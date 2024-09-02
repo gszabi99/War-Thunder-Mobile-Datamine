@@ -1,188 +1,241 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { getBulletBeltImage } = require("%appGlobals/config/bulletsPresentation.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { getWeaponShortNameWithCount } = require("%rGui/weaponry/weaponsVisual.nut")
-let { getEquippedWeapon } = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { mkWeaponPreset } = require("%rGui/unit/unitSettings.nut")
+let { getEquippedWeapon, isBeltWeapon, mkWeaponBelts, getEquippedBelt, getEqippedWithoutOverload
+} = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { mkWeaponPreset, mkChosenBelts } = require("%rGui/unit/unitSettings.nut")
 
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bg, bulletsBlockMargin, headerText, header, gap } = require("respawnComps.nut")
+let { headerText, header, headerHeight, bulletsBlockMargin, unitListHeight, textColor, secondaryMenuKey,
+  padding, weaponSize, weaponGroupWidth, smallGap, commonWeaponIcon,
+  getWeaponTitle, caliberTitle, secondaryTitleKey, courseMenuKey, courseTitleKey, turretMenuKey, turretTitleKey,
+  mkBeltImage
+} = require("respawnComps.nut")
+let { getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
+let { unitPlatesGap, unitPlateHeight } = require("%rGui/unit/components/unitPlateComp.nut")
+let { respawnSlots, unitListScrollHandler } = require("respawnState.nut")
+let { selectedBeltWeaponId } = require("respawnAirChooseState.nut")
+let { showAirRespChooseSecWnd, showAirRespChooseBeltWnd } = require("respawnAirChooseWeaponWnd.nut")
 
+let mkCardTitle = @(title) title == "" ? null
+  : {
+      size = [flex(), SIZE_TO_CONTENT]
+      padding = [hdpx(4), 0, 0, hdpx(8)]
+      rendObj = ROBJ_BOX
+      fillColor = 0x44000000
+      children = {
+        size = [flex(), SIZE_TO_CONTENT]
+        rendObj = ROBJ_TEXT
+        color = 0xFFFFFFFF
+        text = title
+        behavior = Behaviors.Marquee
+        delay = defMarqueeDelay
+        speed = hdpx(30)
+      }.__update(fontVeryTinyShaded)
+    }
 
-let MAX_COLUMNS = 1
-let beltImgWidth = evenPx(25)
-let imgSize = beltImgWidth * 4
-let padding = hdpxi(5)
-let weaponWidth = hdpx(400)
-let weaponHeight = imgSize + 2 * padding
-let smallGap = hdpx(5)
+let mkCard = @(iconComp, title, bottomTitle = "") {
+  behavior = Behaviors.Button
+  size = [weaponSize, weaponSize]
+  rendObj = ROBJ_BOX
+  fillColor = 0xFF45545D
+  borderColor = 0xFFFFFFFF
+  borderWidth = hdpx(3)
+  children = [
+    {
+      padding
+      children = iconComp
+    }
+    mkCardTitle(title)
+    bottomTitle == "" ? null : mkCardTitle(bottomTitle).__update({ vplace = ALIGN_BOTTOM, padding = [0,0,0,hdpx(8)] })
+  ]
+}
 
+let mkWeaponCard = @(w) mkCard(commonWeaponIcon(w), getWeaponTitle(w))
+  .__update({ onClick = @() showAirRespChooseSecWnd(w.slotIdx) })
 
-let groupsCfg = [
-  {
-    locId = "weaponry/courseGuns"
-    isFit = @(trigger, weapon) weapon.turrets == 0 && (trigger == "machine gun" || trigger == "cannon")
-  }
-  {
-    locId = "weaponry/turretGuns"
-    isFit = @(_, weapon) weapon.turrets > 0
-  }
-  {
-    locId = "weaponry/secondary"
-    isFit = @(_, __) true
-  }
-]
+let mkBeltCard = @(w)
+  @() mkCard(mkBeltImage(w.equipped?.bullets ?? []), caliberTitle(w), getBulletBeltShortName(w.equipped?.id)).__update({
+    watch = selectedBeltWeaponId
+    borderColor = w.weaponId == selectedBeltWeaponId.get() ? 0xC07BFFFF : 0xFFFFFFFF
+    onClick = @() showAirRespChooseBeltWnd(w.weaponId)
+  })
 
-let mkBeltImage = @(bullets) {
-  size = [imgSize, imgSize]
-  gap = round((imgSize - beltImgWidth * bullets.len()) / max(1, bullets.len())).tointeger()
+let mkEmptyInfo = @(text) {
+  size = [flex(), weaponSize]
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
   halign = ALIGN_CENTER
-  flow = FLOW_HORIZONTAL
-  children = bullets.map(@(name) {
-    size = [beltImgWidth, imgSize]
-    rendObj = ROBJ_IMAGE
-    image = Picture($"{getBulletBeltImage(name)}:{beltImgWidth}:{imgSize}:P")
-    keepAspect = true
-  })
-}
+  valign = ALIGN_CENTER
+  text
+  color = textColor
+}.__update(fontTinyAccented)
 
-let mkSimpleIcon = @(image) {
-  size = [imgSize, imgSize]
-  rendObj = ROBJ_IMAGE
-  image = Picture($"{image}:{imgSize}:{imgSize}:P")
-  keepAspect = true
-}
-
-function commonWeaponIcon(w) {
-  let { iconType = "" } = w
-  return iconType == "" ? null : mkSimpleIcon($"ui/gameuiskin#{iconType}.avif")
-}
-
-function mkWeaponCard(w) {
-  let bSet = w.bulletSets?[""]
-  let { bullets = [], isBulletBelt = false } = bSet
-  return bg.__merge({
-    size = [weaponWidth, weaponHeight]
-    flow = FLOW_HORIZONTAL
-    children = [
-      {
-        size = [weaponHeight, weaponHeight]
-        padding
-        rendObj = ROBJ_SOLID
-        color = 0xA02C2C2C
-        vplace = ALIGN_CENTER
-        hplace = ALIGN_CENTER
-        children = isBulletBelt ? mkBeltImage(bullets)
-          : commonWeaponIcon(w)
-      }
-      {
-        size = flex()
-        padding
-        children = {
-          size = [flex(), SIZE_TO_CONTENT]
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          color = 0xFFD0D0D0
-          text = getWeaponShortNameWithCount(w, bSet)
-        }.__update(fontVeryTiny)
-      }
-    ]
-  })
-}
-
-function mkWeaponGroup(wg, wgCfg) {
-  if (wg.len() == 0)
-    return null
-  let columns = min(wg.len(), MAX_COLUMNS)
-  let children = wg.map(mkWeaponCard)
-  return {
-    size = [weaponWidth * columns + gap * (columns - 1), SIZE_TO_CONTENT]
-    flow = FLOW_VERTICAL
-    gap = smallGap
-    children = [
-      header(headerText(loc(wgCfg.locId)))
-      {
-        flow = FLOW_VERTICAL
+let mkGroup = @(locId, children, ovr = {}, headerOvr = {}) {
+  size = [weaponGroupWidth, SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
+  gap = smallGap
+  clipChildren = true
+  children = [
+    header(headerText(loc(locId))).__update(headerOvr)
+    {
+      size = [flex(), SIZE_TO_CONTENT]
+      rendObj = ROBJ_SOLID
+      color = 0x99000000
+      children = {
+        size = [flex(), SIZE_TO_CONTENT]
+        behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
+        scrollHandler = ScrollHandler()
+        flow = FLOW_HORIZONTAL
         gap = smallGap
-        children = arrayByRows(children, columns).map(@(row) {
-          flow = FLOW_HORIZONTAL
-          gap = smallGap
-          children = row
-        })
-      }
-    ]
-  }
+        halign = ALIGN_CENTER
+        children
+      }.__update(ovr)
+    }
+  ]
 }
 
-function divideWeaponryByGroups(weapons) {
-  let groups = groupsCfg.map(@(_) [])
+function stackSecondaryWeapons(weapons) {
+  let byIcon = {}
+  let res = []
   foreach(w in weapons)
-    foreach(idx, group in groupsCfg)
-      if (group.isFit(w.trigger, w)) {
-        groups[idx].append(w)
-        break
-      }
+    if (w.iconType not in byIcon) {
+      byIcon[w.iconType] <- res.len()
+      res.append(clone w)
+    }
+    else {
+      let idx = byIcon[w.iconType]
+      res[idx].count <- (res[idx]?.count ?? 1) + (w?.count ?? 1)
+    }
+  return res
+}
 
-  return groups.map(function(group) {
-    let byBlk = {}
-    let res = []
-    foreach(w in group)
-      if (w.blk not in byBlk) {
-        byBlk[w.blk] <- res.len()
-        res.append(clone w)
-      }
-      else {
-        let idx = byBlk[w.blk]
-        res[idx].count <- (res[idx]?.count ?? 1) + (w?.count ?? 1)
-      }
-    return res
+let normalizeValue = @(val) (100 * val) / unitListHeight
+let calcUnitToY = @(idx) normalizeValue(
+  idx * headerHeight
+    + idx * smallGap
+    + (idx - 1) * unitPlatesGap
+    + (idx - 0.5) * weaponSize)
+
+let calcUnitFromY = @(idx, scrollOffsY) normalizeValue(
+  (idx + 0.5) * unitPlateHeight
+    + idx * unitPlatesGap
+    - scrollOffsY)
+
+function mkLinks(selSlot, weaponGroupsLen) {
+  let slotIdx = Computed(@() respawnSlots.get().findindex(@(rs) rs.id == selSlot.id) ?? 0)
+  let unitFromYComp = Computed(function() {
+    let scrollOffsY = unitListScrollHandler.elem?.getScrollOffsY() ?? 0
+    let posY = calcUnitFromY(slotIdx.get(), scrollOffsY)
+    return posY < 0 ? -1
+      : posY > 100 ? 101
+      : posY
   })
+  return function() {
+    let unitFromY = unitFromYComp.get()
+    let unitFromLine = unitFromY < 0 || unitFromY > 100 ? null
+      : [VECTOR_LINE, 0, unitFromY, 50, unitFromY]
+
+    let unitToYArr = array(weaponGroupsLen).map(@(_, idx) calcUnitToY(idx + 1))
+    let unitToLines = unitToYArr.map(@(posY) [VECTOR_LINE, 50, posY, 100, posY])
+
+    let baseTop = max(0, min(unitToYArr[0], unitFromY))
+    let baseBottom = min(100, max(unitToYArr[unitToYArr.len() - 1], unitFromY))
+    let baseLine = [VECTOR_LINE, 50, baseTop, 50, baseBottom]
+    return {
+      watch = unitFromYComp
+      size = [bulletsBlockMargin, unitListHeight]
+      margin = [unitPlatesGap + headerHeight, 0, 0, 0]
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = evenPx(4)
+      color = 0xFFFFFFFF
+      commands = [
+        baseLine,
+        unitFromLine
+      ].extend(unitToLines).filter(@(l) l != null)
+    }
+  }
 }
 
 function respawnAirWeaponry(selSlot) {
   let wSlots = loadUnitWeaponSlots(selSlot.name)
-  let { weaponPreset } = mkWeaponPreset(Watched(selSlot.name))
+  let unitNameW = Watched(selSlot.name)
+  let { weaponPreset } = mkWeaponPreset(unitNameW)
+  let { chosenBelts } = mkChosenBelts(unitNameW)
   return function() {
-    let activeWeapons = []
-    foreach(idx, wSlot in wSlots) {
-      let weapon = getEquippedWeapon(weaponPreset.get(), idx, wSlot?.wPresets ?? {}, selSlot?.mods)
+    let courseBeltWeapons = []
+    let turretBeltWeapons = []
+    let secondaryWeapons = []
+    let addedBelts = {}
+
+    let weapBySlots = getEqippedWithoutOverload(selSlot.name,
+      wSlots.map(@(wSlot, idx) getEquippedWeapon(weaponPreset.get(), idx, wSlot?.wPresets ?? {}, selSlot?.mods)))
+
+    foreach(idx, weapon in weapBySlots) {
       if (weapon == null)
         continue
-      let { iconType = "", weapons } = weapon
-      activeWeapons.extend(iconType == "" ? weapons : weapons.map(@(w) w.__merge({ iconType })))
+      foreach(w in weapon.weapons) {
+        let { weaponId } = w
+        if (weaponId in addedBelts)
+          addedBelts[weaponId].count++
+        else if (isBeltWeapon(w)) {
+          let list = w.turrets > 0 ? turretBeltWeapons : courseBeltWeapons
+          let equipped = getEquippedBelt(chosenBelts.get(), weaponId, mkWeaponBelts(selSlot.name, w), selSlot?.mods)
+          let beltW = w.__merge({
+            count = 1
+            equipped
+            caliber = equipped?.caliber ?? 0
+          })
+          list.append(beltW)
+          addedBelts[weaponId] <- beltW
+        }
+      }
+      if (idx != 0) //idx == 0 is commonWeapons
+        secondaryWeapons.append(weapon.__merge({ slotIdx = idx }))
     }
 
-    let weaponGroups = divideWeaponryByGroups(activeWeapons)
     let rows = []
-    local curRow = null
-    local columnsLeft = MAX_COLUMNS
-    foreach(idx, wg in weaponGroups) {
-      if (wg.len() == 0)
-        continue
-      if (curRow == null || columnsLeft < wg.len()) {
-        curRow = []
-        rows.append(curRow)
-        columnsLeft = MAX_COLUMNS
-      }
-      columnsLeft -= wg.len()
-      curRow.append(mkWeaponGroup(wg, groupsCfg[idx]))
-    }
+    if (courseBeltWeapons.len() > 0)
+      rows.append(mkGroup("weaponry/courseGunBelts",
+        courseBeltWeapons.sort(@(a, b) b.caliber <=> a.caliber).map(mkBeltCard), { key = courseMenuKey }, {
+          key = courseTitleKey
+        }))
+    if (turretBeltWeapons.len() > 0)
+      rows.append(mkGroup("weaponry/turretGunBelts",
+        turretBeltWeapons.sort(@(a, b) b.caliber <=> a.caliber).map(mkBeltCard), { key = turretMenuKey }, {
+          key = turretTitleKey
+        }))
+    let secondaryStacks = stackSecondaryWeapons(secondaryWeapons)
+    if (secondaryStacks.len() > 0)
+      rows.append(mkGroup("weaponry/secondaryWeapons", secondaryStacks.map(mkWeaponCard), { key = secondaryMenuKey }, {
+        key = secondaryTitleKey
+      }))
+    else if (wSlots.len() > 1)
+      rows.append(mkGroup("weaponry/secondaryWeapons", mkEmptyInfo(loc("weaponry/tapToChooseSecondary")), {
+        onClick = @() showAirRespChooseSecWnd("")
+        behavior = Behaviors.Button
+        scrollHandler = null
+        key = secondaryMenuKey
+      }, {
+        key = secondaryTitleKey
+      }))
 
     return {
-      watch = weaponPreset
-      key = selSlot.name
-      size = [MAX_COLUMNS * weaponWidth + smallGap * (MAX_COLUMNS - 1), SIZE_TO_CONTENT]
-      margin = [0, hdpx(20), 0, bulletsBlockMargin]
-      flow = FLOW_VERTICAL
-      gap
-      children = rows.map(@(children) {
-        flow = FLOW_HORIZONTAL
-        gap = smallGap
-        children
-      })
-      animations = wndSwitchAnim
+      watch = [weaponPreset, chosenBelts]
+      size = [weaponGroupWidth + bulletsBlockMargin, SIZE_TO_CONTENT]
+      flow = FLOW_HORIZONTAL
+      children = [
+        mkLinks(selSlot, rows.len())
+        {
+          key = selSlot.name
+          margin = [0, hdpx(20), 0, 0]
+          flow = FLOW_VERTICAL
+          gap = unitPlatesGap
+          children = [
+            header(headerText(loc("respawn/select_weapon")))
+          ].extend(rows)
+          animations = wndSwitchAnim
+        }
+      ]
     }
   }
 }

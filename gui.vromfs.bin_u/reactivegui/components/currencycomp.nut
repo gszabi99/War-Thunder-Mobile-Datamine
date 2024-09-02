@@ -78,12 +78,7 @@ function strikeThrough(content, style = CS_COMMON) {
         size = flex()
         rendObj = ROBJ_VECTOR_CANVAS
         commands = [
-          [VECTOR_COLOR, Color(0, 0, 0, 56)],
-          [VECTOR_WIDTH, style.discountStrikeWidth + hdpx(4)],
-          [VECTOR_LINE, 0, 90, 100, 20],
-          [VECTOR_WIDTH, style.discountStrikeWidth + hdpx(2)],
-          [VECTOR_LINE, 0, 90, 100, 20],
-          [VECTOR_COLOR, style.textColor],
+          [VECTOR_COLOR, 0xFFE02A14],
           [VECTOR_WIDTH, style.discountStrikeWidth],
           [VECTOR_LINE, 0, 90, 100, 20],
         ]
@@ -105,10 +100,10 @@ function mkDiscountPriceComp(fullValue, value, currencyId, style = CS_COMMON) {
     valign = ALIGN_CENTER
     gap = style.discountPriceGap
     children = [
-      !isFree
-        ? strikeThrough(mkCurrencyComp(fullValue, currencyId, oldPriceStyle), style)
-        : null
       price
+      !isFree
+        ? strikeThrough(mkCurrencyText(fullValue, oldPriceStyle), style)
+        : null
     ]
   }
 }

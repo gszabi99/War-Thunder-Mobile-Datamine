@@ -2,10 +2,10 @@ from "%globalsDarg/darg_library.nut" import *
 let { round, round_by_value, lerpClamped } = require("%sqstd/math.nut")
 let { getUnitType, getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { applyAttrLevels } = require("%rGui/unitAttr/unitAttrValues.nut")
+let { applyAttrLevels } = require("%rGui/attributes/attrValues.nut")
 let { TANK, SHIP, SUBMARINE, AIR } = require("%appGlobals/unitConst.nut")
 let { get_game_params } = require("gameparams")
-let { attrPresets } = require("%rGui/unitAttr/unitAttrState.nut")
+let { attrPresets } = require("%rGui/attributes/attrState.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { getWeaponShortNameWithCount, getWeaponTypeName, getWeaponCaliber } = require("%rGui/weaponry/weaponsVisual.nut")
 
@@ -496,6 +496,7 @@ function mkUnitStat(unit, stat, shopCfg, uid) {
     value = stat.valueToText(value, shopCfg)
     progress = stat.getProgress?(value)
     progressColor = stat.getProgressColor(unit, value)
+    isMultiline = fullGunWeaponId == stat?.id
   }
 }
 

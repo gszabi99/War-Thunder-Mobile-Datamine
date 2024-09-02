@@ -4,7 +4,6 @@ let { eventbus_subscribe } = require("eventbus")
 let iOsPlaform = require("ios.platform")
 let { requestTrackingPermission, getTrackingPermission, ATT_NOT_DETERMINED } = iOsPlaform
 let { LOGIN_STATE, isPreviewIDFAShowed, isReadyForShowPreviewIdfa } = require("%appGlobals/loginState.nut")
-let { abTests } = require("%appGlobals/pServer/campaign.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 let { export, finalizeStage } = require("mkStageBase.nut")("ios_idfa",
@@ -33,7 +32,7 @@ eventbus_subscribe("ios.platform.onPermissionTrackCallback", function(p) {
 
 function start() {
   if (getTrackingPermission() == ATT_NOT_DETERMINED)
-    return abTests.get()?.showPreviewIDFA == "true" ? isReadyForShowPreviewIdfa.set(true) : request()
+    isReadyForShowPreviewIdfa.set(true)
   else
     finalizeStage()
 }

@@ -69,6 +69,7 @@ let loginTypes = {
   LT_GUEST = "guest"
   LT_FACEBOOK = "facebook"
   LT_NSWITCH = "nswitch"
+  LT_HUAWEI = "huawei"
 }
 
 let secondStepTypes = {
@@ -94,6 +95,7 @@ if (is_ios) {
       [loginTypes.LT_GOOGLE] = true,
       [loginTypes.LT_FIREBASE] = true,
       [loginTypes.LT_FACEBOOK] = true,
+      [loginTypes.LT_HUAWEI] = true,
     })
 }
 

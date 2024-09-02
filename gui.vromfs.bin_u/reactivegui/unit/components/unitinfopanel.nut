@@ -7,7 +7,7 @@ let { mkCurrencyImage, mkCurrencyComp } = require("%rGui/components/currencyComp
 let panelBg = require("%rGui/components/panelBg.nut")
 let { mkUnitStatsCompShort, mkUnitStatsCompFull, armorProtectionPercentageColors,
   avgShellPenetrationMmByRank } = require("%rGui/unit/unitStats.nut")
-let { attrPresets } = require("%rGui/unitAttr/unitAttrState.nut")
+let { attrPresets } = require("%rGui/attributes/attrState.nut")
 let { mkUnitBonuses, mkBonusTiny, bonusTinySize } = require("unitInfoComps.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { itemsCfgOrdered } = require("%appGlobals/itemsState.nut")
@@ -25,6 +25,7 @@ let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { researchBlock } = require("%rGui/unitsTree/components/researchBars.nut")
 let { mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize } = require("%rGui/components/scrollArrows.nut")
+let { isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 
 let statsWidth = hdpx(500)
 let textColor = 0xFFFFFFFF
@@ -49,14 +50,14 @@ let canUseItemByUnit = {
 let mkText = @(override = {}) {
   color = textColor
   rendObj = ROBJ_TEXT
-}.__update(fontTiny, override)
+}.__update(fontVeryTinyAccented, override)
 
 let mkTextArea = @(override = {}) {
   size = [flex(), SIZE_TO_CONTENT]
   behavior = Behaviors.TextArea
   color = textColor
   rendObj = ROBJ_TEXTAREA
-}.__update(fontTiny, override)
+}.__update(fontVeryTinyAccented, override)
 
 let inlineIconSize = hdpxi(40)
 let mkInlineCurrencyIcon = @(currencyId) {
@@ -119,6 +120,16 @@ let diffProgress = @(width, posX, pivotX, color) {
   ]
 }
 
+function setScrollStr(text){
+  return{
+    maxWidth = hdpx(350)
+    text = text
+    behavior = Behaviors.Marquee
+    speed = hdpx(30)
+    delay = defMarqueeDelay
+  }
+}
+
 function mkStatRow(data, prevProgress) {
   let { header = null, value = null, progress = null,
     progressColor = null, uid = null, isMultiline = false } = data
@@ -131,7 +142,7 @@ function mkStatRow(data, prevProgress) {
         size = [flex(), SIZE_TO_CONTENT]
         valign = ALIGN_BOTTOM
         children = [
-          isMultiline ? mkTextArea({ text = header }) : mkText({ text = header })
+          isMultiline ? mkTextArea({ text = header }) : mkText(setScrollStr(header))
           mkText({ text = value, hplace = ALIGN_RIGHT })
         ]
       }
@@ -316,7 +327,7 @@ function unitPriceBlock(unit) {
         mkText({ text = loc("unitsTree/purchasePrice"), size = [ flex(), SIZE_TO_CONTENT ] })
         mkCurrencyComp(price.get().price, price.get().currencyId, CS_COMMON.__merge({
           iconSize = bonusTinySize
-          fontStyle = fontTiny
+          fontStyle = fontVeryTinyAccented
           iconGap = hdpx(6)
         }))
       ]
@@ -368,7 +379,7 @@ function unitMRankBlock(mRank) {
         rendObj = ROBJ_TEXT
         text = loc("attrib_section/mRank")
         size = [flex(), SIZE_TO_CONTENT]
-      }.__update(fontTiny)
+      }.__update(fontVeryTinyAccented)
       mkGradRank(mRank)
     ]
   }
@@ -387,7 +398,7 @@ let unitRewardsBlock = @(unit, title) {
       behavior = Behaviors.Marquee
       delay = defMarqueeDelay
       speed = hdpx(50)
-    }.__update(fontTiny)
+    }.__update(fontVeryTinyAccented)
     mkUnitBonuses(unit, {}, mkBonusTiny)
   ]
 }
@@ -433,19 +444,19 @@ let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = h
         unitHeaderBlock(unit.value, headerCtor)
         unitMRankBlock(unit.value?.mRank)
         unitRewardsBlock(unit.value, loc("attrib_section/battleRewards"))
-        unit.value?.isUpgraded || unit.value?.isPremium
+        unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
           ? null
           : unitRewardsBlock(unit.value.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
             { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
         unitStatsBlock(unitStats, prevStats)
         unitArmorBlock(unit.value, false)
         unitPriceBlock(unit.get())
-        researchBlock(unit.get())
+        !isUnitsTreeOpen.get() ? researchBlock(unit.get()) : null
       ]
     }.__update(ovr)
 
-    return panelBg.__merge({
-      watch = [unit, unitMods, attrPresets]
+    let content = {
+      watch = [unit, unitMods, attrPresets, isUnitsTreeOpen]
       clipChildren = true
       stopMouse = true
       children = !mkScroll ? children
@@ -453,7 +464,9 @@ let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = h
             mkScroll(children)
             scrollArrowsBlock
           ]
-    }, override)
+    }.__merge(override)
+
+    return isUnitsTreeOpen.get() ? content : panelBg.__merge(content)
   }
 
 let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
@@ -471,7 +484,7 @@ let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
       : [
           unitMRankBlock(unit.value?.mRank)
           unitRewardsBlock(unit.value, loc("attrib_section/battleRewards"))
-          unit.value?.isUpgraded || unit.value?.isPremium
+          unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
             ? null
             : unitRewardsBlock(unit.value.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
               { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))

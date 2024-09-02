@@ -1,10 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
+let { unitExpColor, slotExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
-let { getUnitsSet, getUnitRewards, isUnitReceiveLevel, getLevelProgress, sortUnitMods } = require("%rGui/debriefing/debrUtils.nut")
-let { mkUnitPlateWithLevelProgress } = require("%rGui/debriefing/mkUnitPlateWithLevelProgress.nut")
-let { getLevelUnlockLineAnimTime, mkLevelUnlockLinesContainer, mkDebrLineMod, mkDebrLinePoints
+let { getUnitsSet, getUnitRewards, isUnitReceiveLevel, isSlotReceiveLevel, getSlotLevelCfg,
+  getLevelProgress, getNextUnitLevelWithRewards, sortUnitMods
+} = require("%rGui/debriefing/debrUtils.nut")
+let mkPlateWithLevelProgress = require("%rGui/debriefing/mkPlateWithLevelProgress.nut")
+let { getLevelUnlockLineAnimTime, mkLevelUnlockLinesContainer, mkDebrLineMod, mkDebrLineWeapon,
+  mkDebrLineAmmo, mkDebrLinePoints
 } = require("%rGui/debriefing/debrLevelUnlockLines.nut")
 
 let levelProgressAnimStartTime = 0.0
@@ -13,41 +16,35 @@ let levelUnlocksAnimStartTime = 1.0
 let columnWidth = hdpx(350)
 let columnGap = hdpx(50)
 
-function mkUnitLevelUnlockLines(unit, debrData, delay) {
+function hasAnySlotOrUnitLevelUnlockRewards(units, debrData) {
+  foreach (unit in units) {
+    let { slot = {}, name = "" } = unit
+    let { nextLevelExp = 0 } = slot
+    let isSlotMaxLevel = nextLevelExp == 0
+    if (!isSlotMaxLevel && isSlotReceiveLevel(name, debrData))
+      return true
+  }
+  foreach (unit in units) {
+    let { unitWeaponry = {} } = debrData
+    let { nextLevelExp = 0, name = "", level = 0, modPresetCfg = {} } = unit
+    let isUnitMaxLevel = nextLevelExp == 0
+    if (isUnitMaxLevel || !isUnitReceiveLevel(name, debrData))
+      continue
+    let { unlockedLevel } = getLevelProgress(unit, getUnitRewards(name, debrData)?.exp)
+    if (getNextUnitLevelWithRewards(level + 1, unlockedLevel, modPresetCfg, unitWeaponry?[name]) > level)
+      return true
+  }
+  return false
+}
+
+function mkLevelUnlockLines(list, delay) {
   let res = {
     levelUnlocksAnimTime = 0
     levelUnlocksComps = null
   }
-  if (unit == null)
-    return res
-
-  let { items = {} } = debrData
-  let unitExp = getUnitRewards(unit?.name, debrData)?.exp
-  let { prevLevel, unlockedLevel } = getLevelProgress(unit, unitExp)
-  let startLevel = prevLevel + 1
-  let endLevel = max(startLevel, unlockedLevel)
-  let { modPresetCfg = {}, levelsSp = {} } = unit
-  let spLevels = levelsSp?.levels ?? []
-
-  let list = []
-  for (local l = startLevel; l <= endLevel; l++) {
-    let isUnlocked = l <= unlockedLevel
-    // Mods
-    let modsList = modPresetCfg
-      .map(@(mod, name) mod.__merge({ name }))
-      .values()
-      .filter(@(mod) mod?.reqLevel == l && !mod?.isHidden && (mod.name not in items))
-    modsList.sort(sortUnitMods)
-    list.extend(modsList.map(@(v) { isUnlocked, data = v, ctor = mkDebrLineMod }))
-    // Points
-    let sp = spLevels?[l - 1] ?? 0
-    if (sp > 0) {
-      let data = { sp, reqLevel = l, name = $"sp{l}" }
-      list.append({ isUnlocked, data, ctor = mkDebrLinePoints })
-    }
-  }
-
   let total = list.len()
+  if (total == 0)
+    return res
   let itemTime = getLevelUnlockLineAnimTime(total)
   res.levelUnlocksAnimTime = total * itemTime
   res.levelUnlocksComps = list.map(function(v, idx) {
@@ -58,13 +55,95 @@ function mkUnitLevelUnlockLines(unit, debrData, delay) {
   return res
 }
 
-function mkUnitColumn(unit, debrData) {
+function mkSlotLevelUnlockLines(unit, debrData, delay) {
   if (unit == null)
-    return null
+    return mkLevelUnlockLines([], delay)
 
   let unitExp = getUnitRewards(unit?.name, debrData)?.exp
-  let { unitPlateWithLevelProgressComp, levelProgressAnimTime } = mkUnitPlateWithLevelProgress(unit, unitExp, levelProgressAnimStartTime, unitExpColor)
-  let { levelUnlocksComps, levelUnlocksAnimTime } = mkUnitLevelUnlockLines(unit, debrData, levelUnlocksAnimStartTime)
+  let { levelsSp = {} } = debrData?.slots
+  let slotLevelCfg = getSlotLevelCfg(unit, debrData)
+  let { prevLevel, unlockedLevel } = getLevelProgress(slotLevelCfg, unitExp)
+  let startLevel = prevLevel + 1
+  let endLevel = max(startLevel, unlockedLevel)
+  let spLevels = levelsSp?.levels ?? []
+
+  let list = []
+  for (local l = startLevel; l <= endLevel; l++) {
+    let isUnlocked = l <= unlockedLevel
+    // Points
+    let sp = spLevels?[l - 1] ?? 0
+    if (sp > 0) {
+      let data = { sp, reqLevel = l, name = $"sp{l}" }
+      list.append({ isUnlocked, data, ctor = mkDebrLinePoints })
+    }
+  }
+
+  return mkLevelUnlockLines(list, delay)
+}
+
+function mkUnitLevelUnlockLines(unit, debrData, delay) {
+  if (unit == null)
+    return mkLevelUnlockLines([], delay)
+
+  let { unitWeaponry = {}, campaign = "" } = debrData
+  let unitExp = getUnitRewards(unit?.name, debrData)?.exp
+  let { modPresetCfg = {}, levelsExp = [] } = unit
+  let { prevLevel, unlockedLevel } = getLevelProgress(unit, unitExp)
+  let startLevel = prevLevel + 1
+  let endLevel = max(unlockedLevel,
+    getNextUnitLevelWithRewards(startLevel, levelsExp.len(), modPresetCfg, unitWeaponry?[unit?.name]))
+
+  let isModsWeapons = campaign == "air"
+  let modsMap = modPresetCfg
+    .filter(@(mod) !mod?.isHidden)
+    .map(@(mod, name) mod.__merge({ name }))
+  let weaponsPresetsMap = (unitWeaponry?[unit?.name].weaponPresets ?? {})
+    .map(@(w) {
+        reqLevel = modsMap?[w?.reqModification].reqLevel
+      }.__update(w))
+  let ammoForWeaponsMap = {}
+  let { ammoForWeapons = {} } = unitWeaponry?[unit?.name]
+  foreach (weapon in ammoForWeapons) {
+    let { fromUnitTags = {} } = weapon
+    foreach (bSetId, b in fromUnitTags) {
+      let reqLevel = b?.reqLevel ?? modsMap?[b?.reqModification].reqLevel ?? 0
+      ammoForWeaponsMap[bSetId] <- {
+        bSetId
+        weapon
+        reqLevel
+        isModsWeapons
+        campaign
+      }
+    }
+  }
+
+  let list = []
+  for (local l = startLevel; l <= endLevel; l++) {
+    let isUnlocked = l <= unlockedLevel
+    // Mods
+    if (!isModsWeapons) {
+      let modsList = modsMap
+        .filter(@(mod) mod?.reqLevel == l)
+        .values()
+      modsList.sort(sortUnitMods)
+      list.extend(modsList.map(@(v) { isUnlocked, data = v, ctor = mkDebrLineMod }))
+    }
+    // Weapons
+    let weaponsList = weaponsPresetsMap
+      .filter(@(w) w?.reqLevel == l)
+      .values()
+    list.extend(weaponsList.map(@(v) { isUnlocked, data = v, ctor = mkDebrLineWeapon }))
+    // Ammo
+    let ammoList = ammoForWeaponsMap
+      .filter(@(w) w?.reqLevel == l)
+      .values()
+    list.extend(ammoList.map(@(v) { isUnlocked, data = v, ctor = mkDebrLineAmmo }))
+  }
+
+  return mkLevelUnlockLines(list, delay)
+}
+
+function mkColumn(plateWithLevelProgressComp, levelProgressAnimTime, levelUnlocksComps, levelUnlocksAnimTime) {
   let levelUnlockLines = mkLevelUnlockLinesContainer(levelUnlocksComps)
 
   let columnShowTime = max(
@@ -77,7 +156,7 @@ function mkUnitColumn(unit, debrData) {
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     children = [
-      unitPlateWithLevelProgressComp
+      plateWithLevelProgressComp
       levelUnlockLines
     ]
   }
@@ -88,29 +167,46 @@ function mkUnitColumn(unit, debrData) {
   }
 }
 
+function mkSlotColumn(unit, debrData) {
+  if (unit == null)
+    return null
+  let slotLevelCfg = getSlotLevelCfg(unit, debrData)
+  let unitExp = getUnitRewards(unit?.name, debrData)?.exp
+  let { plateWithLevelProgressComp, levelProgressAnimTime
+  } = mkPlateWithLevelProgress(debrData, slotLevelCfg, unitExp, levelProgressAnimStartTime, slotExpColor)
+  let { levelUnlocksComps, levelUnlocksAnimTime } = mkSlotLevelUnlockLines(unit, debrData, levelUnlocksAnimStartTime)
+  return mkColumn(plateWithLevelProgressComp, levelProgressAnimTime, levelUnlocksComps, levelUnlocksAnimTime)
+}
+
+function mkUnitColumn(unit, debrData) {
+  if (unit == null)
+    return null
+  let unitExp = getUnitRewards(unit?.name, debrData)?.exp
+  let { plateWithLevelProgressComp, levelProgressAnimTime
+  } = mkPlateWithLevelProgress(debrData, unit, unitExp, levelProgressAnimStartTime, unitExpColor)
+  let { levelUnlocksComps, levelUnlocksAnimTime } = mkUnitLevelUnlockLines(unit, debrData, levelUnlocksAnimStartTime)
+  return mkColumn(plateWithLevelProgressComp, levelProgressAnimTime, levelUnlocksComps, levelUnlocksAnimTime)
+}
+
 function mkDebriefingWndTabUnitsSet(debrData, params) {
   let units = getUnitsSet(debrData)
 
-  local hasAnyUnitRewards = false
+  local needShow = false
   foreach (unit in units) {
-    hasAnyUnitRewards = (getUnitRewards(unit?.name, debrData)?.exp.totalExp ?? 0) > 0
-    if (hasAnyUnitRewards)
+    needShow = (getUnitRewards(unit?.name, debrData)?.exp.totalExp ?? 0) > 0
+    if (needShow)
       break
   }
-  if (!hasAnyUnitRewards)
+  if (!needShow)
     return null
 
-  local hasAnyUnitLevelUps = false
-  foreach (unit in units) {
-    hasAnyUnitLevelUps = isUnitReceiveLevel(unit?.name, debrData)
-    if (hasAnyUnitLevelUps)
-      break
-  }
+  let hasAnyLevelUnlockRewards = hasAnySlotOrUnitLevelUnlockRewards(units, debrData)
 
-  let columnsData = units.map(@(u) mkUnitColumn(u, debrData))
+  let slotColumnsData = units.map(@(u) mkSlotColumn(u, debrData))
+  let unitColumnsData = units.map(@(u) mkUnitColumn(u, debrData))
 
   let { needBtnUnit = true } = params
-  let timeShow = columnsData.reduce(@(res, v) max(res, v.columnShowTime), 0) + (needBtnUnit ? buttonsShowTime : 0)
+  let timeShow = unitColumnsData.reduce(@(res, v) max(res, v.columnShowTime), 0) + (needBtnUnit ? buttonsShowTime : 0)
 
   let comp = {
     size = flex()
@@ -126,7 +222,14 @@ function mkDebriefingWndTabUnitsSet(debrData, params) {
             halign = ALIGN_CENTER
             flow = FLOW_HORIZONTAL
             gap = columnGap
-            children = columnsData.map(@(v) v.columnComp)
+            children = slotColumnsData.map(@(v) v.columnComp)
+          }
+          {
+            size = [hdpx(1600), flex()]
+            halign = ALIGN_CENTER
+            flow = FLOW_HORIZONTAL
+            gap = columnGap
+            children = unitColumnsData.map(@(v) v.columnComp)
           }
         ]
       }
@@ -136,7 +239,7 @@ function mkDebriefingWndTabUnitsSet(debrData, params) {
   return {
     comp
     timeShow
-    forceStopAnim = params.needBtnUnit || hasAnyUnitLevelUps
+    forceStopAnim = params.needBtnUnit || hasAnyLevelUnlockRewards
   }
 }
 

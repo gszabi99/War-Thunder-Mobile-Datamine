@@ -8,9 +8,11 @@ let { setSelectedUnitInfo, getAvailableRespawnBases, getFullRespawnBasesList,
 let { onSpectatorMode } = require("guiSpectator")
 let { is_bit_set, ceil } = require("%sqstd/math.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
-let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft, respawnUnitItems
+let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft, respawnUnitItems,
+  hasRespawnSeparateSlots, curUnitsAvgCostWp
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { getUnitTags, getUnitType } = require("%appGlobals/unitTags.nut")
+let { AIR } = require("%appGlobals/unitConst.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -23,9 +25,9 @@ let { curLevelTags } = require("%rGui/unitSkins/levelSkinTags.nut")
 let { getSkinCustomTags } = require("%rGui/unit/unitSettings.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { sendPlayerActivityToServer } = require("playerActivity.nut")
-let { getUnitSlotsPresetNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { getUnitSlotsPresetNonUpdatable, getUnitBeltsNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
 
-
+let unitListScrollHandler = ScrollHandler()
 let sparesNum = mkWatched(persist, "sparesNum", servProfile.value?.items[SPARE].count ?? 0)
 let isRespawnAttached = Watched(false)
 let readySlotsMask = Watched(0)
@@ -49,6 +51,13 @@ let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
     isSpawnBySpare = is_bit_set(spareMask, id),
     bullets = loadUnitBulletsChoice(info?.name)?.commonWeapons.primary.fromUnitTags ?? {}
     mods = info?.items ?? defMods
+    isPremium = info?.isPremium ?? false
+    isUpgraded = info?.isUpgraded ?? false
+    modPresetCfg = info?.modPresetCfg ?? {}
+    costWp = info?.costWp ?? 0
+    modCostPart = info?.modCostPart ?? 0.0
+    level = info?.level ?? -1
+    rank = info?.rank ?? 0
   }
 
 let canUseSpare = Computed(@() (respawnUnitItems.get()?.spare ?? 0) > 0)
@@ -65,8 +74,14 @@ let respawnSlots = Computed(function() {
     res.append(mkSlot(idx + 1, sUnit, defMods, rMask, sMask))
   foreach (sUnit in respawnUnitInfo.value?.lockedUnits ?? [])
     res.append(mkSlot(res.len(), sUnit, defMods).__update({ reqLevel = sUnit?.reqLevel ?? 0, isLocked = true }))
-  let { level = -1 } = respawnUnitInfo.value
-  res.each(@(s) s.level <- level)
+  if (!hasRespawnSeparateSlots.get()) {
+    let { level = -1, isPremium = false, isUpgraded = false } = respawnUnitInfo.get()
+    res.each(function(s) {
+      s.level = level
+      s.isUpgraded = isUpgraded
+      s.isPremium = isPremium
+    })
+  }
   return res
 })
 
@@ -117,10 +132,10 @@ function loadSeenShells() {
 if (seenShells.value.len() == 0)
   loadSeenShells()
 
-let hasAvailableSlot = Computed(@() respawnsLeft.value != 0 && respawnSlots.value.findvalue(@(s) s.canSpawn) != null)
-let needAutospawn = keepref(Computed(@() isInRespawn.value && isRespawnAttached.value
-  && hasAvailableSlot.value && respawnSlots.value.len() == 1))
-let needSpectatorMode = keepref(Computed(@() isInRespawn.value && !hasAvailableSlot.value))
+let hasAvailableSlot = Computed(@() respawnsLeft.get() != 0 && respawnSlots.get().findvalue(@(s) s.canSpawn) != null)
+let needAutospawn = keepref(Computed(@() isInRespawn.get() && isRespawnAttached.get()
+  && hasAvailableSlot.get() && !hasRespawnSeparateSlots.get() && respawnSlots.get().len() == 1))
+let needSpectatorMode = keepref(Computed(@() isInRespawn.get() && !hasAvailableSlot.get()))
 needSpectatorMode.subscribe(onSpectatorMode)
 
 let selSlot = Computed(function() {
@@ -212,10 +227,19 @@ function respawn(slot, bullets) {
     respBaseId = chooseRandom(availRespBases.value.keys()) ?? -1
 
   local bulletsData = clone emptyBullets
-  foreach (idx, bullet in bullets) {
-    bulletsData[$"bullets{idx}"] <- bullet.name
-    bulletsData[$"bulletCount{idx}"] <- bullet.count
-  }
+  if (getUnitType(name) == AIR) {
+    local idx = 0
+    foreach (weaponId, bName in getUnitBeltsNonUpdatable(name, mods)) {
+      bulletsData[$"bulletsWeapon{idx}"] <- weaponId
+      bulletsData[$"bullets{idx}"] <- bName
+      bulletsData[$"bulletCount{idx}"] <- 10000
+      idx++
+    }
+  } else
+    foreach (idx, bullet in bullets) {
+      bulletsData[$"bullets{idx}"] <- bullet.name
+      bulletsData[$"bulletCount{idx}"] <- bullet.count
+    }
 
   let spawnSkin = selectedSkins.get()?[name] ?? skin
 
@@ -313,4 +337,8 @@ return {
 
   chooseAutoSkin
   selectedSkins
+
+  unitListScrollHandler
+  hasRespawnSeparateSlots
+  curUnitsAvgCostWp
 }

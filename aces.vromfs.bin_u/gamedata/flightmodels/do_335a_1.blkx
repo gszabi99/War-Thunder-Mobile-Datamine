@@ -1771,10 +1771,6 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1040.0,
-    "maxloadMassLeftConsoles": 570.0,
-    "maxloadMassRightConsoles": 570.0,
-    "maxDisbalance": 420.0,
     "HideNodes": {},
     "WeaponSlot": [
       {
@@ -1821,7 +1817,7 @@
         "tier": 7,
         "order": 1,
         "WeaponPreset": {
-          "iconType": "bombs_small",
+          "iconType": "bomb_250kg",
           "name": "sc250",
           "reqModification": "etc250_2_mod",
           "Weapon": {
@@ -1838,7 +1834,7 @@
         "tier": 6,
         "order": 3,
         "WeaponPreset": {
-          "iconType": "bombs_large",
+          "iconType": "bomb_500kg",
           "name": "sc500",
           "reqModification": "etc500_3_mod",
           "Weapon": {
@@ -1860,7 +1856,7 @@
         "tier": 5,
         "order": 2,
         "WeaponPreset": {
-          "iconType": "bombs_small",
+          "iconType": "bomb_250kg",
           "name": "sc250",
           "reqModification": "etc250_2_mod",
           "Weapon": {

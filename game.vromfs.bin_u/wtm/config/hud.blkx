@@ -1890,7 +1890,7 @@
     ]
   },
   "pointers": {
-    "arrow": "arrow",
+    "arrow": "arrow_mark.svg:55:46:K",
     "colorEnemy": [
       82,
       90,
@@ -1957,7 +1957,7 @@
     "hudScreenSafeAreaForPointers": 1.0,
     "captureZonePointersInDarg": true,
     "airTargetArrow": {
-      "scale": 2.0,
+      "scale": 1.0,
       "color": [
         255,
         255,
@@ -1965,7 +1965,7 @@
         255
       ],
       "animFreq": 1.5,
-      "animScale": 1.5
+      "animScale": 1.2
     }
   },
   "indicators": {
@@ -2000,6 +2000,7 @@
     ],
     "blinkFreq": 2.0,
     "showIndicatorCenterAngle": 10.0,
+    "showDistanceAngle": 30.0,
     "font": "tiny_accented_text",
     "smallFont": "very_tiny_text",
     "fontFxColor": [
@@ -2433,7 +2434,7 @@
       "distanceFullySpecifiedTarget": 500.0,
       "distanceShowTitle": 1000.0,
       "scaleAlphaForPlane": [
-        2.5,
+        2.0,
         200.0
       ]
     },
@@ -4108,6 +4109,9 @@
       },
       "strategy_mode": {
         "shortcutIdx": 38
+      },
+      "electronic_warfare": {
+        "shortcutIdx": -1
       }
     },
     "wheelActions": {
@@ -4729,6 +4733,8 @@
     "weaponIcon": "hud_debuff_weapon.svg:34:34:K",
     "controlIcon": "hud_debuff_control.svg:34:34:K",
     "explosionIcon": "dmg_ship_explosion.svg:34:34:K",
+    "ricochetIcon": "dmg_ricochet.svg:34:34:K",
+    "nopenetrationIcon": "dmg_not_penetrated.svg:34:34:K",
     "pointerFontName": "small_accented_text",
     "textOffset": [
       0.0,
@@ -4738,7 +4744,25 @@
     "flyAwayHeight": 100.0,
     "blinkDuration": 0.3,
     "maxBlinkScale": 1.2,
-    "fxAlpha": 255
+    "fxAlpha": 255,
+    "failed": {
+      "delay": 1.5,
+      "fontId": "small_accented_text",
+      "iconColor": [
+        250,
+        250,
+        250,
+        230
+      ],
+      "iconScale": 1.0,
+      "textColor": [
+        240,
+        240,
+        240,
+        190
+      ],
+      "textScale": 0.7
+    }
   },
   "airDebuffs": {
     "overheatLevel": 0.7,

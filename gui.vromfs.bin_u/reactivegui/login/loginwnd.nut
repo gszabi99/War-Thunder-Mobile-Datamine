@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce, setInterval, clearTimer } = require("dagor.workcycle")
-let { LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_NSWITCH, SST_MAIL, SST_UNKNOWN, availableLoginTypes, isLoginByGajin
+let { LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_NSWITCH, SST_MAIL, SST_UNKNOWN, availableLoginTypes, isLoginByGajin
 } = require("%appGlobals/loginState.nut")
 let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -18,9 +18,11 @@ let { getCurrentLanguage } = require("dagor.localize")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { is_nswitch, is_ios } = require("%sqstd/platform.nut")
 let { GP_SUCCESS = 0, getGPStatus = @() 0 } = require("android.account.googleplay")
+let { isHMSAvailable = @() false } = require("android.account.huawei")
 
 let fbButtonVisible = getCurrentLanguage() != "Russian"
 let gpButtonVisible = getGPStatus() == GP_SUCCESS
+let hmsButtonVisible = isHMSAvailable()
 let loginName = mkWatched(persist, "loginName", "")
 let loginPas = mkWatched(persist, "loginPas", "")
 let twoStepAuthCode = mkWatched(persist, "twoStepAuthCode", "")
@@ -311,6 +313,19 @@ let googleLoginButtonContent = {
   ]
 }
 
+let huaweiLoginButtonContent = {
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = hdpx(15)
+  children = [
+    {
+      rendObj = ROBJ_TEXT
+      text = "Sign in with HUAWEI ID"
+      color = Color(0, 0, 0)
+    }.__update(fontSmallAccented)
+  ]
+}
+
 let fbLoginButtonContent = {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -359,6 +374,10 @@ let loginButtonCtors = {
     : @() mkCustomButton(googleLoginButtonContent,
       @() eventbus_send("doLogin", { loginType = LT_GOOGLE }),
         BRIGHT),
+   [LT_HUAWEI] =  !hmsButtonVisible ? null
+    : @() mkCustomButton(huaweiLoginButtonContent,
+    @() eventbus_send("doLogin", { loginType = LT_HUAWEI }),
+        BRIGHT),
   [LT_APPLE] = @() mkCustomButton(appleLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_APPLE }),
     BRIGHT),
@@ -378,7 +397,7 @@ let loginButtonCtors = {
 }.filter(@(btnCtor) btnCtor != null)
 
 function mkMainAuthorizationButtons() {
-  let res = [LT_APPLE, LT_GOOGLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_GAIJIN, LT_NSWITCH]
+  let res = [LT_APPLE, LT_GOOGLE, LT_HUAWEI, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_GAIJIN, LT_NSWITCH]
     .filter(@(lt) availableLoginTypes?[lt] ?? false)
     .map(@(lt) loginButtonCtors?[lt]())
   if (!is_nswitch)

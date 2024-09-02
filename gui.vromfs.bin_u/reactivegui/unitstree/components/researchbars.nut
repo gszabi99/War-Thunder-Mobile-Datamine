@@ -5,8 +5,6 @@ let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { attractColor, aTimeHint, aTimePriceScale } = require("%rGui/unitsTree/treeAnimConsts.nut")
-
-
 let { unitsResearchStatus } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 
 
@@ -15,6 +13,7 @@ let barSize = [hdpx(500), hdpx(30)]
 let blueprintBarColor = 0xFF3384C4
 let unitResearchExpColor = 0xFFE86C00
 let statsWidth = hdpx(500)
+let researchBlockSize = [statsWidth, hdpx(150)]
 
 function mkLevelLine(cur, req, color, ovr = {}) {
   let percent =  1.0 * clamp(cur, 0, req ) / req
@@ -56,7 +55,7 @@ function blueprintBar(unit){
           behavior = Behaviors.TextArea
           halign = ALIGN_CENTER
           text = loc("blueprints/desc")
-        }.__update(fontTinyAccented)
+        }.__update(fontTiny)
         mkLevelLine(curBluebrintsCount.get(), reqBluebrintsCount.get(), blueprintBarColor)
       ]}
     : { watch = [serverConfigs, myUnits]}
@@ -104,7 +103,7 @@ function unitResearchBar(unitName) {
             size = [statsWidth, SIZE_TO_CONTENT]
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
-            halign = ALIGN_CENTER
+            halign = ALIGN_LEFT
             text = hintLocId.get() == null ? null : loc(hintLocId.get())
             transform = {}
             animations = [
@@ -113,15 +112,16 @@ function unitResearchBar(unitName) {
               { prop = AnimProp.scale, to = [1.2, 1.2], duration = aTimePriceScale, easing = CosineFull,
                 trigger = "unitInfoActionHint" }
             ]
-          }.__update(fontTinyAccented)
+          }.__update(fontTiny)
           unitExpBar(unitName, unitResearch)
         ]
       }
 }
 
 let researchBlock = @(unit) {
-  size = [statsWidth, SIZE_TO_CONTENT]
-  padding = [hdpx(50), 0]
+  size = researchBlockSize
+  flow = FLOW_VERTICAL
+  valign = ALIGN_BOTTOM
   children = [
     blueprintBar(unit)
     unitResearchBar(unit.name)
@@ -130,4 +130,5 @@ let researchBlock = @(unit) {
 
 return {
   researchBlock
+  researchBlockSize
 }

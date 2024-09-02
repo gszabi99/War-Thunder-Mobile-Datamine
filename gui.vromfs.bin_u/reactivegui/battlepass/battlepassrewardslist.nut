@@ -2,17 +2,20 @@ from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { bpCardStyle, bpCardPadding, bpCardGap, bpCardFooterHeight, bpCardHeight, bpCardMargin
 } = require("bpCardsStyle.nut")
-let { mkRewardPlate, mkRewardPlateVip, getRewardPlateSize } = require("%rGui/rewards/rewardPlateComp.nut")
+let { mkRewardPlate, mkRewardPlateVip, getRewardPlateSize, mkRewardReceivedMark
+} = require("%rGui/rewards/rewardPlateComp.nut")
 let { textButtonBattle, textButtonPricePurchaseLow } = require("%rGui/components/textButton.nut")
-let { receiveBpRewards, isBpRewardsInProgress, selectedStage, bpLevelPrice, isBPLevelPurchaseInProgress } = require("battlePassState.nut")
+let { receiveBpRewards, isBpRewardsInProgress, selectedStage, bpLevelPrice,
+  isBPLevelPurchaseInProgress
+} = require("battlePassState.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let buyBPLevelMsg = require("buyBPLevelMsg.nut")
+let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
 
 let rewardBoxSize = bpCardStyle.boxSize
 let emptySlot = { size = array(2, rewardBoxSize) }
-let receiveMarkIconSize = [hdpxi(100), hdpxi(100)]
 let lockedMarkIconSize = [hdpxi(25), hdpxi(32)]
 let purchBtnHeight = hdpx(60)
 
@@ -44,20 +47,6 @@ let paidMark = {
 }
 
 let vipMark = paidMark.__merge({ color = 0xFF8307C6 })
-
-let receivedMark = {
-  size = flex()
-  rendObj = ROBJ_SOLID
-  color = 0x80000000
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  children = {
-    pos = [hdpx(12), -hdpx(10)]
-    rendObj = ROBJ_IMAGE
-    size = receiveMarkIconSize
-    image = Picture($"ui/gameuiskin#daily_mark_claimed.avif:{receiveMarkIconSize[0]}:{receiveMarkIconSize[1]}:P")
-  }
-}
 
 let lockedMark = {
   rendObj = ROBJ_IMAGE
@@ -109,7 +98,7 @@ function cardContent(stageInfo, stateFlags) {
             : isVip ? mkRewardPlateVip(viewInfo, bpCardStyle)
             : mkRewardPlate(viewInfo, bpCardStyle)
           isReceived
-            ? receivedMark
+            ? mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
             : canReceive ? null : lockedMark
         ]
       }

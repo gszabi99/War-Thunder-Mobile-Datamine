@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "100lb"
+    },
+    {
+      "slot": 2,
+      "preset": "500lb"
+    },
+    {
+      "slot": 3,
+      "preset": "100lb"
+    }
+  ]
+}

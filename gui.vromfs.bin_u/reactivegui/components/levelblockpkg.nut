@@ -4,8 +4,9 @@ let darkBorderWidth = hdpx(2)
 let lightBorderWidth = hdpx(3)
 let levelBorder = darkBorderWidth + lightBorderWidth
 let levelBgColor = Color(51, 54, 58)
-let playerExpColor = Color(255, 183, 11)
-let unitExpColor = Color(126, 226, 255)
+let playerExpColor = 0xFFFFB70B
+let unitExpColor = 0xFF7EE2FF
+let slotExpColor = 0xFF65BC82
 let maxLevelStarChar = "\u2605"
 
 let levelProgressBgColor     = Color(96, 96, 96)
@@ -56,6 +57,7 @@ return {
   maxLevelStarChar
   playerExpColor
   unitExpColor
+  slotExpColor
 
   mkLevelBg
   mkProgressLevelBg

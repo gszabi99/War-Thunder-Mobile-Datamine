@@ -14,7 +14,7 @@ let boostersHeight = iconSize * 1.3
 let activeBoosters = Computed(function() {
   let res = []
   foreach(key, boost in (servProfile.value?.boosters ?? {}))
-    if (!boost?.isDisabled && boost.battlesLeft > 0 && key in serverConfigs.get()?.allBoosters)
+    if (!boost.isDisabled && boost.battlesLeft > 0 && key in serverConfigs.get()?.allBoosters)
       res.append(key)
   return res.sort(@(a, b) a <=> b)
 })

@@ -47,7 +47,7 @@ let pannable = @(ovr) {
   })
 }.__update(ovr)
 
-let isPurchNoNeedResultWindow = @(purch) purch?.source == "purchaseInternal"
+let isPurchNoNeedResultWindow = @(purch) (purch?.source == "purchaseInternal" || purch?.source == "scheduledReward")
   && null == purch.goods.findvalue(@(g) g.gType != "item" && g.gType != "currency" && g.gType != "premium")
 let markPurchasesSeenDelayed = @(purchList) defer(@() markPurchasesSeen(purchList.keys()))
 

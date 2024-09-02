@@ -130,7 +130,15 @@ eventbus_subscribe("TankDebuffs:Battery", @(data) activeTimers.mutate(function o
   else
     actTimers.battery_status <- { text = charge.tointeger() }
 }))
-
+/*
+eventbus_subscribe("TankDebuffs:Building", @(data) activeTimers.mutate(function onBuilding(actTimers) {
+  let { timer = 0.0, inProgress = false } = data
+  if (inProgress)
+    deleteF(actTimers, "building_status")
+  else
+    actTimers.building_status <- { text = timer.tointeger() }
+}))
+*/
 crewState.subscribe(@(data) activeTimers.mutate(function onCrewState(actTimers) {
   let { healing, totalHealingTime = 0, currentHealingTime = 0 } = data
   if (!healing || totalHealingTime <= 0)

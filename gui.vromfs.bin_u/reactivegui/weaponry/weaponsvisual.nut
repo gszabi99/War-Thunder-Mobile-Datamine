@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { format } = require("string")
 let { doesLocTextExist } = require("dagor.localize")
 let { getWeaponId } = require("%rGui/weaponry/loadUnitBullets.nut")
+let { getLocIdPrefixByCaliber } = require("%appGlobals/config/bulletsPresentation.nut")
 
 function getAmmoNameForLoc(bSet) {
   let { isBulletBelt = false } = bSet
@@ -70,28 +71,38 @@ let isCaliberCannon = @(caliberMm) caliberMm > 15
 let withCount = @(text, count) count <= 1 ? text
   : "".concat(text, format(loc("weapons/counter"), count)) //todo: separate lang instead of WT one
 
-function getWeaponShortName(weapon, bSet) {
+function getWeaponNameImpl(weapon, bSet, isShort) {
+  let { total, weaponId = "" } = weapon
+  if (weaponId != "") {
+    if (!isShort)
+      return loc($"weapons/{weaponId}")
+    let locId = $"weapons/{weaponId}/short"
+    return doesLocTextExist(locId) ? loc(locId) : loc($"weapons/{weaponId}")
+  }
+
   let { isBulletBelt = false, caliber = 0, bullets = null, bulletDataByType = null,
     weaponType = null, proximityFuseRadius = 0
   } = bSet
   if (isBulletBelt)
     return loc(isCaliberCannon(caliber) ? "weapons/cannon" : "weapons/minigun", { caliber })
 
-  let { total } = weapon
   let { mass = 0 } = bulletDataByType?[bullets?[0]]
   if (weaponType != null) {
     let locId = proximityFuseRadius > 0 ? $"weapons/{weaponType}_with_fuse" : $"weapons/{weaponType}"
     return withCount(loc(locId, { caliber, mass }), total)
   }
 
-  return weapon.weaponId
+  return weaponId
 }
 
-function getWeaponShortNameWithCount(weapon, bSet, withAnyCount = false, counterLang = "weapons/counter") {
+let getWeaponShortName = @(weapon, bSet) getWeaponNameImpl(weapon, bSet, true)
+let getWeaponFullName  = @(weapon, bSet) getWeaponNameImpl(weapon, bSet, false)
+
+function getWeaponShortNameWithCount(weapon, bSet = null, withAnyCount = false, counterLang = "weapons/counter") {
   let { turrets, count = 1 } = weapon
   let total = max(turrets, 1) * count
   let res = getWeaponShortName(weapon, bSet)
-  return !withAnyCount && total <= 1 ? res : $"{res} {format(loc(counterLang), total)}"
+  return !withAnyCount && total == 1 ? res : $"{res} {format(loc(counterLang), total)}"
 }
 
 function getWeaponCaliber(weapon, bSet) {
@@ -100,7 +111,7 @@ function getWeaponCaliber(weapon, bSet) {
   return $"{format(loc("caliber/mm"), bSet.caliber)} {format(loc("weapons/counter/right/short"), total)}"
 }
 
-function getWeaponNamesList(weapons) {
+function getWeaponNamesListImpl(weapons, isShort) {
   let counts = {}
   let order = []
   foreach(w in weapons) {
@@ -111,9 +122,34 @@ function getWeaponNamesList(weapons) {
   }
   return order.map(function(w) {
     let bSet = w.bulletSets?[""]
-    let bulletName = getWeaponShortName(w, bSet)
+    let bulletName = getWeaponNameImpl(w, bSet, isShort)
     let count = counts[w.weaponId]
     return count > 1 ? $"{bulletName} {format(loc("weapons/counter"), count)}" : bulletName
+  })
+}
+
+let getWeaponShortNamesList = @(weapons) getWeaponNamesListImpl(weapons, true)
+let getWeaponFullNamesList  = @(weapons) getWeaponNamesListImpl(weapons, false)
+
+function getWeaponDescList(weapons, separator = "\n") {
+  let counts = {}
+  let bullets = {}
+  let order = []
+  foreach(w in weapons) {
+    let { weaponId, turrets, totalBullets, count = 1 } = w
+    if(weaponId not in counts)
+      order.append(w)
+    counts[weaponId] <- (counts?[weaponId] ?? 0) + max(turrets, 1) * count
+    bullets[weaponId] <- (bullets?[weaponId] ?? 0) + totalBullets
+  }
+  return order.map(function(w) {
+    let bSet = w.bulletSets?[""]
+    let bulletName = getWeaponNameImpl(w, bSet, false)
+    let count = counts[w.weaponId]
+    return separator.concat(
+      count > 1 ? $"{bulletName} {format(loc("weapons/counter"), count)}" : bulletName,
+      "".concat(loc("shop/ammo"), colon, bullets[w.weaponId])
+    )
   })
 }
 
@@ -133,6 +169,11 @@ let weaponTypesLoc = {
 
 let getWeaponTypeName = @(id) $"{loc($"weapon/{weaponTypesLoc[id][1]}")} {loc($"weapons_types/{weaponTypesLoc[id][0]}")}"
 
+let getBulletBeltShortName = @(id) id == "" ? loc("default/name")
+  : loc($"{getLocIdPrefixByCaliber(id)}/name/short")
+let getBulletBeltFullName = @(id, caliber) id == "" ? loc("default/name")
+  : format(loc($"{getLocIdPrefixByCaliber(id)}/name"), caliber.tostring())
+
 return {
   getAmmoNameText
   getAmmoNameShortText
@@ -140,8 +181,13 @@ return {
   getAmmoTypeText
   getAmmoAdviceText
   getWeaponShortName
+  getWeaponFullName
   getWeaponShortNameWithCount
-  getWeaponNamesList
+  getWeaponShortNamesList
+  getWeaponFullNamesList
+  getWeaponDescList
   getWeaponTypeName
   getWeaponCaliber
+  getBulletBeltShortName
+  getBulletBeltFullName
 }

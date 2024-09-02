@@ -1,0 +1,12 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "ros82_slot1"
+    },
+    {
+      "slot": 5,
+      "preset": "ros82_slot5"
+    }
+  ]
+}

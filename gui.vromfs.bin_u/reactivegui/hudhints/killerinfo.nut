@@ -6,9 +6,9 @@ let { HUD_MSG_MULTIPLAYER_DMG } = require("hudMessages")
 let { get_unittags_blk } = require("blkGetters")
 let { localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
+let { allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
 let { isUnitAlive } = require("%rGui/hudState.nut")
 let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
-let { playerLevelInfo, allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
 let { mkGradientBlock, failBgColor } = require("hintCtors.nut")
 let { mkSingleUnitPlate, unitPlateWidth } = require("%rGui/unit/components/unitPlateComp.nut")
 let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
@@ -25,31 +25,29 @@ let mkFakeUnitCfg = @(name, hudMsgUnitType, country) unitFake.__merge({
   name
   country
   unitType = hudMessagesUnitTypesMap?[hudMsgUnitType] ?? ""
+  mRank = -1
+  rank = -1
+  level = -1
 })
 
 let info = Computed(function() {
   if (killData.value == null)
     return null
   let { killer, unitName, unitType } = killData.value
-  let finalOverride = { name = unitName }
-  local unitCfg = allUnitsCfgFlat.value?[unitName]
-  if (unitCfg == null && unitName in get_unittags_blk()) {
+  local unitCfg = allUnitsCfgFlat.get()?[unitName]
+  if (unitCfg == null && unitName in get_unittags_blk())
     unitCfg = mkFakeUnitCfg(unitName, unitType, killer.country)
-    finalOverride.__update({ mRank = -1, rank = -1, level = -1 })
-  }
   if (unitCfg == null) {
     logerr($"Player killed by unknown unit {unitName}, unitType = {unitType}") // AI unit?
     return null
   }
-  let defLevel = playerLevelInfo.value.level
-  let cStats = killer.isBot ? genBotCommonStats(killer.name, unitName, unitCfg, defLevel)
+  let cStats = killer.isBot ? genBotCommonStats(killer.name, unitName, unitCfg, 0)
     : playersCommonStats.value?[killer.userId.tointeger()]
+  let { hasPremium = false, decorators = null, units = null } = cStats
   return killData.value.__merge({
-    killerHasPremium = cStats?.hasPremium ?? false
-    killerLevel = cStats?.level ?? 1
-    killerStarLevel = cStats?.starLevel ?? 1
-    killerAvatar = cStats?.decorators.avatar
-    killerUnit = (unitCfg).__merge(cStats?.unit ?? {}, finalOverride)
+    killerHasPremium = hasPremium
+    killerAvatar = decorators?.avatar
+    killerUnit = unitCfg.__merge(units?[unitName] ?? {})
   })
 })
 

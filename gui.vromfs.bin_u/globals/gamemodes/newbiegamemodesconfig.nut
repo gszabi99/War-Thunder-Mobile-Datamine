@@ -25,7 +25,7 @@ let newbieGameModesConfig = {
     }
     {
       gmName = "tank_new_players_battle_coop"
-      isFit = @(s, mRank) mRank <= 2
+      isFit = @(s, mRank) mRank <= 1
         && (s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 5))
     }
   ]
@@ -40,7 +40,7 @@ let newbieGameModesConfig = {
     }
     {
       gmName = "ship_new_players_battle_coop"
-      isFit = @(s, mRank) mRank <= 2
+      isFit = @(s, mRank) mRank <= 1
         && (s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 3))
     }
   ]
@@ -54,7 +54,7 @@ let newbieGameModesConfig = {
     }
     {
       gmName = "plane_new_players_battle_coop"
-      isFit = @(s, mRank) mRank <= 2
+      isFit = @(s, mRank) mRank <= 1
         && (s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 5))
     }
   ]

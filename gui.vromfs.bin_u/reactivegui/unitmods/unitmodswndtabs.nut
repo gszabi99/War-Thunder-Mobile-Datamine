@@ -66,7 +66,7 @@ function tabData(tab, ovr = {}) {
           behavior = Behaviors.Marquee
           delay = defMarqueeDelay
           speed = hdpx(50)
-        }.__update(fontSmallShaded)
+        }.__update(fontTinyShaded)
 
         mkCatIcon(id)
 

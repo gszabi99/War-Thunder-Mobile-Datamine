@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { OCT_TEXTINPUT, OCT_MULTISELECT } = require("%rGui/options/optCtrlType.nut")
-let { getUnitPresentation, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
+let { unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY, US_TOO_LOW_LEVEL, US_NOT_RESEARCHED
+let { canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY, US_TOO_LOW_LEVEL, US_NOT_RESEARCHED,
+  US_NEED_BLUEPRINTS, US_CAN_RESEARCH
 } = require("%appGlobals/unitsState.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { mkFlagImage } = require("%rGui/unitsTree/unitsTreeComps.nut")
+let { isUnitNameMatchSearchStr } = require("%rGui/unit/unitNameSearch.nut")
 
 
 let statusLoc = {
@@ -16,6 +17,8 @@ let statusLoc = {
   [US_TOO_LOW_LEVEL] = "options/unitNeedLevel",
   [US_NOT_FOR_SALE] = "options/unitNotForSale",
   [US_NOT_RESEARCHED] = "options/unitNotResearched",
+  [US_NEED_BLUEPRINTS] = "options/unitNeedBlueprints",
+  [US_CAN_RESEARCH] = "options/unitCanResearch",
 }
 
 let curFilters = mkWatched(persist, "curFilters", {})
@@ -42,20 +45,6 @@ let mkListToggleValue = @(id, allValuesW) function toggleValue(value, isChecked)
   saveValue(id, res)
 }
 
-let nameLocCache = {}
-function getLocName(name) {
-  if (name not in nameLocCache)
-    nameLocCache[name] <- utf8ToLower(loc(getUnitPresentation(name).locId))
-  return nameLocCache[name]
-}
-
-let idLowercaseCache = {}
-function getIdLowercase(name) {
-  if (name not in idLowercaseCache)
-    idLowercaseCache[name] <- name.tolower()
-  return idLowercaseCache[name]
-}
-
 let nameId = "name"
 let nameValue = mkValue(nameId, "")
 let optName = {
@@ -64,17 +53,7 @@ let optName = {
   locId = "options/unitName"
   value = nameValue
   setValue = mkSetValue(nameId)
-  isFit = function(unit, value) {
-    if (value == "")
-      return true
-    let lower = utf8ToLower(value)
-    if (getLocName(unit.name).contains(lower) || getIdLowercase(unit.name) == lower)
-      return true
-    foreach (pu in unit.platoonUnits)
-      if (getLocName(pu.name).contains(lower) || getIdLowercase(pu.name) == lower)
-        return true
-    return false
-  }
+  isFit = @(unit, value) value == "" ? true : isUnitNameMatchSearchStr(unit, value)
 }
 
 function mkOptMultiselect(id, override = {}) {

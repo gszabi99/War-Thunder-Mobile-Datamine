@@ -85,32 +85,34 @@ let mkDropMenu = @(columnsList) {
   children = columnsList.map(mkColumn)
 }
 
-let mkDropMenuBtn = @(getButtons, buttonsGeneration) function() {
-  let res = {
-    watch = buttonsGeneration
-  }
-  let columnsList = getButtons().filter(@(col) col.len() > 0)
-  if (columnsList.len() == 0)
-    return res
+let function mkDropMenuBtn(getButtons, buttonsGeneration) {
+  let getColumnsList = @() getButtons().filter(@(col) col.len() > 0)
+  return function() {
+    let res = {
+      watch = buttonsGeneration
+    }
+    let columnsList = getColumnsList()
+    if (columnsList.len() == 0)
+      return res
 
-  if (columnsList.len() == 1 && columnsList[0].len() == 1) {
-    res.children <- makeMenuBtn(columnsList[0][0].cb)
+    if (columnsList.len() == 1 && columnsList[0].len() == 1) {
+      res.children <- makeMenuBtn(columnsList[0][0].cb)
+      return res
+    }
+
+    function openMenu(event) {
+      let { targetRect } = event
+      modalPopupWnd.add([targetRect.r, targetRect.b], {
+        uid = WND_UID
+        children = @() { watch = buttonsGeneration, children = mkDropMenu(getColumnsList()) }
+        popupOffset = hdpx(5)
+        popupHalign = ALIGN_RIGHT
+        hotkeys = [[$"^J:Start | {btnBEsc}", { action = close, description = loc("Cancel") }]]
+      })
+    }
+    res.children <- makeMenuBtn(openMenu)
     return res
   }
-
-  let menuUi = mkDropMenu(columnsList)
-  function openMenu(event) {
-    let { targetRect } = event
-    modalPopupWnd.add([targetRect.r, targetRect.b], {
-      uid = WND_UID
-      children = menuUi
-      popupOffset = hdpx(5)
-      popupHalign = ALIGN_RIGHT
-      hotkeys = [[$"^J:Start | {btnBEsc}", { action = close, description = loc("Cancel") }]]
-    })
-  }
-  res.children <- makeMenuBtn(openMenu)
-  return res
 }
 
 return {

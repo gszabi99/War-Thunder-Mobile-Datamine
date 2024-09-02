@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_EVT_CURRENCY,
-  SGT_LOOTBOX, SGT_GOLD, SGT_PLATINUM, SGT_BOOSTERS, SGT_SLOTS
+  SGT_LOOTBOX, SGT_GOLD, SGT_PLATINUM, SGT_BOOSTERS, SGT_SLOTS, SGT_BLUEPRINTS
 } = require("%rGui/shop/shopConst.nut")
 
 /*
@@ -25,6 +25,8 @@ let PURCH_SRC_BATTLE_PASS = "battle_pass"
 let PURCH_SRC_SKINS = "skins"
 let PURCH_SRC_BOOSTERS = "boosters"
 let PURCH_SRC_SLOTBAR = "slotbar"
+let PURCH_SRC_SLOT_UPGRADES = "slot_upgrades"
+let PURCH_SRC_BLUEPRINTS = "blueprints"
 
 let PURCH_TYPE_UNIT = "unit"
 let PURCH_TYPE_UNIT_MOD = "unit_mod"
@@ -44,6 +46,8 @@ let PURCH_TYPE_SLOT = "slot"
 let PURCH_TYPE_GOODS_SLOT = "goods_slot"
 let PURCH_TYPE_GOODS_LIMIT = "goods_limit"
 let PURCH_TYPE_GOODS_REROLL_SLOTS = "goods_reroll_slots"
+let PURCH_TYPE_SLOT_LEVEL = "slot_level"
+let PURCH_TYPE_BLUEPRINTS = "blueprints"
 
 let goodsTypeToPurchTypeMap = {
   [SGT_UNKNOWN] = "unknown",
@@ -57,6 +61,7 @@ let goodsTypeToPurchTypeMap = {
   [SGT_LOOTBOX] = PURCH_TYPE_LOOTBOX,
   [SGT_BOOSTERS] = PURCH_TYPE_BOOSTERS,
   [SGT_SLOTS] = PURCH_TYPE_GOODS_SLOT,
+  [SGT_BLUEPRINTS] = PURCH_TYPE_BLUEPRINTS,
 }
 
 function getPurchaseTypeByGoodsType(gtype) {
@@ -92,6 +97,8 @@ return {
   PURCH_SRC_SKINS
   PURCH_SRC_BOOSTERS
   PURCH_SRC_SLOTBAR
+  PURCH_SRC_SLOT_UPGRADES
+  PURCH_SRC_BLUEPRINTS
 
   PURCH_TYPE_UNIT
   PURCH_TYPE_UNIT_MOD
@@ -111,6 +118,8 @@ return {
   PURCH_TYPE_GOODS_SLOT
   PURCH_TYPE_GOODS_LIMIT
   PURCH_TYPE_GOODS_REROLL_SLOTS
+  PURCH_TYPE_SLOT_LEVEL
+  PURCH_TYPE_BLUEPRINTS
 
   getPurchaseTypeByGoodsType
   mkBqPurchaseInfo

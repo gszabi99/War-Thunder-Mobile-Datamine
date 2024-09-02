@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getUnitLocId, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
-let { premiumTextColor, hiddenTextColor } = require("%rGui/style/stdColors.nut")
+let { premiumTextColor, collectibleTextColor } = require("%rGui/style/stdColors.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
@@ -51,17 +51,17 @@ function getUnitNameText(unitId, unitClass, halign) {
 }
 
 let function getColorUnitName(player){
-  if(player.isDead)
+  if(player.isDead && !player.isTemporary)
     return unitDeadTextColor
-  else if(player?.isUnitPremium)
+  else if(player?.isUnitCollectible)
+    return collectibleTextColor
+  else if(player?.isUnitPremium || player?.isUnitUpgraded)
     return premiumTextColor
-  else if(player?.isUnitHidden)
-    return hiddenTextColor
   return cellTextColor
 }
 
 function mkNameContent(player, teamColor, halign) {
-  let unitName = player?.mainUnitName ?? player.aircraftName
+  let { unitName } = player
   let nameCell = {
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL

@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/rewardType.nut" import *
 let logR = log_with_prefix("[Roulette] ")
 let { resetTimeout, defer, deferOnce, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
@@ -14,7 +15,9 @@ let { rouletteOpenId, rouletteOpenType, rouletteOpenResult, nextOpenCount, curJa
 } = require("lootboxOpenRouletteState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { delayUnseedPurchaseShow, skipUnseenMessageAnimOnce } = require("%rGui/shop/unseenPurchasesState.nut")
-let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardLocked } = require("%rGui/rewards/rewardPlateComp.nut")
+let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardLocked, mkRewardPlateBg,
+  mkRewardPlateImage, mkProgressLabel, mkProgressBarWithForecast, mkProgressBarText
+} = require("%rGui/rewards/rewardPlateComp.nut")
 let { ignoreSubIdRTypes } = require("%rGui/rewards/rewardViewInfo.nut")
 let { addCompToCompAnim } = require("%darg/helpers/compToCompAnim.nut")
 let { mkLensFlareLootbox } = require("%rGui/effects/mkLensFlare.nut")
@@ -23,6 +26,11 @@ let { opacityAnim, lightAnim } = require("lootboxOpenRouletteAnims.nut")
 let lootboxOpenRouletteConfig = require("lootboxOpenRouletteConfig.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
+let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { mkUnitFlag } = require("%rGui/unit/components/unitPlateComp.nut")
 
 let markSize = evenPx(40)
 let markMaxOffset = hdpx(20)
@@ -66,6 +74,7 @@ let receiveRewardsAnimViewInfo = Computed(@() receivedRewardsAll.value?[recevedR
 let needHighlight = Watched(receiveRewardsAnimViewInfo.value != null)
 let openConfig = Computed(@() lootboxOpenRouletteConfig?[rouletteOpenType.value]
   ?? lootboxOpenRouletteConfig.roulette_short)
+let consistentReceivedRewardIdx = Watched(-1)
 
 function isReceivedSame(received, rewardInfo) {
   foreach(rec in received)
@@ -122,6 +131,7 @@ rouletteOpenId.subscribe(function(v) {
   resultVisibleIdx(-1)
   recevedRewardAnimIdx(-1)
   resultOffsetIdx(-1)
+  consistentReceivedRewardIdx(-1)
 })
 
 function onChangeIndexes() {
@@ -559,38 +569,79 @@ let highlight = @() {
   ]
 }
 
-function onRewardScaleFinish(viewInfo, rewardIdx) {
-  addCompToCompAnim({
-    component = mkRewardPlate(viewInfo, REWARD_STYLE_MEDIUM)
-    from = isReceivedAnimFixed.value ? FIXED_REWARD_ANIM_KEY : REWARD_RESULT_ANIM_KEY
-    to = getRewardResultKey(rewardIdx)
-    easing = InOutQuad
-    duration = aTimeRewardMove
+recevedRewardAnimIdx.subscribe(function(idx) {
+  if (idx > consistentReceivedRewardIdx.get())
+    consistentReceivedRewardIdx.set(idx)
+})
+
+function mkBlueprintPlateTexts(reward, unitRank, rStyle) {
+  let { id } = reward
+  let countToDecrease = Computed(function() {
+    local totalCount = 0
+    local rewards = receivedRewardsAll.get()
+    local openIdx = rouletteOpenIdx.get()
+    for (local i = rewards.len(); i >= openIdx; i--) {
+      let rReward = rewards?[i].viewInfo[0]
+      if (!rReward)
+        continue
+      if (consistentReceivedRewardIdx.get() == i)
+        return totalCount
+      if (rReward.rType == G_BLUEPRINT && rReward.id == id)
+        totalCount += rReward.count
+    }
+    return totalCount
   })
 
-  resetTimeout(aTimeRewardMove, @() resultVisibleIdx(max(rewardIdx, resultVisibleIdx.value)))
-  if (rewardIdx >= receivedRewardsAll.value.len() - 1)
-    resetTimeout(aTimeRewardMove + delayBeforeClose, closeRoulette)
-  else if (rouletteOpenIdx.value == rewardIdx && (isReceivedAnimFixed.value || isReceivedAnimLast.value))
-    rouletteOpenIdx(rewardIdx + 1)
-  recevedRewardAnimIdx(-1)
+  let available = Computed(@() (servProfile.get()?.blueprints?[id] ?? 0) - countToDecrease.get())
+  let total = Computed(@() serverConfigs.get()?.allBlueprints?[id].targetCount ?? 1)
+
+  return @() {
+    watch = consistentReceivedRewardIdx
+    size = flex()
+    children = [
+      {
+        size = flex()
+        valign = ALIGN_BOTTOM
+        flow = FLOW_VERTICAL
+        children = [
+          mkProgressLabel(available.get(), total.get(), rStyle)
+          mkProgressBarWithForecast(reward.count, available.get(), total.get())
+        ]
+      }
+      {
+        size = flex()
+        valign = ALIGN_BOTTOM
+        halign = ALIGN_RIGHT
+        flow = FLOW_VERTICAL
+        padding = [0, hdpx(5)]
+        children = [
+          unitRank
+            ? mkGradRankSmall(unitRank).__update({ fontSize = rStyle.textStyle.fontSize, pos = [0, hdpx(5)] })
+            : null
+          mkProgressBarText(reward, rStyle)
+        ]
+      }
+    ]
+  }
 }
 
-let receiveRewardAnimBlock = @(viewInfo, rewardIdx, key, duration)
-  mkRewardPlate(viewInfo, REWARD_STYLE_MEDIUM,
-    {
-      key
-      transform = {}
-      animations = [{ prop = AnimProp.scale, to = [1.3, 1.3], easing = CosineFull,
-        duration, play = true,
-        onFinish = @() onRewardScaleFinish(viewInfo, rewardIdx)
-      }]
-    })
+function mkBlueprintPlate(reward, rStyle, ovr = {}) {
+  let size = getRewardPlateSize(reward.slots, rStyle)
+  let unit = Computed(@() serverConfigs.value?.allUnits?[reward.id])
 
-let function mkRewardBlock(reward, rStyle) {
-  let { rType, id } = reward
-  if (rType != "skin")
-    return mkRewardPlate(reward, rStyle)
+  return {
+    size
+    children = [
+      mkRewardPlateBg(reward, rStyle)
+      mkRewardPlateImage(reward, rStyle)
+      mkBlueprintPlateTexts(reward, unit.get()?.mRank, rStyle)
+      mkUnitFlag(unit.get(), rStyle)
+    ]
+  }.__update(ovr)
+}
+
+function mkSkinPlate(reward, rStyle, ovr = {}) {
+  let { id } = reward
   let isAvailable = Computed(function() {
     if (id not in myUnits.get())
       return false
@@ -609,8 +660,49 @@ let function mkRewardBlock(reward, rStyle) {
       mkRewardPlate(reward, rStyle)
       !isAvailable.get() ? mkRewardLocked(REWARD_STYLE_MEDIUM) : null
     ]
-  }
+  }.__update(ovr)
 }
+
+let rewardCtors = {
+  [G_SKIN] = mkSkinPlate,
+  [G_BLUEPRINT] = mkBlueprintPlate
+}
+
+let function mkRewardBlock(reward, rStyle, ovr = {}) {
+  let { rType } = reward
+  if (rType in rewardCtors)
+    return rewardCtors[rType](reward, rStyle, ovr)
+  else
+    return mkRewardPlate(reward, rStyle, ovr)
+}
+
+function onRewardScaleFinish(viewInfo, rewardIdx) {
+  addCompToCompAnim({
+    component = mkRewardBlock(viewInfo, REWARD_STYLE_MEDIUM)
+    from = isReceivedAnimFixed.value ? FIXED_REWARD_ANIM_KEY : REWARD_RESULT_ANIM_KEY
+    to = getRewardResultKey(rewardIdx)
+    easing = InOutQuad
+    duration = aTimeRewardMove
+  })
+
+  resetTimeout(aTimeRewardMove, @() resultVisibleIdx(max(rewardIdx, resultVisibleIdx.value)))
+  if (rewardIdx >= receivedRewardsAll.value.len() - 1)
+    resetTimeout(aTimeRewardMove + delayBeforeClose, closeRoulette)
+  else if (rouletteOpenIdx.value == rewardIdx && (isReceivedAnimFixed.value || isReceivedAnimLast.value))
+    rouletteOpenIdx(rewardIdx + 1)
+  recevedRewardAnimIdx(-1)
+}
+
+let receiveRewardAnimBlock = @(viewInfo, rewardIdx, key, duration)
+  mkRewardBlock(viewInfo, REWARD_STYLE_MEDIUM,
+    {
+      key
+      transform = {}
+      animations = [{ prop = AnimProp.scale, to = [1.3, 1.3], easing = CosineFull,
+        duration, play = true,
+        onFinish = @() onRewardScaleFinish(viewInfo, rewardIdx)
+      }]
+    })
 
 function rouletteRewardsBlock() {
   if (rouletteRewardsList.value.len() < 2)
@@ -761,7 +853,7 @@ function receivedRewardsBlock() {
     valign = ALIGN_BOTTOM
     children = !rouletteOpenResult.value || receivedRewardsAll.value.len() == 0 ? null
       : viewInfos.map(@(viewInfo, idx)
-          mkRewardPlate(viewInfo, REWARD_STYLE_MEDIUM,
+          mkRewardBlock(viewInfo, REWARD_STYLE_MEDIUM,
             {
               key = getRewardResultKey(idx)
               opacity = idx <= resultVisibleIdx.value ? 1 : 0
@@ -911,7 +1003,7 @@ let fixedRewardIcon = @(viewInfo) {
       halign = ALIGN_CENTER
       children = needHighlight.value && isReceivedAnimFixed.value ? highlight : null
     }
-    mkRewardPlate(viewInfo, REWARD_STYLE_MEDIUM)
+    mkRewardBlock(viewInfo, REWARD_STYLE_MEDIUM)
     @() {
       watch = [recevedRewardAnimIdx, receiveRewardsAnimViewInfo, isReceivedAnimFixed]
       children = receiveRewardsAnimViewInfo.value == null || !isReceivedAnimFixed.value ? null

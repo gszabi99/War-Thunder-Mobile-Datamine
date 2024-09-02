@@ -336,6 +336,10 @@ return {
       "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green_braun_lines_mhn"
     },
+    "germ_flakpanzer_IV_Ostwind_2_reskin": {
+      "": "ger_camo_dunkelgelb",
+      "forest": "ger_camo_dunkelgelb_green_braun_blots_man"
+    },
     "germ_flakpanzer_IV_Ostwind_reskin": {
       "": "ger_camo_dunkelgelb_green",
       "forest": "ger_camo_dunkelgelb",
@@ -436,6 +440,10 @@ return {
       "forest": "ger_camo_dunkelgelb_green_braun_blots_small",
       "winter": "ger_camo_winter_waves"
     },
+    "germ_panzerbefelhswagen_jagdpanther": {
+      "": "ger_camo_dunkelgelb",
+      "forest": "ger_camo_dunkelgelb_green_braun_blots_man"
+    },
     "germ_panzerjager_nashorn": {
       "": "ger_camo_dunkelgelb",
       "desert": "ger_camo_dunkelgelb_africa",
@@ -516,6 +524,10 @@ return {
       "": "ger_camo_dunkelgelb",
       "forest": "ger_camo_hinterhalt_tarnung"
     },
+    "germ_pzkpfw_VI_ausf_b_tiger_IIp_reskin2": {
+      "": "ger_camo_dunkelgelb",
+      "forest": "ger_camo_dunkelgelb_green_braun_blots_man"
+    },
     "germ_pzkpfw_VI_ausf_e_tiger": {
       "": "ger_camo_dunkelgelb_green",
       "forest": "ger_camo_dunkelgelb",
@@ -531,6 +543,10 @@ return {
       "forest": "ger_camo_dunkelgelb",
       "forest2": "ger_camo_dunkelgelb_green_braun_lines",
       "winter": "ger_camo_winter_lines"
+    },
+    "germ_pzkpfw_V_ausf_a_panther": {
+      "": "ger_camo_dunkelgelb",
+      "forest": "ger_camo_dunkelgelb_green_braun_blots_man"
     },
     "germ_pzkpfw_V_ausf_d_panther": {
       "": "ger_camo_dunkelgelb",
@@ -616,9 +632,21 @@ return {
       "": "us_camo_olive",
       "upgraded": "isr_camo_sandgray"
     },
+    "il_m113a1_tow": {
+      "": "isr_camo_sandgray",
+      "desert": "isr_camo_threecolor",
+      "desert2": "camo_f_blue_orng",
+      "forest": "isr_camo_green"
+    },
     "il_m163_vulcan": {
       "": "us_camo_olive",
       "upgraded": "isr_camo_sandgray"
+    },
+    "il_magach_6_rocket": {
+      "": "isr_camo_sandgray",
+      "desert": "isr_camo_threecolor",
+      "desert2": "camo_f_blue_orng",
+      "forest": "isr_camo_green"
     },
     "il_magach_6b": {
       "": "us_camo_olive",
@@ -627,6 +655,18 @@ return {
     "il_magach_6r": {
       "": "us_camo_olive",
       "upgraded": "isr_camo_sandgray"
+    },
+    "il_merkava_mk_1": {
+      "": "isr_camo_sandgray",
+      "desert": "isr_camo_threecolor",
+      "desert2": "camo_f_blue_orng",
+      "forest": "isr_camo_green"
+    },
+    "il_zsu_23_4": {
+      "": "isr_camo_sandgray",
+      "desert": "isr_camo_threecolor",
+      "desert2": "camo_f_blue_orng",
+      "forest": "isr_camo_green"
     },
     "it_43m_turan_3": {
       "": "ann_camo",
@@ -920,6 +960,9 @@ return {
     },
     "uk_battleship_king_george_1945": {
       "upgraded": "camo_mtb_spots"
+    },
+    "uk_battleship_marlborough": {
+      "bluegray_geometry_prem": "camo_bluegray_geometry"
     },
     "uk_battleship_vanguard": {
       "upgraded": "camo_nord_bluegreen"
@@ -1429,6 +1472,10 @@ return {
       "": "us_camo_modern_green",
       "forest": "usa_pw_4"
     },
+    "ussr_9p149": {
+      "": "ussr_camo_green",
+      "upgraded": "ussr_modern_def_gray"
+    },
     "ussr_battlecruiser_kronshtadt": {
       "": "camo_geometry_zheleznyakov",
       "disruptive_gray": "camo_disruptive_gray",
@@ -1457,6 +1504,10 @@ return {
     "ussr_bmp_1": {
       "": "ussr_camo_green",
       "fiction": "ussr_t_34_85_zis_53_dislike"
+    },
+    "ussr_bmp_2": {
+      "": "ussr_camo_green",
+      "upgraded": "ussr_modern_def_gray"
     },
     "ussr_btr_152a": {
       "": "ussr_camo_winter_net",
@@ -1489,6 +1540,9 @@ return {
     },
     "ussr_cruiser_kirov": {
       "upgraded": "camo_cross_browngreen"
+    },
+    "ussr_cruiser_rckt_pr58": {
+      "upgraded": "camo_northern_fleet_contrast"
     },
     "ussr_cruiser_sverdlov": {
       "upgraded": "camo_geometry_longdiag"
@@ -1777,6 +1831,14 @@ return {
     "ussr_t_62": {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_winter_lines"
+    },
+    "ussr_t_64a_1971": {
+      "": "ussr_camo_green",
+      "upgraded": "ussr_modern_def_gray"
+    },
+    "ussr_t_72a": {
+      "": "ussr_camo_green",
+      "upgraded": "ussr_modern_def_gray"
     },
     "ussr_type_65_aa": {
       "": "ussr_camo_forest_01",

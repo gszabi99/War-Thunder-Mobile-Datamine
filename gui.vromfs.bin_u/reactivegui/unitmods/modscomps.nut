@@ -1,6 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let lockIconSize = hdpxi(85)
+let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
+let { getModCurrency, getModCost } = require("unitModsSlotsState.nut")
+let { contentMargin } = require("unitModsConst.nut")
+let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
+
+let defLockIconSize = hdpxi(85)
 let bgShadeColor = 0x80000000
 let defImage = "ui/gameuiskin#upgrades_tools_icon.avif:0:P"
 
@@ -10,24 +15,28 @@ let bgShade = {
   color = bgShadeColor
 }
 
-let mkLevelLock = @(reqLevel) {
+let mkLevelLockBase = @(reqLevel, iconSize, textOvr = {}) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = hdpx(30)
   children = {
     rendObj = ROBJ_IMAGE
-    size = [lockIconSize, lockIconSize]
-    image = Picture($"ui/gameuiskin#lock_unit.svg:{lockIconSize}:{lockIconSize}:P")
+    size = [iconSize, iconSize]
+    image = Picture($"ui/gameuiskin#lock_unit.svg:{iconSize}:{iconSize}:P")
     keepAspect = KEEP_ASPECT_FIT
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = {
       rendObj = ROBJ_TEXT
       text = reqLevel
-      pos = [hdpx(1), hdpx(13)]
-    }.__update(fontVeryTiny)
+    }.__update(textOvr)
   }
 }
+
+let mkLevelLock = @(reqLevel)
+  mkLevelLockBase(reqLevel, defLockIconSize, { pos = [hdpx(1), hdpx(13)] }.__update(fontVeryTiny))
+let mkLevelLockSmall = @(reqLevel)
+  mkLevelLockBase(reqLevel, hdpxi(60), { pos = [hdpx(1), hdpx(9)] }.__update(fontVeryVeryTiny))
 
 let mkNotPurchasedShade = @(isPurchased) @() isPurchased.value ? { watch = isPurchased }
   : bgShade.__merge({ watch = isPurchased })
@@ -42,9 +51,20 @@ let mkModImage = @(mod) mod?.name == null ? null : {
   imageValign = ALIGN_BOTTOM
 }
 
+let mkModCost = @(isPurchased, isLocked, mod, unitAllModsCost, currencyStyle = CS_COMMON) @() {
+  watch = [isPurchased, isLocked, mod, unitAllModsCost]
+  margin = contentMargin
+  vplace = ALIGN_BOTTOM
+  hplace = ALIGN_RIGHT
+  children = isPurchased.get() || isLocked.get() || mod.get() == null ? null
+    : mkCurrencyComp(getModCost(mod.get(), unitAllModsCost.get()), getModCurrency(mod.get()), currencyStyle)
+}
+
 return {
   mkLevelLock
+  mkLevelLockSmall
   mkNotPurchasedShade
   bgShade
   mkModImage
+  mkModCost
 }

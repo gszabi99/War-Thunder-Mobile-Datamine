@@ -1,0 +1,70 @@
+{
+  "HideNodes": {
+    "node": [
+      "pylon_cannon_empty",
+      "pylon_cannon_empty",
+      "pylon_cannon_r6_l",
+      "pylon_cannon_r6_r",
+      "flare6",
+      "flare7",
+      "210mm_tube_l",
+      "210mm_tube_r",
+      "210mm_1",
+      "210mm_2"
+    ]
+  },
+  "HideDmParts": {
+    "node": [
+      "cannon3_dm",
+      "cannon4_dm",
+      "cover5_dm",
+      "cover6_dm"
+    ]
+  },
+  "ShowDmParts": {
+    "node": [
+      "cannon6_dm",
+      "cover8_dm",
+      "cannon5_dm",
+      "cover7_dm"
+    ]
+  },
+  "Weapon": [
+    {
+      "cmOffset": [
+        -0.5,
+        0.0,
+        0.0
+      ],
+      "trigger": "additional gun",
+      "blk": "gameData/Weapons/cannonMK108_underwing.blk",
+      "emitter": "flare4",
+      "flash": "flare4",
+      "shell": "emtr_shellrejection3",
+      "dm": "cannon5_dm",
+      "bullets": 35,
+      "spread": 1.5,
+      "traceOffset": 1,
+      "counterIndex": 1,
+      "external": true
+    },
+    {
+      "cmOffset": [
+        -0.5,
+        0.0,
+        0.0
+      ],
+      "trigger": "additional gun",
+      "blk": "gameData/Weapons/cannonMK108_underwing.blk",
+      "emitter": "flare5",
+      "flash": "flare5",
+      "shell": "emtr_shellrejection4",
+      "dm": "cannon6_dm",
+      "bullets": 35,
+      "spread": 1.5,
+      "traceOffset": 1,
+      "counterIndex": 5,
+      "external": true
+    }
+  ]
+}

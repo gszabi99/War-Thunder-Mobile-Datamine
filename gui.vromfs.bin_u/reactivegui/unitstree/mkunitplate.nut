@@ -512,6 +512,13 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
           }
           : {watch = researchStatus}
       ]
+      transform = {}
+      animations = [
+        { prop = AnimProp.rotate, to = 2, duration = aTimePriceShake, easing = Shake4,
+          trigger = $"unit_exp_{unit.name}", delay = aDelayPrice }
+        { prop = AnimProp.scale, to = [1.1, 1.1], duration = aTimePriceScale, easing = CosineFull,
+          trigger = $"unit_exp_{unit.name}", delay = aDelayPrice }
+      ]
     }.__update(ovr)
 }
 

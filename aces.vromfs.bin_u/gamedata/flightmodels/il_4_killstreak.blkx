@@ -2335,7 +2335,7 @@
         "order": 1,
         "WeaponPreset": [
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_250kg",
             "name": "fab250_external",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2359,7 +2359,7 @@
             }
           },
           {
-            "iconType": "bombs_middle_high_drag",
+            "iconType": "bomb_500kg",
             "name": "brab250_external",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2383,7 +2383,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_middle",
+            "iconType": "bomb_500kg",
             "name": "fab500_external",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2407,7 +2407,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag",
+            "iconType": "bomb_500kg",
             "name": "brab500_external",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2439,7 +2439,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bombs_small_group_x8",
+            "iconType": "bomb_50kg_group",
             "name": "fab50",
             "Weapon": [
               {
@@ -2519,7 +2519,7 @@
             }
           },
           {
-            "iconType": "bombs_middle_group_x8",
+            "iconType": "bomb_100kg_group",
             "name": "fab100",
             "Weapon": [
               {
@@ -2607,7 +2607,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_250kg",
             "name": "fab250",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2627,7 +2627,7 @@
             }
           },
           {
-            "iconType": "bombs_middle_high_drag",
+            "iconType": "bomb_250kg",
             "name": "brab250",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2647,7 +2647,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_middle",
+            "iconType": "bomb_500kg",
             "name": "fab500",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2667,7 +2667,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag",
+            "iconType": "bomb_500kg",
             "name": "brab500",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2687,7 +2687,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bomb_1000kg",
             "name": "fab1000",
             "reqModification": "der-20",
             "ShowNodes": {
@@ -2707,7 +2707,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_high_drag",
+            "iconType": "bomb_1000kg",
             "name": "brab1000",
             "reqModification": "der-20",
             "ShowNodes": {
@@ -2727,7 +2727,7 @@
             }
           },
           {
-            "iconType": "air_torpedo",
+            "iconType": "torpedo",
             "name": "torpedo",
             "reqModification": "t-18",
             "ShowNodes": {
@@ -2766,7 +2766,7 @@
         "order": 2,
         "WeaponPreset": [
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_250kg",
             "name": "fab250_external",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2790,7 +2790,7 @@
             }
           },
           {
-            "iconType": "bombs_middle_high_drag",
+            "iconType": "bomb_250kg",
             "name": "brab250_external",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2814,7 +2814,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_middle",
+            "iconType": "bomb_500kg",
             "name": "fab500_external",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2838,7 +2838,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag",
+            "iconType": "bomb_500kg",
             "name": "brab500_external",
             "reqModification": "der-19",
             "ShowNodes": {

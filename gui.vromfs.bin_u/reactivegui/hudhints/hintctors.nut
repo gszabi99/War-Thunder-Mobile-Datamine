@@ -124,6 +124,26 @@ function mkTextWithIcon(text, icon, iconSize, width) {
   }
 }
 
+function simpleTextWithIcon(text, icon, width) {
+  let imgSize = array(2, hdpx(30)).map(@(v) v.tointeger())
+  return {
+    size = [width, SIZE_TO_CONTENT]
+    flow = FLOW_HORIZONTAL
+    gap = textGap
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    children = [
+      mkTextByWidth(text, width - imgSize[0] - textGap,
+        { size = SIZE_TO_CONTENT, halign = ALIGN_LEFT, maxWidth = width })
+      {
+        rendObj = ROBJ_IMAGE
+        size = imgSize
+        image = Picture($"{icon}:{imgSize[0]}:{imgSize[1]}")
+      }
+    ]
+  }
+}
+
 function commonHintCtor(hint, bgColor, width = hintWidth) {
   let res = mkGradientBlock(bgColor, mkTextByWidth(hint?.text ?? loc(hint?.locId ?? ""), width))
   return hint?.key == null ? res : res.__update({ key = hint.key })
@@ -147,6 +167,7 @@ let hintCtors = {
       { halign = ALIGN_CENTER, maxWidth = maxHintWidth }.__update(fontTiny))
   chatLogTextTiny = @(hint) simpleText(hint.text,
     { halign = ALIGN_CENTER, maxWidth = maxChatLogWidth }.__update(fontTiny))
+  simpleTextWithIcon = @(hint) simpleTextWithIcon(hint?.text ?? "", hint?.icon, maxHintWidth)
 }
 
 function registerHintCreator(id, ctor) {

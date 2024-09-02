@@ -161,7 +161,7 @@ let mkDiscountCorner = @(discountPrc) discountPrc <= 0 || discountPrc >= 100 ? n
     vplace = ALIGN_CENTER
     pos = [pw(-14), ph(-14)]
     transform = { rotate = -45 }
-    rendObj = ROBJ_INSCRIPTION
+    rendObj = ROBJ_TEXT
     fontSize = hdpxi(20)
   })
 }
@@ -338,20 +338,36 @@ let purchasedPlate = {
   }.__update(fontMedium)
 }
 
-let mkCanPurchase = @(id, limit, dailyLimit) Computed(function() {
+let skipPurchasedPlate = {
+  size = flex()
+  rendObj = ROBJ_IMAGE
+  image = priceBgGradGold
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc("btn/skipWait")
+    color = 0xFFFFFFFF
+  }.__update(fontSmallAccentedShaded)
+}
+
+let mkCanPurchase = @(id, limit, dailyLimit, isPurchaseFull = true) Computed(function() {
   let { time = 0, count = 0 } = goodsLimitReset.get()?[id]
   let limitInc = getDay(time) == serverTimeDay.get() ? count : 0
   return (limit <= 0 || (purchasesCount.get()?[id].count ?? 0) < limit + limitInc)
     && (dailyLimit <= 0 || (todayPurchasesCount.get()?[id].count ?? 0) < dailyLimit + limitInc)
+    && isPurchaseFull
 })
 
 function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
   let { limit = 0, dailyLimit = 0, id = null } = goods
   let stateFlags = Watched(0)
   let canPurchase = mkCanPurchase(id, limit, dailyLimit)
+  let canShowSkipPurchase = Computed(@() !goodsLimitReset.get()?[id])
+
   return @() bgShaded.__merge({
     size = [ goodsW, goodsH ]
-    watch = [stateFlags, canPurchase]
+    watch = [stateFlags, canPurchase, canShowSkipPurchase]
     behavior = Behaviors.Button
     clickableInfo = loc("mainmenu/btnBuy")
     onClick = canPurchase.get() ? onClick : null
@@ -368,7 +384,11 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
         size = [ flex(), goodsBgH ]
         children = mkContent?(stateFlags.get(), canPurchase.get())
       }.__update(childOvr)
-      canPurchase.get() ? pricePlate : purchasedPlate
+      canPurchase.get()
+          ? pricePlate
+        : canShowSkipPurchase.get()
+          ? purchasedPlate
+        : skipPurchasedPlate
     ]
   }).__update(ovr)
 }
@@ -589,6 +609,8 @@ return {
   goodsGap
   offerPad
   titlePadding
+  offerW
+  offerH
 
   priceBgGradDefault
   priceBgGradGold
@@ -620,6 +642,7 @@ return {
   mkGoodsLimit
   mkGoodsLimitText
   mkCanPurchase
+  skipPurchasedPlate
 
   goodsGlareAnimDuration
   mkBgParticles

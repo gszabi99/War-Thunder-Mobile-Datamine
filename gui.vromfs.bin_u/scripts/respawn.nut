@@ -9,12 +9,12 @@ let { get_game_mode, get_game_type } = require("mission")
 let { quit_to_debriefing, get_respawns_left,
   get_mp_respawn_countdown, get_mission_status } = require("guiMission")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { curBattleUnit, curBattleItems, curBattleSkins, isBattleDataReceived
+let { curBattleUnit, curBattleItems, curBattleSkins, isBattleDataReceived, isSeparateSlots, unitsAvgCostWp
 } = require("%scripts/battleData/battleData.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isInBattle, isLocalMultiplayer } = require("%appGlobals/clientState/clientState.nut")
 let { isInRespawn, respawnUnitInfo, respawnUnitItems, isRespawnStarted, timeToRespawn, isRespawnInProgress,
-  isRespawnDataInProgress, isBatleDataRequired, respawnsLeft, respawnUnitSkins
+  isRespawnDataInProgress, isBatleDataRequired, respawnsLeft, respawnUnitSkins, hasRespawnSeparateSlots, curUnitsAvgCostWp
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 
 let unitToSpawn = Computed(@() !isBatleDataRequired.value || isBattleDataReceived.value || isLocalMultiplayer.value
@@ -45,6 +45,8 @@ isInRespawn.subscribe(function(v) {
 unitToSpawn.subscribe(@(v) isInRespawn.value ? respawnUnitInfo(v) : null)
 curBattleItems.subscribe(@(v) isInRespawn.value ? respawnUnitItems(v) : null)
 curBattleSkins.subscribe(@(v) isInRespawn.value ? respawnUnitSkins(v) : null)
+isSeparateSlots.subscribe(@(v) hasRespawnSeparateSlots.set(v))
+unitsAvgCostWp.subscribe(@(v) isInRespawn.get() ? curUnitsAvgCostWp.set(v) : null)
 if (isInRespawn.value && unitToSpawn.value != null)
   updateRespawnUnitInfo()
 

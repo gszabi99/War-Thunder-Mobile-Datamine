@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
   AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3, AB_SUPPORT_PLANE_4, AB_DIVING_LOCK, AB_STRATEGY_MODE,
-  AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_MANUAL_ANTIAIR
+  AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_MANUAL_ANTIAIR, AB_ELECTRONIC_WARFARE
 } = require("actionBar/actionType.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("hudHaptic.nut")
@@ -65,6 +65,14 @@ let actionBarItemsConfig = {
     getImage = @(_) "ui/gameuiskin#icon_ircm.svg"
     actionType = AB_IRCM
     mkButtonFunction = "mkIRCMActionItem"
+    haptPatternId = HAPT_IRCM
+  }
+  EII_ELECTRONIC_WARFARE = {
+    getShortcut = @(_, __) "ID_ELECTRONIC_WARFARE"
+    getImage = @(_) "ui/gameuiskin#icon_capture_blocker.svg"
+    alternativeImage = @(_) "ui/gameuiskin#icon_rocket_blocker.svg"
+    actionType = AB_ELECTRONIC_WARFARE
+    mkButtonFunction = "mkActionItem"
     haptPatternId = HAPT_IRCM
   }
   EII_SMOKE_GRENADE = {

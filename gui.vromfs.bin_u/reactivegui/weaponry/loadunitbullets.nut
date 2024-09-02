@@ -192,13 +192,14 @@ function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
 
 function loadAllBullets(weaponBlkName) {
   let weaponBlk = blkOptFromPath(weaponBlkName)
-  let { bullets = 0, bulletsCartridge = 1, useSingleIconForBullet = false } = weaponBlk
+  let { bullets = 0, bulletsCartridge = 1, useSingleIconForBullet = false, mass = 0.0 } = weaponBlk
   let isBulletBelt = !useSingleIconForBullet
     && ((weaponBlk?.isBulletBelt ?? true) || bulletsCartridge > 1)
 
   let res = {
     catridge = bulletsCartridge
     total = bullets
+    gunMass = mass
     bulletSets = {}
   }
   let defBullets = loadBullets(weaponBlk, "", weaponBlkName, isBulletBelt)
@@ -219,6 +220,11 @@ function loadBulletsCached(weaponBlkName, cache) {
   return cache[weaponBlkName]
 }
 
+function calcMass(weapon) {
+  let { bulletSets, totalBullets, gunMass } = weapon
+  return gunMass + totalBullets * (bulletSets.findvalue(@(v) v.mass > 0)?.mass ?? 0.0)
+}
+
 function loadUnitBulletsFullImpl(unitName) {
   let triggersData = {}
   let unitBlk = blkOptFromPath(getUnitFileName(unitName))
@@ -229,11 +235,15 @@ function loadUnitBulletsFullImpl(unitName) {
 
   let weaponSlots = {}
   let weaponSlotsOrder = {}
-  if (isDataBlock(WeaponSlots))
+  let slotsParams = {}
+  if (isDataBlock(WeaponSlots)) {
+    slotsParams.notUseForDisbalance <- {}
     foreach(wsBlk in WeaponSlots % "WeaponSlot") {
-      let { index = null } = wsBlk
+      let { index = null, notUseforDisbalanceCalculation = false } = wsBlk
       if (index == null)
         continue
+      if (notUseforDisbalanceCalculation)
+        slotsParams.notUseForDisbalance[index] <- true
       weaponSlots[index] <- {}
       weaponSlotsOrder[index] <- []
       foreach(presetBlk in wsBlk % "WeaponPreset") {
@@ -244,6 +254,9 @@ function loadUnitBulletsFullImpl(unitName) {
         weaponSlotsOrder[index].append(presetName)
       }
     }
+    foreach(id in ["maxloadMass", "maxloadMassLeftConsoles", "maxloadMassRightConsoles", "maxDisbalance"])
+      slotsParams[id] <- WeaponSlots?[id] ?? 0
+  }
 
   if (isDataBlock(weapon_presets))
     eachBlock(weapon_presets, function(b) {
@@ -301,7 +314,7 @@ function loadUnitBulletsFullImpl(unitName) {
       return { weaponId, bulletSets, catridge, guns, total, trigger, triggerGroup, turrets }
     }))
 
-  let res = { presets, slots = [] }
+  let res = { presets, slots = [], slotsParams }
   if (weaponSlots.len() == 0)
     return res
 
@@ -313,15 +326,19 @@ function loadUnitBulletsFullImpl(unitName) {
       let reqModification = weaponsTags?[presetId].reqModification ?? ""
       let weapons = []
       let preset = gatherSlotWeaponPreset(presetBlk)
-      foreach(wData in preset)
+      local mass = 0.0
+      foreach(wData in preset) {
         weapons.append(wData.__merge(
           loadBulletsCached(wData.blk, bulletsCache)))
+        mass += calcMass(weapons.top())
+      }
       return {
         name = presetId
         reqModification
         iconType
-        isDefault = reqModification == "" && presetId.startswith("default")
+        isDefault = reqModification == "" && (index == 0 || presetId.startswith("default"))
         weapons
+        mass
       }
     })
     slots.append({ index, wPresets, wPresetsOrder = weaponSlotsOrder[index] })
@@ -339,6 +356,7 @@ function loadUnitBulletsAndSlots(unitName) {
 
 let loadUnitBulletsFull = @(unitName) loadUnitBulletsAndSlots(unitName).presets
 let loadUnitWeaponSlots = @(unitName) loadUnitBulletsAndSlots(unitName).slots
+let loadUnitSlotsParams = @(unitName) loadUnitBulletsAndSlots(unitName).slotsParams
 
 function loadUnitBulletsChoiceImpl(unitName) {
   let { bullets = {}, bulletsOrder = [] } = getUnitTagsCfg(unitName)
@@ -376,6 +394,7 @@ return {
   loadUnitBulletsFull //include all bullets described in the unit blk
   loadUnitBulletsChoice //include only bullets described in the unittags
   loadUnitWeaponSlots
+  loadUnitSlotsParams
   loadUnitBulletsAndSlots
   getWeaponId
 }

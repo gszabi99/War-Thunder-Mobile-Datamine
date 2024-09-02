@@ -2032,7 +2032,7 @@
         "order": 1,
         "WeaponPreset": [
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bomb_1000kg",
             "name": "sc1000",
             "reqModification": "he-111_2x1000kg_pylon",
             "ShowNodes": {
@@ -2048,7 +2048,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_middle_black",
+            "iconType": "bomb_1500kg",
             "name": "xpc1000",
             "reqModification": "he-111_2x1000kg_pylon",
             "ShowNodes": {
@@ -2064,7 +2064,7 @@
             }
           },
           {
-            "iconType": "air_torpedo",
+            "iconType": "torpedo",
             "name": "torpedo",
             "reqModification": "pvc_1006b_pylon",
             "ShowNodes": {
@@ -2087,7 +2087,7 @@
         "order": 3,
         "WeaponPreset": [
           {
-            "iconType": "bombs_small_group_x8",
+            "iconType": "bomb_50kg_group",
             "name": "sc50",
             "ShowNodes": {
               "node": "bomb_bay"
@@ -2352,7 +2352,7 @@
             ]
           },
           {
-            "iconType": "bombs_midlle_group_x6",
+            "iconType": "bomb_250kg_group",
             "name": "sc250",
             "ShowNodes": {
               "node": "bomb_bay"
@@ -2417,7 +2417,7 @@
             ]
           },
           {
-            "iconType": "bombs_midlle_group_x6",
+            "iconType": "bomb_250kg_group",
             "name": "sc250_killstreak",
             "ShowNodes": {
               "node": "bomb_bay"
@@ -2526,7 +2526,7 @@
         "order": 2,
         "WeaponPreset": [
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bomb_1000kg",
             "name": "sc1000",
             "reqModification": "he-111_2x1000kg_pylon",
             "ShowNodes": {
@@ -2542,7 +2542,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_middle_black",
+            "iconType": "bomb_1500kg",
             "name": "xpc1000",
             "reqModification": "he-111_2x1000kg_pylon",
             "ShowNodes": {
@@ -2558,7 +2558,7 @@
             }
           },
           {
-            "iconType": "air_torpedo",
+            "iconType": "torpedo",
             "name": "torpedo",
             "reqModification": "pvc_1006b_pylon",
             "ShowNodes": {
@@ -2574,7 +2574,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_high_drag",
+            "iconType": "bomb_1500kg",
             "name": "fx1400",
             "reqModification": "fx1400",
             "ShowNodes": {

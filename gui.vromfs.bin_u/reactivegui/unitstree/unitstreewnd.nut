@@ -1,33 +1,35 @@
 from "%globalsDarg/darg_library.nut" import *
+let { defer } = require("dagor.workcycle")
 let { registerScene } = require("%rGui/navState.nut")
 let { isUnitsTreeOpen, closeUnitsTreeWnd, unitsMapped, countriesCfg, countriesRows, columnsCfg,
   unitsMaxRank, unitsMaxStarRank, unitsTreeBg, unitsTreeOpenRank, isUnitsTreeAttached
 } = require("%rGui/unitsTree/unitsTreeState.nut")
+let { levelInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
+let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { platoonPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkProgressBar,
   progressBarHeight, bgLight, noUnitsMsg, btnSize, platesGap,
-  blockSize, flagTreeOffset, gamercardOverlap
+  blockSize, flagTreeOffset, gamercardOverlap, infoPanelWidth
 } = require("unitsTreeComps.nut")
-let { animBuyRequirementsUnitId } = require("animState.nut")
+let { animBuyRequirementsUnitId, animResearchRequirementsUnitId } = require("animState.nut")
 let { unitInfoPanel, mkUnitTitle, statsWidth, scrollHandlerInfoPanel } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { curSelectedUnit, sizePlatoon, curUnitName } = require("%rGui/unit/unitsWndState.nut")
 let { unitActions, discountBlock } = require("%rGui/unit/unitsWndActions.nut")
-let { horizontalPannableAreaCtor, verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let { levelBorder } = require("%rGui/components/levelBlockPkg.nut")
-let { defer } = require("dagor.workcycle")
+let { spinner } = require("%rGui/components/spinner.nut")
 let { lvlUpCost, openLvlUpWndIfCan, isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
 let { isFiltersVisible, filterStateFlags, openFilters, filters, activeFilters
 } = require("%rGui/unit/unitsFilterPkg.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
-let { mkUnitsTreeNodesContent } = require("unitsTreeNodesContent.nut")
-let { rankBlockHeight, rankBlockOffset } = require("unitsTreeConsts.nut")
+let { mkUnitsTreeNodesContent, mkHasDarkScreen } = require("unitsTreeNodesContent.nut")
+let { rankBlockOffset } = require("unitsTreeConsts.nut")
 let { mkUnitPlate, framesGapMul } = require("mkUnitPlate.nut")
 let { unseenArrowsBlock, scrollToUnit, scrollToRank, scrollHandler
 } = require("unitsTreeScroll.nut")
@@ -35,7 +37,11 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { slotBarTreeHeight } = require("%rGui/slotBar/slotBarConsts.nut")
+let { selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
+let { researchBlock, researchBlockSize } = require("%rGui/unitsTree/components/researchBars.nut")
+let panelBg = require("%rGui/components/panelBg.nut")
 
+let infoPanelFooterGap = hdpx(20)
 let filterIconSize = hdpxi(36)
 let clearIconSize = hdpxi(45)
 
@@ -49,12 +55,14 @@ let openFiltersPopup = @(e) openFilters(e, isTreeNodes.get(), {
 
 curSelectedUnit.subscribe(@(v) v ? scrollHandlerInfoPanel.scrollToY(0) : null)
 
-animBuyRequirementsUnitId.subscribe(function(v) {
-  if (!v)
+function tryAnimUnitInfoActionHint(unitId) {
+  if (!unitId)
     return
   scrollHandlerInfoPanel.scrollToY(scrollHandlerInfoPanel.elem?.getWidth() ?? 1000000)
   anim_start("unitInfoActionHint")
-})
+}
+animBuyRequirementsUnitId.subscribe(tryAnimUnitInfoActionHint)
+animResearchRequirementsUnitId.subscribe(tryAnimUnitInfoActionHint)
 
 function onBackButtonClick() {
   closeUnitsTreeWnd()
@@ -257,8 +265,8 @@ let unitsTreeContent = {
 }
 
 let unitsTreeGamercard = {
-  size = [flex(), gamercardHeight]
-  valign = ALIGN_TOP
+  size = [flex(), backButtonHeight]
+  valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(20)
   children = [
@@ -266,14 +274,14 @@ let unitsTreeGamercard = {
 
     @() {
       watch = isTreeNodes
-      pos = [0, hdpx(5)]
       rendObj = ROBJ_TEXT
       text = loc(isTreeNodes.get() ? "unitsTree/researches" : "unitsTree/campaignLevel")
     }.__update(isWidescreen ? fontMedium : fontSmall)
 
     @() {
-      watch = [playerLevelInfo, lvlUpCost, isLvlUpAnimated, isTreeNodes]
+      watch = [playerLevelInfo, lvlUpCost, isLvlUpAnimated, isTreeNodes, levelInProgress]
       children = isTreeNodes.get() ? null
+        : levelInProgress.get() ? spinner
         : playerLevelInfo.get().isReadyForLevelUp
           ? levelUpBtn(isLvlUpAnimated.get() ? null : openLvlUpWndIfCan)
         : playerLevelInfo.get()?.nextLevelExp != 0 && !playerLevelInfo.get()?.isMaxLevel
@@ -298,59 +306,78 @@ let unitsTreeGamercard = {
   ]
 }
 
-let unitInfoPanelHeight = saSize[1] - gamercardHeight + gamercardOverlap - rankBlockHeight - rankBlockOffset - slotBarTreeHeight
-let pannableInfoPanelArea = verticalPannableAreaCtor(unitInfoPanelHeight, [0, 0], [0, hdpx(5)])
+let infoPanelHeight = saSize[1] - gamercardHeight + gamercardOverlap + saBorders[1] - rankBlockOffset
+let unitInfoPanelHeight = infoPanelHeight - researchBlockSize[1] - slotBarTreeHeight - infoPanelFooterGap - saBorders[1]
 
-let infoPanel = @() {
-  watch = [curSelectedUnit, isTreeNodes]
-  key = {}
-  size = flex()
-  padding = saBordersRv
-  children = !curSelectedUnit.value ? null : [
-    isTreeNodes.get()
-        ? {
-            size = [hdpx(560), flex()]
-            pos = [0, gamercardHeight - gamercardOverlap + rankBlockHeight + rankBlockOffset]
-            hplace = ALIGN_RIGHT
-            clipChildren = true
-            children = unitInfoPanel({
-                  size = [flex(), unitInfoPanelHeight]
-                  hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
-                  animations = wndSwitchAnim
-                }, mkUnitTitle, hangarUnit, {},
-                @(v) pannableInfoPanelArea(v, {},
-                  {
-                    behavior = [Behaviors.Pannable, Behaviors.ScrollEvent]
-                    scrollHandler = scrollHandlerInfoPanel
-            }))
-          }
-        : {
-            size = [hdpx(560), flex()]
-            pos = [0, gamercardHeight + levelMarkSize - gamercardOverlap]
-            hplace = ALIGN_RIGHT
-            children = unitInfoPanel({
-                size = [flex(), unitInfoPanelHeight]
-                hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
-                animations = wndSwitchAnim
-              }, mkUnitTitle, hangarUnit, {},
-              @(v) pannableInfoPanelArea(v, {},
-                {
-                  behavior = [Behaviors.Pannable, Behaviors.ScrollEvent]
-                  scrollHandler = scrollHandlerInfoPanel
-            }))
-          }
-    {
+function mkHasUnitActions(withTreeNodes) {
+  if (!withTreeNodes)
+    return Computed(@() curSelectedUnit.get() != null || selectedSlotIdx.get() == null)
+  let hasDarkScreen = mkHasDarkScreen()
+  return Computed(@() curSelectedUnit.get() != null || selectedSlotIdx.get() == null || hasDarkScreen.get())
+}
+
+function mkBottomInfoPanel() {
+  return function() {
+    let hasUnitActions = mkHasUnitActions(isTreeNodes.get())
+    return {
+      watch = isTreeNodes
       rendObj = ROBJ_BOX
       hplace = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM
       halign = ALIGN_CENTER
       flow = FLOW_VERTICAL
-      children = [
-        discountBlock
-        unitActions
-      ]
+      children = @() {
+        watch = hasUnitActions
+        children = hasUnitActions.get() ? [discountBlock, unitActions]
+          : {
+              halign = ALIGN_CENTER
+              valign = ALIGN_CENTER
+              size = [statsWidth, slotBarTreeHeight]
+              rendObj = ROBJ_TEXTAREA
+              behavior = Behaviors.TextArea
+              text = loc("unitsTree/selectUnitHint")
+            }.__update(fontMedium)
+      }
     }
-  ]
+  }
+}
+
+let infoPanel = @() {
+  watch = [curSelectedUnit, isTreeNodes]
+  key = {}
+  size = flex()
+  children = !curSelectedUnit.get() && !isTreeNodes.get() ? null
+    : [
+        !curSelectedUnit.get() ? null
+          : panelBg.__merge({
+              size = [infoPanelWidth, infoPanelHeight]
+              padding = [0, saBorders[0], saBorders[1], hdpx(30)]
+              hplace = ALIGN_RIGHT
+              vplace = ALIGN_BOTTOM
+              valign = ALIGN_BOTTOM
+              clipChildren = isTreeNodes.get()
+              flow = FLOW_VERTICAL
+              children = [
+                unitInfoPanel(
+                  {
+                    size = [flex(), unitInfoPanelHeight]
+                    halign = ALIGN_RIGHT
+                    hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
+                    animations = wndSwitchAnim
+                  }, mkUnitTitle, hangarUnit)
+                {
+                  flow = FLOW_VERTICAL
+                  gap = infoPanelFooterGap
+                  hplace = ALIGN_RIGHT
+                  halign = ALIGN_RIGHT
+                  children = [
+                    researchBlock(hangarUnit.get())
+                    mkBottomInfoPanel()
+                  ]
+                }
+              ]
+            })
+      ]
 }
 
 let unitsTreeWnd = {

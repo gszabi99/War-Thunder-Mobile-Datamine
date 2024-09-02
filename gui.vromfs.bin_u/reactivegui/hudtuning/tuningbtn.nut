@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { withHoldTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
+let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
 
 let tuningBtnSize = evenPx(70)
 let imgSize = evenPx(54)
@@ -31,19 +31,18 @@ function tuningBtn(image, onClick, description, ovr = {}) {
     size = [tuningBtnSize, tuningBtnSize]
     rendObj = ROBJ_SOLID
     color = btnBgColorDefault
-    onElemState = withHoldTooltip(stateFlags, key, @(){
-      content = loc(description)
-      flow = FLOW_VERTICAL
-      valign = ALIGN_BOTTOM
-    })
-    onDetach = tooltipDetach(stateFlags)
     behavior = Behaviors.Button
-    onClick
     sound = { click  = "click" }
     children
     transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
-  }.__update(ovr)
+  }.__update(ovr,
+    mkButtonHoldTooltip(onClick, stateFlags, key,
+      @() {
+        content = loc(description)
+        flow = FLOW_VERTICAL
+        valign = ALIGN_BOTTOM
+      }))
 }
 
 let tuningBtnInactive = @(image, onClick, description)

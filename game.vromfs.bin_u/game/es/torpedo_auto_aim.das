@@ -34,22 +34,6 @@ def torpedo_auto_aim(evt : EventOnStartShooting; uid : int)
     if weapon != null && weapon.isTorpedoGun
       weapon |> torpedo_auto_aim_impl(target, uid, unit.isSubmarine, unit.vel)
 
-[es(tag=server)]
-def torpedo_auto_aim_aircraft(evt : EventOnStartShooting;
-                              aircarft__ownerId : int;
-                              uid : int;
-                              net_unit : ECSNetUnit;
-                              weapon_controller : WeaponController)
-  get_unit_target(aircarft__ownerId) <| $(target)
-    var weapon = weapon_controller.Weapons |> get_weapon(evt.weaponIdx)
-    if weapon != null && weapon.isTorpedoGun
-      let emitterNo = weapon.emitterNo
-      var shootTm : float3x4
-      weapon |> weapon_calcShootTm(net_unit.tm, true, emitterNo, true, shootTm)
-      weapon.startShootingPos = float3(shootTm[3].x, 0., shootTm[3].z)
-
-      weapon |> torpedo_auto_aim_impl(target, uid, false, net_unit.phys.currentState.velocity)
-
 [es(tag=server, REQUIRE=enableTorpedoAutoAim, no_order)]
 def torpedo_guns_to_target(info : UpdateStageInfoAct;
                            uid : int;

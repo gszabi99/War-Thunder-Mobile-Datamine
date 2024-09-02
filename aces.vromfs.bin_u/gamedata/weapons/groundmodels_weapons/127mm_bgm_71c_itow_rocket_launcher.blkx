@@ -69,7 +69,7 @@
     "force": 2800.0,
     "timeFire": 1.6,
     "thrustDeviation": 0.0,
-    "fireEffect": "rocket_fire_short_doubleside",
+    "fireEffect": "rocket_fire_short",
     "smokeEffect": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,

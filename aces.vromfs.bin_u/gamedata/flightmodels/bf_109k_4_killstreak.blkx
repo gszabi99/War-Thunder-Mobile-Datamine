@@ -1731,10 +1731,6 @@
     }
   },
   "WeaponSlots": {
-    "maxloadMass": 1040.0,
-    "maxloadMassLeftConsoles": 570.0,
-    "maxloadMassRightConsoles": 570.0,
-    "maxDisbalance": 420.0,
     "HideNodes": {
       "node": [
         "pylon_cannon_l",
@@ -1837,7 +1833,7 @@
         "tier": 6,
         "order": 3,
         "WeaponPreset": {
-          "iconType": "cannon_inner",
+          "iconType": "bomb_500kg_group",
           "name": "sc500",
           "reqModification": "Bf-110C-4_SC500",
           "ShowNodes": {

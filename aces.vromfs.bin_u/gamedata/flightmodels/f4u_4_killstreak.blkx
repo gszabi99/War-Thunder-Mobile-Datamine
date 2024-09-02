@@ -1817,7 +1817,7 @@
         "order": 1,
         "WeaponPreset": [
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "hvar",
             "reqModification": "frc_mk2",
             "ShowNodes": {
@@ -1833,7 +1833,7 @@
             }
           },
           {
-            "iconType": "bombs_small",
+            "iconType": "bomb_100kg",
             "name": "100lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -1856,7 +1856,7 @@
         "order": 3,
         "WeaponPreset": [
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "hvar",
             "reqModification": "frc_mk2",
             "ShowNodes": {
@@ -1872,7 +1872,7 @@
             }
           },
           {
-            "iconType": "bombs_small",
+            "iconType": "bomb_100kg",
             "name": "100lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -1895,7 +1895,7 @@
         "order": 5,
         "WeaponPreset": [
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "hvar",
             "reqModification": "frc_mk2",
             "ShowNodes": {
@@ -1911,7 +1911,7 @@
             }
           },
           {
-            "iconType": "bombs_small",
+            "iconType": "bomb_100kg",
             "name": "100lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -1934,7 +1934,7 @@
         "order": 7,
         "WeaponPreset": [
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "hvar",
             "reqModification": "frc_mk2",
             "ShowNodes": {
@@ -1950,7 +1950,7 @@
             }
           },
           {
-            "iconType": "bombs_small",
+            "iconType": "bomb_100kg",
             "name": "100lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -1966,7 +1966,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "250lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -1990,7 +1990,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_500kg",
             "name": "500lb",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -2006,7 +2006,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_middle",
+            "iconType": "bomb_1000kg",
             "name": "1000lb",
             "reqModification": "flbc_mk1",
             "ShowNodes": {
@@ -2030,7 +2030,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_500kg",
             "name": "500lb",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -2046,7 +2046,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_middle",
+            "iconType": "bomb_1000kg",
             "name": "1000lb",
             "reqModification": "flbc_mk1",
             "ShowNodes": {
@@ -2069,7 +2069,7 @@
         "order": 8,
         "WeaponPreset": [
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "hvar",
             "reqModification": "frc_mk2",
             "ShowNodes": {
@@ -2085,7 +2085,7 @@
             }
           },
           {
-            "iconType": "bombs_small",
+            "iconType": "bomb_100kg",
             "name": "100lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -2124,7 +2124,7 @@
         "order": 6,
         "WeaponPreset": [
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "hvar",
             "reqModification": "frc_mk2",
             "ShowNodes": {
@@ -2140,7 +2140,7 @@
             }
           },
           {
-            "iconType": "bombs_small",
+            "iconType": "bomb_100kg",
             "name": "100lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -2163,7 +2163,7 @@
         "order": 4,
         "WeaponPreset": [
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "hvar",
             "reqModification": "frc_mk2",
             "ShowNodes": {
@@ -2179,7 +2179,7 @@
             }
           },
           {
-            "iconType": "bombs_small",
+            "iconType": "bomb_100kg",
             "name": "100lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -2202,7 +2202,7 @@
         "order": 2,
         "WeaponPreset": [
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "hvar",
             "reqModification": "frc_mk2",
             "ShowNodes": {
@@ -2218,7 +2218,7 @@
             }
           },
           {
-            "iconType": "bombs_small",
+            "iconType": "bomb_100kg",
             "name": "100lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {

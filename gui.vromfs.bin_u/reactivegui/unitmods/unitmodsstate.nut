@@ -28,7 +28,7 @@ let unitModPreset = Computed(@() unit.value?.modPreset)
 isUnitModsOpen.subscribe(@(v) sendNewbieBqEvent(v ? "openUnitModificationsWnd" : "closeUnitModificationsWnd"))
 
 let modsPresets = Computed(function() {
-  let { unitModPresets = [] } = campConfigs.value
+  let { unitModPresets = [] } = campConfigs.get()
   let result = {}
   foreach(presetName, preset in unitModPresets) {
     result[presetName] <- {}
@@ -71,6 +71,33 @@ let unseenModsByCategory = Computed(function() {
   }
   return res.filter(@(v) v.len() > 0)
 })
+
+function unseenSlotModsByCategory(slotUnit) {
+  let slotModsByCategory = Computed(function() {
+    let result = {}
+    foreach(modName, mod in modsPresets.get()?[slotUnit.get()?.modPreset] ?? {}) {
+      if (mod?.isHidden)
+        continue
+      if (mod.group not in result)
+        result[mod.group] <- {}
+      result[mod.group][modName] <- mod
+    }
+    return result
+  })
+
+  return Computed(function() {
+    let res = {}
+    foreach (cat, modsInCat in slotModsByCategory.get()) {
+      res[cat] <- {}
+      foreach (mod in modsInCat)
+        if (mod.name not in seenMods.get()?[slotUnit.get()?.name]
+            && (mod.reqLevel ?? 0) <= (slotUnit.get()?.level ?? 0)
+            && mod.name not in slotUnit.get()?.mods)
+          res[cat][mod.name] <- true
+    }
+    return res.filter(@(v) v.len() > 0)
+  })
+}
 
 function openUnitModsWnd() {
   curCategoryId(modsCategories.value?[0])
@@ -187,5 +214,6 @@ return {
 
   setCurUnitSeenModsCurrent
   unseenModsByCategory
+  unseenSlotModsByCategory
   onTabChange
 }

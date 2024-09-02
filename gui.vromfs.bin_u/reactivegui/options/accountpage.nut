@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { set_clipboard_text } = require("dagor.clipboard")
 let { ACTIVATE_PROMO_CODE_URL, LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
-let { curLoginType, LT_GOOGLE, LT_APPLE, LT_FACEBOOK } = require("%appGlobals/loginState.nut")
+let { curLoginType, LT_GOOGLE, LT_APPLE, LT_FACEBOOK, LT_HUAWEI } = require("%appGlobals/loginState.nut")
 let { can_link_to_gaijin_account } = require("%appGlobals/permissions.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
@@ -24,7 +24,7 @@ let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { showHint } = require("%rGui/tooltip.nut")
 
 let canLinkToGaijinAccount = Computed(@() can_link_to_gaijin_account.get() && !is_nswitch
-  && [ LT_GOOGLE, LT_APPLE, LT_FACEBOOK ].contains(curLoginType.get()))
+  && [ LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FACEBOOK ].contains(curLoginType.get()))
 
 let canChangeAccount = Computed(@() isInMenu.get() && !is_nswitch)
 

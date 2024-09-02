@@ -1,30 +1,38 @@
 from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
 let { deferOnce } = require("dagor.workcycle")
+let { round_by_value } = require("%sqstd/math.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { modsInProgress, buy_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
 let { mkGamercardUnitCampaign, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { unitModSlotsOpenCount, closeUnitModsSlotsWnd, curUnit, weaponSlots, curSlotIdx, curWeapons,
-  curWeaponIdx, curWeapon, getEquippedWeapon, weaponPreset, equippedWeaponId,
+  curWeaponIdx, curWeapon, equippedWeaponsBySlots, equippedWeaponId,
   curWeaponMod, curWeaponModName, curWeaponReqLevel, curWeaponIsLocked, curWeaponIsPurchased,
-  equipCurWeapon, unequipCurWeapon, curUnitAllModsCost
+  equipCurWeapon, unequipCurWeapon, curUnitAllModsCost, beltWeapons, curBeltsWeaponIdx,
+  curWeaponBeltsOrdered, curBeltIdx, curBelt, equippedBeltId, equipCurBelt, getEquippedBelt,
+  chosenBelts, mkWeaponBelts, equippedWeaponIdCount, curBeltWeapon, overloadInfo, fixCurPresetOverload
 } = require("unitModsSlotsState.nut")
 let { getModCurrency, getModCost } = require("unitModsState.nut")
-let { getWeaponNamesList } = require("%rGui/weaponry/weaponsVisual.nut")
-let { mkSlotWeapon, mkWeaponImage, mkWeaponDesc, weaponH, weaponW, weaponTotalH, weaponGap
+let { getWeaponDescList, getWeaponShortNameWithCount,
+  getBulletBeltShortName, getBulletBeltFullName, getWeaponShortNamesList
+} = require("%rGui/weaponry/weaponsVisual.nut")
+let { mkSlotWeapon, mkWeaponImage, mkWeaponDesc, mkEmptyText, weaponH, weaponW, weaponTotalH, weaponGap,
+  mkSlotText, mkBeltImage, mkSlotBelt
 } = require("slotWeaponCard.nut")
 let { textButtonPrimary, textButtonPurchase } = require("%rGui/components/textButton.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { tabsGap, bgColor, tabExtraWidth, mkTabs } = require("%rGui/components/tabs.nut")
+let panelBg = require("%rGui/components/panelBg.nut")
+let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
+let { userlogTextColor, badTextColor2, commonTextColor } = require("%rGui/style/stdColors.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideX } = require("%rGui/style/gradients.nut")
-let buyUnitLevelWnd = require("%rGui/unitAttr/buyUnitLevelWnd.nut")
+let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
@@ -33,7 +41,13 @@ let slotW = weaponW + hdpx(20)
 let slotPadding = [hdpx(10), hdpx(30)]
 let slotsBlockMargin = hdpx(24)
 let slotsBlockHeight = saSize[1] - gamercardHeight - slotsBlockMargin
-let maxSlotsNoScroll = ((slotsBlockHeight - tabsGap) / (weaponH + tabsGap)).tointeger()
+let headerHeight = hdpx(70)
+let headerHeightWithGap = headerHeight + tabsGap
+let weaponHWithGap = weaponH + tabsGap
+let maxSlotsNoScroll = ((slotsBlockHeight - tabsGap - 2 * headerHeightWithGap) / weaponHWithGap).tointeger()
+
+let vertIndent = hdpx(100)
+let vertIndentThroughHeader = vertIndent + headerHeight / 2
 
 let pageWidth = saSize[0] + saBorders[0] - slotW
 let pageMask = mkBitmapPictureLazy((pageWidth / 10).tointeger(), 2, mkGradientCtorDoubleSideX(0, 0xFFFFFFFF, 0.05))
@@ -42,32 +56,84 @@ let slotsScrollHandler = ScrollHandler()
 let weaponsScrollHandler = ScrollHandler()
 
 
-function scrollToWeapon() {
-  let idx = curWeaponIdx.get()
-  if (idx == null)
+function closeWithWarning() {
+  let { overloads = [] } = overloadInfo.get()
+  if (overloads.len() == 0) {
+    closeUnitModsSlotsWnd()
     return
+  }
+  openMsgBox({
+    text = loc("weapons/pilonsRemoveWarning", {
+      warnings = colorize(badTextColor2, "\n".join(overloads))
+    })
+    buttons = [
+      { text = loc("btn/autoRemovePilons"),
+        function cb() {
+          fixCurPresetOverload()
+          closeUnitModsSlotsWnd()
+        }
+      }
+      { text = loc("btn/fixItMyself"), styleId = "PRIMARY", isCancel = true }
+    ]
+  })
+}
+
+function scrollToWeapon() {
+  let idx = curWeaponBeltsOrdered.get().len() > 0 ? curBeltIdx.get() : curWeaponIdx.get()
   let { elem } = weaponsScrollHandler
   if (elem != null)
     weaponsScrollHandler.scrollToX(idx * (weaponW + weaponGap) - (elem.getWidth() - weaponW) / 2)
 }
 
 function scrollToSlot() {
-  let idx = curSlotIdx.get()
+  let beltIdx = curBeltsWeaponIdx.get()
+  let isBeltActive = beltIdx >= 0
+
+  let idx = isBeltActive ? beltIdx : curSlotIdx.get()
   if (idx == null)
     return
   let { elem } = slotsScrollHandler
   if (elem == null)
     return
-  let top = idx * (weaponH + tabsGap)
-  if (top < elem.getScrollOffsY())
-    slotsScrollHandler.scrollToY(top)
-  else if (top + weaponH > elem.getScrollOffsY() + elem.getHeight())
-    slotsScrollHandler.scrollToY(top + weaponH - elem.getHeight())
+
+  let beltWeaponTypes = beltWeapons.get().reduce(function(acc, weapon, index) {
+    if (weapon.turrets != 0)
+      acc.turrets.append(index)
+    else
+      acc.course.append(index)
+    return acc
+  }, { turrets = [], course = [] })
+  let beltWeaponsCount = beltWeapons.get().len()
+  let beltWeaponTypesCount = beltWeaponTypes.filter(@(v) v.len() > 0).len()
+
+  local isFirstAfterHeader = curSlotIdx.get() == 1
+  local top = 0
+
+  if (!isBeltActive) {
+    let baseOffset = (beltWeaponTypesCount + 1) * headerHeightWithGap
+    top = (beltWeaponsCount + idx - 1) * weaponHWithGap + baseOffset
+  } else {
+    let headersCount = beltWeaponTypes.filter(@(v) v.findindex(@(index) index <= beltIdx) != null).len()
+    top = idx * weaponHWithGap + headersCount * headerHeightWithGap
+    isFirstAfterHeader = beltWeaponTypes.filter(@(v) v.findindex(@(index) index == beltIdx) == 0).len() > 0
+  }
+
+  let ident = isFirstAfterHeader ? vertIndentThroughHeader : vertIndent
+
+  if (top - ident < elem.getScrollOffsY())
+    slotsScrollHandler.scrollToY(top - ident)
+  else if (top + weaponH + ident > elem.getScrollOffsY() + elem.getHeight())
+    slotsScrollHandler.scrollToY(top + weaponH + ident - elem.getHeight())
 }
 
 curSlotIdx.subscribe(function(_) {
   deferOnce(scrollToWeapon)
-  scrollToSlot()
+  deferOnce(scrollToSlot)
+})
+
+curBeltsWeaponIdx.subscribe(function(_) {
+  deferOnce(scrollToWeapon)
+  deferOnce(scrollToSlot)
 })
 
 let mkVerticalPannableArea = @(content) {
@@ -77,6 +143,8 @@ let mkVerticalPannableArea = @(content) {
     size = flex()
     behavior = Behaviors.Pannable
     scrollHandler = slotsScrollHandler
+    flow = FLOW_VERTICAL
+    gap = tabsGap
     children = content
     xmbNode = {
       canFocus = false
@@ -110,21 +178,22 @@ let mkHorizontalPannableArea = @(content) {
   ]
 }
 
-function mkSlotContent(slot, idx) {
-  let weapon = Computed(@() getEquippedWeapon(weaponPreset.get(), idx, slot.wPresets, curUnit.get()?.mods))
+function mkSlotContent(idx) {
+  let weapon = Computed(@() equippedWeaponsBySlots.get()?[idx])
   return {
     size = [flex(), weaponH]
     children = [
       mkWeaponImage(weapon)
       mkWeaponDesc(weapon)
+      mkEmptyText(weapon)
       {
         hplace = ALIGN_RIGHT
         vplace = ALIGN_BOTTOM
         margin = slotPadding
         rendObj = ROBJ_TEXT
-        text = $"#{idx + 1}"
+        text = $"#{idx}"
         color = 0xFFC0C0C0
-      }.__update(fontSmallShaded)
+      }.__update(fontTinyShaded)
     ]
   }
 }
@@ -134,61 +203,174 @@ let slotsList = @(slots) {
   key = slotsKey
   size = [flex(), SIZE_TO_CONTENT]
   onAttach = scrollToSlot
-  children = mkTabs(slots.map(@(s, idx) { id = idx, content = mkSlotContent(s, idx) }),
+  children = mkTabs(
+    slots.slice(1) //0 slot has only guns, and unable to change anything
+      .map(@(_, idx) { id = idx + 1, content = mkSlotContent(idx + 1) }),
     curSlotIdx, {}, @(idx) curSlotIdx.set(idx))
 }
 
-function slotsBlock() {
-  let list = slotsList(weaponSlots.get())
-  return {
-    watch = weaponSlots
-    size = [slotW, flex()]
-    margin = [slotsBlockMargin, 0, 0, 0]
-    flow = FLOW_VERTICAL
-    gap = tabsGap
-    children = weaponSlots.get().len() > maxSlotsNoScroll ? mkVerticalPannableArea(list)
+function mkBeltSlotContent(weapon) {
+  let beltId = Computed(@()
+    getEquippedBelt(chosenBelts.get(), weapon.weaponId,
+        mkWeaponBelts(curUnit.get()?.name, weapon),
+        curUnit.get()?.mods)
+      ?.id)
+  let gunCount = Computed(@() equippedWeaponIdCount.get()?[weapon.weaponId] ?? 0)
+  return @() {
+    watch = [beltId, gunCount]
+    size = [flex(), weaponH]
+    opacity = gunCount.get() == 0 ? 0.5 : 1.0
+    children = beltId.get() == null ? null
       : [
-          list
-          {
-            margin = [0, 0, 0, tabExtraWidth]
-            size = [slotW - tabExtraWidth, flex()]
-            rendObj = ROBJ_SOLID
-            color = bgColor
-          }
+          mkBeltImage(weapon.bulletSets?[beltId.get()].bullets ?? [])
+          mkSlotText(getWeaponShortNameWithCount(weapon.__merge({ count = gunCount.get() })))
+          mkSlotText(getBulletBeltShortName(beltId.get()), { vplace = ALIGN_BOTTOM })
         ]
   }
 }
 
+function beltsList(weapons, filter) {
+  let list = weapons
+    .map(@(w, idx) filter(w) ? { id = idx, content = mkBeltSlotContent(w) } : null)
+    .filter(@(v) v != null)
+  if (list.len() == 0)
+    return null
+  return {
+    size = [flex(), SIZE_TO_CONTENT]
+    children = mkTabs(list, curBeltsWeaponIdx, {}, @(idx) curBeltsWeaponIdx.set(idx))
+  }
+}
+
+let mkBlock = @(text, child) child == null ? null
+  : {
+      size = [slotW, SIZE_TO_CONTENT]
+      flow = FLOW_VERTICAL
+      gap = tabsGap
+      children = [
+        {
+          margin = [0, 0, 0, tabExtraWidth]
+          size = [slotW - tabExtraWidth, headerHeight]
+          padding = hdpx(10)
+          rendObj = ROBJ_SOLID
+          color = bgColor
+          valign = ALIGN_CENTER
+          children = {
+            size = [flex(), SIZE_TO_CONTENT]
+            rendObj = ROBJ_TEXTAREA
+            behavior = Behaviors.TextArea
+            text
+            color = 0xFFA0A0A0
+          }.__update(fontTinyAccented)
+        }
+        child
+      ]
+    }
+
+function slotsBlock() {
+  let children = [
+    mkBlock(loc("weaponry/courseGunBelts"), beltsList(beltWeapons.get(), @(w) w.turrets == 0))
+    mkBlock(loc("weaponry/turretGunBelts"), beltsList(beltWeapons.get(), @(w) w.turrets != 0))
+    weaponSlots.get().len() <= 1 ? null //0 slot is common weapons
+      : mkBlock(loc("weaponry/secondaryWeapons"), slotsList(weaponSlots.get()))
+  ]
+    .filter(@(v) v != null)
+  let cardsCount = weaponSlots.get().len() - 1 + beltWeapons.get().len()
+  return {
+    watch = [beltWeapons, weaponSlots]
+    size = [slotW, flex()]
+    margin = [slotsBlockMargin, 0, 0, 0]
+    flow = FLOW_VERTICAL
+    gap = tabsGap
+    children = cardsCount > maxSlotsNoScroll ? mkVerticalPannableArea(children)
+      : children.append({
+          margin = [0, 0, 0, tabExtraWidth]
+          size = [slotW - tabExtraWidth, flex()]
+          rendObj = ROBJ_SOLID
+          color = bgColor
+        })
+  }
+}
+
+let notUsedCurGunInfo = panelBg.__merge({
+  vplace = ALIGN_BOTTOM
+  children = @() {
+    watch = curBeltWeapon
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    text = curBeltWeapon.get() == null ? ""
+      : "\n".concat(
+          getWeaponShortNameWithCount(curBeltWeapon.get().__merge({ count = 0 })),
+          loc("weaponry/hint/needToInstallSecondaryGun")
+        )
+     color = commonTextColor
+  }.__update(fontTiny)
+})
+
 let weaponsCount = Computed(@() curWeapons.get().len())
+let beltsCount = Computed(@() curWeaponBeltsOrdered.get().len())
+let curBeltGunCount = Computed(@() curBeltWeapon.get() == null ? -1
+  : equippedWeaponIdCount.get()?[curBeltWeapon.get().weaponId] ?? 0)
 let slotWeaponsBlock = @() {
-  watch = weaponsCount
+  watch = [weaponsCount, beltsCount]
   size = [SIZE_TO_CONTENT, flex()]
-  flow = FLOW_HORIZONTAL
+  flow = curBeltGunCount.get() == 0 ? null : FLOW_HORIZONTAL
   gap = weaponGap
-  children = array(weaponsCount.get())
-    .map(@(_, idx) mkSlotWeapon(idx, scrollToWeapon))
+  children = curBeltGunCount.get() == 0 ? notUsedCurGunInfo
+    : beltsCount.get() > 0
+      ? array(beltsCount.get())
+        .map(@(_, idx) mkSlotBelt(idx, scrollToWeapon))
+    : array(weaponsCount.get())
+        .map(@(_, idx) mkSlotWeapon(idx, scrollToWeapon))
+}
+
+function getWeaponDescription(weapon) {
+  if (weapon == null)
+    return ""
+  let { weapons, mass } = weapon
+  let resArr = getWeaponDescList(weapons)
+  if (mass > 0)
+    resArr.append("".concat(loc("stats/mass"), colon, round_by_value(mass, 0.1), loc("measureUnits/kg")))
+  return "\n".join(resArr)
 }
 
 function slotPresetInfo() {
-  if (curWeapon.get() == null)
-    return { watch = curWeapon }
-  let desc = "\n".join(getWeaponNamesList(curWeapon.get()?.weapons ?? []))
-  return {
-    watch = curWeapon
+  let watch = [curWeapon, curBelt]
+  if (curWeapon.get() == null && curBelt.get() == null)
+    return { watch }
+  let desc = curBelt.get() != null
+    ? getBulletBeltFullName(curBelt.get().id, curBelt.get().caliber)
+    : getWeaponDescription(curWeapon.get())
+  return panelBg.__merge({
+    watch
+    hplace = ALIGN_RIGHT
     rendObj = ROBJ_IMAGE
-    pos = [saBorders[0], 0]
-    image = Picture("ui/gameuiskin#debriefing_bg_grad@@ss.avif:0:P")
-    color = 0x90090F16
-    margin = [0, saBorders[0], 0, 0]
-    padding = [hdpx(30), saBorders[0]]
     children = {
       size = [weaponW, SIZE_TO_CONTENT]
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       halign = ALIGN_RIGHT
       text = desc
-    }.__update(fontSmall)
-  }
+      color = commonTextColor
+    }.__update(fontTiny)
+  })
+}
+
+function overloadInfoBlock() {
+  let { massInfo = "", overloads = [] } = overloadInfo.get()
+  if (massInfo == "" && overloads.len() == 0)
+    return { watch = overloadInfo }
+  local overText = overloads.len() == 0 ? ""
+    : colorize(badTextColor2, "\n".join(overloads))
+  return panelBg.__merge({
+    watch = overloadInfo
+    children = {
+      maxWidth = hdpx(625)
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      color = commonTextColor
+      text = "\n".join([massInfo, overText], true)
+    }.__update(fontTiny)
+  })
 }
 
 let spinner = {
@@ -206,7 +388,9 @@ function onPurchaseMod() {
     return
   let price = getModCost(mod, curUnitAllModsCost.get())
   let currencyId = getModCurrency(mod)
-  let weaponName = comma.join(getWeaponNamesList(curWeapon.get()?.weapons ?? []))
+  let weaponName = curBelt.get() != null
+    ? getBulletBeltShortName(curBelt.get().id)
+    : comma.join(getWeaponShortNamesList(curWeapon.get()?.weapons ?? []))
   openMsgBoxPurchase(
     loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, weaponName) }),
     { price, currencyId },
@@ -215,19 +399,24 @@ function onPurchaseMod() {
 }
 
 let slotPresetButtons = @() {
-  watch = [curWeapon, modsInProgress, curWeaponIsLocked, curWeaponReqLevel, equippedWeaponId, curWeapons]
+  watch = [curWeapon, curBelt, modsInProgress, curWeaponIsLocked, curWeaponReqLevel,
+    equippedWeaponId, curWeapons, equippedBeltId]
   size = [flex(), SIZE_TO_CONTENT]
-  margin = [hdpx(25), saBorders[0], hdpx(25), 0]
   halign = ALIGN_RIGHT
-  children = curWeapon.get() == null ? null
+  vplace = ALIGN_BOTTOM
+  children = curWeapon.get() == null && curBelt.get() == null ? null
     : modsInProgress.get() != null ? spinner
     : curWeaponIsLocked.get() && curWeaponReqLevel.get() > 0
       ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), curWeaponReqLevel.get(),
         @() curUnit.get() != null ? buyUnitLevelWnd(curUnit.get().name) : null, { hotkeys = ["^J:Y"] })
     : curWeaponIsLocked.get() ? null
     : !curWeaponIsPurchased.get() ? textButtonPurchase(loc("mainmenu/btnBuy"), onPurchaseMod)
-    : equippedWeaponId.get() != curWeapon.get().name ? textButtonPrimary(loc("mod/enable"), equipCurWeapon)
-    : curWeapons.get().len() > 1 || !curWeapon.get().isDefault ? textButtonPrimary(loc("mod/disable"), unequipCurWeapon)
+    : curWeapon.get() != null && equippedWeaponId.get() != curWeapon.get().name
+      ? textButtonPrimary(loc("mod/enable"), equipCurWeapon)
+    : curWeapon.get() != null && (curWeapons.get().len() > 1 || !curWeapon.get().isDefault)
+      ? textButtonPrimary(loc("mod/disable"), unequipCurWeapon)
+    : curBelt.get() != null && equippedBeltId.get() != curBelt.get().id
+      ? textButtonPrimary(loc("mod/enable"), equipCurBelt)
     : null
 }
 
@@ -240,7 +429,7 @@ let unitModsWnd = {
   children = [
     @(){
       watch = curCampaign
-      children = mkGamercardUnitCampaign(closeUnitModsSlotsWnd, $"gamercard/levelUnitMod/desc/{curCampaign.value}")
+      children = mkGamercardUnitCampaign(closeWithWarning, $"gamercard/levelUnitMod/desc/{curCampaign.value}")
     }
     {
       size = [saSize[0] + saBorders[0], flex()]
@@ -252,9 +441,15 @@ let unitModsWnd = {
           flow = FLOW_VERTICAL
           halign = ALIGN_RIGHT
           children = [
-            slotPresetInfo
-            { size = flex() }
-            slotPresetButtons
+            {
+              size = flex()
+              padding = [hdpx(25), saBorders[0], hdpx(25), blocksGap]
+              children = [
+                overloadInfoBlock
+                slotPresetInfo
+                slotPresetButtons
+              ]
+            }
             mkHorizontalPannableArea(slotWeaponsBlock)
           ]
         }

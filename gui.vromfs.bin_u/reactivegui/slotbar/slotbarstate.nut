@@ -6,17 +6,27 @@ let { set_unit_to_slot, buy_unit_slot, clear_unit_slot } = require("%appGlobals/
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
+let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { PURCH_SRC_SLOTBAR, PURCH_TYPE_SLOT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { canPlayAnimUnitWithLink, animUnitWithLink, animNewUnitsAfterResearchTrigger } = require("%rGui/unitsTree/animState.nut")
 
 
 let animTimeout = 5.0 //in case we not receive event from anim
+let getCurrentSlotIdx = @(slots) slots.findindex(@(s) s?.name == hangarUnitName.get())
+
+let selectedSlotIdx = mkWatched(persist, "selectedSlotIdx", null)
+let maxSlotLevels = Computed(@() campConfigs.get()?.unitLevels[$"{curCampaign.get()}_slots"])
 
 let slots = Computed(function() {
   let res = clone curCampaignSlots.get()?.slots ?? []
   res.resize(curCampaignSlots.get()?.totalSlots ?? 0)
   return res
 })
+
+if(hangarUnitName.get())
+  selectedSlotIdx.set(getCurrentSlotIdx(slots.get()))
+hangarUnitName.subscribe(@(_) selectedSlotIdx.set(getCurrentSlotIdx(slots.get())))
+
 let slotsNeedAddAnim = mkWatched(persist, "slotsNeedAddAnim", {})
 let isAnimChangedSoon = mkWatched(persist, "isAnimChangedSoon", false)
 let isSlotsAnimActive = Computed(@() isAnimChangedSoon.get() && slotsNeedAddAnim.get().len() > 0)
@@ -100,4 +110,7 @@ return {
   getSlotAnimTrigger
   onFinishSlotAnim
   isSlotsAnimActive
+
+  selectedSlotIdx
+  maxSlotLevels
 }

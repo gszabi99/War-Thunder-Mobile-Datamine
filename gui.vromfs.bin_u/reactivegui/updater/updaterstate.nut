@@ -7,13 +7,14 @@ let { download_addons_in_background, stop_updater, is_updater_running, get_addon
   UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS, UPDATER_EVENT_ERROR,
   UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING, UPDATER_EVENT_INCOMPATIBLE_VERSION
 } = require("contentUpdater")
-let { get_local_custom_settings_blk } = require("blkGetters")
+let { get_local_custom_settings_blk, get_settings_blk } = require("blkGetters")
 let logA = log_with_prefix("[ADDONS] ")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInLoadingScreen, isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
-let { localizeAddonsLimited, initialAddons, latestDownloadAddonsByCamp, latestDownloadAddons, commonUhqAddons
+let { localizeAddonsLimited, initialAddons, latestDownloadAddonsByCamp, latestDownloadAddons,
+  commonUhqAddons, soloNewbieByCampaign
 } = require("%appGlobals/updater/addons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
@@ -69,7 +70,7 @@ let latestAddonsToDownload = Computed(@(prev) mkAddonsToDownload(
   hasAddons.value, prev))
 
 let uhqAddonsToDownload = Computed(function(prev) {
-  if (!needUhqTextures.value)
+  if (!needUhqTextures.value || (get_settings_blk()?.graphics.uhqForceDisabled ?? true))
     return isEqual(prev, {}) ? prev : {}
   let res = clone commonUhqAddons
   foreach(a, has in hasAddons.value)
@@ -97,7 +98,15 @@ let wantStartDownloadAddons = Computed(function(prev) {
   if (!isAnyCampaignSelected.value)
     return prevIfEqual(prev, {})
 
-  let campaign = curCampaign.value
+  let campaign = curCampaign.get()
+  if (campaign in soloNewbieByCampaign) {
+    foreach (a in soloNewbieByCampaign[campaign])
+      if (a in addonsToDownload.get())
+        res[a] <- true
+    if (res.len() != 0)
+      return prevIfEqual(prev, res)
+  }
+
   let curUnitAddons = isRandomBattleNewbie.value
     ? getCampaignPkgsForNewbieBattle(campaign, battleUnitsMaxMRank.get(), isRandomBattleNewbieSingle.value)
     : getCampaignPkgsForOnlineBattle(campaign, battleUnitsMaxMRank.get())
@@ -260,6 +269,8 @@ let addonsToAutoDownload = keepref(Computed(function() {
     return initialAddonsToDownload.value?.keys()
   let list = initialAddonsToDownload.value.__merge(latestAddonsToDownload.value, squadAddons.value)
   foreach(a in getCampaignPkgsForOnlineBattle(curCampaign.value, maxCurCampaignMRank.value))
+    list[a] <- true
+  foreach(a in soloNewbieByCampaign?[curCampaign.get()] ?? [])
     list[a] <- true
   return list.keys()
 }))

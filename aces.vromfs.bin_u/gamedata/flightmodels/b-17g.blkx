@@ -2585,16 +2585,42 @@
     }
   },
   "weapon_presets": {
-    "preset": {
-      "name": "b-17g_default",
-      "blk": "gameData/FlightModels/weaponPresets/b-17g_default.blk"
-    }
+    "preset": [
+      {
+        "name": "b-17g_default",
+        "blk": "gameData/FlightModels/weaponPresets/b-17g_default.blk"
+      },
+      {
+        "name": "b-17g_16x500lbs",
+        "blk": "gameData/FlightModels/weaponPresets/b-17g_16x500lbs.blk",
+        "reqModification": "b-17_sbc"
+      },
+      {
+        "name": "b-17g_8x1000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/b-17g_8x1000lbs.blk",
+        "reqModification": "b-17_mbc"
+      },
+      {
+        "name": "b-17g_2x1600lbs",
+        "blk": "gameData/FlightModels/weaponPresets/b-17g_2x1600lbs.blk",
+        "reqModification": "b-17_mbc"
+      },
+      {
+        "name": "b-17g_2x2000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/b-17g_2x2000lbs.blk",
+        "reqModification": "b-17_lbc"
+      },
+      {
+        "name": "b-17g_4x2000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/b-17_4x2000lb_anm65.blk",
+        "reqModification": [
+          "m10_pylon",
+          "b-17_lbc"
+        ]
+      }
+    ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1040.0,
-    "maxloadMassLeftConsoles": 570.0,
-    "maxloadMassRightConsoles": 570.0,
-    "maxDisbalance": 420.0,
     "HideNodes": {
       "node": [
         "pylon_1000lb_l",
@@ -2981,125 +3007,342 @@
       },
       {
         "index": 1,
-        "tier": 7,
+        "tier": 6,
         "order": 1,
+        "ShowNodes": {
+          "node": "pylon_2000lb_l"
+        },
         "WeaponPreset": {
-          "iconType": "bombs_large_group",
-          "name": "bombs",
-          "Weapon": [
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb1",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb2",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb3",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb4",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb5",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb6",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb7",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb8",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb9",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb10",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb11",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb12",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb13",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb14",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb15",
-              "bullets": 1
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
-              "separate": true,
-              "emitter": "bomb16",
-              "bullets": 1
-            }
-          ]
+          "iconType": "bomb_2000kg",
+          "name": "2000lb_left",
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",
+            "emitter": "bomb27",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "bomb_250kg_group",
+            "name": "250lb",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb1",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb2",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb3",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb4",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb5",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb6",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb7",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb8",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb9",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb10",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb11",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb12",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb13",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb14",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb15",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb16",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "bomb_500kg_group",
+            "name": "500lb",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "separate": true,
+                "emitter": "bomb1",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb1",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb2",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb3",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb4",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb5",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb6",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb7",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb8",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb9",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb10",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb11",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb12",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "bomb_1000kg_group",
+            "name": "1000lb",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb17",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb18",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb19",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb20",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb21",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb22",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "bomb_1500kg_group",
+            "name": "1600lb",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anmk33_box_ap.blk",
+                "emitter": "bomb17",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anmk33_box_ap.blk",
+                "emitter": "bomb7",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anmk33_box_ap.blk",
+                "emitter": "bomb18",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anmk33_box_ap.blk",
+                "emitter": "bomb8",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "bomb_2000kg_group",
+            "name": "2000lb_mid",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",
+                "emitter": "bomb25",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",
+                "emitter": "bomb26",
+                "bullets": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 8,
+        "order": 2,
+        "ShowNodes": {
+          "node": "pylon_2000lb_r"
+        },
+        "WeaponPreset": {
+          "iconType": "bomb_2000kg",
+          "name": "2000lb_right",
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",
+            "emitter": "bomb28",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
         }
       }
     ]

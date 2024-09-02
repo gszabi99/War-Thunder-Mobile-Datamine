@@ -102,6 +102,7 @@ function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo, title = 
   }
 
   openMsgBox({
+    uid = "purchase_msg_box"
     text = msgContent(text, priceComp),
     buttons = [
       { id = "cancel", cb = cancelFunc, isCancel = true }

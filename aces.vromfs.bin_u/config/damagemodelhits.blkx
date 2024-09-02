@@ -29,6 +29,12 @@
   ],
   "dmgUpdateLatency": 0.5,
   "dmgBgColor": [
+    0.65,
+    0.65,
+    0.65,
+    1.0
+  ],
+  "dmgBgColorShip": [
     1.0,
     1.0,
     1.0,

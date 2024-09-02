@@ -8,7 +8,7 @@ let { flagsWidth, bgLight, mkTreeNodesFlag,
 let { unitsTreeOpenRank, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { curSelectedUnit, curUnitName, availableUnitsList } = require("%rGui/unit/unitsWndState.nut")
-let { isSlotsAnimActive } = require("%rGui/slotBar/slotBarState.nut")
+let { isSlotsAnimActive, selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
 let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { doubleSidePannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
@@ -26,12 +26,12 @@ let { selectedCountry, mkVisibleNodes, mkFilteredNodes, mkCountryNodesCfg, mkCou
 let { slotBarUnitsTree, slotBarTreeHeight } = require("%rGui/slotBar/slotBar.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { rankBlockOffset } = require("unitsTreeConsts.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { animUnitWithLink, animNewUnitsAfterResearch, isBuyUnitWndOpened,
   animUnitAfterResearch, canPlayAnimUnitWithLink, hasAnimDarkScreen, resetAnim,
-  animBuyRequirementsUnitId, animBuyRequirements,
+  animBuyRequirementsUnitId, animBuyRequirements, animResearchRequirementsUnitId, animResearchRequirements
+  animResearchRequirementsAncestors
 } = require("animState.nut")
 let { attractColor } = require("treeAnimConsts.nut")
 
@@ -187,8 +187,9 @@ let mkLinks = @(linksCfg) function() {
   let own = myUnits.get()
   let status = unitsResearchStatus.get()
   let animUnlockUnit = animUnitWithLink.get()
-  let animLockUnit = animBuyRequirementsUnitId.get()
-  let animLockReq = animBuyRequirements.get()
+  let animLockUnit = animBuyRequirementsUnitId.get() ?? animResearchRequirementsUnitId.get()
+  let animLockReq = animBuyRequirements.get().len() > 0 ? animBuyRequirements.get() : animResearchRequirements.get()
+  let animLockAncs = animResearchRequirementsAncestors.get()
   let canPlayAnim = canPlayAnimUnitWithLink.get()
   let commands = []
   let animUnlockCommands = []
@@ -227,7 +228,7 @@ let mkLinks = @(linksCfg) function() {
     }
     else if (!hasAccess
         && (name == animLockUnit
-          || name in animLockReq
+          || (!animLockAncs?[name] && name in animLockReq)
           || (isList && name.contains(animLockUnit))
           || (isList && null != name.findvalue(@(n) n in animLockReq)
             && null != reqUnits.findvalue(@(n) n in animLockReq))))
@@ -238,7 +239,8 @@ let mkLinks = @(linksCfg) function() {
 
   return {
     watch = [unitsResearchStatus, myUnits, animUnitWithLink, canPlayAnimUnitWithLink,
-      animBuyRequirementsUnitId, animBuyRequirements
+      animBuyRequirementsUnitId, animBuyRequirements, animResearchRequirements, animResearchRequirementsUnitId,
+      animResearchRequirementsAncestors
     ]
     size = flex()
     rendObj = ROBJ_VECTOR_CANVAS
@@ -541,7 +543,12 @@ let mkUnitsTreeFull = @(countryNodesCfg) {
   minWidth = areaSize[0]
   minHeight = areaSize[1]
   behavior = Behaviors.Button
-  onClick = @() isLvlUpAnimated.get() ? null : curSelectedUnit.set(null)
+  function onClick() {
+    if (!isLvlUpAnimated.get()) {
+      curSelectedUnit.set(null)
+      selectedSlotIdx.set(null)
+    }
+  }
   children = [
     {
       size = [flex(), nodeBlockSize[1]]
@@ -559,6 +566,13 @@ let mkUnitsTreeFull = @(countryNodesCfg) {
     }
   ]
 }
+
+let onAnimChange = @(unitId, nodes) @(v) scrollToUnitGroup(
+  v.keys()
+    .filter(@(name) name not in myUnits.get())
+    .append(unitId),
+  nodes
+)
 
 let pannableArea = doubleSidePannableAreaCtor(
   areaSize[0],
@@ -590,11 +604,8 @@ let function mkUnitsTreeNodesContent() {
     scrollToUnit(v, countryNodesCfg.get().nodes)
     deferOnce(@() unitToScroll.set(null))
   }
-  let onAnimBuyChange = @(v) scrollToUnitGroup(
-    v.keys()
-      .filter(@(name) name not in myUnits.get())
-      .append(animBuyRequirementsUnitId.get()),
-    countryNodesCfg.get().nodes)
+  let onAnimBuyChange = onAnimChange(animBuyRequirementsUnitId.get(), countryNodesCfg.get().nodes)
+  let onAnimResearchChange = onAnimChange(animResearchRequirementsUnitId.get(), countryNodesCfg.get().nodes)
   return [
     {
       key = contentKey
@@ -605,6 +616,7 @@ let function mkUnitsTreeNodesContent() {
       function onAttach() {
         unitToScroll.subscribe(onUnitToScrollChange)
         animBuyRequirements.subscribe(onAnimBuyChange)
+        animResearchRequirements.subscribe(onAnimResearchChange)
         if (unitToScroll.get() == null)
           selectCountryByCurResearch()
         deferOnce(@() unitToScroll.get() != null ? onUnitToScrollChange(unitToScroll.get())
@@ -614,6 +626,7 @@ let function mkUnitsTreeNodesContent() {
       function onDetach() {
         unitToScroll.unsubscribe(onUnitToScrollChange)
         animBuyRequirements.unsubscribe(onAnimBuyChange)
+        animResearchRequirements.unsubscribe(onAnimResearchChange)
         resetAnim()
       }
       children = [
@@ -662,7 +675,6 @@ let function mkUnitsTreeNodesContent() {
                   rendObj = ROBJ_TEXT
                   text = utf8ToUpper(loc("unitsTree/chooseNextUnit"))
                 }.__update(fontSmall)
-                animations = wndSwitchAnim
               }
             ]
             animations = hasAnimDarkScreen.get() ? darkScreenAnim : null
@@ -687,4 +699,5 @@ let function mkUnitsTreeNodesContent() {
 
 return {
   mkUnitsTreeNodesContent
+  mkHasDarkScreen
 }

@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
+let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { playSound } = require("sound_wt")
 let { registerScene } = require("%rGui/navState.nut")
-let { GPT_SLOTS, previewType, previewGoods, closeGoodsPreview, openPreviewCount
+let { GPT_SLOTS, previewType, previewGoods, closeGoodsPreview, openPreviewCount, GPT_BLUEPRINT, openedGoodsId
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -20,6 +20,7 @@ let { PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, PURCH_TYPE_GOODS_LIMIT, PURCH_TYPE_
 } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -29,22 +30,31 @@ let { spinner } = require("%rGui/components/spinner.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { textButtonPricePurchase, buttonsHGap, buttonStyles } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, PRIMARY } = buttonStyles
-let { getSlotsPreviewBg } = require("%appGlobals/config/goodsPresentation.nut")
+let { getSlotsPreviewBg, getSlotsTexts } = require("%appGlobals/config/goodsPresentation.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, getRewardPlateSize
+let { REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, getRewardPlateSize, progressBarHeight
 } = require("%rGui/rewards/rewardStyles.nut")
-let { mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
+let { mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts, mkRewardSearchPlate,
+  mkRewardDisabledBkg, mkRewardReceivedMark
+} = require("%rGui/rewards/rewardPlateComp.nut")
 let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
+let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
+let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
+let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
+let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
+let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { mkUnitFlag } = require("%rGui/unit/components/unitPlateComp.nut")
 
 
 let MAX_BIG_SLOTS = 8
 let maxWndWidth = min(saSize[0], hdpxi(2200))
 let blockGap = buttonsHGap
 
-let selBorderWidth = hdpx(3)
 let selBorderColor = 0xFFFFFFFF
 let hoverBorderColor = 0x40404040
+let borderHeight = hdpx(8)
+
 
 let isAttached = Watched(false)
 let openCount = Computed(@() previewType.get() == GPT_SLOTS ? openPreviewCount.get() : 0)
@@ -73,13 +83,15 @@ registerHandler("autoGenerateGoodsSlots",
     resetTimeout(AUTO_REQUEST_AFTER_ERROR_TIME, resetError)
   })
 
-needFreeRefreshSlots.subscribe(function(v) {
-  if (!v)
+function freeRefreshSlots() {
+  if (!needFreeRefreshSlots.get())
     return
   let { id = null } = previewGoods.get()
   if (id != null)
     gen_goods_slots(id, "", 0, { id = "autoGenerateGoodsSlots", goodsId = id })
-})
+}
+
+needFreeRefreshSlots.subscribe(@(_) deferOnce(freeRefreshSlots))
 
 rewardSlots.subscribe(@(_) selIndex.set(-1))
 
@@ -111,44 +123,121 @@ let headerPanel = {
   children = [
     backButton(closeGoodsPreview)
     @() {
-      watch = previewGoods
-      rendObj = ROBJ_TEXT
-      color = 0xFFFFFFFF
-      text = previewGoods.get() == null ? null
-        : getGoodsLocName(previewGoods.get())
-    }.__update(fontBig)
+      watch = [previewGoods, openedGoodsId]
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(30)
+      valign = ALIGN_CENTER
+      children = [
+        {
+          rendObj = ROBJ_TEXT
+          color = 0xFFFFFFFF
+          text = previewGoods.get() == null ? null
+            : getGoodsLocName(previewGoods.get())
+        }.__update(fontBig)
+        infoTooltipButton(@() loc(getSlotsTexts(openedGoodsId.get()).description), { halign = ALIGN_LEFT },
+          {
+            size = [hdpx(52), hdpx(52)]
+            fillColor = 0x80000000
+            children = {
+              rendObj = ROBJ_TEXT
+              text = "i"
+              halign = ALIGN_CENTER
+            }.__update(fontTinyAccented)
+          })
+      ]
+    }
     { size = flex() }
     balanceButtons
   ]
 }
 
-let selBorder = @(size, color) {
-  size = size.map(@(v) v + 2 * selBorderWidth)
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  rendObj = ROBJ_BOX
-  fillColor = 0
-  borderColor = color
-  borderWidth = selBorderWidth
+let highlight = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
+  mkGradientCtorRadial(0xFFFFFFFF, 0, 25, 22, 31,-22))
+
+let mkHightlightPlate = @(isSelected) {
+  size = flex()
+  children = [
+    {
+      size = flex()
+      rendObj = ROBJ_IMAGE
+      flipY = true
+      image = highlight()
+      animations = revealAnimation(0)
+      transform = { rotate = 180 }
+      opacity = 0.5
+    }
+    {
+      size = [flex(), borderHeight]
+      pos = [0, -borderHeight]
+      rendObj = ROBJ_BOX
+      hplace = ALIGN_TOP
+      fillColor = isSelected ? selBorderColor : hoverBorderColor
+    }
+    !isSelected ? null
+      : {
+          pos = [0, -progressBarHeight]
+          vplace = ALIGN_BOTTOM
+          hplace = ALIGN_LEFT
+          padding = hdpx(5)
+          children = mkRewardSearchPlate
+        }
+  ]
 }
 
-function mkSlot(slotIdx, reward, style) {
-  let rewardComp = mkRewardPlate(reward, style)
-  let size = getRewardPlateSize(reward.slots, style)
+function mkTimeLeftInfo(ovr = {}) {
+  let text = Computed(@() secondsToHoursLoc(untilNextDaySec(serverTime.get())))
+  return @() {
+    watch = openedGoodsId
+    halign = ALIGN_RIGHT
+    flow = FLOW_VERTICAL
+    children = [
+      txt(loc(getSlotsTexts(openedGoodsId.get()).updateIn))
+      @() txt(text.get(), { watch = text })
+    ]
+  }.__update(ovr)
+}
+
+function mkDisableBkgWithTooltip(isPurchased, rStyle) {
+  let stateFlags = Watched(0)
+  let key = {}
+
+  return {
+    key
+    size = flex()
+    behavior = Behaviors.Button
+    onDetach = tooltipDetach(stateFlags)
+    onElemState = withTooltip(stateFlags, key, @() { content = mkTimeLeftInfo({ halign = ALIGN_CENTER }) })
+    children = isPurchased ? mkRewardReceivedMark(rStyle) : mkRewardDisabledBkg
+  }
+}
+
+function mkSlot(slotIdx, reward, rStyle) {
+  let size = getRewardPlateSize(reward.slots, rStyle)
   let stateFlags = Watched(0)
   let isSelected = Computed(@() selIndex.get() == slotIdx)
+  let unit = Computed(@() serverConfigs.value?.allUnits?[reward.id])
+
   return @() {
-    watch = [isSelected, stateFlags]
+    watch = [isSelected, stateFlags, rewardSlots, unit]
     size
     behavior = Behaviors.Button
-    onElemState = @(v) stateFlags(v)
-    onClick = @() selIndex.set(slotIdx)
-    sound = { click  = "click" }
+    onElemState = @(v) rewardSlots.get()?.isPurchased ? null : stateFlags(v)
+    onClick = @() rewardSlots.get()?.isPurchased
+        ? null
+      : isSelected.get()
+        ? unitDetailsWnd({ name = reward.id })
+      : selIndex.set(slotIdx)
+    sound = rewardSlots.get()?.isPurchased ? {} : { click  = "click" }
 
     children = [
-      rewardComp
+      mkRewardPlateBg(reward, rStyle)
+      mkRewardPlateImage(reward, rStyle)
       !isSelected.get() && !(stateFlags.get() & S_HOVER) ? null
-        : selBorder(size, isSelected.get() ? selBorderColor : hoverBorderColor)
+        : mkHightlightPlate(isSelected.get())
+      mkRewardPlateTexts(reward, rStyle)
+      reward.rType == GPT_BLUEPRINT ? mkUnitFlag(unit.get(), rStyle) : null
+      !rewardSlots.get()?.isPurchased ? null
+        : mkDisableBkgWithTooltip(rewardSlots.get()?.purchasedIdx == slotIdx, rStyle)
     ]
     transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14 }]
@@ -156,12 +245,14 @@ function mkSlot(slotIdx, reward, style) {
 }
 
 function fillRewardsByRows(goods, slotsInRowMax, style) {
+  let res = []
   let rewards = goods.map(@(g) getRewardsViewInfo(g)[0])
-  let totalSlots = rewards.reduce(@(res, r) res + r.slots, 0)
+  let totalSlots = rewards.reduce(@(tsRes, r) tsRes + r.slots, 0)
   let rowsCount = totalSlots / slotsInRowMax + ((totalSlots % slotsInRowMax) ? 1 : 0)
+  if (rowsCount == 0)
+    return res
   let slotsInRowMin = totalSlots / rowsCount + ((totalSlots % rowsCount) ? 1 : 0)
 
-  let res = []
   local curRowSlots = slotsInRowMax
   foreach(slotIdx, r in rewards) {
     if (curRowSlots >= slotsInRowMin || curRowSlots + r.slots > slotsInRowMax) {
@@ -172,34 +263,6 @@ function fillRewardsByRows(goods, slotsInRowMax, style) {
     res.top().append(mkSlot(slotIdx, r, style))
   }
   return res
-}
-
-function mkSlotsList() {
-  let isActual = Computed(@() shopGenSlotInProgress.get() != previewGoods.get()?.id
-    && getDay(rewardSlots.get()?.time ?? 0) == serverTimeDay.get())
-  return function() {
-    let { goods = [] } = rewardSlots.get()
-    let style = goods.len() > MAX_BIG_SLOTS ? REWARD_STYLE_SMALL : REWARD_STYLE_MEDIUM
-    let { boxSize, boxGap } = style
-    let slotsInRow = (maxWndWidth + boxGap) / (boxSize + boxGap)
-    let rows = !isActual.get() || shopGenSlotInProgress.get() ? []
-      : fillRewardsByRows(goods, slotsInRow, style)
-
-    return {
-      watch = [rewardSlots, isActual]
-      size = [SIZE_TO_CONTENT, max(2, rows.len()) * (boxSize + boxGap) - boxGap]
-      flow = FLOW_VERTICAL
-      valign = ALIGN_CENTER
-      halign = ALIGN_CENTER
-      gap = boxGap
-      children = shopGenSlotInProgress.get() ? spinner
-        : rows.map(@(children) {
-            flow = FLOW_HORIZONTAL
-            gap = boxGap
-            children
-          })
-    }
-  }
 }
 
 function purchaseSelectedSlot(price, currencyId) {
@@ -237,18 +300,6 @@ function rerollSlots(price, currencyId) {
     return
   gen_goods_slots(id, currencyId, price)
   playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money")
-}
-
-function mkTimeLeftInfo() {
-  let text = Computed(@() secondsToHoursLoc(untilNextDaySec(serverTime.get())))
-  return {
-    halign = ALIGN_RIGHT
-    flow = FLOW_VERTICAL
-    children = [
-      txt(loc("shop/updateIn"))
-      @() txt(text.get(), { watch = text })
-    ]
-  }
 }
 
 function purchButton(text, priceCfg, purchAction, purchCount = 0, styleOvr = {}) {
@@ -295,17 +346,44 @@ function buttons() {
   })
 }
 
-let content = @() {
-  size = flex()
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  flow = FLOW_VERTICAL
-  gap = blockGap
-  children = [
-    txt(loc("shop/pickOneItem"))
-    mkSlotsList()
-    buttons
-  ]
+function content() {
+  let isActual = Computed(@() shopGenSlotInProgress.get() != previewGoods.get()?.id
+    && getDay(rewardSlots.get()?.time ?? 0) == serverTimeDay.get())
+  return function() {
+    let { goods = [] } = rewardSlots.get()
+    let style = goods.len() > MAX_BIG_SLOTS ? REWARD_STYLE_SMALL : REWARD_STYLE_MEDIUM
+    let { boxSize, boxGap } = style
+    let slotsInRow = (maxWndWidth + boxGap) / (boxSize + boxGap)
+    let rows = !isActual.get() || shopGenSlotInProgress.get() ? []
+      : fillRewardsByRows(goods, slotsInRow, style)
+
+    return {
+      watch = [rewardSlots, isActual, shopGenSlotInProgress, openedGoodsId]
+      size = flex()
+      valign = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      flow = FLOW_VERTICAL
+      gap = blockGap
+      children = [
+        {
+          size = [SIZE_TO_CONTENT, max(2, rows.len()) * (boxSize + boxGap) - boxGap]
+          flow = FLOW_VERTICAL
+          valign = ALIGN_CENTER
+          halign = ALIGN_CENTER
+          gap = boxGap
+          children = shopGenSlotInProgress.get() ? spinner
+            : rows.map(@(children) {
+                flow = FLOW_HORIZONTAL
+                gap = boxGap
+                children
+              })
+        }
+        rewardSlots.get()?.isPurchased ? null
+          : txt(rows.len() > 0 ? utf8ToUpper(loc("shop/pickOneItem")) : utf8ToUpper(loc(getSlotsTexts(openedGoodsId.get()).missing)))
+        rows.len() > 0 ? buttons : null
+      ]
+    }
+  }
 }
 
 let previewWnd = bgShaded.__merge({
@@ -328,7 +406,7 @@ let previewWnd = bgShaded.__merge({
       flow = FLOW_VERTICAL
       children = [
         headerPanel
-        content
+        content()
       ]
     }
   ]

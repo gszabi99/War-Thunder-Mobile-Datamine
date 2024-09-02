@@ -1612,10 +1612,6 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1040.0,
-    "maxloadMassLeftConsoles": 570.0,
-    "maxloadMassRightConsoles": 570.0,
-    "maxDisbalance": 420.0,
     "HideNodes": {
       "node": [
         "dgp_1_l",
@@ -1693,7 +1689,7 @@
         "order": 1,
         "WeaponPreset": [
           {
-            "iconType": "bombs_small",
+            "iconType": "bomb_100kg",
             "name": "100lb",
             "reqModification": "etc250_2_mod",
             "Weapon": {
@@ -1706,7 +1702,7 @@
             }
           },
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_250kg",
             "name": "250lb",
             "Weapon": {
               "trigger": "bombs",
@@ -1718,7 +1714,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bomb_500kg",
             "name": "500lb",
             "Weapon": {
               "trigger": "bombs",
@@ -1736,7 +1732,7 @@
         "order": 2,
         "WeaponPreset": [
           {
-            "iconType": "bombs_small",
+            "iconType": "bomb_100kg",
             "name": "100lb",
             "Weapon": {
               "trigger": "bombs",
@@ -1748,7 +1744,7 @@
             }
           },
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_250kg",
             "name": "250lb",
             "Weapon": {
               "trigger": "bombs",
@@ -1760,7 +1756,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bomb_500kg",
             "name": "500lb",
             "Weapon": {
               "trigger": "bombs",

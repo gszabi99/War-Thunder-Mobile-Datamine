@@ -52,7 +52,10 @@
     "explodeOnRendinst": true,
     "shellAnimation": "video/shells_animations/he_vt.ivf",
     "bulletName": "100mm_zs_58r",
-    "selfDestructionFx": "explosion_air_selfexplosion_big",
+    "selfDestructionFx": [
+      "explosion_air_selfexplosion_big",
+      "explosion_air_selfexplosion_med"
+    ],
     "hasProximityFuse": true,
     "dynamicKv": true,
     "relativeVelArmorShift": [

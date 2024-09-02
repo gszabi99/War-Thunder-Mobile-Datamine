@@ -297,6 +297,7 @@ updateBailoutText()
 eventbus_subscribe("hint:bailout:startBailout", function(data) {
   bailoutTimerStep = 0
   bailoutTimer.set(data?.lifeTime ?? 0)
+  addCommonHintWithTtl(loc("hints/can_leave_in_menu"), 5)
 })
 
 eventbus_subscribe("hint:bailout:notBailouts", function(_) {
@@ -331,6 +332,33 @@ eventbus_subscribe("hint:air_critical_speed", function(_) {
 eventbus_subscribe("hint:aim_for_lead_indicator", function(_) {
   addCommonHintWithTtl(loc("hints/aim_for_lead_indicator"), 10)
 })
+
+eventbus_subscribe("CaptureBlockerActive", function(_) {
+  addCommonHintWithTtl(loc("hints/capture_blocker_active"), 5)
+})
+
+eventbus_subscribe("CaptureInterrupted", function(_) {
+  addCommonHintWithTtl(loc("hints/capture_interrupted"), 5)
+})
+
+eventbus_subscribe("hint:enemy_too_far", function(_) {
+  addCommonHintWithTtl(loc("hints/enemy_too_far"), 3)
+})
+
+eventbus_subscribe("hint:need_lock_target", function(_) {
+  if (incHintCounter("need_lock_target", 5)) {
+    addCommonHintWithTtl(loc("hints/need_lock_target"), 5)
+    anim_start("hint_need_lock_target")
+  }
+})
+
+const CAPTURED_BY_ENEMY = "can_use_air_support"
+
+eventbus_subscribe("CapturedByEnemy:show",
+  @(_) addCommonHintWithTtl(loc("hints/ship_is_captured_by_enemy"), -1, CAPTURED_BY_ENEMY))
+
+eventbus_subscribe("CapturedByEnemy:hide",
+  @(_) removeEvent({ id = CAPTURED_BY_ENEMY }))
 
 register_command(function() {
     let sBlk = get_local_custom_settings_blk()

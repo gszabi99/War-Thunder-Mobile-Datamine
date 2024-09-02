@@ -90,9 +90,11 @@ def operator ?? ( a : json::JsonValue?; val:string ) : string
     return a != null && a.value is _string ? a.value as _string : val
 
 def operator ?. value ( a : JsonValue? == const ) : JsValue const?
+    //! Returns the value of the JSON object, if it exists.
     return a . ?. value
 
 def operator ?. value ( var a : JsonValue? == const ) : JsValue?
+    //! Returns the value of the JSON object, if it exists.
     return a . ?. value
 
 [macro_function]
@@ -340,12 +342,12 @@ def from_JV ( var v:JsonValue explicit?; anything : auto(TT) )
                 move_to_ref ( ret[i], _::from_JV(arr[i], decltype_noref(anything[0])) )
 			return <- ret
 	static_elif typeinfo(is_struct anything) || typeinfo(is_tuple anything)
-		var ret : TT
-	    if v==null || !(v.value is _object)
-			return <- ret
-		apply(ret) <| $ ( name:string; var field )
+        var ret <- [[TT -const()]]
+        if v==null || !(v.value is _object)
+            return <- ret
+        apply(ret) <| $ ( name:string; var field )
             move_to_ref ( field, _::from_JV((v as _object)[name], decltype_noref(field)) )
-		return <- ret
+        return <- ret
     static_elif typeinfo(is_array anything)
         var ret : TT
 		if v==null || !(v.value is _array)

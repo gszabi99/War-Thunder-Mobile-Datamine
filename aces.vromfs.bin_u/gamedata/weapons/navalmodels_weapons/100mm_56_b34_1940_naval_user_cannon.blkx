@@ -59,6 +59,7 @@
     "explodeTreshold": 0.1,
     "fuseDelayDist": 10.0,
     "fuseOnWater": true,
+    "selfDestructionFx": "explosion_air_selfexplosion_med",
     "explosionEffect": "hit_81_105mm_metal_he",
     "groundCollisionEffect": "hit_81_105mm_dirt_he",
     "ricochetEffect": "hit_81_105mm_metal_ap",
@@ -261,6 +262,7 @@
       "explodeTreshold": 0.1,
       "fuseDelayDist": 10.0,
       "fuseOnWater": true,
+      "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_81_105mm_metal_he",
       "groundCollisionEffect": "hit_81_105mm_dirt_he",
       "ricochetEffect": "hit_81_105mm_metal_ap",
@@ -464,6 +466,7 @@
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.0,
       "fuseOnWater": true,
+      "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_81_105mm_metal_he",
       "groundCollisionEffect": "hit_81_105mm_dirt_he",
       "ricochetEffect": "hit_81_105mm_metal_ap",
@@ -654,7 +657,10 @@
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_vt.ivf",
       "bulletName": "100mm_zs56r_vt",
-      "selfDestructionFx": "explosion_air_selfexplosion_big",
+      "selfDestructionFx": [
+        "explosion_air_selfexplosion_big",
+        "explosion_air_selfexplosion_med"
+      ],
       "hasProximityFuse": true,
       "dynamicKv": true,
       "relativeVelArmorShift": [

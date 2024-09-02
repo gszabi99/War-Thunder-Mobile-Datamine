@@ -179,3 +179,7 @@ struct EventOnPlayerBailout
   userId : uint64
   unitId : int
   isReadyToDie : bool
+
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+struct EventZoneDamageMessage
+  score : int

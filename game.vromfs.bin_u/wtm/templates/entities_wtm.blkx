@@ -2173,8 +2173,8 @@
       },
       {
         "_tags": "server",
-        "damage_area__offenderId": 0,
-        "damage_area__nextUpdateTime": 0.0
+        "damage_area__nextUpdateTime": 0.0,
+        "damage_area__offender": {}
       },
       {
         "_tags": "gameClient",
@@ -3113,6 +3113,7 @@
   "damage_log": {
     "nextStatsSyncTime": 0.0,
     "maxMrank": 0,
+    "curCampaign": "",
     "damageLog:array": {},
     "captureLog:array": {},
     "repairLog:object": {},

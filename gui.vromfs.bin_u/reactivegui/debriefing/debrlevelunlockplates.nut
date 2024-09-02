@@ -6,7 +6,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkUnitSlotLockedLine,
   platoonPlatesGap, unitPlateRatio, mkUnitRank
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkModImage, bgShade } = require("%rGui/unitMods/modsComps.nut")
-let { getSpCostText } = require("%rGui/unitAttr/unitAttrState.nut")
+let { getSpCostText } = require("%rGui/attributes/attrState.nut")
 
 let levelUnlockPlateTime = 0.5
 let levelUnlockPlatesTotalTimeMax = 1.0

@@ -25,7 +25,7 @@ let { getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentatio
 let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
@@ -807,7 +807,7 @@ function onCloseRequest() {
   let unitId = stackData.value?.unitPlates.findvalue(@(_) true)?.id
   let unit = myUnits.value?[unitId]
   if (unit != null && canResetToMainScene()) {
-    let errString = setCurrentUnit(unitId)
+    let errString = unitId == curUnit.get()?.name ? "" : setCurrentUnit(unitId)
     if (errString == "") {
       tryResetToMainScene()
       setHangarUnit(unitId)

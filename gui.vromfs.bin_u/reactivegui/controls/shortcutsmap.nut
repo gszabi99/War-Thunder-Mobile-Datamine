@@ -8,6 +8,7 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_CONTINUE = "J:RT | Space"
   ID_MPSTATSCREEN =  "J:Back | Tab"
   ID_ZOOM_TOGGLE = "J:RS | L.Shift"
+  ID_SHOW_HERO_MODULES = "J:X | 6"
 
   ID_CAMERA_NEUTRAL =  "J:LS | N" // Tank and Air
 
@@ -25,7 +26,6 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_SMOKE_SCREEN = "J:D.Right | 4"
   ID_ACTION_BAR_ITEM_11 = "J:D.Left | 5" //toolkit
   ID_ACTION_BAR_ITEM_6 = "J:D.Up | 7" //extinguisher
-  ID_SHOW_HERO_MODULES = "J:X | 6"
 
   ID_ACTION_BAR_ITEM_10 = "Q" //winch
   ID_NEXT_BULLET_TYPE = "J:Y | E"
@@ -81,8 +81,8 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_FIRE_CANNONS = "J:RT | Space"
   ID_FIRE_MGUNS = "J:RB | L.Ctrl"
   ID_LOCK_TARGET = "J:LB | L.Alt"
-  ID_ROCKETS = "J:X | X"
-  ID_WTM_AIRCRAFT_LAUNCH_TORPEDOES = "J:Y | C"
+  ID_ROCKETS = "J:A | X"
+  ID_WTM_AIRCRAFT_TORPEDOES = "J:Y | C"
 }
 
 let gamepadAxes = {

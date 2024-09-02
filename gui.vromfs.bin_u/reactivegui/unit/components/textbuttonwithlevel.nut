@@ -7,7 +7,7 @@ let { mkUnitLevel } = require("%rGui/unit/components/unitLevelComp.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 
 let textBtnComp = @(text){
-  size = [defButtonMinWidth - 3 * paddingX, SIZE_TO_CONTENT]
+  maxWidth = defButtonMinWidth - 2 * paddingX
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   vplace = ALIGN_CENTER

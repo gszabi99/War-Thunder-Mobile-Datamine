@@ -1522,10 +1522,6 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1040.0,
-    "maxloadMassLeftConsoles": 570.0,
-    "maxloadMassRightConsoles": 570.0,
-    "maxDisbalance": 420.0,
     "HideNodes": {
       "node": [
         "hatch1_open",
@@ -1713,7 +1709,7 @@
         "order": 1,
         "WeaponPreset": [
           {
-            "iconType": "bombs_midlle_group",
+            "iconType": "bomb_250kg_group",
             "name": "250lb",
             "Weapon": [
               {
@@ -1826,7 +1822,7 @@
             }
           },
           {
-            "iconType": "air_torpedo",
+            "iconType": "torpedo_no_case",
             "name": "torpedo",
             "reqModification": "tbf_itc",
             "Weapon": {
@@ -1854,7 +1850,7 @@
             }
           },
           {
-            "iconType": "air_torpedo",
+            "iconType": "torpedo",
             "name": "torpedo_case",
             "reqModification": "improved_torpedo_mod",
             "Weapon": {
@@ -1882,7 +1878,7 @@
             }
           },
           {
-            "iconType": "bombs_large_group",
+            "iconType": "bomb_500kg_group",
             "name": "500lb",
             "reqModification": "btd_sbc",
             "Weapon": [
@@ -1992,7 +1988,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bomb_1000kg",
             "name": "1000lb",
             "reqModification": "btd_mbc",
             "Weapon": {
@@ -2095,7 +2091,7 @@
             }
           },
           {
-            "iconType": "air_mines",
+            "iconType": "mine",
             "name": "mine",
             "reqModification": "us_mine_mk13_mod0",
             "Weapon": {

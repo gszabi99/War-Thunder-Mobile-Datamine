@@ -7,10 +7,16 @@ function genBotCommonStats(name, unitName, unitCfg, defLevel) {
   let avatars = serverConfigs.value?.allDecorators.filter(@(dec) dec.dType == "avatar")
   return {
     level = unitCfg?.rank ?? defLevel
-    unit = {
-      level = abs((playerHash + unitHash) % 25) + 1
-      unitClass = unitCfg?.unitClass ?? ""
-      mRank = unitCfg?.mRank
+    mainUnitName = unitName
+    units = {
+      [unitName] = {
+        level = abs((playerHash + unitHash) % 25) + 1
+        unitClass = unitCfg?.unitClass ?? ""
+        country = unitCfg?.country ?? ""
+        mRank = unitCfg?.mRank
+        isCollectible = unitCfg?.isCollectible ?? false
+        isPremium = unitCfg?.isPremium ?? false
+      }
     }
     decorators = {
       avatar = avatars?.keys()[(playerHash) % (avatars?.len() ?? 1)]

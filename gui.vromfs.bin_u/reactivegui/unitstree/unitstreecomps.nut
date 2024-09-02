@@ -29,6 +29,7 @@ let btnSize = [SIZE_TO_CONTENT, hdpxi(70)]
 let btnStyle = { ovr = { size = btnSize } }
 let flagTreeOffset = hdpxi(60)
 let gamercardOverlap = hdpx(55)
+let infoPanelWidth = hdpx(650)
 
 let aTimeBarFill = 0.8
 
@@ -218,4 +219,5 @@ return {
   platesGap
   unitPlateSize
   blockSize
+  infoPanelWidth
 }

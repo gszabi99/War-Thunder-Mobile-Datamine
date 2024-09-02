@@ -13,7 +13,7 @@ let { textButtonPrimary, textButtonBattle, buttonsHGap } = require("%rGui/compon
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { commonGlare } = require("%rGui/components/glare.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { openUnitAttrWnd } = require("%rGui/unitAttr/unitAttrState.nut")
+let { openUnitAttrWnd } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
 let { debriefingData, curDebrTabId, nextDebrTabId, isDebriefingAnimFinished, isNoExtraScenesAfterDebriefing,
   DEBR_TAB_SCORES, DEBR_TAB_CAMPAIGN, debrTabsShowTime, stopDebriefingAnimation,
   needShowBtns_Campaign, needShowBtns_Unit, needShowBtns_Final,

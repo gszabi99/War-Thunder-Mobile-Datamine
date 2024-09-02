@@ -15,11 +15,9 @@ let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut"
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
-let { register_command } = require("console")
 
 const STATS_UPDATE_TIMEOUT = 1.0
 
-let showAircraftName = Watched(false)
 let isAttached = Watched(false)
 let playersByTeamBase = Watched([])
 let missionName = Watched("")
@@ -28,16 +26,17 @@ let playersByTeam = Computed(function() {
     .map(@(list) sortAndFillPlayerPlaces(battleCampaign.value,
       list.map(function(p) {
         // Important: Mplayer "name" value is already prepared by getPlayerName() and frameNick(), see registerMplayerCallbacks.
-        let { id, userId, name, isBot, aircraftName = "" } = p
+        let { id, userId, name, isBot, aircraftName, ownedUnitName = "" } = p
+        let unitName = ownedUnitName != "" ? ownedUnitName : aircraftName
         let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[id]
-        let { level = 1, starLevel = 0, hasPremium = false, decorators = null, unit = {} } = !isBot
+        let { level = 1, starLevel = 0, hasPremium = false, decorators = null, units = {} } = !isBot
           ? playersCommonStats.value?[userId.tointeger()]
-          : genBotCommonStats(name, aircraftName, allUnitsCfgFlat.value?[aircraftName] ?? {}, playerLevelInfo.value.level)
-        let { unitClass = "", platoonUnits = {} } = unit
-        let mainUnitName = ((aircraftName in platoonUnits) || showAircraftName.value)
-          ? aircraftName
-          : (unit?.name ?? aircraftName)
-        let mRank = unit?.mRank
+          : genBotCommonStats(name, unitName, allUnitsCfgFlat.get()?[unitName] ?? {}, playerLevelInfo.get().level)
+        let unit = units?[unitName]
+        let { unitClass = "", mRank = null } = unit
+        let isUnitCollectible = unit?.isCollectible ?? false
+        let isUnitPremium = unit?.isPremium ?? false
+        let isUnitUpgraded = unit?.isUpgraded ?? false
         return p.__merge({
           damage
           score
@@ -45,9 +44,12 @@ let playersByTeam = Computed(function() {
           starLevel
           hasPremium
           decorators
+          unitName
           unitClass
-          mainUnitName
           mRank
+          isUnitCollectible
+          isUnitPremium
+          isUnitUpgraded
           userId
         })
       })))
@@ -97,8 +99,6 @@ let wndTitle = @() {
 }.__update(fontMedium)
 
 let cornerBackBtn = backButton(onQuit)
-
-register_command(@() showAircraftName(!showAircraftName.value), "debug.showAircraftName")
 
 return bgShaded.__merge({
   key = {}

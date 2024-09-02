@@ -237,7 +237,7 @@
   "friendlyFireImmortalOnLandTime": 30.0,
   "readyToDieRepairTimeMult": 3.0,
   "bailoutEnabled": false,
-  "bailoutReadyToDieTime": 15.0,
+  "bailoutReadyToDieTime": 7.0,
   "bailoutHoldTime": 3.0,
   "bailoutHoldTimeAtExitZone": 1.5,
   "airfieldRepairDamageLimit": 0.5,
@@ -353,6 +353,8 @@
   "useMedicalKitWithToolkit": true,
   "disableDamageForBombOwner": true,
   "maxTimeWaitFirstSpawn": 60.0,
+  "debugRiTexture": "detail_concrete_tex_d",
+  "debugRiTextureSize": 8,
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [
@@ -9244,6 +9246,12 @@
     "resqueTime": 0.3,
     "burnArmorThreshold": 50.0,
     "burnRadiusMultHV": 1.7
+  },
+  "diagnoseInvalidRendinstDestruction": {
+    "name": [
+      "asian_pagoda_foundation_a",
+      "asian_pagoda_foundation_b"
+    ]
   },
   "gameLimits": {
     "maxAircrafts": 1024,

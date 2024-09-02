@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
 let { doesLocTextExist } = require("dagor.localize")
+let { roundToDigits } = require("%sqstd/math.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { campaignPresentations } = require("%appGlobals/config/campaignPresentation.nut")
@@ -19,12 +20,14 @@ let iconInlineGap = round(iconInlineSize * 0.4).tointeger()
 let endHeaderLineAnim = 1.0
 let offsetTime = 0.1
 
+let KG_TO_TONS = 0.001
+
 let activeCounters = Watched({})
 let isCounterActive = keepref(Computed(@() activeCounters.get().len() > 0))
 
 let placeGlowColor = [0x40bbbbbb, 0x40ffdb7b, 0x407be1ff, 0x40ffb67b]
 
-function playerPlaceCtor(_uid, place, startTime) {
+function playerPlaceCtor(_uid, place, _printVal, startTime) {
   return {
     size = [flex(), playerPlaceIconSize]
     halign = ALIGN_RIGHT
@@ -63,7 +66,9 @@ function playerPlaceCtor(_uid, place, startTime) {
 let labelLbCommon = colon.concat(loc("lb/bestBattles"), loc("lb/overall_rating"))
 let labelLbShips = colon.concat(loc("lb/bestBattles"), loc(campaignPresentations.ships.unitsLocId))
 let labelLbTanks = colon.concat(loc("lb/bestBattles"), loc(campaignPresentations.tanks.unitsLocId))
+let labelLbAir = colon.concat(loc("lb/bestBattles"), loc(campaignPresentations.air.unitsLocId))
 let toLbRating = @(v) (0.01 * v + 0.5).tointeger()
+let damageZoneTons = @(v) roundToDigits(v * KG_TO_TONS, 3)
 
 let getValIfPositive = @(val, convertFunc = @(v) v) (val ?? 0) > 0 ? convertFunc(val) : null
 
@@ -84,6 +89,15 @@ let statsByCamp = {
     { getLoc = @() labelLbCommon, getVal = @(debrData, _) getValIfPositive(debrData?.userstat.wp_rating, toLbRating) }
     { locId = "debriefing/PlayerPlace", getVal = @(_, player) player?.place, valueCtor = playerPlaceCtor }
   ],
+  air = [
+    { locId = "debriefing/totalscore", getVal = @(debrData, _) (100 * (debrData?.reward.dmgScoreBonus ?? 0)).tointeger() }
+    { locId = "debriefing/AirKills", getVal = @(_, player) player?.kills ?? 0 }
+    { locId = "debriefing/GroundKills", getVal = @(_, player) getValIfPositive(player?.groundKills) }
+    { locId = "debriefing/Damage", getVal = @(_, player) getValIfPositive(player?.damageZone), printVal = damageZoneTons }
+    { getLoc = @() labelLbAir,  getVal = @(debrData, _) getValIfPositive(debrData?.userstat.air_rating, toLbRating) }
+    { getLoc = @() labelLbCommon, getVal = @(debrData, _) getValIfPositive(debrData?.userstat.wp_rating, toLbRating) }
+    { locId = "debriefing/PlayerPlace", getVal = @(_, player) player?.place, valueCtor = playerPlaceCtor }
+  ],
 }
 
 let statsByCampSingle = {
@@ -92,6 +106,9 @@ let statsByCampSingle = {
   ],
   tanks = [
     { locId = "debriefing/GroundKills", getVal = @(_, player) getValIfPositive(player?.kills) }
+  ],
+  air = [
+    { locId = "debriefing/AirKills", getVal = @(_, player) getValIfPositive(player?.kills) }
   ],
 }
 
@@ -114,8 +131,8 @@ let animCountBaseComp = {
     color = 0xFFFFFFFF
 }.__update(fontTiny)
 
-let mkAnimatedCount = @(uid, value, startTime, baseComp = animCountBaseComp)
-  mkAnimatedCountText(uid, value, startTime, statIncreaseAnimTimeMsec, setCounterActive, baseComp)
+let mkAnimatedCount = @(uid, value, printVal, startTime, baseComp = animCountBaseComp)
+  mkAnimatedCountText(uid, value, printVal, startTime, statIncreaseAnimTimeMsec, setCounterActive, baseComp)
 
 let mkText = @(text) {
   rendObj = ROBJ_TEXT
@@ -131,7 +148,7 @@ let mkInlineIcon = @(children) {
   children
 }
 
-let mkStat = @(uid, text, value, startTime, valueCtor) {
+let mkStat = @(uid, text, value, startTime, printVal, valueCtor) {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -142,7 +159,7 @@ let mkStat = @(uid, text, value, startTime, valueCtor) {
       color = 0xFFFFFFFF
       hplace = ALIGN_LEFT
     }.__update(fontTiny),
-    (valueCtor ?? mkAnimatedCount)(uid, value, startTime)
+    (valueCtor ?? mkAnimatedCount)(uid, value, printVal, startTime)
   ]
 }
 
@@ -167,11 +184,11 @@ function mkItemsUsedRows(itemsUsed, delay) {
         mkTextRow(loc(locId, { count = used }),
           mkText,
           {
-            ["{countAnim}"] = mkAnimatedCount(id, used, startTime, //warning disable: -forgot-subst
+            ["{countAnim}"] = mkAnimatedCount(id, used, null, startTime, //warning disable: -forgot-subst
               { size = [usedWidth, SIZE_TO_CONTENT], halign = ALIGN_CENTER })
           })
         .append(
-          mkAnimatedCount($"count_{id}", count, startTime)
+          mkAnimatedCount($"count_{id}", count, null, startTime)
           mkInlineIcon(mkCurrencyImage(id, iconSize))
         )
     }
@@ -208,7 +225,7 @@ function mkDebriefingStats(debrData, startAnimTime) {
     let val = s.getVal(debrData, player)
     return val == null
       ? null
-      : mkStat(uid, s?.getLoc() ?? loc(s.locId), val, startAnimTime + (offsetTime * idx++), s?.valueCtor)
+      : mkStat(uid, s?.getLoc() ?? loc(s.locId), val, startAnimTime + (offsetTime * idx++), s?.printVal, s?.valueCtor)
   }).filter(@(v) v != null)
 
   let children = statsContent.extend(mkItemsUsedRows(itemsUsed, startAnimTime + (statsContent.len() * offsetTime)))

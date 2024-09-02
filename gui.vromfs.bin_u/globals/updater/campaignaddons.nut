@@ -97,7 +97,7 @@ function getCampaignPkgsForNewbieBattle(campaign, mRank, isSingle) {
   //we don't want to bots have higher rank than player in the single battle,
   //but mRank == 1 is tested regulary when test novice experience, but rare case about novice purchase high level tank not good tested.
   //so beeter player to download +1 pack as in the online mode in such case to ensure crash safe
-  let maxRank = max(mRank > 1 ? mRank + 1 : mRank, isSingle ? 0 : 2)
+  let maxRank = max(mRank > 1 ? mRank + 1 : mRank, isSingle ? 0 : 1)
   for (local i = maxRank; i >= 1 ; i--) {
     appendRankAddon(res, postfix, i)
     appendCampaignExtAddons(res, campaign, i)

@@ -5,46 +5,53 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitResearchPrice,
   mkUnitSelectedGlow, unitPlateTiny, mkIcon
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
-let { mkPlateExpBar } = require("%rGui/unitsTree/unitResearchBar.nut")
+let { mkPlateExpBar, mkPlateBlueprintBar } = require("%rGui/unitsTree/unitResearchBar.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 
-let sectorSize = [hdpx(20), hdpx(10)]
+let sectorSizeCommon = [hdpx(20), hdpx(10)]
 let sectorColorLight = 0xFF6EFF95
 let sectorColorDark = 0xFF77B480
+let gapCommon = hdpx(-10)
 
-let sectorProgBar = @(color){
-  size = sectorSize
+let sectorProgBar = @(color, size = sectorSizeCommon){
+  size
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#progress_bar_animated.svg")
+  image = Picture($"ui/gameuiskin#progress_bar_animated.svg:{size[0]}:{size[1]}:P")
   color
 }
 
-function progressBar(){
+function progressBar(width, sectorSize){
   let children = []
-  for (local i = 0; i < 3 * unitPlateTiny[0] / sectorSize[0]; i++){
-    children.append(sectorProgBar(i % 2 == 0 ? sectorColorLight : sectorColorDark))
+  for (local i = 0; i < 3 * width / sectorSize[0]; i++){
+    children.append(sectorProgBar(i % 2 == 0 ? sectorColorLight : sectorColorDark, sectorSize))
   }
   return children
 }
 
-let animatedProgressBar = @(researchStatus){
-  size = [unitPlateTiny[0], sectorSize[1]]
-  clipChildren = true
-  children = [
-    {
-      size = flex()
-      flow = FLOW_HORIZONTAL
-      halign = ALIGN_CENTER
-      gap = hdpx(-10)
-      children = progressBar()
-      transform = {}
-      animations = [
-        { prop = AnimProp.translate, from = [-sectorSize[0], 0], to = [0, 0],
-          duration = 1.0, play = true, loop = true, globalTimer = true }
-      ]
-    }
-    mkPlateExpBar(researchStatus, { color = 0 })
-  ]
+function animatedProgressBar(unit, style = {}, childOvr = {}){
+  let { width = unitPlateTiny[0], height = sectorSizeCommon[1], gap = gapCommon, sectorSize = sectorSizeCommon } = style
+  let researchStatus = unitsResearchStatus.get()?[unit.name]
+  return {
+    size = [width, height]
+    clipChildren = true
+    children = [
+      {
+        size = flex()
+        flow = FLOW_HORIZONTAL
+        halign = ALIGN_CENTER
+        gap
+        children = progressBar(width, sectorSize)
+        transform = {}
+        animations = [
+          { prop = AnimProp.translate, from = [-sectorSize[0], 0], to = [0, 0],
+            duration = 1.0, play = true, loop = true, globalTimer = true }
+        ]
+      }
+      researchStatus
+        ? mkPlateExpBar(researchStatus, { color = 0 })
+        : mkPlateBlueprintBar(unit, { size = flex() pos = [0, 0] color = 0 })
+    ].append(childOvr)
+  }
 }
 
 let mkTreeNodesUnitPlateBuy = @(unit){
@@ -62,13 +69,13 @@ let mkTreeNodesUnitPlateBuy = @(unit){
   ]
 }
 
-function mkTreeNodesUnitPlateSimple(unit) {
+function mkTreeNodesUnitPlateSimple(unit, unitSize = unitPlateTiny) {
   let researchStatus = unitsResearchStatus.get()?[unit.name]
   return @() {
     flow = FLOW_VERTICAL
     children = [
       {
-        size = unitPlateTiny
+        size = unitSize
         children = [
           mkUnitBg(unit)
           mkUnitSelectedGlow(unit, Watched(true))
@@ -89,7 +96,7 @@ function mkTreeNodesUnitPlateSimple(unit) {
                   mkGradRankSmall(unit?.mRank)
                 ]
               }
-              animatedProgressBar(researchStatus)
+              animatedProgressBar(unit)
             ]
           }
           {
@@ -123,6 +130,7 @@ function mkTreeNodesUnitPlateSimple(unit) {
 }
 
 return {
+  animatedProgressBar
   mkTreeNodesUnitPlateSimple
   mkTreeNodesUnitPlateBuy
 }

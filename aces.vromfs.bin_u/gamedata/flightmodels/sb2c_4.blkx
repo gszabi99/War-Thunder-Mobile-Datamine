@@ -1935,7 +1935,7 @@
         "tier": 8,
         "order": 1,
         "WeaponPreset": {
-          "iconType": "rockets_he_middle_group_x4",
+          "iconType": "rocket_7kg_group",
           "name": "hvar",
           "reqModification": "frc_mk2",
           "ShowNodes": {
@@ -1983,7 +1983,7 @@
         "order": 3,
         "WeaponPreset": [
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "250lbs",
             "ShowNodes": {
               "node": "pylon_bomb1"
@@ -1998,7 +1998,7 @@
             }
           },
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_500kg",
             "name": "500lbs",
             "ShowNodes": {
               "node": "pylon_bomb1"
@@ -2069,7 +2069,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bombs_middle_group_x2",
+            "iconType": "bomb_250kg_group",
             "name": "250lbs_x2",
             "Weapon": [
               {
@@ -2180,7 +2180,7 @@
             }
           },
           {
-            "iconType": "bombs_large_group_x2",
+            "iconType": "bomb_500kg_group",
             "name": "500lbs_x2",
             "Weapon": [
               {
@@ -2291,7 +2291,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_middle",
+            "iconType": "bomb_1000kg",
             "name": "1000lbs",
             "reqModification": "btd_mbc",
             "ShowNodes": {
@@ -2398,7 +2398,7 @@
             }
           },
           {
-            "iconType": "bombs_special",
+            "iconType": "bomb_1500kg",
             "name": "1600lbs",
             "reqModification": "btd_mbc",
             "ShowNodes": {
@@ -2505,7 +2505,7 @@
             }
           },
           {
-            "iconType": "air_torpedo",
+            "iconType": "torpedo_no_case",
             "name": "torpedo",
             "reqModification": "tbf_itc",
             "ShowNodes": {
@@ -2534,7 +2534,7 @@
             }
           },
           {
-            "iconType": "air_torpedo",
+            "iconType": "torpedo",
             "name": "torpedo_case",
             "reqModification": "improved_torpedo_mod",
             "ShowNodes": {
@@ -2563,7 +2563,7 @@
             }
           },
           {
-            "iconType": "air_mines",
+            "iconType": "mine",
             "name": "mine",
             "reqModification": "us_mine_mk13_mod0",
             "ShowNodes": {
@@ -2677,7 +2677,7 @@
         "order": 4,
         "WeaponPreset": [
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "250lbs",
             "ShowNodes": {
               "node": "pylon_bomb2"
@@ -2692,7 +2692,7 @@
             }
           },
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_500kg",
             "name": "500lbs",
             "ShowNodes": {
               "node": "pylon_bomb2"
@@ -2761,7 +2761,7 @@
         "tier": 4,
         "order": 2,
         "WeaponPreset": {
-          "iconType": "rockets_he_middle_group_x4",
+          "iconType": "rocket_7kg_group",
           "name": "hvar",
           "reqModification": "frc_mk2",
           "ShowNodes": {

@@ -1761,10 +1761,6 @@
     }
   },
   "WeaponSlots": {
-    "maxloadMass": 1040.0,
-    "maxloadMassLeftConsoles": 570.0,
-    "maxloadMassRightConsoles": 570.0,
-    "maxDisbalance": 420.0,
     "hideDmParts": {
       "node": "armor4_dm"
     },

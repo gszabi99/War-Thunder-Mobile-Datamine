@@ -2202,7 +2202,7 @@
         "order": 1,
         "WeaponPreset": [
           {
-            "iconType": "bombs_small_group_x2",
+            "iconType": "bomb_50kg_group",
             "name": "50kg_x2",
             "reqModification": "etc50_4_mod",
             "ShowNodes": {
@@ -2319,7 +2319,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "250kg",
             "reqModification": "etc250_2_mod",
             "ShowNodes": {
@@ -2429,7 +2429,7 @@
             }
           },
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_500kg",
             "name": "500kg",
             "ShowNodes": {
               "node": [
@@ -2907,7 +2907,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "250kg_slot2",
             "reqModification": "etc250_2_mod",
             "ShowNodes": {
@@ -3019,7 +3019,7 @@
             }
           },
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_500kg",
             "name": "500kg_slot2",
             "ShowNodes": {
               "node": [
@@ -3128,7 +3128,7 @@
             }
           },
           {
-            "iconType": "bombs_large_high_drag",
+            "iconType": "bomb_500kg",
             "name": "pc500kg_slot2",
             "ShowNodes": {
               "node": [
@@ -3464,7 +3464,7 @@
         "order": 2,
         "WeaponPreset": [
           {
-            "iconType": "bombs_small_group_x2",
+            "iconType": "bomb_50kg_group",
             "name": "50kg_x2",
             "reqModification": "etc50_4_mod",
             "ShowNodes": {
@@ -3581,7 +3581,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "250kg",
             "reqModification": "etc250_2_mod",
             "ShowNodes": {
@@ -3691,7 +3691,7 @@
             }
           },
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_500kg",
             "name": "500kg",
             "ShowNodes": {
               "node": [

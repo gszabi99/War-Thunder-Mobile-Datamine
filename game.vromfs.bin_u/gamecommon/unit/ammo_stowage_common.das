@@ -82,9 +82,12 @@ def get_ammo_slot_class_mask(slot_id : int;  v : tuple<ammo_slots__ammoMaskAndTy
 [with_bundle(v)]
 def public ammo_slot_set_dm_enabled(var unit : Unit?; slot_id : int; is_enabled : bool; v : tuple<ammo_slots__partId : PartIdList>) : bool
   let slot_part_id = v.ammo_slots__partId[slot_id];
-  if *unit.visual |> dm_is_part_enabled(slot_part_id) != is_enabled
-    *unit.visual |> dm_set_part_enabled(slot_part_id, is_enabled)
-    *unit.visual |> dm_set_decor_by_part_id(int(slot_part_id.globalId), is_enabled)
+  assume dvm = *unit.visual
+  if dvm |> dm_is_part_enabled(slot_part_id) != is_enabled
+    dvm |> dm_set_part_enabled(slot_part_id, is_enabled)
+    dvm |> dm_set_decor_by_part_id(int(slot_part_id.globalId), is_enabled)
+    if is_enabled
+      dvm |> dm_set_rel_hp(int(slot_part_id.globalId), 1.0f, false)
     return true
   return false
 

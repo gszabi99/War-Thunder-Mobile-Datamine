@@ -3,6 +3,7 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
 
 const REPAY_TIME = 0.3
+const BLOCK_CLICK_TOOLTIP_TIME = 0.3
 let state = Watched(null)
 local curContent = null
 local delayedTooltip = null
@@ -109,9 +110,9 @@ function showDelayedTooltipImpl() {
   showTooltip(rectOrPos, params)
 }
 
-function showDelayedTooltip(rectOrPos, params, repayTime = REPAY_TIME) {
+function showDelayedTooltip(rectOrPos, params, key, repayTime = REPAY_TIME) {
   hideTooltip()
-  delayedTooltip = { rectOrPos, params }
+  delayedTooltip = { rectOrPos, params, key }
   resetTimeout(repayTime, showDelayedTooltipImpl)
 }
 
@@ -125,7 +126,7 @@ function showHint(rectOrPos, params, showTime) {
   resetTimeout(showTime, hideTooltip)
 }
 
-let withTooltipImpl = @(stateFlags, showFunc) function(sf) {
+let withTooltipImpl = @(stateFlags, showFunc, hideFunc = hideTooltip) function(sf) {
   let hasHint = (stateFlags.value & S_ACTIVE) != 0
   let needHint = (sf & S_ACTIVE) != 0
   stateFlags(sf)
@@ -134,13 +135,32 @@ let withTooltipImpl = @(stateFlags, showFunc) function(sf) {
   if (needHint)
     showFunc()
   else
-    hideTooltip()
+    hideFunc()
 }
 
 let tooltipDetach = @(stateFlags) @() (stateFlags.value & S_ACTIVE) != 0 ? hideTooltip() : null
 
-let withHoldTooltip = @(stateFlags, key, tooltipCtor)
-  withTooltipImpl(stateFlags, @() showDelayedTooltip(gui_scene.getCompAABBbyKey(key), tooltipCtor()))
+local allowHoldClickKey = null
+function unallowHoldClick() {
+  allowHoldClickKey = null
+}
+
+let mkButtonHoldTooltip = @(onClick, stateFlags, key, tooltipCtor, repayTime = REPAY_TIME) {
+  onElemState = withTooltipImpl(stateFlags,
+    function() {
+      showDelayedTooltip(gui_scene.getCompAABBbyKey(key), tooltipCtor(), key, repayTime)
+      allowHoldClickKey = key
+      resetTimeout(BLOCK_CLICK_TOOLTIP_TIME, unallowHoldClick)
+    },
+    function() {
+      if (delayedTooltip?.key == key)
+        allowHoldClickKey = key
+      clearTimer(unallowHoldClick)
+      hideTooltip()
+    })
+  onDetach = tooltipDetach(stateFlags)
+  onClick = @() allowHoldClickKey == key ? onClick?() : null
+}
 
 let withTooltip = @(stateFlags, key, tooltipCtor)
   withTooltipImpl(stateFlags, @() showTooltip(gui_scene.getCompAABBbyKey(key), tooltipCtor()))
@@ -198,7 +218,7 @@ return {
   showTooltip
   showDelayedTooltip
   hideTooltip
-  withHoldTooltip
+  mkButtonHoldTooltip
   withTooltip
   tooltipDetach
   showHint

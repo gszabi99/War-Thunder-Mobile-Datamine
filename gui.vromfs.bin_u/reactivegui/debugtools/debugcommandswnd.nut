@@ -63,8 +63,8 @@ let commandsList = [
     mainHangarUnitName.get()?.isUpgraded || mainHangarUnitName.get()?.isPremium
       ? "consolePrintResult"
       : { id = "upgradeUnit", name = mainHangarUnitName.get() })) }
-  { label = "meta.reset_profile", func = withClose(reset_profile) }
   { label = "meta.reset_profile_with_stats", func = withClose(resetProfileWithStats) }
+  { label = "meta.reset_profile_only", func = withClose(reset_profile) }
   { label = "reset_scheduled_reward_timers", func = withClose(reset_scheduled_reward_timers) }
   { label = "meta.unlock_all_units", func = withClose(unlock_all_units) }
   { label = "meta.royal_beta_units_unlock", func = withClose(royal_beta_units_unlock) }

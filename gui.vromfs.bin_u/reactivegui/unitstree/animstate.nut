@@ -6,7 +6,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { needSelectResearch } = require("selectResearchWnd.nut")
 let { isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { maxBuyRequirementsAnimTime } = require("%rGui/unitsTree/treeAnimConsts.nut")
+let { maxBuyRequirementsAnimTime, maxResearchRequirementsAnimTime } = require("%rGui/unitsTree/treeAnimConsts.nut")
 
 let animExpPartDelay = 0.3
 
@@ -20,6 +20,7 @@ let animNewUnitsAfterResearch = mkWatched(persist, "animNewUnitsAfterResearch", 
 let needShowPriceUnit = mkWatched(persist, "needShowPriceUnit", false)
 let hasAnimDarkScreen = mkWatched(persist, "hasAnimDarkScreen", false)
 let animBuyRequirementsUnitId = mkWatched(persist, "animBuyRequirementsUnitId", null)
+let animResearchRequirementsUnitId = mkWatched(persist, "animResearchRequirementsUnitId", null)
 
 let animExpPart = mkWatched(persist, "animExpPart", false)
 local expPartValue = 0
@@ -85,28 +86,51 @@ unitsResearchStatus.subscribe(function(v){
   }
 })
 
-let animBuyRequirements = Computed(function() {
+function mkAnimRequirements(unitId, allNodes, canAdd = @(_) true) {
   let res = {}
-  if (animBuyRequirementsUnitId.get() == null)
-    return res
-  let allNodes = serverConfigs.get()?.unitTreeNodes[curCampaign.get()]
-  let list = [animBuyRequirementsUnitId.get()]
+  let ancestors = {}
+  if (unitId == null)
+    return { res, ancestors }
+  let list = [unitId]
   foreach(name in list) {
     let node = allNodes?[name]
     if (!node)
       continue
+    local last = true
     foreach(u in node.reqUnits)
-      if (u not in res) {
+      if (u not in res && canAdd(u)) {
+        last = false
         res[u] <- true
         list.append(u) // warning disable: -modified-container
-      }
+      } else if (u in res)
+        last = false
+    if (last)
+      ancestors[name] <- true
   }
-  return res
-})
+  return { res, ancestors }
+}
 
-let clearRequirementsAnim = @() animBuyRequirementsUnitId.set(null)
-animBuyRequirementsUnitId.subscribe(@(v) v == null ? null : resetTimeout(maxBuyRequirementsAnimTime, clearRequirementsAnim))
+let allNodes = Computed(@() serverConfigs.get()?.unitTreeNodes[curCampaign.get()])
+let animBuyRequirements = Computed(@() mkAnimRequirements(animBuyRequirementsUnitId.get(), allNodes.get()).res)
+let animResearchRequirementsInfo = Computed(@() mkAnimRequirements(
+  animResearchRequirementsUnitId.get(),
+  allNodes.get(),
+  function(u) {
+    let researchStatus = unitsResearchStatus.get()?[u]
+    if (researchStatus == null)
+      return false
+    return !researchStatus.isResearched || researchStatus.canResearch
+  }))
+let animResearchRequirements = Computed(@() animResearchRequirementsInfo.get().res)
+let animResearchRequirementsAncestors = Computed(@() animResearchRequirementsInfo.get().ancestors)
+
+let clearBuyRequirementsAnim = @() animBuyRequirementsUnitId.set(null)
+let clearResearchRequirementsAnim = @() animResearchRequirementsUnitId.set(null)
+animBuyRequirementsUnitId.subscribe(@(v) v == null ? null : resetTimeout(maxBuyRequirementsAnimTime, clearBuyRequirementsAnim))
+animResearchRequirementsUnitId.subscribe(@(v) v == null ? null
+  : resetTimeout(maxResearchRequirementsAnimTime, clearResearchRequirementsAnim))
 animBuyRequirements.subscribe(@(v) v.each(@(_, id) anim_start($"unit_price_{id}")))
+animResearchRequirements.subscribe(@(v) v.each(@(_, id) anim_start($"unit_exp_{id}")))
 
 return {
   animUnitAfterResearch
@@ -117,6 +141,9 @@ return {
   animExpPart
   animBuyRequirementsUnitId
   animBuyRequirements
+  animResearchRequirementsUnitId
+  animResearchRequirements
+  animResearchRequirementsAncestors
 
   isBuyUnitWndOpened
   canPlayAnimUnitWithLink

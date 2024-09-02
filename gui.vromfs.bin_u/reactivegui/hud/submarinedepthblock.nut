@@ -47,13 +47,13 @@ function depthValueUpdate() {
 
 depthChangeDir.subscribe(@(_) depthValueUpdate())
 
-let mkMarksOfDepth = @(firstMark, countOfMarks) {
+let mkMarksOfDepth = @(countOfMarks, firstMark) {
   size = [hdpx(20), flex()]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = hdpx(2.5)
   commands = array(max(1, countOfMarks - firstMark)).map(function(_, i) {
-    let y = 100.0 * (i +  firstMark) / max(1, countOfMarks - 1)
-    return [VECTOR_LINE, 0, y, 100 - 50 * (i % 2), y]
+    let y = 100.0 * (i + firstMark) / max(1, countOfMarks - 1)
+    return [VECTOR_LINE, 0, y, 100 - 50 * ((i + 1) % 2), y]
   })
 }
 
@@ -62,18 +62,18 @@ let periscopIcon = {
   height = hdpxi(50)
 }
 let marksTextStep = 4
-let mkMarksOfDepthTexts = @(countOfMarks, firstMarkValue) {
+let mkMarksOfDepthTexts = @(countOfMarks) {
   size = [SIZE_TO_CONTENT, flex()]
   margin = [0, 0, 0, hdpx(5)]
   children = array(countOfMarks / marksTextStep)
     .map(@(_, i) {
       rendObj = ROBJ_TEXT
       vplace = ALIGN_CENTER
-      pos = [0, ph(100.0 * i * marksTextStep / (countOfMarks - 1) - 30)]
+      pos = [0, ph(100.0 * i * marksTextStep / (countOfMarks - 1) - 35)]
       fontFxColor = 0xFF000000
       fontFxFactor = hdpx(50)
       fontFx = FFT_GLOW
-      text = firstMarkValue + (i + 1) * marksTextStep * markStep
+      text = i * markStep * marksTextStep + 20
     }.__update(fontTiny))
     .append({
       rendObj = ROBJ_IMAGE
@@ -125,7 +125,7 @@ let btnImageDepthDec = mkGamepadShortcutImg("submarine_depth_dec",
 function depthSlider() {
   let minVal = maxControlDepth.value > 0 ? periscopeDepthCtrl.value / maxControlDepth.value : 0.0
   let deadZoneVal = maxControlDepth.value > 0 ? deadZoneDepth.value / maxControlDepth.value : 0.0
-  let countOfMarks = max((maxControlDepth.value - periscopeDepthCtrl.value) / markStep + 1, 2).tointeger()
+  let countOfMarks = max(maxControlDepth.value / markStep, 2).tointeger()
   let firstMark = (deadZoneDepth.value / markStep).tointeger()
 
   let wishDistClamped = clamp(wishDist.value, minVal, 1.0)
@@ -172,8 +172,8 @@ function depthSlider() {
           btnImageDepthDec
         ]
       }
-      mkMarksOfDepth(firstMark, countOfMarks)
-      mkMarksOfDepthTexts(countOfMarks, periscopeDepthCtrl.value)
+      mkMarksOfDepth(countOfMarks, firstMark)
+      mkMarksOfDepthTexts(countOfMarks)
     ]
     onChange = function(val) {
       if (!isDeeperThanPeriscopeDepth.value && wishDist.value == 0) {

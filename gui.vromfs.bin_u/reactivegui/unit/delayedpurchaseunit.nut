@@ -4,7 +4,7 @@ let { deferOnce, setTimeout } = require("dagor.workcycle")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { set_current_unit } = require("%appGlobals/pServer/pServerApi.nut")
+let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
@@ -31,7 +31,7 @@ function showPurchases() {
     return delayedPurchaseList.clear()
 
   if (curUnit.get()?.name != listForRequest.top())
-    set_current_unit(listForRequest.top())
+    setCurrentUnit(listForRequest.top())
 
   foreach (idx, unitId in listForRequest) {
     let unit = myUnits.get()?[unitId]

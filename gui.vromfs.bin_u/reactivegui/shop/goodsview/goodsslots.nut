@@ -1,16 +1,59 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getLocNameDefault } = require("goodsDefault.nut")
-let { mkGoodsWrap, txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsLimit,
+let { txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsLimit,
   priceBgGradDefault, goodsH, goodsSmallSize, goodsBgH, mkBgImg, mkBgParticles, borderBg,
-  mkSquareIconBtn
+  mkSquareIconBtn, skipPurchasedPlate, purchasedPlate, mkCanPurchase, goodsW
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { getGoodsIcon } = require("%appGlobals/config/goodsPresentation.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
+let { isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
 
 
 let fontIconPreview = "⌡"
 let bgSize = [goodsSmallSize[0], goodsBgH]
 let iconSize = [goodsSmallSize[0] - hdpxi(40), (goodsBgH * 0.9 + 0.5).tointeger()]
+
+function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
+  let { limit = 0, dailyLimit = 0, id = null } = goods
+  let stateFlags = Watched(0)
+
+  let isGoodsFull = Computed(@() !!serverConfigs.get().goodsRewardSlots?[goods.slotsPreset].variants
+    .findvalue(@(r) !isRewardEmpty(r, servProfile.get())))
+
+  let canPurchase = mkCanPurchase(id, limit, dailyLimit, isGoodsFull.get())
+  let canShowSkipPurchase = Computed(@() isGoodsFull.get() && goodsLimitReset.get()?[id])
+
+  return @() bgShaded.__merge({
+    size = [ goodsW, goodsH ]
+    watch = [stateFlags, canPurchase, canShowSkipPurchase]
+    behavior = Behaviors.Button
+    clickableInfo = loc("mainmenu/btnBuy")
+    onClick = canPurchase.get() ? onClick : null
+    onElemState = @(v) stateFlags(v)
+    xmbNode = XmbNode()
+    transform = {
+      scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.97, 0.97] : [1, 1]
+    }
+    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
+    sound = { click = "choose" }
+    flow = FLOW_VERTICAL
+    children = [
+      {
+        size = [ flex(), goodsBgH ]
+        children = mkContent?(stateFlags.get(), canPurchase.get())
+      }.__update(childOvr)
+      canPurchase.get()
+          ? pricePlate
+        : canShowSkipPurchase.get()
+          ? skipPurchasedPlate
+        : purchasedPlate
+    ]
+  }).__update(ovr)
+}
 
 function mkGoodsSlots(goods, _, state, animParams) {
   let bg = mkBgImg("ui/gameuiskin/shop_bg_blue.avif")
@@ -19,7 +62,7 @@ function mkGoodsSlots(goods, _, state, animParams) {
   return mkGoodsWrap(
     goods,
     onClick,
-    @(_, _) [
+    @(_, canPurchase) [
       bg
       goods?.isShowDebugOnly ? underConstructionBg : null
       bgParticles
@@ -38,7 +81,7 @@ function mkGoodsSlots(goods, _, state, animParams) {
         text = getLocNameDefault(goods)
       }.__update(fontSmall))
       mkSquareIconBtn(fontIconPreview, onClick, { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
-      mkGoodsLimit(goods)
+      canPurchase ? mkGoodsLimit(goods) : null
     ].extend(mkGoodsCommonParts(goods, state)),
     mkPricePlate(goods, priceBgGradDefault, state, animParams)
     { size = [goodsSmallSize[0], goodsH], onClick })

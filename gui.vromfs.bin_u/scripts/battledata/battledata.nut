@@ -269,9 +269,11 @@ register_command(function() {
 return {
   battleData = realBattleData
   lastClientBattleData
-  curBattleUnit = Computed(@() realBattleData.value?.unit)
-  curBattleItems = Computed(@() realBattleData.value?.items)
-  curBattleSkins = Computed(@() realBattleData.value?.skins)
-  isBattleDataReceived = Computed(@() curAction.get() != ACTION.REQUEST && (state.value?.isBattleDataReceived ?? false))
+  curBattleUnit = Computed(@() realBattleData.get()?.unit)
+  curBattleItems = Computed(@() realBattleData.get()?.items)
+  curBattleSkins = Computed(@() realBattleData.get()?.skins)
+  isSeparateSlots = Computed(@() realBattleData.get()?.isSeparateSlots ?? false)
+  unitsAvgCostWp = Computed(@() realBattleData.get()?.unitsAvgCostWp ?? [])
+  isBattleDataReceived = Computed(@() curAction.get() != ACTION.REQUEST && (state.get()?.isBattleDataReceived ?? false))
   wasBattleDataApplied
 }

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { can_debug_configs, can_debug_missions, can_use_debug_console, can_view_replays, can_write_replays,
-  has_offline_battle_access, can_debug_touches
+  has_offline_battle_access
 } = require("%appGlobals/permissions.nut")
 let { openDebugProfileWnd } = require("%rGui/debugTools/debugProfileWnd.nut")
 let { openDebugConfigWnd } = require("%rGui/debugTools/debugConfigsWnd.nut")
@@ -27,7 +27,6 @@ let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { openBugReport } = require("%rGui/feedback/bugReport.nut")
 let { openOfflineBattleMenu } = require("%rGui/debugTools/debugOfflineBattleState.nut")
-let { isDebugTouchesActive } = require("%rGui/debugTools/debugTouches.nut")
 
 
 let TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
@@ -133,10 +132,6 @@ let OFFLINE_BATTLES = {
   name = loc("mainmenu/offlineBattles")
   cb = openOfflineBattleMenu
 }
-let DEBUG_TOUCHES = {
-  name = "Toggle debug touches"
-  cb = @() isDebugTouchesActive.set(!isDebugTouchesActive.get())
-}
 
 function getPublicButtons() {
   let res = [OPTIONS, STORE, UNITS]
@@ -153,8 +148,6 @@ function getPublicButtons() {
   if (can_write_replays.value && hasUnsavedReplay.value)
     res.append(SAVE_LAST_REPLAY)
   res.append(BUG_REPORT)
-  if (can_debug_touches.get())
-    res.append(DEBUG_TOUCHES)
   return res
 }
 
@@ -185,8 +178,7 @@ let topMenuButtonsGenId = Computed(function(prev) {
   let vals = [   //warning disable: -declared-never-used
     can_debug_missions, can_debug_configs, can_use_debug_console, isGamepad,
     isFeedReceived, firstBattleTutor, canShowLoginAwards, isUserstatMissingData,
-    can_view_replays, can_write_replays, hasUnsavedReplay, has_offline_battle_access,
-    can_debug_touches
+    can_view_replays, can_write_replays, hasUnsavedReplay, has_offline_battle_access
   ]
   return prev == FRP_INITIAL ? 0 : prev + 1
 })

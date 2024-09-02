@@ -22,7 +22,7 @@ let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideX } = require("%rGui/style/gradients.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
-let buyUnitLevelWnd = require("%rGui/unitAttr/buyUnitLevelWnd.nut")
+let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 

@@ -9,12 +9,13 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlotContentGenId,
-  selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum
+  selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler
 } = require("respawnState.nut")
 let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets
 } = require("bulletsChoiceState.nut")
 let { slotAABB, selSlotLinesSteps, lineSpeed } = require("respawnAnimState.nut")
-let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, respawnUnitItems, respawnUnitSkins
+let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, respawnUnitItems, respawnUnitSkins,
+  hasRespawnSeparateSlots
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { getUnitPresentation, getPlatoonName, getUnitClassFontIcon, getUnitLocId
 } = require("%appGlobals/unitPresentation.nut")
@@ -34,7 +35,8 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let respawnMap = require("respawnMap.ui.nut")
 let respawnBullets = require("respawnBullets.nut")
 let respawnAirWeaponry = require("respawnAirWeaponry.nut")
-let { bg, headerText, headerHeight, header, gap, headerMarquee, bulletsBlockMargin, bulletsBlockWidth
+let { bg, headerText, headerHeight, header, gap, headerMarquee, bulletsBlockMargin, bulletsBlockWidth,
+  contentOffset, unitListHeight
 } = require("respawnComps.nut")
 let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
 let { SPARE } = require("%appGlobals/itemsState.nut")
@@ -44,14 +46,11 @@ let { respawnSkins, skinSize } = require("respawnSkins.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { sendPlayerActivityToServer } = require("playerActivity.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
 
 
 let slotPlateWidth = unitPlateWidth + unitSelUnderlineFullSize
 let mapMaxSize = hdpx(650)
 let levelHolderSize = evenPx(84)
-let contentOffset = hdpx(40)
-let unitListHeight = saSize[1] - scoreBoardHeight - contentOffset - headerHeight - unitPlatesGap
 let unitListGradientSize = [unitPlatesGap, saBorders[1]]
 let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
 let skinTextHeight = hdpx(45)
@@ -112,27 +111,26 @@ let sparePrice = {
 function mkSlotPlate(slot, baseUnit) {
   let p = getUnitPresentation(slot.name)
   let isSelected = Computed(@() selSlot.value?.id == slot.id)
-  let unit = Computed(@() myUnits.get()?[slot.name] ?? baseUnit.__merge(slot))
+  let unit = baseUnit.__merge(slot)
   let { canSpawn, isSpawnBySpare } = slot
-  return @() {
-    watch = unit
+  return {
     size = [slotPlateWidth, unitPlateHeight]
     behavior = Behaviors.Button
     onClick = @() onSlotClick(slot)
     sound = { click  = "choose" }
     flow = FLOW_HORIZONTAL
     children = [
-      mkUnitSelectedUnderlineVert(unit.get(), isSelected)
+      mkUnitSelectedUnderlineVert(unit, isSelected)
       {
         key = slot
         size = [unitPlateWidth, unitPlateHeight]
         children = [
-          mkUnitBg(unit.get(), !canSpawn)
-          canSpawn ? mkUnitSelectedGlow(unit.get(), isSelected) : null
-          mkUnitImage(unit.get(), !canSpawn)
-          mkUnitTexts(unit.get(), loc(p.locId), !canSpawn)
+          mkUnitBg(unit, !canSpawn)
+          canSpawn ? mkUnitSelectedGlow(unit, isSelected) : null
+          mkUnitImage(unit, !canSpawn)
+          mkUnitTexts(unit, loc(p.locId), !canSpawn)
           canSpawn
-              ? mkUnitRank(unit.get(), !!(unit.get()?.isPremium || unit.get()?.isUpgraded) ? {} : { pos = [-hdpx(30), 0] })
+              ? mkUnitRank(unit, !!(unit?.isPremium || unit?.isUpgraded) ? {} : { pos = [-hdpx(30), 0] })
             : slot?.isLocked && (slot?.reqLevel ?? 0) <= 0
               ? unitSlotLockedByQuests
             : mkUnitSlotLockedLine(slot)
@@ -181,7 +179,6 @@ function platoonTitle(unit) {
 
 let pannableArea = verticalPannableAreaCtor(unitListHeight + unitListGradientSize[0] + unitListGradientSize[1],
   unitListGradientSize)
-let scrollHandler = ScrollHandler()
 
 function slotsBlock() {
   let title = platoonTitle(respawnUnitInfo.value)
@@ -206,8 +203,9 @@ function slotsBlock() {
                   children = list
                 },
                 {},
-                { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
-              mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall, { vplace = ALIGN_TOP, pos = [0, unitListHeight] })
+                { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler = unitListScrollHandler })
+              mkScrollArrow(unitListScrollHandler, MR_B, scrollArrowImageSmall,
+                { vplace = ALIGN_TOP, pos = [0, unitListHeight] })
             ]
           }
         ]
@@ -317,6 +315,18 @@ let weaponryBlockByUnitType = {
   [AIR] = respawnAirWeaponry,
 }
 
+let isFixedPositionByUnitType = {
+  [AIR] = true
+}
+
+function calcPos(content, contentAABB) {
+  let size = calc_comp_size(content)
+  let posY = (slotAABB.value.t + slotAABB.value.b - size[1]) / 2  - contentAABB.t
+  let maxY = max(0, contentAABB.b - contentAABB.t - size[1])
+  let maxYWithSkins = max(0, contentAABB.b - contentAABB.t - size[1] - skinSize - skinTextHeight - skinPadding * 2 - hdpx(15))
+  return [0, clamp(posY, 0, !respawnUnitSkins.get() ? maxY : maxYWithSkins)]
+}
+
 function respawnBulletsPlace() {
   let res = { watch = [slotAABB, respawnUnitSkins, selSlotUnitType, selSlot], onAttach = @() deferOnce(updateSlotAABB) }
   if (slotAABB.value == null)
@@ -327,16 +337,12 @@ function respawnBulletsPlace() {
 
   let content = selSlotUnitType.get() == null ? null
     : (weaponryBlockByUnitType?[selSlotUnitType.get()](selSlot.get()) ?? respawnBullets)
-  let size = calc_comp_size(content)
-  let posY = (slotAABB.value.t + slotAABB.value.b - size[1]) / 2  - contentAABB.t
-  let maxY = max(0, contentAABB.b - contentAABB.t - size[1])
-  let maxYWithSkins = max(0, contentAABB.b - contentAABB.t - size[1] - skinSize - skinTextHeight - skinPadding * 2 - hdpx(15))
   return res.__update({
     size = [SIZE_TO_CONTENT, flex()]
     children = {
       key = slotAABB.value
       onAttach = @() selSlotContentGenId.set(selSlotContentGenId.get() + 1)
-      pos = [0, clamp(posY, 0, !respawnUnitSkins.get() ? maxY : maxYWithSkins)]
+      pos = [0, (isFixedPositionByUnitType?[selSlotUnitType.get()] ?? false) ? 0 : calcPos(content, contentAABB)[1]]
       children = content
     }
   })
@@ -376,11 +382,11 @@ let skinsList = @() {
 }
 
 let content = @() {
-  watch = respawnSlots
+  watch = [respawnSlots, hasRespawnSeparateSlots]
   key = "respawnWndContent"
   size = flex()
   flow = FLOW_HORIZONTAL
-  children = respawnSlots.value.len() <= 1 ? null
+  children = !hasRespawnSeparateSlots.get() && respawnSlots.get().len() <= 1 ? null
     : [
         slotsBlock
         {

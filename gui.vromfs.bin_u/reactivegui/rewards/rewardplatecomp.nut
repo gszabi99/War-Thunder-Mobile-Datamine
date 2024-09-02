@@ -3,7 +3,7 @@ let { round } =  require("math")
 let { getCurrencyImage } = require("%appGlobals/config/currencyPresentation.nut")
 let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { fontLabel, labelHeight, REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
-  getRewardPlateSize
+  getRewardPlateSize, progressBarHeight
 } = require("rewardStyles.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -21,11 +21,17 @@ let { eventSeason } = require("%rGui/event/eventState.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
-let { mkBattleModEventUnitText, mkBattleModRewardUnitImage, mkBattleModCommonText, mkBattleModCommonImage } = require("%rGui/rewards/battleModComp.nut")
+let { mkBattleModEventUnitText, mkBattleModRewardUnitImage, mkBattleModCommonText,
+  mkBattleModCommonImage } = require("%rGui/rewards/battleModComp.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { NO_DROP_LIMIT } = require("%rGui/rewards/rewardViewInfo.nut")
 
 let textPadding = [0, hdpx(5)]
 let fontLabelSmaller = fontVeryTiny
 let fontLabelBig = fontSmall
+let searchPlateSize = [evenPx(40), evenPx(40)]
+let searchIconSize = evenPx(30)
+let transparentBlackColor = 0x80000000
 
 let iconBase = {
   hplace = ALIGN_CENTER
@@ -58,9 +64,109 @@ let mkRewardLabel = @(children, needPadding = true) {
   halign = ALIGN_RIGHT
   clipChildren = true
   rendObj = ROBJ_SOLID
-  color = 0x80000000
+  color = transparentBlackColor
   flow = FLOW_HORIZONTAL
   children
+}
+
+let mkRewardSearchPlate = {
+  fillColor = transparentBlackColor
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  rendObj = ROBJ_VECTOR_CANVAS
+  size = searchPlateSize
+  lineWidth = hdpx(1)
+  commands = [
+    [VECTOR_ELLIPSE, 50, 50, 50, 50],
+  ]
+  children = {
+    size = [searchIconSize, searchIconSize]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#btn_search.svg:{searchIconSize}:{searchIconSize}:P")
+    color = 0xFFFFFFFF
+  }
+}
+
+function mkProgressBarText(r, rStyle) {
+  let { labelCurrencyNeedCompact } = rStyle
+  let countText = "countRange" in r
+      ? "".concat(shortTextFromNum(r.count), "-", shortTextFromNum(r.countRange))
+    : labelCurrencyNeedCompact
+      ? shortTextFromNum(r.count)
+    : decimalFormat(r.count)
+  return {
+    size = [flex(), progressBarHeight]
+    children = {
+      rendObj = ROBJ_TEXT
+      text = countText
+      hplace = ALIGN_RIGHT
+      vplace = ALIGN_CENTER
+      fontFx = FFT_GLOW
+      fontFxColor = 0xFF000000
+      fontFxFactor = hdpxi(32)
+    }.__update(rStyle.textStyle)
+  }
+}
+
+let mkProgressBarWithForecast = @(count, available, total) @() {
+  size = [flex(), progressBarHeight]
+  children = {
+    size = flex()
+    rendObj = ROBJ_BOX
+    fillColor = transparentBlackColor
+    children = [
+      {
+        rendObj = ROBJ_BOX
+        size = [
+          pw(clamp(100 * ((count.tofloat() + available.tofloat()) / total), 0, 100)),
+          progressBarHeight
+        ]
+        fillColor = 0xFF6EFF95
+      }
+      {
+        rendObj = ROBJ_BOX
+        size = [pw(clamp(100 * (available.tofloat() / total), 0, 100)), progressBarHeight]
+        fillColor = 0xFF3384C4
+      }
+    ]
+  }
+}
+
+let mkProgressBar = @(available, total) @() {
+  size = [flex(), progressBarHeight]
+  children = {
+    size = flex()
+    rendObj = ROBJ_BOX
+    fillColor = transparentBlackColor
+    children = {
+      rendObj = ROBJ_BOX
+      size = [pw(clamp(100 * (available.tofloat() / total), 0, 100)), progressBarHeight]
+      fillColor = 0xFF3384C4
+    }
+  }
+}
+
+let mkProgressLabel = @(available, total, rStyle = {}) {
+  size = [flex(), labelHeight]
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_BOTTOM
+  children = {
+    size = [flex(), SIZE_TO_CONTENT]
+    halign = ALIGN_RIGHT
+    padding = [0, hdpx(5), 0 , 0]
+    children = [
+      {
+        size = [pw(100), SIZE_TO_CONTENT]
+        rendObj = ROBJ_TEXT
+        text = "/".concat(available, total)
+        halign = ALIGN_CENTER
+        vplace = ALIGN_CENTER
+        fontFx = FFT_GLOW
+        fontFxColor = 0xFF000000
+        fontFxFactor = hdpxi(24)
+      }.__update(rStyle.textStyle)
+    ]
+  }
 }
 
 let mkRewardPlateCountText = @(r, rStyle)
@@ -79,16 +185,30 @@ let mkRewardFixedIcon = @(rStyle) {
   image = Picture($"ui/gameuiskin#events_chest_icon.svg:{rStyle.markSize}:{rStyle.markSize}:P")
 }
 
-let mkRewardReceivedMark = @(rStyle, ovr = {}) {
-  size = [rStyle.markSize, rStyle.markSize]
-  halign = ALIGN_LEFT
-  valign = ALIGN_TOP
-  margin = hdpx(2)
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#check.svg:{rStyle.markSize}:{rStyle.markSize}:P")
-  keepAspect = KEEP_ASPECT_FIT
-  color = 0xFF78FA78
-}.__update(ovr)
+let mkRewardDisabledBkg = {
+  size = flex()
+  rendObj = ROBJ_SOLID
+  color = transparentBlackColor
+}
+
+function mkRewardReceivedMark(rStyle, ovr = {}) {
+  let iconSize = 2 * (rStyle.boxSize * 0.3 + 0.5).tointeger()
+  return {
+    size = flex()
+    rendObj = ROBJ_SOLID
+    color = transparentBlackColor
+    children = {
+      size = [iconSize, iconSize]
+      pos = [hdpx(10), -hdpx(10)]
+      rendObj = ROBJ_IMAGE
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      image = Picture($"ui/gameuiskin#daily_mark_claimed.avif:{iconSize}:{iconSize}:P")
+      keepAspect = true
+      color = 0xFFFFFFFF
+    }
+  }.__update(ovr)
+}
 
 let mkReceivedCounter = @(received, total) {
   margin = [hdpx(4), hdpx(8)]
@@ -97,6 +217,16 @@ let mkReceivedCounter = @(received, total) {
   rendObj = ROBJ_TEXT
   text = $"{received}/{total}"
 }.__update(fontVeryTinyShaded)
+
+function mkUnitNameText(unitNameLoc, size, rStyle) {
+  let textStyle = rStyle.textStyle
+  let maxTextWidth = size[0] - 2 * textPadding[1] - rStyle.markSize
+  local nameText = mkPlateText(unitNameLoc, textStyle)
+    if (calc_comp_size(nameText)[0] > maxTextWidth)
+      nameText = mkPlateText(unitNameLoc, fontVeryTiny)
+        .__update({ behavior = Behaviors.Marquee, maxWidth = maxTextWidth, speed = hdpx(30), delay = defMarqueeDelay })
+  return nameText
+}
 
 // CURRENCY ///////////////////////////////////////////////////////////////////
 
@@ -354,32 +484,7 @@ function mkRewardPlateSkinTexts(r, rStyle) {
   return mkRewardLabel(mkCommonLabelTextMarquee(loc(getUnitLocId(id)), rStyle))
 }
 
-//  BLUEPRINTS ///////////////////////////////////////////////////////////////////////
-
-function mkRewardPlateBlueprintImage(r, rStyle) {
-  let { id } = r
-  let size = getRewardPlateSize(r.slots, rStyle)
-  let imageW = size[0]
-  let imageH = size[1] - labelHeight
-  let textStyle = rStyle.textStyle
-  return {
-    size = [imageW,imageH]
-    rendObj = ROBJ_IMAGE
-    fallbackImage = Picture($"ui/unitskin#blueprint_default.avif:{imageW}:{imageH}:P")
-    image = Picture($"ui/unitskin#blueprint_{id}.avif:{imageW}:{imageH}:P")
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    children = {
-      padding = hdpx(5)
-      rendObj = ROBJ_TEXT
-      text = loc(getUnitLocId(id))
-      hplace = ALIGN_LEFT
-      vplace = ALIGN_BOTTOM
-    }.__update(textStyle)
-  }
-}
-
-let mkRewardPlateBlueprintTexts = @(r, rStyle) mkRewardLabel(mkCommonLabelTextMarquee(r?.count ?? 0, rStyle))
+//  UNIT ///////////////////////////////////////////////////////////////////////
 
 let mkRewardPlateUnitImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, false)
 let mkRewardPlateUnitUpgradeImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, true)
@@ -387,17 +492,11 @@ let mkRewardPlateUnitUpgradeImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, r
 function mkUnitTextsImpl(r, rStyle, isUpgraded) {
   let unit = Computed(@() serverConfigs.value?.allUnits?[r.id].__merge({ isUpgraded }))
   let size = getRewardPlateSize(r.slots, rStyle)
-  let maxTextWidth = size[0] - 2 * textPadding[1] - rStyle.markSize
   return function() {
     let res = { watch = unit }
     if (unit.value == null)
       return res
     let unitNameLoc = loc(getUnitLocId(unit.value))
-    let textStyle = rStyle.textStyle
-    local nameText = mkPlateText(unitNameLoc, textStyle)
-    if (calc_comp_size(nameText)[0] > maxTextWidth)
-      nameText = mkPlateText(unitNameLoc, fontVeryTiny)
-        .__update({ behavior = Behaviors.Marquee, maxWidth = maxTextWidth, speed = hdpx(30), delay = defMarqueeDelay })
     return res.__update({
       size
       padding = textPadding
@@ -409,7 +508,7 @@ function mkUnitTextsImpl(r, rStyle, isUpgraded) {
           flow = FLOW_VERTICAL
           halign = ALIGN_RIGHT
           children = [
-            nameText
+            mkUnitNameText(unitNameLoc, size, rStyle)
             mkPlateText(getUnitClassFontIcon(unit.value), fontLabel)
           ]
         }
@@ -425,6 +524,66 @@ function mkUnitTextsImpl(r, rStyle, isUpgraded) {
 
 let mkRewardPlateUnitTexts = @(r, rStyle) mkUnitTextsImpl(r, rStyle, false)
 let mkRewardPlateUnitUpgradeTexts = @(r, rStyle) mkUnitTextsImpl(r, rStyle, true)
+
+//  BLUEPRINTS ////////////////////////////////////////////////////////////////
+
+function mkRewardPlateBlueprintImage(r, rStyle) {
+  let { id } = r
+  let size = getRewardPlateSize(r.slots, rStyle)
+  let imageW = size[0]
+  let imageH = size[1] - progressBarHeight
+  let unitNameLoc = loc(getUnitLocId(id))
+  return {
+    size = [imageW,imageH]
+    rendObj = ROBJ_IMAGE
+    fallbackImage = Picture($"ui/unitskin#blueprint_default.avif:{imageW}:{imageH}:P")
+    image = Picture($"ui/unitskin#blueprint_{id}.avif:{imageW}:{imageH}:P")
+    halign = ALIGN_RIGHT
+    valign = ALIGN_TOP
+    children = mkUnitNameText(unitNameLoc, size, rStyle).__update({ padding = textPadding })
+  }
+}
+
+function mkRewardPlateBlueprintTexts(r, rStyle) {
+  let available = Computed(@() servProfile.get()?.blueprints?[r.id] ?? 0)
+  let total = Computed(@() serverConfigs.get()?.allBlueprints?[r.id].targetCount ?? 1)
+  let unitRank = Computed(@() serverConfigs.value?.allUnits?[r.id]?.mRank)
+  let isAllReceived = ("dropLimit" in r && "received" in r)
+    ? r.dropLimit != NO_DROP_LIMIT && r.dropLimit <= r.received
+    : false
+
+  return {
+    size = flex()
+    children = [
+      @() {
+        watch = [available, total]
+        size = flex()
+        valign = ALIGN_BOTTOM
+        flow = FLOW_VERTICAL
+        children = [
+          mkProgressLabel(available.get(), total.get(), rStyle)
+          isAllReceived
+            ? mkProgressBar(available.get(), total.get())
+            : mkProgressBarWithForecast(r.count, available.get(), total.get())
+        ]
+      }
+      @() {
+        watch = unitRank
+        size = flex()
+        valign = ALIGN_BOTTOM
+        halign = ALIGN_RIGHT
+        flow = FLOW_VERTICAL
+        padding = [0, hdpx(5)]
+        children = [
+          unitRank.get()
+            ? mkGradRankSmall(unitRank.get()).__update({ fontSize = rStyle.textStyle.fontSize, pos = [0, hdpx(5)] })
+            : null
+          mkProgressBarText(r, rStyle)
+        ]
+      }
+    ]
+  }
+}
 
 // UNKNOWN ////////////////////////////////////////////////////////////////////
 
@@ -577,6 +736,8 @@ return {
   REWARD_STYLE_SMALL
   REWARD_STYLE_MEDIUM
 
+  mkRewardDisabledBkg
+  mkRewardSearchPlate
   getRewardPlateSize
   mkRewardPlate
   mkRewardPlateVip
@@ -588,6 +749,9 @@ return {
   mkRewardFixedIcon
   mkReceivedCounter
   mkRewardLocked
+  mkProgressLabel
+  mkProgressBarWithForecast
+  mkProgressBarText
 
   decoratorIconContentCtors
 }

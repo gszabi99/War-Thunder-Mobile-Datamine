@@ -90,7 +90,7 @@ function getLocIdPrefixByCaliber(name) {
   foreach(id in bulletsLocIdByCaliber)
     if (name.endswith(id))
       return id
-  return null
+  return name
 }
 
 return {

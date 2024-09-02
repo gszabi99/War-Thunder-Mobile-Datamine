@@ -24,7 +24,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
-let { infoRhombButton } = require("%rGui/components/infoButton.nut")
+let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { has_leaderboard } = require("%appGlobals/permissions.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { lootboxImageWithTimer, lootboxContentBlock, lootboxHeader } = require("%rGui/shop/lootboxPreviewContent.nut")
@@ -261,8 +261,7 @@ let eventGamercard = {
               rendObj = ROBJ_TEXT
               text = curEventLoc.value
             }.__update(fontBig)
-
-            infoRhombButton(@() openNewsWndTagged($"event_{curEventName.value}_{curEventSeason.value}"))
+            infoEllipseButton(@() openNewsWndTagged($"event_{curEventName.value}_{curEventSeason.value}"))
           ]
         }
 

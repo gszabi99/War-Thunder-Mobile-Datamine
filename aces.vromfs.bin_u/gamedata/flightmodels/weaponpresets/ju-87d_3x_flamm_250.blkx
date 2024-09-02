@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "flam_250kg"
+    },
+    {
+      "slot": 2,
+      "preset": "flam_250kg"
+    },
+    {
+      "slot": 3,
+      "preset": "flam_250kg"
+    }
+  ]
+}

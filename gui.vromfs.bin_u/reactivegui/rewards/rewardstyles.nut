@@ -3,6 +3,7 @@ let { round } =  require("math")
 
 let fontLabel = fontTiny
 let labelHeight = round(fontLabel.fontSize * 1.3).tointeger()
+let progressBarHeight = hdpx(25)
 
 let mkRewardStyle = @(boxSize, style) {
   boxSize
@@ -25,6 +26,7 @@ function getRewardPlateSize(slots, rStyle) {
 return {
   fontLabel
   labelHeight
+  progressBarHeight
 
   REWARD_STYLE_TINY_SMALL_GAP = mkRewardStyleSmallGap(evenPx(104), fontVeryTiny)
   REWARD_STYLE_TINY = mkRewardStyle(evenPx(104), fontVeryTiny)

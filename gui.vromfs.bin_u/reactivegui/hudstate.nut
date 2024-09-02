@@ -61,6 +61,7 @@ let unitType = Computed(@() nativeToUnitType?[nativeUnitType.value])
 
 let isUnitDelayedNative = hudStateNative.isUnitDelayed
 let forceDelayed = mkWatched(persist, "forceDelayed", false)
+let areHintsHidden = mkWatched(persist, "areHintsHidden", false)
 let isUnitDelayed = Computed(@() isUnitDelayedNative.value || forceDelayed.value)
 register_command(@() forceDelayed(!forceDelayed.value), "debug.hud.isUnitDelayed")
 
@@ -75,6 +76,7 @@ let isInAntiairMode = hudStateNative.isInAntiairMode
 let hudMode = Computed(@() isInAntiairMode.value ? HM_MANUAL_ANTIAIR : HM_COMMON)
 
 return hudStateNative.__merge({
+  areHintsHidden
   unitType
   isUnitDelayed
   hudMode

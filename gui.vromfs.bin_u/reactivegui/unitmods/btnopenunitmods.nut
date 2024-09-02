@@ -4,7 +4,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
 let { unseenModsByCategory } = require("%rGui/unitMods/unitModsState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { contentMargin } = require("%rGui/unitAttr/unitAttrWndTabs.nut")
+let { contentMargin } = require("%rGui/attributes/attrWndTabs.nut")
 let { isHangarUnitHasWeaponSlots, openUnitModsSlotsWnd } = require("unitModsSlotsState.nut")
 
 let arsenalIconSize = hdpxi(80)

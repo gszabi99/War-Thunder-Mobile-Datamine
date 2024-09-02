@@ -5,7 +5,6 @@ let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { spendItemsQueue, removeSpendItem } = require("%rGui/hud/spendItems.nut")
 
 let btnGlareSize = (1.62 * touchButtonSize).tointeger()
-let actionGlareSize = (1.15 * touchButtonSize).tointeger()
 
 let consumableIconSize = hdpx(50)
 let consumableAnimationBottom = hdpx(-80)
@@ -39,8 +38,9 @@ let mkBtnGlare = @(trigger) {
   animations = [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.0, 1.0], duration = 0.5, trigger }]
 }
 
-function mkActionGlare(actionItem) {
+function mkActionGlare(actionItem,  buttonSize = touchButtonSize) {
   let trigger = $"action_cd_finish_{actionItem?.id}"
+  let actionGlareSize = (1.15 * buttonSize).tointeger()
   return {
     size = [actionGlareSize, actionGlareSize]
     vplace = ALIGN_CENTER

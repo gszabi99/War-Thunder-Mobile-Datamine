@@ -13,6 +13,9 @@ let unitClassFontIcons = {
   battlecruiser = "\u2410"
   battleship    = "\u2411"
   submarine     = "\u2412"
+  fighter       = "\u25A5"
+  bomber        = "\u25A2"
+  attacker      = "\u25A3"
 }
 
 let unitTypeFontIcons = {
@@ -36,12 +39,25 @@ let defaults = {
   image = ""
   upgradedImage = ""
   locId = ""
+  blueprintImage = ""
 }
 
 
-let inProgress = { image = "!ui/unitskin#image_in_progress.avif" }
+let inProgress = { image = "!ui/unitskin#image_in_progress.avif" } // warning disable: -declared-never-used
 let overrides = {
-  //
+//
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -60,6 +76,7 @@ let genParams = {
   image = @(name) $"!ui/unitskin#{name}.avif"
   upgradedImage = @(name) $"!ui/unitskin#{name}_upgraded.avif"
   locId = @(name) $"{name}"
+  blueprintImage = @(name) $"ui/unitskin#blueprint_{name}.avif"
 }
 
 function mkUnitPresentation(unitName) {

@@ -8,4 +8,5 @@ return {
   aTimePriceScale = 0.3 * blinkPeriod
   aTimePriceShake = blinkPeriod
   maxBuyRequirementsAnimTime = 2 * blinkPeriod
+  maxResearchRequirementsAnimTime = 2 * blinkPeriod
 }

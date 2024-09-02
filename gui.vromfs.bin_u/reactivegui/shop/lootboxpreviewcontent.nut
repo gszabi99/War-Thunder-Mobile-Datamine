@@ -1,13 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/rewardType.nut" import *
 let { roundToDigits } = require("%sqstd/math.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 let { getLootboxImage, getLootboxName, lootboxFallbackPicture } = require("%appGlobals/config/lootboxPresentation.nut")
 let { getLootboxRewardsViewInfo, fillRewardsCounts, NO_DROP_LIMIT
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon, mkReceivedCounter,
-  mkRewardLocked } = require("%rGui/rewards/rewardPlateComp.nut")
-let { REWARD_STYLE_TINY_SMALL_GAP, REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
+  mkRewardLocked, mkRewardSearchPlate, mkRewardDisabledBkg
+} = require("%rGui/rewards/rewardPlateComp.nut")
+let { REWARD_STYLE_TINY_SMALL_GAP, REWARD_STYLE_MEDIUM, progressBarHeight
+} = require("%rGui/rewards/rewardStyles.nut")
 let { mkLootboxChancesComp, mkIsLootboxChancesInProgress } = require("%rGui/rewards/lootboxRewardChances.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -21,14 +23,16 @@ let { mkFreeAdsGoodsTimeProgress } = require("%rGui/shop/goodsView/sharedParts.n
 let { schRewards } = require("%rGui/shop/schRewardsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
+let { mkButtonHoldTooltip  } = require("%rGui/tooltip.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { getStepsToNextFixed } = require("lootboxPreviewState.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let currencyStyles = require("%rGui/components/currencyStyles.nut")
 let { CS_COMMON } = currencyStyles
+let { mkUnitFlag } = require("%rGui/unit/components/unitPlateComp.nut")
 
 let lootboxImageSize = hdpxi(400)
+let blueprintSize = hdpxi(30)
 
 let spinner = mkSpinner(hdpx(100))
 
@@ -37,6 +41,15 @@ let columnsCount = (saSize[0] + saBorders[0] + boxGap) / (boxSize + boxGap) //al
 let itemsBlockWidth = isWidescreen ? saSize[0] : columnsCount * (boxSize + boxGap)
 
 let maxRewardsInLootboxBig = 24
+
+let chanceStyle = CS_COMMON
+
+let mkUnitPlateClick = @(r) @() unitDetailsWnd({ name = r.id, isUpgraded = r.rType == G_UNIT_UPGRADE })
+let mkPlateClickByType = {
+  [G_BLUEPRINT] = mkUnitPlateClick,
+  [G_UNIT] = mkUnitPlateClick,
+  [G_UNIT_UPGRADE] = mkUnitPlateClick,
+}
 
 let mkText = @(text, ovr = {}) {
   text
@@ -107,34 +120,40 @@ let mkTooltipText = @(text) {
   text
 }.__update(fontSmall)
 
-let mkCurrencyComp = @(count, chance, currencyId, style = CS_COMMON) {
+let mkChanceRow = @(count, chance, icon) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
-  gap = style.iconGap
+  gap = chanceStyle.iconGap
   children = [
     mkText(loc("item/chance"))
-    mkCurrencyImage(currencyId, style.iconSize, { key = style?.iconKey })
-    mkText($"{count}{colon}{chance}%")
+    icon
+    mkText($"{decimalFormat(count)}{colon}{roundToDigits(chance, 2)}%")
   ]
 }
 
-function mkTextForChance(rewardId, chances = null, count = null, currencyId = "") {
-  if (chances == null)
-    return mkText(loc("item/chance/error"))
+let mkTextForChanceCurrency = @(sr, chances, combinedReward)
+  mkChanceRow(sr.count, chances.percents[sr.id], mkCurrencyImage(combinedReward.id, chanceStyle.iconSize))
 
-  let chance = roundToDigits(chances.percents[rewardId], 2)
-  return count ? mkCurrencyComp(decimalFormat(count), chance, currencyId)
-    : mkText($"{loc("item/chance")}{colon}{chance}%")
+let chancePartCtors = {
+  blueprint = @(sr, chances, _)
+    mkChanceRow(sr.count, chances.percents[sr.id],
+      {
+        size = [blueprintSize, blueprintSize]
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/unitskin#blueprint_default_small.avif:{blueprintSize}:{blueprintSize}:P")
+        transform = { rotate = -10 }
+      })
 }
 
-function mkJackpotChanceText(id, chances, mainChances, stepsToFixed) {
+let mkTextForChancePart = @(singleReward, chances, combinedReward)
+  (chancePartCtors?[combinedReward.rType] ?? mkTextForChanceCurrency)(singleReward, chances, combinedReward)
+
+function mkJackpotChanceText(id, chances, mainChances, stepsCount) {
   if(chances == null || mainChances == null)
     return loc("item/chance/error")
 
   let chance = roundToDigits(chances.percents[id], 2)
-  let stepsToFixedJackpot = stepsToFixed[1] - stepsToFixed[0]
-
-  let chanceForGuaranteed = $"{loc("item/chance/jackpot", { count = stepsToFixedJackpot })}{colon}{chance}%"
+  let chanceForGuaranteed = $"{loc("item/chance/jackpot", { count = stepsCount })}{colon}{chance}%"
 
   if (!mainChances.percents?[id] && chances.percents?[id])
     return chanceForGuaranteed
@@ -144,13 +163,14 @@ function mkJackpotChanceText(id, chances, mainChances, stepsToFixed) {
   return "\n".concat($"{loc("item/chance")}{colon}{mainChance}%", chanceForGuaranteed)
 }
 
-function mkJackpotChanceContent(reward, lootbox, mainPercents, mainChanceInProgress) { //-return-different-types
+function mkJackpotChanceContent(reward, stepsCount, mainPercents, mainChanceInProgress) { //-return-different-types
   let { rewardId = null, parentSource = "", isLastReward = false } = reward
-  let stepsToFixed = getStepsToNextFixed(lootbox, serverConfigs.get(), servProfile.get())
+
+  if (stepsCount < 0)
+    return loc("item/chance/alternativeRewardReceived")
 
   if (isLastReward)
-    return loc("item/chance/lastRewardJackpot",
-      { count = stepsToFixed[1] - stepsToFixed[0] })
+    return loc("item/chance/lastRewardJackpot", { count = stepsCount })
 
   let jackpotChances = mkLootboxChancesComp(parentSource)
 
@@ -167,11 +187,11 @@ function mkJackpotChanceContent(reward, lootbox, mainPercents, mainChanceInProgr
       : mkTooltipText(mkJackpotChanceText(rewardId,
           mainPercents.get(),
           jackpotChances.get(),
-          stepsToFixed))
+          stepsCount))
     }
 }
 
-function mkChanceContent(reward, rewardStatus, lootbox) { //-return-different-types
+function mkChanceContent(reward, rewardStatus, stepsCount) { //-return-different-types
   let { rewardId = null, agregatedRewards = null, source = "", isLastReward = false } = reward
   let { isAvailable, isAllReceived, isJackpot = false } = rewardStatus
 
@@ -186,7 +206,7 @@ function mkChanceContent(reward, rewardStatus, lootbox) { //-return-different-ty
   let isInProgress = mkIsLootboxChancesInProgress(source)
 
   if (isJackpot)
-    return mkJackpotChanceContent(reward, lootbox, mainChances, isInProgress)
+    return mkJackpotChanceContent(reward, stepsCount, mainChances, isInProgress)
 
   return @() {
     watch = [isInProgress, mainChances]
@@ -195,53 +215,105 @@ function mkChanceContent(reward, rewardStatus, lootbox) { //-return-different-ty
     gap = hdpx(5)
     halign = ALIGN_LEFT
     children = isInProgress.get() ? spinner
-      : agregatedRewards != null ? agregatedRewards.map(@(r)
-        mkTextForChance(r.id, mainChances.get(), r.count, reward.id))
-      : mkTextForChance(rewardId, mainChances.get())
+      : mainChances.get() == null ? mkText(loc("item/chance/error"))
+      : agregatedRewards != null ? agregatedRewards.map(@(r) mkTextForChancePart(r, mainChances.get(), reward))
+      : rewardId != null
+        ? mkText("".concat(loc("item/chance"), colon, roundToDigits(mainChances.get().percents[rewardId], 2), "%"))
+      : null
   }
 }
 
-function mkReward(reward, lootbox, style) {
-  let { rType, id, dropLimit, dropLimitRaw, received = 0 } = reward
+function mkOvrSearchPlate(reward, ovr = {}) {
+  let onClick = mkPlateClickByType?[reward.rType](reward)
+  let ovr2 = onClick == null ? {}
+    : {
+        behavior = Behaviors.Button
+        onClick
+        sound = { click  = "click" }
+        clickableInfo = loc("mainmenu/btnPreview")
+        skipDirPadNav = true
+      }
+  return {
+    size = flex()
+    children = {
+      vplace = ALIGN_BOTTOM
+      hplace = ALIGN_LEFT
+      padding = hdpx(5)
+      children = mkRewardSearchPlate
+    }.__update(ovr2, ovr)
+  }
+}
+
+function mkBlueprintPlate(reward, rStyle) {
+  let { isJackpot = false } = reward
+  let unit = Computed(@() serverConfigs.value?.allUnits?[reward.id])
+  return @() {
+    watch = unit
+    size = flex()
+    children = [
+      mkOvrSearchPlate(reward, { pos = [0, -progressBarHeight] })
+      !isJackpot ? mkUnitFlag(unit.get(), rStyle) : null
+    ]
+  }
+}
+
+let ovrRewardPlateCtors = {
+  [G_BLUEPRINT] = mkBlueprintPlate,
+  [G_UNIT_UPGRADE] = @(reward, _) mkOvrSearchPlate(reward),
+  [G_UNIT] = @(reward, _) mkOvrSearchPlate(reward)
+}
+
+function mkReward(reward, lootbox, rStyle) {
+  let { rType, id, dropLimit, dropLimitRaw, received = 0, isJackpot = false } = reward
   let stateFlags = Watched(0)
   let key = {}
   local ovr = {}
-  if (rType == "unitUpgrade" || rType == "unit")
+  let onClick = mkPlateClickByType?[rType](reward)
+  if (onClick != null)
     ovr = {
-      onClick = @() unitDetailsWnd({
-        name = id,
-        isUpgraded = rType == "unitUpgrade"
-      })
       sound = { click  = "click" }
       clickableInfo = loc("mainmenu/btnPreview")
     }
-  let isAllReceived = Computed(function(){
-    local res = false
-    if((dropLimit != NO_DROP_LIMIT && dropLimit <= received) || (rType == "blueprint" && id in myUnits.get()))
-      res = true
-    return res
-  })
+  let isAllReceived = dropLimit != NO_DROP_LIMIT && dropLimit <= received
   let isAvailable = Computed(@() rType != "skin" || id in myUnits.get())
 
+  local ovrRewardPlate = null
+  local stepsToFixed = []
+
+  if (rType in ovrRewardPlateCtors)
+    ovrRewardPlate = ovrRewardPlateCtors[rType](reward, rStyle)
+  if (isJackpot)
+    stepsToFixed = getStepsToNextFixed(lootbox, serverConfigs.get(), servProfile.get())
+
+  let stepsCount = stepsToFixed.len() ? stepsToFixed[1] - stepsToFixed[0] : 0
+  let needDisabledBkg = isJackpot && stepsCount < 0 && !isAllReceived
+
   return @() {
-    watch = [isAvailable, stateFlags, isAllReceived]
+    watch = [isAvailable, stateFlags]
     behavior = Behaviors.Button
-    onDetach = tooltipDetach(stateFlags)
-    onElemState = withTooltip(stateFlags, key, @() { content = mkChanceContent(reward, {
-      isAvailable,
-      isAllReceived = isAllReceived.get(),
-      isJackpot = reward?.isJackpot
-    }, lootbox)})
     key
     children = [
-      mkRewardPlate(reward, style)
-      !isAvailable.get() ? mkRewardLocked(style)
-        : isAllReceived.get() ? mkRewardReceivedMark(style)
-        : (reward?.isFixed ?? reward?.isJackpot) ? mkRewardFixedIcon(style)
+      mkRewardPlate(reward, rStyle)
+      ovrRewardPlate
+      !isAvailable.get() ? mkRewardLocked(rStyle)
+        : isAllReceived ? mkRewardReceivedMark(rStyle)
+        : (reward?.isFixed ?? isJackpot) ? mkRewardFixedIcon(rStyle)
         : dropLimitRaw != NO_DROP_LIMIT ? mkReceivedCounter(received, dropLimit)
         : null
+      needDisabledBkg ? mkRewardDisabledBkg : null
     ]
-  }.__update(ovr)
+  }.__update(ovr,
+    mkButtonHoldTooltip(onClick, stateFlags, key,
+      @() {
+        content = mkChanceContent(reward,
+          {
+            isAvailable,
+            isAllReceived,
+            isJackpot
+          },
+          stepsCount)
+      },
+      0.01))
 }
 
 let itemsBlock = @(rewards, width, style, ovr = {}, lootbox = null) function() {

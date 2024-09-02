@@ -2150,7 +2150,7 @@
         "tier": 12,
         "order": 1,
         "WeaponPreset": {
-          "iconType": "nar_ap_small",
+          "iconType": "rocket_7kg",
           "name": "ub16",
           "reqModification": "il_28sh_ub_16_57",
           "ShowNodes": {
@@ -2173,7 +2173,7 @@
         "order": 3,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_small",
+            "iconType": "rocket_7kg",
             "name": "ub16",
             "reqModification": "il_28sh_ub_16_57",
             "ShowNodes": {
@@ -2190,7 +2190,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "fab250",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -2213,7 +2213,7 @@
         "order": 5,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_small",
+            "iconType": "rocket_7kg",
             "name": "ub16",
             "reqModification": "il_28sh_ub_16_57",
             "ShowNodes": {
@@ -2230,7 +2230,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "fab250",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -2253,7 +2253,7 @@
         "order": 7,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_small",
+            "iconType": "rocket_7kg",
             "name": "ub16",
             "reqModification": "il_28sh_ub_16_57",
             "ShowNodes": {
@@ -2270,7 +2270,7 @@
             }
           },
           {
-            "iconType": "rockets_he_large",
+            "iconType": "rocket_40kg",
             "name": "s24",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
@@ -2290,7 +2290,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "fab250",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -2313,7 +2313,7 @@
         "order": 9,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_small",
+            "iconType": "rocket_7kg",
             "name": "ub16",
             "reqModification": "il_28sh_ub_16_57",
             "ShowNodes": {
@@ -2330,7 +2330,7 @@
             }
           },
           {
-            "iconType": "rockets_he_large",
+            "iconType": "rocket_40kg",
             "name": "s24",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
@@ -2350,7 +2350,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "fab250",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -2389,7 +2389,7 @@
         "order": 11,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_small",
+            "iconType": "rocket_7kg",
             "name": "ub16",
             "reqModification": "il_28sh_ub_16_57",
             "ShowNodes": {
@@ -2406,7 +2406,7 @@
             }
           },
           {
-            "iconType": "rockets_he_large",
+            "iconType": "rocket_40kg",
             "name": "s24",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
@@ -2426,7 +2426,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "fab250",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -2496,7 +2496,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bombs_small_group_x8",
+            "iconType": "bomb_100kg_group",
             "name": "fab100_x12",
             "Weapon": [
               {
@@ -2586,7 +2586,7 @@
             ]
           },
           {
-            "iconType": "bombs_middle_group_x8",
+            "iconType": "bomb_250kg_group",
             "name": "fab250_x8",
             "reqModification": "mi_24_fab_250",
             "Weapon": [
@@ -2649,7 +2649,7 @@
             ]
           },
           {
-            "iconType": "bombs_large_group_x4",
+            "iconType": "bomb_500kg_group",
             "name": "fab500_x4",
             "reqModification": "kd-3_bc",
             "Weapon": [
@@ -2684,7 +2684,7 @@
             ]
           },
           {
-            "iconType": "bombs_special",
+            "iconType": "bomb_1500kg",
             "name": "fab1500",
             "reqModification": "bd-4_bc",
             "Weapon": {
@@ -2696,7 +2696,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bomb_2000kg",
             "name": "fab3000",
             "reqModification": "bd-4_bc",
             "Weapon": {
@@ -2714,7 +2714,7 @@
         "order": 12,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_small",
+            "iconType": "rocket_7kg",
             "name": "ub16",
             "reqModification": "il_28sh_ub_16_57",
             "ShowNodes": {
@@ -2731,7 +2731,7 @@
             }
           },
           {
-            "iconType": "rockets_he_large",
+            "iconType": "rocket_40kg",
             "name": "s24",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
@@ -2751,7 +2751,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "fab250",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -2820,7 +2820,7 @@
         "order": 10,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_small",
+            "iconType": "rocket_7kg",
             "name": "ub16",
             "reqModification": "il_28sh_ub_16_57",
             "ShowNodes": {
@@ -2837,7 +2837,7 @@
             }
           },
           {
-            "iconType": "rockets_he_large",
+            "iconType": "rocket_40kg",
             "name": "s24",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
@@ -2857,7 +2857,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "fab250",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -2896,7 +2896,7 @@
         "order": 8,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_small",
+            "iconType": "rocket_7kg",
             "name": "ub16",
             "reqModification": "il_28sh_ub_16_57",
             "ShowNodes": {
@@ -2913,7 +2913,7 @@
             }
           },
           {
-            "iconType": "rockets_he_large",
+            "iconType": "rocket_40kg",
             "name": "s24",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
@@ -2933,7 +2933,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "fab250",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -2956,7 +2956,7 @@
         "order": 6,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_small",
+            "iconType": "rocket_7kg",
             "name": "ub16",
             "reqModification": "il_28sh_ub_16_57",
             "ShowNodes": {
@@ -2973,7 +2973,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "fab250",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -2996,7 +2996,7 @@
         "order": 4,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_small",
+            "iconType": "rocket_7kg",
             "name": "ub16",
             "reqModification": "il_28sh_ub_16_57",
             "ShowNodes": {
@@ -3013,7 +3013,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "fab250",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -3035,7 +3035,7 @@
         "tier": 0,
         "order": 2,
         "WeaponPreset": {
-          "iconType": "nar_ap_small",
+          "iconType": "rocket_7kg",
           "name": "ub16",
           "reqModification": "il_28sh_ub_16_57",
           "ShowNodes": {

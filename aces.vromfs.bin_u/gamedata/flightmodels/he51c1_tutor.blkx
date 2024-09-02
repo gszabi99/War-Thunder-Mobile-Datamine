@@ -1918,10 +1918,6 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1040.0,
-    "maxloadMassLeftConsoles": 570.0,
-    "maxloadMassRightConsoles": 570.0,
-    "maxDisbalance": 420.0,
     "HideNodes": {
       "node": [
         "pylon_bomb1",
@@ -1961,7 +1957,7 @@
         "tier": 7,
         "order": 1,
         "WeaponPreset": {
-          "iconType": "bombs_small_group",
+          "iconType": "bomb_25kg_group",
           "name": "sd10a",
           "ShowNodes": {
             "node": "pylon_bomb1"
@@ -1999,7 +1995,7 @@
         "tier": 5,
         "order": 2,
         "WeaponPreset": {
-          "iconType": "bombs_small_group",
+          "iconType": "bomb_25kg_group",
           "name": "sd10a",
           "ShowNodes": {
             "node": "pylon_bomb2"

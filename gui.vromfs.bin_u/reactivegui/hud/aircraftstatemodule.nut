@@ -13,8 +13,7 @@ let iconSize = hdpx(60).tointeger()
 let iconColumnCount = 5
 
 let dmModulesSize = [iconSize * iconColumnCount, SIZE_TO_CONTENT]
-let xrayDollSize = shHud(20)
-
+let xrayDollSize = hdpx(150)
 let xrayDoll = @(stateFlags) {
   size = [xrayDollSize, xrayDollSize]
   children = [
@@ -133,6 +132,7 @@ let xrayModelEditView = {
 }
 
 return {
+  xrayDollSize
   xrayModel
   dmModules
   xrayModelEditView

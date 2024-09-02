@@ -3,10 +3,10 @@ from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_common_local_settings_blk, get_settings_blk } = require("blkGetters")
 let { get_maximum_frames_per_second, is_broken_grass_flag_set, is_texture_uhq_supported, should_notify_about_restart,
-  get_platform_window_resolution, get_default_graphics_preset
+  get_platform_window_resolution, get_default_graphics_preset, get_deferred_enabled
 } = require("graphicsOptions")
 let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
-let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTION, mkOptionValue
+let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTION, OPT_AA, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
@@ -26,6 +26,8 @@ let graphicsQuality = mkOptionValue(OPT_GRAPHICS_QUALITY, defaultQuality, valida
 let resolutionList = (get_settings_blk()?.graphics.forceLowPreset ?? false) ? ["low"]
   : (is_android && (get_user_system_info()?.physicalMemory ?? minMemory) < minMemory) ? ["low", "medium"]
   : ["low", "medium", "high"]
+
+let aaList = (is_android || is_pc) ? (get_deferred_enabled() ? ["fxaa", "fxaa_hq", "taa"] : ["fxaa"]) : []
 
 let validateResolution = @(q) resolutionList.contains(q) ? q : resolutionList[0]
 
@@ -88,6 +90,20 @@ let optFpsLimit = {
   }
 }
 
+let defaultAA = aaList.len() > 0 ? aaList[0] : ""
+let validateAA = @(a) aaList.contains(a) ? a : defaultAA
+let aaValue = mkOptionValue(OPT_AA, defaultAA, validateAA)
+let optAntiAliasing = {
+  locId = "options/aa_options"
+  ctrlType = OCT_LIST
+  value = aaValue
+  list = aaList
+  valToString = @(v) loc($"options/aa_{v}")
+  function setValue(v) {
+    aaValue(v)
+  }
+}
+
 let rayTracingValues = [0, 1, 2]
 let optRayTracing = {
   locId = "options/raytracing"
@@ -103,7 +119,7 @@ let needUhqTexturesRaw = Watched(isUhqSupported
   && !!get_common_local_settings_blk()?.uhqTextures) //machine storage
 
 let needShowRestartNotify = Watched(should_notify_about_restart())
-eventbus_subscribe("presets.scaleChanged", @(params) needShowRestartNotify(params?.status ?? false))
+eventbus_subscribe("presets.restartNotifyChanged", @(params) needShowRestartNotify(params?.status ?? false))
 
 let restartTxt = @() !needShowRestartNotify.get() ? { watch = needShowRestartNotify }
 : {
@@ -135,6 +151,7 @@ return {
     optQuality
     { comp = restartTxt }
     optResolution
+    aaList.len() > 1 ? optAntiAliasing : null
     optFpsLimit
     inline_raytracing_available() ? optRayTracing : null
     isUhqSupported ? optUhqTextures : null

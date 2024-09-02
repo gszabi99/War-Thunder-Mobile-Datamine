@@ -107,7 +107,20 @@ function mkWeaponPreset(unitNameW) {
 
 function getWeaponPreset(unitName) {
   loadSettingsOnce(unitName)
-  return loadedSettings.get()?[unitName].weaponPreset ?? {}
+  return loadedSettings.get()?[unitName].weaponPreset ?? []
+}
+
+function mkChosenBelts(unitNameW) {
+  let { unitSettings, updateUnitSettings } = mkUnitSettingsWatch(unitNameW)
+  let chosenBelts = Computed(@() unitSettings.get()?.belts ?? {})
+  let setChosenBelts = @(belts) isEqual(belts, chosenBelts.get()) ? null
+    : updateUnitSettings({ belts })
+  return { chosenBelts, setChosenBelts }
+}
+
+function getChosenBelts(unitName) {
+  loadSettingsOnce(unitName)
+  return loadedSettings.get()?[unitName].belts ?? {}
 }
 
 return {
@@ -118,4 +131,6 @@ return {
   getSkinCustomTags
   mkWeaponPreset
   getWeaponPreset
+  mkChosenBelts
+  getChosenBelts
 }

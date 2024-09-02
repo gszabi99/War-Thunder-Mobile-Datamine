@@ -37,8 +37,8 @@ function startOfflineMission(unitName, skin, missionId, bullets, weaponPreset, l
   misBlk["isBotsAllowed"] = true
   changeTrainingUnit(unitName, skin, bullets)
 
+  let wBlk = misBlk.addBlock("customWeaponPresetForTraining")
   if (weaponPreset != null) {
-    let wBlk = misBlk.addBlock("custom_weapons")
     foreach(slotId, presetId in weaponPreset) {
       let blk = DataBlock()
       blk.slot = slotId

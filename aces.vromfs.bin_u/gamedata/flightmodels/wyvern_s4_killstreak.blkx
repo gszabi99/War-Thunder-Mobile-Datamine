@@ -1894,7 +1894,7 @@
             ]
           },
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "60lbs_8",
             "reqModification": "halker_rc",
             "ShowNodes": {
@@ -2063,7 +2063,7 @@
             ]
           },
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "60lbs_8",
             "reqModification": "halker_rc",
             "ShowNodes": {
@@ -2232,7 +2232,7 @@
             ]
           },
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "60lbs_8",
             "reqModification": "halker_rc",
             "ShowNodes": {
@@ -2401,7 +2401,7 @@
             ]
           },
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "60lbs_8",
             "reqModification": "halker_rc",
             "ShowNodes": {
@@ -3327,7 +3327,7 @@
             ]
           },
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "60lbs_8",
             "reqModification": "halker_rc",
             "ShowNodes": {
@@ -3496,7 +3496,7 @@
             ]
           },
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "60lbs_8",
             "reqModification": "halker_rc",
             "ShowNodes": {
@@ -3665,7 +3665,7 @@
             ]
           },
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "60lbs_8",
             "reqModification": "halker_rc",
             "ShowNodes": {
@@ -3834,7 +3834,7 @@
             ]
           },
           {
-            "iconType": "rockets_he_small",
+            "iconType": "rocket_7kg",
             "name": "60lbs_8",
             "reqModification": "halker_rc",
             "ShowNodes": {

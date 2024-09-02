@@ -6,6 +6,7 @@ let io = require("io")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { sendNetEvent, CmdApplyMyBattleResultOnExit } = require("dasevents")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { EventBattleResult, EventResultMPlayers } = require("%appGlobals/sqevents.nut")
 let { register_command } = require("console")
 let { myUserId, myUserName } = require("%appGlobals/profileStates.nut")
@@ -15,6 +16,7 @@ let { isInBattle, battleSessionId, isOnline } = require("%appGlobals/clientState
 let { get_mp_session_id_int, destroy_session, set_quit_to_debriefing_allowed } = require("multiplayer")
 let { allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
+let { compatibilityConvertCommonStats } = require("%appGlobals/commonStatsUtils.nut")
 let { get_mp_local_team, get_mplayers_list } = require("mission")
 let { get_mp_tbl_teams } = require("guiMission")
 let mkCommonExtras = require("mkCommonExtras.nut")
@@ -31,26 +33,33 @@ let resultPlayers = mkWatched(persist, "resultPlayers", null)
 let playersCommonStats = mkWatched(persist, "playersCommonStats", {})
 let connectFailedData = mkWatched(persist, "connectFailedData", null)
 let questProgressDiff = mkWatched(persist, "questProgressDiff", null)
+let unitWeaponry = mkWatched(persist, "unitWeaponry", null)
 let roomInfo = Computed(@() lastRoom.get()?.public.filter(@(_, key) key in exportRoomParams))
 
 let battleResult = Computed(function() {
-  if (debugBattleResult.value)
-    return debugBattleResult.value
-  if (battleSessionId.value == -1)
-    return singleMissionResult.value != null
-      ? mkCommonExtras(singleMissionResult.value).__merge(singleMissionResult.value)
-      : null
-  local res = baseBattleResult.value?.__merge({ roomInfo = roomInfo.get() })
-  if (res?.sessionId != battleSessionId.value)
-    return connectFailedData.value?.sessionId != battleSessionId.value ? null
-      : connectFailedData.value.__merge({ isDisconnected = true }, { roomInfo = roomInfo.get() })
-  if (res?.sessionId == resultPlayers.value?.sessionId)
-    res = resultPlayers.value.__merge(res)
-  if (playersCommonStats.value.len() != 0)
-    res = { playersCommonStats = playersCommonStats.value }.__merge(res)
-  if (questProgressDiff.value != null)
-    res = { quests = questProgressDiff.value }.__merge(res)
-  res = mkCommonExtras(baseBattleResult.value).__merge(res)
+  if (debugBattleResult.get())
+    return debugBattleResult.get()
+  local res
+  if (battleSessionId.get() == -1) {
+    if (singleMissionResult.get() == null)
+      return null
+    res = mkCommonExtras(singleMissionResult.get()).__merge(singleMissionResult.get())
+  }
+  else {
+    res = baseBattleResult.get()?.__merge({ roomInfo = roomInfo.get() })
+    if (res?.sessionId != battleSessionId.get())
+      return connectFailedData.get()?.sessionId != battleSessionId.get() ? null
+        : connectFailedData.get().__merge({ isDisconnected = true }, { roomInfo = roomInfo.get() })
+    if (res?.sessionId == resultPlayers.get()?.sessionId)
+      res = resultPlayers.get().__merge(res)
+    if (playersCommonStats.get().len() != 0)
+      res = { playersCommonStats = playersCommonStats.get() }.__merge(res)
+    if (questProgressDiff.get() != null)
+      res = { quests = questProgressDiff.get() }.__merge(res)
+    res = mkCommonExtras(baseBattleResult.get()).__merge(res)
+  }
+  if (unitWeaponry.get() != null)
+    res = { unitWeaponry = unitWeaponry.get() }.__merge(res)
   return res
 })
 
@@ -62,6 +71,29 @@ singleMissionResult.subscribe(@(_) debugBattleResult(null))
 
 isInBattle.subscribe(@(v) v ? questProgressDiff.set(null) : null)
 eventbus_subscribe("BattleResultQuestProgressDiff", @(v) questProgressDiff.set(v))
+
+local isUnitWeaponryRequested = mkWatched(persist, "isUnitWeaponryRequested", null)
+isInBattle.subscribe(function(v) {
+  if (!v)
+    return
+  unitWeaponry.set(null)
+  isUnitWeaponryRequested.set(null)
+})
+battleResult.subscribe(function(v) {
+  let { unit = null, isSeparateSlots = false } = v
+  if (unit == null)
+    return
+  let { name = "", platoonUnits = [] } = unit
+  let units = isSeparateSlots
+    ? [ name ].extend(platoonUnits.map(@(pu) pu.name))
+    : [ name ]
+  let params = { units }
+  if (isEqual(isUnitWeaponryRequested.get(), params))
+    return
+  isUnitWeaponryRequested.set(params)
+  eventbus_send("RequestBattleResultUnitWeaponry", params)
+})
+eventbus_subscribe("BattleResultUnitWeaponry", @(v) unitWeaponry.set(v))
 
 let gotQuitToDebriefing = mkWatched(persist, "gotQuitToDebriefing", false)
 isInBattle.subscribe(@(v)  v ? gotQuitToDebriefing(false) : null)
@@ -133,7 +165,7 @@ function getPlayersCommonStats(players) {
   let res = {}
   playersCommonStatsQuery(function(_, c) {
     if (c.isBattleDataReceived)
-      res[c.server_player__userId.tostring()] <- c.commonStats.getAll()
+      res[c.server_player__userId.tostring()] <- compatibilityConvertCommonStats(c.commonStats.getAll())
   })
   let defLevel = res.findvalue(@(_) true)?.level ?? 1
   foreach (player in players) {

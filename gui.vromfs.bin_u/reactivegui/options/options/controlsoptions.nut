@@ -3,14 +3,18 @@ from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_send } = require("eventbus")
 let { DBGLEVEL } = require("dagor.system")
 let {OPT_FREE_CAMERA_TANK, OPT_HAPTIC_INTENSITY, OPT_HAPTIC_INTENSITY_ON_SHOOT, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT,
-  OPT_HAPTIC_INTENSITY_ON_COLLISION, mkOptionValue
+  OPT_HAPTIC_INTENSITY_ON_COLLISION, OPT_CAMERA_ROTATION_ASSIST, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
-let { CAM_TYPE_FREE_TANK, set_camera_sens } = require("controlsOptions")
+let { CAM_TYPE_FREE_TANK, set_camera_sens, set_camera_rotation_assist } = require("controlsOptions")
 let { setHapticIntensity, ON_SHOOT, ON_HERO_GET_SHOT, ON_COLLISION } = require("hapticVibration")
 let { get_option_multiplier, set_option_multiplier, OPTION_FREE_CAMERA_INERTIA } = require("gameOptions")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { openTuningRecommended } = require("%rGui/hudTuning/hudTuningState.nut")
 let { openVoiceMsgPieEditor } = require("%rGui/hud/voiceMsg/voiceMsgPieEditor.nut")
+let { abTests } = require("%appGlobals/pServer/campaign.nut")
+let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+
+let sendChange = @(id, v) sendSettingChangeBqEvent(id, "tanks", v)
 
 function cameraSenseSlider(camType, locId, optId, cur = 1.0, minVal = 0.03, maxVal = 3.0, stepVal = 0.03) {
   let value = mkOptionValue(optId, cur)
@@ -65,6 +69,27 @@ let optFreeCameraInertia = {
   }
 }
 
+let validate = @(val, list) list.contains(val) ? val : list[0]
+
+let cameraRotationAssistList = [false, true]
+let cameraRotationAssistDefault = Computed(@() (abTests.value?.tankCameraRotationAssist ?? "true") == "true")
+let currentCameraRotationAssistRaw = mkOptionValue(OPT_CAMERA_ROTATION_ASSIST)
+let currentCameraRotationAssist = Computed(@() validate(
+  currentCameraRotationAssistRaw.value ?? cameraRotationAssistDefault
+  cameraRotationAssistList))
+set_camera_rotation_assist(currentCameraRotationAssist.value)
+currentCameraRotationAssist.subscribe(@(v) set_camera_rotation_assist(v))
+let cameraRotationAssist = {
+  locId = "options/camera_rotation_assist"
+  ctrlType = OCT_LIST
+  value = currentCameraRotationAssist
+  setValue = @(v) currentCameraRotationAssistRaw(v)
+  onChangeValue = @(v) sendChange("camera_rotation_assist", v)
+  list = cameraRotationAssistList
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+  description = loc("options/desc/camera_rotation_assist")
+}
+
 return {
   cameraSenseSlider
   controlsOptions = [
@@ -84,5 +109,6 @@ return {
     hapticIntensitySlider("options/vibration_on_collision", OPT_HAPTIC_INTENSITY_ON_COLLISION, ON_COLLISION)
     cameraSenseSlider(CAM_TYPE_FREE_TANK, "options/free_camera_sensitivity_tank", OPT_FREE_CAMERA_TANK, 2.0, 0.5, 8.0)
     DBGLEVEL > 0 ? optFreeCameraInertia : null
+    cameraRotationAssist
   ]
 }

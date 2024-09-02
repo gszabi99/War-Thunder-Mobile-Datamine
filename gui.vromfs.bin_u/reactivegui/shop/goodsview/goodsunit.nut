@@ -7,7 +7,7 @@ let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
 let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareIconBtn, purchasedPlate,
   mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, underConstructionBg, goodsH, goodsSmallSize, offerPad,
-  priceBgGradGold
+  priceBgGradGold, offerW,  offerH
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { discountTagBig } = require("%rGui/components/discountTag.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -30,7 +30,9 @@ let bgHiglight = {
 }
 
 function getUnitByGoods(goods) {
-  let unit = serverConfigs.value?.allUnits[goods?.unitUpgrades[0]]
+  let isBlueprintOffer = (goods?.blueprints.len() ?? 0) > 0
+  let unitName = isBlueprintOffer ? goods?.blueprints.findindex(@(_) true) : goods?.unitUpgrades[0]
+  let unit = serverConfigs.value?.allUnits[unitName]
   if (unit != null)
     return unit.__merge({ isUpgraded = true })
   return serverConfigs.get()?.allUnits[goods.units?[0] ?? goods?.meta.previewUnit]
@@ -40,6 +42,11 @@ function isUnitOrUnitUpgradePurchased(myUnitsValue, unit) {
   let { name = "", isUpgraded = false } = unit
   let ownUnit = myUnitsValue?[name]
   return ownUnit != null && (!isUpgraded || ownUnit.isUpgraded)
+}
+
+let getLocBlueprintUnit = function(goods) {
+  let unit = getUnitByGoods(goods)
+  return unit != null ? " ".concat(loc("blueprints"), getPlatoonOrUnitName(unit, loc)) : goods.id
 }
 
 let getLocNameUnit = function(goods) {
@@ -237,9 +244,36 @@ function mkOfferUnit(goods, onClick, state) {
     ].extend(mkOfferCommonParts(goods, state)))
 }
 
+function mkOfferBlueprint(goods, onClick, state){
+  let unit = getUnitByGoods(goods)
+  let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
+    offerClass = null } = goods
+  let bgImg = "ui/gameuiskin#offer_bg_blue.avif"
+  let image = {
+    size = [ offerW,  offerH ]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#blueprint_offer_banner_01.avif:{offerW}:{offerH}:P")
+    imageHalign = ALIGN_CENTER
+    imageValign = ALIGN_CENTER
+  }
+  return mkOfferWrap(onClick,
+    unit == null ? null : @(sf) [
+      mkBgImg(bgImg)
+      isShowDebugOnly ? underConstructionBg : null
+      sf & S_HOVER ? bgHiglight : null
+      image
+      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
+        endTime ?? timeRange?.end)
+      discountTagBig(discountInPercent)
+    ].extend(mkOfferCommonParts(goods, state)))
+
+}
+
 return {
   getLocNameUnit
+  getLocBlueprintUnit
   mkGoodsUnit
   mkOfferUnit
+  mkOfferBlueprint
   getUnitByGoods
 }

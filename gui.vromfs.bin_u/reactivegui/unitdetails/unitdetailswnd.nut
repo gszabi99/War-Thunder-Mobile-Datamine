@@ -14,18 +14,20 @@ let { can_debug_units } = require("%appGlobals/permissions.nut")
 let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { mkLeftBlockUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
-let buyUnitLevelWnd = require("%rGui/unitAttr/buyUnitLevelWnd.nut")
+let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let { scaleAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { justUnlockedPlatoonUnits } = require("%rGui/unit/justUnlockedPlatoonUnits.nut")
-let { btnOpenUnitAttrBig } = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
+let { btnOpenUnitAttrBig } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
 let btnOpenUnitSkins = require("%rGui/unitSkins/btnOpenUnitSkins.nut")
 let { curSelectedUnitId, openUnitOvr, closeUnitDetailsWnd, baseUnit,
   platoonUnitsList, unitToShow, isWindowAttached, openUnitDetailsWnd, unitDetailsOpenCount
 } = require("unitDetailsState.nut")
 let { selectedLineHorUnitsCustomSize, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
+let { hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
+let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 
 
 let buttonsGap = hdpx(40)
@@ -152,7 +154,11 @@ let buttonsBlock = @() {
           vplace = ALIGN_BOTTOM
           valign = ALIGN_BOTTOM
           children = [
-            btnOpenUnitAttrBig
+            @() {
+              watch = hasSlotAttrPreset
+              children = !hasSlotAttrPreset.get() ? btnOpenUnitAttrBig
+                : btnOpenUnitMods({ hotkeys = ["^J:Y"] })
+            }
             lvlUpButton
             { size = flex() }
             btnOpenUnitSkins

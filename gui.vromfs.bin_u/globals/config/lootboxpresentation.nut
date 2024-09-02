@@ -7,7 +7,6 @@ let customLootboxImages = {
   every_day_award_first = "every_day_award_medium_pack.avif"
 
   event_small_season_1                 = "event_small.avif"
-  event_small_season_11                = "event_small_season_11.avif"
 
   event_special_tanks_christmas_2023   = "event_special_ships_christmas_2023.avif"
   event_special_tanks_april_2024       = "event_special_ships_april_2024.avif"
@@ -30,10 +29,9 @@ let imgIdBySeason = {
   event_small = @(season) $"event_small_{season}",
 }
 
-let mkImgTankToShip = @(id) id.replace("tanks", "ships")
 let defaultSeasonImages = [
-  { re = regexp2(@"^event_tanks_medium_season_\d+$"), mkImg = mkImgTankToShip },
-  { re = regexp2(@"^event_tanks_big_season_\d+$"),    mkImg = mkImgTankToShip },
+  { re = regexp2(@"^event_tanks_(medium|big)_season_\d+$"), mkImg = @(id) id.replace("tanks", "ships") },
+  { re = regexp2(@"^event_air_(medium|big)_season_\d+$"),   mkImg = @(id) id.replace("air", "ships") },
 ]
 
 let customEventLootboxScale = {

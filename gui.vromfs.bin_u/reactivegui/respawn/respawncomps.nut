@@ -1,4 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
+let { round } = require("math")
+let { format } = require("string")
+let { scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
+let { unitPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
+let { getBulletBeltImage } = require("%appGlobals/config/bulletsPresentation.nut")
+
+let courseMenuKey = "courseMenuKey"
+let courseTitleKey = "courseTitleKey"
+let turretMenuKey = "turretMenuKey"
+let turretTitleKey = "turretTitleKey"
+let secondaryMenuKey = "secondaryMenuKey"
+let secondaryTitleKey = "secondaryTitleKey"
 
 let textColor = 0xFFD0D0D0
 let headerHeight = hdpx(60)
@@ -6,7 +18,36 @@ let gap = hdpx(10)
 let bulletsBlockWidth = hdpx(520)
 let bulletsBlockMargin = hdpx(40)
 let bulletsLegendWidth = hdpx(260)
+let contentOffset = hdpx(40)
 let headerMargin = [0, hdpx(20), 0, bulletsBlockMargin]
+let unitListHeight = saSize[1] - scoreBoardHeight - contentOffset - headerHeight - unitPlatesGap
+
+let smallGap = hdpx(8)
+let beltImgWidth = evenPx(25)
+let imgSize = beltImgWidth * 4
+let padding = hdpxi(5)
+let weaponSize = imgSize + 2 * padding
+let weaponGroupWidth = hdpx(600)
+
+let defaultTitle = @(w) format(loc("weapons/counter/right/short"), w?.count ?? 1)
+
+function caliberTitle(w) {
+  let { caliber = null } = w.bulletSets.findvalue(@(_) true)
+  return " ".join([
+      caliber != null ? format(loc("caliber/mm"), caliber) : "",
+      (w?.count ?? 1) == 1 ? "" : format(loc("weapons/counter/right/short"), w.count)
+    ],
+    false)
+}
+
+let weaponTitles = {
+  ["machine gun"] = caliberTitle,
+  ["additional gun"] = caliberTitle,
+  cannon = caliberTitle,
+  gunner = caliberTitle,
+}
+
+let getWeaponTitle = @(w) (weaponTitles?[w?.trigger] ?? defaultTitle)(w)
 
 let bg = {
   rendObj = ROBJ_SOLID
@@ -79,9 +120,40 @@ let bulletsLegend = {
   ]
 }
 
+let mkSimpleIcon = @(image) {
+  size = [imgSize, imgSize]
+  rendObj = ROBJ_IMAGE
+  image = Picture($"{image}:{imgSize}:{imgSize}:P")
+  keepAspect = true
+}
+
+function commonWeaponIcon(w) {
+  let { iconType = "" } = w
+  return iconType == "" ? null : mkSimpleIcon($"ui/gameuiskin#{iconType}.avif")
+}
+
+function mkBeltImage(bullets) {
+  let list = bullets.len() == 1 ? array(4, bullets[0])
+    : bullets.len() == 2 ? (clone bullets).extend(bullets)
+    : bullets
+  return {
+    size = [imgSize, imgSize]
+    gap = round((imgSize - beltImgWidth * list.len()) / max(1, list.len())).tointeger()
+    halign = ALIGN_CENTER
+    flow = FLOW_HORIZONTAL
+    children = list.map(@(name) {
+      size = [beltImgWidth, imgSize]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"{getBulletBeltImage(name)}:{beltImgWidth}:{imgSize}:P")
+      keepAspect = true
+    })
+  }
+}
+
 return {
   bg
   gap
+  textColor
   headerText
   header
   headerMargin
@@ -91,4 +163,25 @@ return {
   bulletsBlockMargin
   bulletsLegend
   bulletsLegendWidth
+  contentOffset
+  unitListHeight
+  beltImgWidth
+  imgSize
+  padding
+  weaponSize
+  weaponGroupWidth
+  smallGap
+  commonWeaponIcon
+
+  getWeaponTitle
+  caliberTitle
+
+  courseMenuKey
+  courseTitleKey
+  turretMenuKey
+  turretTitleKey
+  secondaryMenuKey
+  secondaryTitleKey
+
+  mkBeltImage
 }

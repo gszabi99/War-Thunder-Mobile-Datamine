@@ -6,7 +6,7 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { endswith } = require("string")
 let logO = log_with_prefix("[OFFLINE_BATTLE] ")
 let { chooseRandom } = require("%sqstd/rand.nut")
-let { curCampaign, campProfile, abTests } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campProfile, abTests, curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let { curUnit, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let newbieModeStats = require("newbieModeStats.nut")
@@ -55,10 +55,17 @@ let newbieOfflineMissions = Computed(function() {
   if (list == null)
     return null
 
-  let { level = 0 } = curUnit.value
-  let platoonUnit = curUnit.value?.platoonUnits.findvalue(@(u) (u?.reqLevel ?? 0) <= level)
-  if (platoonUnit != null) //offline missions does not have units choice, so go to online newbie mode in the such case
-    return null
+  //offline missions does not have units choice, so go to online newbie mode in the such case
+  if (curCampaignSlotUnits.get() != null) {
+    if (curCampaignSlotUnits.get().len() > 1)
+      return null
+  }
+  else {
+    let { level = 0 } = curUnit.value
+    let platoonUnit = curUnit.value?.platoonUnits.findvalue(@(u) (u?.reqLevel ?? 0) <= level)
+    if (platoonUnit != null)
+      return null
+  }
 
   return missionsList.value
 })

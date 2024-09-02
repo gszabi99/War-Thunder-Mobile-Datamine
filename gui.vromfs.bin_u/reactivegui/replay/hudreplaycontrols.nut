@@ -5,6 +5,7 @@ let { mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { get_mplayer_by_id } = require("mission")
 let { getSpectatorTargetId } = require("guiSpectator")
+let { get_replay_anchors } = require("replays")
 
 let buttonSize = hdpxi(70)
 let btnColor = 0xFFFFFFFF
@@ -14,6 +15,7 @@ let unitNameSize = hdpxi(600)
 let watchedHeroId = mkWatched(persist, "watchedHeroId", -1)
 let watchedHero = Computed(@() get_mplayer_by_id(watchedHeroId.value))
 let watchedHeroName = Computed(@() watchedHero.value == null ? "" : watchedHero.value.name)
+let hasAncors = Watched(false)
 
 eventbus_subscribe("WatchedHeroChanged", @(_) watchedHeroId(getSpectatorTargetId()))
 
@@ -60,6 +62,25 @@ function makeArrow(isLeft, shortcutId) {
   }
 }
 
+let prevAnchor = makeArrow(true, "ID_REPLAY_PREVIOUS_ANCHOR")
+let nextAnchor = makeArrow(false, "ID_REPLAY_NEXT_ANCHOR")
+
+let rewindControls = {
+  size = SIZE_TO_CONTENT
+  pos = [pw(-20), ph(5)]
+  rendObj = ROBJ_VECTOR_CANVAS
+  vplace = ALIGN_TOP
+  hplace = ALIGN_RIGHT
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(40)
+  children = [
+    prevAnchor
+    nextAnchor
+  ]
+  fillColor = 0x00000000
+  commands = [[VECTOR_POLY, 0, 0, 100, 0, 100, 100, 0, 100]]
+}
+
 let prevUnit = makeArrow(true, "ID_PREV_PLANE")
 let nextUnit = makeArrow(false, "ID_NEXT_PLANE")
 
@@ -97,32 +118,43 @@ function makeButton(label, shortcutId) {
 let playersView = makeButton("Player's view", "ID_TOGGLE_FOLLOWING_CAMERA")
 let defaultView = makeButton("Default view", "ID_CAMERA_DEFAULT")
 
-let hudReplayControls = @() {
-  key = "replay-controls"
-  watch = [ isPlayingReplay, watchedHero ]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_BOTTOM
-  flow = FLOW_HORIZONTAL
+let heroControls = {
   size = SIZE_TO_CONTENT
   pos = [0, ph(-20)]
-  children = !isPlayingReplay.value || watchedHero == null ? null
-    : [
-        prevUnit
+  vplace = ALIGN_BOTTOM
+  hplace = ALIGN_CENTER
+  flow = FLOW_HORIZONTAL
+  children = [
+    prevUnit
+    {
+      flow = FLOW_VERTICAL
+      children = [
+        namePlate
         {
-          flow = FLOW_VERTICAL
+          flow = FLOW_HORIZONTAL
           children = [
-            namePlate
-            {
-              flow = FLOW_HORIZONTAL
-              children = [
-                playersView
-                defaultView
-              ]
-            }
+            playersView
+            defaultView
           ]
         }
-        nextUnit
-    ]
+      ]
+    }
+    nextUnit
+  ]
+}
+
+let hudReplayControls = @() {
+  key = "replay-controls"
+  watch = [ isPlayingReplay, watchedHero, hasAncors ]
+  size = flex()
+  function onAttach() {
+    hasAncors(get_replay_anchors().len() > 0)
+  }
+  children = isPlayingReplay.value
+    ? [
+      hasAncors.value ? rewindControls : null
+      heroControls
+    ] : null
 }
 
 return hudReplayControls

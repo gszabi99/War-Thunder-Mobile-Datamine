@@ -1,10 +1,23 @@
 {
-  "version": "1.9.0.84",
-  "grpHash": "818a6d626504cea64fbf1b7a8472914d",
+  "version": "1.10.0.22",
+  "grpHash": "e3363e19abcf93df2791dfa87d476ad0",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "162e76ce17a469240b54cd27e2a3b387",
+  "blkHash": "7709649eff299a07edb6cfc7048bbbea",
   "genHash": "1e6cbd2338e3c521cbf041ec4d9a5179",
+  "a-20g": {
+    "dep": [
+      "a_20",
+      "a_20_anim",
+      "a_20_skeleton",
+      "gunner_us_500",
+      "pilot_us_500",
+      "pilot_usaf_b17_1_char",
+      "us_500lb_anm64a1",
+      "us_m8_bazooka",
+      "usa_paratrooper_char"
+    ]
+  },
   "a6m5_zero_killstreak": {
     "dep": [
       "a6m5",
@@ -14,6 +27,22 @@
       "jp_navy_mod25mark2_250kg",
       "pilot_japan_500",
       "pilot_japan_char"
+    ]
+  },
+  "ar_2": {
+    "dep": [
+      "ar2",
+      "ar2_anim",
+      "ar2_skeleton",
+      "german_paratrooper_char",
+      "gunner_lay_su_500",
+      "gunner_sit_su_500",
+      "pilot_su_500",
+      "pilot_su_char",
+      "su_fab_100sv",
+      "su_fab_250sv_x",
+      "su_fab_500sv",
+      "su_fab_500sv_x"
     ]
   },
   "arado_196a_3": {
@@ -28,6 +57,21 @@
       "sc50"
     ]
   },
+  "b-17e": {
+    "dep": [
+      "b_17e",
+      "b_17e_anim",
+      "b_17e_skeleton",
+      "gunner_lay_us_500",
+      "gunner_sit_us_500",
+      "pilot_us_500",
+      "pilot_usaf_b17_1_char",
+      "us_1000lb_anm65a1",
+      "us_2000lbs_an66",
+      "us_500lb_anm64a1",
+      "usa_gunner_paratrooper_char"
+    ]
+  },
   "b-17g": {
     "dep": [
       "b_17g",
@@ -35,8 +79,291 @@
       "b_17g_skeleton",
       "pilot_us_500",
       "pilot_usaf_b17_1_char",
+      "us_1000lb_anm33_box_ap",
+      "us_1000lb_anm65a1",
+      "us_2000lbs_an66",
       "us_250lb_anm57",
+      "us_500lb_anm64a1",
       "usa_gunner_paratrooper_char"
+    ]
+  },
+  "b-17g_prem": {
+    "dep": [
+      "b_17g",
+      "b_17g_anim",
+      "b_17g_skeleton",
+      "pilot_us_500",
+      "pilot_usaf_b17_1_char",
+      "us_1000lb_anm33_box_ap",
+      "us_1000lb_anm65a1",
+      "us_2000lbs_an66",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1",
+      "usa_gunner_paratrooper_char"
+    ]
+  },
+  "b_25j_20": {
+    "dep": [
+      "b_25j_20",
+      "b_25j_20_anim",
+      "b_25j_20_skeleton",
+      "gunner_sit_us_500",
+      "pilot_us_500",
+      "pilot_usaf_b17_1_char",
+      "us_1000lb_anm65a1",
+      "us_100lb_an_m30",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1",
+      "usa_gunner_paratrooper_char"
+    ]
+  },
+  "b_26b_c": {
+    "dep": [
+      "b_26b_c",
+      "b_26b_c_anim",
+      "b_26b_c_skeleton",
+      "gunner_sit_us_500",
+      "pilot_us_500",
+      "pilot_usaf_b17_1_char",
+      "us_1000lb_anm65a1",
+      "us_100lb_an_m30",
+      "us_1600lb_ap_an_mk1",
+      "us_2000lbs_an66",
+      "us_300lb_m31",
+      "us_600lb_m32",
+      "us_mk13_torpedo_no_case",
+      "usa_gunner_paratrooper_char"
+    ]
+  },
+  "b_34": {
+    "dep": [
+      "b_34",
+      "b_34_anim",
+      "b_34_skeleton",
+      "gunner_lay_us_500",
+      "gunner_sit_us_500",
+      "pilot_us_500",
+      "pilot_usaf_b17_1_char",
+      "torpedo_g7a",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1",
+      "usa_paratrooper_char"
+    ]
+  },
+  "bf-109b_2": {
+    "dep": [
+      "bf_109b_2",
+      "bf_109b_2_anim",
+      "bf_109b_2_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500"
+    ]
+  },
+  "bf-109c_1": {
+    "dep": [
+      "bf_109c_1",
+      "bf_109c_1_anim",
+      "bf_109c_1_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500"
+    ]
+  },
+  "bf-109e-1": {
+    "dep": [
+      "bf_109e_1",
+      "bf_109e_1_anim",
+      "bf_109e_1_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50"
+    ]
+  },
+  "bf-109e-3": {
+    "dep": [
+      "bf_109e_3",
+      "bf_109e_3_anim",
+      "bf_109e_3_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50"
+    ]
+  },
+  "bf-109e-3_prem": {
+    "dep": [
+      "bf_109e_3",
+      "bf_109e_3_anim",
+      "bf_109e_3_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50"
+    ]
+  },
+  "bf-109f-1": {
+    "dep": [
+      "bf_109f_2",
+      "bf_109f_2_anim",
+      "bf_109f_2_skeleton",
+      "de_250kg_c_flam",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50"
+    ]
+  },
+  "bf-109f-2": {
+    "dep": [
+      "bf_109f_2",
+      "bf_109f_2_anim",
+      "bf_109f_2_skeleton",
+      "de_250kg_c_flam",
+      "de_rz65_rocket",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50"
+    ]
+  },
+  "bf-109f-4": {
+    "dep": [
+      "bf_109f_4",
+      "bf_109f_4_anim",
+      "bf_109f_4_skeleton",
+      "de_250kg_c_flam",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50"
+    ]
+  },
+  "bf-109f-4_trop": {
+    "dep": [
+      "bf_109f_4_trop",
+      "bf_109f_4_trop_anim",
+      "bf_109f_4_trop_skeleton",
+      "de_250kg_c_flam",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50"
+    ]
+  },
+  "bf-109g-14": {
+    "dep": [
+      "bf_109g_14",
+      "bf_109g_14_anim",
+      "bf_109g_14_skeleton",
+      "de_250kg_c_flam",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b"
+    ]
+  },
+  "bf-109g-14_prem": {
+    "dep": [
+      "bf_109g_14",
+      "bf_109g_14_anim",
+      "bf_109g_14_skeleton",
+      "de_250kg_c_flam",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b"
+    ]
+  },
+  "bf-109g-2": {
+    "dep": [
+      "bf_109g_2_trop",
+      "bf_109g_2_trop_anim",
+      "bf_109g_2_trop_skeleton",
+      "de_250kg_c_flam",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50"
+    ]
+  },
+  "bf-109z": {
+    "dep": [
+      "bf_109z",
+      "bf_109z_anim",
+      "bf_109z_skeleton",
+      "de_250kg_c_flam",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b"
+    ]
+  },
+  "bf-110f-2": {
+    "dep": [
+      "bf_110f_2",
+      "bf_110f_2_anim",
+      "bf_110f_2_skeleton",
+      "de_250kg_c_flam",
+      "de_500kg_c_flam",
+      "de_rz65_rocket",
+      "german_paratrooper_char",
+      "gunner_sit_lw_500",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc1000_c",
+      "sc250_b",
+      "sc50",
+      "sc500_2_b"
+    ]
+  },
+  "bf-110g-2": {
+    "dep": [
+      "bf_110g_2",
+      "bf_110g_2_anim",
+      "bf_110g_2_skeleton",
+      "de_210mm",
+      "de_250kg_c_flam",
+      "de_500kg_c_flam",
+      "de_pc1000_ap",
+      "de_pc500_ap",
+      "german_paratrooper_char",
+      "gunner_sit_lw_500",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc1000_c",
+      "sc250_b",
+      "sc50",
+      "sc500_2_b"
+    ]
+  },
+  "bf-110g-2_prem": {
+    "dep": [
+      "bf_110g_2",
+      "bf_110g_2_anim",
+      "bf_110g_2_skeleton",
+      "de_210mm",
+      "de_250kg_c_flam",
+      "de_500kg_c_flam",
+      "de_pc1000_ap",
+      "de_pc500_ap",
+      "german_paratrooper_char",
+      "gunner_sit_lw_500",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc1000_c",
+      "sc250_b",
+      "sc50",
+      "sc500_2_b"
     ]
   },
   "bf_109k_4_killstreak": {
@@ -384,6 +711,63 @@
       "ztz_96_xray_skeleton"
     ]
   },
+  "db_3b": {
+    "dep": [
+      "db_3b",
+      "db_3b_anim",
+      "db_3b_skeleton",
+      "gunner_lay_su_500",
+      "gunner_sit_su_500",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_1000sv",
+      "su_fab_250sv",
+      "su_fab_500sv",
+      "su_fab_50sv_37",
+      "torpedo_g7a"
+    ]
+  },
+  "do_17e_1": {
+    "dep": [
+      "de_250kg_c_flam",
+      "do_17e_1",
+      "do_17e_1_anim",
+      "do_17e_1_skeleton",
+      "german_paratrooper_char",
+      "gunner_lay_lw_500",
+      "gunner_sit_lw_500",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50"
+    ]
+  },
+  "do_17z_2": {
+    "dep": [
+      "de_250kg_c_flam",
+      "do_17z_2",
+      "do_17z_2_anim",
+      "do_17z_2_skeleton",
+      "german_paratrooper_char",
+      "gunner_lay_lw_500",
+      "gunner_sit_lw_500",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50"
+    ]
+  },
+  "do_335a_0": {
+    "dep": [
+      "do_335a_0",
+      "do_335a_0_anim",
+      "do_335a_0_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500"
+    ]
+  },
   "do_335a_1": {
     "dep": [
       "do_335a_1",
@@ -406,6 +790,28 @@
       "pilot_lw_500",
       "sc250_b",
       "sc500_2_b"
+    ]
+  },
+  "douglas_ad_2": {
+    "dep": [
+      "douglas_ad_2",
+      "douglas_ad_2_anim",
+      "douglas_ad_2_skeleton",
+      "mine_mk13_mod0",
+      "pilot_us_500",
+      "pilot_us_char",
+      "torpedo_g7a",
+      "us_1000lb_anm33_box_ap",
+      "us_1000lb_anm65a1",
+      "us_1600lb_ap_an_mk1",
+      "us_1600lb_ap_an_mk1_45",
+      "us_2000lbs_an66",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1",
+      "us_5in_hvar_b",
+      "us_750lb_mk_78_mod_2",
+      "us_tiny_tim_navy2",
+      "usa_paratrooper_char"
     ]
   },
   "dummy_plane": {
@@ -447,11 +853,105 @@
       "pilot_japan_char"
     ]
   },
+  "er-2_m105_mv3": {
+    "dep": [
+      "er_2_m105_mv3",
+      "er_2_m105_mv3_anim",
+      "er_2_m105_mv3_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_1000sv",
+      "su_fab_100sv",
+      "su_fab_250sv",
+      "su_fab_500sv",
+      "su_fab_500sv_x",
+      "su_fab_50sv_37"
+    ]
+  },
+  "er-2_m105r_lu2b": {
+    "dep": [
+      "er_2_m105r_lu2b",
+      "er_2_m105r_lu2b_anim",
+      "er_2_m105r_lu2b_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_1000sv",
+      "su_fab_100sv",
+      "su_fab_250sv",
+      "su_fab_500sv",
+      "su_fab_500sv_x",
+      "su_fab_50sv_37"
+    ]
+  },
+  "f2a-1": {
+    "dep": [
+      "f2a_1",
+      "f2a_1_anim",
+      "f2a_1_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "usa_paratrooper_char"
+    ]
+  },
+  "f2g-1": {
+    "dep": [
+      "f2g_1",
+      "f2g_1_anim",
+      "f2g_1_skeleton",
+      "pilot_us_500",
+      "pilot_usaf_b17_2_char",
+      "us_1000lb_anm65a1",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1",
+      "us_5in_hvar_2",
+      "us_tiny_tim_navy2",
+      "usa_paratrooper_char"
+    ]
+  },
+  "f2g-1_prem": {
+    "dep": [
+      "f2g_1",
+      "f2g_1_anim",
+      "f2g_1_skeleton",
+      "pilot_us_500",
+      "pilot_usaf_b17_2_char",
+      "us_1000lb_anm65a1",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1",
+      "us_5in_hvar_2",
+      "us_tiny_tim_navy2",
+      "usa_paratrooper_char"
+    ]
+  },
   "f3f-2": {
     "dep": [
       "f3f_2",
       "f3f_2_anim",
       "f3f_2_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_100lb_an_m30",
+      "usa_paratrooper_char"
+    ]
+  },
+  "f4f-3": {
+    "dep": [
+      "f4f_3",
+      "f4f_3_anim",
+      "f4f_3_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_100lb_an_m30",
+      "usa_paratrooper_char"
+    ]
+  },
+  "f4f-4": {
+    "dep": [
+      "f4f_4",
+      "f4f_4_anim",
+      "f4f_4_skeleton",
       "pilot_us_500",
       "pilot_us_char",
       "us_100lb_an_m30",
@@ -466,6 +966,69 @@
       "pilot_us_500",
       "pilot_us_char",
       "us_100lb_an_m30",
+      "usa_paratrooper_char"
+    ]
+  },
+  "f4f_4_prem": {
+    "dep": [
+      "f4f_4",
+      "f4f_4_anim",
+      "f4f_4_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_100lb_an_m30",
+      "usa_paratrooper_char"
+    ]
+  },
+  "f4u-1c": {
+    "dep": [
+      "f4u_1c",
+      "f4u_1c_anim",
+      "f4u_1c_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_5in_hvar_2",
+      "usa_paratrooper_char"
+    ]
+  },
+  "f4u-1d": {
+    "dep": [
+      "f4u_1d",
+      "f4u_1d_anim",
+      "f4u_1d_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_1000lb_anm65a1",
+      "us_5in_hvar_2",
+      "usa_paratrooper_char"
+    ]
+  },
+  "f4u-4": {
+    "dep": [
+      "f4u_4",
+      "f4u_4_anim",
+      "f4u_4_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_1000lb_anm65a1",
+      "us_100lb_an_m30",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1",
+      "us_5in_hvar_2",
+      "usa_paratrooper_char"
+    ]
+  },
+  "f4u-4b": {
+    "dep": [
+      "f4u_4b",
+      "f4u_4b_anim",
+      "f4u_4b_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_1000lb_anm65a1",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1",
+      "us_5in_hvar_2",
       "usa_paratrooper_char"
     ]
   },
@@ -496,23 +1059,6 @@
       "us_250lb_anm57",
       "us_500lb_anm64a1",
       "us_5in_hvar_2",
-      "usa_paratrooper_char"
-    ]
-  },
-  "f6f_3": {
-    "dep": [
-      "f6f_5",
-      "f6f_5_anim",
-      "f6f_5_skeleton",
-      "pilot_us_500",
-      "pilot_us_char",
-      "torpedo_g7a",
-      "uk_hvar",
-      "us_1000lb_anm65a1",
-      "us_1600lb_ap_an_mk1_45",
-      "us_2000lbs_an66",
-      "us_500lb_anm64a1",
-      "us_tiny_tim_navy2",
       "usa_paratrooper_char"
     ]
   },
@@ -1171,6 +1717,53 @@
       "tpk_641_vpc_xray_skeleton"
     ]
   },
+  "fw-190a-4": {
+    "dep": [
+      "fw_190a_4",
+      "fw_190a_4_anim",
+      "fw_190a_4_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500"
+    ]
+  },
+  "fw-190a-5": {
+    "dep": [
+      "fw_190a_5",
+      "fw_190a_5_anim",
+      "fw_190a_5_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500"
+    ]
+  },
+  "fw-190a-5_cannons": {
+    "dep": [
+      "de_210mm",
+      "fw_190a_5",
+      "fw_190a_5_anim",
+      "fw_190a_5_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500"
+    ]
+  },
+  "fw-190a-5_u2": {
+    "dep": [
+      "de_210mm",
+      "de_250kg_c_flam",
+      "de_500kg_c_flam",
+      "fw_190a_5",
+      "fw_190a_5_anim",
+      "fw_190a_5_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50",
+      "sc500_2_b"
+    ]
+  },
   "fw-190c": {
     "dep": [
       "fw_190c",
@@ -1179,6 +1772,40 @@
       "german_paratrooper_char",
       "pilot_german_char",
       "pilot_lw_500"
+    ]
+  },
+  "fw-190d-9": {
+    "dep": [
+      "de_250kg_c_flam",
+      "de_500kg_c_flam",
+      "fw_190d_9",
+      "fw_190d_9_anim",
+      "fw_190d_9_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50",
+      "sc500_2_b"
+    ]
+  },
+  "fw-190f-8": {
+    "dep": [
+      "de_250kg_c_flam",
+      "de_500kg_c_flam",
+      "de_pc1000_ap",
+      "de_pc500_ap",
+      "de_r4m_pb2_rocket",
+      "fw_190f_8",
+      "fw_190f_8_anim",
+      "fw_190f_8_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc1000_c",
+      "sc250_b",
+      "sc50",
+      "sc500_2_b"
     ]
   },
   "fw_190a_1": {
@@ -1199,6 +1826,42 @@
       "german_paratrooper_char",
       "pilot_german_char",
       "pilot_lw_500"
+    ]
+  },
+  "fw_190a_5_u14": {
+    "dep": [
+      "de_f5b_k3_torpedo",
+      "fw_190a_5_u14",
+      "fw_190a_5_u14_anim",
+      "fw_190a_5_u14_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500"
+    ]
+  },
+  "fw_190a_5_u14_prem": {
+    "dep": [
+      "de_f5b_k3_torpedo",
+      "fw_190a_5_u14",
+      "fw_190a_5_u14_anim",
+      "fw_190a_5_u14_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500"
+    ]
+  },
+  "fw_200c_1": {
+    "dep": [
+      "de_pc1000_ap",
+      "de_pc500_ap",
+      "fw_200c_1",
+      "fw_200c_1_anim",
+      "fw_200c_1_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc500_2_b"
     ]
   },
   "germ_artilleriefahrprahm_typ_d3": {
@@ -1529,6 +2192,22 @@
     ]
   },
   "germ_flakpanzer_iv_ostwind_2": {
+    "dep": [
+      "flpz_IV_ostwind_2",
+      "flpz_IV_ostwind_2_char",
+      "flpz_IV_ostwind_2_collision",
+      "flpz_IV_ostwind_2_dm_skeleton",
+      "flpz_IV_ostwind_2_dmg",
+      "flpz_IV_ostwind_2_dmg_skeleton",
+      "flpz_IV_ostwind_2_fastphys",
+      "flpz_IV_ostwind_2_skeleton",
+      "flpz_IV_ostwind_2_xray",
+      "flpz_IV_ostwind_2_xray_skeleton",
+      "german_gunner_early_char",
+      "german_gunner_early_officer_char"
+    ]
+  },
+  "germ_flakpanzer_iv_ostwind_2_reskin": {
     "dep": [
       "flpz_IV_ostwind_2",
       "flpz_IV_ostwind_2_char",
@@ -1894,6 +2573,21 @@
       "mkpz_m48a2ga2_skeleton",
       "mkpz_m48a2ga2_xray",
       "mkpz_m48a2ga2_xray_skeleton"
+    ]
+  },
+  "germ_panzerbefelhswagen_jagdpanther": {
+    "dep": [
+      "grenade_l8",
+      "pzbefwg_jagdpanther",
+      "pzbefwg_jagdpanther_char",
+      "pzbefwg_jagdpanther_collision",
+      "pzbefwg_jagdpanther_dm_skeleton",
+      "pzbefwg_jagdpanther_dmg",
+      "pzbefwg_jagdpanther_dmg_skeleton",
+      "pzbefwg_jagdpanther_fastphys",
+      "pzbefwg_jagdpanther_skeleton",
+      "pzbefwg_jagdpanther_xray",
+      "pzbefwg_jagdpanther_xray_skeleton"
     ]
   },
   "germ_panzerbefelhswagen_vi_p": {
@@ -2331,6 +3025,21 @@
       "pzkpfw_VI_ausf_B_tiger_xray_skeleton"
     ]
   },
+  "germ_pzkpfw_vi_ausf_b_tiger_iip_reskin2": {
+    "dep": [
+      "grenade_l8",
+      "pzkpfw_VI_ausf_B_tiger",
+      "pzkpfw_VI_ausf_B_tiger_char",
+      "pzkpfw_VI_ausf_B_tiger_collision",
+      "pzkpfw_VI_ausf_B_tiger_dm_skeleton",
+      "pzkpfw_VI_ausf_B_tiger_dmg",
+      "pzkpfw_VI_ausf_B_tiger_dmg_skeleton",
+      "pzkpfw_VI_ausf_B_tiger_fastphys",
+      "pzkpfw_VI_ausf_B_tiger_skeleton",
+      "pzkpfw_VI_ausf_B_tiger_xray",
+      "pzkpfw_VI_ausf_B_tiger_xray_skeleton"
+    ]
+  },
   "germ_pzkpfw_vi_ausf_e_tiger": {
     "dep": [
       "grenade_l8",
@@ -2603,6 +3312,43 @@
       "wiesel_1_mk20_xray_skeleton"
     ]
   },
+  "he-111h-16_winter": {
+    "dep": [
+      "de_250kg_c_flam",
+      "german_paratrooper_char",
+      "gunner_lay_lw_500",
+      "gunner_sit_lw_500",
+      "he_111h_16_winter",
+      "he_111h_16_winter_anim",
+      "he_111h_16_winter_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc1000_c",
+      "sc2500",
+      "sc250_b",
+      "sc50"
+    ]
+  },
+  "he51b1": {
+    "dep": [
+      "german_paratrooper_char",
+      "he51b1",
+      "he51b1_anim",
+      "he51b1_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500"
+    ]
+  },
+  "he51b1_prem": {
+    "dep": [
+      "german_paratrooper_char",
+      "he51b1",
+      "he51b1_anim",
+      "he51b1_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500"
+    ]
+  },
   "he51c1": {
     "dep": [
       "de_sd_10a_bomb",
@@ -2661,6 +3407,51 @@
       "torpedo_g7a"
     ]
   },
+  "he_112a_0": {
+    "dep": [
+      "german_paratrooper_char",
+      "he_112a_0",
+      "he_112a_0_anim",
+      "he_112a_0_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500"
+    ]
+  },
+  "he_112b_0": {
+    "dep": [
+      "german_paratrooper_char",
+      "he_112b_0",
+      "he_112b_0_anim",
+      "he_112b_0_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500"
+    ]
+  },
+  "hs-123a-1": {
+    "dep": [
+      "german_paratrooper_char",
+      "hs_123a_1",
+      "hs_123a_1_anim",
+      "hs_123a_1_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50"
+    ]
+  },
+  "i-153_m62": {
+    "dep": [
+      "i_153_m62",
+      "i_153_m62_anim",
+      "i_153_m62_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_50sv_37",
+      "su_rbs_82_rocket",
+      "su_ros_82_497_rocket"
+    ]
+  },
   "i-15_1934": {
     "dep": [
       "i_15_1934",
@@ -2670,6 +3461,196 @@
       "pilot_su_char",
       "soviet_paratrooper_char",
       "su_fab_50sv_37"
+    ]
+  },
+  "i-15_1935": {
+    "dep": [
+      "i_15_1935",
+      "i_15_1935_anim",
+      "i_15_1935_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_50sv_37"
+    ]
+  },
+  "i-15_1935_prem": {
+    "dep": [
+      "i_15_1935",
+      "i_15_1935_anim",
+      "i_15_1935_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_50sv_37"
+    ]
+  },
+  "i-16_type10": {
+    "dep": [
+      "i_16_type_10",
+      "i_16_type_10_anim",
+      "i_16_type_10_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_rbs_82_rocket",
+      "su_ros_82_497_rocket"
+    ]
+  },
+  "i-16_type18": {
+    "dep": [
+      "i_16_type_18",
+      "i_16_type_18_anim",
+      "i_16_type_18_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_50sv_37",
+      "su_rbs_82_rocket",
+      "su_ros_82_497_rocket"
+    ]
+  },
+  "i-16_type5": {
+    "dep": [
+      "i_16_type_5",
+      "i_16_type_5_anim",
+      "i_16_type_5_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char"
+    ]
+  },
+  "i_180": {
+    "dep": [
+      "i_180",
+      "i_180_anim",
+      "i_180_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_50sv_37"
+    ]
+  },
+  "i_180_prem": {
+    "dep": [
+      "i_180",
+      "i_180_anim",
+      "i_180_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_50sv_37"
+    ]
+  },
+  "i_185_m82": {
+    "dep": [
+      "i_185_m82",
+      "i_185_m82_anim",
+      "i_185_m82_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_250sv",
+      "su_rbs_82_rocket",
+      "su_ros_82_497_rocket",
+      "su_zab_50fp_1942"
+    ]
+  },
+  "il-10": {
+    "dep": [
+      "gunner_sit_su_500",
+      "il_10",
+      "il_10_anim",
+      "il_10_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_250sv",
+      "su_fab_50sv_37",
+      "su_m_13uk_1944_rocket",
+      "su_m_8_1944_rocket",
+      "su_rbs_132_rocket",
+      "su_rbs_82_rocket"
+    ]
+  },
+  "il-10_1946": {
+    "dep": [
+      "gunner_sit_su_500",
+      "il_10_1946",
+      "il_10_1946_anim",
+      "il_10_1946_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_250sv",
+      "su_fab_50sv_37",
+      "su_m_13uk_1944_rocket",
+      "su_m_8_1944_rocket",
+      "su_rbs_132_rocket",
+      "su_rbs_82_rocket"
+    ]
+  },
+  "il-10_1946_prem": {
+    "dep": [
+      "gunner_sit_su_500",
+      "il_10_1946",
+      "il_10_1946_anim",
+      "il_10_1946_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_250sv",
+      "su_fab_50sv_37",
+      "su_m_13uk_1944_rocket",
+      "su_m_8_1944_rocket",
+      "su_rbs_132_rocket",
+      "su_rbs_82_rocket"
+    ]
+  },
+  "il-2i": {
+    "dep": [
+      "il_2_1942",
+      "il_2_1942_anim",
+      "il_2_1942_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_ao_25m_1",
+      "su_fab_100sv",
+      "su_fab_250sv",
+      "su_fab_50sv_37",
+      "su_m_13uk_1944_rocket",
+      "su_rbs_132_rocket",
+      "su_rbs_82_rocket",
+      "su_ros_132_498_rocket",
+      "su_ros_82_497_rocket"
+    ]
+  },
+  "il-2m": {
+    "dep": [
+      "gunner_sit_su_500",
+      "il_2m_type3_1945",
+      "il_2m_type3_1945_anim",
+      "il_2m_type3_1945_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_ao_25m_1",
+      "su_fab_100m43",
+      "su_fab_250m43",
+      "su_fab_50sv_37",
+      "su_m_13uk_1944_rocket",
+      "su_rbs_132_rocket",
+      "su_rbs_82_rocket",
+      "su_ros_132_498_rocket",
+      "su_ros_82_497_rocket"
     ]
   },
   "il_28sh_killstreak": {
@@ -2687,18 +3668,18 @@
       "su_s_24_rocket"
     ]
   },
-  "il_2m_1943": {
+  "il_2_1941": {
     "dep": [
-      "gunner_sit_su_500",
-      "il_2m_1943",
-      "il_2m_1943_anim",
-      "il_2m_1943_skeleton",
+      "il_2_1941",
+      "il_2_1941_anim",
+      "il_2_1941_skeleton",
       "pilot_su_500",
       "pilot_su_char",
       "soviet_paratrooper_char",
       "su_ao_25m_1",
+      "su_brab220kg_1938",
       "su_fab_100sv",
-      "su_fab_250m43",
+      "su_fab_250sv",
       "su_fab_50sv_37",
       "su_m_13uk_1944_rocket",
       "su_rbs_132_rocket",
@@ -2717,7 +3698,7 @@
       "pilot_su_char",
       "soviet_paratrooper_char",
       "su_ao_25m_1",
-      "su_fab_100sv",
+      "su_fab_100m43",
       "su_fab_250m43",
       "su_fab_50sv_37",
       "su_m_13uk_1944_rocket",
@@ -2784,6 +3765,23 @@
       "grenade_l8"
     ]
   },
+  "il_m113a1_tow": {
+    "dep": [
+      "bgm_71_tow_rocket_char",
+      "bgm_71_tow_rocket_deployed",
+      "m113a1_tow_idf",
+      "m113a1_tow_idf_char",
+      "m113a1_tow_idf_collision",
+      "m113a1_tow_idf_dm_skeleton",
+      "m113a1_tow_idf_dmg",
+      "m113a1_tow_idf_dmg_skeleton",
+      "m113a1_tow_idf_fastphys",
+      "m113a1_tow_idf_skeleton",
+      "m113a1_tow_idf_xray",
+      "m113a1_tow_idf_xray_skeleton",
+      "us_gunner_char"
+    ]
+  },
   "il_m163_vulcan": {
     "dep": [
       "m163_vulcan",
@@ -2798,6 +3796,22 @@
       "m163_vulcan_xray_skeleton",
       "us_gunner_char",
       "us_gunner_officer_char"
+    ]
+  },
+  "il_magach_6_rocket": {
+    "dep": [
+      "hydra_70_rocket_char",
+      "hydra_70_rocket_deployed",
+      "magach_6r_rocket",
+      "magach_6r_rocket_char",
+      "magach_6r_rocket_collision",
+      "magach_6r_rocket_dm_skeleton",
+      "magach_6r_rocket_dmg",
+      "magach_6r_rocket_dmg_skeleton",
+      "magach_6r_rocket_fastphys",
+      "magach_6r_rocket_skeleton",
+      "magach_6r_rocket_xray",
+      "magach_6r_rocket_xray_skeleton"
     ]
   },
   "il_magach_6b": {
@@ -2827,6 +3841,35 @@
       "magach_6r_skeleton",
       "magach_6r_xray",
       "magach_6r_xray_skeleton"
+    ]
+  },
+  "il_merkava_mk_1": {
+    "dep": [
+      "grenade_l8",
+      "merkava_mk_1",
+      "merkava_mk_1_char",
+      "merkava_mk_1_collision",
+      "merkava_mk_1_dm_skeleton",
+      "merkava_mk_1_dmg",
+      "merkava_mk_1_dmg_skeleton",
+      "merkava_mk_1_fastphys",
+      "merkava_mk_1_skeleton",
+      "merkava_mk_1_xray",
+      "merkava_mk_1_xray_skeleton"
+    ]
+  },
+  "il_zsu_23_4": {
+    "dep": [
+      "zsu_23_4",
+      "zsu_23_4_char",
+      "zsu_23_4_collision",
+      "zsu_23_4_dm_skeleton",
+      "zsu_23_4_dmg",
+      "zsu_23_4_dmg_skeleton",
+      "zsu_23_4_fastphys",
+      "zsu_23_4_skeleton",
+      "zsu_23_4_xray",
+      "zsu_23_4_xray_skeleton"
     ]
   },
   "it_43m_turan_3": {
@@ -3065,6 +4108,20 @@
       "vcc_80_hitfist_60_skeleton",
       "vcc_80_hitfist_60_xray",
       "vcc_80_hitfist_60_xray_skeleton"
+    ]
+  },
+  "itp_m1": {
+    "dep": [
+      "itp_m1",
+      "itp_m1_anim",
+      "itp_m1_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_50sv_37",
+      "su_rbs_82_rocket",
+      "su_ros_82_497_rocket"
     ]
   },
   "jp_armoredcruiser_ikoma": {
@@ -3666,6 +4723,65 @@
       "type_89_xray_skeleton"
     ]
   },
+  "ju-188a-2": {
+    "dep": [
+      "de_250kg_c_flam",
+      "de_500kg_c_flam",
+      "de_pc1000_ap",
+      "de_pc1600_ap",
+      "de_pc500_ap",
+      "de_sc1800b",
+      "german_paratrooper_char",
+      "gunner_sit_lw_500",
+      "ju_188a_2",
+      "ju_188a_2_anim",
+      "ju_188a_2_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc1000_c",
+      "sc250_b",
+      "sc50",
+      "sc500_2_b"
+    ]
+  },
+  "ju-87b-2": {
+    "dep": [
+      "de_250kg_c_flam",
+      "de_500kg_c_flam",
+      "german_paratrooper_char",
+      "gunner_sit_lw_500",
+      "ju_87b_2",
+      "ju_87b_2_anim",
+      "ju_87b_2_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc1000_c",
+      "sc250_b_87",
+      "sc50",
+      "sc500_2_b_87"
+    ]
+  },
+  "ju-87d-3": {
+    "dep": [
+      "de_250kg_c_flam",
+      "de_500kg_c_flam",
+      "de_pc1000_ap",
+      "de_pc500_ap",
+      "german_paratrooper_char",
+      "gunner_sit_lw_500",
+      "ju_87d_3",
+      "ju_87d_3_anim",
+      "ju_87d_3_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc1000_c",
+      "sc250_b",
+      "sc250_b_87",
+      "sc50",
+      "sc500_2_b",
+      "sc500_2_b_87"
+    ]
+  },
   "ju_87d_5": {
     "dep": [
       "de_250kg_c_flam",
@@ -3716,6 +4832,26 @@
       "su_fab_100sv"
     ]
   },
+  "la-11": {
+    "dep": [
+      "la_11",
+      "la_11_anim",
+      "la_11_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char"
+    ]
+  },
+  "la-11_prem": {
+    "dep": [
+      "la_11",
+      "la_11_anim",
+      "la_11_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char"
+    ]
+  },
   "la-5_type37_early": {
     "dep": [
       "la_5_type_37_early",
@@ -3727,11 +4863,34 @@
       "su_fab_50sv_37"
     ]
   },
-  "la_9": {
+  "la-5fn": {
     "dep": [
-      "la_9",
-      "la_9_anim",
-      "la_9_skeleton",
+      "la_5fn",
+      "la_5fn_anim",
+      "la_5fn_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_50sv_37"
+    ]
+  },
+  "la-7": {
+    "dep": [
+      "la_7",
+      "la_7_anim",
+      "la_7_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_50sv_37"
+    ]
+  },
+  "la-7b-20": {
+    "dep": [
+      "la_7b_20",
+      "la_7b_20_anim",
+      "la_7b_20_skeleton",
       "pilot_su_500",
       "pilot_su_char",
       "soviet_paratrooper_char"
@@ -3747,6 +4906,84 @@
       "soviet_paratrooper_char"
     ]
   },
+  "lagg-3-11": {
+    "dep": [
+      "lagg_3_11",
+      "lagg_3_11_anim",
+      "lagg_3_11_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_50sv_37",
+      "su_rbs_82_rocket",
+      "su_ros_82_497_rocket"
+    ]
+  },
+  "lagg-3-35": {
+    "dep": [
+      "lagg_3_35",
+      "lagg_3_35_anim",
+      "lagg_3_35_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_50sv_37",
+      "su_rbs_82_rocket",
+      "su_ros_82_497_rocket"
+    ]
+  },
+  "lagg-3-8": {
+    "dep": [
+      "lagg_3_8",
+      "lagg_3_8_anim",
+      "lagg_3_8_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char"
+    ]
+  },
+  "me-410a-1": {
+    "dep": [
+      "german_paratrooper_char",
+      "gunner_sit_lw_500",
+      "me_410a_1",
+      "me_410a_1_anim",
+      "me_410a_1_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50",
+      "sc500_2_b"
+    ]
+  },
+  "me-410a-1_prem": {
+    "dep": [
+      "german_paratrooper_char",
+      "gunner_sit_lw_500",
+      "me_410a_1",
+      "me_410a_1_anim",
+      "me_410a_1_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50",
+      "sc500_2_b"
+    ]
+  },
+  "me-410a-1_u2": {
+    "dep": [
+      "de_210mm",
+      "german_paratrooper_char",
+      "gunner_sit_lw_500",
+      "me_410a_1",
+      "me_410a_1_anim",
+      "me_410a_1_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500"
+    ]
+  },
   "me_262c_2b_killstreak": {
     "dep": [
       "german_paratrooper_char",
@@ -3755,6 +4992,19 @@
       "me_262c_2b_skeleton",
       "pilot_german_char",
       "pilot_lw_500"
+    ]
+  },
+  "me_264": {
+    "dep": [
+      "de_pc1000_ap",
+      "german_paratrooper_char",
+      "me_264",
+      "me_264_anim",
+      "me_264_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc1000_c",
+      "sc250_b"
     ]
   },
   "meteor_fmk8_killstreak": {
@@ -3800,6 +5050,26 @@
       "raf_paratrooper_char"
     ]
   },
+  "p-36a": {
+    "dep": [
+      "p_36a",
+      "p_36a_anim",
+      "p_36a_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-36c": {
+    "dep": [
+      "p_36c",
+      "p_36c_anim",
+      "p_36c_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "usa_paratrooper_char"
+    ]
+  },
   "p-38k": {
     "dep": [
       "p_38k",
@@ -3807,6 +5077,155 @@
       "p_38k_skeleton",
       "pilot_us_500",
       "pilot_us_char",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-400": {
+    "dep": [
+      "p_400",
+      "p_400_anim",
+      "p_400_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_500lb_anm64a1",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-400_prem": {
+    "dep": [
+      "p_400",
+      "p_400_anim",
+      "p_400_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_500lb_anm64a1",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-40e": {
+    "dep": [
+      "p_40e",
+      "p_40e_anim",
+      "p_40e_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_100lb_an_m30",
+      "us_500lb_anm64a1",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-40f_10": {
+    "dep": [
+      "p_40f_10",
+      "p_40f_10_anim",
+      "p_40f_10_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_100lb_an_m30",
+      "us_500lb_anm64a1",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-43a-1": {
+    "dep": [
+      "p_43a_1",
+      "p_43a_1_anim",
+      "p_43a_1_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-47d": {
+    "dep": [
+      "p_47d",
+      "p_47d_anim",
+      "p_47d_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "uk_hvar",
+      "us_1000lb_anm65a1",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-47d-28": {
+    "dep": [
+      "p_47d_28",
+      "p_47d_28_anim",
+      "p_47d_28_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "uk_hvar",
+      "us_1000lb_anm65a1",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1",
+      "us_m8_bazooka",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-47d-28_prem": {
+    "dep": [
+      "p_47d_28",
+      "p_47d_28_anim",
+      "p_47d_28_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "uk_hvar",
+      "us_1000lb_anm65a1",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1",
+      "us_m8_bazooka",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-47d_22_re": {
+    "dep": [
+      "p_47d_22_re",
+      "p_47d_22_re_anim",
+      "p_47d_22_re_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_1000lb_anm65a1",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1",
+      "us_m8_bazooka",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-47d_ussr": {
+    "dep": [
+      "p_47d",
+      "p_47d_anim",
+      "p_47d_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "su_fab_250sv",
+      "su_fab_500sv",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-47n-15": {
+    "dep": [
+      "p_47n_15",
+      "p_47n_15_anim",
+      "p_47n_15_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "uk_hvar",
+      "us_1000lb_anm65a1",
+      "us_500lb_anm64a1",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-51b": {
+    "dep": [
+      "p_51_mk1a",
+      "p_51_mk1a_anim",
+      "p_51_mk1a_skeleton",
+      "pilot_raf_500",
+      "pilot_raf_char",
       "usa_paratrooper_char"
     ]
   },
@@ -3821,6 +5240,46 @@
       "us_250lb_anm57",
       "us_500lb_anm64a1",
       "usa_paratrooper_char"
+    ]
+  },
+  "p-51d-20-na": {
+    "dep": [
+      "p_51d_20_na",
+      "p_51d_20_na_anim",
+      "p_51d_20_na_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "uk_hvar",
+      "us_1000lb_anm65a1",
+      "us_m8_bazooka",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-51d-5": {
+    "dep": [
+      "p_51d_5",
+      "p_51d_5_anim",
+      "p_51d_5_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "uk_hvar",
+      "us_1000lb_anm65a1",
+      "us_100lb_an_m30",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1",
+      "us_m8_bazooka",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-63a-10": {
+    "dep": [
+      "p_63a_10",
+      "p_63a_10_anim",
+      "p_63a_10_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "soviet_paratrooper_char",
+      "us_500lb_anm64a1"
     ]
   },
   "p_40e_killstreak": {
@@ -3842,6 +5301,38 @@
       "pilot_us_char",
       "us_1000lb_anm65a1",
       "usa_paratrooper_char"
+    ]
+  },
+  "pby-5a": {
+    "dep": [
+      "mine_mk13_mod0",
+      "pby_5a",
+      "pby_5a_anim",
+      "pby_5a_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "torpedo_g7a",
+      "us_1000lb_anm65a1",
+      "us_100lb_an_m30",
+      "us_500lb_anm64a1",
+      "usa_paratrooper_char"
+    ]
+  },
+  "pe-8_m82": {
+    "dep": [
+      "gunner_sit_su_500",
+      "pe_8_m82",
+      "pe_8_m82_anim",
+      "pe_8_m82_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab5000",
+      "su_fab_1000sv",
+      "su_fab_100sv",
+      "su_fab_250sv_x",
+      "su_fab_500sv",
+      "su_fab_50sv_37"
     ]
   },
   "pony_assault": {
@@ -3966,6 +5457,86 @@
       "usa_paratrooper_char"
     ]
   },
+  "sb2u-2": {
+    "dep": [
+      "gunner_sit_us_500",
+      "gunner_us_char",
+      "mine_mk13_mod0",
+      "pilot_us_500",
+      "pilot_us_char",
+      "sb2u_2",
+      "sb2u_2_anim",
+      "sb2u_2_skeleton",
+      "us_1000lb_anm65a1_rod",
+      "us_1600lb_ap_an_mk1",
+      "usa_paratrooper_char"
+    ]
+  },
+  "sb2u-3": {
+    "dep": [
+      "gunner_sit_us_500",
+      "gunner_us_char",
+      "mine_mk13_mod0",
+      "pilot_us_500",
+      "pilot_us_char",
+      "sb2u_3",
+      "sb2u_3_anim",
+      "sb2u_3_skeleton",
+      "us_1000lb_anm65a1_rod",
+      "us_1600lb_ap_an_mk1",
+      "usa_paratrooper_char"
+    ]
+  },
+  "sb2u-3_prem": {
+    "dep": [
+      "gunner_sit_us_500",
+      "gunner_us_char",
+      "mine_mk13_mod0",
+      "pilot_us_500",
+      "pilot_us_char",
+      "sb2u_3",
+      "sb2u_3_anim",
+      "sb2u_3_skeleton",
+      "us_1000lb_anm65a1_rod",
+      "us_1600lb_ap_an_mk1",
+      "usa_paratrooper_char"
+    ]
+  },
+  "sb_2m_100": {
+    "dep": [
+      "german_paratrooper_char",
+      "gunner_lay_su_500",
+      "gunner_sit_su_500",
+      "pilot_su_500",
+      "pilot_su_char",
+      "sb_2m_100",
+      "sb_2m_100_anim",
+      "sb_2m_100_skeleton",
+      "su_brab220kg_1938",
+      "su_brab500kg_1938",
+      "su_fab_100sv_x",
+      "su_fab_250sv_x",
+      "su_fab_500sv_x"
+    ]
+  },
+  "sbd-3": {
+    "dep": [
+      "gunner_sit_us_500",
+      "gunner_us_char",
+      "mine_mk13_mod0",
+      "pilot_us_500",
+      "pilot_us_char",
+      "sbd_3",
+      "sbd_3_anim",
+      "sbd_3_skeleton",
+      "us_1000lb_anm33_box_45_ap",
+      "us_1000lb_anm65a1",
+      "us_100lb_an_m30",
+      "us_1600lb_ap_an_mk1_45",
+      "us_500lb_anm64a1",
+      "usa_paratrooper_char"
+    ]
+  },
   "seafire_mk3_killstreak": {
     "dep": [
       "pilot_raf_500",
@@ -3999,6 +5570,39 @@
       "soc_1_skeleton",
       "us_100lb_an_m30",
       "usa_paratrooper_char"
+    ]
+  },
+  "su-2_mv5": {
+    "dep": [
+      "gunner_sit_su_500",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_2_mv5",
+      "su_2_mv5_anim",
+      "su_2_mv5_skeleton",
+      "su_brab220kg_1938",
+      "su_fab_100sv",
+      "su_fab_250sv",
+      "su_fab_500sv_x",
+      "su_fab_50sv_37"
+    ]
+  },
+  "su_6_single": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_6_single",
+      "su_6_single_anim",
+      "su_6_single_skeleton",
+      "su_ao_25m_1",
+      "su_fab_100sv",
+      "su_fab_50sv_37",
+      "su_m_13uk_1944_rocket",
+      "su_m_8_1944_rocket",
+      "su_rbs_132_rocket",
+      "su_rbs_82_rocket"
     ]
   },
   "sw_cv_90105_tml": {
@@ -4136,6 +5740,35 @@
       "veak_40_skeleton",
       "veak_40_xray",
       "veak_40_xray_skeleton"
+    ]
+  },
+  "tandem_mai": {
+    "dep": [
+      "gunner_sit_su_500",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_50sv_37",
+      "tandem_mai",
+      "tandem_mai_anim",
+      "tandem_mai_skeleton"
+    ]
+  },
+  "tbd-1_1938": {
+    "dep": [
+      "gunner_sit_us_500",
+      "gunner_us_char",
+      "pilot_us_500",
+      "pilot_us_char",
+      "tbd_1_1938",
+      "tbd_1_1938_anim",
+      "tbd_1_1938_skeleton",
+      "torpedo_g7a",
+      "us_1000lb_mk9",
+      "us_100lb_an_m30",
+      "us_500lb_anm64a1",
+      "usa_paratrooper_char"
     ]
   },
   "uk_a27m_cromwell_5": {
@@ -4391,6 +6024,23 @@
       "battleship_king_george_1945_xray_skeleton",
       "depth_charge_mk6",
       "mine_emc"
+    ]
+  },
+  "uk_battleship_marlborough": {
+    "dep": [
+      "battleship_marlborough",
+      "battleship_marlborough_char",
+      "battleship_marlborough_collision",
+      "battleship_marlborough_dm_skeleton",
+      "battleship_marlborough_fastphys",
+      "battleship_marlborough_sections",
+      "battleship_marlborough_sections_remote",
+      "battleship_marlborough_skeleton",
+      "battleship_marlborough_xray",
+      "battleship_marlborough_xray_skeleton",
+      "depth_charge_mk6",
+      "mine_emc",
+      "torpedo_g7a"
     ]
   },
   "uk_battleship_vanguard": {
@@ -6491,6 +8141,23 @@
       "pt_109_a_skeleton"
     ]
   },
+  "ussr_9p149": {
+    "dep": [
+      "9m114_rocket_char",
+      "9m114_rocket_deployed",
+      "9m120_rocket_deployed",
+      "9p149",
+      "9p149_char",
+      "9p149_collision",
+      "9p149_dm_skeleton",
+      "9p149_dmg",
+      "9p149_dmg_skeleton",
+      "9p149_fastphys",
+      "9p149_skeleton",
+      "9p149_xray",
+      "9p149_xray_skeleton"
+    ]
+  },
   "ussr_battlecruiser_kronshtadt": {
     "dep": [
       "battlecruiser_kronshtadt",
@@ -6636,6 +8303,23 @@
       "grenade_zd17"
     ]
   },
+  "ussr_bmp_2": {
+    "dep": [
+      "9m113_rocket_char",
+      "9m113_rocket_deployed",
+      "bmp_2",
+      "bmp_2_char",
+      "bmp_2_collision",
+      "bmp_2_dm_skeleton",
+      "bmp_2_dmg",
+      "bmp_2_dmg_skeleton",
+      "bmp_2_fastphys",
+      "bmp_2_skeleton",
+      "bmp_2_xray",
+      "bmp_2_xray_skeleton",
+      "grenade_zd17"
+    ]
+  },
   "ussr_btr_152a": {
     "dep": [
       "btr_152a",
@@ -6747,6 +8431,42 @@
       "cruiser_kirov_xray_skeleton",
       "depth_charge_mk6",
       "mine_emc",
+      "torpedo_g7a"
+    ]
+  },
+  "ussr_cruiser_maxim_gorky": {
+    "dep": [
+      "cruiser_maxim_gorky",
+      "cruiser_maxim_gorky_char",
+      "cruiser_maxim_gorky_collision",
+      "cruiser_maxim_gorky_dm_skeleton",
+      "cruiser_maxim_gorky_fastphys",
+      "cruiser_maxim_gorky_sections",
+      "cruiser_maxim_gorky_sections_remote",
+      "cruiser_maxim_gorky_skeleton",
+      "cruiser_maxim_gorky_xray",
+      "cruiser_maxim_gorky_xray_skeleton",
+      "depth_charge_mk6",
+      "mine_emc",
+      "torpedo_g7a"
+    ]
+  },
+  "ussr_cruiser_rckt_pr58": {
+    "dep": [
+      "cruiser_rckt_pr58",
+      "cruiser_rckt_pr58_char",
+      "cruiser_rckt_pr58_collision",
+      "cruiser_rckt_pr58_dm_skeleton",
+      "cruiser_rckt_pr58_fastphys",
+      "cruiser_rckt_pr58_sections",
+      "cruiser_rckt_pr58_sections_remote",
+      "cruiser_rckt_pr58_skeleton",
+      "cruiser_rckt_pr58_xray",
+      "cruiser_rckt_pr58_xray_skeleton",
+      "depth_charge_mk6",
+      "mine_emc",
+      "rocket_p_35",
+      "rocket_rim7_sea_sparrow",
       "torpedo_g7a"
     ]
   },
@@ -7781,6 +9501,35 @@
       "t_62_xray_skeleton"
     ]
   },
+  "ussr_t_64a_1971": {
+    "dep": [
+      "t_64_a_1971",
+      "t_64_a_1971_char",
+      "t_64_a_1971_collision",
+      "t_64_a_1971_dm_skeleton",
+      "t_64_a_1971_dmg",
+      "t_64_a_1971_dmg_skeleton",
+      "t_64_a_1971_fastphys",
+      "t_64_a_1971_skeleton",
+      "t_64_a_1971_xray",
+      "t_64_a_1971_xray_skeleton"
+    ]
+  },
+  "ussr_t_72a": {
+    "dep": [
+      "grenade_zd17",
+      "t_72a",
+      "t_72a_char",
+      "t_72a_collision",
+      "t_72a_dm_skeleton",
+      "t_72a_dmg",
+      "t_72a_dmg_skeleton",
+      "t_72a_fastphys",
+      "t_72a_skeleton",
+      "t_72a_xray",
+      "t_72a_xray_skeleton"
+    ]
+  },
   "ussr_type_65_aa": {
     "dep": [
       "soviet_gunner_char",
@@ -8019,6 +9768,69 @@
       "wyvern_s4_skeleton"
     ]
   },
+  "xp-50": {
+    "dep": [
+      "pilot_us_500",
+      "pilot_us_char",
+      "usa_paratrooper_char",
+      "xp_50",
+      "xp_50_anim",
+      "xp_50_skeleton"
+    ]
+  },
+  "xp-55": {
+    "dep": [
+      "pilot_us_500",
+      "pilot_us_char",
+      "usa_paratrooper_char",
+      "xp_55",
+      "xp_55_anim",
+      "xp_55_skeleton"
+    ]
+  },
+  "yak-1_early": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_50sv_37",
+      "yak_1_early",
+      "yak_1_early_anim",
+      "yak_1_early_skeleton"
+    ]
+  },
+  "yak-1b": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_50sv_37",
+      "yak_1b",
+      "yak_1b_anim",
+      "yak_1b_skeleton"
+    ]
+  },
+  "yak-3": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "yak_3",
+      "yak_3_anim",
+      "yak_3_skeleton"
+    ]
+  },
+  "yak-3p": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "yak_3",
+      "yak_3_anim",
+      "yak_3_skeleton"
+    ]
+  },
   "yak-3t": {
     "dep": [
       "pilot_su_500",
@@ -8029,6 +9841,90 @@
       "yak_3t_skeleton"
     ]
   },
+  "yak-7b": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_50sv_37",
+      "su_rbs_82_rocket",
+      "su_ros_82_497_rocket",
+      "yak_7b",
+      "yak_7b_anim",
+      "yak_7b_skeleton"
+    ]
+  },
+  "yak-9": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "yak_9",
+      "yak_9_anim",
+      "yak_9_skeleton"
+    ]
+  },
+  "yak-9_prem": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "yak_9",
+      "yak_9_anim",
+      "yak_9_skeleton"
+    ]
+  },
+  "yak-9m": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "yak_9m",
+      "yak_9m_anim",
+      "yak_9m_skeleton"
+    ]
+  },
+  "yak-9m_prem": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "yak_9m",
+      "yak_9m_anim",
+      "yak_9m_skeleton"
+    ]
+  },
+  "yak-9t": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "yak_9t",
+      "yak_9t_anim",
+      "yak_9t_skeleton"
+    ]
+  },
+  "yak-9u": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "yak_9u",
+      "yak_9u_anim",
+      "yak_9u_skeleton"
+    ]
+  },
+  "yak_2_kabb": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "yak_2_kabb",
+      "yak_2_kabb_anim",
+      "yak_2_kabb_skeleton"
+    ]
+  },
   "yak_9_killstreak": {
     "dep": [
       "pilot_su_500",
@@ -8037,6 +9933,16 @@
       "yak_9",
       "yak_9_anim",
       "yak_9_skeleton"
+    ]
+  },
+  "yp-38": {
+    "dep": [
+      "pilot_us_500",
+      "pilot_us_char",
+      "usa_paratrooper_char",
+      "yp_38",
+      "yp_38_anim",
+      "yp_38_skeleton"
     ]
   }
 }

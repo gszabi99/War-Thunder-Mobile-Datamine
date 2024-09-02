@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { floor, ceil } = require("%sqstd/math.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
-let { SGT_UNIT, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
+let { SGT_UNIT, SGT_BLUEPRINTS, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
 let { curCategoryId, goodsByCategory, sortGoods, openShopWnd, goodsLinks } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory, onSchRewardReceive } = require("schRewardsState.nut")
 let { purchasesCount } = require("%appGlobals/pServer/campaign.nut")
@@ -164,7 +164,7 @@ function mkGoodsListWithBaseValue(goodsListBase) {
 }
 
 function onGoodsClick(goods) {
-  if (goods.gtype == SGT_UNIT)
+  if (goods.gtype == SGT_UNIT || goods.gtype == SGT_BLUEPRINTS)
     openGoodsPreview(goods.id)
   else
     purchaseFunc(goods)

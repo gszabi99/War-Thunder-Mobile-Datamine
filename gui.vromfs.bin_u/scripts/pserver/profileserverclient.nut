@@ -1,9 +1,9 @@
 from "%scripts/dagui_library.nut" import *
-
 let logPSC = log_with_prefix("[profileServerClient] ")
 let { object_to_json_string } = require("json")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let profile = require("profile_server")
+let { frnd } = require("dagor.random")
 let { isAuthAndUpdated } = require("%appGlobals/loginState.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let serverTimeUpdate = require("%appGlobals/userstats/serverTimeUpdate.nut")
@@ -164,7 +164,7 @@ function updateDebugDelay() {
   request = (debugDelay.value <= 0) ? requestImpl
     : function(msg) {
         startProgress(msg.data?.progressId, msg.data?.progressValue)
-        setTimeout(debugDelay.value, @() requestImpl(msg))
+        setTimeout(max(0.2, frnd()) * debugDelay.value, @() requestImpl(msg))
       }
 }
 updateDebugDelay()

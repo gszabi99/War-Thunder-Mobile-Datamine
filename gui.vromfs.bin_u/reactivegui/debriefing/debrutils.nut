@@ -91,6 +91,36 @@ function isUnitReceiveLevel(unitName, debrData) {
     && exp + totalExp >= nextLevelExp
 }
 
+function isSlotReceiveLevel(unitName, debrData) {
+  if (!debrData?.isSeparateSlots)
+    return false
+  let { exp = 0, nextLevelExp = 0 } = getUnit(unitName, debrData)?.slot
+  let { totalExp = 0 } = getUnitRewards(unitName, debrData)?.exp
+  return nextLevelExp != 0
+    && exp + totalExp >= nextLevelExp
+}
+
+function getSlotLevelCfg(unit, debrData) {
+  let { slot = {}, slotIdx = 0, name = "" } = unit
+  let { levelsExp = [] } = debrData?.slots
+  return slot.__merge({ levelsExp, slotIdx, name, isSlot = true })
+}
+
+function getNextUnitLevelWithRewards(levelMin, levelMax, modPresetCfg, unitWeaponryCfg) {
+  let { weaponPresets = {}, ammoForWeapons = {} } = unitWeaponryCfg
+  for (local l = levelMin; l <= levelMax; l++) {
+    let modId = modPresetCfg.findindex(@(v) v?.reqLevel == l)
+    if (modId != null && weaponPresets.findvalue(@(wp) wp?.reqModification == modId) != null)
+      return l
+    foreach (weapon in ammoForWeapons) {
+      let { fromUnitTags = {} } = weapon
+      if (fromUnitTags.findvalue(@(b) (modId != null && b?.reqModification == modId) || b?.reqLevel == l) != null)
+        return l
+    }
+  }
+  return -1
+}
+
 function getNewPlatoonUnit(unitName, debrData) {
   if (debrData?.isSeparateSlots ?? false)
     return null // No platoons in campaigns with separate slots.
@@ -137,6 +167,9 @@ return {
   getUnit
   getUnitRewards
   isUnitReceiveLevel
+  isSlotReceiveLevel
+  getSlotLevelCfg
+  getNextUnitLevelWithRewards
   getNewPlatoonUnit
 
   sortUnitMods

@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { resetTimeout } = require("dagor.workcycle")
 let { addModalWindow, removeModalWindow, hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { msgBoxBg } = require("%rGui/components/msgBox.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
@@ -6,17 +7,21 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { slotBarSelectWnd } = require("slotBar.nut")
 let { selectedUnitToSlot, slots, resetSelectedUnitToSlot } = require("slotBarState.nut")
-let { resetTimeout } = require("dagor.workcycle")
 let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { unitToScroll } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { getBox } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
 let { treeNodeUnitPlateKey } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 
 
 let WND_UID = "selectUnitToSlot"
 
-let needSelectUnitResearch = keepref(Computed(@() selectedUnitToSlot.get() != null && !isPurchEffectVisible.get()))
+let needOpen = Computed(@() selectedUnitToSlot.get() != null
+  && !isPurchEffectVisible.get()
+  && !isInBattle.get()
+  && slots.get().len() > 0
+)
+let canOpen = Computed(@() !hasModalWindows.get())
+let shouldOpen = Computed(@() needOpen.get() && canOpen.get())
 
 function close() {
   resetSelectedUnitToSlot()
@@ -50,23 +55,18 @@ let openImpl = @(rect) addModalWindow({
   animations = wndSwitchAnim
 })
 
-function openWndIfCan() {
-  if (needSelectUnitResearch.get()
-      && !hasModalWindows.get()
-      && !isInBattle.get()
-      && !isPurchEffectVisible.get()
-      && slots.get().len() > 0) {
-    unitToScroll.set(selectedUnitToSlot.get())
-    resetTimeout(0.1, function() {
-      let rect = getBox(treeNodeUnitPlateKey(selectedUnitToSlot.get()))
-      if (rect)
-        openImpl(rect)
-    })
-  }
+function open() {
+  unitToScroll.set(selectedUnitToSlot.get())
+  resetTimeout(0.1, function() {
+    if (!shouldOpen.get())
+      return
+    let rect = gui_scene.getCompAABBbyKey(treeNodeUnitPlateKey(selectedUnitToSlot.get()))
+    if (rect)
+      openImpl(rect)
+  })
 }
 
-if (needSelectUnitResearch.get())
-  openWndIfCan()
-needSelectUnitResearch.subscribe(@(v) v ? openWndIfCan() : close())
-
-return openWndIfCan
+if (shouldOpen.get())
+  open()
+shouldOpen.subscribe(@(v) v ? open() : null)
+needOpen.subscribe(@(v) v ? null : close())

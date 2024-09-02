@@ -5,7 +5,7 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { btnA } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { getGamepadHotkey } = require("%rGui/controlsMenu/dargHotkeys.nut")
-let { withHoldTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
+let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
 
 
 let buttonsHGap = hdpx(64)
@@ -172,16 +172,12 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
     valign = ALIGN_CENTER
     rendObj = ROBJ_BOX
     behavior = Behaviors.Button
-    onElemState = tooltipCtor == null ? @(v) stateFlags(v)
-      : withHoldTooltip(stateFlags, key, tooltipCtor)
-    onDetach = tooltipDetach(stateFlags)
     xmbNode = {}
     hotkeys
     sound = {
       click  = "click"
     }
     clickableInfo = { skipDescription = true }
-    onClick
     brightness = stateFlags.value & S_HOVER ? 1.5 : 1
     transform = {
       scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1]
@@ -191,7 +187,13 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
       pattern
       mkGradient(gradientOvr)
     ].append(contentExt, addChild)
-  }.__update(ovrExt)
+  }.__update(ovrExt,
+    tooltipCtor == null
+      ? {
+          onElemState = @(v) stateFlags(v)
+          onClick
+        }
+      : mkButtonHoldTooltip(onClick, stateFlags, key, tooltipCtor))
 }
 
 let textButton = @(text, onClick, style = buttonStyles.PRIMARY)

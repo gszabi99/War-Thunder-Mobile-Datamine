@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%globalScripts/ecs.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
 let { get_mplayer_by_id } = require("mission")
@@ -12,6 +13,7 @@ let { startMissionHintSeria, captureHintSeria } = require("missionNewbiesHints.n
 let { unitType } = require("%rGui/hudState.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { teamRedColor } = require("%rGui/style/teamColors.nut")
+let { EventZoneDamageMessage } = require("dasevents")
 
 let state = require("%sqstd/mkEventLogState.nut")({
   persistId = "mainHintLogState"
@@ -107,6 +109,21 @@ eventbus_subscribe("zoneCapturingEvent", function(data) {
     },
     @(ev) ev?.id == id && ev?.text == text)
 })
+
+
+register_es("on_zone_damage_message",
+  {
+    [EventZoneDamageMessage] = @(evt, _eid, _comp) addEvent({
+      hType = "simpleTextWithIcon",
+      text = loc("exp_reasons/damage_zone", {score = evt.score}),
+      icon = $"ui/gameuiskin#score_icon.svg"
+      ttl = 3
+    })
+  },
+  {
+    comps_rq = [["server_player__userId", TYPE_UINT64]]
+  })
+
 
 const MISSSION_RESULT = "mission_result"
 let resultLocId = {

@@ -66,17 +66,6 @@
         "isTanksAllowed": false,
         "isShipsAllowed": false,
         "isHelicoptersAllowed": false
-      },
-      "editSlotbar": {
-        "keepOwnUnits": false,
-        "country_usa": {
-          "he51c1": {
-            "crewSkillsPercent": 100,
-            "crewSpecialization": 2,
-            "allWeapons": true,
-            "allModifications": true
-          }
-        }
       }
     },
     "atmosphere": {

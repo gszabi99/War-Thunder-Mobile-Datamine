@@ -1,0 +1,28 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "fl250"
+    },
+    {
+      "slot": 2,
+      "preset": "fl250"
+    },
+    {
+      "slot": 3,
+      "preset": "fl250"
+    },
+    {
+      "slot": 5,
+      "preset": "fl250"
+    },
+    {
+      "slot": 6,
+      "preset": "fl250"
+    },
+    {
+      "slot": 7,
+      "preset": "fl250"
+    }
+  ]
+}

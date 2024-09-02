@@ -17,6 +17,14 @@
       ]
     }
   },
+  "singleMission": {
+    "tank": {
+      "m": "abandoned_factory_single_Conq2"
+    },
+    "ship": {
+      "m": "pacific_island_small_single_NTdm"
+    }
+  },
   "test": {
     "test_single": {
       "m": "small_mission"

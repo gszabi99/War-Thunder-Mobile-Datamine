@@ -26,7 +26,7 @@ let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let unitPlateWidth = hdpx(406)
 let unitPlateHeight = hdpx(158)
 let unitPlateRatio = unitPlateHeight / unitPlateWidth
-let unitPlateSmallWidth = hdpx(320)
+let unitPlateSmallWidth = hdpx(290)
 let unitPlateSmallHeight = (unitPlateSmallWidth * unitPlateRatio).tointeger()
 let unitPlateSmall = [unitPlateSmallWidth, unitPlateSmallHeight]
 let unitPlateTinyWidth = evenPx(280)
@@ -231,7 +231,7 @@ let mkPlateText = @(text, override = {}) {
   fontFx = FFT_GLOW
   fontFxColor = 0xFF000000
   fontFxFactor = hdpx(32)
-}.__update(fontTinyAccented, override)
+}.__update(fontVeryTinyAccented, override)
 
 let mkPlateTextTimer = @(endTime, override = {}) @() {
   watch = serverTime
@@ -380,19 +380,21 @@ let function mkUnitFlag(unit, isLocked = false) {
   })
 }
 
+let unitPlateNameOvr = {
+  size = [flex(), SIZE_TO_CONTENT]
+  padding = [plateTextsSmallPad * 0.5, plateTextsSmallPad * 2, 0, 0]
+  halign = ALIGN_RIGHT
+  behavior = Behaviors.Marquee
+  speed = hdpx(30)
+  delay = defMarqueeDelay
+}
+
 let mkUnitTexts = @(unit, unitLocName, isLocked = false) {
   size = flex()
   flow = FLOW_HORIZONTAL
   children = [
     mkUnitFlag(unit, isLocked)
-    mkPlateText(unitLocName, {
-      size = [flex(), SIZE_TO_CONTENT]
-      padding = [plateTextsSmallPad * 0.5, plateTextsSmallPad, 0, 0]
-      halign = ALIGN_RIGHT
-      behavior = Behaviors.Marquee
-      speed = hdpx(30)
-      delay = defMarqueeDelay
-    })
+    mkPlateText(unitLocName, unitPlateNameOvr)
   ]
 }
 
@@ -484,6 +486,14 @@ let mkEquippedIcon = @(unit) {
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = getComponentsByUnitType(unit.unitType).equippedIcons(unit)
+}
+
+let mkUnitPlateBorder = @(isSelected) @(){
+  watch = isSelected
+  size = flex()
+  rendObj = ROBJ_BOX
+  borderWidth = hdpx(3)
+  borderColor = isSelected.get() ? 0xFFFFFFFF : 0xFFA0A0A0
 }
 
 let mkUnitEquippedFrame = @(unit, isEquipped, justUnlockedDelay = null) @() isEquipped.value
@@ -644,6 +654,7 @@ return {
   plateTextsSmallPad
 
   mkUnitBg
+  mkUnitFlag
   mkUnitSelectedGlow
   mkUnitImage
   mkUnitTexts
@@ -668,6 +679,7 @@ return {
   mkUnitBlueprintMark
   mkUnitResearchPrice
   mkUnitBgPremium
+  mkUnitPlateBorder
 
   mkPlatoonPlateFrame
   mkPlatoonBgPlates
@@ -676,6 +688,7 @@ return {
   mkFlagImage
   bgUnit
   bgUnitNotAvailable
-
   unitBgImageBase
+
+  unitPlateNameOvr
 }

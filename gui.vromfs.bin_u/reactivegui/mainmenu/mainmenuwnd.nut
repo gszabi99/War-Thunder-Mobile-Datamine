@@ -11,7 +11,7 @@ let { itemsOrder } = require("%appGlobals/itemsState.nut")
 let { unitSpecificItems } = require("%appGlobals/unitSpecificItems.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { btnOpenUnitAttr } = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
+let { btnOpenUnitAttr } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
 let { isMainMenuAttached } = require("mainMenuState.nut")
 let { totalPlayers } = require("%appGlobals/gameModes/gameModes.nut")
 let { curCampaign, campaignsList } = require("%appGlobals/pServer/campaign.nut")
@@ -165,7 +165,11 @@ let leftTopButtons = {
             flow = FLOW_HORIZONTAL
             children = [
               campaignsBtn
-              downloadInfoBlock
+              {
+                size = [0, 0]
+                pos = [0, -hdpx(10)]
+                children = downloadInfoBlock
+              }
             ]
           }
           {

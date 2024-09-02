@@ -20,6 +20,7 @@ let optListLocalNative = [
   "OPT_FPS"
   "OPT_RAYTRACING"
   "OPT_GRAPHICS_SCENE_RESOLUTION"
+  "OPT_AA"
 ]
 
 let optListScriptOnly = [
@@ -55,9 +56,11 @@ let optListScriptOnly = [
   "OPT_AIRCRAFT_MOVEMENT_CONTROL"
   "OPT_AIRCRAFT_TAP_SELECTION"
   "OPT_AIRCRAFT_ADDITIONAL_FLY_CONTROLS"
+  "OPT_AIRCRAFT_TARGET_FOLLOWER"
 ]
 
 let optListLocalScriptOnly = [
+  "OPT_SHOW_TOUCHES_ENABLED"
 ]
 
 let export = {}

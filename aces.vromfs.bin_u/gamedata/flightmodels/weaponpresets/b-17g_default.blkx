@@ -1,6 +1,6 @@
 {
   "Weapon": {
-    "slot": 1,
-    "preset": "bombs"
+    "slot": 2,
+    "preset": "250lb"
   }
 }

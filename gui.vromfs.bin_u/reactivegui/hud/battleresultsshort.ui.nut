@@ -61,6 +61,16 @@ let scoresByCampaign = {
       locId = "debriefing/GroundKills"
     }
   ]
+  air = [
+    {
+      name = "score"
+      locId = "debriefing/totalscore"
+    }
+    {
+      name = "kills"
+      locId = "debriefing/AirKills"
+    }
+  ]
 }
 
 let resultLocId = {

@@ -249,22 +249,8 @@
         "soloNewbie": "air"
       }
     },
-    "pkg_ground": [
-      {},
-      {
-        "base": false,
-        "hq": false,
-        "uhq": true
-      }
-    ],
-    "pkg_naval": [
-      {},
-      {
-        "base": false,
-        "hq": false,
-        "uhq": true
-      }
-    ],
+    "pkg_ground": {},
+    "pkg_naval": {},
     "pkg_lvl_air_assets": {
       "conditions": {
         "campaign": "air",
@@ -273,12 +259,6 @@
       }
     },
     "pkg_april_fools_event_2024": {
-      "conditions": {
-        "campaign": "air",
-        "mRank": 1
-      }
-    },
-    "pkg_cbt_aircraft": {
       "conditions": {
         "campaign": "air",
         "mRank": 1
@@ -296,10 +276,20 @@
     "pkg_tier_5_ground": {},
     "pkg_tier_6_ground": {},
     "pkg_tier_7_ground": {},
-    "pkg_tier_1_aircraft": {},
+    "pkg_cbt_aircraft": {},
+    "pkg_tier_1_aircraft": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 1
+      }
+    },
     "pkg_tier_2_aircraft": {},
     "pkg_tier_3_aircraft": {},
     "pkg_tier_4_aircraft": {},
+    "pkg_tier_5_aircraft": {},
+    "pkg_tier_6_aircraft": {},
+    "pkg_tier_7_aircraft": {},
+    "pkg_tier_8_aircraft": {},
     "pkg_common_2_aircraft": {},
     "pkg_common_3_aircraft": {},
     "pkg_common_4_aircraft": {},
@@ -779,7 +769,17 @@
         "mRank": 7
       }
     },
-    "pkg_environment": {
+    "pkg_environment_uhq": {
+      "base": false,
+      "hq": false,
+      "uhq": true
+    },
+    "pkg_ground_uhq": {
+      "base": false,
+      "hq": false,
+      "uhq": true
+    },
+    "pkg_naval_uhq": {
       "base": false,
       "hq": false,
       "uhq": true
@@ -894,6 +894,7 @@
     "allowDepthResolvePath": true,
     "resetManagedTexturesOnSettingsChanged": true,
     "allow_uhq_textures": false,
+    "uhqForceDisabled": true,
     "shoreHeightmapRange": 200.0,
     "msaaQuality": 4,
     "wfxHeightLimit": 1.0,
@@ -913,15 +914,19 @@
     "riexCanIncreaseRenderBuffer": false,
     "riMaxModelsPerLevel": 1024,
     "taaSigmaScaleMin": 1.5,
-    "taaSigmaScaleMax": 7.5,
+    "taaSigmaScaleMax": 2.5,
+    "taaSigmaScaleMaxHangar": 7.5,
     "taaMotionScale": 2500.0,
     "forwardSpeedLines": false,
     "volumetricAfterBurner": false,
     "backbufferHolderReadable": false,
     "useUnderwaterFogPrepassPlane": true,
     "csmAllowDynrendPrepareJobsInThreads": false,
+    "sky_panorama_async_pipelines": true,
+    "riPerInstanceVisibility": false,
+    "useRiPrepass": false,
     "raytraced_shadows": {
-      "maxBlasBuildsPerFrame": 25,
+      "maxBlasBuildsPerFrame": 30,
       "additionalElementsCheck": false
     },
     "cellsVBcfg": {
@@ -1045,6 +1050,7 @@
     "useANRWatcherThreadProbability": 0.1,
     "logSignificantChangesAsWarnings": true,
     "dumpSettings": true,
+    "clearDiscardedImagesInAtlas": false,
     "unsupportedVfxShaders": {
       "shader": [
         "dafx_modfx_volshape_render",
@@ -1899,13 +1905,11 @@
         "mobile_ssao_active": 1,
         "renderImmDecals": true,
         "renderImpostorsToDraftDepth": true,
-        "includeAtesUnitstInDepthPrepass": false,
         "grassQuality": "low",
         "grassAlphaToCoverage": false,
         "treeAlphaToCoverage": false,
         "impostorAlphaToCoverage": false,
         "shaderlod": "high",
-        "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
         "underwaterFogUseTAA": false,
@@ -1990,13 +1994,11 @@
         "mobile_ssao_active": 0,
         "renderImmDecals": false,
         "renderImpostorsToDraftDepth": false,
-        "includeAtesUnitstInDepthPrepass": false,
         "grassQuality": "low",
         "grassAlphaToCoverage": false,
         "treeAlphaToCoverage": false,
         "impostorAlphaToCoverage": false,
         "shaderlod": "low",
-        "riExtraMinSizeForDraftDepth": 15.0,
         "underwaterFogUseShadows": 0,
         "underwaterFogUseSimple": true,
         "underwaterFogUseTAA": false,
@@ -2037,9 +2039,6 @@
       },
       "debug": {
         "lodDistanceScale": 1.0
-      },
-      "video": {
-        "postfx_antialiasing": "fxaa"
       }
     },
     "medium": {
@@ -2069,13 +2068,11 @@
         "mobile_ssao_active": 1,
         "renderImmDecals": false,
         "renderImpostorsToDraftDepth": true,
-        "includeAtesUnitstInDepthPrepass": false,
         "grassQuality": "high",
         "grassAlphaToCoverage": false,
         "treeAlphaToCoverage": false,
         "impostorAlphaToCoverage": false,
         "shaderlod": "high",
-        "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": true,
         "underwaterFogUseTAA": false,
@@ -2116,9 +2113,6 @@
       },
       "debug": {
         "lodDistanceScale": 1.0
-      },
-      "video": {
-        "postfx_antialiasing": "fxaa"
       }
     },
     "high": {
@@ -2148,13 +2142,11 @@
         "mobile_ssao_active": 1,
         "renderImmDecals": true,
         "renderImpostorsToDraftDepth": true,
-        "includeAtesUnitstInDepthPrepass": false,
         "grassQuality": "low",
         "grassAlphaToCoverage": false,
         "treeAlphaToCoverage": false,
         "impostorAlphaToCoverage": false,
         "shaderlod": "high",
-        "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
         "underwaterFogUseTAA": false,
@@ -2195,9 +2187,6 @@
       },
       "debug": {
         "lodDistanceScale": 1.0
-      },
-      "video": {
-        "postfx_antialiasing": "fxaa"
       }
     },
     "max": {
@@ -2227,13 +2216,11 @@
         "mobile_ssao_active": 1,
         "renderImmDecals": true,
         "renderImpostorsToDraftDepth": true,
-        "includeAtesUnitstInDepthPrepass": true,
         "grassQuality": "high",
         "grassAlphaToCoverage": true,
         "treeAlphaToCoverage": true,
         "impostorAlphaToCoverage": true,
         "shaderlod": "high",
-        "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
         "underwaterFogUseTAA": true,
@@ -2274,9 +2261,6 @@
       },
       "debug": {
         "lodDistanceScale": 1.0
-      },
-      "video": {
-        "postfx_antialiasing": "fxaa"
       }
     },
     "movie": {
@@ -2306,13 +2290,11 @@
         "mobile_ssao_active": 1,
         "renderImmDecals": true,
         "renderImpostorsToDraftDepth": true,
-        "includeAtesUnitstInDepthPrepass": true,
         "grassQuality": "high",
         "grassAlphaToCoverage": true,
         "treeAlphaToCoverage": true,
         "impostorAlphaToCoverage": true,
         "shaderlod": "high",
-        "riExtraMinSizeForDraftDepth": 0.0,
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
         "underwaterFogUseTAA": true,
@@ -2353,9 +2335,6 @@
       },
       "debug": {
         "lodDistanceScale": 0.5
-      },
-      "video": {
-        "postfx_antialiasing": "high_fxaa"
       }
     }
   },
@@ -2611,6 +2590,7 @@
   },
   "vulkan": {
     "texUploadLimitMb": 32,
+    "allowBufferDMALockPath": false,
     "vendor": {
       "Qualcomm": {
         "driverProps": {
@@ -2698,6 +2678,18 @@
                 }
               }
             ]
+          },
+          "limitedDXCSupport": {
+            "entry": {
+              "driverMinVer0": 512,
+              "driverMinVer1": 384,
+              "driverMaxVer0": 512,
+              "driverMaxVer1": 384,
+              "gpu": "630",
+              "data": {
+                "affected": true
+              }
+            }
           }
         }
       },

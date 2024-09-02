@@ -5,6 +5,7 @@ let { controlsOptions } = require("options/controlsOptions.nut")
 let { tankControlsOptions } = require("options/tankControlsOptions.nut")
 let { shipControlsOptions } = require("options/shipControlsOptions.nut")
 let { airControlsOptions } = require("options/airControlsOptions.nut")
+let { systemOptions } = require("options/systemOptions.nut")
 let { mkOptionsScene } = require("mkOptionsScene.nut")
 
 let tabs = [ // id, locId, image, options, content
@@ -49,6 +50,11 @@ let tabs = [ // id, locId, image, options, content
     locId = "profile/language"
     image = "ui/gameuiskin#menu_lang.svg"
     options = langOptions
+  }
+  {
+    locId = "options/system"
+    image = "ui/gameuiskin#menu_system.svg"
+    options = systemOptions
   }
 ]
 

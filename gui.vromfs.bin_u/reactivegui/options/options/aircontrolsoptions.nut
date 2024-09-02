@@ -17,6 +17,7 @@ let {
   OPT_AIRCRAFT_GYRO_CONTROL_PARAM_SENSITIVITY,
   OPT_AIRCRAFT_TAP_SELECTION,
   OPT_AIRCRAFT_ADDITIONAL_FLY_CONTROLS,
+  OPT_AIRCRAFT_TARGET_FOLLOWER,
   mkOptionValue,
   getOptValue } = require("%rGui/options/guiOptions.nut")
 let {
@@ -32,6 +33,7 @@ let {
   set_camera_viscosity,
   set_camera_viscosity_in_zoom,
   set_aircraft_tap_selection,
+  set_aircraft_target_follower,
   CAM_TYPE_FREE_PLANE,
   CAM_TYPE_NORMAL_PLANE,
   CAM_TYPE_BINOCULAR_PLANE } = require("controlsOptions")
@@ -195,6 +197,20 @@ let currentTapSelectionType = {
   description = loc("options/desc/tap_selection")
 }
 
+let targetFollowerList = [false, true]
+let currentTargetFollower = mkOptionValue(OPT_AIRCRAFT_TARGET_FOLLOWER, true, @(v) validate(v, targetFollowerList))
+set_aircraft_target_follower(currentTargetFollower.value)
+currentTargetFollower.subscribe(@(v) set_aircraft_target_follower(v))
+let currentTargetFollowerType = {
+  locId = "options/target_follower"
+  ctrlType = OCT_LIST
+  value = currentTargetFollower
+  onChangeValue = @(v) sendChange("target_follower", v)
+  list = targetFollowerList
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+  description = loc("options/desc/target_follower")
+}
+
 return {
   airControlsOptions = [
     aircraftControlType
@@ -211,6 +227,7 @@ return {
     controlByGyroModeDeadZoneSlider
     controlByGyroModeSensitivitySlider
     currentTapSelectionType
+    currentTargetFollowerType
   ].extend(crosshairOptions)
   currentAircraftCtrlType
   currentControlByGyroModeAilerons,

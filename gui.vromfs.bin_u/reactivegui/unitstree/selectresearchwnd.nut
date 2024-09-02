@@ -89,7 +89,13 @@ let function unitsBlock(startUnit) {
             list.append(c) // warning disable: -modified-container
           }
     }
-    return resTable.keys().sort(@(a, b) nodes.get()[a].y <=> nodes.get()[b].y)
+
+    let resTableKeys = resTable.keys()
+    let maxMRank = resTableKeys.reduce(@(prevMRank, curUnit) max(prevMRank, serverConfigs.get()?.allUnits[curUnit].mRank ?? 0), 0)
+
+    return resTableKeys
+      .filter(@(unit) (serverConfigs.get()?.allUnits[unit].mRank ?? 0) >= maxMRank - 1)
+      .sort(@(a, b) nodes.get()[a].y <=> nodes.get()[b].y)
   })
   return @() {
     watch = [serverConfigs, childUnits, startUnit]

@@ -502,7 +502,7 @@ function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, eventPassThrou
   })
 }
 
-function mkCirclePlaneCourseGuns() {
+function mkCirclePlaneCourseGuns(btnSize, imgSize) {
   let shortcutId = "ID_FIRE_COURSE_GUNS"
   let stateFlags = Watched(0)
 
@@ -538,17 +538,17 @@ function mkCirclePlaneCourseGuns() {
   return @() !hasAnyWeapon.get() ? { watch = hasAnyWeapon, key = shortcutId }
     : res.__merge({
         watch = [hasAnyWeapon, isAnyWeaponAvailable]
-        size = [bigButtonSize, bigButtonSize]
+        size = [btnSize, btnSize]
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
         children = [
           @() {
             watch = availableWeapon
             size = flex()
-            children = mkCircleProgressBgWeapon(bigButtonSize, "course_gun", availableWeapon.get(), isAnyWeaponAvailable.get())
+            children = mkCircleProgressBgWeapon(btnSize, "course_gun", availableWeapon.get(), isAnyWeaponAvailable.get())
           }
-          mkBorderPlane(bigButtonSize, isAnyWeaponAvailable.get(), stateFlags)
-          mkBtnImage(bigButtonImgSize, "ui/gameuiskin#hud_aircraft_canons.svg", isAnyWeaponAvailable.get() ? 0xFFFFFFFF : disabledColor)
+          mkBorderPlane(btnSize, isAnyWeaponAvailable.get(), stateFlags)
+          mkBtnImage(imgSize, "ui/gameuiskin#hud_aircraft_canons.svg", isAnyWeaponAvailable.get() ? 0xFFFFFFFF : disabledColor)
           @() {
               watch = [MGun0, isMgunsAvailable]
             }.__update(!isMgunsAvailable.get() || MGun0.get().count < 0 ? {}
@@ -557,7 +557,7 @@ function mkCirclePlaneCourseGuns() {
                 watch = [Cannon0, isCannonsAvailable]
               }.__update(!isCannonsAvailable.get() || Cannon0.get().count < 0 ? {}
                 : mkCountTextLeftUpper(Cannon0.get().count, isCannonsAvailable.get() ? 0xFFFFFFFF : disabledColor))
-          mkCircleGlare(bigButtonSize, "course_gun")
+          mkCircleGlare(btnSize, "course_gun")
           mkGamepadShortcutImage(shortcutId, defShortcutOvr)
         ]
       })
@@ -680,6 +680,8 @@ function mkCircleLockBtn(shortcutId){
       isDisabled.get() ? null
         : mkGamepadShortcutImage(shortcutId, defShortcutOvr)
     ]
+    transform = {}
+    animations = [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.2, 1.2], duration = 2.0,  easing = DoubleBlink, trigger = "hint_need_lock_target" }]
   }
 }
 
@@ -812,4 +814,6 @@ return {
   buttonImgSize
   bigButtonSize
   bigButtonImgSize
+  airButtonSize
+  buttonAirImgSize
 }

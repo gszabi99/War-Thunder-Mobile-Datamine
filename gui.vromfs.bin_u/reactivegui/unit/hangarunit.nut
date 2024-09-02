@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { eventbus_subscribe } = require("eventbus")
+let { deferOnce } = require("dagor.workcycle")
 let { hangar_load_model_with_skin, hangar_move_cam_to_unit_place,
   hangar_get_current_unit_name, hangar_get_loaded_unit_name, change_background_models_list_with_skin,
   change_one_background_model_with_skin, hangar_get_current_unit_skin, get_current_background_models_list
@@ -8,11 +9,11 @@ let { hangar_load_model_with_skin, hangar_move_cam_to_unit_place,
 let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { isInMenu, isInMpSession, isInLoadingScreen, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
-let isHangarUnitLoaded = mkWatched(persist, "isHangarUnitLoaded", false)
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 
+let isHangarUnitLoaded = mkWatched(persist, "isHangarUnitLoaded", false)
 let loadedInfo = Watched({
   name = hangar_get_current_unit_name()
   skin = hangar_get_current_unit_skin()
@@ -105,6 +106,7 @@ let hangarUnitSkin = Computed(@() hangarUnitData.get()?.skin
 
 let hasNotDownloadedPkg = Computed(@() !isReadyToFullLoad.get() ||
   getUnitPkgs(hangarUnitName.get(), hangarUnit.get()?.mRank).findvalue(@(a) !hasAddons.value?[a]) != null)
+let canReloadModel = keepref(Computed(@() !hasNotDownloadedPkg.get() && !isInBattle.get() && !isInLoadingScreen.get()))
 
 function loadModel(unitName, skin) {
   if ((unitName ?? "") == "" && hangar_get_current_unit_name() == "")
@@ -205,12 +207,13 @@ function resetCustomHangarUnit() {
   }
 }
 
-hasNotDownloadedPkg.subscribe(function(_) {
-  if (isInBattle.value || isInLoadingScreen.value)
+function onReloadModel() {
+  if (!canReloadModel.get())
     return
   loadCurrentHangarUnitModel()
   reloadAllBgModels()
-})
+}
+canReloadModel.subscribe(@(_) deferOnce(onReloadModel))
 
 eventbus_subscribe("onHangarModelStartLoad", @(_) isHangarUnitLoaded(false))
 

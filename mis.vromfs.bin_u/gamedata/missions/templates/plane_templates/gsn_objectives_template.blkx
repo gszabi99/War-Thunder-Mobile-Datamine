@@ -41,6 +41,9 @@
             "time": 5.0
           },
           {
+            "time": 10.0
+          },
+          {
             "time": 5.0
           }
         ],
@@ -56,6 +59,9 @@
             "object_marking": 0,
             "object_var_comp_op": "equal",
             "object_var_name": ""
+          },
+          {
+            "target": "arcade_destroy_airplanes"
           }
         ],
         "triggerEnable": {
@@ -167,6 +173,19 @@
         "scoreConst": 100,
         "scoreTime": 400,
         "team": "B"
+      },
+      "onSuccess": {},
+      "onFailed": {}
+    },
+    "arcade_destroy_airplanes": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
       },
       "onSuccess": {},
       "onFailed": {}

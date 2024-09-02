@@ -425,7 +425,7 @@
               10.0,
               15.0
             ],
-            "target": "t1_quest_units_squad",
+            "target": "t2_quest_units_squad",
             "randomTargetsCount": 1,
             "doExplosion": true
           },
@@ -447,7 +447,7 @@
               10.0,
               15.0
             ],
-            "target": "t2_quest_units_squad",
+            "target": "t1_quest_units_squad",
             "randomTargetsCount": 1,
             "doExplosion": true
           }
@@ -464,8 +464,8 @@
     "is_enabled": true
   },
   "variables": {
-    "seconds_left_real": 420.0,
-    "time_to_kill_one": 420.0,
+    "seconds_left_real": 300.0,
+    "time_to_kill_one": 300.0,
     "count_alive_rn": 0.0,
     "min_alive_rn_count": 0.0,
     "t1_land_unit_count_real": 0.0,

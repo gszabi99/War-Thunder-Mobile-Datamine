@@ -2,7 +2,11 @@ from "%globalsDarg/darg_library.nut" import *
 let { allow_voice_messages, has_strategy_mode } = require("%appGlobals/permissions.nut")
 let { SHIP } = require("%appGlobals/unitConst.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
-let { EII_SMOKE_SCREEN, EII_TOOLKIT, EII_IRCM } = require("%rGui/hud/weaponsButtonsConfig.nut")
+let { EII_SMOKE_SCREEN, EII_TOOLKIT,
+  //
+
+
+  EII_IRCM } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let { AB_FIREWORK } = require("%rGui/hud/actionBar/actionType.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let cfgHudCommonNaval = require("cfgHudCommonNaval.nut")
@@ -101,6 +105,11 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
 
   abIrcm = withActionBarButtonCtor(EII_IRCM, SHIP,
      { defTransform = mkRBPos([hdpx(-750), hdpx(43)]) })
+
+//
+
+
+
 
   firework = withActionButtonCtor(AB_FIREWORK, mkRhombFireworkBtn,
     {

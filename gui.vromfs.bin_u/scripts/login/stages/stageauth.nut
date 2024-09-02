@@ -1,12 +1,13 @@
-from "%scripts/dagui_natives.nut" import check_login_pass
 from "%scripts/dagui_library.nut" import *
-let { get_player_tags, isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync } = require("auth_wt")
-let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_FACEBOOK, LT_APPLE, LT_NSWITCH, LT_FIREBASE, LT_GUEST, SST_MAIL, SST_GA, SST_GP, SST_UNKNOWN, curLoginType, authTags
+let { get_player_tags, isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync, check_login_pass_async
+} = require("auth_wt")
+let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_FACEBOOK, LT_APPLE, LT_NSWITCH, LT_FIREBASE, LT_GUEST, SST_MAIL, SST_GA, SST_GP, SST_UNKNOWN, curLoginType, authTags
 } = require("%appGlobals/loginState.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { authState } = require("%scripts/login/authState.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let googlePlayAccount = require("android.account.googleplay")
+let hmsAccount = require("android.account.huawei")
 let appleAccount = require("ios.account.apple")
 let { getUUID } = require("ios.platform")
 let { is_ios, is_android } = require("%appGlobals/clientState/platform.nut")
@@ -18,6 +19,7 @@ let { send_counter } = require("statsd")
 let { sendErrorBqEvent, sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { getLocTextForLang } = require("dagor.localize")
 let { login_nswitch} = require("subStageAuthNSwitch.nut")
+let {parse_json} = require("json")
 
 let { logStage, onlyActiveStageCb, export, finalizeStage, interruptStage} = require("mkStageBase.nut")("auth", LOGIN_STATE.LOGIN_STARTED, LOGIN_STATE.AUTHORIZED)
 
@@ -80,6 +82,20 @@ function proceedAuthorizationResult(result, loginType) {
   interruptStage({ errCode = result })
 }
 
+function checkLoginPassDoneCb(login_type, msg) {
+  let { result } = msg
+  onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, login_type))(result)
+}
+
+eventbus_subscribe("CheckLoginPassDone.Huawei", @(msg) checkLoginPassDoneCb(LT_HUAWEI, msg))
+eventbus_subscribe("CheckLoginPassDone.Google", @(msg) checkLoginPassDoneCb(LT_GOOGLE, msg))
+eventbus_subscribe("CheckLoginPassDone.Facebook", @(msg) checkLoginPassDoneCb(LT_FACEBOOK, msg))
+eventbus_subscribe("CheckLoginPassDone.Firebase", @(msg) checkLoginPassDoneCb(LT_FIREBASE, msg))
+eventbus_subscribe("CheckLoginPassDone.Apple", @(msg) checkLoginPassDoneCb(LT_APPLE, msg))
+eventbus_subscribe("CheckLoginPassDone.NSwitch", @(msg) checkLoginPassDoneCb(LT_NSWITCH, msg))
+eventbus_subscribe("CheckLoginPassDone.Guest", @(msg) checkLoginPassDoneCb(LT_GUEST, msg))
+eventbus_subscribe("CheckLoginPassDone.Gaijin", @(msg) checkLoginPassDoneCb(LT_GAIJIN, msg))
+
 eventbus_subscribe("android.account.googleplay.onSignInCallback",
   onlyActiveStageCb(function(msg) {
     let { player_id, server_auth, error_code = null } = msg
@@ -100,15 +116,13 @@ eventbus_subscribe("android.account.googleplay.onSignInCallback",
       }
       return
     }
-    logStage("Google check_login_pass")
-    let result = check_login_pass(player_id, server_auth, "google", "google", false, false)
-    //check_login_pass is not instant
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_GOOGLE))(result)
+    logStage("Google check_login_pass_async")
+    check_login_pass_async("CheckLoginPassDone.Google", player_id, server_auth, "google", "google", false, false)
   }))
 
 eventbus_subscribe(is_android ? "android.account.fb.onSignInCallback" : "ios.account.facebook.onSignInCallback",
   onlyActiveStageCb(function(msg) {
-    let { token, status } = msg
+    let { token, status, isLimited = false } = msg
     if (status != fbAccount.FB_RESULT_OK) {
       send_counter("auth.fb_signin_errors", 1, { error = status })
       interruptStage({ error = $"Facebook sign in failed: {status}" })
@@ -121,9 +135,32 @@ eventbus_subscribe(is_android ? "android.account.fb.onSignInCallback" : "ios.acc
       }
       return
     }
-    logStage("Facebook check_login_pass")
-    let result = check_login_pass(token, "", "facebook", "facebook", false, false)
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_FACEBOOK))(result)
+    logStage("Facebook check_login_pass_async")
+    check_login_pass_async("CheckLoginPassDone.Facebook", token, "", "facebook", isLimited ? "facebook-limited" : "facebook", false, false)
+  }))
+
+eventbus_subscribe("android.account.huawei.onSignInCallback",
+  onlyActiveStageCb(function(msg) {
+    let { json, code = 0 } = msg
+    if (code != hmsAccount.HMS_SERVICE_OK) {
+      send_counter("auth.huawei_signin_errors", 1, { code })
+      interruptStage({ error = $"Huawei sign in failed: {code}" })
+      if (code != hmsAccount.HMS_ERROR_SIGN_IN_CANCELLED) {
+        let errLocId = $"yn1/login/huawei/{code}"
+        sendErrorBqEvent($"{getLocTextForLang(errLocId, "English")}{code}")
+        let errCodeStr = code != null ? $"\n\n<color={0x80808080}>{code}</color>" : ""
+        openFMsgBox({ text = $"{loc(errLocId)}{errCodeStr}",
+          buttons = [
+            { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }
+            { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
+          ]
+        })
+      }
+      return
+    }
+    let parsed = parse_json(json)
+    logStage("Huawei check_login_pass_async")
+    check_login_pass_async("CheckLoginPassDone.Huawei", "", parsed?.AccessToken, "huawei", "huawei", false, false)
   }))
 
 eventbus_subscribe("android.account.onGuestFIDReciveCallback",
@@ -140,10 +177,8 @@ eventbus_subscribe("android.account.onGuestFIDReciveCallback",
       return
     }
 
-    logStage("Firebase check_login_pass")
-    let result = check_login_pass(guest_FID, "", "firebase", "firebase", false, false)
-    //check_login_pass is not instant
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_FIREBASE))(result)
+    logStage("Firebase check_login_pass_async")
+    check_login_pass_async("CheckLoginPassDone.Firebase", guest_FID, "", "firebase", "firebase", false, false)
   }))
 
 eventbus_subscribe("ios.account.apple.onAppleLoginToken",
@@ -163,9 +198,8 @@ eventbus_subscribe("ios.account.apple.onAppleLoginToken",
         ])
       return
     }
-    logStage("Apple check_login_pass")
-    let result = check_login_pass("", token, "apple", "apple", false, false)
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_APPLE))(result)
+    logStage("Apple check_login_pass_async")
+    check_login_pass_async("CheckLoginPassDone.Apple", "", token, "apple", "apple", false, false)
 }))
 
 eventbus_subscribe("nswitch.account.login",
@@ -182,15 +216,18 @@ eventbus_subscribe("nswitch.account.login",
       })
       return
     }
-    logStage("Nintendo Switch check_login_pass")
-    let result = check_login_pass(player_id, token, "nswitch", "nswitch", false, false)
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_NSWITCH))(result)
+    logStage("Nintendo Switch check_login_pass_async")
+    check_login_pass_async("CheckLoginPassDone.NSwitch", player_id, token, "nswitch", "nswitch", false, false)
 }))
 
 let loginByType = {
   [LT_GOOGLE] = function(_as) {
     googlePlayAccount.signOut(false)
     googlePlayAccount.startSignIn() //will be event android.account.googleplay.onSignInCallback as result
+  },
+
+  [LT_HUAWEI] = function(_as) {
+    hmsAccount.silentSignIn() //will be event android.account.huawei.onSignInCallback as result
   },
 
   [LT_FACEBOOK] = function(_as) {
@@ -205,8 +242,7 @@ let loginByType = {
   },
 
   [LT_GUEST] = function(_as) {
-    let result = check_login_pass(getUUID(), "", "guest", "guest", false, false)
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_GUEST))(result)
+    check_login_pass_async("CheckLoginPassDone.Guest", getUUID(), "", "guest", "guest", false, false)
   },
 
   [LT_NSWITCH] = function(_as) {
@@ -218,14 +254,12 @@ let loginByType = {
   },
 
   [LT_GAIJIN] = function(as) {
-    let result = check_login_pass(as.loginName,
+    check_login_pass_async("CheckLoginPassDone.Gaijin", as.loginName,
       as.loginPas,
       "", //We not use stoken in WTM
       as.check2StepAuthCode ? as.twoStepAuthCode : "",
       true,
       false)
-    //check_login_pass is not instant
-    onlyActiveStageCb(@(_res) proceedAuthorizationResult(result, LT_GAIJIN))(result)
   },
 }
 

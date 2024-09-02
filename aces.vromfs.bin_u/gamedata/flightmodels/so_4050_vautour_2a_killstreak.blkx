@@ -1892,7 +1892,7 @@
             }
           },
           {
-            "iconType": "rockets_he_small_group",
+            "iconType": "rocket_7kg_group",
             "name": "t10_140",
             "reqModification": "fr_matra_t_10",
             "ShowNodes": {
@@ -2105,7 +2105,7 @@
             }
           },
           {
-            "iconType": "rockets_he_small_group",
+            "iconType": "rocket_7kg_group",
             "name": "t10_140",
             "reqModification": "fr_matra_t_10",
             "ShowNodes": {
@@ -2498,7 +2498,7 @@
             }
           },
           {
-            "iconType": "rockets_he_small_group",
+            "iconType": "rocket_7kg_group",
             "name": "t10_140",
             "reqModification": "fr_matra_t_10",
             "ShowNodes": {
@@ -2711,7 +2711,7 @@
             }
           },
           {
-            "iconType": "rockets_he_small_group",
+            "iconType": "rocket_7kg_group",
             "name": "t10_140",
             "reqModification": "fr_matra_t_10",
             "ShowNodes": {

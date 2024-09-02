@@ -38,7 +38,7 @@ let effectsCfg = {
     timeTotal = 2.6
   },
   [AIR] = {
-    play = @() play_fx_on_unit(Point3(0.3, 0.0, -0.45), -1.0, "misc_open_aircraft", "")
+    play = @() play_fx_on_unit(Point3(0.2, -0.5, 0.0), -1.0, "misc_open_aircraft", "")
     timeToShowUnit = 0.2
     timeTotal = 2.6
   }

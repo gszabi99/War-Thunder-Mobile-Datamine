@@ -2167,8 +2167,8 @@
       },
       {
         "_tags": "server",
-        "damage_area__offenderId": 0,
-        "damage_area__nextUpdateTime": 0.0
+        "damage_area__nextUpdateTime": 0.0,
+        "damage_area__offender": {}
       },
       {
         "_tags": "gameClient",

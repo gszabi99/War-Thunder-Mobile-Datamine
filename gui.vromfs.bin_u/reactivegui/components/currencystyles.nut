@@ -35,6 +35,7 @@ let CS_GAMERCARD = sw(100) >= hdpx(2100)
 
 return freeze({
   gamercardGap
+  CS_TINY = CS_COMMON.__merge({ fontStyle = fontVeryVeryTinyAccented, iconSize = hdpxi(22), iconGap = hdpx(4) })
   CS_SMALL = CS_COMMON.__merge({ fontStyle = fontTiny, iconSize = hdpxi(30) })
   CS_SMALL_INCREASED_ICON
   CS_COMMON

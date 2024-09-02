@@ -8,6 +8,7 @@ let { chooseRandom } = require("%sqstd/rand.nut")
 let { localMPlayerId, localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
 let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { debugHudType, HT_CUTSCENE } = require("%appGlobals/clientState/hudState.nut")
+let { areHintsHidden } = require("%rGui/hudState.nut")
 let { playersCommonStats, dbgCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
@@ -129,7 +130,21 @@ register_command(
       victimUnitNameLoc = "Victim Unit"
     })
     if (myUserId.value != null && (playersCommonStats.value?[myUserId.value].len() ?? 0) == 0)
-      dbgCommonStats.mutate(@(v) v[myUserId.value] <- { hasPremium = true, level = unit?.rank ?? 1, unit = { level = 25, isPremium = true } })
+      dbgCommonStats.mutate(@(v) v[myUserId.value] <- {
+        hasPremium = true
+        level = unit?.rank ?? 1
+        mainUnitName = unit?.name ?? ""
+        units = {
+          [unit?.name ?? ""] = { level = 25, mRank = unit?.mRank, isUpgraded = true }
+        }
+      })
     debugHudType(HT_CUTSCENE)
   },
   "hud.debug.deathScreen")
+
+register_command(
+  function() {
+    areHintsHidden.set(!areHintsHidden.get())
+    console_print($"Current state - {areHintsHidden.get()}") //warning disable: -forbidden-function
+  },
+  "hud.debug.hideHints")

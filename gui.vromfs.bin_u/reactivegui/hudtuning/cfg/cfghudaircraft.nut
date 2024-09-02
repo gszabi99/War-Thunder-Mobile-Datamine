@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { allow_voice_messages } = require("%appGlobals/permissions.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { Z_ORDER, mkLBPos, mkLTPos, mkRBPos, mkRTPos, mkCTPos } = require("hudTuningPkg.nut")
 let { optDoubleCourseGuns } = require("cfgOptions.nut")
 let {
@@ -26,9 +27,10 @@ let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCam
 let { mkFreeCameraButton, mkViewBackButton } = require("%rGui/hud/buttons/cameraButtons.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { mkMyPlace, myPlaceUi, mkAirMyScores, myScoresUi } = require("%rGui/hud/myScores.nut")
-let { xrayModel, dmModules, xrayModelEditView, dmModulesEditView } = require("%rGui/hud/aircraftStateModule.nut")
+let { xrayModel, dmModules, xrayModelEditView, dmModulesEditView, xrayDollSize } = require("%rGui/hud/aircraftStateModule.nut")
 let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkCircleBtnPlaneEditView, mkCirclePlaneTurretsGuns,
-  bigButtonSize, bigButtonImgSize, mkCircleZoom, mkCircleWeaponryItem, mkCircleLockBtn, mkBigCirclePlaneBtnEditView
+  bigButtonSize, bigButtonImgSize, mkCircleZoom, mkCircleWeaponryItem, mkCircleLockBtn, mkBigCirclePlaneBtnEditView, airButtonSize,
+  buttonAirImgSize
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { Cannon0, MGun0, hasCanon0, hasMGun0,
   BombsState, hasBombs,
@@ -75,7 +77,7 @@ return cfgHudCommon.__merge({
   }
 
   torpedo = {
-    ctor = @() mkCircleWeaponryItem("ID_TORPEDOES", TorpedoesState, hasTorpedos, "ui/gameuiskin#hud_torpedo.svg", true)
+    ctor = @() mkCircleWeaponryItem("ID_WTM_AIRCRAFT_TORPEDOES", TorpedoesState, hasTorpedos, "ui/gameuiskin#hud_torpedo.svg", true)
     defTransform = mkLBPos([hdpx(435), hdpx(-107)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_torpedo.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
@@ -162,14 +164,14 @@ return cfgHudCommon.__merge({
 
   dmModules = {
     ctor = @() dmModules
-    defTransform = mkLBPos([hdpx(480), hdpx(30)])
+    defTransform = mkLBPos([hdpx(480) + xrayDollSize, hdpx(30)])
     editView = dmModulesEditView
     hideForDelayed = false
   }
 
   xpayModel = {
     ctor = @() xrayModel
-    defTransform = mkLBPos([hdpx(820), hdpx(30)])
+    defTransform = mkLBPos([hdpx(480), hdpx(30)])
     editView = xrayModelEditView
     hideForDelayed = false
   }
@@ -223,13 +225,25 @@ return cfgHudCommon.__merge({
       key = "plane_course_guns"
       watch = isActiveTurretCamera
       children = isActiveTurretCamera.get() ? mkCirclePlaneTurretsGuns(bigButtonSize, bigButtonImgSize)
-        : mkCirclePlaneCourseGuns()
+        : mkCirclePlaneCourseGuns(bigButtonSize, bigButtonImgSize)
     }
     defTransform = mkLBPos([hdpx(60), hdpx(-0)])
     editView = mkBigCirclePlaneBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
     isVisible = @(options) !optDoubleCourseGuns.has(options)
     options = [ optDoubleCourseGuns ]
+  }
+  courseGunsSecondBtn = {
+    ctor = @() @() {
+      key = "plane_course_guns"
+      watch = [isGamepad, isActiveTurretCamera]
+      children = isGamepad.get() ? null
+        : isActiveTurretCamera.get() ? mkCirclePlaneTurretsGuns(bigButtonSize, bigButtonImgSize)
+        : mkCirclePlaneCourseGuns(airButtonSize, buttonAirImgSize)
+    }
+    defTransform = mkRBPos([hdpx(-300), hdpx(-280)])
+    editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
+    priority = Z_ORDER.BUTTON_PRIMARY
   }
 
   cannons = {
@@ -277,14 +291,14 @@ return cfgHudCommon.__merge({
     ctor = @() @() {
       children = aircraftMoveStick
     }
-    defTransform = mkRBPos([hdpx(20), hdpx(-220)])
+    defTransform = mkRBPos([hdpx(-20), hdpx(-320)])
     editView = aircraftMoveStickView
     priority = Z_ORDER.STICK
   }
 
   moveArrows = {
     ctor = aircraftMoveArrows
-    defTransform = mkRBPos([hdpx(-300), hdpx(-150)])
+    defTransform = mkRBPos([hdpx(-450), hdpx(-150)])
     editView = moveArrowsAirView
     priority = Z_ORDER.STICK
     isVisibleInBattle = isAircraftMoveArrowsAvailable

@@ -10,6 +10,9 @@ let { getNodeStyle, airGroupIcons, airGroupButtonWidth, airGroupButtonHeight,
       iconShip, debugTextColor
     } = require("%rGui/hud/strategyMode/style.nut")
 let { NODE_SELF } = require("guiStrategyMode")
+let { mkSquareButtonBg } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
+let { mkActionGlare } = require("%rGui/hud/weaponsButtonsAnimations.nut")
+let { playSound } = require("sound_wt")
 
 local prevAirGroupHealth = {}
 
@@ -63,15 +66,16 @@ function mkStrategyCommandsUi(data) {
 }
 
 function mkPlaneUi(actionItem, airGroupIndex) {
-  let airGroupData = Computed(@() strategyDataRest.value?[airGroupIndex] )
+  let airGroupData = Computed(@() strategyDataRest.value?[airGroupIndex])
   return {
     flow = FLOW_VERTICAL
     gap = hdpx(7)
     children = [
-      {
+      @() {
+        watch = actionItem
         rendObj = ROBJ_TEXT
         hplace = ALIGN_RIGHT
-        text = utf8ToUpper(loc(actionItem.weaponName))
+        text = utf8ToUpper(loc(actionItem.get()?.weaponName ?? ""))
       }.__update(fontSmall)
       @() {
         watch = airGroupData
@@ -131,13 +135,13 @@ let shipUi = {
   ]
 }
 
-function mkUnitSelectable(selectableIndex, icon, border, unitUi, count, trigger) {
+function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, trigger) {
   let stateFlags = Watched(0)
   let isSelected = Computed(@() curAirGroupIndex.value == selectableIndex)
   let buttonSize = airGroupButtonHeight
   let iconSize = (buttonSize * 0.65).tointeger()
   return @() {
-    watch = [isSelected, stateFlags]
+    watch = [isSelected, stateFlags, actionItem]
     size = [airGroupButtonWidth, SIZE_TO_CONTENT]
     rendObj = ROBJ_BOX
     hplace = ALIGN_RIGHT
@@ -165,30 +169,40 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, count, trigger)
         children = [
           unitUi
           {
-            rendObj = ROBJ_BOX
             size = [buttonSize, buttonSize]
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
-            padding = hdpx(5)
-            gap = hdpx(5)
-            flow = FLOW_VERTICAL
-            borderWidth = borderWidth
-            borderColor = borderNoAmmoColor
-            fillColor = btnBgColor.ready
             children = [
+              actionItem == null ? null : mkActionGlare(actionItem.value, buttonSize)
+              actionItem == null || actionItem.value.count == 0 ? null
+                : mkSquareButtonBg(actionItem.get(), buttonSize, @() playSound("weapon_secondary_ready"))
               {
-                rendObj = ROBJ_IMAGE
-                size = [iconSize, iconSize]
-                image = Picture($"{icon}:{iconSize}:{iconSize}:P")
-                keepAspect = KEEP_ASPECT_FIT
-                color = imageColor
-              }
-              count == null ? null : {
-                rendObj = ROBJ_TEXT
+                size = flex()
+                padding = hdpx(5)
+                gap = hdpx(5)
+                rendObj = ROBJ_BOX
+                flow = FLOW_VERTICAL
                 halign = ALIGN_CENTER
-                valign = ALIGN_BOTTOM
-                fillColor = borderColor
-                text = $"{count}"
+                valign = ALIGN_CENTER
+                borderWidth = borderWidth
+                borderColor = isSelected.value ? borderColor : 0x21212121
+                fillColor = actionItem == null ? btnBgColor.ready : btnBgColor.empty
+                children = [
+                  {
+                    rendObj = ROBJ_IMAGE
+                    size = [iconSize, iconSize]
+                    image = Picture($"{icon}:{iconSize}:{iconSize}:P")
+                    keepAspect = KEEP_ASPECT_FIT
+                    color = imageColor
+                  }
+                  actionItem == null ? null : {
+                    rendObj = ROBJ_TEXT
+                    halign = ALIGN_CENTER
+                    valign = ALIGN_BOTTOM
+                    fillColor = borderColor
+                    text = $"{actionItem.value.count}"
+                  }
+                ]
               }
             ]
           }
@@ -198,20 +212,16 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, count, trigger)
   }
 }
 
-function mkPlaneSelectable(airGroupIndex, action) {
+function mkPlaneSelectable(airGroupIndex, actionItem) {
   let icon = airGroupIcons[airGroupIndex]
-  let isActionAvailable = Computed(
-    @()
-      action.value?.available ?? false
-  )
   return @() {
-    watch = [isActionAvailable, optDebugDraw, action]
+    watch = optDebugDraw
     flow = FLOW_HORIZONTAL
     children = [
       !optDebugDraw.value ? null
         : mkPlaneDebugInfo(airGroupIndex)
-      !isActionAvailable.value ? null
-        : mkUnitSelectable(airGroupIndex, icon, borderWidth, @() mkPlaneUi(action.value, airGroupIndex), action.value.count, $"airGroupHealthReduced{airGroupIndex}")
+      mkUnitSelectable(airGroupIndex, icon, borderWidth, mkPlaneUi(actionItem, airGroupIndex),
+        actionItem, $"airGroupHealthReduced{airGroupIndex}")
     ]
   }
 }

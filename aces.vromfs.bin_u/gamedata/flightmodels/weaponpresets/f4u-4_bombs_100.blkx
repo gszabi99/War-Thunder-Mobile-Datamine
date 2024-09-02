@@ -1,0 +1,36 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "100lbs"
+    },
+    {
+      "slot": 2,
+      "preset": "100lbs"
+    },
+    {
+      "slot": 3,
+      "preset": "100lbs"
+    },
+    {
+      "slot": 4,
+      "preset": "100lbs"
+    },
+    {
+      "slot": 7,
+      "preset": "100lbs"
+    },
+    {
+      "slot": 8,
+      "preset": "100lbs"
+    },
+    {
+      "slot": 9,
+      "preset": "100lbs"
+    },
+    {
+      "slot": 10,
+      "preset": "100lbs"
+    }
+  ]
+}

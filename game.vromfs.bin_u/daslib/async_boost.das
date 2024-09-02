@@ -12,12 +12,12 @@ require daslib/macro_boost
 
 
 def public await_next_frame()
-    //! This function is used to suspend coroutine until next frame.
+    //! Suspend the coroutine until next frame.
     panic("await_next_frame() should not be called directly, add [async] annotation to the function in that you want to use it")
 
 [tag_function(await_tag)]
 def public await(var a : iterator<variant<res : auto(T); wait : bool>>) : T
-    //! This function is used to wait for the result of the async function.
+    //! Wait for the result of the async function.
     panic("await( ) should not be called directly, add [async] annotation to the function in that you want to use it")
     var res : T
     return <- res
@@ -31,7 +31,7 @@ class AwaitMacro : AstFunctionAnnotation
 
 [tag_function(await_coroutine_tag)]
 def public await(var a : iterator<bool>) : bool
-    //! This function is used to wait for the result of the async function.
+    //! Wait for the result of the async function.
     panic("await() should not be called directly, add [async] annotation to the function in that you want to use it")
     return false
 
@@ -259,13 +259,13 @@ class CollectAndReplaceIteratorFields : AstVisitor
 
 
 def public async_run(var a : iterator<auto>)
-    //! This function runs async function until it is finished.
+    //! Run the async function until it is finished.
     for t in a
         pass
 
 
 def public async_run_all(var a : array<iterator<auto>>)
-    //! This function runs all async function until they are finished (in parallel, starting from the last one).
+    //! Run all async function until they are finished (in parallel, starting from the last one).
     while true
         var i = length(a)
         if i == 0

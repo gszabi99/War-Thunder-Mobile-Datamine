@@ -14,6 +14,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { can_preload_request_ads_consent } = require("%appGlobals/permissions.nut")
 let { isConsentWasAutoSkipped, needOpenConsentWnd } = require("%rGui/notifications/consent/consentState.nut")
+let { set_mute_sound } = require("soundOptions")
 
 
 let LOAD_ADS_BEFORE_TIME = 120 //2 min before ads will be ready to watch
@@ -57,6 +58,7 @@ function giveReward() {
 function onFinishShowAds() {
   if (rewardInfo.value != null)
     eventbus_send("adsShowFinish", rewardInfo.value)
+  set_mute_sound(true)
 }
 
 let cancelReward = @() rewardInfo(null)
@@ -97,6 +99,7 @@ let providerPriorities = Computed(function(prev) {
 })
 
 function onShowAds(providerBase = "") {
+  set_mute_sound(false)
   local provider = providerBase
   if (provider == "") {
     local priority = -1

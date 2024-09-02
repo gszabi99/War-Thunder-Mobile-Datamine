@@ -468,6 +468,25 @@ def repair_system_update_es(act : UpdateStageInfoAct;
                       repairWithoutModsOnly=get_flag(repair_system_state, RepairState REPAIR_WITHOUT_MODS_ONLY)
                     ]])
 
+[es(tag=server)]
+def repair_system_on_damage_es(evt : EventUnitDamage;
+                               uid : int;
+                               repair_system_state : uint&;
+                               var repair_system_parts_hp : Point4List&;
+                               repair_system_parts_state : UInt32List&;
+                               repair_system_parts_id : PartIdList&)
+  if !get_flag(repair_system_state, RepairState SUITABLE_FOR_REPAIR)
+    return
+
+  var unit = get_unit(uid)
+  if unit == null || unit.isDelayed || !unit.isAuthority
+    return
+
+  for part_id, part_state, part_hp in repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp
+    if part_id.id == evt.partId.id && get_flag(part_state, DmPartRepairState IN_PROGRESS)
+      part_hp.x = get_part_hp(unit.dmData, part_id)
+      break
+
 
 [es]
 def repair_system_stop_repair_handle_es(evt : EventRepairSystemStopRepair;

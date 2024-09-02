@@ -3,7 +3,7 @@ let { HangarCameraControl } = require("wt.behaviors")
 let { eventbus_subscribe } = require("eventbus")
 let { defer, resetTimeout } = require("dagor.workcycle")
 let { registerScene } = require("%rGui/navState.nut")
-let { GPT_UNIT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount
+let { GPT_UNIT, GPT_BLUEPRINT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -22,16 +22,25 @@ let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchases
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
 let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
-let { getPlatoonOrUnitName, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
+let { getPlatoonOrUnitName, getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { unitSelUnderlineFullSize, unitPlatesGap, unitPlateSmall, mkUnitRank,
-  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSelectedUnderlineVert
+  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSelectedUnderlineVert,
+  unitPlateWidth, unitPlateHeight
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
 let { showBlackOverlay, closeBlackOverlay } = require("%rGui/shop/blackOverlay.nut")
 let { get_settings_blk } = require("blkGetters")
-
+let { animatedProgressBar } = require("%rGui/unitsTree/components/unitPlateNodeComp.nut")
+let { mkGradRank } = require("%rGui/components/gradTexts.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { schRewards, onSchRewardReceive } = require("%rGui/shop/schRewardsState.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { spinner } = require("%rGui/components/spinner.nut")
+let { schRewardInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { activeOffer } = require("%rGui/shop/offerState.nut")
 
 let TIME_TO_SHOW_UI = 5.0 //timer need to show UI even with bug with cutscene
 let TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
@@ -44,7 +53,7 @@ let verticalGap = hdpx(20)
 let isWindowAttached = Watched(false)
 let needShowUi = Watched(false)
 let skipAnimsOnce = Watched(false)
-let openCount = Computed(@() previewType.value == GPT_UNIT ? openPreviewCount.get() : 0)
+let openCount = Computed(@() previewType.value == GPT_UNIT || previewType.value == GPT_BLUEPRINT ? openPreviewCount.get() : 0)
 
 //anim pack info
 let aTimePackInfoStart = aTimePackNameFull
@@ -57,6 +66,33 @@ let aTimeInfoHeaderFull = aTimeInfoLight + 0.3 * aTimeInfoItem + aTimeFirstItemO
 //anim price and time
 let aTimePriceStart = aTimePackInfoStart + aTimeInfoHeaderFull
 
+function mkGiftSchRewardBtn(giftSchReward, posX) {
+  local { isReady = false } = giftSchReward
+  if (!isReady)
+    return null
+  local isPurchasing = Computed(@() schRewardInProgress.value == giftSchReward.id)
+  return {
+    size = [hdpx(130),hdpx(130)]
+    pos = [posX + verticalGap,0]
+    rendObj = ROBJ_IMAGE
+    image = Picture("ui/gameuiskin#offer_gift_icon.avif:0:P")
+    behavior = Behaviors.Button
+    onClick = @() onSchRewardReceive(giftSchReward)
+    children = [
+      {
+        hplace = ALIGN_RIGHT
+        margin = [hdpx(10), hdpx(10), 0, 0]
+        children = priorityUnseenMark
+      }
+      @() {
+        watch = isPurchasing
+        hplace = ALIGN_CENTER
+        vplace = ALIGN_CENTER
+        children = isPurchasing.get() ? spinner : null
+      }
+    ]
+  }
+}
 
 let showUi = @() needShowUi(true)
 isWindowAttached.subscribe(function(v) {
@@ -152,6 +188,70 @@ function openDetailsWnd() {
   skipAnimsOnce(true)
 }
 
+function mkBlueprintUnitPlate(unit){
+  let deltaBlueprints = Computed(@() (serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1) - (servProfile.get()?.blueprints?[unit.name] ?? 0))
+  return @() {
+    watch = deltaBlueprints
+    flow = FLOW_VERTICAL
+    children = [
+      {
+        size = [unitPlateWidth, unitPlateHeight]
+        children = [
+          mkUnitBg(unit)
+          {
+            size = [unitPlateWidth, unitPlateHeight]
+            rendObj = ROBJ_IMAGE
+            image = Picture($"ui/unitskin#blueprint_{unit.name}.avif:{unitPlateWidth}:{unitPlateHeight}:P")
+          }
+          mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+          {
+            size = flex()
+            valign = ALIGN_BOTTOM
+            flow = FLOW_VERTICAL
+            children = [
+              {
+                size = [flex(), SIZE_TO_CONTENT]
+                halign = ALIGN_RIGHT
+                padding = [0, hdpx(5), 0 , 0]
+                children = [
+                  {
+                    size = [pw(100), SIZE_TO_CONTENT]
+                    rendObj = ROBJ_TEXT
+                    text = "/".concat((servProfile.get()?.blueprints?[unit.name] ?? 0), (serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1) )
+                    halign = ALIGN_CENTER
+                    vplace = ALIGN_CENTER
+                    fontFx = FFT_GLOW
+                    fontFxColor = 0xFF000000
+                    fontFxFactor = hdpxi(32)
+                  }.__update(fontTinyAccented)
+                  mkGradRank(unit?.mRank)
+                ]
+              }
+              animatedProgressBar(unit,
+                {
+                  width = unitPlateWidth,
+                  height = hdpx(30),
+                  gap = hdpx(-30),
+                  sectorSize = [hdpx(60), hdpx(30)]
+                },
+                {
+                  rendObj = ROBJ_TEXT
+                  text = "".concat("+", deltaBlueprints.get())
+                  hplace = ALIGN_RIGHT
+                  vplace = ALIGN_CENTER
+                  fontFx = FFT_GLOW
+                  fontFxColor = 0xFF000000
+                  fontFxFactor = hdpxi(32)
+                }.__update(fontTinyAccented))
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+
+
 function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
   let p = getUnitPresentation(platoonUnit)
   let platoonUnitFull = unit.__merge(platoonUnit)
@@ -191,8 +291,10 @@ let platoonUnitsBlock = @() {
 }
 
 let singleUnitBlock = @() {
-  watch = previewGoodsUnit
-  children = mkUnitPlate(0, previewGoodsUnit.value, { name = previewGoodsUnit.value.name, reqLevel = 0 })
+  watch = [previewGoodsUnit, previewType]
+  children = previewType.get() == GPT_BLUEPRINT
+    ? mkBlueprintUnitPlate(previewGoodsUnit.get())
+    : mkUnitPlate(0, previewGoodsUnit.value, { name = previewGoodsUnit.value.name, reqLevel = 0 })
 }
 
 let mkHeader = @() mkPreviewHeader(
@@ -358,10 +460,12 @@ let previewWnd = @() {
           ]
         }
         @() {
-          watch = previewGoodsUnit
+          watch = [previewGoodsUnit, schRewards, previewGoods, activeOffer]
           size = flex()
           children = [
-            previewGoodsUnit.value?.platoonUnits.len() == 0 ? leftBlockSingleUnit : leftBlock
+            previewGoodsUnit.get()?.platoonUnits.len() == 0 ? leftBlockSingleUnit : leftBlock
+            activeOffer.get()?.id == previewGoods.get()?.id ? mkGiftSchRewardBtn(schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"],
+              previewGoodsUnit.get()?.platoonUnits.len() ? unitPlateSizeMain[0] : unitPlateSizeSingle[0]) : null
             rightBlock
           ]
         }

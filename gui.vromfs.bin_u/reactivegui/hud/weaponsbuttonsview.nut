@@ -11,7 +11,7 @@ let { touchButtonSize, borderWidth, btnBgColor, getSvgImage, imageColor, imageDi
 let { hasAimingModeForWeapon, markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside, isChainedWeapons
 } = require("%rGui/hud/currentWeaponsStates.nut")
 let { hasTarget, hasTargetCandidate, groupAttack, targetState, torpedoDistToLive, canZoom, isInZoom, unitType,
-  groupIsInAir, group2IsInAir, group3IsInAir, group4IsInAir } = require("%rGui/hudState.nut")
+  groupIsInAir, group2IsInAir, group3IsInAir, group4IsInAir, isInAntiairMode } = require("%rGui/hudState.nut")
 let { playHapticPattern } = require("hapticVibration")
 let { fire, isFullBuoyancy, isAsmCaptureAllowed } = require("%rGui/hud/shipState.nut")
 let { playSound } = require("sound_wt")
@@ -59,7 +59,6 @@ let { setDrawWeaponAllowableAngles } = require("hudState")
 let gunImageBySizeOrder = [
   { image = "ui/gameuiskin#hud_ship_calibre_main_3_left.svg", relImageSize = 1.3 }
   { image = "ui/gameuiskin#hud_ship_calibre_medium.svg" }
-  { image = "ui/gameuiskin#hud_aircraft_machine_gun.svg" }
 ]
 
 let svgNullable = @(image, size) ((image ?? "") == "") ? null
@@ -146,7 +145,7 @@ let mkActionItemImage = @(getImage, isAvailable) @() {
 function mkActionItem(buttonConfig, actionItem) {
   if (actionItem == null)
     return null
-  let { getShortcut, getImage, haptPatternId = -1, key = null, sound = "", getAnimationKey = null } = buttonConfig
+  let { getShortcut, getImage, haptPatternId = -1, key = null, sound = "", getAnimationKey = null, alternativeImage = null } = buttonConfig
   let stateFlags = Watched(0)
   let isAvailable = isAvailableActionItem(actionItem)
   let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
@@ -184,7 +183,7 @@ function mkActionItem(buttonConfig, actionItem) {
               : borderColor
             borderWidth
           }
-          mkActionItemImage(getImage, isAvailable && !isDisabled.value)
+          mkActionItemImage(actionItem?.isAlternativeImage ? alternativeImage : getImage, isAvailable && !isDisabled.value)
           mkActionGlare(actionItem)
           isDisabled.value ? null
             : mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
@@ -667,7 +666,7 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
         rendObj = ROBJ_IMAGE
         size = [imgSize, imgSize]
         pos = [0, -hdpx(5)] //gap over amount text
-        image = svgNullable(alternativeImage && actionItem?.isHedgehog ? alternativeImage : getImage(unitType.value), imgSize)
+        image = svgNullable(alternativeImage && actionItem?.isAlternativeImage ? alternativeImage : getImage(unitType.value), imgSize)
         keepAspect = KEEP_ASPECT_FIT
         color = !isAvailable || isDisabled.value || (hasAim && !(actionItem?.aimReady ?? true)) || !canShoot.value || isBlocked.value
           ? imageDisabledColor
@@ -704,7 +703,11 @@ function mkPlaneItem(buttonConfig, actionItem, ovr = {}) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     hotkeys = mkGamepadHotkey(shortcutId)
-    onClick = @() toggleShortcut(shortcutId)
+    function onClick() {
+      if ((actionItem?.cooldownEndTime ?? 0) > get_mission_time())
+        return
+      toggleShortcut(shortcutId)
+    }
     onElemState = @(v) stateFlags(v)
     children = [
       mkRhombBtnBg(isAvailable, actionItem, @() playSound("weapon_secondary_ready"))
@@ -842,7 +845,10 @@ let surfacingIcon = {
 
 function mkWeaponryItemByTrigger(buttonConfig, actionItem, ovr = {}) {
   let { trigger, sizeOrder, number, shortcut, selShortcut = null } = buttonConfig
-  let { image, relImageSize = 1.0 } = gunImageBySizeOrder?[sizeOrder] ?? gunImageBySizeOrder.top()
+  let { image, relImageSize = 1.0 } =
+    trigger != TRIGGER_GROUP_MACHINE_GUN ? gunImageBySizeOrder?[sizeOrder] ?? gunImageBySizeOrder.top()
+    : isInAntiairMode.get() ? { image = "ui/gameuiskin#hud_anti_air_def_fire.svg" }
+    : { image = "ui/gameuiskin#hud_aircraft_machine_gun.svg" }
   local btnCfg = {
     key = trigger
     selShortcut

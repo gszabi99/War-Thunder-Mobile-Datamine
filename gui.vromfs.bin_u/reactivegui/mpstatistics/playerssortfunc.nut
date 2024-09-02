@@ -3,20 +3,20 @@ let sortByCampaign = {
        b.damage <=> a.damage
     || b.navalKills <=> a.navalKills
     || b.kills <=> a.kills
-    || a.isDead <=> b.isDead
+    || (a.isDead && !a.isTemporary) <=> (b.isDead && !b.isTemporary)
     || a.id <=> b.id
 
   tanks = @(a, b)
        b.score <=> a.score
     || b.groundKills <=> a.groundKills
     || b.kills <=> a.kills
-    || a.isDead <=> b.isDead
+    || (a.isDead && !a.isTemporary) <=> (b.isDead && !b.isTemporary)
     || a.id <=> b.id
 
   air = @(a, b)
        b.score <=> a.score
     || b.kills <=> a.kills
-    || a.isDead <=> b.isDead
+    || (a.isDead && !a.isTemporary) <=> (b.isDead && !b.isTemporary)
     || a.id <=> b.id
 }
 

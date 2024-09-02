@@ -13,7 +13,7 @@ let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
-let { getUnitSlotsPresetNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { getUnitSlotsPresetNonUpdatable, getUnitBeltsNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
 
 
 let MAX_SLOTS = 2
@@ -31,6 +31,14 @@ let testFlightByUnitType = {
 }
 
 function getBulletsForTestFlight(unitName) {
+  if (getUnitType(unitName) == AIR) {
+    let res = []
+    let belts = getUnitBeltsNonUpdatable(unitName, myUnits.get()?[unitName].mods)
+    foreach(name in belts)
+      res.append({ name, count = 10000 })
+    return res
+  }
+
   let { primary = null, secondary = null } = loadUnitBulletsChoice(unitName)?.commonWeapons
   if (primary == null)
     return [{ name = "", count = 10000 }]

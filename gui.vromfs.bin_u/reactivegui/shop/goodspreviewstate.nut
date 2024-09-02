@@ -6,17 +6,21 @@ let { activeOffer } = require("offerState.nut")
 let { activeOfferByGoods } = require("offerByGoodsState.nut")
 let { shopGoods } = require("shopState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { shopPurchaseInProgress, check_empty_offer } = require("%appGlobals/pServer/pServerApi.nut")
 let { platformPurchaseInProgress } = require("platformGoods.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
 
 let GPT_UNIT = "unit"
 let GPT_CURRENCY = "currency"
 let GPT_PREMIUM = "premium"
 let GPT_LOOTBOX = "lootbox"
 let GPT_SLOTS = "slots"
+let GPT_BLUEPRINT = "blueprint"
 
 let openedGoodsId = mkWatched(persist, "openedGoodsId", null)
 let closeGoodsPreview = @() openedGoodsId(null)
@@ -46,16 +50,20 @@ let previewGoods = Computed(@()
     : shopGoods.get()?[openedGoodsId.get()])
 
 let previewGoodsUnit = Computed(function() {
-  let unit = serverConfigs.value?.allUnits[previewGoods.value?.unitUpgrades[0]]
+  let isBlueprintGoods = (previewGoods.get()?.blueprints.len() ?? 0) > 0
+  let unitName = isBlueprintGoods ? previewGoods.get().blueprints.findindex(@(_) true) : previewGoods.value?.unitUpgrades[0]
+  let unit = serverConfigs.value?.allUnits[unitName]
+  let isUpgraded = !isBlueprintGoods
   if (unit != null) {
     let { upgradeUnitBonus = {} } = serverConfigs.value?.gameProfile
-    return unit.__merge({ isUpgraded = true }, upgradeUnitBonus)
+    return unit.__merge({ isUpgraded }, upgradeUnitBonus)
   }
 
   return serverConfigs.get()?.allUnits[previewGoods.get()?.units[0] ?? previewGoods.get()?.meta.previewUnit]
 })
 
 let previewType = Computed(@() (previewGoods.get()?.slotsPreset ?? "") != "" ? GPT_SLOTS
+  : (previewGoods.get()?.blueprints.len() ?? 0) > 0 ? GPT_BLUEPRINT
   : previewGoodsUnit.value != null ? GPT_UNIT
   : (previewGoods.get()?.lootboxes.len() ?? 0) > 0 ? GPT_LOOTBOX
   : (previewGoods.get()?.currencies.len() ?? 0) > 0 ? GPT_CURRENCY
@@ -87,17 +95,28 @@ offerUnitName.subscribe(function(v) {
   offerPrevUnitName = v
 })
 
+servProfile.subscribe(function(v){
+  let offersBlueprint = activeOffer.get()?.blueprints.findindex(@(_) true)
+  if(!offersBlueprint)
+    return
+  if( offersBlueprint in myUnits.get()
+    || v.blueprints[offersBlueprint] == serverConfigs.get()?.allBlueprints?[offersBlueprint].targetCount)
+    check_empty_offer(curCampaign.get())
+})
+
 return {
   GPT_UNIT
   GPT_CURRENCY
   GPT_PREMIUM
   GPT_LOOTBOX
   GPT_SLOTS
+  GPT_BLUEPRINT
 
   openGoodsPreview
   closeGoodsPreview
   openPreviewCount
 
+  openedGoodsId
   previewGoods
   previewGoodsUnit
   previewType

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventCurrenciesGoods, closeBuyEventCurrenciesWnd, currencyId, parentEventId, parentEventLoc
-} = require("buyEventCurrenciesState.nut")
+let { eventCurrenciesGoods, closeBuyEventCurrenciesWnd, currencyId, parentEventId, parentEventLoc,
+  buyCurrencyWndGamercardCurrencies
+} = require("%rGui/event/buyEventCurrenciesState.nut")
 let { mkGoodsWrap, mkSlotBgImg, mkCurrencyAmountTitle, mkGoodsImg, mkPricePlate, mkGoodsCommonParts, mkBgParticles,
   txt } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
@@ -188,7 +189,12 @@ let buyEventCurrenciesGamercard = @() {
   children = [
     backButton(closeBuyEventCurrenciesWnd, { vplace = ALIGN_CENTER })
     { size = flex() }
-    mkCurrencyBalance(currencyId.get())
+    {
+      valign = ALIGN_CENTER
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(70)
+      children = buyCurrencyWndGamercardCurrencies.get().map(@(v) mkCurrencyBalance(v))
+    }
   ]
 }
 

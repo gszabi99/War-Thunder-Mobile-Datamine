@@ -25,7 +25,7 @@ let hints = [
   //LEFT SIDE
   {
     key = "J:Back"
-    lines = mkLines([420, 153, 420, -90])
+    lines = mkLines([255, 153, 255, -20])
     blockOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_BOTTOM }
   }
   {
@@ -73,7 +73,7 @@ let hints = [
   //RIGHT SIDE
   {
     key = "J:Start"
-    lines = mkLines([583, 153, 580, -20])
+    lines = mkLines([585, 153, 585, -20])
     blockOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_BOTTOM }
   }
   {

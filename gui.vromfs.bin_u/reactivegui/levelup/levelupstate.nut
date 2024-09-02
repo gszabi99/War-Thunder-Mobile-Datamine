@@ -24,7 +24,6 @@ let failedRewardsLevelStr = mkWatched(persist, "failedRewardsLevelStr", {})
 let upgradeUnitName = mkWatched(persist, "upgradeUnitName", null)
 
 let openLvlUpWnd = @() isLvlUpOpened.set(true)
-let openLvlUpAfterDelay = @() resetTimeout(LVL_UP_ANIM, openLvlUpWnd)
 let openRewardsModal = @() isRewardsModalOpen.set(true)
 
 isLvlUpOpened.subscribe(@(v) v ? isSeen(true) : null)
@@ -78,6 +77,21 @@ hasDataForLevelWnd.subscribe(function(v) {
   isLvlUpOpened.set(false)
 })
 
+let needAutoLevelUp = keepref(Computed(@() !levelInProgress.get()
+  && hasDataForLevelWnd.value
+  && rewardsToReceive.value.len() == 0
+  && buyUnitsData.value.canBuyOnLvlUp.len() == 0
+  && !isInBattle.value))
+
+let skipLevelUpUnitPurchase = @() levelup_without_unit(curCampaign.value)
+
+function onNeedAutoLevelUp() {
+  if (needAutoLevelUp.get())
+    skipLevelUpUnitPurchase()
+}
+onNeedAutoLevelUp()
+needAutoLevelUp.subscribe(@(_) deferOnce(onNeedAutoLevelUp))
+
 let needOpenLevelUpWnd = keepref(Computed(@() hasDataForLevelWnd.get()
   && !isSeen.get()
   && isLoggedIn.get()
@@ -86,18 +100,27 @@ let needOpenLevelUpWnd = keepref(Computed(@() hasDataForLevelWnd.get()
   && !hasModalWindows.get()))
 
 function openLvlUpWndIfCan() {
-  if (hasDataForLevelWnd.get()) {
-    if (!isUnitsTreeOpen.get() && !isCampaignWithUnitsResearch.get())
-      openUnitsTreeAtCurRank()
-    if (rewardsToReceive.get().len() > 0)
-      openRewardsModal()
-    else if (!isCampaignWithUnitsResearch.get())
-      openLvlUpWnd()
-    else if (!levelInProgress.get())
-      levelup_without_unit(curCampaign.get())
+  if (!hasDataForLevelWnd.get())
+    return false
+
+  if (needAutoLevelUp.get()) {
+    deferOnce(onNeedAutoLevelUp)
+    return true
   }
-  return hasDataForLevelWnd.get()
+
+  if (!isUnitsTreeOpen.get() && !isCampaignWithUnitsResearch.get())
+    openUnitsTreeAtCurRank()
+  if (rewardsToReceive.get().len() > 0)
+    openRewardsModal()
+  else if (!isCampaignWithUnitsResearch.get())
+    openLvlUpWnd()
+  else if (!levelInProgress.get())
+    levelup_without_unit(curCampaign.get())
+
+  return true
 }
+
+let openLvlUpAfterDelay = @() resetTimeout(LVL_UP_ANIM, openLvlUpWndIfCan)
 
 function onNeedOpenLevelUpWnd() {
   if (!needOpenLevelUpWnd.get())
@@ -114,20 +137,6 @@ function onNeedOpenLevelUpWnd() {
 }
 
 needOpenLevelUpWnd.subscribe(@(_) deferOnce(onNeedOpenLevelUpWnd))
-
-let needAutoLevelUp = keepref(Computed(@() hasDataForLevelWnd.value
-  && rewardsToReceive.value.len() == 0
-  && buyUnitsData.value.canBuyOnLvlUp.len() == 0
-  && !isInBattle.value))
-
-let skipLevelUpUnitPurchase = @() levelup_without_unit(curCampaign.value)
-
-function onNeedAutoLevelUp(need) {
-  if (need)
-    skipLevelUpUnitPurchase()
-}
-onNeedAutoLevelUp(needAutoLevelUp.value)
-needAutoLevelUp.subscribe(onNeedAutoLevelUp)
 
 let lvlUpCost = Computed(function() {
   let { costGold, nextLevelExp, exp } = playerLevelInfo.value

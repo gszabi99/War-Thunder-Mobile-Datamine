@@ -3,8 +3,9 @@ let darkenTextColor = 0xFF8898CC
 
 return {
   textColor = 0xFFFFFFFF
+  commonTextColor = 0xFFC0C0C0
   premiumTextColor = 0xFFFFC000
-  hiddenTextColor = 0xFFB04CFC
+  collectibleTextColor = 0xFFDAABFE
   userlogTextColor = 0xFFF9DB78
   hoverColor = 0xC07BFFFF
   hoverColorDark = 0xC062CCCC

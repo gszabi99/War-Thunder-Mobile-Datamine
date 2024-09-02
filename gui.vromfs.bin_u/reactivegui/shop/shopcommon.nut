@@ -14,7 +14,7 @@ let shopCategoriesCfg = [
     // TODO: replace icon
     getImage =  @(campaign) campaign == "tanks" ? "!ui/gameuiskin#shop_tanks.svg"
       : "!ui/gameuiskin#shop_ships.svg"
-    gtypes = [ SGT_UNIT, SGT_SLOTS, SGT_LOOTBOX ]
+    gtypes = [ SGT_UNIT, SGT_SLOTS, SGT_LOOTBOX, SGT_BLUEPRINTS ]
   },
   {
     id = SC_GOLD
@@ -62,14 +62,18 @@ function getGoodsType(goods) {
     return SGT_PREMIUM
   if ((goods?.boosters.len() ?? 0) > 0)
     return SGT_BOOSTERS
+  if ((goods?.blueprints.len() ?? 0) > 0)
+    return SGT_BLUEPRINTS
   else if (goods.currencies.len() == 1)
     return currencyToGoodsType?[goods.currencies.findindex(@(_) true)] ?? SGT_EVT_CURRENCY
   return SGT_UNKNOWN
 }
 
 function isGoodsFitToCampaign(goods, cConfigs, curCampaign = null) {
-  let { units = [], unitUpgrades = [], items = {} , meta = {}} = goods
+  let { units = [], unitUpgrades = [], items = {} , meta = {}, blueprints = {} } = goods
   if (units.len() > 0)
+    return null != units.findvalue(@(u) u in cConfigs?.allUnits)
+  if (blueprints.len() > 0)
     return null != units.findvalue(@(u) u in cConfigs?.allUnits)
   if (unitUpgrades.len() > 0)
     return null != unitUpgrades.findvalue(@(u) u in cConfigs?.allUnits)

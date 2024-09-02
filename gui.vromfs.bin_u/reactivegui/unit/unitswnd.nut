@@ -19,7 +19,7 @@ let { unitPlateWidth, unitPlateHeight, unutEquppedTopLineFullHeight, unitSelUnde
   bgPlatesTranslate, mkPlateText, plateTextsSmallPad
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { btnOpenUnitAttr } = require("%rGui/unitAttr/btnOpenUnitAttr.nut")
+let { btnOpenUnitAttr } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
 let { curFilters } = require("%rGui/unit/unitsFilterState.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let mkUnitPkgDownloadInfo = require("mkUnitPkgDownloadInfo.nut")

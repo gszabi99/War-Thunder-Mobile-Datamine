@@ -9,6 +9,7 @@ let { spinner } = require("%rGui/components/spinner.nut")
 let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
+let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 
 
 let rStyleDefault = REWARD_STYLE_SMALL
@@ -63,7 +64,7 @@ let lockedReward = {
 let currencyProgressBarRewardCtor = @(r, isUnlocked = false, canClaimReward = false) [
   mkRewardPlate(r, rStyleDefault)
   !isUnlocked ? lockedReward
-    : !canClaimReward ? mkRewardReceivedMark(REWARD_STYLE_SMALL, { hplace = ALIGN_RIGHT })
+    : !canClaimReward ? mkRewardReceivedMark(REWARD_STYLE_SMALL)
     : mkGlare(rewardsBtnSize, { repeatDelay = 2.5, duration = 0.6 })
 ]
 
@@ -116,6 +117,7 @@ let mkQuestRewardPlate = @(r, startIdx, isQuestFinished = false, rStyle = rStyle
     })
     @() {
       watch = servProfile
+      size = getRewardPlateSize(r.slots, REWARD_STYLE_SMALL)
       children = isQuestFinished || isSingleViewInfoRewardEmpty(r, servProfile.value)
           ? mkRewardReceivedMark(REWARD_STYLE_SMALL)
         : null

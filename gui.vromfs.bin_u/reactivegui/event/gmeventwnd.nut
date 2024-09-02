@@ -22,9 +22,9 @@ let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradie
 let squadPanel = require("%rGui/squad/squadPanel.nut")
 let { gmEventContent, goodsSize, goodsGap } = require("gmEventComps.nut")
 let { PLATINUM } = require("%appGlobals/currenciesState.nut")
-let { infoRhombButton } = require("%rGui/components/infoButton.nut")
+let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
+let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
 let { openBugReport } = require("%rGui/feedback/bugReport.nut")
 let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
 
@@ -86,7 +86,7 @@ let signUpForCbtContent = @() {
               color = 0xFFE0E0E0
               text = loc("readMore")
             }.__update(fontSmall)
-            infoRhombButton(@() openNewsWndTagged(openedGmEventId.get()))
+            infoEllipseButton(@() openNewsWndTagged(openedGmEventId.get()))
           ]
         }
         textButtonPrimary(utf8ToUpper(loc($"{openedGmEventId.get()}/freeAccess/btn")),
@@ -136,7 +136,6 @@ function validateAccessStat() {
 
 isWndAttached.subscribe(@(_) validateAccessStat())
 hasAccessCurGmEvent.subscribe(@(_) validateAccessStat())
-
 let content = @() {
   watch = [hasAccessCurGmEvent, curEventAccessStatValue, curEventAccessStat]
   size = flex()
@@ -153,7 +152,7 @@ let content = @() {
           children = [
             gmEventSubTitleText(loc($"{openedGmEventId.get()}/accessPacks/header"))
             gmEventContent(Computed(@() reqBattleMods.get().len() == 0 ? []
-              : shopGoods.get()
+              : shopGoodsAllCampaigns.get()
                 .filter(@(goods) null != (goods?.battleMods.findvalue(@(_, bm) reqBattleMods.get().contains(bm))))
                 .values()))
             gmEventDescriptionText(loc($"{openedGmEventId.get()}/accessPacks/description"))
@@ -196,7 +195,7 @@ let gmEventTitle = @(text) @() {
       maxWidth = pw(97)
       text
     }.__update(fontBig, gmEventText)
-    infoRhombButton(@() openNewsWndTagged(openedGmEventId.get()))
+    infoEllipseButton(@() openNewsWndTagged(openedGmEventId.get()))
   ]
 }
 

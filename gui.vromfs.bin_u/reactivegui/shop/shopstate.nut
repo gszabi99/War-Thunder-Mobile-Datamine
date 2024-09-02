@@ -109,20 +109,24 @@ isServerTimeValid.subscribe(@(_) updateGoodsTimers())
 
 let shopGoodsInternal = Computed(@() (campConfigs.get()?.allGoods ?? {})
   .filter(@(g) (can_debug_shop.get() || !g.isShowDebugOnly)
-    && (g?.price.price ?? 0) > 0
-    && isGoodsFitToCampaign(g, campConfigs.get(), curCampaign.get()))
+    && (g?.price.price ?? 0) > 0)
   .map(@(g) g.__merge({ gtype = getGoodsType(g) }))
 )
 
-let allShopGoods = Computed(@() shopGoodsInternal.value
-  .__merge(
-    platformGoods.value.filter(@(g) isGoodsFitToCampaign(g, campConfigs.value))
-      .map(@(g) g.__merge({ gtype = getGoodsType(g) })))
-)
+let allCampaignsShopGoods = Computed(@() shopGoodsInternal.get()
+  .__merge(platformGoods.get().map(@(g) g.__merge({ gtype = getGoodsType(g) }))))
+
+let allShopGoods = Computed(@() allCampaignsShopGoods.get()
+  .filter(@(g) isGoodsFitToCampaign(g, campConfigs.get(), curCampaign.get())))
 
 let shopGoods = Computed(function() {
   let exclude = inactiveGoodsByTime.get()
   return allShopGoods.get().filter(@(_, id) id not in exclude)
+})
+
+let shopGoodsAllCampaigns = Computed(function() {
+  let exclude = inactiveGoodsByTime.get()
+  return allCampaignsShopGoods.get().filter(@(_, id) id not in exclude)
 })
 
 let goodsByCategory = Computed(function() {
@@ -311,6 +315,7 @@ return {
   goodsByCategory
   goodsIdsByCategory
   allShopGoods
+  shopGoodsAllCampaigns
   shopGoods
   shopGoodsInternal
   goodsLinks

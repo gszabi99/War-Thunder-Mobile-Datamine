@@ -1583,10 +1583,10 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1040.0,
-    "maxloadMassLeftConsoles": 570.0,
-    "maxloadMassRightConsoles": 570.0,
-    "maxDisbalance": 420.0,
+    "maxloadMass": 1500.0,
+    "maxloadMassLeftConsoles": 750.0,
+    "maxloadMassRightConsoles": 750.0,
+    "maxDisbalance": 550.0,
     "HideNodes": {
       "node": [
         "pylon_bomb1",
@@ -1629,15 +1629,19 @@
         "tier": 7,
         "order": 1,
         "WeaponPreset": {
-          "iconType": "bombs_small",
+          "iconType": "bomb_50kg",
           "name": "fab50",
+          "reqModification": "la-5fn_dz-40",
+          "ShowNodes": {
+            "node": "pylon_bomb1"
+          },
           "Weapon": {
             "trigger": "bombs",
-            "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
-            "separate": true,
+            "blk": "gameData/Weapons/BombGuns/su_fab50.blk",
             "emitter": "bomb1",
             "bullets": 1,
-            "external": true
+            "external": true,
+            "separate": true
           }
         }
       },
@@ -1646,15 +1650,19 @@
         "tier": 5,
         "order": 2,
         "WeaponPreset": {
-          "iconType": "bombs_small",
+          "iconType": "bomb_50kg",
           "name": "fab50",
+          "reqModification": "la-5fn_dz-40",
+          "ShowNodes": {
+            "node": "pylon_bomb2"
+          },
           "Weapon": {
             "trigger": "bombs",
-            "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
-            "separate": true,
+            "blk": "gameData/Weapons/BombGuns/su_fab50.blk",
             "emitter": "bomb2",
             "bullets": 1,
-            "external": true
+            "external": true,
+            "separate": true
           }
         }
       }

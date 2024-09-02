@@ -280,5 +280,56 @@
       "circleCount": 3,
       "pointCount": 5
     }
+  },
+  "splash": {
+    "voxelBoxResolution": 80,
+    "minVoxelSize": 0.02,
+    "minObstacleSize": 0.02,
+    "thicknessMapEnabled": true,
+    "pushOutCenter": true,
+    "squashArmorAnglesScale": {
+      "p0": [
+        0.0,
+        1.0
+      ],
+      "p1": [
+        60.0,
+        1.0
+      ],
+      "p2": [
+        75.0,
+        1.0
+      ],
+      "p3": [
+        90.0,
+        1.0
+      ]
+    },
+    "squashArmorThicknessScales": {
+      "p0": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "p1": [
+        0.25,
+        0.8,
+        0.8,
+        0.8
+      ],
+      "p2": [
+        0.99,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "p3": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
   }
 }

@@ -11,6 +11,7 @@ return freeze({
   costGold = 0
   costWp = 0
   isDefault = false
+  isCollectible = false
   isPremium = false
   itemsPerUse = 0
   levelPreset = ""

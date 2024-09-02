@@ -414,10 +414,10 @@ let imuAxisListener = axisListener({
   [shortcutsMap.imuAxes.gravityUp]      = @(v) applyGravityUp     (-v, currentControlByGyroModeAilerons.value, currentControlByGyroModeSensitivity.value)
 })
 
-let stickZoneSize = [shHud(40), shHud(40)]
-let bgRadius = shHud(15)
+let stickZoneSize = [hdpx(280), hdpx(280)]
+let bgRadius = hdpx(140)
 let imgBgSize = 2 * bgRadius
-let stickSize = shHud(11)
+let stickSize = hdpx(100)
 
 let imgBg = {
   size = [imgBgSize, imgBgSize]

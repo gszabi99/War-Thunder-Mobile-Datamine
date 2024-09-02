@@ -1795,10 +1795,6 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1040.0,
-    "maxloadMassLeftConsoles": 570.0,
-    "maxloadMassRightConsoles": 570.0,
-    "maxDisbalance": 420.0,
     "WeaponSlot": [
       {
         "index": 0,
@@ -1856,7 +1852,7 @@
         "tier": 7,
         "order": 1,
         "WeaponPreset": {
-          "iconType": "bombs_small",
+          "iconType": "bomb_50kg",
           "name": "fab50",
           "Weapon": {
             "trigger": "bombs",
@@ -1872,7 +1868,7 @@
         "tier": 5,
         "order": 2,
         "WeaponPreset": {
-          "iconType": "bombs_small",
+          "iconType": "bomb_50kg",
           "name": "fab50",
           "Weapon": {
             "trigger": "bombs",

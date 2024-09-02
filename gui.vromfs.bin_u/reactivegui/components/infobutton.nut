@@ -139,7 +139,7 @@ function infoRhombButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   }.__update(ovr)
 }
 
-function infoTooltipButton(contentCtor, tooltipOvr = {}) {
+function infoTooltipButton(contentCtor, tooltipOvr = {}, ovr = {}) {
   let stateFlags = Watched(0)
   let key = {}
   return @() {
@@ -169,7 +169,7 @@ function infoTooltipButton(contentCtor, tooltipOvr = {}) {
         halign = ALIGN_CENTER
       }.__update(fontTinyAccented)
     ]
-  }
+  }.__update(ovr)
 }
 
 return {

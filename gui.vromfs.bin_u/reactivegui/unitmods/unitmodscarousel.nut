@@ -113,7 +113,7 @@ function modData(mod) {
           behavior = Behaviors.Marquee
           delay = defMarqueeDelay
           speed = hdpx(50)
-        }.__update(fontSmallShaded)
+        }.__update(fontTinyShaded)
 
         mkNotPurchasedShade(isPurchased)
         mkEquippedFrame(isEquipped)

@@ -10,6 +10,7 @@ let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { myUserName } = require("%appGlobals/profileStates.nut")
 let { localPlayerColor } = require("%rGui/style/stdColors.nut")
 let { teamBlueLightColor, teamRedLightColor } = require("%rGui/style/teamColors.nut")
+let { areHintsHidden } = require("%rGui/hudState.nut")
 
 let textsForLoggerEditView = [
   $"{colorize(localPlayerColor, myUserName.get())} {loc("icon/hud_msg_mp_dmg/kill_s_s")} {
@@ -43,6 +44,9 @@ let mkTransition = @(uid, children, offset, zOrder, ovr) {
 let mkHintsBlock = @(events, transOvr = {}, blockOvr = {}) function mainHintsBlock() {
   local offset = 0
   let children = []
+  if (areHintsHidden.get())
+    return { watch = [events, areHintsHidden] }
+
   foreach (hint in events.value) {
     let { hType = null, uid, zOrder = null } = hint
     let ctor = hintCtors?[hType] ?? defaultHintCtor
@@ -52,7 +56,7 @@ let mkHintsBlock = @(events, transOvr = {}, blockOvr = {}) function mainHintsBlo
   }
 
   return {
-    watch = events
+    watch = [events, areHintsHidden]
     size = [flex(), max(offset - hintsGap, 0)]
     children
   }.__update(blockOvr)

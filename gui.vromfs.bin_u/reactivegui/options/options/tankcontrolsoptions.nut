@@ -2,11 +2,11 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { /* OPT_TANK_TARGETING_CONTROL,  */
   OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_ARMOR_PIERCING_FIXED, OPT_AUTO_ZOOM,
-  OPT_AUTO_ZOOM_TANK, OPT_GEAR_DOWN_ON_STOP_BUTTON, OPT_CAMERA_ROTATION_ASSIST, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_CAMERA_SENSE,
+  OPT_AUTO_ZOOM_TANK, OPT_GEAR_DOWN_ON_STOP_BUTTON, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_CAMERA_SENSE,
   OPT_CAMERA_SENSE_IN_ZOOM, OPT_CAMERA_SENSE_TANK
   OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, OPT_SHOW_GRASS_IN_TANK_VISION, mkOptionValue, getOptValue
 } = require("%rGui/options/guiOptions.nut")
-let { set_should_target_tracking, set_camera_rotation_assist, set_armor_piercing_fixed, set_show_reticle,
+let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle,
   set_auto_zoom, CAM_TYPE_NORMAL_TANK, CAM_TYPE_BINOCULAR_TANK
 } = require("controlsOptions")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -150,25 +150,6 @@ let showGrassInTankVision = {
   description = loc("options/desc/grass_in_tank_vision")
 }
 
-let cameraRotationAssistList = [false, true]
-let cameraRotationAssistDefault = Computed(@() (abTests.value?.tankCameraRotationAssist ?? "true") == "true")
-let currentCameraRotationAssistRaw = mkOptionValue(OPT_CAMERA_ROTATION_ASSIST)
-let currentCameraRotationAssist = Computed(@() validate(
-  currentCameraRotationAssistRaw.value ?? cameraRotationAssistDefault
-  cameraRotationAssistList))
-set_camera_rotation_assist(currentCameraRotationAssist.value)
-currentCameraRotationAssist.subscribe(@(v) set_camera_rotation_assist(v))
-let cameraRotationAssist = {
-  locId = "options/camera_rotation_assist"
-  ctrlType = OCT_LIST
-  value = currentCameraRotationAssist
-  setValue = @(v) currentCameraRotationAssistRaw(v)
-  onChangeValue = @(v) sendChange("camera_rotation_assist", v)
-  list = cameraRotationAssistList
-  valToString = @(v) loc(v ? "options/enable" : "options/disable")
-  description = loc("options/desc/camera_rotation_assist")
-}
-
 let hudScoreTankList = ["score", "kills"]
 let hudScoreTankDefault = Computed(@() validate(abTests.value?.tankHudScores, hudScoreTankList))
 let hudScoreTankRaw = mkOptionValue(OPT_HUD_TANK_SHOW_SCORE)
@@ -196,7 +177,6 @@ return {
     gearDownOnStopButtonTouch
     targetTrackingType
     // tankTargetControlType
-    cameraRotationAssist
     showMoveDirection
     showGrassInTankVision
     currentArmorPiercingType

@@ -21,6 +21,7 @@ const PROGRESS_LEVEL = "LevelInProgress"
 const PROGRESS_MODS = "ModsInProgress"
 const PROGRESS_SKINS = "SkinsInProgress"
 const PROGRESS_BOOSTER = "BoosterInProgress"
+const PROGRESS_SLOT = "SlotInProgress"
 
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
@@ -205,6 +206,7 @@ return {
   modsInProgress = mkProgress(PROGRESS_MODS)
   skinsInProgress = mkProgress(PROGRESS_SKINS)
   boosterInProgress = mkProgress(PROGRESS_BOOSTER)
+  slotInProgress = mkProgress(PROGRESS_SLOT)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -294,6 +296,20 @@ return {
     params = { unitName, level }
   }, cb)
 
+  add_slot_attributes = @(campaign, slotIdx, attributes, totalSpCost, cb = null) request({
+    method = "add_slot_attributes"
+    params = { campaign, slotIdx, attributes, totalSpCost }
+    progressId = PROGRESS_SLOT
+    progressValue = slotIdx
+  }, cb)
+
+  buy_slot_level = @(campaign, slotIdx, curLevel, tgtLevel, expLeft, price, cb = null) request({
+    method = "buy_slot_level"
+    params = { campaign, slotIdx, curLevel, tgtLevel, expLeft, price }
+    progressId = PROGRESS_SLOT
+    progressValue = slotIdx
+  }, cb)
+
   add_slot_exp = @(campaign, slotIdx, exp, cb = null) request({
     method = "add_slot_exp"
     params = { campaign, slotIdx, exp }
@@ -309,6 +325,7 @@ return {
   levelup_without_unit = @(campaign, cb = null) request({
     method = "levelup_without_unit"
     progressId = PROGRESS_LEVEL
+    progressValue = campaign
     params = { campaign }
   }, cb)
 
@@ -552,6 +569,11 @@ return {
   set_purch_player_type = @(playerType, cb = null) request({
     method = "set_purch_player_type"
     params = { playerType }
+  }, cb)
+
+  check_empty_offer = @(campaign, cb = null) request({
+    method = "check_empty_offer"
+    params = { campaign }
   }, cb)
 
   check_new_offer = @(campaign, cb = null) request({
