@@ -4,6 +4,8 @@ let { Indicator } = require("wt.behaviors")
 let { crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
 let { crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
 let { canShowRadar } = require("%rGui/hudTuning/hudTuningState.nut")
+let { unitType } = require("%rGui/hudState.nut")
+let { AIR } = require("%appGlobals/unitConst.nut")
 
 let AirTutorialVideoH = (saSize[1] * 0.95).tointeger()
 let AirTutorialVideoW = (AirTutorialVideoH * (16.0 / 9)).tointeger()
@@ -48,7 +50,8 @@ let changePosImg = function(){
   return animSeq
 }
 
-let img_swipe_to_rotate_cam = @(_) {
+let img_swipe_to_rotate_cam = @(_) @(){
+  watch = unitType
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   children = [
@@ -60,7 +63,7 @@ let img_swipe_to_rotate_cam = @(_) {
       transform = {}
       animations = changePosImg()
     }
-    {
+    unitType.get() != AIR ? null : {
       size = [ imgSize, imgSize ]
       pos = [-(imgSize/2).tointeger(), 0]
       rendObj = ROBJ_IMAGE

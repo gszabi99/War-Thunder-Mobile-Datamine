@@ -1047,6 +1047,7 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
+        "speedYaw": 55.0,
         "shotFreq": 0.25,
         "turret": {
           "head": "tt_head_01",
@@ -1055,8 +1056,18 @@
         },
         "limits": {
           "yaw": [
-            -135.0,
-            -45.0
+            -155.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        },
+        "limitsDeadzone": {
+          "yaw": [
+            -25.0,
+            0.0
           ],
           "pitch": [
             0.0,
@@ -1091,6 +1102,7 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
+        "speedYaw": 55.0,
         "shotFreq": 0.25,
         "turret": {
           "head": "tt_head_02",
@@ -1099,8 +1111,18 @@
         },
         "limits": {
           "yaw": [
-            45.0,
-            135.0
+            0.0,
+            155.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        },
+        "limitsDeadzone": {
+          "yaw": [
+            0.0,
+            25.0
           ],
           "pitch": [
             0.0,
@@ -1723,6 +1745,7 @@
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
+              "speedYaw": 55.0,
               "shotFreq": 0.25,
               "turret": {
                 "head": "tt_head_01",
@@ -1731,8 +1754,18 @@
               },
               "limits": {
                 "yaw": [
-                  -135.0,
-                  -45.0
+                  -155.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -25.0,
+                  0.0
                 ],
                 "pitch": [
                   0.0,
@@ -1767,6 +1800,7 @@
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
+              "speedYaw": 55.0,
               "shotFreq": 0.25,
               "turret": {
                 "head": "tt_head_02",
@@ -1775,8 +1809,18 @@
               },
               "limits": {
                 "yaw": [
-                  45.0,
-                  135.0
+                  0.0,
+                  155.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  0.0,
+                  25.0
                 ],
                 "pitch": [
                   0.0,
@@ -2391,6 +2435,7 @@
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
+              "speedYaw": 55.0,
               "shotFreq": 0.25,
               "turret": {
                 "head": "tt_head_01",
@@ -2399,8 +2444,18 @@
               },
               "limits": {
                 "yaw": [
-                  -135.0,
-                  -45.0
+                  -155.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -25.0,
+                  0.0
                 ],
                 "pitch": [
                   0.0,
@@ -2435,6 +2490,7 @@
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
+              "speedYaw": 55.0,
               "shotFreq": 0.25,
               "turret": {
                 "head": "tt_head_02",
@@ -2443,8 +2499,18 @@
               },
               "limits": {
                 "yaw": [
-                  45.0,
-                  135.0
+                  0.0,
+                  155.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  0.0,
+                  25.0
                 ],
                 "pitch": [
                   0.0,
