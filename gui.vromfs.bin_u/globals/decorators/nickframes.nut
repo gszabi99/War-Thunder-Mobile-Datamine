@@ -68,6 +68,10 @@ let nickFrames = {
   turret = @(n) $"♲{n}♳"
   shells = @(n) $"♴{n}♴"
   blast = @(n) $"♵{n}♶"
+  steel_bars = @(n) $"⊨{n}⊨"
+  hammer_anvil = @(n) $"⊩{n}⊪"
+  punch = @(n) $"⊫{n}⊬"
+  chain = @(n) $"⊭{n}⊭"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

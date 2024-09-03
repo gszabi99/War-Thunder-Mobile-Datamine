@@ -45,7 +45,7 @@ let screensList = {
   }
   simple_ship_6 = {
     camp = [ "ships" ]
-    weight = 2.0
+    weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_s_6.avif")
   }
   complex_ship_1 = {
@@ -127,6 +127,11 @@ let screensList = {
     camp = [ "tanks" ]
     weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_15.avif")
+  }
+  simple_tank_16 = {
+    camp = [ "tanks" ]
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_16.avif")
   }
 }
 

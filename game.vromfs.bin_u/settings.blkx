@@ -535,10 +535,28 @@
         "mRank": 6
       }
     },
+    "pkg_ussr_cruiser_maxim_gorky": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_ussr_cruiser_rckt_pr58": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
     "pkg_fr_battleship_courbet_class_courbet": {
       "conditions": {
         "campaign": "ships",
         "mRank": 3
+      }
+    },
+    "pkg_uk_battleship_marlborough": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
       }
     },
     "pkg_ussr_kv_122": {
@@ -761,6 +779,24 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 9
+      }
+    },
+    "pkg_ussr_t_72a": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_il_merkava_mk_1": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_germ_panzerbefelhswagen_jagdpanther": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 5
       }
     },
     "pkg_cn_object_122tm": {
