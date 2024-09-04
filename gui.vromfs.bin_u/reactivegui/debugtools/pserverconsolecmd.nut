@@ -165,7 +165,7 @@ foreach (ot in ["start", "gold", "collection", "sidegrade", "upgrade"]) {
 
 foreach (cmd in ["get_all_configs", "reset_profile",
   "unlock_all_common_units", "unlock_all_premium_units", "unlock_all_units", "check_purchases",
-  "reset_mutations_timestamp"
+  "reset_mutations_timestamp", "reset_scheduled_reward_timers"
 ]) {
   let action = pServerApi[cmd]
   register_command(@() action("consolePrintResult"), $"meta.{cmd}")

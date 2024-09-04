@@ -58,6 +58,9 @@ let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
     modCostPart = info?.modCostPart ?? 0.0
     level = info?.level ?? -1
     rank = info?.rank ?? 0
+    mRank = info?.mRank ?? 0
+    country = info?.country ?? ""
+    isCurrent = info?.isCurrent ?? false
   }
 
 let canUseSpare = Computed(@() (respawnUnitItems.get()?.spare ?? 0) > 0)
@@ -142,7 +145,8 @@ let selSlot = Computed(function() {
   let slot = respawnSlots.value?[playerSelectedSlotIdx.value]
   if (slot?.canSpawn ?? false)
     return slot
-  return respawnSlots.value.findvalue(@(s) s.canSpawn)
+  return respawnSlots.value.findvalue(@(s) s.isCurrent && s.canSpawn)
+    ?? respawnSlots.value.findvalue(@(s) s.canSpawn)
 })
 
 let selSlotUnitType = Computed(@() "name" not in selSlot.get() ? null
@@ -182,6 +186,7 @@ isInBattle.subscribe( function (v) {
   else {
     playerSelectedRespBase(-1)
     selectedSkins.set({})
+    playerSelectedSlotIdx.set(-1)
   }
 })
 let emptyBullets = { bullets0 = "", bulletCount0 = 10000 }

@@ -169,7 +169,7 @@ let machineSpeed = {
       rendObj = ROBJ_TEXT
       hplace = ALIGN_CENTER
       text = machineSpeedLoc[averageSpeed.value]
-    }.__update(fontTiny)
+    }.__update(fontTinyShaded)
     mkStopImage({ flipX = true, hplace = ALIGN_RIGHT })
   ]
 }

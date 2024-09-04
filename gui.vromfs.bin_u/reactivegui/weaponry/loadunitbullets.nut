@@ -12,6 +12,27 @@ let WT_AAM = "aam" // Air-to-Air Missiles
 let WT_AGM = "agm" // Air-to-Ground Missile, Anti-Tank Guided Missiles
 let WT_ROCKETS = "rockets"
 let WT_BOMBS = "bombs"
+let WT_TORPEDO = "torpedoes"
+
+let allCustomBulletParams = [
+  "explosiveType", "explosiveMass", "explodeTreshold", "speed", "ricochetPreset", "mass", "mass_lbs",
+  "dropSpeedRange", "dropHeightRange", "maxSpeedInWater", "distToLive", "maxSpeed"
+]
+
+let warhedByKineticDamage = @(kineticDamage) kineticDamage?.damageType == "tandemPrecharge" ? "tandem" : "heat"
+let getRocketParams = @(wBlk) {
+  warhead = wBlk?.strikingPart != null ? "multidart"
+    : wBlk?.smokeShell == true ? "smoke"
+    : wBlk?.cumulativeDamage.armorPower != null ? warhedByKineticDamage(wBlk?.kineticDamage)
+    : wBlk?.explosiveType != null && wBlk?.armorpower != null ? "aphe"
+    : wBlk?.explosiveType != null ? "he"
+    : "ap"
+}
+
+let customParamsByWeaponType = {
+  [WT_ROCKETS] = getRocketParams,
+  [WT_AGM] = getRocketParams,
+}
 
 
 let fullCache = persist("fullCache", @() {})
@@ -105,6 +126,10 @@ function getBulletsList(bulletsBlk) {
   if (bulletsList.len() != 0)
     return { bulletsList, weaponType = WT_BOMBS }
 
+  bulletsList = bulletsBlk % "torpedo"
+  if (bulletsList.len() != 0)
+    return { bulletsList, weaponType = WT_TORPEDO }
+
   return { bulletsList, weaponType }
 }
 
@@ -152,10 +177,16 @@ function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
     if ("bulletName" in b)
       res.bulletNames.append(b.bulletName)
 
-    foreach (param in ["explosiveType", "explosiveMass", "explodeTreshold", "speed", "ricochetPreset", "mass"])
+    foreach (param in allCustomBulletParams)
       if (param in paramsBlk) {
         res[param] <- paramsBlk[param]
         res.bulletDataByType[bulletType][param] <- paramsBlk[param]
+      }
+    let addParams = customParamsByWeaponType?[weaponType](paramsBlk)
+    if (addParams != null)
+      foreach (key, value in addParams) {
+        res[key] <- value
+        res.bulletDataByType[bulletType][key] <- value
       }
 
     foreach (param in ["smokeShellRad", "smokeActivateTime", "smokeTime"])
@@ -179,6 +210,9 @@ function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
 
   if (res == null)
     return res
+
+  if (res.bullets.len() == 1)
+    res.bulletDataByType.clear() //no need copy when only single bullet.
 
   if (res.bulletNames.len() > 1 && res.bulletNames.findvalue(@(v) v != res.bulletNames[0]) == null) {
     res.mass <- bulletsList[0]?.mass ?? 0.0

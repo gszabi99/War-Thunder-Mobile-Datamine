@@ -15,6 +15,7 @@ let { pushNotification, removeNotifyById, subscribeGroup
 } = require("%rGui/invitations/invitationsState.nut")
 let { myBlacklistUids } = require("%rGui/contacts/contactLists.nut")
 let { allContacts, validateNickNames, getContactNick, updateContact } = require("%rGui/contacts/contact.nut")
+let { deactualizePublicInfos } = require("%rGui/contacts/contactPublicInfo.nut")
 let { onlineStatus, isContactOnline, updateSquadPresences } = require("%rGui/contacts/contactPresence.nut")
 let squadState = require("%appGlobals/squadState.nut")
 let { squadId, isReady, isInSquad, isSquadLeader, isInvitedToSquad, squadMembers, squadMyState,
@@ -50,6 +51,18 @@ isInvitedToSquad.subscribe(@(list) validateNickNames(list.keys()))
 squadLeaderCampaign.subscribe(@(_) setReady(false))
 curCampaign.subscribe(@(v) v != squadLeaderCampaign.value ? setReady(false) : null)
 isInBattle.subscribe(@(_) setReady(false))
+
+let localMemberDecoratorHashes = squadMembers.get().map(@(data) data?.chosenDecoratorsHash)
+
+squadMembers.subscribe(function (members) {
+  let ids = []
+  foreach(uid, data in members)
+    if (localMemberDecoratorHashes?[uid] != data?.chosenDecoratorsHash) {
+      ids.append(uid)
+      localMemberDecoratorHashes[uid] <- data?.chosenDecoratorsHash
+    }
+  deactualizePublicInfos(ids)
+})
 
 let getSquadInviteUid = @(inviterSquadId) $"squad_invite_{inviterSquadId}"
 

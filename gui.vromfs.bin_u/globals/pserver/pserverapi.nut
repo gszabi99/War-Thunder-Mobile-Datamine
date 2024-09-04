@@ -485,6 +485,8 @@ return {
     progressValue = goodsId
   }, cb)
 
+  reset_reward_slots = @(cb = null) request({ method = "reset_reward_slots" }, cb)
+
   debug_apply_items_in_battle = @(items, cb = null) request({
     method = "debug_apply_items_in_battle"
     params = { items }

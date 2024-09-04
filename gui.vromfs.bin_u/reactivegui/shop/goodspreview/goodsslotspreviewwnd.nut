@@ -1,8 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
+let { register_command } = require("console")
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { playSound } = require("sound_wt")
 let { registerScene } = require("%rGui/navState.nut")
-let { GPT_SLOTS, previewType, previewGoods, closeGoodsPreview, openPreviewCount, GPT_BLUEPRINT, openedGoodsId
+let { GPT_SLOTS, previewType, previewGoods, closeGoodsPreview, openPreviewCount, GPT_BLUEPRINT, openedGoodsId,
+  openedUnitFromTree
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -11,7 +13,7 @@ let { serverTimeDay, getDay, untilNextDaySec } = require("%appGlobals/userstats/
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { registerHandler, shopPurchaseInProgress, shopGenSlotInProgress,
-  gen_goods_slots, buy_goods_slot, increase_goods_limit
+  gen_goods_slots, buy_goods_slot, increase_goods_limit, reset_reward_slots
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
@@ -42,9 +44,10 @@ let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
-let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
+let { revealAnimation, scaleAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkUnitFlag } = require("%rGui/unit/components/unitPlateComp.nut")
+let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 
 
 let MAX_BIG_SLOTS = 8
@@ -134,7 +137,7 @@ let headerPanel = {
           text = previewGoods.get() == null ? null
             : getGoodsLocName(previewGoods.get())
         }.__update(fontBig)
-        infoTooltipButton(@() loc(getSlotsTexts(openedGoodsId.get()).description), { halign = ALIGN_LEFT },
+        infoTooltipButton(@() loc(getSlotsTexts(openedGoodsId.get()).description), { halign = ALIGN_RIGHT },
           {
             size = [hdpx(52), hdpx(52)]
             fillColor = 0x80000000
@@ -291,7 +294,9 @@ function increaseLimit(price, currencyId) {
   playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money")
 }
 
+let rerollTrigger = {}
 function rerollSlots(price, currencyId) {
+  anim_start(rerollTrigger)
   let { id = null } = previewGoods.get()
   if (id == null)
     return
@@ -356,9 +361,10 @@ function content() {
     let slotsInRow = (maxWndWidth + boxGap) / (boxSize + boxGap)
     let rows = !isActual.get() || shopGenSlotInProgress.get() ? []
       : fillRewardsByRows(goods, slotsInRow, style)
+    let curUnit = openedUnitFromTree.get()
 
     return {
-      watch = [rewardSlots, isActual, shopGenSlotInProgress, openedGoodsId]
+      watch = [rewardSlots, isActual, shopGenSlotInProgress, openedGoodsId, openedUnitFromTree]
       size = flex()
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
@@ -381,16 +387,28 @@ function content() {
         rewardSlots.get()?.isPurchased ? null
           : txt(rows.len() > 0 ? utf8ToUpper(loc("shop/pickOneItem")) : utf8ToUpper(loc(getSlotsTexts(openedGoodsId.get()).missing)))
         rows.len() > 0 ? buttons : null
+        rewardSlots.get()?.isPurchased || rows.len() <= 0 || curUnit == null
+          || goods.reduce(@(res, g) res.$rawset(g[0].id, true), {})?[curUnit]
+              ? null
+            : txt(loc("shop/hint/rerollForUnit", { unitName = getUnitLocId(curUnit) }), {
+                animations = scaleAnimation(0.1, [1.15, 1.15], 0.15, rerollTrigger)
+                transform = {}
+              })
       ]
     }
   }
+}
+
+function onDetach() {
+  isAttached.set(false)
+  openedUnitFromTree.set(null)
 }
 
 let previewWnd = bgShaded.__merge({
   key = openCount
   size = flex()
   onAttach = @() isAttached.set(true)
-  onDetach = @() isAttached.set(false)
+  onDetach
 
   children = [
     @() {
@@ -412,5 +430,7 @@ let previewWnd = bgShaded.__merge({
   ]
   animations = wndSwitchAnim
 })
+
+register_command(@() reset_reward_slots(), "meta.reset_reward_slots")
 
 registerScene("goodsSlotsPreviewWnd", previewWnd, closeGoodsPreview, openCount)

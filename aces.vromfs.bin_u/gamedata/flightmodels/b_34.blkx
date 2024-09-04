@@ -2171,7 +2171,7 @@
             ]
           },
           {
-            "iconType": "torpedo",
+            "iconType": "torppedo",
             "name": "torp",
             "reqModification": "tbf_itc",
             "Weapon": {

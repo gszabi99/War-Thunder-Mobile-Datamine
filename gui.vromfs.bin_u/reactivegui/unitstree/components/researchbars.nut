@@ -8,11 +8,11 @@ let { attractColor, aTimeHint, aTimePriceScale } = require("%rGui/unitsTree/tree
 let { unitsResearchStatus } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 
 
-let barSize = [hdpx(500), hdpx(30)]
+let statsWidth = hdpx(495)
+let barSize = [statsWidth, hdpx(30)]
 
 let blueprintBarColor = 0xFF3384C4
 let unitResearchExpColor = 0xFFE86C00
-let statsWidth = hdpx(500)
 let researchBlockSize = [statsWidth, hdpx(150)]
 
 function mkLevelLine(cur, req, color, ovr = {}) {

@@ -20,12 +20,6 @@ let gap = hdpx(10)
 let healthImageWidth = shHud(40)
 let healthImageHeight = (36.0 / 200.0 * healthImageWidth).tointeger()
 
-let fontFx = {
-  fontFxColor = 0xFF000000
-  fontFxFactor = 50
-  fontFx = FFT_GLOW
-}
-
 let remainingHpPercent = Computed(@() maxHealth.value == 0 ? 1 : curRelativeHealth.value)
 
 local prevHpPercent = 1.0
@@ -194,7 +188,7 @@ let crewHealth = {
           rendObj = ROBJ_TEXT
           color = healthColor.value
           text =  $"{((remainingHpPercent.value * 100)+ 0.5).tointeger()} %"
-        }.__update(fontSmall, fontFx)
+        }.__update(fontSmallShaded)
       ]
     }
     @() {
@@ -210,7 +204,7 @@ let crewHealth = {
           rendObj = ROBJ_TEXT
           color = hpToRepairColor
           text =  $"{hpToRepairPercent.value} %"
-        }.__update(fontSmall, fontFx)
+        }.__update(fontSmallShaded)
       ]
     }
   ]
@@ -230,7 +224,7 @@ let crewHealthEditView = {
         {
           rendObj = ROBJ_TEXT
           text =  $"xx %"
-        }.__update(fontSmall, fontFx)
+        }.__update(fontSmallShaded)
       ]
     }
     {
@@ -242,7 +236,7 @@ let crewHealthEditView = {
         {
           rendObj = ROBJ_TEXT
           text =  $"xx %"
-        }.__update(fontSmall, fontFx)
+        }.__update(fontSmallShaded)
       ]
     }
   ]

@@ -26,7 +26,7 @@ let { textButtonCommon, textButtonBattle } = require("%rGui/components/textButto
 let { scoreBoard, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
 let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullSize, mkUnitPrice,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, unitSlotLockedByQuests,
-  mkUnitSelectedUnderlineVert, mkUnitRank, unitPlatesGap
+  mkUnitSelectedUnderlineVert, mkUnitRank, unitPlatesGap, plateTextsSmallPad
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { logerrHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
@@ -46,7 +46,6 @@ let { respawnSkins, skinSize } = require("respawnSkins.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { sendPlayerActivityToServer } = require("playerActivity.nut")
-
 
 let slotPlateWidth = unitPlateWidth + unitSelUnderlineFullSize
 let mapMaxSize = hdpx(650)
@@ -71,7 +70,7 @@ let balanceBlock = @() {
   size = [SIZE_TO_CONTENT, flex()]
   children = [
     mkCurrencyComp(sparesNum.value, SPARE)
-    mkConsumableSpend(SPARE, hdpx(20), hdpx(80), @() sparesNum(sparesNum.value - 1))
+    mkConsumableSpend(SPARE, hdpx(20), hdpx(80), @(count) sparesNum.set(sparesNum.get() - count))
   ]
 }
 
@@ -112,7 +111,7 @@ function mkSlotPlate(slot, baseUnit) {
   let p = getUnitPresentation(slot.name)
   let isSelected = Computed(@() selSlot.value?.id == slot.id)
   let unit = baseUnit.__merge(slot)
-  let { canSpawn, isSpawnBySpare } = slot
+  let { canSpawn, isSpawnBySpare, country, mRank } = slot
   return {
     size = [slotPlateWidth, unitPlateHeight]
     behavior = Behaviors.Button
@@ -128,9 +127,9 @@ function mkSlotPlate(slot, baseUnit) {
           mkUnitBg(unit, !canSpawn)
           canSpawn ? mkUnitSelectedGlow(unit, isSelected) : null
           mkUnitImage(unit, !canSpawn)
-          mkUnitTexts(unit, loc(p.locId), !canSpawn)
+          mkUnitTexts(country == "" ? baseUnit : unit, loc(p.locId), !canSpawn)
           canSpawn
-              ? mkUnitRank(unit, !!(unit?.isPremium || unit?.isUpgraded) ? {} : { pos = [-hdpx(30), 0] })
+              ? mkUnitRank(mRank == 0 ? baseUnit : unit, { padding = [0, plateTextsSmallPad * 2, 0, 0] })
             : slot?.isLocked && (slot?.reqLevel ?? 0) <= 0
               ? unitSlotLockedByQuests
             : mkUnitSlotLockedLine(slot)

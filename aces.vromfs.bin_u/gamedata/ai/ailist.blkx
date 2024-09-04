@@ -2248,32 +2248,45 @@
                 "fighterAttackBomber": {}
               }
             ],
-            "selector": {
-              "selectStrategy": "ordered",
-              "diveBombTarget": {},
-              "sequencer": {
-                "not": {
-                  "ifThenElse": {
-                    "hasDependentAttackers": {},
-                    "selector": {
-                      "selectStrategy": "ordered",
-                      "fighterAttackGround": {},
-                      "parallel": {
-                        "cycle": {
-                          "hasGroupWeaponForTarget": {}
-                        },
-                        "attackGroundFake": {}
-                      }
-                    },
-                    "fighterAttackGround": {}
-                  }
-                },
-                "selector": {
-                  "spiralUp": {
-                    "time": 5.0
+            "ifThenElse": {
+              "or": {
+                "isTargetType": [
+                  {
+                    "type": "fighter"
                   },
-                  "flyToPlane": {
-                    "dist": 800.0
+                  {
+                    "type": "bomber"
+                  }
+                ]
+              },
+              "recalculateTree": {},
+              "selector": {
+                "selectStrategy": "ordered",
+                "diveBombTarget": {},
+                "sequencer": {
+                  "not": {
+                    "ifThenElse": {
+                      "hasDependentAttackers": {},
+                      "selector": {
+                        "selectStrategy": "ordered",
+                        "fighterAttackGround": {},
+                        "parallel": {
+                          "cycle": {
+                            "hasGroupWeaponForTarget": {}
+                          },
+                          "attackGroundFake": {}
+                        }
+                      },
+                      "fighterAttackGround": {}
+                    }
+                  },
+                  "selector": {
+                    "spiralUp": {
+                      "time": 5.0
+                    },
+                    "flyToPlane": {
+                      "dist": 800.0
+                    }
                   }
                 }
               }
@@ -2478,8 +2491,24 @@
                     }
                   }
                 }
+              }
+            ],
+            "ifThenElse": {
+              "or": {
+                "isTargetType": [
+                  {
+                    "type": "fighter"
+                  },
+                  {
+                    "type": "bomber"
+                  },
+                  {
+                    "type": "bigShip"
+                  }
+                ]
               },
-              {
+              "recalculateTree": {},
+              "sequencer": {
                 "selector": {
                   "selectStrategy": "ordered",
                   "bombTarget": {},
@@ -2508,7 +2537,7 @@
                   }
                 }
               }
-            ]
+            }
           }
         },
         {
@@ -2688,8 +2717,24 @@
                     "fighterAttackGround": {}
                   }
                 }
+              }
+            ],
+            "ifThenElse": {
+              "or": {
+                "isTargetType": [
+                  {
+                    "type": "fighter"
+                  },
+                  {
+                    "type": "bomber"
+                  },
+                  {
+                    "type": "bigShip"
+                  }
+                ]
               },
-              {
+              "recalculateTree": {},
+              "sequencer": {
                 "selector": {
                   "selectStrategy": "ordered",
                   "diveBombTarget": {},
@@ -2710,7 +2755,7 @@
                   }
                 }
               }
-            ]
+            }
           }
         },
         {
@@ -2897,37 +2942,51 @@
                     }
                   }
                 }
+              }
+            ],
+            "ifThenElse": {
+              "or": {
+                "isTargetType": [
+                  {
+                    "type": "fighter"
+                  },
+                  {
+                    "type": "bomber"
+                  },
+                  {
+                    "type": "bigShip"
+                  }
+                ]
               },
-              {
-                "selector": {
-                  "selectStrategy": "ordered",
-                  "diveBombTarget": {},
-                  "bombTarget": {},
-                  "ifThenElse": {
-                    "hasDependentAttackers": {},
-                    "selector": {
-                      "selectStrategy": "ordered",
-                      "sequencer": {
-                        "isAuxWeaponAllowed": {},
-                        "fighterAttackGround": {}
-                      },
-                      "parallel": {
-                        "cycle": {
-                          "hasGroupWeaponForTarget": {
-                            "checkAuxWeapon": true
-                          }
-                        },
-                        "attackGroundFake": {}
-                      }
-                    },
+              "recalculateTree": {},
+              "selector": {
+                "selectStrategy": "ordered",
+                "diveBombTarget": {},
+                "bombTarget": {},
+                "ifThenElse": {
+                  "hasDependentAttackers": {},
+                  "selector": {
+                    "selectStrategy": "ordered",
                     "sequencer": {
                       "isAuxWeaponAllowed": {},
                       "fighterAttackGround": {}
+                    },
+                    "parallel": {
+                      "cycle": {
+                        "hasGroupWeaponForTarget": {
+                          "checkAuxWeapon": true
+                        }
+                      },
+                      "attackGroundFake": {}
                     }
+                  },
+                  "sequencer": {
+                    "isAuxWeaponAllowed": {},
+                    "fighterAttackGround": {}
                   }
                 }
               }
-            ]
+            }
           }
         },
         {

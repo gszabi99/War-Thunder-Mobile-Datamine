@@ -18,7 +18,10 @@ let rowHeight = hdpx(100)
 let costColW = hdpx(55)
 let rowsPosPadL = progressBtnSize + progressBtnGap
 let rowsPosPadR = rowsPosPadL + progressBtnGap + costColW
-let cellH = hdpx(20)
+let knobWidth = evenPx(42)
+let knobHeight = evenPx(21)
+let sliderTouchableHeight = knobHeight + hdpx(44)
+let cellH = evenPx(21)
 let cellGap = hdpx(5)
 let infoImgSize = hdpxi(30)
 let pageWidth = hdpx(855)
@@ -225,7 +228,7 @@ function applyAttrRowChange(catId, attrId, tryValue, selLevel, minLevel, maxLeve
 let knobCtor = @(relValue, stateFlags, fullW)
   mkSliderKnob(relValue, stateFlags, fullW,
     {
-      size = [evenPx(42), evenPx(21)],
+      size = [knobWidth, knobHeight],
       rendObj = ROBJ_SOLID,
     })
 
@@ -241,7 +244,7 @@ function mkProgressBarSlider(minLevel, selLevel, maxLevel, totalLevels, mkCellOn
   let sliderOverride = {
     min = 0
     max = totalLevels
-    size = [sliderWidth, cellH]
+    size = [sliderWidth, sliderTouchableHeight]
     function onChange(v) {
       if (v < minLevel.get() || v > maxLevel.get())
         return

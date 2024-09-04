@@ -27,6 +27,7 @@ let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { isSlotAttrOpened, attrSlotData, slotUnitName, slotLevel,
   curCategory, applyAttributes, selAttrSpCost, slotLevelsToMax,
   isSlotMaxSkills, unseenSlotAttrByIdx, resetAttrState, leftSlotSp,
+  markSlotAttributesSeen
 } = require("slotAttrState.nut")
 let { mkAttrTabs } = require("%rGui/attributes/attrWndTabs.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -331,6 +332,7 @@ let slotAttrWnd = {
   padding = saBordersRv
   flow = FLOW_VERTICAL
   gap = hdpx(20)
+  onDetach = @() markSlotAttributesSeen(selectedSlotIdx.get())
   children = [
     mkGamercardSlotCampaign(onClose, $"gamercard/slot/level/description",  mkSlotUnitName)
     {

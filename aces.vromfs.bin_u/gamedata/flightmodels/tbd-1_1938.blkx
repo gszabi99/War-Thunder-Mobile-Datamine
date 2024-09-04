@@ -2013,7 +2013,7 @@
             }
           },
           {
-            "iconType": "torpedo",
+            "iconType": "torppedo",
             "name": "mk13",
             "ShowNodes": {
               "node": "torpedo_pylon"
@@ -2031,7 +2031,7 @@
             }
           },
           {
-            "iconType": "torpedo_no_case",
+            "iconType": "torppedo_no_case",
             "name": "mk13_weak",
             "reqModification": "tbf_itc",
             "ShowNodes": {

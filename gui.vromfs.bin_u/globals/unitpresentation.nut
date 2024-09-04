@@ -15,7 +15,7 @@ let unitClassFontIcons = {
   submarine     = "\u2412"
   fighter       = "\u25A5"
   bomber        = "\u25A2"
-  attacker      = "\u25A3"
+  assault      = "\u25A3"
 }
 
 let unitTypeFontIcons = {

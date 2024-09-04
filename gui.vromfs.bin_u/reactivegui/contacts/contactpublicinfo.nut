@@ -57,10 +57,23 @@ let mkPublicInfo = @(userId)
 let mkIsPublicInfoWait = @(userId)
   Computed(@() userId in inProgressUids.get() )
 
+function deactualizePublicInfos(ids) {
+  let updatedReceiveTime = {}
+  foreach(uid in ids){
+    local publicMemberInfo = allPublicInfo.get()?[uid.tostring()]
+    if (publicMemberInfo)
+      updatedReceiveTime[uid.tostring()] <- publicMemberInfo.__merge({receiveTime = publicMemberInfo.receiveTime - AGEING_TIME_MSEC})
+  }
+
+  if (updatedReceiveTime.len() > 0)
+    allPublicInfo(allPublicInfo.get().__merge(updatedReceiveTime))
+}
+
 return {
   allPublicInfo
   inProgressPublicInfo = inProgressUids
   mkIsPublicInfoWait
   refreshPublicInfo
   mkPublicInfo
+  deactualizePublicInfos
 }

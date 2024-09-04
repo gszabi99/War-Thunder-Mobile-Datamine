@@ -68,6 +68,10 @@ let aTimePriceStart = aTimePackInfoStart + aTimeInfoHeaderFull
 
 function mkGiftSchRewardBtn(giftSchReward, posX) {
   local { isReady = false } = giftSchReward
+  function schRewardAndSkipAnim(){
+    onSchRewardReceive(giftSchReward)
+    skipAnimsOnce(true)
+  }
   if (!isReady)
     return null
   local isPurchasing = Computed(@() schRewardInProgress.value == giftSchReward.id)
@@ -77,7 +81,7 @@ function mkGiftSchRewardBtn(giftSchReward, posX) {
     rendObj = ROBJ_IMAGE
     image = Picture("ui/gameuiskin#offer_gift_icon.avif:0:P")
     behavior = Behaviors.Button
-    onClick = @() onSchRewardReceive(giftSchReward)
+    onClick = schRewardAndSkipAnim
     children = [
       {
         hplace = ALIGN_RIGHT

@@ -392,7 +392,6 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
   let discount = Computed(@() unitDiscounts?.get()[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
   let isCollectible = unit?.isCollectible
-  let needShowPrice = Computed(@() researchStatus.get()?.isResearched && unit.name not in myUnits.get())
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get() || unit.name in unseenSkins.get())
   let needShowBlueprintBar = Computed(@() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in myUnits.get())
   let trigger = $"{unit.name}_anim"
@@ -450,16 +449,16 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
         mkPriorityUnseenMarkWatch(needShowUnseenMark)
         @() {
           padding = hdpx(10)
-          watch = [price, discount, needShowPrice, researchStatus]
+          watch = [price, discount, canPurchase, researchStatus]
           key = price
           flow = FLOW_HORIZONTAL
           hplace = ALIGN_LEFT
           vplace = ALIGN_BOTTOM
           valign = ALIGN_BOTTOM
-          children = !needShowPrice.get() ? null : [
+          children = !price.get() ? null : [
             discount.get() != null ? discountTagUnit(discount.get().discount) : null
             price.get() != null && price.get().price > 0
-                ? mkUnitsTreePrice(price.get(), null, researchStatus.get()?.canBuy)
+                ? mkUnitsTreePrice(price.get(), null, canPurchase.get())
               : null
           ]
           transform = {}

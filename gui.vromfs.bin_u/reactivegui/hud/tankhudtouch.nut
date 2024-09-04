@@ -17,7 +17,7 @@ let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 let { DM_TEST_NOT_PENETRATE, DM_TEST_RICOCHET } = require("crosshair")
 let { currentArmorPiercingFixed } = require("%rGui/options/options/tankControlsOptions.nut")
 let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
-let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
+
 
 let crosshairReadyColor = Color(232, 75, 60)
 let crosshairSize = evenPx(38)
@@ -215,6 +215,5 @@ return {
     tankSight
     arcadeCrosshairAim
     arcadeCrosshair
-    voiceMsgPie
   ]
 }

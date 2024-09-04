@@ -1,5 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
+let { eventbus_send } = require("eventbus")
+let { register_command } = require("console")
 let { deferOnce } = require("dagor.workcycle")
+let { get_local_custom_settings_blk } = require("blkGetters")
+let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { add_slot_attributes } = require("%appGlobals/pServer/pServerApi.nut")
@@ -11,6 +15,9 @@ let { selAttributes, curCategoryId, attrPresets,
 
 
 let isSlotAttrOpened = mkWatched(persist, "isSlotAttrOpened", false)
+
+let SEEN_SLOT_ATTRIBUTES = "seenSlotAttributes"
+let seenSlotAttributes = mkWatched(persist, SEEN_SLOT_ATTRIBUTES, {})
 
 let attrSlotData = Computed(function() {
   let slot = slots.get()?[selectedSlotIdx.get()]
@@ -86,11 +93,13 @@ function unseenSlotAttrByIdx(idx) {
       null != cat.attrList.findvalue(@(attr) attr.levelCost.len() > (slot.attrLevels?[cat.id][attr.id] ?? 0)))
   })
 
+  let isMaxSlotLevel = Computed(@() (maxSlotLevels.get()?.len() ?? 0) <= (attrDataByIdx.get()?.slot.level ?? 0))
+
   return Computed(function() {
     let { slot = null, preset = null } = attrDataByIdx.get()
     let { attrLevels = null } = slot
     if (attrLevels == null || preset == null || leftSp.get() <= 0 || isMaxSkills.get())
-      return { status = -1, statusByCat = [] }
+      return { status = -1, statusByCat = [], isUnseen = false }
     let selAttr = selAttributes.get()
     let avail = array(MAX_AVAIL_STATUS, 0)
     let availCats = []
@@ -115,9 +124,14 @@ function unseenSlotAttrByIdx(idx) {
       }
       availCats.append(cAvail)
     }
+
+    let statusByCat = availCats.map(calcStatus)
+    let seenSlotLevel = seenSlotAttributes.get()?[curCampaign.get()][idx]
     return {
       status = calcStatus(avail)
-      statusByCat = availCats.map(calcStatus)
+      statusByCat
+      isUnseen = statusByCat.len() > 0
+        && (isMaxSlotLevel.get() || !seenSlotLevel || (slot?.level ?? 0) > seenSlotLevel)
     }
   })
 }
@@ -127,6 +141,46 @@ function applyAttributes() {
     return
   add_slot_attributes(curCampaign.get(), selectedSlotIdx.get(), selAttributes.get(), selAttrSpCost.get())
 }
+
+function markSlotAttributesSeen(slotIdx) {
+  let curSlotLevel = slots.get()?[slotIdx]?.level
+
+  seenSlotAttributes.mutate(function(v) {
+    if(curCampaign.get() not in v)
+      v[curCampaign.get()] <- {}
+    return v[curCampaign.get()][slotIdx] <- curSlotLevel
+  })
+
+  let sBlk = get_local_custom_settings_blk().addBlock(SEEN_SLOT_ATTRIBUTES)
+  sBlk.addBlock(curCampaign.get())[slotIdx.tostring()] = curSlotLevel
+
+  eventbus_send("saveProfile", {})
+}
+
+function loadSeenSlotAttributes() {
+  let blk = get_local_custom_settings_blk()
+  let htBlk = blk?[SEEN_SLOT_ATTRIBUTES]
+  if (!isDataBlock(htBlk))
+    return seenSlotAttributes.set({})
+
+  let res = {}
+  foreach (campaign, slotIndexes in htBlk) {
+    let seenSlots = {}
+    eachParam(slotIndexes, @(level, idx) seenSlots[idx.tointeger()] <- level)
+    if (seenSlots.len() > 0)
+      res[campaign] <- seenSlots
+  }
+  seenSlotAttributes.set(res)
+}
+
+if (seenSlotAttributes.get().len() == 0)
+  loadSeenSlotAttributes()
+
+register_command(function() {
+  seenSlotAttributes.set({})
+  get_local_custom_settings_blk().removeBlock(SEEN_SLOT_ATTRIBUTES)
+  eventbus_send("saveProfile", {})
+}, "debug.reset_seen_slot_attributes")
 
 return {
   openSlotAttrWnd = @() isSlotAttrOpened.set(true)
@@ -145,4 +199,6 @@ return {
   resetAttrState
   applyAttributes
   slotLevelsToMax
+  seenSlotAttributes
+  markSlotAttributesSeen
 }

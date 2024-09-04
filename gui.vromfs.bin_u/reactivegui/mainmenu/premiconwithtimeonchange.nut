@@ -83,7 +83,7 @@ function premiumTime() {
       { prop = AnimProp.translate, to = [0, hdpx(50)], duration = 0.3, easing = OutQuad,
         playFadeOut = true, trigger = "premiumAnimSkip" }
     ]
-  }.__update(fontSmall, fontGlowBlack)
+  }.__update(fontSmallShaded)
 }
 
 function onChangeAnimFinish(change) {
@@ -109,7 +109,7 @@ function mkChangeView(change) {
         rendObj = ROBJ_TEXT
         text = "".concat(diff < 0 ? "-" : "+", secondsToHoursLoc(abs(diff)))
         color = diff < 0 ? badTextColor2 : goodTextColor2
-      }.__update(fontMedium, fontGlowBlack)
+      }.__update(fontMediumShaded)
     ]
     transform = {}
     animations = mkBalanceDiffAnims(@() onChangeAnimFinish(change))

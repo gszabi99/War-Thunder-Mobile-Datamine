@@ -10,8 +10,7 @@
 "charServer/entitlement/PremiumAccount";"Premium Account";"Compte premium";"Account premium";"Premium-Konto";"Cuenta premium";"Премиум-аккаунт";"Преміум-акаунт";"Konto premium";"Conta Premium";"Premium Hesap";"Prémiový účet";"Λογαριασμός Premium";"Akun Premium";"บัญชีพรีเมียม";"프리미엄 계정";"高\t级\t账\t号";"プレミアムアカウント";"高\t級\t帳\t號";;
 "charServer/entitlement/PremiumAccount/desc";"* {bonusPlayerExp} ▉ (Player experience) in all game modes
 * {bonusUnitExp} ▉ (Unit experience) in all game modes
-* {bonusWp} ▻ (Silver Lions) reward in all game modes
-* {bonusGold} ▽ (Gold Eagles) reward in aviation campaign";"* {bonusPlayerExp} ▉ (Expérience de joueur) dans tous les modes de jeu
+* {bonusWp} ▻ (Silver Lions) reward in all game modes";"* {bonusPlayerExp} ▉ (Expérience de joueur) dans tous les modes de jeu
 * {bonusUnitExp} ▉ (Expérience d'unité) dans tous les modes de jeu
 * {bonusWp} ▻ (Silver Lions) de récompense dans tous les modes de jeu";"* {bonusPlayerExp} ▉ (Esperienza del giocatore) in tutte le modalità di gioco
 * {bonusUnitExp} ▉ (Esperienza dell'unità) in tutte le modalità di gioco
@@ -21,8 +20,7 @@
 * {bonusUnitExp} ▉ (Experiencia de unidad) en todos los modos de juego
 * {bonusWp} ▻ (Leones de Plata) de recompensa en todos los modos de juego";"* {bonusPlayerExp} ▉ (Очков опыта) во всех игровых режимах
 * {bonusUnitExp} ▉ (Опыт техники) к награде во всех игровых режимах
-* {bonusWp} ▻ (Серебряных львов) к награде во всех игровых режимах
-* {bonusGold} ▽ (Золотых орлов) к награде в самолетной кампании";"* {bonusPlayerExp} ▉ (Очок досвіду) у всіх ігрових режимах
+* {bonusWp} ▻ (Серебряных львов) к награде во всех игровых режимах";"* {bonusPlayerExp} ▉ (Очок досвіду) у всіх ігрових режимах
 * {bonusUnitExp} (Досвід техніки) до нагороди у всіх ігрових режимах
 * {bonusWp} ▻ (Срібних левів) до нагороди у всіх ігрових режимах";"* {bonusPlayerExp} ▉ (doświadczenie gracza) we wszystkich trybach gry
 * {bonusUnitExp} ▉ (doświadczenie jednostki) we wszystkich trybach gry

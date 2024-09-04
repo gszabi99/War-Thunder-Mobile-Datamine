@@ -5,7 +5,6 @@ let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { naval, ground, extAddonsByRank, knownAddons, campaignPostfix
 } = require("%appGlobals/updater/addons.nut")
 
-let aircraftCbtPkgs = ["pkg_cbt_aircraft", "pkg_cbt_aircraft_hq"].filter(@(a) a in knownAddons)
 let customUnitPkg = {
   //ships
   germ_destroyer_class1934a_1940 = null
@@ -21,9 +20,6 @@ let customUnitPkg = {
   ["f3f-2"] = null,
   fw_190a_1 = null,
   il_2m_1943 = null,
-  ["p-38k"] = aircraftCbtPkgs,
-  ["yak-3t"] = aircraftCbtPkgs,
-  ["fw-190c"] = aircraftCbtPkgs
 }
 
 let defAddonPostfix = "naval"

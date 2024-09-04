@@ -16,8 +16,9 @@ let { weaponTouchIcons } = require("%appGlobals/weaponPresentation.nut")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { allowShoot, primaryRocketGun } = require("%rGui/hud/tankState.nut")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
-let { Cannon0, MGun0, hasCanon0, hasMGun0, TurretsVisible,
-  TurretsReloading, TurretsEmpty } = require("%rGui/hud/airState.nut")
+let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun,
+  TurretsVisible, TurretsReloading, TurretsEmpty
+} = require("%rGui/hud/airState.nut")
 let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
 } = require("%rGui/hud/currentWeaponsStates.nut")
 let { mkBtnZone, lockButtonIcon, canLock, defShortcutOvr}  = require("hudButtonsPkg.nut")
@@ -240,10 +241,7 @@ let mkBigCirclePlaneBtnEditView = circleBtnPlaneEditViewCtor(bigButtonSize, bigB
 let countTextStyle = {
   rendObj = ROBJ_TEXT
   vplace = ALIGN_BOTTOM
-  fontFxColor = 0xFF000000
-  fontFxFactor = 50
-  fontFx = FFT_GLOW
-}.__update(fontVeryTiny)
+}.__update(fontVeryTinyShaded)
 
 let mkCountTextRight = @(text, color)
   countTextStyle.__merge({
@@ -260,21 +258,12 @@ let mkCountTextLeft = @(text, color)
     text
   })
 
-let mkCountTextLeftUpper = @(text, color)
-  countTextStyle.__merge({
-    hplace = ALIGN_RIGHT
-    pos = [pw(-85), ph(-85)]
-    color
-    text
-  })
-
-  let mkCountTextLeftLower = @(text, color)
-  countTextStyle.__merge({
-    hplace = ALIGN_RIGHT
-    pos = [pw(-100), ph(-70)]
-    color
-    text
-  })
+let mkCountTextLeftUpper = [
+  [pw(-85), ph(-85)],
+  [pw(-100), ph(-70)],
+  [pw(-105), ph(-55)],
+]
+  .map(@(pos) @(ovr) countTextStyle.__merge({ hplace = ALIGN_RIGHT, pos }, ovr))
 
 let waitForAimIcon = {
   rendObj = ROBJ_IMAGE
@@ -508,11 +497,13 @@ function mkCirclePlaneCourseGuns(btnSize, imgSize) {
 
   let mGunsDisabled = mkIsControlDisabled("ID_FIRE_MGUNS")
   let cannonsDisabled = mkIsControlDisabled("ID_FIRE_CANNONS")
+  let addGunsDisabled = mkIsControlDisabled("ID_FIRE_ADDITIONAL_GUNS")
 
-  let hasAnyWeapon = Computed(@() hasMGun0.get() || hasCanon0.get())
+  let hasAnyWeapon = Computed(@() hasMGun0.get() || hasCanon0.get() || hasAddGun.get())
   let isMgunsAvailable = Computed(@() (hasMGun0.get() && isWeaponAvailable(MGun0.get()) && !mGunsDisabled.get()))
   let isCannonsAvailable = Computed(@() (hasCanon0.get() && isWeaponAvailable(Cannon0.get()) && !cannonsDisabled.get()))
-  let isAnyWeaponAvailable = Computed(@() isMgunsAvailable.get() || isCannonsAvailable.get())
+  let isAddGunsAvailable = Computed(@() (hasAddGun.get() && isWeaponAvailable(AddGun.get()) && !addGunsDisabled.get()))
+  let isAnyWeaponAvailable = Computed(@() isMgunsAvailable.get() || isCannonsAvailable.get() || isAddGunsAvailable.get())
   let availableWeapon = Computed(@() hasMGun0.get() && !mGunsDisabled.value
       && (MGun0.get().count > 0  || !hasCanon0.get() || cannonsDisabled.value || MGun0.get().endTime < Cannon0.get().endTime)
     ? MGun0.get()
@@ -521,12 +512,14 @@ function mkCirclePlaneCourseGuns(btnSize, imgSize) {
   function onTouchBegin() {
     setShortcutOn("ID_FIRE_MGUNS")
     setShortcutOn("ID_FIRE_CANNONS")
+    setShortcutOn("ID_FIRE_ADDITIONAL_GUNS")
     updateActionBarDelayed()
   }
 
   function onTouchEnd() {
     setShortcutOff("ID_FIRE_MGUNS")
     setShortcutOff("ID_FIRE_CANNONS")
+    setShortcutOff("ID_FIRE_ADDITIONAL_GUNS")
   }
 
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
@@ -550,14 +543,92 @@ function mkCirclePlaneCourseGuns(btnSize, imgSize) {
           mkBorderPlane(btnSize, isAnyWeaponAvailable.get(), stateFlags)
           mkBtnImage(imgSize, "ui/gameuiskin#hud_aircraft_canons.svg", isAnyWeaponAvailable.get() ? 0xFFFFFFFF : disabledColor)
           @() {
-              watch = [MGun0, isMgunsAvailable]
-            }.__update(!isMgunsAvailable.get() || MGun0.get().count < 0 ? {}
-              : mkCountTextLeftLower(MGun0.get().count, isMgunsAvailable.get() ? 0xFFFFFFFF : disabledColor))
-          @() {
-                watch = [Cannon0, isCannonsAvailable]
-              }.__update(!isCannonsAvailable.get() || Cannon0.get().count < 0 ? {}
-                : mkCountTextLeftUpper(Cannon0.get().count, isCannonsAvailable.get() ? 0xFFFFFFFF : disabledColor))
+            watch = [isCannonsAvailable, isMgunsAvailable, isAddGunsAvailable]
+            size = flex()
+            valign = ALIGN_CENTER
+            halign = ALIGN_CENTER
+            children = [
+              isCannonsAvailable.get() ? Cannon0 : null,
+              isMgunsAvailable.get() ? MGun0 : null,
+              isAddGunsAvailable.get() ? AddGun : null,
+            ]
+              .filter(@(v) v != null)
+              .map(@(w, idx) @() mkCountTextLeftUpper[idx]({
+                watch = w
+                text = w.get().count
+                color = w.get().count > 0 ? 0xFFFFFFFF : disabledColor
+              }))
+          }
           mkCircleGlare(btnSize, "course_gun")
+          mkGamepadShortcutImage(shortcutId, defShortcutOvr)
+        ]
+      })
+}
+
+function mkCircleSecondaryGuns(btnSize, imgSize) {
+  let shortcutId = "ID_FIRE_MGUNS"
+  let stateFlags = Watched(0)
+
+  let mGunsDisabled = mkIsControlDisabled("ID_FIRE_MGUNS")
+  let addGunsDisabled = mkIsControlDisabled("ID_FIRE_ADDITIONAL_GUNS")
+
+  let hasAnyWeapon = Computed(@() hasMGun0.get() || hasAddGun.get())
+  let isMgunsAvailable = Computed(@() (hasMGun0.get() && isWeaponAvailable(MGun0.get()) && !mGunsDisabled.get()))
+  let isAddGunsAvailable = Computed(@() (hasAddGun.get() && isWeaponAvailable(AddGun.get()) && !addGunsDisabled.get()))
+  let isAnyWeaponAvailable = Computed(@() isMgunsAvailable.get() || isAddGunsAvailable.get())
+  let availableWeapon = Computed(@() hasMGun0.get() && !mGunsDisabled.get()
+      && (MGun0.get().count > 0 || !hasAddGun.get() || addGunsDisabled.get())
+    ? MGun0.get()
+    : AddGun.get())
+
+  function onTouchBegin() {
+    setShortcutOn("ID_FIRE_MGUNS")
+    setShortcutOn("ID_FIRE_ADDITIONAL_GUNS")
+    updateActionBarDelayed()
+  }
+
+  function onTouchEnd() {
+    setShortcutOff("ID_FIRE_MGUNS")
+    setShortcutOff("ID_FIRE_ADDITIONAL_GUNS")
+  }
+
+  let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
+    .__update({
+      behavior = TouchAreaOutButton
+      eventPassThrough = true
+    })
+
+  return @() !hasAnyWeapon.get() ? { watch = hasAnyWeapon, key = shortcutId }
+    : res.__merge({
+        watch = [hasAnyWeapon, isAnyWeaponAvailable]
+        size = [btnSize, btnSize]
+        valign = ALIGN_CENTER
+        halign = ALIGN_CENTER
+        children = [
+          @() {
+            watch = availableWeapon
+            size = flex()
+            children = mkCircleProgressBgWeapon(btnSize, "secondary_gun", availableWeapon.get(), isAnyWeaponAvailable.get())
+          }
+          mkBorderPlane(btnSize, isAnyWeaponAvailable.get(), stateFlags)
+          mkBtnImage(imgSize, "ui/gameuiskin#hud_aircraft_canons.svg", isAnyWeaponAvailable.get() ? 0xFFFFFFFF : disabledColor)
+          @() {
+            watch = [isMgunsAvailable, isAddGunsAvailable]
+            size = flex()
+            valign = ALIGN_CENTER
+            halign = ALIGN_CENTER
+            children = [
+              isMgunsAvailable.get() ? MGun0 : null,
+              isAddGunsAvailable.get() ? AddGun : null,
+            ]
+              .filter(@(v) v != null)
+              .map(@(w, idx) @() mkCountTextLeftUpper[idx]({
+                watch = w
+                text = w.get().count
+                color = w.get().count > 0 ? 0xFFFFFFFF : disabledColor
+              }))
+          }
+          mkCircleGlare(btnSize, "secondary_gun")
           mkGamepadShortcutImage(shortcutId, defShortcutOvr)
         ]
       })
@@ -801,6 +872,7 @@ return {
   mkCircleTargetTrackingBtn
   mkCircleFireworkBtn
   mkCirclePlaneCourseGuns
+  mkCircleSecondaryGuns
   mkCirclePlaneCourseGunsSingle
   mkCirclePlaneTurretsGuns
   mkCircleWeaponryItem

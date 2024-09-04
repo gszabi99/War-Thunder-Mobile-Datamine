@@ -9,6 +9,7 @@ return {
   userlogTextColor = 0xFFF9DB78
   hoverColor = 0xC07BFFFF
   hoverColorDark = 0xC062CCCC
+  warningTextColor = 0xFFE66464
 
   goodTextColor = 0xFF20F020
   badTextColor = 0xFFFF4B38

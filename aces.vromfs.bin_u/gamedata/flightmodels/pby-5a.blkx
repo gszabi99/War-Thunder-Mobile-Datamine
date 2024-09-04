@@ -2296,7 +2296,7 @@
             ]
           },
           {
-            "iconType": "torpedo_no_case",
+            "iconType": "torppedo_no_case",
             "name": "us_mk13_torpedo_no_case",
             "reqModification": "pby5_ltc",
             "ShowNodes": {
@@ -2312,7 +2312,7 @@
             }
           },
           {
-            "iconType": "torpedo",
+            "iconType": "torppedo",
             "name": "us_mk13_torpedo",
             "reqModification": "improved_torpedo_mod",
             "ShowNodes": {
@@ -2410,7 +2410,7 @@
             ]
           },
           {
-            "iconType": "torpedo_no_case",
+            "iconType": "torppedo_no_case",
             "name": "us_mk13_torpedo_no_case",
             "reqModification": "pby5_ltc",
             "ShowNodes": {
@@ -2426,7 +2426,7 @@
             }
           },
           {
-            "iconType": "torpedo",
+            "iconType": "torppedo",
             "name": "us_mk13_torpedo",
             "reqModification": "improved_torpedo_mod",
             "ShowNodes": {

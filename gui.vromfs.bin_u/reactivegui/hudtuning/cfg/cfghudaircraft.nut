@@ -30,9 +30,9 @@ let { mkMyPlace, myPlaceUi, mkAirMyScores, myScoresUi } = require("%rGui/hud/myS
 let { xrayModel, dmModules, xrayModelEditView, dmModulesEditView, xrayDollSize } = require("%rGui/hud/aircraftStateModule.nut")
 let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkCircleBtnPlaneEditView, mkCirclePlaneTurretsGuns,
   bigButtonSize, bigButtonImgSize, mkCircleZoom, mkCircleWeaponryItem, mkCircleLockBtn, mkBigCirclePlaneBtnEditView, airButtonSize,
-  buttonAirImgSize
+  buttonAirImgSize, mkCircleSecondaryGuns
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
-let { Cannon0, MGun0, hasCanon0, hasMGun0,
+let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun,
   BombsState, hasBombs,
   RocketsState, hasRockets,
   TorpedoesState, hasTorpedos,
@@ -222,7 +222,7 @@ return cfgHudCommon.__merge({
 
   courseGuns = {
     ctor = @() @() {
-      key = "plane_course_guns"
+      key = "air_course_guns_main"
       watch = isActiveTurretCamera
       children = isActiveTurretCamera.get() ? mkCirclePlaneTurretsGuns(bigButtonSize, bigButtonImgSize)
         : mkCirclePlaneCourseGuns(bigButtonSize, bigButtonImgSize)
@@ -235,7 +235,7 @@ return cfgHudCommon.__merge({
   }
   courseGunsSecondBtn = {
     ctor = @() @() {
-      key = "plane_course_guns"
+      key = "air_course_guns_second"
       watch = [isGamepad, isActiveTurretCamera]
       children = isGamepad.get() ? null
         : isActiveTurretCamera.get() ? mkCirclePlaneTurretsGuns(bigButtonSize, bigButtonImgSize)
@@ -249,6 +249,7 @@ return cfgHudCommon.__merge({
   cannons = {
     ctor = @() @() {
       watch = [hasCanon0, hasMGun0, isActiveTurretCamera]
+      key = "air_cannon"
       children = isActiveTurretCamera.get() ? mkCirclePlaneTurretsGuns(bigButtonSize, bigButtonImgSize)
         : hasCanon0.get() ? mkCirclePlaneCourseGunsSingle("ID_FIRE_CANNONS", Cannon0, hasCanon0, bigButtonSize, bigButtonImgSize)
         : mkCirclePlaneCourseGunsSingle("ID_FIRE_MGUNS", MGun0, hasMGun0, bigButtonSize, bigButtonImgSize)
@@ -261,9 +262,13 @@ return cfgHudCommon.__merge({
   }
 
   miniguns = {
-    ctor = @() mkCirclePlaneCourseGunsSingle("ID_FIRE_MGUNS",
-      MGun0,
-      Computed(@() hasCanon0.get() && hasMGun0.get()))
+    ctor = @() @() {
+      watch = hasCanon0
+      key = "air_minigun"
+      children = hasCanon0.get()
+        ? mkCircleSecondaryGuns(airButtonSize, buttonAirImgSize)
+        : mkCirclePlaneCourseGunsSingle("ID_FIRE_ADDITIONAL_GUNS", AddGun, hasAddGun)
+    }
     defTransform = mkLBPos([hdpx(142), hdpx(-245)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
     priority = Z_ORDER.BUTTON_PRIMARY

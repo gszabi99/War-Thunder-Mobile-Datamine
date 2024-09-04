@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { Point2 } = require("dagor.math")
 let { register_command, command } = require("console")
 let { get_unittags_blk } = require("blkGetters")
 let { object_to_json_string } = require("json")
@@ -9,6 +10,7 @@ let { eachBlock } = require("%sqstd/datablock.nut")
 let { calcUnitTypeFromTags } = require("%appGlobals/unitConst.nut")
 let { loadUnitBulletsFull, loadUnitBulletsChoice, loadUnitBulletsAndSlots, loadUnitWeaponSlots
 } = require("%rGui/weaponry/loadUnitBullets.nut")
+let { getBulletBeltImageId } = require("%appGlobals/config/bulletsPresentation.nut")
 
 register_command(@(unitName) log($"Unit {unitName} full all bullets: ", loadUnitBulletsFull(unitName)),
   "debug.get_unit_bullets_full_all")
@@ -85,6 +87,30 @@ register_command(
   @() countBulletsStats(loadUnitBulletsChoice)
   "debug.get_unit_bullets_stats_choice")
 
+let prepareInstance = {
+  [Point2] = @(v) { x = v.x, y = v.y },
+}
+
+function prepareDataForJson(data) {
+  if (type(data) == "instance") {
+    foreach(inst, prepare in prepareInstance)
+      if (data instanceof inst)
+        return prepare(data)
+    return data
+  }
+  if (type(data) == "array" || type(data) == "table") {
+    local isChanged = false
+    let prepare = prepareDataForJson
+    local res = data.map(function(v) {
+      let newV = prepare(v)
+      isChanged = isChanged || newV != v
+      return newV
+    })
+    return isChanged ? res : data
+  }
+  return data
+}
+
 local loadAllBulletsProgress = null
 let onLoadAllBullets = []
 
@@ -131,7 +157,7 @@ function loadAllBulletsAndDo(action) {
 register_command(
   @(filePath) loadAllBulletsAndDo(function(res) {
     let file = io.file(filePath, "wt+")
-    file.writestring(object_to_json_string(res, true))
+    file.writestring(object_to_json_string(prepareDataForJson(res), true))
     file.close()
   }),
   "debug.save_all_unit_bullets_to_file")
@@ -149,9 +175,82 @@ register_command(
     foreach(unitType, data in resByType) {
       let filePath = $"{filePrefix}{unitType}.json"
       let file = io.file(filePath, "wt+")
-      file.writestring(object_to_json_string(data, true))
+      file.writestring(object_to_json_string(prepareDataForJson(data), true))
       file.close()
       log($"Saved file {filePath}")
     }
   }),
   "debug.save_all_unit_bullets_to_files_by_type")
+
+register_command(
+  @() loadAllBulletsAndDo(function(res) {
+    let resByCount = []
+    let bigBeltsUnits = {}
+    foreach(name, b in res) {
+      let { slots = [] } = b
+      if (slots.len() == 0)
+        continue
+      foreach(slot in slots)
+        foreach(preset in slot.wPresets)
+          foreach(weapon in preset.weapons)
+            foreach(set in weapon.bulletSets) {
+              if (!set.isBulletBelt)
+                continue
+              let count = set.bullets.len()
+              if (count not in resByCount)
+                resByCount.resize(count + 1, null)
+              let icons = set.bullets.map(getBulletBeltImageId)
+              let iconsStr = ";".join(icons)
+              resByCount[count] = (resByCount[count] ?? {}).__update({ [iconsStr] = true }) //warning disable: -unwanted-modification
+              if (count < 6)
+                continue
+              bigBeltsUnits[name] <- (bigBeltsUnits?[name] ?? {}).__update({ [iconsStr] = true }) //warning disable: -unwanted-modification
+            }
+    }
+
+    let texts = ["Big belts units: "]
+    foreach(name, list in bigBeltsUnits) {
+      texts.append($"Unit {name}:")
+      foreach(icons, _ in list)
+        texts.append($"  {icons}")
+    }
+
+    texts.append("\nAll bullet icons for slots:")
+    foreach(idx, list in resByCount) {
+      if (list == null)
+        continue
+      texts.append($"Sets of {idx}:")
+      foreach(s in list.keys().sort())
+        texts.append(s)
+    }
+    let text = "\n".join(texts)
+    log(text)
+    console_print(text) //warning disable: -forbidden-function
+  }),
+  "debug.print_all_bullet_sets_icons_for_slots")
+
+register_command(
+  @() loadAllBulletsAndDo(function(res) {
+    let resUnits = {}
+    foreach(name, b in res) {
+      let { slots = [] } = b
+      if (slots.len() == 0)
+        continue
+      foreach(idx, slot in slots)
+        if (idx != 0)
+          foreach(preset in slot.wPresets) {
+            let wList = {}
+            foreach(weapon in preset.weapons)
+              wList[weapon.weaponId] <- true
+            if (wList.len() <= 1)
+              continue
+            if (name not in resUnits)
+              resUnits[name] <- {}
+            resUnits[name][idx] <- wList.keys()
+          }
+    }
+
+    log(resUnits)
+    console_print(resUnits) //warning disable: -forbidden-function
+  }),
+  "debug.find_double_weapon_secondary_slots")

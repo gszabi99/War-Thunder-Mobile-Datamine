@@ -2280,11 +2280,6 @@
         "name": "bf-109z_1xsc250",
         "blk": "gameData/FlightModels/weaponPresets/bf-109z_1xsc250.blk",
         "reqModification": "Bf-109G-14_SC250"
-      },
-      {
-        "name": "bf-109z_flamm_250",
-        "blk": "gameData/FlightModels/weaponPresets/bf-109z_flamm_250.blk",
-        "reqModification": "flamm_250"
       }
     ]
   },
@@ -2351,40 +2346,22 @@
         "index": 1,
         "tier": 6,
         "order": 1,
-        "WeaponPreset": [
-          {
-            "iconType": "bomb_250kg",
-            "name": "250kg",
-            "reqModification": "Bf-109E-3_SC250",
-            "ShowNodes": {
-              "node": "pylon_bomb1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-              "emitter": "de_sc250",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+        "WeaponPreset": {
+          "iconType": "bomb_250kg",
+          "name": "250kg",
+          "reqModification": "Bf-109E-3_SC250",
+          "ShowNodes": {
+            "node": "pylon_bomb1"
           },
-          {
-            "iconType": "napalm_middle",
-            "name": "flamm_250",
-            "reqModification": "flamm_250",
-            "ShowNodes": {
-              "node": "pylon_bomb1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-              "emitter": "de_sc250",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+            "emitter": "de_sc250",
+            "bullets": 1,
+            "external": true,
+            "separate": true
           }
-        ]
+        }
       }
     ]
   },

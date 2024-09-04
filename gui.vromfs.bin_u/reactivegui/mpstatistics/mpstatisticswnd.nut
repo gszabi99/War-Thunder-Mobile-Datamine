@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { get_mplayers_list, GET_MPLAYERS_LIST, get_mp_local_team } = require("mission")
+let { get_mplayers_list, GET_MPLAYERS_LIST, get_mp_local_team, get_current_mission_name } = require("mission")
 let { GO_WIN, GO_FAIL } = require("guiMission")
 let { gameOverReason } = require("%rGui/missionState.nut")
 let { playerLevelInfo, allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
@@ -112,7 +112,7 @@ return bgShaded.__merge({
       size = [flex(), SIZE_TO_CONTENT]
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
-      children = mkMpStatsTable(getColumnsByCampaign(battleCampaign.value), playersByTeam.value)
+      children = mkMpStatsTable(getColumnsByCampaign(battleCampaign.get(), get_current_mission_name()), playersByTeam.get())
     }
     {
       size = saSize

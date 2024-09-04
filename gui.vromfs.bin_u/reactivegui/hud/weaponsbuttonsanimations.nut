@@ -67,7 +67,9 @@ function mkActionGlare(actionItem,  buttonSize = touchButtonSize) {
   }
 }
 
-function mkConsumableAnimation(nextAnimation, start, finish, onFinish) {
+function mkConsumableAnimation(nextAnimation, start, finish, onDecrement) {
+  let onFinish = onDecrement == null ? null
+    : @() onDecrement(nextAnimation.count)
   return {
     key = nextAnimation
     valign = ALIGN_CENTER
@@ -99,16 +101,15 @@ function mkConsumableAnimation(nextAnimation, start, finish, onFinish) {
   }
 }
 
-function mkConsumableSpend(itemId, start = consumableAnimationBottom, finish = consumableAnimationTop, onFinish = null) {
+function mkConsumableSpend(itemId, start = consumableAnimationBottom, finish = consumableAnimationTop, onDecrement = null) {
   if (!itemId)
     return null
   let nextAnimation = Computed(@() spendItemsQueue.value.findvalue(@(i) i.itemId == itemId))
-
   return {
     hplace = ALIGN_LEFT
     children = @() {
       watch = nextAnimation
-      children = nextAnimation.value == null ? null : mkConsumableAnimation(nextAnimation.value, start, finish, onFinish)
+      children = nextAnimation.value == null ? null : mkConsumableAnimation(nextAnimation.value, start, finish, onDecrement)
     }
   }
 }

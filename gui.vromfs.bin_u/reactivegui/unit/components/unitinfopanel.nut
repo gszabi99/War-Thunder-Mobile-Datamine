@@ -8,7 +8,7 @@ let panelBg = require("%rGui/components/panelBg.nut")
 let { mkUnitStatsCompShort, mkUnitStatsCompFull, armorProtectionPercentageColors,
   avgShellPenetrationMmByRank } = require("%rGui/unit/unitStats.nut")
 let { attrPresets } = require("%rGui/attributes/attrState.nut")
-let { mkUnitBonuses, mkBonusTiny, bonusTinySize } = require("unitInfoComps.nut")
+let { mkUnitBonuses, mkUnitDailyLimit, mkBonusTiny, bonusTinySize } = require("unitInfoComps.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { itemsCfgOrdered } = require("%appGlobals/itemsState.nut")
 let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
@@ -26,8 +26,10 @@ let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { researchBlock } = require("%rGui/unitsTree/components/researchBars.nut")
 let { mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize } = require("%rGui/components/scrollArrows.nut")
 let { isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 
-let statsWidth = hdpx(500)
+
+let statsWidth = hdpx(495)
 let textColor = 0xFFFFFFFF
 let progressBgColor = 0xFF606060
 let progressFgColor = 0xFF10AFE2
@@ -403,6 +405,24 @@ let unitRewardsBlock = @(unit, title) {
   ]
 }
 
+let unitRewardsDailyBlock = @(unit, title, unitsGold) unit?.dailyGoldLimit == 0 ? null : {
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  size = [ statsWidth, hdpx(40) ]
+  children =  [
+    {
+      margin = [ 0, hdpx(10), 0, 0 ]
+      rendObj = ROBJ_TEXT
+      text =  title
+      size = [ flex(), SIZE_TO_CONTENT ]
+      behavior = Behaviors.Marquee
+      delay = defMarqueeDelay
+      speed = hdpx(50)
+    }.__update(fontTiny)
+    mkUnitDailyLimit(unit, unitsGold, {})
+  ]
+}
+
 let unitHeaderBlock = @(unit, unitTitleCtor) @(){
   watch = myUnits
   hplace = ALIGN_RIGHT
@@ -448,6 +468,9 @@ let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = h
           ? null
           : unitRewardsBlock(unit.value.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
             { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
+        unit.get()?.isUpgraded || unit.get()?.isPremium
+          ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"), servProfile.get()?.unitsGold)
+          : null
         unitStatsBlock(unitStats, prevStats)
         unitArmorBlock(unit.value, false)
         unitPriceBlock(unit.get())
@@ -488,6 +511,9 @@ let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
             ? null
             : unitRewardsBlock(unit.value.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
               { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
+          unit.get()?.isUpgraded || unit.get()?.isPremium
+            ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"), servProfile.get()?.unitsGold)
+            : null
           unitStatsBlock(unitStats, prevStats)
           unitArmorBlock(unit.value, false)
           unitConsumablesBlock(unit.value, itemsCfgOrdered.value)

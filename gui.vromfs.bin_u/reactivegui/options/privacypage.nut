@@ -19,7 +19,7 @@ let logoutToDeleteAccountMsgBox = @() openMsgBox({
   ]
 })
 
-return {
+return @(){
   size = flex()
   padding = [buttonsHGap, 0, 0, 0]
   flow = FLOW_VERTICAL

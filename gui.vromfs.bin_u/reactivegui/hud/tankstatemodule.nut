@@ -120,18 +120,18 @@ let speedText = {
       watch = speed
       rendObj = ROBJ_TEXT
       text = speed.value
-    }.__update(fontTiny)
+    }.__update(fontTinyShaded)
     {
       rendObj = ROBJ_TEXT
       text = loc("measureUnits/kmh")
-    }.__update(fontVeryTiny)
+    }.__update(fontVeryTinyShaded)
   ]
 }
 
 let speedTextEditView = {
   rendObj = ROBJ_TEXT
   text = "".concat("XX ", loc("measureUnits/kmh"))
-}.__update(fontVeryTiny)
+}.__update(fontVeryTinyShaded)
 
 let xrayDoll = @(stateFlags) @() {
   size = [damagePanelSize, damagePanelSize]
@@ -165,7 +165,7 @@ let dollEditView = {
   children = {
     rendObj = ROBJ_TEXT
     text = loc("xray/model")
-  }.__update(fontSmall)
+  }.__update(fontSmallShaded)
 }
 
 function useShortcutOn(shortcutId) {

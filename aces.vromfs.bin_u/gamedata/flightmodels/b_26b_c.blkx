@@ -3079,7 +3079,7 @@
         "tier": 6,
         "order": 1,
         "WeaponPreset": {
-          "iconType": "torpedo",
+          "iconType": "torppedo",
           "name": "torpedo",
           "reqModification": "tbf_itc",
           "ShowNodes": {

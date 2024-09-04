@@ -80,13 +80,11 @@ function getWeaponNameImpl(weapon, bSet, isShort) {
     return doesLocTextExist(locId) ? loc(locId) : loc($"weapons/{weaponId}")
   }
 
-  let { isBulletBelt = false, caliber = 0, bullets = null, bulletDataByType = null,
-    weaponType = null, proximityFuseRadius = 0
+  let { isBulletBelt = false, caliber = 0, mass = 0, weaponType = null, proximityFuseRadius = 0
   } = bSet
   if (isBulletBelt)
     return loc(isCaliberCannon(caliber) ? "weapons/cannon" : "weapons/minigun", { caliber })
 
-  let { mass = 0 } = bulletDataByType?[bullets?[0]]
   if (weaponType != null) {
     let locId = proximityFuseRadius > 0 ? $"weapons/{weaponType}_with_fuse" : $"weapons/{weaponType}"
     return withCount(loc(locId, { caliber, mass }), total)

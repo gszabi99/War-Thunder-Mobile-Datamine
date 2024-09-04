@@ -17,7 +17,6 @@ let { unitsResearchStatus, nodes } = require("unitsTreeNodesState.nut")
 let { unitPlateWidth, unitPlateHeight } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkTreeNodesUnitPlateSimple } = require("%rGui/unitsTree/components/unitPlateNodeComp.nut")
 let { mkCustomMsgBoxWnd, mkBtn } = require("%rGui/components/msgBox.nut")
-let { resetTimeout } = require("dagor.workcycle")
 let { animUnitAfterResearch, animExpPart, animNewUnitsAfterResearch } = require("animState.nut")
 
 let WND_UID = "buyUnitResearchWnd"
@@ -58,7 +57,7 @@ registerHandler("buyUnitResearch", function(res, context) {
       ?.filter(@(n) n.reqUnits.contains(context.unitName) && (unitsResearchStatus.get()?[n.name].canResearch ?? false))
       .map(@(n) n.name) ?? {})
   }
-  resetTimeout(0.1, close)
+  close()
 })
 
 let function mkPrice() {

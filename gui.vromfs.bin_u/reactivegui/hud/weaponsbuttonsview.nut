@@ -126,12 +126,9 @@ let mkActionItemCount = @(count) {
   size = [touchButtonSize, countHeightUnderActionItem]
   halign = ALIGN_CENTER
   valign = ALIGN_BOTTOM
-  fontFxColor = Color(0, 0, 0, 255)
-  fontFxFactor = 50
-  fontFx = FFT_GLOW
   color = textColor
   text = count < 0 ? "" : count
-}.__update(fontTiny)
+}.__update(fontTinyShaded)
 
 let mkActionItemImage = @(getImage, isAvailable) @() {
   watch = unitType

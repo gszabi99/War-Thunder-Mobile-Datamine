@@ -617,7 +617,7 @@ let function mkUnitsTreeNodesContent() {
         unitToScroll.subscribe(onUnitToScrollChange)
         animBuyRequirements.subscribe(onAnimBuyChange)
         animResearchRequirements.subscribe(onAnimResearchChange)
-        if (unitToScroll.get() == null)
+        if (unitToScroll.get() == null && selectedCountry.get() == null)
           selectCountryByCurResearch()
         deferOnce(@() unitToScroll.get() != null ? onUnitToScrollChange(unitToScroll.get())
           : unitsTreeOpenRank.get() != null ? scrollToRank(unitsTreeOpenRank.get(), ranksCfg.get())

@@ -70,11 +70,8 @@ let mkMarksOfDepthTexts = @(countOfMarks) {
       rendObj = ROBJ_TEXT
       vplace = ALIGN_CENTER
       pos = [0, ph(100.0 * i * marksTextStep / (countOfMarks - 1) - 35)]
-      fontFxColor = 0xFF000000
-      fontFxFactor = hdpx(50)
-      fontFx = FFT_GLOW
       text = i * markStep * marksTextStep + 20
-    }.__update(fontTiny))
+    }.__update(fontTinyShaded))
     .append({
       rendObj = ROBJ_IMAGE
       size = [ periscopIcon.width, periscopIcon.height ]

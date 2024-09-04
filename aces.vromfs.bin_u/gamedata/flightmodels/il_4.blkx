@@ -2761,7 +2761,7 @@
             }
           },
           {
-            "iconType": "torpedo",
+            "iconType": "torppedo",
             "name": "torpedo",
             "reqModification": "t-18",
             "ShowNodes": {

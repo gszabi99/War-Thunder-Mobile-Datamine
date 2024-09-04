@@ -19,24 +19,18 @@ depthText.subscribe(@(_) zeroOxygen.value
   : anim_start("depth_status_highlight")
 )
 
-let fontFx = {
-  fontFxColor = Color(0, 0, 0, 255)
-  fontFxFactor = 50
-  fontFx = FFT_GLOW
-}
-
 let oxygenMark = {
   flow = FLOW_HORIZONTAL
   children = [
     {
       rendObj = ROBJ_TEXT
       text =  "O"
-    }.__update(fontMedium, fontFx)
+    }.__update(fontMediumShaded)
     {
       rendObj = ROBJ_TEXT
       pos = [0, hdpx(20)]
       text =  "2"
-    }.__update(fontTiny, fontFx)
+    }.__update(fontTinyShaded)
   ]
 }
 
@@ -52,7 +46,7 @@ let depthControl = {
       rendObj = ROBJ_TEXT
       text = $"{waterDist.value.tointeger()} {mText}"
       padding = [0, textPadding, 0, 0]
-    }.__update(fontTinyAccented, fontFx)
+    }.__update(fontTinyAccentedShaded)
     {
       size = [flex(), SIZE_TO_CONTENT]
       rendObj = ROBJ_SOLID
@@ -82,7 +76,7 @@ let depthControl = {
         halign = ALIGN_RIGHT
         behavior = [Behaviors.TextArea]
         text = depthText.value
-      }.__update(fontVeryTiny, fontFx)
+      }.__update(fontVeryTinyShaded)
     }
   ]
 }
@@ -98,7 +92,7 @@ let depthControlEditView = {
       padding = [0, textPadding, 0, 0]
       rendObj = ROBJ_TEXT
       text = $"XX {mText}"
-    }.__update(fontTinyAccented, fontFx)
+    }.__update(fontTinyAccentedShaded)
     {
       margin = textPadding
       rendObj = ROBJ_TEXTAREA
@@ -106,7 +100,7 @@ let depthControlEditView = {
       halign = ALIGN_RIGHT
       behavior = [Behaviors.TextArea]
       text = loc("controls/submarine_depth")
-    }.__update(fontVeryTiny, fontFx)
+    }.__update(fontVeryTinyShaded)
   ]
 }
 

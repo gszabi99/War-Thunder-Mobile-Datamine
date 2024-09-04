@@ -3,9 +3,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { mkWeaponPreset, mkChosenBelts } = require("%rGui/unit/unitSettings.nut")
-let { getEquippedWeapon, mkWeaponBelts, isBeltWeapon, getEquippedBelt, mkWeaponStates,
-  calcOverloadInfo, getEqippedWithoutOverload
+let { mkWeaponBelts, isBeltWeapon, getEquippedBelt, mkWeaponStates, calcOverloadInfo
 } = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { getEqippedWithoutOverload, getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
 let { sendPlayerActivityToServer } = require("playerActivity.nut")
 let { selSlot, hasRespawnSeparateSlots, curUnitsAvgCostWp } = require("respawnState.nut")
 

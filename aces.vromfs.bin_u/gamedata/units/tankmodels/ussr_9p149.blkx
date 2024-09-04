@@ -1685,6 +1685,18 @@
     ],
     "animatedBones": {
       "node": "bone_turret"
+    },
+    "hideNodes": {
+      "node": [
+        "body_02",
+        "ex_decor_l_01",
+        "ex_decor_l_01_dm",
+        "ex_decor_r_01",
+        "ex_decor_r_01_dm",
+        "ex_decor_r_02",
+        "ex_decor_r_03",
+        "optic_gun_02"
+      ]
     }
   },
   "weapon_presets": {

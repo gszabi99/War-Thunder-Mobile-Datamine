@@ -31,6 +31,8 @@ let chosenTitle = Computed(@() availTitles.value.findvalue(@(v) v.isCurrent))
 let chosenNickFrame = Computed(@() availNickFrames.value.findvalue(@(v) v.isCurrent))
 let chosenAvatar = Computed(@() availAvatars.value.findvalue(@(v) v.isCurrent))
 
+let chosenDecoratorsHash = Computed(@() (chosenTitle.get()?.name ?? "").hash() + (chosenNickFrame.get()?.name ?? "").hash() + (chosenAvatar.get()?.name ?? "").hash())
+
 let myNameWithFrame = Computed(@() frameNick(myUserName.value, chosenNickFrame.value?.name))
 let myAvatarImage = Computed(@() getAvatarImage(chosenAvatar.value?.name))
 
@@ -91,6 +93,8 @@ return {
   chosenNickFrame
   chosenTitle
   chosenAvatar
+
+  chosenDecoratorsHash
 
   myNameWithFrame
   getReceiveReason

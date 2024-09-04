@@ -33,7 +33,7 @@ let machineSpeedDirection = [
   "back"
 ]
 
-let defFont = fontVeryTiny
+let defFont = fontVeryTinyShaded
 
 let speedValue = @(ovr = {}) @() {
   watch = speed

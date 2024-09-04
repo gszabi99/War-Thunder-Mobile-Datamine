@@ -19,6 +19,8 @@ let curCampaign = Computed(@()
     : campaignsList.value.contains(savedCampaign.value) ? savedCampaign.value
     : campaignsList.value?[0])
 
+let curCampaignBit = Computed(@() serverConfigs.get()?.campaignCfg[curCampaign.get()].bit ?? 0)
+
 function setCampaign(campaign) {
   selectedCampaign(campaign)
   if (campaign != savedCampaign.value)
@@ -38,16 +40,25 @@ function filterByCampaign(res, key, campaign) {
     res[key] = res[key].filter(@(o) o?.campaign == campaign)
 }
 
+function filterByCampaignMask(res, key, campaignBit) {
+  if (key in res)
+    res[key] = res[key].filter(@(o) (o.campaigns & campaignBit) != 0)
+}
+
 let campConfigs = Computed(function() {
-  let campaign = curCampaign.value
-  let res = clone (serverConfigs.value ?? {})
+  let campaign = curCampaign.get()
+  let campaignBit = curCampaignBit.get()
+  let res = clone (serverConfigs.get() ?? {})
   chooseByCampaign(res, "campaignCfg", campaign)
   chooseByCampaign(res, "playerLevels", campaign)
   chooseByCampaign(res, "playerLevelsInfo", campaign)
   chooseByCampaign(res, "playerLevelRewards", campaign)
   filterByCampaign(res, "clientMissionRewards", campaign)
   filterByCampaign(res, "allUnits", campaign)
-  filterByCampaign(res, "allItems", campaign)
+  if ("campaign" in res?.allItems.findvalue(@(_) true)) //compatibility with 2024.08.26
+    filterByCampaign(res, "allItems", campaign)
+  else
+    filterByCampaignMask(res, "allItems", campaignBit)
   return res
 })
 
@@ -61,10 +72,10 @@ function newIfHasChanges(newList, prevList) {
   return prevList
 }
 
-function filterByCampaignTbl(res, prev, key, campaign, compareList) {
+function filterByListTbl(res, prev, key, compareList) {
   if (key not in res)
     return
-  let newList = res[key].filter(@(_, id) compareList?[id].campaign == campaign)
+  let newList = res[key].filter(@(_, id) id in compareList)
   let prevList = prev?[key] ?? {}
   res[key] = newIfHasChanges(newList, prevList)
 }
@@ -86,11 +97,11 @@ function chooseOneByCampaignTbl(res, prev, key, campaign) {
 }
 
 let campProfile = Computed(function(prev) {
-  let res = clone (servProfile.value ?? {})
-  let campaign = curCampaign.value
-  let { allUnits = {}, allItems = {} } = campConfigs.value
-  filterByCampaignTbl(res, prev, "units", campaign, allUnits)
-  filterByCampaignTbl(res, prev, "items", campaign, allItems)
+  let res = clone (servProfile.get() ?? {})
+  let campaign = curCampaign.get()
+  let { allUnits = {}, allItems = {} } = campConfigs.get()
+  filterByListTbl(res, prev, "units", allUnits)
+  filterByListTbl(res, prev, "items", allItems)
   chooseListByCampaignTbl(res, prev, "receivedLevelsRewards", campaign) //compatibility with 2024.04.14
   chooseListByCampaignTbl(res, prev, "receivedLvlRewards", campaign)
   chooseListByCampaignTbl(res, prev, "levelInfo", campaign)

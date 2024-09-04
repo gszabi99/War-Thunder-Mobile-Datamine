@@ -5,6 +5,7 @@ let presentations = {
   season_8 = { color = 0xA50A65B1 }
   season_9 = { color = 0XA57E34FF }
   season_11 = { color = 0xFFFFBB10 }
+  season_12 = { color = 0xFFFF8000 }
 }
 
 let genParams = {

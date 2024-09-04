@@ -24,12 +24,6 @@ let appearAnim = @(delay, duration) [
   { prop = AnimProp.opacity, from = 0, to = 1, delay, duration, easing = OutQuad, play = true }
 ]
 
-let fontGlowBlack = {
-  fontFxColor = 0xFF000000
-  fontFxFactor = 50
-  fontFx = FFT_GLOW
-}
-
 let Layers = freeze({
   Default = 0
   Upper = 1
@@ -52,7 +46,6 @@ return dargBaseLib.__merge(
   //darg helpers
   colorArr
   appearAnim
-  fontGlowBlack
   Layers
   defMarqueeDelay = [5, 1]
 

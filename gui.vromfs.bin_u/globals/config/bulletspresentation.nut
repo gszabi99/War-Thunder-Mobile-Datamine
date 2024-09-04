@@ -1,3 +1,5 @@
+let TOTAL_VIEW_BULLETS = 5
+
 let bulletsImages = {
   ap_tank                             = "shell_apbc_tank"
   apbc_tank                           = "shell_apbc_tank"
@@ -47,29 +49,29 @@ let bulletsImages = {
   aam                                 = "air_to_air_missile"
 }
 
-let defaultBeltImage                  = "bullet_gun_brown"
+let defaultBeltImage                  = "bullet_gun_default"
 let bulletsBeltImages = {
-  ball                                = "bullet_gun_brown"
+  ball                                = "bullet_gun_default"
   t_ball                              = "bullet_gun_green"
-  i_ball                              = "bullet_gun_blue"
-  ap_ball                             = "bullet_gun_red"
-  ap_t_ball                           = "bullet_gun_red_green"
-  ap_i_ball                           = "bullet_gun_red_blue"
-  ap_i_t_ball                         = "bullet_gun_red_blue_green"
-  apcr_i_ball                         = "bullet_gun_black_blue"
-  apcr_i_ball_bs41                    = "bullet_gun_black_blue"
+  i_ball                              = "bullet_gun_red"
+  ap_ball                             = "bullet_gun_black"
+  ap_t_ball                           = "bullet_gun_green"
+  ap_i_ball                           = "bullet_gun_red"
+  ap_i_t_ball                         = "bullet_gun_red"
+  apcr_i_ball                         = "bullet_gun_red"
+  apcr_i_ball_bs41                    = "bullet_gun_red"
   he_ball                             = "bullet_gun_yellow"
   he_i_ball                           = "bullet_gun_yellow"
   he_i_fuse_ball                      = "bullet_gun_yellow"
-  he_frag_t_ball                      = "bullet_gun_yellow_green"
-  i_t_ball                            = "bullet_gun_blue_green"
-  i_ball_M1                           = "bullet_gun_blue"
+  he_frag_t_ball                      = "bullet_gun_yellow"
+  i_t_ball                            = "bullet_gun_green"
+  i_ball_M1                           = "bullet_gun_red"
   t_ball_M1                           = "bullet_gun_green"
-  ap_ball_M2                          = "bullet_gun_red"
-  ball_M2                             = "bullet_gun_brown"
-  ap_i_t_ball_M20                     = "bullet_gun_red_blue_green"
-  i_ball_M23                          = "bullet_gun_blue"
-  ap_i_ball_M8                        = "bullet_gun_red_blue"
+  ap_ball_M2                          = "bullet_gun_black"
+  ball_M2                             = "bullet_gun_default"
+  ap_i_t_ball_M20                     = "bullet_gun_red"
+  i_ball_M23                          = "bullet_gun_red"
+  ap_i_ball_M8                        = "bullet_gun_red"
 }
 
 let bulletsLocIdByCaliber = [
@@ -94,7 +96,10 @@ function getLocIdPrefixByCaliber(name) {
 }
 
 return {
+  TOTAL_VIEW_BULLETS
+
   getBulletImage
-  getBulletBeltImage = @(id) $"ui/gameuiskin#{bulletsBeltImages?[id] ?? defaultBeltImage}.avif"
+  getBulletBeltImage = @(id, idx) $"ui/gameuiskin#{bulletsBeltImages?[id] ?? defaultBeltImage}_{idx}.avif"
+  getBulletBeltImageId = @(id) bulletsBeltImages?[id] ?? defaultBeltImage
   getLocIdPrefixByCaliber
 }

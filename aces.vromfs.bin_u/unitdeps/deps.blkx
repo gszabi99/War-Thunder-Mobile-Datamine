@@ -1,9 +1,9 @@
 {
-  "version": "1.10.0.29",
-  "grpHash": "d949f7fa3b9ca7fd8fb1f1b725fcb0d7",
+  "version": "1.10.0.38",
+  "grpHash": "27ef6f654e5c4128a5de8a7a3995e07f",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "5ed06c08ebc6a8c1bf915e91d50857e0",
+  "blkHash": "30aa5b5bd99e09260da8c011c78725ca",
   "genHash": "1e6cbd2338e3c521cbf041ec4d9a5179",
   "a-20g": {
     "dep": [
@@ -224,7 +224,6 @@
       "bf_109f_2",
       "bf_109f_2_anim",
       "bf_109f_2_skeleton",
-      "de_250kg_c_flam",
       "de_rz65_rocket",
       "german_paratrooper_char",
       "pilot_german_char",
@@ -238,7 +237,6 @@
       "bf_109f_4",
       "bf_109f_4_anim",
       "bf_109f_4_skeleton",
-      "de_250kg_c_flam",
       "german_paratrooper_char",
       "pilot_german_char",
       "pilot_lw_500",
@@ -251,7 +249,6 @@
       "bf_109f_4_trop",
       "bf_109f_4_trop_anim",
       "bf_109f_4_trop_skeleton",
-      "de_250kg_c_flam",
       "german_paratrooper_char",
       "pilot_german_char",
       "pilot_lw_500",
@@ -264,7 +261,6 @@
       "bf_109g_14",
       "bf_109g_14_anim",
       "bf_109g_14_skeleton",
-      "de_250kg_c_flam",
       "german_paratrooper_char",
       "pilot_german_char",
       "pilot_lw_500",
@@ -276,7 +272,6 @@
       "bf_109g_14",
       "bf_109g_14_anim",
       "bf_109g_14_skeleton",
-      "de_250kg_c_flam",
       "german_paratrooper_char",
       "pilot_german_char",
       "pilot_lw_500",
@@ -288,7 +283,6 @@
       "bf_109g_2_trop",
       "bf_109g_2_trop_anim",
       "bf_109g_2_trop_skeleton",
-      "de_250kg_c_flam",
       "german_paratrooper_char",
       "pilot_german_char",
       "pilot_lw_500",
@@ -301,7 +295,6 @@
       "bf_109z",
       "bf_109z_anim",
       "bf_109z_skeleton",
-      "de_250kg_c_flam",
       "german_paratrooper_char",
       "pilot_german_char",
       "pilot_lw_500",
@@ -730,7 +723,6 @@
   },
   "do_17e_1": {
     "dep": [
-      "de_250kg_c_flam",
       "do_17e_1",
       "do_17e_1_anim",
       "do_17e_1_skeleton",
@@ -745,7 +737,6 @@
   },
   "do_17z_2": {
     "dep": [
-      "de_250kg_c_flam",
       "do_17z_2",
       "do_17z_2_anim",
       "do_17z_2_skeleton",
@@ -1751,8 +1742,6 @@
   "fw-190a-5_u2": {
     "dep": [
       "de_210mm",
-      "de_250kg_c_flam",
-      "de_500kg_c_flam",
       "fw_190a_5",
       "fw_190a_5_anim",
       "fw_190a_5_skeleton",
@@ -1776,8 +1765,6 @@
   },
   "fw-190d-9": {
     "dep": [
-      "de_250kg_c_flam",
-      "de_500kg_c_flam",
       "fw_190d_9",
       "fw_190d_9_anim",
       "fw_190d_9_skeleton",
@@ -1791,8 +1778,6 @@
   },
   "fw-190f-8": {
     "dep": [
-      "de_250kg_c_flam",
-      "de_500kg_c_flam",
       "de_pc1000_ap",
       "de_pc500_ap",
       "de_r4m_pb2_rocket",
@@ -3314,7 +3299,6 @@
   },
   "he-111h-16_winter": {
     "dep": [
-      "de_250kg_c_flam",
       "german_paratrooper_char",
       "gunner_lay_lw_500",
       "gunner_sit_lw_500",
@@ -3373,7 +3357,6 @@
   },
   "he_111h_6": {
     "dep": [
-      "de_250kg_c_flam",
       "de_fx1400",
       "de_pc1000_ap",
       "german_paratrooper_char",
@@ -3391,7 +3374,6 @@
   },
   "he_111h_6_killstreak": {
     "dep": [
-      "de_250kg_c_flam",
       "de_fx1400",
       "de_pc1000_ap",
       "german_paratrooper_char",
@@ -3680,6 +3662,26 @@
       "su_brab220kg_1938",
       "su_fab_100sv",
       "su_fab_250sv",
+      "su_fab_50sv_37",
+      "su_m_13uk_1944_rocket",
+      "su_rbs_132_rocket",
+      "su_rbs_82_rocket",
+      "su_ros_132_498_rocket",
+      "su_ros_82_497_rocket"
+    ]
+  },
+  "il_2m_1943": {
+    "dep": [
+      "gunner_sit_su_500",
+      "il_2m_1943",
+      "il_2m_1943_anim",
+      "il_2m_1943_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_ao_25m_1",
+      "su_fab_100m43",
+      "su_fab_250m43",
       "su_fab_50sv_37",
       "su_m_13uk_1944_rocket",
       "su_rbs_132_rocket",
@@ -4746,8 +4748,6 @@
   },
   "ju-87b-2": {
     "dep": [
-      "de_250kg_c_flam",
-      "de_500kg_c_flam",
       "german_paratrooper_char",
       "gunner_sit_lw_500",
       "ju_87b_2",
@@ -4763,8 +4763,6 @@
   },
   "ju-87d-3": {
     "dep": [
-      "de_250kg_c_flam",
-      "de_500kg_c_flam",
       "de_pc1000_ap",
       "de_pc500_ap",
       "german_paratrooper_char",
@@ -4784,8 +4782,6 @@
   },
   "ju_87d_5": {
     "dep": [
-      "de_250kg_c_flam",
-      "de_500kg_c_flam",
       "de_pc500_ap",
       "german_paratrooper_char",
       "gunner_sit_lw_500",
@@ -4803,8 +4799,6 @@
   },
   "ju_87d_5_killstreak": {
     "dep": [
-      "de_250kg_c_flam",
-      "de_500kg_c_flam",
       "de_pc500_ap",
       "german_paratrooper_char",
       "gunner_sit_lw_500",

@@ -28,7 +28,7 @@ let { unseenSlotModsByCategory } = require("%rGui/unitMods/unitModsState.nut")
 let { priorityUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
 let { openSlotAttrWnd, unseenSlotAttrByIdx } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { infoPanelWidth } = require("%rGui/unitsTree/unitsTreeComps.nut")
-let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX, mkColoredGradientY } = require("%rGui/style/gradients.nut")
 
 
 let slotsGap = hdpx(4)
@@ -49,6 +49,8 @@ let removeUnitTrigger = {}
 
 let playSlotRemove = @() playSound("meta_unit_remove")
 let playSlotRemoveDelayed = @() resetTimeout(0.01, playSlotRemove)
+
+let highlightEmptySearch = mkColoredGradientY(0x20A0A0A0, 0)
 
 function skipRemoveAnim() {
   anim_skip(removeUnitTrigger)
@@ -133,7 +135,7 @@ function statusAttrMark(idx) {
   let unseenAttr = unseenSlotAttrByIdx(idx)
   return @() {
     watch = unseenAttr
-    children = unseenAttr.get().statusByCat.len() ? priorityUnseenMark : null
+    children = unseenAttr.get().isUnseen ? priorityUnseenMark : null
   }.__update(mkMark)
 }
 
@@ -385,7 +387,23 @@ function mkSlotSelect(slot, idx) {
     flow = FLOW_VERTICAL
     children = [
       mkSlotHeader(slot, idx, unit, Computed(@() selectedSlotIdx.get() == idx))
-      mkUnitSlot(unit.get(), idx, @() setUnitToSlot(idx))
+      {
+        children = [
+          mkUnitSlot(unit.get(), idx, @() setUnitToSlot(idx))
+          unit.get() ? null
+          : {
+              key = idx
+              size = [flex(), ph(70)]
+              rendObj = ROBJ_IMAGE
+              vplace = ALIGN_TOP
+              image = highlightEmptySearch
+              transform = {}
+              opacity = 0
+              animations = [{ prop = AnimProp.opacity, from = 0.0, to = 0.3, duration = 1,
+                play = true, easing = CosineFull, loop = true, loopPause = 1 }]
+            }
+        ]
+      }
       frame
     ]
   }

@@ -2128,7 +2128,7 @@
         "order": 1,
         "WeaponPreset": [
           {
-            "iconType": "bombs_middle_group_x2",
+            "iconType": "bomb_250kg_group",
             "name": "250fab",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2152,7 +2152,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_group",
+            "iconType": "bomb_500kg",
             "name": "500fab",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2183,7 +2183,7 @@
         "order": 3,
         "WeaponPreset": [
           {
-            "iconType": "bombs_small_group_x8",
+            "iconType": "bomb_50kg_group",
             "name": "50fab",
             "Weapon": [
               {
@@ -2259,7 +2259,7 @@
             ]
           },
           {
-            "iconType": "bombs_heavy_group",
+            "iconType": "bomb_1000kg_group",
             "name": "1000fab",
             "reqModification": "der-20",
             "ShowNodes": {
@@ -2278,7 +2278,7 @@
             }
           },
           {
-            "iconType": "rockets_ap_middle",
+            "iconType": "torppedo",
             "name": "torpedo",
             "reqModification": "t-18",
             "ShowNodes": {
@@ -2303,7 +2303,7 @@
         "order": 2,
         "WeaponPreset": [
           {
-            "iconType": "bombs_middle_group_x2",
+            "iconType": "bomb_250kg_group",
             "name": "250fab",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2327,7 +2327,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_group",
+            "iconType": "bomb_500kg_group",
             "name": "500fab",
             "reqModification": "der-19",
             "ShowNodes": {

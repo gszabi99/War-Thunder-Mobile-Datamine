@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { setInterval, clearTimer } = require("dagor.workcycle")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { isInSquad, squadMembers, squadMembersOrder, isInvitedToSquad, squadId, squadLeaderCampaign,
   squadLeaderReadyCheckTime, getMemberMaxMRank
@@ -19,8 +20,6 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let squadMemberInfoWnd = require("squadMemberInfoWnd.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { myAvatarImage } = require("%rGui/decorators/decoratorState.nut")
-
 
 let gap = hdpx(24)
 let memberSize = evenPx(100)
@@ -45,13 +44,13 @@ let contactsBtn = framedImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts
     children = requestsToMeUids.value.len() > 0 ? priorityUnseenMark : null
   })
 
-let mkAvatar = @(info, onlineStatus, isInviteeV, isMe) function() {
+let mkAvatar = @(info, onlineStatus, isInviteeV) function() {
   let { avatar = null } = info.get()?.decorators
   return {
-    watch = [info, onlineStatus, myAvatarImage]
+    watch = [info, onlineStatus]
     size = [avatarSize, avatarSize]
     rendObj = ROBJ_IMAGE
-    image = Picture($"{isMe ? myAvatarImage.get() : getAvatarImage(avatar)}:{avatarSize}:{avatarSize}:P")
+    image = Picture($"{getAvatarImage(avatar)}:{avatarSize}:{avatarSize}:P")
     picSaturate = isInviteeV ? 0.3 : 1.0
     brightness = isInviteeV ? 0.5
       : !onlineStatus.value ? 0.6
@@ -101,6 +100,7 @@ function mkMember(uid) {
   let onlineStatus = mkContactOnlineStatus(userId)
   let rank = Computed(@() getMemberMaxMRank(state.get(), squadLeaderCampaign.get(), serverConfigs.get()))
   let stateFlags = Watched(0)
+
   return @() {
     watch = [isMe, isInvitee, stateFlags]
     key = uid
@@ -113,7 +113,6 @@ function mkMember(uid) {
     transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
 
-    onAttach = @() refreshPublicInfo(userId)
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags(sf)
     clickableInfo = loc("squad/member_info")
@@ -123,12 +122,17 @@ function mkMember(uid) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
-      mkAvatar(info, onlineStatus, isInvitee.get(), isMe.get())
+      mkAvatar(info, onlineStatus, isInvitee.get())
       memberStatus(isLeader, state, onlineStatus)
       mkRank(rank)
       isInvitee.value ? spinner : null
     ]
   }
+}
+
+function refreshMembersInfo() {
+  foreach(id in squadMembersOrder.get())
+    refreshPublicInfo(id.tostring())
 }
 
 function squadMembersList() {
@@ -137,6 +141,9 @@ function squadMembersList() {
     children.append(squadInviteButton)
   return {
     watch = [maxSquadSize, squadMembersOrder]
+    key = refreshMembersInfo
+    onAttach = @() setInterval(1, refreshMembersInfo)
+    onDetach = @() clearTimer(refreshMembersInfo)
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     gap

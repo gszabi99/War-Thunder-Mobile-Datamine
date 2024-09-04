@@ -57,9 +57,8 @@ function saveDebriefing(fileName) {
   openFMsgBox({
     text = $"File already exists:\n{fileName}\nOverwrite?"
     buttons = [
-      { id = "cancel", isCancel = true }
-      { text = "Overwrite", eventId = "debrSaveOverwrite", context = fileName,
-        styleId = "PRIMARY", isDefault = true }
+      { id = "cancel", isCancel = true, styleId = "PRIMARY" }
+      { text = "Overwrite", eventId = "debrSaveOverwrite", context = fileName }
     ]
   })
 }

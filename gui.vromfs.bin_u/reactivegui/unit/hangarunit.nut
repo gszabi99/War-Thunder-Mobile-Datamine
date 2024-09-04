@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+let DataBlock = require("DataBlock")
+let { set_weapon_visual_custom_blk } = require("unitCustomization")
 let { eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { hangar_load_model_with_skin, hangar_move_cam_to_unit_place,
@@ -12,6 +14,9 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { mkWeaponPreset } = require("unitSettings.nut")
+let { getEqippedWithoutOverload, getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
+let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 
 let isHangarUnitLoaded = mkWatched(persist, "isHangarUnitLoaded", false)
 let loadedInfo = Watched({
@@ -45,6 +50,21 @@ let mainHangarUnit = Computed(function() {
       return unit
   }
   return null
+})
+
+let mainHangarUnitName = Computed(@() mainHangarUnit.get()?.name)
+let { weaponPreset } = mkWeaponPreset(mainHangarUnitName)
+
+let hangarUnitPreset = Computed(function() {
+  let { name = null, mods = null } = mainHangarUnit.get()
+  if (name == null)
+    return null
+  let weaponSlots = loadUnitWeaponSlots(name)
+  if (weaponSlots.len() == 0)
+    return null
+  let equippedWeaponsBySlots = weaponSlots
+    .map(@(slot, idx) getEquippedWeapon(weaponPreset.get(), idx, slot?.wPresets ?? {}, mods))
+  return getEqippedWithoutOverload(name, equippedWeaponsBySlots).map(@(a) a?.name ?? "")
 })
 
 let hangarUnit = Computed(function() {
@@ -108,7 +128,22 @@ let hasNotDownloadedPkg = Computed(@() !isReadyToFullLoad.get() ||
   getUnitPkgs(hangarUnitName.get(), hangarUnit.get()?.mRank).findvalue(@(a) !hasAddons.value?[a]) != null)
 let canReloadModel = keepref(Computed(@() !hasNotDownloadedPkg.get() && !isInBattle.get() && !isInLoadingScreen.get()))
 
-function loadModel(unitName, skin) {
+function setHangarUnitWeaponPreset(unitName, preset) {
+  if (unitName == null)
+    return
+  let blk = DataBlock()
+  blk.name = ""
+  foreach (slot, weaponId in preset) {
+    if (slot == 0 || weaponId == "")
+      continue
+    let weaponBlk = blk.addNewBlock("Weapon")
+    weaponBlk.preset = weaponId
+    weaponBlk.slot = slot
+  }
+  set_weapon_visual_custom_blk(unitName, blk)
+}
+
+function loadModel(unitName, skin, weapPreset) {
   if ((unitName ?? "") == "" && hangar_get_current_unit_name() == "")
     //fallback to any unit from config units
     unitName = (myUnits.value.findvalue(@(_) true) ?? allUnitsCfg.value.findvalue(@(_) true))?.name
@@ -122,12 +157,15 @@ function loadModel(unitName, skin) {
   }
 
   hangar_load_model_with_skin(unitName, skin)
+  if (weapPreset != null)
+    setHangarUnitWeaponPreset(unitName, weapPreset)
 }
 
-let loadCurrentHangarUnitModel = @() loadModel(hangarUnitName.value, hangarUnitSkin.value)
+let loadCurrentHangarUnitModel = @() loadModel(hangarUnitName.get(), hangarUnitSkin.get(), hangarUnitPreset.get())
 loadCurrentHangarUnitModel()
 hangarUnitName.subscribe(@(_) loadCurrentHangarUnitModel())
 hangarUnitSkin.subscribe(@(_) loadCurrentHangarUnitModel())
+hangarUnitPreset.subscribe(@(_) loadCurrentHangarUnitModel())
 
 isInMpSession.subscribe(function(v) {
   if (v || !isInMenu.value || hangar_get_current_unit_name() == loadedInfo.value.name)
@@ -248,5 +286,5 @@ return {
   isHangarUnitLoaded
 
   mainHangarUnit
-  mainHangarUnitName = Computed(@() mainHangarUnit.get()?.name)
+  mainHangarUnitName
 }

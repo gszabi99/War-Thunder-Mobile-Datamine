@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { getEquippedWeapon, isBeltWeapon, mkWeaponBelts, getEquippedBelt, getEqippedWithoutOverload
-} = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { isBeltWeapon, mkWeaponBelts, getEquippedBelt } = require("%rGui/unitMods/unitModsSlotsState.nut")
+let { getEquippedWeapon, getEqippedWithoutOverload } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
 let { mkWeaponPreset, mkChosenBelts } = require("%rGui/unit/unitSettings.nut")
 
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -33,7 +33,7 @@ let mkCardTitle = @(title) title == "" ? null
       }.__update(fontVeryTinyShaded)
     }
 
-let mkCard = @(iconComp, title, bottomTitle = "") {
+let mkCard = @(iconComp, title, bottomTitle = "", isSelectedStyle = false) {
   behavior = Behaviors.Button
   size = [weaponSize, weaponSize]
   rendObj = ROBJ_BOX
@@ -45,8 +45,16 @@ let mkCard = @(iconComp, title, bottomTitle = "") {
       padding
       children = iconComp
     }
-    mkCardTitle(title)
-    bottomTitle == "" ? null : mkCardTitle(bottomTitle).__update({ vplace = ALIGN_BOTTOM, padding = [0,0,0,hdpx(8)] })
+    mkCardTitle(title).__update({
+      borderWidth = [hdpx(3), hdpx(3), 0, hdpx(3)]
+      borderColor = isSelectedStyle ? 0xC07BFFFF : 0xFFFFFFFF
+    })
+    bottomTitle == "" ? null : mkCardTitle(bottomTitle).__update({
+      borderWidth = [0, hdpx(3), hdpx(3), hdpx(3)]
+      borderColor = isSelectedStyle ? 0xC07BFFFF : 0xFFFFFFFF
+      vplace = ALIGN_BOTTOM
+      padding = [0,0,0,hdpx(8)]
+    })
   ]
 }
 
@@ -54,7 +62,12 @@ let mkWeaponCard = @(w) mkCard(commonWeaponIcon(w), getWeaponTitle(w))
   .__update({ onClick = @() showAirRespChooseSecWnd(w.slotIdx) })
 
 let mkBeltCard = @(w)
-  @() mkCard(mkBeltImage(w.equipped?.bullets ?? []), caliberTitle(w), getBulletBeltShortName(w.equipped?.id)).__update({
+  @() mkCard(
+    mkBeltImage(w.equipped?.bullets ?? []),
+    caliberTitle(w),
+    getBulletBeltShortName(w.equipped?.id),
+    w.weaponId == selectedBeltWeaponId.get()
+  ).__update({
     watch = selectedBeltWeaponId
     borderColor = w.weaponId == selectedBeltWeaponId.get() ? 0xC07BFFFF : 0xFFFFFFFF
     onClick = @() showAirRespChooseBeltWnd(w.weaponId)
@@ -211,7 +224,7 @@ function respawnAirWeaponry(selSlot) {
       }))
     else if (wSlots.len() > 1)
       rows.append(mkGroup("weaponry/secondaryWeapons", mkEmptyInfo(loc("weaponry/tapToChooseSecondary")), {
-        onClick = @() showAirRespChooseSecWnd("")
+        onClick = @() showAirRespChooseSecWnd(1)
         behavior = Behaviors.Button
         scrollHandler = null
         key = secondaryMenuKey

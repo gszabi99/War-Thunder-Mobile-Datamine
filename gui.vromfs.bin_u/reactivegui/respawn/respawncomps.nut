@@ -1,9 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
 let { format } = require("string")
 let { scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
 let { unitPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
-let { getBulletBeltImage } = require("%appGlobals/config/bulletsPresentation.nut")
+let { getBulletBeltImage, TOTAL_VIEW_BULLETS } = require("%appGlobals/config/bulletsPresentation.nut")
 
 let courseMenuKey = "courseMenuKey"
 let courseTitleKey = "courseTitleKey"
@@ -23,8 +22,8 @@ let headerMargin = [0, hdpx(20), 0, bulletsBlockMargin]
 let unitListHeight = saSize[1] - scoreBoardHeight - contentOffset - headerHeight - unitPlatesGap
 
 let smallGap = hdpx(8)
-let beltImgWidth = evenPx(25)
-let imgSize = beltImgWidth * 4
+let beltImgSize = evenPx(75)
+let imgSize = evenPx(100)
 let padding = hdpxi(5)
 let weaponSize = imgSize + 2 * padding
 let weaponGroupWidth = hdpx(600)
@@ -133,20 +132,26 @@ function commonWeaponIcon(w) {
 }
 
 function mkBeltImage(bullets) {
-  let list = bullets.len() == 1 ? array(4, bullets[0])
-    : bullets.len() == 2 ? (clone bullets).extend(bullets)
-    : bullets
+  if (bullets.len() == 0)
+    return null
+  let list = array(TOTAL_VIEW_BULLETS).map(@(_, i) bullets[i % bullets.len()])
+
+  let bulletBeltImage = [{
+    size = [beltImgSize, beltImgSize]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#shadow.avif:{beltImgSize}:{beltImgSize}:P")
+    keepAspect = true
+  }].extend(list.map(@(name, idx) {
+    size = [beltImgSize, beltImgSize]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"{getBulletBeltImage(name, idx)}:{beltImgSize}:{beltImgSize}:P")
+    keepAspect = true
+  }))
   return {
     size = [imgSize, imgSize]
-    gap = round((imgSize - beltImgWidth * list.len()) / max(1, list.len())).tointeger()
     halign = ALIGN_CENTER
-    flow = FLOW_HORIZONTAL
-    children = list.map(@(name) {
-      size = [beltImgWidth, imgSize]
-      rendObj = ROBJ_IMAGE
-      image = Picture($"{getBulletBeltImage(name)}:{beltImgWidth}:{imgSize}:P")
-      keepAspect = true
-    })
+    valign = ALIGN_CENTER
+    children = bulletBeltImage
   }
 }
 
@@ -165,7 +170,7 @@ return {
   bulletsLegendWidth
   contentOffset
   unitListHeight
-  beltImgWidth
+  beltImgSize
   imgSize
   padding
   weaponSize

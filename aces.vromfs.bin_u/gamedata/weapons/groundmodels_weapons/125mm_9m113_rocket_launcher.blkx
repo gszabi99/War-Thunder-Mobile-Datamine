@@ -76,6 +76,7 @@
     "timeFire1": 13.0,
     "thrustDeviation": 0.0,
     "rotationRocket": 8.5,
+    "timeLife": 16.0,
     "fireEffect": "rocket_fire_short",
     "smokeEffect": "",
     "hazeEffect": "haze_missile",
@@ -405,7 +406,7 @@
       "breachConeAngle": 45.0
     },
     "cumulativeDamage": {
-      "armorPower": 600.0,
+      "armorPower": 500.0,
       "distance": 5.5,
       "damage": 600.0,
       "onHitChanceMultFire": 25.0

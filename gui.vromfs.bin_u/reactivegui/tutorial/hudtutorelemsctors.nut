@@ -7,8 +7,10 @@ let { canShowRadar } = require("%rGui/hudTuning/hudTuningState.nut")
 let { unitType } = require("%rGui/hudState.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 
-let AirTutorialVideoH = (saSize[1] * 0.95).tointeger()
+
+let AirTutorialVideoH = min((saSize[1] * 0.95).tointeger(), (9.0 / 16.0 * saSize[0]).tointeger())
 let AirTutorialVideoW = (AirTutorialVideoH * (16.0 / 9)).tointeger()
+
 let swipeImgW = hdpx(200).tointeger()
 let swipeImgH = round(swipeImgW / (41.0 / 43)).tointeger()
 let imgSize = hdpxi(80)
@@ -125,7 +127,7 @@ let air_tutorial_forestall_crosshair_gif = @(_) {
   size = SIZE_TO_CONTENT
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  pos = [0, -hdpx(250)]
+  pos = [0, -hdpx(150)]
   children = [
     {
       size = [hdpx(45), hdpx(45)]

@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { defer } = require("dagor.workcycle")
-let { round } = require("math")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { curWeaponsOrdered, curWeaponIdx, curUnit, equippedWeaponId,
@@ -10,15 +9,14 @@ let { curWeaponsOrdered, curWeaponIdx, curUnit, equippedWeaponId,
 let { mkLevelLock, mkNotPurchasedShade, mkModCost } = require("modsComps.nut")
 let { selectedLineHor, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
 let { getWeaponShortNamesList, getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
-let { getBulletBeltImage } = require("%appGlobals/config/bulletsPresentation.nut")
+let { getBulletBeltImage, TOTAL_VIEW_BULLETS } = require("%appGlobals/config/bulletsPresentation.nut")
 let { contentMargin } = require("unitModsConst.nut")
 
 let weaponGap = hdpx(10)
 let selLineGap = hdpx(14)
 let bgColor = 0x990C1113
 let activeBgColor = 0xFF52C4E4
-let beltImgWidth = evenPx(22)
-let beltImgHeight = 4 * beltImgWidth
+let beltImgSize = evenPx(120)
 let weaponIconSize = evenPx(140)
 let weaponH = weaponIconSize + 2 * contentMargin
 let weaponW = hdpx(440)
@@ -181,22 +179,28 @@ function mkSlotWeapon(idx, scrollToWeapon) {
 }
 
 function mkBeltImage(bullets) {
-  let list = bullets.len() == 1 ? array(4, bullets[0])
-    : bullets.len() == 2 ? (clone bullets).extend(bullets)
-    : bullets
+  if (bullets.len() == 0)
+    return null
+  let list = array(TOTAL_VIEW_BULLETS).map(@(_, i) bullets[i % bullets.len()])
+
+  let bulletBeltImage = [{
+    size = [beltImgSize, beltImgSize]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#shadow.avif:{beltImgSize}:{beltImgSize}:P")
+    keepAspect = true
+  }].extend(list.map(@(name, idx) {
+    size = [beltImgSize, beltImgSize]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"{getBulletBeltImage(name, idx)}:{beltImgSize}:{beltImgSize}:P")
+    keepAspect = true
+  }))
   return {
-    size = [beltImgHeight, weaponIconSize]
-    margin = contentMargin
-    halign = ALIGN_CENTER
+    size = flex()
     valign = ALIGN_BOTTOM
-    flow = FLOW_HORIZONTAL
-    gap = round((beltImgHeight - beltImgWidth * list.len()) / max(1, list.len())).tointeger()
-    children = list.map(@(name) {
-      size = [beltImgWidth, beltImgHeight]
-      rendObj = ROBJ_IMAGE
-      image = Picture($"{getBulletBeltImage(name)}:{beltImgWidth}:{beltImgHeight}:P")
-      keepAspect = true
-    })
+    children = {
+      size = [beltImgSize, beltImgSize]
+      children = bulletBeltImage
+    }
   }
 }
 

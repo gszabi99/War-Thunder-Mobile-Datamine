@@ -1,7 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { canBuyUnitsStatus, US_OWN, US_CAN_BUY } = require("%appGlobals/unitsState.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isUnitsWndAttached } = require("%rGui/mainMenu/mainMenuState.nut")
+
 
 let UNLOCK_DELAY = 1.8
 let UNLOCK_STEP = 1.5
@@ -22,7 +24,9 @@ function updateJustUnlockedUnits(unitsStatus) {
     if (prevCanBuyUnitsStatus.value?[unit] != null && prevCanBuyUnitsStatus.value[unit] != status) {
       if (status == US_OWN)
         boughtUnits[unit] <- UNLOCK_DELAY
-      else if (status == US_CAN_BUY)
+      else if (status == US_CAN_BUY
+          && unit not in serverConfigs.get()?.allBlueprints
+          && (serverConfigs.get()?.unitResearchExp[unit] ?? 0) == 0)
         unlockedUnits[unit] <- UNLOCK_DELAY + UNLOCK_STEP
     }
 

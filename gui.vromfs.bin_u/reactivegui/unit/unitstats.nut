@@ -8,6 +8,7 @@ let { get_game_params } = require("gameparams")
 let { attrPresets } = require("%rGui/attributes/attrState.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { getWeaponShortNameWithCount, getWeaponTypeName, getWeaponCaliber } = require("%rGui/weaponry/weaponsVisual.nut")
+let { getSpeedText } = require("%rGui/measureUnits.nut")
 
 let aircraftMark = "▭"
 let cannonMark = "⋖"
@@ -130,9 +131,7 @@ let statsShip = {
     getProgress = null
   }
 
-  maxSpeed = {
-    valueToText = @(v, _) "".concat(round(v * 3.6), loc("measureUnits/kmh"))
-  }
+  maxSpeed = { valueToText = @(v, _) getSpeedText(v) }
   turningTime = {
     getProgress = mkGetProgressInv(SHIP, "turningTime")
     valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
@@ -175,9 +174,7 @@ let statsShip = {
 }.map(@(cfg, id) mkStat(id, cfg, SHIP))
 
 let statsSubmarine = {
-  maxSpeed = {
-    valueToText = @(v, _) "".concat(round(v * 3.6 * (get_game_params()?.submarineMaxSpeedMult ?? 1.)),
-      loc("measureUnits/kmh"))  }
+  maxSpeed = { valueToText = @(v, _) getSpeedText(v * (get_game_params()?.submarineMaxSpeedMult ?? 1.)) }
 }.map(@(cfg, id) mkStat(id, cfg, SHIP))
 
 let statsTank = {
@@ -197,12 +194,8 @@ let statsTank = {
     getProgress = mkGetProgress(TANK, "armorPower")
     getProgressColor = getArmorPenetrationColor
   }
-  maxSpeedForward = {
-    valueToText = @(v, _) "".concat(round(v), loc("measureUnits/kmh"))
-  }
-  maxSpeedBackward = {
-    valueToText = @(v, _) "".concat(round(v), loc("measureUnits/kmh"))
-  }
+  maxSpeedForward = { valueToText = @(v, _) getSpeedText(v) }
+  maxSpeedBackward = { valueToText = @(v, _) getSpeedText(v) }
   powerToWeightRatio = {
     valueToText = @(v, _) "".concat(round(v), loc("measureUnits/hp_per_ton"))
   }
@@ -222,7 +215,7 @@ let statsAir = {
     valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/kgPerSec"))
   }
   maxSpeed = {
-    valueToText = @(v, _) "".concat(round(v), loc("measureUnits/kmh"))
+    valueToText = @(v, _) getSpeedText(v)
     isAfterWeapons = true
   }
   maxSpeedAlt = {
@@ -386,15 +379,19 @@ let weaponsCfgTank = {
   ]
 }
 
-function getAirGunName(s, u, isFullName = true) {
-  let ws = loadUnitWeaponSlots(u.name).map(@(wp) wp.wPresets[wp.wPresets.keys()[0]].weapons)
-  local weapon = null
-  foreach (arr in ws) {
-    weapon = arr.findvalue(@(v) v.weaponId == s.wId)
-    if (weapon != null)
-      break
-  }
+function findWeapon(weaponSlots, wId) {
+  foreach (weaponSlot in weaponSlots)
+    foreach (preset in weaponSlot?.wPresets ?? {})
+      foreach (weap in preset?.weapons ?? [])
+        if (weap.weaponId == wId)
+          return weap
+  return null
+}
 
+function getAirGunName(s, u, isFullName = true) {
+  let weapon = findWeapon(loadUnitWeaponSlots(u.name), s.wId)
+  if (weapon == null)
+    return ""
   let bSet = weapon.bulletSets[weapon.bulletSets.keys()[0]]
   let withAnyCount = true
   return isFullName ? getWeaponShortNameWithCount(weapon, bSet, withAnyCount, "weapons/counter/right/short")
@@ -537,8 +534,11 @@ function getUnitStats(unit, shopCfg, statsList, weapStatsList) {
           continue
 
         foreach (weap in list)
-          foreach (wCfg in weap)
-            headers[mkUnitStat(unit, aggregateStat, wCfg, aggregateStat.id).header] <- true
+          foreach (wCfg in weap) {
+            let unitStat = mkUnitStat(unit, aggregateStat, wCfg, aggregateStat.id)
+            if (unitStat != null)
+              headers[unitStat.header] <- true
+          }
       }
 
       if (headers.len() > 0) {

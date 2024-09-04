@@ -240,15 +240,12 @@ function throttleSlider() {
         key = "air_throttle_slider_text"
         rendObj = ROBJ_TEXT
         pos = [knobSize + hdpx(5), -knobPadding]
-        fontFxColor = 0xFF000000
         color = IsTrtWep0.get() && !wheelBrake.get() ? 0xFFFF0000 : knobColor
-        fontFxFactor = 50
-        fontFx = FFT_GLOW
         text = wheelBrake.get() && isOnGroundSmoothed.get() ? loc("hotkeys/ID_WHEEL_BRAKE")
           : IsTrtWep0.get() ? wepText
           : Trt0.get() >= maxThrottle ? maxThrottleText
           : $"{Trt0.get()}{percentText}"
-      }.__update(wheelBrake.get() && isOnGroundSmoothed.get() ? fontVeryTiny : fontTiny)
+      }.__update(wheelBrake.get() && isOnGroundSmoothed.get() ? fontVeryTinyShaded : fontTinyShaded)
     ]
   }
   return {
@@ -563,20 +560,20 @@ let aircraftIndicators = {
         rendObj = ROBJ_TEXT
         color = neutralColor
         text = loc($"{playerUnitName.value}_1", loc(playerUnitName.value))
-      }.__update(fontTinyAccented)
+      }.__update(fontTinyAccentedShaded)
     @() {
       watch = [Spd, IsSpdCritical]
       key = "plane_speed_indicator"
       rendObj = ROBJ_TEXT
       color = IsSpdCritical.value ? redColor : neutralColor
       text = " ".concat(loc("HUD/REAL_SPEED_SHORT"), Spd.value, loc("measureUnits/kmh"))
-    }.__update(fontTinyAccented)
+    }.__update(fontTinyAccentedShaded)
     @() {
       watch = DistanceToGround
       key = "plane_altitude_indicator"
       rendObj = ROBJ_TEXT
       text = " ".concat(loc("HUD/ALTITUDE_SHORT"), floor(DistanceToGround.value), loc("measureUnits/meters_alt"))
-    }.__update(fontTinyAccented)
+    }.__update(fontTinyAccentedShaded)
   ]
 }
 
@@ -590,16 +587,16 @@ let aircraftIndicatorsEditView = {
       rendObj = ROBJ_TEXT
       color = neutralColor
       text = loc("hud/aircraft_name")
-    }.__update(fontTinyAccented)
+    }.__update(fontTinyAccentedShaded)
     {
       rendObj = ROBJ_TEXT
       color = neutralColor
       text = " ".concat(loc("HUD/REAL_SPEED_SHORT"), "xxx", loc("measureUnits/kmh"))
-    }.__update(fontTinyAccented)
+    }.__update(fontTinyAccentedShaded)
     {
       rendObj = ROBJ_TEXT
       text = " ".concat(loc("HUD/ALTITUDE_SHORT"), "xxxx", loc("measureUnits/meters_alt"))
-    }.__update(fontTinyAccented)
+    }.__update(fontTinyAccentedShaded)
   ]
 }
 

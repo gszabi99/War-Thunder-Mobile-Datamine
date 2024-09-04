@@ -1872,7 +1872,7 @@
             }
           },
           {
-            "iconType": "napalm_middle",
+            "iconType": "bomb_500kg",
             "name": "mk78",
             "reqModification": "us_mk78_mod0",
             "ShowNodes": {
@@ -1967,7 +1967,7 @@
             }
           },
           {
-            "iconType": "torpedo",
+            "iconType": "torppedo",
             "name": "mk13_torpedo",
             "reqModification": "btd_tc",
             "Weapon": {
@@ -2104,7 +2104,7 @@
             }
           },
           {
-            "iconType": "rocke_500kg",
+            "iconType": "rocket_500kg",
             "name": "tyni_tim",
             "reqModification": "frc_mk3",
             "ShowNodes": {
@@ -2121,7 +2121,7 @@
             }
           },
           {
-            "iconType": "napalm_middle",
+            "iconType": "bomb_500kg",
             "name": "mk78",
             "reqModification": "us_mk78_mod0",
             "ShowNodes": {

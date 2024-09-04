@@ -2505,7 +2505,7 @@
             }
           },
           {
-            "iconType": "torpedo_no_case",
+            "iconType": "torppedo_no_case",
             "name": "torpedo",
             "reqModification": "tbf_itc",
             "ShowNodes": {
@@ -2534,7 +2534,7 @@
             }
           },
           {
-            "iconType": "torpedo",
+            "iconType": "torppedo",
             "name": "torpedo_case",
             "reqModification": "improved_torpedo_mod",
             "ShowNodes": {

@@ -92,15 +92,15 @@ let colorAnimation = @(delay, colorFrom, colorTo, duration = REVEAL) delay
     ]
   : null
 
-let scaleAnimation = @(delay, scale = [1.15, 1.15], duration = REVEAL / 2) delay
+let scaleAnimation = @(delay, scale = [1.15, 1.15], duration = REVEAL / 2, trigger = null) delay
   ? [
       {
         prop = AnimProp.scale, from = [1.0, 1.0], to = scale,
-        delay = delay + duration, duration, play = true
+        delay = delay + duration, duration, play = true, trigger
       }
       {
         prop = AnimProp.scale, from = scale, to = [1.0, 1.0],
-        delay = delay + duration * 2, duration, play = true
+        delay = delay + duration * 2, duration, play = true, trigger
       }
     ]
   : null

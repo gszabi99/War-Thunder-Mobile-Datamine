@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { platformOffer, platformPurchaseInProgress, isGoodsOnlyInternalPurchase } = require("platformGoods.nut")
 let { check_new_offer, shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
@@ -32,9 +33,11 @@ updateOutdatedTimer(activeOffers.value)
 activeOffers.subscribe(updateOutdatedTimer)
 
 let addGType = @(offer) offer == null ? null : offer.__merge({ gtype = getGoodsType(offer) })
-let activeOffer = Computed(@() activeOffers.value == null ? null
-  : isGoodsOnlyInternalPurchase(activeOffers.value) ? addGType(activeOffers.value)
-  : addGType(platformOffer.value))
+let prevIfEqual = @(prev, new) isEqual(prev, new) ? prev : new
+let activeOffer = Computed(@(prev) prevIfEqual(prev,
+  activeOffers.value == null ? null
+    : isGoodsOnlyInternalPurchase(activeOffers.value) ? addGType(activeOffers.value)
+    : addGType(platformOffer.value)))
 let visibleOffer = Computed(@() isOfferOutdated.value ? null : activeOffer.value)
 
 let checkNewOffer = @() check_new_offer(curCampaign.value)
@@ -65,7 +68,10 @@ let offerPurchasingState = Computed(function() {
 })
 
 let reqAddonsToShowOffer = Computed(function() {
-  let unit = serverConfigs.value?.allUnits[visibleOffer.value?.unitUpgrades[0] ?? visibleOffer.value?.units[0]]
+  let unitId = visibleOffer.get()?.unitUpgrades[0]
+    ?? visibleOffer.get()?.units[0]
+    ?? visibleOffer.get()?.blueprints.findindex(@(_) true)
+  let unit = serverConfigs.value?.allUnits[unitId]
   if (unit == null)
     return []
   return getUnitPkgs(unit.name, unit.mRank).filter(@(a) !hasAddons.value?[a])

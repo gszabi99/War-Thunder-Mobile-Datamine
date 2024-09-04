@@ -959,8 +959,6 @@
     "useUnderwaterFogPrepassPlane": true,
     "csmAllowDynrendPrepareJobsInThreads": false,
     "sky_panorama_async_pipelines": true,
-    "riPerInstanceVisibility": false,
-    "useRiPrepass": false,
     "raytraced_shadows": {
       "maxBlasBuildsPerFrame": 30,
       "additionalElementsCheck": false
@@ -2626,7 +2624,6 @@
   },
   "vulkan": {
     "texUploadLimitMb": 32,
-    "allowBufferDMALockPath": false,
     "vendor": {
       "Qualcomm": {
         "driverProps": {
@@ -2731,6 +2728,17 @@
       },
       "ARM": {
         "driverProps": {
+          "extensions": {
+            "entry": {
+              "gpu": [
+                "G57",
+                "G52"
+              ],
+              "data": {
+                "VK_KHR_buffer_device_address": false
+              }
+            }
+          },
           "ignoreDeviceLost": {
             "entry": {
               "gpu": "G51",
@@ -2787,6 +2795,9 @@
         "driverProps": {
           "hasTileBasedArchitecture": {
             "affected": true
+          },
+          "latencyWait": {
+            "deltaUs": 300
           }
         }
       }

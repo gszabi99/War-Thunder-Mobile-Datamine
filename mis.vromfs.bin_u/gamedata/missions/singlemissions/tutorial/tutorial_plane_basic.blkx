@@ -17,6 +17,8 @@
       "weather": "good",
       "forceSimulInitialRandomSeed": true,
       "simulInitialRandomSeed": 33,
+      "locName": "missions/tutorial_plane_basic",
+      "locDesc": "missions/tutorial_plane_basic/desc",
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
       "openDiffLevels": false,
@@ -69,9 +71,26 @@
               "lookAt": "big_area"
             },
             {
+              "icontype": "fighter",
+              "side": "enemy",
+              "target": "target_plane01_starting_position",
+              "lookAt": "target_plane01_wp1"
+            },
+            {
+              "icontype": "fighter",
+              "side": "enemy",
+              "target": "target_plane03_starting_position",
+              "lookAt": "target_plane02_final_position"
+            },
+            {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "target_vehicle_01"
+            },
+            {
               "icontype": "mark",
               "side": "neutral",
-              "target": "big_area"
+              "target": "player_spawn02"
             }
           ],
           "battleArea": {
@@ -1028,7 +1047,7 @@
       "conditions": {
         "playerAxisValueReached": {
           "value": 1.0,
-          "func": "more",
+          "func": "notLess",
           "axis": "AXIS_THROTTLE"
         }
       },
@@ -2158,7 +2177,8 @@
           "target_var_value": 0,
           "object": "player",
           "move_type": "teleport",
-          "lookat": "waypoint02"
+          "lookat": "waypoint02",
+          "velocity": 250.0
         },
         "unitSetControls": {
           "controls": "power",
@@ -2336,8 +2356,8 @@
             "target_var_value": 0,
             "object": "player",
             "move_type": "teleport",
-            "speed": 300.0,
-            "lookat": "player_lookAtArea"
+            "lookat": "player_lookAtArea",
+            "velocity": 250.0
           },
           {
             "target": "target_plane01_wp1",
@@ -2663,8 +2683,11 @@
             "target": "shooting_check_still_aimed"
           }
         ],
-        "triggerEnable": {
-          "target": "shooting_aim_at_target"
+        "triggerActivate": {
+          "target": "shooting_aim_at_target",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
         }
       }
     },
@@ -2944,7 +2967,7 @@
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
+        "conditionsType": "ANY",
         "enableAfterComplete": true
       },
       "events": {
@@ -2953,11 +2976,18 @@
         }
       },
       "conditions": {
-        "playerWhenCursorIn": {
-          "cursor": "mouseAim",
-          "element": "curTarget",
-          "areaSizeMul": 1.0
-        }
+        "playerWhenCursorIn": [
+          {
+            "cursor": "mouseAim",
+            "element": "curTarget",
+            "areaSizeMul": 1.0
+          },
+          {
+            "cursor": "mouseAim",
+            "element": "forestall",
+            "areaSizeMul": 1.0
+          }
+        ]
       },
       "actions": {
         "__playHint": {
@@ -3071,7 +3101,7 @@
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
+        "conditionsType": "ANY",
         "enableAfterComplete": false
       },
       "events": {
@@ -3080,11 +3110,18 @@
         }
       },
       "conditions": {
-        "playerWhenCursorIn": {
-          "cursor": "mouseAim",
-          "element": "curTarget",
-          "areaSizeMul": 1.0
-        }
+        "playerWhenCursorIn": [
+          {
+            "cursor": "mouseAim",
+            "element": "curTarget",
+            "areaSizeMul": 1.0
+          },
+          {
+            "cursor": "mouseAim",
+            "element": "forestall",
+            "areaSizeMul": 1.0
+          }
+        ]
       },
       "actions": {
         "triggerEnable": {
@@ -3780,7 +3817,7 @@
           "time": -1
         },
         "wait": {
-          "time": 6.0
+          "time": 7.5
         },
         "triggerEnable": {
           "target": "shooting_video_done"
@@ -4072,7 +4109,7 @@
       "actions": {
         "missionSetTimeSpeed": {
           "speed": 0.1,
-          "realtimeTriggers": true
+          "realtimeTriggers": false
         },
         "triggerEnable": {
           "target": [
@@ -4093,8 +4130,8 @@
         "enableAfterComplete": false
       },
       "events": {
-        "periodicEvent": {
-          "time": 0.01
+        "timeExpires": {
+          "time": 0.0
         }
       },
       "conditions": {
@@ -4238,12 +4275,20 @@
           "speed": 1.0,
           "realtimeTriggers": true
         },
-        "triggerEnable": {
-          "target": [
-            "shooting_plane_killed",
-            "mission_timer",
-            "retry_shooting"
-          ]
+        "triggerEnable": [
+          {
+            "target": [
+              "shooting_plane_killed",
+              "mission_timer",
+              "retry_shooting"
+            ]
+          },
+          {
+            "target": "shooting_autokill"
+          }
+        ],
+        "wait": {
+          "time": 20.0
         }
       },
       "else_actions": {}
@@ -4257,27 +4302,16 @@
         "enableAfterComplete": false
       },
       "events": {
-        "periodicEvent": {
-          "time": 1.0
+        "timeExpires": {
+          "time": 0.0
         }
       },
       "conditions": {
-        "unitWhenStatus": {
-          "object_type": "damaged",
-          "object_marking": 0,
-          "check_objects": "all",
-          "target_type": "isAlive",
-          "check_period": 1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "target_plane01"
+        "unitWhenHit": {
+          "target": "target_plane01"
         }
       },
       "actions": {
-        "wait": {
-          "time": 1.0
-        },
         "unitDamage": {
           "part": 21,
           "power": 1.0,
@@ -4432,7 +4466,7 @@
         },
         "varCompareInt": {
           "var_value": "timer",
-          "value": 15,
+          "value": 30,
           "comparasion_func": "more"
         }
       },
@@ -4457,7 +4491,8 @@
             "shooting_keep_aiming",
             "shooting_aim_completed",
             "shooting_open_fire",
-            "shooting_plane_killed"
+            "shooting_plane_killed",
+            "shooting_autokill"
           ]
         },
         "varSetInt": {
@@ -4582,7 +4617,7 @@
             "shooting_open_fire",
             "shooting_plane_killed",
             "retry_shooting",
-            "retry_shooting"
+            "shooting_autokill"
           ]
         },
         "varSetInt": {
@@ -4680,7 +4715,8 @@
             "target_var_value": 0,
             "object": "target_plane01",
             "move_type": "teleport",
-            "lookat": "target_plane01_lookAtArea"
+            "lookat": "target_plane01_lookAtArea",
+            "velocity": 250.0
           },
           {
             "target": "player_checkpoint02",
@@ -4704,8 +4740,8 @@
             "target_var_value": 0,
             "object": "player",
             "move_type": "teleport",
-            "speed": 300.0,
-            "lookat": "player_checkpoint_lookAt"
+            "lookat": "player_checkpoint_lookAt",
+            "velocity": 250.0
           },
           {
             "target": "target_plane01_wp1",
@@ -4933,7 +4969,8 @@
             "target_var_value": 0,
             "object": "target_plane02",
             "move_type": "teleport",
-            "lookat": "target_plane02_final_position"
+            "lookat": "target_plane02_final_position",
+            "velocity": 250.0
           },
           {
             "target": "target_plane03_starting_position",
@@ -4957,7 +4994,8 @@
             "target_var_value": 0,
             "object": "target_plane03",
             "move_type": "teleport",
-            "lookat": "target_plane02_final_position"
+            "lookat": "target_plane02_final_position",
+            "velocity": 250.0
           },
           {
             "target": "player_spawn04",
@@ -4981,7 +5019,8 @@
             "target_var_value": 0,
             "object": "player",
             "move_type": "teleport",
-            "lookat": "target_plane02_starting_position"
+            "lookat": "target_plane02_starting_position",
+            "velocity": 250.0
           },
           {
             "target": "target_plane02_final_position",
@@ -5010,7 +5049,7 @@
             "move_type": "zigzag_move",
             "zzPeriod": 5.0,
             "zzAmp": 20.0,
-            "speed": 300.0
+            "speed": 250.0
           }
         ],
         "unitSetControls": {
@@ -5594,7 +5633,7 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "timer",
-          "value": 40,
+          "value": 60,
           "comparasion_func": "more"
         },
         "unitWhenStatus": {
@@ -6878,12 +6917,12 @@
             -0.461748
           ],
           [
-            1892.1,
+            5008.0,
             900.004,
             10817.6
           ]
         ],
-        "unit_class": "i-15_1934",
+        "unit_class": "f3f-2",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6940,7 +6979,7 @@
             -0.479033
           ],
           [
-            1241.77,
+            4357.67,
             900.004,
             9524.38
           ]
@@ -7000,7 +7039,7 @@
                 1.0
               ],
               [
-                -1653.25,
+                1462.65,
                 900.004,
                 5108.1
               ]
@@ -7031,7 +7070,7 @@
             0.866025
           ],
           [
-            685.15,
+            3801.05,
             900.004,
             8599.5
           ]
@@ -7095,7 +7134,7 @@
             -0.999048
           ],
           [
-            145.051,
+            3260.95,
             900.004,
             7112.0
           ]
@@ -7157,7 +7196,7 @@
             -0.999876
           ],
           [
-            167.0,
+            3282.9,
             850.0,
             7059.9
           ]
@@ -7220,7 +7259,7 @@
           1.0
         ],
         [
-          1246.4,
+          4362.29,
           -2.5959,
           7595.6
         ]
@@ -7255,7 +7294,7 @@
           -0.642787
         ],
         [
-          779.65,
+          3895.55,
           26.1682,
           6363.5
         ]
@@ -7314,7 +7353,7 @@
           358.9
         ],
         [
-          1621.9,
+          4737.8,
           900.004,
           10138.7
         ]
@@ -7342,7 +7381,7 @@
           40.0
         ],
         [
-          1057.6,
+          4173.5,
           700.004,
           9248.39
         ]
@@ -7370,7 +7409,7 @@
           422.4
         ],
         [
-          3979.2,
+          7095.1,
           700.004,
           5543.6
         ]
@@ -7383,24 +7422,24 @@
       "type": "Sphere",
       "tm": [
         [
-          23793.7,
+          14000.0,
           0.0,
           0.0
         ],
         [
           0.0,
-          23793.7,
+          14000.0,
           0.0
         ],
         [
           0.0,
           0.0,
-          23793.7
+          14000.0
         ],
         [
-          1089.55,
-          -6.0459,
-          6274.9
+          2629.5,
+          682.0,
+          5914.7
         ]
       ],
       "props": {
@@ -7426,7 +7465,7 @@
           40.0
         ],
         [
-          838.55,
+          3954.45,
           700.004,
           8930.29
         ]
@@ -7454,7 +7493,7 @@
           40.0
         ],
         [
-          690.65,
+          3806.55,
           900.004,
           7703.5
         ]
@@ -7482,7 +7521,7 @@
           358.9
         ],
         [
-          4748.5,
+          7864.4,
           900.004,
           15096.1
         ]
@@ -7510,7 +7549,7 @@
           200.0
         ],
         [
-          4462.5,
+          7578.4,
           900.004,
           14479.1
         ]
@@ -7538,7 +7577,7 @@
           200.0
         ],
         [
-          4216.0,
+          7331.9,
           900.004,
           13944.3
         ]
@@ -7566,7 +7605,7 @@
           40.0
         ],
         [
-          518.451,
+          3634.35,
           900.004,
           7271.0
         ]
@@ -7594,7 +7633,7 @@
           400.0
         ],
         [
-          -6054.45,
+          -2938.55,
           900.004,
           3672.65
         ]
@@ -7622,7 +7661,7 @@
           200.0
         ],
         [
-          3881.1,
+          6997.0,
           900.005,
           13125.2
         ]
@@ -7650,7 +7689,7 @@
           32.4
         ],
         [
-          779.75,
+          3895.65,
           26.6168,
           6363.8
         ]
@@ -7678,7 +7717,7 @@
           40.0
         ],
         [
-          1122.2,
+          4238.09,
           700.004,
           8244.8
         ]
@@ -7706,7 +7745,7 @@
           40.0
         ],
         [
-          782.35,
+          3898.25,
           700.004,
           9024.7
         ]
@@ -7734,7 +7773,7 @@
           358.9
         ],
         [
-          4075.0,
+          7190.9,
           900.004,
           14518.2
         ]
@@ -7762,7 +7801,7 @@
           40.0
         ],
         [
-          402.601,
+          3518.5,
           379.354,
           6552.4
         ]
@@ -7790,7 +7829,7 @@
           40.0
         ],
         [
-          518.45,
+          3634.35,
           850.0,
           7271.0
         ]
@@ -7817,7 +7856,7 @@
           40.0
         ],
         [
-          976.05,
+          4091.95,
           850.0,
           8615.15
         ]
@@ -7844,7 +7883,7 @@
           40.0
         ],
         [
-          831.2,
+          3947.1,
           699.999,
           9302.8
         ]
@@ -7871,7 +7910,7 @@
           40.0
         ],
         [
-          806.4,
+          3922.3,
           700.0,
           8939.5
         ]

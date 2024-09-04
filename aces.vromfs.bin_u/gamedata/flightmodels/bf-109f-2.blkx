@@ -1905,21 +1905,6 @@
             }
           },
           {
-            "iconType": "napalm_heavy",
-            "name": "flamm_250",
-            "reqModification": "flamm_250",
-            "ShowNodes": {
-              "node": "pylon_bomb1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-              "emitter": "bomb1",
-              "bullets": 1,
-              "external": true
-            }
-          },
-          {
             "iconType": "rocket_7kg",
             "name": "rocket",
             "reqModification": "Bf-109F_rz_65",

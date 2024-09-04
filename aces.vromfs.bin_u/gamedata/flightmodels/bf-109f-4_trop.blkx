@@ -1745,11 +1745,6 @@
         "reqModification": "Bf-109F-4_SC250"
       },
       {
-        "name": "Bf-109F-4_flamm_250",
-        "blk": "gameData/FlightModels/weaponPresets/bf_109f_4_flamm_250.blk",
-        "reqModification": "flamm_250"
-      },
-      {
         "name": "Bf-109F-4_R1",
         "blk": "gameData/FlightModels/weaponPresets/bf-109f-4_R1.blk",
         "reqModification": "Bf-109F-4_R1"
@@ -1910,21 +1905,6 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-              "emitter": "bomb1",
-              "bullets": 1,
-              "external": true
-            }
-          },
-          {
-            "iconType": "napalm_heavy",
-            "name": "flamm_250",
-            "reqModification": "flamm_250",
-            "ShowNodes": {
-              "node": "pylon_bomb1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
               "emitter": "bomb1",
               "bullets": 1,
               "external": true

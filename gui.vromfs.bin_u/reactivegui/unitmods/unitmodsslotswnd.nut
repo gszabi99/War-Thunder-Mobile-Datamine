@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
 let { deferOnce } = require("dagor.workcycle")
-let { round_by_value } = require("%sqstd/math.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { modsInProgress, buy_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
@@ -9,17 +8,17 @@ let { mkGamercardUnitCampaign, gamercardHeight } = require("%rGui/mainMenu/gamer
 let { unitModSlotsOpenCount, closeUnitModsSlotsWnd, curUnit, weaponSlots, curSlotIdx, curWeapons,
   curWeaponIdx, curWeapon, equippedWeaponsBySlots, equippedWeaponId,
   curWeaponMod, curWeaponModName, curWeaponReqLevel, curWeaponIsLocked, curWeaponIsPurchased,
-  equipCurWeapon, unequipCurWeapon, curUnitAllModsCost, beltWeapons, curBeltsWeaponIdx,
+  equipCurWeapon, unequipCurWeapon, curUnitAllModsCost, beltWeapons, curBeltsWeaponIdx, isOwn,
   curWeaponBeltsOrdered, curBeltIdx, curBelt, equippedBeltId, equipCurBelt, getEquippedBelt,
   chosenBelts, mkWeaponBelts, equippedWeaponIdCount, curBeltWeapon, overloadInfo, fixCurPresetOverload
 } = require("unitModsSlotsState.nut")
 let { getModCurrency, getModCost } = require("unitModsState.nut")
-let { getWeaponDescList, getWeaponShortNameWithCount,
-  getBulletBeltShortName, getBulletBeltFullName, getWeaponShortNamesList
+let { getWeaponShortNameWithCount, getBulletBeltShortName, getWeaponShortNamesList
 } = require("%rGui/weaponry/weaponsVisual.nut")
 let { mkSlotWeapon, mkWeaponImage, mkWeaponDesc, mkEmptyText, weaponH, weaponW, weaponTotalH, weaponGap,
   mkSlotText, mkBeltImage, mkSlotBelt
 } = require("slotWeaponCard.nut")
+let { mkBeltDesc, mkSlotWeaponDesc } = require("unitModsSlotsDesc.nut")
 let { textButtonPrimary, textButtonPurchase } = require("%rGui/components/textButton.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
@@ -45,6 +44,8 @@ let headerHeight = hdpx(70)
 let headerHeightWithGap = headerHeight + tabsGap
 let weaponHWithGap = weaponH + tabsGap
 let maxSlotsNoScroll = ((slotsBlockHeight - tabsGap - 2 * headerHeightWithGap) / weaponHWithGap).tointeger()
+let descWidth = hdpx(600)
+let maxOverloadInfoWidth = min(hdpx(1650), saSize[0] - descWidth - weaponW - tabExtraWidth - 4 * panelBg.padding - 2 * blocksGap)
 
 let vertIndent = hdpx(100)
 let vertIndentThroughHeader = vertIndent + headerHeight / 2
@@ -323,35 +324,15 @@ let slotWeaponsBlock = @() {
         .map(@(_, idx) mkSlotWeapon(idx, scrollToWeapon))
 }
 
-function getWeaponDescription(weapon) {
-  if (weapon == null)
-    return ""
-  let { weapons, mass } = weapon
-  let resArr = getWeaponDescList(weapons)
-  if (mass > 0)
-    resArr.append("".concat(loc("stats/mass"), colon, round_by_value(mass, 0.1), loc("measureUnits/kg")))
-  return "\n".join(resArr)
-}
-
 function slotPresetInfo() {
   let watch = [curWeapon, curBelt]
   if (curWeapon.get() == null && curBelt.get() == null)
     return { watch }
-  let desc = curBelt.get() != null
-    ? getBulletBeltFullName(curBelt.get().id, curBelt.get().caliber)
-    : getWeaponDescription(curWeapon.get())
   return panelBg.__merge({
     watch
     hplace = ALIGN_RIGHT
-    rendObj = ROBJ_IMAGE
-    children = {
-      size = [weaponW, SIZE_TO_CONTENT]
-      rendObj = ROBJ_TEXTAREA
-      behavior = Behaviors.TextArea
-      halign = ALIGN_RIGHT
-      text = desc
-      color = commonTextColor
-    }.__update(fontTiny)
+    children = curBelt.get() != null ? mkBeltDesc(curBelt.get(), descWidth)
+      : mkSlotWeaponDesc(curWeapon.get(), descWidth)
   })
 }
 
@@ -364,7 +345,7 @@ function overloadInfoBlock() {
   return panelBg.__merge({
     watch = overloadInfo
     children = {
-      maxWidth = hdpx(625)
+      maxWidth = maxOverloadInfoWidth
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       color = commonTextColor
@@ -399,12 +380,12 @@ function onPurchaseMod() {
 }
 
 let slotPresetButtons = @() {
-  watch = [curWeapon, curBelt, modsInProgress, curWeaponIsLocked, curWeaponReqLevel,
+  watch = [isOwn, curWeapon, curBelt, modsInProgress, curWeaponIsLocked, curWeaponReqLevel,
     equippedWeaponId, curWeapons, equippedBeltId]
   size = [flex(), SIZE_TO_CONTENT]
   halign = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
-  children = curWeapon.get() == null && curBelt.get() == null ? null
+  children = !isOwn.get() || (curWeapon.get() == null && curBelt.get() == null) ? null
     : modsInProgress.get() != null ? spinner
     : curWeaponIsLocked.get() && curWeaponReqLevel.get() > 0
       ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), curWeaponReqLevel.get(),

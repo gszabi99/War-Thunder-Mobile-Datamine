@@ -10,7 +10,7 @@ let circle = @(objs) { objs, sizeInc = circleWithCountSizeInc }
 let elements = {
   air_throttle_slider = [["air_throttle_slider", "air_throttle_slider_text"]]
   air_throttle_slider_text = ["air_throttle_slider_text"]
-  plane_course_guns = ["plane_course_guns", "ID_FIRE_MGUNS", "ID_FIRE_CANNONS"]
+  plane_course_guns = ["air_course_guns_main", "air_course_guns_second", "air_cannon", "air_minigun"]
   plane_lock_target = ["plane_lock_target"]
   plane_speed_indicator = ["plane_speed_indicator"]
   plane_altitude_indicator = ["plane_altitude_indicator"]

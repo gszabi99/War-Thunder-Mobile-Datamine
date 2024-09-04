@@ -11,7 +11,7 @@ let wtfont = Fonts.wtfont
 
 let shadeTiny = {
   fontFx = FFT_GLOW
-  fontFxColor = 0x80000000
+  fontFxColor = 0xB3000000
   fontFxFactor = hdpxi(32)
 }
 let shade = {

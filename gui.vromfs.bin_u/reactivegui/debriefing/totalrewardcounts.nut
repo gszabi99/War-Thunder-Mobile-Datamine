@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { playSound } = require("sound_wt")
-let { WP } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { playerExpColor, unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { mkCurrencyComp, mkExp, CS_COMMON, CS_SMALL } = require("%rGui/components/currencyComp.nut")
 let { premiumTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let mkTryPremiumButton = require("%rGui/debriefing/tryPremiumButton.nut")
-let { isDebrWithUnitsResearch, getBestUnitName, getUnit, getUnitRewards } = require("debrUtils.nut")
+let { isDebrWithUnitsResearch, getBestUnitName, getUnit, getUnitsSet, getUnitRewards } = require("debrUtils.nut")
 
 let REWARDS_SCORES = "wp"
 let REWARDS_CAMPAIGN = "campaign"
@@ -23,9 +23,11 @@ let deltaStartTimeRewards = rewardAnimTime / 2
 let getIsMultiplayerMission = @(debrData) debrData?.sessionId != null
 let getIsPremiumIncludedWp  = @(debrData) (debrData?.premiumBonus?.wpMul  ?? 1.0) > 1.0
 let getIsPremiumIncludedExp = @(debrData) (debrData?.premiumBonus?.expMul ?? 1.0) > 1.0
+let getIsPremiumIncludedGold = @(debrData) (debrData?.premiumBonus?.goldMul ?? 1.0) > 1.0
 
 let getPremMulWp  = @(debrData) debrData?.premiumBonus.wpMul  ?? debrData?.premiumBonusNotApplied.wpMul  ?? 1.0
 let getPremMulExp = @(debrData) debrData?.premiumBonus.expMul ?? debrData?.premiumBonusNotApplied.expMul ?? 1.0
+let getPremMulGold = @(debrData) debrData?.premiumBonus.goldMul ?? debrData?.premiumBonusNotApplied.goldMul ?? 1.0
 
 let rewardsInfoCfg = {
   [REWARDS_SCORES] = {
@@ -43,6 +45,19 @@ let rewardsInfoCfg = {
     getTotalWithPremium = @(debrData) !getIsMultiplayerMission(debrData) || getIsPremiumIncludedWp(debrData)
       ? (debrData?.reward.playerWp.totalWp ?? 0)
       : round((debrData?.reward.playerWp.totalWp ?? 0) * getPremMulWp(debrData)).tointeger()
+    function getTotalGoldWithoutPremium(debrData) {
+      let calc = getIsMultiplayerMission(debrData) && getIsPremiumIncludedGold(debrData)
+        ? @(v) (v?.totalGold ?? 0) - (v?.premGold ?? 0)
+        : @(v) v?.totalGold ?? 0
+      return getUnitsSet(debrData)
+        .reduce(@(res, unit) res + calc(getUnitRewards(unit.name, debrData)?.gold), 0)
+    }
+    function getTotalGoldWithPremium(debrData) {
+      let totalGold = getUnitsSet(debrData).reduce(@(res, unit) res + (getUnitRewards(unit.name, debrData)?.gold.totalGold ?? 0), 0)
+      return !getIsMultiplayerMission(debrData) || getIsPremiumIncludedGold(debrData)
+        ? totalGold
+        : round(totalGold * getPremMulGold(debrData)).tointeger()
+    }
     mkCurrComp = @(val, style) mkCurrencyComp(val, WP, style)
   },
   [REWARDS_CAMPAIGN] = {
@@ -92,7 +107,8 @@ let rewardsInfoCfg = {
 
 function getRewardsInfo(preset, debrData) {
   let { getHasProgress, getBasic, getBooster, getStreaks,
-    getIsPremiumIncluded, getTotalWithoutPremium, getTotalWithPremium } = rewardsInfoCfg[preset]
+    getIsPremiumIncluded, getTotalWithoutPremium, getTotalWithPremium,
+    getTotalGoldWithoutPremium = null, getTotalGoldWithPremium = null } = rewardsInfoCfg[preset]
   let hasProgress = getHasProgress(debrData)
   let basic = hasProgress ? getBasic(debrData) : 0
   let booster = hasProgress ? getBooster(debrData) : 0
@@ -101,6 +117,8 @@ function getRewardsInfo(preset, debrData) {
   let total = hasProgress ? getTotalWithoutPremium(debrData) : 0
   let totalWithPremRaw = hasProgress ? getTotalWithPremium(debrData) : 0
   let totalWithPrem = totalWithPremRaw > total ? totalWithPremRaw : 0
+  let totalGoldWithPremium = getTotalGoldWithPremium && hasProgress ? getTotalGoldWithPremium(debrData) : 0
+  let totalGoldWithoutPremium = getTotalGoldWithoutPremium && hasProgress ? getTotalGoldWithoutPremium(debrData) : 0
   return {
     preset
     isPremiumIncluded
@@ -109,6 +127,8 @@ function getRewardsInfo(preset, debrData) {
     streaks
     total
     totalWithPrem
+    totalGoldWithPremium
+    totalGoldWithoutPremium
   }
 }
 
@@ -121,6 +141,7 @@ let mkLabelIcon = @(path, w, h) {
 }
 
 let iconPrem = mkLabelIcon("ui/gameuiskin#premium_active.svg", round(labelIconSize / 237.0 * 339).tointeger(), labelIconSize)
+let iconPremVehicle = mkLabelIcon("ui/gameuiskin#icon_premium.svg", round(labelIconSize / 237.0 * 339).tointeger(), labelIconSize)
 let iconBooster = {
   [REWARDS_SCORES] = mkLabelIcon(getBoosterIcon("wp"), labelIconSize, labelIconSize),
   [REWARDS_CAMPAIGN] = mkLabelIcon(getBoosterIcon("playerExp"), labelIconSize, labelIconSize),
@@ -131,11 +152,36 @@ let CS_DEBR_REWARD = CS_COMMON.__merge({ fontStyle = fontCommon })
 let CS_DEBR_REWARD_TOTAL = CS_COMMON.__merge({ fontStyle = fontTotal })
 
 let ovrCtorWp = { valueCtor = @(value) mkCurrencyComp($"+ {decimalFormat(value)}", WP, CS_DEBR_REWARD) }
-let ovrCtorWpTotal = { valueCtor = @(value) mkCurrencyComp(value, WP, CS_DEBR_REWARD_TOTAL) }
+let ovrCtorWpTotal = {
+  getVal = @(ri) { wp = ri.total, gold = ri.totalGoldWithoutPremium }
+  valueCtor = @(value) [
+    mkCurrencyComp(value.wp, WP, CS_DEBR_REWARD_TOTAL)
+    value.gold == 0
+      ? null
+      : mkCurrencyComp(value.gold, GOLD, CS_DEBR_REWARD_TOTAL.__merge({ textColor = premiumTextColor }))
+  ]
+}
+let ovrCtorWpPremTotal = {
+  getVal = @(ri) {wp = ri.totalWithPrem, gold = ri.totalGoldWithPremium}
+  valueCtor = @(value)
+    [mkCurrencyComp(value.wp, WP, CS_DEBR_REWARD_TOTAL),
+      value.gold == 0
+        ? null
+        : mkCurrencyComp($"+ {value.gold}", GOLD, CS_DEBR_REWARD_TOTAL.__merge({ textColor = premiumTextColor }))
+    ]
+}
+let ovrCtorGoldTotal = { valueCtor = @(value) mkCurrencyComp($"+ {value}", GOLD, CS_DEBR_REWARD.__merge({ textColor = premiumTextColor })) }
 let ovrCtorExpPlayer = { valueCtor = @(value) mkExp($"+ {decimalFormat(value)}", playerExpColor, CS_DEBR_REWARD) }
 let ovrCtorExpPlayerTotal = { valueCtor = @(value) mkExp(value, playerExpColor, CS_DEBR_REWARD_TOTAL) }
 let ovrCtorExpUnit = { valueCtor = @(value) mkExp($"+ {decimalFormat(value)}", unitExpColor, CS_DEBR_REWARD) }
 let ovrCtorExpUnitTotal = { valueCtor = @(value) mkExp(value, unitExpColor, CS_DEBR_REWARD_TOTAL) }
+
+let cfgRowGoldTotal = {
+  needShow = @(ri) ri.totalGoldWithoutPremium != 0
+  getVal = @(ri) ri.totalGoldWithoutPremium
+  getLabelText = @(_ri) loc("debriefing/rewards/premiumVehicle")
+  getLabelIcon = @(_ri) iconPremVehicle
+}
 
 let cfgRowBasic = {
   needShow = @(ri) ri.basic != 0
@@ -171,17 +217,18 @@ let cfgRowTotalWithPrem = {
   getVal = @(ri) ri.totalWithPrem
   getLabelText = @(_ri) loc("debriefing/battleReward/withPremium")
   getLabelIcon = @(_ri) iconPrem
-  labelOvr = { color = premiumTextColor }.__update(fontTotal)
+  labelOvr = fontTotal
   getIsDisabled = @(ri) !ri.isPremiumIncluded
 }
 
 let rewardRowsCfg = {
   [REWARDS_SCORES] = [
+    cfgRowGoldTotal.__merge(ovrCtorGoldTotal)
     cfgRowBasic.__merge(ovrCtorWp)
     cfgRowBooster.__merge(ovrCtorWp)
     cfgRowStreaks.__merge(ovrCtorWp)
     cfgRowTotal.__merge(ovrCtorWpTotal)
-    cfgRowTotalWithPrem.__merge(ovrCtorWpTotal)
+    cfgRowTotalWithPrem.__merge(ovrCtorWpPremTotal)
   ],
   [REWARDS_CAMPAIGN] = [
     cfgRowBasic.__merge(ovrCtorExpPlayer)
@@ -209,6 +256,8 @@ let mkRewardWithAnimation = @(value, valueCtor, idx, rewardsStartTime, isDisable
       onStart = @() playSound("prize"),
     }
   ]
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(20)
   children = valueCtor(value)
 }
 

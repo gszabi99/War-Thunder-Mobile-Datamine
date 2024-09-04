@@ -22,7 +22,7 @@ let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank
+let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank, mkUnitFlag
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
@@ -39,8 +39,12 @@ let { eventSeason } = require("%rGui/event/eventState.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
 let { mkBattleModEventUnitText } = require("%rGui/rewards/battleModComp.nut")
-let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
-let { ignoreSubIdRTypes } = require("%rGui/rewards/rewardViewInfo.nut")
+let { REWARD_STYLE_MEDIUM, getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
+let { ignoreSubIdRTypes, getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkProgressBarText
+} = require("%rGui/rewards/rewardPlateComp.nut")
+let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 
 let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel",
   "decorator", "medal", "booster", "skin",
@@ -416,6 +420,75 @@ function mkSkinRewardIcon(startDelay, unitName, skinName) {
   }
 }
 
+function mkBlueprintPlateTexts(r, rStyle) {
+  let { id } = r
+  let available = Computed(@() servProfile.get()?.blueprints?[id] ?? 0)
+  let total = Computed(@() serverConfigs.get()?.allBlueprints?[id].targetCount ?? 1)
+  let unitRank = Computed(@() serverConfigs.value?.allUnits?[id]?.mRank)
+  let hasBlueprintUnit = Computed(@() id in myUnits.get())
+
+  return {
+    size = flex()
+    children = [
+      @() {
+        watch = [available, total, hasBlueprintUnit]
+        size = flex()
+        valign = ALIGN_BOTTOM
+        flow = FLOW_VERTICAL
+        children = hasBlueprintUnit.get()
+          ? [
+              mkProgressLabel(total.get(), total.get(), rStyle)
+              mkProgressBar(total.get(), total.get())
+            ]
+          : [
+              mkProgressLabel(available.get(), total.get(), rStyle)
+              mkProgressBar(available.get(), total.get())
+          ]
+      }
+      @() {
+        watch = unitRank
+        size = flex()
+        valign = ALIGN_BOTTOM
+        halign = ALIGN_RIGHT
+        flow = FLOW_VERTICAL
+        padding = [0, hdpx(5)]
+        children = [
+          unitRank.get()
+            ? mkGradRankSmall(unitRank.get()).__update({ fontSize = rStyle.textStyle.fontSize, pos = [0, hdpx(5)] })
+            : null
+          mkProgressBarText(r, rStyle)
+        ]
+      }
+    ]
+  }
+}
+
+function mkBkueprintRewardIcon(rewardInfo, rStyle) {
+  let reward = getRewardsViewInfo([rewardInfo])?[0]
+  let startDelay = rewardInfo.startDelay
+
+  if (!reward)
+    return mkRewardIcon(startDelay, $"ui/unitskin#blueprint_{rewardInfo.id}.avif", 1.0, 1.5)
+
+  let size = getRewardPlateSize(reward.slots, rStyle)
+  let unit = Computed(@() serverConfigs.get()?.allUnits?[rewardInfo.id])
+
+  return {
+    size
+    children = [
+      {
+        hplace = ALIGN_CENTER
+        vplace = ALIGN_CENTER
+        children = mkHighlight(startDelay, aRewardIconFlareScale)
+      }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+      mkRewardPlateBg(reward, rStyle)
+      mkRewardPlateImage(reward, rStyle)
+      mkBlueprintPlateTexts(reward, rStyle)
+      mkUnitFlag(unit.get(), rStyle)
+    ]
+  }
+}
+
 let rewardCtors = {
   currency = {
     mkIcon = @(rewardInfo) mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id)
@@ -444,7 +517,7 @@ let rewardCtors = {
       loc("skins/title", { unitName = loc(getUnitLocId(rewardInfo.id)) }))
   }
   blueprint = {
-    mkIcon = @(rewardInfo) mkRewardIcon(rewardInfo.startDelay, $"ui/unitskin#blueprint_{rewardInfo.id}.avif", 1.0, 1.5)
+    mkIcon = @(rewardInfo) mkBkueprintRewardIcon(rewardInfo, REWARD_STYLE_MEDIUM)
     mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay,
       "\n".concat(loc("blueprints/title", {count = rewardInfo.count}), loc(getUnitLocId(rewardInfo.id))))
   }
@@ -549,6 +622,7 @@ function mkBattleModText(bmp, reward) {
                 size = [rewIconSize, rewIconSize]
                 rendObj = ROBJ_IMAGE
                 image = Picture($"{icon}:{rewIconSize}:{rewIconSize}:P")
+                keepAspect = true
               }
                 .__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
         ]

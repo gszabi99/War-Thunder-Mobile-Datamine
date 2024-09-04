@@ -5,7 +5,6 @@ let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
 let aircraftSight = require("%rGui/hud/aircraftSight.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
-let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
 let ctrlPieMenu = require("%rGui/hud/controlsPieMenu/ctrlPieMenu.nut")
 let cameraPieMenu = require("%rGui/hud/cameraPieMenu/cameraPieMenu.nut")
 let { TargetSelector } = require("wt.behaviors")
@@ -96,7 +95,7 @@ let airCircularIndicators = {
   behavior = Behaviors.RtPropUpdate
   update = pointCrosshairScreenPositionUpdate
   size = [circularIndSize, circularIndSize]
-  pos = [-saBorders[0] - circularIndSize * 0.5, -saBorders[1] - circularIndSize * 0.5]
+  pos = [ - circularIndSize * 0.5, - circularIndSize * 0.5]
   children = [
     leftOverheatProgress
     rightOverheatProgress
@@ -105,7 +104,7 @@ let airCircularIndicators = {
   ]
 }
 
-return {
+let aircraftHud = {
   size = saSize
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
@@ -118,16 +117,21 @@ return {
     hudTopMainLog
     hudBottomCenter
     currentWeaponNameText
-    aircraftSight
-    airCircularIndicators
-    voiceMsgPie
-    ctrlPieMenu
     {
       size = flex()
       behavior = TargetSelector
       selectAngle = 30
       captureAngle = 7
     }
+  ]
+}
+
+return {
+  aircraftHud
+  aircraftHudElemsOverShade = [
+    aircraftSight
+    airCircularIndicators
+    ctrlPieMenu
     cameraPieMenu
   ]
 }

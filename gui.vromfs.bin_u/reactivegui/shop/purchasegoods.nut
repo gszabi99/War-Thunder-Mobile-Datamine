@@ -3,7 +3,7 @@ let logShop = log_with_prefix("[SHOP] ")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { shopPurchaseInProgress, buy_goods, buy_offer, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
+let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
 let { activeOffer } = require("offerState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
@@ -107,7 +107,7 @@ function purchaseGoods(goodsId) {
   if (shopPurchaseInProgress.value != null)
     return logShop($"ERROR: shopPurchaseInProgress: {shopPurchaseInProgress.value}")
   let isOffer = activeOffer.get()?.id == goodsId
-  let goods = isOffer ? activeOffer.get() : shopGoods.get()?[goodsId]
+  let goods = isOffer ? activeOffer.get() : shopGoodsAllCampaigns.get()?[goodsId]
   if (goods == null)
     return logShop($"ERROR: Goods not found: {goodsId}")
   let { price, currencyId } = goods.price

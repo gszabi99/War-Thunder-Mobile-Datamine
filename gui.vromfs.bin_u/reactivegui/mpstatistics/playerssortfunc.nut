@@ -23,19 +23,15 @@ let sortByCampaign = {
 let scoreKey = {
   ships = "damage"
   tanks = "score"
+  air   = "score"
 }
 
 let scoreKeyRaw = {
   ships = "damage"
   tanks = "dmgScoreBonus"
+  air   = "dmgScoreBonus"
 }
 
-let scoreKeyAir = {
-  fighter = "kills"
-  bomber = "score"
-}
-
-let getScoreKeyAir = @(unitClass) scoreKeyAir?[unitClass] ?? scoreKeyAir.bomber
 let getScoreKey = @(campaign) scoreKey?[campaign] ?? scoreKey.tanks
 let getScoreKeyRaw = @(campaign) scoreKeyRaw?[campaign] ?? scoreKeyRaw.tanks
 let playersSortFunc = @(campaign) sortByCampaign?[campaign] ?? sortByCampaign.tanks
@@ -62,7 +58,6 @@ function sortAndFillPlayerPlaces(campaign, players) {
 }
 
 return {
-  getScoreKeyAir
   getScoreKey
   getScoreKeyRaw
   playersSortFunc

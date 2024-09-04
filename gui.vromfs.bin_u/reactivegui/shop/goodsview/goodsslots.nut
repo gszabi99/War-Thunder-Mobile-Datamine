@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getLocNameDefault } = require("goodsDefault.nut")
 let { txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsLimit,
   priceBgGradDefault, goodsH, goodsSmallSize, goodsBgH, mkBgImg, mkBgParticles, borderBg,
-  mkSquareIconBtn, skipPurchasedPlate, purchasedPlate, mkCanPurchase, goodsW
+  mkSquareIconBtn, skipPurchasedPlate, purchasedPlate, mkCanPurchase, goodsW, mkCanShowTimeProgress
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { getGoodsIcon } = require("%appGlobals/config/goodsPresentation.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
@@ -10,7 +10,6 @@ let { isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
 
 
 let fontIconPreview = "⌡"
@@ -18,14 +17,18 @@ let bgSize = [goodsSmallSize[0], goodsBgH]
 let iconSize = [goodsSmallSize[0] - hdpxi(40), (goodsBgH * 0.9 + 0.5).tointeger()]
 
 function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
-  let { limit = 0, dailyLimit = 0, id = null } = goods
+  let { limit = 0, dailyLimit = 0, id = null, limitResetPrice = {} } = goods
   let stateFlags = Watched(0)
 
   let isGoodsFull = Computed(@() !!serverConfigs.get().goodsRewardSlots?[goods.slotsPreset].variants
     .findvalue(@(r) !isRewardEmpty(r, servProfile.get())))
 
+  let { price = 0, currencyId = "" } = limitResetPrice
+  let hasLimitResetPrice = price > 0 && currencyId != ""
+
   let canPurchase = mkCanPurchase(id, limit, dailyLimit, isGoodsFull.get())
-  let canShowSkipPurchase = Computed(@() isGoodsFull.get() && goodsLimitReset.get()?[id])
+  let canShowTimeProgress = mkCanShowTimeProgress(goods)
+  let canShowSkipPurchase = Computed(@() isGoodsFull.get() && canShowTimeProgress.get() && hasLimitResetPrice)
 
   return @() bgShaded.__merge({
     size = [ goodsW, goodsH ]

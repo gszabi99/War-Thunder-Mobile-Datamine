@@ -1,0 +1,204 @@
+from "%globalsDarg/darg_library.nut" import *
+let { format } = require("string")
+let { commonTextColor } = require("%rGui/style/stdColors.nut")
+let { getBulletBeltFullName, getWeaponFullName } = require("%rGui/weaponry/weaponsVisual.nut")
+let { getTntEquivalentMass } = require("%rGui/weaponry/weaponryStatsCalculations.nut")
+let { getMassText, getMassLbsText, getSpeedText, getSpeedRangeText, getHeightRangeText, getDistanceText
+} = require("%rGui/measureUnits.nut")
+
+
+let headerColor = 0xFFFFFFFF
+let infoGap = hdpxi(10)
+
+let rowCfgDefaults = freeze({
+  getHeader = @(_w) ""
+  isVisible = @(_w, _v) true
+  getVal = @(_w) null
+  valToStr = @(_v) null
+  color = commonTextColor
+})
+
+let mkRowCfg = @(locId, getVal, valToStr = @(v) v.tostring(), isVisible = @(_w, v) v != null) {
+  getHeader = @(_w) loc(locId)
+  getVal
+  valToStr
+  isVisible
+}
+
+function getSingleBulletParamsTbl(weapon) {
+  let { bulletSets } = weapon
+  return (bulletSets.len() == 1 && bulletSets?[""].bullets.len() == 1) ? bulletSets[""] : null
+}
+
+let getSingleBulletParam = @(weapon, key) getSingleBulletParamsTbl(weapon)?[key]
+
+let weaponDescRowsCfg = [
+  {
+    function getHeader(w) {
+      let bSet = w.bulletSets?[""]
+      let name = getWeaponFullName(w, bSet)
+      return w.count > 1 ? $"{name} {format(loc("weapons/counter"), w.count)}" : name
+    }
+    color = headerColor
+  }
+  mkRowCfg("shop/ammo", @(w) w.totalBullets)
+  mkRowCfg("stats/mass",
+    function(w) {
+      if (w.mass <= 0)
+        return null
+      return { mass = w.mass, massLbs = getSingleBulletParam(w, "mass_lbs") ?? 0 }
+    },
+    @(v) v.massLbs <= 0 ? getMassText(v.mass)
+      : $"{getMassLbsText(v.massLbs)} ({getMassText(v.mass)})")
+  mkRowCfg("weapons/drop_speed_range",
+    @(w) getSingleBulletParam(w, "dropSpeedRange"),
+    @(v) getSpeedRangeText(v.x, v.y))
+  mkRowCfg("weapons/drop_height_range",
+    @(w) getSingleBulletParam(w, "dropHeightRange"),
+    @(v) getHeightRangeText(v.x, v.y))
+  mkRowCfg("bullet_properties/explosiveType",
+    @(w) getSingleBulletParam(w, "explosiveType")
+    @(v) loc($"explosiveType/{v}"))
+  mkRowCfg("bullet_properties/explosiveMass",
+    @(w) getSingleBulletParam(w, "explosiveMass"),
+    getMassText)
+  mkRowCfg("bullet_properties/explosiveMassInTNTEquivalent"
+    function(w) {
+      let { explosiveType = "tnt", explosiveMass = 0 } = getSingleBulletParamsTbl(w)
+      let mass = getTntEquivalentMass(explosiveType, explosiveMass)
+      return mass == 0 ? null : mass
+    },
+    getMassText)
+  mkRowCfg("torpedo/maxSpeedInWater",
+    @(w) getSingleBulletParam(w, "maxSpeedInWater"),
+    getSpeedText)
+  mkRowCfg("torpedo/distanceToLive",
+    @(w) getSingleBulletParam(w, "distToLive"),
+    getDistanceText)
+  mkRowCfg("rocket/maxSpeed",
+    @(w) getSingleBulletParam(w, "maxSpeed"),
+    getSpeedText)
+  mkRowCfg("rocket/warhead",
+    @(w) getSingleBulletParam(w, "warhead"),
+    @(v) loc($"rocket/warhead/{v}"))
+]
+  .map(@(r) rowCfgDefaults.__merge(r))
+
+
+function getDescRowsCfg(slotWeapon) {
+  let resArr = []
+  let { weapons, mass } = slotWeapon
+  if (weapons.len() == 0)
+    return resArr
+
+  let wId = weapons[0].weaponId //we deceided to not have more that 2 weapon types in the same slot
+  local totalCount = 0
+  local totalBulletsCount = 0
+  local totalTurrets = 0
+  let fullList = {}
+  foreach(w in weapons) {
+    let { weaponId, turrets, totalBullets, count = 1 } = w
+    fullList[weaponId] <- true
+    if (wId != weaponId)
+      continue
+
+    totalCount += max(turrets, 1) * count
+    totalBulletsCount += totalBullets
+    totalTurrets += turrets
+  }
+
+  if (fullList.len() > 1) {
+    log("slotWeapon for desc: ", slotWeapon)
+    log("weapnId list: ", fullList.keys())
+    logerr("SlotWeaponPreset has more than 1 different weaponId")
+  }
+
+  let weapon = weapons[0].__merge({
+    count = totalCount
+    totalBullets = totalBulletsCount
+    turrets = totalTurrets
+    mass
+  })
+
+  foreach(r in weaponDescRowsCfg) {
+    let val = r.getVal(weapon)
+    if (!r.isVisible(weapon, val))
+      continue
+    resArr.append({ header = r.getHeader(weapon), valueText = r.valToStr(val), color = r.color })
+  }
+
+  return resArr
+}
+
+let mkDesc = @(width, text, color = commonTextColor) {
+  size = [width, SIZE_TO_CONTENT]
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  text
+  color
+}.__update(fontTiny)
+
+let mkRows = @(rowsCfg, width) {
+  size = [width, SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
+  children = rowsCfg.map(function(r) {
+    let { header, valueText, color } = r
+    return valueText == null ? mkDesc(width, header, color)
+      : {
+          size = [flex(), SIZE_TO_CONTENT]
+          flow = FLOW_HORIZONTAL
+          gap = infoGap
+          children = [
+            mkDesc(flex(), header, color)
+            {
+              maxWidth = width / 2 - infoGap
+              rendObj = ROBJ_TEXTAREA
+              behavior = Behaviors.TextArea
+              text = valueText
+              color
+              halign = ALIGN_RIGHT
+            }.__update(fontTiny)
+          ]
+        }
+  })
+}
+
+function getBeltBulletsInfoText(belt) {
+  let { caliber, bullets } = belt
+  if (bullets.len() < 1)
+    return ""
+
+  let used = {}
+  let annotationList = []
+  let nameList = []
+  foreach (b in bullets) {
+    if (b in used) {
+      nameList.append(used[b])
+      continue
+    }
+    let splittedBullet = b.split("@")
+    let shortName = "".join(splittedBullet.map(@(v) loc($"{v}/name/short")))
+    let fullName = "".join(splittedBullet.map(@(v) loc($"{v}/name")))
+    nameList.append(shortName)
+    annotationList.append($"{shortName} - {fullName}")
+    used[b] <- shortName
+  }
+
+  return "\n\n".concat(
+    format(loc($"caliber_{caliber}/desc"), loc("bullet_type_separator/name").join(nameList)),
+    "\n".join(annotationList))
+}
+
+let mkBeltDesc = @(belt, width) {
+  size = [width, SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
+  children = [
+    mkDesc(width, getBulletBeltFullName(belt.id, belt.caliber), headerColor)
+    mkDesc(width, getBeltBulletsInfoText(belt))
+  ]
+}
+
+return {
+  mkBeltDesc
+  mkSlotWeaponDesc = @(slotWeapon, width) mkRows(getDescRowsCfg(slotWeapon), width)
+}

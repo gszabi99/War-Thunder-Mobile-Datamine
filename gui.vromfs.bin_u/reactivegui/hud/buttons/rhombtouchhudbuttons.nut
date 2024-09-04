@@ -24,12 +24,9 @@ let mkAmmoCount = @(count, isAvailable = true) count < 0 ? null
   : {
       rendObj = ROBJ_TEXT
       vplace = ALIGN_BOTTOM
-      fontFxColor = 0xFF000000
-      fontFxFactor = 50
-      fontFx = FFT_GLOW
       color = isAvailable ? textColor : textDisabledColor
       text = count
-    }.__update(fontVeryTiny)
+    }.__update(fontVeryTinyShaded)
 
 function mkRhombBtnBg(isAvailable, actionItem, onFinishExt = null) {
   let misTime = get_mission_time()

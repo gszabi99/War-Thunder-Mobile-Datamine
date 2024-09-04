@@ -140,13 +140,13 @@ let lvlUpButton = @() {
 let buttonsBlock = @() {
   size = flex()
   flow = FLOW_VERTICAL
-  watch = isShowedUnitOwned
+  watch = [curCampaign, isShowedUnitOwned]
   gap = hdpx(30)
   children = [
     { size = flex() }
     mkUnitPkgDownloadInfo(baseUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
     testDriveButton
-    !isShowedUnitOwned.get() ? null
+    !(curCampaign.get() == "air" || isShowedUnitOwned.get()) ? null
       : {
           size = [flex(), SIZE_TO_CONTENT]
           flow = FLOW_HORIZONTAL

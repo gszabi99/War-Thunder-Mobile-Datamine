@@ -359,11 +359,24 @@ let mkCanPurchase = @(id, limit, dailyLimit, isPurchaseFull = true) Computed(fun
     && isPurchaseFull
 })
 
+let mkCanShowTimeProgress = @(goods) Computed(function() {
+  if (!goods?.dailyLimit || goods.dailyLimit <= 0)
+    return false
+  let { time = 0, count = 0 } = goodsLimitReset.get()?[goods.id]
+  let limitInc = getDay(time) == serverTimeDay.get() ? count : 0
+  return (todayPurchasesCount.get()?[goods.id].count ?? 0) >= (goods.dailyLimit + limitInc)
+})
+
 function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
-  let { limit = 0, dailyLimit = 0, id = null } = goods
+  let { limit = 0, dailyLimit = 0, id = null, limitResetPrice = {} } = goods
   let stateFlags = Watched(0)
+
+  let { price = 0, currencyId = "" } = limitResetPrice
+  let hasLimitResetPrice = price > 0 && currencyId != ""
+
   let canPurchase = mkCanPurchase(id, limit, dailyLimit)
-  let canShowSkipPurchase = Computed(@() !goodsLimitReset.get()?[id])
+  let canShowTimeProgress = mkCanShowTimeProgress(goods)
+  let canShowSkipPurchase = Computed(@() canShowTimeProgress.get() && hasLimitResetPrice)
 
   return @() bgShaded.__merge({
     size = [ goodsW, goodsH ]
@@ -387,8 +400,8 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
       canPurchase.get()
           ? pricePlate
         : canShowSkipPurchase.get()
-          ? purchasedPlate
-        : skipPurchasedPlate
+          ? skipPurchasedPlate
+        : purchasedPlate
     ]
   }).__update(ovr)
 }
@@ -460,14 +473,10 @@ function mkCalcDailyLimitGoodsTimeProgress() {
 }
 
 function mkDailyLimitGoodsTimeProgress(goods) {
-  let { dailyLimit = 0, id = null } = goods
+  let { dailyLimit = 0 } = goods
   if (dailyLimit <= 0)
     return null
-  let canShowTimeProgress = Computed(function() {
-    let { time = 0, count = 0 } = goodsLimitReset.get()?[goods.id]
-    let limitInc = getDay(time) == serverTimeDay.get() ? count : 0
-    return (todayPurchasesCount.get()?[id].count ?? 0) >= (dailyLimit + limitInc)
-  })
+  let canShowTimeProgress = mkCanShowTimeProgress(goods)
   return @() {
     watch = canShowTimeProgress
     size = flex()
@@ -643,6 +652,7 @@ return {
   mkGoodsLimitText
   mkCanPurchase
   skipPurchasedPlate
+  mkCanShowTimeProgress
 
   goodsGlareAnimDuration
   mkBgParticles

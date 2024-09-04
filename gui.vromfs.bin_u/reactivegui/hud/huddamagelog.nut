@@ -35,10 +35,7 @@ registerInteropFunc("hudDmgInfoUpdate", function(dmg, dmgType) {
 
 let textStyle = {
   rendObj = ROBJ_TEXT
-  fontFxColor = Color(0, 0, 0, 255)
-  fontFxFactor = 50
-  fontFx = FFT_GLOW
-}.__update(fontTiny)
+}.__update(fontTinyShaded)
 
 function damageLogUi() {
   let resObj = { watch = visibleLog, size = [shHud(50), hdpx(50)] }

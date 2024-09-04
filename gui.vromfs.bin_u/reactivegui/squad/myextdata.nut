@@ -11,6 +11,7 @@ let { readyCheckTime } = require("readyCheck.nut")
 let { mRankCheckTime } = require("mRankCheck.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { activeBattleMods } = require("%appGlobals/pServer/battleMods.nut")
+let { chosenDecoratorsHash } = require("%rGui/decorators/decoratorState.nut")
 
 let curUnits = keepref(Computed(function() {
   let { allUnits = null, campaignCfg = {} } = serverConfigs.value
@@ -58,3 +59,4 @@ bindSquadROVar("mRankCheckTime", mRankCheckTime)
 bindSquadROVar("queueDataCheckTime", queueDataCheckTime)
 bindSquadROVar("clustersRTT", myClustersRTT)
 bindSquadROVar("battleMods", myBattleMods)
+bindSquadROVar("chosenDecoratorsHash", chosenDecoratorsHash)

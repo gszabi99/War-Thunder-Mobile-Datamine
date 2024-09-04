@@ -9130,6 +9130,7 @@
     "targetingNearDist": 150.0,
     "targetingNearDistK": 0.1,
     "targetingDistancePower": 2.0,
+    "targetTrackingTimeOut": 1.1,
     "pointsInactive": 100.0,
     "pointsObjecive": 0.0,
     "pointsAlive": 25.0,

@@ -154,10 +154,7 @@ let timerTextStyle = {
   halign = ALIGN_CENTER
   rendObj = ROBJ_TEXT
   color = 0xFFFFFFFF
-  fontFxColor = Color(0, 0, 0, 255)
-  fontFxFactor = 50
-  fontFx = FFT_GLOW
-}.__update(fontTiny)
+}.__update(fontTinyShaded)
 
 function timerText(id, timer) {
   let { needCountdown = false, text = null } = timer

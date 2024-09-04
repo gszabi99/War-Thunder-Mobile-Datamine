@@ -4,7 +4,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { defer } = require("dagor.workcycle")
 let { activeOffer } = require("offerState.nut")
 let { activeOfferByGoods } = require("offerByGoodsState.nut")
-let { shopGoods } = require("shopState.nut")
+let { shopGoodsAllCampaigns } = require("shopState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { shopPurchaseInProgress, check_empty_offer } = require("%appGlobals/pServer/pServerApi.nut")
 let { platformPurchaseInProgress } = require("platformGoods.nut")
@@ -22,6 +22,7 @@ let GPT_LOOTBOX = "lootbox"
 let GPT_SLOTS = "slots"
 let GPT_BLUEPRINT = "blueprint"
 
+let openedUnitFromTree = mkWatched(persist, "openedUnitFromTree", null)
 let openedGoodsId = mkWatched(persist, "openedGoodsId", null)
 let closeGoodsPreview = @() openedGoodsId(null)
 let openPreviewCount = Watched(openedGoodsId.get() == null ? 0 : 1)
@@ -34,7 +35,7 @@ function getAddonsToShowGoods(goods) {
 }
 
 function openGoodsPreview(id) {
-  let addons = getAddonsToShowGoods(shopGoods.value?[id])
+  let addons = getAddonsToShowGoods(shopGoodsAllCampaigns.value?[id])
   if (addons.len() != 0) {
     openDownloadAddonsWnd(addons, "openGoodsPreview", { id })
     return
@@ -47,7 +48,7 @@ function openGoodsPreview(id) {
 let previewGoods = Computed(@()
   activeOffer.get()?.id == openedGoodsId.value ? activeOffer.get()
     : activeOfferByGoods.get()?.id == openedGoodsId.value ? activeOfferByGoods.get()
-    : shopGoods.get()?[openedGoodsId.get()])
+    : shopGoodsAllCampaigns.get()?[openedGoodsId.get()])
 
 let previewGoodsUnit = Computed(function() {
   let isBlueprintGoods = (previewGoods.get()?.blueprints.len() ?? 0) > 0
@@ -99,8 +100,8 @@ servProfile.subscribe(function(v){
   let offersBlueprint = activeOffer.get()?.blueprints.findindex(@(_) true)
   if(!offersBlueprint)
     return
-  if( offersBlueprint in myUnits.get()
-    || v.blueprints[offersBlueprint] == serverConfigs.get()?.allBlueprints?[offersBlueprint].targetCount)
+  if (offersBlueprint in myUnits.get()
+      || v?.blueprints[offersBlueprint] == serverConfigs.get()?.allBlueprints?[offersBlueprint].targetCount)
     check_empty_offer(curCampaign.get())
 })
 
@@ -116,6 +117,7 @@ return {
   closeGoodsPreview
   openPreviewCount
 
+  openedUnitFromTree
   openedGoodsId
   previewGoods
   previewGoodsUnit

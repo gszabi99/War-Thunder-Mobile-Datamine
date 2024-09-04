@@ -14,13 +14,13 @@ function mkDebriefingWndTabMpStats(debrData, _params) {
   if ((debrData?.isSingleMission ?? false) || (debrData?.players ?? {}).len() == 0)
     return null
 
-  let { campaign = "" } = debrData
+  let { campaign = "", mission = "" } = debrData
   let playersByTeam = mkPlayersByTeam(debrData)
   let comp = {
     size = [sw(100), flex()]
     hplace = ALIGN_CENTER
     margin = [hdpx(20), 0, 0, 0]
-    children = mkMpStatsTable(getColumnsByCampaign(campaign), mkPlayersByTeamForMpStats(playersByTeam, campaign))
+    children = mkMpStatsTable(getColumnsByCampaign(campaign, mission), mkPlayersByTeamForMpStats(playersByTeam, campaign))
   }
 
   return {

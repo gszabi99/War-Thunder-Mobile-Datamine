@@ -15,7 +15,7 @@ let { rouletteOpenId, rouletteOpenType, rouletteOpenResult, nextOpenCount, curJa
 } = require("lootboxOpenRouletteState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { delayUnseedPurchaseShow, skipUnseenMessageAnimOnce } = require("%rGui/shop/unseenPurchasesState.nut")
-let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardLocked, mkRewardPlateBg,
+let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardLocked, mkRewardPlateBg, mkProgressBar,
   mkRewardPlateImage, mkProgressLabel, mkProgressBarWithForecast, mkProgressBarText
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { ignoreSubIdRTypes } = require("%rGui/rewards/rewardViewInfo.nut")
@@ -76,12 +76,22 @@ let openConfig = Computed(@() lootboxOpenRouletteConfig?[rouletteOpenType.value]
   ?? lootboxOpenRouletteConfig.roulette_short)
 let consistentReceivedRewardIdx = Watched(-1)
 
+
+let isRewardSameDefault = @(received, info) info.id == received.id && info.count == received.count
+  && (info.rType in ignoreSubIdRTypes || info.subId == received.subId)
+
+let isSameByType = {
+  blueprint = @(received, info) info.id == received.id
+    && info.count == received.count + (received.subId == "" ? 0 : received.subId.tointeger())
+}
+
 function isReceivedSame(received, rewardInfo) {
-  foreach(rec in received)
+  foreach(rec in received) {
+    let { rType } = rec
     foreach(info in rewardInfo)
-      if (info.id == rec.id && info.rType == rec.rType && info.count == rec.count
-          && (info.rType in ignoreSubIdRTypes || info.subId == rec.subId))
+      if (info.rType == rType && (isSameByType?[rType] ?? isRewardSameDefault)(rec, info))
         return true //support only single reward drop from lootboxes atm.
+  }
   return false
 }
 
@@ -594,19 +604,26 @@ function mkBlueprintPlateTexts(reward, unitRank, rStyle) {
 
   let available = Computed(@() (servProfile.get()?.blueprints?[id] ?? 0) - countToDecrease.get())
   let total = Computed(@() serverConfigs.get()?.allBlueprints?[id].targetCount ?? 1)
+  let hasBlueprintUnit = Computed(@() id in myUnits.get())
 
   return @() {
     watch = consistentReceivedRewardIdx
     size = flex()
     children = [
-      {
+      @() {
+        watch = hasBlueprintUnit
         size = flex()
         valign = ALIGN_BOTTOM
         flow = FLOW_VERTICAL
-        children = [
-          mkProgressLabel(available.get(), total.get(), rStyle)
-          mkProgressBarWithForecast(reward.count, available.get(), total.get())
-        ]
+        children = hasBlueprintUnit.get()
+          ? [
+              mkProgressLabel(total.get(), total.get(), rStyle)
+              mkProgressBar(total.get(), total.get())
+            ]
+          : [
+              mkProgressLabel(available.get(), total.get(), rStyle)
+              mkProgressBarWithForecast(reward.count, available.get(), total.get())
+          ]
       }
       {
         size = flex()

@@ -17,7 +17,7 @@ let { mkDiscountPriceComp, CS_INCREASED_ICON } = require("%rGui/components/curre
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { textButtonPlayerLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
-let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
+let { openGoodsPreview, openedUnitFromTree } = require("%rGui/shop/goodsPreviewState.nut")
 let { curCampaign, curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let { allUnitsCfg, curUnit, playerLevelInfo, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -226,7 +226,7 @@ function unitActionButtons() {
     children.append(textButtonMultiline(utf8ToUpper(loc("unitsTree/speedUpProgress")),
       @() openBuyUnitResearchWnd(unitName),
       mergeStyles(PURCHASE, { hotkeys = ["^J:X"] })))
-  else if (canResearch || (serverConfigs.get()?.unitResearchExp[unitName] ?? 0) > 0)
+  else if (!isOwned && (canResearch || (serverConfigs.get()?.unitResearchExp[unitName] ?? 0) > 0))
     children.append(withGlareEffect(
       textButtonMultiline(utf8ToUpper(loc("unitsTree/startResearch")),
         @() canResearch ? setResearchUnit(unitName) : animResearchRequirementsUnitId.set(unitName),
@@ -259,7 +259,10 @@ function unitActionButtons() {
     if(blueprintsGoodsId)
       children.append(withGlareEffect(
         textButtonMultiline(utf8ToUpper(loc("mainmenu/btnShop")),
-          @() openGoodsPreview(blueprintsGoodsId),
+          function() {
+            openGoodsPreview(blueprintsGoodsId)
+            openedUnitFromTree.set(curSelectedUnit.get())
+          },
           mergeStyles(PURCHASE, { hotkeys = ["^J:X"] })),
         PURCHASE.ovr.minWidth,
         { delay = 3, repeatDelay = 3 }
@@ -277,7 +280,7 @@ function unitActionButtons() {
     size = SIZE_TO_CONTENT
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
-    gap = hdpx(24)
+    gap = hdpx(18)
     children
   }
 }

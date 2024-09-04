@@ -1,14 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
-let { round_by_value, roundToDigits } = require("%sqstd/math.nut")
+let { roundToDigits } = require("%sqstd/math.nut")
 let { getArmorPiercingByDistance, getRicochetGuaranteedAngle, getTntStrengthEquivalent
 } = require("%rGui/weaponry/dmgModel.nut")
+let { getMassText } = require("%rGui/measureUnits.nut")
 
 const ARMOR_PENETRATION_DIST_MIN = 100
 const ARMOR_PENETRATION_DIST_MAX = 500
-
-let getMassText = @(mass) mass < 1 ? "".concat((1000 * mass).tointeger(), loc("measureUnits/gr"))
-  : "".concat(round_by_value(mass, 0.01), loc("measureUnits/kg"))
 
 let getPenetrationDistance = @(tags, isMaxDistance) isMaxDistance
   ? (tags?.armorPenetrationDistanceMax ?? ARMOR_PENETRATION_DIST_MAX)

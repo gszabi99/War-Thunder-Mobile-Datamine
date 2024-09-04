@@ -2051,10 +2051,6 @@
         "blk": "gameData/FlightModels/weaponPresets/He-111H-16_winter_250kg.blk"
       },
       {
-        "name": "he-111h-16_winter_flamm_250",
-        "blk": "gameData/FlightModels/weaponPresets/he-111h-16_winter_flamm_250.blk"
-      },
-      {
         "name": "he-111_sc2500",
         "blk": "gameData/FlightModels/weaponPresets/he-111_sc2500.blk"
       }
@@ -2606,69 +2602,6 @@
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-                "emitter": "bomb8",
-                "bullets": 1,
-                "bombBayHeight": 1.5
-              }
-            ]
-          },
-          {
-            "iconType": "napalm_small_group_x3",
-            "name": "flam_250",
-            "reqModification": "flamm_250",
-            "Weapon": [
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-                "emitter": "bomb1",
-                "bullets": 1,
-                "bombBayHeight": 1.5
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-                "emitter": "bomb2",
-                "bullets": 1,
-                "bombBayHeight": 1.5
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-                "emitter": "bomb3",
-                "bullets": 1,
-                "bombBayHeight": 1.5
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-                "emitter": "bomb4",
-                "bullets": 1,
-                "bombBayHeight": 1.5
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-                "emitter": "bomb5",
-                "bullets": 1,
-                "bombBayHeight": 1.5
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-                "emitter": "bomb6",
-                "bullets": 1,
-                "bombBayHeight": 1.5
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-                "emitter": "bomb7",
-                "bullets": 1,
-                "bombBayHeight": 1.5
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
                 "emitter": "bomb8",
                 "bullets": 1,
                 "bombBayHeight": 1.5

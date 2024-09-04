@@ -6,12 +6,13 @@ let { isInFlight } = require("%rGui/globalState.nut")
 let { unitType } = require("%rGui/hudState.nut")
 let shipHudTouch = require("%rGui/hud/shipHudTouch.nut")
 let tankHudTouch = require("%rGui/hud/tankHudTouch.nut")
-let aircraftHudTouch = require("%rGui/hud/aircraftHudTouch.nut")
+let { aircraftHud, aircraftHudElemsOverShade } = require("%rGui/hud/aircraftHudTouch.nut")
 let submarineHudTouch = require("%rGui/hud/submarineHudTouch.nut")
 let cutsceneHud = require("%rGui/hud/cutsceneHud.nut")
 let freeCamHud = require("%rGui/hud/freeCamHud.nut")
 let hudIndicators = require("%rGui/hud/indicators/hudIndicators.nut")
 let { hudElementShade } = require("%rGui/tutorial/hudElementShade.nut")
+let { hudElementBlink } = require("%rGui/tutorial/hudElementBlink.nut")
 let { hudElementPointers } = require("%rGui/tutorial/hudElementPointers.nut")
 let hudTutorElems = require("%rGui/tutorial/hudTutorElems.nut")
 let hudReplayControls = require("%rGui/replay/hudReplayControls.nut")
@@ -19,12 +20,17 @@ let { viewHudType, HT_HUD, HT_FREECAM, HT_CUTSCENE, HT_BENCHMARK, isHudAttached
 } = require("%appGlobals/clientState/hudState.nut")
 let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 let battleResultsShort = require("%rGui/hud/battleResultsShort.ui.nut")
+let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
 
 let hudByUnitType = {
-  [AIR] = aircraftHudTouch,
+  [AIR] = aircraftHud,
   [SHIP] = shipHudTouch,
   [SUBMARINE] = submarineHudTouch,
   [TANK] = tankHudTouch,
+}
+
+let hudOverShade = {
+  [AIR] = aircraftHudElemsOverShade,
 }
 
 let emptySceneWithMenuButton = {
@@ -36,11 +42,14 @@ let hudByType = {
   [HT_HUD] = @(unitTypeV) [
     hudIndicators
     hudByUnitType?[unitTypeV]
+    hudReplayControls
     hudElementShade
+    hudElementBlink
     hudElementPointers
     hudTutorElems
-    hudReplayControls
-  ],
+  ]
+    .extend(hudOverShade?[unitTypeV] ?? [])
+    .append(voiceMsgPie),
   [HT_FREECAM] = @(_) freeCamHud,
   [HT_CUTSCENE] = @(_) cutsceneHud,
   [HT_BENCHMARK] = @(_) emptySceneWithMenuButton,

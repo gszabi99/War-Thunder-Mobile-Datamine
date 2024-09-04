@@ -21,7 +21,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
-let { battleCampaign, mainBattleUnitName } = require("%appGlobals/clientState/missionState.nut")
+let { battleCampaign, battleUnitClasses, mainBattleUnitName } = require("%appGlobals/clientState/missionState.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 
@@ -250,7 +250,12 @@ let mpBattleDataForClientEcs = keepref(Computed(@() !isInBattle.value || !is_mul
   : state.value?.data))
 mpBattleDataForClientEcs.subscribe(@(v) setBattleDataToClientEcs(v))
 
-realBattleData.subscribe(@(v) battleCampaign(v?.campaign ?? ""))
+realBattleData.subscribe(function(v) {
+  battleCampaign.set(v?.campaign ?? "")
+  battleUnitClasses.set([ v?.unit ].extend(v?.unit.platoonUnits ?? [])
+    .map(@(u) [ u?.name ?? "", u?.unitClass ?? "" ])
+    .totable())
+})
 
 isInBattle.subscribe(@(v) v ? wasBattleDataApplied(isBattleDataApplied.value) : isBattleDataApplied(false))
 isBattleDataApplied.subscribe(@(v) v ? wasBattleDataApplied(v) : null)

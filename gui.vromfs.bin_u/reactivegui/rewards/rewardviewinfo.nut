@@ -11,6 +11,7 @@ let rTypesPriority = {
   lootbox         = 100000
   unitUpgrade     = 20000
   unit            = 10000
+  blueprint       = 9000
   skin            = 5000
   decorator       = 1000
   currency        = 100

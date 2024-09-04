@@ -21,7 +21,7 @@
   "bullets": -1,
   "bulletsCluster": 1,
   "useSingleIconForBullet": true,
-  "fxType": "muzzle_ground_100mm_recoilless_noflash",
+  "fxType": "muzzle_ground_100mm_recoilless",
   "fxGroundDust": "",
   "fxSandDust": "",
   "fxSnowDust": "",
@@ -136,12 +136,16 @@
       ],
       "shellAnimation": "video/shells_animations/atgm.ivf",
       "dragCx": 0.027,
-      "selfDestructionFx": "hit_81_132mm_heat",
-      "explosionEffect": "hit_81_132mm_heat",
+      "selfDestructionFx": "explosion_air_selfexplosion_big",
+      "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
       "ricochetEffect": "hit_106_132mm_metal_ap",
       "waterCollisionEffect": "hit_106_132mm_water",
       "explosionPatchRadius": 3.5,
+      "fireEffect": "rocket_fire_short",
+      "smokeEffect": "",
+      "hazeEffect": "haze_missile",
+      "endSmokeViscosity": 0.05,
       "effectOffset": [
         0.05,
         0.0,
@@ -165,6 +169,12 @@
       "explodeTreshold": 0.1,
       "price": 3000.0,
       "mesh": "9m113_rocket_deployed",
+      "hasTracerTrail": true,
+      "tracerTrailEmitter": [
+        0.185,
+        -0.01,
+        0.0
+      ],
       "guidance": {
         "controlConeFov": 10.0,
         "breakLockMaxTime": 3.0,
@@ -316,6 +326,9 @@
         "glass": {
           "fx": "hit_106_132mm_metal_he"
         },
+        "wood": {
+          "fx": "hit_106_132mm_wood_he"
+        },
         "steel": {
           "fx": "hit_106_132mm_metal_he"
         },
@@ -342,10 +355,6 @@
         },
         "stone_snow": {
           "fx": "hit_106_132mm_snow_he"
-        },
-        "wood": {
-          "fx": "hit_81_132mm_heat",
-          "copyBulletTm": true
         }
       },
       "hitpower": {
@@ -498,6 +507,14 @@
         "distance": 5.5,
         "damage": 600.0,
         "onHitChanceMultFire": 25.0
+      },
+      "tracerTrail": {
+        "smokeEffect": "",
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "152mmRed",
+          "trail": "noTrail"
+        }
       }
     }
   },
@@ -595,12 +612,16 @@
         ],
         "shellAnimation": "video/shells_animations/atgm.ivf",
         "dragCx": 0.027,
-        "selfDestructionFx": "hit_81_132mm_heat",
-        "explosionEffect": "hit_81_132mm_heat",
+        "selfDestructionFx": "explosion_air_selfexplosion_big",
+        "explosionEffect": "hit_106_132mm_metal_he",
         "groundCollisionEffect": "hit_106_132mm_dirt_he",
         "ricochetEffect": "hit_106_132mm_metal_ap",
         "waterCollisionEffect": "hit_106_132mm_water",
         "explosionPatchRadius": 3.5,
+        "fireEffect": "rocket_fire_short",
+        "smokeEffect": "",
+        "hazeEffect": "haze_missile",
+        "endSmokeViscosity": 0.05,
         "effectOffset": [
           0.05,
           0.0,
@@ -624,6 +645,12 @@
         "explodeTreshold": 0.1,
         "price": 3000.0,
         "mesh": "9m113_rocket_deployed",
+        "hasTracerTrail": true,
+        "tracerTrailEmitter": [
+          0.185,
+          -0.01,
+          0.0
+        ],
         "guidance": {
           "controlConeFov": 10.0,
           "breakLockMaxTime": 3.0,
@@ -775,6 +802,9 @@
           "glass": {
             "fx": "hit_106_132mm_metal_he"
           },
+          "wood": {
+            "fx": "hit_106_132mm_wood_he"
+          },
           "steel": {
             "fx": "hit_106_132mm_metal_he"
           },
@@ -801,10 +831,6 @@
           },
           "stone_snow": {
             "fx": "hit_106_132mm_snow_he"
-          },
-          "wood": {
-            "fx": "hit_81_132mm_heat",
-            "copyBulletTm": true
           }
         },
         "hitpower": {
@@ -957,6 +983,14 @@
           "distance": 5.5,
           "damage": 600.0,
           "onHitChanceMultFire": 25.0
+        },
+        "tracerTrail": {
+          "smokeEffect": "",
+          "visual": {
+            "traceFreq": 1,
+            "tracer": "152mmRed",
+            "trail": "noTrail"
+          }
         }
       }
     }

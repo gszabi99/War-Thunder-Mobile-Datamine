@@ -4,7 +4,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { AirThrottleMode, AirParamsMain } = require("%globalScripts/sharedEnums.nut")
 let interopGen = require("%rGui/interopGen.nut")
 let { registerInteropFunc } = require("%globalsDarg/interop.nut")
-let { CANNON_1, MACHINE_GUNS_1, ROCKET, BOMBS, TORPEDO } = AirParamsMain
+let { CANNON_1, MACHINE_GUNS_1, ROCKET, BOMBS, TORPEDO, CANNON_ADDITIONAL } = AirParamsMain
 let { use_mgun_as_cannon_by_trigger } = require("hudAircraftStates")
 let { isUnitAlive, isUnitDelayed, playerUnitName } = require("%rGui/hudState.nut")
 let { FlightCameraType, getCameraViewType } = require("camera_control")
@@ -20,6 +20,7 @@ let Trt0             = Watched(0)
 let TrtMode0         = Watched(0)
 let Cannon0          = Watched({ count = 0, time = -1, endTime = -1 })
 let MGun0            = Watched({ count = 0, time = -1, endTime = -1 }) // -duplicate-assigned-expr
+let AddGun           = Watched({ count = 0, time = -1, endTime = -1 }) // -duplicate-assigned-expr
 
 let BombsState       = Watched({ count = 0, time = -1, endTime = 1 }) // -duplicate-assigned-expr
 let RocketsState     = Watched({ count = 0, time = -1, endTime = 1 }) // -duplicate-assigned-expr
@@ -40,8 +41,10 @@ let airState = {
   MainMask
   Cannon0
   MGun0
+  AddGun
   hasCanon0  = Computed(@() (MainMask.get() & (1 << CANNON_1)) != 0)
   hasMGun0   = Computed(@() (MainMask.get() & (1 << MACHINE_GUNS_1)) != 0)
+  hasAddGun  = Computed(@() (MainMask.get() & (1 << CANNON_ADDITIONAL)) != 0)
   isActiveTurretCamera
   cannonsOverheat
   mgunsOverheat
@@ -104,6 +107,11 @@ registerInteropFunc("updateMachineGunsArray", function(index, count, _seconds, _
   let p = MGun0.get()
   if (p.count != count || p.time != time || p.endTime != endTime)
     MGun0.set({ count, time, endTime })
+})
+
+registerInteropFunc("updateAdditionalCannons", function(count, _seconds, _mode, _selected) {
+  if (AddGun.get().count != count)
+    AddGun.set(AddGun.get().__merge({ count }))
 })
 
 registerInteropFunc("updateBombs", @(count, _seconds, _mode, _selected, _salvo, _name, _actualCount, time, endTime)

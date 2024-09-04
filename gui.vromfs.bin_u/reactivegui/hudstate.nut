@@ -2,9 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 require("%rGui/onlyAfterLogin.nut")
 let { register_command } = require("console")
+let { round } =  require("math")
+let { setDrawNativeAirCrosshair  = null } = require("hudState")
 let interopGet = require("interopGen.nut")
 let { battleUnitName } = require("%appGlobals/clientState/clientState.nut")
 let { DM_TEST_EMPTY } = require("crosshair")
+let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
 
 let hudStateNative = {
   playerUnitName = ""
@@ -28,8 +31,9 @@ let hudStateNative = {
   zoomMult = 1.0
   playerRoundKills = 0
   playerAiRoundKills = 0
-  tankCrosshairColor = Color(255, 255, 255)
+  tankCrosshairColor = 0xFFFFFFFF
   tankCrosshairDmTestResult = DM_TEST_EMPTY
+  aircraftCrosshairColor = 0xFFFFFFFF
   tankZoomAutoAimMode = false
   isUnitDelayed = false
   isUnitAlive = false
@@ -75,6 +79,21 @@ let HM_MANUAL_ANTIAIR = 0x002
 let isInAntiairMode = hudStateNative.isInAntiairMode
 let hudMode = Computed(@() isInAntiairMode.value ? HM_MANUAL_ANTIAIR : HM_COMMON)
 
+let aircraftCrosshairColorNative = hudStateNative.aircraftCrosshairColor
+let aircraftCrosshairColor = Computed(function() {
+  local res = aircraftCrosshairColorNative.get()
+  if ((res & 0xFF000000) == 0xFF000000)
+    return res
+  let mul = ((res & 0xFF000000) >> 24) / 255.0
+  let r = round(mul * ((res & 0xFF0000) >> 16)).tointeger()
+  let g = round(mul * ((res & 0xFF00) >> 8)).tointeger()
+  let b = round(mul * (res & 0xFF)).tointeger()
+  return (res & 0xFF000000) + (r << 16) + (g << 8) + b
+})
+
+setDrawNativeAirCrosshair?(false)
+isAppLoaded.subscribe(@(_) setDrawNativeAirCrosshair?(false))
+
 return hudStateNative.__merge({
   areHintsHidden
   unitType
@@ -82,4 +101,5 @@ return hudStateNative.__merge({
   hudMode
   HM_COMMON
   HM_MANUAL_ANTIAIR
+  aircraftCrosshairColor
 })
