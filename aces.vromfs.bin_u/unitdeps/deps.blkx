@@ -1,9 +1,9 @@
 {
-  "version": "1.10.0.38",
+  "version": "1.10.0.42",
   "grpHash": "27ef6f654e5c4128a5de8a7a3995e07f",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "30aa5b5bd99e09260da8c011c78725ca",
+  "blkHash": "a90e5c50467197246039ff835fcc5255",
   "genHash": "1e6cbd2338e3c521cbf041ec4d9a5179",
   "a-20g": {
     "dep": [
@@ -306,8 +306,6 @@
       "bf_110f_2",
       "bf_110f_2_anim",
       "bf_110f_2_skeleton",
-      "de_250kg_c_flam",
-      "de_500kg_c_flam",
       "de_rz65_rocket",
       "german_paratrooper_char",
       "gunner_sit_lw_500",
@@ -325,8 +323,6 @@
       "bf_110g_2_anim",
       "bf_110g_2_skeleton",
       "de_210mm",
-      "de_250kg_c_flam",
-      "de_500kg_c_flam",
       "de_pc1000_ap",
       "de_pc500_ap",
       "german_paratrooper_char",
@@ -345,8 +341,6 @@
       "bf_110g_2_anim",
       "bf_110g_2_skeleton",
       "de_210mm",
-      "de_250kg_c_flam",
-      "de_500kg_c_flam",
       "de_pc1000_ap",
       "de_pc500_ap",
       "german_paratrooper_char",
@@ -3538,8 +3532,7 @@
       "su_fab_100sv",
       "su_fab_250sv",
       "su_rbs_82_rocket",
-      "su_ros_82_497_rocket",
-      "su_zab_50fp_1942"
+      "su_ros_82_497_rocket"
     ]
   },
   "il-10": {

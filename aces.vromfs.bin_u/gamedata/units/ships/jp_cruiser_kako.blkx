@@ -2341,7 +2341,7 @@
       }
     ]
   },
-  "weapon_preset": {
+  "weapon_presets": {
     "preset": {
       "name": "jp_cruiser_kako_default",
       "blk": "gameData/units/ships/weaponPresets/jp_cruiser_kako_default.blk"

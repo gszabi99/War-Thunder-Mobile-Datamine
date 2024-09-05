@@ -1864,7 +1864,7 @@
         "order": 3,
         "WeaponPreset": [
           {
-            "iconType": "bombs_small_group_x4",
+            "iconType": "bomb_50kg_group",
             "name": "sc50",
             "reqModification": "Bf-109F-4_4xSC50",
             "ShowNodes": {
@@ -1912,7 +1912,7 @@
             ]
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "sc250",
             "reqModification": "Bf-109F-4_SC250",
             "ShowNodes": {

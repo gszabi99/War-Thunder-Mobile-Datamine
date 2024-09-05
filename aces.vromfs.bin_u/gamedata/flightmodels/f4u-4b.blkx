@@ -1829,7 +1829,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "250lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -1889,7 +1889,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "250lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -1913,7 +1913,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_500kg",
             "name": "500lb",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -1929,7 +1929,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_middle",
+            "iconType": "bomb_1000kg",
             "name": "1000lb",
             "reqModification": "flbc_mk1",
             "ShowNodes": {
@@ -1953,7 +1953,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bombs_large",
+            "iconType": "bomb_500kg",
             "name": "500lb",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -1969,7 +1969,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy_middle",
+            "iconType": "bomb_1000kg",
             "name": "1000lb",
             "reqModification": "flbc_mk1",
             "ShowNodes": {
@@ -2008,7 +2008,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "250lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {
@@ -2068,7 +2068,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "250lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {

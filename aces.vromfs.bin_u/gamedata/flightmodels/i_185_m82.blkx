@@ -1656,10 +1656,6 @@
       {
         "name": "i-185_m82_2xfab250",
         "blk": "gameData/FlightModels/weaponPresets/i-185_m82_2xfab250.blk"
-      },
-      {
-        "name": "i-i-185_m82_zb50",
-        "blk": "gameData/FlightModels/weaponPresets/i-185_m82_zb50.blk"
       }
     ]
   },
@@ -1916,32 +1912,6 @@
                 "preset": "rbs82_slot1"
               }
             ]
-          },
-          {
-            "iconType": "napalm_small",
-            "name": "zab50_slot3",
-            "reqModification": "la-7_dz-40",
-            "ShowNodes": {
-              "node": "pylon_bomb2"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_zab50fp.blk",
-              "emitter": "bomb2",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 1,
-                "preset": "rs82_slot1"
-              },
-              {
-                "slot": 1,
-                "preset": "rbs82_slot1"
-              }
-            ]
           }
         ]
       },
@@ -1993,32 +1963,6 @@
                 0.0,
                 0.1
               ]
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 6,
-                "preset": "rs82_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "rbs82_slot6"
-              }
-            ]
-          },
-          {
-            "iconType": "napalm_small",
-            "name": "zab50_slot4",
-            "reqModification": "la-7_dz-40",
-            "ShowNodes": {
-              "node": "pylon_bomb3"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_zab50fp.blk",
-              "emitter": "bomb3",
-              "bullets": 1,
-              "external": true,
-              "separate": true
             },
             "BannedWeaponPreset": [
               {

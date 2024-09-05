@@ -194,8 +194,8 @@ let statsTank = {
     getProgress = mkGetProgress(TANK, "armorPower")
     getProgressColor = getArmorPenetrationColor
   }
-  maxSpeedForward = { valueToText = @(v, _) getSpeedText(v) }
-  maxSpeedBackward = { valueToText = @(v, _) getSpeedText(v) }
+  maxSpeedForward = { valueToText = @(v, _) getSpeedText(v / 3.6) }
+  maxSpeedBackward = { valueToText = @(v, _) getSpeedText(v / 3.6) }
   powerToWeightRatio = {
     valueToText = @(v, _) "".concat(round(v), loc("measureUnits/hp_per_ton"))
   }

@@ -2123,7 +2123,7 @@
             }
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_250kg",
             "name": "250lbs",
             "reqModification": "fmbc_mk1",
             "ShowNodes": {

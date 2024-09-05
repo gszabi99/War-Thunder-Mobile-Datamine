@@ -1798,7 +1798,7 @@
             }
           },
           {
-            "iconType": "rbazooka_group",
+            "iconType": "bazooka_group",
             "name": "m8",
             "reqModification": "bazooka_pylon",
             "ShowNodes": {
@@ -2018,7 +2018,7 @@
             }
           },
           {
-            "iconType": "rbazooka_group",
+            "iconType": "bazooka_group",
             "name": "m8",
             "reqModification": "bazooka_pylon",
             "ShowNodes": {
