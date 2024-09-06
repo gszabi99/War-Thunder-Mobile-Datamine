@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { isBattleDataFake } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { isBeltWeapon, mkWeaponBelts, getEquippedBelt } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { getEquippedWeapon, getEqippedWithoutOverload } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
@@ -58,10 +59,10 @@ let mkCard = @(iconComp, title, bottomTitle = "", isSelectedStyle = false) {
   ]
 }
 
-let mkWeaponCard = @(w) mkCard(commonWeaponIcon(w), getWeaponTitle(w))
-  .__update({ onClick = @() showAirRespChooseSecWnd(w.slotIdx) })
+let mkWeaponCard = @(w, canClick) mkCard(commonWeaponIcon(w), getWeaponTitle(w))
+  .__update({ onClick = canClick ? @() showAirRespChooseSecWnd(w.slotIdx) : null })
 
-let mkBeltCard = @(w)
+let mkBeltCard = @(w, canClick)
   @() mkCard(
     mkBeltImage(w.equipped?.bullets ?? []),
     caliberTitle(w),
@@ -70,7 +71,7 @@ let mkBeltCard = @(w)
   ).__update({
     watch = selectedBeltWeaponId
     borderColor = w.weaponId == selectedBeltWeaponId.get() ? 0xC07BFFFF : 0xFFFFFFFF
-    onClick = @() showAirRespChooseBeltWnd(w.weaponId)
+    onClick = canClick ? @() showAirRespChooseBeltWnd(w.weaponId) : null
   })
 
 let mkEmptyInfo = @(text) {
@@ -209,20 +210,20 @@ function respawnAirWeaponry(selSlot) {
     let rows = []
     if (courseBeltWeapons.len() > 0)
       rows.append(mkGroup("weaponry/courseGunBelts",
-        courseBeltWeapons.sort(@(a, b) b.caliber <=> a.caliber).map(mkBeltCard), { key = courseMenuKey }, {
+        courseBeltWeapons.sort(@(a, b) b.caliber <=> a.caliber).map(@(w) mkBeltCard(w, !isBattleDataFake.get())), { key = courseMenuKey }, {
           key = courseTitleKey
         }))
     if (turretBeltWeapons.len() > 0)
       rows.append(mkGroup("weaponry/turretGunBelts",
-        turretBeltWeapons.sort(@(a, b) b.caliber <=> a.caliber).map(mkBeltCard), { key = turretMenuKey }, {
+        turretBeltWeapons.sort(@(a, b) b.caliber <=> a.caliber).map(@(w) mkBeltCard(w, !isBattleDataFake.get())), { key = turretMenuKey }, {
           key = turretTitleKey
         }))
     let secondaryStacks = stackSecondaryWeapons(secondaryWeapons)
     if (secondaryStacks.len() > 0)
-      rows.append(mkGroup("weaponry/secondaryWeapons", secondaryStacks.map(mkWeaponCard), { key = secondaryMenuKey }, {
+      rows.append(mkGroup("weaponry/secondaryWeapons", secondaryStacks.map(@(w) mkWeaponCard(w, !isBattleDataFake.get())), { key = secondaryMenuKey }, {
         key = secondaryTitleKey
       }))
-    else if (wSlots.len() > 1)
+    else if (wSlots.len() > 1 && !isBattleDataFake.get())
       rows.append(mkGroup("weaponry/secondaryWeapons", mkEmptyInfo(loc("weaponry/tapToChooseSecondary")), {
         onClick = @() showAirRespChooseSecWnd(1)
         behavior = Behaviors.Button
@@ -233,7 +234,7 @@ function respawnAirWeaponry(selSlot) {
       }))
 
     return {
-      watch = [weaponPreset, chosenBelts]
+      watch = [weaponPreset, chosenBelts, isBattleDataFake]
       size = [weaponGroupWidth + bulletsBlockMargin, SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL
       children = [

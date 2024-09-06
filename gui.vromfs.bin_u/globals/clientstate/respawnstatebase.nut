@@ -13,6 +13,7 @@ let isRespawnInProgress = sharedWatched("isRespawnInProgress", @() false)
 let timeToRespawn = sharedWatched("timeToRespawn", @() -1)
 let hasRespawnSeparateSlots = sharedWatched("hasRespawnSeparateSlots", @() false)
 let curUnitsAvgCostWp = sharedWatched("curUnitsAvgCostWp", @() null)
+let isBattleDataFake = sharedWatched("isBattleDataFake", @() null)
 
 return {
   isInRespawn
@@ -27,4 +28,5 @@ return {
   timeToRespawn
   hasRespawnSeparateSlots
   curUnitsAvgCostWp
+  isBattleDataFake
 }

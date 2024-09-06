@@ -1317,19 +1317,23 @@
     "use": true,
     "canRebuild": false,
     "common": {
+      "useExactSizeWithoutRebuild": true,
       "IB": 16384,
       "VB1": 16384,
       "VB2": 16384,
       "VB3": 16384,
       "VB4": 16384,
-      "VB5": 0
+      "VB5": 65536,
+      "VB6": 0
     }
   },
   "unitedVdata.rendInst": {
     "common": {
-      "IB": 4096,
+      "useExactSizeWithoutRebuild": true,
+      "IB": 8192,
       "VB1": 16384,
-      "VB2": 0
+      "VB2": 8192,
+      "VB3": 0
     }
   },
   "contentUpdater": {
