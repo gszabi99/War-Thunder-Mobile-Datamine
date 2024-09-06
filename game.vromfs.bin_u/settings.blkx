@@ -276,7 +276,12 @@
     "pkg_tier_5_ground": {},
     "pkg_tier_6_ground": {},
     "pkg_tier_7_ground": {},
-    "pkg_cbt_aircraft": {},
+    "pkg_cbt_aircraft": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 1
+      }
+    },
     "pkg_tier_1_aircraft": {
       "conditions": {
         "campaign": "air",

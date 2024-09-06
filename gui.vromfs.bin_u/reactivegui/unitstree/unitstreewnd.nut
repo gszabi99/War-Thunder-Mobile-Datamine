@@ -38,12 +38,13 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { slotBarTreeHeight } = require("%rGui/slotBar/slotBarConsts.nut")
 let { selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
-let { researchBlock, researchBlockSize } = require("%rGui/unitsTree/components/researchBars.nut")
+let { researchBlock } = require("%rGui/unitsTree/components/researchBars.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 
 let infoPanelFooterGap = hdpx(20)
 let filterIconSize = hdpxi(36)
 let clearIconSize = hdpxi(45)
+let researchBlockReservedHeight = hdpx(150)
 
 let isTreeNodes = Computed(@() curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
 
@@ -307,7 +308,7 @@ let unitsTreeGamercard = {
 }
 
 let infoPanelHeight = saSize[1] - gamercardHeight + gamercardOverlap + saBorders[1] - rankBlockOffset
-let unitInfoPanelHeight = infoPanelHeight - researchBlockSize[1] - slotBarTreeHeight - infoPanelFooterGap - saBorders[1]
+let unitInfoPanelHeight = infoPanelHeight - researchBlockReservedHeight - slotBarTreeHeight - infoPanelFooterGap - saBorders[1]
 
 function mkHasUnitActions(withTreeNodes) {
   if (!withTreeNodes)

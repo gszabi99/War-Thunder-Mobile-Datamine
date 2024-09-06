@@ -92,13 +92,10 @@ let prepareInstance = {
 }
 
 function prepareDataForJson(data) {
-  if (type(data) == "instance") {
-    foreach(inst, prepare in prepareInstance)
-      if (data instanceof inst)
-        return prepare(data)
-    return data
-  }
-  if (type(data) == "array" || type(data) == "table") {
+  let dataType = type(data)
+  if (dataType == "instance")
+    return prepareInstance?[data.getclass()](data) ?? data
+  if (dataType == "array" || dataType == "table") {
     local isChanged = false
     let prepare = prepareDataForJson
     local res = data.map(function(v) {

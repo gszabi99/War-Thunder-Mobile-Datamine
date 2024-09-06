@@ -52,10 +52,10 @@ let weaponDescRowsCfg = [
       : $"{getMassLbsText(v.massLbs)} ({getMassText(v.mass)})")
   mkRowCfg("weapons/drop_speed_range",
     @(w) getSingleBulletParam(w, "dropSpeedRange"),
-    @(v) getSpeedRangeText(v.x, v.y))
+    @(v) getSpeedRangeText(v[0], v[1]))
   mkRowCfg("weapons/drop_height_range",
     @(w) getSingleBulletParam(w, "dropHeightRange"),
-    @(v) getHeightRangeText(v.x, v.y))
+    @(v) getHeightRangeText(v[0], v[1]))
   mkRowCfg("bullet_properties/explosiveType",
     @(w) getSingleBulletParam(w, "explosiveType")
     @(v) loc($"explosiveType/{v}"))

@@ -23,7 +23,7 @@ let mkArsenalBtnContent = {
     {
       rendObj = ROBJ_TEXT
       text = utf8ToUpper(loc("mainmenu/btnArsenal"))
-    }.__update(fontSmallAccentedShaded)
+    }.__update(fontTinyAccented)
   ]
 }
 

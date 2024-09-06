@@ -7,7 +7,7 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
 
 let btnW = hdpxi(340)
-let btnH = hdpxi(210)
+let btnH = hdpxi(180)
 let premIconW = hdpxi(160)
 let premIconH = hdpxi(110)
 

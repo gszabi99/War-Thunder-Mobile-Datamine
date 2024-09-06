@@ -186,6 +186,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -422,6 +425,9 @@
           "icon": "t_ball/ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
+        },
         "shkas_all_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -481,6 +487,9 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
@@ -1549,6 +1558,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -2057,6 +2069,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_7"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_2"
@@ -2192,6 +2207,9 @@
         },
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/"
@@ -2340,6 +2358,9 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
+        },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -2457,6 +2478,9 @@
         },
         "shkas_universal": {
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/"
+        },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
         },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/"
@@ -3372,6 +3396,9 @@
         },
         "mg131_stealth": {
           "icon": "ap_i_ball/"
+        },
+        "mg131_turret": {
+          "icon": "ap_t_ball/ap_t_ball/he_i_ball/"
         }
       },
       "cannonMK108": {
@@ -3867,6 +3894,9 @@
         "shkas_universal": {
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/"
         },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
+        },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/"
         },
@@ -3946,6 +3976,9 @@
         },
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/"
@@ -4173,6 +4206,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -4311,6 +4347,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -4398,6 +4437,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -4463,6 +4505,9 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
@@ -4537,6 +4582,9 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
@@ -4638,6 +4686,9 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
@@ -8342,6 +8393,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -8433,6 +8487,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -8499,6 +8556,9 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
@@ -8580,6 +8640,9 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
@@ -8670,6 +8733,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -8747,6 +8813,9 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
@@ -8846,6 +8915,9 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
@@ -8948,6 +9020,9 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
@@ -9075,6 +9150,9 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
@@ -9563,6 +9641,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -9688,6 +9769,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -9807,6 +9891,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -9924,6 +10011,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -10034,6 +10124,9 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
@@ -10380,6 +10473,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -10476,6 +10572,9 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
@@ -10823,6 +10922,9 @@
         "mg131_stealth": {
           "icon": "ap_i_ball/",
           "reqModification": "aircraft_mod_3"
+        },
+        "mg131_turret": {
+          "icon": "ap_t_ball/ap_t_ball/he_i_ball/"
         }
       },
       "cannonMG15120": {
@@ -10956,6 +11058,9 @@
         "mg131_stealth": {
           "icon": "ap_i_ball/",
           "reqModification": "aircraft_mod_8"
+        },
+        "mg131_turret": {
+          "icon": "ap_t_ball/ap_t_ball/he_i_ball/"
         }
       },
       "cannonMG15120": {
@@ -11280,6 +11385,9 @@
         "mg131_stealth": {
           "icon": "ap_i_ball/",
           "reqModification": "aircraft_mod_1"
+        },
+        "mg131_turret": {
+          "icon": "ap_t_ball/ap_t_ball/he_i_ball/"
         }
       },
       "cannonMG15120": {
@@ -11391,6 +11499,9 @@
         "mg131_stealth": {
           "icon": "ap_i_ball/",
           "reqModification": "aircraft_mod_1"
+        },
+        "mg131_turret": {
+          "icon": "ap_t_ball/ap_t_ball/he_i_ball/"
         }
       },
       "cannonMG15120": {
@@ -11565,6 +11676,9 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
+        },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -11669,6 +11783,9 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
+        },
+        "mg_turret": {
+          "icon": "ap_i_ball/ap_ball/ap_t_ball/ap_ball/"
         },
         "mg_all_tracers": {
           "icon": "ap_t_ball/",
@@ -11793,6 +11910,9 @@
         "shkas_universal": {
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
+        },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
         },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
@@ -11933,6 +12053,9 @@
         "shkas_universal": {
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
+        },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
         },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
@@ -12088,6 +12211,9 @@
         "shkas_universal": {
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
+        },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
         },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
@@ -13281,6 +13407,9 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_4"
         },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
+        },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
@@ -13550,6 +13679,9 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
+        },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -13685,6 +13817,9 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
+        },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -13774,6 +13909,9 @@
         "shkas_universal": {
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
+        },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
         },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
@@ -14100,6 +14238,9 @@
         "shkas_universal": {
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_4"
+        },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
         },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
@@ -14632,6 +14773,9 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
+        },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -14690,6 +14834,9 @@
           "icon": "t_ball/ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
+        },
         "shkas_all_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -14747,6 +14894,9 @@
         "shkas_universal": {
           "icon": "t_ball/ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
+        },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
         },
         "shkas_all_tracers": {
           "icon": "ap_i_t_ball/",
@@ -14820,6 +14970,9 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
+        },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -14887,6 +15040,9 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
+        },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
@@ -14950,6 +15106,9 @@
         "shkas_universal": {
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
+        },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
         },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
@@ -15798,6 +15957,9 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_5"
         },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
+        },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
@@ -16209,6 +16371,9 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_5"
         },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
+        },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
@@ -16300,6 +16465,9 @@
         "shkas_universal": {
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_5"
+        },
+        "shkas_turret": {
+          "icon": "ap_i_t_ball/ap_i_ball/he_ball/ap_i_ball/ap_i_t_ball/"
         },
         "shkas_all_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
@@ -21862,7 +22030,7 @@
           "gunsCount": 1,
           "caliber": 76.0,
           "ammoCount": 640,
-          "isBeltAmmo": true
+          "isBeltAmmo": false
         },
         "us_324mm_mark_44_torpedo": {
           "wtype": "torpedo",
@@ -22287,8 +22455,8 @@
       ],
       "crew": 4,
       "mass": 30000.0,
-      "maxSpeedForward": 48.9403,
-      "maxSpeedBackward": 6.91568,
+      "maxSpeedForward": 13.5945,
+      "maxSpeedBackward": 1.92102,
       "powerToWeightRatio": 16.6667,
       "weapons": {
         "76mm_F34_user_cannon": {
@@ -22353,8 +22521,8 @@
       ],
       "crew": 5,
       "mass": 30600.0,
-      "maxSpeedForward": 38.0112,
-      "maxSpeedBackward": 4.94011,
+      "maxSpeedForward": 10.5586,
+      "maxSpeedBackward": 1.37225,
       "powerToWeightRatio": 13.0719,
       "weapons": {
         "75mm_m3_sherman_user_cannon": {
@@ -22429,8 +22597,8 @@
       ],
       "crew": 5,
       "mass": 18400.0,
-      "maxSpeedForward": 56.4238,
-      "maxSpeedBackward": 23.1245,
+      "maxSpeedForward": 15.6732,
+      "maxSpeedBackward": 6.42346,
       "powerToWeightRatio": 16.087,
       "weapons": {
         "75mm_M6_user_cannon": {
@@ -22505,8 +22673,8 @@
       ],
       "crew": 5,
       "mass": 18400.0,
-      "maxSpeedForward": 56.4238,
-      "maxSpeedBackward": 23.1245,
+      "maxSpeedForward": 15.6732,
+      "maxSpeedBackward": 6.42346,
       "powerToWeightRatio": 16.087,
       "weapons": {
         "75mm_M6_user_cannon": {
@@ -22575,8 +22743,8 @@
       ],
       "crew": 5,
       "mass": 30374.0,
-      "maxSpeedForward": 41.1843,
-      "maxSpeedBackward": 4.83784,
+      "maxSpeedForward": 11.4401,
+      "maxSpeedBackward": 1.34384,
       "powerToWeightRatio": 13.4984,
       "weapons": {
         "76mm_M7_for_M10_user_cannon": {
@@ -22637,8 +22805,8 @@
       ],
       "crew": 5,
       "mass": 30374.0,
-      "maxSpeedForward": 41.1843,
-      "maxSpeedBackward": 4.83784,
+      "maxSpeedForward": 11.4401,
+      "maxSpeedBackward": 1.34384,
       "powerToWeightRatio": 13.4984,
       "weapons": {
         "76mm_M7_for_M10_user_cannon": {
@@ -22701,8 +22869,8 @@
       ],
       "crew": 3,
       "mass": 8550.0,
-      "maxSpeedForward": 72.93,
-      "maxSpeedBackward": 9.96311,
+      "maxSpeedForward": 20.2583,
+      "maxSpeedBackward": 2.76753,
       "powerToWeightRatio": 17.3099,
       "weapons": {
         "12_7mm_M2_HB_user_machinegun_for_M16": {
@@ -22757,8 +22925,8 @@
       ],
       "crew": 3,
       "mass": 8550.0,
-      "maxSpeedForward": 72.93,
-      "maxSpeedBackward": 9.96311,
+      "maxSpeedForward": 20.2583,
+      "maxSpeedBackward": 2.76753,
       "powerToWeightRatio": 17.3099,
       "weapons": {
         "12_7mm_M2_HB_user_machinegun_for_M16": {
@@ -22815,8 +22983,8 @@
       ],
       "crew": 5,
       "mass": 32673.0,
-      "maxSpeedForward": 38.0085,
-      "maxSpeedBackward": 4.93975,
+      "maxSpeedForward": 10.5579,
+      "maxSpeedBackward": 1.37215,
       "powerToWeightRatio": 12.2425,
       "weapons": {
         "76mm_M1_m4a1_76w_sherman_user_cannon": {
@@ -22889,8 +23057,8 @@
       ],
       "crew": 5,
       "mass": 32650.0,
-      "maxSpeedForward": 47.7092,
-      "maxSpeedBackward": 6.20051,
+      "maxSpeedForward": 13.2525,
+      "maxSpeedBackward": 1.72236,
       "powerToWeightRatio": 12.5574,
       "weapons": {
         "75mm_m3_sherman_user_cannon": {
@@ -22963,8 +23131,8 @@
       ],
       "crew": 5,
       "mass": 42605.0,
-      "maxSpeedForward": 38.0107,
-      "maxSpeedBackward": 4.94005,
+      "maxSpeedForward": 10.5585,
+      "maxSpeedBackward": 1.37223,
       "powerToWeightRatio": 11.7357,
       "weapons": {
         "75mm_m3_sherman_user_cannon": {
@@ -23031,14 +23199,14 @@
       ],
       "crew": 6,
       "mass": 17500.0,
-      "maxSpeedForward": 56.4238,
-      "maxSpeedBackward": 23.1245,
+      "maxSpeedForward": 15.6732,
+      "maxSpeedBackward": 6.42346,
       "powerToWeightRatio": 16.9143,
       "weapons": {
         "40mm_M2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -23082,14 +23250,14 @@
       ],
       "crew": 6,
       "mass": 17500.0,
-      "maxSpeedForward": 56.4238,
-      "maxSpeedBackward": 23.1245,
+      "maxSpeedForward": 15.6732,
+      "maxSpeedBackward": 6.42346,
       "powerToWeightRatio": 16.9143,
       "weapons": {
         "40mm_M2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -23145,8 +23313,8 @@
       ],
       "crew": 5,
       "mass": 17690.0,
-      "maxSpeedForward": 72.2336,
-      "maxSpeedBackward": 23.3135,
+      "maxSpeedForward": 20.0649,
+      "maxSpeedBackward": 6.47596,
       "powerToWeightRatio": 22.6116,
       "weapons": {
         "76mm_M1_user_cannon": {
@@ -23205,14 +23373,14 @@
       ],
       "crew": 6,
       "mass": 22450.0,
-      "maxSpeedForward": 72.4416,
-      "maxSpeedBackward": 18.816,
+      "maxSpeedForward": 20.1226,
+      "maxSpeedBackward": 5.22666,
       "powerToWeightRatio": 22.2717,
       "weapons": {
         "40mm_M2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -23257,14 +23425,14 @@
       ],
       "crew": 6,
       "mass": 22450.0,
-      "maxSpeedForward": 72.4416,
-      "maxSpeedBackward": 18.816,
+      "maxSpeedForward": 20.1226,
+      "maxSpeedBackward": 5.22666,
       "powerToWeightRatio": 22.2717,
       "weapons": {
         "40mm_M2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -23308,14 +23476,14 @@
       ],
       "crew": 6,
       "mass": 22450.0,
-      "maxSpeedForward": 72.4416,
-      "maxSpeedBackward": 18.816,
+      "maxSpeedForward": 20.1226,
+      "maxSpeedBackward": 5.22666,
       "powerToWeightRatio": 22.2717,
       "weapons": {
         "40mm_M2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -23360,14 +23528,14 @@
       ],
       "crew": 6,
       "mass": 22450.0,
-      "maxSpeedForward": 72.4416,
-      "maxSpeedBackward": 18.816,
+      "maxSpeedForward": 20.1226,
+      "maxSpeedBackward": 5.22666,
       "powerToWeightRatio": 22.2717,
       "weapons": {
         "40mm_M2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -23418,8 +23586,8 @@
       ],
       "crew": 5,
       "mass": 30600.0,
-      "maxSpeedForward": 40.2633,
-      "maxSpeedBackward": 4.94011,
+      "maxSpeedForward": 11.1842,
+      "maxSpeedBackward": 1.37225,
       "powerToWeightRatio": 13.8889,
       "weapons": {
         "75mm_m3_sherman_user_cannon": {
@@ -23484,8 +23652,8 @@
       ],
       "crew": 5,
       "mass": 30600.0,
-      "maxSpeedForward": 40.2633,
-      "maxSpeedBackward": 4.94011,
+      "maxSpeedForward": 11.1842,
+      "maxSpeedBackward": 1.37225,
       "powerToWeightRatio": 13.8889,
       "weapons": {
         "75mm_m3_sherman_user_cannon": {
@@ -23550,8 +23718,8 @@
       ],
       "crew": 5,
       "mass": 30600.0,
-      "maxSpeedForward": 40.2633,
-      "maxSpeedBackward": 4.94011,
+      "maxSpeedForward": 11.1842,
+      "maxSpeedBackward": 1.37225,
       "powerToWeightRatio": 13.8889,
       "weapons": {
         "75mm_m3_sherman_user_cannon": {
@@ -23623,8 +23791,8 @@
       ],
       "crew": 6,
       "mass": 56835.0,
-      "maxSpeedForward": 35.0425,
-      "maxSpeedBackward": 4.55428,
+      "maxSpeedForward": 9.734,
+      "maxSpeedBackward": 1.26507,
       "powerToWeightRatio": 14.0758,
       "weapons": {
         "76mm_M7_user_cannon": {
@@ -23697,8 +23865,8 @@
       ],
       "crew": 5,
       "mass": 22500.0,
-      "maxSpeedForward": 53.4072,
-      "maxSpeedBackward": 9.98265,
+      "maxSpeedForward": 14.8353,
+      "maxSpeedBackward": 2.77295,
       "powerToWeightRatio": 13.3333,
       "weapons": {
         "50mm_KwK39_user_cannon": {
@@ -23763,8 +23931,8 @@
       ],
       "crew": 5,
       "mass": 22300.0,
-      "maxSpeedForward": 42.7622,
-      "maxSpeedBackward": 7.99294,
+      "maxSpeedForward": 11.8784,
+      "maxSpeedBackward": 2.22026,
       "powerToWeightRatio": 13.4529,
       "weapons": {
         "75mm_KwK37_user_cannon": {
@@ -23829,8 +23997,8 @@
       ],
       "crew": 5,
       "mass": 22650.0,
-      "maxSpeedForward": 42.7622,
-      "maxSpeedBackward": 7.99294,
+      "maxSpeedForward": 11.8784,
+      "maxSpeedBackward": 2.22026,
       "powerToWeightRatio": 13.245,
       "weapons": {
         "75mm_KwK40_L43_user_cannon": {
@@ -23895,8 +24063,8 @@
       ],
       "crew": 5,
       "mass": 23650.0,
-      "maxSpeedForward": 40.0034,
-      "maxSpeedBackward": 7.47727,
+      "maxSpeedForward": 11.112,
+      "maxSpeedBackward": 2.07701,
       "powerToWeightRatio": 12.685,
       "weapons": {
         "75mm_KwK40_L43_user_cannon": {
@@ -23961,8 +24129,8 @@
       ],
       "crew": 5,
       "mass": 26350.0,
-      "maxSpeedForward": 38.6897,
-      "maxSpeedBackward": 7.23171,
+      "maxSpeedForward": 10.7471,
+      "maxSpeedBackward": 2.0088,
       "powerToWeightRatio": 11.3852,
       "weapons": {
         "75mm_KwK40_L48_user_cannon": {
@@ -24025,14 +24193,14 @@
       ],
       "crew": 5,
       "mass": 25000.0,
-      "maxSpeedForward": 38.6897,
-      "maxSpeedBackward": 7.23171,
+      "maxSpeedForward": 10.7471,
+      "maxSpeedBackward": 2.0088,
       "powerToWeightRatio": 12.0,
       "weapons": {
         "20mm_FlaK38_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 9.78553,
+          "armorPower": 12.043,
           "reloadTime": 0.125,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -24081,14 +24249,14 @@
       ],
       "crew": 5,
       "mass": 25000.0,
-      "maxSpeedForward": 38.6897,
-      "maxSpeedBackward": 7.23171,
+      "maxSpeedForward": 10.7471,
+      "maxSpeedBackward": 2.0088,
       "powerToWeightRatio": 12.0,
       "weapons": {
         "37mm_FlaK43_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 25.3637,
+          "armorPower": 27.3921,
           "reloadTime": 0.240038,
           "gunnerTurretRotationSpeed": 35.0,
           "isBeltAmmo": true
@@ -24130,8 +24298,8 @@
       ],
       "crew": 5,
       "mass": 45250.0,
-      "maxSpeedForward": 55.0064,
-      "maxSpeedBackward": 4.0121,
+      "maxSpeedForward": 15.2795,
+      "maxSpeedBackward": 1.11447,
       "powerToWeightRatio": 14.3646,
       "weapons": {
         "75mm_Kwk42_user_cannon": {
@@ -24196,8 +24364,8 @@
       ],
       "crew": 5,
       "mass": 57320.0,
-      "maxSpeedForward": 44.8672,
-      "maxSpeedBackward": 8.33075,
+      "maxSpeedForward": 12.4631,
+      "maxSpeedBackward": 2.31409,
       "powerToWeightRatio": 11.3398,
       "weapons": {
         "88mm_Kwk36_user_cannon": {
@@ -24262,8 +24430,8 @@
       ],
       "crew": 4,
       "mass": 24350.0,
-      "maxSpeedForward": 40.3073,
-      "maxSpeedBackward": 7.53408,
+      "maxSpeedForward": 11.1965,
+      "maxSpeedBackward": 2.09279,
       "powerToWeightRatio": 12.3203,
       "weapons": {
         "75mm_StuK40_L48_user_cannon": {
@@ -24319,8 +24487,8 @@
       ],
       "crew": 4,
       "mass": 15750.0,
-      "maxSpeedForward": 42.146,
-      "maxSpeedBackward": 6.10547,
+      "maxSpeedForward": 11.7072,
+      "maxSpeedBackward": 1.69596,
       "powerToWeightRatio": 10.1587,
       "weapons": {
         "75mm_PaK39_L48_user_cannon": {
@@ -24389,8 +24557,8 @@
       ],
       "crew": 4,
       "mass": 28270.0,
-      "maxSpeedForward": 48.9403,
-      "maxSpeedBackward": 6.91568,
+      "maxSpeedForward": 13.5945,
+      "maxSpeedBackward": 1.92102,
       "powerToWeightRatio": 17.6866,
       "weapons": {
         "76mm_F34_user_cannon": {
@@ -24463,8 +24631,8 @@
       ],
       "crew": 4,
       "mass": 29500.0,
-      "maxSpeedForward": 56.2997,
-      "maxSpeedBackward": 7.95563,
+      "maxSpeedForward": 15.6388,
+      "maxSpeedBackward": 2.20989,
       "powerToWeightRatio": 16.9492,
       "weapons": {
         "76mm_F34_user_cannon": {
@@ -24525,8 +24693,8 @@
       ],
       "crew": 4,
       "mass": 25600.0,
-      "maxSpeedForward": 48.9403,
-      "maxSpeedBackward": 6.91568,
+      "maxSpeedForward": 13.5945,
+      "maxSpeedBackward": 1.92102,
       "powerToWeightRatio": 19.5312,
       "weapons": {
         "76mm_L11_user_cannon": {
@@ -24586,8 +24754,8 @@
       ],
       "crew": 4,
       "mass": 32000.0,
-      "maxSpeedForward": 54.9303,
-      "maxSpeedBackward": 8.38936,
+      "maxSpeedForward": 15.2584,
+      "maxSpeedBackward": 2.33037,
       "powerToWeightRatio": 15.625,
       "weapons": {
         "85mm_D5T_user_cannon": {
@@ -24660,8 +24828,8 @@
       ],
       "crew": 5,
       "mass": 46400.0,
-      "maxSpeedForward": 34.3099,
-      "maxSpeedBackward": 6.18425,
+      "maxSpeedForward": 9.5305,
+      "maxSpeedBackward": 1.71784,
       "powerToWeightRatio": 12.931,
       "weapons": {
         "76mm_ZIS5_user_cannon": {
@@ -24725,8 +24893,8 @@
       ],
       "crew": 4,
       "mass": 44000.0,
-      "maxSpeedForward": 42.1729,
-      "maxSpeedBackward": 16.2715,
+      "maxSpeedForward": 11.7147,
+      "maxSpeedBackward": 4.51984,
       "powerToWeightRatio": 11.8182,
       "weapons": {
         "85mm_D5T_user_cannon": {
@@ -24788,8 +24956,8 @@
       ],
       "crew": 4,
       "mass": 44000.0,
-      "maxSpeedForward": 42.1729,
-      "maxSpeedBackward": 16.2715,
+      "maxSpeedForward": 11.7147,
+      "maxSpeedBackward": 4.51984,
       "powerToWeightRatio": 11.8182,
       "weapons": {
         "85mm_D5T_user_cannon": {
@@ -24848,14 +25016,14 @@
       ],
       "crew": 4,
       "mass": 2950.0,
-      "maxSpeedForward": 50.7785,
-      "maxSpeedBackward": 6.49342,
+      "maxSpeedForward": 14.1051,
+      "maxSpeedBackward": 1.80372,
       "powerToWeightRatio": 23.7288,
       "weapons": {
         "25mm_72K_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 25.0,
-          "armorPower": 28.0961,
+          "armorPower": 29.6711,
           "reloadTime": 0.25,
           "gunnerTurretRotationSpeed": 35.0,
           "isBeltAmmo": true
@@ -24900,14 +25068,14 @@
       ],
       "crew": 4,
       "mass": 8750.0,
-      "maxSpeedForward": 35.0023,
-      "maxSpeedBackward": 8.00969,
+      "maxSpeedForward": 9.72285,
+      "maxSpeedBackward": 2.22491,
       "powerToWeightRatio": 10.2857,
       "weapons": {
         "37mm_61_K_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 36.195,
+          "armorPower": 38.2008,
           "reloadTime": 0.37594,
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": true
@@ -24953,8 +25121,8 @@
       ],
       "crew": 5,
       "mass": 45500.0,
-      "maxSpeedForward": 42.6323,
-      "maxSpeedBackward": 16.4487,
+      "maxSpeedForward": 11.8423,
+      "maxSpeedBackward": 4.56907,
       "powerToWeightRatio": 13.1868,
       "weapons": {
         "152mm_ML20S_user_cannon": {
@@ -25009,14 +25177,14 @@
       ],
       "crew": 5,
       "mass": 12200.0,
-      "maxSpeedForward": 42.081,
-      "maxSpeedBackward": 5.50799,
+      "maxSpeedForward": 11.6891,
+      "maxSpeedBackward": 1.52999,
       "powerToWeightRatio": 11.4754,
       "weapons": {
         "37mm_61_K_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 36.195,
+          "armorPower": 38.2008,
           "reloadTime": 0.37594,
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": true
@@ -25065,14 +25233,14 @@
       ],
       "crew": 5,
       "mass": 12200.0,
-      "maxSpeedForward": 42.081,
-      "maxSpeedBackward": 5.50799,
+      "maxSpeedForward": 11.6891,
+      "maxSpeedBackward": 1.52999,
       "powerToWeightRatio": 11.4754,
       "weapons": {
         "37mm_61_K_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 36.195,
+          "armorPower": 38.2008,
           "reloadTime": 0.37594,
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": true
@@ -25115,8 +25283,8 @@
       ],
       "crew": 6,
       "mass": 29400.0,
-      "maxSpeedForward": 34.732,
-      "maxSpeedBackward": 5.06372,
+      "maxSpeedForward": 9.64775,
+      "maxSpeedBackward": 1.40659,
       "powerToWeightRatio": 17.0068,
       "weapons": {
         "76mm_L10_user_cannon": {
@@ -25181,8 +25349,8 @@
       ],
       "crew": 5,
       "mass": 28000.0,
-      "maxSpeedForward": 51.5037,
-      "maxSpeedBackward": 3.01918,
+      "maxSpeedForward": 14.3065,
+      "maxSpeedBackward": 0.83866,
       "powerToWeightRatio": 21.4286,
       "weapons": {
         "75mm_QQF_MkV_user_cannon": {
@@ -25241,14 +25409,14 @@
       ],
       "crew": 4,
       "mass": 12700.0,
-      "maxSpeedForward": 66.2843,
-      "maxSpeedBackward": 8.28554,
+      "maxSpeedForward": 18.4123,
+      "maxSpeedBackward": 2.30153,
       "powerToWeightRatio": 12.4409,
       "weapons": {
         "20mm_Oerlikon_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 28.5966,
+          "armorPower": 29.5966,
           "reloadTime": 0.133333,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -25297,8 +25465,8 @@
       ],
       "crew": 3,
       "mass": 12700.0,
-      "maxSpeedForward": 60.0771,
-      "maxSpeedBackward": 6.89432,
+      "maxSpeedForward": 16.688,
+      "maxSpeedBackward": 1.91508,
       "powerToWeightRatio": 21.2598,
       "weapons": {
         "75mm_SA_49_user_cannon": {
@@ -25361,8 +25529,8 @@
       ],
       "crew": 3,
       "mass": 12700.0,
-      "maxSpeedForward": 60.0771,
-      "maxSpeedBackward": 6.89432,
+      "maxSpeedForward": 16.688,
+      "maxSpeedBackward": 1.91508,
       "powerToWeightRatio": 21.2598,
       "weapons": {
         "75mm_SA_49_user_cannon": {
@@ -25426,8 +25594,8 @@
       ],
       "crew": 5,
       "mass": 41500.0,
-      "maxSpeedForward": 20.3646,
-      "maxSpeedBackward": 2.53456,
+      "maxSpeedForward": 5.65681,
+      "maxSpeedBackward": 0.704043,
       "powerToWeightRatio": 8.43373,
       "weapons": {
         "75mm_QQF_MkV_churchill_user_cannon": {
@@ -25492,8 +25660,8 @@
       ],
       "crew": 5,
       "mass": 39000.0,
-      "maxSpeedForward": 27.9571,
-      "maxSpeedBackward": 2.49617,
+      "maxSpeedForward": 7.76583,
+      "maxSpeedBackward": 0.693378,
       "powerToWeightRatio": 8.97436,
       "weapons": {
         "57mm_6pdr_QQF_Mk_5_L50_user_cannon": {
@@ -25560,8 +25728,8 @@
       ],
       "crew": 5,
       "mass": 37800.0,
-      "maxSpeedForward": 28.0055,
-      "maxSpeedBackward": 2.50049,
+      "maxSpeedForward": 7.77929,
+      "maxSpeedBackward": 0.69458,
       "powerToWeightRatio": 9.25926,
       "weapons": {
         "40mm_QF_2pdr_Churchill_user_cannon": {
@@ -25632,8 +25800,8 @@
       ],
       "crew": 5,
       "mass": 30600.0,
-      "maxSpeedForward": 38.0112,
-      "maxSpeedBackward": 4.94011,
+      "maxSpeedForward": 10.5586,
+      "maxSpeedBackward": 1.37225,
       "powerToWeightRatio": 13.0719,
       "weapons": {
         "75mm_m3_sherman_user_cannon": {
@@ -25700,14 +25868,14 @@
       ],
       "crew": 3,
       "mass": 8500.0,
-      "maxSpeedForward": 64.3404,
-      "maxSpeedBackward": 8.568,
+      "maxSpeedForward": 17.8723,
+      "maxSpeedBackward": 2.37999,
       "powerToWeightRatio": 11.0588,
       "weapons": {
         "40mm_Bofors_L60_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 35.0,
           "isBeltAmmo": true
@@ -25752,14 +25920,14 @@
       ],
       "crew": 3,
       "mass": 8500.0,
-      "maxSpeedForward": 64.3404,
-      "maxSpeedBackward": 8.568,
+      "maxSpeedForward": 17.8723,
+      "maxSpeedBackward": 2.37999,
       "powerToWeightRatio": 11.0588,
       "weapons": {
         "40mm_Bofors_L60_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 35.0,
           "isBeltAmmo": true
@@ -25801,8 +25969,8 @@
       ],
       "crew": 5,
       "mass": 50000.0,
-      "maxSpeedForward": 37.4093,
-      "maxSpeedBackward": 7.53381,
+      "maxSpeedForward": 10.3914,
+      "maxSpeedBackward": 2.09272,
       "powerToWeightRatio": 12.0,
       "weapons": {
         "90mm_SA45_ARL_user_cannon": {
@@ -25859,8 +26027,8 @@
       ],
       "crew": 5,
       "mass": 47000.0,
-      "maxSpeedForward": 37.4093,
-      "maxSpeedBackward": 7.53381,
+      "maxSpeedForward": 10.3914,
+      "maxSpeedBackward": 2.09272,
       "powerToWeightRatio": 12.766,
       "weapons": {
         "75mm_SA_46_user_cannon": {
@@ -25917,8 +26085,8 @@
       ],
       "crew": 5,
       "mass": 47000.0,
-      "maxSpeedForward": 37.4093,
-      "maxSpeedBackward": 7.53381,
+      "maxSpeedForward": 10.3914,
+      "maxSpeedBackward": 2.09272,
       "powerToWeightRatio": 12.766,
       "weapons": {
         "75mm_SA_46_user_cannon": {
@@ -25986,8 +26154,8 @@
       ],
       "crew": 4,
       "mass": 31500.0,
-      "maxSpeedForward": 51.9471,
-      "maxSpeedBackward": 3.04518,
+      "maxSpeedForward": 14.4297,
+      "maxSpeedBackward": 0.84588,
       "powerToWeightRatio": 19.0476,
       "weapons": {
         "76mm_17pdr_QF_user_cannon": {
@@ -26045,8 +26213,8 @@
       ],
       "crew": 4,
       "mass": 14500.0,
-      "maxSpeedForward": 82.7862,
-      "maxSpeedBackward": 82.7862,
+      "maxSpeedForward": 22.9961,
+      "maxSpeedBackward": 22.9961,
       "powerToWeightRatio": 14.4138,
       "weapons": {
         "77mm_QQF_Mk_II_L50_user_cannon": {
@@ -26105,14 +26273,14 @@
       ],
       "crew": 4,
       "mass": 19558.0,
-      "maxSpeedForward": 43.6907,
-      "maxSpeedBackward": 6.93138,
+      "maxSpeedForward": 12.1363,
+      "maxSpeedBackward": 1.92538,
       "powerToWeightRatio": 17.3842,
       "weapons": {
         "20mm_Oerlikon_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 28.5966,
+          "armorPower": 29.5966,
           "reloadTime": 0.133333,
           "gunnerTurretRotationSpeed": 70.0,
           "isBeltAmmo": true
@@ -26159,8 +26327,8 @@
       ],
       "crew": 5,
       "mass": 20000.0,
-      "maxSpeedForward": 39.0059,
-      "maxSpeedBackward": 7.29082,
+      "maxSpeedForward": 10.8349,
+      "maxSpeedBackward": 2.02522,
       "powerToWeightRatio": 12.0,
       "weapons": {
         "75mm_Type_II_model_II_user_cannon": {
@@ -26221,8 +26389,8 @@
       ],
       "crew": 5,
       "mass": 30480.0,
-      "maxSpeedForward": 44.899,
-      "maxSpeedBackward": 8.22449,
+      "maxSpeedForward": 12.4719,
+      "maxSpeedBackward": 2.28458,
       "powerToWeightRatio": 13.1234,
       "weapons": {
         "75mm_Type_II_model_II_user_cannon": {
@@ -26283,8 +26451,8 @@
       ],
       "crew": 6,
       "mass": 13700.0,
-      "maxSpeedForward": 40.0009,
-      "maxSpeedBackward": 8.22449,
+      "maxSpeedForward": 11.1113,
+      "maxSpeedBackward": 2.28458,
       "powerToWeightRatio": 12.0438,
       "weapons": {
         "75mm_Lightweight_Type1_model_II_user_cannon": {
@@ -26335,14 +26503,14 @@
       ],
       "crew": 6,
       "mass": 17500.0,
-      "maxSpeedForward": 56.4238,
-      "maxSpeedBackward": 23.1245,
+      "maxSpeedForward": 15.6732,
+      "maxSpeedBackward": 6.42346,
       "powerToWeightRatio": 16.9143,
       "weapons": {
         "40mm_M2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -26384,8 +26552,8 @@
       ],
       "crew": 5,
       "mass": 33500.0,
-      "maxSpeedForward": 51.519,
-      "maxSpeedBackward": 3.02219,
+      "maxSpeedForward": 14.3108,
+      "maxSpeedBackward": 0.839495,
       "powerToWeightRatio": 17.9104,
       "weapons": {
         "77mm_QQF_Mk_II_L50_comet_user_cannon": {
@@ -26457,8 +26625,8 @@
       ],
       "crew": 5,
       "mass": 31500.0,
-      "maxSpeedForward": 51.9471,
-      "maxSpeedBackward": 3.04518,
+      "maxSpeedForward": 14.4297,
+      "maxSpeedBackward": 0.84588,
       "powerToWeightRatio": 19.0476,
       "weapons": {
         "76mm_17pdr_QF_challenger_user_cannon": {
@@ -26517,14 +26685,14 @@
       ],
       "crew": 3,
       "mass": 19254.0,
-      "maxSpeedForward": 43.6907,
-      "maxSpeedBackward": 6.93138,
+      "maxSpeedForward": 12.1363,
+      "maxSpeedBackward": 1.92538,
       "powerToWeightRatio": 17.6587,
       "weapons": {
         "40mm_Bofors_L60_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -26573,8 +26741,8 @@
       ],
       "crew": 4,
       "mass": 12500.0,
-      "maxSpeedForward": 104.877,
-      "maxSpeedBackward": 104.877,
+      "maxSpeedForward": 29.1326,
+      "maxSpeedBackward": 29.1326,
       "powerToWeightRatio": 16.0,
       "weapons": {
         "75mm_SA_49_ebr_user_cannon": {
@@ -26630,8 +26798,8 @@
       ],
       "crew": 4,
       "mass": 30300.0,
-      "maxSpeedForward": 38.0085,
-      "maxSpeedBackward": 4.93975,
+      "maxSpeedForward": 10.5579,
+      "maxSpeedBackward": 1.37215,
       "powerToWeightRatio": 13.2013,
       "weapons": {
         "75mm_SA_50_fl_10_user_cannon": {
@@ -26690,14 +26858,14 @@
       ],
       "crew": 5,
       "mass": 15500.0,
-      "maxSpeedForward": 60.0771,
-      "maxSpeedBackward": 6.89432,
+      "maxSpeedForward": 16.688,
+      "maxSpeedBackward": 1.91508,
       "powerToWeightRatio": 17.4194,
       "weapons": {
         "40mm_Mle51_t1_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 47.6356,
+          "armorPower": 49.8047,
           "reloadTime": 0.25,
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": true
@@ -26742,14 +26910,14 @@
       ],
       "crew": 5,
       "mass": 15500.0,
-      "maxSpeedForward": 60.0771,
-      "maxSpeedBackward": 6.89432,
+      "maxSpeedForward": 16.688,
+      "maxSpeedBackward": 1.91508,
       "powerToWeightRatio": 17.4194,
       "weapons": {
         "40mm_Mle51_t1_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 47.6356,
+          "armorPower": 49.8047,
           "reloadTime": 0.25,
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": true
@@ -26794,14 +26962,14 @@
       ],
       "crew": 5,
       "mass": 15500.0,
-      "maxSpeedForward": 60.0771,
-      "maxSpeedBackward": 6.89432,
+      "maxSpeedForward": 16.688,
+      "maxSpeedBackward": 1.91508,
       "powerToWeightRatio": 17.4194,
       "weapons": {
         "40mm_Mle51_t1_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 47.6356,
+          "armorPower": 49.8047,
           "reloadTime": 0.25,
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": true
@@ -26855,8 +27023,8 @@
       ],
       "crew": 5,
       "mass": 32900.0,
-      "maxSpeedForward": 42.0719,
-      "maxSpeedBackward": 5.43584,
+      "maxSpeedForward": 11.6866,
+      "maxSpeedBackward": 1.50995,
       "powerToWeightRatio": 15.1976,
       "weapons": {
         "76mm_M1_m4a3e8_76w_user_cannon": {
@@ -26934,8 +27102,8 @@
       ],
       "crew": 4,
       "mass": 23040.0,
-      "maxSpeedForward": 72.4416,
-      "maxSpeedBackward": 18.816,
+      "maxSpeedForward": 20.1226,
+      "maxSpeedBackward": 5.22666,
       "powerToWeightRatio": 21.7014,
       "weapons": {
         "76mm_M32_m41_user_cannon": {
@@ -27011,8 +27179,8 @@
       ],
       "crew": 5,
       "mass": 46400.0,
-      "maxSpeedForward": 40.1713,
-      "maxSpeedBackward": 11.8094,
+      "maxSpeedForward": 11.1587,
+      "maxSpeedBackward": 3.28038,
       "powerToWeightRatio": 10.7759,
       "weapons": {
         "90mm_M3_t26e5_user_cannon": {
@@ -27080,8 +27248,8 @@
       ],
       "crew": 4,
       "mass": 26200.0,
-      "maxSpeedForward": 34.7819,
-      "maxSpeedBackward": 7.47648,
+      "maxSpeedForward": 9.66161,
+      "maxSpeedBackward": 2.07679,
       "powerToWeightRatio": 11.4504,
       "weapons": {
         "75mm_PaK42_user_cannon": {
@@ -27145,8 +27313,8 @@
       ],
       "crew": 5,
       "mass": 68000.0,
-      "maxSpeedForward": 41.6743,
-      "maxSpeedBackward": 11.1202,
+      "maxSpeedForward": 11.5762,
+      "maxSpeedBackward": 3.08894,
       "powerToWeightRatio": 10.2941,
       "weapons": {
         "88mm_Kwk43_user_cannon": {
@@ -27209,14 +27377,14 @@
       ],
       "crew": 6,
       "mass": 25000.0,
-      "maxSpeedForward": 38.6897,
-      "maxSpeedBackward": 7.23171,
+      "maxSpeedForward": 10.7471,
+      "maxSpeedBackward": 2.0088,
       "powerToWeightRatio": 12.0,
       "weapons": {
         "37mm_FlaK44_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 25.3637,
+          "armorPower": 27.3921,
           "reloadTime": 0.240038,
           "gunnerTurretRotationSpeed": 35.0,
           "isBeltAmmo": true
@@ -27274,8 +27442,8 @@
       ],
       "crew": 5,
       "mass": 32200.0,
-      "maxSpeedForward": 54.9303,
-      "maxSpeedBackward": 8.38936,
+      "maxSpeedForward": 15.2584,
+      "maxSpeedBackward": 2.33037,
       "powerToWeightRatio": 15.528,
       "weapons": {
         "85mm_ZiS_S_53_user_cannon": {
@@ -27343,8 +27511,8 @@
       ],
       "crew": 4,
       "mass": 31600.0,
-      "maxSpeedForward": 49.9192,
-      "maxSpeedBackward": 7.62402,
+      "maxSpeedForward": 13.8664,
+      "maxSpeedBackward": 2.11778,
       "powerToWeightRatio": 15.8228,
       "weapons": {
         "100mm_D10S_user_cannon": {
@@ -27396,8 +27564,8 @@
       ],
       "crew": 4,
       "mass": 46000.0,
-      "maxSpeedForward": 42.1729,
-      "maxSpeedBackward": 16.2715,
+      "maxSpeedForward": 11.7147,
+      "maxSpeedBackward": 4.51984,
       "powerToWeightRatio": 11.3043,
       "weapons": {
         "122mm_D25T_user_cannon": {
@@ -27469,8 +27637,8 @@
       ],
       "crew": 5,
       "mass": 50000.0,
-      "maxSpeedForward": 17.2407,
-      "maxSpeedBackward": 2.15438,
+      "maxSpeedForward": 4.78908,
+      "maxSpeedBackward": 0.598436,
       "powerToWeightRatio": 7.0,
       "weapons": {
         "76mm_17pdr_QF_user_cannon": {
@@ -27542,8 +27710,8 @@
       ],
       "crew": 4,
       "mass": 46900.0,
-      "maxSpeedForward": 37.1074,
-      "maxSpeedBackward": 12.0689,
+      "maxSpeedForward": 10.3076,
+      "maxSpeedBackward": 3.35247,
       "powerToWeightRatio": 13.5394,
       "weapons": {
         "76mm_17pdr_QF_user_cannon": {
@@ -27605,8 +27773,8 @@
       ],
       "crew": 3,
       "mass": 20100.0,
-      "maxSpeedForward": 105.227,
-      "maxSpeedBackward": 17.6256,
+      "maxSpeedForward": 29.2298,
+      "maxSpeedBackward": 4.89599,
       "powerToWeightRatio": 14.0299,
       "weapons": {
         "90mm_GT_2_user_cannon": {
@@ -27665,14 +27833,14 @@
       ],
       "crew": 3,
       "mass": 6000.0,
-      "maxSpeedForward": 89.4226,
-      "maxSpeedBackward": 12.9697,
+      "maxSpeedForward": 24.8395,
+      "maxSpeedBackward": 3.60268,
       "powerToWeightRatio": 20.6667,
       "weapons": {
         "20mm_GAI_CO1_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 29.033,
+          "armorPower": 30.963,
           "reloadTime": 0.060241,
           "gunnerTurretRotationSpeed": 45.0,
           "isBeltAmmo": true
@@ -27726,8 +27894,8 @@
       ],
       "crew": 4,
       "mass": 34000.0,
-      "maxSpeedForward": 45.0,
-      "maxSpeedBackward": 17.4419,
+      "maxSpeedForward": 12.5,
+      "maxSpeedBackward": 4.84495,
       "powerToWeightRatio": 14.7059,
       "weapons": {
         "90mm_M3A1_jp_st_a1_user_cannon": {
@@ -27801,8 +27969,8 @@
       ],
       "crew": 4,
       "mass": 23040.0,
-      "maxSpeedForward": 72.4416,
-      "maxSpeedBackward": 18.816,
+      "maxSpeedForward": 20.1226,
+      "maxSpeedBackward": 5.22666,
       "powerToWeightRatio": 21.7014,
       "weapons": {
         "76mm_M32_user_cannon": {
@@ -27882,8 +28050,8 @@
       ],
       "crew": 5,
       "mass": 29937.0,
-      "maxSpeedForward": 41.8704,
-      "maxSpeedBackward": 5.4098,
+      "maxSpeedForward": 11.6306,
+      "maxSpeedBackward": 1.50272,
       "powerToWeightRatio": 16.7017,
       "weapons": {
         "90mm_M3A1_user_cannon": {
@@ -27950,14 +28118,14 @@
       ],
       "crew": 6,
       "mass": 22450.0,
-      "maxSpeedForward": 72.4416,
-      "maxSpeedBackward": 18.816,
+      "maxSpeedForward": 20.1226,
+      "maxSpeedBackward": 5.22666,
       "powerToWeightRatio": 22.2717,
       "weapons": {
         "40mm_M2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -28002,14 +28170,14 @@
       ],
       "crew": 6,
       "mass": 22450.0,
-      "maxSpeedForward": 72.4416,
-      "maxSpeedBackward": 18.816,
+      "maxSpeedForward": 20.1226,
+      "maxSpeedBackward": 5.22666,
       "powerToWeightRatio": 22.2717,
       "weapons": {
         "40mm_M2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -28059,8 +28227,8 @@
       ],
       "crew": 5,
       "mass": 42900.0,
-      "maxSpeedForward": 40.246,
-      "maxSpeedBackward": 12.9895,
+      "maxSpeedForward": 11.1794,
+      "maxSpeedBackward": 3.60817,
       "powerToWeightRatio": 11.655,
       "weapons": {
         "90mm_T54_user_cannon": {
@@ -28120,8 +28288,8 @@
       ],
       "crew": 6,
       "mass": 65135.0,
-      "maxSpeedForward": 35.0384,
-      "maxSpeedBackward": 13.5174,
+      "maxSpeedForward": 9.73287,
+      "maxSpeedBackward": 3.75484,
       "powerToWeightRatio": 12.4357,
       "weapons": {
         "120mm_T53_user_cannon": {
@@ -28185,8 +28353,8 @@
       ],
       "crew": 4,
       "mass": 86182.0,
-      "maxSpeedForward": 12.8036,
-      "maxSpeedBackward": 4.13239,
+      "maxSpeedForward": 3.55655,
+      "maxSpeedBackward": 1.14788,
       "powerToWeightRatio": 5.80168,
       "weapons": {
         "105mm_T15E2_user_cannon": {
@@ -28246,8 +28414,8 @@
       ],
       "crew": 5,
       "mass": 45500.0,
-      "maxSpeedForward": 45.8387,
-      "maxSpeedBackward": 3.34341,
+      "maxSpeedForward": 12.7329,
+      "maxSpeedBackward": 0.928724,
       "powerToWeightRatio": 13.1868,
       "weapons": {
         "75mm_Kwk44_user_cannon": {
@@ -28311,8 +28479,8 @@
       ],
       "crew": 5,
       "mass": 69800.0,
-      "maxSpeedForward": 41.6743,
-      "maxSpeedBackward": 11.1202,
+      "maxSpeedForward": 11.5762,
+      "maxSpeedBackward": 3.08894,
       "powerToWeightRatio": 10.0287,
       "weapons": {
         "88mm_Kwk43_user_cannon": {
@@ -28372,8 +28540,8 @@
       ],
       "crew": 6,
       "mass": 75200.0,
-      "maxSpeedForward": 41.6743,
-      "maxSpeedBackward": 11.1202,
+      "maxSpeedForward": 11.5762,
+      "maxSpeedBackward": 3.08894,
       "powerToWeightRatio": 9.30851,
       "weapons": {
         "128mm_PaK44_user_cannon": {
@@ -28436,14 +28604,14 @@
       ],
       "crew": 5,
       "mass": 25000.0,
-      "maxSpeedForward": 38.6897,
-      "maxSpeedBackward": 7.23171,
+      "maxSpeedForward": 10.7471,
+      "maxSpeedBackward": 2.0088,
       "powerToWeightRatio": 12.0,
       "weapons": {
         "30mm_MK103_38_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 30.0,
-          "armorPower": 29.9576,
+          "armorPower": 30.7892,
           "reloadTime": 0.133333,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -28490,14 +28658,14 @@
       ],
       "crew": 5,
       "mass": 25000.0,
-      "maxSpeedForward": 38.6897,
-      "maxSpeedBackward": 7.23171,
+      "maxSpeedForward": 10.7471,
+      "maxSpeedBackward": 2.0088,
       "powerToWeightRatio": 12.0,
       "weapons": {
         "30mm_MK103_38_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 30.0,
-          "armorPower": 29.9576,
+          "armorPower": 30.7892,
           "reloadTime": 0.133333,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -28555,8 +28723,8 @@
       ],
       "crew": 4,
       "mass": 31000.0,
-      "maxSpeedForward": 60.2599,
-      "maxSpeedBackward": 9.03899,
+      "maxSpeedForward": 16.7388,
+      "maxSpeedBackward": 2.51082,
       "powerToWeightRatio": 16.129,
       "weapons": {
         "85mm_ZiS_S_53_user_cannon": {
@@ -28628,8 +28796,8 @@
       ],
       "crew": 4,
       "mass": 33500.0,
-      "maxSpeedForward": 60.2599,
-      "maxSpeedBackward": 9.03899,
+      "maxSpeedForward": 16.7388,
+      "maxSpeedBackward": 2.51082,
       "powerToWeightRatio": 15.5224,
       "weapons": {
         "100mm_D10T_user_cannon": {
@@ -28697,8 +28865,8 @@
       ],
       "crew": 4,
       "mass": 46150.0,
-      "maxSpeedForward": 42.1729,
-      "maxSpeedBackward": 16.2715,
+      "maxSpeedForward": 11.7147,
+      "maxSpeedBackward": 4.51984,
       "powerToWeightRatio": 11.2676,
       "weapons": {
         "122mm_D25T_user_cannon": {
@@ -28769,14 +28937,14 @@
       ],
       "crew": 6,
       "mass": 28000.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 18.5714,
       "weapons": {
         "57mm_S_68_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 57.0,
-          "armorPower": 76.1917,
+          "armorPower": 78.3726,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -28823,14 +28991,14 @@
       ],
       "crew": 6,
       "mass": 28000.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 18.5714,
       "weapons": {
         "57mm_S_68_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 57.0,
-          "armorPower": 76.1917,
+          "armorPower": 78.3726,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -28880,8 +29048,8 @@
       ],
       "crew": 4,
       "mass": 37239.0,
-      "maxSpeedForward": 31.5003,
-      "maxSpeedBackward": 4.62926,
+      "maxSpeedForward": 8.75006,
+      "maxSpeedBackward": 1.2859,
       "powerToWeightRatio": 13.6953,
       "weapons": {
         "84mm_QQF_20pdr_Mk_I_user_cannon": {
@@ -28934,8 +29102,8 @@
       ],
       "crew": 5,
       "mass": 60000.0,
-      "maxSpeedForward": 28.0049,
-      "maxSpeedBackward": 9.74927,
+      "maxSpeedForward": 7.77911,
+      "maxSpeedBackward": 2.70812,
       "powerToWeightRatio": 10.8333,
       "weapons": {
         "183mm_QF_L4_user_cannon": {
@@ -28991,8 +29159,8 @@
       ],
       "crew": 7,
       "mass": 81283.0,
-      "maxSpeedForward": 19.0418,
-      "maxSpeedBackward": 19.0418,
+      "maxSpeedForward": 5.28937,
+      "maxSpeedBackward": 5.28937,
       "powerToWeightRatio": 7.99675,
       "weapons": {
         "94mm_QQF_32pdr_user_cannon": {
@@ -29058,14 +29226,14 @@
       ],
       "crew": 3,
       "mass": 18900.0,
-      "maxSpeedForward": 105.227,
-      "maxSpeedBackward": 17.6256,
+      "maxSpeedForward": 29.2298,
+      "maxSpeedBackward": 4.89599,
       "powerToWeightRatio": 14.9206,
       "weapons": {
         "20mm_GI_2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 29.033,
+          "armorPower": 30.963,
           "reloadTime": 0.08,
           "gunnerTurretRotationSpeed": 23.8,
           "isBeltAmmo": true
@@ -29129,8 +29297,8 @@
       ],
       "crew": 4,
       "mass": 25375.0,
-      "maxSpeedForward": 65.0,
-      "maxSpeedBackward": 65.0,
+      "maxSpeedForward": 18.0555,
+      "maxSpeedBackward": 18.0555,
       "powerToWeightRatio": 19.7044,
       "weapons": {
         "90mm_Char_25t_user_cannon": {
@@ -29186,8 +29354,8 @@
       ],
       "crew": 5,
       "mass": 52000.0,
-      "maxSpeedForward": 51.2466,
-      "maxSpeedBackward": 5.88096,
+      "maxSpeedForward": 14.2351,
+      "maxSpeedBackward": 1.63359,
       "powerToWeightRatio": 19.2308,
       "weapons": {
         "90mm_SA45_user_cannon": {
@@ -29249,8 +29417,8 @@
       ],
       "crew": 3,
       "mass": 14700.0,
-      "maxSpeedForward": 60.0771,
-      "maxSpeedBackward": 6.89432,
+      "maxSpeedForward": 16.688,
+      "maxSpeedBackward": 1.91508,
       "powerToWeightRatio": 18.3673,
       "weapons": {
         "75mm_SA_50_user_cannon": {
@@ -29309,8 +29477,8 @@
       ],
       "crew": 5,
       "mass": 30600.0,
-      "maxSpeedForward": 38.0112,
-      "maxSpeedBackward": 4.94011,
+      "maxSpeedForward": 10.5586,
+      "maxSpeedBackward": 1.37225,
       "powerToWeightRatio": 19.6078,
       "weapons": {
         "75mm_m3_user_cannon": {
@@ -29377,8 +29545,8 @@
       ],
       "crew": 5,
       "mass": 22000.0,
-      "maxSpeedForward": 27.8394,
-      "maxSpeedBackward": 5.20363,
+      "maxSpeedForward": 7.73315,
+      "maxSpeedBackward": 1.44545,
       "powerToWeightRatio": 8.18182,
       "weapons": {
         "105mm_K18_user_cannon": {
@@ -29432,8 +29600,8 @@
       ],
       "crew": 5,
       "mass": 23000.0,
-      "maxSpeedForward": 53.4072,
-      "maxSpeedBackward": 9.98265,
+      "maxSpeedForward": 14.8353,
+      "maxSpeedBackward": 2.77295,
       "powerToWeightRatio": 13.0435,
       "weapons": {
         "50mm_KwK39_user_cannon": {
@@ -29496,8 +29664,8 @@
       ],
       "crew": 5,
       "mass": 25400.0,
-      "maxSpeedForward": 38.6897,
-      "maxSpeedBackward": 7.23171,
+      "maxSpeedForward": 10.7471,
+      "maxSpeedBackward": 2.0088,
       "powerToWeightRatio": 11.811,
       "weapons": {
         "75mm_KwK40_L48_user_cannon": {
@@ -29558,14 +29726,14 @@
       ],
       "crew": 4,
       "mass": 10400.0,
-      "maxSpeedForward": 49.8059,
-      "maxSpeedBackward": 8.82091,
+      "maxSpeedForward": 13.8349,
+      "maxSpeedBackward": 2.45025,
       "powerToWeightRatio": 11.0577,
       "weapons": {
         "37mm_FlaK36_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 25.3637,
+          "armorPower": 27.3921,
           "reloadTime": 0.37594,
           "gunnerTurretRotationSpeed": 35.0,
           "isBeltAmmo": true
@@ -29620,8 +29788,8 @@
       ],
       "crew": 4,
       "mass": 30600.0,
-      "maxSpeedForward": 42.9597,
-      "maxSpeedBackward": 6.07057,
+      "maxSpeedForward": 11.9332,
+      "maxSpeedBackward": 1.68626,
       "powerToWeightRatio": 16.3399,
       "weapons": {
         "76mm_F34_user_cannon": {
@@ -29687,8 +29855,8 @@
       ],
       "crew": 4,
       "mass": 28270.0,
-      "maxSpeedForward": 48.9403,
-      "maxSpeedBackward": 6.91568,
+      "maxSpeedForward": 13.5945,
+      "maxSpeedBackward": 1.92102,
       "powerToWeightRatio": 17.6866,
       "weapons": {
         "76mm_F34_user_cannon": {
@@ -29747,8 +29915,8 @@
       ],
       "crew": 6,
       "mass": 52400.0,
-      "maxSpeedForward": 34.3099,
-      "maxSpeedBackward": 6.18425,
+      "maxSpeedForward": 9.5305,
+      "maxSpeedBackward": 1.71784,
       "powerToWeightRatio": 11.4504,
       "weapons": {
         "152mm_M10T_user_cannon": {
@@ -29806,8 +29974,8 @@
       ],
       "crew": 5,
       "mass": 8600.0,
-      "maxSpeedForward": 82.8834,
-      "maxSpeedBackward": 10.7589,
+      "maxSpeedForward": 23.0231,
+      "maxSpeedBackward": 2.98858,
       "powerToWeightRatio": 12.7907,
       "weapons": {
         "14_5mm_KPVT_BTR_152_user_machinegun": {
@@ -29858,8 +30026,8 @@
       ],
       "crew": 5,
       "mass": 29827.0,
-      "maxSpeedForward": 56.0113,
-      "maxSpeedBackward": 18.6704,
+      "maxSpeedForward": 15.5587,
+      "maxSpeedBackward": 5.18622,
       "powerToWeightRatio": 16.7633,
       "weapons": {
         "76mm_M1_no_MB_user_cannon": {
@@ -29932,8 +30100,8 @@
       ],
       "crew": 5,
       "mass": 17690.0,
-      "maxSpeedForward": 72.2336,
-      "maxSpeedBackward": 23.3135,
+      "maxSpeedForward": 20.0649,
+      "maxSpeedBackward": 6.47596,
       "powerToWeightRatio": 22.6116,
       "weapons": {
         "76mm_M1_no_MB_user_cannon": {
@@ -29999,8 +30167,8 @@
       ],
       "crew": 5,
       "mass": 37800.0,
-      "maxSpeedForward": 35.3047,
-      "maxSpeedBackward": 4.58835,
+      "maxSpeedForward": 9.80683,
+      "maxSpeedBackward": 1.27454,
       "powerToWeightRatio": 13.2275,
       "weapons": {
         "75mm_m3_user_cannon": {
@@ -30064,8 +30232,8 @@
       ],
       "crew": 6,
       "mass": 62700.0,
-      "maxSpeedForward": 34.3099,
-      "maxSpeedBackward": 6.18425,
+      "maxSpeedForward": 9.5305,
+      "maxSpeedBackward": 1.71784,
       "powerToWeightRatio": 13.5566,
       "weapons": {
         "85mm_F30_user_cannon": {
@@ -30128,8 +30296,8 @@
       ],
       "crew": 5,
       "mass": 33000.0,
-      "maxSpeedForward": 45.9269,
-      "maxSpeedBackward": 5.96887,
+      "maxSpeedForward": 12.7574,
+      "maxSpeedBackward": 1.65802,
       "powerToWeightRatio": 12.4242,
       "weapons": {
         "76mm_M1_user_cannon": {
@@ -30200,8 +30368,8 @@
       ],
       "crew": 5,
       "mass": 33000.0,
-      "maxSpeedForward": 45.9269,
-      "maxSpeedBackward": 5.96887,
+      "maxSpeedForward": 12.7574,
+      "maxSpeedBackward": 1.65802,
       "powerToWeightRatio": 12.4242,
       "weapons": {
         "76mm_M1_user_cannon": {
@@ -30271,8 +30439,8 @@
       ],
       "crew": 4,
       "mass": 31600.0,
-      "maxSpeedForward": 54.9303,
-      "maxSpeedBackward": 8.38936,
+      "maxSpeedForward": 15.2584,
+      "maxSpeedBackward": 2.33037,
       "powerToWeightRatio": 15.8228,
       "weapons": {
         "85mm_D5S_user_cannon": {
@@ -30325,14 +30493,14 @@
       ],
       "crew": 5,
       "mass": 25000.0,
-      "maxSpeedForward": 54.9303,
-      "maxSpeedBackward": 8.38936,
+      "maxSpeedForward": 15.2584,
+      "maxSpeedBackward": 2.33037,
       "powerToWeightRatio": 20.0,
       "weapons": {
         "37mm_type_65_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 36.195,
+          "armorPower": 38.2008,
           "reloadTime": 0.37594,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -30379,14 +30547,14 @@
       ],
       "crew": 5,
       "mass": 25000.0,
-      "maxSpeedForward": 54.9303,
-      "maxSpeedBackward": 8.38936,
+      "maxSpeedForward": 15.2584,
+      "maxSpeedBackward": 2.33037,
       "powerToWeightRatio": 20.0,
       "weapons": {
         "37mm_type_65_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 36.195,
+          "armorPower": 38.2008,
           "reloadTime": 0.37594,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -30434,8 +30602,8 @@
       ],
       "crew": 5,
       "mass": 70000.0,
-      "maxSpeedForward": 41.6743,
-      "maxSpeedBackward": 11.1202,
+      "maxSpeedForward": 11.5762,
+      "maxSpeedBackward": 3.08894,
       "powerToWeightRatio": 10.7143,
       "weapons": {
         "88mm_Kwk43_user_cannon": {
@@ -30494,8 +30662,8 @@
       ],
       "crew": 5,
       "mass": 44800.0,
-      "maxSpeedForward": 45.8387,
-      "maxSpeedBackward": 3.34341,
+      "maxSpeedForward": 12.7329,
+      "maxSpeedBackward": 0.928724,
       "powerToWeightRatio": 13.3929,
       "weapons": {
         "75mm_Kwk42_user_cannon": {
@@ -30557,8 +30725,8 @@
       ],
       "crew": 6,
       "mass": 65000.0,
-      "maxSpeedForward": 30.0438,
-      "maxSpeedBackward": 30.0438,
+      "maxSpeedForward": 8.34548,
+      "maxSpeedBackward": 8.34548,
       "powerToWeightRatio": 9.61539,
       "weapons": {
         "88mm_PaK43_user_cannon": {
@@ -30611,14 +30779,14 @@
       ],
       "crew": 5,
       "mass": 44800.0,
-      "maxSpeedForward": 45.8387,
-      "maxSpeedBackward": 3.34341,
+      "maxSpeedForward": 12.7329,
+      "maxSpeedBackward": 0.928724,
       "powerToWeightRatio": 13.3929,
       "weapons": {
         "37mm_FlaK44_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 25.3637,
+          "armorPower": 27.3921,
           "reloadTime": 0.240038,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -30663,8 +30831,8 @@
       ],
       "crew": 4,
       "mass": 46000.0,
-      "maxSpeedForward": 42.1729,
-      "maxSpeedBackward": 16.2715,
+      "maxSpeedForward": 11.7147,
+      "maxSpeedBackward": 4.51984,
       "powerToWeightRatio": 11.3043,
       "weapons": {
         "122mm_D25T_user_cannon": {
@@ -30734,8 +30902,8 @@
       ],
       "crew": 4,
       "mass": 31800.0,
-      "maxSpeedForward": 60.2599,
-      "maxSpeedBackward": 9.03899,
+      "maxSpeedForward": 16.7388,
+      "maxSpeedBackward": 2.51082,
       "powerToWeightRatio": 15.7233,
       "weapons": {
         "122mm_D25_44T_user_cannon": {
@@ -30801,8 +30969,8 @@
       ],
       "crew": 4,
       "mass": 33000.0,
-      "maxSpeedForward": 54.9303,
-      "maxSpeedBackward": 8.38936,
+      "maxSpeedForward": 15.2584,
+      "maxSpeedBackward": 2.33037,
       "powerToWeightRatio": 15.1515,
       "weapons": {
         "100mm_LB1_user_cannon": {
@@ -30874,8 +31042,8 @@
       ],
       "crew": 5,
       "mass": 44100.0,
-      "maxSpeedForward": 48.1001,
-      "maxSpeedBackward": 19.3044,
+      "maxSpeedForward": 13.3611,
+      "maxSpeedBackward": 5.36231,
       "powerToWeightRatio": 18.3673,
       "weapons": {
         "90mm_M36_user_cannon": {
@@ -30939,8 +31107,8 @@
       ],
       "crew": 5,
       "mass": 56699.0,
-      "maxSpeedForward": 33.4827,
-      "maxSpeedBackward": 8.46303,
+      "maxSpeedForward": 9.30072,
+      "maxSpeedBackward": 2.35084,
       "powerToWeightRatio": 14.286,
       "weapons": {
         "120mm_M58_user_cannon": {
@@ -31002,8 +31170,8 @@
       ],
       "crew": 2,
       "mass": 9000.0,
-      "maxSpeedForward": 57.4401,
-      "maxSpeedBackward": 12.652,
+      "maxSpeedForward": 15.9556,
+      "maxSpeedBackward": 3.51444,
       "powerToWeightRatio": 17.7778,
       "weapons": {
         "106mm_M40A1C_T114_user_cannon": {
@@ -31062,14 +31230,14 @@
       ],
       "crew": 4,
       "mass": 11203.0,
-      "maxSpeedForward": 64.3009,
-      "maxSpeedBackward": 14.7818,
+      "maxSpeedForward": 17.8613,
+      "maxSpeedBackward": 4.10605,
       "powerToWeightRatio": 18.9235,
       "weapons": {
         "20mm_M168_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 36.1912,
+          "armorPower": 37.2245,
           "reloadTime": 0.02,
           "gunnerTurretRotationSpeed": 75.0,
           "isBeltAmmo": true
@@ -31113,14 +31281,14 @@
       ],
       "crew": 4,
       "mass": 11203.0,
-      "maxSpeedForward": 64.3009,
-      "maxSpeedBackward": 14.7818,
+      "maxSpeedForward": 17.8613,
+      "maxSpeedBackward": 4.10605,
       "powerToWeightRatio": 18.9235,
       "weapons": {
         "20mm_M168_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 36.1912,
+          "armorPower": 37.2245,
           "reloadTime": 0.02,
           "gunnerTurretRotationSpeed": 75.0,
           "isBeltAmmo": true
@@ -31164,8 +31332,8 @@
       ],
       "crew": 4,
       "mass": 54430.0,
-      "maxSpeedForward": 42.7556,
-      "maxSpeedBackward": 11.544,
+      "maxSpeedForward": 11.8765,
+      "maxSpeedBackward": 3.20666,
       "powerToWeightRatio": 14.8815,
       "weapons": {
         "105mm_T140_user_cannon": {
@@ -31231,8 +31399,8 @@
       ],
       "crew": 2,
       "mass": 8300.0,
-      "maxSpeedForward": 48.23,
-      "maxSpeedBackward": 7.84541,
+      "maxSpeedForward": 13.3972,
+      "maxSpeedBackward": 2.17928,
       "powerToWeightRatio": 17.4699,
       "weapons": {
         "106mm_M40A1C_user_cannon": {
@@ -31302,8 +31470,8 @@
       ],
       "crew": 5,
       "mass": 54000.0,
-      "maxSpeedForward": 35.1325,
-      "maxSpeedBackward": 13.5551,
+      "maxSpeedForward": 9.75901,
+      "maxSpeedBackward": 3.76529,
       "powerToWeightRatio": 14.2593,
       "weapons": {
         "90mm_T15E2_user_cannon": {
@@ -31372,8 +31540,8 @@
       ],
       "crew": 4,
       "mass": 40000.0,
-      "maxSpeedForward": 65.1658,
-      "maxSpeedBackward": 25.0638,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 6.96214,
       "powerToWeightRatio": 20.75,
       "weapons": {
         "105mm_L7A3_user_cannon": {
@@ -31447,8 +31615,8 @@
       ],
       "crew": 4,
       "mass": 47800.0,
-      "maxSpeedForward": 48.0682,
-      "maxSpeedBackward": 8.3776,
+      "maxSpeedForward": 13.3522,
+      "maxSpeedBackward": 2.32711,
       "powerToWeightRatio": 17.2594,
       "weapons": {
         "90mm_Kanone_M41_user_cannon": {
@@ -31529,8 +31697,8 @@
       ],
       "crew": 5,
       "mass": 44100.0,
-      "maxSpeedForward": 48.1001,
-      "maxSpeedBackward": 19.3044,
+      "maxSpeedForward": 13.3611,
+      "maxSpeedBackward": 5.36231,
       "powerToWeightRatio": 18.3673,
       "weapons": {
         "90mm_M36_user_cannon": {
@@ -31597,14 +31765,14 @@
       ],
       "crew": 3,
       "mass": 29200.0,
-      "maxSpeedForward": 75.2494,
-      "maxSpeedBackward": 75.2494,
+      "maxSpeedForward": 20.9026,
+      "maxSpeedBackward": 20.9026,
       "powerToWeightRatio": 20.5479,
       "weapons": {
         "20mm_Rh_202_Marder_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 29.033,
+          "armorPower": 30.963,
           "reloadTime": 0.0749963,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -31678,8 +31846,8 @@
       ],
       "crew": 4,
       "mass": 35500.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 14.6479,
       "weapons": {
         "100mm_D10T_user_cannon": {
@@ -31751,8 +31919,8 @@
       ],
       "crew": 4,
       "mass": 50000.0,
-      "maxSpeedForward": 41.9848,
-      "maxSpeedBackward": 8.00335,
+      "maxSpeedForward": 11.6624,
+      "maxSpeedBackward": 2.22315,
       "powerToWeightRatio": 14.0,
       "weapons": {
         "122mm_D25TS_user_cannon": {
@@ -31814,8 +31982,8 @@
       ],
       "crew": 3,
       "mass": 15000.0,
-      "maxSpeedForward": 73.893,
-      "maxSpeedBackward": 73.893,
+      "maxSpeedForward": 20.5258,
+      "maxSpeedBackward": 20.5258,
       "powerToWeightRatio": 20.0,
       "weapons": {
         "85mm_D58_user_cannon": {
@@ -31874,14 +32042,14 @@
       ],
       "crew": 4,
       "mass": 21000.0,
-      "maxSpeedForward": 50.0012,
-      "maxSpeedBackward": 7.50019,
+      "maxSpeedForward": 13.8892,
+      "maxSpeedBackward": 2.08338,
       "powerToWeightRatio": 13.3333,
       "weapons": {
         "23mm_2A7_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 23.0,
-          "armorPower": 23.0,
+          "armorPower": 24.9622,
           "reloadTime": 0.0705916,
           "gunnerTurretRotationSpeed": 70.0,
           "isBeltAmmo": true
@@ -31931,8 +32099,8 @@
       ],
       "crew": 4,
       "mass": 48000.0,
-      "maxSpeedForward": 48.1119,
-      "maxSpeedBackward": 7.99537,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
       "powerToWeightRatio": 15.625,
       "weapons": {
         "105mm_M68_M60A1_user_cannon": {
@@ -32001,8 +32169,8 @@
       ],
       "crew": 4,
       "mass": 51900.0,
-      "maxSpeedForward": 48.1119,
-      "maxSpeedBackward": 7.99537,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
       "powerToWeightRatio": 14.4509,
       "weapons": {
         "152mm_M162_user_cannon": {
@@ -32076,14 +32244,14 @@
       ],
       "crew": 3,
       "mass": 22285.0,
-      "maxSpeedForward": 65.9254,
-      "maxSpeedBackward": 13.8443,
+      "maxSpeedForward": 18.3126,
+      "maxSpeedBackward": 3.84564,
       "powerToWeightRatio": 22.7507,
       "weapons": {
         "25mm_M242_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 25.0,
-          "armorPower": 40.4173,
+          "armorPower": 42.4532,
           "reloadTime": 0.298507,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -32150,8 +32318,8 @@
       ],
       "crew": 4,
       "mass": 42400.0,
-      "maxSpeedForward": 65.1658,
-      "maxSpeedBackward": 25.0638,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 6.96214,
       "powerToWeightRatio": 19.5755,
       "weapons": {
         "105mm_L7A3_GA_2_user_cannon": {
@@ -32216,8 +32384,8 @@
       ],
       "crew": 4,
       "mass": 47800.0,
-      "maxSpeedForward": 48.0682,
-      "maxSpeedBackward": 8.3776,
+      "maxSpeedForward": 13.3522,
+      "maxSpeedBackward": 2.32711,
       "powerToWeightRatio": 17.2594,
       "weapons": {
         "105mm_L7A3_GA_2_user_cannon": {
@@ -32277,14 +32445,14 @@
       ],
       "crew": 3,
       "mass": 46000.0,
-      "maxSpeedForward": 65.1658,
-      "maxSpeedBackward": 25.0638,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 6.96214,
       "powerToWeightRatio": 18.0435,
       "weapons": {
         "35mm_Oerlikon_KDA_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 35.0,
-          "armorPower": 34.6441,
+          "armorPower": 36.8965,
           "reloadTime": 0.10917,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -32342,8 +32510,8 @@
       ],
       "crew": 4,
       "mass": 36000.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 16.1111,
       "weapons": {
         "100mm_D10T2S_user_cannon": {
@@ -32415,8 +32583,8 @@
       ],
       "crew": 4,
       "mass": 37000.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 15.6757,
       "weapons": {
         "115mm_U5TS_user_cannon": {
@@ -32475,14 +32643,14 @@
       ],
       "crew": 4,
       "mass": 25500.0,
-      "maxSpeedForward": 64.2552,
-      "maxSpeedBackward": 23.4072,
+      "maxSpeedForward": 17.8486,
+      "maxSpeedBackward": 6.502,
       "powerToWeightRatio": 15.6863,
       "weapons": {
         "37mm_2A11_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 43.3545,
+          "armorPower": 45.3604,
           "reloadTime": 0.11999,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -32531,8 +32699,8 @@
       ],
       "crew": 5,
       "mass": 40000.0,
-      "maxSpeedForward": 38.6071,
-      "maxSpeedBackward": 2.26317,
+      "maxSpeedForward": 10.7242,
+      "maxSpeedBackward": 0.628658,
       "powerToWeightRatio": 15.7,
       "weapons": {
         "75mm_QQF_MkV_user_cannon": {
@@ -32588,8 +32756,8 @@
       ],
       "crew": 6,
       "mass": 29000.0,
-      "maxSpeedForward": 40.0037,
-      "maxSpeedBackward": 5.19907,
+      "maxSpeedForward": 11.1121,
+      "maxSpeedBackward": 1.44418,
       "powerToWeightRatio": 13.7931,
       "weapons": {
         "94mm_QF_Mk1_user_cannon": {
@@ -32639,14 +32807,14 @@
       ],
       "crew": 5,
       "mass": 19500.0,
-      "maxSpeedForward": 100.07,
-      "maxSpeedBackward": 8.00562,
+      "maxSpeedForward": 27.7972,
+      "maxSpeedBackward": 2.22378,
       "powerToWeightRatio": 16.1538,
       "weapons": {
         "23mm_2A14_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 23.0,
-          "armorPower": 23.0,
+          "armorPower": 24.9622,
           "reloadTime": 0.0749963,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -32698,8 +32866,8 @@
       ],
       "crew": 4,
       "mass": 31500.0,
-      "maxSpeedForward": 38.0112,
-      "maxSpeedBackward": 4.94011,
+      "maxSpeedForward": 10.5586,
+      "maxSpeedBackward": 1.37225,
       "powerToWeightRatio": 12.6984,
       "weapons": {
         "76mm_17pdr_QF_user_cannon": {
@@ -32773,8 +32941,8 @@
       ],
       "crew": 4,
       "mass": 35000.0,
-      "maxSpeedForward": 45.088,
-      "maxSpeedBackward": 8.0343,
+      "maxSpeedForward": 12.5244,
+      "maxSpeedBackward": 2.23174,
       "powerToWeightRatio": 16.2857,
       "weapons": {
         "90mm_Type61_user_cannon": {
@@ -32841,8 +33009,8 @@
       ],
       "crew": 3,
       "mass": 8020.0,
-      "maxSpeedForward": 54.6594,
-      "maxSpeedBackward": 23.5601,
+      "maxSpeedForward": 15.1831,
+      "maxSpeedBackward": 6.54446,
       "powerToWeightRatio": 18.7032,
       "weapons": {
         "106mm_Type_60B_user_cannon": {
@@ -32898,8 +33066,8 @@
       ],
       "crew": 6,
       "mass": 51000.0,
-      "maxSpeedForward": 40.2448,
-      "maxSpeedBackward": 7.5224,
+      "maxSpeedForward": 11.1791,
+      "maxSpeedBackward": 2.08955,
       "powerToWeightRatio": 10.7843,
       "weapons": {
         "105mm_Exp_HV_user_cannon": {
@@ -32952,14 +33120,14 @@
       ],
       "crew": 3,
       "mass": 49350.0,
-      "maxSpeedForward": 48.1119,
-      "maxSpeedBackward": 7.99537,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
       "powerToWeightRatio": 15.1976,
       "weapons": {
         "40mm_M266_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 19.4083,
+          "armorPower": 21.7547,
           "reloadTime": 0.2,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -33000,8 +33168,8 @@
       ],
       "crew": 4,
       "mass": 23000.0,
-      "maxSpeedForward": 70.2441,
-      "maxSpeedBackward": 70.2441,
+      "maxSpeedForward": 19.5122,
+      "maxSpeedBackward": 19.5122,
       "powerToWeightRatio": 21.7391,
       "weapons": {
         "136mm_k3s_hot_rocket_launcher": {
@@ -33055,8 +33223,8 @@
       ],
       "crew": 3,
       "mass": 34500.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 16.8116,
       "weapons": {
         "180mm_2k4_rocket_launcher": {
@@ -33112,8 +33280,8 @@
       ],
       "crew": 5,
       "mass": 35000.0,
-      "maxSpeedForward": 55.0064,
-      "maxSpeedBackward": 4.0121,
+      "maxSpeedForward": 15.2795,
+      "maxSpeedBackward": 1.11447,
       "powerToWeightRatio": 18.5714,
       "weapons": {
         "75mm_Kwk42_user_cannon": {
@@ -33181,14 +33349,14 @@
       ],
       "crew": 4,
       "mass": 8000.0,
-      "maxSpeedForward": 52.36,
-      "maxSpeedBackward": 10.7295,
+      "maxSpeedForward": 14.5444,
+      "maxSpeedBackward": 2.98041,
       "powerToWeightRatio": 12.5,
       "weapons": {
         "15mm_MG151_out_drilling_user_cannon": {
           "wtype": "auxCannon",
           "caliber": 15.0,
-          "armorPower": 19.1084,
+          "armorPower": 20.6084,
           "reloadTime": 0.0857192,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -33196,7 +33364,7 @@
         "15mm_MG151_mid_drilling_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 15.0,
-          "armorPower": 19.1084,
+          "armorPower": 20.6084,
           "reloadTime": 0.0857192,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -33253,8 +33421,8 @@
       ],
       "crew": 6,
       "mass": 60400.0,
-      "maxSpeedForward": 37.1643,
-      "maxSpeedBackward": 37.1643,
+      "maxSpeedForward": 10.3234,
+      "maxSpeedBackward": 10.3234,
       "powerToWeightRatio": 13.245,
       "weapons": {
         "76mm_M7_user_cannon": {
@@ -33327,8 +33495,8 @@
       ],
       "crew": 5,
       "mass": 29483.0,
-      "maxSpeedForward": 40.0037,
-      "maxSpeedBackward": 5.19907,
+      "maxSpeedForward": 11.1121,
+      "maxSpeedBackward": 1.44418,
       "powerToWeightRatio": 13.5671,
       "weapons": {
         "57mm_6pdr_QQF_Mk_3_L43_user_cannon": {
@@ -33394,8 +33562,8 @@
       ],
       "crew": 5,
       "mass": 30600.0,
-      "maxSpeedForward": 38.0112,
-      "maxSpeedBackward": 4.94011,
+      "maxSpeedForward": 10.5586,
+      "maxSpeedBackward": 1.37225,
       "powerToWeightRatio": 13.0719,
       "weapons": {
         "75mm_m3_user_cannon": {
@@ -33462,8 +33630,8 @@
       ],
       "crew": 5,
       "mass": 34300.0,
-      "maxSpeedForward": 40.2604,
-      "maxSpeedBackward": 4.93975,
+      "maxSpeedForward": 11.1834,
+      "maxSpeedBackward": 1.37215,
       "powerToWeightRatio": 11.6618,
       "weapons": {
         "75mm_SA_50_M4A4_user_cannon": {
@@ -33532,8 +33700,8 @@
       ],
       "crew": 5,
       "mass": 29937.0,
-      "maxSpeedForward": 40.1666,
-      "maxSpeedBackward": 5.18966,
+      "maxSpeedForward": 11.1574,
+      "maxSpeedBackward": 1.44157,
       "powerToWeightRatio": 13.6954,
       "weapons": {
         "90mm_M3_M36B2_user_cannon": {
@@ -33607,8 +33775,8 @@
       ],
       "crew": 5,
       "mass": 37800.0,
-      "maxSpeedForward": 35.3047,
-      "maxSpeedBackward": 4.58835,
+      "maxSpeedForward": 9.80683,
+      "maxSpeedBackward": 1.27454,
       "powerToWeightRatio": 13.2275,
       "weapons": {
         "75mm_m3_user_cannon": {
@@ -33680,8 +33848,8 @@
       ],
       "crew": 5,
       "mass": 30600.0,
-      "maxSpeedForward": 38.0112,
-      "maxSpeedBackward": 4.94011,
+      "maxSpeedForward": 10.5586,
+      "maxSpeedBackward": 1.37225,
       "powerToWeightRatio": 13.0719,
       "weapons": {
         "75mm_m3_user_cannon": {
@@ -33758,8 +33926,8 @@
       ],
       "crew": 3,
       "mass": 42500.0,
-      "maxSpeedForward": 49.1149,
-      "maxSpeedBackward": 43.8526,
+      "maxSpeedForward": 13.643,
+      "maxSpeedBackward": 12.1812,
       "powerToWeightRatio": 18.3529,
       "weapons": {
         "105mm_L74_103C_user_cannon": {
@@ -33828,8 +33996,8 @@
       ],
       "crew": 4,
       "mass": 54000.0,
-      "maxSpeedForward": 48.1119,
-      "maxSpeedBackward": 7.99537,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
       "powerToWeightRatio": 13.8889,
       "weapons": {
         "105mm_kan_strv_104_user_cannon": {
@@ -33886,8 +34054,8 @@
       ],
       "crew": 4,
       "mass": 9700.0,
-      "maxSpeedForward": 38.0504,
-      "maxSpeedBackward": 6.65883,
+      "maxSpeedForward": 10.5695,
+      "maxSpeedBackward": 1.84967,
       "powerToWeightRatio": 14.0206,
       "weapons": {
         "127mm_Rbs_55_tow_launcher_user_cannon": {
@@ -33938,14 +34106,14 @@
       ],
       "crew": 3,
       "mass": 29000.0,
-      "maxSpeedForward": 60.0422,
-      "maxSpeedBackward": 18.513,
+      "maxSpeedForward": 16.6783,
+      "maxSpeedBackward": 5.14249,
       "powerToWeightRatio": 18.6207,
       "weapons": {
         "40mm_Lva_kan_m48_VEAK_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 33.7521,
+          "armorPower": 35.7727,
           "reloadTime": 0.2,
           "gunnerTurretRotationSpeed": 85.0,
           "isBeltAmmo": true
@@ -33999,8 +34167,8 @@
       ],
       "crew": 3,
       "mass": 42500.0,
-      "maxSpeedForward": 65.1658,
-      "maxSpeedBackward": 25.258,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 7.01611,
       "powerToWeightRatio": 20.1412,
       "weapons": {
         "105mm_L7A3_user_cannon": {
@@ -34014,7 +34182,7 @@
         "30mm_HSS_831L_Turm_user_cannon": {
           "wtype": "machinegun",
           "caliber": 30.0,
-          "armorPower": 26.9184,
+          "armorPower": 28.9993,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 24.0,
           "isBeltAmmo": true
@@ -34072,14 +34240,14 @@
       ],
       "crew": 2,
       "mass": 2900.0,
-      "maxSpeedForward": 80.0502,
-      "maxSpeedBackward": 29.3612,
+      "maxSpeedForward": 22.2361,
+      "maxSpeedBackward": 8.15586,
       "powerToWeightRatio": 30.0,
       "weapons": {
         "20mm_Rh_202_Wiesel_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 29.033,
+          "armorPower": 30.963,
           "reloadTime": 0.0749963,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -34139,8 +34307,8 @@
       ],
       "crew": 6,
       "mass": 188000.0,
-      "maxSpeedForward": 20.6886,
-      "maxSpeedBackward": 20.6886,
+      "maxSpeedForward": 5.74682,
+      "maxSpeedBackward": 5.74682,
       "powerToWeightRatio": 6.38298,
       "weapons": {
         "128mm_KwK44_user_cannon": {
@@ -34208,8 +34376,8 @@
       ],
       "crew": 4,
       "mass": 40000.0,
-      "maxSpeedForward": 65.1658,
-      "maxSpeedBackward": 25.0638,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 6.96214,
       "powerToWeightRatio": 20.75,
       "weapons": {
         "105mm_L7A3_user_cannon": {
@@ -34271,8 +34439,8 @@
       ],
       "crew": 5,
       "mass": 57000.0,
-      "maxSpeedForward": 35.3125,
-      "maxSpeedBackward": 32.2857,
+      "maxSpeedForward": 9.80901,
+      "maxSpeedBackward": 8.96824,
       "powerToWeightRatio": 10.9649,
       "weapons": {
         "88mm_Kwk36_user_cannon": {
@@ -34337,8 +34505,8 @@
       ],
       "crew": 5,
       "mass": 57320.0,
-      "maxSpeedForward": 44.8672,
-      "maxSpeedBackward": 8.33075,
+      "maxSpeedForward": 12.4631,
+      "maxSpeedBackward": 2.31409,
       "powerToWeightRatio": 12.2121,
       "weapons": {
         "88mm_Kwk36_user_cannon": {
@@ -34397,8 +34565,8 @@
       ],
       "crew": 4,
       "mass": 28450.0,
-      "maxSpeedForward": 39.9991,
-      "maxSpeedBackward": 7.47648,
+      "maxSpeedForward": 11.1109,
+      "maxSpeedBackward": 2.07679,
       "powerToWeightRatio": 10.5448,
       "weapons": {
         "75mm_PaK42_user_cannon": {
@@ -34459,14 +34627,14 @@
       ],
       "crew": 5,
       "mass": 25000.0,
-      "maxSpeedForward": 38.6897,
-      "maxSpeedBackward": 7.23171,
+      "maxSpeedForward": 10.7471,
+      "maxSpeedBackward": 2.0088,
       "powerToWeightRatio": 12.0,
       "weapons": {
         "37mm_FlaK43_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 25.3637,
+          "armorPower": 27.3921,
           "reloadTime": 0.240038,
           "gunnerTurretRotationSpeed": 35.0,
           "isBeltAmmo": true
@@ -34516,8 +34684,8 @@
       ],
       "crew": 5,
       "mass": 39000.0,
-      "maxSpeedForward": 27.9571,
-      "maxSpeedBackward": 2.49617,
+      "maxSpeedForward": 7.76583,
+      "maxSpeedBackward": 0.693378,
       "powerToWeightRatio": 8.97436,
       "weapons": {
         "75mm_QQF_MkV_NA75_user_cannon": {
@@ -34581,8 +34749,8 @@
       ],
       "crew": 3,
       "mass": 14000.0,
-      "maxSpeedForward": 43.9186,
-      "maxSpeedBackward": 6.47427,
+      "maxSpeedForward": 12.1996,
+      "maxSpeedBackward": 1.7984,
       "powerToWeightRatio": 17.1429,
       "weapons": {
         "76mm_D56_TS_user_cannon": {
@@ -34641,8 +34809,8 @@
       ],
       "crew": 4,
       "mass": 48000.0,
-      "maxSpeedForward": 34.1058,
-      "maxSpeedBackward": 13.1589,
+      "maxSpeedForward": 9.47382,
+      "maxSpeedBackward": 3.65525,
       "powerToWeightRatio": 10.8333,
       "weapons": {
         "122mm_D25T_user_cannon": {
@@ -34704,8 +34872,8 @@
       ],
       "crew": 4,
       "mass": 32000.0,
-      "maxSpeedForward": 49.9192,
-      "maxSpeedBackward": 7.62402,
+      "maxSpeedForward": 13.8664,
+      "maxSpeedBackward": 2.11778,
       "powerToWeightRatio": 15.625,
       "weapons": {
         "122mm_D25S_user_cannon": {
@@ -34759,8 +34927,8 @@
       ],
       "crew": 4,
       "mass": 32000.0,
-      "maxSpeedForward": 49.9192,
-      "maxSpeedBackward": 7.62402,
+      "maxSpeedForward": 13.8664,
+      "maxSpeedBackward": 2.11778,
       "powerToWeightRatio": 15.625,
       "weapons": {
         "122mm_D25S_user_cannon": {
@@ -34810,14 +34978,14 @@
       ],
       "crew": 6,
       "mass": 9000.0,
-      "maxSpeedForward": 61.1195,
-      "maxSpeedBackward": 6.36188,
+      "maxSpeedForward": 16.9776,
+      "maxSpeedBackward": 1.76718,
       "powerToWeightRatio": 26.6667,
       "weapons": {
         "23mm_2A14_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 23.0,
-          "armorPower": 23.0,
+          "armorPower": 24.9622,
           "reloadTime": 0.0749963,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -34871,8 +35039,8 @@
       ],
       "crew": 4,
       "mass": 38500.0,
-      "maxSpeedForward": 57.2328,
-      "maxSpeedBackward": 8.942,
+      "maxSpeedForward": 15.898,
+      "maxSpeedBackward": 2.48388,
       "powerToWeightRatio": 18.961,
       "weapons": {
         "105mm_ZPL94_user_cannon": {
@@ -34940,8 +35108,8 @@
       ],
       "crew": 4,
       "mass": 36500.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 14.2466,
       "weapons": {
         "105mm_Type_83_user_cannon": {
@@ -35006,8 +35174,8 @@
       ],
       "crew": 5,
       "mass": 12000.0,
-      "maxSpeedForward": 64.3009,
-      "maxSpeedBackward": 14.7818,
+      "maxSpeedForward": 17.8613,
+      "maxSpeedBackward": 4.10605,
       "powerToWeightRatio": 17.9167,
       "weapons": {
         "127mm_BGM_71_tow_launcher_user_cannon": {
@@ -35074,14 +35242,14 @@
       ],
       "crew": 3,
       "mass": 38000.0,
-      "maxSpeedForward": 65.1658,
-      "maxSpeedBackward": 15.1902,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 4.21948,
       "powerToWeightRatio": 21.0526,
       "weapons": {
         "35mm_PG_99_35_2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 35.0,
-          "armorPower": 34.6441,
+          "armorPower": 36.8965,
           "reloadTime": 0.10917,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -35129,8 +35297,8 @@
       ],
       "crew": 6,
       "mass": 64183.0,
-      "maxSpeedForward": 35.1325,
-      "maxSpeedBackward": 13.5551,
+      "maxSpeedForward": 9.75901,
+      "maxSpeedBackward": 3.76529,
       "powerToWeightRatio": 11.9969,
       "weapons": {
         "105mm_T5E2_user_cannon": {
@@ -35194,8 +35362,8 @@
       ],
       "crew": 5,
       "mass": 22000.0,
-      "maxSpeedForward": 72.2336,
-      "maxSpeedBackward": 23.3135,
+      "maxSpeedForward": 20.0649,
+      "maxSpeedBackward": 6.47596,
       "powerToWeightRatio": 18.1818,
       "weapons": {
         "90mm_M3_user_cannon": {
@@ -35257,8 +35425,8 @@
       ],
       "crew": 5,
       "mass": 69850.0,
-      "maxSpeedForward": 28.8608,
-      "maxSpeedBackward": 28.8608,
+      "maxSpeedForward": 8.01688,
+      "maxSpeedBackward": 8.01688,
       "powerToWeightRatio": 11.4531,
       "weapons": {
         "105mm_T15E2_user_cannon": {
@@ -35324,14 +35492,14 @@
       ],
       "crew": 6,
       "mass": 22450.0,
-      "maxSpeedForward": 72.4416,
-      "maxSpeedBackward": 18.816,
+      "maxSpeedForward": 20.1226,
+      "maxSpeedBackward": 5.22666,
       "powerToWeightRatio": 22.2717,
       "weapons": {
         "40mm_M2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -35386,8 +35554,8 @@
       ],
       "crew": 4,
       "mass": 36000.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 14.4444,
       "weapons": {
         "100mm_D10T_user_cannon": {
@@ -35457,8 +35625,8 @@
       ],
       "crew": 4,
       "mass": 60000.0,
-      "maxSpeedForward": 42.5543,
-      "maxSpeedBackward": 10.5162,
+      "maxSpeedForward": 11.8206,
+      "maxSpeedBackward": 2.92115,
       "powerToWeightRatio": 12.5,
       "weapons": {
         "122mm_D25T_user_cannon": {
@@ -35517,8 +35685,8 @@
       ],
       "crew": 4,
       "mass": 27000.0,
-      "maxSpeedForward": 63.6739,
-      "maxSpeedBackward": 15.3187,
+      "maxSpeedForward": 17.6872,
+      "maxSpeedBackward": 4.25517,
       "powerToWeightRatio": 17.7778,
       "weapons": {
         "152mm_M69_user_cannon": {
@@ -35568,14 +35736,14 @@
       ],
       "crew": 4,
       "mass": 21000.0,
-      "maxSpeedForward": 50.0012,
-      "maxSpeedBackward": 7.50019,
+      "maxSpeedForward": 13.8892,
+      "maxSpeedBackward": 2.08338,
       "powerToWeightRatio": 13.3333,
       "weapons": {
         "23mm_2A7_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 23.0,
-          "armorPower": 23.0,
+          "armorPower": 24.9622,
           "reloadTime": 0.0705916,
           "gunnerTurretRotationSpeed": 70.0,
           "isBeltAmmo": true
@@ -35620,8 +35788,8 @@
       ],
       "crew": 4,
       "mass": 28270.0,
-      "maxSpeedForward": 48.9403,
-      "maxSpeedBackward": 6.91568,
+      "maxSpeedForward": 13.5945,
+      "maxSpeedBackward": 1.92102,
       "powerToWeightRatio": 17.6866,
       "weapons": {
         "57mm_ZIS4_user_cannon": {
@@ -35684,8 +35852,8 @@
       ],
       "crew": 5,
       "mass": 48950.0,
-      "maxSpeedForward": 34.3572,
-      "maxSpeedBackward": 6.19278,
+      "maxSpeedForward": 9.54365,
+      "maxSpeedBackward": 1.72021,
       "powerToWeightRatio": 12.2574,
       "weapons": {
         "76mm_F32_user_cannon": {
@@ -35741,8 +35909,8 @@
       ],
       "crew": 6,
       "mass": 64000.0,
-      "maxSpeedForward": 32.2768,
-      "maxSpeedBackward": 4.05409,
+      "maxSpeedForward": 8.96576,
+      "maxSpeedBackward": 1.12613,
       "powerToWeightRatio": 13.2812,
       "weapons": {
         "130mm_B13_user_cannon": {
@@ -35792,8 +35960,8 @@
       ],
       "crew": 5,
       "mass": 8800.0,
-      "maxSpeedForward": 82.8834,
-      "maxSpeedBackward": 10.7589,
+      "maxSpeedForward": 23.0231,
+      "maxSpeedBackward": 2.98858,
       "powerToWeightRatio": 12.5,
       "weapons": {
         "14_5mm_KPVT_BTR_152_user_machinegun": {
@@ -35841,8 +36009,8 @@
       ],
       "crew": 4,
       "mass": 38000.0,
-      "maxSpeedForward": 53.0728,
-      "maxSpeedBackward": 7.43239,
+      "maxSpeedForward": 14.7424,
+      "maxSpeedBackward": 2.06455,
       "powerToWeightRatio": 19.7368,
       "weapons": {
         "105mm_L7A3_STB_user_cannon": {
@@ -35910,8 +36078,8 @@
       ],
       "crew": 4,
       "mass": 38000.0,
-      "maxSpeedForward": 53.0728,
-      "maxSpeedBackward": 7.43239,
+      "maxSpeedForward": 14.7424,
+      "maxSpeedBackward": 2.06455,
       "powerToWeightRatio": 18.9474,
       "weapons": {
         "105mm_L7A3_STB_user_cannon": {
@@ -35986,14 +36154,14 @@
       ],
       "crew": 3,
       "mass": 38000.0,
-      "maxSpeedForward": 53.0728,
-      "maxSpeedBackward": 7.43239,
+      "maxSpeedForward": 14.7424,
+      "maxSpeedBackward": 2.06455,
       "powerToWeightRatio": 18.9474,
       "weapons": {
         "35mm_Oerlikon_KDA_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 35.0,
-          "armorPower": 34.6441,
+          "armorPower": 36.8965,
           "reloadTime": 0.10917,
           "gunnerTurretRotationSpeed": 56.0,
           "isBeltAmmo": true
@@ -36044,14 +36212,14 @@
       ],
       "crew": 5,
       "mass": 15000.0,
-      "maxSpeedForward": 100.382,
-      "maxSpeedBackward": 11.2871,
+      "maxSpeedForward": 27.884,
+      "maxSpeedBackward": 3.13529,
       "powerToWeightRatio": 20.3333,
       "weapons": {
         "25mm_Oerlikon_KBA_Dardo_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 25.0,
-          "armorPower": 27.4214,
+          "armorPower": 30.1359,
           "reloadTime": 0.107135,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -36108,8 +36276,8 @@
       ],
       "crew": 4,
       "mass": 50803.0,
-      "maxSpeedForward": 34.6681,
-      "maxSpeedBackward": 12.0689,
+      "maxSpeedForward": 9.63,
+      "maxSpeedBackward": 3.35247,
       "powerToWeightRatio": 12.7945,
       "weapons": {
         "84mm_QQF_20pdr_Mk_I_user_cannon": {
@@ -36171,8 +36339,8 @@
       ],
       "crew": 3,
       "mass": 6000.0,
-      "maxSpeedForward": 89.8396,
-      "maxSpeedBackward": 17.2193,
+      "maxSpeedForward": 24.9554,
+      "maxSpeedBackward": 4.78312,
       "powerToWeightRatio": 15.0,
       "weapons": {
         "90mm_GT_2_user_cannon": {
@@ -36228,8 +36396,8 @@
       ],
       "crew": 4,
       "mass": 50802.0,
-      "maxSpeedForward": 37.2663,
-      "maxSpeedBackward": 12.0689,
+      "maxSpeedForward": 10.3517,
+      "maxSpeedBackward": 3.35247,
       "powerToWeightRatio": 12.4995,
       "weapons": {
         "120mm_QQF_Tk_L1A1_user_cannon": {
@@ -36287,14 +36455,14 @@
       ],
       "crew": 5,
       "mass": 27660.0,
-      "maxSpeedForward": 32.0293,
-      "maxSpeedBackward": 4.53749,
+      "maxSpeedForward": 8.89701,
+      "maxSpeedBackward": 1.26041,
       "powerToWeightRatio": 14.4613,
       "weapons": {
         "20mm_Polsten_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 28.5966,
+          "armorPower": 29.5966,
           "reloadTime": 0.133333,
           "gunnerTurretRotationSpeed": 63.0,
           "isBeltAmmo": true
@@ -36353,8 +36521,8 @@
       ],
       "crew": 4,
       "mass": 38200.0,
-      "maxSpeedForward": 65.0779,
-      "maxSpeedBackward": 65.0779,
+      "maxSpeedForward": 18.0772,
+      "maxSpeedBackward": 18.0772,
       "powerToWeightRatio": 19.6335,
       "weapons": {
         "105mm_CN_105_F1_user_cannon": {
@@ -36368,7 +36536,7 @@
         "20mm_M_693_user_cannon": {
           "wtype": "machinegun",
           "caliber": 20.0,
-          "armorPower": 29.033,
+          "armorPower": 30.963,
           "reloadTime": 0.081103,
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": true
@@ -36428,8 +36596,8 @@
       ],
       "crew": 3,
       "mass": 16000.0,
-      "maxSpeedForward": 74.9777,
-      "maxSpeedBackward": 24.5864,
+      "maxSpeedForward": 20.8271,
+      "maxSpeedBackward": 6.82955,
       "powerToWeightRatio": 26.25,
       "weapons": {
         "90mm_CN_90_F4_user_cannon": {
@@ -36492,14 +36660,14 @@
       ],
       "crew": 3,
       "mass": 36000.0,
-      "maxSpeedForward": 65.0779,
-      "maxSpeedBackward": 65.0779,
+      "maxSpeedForward": 18.0772,
+      "maxSpeedBackward": 18.0772,
       "powerToWeightRatio": 19.4444,
       "weapons": {
         "30mm_HSS_831A_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 30.0,
-          "armorPower": 26.9184,
+          "armorPower": 28.9993,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 80.0,
           "isBeltAmmo": true
@@ -36549,8 +36717,8 @@
       ],
       "crew": 4,
       "mass": 38000.0,
-      "maxSpeedForward": 65.0779,
-      "maxSpeedBackward": 65.0779,
+      "maxSpeedForward": 18.0772,
+      "maxSpeedBackward": 18.0772,
       "powerToWeightRatio": 17.8947,
       "weapons": {
         "105mm_CN_105_F1_user_cannon": {
@@ -36564,7 +36732,7 @@
         "20mm_M_693_user_cannon": {
           "wtype": "machinegun",
           "caliber": 20.0,
-          "armorPower": 29.033,
+          "armorPower": 30.963,
           "reloadTime": 0.081103,
           "gunnerTurretRotationSpeed": 25.0,
           "isBeltAmmo": true
@@ -36626,8 +36794,8 @@
       ],
       "crew": 5,
       "mass": 43850.0,
-      "maxSpeedForward": 48.3013,
-      "maxSpeedBackward": 19.24,
+      "maxSpeedForward": 13.417,
+      "maxSpeedBackward": 5.34444,
       "powerToWeightRatio": 18.4721,
       "weapons": {
         "90mm_M3A1_user_cannon": {
@@ -36699,8 +36867,8 @@
       ],
       "crew": 4,
       "mass": 16855.0,
-      "maxSpeedForward": 56.621,
-      "maxSpeedBackward": 8.08872,
+      "maxSpeedForward": 15.728,
+      "maxSpeedBackward": 2.24686,
       "powerToWeightRatio": 20.1721,
       "weapons": {
         "76mm_T185E1_user_cannon": {
@@ -36770,8 +36938,8 @@
       ],
       "crew": 4,
       "mass": 86182.0,
-      "maxSpeedForward": 12.8036,
-      "maxSpeedBackward": 4.13239,
+      "maxSpeedForward": 3.55655,
+      "maxSpeedBackward": 1.14788,
       "powerToWeightRatio": 5.80168,
       "weapons": {
         "105mm_T15E2_user_cannon": {
@@ -36829,14 +36997,14 @@
       ],
       "crew": 6,
       "mass": 22450.0,
-      "maxSpeedForward": 72.4416,
-      "maxSpeedBackward": 18.816,
+      "maxSpeedForward": 20.1226,
+      "maxSpeedBackward": 5.22666,
       "powerToWeightRatio": 22.2717,
       "weapons": {
         "40mm_M2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -36891,8 +37059,8 @@
       ],
       "crew": 4,
       "mass": 35300.0,
-      "maxSpeedForward": 35.8085,
-      "maxSpeedBackward": 5.2697,
+      "maxSpeedForward": 9.9468,
+      "maxSpeedBackward": 1.4638,
       "powerToWeightRatio": 12.0397,
       "weapons": {
         "76mm_17pdr_QF_user_cannon": {
@@ -36965,8 +37133,8 @@
       ],
       "crew": 5,
       "mass": 17690.0,
-      "maxSpeedForward": 72.2336,
-      "maxSpeedBackward": 23.3135,
+      "maxSpeedForward": 20.0649,
+      "maxSpeedBackward": 6.47596,
       "powerToWeightRatio": 22.6116,
       "weapons": {
         "76mm_M1_open_turret_user_cannon": {
@@ -37038,8 +37206,8 @@
       ],
       "crew": 5,
       "mass": 30850.0,
-      "maxSpeedForward": 41.1742,
-      "maxSpeedBackward": 5.35118,
+      "maxSpeedForward": 11.4372,
+      "maxSpeedBackward": 1.48644,
       "powerToWeightRatio": 16.2075,
       "weapons": {
         "90mm_90_50_M3A1_user_cannon": {
@@ -37097,14 +37265,14 @@
       ],
       "crew": 4,
       "mass": 3650.0,
-      "maxSpeedForward": 114.945,
-      "maxSpeedBackward": 28.9861,
+      "maxSpeedForward": 31.9291,
+      "maxSpeedBackward": 8.05168,
       "powerToWeightRatio": 26.0274,
       "weapons": {
         "20mm_Oerlikon_KAD_B17_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 29.033,
+          "armorPower": 30.963,
           "reloadTime": 0.060241,
           "gunnerTurretRotationSpeed": 45.0,
           "isBeltAmmo": true
@@ -37158,8 +37326,8 @@
       ],
       "crew": 4,
       "mass": 43000.0,
-      "maxSpeedForward": 65.1658,
-      "maxSpeedBackward": 25.0638,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 6.96214,
       "powerToWeightRatio": 19.3023,
       "weapons": {
         "105mm_OTO_Melara_Mk_2_user_cannon": {
@@ -37231,8 +37399,8 @@
       ],
       "crew": 4,
       "mass": 42500.0,
-      "maxSpeedForward": 65.1658,
-      "maxSpeedBackward": 25.0638,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 6.96214,
       "powerToWeightRatio": 19.5294,
       "weapons": {
         "105mm_L7A3_Radpanzer_user_cannon": {
@@ -37286,8 +37454,8 @@
       ],
       "crew": 5,
       "mass": 11160.0,
-      "maxSpeedForward": 64.3009,
-      "maxSpeedBackward": 14.7818,
+      "maxSpeedForward": 17.8613,
+      "maxSpeedBackward": 4.10605,
       "powerToWeightRatio": 19.2652,
       "weapons": {
         "127mm_bgm_71c_itow_rocket_launcher": {
@@ -37345,14 +37513,14 @@
       ],
       "crew": 3,
       "mass": 14300.0,
-      "maxSpeedForward": 64.3009,
-      "maxSpeedBackward": 14.7818,
+      "maxSpeedForward": 17.8613,
+      "maxSpeedBackward": 4.10605,
       "powerToWeightRatio": 14.8252,
       "weapons": {
         "25mm_Oerlikon_KBA_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 25.0,
-          "armorPower": 3.04,
+          "armorPower": 5.07176,
           "reloadTime": 0.10917,
           "gunnerTurretRotationSpeed": 120.0,
           "isBeltAmmo": true
@@ -37401,8 +37569,8 @@
       ],
       "crew": 4,
       "mass": 25500.0,
-      "maxSpeedForward": 80.2,
-      "maxSpeedBackward": 80.2,
+      "maxSpeedForward": 22.2777,
+      "maxSpeedBackward": 22.2777,
       "powerToWeightRatio": 25.8824,
       "weapons": {
         "90mm_BK90_Ru251_user_cannon": {
@@ -37466,8 +37634,8 @@
       ],
       "crew": 5,
       "mass": 69800.0,
-      "maxSpeedForward": 41.6743,
-      "maxSpeedBackward": 11.1202,
+      "maxSpeedForward": 11.5762,
+      "maxSpeedBackward": 3.08894,
       "powerToWeightRatio": 10.0287,
       "weapons": {
         "88mm_Kwk43_user_cannon": {
@@ -37528,8 +37696,8 @@
       ],
       "crew": 4,
       "mass": 25700.0,
-      "maxSpeedForward": 70.2441,
-      "maxSpeedBackward": 70.2441,
+      "maxSpeedForward": 19.5122,
+      "maxSpeedBackward": 19.5122,
       "powerToWeightRatio": 19.4553,
       "weapons": {
         "90mm_BK_90_user_cannon": {
@@ -37590,14 +37758,14 @@
       ],
       "crew": 5,
       "mass": 25000.0,
-      "maxSpeedForward": 38.6897,
-      "maxSpeedBackward": 7.23171,
+      "maxSpeedForward": 10.7471,
+      "maxSpeedBackward": 2.0088,
       "powerToWeightRatio": 12.0,
       "weapons": {
         "30mm_MK103_38_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 30.0,
-          "armorPower": 29.9576,
+          "armorPower": 30.7892,
           "reloadTime": 0.133333,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -37645,8 +37813,8 @@
       ],
       "crew": 5,
       "mass": 32200.0,
-      "maxSpeedForward": 54.9303,
-      "maxSpeedBackward": 8.38936,
+      "maxSpeedForward": 15.2584,
+      "maxSpeedBackward": 2.33037,
       "powerToWeightRatio": 15.528,
       "weapons": {
         "85mm_ZiS_S_53_user_cannon": {
@@ -37710,8 +37878,8 @@
       ],
       "crew": 3,
       "mass": 14000.0,
-      "maxSpeedForward": 43.9186,
-      "maxSpeedBackward": 6.47427,
+      "maxSpeedForward": 12.1996,
+      "maxSpeedBackward": 1.7984,
       "powerToWeightRatio": 17.1429,
       "weapons": {
         "76mm_D56_T_user_cannon": {
@@ -37770,8 +37938,8 @@
       ],
       "crew": 5,
       "mass": 46000.0,
-      "maxSpeedForward": 37.8124,
-      "maxSpeedBackward": 14.589,
+      "maxSpeedForward": 10.5034,
+      "maxSpeedBackward": 4.0525,
       "powerToWeightRatio": 11.3043,
       "weapons": {
         "122mm_A19_user_cannon": {
@@ -37829,14 +37997,14 @@
       ],
       "crew": 5,
       "mass": 14000.0,
-      "maxSpeedForward": 60.0395,
-      "maxSpeedBackward": 8.85179,
+      "maxSpeedForward": 16.6776,
+      "maxSpeedBackward": 2.45883,
       "powerToWeightRatio": 18.5714,
       "weapons": {
         "25mm_PG87_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 25.0,
-          "armorPower": 32.2422,
+          "armorPower": 33.9672,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 54.0,
           "isBeltAmmo": true
@@ -37882,8 +38050,8 @@
       ],
       "crew": 4,
       "mass": 54425.0,
-      "maxSpeedForward": 40.7078,
-      "maxSpeedBackward": 9.40364,
+      "maxSpeedForward": 11.3077,
+      "maxSpeedBackward": 2.61211,
       "powerToWeightRatio": 12.1268,
       "weapons": {
         "120mm_OBL_Tk_L11_user_cannon": {
@@ -37955,8 +38123,8 @@
       ],
       "crew": 4,
       "mass": 66044.0,
-      "maxSpeedForward": 34.3908,
-      "maxSpeedBackward": 11.9679,
+      "maxSpeedForward": 9.55299,
+      "maxSpeedBackward": 3.32441,
       "powerToWeightRatio": 12.2646,
       "weapons": {
         "120mm_QQF_Tk_L1A1_user_cannon": {
@@ -38013,8 +38181,8 @@
       ],
       "crew": 3,
       "mass": 8340.0,
-      "maxSpeedForward": 80.2743,
-      "maxSpeedBackward": 80.2743,
+      "maxSpeedForward": 22.2984,
+      "maxSpeedBackward": 22.2984,
       "powerToWeightRatio": 22.7818,
       "weapons": {
         "170mm_BAe_Swingfire_launcher_user_cannon": {
@@ -38077,14 +38245,14 @@
       ],
       "crew": 3,
       "mass": 15875.0,
-      "maxSpeedForward": 47.9096,
-      "maxSpeedBackward": 7.93205,
+      "maxSpeedForward": 13.3082,
+      "maxSpeedBackward": 2.20334,
       "powerToWeightRatio": 13.4173,
       "weapons": {
         "30mm_HSS_831L_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 30.0,
-          "armorPower": 26.9184,
+          "armorPower": 28.9993,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 80.0,
           "isBeltAmmo": true
@@ -38134,8 +38302,8 @@
       ],
       "crew": 4,
       "mass": 50000.0,
-      "maxSpeedForward": 48.1119,
-      "maxSpeedBackward": 7.99537,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
       "powerToWeightRatio": 15.0,
       "weapons": {
         "105mm_L7_Shot_user_cannon": {
@@ -38215,8 +38383,8 @@
       ],
       "crew": 4,
       "mass": 53200.0,
-      "maxSpeedForward": 48.1119,
-      "maxSpeedBackward": 7.99537,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
       "powerToWeightRatio": 14.0977,
       "weapons": {
         "105mm_L7_Shot_user_cannon": {
@@ -38288,8 +38456,8 @@
       ],
       "crew": 4,
       "mass": 54000.0,
-      "maxSpeedForward": 48.1119,
-      "maxSpeedBackward": 7.99537,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
       "powerToWeightRatio": 13.8889,
       "weapons": {
         "105mm_L7_Shot_user_cannon": {
@@ -38356,14 +38524,14 @@
       ],
       "crew": 4,
       "mass": 11203.0,
-      "maxSpeedForward": 64.3009,
-      "maxSpeedBackward": 14.7818,
+      "maxSpeedForward": 17.8613,
+      "maxSpeedBackward": 4.10605,
       "powerToWeightRatio": 18.9235,
       "weapons": {
         "20mm_M168_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 36.1912,
+          "armorPower": 37.2245,
           "reloadTime": 0.02,
           "gunnerTurretRotationSpeed": 75.0,
           "isBeltAmmo": true
@@ -38412,14 +38580,14 @@
       ],
       "crew": 3,
       "mass": 14550.0,
-      "maxSpeedForward": 87.0282,
-      "maxSpeedBackward": 11.7924,
+      "maxSpeedForward": 24.1744,
+      "maxSpeedBackward": 3.27567,
       "powerToWeightRatio": 17.8694,
       "weapons": {
         "30mm_2A72_BTR_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 30.0,
-          "armorPower": 33.0553,
+          "armorPower": 35.1221,
           "reloadTime": 0.181818,
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": true
@@ -38482,8 +38650,8 @@
       ],
       "crew": 4,
       "mass": 33500.0,
-      "maxSpeedForward": 60.2599,
-      "maxSpeedBackward": 9.03899,
+      "maxSpeedForward": 16.7388,
+      "maxSpeedBackward": 2.51082,
       "powerToWeightRatio": 15.5224,
       "weapons": {
         "100mm_D10T_user_cannon": {
@@ -38559,8 +38727,8 @@
       ],
       "crew": 5,
       "mass": 36000.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 14.4444,
       "weapons": {
         "122mm_D49_user_cannon": {
@@ -38621,14 +38789,14 @@
       ],
       "crew": 6,
       "mass": 28000.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 18.5714,
       "weapons": {
         "57mm_S_68_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 57.0,
-          "armorPower": 76.1917,
+          "armorPower": 78.3726,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -38680,8 +38848,8 @@
       ],
       "crew": 5,
       "mass": 37800.0,
-      "maxSpeedForward": 35.3047,
-      "maxSpeedBackward": 4.58835,
+      "maxSpeedForward": 9.80683,
+      "maxSpeedBackward": 1.27454,
       "powerToWeightRatio": 13.2275,
       "weapons": {
         "76mm_M1_no_MB_user_cannon": {
@@ -38752,8 +38920,8 @@
       ],
       "crew": 5,
       "mass": 33000.0,
-      "maxSpeedForward": 45.9269,
-      "maxSpeedBackward": 5.96887,
+      "maxSpeedForward": 12.7574,
+      "maxSpeedBackward": 1.65802,
       "powerToWeightRatio": 12.4242,
       "weapons": {
         "76mm_M1_user_cannon": {
@@ -38827,8 +38995,8 @@
       ],
       "crew": 5,
       "mass": 28120.0,
-      "maxSpeedForward": 41.8704,
-      "maxSpeedBackward": 5.4098,
+      "maxSpeedForward": 11.6306,
+      "maxSpeedBackward": 1.50272,
       "powerToWeightRatio": 17.7809,
       "weapons": {
         "90mm_M3_open_turret_without_MB_user_cannon": {
@@ -38886,14 +39054,14 @@
       ],
       "crew": 6,
       "mass": 22450.0,
-      "maxSpeedForward": 72.4416,
-      "maxSpeedBackward": 18.816,
+      "maxSpeedForward": 20.1226,
+      "maxSpeedBackward": 5.22666,
       "powerToWeightRatio": 22.2717,
       "weapons": {
         "40mm_M2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -38941,8 +39109,8 @@
       ],
       "crew": 5,
       "mass": 47500.0,
-      "maxSpeedForward": 34.3572,
-      "maxSpeedBackward": 6.19278,
+      "maxSpeedForward": 9.54365,
+      "maxSpeedBackward": 1.72021,
       "powerToWeightRatio": 12.6316,
       "weapons": {
         "75mm_KwK40_L48_user_cannon": {
@@ -39010,8 +39178,8 @@
       ],
       "crew": 4,
       "mass": 11740.0,
-      "maxSpeedForward": 89.8877,
-      "maxSpeedBackward": 89.8877,
+      "maxSpeedForward": 24.9687,
+      "maxSpeedBackward": 24.9687,
       "powerToWeightRatio": 17.8876,
       "weapons": {
         "75mm_PaK40_3_L46_user_cannon": {
@@ -39077,8 +39245,8 @@
       ],
       "crew": 4,
       "mass": 24460.0,
-      "maxSpeedForward": 39.9991,
-      "maxSpeedBackward": 7.47648,
+      "maxSpeedForward": 11.1109,
+      "maxSpeedBackward": 2.07679,
       "powerToWeightRatio": 12.2649,
       "weapons": {
         "75mm_PaK39_L48_user_cannon": {
@@ -39139,14 +39307,14 @@
       ],
       "crew": 5,
       "mass": 25000.0,
-      "maxSpeedForward": 38.6897,
-      "maxSpeedBackward": 7.23171,
+      "maxSpeedForward": 10.7471,
+      "maxSpeedBackward": 2.0088,
       "powerToWeightRatio": 12.0,
       "weapons": {
         "37mm_FlaK43_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 25.3637,
+          "armorPower": 27.3921,
           "reloadTime": 0.240038,
           "gunnerTurretRotationSpeed": 35.0,
           "isBeltAmmo": true
@@ -39194,8 +39362,8 @@
       ],
       "crew": 3,
       "mass": 25200.0,
-      "maxSpeedForward": 70.0247,
-      "maxSpeedBackward": 31.8613,
+      "maxSpeedForward": 19.4513,
+      "maxSpeedBackward": 8.85033,
       "powerToWeightRatio": 20.6349,
       "weapons": {
         "60mm_OTO_HVG_Hitfist_user_cannon": {
@@ -39266,8 +39434,8 @@
       ],
       "crew": 4,
       "mass": 30000.0,
-      "maxSpeedForward": 110.008,
-      "maxSpeedBackward": 22.1229,
+      "maxSpeedForward": 30.5578,
+      "maxSpeedBackward": 6.14523,
       "powerToWeightRatio": 17.3333,
       "weapons": {
         "105mm_OTO_Melara_ROMOR_user_cannon": {
@@ -39333,14 +39501,14 @@
       ],
       "crew": 3,
       "mass": 26000.0,
-      "maxSpeedForward": 108.09,
-      "maxSpeedBackward": 22.0515,
+      "maxSpeedForward": 30.0249,
+      "maxSpeedBackward": 6.12542,
       "powerToWeightRatio": 21.1538,
       "weapons": {
         "25mm_Oerlikon_KBA_Dardo_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 25.0,
-          "armorPower": 27.4214,
+          "armorPower": 30.1359,
           "reloadTime": 0.107135,
           "gunnerTurretRotationSpeed": 57.3,
           "isBeltAmmo": true
@@ -39396,14 +39564,14 @@
       ],
       "crew": 3,
       "mass": 14300.0,
-      "maxSpeedForward": 64.3009,
-      "maxSpeedBackward": 14.7818,
+      "maxSpeedForward": 17.8613,
+      "maxSpeedBackward": 4.10605,
       "powerToWeightRatio": 14.8252,
       "weapons": {
         "25mm_Oerlikon_KBA_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 25.0,
-          "armorPower": 3.04,
+          "armorPower": 5.07176,
           "reloadTime": 0.10917,
           "gunnerTurretRotationSpeed": 120.0,
           "isBeltAmmo": true
@@ -39455,8 +39623,8 @@
       ],
       "crew": 3,
       "mass": 15500.0,
-      "maxSpeedForward": 60.0771,
-      "maxSpeedBackward": 6.89432,
+      "maxSpeedForward": 16.688,
+      "maxSpeedBackward": 1.91508,
       "powerToWeightRatio": 17.4194,
       "weapons": {
         "75mm_SA_50_user_cannon": {
@@ -39524,8 +39692,8 @@
       ],
       "crew": 4,
       "mass": 36000.0,
-      "maxSpeedForward": 65.0779,
-      "maxSpeedBackward": 65.0779,
+      "maxSpeedForward": 18.0772,
+      "maxSpeedBackward": 18.0772,
       "powerToWeightRatio": 20.0,
       "weapons": {
         "105mm_CN_105_F1_user_cannon": {
@@ -39539,7 +39707,7 @@
         "20mm_M_693_user_cannon": {
           "wtype": "machinegun",
           "caliber": 20.0,
-          "armorPower": 29.033,
+          "armorPower": 30.963,
           "reloadTime": 0.081103,
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": true
@@ -39589,8 +39757,8 @@
       ],
       "crew": 4,
       "mass": 57800.0,
-      "maxSpeedForward": 51.2466,
-      "maxSpeedBackward": 5.88096,
+      "maxSpeedForward": 14.2351,
+      "maxSpeedBackward": 1.63359,
       "powerToWeightRatio": 14.7059,
       "weapons": {
         "120mm_SA_46_Surbaisse_user_cannon": {
@@ -39651,14 +39819,14 @@
       ],
       "crew": 3,
       "mass": 36000.0,
-      "maxSpeedForward": 65.0779,
-      "maxSpeedBackward": 65.0779,
+      "maxSpeedForward": 18.0772,
+      "maxSpeedBackward": 18.0772,
       "powerToWeightRatio": 19.4444,
       "weapons": {
         "30mm_HSS_831A_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 30.0,
-          "armorPower": 26.9184,
+          "armorPower": 28.9993,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 80.0,
           "isBeltAmmo": true
@@ -39709,8 +39877,8 @@
       ],
       "crew": 5,
       "mass": 60000.0,
-      "maxSpeedForward": 31.3832,
-      "maxSpeedBackward": 28.6932,
+      "maxSpeedForward": 8.71753,
+      "maxSpeedBackward": 7.97032,
       "powerToWeightRatio": 10.4167,
       "weapons": {
         "88mm_Kwk36_user_cannon": {
@@ -39766,8 +39934,8 @@
       ],
       "crew": 5,
       "mass": 35000.0,
-      "maxSpeedForward": 55.0064,
-      "maxSpeedBackward": 4.0121,
+      "maxSpeedForward": 15.2795,
+      "maxSpeedBackward": 1.11447,
       "powerToWeightRatio": 18.5714,
       "weapons": {
         "75mm_Kwk42_user_cannon": {
@@ -39829,8 +39997,8 @@
       ],
       "crew": 5,
       "mass": 23500.0,
-      "maxSpeedForward": 40.0034,
-      "maxSpeedBackward": 7.47727,
+      "maxSpeedForward": 11.112,
+      "maxSpeedBackward": 2.07701,
       "powerToWeightRatio": 12.766,
       "weapons": {
         "88mm_PaK43_user_cannon": {
@@ -39891,14 +40059,14 @@
       ],
       "crew": 5,
       "mass": 25000.0,
-      "maxSpeedForward": 38.6897,
-      "maxSpeedBackward": 7.23171,
+      "maxSpeedForward": 10.7471,
+      "maxSpeedBackward": 2.0088,
       "powerToWeightRatio": 12.0,
       "weapons": {
         "37mm_FlaK43_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 25.3637,
+          "armorPower": 27.3921,
           "reloadTime": 0.240038,
           "gunnerTurretRotationSpeed": 35.0,
           "isBeltAmmo": true
@@ -39948,8 +40116,8 @@
       ],
       "crew": 4,
       "mass": 57200.0,
-      "maxSpeedForward": 48.118,
-      "maxSpeedBackward": 11.1154,
+      "maxSpeedForward": 13.3661,
+      "maxSpeedBackward": 3.0876,
       "powerToWeightRatio": 13.2867,
       "weapons": {
         "120mm_OBL_Tk_L11_user_cannon": {
@@ -40017,8 +40185,8 @@
       ],
       "crew": 4,
       "mass": 60500.0,
-      "maxSpeedForward": 57.6396,
-      "maxSpeedBackward": 21.2031,
+      "maxSpeedForward": 16.011,
+      "maxSpeedBackward": 5.88975,
       "powerToWeightRatio": 17.3554,
       "weapons": {
         "105mm_GT_8_user_cannon": {
@@ -40075,8 +40243,8 @@
       ],
       "crew": 4,
       "mass": 18500.0,
-      "maxSpeedForward": 105.227,
-      "maxSpeedBackward": 17.6256,
+      "maxSpeedForward": 29.2298,
+      "maxSpeedBackward": 4.89599,
       "powerToWeightRatio": 15.2432,
       "weapons": {
         "127mm_ZT_3_launcher_user_cannon": {
@@ -40135,14 +40303,14 @@
       ],
       "crew": 3,
       "mass": 32000.0,
-      "maxSpeedForward": 120.327,
-      "maxSpeedBackward": 36.6428,
+      "maxSpeedForward": 33.4241,
+      "maxSpeedBackward": 10.1785,
       "powerToWeightRatio": 17.7188,
       "weapons": {
         "35mm_GA_35_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 35.0,
-          "armorPower": 34.6441,
+          "armorPower": 36.8965,
           "reloadTime": 0.10917,
           "gunnerTurretRotationSpeed": 45.0,
           "isBeltAmmo": true
@@ -40190,8 +40358,8 @@
       ],
       "crew": 4,
       "mass": 51400.0,
-      "maxSpeedForward": 44.2816,
-      "maxSpeedBackward": 17.085,
+      "maxSpeedForward": 12.3004,
+      "maxSpeedBackward": 4.74583,
       "powerToWeightRatio": 13.6187,
       "weapons": {
         "122mm_D30T_user_cannon": {
@@ -40260,8 +40428,8 @@
       ],
       "crew": 3,
       "mass": 15000.0,
-      "maxSpeedForward": 73.893,
-      "maxSpeedBackward": 73.893,
+      "maxSpeedForward": 20.5258,
+      "maxSpeedBackward": 20.5258,
       "powerToWeightRatio": 20.0,
       "weapons": {
         "85mm_D58_user_cannon": {
@@ -40320,14 +40488,14 @@
       ],
       "crew": 4,
       "mass": 25500.0,
-      "maxSpeedForward": 64.2552,
-      "maxSpeedBackward": 23.4072,
+      "maxSpeedForward": 17.8486,
+      "maxSpeedBackward": 6.502,
       "powerToWeightRatio": 15.6863,
       "weapons": {
         "37mm_2A11_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 43.3545,
+          "armorPower": 45.3604,
           "reloadTime": 0.11999,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -40375,8 +40543,8 @@
       ],
       "crew": 5,
       "mass": 38197.0,
-      "maxSpeedForward": 50.1187,
-      "maxSpeedBackward": 50.1187,
+      "maxSpeedForward": 13.9218,
+      "maxSpeedBackward": 13.9218,
       "powerToWeightRatio": 13.09,
       "weapons": {
         "90mm_M3_without_MB_user_cannon": {
@@ -40456,8 +40624,8 @@
       ],
       "crew": 3,
       "mass": 7030.0,
-      "maxSpeedForward": 45.0098,
-      "maxSpeedBackward": 18.9352,
+      "maxSpeedForward": 12.5027,
+      "maxSpeedBackward": 5.25976,
       "powerToWeightRatio": 28.4495,
       "weapons": {
         "90mm_M54_user_cannon": {
@@ -40515,8 +40683,8 @@
       ],
       "crew": 5,
       "mass": 46400.0,
-      "maxSpeedForward": 40.1713,
-      "maxSpeedBackward": 11.8094,
+      "maxSpeedForward": 11.1587,
+      "maxSpeedBackward": 3.28038,
       "powerToWeightRatio": 10.7759,
       "weapons": {
         "90mm_M3_t26e5_user_cannon": {
@@ -40582,14 +40750,14 @@
       ],
       "crew": 6,
       "mass": 22450.0,
-      "maxSpeedForward": 72.4416,
-      "maxSpeedBackward": 18.816,
+      "maxSpeedForward": 20.1226,
+      "maxSpeedBackward": 5.22666,
       "powerToWeightRatio": 22.2717,
       "weapons": {
         "40mm_M2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 36.6439,
+          "armorPower": 38.6924,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
@@ -40638,8 +40806,8 @@
       ],
       "crew": 3,
       "mass": 13400.0,
-      "maxSpeedForward": 65.0681,
-      "maxSpeedBackward": 11.1733,
+      "maxSpeedForward": 18.0744,
+      "maxSpeedBackward": 3.10369,
       "powerToWeightRatio": 22.3881,
       "weapons": {
         "73mm_2A28_user_cannon": {
@@ -40661,7 +40829,7 @@
         "125mm_9M113_rocket_launcher": {
           "wtype": "rockets",
           "caliber": 125.0,
-          "armorPower": 600.0,
+          "armorPower": 500.0,
           "reloadTime": 6.66667,
           "gunnerTurretRotationSpeed": 24.0,
           "isBeltAmmo": false
@@ -40709,8 +40877,8 @@
       ],
       "crew": 4,
       "mass": 48000.0,
-      "maxSpeedForward": 40.1293,
-      "maxSpeedBackward": 15.483,
+      "maxSpeedForward": 11.147,
+      "maxSpeedBackward": 4.30081,
       "powerToWeightRatio": 10.8333,
       "weapons": {
         "122mm_D25T_user_cannon": {
@@ -40777,8 +40945,8 @@
       ],
       "crew": 4,
       "mass": 50000.0,
-      "maxSpeedForward": 50.2171,
-      "maxSpeedBackward": 9.85028,
+      "maxSpeedForward": 13.9492,
+      "maxSpeedBackward": 2.73618,
       "powerToWeightRatio": 15.0,
       "weapons": {
         "152mm_M64_user_cannon": {
@@ -40839,14 +41007,14 @@
       ],
       "crew": 6,
       "mass": 28000.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 18.5714,
       "weapons": {
         "57mm_S_68_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 57.0,
-          "armorPower": 76.1917,
+          "armorPower": 78.3726,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -40894,8 +41062,8 @@
       ],
       "crew": 4,
       "mass": 50000.0,
-      "maxSpeedForward": 50.2171,
-      "maxSpeedBackward": 9.85028,
+      "maxSpeedForward": 13.9492,
+      "maxSpeedBackward": 2.73618,
       "powerToWeightRatio": 15.0,
       "weapons": {
         "122mm_M62T2S_user_cannon": {
@@ -40964,8 +41132,8 @@
       ],
       "crew": 4,
       "mass": 56000.0,
-      "maxSpeedForward": 48.1119,
-      "maxSpeedBackward": 7.99537,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
       "powerToWeightRatio": 16.0714,
       "weapons": {
         "105mm_kan_strv_105_user_cannon": {
@@ -41028,8 +41196,8 @@
       ],
       "crew": 3,
       "mass": 23100.0,
-      "maxSpeedForward": 70.0335,
-      "maxSpeedBackward": 45.1829,
+      "maxSpeedForward": 19.4537,
+      "maxSpeedBackward": 12.5508,
       "powerToWeightRatio": 23.8095,
       "weapons": {
         "40mm_Kan_Strf_user_cannon": {
@@ -41103,8 +41271,8 @@
       ],
       "crew": 3,
       "mass": 25000.0,
-      "maxSpeedForward": 70.1316,
-      "maxSpeedBackward": 40.0752,
+      "maxSpeedForward": 19.481,
+      "maxSpeedBackward": 11.132,
       "powerToWeightRatio": 26.8,
       "weapons": {
         "105mm_XC8_L50_user_cannon": {
@@ -41149,14 +41317,14 @@
       ],
       "crew": 3,
       "mass": 49255.0,
-      "maxSpeedForward": 68.2106,
-      "maxSpeedBackward": 30.9711,
+      "maxSpeedForward": 18.9473,
+      "maxSpeedBackward": 8.60307,
       "powerToWeightRatio": 30.4538,
       "weapons": {
         "35mm_Oerlikon_KDA_marksman_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 35.0,
-          "armorPower": 34.6441,
+          "armorPower": 36.8965,
           "reloadTime": 0.10917,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -41226,8 +41394,8 @@
       ],
       "crew": 4,
       "mass": 36700.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 15.8038,
       "weapons": {
         "100mm_Type69_II_user_cannon": {
@@ -41303,8 +41471,8 @@
       ],
       "crew": 4,
       "mass": 36000.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 14.4444,
       "weapons": {
         "100mm_Type59_user_cannon": {
@@ -41359,8 +41527,8 @@
       ],
       "crew": 4,
       "mass": 25000.0,
-      "maxSpeedForward": 71.9712,
-      "maxSpeedBackward": 18.1698,
+      "maxSpeedForward": 19.992,
+      "maxSpeedBackward": 5.04715,
       "powerToWeightRatio": 20.0,
       "weapons": {
         "76mm_M32K1_user_cannon": {
@@ -41450,14 +41618,14 @@
       ],
       "crew": 6,
       "mass": 31000.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 18.7097,
       "weapons": {
         "57mm_WA_318_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 57.0,
-          "armorPower": 80.5583,
+          "armorPower": 82.748,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 36.0,
           "isBeltAmmo": true
@@ -41503,8 +41671,8 @@
       ],
       "crew": 4,
       "mass": 46500.0,
-      "maxSpeedForward": 35.036,
-      "maxSpeedBackward": 13.5178,
+      "maxSpeedForward": 9.7322,
+      "maxSpeedBackward": 3.75494,
       "powerToWeightRatio": 11.1828,
       "weapons": {
         "100mm_C34_user_cannon": {
@@ -41568,8 +41736,8 @@
       ],
       "crew": 5,
       "mass": 32200.0,
-      "maxSpeedForward": 54.9303,
-      "maxSpeedBackward": 8.38936,
+      "maxSpeedForward": 15.2584,
+      "maxSpeedBackward": 2.33037,
       "powerToWeightRatio": 15.528,
       "weapons": {
         "85mm_ZiS_S_53_user_cannon": {
@@ -41635,8 +41803,8 @@
       ],
       "crew": 5,
       "mass": 21600.0,
-      "maxSpeedForward": 63.36,
-      "maxSpeedBackward": 23.0811,
+      "maxSpeedForward": 17.6,
+      "maxSpeedBackward": 6.41141,
       "powerToWeightRatio": 18.5185,
       "weapons": {
         "100mm_D50_user_cannon": {
@@ -41686,14 +41854,14 @@
       ],
       "crew": 6,
       "mass": 9000.0,
-      "maxSpeedForward": 61.1195,
-      "maxSpeedBackward": 6.36188,
+      "maxSpeedForward": 16.9776,
+      "maxSpeedBackward": 1.76718,
       "powerToWeightRatio": 26.6667,
       "weapons": {
         "23mm_2A14_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 23.0,
-          "armorPower": 23.0,
+          "armorPower": 24.9622,
           "reloadTime": 0.0749963,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -41734,8 +41902,8 @@
       ],
       "crew": 4,
       "mass": 16000.0,
-      "maxSpeedForward": 84.3345,
-      "maxSpeedBackward": 84.3345,
+      "maxSpeedForward": 23.4262,
+      "maxSpeedBackward": 23.4262,
       "powerToWeightRatio": 17.5,
       "weapons": {
         "105mm_Modele_F2_user_cannon": {
@@ -41798,8 +41966,8 @@
       ],
       "crew": 4,
       "mass": 38000.0,
-      "maxSpeedForward": 65.0779,
-      "maxSpeedBackward": 65.0779,
+      "maxSpeedForward": 18.0772,
+      "maxSpeedBackward": 18.0772,
       "powerToWeightRatio": 18.9474,
       "weapons": {
         "142mm_ACRA_user_cannon": {
@@ -41863,8 +42031,8 @@
       ],
       "crew": 5,
       "mass": 46100.0,
-      "maxSpeedForward": 51.4354,
-      "maxSpeedBackward": 19.0502,
+      "maxSpeedForward": 14.2876,
+      "maxSpeedBackward": 5.2917,
       "powerToWeightRatio": 21.692,
       "weapons": {
         "90mm_Char_25t_user_cannon": {
@@ -41939,14 +42107,14 @@
       ],
       "crew": 3,
       "mass": 36000.0,
-      "maxSpeedForward": 65.0779,
-      "maxSpeedBackward": 65.0779,
+      "maxSpeedForward": 18.0772,
+      "maxSpeedBackward": 18.0772,
       "powerToWeightRatio": 19.4444,
       "weapons": {
         "30mm_HSS_831A_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 30.0,
-          "armorPower": 26.9184,
+          "armorPower": 28.9993,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 80.0,
           "isBeltAmmo": true
@@ -41992,8 +42160,8 @@
       ],
       "crew": 3,
       "mass": 41000.0,
-      "maxSpeedForward": 57.2328,
-      "maxSpeedBackward": 8.942,
+      "maxSpeedForward": 15.898,
+      "maxSpeedBackward": 2.48388,
       "powerToWeightRatio": 17.8049,
       "weapons": {
         "125mm_Type_88C_user_cannon": {
@@ -42069,8 +42237,8 @@
       ],
       "crew": 4,
       "mass": 54000.0,
-      "maxSpeedForward": 48.1119,
-      "maxSpeedBackward": 7.99537,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
       "powerToWeightRatio": 13.8889,
       "weapons": {
         "105mm_M68A1_user_cannon": {
@@ -42131,8 +42299,8 @@
       ],
       "crew": 4,
       "mass": 13750.0,
-      "maxSpeedForward": 95.0675,
-      "maxSpeedBackward": 8.07711,
+      "maxSpeedForward": 26.4076,
+      "maxSpeedBackward": 2.24364,
       "powerToWeightRatio": 23.2727,
       "weapons": {
         "152mm_hj_9_launcher_user_cannon": {
@@ -42191,14 +42359,14 @@
       ],
       "crew": 3,
       "mass": 38000.0,
-      "maxSpeedForward": 65.1658,
-      "maxSpeedBackward": 15.1902,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 4.21948,
       "powerToWeightRatio": 21.0526,
       "weapons": {
         "35mm_PG_99_35_2_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 35.0,
-          "armorPower": 34.6441,
+          "armorPower": 36.8965,
           "reloadTime": 0.10917,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -42230,8 +42398,8 @@
       ],
       "crew": 4,
       "mass": 41500.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 16.6265,
       "weapons": {
         "100mm_D10T2S_t_55_amd_1_user_cannon": {
@@ -42331,8 +42499,8 @@
       ],
       "crew": 3,
       "mass": 16500.0,
-      "maxSpeedForward": 70.2688,
-      "maxSpeedBackward": 20.5344,
+      "maxSpeedForward": 19.5191,
+      "maxSpeedBackward": 5.70399,
       "powerToWeightRatio": 27.5758,
       "weapons": {
         "100mm_2A48_user_cannon": {
@@ -42386,8 +42554,8 @@
       ],
       "crew": 3,
       "mass": 34500.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 16.8116,
       "weapons": {
         "180mm_2k4_rocket_launcher": {
@@ -42446,14 +42614,14 @@
       ],
       "crew": 4,
       "mass": 25500.0,
-      "maxSpeedForward": 64.2552,
-      "maxSpeedBackward": 23.4072,
+      "maxSpeedForward": 17.8486,
+      "maxSpeedBackward": 6.502,
       "powerToWeightRatio": 15.6863,
       "weapons": {
         "37mm_2A11_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 37.0,
-          "armorPower": 43.3545,
+          "armorPower": 45.3604,
           "reloadTime": 0.11999,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -42495,8 +42663,8 @@
       ],
       "crew": 5,
       "mass": 45250.0,
-      "maxSpeedForward": 45.8387,
-      "maxSpeedBackward": 3.34341,
+      "maxSpeedForward": 12.7329,
+      "maxSpeedBackward": 0.928724,
       "powerToWeightRatio": 13.2597,
       "weapons": {
         "75mm_Kwk42_user_cannon": {
@@ -42561,8 +42729,8 @@
       ],
       "crew": 4,
       "mass": 23100.0,
-      "maxSpeedForward": 72.4416,
-      "maxSpeedBackward": 18.816,
+      "maxSpeedForward": 20.1226,
+      "maxSpeedBackward": 5.22666,
       "powerToWeightRatio": 21.645,
       "weapons": {
         "76mm_KwK_M32_user_cannon": {
@@ -42632,8 +42800,8 @@
       ],
       "crew": 5,
       "mass": 68000.0,
-      "maxSpeedForward": 41.6743,
-      "maxSpeedBackward": 11.1202,
+      "maxSpeedForward": 11.5762,
+      "maxSpeedBackward": 3.08894,
       "powerToWeightRatio": 10.2941,
       "weapons": {
         "88mm_Kwk43_user_cannon": {
@@ -42694,14 +42862,14 @@
       ],
       "crew": 5,
       "mass": 25000.0,
-      "maxSpeedForward": 38.6897,
-      "maxSpeedBackward": 7.23171,
+      "maxSpeedForward": 10.7471,
+      "maxSpeedBackward": 2.0088,
       "powerToWeightRatio": 12.0,
       "weapons": {
         "30mm_mk103_45_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 30.0,
-          "armorPower": 29.9576,
+          "armorPower": 30.7892,
           "reloadTime": 0.133333,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -42747,8 +42915,8 @@
       ],
       "crew": 4,
       "mass": 38460.0,
-      "maxSpeedForward": 56.2675,
-      "maxSpeedBackward": 12.4381,
+      "maxSpeedForward": 15.6298,
+      "maxSpeedBackward": 3.45501,
       "powerToWeightRatio": 14.5606,
       "weapons": {
         "90mm_T208E9_user_cannon": {
@@ -42810,8 +42978,8 @@
       ],
       "crew": 4,
       "mass": 53200.0,
-      "maxSpeedForward": 48.1119,
-      "maxSpeedBackward": 7.99537,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
       "powerToWeightRatio": 14.0977,
       "weapons": {
         "165mm_M135_user_cannon": {
@@ -42872,8 +43040,8 @@
       ],
       "crew": 4,
       "mass": 11800.0,
-      "maxSpeedForward": 64.3009,
-      "maxSpeedBackward": 14.7818,
+      "maxSpeedForward": 17.8613,
+      "maxSpeedBackward": 4.10605,
       "powerToWeightRatio": 17.9661,
       "weapons": {
         "127mm_iTOW_launcher_user_cannon": {
@@ -42923,14 +43091,14 @@
       ],
       "crew": 4,
       "mass": 11203.0,
-      "maxSpeedForward": 64.3009,
-      "maxSpeedBackward": 14.7818,
+      "maxSpeedForward": 17.8613,
+      "maxSpeedBackward": 4.10605,
       "powerToWeightRatio": 18.9235,
       "weapons": {
         "20mm_M168_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 36.1912,
+          "armorPower": 37.2245,
           "reloadTime": 0.02,
           "gunnerTurretRotationSpeed": 75.0,
           "isBeltAmmo": true
@@ -42961,8 +43129,8 @@
       ],
       "crew": 3,
       "mass": 51700.0,
-      "maxSpeedForward": 64.4096,
-      "maxSpeedBackward": 64.4096,
+      "maxSpeedForward": 17.8915,
+      "maxSpeedBackward": 17.8915,
       "powerToWeightRatio": 28.53,
       "weapons": {
         "152mm_XM150E5_user_cannon": {
@@ -42976,7 +43144,7 @@
         "20mm_Rh_202_user_cannon": {
           "wtype": "machinegun",
           "caliber": 20.0,
-          "armorPower": 29.033,
+          "armorPower": 30.963,
           "reloadTime": 0.0666667,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -43034,8 +43202,8 @@
       ],
       "crew": 4,
       "mass": 52617.0,
-      "maxSpeedForward": 48.1119,
-      "maxSpeedBackward": 7.99537,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
       "powerToWeightRatio": 14.2539,
       "weapons": {
         "105mm_M68_TTS_user_cannon": {
@@ -43113,14 +43281,14 @@
       ],
       "crew": 3,
       "mass": 29937.0,
-      "maxSpeedForward": 61.0952,
-      "maxSpeedBackward": 13.7464,
+      "maxSpeedForward": 16.9708,
+      "maxSpeedBackward": 3.81844,
       "powerToWeightRatio": 20.0421,
       "weapons": {
         "25mm_M242_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 25.0,
-          "armorPower": 40.4173,
+          "armorPower": 42.4532,
           "reloadTime": 0.298507,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -43206,14 +43374,14 @@
       ],
       "crew": 3,
       "mass": 49350.0,
-      "maxSpeedForward": 48.1119,
-      "maxSpeedBackward": 7.99537,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
       "powerToWeightRatio": 15.1976,
       "weapons": {
         "40mm_M266_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 40.0,
-          "armorPower": 19.4083,
+          "armorPower": 21.7547,
           "reloadTime": 0.2,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -43245,8 +43413,8 @@
       ],
       "crew": 4,
       "mass": 38500.0,
-      "maxSpeedForward": 53.0728,
-      "maxSpeedBackward": 16.7402,
+      "maxSpeedForward": 14.7424,
+      "maxSpeedBackward": 4.65006,
       "powerToWeightRatio": 18.7013,
       "weapons": {
         "105mm_L7A3_Type74kai_user_cannon": {
@@ -43317,8 +43485,8 @@
       ],
       "crew": 4,
       "mass": 38000.0,
-      "maxSpeedForward": 53.0728,
-      "maxSpeedBackward": 7.43239,
+      "maxSpeedForward": 14.7424,
+      "maxSpeedBackward": 2.06455,
       "powerToWeightRatio": 22.8947,
       "weapons": {
         "105mm_L7A3_Type74kai_user_cannon": {
@@ -43391,8 +43559,8 @@
       ],
       "crew": 3,
       "mass": 26500.0,
-      "maxSpeedForward": 70.2269,
-      "maxSpeedBackward": 42.5618,
+      "maxSpeedForward": 19.5074,
+      "maxSpeedBackward": 11.8227,
       "powerToWeightRatio": 22.6415,
       "weapons": {
         "35mm_Oerlikon_KDE_user_cannon": {
@@ -43483,14 +43651,14 @@
       ],
       "crew": 3,
       "mass": 38000.0,
-      "maxSpeedForward": 53.0728,
-      "maxSpeedBackward": 7.43239,
+      "maxSpeedForward": 14.7424,
+      "maxSpeedBackward": 2.06455,
       "powerToWeightRatio": 18.9474,
       "weapons": {
         "35mm_Oerlikon_KDA_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 35.0,
-          "armorPower": 34.6441,
+          "armorPower": 36.8965,
           "reloadTime": 0.10917,
           "gunnerTurretRotationSpeed": 56.0,
           "isBeltAmmo": true
@@ -43521,8 +43689,8 @@
       ],
       "crew": 4,
       "mass": 39700.0,
-      "maxSpeedForward": 58.8194,
-      "maxSpeedBackward": 24.0926,
+      "maxSpeedForward": 16.3387,
+      "maxSpeedBackward": 6.69237,
       "powerToWeightRatio": 21.4106,
       "weapons": {
         "100mm_SA_47_user_cannon": {
@@ -43578,8 +43746,8 @@
       ],
       "crew": 4,
       "mass": 43500.0,
-      "maxSpeedForward": 65.0779,
-      "maxSpeedBackward": 65.0779,
+      "maxSpeedForward": 18.0772,
+      "maxSpeedBackward": 18.0772,
       "powerToWeightRatio": 15.6322,
       "weapons": {
         "155mm_GCT_F1_user_cannon": {
@@ -43656,8 +43824,8 @@
       ],
       "crew": 3,
       "mass": 14700.0,
-      "maxSpeedForward": 60.0771,
-      "maxSpeedBackward": 6.89432,
+      "maxSpeedForward": 16.688,
+      "maxSpeedBackward": 1.91508,
       "powerToWeightRatio": 18.3673,
       "weapons": {
         "75mm_SA_50_user_cannon": {
@@ -43702,14 +43870,14 @@
       ],
       "crew": 6,
       "mass": 7000.0,
-      "maxSpeedForward": 90.0178,
-      "maxSpeedBackward": 13.056,
+      "maxSpeedForward": 25.0049,
+      "maxSpeedBackward": 3.62666,
       "powerToWeightRatio": 22.8571,
       "weapons": {
         "20mm_Oerlikon_KAD_B17_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 29.033,
+          "armorPower": 30.963,
           "reloadTime": 0.060241,
           "gunnerTurretRotationSpeed": 80.0,
           "isBeltAmmo": true
@@ -43754,8 +43922,8 @@
       ],
       "crew": 4,
       "mass": 43000.0,
-      "maxSpeedForward": 65.1658,
-      "maxSpeedBackward": 25.0638,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 6.96214,
       "powerToWeightRatio": 19.3023,
       "weapons": {
         "120mm_Rheinmetall_L44_user_cannon": {
@@ -43813,8 +43981,8 @@
       ],
       "crew": 4,
       "mass": 33000.0,
-      "maxSpeedForward": 74.9819,
-      "maxSpeedBackward": 74.9819,
+      "maxSpeedForward": 20.8283,
+      "maxSpeedBackward": 20.8283,
       "powerToWeightRatio": 21.8182,
       "weapons": {
         "105mm_FMK4_Modelo_1L_2IP_user_cannon": {
@@ -43879,8 +44047,8 @@
       ],
       "crew": 4,
       "mass": 41000.0,
-      "maxSpeedForward": 85.7125,
-      "maxSpeedBackward": 34.9083,
+      "maxSpeedForward": 23.809,
+      "maxSpeedBackward": 9.69674,
       "powerToWeightRatio": 19.1707,
       "weapons": {
         "105mm_GT3B_user_cannon": {
@@ -43957,14 +44125,14 @@
       ],
       "crew": 3,
       "mass": 46000.0,
-      "maxSpeedForward": 65.1658,
-      "maxSpeedBackward": 25.0638,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 6.96214,
       "powerToWeightRatio": 18.0435,
       "weapons": {
         "35mm_Oerlikon_KDA_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 35.0,
-          "armorPower": 34.6441,
+          "armorPower": 36.8965,
           "reloadTime": 0.10917,
           "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
@@ -43995,8 +44163,8 @@
       ],
       "crew": 4,
       "mass": 22000.0,
-      "maxSpeedForward": 40.1343,
-      "maxSpeedBackward": 40.1343,
+      "maxSpeedForward": 11.1484,
+      "maxSpeedBackward": 11.1484,
       "powerToWeightRatio": 11.8182,
       "weapons": {
         "75mm_43M_user_cannon": {
@@ -44058,8 +44226,8 @@
       ],
       "crew": 5,
       "mass": 19800.0,
-      "maxSpeedForward": 43.0426,
-      "maxSpeedBackward": 43.0426,
+      "maxSpeedForward": 11.9562,
+      "maxSpeedBackward": 11.9562,
       "powerToWeightRatio": 13.1313,
       "weapons": {
         "75mm_43M_user_cannon": {
@@ -44118,8 +44286,8 @@
       ],
       "crew": 6,
       "mass": 11500.0,
-      "maxSpeedForward": 53.0522,
-      "maxSpeedBackward": 6.50149,
+      "maxSpeedForward": 14.7367,
+      "maxSpeedBackward": 1.80597,
       "powerToWeightRatio": 10.0,
       "weapons": {
         "90mm_90_53_mod41_user_cannon": {
@@ -44174,14 +44342,14 @@
       ],
       "crew": 3,
       "mass": 15500.0,
-      "maxSpeedForward": 38.3076,
-      "maxSpeedBackward": 3.3313,
+      "maxSpeedForward": 10.641,
+      "maxSpeedBackward": 0.925359,
       "powerToWeightRatio": 11.9355,
       "weapons": {
         "20mm_Scotti_Isotta_20_70_M41_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 20.0,
-          "armorPower": 10.2764,
+          "armorPower": 11.7764,
           "reloadTime": 0.1,
           "gunnerTurretRotationSpeed": 60.0,
           "isBeltAmmo": true
@@ -44228,8 +44396,8 @@
       ],
       "crew": 3,
       "mass": 41000.0,
-      "maxSpeedForward": 59.6838,
-      "maxSpeedBackward": 4.15915,
+      "maxSpeedForward": 16.5788,
+      "maxSpeedBackward": 1.15532,
       "powerToWeightRatio": 19.0244,
       "weapons": {
         "125mm_2A46M_user_cannon": {
@@ -44305,8 +44473,8 @@
       ],
       "crew": 3,
       "mass": 38000.0,
-      "maxSpeedForward": 60.566,
-      "maxSpeedBackward": 4.22062,
+      "maxSpeedForward": 16.8238,
+      "maxSpeedBackward": 1.17239,
       "powerToWeightRatio": 18.4211,
       "weapons": {
         "125mm_2A26_user_cannon": {
@@ -44381,8 +44549,8 @@
       ],
       "crew": 3,
       "mass": 14000.0,
-      "maxSpeedForward": 65.211,
-      "maxSpeedBackward": 10.6573,
+      "maxSpeedForward": 18.1141,
+      "maxSpeedBackward": 2.96037,
       "powerToWeightRatio": 21.4286,
       "weapons": {
         "30mm_2A42_user_cannon": {
@@ -44401,7 +44569,7 @@
           "gunnerTurretRotationSpeed": 17.0,
           "isBeltAmmo": true
         },
-        "125mm_9m113_launcher_user_cannon": {
+        "125mm_9M113_rocket_launcher": {
           "wtype": "auxCannon",
           "caliber": 125.0,
           "armorPower": 500.0,
@@ -44428,7 +44596,7 @@
           "reqLevel": 16
         }
       },
-      "125mm_9m113_launcher_user_cannon": {
+      "125mm_9M113_rocket_launcher": {
         "default": {
           "icon": "hud_ammo_atgm_ap1_he1"
         }
@@ -44461,8 +44629,8 @@
       ],
       "crew": 2,
       "mass": 12045.0,
-      "maxSpeedForward": 61.5029,
-      "maxSpeedBackward": 10.302,
+      "maxSpeedForward": 17.0841,
+      "maxSpeedBackward": 2.86166,
       "powerToWeightRatio": 19.9253,
       "weapons": {
         "130mm_9M114_launcher_user_cannon": {
@@ -44507,8 +44675,8 @@
       ],
       "crew": 4,
       "mass": 61000.0,
-      "maxSpeedForward": 53.8775,
-      "maxSpeedBackward": 13.8542,
+      "maxSpeedForward": 14.966,
+      "maxSpeedBackward": 3.84839,
       "powerToWeightRatio": 14.7541,
       "weapons": {
         "105mm_L7_Shot_user_cannon": {
@@ -44579,8 +44747,8 @@
       ],
       "crew": 4,
       "mass": 46700.0,
-      "maxSpeedForward": 47.6706,
-      "maxSpeedBackward": 12.2582,
+      "maxSpeedForward": 13.2418,
+      "maxSpeedBackward": 3.40503,
       "powerToWeightRatio": 16.06,
       "weapons": {
         "105mm_L7_Shot_user_cannon": {
@@ -44666,8 +44834,8 @@
       ],
       "crew": 5,
       "mass": 11160.0,
-      "maxSpeedForward": 64.3009,
-      "maxSpeedBackward": 14.7818,
+      "maxSpeedForward": 17.8613,
+      "maxSpeedBackward": 4.10605,
       "powerToWeightRatio": 19.2652,
       "weapons": {
         "127mm_bgm_71c_itow_rocket_launcher": {
@@ -44719,8 +44887,8 @@
       ],
       "crew": 4,
       "mass": 21000.0,
-      "maxSpeedForward": 50.0012,
-      "maxSpeedBackward": 7.50019,
+      "maxSpeedForward": 13.8892,
+      "maxSpeedBackward": 2.08338,
       "powerToWeightRatio": 13.3333,
       "weapons": {
         "23mm_2A7_user_cannon": {
@@ -44770,8 +44938,8 @@
       ],
       "crew": 5,
       "mass": 46000.0,
-      "maxSpeedForward": 45.8387,
-      "maxSpeedBackward": 3.48718,
+      "maxSpeedForward": 12.7329,
+      "maxSpeedBackward": 0.968658,
       "powerToWeightRatio": 13.0435,
       "weapons": {
         "88mm_PaK43_user_cannon": {
@@ -44847,8 +45015,8 @@
       ],
       "crew": 5,
       "mass": 45250.0,
-      "maxSpeedForward": 55.0064,
-      "maxSpeedBackward": 4.0121,
+      "maxSpeedForward": 15.2795,
+      "maxSpeedBackward": 1.11447,
       "powerToWeightRatio": 15.4696,
       "weapons": {
         "75mm_Kwk42_user_cannon": {
@@ -44910,8 +45078,8 @@
       ],
       "crew": 5,
       "mass": 68000.0,
-      "maxSpeedForward": 41.6743,
-      "maxSpeedBackward": 11.1202,
+      "maxSpeedForward": 11.5762,
+      "maxSpeedBackward": 3.08894,
       "powerToWeightRatio": 10.2941,
       "weapons": {
         "88mm_Kwk43_user_cannon": {
@@ -44974,8 +45142,8 @@
       ],
       "crew": 6,
       "mass": 25000.0,
-      "maxSpeedForward": 38.6897,
-      "maxSpeedBackward": 7.23171,
+      "maxSpeedForward": 10.7471,
+      "maxSpeedBackward": 2.0088,
       "powerToWeightRatio": 12.0,
       "weapons": {
         "37mm_FlaK44_user_cannon": {
@@ -45020,8 +45188,8 @@
       ],
       "crew": 4,
       "mass": 37500.0,
-      "maxSpeedForward": 55.0594,
-      "maxSpeedBackward": 7.43325,
+      "maxSpeedForward": 15.2942,
+      "maxSpeedBackward": 2.06479,
       "powerToWeightRatio": 17.3333,
       "weapons": {
         "120mm_122TM_user_cannon": {
@@ -45104,8 +45272,8 @@
       ],
       "crew": 5,
       "mass": 30000.0,
-      "maxSpeedForward": 56.144,
-      "maxSpeedBackward": 8.53728,
+      "maxSpeedForward": 15.5955,
+      "maxSpeedBackward": 2.37146,
       "powerToWeightRatio": 17.3333,
       "weapons": {
         "130mm_pl_59a_gai_user_cannon": {
@@ -45168,8 +45336,8 @@
       ],
       "crew": 4,
       "mass": 36000.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 14.4444,
       "weapons": {
         "100mm_Type59_user_cannon": {
@@ -45261,8 +45429,8 @@
       ],
       "crew": 6,
       "mass": 31000.0,
-      "maxSpeedForward": 50.0344,
-      "maxSpeedBackward": 7.50515,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
       "powerToWeightRatio": 18.7097,
       "weapons": {
         "57mm_WA_318_user_cannon": {

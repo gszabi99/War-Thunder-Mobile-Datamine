@@ -132,6 +132,14 @@ function actualizeBattleData(unitNameOrSlots, executeAfterExt = null) {
       executeAfterExt)
 }
 
+function actualizeBattleDataIfOwn(unitNameOrSlots) {
+  let isOwn = type(unitNameOrSlots) == "array"
+    ? null == unitNameOrSlots.findvalue(@(u) u not in servProfile.value?.units)
+    : unitNameOrSlots in servProfile.value?.units
+  if (isOwn)
+    actualizeBattleData(unitNameOrSlots)
+}
+
 registerHandler("onGetMenuBattleData", function(res, context) {
   let { unitsInfo, executeAfterExt = null } = context
   if (!isEqual(unitsInfo, battleUnitsInfo.get())) {
@@ -259,6 +267,7 @@ return {
   isBattleDataActual
   battleDataError
   actualizeBattleData
+  actualizeBattleDataIfOwn
 
   battleDataOvrMission = Computed(@() lastOvrMissionResult.get())
   isBattleDataOvrMissionActual

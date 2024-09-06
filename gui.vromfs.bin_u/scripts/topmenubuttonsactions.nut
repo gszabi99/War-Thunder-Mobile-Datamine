@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let g_mislist_type = require("%scripts/missions/misListType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { actualizeBattleData } = require("%scripts/battleData/menuBattleData.nut")
+let { actualizeBattleDataIfOwn } = require("%scripts/battleData/menuBattleData.nut")
 let { changeTrainingUnit, requestHudState } = require("%scripts/missions/guiOptions.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let DataBlock  = require("DataBlock")
@@ -26,7 +26,7 @@ function startOfflineMission(unitName, skin, missionId, bullets, weaponPreset, l
     openFMsgBox({ text = "No showed unit. Select unit in ship window" })
     return
   }
-  actualizeBattleData(unitName)
+  actualizeBattleDataIfOwn(unitName)
 
   requestHudState()
 

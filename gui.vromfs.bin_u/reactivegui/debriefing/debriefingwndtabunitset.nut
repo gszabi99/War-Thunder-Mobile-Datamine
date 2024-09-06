@@ -2,8 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { unitExpColor, slotExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
-let { getUnitsSet, getUnitRewards, isUnitReceiveLevel, isSlotReceiveLevel, getSlotLevelCfg,
-  getLevelProgress, getNextUnitLevelWithRewards, sortUnitMods
+let { getUnitsSet, getUnitRewards, getSlotLevelCfg, getLevelProgress,
+  getNextUnitLevelWithRewards, getSlotOrUnitLevelUnlockRewards, sortUnitMods
 } = require("%rGui/debriefing/debrUtils.nut")
 let mkPlateWithLevelProgress = require("%rGui/debriefing/mkPlateWithLevelProgress.nut")
 let { getLevelUnlockLineAnimTime, mkLevelUnlockLinesContainer, mkDebrLineMod, mkDebrLineWeapon,
@@ -15,27 +15,6 @@ let levelUnlocksAnimStartTime = 1.0
 
 let columnWidth = hdpx(350)
 let columnGap = hdpx(50)
-
-function hasAnySlotOrUnitLevelUnlockRewards(units, debrData) {
-  foreach (unit in units) {
-    let { slot = {}, name = "" } = unit
-    let { nextLevelExp = 0 } = slot
-    let isSlotMaxLevel = nextLevelExp == 0
-    if (!isSlotMaxLevel && isSlotReceiveLevel(name, debrData))
-      return true
-  }
-  foreach (unit in units) {
-    let { unitWeaponry = {} } = debrData
-    let { nextLevelExp = 0, name = "", level = 0, modPresetCfg = {} } = unit
-    let isUnitMaxLevel = nextLevelExp == 0
-    if (isUnitMaxLevel || !isUnitReceiveLevel(name, debrData))
-      continue
-    let { unlockedLevel } = getLevelProgress(unit, getUnitRewards(name, debrData)?.exp)
-    if (getNextUnitLevelWithRewards(level + 1, unlockedLevel, modPresetCfg, unitWeaponry?[name]) > level)
-      return true
-  }
-  return false
-}
 
 function mkLevelUnlockLines(list, delay) {
   let res = {
@@ -200,7 +179,7 @@ function mkDebriefingWndTabUnitsSet(debrData, params) {
   if (!needShow)
     return null
 
-  let hasAnyLevelUnlockRewards = hasAnySlotOrUnitLevelUnlockRewards(units, debrData)
+  let hasAnyLevelUnlockRewards = getSlotOrUnitLevelUnlockRewards(debrData).has
 
   let slotColumnsData = units.map(@(u) mkSlotColumn(u, debrData))
   let unitColumnsData = units.map(@(u) mkUnitColumn(u, debrData))

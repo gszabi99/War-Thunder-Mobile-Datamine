@@ -6,9 +6,9 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkGamercardUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, buttonsHGap, paddingX, mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+let { defButtonHeight, defButtonMinWidth, PRIMARY } = require("%rGui/components/buttonStyles.nut")
 let {isUnitAttrOpened, attrUnitData, attrUnitName, attrUnitLevelsToMax, curCategory, selAttrSpCost,
   leftUnitSp, isUnitMaxSkills, availableAttributes, resetAttrState, applyAttributes,
 } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
@@ -191,14 +191,28 @@ let applyAction = function() {
   backButtonBlink("UnitAttr")
 }
 
+let mkMoreDetailBtn = @(text) {
+  flow = FLOW_HORIZONTAL
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  gap = hdpx(10)
+  children = {
+    maxWidth = defButtonMinWidth - 2 * paddingX
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    vplace = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    text
+  }.__update(fontTinyAccented)
+}
+
 let actionButtons = @() {
   watch = [selAttrSpCost, attrUnitLevelsToMax, attrUnitName, attrUnitData]
-  size = SIZE_TO_CONTENT
   flow = FLOW_HORIZONTAL
   gap = buttonsHGap * 0.5
   children = [
-    textButtonPrimary(utf8ToUpper(loc("terms_wnd/more_detailed")), @() null,
-      { hotkeys = ["^J:RB"], stateFlags = showAttrStateFlags, ovr = isWidescreen ? {} : { maxWidth = hdpx(510) } })
+    mkCustomButton(mkMoreDetailBtn(utf8ToUpper(loc("terms_wnd/more_detailed"))), @() null,
+      mergeStyles(PRIMARY, { hotkeys = ["^J:RB"], stateFlags = showAttrStateFlags}))
     attrUnitLevelsToMax.value <= 0 ? null
       : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
         (attrUnitData.value?.unit.level ?? 0) + 1,

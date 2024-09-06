@@ -121,6 +121,28 @@ function getNextUnitLevelWithRewards(levelMin, levelMax, modPresetCfg, unitWeapo
   return -1
 }
 
+function getSlotOrUnitLevelUnlockRewards(debrData) {
+  let units = getUnitsSet(debrData)
+  foreach (unit in units) {
+    let { slot = {}, name = "", slotIdx = 0 } = unit
+    let { nextLevelExp = 0, level = 0 } = slot
+    let isSlotMaxLevel = nextLevelExp == 0
+    if (!isSlotMaxLevel && isSlotReceiveLevel(name, debrData))
+      return { has = true, type = "crew", idx = slotIdx, name, levelBeforeBattle = level }
+  }
+  foreach (unit in units) {
+    let { unitWeaponry = {} } = debrData
+    let { nextLevelExp = 0, name = "", level = 0, slotIdx = 0, modPresetCfg = {} } = unit
+    let isUnitMaxLevel = nextLevelExp == 0
+    if (isUnitMaxLevel || !isUnitReceiveLevel(name, debrData))
+      continue
+    let { unlockedLevel } = getLevelProgress(unit, getUnitRewards(name, debrData)?.exp)
+    if (getNextUnitLevelWithRewards(level + 1, unlockedLevel, modPresetCfg, unitWeaponry?[name]) > level)
+      return { has = true, type = "arsenal", idx = slotIdx, name }
+  }
+  return { has = false }
+}
+
 function getNewPlatoonUnit(unitName, debrData) {
   if (debrData?.isSeparateSlots ?? false)
     return null // No platoons in campaigns with separate slots.
@@ -170,6 +192,7 @@ return {
   isSlotReceiveLevel
   getSlotLevelCfg
   getNextUnitLevelWithRewards
+  getSlotOrUnitLevelUnlockRewards
   getNewPlatoonUnit
 
   sortUnitMods

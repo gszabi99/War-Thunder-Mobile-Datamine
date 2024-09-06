@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { Point2 } = require("dagor.math")
 let { getUnitFileName } = require("vehicleModel")
 let { getUnitTagsCfg, getUnitType } = require("%appGlobals/unitTags.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
@@ -18,6 +19,11 @@ let allCustomBulletParams = [
   "explosiveType", "explosiveMass", "explodeTreshold", "speed", "ricochetPreset", "mass", "mass_lbs",
   "dropSpeedRange", "dropHeightRange", "maxSpeedInWater", "distToLive", "maxSpeed"
 ]
+
+let valConvert = {
+  [Point2] = @(v) [ v.x, v.y ]
+}
+let prepareVal = @(v) valConvert?[v?.getclass()](v) ?? v
 
 let warhedByKineticDamage = @(kineticDamage) kineticDamage?.damageType == "tandemPrecharge" ? "tandem" : "heat"
 let getRocketParams = @(wBlk) {
@@ -179,8 +185,9 @@ function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
 
     foreach (param in allCustomBulletParams)
       if (param in paramsBlk) {
-        res[param] <- paramsBlk[param]
-        res.bulletDataByType[bulletType][param] <- paramsBlk[param]
+        let val = prepareVal(paramsBlk[param])
+        res[param] <- val
+        res.bulletDataByType[bulletType][param] <- val
       }
     let addParams = customParamsByWeaponType?[weaponType](paramsBlk)
     if (addParams != null)

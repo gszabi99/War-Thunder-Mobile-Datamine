@@ -13,7 +13,7 @@ let barSize = [statsWidth, hdpx(30)]
 
 let blueprintBarColor = 0xFF3384C4
 let unitResearchExpColor = 0xFFE86C00
-let researchBlockSize = [statsWidth, hdpx(150)]
+let researchBlockWidth = statsWidth
 
 function mkLevelLine(cur, req, color, ovr = {}) {
   let percent =  1.0 * clamp(cur, 0, req ) / req
@@ -118,17 +118,18 @@ function unitResearchBar(unitName) {
       }
 }
 
-let researchBlock = @(unit) {
-  size = researchBlockSize
-  flow = FLOW_VERTICAL
-  valign = ALIGN_BOTTOM
-  children = [
-    blueprintBar(unit)
-    unitResearchBar(unit.name)
-  ]
-}
+let researchBlock = @(unit) unit == null ? null
+  : {
+      size = [researchBlockWidth, SIZE_TO_CONTENT]
+      flow = FLOW_VERTICAL
+      valign = ALIGN_BOTTOM
+      children = [
+        blueprintBar(unit)
+        unitResearchBar(unit.name)
+      ]
+    }
 
 return {
+  blueprintBar
   researchBlock
-  researchBlockSize
 }

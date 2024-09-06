@@ -102,6 +102,8 @@ function mkOfflineBattleMenuWnd() {
   })
   let curUnitName = Computed(@() curData.get().name)
   let curMissionName = Computed(@() curData.get().mission)
+  if (savedMissionName.get() == null)
+    savedMissionName.set(curMissionName.get())
 
   function onUnitChange() {
     if (curUnitName.get() != null)
@@ -125,8 +127,6 @@ function mkOfflineBattleMenuWnd() {
       refreshOfflineMissionsList()
       initUnitWnd()
       onUnitChange()
-      if (savedMissionName.get() == null)
-        savedMissionName.set(curMissionName.get())
     }
     children = [
       wndHeader([

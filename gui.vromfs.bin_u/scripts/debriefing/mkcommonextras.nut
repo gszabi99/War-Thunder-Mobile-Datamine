@@ -7,7 +7,7 @@ let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut"
 function mkCommonExtras(battleResult) {
   let res = {}
   if ((battleResult?.reward.playerExp.totalExp ?? 0) > 0) {
-    let { unitResearchExp } = serverConfigs.get()
+    let { unitResearchExp = null } = serverConfigs.get()
     // For campaigns with campaign level progress unit rewards
     if (!isCampaignWithUnitsResearch.get()) {
       let nextLevel = (battleResult?.player.level ?? 0) + 1

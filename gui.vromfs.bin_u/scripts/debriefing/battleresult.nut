@@ -80,6 +80,8 @@ isInBattle.subscribe(function(v) {
   isUnitWeaponryRequested.set(null)
 })
 battleResult.subscribe(function(v) {
+  if (debugBattleResult.get() != null)
+    return
   let { unit = null, isSeparateSlots = false } = v
   if (unit == null)
     return

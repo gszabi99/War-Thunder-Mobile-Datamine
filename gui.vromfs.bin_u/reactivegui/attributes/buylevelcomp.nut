@@ -60,7 +60,7 @@ let numberBox = @(text) {
       borderWidth = hdpx(3)
       transform = { rotate = 45 }
     }
-    mkGradGlowText(text, fontWtVeryLarge, textGradient, {
+    mkGradGlowText(text, fontWtLarge, textGradient, {
       pos = [-0.1 * numberSize, 0]
     })
   ]
@@ -102,20 +102,21 @@ let mkLevelInfo = @(levels, sp, sf) {
     pattern
     {
       size = flex()
-      flow = FLOW_HORIZONTAL
       padding = [hdpx(10), hdpx(20)]
       valign = ALIGN_CENTER
+      halign = ALIGN_LEFT
       gap = hdpx(20)
       children = [
         numberBox($"+{levels}")
         {
-          pos = [0, hdpx(12)]
           flow = FLOW_VERTICAL
+          vplace = ALIGN_TOP
+          hplace = ALIGN_RIGHT
           halign = ALIGN_RIGHT
           children = [
             mkGradGlowText(
               utf8ToUpper(loc("purchase/levels", { levels }))
-              fontWtLarge
+              fontBig
               textGradient
             )
             mkSpText(sp)

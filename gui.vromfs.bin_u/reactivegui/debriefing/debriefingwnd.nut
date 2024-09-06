@@ -34,7 +34,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { lvlUpCost } = require("%rGui/levelUp/levelUpState.nut")
 let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
-let { isPlayerReceiveLevel, getResearchedUnit, getBestUnitName, isUnitReceiveLevel, getNewPlatoonUnit
+let { isPlayerReceiveLevel, getResearchedUnit, getBestUnitName, isUnitReceiveLevel, getNewPlatoonUnit, getSlotOrUnitLevelUnlockRewards
 } = require("debrUtils.nut")
 let mkDebrTabsInfo = require("mkDebrTabsInfo.nut")
 let debriefingTabBar = require("debriefingTabBar.nut")
@@ -43,6 +43,10 @@ let { boostersListActive } = require("%rGui/boosters/boostersListActive.nut")
 let { openEventWnd, specialEvents } = require("%rGui/event/eventState.nut")
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
 let { openUnitsTreeAtUnit } = require("%rGui/unitsTree/unitsTreeState.nut")
+let { slots, selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
+let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
+let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
+let { runOfflineBattle } = require("%rGui/debugTools/debugOfflineBattleState.nut")
 
 local isAttached = false
 
@@ -97,13 +101,21 @@ let mkBtnAppearAnim = @(needBlink, needShowW, children) @() !needShowW.get() ? {
   }
 }
 
-let mkBtnToHangar = @(needShow, campaign, isMainBtn) mkBtnAppearAnim(false, needShow,
+let mkBtnToHangar = @(needShow, campaign, isMainBtn, unlockedReward) mkBtnAppearAnim(false, needShow,
   (isMainBtn ? textButtonBattle : textButtonPrimary)(
-    utf8ToUpper(loc(campaign == "ships" ? "return_to_port/short" : "return_to_hangar/short")),
+    utf8ToUpper(loc(campaign == "ships" ? "return_to_port/short"
+      : unlockedReward.has ? $"return_to_hangar/lvlUnlocks/{unlockedReward.type}"
+      : "return_to_hangar/short"
+    )),
     function() {
       isNoExtraScenesAfterDebriefing.set(true)
       if (needRateGame.get())
         requestShowRateGame()
+      if (unlockedReward.has){
+        selectedSlotIdx.set(unlockedReward.idx)
+        setCurrentUnit(unlockedReward.name)
+        curSelectedUnit.set(unlockedReward.name)
+      }
       closeDebriefing()
       openSpecialEvent()
     },
@@ -174,6 +186,18 @@ let startOfflineMissionButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBat
   },
   { hotkeys = ["^J:X | Enter"] })
 
+let mkStartCustomOfflineBattleButton = @(unitName, missionName) textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
+  function() {
+    isNoExtraScenesAfterDebriefing.set(true)
+    let nextAction = @() runOfflineBattle(unitName, missionName)
+    if (needRateGame.get())
+      requestShowRateGame(nextAction)
+    else
+      nextAction()
+    closeDebriefing()
+  },
+  { hotkeys = ["^J:X | Enter"] })
+
 let mkBtnUpgradeUnit = @(needShow, campaign) mkBtnAppearAnim(true, needShow, textButtonPrimary(
   utf8ToUpper(loc(upgradeUnitLocIdByCampaign?[campaign] ?? upgradeUnitLocIdByCampaign.tanks)),
   function() {
@@ -211,14 +235,17 @@ let mkNextGameModeInfo = @(roomInfo) Computed(function() {
     : { gmId = game_mode_id, isCommonBattle = false }
 })
 
-let mkBtnToBattlePlace = @(nextGMInfo, needShow) mkBtnAppearAnim(false, needShow,
+let mkBtnToBattlePlace = @(needShow, nextGMInfo, debrData) mkBtnAppearAnim(false, needShow,
   function() {
+    let { isCustomOfflineBattle = false, unit = null, mission = null } = debrData
     let { gmId, isCommonBattle } = nextGMInfo.get()
     return {
       watch = [newbieOfflineMissions, isInSquad, isSquadLeader, nextGMInfo]
       flow = FLOW_HORIZONTAL
       gap = hdpx(20)
-      children = !isInSquad.get() && isCommonBattle && newbieOfflineMissions.get() != null
+      children = !isInSquad.get() && isCustomOfflineBattle && unit?.name != null && mission != null
+          ? [ boostersListActive, mkStartCustomOfflineBattleButton(unit.name, mission) ]
+        : !isInSquad.get() && isCommonBattle && newbieOfflineMissions.get() != null
           ? [ boostersListActive, startOfflineMissionButton ]
         : gmId != null && (!isInSquad.get() || isSquadLeader.get())
           ? [ boostersListActive, toBattleButton(gmId) ]
@@ -264,9 +291,13 @@ function debriefingWnd() {
     isFinished = false, isDeserter = false, isDisconnected = false, kickInactivity = false
   } = debrData
   let unitName = getBestUnitName(debrData)
-
-  let needForceQuitToHangar = (debrData?.isTutorial ?? false) && getResearchedUnit(debrData) != null
-
+  let unlockedReward = getSlotOrUnitLevelUnlockRewards(debrData)
+  let hasAnyLevelUnlockRewards = unlockedReward.has
+  let isFirstLvlUpForSlot = hasAnyLevelUnlockRewards
+    && unlockedReward.type == "crew"
+    && unlockedReward.levelBeforeBattle == 0
+    && slots.get().filter(@(slot) slot.level != 0).len() == 1
+  let needForceQuitToHangar = ((debrData?.isTutorial ?? false) && getResearchedUnit(debrData) != null) || isFirstLvlUpForSlot
   let hasPlayerLevelUp = !needForceQuitToHangar && isPlayerReceiveLevel(debrData)
   let hasUnitLevelUp = !needForceQuitToHangar && !isSeparateSlots && isUnitReceiveLevel(unitName, debrData)
   let newPlatoonUnit = needForceQuitToHangar ? null : getNewPlatoonUnit(unitName, debrData)
@@ -337,7 +368,7 @@ function debriefingWnd() {
                 halign = ALIGN_LEFT
                 children = newPlatoonUnit != null || hasPlayerLevelUp || researchedUnit != null || needForceQuitToHangar ? null
                   : hasUnitLevelUp ? mkBtnUpgradeUnit(needShowBtns_Unit, campaign)
-                  : mkBtnToHangar(needShowBtns_Final, campaign, false)
+                  : mkBtnToHangar(needShowBtns_Final, campaign, false, unlockedReward)
               }
               {
                 size = [flex(), SIZE_TO_CONTENT]
@@ -346,7 +377,7 @@ function debriefingWnd() {
                   flow = FLOW_HORIZONTAL
                   gap = buttonsHGap
                   children = (needForceQuitToHangar ? [ //warning disable: -unwanted-modification
-                        mkBtnToHangar(needShowBtns_Final, campaign, true)
+                        mkBtnToHangar(needShowBtns_Final, campaign, true, unlockedReward)
                       ]
                     : hasPlayerLevelUp ? [
                         buttonDescText(needShowBtns_Campaign, loc("levelUp/playerLevelUp"))
@@ -365,7 +396,7 @@ function debriefingWnd() {
                     : [
                         mkBtnBuyNextPlayerLevel(Computed(@() curDebrTabId.get() == DEBR_TAB_CAMPAIGN),
                           debrData?.player.level ?? -1, campaign)
-                        mkBtnToBattlePlace(mkNextGameModeInfo(roomInfo), needShowBtns_Final)
+                        mkBtnToBattlePlace(needShowBtns_Final, mkNextGameModeInfo(roomInfo), debrData)
                       ]
                   ).append(btnSkip)  //warning disable: -unwanted-modification
                 }

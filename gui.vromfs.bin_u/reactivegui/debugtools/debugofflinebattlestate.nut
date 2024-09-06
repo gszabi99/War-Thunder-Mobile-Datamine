@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { eventbus_send } = require("eventbus")
 let { getMissionLocName } = require("%rGui/globals/missionUtils.nut")
 let { get_meta_missions_info_by_chapters } = require("guiMission")
 let { get_unittags_blk } = require("blkGetters")
@@ -12,7 +13,7 @@ let savedUnitType = mkWatched(persist, "savedUnitType", null)
 let savedUnitName = mkWatched(persist, "savedUnitName", null)
 let savedMissionName = mkWatched(persist, "savedMissionName", null)
 
-let offlineMissionsList = mkWatched(persist, "offlineMissionsList", [])
+let offlineMissionsList = mkWatched(persist, "offlineMissionsList", {})
 
 function refreshOfflineMissionsList() {
   let chapters = get_meta_missions_info_by_chapters(GM_SINGLE_MISSION).filter(@(m) m.len() > 0)
@@ -31,14 +32,15 @@ function refreshOfflineMissionsList() {
   offlineMissionsList.set(missions)
 }
 
-function runOfflineBattle() {
-  let unitName = savedUnitName.get()
-  let missionName = savedMissionName.get()
+function runOfflineBattle(unitName = null, missionName = null) {
+  unitName = unitName ?? savedUnitName.get()
+  missionName = missionName ?? savedMissionName.get()
 
   if(unitName not in get_unittags_blk())
     return
 
   log($"OflineStartBattle: start mission {missionName} for {unitName}")
+  eventbus_send("lastSingleMissionRewardData", { battleData = { isCustomOfflineBattle = true } })
   startOfflineBattle({ name = unitName }, missionName)
 }
 
