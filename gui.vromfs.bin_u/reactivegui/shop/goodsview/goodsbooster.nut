@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
-let { mkGoodsWrap, borderBg, mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonParts,
+let { mkGoodsWrap, borderBg, mkCurrencyAmountTitleArea, mkPricePlate, mkGoodsCommonParts,
   mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit,
   priceBgGradConsumables, titleFontGradConsumables
 } = require("%rGui/shop/goodsView/sharedParts.nut")
@@ -61,7 +61,7 @@ function mkGoodsBooster(goods, onClick, state, animParams) {
         size = [hdpx(270), viewBaseValue > 0 ? hdpx(175) : hdpx(135)]
         padding = [hdpx(20), 0]
         children = boostersList.map(@(v, id)
-          mkCurrencyAmountTitle(v,
+          mkCurrencyAmountTitleArea(v,
             viewBaseValue,
             titleFontGradConsumables,
             nameBooster(id))).values()

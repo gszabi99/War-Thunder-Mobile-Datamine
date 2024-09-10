@@ -52,7 +52,7 @@
       "finsAoaHor": 0.15,
       "finsAoaVer": 0.15,
       "distFromCmToStab": 0.075,
-      "mass": 2500.0,
+      "mass": 1735.0,
       "massEnd": 1625.0,
       "massEnd1": 1475.0,
       "timeFire": 2.0,

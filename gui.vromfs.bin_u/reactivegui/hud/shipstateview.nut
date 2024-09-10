@@ -33,20 +33,19 @@ let machineSpeedDirection = [
   "back"
 ]
 
-let defFont = fontVeryTinyShaded
+let defFont = fontVeryTiny
+let defFontMono = fontMonoTiny
 
-let speedValue = @(ovr = {}) @() {
+let speedValue = @() {
   watch = speed
   rendObj = ROBJ_TEXT
   text = speed.value.tostring()
-  margin = [0, 0, 0, sh(1)]
-}.__update(defFont, ovr)
+}.__update(defFontMono)
 
-let speedUnits = @(ovr = {}) @() {
+let speedUnits = @() {
   rendObj = ROBJ_TEXT
   text = loc("measureUnits/kmh")
-  margin = [0, 0, hdpx(1.5), sh(0.5)]
-}.__update(defFont, ovr)
+}.__update(defFont)
 
 let averageSpeed = Computed(@() clamp((portSideMachine.value + sideboardSideMachine.value) / 2, 0, machineSpeedLoc.len()))
 

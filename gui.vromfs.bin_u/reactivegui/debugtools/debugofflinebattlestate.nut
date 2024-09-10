@@ -40,8 +40,14 @@ function runOfflineBattle(unitName = null, missionName = null) {
     return
 
   log($"OflineStartBattle: start mission {missionName} for {unitName}")
-  eventbus_send("lastSingleMissionRewardData", { battleData = { isCustomOfflineBattle = true } })
-  startOfflineBattle({ name = unitName }, missionName)
+  let unit = { name = unitName }
+  let battleData = {
+    isCustomOfflineBattle = true
+    reward = { unitName }
+    unit
+  }
+  eventbus_send("lastSingleMissionRewardData", { battleData })
+  startOfflineBattle(unit, missionName)
 }
 
 let openOfflineBattleMenu = @() isOpened.set(true)

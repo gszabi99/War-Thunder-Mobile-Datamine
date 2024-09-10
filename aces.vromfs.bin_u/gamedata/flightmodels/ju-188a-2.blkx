@@ -2052,14 +2052,6 @@
         "weaponConfig": {
           "presetType": "AIR_TO_SEA"
         }
-      },
-      {
-        "name": "ju_188a_6x_flamm_250",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_6x_flamm_250.blk"
-      },
-      {
-        "name": "ju_188a_2x_flamm_500",
-        "blk": "gameData/FlightModels/weaponPresets/ju_188a_2x_flamm_500.blk"
       }
     ]
   },
@@ -2252,80 +2244,44 @@
         "index": 1,
         "tier": 9,
         "order": 1,
-        "WeaponPreset": [
-          {
-            "iconType": "bomb_250kg",
-            "name": "sc250",
-            "reqModification": "ju-88_4xSC250",
-            "ShowNodes": {
-              "node": "pylon_bomb5"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-              "emitter": "bomb33",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+        "WeaponPreset": {
+          "iconType": "bomb_250kg",
+          "name": "sc250",
+          "reqModification": "ju-88_4xSC250",
+          "ShowNodes": {
+            "node": "pylon_bomb5"
           },
-          {
-            "iconType": "napalm_middle",
-            "name": "fl250",
-            "reqModification": "flamm_250",
-            "ShowNodes": {
-              "node": "pylon_bomb5"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-              "emitter": "bomb33",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+            "emitter": "bomb33",
+            "bullets": 1,
+            "external": true,
+            "separate": true
           }
-        ]
+        }
       },
       {
         "index": 2,
         "tier": 8,
         "order": 3,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "iconType": "bomb_250kg",
-            "name": "sc250",
-            "reqModification": "ju-88_4xSC250",
-            "ShowNodes": {
-              "node": "pylon_bomb1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-              "emitter": "bomb31",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+        "WeaponPreset": {
+          "iconType": "bomb_250kg",
+          "name": "sc250",
+          "reqModification": "ju-88_4xSC250",
+          "ShowNodes": {
+            "node": "pylon_bomb1"
           },
-          {
-            "iconType": "napalm_middle",
-            "name": "fl250",
-            "reqModification": "flamm_250",
-            "ShowNodes": {
-              "node": "pylon_bomb1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-              "emitter": "bomb31",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+            "emitter": "bomb31",
+            "bullets": 1,
+            "external": true,
+            "separate": true
           }
-        ]
+        }
       },
       {
         "index": 3,
@@ -2439,38 +2395,6 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/de_pc1600_ap.blk",
-              "emitter": "bomb29",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "napalm_middle",
-            "name": "fl250",
-            "reqModification": "flamm_250",
-            "ShowNodes": {
-              "node": "pylon_bomb2"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-              "emitter": "bomb29",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "napalm_large",
-            "name": "fl500",
-            "reqModification": "flamm_500",
-            "ShowNodes": {
-              "node": "pylon_bomb2"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_500.blk",
               "emitter": "bomb29",
               "bullets": 1,
               "external": true,
@@ -2646,38 +2570,6 @@
               "external": true,
               "separate": true
             }
-          },
-          {
-            "iconType": "napalm_middle",
-            "name": "fl250",
-            "reqModification": "flamm_250",
-            "ShowNodes": {
-              "node": "pylon_bomb3"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-              "emitter": "bomb30",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "napalm_large",
-            "name": "fl500",
-            "reqModification": "flamm_500",
-            "ShowNodes": {
-              "node": "pylon_bomb3"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_500.blk",
-              "emitter": "bomb30",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
           }
         ]
       },
@@ -2686,79 +2578,43 @@
         "tier": 4,
         "order": 4,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "iconType": "bomb_250kg",
-            "name": "sc250",
-            "reqModification": "ju-88_4xSC250",
-            "ShowNodes": {
-              "node": "pylon_bomb4"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-              "emitter": "bomb32",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+        "WeaponPreset": {
+          "iconType": "bomb_250kg",
+          "name": "sc250",
+          "reqModification": "ju-88_4xSC250",
+          "ShowNodes": {
+            "node": "pylon_bomb4"
           },
-          {
-            "iconType": "napalm_middle",
-            "name": "fl250",
-            "reqModification": "flamm_250",
-            "ShowNodes": {
-              "node": "pylon_bomb4"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-              "emitter": "bomb32",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+            "emitter": "bomb32",
+            "bullets": 1,
+            "external": true,
+            "separate": true
           }
-        ]
+        }
       },
       {
         "index": 7,
         "tier": 3,
         "order": 2,
-        "WeaponPreset": [
-          {
-            "iconType": "bomb_250kg",
-            "name": "sc250",
-            "reqModification": "ju-88_4xSC250",
-            "ShowNodes": {
-              "node": "pylon_bomb6"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-              "emitter": "bomb34",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+        "WeaponPreset": {
+          "iconType": "bomb_250kg",
+          "name": "sc250",
+          "reqModification": "ju-88_4xSC250",
+          "ShowNodes": {
+            "node": "pylon_bomb6"
           },
-          {
-            "iconType": "napalm_middle",
-            "name": "fl250",
-            "reqModification": "flamm_250",
-            "ShowNodes": {
-              "node": "pylon_bomb6"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_flam_250.blk",
-              "emitter": "bomb34",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+            "emitter": "bomb34",
+            "bullets": 1,
+            "external": true,
+            "separate": true
           }
-        ]
+        }
       }
     ]
   },

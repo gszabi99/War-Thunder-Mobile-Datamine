@@ -2031,7 +2031,7 @@
             }
           },
           {
-            "iconType": "torppedo_no_case",
+            "iconType": "torppedo",
             "name": "mk13_weak",
             "reqModification": "tbf_itc",
             "ShowNodes": {

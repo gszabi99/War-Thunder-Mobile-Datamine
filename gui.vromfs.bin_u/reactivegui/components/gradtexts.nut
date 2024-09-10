@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkFontGradient } = require("%rGui/style/gradients.nut")
 let { getRomanNumeral } = require("%sqstd/math.nut")
+let { trim } = require("%sqstd/string.nut")
 
 
 let rankTextGradient = mkFontGradient(0xFFFFFFFF, 0xFF785443)
@@ -27,6 +28,32 @@ let mkGradGlowText = @(text, fontStyle, fontTex, ovr = {})
     }.__update(fontStyle)
   }).__update(ovr)
 
+function mkGradGlowMultiLine(text, fontStyle, fontTex, maxWidth, ovr = {}) {
+  if(calc_str_box(text, fontStyle)[0] < maxWidth){
+    return mkGradGlowText(text, fontStyle, fontTex, {})
+  }
+  local strArray = []
+  local modifStr = ""
+  foreach(word in text.split(" ")){
+    local checkStr = ""
+    if (calc_str_box(modifStr, fontStyle)[0] < maxWidth){
+      checkStr = word.concat(modifStr, " ")
+      if (calc_str_box(checkStr, fontStyle)[0] > maxWidth){
+        strArray.append(trim(modifStr))
+        modifStr = ""
+      }
+    }
+    modifStr = word.concat(modifStr, " ")
+    modifStr = trim(modifStr)
+  }
+  if(modifStr.len() > 0)
+    strArray.append(modifStr)
+  return {
+    flow = FLOW_VERTICAL
+    children = strArray.map(@(str) mkGradGlowText(str, fontStyle, fontTex, ovr))
+  }.__update(ovr)
+}
+
 let mkGradRank = @(rank, ovr = {})
   mkGradText(getRomanNumeral(rank), fontWtMedium, rankTextGradient, ovr)
 
@@ -39,6 +66,7 @@ let mkGradRankLarge = @(rank, ovr = {})
 return {
   mkGradText
   mkGradGlowText
+  mkGradGlowMultiLine
   mkGradRank
   mkGradRankSmall
   mkGradRankLarge

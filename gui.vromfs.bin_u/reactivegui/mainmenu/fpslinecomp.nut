@@ -91,6 +91,7 @@ let lastBattleID = @() textStyle.__merge({
 let latencyComp = @() textStyle.__merge({
   watch = latencyText
   text = latencyText.value
+  monoWidth = "0"
 })
 
 let presetBattle = [

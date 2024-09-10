@@ -2369,10 +2369,8 @@
     ],
     "hideNodes": {
       "node": [
-        "ex_armor_turret_01",
-        "ex_armor_turret_02",
-        "ex_armor_turret_03",
-        "ex_armor_turret_05"
+        "ex_decor_02",
+        "ex_decor_07"
       ]
     }
   },
@@ -3313,10 +3311,8 @@
           ],
           "hideNodes": {
             "node": [
-              "ex_armor_turret_01",
-              "ex_armor_turret_02",
-              "ex_armor_turret_03",
-              "ex_armor_turret_05"
+              "ex_decor_02",
+              "ex_decor_07"
             ]
           }
         }

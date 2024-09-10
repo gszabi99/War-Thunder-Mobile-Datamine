@@ -104,7 +104,7 @@ function waitTime() {
     watch = [serverTime, curQueue]
     color = textColor
     text = msec < 0 ? "" : secondsToTimeSimpleString(millisecondsToSecondsInt(msec))
-  }, fontMedium)
+  }, fontMonoMedium)
 }
 
 let waitingBlock = @() {

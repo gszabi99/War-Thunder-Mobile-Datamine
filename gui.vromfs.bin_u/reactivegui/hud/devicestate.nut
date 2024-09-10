@@ -20,6 +20,7 @@ let maxFpsVal = 999
 let maxPingVal = 999
 let maxPlVal = 100
 let textsFont = fontTinyAccentedShaded
+let textsFontMono = fontMonoTinyAccentedShaded
 let defaultColor = 0xFFFFFFFF
 let badQualityColor = 0xFFFF5D5D
 
@@ -65,34 +66,63 @@ isInBattle.subscribe(enableDeviceState)
 if (isInBattle.value)
   enableDeviceState(true)
 
-let getTextWidthPx = @(text) calc_comp_size({ rendObj = ROBJ_TEXT, text }.__update(textsFont))[0]
-let fpsTextW = getTextWidthPx($"{textFps}000")
-let pingTextW = getTextWidthPx($"{textPing}000")
-let plTextW = getTextWidthPx($"{textPackagesLoss}100%")
+let getTextMonoWidthPx = @(text) calc_comp_size({ rendObj = ROBJ_TEXT, text }.__update(textsFontMono))[0]
+let numberW = getTextMonoWidthPx("000")
+let percentW = getTextMonoWidthPx("100%")
 
-let fpsComp = @() fps.value < 0 ? { watch = fps } : {
+let fpsComp = @() fps.get() < 0 ? { watch = fps } : {
   watch = fps
-  size = [ fpsTextW, SIZE_TO_CONTENT ]
-  rendObj = ROBJ_TEXT
-  text = $"{textFps}{fps.value}"
-  color = (DBGLEVEL <= 0 || fps.value >= FPS_LEVEL_ACCEPTABLE) ? defaultColor : badQualityColor
-}.__update(textsFont)
+  flow = FLOW_HORIZONTAL
+  children = [
+    {
+      rendObj = ROBJ_TEXT
+      text = textFps
+      color = (DBGLEVEL <= 0 || fps.get() >= FPS_LEVEL_ACCEPTABLE) ? defaultColor : badQualityColor
+    }.__update(textsFont)
+    {
+      size = [ numberW, SIZE_TO_CONTENT ]
+      rendObj = ROBJ_TEXT
+      text = fps.get()
+      color = (DBGLEVEL <= 0 || fps.get() >= FPS_LEVEL_ACCEPTABLE) ? defaultColor : badQualityColor
+    }.__update(textsFontMono)
+  ]
+}
 
-let pingComp = @() ping.value < 0 ? { watch = ping } : {
+let pingComp = @() ping.get() < 0 ? { watch = ping } : {
   watch = ping
-  size = [ pingTextW, SIZE_TO_CONTENT ]
-  rendObj = ROBJ_TEXT
-  text = $"{textPing}{ping.value}"
-  color = ping.value < PING_LEVEL_SLOW ? defaultColor : badQualityColor
-}.__update(textsFont)
+  flow = FLOW_HORIZONTAL
+  children = [
+    {
+      rendObj = ROBJ_TEXT
+      text = textPing
+      color = ping.get() < PING_LEVEL_SLOW ? defaultColor : badQualityColor
+    }.__update(textsFont)
+    {
+      size = [ numberW, SIZE_TO_CONTENT ]
+      rendObj = ROBJ_TEXT
+      text = ping.get()
+      color = ping.get() < PING_LEVEL_SLOW ? defaultColor : badQualityColor
+    }.__update(textsFontMono)
+  ]
+}
 
-let plComp = @() pl.value < 0 ? { watch = pl } : {
+let plComp = @() pl.get() < 0 ? { watch = pl } : {
   watch = pl
-  size = [ plTextW, SIZE_TO_CONTENT ]
-  rendObj = ROBJ_TEXT
-  text = $"{textPackagesLoss}{pl.value}{pl.value > 0 ? "%" : ""}"
-  color = pl.value <= PL_LEVEL_ACCEPTABLE ? defaultColor : badQualityColor
-}.__update(textsFont)
+  flow = FLOW_HORIZONTAL
+  children = [
+    {
+      rendObj = ROBJ_TEXT
+      text = textPackagesLoss
+      color = pl.get() <= PL_LEVEL_ACCEPTABLE ? defaultColor : badQualityColor
+    }.__update(textsFont)
+    {
+      size = [ percentW, SIZE_TO_CONTENT ]
+      rendObj = ROBJ_TEXT
+      text = $"{pl.get()}{pl.get() > 0 ? "%" : ""}"
+      color = pl.get() <= PL_LEVEL_ACCEPTABLE ? defaultColor : badQualityColor
+    }.__update(textsFontMono)
+  ]
+}
 
 let pingIconFn = Computed(@() ping.value < 0 ? ""
   : ping.value < PING_LEVEL_MEDIUM ? "icon_wifi_high"

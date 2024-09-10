@@ -1,9 +1,9 @@
 {
-  "version": "1.10.0.45",
-  "grpHash": "7a27ddea587cce878b47fe127754cc9e",
+  "version": "1.10.0.51",
+  "grpHash": "e4cbc32907deaf596d511098e3a6b655",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "f22e7cfaea3731cc91a4c350bdd5d9e8",
+  "blkHash": "6b5ae7c074a56d551ab9c723c46c1d06",
   "genHash": "1e6cbd2338e3c521cbf041ec4d9a5179",
   "a-20g": {
     "dep": [
@@ -794,7 +794,6 @@
       "us_250lb_anm57",
       "us_500lb_anm64a1",
       "us_5in_hvar_b",
-      "us_750lb_mk_78_mod_2",
       "us_tiny_tim_navy2",
       "usa_paratrooper_char"
     ]
@@ -4720,8 +4719,6 @@
   },
   "ju-188a-2": {
     "dep": [
-      "de_250kg_c_flam",
-      "de_500kg_c_flam",
       "de_pc1000_ap",
       "de_pc1600_ap",
       "de_pc500_ap",

@@ -177,9 +177,10 @@ let machineSpeed = {
 let speedComp = {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_BOTTOM
+  gap = hdpx(2)
   children = [
-    speedValue({ margin = 0 }.__update(fontTiny))
-    speedUnits(fontVeryTiny)
+    speedValue
+    speedUnits
   ]
 }
 

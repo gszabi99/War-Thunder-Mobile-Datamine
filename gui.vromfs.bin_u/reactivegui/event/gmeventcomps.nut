@@ -58,15 +58,16 @@ let mkGmImg = @(id) {
   keepAspect = true
 }
 
-function mkGmGoods(goods, onClick, state, animParams) {
+function mkGmGoods(goods, mkOnClick, state, animParams) {
   let { limit = 0, dailyLimit = 0, id = null } = goods
   let bgParticles = mkBgParticles(goodsBgSize)
   let unit = getUnitByGoods(goods)
   let canPurchase = mkCanPurchase(id, limit, dailyLimit).get()
   let isUnit = goods.gtype == SGT_UNIT
+  let onClick = mkOnClick(canPurchase, isUnit, unit)
   return mkGoodsWrap(
     goods,
-    onClick(canPurchase, isUnit, unit),
+    onClick,
     @(sf, _) [
       mkSlotBgImg()
       bgParticles
@@ -77,7 +78,7 @@ function mkGmGoods(goods, onClick, state, animParams) {
         { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
     ].extend(mkGoodsCommonParts(goods, state)),
     mkPricePlate(goods, priceBgGrad, state, animParams),
-    { size = goodsSize },
+    { size = goodsSize, onClick },
     { size = goodsBgSize })
 }
 

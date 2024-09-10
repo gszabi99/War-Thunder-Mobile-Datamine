@@ -15,6 +15,7 @@ let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { saveSeenGoods } = require("%rGui/shop/shopState.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { mkRewardCurrencyImage } = require("%rGui/rewards/rewardPlateComp.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 
 
 let fonticonPreview = "⌡"
@@ -269,11 +270,37 @@ function mkOfferBlueprint(goods, onClick, state){
 
 }
 
+function mkOfferBranchUnit(goods, onClick, state) {
+  let unit = getUnitByGoods(goods)
+  let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
+    currencies = null, offerClass = null
+  } = goods
+  let p = getUnitPresentation(unit)
+  let bgImg = offerClass == "seasonal" ? "ui/gameuiskin#offer_bg_green.avif"
+    : unit?.unitType == "tank" ? "ui/gameuiskin#offer_bg_yellow.avif"
+    : "ui/gameuiskin#offer_bg_blue.avif"
+  let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
+  let image = mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image)
+  let imageOffset = currencyId == null || unit?.unitType == "tank" ? 0
+    : hdpx(40)
+  return mkOfferWrap(onClick,
+    unit == null ? null : @(sf) [
+      mkBgImg(bgImg)
+      isShowDebugOnly ? underConstructionBg : null
+      sf & S_HOVER ? bgHiglight : null
+      currencyId == null ? null : mkCurrencyIcon(currencyId)
+      imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
+      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
+        endTime ?? timeRange?.end, utf8ToUpper(loc("offer/airBranch")))
+      discountTagBig(discountInPercent)
+    ].extend(mkOfferCommonParts(goods, state)))
+}
 return {
   getLocNameUnit
   getLocBlueprintUnit
   mkGoodsUnit
   mkOfferUnit
   mkOfferBlueprint
+  mkOfferBranchUnit
   getUnitByGoods
 }

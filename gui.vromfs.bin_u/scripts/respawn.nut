@@ -18,7 +18,7 @@ let { isInRespawn, respawnUnitInfo, respawnUnitItems, isRespawnStarted, timeToRe
   isBattleDataFake
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 
-let isFake = Computed(@() battleData.get()?.isFake)
+let isFake = keepref(Computed(@() battleData.get()?.isFake))
 let unitToSpawn = Computed(@() !isBatleDataRequired.value || isBattleDataReceived.value || isLocalMultiplayer.value
   ? curBattleUnit.value : null)
 let respawnData = mkWatched(persist, "respawnData", null)

@@ -125,7 +125,9 @@ let commandsList = [
   }
 ]
 
-foreach (ot in ["start", "gold", "collection", "sidegrade", "upgrade", "whale", "blueprint"]) {
+let offersList = ["start", "gold", "collection", "sidegrade", "upgrade", "whale", "blueprint", "branchAir", "premAir", "startAir"]
+
+foreach (ot in offersList) {
   let offerType = ot
   commandsList.append({
     label = $"generate {offerType}",

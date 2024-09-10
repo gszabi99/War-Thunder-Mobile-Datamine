@@ -2296,7 +2296,7 @@
             ]
           },
           {
-            "iconType": "torppedo_no_case",
+            "iconType": "torppedo",
             "name": "us_mk13_torpedo_no_case",
             "reqModification": "pby5_ltc",
             "ShowNodes": {
@@ -2410,7 +2410,7 @@
             ]
           },
           {
-            "iconType": "torppedo_no_case",
+            "iconType": "torppedo",
             "name": "us_mk13_torpedo_no_case",
             "reqModification": "pby5_ltc",
             "ShowNodes": {

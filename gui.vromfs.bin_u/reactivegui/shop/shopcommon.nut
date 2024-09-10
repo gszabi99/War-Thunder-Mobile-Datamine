@@ -52,8 +52,10 @@ let shopCategoriesCfg = [
 function getGoodsType(goods) {
   if ((goods?.slotsPreset ?? "") != "")
     return SGT_SLOTS
-  if (goods.units.len() > 0 || (goods?.unitUpgrades.len() ?? 0) > 0 || goods?.meta.previewUnit)
+  if (goods.units.len() == 1 || (goods?.unitUpgrades.len() ?? 0) > 0 || goods?.meta.previewUnit)
     return SGT_UNIT
+  if (goods.units.len() >= 2 )
+    return SGT_BRANCH
   if (goods.items.len() > 0)
     return SGT_CONSUMABLES
   if (goods.lootboxes.len() > 0)

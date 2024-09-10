@@ -3062,6 +3062,7 @@
           {
             "iconType": "bomb_250kg_group",
             "name": "250lb",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",

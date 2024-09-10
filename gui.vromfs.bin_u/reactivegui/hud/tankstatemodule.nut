@@ -120,7 +120,7 @@ let speedText = {
       watch = speed
       rendObj = ROBJ_TEXT
       text = speed.value
-    }.__update(fontTinyShaded)
+    }.__update(fontMonoTinyShaded)
     {
       rendObj = ROBJ_TEXT
       text = loc("measureUnits/kmh")

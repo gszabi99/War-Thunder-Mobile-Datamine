@@ -17,7 +17,7 @@ let { getFontSizeToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { mkFireParticles, mkAshes, mkSparks } = require("%rGui/effects/mkFireParticles.nut")
 let { shopUnseenGoods } = require("%rGui/shop/shopState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { mkGradText, mkGradGlowText } = require("%rGui/components/gradTexts.nut")
+let { mkGradText, mkGradGlowText, mkGradGlowMultiLine } = require("%rGui/components/gradTexts.nut")
 let { withGlareEffect } = require("%rGui/components/glare.nut")
 let { purchasesCount, todayPurchasesCount, goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
 
@@ -129,6 +129,37 @@ let mkCurrencyAmountTitle = @(amount, oldAmount, fontTex, slotName = null) {
           behavior = Behaviors.Marquee
           maxWidth = goodsSmallSize[0] - titlePadding * 2
         })
+      : null
+    {
+      margin = [ slotName ? 0 : hdpx(20), 0]
+      halign = ALIGN_RIGHT
+      children = type(amount) == "array"
+        ? mkGradText(numberToTextForWtFont("+".join(amount)), fontWtBig, fontTex, {})
+        : [
+            oldAmount <= 0
+              ? null
+              : mkGradText(numberToTextForWtFont(decimalFormat(oldAmount)), fontWtBig, fontTex, {
+                  children = oldAmountStrikeThrough
+                })
+            mkGradGlowText(numberToTextForWtFont(decimalFormat(amount)), fontWtLarge, fontTex, {
+              margin = [oldAmount > 0 ? hdpx(40) : 0, 0, 0, 0]
+            })
+          ]
+    }
+  ]
+}
+
+let mkCurrencyAmountTitleArea = @(amount, oldAmount, fontTex, slotName = null) {
+  padding = [0, titlePadding]
+  halign = ALIGN_RIGHT
+  flow = FLOW_VERTICAL
+  hplace = ALIGN_RIGHT
+  clipChildren = true
+  children = [
+    slotName
+      ? mkGradGlowMultiLine(slotName, fontWtSmall, fontTex, goodsSmallSize[0] - titlePadding * 2, {
+        halign = ALIGN_RIGHT
+      })
       : null
     {
       margin = [ slotName ? 0 : hdpx(20), 0]
@@ -520,11 +551,11 @@ function mkTimeLeft(endTime, ovr = {}) {
   }.__update(fontSmall, ovr))
 }
 
-function mkOfferTexts(title, endTime) {
+function mkOfferTexts(title, endTime, addTitle = "") {
   let titleComp = textArea({
     halign = ALIGN_RIGHT
     vplace = ALIGN_BOTTOM
-    text = utf8ToUpper(title)
+    text = " ".concat(addTitle, utf8ToUpper(title))
   }.__update(fontSmall))
   titleComp.fontSize = getFontSizeToFitWidth(titleComp, offerW - (2 * offerPad[1]), fontVeryTiny.fontSize)
   return {
@@ -637,6 +668,7 @@ return {
   mkFitCenterImg
   mkGoodsImg
   mkCurrencyAmountTitle
+  mkCurrencyAmountTitleArea
   numberToTextForWtFont
   mkPricePlate
   purchasedPlate

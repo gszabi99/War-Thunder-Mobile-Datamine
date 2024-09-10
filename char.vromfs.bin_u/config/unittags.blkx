@@ -22222,12 +22222,12 @@
     },
     "Shop": {
       "shipCrewMax": 340,
-      "shipCrewMin": 60,
-      "shipCrewRating": 2.1897,
+      "shipCrewMin": 50,
+      "shipCrewRating": 2.61242,
       "maxSpeed": 17.47,
       "turningTime": 18,
       "addTorpedoesCountPack": 3,
-      "asmCaptureDuration": 6.0,
+      "asmCaptureDuration": 5.0,
       "mainWeaponCaliber": 76.2,
       "weapons": {
         "76mm_ak_726_naval_user_cannon": {
@@ -22253,7 +22253,7 @@
           "wtype": "rockets",
           "damage": 11100.0,
           "shotFreq": 4.2,
-          "reloadTime": 22.0,
+          "reloadTime": 20.0,
           "rocketsSalvo": 4,
           "distToLive": 10000.0,
           "gunsCount": 1,

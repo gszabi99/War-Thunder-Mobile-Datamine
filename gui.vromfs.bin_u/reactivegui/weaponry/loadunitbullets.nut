@@ -363,7 +363,7 @@ function loadUnitBulletsFullImpl(unitName) {
   let weaponsTags = getUnitTagsCfg(unitName)?.Shop.weapons
   foreach(index, slotPresets in weaponSlots) {
     let wPresets = slotPresets.map(function(presetBlk, presetId) {
-      let { iconType = "" } = presetBlk
+      let { iconType = "", isDefault = false } = presetBlk
       let reqModification = weaponsTags?[presetId].reqModification ?? ""
       let weapons = []
       let preset = gatherSlotWeaponPreset(presetBlk)
@@ -377,7 +377,7 @@ function loadUnitBulletsFullImpl(unitName) {
         name = presetId
         reqModification
         iconType
-        isDefault = reqModification == "" && (index == 0 || presetId.startswith("default"))
+        isDefault = reqModification == "" && (isDefault || index == 0 || presetId.startswith("default"))
         weapons
         mass
       }

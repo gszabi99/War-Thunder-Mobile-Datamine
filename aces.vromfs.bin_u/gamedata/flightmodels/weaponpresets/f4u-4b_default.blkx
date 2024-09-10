@@ -1,1 +1,28 @@
-{}
+{
+  "Weapon": [
+    {
+      "slot": 3,
+      "preset": "hvar"
+    },
+    {
+      "slot": 4,
+      "preset": "hvar"
+    },
+    {
+      "slot": 5,
+      "preset": "1000lb"
+    },
+    {
+      "slot": 6,
+      "preset": "1000lb"
+    },
+    {
+      "slot": 7,
+      "preset": "hvar"
+    },
+    {
+      "slot": 8,
+      "preset": "hvar"
+    }
+  ]
+}

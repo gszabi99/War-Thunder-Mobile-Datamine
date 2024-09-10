@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
 let { TouchScreenSteeringStick } = require("wt.behaviors")
-let { floor, fabs, lerp } = require("%sqstd/math.nut")
+let { fabs, lerp } = require("%sqstd/math.nut")
 let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue, setVirtualAxesAileronsElevatorValue
 } = require("%globalScripts/controls/shortcutActions.nut")
 let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround, isActiveTurretCamera, wheelBrake } = require("%rGui/hud/airState.nut")
@@ -548,6 +548,13 @@ playerUnitName.subscribe(function(_) {
 })
 resetTimeout(SHOW_MODEL_NAME_TIMEOUT, showModelNameOff)
 
+let txtSpeedLabel = loc("HUD/REAL_SPEED_SHORT")
+let txtSpeedUnits = loc("measureUnits/kmh")
+let txtAltitudeLabel = loc("HUD/ALTITUDE_SHORT")
+let txtAltitudeUnits = loc("measureUnits/meters_alt")
+
+let altitudeMeters = Computed(@() DistanceToGround.get().tointeger())
+
 let aircraftIndicators = {
   size = [hdpx(250), hdpx(150)]
   valign = ALIGN_BOTTOM
@@ -562,18 +569,49 @@ let aircraftIndicators = {
         text = loc($"{playerUnitName.value}_1", loc(playerUnitName.value))
       }.__update(fontTinyAccentedShaded)
     @() {
-      watch = [Spd, IsSpdCritical]
+      watch = IsSpdCritical
       key = "plane_speed_indicator"
-      rendObj = ROBJ_TEXT
-      color = IsSpdCritical.value ? redColor : neutralColor
-      text = " ".concat(loc("HUD/REAL_SPEED_SHORT"), Spd.value, loc("measureUnits/kmh"))
-    }.__update(fontTinyAccentedShaded)
-    @() {
-      watch = DistanceToGround
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(8)
+      children = [
+        {
+          rendObj = ROBJ_TEXT
+          color = IsSpdCritical.get() ? redColor : neutralColor
+          text = txtSpeedLabel
+        }.__update(fontTinyAccentedShaded)
+        @() {
+          watch = Spd
+          rendObj = ROBJ_TEXT
+          color = IsSpdCritical.get() ? redColor : neutralColor
+          text = Spd.get()
+        }.__update(fontMonoTinyAccentedShaded)
+        {
+          rendObj = ROBJ_TEXT
+          color = IsSpdCritical.get() ? redColor : neutralColor
+          text = txtSpeedUnits
+        }.__update(fontTinyAccentedShaded)
+      ]
+    }
+    {
       key = "plane_altitude_indicator"
-      rendObj = ROBJ_TEXT
-      text = " ".concat(loc("HUD/ALTITUDE_SHORT"), floor(DistanceToGround.value), loc("measureUnits/meters_alt"))
-    }.__update(fontTinyAccentedShaded)
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(8)
+      children = [
+        {
+          rendObj = ROBJ_TEXT
+          text = txtAltitudeLabel
+        }.__update(fontTinyAccentedShaded)
+        @() {
+          watch = altitudeMeters
+          rendObj = ROBJ_TEXT
+          text = altitudeMeters.get()
+        }.__update(fontMonoTinyAccentedShaded)
+        {
+          rendObj = ROBJ_TEXT
+          text = txtAltitudeUnits
+        }.__update(fontTinyAccentedShaded)
+      ]
+    }
   ]
 }
 

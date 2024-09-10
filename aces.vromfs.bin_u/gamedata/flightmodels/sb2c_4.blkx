@@ -1937,7 +1937,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg_group",
           "name": "hvar",
-          "reqModification": "frc_mk2",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_rocket1"
           },
@@ -2505,7 +2505,7 @@
             }
           },
           {
-            "iconType": "torppedo_no_case",
+            "iconType": "torppedo",
             "name": "torpedo",
             "reqModification": "tbf_itc",
             "ShowNodes": {
@@ -2763,7 +2763,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg_group",
           "name": "hvar",
-          "reqModification": "frc_mk2",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_rocket2"
           },

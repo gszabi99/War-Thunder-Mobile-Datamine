@@ -1822,7 +1822,7 @@
             }
           },
           {
-            "iconType": "torppedo_no_case",
+            "iconType": "torppedo",
             "name": "torpedo",
             "reqModification": "tbf_itc",
             "Weapon": {

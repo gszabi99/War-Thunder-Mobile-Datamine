@@ -19,7 +19,7 @@ let { loadedHangarUnitName, setCustomHangarUnit, resetCustomHangarUnit,
 let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("%rGui/shop/unseenPurchasesState.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
 let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
 let { getPlatoonOrUnitName, getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
@@ -41,6 +41,11 @@ let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { schRewardInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { activeOffer } = require("%rGui/shop/offerState.nut")
+let { arrayByRows } = require("%sqstd/underscore.nut")
+let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
+let { backButtonHeight } = require("%rGui/components/backButton.nut")
+
 
 let TIME_TO_SHOW_UI = 5.0 //timer need to show UI even with bug with cutscene
 let TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
@@ -301,6 +306,14 @@ let singleUnitBlock = @() {
     : mkUnitPlate(0, previewGoodsUnit.value, { name = previewGoodsUnit.value.name, reqLevel = 0 })
 }
 
+function branchUnitsBlock(unitName){
+  let unit = Computed(@() allUnitsCfg.get()[unitName])
+  return @(){
+    watch = unit
+    children = mkUnitPlate(0, unit.get(), { name = unitName, reqLevel = 0 })
+  }
+}
+
 let mkHeader = @() mkPreviewHeader(
   Computed(@() previewGoods.get()?.offerClass == "seasonal" ? loc("seasonalOffer")
     : previewGoodsUnit.get() ? getPlatoonOrUnitName(previewGoodsUnit.get(), loc)
@@ -359,7 +372,7 @@ let itemsDesc = {
   animations = opacityAnims(aTimePackInfoHeader, aTimePackInfoStart)
 }.__update(fontSmall)
 
-let leftBlock = {
+let leftBlockPlatoon = {
   size = flex()
   flow = FLOW_VERTICAL
   children = [
@@ -425,6 +438,48 @@ function closeBlackOverlayOnceOnVisualsLoaded(loaded) {
   }
 }
 
+let sortedBranchUnits = Computed(function(){
+  let units = clone activeOffer.get()?.units
+  if (units)
+    return units
+      .filter(@(u) u not in myUnits.get())
+      .sort(@(a,b) allUnitsCfg.get()[b].mRank <=> allUnitsCfg.get()[a].mRank)
+})
+
+let pannableArea = verticalPannableAreaCtor(saSize[1] - horGap, [saBorders[1],saBorders[1]])
+let scrollHandler = ScrollHandler()
+
+let scrollArrowsBlock = {
+  size = [SIZE_TO_CONTENT, saSize[1] - backButtonHeight - verticalGap]
+  hplace = ALIGN_CENTER
+  children = [
+    mkScrollArrow(scrollHandler, MR_T)
+    mkScrollArrow(scrollHandler, MR_B)
+  ]
+}
+
+let gapForBranch = hdpx(10)
+
+let leftBlock = @(){
+  watch = [previewGoodsUnit, schRewards, previewGoods, activeOffer]
+  size = [unitPlateSizeSingle[0]*2 + gapForBranch, SIZE_TO_CONTENT]
+  children = @() (activeOffer.get()?.units.len() ?? 0) > 1
+    ? {
+      watch = sortedBranchUnits
+      flow = FLOW_VERTICAL
+      gap = gapForBranch
+      children = arrayByRows(sortedBranchUnits.get().map(@(u) branchUnitsBlock(u)), 2)
+        .map(@(u)
+          {
+            flow = FLOW_HORIZONTAL
+            gap = gapForBranch
+            children = u
+          })
+    }
+    : previewGoodsUnit.get()?.platoonUnits.len() == 0 ? leftBlockSingleUnit : leftBlockPlatoon
+
+}
+
 let previewWnd = @() {
   watch = needShowUi
   key = openCount
@@ -467,7 +522,13 @@ let previewWnd = @() {
           watch = [previewGoodsUnit, schRewards, previewGoods, activeOffer]
           size = flex()
           children = [
-            previewGoodsUnit.get()?.platoonUnits.len() == 0 ? leftBlockSingleUnit : leftBlock
+            {
+              size = [unitPlateSizeSingle[0]*2 + hdpx(20), SIZE_TO_CONTENT]
+              children = [
+                pannableArea(leftBlock, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+                scrollArrowsBlock
+              ]
+            }
             activeOffer.get()?.id == previewGoods.get()?.id ? mkGiftSchRewardBtn(schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"],
               previewGoodsUnit.get()?.platoonUnits.len() ? unitPlateSizeMain[0] : unitPlateSizeSingle[0]) : null
             rightBlock

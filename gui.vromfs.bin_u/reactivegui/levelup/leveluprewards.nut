@@ -105,7 +105,7 @@ let receiveBtn = mkSpinnerHideBlock(Computed(@() rewardInProgress.value != null)
   })
 
 let startTimes = {} //outside to not break after parent recalc.
-let countTextStyle = { halign = ALIGN_CENTER, monoWidth = "0" }.__merge(fontMedium)
+let countTextStyle = { halign = ALIGN_CENTER }.__merge(fontMonoMedium)
 function mkCurrencyReward(id, amount, countDelay) {
   let countTimeMsec = (1000 * min(amount.tofloat() / (rewardCountPerSec?[id] ?? amount), maxRewardCountTime)).tointeger()
   return {

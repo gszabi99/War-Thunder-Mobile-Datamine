@@ -1845,7 +1845,10 @@
             "name": "sc50_mid",
             "reqModification": "Fw-190A-5_4xSC50",
             "ShowNodes": {
-              "node": "pylon_bomb2"
+              "node": [
+                "pylon_bomb2",
+                "pylon_bomb1"
+              ]
             },
             "Weapon": [
               {
