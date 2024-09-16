@@ -2,11 +2,6 @@
   "model": "itp_m1",
   "fmFile": "fm/itp-m1.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.251,
@@ -1829,7 +1824,7 @@
         "order": 1,
         "WeaponPreset": [
           {
-            "iconType": "bombs_small_group_x2",
+            "iconType": "bomb_50kg_group",
             "name": "fab50",
             "reqModification": "la-7_dz-40",
             "ShowNodes": {
@@ -1858,7 +1853,7 @@
             ]
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_100kg",
             "name": "fab100",
             "reqModification": "la-7_dz-40",
             "ShowNodes": {
@@ -1874,7 +1869,7 @@
             }
           },
           {
-            "iconType": "rockets_he_middle_group_x4",
+            "iconType": "rocket_7kg_group",
             "name": "rs82",
             "reqModification": "LaGG_ro-82",
             "ShowNodes": {
@@ -1916,7 +1911,7 @@
             ]
           },
           {
-            "iconType": "rockets_ap_large_group_x4",
+            "iconType": "rocket_40kg_group",
             "name": "rbs82",
             "reqModification": "LaGG_ro-82",
             "ShowNodes": {
@@ -1965,7 +1960,7 @@
         "order": 2,
         "WeaponPreset": [
           {
-            "iconType": "bombs_small_group_x2",
+            "iconType": "bomb_50kg_group",
             "name": "fab50",
             "reqModification": "la-7_dz-40",
             "ShowNodes": {
@@ -1994,7 +1989,7 @@
             ]
           },
           {
-            "iconType": "bombs_middle",
+            "iconType": "bomb_100kg",
             "name": "fab100",
             "reqModification": "la-7_dz-40",
             "ShowNodes": {
@@ -2010,7 +2005,7 @@
             }
           },
           {
-            "iconType": "rockets_he_middle_group_x4",
+            "iconType": "rocket_7kg_group",
             "name": "rs82",
             "reqModification": "LaGG_ro-82",
             "ShowNodes": {
@@ -2052,7 +2047,7 @@
             ]
           },
           {
-            "iconType": "rockets_ap_large_group_x4",
+            "iconType": "rocket_40kg_group",
             "name": "rbs82",
             "reqModification": "LaGG_ro-82",
             "ShowNodes": {

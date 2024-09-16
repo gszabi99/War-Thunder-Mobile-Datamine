@@ -1,5 +1,5 @@
 from "%globalScripts/logs.nut" import *
-let { allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
+let { getPlatoonUnitCfgNonUpdatable } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 
 // Compatibility with Dedicated before 2024-07-29 (commit https://cvs1.gaijin.lan/c/dagor4/+/494651)
 function compatibilityConvertCommonStats(data) {
@@ -12,14 +12,14 @@ function compatibilityConvertCommonStats(data) {
   let { name = "", platoonUnits = {} } = unitInfo
   unitInfo.$rawdelete("name")
   unitInfo.$rawdelete("platoonUnits")
-  local unitCfg = allUnitsCfgFlat.get()?[name]
+  local unitCfg = getPlatoonUnitCfgNonUpdatable(name)
   unitInfo.__update({
     country = unitCfg?.country ?? ""
     isCollectible = unitCfg?.isCollectible ?? false
   })
   let units = { [name] = unitInfo }
   foreach (puName, _ in platoonUnits) {
-    unitCfg = allUnitsCfgFlat.get()?[puName] ?? unitInfo
+    unitCfg = getPlatoonUnitCfgNonUpdatable(puName) ?? unitInfo
     units[puName] <- unitInfo.map(@(v, k) unitCfg?[k] ?? v)
   }
   data.__update({

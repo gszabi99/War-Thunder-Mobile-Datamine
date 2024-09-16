@@ -2,11 +2,6 @@
   "model": "il_4",
   "fmFile": "fm/il_4.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "gForceTolerationMult": 1.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
@@ -2359,7 +2354,7 @@
             }
           },
           {
-            "iconType": "bomb_500kg",
+            "iconType": "bomb_250kg",
             "name": "brab250_external",
             "reqModification": "der-19",
             "ShowNodes": {
@@ -2441,6 +2436,7 @@
           {
             "iconType": "bomb_50kg_group",
             "name": "fab50",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",

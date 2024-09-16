@@ -2,9 +2,9 @@
   "fmFile": "fm/do_17z_2.blk",
   "model": "do_17z_2",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
+  "tpsCameraOffset": [
+    -6.0,
+    2.0,
     0.0
   ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",

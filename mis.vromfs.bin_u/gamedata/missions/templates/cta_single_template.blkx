@@ -128,7 +128,10 @@
           },
           "triggerEnable": [
             {
-              "target": "player_fade_on_respawn"
+              "target": [
+                "player_fade_on_respawn",
+                "player_hint_check_killed"
+              ]
             },
             {
               "target": "bq_player_deaths"
@@ -178,6 +181,53 @@
           }
         },
         "else_actions": {}
+      },
+      "player_hint_check_killed": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "killedBy",
+            "check_objects": "any",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object": "@t1_player_name",
+            "killedByObject": [
+              "t2_bot_plane_sq",
+              ""
+            ]
+          }
+        },
+        "actions": {
+          "triggerEnable": {
+            "target": "palyer_hint_killed"
+          },
+          "triggerDisable": {
+            "target": "player_hint_check_killed"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "palyer_hint_crashed"
+          },
+          "triggerDisable": {
+            "target": "player_hint_check_killed"
+          }
+        }
       },
       "mission_completed": {
         "is_enabled": false,
@@ -305,6 +355,114 @@
             "value": 1.0,
             "var": "mission_time"
           }
+        },
+        "else_actions": {}
+      },
+      "palyer_hint_crashed": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.99
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "wait": [
+            {
+              "time": 2.0
+            },
+            {
+              "time": 5.0
+            }
+          ],
+          "playHint": [
+            {
+              "hintType": "tutorialHint",
+              "name": "hints/wtm_plane_newbie/crashed",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "tutorialHint",
+              "name": "hints/wtm_plane_newbie/crashed",
+              "action": "hide",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "palyer_hint_killed": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.99
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "wait": [
+            {
+              "time": 2.0
+            },
+            {
+              "time": 5.0
+            }
+          ],
+          "playHint": [
+            {
+              "hintType": "tutorialHint",
+              "name": "hints/wtm_plane_newbie/killed",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
+            {
+              "hintType": "tutorialHint",
+              "name": "hints/wtm_plane_newbie/killed",
+              "action": "hide",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          ]
         },
         "else_actions": {}
       }

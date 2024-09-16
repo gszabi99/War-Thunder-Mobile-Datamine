@@ -4,11 +4,6 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "gyroSight": false,
   "type": [
     "typeFighter",
@@ -1937,7 +1932,6 @@
         "index": 6,
         "tier": 7,
         "order": 11,
-        "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",

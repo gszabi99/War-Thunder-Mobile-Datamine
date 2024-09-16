@@ -10,6 +10,7 @@ let {
   aircraftMovementEditView,
   aircraftIndicatorsEditView,
   aircraftMoveStick,
+  aircraftMoveSecondaryStick
   aircraftMoveStickView,
   aircraftMoveArrows,
   isAircraftMoveArrowsAvailable,
@@ -297,6 +298,15 @@ return cfgHudCommon.__merge({
       children = aircraftMoveStick
     }
     defTransform = mkRBPos([hdpx(-20), hdpx(-320)])
+    editView = aircraftMoveStickView
+    priority = Z_ORDER.STICK
+  }
+
+  moveSecondaryStick = {
+    ctor = @() @() {
+      children = aircraftMoveSecondaryStick
+    }
+    defTransform = mkLBPos([hdpx(200), hdpx(-320)])
     editView = aircraftMoveStickView
     priority = Z_ORDER.STICK
   }

@@ -10,7 +10,7 @@ let { mkUnitStatsCompShort, mkUnitStatsCompFull, armorProtectionPercentageColors
 let { attrPresets } = require("%rGui/attributes/attrState.nut")
 let { mkUnitBonuses, mkUnitDailyLimit, mkBonusTiny, bonusTinySize } = require("unitInfoComps.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { itemsCfgOrdered } = require("%appGlobals/itemsState.nut")
+let { itemsCfgByCampaignOrdered } = require("%appGlobals/itemsState.nut")
 let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
@@ -502,7 +502,7 @@ let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
   lastUnitStats = unitStats
 
   return panelBg.__merge({
-    watch = [ unit, itemsCfgOrdered, unitMods, attrPresets ]
+    watch = [ unit, itemsCfgByCampaignOrdered, unitMods, attrPresets ]
     children = unit.value == null ? null
       : [
           unitMRankBlock(unit.value?.mRank)
@@ -516,7 +516,7 @@ let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
             : null
           unitStatsBlock(unitStats, prevStats)
           unitArmorBlock(unit.value, false)
-          unitConsumablesBlock(unit.value, itemsCfgOrdered.value)
+          unitConsumablesBlock(unit.get(), itemsCfgByCampaignOrdered.get()?[unit.get()?.campaign] ?? [])
         ]
   }, override)
 }

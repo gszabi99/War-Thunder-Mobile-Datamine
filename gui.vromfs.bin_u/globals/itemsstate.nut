@@ -1,6 +1,7 @@
 
 let { Computed } = require("frp")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { campConfigs, campaignsList } = require("%appGlobals/pServer/campaign.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let SPARE = "spare"
 
@@ -30,9 +31,28 @@ let itemsOrder = Computed(@() itemsOrderFull.filter(@(id) id not in hiddenItems
 let itemsCfgOrdered = Computed(@() itemsOrderFull
   .map(@(id) id in hiddenItems ? null : campConfigs.get()?.allItems[id])
   .filter(@(v) v != null))
+let itemsCfgByCampaignOrdered = Computed(function() {
+  let { allItems = {}, campaignCfg = {} } = serverConfigs.get()
+  let needUseBit = "campaign" not in allItems.findvalue(@(_) true) //compatibility with 2024.08.26
+  let res = {}
+  foreach (campaignName, campaign in campaignCfg) {
+    let { bit = 0 } = campaign
+    let campId = campaignsList.get()?.findindex(@(c) c == campaignName)
+
+    let itemsConfigByCampaign = needUseBit
+      ? allItems.filter(@(o) (o.campaigns & bit) != 0)
+      : allItems.filter(@(o) o.campaign == campId)
+
+    res[campaignName] <- itemsOrderFull
+      .map(@(id) id in hiddenItems ? null : itemsConfigByCampaign?[id])
+      .filter(@(v) v != null)
+  }
+  return res
+})
 
 return {
   SPARE
+  itemsCfgByCampaignOrdered
   itemsOrderFull
   orderByItems
   itemsOrder

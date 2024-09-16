@@ -1,9 +1,9 @@
 {
   "model": "db_3b",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
+  "tpsCameraOffset": [
+    -4.0,
+    2.0,
     0.0
   ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
@@ -2327,7 +2327,7 @@
             }
           },
           {
-            "iconType": "bomb_500kg_group",
+            "iconType": "bomb_500kg",
             "name": "500fab",
             "reqModification": "der-19",
             "ShowNodes": {

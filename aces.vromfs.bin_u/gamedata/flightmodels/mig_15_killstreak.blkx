@@ -2,11 +2,6 @@
   "model": "mig_15bis_nr23",
   "fmFile": "fm/mig_15.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "gForceTolerationMult": 10.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gyroSight": true,

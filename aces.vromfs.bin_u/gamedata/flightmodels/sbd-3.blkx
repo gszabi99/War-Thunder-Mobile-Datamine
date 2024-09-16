@@ -2,11 +2,6 @@
   "model": "sbd_3",
   "fmFile": "fm/sbd-3.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.119,
@@ -1934,7 +1929,7 @@
             }
           },
           {
-            "iconType": "doublebarreled_box",
+            "iconType": "gun_12mm",
             "name": "gun_pod_slot1",
             "reqModification": "dgp-1_gunpod",
             "ShowNodes": {
@@ -2102,7 +2097,7 @@
             }
           },
           {
-            "iconType": "doublebarreled_box",
+            "iconType": "gun_12mm",
             "name": "gun_pod_slot3",
             "reqModification": "dgp-1_gunpod",
             "ShowNodes": {

@@ -94,7 +94,7 @@
             }
           ],
           "battleArea": {
-            "target": "big_area"
+            "target": "briefing_zone"
           }
         }
       }
@@ -142,6 +142,10 @@
           },
           {
             "setStatus": "enable",
+            "control": "ID_SHOW_HERO_MODULES"
+          },
+          {
+            "setStatus": "enable",
             "control": "ID_FLIGHTMENU"
           }
         ],
@@ -174,6 +178,10 @@
         "varSetInt": {
           "value": 0,
           "var": "timer"
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
         },
         "wait": [
           {
@@ -238,10 +246,6 @@
           "object_var_value": 0,
           "object": "player",
           "speed": 250.0
-        },
-        "missionSetTimeSpeed": {
-          "speed": 0.0,
-          "realtimeTriggers": true
         },
         "triggerEnable": {
           "target": "flight_start"
@@ -337,7 +341,8 @@
         "hudElementBlink": {
           "element": "mouseAim",
           "time": 20.0,
-          "blink": true
+          "blink": true,
+          "drawFromGui": true
         },
         "triggerEnable": {
           "target": "flight_intro"
@@ -437,7 +442,8 @@
         "hudElementBlink": {
           "element": "mouseAim",
           "time": 10.0,
-          "blink": true
+          "blink": true,
+          "drawFromGui": true
         },
         "triggerEnable": [
           {
@@ -596,7 +602,8 @@
         "hudElementBlink": {
           "element": "mouseAim",
           "time": 10.0,
-          "blink": false
+          "blink": false,
+          "drawFromGui": true
         },
         "playerControls": {
           "setStatus": "enable",
@@ -786,11 +793,17 @@
             "waypoint02"
           ]
         },
-        "playerControls": {
-          "setStatus": "disable",
-          "needKeyUp": false,
-          "control": "ALL"
-        },
+        "playerControls": [
+          {
+            "setStatus": "disable",
+            "needKeyUp": false,
+            "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_SHOW_HERO_MODULES"
+          }
+        ],
         "playHint": [
           {
             "hintType": "tutorialHint",
@@ -1282,11 +1295,17 @@
             "waypoint02"
           ]
         },
-        "playerControls": {
-          "setStatus": "disable",
-          "needKeyUp": false,
-          "control": "ALL"
-        },
+        "playerControls": [
+          {
+            "setStatus": "disable",
+            "needKeyUp": false,
+            "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_SHOW_HERO_MODULES"
+          }
+        ],
         "playHint": [
           {
             "hintType": "tutorialHint",
@@ -1989,11 +2008,17 @@
             "waypoint02"
           ]
         },
-        "playerControls": {
-          "setStatus": "disable",
-          "needKeyUp": false,
-          "control": "ALL"
-        },
+        "playerControls": [
+          {
+            "setStatus": "disable",
+            "needKeyUp": false,
+            "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_SHOW_HERO_MODULES"
+          }
+        ],
         "playHint": [
           {
             "hintType": "tutorialHint",
@@ -2251,11 +2276,17 @@
             "realtimeTriggers": true
           }
         ],
-        "playerControls": {
-          "setStatus": "disable",
-          "needKeyUp": false,
-          "control": "ALL"
-        },
+        "playerControls": [
+          {
+            "setStatus": "disable",
+            "needKeyUp": false,
+            "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_SHOW_HERO_MODULES"
+          }
+        ],
         "missionSetFade": [
           {
             "mode": "fadeOut",
@@ -2895,11 +2926,11 @@
             "time": 0.5
           }
         ],
-        "hudElementSelectionShade": {
-          "element": ""
-        },
         "triggerEnable": {
           "target": "following_initial"
+        },
+        "hudElementSelectionShade": {
+          "element": ""
         },
         "playHint": [
           {
@@ -3349,8 +3380,8 @@
         "enableAfterComplete": false
       },
       "events": {
-        "periodicEvent": {
-          "time": 0.01
+        "timeExpires": {
+          "time": 0.0
         }
       },
       "conditions": {
@@ -3477,11 +3508,17 @@
             "waypoint02"
           ]
         },
-        "playerControls": {
-          "setStatus": "disable",
-          "needKeyUp": false,
-          "control": "ALL"
-        },
+        "playerControls": [
+          {
+            "setStatus": "disable",
+            "needKeyUp": false,
+            "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_SHOW_HERO_MODULES"
+          }
+        ],
         "hudElementSelectionShade": {
           "element": ""
         },
@@ -3611,7 +3648,8 @@
         "hudElementBlink": {
           "element": "crosshair",
           "time": 20.0,
-          "blink": true
+          "blink": true,
+          "drawFromGui": true
         },
         "triggerEnable": {
           "target": "shooting_forestall_hint"
@@ -3646,7 +3684,8 @@
           {
             "element": "crosshair",
             "time": 6.0,
-            "blink": false
+            "blink": false,
+            "drawFromGui": true
           },
           {
             "element": "forestall",
@@ -4010,7 +4049,8 @@
         "hudElementBlink": {
           "element": "mouseAim",
           "time": 10.0,
-          "blink": true
+          "blink": true,
+          "drawFromGui": true
         },
         "hudElementSelectionShade": {
           "element": "forestall"
@@ -4045,7 +4085,8 @@
         "hudElementBlink": {
           "element": "mouseAim",
           "time": 10.0,
-          "blink": false
+          "blink": false,
+          "drawFromGui": true
         },
         "playHint": [
           {
@@ -4519,11 +4560,17 @@
             "waypoint02"
           ]
         },
-        "playerControls": {
-          "setStatus": "disable",
-          "needKeyUp": false,
-          "control": "ALL"
-        },
+        "playerControls": [
+          {
+            "setStatus": "disable",
+            "needKeyUp": false,
+            "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_SHOW_HERO_MODULES"
+          }
+        ],
         "playHint": [
           {
             "hintType": "tutorialHint",
@@ -4624,11 +4671,17 @@
           "value": 0,
           "var": "timer"
         },
-        "playerControls": {
-          "setStatus": "disable",
-          "needKeyUp": false,
-          "control": "ALL"
-        },
+        "playerControls": [
+          {
+            "setStatus": "disable",
+            "needKeyUp": false,
+            "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_SHOW_HERO_MODULES"
+          }
+        ],
         "missionSetFade": [
           {
             "mode": "fadeOut",
@@ -4845,6 +4898,10 @@
             "setStatus": "disable",
             "needKeyUp": false,
             "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_SHOW_HERO_MODULES"
           },
           {
             "setStatus": "enable",
@@ -5672,11 +5729,17 @@
           "value": 0,
           "var": "timer"
         },
-        "playerControls": {
-          "setStatus": "disable",
-          "needKeyUp": false,
-          "control": "ALL"
-        },
+        "playerControls": [
+          {
+            "setStatus": "disable",
+            "needKeyUp": false,
+            "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_SHOW_HERO_MODULES"
+          }
+        ],
         "playHint": [
           {
             "hintType": "tutorialHint",
@@ -5794,6 +5857,10 @@
             "setStatus": "disable",
             "needKeyUp": false,
             "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_SHOW_HERO_MODULES"
           },
           {
             "setStatus": "enable",
@@ -6705,11 +6772,17 @@
         "hudElementSelectionShade": {
           "element": ""
         },
-        "playerControls": {
-          "setStatus": "disable",
-          "needKeyUp": false,
-          "control": "ALL"
-        },
+        "playerControls": [
+          {
+            "setStatus": "disable",
+            "needKeyUp": false,
+            "control": "ALL"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_SHOW_HERO_MODULES"
+          }
+        ],
         "playHint": [
           {
             "hintType": "tutorialHint",
@@ -7913,6 +7986,33 @@
           3922.3,
           700.0,
           8939.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_zone": {
+      "type": "Box",
+      "tm": [
+        [
+          7000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          542.55,
+          0.0
+        ],
+        [
+          0.0,
+          -0.0000235496,
+          7000.0
+        ],
+        [
+          3392.3,
+          32.0996,
+          8906.65
         ]
       ],
       "objLayer": 0,

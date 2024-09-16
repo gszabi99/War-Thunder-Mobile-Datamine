@@ -4,11 +4,6 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/light_fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "german",
@@ -1906,16 +1901,10 @@
     }
   },
   "weapon_presets": {
-    "preset": [
-      {
-        "name": "he51c1_default",
-        "blk": "gameData/FlightModels/weaponPresets/he51a1_default.blk"
-      },
-      {
-        "name": "he51c1_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/he51c1_bombs.blk"
-      }
-    ]
+    "preset": {
+      "name": "he51c1_default",
+      "blk": "gameData/FlightModels/weaponPresets/he51c1_bombs.blk"
+    }
   },
   "WeaponSlots": {
     "HideNodes": {
@@ -1959,6 +1948,7 @@
         "WeaponPreset": {
           "iconType": "bomb_25kg_group",
           "name": "sd10a",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_bomb1"
           },
@@ -1997,6 +1987,7 @@
         "WeaponPreset": {
           "iconType": "bomb_25kg_group",
           "name": "sd10a",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_bomb2"
           },

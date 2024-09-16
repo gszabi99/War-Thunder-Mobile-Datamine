@@ -12,9 +12,14 @@ let {
   OPT_AIRCRAFT_INVERTED_Y,
   OPT_AIRCRAFT_MOVEMENT_CONTROL,
   OPT_AIRCRAFT_CONTINUOUS_TURN_MODE,
+  OPT_AIRCRAFT_THROTTLE_STICK,
   OPT_AIRCRAFT_GYRO_CONTROL_FLAG_AILERONS,
+  OPT_AIRCRAFT_GYRO_CONTROL_AIM_MODE,
+  OPT_AIRCRAFT_GYRO_CONTROL_FLAG_DIRECT_CONTROL,
   OPT_AIRCRAFT_GYRO_CONTROL_PARAM_DEAD_ZONE,
   OPT_AIRCRAFT_GYRO_CONTROL_PARAM_SENSITIVITY,
+  OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_DEAD_ZONE,
+  OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_SENSITIVITY,
   OPT_AIRCRAFT_TAP_SELECTION,
   OPT_AIRCRAFT_ADDITIONAL_FLY_CONTROLS,
   OPT_AIRCRAFT_TARGET_FOLLOWER,
@@ -23,9 +28,7 @@ let {
 let {
   set_aircraft_continuous_turn_mode,
   set_aircraft_control_by_gyro,
-  set_aircraft_control_by_gyro_mode_flag,
   set_aircraft_control_by_gyro_mode_param,
-  CBG_FLAG_AILERONS,
   CBG_PARAM_DEAD_ZONE,
   CBG_PARAM_SENSITIVITY,
   set_aircraft_fixed_aim_cursor,
@@ -40,7 +43,7 @@ let {
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { crosshairOptions } = require("crosshairOptions.nut")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-
+let { setVirtualAxesAim, setVirtualAxesDirectControl } = require("%globalScripts/controls/shortcutActions.nut")
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "air", v)
@@ -113,30 +116,66 @@ let currentContinuousTurnModeType = {
   description = loc("options/desc/continuous_turn_mode")
 }
 
-let currentControlByGyroModeAileronsList = [false, true]
-let currentControlByGyroModeAilerons = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_FLAG_AILERONS, false,
-  @(v) validate(v, currentAdditionalFlyControlsList))
-set_aircraft_control_by_gyro_mode_flag(CBG_FLAG_AILERONS, currentControlByGyroModeAilerons.value)
-currentControlByGyroModeAilerons.subscribe(@(v) set_aircraft_control_by_gyro_mode_flag(CBG_FLAG_AILERONS, v))
-let controlByGyroModeAilerons = {
-  locId = "options/control_by_gyro_ailerons"
+let throttleStickList = [false, true]
+let currentThrottleStick = mkOptionValue(OPT_AIRCRAFT_THROTTLE_STICK, false, @(v) validate(v, throttleStickList))
+let controlThrottleStick = {
+  locId = "options/throttle_stick"
   ctrlType = OCT_LIST
-  value = currentControlByGyroModeAilerons
-  onChangeValue = @(v) sendChange("control_by_gyro_ailerons", v)
-  list = Computed(@() currentAircraftCtrlType.value == "mouse_aim" ? currentControlByGyroModeAileronsList : [])
+  value = currentThrottleStick
+  onChangeValue = @(v) sendChange("throttle_stick", v)
+  list = throttleStickList
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+  description = loc("options/desc/throttle_stick")
+}
+
+let currentControlByGyroModeAileronsAssistList = [false, true]
+let currentControlByGyroModeAileronsAssist = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_FLAG_AILERONS, false,
+  @(v) validate(v, currentAdditionalFlyControlsList))
+let controlByGyroModeAileronsAssist = {
+  locId = "options/control_by_gyro_ailerons_assist"
+  ctrlType = OCT_LIST
+  value = currentControlByGyroModeAileronsAssist
+  onChangeValue = @(v) sendChange("control_by_gyro_ailerons_assist", v)
+  list = Computed(@() setVirtualAxesAim == null && currentAircraftCtrlType.value == "mouse_aim" ? currentControlByGyroModeAileronsAssistList : [])
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
 
-set_aircraft_control_by_gyro(currentControlByGyroModeAilerons.value)
-currentControlByGyroModeAilerons.subscribe(@(_) set_aircraft_control_by_gyro(currentControlByGyroModeAilerons.value))
+let currentControlByGyroAimModeList = ["off", "aim", "aileron_assist"]
+let currentControlByGyroAimMode = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_AIM_MODE, null,
+  @(v) currentControlByGyroAimModeList.contains(v) ? v : currentControlByGyroAimModeList[0])
+let controlByGyroAimMode = {
+  locId = "options/aircraft_gyro_aim_mode"
+  ctrlType = OCT_LIST
+  value = currentControlByGyroAimMode
+  onChangeValue = @(v) sendChange("aircraft_gyro_aim_mode", v)
+  list = Computed(@() setVirtualAxesAim != null && currentAircraftCtrlType.value == "mouse_aim" ? currentControlByGyroAimModeList : [])
+  valToString = airCtrlTypeToString
+}
 
-let currentControlByGyroModeDeadZone = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_PARAM_DEAD_ZONE, 0.5)
-set_aircraft_control_by_gyro_mode_param(CBG_PARAM_DEAD_ZONE, currentControlByGyroModeDeadZone.value)
-currentControlByGyroModeDeadZone.subscribe(@(v) set_aircraft_control_by_gyro_mode_param(CBG_PARAM_DEAD_ZONE, v))
-let controlByGyroModeDeadZoneSlider = {
-  locId = "options/control_by_gyro_dead_zone"
+let currentControlByGyroDirectControlList = [false, true]
+let currentControlByGyroDirectControl = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_FLAG_DIRECT_CONTROL, false,
+  @(v) validate(v, currentAdditionalFlyControlsList))
+let controlByGyroDirectControl = {
+  locId = "options/control_gyro_direct_control"
+  ctrlType = OCT_LIST
+  value = currentControlByGyroDirectControl
+  onChangeValue = @(v) sendChange("control_gyro_direct_control", v)
+  list = Computed(@() setVirtualAxesDirectControl != null && currentAircraftCtrlType.value != "mouse_aim" ? currentControlByGyroDirectControlList : [])
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+}
+
+set_aircraft_control_by_gyro(currentControlByGyroAimMode.value != "off" || (setVirtualAxesAim == null && currentControlByGyroModeAileronsAssist.value) || currentControlByGyroDirectControl.value)
+currentControlByGyroModeAileronsAssist.subscribe(@(v) set_aircraft_control_by_gyro((setVirtualAxesAim == null && v) || currentControlByGyroAimMode.value != "off" || currentControlByGyroDirectControl.value))
+currentControlByGyroAimMode.subscribe(@(v) set_aircraft_control_by_gyro(v != "off" || currentControlByGyroDirectControl.value || (setVirtualAxesAim == null && currentControlByGyroModeAileronsAssist.value)))
+currentControlByGyroDirectControl.subscribe(@(v) set_aircraft_control_by_gyro(v || currentControlByGyroAimMode.value != "off" || (setVirtualAxesAim == null && currentControlByGyroModeAileronsAssist.value)))
+
+let currentControlByGyroModeAileronsDeadZone = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_PARAM_DEAD_ZONE, 0.5)
+set_aircraft_control_by_gyro_mode_param(CBG_PARAM_DEAD_ZONE, currentControlByGyroModeAileronsDeadZone.value)
+currentControlByGyroModeAileronsDeadZone.subscribe(@(v) set_aircraft_control_by_gyro_mode_param(CBG_PARAM_DEAD_ZONE, v))
+let controlByGyroModeAileronsDeadZoneSlider = {
+  locId = "options/control_by_gyro_ailerons_dead_zone"
   ctrlType = OCT_SLIDER
-  value = currentControlByGyroModeDeadZone
+  value = currentControlByGyroModeAileronsDeadZone
   onChangeValue = @(v) sendChange("control_by_gyro_dead_zone", v)
   valToString = @(v) $"{v}"
   ctrlOverride = {
@@ -146,14 +185,42 @@ let controlByGyroModeDeadZoneSlider = {
   }
 }
 
-let currentControlByGyroModeSensitivity = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_PARAM_SENSITIVITY, 5.0)
-set_aircraft_control_by_gyro_mode_param(CBG_PARAM_SENSITIVITY, currentControlByGyroModeSensitivity.value)
-currentControlByGyroModeSensitivity.subscribe(@(v) set_aircraft_control_by_gyro_mode_param(CBG_PARAM_SENSITIVITY, v))
-let controlByGyroModeSensitivitySlider = {
-  locId = "options/control_by_gyro_sensitivity"
+let currentControlByGyroModeAileronsSensitivity = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_PARAM_SENSITIVITY, 5.0)
+set_aircraft_control_by_gyro_mode_param(CBG_PARAM_SENSITIVITY, currentControlByGyroModeAileronsSensitivity.value)
+currentControlByGyroModeAileronsSensitivity.subscribe(@(v) set_aircraft_control_by_gyro_mode_param(CBG_PARAM_SENSITIVITY, v))
+let controlByGyroModeAileronsSensitivitySlider = {
+  locId = "options/control_by_gyro_ailerons_sensitivity"
   ctrlType = OCT_SLIDER
-  value = currentControlByGyroModeSensitivity
+  value = currentControlByGyroModeAileronsSensitivity
   onChangeValue = @(v) sendChange("control_by_gyro_sensitivity", v)
+  valToString = @(v) $"{v}"
+  ctrlOverride = {
+    min = 0.0
+    max = 10.0
+    unit = 0.1
+  }
+}
+
+let currentControlByGyroModeElevatorDeadZone = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_DEAD_ZONE, 0.5)
+let controlByGyroModeElevatorDeadZoneSlider = {
+  locId = "options/control_by_gyro_elevator_dead_zone"
+  ctrlType = OCT_SLIDER
+  value = currentControlByGyroModeElevatorDeadZone
+  onChangeValue = @(v) sendChange("control_by_gyro_elevator_dead_zone", v)
+  valToString = @(v) $"{v}"
+  ctrlOverride = {
+    min = 0.1
+    max = 1.0
+    unit = 0.01
+  }
+}
+
+let currentControlByGyroModeElevatorSensitivity = mkOptionValue(OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_SENSITIVITY, 5.0)
+let controlByGyroModeElevatorSensitivitySlider = {
+  locId = "options/control_by_gyro_elevator_sensitivity"
+  ctrlType = OCT_SLIDER
+  value = currentControlByGyroModeElevatorSensitivity
+  onChangeValue = @(v) sendChange("control_by_gyro_elevator_sensitivity", v)
   valToString = @(v) $"{v}"
   ctrlOverride = {
     min = 0.0
@@ -223,15 +290,25 @@ return {
     cameraViscositySlider(true, "options/camera_sensitivity_in_zoom", OPT_CAMERA_VISC_IN_ZOOM_PLANE,1.0, 0.003, 0.1, 10.0)
     cameraSenseSlider(CAM_TYPE_FREE_PLANE, "options/free_camera_sensitivity_plane", OPT_FREE_CAMERA_PLANE, 0.5, 0.125, 2.0, 0.0187)
     currentContinuousTurnModeType
-    controlByGyroModeAilerons
-    controlByGyroModeDeadZoneSlider
-    controlByGyroModeSensitivitySlider
+    controlThrottleStick
+    controlByGyroModeAileronsAssist
+    controlByGyroAimMode
+    controlByGyroDirectControl
+    controlByGyroModeAileronsDeadZoneSlider
+    controlByGyroModeAileronsSensitivitySlider
+    controlByGyroModeElevatorDeadZoneSlider
+    controlByGyroModeElevatorSensitivitySlider
     currentTapSelectionType
     currentTargetFollowerType
   ].extend(crosshairOptions)
-  currentAircraftCtrlType
-  currentControlByGyroModeAilerons,
-  currentControlByGyroModeDeadZone,
-  currentControlByGyroModeSensitivity,
+  currentAircraftCtrlType,
+  currentThrottleStick,
+  currentControlByGyroModeAileronsAssist
+  currentControlByGyroAimMode,
+  currentControlByGyroDirectControl,
+  currentControlByGyroModeAileronsDeadZone,
+  currentControlByGyroModeAileronsSensitivity,
+  currentControlByGyroModeElevatorDeadZone,
+  currentControlByGyroModeElevatorSensitivity,
   currentAdditionalFlyControls
 }

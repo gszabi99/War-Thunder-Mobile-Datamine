@@ -2,11 +2,6 @@
   "model": "bf_110g_2",
   "fmFile": "fm/bf-110g-2.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_attacker_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.107,
@@ -2505,7 +2500,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "cannon_inner_x2",
+            "iconType": "gun_20mm",
             "name": "gun_pod_x2",
             "reqModification": "mg15120gunpod_mod_bf110",
             "ShowDmParts": {
@@ -2543,7 +2538,7 @@
             ]
           },
           {
-            "iconType": "cannon_inner_x4",
+            "iconType": "gun_12mm",
             "name": "gun_pod",
             "reqModification": "mg15120gunpod_mod_bf110",
             "ShowNodes": {
@@ -2608,7 +2603,7 @@
             ]
           },
           {
-            "iconType": "machine_gun",
+            "iconType": "gun_30mm",
             "name": "bk37",
             "reqModification": "hs129_bk37_bf110",
             "ShowNodes": {
@@ -2847,7 +2842,7 @@
         "order": 2,
         "WeaponPreset": [
           {
-            "iconType": "rocket_40kg",
+            "iconType": "rocket_40kg_group",
             "name": "br20_slot5",
             "reqModification": "Fw-190A-5_R6",
             "ShowNodes": {

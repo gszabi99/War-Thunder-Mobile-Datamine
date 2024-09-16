@@ -2,11 +2,6 @@
   "model": "soc_1",
   "fmFile": "fm/soc_1.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "gForceTolerationMult": 1.3,
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/biplane_metaparts.blk",

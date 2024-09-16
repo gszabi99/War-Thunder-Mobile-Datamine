@@ -2,11 +2,6 @@
   "fmFile": "fm/do_335a_0.blk",
   "model": "do_335a_0",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
   "type": "typeFighter",
@@ -1843,7 +1838,7 @@
         "order": 1,
         "WeaponPreset": {
           "name": "mg15115",
-          "iconType": "cannon_inner",
+          "iconType": "gun_20mm",
           "HideDmParts": {
             "node": [
               "cannon2_dm",

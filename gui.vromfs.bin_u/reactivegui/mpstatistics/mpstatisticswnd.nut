@@ -5,7 +5,8 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { get_mplayers_list, GET_MPLAYERS_LIST, get_mp_local_team, get_current_mission_name } = require("mission")
 let { GO_WIN, GO_FAIL } = require("guiMission")
 let { gameOverReason } = require("%rGui/missionState.nut")
-let { playerLevelInfo, allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
+let { allMainUnitsByPlatoon, getPlatoonUnitCfg } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
+let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { sortAndFillPlayerPlaces } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { mkMpStatsTable, getColumnsByCampaign } = require("%rGui/mpStatistics/mpStatsTable.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
@@ -31,7 +32,7 @@ let playersByTeam = Computed(function() {
         let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[id]
         let { level = 1, starLevel = 0, hasPremium = false, decorators = null, units = {} } = !isBot
           ? playersCommonStats.value?[userId.tointeger()]
-          : genBotCommonStats(name, unitName, allUnitsCfgFlat.get()?[unitName] ?? {}, playerLevelInfo.get().level)
+          : genBotCommonStats(name, unitName, getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get()) ?? {}, playerLevelInfo.get().level)
         let unit = units?[unitName]
         let { unitClass = "", mRank = null } = unit
         let isUnitCollectible = unit?.isCollectible ?? false
@@ -108,7 +109,7 @@ return bgShaded.__merge({
   onDetach
   children = [
     @() {
-      watch = [playersByTeam, allUnitsCfgFlat, battleCampaign]
+      watch = [playersByTeam, battleCampaign]
       size = [flex(), SIZE_TO_CONTENT]
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER

@@ -2,23 +2,21 @@
   "model": "me_264",
   "fmFile": "fm/me_264.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    [
-      40.0,
-      10.0,
-      0.0
-    ],
-    [
-      -250.0,
-      65.0,
-      0.0
-    ]
+  "tpsCameraOffset": [
+    -11.0,
+    3.0,
+    0.0
   ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/4x_engine_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.315,
   "gearSinkRangeC": 0.3,
   "gyroSight": false,
+  "tpsCameraTargetOffsetAtZoom": [
+    -250.0,
+    65.0,
+    0.0
+  ],
   "type": [
     "typeBomber",
     "typeTransport"

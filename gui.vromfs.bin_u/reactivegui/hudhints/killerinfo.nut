@@ -6,7 +6,7 @@ let { HUD_MSG_MULTIPLAYER_DMG } = require("hudMessages")
 let { get_unittags_blk } = require("blkGetters")
 let { localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
-let { allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
+let { allMainUnitsByPlatoon, getPlatoonUnitCfg } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 let { isUnitAlive } = require("%rGui/hudState.nut")
 let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
 let { mkGradientBlock, failBgColor } = require("hintCtors.nut")
@@ -34,7 +34,7 @@ let info = Computed(function() {
   if (killData.value == null)
     return null
   let { killer, unitName, unitType } = killData.value
-  local unitCfg = allUnitsCfgFlat.get()?[unitName]
+  local unitCfg = getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get())
   if (unitCfg == null && unitName in get_unittags_blk())
     unitCfg = mkFakeUnitCfg(unitName, unitType, killer.country)
   if (unitCfg == null) {

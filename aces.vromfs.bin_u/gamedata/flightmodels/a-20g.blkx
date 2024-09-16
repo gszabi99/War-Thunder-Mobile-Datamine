@@ -2,11 +2,6 @@
   "model": "a_20",
   "fmFile": "fm/a-20g.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_attacker_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "noEffectsDist": 8.0,
@@ -2219,7 +2214,7 @@
         "tier": 7,
         "order": 1,
         "WeaponPreset": {
-          "iconType": "rockets_ap_large_group_x6",
+          "iconType": "bazooka_group",
           "name": "bazooka",
           "reqModification": "bazooka_pylon",
           "ShowNodes": {
@@ -2285,7 +2280,7 @@
         "tier": 6,
         "order": 3,
         "WeaponPreset": {
-          "iconType": "bombs_heavy_group_x4",
+          "iconType": "bomb_500kg_group",
           "name": "500lb",
           "reqModification": "flbc_mk1",
           "hideNodes": {
@@ -2331,7 +2326,7 @@
         "tier": 5,
         "order": 2,
         "WeaponPreset": {
-          "iconType": "rockets_ap_large_group_x6",
+          "iconType": "bazooka_group",
           "name": "bazooka",
           "reqModification": "bazooka_pylon",
           "ShowNodes": {

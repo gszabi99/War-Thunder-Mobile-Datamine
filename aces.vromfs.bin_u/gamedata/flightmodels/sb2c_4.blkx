@@ -2,11 +2,6 @@
   "model": "sb2c_4",
   "fmFile": "fm/sb2c_4.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "type": [
@@ -2013,7 +2008,7 @@
             }
           },
           {
-            "iconType": "doublebarreled_box",
+            "iconType": "gun_12mm",
             "name": "gun_pod",
             "reqModification": "dgp-1_gunpod",
             "ShowNodes": {
@@ -2707,7 +2702,7 @@
             }
           },
           {
-            "iconType": "doublebarreled_box",
+            "iconType": "gun_12mm",
             "name": "gun_pod",
             "reqModification": "dgp-1_gunpod",
             "ShowNodes": {

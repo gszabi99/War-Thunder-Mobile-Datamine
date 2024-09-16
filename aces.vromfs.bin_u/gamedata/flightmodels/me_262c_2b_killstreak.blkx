@@ -2,11 +2,6 @@
   "fmFile": "fm/me_262c_2b.blk",
   "model": "me_262c_2b",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "gForceTolerationMult": 10.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gyroSight": false,

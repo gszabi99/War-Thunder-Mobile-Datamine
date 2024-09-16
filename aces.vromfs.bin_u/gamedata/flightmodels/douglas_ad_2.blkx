@@ -2,11 +2,6 @@
   "model": "douglas_ad_2",
   "fmFile": "fm/douglas_ad_2.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_attacker_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.156,
@@ -1637,7 +1632,7 @@
             "trigger": "rockets",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar.blk",
             "emitter": "5_in_hvar_b_1",
             "bullets": 1
           }
@@ -1657,7 +1652,7 @@
             "trigger": "rockets",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar.blk",
             "emitter": "5_in_hvar_b_2",
             "bullets": 1
           }
@@ -1677,7 +1672,7 @@
             "trigger": "rockets",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar.blk",
             "emitter": "5_in_hvar_b_3",
             "bullets": 1
           }
@@ -1697,7 +1692,7 @@
             "trigger": "rockets",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar.blk",
             "emitter": "5_in_hvar_b_4",
             "bullets": 1
           }
@@ -1717,7 +1712,7 @@
             "trigger": "rockets",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar.blk",
             "emitter": "5_in_hvar_b_5",
             "bullets": 1
           }
@@ -1737,7 +1732,7 @@
             "trigger": "rockets",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar.blk",
             "emitter": "5_in_hvar_b_6",
             "bullets": 1
           }
@@ -2115,7 +2110,7 @@
             "trigger": "rockets",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar.blk",
             "emitter": "5_in_hvar_b_7",
             "bullets": 1
           }
@@ -2135,7 +2130,7 @@
             "trigger": "rockets",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar.blk",
             "emitter": "5_in_hvar_b_8",
             "bullets": 1
           }
@@ -2155,7 +2150,7 @@
             "trigger": "rockets",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar.blk",
             "emitter": "5_in_hvar_b_9",
             "bullets": 1
           }
@@ -2175,7 +2170,7 @@
             "trigger": "rockets",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar.blk",
             "emitter": "5_in_hvar_b_10",
             "bullets": 1
           }
@@ -2195,7 +2190,7 @@
             "trigger": "rockets",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar.blk",
             "emitter": "5_in_hvar_b_11",
             "bullets": 1
           }
@@ -2215,7 +2210,7 @@
             "trigger": "rockets",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar.blk",
             "emitter": "5_in_hvar_b_12",
             "bullets": 1
           }

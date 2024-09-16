@@ -2,11 +2,6 @@
   "model": "fw_190f_8",
   "fmFile": "fm/fw-190f-8.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
@@ -1834,7 +1829,7 @@
             ]
           },
           {
-            "iconType": "machine_gun",
+            "iconType": "gun_30mm",
             "name": "r3_left",
             "reqModification": "Fw-190F-8_R3",
             "ShowNodes": {
@@ -2117,7 +2112,7 @@
             ]
           },
           {
-            "iconType": "machine_gun",
+            "iconType": "gun_30mm",
             "name": "r3_right",
             "reqModification": "Fw-190F-8_R3",
             "ShowNodes": {

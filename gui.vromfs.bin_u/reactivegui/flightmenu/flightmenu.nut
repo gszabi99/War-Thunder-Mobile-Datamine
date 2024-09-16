@@ -18,6 +18,7 @@ let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
 let { COMMON } = require("%rGui/components/buttonStyles.nut")
 let { isUnitDelayed, isUnitAlive } = require("%rGui/hudState.nut")
 let { respawnSlots, canUseSpare } = require("%rGui/respawn/respawnState.nut")
+let { resetGravityAxesZero } = require("%rGui/hud/aircraftMovementBlock.nut")
 
 
 let spawnInfo = Watched(null)
@@ -47,6 +48,9 @@ let optionsButton = textButtonCommon(utf8ToUpper(loc("mainmenu/btnOptions")), op
   { hotkeys = ["^J:Y"] })
 let helpButton = textButtonCommon(utf8ToUpper(loc("flightmenu/btnControlsHelp")), controlsHelpWnd,
   { hotkeys = ["^J:X"] })
+let gyroResetButton = textButtonCommon(utf8ToUpper(loc("mainmenu/btnGyroReset")), resetGravityAxesZero,
+  { hotkeys = [] })
+
 let leaveVehicleButton = textButtonMultiline(utf8ToUpper(loc("flightmenu/btnLeaveTheTank")), leaveVehicle,
   COMMON.__merge({ hotkeys = ["^J:LT"] }))
 
@@ -91,7 +95,16 @@ let flightMenu = @() bgShaded.__merge({
             && (respawnSlots.get().len() > 1 || canUseSpare.get())
           ? leaveVehicleButton
           : null
-          openDevMenuButton
+        @() {
+          flow = FLOW_VERTICAL
+          gap = buttonsHGap
+          hplace = ALIGN_RIGHT
+          vplace = ALIGN_BOTTOM
+          children = [
+            openDevMenuButton
+            gyroResetButton
+          ]
+        }
       ]
     }
   ]

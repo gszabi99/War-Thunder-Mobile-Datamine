@@ -2,11 +2,6 @@
   "model": "bf_109f_4",
   "fmFile": "fm/bf-109f-4.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
@@ -1811,7 +1806,7 @@
         "tier": 7,
         "order": 1,
         "WeaponPreset": {
-          "iconType": "cannon_inner_x2",
+          "iconType": "gun_20mm",
           "name": "R6",
           "reqModification": "Bf-109F-4_R1",
           "HideNodes": {
@@ -1820,42 +1815,23 @@
           "ShowNodes": {
             "node": "pylon_cannon_l"
           },
-          "Weapon": [
-            {
-              "cmOffset": [
-                -0.6,
-                0.0,
-                0.0
-              ],
-              "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonMG15115_underwing.blk",
-              "emitter": "flare4",
-              "flash": "flare4",
-              "shell": "emtr_shellrejection3",
-              "bullets": 125,
-              "spread": 1.5,
-              "traceOffset": 1,
-              "external": true,
-              "dm": "cannon2_dm"
-            },
-            {
-              "cmOffset": [
-                -0.6,
-                0.0,
-                0.0
-              ],
-              "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonMG15115_underwing.blk",
-              "emitter": "flare5",
-              "flash": "flare5",
-              "shell": "emtr_shellrejection4",
-              "bullets": 125,
-              "spread": 1.5,
-              "traceOffset": 1,
-              "external": true,
-              "dm": "cannon3_dm"
-            }
-          ]
+          "Weapon": {
+            "cmOffset": [
+              -0.6,
+              0.0,
+              0.0
+            ],
+            "trigger": "additional gun",
+            "blk": "gameData/Weapons/cannonMG15115_underwing.blk",
+            "emitter": "flare4",
+            "flash": "flare4",
+            "shell": "emtr_shellrejection3",
+            "bullets": 125,
+            "spread": 1.5,
+            "traceOffset": 1,
+            "external": true,
+            "dm": "cannon2_dm"
+          }
         }
       },
       {
@@ -1933,7 +1909,7 @@
         "tier": 5,
         "order": 2,
         "WeaponPreset": {
-          "iconType": "cannon_inner_x2",
+          "iconType": "gun_20mm",
           "name": "R6",
           "reqModification": "Bf-109F-4_R1",
           "HideNodes": {

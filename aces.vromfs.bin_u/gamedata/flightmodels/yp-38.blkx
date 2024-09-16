@@ -1,11 +1,6 @@
 {
   "model": "yp_38",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_fighter_metaparts.blk",
   "fmFile": "fm/yp-38.blk",
   "gearSinkRangeLR": 0.22,

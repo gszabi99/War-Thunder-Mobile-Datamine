@@ -74,19 +74,8 @@ let playerLevelInfo = Computed(function() {
   return res
 })
 
-let allUnitsCfgFlat = Computed(function() {
-  let cfg = allUnitsCfg.value
-  let res = {}
-  foreach (unit in cfg)
-    foreach (pu in unit.platoonUnits)
-      res[pu.name] <- unit.__merge(pu)
-  res.__update(cfg)
-  return res
-})
-
 return {
   allUnitsCfg
-  allUnitsCfgFlat
   myUnits
   curUnit
   battleUnitsMaxMRank

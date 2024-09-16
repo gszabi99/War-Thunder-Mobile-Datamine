@@ -2,11 +2,6 @@
   "model": "i_153_m62",
   "fmFile": "fm/i-153_m62.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/biplane_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_low_common.blk",
   "gearSinkRangeLR": 0.14,

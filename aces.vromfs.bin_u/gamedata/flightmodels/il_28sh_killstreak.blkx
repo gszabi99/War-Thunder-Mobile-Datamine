@@ -2,11 +2,6 @@
   "model": "il_28sh",
   "fmFile": "fm/il_28sh.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "gForceTolerationMult": 10.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "gearSinkRangeLR": 0.206,
@@ -2458,7 +2453,7 @@
             }
           },
           {
-            "iconType": "doublebarreled_box",
+            "iconType": "gun_12mm",
             "name": "upk",
             "reqModification": "il_28sh_upk23_gunpod",
             "ShowNodes": {
@@ -2783,7 +2778,7 @@
             }
           },
           {
-            "iconType": "doublebarreled_box",
+            "iconType": "gun_12mm",
             "name": "upk",
             "reqModification": "il_28sh_upk23_gunpod",
             "ShowNodes": {

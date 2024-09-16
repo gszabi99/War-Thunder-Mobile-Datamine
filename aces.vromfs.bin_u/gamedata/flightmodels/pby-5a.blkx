@@ -2,9 +2,9 @@
   "model": "pby_5a",
   "fmFile": "fm/pby-5a.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
+  "tpsCameraOffset": [
+    -5.0,
+    2.0,
     0.0
   ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",

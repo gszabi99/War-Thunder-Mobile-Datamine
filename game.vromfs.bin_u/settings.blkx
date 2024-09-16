@@ -2057,7 +2057,7 @@
         "refractionShadows": false,
         "infiniteSkiesInAirplane": false,
         "nonVolumeCloudsQuality": 2,
-        "volumeCloudsQuality": 3,
+        "volumeCloudsQuality": 4,
         "xrayOutlinesScale": 1.0,
         "underwaterCausticsEnabled": false
       },

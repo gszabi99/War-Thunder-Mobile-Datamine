@@ -2,11 +2,6 @@
   "fmFile": "fm/bf-109f-4_trop.blk",
   "model": "bf_109f_4_trop",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
@@ -1814,7 +1809,7 @@
         "tier": 7,
         "order": 1,
         "WeaponPreset": {
-          "iconType": "cannon_inner_x2",
+          "iconType": "gun_20mm",
           "name": "R1",
           "reqModification": "Bf-109F-4_R1",
           "HideNodes": {
@@ -1917,7 +1912,7 @@
         "tier": 5,
         "order": 2,
         "WeaponPreset": {
-          "iconType": "cannon_inner_x2",
+          "iconType": "gun_20mm",
           "name": "R1",
           "reqModification": "Bf-109F-4_R1",
           "HideNodes": {

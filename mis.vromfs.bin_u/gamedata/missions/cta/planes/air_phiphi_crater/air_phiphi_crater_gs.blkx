@@ -98,13 +98,13 @@
               "icontype": "fighter",
               "side": "ally",
               "target": "t1_bombers_spawn",
-              "lookAt": "area_01"
+              "lookAt": "area_planes_9592"
             },
             {
               "icontype": "fighter",
               "side": "enemy",
               "target": "t2_bombers_spawn",
-              "lookAt": "area_01"
+              "lookAt": "area_planes_9592"
             },
             {
               "icontype": "destroyer",
@@ -130,11 +130,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -144,11 +146,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -158,11 +162,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -172,11 +178,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -186,11 +194,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -200,11 +210,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -214,11 +226,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -363,11 +377,6 @@
             "ignoreTeamsOnReuse": false,
             "target": "t1_airfield",
             "team": "A",
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
             "tags": {
               "type_hydroplane": false,
               "tank": false
@@ -392,11 +401,6 @@
             "ignoreTeamsOnReuse": false,
             "target": "t2_airfield",
             "team": "B",
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
             "tags": {
               "type_hydroplane": false,
               "tank": false
@@ -425,7 +429,8 @@
               "t1_boats_squad",
               "t2_boats_squad"
             ],
-            "accuracy": 0.1,
+            "accuracy": 0.05,
+            "airAccuracy": 0.05,
             "effShootingRate": 0.0,
             "airEffShootingRate": 0.1
           },
@@ -438,8 +443,8 @@
               "t1_ships_squad",
               "t2_ships_squad"
             ],
-            "targetGnd": false,
-            "accuracy": 0.1,
+            "accuracy": 0.05,
+            "airAccuracy": 0.05,
             "effShootingRate": 0.0,
             "airEffShootingRate": 0.1,
             "hasExhaust": false
@@ -453,7 +458,7 @@
               "t2_boats_01",
               "t1_boats_01"
             ],
-            "speed": 30.0,
+            "speed": 40.0,
             "lockSpeed": true
           },
           {
@@ -477,7 +482,7 @@
               "t2_boats_02",
               "t1_boats_02"
             ],
-            "speed": 30.0,
+            "speed": 40.0,
             "lockSpeed": true
           },
           {
@@ -489,7 +494,7 @@
               "t2_boats_03",
               "t1_boats_03"
             ],
-            "speed": 30.0,
+            "speed": 40.0,
             "lockSpeed": true
           },
           {
@@ -501,7 +506,7 @@
               "t2_boats_04",
               "t1_boats_04"
             ],
-            "speed": 30.0,
+            "speed": 40.0,
             "lockSpeed": true
           },
           {
@@ -513,7 +518,7 @@
               "t1_boats_05",
               "t2_boats_05"
             ],
-            "speed": 30.0,
+            "speed": 40.0,
             "lockSpeed": true
           }
         ],
@@ -522,16 +527,16 @@
             "time": 1.0
           },
           {
-            "time": 20.0
+            "time": 15.0
           },
           {
-            "time": 20.0
+            "time": 15.0
           },
           {
-            "time": 20.0
+            "time": 15.0
           },
           {
-            "time": 20.0
+            "time": 15.0
           }
         ]
       },
@@ -17000,7 +17005,7 @@
             2777.9
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -17017,16 +17022,16 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 1,
+          "count": 3,
           "formation_type": "rows",
-          "formation_div": 3,
+          "formation_div": 1,
           "formation_step": [
-            2.5,
-            2.0
+            7.0,
+            8.0
           ],
           "formation_noise": [
-            0.1,
-            0.1
+            0.3,
+            0.5
           ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
@@ -17474,7 +17479,7 @@
             2726.91
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -17491,16 +17496,16 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 1,
+          "count": 2,
           "formation_type": "rows",
-          "formation_div": 3,
+          "formation_div": 1,
           "formation_step": [
-            2.5,
-            2.0
+            7.0,
+            8.0
           ],
           "formation_noise": [
-            0.1,
-            0.1
+            0.3,
+            0.5
           ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
@@ -18896,7 +18901,7 @@
             -9085.68
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -18913,16 +18918,16 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 1,
+          "count": 3,
           "formation_type": "rows",
-          "formation_div": 3,
+          "formation_div": 1,
           "formation_step": [
-            2.5,
-            2.0
+            7.0,
+            8.0
           ],
           "formation_noise": [
-            0.1,
-            0.1
+            0.3,
+            0.5
           ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
@@ -19338,7 +19343,7 @@
             -9210.54
           ]
         ],
-        "unit_class": "uss_dd_sims",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -19355,16 +19360,16 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 1,
+          "count": 2,
           "formation_type": "rows",
-          "formation_div": 3,
+          "formation_div": 1,
           "formation_step": [
-            2.5,
-            2.0
+            7.0,
+            8.0
           ],
           "formation_noise": [
-            0.1,
-            0.1
+            0.3,
+            0.5
           ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
@@ -19462,7 +19467,6 @@
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -21101,12 +21105,12 @@
             0.0871556
           ],
           [
-            7296.74,
-            0.000244143,
-            -282.539
+            7614.5,
+            0.000244141,
+            -2023.55
           ]
         ],
-        "unit_class": "germ_dd_z28",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -21123,53 +21127,21 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 1,
+          "count": 3,
           "formation_type": "rows",
           "formation_div": 1,
           "formation_step": [
-            14.0,
-            4.0
+            7.0,
+            8.0
           ],
           "formation_noise": [
-            0.4,
+            0.3,
             0.5
           ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
         "way": {
-          "t2_ship_01_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7225.77,
-                1.00317,
-                -421.333
-              ]
-            ],
-            "props": {
-              "speed": 60.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t2_ship_01_wp_04": {
             "type": "normal",
             "tm": [
@@ -21198,7 +21170,6 @@
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -21230,7 +21201,6 @@
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -21262,7 +21232,6 @@
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -21294,7 +21263,6 @@
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -21326,7 +21294,6 @@
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -21358,7 +21325,6 @@
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -21390,7 +21356,6 @@
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -21422,7 +21387,6 @@
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -21454,7 +21418,6 @@
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -21486,7 +21449,6 @@
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -21518,7 +21480,6 @@
               "speed": 10.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -21543,12 +21504,12 @@
             0.0871556
           ],
           [
-            7368.22,
+            7685.98,
             41.7812,
-            -90.5538
+            -1831.56
           ]
         ],
-        "unit_class": "germ_dd_z28",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -21565,53 +21526,21 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 1,
+          "count": 2,
           "formation_type": "rows",
-          "formation_div": 3,
+          "formation_div": 1,
           "formation_step": [
-            2.5,
-            2.0
+            7.0,
+            8.0
           ],
           "formation_noise": [
-            0.1,
-            0.1
+            0.3,
+            0.5
           ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
         "way": {
-          "t2_ship_02_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7312.3,
-                1.00317,
-                -443.187
-              ]
-            ],
-            "props": {
-              "speed": 60.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t2_ship_02_wp_04": {
             "type": "normal",
             "tm": [
@@ -22017,9 +21946,9 @@
             0.0871556
           ],
           [
-            7181.33,
-            0.000244143,
-            11.0772
+            7499.09,
+            0.000244141,
+            -1729.93
           ]
         ],
         "unit_class": "germ_dd_z28",
@@ -22054,38 +21983,6 @@
           "attack_type": "fire_at_will"
         },
         "way": {
-          "t2_ship_03_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7423.53,
-                1.00244,
-                -470.049
-              ]
-            ],
-            "props": {
-              "speed": 60.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t2_ship_03_wp_04": {
             "type": "normal",
             "tm": [
@@ -22491,9 +22388,9 @@
             0.0871556
           ],
           [
-            7304.29,
-            0.000976563,
-            201.486
+            7622.05,
+            0.000976561,
+            -1539.53
           ]
         ],
         "unit_class": "germ_dd_z28",
@@ -22528,38 +22425,6 @@
           "attack_type": "fire_at_will"
         },
         "way": {
-          "t2_ship_04_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7463.49,
-                1.00244,
-                -483.93
-              ]
-            ],
-            "props": {
-              "speed": 60.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t2_ship_04_wp_04": {
             "type": "normal",
             "tm": [
@@ -22965,9 +22830,9 @@
             0.0871556
           ],
           [
-            7181.47,
-            0.000244143,
-            339.237
+            7499.23,
+            0.000244141,
+            -1401.77
           ]
         ],
         "unit_class": "germ_dd_z28",
@@ -23002,38 +22867,6 @@
           "attack_type": "fire_at_will"
         },
         "way": {
-          "t2_ship_05_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7225.77,
-                1.00317,
-                -421.333
-              ]
-            ],
-            "props": {
-              "speed": 60.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t2_ship_05_wp_04": {
             "type": "normal",
             "tm": [
@@ -23412,7 +23245,7 @@
             9314.09
           ]
         ],
-        "unit_class": "germ_dd_z28",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -23429,16 +23262,16 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 1,
+          "count": 3,
           "formation_type": "rows",
-          "formation_div": 3,
+          "formation_div": 1,
           "formation_step": [
-            2.5,
-            2.0
+            7.0,
+            8.0
           ],
           "formation_noise": [
-            0.1,
-            0.1
+            0.3,
+            0.5
           ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
@@ -23822,7 +23655,7 @@
             9318.59
           ]
         ],
-        "unit_class": "germ_dd_z28",
+        "unit_class": "uss_pt_109",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -23839,16 +23672,16 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 1,
+          "count": 2,
           "formation_type": "rows",
-          "formation_div": 3,
+          "formation_div": 1,
           "formation_step": [
-            2.5,
-            2.0
+            7.0,
+            8.0
           ],
           "formation_noise": [
-            0.1,
-            0.1
+            0.3,
+            0.5
           ],
           "uniqueName": "",
           "attack_type": "fire_at_will"
@@ -25590,9 +25423,9 @@
         "name": "t1_airfield",
         "tm": [
           [
-            -2.08616e-7,
+            -0.141577,
             0.0,
-            1.0
+            0.989927
           ],
           [
             0.0,
@@ -25600,14 +25433,14 @@
             0.0
           ],
           [
-            -1.0,
+            -0.989927,
             0.0,
-            -2.08616e-7
+            -0.141577
           ],
           [
-            -4329.28,
-            6.00079,
-            -8175.82
+            -4220.35,
+            6.00049,
+            -7726.35
           ]
         ],
         "unit_class": "dynaf_universal_1line_b_nolight",
@@ -25665,9 +25498,9 @@
             1.0
           ],
           [
-            -12253.8,
-            29.1,
-            2930.0
+            -11636.5,
+            29.1001,
+            3568.0
           ]
         ],
         "unit_class": "dynBase_ammunition_camp_square",
@@ -25681,9 +25514,9 @@
         "name": "t1_bomb_target_02",
         "tm": [
           [
-            0.92388,
+            0.993412,
             0.0,
-            0.382683
+            -0.114595
           ],
           [
             0.0,
@@ -25691,14 +25524,14 @@
             0.0
           ],
           [
-            -0.382683,
+            0.114595,
             0.0,
-            0.92388
+            0.993412
           ],
           [
-            2275.65,
-            13.4164,
-            -11107.0
+            2326.6,
+            13.416,
+            -11141.0
           ]
         ],
         "unit_class": "dynBase_petrol_camp_square",
@@ -25727,9 +25560,9 @@
             0.939693
           ],
           [
-            -5611.05,
-            37.5482,
-            -4047.35
+            -5454.85,
+            37.5481,
+            -4020.05
           ]
         ],
         "unit_class": "dynBase_small_factory_square",
@@ -25789,9 +25622,9 @@
             0.92388
           ],
           [
-            12393.3,
+            12181.2,
             93.1332,
-            -2875.5
+            -2999.75
           ]
         ],
         "unit_class": "dynBase_military_base_square",
@@ -25820,9 +25653,9 @@
             0.92388
           ],
           [
-            6233.95,
+            6159.7,
             66.8763,
-            4755.2
+            4700.15
           ]
         ],
         "unit_class": "dynBase_hq_camp_square",
@@ -25851,9 +25684,9 @@
             0.92388
           ],
           [
-            8415.98,
+            8216.88,
             138.749,
-            6049.44
+            5686.29
           ]
         ],
         "unit_class": "dynBase_small_factory_square",
@@ -25882,9 +25715,9 @@
             0.939693
           ],
           [
-            -8319.58,
-            29.0994,
-            -4940.91
+            -7680.04,
+            29.0996,
+            -4947.69
           ]
         ],
         "unit_class": "dynBase_hq_camp_square",
@@ -25900,9 +25733,9 @@
         "name": "t1_def_big_aaa_01",
         "tm": [
           [
-            -0.999048,
+            -0.99516,
             0.0,
-            0.0436195
+            -0.0982615
           ],
           [
             0.0,
@@ -25910,14 +25743,14 @@
             0.0
           ],
           [
-            -0.0436195,
+            0.0982615,
             0.0,
-            -0.999048
+            -0.99516
           ],
           [
-            -4361.42,
-            38.9291,
-            -7833.92
+            -4300.57,
+            38.9288,
+            -7392.44
           ]
         ],
         "unit_class": "germ_88mm_flak36_noground",
@@ -25957,9 +25790,9 @@
         "name": "t1_def_big_aaa_02",
         "tm": [
           [
-            -0.999048,
+            -0.99516,
             0.0,
-            0.0436195
+            -0.0982615
           ],
           [
             0.0,
@@ -25967,14 +25800,14 @@
             0.0
           ],
           [
-            -0.0436195,
+            0.0982615,
             0.0,
-            -0.999048
+            -0.99516
           ],
           [
-            -4438.12,
-            38.9292,
-            -8567.82
+            -4272.6,
+            38.9289,
+            -8129.81
           ]
         ],
         "unit_class": "germ_88mm_flak36_noground",
@@ -26014,9 +25847,9 @@
         "name": "t1_def_small_aaa_01",
         "tm": [
           [
-            -0.999048,
+            -0.99516,
             0.0,
-            0.0436195
+            -0.0982615
           ],
           [
             0.0,
@@ -26024,14 +25857,14 @@
             0.0
           ],
           [
-            -0.0436195,
+            0.0982615,
             0.0,
-            -0.999048
+            -0.99516
           ],
           [
-            -4430.25,
-            38.9292,
-            -8366.6
+            -4293.29,
+            38.9289,
+            -7929.5
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -26071,9 +25904,9 @@
         "name": "t1_def_small_aaa_02",
         "tm": [
           [
-            -0.999048,
+            -0.99516,
             0.0,
-            0.0436195
+            -0.0982615
           ],
           [
             0.0,
@@ -26081,14 +25914,14 @@
             0.0
           ],
           [
-            -0.0436195,
+            0.0982615,
             0.0,
-            -0.999048
+            -0.99516
           ],
           [
-            -4445.93,
-            38.9293,
-            -8650.33
+            -4268.65,
+            38.929,
+            -8212.6
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -26128,9 +25961,9 @@
         "name": "t1_def_small_aaa_03",
         "tm": [
           [
-            -0.999048,
+            -0.99516,
             0.0,
-            0.0436195
+            -0.0982615
           ],
           [
             0.0,
@@ -26138,14 +25971,14 @@
             0.0
           ],
           [
-            -0.0436195,
+            0.0982615,
             0.0,
-            -0.999048
+            -0.99516
           ],
           [
-            -4386.65,
-            38.9292,
-            -7986.01
+            -4304.02,
+            38.9289,
+            -7546.57
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -26185,9 +26018,9 @@
         "name": "t1_def_small_aaa_04",
         "tm": [
           [
-            -0.999048,
+            -0.99516,
             0.0,
-            0.0436195
+            -0.0982615
           ],
           [
             0.0,
@@ -26195,14 +26028,14 @@
             0.0
           ],
           [
-            -0.0436195,
+            0.0982615,
             0.0,
-            -0.999048
+            -0.99516
           ],
           [
-            -4414.99,
-            38.9294,
-            -7730.09
+            -4368.3,
+            38.9291,
+            -7297.24
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -26698,9 +26531,9 @@
         "name": "t1_def_small_aaa_05",
         "tm": [
           [
-            -0.999048,
+            -0.99516,
             0.0,
-            0.0436195
+            -0.0982615
           ],
           [
             0.0,
@@ -26708,14 +26541,14 @@
             0.0
           ],
           [
-            -0.0436195,
+            0.0982615,
             0.0,
-            -0.999048
+            -0.99516
           ],
           [
-            -4360.76,
-            38.9293,
-            -8895.21
+            -4149.66,
+            38.929,
+            -8442.96
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -26755,9 +26588,9 @@
         "name": "t1_def_small_aaa_06",
         "tm": [
           [
-            -0.999048,
+            -0.99516,
             0.0,
-            0.0436195
+            -0.0982615
           ],
           [
             0.0,
@@ -26765,14 +26598,14 @@
             0.0
           ],
           [
-            -0.0436195,
+            0.0982615,
             0.0,
-            -0.999048
+            -0.99516
           ],
           [
-            -4407.63,
-            38.9293,
-            -7472.65
+            -4397.46,
+            38.929,
+            -7041.36
           ]
         ],
         "unit_class": "germ_37mm_flak43_noground",
@@ -26812,9 +26645,9 @@
         "name": "t1_def_big_aaa_03",
         "tm": [
           [
-            -0.999048,
+            -0.99516,
             0.0,
-            0.0436195
+            -0.0982615
           ],
           [
             0.0,
@@ -26822,14 +26655,14 @@
             0.0
           ],
           [
-            -0.0436195,
+            0.0982615,
             0.0,
-            -0.999048
+            -0.99516
           ],
           [
-            -4511.73,
-            38.9293,
-            -8358.67
+            -4375.08,
+            38.929,
+            -7933.19
           ]
         ],
         "unit_class": "germ_88mm_flak36_noground",
@@ -26869,9 +26702,9 @@
         "name": "t1_def_big_aaa_04",
         "tm": [
           [
-            -0.999048,
+            -0.99516,
             0.0,
-            0.0436195
+            -0.0982615
           ],
           [
             0.0,
@@ -26879,14 +26712,14 @@
             0.0
           ],
           [
-            -0.0436195,
+            0.0982615,
             0.0,
-            -0.999048
+            -0.99516
           ],
           [
-            -4492.81,
-            38.9293,
-            -7983.57
+            -4409.45,
+            38.929,
+            -7559.19
           ]
         ],
         "unit_class": "germ_88mm_flak36_noground",
@@ -28292,7 +28125,7 @@
       ],
       "props": {}
     },
-    "area_01": {
+    "area_planes_9592": {
       "type": "Sphere",
       "tm": [
         [
@@ -28423,7 +28256,7 @@
       ],
       "props": {}
     },
-    "fighters_area": {
+    "area_planes_8000": {
       "type": "Sphere",
       "tm": [
         [
@@ -28481,9 +28314,9 @@
       "type": "Box",
       "tm": [
         [
-          -222.05,
+          -219.813,
           0.0,
-          0.0
+          -31.4371
         ],
         [
           0.0,
@@ -28491,14 +28324,14 @@
           0.0
         ],
         [
+          241.568,
           0.0,
-          0.0,
-          -1706.27
+          -1689.08
         ],
         [
-          -4277.1,
-          -12.1,
-          -8173.55
+          -4169.02,
+          -12.1003,
+          -7716.71
         ]
       ],
       "objLayer": 0,
@@ -28531,7 +28364,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "fighters_area01": {
+    "area_planes_6000": {
       "type": "Sphere",
       "tm": [
         [
@@ -28550,14 +28383,14 @@
           8847.33
         ],
         [
-          151.3,
+          195.099,
           2000.0,
-          586.95
+          422.6
         ]
       ],
       "props": {}
     },
-    "fighters_area02": {
+    "area_planes_4000": {
       "type": "Sphere",
       "tm": [
         [
@@ -28814,9 +28647,9 @@
           450.0
         ],
         [
-          -12255.0,
-          29.2712,
-          2928.75
+          -11637.8,
+          29.2713,
+          3566.75
         ]
       ],
       "objLayer": 0,
@@ -28826,9 +28659,9 @@
       "type": "Sphere",
       "tm": [
         [
-          450.0,
+          393.273,
           0.0,
-          0.0
+          -218.715
         ],
         [
           0.0,
@@ -28836,14 +28669,14 @@
           0.0
         ],
         [
+          218.715,
           0.0,
-          0.0,
-          450.0
+          393.273
         ],
         [
-          2276.3,
-          0.0,
-          -11106.5
+          2327.41,
+          -0.000353813,
+          -11140.9
         ]
       ],
       "objLayer": 0,
@@ -28868,9 +28701,9 @@
           450.0
         ],
         [
-          -5611.7,
+          -5455.5,
           36.95,
-          -4046.0
+          -4018.7
         ]
       ],
       "objLayer": 0,
@@ -28922,9 +28755,9 @@
           450.0
         ],
         [
-          12395.9,
-          92.9255,
-          -2874.7
+          12183.9,
+          85.65,
+          -2998.95
         ]
       ],
       "objLayer": 0,
@@ -28949,9 +28782,9 @@
           450.0
         ],
         [
-          6234.35,
+          6160.1,
           66.65,
-          4753.7
+          4698.65
         ]
       ],
       "objLayer": 0,
@@ -29113,7 +28946,7 @@
       ],
       "props": {}
     },
-    "fighters_area03": {
+    "area_planes_11000 ": {
       "type": "Sphere",
       "tm": [
         [
@@ -29296,7 +29129,7 @@
       ],
       "props": {}
     },
-    "fighters_area04": {
+    "area_planes_2500": {
       "type": "Sphere",
       "tm": [
         [
@@ -29445,9 +29278,9 @@
           450.0
         ],
         [
-          8342.06,
+          8220.15,
           138.749,
-          6026.11
+          5677.25
         ]
       ],
       "objLayer": 0,
@@ -29472,9 +29305,9 @@
           450.0
         ],
         [
-          -8310.39,
-          29.0994,
-          -4935.97
+          -7670.85,
+          29.0996,
+          -4942.75
         ]
       ],
       "objLayer": 0,

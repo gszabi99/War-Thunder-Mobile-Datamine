@@ -157,7 +157,9 @@ let readyToShowCutScene = mkWatched(persist, "readyToShowCutScene", false)
 eventbus_subscribe("onHangarModelStartLoad", @(_) readyToShowCutScene(false))
 eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" : "onHangarModelLoaded", @(_) readyToShowCutScene(true))
 
+let canShowCutscene = Computed(@() previewGoodsUnit.get()?.unitType != AIR)  //temporary switch off cutscene for aircrafts while have bugs with it
 let needShowCutscene = keepref(Computed(@() unitForShow.value != null
+  && canShowCutscene.get()
   && loadedHangarUnitName.value == unitForShow.value?.name
   && readyToShowCutScene.value ))
 
@@ -494,6 +496,10 @@ let previewWnd = @() {
   onAttach = function() {
     addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
     isWindowAttached(true)
+    if (!canShowCutscene.get()) { //temporary switch off cutscene for aircrafts while have bugs with it
+      needShowUi.set(true)
+      return
+    }
     if (transitionThroughBlackScreen) {
       showBlackOverlay()
       if (!readyToShowCutScene.value)

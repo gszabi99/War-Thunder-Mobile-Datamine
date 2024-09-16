@@ -2,11 +2,6 @@
   "model": "la_7b_20",
   "fmFile": "fm/la-7b-20.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
@@ -1631,6 +1626,12 @@
     }
   },
   "WeaponSlots": {
+    "HideNodes": {
+      "node": [
+        "pylon_bomb1",
+        "pylon_bomb2"
+      ]
+    },
     "HideDmParts": {
       "node": "armor4_dm"
     },

@@ -6,6 +6,7 @@ let { startCrosshairAnimationTime, pointCrosshairScreenPosition, crosshairDestin
 } = require("%rGui/hud/commonState.nut")
 let { TargetLockTime } = require("%rGui/hud/airState.nut")
 let { targetName, mkTargetSelectionData } = require("%rGui/hud/targetSelectionProgress.nut")
+let { currentAircraftCtrlType } = require("%rGui/options/options/airControlsOptions.nut")
 
 let airCrosshairSize = evenPx(36)
 let airGunDirectionSize = evenPx(58)
@@ -56,14 +57,15 @@ let airDestination = {
   update = mkUpdatePosColor(crosshairDestinationScreenPosition, aircraftCrosshairColor)
 }
 
-let aircraftSight = {
+let aircraftSight = @() {
+  watch = currentAircraftCtrlType
   size = flex()
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = setDrawNativeAirCrosshair == null ? airTarget
     : [
         airCrosshair
-        airDestination
+        currentAircraftCtrlType.value == "mouse_aim" ? airDestination : null
         airTarget
       ]
 }

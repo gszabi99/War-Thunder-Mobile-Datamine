@@ -2,8 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
 let { TouchScreenSteeringStick } = require("wt.behaviors")
 let { fabs, lerp } = require("%sqstd/math.nut")
-let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue, setVirtualAxesAileronsElevatorValue
-} = require("%globalScripts/controls/shortcutActions.nut")
+let { Point3 } = require("dagor.math")
+let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue, setVirtualAxesAileronsElevatorValue,
+      setVirtualAxesAim =  null, setVirtualAxesAileronsAssist = null, setVirtualAxesDirectControl = null } = require("%globalScripts/controls/shortcutActions.nut")
 let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround, isActiveTurretCamera, wheelBrake } = require("%rGui/hud/airState.nut")
 let { getSvgImage, borderColor, btnBgColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
@@ -15,8 +16,10 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { playerUnitName, unitType, isUnitDelayed } = require("%rGui/hudState.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
-let { currentControlByGyroModeAilerons, currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity,
-      currentAircraftCtrlType, currentAdditionalFlyControls } = require("%rGui/options/options/airControlsOptions.nut")
+let { currentControlByGyroModeAileronsAssist, currentControlByGyroAimMode, currentControlByGyroDirectControl,
+      currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity,
+      currentControlByGyroModeElevatorDeadZone, currentControlByGyroModeElevatorSensitivity,
+      currentAircraftCtrlType, currentThrottleStick, currentAdditionalFlyControls } = require("%rGui/options/options/airControlsOptions.nut")
 let { set_mouse_aim } = require("controlsOptions")
 let { isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnOutline, mkMoveVertBtnCorner } = require("%rGui/components/movementArrows.nut")
@@ -353,63 +356,90 @@ let gamepadGunnerAxisListener = axisListener({
   [turret_y] = @(v) setVirtualAxisValue("turret_y", -v)
  })
 
+local gravity0 = Point3(0.0, -1.0, 0.0)
+local gravity = Point3(0.0, -1.0, 0.0)
+
 local resetGravityLeft0 = false
 local resetGravityForward0 = false
 local resetGravityUp0 = false
-function resetAxesZero() {
+function resetGravityAxesZero() {
   resetGravityLeft0 = true
   resetGravityForward0 = true
   resetGravityUp0 = true
   setVirtualAxisValue("ailerons", 0.0)
   setVirtualAxisValue("elevator", 0.0)
+  setVirtualAxisValue("mouse_aim_x", 0.0)
+  setVirtualAxisValue("mouse_aim_y", 0.0)
 }
-unitType.subscribe(@(_v) resetAxesZero())
-currentControlByGyroModeAilerons.subscribe(@(_v) resetAxesZero())
+unitType.subscribe(@(_v) resetGravityAxesZero())
+currentControlByGyroModeAileronsAssist.subscribe(@(_v) resetGravityAxesZero())
+currentControlByGyroAimMode.subscribe(@(_v) resetGravityAxesZero())
+currentControlByGyroDirectControl.subscribe(@(_v) resetGravityAxesZero())
 
-local gravityLeft0 = 0.0
-local gravityForward0 = 0.0
-local gravityUp0 = -1.0
-
-local gravityLeft = 0.0
-local gravityForward = 0.0
-local gravityUp = -1.0
-
-function setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, sensitivity) {
-  setVirtualAxesAileronsElevatorValue(sensitivity, set_ailerons, false, gravityLeft0, gravityForward0, gravityUp0, gravityLeft, gravityForward, gravityUp)
+function setVirtualAxesAileronsEelvatorAssistValueFromGravity(_aileronsDeadZone, aileronsSensitivity, _elevatorDeadZone, _elevatorSensitivity) {
+  setVirtualAxesAileronsElevatorValue(aileronsSensitivity, true, false, gravity0.z, gravity0.x, gravity0.y, gravity.z, gravity.x, gravity.y)
 }
 
-function applyGravityLeft(val, set_ailerons, sensitivity) {
+function setVirtualAxesAimValuesFromGravity(aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity) {
+  if (setVirtualAxesAim != null)
+    setVirtualAxesAim(gravity0, gravity, aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity)
+}
+
+function setVirtualAxesAileronsAssistValueFromGravity(aileronsDeadZone, aileronsSensitivity, _elevatorDeadZone, _elevatorSensitivity) {
+  if (setVirtualAxesAileronsAssist != null)
+    setVirtualAxesAileronsAssist(gravity0, gravity, aileronsDeadZone, aileronsSensitivity)
+}
+
+function setVirtualAxesDirectControlValuesFromGravity(aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity) {
+  if (setVirtualAxesDirectControl != null)
+    setVirtualAxesDirectControl(gravity0, gravity, aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity)
+}
+
+function applyGravityLeft(val, setAxesFunc, aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity) {
   if (resetGravityLeft0) {
-    gravityLeft0 = val
+    gravity0.z = val
     resetGravityLeft0 = false
   }
-  gravityLeft = val
-  return setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, sensitivity)
+  gravity.z = val
+  setAxesFunc(aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity)
 }
 
-function applyGravityForward(val, set_ailerons, sensitivity) {
+function applyGravityForward(val, setAxesFunc, aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity) {
   if (resetGravityForward0) {
-    gravityForward0 = val
+    gravity0.x = val
     resetGravityForward0 = false
   }
-  gravityForward = val
-  return setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, sensitivity)
+  gravity.x = val
+  setAxesFunc(aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity)
 }
 
-function applyGravityUp(val, set_ailerons, sensitivity) {
+function applyGravityUp(val, setAxesFunc, aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity) {
   if (resetGravityUp0) {
-    gravityUp0 = val
+    gravity0.y = val
     resetGravityUp0 = false
   }
-  gravityUp = val
-  return setVirtualAxesAileronsElevatorValueFromGravity(set_ailerons, sensitivity)
+  gravity.y = val
+  setAxesFunc(aileronsDeadZone, aileronsSensitivity, elevatorDeadZone, elevatorSensitivity)
 }
 
-let imuAxisListener = axisListener({
-  [shortcutsMap.imuAxes.gravityLeft]    = @(v) applyGravityLeft   ( v, currentControlByGyroModeAilerons.value, currentControlByGyroModeSensitivity.value),
-  [shortcutsMap.imuAxes.gravityForward] = @(v) applyGravityForward(-v, currentControlByGyroModeAilerons.value, currentControlByGyroModeSensitivity.value),
-  [shortcutsMap.imuAxes.gravityUp]      = @(v) applyGravityUp     (-v, currentControlByGyroModeAilerons.value, currentControlByGyroModeSensitivity.value)
-})
+function makeGravityListenerMap(setAxesFunc) {
+  return {
+    [shortcutsMap.imuAxes.gravityLeft]    = @(v) applyGravityLeft   ( v, setAxesFunc,
+      currentControlByGyroModeAileronsDeadZone.value, currentControlByGyroModeAileronsSensitivity.value,
+      currentControlByGyroModeElevatorDeadZone.value, currentControlByGyroModeElevatorSensitivity.value),
+    [shortcutsMap.imuAxes.gravityForward] = @(v) applyGravityForward(-v, setAxesFunc,
+      currentControlByGyroModeAileronsDeadZone.value, currentControlByGyroModeAileronsSensitivity.value,
+      currentControlByGyroModeElevatorDeadZone.value, currentControlByGyroModeElevatorSensitivity.value),
+    [shortcutsMap.imuAxes.gravityUp]      = @(v) applyGravityUp     (-v, setAxesFunc,
+      currentControlByGyroModeAileronsDeadZone.value, currentControlByGyroModeAileronsSensitivity.value,
+      currentControlByGyroModeElevatorDeadZone.value, currentControlByGyroModeElevatorSensitivity.value)
+  }
+}
+
+let imuAxesListenerAleronsElevatorAssist = axisListener( makeGravityListenerMap(setVirtualAxesAileronsEelvatorAssistValueFromGravity) )
+let imuAxesListenerAim = axisListener( makeGravityListenerMap(setVirtualAxesAimValuesFromGravity) )
+let imuAxesListenerAleronsAssist = axisListener( makeGravityListenerMap(setVirtualAxesAileronsAssistValueFromGravity) )
+let imuAxesListenerDirectControl = axisListener( makeGravityListenerMap(setVirtualAxesDirectControlValuesFromGravity) )
 
 let stickZoneSize = [hdpx(280), hdpx(280)]
 let bgRadius = hdpx(140)
@@ -477,6 +507,70 @@ let aircraftMoveStick = @() {
   children = currentAircraftCtrlType.value == "stick" || currentAircraftCtrlType.value == "stick_static" ? aircraftMoveStickBase : null
 }
 
+let aircraftMoveSecondaryStickBase  = @() {
+  watch = currentAircraftCtrlType
+  key = currentAircraftCtrlType
+  behavior = TouchScreenSteeringStick
+  size = stickZoneSize
+  touchStickAction = {
+    horizontal = "rudder"
+    vertical = "throttle"
+  }
+  isForAircraft = true
+  invertedX=true
+  maxValueRadius = bgRadius
+  useCenteringOnTouchBegin = currentAircraftCtrlType.value == "stick"
+
+  function onAttach() {
+    set_mouse_aim(false)
+  }
+  function onDetach() {
+    setVirtualAxisValue("rudder", 0)
+    setVirtualAxisValue("throttle", 0)
+    set_mouse_aim(true)
+  }
+  children = [
+    imgBgComp
+    imgStick
+  ]
+}
+
+let aircraftMoveRudderStickBase  = @() {
+  watch = currentAircraftCtrlType
+  key = currentAircraftCtrlType
+  behavior = TouchScreenSteeringStick
+  size = stickZoneSize
+  touchStickAction = {
+    horizontal = "rudder"
+    vertical = "climb"
+  }
+  isForAircraft = true
+  invertedX=true
+  maxValueRadius = bgRadius
+  useCenteringOnTouchBegin = currentAircraftCtrlType.value == "stick"
+
+  function onAttach() {
+    set_mouse_aim(false)
+  }
+  function onDetach() {
+    setVirtualAxisValue("rudder", 0)
+    set_mouse_aim(true)
+  }
+  children = [
+    imgBgComp
+    imgStick
+  ]
+}
+
+let aircraftMoveSecondaryStick = @() {
+  watch = [currentAircraftCtrlType, currentThrottleStick]
+  size = stickZoneSize
+  vplace = ALIGN_BOTTOM
+  hplace = ALIGN_LEFT
+  children = currentAircraftCtrlType.value == "stick" || currentAircraftCtrlType.value == "stick_static" ?
+    (currentThrottleStick.value ? aircraftMoveSecondaryStickBase : aircraftMoveRudderStickBase) : null
+}
+
 let aircraftMoveStickView = {
   size = stickZoneSize
   valign = ALIGN_CENTER
@@ -495,14 +589,31 @@ function mkGamepadAxisListener() {
   return gamepadAxisListener
 }
 
+function getImuAxesListener(controlType, gyroAimMode, aileronsAssistMode, directControlMode) {
+  if (controlType == "mouse_aim") {
+    if (setVirtualAxesAim != null) {
+      if (gyroAimMode == "aim")
+        return imuAxesListenerAim
+      else if (gyroAimMode == "aileron_assist")
+        return imuAxesListenerAleronsAssist
+      else
+        return null
+    }
+    else
+      return aileronsAssistMode ? imuAxesListenerAleronsElevatorAssist : null
+  }
+  else
+    return directControlMode ? imuAxesListenerDirectControl : null
+}
+
 let aircraftMovement = {
   children = [
     throttleSlider
     @() {
-      watch = [ isGamepad, currentAircraftCtrlType, currentControlByGyroModeAilerons,
-                currentControlByGyroModeDeadZone, currentControlByGyroModeSensitivity]
+      watch = [ isGamepad, currentAircraftCtrlType, currentControlByGyroModeAileronsAssist, currentControlByGyroAimMode, currentControlByGyroDirectControl,
+        currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity]
       children = [
-        currentAircraftCtrlType.value == "mouse_aim" && currentControlByGyroModeAilerons.value ? imuAxisListener : null
+        getImuAxesListener(currentAircraftCtrlType.value, currentControlByGyroAimMode.value, currentControlByGyroModeAileronsAssist.value, currentControlByGyroDirectControl.value),
         isGamepad.value ? mkGamepadAxisListener() : null
       ]
     }
@@ -715,9 +826,11 @@ return {
   aircraftMovementEditView
   aircraftIndicatorsEditView
   aircraftMoveStick
+  aircraftMoveSecondaryStick
   aircraftMoveStickView
   aircraftMoveArrows
   brakeButton
   brakeButtonEditView
   isAircraftMoveArrowsAvailable
+  resetGravityAxesZero
 }

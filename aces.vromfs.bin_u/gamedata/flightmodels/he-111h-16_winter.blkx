@@ -2,9 +2,9 @@
   "fmFile": "fm/he-111h-16_winter.blk",
   "model": "he_111h_16_winter",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
+  "tpsCameraOffset": [
+    -5.0,
+    2.0,
     0.0
   ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
@@ -2051,6 +2051,10 @@
         "blk": "gameData/FlightModels/weaponPresets/He-111H-16_winter_250kg.blk"
       },
       {
+        "name": "He_111H16_2x1000kg",
+        "blk": "gameData/FlightModels/weaponPresets/he-111_2xsc1000.blk"
+      },
+      {
         "name": "he-111_sc2500",
         "blk": "gameData/FlightModels/weaponPresets/he-111_sc2500.blk"
       }
@@ -2610,7 +2614,7 @@
           },
           {
             "iconType": "bomb_1000kg_group",
-            "name": "1000kg_250kg",
+            "name": "1000kg",
             "reqModification": "he-111_2x1000kg_250kg_pylon",
             "Weapon": [
               {

@@ -2,9 +2,9 @@
   "fmFile": "fm/er-2_m105_mv3.blk",
   "model": "er_2_m105r_lu2b",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
+  "tpsCameraOffset": [
+    -5.0,
+    2.0,
     0.0
   ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",

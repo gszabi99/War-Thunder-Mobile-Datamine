@@ -14,7 +14,7 @@ let { battleData } = require("%scripts/battleData/battleData.nut")
 let { singleMissionResult } = require("singleMissionResult.nut")
 let { isInBattle, battleSessionId, isOnline } = require("%appGlobals/clientState/clientState.nut")
 let { get_mp_session_id_int, destroy_session, set_quit_to_debriefing_allowed } = require("multiplayer")
-let { allUnitsCfgFlat } = require("%appGlobals/pServer/profile.nut")
+let { getPlatoonUnitCfgNonUpdatable } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { compatibilityConvertCommonStats } = require("%appGlobals/commonStatsUtils.nut")
 let { get_mp_local_team, get_mplayers_list } = require("mission")
@@ -174,7 +174,7 @@ function getPlayersCommonStats(players) {
     if (!player.isBot)
       continue
     let { userId, name, aircraftName = "" } = player
-    let unitCfg = allUnitsCfgFlat.value?[aircraftName] ?? {}
+    let unitCfg = getPlatoonUnitCfgNonUpdatable(aircraftName) ?? {}
     res[userId.tostring()] <- genBotCommonStats(name, aircraftName, unitCfg, defLevel)
   }
   return res

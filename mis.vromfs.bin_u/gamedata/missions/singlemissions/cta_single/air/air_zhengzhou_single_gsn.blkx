@@ -302,6 +302,9 @@
         "triggerDisable": {
           "target": "init_GSn_ai_kill"
         },
+        "missionSetClampMouseAim": {
+          "enable": true
+        },
         "comment": [
           {
             "value": "zadaem nachal'nuyu skorost' unichtozheniya nazemki"
@@ -962,9 +965,10 @@
           "element": "targetsCounter"
         },
         "hudElementBlink": {
-          "element": "targetsCounter",
-          "time": 10.0,
-          "blink": true
+          "drawFromGui": true,
+          "element": "targets_indicators",
+          "highLightType": "arrow",
+          "show": true
         },
         "triggerEnable": {
           "target": "1st_battle_hints_indicator"
@@ -1001,6 +1005,20 @@
           },
           {
             "element": "screenTop"
+          }
+        ],
+        "hudElementBlink": [
+          {
+            "drawFromGui": true,
+            "element": "targets_indicators",
+            "highLightType": "arrow",
+            "show": false
+          },
+          {
+            "drawFromGui": true,
+            "element": "ticket_panel",
+            "highLightType": "arrow",
+            "show": true
           }
         ],
         "playHint": [
@@ -1096,6 +1114,12 @@
       "actions": {
         "hudElementSelectionShade": {
           "element": ""
+        },
+        "hudElementBlink": {
+          "drawFromGui": true,
+          "element": "ticket_panel",
+          "highLightType": "arrow",
+          "show": false
         },
         "playHint": [
           {
@@ -1229,6 +1253,9 @@
             "init_GSn_ai_kill",
             "objectives_init"
           ]
+        },
+        "missionSetClampMouseAim": {
+          "enable": false
         }
       },
       "else_actions": {}

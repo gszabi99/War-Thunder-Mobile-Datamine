@@ -2,9 +2,9 @@
   "fmFile": "fm/ju-188a-2.blk",
   "model": "ju_188a_2",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
+  "tpsCameraOffset": [
+    -11.0,
+    3.0,
     0.0
   ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",

@@ -2,11 +2,6 @@
   "model": "bf_109g_2_trop",
   "fmFile": "fm/bf-109g-2.blk",
   "useTouchShooting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
@@ -1841,7 +1836,7 @@
         "tier": 7,
         "order": 1,
         "WeaponPreset": {
-          "iconType": "cannon_inner",
+          "iconType": "gun_20mm",
           "name": "add",
           "reqModification": "Bf-109G-2_R6",
           "ShowNodes": {
@@ -1950,7 +1945,7 @@
         "tier": 5,
         "order": 3,
         "WeaponPreset": {
-          "iconType": "cannon_inner",
+          "iconType": "gun_20mm",
           "name": "add",
           "reqModification": "Bf-109G-2_R6",
           "ShowNodes": {
