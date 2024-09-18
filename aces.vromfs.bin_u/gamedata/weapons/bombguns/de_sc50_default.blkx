@@ -173,13 +173,6 @@
         "explosionArmorQuality": 45.0,
         "shatterArmorQuality": 45.0
       }
-    },
-    "splash": {
-      "innerRadius": 7.0,
-      "outerRadius": 30.0,
-      "penetration": 125.0,
-      "damage": 3500.0,
-      "damageType": "explosion"
     }
   }
 }

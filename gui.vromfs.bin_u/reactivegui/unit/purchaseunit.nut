@@ -12,7 +12,7 @@ let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { unitDiscounts } = require("unitsDiscountState.nut")
 let { selectedUnitToSlot, slots } = require("%rGui/slotBar/slotBarState.nut")
 let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
-let { addNewPurchasedUnit } = require("delayedPurchaseUnit.nut")
+let { addNewPurchasedUnit, delayedPurchaseUnitData, needSaveUnitDataForTutorial } = require("delayedPurchaseUnit.nut")
 let { animUnitWithLink, isBuyUnitWndOpened } = require("%rGui/unitsTree/animState.nut")
 
 registerHandler("onUnitPurchaseResult",
@@ -37,6 +37,7 @@ registerHandler("onUnitPurchaseResult",
       isBuyUnitWndOpened.set(false)
       animUnitWithLink.set(unitId)
       selectedUnitToSlot.set(unitId)
+      playSound("meta_build_unit")
     }
   })
 
@@ -72,9 +73,13 @@ function purchaseUnit(unitId, bqPurchaseInfo, isUpgraded = false, executeAfter =
     return
   }
 
-  let contPurch = content ?? loc("shop/needMoneyQuestion",
+  if (needSaveUnitDataForTutorial.get())
+    delayedPurchaseUnitData.set({ unitId, currencyId = price.currencyId, price = price.price })
+
+  let contPurch = content ?? loc(!isCampaignWithUnitsResearch.get() ? "shop/needMoneyQuestion" : "shop/needMoneyQuestion_build",
     { item = colorize(userlogTextColor, loc(getUnitPresentation(unit).locId)) })
-  openMsgBoxPurchase(contPurch, price, purchaseFunc, bqPurchaseInfo, title, executeAfterCancel)
+  openMsgBoxPurchase(contPurch, price, purchaseFunc, bqPurchaseInfo, title, executeAfterCancel,
+    isCampaignWithUnitsResearch.get() ? "msgbox/btn_build" : "msgbox/btn_purchase")
   playSound("meta_new_technics_for_gold")
 }
 

@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { format } = require("string")
 let { isBattleDataFake } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { isBeltWeapon, mkWeaponBelts, getEquippedBelt } = require("%rGui/unitMods/unitModsSlotsState.nut")
@@ -7,8 +8,8 @@ let { mkWeaponPreset, mkChosenBelts } = require("%rGui/unit/unitSettings.nut")
 
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { headerText, header, headerHeight, bulletsBlockMargin, unitListHeight, textColor, secondaryMenuKey,
-  padding, weaponSize, weaponGroupWidth, smallGap, commonWeaponIcon,
-  getWeaponTitle, caliberTitle, secondaryTitleKey, courseMenuKey, courseTitleKey, turretMenuKey, turretTitleKey,
+  weaponSize, weaponGroupWidth, smallGap, commonWeaponIcon,
+  caliberTitle, secondaryTitleKey, courseMenuKey, courseTitleKey, turretMenuKey, turretTitleKey,
   mkBeltImage
 } = require("respawnComps.nut")
 let { getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
@@ -42,10 +43,7 @@ let mkCard = @(iconComp, title, bottomTitle = "", isSelectedStyle = false) {
   borderColor = 0xFFFFFFFF
   borderWidth = hdpx(3)
   children = [
-    {
-      padding
-      children = iconComp
-    }
+    iconComp
     mkCardTitle(title).__update({
       borderWidth = [hdpx(3), hdpx(3), 0, hdpx(3)]
       borderColor = isSelectedStyle ? 0xC07BFFFF : 0xFFFFFFFF
@@ -54,12 +52,13 @@ let mkCard = @(iconComp, title, bottomTitle = "", isSelectedStyle = false) {
       borderWidth = [0, hdpx(3), hdpx(3), hdpx(3)]
       borderColor = isSelectedStyle ? 0xC07BFFFF : 0xFFFFFFFF
       vplace = ALIGN_BOTTOM
-      padding = [0,0,0,hdpx(8)]
+      padding = [0, hdpx(4), hdpx(4), hdpx(6)]
     })
   ]
 }
 
-let mkWeaponCard = @(w, canClick) mkCard(commonWeaponIcon(w), getWeaponTitle(w))
+let weaponTitle = @(w) format(loc("weapons/counter/right/short"), (w?.count ?? 1))
+let mkWeaponCard = @(w, canClick) mkCard(commonWeaponIcon(w), weaponTitle(w))
   .__update({ onClick = canClick ? @() showAirRespChooseSecWnd(w.slotIdx) : null })
 
 let mkBeltCard = @(w, canClick)
@@ -111,15 +110,14 @@ let mkGroup = @(locId, children, ovr = {}, headerOvr = {}) {
 function stackSecondaryWeapons(weapons) {
   let byIcon = {}
   let res = []
-  foreach(w in weapons)
+  foreach(w in weapons) {
     if (w.iconType not in byIcon) {
       byIcon[w.iconType] <- res.len()
       res.append(clone w)
     }
-    else {
-      let idx = byIcon[w.iconType]
-      res[idx].count <- (res[idx]?.count ?? 1) + (w?.count ?? 1)
-    }
+    let idx = byIcon[w.iconType]
+    res[idx].count <- (res[idx]?.count ?? 0) + ((w?.count ?? 1) * (w?.weapons[0].totalBullets ?? 1))
+  }
   return res
 }
 

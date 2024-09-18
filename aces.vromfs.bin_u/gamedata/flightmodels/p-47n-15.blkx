@@ -1793,6 +1793,7 @@
           "iconType": "rocket_7kg",
           "name": "hvar",
           "reqModification": "frc_mk2",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_rocket1"
           },
@@ -1814,6 +1815,7 @@
           "iconType": "rocket_7kg",
           "name": "hvar",
           "reqModification": "frc_mk2",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_rocket2"
           },
@@ -1835,6 +1837,7 @@
           "iconType": "rocket_7kg",
           "name": "hvar",
           "reqModification": "frc_mk2",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_rocket3"
           },
@@ -1877,6 +1880,7 @@
           "iconType": "rocket_7kg",
           "name": "hvar",
           "reqModification": "frc_mk2",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_rocket4"
           },
@@ -1898,6 +1902,7 @@
           "iconType": "rocket_7kg",
           "name": "hvar",
           "reqModification": "frc_mk2",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_rocket5"
           },
@@ -1959,6 +1964,7 @@
           "iconType": "rocket_7kg",
           "name": "hvar",
           "reqModification": "frc_mk2",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_rocket6"
           },
@@ -1980,6 +1986,7 @@
           "iconType": "rocket_7kg",
           "name": "hvar",
           "reqModification": "frc_mk2",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_rocket7"
           },
@@ -2022,6 +2029,7 @@
           "iconType": "rocket_7kg",
           "name": "hvar",
           "reqModification": "frc_mk2",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_rocket8"
           },
@@ -2043,6 +2051,7 @@
           "iconType": "rocket_7kg",
           "name": "hvar",
           "reqModification": "frc_mk2",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_rocket9"
           },
@@ -2064,6 +2073,7 @@
           "iconType": "rocket_7kg",
           "name": "hvar",
           "reqModification": "frc_mk2",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_rocket10"
           },

@@ -46,7 +46,13 @@ function mkReloadProgress(orientation, duration) {
     fgColor = orientation == ORIENT_RIGHT ? backGroundColor : reloadColor
     bgColor = orientation == ORIENT_RIGHT ? reloadColor : backGroundColor
     key = $"air_reload_{orientation}_{duration}"
-    animations = [{prop = AnimProp.fValue, from, to, duration, play = true}]
+    animations = [
+      { prop = AnimProp.fValue, from, to, duration, play = true }
+      {
+        prop = AnimProp.opacity, to = 0.3, duration = 0.6,
+        easing = CosineFull, loop = true, play = true
+      }
+    ]
   }
 }
 

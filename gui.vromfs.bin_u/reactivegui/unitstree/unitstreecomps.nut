@@ -76,6 +76,7 @@ let function mkTreeNodesFlag(country, curCountry, onClick, showUnseenMark, selec
     halign = ALIGN_CENTER
     behavior = Behaviors.Button
     onClick
+    sound = { click = "choose" }
     children = [
       {
         size = flex()

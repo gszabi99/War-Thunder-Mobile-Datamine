@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setTimeout } = require("dagor.workcycle")
+let { setTimeout, deferOnce } = require("dagor.workcycle")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let tutorialWndDefStyle = require("tutorialWndDefStyle.nut")
 let { isTutorialActive, tutorialConfigVersion, getTutorialConfig, stepIdx, WND_UID,
   nextStep, nextStepByDefaultHotkey, skipStep, nextKeyAllowed, skipKeyAllowed, getTimeAfterStepStart
 } = require("tutorialWndState.nut")
 let { getBox, incBoxSize, createHighlight, findGoodPos, findGoodArrowPos, sizePosToBox,
-  hasInteractions
+  hasInteractions, getNotInterractPos, findGoodPosX
 } = require("tutorialUtils.nut")
 
 const DEF_SKIP_TIME = 3.0
+let charBestPosOffsetX = hdpxi(330)
 
 let mkLightCtorExt = @(lightCtor, nextStepDelay) function(box) {
   let { ctor = null, onClick = null } = box
@@ -33,6 +34,16 @@ function mkBg(boxes, style, nextStepDelay) {
     children = createHighlight(boxes, lightCtorExt, darkCtor)
   }
 }
+
+let bgContinueButton = @() !nextKeyAllowed.get() ? { watch = nextKeyAllowed }
+  : {
+      watch = nextKeyAllowed
+      size = flex()
+      behavior = Behaviors.Button
+      onClick = nextStepByDefaultHotkey
+      sound = { click  = "click" }
+    }
+
 
 function mkArrowLinks(stepData, boxes, style) {
   let { arrowLinks = null } = stepData
@@ -66,20 +77,55 @@ function mkArrowLinks(stepData, boxes, style) {
   }
 }
 
-function mkMessage(text, customCtor, boxes, style) {
+function mkMessage(text, charId, customCtor, boxes, style) {
   if (text == null && customCtor == null)
     return null
 
   let ctor = customCtor ?? style.messageCtor
+  let character = style.characterCtor(charId, false)
   //calc size with next message
-  let size = calc_comp_size(ctor(text, Watched(true), nextStepByDefaultHotkey))
-  let pos = findGoodPos(size, [sw(50) - 0.5 * size[0], sh(50) - 0.5 * size[1]], boxes)
+  let charSize = calc_comp_size(character)
+  let msgSize = calc_comp_size(ctor(text, Watched(false), nextStepByDefaultHotkey))
+
+  let charPosY = sh(100) - charSize[1]
+  let bestCharPos = [max(saBorders[0], sw(50) - charSize[0] - charBestPosOffsetX), charPosY]
+  let charPos = getNotInterractPos(charSize,
+      [
+        bestCharPos,
+        [min(sw(100) - saBorders[0] - charSize[0], sw(50) + charBestPosOffsetX), charPosY],
+        [saBorders[0], charPosY],
+        [sw(100) - saBorders[0] - charSize[0], charPosY],
+      ],
+      boxes)
+    ?? findGoodPosX(charSize, bestCharPos, boxes)
+
+  let bestMsgPos = [
+    clamp(charPos[0] + (charSize[0] - msgSize[0]) / 2, saBorders[0], sw(100) - saBorders[0]),
+    sh(100) - msgSize[1] - saBorders[1]
+  ]
+  local msgPos = bestMsgPos
+  if (hasInteractions(sizePosToBox(msgSize, msgPos), boxes)) {
+    msgPos = findGoodPosX(msgSize, msgPos, boxes) //try to move message horizontally
+    if (hasInteractions(sizePosToBox(msgSize, msgPos), boxes)) {
+      let boxesWithChar = (clone boxes).append(sizePosToBox(charSize, charPos))
+      msgPos = findGoodPos(msgSize,
+        [ charPos[0] < sw(50) ? charPos[0] + charSize[0] : charPos[0] - msgSize[0], bestMsgPos[1] ],
+        boxesWithChar)
+      if (hasInteractions(sizePosToBox(msgSize, msgPos), boxesWithChar))
+        msgPos = bestMsgPos //no way to no intersect, so put over character as was planned before
+    }
+  }
+
   return {
     messageComp = {
-      pos
+      pos = msgPos
       children = ctor(text, nextKeyAllowed, nextStepByDefaultHotkey)
     }
-    messageBox = sizePosToBox(size, pos)
+    messageBox = sizePosToBox(msgSize, msgPos)
+    characterComp = {
+      pos = charPos
+      children = charPos[0] < sw(50) ? character : style.characterCtor(charId, true)
+    }
   }
 }
 
@@ -126,7 +172,7 @@ local function mkArrows(boxes, obstaclesVar, style) {
   }
 }
 
-let nextStepSubscription = @(v) v ? nextStep() : null
+let nextStepSubscription = @(v) v ? deferOnce(nextStep) : null
 
 let boxUpdateCount = Watched(0)
 let boxUpdateCountWithStep = Computed(@() boxUpdateCount.value + stepIdx.value)
@@ -136,7 +182,7 @@ function tutorialWnd() {
   let style = tutorialWndDefStyle.__merge(config?.style ?? {})
 
   let stepData = config?.steps[stepIdx.value] ?? {}
-  local { nextStepAfter = null, text = null, textCtor = null } = stepData
+  local { nextStepAfter = null, text = null, textCtor = null, charId = null } = stepData
 
   if (text instanceof Watched) {
     watch.append(text)
@@ -168,7 +214,7 @@ function tutorialWnd() {
 
   let { skipBtn, skipBox } = mkSkipButton(config?.stepSkipDelay ?? DEF_SKIP_TIME, obstacles, style)
   obstacles.append(skipBox)
-  let { messageComp = null, messageBox = null } = mkMessage(text, textCtor, obstacles, style)
+  let { characterComp = null, messageComp = null, messageBox = null } = mkMessage(text, charId, textCtor, obstacles, style)
   if (messageBox != null)
     obstacles.append(messageBox)
 
@@ -177,8 +223,10 @@ function tutorialWnd() {
     size = flex()
     stopMouse = true
     children = [
+      bgContinueButton
       mkBg(boxes, style, config?.nextStepDelay ?? 0.5)
       arrowLinks
+      characterComp
       messageComp
       skipBtn
       mkArrows(boxes, obstacles, style)

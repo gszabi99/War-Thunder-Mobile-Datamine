@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { playSound } = require("sound_wt")
 let { resetTimeout } = require("dagor.workcycle")
 let { unitsResearchStatus } = require("unitsTreeNodesState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -21,25 +22,30 @@ let needShowPriceUnit = mkWatched(persist, "needShowPriceUnit", false)
 let hasAnimDarkScreen = mkWatched(persist, "hasAnimDarkScreen", false)
 let animBuyRequirementsUnitId = mkWatched(persist, "animBuyRequirementsUnitId", null)
 let animResearchRequirementsUnitId = mkWatched(persist, "animResearchRequirementsUnitId", null)
+let needDelayAnimation = mkWatched(persist, "needDelayAnimation", false)
 
 let animExpPart = mkWatched(persist, "animExpPart", false)
 local expPartValue = 0
 
 animUnitAfterResearch.subscribe(function(v) {
-  if(v){
+  if(v) {
     anim_start($"anim_{v}")
-    resetTimeout(animExpPartDelay, function() {
-      animExpPart(1)
-    })
+    resetTimeout(animExpPartDelay, @() animExpPart(1))
   }
 })
 
 isUnitsTreeOpen.subscribe(function(v){
-  if(v && animUnitAfterResearch.get()){
+  if(v && animUnitAfterResearch.get()) {
     animExpPart(expPartValue)
-    resetTimeout(animExpPartDelay, function() {
-      animExpPart(1)
-    })
+    resetTimeout(animExpPartDelay, @() animExpPart(1))
+  }
+})
+
+let canPlayAnimUnitAfterResearch = Computed(@() animUnitAfterResearch.get() != null && !needDelayAnimation.get())
+needDelayAnimation.subscribe(function(v) {
+  if(!v) {
+    animExpPart(expPartValue)
+    resetTimeout(animExpPartDelay, @() animExpPart(1))
   }
 })
 
@@ -131,6 +137,7 @@ animResearchRequirementsUnitId.subscribe(@(v) v == null ? null
   : resetTimeout(maxResearchRequirementsAnimTime, clearResearchRequirementsAnim))
 animBuyRequirements.subscribe(@(v) v.each(@(_, id) anim_start($"unit_price_{id}")))
 animResearchRequirements.subscribe(@(v) v.each(@(_, id) anim_start($"unit_exp_{id}")))
+needShowPriceUnit.subscribe(@(v) v ? playSound("meta_research_complete") : null)
 
 return {
   animUnitAfterResearch
@@ -152,4 +159,6 @@ return {
   unitsForExpAnim
 
   resetAnim
+  needDelayAnimation
+  canPlayAnimUnitAfterResearch
 }

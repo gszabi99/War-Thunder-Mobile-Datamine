@@ -30,6 +30,7 @@ return {
 
   markTextColor = 0xFFFFB70B
   darkenTextColor = 0xFF8898CC
+  highlightTextColor = 0xFFF0F0F0
 
   locColorTable = {
     mark = markTextColor

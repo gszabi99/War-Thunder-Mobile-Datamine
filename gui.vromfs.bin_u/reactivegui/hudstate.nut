@@ -66,6 +66,7 @@ let unitType = Computed(@() nativeToUnitType?[nativeUnitType.value])
 let isUnitDelayedNative = hudStateNative.isUnitDelayed
 let forceDelayed = mkWatched(persist, "forceDelayed", false)
 let areHintsHidden = mkWatched(persist, "areHintsHidden", false)
+let areSightHidden = mkWatched(persist, "areSightHidden", false)
 let isUnitDelayed = Computed(@() isUnitDelayedNative.value || forceDelayed.value)
 register_command(@() forceDelayed(!forceDelayed.value), "debug.hud.isUnitDelayed")
 
@@ -96,6 +97,7 @@ isAppLoaded.subscribe(@(_) setDrawNativeAirCrosshair?(false))
 
 return hudStateNative.__merge({
   areHintsHidden
+  areSightHidden
   unitType
   isUnitDelayed
   hudMode

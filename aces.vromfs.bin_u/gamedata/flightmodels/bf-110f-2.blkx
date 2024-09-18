@@ -2149,6 +2149,7 @@
           "iconType": "bomb_50kg_group",
           "name": "sc50",
           "reqModification": "Bf-110C-4_SC50_SC250",
+          "isDefault": true,
           "ShowNodes": {
             "node": [
               "pylon_wing_l",
@@ -2185,6 +2186,7 @@
             "iconType": "bomb_50kg_group",
             "name": "sc50_x4",
             "reqModification": "Bf-110C-4_SC50_SC250",
+            "isDefault": true,
             "ShowNodes": {
               "node": [
                 "pylon_bomb2",
@@ -2237,7 +2239,7 @@
             ]
           },
           {
-            "iconType": "bomb_25kg",
+            "iconType": "bomb_250kg",
             "name": "sc250",
             "reqModification": "Bf-110C-4_SC50_SC250",
             "ShowNodes": {
@@ -2586,6 +2588,7 @@
             "iconType": "bomb_50kg_group",
             "name": "sc50_x4",
             "reqModification": "Bf-110C-4_SC50_SC250",
+            "isDefault": true,
             "ShowNodes": {
               "node": [
                 "pylon_bomb3",
@@ -2699,6 +2702,7 @@
           "iconType": "bomb_50kg_group",
           "name": "sc50",
           "reqModification": "Bf-110C-4_SC50_SC250",
+          "isDefault": true,
           "ShowNodes": {
             "node": [
               "pylon_wing_r",

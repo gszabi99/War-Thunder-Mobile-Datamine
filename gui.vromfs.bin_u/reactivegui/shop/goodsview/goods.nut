@@ -5,7 +5,7 @@ let { getLocNameGold, mkGoodsGold } = require("%rGui/shop/goodsView/goodsGold.nu
 let { getLocNameWp, mkGoodsWp } = require("%rGui/shop/goodsView/goodsWp.nut")
 let { getLocNamePlatinum, mkGoodsPlatinum } = require("%rGui/shop/goodsView/goodsPlatinum.nut")
 let { getLocNamePremium, mkGoodsPremium } = require("%rGui/shop/goodsView/goodsPremium.nut")
-let { getLocNameUnit, mkGoodsUnit, getLocBlueprintUnit } = require("%rGui/shop/goodsView/goodsUnit.nut")
+let { getLocNameUnit, mkGoodsUnit, getLocBlueprintUnit, getLocBranchUnits } = require("%rGui/shop/goodsView/goodsUnit.nut")
 let { getLocNameConsumables, mkGoodsConsumables } = require("%rGui/shop/goodsView/goodsConsumables.nut")
 let { getLocNameLootbox, mkGoodsLootbox } = require("%rGui/shop/goodsView/goodsLootbox.nut")
 let { getLocNameBooster, mkGoodsBooster } = require("%rGui/shop/goodsView/goodsBooster.nut")
@@ -27,6 +27,7 @@ let locNameGetters = {
   [SGT_LOOTBOX] = getLocNameLootbox,
   [SGT_BOOSTERS] = getLocNameBooster,
   [SGT_BLUEPRINTS] = getLocBlueprintUnit,
+  [SGT_BRANCH] = getLocBranchUnits
 }
 
 let constructors = {

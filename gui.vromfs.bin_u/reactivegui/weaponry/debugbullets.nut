@@ -7,6 +7,7 @@ let io = require("io")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { eachBlock } = require("%sqstd/datablock.nut")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { calcUnitTypeFromTags } = require("%appGlobals/unitConst.nut")
 let { loadUnitBulletsFull, loadUnitBulletsChoice, loadUnitBulletsAndSlots, loadUnitWeaponSlots
 } = require("%rGui/weaponry/loadUnitBullets.nut")
@@ -251,3 +252,141 @@ register_command(
     console_print(resUnits) //warning disable: -forbidden-function
   }),
   "debug.find_double_weapon_secondary_slots")
+
+register_command(
+  @() loadAllBulletsAndDo(function(res) {
+    let conflicts = []
+    foreach(name, b in res) {
+      let { slots = [] } = b
+      if (slots.len() == 0)
+        continue
+      local slotIdx = null
+      local biggestBan = {}
+      foreach(idx, slot in slots)
+        foreach(preset in slot.wPresets) {
+          let { banPresets } = preset
+          if (banPresets.len() <= biggestBan.len())
+            continue
+          biggestBan = banPresets
+          slotIdx = idx
+        }
+      if (slotIdx == null)
+        continue
+      let count = biggestBan.len()
+      if (count >= conflicts.len())
+        conflicts.resize(count + 1)
+      conflicts[count] = (conflicts[count] ?? []) //warning disable: -unwanted-modification
+        .append({ name, slots = biggestBan.keys().append(slotIdx).sort() })
+    }
+
+    log($"Most conflicts = {conflicts.len()}:\n", conflicts.top())
+    console_print($"Most conflicts = {conflicts.len()}:\n", conflicts.top()) //warning disable: -forbidden-function
+
+    for (local nextIdx = conflicts.len() - 2; nextIdx >= 0; nextIdx--) {
+      if (conflicts[nextIdx] == null)
+        continue
+      log($"Next conflicts = {nextIdx + 1}:\n", conflicts?[nextIdx])
+      console_print($"Most conflicts = {nextIdx + 1}:\n", conflicts?[nextIdx]) //warning disable: -forbidden-function
+      break
+    }
+  }),
+  "debug.find_most_conflicts_weapons")
+
+let ignoreFileds = ["name", "mirrorId", "banPresets"]
+  .reduce(@(res, v) res.$rawset(v, true), {})
+function getEqualPresetError(p1, p2, slots) {
+  if (p1.len() != p2.len())
+    return "diffrerent preset params count"
+  foreach(key, value in p1)
+    if (key not in ignoreFileds && !isEqual(value, p2?[key]))
+      return $"diffrerent '{key}'"
+  let banPresets1 = p1.banPresets
+  let banPresets2 = p2.banPresets
+  if (banPresets1.len() != banPresets2.len())
+    return "diffrerent banPresets len"
+  foreach(idx1, list1 in banPresets1) {
+    let idx2 = slots?[idx1].mirror ?? idx1
+    let list2 = banPresets2?[idx2]
+    if (list1.len() != (list2?.len() ?? -1))
+      return $"different ban list for slot {idx1}&{idx2}"
+    foreach(id1, _ in list1) {
+      let id2 = slots?[idx1].wPresets[id1].mirrorId ?? id1
+      if (id2 not in list2)
+        return $"different ban list for slot {idx1}&{idx2}"
+    }
+  }
+  return ""
+}
+
+register_command(
+  @() loadAllBulletsAndDo(function(res) {
+    local correct = 0
+    local incorrect = 0
+    let conflicts = {}
+    foreach(name, b in res) {
+      let { slots = [], slotsParams = {} } = b
+      if (slots.len() == 0)
+        continue
+      let { notUseForDisbalance = {} } = slotsParams
+      let centerIdx = slots.len() / 2
+      let unitConflicts = []
+      for (local idx1 = 1; idx1 < slots.len(); idx1++) {
+        let slot1 = slots[idx1]
+        let idx2 = slot1?.mirror
+        if (idx2 == null) {
+          if (!notUseForDisbalance?[idx1] && idx1 != centerIdx)
+            unitConflicts.append({
+              slotIdx = $"{idx1}&{idx2}"
+              errText = "used for disbalance, but does not have mirror"
+            })
+          continue
+        }
+        if ((notUseForDisbalance?[idx1] ?? false) != (notUseForDisbalance?[idx2] ?? false)) {
+          unitConflicts.append({
+            slotIdx = $"{idx1}&{idx2}"
+            errText = "has different notUseForDisbalance value"
+          })
+          continue
+        }
+        if (notUseForDisbalance?[idx1] ?? false) {
+          if (idx2 != null)
+            unitConflicts.append({
+              slotIdx = $"{idx1}&{idx2}"
+              errText = "slot notUseForDisbalance but have mirror"
+            })
+          continue
+        }
+        if (idx1 >= centerIdx)
+          continue
+
+        let slot2 = slots[idx2]
+        if (slot1.wPresetsOrder.len() != slot2.wPresetsOrder.len()) {
+          unitConflicts.append({
+            slotIdx = $"{idx1}&{idx2}"
+            errText = "has different wPresets count"
+          })
+          continue
+        }
+
+        foreach(presetId, preset in slot1.wPresets) {
+          let { mirrorId = presetId } = preset
+          let err = getEqualPresetError(preset, slot2.wPresets?[mirrorId], slots)
+          if (err != "")
+            unitConflicts.append({
+              slotIdx = $"{idx1}&{idx2}"
+              errText = $"has different preset {presetId}&{mirrorId}: {err}"
+            })
+        }
+      }
+      if (unitConflicts.len() == 0)
+        correct++
+      else {
+        incorrect++
+        conflicts[name] <- unitConflicts
+      }
+    }
+
+    log($"correct = {correct}, incorrect = {incorrect}", conflicts)
+    console_print($"correct = {correct}, incorrect = {incorrect}", conflicts) //warning disable: -forbidden-function
+  }),
+  "debug.find_not_mirror_wings_weapon_slots")

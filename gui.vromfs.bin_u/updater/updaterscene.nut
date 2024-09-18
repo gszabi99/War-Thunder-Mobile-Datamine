@@ -7,6 +7,10 @@ let { gradientLoadingTip } = require("loadingTip.nut")
 
 let spinnerSize = hdpxi(100)
 
+// ONLY images for those LoadingScreen IDs exist in Updater VROMs,
+// and if you edit this list, you MUST make the correcponding changes in Updater VROMs too.
+// Also you may need to change the "fallbackLoadingImage" in loadingScreensCfg.nut,
+// because "fallbackLoadingImage" image MUST exist in both game client VROMs and Updater VROMs.
 let loadingScreensWhitelist = [
   "simple_ship_6"
   "simple_tank_7"

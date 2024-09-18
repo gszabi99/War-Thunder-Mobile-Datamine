@@ -4,6 +4,7 @@ let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { getModCurrency, getModCost } = require("unitModsSlotsState.nut")
 let { contentMargin } = require("unitModsConst.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 let defLockIconSize = hdpxi(85)
 let bgShadeColor = 0x80000000
@@ -60,6 +61,14 @@ let mkModCost = @(isPurchased, isLocked, mod, unitAllModsCost, currencyStyle = C
     : mkCurrencyComp(getModCost(mod.get(), unitAllModsCost.get()), getModCurrency(mod.get()), currencyStyle)
 }
 
+let mkUnseenModIndicator = @(isUnseen) @() {
+  watch = isUnseen
+  margin = contentMargin
+  vplace = ALIGN_TOP
+  hplace = ALIGN_LEFT
+  children = isUnseen.get() ? priorityUnseenMark : null
+}
+
 return {
   mkLevelLock
   mkLevelLockSmall
@@ -67,4 +76,5 @@ return {
   bgShade
   mkModImage
   mkModCost
+  mkUnseenModIndicator
 }

@@ -35,26 +35,67 @@
       {
         "range": [
           2,
+          2
+        ],
+        "aircraft": [
+          {
+            "name": "f2a-1",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "bf-109c_1",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "i-153_m62",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
+      },
+      {
+        "range": [
+          3,
+          3
+        ],
+        "aircraft": [
+          {
+            "name": "f4f-3",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "he_112b_0",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "yak-1_early",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
+      },
+      {
+        "range": [
+          4,
           4
         ],
         "aircraft": [
           {
-            "name": "p-51c-10-nt",
+            "name": "f4u-1d",
             "weight": 1.0,
             "country": "usa"
           },
           {
-            "name": "sb2c_4",
+            "name": "bf-109f-2",
             "weight": 1.0,
-            "country": "usa"
+            "country": "germany"
           },
           {
-            "name": "la-5_type37_early",
-            "weight": 1.0,
-            "country": "ussr"
-          },
-          {
-            "name": "il_4",
+            "name": "yak-7b",
             "weight": 1.0,
             "country": "ussr"
           }
@@ -63,26 +104,90 @@
       {
         "range": [
           5,
-          50
+          5
         ],
         "aircraft": [
           {
-            "name": "p-38k",
+            "name": "p-63a-10",
             "weight": 1.0,
             "country": "usa"
           },
           {
-            "name": "b-17g",
-            "weight": 1.0,
-            "country": "usa"
-          },
-          {
-            "name": "fw-190c",
+            "name": "fw-190a-4",
             "weight": 1.0,
             "country": "germany"
           },
           {
-            "name": "yak-3t",
+            "name": "la-5fn",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
+      },
+      {
+        "range": [
+          6,
+          6
+        ],
+        "aircraft": [
+          {
+            "name": "p-51d-5",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "bf-109f-4_trop",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "yak-3",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
+      },
+      {
+        "range": [
+          7,
+          7
+        ],
+        "aircraft": [
+          {
+            "name": "f4u-1c",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "fw-190a-5_cannons",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "la-7b-20",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
+      },
+      {
+        "range": [
+          8,
+          50
+        ],
+        "aircraft": [
+          {
+            "name": "f4u-4b",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "fw-190d-12",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "yak-9ut",
             "weight": 1.0,
             "country": "ussr"
           }

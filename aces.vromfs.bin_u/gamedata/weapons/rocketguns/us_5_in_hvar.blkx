@@ -19,12 +19,6 @@
     "massEnd": 51.1,
     "statType": "hydra",
     "explodeTreshold": 0.01,
-    "explodeHitPower": 550.0,
-    "explodeArmorPower": 75.0,
-    "explodeRadius": [
-      1.0,
-      3.5
-    ],
     "rendinstDamageRadius": 9.0,
     "fuseDelayDist": 1.0,
     "maxDistance": 7000.0,
@@ -78,24 +72,6 @@
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
     "maxDeltaAngle": 3.5,
-    "armorpower": {
-      "ArmorPower0m": [
-        28.0,
-        10.0
-      ],
-      "ArmorPower100m": [
-        25.0,
-        100.0
-      ],
-      "ArmorPower7000m": [
-        23.0,
-        7000.0
-      ],
-      "ArmorPower10000m": [
-        0.0,
-        10000.0
-      ]
-    },
     "hitpower": {
       "HitPower0m": [
         400.0,

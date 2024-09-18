@@ -893,9 +893,15 @@
           5
         ],
         "isShip": false,
-        "condition": {
-          "type": "online"
-        }
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
+          }
+        ]
       }
     },
     {
@@ -1830,6 +1836,217 @@
         "condition": {
           "type": "online"
         }
+      }
+    },
+    {
+      "id": "heroic_fighter",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 1250,
+      "isAfterFlight": true,
+      "userstat_stat_id": "top_killer_hero",
+      "mode": {
+        "type": "killedAirBest",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 3,
+        "minVal": 12,
+        "bestId": "heroic_fighter",
+        "includeBots": true,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "missionType",
+            "missionType": [
+              0,
+              1,
+              2
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "trophy_near_fighter",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 500,
+      "isAfterFlight": true,
+      "userstat_stat_id": "top_killer",
+      "mode": {
+        "type": "killedAirBest",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 3,
+        "maxVal": 11,
+        "bestId": "trophy_near_fighter",
+        "includeBots": true,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "missionType",
+            "missionType": [
+              0,
+              1,
+              2
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "heroic_bomber",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 1250,
+      "isAfterFlight": true,
+      "userstat_stat_id": "top_ground_assault_hero",
+      "mode": {
+        "type": "killedGroundBest",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 3,
+        "minVal": 18,
+        "bestId": "heroic_bomber",
+        "includeBots": true,
+        "isShip": false,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includePlayers": false,
+            "includeAI": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "trophy_near_bomber",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 500,
+      "isAfterFlight": true,
+      "userstat_stat_id": "ground_assault_hero",
+      "mode": {
+        "type": "killedGroundBest",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 3,
+        "maxVal": 17,
+        "bestId": "trophy_near_bomber",
+        "includeBots": true,
+        "isShip": false,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includePlayers": false,
+            "includeAI": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "marks_5_bombers",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 250,
+      "isAfterFlight": false,
+      "userstat_stat_id": "air_assault_killer",
+      "mode": {
+        "type": "killedPlayers",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 3,
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "targetType",
+            "unitType": [
+              "typeBomber",
+              "typeStormovik"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "marks_5_fighters",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 250,
+      "isAfterFlight": false,
+      "userstat_stat_id": "air_fighter_killer",
+      "mode": {
+        "type": "killedPlayers",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 3,
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "targetType",
+            "unitType": "typeFighter"
+          }
+        ]
+      }
+    },
+    {
+      "id": "marks_landing_after_critical_hit",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 250,
+      "isAfterFlight": false,
+      "userstat_stat_id": "soft_landing",
+      "mode": {
+        "type": "landings",
+        "num": 1,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "critical"
+          }
+        ]
       }
     },
     {

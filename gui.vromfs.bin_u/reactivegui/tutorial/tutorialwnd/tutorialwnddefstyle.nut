@@ -1,10 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
 let { debounce } = require("%sqstd/timers.nut")
-let { sizePosToBox, getLinkArrowMiddleCfg, createHighlight } = require("tutorialUtils.nut")
+let { commonTextColor } = require("%rGui/style/stdColors.nut")
+let { simpleHorGrad } = require("%rGui/style/gradients.nut")
+let { sizePosToBox, getLinkArrowMiddleCfg, createHighlight, incBoxSizeUnlimited } = require("tutorialUtils.nut")
 let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+
 
 let borderWidth = hdpx(1)
 let defMsgPadding = [hdpx(20), hdpx(40)] //to not be too close to highlighted objects.
+let characterSize = [hdpxi(644), hdpxi(914)]
+let shadeColor = 0xC0020B19
+let msgBgColor = 0xCC000000
+let msgBorderColor = 0x60484848
+let msgBorderWidth = hdpxi(3)
+
+let characters = {
+  mary_with_notebook = "review_cue_1.avif"
+  mary_points = "review_cue_2.avif"
+  mary_salutes = "review_cue_3.avif"
+  mary_points_sad = "review_cue_4.avif"
+  mary_like = "review_cue_5.avif"
+}
+  .map(@(v) $"!ui/images/{v}")
+let defaultCharacter = characters.mary_with_notebook
 
 function mkSizeTable(box, content) {
   let { l, r, t, b } = box
@@ -14,7 +32,7 @@ function mkSizeTable(box, content) {
   }.__update(content)
 }
 
-let lightCtor = @(box, override = {}) mkSizeTable(box, {
+let lightCtor = @(box, override = {}) mkSizeTable(incBoxSizeUnlimited(box, 2 * borderWidth), {
   rendObj = ROBJ_BOX
   borderWidth
   borderColor = 0xFFFFFFFF
@@ -23,38 +41,62 @@ let lightCtor = @(box, override = {}) mkSizeTable(box, {
 
 let darkCtor = @(box) mkSizeTable(box, {
   rendObj = ROBJ_SOLID
-  color = 0xC0000000
+  color = shadeColor
 })
 
 let anyTapHint = {
   rendObj = ROBJ_TEXT
   text = loc("TapAnyToContinue")
   color = 0xFFA0A0A0
-}.__update(fontSmall)
+}.__update(fontTiny)
 
 let nextKeyHintCtor = @(nextKeyAllowed, onClick) onClick == null ? null
-  : @() {
-      watch = nextKeyAllowed
-      children = !nextKeyAllowed.value ? null : anyTapHint
-        .__merge({ hotkeys = [[$"{btnAUp} | Space", onClick]] })
-      behavior = Behaviors.Button
-      onClick
-      sound = { click  = "click" }
-    }
+  : @() !nextKeyAllowed.get() ? { watch = nextKeyAllowed }
+    : {
+        watch = nextKeyAllowed
+        size = [flex(), SIZE_TO_CONTENT]
+        margin = [hdpx(10), 0, 0, 0]
+        behavior = Behaviors.Button
+        onClick
+        sound = { click  = "click" }
+        flow = FLOW_HORIZONTAL
+        gap = hdpx(20)
+        valign = ALIGN_CENTER
+        children = [
+          {
+            size = [flex(), msgBorderWidth]
+            rendObj = ROBJ_IMAGE
+            image = simpleHorGrad
+            color = msgBorderColor
+          }
+          anyTapHint.__merge({ hotkeys = [[$"{btnAUp} | Space", onClick]] })
+          {
+            size = [flex(), msgBorderWidth]
+            rendObj = ROBJ_IMAGE
+            image = simpleHorGrad
+            color = msgBorderColor
+            flipX = true
+          }
+        ]
+      }
 
 let messageCtor = @(text, nextKeyAllowed, onNext, textOverride = {}) {
   padding = defMsgPadding
-  gap = hdpx(20)
+  rendObj = ROBJ_BOX
+  fillColor = msgBgColor
+  borderColor = msgBorderColor
+  borderWidth = msgBorderWidth
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   children = [
     { //include only because padding not correct count by calc_comp_size while in textarea.
-      maxWidth = fsh(80)
+      maxWidth = characterSize[0]
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       text
+      color = commonTextColor
       halign = ALIGN_CENTER
-    }.__update(fontMedium, textOverride)
+    }.__update(fontSmall, textOverride)
     nextKeyHintCtor(nextKeyAllowed, onNext)
   ]
 }
@@ -145,6 +187,19 @@ function mkLinkArrow(boxFrom, boxTo) {
   }
 }
 
+function characterCtor(charId, isRight = false) {
+  if (charId != null && charId not in characters)
+    logerr($"Unknown tutorial characterId = {charId}")
+  let image = charId in characters ? characters[charId] : defaultCharacter
+  return {
+    size = characterSize
+    rendObj = ROBJ_IMAGE
+    image = Picture(image)
+    keepAspect = true
+    flipX = isRight
+  }
+}
+
 return freeze({
   //required styles
   lightCtor
@@ -155,6 +210,7 @@ return freeze({
   mkPointerArrow
   mkLinkArrow
   mkCutBg
+  characterCtor
 
   //components to reuse from outside
   mkSizeTable

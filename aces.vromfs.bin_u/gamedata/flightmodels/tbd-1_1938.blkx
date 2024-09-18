@@ -1833,6 +1833,7 @@
         "WeaponPreset": {
           "iconType": "bomb_100kg",
           "name": "100lb",
+          "isDefault": true,
           "ShowNodes": {
             "node": "wing_plate"
           },
@@ -1853,6 +1854,7 @@
         "WeaponPreset": {
           "iconType": "bomb_100kg",
           "name": "100lb",
+          "isDefault": true,
           "ShowNodes": {
             "node": "wing_plate"
           },
@@ -1873,6 +1875,7 @@
         "WeaponPreset": {
           "iconType": "bomb_100kg",
           "name": "100lb",
+          "isDefault": true,
           "ShowNodes": {
             "node": "wing_plate"
           },
@@ -1893,6 +1896,7 @@
         "WeaponPreset": {
           "iconType": "bomb_100kg",
           "name": "100lb",
+          "isDefault": true,
           "ShowNodes": {
             "node": "wing_plate"
           },
@@ -1913,6 +1917,7 @@
         "WeaponPreset": {
           "iconType": "bomb_100kg",
           "name": "100lb",
+          "isDefault": true,
           "ShowNodes": {
             "node": "wing_plate"
           },
@@ -1933,6 +1938,7 @@
         "WeaponPreset": {
           "iconType": "bomb_100kg",
           "name": "100lb",
+          "isDefault": true,
           "ShowNodes": {
             "node": "wing_plate"
           },
@@ -2058,6 +2064,7 @@
         "WeaponPreset": {
           "iconType": "bomb_100kg",
           "name": "100lb",
+          "isDefault": true,
           "ShowNodes": {
             "node": "wing_plate"
           },
@@ -2078,6 +2085,7 @@
         "WeaponPreset": {
           "iconType": "bomb_100kg",
           "name": "100lb",
+          "isDefault": true,
           "ShowNodes": {
             "node": "wing_plate"
           },
@@ -2098,6 +2106,7 @@
         "WeaponPreset": {
           "iconType": "bomb_100kg",
           "name": "100lb",
+          "isDefault": true,
           "ShowNodes": {
             "node": "wing_plate"
           },
@@ -2118,6 +2127,7 @@
         "WeaponPreset": {
           "iconType": "bomb_100kg",
           "name": "100lb",
+          "isDefault": true,
           "ShowNodes": {
             "node": "wing_plate"
           },
@@ -2138,6 +2148,7 @@
         "WeaponPreset": {
           "iconType": "bomb_100kg",
           "name": "100lb",
+          "isDefault": true,
           "ShowNodes": {
             "node": "wing_plate"
           },
@@ -2158,6 +2169,7 @@
         "WeaponPreset": {
           "iconType": "bomb_100kg",
           "name": "100lb",
+          "isDefault": true,
           "ShowNodes": {
             "node": "wing_plate"
           },

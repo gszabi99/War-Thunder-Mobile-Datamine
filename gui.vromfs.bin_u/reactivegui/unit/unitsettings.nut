@@ -32,9 +32,15 @@ function saveUnitSettings(unitName, settings) {
   eventbus_send("saveProfile", {})
 }
 
-let function loadSettingsOnce(unitName) {
+function loadSettingsOnce(unitName) {
   if (loadedSettings.get()?[unitName] == null && (unitName ?? "") != "")
     loadedSettings.mutate(@(v) v.$rawset(unitName, loadUnitSettings(unitName)))
+}
+
+function resetUnitSettings(unitName) {
+  if (isOnlineSettingsAvailable.get())
+    saveUnitSettings(unitName, {})
+  loadedSettings.mutate(@(v) v.$rawset(unitName, {}))
 }
 
 let OLD_SAVE_ID = "skinTuning" //24.05.2024
@@ -123,6 +129,14 @@ function getChosenBelts(unitName) {
   return loadedSettings.get()?[unitName].belts ?? {}
 }
 
+function mkSeenMods(unitNameW) {
+  let { unitSettings, updateUnitSettings } = mkUnitSettingsWatch(unitNameW)
+  let seenUnitMods = Computed(@() unitSettings.get()?.seenMods ?? {})
+  let setSeenUnitMods = @(seenMods) isEqual(seenMods, seenUnitMods.get()) ? null
+    : updateUnitSettings({ seenMods })
+  return { seenUnitMods, setSeenUnitMods }
+}
+
 return {
   mkUnitSettingsWatch
   mkIsAutoSkin
@@ -133,4 +147,6 @@ return {
   getWeaponPreset
   mkChosenBelts
   getChosenBelts
+  mkSeenMods
+  resetUnitSettings
 }

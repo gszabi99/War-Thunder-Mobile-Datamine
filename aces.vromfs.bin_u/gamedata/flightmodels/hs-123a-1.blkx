@@ -1901,7 +1901,11 @@
     "HideNodes": {
       "node": [
         "drop_fueltank",
-        "pylon_bomb5"
+        "pylon_bomb5",
+        "pylon_bomb4",
+        "pylon_bomb3",
+        "pylon_bomb2",
+        "pylon_bomb1"
       ]
     },
     "hideDmParts": {
@@ -1942,6 +1946,13 @@
         "WeaponPreset": {
           "iconType": "bomb_50kg_group",
           "name": "sc50",
+          "isDefault": true,
+          "ShowNodes": {
+            "node": [
+              "pylon_bomb1",
+              "pylon_bomb2"
+            ]
+          },
           "Weapon": [
             {
               "trigger": "bombs",
@@ -1972,42 +1983,24 @@
         "index": 2,
         "tier": 6,
         "order": 3,
-        "WeaponPreset": [
-          {
-            "iconType": "bomb_50kg",
-            "name": "sc50_mid",
-            "reqModification": "Hs-123_SC250",
-            "ShowNodes": {
-              "node": "pylon_bomb5"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "external": [
-                true,
-                true
-              ],
-              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
-              "separate": true,
-              "emitter": "bomb_4",
-              "bullets": 1
-            }
+        "WeaponPreset": {
+          "iconType": "bomb_250kg",
+          "name": "sc250_mid",
+          "reqModification": "Hs-123_SC250",
+          "ShowNodes": {
+            "node": "pylon_bomb5"
           },
-          {
-            "iconType": "bomb_250kg",
-            "name": "sc250_mid",
-            "reqModification": "Hs-123_SC250",
-            "Weapon": {
-              "trigger": "bombs",
-              "external": [
-                true,
-                true
-              ],
-              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-              "emitter": "bomb_5",
-              "bullets": 1
-            }
+          "Weapon": {
+            "trigger": "bombs",
+            "external": [
+              true,
+              true
+            ],
+            "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+            "emitter": "bomb_5",
+            "bullets": 1
           }
-        ]
+        }
       },
       {
         "index": 3,
@@ -2016,6 +2009,13 @@
         "WeaponPreset": {
           "iconType": "bomb_50kg_group",
           "name": "sc50",
+          "isDefault": true,
+          "ShowNodes": {
+            "node": [
+              "pylon_bomb3",
+              "pylon_bomb4"
+            ]
+          },
           "Weapon": [
             {
               "trigger": "bombs",

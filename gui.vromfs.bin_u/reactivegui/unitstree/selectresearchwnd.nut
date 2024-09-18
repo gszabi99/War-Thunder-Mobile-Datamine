@@ -16,6 +16,9 @@ let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { set_research_unit, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
+let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
+let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
 let WND_UID = "chooseResearch"
@@ -24,28 +27,44 @@ let defaultLineWidth = hdpxi(2)
 let defaultMargin = hdpx(10)
 let smallVertLineHeight = hdpx(20)
 let bigVertLineHeight = hdpx(50)
+let maxAmountOfUnitsOnScreen = (saSize[0] / (unitPlateTiny[0] + buttonsHGap)).tointeger()
 
-let needSelectResearch = keepref(Computed(@() myUnits.get().len() == 0
-  && isCampaignWithUnitsResearch.get()
+let needSelectResearch = keepref(Computed(@() isCampaignWithUnitsResearch.get()
   && currentResearch.get() == null
-  && null != unitsResearchStatus.get().findvalue(@(r) r.canResearch)))
+  && null != unitsResearchStatus.get().findvalue(@(r) r.canResearch || r.isResearched)
+  && null == myUnits.get().findindex(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {}))))
 
-let closeSelectResearch = @() removeModalWindow(WND_UID)
+function closeSelectResearch() {
+  sendUiBqEvent("first_country_choice", { id = "finish_select_research" })
+  removeModalWindow(WND_UID)
+}
 
 let mkSmallText = @(text, ovr = {}) {
   rendObj = ROBJ_TEXT
   text
 }.__update(fontTiny).__update(ovr)
 
-let mkUnitPlate = @(unit) {
-  size = unitPlateTiny
-  behavior = Behaviors.Button
-  children = [
-    mkUnitBg(unit)
-    mkUnitImage(unit)
-    mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
-    mkUnitRank(unit)
-  ]
+function mkUnitPlate(unit) {
+  let stateFlags = Watched(0)
+  let key = {}
+
+  return @() {
+    key
+    watch = stateFlags
+    size = unitPlateTiny
+    behavior = Behaviors.Button
+    onElemState = withTooltip(stateFlags, key, @() {
+      content = unitInfoPanel({}, mkPlatoonOrUnitTitle, Watched(unit)),
+      flow = FLOW_HORIZONTAL
+    })
+    onDetach = tooltipDetach(stateFlags)
+    children = [
+      mkUnitBg(unit)
+      mkUnitImage(unit)
+      mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
+      mkUnitRank(unit)
+    ]
+  }
 }
 
 let lineCtor = @(commands, ovr = {}) {
@@ -95,6 +114,8 @@ let function unitsBlock(startUnit) {
 
     return resTableKeys
       .filter(@(unit) (serverConfigs.get()?.allUnits[unit].mRank ?? 0) >= maxMRank - 1)
+      .sort(@(a, b) serverConfigs.get()?.allUnits[b].mRank <=> serverConfigs.get()?.allUnits[a].mRank)
+      .slice(0, maxAmountOfUnitsOnScreen)
       .sort(@(a, b) nodes.get()[a].y <=> nodes.get()[b].y)
   })
   return @() {
@@ -161,9 +182,14 @@ let wndContent = @(startUnit, allCountries, curCountry) {
   ]
 }
 
-let acceptChooseResearch = @(unitId) set_research_unit(curCampaign.get(), unitId)
+function acceptChooseResearch(unitId) {
+  sendUiBqEvent("first_country_choice", { id = selectedCountry.get() })
+  set_research_unit(curCampaign.get(), unitId)
+}
 
 function openImpl() {
+  sendUiBqEvent("first_country_choice", { id = "start_select_research" })
+
   let allCountries = mkCountries(nodes)
   let curCountry = Computed(@() allCountries.get().contains(selectedCountry.get())
     ? selectedCountry.get()

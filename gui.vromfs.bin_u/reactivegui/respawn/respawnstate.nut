@@ -52,6 +52,7 @@ let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
     bullets = loadUnitBulletsChoice(info?.name)?.commonWeapons.primary.fromUnitTags ?? {}
     mods = info?.items ?? defMods
     isPremium = info?.isPremium ?? false
+    isCollectible = info?.isCollectible ?? false
     isUpgraded = info?.isUpgraded ?? false
     modPresetCfg = info?.modPresetCfg ?? {}
     costWp = info?.costWp ?? 0

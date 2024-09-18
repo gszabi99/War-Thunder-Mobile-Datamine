@@ -256,4 +256,5 @@ return {
   startCurNewbieMission
   startDebugNewbieMission
   startLocalMultiplayerMission
+  firstBattlesReward
 }

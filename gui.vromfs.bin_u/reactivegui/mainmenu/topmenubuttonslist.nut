@@ -39,7 +39,7 @@ let openConfirmationTutorialMsg = @() openMsgBox({
   buttons = [
     { id = "cancel", isCancel = true }
     { id = "startTutorial", styleId = "PRIMARY", isDefault = true,
-      cb = @() notAvailableForSquadMsg(@() startTutor(firstBattleTutor.value))
+      cb = @() notAvailableForSquadMsg(@() startTutor(firstBattleTutor.get(), hangarUnit.get()?.name))
     }
   ]
 })

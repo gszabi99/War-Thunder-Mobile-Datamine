@@ -11,6 +11,7 @@ let { enable_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { roundPrice } = require("%appGlobals/pServer/pServerMath.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { balanceWp, balanceGold } = require("%appGlobals/currenciesState.nut")
 
 let SEEN_MODS = "seenMods"
 let seenMods = mkWatched(persist, "SEEN_MODS", {})
@@ -72,33 +73,6 @@ let unseenModsByCategory = Computed(function() {
   return res.filter(@(v) v.len() > 0)
 })
 
-function unseenSlotModsByCategory(slotUnit) {
-  let slotModsByCategory = Computed(function() {
-    let result = {}
-    foreach(modName, mod in modsPresets.get()?[slotUnit.get()?.modPreset] ?? {}) {
-      if (mod?.isHidden)
-        continue
-      if (mod.group not in result)
-        result[mod.group] <- {}
-      result[mod.group][modName] <- mod
-    }
-    return result
-  })
-
-  return Computed(function() {
-    let res = {}
-    foreach (cat, modsInCat in slotModsByCategory.get()) {
-      res[cat] <- {}
-      foreach (mod in modsInCat)
-        if (mod.name not in seenMods.get()?[slotUnit.get()?.name]
-            && (mod.reqLevel ?? 0) <= (slotUnit.get()?.level ?? 0)
-            && mod.name not in slotUnit.get()?.mods)
-          res[cat][mod.name] <- true
-    }
-    return res.filter(@(v) v.len() > 0)
-  })
-}
-
 function openUnitModsWnd() {
   curCategoryId(modsCategories.value?[0])
   isUnitModsOpen(true)
@@ -120,6 +94,13 @@ function getModCost(mod, allModsCost) {
   if (costWpWeight <= 0)
     return costGold
   return roundPrice(costWpWeight.tofloat() * allModsCost)
+}
+
+function hasEnoughCurrencies(mod, allModsCost) {
+  let { costWpWeight = 0, costGold = 0 } = mod
+  if (costWpWeight <= 0)
+    return costGold <= balanceGold.get()
+  return costWpWeight.tofloat() * allModsCost <= balanceWp.get()
 }
 
 let mkCurUnitModCostComp = @(mod) Computed(@() getModCost(mod, curUnitAllModsCost.value))
@@ -214,6 +195,6 @@ return {
 
   setCurUnitSeenModsCurrent
   unseenModsByCategory
-  unseenSlotModsByCategory
   onTabChange
+  hasEnoughCurrencies
 }

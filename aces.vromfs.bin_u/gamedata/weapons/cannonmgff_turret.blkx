@@ -603,7 +603,7 @@
       }
     }
   ],
-  "mgff_turret_ap": {
+  "mgff_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.117,
@@ -1338,7 +1338,7 @@
       }
     ]
   },
-  "mgff_turret_ap_he": {
+  "mgff_turret_universal": {
     "bullet": [
       {
         "mass": 0.117,

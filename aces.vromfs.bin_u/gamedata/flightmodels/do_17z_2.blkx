@@ -2012,6 +2012,7 @@
           {
             "iconType": "bomb_50kg_group",
             "name": "sc50",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",

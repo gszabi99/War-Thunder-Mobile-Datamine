@@ -6,7 +6,9 @@ let io = require("io")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { sendNetEvent, CmdApplyMyBattleResultOnExit } = require("dasevents")
+let { get_local_custom_settings_blk } = require("blkGetters")
 let { isEqual } = require("%sqstd/underscore.nut")
+let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { EventBattleResult, EventResultMPlayers } = require("%appGlobals/sqevents.nut")
 let { register_command } = require("console")
 let { myUserId, myUserName } = require("%appGlobals/profileStates.nut")
@@ -34,6 +36,7 @@ let playersCommonStats = mkWatched(persist, "playersCommonStats", {})
 let connectFailedData = mkWatched(persist, "connectFailedData", null)
 let questProgressDiff = mkWatched(persist, "questProgressDiff", null)
 let unitWeaponry = mkWatched(persist, "unitWeaponry", null)
+let completedTutorials = mkWatched(persist, "completedTutorials", {})
 let roomInfo = Computed(@() lastRoom.get()?.public.filter(@(_, key) key in exportRoomParams))
 
 let battleResult = Computed(function() {
@@ -60,6 +63,7 @@ let battleResult = Computed(function() {
   }
   if (unitWeaponry.get() != null)
     res = { unitWeaponry = unitWeaponry.get() }.__merge(res)
+  res.completedTutorials <- completedTutorials.get()
   return res
 })
 
@@ -67,7 +71,21 @@ let sendBattleResult = @() eventbus_send("BattleResult", battleResult.value)
 battleResult.subscribe(@(_) resetTimeout(0.1, sendBattleResult))
 eventbus_subscribe("RequestBattleResult", @(_) sendBattleResult())
 
-singleMissionResult.subscribe(@(_) debugBattleResult(null))
+function updateCompletedTutorials() {
+  let blk = get_local_custom_settings_blk()?.tutorials
+  let list = {}
+  if (isDataBlock(blk))
+    eachParam(blk, function(isCompleted, id) {
+      if (isCompleted)
+       list[id] <- true
+    })
+  completedTutorials.set(list)
+}
+
+singleMissionResult.subscribe(function(_) {
+  debugBattleResult.set(null)
+  updateCompletedTutorials()
+})
 
 isInBattle.subscribe(@(v) v ? questProgressDiff.set(null) : null)
 eventbus_subscribe("BattleResultQuestProgressDiff", @(v) questProgressDiff.set(v))
@@ -127,7 +145,8 @@ function onBattleResult(evt, _eid, comp) {
       teams = get_mp_tbl_teams()
       userName = myUserName.value
     }))
-  debugBattleResult(null)
+  debugBattleResult.set(null)
+  updateCompletedTutorials()
 }
 
 register_es("battle_result_es",

@@ -1199,7 +1199,7 @@
       }
     }
   ],
-  "303_turret_ap": {
+  "303_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.0095,
@@ -1979,7 +1979,7 @@
       }
     ]
   },
-  "303_turret_api": {
+  "303_turret_universal": {
     "bullet": [
       {
         "mass": 0.0095,

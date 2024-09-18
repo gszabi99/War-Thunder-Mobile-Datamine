@@ -1,5 +1,92 @@
 return {
   "byUnit": {
+    "a-20g": {
+      "": "ussr_p_47d_ussr"
+    },
+    "ar_2": {
+      "": "ussr_yak_2_kabb"
+    },
+    "b-17e": {
+      "": "usa_p43a_1_usaaf"
+    },
+    "b-17g": {
+      "": "usa_pby_5a_early_a"
+    },
+    "b-17g_prem": {
+      "": "usa_tbd_1_1938"
+    },
+    "b_24d": {
+      "": "usa_p38k_usaaf"
+    },
+    "b_25j_20": {
+      "": "usa_p-47n-15"
+    },
+    "b_26b_c": {
+      "": "germ_fw_190c"
+    },
+    "b_34": {
+      "": "usa_p_400"
+    },
+    "bb-1": {
+      "": "ussr_yak_2_kabb"
+    },
+    "bf-109a_1": {
+      "": "germ_he51c1"
+    },
+    "bf-109b_2": {
+      "": "germ_bf_109e_4_green_early"
+    },
+    "bf-109c_1": {
+      "": "germ_bf_109c_1"
+    },
+    "bf-109e-1": {
+      "": "germ_bf_109e_3"
+    },
+    "bf-109e-3": {
+      "": "germ_bf_109e_3"
+    },
+    "bf-109e-3_prem": {
+      "": "germ_bf_109g_14"
+    },
+    "bf-109e-4": {
+      "": "germ_bf_109e_4_green_early"
+    },
+    "bf-109f-2": {
+      "": "germ_bf_109f_4"
+    },
+    "bf-109f-4": {
+      "": "germ_bf_109f_4"
+    },
+    "bf-109f-4_trop": {
+      "": "germ_bf_109f_4_trop"
+    },
+    "bf-109g-14": {
+      "": "germ_bf_109g_14"
+    },
+    "bf-109g-14_prem": {
+      "": "germ_bf_109a"
+    },
+    "bf-109g-2": {
+      "": "germ_bf_109g_2"
+    },
+    "bf-109g-6": {
+      "": "germ_bf_109f_4"
+    },
+    "bf-109k-4": {
+      "": "usa_p_400"
+    },
+    "bf-109z": {
+      "": "germ_bf_109z"
+    },
+    "bf-110f-2": {
+      "": "germ_bf_110f_2"
+    },
+    "bf-110g-2": {
+      "": "germ_bf_110g_2"
+    },
+    "bf-110g-2_prem": {
+      "": "usa_f4u_4b"
+    },
     "cn_cm11": {
       "": "us_camo_modern_green",
       "upgraded": "ger_camo_carc"
@@ -95,6 +182,90 @@ return {
     "cn_ztz_96": {
       "": "ussr_camo_green",
       "upgraded": "cn_camo_sand_ltgreen_dkgreen_lines"
+    },
+    "db_3b": {
+      "": "ussr_db_3b"
+    },
+    "do_17e_1": {
+      "": "germ_dornier_do_17e_1"
+    },
+    "do_17z_2": {
+      "": "germ_bf_109e_3"
+    },
+    "do_335a_0": {
+      "": "germ_do335a_1"
+    },
+    "do_335a_1": {
+      "": "germ_do335a_1"
+    },
+    "do_335b_2": {
+      "": "germ_do335a_1"
+    },
+    "douglas_ad_2": {
+      "": "usa_f8f1b_bearcat"
+    },
+    "douglas_ad_4": {
+      "": "usa_f4u_4b"
+    },
+    "er-2_ach30b_early": {
+      "": "germ_do335a_1"
+    },
+    "er-2_m105_mv3": {
+      "": "ussr_yak_1_early_green"
+    },
+    "er-2_m105r_lu2b": {
+      "": "ussr_yak_9_green"
+    },
+    "f2a-1": {
+      "": "usa_tbd_1_1938"
+    },
+    "f2a-3": {
+      "": "usa_sb2u_3"
+    },
+    "f2g-1": {
+      "": "usa_pby_5a_early_a"
+    },
+    "f2g-1_prem": {
+      "": "usa_f2g_1_race_57"
+    },
+    "f3f-2": {
+      "": "usa_tbd_1_1938"
+    },
+    "f4f-3": {
+      "": "usa_sb2u_3"
+    },
+    "f4f_4": {
+      "": "usa_sb2u_3"
+    },
+    "f4f_4_prem": {
+      "": "ussr_la_11_standard"
+    },
+    "f4u-1a": {
+      "": "usa_sb2u_3"
+    },
+    "f4u-1c": {
+      "": "usa_f4u_4b"
+    },
+    "f4u-1d": {
+      "": "usa_f4u_4b"
+    },
+    "f4u-4b": {
+      "": "usa_f4u_4b"
+    },
+    "f4u_4": {
+      "": "usa_f4u_4b"
+    },
+    "f6f_3": {
+      "": "usa_f4u_4b"
+    },
+    "f7f1": {
+      "": "usa_f8f1b_bearcat"
+    },
+    "f8f1": {
+      "": "usa_f8f1b_bearcat"
+    },
+    "f8f1b": {
+      "": "usa_f8f1b_bearcat"
     },
     "fr_amx_10rc": {
       "": "fr_camo_vert_olive_arme",
@@ -262,6 +433,48 @@ return {
     "fr_tpk_641_vpc": {
       "": "fr_camo_vert_olive_arme",
       "forest": "fr_camo_carc"
+    },
+    "fw-189a-1": {
+      "": "germ_fw_189a_1"
+    },
+    "fw-190a-4": {
+      "": "germ_bf_109f_4"
+    },
+    "fw-190a-5": {
+      "": "germ_fw-190d-9"
+    },
+    "fw-190a-5_cannons": {
+      "": "germ_fw-190d-9"
+    },
+    "fw-190a-5_u2": {
+      "": "germ_fw-190d-9"
+    },
+    "fw-190a-8": {
+      "": "germ_fw_190_a8"
+    },
+    "fw-190c": {
+      "": "germ_fw_190c"
+    },
+    "fw-190d-12": {
+      "": "germ_fw-190d-9"
+    },
+    "fw-190d-9": {
+      "": "germ_fw-190d-9"
+    },
+    "fw-190f-8": {
+      "": "germ_fw_190a_5"
+    },
+    "fw_190a_1": {
+      "": "germ_fw_190a_1"
+    },
+    "fw_190a_5_u14": {
+      "": "germ_fw-190d-9"
+    },
+    "fw_190a_5_u14_prem": {
+      "": "germ_fw_190a_5_u14_yellow_1"
+    },
+    "fw_200c_1": {
+      "": "germ_fw_200c_1"
     },
     "germ_artilleriefahrprahm_typ_d3": {
       "": "camo_blackgray_net",
@@ -628,6 +841,96 @@ return {
       "forest": "ger_camo_bronzegruen",
       "winter": "ussr_camo_winter"
     },
+    "he-111h-16_winter": {
+      "": "germ_he_111h_16_a_winter"
+    },
+    "he-177a-5": {
+      "": "germ_he_177_a5"
+    },
+    "he51b1": {
+      "": "germ_he51b1_spanish"
+    },
+    "he51b1_prem": {
+      "": "germ_he51b1_spanish_trop"
+    },
+    "he51c1": {
+      "": "germ_he51c1"
+    },
+    "he_112a_0": {
+      "": "usa_p_40c_metal"
+    },
+    "he_112b_0": {
+      "": "germ_me_410a_1"
+    },
+    "he_112v_5": {
+      "": "usa_p_40c_metal"
+    },
+    "hs-123a-1": {
+      "": "germ_hs_123a1_late"
+    },
+    "hs-129b-3": {
+      "": "germ_fw_200c_1"
+    },
+    "i-153_m62": {
+      "": "ussr_i_180s"
+    },
+    "i-15_1934": {
+      "": "ussr_il_10"
+    },
+    "i-15_1935": {
+      "": "ussr_il_10"
+    },
+    "i-15_1935_prem": {
+      "": "usa_p_40c_metal"
+    },
+    "i-15bis": {
+      "": "ussr_i_180s"
+    },
+    "i-16_type10": {
+      "": "ussr_il_10"
+    },
+    "i-16_type18": {
+      "": "ussr_la_5f_type39"
+    },
+    "i-16_type28": {
+      "": "ussr_yak_2_kabb"
+    },
+    "i-16_type5": {
+      "": "ussr_tandem_mai"
+    },
+    "i_180": {
+      "": "ussr_i_180s_red"
+    },
+    "i_180_prem": {
+      "": "ussr_tandem_mai"
+    },
+    "i_185_m82": {
+      "": "ussr_tandem_mai"
+    },
+    "il-10": {
+      "": "ussr_il_10"
+    },
+    "il-10_1946": {
+      "": "ussr_il_10"
+    },
+    "il-10_1946_prem": {
+      "": "ussr_il_10_winter44"
+    },
+    "il-2i": {
+      "": "ussr_il_10"
+    },
+    "il-2m": {
+      "": "ussr_il_2m_type3_1945"
+    },
+    "il_2_1941": {
+      "": "ussr_yak_1_early_green"
+    },
+    "il_2m_1943": {
+      "": "ussr_il_4"
+    },
+    "il_4": {
+      "": "ussr_il_4"
+    },
     "il_centurion_shot_kal_gimel": {
       "": "us_camo_olive",
       "upgraded": "isr_camo_sandgray"
@@ -739,6 +1042,9 @@ return {
     "it_vcc_80_hitfist_60": {
       "": "it_camo_green",
       "upgraded": "it_camo_modern_three_color"
+    },
+    "itp_m1": {
+      "": "ussr_itp_m1"
     },
     "jp_armoredcruiser_ikoma": {
       "": "camo_darkgrey_big_spots"
@@ -874,6 +1180,177 @@ return {
       "forest": "jp_camo_post_biege_gray_green_fuji",
       "winter": "jp_camo_winter_late"
     },
+    "ju-188a-2": {
+      "": "germ_ju_188a_2_3color"
+    },
+    "ju-288c": {
+      "": "germ_fw_189a_1"
+    },
+    "ju-87b-2": {
+      "": "germ_me_410a_1"
+    },
+    "ju-87d-3": {
+      "": "germ_me_410a_1"
+    },
+    "ju-87g_2": {
+      "": "germ_me_410a_1"
+    },
+    "ju-87r-2": {
+      "": "germ_tropic_ju_87r_2"
+    },
+    "ju_87d_5": {
+      "": "germ_me_410a_1"
+    },
+    "la-11": {
+      "": "ussr_la_11_standard"
+    },
+    "la-11_prem": {
+      "": "ussr_la_11_standard_red"
+    },
+    "la-5_type37_early": {
+      "": "ussr_la_5f_type39"
+    },
+    "la-5_type39": {
+      "": "ussr_la_5f_type39"
+    },
+    "la-5fn": {
+      "": "ussr_yak_3t_gray"
+    },
+    "la-7": {
+      "": "ussr_yak_3t_gray"
+    },
+    "la-7b-20": {
+      "": "ussr_la_7b_20"
+    },
+    "la_9": {
+      "": "ussr_tandem_mai"
+    },
+    "lagg-3-11": {
+      "": "ussr_lagg_3_series_11"
+    },
+    "lagg-3-8": {
+      "": "ussr_sb_2m_100"
+    },
+    "me-410a-1": {
+      "": "germ_me_410a_1"
+    },
+    "me-410a-1_prem": {
+      "": "germ_bf_110f_2"
+    },
+    "me-410a-1_u2": {
+      "": "germ_me_410a_1"
+    },
+    "me_264": {
+      "": "germ_ta152c"
+    },
+    "p-36a": {
+      "": "usa_p_40c_metal"
+    },
+    "p-36c": {
+      "": "usa_p43a_1_usaaf"
+    },
+    "p-36g": {
+      "": "usa_p43a_1_usaaf"
+    },
+    "p-38k": {
+      "": "usa_p38k_usaaf"
+    },
+    "p-39n_su": {
+      "": "usa_p-47n-15"
+    },
+    "p-39q_5": {
+      "": "usa_p-47n-15"
+    },
+    "p-400": {
+      "": "usa_p_400"
+    },
+    "p-400_prem": {
+      "": "usa_p_51_mk1a_trop"
+    },
+    "p-40c": {
+      "": "usa_p_40c_metal"
+    },
+    "p-40e": {
+      "": "usa_p38k_usaaf"
+    },
+    "p-40f_10": {
+      "": "usa_p38k_usaaf"
+    },
+    "p-43a-1": {
+      "": "usa_p43a_1_usaaf"
+    },
+    "p-47d-28": {
+      "": "usa_p_40c_metal"
+    },
+    "p-47d-28_prem": {
+      "": "usa_f4u_4b"
+    },
+    "p-47d_22_re": {
+      "": "usa_p43a_1_usaaf"
+    },
+    "p-47d_ussr": {
+      "": "usa_p-47n-15"
+    },
+    "p-47n-15": {
+      "": "usa_p_40c_metal"
+    },
+    "p-51_mk1a_usaaf": {
+      "": "usa_p_51_mk1a_trop"
+    },
+    "p-51c-10-nt": {
+      "": "usa_p_40c_metal"
+    },
+    "p-51d-20-na": {
+      "": "usa_p_40c_metal"
+    },
+    "p-51d-30_usaaf_korea": {
+      "": "usa_p_40c_metal"
+    },
+    "p-51d-5": {
+      "": "usa_p_40c_metal"
+    },
+    "p-51h-5_na": {
+      "": "usa_p_40c_metal"
+    },
+    "p-63a-10": {
+      "": "usa_tbd_1_1938"
+    },
+    "p-63a-5": {
+      "": "usa_p38k_usaaf"
+    },
+    "p-63c-5": {
+      "": "usa_p38k_usaaf"
+    },
+    "pby-5a": {
+      "": "usa_sb2u_3"
+    },
+    "pe-8_m82": {
+      "": "ussr_pe_8_m82"
+    },
+    "sb2c_4": {
+      "": "usa_f4u_4b"
+    },
+    "sb2u-2": {
+      "": "usa_sb2u_3"
+    },
+    "sb2u-3": {
+      "": "usa_sb2u_3"
+    },
+    "sb2u-3_prem": {
+      "": "usa_p_40c_metal"
+    },
+    "sb_2m_100": {
+      "": "usa_p_40c_metal"
+    },
+    "sbd-3": {
+      "": "usa_f4u_4b"
+    },
+    "su-2_mv5": {
+      "": "ussr_yak_2_kabb"
+    },
+    "su_6_single": {
+      "": "ussr_tandem_mai"
+    },
     "sw_cv_90105_tml": {
       "": "se_camo_green",
       "upgraded": "se_camo_modern_winter_m90"
@@ -905,6 +1382,15 @@ return {
     "sw_veak_40": {
       "": "se_camo_green",
       "upgraded": "se_camo_modern_deform"
+    },
+    "ta-152c": {
+      "": "germ_ta152c"
+    },
+    "tandem_mai": {
+      "": "ussr_tandem_mai"
+    },
+    "tbd-1_1938": {
+      "": "usa_tbd_1_1938"
     },
     "uk_a27m_cromwell_5": {
       "": "uk_camo_light_stone_slate_grey",
@@ -1907,6 +2393,60 @@ return {
     "ussr_zsu_57_2_reskin3": {
       "": "ussr_camo_green",
       "fiction": "ussr_t_34_85_zis_53_dislike"
+    },
+    "xp-50": {
+      "": "usa_pby_5a_early_a"
+    },
+    "xp-55": {
+      "": "usa_xp_55_olive_drab_a"
+    },
+    "yak-1_early": {
+      "": "ussr_yak_1_early_green"
+    },
+    "yak-3": {
+      "": "ussr_yak_3"
+    },
+    "yak-3p": {
+      "": "ussr_yak_3"
+    },
+    "yak-3t": {
+      "": "ussr_yak_3t_gray"
+    },
+    "yak-3u": {
+      "": "ussr_la_11_standard"
+    },
+    "yak-7b": {
+      "": "ussr_yak_9_green"
+    },
+    "yak-9": {
+      "": "ussr_yak_9_green"
+    },
+    "yak-9_prem": {
+      "": "ussr_yak_9_normandia"
+    },
+    "yak-9m": {
+      "": "ussr_yak_9_normandia"
+    },
+    "yak-9m_prem": {
+      "": "ussr_yak_9_green"
+    },
+    "yak-9p": {
+      "": "ussr_la_7b_20"
+    },
+    "yak-9t": {
+      "": "ussr_yak_9_green"
+    },
+    "yak-9u": {
+      "": "ussr_yak_3t_gray"
+    },
+    "yak-9ut": {
+      "": "ussr_yak_3t_gray"
+    },
+    "yak_2_kabb": {
+      "": "ussr_yak_2_kabb"
+    },
+    "yp-38": {
+      "": "usa_pby_5a_early_a"
     }
   },
   "byUnitType": {

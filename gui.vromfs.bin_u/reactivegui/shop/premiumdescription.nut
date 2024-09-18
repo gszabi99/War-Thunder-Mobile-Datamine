@@ -2,19 +2,17 @@ from "%globalsDarg/darg_library.nut" import *
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let { gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { bgShadedDark, bgHeader, bgMessage } = require("%rGui/style/backgrounds.nut")
 
 
 let premDescWndUid = "prem_desc_wnd_uid"
 
 let isPremiumDescriptionWndVisible = Watched(false)
-let premiumDescriptionWndBg = 0xDC000000
 let premiumDescriptionWidth = sw(50)
 let premiumDescriptionHeaderHeight = sh(8)
-let premiumDescriptionHeaderBg = 0x0A585858
-let premiumDescriptionDecorativeLineBg = 0xFFD4D4D4
 
 let premiumBonusesCfg = Computed(@() serverConfigs.value?.gameProfile.premiumBonuses)
 let bonusMultText = @(v) $"{v}x"
@@ -26,27 +24,18 @@ let infoText = Computed(function() {
     bonusPlayerExp = expMul
     bonusWp = bonusMultText(premiumBonusesCfg.value?.wpMul || 1.0)
     bonusUnitExp = expMul
+    bonusGold = bonusMultText(premiumBonusesCfg.get()?.goldMul || 1.0)
   })
 })
 
 let closePremiumDescriptionWnd = @() isPremiumDescriptionWndVisible(false)
 
-let decorativeLine = {
-  rendObj = ROBJ_IMAGE
-  image = gradTranspDoubleSideX
-  color = premiumDescriptionDecorativeLineBg
-  size = [ premiumDescriptionWidth, hdpx(6) ]
-}
-
-let premiumDescriptionHeader = {
-  rendObj = ROBJ_IMAGE
-  image = gradTranspDoubleSideX
-  color = premiumDescriptionHeaderBg
-  size = [ premiumDescriptionWidth, premiumDescriptionHeaderHeight ]
+let premiumDescriptionHeader = bgHeader.__merge({
+  size = [ flex(), premiumDescriptionHeaderHeight ]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = { rendObj = ROBJ_TEXT, text = loc("charServer/entitlement/PremiumAccount") }.__update(fontMedium)
-}
+})
 
 let premiumDescription = {
   flow = FLOW_VERTICAL
@@ -55,22 +44,19 @@ let premiumDescription = {
   halign = ALIGN_CENTER
   size = [ premiumDescriptionWidth, SIZE_TO_CONTENT ]
   children = [
-    decorativeLine
     premiumDescriptionHeader
     {
-      rendObj = ROBJ_9RECT
-      image = gradTranspDoubleSideX
-      padding = [ hdpx(24), 0 ]
+      padding = hdpx(48)
       size = [ flex(), SIZE_TO_CONTENT ]
       texOffs = [0 , gradDoubleTexOffset]
       screenOffs = [0, hdpx(250)]
-      color = premiumDescriptionWndBg
       flow = FLOW_HORIZONTAL
+      gap = hdpx(48)
       valign = ALIGN_CENTER
       children = [
         {
           rendObj = ROBJ_IMAGE
-          image = Picture("ui/gameuiskin/shop_premium_slot.avif")
+          image = Picture("ui/gameuiskin/shop_premium_slot.avif:0:P")
           keepAspect = KEEP_ASPECT_FIT
           size = flex()
           minHeight = sh(30)
@@ -87,7 +73,6 @@ let premiumDescription = {
         }.__update(fontSmall)
       ]
     }
-    decorativeLine
   ]
 }
 
@@ -98,21 +83,32 @@ let backBtn = {
 }
 
 let premiumDescriptionWnd = {
-  rendObj = ROBJ_SOLID
   size = flex()
-  color = premiumDescriptionWndBg
   padding = saBordersRv
   behavior = Behaviors.Button
   onClick = @() closePremiumDescriptionWnd()
   children = [
     backBtn
-    premiumDescription
+    {
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      children = [
+        bgMessage.__merge({size = flex()})
+        premiumDescription
+      ]
+    }
   ]
 }
 
+let premiumDescriptionWndWithBg = bgShadedDark.__merge({
+  size = flex()
+  onClick = closePremiumDescriptionWnd()
+  children = premiumDescriptionWnd
+})
+
 isPremiumDescriptionWndVisible.subscribe(function(isOpened) {
   if (isOpened) {
-    addModalWindow(premiumDescriptionWnd.__merge({
+    addModalWindow(premiumDescriptionWndWithBg.__merge({
       key = premDescWndUid
       hotkeys = [[btnBEscUp, { action = closePremiumDescriptionWnd }]]
       onClick = @() closePremiumDescriptionWnd()

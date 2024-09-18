@@ -165,6 +165,8 @@ let weaponTypesLoc = {
   rockets = rocketLoc
 }
 
+let getBulletBeltDesc = @(id) id == "" ? null : loc($"modification/air/machinegun_belt_{getLocIdPrefixByCaliber(id)}/desc")
+
 let getWeaponTypeName = @(id) $"{loc($"weapon/{weaponTypesLoc[id][1]}")} {loc($"weapons_types/{weaponTypesLoc[id][0]}")}"
 
 let getBulletBeltShortName = @(id) id == "" ? loc("default/name")
@@ -188,4 +190,5 @@ return {
   getWeaponCaliber
   getBulletBeltShortName
   getBulletBeltFullName
+  getBulletBeltDesc
 }

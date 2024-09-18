@@ -33,9 +33,9 @@ let advertSize = hdpxi(60)
 let glareWidth = sh(8)
 let goodsGlareAnimDuration = 0.2
 
-let offerW = hdpx(325)
-let offerH = hdpx(120)
-let offerPad = [hdpx(10), hdpx(20)]
+let offerW = hdpx(332)
+let offerH = hdpx(136)
+let offerPad = [hdpx(5), hdpx(20)]
 let titlePadding = hdpx(33)
 
 let pricePlateH = goodsH - goodsBgH
@@ -88,14 +88,14 @@ let borderBg = {
   borderWidth = 2
 }
 
-let mkFitCenterImg = @(img) {
+let mkFitCenterImg = @(img, ovr = {}) {
   size = flex()
   rendObj = ROBJ_IMAGE
   image = Picture(img)
   keepAspect = KEEP_ASPECT_FIT
   imageHalign = ALIGN_CENTER
   imageValign = ALIGN_CENTER
-}
+}.__update(ovr)
 
 let mkGoodsImg = @(img, fallbackImg = null, ovr = {}) {
   size = flex()
@@ -548,16 +548,31 @@ function mkTimeLeft(endTime, ovr = {}) {
     watch = countdownText
     halign = ALIGN_RIGHT
     text = countdownText.get()
-  }.__update(fontSmall, ovr))
+  }.__update(fontTinyAccented, ovr))
 }
 
-function mkOfferTexts(title, endTime, addTitle = "") {
+function mkOfferTexts(title, endTime) {
   let titleComp = textArea({
     halign = ALIGN_RIGHT
     vplace = ALIGN_BOTTOM
-    text = " ".concat(addTitle, utf8ToUpper(title))
-  }.__update(fontSmall))
-  titleComp.fontSize = getFontSizeToFitWidth(titleComp, offerW - (2 * offerPad[1]), fontVeryTiny.fontSize)
+    text = utf8ToUpper(title)
+  }.__update(fontVeryTinyAccented))
+  return {
+    size = flex()
+    margin = offerPad
+    children = [
+      mkTimeLeft(endTime)
+      titleComp
+    ]
+  }
+}
+
+function mkAirBranchOfferTexts(title, unitName, endTime) {
+  let titleComp = textArea({
+    halign = ALIGN_RIGHT
+    vplace = ALIGN_BOTTOM
+    text = "\n".concat(utf8ToUpper(title),utf8ToUpper(unitName))
+  }.__update(fontVeryTinyAccented))
   return {
     size = flex()
     margin = offerPad
@@ -676,6 +691,7 @@ return {
   mkOfferCommonParts
   oldAmountStrikeThrough
   mkOfferTexts
+  mkAirBranchOfferTexts
   mkFreeAdsGoodsTimeProgress
   underConstructionBg
   mkSquareIconBtn

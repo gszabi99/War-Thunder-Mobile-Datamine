@@ -7,6 +7,9 @@ let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
 
 let btnH = hdpx(103)
 
+let aircraftCrosshairTypesList = getHudConfigParameter("crosshairAir")
+let defaultIndex = 0
+
 let mkImage = @(img, size) {
   size = [flex(), btnH]
   halign = ALIGN_CENTER
@@ -19,12 +22,17 @@ let mkImage = @(img, size) {
   }
 }
 
-function mkImageContent(value) {
-  function mkImageSize(path) {
-    local parts = path.tostring().split(":")
-    return [hdpx(parts?[1].tointeger() ?? flex()), hdpx(parts?[2].tointeger() ?? (btnH / 2))]
+let getCrosshairIconCfg = memoize(function(id) {
+  local parts = id.split(":")
+  return {
+    size = [oddPx(parts?[1].tointeger() ?? 23), oddPx(parts?[2].tointeger() ?? 23)]
+    icon = $"ui/gameuiskin#{parts[0]}"
   }
-  return mkImage(Picture($"ui/gameuiskin#{value}"), mkImageSize(value))
+})
+
+function mkImageContent(value) {
+  let { icon, size } = getCrosshairIconCfg(value)
+  return mkImage(Picture(icon), size)
 }
 
 function mkCrosshairTypeValue(defValue, validate) {
@@ -45,21 +53,21 @@ function mkCrosshairTypeValue(defValue, validate) {
   return value
 }
 
-let aircraftCrosshairTypesList = getHudConfigParameter("crosshair")
-let defaultIndex = 0
 let currentCrosshairType = mkCrosshairTypeValue(defaultIndex,
   @(idx) aircraftCrosshairTypesList?[idx] ? idx : defaultIndex)
+let currentCrosshairIconCfg = Computed(@() getCrosshairIconCfg(aircraftCrosshairTypesList[currentCrosshairType.get()]))
+
 let crosshairType = {
   locId = $"options/crosshairType"
   ctrlType = OCT_LIST
-  value = Computed(@() aircraftCrosshairTypesList?[currentCrosshairType.get()] ?? defaultIndex)
-  list = aircraftCrosshairTypesList
-  mkContentCtor = @(v, _, _) mkImageContent(v)
-  setValue = @(value) currentCrosshairType.set(aircraftCrosshairTypesList.findindex(@(v) v == value))
+  value = currentCrosshairType
+  list = aircraftCrosshairTypesList.map(@(_, idx) idx)
+  mkContentCtor = @(v, _, _) mkImageContent(aircraftCrosshairTypesList?[v])
 }
 
 return {
   crosshairOptions = [
     crosshairType
   ]
+  currentCrosshairIconCfg
 }

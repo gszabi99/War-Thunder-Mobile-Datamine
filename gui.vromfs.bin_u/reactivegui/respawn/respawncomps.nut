@@ -25,10 +25,11 @@ let smallGap = hdpx(8)
 let beltImgSize = evenPx(75)
 let imgSize = evenPx(100)
 let padding = hdpxi(5)
+let defPadding = hdpxi(3)
 let weaponSize = imgSize + 2 * padding
 let weaponGroupWidth = hdpx(600)
 
-let defaultTitle = @(w) format(loc("weapons/counter/right/short"), w?.count ?? 1)
+let defaultTitle = @(w) format(loc("weapons/counter/right/short"), (w?.count ?? 1) * (w?.weapons[0].totalBullets ?? 1))
 
 function caliberTitle(w) {
   let { caliber = null } = w.bulletSets.findvalue(@(_) true)
@@ -131,27 +132,27 @@ function commonWeaponIcon(w) {
   return iconType == "" ? null : mkSimpleIcon($"ui/gameuiskin#{iconType}.avif")
 }
 
-function mkBeltImage(bullets) {
+function mkBeltImage(bullets, beltSize = weaponSize) {
   if (bullets.len() == 0)
     return null
   let list = array(TOTAL_VIEW_BULLETS).map(@(_, i) bullets[i % bullets.len()])
 
-  let bulletBeltImage = [{
-    size = [beltImgSize, beltImgSize]
-    rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#shadow.avif:{beltImgSize}:{beltImgSize}:P")
-    keepAspect = true
-  }].extend(list.map(@(name, idx) {
-    size = [beltImgSize, beltImgSize]
-    rendObj = ROBJ_IMAGE
-    image = Picture($"{getBulletBeltImage(name, idx)}:{beltImgSize}:{beltImgSize}:P")
-    keepAspect = true
-  }))
   return {
-    size = [imgSize, imgSize]
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    children = bulletBeltImage
+    size = [beltSize, beltSize]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#shadow.avif:{beltSize}:{beltSize}:P")
+    keepAspect = true
+    padding
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    children = list.map(@(name, idx) {
+      size = [beltImgSize, beltImgSize]
+      rendObj = ROBJ_IMAGE
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      image = Picture($"{getBulletBeltImage(name, idx)}:{beltImgSize}:{beltImgSize}:P")
+      keepAspect = true
+    })
   }
 }
 
@@ -173,6 +174,7 @@ return {
   beltImgSize
   imgSize
   padding
+  defPadding
   weaponSize
   weaponGroupWidth
   smallGap

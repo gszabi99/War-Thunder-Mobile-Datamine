@@ -1890,6 +1890,7 @@
             "iconType": "rocket_7kg",
             "name": "rs82_slot1",
             "reqModification": "ro_82_mod",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_rocket1"
             },
@@ -1904,7 +1905,7 @@
             }
           },
           {
-            "iconType": "rocket_7kg",
+            "iconType": "bazooka",
             "name": "rbs82_slot1",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
@@ -1965,6 +1966,7 @@
             "iconType": "rocket_7kg",
             "name": "rs82_slot2",
             "reqModification": "ro_82_mod",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_rocket2"
             },
@@ -1979,7 +1981,7 @@
             }
           },
           {
-            "iconType": "rocket_7kg",
+            "iconType": "bazooka",
             "name": "rbs82_slot2",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
@@ -2040,6 +2042,7 @@
           {
             "iconType": "bomb_50kg",
             "name": "fab50",
+            "isDefault": true,
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab50.blk",
@@ -2087,6 +2090,7 @@
           {
             "iconType": "bomb_50kg",
             "name": "fab50",
+            "isDefault": true,
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab50.blk",
@@ -2134,6 +2138,7 @@
             "iconType": "rocket_7kg",
             "name": "rs82_slot5",
             "reqModification": "ro_82_mod",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_rocket3"
             },
@@ -2148,7 +2153,7 @@
             }
           },
           {
-            "iconType": "rocket_7kg",
+            "iconType": "bazooka",
             "name": "rbs82_slot5",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
@@ -2209,6 +2214,7 @@
             "iconType": "rocket_7kg",
             "name": "rs82_slot6",
             "reqModification": "ro_82_mod",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_rocket4"
             },
@@ -2223,7 +2229,7 @@
             }
           },
           {
-            "iconType": "rocket_7kg",
+            "iconType": "bazooka",
             "name": "rbs82_slot6",
             "reqModification": "ro_82_mod",
             "ShowNodes": {

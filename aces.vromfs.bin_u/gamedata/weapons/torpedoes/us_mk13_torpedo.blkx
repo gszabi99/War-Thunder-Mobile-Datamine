@@ -4,7 +4,7 @@
   "bullets": 1,
   "shotFreq": 1.5,
   "external": true,
-  "mesh": "torpedo_g7a",
+  "mesh": "us_mk13_torpedo",
   "tags": {
     "antiShipBomb": true
   },
@@ -32,7 +32,7 @@
     "mass": 874.07,
     "mass_lbs": 1927.0,
     "explosiveType": "tnt",
-    "explosiveMass": 178.0,
+    "explosiveMass": 200.0,
     "dragCx": 0.01,
     "startPropulsionDelay": 0.1,
     "explosionFx": "bomb_expl_100kg",
@@ -53,6 +53,12 @@
       1000.0
     ],
     "explodeTreshold": 0.00001,
+    "splash": {
+      "innerRadius": 9.0,
+      "penetration": 120.0,
+      "damage": 5000.0,
+      "damageType": "explosionTorpedo"
+    },
     "arcadeProp": {
       "dropSpeedRange": [
         0.0,

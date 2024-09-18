@@ -12,6 +12,7 @@ let { balance } = require("%appGlobals/currenciesState.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { unlockTables, activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { closeLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
 
 let SEEN_LOOTBOXES = "seenLootboxes"
@@ -19,6 +20,7 @@ let LOOTBOXES_AVAILABILITY = "lootboxesAvailability"
 let MAIN_EVENT_ID = "main"
 let getSeasonPrefix = @(n) $"season_{n}"
 let getSpecialEventName = @(n) $"special_event_{n}"
+let AIR_CAMPAIGN_MIN_SEASON_IDX = 13
 
 let openEventInfo = mkWatched(persist, "openEventInfo")
 let curEvent = Computed(@() openEventInfo.get()?.eventName)
@@ -32,7 +34,8 @@ eventWndOpenCounter.subscribe(function(v) {
 let eventEndsAt = Computed(@() userstatStats.value?.stats.season["$endsAt"] ?? 0)
 let eventSeasonIdx = Computed(@() userstatStats.get()?.stats.season["$index"] ?? 0)
 let eventSeason = Computed(@() getSeasonPrefix(eventSeasonIdx.get()))
-let isEventActive = Computed(@() unlockTables.value?.season == true)
+let isEventActive = Computed(@() unlockTables.value?.season == true
+  && (curCampaign.get() != "air" || eventSeasonIdx.get() >= AIR_CAMPAIGN_MIN_SEASON_IDX))
 
 let seenLootboxes = mkWatched(persist, SEEN_LOOTBOXES, {})
 let lootboxesAvailability = mkWatched(persist, LOOTBOXES_AVAILABILITY, {})
@@ -298,4 +301,5 @@ return {
   eventBgFallback
   curEventBg
   getEventBg
+  AIR_CAMPAIGN_MIN_SEASON_IDX
 }

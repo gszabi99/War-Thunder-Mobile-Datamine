@@ -1948,7 +1948,6 @@
         "WeaponPreset": {
           "iconType": "bomb_25kg_group",
           "name": "sd10a",
-          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_bomb1"
           },
@@ -1987,7 +1986,6 @@
         "WeaponPreset": {
           "iconType": "bomb_25kg_group",
           "name": "sd10a",
-          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_bomb2"
           },

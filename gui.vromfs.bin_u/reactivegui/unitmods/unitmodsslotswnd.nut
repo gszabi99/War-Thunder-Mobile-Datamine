@@ -3,20 +3,23 @@ let { HangarCameraControl } = require("wt.behaviors")
 let { deferOnce } = require("dagor.workcycle")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { modsInProgress, buy_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
+let { modsInProgress, buy_unit_mod, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { mkGamercardUnitCampaign, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { unitModSlotsOpenCount, closeUnitModsSlotsWnd, curUnit, weaponSlots, curSlotIdx, curWeapons,
-  curWeaponIdx, curWeapon, equippedWeaponsBySlots, equippedWeaponId,
+  curWeaponIdx, curWeapon, equippedWeaponsBySlots, equippedWeaponId, setCurSlotIdx, setCurBeltsWeaponIdx,
   curWeaponMod, curWeaponModName, curWeaponReqLevel, curWeaponIsLocked, curWeaponIsPurchased,
-  equipCurWeapon, unequipCurWeapon, curUnitAllModsCost, beltWeapons, curBeltsWeaponIdx, isOwn,
-  curWeaponBeltsOrdered, curBeltIdx, curBelt, equippedBeltId, equipCurBelt, getEquippedBelt,
-  chosenBelts, mkWeaponBelts, equippedWeaponIdCount, curBeltWeapon, overloadInfo, fixCurPresetOverload
+  unequipCurWeapon, unequipCurWeaponFromWings, curUnitAllModsCost, beltWeapons, curBeltsWeaponIdx, isOwn, getConflictsList,
+  curWeaponBeltsOrdered, curBeltIdx, curBelt, equippedBeltId, equipCurBelt, getEquippedBelt, curUnseenMods,
+  chosenBelts, mkWeaponBelts, equippedWeaponIdCount, curBeltWeapon, overloadInfo, fixCurPresetOverload,
+  isUnitModSlotsAttached, equipBelt, equipWeaponList, equipWeaponListWithMirrors, mirrorIdx, weaponsScrollHandler
 } = require("unitModsSlotsState.nut")
+let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
+let { equipCurWeaponMsg, customEquipCurWeaponMsg } = require("equipSlotWeaponMsgBox.nut")
 let { getModCurrency, getModCost } = require("unitModsState.nut")
 let { getWeaponShortNameWithCount, getBulletBeltShortName, getWeaponShortNamesList
 } = require("%rGui/weaponry/weaponsVisual.nut")
 let { mkSlotWeapon, mkWeaponImage, mkWeaponDesc, mkEmptyText, weaponH, weaponW, weaponTotalH, weaponGap,
-  mkSlotText, mkBeltImage, mkSlotBelt
+  mkSlotText, mkBeltImage, mkSlotBelt, mkConflictsBorder
 } = require("slotWeaponCard.nut")
 let { mkBeltDesc, mkSlotWeaponDesc } = require("unitModsSlotsDesc.nut")
 let { textButtonPrimary, textButtonPurchase } = require("%rGui/components/textButton.nut")
@@ -34,6 +37,7 @@ let { mkGradientCtorDoubleSideX } = require("%rGui/style/gradients.nut")
 let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { mkUnseenModIndicator } = require("modsComps.nut")
 
 let blocksGap = hdpx(60)
 let slotW = weaponW + hdpx(20)
@@ -54,7 +58,6 @@ let pageWidth = saSize[0] + saBorders[0] - slotW
 let pageMask = mkBitmapPictureLazy((pageWidth / 10).tointeger(), 2, mkGradientCtorDoubleSideX(0, 0xFFFFFFFF, 0.05))
 
 let slotsScrollHandler = ScrollHandler()
-let weaponsScrollHandler = ScrollHandler()
 
 
 function closeWithWarning() {
@@ -78,6 +81,22 @@ function closeWithWarning() {
     ]
   })
 }
+
+registerHandler("onPurchasedMod", function equipOnPurchase(_, context) {
+  let { belt, weapon, unitName } = context
+  if (unitName != curUnit.get()?.name) //no need to try equip when player leave this window
+    return
+  if (belt)
+    equipBelt(belt.weaponId, belt.id)
+  if (weapon){
+    let { mirror = -1 } = loadUnitWeaponSlots(unitName)[weapon.slotIdx]
+    let weaponList = { [weapon.slotIdx] = weapon.weapon.name }
+    if (mirror != -1)
+      weaponList.__update({ [mirror] = weapon.weapon.name })
+    customEquipCurWeaponMsg(weapon.slotIdx, weapon.weapon,
+      equippedWeaponsBySlots.get(), @() equipWeaponList(weaponList), @(list) equipWeaponListWithMirrors(list, unitName))
+  }
+})
 
 function scrollToWeapon() {
   let idx = curWeaponBeltsOrdered.get().len() > 0 ? curBeltIdx.get() : curWeaponIdx.get()
@@ -179,8 +198,14 @@ let mkHorizontalPannableArea = @(content) {
   ]
 }
 
+let mkIsSelWeaponConflict = @(slotIdx, weapon)
+  Computed(@() curWeapon.get()?.banPresets[slotIdx][weapon.get()?.name] ?? false)
+
 function mkSlotContent(idx) {
   let weapon = Computed(@() equippedWeaponsBySlots.get()?[idx])
+  let isUnseen = Computed(@() curUnseenMods.get()?[idx]
+    .findindex(@(_, mod) mod in (weaponSlots.get()?[idx].wPresets ?? {})) != null)
+
   return {
     size = [flex(), weaponH]
     children = [
@@ -195,6 +220,8 @@ function mkSlotContent(idx) {
         text = $"#{idx}"
         color = 0xFFC0C0C0
       }.__update(fontTinyShaded)
+      mkConflictsBorder(mkIsSelWeaponConflict(idx, weapon))
+      mkUnseenModIndicator(isUnseen)
     ]
   }
 }
@@ -207,18 +234,20 @@ let slotsList = @(slots) {
   children = mkTabs(
     slots.slice(1) //0 slot has only guns, and unable to change anything
       .map(@(_, idx) { id = idx + 1, content = mkSlotContent(idx + 1) }),
-    curSlotIdx, {}, @(idx) curSlotIdx.set(idx))
+    curSlotIdx, {}, setCurSlotIdx)
 }
 
-function mkBeltSlotContent(weapon) {
+function mkBeltSlotContent(weapon, idx) {
   let beltId = Computed(@()
     getEquippedBelt(chosenBelts.get(), weapon.weaponId,
         mkWeaponBelts(curUnit.get()?.name, weapon),
         curUnit.get()?.mods)
       ?.id)
   let gunCount = Computed(@() equippedWeaponIdCount.get()?[weapon.weaponId] ?? 0)
+  let isUnseen = Computed(@() curUnseenMods.get()?[idx]
+    .findindex(@(_, mod) mod in (beltWeapons.get()?[idx].bulletSets ?? {})) != null)
   return @() {
-    watch = [beltId, gunCount]
+    watch = [beltId, gunCount, isUnseen]
     size = [flex(), weaponH]
     opacity = gunCount.get() == 0 ? 0.5 : 1.0
     children = beltId.get() == null ? null
@@ -226,19 +255,20 @@ function mkBeltSlotContent(weapon) {
           mkBeltImage(weapon.bulletSets?[beltId.get()].bullets ?? [])
           mkSlotText(getWeaponShortNameWithCount(weapon.__merge({ count = gunCount.get() })))
           mkSlotText(getBulletBeltShortName(beltId.get()), { vplace = ALIGN_BOTTOM })
+          mkUnseenModIndicator(isUnseen)
         ]
   }
 }
 
 function beltsList(weapons, filter) {
   let list = weapons
-    .map(@(w, idx) filter(w) ? { id = idx, content = mkBeltSlotContent(w) } : null)
+    .map(@(w, idx) filter(w) ? { id = idx, content = mkBeltSlotContent(w, idx) } : null)
     .filter(@(v) v != null)
   if (list.len() == 0)
     return null
   return {
     size = [flex(), SIZE_TO_CONTENT]
-    children = mkTabs(list, curBeltsWeaponIdx, {}, @(idx) curBeltsWeaponIdx.set(idx))
+    children = mkTabs(list, curBeltsWeaponIdx, {}, setCurBeltsWeaponIdx)
   }
 }
 
@@ -325,14 +355,14 @@ let slotWeaponsBlock = @() {
 }
 
 function slotPresetInfo() {
-  let watch = [curWeapon, curBelt]
+  let watch = [curWeapon, curBelt, equippedWeaponsBySlots]
   if (curWeapon.get() == null && curBelt.get() == null)
     return { watch }
   return panelBg.__merge({
     watch
     hplace = ALIGN_RIGHT
     children = curBelt.get() != null ? mkBeltDesc(curBelt.get(), descWidth)
-      : mkSlotWeaponDesc(curWeapon.get(), descWidth)
+      : mkSlotWeaponDesc(curWeapon.get(), descWidth, getConflictsList(curWeapon.get(), equippedWeaponsBySlots.get()))
   })
 }
 
@@ -375,7 +405,23 @@ function onPurchaseMod() {
   openMsgBoxPurchase(
     loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, weaponName) }),
     { price, currencyId },
-    @() buy_unit_mod(unitName, modName, currencyId, price),
+    @() buy_unit_mod(unitName, modName, currencyId, price,
+      {
+        id = "onPurchasedMod",
+        weapon = curWeapon.get() != null && equippedWeaponId.get() != curWeapon.get().name
+          ? {
+              slotIdx = curSlotIdx.get()
+              weapon = curWeapon.get()
+            }
+          : null,
+        belt = curBelt.get() != null && equippedBeltId.get() != curBelt.get().id
+          ? {
+              weaponId = curBeltWeapon.get().weaponId
+              id = curBelt.get()?.id ?? ""
+            }
+          : null
+        unitName
+      }),
     mkBqPurchaseInfo(PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, $"{unitName} {modName}"))
 }
 
@@ -391,11 +437,12 @@ let slotPresetButtons = @() {
       ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), curWeaponReqLevel.get(),
         @() curUnit.get() != null ? buyUnitLevelWnd(curUnit.get().name) : null, { hotkeys = ["^J:Y"] })
     : curWeaponIsLocked.get() ? null
-    : !curWeaponIsPurchased.get() ? textButtonPurchase(loc("mainmenu/btnBuy"), onPurchaseMod)
+    : !curWeaponIsPurchased.get()
+      ? textButtonPurchase(loc("mainmenu/btnBuy"), onPurchaseMod, { ovr = { key = "arsenal_purchase_tutor_btn" }})
     : curWeapon.get() != null && equippedWeaponId.get() != curWeapon.get().name
-      ? textButtonPrimary(loc("mod/enable"), equipCurWeapon)
-    : curWeapon.get() != null && (curWeapons.get().len() > 1 || !curWeapon.get().isDefault)
-      ? textButtonPrimary(loc("mod/disable"), unequipCurWeapon)
+      ? textButtonPrimary(loc($"mod/enable{mirrorIdx.get() != -1 ? "/both_wings" : ""}"), equipCurWeaponMsg)
+    : curWeapon.get() != null
+      ? textButtonPrimary(loc($"mod/disable{mirrorIdx.get() != -1 ? "/both_wings" : ""}"), mirrorIdx.get() != -1 ? unequipCurWeaponFromWings : unequipCurWeapon)
     : curBelt.get() != null && equippedBeltId.get() != curBelt.get().id
       ? textButtonPrimary(loc("mod/enable"), equipCurBelt)
     : null
@@ -407,6 +454,8 @@ let unitModsWnd = {
   padding = saBordersRv
   behavior = HangarCameraControl
   flow = FLOW_VERTICAL
+  onAttach = @() isUnitModSlotsAttached.set(true)
+  onDetach = @() isUnitModSlotsAttached.set(false)
   children = [
     @(){
       watch = curCampaign

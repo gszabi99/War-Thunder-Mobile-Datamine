@@ -2000,7 +2000,7 @@
     ],
     "blinkFreq": 2.0,
     "showIndicatorCenterAngle": 10.0,
-    "showDistanceAngle": 30.0,
+    "showDistanceAngle": 45.0,
     "font": "tiny_accented_text",
     "smallFont": "very_tiny_text",
     "fontFxColor": [

@@ -41,6 +41,7 @@ let { selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
 let { researchBlock } = require("%rGui/unitsTree/components/researchBars.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 
+let infoPannelPadding = hdpx(30)
 let infoPanelFooterGap = hdpx(20)
 let filterIconSize = hdpxi(36)
 let clearIconSize = hdpxi(45)
@@ -317,68 +318,82 @@ function mkHasUnitActions(withTreeNodes) {
   return Computed(@() curSelectedUnit.get() != null || selectedSlotIdx.get() == null || hasDarkScreen.get())
 }
 
-function mkBottomInfoPanel() {
-  return function() {
-    let hasUnitActions = mkHasUnitActions(isTreeNodes.get())
-    return {
-      watch = isTreeNodes
-      rendObj = ROBJ_BOX
-      hplace = ALIGN_RIGHT
-      vplace = ALIGN_BOTTOM
-      halign = ALIGN_CENTER
-      flow = FLOW_VERTICAL
-      children = @() {
-        watch = hasUnitActions
-        children = hasUnitActions.get() ? [discountBlock, unitActions]
-          : {
-              halign = ALIGN_CENTER
-              valign = ALIGN_CENTER
-              size = [statsWidth, slotBarTreeHeight]
-              rendObj = ROBJ_TEXTAREA
-              behavior = Behaviors.TextArea
-              text = loc("unitsTree/selectUnitHint")
-            }.__update(fontMedium)
-      }
-    }
-  }
+let mkBottomInfoPanel = {
+  rendObj = ROBJ_BOX
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_BOTTOM
+  halign = ALIGN_CENTER
+  flow = FLOW_VERTICAL
+  children = [
+    discountBlock
+    unitActions
+  ]
 }
 
-let infoPanel = @() {
-  watch = [curSelectedUnit, isTreeNodes]
-  key = {}
-  size = flex()
-  children = !curSelectedUnit.get() && !isTreeNodes.get() ? null
-    : [
-        !curSelectedUnit.get() ? null
-          : panelBg.__merge({
-              size = [infoPanelWidth, infoPanelHeight]
-              padding = [0, saBorders[0], saBorders[1], hdpx(30)]
-              hplace = ALIGN_RIGHT
-              vplace = ALIGN_BOTTOM
-              valign = ALIGN_BOTTOM
-              clipChildren = isTreeNodes.get()
-              flow = FLOW_VERTICAL
-              children = [
-                unitInfoPanel(
+function infoPanel() {
+  let hasUnitActions = mkHasUnitActions(isTreeNodes.get())
+  return {
+    watch = [curSelectedUnit, isTreeNodes]
+    key = {}
+    size = flex()
+    children = !curSelectedUnit.get() && !isTreeNodes.get() ? null
+      : [
+          !curSelectedUnit.get()
+            ? @() {
+                watch = selectedSlotIdx
+                rendObj = ROBJ_SOLID
+                size = [infoPanelWidth, slotBarTreeHeight + saBorders[1]]
+                padding = [0, saBorders[0]]
+                color = 0x40000000
+                hplace = ALIGN_RIGHT
+                vplace = ALIGN_BOTTOM
+                children = selectedSlotIdx.get() == null ? null
+                  : {
+                      hplace = ALIGN_RIGHT
+                      halign = ALIGN_RIGHT
+                      valign = ALIGN_CENTER
+                      size = [statsWidth, slotBarTreeHeight]
+                      rendObj = ROBJ_TEXTAREA
+                      behavior = Behaviors.TextArea
+                      text = loc("unitsTree/selectUnitHint")
+                    }.__update(fontMedium)
+              }
+            : panelBg.__merge({
+                size = [infoPanelWidth, infoPanelHeight]
+                padding = [infoPannelPadding, saBorders[0], saBorders[1], infoPannelPadding]
+                hplace = ALIGN_RIGHT
+                vplace = ALIGN_BOTTOM
+                valign = ALIGN_BOTTOM
+                clipChildren = isTreeNodes.get()
+                flow = FLOW_VERTICAL
+                children = [
+                  unitInfoPanel(
+                    {
+                      size = [flex(), unitInfoPanelHeight]
+                      halign = ALIGN_RIGHT
+                      hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
+                      animations = wndSwitchAnim
+                    }, mkUnitTitle, hangarUnit)
                   {
-                    size = [flex(), unitInfoPanelHeight]
+                    size = flex()
+                  }
+                  {
+                    flow = FLOW_VERTICAL
+                    gap = infoPanelFooterGap
+                    hplace = ALIGN_RIGHT
                     halign = ALIGN_RIGHT
-                    hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
-                    animations = wndSwitchAnim
-                  }, mkUnitTitle, hangarUnit)
-                {
-                  flow = FLOW_VERTICAL
-                  gap = infoPanelFooterGap
-                  hplace = ALIGN_RIGHT
-                  halign = ALIGN_RIGHT
-                  children = [
-                    researchBlock(hangarUnit.get())
-                    mkBottomInfoPanel()
-                  ]
-                }
-              ]
-            })
-      ]
+                    children = [
+                      researchBlock(hangarUnit.get())
+                      @() {
+                        watch = hasUnitActions
+                        children = hasUnitActions.get() ? mkBottomInfoPanel : null
+                      }
+                    ]
+                  }
+                ]
+              })
+        ]
+  }
 }
 
 let unitsTreeWnd = {

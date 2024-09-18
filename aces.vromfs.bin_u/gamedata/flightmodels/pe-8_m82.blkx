@@ -2544,6 +2544,7 @@
           {
             "iconType": "bomb_50kg_group",
             "name": "fab50",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",
@@ -2749,6 +2750,7 @@
           {
             "iconType": "bomb_100kg_group",
             "name": "fab50_mid",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",
@@ -3303,6 +3305,7 @@
           {
             "iconType": "bomb_50kg_group",
             "name": "fab50",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",

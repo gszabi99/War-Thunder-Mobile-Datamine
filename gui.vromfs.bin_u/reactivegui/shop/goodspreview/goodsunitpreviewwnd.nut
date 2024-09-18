@@ -43,8 +43,10 @@ let { schRewardInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { activeOffer } = require("%rGui/shop/offerState.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
+let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { backButtonHeight } = require("%rGui/components/backButton.nut")
+let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
+
 
 
 let TIME_TO_SHOW_UI = 5.0 //timer need to show UI even with bug with cutscene
@@ -135,7 +137,7 @@ let unitForShow = keepref(Computed(function() {
   let unitName = curSelectedUnitId.value
   if (unitName == previewGoodsUnit.value.name || unitName == "")
     return previewGoodsUnit.value
-  return previewGoodsUnit.value.__merge({ name = unitName })
+  return allUnitsCfg.get()?[unitName] ?? previewGoodsUnit.value.__merge({ name = unitName })
 }))
 
 unitForShow.subscribe(function(unit) {
@@ -157,9 +159,7 @@ let readyToShowCutScene = mkWatched(persist, "readyToShowCutScene", false)
 eventbus_subscribe("onHangarModelStartLoad", @(_) readyToShowCutScene(false))
 eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" : "onHangarModelLoaded", @(_) readyToShowCutScene(true))
 
-let canShowCutscene = Computed(@() previewGoodsUnit.get()?.unitType != AIR)  //temporary switch off cutscene for aircrafts while have bugs with it
 let needShowCutscene = keepref(Computed(@() unitForShow.value != null
-  && canShowCutscene.get()
   && loadedHangarUnitName.value == unitForShow.value?.name
   && readyToShowCutScene.value ))
 
@@ -192,7 +192,7 @@ function openDetailsWnd() {
     custom = unitForShow.value,
   })
   unitDetailsWnd({
-    name = previewGoodsUnit.value?.name
+    name = unitForShow.get()?.name
     isUpgraded = previewGoodsUnit.value?.isUpgraded ?? false
     canShowOwnUnit = false
   })
@@ -262,6 +262,35 @@ function mkBlueprintUnitPlate(unit){
   }
 }
 
+function mkAirBranchUnitPlate(unit, platoonUnit, onSelectUnit){
+  let p = getUnitPresentation(platoonUnit)
+  let platoonUnitFull = unit.__merge(platoonUnit)
+  let isSelected = Computed(@() curSelectedUnitId.get() == platoonUnit.name)
+  return {
+    behavior = Behaviors.Button
+    onClick = onSelectUnit
+    sound = { click  = "choose" }
+    children = [
+      {
+        size = unitPlateSizeSingle
+        children = [
+          mkUnitBg(unit)
+          mkUnitSelectedGlow(unit, isSelected)
+          mkUnitImage(platoonUnitFull)
+          mkUnitTexts(platoonUnitFull, loc(p.locId))
+          mkUnitRank(unit)
+        ]
+      }
+      {
+        size = flex()
+        valign = ALIGN_TOP
+        pos = [0, -selLineSize]
+        children = selectedLineHorUnits(isSelected)
+      }
+    ]
+    animations = opacityAnims(aTimePackUnitPlates, aTimePackUnitInfoStart + aTimePackUnitPlatesOffset)
+  }
+}
 
 function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
   let p = getUnitPresentation(platoonUnit)
@@ -312,12 +341,14 @@ function branchUnitsBlock(unitName){
   let unit = Computed(@() allUnitsCfg.get()[unitName])
   return @(){
     watch = unit
-    children = mkUnitPlate(0, unit.get(), { name = unitName, reqLevel = 0 })
+    children = mkAirBranchUnitPlate(unit.get(), { name = unitName, reqLevel = 0 },
+      @() curSelectedUnitId.set(unitName))
   }
 }
 
 let mkHeader = @() mkPreviewHeader(
   Computed(@() previewGoods.get()?.offerClass == "seasonal" ? loc("seasonalOffer")
+    : (previewGoods.get()?.id ?? "") == "branch_offer" ? " ".concat(getPlatoonOrUnitName(previewGoodsUnit.get(), loc), loc("offer/airBranch"))
     : previewGoodsUnit.get() ? getPlatoonOrUnitName(previewGoodsUnit.get(), loc)
     : ""),
   closeGoodsPreview,
@@ -441,31 +472,32 @@ function closeBlackOverlayOnceOnVisualsLoaded(loaded) {
 }
 
 let sortedBranchUnits = Computed(function(){
-  let units = clone activeOffer.get()?.units
+  let units = clone previewGoods.get()?.units
   if (units)
     return units
       .filter(@(u) u not in myUnits.get())
       .sort(@(a,b) allUnitsCfg.get()[b].mRank <=> allUnitsCfg.get()[a].mRank)
 })
 
-let pannableArea = verticalPannableAreaCtor(saSize[1] - horGap, [saBorders[1],saBorders[1]])
+let pannableArea = verticalPannableAreaCtor(sh(100) - saBorders[1] - backButtonHeight - 2*hdpx(20), [saBorders[1],saBorders[1]])
 let scrollHandler = ScrollHandler()
 
 let scrollArrowsBlock = {
   size = [SIZE_TO_CONTENT, saSize[1] - backButtonHeight - verticalGap]
   hplace = ALIGN_CENTER
   children = [
-    mkScrollArrow(scrollHandler, MR_T)
-    mkScrollArrow(scrollHandler, MR_B)
+    mkScrollArrow(scrollHandler, MR_T, scrollArrowImageSmall)
+    mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall)
   ]
 }
 
-let gapForBranch = hdpx(10)
+let gapForBranch = hdpx(20)
 
 let leftBlock = @(){
-  watch = [previewGoodsUnit, schRewards, previewGoods, activeOffer]
-  size = [unitPlateSizeSingle[0]*2 + gapForBranch, SIZE_TO_CONTENT]
-  children = @() (activeOffer.get()?.units.len() ?? 0) > 1
+  watch = [previewGoodsUnit, schRewards, previewGoods]
+  size = [unitPlateSizeSingle[0] * 2 + 2*gapForBranch, SIZE_TO_CONTENT]
+  halign = ALIGN_CENTER
+  children = @() (previewGoods.get()?.units.len() ?? 0) > 1
     ? {
       watch = sortedBranchUnits
       flow = FLOW_VERTICAL
@@ -496,10 +528,6 @@ let previewWnd = @() {
   onAttach = function() {
     addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
     isWindowAttached(true)
-    if (!canShowCutscene.get()) { //temporary switch off cutscene for aircrafts while have bugs with it
-      needShowUi.set(true)
-      return
-    }
     if (transitionThroughBlackScreen) {
       showBlackOverlay()
       if (!readyToShowCutScene.value)
@@ -529,14 +557,18 @@ let previewWnd = @() {
           size = flex()
           children = [
             {
-              size = [unitPlateSizeSingle[0]*2 + hdpx(20), SIZE_TO_CONTENT]
+              size = [unitPlateSizeSingle[0]*2 + 2*gapForBranch, SIZE_TO_CONTENT]
               children = [
                 pannableArea(leftBlock, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
                 scrollArrowsBlock
               ]
             }
             activeOffer.get()?.id == previewGoods.get()?.id ? mkGiftSchRewardBtn(schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"],
-              previewGoodsUnit.get()?.platoonUnits.len() ? unitPlateSizeMain[0] : unitPlateSizeSingle[0]) : null
+              (previewGoods.get()?.units.len() ?? 0) > 1
+                ? unitPlateSizeSingle[0] * 2 + gapForBranch
+              : previewGoodsUnit.get()?.platoonUnits.len()
+                ? unitPlateSizeMain[0]
+              : unitPlateSizeSingle[0]) : null
             rightBlock
           ]
         }

@@ -1983,10 +1983,6 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1220.0,
-    "maxloadMassLeftConsoles": 610.0,
-    "maxloadMassRightConsoles": 610.0,
-    "maxDisbalance": 450.0,
     "HideNodes": {
       "node": [
         "mg151",
@@ -2127,6 +2123,7 @@
           {
             "iconType": "bomb_50kg_group",
             "name": "sc50",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",

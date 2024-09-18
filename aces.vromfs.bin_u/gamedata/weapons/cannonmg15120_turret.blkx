@@ -603,7 +603,7 @@
       }
     }
   ],
-  "mg15120_turret_ap": {
+  "mg15120_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.117,
@@ -1363,7 +1363,7 @@
       }
     ]
   },
-  "mg15120_turret_ap_he": {
+  "mg15120_turret_universal": {
     "bullet": [
       {
         "mass": 0.116,

@@ -7,7 +7,8 @@ let { mkHorizontalTabs } = require("%rGui/components/horizontalTabs.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
-let contentWidth = saSize[0] - tabW - saBorders[0] * 2
+let contentWidth = saSize[0] - tabW - saBorders[0]
+let pannableAreaWidth = saSize[0] - tabW + saBorders[0]
 let backButtonHeight = hdpx(60)
 let gapBackButton = hdpx(50)
 let tabHeight = hdpx(120)
@@ -47,13 +48,14 @@ function mkChildrenOptions(tabs) {
         mkVerticalPannableArea(
           {
             size = [contentWidth, SIZE_TO_CONTENT]
+            padding = [0, saBorders[0]]
             key = tab
             flow = FLOW_VERTICAL
             halign = ALIGN_LEFT
             children = tab?.options.filter(@(v) v != null).map(mkOption)
             animations = wndSwitchAnim
           },
-          { size = [contentWidth, saSize[1] - tabHeight - gap] },
+          { size = [pannableAreaWidth, saSize[1] - tabHeight - gap] },
           { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
         scrollArrowsBlock
       ]
@@ -62,7 +64,6 @@ function mkChildrenOptions(tabs) {
 
   return {
     size = flex()
-    padding = [0, saBordersRv[1]]
     function onAttach() {
       if (curTabIdx.get() not in tabs)
         resetCurTabIdx()
@@ -72,7 +73,7 @@ function mkChildrenOptions(tabs) {
       flow = FLOW_VERTICAL
       gap
       children = [
-        mkHorizontalTabs(tabs, curTabIdx)
+        mkHorizontalTabs(tabs, curTabIdx).__update({ padding = [0, 0, 0, saBorders[0]] })
         curOptionsContent
       ]
     }

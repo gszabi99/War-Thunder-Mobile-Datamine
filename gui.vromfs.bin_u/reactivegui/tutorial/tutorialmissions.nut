@@ -73,7 +73,7 @@ let needForceStartTutorial = keepref(Computed(@()
   && isLoggedIn.value
   && isInMenu.value))
 
-function startTutor(id) {
+function startTutor(id, currentUnitName = null) {
   if (id not in tutorialMissions.value)
     return
   if (id in missionsWithRewards.value) {
@@ -86,10 +86,14 @@ function startTutor(id) {
   if (!isSkippedTutor.get()?[id])
     eventbus_send("startSingleMission", {
       id = tutorialMissions.value[id],
-      unitName = !isCampaignWithUnitsResearch.get() ? null
-        : isDebugMode.get() && hangarUnit.get()?.name ? hangarUnit.get().name
-        : myUnits.get().len() != 0 ? null
-        : currentResearch.get()?.name
+      unitName = !isCampaignWithUnitsResearch.get()
+          ? null
+        : currentUnitName
+          ? currentUnitName
+        : isDebugMode.get() && hangarUnit.get()?.name
+          ? hangarUnit.get().name
+        : myUnits.get().findindex(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {}))
+          ?? currentResearch.get()?.name
     })
   resetTimeout(0.1, @() isDebugMode(false))
 }

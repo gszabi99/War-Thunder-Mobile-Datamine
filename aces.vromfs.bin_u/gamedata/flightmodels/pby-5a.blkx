@@ -2047,6 +2047,7 @@
           {
             "iconType": "bomb_100kg",
             "name": "us_100lb",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -2129,6 +2130,7 @@
           {
             "iconType": "bomb_100kg",
             "name": "us_100lb_left",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -2223,6 +2225,7 @@
           {
             "iconType": "bomb_100kg_group",
             "name": "us_100lb_x6_left",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_bomb1"
             },
@@ -2337,6 +2340,7 @@
           {
             "iconType": "bomb_100kg_group",
             "name": "us_100lb_x6_right",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_bomb2"
             },
@@ -2451,6 +2455,7 @@
           {
             "iconType": "bomb_100kg",
             "name": "us_100lb_right",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_bomb4"
             },
@@ -2545,6 +2550,7 @@
           {
             "iconType": "bomb_100kg",
             "name": "us_100lb",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_bomb4"
             },

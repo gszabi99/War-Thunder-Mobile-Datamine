@@ -4,12 +4,12 @@ let { eventbus_send } = require("eventbus")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { register_command } = require("console")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { isUnitsTreeOpen, isUnitsTreeAttached } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId
 } = require("tutorialWnd/tutorialWndState.nut")
+let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nut")
@@ -19,7 +19,7 @@ let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 
 const TUTORIAL_ID = "startFirstBattle"
-let isSkipped = hardPersistWatched("firstBattleTutorial.isSkipped", false)
+let isFinished = mkIsTutorialCompleted(TUTORIAL_ID)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let hasBattles = Computed(@()
   (servProfile.value?.sharedStatsByCampaign ?? {})
@@ -27,7 +27,7 @@ let hasBattles = Computed(@()
   != null)
 
 let needShowTutorial = Computed(@() !isInSquad.get()
-  && !isSkipped.get()
+  && !isFinished.get()
   && !isCampaignWithUnitsResearch.get()
   && !hasBattles.get())
 let canStartTutorial = Computed(@() isUnitsTreeAttached.value
@@ -42,7 +42,7 @@ let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.value == TU
 let finishEarly = @() shouldEarlyCloseTutorial.value ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
-hasBattles.subscribe(@(v) v ? null : isSkipped(false))
+hasBattles.subscribe(@(v) v ? null : markTutorialCompleted(TUTORIAL_ID))
 
 function startTutorial() {
   let unitsListShowEnough = Watched(false)
@@ -51,8 +51,8 @@ function startTutorial() {
     id = TUTORIAL_ID
     function onStepStatus(stepId, status) {
       logFB($"{stepId}: {status}")
-      if (status == "skip_step")
-        isSkipped(true)
+      if (status == "tutorial_finished")
+        markTutorialCompleted(TUTORIAL_ID)
     }
     steps = [
       //units window
@@ -82,6 +82,7 @@ function startTutorial() {
       {
         id = "s3_press_battle_button"
         text = loc("tutorial/pressToBattleButton")
+        charId = "mary_like"
         onSkip = @() null
         objects = [{
           keys = "toBattleButton"

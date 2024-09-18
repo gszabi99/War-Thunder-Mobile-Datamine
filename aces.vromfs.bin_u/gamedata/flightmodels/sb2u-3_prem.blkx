@@ -1640,7 +1640,21 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "sb2u-3_default",
+        "name": "sb2u-3_prem_default",
+        "blk": "gameData/FlightModels/weaponPresets/sb2u_500lbs_2x100lbs.blk"
+      },
+      {
+        "name": "sb2u_sb2u_500lbs_2x250lbs",
+        "blk": "gameData/FlightModels/weaponPresets/sb2u_500lbs_2x250lbs.blk",
+        "reqModification": "fsbc_mk5"
+      },
+      {
+        "name": "sb2u_sb2u_500lbs",
+        "blk": "gameData/FlightModels/weaponPresets/sb2u_500lbs.blk",
+        "reqModification": "fsbc_mk5"
+      },
+      {
+        "name": "sb2u-3_1000",
         "blk": "gameData/FlightModels/weaponPresets/sb2u_1000lbs.blk",
         "reqModification": "flbc_mk1"
       },
@@ -1786,6 +1800,54 @@
         "tier": 6,
         "order": 1,
         "WeaponPreset": [
+          {
+            "iconType": "bomb_100kg",
+            "name": "100lb",
+            "isDefault": true,
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+              "emitter": "an_m57_1",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bomb_250kg",
+            "name": "250lb",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "separate": true,
+              "emitter": "an_m57_1",
+              "bullets": 1,
+              "external": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 6,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "bomb_500kg",
+            "name": "500lb",
+            "hideNodes": {
+              "node": "bomb_launcher1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1_rod.blk",
+              "emitter": "an_m64",
+              "bullets": 1,
+              "separate": true,
+              "external": true,
+              "launcher": true
+            }
+          },
           {
             "iconType": "bomb_1000kg",
             "name": "1000lb",
@@ -2103,6 +2165,38 @@
                 ],
                 "roll": 179.0
               }
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "bomb_100kg",
+            "name": "100lb",
+            "isDefault": true,
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+              "emitter": "an_m57_2",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bomb_250kg",
+            "name": "250lb",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "separate": true,
+              "emitter": "an_m57_2",
+              "bullets": 1,
+              "external": true
             }
           }
         ]

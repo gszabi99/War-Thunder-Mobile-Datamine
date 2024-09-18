@@ -578,6 +578,11 @@ return {
     params = { campaign }
   }, cb)
 
+  update_branch_offer = @(campaign, cb = null) request({
+    method = "update_branch_offer"
+    params = { campaign }
+  }, cb)
+
   check_new_offer = @(campaign, cb = null) request({
     method = "check_new_offer"
     params = { campaign }

@@ -997,7 +997,7 @@
       }
     }
   ],
-  "mg_turret_ap": {
+  "mg_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.0115,

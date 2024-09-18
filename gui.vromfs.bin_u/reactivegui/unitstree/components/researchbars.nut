@@ -84,7 +84,7 @@ function unitResearchBar(unitName) {
     return isCurrent ? "unitsTree/currentResearch"
       : canResearch ? "unitsTree/availableForResearch"
       : !isResearched ? "unitsTree/researchHint"
-      : !canBuy ? "unitsTree/buyHint"
+      : !canBuy ? "unitsTree/buyHint/build"
       : null
   })
 

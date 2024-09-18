@@ -2443,6 +2443,22 @@
                 "bombBayHeight": 1.5
               }
             ]
+          },
+          {
+            "iconType": "bomb_1500kg",
+            "name": "fx1400",
+            "reqModification": "fx1400",
+            "ShowNodes": {
+              "node": "pylon_1006_bomb"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_fx1400.blk",
+              "emitter": "bomb28",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2494,22 +2510,6 @@
               "trigger": "torpedoes",
               "blk": "gameData/Weapons/torpedoes/de_f5w_torpedo.blk",
               "emitter": "torp2",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "bomb_1500kg",
-            "name": "fx1400",
-            "reqModification": "fx1400",
-            "ShowNodes": {
-              "node": "pylon_1006_bomb"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/de_fx1400.blk",
-              "emitter": "bomb28",
               "bullets": 1,
               "external": true,
               "separate": true

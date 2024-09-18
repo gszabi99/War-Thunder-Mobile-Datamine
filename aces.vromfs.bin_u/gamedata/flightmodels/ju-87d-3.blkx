@@ -2126,6 +2126,7 @@
             "iconType": "bomb_50kg_group",
             "name": "50kg_x2",
             "reqModification": "etc50_4_mod",
+            "isDefault": true,
             "ShowNodes": {
               "node": "etc50_pylon_l"
             },
@@ -3129,6 +3130,7 @@
             "iconType": "bomb_50kg_group",
             "name": "50kg_x2",
             "reqModification": "etc50_4_mod",
+            "isDefault": true,
             "ShowNodes": {
               "node": "etc50_pylon_r"
             },

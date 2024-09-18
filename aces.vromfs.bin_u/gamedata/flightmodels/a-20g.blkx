@@ -2217,6 +2217,7 @@
           "iconType": "bazooka_group",
           "name": "bazooka",
           "reqModification": "bazooka_pylon",
+          "isDefault": true,
           "ShowNodes": {
             "node": [
               "m10_bazooka_l",
@@ -2329,6 +2330,7 @@
           "iconType": "bazooka_group",
           "name": "bazooka",
           "reqModification": "bazooka_pylon",
+          "isDefault": true,
           "ShowNodes": {
             "node": [
               "m10_bazooka_l",

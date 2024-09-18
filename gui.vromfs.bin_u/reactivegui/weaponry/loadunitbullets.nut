@@ -155,14 +155,12 @@ function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
       foreach (anim in shellAnimations)
         appendOnce(res.shellAnimations, anim)
     }
-    else if (!paramsBlk?.caliber)
-      continue
     else
       res = {
         id
         weaponBlkName
         weaponType
-        caliber = 1000.0 * paramsBlk.caliber
+        caliber = 1000.0 * (paramsBlk?.caliber ?? 0)
         bullets = []
         bulletNames = []
         bulletDataByType = {}
@@ -221,12 +219,12 @@ function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
   if (res.bullets.len() == 1)
     res.bulletDataByType.clear() //no need copy when only single bullet.
 
-  if (res.bulletNames.len() > 1 && res.bulletNames.findvalue(@(v) v != res.bulletNames[0]) == null) {
-    res.mass <- bulletsList[0]?.mass ?? 0.0
+  res.mass <- bulletsList.reduce(@(r, b) r + (b?.mass ?? 0.0), 0.0) / bulletsList.len()
+  let massLbsSum = bulletsList.reduce(@(r, b) r + (b?.mass_lbs ?? 0.0), 0.0)
+  if (massLbsSum > 0)
+    res.mass_lbs <- massLbsSum / bulletsList.len()
+  if (res.bulletNames.len() > 1 && res.bulletNames.findvalue(@(v) v != res.bulletNames[0]) == null)
     res.isUniform <- true
-  }
-  else if (res.bulletNames.len() == 1)
-    res.mass <- bulletsList[0]?.mass ?? 0.0
 
   return res
 }
@@ -264,6 +262,50 @@ function loadBulletsCached(weaponBlkName, cache) {
 function calcMass(weapon) {
   let { bulletSets, totalBullets, gunMass } = weapon
   return gunMass + totalBullets * (bulletSets.findvalue(@(v) v.mass > 0)?.mass ?? 0.0)
+}
+
+function calcMassLbs(weapon) {
+  let { bulletSets, totalBullets } = weapon //massLbs does not used with guns. so no need to count gun mass in lbs
+  return totalBullets * (bulletSets.findvalue(@(v) "mass_lbs" in v)?.mass_lbs ?? 0.0)
+}
+
+function getBanPresets(presetBlk) {
+  let res = {}
+  foreach(banned in presetBlk % "BannedWeaponPreset") {
+    let { slot = -1, preset = "" } = banned
+    if (slot == -1 || preset == "")
+      continue
+    if (slot not in res)
+      res[slot] <- {}
+    res[slot][preset] <- true
+  }
+  return res
+}
+
+function fillBanAndMirrors(slots, notUseForDisbalance) {
+  foreach(slotIdx, s in slots) {
+    foreach(presetId, preset in s.wPresets)
+      foreach(banIdx, banList in preset.banPresets)
+        foreach(banId, _ in banList) {
+          let tgtBanList = slots?[banIdx].wPresets[banId].banPresets
+          if (tgtBanList == null)
+            continue
+          if (slotIdx not in tgtBanList)
+            tgtBanList[slotIdx] <- {}
+          tgtBanList[slotIdx][presetId] <- true
+        }
+
+    if (slotIdx == 0 || !!notUseForDisbalance?[slotIdx])
+      continue
+    let mirror = slots.len() - slotIdx
+    if (mirror == slotIdx)
+      continue
+    s.mirror <- mirror
+    let mirrorOrder = slots[mirror].wPresetsOrder
+    foreach(i, p in s.wPresetsOrder)
+      if (i in mirrorOrder && p != mirrorOrder[i])
+        s.wPresets[p].mirrorId <- mirrorOrder[i]
+  }
 }
 
 function loadUnitBulletsFullImpl(unitName) {
@@ -355,7 +397,24 @@ function loadUnitBulletsFullImpl(unitName) {
       return { weaponId, bulletSets, catridge, guns, total, trigger, triggerGroup, turrets }
     }))
 
-  let res = { presets, slots = [], slotsParams }
+  let res = { presets, slots = [], slotsParams, reqModifications = {} }
+
+  let { reqModifications } = res
+  let { bullets = {} } = getUnitTagsCfg(unitName)
+
+  foreach(preset in presets)
+    foreach(weapon in preset) {
+      let { bulletSets, weaponId } = weapon
+      let bulletsTags = bullets?[weaponId] ?? {}
+      foreach(bSet in bulletSets) {
+        let reqModification = bulletsTags?[bSet.id].reqModification ?? ""
+        reqModifications[reqModification] <- true
+      }
+    }
+
+  if("" in reqModifications)
+    reqModifications.$rawdelete("")
+
   if (weaponSlots.len() == 0)
     return res
 
@@ -368,23 +427,35 @@ function loadUnitBulletsFullImpl(unitName) {
       let weapons = []
       let preset = gatherSlotWeaponPreset(presetBlk)
       local mass = 0.0
+      local massLbs = 0.0
+      reqModifications[reqModification] <- true
       foreach(wData in preset) {
-        weapons.append(wData.__merge(
-          loadBulletsCached(wData.blk, bulletsCache)))
-        mass += calcMass(weapons.top())
+        let w = wData.__merge(loadBulletsCached(wData.blk, bulletsCache))
+        weapons.append(w)
+        mass += calcMass(w)
+        massLbs += calcMassLbs(w)
       }
-      return {
+      let wRes = {
         name = presetId
         reqModification
         iconType
         isDefault = reqModification == "" && (isDefault || index == 0 || presetId.startswith("default"))
         weapons
         mass
+        banPresets = getBanPresets(presetBlk)
       }
+      if (massLbs > 0)
+        wRes.massLbs <- massLbs
+      return wRes
     })
     slots.append({ index, wPresets, wPresetsOrder = weaponSlotsOrder[index] })
   }
   slots.sort(@(a, b) a.index <=> b.index)
+
+  if("" in reqModifications)
+    reqModifications.$rawdelete("")
+
+  fillBanAndMirrors(slots, slotsParams?.notUseForDisbalance)
 
   return res
 }
@@ -398,6 +469,7 @@ function loadUnitBulletsAndSlots(unitName) {
 let loadUnitBulletsFull = @(unitName) loadUnitBulletsAndSlots(unitName).presets
 let loadUnitWeaponSlots = @(unitName) loadUnitBulletsAndSlots(unitName).slots
 let loadUnitSlotsParams = @(unitName) loadUnitBulletsAndSlots(unitName).slotsParams
+let loadUnitReqModifications = @(unitName) loadUnitBulletsAndSlots(unitName).reqModifications
 
 function loadUnitBulletsChoiceImpl(unitName) {
   let { bullets = {}, bulletsOrder = [] } = getUnitTagsCfg(unitName)
@@ -438,4 +510,5 @@ return {
   loadUnitSlotsParams
   loadUnitBulletsAndSlots
   getWeaponId
+  loadUnitReqModifications
 }

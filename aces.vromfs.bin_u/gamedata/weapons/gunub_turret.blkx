@@ -795,7 +795,7 @@
       }
     }
   ],
-  "ub_turret_ap": {
+  "ub_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.044,
@@ -1548,7 +1548,7 @@
       }
     ]
   },
-  "ub_turret_api": {
+  "ub_turret_universal": {
     "bullet": [
       {
         "mass": 0.044,

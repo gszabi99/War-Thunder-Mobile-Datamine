@@ -1008,7 +1008,7 @@
       }
     }
   ],
-  "shkas_turret_ap": {
+  "shkas_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.0099,

@@ -165,6 +165,9 @@ function joinViewInfo(resViewInfo, joiningViewInfo, onJoin = null) {
   return resViewInfo
 }
 
+let findIndexForJoin = @(viewInfoList, viewInfo)
+  viewInfoList.findindex(@(v) joinSingleViewInfo(clone viewInfo, v, null))
+
 let function addTbl(res, id) {
   if (id not in res)
     res[id] <- {}
@@ -430,6 +433,7 @@ return {
   getUnlockRewardsViewInfo
   sortRewardsViewInfo
   joinViewInfo
+  findIndexForJoin
   getLootboxRewardsViewInfo
   receivedGoodsToViewInfo
   isRewardEmpty

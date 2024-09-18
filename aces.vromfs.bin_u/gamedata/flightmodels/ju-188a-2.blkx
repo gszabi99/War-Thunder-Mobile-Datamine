@@ -2411,6 +2411,7 @@
         "WeaponPreset": {
           "iconType": "bomb_50kg_group",
           "name": "10sc50",
+          "isDefault": true,
           "Weapon": [
             {
               "trigger": "bombs",

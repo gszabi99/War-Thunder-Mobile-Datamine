@@ -2525,7 +2525,7 @@
             "Weapon": [
               {
                 "trigger": "machine gun",
-                "blk": "gameData/Weapons/cannonMG15120.blk",
+                "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
                 "emitter": "flare1",
                 "flash": "flare1",
                 "shell": "emtr_shellrejection1",
@@ -2536,7 +2536,7 @@
               },
               {
                 "trigger": "machine gun",
-                "blk": "gameData/Weapons/cannonMG15120.blk",
+                "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
                 "emitter": "flare2",
                 "flash": "flare2",
                 "dm": "cannon2_dm",

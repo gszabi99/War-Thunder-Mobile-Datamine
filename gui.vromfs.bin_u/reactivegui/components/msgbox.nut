@@ -18,7 +18,7 @@ let wndHeaderHeight = hdpx(105)
 
 function mkBtn(b, wndUid) {
   let { id = "", text = null, cb = null, hotkeys = null, isCancel = false, isDefault = false,
-    styleId = "COMMON" } = b
+    styleId = "COMMON", key = null } = b
   let style = buttonStyles?[styleId]
   if (!style)
     logerr($"StyleId {styleId} doesn't exist in buttonStyles")
@@ -33,6 +33,7 @@ function mkBtn(b, wndUid) {
         ?? (isDefault ? [btnAUp]
           : isCancel ? [btnBEscUp]
           : null)
+      ovr = { key }
     }))
 }
 

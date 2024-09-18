@@ -108,8 +108,8 @@ Versuche es später noch einmal.";"Estabas comprobando el Rango del escuadrón.
 Inténtalo más tarde.";"Вы только что проверяли ранги отряда.
 Попробуйте позднее.";"Ви щойно перевіряли ранг ланки.
 Спробуйте ще раз пізніше.";"Właśnie sprawdzałeś Rangę oddziału.
-Spróbuj ponownie później.";"Estava agora mesmo a ver a Classificação do esquadrão.
-Tente outra vez mais tarde.";"Ekibin seviyesini henüz kontrol ettiniz.
+Spróbuj ponownie później.";"Estava agora mesmo a ver a classificação do pelotão.
+Tente novamente mais tarde.";"Ekibin seviyesini henüz kontrol ettiniz.
 Lütfen daha sonra tekrar deneyin.";"Právě jsi zkontroloval úroveň skupiny.
 Zkus to později.";"Μόλις ελέγξατε την Κλάση της ομάδας.
 Προσπαθήστε ξανά αργότερα.";"Kamu baru saja memeriksa Rank skuad.
@@ -144,7 +144,7 @@ Přepnout na {campaign}?";"Για να συμμετάσχετε σε μια μά
 Θα αλλάξετε σε {campaign};";"Kamu harus memilih angkatan bersenjata yang sama dengan yang dipilih pemimpin untuk berpartisipasi dalam pertempuran.
 Beralih ke {campaign}?";"คุณต้องเลือกกองทัพประเภทเดียวกับที่หัวหน้าเลือกเพื่อเข้าร่วมการต่อสู้
 เปลี่ยนเป็น{campaign}หรือไม่?";"전투에 참가하기 위해선 편대장과 같은 진영을 선택해야 합니다.
-{campaign}(으)로 바꾸시겠습니까?";"加\t入\t战\t斗\t需\t要\t使\t用\t队\t长\t当\t前\t装\t备\t载\t具\t类\t型。
+{campaign}(으)로 바꾸시겠습니까?";"加\t入\t战\t斗\t需\t要\t使\t用\t队\t长\t当\t前\t使\t用\t军\t种\t类\t型。
 确\t定\t要\t切\t换\t至 {campaign} 吗？";"バトルに\t参加するには、\t分隊長が\t選んだ\t軍と\t同じものを\t選択する\t必要があります。\t
 {campaign}に\t切り\t替えますか？";"加\t入\t戰\t鬥\t需\t要\t使\t用\t隊\t長\t當\t前\t裝\t備\t載\t具\t類\t型。
 確\t定\t要\t切\t換\t至 {campaign} 嗎？";;

@@ -14,6 +14,7 @@ return {
   FOREST
   WINTER
   DESERT
+  AIR= "air"
   NAVAL = "naval"
 
   tankTagsOrder = [WINTER, DESERT, FOREST, NO_TAG]

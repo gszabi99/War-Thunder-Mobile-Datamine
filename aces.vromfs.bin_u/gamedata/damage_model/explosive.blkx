@@ -20,7 +20,15 @@
       "strengthEquivalent": 1.59,
       "brisanceEquivalent": 1.25
     },
+    "lx14": {
+      "strengthEquivalent": 1.41,
+      "brisanceEquivalent": 1.25
+    },
     "comp_h6": {
+      "strengthEquivalent": 1.35,
+      "brisanceEquivalent": 1.35
+    },
+    "comp_a4w": {
       "strengthEquivalent": 1.35,
       "brisanceEquivalent": 1.35
     },
@@ -28,17 +36,33 @@
       "strengthEquivalent": 1.0,
       "brisanceEquivalent": 1.0
     },
+    "rdx_petn": {
+      "strengthEquivalent": 1.3,
+      "brisanceEquivalent": 1.3
+    },
     "rdx_tnt": {
       "strengthEquivalent": 1.28,
       "brisanceEquivalent": 1.28
     },
+    "octol_tnt": {
+      "strengthEquivalent": 1.44,
+      "brisanceEquivalent": 1.18
+    },
     "rdx_pwx": {
+      "strengthEquivalent": 1.28,
+      "brisanceEquivalent": 1.28
+    },
+    "rdx_aluminium": {
       "strengthEquivalent": 1.28,
       "brisanceEquivalent": 1.28
     },
     "smoke_composition": {
       "strengthEquivalent": 1.0,
       "brisanceEquivalent": 1.0
+    },
+    "s_r_379": {
+      "strengthEquivalent": 0.002,
+      "brisanceEquivalent": 0.002
     },
     "sw_39a": {
       "strengthEquivalent": 1.28,
@@ -57,6 +81,14 @@
       "brisanceEquivalent": 1.3
     },
     "rdx": {
+      "strengthEquivalent": 1.6,
+      "brisanceEquivalent": 1.4
+    },
+    "h761": {
+      "strengthEquivalent": 1.6,
+      "brisanceEquivalent": 1.4
+    },
+    "ha_41": {
       "strengthEquivalent": 1.6,
       "brisanceEquivalent": 1.4
     },
@@ -100,6 +132,10 @@
       "strengthEquivalent": 1.6,
       "brisanceEquivalent": 1.2
     },
+    "trialen_105": {
+      "strengthEquivalent": 1.6,
+      "brisanceEquivalent": 1.2
+    },
     "hbx": {
       "strengthEquivalent": 1.6,
       "brisanceEquivalent": 1.2
@@ -112,13 +148,49 @@
       "strengthEquivalent": 1.2,
       "brisanceEquivalent": 1.28
     },
+    "napalm": {
+      "strengthEquivalent": 0.002,
+      "brisanceEquivalent": 0.002
+    },
+    "oktogel": {
+      "strengthEquivalent": 0.002,
+      "brisanceEquivalent": 0.002
+    },
+    "sks": {
+      "strengthEquivalent": 0.002,
+      "brisanceEquivalent": 0.002
+    },
+    "fp_02": {
+      "strengthEquivalent": 0.002,
+      "brisanceEquivalent": 0.002
+    },
+    "octogel": {
+      "strengthEquivalent": 0.002,
+      "brisanceEquivalent": 0.002
+    },
+    "aerea_64057": {
+      "strengthEquivalent": 0.002,
+      "brisanceEquivalent": 0.002
+    },
+    "napalm_gel": {
+      "strengthEquivalent": 0.002,
+      "brisanceEquivalent": 0.002
+    },
     "pentolite": {
+      "strengthEquivalent": 1.21,
+      "brisanceEquivalent": 1.26
+    },
+    "detonite": {
       "strengthEquivalent": 1.21,
       "brisanceEquivalent": 1.26
     },
     "comp_b": {
       "strengthEquivalent": 1.31,
       "brisanceEquivalent": 1.27
+    },
+    "comp_b_mod": {
+      "strengthEquivalent": 1.35,
+      "brisanceEquivalent": 1.35
     },
     "amatol_tnt": {
       "strengthEquivalent": 1.0,
@@ -168,8 +240,16 @@
       "strengthEquivalent": 1.54,
       "brisanceEquivalent": 1.4
     },
-    "a_ix_1": {
+    "mc": {
       "strengthEquivalent": 1.54,
+      "brisanceEquivalent": 1.4
+    },
+    "jh_2": {
+      "strengthEquivalent": 1.53,
+      "brisanceEquivalent": 1.34
+    },
+    "a_ix_1": {
+      "strengthEquivalent": 1.25,
       "brisanceEquivalent": 1.4
     },
     "h10": {
@@ -196,6 +276,10 @@
       "strengthEquivalent": 1.0,
       "brisanceEquivalent": 1.0
     },
+    "explosive_d": {
+      "strengthEquivalent": 0.98,
+      "brisanceEquivalent": 0.99
+    },
     "picric_acid_tnt": {
       "strengthEquivalent": 0.98,
       "brisanceEquivalent": 0.99
@@ -212,6 +296,10 @@
       "strengthEquivalent": 1.1,
       "brisanceEquivalent": 1.06
     },
+    "mn_f_dn": {
+      "strengthEquivalent": 0.9,
+      "brisanceEquivalent": 0.9
+    },
     "dd": {
       "strengthEquivalent": 0.94,
       "brisanceEquivalent": 0.95
@@ -225,6 +313,10 @@
       "brisanceEquivalent": 1.4
     },
     "tgaf_5": {
+      "strengthEquivalent": 1.6,
+      "brisanceEquivalent": 1.5
+    },
+    "tgaf_5m": {
       "strengthEquivalent": 1.6,
       "brisanceEquivalent": 1.5
     },
@@ -248,6 +340,14 @@
       "strengthEquivalent": 1.28,
       "brisanceEquivalent": 1.28
     },
+    "pbxn_102": {
+      "strengthEquivalent": 1.28,
+      "brisanceEquivalent": 1.28
+    },
+    "pbxn_110": {
+      "strengthEquivalent": 1.28,
+      "brisanceEquivalent": 1.28
+    },
     "nitrolit": {
       "strengthEquivalent": 1.01,
       "brisanceEquivalent": 1.01
@@ -256,11 +356,19 @@
       "strengthEquivalent": 1.28,
       "brisanceEquivalent": 1.28
     },
+    "tg_20": {
+      "strengthEquivalent": 1.33,
+      "brisanceEquivalent": 1.33
+    },
     "hlp_n": {
       "strengthEquivalent": 10.23,
       "brisanceEquivalent": 9.24
     },
     "okfol_20": {
+      "strengthEquivalent": 1.325,
+      "brisanceEquivalent": 1.325
+    },
+    "okfol_3_5": {
       "strengthEquivalent": 1.325,
       "brisanceEquivalent": 1.325
     }

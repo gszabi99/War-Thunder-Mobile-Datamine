@@ -805,7 +805,7 @@
       }
     }
   ],
-  "50cal_turret_ap": {
+  "50cal_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.046,
@@ -1592,7 +1592,7 @@
       }
     ]
   },
-  "50cal_turret_api": {
+  "50cal_turret_universal": {
     "bullet": [
       {
         "mass": 0.0403,

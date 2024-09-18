@@ -6,6 +6,8 @@ let { TPS, VIRTUAL_FPS, BOMBERVIEW, TURRET } = FlightCameraType
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getPieMenuSelectedIdx } = require("%rGui/hud/pieMenu.nut")
 let { playerUnitName, isUnitDelayed, isUnitAlive } = require("%rGui/hudState.nut")
+let { imageDisabledColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { enabledControls, isAllControlsEnabled } = require("%rGui/controls/disabledControls.nut")
 
 let selectedViewIconColor = 0x99996203
 
@@ -21,11 +23,14 @@ let mkLabel = @(actionId) loc($"hotkeys/{actionId}")
 let mkPieCfgItem = @(a) {
   action = @() toggleShortcut(a.shortcut)
   isVisibleByUnit = @() isCameraViewAvailable(a.view)
-  mkView = @() {
+  mkView = @(isEnabled) {
     label = mkLabel(a.shortcut),
     icon = a.icon,
-    iconColor = (getCameraViewType() == a.view) ? selectedViewIconColor : 0xFFFFFFFF
+    iconColor = !isEnabled ? imageDisabledColor
+      :(getCameraViewType() == a.view) ? selectedViewIconColor
+      : 0xFFFFFFFF
   }
+  shortcut = a.shortcut
 }
 
 let cameraPieCfgBase = actions.map(@(action) mkPieCfgItem(action))
@@ -34,6 +39,9 @@ let cameraPieStickDelta = Watched(Point2(0, 0))
 let cameraPieCfg = Watched([])
 let visibleByUnit = Watched([])
 let isCameraPieAvailable = Computed(@() visibleByUnit.get().contains(true))
+let isCameraPieItemsEnabled = Computed(@() null != cameraPieCfgBase.findvalue(@(c, id)
+  visibleByUnit.get()?[id] && (enabledControls.get()?[c?.shortcut] ?? isAllControlsEnabled.get()))
+)
 
 let updateVisibleByUnit = @() visibleByUnit.set(!isUnitAlive.get() || isUnitDelayed.get() ? []
   : cameraPieCfgBase.map(@(c) c?.isVisibleByUnit() ?? true))
@@ -49,7 +57,8 @@ function updatePieCfg() {
     .map(function(v, id) {
       if (!visibleByUnit.get()?[id])
         return null
-      return v.mkView()?.__update({ id })
+      let isEnabled = (enabledControls.get()?[v.shortcut] ?? isAllControlsEnabled.get())
+      return v.mkView(isEnabled)?.__update({ id })
     })
     .filter(@(v) v != null))
 }
@@ -57,6 +66,8 @@ updatePieCfg()
 isCameraPieStickActive.subscribe(@(_) updatePieCfg())
 isCameraPieStickActive.subscribe(@(_) updateVisibleByUnit())
 visibleByUnit.subscribe(@(_) updatePieCfg())
+enabledControls.subscribe(@(_) updatePieCfg())
+isAllControlsEnabled.subscribe(@(_) updatePieCfg())
 
 let cameraPieSelectedIdx = Computed(@() getPieMenuSelectedIdx(cameraPieCfg.get().len(), cameraPieStickDelta.get()))
 
@@ -70,6 +81,7 @@ isCameraPieStickActive.subscribe(function(isActive) {
 
 return {
   cameraPieCfg
+  isCameraPieItemsEnabled
   isCameraPieAvailable
   isCameraPieStickActive
   cameraPieStickDelta

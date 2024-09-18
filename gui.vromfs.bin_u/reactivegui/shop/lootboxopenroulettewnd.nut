@@ -18,7 +18,7 @@ let { delayUnseedPurchaseShow, skipUnseenMessageAnimOnce } = require("%rGui/shop
 let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardLocked, mkRewardPlateBg, mkProgressBar,
   mkRewardPlateImage, mkProgressLabel, mkProgressBarWithForecast, mkProgressBarText
 } = require("%rGui/rewards/rewardPlateComp.nut")
-let { ignoreSubIdRTypes } = require("%rGui/rewards/rewardViewInfo.nut")
+let { ignoreSubIdRTypes, joinViewInfo, findIndexForJoin } = require("%rGui/rewards/rewardViewInfo.nut")
 let { addCompToCompAnim } = require("%darg/helpers/compToCompAnim.nut")
 let { mkLensFlareLootbox } = require("%rGui/effects/mkLensFlare.nut")
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
@@ -75,7 +75,8 @@ let needHighlight = Watched(receiveRewardsAnimViewInfo.value != null)
 let openConfig = Computed(@() lootboxOpenRouletteConfig?[rouletteOpenType.value]
   ?? lootboxOpenRouletteConfig.roulette_short)
 let consistentReceivedRewardIdx = Watched(-1)
-
+let viewInfos = Computed(@() receivedRewardsAll.value.map(@(r) r.viewInfo[0]))
+let visibleInfos = Computed(@() joinViewInfo([], viewInfos.get().slice(0, resultOffsetIdx.get() + 1)))
 
 let isRewardSameDefault = @(received, info) info.id == received.id && info.count == received.count
   && (info.rType in ignoreSubIdRTypes || info.subId == received.subId)
@@ -703,21 +704,21 @@ function onRewardScaleFinish(viewInfo, rewardIdx) {
   })
 
   resetTimeout(aTimeRewardMove, @() resultVisibleIdx(max(rewardIdx, resultVisibleIdx.value)))
-  if (rewardIdx >= receivedRewardsAll.value.len() - 1)
+  if (resultOffsetIdx.get() >= receivedRewardsAll.value.len() - 1)
     resetTimeout(aTimeRewardMove + delayBeforeClose, closeRoulette)
   else if (rouletteOpenIdx.value == rewardIdx && (isReceivedAnimFixed.value || isReceivedAnimLast.value))
     rouletteOpenIdx(rewardIdx + 1)
   recevedRewardAnimIdx(-1)
 }
 
-let receiveRewardAnimBlock = @(viewInfo, rewardIdx, key, duration)
+let receiveRewardAnimBlock = @(viewInfo, key, duration)
   mkRewardBlock(viewInfo, REWARD_STYLE_MEDIUM,
     {
       key
       transform = {}
       animations = [{ prop = AnimProp.scale, to = [1.3, 1.3], easing = CosineFull,
         duration, play = true,
-        onFinish = @() onRewardScaleFinish(viewInfo, rewardIdx)
+        onFinish = @() onRewardScaleFinish(viewInfo, findIndexForJoin(visibleInfos.get(), viewInfo))
       }]
     })
 
@@ -839,37 +840,35 @@ function rouletteRewardsBlock() {
         children = needHighlight.value && !isReceivedAnimFixed.value ? highlight : null
       }
       @() {
-        watch = [recevedRewardAnimIdx, receiveRewardsAnimViewInfo, isReceivedAnimFixed]
+        watch = [receiveRewardsAnimViewInfo, isReceivedAnimFixed]
         children = receiveRewardsAnimViewInfo.value == null || isReceivedAnimFixed.value ? null
-          : receiveRewardAnimBlock(receiveRewardsAnimViewInfo.value, recevedRewardAnimIdx.value,
-              REWARD_RESULT_ANIM_KEY, aTimeRewardScale)
+          : receiveRewardAnimBlock(receiveRewardsAnimViewInfo.value, REWARD_RESULT_ANIM_KEY, aTimeRewardScale)
       }
     ]
   }
 }
 
 function receivedRewardsBlock() {
-  let viewInfos = receivedRewardsAll.value.map(@(r) r.viewInfo[0])
   let widthSum = []
   local visibleWidth = 0
   for(local i = 0; i <= resultOffsetIdx.value; i++) {
     widthSum.append(visibleWidth)
-    let { slots = 0 } = viewInfos?[i]
+    let { slots = 0 } = visibleInfos.get()?[i]
     visibleWidth += slotsGap + slots * rewardBoxSize + (slots - 1) * rewardBoxGap
   }
 
   let offsetVisible = - visibleWidth / 2 + slotsGap / 2
   let posInvisible = - offsetVisible + slotsGap
-    - 0.5 * (rewardBoxSize + rewardBoxGap) * (viewInfos?[resultOffsetIdx.value + 1].slots ?? 0)
+    - 0.5 * (rewardBoxSize + rewardBoxGap) * (visibleInfos.get()?[resultOffsetIdx.value + 1].slots ?? 0)
     + 0.5 * rewardBoxGap
 
   return {
-    watch = [receivedRewardsAll, rouletteOpenResult, resultVisibleIdx, resultOffsetIdx]
+    watch = [visibleInfos, rouletteOpenResult, resultVisibleIdx, resultOffsetIdx]
     size = [0, rewardBoxSize]
     hplace = ALIGN_CENTER
     valign = ALIGN_BOTTOM
     children = !rouletteOpenResult.value || receivedRewardsAll.value.len() == 0 ? null
-      : viewInfos.map(@(viewInfo, idx)
+      : visibleInfos.get().map(@(viewInfo, idx)
           mkRewardBlock(viewInfo, REWARD_STYLE_MEDIUM,
             {
               key = getRewardResultKey(idx)
@@ -1022,10 +1021,9 @@ let fixedRewardIcon = @(viewInfo) {
     }
     mkRewardBlock(viewInfo, REWARD_STYLE_MEDIUM)
     @() {
-      watch = [recevedRewardAnimIdx, receiveRewardsAnimViewInfo, isReceivedAnimFixed]
+      watch = [receiveRewardsAnimViewInfo, isReceivedAnimFixed]
       children = receiveRewardsAnimViewInfo.value == null || !isReceivedAnimFixed.value ? null
-        : receiveRewardAnimBlock(receiveRewardsAnimViewInfo.value, recevedRewardAnimIdx.value,
-            FIXED_REWARD_ANIM_KEY, aTimeFixedRewardScale)
+        : receiveRewardAnimBlock(receiveRewardsAnimViewInfo.value, FIXED_REWARD_ANIM_KEY, aTimeFixedRewardScale)
     }
   ]
 }

@@ -163,6 +163,8 @@ let hintCtors = {
   simpleText = @(hint) simpleText(hint.text, { maxWidth = maxHintWidth })
   simpleTextTiny = @(hint) simpleText(hint.text,
     { halign = ALIGN_CENTER, maxWidth = maxHintWidth }.__update(fontTiny))
+  simpleTextTinyGrad = @(hint) mkGradientBlock(defBgColor, simpleText(hint.text,
+    { halign = ALIGN_CENTER }.__update(fontTiny)), hintWidth, 0)
   warningTextTiny = @(hint) warningText(hint.text,
       { halign = ALIGN_CENTER, maxWidth = maxHintWidth }.__update(fontTiny))
   chatLogTextTiny = @(hint) simpleText(hint.text,

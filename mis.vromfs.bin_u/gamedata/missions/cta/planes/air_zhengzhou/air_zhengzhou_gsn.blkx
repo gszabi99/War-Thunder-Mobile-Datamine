@@ -512,7 +512,7 @@
           "air": true,
           "ground": false,
           "mapArea": false,
-          "airMapArea": false,
+          "airMapArea": true,
           "killArea": false,
           "detectionArea": false,
           "killOutOfBattleArea": false,

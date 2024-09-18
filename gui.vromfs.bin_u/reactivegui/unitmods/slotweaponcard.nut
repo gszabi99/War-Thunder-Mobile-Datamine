@@ -2,23 +2,26 @@ from "%globalsDarg/darg_library.nut" import *
 let { defer } = require("dagor.workcycle")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { curWeaponsOrdered, curWeaponIdx, curUnit, equippedWeaponId,
-  curMods, curUnitAllModsCost, mkWeaponStates,
-  curWeaponBeltsOrdered, curBeltIdx, equippedBeltId
+let { curWeaponsOrdered, curWeaponIdx, curUnit, equippedWeaponId, mkHasConflicts,
+  curMods, curUnitAllModsCost, mkWeaponStates, curBeltsWeaponIdx, equippedWeaponsBySlots,
+  curWeaponBeltsOrdered, curBeltIdx, equippedBeltId, curSlotIdx, curUnseenMods,
+  slotBeltKey, slotWeaponKey
 } = require("unitModsSlotsState.nut")
-let { mkLevelLock, mkNotPurchasedShade, mkModCost } = require("modsComps.nut")
+let { mkLevelLock, mkNotPurchasedShade, mkModCost, mkUnseenModIndicator } = require("modsComps.nut")
 let { selectedLineHor, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
 let { getWeaponShortNamesList, getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
 let { getBulletBeltImage, TOTAL_VIEW_BULLETS } = require("%appGlobals/config/bulletsPresentation.nut")
 let { contentMargin } = require("unitModsConst.nut")
+let { warningTextColor } = require("%rGui/style/stdColors.nut")
 
 let weaponGap = hdpx(10)
 let selLineGap = hdpx(14)
 let bgColor = 0x990C1113
 let activeBgColor = 0xFF52C4E4
 let beltImgSize = evenPx(120)
-let weaponIconSize = evenPx(140)
-let weaponH = weaponIconSize + 2 * contentMargin
+let weaponIconHeight = evenPx(140)
+let weaponIconWidth = hdpxi(210)
+let weaponH = weaponIconHeight + 2 * contentMargin
 let weaponW = hdpx(440)
 let equippedColor = 0xFF50C0FF
 let equippedFrameWidth = hdpx(4)
@@ -91,14 +94,14 @@ let mkWeaponImage = @(weapon) function() {
   if (weapon.get() == null)
     return { watch = weapon }
   let { iconType = "" } = weapon.get()
-  let fallbackImage = Picture($"ui/gameuiskin#icon_primary_attention.svg:{weaponIconSize}:{weaponIconSize}:P")
+  let fallbackImage = Picture($"ui/gameuiskin#icon_primary_attention.svg:{weaponIconWidth}:{weaponIconHeight}:P")
   return {
     watch = weapon
-    size = [weaponIconSize, weaponIconSize]
+    size = [weaponIconWidth, weaponIconHeight]
     margin = contentMargin
     rendObj = ROBJ_IMAGE
     image = iconType == "" ? fallbackImage
-      : Picture($"ui/gameuiskin#{iconType}.avif:{weaponIconSize}:{weaponIconSize}:P")
+      : Picture($"ui/gameuiskin#{iconType}.avif:{weaponIconWidth}:{weaponIconHeight}:P")
     fallbackImage
     keepAspect = true
     imageHalign = ALIGN_LEFT
@@ -131,6 +134,15 @@ let mkLevelLockInfo = @(isLocked, reqLevel) @() {
       }
 }
 
+let mkConflictsBorder = @(hasConflicts) @() !hasConflicts.get() ? { watch = hasConflicts }
+  : {
+      watch = hasConflicts
+      size = flex()
+      rendObj = ROBJ_BOX
+      borderColor = warningTextColor
+      borderWidth = hdpx(3)
+    }
+
 function mkSlotWeaponContent(idx) {
   let weapon = Computed(@() curWeaponsOrdered.get()?[idx])
   let id = Computed(@() weapon.get()?.name)
@@ -146,6 +158,8 @@ function mkSlotWeaponContent(idx) {
       mkEquippedIcon(isEquipped)
       mkLevelLockInfo(isLocked, reqLevel)
       mkModCost(isPurchased, isLocked, mod, curUnitAllModsCost)
+      mkUnseenModIndicator(Computed(@() id.get() in curUnseenMods.get()?[curSlotIdx.get()]))
+      mkConflictsBorder(mkHasConflicts(weapon, equippedWeaponsBySlots))
     ]
   }
 }
@@ -157,6 +171,7 @@ function mkSlotWeapon(idx, scrollToWeapon) {
   let isHover = Computed (@() stateFlags.get() & S_HOVER)
 
   return {
+    key = slotWeaponKey(idx)
     size = [SIZE_TO_CONTENT, flex()]
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags(v)
@@ -209,6 +224,8 @@ function mkSlotBeltContent(idx) {
   let id = Computed(@() belt.get()?.id)
   let { mod, reqLevel, isLocked, isPurchased } = mkWeaponStates(belt, curMods, curUnit)
   let isEquipped = Computed(@() equippedBeltId.get() == id.get())
+
+  let isUnseen = Computed(@() id.get() in curUnseenMods.get()?[curBeltsWeaponIdx.get()])
   return @() {
     watch = belt
     size = [weaponW, weaponH]
@@ -221,6 +238,7 @@ function mkSlotBeltContent(idx) {
           mkEquippedIcon(isEquipped)
           mkLevelLockInfo(isLocked, reqLevel)
           mkModCost(isPurchased, isLocked, mod, curUnitAllModsCost)
+          mkUnseenModIndicator(isUnseen)
         ]
   }
 }
@@ -231,6 +249,7 @@ function mkSlotBelt(idx, scrollToWeapon) {
   let isActive = Computed(@() curBeltIdx.get() == idx || (stateFlags.get() & S_ACTIVE) != 0)
   let isHover = Computed(@() stateFlags.get() & S_HOVER)
   return {
+    key = slotBeltKey(idx)
     size = [SIZE_TO_CONTENT, flex()]
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags(v)
@@ -261,9 +280,9 @@ return {
   weaponW
   weaponGap
   weaponTotalH
-  weaponIconSize
 
   mkSlotText
   mkBeltImage
   mkSlotBelt
+  mkConflictsBorder
 }

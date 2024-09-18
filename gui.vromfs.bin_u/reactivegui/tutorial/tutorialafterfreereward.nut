@@ -2,8 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let logFB = log_with_prefix("[FIRST_BATTLE_TUTOR] ")
 let { register_command } = require("console")
 let { eventbus_send } = require("eventbus")
-let { deferOnce, resetTimeout } = require("dagor.workcycle")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { deferOnce } = require("dagor.workcycle")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
@@ -13,13 +12,14 @@ let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial,
   activeTutorialId } = require("tutorialWnd/tutorialWndState.nut")
+let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
 let { needShowTutorialAfterReward } = require("%rGui/rewards/freeRewardCampaigns.nut")
 
 const TUTORIAL_ID = "tutorialAfterFreeReward"
-let isSkipped = hardPersistWatched("tutorialAfterFreeReward.isSkipped", false)
+let isFinished = mkIsTutorialCompleted(TUTORIAL_ID)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let needShowTutorial = Computed(@() !isInSquad.get()
-  && !isSkipped.get()
+  && !isFinished.get()
   && isCampaignWithUnitsResearch.get()
   && needShowTutorialAfterReward.get())
 let canStartTutorial = Computed(@() !hasModalWindows.get()
@@ -34,27 +34,18 @@ let finishEarly = @() shouldEarlyCloseTutorial.get() ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
 function startTutorial() {
-  let unitsListShowEnough = Watched(false)
   setTutorialConfig({
     id = TUTORIAL_ID
     function onStepStatus(stepId, status) {
       logFB($"{stepId}: {status}")
-      if (status == "skip_step")
-        isSkipped(true)
-      if (stepId == "s3_press_battle_button" && status == "tutorial_finished")
+      if (status == "tutorial_finished") {
+        markTutorialCompleted(TUTORIAL_ID)
         needShowTutorialAfterReward.set(false)
+      }
     }
     steps = [
       {
-        id = "s1_units_wnd_animation"
-        function beforeStart() {
-          resetTimeout(0.5, @() unitsListShowEnough.set(true))
-        }
-        nextStepAfter = unitsListShowEnough
-        objects = [{ keys = "sceneRoot" }]
-      }
-      {
-        id = "s3_press_battle_button"
+        id = "s1_press_battle_button"
         text = loc("tutorial/pressToBattleButton")
         onSkip = @() null
         objects = [{

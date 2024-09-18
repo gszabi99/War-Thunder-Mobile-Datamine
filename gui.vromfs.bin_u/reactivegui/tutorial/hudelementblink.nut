@@ -1,13 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
-let { setInterval, clearTimer } = require("dagor.workcycle")
+let { setInterval, clearTimer, resetTimeout } = require("dagor.workcycle")
+let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
 
 let { getBox, incBoxSize, findGoodArrowPos, sizePosToBox } = require("tutorialWnd/tutorialUtils.nut")
 let { pointerArrow } = require("tutorialWnd/tutorialWndDefStyle.nut")
-let { elements, sizeIncDef } = require("hudElementsCfg.nut")
+let hudElementsCfg = require("hudElementsCfg.nut")
+let { sizeIncDef } = hudElementsCfg
+let hudElements = hudElementsCfg.elements
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+
 
 let arrowHlType = "arrow"
 let highLightTypes = {
@@ -17,74 +21,91 @@ let highLightTypes = {
 let staticUpdateInterval = 0.5
 
 let isHudBlinkAttached = Watched(false)
-let blinkState = Watched({})
-let lastBlinkEvent = mkWatched(persist, "lastBlinkEvent", {})
-let isHudBlinkActive = Computed(@() isHudBlinkAttached.get() && blinkState.get().findvalue(@(v) v.len() > 0) != null)
+let activeBlinkElems = mkWatched(persist, "activeBlinkElems", {})
+let curBoxes = Watched({})
+let arrowCurBoxes = Computed(@() curBoxes.get()?[arrowHlType] ?? {})
 
-function resetState() {
-  blinkState.set({})
-  lastBlinkEvent.set({})
-}
-
-eventbus_subscribe("hudElementBlink", @(ev) lastBlinkEvent.set(ev))
-isInBattle.subscribe(@(_) resetState())
-
-let updateInterval = keepref(Computed(@() !isHudBlinkActive.get() ? 0 : staticUpdateInterval))
-
-let curElements = Computed(function() {
+let highlights = Computed(function(prev) {
   let res = {}
-  foreach (hlType, blinkStateElements in blinkState.get()) {
-    res[hlType] <- []
-    foreach (e, _ in blinkStateElements)
-      if (e in elements)
-        res[hlType].extend(elements[e])
+  foreach(elem, cfg in activeBlinkElems.get()) {
+    let { highLightType } = cfg
+    if (!highLightTypes?[highLightType])
+      continue
+    let hudCfg = hudElements?[elem]
+    if (hudCfg == null)
+      continue
+    if (highLightType not in res)
+      res[highLightType] <- {}
+    res[highLightType][elem] <- hudCfg
   }
-  return res
+  return isEqual(res, prev) ? prev : res
 })
 
-let curBoxes = Watched({})
-let arrowCurBoxes = Computed(@() curBoxes.get()?[arrowHlType] ?? [])
+let elementBlinks = Computed(function(prev) {
+  let res = {}
+  foreach(elem, cfg in activeBlinkElems.get())
+    if (cfg.blink)
+      res[elem] <- true
+  return isEqual(res, prev) ? prev : res
+})
+
+let isHudHighlightActive = Computed(@() isHudBlinkAttached.get() && highlights.get().len() > 0)
+let updateInterval = keepref(Computed(@() !isHudHighlightActive.get() ? 0 : staticUpdateInterval))
+
+let reset = @() activeBlinkElems.set({})
+isInBattle.subscribe(@(_) reset())
+
+function onHudElementBlink(evt) {
+  let { time = 0, enabled = true, highLightType = "", elements = [], blink = false } = evt
+  activeBlinkElems.mutate(function(v) {
+    let shouldAdd = blink || (highLightType != "" && enabled)
+    foreach(e in elements)
+      if (!shouldAdd && e in v)
+        v.$rawdelete(e)
+      else if (shouldAdd)
+        v[e] <- { blink, highLightType, endTimeMsec = time > 0 ? get_time_msec() + (1000 * time).tointeger() : 0 }
+  })
+}
+
+eventbus_subscribe("hudElementBlink", onHudElementBlink)
+
+function updateInactivityTimer() {
+  let timeMsec = get_time_msec()
+  let newElems = activeBlinkElems.get().filter(@(e) e.endTimeMsec <= 0 || e.endTimeMsec > timeMsec)
+  if (newElems.len() != activeBlinkElems.get().len())
+    activeBlinkElems.set(newElems)
+  let nextTime = activeBlinkElems.get()
+    .reduce(@(res, e) e.endTimeMsec <= 0 ? res
+        : res == 0 ? e.endTimeMsec
+        : min(res, e.endTimeMsec),
+      0)
+  if (nextTime > 0)
+    resetTimeout(max(0.01, (nextTime - timeMsec) * 0.001), updateInactivityTimer)
+}
+updateInactivityTimer()
+activeBlinkElems.subscribe(@(_) resetTimeout(0.01, updateInactivityTimer))
 
 function updateCurBoxes() {
-  let boxes = highLightTypes.map(@(_) [])
-  foreach (hlType, elems in curElements.get()) {
-    if (!highLightTypes?[hlType])
-      continue
-    foreach (idx, cfg in elems) {
-      let { sizeInc = sizeIncDef, objs = null } = cfg
-      local box = getBox(objs ?? cfg) //when not table, cfg is objs
-      if (box == null)
-        continue
-      let isValid = box.r - box.l > 0 && box.b - box.t > 0
-      if (isValid)
-        box = incBoxSize(box, sizeInc)
-      box.id <- idx
-      boxes[hlType].append(box)
-    }
-  }
+  let boxes = highlights.get().map(
+    function(cfgList) {
+      let list = []
+      foreach(cfg in cfgList)
+        foreach(elemCfg in cfg) {
+          let { sizeInc = sizeIncDef, objs = null } = elemCfg
+          local box = getBox(objs ?? elemCfg) //when not table, cfg is objs
+          if (box == null || box.r - box.l <= 0 || box.b - box.t <= 0)
+            continue
+          box = incBoxSize(box, sizeInc)
+          list.append(box)
+        }
+      return list
+    })
 
   if (!isEqual(curBoxes.get(), boxes))
     curBoxes.set(boxes)
 }
 
-lastBlinkEvent.subscribe(function(evt) {
-  let { highLightType = null } = evt
-  if (!highLightTypes?[highLightType])
-    return
-  let res = clone blinkState.get()
-  if (res?[highLightType] == null)
-    res[highLightType] <- {}
-  foreach (evtElem in evt?.elements ?? []) {
-    if (evt.enabled)
-      res[highLightType][evtElem] <- true
-    else
-      res[highLightType].$rawdelete(evtElem)
-  }
-  if (res[highLightType].len() == 0)
-    res.$rawdelete(highLightType)
-  blinkState.set(res)
-  updateCurBoxes()
-})
+highlights.subscribe(@(_) updateCurBoxes())
 
 updateInterval.subscribe(function(interval) {
   clearTimer(updateCurBoxes)
@@ -94,18 +115,16 @@ updateInterval.subscribe(function(interval) {
   setInterval(interval, updateCurBoxes)
 })
 
-function mkArrows() {
-  let boxes = arrowCurBoxes.get().filter(@(b) b.r - b.l > 0 && b.b - b.t > 0)
+function arrows() {
+  let boxes = arrowCurBoxes.get()
   if (boxes.len() == 0)
     return { watch = arrowCurBoxes }
   let size = calc_comp_size(pointerArrow)
-  let obstaclesVar = []
+  let obstacles = clone boxes
   let children = []
   foreach (box in boxes) {
-    let { pos, rotate } = findGoodArrowPos(box, size, obstaclesVar)
-    obstaclesVar.append(sizePosToBox(size, pos))
-    if (box.id < 0)
-      continue
+    let { pos, rotate } = findGoodArrowPos(box, size, obstacles)
+    obstacles.append(sizePosToBox(size, pos))
     children.append(pointerArrow.__merge({ pos, transform = { rotate } }))
   }
   return {
@@ -115,37 +134,36 @@ function mkArrows() {
   }
 }
 
-let shadeKey = {}
 let hudElementBlink = {
-  key = shadeKey
+  key = highlights
   size = flex()
   onAttach = @() isHudBlinkAttached.set(true)
   onDetach = @() isHudBlinkAttached.set(false)
-  children = mkArrows
+  children = arrows
 }
 
-function debugHudBlink(ids, highLightType, enabled) {
-  let res = {}
-  if (highLightTypes?[highLightType])
-    res.highLightType <- highLightType
-  else
-    console_print($"{highLightType} - unknown type") // warning disable: -forbidden-function
-  if (type(ids) == "string")
-    ids = [ids]
-  let elems = []
-  foreach (id in ids) {
-    if (id in elements)
-      elems.append(id)
-    else if (id != "")
-      console_print($"{id} - unknown element") // warning disable: -forbidden-function
+function debugHudBlinkArrow(id, time) {
+  if (id not in hudElements) {
+    console_print($"{id} - unknown element") // warning disable: -forbidden-function
+    return
   }
-  lastBlinkEvent.set(res.__update({ enabled, elements = elems }))
-  console_print(blinkState.get()) // warning disable: -forbidden-function
+  let enabled = time > 0 || id not in activeBlinkElems.get()
+
+  onHudElementBlink({ time, enabled, highLightType = arrowHlType, elements = [id] })
+  console_print($"enabled = {enabled}") // warning disable: -forbidden-function
 }
 
-register_command(@(ids, highLightType) debugHudBlink(ids, highLightType, true), "debug.hudBlinkEnable")
-register_command(@(ids, highLightType) debugHudBlink(ids, highLightType, false), "debug.hudBlinkDisable")
+function debugHudBlink(id, time) {
+  let blink = time > 0 || id not in activeBlinkElems.get()
+  onHudElementBlink({ time, blink, elements = [id] })
+  console_print($"blink = {blink}") // warning disable: -forbidden-function
+}
+
+register_command(debugHudBlinkArrow, "debug.hudBlinkArrow")
+register_command(debugHudBlink, "debug.hudBlink")
+register_command(reset, "debug.hudBlinkReset")
 
 return {
   hudElementBlink
+  elementBlinks
 }

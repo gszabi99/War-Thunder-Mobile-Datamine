@@ -335,6 +335,8 @@
   "shipTouchAimSensMult": 0.3,
   "aircraftTouchSensMult": 1.0,
   "aircraftTouchAimSensMult": 0.7,
+  "touchSensMultPlane": 0.175,
+  "touchAimSensMultPlane": 0.125,
   "loadNetEffectiveness": 100,
   "forceShowIndicators": true,
   "drawDamagePoints": true,
@@ -7576,7 +7578,7 @@
       "easy": {
         "singleRespTime": 3.0,
         "botRespTime": 300.0,
-        "versusRespTime": 5.0,
+        "versusRespTime": 1.0,
         "coopRespTime": 25.0,
         "coopMaxRespTime": 180.0,
         "coopDeathPenaltyK": 2.0,
@@ -7585,7 +7587,7 @@
       "medium": {
         "singleRespTime": 3.0,
         "botRespTime": 300.0,
-        "versusRespTime": 15.0,
+        "versusRespTime": 1.0,
         "coopRespTime": 30.0,
         "coopMaxRespTime": 180.0,
         "coopDeathPenaltyK": 2.0,
@@ -7594,7 +7596,7 @@
       "hard": {
         "singleRespTime": 3.0,
         "botRespTime": 300.0,
-        "versusRespTime": 15.0,
+        "versusRespTime": 1.0,
         "coopRespTime": 30.0,
         "coopMaxRespTime": 180.0,
         "coopDeathPenaltyK": 2.0,
@@ -8467,7 +8469,7 @@
           1.0
         ],
         "crashDamagePlayers": false,
-        "crashDamageBots": true,
+        "crashDamageBots": false,
         "simulateBattery": false,
         "shipBrokenFunnelMaxRedynessMult": 0.5,
         "shipBrokenEngineRedynessMult": 0.5,

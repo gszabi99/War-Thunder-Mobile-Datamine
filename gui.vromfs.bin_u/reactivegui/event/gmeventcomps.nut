@@ -5,8 +5,9 @@ let { mkGoodsWrap, mkSlotBgImg, mkPricePlate, mkGoodsCommonParts, mkBgParticles,
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { getUnitByGoods } = require("%rGui/shop/goodsView/goodsUnit.nut")
+let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
 let { SGT_UNIT } = require("%rGui/shop/shopConst.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let priceBgGrad = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
 
@@ -61,7 +62,7 @@ let mkGmImg = @(id) {
 function mkGmGoods(goods, mkOnClick, state, animParams) {
   let { limit = 0, dailyLimit = 0, id = null } = goods
   let bgParticles = mkBgParticles(goodsBgSize)
-  let unit = getUnitByGoods(goods)
+  let unit = getBestUnitByGoods(goods, serverConfigs.get())
   let canPurchase = mkCanPurchase(id, limit, dailyLimit).get()
   let isUnit = goods.gtype == SGT_UNIT
   let onClick = mkOnClick(canPurchase, isUnit, unit)

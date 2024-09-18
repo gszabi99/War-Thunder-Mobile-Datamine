@@ -22,7 +22,6 @@ let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
-let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { blueprintBar } = require("%rGui/unitsTree/components/researchBars.nut")
 let { mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize } = require("%rGui/components/scrollArrows.nut")
 let { isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
@@ -314,14 +313,12 @@ function unitArmorBlock(unit, needLabels) {
 
 function unitPriceBlock(unit) {
   if (unit?.campaign not in serverConfigs.get()?.unitTreeNodes
-      || unit.isPremium
-      || unit.name in myUnits.get()
-      || unit.name in canBuyUnits.get())
+      || unit.name in myUnits.get())
     return null
   let price = Computed(@() getUnitAnyPrice(unit, false, unitDiscounts.get()))
   return @() price.get()?.price
     ? {
-      watch = [serverConfigs, myUnits, canBuyUnits, price]
+      watch = [serverConfigs, myUnits, price]
       size = [statsWidth, SIZE_TO_CONTENT]
       margin = [statsGap, 0, 0, 0]
       flow = FLOW_HORIZONTAL
@@ -362,7 +359,7 @@ let unitConsumablesBlock = @(unit, itemsList) {
   gap = statsGap + statsInsideGap + progressHt
   flow = FLOW_VERTICAL
   children = itemsList
-    .filter(@(cfg) canUseItemByUnit?[cfg.name](unit.name) ?? true)
+    .filter(@(cfg) (cfg?.itemsPerUse != 1) && (canUseItemByUnit?[cfg.name](unit.name) ?? true))
     .map(@(itemCfg)
       mkConsumableRow(itemCfg.name, (itemCfg?.itemsPerUse ?? 0) > 0 ? itemCfg.itemsPerUse : unit.itemsPerUse))
 }

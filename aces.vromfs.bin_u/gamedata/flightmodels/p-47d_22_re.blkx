@@ -1712,6 +1712,7 @@
             "iconType": "bomb_250kg",
             "name": "250lbs",
             "reqModification": "fsbc_mk5",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_bomb1"
             },
@@ -1807,6 +1808,7 @@
             "iconType": "bomb_250kg",
             "name": "250lbs",
             "reqModification": "fsbc_mk5",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_bomb3"
             },
@@ -1885,6 +1887,7 @@
             "iconType": "bomb_250kg",
             "name": "250lbs",
             "reqModification": "fsbc_mk5",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_bomb2"
             },

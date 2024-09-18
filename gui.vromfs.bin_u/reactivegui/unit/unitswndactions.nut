@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { playSound } = require("sound_wt")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { abs } = require("%sqstd/math.nut")
 let { hangarUnitName } = require("hangarUnit.nut")
@@ -18,7 +19,7 @@ let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { textButtonPlayerLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { openGoodsPreview, openedUnitFromTree } = require("%rGui/shop/goodsPreviewState.nut")
-let { curCampaign, curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, curCampaignSlotUnits, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { allUnitsCfg, curUnit, playerLevelInfo, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { setCurrentUnit, canBuyUnits, buyUnitsData, canBuyUnitsStatus, US_TOO_LOW_LEVEL, US_NOT_FOR_SALE
@@ -154,8 +155,13 @@ let mkUnitChangeInfo = @(prevUnit, newUnit) {
     })
 }
 
+function researchUnit(unitName) {
+  set_research_unit(curCampaign.get(), unitName)
+  playSound("meta_research_start")
+}
+
 function setResearchUnit(unitName) {
-  let research = @() set_research_unit(curCampaign.get(), unitName)
+  let research = @() researchUnit(unitName)
   let newUnit = allUnitsCfg.get()?[unitName]
   let prevUnit = allUnitsCfg.get()?[currentResearch.get()?.name]
   if (newUnit == null)
@@ -217,7 +223,7 @@ function unitActionButtons() {
     let price = getUnitAnyPrice(unit, isForLevelUp, unitDiscounts.get())
     if (price != null) {
       let priceComp = mkDiscountPriceComp(price.fullPrice, price.price, price.currencyId, CS_INCREASED_ICON)
-      children.append(textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_order")), priceComp,
+      children.append(textButtonPricePurchase(utf8ToUpper(loc(!isCampaignWithUnitsResearch.get() ? "msgbox/btn_order" : "msgbox/btn_build")), priceComp,
         canBuyUnit ? onBuyUnit : @() animBuyRequirementsUnitId.set(unitName),
         { hotkeys = ["^J:X"] }.__update(canBuyUnit ? {} : COMMON)))
     }
@@ -230,7 +236,7 @@ function unitActionButtons() {
     children.append(withGlareEffect(
       textButtonMultiline(utf8ToUpper(loc("unitsTree/startResearch")),
         @() canResearch ? setResearchUnit(unitName) : animResearchRequirementsUnitId.set(unitName),
-        mergeStyles(canResearch ? PURCHASE : COMMON, { hotkeys = ["^J:X"] })),
+        mergeStyles(canResearch ? PURCHASE : COMMON, { hotkeys = ["^J:X"], ovr = { key = "startResearchButton" } })),
       PURCHASE.ovr.minWidth,
       { delay = 3, repeatDelay = 3 }
     ))
@@ -316,6 +322,7 @@ let unitActions = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null |
   })
 
 return {
+  setResearchUnit
   unitActions
   discountBlock
   findGoodsPrem

@@ -962,13 +962,13 @@
           }
         ],
         "hudElementSelectionShade": {
-          "element": "targetsCounter"
+          "element": "targetsCounter",
+          "drawFromGui": false
         },
         "hudElementBlink": {
-          "drawFromGui": true,
-          "element": "targets_indicators",
-          "highLightType": "arrow",
-          "show": true
+          "element": "targetsCounter",
+          "time": 20.0,
+          "blink": true
         },
         "triggerEnable": {
           "target": "1st_battle_hints_indicator"
@@ -1001,24 +1001,27 @@
       "actions": {
         "hudElementSelectionShade": [
           {
-            "element": ""
+            "element": "",
+            "drawFromGui": false
           },
           {
-            "element": "screenTop"
+            "element": "screenTop",
+            "drawFromGui": false
           }
         ],
         "hudElementBlink": [
           {
-            "drawFromGui": true,
-            "element": "targets_indicators",
-            "highLightType": "arrow",
-            "show": false
+            "element": "targetsCounter",
+            "time": 20.0,
+            "blink": false
           },
           {
             "drawFromGui": true,
-            "element": "ticket_panel",
+            "element": "score_board",
             "highLightType": "arrow",
-            "show": true
+            "time": -1.0,
+            "show": true,
+            "blink": true
           }
         ],
         "playHint": [
@@ -1113,13 +1116,16 @@
       },
       "actions": {
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "hudElementBlink": {
           "drawFromGui": true,
-          "element": "ticket_panel",
+          "element": "score_board",
           "highLightType": "arrow",
-          "show": false
+          "time": 0.0,
+          "show": false,
+          "blink": false
         },
         "playHint": [
           {
@@ -1256,6 +1262,9 @@
         },
         "missionSetClampMouseAim": {
           "enable": false
+        },
+        "playerSetMouseAim": {
+          "lookat": "fighters_area"
         }
       },
       "else_actions": {}

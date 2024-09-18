@@ -9,6 +9,7 @@ let { openBuyEventCurrenciesWnd } = require("%rGui/event/buyEventCurrenciesState
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 
 let NO_BALANCE_UID = "no_balance_msg"
+let PURCHASE_BOX_UID = "purchase_msg_box"
 
 let openBuyWnd = {
   [WP] = @(bqPurchaseInfo) openShopWndByCurrencyId(WP, bqPurchaseInfo),
@@ -87,10 +88,9 @@ let msgContent = @(text, priceComp) {
   ]
 }
 
-function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo, title = null, cancelFunc = null) {
+function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo, title = null, cancelFunc = null, purchaseLocId = "msgbox/btn_purchase") {
   let priceComp = []
   let priceList = type(prices) == "array" ? prices : [prices]
-
   foreach(price in priceList) {
     if (showNoBalanceMsgIfNeed(price.price, price.currencyId, bqPurchaseInfo, null, cancelFunc))
       return
@@ -102,11 +102,11 @@ function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo, title = 
   }
 
   openMsgBox({
-    uid = "purchase_msg_box"
+    uid = PURCHASE_BOX_UID
     text = msgContent(text, priceComp),
     buttons = [
       { id = "cancel", cb = cancelFunc, isCancel = true }
-      { id = "purchase", cb = purchaseFunc, styleId = "PURCHASE", isDefault = true }
+      { text = loc(purchaseLocId), cb = purchaseFunc, styleId = "PURCHASE", isDefault = true, key = "purchase_tutor_btn" }
     ],
     title
   })
@@ -115,4 +115,5 @@ function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo, title = 
 return {
   showNoBalanceMsgIfNeed
   openMsgBoxPurchase
+  PURCHASE_BOX_UID
 }

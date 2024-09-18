@@ -16,6 +16,7 @@ let sliderVisibleH = evenPx(10)
 let sliderW = hdpx(750)
 let sliderBlockH = hdpx(160)
 let btnSize = evenPx(100)
+let iconSize = evenPx(34)
 let gap = btnSize / 2
 let firstTick = 0.3
 let btnRepeatTick = 0.025
@@ -138,8 +139,22 @@ let mkBtnText = @(override) {
   color = textColor
 }.__update(fontBig, override)
 
-let btnTextDec = mkBtnText({ text = "–", pos = [0, -hdpx(6)] })
-let btnTextInc = mkBtnText({ text = "+" })
+let getIcon = @(iconName) mkBtnText({
+  size = [iconSize, iconSize]
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#icon_{iconName}.svg:{iconSize}:{iconSize}:P")
+  keepAspect = KEEP_ASPECT_FIT
+})
+
+let btnTextDec = getIcon("minus")
+let btnTextInc = getIcon("plus")
+
+let mkIconBtn = @(children) {
+  size = flex()
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children
+}
 
 function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
   let stateFlags = Watched(0)
@@ -209,7 +224,7 @@ function sliderWithButtons(valueWatch, header, sliderOverride = {}, valToString 
     gap
     valign = ALIGN_BOTTOM
     children = [
-      sliderBtn(@(sf) sf & S_HOVER ? btnTextDec.__merge({ color = hoverColor }) : btnTextDec,
+      sliderBtn(@(sf) mkIconBtn(sf & S_HOVER ? btnTextDec.__merge({ color = hoverColor }) : btnTextDec),
         mkOnClick(-unit))
       {
         flow = FLOW_VERTICAL
@@ -219,7 +234,7 @@ function sliderWithButtons(valueWatch, header, sliderOverride = {}, valToString 
           slider(valueWatch, sliderOverride)
         ]
       }
-      sliderBtn(@(sf) sf & S_HOVER ? btnTextInc.__merge({ color = hoverColor }) : btnTextInc,
+      sliderBtn(@(sf) mkIconBtn(sf & S_HOVER ? btnTextInc.__merge({ color = hoverColor }) : btnTextInc),
         mkOnClick(unit))
     ]
   }
@@ -235,5 +250,6 @@ return {
 
   btnTextDec
   btnTextInc
+  mkIconBtn
   btnBg
 }

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { registerHintCreator, mkGradientBlock, defBgColor } = require("%rGui/hudHints/hintCtors.nut")
-let { mkStreakIcon, getMultiStageUnlockId, getUnlockLocText } = require("%rGui/streak/streakPkg.nut")
+let { mkStreakIcon, getMultiStageUnlockId, getUnlockLocText } = require("%rGui/unlocks/streakPkg.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { WP } = require("%appGlobals/currenciesState.nut")
 let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")

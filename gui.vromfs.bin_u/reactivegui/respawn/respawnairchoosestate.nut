@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
+let { isInRespawn } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { mkWeaponPreset, mkChosenBelts } = require("%rGui/unit/unitSettings.nut")
 let { mkWeaponBelts, isBeltWeapon, getEquippedBelt, mkWeaponStates, calcOverloadInfo
@@ -89,6 +90,8 @@ let selectedBeltSlot = Computed(@() beltSlots.get().findvalue(@(cbl) cbl.weaponI
 
 let selectedWSlot = Computed(@() allWSlots.get()?[selectedWSlotIdx.get()])
 
+let mirrorIdx = Computed(@() selectedWSlot.get()?.mirror ?? -1)
+
 let wCards = Computed(function() {
   let { wPresets = {}, wPresetsOrder = {} } = selectedWSlot.get()
   return wPresetsOrder.map(@(id, idx) wPresets[id].__merge({ slotIdx = idx }))
@@ -119,8 +122,30 @@ function closeWnd() {
   sendPlayerActivityToServer()
 }
 
+function equipWeaponList(list) {
+  let preset = equippedWeaponsBySlots.get().map(@(w) w?.name ?? "")
+  foreach (slotIdx, weaponId in list) {
+    if (slotIdx >= preset.len())
+      preset.resize(slotIdx + 1, "")
+    preset[slotIdx] = weaponId
+  }
+  setWeaponPreset(preset)
+}
+
+function equipWeaponListWithMirrors(wList) {
+  let mirrors = {}
+  let slots = loadUnitWeaponSlots(unitName.get())
+  foreach(idx, val in wList) {
+    let { mirror = -1 } = slots[idx]
+    if (mirror != -1)
+      mirrors[mirror] <- val
+  }
+  wList.__update(mirrors)
+  equipWeaponList(wList)
+}
+
 function equipWeapon(slotIdx, weaponId) {
-  let preset = clone weaponPreset.get()
+  let preset = equippedWeaponsBySlots.get().map(@(w) w?.name ?? "")
   if (slotIdx >= preset.len())
     preset.resize(slotIdx + 1, "")
   preset[slotIdx] = weaponId
@@ -129,6 +154,23 @@ function equipWeapon(slotIdx, weaponId) {
 
 let equipSelWeapon = @() equipWeapon(selectedWSlotIdx.get(), selectedWCard.get()?.name ?? "")
 let unequipSelWeapon = @() equipWeapon(selectedWSlotIdx.get(), "")
+
+function equipSelWeaponToWings() {
+  let { name = "", mirrorId = null } = selectedWCard.get()
+  let { index, mirror = null } = selectedWSlot.get()
+  let weapon = { [index] = name }
+  if (mirror != null)
+    weapon[mirror] <- mirrorId ?? name
+  equipWeaponList(weapon)
+}
+
+function unequipSelWeaponFromWings() {
+  let { index, mirror = null } = selectedWSlot.get()
+  let weapon = { [index] = "", [mirror] = "" }
+  if (mirror != null)
+    weapon[mirror] <- ""
+  equipWeaponList(weapon)
+}
 
 function applyBelt(weaponId, beltId) {
   if (chosenBelts.get()?[weaponId] != beltId)
@@ -148,14 +190,19 @@ function selectBeltCard(slotIdx) {
 function selectWeaponSlot(slotIdx) {
   closeWnd()
   selectedWSlotIdx.set(slotIdx)
+  let currentCardWName = selectedSlotWeaponName.get()
+  selectWeaponCard(wCards.get()?.findindex(@(wc) wc.name == currentCardWName) ?? 0)
 }
 
 function selectBeltSlot(weaponId) {
   closeWnd()
   selectedBeltWeaponId.set(weaponId)
+  let currentCardBeltId = selectedBeltSlot.get()?.equipped.id ?? ""
+  selectBeltCard(beltCards.get()?.findindex(@(bc) bc.id == currentCardBeltId) ?? 0)
 }
 
 canShowChooseBulletWnd.subscribe(@(v) !v ? closeWnd() : null)
+isInRespawn.subscribe(@(v) !v ? closeWnd() : null)
 
 return {
   selectedBeltWeaponId
@@ -199,9 +246,14 @@ return {
   closeWnd
   applyBelt
   equipSelWeapon
+  equipSelWeaponToWings
   unequipSelWeapon
+  unequipSelWeaponFromWings
+  equipWeaponList
+  equipWeaponListWithMirrors
   selectBeltSlot
   selectBeltCard
   selectWeaponSlot
   selectWeaponCard
+  mirrorIdx
 }

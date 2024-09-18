@@ -3485,7 +3485,7 @@
       }
     ]
   },
-  "mg151_all_tracers": {
+  "mg151_tracers": {
     "bullet": [
       {
         "mass": 0.115,

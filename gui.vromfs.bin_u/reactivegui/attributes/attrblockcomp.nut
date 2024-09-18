@@ -3,11 +3,11 @@ let { deferOnce } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { playSound } = require("sound_wt")
 
-let { btnTextDec, btnTextInc, btnBg, slider, mkSliderKnob, sliderValueSound } = require("%rGui/components/slider.nut")
+let { btnTextDec, btnTextInc, mkIconBtn, btnBg, slider, mkSliderKnob, sliderValueSound } = require("%rGui/components/slider.nut")
 let { textColor, badTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
 let { getSpCostText, setAttribute } = require("%rGui/attributes/attrState.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX, mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 
 let MAX_ATTRIBUTE_INDICATORS = 5
@@ -18,8 +18,8 @@ let rowHeight = hdpx(100)
 let costColW = hdpx(55)
 let rowsPosPadL = progressBtnSize + progressBtnGap
 let rowsPosPadR = rowsPosPadL + progressBtnGap + costColW
-let knobWidth = evenPx(42)
-let knobHeight = evenPx(21)
+let knobWidth = evenPx(13)
+let knobHeight = evenPx(31)
 let sliderTouchableHeight = knobHeight + hdpx(44)
 let cellH = evenPx(21)
 let cellGap = hdpx(5)
@@ -79,7 +79,7 @@ let mkProgressBtnContentDec = @(isAvailable) @(sf)
     children = [
       bgShaded.__merge({ size = flex() })
       btnBg.__merge({ size  = flex() })
-      sf & S_HOVER ? btnTextDec.__merge({ color = hoverColor }) : btnTextDec
+      mkIconBtn(sf & S_HOVER ? btnTextDec.__merge({ color = hoverColor }) : btnTextDec)
     ]
   })
 
@@ -91,7 +91,7 @@ let mkProgressBtnContentInc = @(isAvailable) @(sf)
     children = [
       bgShaded.__merge({ size = flex() })
       btnBg.__merge({ size  = flex() })
-      sf & S_HOVER ? btnTextInc.__merge({ color = hoverColor }) : btnTextInc
+      mkIconBtn(sf & S_HOVER ? btnTextInc.__merge({ color = hoverColor }) : btnTextInc)
       isAvailable.get() ? incBtnGlare : null
     ]
   })
@@ -217,8 +217,10 @@ function applyAttrRowChange(catId, attrId, tryValue, selLevel, minLevel, maxLeve
   local val = clamp(tryValue, minLevel.get(), maxLevel.get())
   if (val == selLevel.get() && tryValue <= maxLevel.get())
     val = max(val - 1, minLevel.get())
-  if (val == selLevel.get())
+  if (val == selLevel.get()) {
+    playSound("meta_denied")
     return false
+  }
   playSound("click")
   setAttribute(catId, attrId, val)
   lastClickTime = get_time_msec()
@@ -228,8 +230,16 @@ function applyAttrRowChange(catId, attrId, tryValue, selLevel, minLevel, maxLeve
 let knobCtor = @(relValue, stateFlags, fullW)
   mkSliderKnob(relValue, stateFlags, fullW,
     {
-      size = [knobWidth, knobHeight],
-      rendObj = ROBJ_SOLID,
+      rendObj = ROBJ_BOX
+      size = [knobWidth, knobHeight]
+      borderColor = 0xFF000000
+      borderWidth = hdpx(2)
+      children = {
+        rendObj = ROBJ_IMAGE
+        size = flex()
+        image = mkColoredGradientY(0xFFFFFFFF, 0xFF555555)
+
+      }
     })
 
 function mkProgressBarSlider(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick) {

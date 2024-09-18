@@ -6,23 +6,36 @@ let { isProfileReceived, curCampaign,
   isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 
+let UNITS_STATUS = {
+  UNITS_INITIAL = null,
+  UNITS_AVAILABLE = true,
+  UNITS_UNAVAILABLE = false
+}
+
 let unitToShowAsReceived = Watched(null)
 let needShowTutorialAfterReward = Watched(false)
 let prevState = Watched(null)
-let hasUnits = keepref(Computed(@() (isProfileReceived.get() && isCampaignWithUnitsResearch.get()) ? myUnits.get().len() > 0 : null))
+let unitsStatus = keepref(Computed(function() {
+  if (!isProfileReceived.get() || !isCampaignWithUnitsResearch.get())
+    return UNITS_STATUS.UNITS_INITIAL
+  return myUnits.get().findvalue(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {})) != null
+    ? UNITS_STATUS.UNITS_AVAILABLE
+    : UNITS_STATUS.UNITS_UNAVAILABLE
+}))
 
-hasUnits.subscribe(function(v) {
+unitsStatus.subscribe(function(v) {
   let { prevCampaign = null, hasUnitsPrev = null } = prevState.get()
   if (prevCampaign == null || prevCampaign != curCampaign.get())
     return prevState.set({ prevCampaign = curCampaign.get(), hasUnitsPrev = v })
-  if (hasUnitsPrev == false && v == true)
-    unitToShowAsReceived.set(myUnits.get().findvalue(@(_) true))
+  if (hasUnitsPrev == false && v == UNITS_STATUS.UNITS_AVAILABLE)
+    unitToShowAsReceived.set(myUnits.get().findvalue(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {})))
 })
 
 let needShow = keepref(Computed(@() !hasModalWindows.get()

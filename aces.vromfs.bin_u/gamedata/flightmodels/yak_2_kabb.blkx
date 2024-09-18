@@ -2014,6 +2014,7 @@
           "iconType": "bomb_100kg_group",
           "name": "fab100",
           "reqModification": "la-7_dz-40",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_bomb1"
           },

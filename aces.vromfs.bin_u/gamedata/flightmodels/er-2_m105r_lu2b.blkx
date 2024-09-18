@@ -2388,6 +2388,7 @@
           {
             "iconType": "bomb_50kg_group",
             "name": "fab50_mid",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",

@@ -1,3 +1,4 @@
+from "%globalsDarg/darg_library.nut" import *
 let { fabs } = require("%sqstd/math.nut")
 let { loadUnitSlotsParams } = require("%rGui/weaponry/loadUnitBullets.nut")
 
@@ -8,7 +9,7 @@ function getEquippedWeapon(wPreset, slotIdx, weaponsList, unitMods = null) {
   let { reqModification = "" } = res
   if (reqModification != "" && reqModification not in unitMods)
     res = null
-  return res ?? weaponsList.findvalue(@(w) w.isDefault)
+  return res ?? ((id == null || slotIdx == 0)  ? weaponsList.findvalue(@(w) w.isDefault) : null)
 }
 
 function removeFromSide(res, isLeft, notUseForDisbalance) {
@@ -33,18 +34,35 @@ function removeNotDisbalance(res, notUseForDisbalance) {
   return 0
 }
 
+let hasConflictWeapons = @(equipped, banPresets) banPresets.len() != 0
+  && null != equipped.findvalue(@(name, idx) banPresets?[idx][name] ?? false)
+
 function getEqippedWithoutOverload(unitName, eqWeaponsBySlots) {
   let { maxDisbalance = 0, maxloadMass = 0, maxloadMassLeftConsoles = 0, maxloadMassRightConsoles = 0,
     notUseForDisbalance = {}
   } = loadUnitSlotsParams(unitName)
+
+  let res = []
+  let equipped = {}
+  foreach(index, w in eqWeaponsBySlots) {
+    let { name = "", banPresets = {} } = w
+    if (hasConflictWeapons(equipped, banPresets)) {
+      res.append(null)
+      continue
+    }
+    res.append(w)
+    if (name != "")
+      equipped[index] <- name
+  }
+
   if (maxDisbalance <= 0 && maxloadMass <= 0 && maxloadMassLeftConsoles <= 0 && maxloadMassRightConsoles <= 0)
-    return eqWeaponsBySlots
+    return res
 
   local massTotal = 0.0
   local massLeft = 0.0
   local massRight = 0.0
   let centerIdx = eqWeaponsBySlots.len() / 2
-  foreach(index, preset in eqWeaponsBySlots) {
+  foreach(index, preset in res) {
     let { mass = 0 } = preset
     if (mass <= 0)
       continue
@@ -57,7 +75,6 @@ function getEqippedWithoutOverload(unitName, eqWeaponsBySlots) {
       massRight += mass
   }
 
-  let res = clone eqWeaponsBySlots
   local total = res.len()
   while(total--) {
     if (massLeft > maxloadMassLeftConsoles) {
@@ -109,4 +126,5 @@ function getEqippedWithoutOverload(unitName, eqWeaponsBySlots) {
 return {
   getEqippedWithoutOverload
   getEquippedWeapon
+  hasConflictWeapons
 }

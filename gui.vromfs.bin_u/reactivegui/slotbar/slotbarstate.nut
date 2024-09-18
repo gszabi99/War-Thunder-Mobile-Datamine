@@ -14,8 +14,12 @@ let { canPlayAnimUnitWithLink, animUnitWithLink, animNewUnitsAfterResearchTrigge
 let animTimeout = 5.0 //in case we not receive event from anim
 let getCurrentSlotIdx = @(slots) slots.findindex(@(s) s?.name == hangarUnitName.get())
 
+let visibleNewModsSlots = Watched({})
 let selectedSlotIdx = mkWatched(persist, "selectedSlotIdx", null)
 let maxSlotLevels = Computed(@() campConfigs.get()?.unitLevels[$"{curCampaign.get()}_slots"])
+
+let slotBarArsenalKey = "slot_bar_arsenal"
+let slotBarSlotKey = @(idx) $"slotbar_slot_{idx}"
 
 let slots = Computed(function() {
   let res = clone curCampaignSlots.get()?.slots ?? []
@@ -32,6 +36,7 @@ let isAnimChangedSoon = mkWatched(persist, "isAnimChangedSoon", false)
 let isSlotsAnimActive = Computed(@() isAnimChangedSoon.get() && slotsNeedAddAnim.get().len() > 0)
 let newSlotPriceGold = Computed(@() campConfigs.get()?.campaignCfg.slotPriceGold[curCampaignSlots.get()?.totalSlots])
 let selectedUnitToSlot = Watched(null)
+let canOpenSelectUnitWithModal = Watched(false)
 
 let getSlotAnimTrigger = @(idx, name) $"slot_{idx}_{name}"
 let mkCurSlotsInfo = @() { prevCampaign = isLoggedIn.get() ? curCampaign.get() : null, prevSlots = slots.get().map(@(s) s?.name ?? "") }
@@ -105,6 +110,7 @@ return {
   buyUnitSlot
   clearUnitSlot
   resetSelectedUnitToSlot
+  canOpenSelectUnitWithModal
 
   slotsNeedAddAnim
   getSlotAnimTrigger
@@ -113,4 +119,9 @@ return {
 
   selectedSlotIdx
   maxSlotLevels
+
+  slotBarArsenalKey
+  slotBarSlotKey
+
+  visibleNewModsSlots
 }

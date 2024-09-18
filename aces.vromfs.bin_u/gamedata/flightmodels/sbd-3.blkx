@@ -1916,6 +1916,7 @@
           {
             "iconType": "bomb_100kg",
             "name": "100lbs",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_dgp_1"
             },
@@ -2084,6 +2085,7 @@
           {
             "iconType": "bomb_100kg",
             "name": "100lbs",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_dgp_2"
             },

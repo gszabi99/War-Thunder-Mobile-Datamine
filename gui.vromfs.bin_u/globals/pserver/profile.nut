@@ -50,7 +50,7 @@ let curUnit = Computed(function() {
 })
 let curUnitName = Computed(@() curUnit.value?.name)
 let battleUnitsMaxMRank = Computed(@() curCampaignSlotUnits.get() == null ? (curUnit.value?.mRank ?? 0)
-  : curCampaignSlotUnits.get().reduce(@(res, name) max(res, campConfigs.get()?.allUnits[name].mRank), 0))
+  : curCampaignSlotUnits.get().reduce(@(res, name) max(res, campConfigs.get()?.allUnits[name].mRank ?? 0), 0))
 
 let playerLevelInfo = Computed(function() {
   let res = defaultProfileLevelInfo.__merge(levelInfo.value)

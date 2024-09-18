@@ -1,9 +1,9 @@
 {
-  "version": "1.10.0.61",
-  "grpHash": "7303dfe0b2035df5d7801564b1952843",
+  "version": "1.10.0.81",
+  "grpHash": "79d8af9b77a4bae167632df561520cdc",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "27df28d9473025cab3e055fa7734e23a",
+  "blkHash": "9dd3d50168617144182130c104ef646d",
   "genHash": "1e6cbd2338e3c521cbf041ec4d9a5179",
   "a-20g": {
     "dep": [
@@ -144,9 +144,9 @@
       "gunner_sit_us_500",
       "pilot_us_500",
       "pilot_usaf_b17_1_char",
-      "torpedo_g7a",
       "us_250lb_anm57",
       "us_500lb_anm64a1",
+      "us_mk13_torpedo",
       "usa_paratrooper_char"
     ]
   },
@@ -763,7 +763,6 @@
       "mine_mk13_mod0",
       "pilot_us_500",
       "pilot_us_char",
-      "torpedo_g7a",
       "us_1000lb_anm33_box_ap",
       "us_1000lb_anm65a1",
       "us_1600lb_ap_an_mk1",
@@ -772,6 +771,7 @@
       "us_250lb_anm57",
       "us_500lb_anm64a1",
       "us_5in_hvar",
+      "us_mk13_torpedo",
       "us_tiny_tim_navy2",
       "usa_paratrooper_char"
     ]
@@ -5223,10 +5223,11 @@
       "pby_5a_skeleton",
       "pilot_us_500",
       "pilot_us_char",
-      "torpedo_g7a",
       "us_1000lb_anm65a1",
       "us_100lb_an_m30",
       "us_500lb_anm64a1",
+      "us_mk13_torpedo",
+      "us_mk13_torpedo_no_case",
       "usa_paratrooper_char"
     ]
   },
@@ -5329,10 +5330,11 @@
       "sb2c_1c",
       "sb2c_1c_anim",
       "sb2c_1c_skeleton",
-      "torpedo_g7a",
       "us_1000lb_anm65a1",
       "us_250lb_anm57",
-      "us_500lb_anm64a1"
+      "us_500lb_anm64a1",
+      "us_mk13_torpedo",
+      "us_mk13_torpedo_no_case"
     ]
   },
   "sb2c_1c_killstreak": {
@@ -5344,10 +5346,11 @@
       "sb2c_1c",
       "sb2c_1c_anim",
       "sb2c_1c_skeleton",
-      "torpedo_g7a",
       "us_1000lb_anm65a1",
       "us_250lb_anm57",
-      "us_500lb_anm64a1"
+      "us_500lb_anm64a1",
+      "us_mk13_torpedo",
+      "us_mk13_torpedo_no_case"
     ]
   },
   "sb2c_4": {
@@ -5360,12 +5363,13 @@
       "sb2c_4",
       "sb2c_4_anim",
       "sb2c_4_skeleton",
-      "torpedo_g7a",
       "us_1000lb_anm65a1",
       "us_1600lb_ap_an_mk1",
       "us_250lb_anm57",
       "us_500lb_anm64a1",
       "us_5in_hvar_a",
+      "us_mk13_torpedo",
+      "us_mk13_torpedo_no_case",
       "usa_paratrooper_char"
     ]
   },
@@ -5380,7 +5384,10 @@
       "sb2u_2_anim",
       "sb2u_2_skeleton",
       "us_1000lb_anm65a1_rod",
+      "us_100lb_an_m30",
       "us_1600lb_ap_an_mk1",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1_rod",
       "usa_paratrooper_char"
     ]
   },
@@ -5395,7 +5402,10 @@
       "sb2u_3_anim",
       "sb2u_3_skeleton",
       "us_1000lb_anm65a1_rod",
+      "us_100lb_an_m30",
       "us_1600lb_ap_an_mk1",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1_rod",
       "usa_paratrooper_char"
     ]
   },
@@ -5410,7 +5420,10 @@
       "sb2u_3_anim",
       "sb2u_3_skeleton",
       "us_1000lb_anm65a1_rod",
+      "us_100lb_an_m30",
       "us_1600lb_ap_an_mk1",
+      "us_250lb_anm57",
+      "us_500lb_anm64a1_rod",
       "usa_paratrooper_char"
     ]
   },
@@ -5676,10 +5689,11 @@
       "tbd_1_1938",
       "tbd_1_1938_anim",
       "tbd_1_1938_skeleton",
-      "torpedo_g7a",
       "us_1000lb_mk9",
       "us_100lb_an_m30",
       "us_500lb_anm64a1",
+      "us_mk13_torpedo",
+      "us_mk13_torpedo_no_case",
       "usa_paratrooper_char"
     ]
   },

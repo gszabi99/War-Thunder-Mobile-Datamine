@@ -1801,6 +1801,7 @@
           {
             "iconType": "bomb_50kg_group",
             "name": "50kg_x2_slot1",
+            "isDefault": true,
             "ShowNodes": {
               "node": [
                 "pylon_bomb3",
@@ -1877,6 +1878,7 @@
           {
             "iconType": "bomb_50kg_group",
             "name": "50kg_x4",
+            "isDefault": true,
             "ShowNodes": {
               "node": [
                 "pylon_bomb2",
@@ -2084,6 +2086,7 @@
           {
             "iconType": "bomb_50kg_group",
             "name": "50kg_x2_slot3",
+            "isDefault": true,
             "ShowNodes": {
               "node": [
                 "pylon_bomb6",

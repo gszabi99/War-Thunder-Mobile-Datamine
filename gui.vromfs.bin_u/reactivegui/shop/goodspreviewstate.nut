@@ -6,7 +6,7 @@ let { activeOffer } = require("offerState.nut")
 let { activeOfferByGoods } = require("offerByGoodsState.nut")
 let { shopGoodsAllCampaigns } = require("shopState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { shopPurchaseInProgress, check_empty_offer } = require("%appGlobals/pServer/pServerApi.nut")
+let { shopPurchaseInProgress, check_empty_offer, update_branch_offer } = require("%appGlobals/pServer/pServerApi.nut")
 let { platformPurchaseInProgress } = require("platformGoods.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
@@ -14,6 +14,7 @@ let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
 
 let GPT_UNIT = "unit"
 let GPT_CURRENCY = "currency"
@@ -27,15 +28,33 @@ let openedGoodsId = mkWatched(persist, "openedGoodsId", null)
 let closeGoodsPreview = @() openedGoodsId(null)
 let openPreviewCount = Watched(openedGoodsId.get() == null ? 0 : 1)
 
-function getAddonsToShowGoods(goods) {
-  let unit = serverConfigs.get()?.allUnits[goods?.unitUpgrades[0] ?? goods?.units[0] ?? goods?.meta.previewUnit]
-  if (unit == null)
-    return []
-  return getUnitPkgs(unit.name, unit.mRank).filter(@(a) !hasAddons.value?[a])
+let getPkgsByUnit = @(unit) unit == null ? [] : getUnitPkgs(unit.name, unit.mRank)
+
+function getAddonsToShowGoods(goods, allUnits, excludeAddons) {
+  let res = {}
+  foreach (unitName in goods?.unitUpgrades ?? {})
+    foreach (pkg in getPkgsByUnit(allUnits?[unitName]))
+      res[pkg] <- true
+
+  foreach (unitName in goods?.units ?? {})
+    foreach (pkg in getPkgsByUnit(allUnits?[unitName]))
+      res[pkg] <- true
+
+  if (goods?.meta.previewUnit != null)
+    foreach (pkg in getPkgsByUnit(allUnits?[goods?.meta.previewUnit]))
+      res[pkg] <- true
+
+  return res.keys().filter(@(a) !excludeAddons?[a])
 }
 
+let getPreviewGoods = @(id, activeOff, activeOffByGoods, shopGoods)
+  activeOff?.id == id ? activeOff
+    : activeOffByGoods?.id == id ? activeOffByGoods
+    : shopGoods?[id]
+
 function openGoodsPreview(id) {
-  let addons = getAddonsToShowGoods(shopGoodsAllCampaigns.value?[id])
+  let goods = getPreviewGoods(id, activeOffer.get(), activeOfferByGoods.get(), shopGoodsAllCampaigns.get())
+  let addons = getAddonsToShowGoods(goods, serverConfigs.get()?.allUnits, hasAddons.get())
   if (addons.len() != 0) {
     openDownloadAddonsWnd(addons, "openGoodsPreview", { id })
     return
@@ -45,23 +64,10 @@ function openGoodsPreview(id) {
   openPreviewCount(openPreviewCount.value + 1)
 }
 
-let previewGoods = Computed(@()
-  activeOffer.get()?.id == openedGoodsId.value ? activeOffer.get()
-    : activeOfferByGoods.get()?.id == openedGoodsId.value ? activeOfferByGoods.get()
-    : shopGoodsAllCampaigns.get()?[openedGoodsId.get()])
+let previewGoods = Computed(@() getPreviewGoods(openedGoodsId.get(), activeOffer.get(),
+  activeOfferByGoods.get(), shopGoodsAllCampaigns.get()))
 
-let previewGoodsUnit = Computed(function() {
-  let isBlueprintGoods = (previewGoods.get()?.blueprints.len() ?? 0) > 0
-  let unitName = isBlueprintGoods ? previewGoods.get().blueprints.findindex(@(_) true) : previewGoods.value?.unitUpgrades[0]
-  let unit = serverConfigs.value?.allUnits[unitName]
-  let isUpgraded = !isBlueprintGoods
-  if (unit != null) {
-    let { upgradeUnitBonus = {} } = serverConfigs.value?.gameProfile
-    return unit.__merge({ isUpgraded }, upgradeUnitBonus)
-  }
-
-  return serverConfigs.get()?.allUnits[previewGoods.get()?.units[0] ?? previewGoods.get()?.meta.previewUnit]
-})
+let previewGoodsUnit = Computed(@() getBestUnitByGoods(previewGoods.get(), serverConfigs.get()))
 
 let previewType = Computed(@() (previewGoods.get()?.slotsPreset ?? "") != "" ? GPT_SLOTS
   : (previewGoods.get()?.blueprints.len() ?? 0) > 0 ? GPT_BLUEPRINT
@@ -103,6 +109,15 @@ servProfile.subscribe(function(v){
   if (offersBlueprint in myUnits.get()
       || v?.blueprints[offersBlueprint] == serverConfigs.get()?.allBlueprints?[offersBlueprint].targetCount)
     check_empty_offer(curCampaign.get())
+})
+
+myUnits.subscribe(function(list){
+  if ((activeOffer.get()?.id ?? "") == "branch_offer")
+    foreach (unitName in activeOffer.get().units)
+      if (unitName in list) {
+        update_branch_offer(curCampaign.get())
+        break
+      }
 })
 
 return {

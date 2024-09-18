@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkStreakIcon, mkStreakWithMultiplier, prepareStreaksArray, getUnlockLocText, getUnlockDescLocText } = require("%rGui/streak/streakPkg.nut")
+let { mkStreakIcon, mkStreakWithMultiplier, prepareStreaksArray, getUnlockLocText, getUnlockDescLocText } = require("%rGui/unlocks/streakPkg.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { WP } = require("%appGlobals/currenciesState.nut")
 let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")

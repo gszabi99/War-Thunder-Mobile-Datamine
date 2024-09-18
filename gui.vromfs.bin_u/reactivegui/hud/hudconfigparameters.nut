@@ -6,12 +6,18 @@ let configParameters = {
   distanceViewMultiplier = 1.0
   changeDmPanelColorDependingOnHp = false
   showDamageLog = false
-  crosshair = []
+  crosshair = ["sight.svg:29:29:K"]
+  crosshairAir = ["sight_air.svg:36:36:K"]
 }
 
 let customLoad = {
   function crosshair(key, blk) {
-    configParameters[key] = blk?.crosshair % "pictureTpsView"
+    if (blk?.crosshair != null)
+      configParameters[key] = blk.crosshair % "pictureTpsView"
+  }
+  function crosshairAir(key, blk) {
+    if (blk?.crosshair != null)
+      configParameters[key] = blk.crosshair % "pictureTpsViewAir"
   }
 }
 

@@ -5,7 +5,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkStreakIcon, multiStageUnlockIdConfig, getUnlockLocText, getUnlockDescLocText
-} = require("%rGui/streak/streakPkg.nut")
+} = require("%rGui/unlocks/streakPkg.nut")
 let { get_unlocks_blk} = require("blkGetters")
 let { ceil } = require("%sqstd/math.nut")
 let { rnd_int } = require("dagor.random")

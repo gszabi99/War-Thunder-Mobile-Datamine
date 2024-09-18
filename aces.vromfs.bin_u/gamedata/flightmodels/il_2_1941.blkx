@@ -1891,6 +1891,7 @@
             "iconType": "rocket_7kg_group",
             "name": "ros_82_slot1",
             "reqModification": "ro_82_mod",
+            "isDefault": true,
             "ShowNodes": {
               "node": [
                 "pylon_rocket1",
@@ -1939,7 +1940,7 @@
             ]
           },
           {
-            "iconType": "rocket_7kg_group",
+            "iconType": "bazooka_group",
             "name": "rbs_82_slot1",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
@@ -2041,7 +2042,7 @@
             ]
           },
           {
-            "iconType": "rocket_40kg_group",
+            "iconType": "rocket_60kg_group",
             "name": "rofs_132_slot1",
             "reqModification": "ro_132_mod",
             "ShowNodes": {
@@ -2092,7 +2093,7 @@
             ]
           },
           {
-            "iconType": "rocket_60kg_group",
+            "iconType": "rocket_500kg_group",
             "name": "rbs_132_slot1",
             "reqModification": "ro_132_mod",
             "ShowNodes": {
@@ -2273,6 +2274,7 @@
           {
             "iconType": "bomb_25kg_group",
             "name": "12_25_slot3",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",
@@ -2379,6 +2381,7 @@
           {
             "iconType": "bomb_25kg_group",
             "name": "12_25_slot4",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",
@@ -2605,6 +2608,7 @@
             "iconType": "rocket_7kg_group",
             "name": "ros_82_slot6",
             "reqModification": "ro_82_mod",
+            "isDefault": true,
             "ShowNodes": {
               "node": [
                 "pylon_rocket8",
@@ -2653,7 +2657,7 @@
             ]
           },
           {
-            "iconType": "rocket_7kg_group",
+            "iconType": "bazooka_group",
             "name": "rbs_82_slot6",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
@@ -2755,7 +2759,7 @@
             ]
           },
           {
-            "iconType": "rocket_40kg_group",
+            "iconType": "rocket_60kg_group",
             "name": "rofs_132_slot6",
             "reqModification": "ro_132_mod",
             "ShowNodes": {
@@ -2806,7 +2810,7 @@
             ]
           },
           {
-            "iconType": "rocket_60kg_group",
+            "iconType": "rocket_500kg_group",
             "name": "rbs_132_slot6",
             "reqModification": "ro_132_mod",
             "ShowNodes": {

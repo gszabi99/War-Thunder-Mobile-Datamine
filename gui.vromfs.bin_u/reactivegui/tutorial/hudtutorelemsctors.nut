@@ -4,8 +4,7 @@ let { Indicator } = require("wt.behaviors")
 let { crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
 let { crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
 let { canShowRadar } = require("%rGui/hudTuning/hudTuningState.nut")
-let { unitType } = require("%rGui/hudState.nut")
-let { AIR } = require("%appGlobals/unitConst.nut")
+let { areSightHidden } = require("%rGui/hudState.nut")
 
 
 let AirTutorialVideoH = min((saSize[1] * 0.95).tointeger(), (9.0 / 16.0 * saSize[0]).tointeger())
@@ -13,7 +12,9 @@ let AirTutorialVideoW = (AirTutorialVideoH * (16.0 / 9)).tointeger()
 
 let swipeImgW = hdpx(200).tointeger()
 let swipeImgH = round(swipeImgW / (41.0 / 43)).tointeger()
-let imgSize = hdpxi(80)
+let swipeAnimOffset = hdpx(200)
+let swipeAnimTime = 3.0
+let imgSize = hdpxi(100)
 let halfCrosshairLineHeight = (0.5 * crosshairLineHeight).tointeger()
 let sizeAim = [crosshairLineWidth, crosshairLineHeight]
 let sizeAimRv = [sizeAim[1], sizeAim[0]]
@@ -52,20 +53,35 @@ let changePosImg = function(){
   return animSeq
 }
 
-let img_swipe_to_rotate_cam = @(_) @(){
-  watch = unitType
+let img_swipe_to_rotate_cam = @(_) {
+  size = [ swipeImgW, swipeImgH ]
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#gesture_swipe.svg:{swipeImgW}:{swipeImgH}:K")
+  keepAspect = KEEP_ASPECT_FIT
+  transform = {}
+  animations = [
+    { prop = AnimProp.translate, from = [ -swipeAnimOffset, 0 ], to = [ swipeAnimOffset, 0 ],
+      duration = swipeAnimTime, play = true, loop = true, easing = CosineFull }
+    { prop = AnimProp.scale, from = [ 1.0, 1.0 ], to = [ 0.9, 0.9 ],
+      duration = swipeAnimTime * 0.5, play = true, loop = true, easing = CosineFull }
+  ]
+}
+
+let img_swipe_to_rotate_cam_air = @(_) {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   children = [
     {
       size = [ swipeImgW, swipeImgH ]
       rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#gesture_swipe.svg:{swipeImgW}:{swipeImgH}:K")
+      image = Picture($"ui/gameuiskin#gesture_swipe_no_arrows.svg:{swipeImgW}:{swipeImgH}:K")
       keepAspect = KEEP_ASPECT_FIT
       transform = {}
       animations = changePosImg()
     }
-    unitType.get() != AIR ? null : {
+    {
       size = [ imgSize, imgSize ]
       pos = [-(imgSize/2).tointeger(), 0]
       rendObj = ROBJ_IMAGE
@@ -96,13 +112,21 @@ let mkImg = function(imgName, ovr = {}){
   }.__update(ovr)
 }
 
+let videoKey = {}
 let air_tutorial_shooting_moving_target = @(_) {
+  key = videoKey
   size = flex()
   rendObj = ROBJ_SOLID
   color = 0xFF000000
   padding = sh(5)
-  onAttach = @() canShowRadar.set(false)
-  onDetach = @() canShowRadar.set(true)
+  function onAttach() {
+    canShowRadar.set(false)
+    areSightHidden.set(true)
+  }
+  function onDetach() {
+    canShowRadar.set(true)
+    areSightHidden.set(false)
+  }
   children = {
     size = [AirTutorialVideoW, AirTutorialVideoH]
     rendObj = ROBJ_MOVIE
@@ -119,18 +143,18 @@ let air_tutorial_shooting_moving_target = @(_) {
 }
 
 let pauseFirstTime = 0.5
-let pauseSecondTime = 0.9
-let animTime = 0.1
-let offset = [hdpx(160), 0]
+let pauseSecondTime = 3.0
+let animTime = 0.5
+let offset = [hdpx(159), 0]
 
 let air_tutorial_forestall_crosshair_gif = @(_) {
   size = SIZE_TO_CONTENT
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  pos = [0, -hdpx(150)]
+  pos = [0, -hdpx(250)]
   children = [
     {
-      size = [hdpx(45), hdpx(45)]
+      size = [hdpx(30), hdpx(30)]
       pos = [hdpx(80), 0]
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
@@ -138,7 +162,7 @@ let air_tutorial_forestall_crosshair_gif = @(_) {
       image = Picture($"ui/gameuiskin#forestall.svg:{imgSize}:{imgSize}:P")
     }
     {
-      size = [hdpx(45), hdpx(45)]
+      size = [hdpx(40), hdpx(40)]
       pos = [-hdpx(80), 0]
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
@@ -208,8 +232,8 @@ function fake_crosshair(p) {
 }
 return {
   img_swipe_to_rotate_cam
+  img_swipe_to_rotate_cam_air
   fake_crosshair
   air_tutorial_shooting_moving_target
   air_tutorial_forestall_crosshair_gif
-  canShowRadar
 }

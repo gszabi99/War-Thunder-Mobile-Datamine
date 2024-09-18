@@ -206,10 +206,7 @@
             "target_type": "isAlive",
             "check_period": 1.0,
             "object": "@t1_player_name",
-            "killedByObject": [
-              "t2_bot_plane_sq",
-              ""
-            ]
+            "killedByObject": "t2_bot_plane_sq"
           }
         },
         "actions": {

@@ -9,6 +9,7 @@ let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { bulletsInfo, currentBulletName } = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
+let { hasMGun0, hasCanon0, Cannon0, MGun0 } = require("%rGui/hud/airState.nut")
 let { addHudElementPointer, removeHudElementPointer } = require("%rGui/tutorial/hudElementPointers.nut")
 let { resetTimeout } = require("dagor.workcycle")
 
@@ -21,6 +22,9 @@ let state = require("%sqstd/mkEventLogState.nut")({
 let { addEvent, modifyOrAddEvent, removeEvent, clearEvents } = state
 let COUNTER_SAVE_ID = "hintCounter"
 
+let isCannonReloading = keepref(Computed(@() hasCanon0.get() && Cannon0.get().time > 0))
+let isMGunReloading = keepref(Computed(@() hasMGun0.get() && MGun0.get().time > 0))
+
 isInBattle.subscribe(@(_) clearEvents())
 
 //todo: export from native code to darg
@@ -31,7 +35,15 @@ let getTeamColor = @(team) team == MP_TEAM_NEUTRAL ? null
  : teamRedColor
 
 let addCommonHint = @(text, evId = "", evType = "simpleTextTiny") addEvent({ id = evId, hType = evType, text })
-let addCommonHintWithTtl = @(text, ttl, evId = "") addEvent({ id = evId, hType = "simpleTextTiny", text, ttl })
+let addCommonHintWithTtl = @(text, ttl, evId = "", evType = "simpleTextTiny")
+  addEvent({ id = evId, hType = evType, text, ttl })
+
+const CANNON_ID = "reload_cannons"
+const M_GUN_ID = "reload_m_guns"
+isCannonReloading.subscribe(@(v) !v ? removeEvent({ id = CANNON_ID })
+  : addCommonHintWithTtl(loc("hints/reloading/cannons"), Cannon0.get().time, CANNON_ID, "simpleTextTinyGrad"))
+isMGunReloading.subscribe(@(v) !v ? removeEvent({ id = M_GUN_ID })
+  : addCommonHintWithTtl(loc("hints/reloading/guns"), MGun0.get().time, M_GUN_ID, "simpleTextTinyGrad"))
 
 eventbus_subscribe("hint:ui_message:show", function(data) {
   let { locId, param = null, paramTeamId = MP_TEAM_NEUTRAL, teamId = MP_TEAM_NEUTRAL } = data

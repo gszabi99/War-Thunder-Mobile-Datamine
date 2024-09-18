@@ -60,7 +60,7 @@
       "mulHorsePowers": 1.2
     },
     "plane_fuselage": {
-      "mulCdminFuse": 1.2
+      "mulCdminFusel": 1.2
     },
     "plane_flaps_wings": {
       "mulCdmin": 1.2

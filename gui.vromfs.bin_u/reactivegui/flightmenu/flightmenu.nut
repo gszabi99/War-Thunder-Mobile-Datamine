@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setInterval, clearTimer } = require("dagor.workcycle")
+let { get_base_game_version_str } = require_optional("app")
+let { check_version } = require("%sqstd/version_compare.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
@@ -16,11 +18,13 @@ let optionsScene = require("%rGui/options/optionsScene.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
 let { COMMON } = require("%rGui/components/buttonStyles.nut")
-let { isUnitDelayed, isUnitAlive } = require("%rGui/hudState.nut")
+let { isUnitDelayed, isUnitAlive, unitType } = require("%rGui/hudState.nut")
 let { respawnSlots, canUseSpare } = require("%rGui/respawn/respawnState.nut")
 let { resetGravityAxesZero } = require("%rGui/hud/aircraftMovementBlock.nut")
+let { isAircraftControlByGyro } = require("%rGui/options/options/airControlsOptions.nut")
 
 
+let hasGyroSupport = check_version(">=1.10.0.61", get_base_game_version_str())
 let spawnInfo = Watched(null)
 let aliveOrHasSpawn = Computed(@() (spawnInfo.get()?.isAlive ?? false) || (spawnInfo.get()?.hasSpawns ?? false))
 eventbus_subscribe("localPlayerSpawnInfo", @(s) spawnInfo(s))
@@ -48,9 +52,8 @@ let optionsButton = textButtonCommon(utf8ToUpper(loc("mainmenu/btnOptions")), op
   { hotkeys = ["^J:Y"] })
 let helpButton = textButtonCommon(utf8ToUpper(loc("flightmenu/btnControlsHelp")), controlsHelpWnd,
   { hotkeys = ["^J:X"] })
-let gyroResetButton = textButtonCommon(utf8ToUpper(loc("mainmenu/btnGyroReset")), resetGravityAxesZero,
-  { hotkeys = [] })
-
+let gyroResetButton = !hasGyroSupport ? null
+  : textButtonMultiline(utf8ToUpper(loc("mainmenu/btnGyroReset")), resetGravityAxesZero, COMMON)
 let leaveVehicleButton = textButtonMultiline(utf8ToUpper(loc("flightmenu/btnLeaveTheTank")), leaveVehicle,
   COMMON.__merge({ hotkeys = ["^J:LT"] }))
 
@@ -89,6 +92,7 @@ let flightMenu = @() bgShaded.__merge({
       gap = buttonsHGap
       hplace = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM
+      valign = ALIGN_BOTTOM
       children = [
         isUnitAlive.get() && !isUnitDelayed.get()
             && canBailoutFromFlightMenu.get()
@@ -96,13 +100,16 @@ let flightMenu = @() bgShaded.__merge({
           ? leaveVehicleButton
           : null
         @() {
+          watch = [unitType, isAircraftControlByGyro]
           flow = FLOW_VERTICAL
           gap = buttonsHGap
           hplace = ALIGN_RIGHT
           vplace = ALIGN_BOTTOM
           children = [
             openDevMenuButton
-            gyroResetButton
+            unitType.get() == "air" && isAircraftControlByGyro.get()
+              ? gyroResetButton
+              : null
           ]
         }
       ]

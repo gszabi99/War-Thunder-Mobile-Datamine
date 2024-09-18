@@ -15,6 +15,10 @@ let { slots } = require("%rGui/slotBar/slotBarState.nut")
 
 let TIME_TO_DELAY = 3.5
 let delayedPurchaseList = persist("delayedPurchaseList", @() [])
+let needSaveUnitDataForTutorial = mkWatched(persist, "needSaveUnitDataForTutorial", false)
+let delayedPurchaseUnitData = mkWatched(persist, "delayedPurchaseUnitData", {})
+
+needSaveUnitDataForTutorial.subscribe(@(v) !v ? delayedPurchaseUnitData.set({}) : null)
 
 let needShow = keepref(Computed(@() !hasModalWindows.get()
   && !isInLoadingScreen.get()
@@ -65,4 +69,6 @@ register_command(debug_unit_slots_purchase_effects, "debug.unit_slots_purchase_e
 
 return {
   addNewPurchasedUnit
+  delayedPurchaseUnitData
+  needSaveUnitDataForTutorial
 }

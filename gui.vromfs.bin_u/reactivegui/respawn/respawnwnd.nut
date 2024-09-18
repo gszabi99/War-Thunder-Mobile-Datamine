@@ -145,7 +145,15 @@ let levelBg = mkLevelBg({
   childOvr = { borderColor = unitExpColor }
 })
 
-function platoonTitle(unit) {
+function slotsBlockTitle(unit, isSeparateSlots) {
+  if (isSeparateSlots) {
+    let { unitType = "" } = unit
+    let text = unitType == "" ? "" : loc($"respawn/squad/{unitType}")
+    return header({
+      valign = ALIGN_CENTER
+      children = headerText(text)
+    })
+  }
   let { name, level = 0, isUpgraded = false, isPremium = false } = unit
   let isElite = isUpgraded || isPremium
   let text = "  ".concat(getPlatoonName(name, loc), getUnitClassFontIcon(unit))
@@ -180,10 +188,10 @@ let pannableArea = verticalPannableAreaCtor(unitListHeight + unitListGradientSiz
   unitListGradientSize)
 
 function slotsBlock() {
-  let title = platoonTitle(respawnUnitInfo.value)
+  let title = slotsBlockTitle(respawnUnitInfo.get(), hasRespawnSeparateSlots.get())
   let list = respawnSlots.value.map(@(slot) mkSlotPlate(slot, respawnUnitInfo.value))
   return {
-    watch = [respawnSlots, respawnUnitInfo]
+    watch = [respawnSlots, respawnUnitInfo, hasRespawnSeparateSlots]
     size = [slotPlateWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     gap = unitPlatesGap
@@ -245,6 +253,10 @@ let mkText = @(text, override = {}) {
   text
 }.__update(fontTiny, override)
 
+let vehicleActionLangKeys = {
+  [AIR] = "mainmenu/flightAgain"
+}
+
 function toBattleButton(onClick, styleOvr) {
   let button = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")), onClick, styleOvr)
   if (!(selSlot.value?.isSpawnBySpare ?? false))
@@ -253,12 +265,13 @@ function toBattleButton(onClick, styleOvr) {
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)
     children = [
-      {
+      @() {
+        watch = selSlotUnitType
         size = [SIZE_TO_CONTENT, flex()]
         flow = FLOW_VERTICAL
         halign = ALIGN_RIGHT
         children = [
-          mkText(utf8ToUpper(loc("mainmenu/driveAgain")))
+          mkText(utf8ToUpper(loc(vehicleActionLangKeys?[selSlotUnitType.get()] ?? "mainmenu/driveAgain")))
           mkCurrencyComp(1, SPARE)
         ]
       }

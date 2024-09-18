@@ -14,7 +14,7 @@ let { mkImageWithCount, myPlace, isPlaceVisible, icons, viewMuls } = require("%r
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let resultsHintLogState = require("%rGui/hudHints/resultsHintLogState.nut")
 let { resultsHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
-let { mkStreakWithMultiplier, prepareStreaksArray } = require("%rGui/streak/streakPkg.nut")
+let { mkStreakWithMultiplier, prepareStreaksArray } = require("%rGui/unlocks/streakPkg.nut")
 
 let changeTextBgColorDuration = 0.1
 let textBlockBounceDuration = 0.3

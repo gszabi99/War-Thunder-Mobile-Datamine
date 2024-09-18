@@ -44,7 +44,7 @@ let ctrlPieCfgBase = [
       let nextState = get_gears_next_toggle_state()
       return {
         label = loc(gearActionLocId?[nextState] ?? "hotkeys/ID_GEAR")
-        icon = "icon_pie_chassis.svg"
+        icon = nextState == ON ? "icon_pie_chassis.svg" : "icon_pie_chassis_disable.svg"
         iconColor = !isEnabled ? imageDisabledColor : iconColorByState(nextState)
       }
     }
@@ -73,7 +73,7 @@ let ctrlPieCfgBase = [
       let nextState = get_air_breaks_next_toggle_state()
       return {
         label = loc(airBreaksActionLocId?[nextState] ?? "hotkeys/ID_AIR_BRAKE")
-        icon = "icon_pie_brake.svg"
+        icon = nextState == ON ? "icon_pie_brake.svg" : "icon_pie_brake_disable.svg"
         iconColor = !isEnabled ? imageDisabledColor : iconColorByState(nextState)
       }
     }
@@ -111,11 +111,10 @@ function updatePieCfg() {
   ctrlPieCfg.set(ctrlPieCfgBase
     .map(function(v, id) {
       if (!visibleByUnit.get()?[id])
-        return null
+        return { icon = "" }
       let isEnabled = (enabledControls.get()?[v.shortcutId] ?? isAllControlsEnabled.get())
       return v.mkView(isEnabled)?.__update({ id })
-    })
-    .filter(@(v) v != null))
+    }))
 }
 updatePieCfg()
 isCtrlPieStickActive.subscribe(@(_) updatePieCfg())

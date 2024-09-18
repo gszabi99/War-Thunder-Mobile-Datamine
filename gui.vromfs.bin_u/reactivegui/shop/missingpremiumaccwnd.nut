@@ -1,10 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { bgShadedDark, bgHeader, bgMessage } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
-let { decorativeLineBgMW } = require("%rGui/style/stdColors.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
@@ -17,7 +15,6 @@ let { havePremium, premiumEndsAt } = require("%rGui/state/profilePremium.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { register_command } = require("console")
 
-let premBuyingWidth = hdpx(1100)
 let premIconW = hdpxi(182)
 let premIconH = hdpxi(126)
 let TIME_RESHOWING_WND = 7 * TIME_DAY_IN_SECONDS
@@ -41,21 +38,19 @@ let infoText = Computed(function() {
     bonusPlayerExp = expMul
     bonusWp = bonusMultText(premiumBonusesCfg.value?.wpMul || 1.0)
     bonusUnitExp = expMul
+    bonusGold = bonusMultText(premiumBonusesCfg.get()?.goldMul || 1.0)
   })
 })
 
-let decorativeLine = {
-  rendObj = ROBJ_9RECT
-  image = gradTranspDoubleSideX
-  color = decorativeLineBgMW
-  size = [ premBuyingWidth, hdpx(6) ]
-}
-
-let premHeader = {
-  rendObj = ROBJ_TEXT
-  text = loc("premBuyWnd/header")
-  margin = [hdpx(20), 0, hdpx(50), 0]
-}.__update(fontMedium)
+let premHeader = bgHeader.__merge({
+  size = [ flex(), sh(8) ]
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc("premBuyWnd/header")
+  }.__update(fontMedium)
+})
 
 let premDesc = @() infoText.value
   ? {
@@ -63,7 +58,7 @@ let premDesc = @() infoText.value
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
     halign = ALIGN_CENTER
-    margin = [hdpx(20), 0, hdpx(50), 0]
+    margin = [hdpx(20), hdpx(48), hdpx(50), hdpx(48)]
     text = infoText.value
     color = 0xC0C0C0C0
     parSpacing = hdpx(10)
@@ -81,7 +76,7 @@ let premIcon = {
 let buttons = @(toBattle){
   flow = FLOW_HORIZONTAL
   gap = hdpx(50)
-  margin = [hdpx(20), 0, hdpx(20), 0]
+  margin = [hdpx(20), hdpx(48), hdpx(48), hdpx(48)]
   children = [
     textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
       function() {
@@ -109,29 +104,15 @@ let window = @(toBattle){
   ]
 }
 
-let showNoPremWnd = @(toBattle) addModalWindow(bgShaded.__merge({
+let showNoPremWnd = @(toBattle) addModalWindow(bgShadedDark.__merge({
   key = WND_UID
   size = flex()
   hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   onClick = close
   children = {
-    rendObj = ROBJ_9RECT
-    image = gradTranspDoubleSideX
-    texOffs = [0 , gradDoubleTexOffset]
-    screenOffs = [ hdpx(200), hdpx(300)]
-    color = 0xCC000000
-    flow = FLOW_VERTICAL
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    size = [ premBuyingWidth, SIZE_TO_CONTENT ]
-    children =
-      [
-        decorativeLine
-        window(toBattle)
-        decorativeLine
-      ]
+    children = [ bgMessage.__merge(window(toBattle)) ]
   }
   animations = wndSwitchAnim
 }))

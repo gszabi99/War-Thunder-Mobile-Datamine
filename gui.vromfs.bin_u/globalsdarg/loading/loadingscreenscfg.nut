@@ -2,6 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkBgImageByPx } = require("%globalsDarg/components/mkAnimBg.nut")
 let mkLayersComplexShip1 = require("complex_ship_1.nut")
 
+/*
+For fallbackLoadingImage please use only image from screen ID, which is listed in "screensList" below,
+AND listed in "loadingScreensWhitelist" (skyquake/prog/scripts/wtm/updater/updaterScene.nut),
+because Android Updated uses this loadingScreensCfg.nut module too, but in its VROMs there are ONLY
+those few images, which are listed in its "loadingScreensWhitelist".
+*/
 let fallbackLoadingImage = "ui/bkg/login_bkg_t_7.avif"
 
 let mkSingleImageLayers = @(image) [{
@@ -130,9 +136,20 @@ let screensList = {
   }
   simple_tank_16 = {
     camp = [ "tanks" ]
-    weight = 2.0
+    weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_16.avif")
   }
+  simple_airplane_1 = {
+    camp = [ "air" ]
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_a_1.avif")
+  }
+  simple_airplane_3 = {
+    camp = [ "air" ]
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_a_3.avif")
+  }
+
 }
 
 return {

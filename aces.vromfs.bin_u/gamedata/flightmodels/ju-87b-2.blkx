@@ -1893,6 +1893,7 @@
           "iconType": "bomb_50kg_group",
           "name": "50kg_x2",
           "reqModification": "etc50_4_mod",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_bomb1"
           },
@@ -2263,6 +2264,7 @@
           "iconType": "bomb_50kg_group",
           "name": "50kg_x2",
           "reqModification": "etc50_4_mod",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon_bomb2"
           },

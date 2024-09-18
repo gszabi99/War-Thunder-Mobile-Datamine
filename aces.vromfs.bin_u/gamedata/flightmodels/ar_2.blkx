@@ -2212,6 +2212,7 @@
           {
             "iconType": "bomb_100kg_group",
             "name": "fab100",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_bomb1"
             },
@@ -2560,6 +2561,7 @@
           {
             "iconType": "bomb_100kg_group",
             "name": "fab100_internal",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",
@@ -2927,6 +2929,7 @@
           {
             "iconType": "bomb_100kg_group",
             "name": "fab100",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_bomb2"
             },

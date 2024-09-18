@@ -8,6 +8,7 @@ let { GPT_SLOTS, previewType, previewGoods, closeGoodsPreview, openPreviewCount,
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
 let { serverTimeDay, getDay, untilNextDaySec } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -29,7 +30,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
+let { mkCurrencyComp, mkFreeText } = require("%rGui/components/currencyComp.nut")
 let { textButtonPricePurchase, buttonsHGap, buttonStyles } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, PRIMARY } = buttonStyles
 let { getSlotsPreviewBg, getSlotsTexts } = require("%appGlobals/config/goodsPresentation.nut")
@@ -61,7 +62,9 @@ let borderHeight = hdpx(8)
 
 let isAttached = Watched(false)
 let openCount = Computed(@() previewType.get() == GPT_SLOTS ? openPreviewCount.get() : 0)
-let rerollCost = Computed(@() serverConfigs.get()?.goodsRewardSlots[previewGoods.get()?.slotsPreset].rerollCost)
+let goodsRewardSlots = Computed(@() serverConfigs.get()?.goodsRewardSlots[previewGoods.get()?.slotsPreset])
+let rerollCost = Computed(@() goodsRewardSlots.get()?.rerollCost)
+let freeRerolls = Computed(@() goodsRewardSlots.get()?.freeRerolls ?? 0)
 let rewardSlots = Computed(@() servProfile.get()?.rewardSlots[previewGoods.get()?.id])
 let selIndex = Watched(-1)
 
@@ -116,6 +119,42 @@ function balanceButtons() {
   }
 }
 
+function headerText() {
+  let previewG = previewGoods.get()
+  let excludeGoods = serverConfigs.get()?.allBlueprints.reduce(@(res, v, unitName) (myUnits.get()?[unitName] != null
+    || (servProfile.get()?.blueprints[unitName] ?? 0) >= (v?.targetCount ?? 0)) ? res.$rawset(unitName, true)
+      : res, {}) ?? {}
+  let allLeftSlotNames = goodsRewardSlots.get().variants.reduce(@(res, v)
+    !excludeGoods?[v[0].id] ? res.append(loc(getUnitLocId(v[0].id))) : res, [])
+  let description = loc(getSlotsTexts(openedGoodsId.get()).description)
+  return {
+    watch = [previewGoods, openedGoodsId, goodsRewardSlots, myUnits, serverConfigs, servProfile]
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(30)
+    valign = ALIGN_CENTER
+    children = [
+      {
+        rendObj = ROBJ_TEXT
+        color = 0xFFFFFFFF
+        text = previewG == null ? null : getGoodsLocName(previewG)
+      }.__update(fontBig)
+      infoTooltipButton(
+        @() allLeftSlotNames.len() == 0 ? description
+          : "\n\n".concat(description, loc("shop/hint/availableSlots", { slots = ", ".join(allLeftSlotNames) })),
+        { halign = ALIGN_RIGHT },
+        {
+          size = [hdpx(52), hdpx(52)]
+          fillColor = 0x80000000
+          children = {
+            rendObj = ROBJ_TEXT
+            text = "i"
+            halign = ALIGN_CENTER
+          }.__update(fontTinyAccented)
+        })
+    ]
+  }
+}
+
 let headerPanel = {
   size = [flex(), gamercardHeight]
   vplace = ALIGN_TOP
@@ -125,30 +164,7 @@ let headerPanel = {
   gap = blockGap
   children = [
     backButton(closeGoodsPreview)
-    @() {
-      watch = [previewGoods, openedGoodsId]
-      flow = FLOW_HORIZONTAL
-      gap = hdpx(30)
-      valign = ALIGN_CENTER
-      children = [
-        {
-          rendObj = ROBJ_TEXT
-          color = 0xFFFFFFFF
-          text = previewGoods.get() == null ? null
-            : getGoodsLocName(previewGoods.get())
-        }.__update(fontBig)
-        infoTooltipButton(@() loc(getSlotsTexts(openedGoodsId.get()).description), { halign = ALIGN_RIGHT },
-          {
-            size = [hdpx(52), hdpx(52)]
-            fillColor = 0x80000000
-            children = {
-              rendObj = ROBJ_TEXT
-              text = "i"
-              halign = ALIGN_CENTER
-            }.__update(fontTinyAccented)
-          })
-      ]
-    }
+    headerText
     { size = flex() }
     balanceButtons
   ]
@@ -307,14 +323,14 @@ function rerollSlots(price, currencyId) {
   playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money")
 }
 
-function purchButton(text, priceCfg, purchAction, purchCount = 0, styleOvr = {}) {
+function purchButton(text, priceCfg, purchAction, purchCount = 0, isFree = false, styleOvr = {}) {
   let { price = 0, currencyId = "", priceInc = 0 } = priceCfg
   if (price <= 0 || currencyId == "")
     return null
 
   let priceFinal = price + priceInc * purchCount
   return textButtonPricePurchase(utf8ToUpper(text),
-    mkCurrencyComp(priceFinal, currencyId)
+    isFree ? mkFreeText() : mkCurrencyComp(priceFinal, currencyId)
     @() purchAction(priceFinal, currencyId),
     styleOvr)
 }
@@ -322,7 +338,7 @@ function purchButton(text, priceCfg, purchAction, purchCount = 0, styleOvr = {})
 function buttons() {
   let res = {
     watch = [shopGenSlotInProgress, shopPurchaseInProgress, previewGoods, rewardSlots, rerollCost,
-      goodsLimitReset, serverTimeDay
+      goodsLimitReset, serverTimeDay, freeRerolls
     ]
     size = [SIZE_TO_CONTENT, defButtonHeight]
   }
@@ -330,7 +346,8 @@ function buttons() {
     return res
 
   let { id, price, limitResetPrice } = previewGoods.get()
-  let { isPurchased = false } = rewardSlots.get()
+  let { isPurchased = false, usedFree = 0 } = rewardSlots.get()
+  let isFree = usedFree < freeRerolls.get()
   return res.__update({
     flow = FLOW_HORIZONTAL
     gap = buttonsHGap
@@ -345,7 +362,7 @@ function buttons() {
                 : goodsLimitReset.get()?[id].count)
           ]
       : [
-          purchButton(loc("btn/rerollItems"), rerollCost.get(), rerollSlots, 0, PRIMARY)
+          purchButton(loc("btn/rerollItems"), rerollCost.get(), rerollSlots, 0, isFree, PRIMARY)
           purchButton(loc("btn/buySelected"), price, purchaseSelectedSlot)
         ]
   })
@@ -390,7 +407,7 @@ function content() {
         rewardSlots.get()?.isPurchased || rows.len() <= 0 || curUnit == null
           || goods.reduce(@(res, g) res.$rawset(g[0].id, true), {})?[curUnit]
               ? null
-            : txt(loc("shop/hint/rerollForUnit", { unitName = getUnitLocId(curUnit) }), {
+            : txt(loc("shop/hint/rerollForUnit", { unitName = loc(getUnitLocId(curUnit)) }), {
                 animations = scaleAnimation(0.1, [1.15, 1.15], 0.15, rerollTrigger)
                 transform = {}
               })

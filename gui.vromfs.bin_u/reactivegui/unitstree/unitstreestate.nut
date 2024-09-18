@@ -8,13 +8,6 @@ let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
 
-
-let bgByCampaign = {
-  tanks = "tank_blur_bg.avif"
-  ships = "ship_blur_bg.avif"
-  air = "air_blur_bg.avif"
-}
-
 let bgByHangar = {
   tanks = {
     ["config/hangar_field_ny.blk"] = "tank_blur_bg_ny.avif"
@@ -91,7 +84,7 @@ let columnsCfg = Computed(function() {
 
 let unitsTreeBg = Computed(function() {
   let addonHangar = ovrHangarAddon?.hangarPath
-  return bgByHangar?[curCampaign.get()][addonHangar] ?? bgByCampaign?[curCampaign.get()]
+  return bgByHangar?[curCampaign.get()][addonHangar] ?? $"{curCampaign.get()}_blur_bg.avif"
 })
 
 let closeUnitsTreeWnd = @() isUnitsTreeOpen.set(false)

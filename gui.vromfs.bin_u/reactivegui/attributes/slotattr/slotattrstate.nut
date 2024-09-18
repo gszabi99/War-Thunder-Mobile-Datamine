@@ -15,6 +15,7 @@ let { selAttributes, curCategoryId, attrPresets,
 
 
 let isSlotAttrOpened = mkWatched(persist, "isSlotAttrOpened", false)
+let isSlotAttrAttached = mkWatched(persist, "isSlotAttrAttached", false)
 
 let SEEN_SLOT_ATTRIBUTES = "seenSlotAttributes"
 let seenSlotAttributes = mkWatched(persist, SEEN_SLOT_ATTRIBUTES, {})
@@ -185,6 +186,7 @@ register_command(function() {
 return {
   openSlotAttrWnd = @() isSlotAttrOpened.set(true)
   isSlotAttrOpened
+  isSlotAttrAttached
 
   attrSlotData
   slotUnitName

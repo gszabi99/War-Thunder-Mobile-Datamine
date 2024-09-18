@@ -28,28 +28,24 @@ let mkGradGlowText = @(text, fontStyle, fontTex, ovr = {})
     }.__update(fontStyle)
   }).__update(ovr)
 
-function mkGradGlowMultiLine(text, fontStyle, fontTex, maxWidth, ovr = {}) {
-  if(calc_str_box(text, fontStyle)[0] < maxWidth){
+function mkGradGlowMultiLine(text, fontStyle, fontTex, maxWidth, ovr = {}){
+  if(calc_str_box(text, fontStyle)[0] < maxWidth)
     return mkGradGlowText(text, fontStyle, fontTex, {})
-  }
   local strArray = []
-  local modifStr = ""
-  foreach(word in text.split(" ")){
-    local checkStr = ""
-    if (calc_str_box(modifStr, fontStyle)[0] < maxWidth){
-      checkStr = word.concat(modifStr, " ")
-      if (calc_str_box(checkStr, fontStyle)[0] > maxWidth){
-        strArray.append(trim(modifStr))
-        modifStr = ""
-      }
+  local lastStr = ""
+  foreach (word in text.split(" ")){
+    local checkStr = lastStr.len() > 0 ? " ".concat(lastStr, word) : word
+    if (calc_str_box(checkStr, fontStyle)[0] > maxWidth) {
+      strArray.append(trim(lastStr))
+      lastStr = word
     }
-    modifStr = word.concat(modifStr, " ")
-    modifStr = trim(modifStr)
+    else
+      lastStr = checkStr
   }
-  if(modifStr.len() > 0)
-    strArray.append(modifStr)
+  if (lastStr.len() > 0)
+    strArray.append(trim(lastStr))
   return {
-    flow = FLOW_VERTICAL
+    flow = FLOW_VERTICAL,
     children = strArray.map(@(str) mkGradGlowText(str, fontStyle, fontTex, ovr))
   }.__update(ovr)
 }

@@ -47,6 +47,7 @@ let { slots, selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { runOfflineBattle } = require("%rGui/debugTools/debugOfflineBattleState.nut")
+let { TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID } = require("%rGui/tutorial/tutorialConst.nut")
 
 local isAttached = false
 
@@ -101,17 +102,17 @@ let mkBtnAppearAnim = @(needBlink, needShowW, children) @() !needShowW.get() ? {
   }
 }
 
-let mkBtnToHangar = @(needShow, campaign, isMainBtn, unlockedReward) mkBtnAppearAnim(false, needShow,
+let mkBtnToHangar = @(needShow, debrData, isMainBtn, unlockedReward) mkBtnAppearAnim(false, needShow,
   (isMainBtn ? textButtonBattle : textButtonPrimary)(
-    utf8ToUpper(loc(campaign == "ships" ? "return_to_port/short"
-      : unlockedReward.has ? $"return_to_hangar/lvlUnlocks/{unlockedReward.type}"
+    utf8ToUpper(loc(unlockedReward.has && debrData?.isSeparateSlots ? $"return_to_hangar/lvlUnlocks/{unlockedReward.type}"
+      : debrData?.campaign == "ships" ? "return_to_port/short"
       : "return_to_hangar/short"
     )),
     function() {
       isNoExtraScenesAfterDebriefing.set(true)
       if (needRateGame.get())
         requestShowRateGame()
-      if (unlockedReward.has){
+      if (unlockedReward.has && debrData?.isSeparateSlots){
         selectedSlotIdx.set(unlockedReward.idx)
         setCurrentUnit(unlockedReward.name)
         curSelectedUnit.set(unlockedReward.name)
@@ -297,7 +298,13 @@ function debriefingWnd() {
     && unlockedReward.type == "crew"
     && unlockedReward.levelBeforeBattle == 0
     && slots.get().filter(@(slot) slot.level != 0).len() == 1
-  let needForceQuitToHangar = ((debrData?.isTutorial ?? false) && getResearchedUnit(debrData) != null) || isFirstLvlUpForSlot
+  let canStartArsenalTutorial = hasAnyLevelUnlockRewards
+    && unlockedReward.type == "arsenal"
+    && debrData.completedTutorials?[TUTORIAL_UNITS_RESEARCH_ID]
+    && !debrData.completedTutorials?[TUTORIAL_ARSENAL_ID]
+  let needForceQuitToHangar = ((debrData?.isTutorial ?? false) && getResearchedUnit(debrData) != null)
+    || isFirstLvlUpForSlot
+    || canStartArsenalTutorial
   let hasPlayerLevelUp = !needForceQuitToHangar && isPlayerReceiveLevel(debrData)
   let hasUnitLevelUp = !needForceQuitToHangar && !isSeparateSlots && isUnitReceiveLevel(unitName, debrData)
   let newPlatoonUnit = needForceQuitToHangar ? null : getNewPlatoonUnit(unitName, debrData)
@@ -368,7 +375,7 @@ function debriefingWnd() {
                 halign = ALIGN_LEFT
                 children = newPlatoonUnit != null || hasPlayerLevelUp || researchedUnit != null || needForceQuitToHangar ? null
                   : hasUnitLevelUp ? mkBtnUpgradeUnit(needShowBtns_Unit, campaign)
-                  : mkBtnToHangar(needShowBtns_Final, campaign, false, unlockedReward)
+                  : mkBtnToHangar(needShowBtns_Final, debrData, false, unlockedReward)
               }
               {
                 size = [flex(), SIZE_TO_CONTENT]
@@ -377,7 +384,7 @@ function debriefingWnd() {
                   flow = FLOW_HORIZONTAL
                   gap = buttonsHGap
                   children = (needForceQuitToHangar ? [ //warning disable: -unwanted-modification
-                        mkBtnToHangar(needShowBtns_Final, campaign, true, unlockedReward)
+                        mkBtnToHangar(needShowBtns_Final, debrData, true, unlockedReward)
                       ]
                     : hasPlayerLevelUp ? [
                         buttonDescText(needShowBtns_Campaign, loc("levelUp/playerLevelUp"))

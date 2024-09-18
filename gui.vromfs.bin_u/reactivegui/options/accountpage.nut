@@ -22,6 +22,7 @@ let { myNameWithFrame, openDecoratorsScene, myAvatarImage, hasUnseenDecorators }
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { showHint } = require("%rGui/tooltip.nut")
+let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 
 let canLinkToGaijinAccount = Computed(@() can_link_to_gaijin_account.get() && !is_nswitch
   && [ LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FACEBOOK ].contains(curLoginType.get()))
@@ -35,6 +36,16 @@ let levelBlockSize = hdpx(60)
 let borderColor = 0xFF000000
 let borderWidth = hdpx(1)
 let gap = hdpx(20)
+let lvlInfoWidth = sw(45)
+
+let unitsResearchInfo = {
+  size = [lvlInfoWidth, SIZE_TO_CONTENT]
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  hplace = ALIGN_LEFT
+  pos = [levelBlockSize + gap, 0]
+  text = loc("hints/aviationExlLvlInfo")
+}.__update(fontVeryTiny)
 
 let starLevelOvr = { pos = [0, ph(40)] }
 let levelMark = @() {
@@ -53,6 +64,7 @@ let levelMark = @() {
       pos = [0, -hdpx(2)]
     }.__update(fontSmall)
     starLevelTiny(playerLevelInfo.get().starLevel, starLevelOvr)
+    isCampaignWithUnitsResearch.get() ? unitsResearchInfo : null
   ]
 }
 
@@ -180,7 +192,7 @@ let userInfoBlock = {
     mkAvatar()
     {
       flow = FLOW_VERTICAL
-      gap
+      gap = hdpx(10)
       children = [
         mkUserName()
         mkTitle(fontSmall)

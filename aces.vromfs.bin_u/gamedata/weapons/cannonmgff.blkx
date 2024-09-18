@@ -2316,7 +2316,7 @@
       }
     ]
   },
-  "mgff_all_tracers": {
+  "mgff_tracers": {
     "bullet": [
       {
         "mass": 0.116,

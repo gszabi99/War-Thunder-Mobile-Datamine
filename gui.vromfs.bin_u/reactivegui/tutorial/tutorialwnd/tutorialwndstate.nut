@@ -46,8 +46,7 @@ let utf8 = require("utf8")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { get_time_msec } = require("dagor.time")
 let { register_command } = require("console")
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
+
 
 const WND_UID = "tutorial_wnd"
 const SKIP_DELAY_DEFAULT = 3.0
@@ -62,6 +61,7 @@ let tutorialConfigVersion = Computed(@() state.value.version)
 let stepIdx = Computed(@() state.value.step)
 let nextKeyAllowed = Watched(false)
 let skipKeyAllowed = Watched(false)
+
 local stepStartTime = 0
 state.subscribe(function(_) { stepStartTime = get_time_msec() })
 
@@ -95,12 +95,6 @@ function setTutorialConfig(config) {
 }
 
 let finishTutorial = @() setTutorialConfig(null)
-
-function saveResultTutorial(id) {
-  let blk = get_local_custom_settings_blk()
-  blk.addBlock("tutorials")[id] = true
-  eventbus_send("saveProfile", {})
-}
 
 function goToStep(idxOrId) {
   if (tutorialConfig == null)
@@ -199,6 +193,5 @@ return {
   skipStep
   finishTutorial
   getTimeAfterStepStart = @() 0.001 * (get_time_msec() - stepStartTime)
-  saveResultTutorial
   WND_UID
 }

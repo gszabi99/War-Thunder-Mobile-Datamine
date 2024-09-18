@@ -1675,6 +1675,7 @@
             "iconType": "rocket_7kg_group",
             "name": "ros82_slot1",
             "reqModification": "ro_82_mod",
+            "isDefault": true,
             "ShowNodes": {
               "node": [
                 "pylon_rocket_1",
@@ -1733,7 +1734,7 @@
             ]
           },
           {
-            "iconType": "rocket_7kg_group",
+            "iconType": "bazooka_group",
             "name": "rbs82_slot1",
             "reqModification": "ro_82_mod",
             "ShowNodes": {
@@ -1964,6 +1965,7 @@
           {
             "iconType": "bomb_25kg_group",
             "name": "ao_25_central",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",
@@ -2181,6 +2183,7 @@
             "iconType": "rocket_7kg_group",
             "name": "ros82_slot5",
             "reqModification": "ro_82_mod",
+            "isDefault": true,
             "ShowNodes": {
               "node": [
                 "pylon_rocket_6",
@@ -2239,7 +2242,7 @@
             ]
           },
           {
-            "iconType": "rocket_7kg_group",
+            "iconType": "bazooka_group",
             "name": "rbs82_slot5",
             "reqModification": "ro_82_mod",
             "ShowNodes": {

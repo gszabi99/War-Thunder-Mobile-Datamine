@@ -2457,7 +2457,7 @@
     ]
   },
   "typeFighter": {
-    "rocketReloadCooldownTime": 200.0,
+    "rocketReloadCooldownTime": 60.0,
     "bombReloadCooldownTime": 60.0,
     "torpedoReloadCooldownTime": 60.0
   },

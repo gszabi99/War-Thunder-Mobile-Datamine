@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { format } = require("string")
-let { commonTextColor } = require("%rGui/style/stdColors.nut")
-let { getBulletBeltFullName, getWeaponFullName } = require("%rGui/weaponry/weaponsVisual.nut")
+let { commonTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
+let { getBulletBeltFullName, getWeaponFullName, getBulletBeltDesc } = require("%rGui/weaponry/weaponsVisual.nut")
 let { getTntEquivalentMass } = require("%rGui/weaponry/weaponryStatsCalculations.nut")
 let { getMassText, getMassLbsText, getSpeedText, getSpeedRangeText, getHeightRangeText, getDistanceText
 } = require("%rGui/measureUnits.nut")
@@ -46,7 +46,7 @@ let weaponDescRowsCfg = [
     function(w) {
       if (w.mass <= 0)
         return null
-      return { mass = w.mass, massLbs = getSingleBulletParam(w, "mass_lbs") ?? 0 }
+      return { mass = w.mass, massLbs = w?.massLbs ?? 0 }
     },
     @(v) v.massLbs <= 0 ? getMassText(v.mass)
       : $"{getMassLbsText(v.massLbs)} ({getMassText(v.mass)})")
@@ -85,9 +85,9 @@ let weaponDescRowsCfg = [
   .map(@(r) rowCfgDefaults.__merge(r))
 
 
-function getDescRowsCfg(slotWeapon) {
+function getDescRowsCfg(slotWeapon, conflictSlots) {
   let resArr = []
-  let { weapons, mass } = slotWeapon
+  let { weapons, mass, massLbs = 0 } = slotWeapon
   if (weapons.len() == 0)
     return resArr
 
@@ -118,6 +118,7 @@ function getDescRowsCfg(slotWeapon) {
     totalBullets = totalBulletsCount
     turrets = totalTurrets
     mass
+    massLbs
   })
 
   foreach(r in weaponDescRowsCfg) {
@@ -126,6 +127,17 @@ function getDescRowsCfg(slotWeapon) {
       continue
     resArr.append({ header = r.getHeader(weapon), valueText = r.valToStr(val), color = r.color })
   }
+
+  if ((conflictSlots?.len() ?? 0) != 0)
+    resArr.append({
+      header = loc("weapons/conflictSlotsHint",
+        {
+          count = conflictSlots.len()
+          slots = comma.join(conflictSlots.map(@(v) $"#{v}"))
+        })
+      color = badTextColor
+      valueText = null
+    })
 
   return resArr
 }
@@ -194,11 +206,12 @@ let mkBeltDesc = @(belt, width) {
   flow = FLOW_VERTICAL
   children = [
     mkDesc(width, getBulletBeltFullName(belt.id, belt.caliber), headerColor)
+    mkDesc(width, getBulletBeltDesc(belt.id))
     mkDesc(width, getBeltBulletsInfoText(belt))
   ]
 }
 
 return {
   mkBeltDesc
-  mkSlotWeaponDesc = @(slotWeapon, width) mkRows(getDescRowsCfg(slotWeapon), width)
+  mkSlotWeaponDesc = @(slotWeapon, width, conflictSlots = null) mkRows(getDescRowsCfg(slotWeapon, conflictSlots), width)
 }

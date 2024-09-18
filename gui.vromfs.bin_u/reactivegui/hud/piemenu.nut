@@ -33,6 +33,8 @@ function getPieMenuSelectedIdx(menuItemsCount, stickDeltaV) {
 
 function mkPieMenuItemIcon(c, pieRadius, pieIconSizeMul) {
   let { icon, iconScale = 1.0, iconColor = 0xFFFFFFFF } = c
+  if ((icon ?? "") == "")
+    return null
   let iconSize = (pieRadius * pieIconSizeMul + 0.5).tointeger()
   let iconTexSize = (iconSize * iconScale + 0.5).tointeger()
   return {
@@ -79,8 +81,8 @@ function mkPieMenu(menuCfg, selIdx, params = defaultPieMenuParams) {
         rendObj = ROBJ_SOLID
         color = 0xFF000000
       }
-      @() selIdx.get() < 0 ? { watch = selIdx } : {
-        watch = [selIdx, degPerItem]
+      @() (menuCfg.get()?[selIdx.get()].icon ?? "") == "" ? { watch = [menuCfg, selIdx] } : {
+        watch = [menuCfg, selIdx, degPerItem]
         size = pieSize
         rendObj = ROBJ_VECTOR_CANVAS
         color = 0xFFFFFFFF
@@ -99,7 +101,7 @@ function mkPieMenu(menuCfg, selIdx, params = defaultPieMenuParams) {
     size = pieSize
     children = menuCfg.get().map(function(c, i) {
       let angleRad = ((degPerItem.get() * i) - 90) * DEG_TO_RAD
-      return mkPieMenuItemIcon(c, pieRadius, pieIconSizeMul).__update({
+      return mkPieMenuItemIcon(c, pieRadius, pieIconSizeMul)?.__update({
         pos = [iconsDistance * cos(angleRad), iconsDistance * sin(angleRad)]
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER

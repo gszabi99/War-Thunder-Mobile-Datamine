@@ -1000,7 +1000,7 @@
       }
     }
   ],
-  "30cal_turret_ap": {
+  "30cal_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.0095,

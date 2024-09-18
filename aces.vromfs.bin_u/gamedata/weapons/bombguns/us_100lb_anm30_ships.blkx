@@ -1,0 +1,92 @@
+{
+  "bombGun": true,
+  "preset_cost": 20,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
+  "mesh": "us_100lb_an_m30",
+  "bomb": {
+    "mass": 45.8,
+    "mass_lbs": 100.0,
+    "explosiveType": "tnt",
+    "explosiveMass": 35.0,
+    "bombType": "he_bomb",
+    "bombName": "an_m30a1",
+    "caliber": 0.207,
+    "length": 0.976,
+    "distFromCmToStab": 0.3,
+    "dragCx": 0.007,
+    "sound": "weapon.bomb_mid",
+    "explosionFx": "bomb_expl_50kg",
+    "explosionPatchRadius": 4.0,
+    "waterExplosionEffect": "bomb_water_explosion_big",
+    "hitPowerMult": 1.0,
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "explodeTreshold": 0.00001,
+    "explodeHitPower": 120.0,
+    "explodeArmorPower": 50.0,
+    "explodeRadius": [
+      3.0,
+      8.0
+    ],
+    "rendinstDamageRadius": 15.0,
+    "shutterDamage": true,
+    "shutterDamageRadius": 40.0,
+    "shutterAmount": 2000,
+    "shutterArmorPower": 10.0,
+    "shutterHit": 10.0,
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 35.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
+      }
+    },
+    "splash": {
+      "innerRadius": 7.0,
+      "outerRadius": 30.0,
+      "penetration": 125.0,
+      "damage": 3500.0,
+      "damageType": "explosion"
+    }
+  }
+}

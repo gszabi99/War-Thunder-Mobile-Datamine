@@ -2642,6 +2642,7 @@
           {
             "iconType": "bomb_250kg_group",
             "name": "sc250_mid",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",

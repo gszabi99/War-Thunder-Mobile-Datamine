@@ -2,10 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let logFB = log_with_prefix("[FIRST_BATTLE_TUTOR] ")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { register_command } = require("console")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId,
-nextStep, saveResultTutorial, WND_UID
+let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId, nextStep, WND_UID
 } = require("tutorialWnd/tutorialWndState.nut")
+let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { isInRespawn, isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -23,7 +22,7 @@ let choiceCount = Computed(@() chosenBullets.get().len())
 let objectsForSixStep = Watched([])
 let setCurSlot = @(name) curSlotName.set(name)
 
-let isFinished = Watched(get_local_custom_settings_blk()?.tutorials?[TUTORIAL_ID] ?? false)
+let isFinished = mkIsTutorialCompleted(TUTORIAL_ID)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let hasEnoughBullets = Computed(@() visibleBullets.get().len() >= 3)
 let needShowTutorial = Computed(@() hasEnoughBullets.get()
@@ -36,18 +35,13 @@ let canStartTutorial = Computed(@() !isTutorialActive.get()
 let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
 
-function markAsCompleted() {
-  isFinished.set(true)
-  saveResultTutorial(TUTORIAL_ID)
-}
-
 let runMsgBox = @() openMsgBox({
   text = loc("tutorial_open_third_shell_prompt"),
   buttons = [
     {
       text = loc("msgbox/btn_no")
       function cb() {
-        markAsCompleted()
+        markTutorialCompleted(TUTORIAL_ID)
         finishTutorial()
       }
     }
@@ -79,7 +73,7 @@ function startTutorial() {
       logFB($"{stepId}: {status}")
       sendPlayerActivityToServer()
       if (stepId == "s9_change_shell" && status == "tutorial_finished")
-        markAsCompleted()
+        markTutorialCompleted(TUTORIAL_ID)
     }
     steps = [
       {
@@ -98,6 +92,7 @@ function startTutorial() {
       {
         id = "s3_open_ammo_menu_prompt"
         text = loc("tutorial_open_ammo_menu_prompt")
+        charId = "mary_points"
         objects = [{
           keys = $"respBulletsBtn{choiceCount.get() - 1}"
           needArrow = true
@@ -110,6 +105,7 @@ function startTutorial() {
           moveModalToTop(WND_UID)
         }
         text = loc("tutorial_view_ammo_details")
+        charId = "mary_points"
         nextKeyDelay = 1
         objects = [{ keys = "bulletsInfo" }]
       }
@@ -147,8 +143,8 @@ function startTutorial() {
       }
       {
         id = "s9_change_shell"
-        nextKeyDelay = 1
         text = loc("tutorial_change_shell")
+        charId = "mary_like"
         objects = [{
           keys = ["applyButton", "errorButton", "closeButton"]
           onClick = applyBullet

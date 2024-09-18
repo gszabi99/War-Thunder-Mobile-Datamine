@@ -27,7 +27,7 @@ let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { isSlotAttrOpened, attrSlotData, slotUnitName, slotLevel,
   curCategory, applyAttributes, selAttrSpCost, slotLevelsToMax,
   isSlotMaxSkills, unseenSlotAttrByIdx, resetAttrState, leftSlotSp,
-  markSlotAttributesSeen
+  markSlotAttributesSeen, isSlotAttrAttached
 } = require("slotAttrState.nut")
 let { mkAttrTabs } = require("%rGui/attributes/attrWndTabs.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -163,9 +163,13 @@ let pageBlock = {
         margin = [0, 0, hdpx(10), 0]
         flow = FLOW_HORIZONTAL
         children = [
-          txt({ text = "".concat(loc("unit/upgradePoints"), loc("ui/colon")) })
+          txt({
+            key = "upgradePoints" //need for tutorial
+            text = "".concat(loc("unit/upgradePoints"), loc("ui/colon"))
+          })
           @() txt({
             watch = leftSlotSp
+            key = "upgradePointsValue" //need for tutorial
             text = getSpCostText(leftSlotSp.get())
             color = leftSlotSp.get() > 0 ? textColor : badTextColor
           })
@@ -332,7 +336,11 @@ let slotAttrWnd = {
   padding = saBordersRv
   flow = FLOW_VERTICAL
   gap = hdpx(20)
-  onDetach = @() markSlotAttributesSeen(selectedSlotIdx.get())
+  onAttach = @() isSlotAttrAttached.set(true)
+  function onDetach() {
+    isSlotAttrAttached.set(false)
+    markSlotAttributesSeen(selectedSlotIdx.get())
+  }
   children = [
     mkGamercardSlotCampaign(onClose, $"gamercard/slot/level/description",  mkSlotUnitName)
     {

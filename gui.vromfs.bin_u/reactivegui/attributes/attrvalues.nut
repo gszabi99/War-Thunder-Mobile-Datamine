@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { Point2 } = require("dagor.math")
 let { isDataBlock, blk2SquirrelObjNoArrays, getBlkByPathArray, blkOptFromPath
 } = require("%sqstd/datablock.nut")
-let { round, round_by_value } = require("%sqstd/math.nut")
+let { round, round_by_value, fabs } = require("%sqstd/math.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
 let { get_modifications_blk } = require("blkGetters")
@@ -37,6 +37,10 @@ let tankAttrToTankCrewParamsMap = {
 }
 
 let planeAttrToCrewParamsMap = {
+  plane_engine = [ "flightPerformance", "engine" ]
+  plane_fuselage = [ "flightPerformance", "fuselage" ]
+  plane_flaps_wings = [ "flightPerformance", "flapsWings" ]
+  plane_compressor = [ "flightPerformance", "compressor" ]
   plane_spotting = [ "pilot", "detection", "vision", "spottingDistance" ]
   plane_threat_recognition = [ "pilot", "detection", "hearing", "spottingDistance" ]
   plane_overload_resistance = [ "gForce", "adaptationK" ]
@@ -68,13 +72,10 @@ function getAttrMultsCfgPlane() {
   let rangeDefault = Point2(1.0, 1.0)
   local attributes = planeAttrToCrewParamsMap.map(function(pathArray) {
     let range = getBlkByPathArray(pathArray, crewParametersBlk, rangeDefault)
-    return isPoint2(range) ? { begin = range.x, end = range.y } : rangeDefault
+    return isPoint2(range)
+      ? { begin = range.x, end = range.y }
+      : { begin = rangeDefault.x, end = rangeDefault.y }
   })
-
-  let attributesBlk = blkOptFromPath("config/attributes.blk")
-  if (isDataBlock(attributesBlk?.plane_attributes)) {
-    attributes.__update(blk2SquirrelObjNoArrays(attributesBlk.plane_attributes))
-  }
   return attributes
 }
 
@@ -308,77 +309,31 @@ let tankAttrs = {
   field_repair = mkAttrUpTo100prc("field_repair", 1.0)
 }.map(@(c) mkValCfg(c))
 
-function mkAttributeValue(attrId, roundBy = 1) {
-  let { begin, end } = attrMultsPlane[attrId]
-  let rMin = begin < end ? begin : end
-  let rMax = begin < end ? end : begin
-  let mulMax = rMin != 0 ? (rMax / rMin) : 1.0
-  return {
-    getBaseVal = @(_) 1.0
-    getMulMin = @(_) 1.0
-    getMulMax = @(_) mulMax
-    valueToText = @(v) "".concat(round_by_value(v * 100, roundBy), "%")
-  }
-}
-
-function mkAttributeTotalPercent(attrId, roundBy = 0.1) {
-  let { begin, end } = attrMultsPlane[attrId]
-  let rMin = begin < end ? begin : end
-  let rMax = begin < end ? end : begin
-  let baseVal = rMax != 0 ? (1.0 / rMax) : 0.0
-  return {
-    getBaseVal = @(_) baseVal
-    getMulMin = @(_) rMin
-    getMulMax = @(_) rMax
-    valueToText = @(v) "".concat("+", round_by_value(v * 100, roundBy), "%")
-  }
-}
-
 function mkAttributePlusPercent(attrId, roundBy = 0.1) {
     let { begin, end } = attrMultsPlane[attrId]
     let rMin = begin < end ? begin : end
     let rMax = begin < end ? end : begin
-    let mulMax = rMin != 0 ? (rMax / rMin) : 1.0
+    let mulMax = rMin != 0 ? (rMax / rMin) : 0.0
     return {
     getBaseVal = @(_) 1.0
     getMulMin = @(_) 1.0
     getMulMax = @(_) mulMax
-    valueToText = @(v) "".concat("+", round_by_value((v - 1.0) * 100, roundBy), "%")
+    valueToText = @(v) "".concat("+", round_by_value(fabs(v - 1.0) * 100, roundBy), "%")
   }
 }
 
 let planeAttrs = {
-  plane_engine = {
-    getBaseVal = @(_) 1.0
-    getMulMin = @(_) 1.0
-    getMulMax = @(attrId) (attrMultsPlane?[attrId].mulHorsePowers ?? 0.0)
-    valueToText = @(v) "".concat("+", round_by_value((v - 1.0) * 100, 0.1), "%")
-  }
-  plane_fuselage = {
-    getBaseVal = @(_) 1.0
-    getMulMin = @(_) 1.0
-    getMulMax = @(attrId) (attrMultsPlane?[attrId].mulCdminFuse ?? 0.0)
-    valueToText = @(v) "".concat("+", round_by_value((v - 1.0) * 100, 0.1), "%")
-  }
-  plane_flaps_wings = {
-    getBaseVal = @(_) 1.0
-    getMulMin = @(_) 1.0
-    getMulMax = @(attrId) (attrMultsPlane?[attrId].mulCdmin ?? 0.0)
-    valueToText = @(v) "".concat("+", round_by_value((v - 1.0) * 100, 0.1), "%")
-  }
-  plane_compressor = {
-    getBaseVal = @(_) 1.0
-    getMulMin = @(_) 1.0
-    getMulMax = @(attrId) (attrMultsPlane?[attrId].mulCompressorMaxP ?? 0.0) + 1.0
-    valueToText = @(v) "".concat("+", round_by_value((v - 1.0) * 100, 0.1), "%")
-  }
-  plane_spotting = mkAttributeValue("plane_spotting")
-  plane_threat_recognition = mkAttributeValue("plane_threat_recognition")
-  plane_overload_resistance = mkAttributeTotalPercent("plane_overload_resistance")
-  plane_protection = mkAttributeValue("plane_protection")
-  plane_accuracy = mkAttributeValue("plane_accuracy")
-  plane_jamming = mkAttributeValue("plane_jamming")
-  plane_reloading = mkAttributeValue("plane_reloading")
+  plane_engine = mkAttributePlusPercent("plane_engine")
+  plane_fuselage = mkAttributePlusPercent("plane_fuselage")
+  plane_flaps_wings = mkAttributePlusPercent("plane_flaps_wings")
+  plane_compressor = mkAttributePlusPercent("plane_compressor")
+  plane_spotting = mkAttributePlusPercent("plane_spotting")
+  plane_threat_recognition = mkAttributePlusPercent("plane_threat_recognition")
+  plane_overload_resistance = mkAttributePlusPercent("plane_overload_resistance")
+  plane_protection = mkAttributePlusPercent("plane_protection")
+  plane_accuracy = mkAttributePlusPercent("plane_accuracy")
+  plane_jamming = mkAttributePlusPercent("plane_jamming")
+  plane_reloading = mkAttributePlusPercent("plane_reloading")
   plane_scatter = mkAttributePlusPercent("plane_scatter")
 }
 

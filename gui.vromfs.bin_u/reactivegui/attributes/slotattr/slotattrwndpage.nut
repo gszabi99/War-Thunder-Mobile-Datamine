@@ -82,7 +82,7 @@ function mkAttrRow(attr) {
 }
 
 let slotAttrPage = @() {
-  key = startIncBtnGlare
+  key = "slotAttributesList" //need for tutorial
   watch = curCategory
   size = [flex(), SIZE_TO_CONTENT]
   onAttach = @() setInterval(incBtnAnimRepeat, startIncBtnGlare)

@@ -14,6 +14,14 @@ let incBoxSize = @(box, inc) inc == 0 ? box
       b = min(sh(100), box.b + inc)
     }
 
+let incBoxSizeUnlimited = @(box, inc) inc == 0 ? box
+  : {
+      l = box.l - inc
+      t = box.t - inc
+      r = box.r + inc
+      b = box.b + inc
+    }
+
 function cutBlock(block, cutter) {
   if (!isIntersect(block, cutter))
     return [block]
@@ -143,17 +151,52 @@ function findGoodPos(size, pos, boxes) { //move only by single axis. For tutoria
   if (!hasInteractions(box, boxes))
     return pos
 
-  let allowedBoxY = { l = box.l, r = box.r, t = sh(5), b = sh(95) }
-  let posY = getBestPosByY(findDiapasonY(allowedBoxY, boxes), box)
-  if (posY != null)
-    return [box.l, posY]
-
   let allowedBoxX = { l = sw(5), r = sw(95), t = box.t, b = box.b }
   let posX = getBestPosByX(findDiapasonX(allowedBoxX, boxes), box)
   if (posX != null)
     return [posX, box.t]
 
+  let allowedBoxY = { l = box.l, r = box.r, t = sh(5), b = sh(95) }
+  let posY = getBestPosByY(findDiapasonY(allowedBoxY, boxes), box)
+  if (posY != null)
+    return [box.l, posY]
+
   return [box.l, box.t]
+}
+
+function getBorderBestPosX(size, allowedBox, boxes) {
+  let ranges = [
+    [allowedBox.l, allowedBox.l + size[0]],
+    [allowedBox.r - size[0], allowedBox.r],
+  ]
+  let weights = ranges.map(@(_) 0)
+  foreach(box in boxes) {
+    if (!isIntersect(box, allowedBox))
+      continue
+    foreach(idx, r in ranges)
+      weights[idx] += max(0, min(box.r, r[1]) - max(box.l, r[0]))
+  }
+  return weights[0] > weights[1] ? ranges[1][0] : ranges[0][0]
+}
+
+function findGoodPosX(size, pos, boxes) {
+  let box = sizePosToBox(size, pos)
+  if (!hasInteractions(box, boxes))
+    return pos
+  let allowedBoxX = { l = sw(5), r = sw(95), t = box.t, b = box.b }
+  local posX = getBestPosByX(findDiapasonX(allowedBoxX, boxes), box)
+  if (posX == null)
+    posX = getBorderBestPosX(size, allowedBoxX, boxes)
+  return [posX, box.t]
+}
+
+function getNotInterractPos(size, posList, boxes) {
+  foreach(pos in posList) {
+    let box = sizePosToBox(size, pos)
+    if (!hasInteractions(box, boxes))
+      return pos
+  }
+  return null
 }
 
 let bottomArrowPos = @(box, size) { pos = [(box.r + box.l - size[0]) / 2, box.b], rotate = 180 }
@@ -223,12 +266,16 @@ function getLinkArrowMiddleCfg(boxFrom, boxTo) {
 return {
   getBox
   incBoxSize
+  incBoxSizeUnlimited
   createHighlight
   findGoodPos
+  findGoodPosX
+  getNotInterractPos
   findGoodArrowPos
   getLinkArrowMiddleCfg
   sizePosToBox
   hasInteractions
+  isIntersect
   leftArrowPos
   rightArrowPos
 }

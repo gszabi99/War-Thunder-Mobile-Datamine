@@ -16,8 +16,8 @@ let TESTFLIGHT_MISSION = "testFlight_destroyer_usa_tfs"
 
 function startOfflineMission(unitName, skin, missionId, bullets, weaponPreset, localMP = false, gameMode = GM_TEST_FLIGHT
 ) {
-  let misBlk = get_meta_mission_info_by_name(missionId)
-  if (misBlk == null) {
+  let misBlkBase = get_meta_mission_info_by_name(missionId)
+  if (misBlkBase == null) {
     openFMsgBox({ text = "Mission not found." })
     return
   }
@@ -30,6 +30,8 @@ function startOfflineMission(unitName, skin, missionId, bullets, weaponPreset, l
 
   requestHudState()
 
+  let misBlk = DataBlock()
+  misBlk.setFrom(misBlkBase)
   if (gameMode != null)
     misBlk["_gameMode"] = gameMode
   misBlk["difficulty"] = "arcade"

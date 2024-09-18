@@ -13,13 +13,14 @@ let { Point3 } = require("dagor.math")
 let { TANK, AIR } = require("%appGlobals/unitConst.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { purchaseEffectText } = require("%rGui/unit/purchaseEffectText.nut")
+let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 
 let TIME_TO_AUTO_CLOSE = 10.0
 
 let unitToShow = mkWatched(persist, "unit", null)
 let hasLvlUpScene = Computed(@() scenesOrder.value.findindex(@(v) v == "levelUpWnd") != null)
 let isOpened = Computed(@() isInMenu.value && !hasModalWindows.value
-  && unitToShow.value != null && !hasLvlUpScene.value)
+  && unitToShow.value != null && !hasLvlUpScene.value && !isTutorialActive.get())
 let close = @() unitToShow(null)
 let isSceneAttached = Watched(false)
 let canShowEffect = keepref(Computed(@() isSceneAttached.get()

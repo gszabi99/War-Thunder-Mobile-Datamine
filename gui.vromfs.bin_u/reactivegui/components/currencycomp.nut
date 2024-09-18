@@ -156,6 +156,7 @@ return freeze(currencyStyles.__merge({
   mkCurrencyText
   currencyIconsColor
 
+  mkFreeText
   mkCurrencyComp
   mkDiscountPriceComp
   mkPriceExtText

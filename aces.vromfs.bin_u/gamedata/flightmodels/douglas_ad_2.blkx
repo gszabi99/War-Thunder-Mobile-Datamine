@@ -1625,6 +1625,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon1"
           },
@@ -1645,6 +1646,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon2"
           },
@@ -1665,6 +1667,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon3"
           },
@@ -1685,6 +1688,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon4"
           },
@@ -1705,6 +1709,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon5"
           },
@@ -1725,6 +1730,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon6"
           },
@@ -2103,6 +2109,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon9"
           },
@@ -2123,6 +2130,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon10"
           },
@@ -2143,6 +2151,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon11"
           },
@@ -2163,6 +2172,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon12"
           },
@@ -2183,6 +2193,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon13"
           },
@@ -2203,6 +2214,7 @@
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",
+          "isDefault": true,
           "ShowNodes": {
             "node": "pylon14"
           },

@@ -6,7 +6,7 @@ let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { slotBarSelectWnd } = require("slotBar.nut")
-let { selectedUnitToSlot, slots, resetSelectedUnitToSlot } = require("slotBarState.nut")
+let { selectedUnitToSlot, slots, resetSelectedUnitToSlot, canOpenSelectUnitWithModal } = require("slotBarState.nut")
 let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { unitToScroll } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { treeNodeUnitPlateKey } = require("%rGui/unitsTree/mkUnitPlate.nut")
@@ -20,7 +20,7 @@ let needOpen = Computed(@() selectedUnitToSlot.get() != null
   && !isInBattle.get()
   && slots.get().len() > 0
 )
-let canOpen = Computed(@() !hasModalWindows.get())
+let canOpen = Computed(@() !hasModalWindows.get() || canOpenSelectUnitWithModal.get())
 let shouldOpen = Computed(@() needOpen.get() && canOpen.get())
 
 function close() {

@@ -2281,6 +2281,7 @@
           "iconType": "rocket_40kg_group",
           "name": "rocket",
           "reqModification": "Fw-190A-5_R6",
+          "isDefault": true,
           "Weapon": [
             {
               "trigger": "rockets",
@@ -2316,6 +2317,7 @@
           "iconType": "rocket_40kg_group",
           "name": "rocket",
           "reqModification": "Fw-190A-5_R6",
+          "isDefault": true,
           "Weapon": [
             {
               "trigger": "rockets",

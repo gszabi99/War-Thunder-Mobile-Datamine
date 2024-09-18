@@ -1809,6 +1809,7 @@
           "iconType": "bomb_250kg",
           "name": "sc250",
           "reqModification": "etc250_2_mod",
+          "isDefault": true,
           "Weapon": {
             "trigger": "bombs",
             "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
@@ -1848,6 +1849,7 @@
           "iconType": "bomb_250kg",
           "name": "sc250",
           "reqModification": "etc250_2_mod",
+          "isDefault": true,
           "Weapon": {
             "trigger": "bombs",
             "blk": "gameData/Weapons/BombGuns/de_sc250.blk",

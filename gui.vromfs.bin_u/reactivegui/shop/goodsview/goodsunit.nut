@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { AIR } = require("%appGlobals/unitConst.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
@@ -6,16 +7,17 @@ let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName } = requir
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
 let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareIconBtn, purchasedPlate,
-  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, underConstructionBg, goodsH, goodsSmallSize, offerPad,
+  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, mkAirBranchOfferTexts, underConstructionBg, goodsH, goodsSmallSize, offerPad,
   priceBgGradGold, offerW,  offerH
 } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { discountTagBig } = require("%rGui/components/discountTag.nut")
+let { discountTagBig, discountTag } = require("%rGui/components/discountTag.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { saveSeenGoods } = require("%rGui/shop/shopState.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { mkRewardCurrencyImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
 
 
 let fonticonPreview = "⌡"
@@ -30,14 +32,26 @@ let bgHiglight = {
   color = 0x3F3F3F
 }
 
-function getUnitByGoods(goods) {
-  let isBlueprintOffer = (goods?.blueprints.len() ?? 0) > 0
-  let unitName = isBlueprintOffer ? goods?.blueprints.findindex(@(_) true) : goods?.unitUpgrades[0]
-  let unit = serverConfigs.value?.allUnits[unitName]
-  if (unit != null)
-    return unit.__merge({ isUpgraded = true })
-  return serverConfigs.get()?.allUnits[goods.units?[0] ?? goods?.meta.previewUnit]
+let unitOfferImageOvrByType = {
+  [AIR] = {
+    size = [pw(90), ph(90)]
+    imageHalign = ALIGN_LEFT
+    vplace = ALIGN_CENTER
+  }
 }
+
+let branchOfferImageOvr = {
+  size = [pw(80), ph(80)]
+  imageHalign = ALIGN_LEFT
+  vplace = ALIGN_CENTER
+}
+
+let discountTagUnit = @(percent) discountTag(percent, {
+  hplace = ALIGN_LEFT
+  vplace = ALIGN_TOP
+  pos = [0, 0]
+  size = [hdpx(93), hdpx(46)]
+})
 
 function isUnitOrUnitUpgradePurchased(myUnitsValue, unit) {
   let { name = "", isUpgraded = false } = unit
@@ -45,13 +59,18 @@ function isUnitOrUnitUpgradePurchased(myUnitsValue, unit) {
   return ownUnit != null && (!isUpgraded || ownUnit.isUpgraded)
 }
 
-let getLocBlueprintUnit = function(goods) {
-  let unit = getUnitByGoods(goods)
+function getLocBranchUnits(goods) {
+  let unit = getBestUnitByGoods(goods, serverConfigs.get())
+  return unit != null ? " ".concat(getPlatoonOrUnitName(unit, loc), loc("offer/airBranch")) : goods.id
+}
+
+function getLocBlueprintUnit(goods) {
+  let unit = getBestUnitByGoods(goods, serverConfigs.get())
   return unit != null ? " ".concat(loc("blueprints"), getPlatoonOrUnitName(unit, loc)) : goods.id
 }
 
 let getLocNameUnit = function(goods) {
-  let unit = getUnitByGoods(goods)
+  let unit = getBestUnitByGoods(goods, serverConfigs.get())
   return unit != null ? getPlatoonOrUnitName(unit, loc) : goods.id
 }
 
@@ -171,7 +190,7 @@ let mkMRank = @(mRank) !mRank ? null : {
 }
 
 function mkGoodsUnit(goods, onClick, state, animParams) {
-  let unit = getUnitByGoods(goods)
+  let unit = getBestUnitByGoods(goods, serverConfigs.get())
   let p = getUnitPresentation(unit)
   let isPurchased = isUnitOrUnitUpgradePurchased(myUnits.value, unit)
   let platoonOffset = platoonPlatesGap * (unit?.platoonUnits.len() ?? 0)
@@ -204,7 +223,7 @@ function mkGoodsUnit(goods, onClick, state, animParams) {
     ].extend(mkGoodsCommonParts(goods, state)),
     isPurchased ? purchasedPlate : mkPricePlate(goods, priceBgGradGold, state, animParams),
     {
-      watch = myUnits
+      watch = [myUnits, serverConfigs]
       size = [goodsSmallSize[0], goodsH - platoonOffset / 2]
       pos = [0, platoonOffset]
     }
@@ -220,7 +239,7 @@ let mkCurrencyIcon = @(currencyId) {
 }
 
 function mkOfferUnit(goods, onClick, state) {
-  let unit = getUnitByGoods(goods)
+  let unit = getBestUnitByGoods(goods, serverConfigs.get())
   let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
     currencies = null, offerClass = null
   } = goods
@@ -229,7 +248,8 @@ function mkOfferUnit(goods, onClick, state) {
     : unit?.unitType == "tank" ? "ui/gameuiskin#offer_bg_yellow.avif"
     : "ui/gameuiskin#offer_bg_blue.avif"
   let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
-  let image = mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image)
+  let image = mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image,
+    unitOfferImageOvrByType?[unit?.unitType] ?? {})
   let imageOffset = currencyId == null || unit?.unitType == "tank" ? 0
     : hdpx(40)
   return mkOfferWrap(onClick,
@@ -241,12 +261,12 @@ function mkOfferUnit(goods, onClick, state) {
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
       mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
         endTime ?? timeRange?.end)
-      discountTagBig(discountInPercent)
+      discountTagUnit(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))
 }
 
 function mkOfferBlueprint(goods, onClick, state){
-  let unit = getUnitByGoods(goods)
+  let unit = getBestUnitByGoods(goods, serverConfigs.get())
   let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
     offerClass = null } = goods
   let bgImg = "ui/gameuiskin#offer_bg_blue.avif"
@@ -271,7 +291,7 @@ function mkOfferBlueprint(goods, onClick, state){
 }
 
 function mkOfferBranchUnit(goods, onClick, state) {
-  let unit = getUnitByGoods(goods)
+  let unit = getBestUnitByGoods(goods, serverConfigs.get())
   let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
     currencies = null, offerClass = null
   } = goods
@@ -280,7 +300,8 @@ function mkOfferBranchUnit(goods, onClick, state) {
     : unit?.unitType == "tank" ? "ui/gameuiskin#offer_bg_yellow.avif"
     : "ui/gameuiskin#offer_bg_blue.avif"
   let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
-  let image = mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image)
+  let image = mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image,
+    branchOfferImageOvr)
   let imageOffset = currencyId == null || unit?.unitType == "tank" ? 0
     : hdpx(40)
   return mkOfferWrap(onClick,
@@ -290,17 +311,17 @@ function mkOfferBranchUnit(goods, onClick, state) {
       sf & S_HOVER ? bgHiglight : null
       currencyId == null ? null : mkCurrencyIcon(currencyId)
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
-      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
-        endTime ?? timeRange?.end, utf8ToUpper(loc("offer/airBranch")))
-      discountTagBig(discountInPercent)
+      mkAirBranchOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
+        utf8ToUpper(loc("offer/airBranch")), endTime ?? timeRange?.end)
+      discountTagUnit(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))
 }
 return {
   getLocNameUnit
+  getLocBranchUnits
   getLocBlueprintUnit
   mkGoodsUnit
   mkOfferUnit
   mkOfferBlueprint
   mkOfferBranchUnit
-  getUnitByGoods
 }

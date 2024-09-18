@@ -66,7 +66,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_ball/i_ball/"
         },
-        "30cal_turret_ap": {
+        "30cal_turret_armor_targets": {
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_6"
         }
@@ -187,7 +187,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -212,7 +212,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_8"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -290,11 +290,11 @@
         "default": {
           "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
         },
-        "50cal_turret_ap": {
+        "50cal_turret_armor_targets": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/ap_i_t_ball_M20/",
           "reqModification": "aircraft_mod_1"
         },
-        "50cal_turret_api": {
+        "50cal_turret_universal": {
           "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/ap_i_t_ball_M20/",
           "reqModification": "aircraft_mod_4"
         }
@@ -366,11 +366,11 @@
         "default": {
           "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
         },
-        "50cal_turret_ap": {
+        "50cal_turret_armor_targets": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/ap_i_t_ball_M20/",
           "reqModification": "aircraft_mod_1"
         },
-        "50cal_turret_api": {
+        "50cal_turret_universal": {
           "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/ap_i_t_ball_M20/",
           "reqModification": "aircraft_mod_4"
         }
@@ -423,11 +423,11 @@
         },
         "shkas_universal": {
           "icon": "t_ball/ap_i_ball/he_ball/ap_i_t_ball/",
-          "reqModification": "aircraft_mod_3"
-        },
-        "shkas_all_tracers": {
-          "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
+        },
+        "shkas_tracers": {
+          "icon": "ap_i_t_ball/",
+          "reqModification": "aircraft_mod_3"
         },
         "shkas_stealth": {
           "icon": "ap_i_ball/ap_i_ball/ap_i_ball/he_ball/",
@@ -471,7 +471,9 @@
           "ammoCount": 1000,
           "shotFreq": 20.0
         },
-        "sd10a": {}
+        "sd10a": {
+          "reqModification": "aircraft_mod_3"
+        }
       }
     },
     "bullets": {
@@ -481,15 +483,15 @@
         },
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
-          "reqModification": "aircraft_mod_2"
-        },
-        "mg_all_tracers": {
-          "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
+        },
+        "mg_tracers": {
+          "icon": "ap_t_ball/",
+          "reqModification": "aircraft_mod_2"
         },
         "mg_stealth": {
           "icon": "he_ball/ap_ball/ap_ball/ap_ball/he_ball/",
-          "reqModification": "aircraft_mod_3"
+          "reqModification": "aircraft_mod_4"
         }
       }
     }
@@ -770,11 +772,11 @@
         },
         "30cal_universal": {
           "icon": "t_ball/ap_ball/i_ball/",
-          "reqModification": "aircraft_mod_3"
+          "reqModification": "aircraft_mod_1"
         },
         "30cal_tracer": {
           "icon": "ap_ball/t_ball/t_ball/t_ball/t_ball/",
-          "reqModification": "aircraft_mod_1"
+          "reqModification": "aircraft_mod_2"
         },
         "30cal_stealth": {
           "icon": "ap_ball/ap_ball/ap_ball/i_ball/i_ball/",
@@ -795,7 +797,7 @@
         },
         "50cal_tracers": {
           "icon": "t_ball_M1/t_ball_M1/t_ball_M1/ap_ball_M2/",
-          "reqModification": "aircraft_mod_2"
+          "reqModification": "aircraft_mod_3"
         },
         "50cal_stealth": {
           "icon": "ap_ball_M2/i_ball_M1/ap_ball_M2/",
@@ -946,11 +948,11 @@
         "default": {
           "icon": "he_i_t_mine/i/ap_i/"
         },
-        "mk_103_antitank": {
+        "mk_103_armor_targets": {
           "icon": "apcr_t/",
           "reqModification": "aircraft_mod_1"
         },
-        "mk_103_antibomber": {
+        "mk_103_air_targets": {
           "icon": "he_i_t_mine/he_i_mine/he_i_mine/i/",
           "reqModification": "aircraft_mod_5"
         },
@@ -1029,10 +1031,10 @@
         "default": {
           "icon": "he_i_t_mine/i/ap_i/"
         },
-        "mk_103_antitank": {
+        "mk_103_armor_targets": {
           "icon": "apcr_t/"
         },
-        "mk_103_antibomber": {
+        "mk_103_air_targets": {
           "icon": "he_i_t_mine/he_i_mine/he_i_mine/i/"
         },
         "mk_103_stealth": {
@@ -1143,7 +1145,7 @@
     "hangar_place": "aircraft",
     "tags": {
       "ally": true,
-      "country_britain": true,
+      "country_uk": true,
       "type_bomber": true,
       "type_jet_bomber": true,
       "bomberview": true,
@@ -1391,7 +1393,7 @@
     "testFlight": "testFlight_britain",
     "tags": {
       "ally": true,
-      "country_britain": true,
+      "country_uk": true,
       "type_fighter": true,
       "type_jet_fighter": true,
       "britain": true,
@@ -1552,7 +1554,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -1573,7 +1575,7 @@
           "icon": "frag_i_t/he_i_mine/he_i_mine/frag_i_t/he_i_mine/he_i_mine/aphe/",
           "reqModification": "aircraft_mod_7"
         },
-        "mgff_all_tracers": {
+        "mgff_tracers": {
           "icon": "i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -1674,7 +1676,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "shkas_turret_ap": {
+        "shkas_turret_armor_targets": {
           "icon": "ap_i_ball/ap_i_ball/ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -1687,11 +1689,11 @@
         "default": {
           "icon": "t_ball/ap_ball/ap_ball/he_i_ball/"
         },
-        "ub_turret_ap": {
+        "ub_turret_armor_targets": {
           "icon": "ap_i_t_ball/ap_ball/ap_ball/apcr_i_ball_bs41/",
           "reqModification": "aircraft_mod_3"
         },
-        "ub_turret_api": {
+        "ub_turret_universal": {
           "icon": "ap_i_t_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_8"
         }
@@ -1764,7 +1766,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "shkas_turret_ap": {
+        "shkas_turret_armor_targets": {
           "icon": "ap_i_ball/ap_i_ball/ap_i_ball/ap_i_t_ball/"
         },
         "shkas_turret_apit": {
@@ -1775,10 +1777,10 @@
         "default": {
           "icon": "t_ball/ap_ball/ap_ball/he_i_ball/"
         },
-        "ub_turret_ap": {
+        "ub_turret_armor_targets": {
           "icon": "ap_i_t_ball/ap_ball/ap_ball/apcr_i_ball_bs41/"
         },
-        "ub_turret_api": {
+        "ub_turret_universal": {
           "icon": "ap_i_t_ball/ap_i_ball/"
         }
       }
@@ -1843,7 +1845,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/"
         },
         "mg_turret_api_apt": {
@@ -1854,7 +1856,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/"
         },
         "mg_turret_api_apt": {
@@ -1922,7 +1924,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/"
         },
         "mg_turret_api_apt": {
@@ -1933,7 +1935,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/"
         },
         "mg_turret_api_apt": {
@@ -2030,7 +2032,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_17"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_1"
         },
@@ -2043,7 +2045,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
           "reqModification": "aircraft_mod_6"
         },
@@ -2060,7 +2062,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_7"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -2085,7 +2087,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_18"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_3"
         },
@@ -2171,7 +2173,7 @@
         "mg151_armor_targets": {
           "icon": "aphe/aphe/aphe/i_t/"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/"
         },
         "mg151_stealth": {
@@ -2182,7 +2184,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/"
         },
         "mg_turret_api_apt": {
@@ -2196,7 +2198,7 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/"
         },
         "mg_stealth": {
@@ -2216,7 +2218,7 @@
         "mg151_armor_targets": {
           "icon": "aphe/aphe/aphe/i_t/"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/"
         },
         "mg151_stealth": {
@@ -2343,7 +2345,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -2369,11 +2371,11 @@
         "default": {
           "icon": "t_ball/ap_ball/ap_ball/he_i_ball/"
         },
-        "ub_turret_ap": {
+        "ub_turret_armor_targets": {
           "icon": "ap_i_t_ball/ap_ball/ap_ball/apcr_i_ball_bs41/",
           "reqModification": "aircraft_mod_6"
         },
-        "ub_turret_api": {
+        "ub_turret_universal": {
           "icon": "ap_i_t_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_10"
         }
@@ -2461,7 +2463,7 @@
         "shkas_universal": {
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/"
         },
         "shkas_stealth": {
@@ -2483,10 +2485,10 @@
         "default": {
           "icon": "t_ball/ap_ball/ap_ball/he_i_ball/"
         },
-        "ub_turret_ap": {
+        "ub_turret_armor_targets": {
           "icon": "ap_i_t_ball/ap_ball/ap_ball/apcr_i_ball_bs41/"
         },
-        "ub_turret_api": {
+        "ub_turret_universal": {
           "icon": "ap_i_t_ball/ap_i_ball/"
         }
       }
@@ -2570,7 +2572,7 @@
         "ub_ground_targets": {
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/"
         },
         "ub_stealth": {
@@ -2586,7 +2588,7 @@
     "crewTotalCount": 1,
     "tags": {
       "ally": true,
-      "country_britain": true,
+      "country_uk": true,
       "type_assault": true,
       "type_strike_aircraft": true,
       "type_naval_aircraft": true,
@@ -2655,7 +2657,7 @@
     "crewTotalCount": 1,
     "tags": {
       "ally": true,
-      "country_britain": true,
+      "country_uk": true,
       "type_assault": true,
       "type_strike_aircraft": true,
       "type_naval_aircraft": true,
@@ -3088,7 +3090,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_ball/i_ball/"
         },
-        "30cal_turret_ap": {
+        "30cal_turret_armor_targets": {
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/i_ball/"
         }
       }
@@ -3170,7 +3172,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_ball/i_ball/"
         },
-        "30cal_turret_ap": {
+        "30cal_turret_armor_targets": {
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/i_ball/"
         }
       }
@@ -3364,7 +3366,7 @@
         "default": {
           "icon": "i_t_ball/ap_t_ball/he_i_ball/"
         },
-        "mg131_fighter": {
+        "mg131_air_targets": {
           "icon": "ap_t_ball/ap_t_ball/i_t_ball/i_t_ball/he_i_ball/"
         },
         "mg131_apt": {
@@ -3400,7 +3402,7 @@
     "crewTotalCount": 1,
     "tags": {
       "ally": true,
-      "country_britain": true,
+      "country_uk": true,
       "type_fighter": true,
       "type_naval_aircraft": true,
       "mediterranean": true,
@@ -3466,7 +3468,7 @@
         "303_universal": {
           "icon": "t_ball/ap_ball/ap_i_ball/ap_i_ball/i_ball/"
         },
-        "303_all_tracers": {
+        "303_tracers": {
           "icon": "i_t_ball/ap_i_ball/"
         },
         "303_stealth": {
@@ -3754,7 +3756,7 @@
     "crewTotalCount": 1,
     "tags": {
       "axis": true,
-      "country_britain": true,
+      "country_uk": true,
       "type_bomber": true,
       "type_light_bomber": true,
       "type_hydroplane": true,
@@ -3870,7 +3872,7 @@
         "shkas_universal": {
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/"
         },
         "shkas_stealth": {
@@ -3881,7 +3883,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "shkas_turret_ap": {
+        "shkas_turret_armor_targets": {
           "icon": "ap_i_ball/ap_i_ball/ap_i_ball/ap_i_t_ball/"
         },
         "shkas_turret_apit": {
@@ -3950,7 +3952,7 @@
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/"
         },
         "mg_stealth": {
@@ -3967,7 +3969,7 @@
         "mgff_air_targets": {
           "icon": "frag_i_t/frag_i_t/ap_i/aphe/i_t/"
         },
-        "mgff_all_tracers": {
+        "mgff_tracers": {
           "icon": "i_t/i_t/frag_i_t/frag_i_t/"
         },
         "mgff_stealth": {
@@ -3978,7 +3980,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/"
         },
         "mg_turret_api_apt": {
@@ -4051,7 +4053,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_ball/i_ball/"
         },
-        "30cal_turret_ap": {
+        "30cal_turret_armor_targets": {
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/i_ball/"
         }
       }
@@ -4121,7 +4123,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_ball/i_ball/"
         },
-        "30cal_turret_ap": {
+        "30cal_turret_armor_targets": {
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/i_ball/"
         }
       }
@@ -4163,8 +4165,9 @@
           "shotFreq": 20.0
         },
         "sc50": {},
-        "sc50_mid": {},
-        "sc250_mid": {}
+        "sc250_mid": {
+          "reqModification": "aircraft_mod_3"
+        }
       }
     },
     "bullets": {
@@ -4176,7 +4179,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -4314,7 +4317,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -4335,7 +4338,7 @@
           "icon": "frag_i_t/frag_i_t/ap_i/aphe/i_t/",
           "reqModification": "aircraft_mod_7"
         },
-        "mgff_all_tracers": {
+        "mgff_tracers": {
           "icon": "i_t/i_t/frag_i_t/frag_i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -4401,7 +4404,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -4467,7 +4470,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -4541,7 +4544,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -4566,7 +4569,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_8"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -4642,7 +4645,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -4667,7 +4670,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_9"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_3"
         },
@@ -4754,7 +4757,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_9"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_1"
         },
@@ -5306,11 +5309,11 @@
         "default": {
           "icon": "t_ball_M1/ap_ball_M2/i_ball_M1/ap_i_ball_M8/"
         },
-        "50cal_turret_ap": {
+        "50cal_turret_armor_targets": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/",
           "reqModification": "aircraft_mod_1"
         },
-        "50cal_turret_api": {
+        "50cal_turret_universal": {
           "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_ball_M8/t_ball_M1/",
           "reqModification": "aircraft_mod_5"
         }
@@ -5319,7 +5322,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_ball/i_ball/"
         },
-        "30cal_turret_ap": {
+        "30cal_turret_armor_targets": {
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_3"
         }
@@ -5398,11 +5401,11 @@
         "default": {
           "icon": "t_ball_M1/ap_ball_M2/i_ball_M1/ap_i_ball_M8/"
         },
-        "50cal_turret_ap": {
+        "50cal_turret_armor_targets": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/",
           "reqModification": "aircraft_mod_3"
         },
-        "50cal_turret_api": {
+        "50cal_turret_universal": {
           "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_ball_M8/t_ball_M1/",
           "reqModification": "aircraft_mod_7"
         }
@@ -5535,7 +5538,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_ball/i_ball/"
         },
-        "30cal_turret_ap": {
+        "30cal_turret_armor_targets": {
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_3"
         }
@@ -5544,11 +5547,11 @@
         "default": {
           "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
         },
-        "50cal_turret_ap": {
+        "50cal_turret_armor_targets": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/ap_i_t_ball_M20/",
           "reqModification": "aircraft_mod_1"
         },
-        "50cal_turret_api": {
+        "50cal_turret_universal": {
           "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/ap_i_t_ball_M20/",
           "reqModification": "aircraft_mod_5"
         }
@@ -5674,11 +5677,11 @@
         "default": {
           "icon": "t_ball_M1/ap_ball_M2/i_ball_M1/ap_i_ball_M8/"
         },
-        "50cal_turret_ap": {
+        "50cal_turret_armor_targets": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/",
           "reqModification": "aircraft_mod_5"
         },
-        "50cal_turret_api": {
+        "50cal_turret_universal": {
           "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_ball_M8/t_ball_M1/",
           "reqModification": "aircraft_mod_12"
         }
@@ -5687,7 +5690,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_ball/i_ball/"
         },
-        "30cal_turret_ap": {
+        "30cal_turret_armor_targets": {
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_9"
         }
@@ -5861,13 +5864,13 @@
           "reqModification": "aircraft_mod_2"
         },
         "1000lbs": {
-          "reqModification": "aircraft_mod_8"
+          "reqModification": "aircraft_mod_7"
         },
         "m8_slot2": {
           "reqModification": "aircraft_mod_4"
         },
         "m8_slot4": {
-          "reqModification": "aircraft_mod_5"
+          "reqModification": "aircraft_mod_4"
         }
       }
     },
@@ -5882,7 +5885,7 @@
         },
         "50cal_ground_targets": {
           "icon": "ap_i_t_ball_M20/i_ball_M23/ap_ball_M2/ap_ball_M2/ap_i_ball_M8/ap_i_ball_M8/",
-          "reqModification": "aircraft_mod_7"
+          "reqModification": "aircraft_mod_6"
         },
         "50cal_tracers": {
           "icon": "ap_i_t_ball_M20/",
@@ -5890,7 +5893,7 @@
         },
         "50cal_stealth": {
           "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/i_ball_M23/",
-          "reqModification": "aircraft_mod_6"
+          "reqModification": "aircraft_mod_5"
         }
       }
     }
@@ -5990,7 +5993,7 @@
     },
     "tags": {
       "ally": true,
-      "country_britain": true,
+      "country_uk": true,
       "type_fighter": true,
       "sicily": true,
       "mediterranean": true,
@@ -6146,7 +6149,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_ball/i_ball/"
         },
-        "30cal_turret_ap": {
+        "30cal_turret_armor_targets": {
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_5"
         }
@@ -6600,11 +6603,11 @@
         "default": {
           "icon": "t_ball_M1/ap_ball_M2/i_ball_M1/ap_i_ball_M8/"
         },
-        "50cal_turret_ap": {
+        "50cal_turret_armor_targets": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/",
           "reqModification": "aircraft_mod_3"
         },
-        "50cal_turret_api": {
+        "50cal_turret_universal": {
           "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_ball_M8/t_ball_M1/",
           "reqModification": "aircraft_mod_5"
         }
@@ -6671,7 +6674,7 @@
       "wingLoading": 161.0,
       "powerToWeightRatio": 0.27,
       "rollRate": 77.0,
-      "pylonCount": 1,
+      "pylonCount": 3,
       "massPerSec": 0.497028,
       "weapons": {
         "gunBrowning303": {
@@ -6686,12 +6689,21 @@
           "ammoCount": 600,
           "shotFreq": 16.6667
         },
-        "1000lb": {},
-        "1600lb": {
+        "100lb": {},
+        "250lb": {
+          "reqModification": "aircraft_mod_2"
+        },
+        "500lb": {
           "reqModification": "aircraft_mod_4"
         },
-        "mine": {
+        "1000lb": {
           "reqModification": "aircraft_mod_6"
+        },
+        "1600lb": {
+          "reqModification": "aircraft_mod_9"
+        },
+        "mine": {
+          "reqModification": "aircraft_mod_10"
         }
       }
     },
@@ -6704,26 +6716,26 @@
           "icon": "t_ball/ap_ball/ap_i_ball/ap_i_ball/i_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "303_all_tracers": {
+        "303_tracers": {
           "icon": "i_t_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_1"
         },
         "303_stealth": {
           "icon": "ap_i_ball/ap_i_ball/i_ball/",
-          "reqModification": "aircraft_mod_5"
+          "reqModification": "aircraft_mod_7"
         }
       },
       "gunBrowning303_turret": {
         "default": {
           "icon": "t_ball/ap_ball/ap_i_ball/ball/ball/i_ball/"
         },
-        "303_turret_ap": {
+        "303_turret_armor_targets": {
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/",
-          "reqModification": "aircraft_mod_2"
+          "reqModification": "aircraft_mod_5"
         },
-        "303_turret_api": {
+        "303_turret_universal": {
           "icon": "t_ball/ap_i_ball/ap_i_ball/ap_i_ball/",
-          "reqModification": "aircraft_mod_7"
+          "reqModification": "aircraft_mod_8"
         }
       }
     }
@@ -6767,7 +6779,7 @@
       "wingLoading": 161.0,
       "powerToWeightRatio": 0.27,
       "rollRate": 77.0,
-      "pylonCount": 1,
+      "pylonCount": 3,
       "massPerSec": 2.73469,
       "weapons": {
         "gunBrowning50_early": {
@@ -6782,12 +6794,21 @@
           "ammoCount": 315,
           "shotFreq": 12.5
         },
-        "1000lb": {},
-        "1600lb": {
+        "100lb": {},
+        "250lb": {
+          "reqModification": "aircraft_mod_2"
+        },
+        "500lb": {
           "reqModification": "aircraft_mod_4"
         },
-        "mine": {
+        "1000lb": {
           "reqModification": "aircraft_mod_7"
+        },
+        "1600lb": {
+          "reqModification": "aircraft_mod_9"
+        },
+        "mine": {
+          "reqModification": "aircraft_mod_11"
         }
       }
     },
@@ -6798,11 +6819,11 @@
         },
         "50cal_universal": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/i_ball_M1/",
-          "reqModification": "aircraft_mod_2"
+          "reqModification": "aircraft_mod_3"
         },
         "50cal_ground_targets": {
           "icon": "t_ball_M1/ap_ball_M2/ap_ball_M2/ap_ball_M2/",
-          "reqModification": "aircraft_mod_6"
+          "reqModification": "aircraft_mod_8"
         },
         "50cal_tracers": {
           "icon": "t_ball_M1/t_ball_M1/t_ball_M1/ap_ball_M2/",
@@ -6810,20 +6831,20 @@
         },
         "50cal_stealth": {
           "icon": "ap_ball_M2/i_ball_M1/ap_ball_M2/",
-          "reqModification": "aircraft_mod_5"
+          "reqModification": "aircraft_mod_6"
         }
       },
       "gunBrowning50_turret": {
         "default": {
           "icon": "t_ball_M1/ap_ball_M2/i_ball_M1/ap_i_ball_M8/"
         },
-        "50cal_turret_ap": {
+        "50cal_turret_armor_targets": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/",
-          "reqModification": "aircraft_mod_3"
+          "reqModification": "aircraft_mod_5"
         },
-        "50cal_turret_api": {
+        "50cal_turret_universal": {
           "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_ball_M8/t_ball_M1/",
-          "reqModification": "aircraft_mod_8"
+          "reqModification": "aircraft_mod_10"
         }
       }
     }
@@ -6867,7 +6888,7 @@
       "wingLoading": 161.0,
       "powerToWeightRatio": 0.27,
       "rollRate": 77.0,
-      "pylonCount": 1,
+      "pylonCount": 3,
       "massPerSec": 2.73469,
       "weapons": {
         "gunBrowning50_early": {
@@ -6882,12 +6903,21 @@
           "ammoCount": 315,
           "shotFreq": 12.5
         },
-        "1000lb": {},
-        "1600lb": {
+        "100lb": {},
+        "250lb": {
+          "reqModification": "aircraft_mod_2"
+        },
+        "500lb": {
           "reqModification": "aircraft_mod_4"
         },
-        "mine": {
+        "1000lb": {
           "reqModification": "aircraft_mod_7"
+        },
+        "1600lb": {
+          "reqModification": "aircraft_mod_9"
+        },
+        "mine": {
+          "reqModification": "aircraft_mod_11"
         }
       }
     },
@@ -6898,11 +6928,11 @@
         },
         "50cal_universal": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/i_ball_M1/",
-          "reqModification": "aircraft_mod_2"
+          "reqModification": "aircraft_mod_3"
         },
         "50cal_ground_targets": {
           "icon": "t_ball_M1/ap_ball_M2/ap_ball_M2/ap_ball_M2/",
-          "reqModification": "aircraft_mod_6"
+          "reqModification": "aircraft_mod_8"
         },
         "50cal_tracers": {
           "icon": "t_ball_M1/t_ball_M1/t_ball_M1/ap_ball_M2/",
@@ -6910,20 +6940,20 @@
         },
         "50cal_stealth": {
           "icon": "ap_ball_M2/i_ball_M1/ap_ball_M2/",
-          "reqModification": "aircraft_mod_5"
+          "reqModification": "aircraft_mod_6"
         }
       },
       "gunBrowning50_turret": {
         "default": {
           "icon": "t_ball_M1/ap_ball_M2/i_ball_M1/ap_i_ball_M8/"
         },
-        "50cal_turret_ap": {
+        "50cal_turret_armor_targets": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/",
-          "reqModification": "aircraft_mod_3"
+          "reqModification": "aircraft_mod_5"
         },
-        "50cal_turret_api": {
+        "50cal_turret_universal": {
           "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_ball_M8/t_ball_M1/",
-          "reqModification": "aircraft_mod_8"
+          "reqModification": "aircraft_mod_10"
         }
       }
     }
@@ -7193,7 +7223,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_ball/i_ball/"
         },
-        "30cal_turret_ap": {
+        "30cal_turret_armor_targets": {
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_5"
         }
@@ -7282,11 +7312,11 @@
         "default": {
           "icon": "t_ball_M1/ap_ball_M2/i_ball_M1/ap_i_ball_M8/"
         },
-        "50cal_turret_ap": {
+        "50cal_turret_armor_targets": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/",
           "reqModification": "aircraft_mod_6"
         },
-        "50cal_turret_api": {
+        "50cal_turret_universal": {
           "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_ball_M8/t_ball_M1/",
           "reqModification": "aircraft_mod_10"
         }
@@ -8176,7 +8206,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -8201,7 +8231,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_9"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -8267,7 +8297,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -8334,7 +8364,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -8415,7 +8445,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -8504,7 +8534,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_2"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -8582,7 +8612,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -8603,7 +8633,7 @@
           "icon": "frag_i_t/frag_i_t/ap_i/aphe/i_t/",
           "reqModification": "aircraft_mod_8"
         },
-        "mgff_all_tracers": {
+        "mgff_tracers": {
           "icon": "i_t/i_t/frag_i_t/frag_i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -8681,7 +8711,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -8702,7 +8732,7 @@
           "icon": "frag_i_t/frag_i_t/ap_i/aphe/i_t/",
           "reqModification": "aircraft_mod_8"
         },
-        "mgff_all_tracers": {
+        "mgff_tracers": {
           "icon": "i_t/i_t/frag_i_t/frag_i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -8783,7 +8813,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -8808,7 +8838,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_11"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -8910,7 +8940,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -8923,7 +8953,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
           "reqModification": "aircraft_mod_6"
         },
@@ -8944,7 +8974,7 @@
           "icon": "frag_i_t/he_i_mine/he_i_mine/frag_i_t/he_i_mine/he_i_mine/aphe/",
           "reqModification": "aircraft_mod_13"
         },
-        "mgff_all_tracers": {
+        "mgff_tracers": {
           "icon": "i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -9027,21 +9057,21 @@
           "reqModification": "aircraft_mod_12"
         },
         "sc1000": {
-          "reqModification": "aircraft_mod_22"
+          "reqModification": "aircraft_mod_21"
         },
         "pc1000": {
-          "reqModification": "aircraft_mod_23"
+          "reqModification": "aircraft_mod_22"
         },
         "cannonMG15120": {
           "type": "machine gun",
-          "gunsCount": 4,
-          "ammoCount": 1500,
+          "gunsCount": 2,
+          "ammoCount": 750,
           "shotFreq": 11.66
         },
         "cannonMG15120_underwing": {
           "type": "machine gun",
-          "gunsCount": 2,
-          "ammoCount": 400,
+          "gunsCount": 4,
+          "ammoCount": 1150,
           "shotFreq": 11.66
         },
         "bk37": {
@@ -9049,7 +9079,7 @@
         },
         "sc50_slot6": {},
         "br20_slot5": {
-          "reqModification": "aircraft_mod_18"
+          "reqModification": "aircraft_mod_7"
         }
       }
     },
@@ -9064,7 +9094,7 @@
         },
         "mk_108_fighter_night": {
           "icon": "he_i_t_n_mine/he_i_t_n_mine/he_i_t_n_mine/i/",
-          "reqModification": "aircraft_mod_19"
+          "reqModification": "aircraft_mod_18"
         },
         "mk_108_fighter_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/i/",
@@ -9075,7 +9105,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
           "reqModification": "aircraft_mod_5"
         },
@@ -9098,9 +9128,9 @@
         },
         "mg151_armor_targets": {
           "icon": "aphe/aphe/aphe/i_t/",
-          "reqModification": "aircraft_mod_20"
+          "reqModification": "aircraft_mod_19"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_1"
         },
@@ -9123,9 +9153,9 @@
         },
         "mg151_armor_targets": {
           "icon": "aphe/aphe/aphe/i_t/",
-          "reqModification": "aircraft_mod_21"
+          "reqModification": "aircraft_mod_20"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -9208,21 +9238,21 @@
           "reqModification": "aircraft_mod_12"
         },
         "sc1000": {
-          "reqModification": "aircraft_mod_22"
+          "reqModification": "aircraft_mod_21"
         },
         "pc1000": {
-          "reqModification": "aircraft_mod_23"
+          "reqModification": "aircraft_mod_22"
         },
         "cannonMG15120": {
           "type": "machine gun",
-          "gunsCount": 4,
-          "ammoCount": 1500,
+          "gunsCount": 2,
+          "ammoCount": 750,
           "shotFreq": 11.66
         },
         "cannonMG15120_underwing": {
           "type": "machine gun",
-          "gunsCount": 2,
-          "ammoCount": 400,
+          "gunsCount": 4,
+          "ammoCount": 1150,
           "shotFreq": 11.66
         },
         "bk37": {
@@ -9230,7 +9260,7 @@
         },
         "sc50_slot6": {},
         "br20_slot5": {
-          "reqModification": "aircraft_mod_18"
+          "reqModification": "aircraft_mod_7"
         }
       }
     },
@@ -9245,7 +9275,7 @@
         },
         "mk_108_fighter_night": {
           "icon": "he_i_t_n_mine/he_i_t_n_mine/he_i_t_n_mine/i/",
-          "reqModification": "aircraft_mod_19"
+          "reqModification": "aircraft_mod_18"
         },
         "mk_108_fighter_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/i/",
@@ -9256,7 +9286,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
           "reqModification": "aircraft_mod_5"
         },
@@ -9279,9 +9309,9 @@
         },
         "mg151_armor_targets": {
           "icon": "aphe/aphe/aphe/i_t/",
-          "reqModification": "aircraft_mod_20"
+          "reqModification": "aircraft_mod_19"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_1"
         },
@@ -9304,9 +9334,9 @@
         },
         "mg151_armor_targets": {
           "icon": "aphe/aphe/aphe/i_t/",
-          "reqModification": "aircraft_mod_21"
+          "reqModification": "aircraft_mod_20"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -9397,7 +9427,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -9422,7 +9452,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_10"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -9522,7 +9552,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -9547,7 +9577,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_10"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -9641,7 +9671,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -9666,7 +9696,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_9"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -9758,7 +9788,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -9771,7 +9801,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -9869,7 +9899,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -9882,7 +9912,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -9957,11 +9987,11 @@
         "default": {
           "icon": "he_i_t_mine/i/ap_i/"
         },
-        "mk_103_antitank": {
+        "mk_103_armor_targets": {
           "icon": "apcr_t/",
           "reqModification": "aircraft_mod_2"
         },
-        "mk_103_antibomber": {
+        "mk_103_air_targets": {
           "icon": "he_i_t_mine/he_i_mine/he_i_mine/i/",
           "reqModification": "aircraft_mod_7"
         },
@@ -9986,7 +10016,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_8"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_1"
         },
@@ -10089,11 +10119,11 @@
         "default": {
           "icon": "i_t/he_i_mine/aphe/"
         },
-        "mg15120_turret_ap": {
+        "mg15120_turret_armor_targets": {
           "icon": "ap_i/ap_i/aphe/i_t/",
           "reqModification": "aircraft_mod_1"
         },
-        "mg15120_turret_ap_he": {
+        "mg15120_turret_universal": {
           "icon": "i_t/he_i_mine/he_i_mine/",
           "reqModification": "aircraft_mod_6"
         }
@@ -10111,7 +10141,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
           "reqModification": "aircraft_mod_4"
         },
@@ -10191,7 +10221,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -10208,7 +10238,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -10288,7 +10318,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -10305,7 +10335,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -10392,7 +10422,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -10472,7 +10502,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_6"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_1"
         },
@@ -10552,7 +10582,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_6"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_1"
         },
@@ -10636,7 +10666,7 @@
         "default": {
           "icon": "i_t_ball/ap_t_ball/he_i_ball/"
         },
-        "mg131_fighter": {
+        "mg131_air_targets": {
           "icon": "ap_t_ball/ap_t_ball/i_t_ball/i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_12"
         },
@@ -10669,7 +10699,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_11"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_1"
         },
@@ -10733,7 +10763,7 @@
           "shotFreq": 11.66
         },
         "pb2_slot1": {
-          "reqModification": "aircraft_mod_10"
+          "reqModification": "aircraft_mod_9"
         },
         "50kg_x2_slot1": {},
         "r3_left": {
@@ -10744,16 +10774,16 @@
           "reqModification": "aircraft_mod_6"
         },
         "500kg": {
-          "reqModification": "aircraft_mod_11"
+          "reqModification": "aircraft_mod_10"
         },
         "pc500kg": {
-          "reqModification": "aircraft_mod_13"
+          "reqModification": "aircraft_mod_12"
         },
         "1000kg": {
-          "reqModification": "aircraft_mod_15"
+          "reqModification": "aircraft_mod_14"
         },
         "pc1000kg": {
-          "reqModification": "aircraft_mod_16"
+          "reqModification": "aircraft_mod_15"
         },
         "pb2_slot3": {
           "reqModification": "aircraft_mod_9"
@@ -10769,7 +10799,7 @@
         "default": {
           "icon": "i_t_ball/ap_t_ball/he_i_ball/"
         },
-        "mg131_fighter": {
+        "mg131_air_targets": {
           "icon": "ap_t_ball/ap_t_ball/i_t_ball/i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
@@ -10796,19 +10826,19 @@
         },
         "mg151_air_targets": {
           "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/",
-          "reqModification": "aircraft_mod_12"
+          "reqModification": "aircraft_mod_11"
         },
         "mg151_armor_targets": {
           "icon": "aphe/aphe/aphe/i_t/",
-          "reqModification": "aircraft_mod_17"
+          "reqModification": "aircraft_mod_16"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_3"
         },
         "mg151_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
-          "reqModification": "aircraft_mod_14"
+          "reqModification": "aircraft_mod_13"
         }
       }
     }
@@ -10882,7 +10912,7 @@
         "250kg": {
           "reqModification": "aircraft_mod_2"
         },
-        "1000kg_250kg": {
+        "1000kg": {
           "reqModification": "aircraft_mod_6"
         },
         "2500kg": {
@@ -10895,11 +10925,11 @@
         "default": {
           "icon": "i_t/he_i_mine/aphe/"
         },
-        "mgff_turret_ap": {
+        "mgff_turret_armor_targets": {
           "icon": "ap_i/ap_i/aphe/i_t/",
           "reqModification": "aircraft_mod_1"
         },
-        "mgff_turret_ap_he": {
+        "mgff_turret_universal": {
           "icon": "ap_i/i_t/he_i_mine/he_i_mine/",
           "reqModification": "aircraft_mod_5"
         }
@@ -10917,7 +10947,7 @@
         "default": {
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "mg_turret_ap": {
+        "mg_turret_armor_targets": {
           "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
           "reqModification": "aircraft_mod_4"
         },
@@ -11017,11 +11047,11 @@
         "default": {
           "icon": "i_t/he_i_mine/aphe/"
         },
-        "mg15120_turret_ap": {
+        "mg15120_turret_armor_targets": {
           "icon": "ap_i/ap_i/aphe/i_t/",
           "reqModification": "aircraft_mod_1"
         },
-        "mg15120_turret_ap_he": {
+        "mg15120_turret_universal": {
           "icon": "i_t/he_i_mine/he_i_mine/",
           "reqModification": "aircraft_mod_4"
         }
@@ -11173,7 +11203,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -11198,7 +11228,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_11"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -11278,7 +11308,7 @@
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "mg_all_tracers": {
+        "mg_tracers": {
           "icon": "ap_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -11303,7 +11333,7 @@
           "icon": "aphe/aphe/aphe/i_t/",
           "reqModification": "aircraft_mod_11"
         },
-        "mg151_all_tracers": {
+        "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
           "reqModification": "aircraft_mod_2"
         },
@@ -11402,7 +11432,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -11415,7 +11445,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "shkas_turret_ap": {
+        "shkas_turret_armor_targets": {
           "icon": "ap_i_ball/ap_i_ball/ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_8"
         },
@@ -11542,7 +11572,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -11568,11 +11598,11 @@
         "default": {
           "icon": "t_ball/ap_ball/ap_ball/he_i_ball/"
         },
-        "ub_turret_ap": {
+        "ub_turret_armor_targets": {
           "icon": "ap_i_t_ball/ap_ball/ap_ball/apcr_i_ball_bs41/",
           "reqModification": "aircraft_mod_7"
         },
-        "ub_turret_api": {
+        "ub_turret_universal": {
           "icon": "ap_i_t_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_10"
         }
@@ -11633,18 +11663,20 @@
           "shotFreq": 10.0
         },
         "ros_82_slot1": {},
-        "rbs_82_slot1": {},
-        "ros_132_slot1": {
+        "rbs_82_slot1": {
           "reqModification": "aircraft_mod_5"
         },
-        "rofs_132_slot1": {
+        "ros_132_slot1": {
           "reqModification": "aircraft_mod_6"
         },
+        "rofs_132_slot1": {
+          "reqModification": "aircraft_mod_7"
+        },
         "rbs_132_slot1": {
-          "reqModification": "aircraft_mod_11"
+          "reqModification": "aircraft_mod_12"
         },
         "fab250_slot2": {
-          "reqModification": "aircraft_mod_10"
+          "reqModification": "aircraft_mod_11"
         },
         "fab50_der31_left": {
           "reqModification": "aircraft_mod_2"
@@ -11653,38 +11685,40 @@
           "reqModification": "aircraft_mod_8"
         },
         "12_25_slot3": {},
-        "12_25_slot4": {},
         "fab50_x2_slot3": {
           "reqModification": "aircraft_mod_2"
         },
         "fab100_x2_slot3": {
-          "reqModification": "aircraft_mod_8"
+          "reqModification": "aircraft_mod_9"
         },
+        "12_25_slot4": {},
         "fab50_x2_slot4": {
           "reqModification": "aircraft_mod_2"
         },
         "fab100_x2_slot4": {
-          "reqModification": "aircraft_mod_8"
+          "reqModification": "aircraft_mod_9"
         },
         "fab250_slot5": {
-          "reqModification": "aircraft_mod_10"
+          "reqModification": "aircraft_mod_11"
         },
         "fab50_der31_right": {
           "reqModification": "aircraft_mod_2"
         },
         "fab100_der31_right": {
-          "reqModification": "aircraft_mod_8"
+          "reqModification": "aircraft_mod_9"
         },
         "ros_82_slot6": {},
-        "rbs_82_slot6": {},
-        "ros_132_slot6": {
+        "rbs_82_slot6": {
           "reqModification": "aircraft_mod_5"
         },
-        "rofs_132_slot6": {
+        "ros_132_slot6": {
           "reqModification": "aircraft_mod_6"
         },
+        "rofs_132_slot6": {
+          "reqModification": "aircraft_mod_7"
+        },
         "rbs_132_slot6": {
-          "reqModification": "aircraft_mod_11"
+          "reqModification": "aircraft_mod_12"
         }
       }
     },
@@ -11697,13 +11731,13 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
         "shkas_stealth": {
           "icon": "ap_i_ball/ap_i_ball/ap_i_ball/he_ball/",
-          "reqModification": "aircraft_mod_7"
+          "reqModification": "aircraft_mod_8"
         }
       },
       "cannonVYa": {
@@ -11716,7 +11750,7 @@
         },
         "vya_armor_targets": {
           "icon": "ap_i/ap_i/ap_i/frag_i_t/",
-          "reqModification": "aircraft_mod_9"
+          "reqModification": "aircraft_mod_10"
         }
       }
     }
@@ -11799,7 +11833,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "shkas_turret_ap": {
+        "shkas_turret_armor_targets": {
           "icon": "ap_i_ball/ap_i_ball/ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -11894,7 +11928,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "shkas_turret_ap": {
+        "shkas_turret_armor_targets": {
           "icon": "ap_i_ball/ap_i_ball/ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -11907,11 +11941,11 @@
         "default": {
           "icon": "t_ball/ap_ball/ap_ball/he_i_ball/"
         },
-        "ub_turret_ap": {
+        "ub_turret_armor_targets": {
           "icon": "ap_i_t_ball/ap_ball/ap_ball/apcr_i_ball_bs41/",
           "reqModification": "aircraft_mod_3"
         },
-        "ub_turret_api": {
+        "ub_turret_universal": {
           "icon": "ap_i_t_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_7"
         }
@@ -12019,7 +12053,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "shkas_turret_ap": {
+        "shkas_turret_armor_targets": {
           "icon": "ap_i_ball/ap_i_ball/ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -12032,15 +12066,15 @@
         "default": {
           "icon": "frag_i_t/he_frag/"
         },
-        "shvak_turret_ap": {
+        "shvak_turret_armor_targets": {
           "icon": "ap_i/frag_i_t/ap_i/",
           "reqModification": "aircraft_mod_3"
         },
-        "shvak_turret_het": {
+        "shvak_turret_air_targets": {
           "icon": "ap_i/frag_i_t/he_frag/he_frag_i/",
           "reqModification": "aircraft_mod_9"
         },
-        "shvak_turret_armor_targets": {
+        "shvak_turret_apit": {
           "icon": "frag_i_t/ap_i/ap_i/",
           "reqModification": "aircraft_mod_11"
         }
@@ -12049,11 +12083,11 @@
         "default": {
           "icon": "t_ball/ap_ball/ap_ball/he_i_ball/"
         },
-        "ub_turret_ap": {
+        "ub_turret_armor_targets": {
           "icon": "ap_i_t_ball/ap_ball/ap_ball/apcr_i_ball_bs41/",
           "reqModification": "aircraft_mod_4"
         },
-        "ub_turret_api": {
+        "ub_turret_universal": {
           "icon": "ap_i_t_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_8"
         }
@@ -12130,7 +12164,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "shkas_turret_ap": {
+        "shkas_turret_armor_targets": {
           "icon": "ap_i_ball/ap_i_ball/ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -12238,7 +12272,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_8"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -12346,7 +12380,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_8"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -12428,7 +12462,7 @@
           "reqModification": "aircraft_mod_8"
         },
         "rbs132_slot2": {
-          "reqModification": "aircraft_mod_8"
+          "reqModification": "aircraft_mod_11"
         },
         "fab50": {
           "reqModification": "aircraft_mod_5"
@@ -12454,7 +12488,7 @@
           "reqModification": "aircraft_mod_2"
         },
         "rs132_slot6": {
-          "reqModification": "aircraft_mod_11"
+          "reqModification": "aircraft_mod_8"
         },
         "rbs132_slot6": {
           "reqModification": "aircraft_mod_11"
@@ -12565,7 +12599,7 @@
           "reqModification": "aircraft_mod_8"
         },
         "rbs132_slot2": {
-          "reqModification": "aircraft_mod_8"
+          "reqModification": "aircraft_mod_11"
         },
         "fab50": {
           "reqModification": "aircraft_mod_5"
@@ -12591,7 +12625,7 @@
           "reqModification": "aircraft_mod_2"
         },
         "rs132_slot6": {
-          "reqModification": "aircraft_mod_11"
+          "reqModification": "aircraft_mod_8"
         },
         "rbs132_slot6": {
           "reqModification": "aircraft_mod_11"
@@ -12759,7 +12793,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -13028,7 +13062,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -13054,11 +13088,11 @@
         "default": {
           "icon": "t_ball/ap_ball/ap_ball/he_i_ball/"
         },
-        "ub_turret_ap": {
+        "ub_turret_armor_targets": {
           "icon": "ap_i_t_ball/ap_ball/ap_ball/apcr_i_ball_bs41/",
           "reqModification": "aircraft_mod_7"
         },
-        "ub_turret_api": {
+        "ub_turret_universal": {
           "icon": "ap_i_t_ball/ap_i_ball/",
           "reqModification": "aircraft_mod_11"
         }
@@ -13163,7 +13197,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -13253,7 +13287,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -13361,7 +13395,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "shkas_turret_ap": {
+        "shkas_turret_armor_targets": {
           "icon": "ap_i_ball/ap_i_ball/ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -13440,7 +13474,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "shkas_turret_ap": {
+        "shkas_turret_armor_targets": {
           "icon": "ap_i_ball/ap_i_ball/ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -13579,7 +13613,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -13592,7 +13626,7 @@
         "default": {
           "icon": "t_ball/ball/ball/ap_i_ball/he_ball/"
         },
-        "shkas_turret_ap": {
+        "shkas_turret_armor_targets": {
           "icon": "ap_i_ball/ap_i_ball/ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -13812,7 +13846,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_7"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -13920,7 +13954,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_2"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -14029,7 +14063,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_9"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -14110,7 +14144,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -14168,7 +14202,7 @@
           "icon": "t_ball/ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -14226,7 +14260,7 @@
           "icon": "t_ball/ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -14298,7 +14332,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -14365,7 +14399,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -14429,7 +14463,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -14573,7 +14607,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_2"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -14693,7 +14727,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_8"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -14877,7 +14911,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_9"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -14974,7 +15008,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -14987,11 +15021,11 @@
         "default": {
           "icon": "ap_t/he_i_t/"
         },
-        "ns37_air_target": {
+        "ns37_air_targets": {
           "icon": "he_i_t/",
           "reqModification": "aircraft_mod_7"
         },
-        "ns37_armor_target": {
+        "ns37_armor_targets": {
           "icon": "ap_t/",
           "reqModification": "aircraft_mod_5"
         }
@@ -15084,7 +15118,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_8"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -15181,7 +15215,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_8"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -15276,7 +15310,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_5"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -15373,7 +15407,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_8"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -15670,7 +15704,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_9"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -15687,7 +15721,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_5"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -15762,7 +15796,7 @@
           "icon": "apcr_i_ball_bs41/ap_i_ball/ap_i_ball/ap_i_t_ball/he_i_ball/",
           "reqModification": "aircraft_mod_9"
         },
-        "ub_all_tracers": {
+        "ub_tracers": {
           "icon": "ap_i_t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -15779,7 +15813,7 @@
           "icon": "ap_i_ball/he_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_5"
         },
-        "shkas_all_tracers": {
+        "shkas_tracers": {
           "icon": "ap_i_ball/ap_i_t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -24621,7 +24655,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_medium_tank": true
     },
@@ -24687,7 +24721,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_spaa": true
     },
@@ -24867,7 +24901,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_heavy_tank": true
     },
@@ -24932,7 +24966,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_heavy_tank": true
     },
@@ -24998,7 +25032,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_heavy_tank": true
     },
@@ -25074,7 +25108,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_medium_tank": true
     },
@@ -25423,7 +25457,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_medium_tank": true
     },
@@ -25484,7 +25518,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_light_tank": true,
       "scout": true,
@@ -25551,7 +25585,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_spaa": true
     },
@@ -25833,7 +25867,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_medium_tank": true
     },
@@ -25890,7 +25924,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_medium_tank": true
     },
@@ -25963,7 +25997,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_spaa": true
     },
@@ -26902,7 +26936,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_heavy_tank": true
     },
@@ -26975,7 +27009,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_medium_tank": true
     },
@@ -27048,7 +27082,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ERA_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_light_tank": true,
       "scout": true,
@@ -27111,7 +27145,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_spaa": true
     },
@@ -28321,7 +28355,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_medium_tank": true
     },
@@ -28386,7 +28420,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_tank_destroyer": true
     },
@@ -28440,7 +28474,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_tank_destroyer": true
     },
@@ -28497,7 +28531,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ERA_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_light_tank": true,
       "scout": true,
@@ -31973,7 +32007,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_heavy_tank": true
     },
@@ -32037,7 +32071,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_tank_destroyer": true
     },
@@ -32086,7 +32120,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_spaa": true
     },
@@ -32137,7 +32171,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_medium_tank": true
     },
@@ -33957,7 +33991,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_heavy_tank": true
     },
@@ -35550,7 +35584,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_medium_tank": true
     },
@@ -35677,7 +35711,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_tank_destroyer": true
     },
@@ -35734,7 +35768,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_spaa": true
     },
@@ -37327,7 +37361,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ERA_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_medium_tank": true
     },
@@ -37404,7 +37438,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ERA_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_heavy_tank": true
     },
@@ -37461,7 +37495,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ERA_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_tank_destroyer": true,
       "type_missile_tank": true
@@ -37519,7 +37553,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ERA_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_spaa": true
     },
@@ -39389,7 +39423,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ERA_tft",
     "tags": {
-      "country_britain": true,
+      "country_uk": true,
       "tank": true,
       "type_medium_tank": true
     },

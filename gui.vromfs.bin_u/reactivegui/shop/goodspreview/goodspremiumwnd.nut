@@ -31,6 +31,7 @@ let infoText = Computed(function() {
     bonusPlayerExp = expMul
     bonusWp = bonusMultText(premiumBonusesCfg.value?.wpMul || 1.0)
     bonusUnitExp = expMul
+    bonusGold = bonusMultText(premiumBonusesCfg.get()?.goldMul || 1.0)
   })
 })
 
