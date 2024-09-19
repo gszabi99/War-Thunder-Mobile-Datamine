@@ -282,6 +282,9 @@
               "time": 0.5
             },
             {
+              "time": 2.0
+            },
+            {
               "time": 2.5
             },
             {
@@ -292,6 +295,20 @@
             {
               "hintType": "tutorialHint",
               "name": "hints/wtm_tutorial_plane/intro",
+              "action": "show",
+              "shouldFadeOut": false,
+              "time": -1.0,
+              "priority": 0,
+              "isOverFade": false,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "shouldBlink": false
+            },
+            {
+              "hintType": "tutorialHint",
+              "name": "hints/wtm_tutorial_plane/tutorial_controls_warn",
               "action": "show",
               "shouldFadeOut": false,
               "time": -1.0,
@@ -7212,6 +7229,20 @@
             "value": 0,
             "var": "timer"
           },
+          "missionKillEffects": [
+            {
+              "area": "big_area",
+              "effect": true,
+              "wreckage": true,
+              "bullets": true,
+              "rockets": true,
+              "bombs": true,
+              "torpedoes": true
+            },
+            {
+              "area": "big_area"
+            }
+          ],
           "missionSetTimeSpeed": [
             {
               "speed": 0.01,
@@ -7274,7 +7305,7 @@
               "time": 0.6
             },
             {
-              "time": 0.15
+              "time": 0.5
             },
             {
               "time": 0.6
@@ -7302,9 +7333,6 @@
           "playerOptions": {
             "currentView": "3rdperson",
             "respawnBullets": true
-          },
-          "missionKillEffects": {
-            "area": "big_area"
           },
           "unitMoveTo": {
             "target": "player_spawn06",
@@ -7342,6 +7370,10 @@
           "unitForceRearmSpeed": {
             "rearmSpeedK": 30.0,
             "target": "player"
+          },
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
           },
           "unitSetIndication": {
             "set": true,
@@ -7837,6 +7869,16 @@
             "value": 0,
             "var": "timer"
           },
+          "missionSetTimeSpeed": [
+            {
+              "speed": 1.0,
+              "realtimeTriggers": true
+            },
+            {
+              "speed": 1.0,
+              "realtimeTriggers": true
+            }
+          ],
           "hudElementSelectionShade": {
             "element": "",
             "drawFromGui": false
@@ -7915,8 +7957,25 @@
             "event": "crashed: failed assault",
             "name": ""
           },
-          "wait": {
-            "time": 2.0
+          "wait": [
+            {
+              "time": 2.5
+            },
+            {
+              "time": 0.6
+            },
+            {
+              "time": 1.5
+            }
+          ],
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 0.5
           },
           "triggerEnable": {
             "target": "assault_initial"
@@ -8046,7 +8105,7 @@
             "name": ""
           },
           "wait": {
-            "time": 2.0
+            "time": 3.0
           },
           "triggerEnable": {
             "target": "assault_initial"

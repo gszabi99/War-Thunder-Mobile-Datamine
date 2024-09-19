@@ -23,6 +23,9 @@ let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
 } = require("%rGui/hud/currentWeaponsStates.nut")
 let { mkBtnZone, lockButtonIcon, canLock, defShortcutOvr}  = require("hudButtonsPkg.nut")
 let { lowerAircraftCamera } = require("camera_control")
+let { playHapticPattern } = require("hapticVibration")
+let { getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT } = require("%rGui/options/guiOptions.nut")
+let { HAPT_SHOOT_ITEM } = require("%rGui/hud/hudHaptic.nut")
 
 let bigButtonSize = hdpxi(150)
 let bigButtonImgSize = (0.65 * bigButtonSize + 0.5).tointeger()
@@ -411,7 +414,7 @@ function getWeapStateFlags(key) {
 
 let lowerCamera = @() lowerAircraftCamera(true)
 
-function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, eventPassThrough, canLowerCamera = false){
+function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, eventPassThrough, canLowerCamera){
   let isDisabled = mkIsControlDisabled(shortcutId)
   let isAvailable = Computed(@() isWeaponAvailable(weapon.get()) && !isDisabled.get())
   let stateFlags = getWeapStateFlags(shortcutId)
@@ -438,6 +441,8 @@ function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, eventPassThrou
       resetTimeout(0.3, lowerCamera)
     markWeapKeyHold(shortcutId)
     userHoldWeapInside.mutate(@(v) v[shortcutId] <- true)
+    let vibrationMult = getOptValue(OPT_HAPTIC_INTENSITY_ON_SHOOT)
+    playHapticPattern(HAPT_SHOOT_ITEM, vibrationMult)
   }
 
   function onTouchBegin() {

@@ -31,6 +31,7 @@ let prizeIcons = [
   "leaderboard_trophy_03.avif"
   "leaderboard_trophy_04.avif"
   "leaderboard_trophy_05.avif"
+  "leaderboard_trophy_06.avif"
 ]
 
 let rowBgOddColor = 0x60000000

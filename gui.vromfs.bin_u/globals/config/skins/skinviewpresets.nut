@@ -124,6 +124,7 @@ let skinsByTag = {
     "usa_camo_desert_brown_yellow_spots"
     "isr_camo_threecolor"
     "camo_f_blue_orng"
+    "us_camo_modern_desert_tan"
   ],
 
   [WINTER] = [

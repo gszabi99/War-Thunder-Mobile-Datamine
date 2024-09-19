@@ -26,6 +26,7 @@ let { getEventLoc, MAIN_EVENT_ID, eventSeason, specialEvents } = require("%rGui/
 let activeItemId = Watched(null)
 
 let currencyStyle = CS_BIG
+let addHintPadding = hdpx(10)
 let purchGap = hdpx(20)
 let horGap = hdpx(60)
 let oldPriceTranslate = [0,
@@ -457,7 +458,7 @@ let activeItemHint = @() activeItemId.value == null ? { watch = activeItemId }
       rendObj = ROBJ_IMAGE
       image = gradTranspDoubleSideX
       color = 0xFF000000
-      padding = [hdpx(10), saBorders[0]]
+      padding = [addHintPadding, saBorders[0] + addHintPadding]
       children = {
         size = [hdpx(500), SIZE_TO_CONTENT]
         rendObj = ROBJ_TEXTAREA

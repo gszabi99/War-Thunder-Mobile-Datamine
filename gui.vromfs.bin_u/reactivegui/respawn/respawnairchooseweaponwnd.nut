@@ -152,6 +152,7 @@ function mkWeaponCard(w) {
     borderColor = w.slotIdx == selectedWCardIdx.get() ? 0xC07BFFFF : 0xFFFFFFFF
     borderWidth = w.slotIdx == selectedWCardIdx.get() ? hdpx(5) : hdpx(3)
     onClick = @() selectWeaponCard(w.slotIdx)
+    sound = { click = "choose" }
     children = [
       {
         size = [flex(), SIZE_TO_CONTENT]
@@ -193,6 +194,7 @@ function mkBeltCard(w) {
     borderColor = isSelected.get() ? 0xC07BFFFF : 0xFFFFFFFF
     borderWidth = isSelected.get() ? padding : defPadding
     onClick = @() selectBeltCard(w.slotIdx)
+    sound = { click = "choose" }
     children = [
       mkBeltImage(w?.bullets ?? [], isSelected.get() ? imgSize : weaponSize - defPadding * 2)
       {
@@ -215,6 +217,7 @@ function mkBeltCard(w) {
 
 let mkBeltSlot = @(w, slotIdx, isSelected) mkSlotBase(isSelected).__update({
   onClick = @() selectBeltSlot(slotIdx)
+  sound = { click = "choose" }
   children = [
     mkBeltImage(w.equipped?.bullets ?? [], isSelected ? imgSize : weaponSize - defPadding * 2)
     {
@@ -234,7 +237,7 @@ let mkBeltSlot = @(w, slotIdx, isSelected) mkSlotBase(isSelected).__update({
   ]
 })
 let mkEmptyWeaponSlot = @(slotIdx, isSelected)
-  mkSlotBase(isSelected).__update({ onClick = @() selectWeaponSlot(slotIdx) })
+  mkSlotBase(isSelected).__update({ onClick = @() selectWeaponSlot(slotIdx), sound = { click = "choose" } })
 function mkWeaponSlot(w, slotIdx, isSelected) {
   let hasConflicts = Computed(@() selectedWCard.get()?.banPresets[slotIdx][w?.name] ?? false)
   return @() mkEmptyWeaponSlot(slotIdx, isSelected).__update({

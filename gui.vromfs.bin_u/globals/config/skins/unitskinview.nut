@@ -2019,7 +2019,9 @@ return {
     },
     "ussr_btr_zd_reskin": {
       "": "ussr_camo_green",
-      "forest": "ussr_camo_deform"
+      "desert": "us_camo_modern_desert_tan",
+      "forest": "ussr_camo_deform",
+      "winter": "ussr_camo_winter"
     },
     "ussr_cruiser_chapayev": {
       "": "camo_bluegray_longspot"
@@ -2134,7 +2136,9 @@ return {
     },
     "ussr_object_248": {
       "": "ussr_camo_green",
-      "forest": "ussr_camo_forest_black"
+      "desert": "us_camo_modern_desert_tan",
+      "forest": "ussr_camo_forest_black",
+      "winter": "ussr_camo_winter"
     },
     "ussr_object_268": {
       "": "ussr_camo_green",
@@ -2174,7 +2178,9 @@ return {
     },
     "ussr_su_100p": {
       "": "ussr_camo_green",
-      "forest": "ussr_camo_forest_black"
+      "desert": "us_camo_modern_desert_tan",
+      "forest": "ussr_camo_forest_black",
+      "winter": "ussr_camo_winter"
     },
     "ussr_su_122P": {
       "": "ussr_camo_forest_01",
@@ -2268,7 +2274,9 @@ return {
     },
     "ussr_t_34_85_zis_53_reskin": {
       "": "ussr_camo_green",
-      "forest": "ussr_camo_forest_black"
+      "desert": "us_camo_modern_desert_tan",
+      "forest": "ussr_camo_forest_black",
+      "winter": "ussr_camo_winter"
     },
     "ussr_t_44": {
       "": "ussr_camo_green",
@@ -2460,6 +2468,7 @@ return {
       "blue_stains": "camo_blue_stains",
       "bluegreen_splotch": "camo_bluegreen_splotch",
       "bluewater_geometry": "camo_bluewater_geometry",
+      "darkbrown_spots_prem": "camo_darkbrown_spots",
       "darkgray_blotch": "camo_darkgray_blotch",
       "disruptive_gray": "camo_disruptive_gray",
       "factory": "camo_navygrey_5",

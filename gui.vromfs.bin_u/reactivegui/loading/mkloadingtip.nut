@@ -9,6 +9,7 @@ let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradie
 let unitTypeWeightsByCampaign = {
   ships = { [BIT_SHIP] = 0.7, [BIT_AIR] = 0.2, [GLOBAL_LOADING_TIP_BIT] = 0.1 }
   tanks = { [BIT_TANK] = 0.7, [BIT_AIR] = 0.2, [GLOBAL_LOADING_TIP_BIT] = 0.1 }
+  air   = { [BIT_AIR] = 0.9, [GLOBAL_LOADING_TIP_BIT] = 0.1 }
 }
 
 let iconColorDefault = 0xFF808080

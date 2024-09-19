@@ -6,6 +6,7 @@ let { localizeAddonsLimited, getAddonsSizeStr } = require("%appGlobals/updater/a
 let { openDownloadAddonsWnd, addonsToDownload } = require("%rGui/updater/updaterState.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
+let { textColor } = require("%rGui/style/stdColors.nut")
 let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
@@ -16,12 +17,12 @@ let textArea = @(text, ovr = {}) {
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER
-  color = 0xFFD0D0D0
+  color = textColor
   text
   fontFxColor = Color(0, 0, 0, 255)
   fontFxFactor = 50
   fontFx = FFT_GLOW
-}.__update(fontTiny, ovr)
+}.__update(fontTinyShaded, ovr)
 
 function mkUnitPkgDownloadInfo(unitW, needProgress = true, ovr = {}) {
   let reqPkgList = Computed(@() unitW.get() == null || !isReadyToFullLoad.get() ? []

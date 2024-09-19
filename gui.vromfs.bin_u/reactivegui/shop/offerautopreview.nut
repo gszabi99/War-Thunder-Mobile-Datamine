@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { openGoodsPreview, previewGoods } = require("%rGui/shop/goodsPreviewState.nut")
+let { openGoodsPreviewInMenuOnly, previewGoods } = require("%rGui/shop/goodsPreviewState.nut")
 let { visibleOffer, reqAddonsToShowOffer } = require("offerState.nut")
 let { isInMenuNoModals, isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -34,7 +34,7 @@ isMainMenuAttached.subscribe(function(v) {
 function openOfferPreview() {
   if (!needShow.value)
     return
-  openGoodsPreview(visibleOffer.value?.id)
+  openGoodsPreviewInMenuOnly(visibleOffer.value?.id)
   sendOfferBqEvent("openInfoAutomatically", visibleOffer.value.campaign)
 }
 

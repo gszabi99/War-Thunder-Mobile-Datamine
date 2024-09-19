@@ -51,8 +51,8 @@ let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
     isSpawnBySpare = is_bit_set(spareMask, id),
     bullets = loadUnitBulletsChoice(info?.name)?.commonWeapons.primary.fromUnitTags ?? {}
     mods = info?.items ?? defMods
-    isPremium = info?.isPremium ?? false
     isCollectible = info?.isCollectible ?? false
+    isPremium = info?.isPremium ?? false
     isUpgraded = info?.isUpgraded ?? false
     modPresetCfg = info?.modPresetCfg ?? {}
     costWp = info?.costWp ?? 0
@@ -79,11 +79,12 @@ let respawnSlots = Computed(function() {
   foreach (sUnit in respawnUnitInfo.value?.lockedUnits ?? [])
     res.append(mkSlot(res.len(), sUnit, defMods).__update({ reqLevel = sUnit?.reqLevel ?? 0, isLocked = true }))
   if (!hasRespawnSeparateSlots.get()) {
-    let { level = -1, isPremium = false, isUpgraded = false } = respawnUnitInfo.get()
+    let { level = -1, isCollectible = false, isPremium = false, isUpgraded = false } = respawnUnitInfo.get()
     res.each(function(s) {
       s.level = level
-      s.isUpgraded = isUpgraded
+      s.isCollectible = isCollectible
       s.isPremium = isPremium
+      s.isUpgraded = isUpgraded
     })
   }
   return res

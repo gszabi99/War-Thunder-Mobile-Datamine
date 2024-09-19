@@ -95,17 +95,16 @@ function getWeaponNameImpl(weapon, bSet, isShort) {
 
 let getWeaponShortName = @(weapon, bSet) getWeaponNameImpl(weapon, bSet, true)
 let getWeaponFullName  = @(weapon, bSet) getWeaponNameImpl(weapon, bSet, false)
+let getTotalWeaponAmount = @(weapon) max(weapon.turrets, 1) * (weapon?.count ?? 1) * (weapon?.guns ?? 1)
 
 function getWeaponShortNameWithCount(weapon, bSet = null, withAnyCount = false, counterLang = "weapons/counter") {
-  let { turrets, count = 1 } = weapon
-  let total = max(turrets, 1) * count
+  let total = getTotalWeaponAmount(weapon)
   let res = getWeaponShortName(weapon, bSet)
   return !withAnyCount && total == 1 ? res : $"{res} {format(loc(counterLang), total)}"
 }
 
 function getWeaponCaliber(weapon, bSet) {
-  let { turrets, count = 1 } = weapon
-  let total = max(turrets, 1) * count
+  let total = getTotalWeaponAmount(weapon)
   return $"{format(loc("caliber/mm"), bSet.caliber)} {format(loc("weapons/counter/right/short"), total)}"
 }
 

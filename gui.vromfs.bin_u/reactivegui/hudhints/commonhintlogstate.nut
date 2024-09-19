@@ -357,6 +357,10 @@ eventbus_subscribe("hint:enemy_too_far", function(_) {
   addCommonHintWithTtl(loc("hints/enemy_too_far"), 3)
 })
 
+eventbus_subscribe("hint:enemy_armored", function(_) {
+  addCommonHintWithTtl(loc("hints/enemy_armored"), 3)
+})
+
 eventbus_subscribe("hint:need_lock_target", function(_) {
   if (incHintCounter("need_lock_target", 5)) {
     addCommonHintWithTtl(loc("hints/need_lock_target"), 5)

@@ -335,9 +335,6 @@ function mkLevelProgressLine(curLevelConfig, reward, title, desc, animStartTime,
   if (isLevelUp && levelsExp.len() > 0) {
     local leftReceivedExp = totalExp - addExp
     foreach (idx, levelExp in levelsExp) {
-      if (leftReceivedExp <= 0)
-        break
-
       if (level >= idx)
         continue
 
@@ -351,6 +348,9 @@ function mkLevelProgressLine(curLevelConfig, reward, title, desc, animStartTime,
         receivedExpWidth = lerpClamped(0, levelExp, 0, levelProgressBarFillWidth, leftReceivedExp)
       })
       leftReceivedExp = leftReceivedExp - levelExp
+
+      if (leftReceivedExp <= 0)
+        break
     }
   }
   let levelProgressLineAnimTime = min(levelUpsArray.len() * levelProgressSingleAnimTime, maxLevelProgressAnimTime)

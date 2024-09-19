@@ -70,7 +70,7 @@ return cfgHudCommon.__merge({
   }
 
   rocket = {
-    ctor = @() mkCircleWeaponryItem("ID_ROCKETS", RocketsState, hasRockets, "ui/gameuiskin#hud_rb_rocket.svg", true)
+    ctor = @() mkCircleWeaponryItem("ID_ROCKETS", RocketsState, hasRockets, "ui/gameuiskin#hud_rb_rocket.svg", true, false)
     defTransform = mkLBPos([hdpx(272), hdpx(-148)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_rb_rocket.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
@@ -78,7 +78,7 @@ return cfgHudCommon.__merge({
   }
 
   torpedo = {
-    ctor = @() mkCircleWeaponryItem("ID_WTM_AIRCRAFT_TORPEDOES", TorpedoesState, hasTorpedos, "ui/gameuiskin#hud_torpedo.svg", true)
+    ctor = @() mkCircleWeaponryItem("ID_WTM_AIRCRAFT_TORPEDOES", TorpedoesState, hasTorpedos, "ui/gameuiskin#hud_torpedo.svg", true, false)
     defTransform = mkLBPos([hdpx(435), hdpx(-107)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_torpedo.svg")
     priority = Z_ORDER.BUTTON_PRIMARY

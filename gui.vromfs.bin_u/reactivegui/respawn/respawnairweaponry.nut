@@ -59,7 +59,10 @@ let mkCard = @(iconComp, title, bottomTitle = "", isSelectedStyle = false) {
 
 let weaponTitle = @(w) format(loc("weapons/counter/right/short"), (w?.count ?? 1))
 let mkWeaponCard = @(w, canClick) mkCard(commonWeaponIcon(w), weaponTitle(w))
-  .__update({ onClick = canClick ? @() showAirRespChooseSecWnd(w.slotIdx) : null })
+  .__update({
+    onClick = canClick ? @() showAirRespChooseSecWnd(w.slotIdx) : null
+    sound = canClick ? { click = "click" } : null
+  })
 
 let mkBeltCard = @(w, canClick)
   @() mkCard(
@@ -71,6 +74,7 @@ let mkBeltCard = @(w, canClick)
     watch = selectedBeltWeaponId
     borderColor = w.weaponId == selectedBeltWeaponId.get() ? 0xC07BFFFF : 0xFFFFFFFF
     onClick = canClick ? @() showAirRespChooseBeltWnd(w.weaponId) : null
+    sound = canClick ? { click = "click" } : null
   })
 
 let mkEmptyInfo = @(text) {
@@ -224,6 +228,7 @@ function respawnAirWeaponry(selSlot) {
     else if (wSlots.len() > 1 && !isBattleDataFake.get())
       rows.append(mkGroup("weaponry/secondaryWeapons", mkEmptyInfo(loc("weaponry/tapToChooseSecondary")), {
         onClick = @() showAirRespChooseSecWnd(1)
+        sound = { click = "click" }
         behavior = Behaviors.Button
         scrollHandler = null
         key = secondaryMenuKey

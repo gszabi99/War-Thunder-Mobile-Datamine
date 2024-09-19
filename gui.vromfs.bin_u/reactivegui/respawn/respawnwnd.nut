@@ -20,7 +20,7 @@ let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, res
 let { getUnitPresentation, getPlatoonName, getUnitClassFontIcon, getUnitLocId
 } = require("%appGlobals/unitPresentation.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { premiumTextColor, markTextColor } = require("%rGui/style/stdColors.nut")
+let { collectibleTextColor, premiumTextColor, markTextColor } = require("%rGui/style/stdColors.nut")
 let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
 let { textButtonCommon, textButtonBattle } = require("%rGui/components/textButton.nut")
 let { scoreBoard, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
@@ -154,13 +154,19 @@ function slotsBlockTitle(unit, isSeparateSlots) {
       children = headerText(text)
     })
   }
-  let { name, level = 0, isUpgraded = false, isPremium = false } = unit
-  let isElite = isUpgraded || isPremium
+  let { name, level = 0, isCollectible = false, isPremium = false, isUpgraded = false } = unit
+  let isElite = isPremium || isUpgraded
   let text = "  ".concat(getPlatoonName(name, loc), getUnitClassFontIcon(unit))
   let textLength = calc_str_box(text, fontTinyAccented)[0]
   let textWidth = slotPlateWidth - levelHolderSize
-  let textComp = headerText(text)
-    .__update(textLength > textWidth ? headerMarquee(textWidth - hdpx(20)) : {}, { margin = [0, hdpx(20), 0, 0] })
+  let textColorOvr = isCollectible ? { color = collectibleTextColor }
+    : isElite ? { color = premiumTextColor }
+    : {}
+  let textComp = headerText(text).__update(
+    textLength > textWidth ? headerMarquee(textWidth - hdpx(20)) : {},
+    { margin = [0, hdpx(20), 0, 0] },
+    textColorOvr
+  )
   return header({
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
@@ -179,7 +185,7 @@ function slotsBlockTitle(unit, isSeparateSlots) {
           }.__update(fontSmall)
         ]
       }
-      !isElite ? textComp : textComp.__update({ color = premiumTextColor })
+      textComp
     ]
   })
 }

@@ -12,7 +12,7 @@ let { add_unit_exp, add_player_exp, add_wp, add_gold, add_platinum, change_item_
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, add_nybond, halt_goods_purchase,
   halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, add_aprilbond,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
-  add_battle_mod, set_research_unit, add_slot_exp
+  add_battle_mod, set_research_unit, add_slot_exp, update_branch_offer
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -162,6 +162,8 @@ foreach (ot in ["start", "gold", "collection", "sidegrade", "upgrade", "premAir"
   register_command(@() generate_fixed_type_offer(curCampaign.value, offerType, "consolePrintResult"),
     $"meta.generate_offer_{offerType}")
 }
+register_command(@() update_branch_offer(curCampaign.get()),
+  "meta.update_branch_offer")
 
 foreach (cmd in ["get_all_configs", "reset_profile",
   "unlock_all_common_units", "unlock_all_premium_units", "unlock_all_units", "check_purchases",

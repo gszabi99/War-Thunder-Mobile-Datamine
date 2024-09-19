@@ -12,7 +12,7 @@ let mkText = @(text, color = defColor) {
   color
 }.__update(fontTiny)
 
-function mkLbMedalTop10(medal) {
+let mkLbMedalTop10 = @(icon) function(medal) {
   let stateFlags = Watched(0)
   let key = {}
 
@@ -45,7 +45,7 @@ function mkLbMedalTop10(medal) {
         size = [medalSize, medalSize]
         rendObj = ROBJ_IMAGE
         keepAspect = KEEP_ASPECT_FIT
-        image = Picture($"ui/gameuiskin#leaderboard_trophy_01.avif:{medalSize}:{medalSize}:P")
+        image = Picture($"ui/gameuiskin#{icon}:{medalSize}:{medalSize}:P")
       }
       medal.list.len() <= 1 ? null
         : {
@@ -80,10 +80,11 @@ function mkUnknownMedal(medal) {
 }
 
 let medalsPresentation = {
-  lb_wp_top_10       = { ctor = mkLbMedalTop10 }
-  lb_tanks_top_10    = { ctor = mkLbMedalTop10, campaign = "tanks" }
-  lb_ships_top_10    = { ctor = mkLbMedalTop10, campaign = "ships" }
-  def                = { ctor = mkUnknownMedal }
+  lb_wp_top_10       = { ctor = mkLbMedalTop10("leaderboard_trophy_01.avif") }
+  lb_tanks_top_10    = { ctor = mkLbMedalTop10("leaderboard_trophy_01.avif"), campaign = "tanks"}
+  lb_ships_top_10    = { ctor = mkLbMedalTop10("leaderboard_trophy_01.avif"), campaign = "ships"}
+  cbt_air_medal      = { ctor = mkLbMedalTop10("leaderboard_trophy_06.avif"), campaign = "air"}
+  def                = { ctor = mkUnknownMedal}
 }
 
 let getMedalPresentation = @(medal) medalsPresentation?[medal.name] ?? medalsPresentation.def

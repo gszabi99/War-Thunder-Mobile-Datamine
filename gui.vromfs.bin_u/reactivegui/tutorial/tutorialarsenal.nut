@@ -26,6 +26,7 @@ let { closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
 let { TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID } = require("tutorialConst.nut")
+let { firstBattlesReward } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 
 
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
@@ -36,6 +37,7 @@ let hasUnitModifications = Computed(@() visibleNewModsSlots.get().len() > 0)
 
 let needShowTutorial = Computed(@() !isInSquad.get()
   && !isFinished.get()
+  && firstBattlesReward.get() == null
   && isFinishedUnitsResearch.get()
   && isCampaignWithUnitsResearch.get()
   && curCampaignSlots.get() != null
@@ -175,6 +177,12 @@ function startTutorial() {
             closeMsgBox(PURCHASE_BOX_UID)
           }
         }]
+      }
+      {
+        id = "s7_finish_arsenal_tutorial"
+        nextKeyDelay = -1
+        charId = "mary_like"
+        text = loc("tutorial/arsenal/finish")
       }
     ]
   })

@@ -10,11 +10,11 @@ let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 
 let { delayedPurchaseUnitData, needSaveUnitDataForTutorial } = require("%rGui/unit/delayedPurchaseUnit.nut")
-let { isUnitsTreeAttached, openUnitsTreeAtUnit } = require("%rGui/unitsTree/unitsTreeState.nut")
+let { isUnitsTreeAttached, openUnitsTreeAtUnit, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { needDelayAnimation, isBuyUnitWndOpened, animExpPart,
   animUnitAfterResearch } = require("%rGui/unitsTree/animState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
-let { nodes, unitsResearchStatus } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { nodes, unitsResearchStatus, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { hasModalWindows, moveModalToTop } = require("%rGui/components/modalWindows.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, WND_UID, goToStep,
   nextStep, activeTutorialId } = require("tutorialWnd/tutorialWndState.nut")
@@ -26,10 +26,11 @@ let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { triggerAnim } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { TUTORIAL_UNITS_RESEARCH_ID } = require("tutorialConst.nut")
+let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 
 
 let STEP_SELECT_NEXT_RESEARCH_DESCRIPTION = "s6_select_next_research_description"
-let STEP_FINISH_RESEARCH_UNIT_TUTORIAL = "s9_finish_research_unit_tutorial"
+let STEP_PARTING_WORDS = "s9_tutorial_parting_words_research_unit"
 
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let isFinished = mkIsTutorialCompleted(TUTORIAL_UNITS_RESEARCH_ID)
@@ -51,7 +52,8 @@ let needShowTutorial = Computed(@() !isInSquad.get()
   && isCampaignWithUnitsResearch.get()
   && isFirstPredifinedReward.get()
   && curResearchUnitStatus.get()
-  && canBuyCurResearchUnit.get())
+  && canBuyCurResearchUnit.get()
+  && currentResearch.get() == null)
 let canStartTutorial = Computed(@() !hasModalWindows.get()
   && isUnitsTreeAttached.get()
   && !isTutorialActive.get())
@@ -59,6 +61,7 @@ let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
 
 let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.get() == TUTORIAL_UNITS_RESEARCH_ID
+  && !isMainMenuAttached.get()
   && !isUnitsTreeAttached.get()))
 let finishEarly = @() shouldEarlyCloseTutorial.get() ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
@@ -172,7 +175,7 @@ function startTutorial() {
         id = "s7_select_next_research_unit"
         function beforeStart() {
           if(availableResearchNodes.len() == 0)
-            deferOnce(@() goToStep(STEP_FINISH_RESEARCH_UNIT_TUTORIAL))
+            deferOnce(@() goToStep(STEP_PARTING_WORDS))
         }
         text = loc("tutorial_select_next_research_unit")
         objects = availableResearchNodes
@@ -180,8 +183,8 @@ function startTutorial() {
       {
         id = "s8_confirm_research_unit"
         function beforeStart() {
-          if (curSelectedUnit.get() == null)
-            deferOnce(@() goToStep(STEP_FINISH_RESEARCH_UNIT_TUTORIAL))
+          if (curSelectedUnit.get() == null || currentResearch.get() != null)
+            deferOnce(@() goToStep(STEP_PARTING_WORDS))
           moveModalToTop(WND_UID)
         }
         text = loc("tutorial_confirm_research_unit")
@@ -192,10 +195,26 @@ function startTutorial() {
         }]
       }
       {
-        id = STEP_FINISH_RESEARCH_UNIT_TUTORIAL
+        id = STEP_PARTING_WORDS
         nextKeyDelay = -1
         charId = "mary_like"
-        text = loc("tutorial_finish_research_unit_tutorial")
+        text = loc("tutorial_parting_words_research_unit")
+      }
+      {
+        id = "s10_units_wnd_press_back"
+        text = loc("tutorial/pressBackToReturnToMainScreen")
+        objects = [{
+          keys = "backButton"
+          sizeIncAdd = hdpx(20)
+          needArrow = true
+          onClick = @() isUnitsTreeOpen.set(false)
+        }]
+      }
+      {
+        id = "s11_finish_research_unit_tutorial"
+        nextKeyDelay = -1
+        charId = "mary_like"
+        text = loc("tutorial_finish_research_unit")
       }
     ]
   })

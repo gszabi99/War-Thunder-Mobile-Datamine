@@ -15,6 +15,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
+let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 
 let GPT_UNIT = "unit"
 let GPT_CURRENCY = "currency"
@@ -64,6 +65,21 @@ function openGoodsPreview(id) {
   openPreviewCount(openPreviewCount.value + 1)
 }
 
+function openGoodsPreviewInMenuOnly(id) {
+  let goods = getPreviewGoods(id, activeOffer.get(), activeOfferByGoods.get(), shopGoodsAllCampaigns.get())
+  let addons = getAddonsToShowGoods(goods, serverConfigs.get()?.allUnits, hasAddons.get())
+  if (addons.len() != 0) {
+    openDownloadAddonsWnd(addons, "openGoodsPreviewInMenuNoModals", { id })
+    return
+  }
+
+  if (!isInMenuNoModals.get())
+    return
+
+  openedGoodsId(id)
+  openPreviewCount(openPreviewCount.value + 1)
+}
+
 let previewGoods = Computed(@() getPreviewGoods(openedGoodsId.get(), activeOffer.get(),
   activeOfferByGoods.get(), shopGoodsAllCampaigns.get()))
 
@@ -92,6 +108,7 @@ isPreviewGoodsPurchasing.subscribe(function(v) {
 })
 
 eventbus_subscribe("openGoodsPreview", @(msg) openGoodsPreview(msg.id))
+eventbus_subscribe("openGoodsPreviewInMenuNoModals", @(msg) openGoodsPreviewInMenuOnly(msg.id))
 
 let offerUnitName = keepref(Computed(@() activeOffer.value?.id == openedGoodsId.value ? previewGoodsUnit.value?.name
   : null))
@@ -138,4 +155,5 @@ return {
   previewGoodsUnit
   previewType
   isPreviewGoodsPurchasing
+  openGoodsPreviewInMenuOnly
 }

@@ -1452,6 +1452,10 @@
             "includeBots": true
           },
           {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
             "type": "targetType",
             "unitType": "aircraft"
           }
@@ -1935,9 +1939,21 @@
             "type": "online"
           },
           {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
             "type": "targetIsPlayer",
             "includePlayers": false,
             "includeAI": true
+          },
+          {
+            "type": "missionType",
+            "missionType": [
+              0,
+              1,
+              2
+            ]
           }
         ]
       }
@@ -1963,9 +1979,21 @@
             "type": "online"
           },
           {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
             "type": "targetIsPlayer",
             "includePlayers": false,
             "includeAI": true
+          },
+          {
+            "type": "missionType",
+            "missionType": [
+              0,
+              1,
+              2
+            ]
           }
         ]
       }
@@ -1997,6 +2025,14 @@
               "typeBomber",
               "typeStormovik"
             ]
+          },
+          {
+            "type": "missionType",
+            "missionType": [
+              0,
+              1,
+              2
+            ]
           }
         ]
       }
@@ -2025,6 +2061,14 @@
           {
             "type": "targetType",
             "unitType": "typeFighter"
+          },
+          {
+            "type": "missionType",
+            "missionType": [
+              0,
+              1,
+              2
+            ]
           }
         ]
       }

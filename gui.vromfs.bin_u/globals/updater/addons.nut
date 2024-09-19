@@ -12,6 +12,8 @@ let PKG_NAVAL  = "pkg_naval"
 let PKG_NAVAL_HQ = "pkg_naval_hq"
 let PKG_GROUND = "pkg_ground"
 let PKG_GROUND_HQ = "pkg_ground_hq"
+let PKG_LVL_AIR_LOCATIONS = "pkg_lvl_air_locations"
+let PKG_LVL_AIR_LOCATIONS_HQ = "pkg_lvl_air_locations_hq"
 let PKG_COMMON = "pkg_common"
 let PKG_COMMON_HQ = "pkg_common_hq"
 let PKG_DEV = "pkg_dev"
@@ -24,6 +26,7 @@ let comma = loc("ui/comma")
 
 let naval     = [ PKG_COMMON, PKG_NAVAL, PKG_COMMON_HQ, PKG_NAVAL_HQ ]
 let ground    = [ PKG_COMMON, PKG_GROUND, PKG_COMMON_HQ, PKG_GROUND_HQ ]
+let air       = [ PKG_COMMON, PKG_LVL_AIR_LOCATIONS, PKG_COMMON_HQ, PKG_LVL_AIR_LOCATIONS_HQ ]
 let dev       = [ PKG_DEV ]
 let initialAddons = [ "pkg_secondary_hq", "pkg_secondary" ]
 let latestDownloadAddonsByCamp = { //addons to download after other required campaign addons is already downloaded
@@ -36,6 +39,7 @@ local ovrHangarAddon = null //{ addons : array<string>, hangarPath : string }
 let gameModeAddonToAddonSetMap = {
   [PKG_NAVAL] = naval,
   [PKG_GROUND] = ground,
+  [PKG_LVL_AIR_LOCATIONS] = air,
 }
 
 let campaignPostfix = {

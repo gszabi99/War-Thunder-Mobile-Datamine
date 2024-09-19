@@ -9,7 +9,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank, unitPlateRatio, plateTexts
   unitBgImageBase, bgUnit, mkPlateText, unitPlateNameOvr
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getSlotLevelIcon } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
-let { getUnitRewards, getLevelProgress, getNextUnitLevelWithRewards } = require("%rGui/debriefing/debrUtils.nut")
+let { getLevelProgress, getNextUnitLevelWithRewards } = require("%rGui/debriefing/debrUtils.nut")
 
 let plateW = hdpx(350)
 let plateH = plateW * unitPlateRatio
@@ -327,7 +327,7 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
   let isLevelUp = addExp > 0 && nextLevelExp <= (exp + totalExp)
 
   let unlockedLevel = isLevelUp
-    ? getLevelProgress(levelCfg, getUnitRewards(name, debrData)?.exp).unlockedLevel
+    ? getLevelProgress(levelCfg, reward).unlockedLevel
     : level
   let nextLevelWithRewards = isMaxLevel ? 0
     : isSlot ? (level + 1)
@@ -350,9 +350,6 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
   if (isLevelUp && levelsExp.len() > 0) {
     local leftReceivedExp = totalExp - addExp
     for (local idx = 0; idx < levelsExp.len() + 1; idx++) {
-      if (leftReceivedExp <= 0)
-        break
-
       if (level >= idx)
         continue
 
@@ -373,6 +370,8 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
           : lerpClamped(0, levelExp, 0, levelProgressBarFillWidth, leftReceivedExp)
       })
       leftReceivedExp -= levelExp
+      if (leftReceivedExp <= 0)
+        break
     }
   }
   let stepsCount = levelUpsArray.len()

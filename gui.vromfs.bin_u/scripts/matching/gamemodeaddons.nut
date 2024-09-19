@@ -61,7 +61,7 @@ function getModeAddonsInfo(mode, unitNames) {
   }
 
   let toDownload = addons.filter(@(v) v)
-  foreach (addon in addons) {
+  foreach (addon, _ in addons) {
     let list = gameModeAddonToAddonSetMap?[addon]
     if (list == null)
       continue
@@ -71,7 +71,7 @@ function getModeAddonsInfo(mode, unitNames) {
   }
 
   let allReqAddonsFinal = clone allReqAddons
-  foreach (addon in allReqAddons) {
+  foreach (addon, _ in allReqAddons) {
     let list = gameModeAddonToAddonSetMap?[addon]
     if (list == null)
       continue

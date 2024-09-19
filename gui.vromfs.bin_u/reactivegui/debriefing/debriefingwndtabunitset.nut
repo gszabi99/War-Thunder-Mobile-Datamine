@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { unitExpColor, slotExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
 let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
-let { getUnitsSet, getUnitRewards, getSlotLevelCfg, getLevelProgress,
+let { getUnitsSet, getUnitRewards, getSlotExpByUnit, getSlotLevelCfg, getLevelProgress,
   getNextUnitLevelWithRewards, getSlotOrUnitLevelUnlockRewards, sortUnitMods
 } = require("%rGui/debriefing/debrUtils.nut")
 let mkPlateWithLevelProgress = require("%rGui/debriefing/mkPlateWithLevelProgress.nut")
@@ -38,10 +38,10 @@ function mkSlotLevelUnlockLines(unit, debrData, delay) {
   if (unit == null)
     return mkLevelUnlockLines([], delay)
 
-  let unitExp = getUnitRewards(unit?.name, debrData)?.exp
+  let slotExp = getSlotExpByUnit(unit?.name, debrData)
   let { levelsSp = {} } = debrData?.slots
   let slotLevelCfg = getSlotLevelCfg(unit, debrData)
-  let { prevLevel, unlockedLevel } = getLevelProgress(slotLevelCfg, unitExp)
+  let { prevLevel, unlockedLevel } = getLevelProgress(slotLevelCfg, slotExp)
   let startLevel = prevLevel + 1
   let endLevel = max(startLevel, unlockedLevel)
   let spLevels = levelsSp?.levels ?? []
@@ -150,9 +150,9 @@ function mkSlotColumn(unit, debrData) {
   if (unit == null)
     return null
   let slotLevelCfg = getSlotLevelCfg(unit, debrData)
-  let unitExp = getUnitRewards(unit?.name, debrData)?.exp
+  let slotExp = getSlotExpByUnit(unit?.name, debrData)
   let { plateWithLevelProgressComp, levelProgressAnimTime
-  } = mkPlateWithLevelProgress(debrData, slotLevelCfg, unitExp, levelProgressAnimStartTime, slotExpColor)
+  } = mkPlateWithLevelProgress(debrData, slotLevelCfg, slotExp, levelProgressAnimStartTime, slotExpColor)
   let { levelUnlocksComps, levelUnlocksAnimTime } = mkSlotLevelUnlockLines(unit, debrData, levelUnlocksAnimStartTime)
   return mkColumn(plateWithLevelProgressComp, levelProgressAnimTime, levelUnlocksComps, levelUnlocksAnimTime)
 }

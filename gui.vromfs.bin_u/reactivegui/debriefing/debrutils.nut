@@ -19,13 +19,13 @@ function getLevelProgress(curLevelConfig, reward) {
   if (isLevelUp && levelsExp.len() > 0) {
     local leftReceivedExp = totalExp - addExp
     foreach (idx, levelExp in levelsExp) {
-      if (leftReceivedExp <= 0)
-        break
       if (idx <= level)
         continue
       res.unlockedLevel = idx
       res.isLastLevel = isLastLevel || (idx + 1) not in levelsExp
       leftReceivedExp = leftReceivedExp - levelExp
+      if (leftReceivedExp <= 0)
+        break
     }
   }
   return res
@@ -84,6 +84,15 @@ function getUnitRewards(unitName, debrData) {
   return (debrData?.reward.units ?? []).findvalue(@(v) v?.name == unitName) ?? {}
 }
 
+function getSlotExpByUnit(unitName, debrData) {
+  let { exp = {}, addSlotExp = 0 } = getUnitRewards(unitName, debrData)
+  return addSlotExp <= 0 ? exp
+    : exp.__merge({
+        baseExp = (exp?.baseExp ?? 0) + addSlotExp
+        totalExp = (exp?.totalExp ?? 0) + addSlotExp
+      })
+}
+
 function isUnitReceiveLevel(unitName, debrData) {
   let { exp = 0, nextLevelExp = 0 } = getUnit(unitName, debrData)
   let { totalExp = 0 } = getUnitRewards(unitName, debrData)?.exp
@@ -95,7 +104,7 @@ function isSlotReceiveLevel(unitName, debrData) {
   if (!debrData?.isSeparateSlots)
     return false
   let { exp = 0, nextLevelExp = 0 } = getUnit(unitName, debrData)?.slot
-  let { totalExp = 0 } = getUnitRewards(unitName, debrData)?.exp
+  let { totalExp = 0 } = getSlotExpByUnit(unitName, debrData)
   return nextLevelExp != 0
     && exp + totalExp >= nextLevelExp
 }
@@ -188,6 +197,7 @@ return {
   getUnitsSet
   getUnit
   getUnitRewards
+  getSlotExpByUnit
   isUnitReceiveLevel
   isSlotReceiveLevel
   getSlotLevelCfg

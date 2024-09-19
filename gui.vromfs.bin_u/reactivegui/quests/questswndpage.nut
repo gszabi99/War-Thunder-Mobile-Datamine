@@ -204,10 +204,10 @@ function mkBtn(item, currencyReward, rewardsPreview, sProfile) {
 }
 
 function mkItem(item, textCtor) {
-  local isCompletedPrevQuest = Computed(@()
+  let isCompletedPrevQuest = Computed(@()
     !item.meta?.chain_quest || (unlockProgress.get()?[item.requirement].isCompleted ?? false)
   )
-  local imgLockSize = hdpxi(60)
+  let imgLockSize = hdpxi(60)
   let isUnseen = Computed(@() !item.hasReward
     && item.name not in seenQuests.value
     && item.name not in inactiveEventUnlocks.value)
@@ -286,8 +286,8 @@ function mkItem(item, textCtor) {
                   rendObj = ROBJ_IMAGE
                   size = [imgLockSize, imgLockSize]
                   image = Picture($"ui/gameuiskin#lock_icon.svg:{imgLockSize}:{imgLockSize}:P")
+                  keepAspect = true
                 }
-
               }
           }
         ]

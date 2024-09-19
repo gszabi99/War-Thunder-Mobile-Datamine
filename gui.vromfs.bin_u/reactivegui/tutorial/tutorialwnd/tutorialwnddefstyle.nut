@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { debounce } = require("%sqstd/timers.nut")
+let { deferOnce } = require("dagor.workcycle")
 let { commonTextColor } = require("%rGui/style/stdColors.nut")
 let { simpleHorGrad } = require("%rGui/style/gradients.nut")
 let { sizePosToBox, getLinkArrowMiddleCfg, createHighlight, incBoxSizeUnlimited } = require("tutorialUtils.nut")
@@ -103,8 +103,9 @@ let messageCtor = @(text, nextKeyAllowed, onNext, textOverride = {}) {
 
 let skipTrigger = {}
 let skipStateFlags = Watched(0)
-let isSkipPushed = Watched(false) //update with debounce, to not change value too fast on calc comp size
-skipStateFlags.subscribe(debounce(@(v) isSkipPushed((v & S_ACTIVE) != 0), 0.01))
+let isSkipPushed = Watched(false)
+let updateSkipPushed = @() isSkipPushed.set((skipStateFlags.get() & S_ACTIVE) != 0)
+skipStateFlags.subscribe(@(_) deferOnce(updateSkipPushed))
 isSkipPushed.subscribe(@(v) v ? anim_start(skipTrigger) : anim_skip(skipTrigger))
 
 let pSize = hdpx(40).tointeger()

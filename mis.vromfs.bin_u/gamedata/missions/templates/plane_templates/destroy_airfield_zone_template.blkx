@@ -338,10 +338,10 @@
         },
         "playHint": [
           {
-            "hintType": "custom",
+            "hintType": "tutorialHint",
             "name": "hints/destoy_bases_first",
             "action": "show",
-            "shouldFadeOut": true,
+            "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,
@@ -351,10 +351,10 @@
             "object_var_value": 0
           },
           {
-            "hintType": "custom",
+            "hintType": "tutorialHint",
             "name": "hints/destoy_bases_first",
             "action": "hide",
-            "shouldFadeOut": true,
+            "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
             "isOverFade": false,

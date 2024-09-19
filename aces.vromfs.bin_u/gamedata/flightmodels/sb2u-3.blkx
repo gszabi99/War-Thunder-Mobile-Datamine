@@ -1593,14 +1593,6 @@
       "preset": "default_common"
     }
   },
-  "gunnerFps": {
-    "pos": [
-      0.3,
-      0.5,
-      0.0
-    ],
-    "head": "turret1"
-  },
   "weapon_presets": {
     "preset": [
       {
@@ -1768,6 +1760,9 @@
             "iconType": "bomb_100kg",
             "name": "100lb",
             "isDefault": true,
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
@@ -1780,6 +1775,9 @@
           {
             "iconType": "bomb_250kg",
             "name": "250lb",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
@@ -2142,6 +2140,9 @@
             "iconType": "bomb_100kg",
             "name": "100lb",
             "isDefault": true,
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
@@ -2154,6 +2155,9 @@
           {
             "iconType": "bomb_250kg",
             "name": "250lb",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",

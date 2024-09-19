@@ -5,8 +5,7 @@ let { hide_unit, show_unit, play_fx_on_unit,
 } = require("hangar")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { registerScene, scenesOrder } = require("%rGui/navState.nut")
-let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
+let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { hangarUnit, setCustomHangarUnit, isHangarUnitLoaded } = require("%rGui/unit/hangarUnit.nut")
 let { playSound } = require("sound_wt")
 let { Point3 } = require("dagor.math")
@@ -19,8 +18,9 @@ let TIME_TO_AUTO_CLOSE = 10.0
 
 let unitToShow = mkWatched(persist, "unit", null)
 let hasLvlUpScene = Computed(@() scenesOrder.value.findindex(@(v) v == "levelUpWnd") != null)
-let isOpened = Computed(@() isInMenu.value && !hasModalWindows.value
-  && unitToShow.value != null && !hasLvlUpScene.value && !isTutorialActive.get())
+let needOpen = Computed(@() unitToShow.get() != null && !hasLvlUpScene.get() && !isTutorialActive.get())
+let shouldOpen = keepref(Computed(@() needOpen.get() && isInMenuNoModals.get()))
+let isOpened = Watched(needOpen.get())
 let close = @() unitToShow(null)
 let isSceneAttached = Watched(false)
 let canShowEffect = keepref(Computed(@() isSceneAttached.get()
@@ -60,6 +60,8 @@ canShowEffect.subscribe(function(v) {
   resetTimeout(timeToShowUnit, playPurchSound)
   resetTimeout(timeTotal, close)
 })
+needOpen.subscribe(@(v) v ? null : isOpened.set(false))
+shouldOpen.subscribe(@(v) v ? isOpened.set(true) : null)
 
 let unitEffectScene = @() {
   //needed to pass validation tests

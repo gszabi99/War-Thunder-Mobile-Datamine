@@ -10,58 +10,41 @@
 "charServer/entitlement/PremiumAccount";"Premium Account";"Compte premium";"Account premium";"Premium-Konto";"Cuenta premium";"Премиум-аккаунт";"Преміум-акаунт";"Konto premium";"Conta Premium";"Premium Hesap";"Prémiový účet";"Λογαριασμός Premium";"Akun Premium";"บัญชีพรีเมียม";"프리미엄 계정";"高\t级\t账\t号";"プレミアムアカウント";"高\t級\t帳\t號";;
 "charServer/entitlement/PremiumAccount/desc";"* {bonusPlayerExp} ▉ (Player experience) in all game modes
 * {bonusUnitExp} ▉ (Unit experience) in all game modes
-* {bonusWp} ▻ (Silver Lions) reward in all game modes
-* {bonusGold} ▽ (Gold Eagles) reward in aviation campaign";"* {bonusPlayerExp} ▉ (Expérience de joueur) dans tous les modes de jeu
+* {bonusWp} ▻ (Silver Lions) reward in all game modes";"* {bonusPlayerExp} ▉ (Expérience de joueur) dans tous les modes de jeu
 * {bonusUnitExp} ▉ (Expérience d'unité) dans tous les modes de jeu
 * {bonusWp} ▻ (Silver Lions) de récompense dans tous les modes de jeu";"* {bonusPlayerExp} ▉ (Esperienza Giocatore) in tutte le modalità di gioco
 * {bonusUnitExp} ▉ (Esperienza Unità) in tutte le modalità di gioco
-* {bonusWp} ▻ (Leoni Argentati) ricompensa in tutte le modalità di gioco
-* {bonusGold} ▽ (Aquile Dorate) ricompensa nella campagna aerea";"* {bonusPlayerExp} ▉ (Spielererfahrung) in allen Spielmodi
+* {bonusWp} ▻ (Leoni Argentati) ricompensa in tutte le modalità di gioco";"* {bonusPlayerExp} ▉ (Spielererfahrung) in allen Spielmodi
 * {bonusUnitExp} ▉ (Einheitenerfahrung) in allen Spielmodi
-* {bonusWp} ▻ (Silver Lions) Belohnung in allen Spielmodi
-* {bonusGold} ▽ (Golden Eagles) Belohnung in der Flugkampagne";"* {bonusPlayerExp} ▉ (Experiencia de jugador) en todos los modos de juego
+* {bonusWp} ▻ (Silver Lions) Belohnung in allen Spielmodi";"* {bonusPlayerExp} ▉ (Experiencia de jugador) en todos los modos de juego
 * {bonusUnitExp} ▉ (Experiencia de unidad) en todos los modos de juego
-* {bonusWp} ▻ (Leones de Plata) de recompensa en todos los modos de juego
-* {bonusGold} ▽ (Águilas de Oro) de recompensa en campaña de aviación";"* {bonusPlayerExp} ▉ (Очков опыта) во всех игровых режимах
+* {bonusWp} ▻ (Leones de Plata) de recompensa en todos los modos de juego";"* {bonusPlayerExp} ▉ (Очков опыта) во всех игровых режимах
 * {bonusUnitExp} ▉ (Опыт техники) к награде во всех игровых режимах
-* {bonusWp} ▻ (Серебряных львов) к награде во всех игровых режимах
-* {bonusGold} ▽ (Золотых орлов) к награде в самолетной кампании";"* {bonusPlayerExp} ▉ (досвід гравця) у всіх режимах гри
+* {bonusWp} ▻ (Серебряных львов) к награде во всех игровых режимах";"* {bonusPlayerExp} ▉ (досвід гравця) у всіх режимах гри
 * {bonusUnitExp} ▉ (досвід бойової одиниці) у всіх режимах гри
-* {bonusWp} ▻ (Срібні леви) нагорода у всіх режимах гри
-* {bonusGold} ▽ (Золоті орли) нагорода в авіаційній кампанії";"* {bonusPlayerExp} ▉ (doświadczenie gracza) we wszystkich trybach gry
+* {bonusWp} ▻ (Срібні леви) нагорода у всіх режимах гри";"* {bonusPlayerExp} ▉ (doświadczenie gracza) we wszystkich trybach gry
 * {bonusUnitExp} ▉ (doświadczenie jednostki) we wszystkich trybach gry
-* {bonusWp} ▻ nagrody (Srebrnych Lwów) we wszystkich trybach gry
-* {bonusGold} ▽ (Złote Orły) nagroda w kampanii samolotów";"* {bonusPlayerExp} ▉ (Experiência do jogador) em todos os modos de jogo
+* {bonusWp} ▻ nagrody (Srebrnych Lwów) we wszystkich trybach gry";"* {bonusPlayerExp} ▉ (Experiência do jogador) em todos os modos de jogo
 * {bonusUnitExp} ▉ (Experiência da unidade) em todos os modos de jogo
-* {bonusWp} ▻ (Silver Lions) recompensa em todos os modos de jogo
-* {bonusGold} ▽ (Golden Eagles) recompensa na campanha de aviação";"* {bonusPlayerExp} ▉ (Oyuncu deneyimi) tüm oyun modlarında
+* {bonusWp} ▻ (Silver Lions) recompensa em todos os modos de jogo";"* {bonusPlayerExp} ▉ (Oyuncu deneyimi) tüm oyun modlarında
 * {bonusUnitExp} ▉ (Birim deneyimi) tüm oyun modlarında 
-* {bonusWp} ▻ (Gümüş Aslan) ödülü tüm oyun modlarında 
-* {bonusGold} ▽ (Altın Kartal) havacılık harekatında";"* {bonusPlayerExp} ▉ (zkušenosti hráče) ve všech herních režimech
+* {bonusWp} ▻ (Gümüş Aslan) ödülü tüm oyun modlarında";"* {bonusPlayerExp} ▉ (zkušenosti hráče) ve všech herních režimech
 * {bonusUnitExp} ▉ (zkušenosti stroje) ve všech herních režimech
-* {bonusWp} ▻ (Stříbrní lvi) odměna ve všech herních režimech
-* {bonusGold} ▽ (Zlaté orlice) odměna v letecké kampani";"* {bonusPlayerExp} ▉ (Εμπειρία παίκτη) σε όλες τις λειτουργίες παιχνιδιού
+* {bonusWp} ▻ (Stříbrní lvi) odměna ve všech herních režimech";"* {bonusPlayerExp} ▉ (Εμπειρία παίκτη) σε όλες τις λειτουργίες παιχνιδιού
 * {bonusUnitExp} ▉ (Εμπειρία μονάδας) σε όλες τις λειτουργίες παιχνιδιού
-* {bonusWp} ▻ (Ασημένια λιοντάρια) ανταμοιβή σε όλες τις λειτουργίες παιχνιδιού
-* {bonusGold} ▽ (Χρυσοί Αετοί) ανταμοιβή σε αεροπορική εκστρατεία";"* {bonusPlayerExp} ▉ (EXP pemain) dalam semua mode game
+* {bonusWp} ▻ (Ασημένια λιοντάρια) ανταμοιβή σε όλες τις λειτουργίες παιχνιδιού";"* {bonusPlayerExp} ▉ (EXP pemain) dalam semua mode game
 * {bonusUnitExp} ▉ (EXP unit) dalam semua mode game
-* {bonusWp} ▻ Imbalan (Singa Perak) dalam semua mode game
-* {bonusGold} ▽ Imbalan (Elang Emas) dalam kampanye penerbangan";"* {bonusPlayerExp} ▉ (ประสบการณ์ผู้เล่น) ในทุกโหมดเกม
+* {bonusWp} ▻ Imbalan (Singa Perak) dalam semua mode game";"* {bonusPlayerExp} ▉ (ประสบการณ์ผู้เล่น) ในทุกโหมดเกม
 * {bonusUnitExp} ▉ (ประสบการณ์พาหนะ) ในทุกโหมดเกม
-* {bonusWp} ▻ รางวัล (สิงโตเงิน) ในทุกโหมดเกม
-* {bonusGold} ▽ รางวัล (อินทรีทอง) ในแคมเปญอากาศยาน";"* 모든 게임모드에서 {bonusPlayerExp} ▉ (플레이어 경험치) 추가
+* {bonusWp} ▻ รางวัล (สิงโตเงิน) ในทุกโหมดเกม";"* 모든 게임모드에서 {bonusPlayerExp} ▉ (플레이어 경험치) 추가
 * 모든 게임모드에서 {bonusUnitExp} ▉ (유닛 경험치) 추가
-* 모든 게임모드에서 {bonusWp} ▻ (실버 라이온) 지급
-* 공군 캠페인에서 {bonusGold} ▽ (골든 이글) 지급";"* 所\t有\t模\t式\t下 {bonusPlayerExp} ▉ (玩\t家\t个\t人\t经\t验)
+* 모든 게임모드에서 {bonusWp} ▻ (실버 라이온) 지급";"* 所\t有\t模\t式\t下 {bonusPlayerExp} ▉ (玩\t家\t个\t人\t经\t验)
 * 所\t有\t模\t式\t下 {bonusUnitExp} ▉ (载\t具\t经\t验)
-* 所\t有\t模\t式\t下 {bonusWp} ▻ (银\t狮) 收\t益
-* 空\t战\t模\t式\t下 {bonusGold} ▽ (金\t鹰) 收\t益";"* {bonusPlayerExp} ▉ （プレイヤー\t経験値）\t全\tゲームモード\t内
+* 所\t有\t模\t式\t下 {bonusWp} ▻ (银\t狮) 收\t益";"* {bonusPlayerExp} ▉ （プレイヤー\t経験値）\t全\tゲームモード\t内
 * {bonusUnitExp} ▉ （ユニット\t経験値）\t全\tゲームモード\t内
-* {bonusWp} ▻ （シルバーライオン）\t全\tゲームモード\t内の\t報酬
-* {bonusGold} ▽ （ゴールデンイーグル）\t航空\tキャンペーン\t内の\t報酬";"*{bonusPlayerExp}\t▉\t所\t有\t遊\t戲\t模\t式\t的\t（玩\t家\t經\t驗\t值）
+* {bonusWp} ▻ （シルバーライオン）\t全\tゲームモード\t内の\t報酬";"*{bonusPlayerExp}\t▉\t所\t有\t遊\t戲\t模\t式\t的\t（玩\t家\t經\t驗\t值）
 * {bonusUnitExp}\t▉\t所\t有\t遊\t戲\t模\t式\t的\t（單\t位\t經\t驗\t值）
-* {bonusWp}\t▻\t所\t有\t遊\t戲\t模\t式\t的\t（銀\t獅）\t獎\t勵
-* {bonusGold} ▽\t航\t空\t戰\t役\t的\t（金\t鷹）\t獎\t勵";;
+* {bonusWp}\t▻\t所\t有\t遊\t戲\t模\t式\t的\t（銀\t獅）\t獎\t勵";;
 "charServer/entitlement/PremiumAccount/header";"Premium account for {days} days";"Compte premium pendant {days} jours";"Account premium per {days} giorni";"Premiumkontozeit für {days} Tage";"Cuenta premium durante {days} días";"Премиум-аккаунт на {days} дней";"Преміум-аккаунт на {days} днів";"Konto premium na {days} dni";"Conta premium para {days} dias";"{days} günlük Premium hesap";"Prémiový účet na {days} dní";"Λογαριασμός Premium για {days} ημέρες";"Akun premium selama {days} hari";"บัญชีพรีเมียม {days} วัน";"프리미엄 계정 {days}일";"{days} 天\t高\t级\t账\t号";"プレミアムアカウント{days}日分";"{days} 天\t高\t級\t帳\t號";;
 "subscription/activeTime";"Active days remaining";"Jours actifs restants";"Giorni attivi rimanenti";"Dein Premium-Konto ist noch aktiv für";"Días activos restantes";"Будет активно ещё";"Буде активно ще";"Liczba pozostałych aktywnych dni";"Dias ativos restantes";"Kalan aktif gün";"Zbývající aktivní dny";"Ενεργές ημέρες που απομένουν";"Sisa hari aktif";"จำนวนวันคงเหลือ";"남은 일수";"高\t级\t账\t号\t有\t效\t期";"残りの\t日数";"高\t級\t帳\t號\t有\t效\t期\t限";;
 "subscription/renew";"You can activate or renew your subscription for";"Vous pouvez activer ou renouveler votre abonnement pour";"Puoi attivare o rinnovare l'iscrizione per";"Aktiviere oder erneuere dein Premium-Konto für";"Puedes activar o renovar tu subscripción por";"Вы можете приобрести или продлить подписку на";"Ви можете активувати або відновити підписку";"Możesz aktywować lub odnowić abonament za";"Pode ativar ou renovar a subscrição por";"Şunun karşılığında üyeliğini etkinleştirebilir veya yenileyebilirsin:";"Své předplatné můžeš aktivovat nebo obnovit za";"Μπορείτε να ενεργοποιήσετε ή να ανανεώσετε τη συνδρομή σας για";"Kamu bisa mengaktifkan atau memperbarui langganan dengan harga";"คุณสามารถเปิดใช้งานหรือต่ออายุสมาชิกในราคา";"당신은 신청함으로써 활성화 또는 갱신할 수 있습니다.";"你\t可\t以\t激\t活\t或\t续\t订";"あなたは、\tサブスクリプションを\t起動または\t更新できます";"你\t可\t以\t啟\t動\t或\t續\t訂";;
@@ -675,6 +658,8 @@ Bu eşyayı satın almak için bir füze gemisi açın.";"DLS Rounds can only be
 "lootbox/past_events_box_tanks_seasons_1_to_7";"Historical Trophy V";"Trophée historique V";"Trofeo Storico V";"Historische Trophäe V";"Trofeo Histórico V";"Исторический трофей V";"Історичний трофей V";"Trofeum Historyczne V";"Troféu Histórico V";"Tarihi Ganimet V";"Historická trofej V";"Ιστορικό τρόπαιο V";"Trofi Historis V";"รางวัลอิงประวัติศาสตร์ V";"히스토리컬 전리품 상자 V";"往\t期\t战\t利\t品\t箱 V";"歴史の\tトロフィー V";"歷\t史\t獎\t盃 V";;
 "lootbox/past_events_box_ships_seasons_1_to_8";"Historical Trophy VI";"Trophée historique VI";"Trofeo Storico VI";"Historische Trophäe VI";"Trofeo Histórico VI";"Исторический трофей VI";"Історичний трофей VI";"Trofeum Historyczne VI";"Troféu Histórico VI";"Tarihi Ganimet VI";"Historická trofej VI";"Ιστορικό τρόπαιο VI";"Trofi Historis VI";"รางวัลอิงประวัติศาสตร์ VI";"히스토리컬 전리품 상자 VI";"往\t期\t战\t利\t品\t箱 VI";"歴史の\tトロフィー VI";"歷\t史\t獎\t盃 VI";;
 "lootbox/past_events_box_tanks_seasons_1_to_8";"Historical Trophy VI";"Trophée historique VI";"Trofeo Storico VI";"Historische Trophäe VI";"Trofeo Histórico VI";"Исторический трофей VI";"Історичний трофей VI";"Trofeum Historyczne VI";"Troféu Histórico VI";"Tarihi Ganimet VI";"Historická trofej VI";"Ιστορικό τρόπαιο VI";"Trofi Historis VI";"รางวัลอิงประวัติศาสตร์ VI";"히스토리컬 전리품 상자 VI";"往\t期\t战\t利\t品\t箱 VI";"歴史の\tトロフィー VI";"歷\t史\t獎\t盃 VI";;
+"lootbox/past_events_box_ships_seasons_1_to_9";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Исторический трофей VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";;
+"lootbox/past_events_box_tanks_seasons_1_to_9";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Исторический трофей VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";;
 "offer/unit/tanks";"General's kit";"Kit du général";"Kit del Generale";"Paket des Generals";"Kit de General";"Набор генерала";"Набір генерала";"Zestaw generała";"Kit do General";"Generalin kiti";"Generálova sada";"Κιτ στρατηγού";"Kit Jenderal";"ชุดนายพล";"육군 사령관 키트";"陆\t军\t司\t令\t礼\t包";"将軍の\tキット";"陸\t軍\t司\t令\t禮\t包";;
 "offer/unit/ships";"Admiral's kit";"Kit de l'amiral";"Kit dell'Ammiraglio";"Paket des Admirals";"Kit del Almirante";"Набор адмирала";"Набір адмірала";"Zestaw admirała";"Kit do Almirante";"Amiralin kiti";"Admirálova sada";"Κιτ ναυάρχου";"Kit Laksamana";"ชุดพลเรือเอก";"해군 사령관 키트";"海\t军\t司\t令\t礼\t包";"提督の\tキット";"海\t軍\t司\t令\t禮\t包";;
 "offer/gold";"Big crate of gold";"Grande boîte d'or";"Grossa cassa con oro";"Große Kiste Gold";"Caja grande de oro";"Большой ящик с золотом";"Великий ящик золота";"Duża skrzynia ze złotem";"Caixote grande de ouro";"Büyük altın kutusu";"Velká bedna se zlatem";"Μεγάλο κιβώτιο με χρυσό";"Peti besar berisi emas";"ทองลังใหญ่";"대형 골드 상자";"大\t箱\t金\t币";"ゴールドの\t大きな\tクレート";"大\t箱\t金\t幣";;

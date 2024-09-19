@@ -774,7 +774,7 @@
           "icon": "t_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_1"
         },
-        "30cal_tracer": {
+        "30cal_tracers": {
           "icon": "ap_ball/t_ball/t_ball/t_ball/t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -4042,7 +4042,7 @@
         "30cal_universal": {
           "icon": "t_ball/ap_ball/i_ball/"
         },
-        "30cal_tracer": {
+        "30cal_tracers": {
           "icon": "ap_ball/t_ball/t_ball/t_ball/t_ball/"
         },
         "30cal_stealth": {
@@ -4112,7 +4112,7 @@
         "30cal_universal": {
           "icon": "t_ball/ap_ball/i_ball/"
         },
-        "30cal_tracer": {
+        "30cal_tracers": {
           "icon": "ap_ball/t_ball/t_ball/t_ball/t_ball/"
         },
         "30cal_stealth": {
@@ -4249,7 +4249,7 @@
           "icon": "he_frag_i_t/",
           "reqModification": "aircraft_mod_3"
         },
-        "mgc30l_mix": {
+        "mgc30l_universal": {
           "icon": "he_frag_i_t/ap_i_t/",
           "reqModification": "aircraft_mod_2"
         }
@@ -5076,7 +5076,7 @@
           "icon": "t_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "30cal_tracer": {
+        "30cal_tracers": {
           "icon": "ap_ball/t_ball/t_ball/t_ball/t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -5664,7 +5664,7 @@
           "icon": "t_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_4"
         },
-        "30cal_tracer": {
+        "30cal_tracers": {
           "icon": "ap_ball/t_ball/t_ball/t_ball/t_ball/",
           "reqModification": "aircraft_mod_2"
         },
@@ -7404,7 +7404,7 @@
           "icon": "t_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "30cal_tracer": {
+        "30cal_tracers": {
           "icon": "ap_ball/t_ball/t_ball/t_ball/t_ball/",
           "reqModification": "aircraft_mod_1"
         },
@@ -7496,7 +7496,7 @@
           "icon": "t_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_3"
         },
-        "30cal_tracer": {
+        "30cal_tracers": {
           "icon": "ap_ball/t_ball/t_ball/t_ball/t_ball/",
           "reqModification": "aircraft_mod_1"
         },

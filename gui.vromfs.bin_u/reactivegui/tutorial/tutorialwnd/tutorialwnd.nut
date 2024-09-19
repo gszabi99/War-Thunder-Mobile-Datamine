@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setTimeout, deferOnce } = require("dagor.workcycle")
+let { setInterval, clearTimer, deferOnce } = require("dagor.workcycle")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let tutorialWndDefStyle = require("tutorialWndDefStyle.nut")
 let { isTutorialActive, tutorialConfigVersion, getTutorialConfig, stepIdx, WND_UID,
@@ -11,6 +11,10 @@ let { getBox, incBoxSize, createHighlight, findGoodPos, findGoodArrowPos, sizePo
 
 const DEF_SKIP_TIME = 3.0
 let charBestPosOffsetX = hdpxi(330)
+
+let boxUpdateCount = Watched(0)
+let boxUpdateCountWithStep = Computed(@() boxUpdateCount.value + stepIdx.value)
+
 
 let mkLightCtorExt = @(lightCtor, nextStepDelay) function(box) {
   let { ctor = null, onClick = null } = box
@@ -130,7 +134,7 @@ function mkMessage(text, charId, customCtor, boxes, style) {
 }
 
 function mkSkipButton(stepSkipDelay, boxes, style) {
-  let skipBtn = style.skipBtnCtor(stepSkipDelay, skipStep, $"skipBtn{stepIdx.value}")
+  let skipBtn = style.skipBtnCtor(stepSkipDelay, skipStep, $"skipBtn{stepIdx.get()}")
   let size = calc_comp_size(skipBtn)
   local pos = null
   let rightPos = [sw(95) - size[0], sh(5)]
@@ -147,8 +151,9 @@ function mkSkipButton(stepSkipDelay, boxes, style) {
   return {
     skipBtn = @() {
       watch = skipKeyAllowed
+      key = $"skipBtnContainer{stepIdx.get()}"
       pos
-      children = skipKeyAllowed.value ? skipBtn : null
+      children = skipKeyAllowed.get() ? skipBtn : null
     }
     skipBox = sizePosToBox(size, pos)
   }
@@ -173,9 +178,22 @@ local function mkArrows(boxes, obstaclesVar, style) {
 }
 
 let nextStepSubscription = @(v) v ? deferOnce(nextStep) : null
+let isBoxValid = @(box) box.r - box.l > 0 && box.b - box.t > 0
 
-let boxUpdateCount = Watched(0)
-let boxUpdateCountWithStep = Computed(@() boxUpdateCount.value + stepIdx.value)
+function checkValidBoxes() {
+  let { objects = [] } = getTutorialConfig()?.steps[stepIdx.value]
+  foreach (objData in objects) {
+    local { keys = null } = objData
+    if (keys instanceof Watched)
+      keys = keys.get()
+    local box = getBox(keys)
+    if (box != null && isBoxValid(box)) {
+      boxUpdateCount.set(boxUpdateCount.get() + 1)
+      return
+    }
+  }
+}
+
 function tutorialWnd() {
   let watch = [tutorialConfigVersion, stepIdx, boxUpdateCountWithStep]
   let config = getTutorialConfig()
@@ -202,7 +220,7 @@ function tutorialWnd() {
     local box = getBox(keys)
     if (box == null)
       continue
-    let isValid = box.r - box.l > 0 && box.b - box.t > 0
+    let isValid = isBoxValid(box)
     if (isValid)
       box = incBoxSize(box, sizeIncAdd)
     boxes.append(objData.__merge(box, { idx }))
@@ -233,8 +251,9 @@ function tutorialWnd() {
       hasValidBoxes || !shouldBeBoxes ? null //recalc objects if back scene not loaded yet
         : {
             size = SIZE_TO_CONTENT
-            key = boxUpdateCountWithStep.value,
-            onAttach = @() setTimeout(0.05, @() boxUpdateCount(boxUpdateCount.value + 1))
+            key = checkValidBoxes
+            onAttach = @() setInterval(0.05, checkValidBoxes)
+            onDetach = @() clearTimer(checkValidBoxes)
           }
       nextStepAfter == null ? null
         : {

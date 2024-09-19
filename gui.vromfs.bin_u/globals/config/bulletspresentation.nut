@@ -111,7 +111,7 @@ let bulletsLocIdByCaliber = [
   "air_target", "air_targets", "all_tracers", "antibomber", "antitank", "apit", "apt",
   "armor_target", "armor_targets", "fighter", "ground_targets", "mix", "night", "stealth",
   "tracer", "tracers", "turret_ap", "turret_ap_he", "turret_ap_t", "turret_api", "turret_apit",
-  "turret_apt", "turret_he", "turret_het", "universal"
+  "turret_apt", "turret_he", "turret_het", "universal", "heit"
 ]
 
 function getBulletImage(bullets){

@@ -8,7 +8,6 @@ let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId
 } = require("tutorialWnd/tutorialWndState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
-let { firstBattlesReward } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
 let { isSlotAttrAttached, openSlotAttrWnd } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { selectedSlotIdx, slotBarSlotKey } = require("%rGui/slotBar/slotBarState.nut")
@@ -19,8 +18,7 @@ let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let isFinished = mkIsTutorialCompleted(TUTORIAL_ID)
 
 let hasSlotForTutor = @(cSlots) cSlots != null && null != cSlots.slots.findindex(@(slot) slot.sp > 0)
-let needShowTutorial = Computed(@() firstBattlesReward.get() == null
-  && !isFinished.get()
+let needShowTutorial = Computed(@() !isFinished.get()
   && hasSlotAttrPreset.get()
   && curCampaignSlots.get() != null
   && null == curCampaignSlots.get().slots.findvalue(@(slot) slot.attrLevels.len() > 0)

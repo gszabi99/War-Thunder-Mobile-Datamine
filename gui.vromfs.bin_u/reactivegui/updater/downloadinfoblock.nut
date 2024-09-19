@@ -4,7 +4,7 @@ let { wantStartDownloadAddons, openDownloadAddonsWnd, downloadAddonsStr, isDownl
 } = require("updaterState.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 
-let blockSize = [hdpx(500), evenPx(95)]
+let blockSize = [hdpx(550), evenPx(95)]
 let padding = hdpx(10)
 let progressSize = blockSize[1] - 2 * padding
 let checkingColor = 0x80808080
@@ -24,7 +24,7 @@ let progress = @() {
     rendObj = ROBJ_TEXT
     text = progressPercent.value == null ? "-" : $"{progressPercent.value}%"
     color = isStageDownloading.value ? 0xFFFFFFFF : checkingColor
-  }.__update(fontVeryTiny)
+  }.__update(fontVeryVeryTinyAccented)
 }
 
 function statusBlock() {
@@ -47,16 +47,17 @@ function statusBlock() {
         text = statusText
       }.__update(fontVeryTiny)
       {
-        size = flex()
+        size = [flex(), SIZE_TO_CONTENT]
         rendObj = ROBJ_TEXTAREA
         behavior = [Behaviors.TextArea, Behaviors.Marquee]
+        maxHeight = hdpx(60)
         text = downloadAddonsStr.value
         color = 0xFFC0C0C0
 
         orientation = O_VERTICAL
-        speed = hdpx(30)
+        speed = [hdpx(30), hdpx(1)]
         delay = defMarqueeDelay
-      }.__update(fontVeryTiny)
+      }.__update(fontVeryTinyShaded)
     ]
   }
 }
@@ -69,7 +70,7 @@ let downloadInfoBlock = @() {
   rendObj = ROBJ_9RECT
   image = gradTranspDoubleSideX
   texOffs = [0, gradDoubleTexOffset]
-  screenOffs = [0, hdpx(300)]
+  screenOffs = [0, hdpx(50)]
   color = 0x90000000
   padding = [hdpx(5), hdpx(20)]
   gap = hdpx(20)
