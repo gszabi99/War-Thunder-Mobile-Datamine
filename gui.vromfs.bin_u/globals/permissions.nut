@@ -31,6 +31,7 @@ let defaults = {
   can_skip_consent = false
   can_report_player = DBGLEVEL > 0
   has_payments_blocked_web_page = false
+  has_att_warmingup_scene = false
 }
 
 let dbgPermissions = sharedWatched("dbgPermissions", @() {})

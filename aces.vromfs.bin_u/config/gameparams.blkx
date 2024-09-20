@@ -335,8 +335,8 @@
   "shipTouchAimSensMult": 0.3,
   "aircraftTouchSensMult": 1.0,
   "aircraftTouchAimSensMult": 0.7,
-  "touchSensMultPlane": 0.175,
-  "touchAimSensMultPlane": 0.125,
+  "touchSensMultPlane": 0.105,
+  "touchAimSensMultPlane": 0.075,
   "loadNetEffectiveness": 100,
   "forceShowIndicators": true,
   "drawDamagePoints": true,
@@ -16992,7 +16992,7 @@
     }
   },
   "treeDestractible": {
-    "heightThreshold": 7.0,
+    "heightThreshold": 3.0,
     "radiusThreshold": 0.5,
     "impulseThresholdMult": 1000.0,
     "canopyRestitution": 0.5,

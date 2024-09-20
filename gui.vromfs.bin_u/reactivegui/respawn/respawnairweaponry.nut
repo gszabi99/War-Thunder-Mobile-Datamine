@@ -58,8 +58,8 @@ let mkCard = @(iconComp, title, bottomTitle = "", isSelectedStyle = false) {
 }
 
 let weaponTitle = @(w) format(loc("weapons/counter/right/short"), (w?.count ?? 1))
-let mkWeaponCard = @(w, canClick) mkCard(commonWeaponIcon(w), weaponTitle(w))
-  .__update({
+let mkWeaponCard = @(w, canClick) mkCard(commonWeaponIcon(w).__update({vplace = ALIGN_BOTTOM, hplace = ALIGN_CENTER}),
+  weaponTitle(w)).__update({
     onClick = canClick ? @() showAirRespChooseSecWnd(w.slotIdx) : null
     sound = canClick ? { click = "click" } : null
   })

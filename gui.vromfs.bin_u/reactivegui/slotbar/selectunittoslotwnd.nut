@@ -47,7 +47,9 @@ let openImpl = @(rect) addModalWindow({
   children = [
     mkCutBg([rect])
     {
-      margin = [rect.b + hdpx(50), 0, 0, 0]
+      margin = [rect.b + hdpx(50), 0, saBorders[1], 0]
+      vplace = ALIGN_BOTTOM
+      hplace = ALIGN_LEFT
       children = msgBoxBg.__merge({ children = slotBarSelectWnd })
     }
     mkBgText(rect)

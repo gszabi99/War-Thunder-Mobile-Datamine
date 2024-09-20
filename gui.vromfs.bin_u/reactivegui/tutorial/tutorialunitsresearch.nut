@@ -17,10 +17,10 @@ let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutoria
 let { nodes, unitsResearchStatus, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { hasModalWindows, moveModalToTop } = require("%rGui/components/modalWindows.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, WND_UID, goToStep,
-  nextStep, activeTutorialId } = require("tutorialWnd/tutorialWndState.nut")
+  activeTutorialId } = require("tutorialWnd/tutorialWndState.nut")
 let { setResearchUnit } = require("%rGui/unit/unitsWndActions.nut")
 let { PURCHASE_BOX_UID } = require("%rGui/shop/msgBoxPurchase.nut")
-let { slots, setUnitToSlot, canOpenSelectUnitWithModal
+let { slots, setUnitToSlot, canOpenSelectUnitWithModal, slotBarSelectWndAttached
   selectedUnitToSlot } = require("%rGui/slotBar/slotBarState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { triggerAnim } = require("%rGui/unitsTree/mkUnitPlate.nut")
@@ -148,17 +148,22 @@ function startTutorial() {
       }
       {
         id = "s4_units_wnd_animation"
+        nextStepAfter = slotBarSelectWndAttached
         function beforeStart() {
           canOpenSelectUnitWithModal.set(true)
           needSaveUnitDataForTutorial.set(false)
           closeMsgBox(PURCHASE_BOX_UID)
           triggerAnim()
-          resetTimeout(0.25, nextStep)
         }
+        objects = [{ keys = "sceneRoot", onClick = @() true }]
       }
       {
         id = "s5_set_purchased_unit_to_slot"
-        beforeStart = @() moveModalToTop(WND_UID)
+        function beforeStart() {
+          if(availableSlotsForSelection.len() == 0 || !slotBarSelectWndAttached.get())
+            deferOnce(@() goToStep(STEP_SELECT_NEXT_RESEARCH_DESCRIPTION))
+          moveModalToTop(WND_UID)
+        }
         text = loc("tutorial_set_purchased_unit_to_slot")
         objects = availableSlotsForSelection
       }

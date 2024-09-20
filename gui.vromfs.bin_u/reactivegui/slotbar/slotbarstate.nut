@@ -37,6 +37,7 @@ let isSlotsAnimActive = Computed(@() isAnimChangedSoon.get() && slotsNeedAddAnim
 let newSlotPriceGold = Computed(@() campConfigs.get()?.campaignCfg.slotPriceGold[curCampaignSlots.get()?.totalSlots])
 let selectedUnitToSlot = Watched(null)
 let canOpenSelectUnitWithModal = Watched(false)
+let slotBarSelectWndAttached = Watched(false)
 
 let getSlotAnimTrigger = @(idx, name) $"slot_{idx}_{name}"
 let mkCurSlotsInfo = @() { prevCampaign = isLoggedIn.get() ? curCampaign.get() : null, prevSlots = slots.get().map(@(s) s?.name ?? "") }
@@ -111,6 +112,7 @@ return {
   clearUnitSlot
   resetSelectedUnitToSlot
   canOpenSelectUnitWithModal
+  slotBarSelectWndAttached
 
   slotsNeedAddAnim
   getSlotAnimTrigger

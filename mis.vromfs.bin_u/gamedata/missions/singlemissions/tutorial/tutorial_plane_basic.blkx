@@ -1553,9 +1553,7 @@
             "name": ""
           },
           "wait": {
-            "time": 2.0,
-            "name": "",
-            "params": ""
+            "time": 2.0
           },
           "triggerEnable": {
             "target": "checkpoint_throttle_waypoint"

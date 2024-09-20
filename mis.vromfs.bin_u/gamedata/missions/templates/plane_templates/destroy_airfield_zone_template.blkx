@@ -336,44 +336,40 @@
         "triggerDisable": {
           "target": "check_bombing_zones_false"
         },
-        "playHint": [
-          {
-            "hintType": "tutorialHint",
-            "name": "hints/destoy_bases_first",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
-          {
-            "hintType": "tutorialHint",
-            "name": "hints/destoy_bases_first",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          }
-        ],
-        "wait": [
-          {
-            "time": 5.0
-          },
-          {
-            "time": 10.0
-          }
-        ],
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/destoy_bases_first",
+          "action": "show",
+          "shouldFadeOut": false,
+          "time": 5.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "__wait": {
+          "time": 5.0
+        },
+        "__playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/destoy_bases_first",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
         "comment": {
-          "value": "dopolnitel'no zhdem 10 sekund"
+          "value": "dopolnitel'no zhdem 15 sekund"
+        },
+        "wait": {
+          "time": 15.0
         },
         "triggerEnable": {
           "target": [

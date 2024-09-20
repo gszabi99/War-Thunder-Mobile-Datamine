@@ -1964,32 +1964,32 @@ di folder UserSights di folder root game.";"สร้างมุมมองผ
 "device_state/pl";"PL";"PL";"PL";"PL";"PL";"PL:";"PL";"PL";"PL";"PK";"PL";"PL";"PL";"PL";"PL";"丢\t包";"PL";"PL";;
 "HUD_IS_VISIBLE_BY_ZONE";"You are in the enemy detection zone and visible to them on the minimap.";"Vous êtes dans la zone de détection adverse et êtes visible sur leur carte.";"Sei nella zona di rilevamento nemica e visibile nella loro minimappa.";"Du befindest Dich im Erfassungsbereich des Feindes und bist für ihn auf der Minimap sichtbar.";"Estás en la zona de detección del enemigo y visible para ellos en el minimapa.";"Вы находитесь в зоне обнаружения противником и видны ему на миникарте.";"Ви знаходитесь в зоні виявлення противником і видно йому на мінікарті.";"Znajdujesz się w strefie wykrywania wroga i jesteś dla niego widoczny na minimapie.";"Está na zona de deteção inimiga e está visível para o inimigo no minimapa.";"Düşman tespit bölgesindesiniz. Düşmanlar mini haritada sizi görebilir.";"Nacházíš se v detekční zóně nepřítele a může tě vidět na minimapě.";"Βρίσκεστε στη ζώνη ανίχνευσης του εχθρού και είστε ορατοί σε αυτόν πάνω στο minimap.";"Kamu berada di zona deteksi musuh dan tampak di peta mini.";"คุณอยู่ในพื้นที่ตรวจจับของศัตรูและถูกมองเห็นได้ทางมินิแมพ";"적이 탐지할 수 있는 범위 내에 있습니다. 적의 미니맵 상에 자신의 위치가 표시됩니다.";"当\t前\t位\t于\t敌\t方\t侦\t测\t区\t域\t内，\t方\t位\t已\t暴\t露\t在\t敌\t方\t小\t地\t图\t中。";"敵の\t検知\tゾーン\t内です。\tミニマップ\t上で\t敵に\t見えています。";"當\t前\t位\t於\t敵\t方\t偵\t測\t區\t域\t內，\t方\t位\t已\t暴\t露\t在\t敵\t方\t小\t地\t圖\t中。";;
 "hud/aircraft_name";"Aircraft Name";"Nom de l'avion";"Nome dell'Aereo";"Flugzeug-Name";"Nombre del Avión";"Название самолёта";"Назва літака";"Nazwa samolotu";"Nome da aeronave";"Uçak Adı";"Název letadla";"Όνομα αεροσκάφους";"Nama Pesawat";"ชื่ออากาศยาน";"항공기 명칭";"战\t机\t名\t称";"航空機名";"戰\t機\t名\t稱";;
-"weaponry/courseGuns";"Fixed";"Formation";"Rotta";"Lehrgang";"Curso";"Курсовое";"Курсові гармати";"Pomocniczy";"Rota";"Yön";"Hlavní";"Πορεία";"Course";"ปืนติดลำ";"전방";"齐\t射";"コース";"軌\t道";;
+"weaponry/courseGuns";"Fixed";"Corrigé";"Fissa";"Fest";"Fijo";"Курсовое";"Стаціонарно";"Stałe";"Fixo";"Sabit";"Napevno";"Σταθερά";"Tetap";"ติดลำ";"전방";"齐\t射";"固定";"固\t定";;
 "weaponry/turretGuns";"Turret";"Tourelle";"Torretta";"Turm";"Torreta";"Турельное";"Турелі";"Wieża";"Torre";"Taret";"Věž";"Πυργίσκος";"Turret";"ป้อมปืน";"포탑";"主\t炮\t塔";"砲塔";"砲\t塔";;
 "weaponry/secondary";"Secondary";"Secondaire";"Secondaria";"Sekundär";"Secundaria";"Подвесное";"Додаткове озброєння";"Dodatkowa";"Secundário";"İkincil";"Vedlejší";"Δευτερεύων";"Cadangan";"รอง";"보조";"副\t武\t器";"セカンダリ";"次\t要";;
 "weaponry/secondaryWeapons";"Secondary Weapons";"Armes secondaires";"Armi secondarie";"Sekundärbewaffnung";"Armas Secundarias";"Подвесное оружие";"Додаткове озброєння";"Uzbrojenie dodatkowe";"Armas secundárias";"İkincil Silahlar";"Přídavná výzbroj";"Δευτερεύοντα όπλα";"Senjata Cadangan";"อาวุธรอง";"보조 무장";"挂\t载";"セカンダリ\t武装";"次\t要\t武\t器";;
-"weaponry/gunBelts";"Belts";"Belts";"Nastri";"Gurte";"Cinturones";"Ленты вооружения";"Стрічки";"Taśmy";"Cintos";"Kemerler";"Pásy";"Ιμάντες";"Sabuk";"สายพาน";"탄띠";"弹\t链";"ベルト";"彈\t藥\t帶";;
-"weaponry/courseGunBelts";"Fixed Weapons belts";"Ceintures d'armes de parcours";"Munizioni armi";"Kurs Waffengurte";"Cinturones de Armas de Rumbo";"Ленты курсового оружия";"Стрічки для курсової зброї";"Pasy uzbrojenia pomocniczego";"Cintos de armas de curso";"Seyir Silahları kemerleri";"Munice hlavní ráže";"Ιμάντες όπλων πορείας";"Sabuk Senjata Course";"สายพานอาวุธติดลำ";"전방 무장 탄띠";"前\t射\t武\t器\t弹\t链";"コース\t武器\tベルト";"軌\t道\t武\t器\t帶";;
+"weaponry/gunBelts";"Belts";"Ceintures";"Nastri";"Gurte";"Cinturones";"Ленты вооружения";"Стрічки";"Taśmy";"Cintos";"Kemerler";"Pásy";"Ιμάντες";"Sabuk";"สายพาน";"탄띠";"弹\t链";"ベルト";"彈\t藥\t帶";;
+"weaponry/courseGunBelts";"Fixed Weapons belts";"Ceintures d'armes fixes";"Munizioni Armi Fisse";"Gurte für fest installierte Waffen";"Cinturones de Armas Fijas";"Ленты курсового оружия";"Стрічки для стаціонарної зброї";"Taśmy uzbrojenia stałego";"Coldres fixos";"Sabit Silah kemerleri";"Pásy pro zbraně napevno";"Ιμάντες σταθερών όπλων";"Sabuk Senjata Tetap";"สายพานอาวุธติดลำ";"전방 무장 탄띠";"前\t射\t武\t器\t弹\t链";"固定武器\tベルト";"固\t定\t武\t器\t彈\t藥\t帶";;
 "weaponry/turretGunBelts";"Turret belts";"Ceintures de tourelle";"Nastri delle torrette";"Geschützkanzel-Gurte";"Cinturones de torreta";"Ленты турельного оружия";"Турельні стрічки";"Pasy wież";"Cintos da torre";"Taret kemerleri";"Munice věží";"Ιμάντες πυργίσκου";"Sabuk Turret";"สายพานป้อมปืน";"포탑 탄띠";"自\t卫\t武\t器\t弹\t链";"砲塔\tベルト";"砲\t塔\t帶";;
 "weaponry/tapToChooseSecondary";"Tap to select a secondary weapon";"Touchez pour sélectionner une arme secondaire";"Tap per scegliere l'arma secondaria";"Tippen, um eine Sekundärwaffe auszuwählen";"Pulsa para seleccionar un arma secundaria";"Нажмите для выбора подвесного оружия";"Натисніть, щоби вибрати додаткове озброєння";"Stuknij, aby wybrać broń dodatkową";"Tocar para selecionar uma arma secundária";"İkincil silah seçmek için dokunun";"Klepnutím vybereš přídavnou zbraň";"Πατήστε για να επιλέξετε ένα δευτερεύον όπλο";"Ketuk untuk memilih senjata cadangan";"แตะเพื่อเลือกอาวุธรอง";"탭하여 보조 무장을 선택하십시오";"点\t击\t选\t取\t挂\t载";"タップして\tセカンダリ\t武装を\t選択";"輕\t觸\t選\t擇\t次\t要\t武\t器";;
 "weaponry/hint/needToInstallSecondaryGun";"To use this Fixed Weapon,
-you need to install it in as Secondary Weapon";"Pour utiliser cette arme de parcours,
-vous devez l'installer comme arme secondaire";"Per usare questa Arma,
-devi installarla come Arma Secondaria";"Um diese Kurswaffe zu benutzen,
-musst du sie als Sekundärwaffe installieren";"Para utilizar esta Arma de Rumbo
+you need to install it in as Secondary Weapon";"Pour utiliser cette arme fixe,
+vous devez l'installer en tant qu'arme secondaire";"Per usare questa Arma,
+devi installarla come Arma Secondaria";"Um diese fest installierte Waffe zu benutzen,
+musst du sie als Sekundärwaffe installieren";"Para utilizar esta Arma Fija
 tienes que instalarla como Arma Secundaria";"Для использования этого курсового оружия
-вам надо установить его в подвесное вооружение";"Щоби використовувати цю курсову зброю,
-установіть її як допоміжне озброєння";"Aby korzystać z tego uzbrojenia pomocniczego,
-musisz zainstalować ją jako broń dodatkową";"Para usar esta arma de curso,
-é necessário instalá-la como Arma Secundária";"Bu Rota Silahını kullanmak için
-onu İkincil Silah olarak yüklemelisiniz";"Pro použití této zbraně je nutné
-ji namontovat jako přídavnou";"Για να χρησιμοποιήσετε αυτό το Όπλο Πορείας,
-πρέπει να το εγκαταστήσετε ως Δευτερεύον Όπλο";"Kamu harus memasang Senjata Course sebagai Senjata Cadangan
-untuk menggunakannya";"เพื่อใช้ปืนติดลำนี้
+вам надо установить его в подвесное вооружение";"Щоби використовувати цю стаціонарну зброю,
+установіть її як допоміжне озброєння";"Aby korzystać z tego uzbrojenia stałego,
+musisz zainstalować ją jako broń dodatkową";"Para usar esta arma fixa,
+instale-a como arma secundária";"Bu Sabit Silahı kullanmak için,
+İkincil Silah olarak yüklemeniz gerekir";"Pro použití této zbraně napevno je nutné
+ji namontovat jako přídavnou";"Για να χρησιμοποιήσετε αυτό το Σταθερό Όπλο,
+πρέπει να το εγκαταστήσετε ως Δευτερεύον Όπλο";"Untuk memakai Senjata Tetap ini,
+kamu harus memasangnya sebagai Senjata Cadangan";"เพื่อใช้ปืนติดลำนี้
 คุณต้องติดตั้งเป็นอาวุธรอง";"이 전방 무장은 
 보조 무장으로 탑재해야 합니다.";"如\t需\t使\t用\t该\t前\t射\t武\t器，
-需\t要\t在\t挂\t载\t界\t面\t中\t进\t行\t加\t挂";"この\tコース\t武器を\t使用するには
-セカンダリ\t武装として\t選択する\t必要があります";"若\t要\t使\t用\t這\t個\t軌\t道\t武\t器，
+需\t要\t在\t挂\t载\t界\t面\t中\t进\t行\t加\t挂";"この\t固定武器を\t使用するには
+セカンダリ\t武装として\t選択する\t必要があります";"若\t要\t使\t用\t這\t個\t固\t定\t武\t器，
 你\t需\t要\t將\t其\t安\t裝\t為\t次\t要\t武\t器";;
-"hints/reloading/cannons";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"Курсовое вооружение перезаряжается";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";;
-"hints/reloading/guns";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"Курсовое вооружение перезаряжается";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";"The fixed weaponry is reloading";;
+"hints/reloading/cannons";"The fixed weaponry is reloading";"L'armement fixe est en recharge";"L'armamento fisso è in ricarica";"Die fest installierten Waffen werden nachgeladen";"El armamento fijo se está recargando";"Курсовое вооружение перезаряжается";"Стаціонарна зброя перезаряджається";"Stałe uzbrojenie jest przeładowywane";"O armamento fixo está sendo recarregado";"Sabit silahlar dolduruluyor";"Zbraň napevno se přebíjí";"Ο σταθερός οπλισμός γεμίζει ξανά";"Persenjataan tetap sedang diisi ulang";"อาวุธติดลำกำลังเติมกระสุน";"전방 무장 재장전 중...";"The fixed weaponry is reloading";"固定武器は\tリロード\t中です";"固\t定\t武\t器\t正\t在\t重\t新\t裝\t填";;
+"hints/reloading/guns";"The fixed weaponry is reloading";"L'armement fixe est en recharge";"L'armamento fisso è in ricarica";"Die fest installierten Waffen werden nachgeladen";"El armamento fijo se está recargando";"Курсовое вооружение перезаряжается";"Стаціонарна зброя перезаряджається";"Stałe uzbrojenie jest przeładowywane";"O armamento fixo está sendo recarregado";"Sabit silahlar dolduruluyor";"Zbraň napevno se přebíjí";"Ο σταθερός οπλισμός γεμίζει ξανά";"Persenjataan tetap sedang diisi ulang";"อาวุธติดลำกำลังเติมกระสุน";"전방 무장 재장전 중...";"The fixed weaponry is reloading";"固定武器は\tリロード\t中です";"固\t定\t武\t器\t正\t在\t重\t新\t裝\t填";;

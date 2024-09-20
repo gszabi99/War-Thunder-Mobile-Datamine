@@ -13,7 +13,7 @@ let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { openUnitsTreeWnd } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { slots, setUnitToSlot, buyUnitSlot, newSlotPriceGold, slotsNeedAddAnim, visibleNewModsSlots,
-  getSlotAnimTrigger, onFinishSlotAnim, selectedSlotIdx, slotBarArsenalKey, slotBarSlotKey
+  getSlotAnimTrigger, onFinishSlotAnim, selectedSlotIdx, slotBarArsenalKey, slotBarSlotKey, slotBarSelectWndAttached
 } = require("slotBarState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
@@ -31,7 +31,6 @@ let { gradTranspDoubleSideX, mkColoredGradientY } = require("%rGui/style/gradien
 
 
 let slotsGap = hdpx(4)
-let gap = hdpx(10)
 let marginVert = hdpx(5)
 let buyIconSize = hdpxi(40)
 let actionBtnSize = slotBtnSize
@@ -447,12 +446,16 @@ let slotBarSelectWnd = @() {
   watch = [slots, newSlotPriceGold]
   key = "slotBarSelectWnd"
   size = [sw(100), SIZE_TO_CONTENT]
-  halign = ALIGN_CENTER
+  halign = ALIGN_LEFT
   valign = ALIGN_CENTER
-  onDetach = skipRemoveAnim
+  onAttach = @() slotBarSelectWndAttached.set(true)
+  function onDetach() {
+    slotBarSelectWndAttached.set(false)
+    skipRemoveAnim()
+  }
   flow = FLOW_HORIZONTAL
-  padding = hdpx(10)
-  gap
+  padding = [hdpx(10), hdpx(10), 0, saBorders[0]]
+  gap = slotsGap
   children = slots.get().map(mkSlotSelect)
     .append(newSlotPriceGold.get() == null ? null : slotToPurchase(newSlotPriceGold.get()))
 }
