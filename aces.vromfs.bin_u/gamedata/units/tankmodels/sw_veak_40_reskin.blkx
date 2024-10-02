@@ -2834,7 +2834,6 @@
     }
   },
   "modifications": {
-    "upgraded": {},
     "art_support": {},
     "tank_extinguisher": {},
     "tank_tool_kit_expendable": {},
@@ -2848,14 +2847,21 @@
     "tank_smoke_screen_low_cooldown": {},
     "tank_smoke_screen_long_duration": {}
   },
-  "upgraded_skin": {
-    "replace_tex": {
-      "from": "se_camo_green*",
-      "to": "se_camo_modern_deform*"
+  "vehicleSkins": {
+    "winter": {
+      "replace_tex": {
+        "from": "se_camo_green*",
+        "to": "se_camo_winter_bicolor*"
+      }
     }
   },
-  "upgradedDecals": {
-    "upgraded": {
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "winter": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0

@@ -7,6 +7,7 @@ let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { add_slot_attributes } = require("%appGlobals/pServer/pServerApi.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
 
 let { slots, selectedSlotIdx, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
 let { selAttributes, curCategoryId, attrPresets,
@@ -174,6 +175,16 @@ function loadSeenSlotAttributes() {
   seenSlotAttributes.set(res)
 }
 
+function hasUpgradedAttrUnitNotUpdatable() {
+  foreach (unit in myUnits.get())
+    if (!unit.isPremium && !unit.isUpgraded)
+      foreach (attributes in unit.attrLevels)
+        foreach (attr in attributes)
+          if (attr > 0)
+            return true
+  return false
+}
+
 if (seenSlotAttributes.get().len() == 0)
   loadSeenSlotAttributes()
 
@@ -200,6 +211,7 @@ return {
   unseenSlotAttrByIdx
   resetAttrState
   applyAttributes
+  hasUpgradedAttrUnitNotUpdatable
   slotLevelsToMax
   seenSlotAttributes
   markSlotAttributesSeen

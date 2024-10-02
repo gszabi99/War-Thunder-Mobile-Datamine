@@ -259,6 +259,68 @@
       },
       "else_actions": {}
     },
+    "check_still_locked_temp": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "isTargetLocked": {
+          "target": "target_plane01"
+        }
+      },
+      "actions": {},
+      "else_actions": {
+        "triggerEnable": {
+          "target": "lock_target1_temp"
+        }
+      }
+    },
+    "lock_target1_temp": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionSetTimeSpeed": [
+          {
+            "speed": 0.01,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          }
+        ],
+        "wait": {
+          "time": 0.02
+        },
+        "playerLockTarget": {
+          "target": "target_plane01"
+        },
+        "triggerEnable": {
+          "target": "check_still_locked_temp"
+        }
+      },
+      "else_actions": {}
+    },
     "steering": {
       "isCategory": true,
       "is_enabled": true,
@@ -3235,7 +3297,8 @@
               "shooting_start_turning",
               "mission_timer",
               "retry_following_timer",
-              "retry_following_crash"
+              "retry_following_crash",
+              "check_still_locked_temp"
             ]
           },
           "triggerDisable": {
@@ -5442,7 +5505,9 @@
               "shooting_aim_completed",
               "shooting_open_fire",
               "retry_shooting_crash",
-              "retry_shooting_timer"
+              "retry_shooting_timer",
+              "check_still_locked_temp",
+              "lock_target1_temp"
             ]
           },
           "varSetInt": {
@@ -6258,10 +6323,7 @@
                 "target_plane02",
                 "target_plane03"
               ],
-              "move_type": "zigzag_move",
-              "zzPeriod": 5.0,
-              "zzAmp": 20.0,
-              "speed": 250.0
+              "move_type": "move"
             }
           ],
           "unitSetControls": {
@@ -6270,18 +6332,31 @@
             "force": true,
             "objects": "player"
           },
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": [
-              "target_plane02",
-              "target_plane03"
-            ],
-            "attack_type": "hold_fire",
-            "ignoresEnemy": true
-          },
+          "unitSetProperties": [
+            {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": [
+                "target_plane02",
+                "target_plane03"
+              ],
+              "attack_type": "hold_fire",
+              "ignoresEnemy": true,
+              "speed": 350.0
+            },
+            {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "player",
+              "attack_type": "hold_fire",
+              "ignoresEnemy": true,
+              "speed": 350.0
+            }
+          ],
           "unitForceRearmSpeed": {
             "rearmSpeedK": 30.0,
             "target": "player"
@@ -6499,7 +6574,8 @@
               "retry_training_timer",
               "mission_timer",
               "training_plane_killed",
-              "training_time_resume"
+              "training_time_resume",
+              "training_to_far"
             ]
           }
         },
@@ -6865,7 +6941,9 @@
               "training_locked_another_target_1",
               "training_locked_another_target_2",
               "retry_training_crash",
-              "retry_training_timer"
+              "retry_training_timer",
+              "training_to_close",
+              "training_to_far"
             ]
           },
           "unitDamage": {
@@ -6962,7 +7040,9 @@
               "training_plane_killed",
               "training_locked_another_target_1",
               "training_locked_another_target_2",
-              "training_planes_killed"
+              "training_planes_killed",
+              "training_to_close",
+              "training_to_far"
             ]
           },
           "hudElementShow": {
@@ -7099,7 +7179,9 @@
               "training_plane_killed",
               "training_locked_another_target_1",
               "training_locked_another_target_2",
-              "training_planes_killed"
+              "training_planes_killed",
+              "training_to_close",
+              "training_to_far"
             ]
           },
           "hudElementShow": {
@@ -7200,6 +7282,165 @@
           },
           "triggerEnable": {
             "target": "training_initial"
+          }
+        },
+        "else_actions": {}
+      },
+      "training_to_far": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 300.0,
+            "math": "notNear2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object": "player",
+            "target": [
+              "target_plane02",
+              "target_plane03"
+            ]
+          }
+        },
+        "actions": {
+          "unitMoveTo": {
+            "target": "target_plane02_final_position",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "object_marking": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "object": [
+              "target_plane02",
+              "target_plane03"
+            ],
+            "move_type": "move",
+            "speed": 275.0,
+            "afterburner": false
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "target_plane02",
+              "target_plane03"
+            ],
+            "attack_type": "hold_fire",
+            "ignoresEnemy": true,
+            "speed": 275.0
+          },
+          "triggerEnable": {
+            "target": "training_to_close"
+          }
+        },
+        "else_actions": {}
+      },
+      "training_to_close": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 250.0,
+            "math": "2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object": "player",
+            "target": [
+              "target_plane02",
+              "target_plane03"
+            ]
+          }
+        },
+        "actions": {
+          "unitMoveTo": {
+            "target": "target_plane02_final_position",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "object_marking": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "object": [
+              "target_plane02",
+              "target_plane03"
+            ],
+            "move_type": "move",
+            "speed": 400.0,
+            "afterburner": false
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": [
+              "target_plane02",
+              "target_plane03"
+            ],
+            "attack_type": "hold_fire",
+            "ignoresEnemy": true,
+            "speed": 400.0,
+            "throttle": 1.0,
+            "lockSpeed": true
           }
         },
         "else_actions": {}
@@ -7514,8 +7755,11 @@
           }
         },
         "conditions": {
+          "playerShortcutPressed": {
+            "control": "ID_ZOOM_TOGGLE"
+          },
           "playerWhenCameraState": {
-            "value": 60.0,
+            "value": 80.0,
             "state": "fov",
             "comparasion_func": "less"
           }
@@ -7546,7 +7790,7 @@
             "name": ""
           },
           "wait": {
-            "time": 0.5
+            "time": 0.1
           },
           "triggerEnable": {
             "target": "assault_zoomed"
@@ -9441,9 +9685,9 @@
           40.0
         ],
         [
-          3806.55,
+          3756.25,
           900.004,
-          7703.5
+          7563.25
         ]
       ],
       "props": {
@@ -9554,7 +9798,7 @@
         ],
         [
           3634.35,
-          900.004,
+          913.95,
           7271.0
         ]
       ],
@@ -9778,7 +10022,7 @@
         ],
         [
           3634.35,
-          850.0,
+          865.75,
           7271.0
         ]
       ],

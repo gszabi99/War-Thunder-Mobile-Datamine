@@ -664,6 +664,14 @@
     "cameraAhead": true
   },
   "commonWeapons": {
+    "hideNodes": {
+      "n": [
+        "turret_01",
+        "main_caliber_turret_02",
+        "main_caliber_gun_02",
+        "gun_barrel_02"
+      ]
+    },
     "Weapon": [
       {
         "trigger": "gunner1",
@@ -1160,6 +1168,14 @@
     "weapons_contact_mines": {
       "effects": {
         "commonWeapons": {
+          "hideNodes": {
+            "n": [
+              "turret_01",
+              "main_caliber_turret_02",
+              "main_caliber_gun_02",
+              "gun_barrel_02"
+            ]
+          },
           "Weapon": [
             {
               "trigger": "gunner1",
@@ -2381,7 +2397,13 @@
     }
   },
   "battleHideNodes": {
-    "n": "details"
+    "n": [
+      "details",
+      "turret_01",
+      "main_caliber_turret_02",
+      "main_caliber_gun_02",
+      "gun_barrel_02"
+    ]
   },
   "upgraded_skin": {
     "name": "prem_camo",

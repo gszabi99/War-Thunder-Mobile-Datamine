@@ -1,9 +1,145 @@
 return {
   "adsCfg": {},
+  "allBlueprints": {
+    "b-17g": {
+      "convertGoldRatio": 1,
+      "name": "b-17g",
+      "targetCount": 1000
+    },
+    "bf-109e-3": {
+      "convertGoldRatio": 1,
+      "name": "bf-109e-3",
+      "targetCount": 1000
+    },
+    "bf-109g-14": {
+      "convertGoldRatio": 1,
+      "name": "bf-109g-14",
+      "targetCount": 1000
+    },
+    "bf-110g-2": {
+      "convertGoldRatio": 1,
+      "name": "bf-110g-2",
+      "targetCount": 1000
+    },
+    "f2g-1": {
+      "convertGoldRatio": 1,
+      "name": "f2g-1",
+      "targetCount": 1000
+    },
+    "f4f_4": {
+      "convertGoldRatio": 1,
+      "name": "f4f_4",
+      "targetCount": 1000
+    },
+    "fw_190a_5_u14": {
+      "convertGoldRatio": 1,
+      "name": "fw_190a_5_u14",
+      "targetCount": 1000
+    },
+    "he51b1": {
+      "convertGoldRatio": 1,
+      "name": "he51b1",
+      "targetCount": 1000
+    },
+    "i-15_1935": {
+      "convertGoldRatio": 1,
+      "name": "i-15_1935",
+      "targetCount": 1000
+    },
+    "i_180": {
+      "convertGoldRatio": 1,
+      "name": "i_180",
+      "targetCount": 1000
+    },
+    "il-10_1946": {
+      "convertGoldRatio": 1,
+      "name": "il-10_1946",
+      "targetCount": 1000
+    },
+    "il_2m_1943": {
+      "convertGoldRatio": 1,
+      "name": "il_2m_1943",
+      "targetCount": 1000
+    },
+    "la-11": {
+      "convertGoldRatio": 1,
+      "name": "la-11",
+      "targetCount": 1000
+    },
+    "me-410a-1": {
+      "convertGoldRatio": 1,
+      "name": "me-410a-1",
+      "targetCount": 1000
+    },
+    "p-400": {
+      "convertGoldRatio": 1,
+      "name": "p-400",
+      "targetCount": 1000
+    },
+    "p-47d-28": {
+      "convertGoldRatio": 1,
+      "name": "p-47d-28",
+      "targetCount": 1000
+    },
+    "sb2u-3": {
+      "convertGoldRatio": 1,
+      "name": "sb2u-3",
+      "targetCount": 1000
+    },
+    "yak-9": {
+      "convertGoldRatio": 1,
+      "name": "yak-9",
+      "targetCount": 1000
+    },
+    "yak-9m": {
+      "convertGoldRatio": 1,
+      "name": "yak-9m",
+      "targetCount": 1000
+    }
+  },
+  "allBoosters": {
+    "playerExp": {
+      "add": 1.0,
+      "battles": 10,
+      "currencyId": "gold",
+      "effect": "playerExp",
+      "price": 240
+    },
+    "unitExp": {
+      "add": 1.0,
+      "battles": 10,
+      "currencyId": "gold",
+      "effect": "unitExp",
+      "price": 150
+    },
+    "wp": {
+      "add": 1.0,
+      "battles": 10,
+      "currencyId": "gold",
+      "effect": "wp",
+      "price": 240
+    }
+  },
   "allDecorators": {
+    "air_bomb": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "aircraft": {
       "dType": "nickFrame",
       "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "aircraft_wings": {
+      "dType": "nickFrame",
+      "isHidden": true,
       "price": {
         "currencyId": "",
         "price": 0
@@ -17,7 +153,63 @@ return {
         "price": 0
       }
     },
+    "antitank_hedgehog": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "assassin": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "bear_head": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "gold",
+        "price": 900
+      }
+    },
     "beta_tester": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "beta_tester_air": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "blast": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "blazing_sunrise": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "bomberman": {
       "dType": "title",
       "isHidden": true,
       "price": {
@@ -41,6 +233,14 @@ return {
         "price": 0
       }
     },
+    "cannoneer": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "captain-lieutenant": {
       "dType": "title",
       "isHidden": false,
@@ -57,6 +257,526 @@ return {
         "price": 0
       }
     },
+    "cardicon_crosspromo": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_default": {
+      "dType": "avatar",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_halloween_usa": {
+      "dType": "avatar",
+      "isHidden": false,
+      "price": {
+        "currencyId": "gold",
+        "price": 900
+      }
+    },
+    "cardicon_jp_admiral": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_new_year_sailor": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_new_year_tanker": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_tanker": {
+      "dType": "avatar",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_vo_nguyen_giap": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_anniversary_2024_1": {
+      "dType": "avatar",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_anniversary_2024_2": {
+      "dType": "avatar",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_anniversary_2024_3": {
+      "dType": "avatar",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_brit_sailor_colossus": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_brit_sailor_valiant": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_brit_tanker_chieftain_mk_10": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_chin_tanker": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_chin_tanker_02": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_chin_tanker_03": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_fr_tanker": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_fr_tanker_amx13": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ger_sailor_01": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ger_sailor_02": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ger_sailor_03": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ger_sailor_04": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ger_tanker": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ger_tanker_01": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ger_tanker_04": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ger_tanker_pzbefwg6p": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_helper": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_is_tanker_01": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_is_tanker_02": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_it_tanker": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_it_tanker_01": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_jp_sailor_01": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_jp_sailor_02": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_jp_tanker_01": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_lunar_new_year": {
+      "dType": "avatar",
+      "isHidden": false,
+      "price": {
+        "currencyId": "gold",
+        "price": 900
+      }
+    },
+    "cardicon_wtm_pony": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_pony_human": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_saint_patrick": {
+      "dType": "avatar",
+      "isHidden": false,
+      "price": {
+        "currencyId": "gold",
+        "price": 900
+      }
+    },
+    "cardicon_wtm_sw_tanker": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_uk_sailor": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_uk_sailor_04": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_uk_sailor_05": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_us_pilot_1": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_us_sailor": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_us_sailor_01": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_us_sailor_04": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_us_sailor_05": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_us_sailor_pensacola": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_us_tanker": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_us_tanker_02": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_us_tanker_03": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_usa_day": {
+      "dType": "avatar",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ussr_sailor": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ussr_sailor_01": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ussr_sailor_04": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ussr_sailor_rckt_pr57bis": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ussr_tanker_01": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ussr_tanker_02": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ussr_tanker_03": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ussr_tanker_05": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ussr_tanker_06": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "cardicon_wtm_ussr_tanker_is_6": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "centurion": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "chain": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "chevron": {
       "dType": "nickFrame",
       "isHidden": false,
@@ -65,9 +785,185 @@ return {
         "price": 150
       }
     },
+    "chosen_one": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "christmas_bauble": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "christmas_tree": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "clenched_fist": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "clover": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "colonel": {
       "dType": "title",
       "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "colossus": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "commander": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "conqueror": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "corinthian_helmet": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "crossed_swords": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "gold",
+        "price": 900
+      }
+    },
+    "cupcake": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "decor_wtm_helper": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "defender": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "desperado": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "duke": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "eagle": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "fighter": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "flag_on_mountain": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "gold",
+        "price": 900
+      }
+    },
+    "flame": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "flying_missile": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "garde_marine": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "gas_mask": {
+      "dType": "nickFrame",
+      "isHidden": true,
       "price": {
         "currencyId": "",
         "price": 0
@@ -81,9 +977,233 @@ return {
         "price": 0
       }
     },
+    "god_of_war": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "grim_reaper": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "guerrilla": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "gun_sight": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "gunner": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "hammer_and_caliper": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "hammer_anvil": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "hand_grenade": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "gold",
+        "price": 900
+      }
+    },
+    "horseshoe": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "hunter": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "iceberg": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "impact_direction": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "independent": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "iron_ghost": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "jarl": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "jungle_king": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "jungle_leaf": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "justice_scale": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "kraken": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "last_hero": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "laurel_wreath": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "legionnaire": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "liberator": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "lieutenant": {
       "dType": "title",
       "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "lionheart": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "lord_of_thunder": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "loyal": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "lucky": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "machete": {
+      "dType": "nickFrame",
+      "isHidden": true,
       "price": {
         "currencyId": "",
         "price": 0
@@ -97,9 +1217,105 @@ return {
         "price": 0
       }
     },
+    "meteorite": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "missle_strike": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "palm": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "pathfinder": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "peaceful_atom": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "pie": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "piece_of_cake": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "pilot": {
       "dType": "title",
       "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "pipe_wrench": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "poseidon": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "predator": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "punch": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "radio_tower": {
+      "dType": "nickFrame",
+      "isHidden": true,
       "price": {
         "currencyId": "",
         "price": 0
@@ -113,6 +1329,14 @@ return {
         "price": 0
       }
     },
+    "riotous": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "sailor": {
       "dType": "title",
       "isHidden": false,
@@ -121,7 +1345,175 @@ return {
         "price": 0
       }
     },
+    "scorpion": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "gold",
+        "price": 900
+      }
+    },
+    "seafarer": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "sentinel": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "shark": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "shell_barrel": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "shells": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "shield": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "ship": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "shuriken": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "sicarius": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "snail": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "snake": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "sniper": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "solid": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "spartan": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "spider": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "star": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "starburst": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "stars_sparkles": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "steel_bars": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "stormy": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "sun_and_fighter": {
       "dType": "nickFrame",
       "isHidden": true,
       "price": {
@@ -130,6 +1522,14 @@ return {
       }
     },
     "tank": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "tank_tracks": {
       "dType": "nickFrame",
       "isHidden": true,
       "price": {
@@ -145,12 +1545,132 @@ return {
         "price": 0
       }
     },
+    "tempered": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "thunder_cloud": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "titan": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "torch": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "tornado": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "turret": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "unbending": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "unsinkable_sam": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "veteran_of_a_thousand_battles": {
+      "dType": "title",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "viking_helmet": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "warlord": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "warrior_of_the_north": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "wasp": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "waves": {
       "dType": "nickFrame",
       "isHidden": false,
       "price": {
         "currencyId": "gold",
         "price": 450
+      }
+    },
+    "white_squall": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "winged_diamond": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
       }
     },
     "wings": {
@@ -160,57 +1680,2511 @@ return {
         "currencyId": "gold",
         "price": 300
       }
+    },
+    "wolf_head": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "wreath": {
+      "dType": "nickFrame",
+      "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "wrench": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    }
+  },
+  "allDiscounts": {
+    "unit": {
+      "fr_m4a4_cn_75_50": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "fr_m4a4_cn_75_50",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "germ_cruiser_admiral_graf_spee": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "germ_cruiser_admiral_graf_spee",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "germ_pzkpfw_VI_ausf_b_tiger_IIh_sla": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "germ_pzkpfw_VI_ausf_b_tiger_IIh_sla",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "germ_pzsfl_IVa_dickermax": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "germ_pzsfl_IVa_dickermax",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "jp_armoredcruiser_ikoma": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "jp_armoredcruiser_ikoma",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "jp_battlecruiser_kongo": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "jp_battlecruiser_kongo",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "jp_st_a3": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "jp_st_a3",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "uk_a_33_excelsior": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "uk_a_33_excelsior",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "uk_battlecruiser_invincible": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "uk_battlecruiser_invincible",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "uk_cruiser_belfast": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "uk_cruiser_belfast",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "us_battleship_arizona_1931": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "us_battleship_arizona_1931",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "us_destroyer_mitscher": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "us_destroyer_mitscher",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "us_m4_sherman_calliope": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "us_m4_sherman_calliope",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "us_m4a3e2_sherman_jumbo_cobra_king": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "us_m4a3e2_sherman_jumbo_cobra_king",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "us_t54e1": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "us_t54e1",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "ussr_battleship_poltava": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "ussr_battleship_poltava",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "ussr_destroyer_pr30_ognevoy": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "ussr_destroyer_pr30_ognevoy",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "ussr_is_2_1944_revenge": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "ussr_is_2_1944_revenge",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "ussr_kv_220": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "ussr_kv_220",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "ussr_kv_2_1940": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "ussr_kv_2_1940",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      },
+      "ussr_sub_pr641": {
+        "discount": 0.5,
+        "gType": "unit",
+        "id": "ussr_sub_pr641",
+        "timeRange": {
+          "end": 1724407199,
+          "start": 1723629600
+        }
+      }
     }
   },
   "allGoods": {},
   "allItems": {
+    "firework_kit": {
+      "battleLimit": 3,
+      "campaigns": 7,
+      "itemsPerUse": 1,
+      "name": "firework_kit"
+    },
+    "ircm_kit": {
+      "battleLimit": 15,
+      "campaigns": 2,
+      "itemsPerUse": 0,
+      "name": "ircm_kit"
+    },
     "ship_smoke_screen_system_mod": {
       "battleLimit": 10,
-      "campaign": "ships",
+      "campaigns": 2,
       "itemsPerUse": 0,
       "name": "ship_smoke_screen_system_mod"
     },
     "ship_tool_kit": {
       "battleLimit": 10,
-      "campaign": "ships",
+      "campaigns": 2,
       "itemsPerUse": 0,
       "name": "ship_tool_kit"
     },
     "spare": {
-      "battleLimit": 10,
-      "campaign": "tanks",
+      "battleLimit": 1,
+      "campaigns": 5,
       "itemsPerUse": 1,
       "name": "spare"
     },
     "tank_extinguisher": {
       "battleLimit": 1,
-      "campaign": "tanks",
+      "campaigns": 1,
       "itemsPerUse": 0,
       "name": "tank_extinguisher"
     },
     "tank_tool_kit_expendable": {
       "battleLimit": 1,
-      "campaign": "tanks",
+      "campaigns": 1,
       "itemsPerUse": 0,
       "name": "tank_tool_kit_expendable"
     }
   },
   "allUnits": {
+    "a-20g": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_usa",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "a-20g",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "a-20g_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ar_2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 15000,
+      "country": "country_ussr",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_4_preset",
+      "name": "ar_2",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "ar_2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "b-17e": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_usa",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "b-17e",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "b-17e_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "b-17g": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_usa",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "b-17g",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "b-17g_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "b-17g_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "b-17g_prem",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 3.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "b-17g_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "b_25j_20": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_usa",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_9_preset",
+      "name": "b_25j_20",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "b_25j_20_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "b_26b_c": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_usa",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "b_26b_c",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "b_26b_c_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "b_34": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_usa",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "b_34",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "b_34_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-109b_2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_germany",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_3_preset",
+      "name": "bf-109b_2",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-109b_2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-109c_1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 15000,
+      "country": "country_germany",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_3_preset",
+      "name": "bf-109c_1",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-109c_1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-109e-1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_germany",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "bf-109e-1",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-109e-1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-109e-3": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_germany",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "bf-109e-3",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-109e-3_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-109e-3_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "bf-109e-3_prem",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 2.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-109e-3_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-109f-2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_germany",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "bf-109f-2",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-109f-2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-109f-4": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_germany",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_11_preset",
+      "name": "bf-109f-4",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-109f-4_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-109f-4_trop": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_germany",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_11_preset",
+      "name": "bf-109f-4_trop",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-109f-4_trop_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-109g-14": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 768100,
+      "country": "country_germany",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "bf-109g-14",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 1.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-109g-14_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-109g-14_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "bf-109g-14_prem",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 3.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-109g-14_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-109g-2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_germany",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_11_preset",
+      "name": "bf-109g-2",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-109g-2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-109z": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 7920,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_4_preset",
+      "name": "bf-109z",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 3.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-109z_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-110f-2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_germany",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_14_preset",
+      "name": "bf-110f-2",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-110f-2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-110g-2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_germany",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_22_preset",
+      "name": "bf-110g-2",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-110g-2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "bf-110g-2_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_22_preset",
+      "name": "bf-110g-2_prem",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 3.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-110g-2_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "cn_object_122tm": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_china",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
+      "levelPreset": "tanks_12",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "cn_object_122tm",
+      "platoonUnits": [
+        {
+          "name": "cn_plz_83_130",
+          "reqLevel": 5
+        },
+        {
+          "name": "cn_ztz_59a",
+          "reqLevel": 10
+        },
+        {
+          "name": "cn_wz_305_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 12,
+      "releaseDate": 1725494400,
+      "rewardExpMul": 29.099998474121094,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.380000114440918,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8090,
+      "weapons": {
+        "cn_object_122tm_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "cn_t_34_85_d_5t": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_china",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "tanks_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
+      "name": "cn_t_34_85_d_5t",
+      "platoonUnits": [
+        {
+          "name": "cn_pt_76",
+          "reqLevel": 5
+        },
+        {
+          "name": "cn_isu_122",
+          "reqLevel": 10
+        },
+        {
+          "name": "cn_zsd63_pg87",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 4,
+      "releaseDate": 1707955200,
+      "rewardExpMul": 4.880000114440918,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.6399998664855957,
+      "skins": {
+        "forest": true,
+        "forest2": false,
+        "forest3": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 640,
+      "weapons": {
+        "cn_t_34_85_d_5t_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "cn_type_69_2a": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_china",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
+      "levelPreset": "tanks_11",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "cn_type_69_2a",
+      "platoonUnits": [
+        {
+          "name": "cn_type_59",
+          "reqLevel": 5
+        },
+        {
+          "name": "cn_m_41d",
+          "reqLevel": 10
+        },
+        {
+          "name": "cn_wz_305",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 11,
+      "releaseDate": 1718236800,
+      "rewardExpMul": 23.279998779296875,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.320000171661377,
+      "skins": {
+        "forest": false,
+        "forest2": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 7770,
+      "weapons": {
+        "cn_type_69_2a_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "cn_ztz_88a": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1648000,
+      "country": "country_china",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_14",
+      "levelUpDiscount": 0.0,
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
+      "name": "cn_ztz_88a",
+      "platoonUnits": [
+        {
+          "name": "cn_type_59d",
+          "reqLevel": 5
+        },
+        {
+          "name": "cn_cm_25",
+          "reqLevel": 10
+        },
+        {
+          "name": "cn_pgz_09",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 14,
+      "releaseDate": 1699920000,
+      "rewardExpMul": 22.739999771118164,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.2400000095367432,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8600,
+      "weapons": {
+        "cn_ztz_88a_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "cn_ztz_96": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1748200,
+      "country": "country_china",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 9,
+      "levelPreset": "tanks_17",
+      "levelUpDiscount": 0.0,
+      "mRank": 9,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "cn_ztz_96",
+      "platoonUnits": [
+        {
+          "name": "cn_cm11",
+          "reqLevel": 5
+        },
+        {
+          "name": "cn_hj_9",
+          "reqLevel": 10
+        },
+        {
+          "name": "cn_pgz_09_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 17,
+      "releaseDate": 1720656000,
+      "rewardExpMul": 44.409999847412109,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.3100001811981201,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 9160,
+      "weapons": {
+        "cn_ztz_96_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "db_3b": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_ussr",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "db_3b",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "db_3b_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "do_17e_1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_germany",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "do_17e_1",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "do_17e_1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "do_17z_2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 15000,
+      "country": "country_germany",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "do_17z_2",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "do_17z_2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "do_335a_0": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 5040,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "do_335a_0",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 3.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "do_335a_0_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "do_335a_1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_germany",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "do_335a_1",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "do_335a_1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "douglas_ad_2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 768100,
+      "country": "country_usa",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_13_preset",
+      "name": "douglas_ad_2",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 1.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "douglas_ad_2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "er-2_m105_mv3": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_ussr",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "er-2_m105_mv3",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "er-2_m105_mv3_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "er-2_m105r_lu2b": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_ussr",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "er-2_m105r_lu2b",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "er-2_m105r_lu2b_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "f2a-1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 15000,
+      "country": "country_usa",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "f2a-1",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "f2a-1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "f2g-1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 768100,
+      "country": "country_usa",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "f2g-1",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 1.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "f2g-1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "f2g-1_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "f2g-1_prem",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 3.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "f2g-1_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "f3f-2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_usa",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "f3f-2",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "f3f-2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "f4f-3": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_usa",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "f4f-3",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "f4f-3_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "f4f_4": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_usa",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "f4f_4",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "f4f_4_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "f4f_4_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "f4f_4_prem",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 2.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "f4f_4_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "f4u-1c": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_usa",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_4_preset",
+      "name": "f4u-1c",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "f4u-1c_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "f4u-1d": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_usa",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "f4u-1d",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "f4u-1d_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "f4u-4b": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 768100,
+      "country": "country_usa",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "f4u-4b",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 1.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "f4u-4b_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "f4u_4": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_usa",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "f4u_4",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "f4u_4_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "f8f1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_usa",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "f8f1",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "f8f1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fr_amx_10rc": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
+      "levelPreset": "tanks_11",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "fr_amx_10rc",
+      "platoonUnits": [
+        {
+          "name": "fr_amx_30_ACRA",
+          "reqLevel": 5
+        },
+        {
+          "name": "fr_amx_50_1950",
+          "reqLevel": 10
+        },
+        {
+          "name": "fr_amx_30_dca_reskin2",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 11,
+      "releaseDate": 1718236800,
+      "rewardExpMul": 23.279998779296875,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.320000171661377,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 7770,
+      "weapons": {
+        "fr_amx_10rc_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fr_amx_13_hot": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
+      "levelPreset": "tanks_11",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "fr_amx_13_hot",
+      "platoonUnits": [
+        {
+          "name": "fr_amx_30_1972",
+          "reqLevel": 5
+        },
+        {
+          "name": "fr_amx_50_surbaisse",
+          "reqLevel": 10
+        },
+        {
+          "name": "fr_amx_30_dca_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 11,
+      "releaseDate": 1712793600,
+      "rewardExpMul": 23.279998779296875,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.320000171661377,
+      "skins": {
+        "desert": false,
+        "desert2": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 7770,
+      "weapons": {
+        "fr_amx_13_hot_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fr_amx_30_auf_1": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "tanks_9",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "fr_amx_30_auf_1",
+      "platoonUnits": [
+        {
+          "name": "fr_lorraine_40t",
+          "reqLevel": 5
+        },
+        {
+          "name": "fr_amx_13_75_reskin",
+          "reqLevel": 10
+        },
+        {
+          "name": "fr_tpk_641_vpc",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 9,
+      "releaseDate": 1723075200,
+      "rewardExpMul": 14.899999618530273,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.1999998092651367,
+      "skins": {
+        "forest": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 6030,
+      "weapons": {
+        "fr_amx_30_auf_1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fr_amx_30_b2_brenus": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1674600,
+      "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_15",
+      "levelUpDiscount": 0.0,
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "fr_amx_30_b2_brenus",
+      "platoonUnits": [
+        {
+          "name": "fr_amx_32_105",
+          "reqLevel": 5
+        },
+        {
+          "name": "fr_mars_15",
+          "reqLevel": 10
+        },
+        {
+          "name": "fr_amx_30_dca",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 15,
+      "releaseDate": 1705536000,
+      "rewardExpMul": 28.420000076293945,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.2699999809265137,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8810,
+      "weapons": {
+        "fr_amx_30_b2_brenus_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "fr_bat_chat_25t": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
       "costWp": 902150,
       "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
       "levelPreset": "tanks_8",
       "levelUpDiscount": 0.0,
-      "mRank": 5,
-      "modPreset": "tank_default",
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
       "name": "fr_bat_chat_25t",
       "platoonUnits": [
         {
@@ -227,13 +4201,201 @@ return {
         }
       ],
       "rank": 8,
+      "releaseDate": 0,
       "rewardExpMul": 5.9600000381469727,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 2.059999942779541,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 4870,
       "weapons": {
         "fr_bat_chat_25t_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fr_battleship_courbet_class_courbet": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_16",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "fr_battleship_courbet_class_courbet",
+      "platoonUnits": [],
+      "rank": 16,
+      "releaseDate": 0,
+      "rewardExpMul": 18.719999313354492,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.8399999141693115,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "battleship",
+      "unitType": "ship",
+      "upgradeCostGold": 1840,
+      "weapons": {
+        "fr_battleship_courbet_class_courbet_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fr_cruiser_emile_bertin": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_11",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "fr_cruiser_emile_bertin",
+      "platoonUnits": [],
+      "rank": 11,
+      "releaseDate": 0,
+      "rewardExpMul": 9.3000001907348633,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.5999999046325684,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 760,
+      "weapons": {
+        "fr_cruiser_emile_bertin_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fr_destroyer_aigle_class_aigle": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 1,
+      "levelPreset": "ships_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "fr_destroyer_aigle_class_aigle",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 3.0399999618530273,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.7200000286102295,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "destroyer",
+      "unitType": "ship",
+      "upgradeCostGold": 480,
+      "weapons": {
+        "fr_destroyer_aigle_class_aigle_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fr_m4a4_cn_75_50": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 4150,
+      "costWp": 0,
+      "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "tanks_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
+      "name": "fr_m4a4_cn_75_50",
+      "platoonUnits": [
+        {
+          "name": "fr_m4a3e2_sherman_jumbo",
+          "reqLevel": 5
+        },
+        {
+          "name": "fr_m36b2_cefeo",
+          "reqLevel": 10
+        },
+        {
+          "name": "fr_amx_13_dca_40_reskin1",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 7.619999885559082,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.9200000762939453,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 2320,
+      "weapons": {
+        "fr_m4a4_cn_75_50_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -246,14 +4408,18 @@ return {
       "costGold": 0,
       "costWp": 0,
       "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
       "isDefault": false,
       "isEvent": false,
       "isHidden": true,
       "isPremium": true,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
-      "levelPreset": "tanks_2",
+      "levelPreset": "tanks_1",
       "levelUpDiscount": 0.0,
       "mRank": 1,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "fr_m4a4_sherman",
       "platoonUnits": [
@@ -270,12 +4436,19 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 2,
-      "rewardExpMul": 3.119999885559082,
-      "rewardWpMul": 3.1800000667572021,
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 2.5,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.7200000286102295,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 420,
+      "upgradeCostGold": 410,
       "weapons": {
         "fr_m4a4_sherman_default": {
           "costWp": 0,
@@ -290,14 +4463,18 @@ return {
       "costGold": 0,
       "costWp": 0,
       "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
       "isDefault": false,
       "isEvent": false,
       "isHidden": true,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
-      "levelPreset": "tanks_2",
+      "levelPreset": "tanks_1",
       "levelUpDiscount": 0.0,
       "mRank": 1,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "fr_m4a4_sherman_reward",
       "platoonUnits": [
@@ -314,12 +4491,20 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 2,
-      "rewardExpMul": 1.559999942779541,
-      "rewardWpMul": 1.5900000333786011,
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 1.3600000143051147,
+      "skins": {
+        "forest": true,
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 420,
+      "upgradeCostGold": 410,
       "weapons": {
         "fr_m4a4_sherman_reward_default": {
           "costWp": 0,
@@ -332,16 +4517,20 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 156850,
+      "costWp": 153350,
       "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
       "levelPreset": "tanks_5",
       "levelUpDiscount": 0.0,
       "mRank": 3,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "fr_panhard_ebr_1951",
       "platoonUnits": [
@@ -359,8 +4548,15 @@ return {
         }
       ],
       "rank": 5,
+      "releaseDate": 0,
       "rewardExpMul": 3.0499999523162842,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.8999999761581421,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 1170,
@@ -372,29 +4568,613 @@ return {
         }
       }
     },
-    "germ_battleship_bismarck": {
+    "fr_sub_surcouf": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_12",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "submarine_default",
+      "name": "fr_sub_surcouf",
+      "platoonUnits": [],
+      "rank": 12,
+      "releaseDate": 1702512000,
+      "rewardExpMul": 10.699999809265137,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.6399998664855957,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "submarine",
+      "unitType": "ship",
+      "upgradeCostGold": 890,
+      "weapons": {
+        "fr_sub_surcouf_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fw-190a-4": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_germany",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "fw-190a-4",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "fw-190a-4_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fw-190a-5_cannons": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 768100,
+      "country": "country_germany",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_13_preset",
+      "name": "fw-190a-5_cannons",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 1.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "fw-190a-5_cannons_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fw-190a-5_u2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_germany",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_9_preset",
+      "name": "fw-190a-5_u2",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "fw-190a-5_u2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fw-190c": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 80,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "fw-190c",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 3.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "fw-190c_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fw-190d-9": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_germany",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "fw-190d-9",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "fw-190d-9_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fw-190f-8": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 768100,
+      "country": "country_germany",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_16_preset",
+      "name": "fw-190f-8",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 1.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "fw-190f-8_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fw_190a_1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_germany",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "fw_190a_1",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "fw_190a_1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fw_190a_5_u14": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_germany",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "fw_190a_5_u14",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "fw_190a_5_u14_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fw_190a_5_u14_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "fw_190a_5_u14_prem",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 3.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "fw_190a_5_u14_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "fw_200c_1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_germany",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "fw_200c_1",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "fw_200c_1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_artilleriefahrprahm_typ_d3": {
       "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
       "isDefault": false,
       "isEvent": false,
       "isHidden": true,
       "isPremium": true,
-      "itemsPerUse": 4,
-      "levelPreset": "ships_19",
+      "isUpgradeable": true,
+      "itemsPerUse": 1,
+      "levelPreset": "ships_2",
       "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modPreset": "empty",
-      "name": "germ_battleship_bismarck",
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "germ_artilleriefahrprahm_typ_d3",
       "platoonUnits": [],
-      "rank": 19,
-      "rewardExpMul": 28.459999084472656,
-      "rewardWpMul": 3.9600000381469727,
+      "rank": 2,
+      "releaseDate": 1712793600,
+      "rewardExpMul": 2.6399998664855957,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.4600000381469727,
+      "skins": {
+        "factory": true,
+        "special": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "destroyer",
+      "unitType": "ship",
+      "upgradeCostGold": 420,
+      "weapons": {
+        "germ_artilleriefahrprahm_typ_d3_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_battlecruiser_von_der_tann": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_14",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "germ_battlecruiser_von_der_tann",
+      "platoonUnits": [],
+      "rank": 14,
+      "releaseDate": 1699920000,
+      "rewardExpMul": 14.159999847412109,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.7599999904632568,
+      "skins": {
+        "black_longdiag": false,
+        "factory": true,
+        "greenwhite_spots": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 3440,
+      "upgradeCostGold": 1240,
+      "weapons": {
+        "germ_battlecruiser_von_der_tann_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_battleship_bayern": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "ships_21",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "germ_battleship_bayern",
+      "platoonUnits": [],
+      "rank": 21,
+      "releaseDate": 1723075200,
+      "rewardExpMul": 37.639999389648438,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.0199999809265137,
+      "skins": {
+        "grayriver": false,
+        "greyblack_geometry_prem": false,
+        "marine_geometry": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "battleship",
+      "unitType": "ship",
+      "upgradeCostGold": 4610,
+      "weapons": {
+        "germ_battleship_bayern_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_battleship_bismarck": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 1019400,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "ships_25",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "germ_battleship_bismarck",
+      "platoonUnits": [],
+      "rank": 25,
+      "releaseDate": 0,
+      "rewardExpMul": 32.919998168945312,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.070000171661377,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
+      "unitType": "ship",
+      "upgradeCostGold": 5460,
       "weapons": {
         "germ_battleship_bismarck_default": {
           "costWp": 0,
@@ -404,26 +5184,37 @@ return {
       }
     },
     "germ_battleship_helgoland": {
-      "attrPreset": "shipDefaultNoTorpedo",
+      "attrPreset": "shipDefaultNoTorpedoNoAA",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 120800,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 2,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
       "levelPreset": "ships_13",
       "levelUpDiscount": 0.0,
       "mRank": 3,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "germ_battleship_helgoland",
       "platoonUnits": [],
       "rank": 13,
+      "releaseDate": 0,
       "rewardExpMul": 6.1500000953674316,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.8500000238418579,
-      "unitClass": "cruiser",
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 1020,
       "weapons": {
@@ -435,26 +5226,37 @@ return {
       }
     },
     "germ_battleship_kaiser": {
-      "attrPreset": "shipDefaultNoTorpedo",
+      "attrPreset": "shipDefaultNoTorpedoNoAA",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 224100,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 3,
       "levelPreset": "ships_15",
       "levelUpDiscount": 0.0,
       "mRank": 3,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "germ_battleship_kaiser",
       "platoonUnits": [],
       "rank": 15,
+      "releaseDate": 0,
       "rewardExpMul": 8.1399993896484375,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.8999999761581421,
-      "unitClass": "cruiser",
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 1540,
       "weapons": {
@@ -469,23 +5271,34 @@ return {
       "attrPreset": "shipDefault",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 0,
+      "costWp": 602650,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 4,
       "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "germ_battleship_scharnhorst",
       "platoonUnits": [],
       "rank": 19,
+      "releaseDate": 0,
       "rewardExpMul": 14.229999542236328,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.9800000190734863,
-      "unitClass": "cruiser",
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 3440,
       "weapons": {
@@ -500,27 +5313,82 @@ return {
       "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 0,
+      "costWp": 927100,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 4,
-      "levelPreset": "ships_19",
+      "levelPreset": "ships_22",
       "levelUpDiscount": 0.0,
       "mRank": 4,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "germ_battleship_tirpitz_1944",
       "platoonUnits": [],
-      "rank": 19,
-      "rewardExpMul": 14.229999542236328,
-      "rewardWpMul": 1.9800000190734863,
-      "unitClass": "cruiser",
+      "rank": 22,
+      "releaseDate": 0,
+      "rewardExpMul": 21.639999389648438,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0299999713897705,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
-      "upgradeCostGold": 3440,
+      "upgradeCostGold": 5000,
       "weapons": {
         "germ_battleship_tirpitz_1944_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_battleship_westfalen": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_16",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "germ_battleship_westfalen",
+      "platoonUnits": [],
+      "rank": 16,
+      "releaseDate": 1705536000,
+      "rewardExpMul": 18.719999313354492,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.8399999141693115,
+      "skins": {
+        "bluewater_geometry": false,
+        "factory": true,
+        "greenwhite_spots": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "battleship",
+      "unitType": "ship",
+      "upgradeCostGold": 1840,
+      "weapons": {
+        "germ_battleship_westfalen_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -530,23 +5398,34 @@ return {
     "germ_cruiser_admiral_graf_spee": {
       "attrPreset": "shipDefault",
       "campaign": "ships",
-      "costGold": 1290,
+      "costGold": 1940,
       "costWp": 0,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
+      "isUpgradeable": true,
       "itemsPerUse": 2,
       "levelPreset": "ships_12",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "germ_cruiser_admiral_graf_spee",
       "platoonUnits": [],
       "rank": 12,
+      "releaseDate": 0,
       "rewardExpMul": 10.699999809265137,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 3.6399998664855957,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "cruiser",
       "unitType": "ship",
       "upgradeCostGold": 890,
@@ -564,20 +5443,31 @@ return {
       "costGold": 0,
       "costWp": 45900,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
       "levelPreset": "ships_8",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "germ_cruiser_admiral_hipper",
       "platoonUnits": [],
       "rank": 8,
+      "releaseDate": 0,
       "rewardExpMul": 3.059999942779541,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.6899999380111694,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "cruiser",
       "unitType": "ship",
       "upgradeCostGold": 620,
@@ -595,20 +5485,31 @@ return {
       "costGold": 0,
       "costWp": 35000,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
       "levelPreset": "ships_6",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "germ_cruiser_nurnberg",
       "platoonUnits": [],
       "rank": 6,
+      "releaseDate": 0,
       "rewardExpMul": 2.309999942779541,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.5900000333786011,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "cruiser",
       "unitType": "ship",
       "upgradeCostGold": 580,
@@ -626,20 +5527,31 @@ return {
       "costGold": 0,
       "costWp": 25700,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "ships_2",
       "levelUpDiscount": 1.0,
       "mRank": 1,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "germ_destroyer_class1934a_1940",
       "platoonUnits": [],
       "rank": 2,
+      "releaseDate": 0,
       "rewardExpMul": 1.3199999332427979,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.2300000190734863,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 420,
@@ -657,20 +5569,31 @@ return {
       "costGold": 0,
       "costWp": 28580,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "ships_4",
       "levelUpDiscount": 0.15000000596046448,
       "mRank": 1,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "germ_destroyer_class1936a_mob_z32",
       "platoonUnits": [],
       "rank": 4,
+      "releaseDate": 0,
       "rewardExpMul": 1.75,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.4599999189376831,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 520,
@@ -682,44 +5605,195 @@ return {
         }
       }
     },
-    "germ_erprobungstrager_3_achs_turm": {
+    "germ_destroyer_rckt_hamburg": {
+      "attrPreset": "shipDefaultMissiles",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 1034000,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "ships_26",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "germ_destroyer_rckt_hamburg",
+      "platoonUnits": [],
+      "rank": 26,
+      "releaseDate": 1705536000,
+      "rewardExpMul": 37.860000610351562,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0799999237060547,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "destroyer",
+      "unitType": "ship",
+      "upgradeCostGold": 5530,
+      "weapons": {
+        "germ_destroyer_rckt_hamburg_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_frigate_rckt_bremen": {
+      "attrPreset": "shipMissilesNoAA",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 1056450,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "ships_28",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "germ_frigate_rckt_bremen",
+      "platoonUnits": [],
+      "rank": 29,
+      "releaseDate": 1723075200,
+      "rewardExpMul": 50.069999694824219,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.1099998950958252,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 1,
+      "suitableForOffer": true,
+      "unitClass": "destroyer",
+      "unitType": "ship",
+      "upgradeCostGold": 5590,
+      "weapons": {
+        "germ_frigate_rckt_bremen_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_kv_1_kwk_40": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
       "costWp": 0,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": false,
+      "isHidden": true,
       "isPremium": true,
-      "itemsPerUse": 2,
-      "levelPreset": "tanks_10",
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "tanks_4",
       "levelUpDiscount": 0.0,
-      "mRank": 6,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
-      "name": "germ_erprobungstrager_3_achs_turm",
+      "name": "germ_kv_1_kwk_40",
       "platoonUnits": [
         {
-          "name": "germ_leopard_I_reskin",
+          "name": "germ_sdkfz_234_4",
           "reqLevel": 5
         },
         {
-          "name": "germ_wiesel_1_mk20",
+          "name": "germ_jgdpz_IV_L48",
           "reqLevel": 10
         },
         {
-          "name": "germ_pzkpfw_Maus",
+          "name": "germ_flakpanzer_IV_Ostwind_reskin2",
           "reqLevel": 15
         }
       ],
-      "rank": 10,
-      "rewardExpMul": 18.619998931884766,
-      "rewardWpMul": 4.2599997520446777,
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 4.880000114440918,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.6399998664855957,
+      "skins": {
+        "desert": true,
+        "winter": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 7180,
+      "upgradeCostGold": 640,
       "weapons": {
-        "germ_erprobungstrager_3_achs_turm_default": {
+        "germ_kv_1_kwk_40_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_leopard_2k": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1804150,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 9,
+      "levelPreset": "tanks_18",
+      "levelUpDiscount": 0.0,
+      "mRank": 9,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "germ_leopard_2k",
+      "platoonUnits": [
+        {
+          "name": "germ_kpz_70",
+          "reqLevel": 5
+        },
+        {
+          "name": "germ_begleitpanzer_57",
+          "reqLevel": 10
+        },
+        {
+          "name": "germ_flakpz_I_Gepard_reskin2",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 19,
+      "releaseDate": 0,
+      "rewardExpMul": 55.509998321533203,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.3299999237060547,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 1,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 9450,
+      "weapons": {
+        "germ_leopard_2k_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -730,16 +5804,20 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 0,
+      "costWp": 1482300,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 2,
-      "levelPreset": "tanks_10",
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
+      "levelPreset": "tanks_11",
       "levelUpDiscount": 0.0,
-      "mRank": 6,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "germ_leopard_I",
       "platoonUnits": [
@@ -756,12 +5834,19 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 10,
-      "rewardExpMul": 9.3099994659423828,
-      "rewardWpMul": 2.1299998760223389,
+      "rank": 11,
+      "releaseDate": 0,
+      "rewardExpMul": 11.639999389648438,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.1600000858306885,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 7180,
+      "upgradeCostGold": 7770,
       "weapons": {
         "germ_leopard_I_default": {
           "costWp": 0,
@@ -774,17 +5859,21 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 0,
+      "costWp": 1600500,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 2,
-      "levelPreset": "tanks_10",
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_13",
       "levelUpDiscount": 0.0,
-      "mRank": 7,
-      "modPreset": "tank_default",
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
       "name": "germ_leopard_I_a1",
       "platoonUnits": [
         {
@@ -800,14 +5889,188 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 10,
-      "rewardExpMul": 9.3099994659423828,
-      "rewardWpMul": 2.1299998760223389,
+      "rank": 13,
+      "releaseDate": 0,
+      "rewardExpMul": 18.190000534057617,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.2200000286102295,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 7180,
+      "upgradeCostGold": 8360,
       "weapons": {
         "germ_leopard_I_a1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_leopard_a1a1_120": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_14",
+      "levelUpDiscount": 0.0,
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
+      "name": "germ_leopard_a1a1_120",
+      "platoonUnits": [
+        {
+          "name": "germ_thyssen_henschel_tam_2ip",
+          "reqLevel": 5
+        },
+        {
+          "name": "germ_th_800_bismark",
+          "reqLevel": 10
+        },
+        {
+          "name": "germ_flakpz_I_Gepard_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 14,
+      "releaseDate": 1723075200,
+      "rewardExpMul": 45.479999542236328,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.4800000190734863,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8600,
+      "weapons": {
+        "germ_leopard_a1a1_120_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_panzerbefelhswagen_VI_P": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "tanks_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
+      "name": "germ_panzerbefelhswagen_VI_P",
+      "platoonUnits": [
+        {
+          "name": "germ_vk_3002m_reskin",
+          "reqLevel": 5
+        },
+        {
+          "name": "germ_panzerjager_nashorn",
+          "reqLevel": 10
+        },
+        {
+          "name": "germ_flakpanzer_IV_Ostwind_reskin3",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 6,
+      "releaseDate": 1712793600,
+      "rewardExpMul": 7.619999885559082,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.9200000762939453,
+      "skins": {
+        "desert": false,
+        "forest": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 2320,
+      "weapons": {
+        "germ_panzerbefelhswagen_VI_P_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_panzerbefelhswagen_jagdpanther": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "tanks_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
+      "name": "germ_panzerbefelhswagen_jagdpanther",
+      "platoonUnits": [
+        {
+          "name": "germ_pzkpfw_V_ausf_a_panther",
+          "reqLevel": 5
+        },
+        {
+          "name": "germ_pzkpfw_VI_ausf_b_tiger_IIp_reskin2",
+          "reqLevel": 10
+        },
+        {
+          "name": "germ_flakpanzer_IV_Ostwind_2_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 6,
+      "releaseDate": 1725494400,
+      "rewardExpMul": 7.619999885559082,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.9200000762939453,
+      "skins": {
+        "forest": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 2320,
+      "weapons": {
+        "germ_panzerbefelhswagen_jagdpanther_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -820,14 +6083,18 @@ return {
       "costGold": 0,
       "costWp": 20600,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "tanks_1",
       "levelUpDiscount": 1.0,
       "mRank": 1,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "germ_pzkpfw_IV_ausf_F2",
       "platoonUnits": [
@@ -845,8 +6112,15 @@ return {
         }
       ],
       "rank": 1,
+      "releaseDate": 0,
       "rewardExpMul": 1.25,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.3600000143051147,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 410,
@@ -864,14 +6138,18 @@ return {
       "costGold": 0,
       "costWp": 20300,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
       "levelPreset": "tanks_2",
       "levelUpDiscount": 0.5,
       "mRank": 2,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "germ_pzkpfw_IV_ausf_G",
       "platoonUnits": [
@@ -889,13 +6167,77 @@ return {
         }
       ],
       "rank": 2,
+      "releaseDate": 0,
       "rewardExpMul": 1.559999942779541,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.5900000333786011,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 420,
       "weapons": {
         "germ_pzkpfw_IV_ausf_G_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_pzkpfw_Maus": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
+      "levelPreset": "tanks_12",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
+      "name": "germ_pzkpfw_Maus",
+      "platoonUnits": [
+        {
+          "name": "germ_erprobungstrager_3_achs_turm",
+          "reqLevel": 5
+        },
+        {
+          "name": "germ_leopard_I_reskin",
+          "reqLevel": 10
+        },
+        {
+          "name": "germ_wiesel_1_mk20",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 12,
+      "releaseDate": 1697500800,
+      "rewardExpMul": 29.099998474121094,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.380000114440918,
+      "skins": {
+        "desert": false,
+        "forest": true,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8090,
+      "weapons": {
+        "germ_pzkpfw_Maus_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -908,15 +6250,19 @@ return {
       "costGold": 11600,
       "costWp": 0,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
-      "itemsPerUse": 2,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
       "levelPreset": "tanks_9",
       "levelUpDiscount": 0.0,
-      "mRank": 5,
-      "modPreset": "tank_default",
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
       "name": "germ_pzkpfw_VI_ausf_b_tiger_IIh_sla",
       "platoonUnits": [
         {
@@ -933,8 +6279,15 @@ return {
         }
       ],
       "rank": 9,
+      "releaseDate": 0,
       "rewardExpMul": 14.899999618530273,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 4.1999998092651367,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 6030,
@@ -946,20 +6299,81 @@ return {
         }
       }
     },
+    "germ_pzkpfw_VI_ausf_e_tiger": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "tanks_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
+      "name": "germ_pzkpfw_VI_ausf_e_tiger",
+      "platoonUnits": [
+        {
+          "name": "germ_pzkpfw_VI_tiger_P",
+          "reqLevel": 5
+        },
+        {
+          "name": "germ_pz_IV_L70_A",
+          "reqLevel": 10
+        },
+        {
+          "name": "germ_flakpanzer_IV_Ostwind_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 4,
+      "releaseDate": 1697500800,
+      "rewardExpMul": 4.880000114440918,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.6399998664855957,
+      "skins": {
+        "forest": true,
+        "forest2": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 640,
+      "weapons": {
+        "germ_pzkpfw_VI_ausf_e_tiger_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "germ_pzkpfw_VI_ausf_h1_tiger": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 49150,
+      "costWp": 155250,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
-      "levelPreset": "tanks_4",
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "tanks_5",
       "levelUpDiscount": 0.0,
-      "mRank": 3,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "germ_pzkpfw_VI_ausf_h1_tiger",
       "platoonUnits": [
@@ -976,12 +6390,19 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 4,
-      "rewardExpMul": 2.440000057220459,
-      "rewardWpMul": 1.8199999332427979,
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 3.0499999523162842,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 1.8999999761581421,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 640,
+      "upgradeCostGold": 1170,
       "weapons": {
         "germ_pzkpfw_VI_ausf_h1_tiger_default": {
           "costWp": 0,
@@ -996,15 +6417,19 @@ return {
       "costGold": 0,
       "costWp": 636200,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
       "levelPreset": "tanks_7",
       "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modPreset": "tank_default",
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
       "name": "germ_pzkpfw_V_ausf_d_panther",
       "platoonUnits": [
         {
@@ -1021,8 +6446,15 @@ return {
         }
       ],
       "rank": 7,
+      "releaseDate": 0,
       "rewardExpMul": 4.7699999809265137,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 2.0099999904632568,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 3670,
@@ -1040,15 +6472,19 @@ return {
       "costGold": 0,
       "costWp": 889650,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
       "levelPreset": "tanks_8",
       "levelUpDiscount": 0.0,
-      "mRank": 5,
-      "modPreset": "tank_default",
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
       "name": "germ_pzkpfw_V_ausf_f_panther",
       "platoonUnits": [
         {
@@ -1065,13 +6501,75 @@ return {
         }
       ],
       "rank": 8,
+      "releaseDate": 0,
       "rewardExpMul": 5.9600000381469727,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 2.059999942779541,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 4870,
       "weapons": {
         "germ_pzkpfw_V_ausf_f_panther_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_pzkpfw_V_ersatz_m10": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "tanks_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
+      "name": "germ_pzkpfw_V_ersatz_m10",
+      "platoonUnits": [
+        {
+          "name": "germ_le_kpz_m41",
+          "reqLevel": 5
+        },
+        {
+          "name": "germ_pzkpfw_VI_ausf_b_tiger_IIp_reskin",
+          "reqLevel": 10
+        },
+        {
+          "name": "germ_flakpanzer_zerstorer_45",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 7,
+      "releaseDate": 1720656000,
+      "rewardExpMul": 9.5399999618530273,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.0199999809265137,
+      "skins": {
+        "forest": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 3670,
+      "weapons": {
+        "germ_pzkpfw_V_ersatz_m10_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -1084,14 +6582,18 @@ return {
       "costGold": 1320,
       "costWp": 0,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
-      "itemsPerUse": 1,
-      "levelPreset": "tanks_2",
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "tanks_3",
       "levelUpDiscount": 0.0,
       "mRank": 2,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "germ_pzsfl_IVa_dickermax",
       "platoonUnits": [
@@ -1108,14 +6610,78 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 2,
-      "rewardExpMul": 3.119999885559082,
-      "rewardWpMul": 3.1800000667572021,
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 3.8999998569488525,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.4600000381469727,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 420,
+      "upgradeCostGold": 450,
       "weapons": {
         "germ_pzsfl_IVa_dickermax_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "germ_ru251": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "tanks_8",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
+      "name": "germ_ru251",
+      "platoonUnits": [
+        {
+          "name": "germ_pzkpfw_VI_ausf_b_tiger_IIh_reskin",
+          "reqLevel": 5
+        },
+        {
+          "name": "germ_kanonenjagdpanzer",
+          "reqLevel": 10
+        },
+        {
+          "name": "germ_flakpanzer_IV_Kugelblitz_reskin2",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 8,
+      "releaseDate": 1707955200,
+      "rewardExpMul": 11.920000076293945,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.119999885559082,
+      "skins": {
+        "desert": false,
+        "fiction": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 4870,
+      "weapons": {
+        "germ_ru251_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -1126,25 +6692,36 @@ return {
       "attrPreset": "shipNoGuns",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 0,
+      "costWp": 1000850,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 4,
-      "levelPreset": "ships_19",
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "ships_24",
       "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modPreset": "empty",
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "submarine_default",
       "name": "germ_sub_type_21",
       "platoonUnits": [],
-      "rank": 19,
-      "rewardExpMul": 14.229999542236328,
-      "rewardWpMul": 1.9800000190734863,
+      "rank": 24,
+      "releaseDate": 0,
+      "rewardExpMul": 28.629999160766602,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.059999942779541,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "submarine",
       "unitType": "ship",
-      "upgradeCostGold": 3440,
+      "upgradeCostGold": 5360,
       "weapons": {
         "germ_sub_type_21_default": {
           "costWp": 0,
@@ -1159,20 +6736,31 @@ return {
       "costGold": 0,
       "costWp": 70350,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 2,
       "levelPreset": "ships_11",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "submarine_default",
       "name": "germ_sub_type_7",
       "platoonUnits": [],
       "rank": 11,
+      "releaseDate": 0,
       "rewardExpMul": 4.6500000953674316,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.7999999523162842,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "submarine",
       "unitType": "ship",
       "upgradeCostGold": 760,
@@ -1184,29 +6772,1542 @@ return {
         }
       }
     },
-    "jp_battleship_fuso": {
-      "attrPreset": "shipDefaultNoTorpedo",
+    "germ_sub_type_7_u305": {
+      "attrPreset": "subArtillery",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
-      "country": "country_japan",
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_12",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "submarine_default",
+      "name": "germ_sub_type_7_u305",
+      "platoonUnits": [],
+      "rank": 12,
+      "releaseDate": 1710374400,
+      "rewardExpMul": 10.699999809265137,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.6399998664855957,
+      "skins": {
+        "blue_stains": false,
+        "camo_olive_spots": false,
+        "threegreenspots": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "submarine",
+      "unitType": "ship",
+      "upgradeCostGold": 890,
+      "weapons": {
+        "germ_sub_type_7_u305_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "he-111h-16_winter": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_germany",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "he-111h-16_winter",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "he-111h-16_winter_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "he51b1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_germany",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_3_preset",
+      "name": "he51b1",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "he51b1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "he51b1_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_3_preset",
+      "name": "he51b1_prem",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 2.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "he51b1_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "he51c1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_germany",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_tutor_mod_4_preset",
+      "name": "he51c1",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "he51c1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "he_112a_0": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 1080,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_3_preset",
+      "name": "he_112a_0",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 2.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "he_112a_0_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "he_112b_0": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_germany",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "he_112b_0",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "he_112b_0_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "hs-123a-1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_germany",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_4_preset",
+      "name": "hs-123a-1",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "hs-123a-1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "i-153_m62": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 15000,
+      "country": "country_ussr",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "i-153_m62",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "i-153_m62_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "i-15_1934": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_ussr",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_tutor_mod_4_preset",
+      "name": "i-15_1934",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "i-15_1934_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "i-15_1935": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_ussr",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "i-15_1935",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "i-15_1935_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "i-15_1935_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "i-15_1935_prem",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 2.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "i-15_1935_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "i-16_type10": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_ussr",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "i-16_type10",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "i-16_type10_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "i-16_type18": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 15000,
+      "country": "country_ussr",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "i-16_type18",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "i-16_type18_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "i-16_type5": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_ussr",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_4_preset",
+      "name": "i-16_type5",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "i-16_type5_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "i_180": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_ussr",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "i_180",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "i_180_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "i_180_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "i_180_prem",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 2.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "i_180_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "i_185_m82": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_ussr",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "i_185_m82",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "i_185_m82_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "il-10": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 768100,
+      "country": "country_ussr",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "il-10",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 1.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "il-10_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "il-10_1946": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_ussr",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_11_preset",
+      "name": "il-10_1946",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "il-10_1946_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "il-10_1946_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_11_preset",
+      "name": "il-10_1946_prem",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 3.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "il-10_1946_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "il-2i": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_ussr",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "il-2i",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "il-2i_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "il-2m": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_ussr",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_14_preset",
+      "name": "il-2m",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "il-2m_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "il_2_1941": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_ussr",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_16_preset",
+      "name": "il_2_1941",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "il_2_1941_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "il_2m_1943": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_ussr",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_14_preset",
+      "name": "il_2m_1943",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "il_2m_1943_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "il_4": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_ussr",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "il_4",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "il_4_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "il_magach_6r": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1706800,
+      "country": "country_israel",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_15",
+      "levelUpDiscount": 0.0,
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "il_magach_6r",
+      "platoonUnits": [
+        {
+          "name": "il_magach_6b",
+          "reqLevel": 5
+        },
+        {
+          "name": "il_centurion_shot_kal_gimel",
+          "reqLevel": 10
+        },
+        {
+          "name": "il_m163_vulcan",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 15,
+      "releaseDate": 1710374400,
+      "rewardExpMul": 28.420000076293945,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.2699999809265137,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8810,
+      "weapons": {
+        "il_magach_6r_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "il_merkava_mk_1": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_israel",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_16",
+      "levelUpDiscount": 0.0,
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "il_merkava_mk_1",
+      "platoonUnits": [
+        {
+          "name": "il_magach_6_rocket",
+          "reqLevel": 5
+        },
+        {
+          "name": "il_m113a1_tow",
+          "reqLevel": 10
+        },
+        {
+          "name": "il_zsu_23_4",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 16,
+      "releaseDate": 1725494400,
+      "rewardExpMul": 71.05999755859375,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.5799999237060547,
+      "skins": {
+        "desert": false,
+        "desert2": false,
+        "forest": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8990,
+      "weapons": {
+        "il_merkava_mk_1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "it_44m_zrinyi_1": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_italy",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "tanks_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
+      "name": "it_44m_zrinyi_1",
+      "platoonUnits": [
+        {
+          "name": "it_43m_turan_3",
+          "reqLevel": 5
+        },
+        {
+          "name": "it_breda_52_autocannone",
+          "reqLevel": 10
+        },
+        {
+          "name": "it_m15_42_contraereo",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 3.119999885559082,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.1800000667572021,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 420,
+      "weapons": {
+        "it_44m_zrinyi_1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "it_of_40_mk_2a": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1689400,
+      "country": "country_italy",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_15",
+      "levelUpDiscount": 0.0,
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "it_of_40_mk_2a",
+      "platoonUnits": [
+        {
+          "name": "it_leopard_1a5",
+          "reqLevel": 5
+        },
+        {
+          "name": "it_m113a1_tow",
+          "reqLevel": 10
+        },
+        {
+          "name": "it_otobreda_sidam_25",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 15,
+      "releaseDate": 1707955200,
+      "rewardExpMul": 28.420000076293945,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.2699999809265137,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8810,
+      "weapons": {
+        "it_of_40_mk_2a_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "it_oto_r3_t20_fa": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_italy",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "tanks_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "it_oto_r3_t20_fa",
+      "platoonUnits": [
+        {
+          "name": "it_sherman_vc_firefly",
+          "reqLevel": 5
+        },
+        {
+          "name": "it_m36b1",
+          "reqLevel": 10
+        },
+        {
+          "name": "it_m18_hellcat",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 6.0999999046325684,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.7999999523162842,
+      "skins": {
+        "desert": false,
+        "forest": true,
+        "forest2": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 1170,
+      "weapons": {
+        "it_oto_r3_t20_fa_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "it_vcc_80_hitfist_60": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1718150,
+      "country": "country_italy",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 9,
+      "levelPreset": "tanks_16",
+      "levelUpDiscount": 0.0,
+      "mRank": 9,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "it_vcc_80_hitfist_60",
+      "platoonUnits": [
+        {
+          "name": "it_b1_centauro_romor",
+          "reqLevel": 5
+        },
+        {
+          "name": "it_vbc_pt2",
+          "reqLevel": 10
+        },
+        {
+          "name": "it_otobreda_sidam_25_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 16,
+      "releaseDate": 1712793600,
+      "rewardExpMul": 35.529998779296875,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.2899999618530273,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8990,
+      "weapons": {
+        "it_vcc_80_hitfist_60_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "itp_m1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 7920,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_11_preset",
+      "name": "itp_m1",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 3.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "itp_m1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "jp_armoredcruiser_ikoma": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 2190,
+      "costWp": 0,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_13",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "jp_armoredcruiser_ikoma",
+      "platoonUnits": [],
+      "rank": 13,
+      "releaseDate": 0,
+      "rewardExpMul": 12.300000190734863,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.7000000476837158,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 1020,
+      "weapons": {
+        "jp_armoredcruiser_ikoma_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "jp_battlecruiser_kongo": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 5830,
+      "costWp": 0,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": true,
       "itemsPerUse": 4,
       "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
-      "modPreset": "empty",
-      "name": "jp_battleship_fuso",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "jp_battlecruiser_kongo",
       "platoonUnits": [],
       "rank": 19,
-      "rewardExpMul": 14.229999542236328,
-      "rewardWpMul": 1.9800000190734863,
+      "releaseDate": 1710374400,
+      "rewardExpMul": 28.459999084472656,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.9600000381469727,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "cruiser",
       "unitType": "ship",
       "upgradeCostGold": 3440,
+      "weapons": {
+        "jp_battlecruiser_kongo_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "jp_battleship_fuso": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 773150,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "ships_20",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "jp_battleship_fuso",
+      "platoonUnits": [],
+      "rank": 20,
+      "releaseDate": 0,
+      "rewardExpMul": 16.369998931884766,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
+      "unitType": "ship",
+      "upgradeCostGold": 4300,
       "weapons": {
         "jp_battleship_fuso_default": {
           "costWp": 0,
@@ -1221,25 +8322,80 @@ return {
       "costGold": 0,
       "costWp": 496900,
       "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 4,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
       "levelPreset": "ships_18",
       "levelUpDiscount": 0.0,
       "mRank": 3,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "jp_battleship_hyuga",
       "platoonUnits": [],
       "rank": 18,
+      "releaseDate": 0,
       "rewardExpMul": 12.380000114440918,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.9600000381469727,
-      "unitClass": "cruiser",
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 2910,
       "weapons": {
         "jp_battleship_hyuga_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "jp_battleship_mutsu": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_17",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "jp_battleship_mutsu",
+      "platoonUnits": [],
+      "rank": 17,
+      "releaseDate": 1712793600,
+      "rewardExpMul": 21.520000457763672,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.8799998760223389,
+      "skins": {
+        "darkbrown_spots_prem": false,
+        "grayriver": false,
+        "lightblue_geometry": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 2310,
+      "weapons": {
+        "jp_battleship_mutsu_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -1252,21 +8408,32 @@ return {
       "costGold": 0,
       "costWp": 169100,
       "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 3,
       "levelPreset": "ships_14",
       "levelUpDiscount": 0.0,
       "mRank": 3,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "jp_battleship_settsu",
       "platoonUnits": [],
       "rank": 14,
+      "releaseDate": 0,
       "rewardExpMul": 7.0799999237060547,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.8799999952316284,
-      "unitClass": "cruiser",
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 1240,
       "weapons": {
@@ -1277,31 +8444,128 @@ return {
         }
       }
     },
-    "jp_battleship_yamato": {
-      "attrPreset": "shipDefaultNoTorpedo",
+    "jp_battleship_yamashiro": {
+      "attrPreset": "shipDefault",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "ships_21",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "jp_battleship_yamashiro",
+      "platoonUnits": [],
+      "rank": 21,
+      "releaseDate": 1720656000,
+      "rewardExpMul": 37.639999389648438,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.0199999809265137,
+      "skins": {
+        "asiatic_forest_prem": false,
+        "black_longdiag": false,
+        "bluegreen_splotch": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "battleship",
+      "unitType": "ship",
+      "upgradeCostGold": 4610,
+      "weapons": {
+        "jp_battleship_yamashiro_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "jp_battleship_yamato": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 1019400,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 4,
-      "levelPreset": "ships_19",
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "ships_25",
       "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modPreset": "empty",
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "jp_battleship_yamato",
       "platoonUnits": [],
-      "rank": 19,
-      "rewardExpMul": 14.229999542236328,
-      "rewardWpMul": 1.9800000190734863,
-      "unitClass": "cruiser",
+      "rank": 25,
+      "releaseDate": 1699920000,
+      "rewardExpMul": 32.919998168945312,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.070000171661377,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
-      "upgradeCostGold": 3440,
+      "upgradeCostGold": 5460,
       "weapons": {
         "jp_battleship_yamato_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "jp_cruiser_agano": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_12",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "jp_cruiser_agano",
+      "platoonUnits": [],
+      "rank": 12,
+      "releaseDate": 0,
+      "rewardExpMul": 10.699999809265137,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.6399998664855957,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 890,
+      "weapons": {
+        "jp_cruiser_agano_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -1314,25 +8578,124 @@ return {
       "costGold": 0,
       "costWp": 37900,
       "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
       "levelPreset": "ships_7",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "jp_cruiser_furutaka",
       "platoonUnits": [],
       "rank": 7,
+      "releaseDate": 0,
       "rewardExpMul": 2.6599998474121094,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.6400001049041748,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "cruiser",
       "unitType": "ship",
       "upgradeCostGold": 590,
       "weapons": {
         "jp_cruiser_furutaka_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "jp_cruiser_kako": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_9",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "jp_cruiser_kako",
+      "platoonUnits": [],
+      "rank": 9,
+      "releaseDate": 1705536000,
+      "rewardExpMul": 7.0399999618530273,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.4600000381469727,
+      "skins": {
+        "black_longdiag": false,
+        "factory": true,
+        "threegreenspots": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 650,
+      "weapons": {
+        "jp_cruiser_kako_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "jp_cruiser_mogami": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_11",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "jp_cruiser_mogami",
+      "platoonUnits": [],
+      "rank": 11,
+      "releaseDate": 1718236800,
+      "rewardExpMul": 9.3000001907348633,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.5999999046325684,
+      "skins": {
+        "bluegreen_splotch": false,
+        "darkbrown_spots_prem": false,
+        "darkgray_blotch": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 760,
+      "weapons": {
+        "jp_cruiser_mogami_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -1345,20 +8708,31 @@ return {
       "costGold": 0,
       "costWp": 94400,
       "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 2,
       "levelPreset": "ships_12",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "jp_cruiser_tone",
       "platoonUnits": [],
       "rank": 12,
+      "releaseDate": 0,
       "rewardExpMul": 5.3499999046325684,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.8199999332427979,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "cruiser",
       "unitType": "ship",
       "upgradeCostGold": 890,
@@ -1376,20 +8750,31 @@ return {
       "costGold": 0,
       "costWp": 27300,
       "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "ships_3",
       "levelUpDiscount": 0.34999999403953552,
       "mRank": 1,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "jp_destroyer_akizuki",
       "platoonUnits": [],
       "rank": 3,
+      "releaseDate": 0,
       "rewardExpMul": 1.5199999809265137,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.3600000143051147,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 480,
@@ -1407,25 +8792,120 @@ return {
       "costGold": 0,
       "costWp": 30100,
       "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "ships_5",
       "levelUpDiscount": 0.0,
       "mRank": 1,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "jp_destroyer_fubuki",
       "platoonUnits": [],
       "rank": 5,
+      "releaseDate": 0,
       "rewardExpMul": 2.0099999904632568,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.5300000905990601,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 550,
       "weapons": {
         "jp_destroyer_fubuki_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "jp_destroyer_hatsuzuki": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 1,
+      "levelPreset": "ships_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "jp_destroyer_hatsuzuki",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.3199999332427979,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 1.2300000190734863,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "destroyer",
+      "unitType": "ship",
+      "upgradeCostGold": 420,
+      "weapons": {
+        "jp_destroyer_hatsuzuki_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "jp_destroyer_rckt_takatsuki": {
+      "attrPreset": "shipMissilesNoAA",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 1034000,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "ships_26",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "jp_destroyer_rckt_takatsuki",
+      "platoonUnits": [],
+      "rank": 26,
+      "releaseDate": 1710374400,
+      "rewardExpMul": 37.860000610351562,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0799999237060547,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 5530,
+      "weapons": {
+        "jp_destroyer_rckt_takatsuki_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -1438,15 +8918,19 @@ return {
       "costGold": 0,
       "costWp": 392950,
       "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
       "levelPreset": "tanks_6",
       "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modPreset": "tank_default",
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
       "name": "jp_st_a1",
       "platoonUnits": [
         {
@@ -1463,8 +8947,15 @@ return {
         }
       ],
       "rank": 6,
+      "releaseDate": 0,
       "rewardExpMul": 3.809999942779541,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.9600000381469727,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 2320,
@@ -1482,15 +8973,19 @@ return {
       "costGold": 7200,
       "costWp": 0,
       "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
       "levelPreset": "tanks_7",
       "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modPreset": "tank_default",
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
       "name": "jp_st_a3",
       "platoonUnits": [
         {
@@ -1507,13 +9002,75 @@ return {
         }
       ],
       "rank": 7,
+      "releaseDate": 0,
       "rewardExpMul": 9.5399999618530273,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 4.0199999809265137,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 3670,
       "weapons": {
         "jp_st_a3_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "jp_st_b1": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1662100,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_14",
+      "levelUpDiscount": 0.0,
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "jp_st_b1",
+      "platoonUnits": [
+        {
+          "name": "jp_type_74_c",
+          "reqLevel": 5
+        },
+        {
+          "name": "jp_type_87_rcv",
+          "reqLevel": 10
+        },
+        {
+          "name": "jp_type_87",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 14,
+      "releaseDate": 1702512000,
+      "rewardExpMul": 22.739999771118164,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.2400000095367432,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8600,
+      "weapons": {
+        "jp_st_b1_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -1526,15 +9083,19 @@ return {
       "costGold": 0,
       "costWp": 26600,
       "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
       "levelPreset": "tanks_3",
       "levelUpDiscount": 0.5,
       "mRank": 2,
-      "modPreset": "tank_default",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke",
       "name": "jp_type_3_chi_nu_75cm_type_5",
       "platoonUnits": [
         {
@@ -1551,8 +9112,15 @@ return {
         }
       ],
       "rank": 3,
+      "releaseDate": 0,
       "rewardExpMul": 1.9499999284744263,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.7300000190734863,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 450,
@@ -1564,29 +9132,2055 @@ return {
         }
       }
     },
-    "uk_a30_sp_avenger": {
+    "jp_type_74_mod_g_kai": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 12900,
-      "country": "country_uk",
+      "costWp": 0,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_15",
+      "levelUpDiscount": 0.0,
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "jp_type_74_mod_g_kai",
+      "platoonUnits": [
+        {
+          "name": "jp_type_74_f",
+          "reqLevel": 5
+        },
+        {
+          "name": "jp_type_89",
+          "reqLevel": 10
+        },
+        {
+          "name": "jp_type_87_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 15,
+      "releaseDate": 1723075200,
+      "rewardExpMul": 56.840000152587891,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.5399999618530273,
+      "skins": {
+        "desert": false,
+        "forest": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8810,
+      "weapons": {
+        "jp_type_74_mod_g_kai_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ju-188a-2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_germany",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "ju-188a-2",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "ju-188a-2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ju-87b-2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 15000,
+      "country": "country_germany",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "ju-87b-2",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "ju-87b-2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ju-87d-3": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_germany",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "ju-87d-3",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "ju-87d-3_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ju_87d_5": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_germany",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_18_preset",
+      "name": "ju_87d_5",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "ju_87d_5_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "la-11": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 768100,
+      "country": "country_ussr",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_3_preset",
+      "name": "la-11",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 1.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "la-11_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "la-11_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_3_preset",
+      "name": "la-11_prem",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 3.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "la-11_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "la-5_type37_early": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_ussr",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "la-5_type37_early",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "la-5_type37_early_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "la-5fn": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_ussr",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "la-5fn",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "la-5fn_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "la-7": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_ussr",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "la-7",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "la-7_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "la-7b-20": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 768100,
+      "country": "country_ussr",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "la-7b-20",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 1.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "la-7b-20_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "lagg-3-11": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_ussr",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_14_preset",
+      "name": "lagg-3-11",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "lagg-3-11_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "lagg-3-8": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 15000,
+      "country": "country_ussr",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "lagg-3-8",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "lagg-3-8_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "me-410a-1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_germany",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_11_preset",
+      "name": "me-410a-1",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "me-410a-1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "me-410a-1_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_11_preset",
+      "name": "me-410a-1_prem",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 2.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "me-410a-1_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "me-410a-1_u2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_germany",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_9_preset",
+      "name": "me-410a-1_u2",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "me-410a-1_u2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "me_264": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_germany",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "me_264",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "me_264_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-36a": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_usa",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
       "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "p-36a",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-36a_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-36c": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 15000,
+      "country": "country_usa",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "p-36c",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-36c_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-38k": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 80,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "p-38k",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 3.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-38k_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-400": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_usa",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "p-400",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-400_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-400_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "p-400_prem",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 2.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-400_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-40e": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 15000,
+      "country": "country_usa",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "p-40e",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-40e_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-40f_10": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_usa",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "p-40f_10",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-40f_10_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-43a-1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_usa",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_4_preset",
+      "name": "p-43a-1",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-43a-1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-47d-28": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_usa",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "p-47d-28",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-47d-28_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-47d-28_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "p-47d-28_prem",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 3.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-47d-28_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-47d_22_re": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_usa",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "p-47d_22_re",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-47d_22_re_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-47d_ussr": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 5040,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "p-47d_ussr",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 3.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-47d_ussr_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-47n-15": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_usa",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "p-47n-15",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-47n-15_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-51c-10-nt": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_usa",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "p-51c-10-nt",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-51c-10-nt_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-51d-20-na": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_usa",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "p-51d-20-na",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-51d-20-na_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-51d-5": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_usa",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_9_preset",
+      "name": "p-51d-5",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-51d-5_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-63a-10": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_usa",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "p-63a-10",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-63a-10_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "pby-5a": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 15000,
+      "country": "country_usa",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "pby-5a",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "pby-5a_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "pe-8_m82": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_ussr",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "pe-8_m82",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "pe-8_m82_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "sb2c_4": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_usa",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_13_preset",
+      "name": "sb2c_4",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "sb2c_4_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "sb2u-2": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_usa",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "sb2u-2",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "sb2u-2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "sb2u-3": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_usa",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_11_preset",
+      "name": "sb2u-3",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "sb2u-3_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "sb2u-3_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_11_preset",
+      "name": "sb2u-3_prem",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 2.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "sb2u-3_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "sb_2m_100": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_ussr",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "sb_2m_100",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "sb_2m_100_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "sbd-3": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 15000,
+      "country": "country_usa",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_11_preset",
+      "name": "sbd-3",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "sbd-3_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "su-2_mv5": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_ussr",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_9_preset",
+      "name": "su-2_mv5",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "su-2_mv5_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "su_6_single": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_ussr",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "su_6_single",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "su_6_single_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "sw_cv_90105_tml": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1739900,
+      "country": "country_sweden",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 9,
+      "levelPreset": "tanks_16",
+      "levelUpDiscount": 0.0,
+      "mRank": 9,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "sw_cv_90105_tml",
+      "platoonUnits": [
+        {
+          "name": "sw_strv_105",
+          "reqLevel": 5
+        },
+        {
+          "name": "sw_strf_90b",
+          "reqLevel": 10
+        },
+        {
+          "name": "sw_itpsv_90",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 16,
+      "releaseDate": 1718236800,
+      "rewardExpMul": 35.529998779296875,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.2899999618530273,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8990,
+      "weapons": {
+        "sw_cv_90105_tml_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "sw_k9_vidar": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_sweden",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
+      "levelPreset": "tanks_12",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "sw_k9_vidar",
+      "platoonUnits": [
+        {
+          "name": "sw_strv_103a",
+          "reqLevel": 5
+        },
+        {
+          "name": "sw_landsverk_ush_405",
+          "reqLevel": 10
+        },
+        {
+          "name": "sw_veak_40_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 12,
+      "releaseDate": 0,
+      "rewardExpMul": 29.099998474121094,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.380000114440918,
+      "skins": {
+        "winter": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8090,
+      "weapons": {
+        "sw_k9_vidar_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "sw_strv_103c": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1634800,
+      "country": "country_sweden",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_14",
+      "levelUpDiscount": 0.0,
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "sw_strv_103c",
+      "platoonUnits": [
+        {
+          "name": "sw_strv_104",
+          "reqLevel": 5
+        },
+        {
+          "name": "sw_pvrbv_551",
+          "reqLevel": 10
+        },
+        {
+          "name": "sw_veak_40",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 14,
+      "releaseDate": 1697500800,
+      "rewardExpMul": 22.739999771118164,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.2400000095367432,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8600,
+      "weapons": {
+        "sw_strv_103c_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "tandem_mai": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 1080,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_6_preset",
+      "name": "tandem_mai",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 2.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "tandem_mai_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "tbd-1_1938": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 5700,
+      "country": "country_usa",
+      "dailyGoldLimit": 20,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 1,
+      "levelPreset": "air_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "tbd-1_1938",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.0,
+      "rewardGoldMul": 1.0,
+      "rewardWpMul": 1.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "bomber",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "tbd-1_1938_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_a30_sp_avenger": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 26600,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
       "levelPreset": "tanks_3",
       "levelUpDiscount": 0.5,
       "mRank": 2,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "uk_a30_sp_avenger",
       "platoonUnits": [
         {
-          "name": "uk_concept3_ngac",
+          "name": "uk_churchill_na75",
           "reqLevel": 5
         },
         {
-          "name": "uk_a_22b_mk_3_churchill_1942",
+          "name": "uk_concept3_ngac",
           "reqLevel": 10
         },
         {
@@ -1595,8 +11189,15 @@ return {
         }
       ],
       "rank": 3,
+      "releaseDate": 0,
       "rewardExpMul": 1.9499999284744263,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.7300000190734863,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 450,
@@ -1608,29 +11209,143 @@ return {
         }
       }
     },
+    "uk_a_22_mk_1_churchill_1941": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 1,
+      "levelPreset": "tanks_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "uk_a_22_mk_1_churchill_1941",
+      "platoonUnits": [
+        {
+          "name": "uk_sherman_II",
+          "reqLevel": 5
+        },
+        {
+          "name": "uk_a27m_cromwell_5",
+          "reqLevel": 10
+        },
+        {
+          "name": "uk_armored_car_mk_2_aa",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 3.119999885559082,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.1800000667572021,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 420,
+      "weapons": {
+        "uk_a_22_mk_1_churchill_1941_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_a_33_excelsior": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 3860,
+      "costWp": 0,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "tanks_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "uk_a_33_excelsior",
+      "platoonUnits": [
+        {
+          "name": "uk_sherman_ic_firefly",
+          "reqLevel": 5
+        },
+        {
+          "name": "uk_ram_90mm_aa",
+          "reqLevel": 10
+        },
+        {
+          "name": "uk_bosvark",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 3.119999885559082,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.1800000667572021,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 420,
+      "weapons": {
+        "uk_a_33_excelsior_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "uk_a_34_comet": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 153350,
+      "costWp": 49650,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
-      "levelPreset": "tanks_5",
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "tanks_4",
       "levelUpDiscount": 0.0,
       "mRank": 3,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "uk_a_34_comet",
       "platoonUnits": [
         {
-          "name": "uk_a30_challenger",
+          "name": "uk_a_22f_mk_7_churchill_1944",
           "reqLevel": 5
         },
         {
-          "name": "uk_a_22f_mk_7_churchill_1944",
+          "name": "uk_a30_challenger",
           "reqLevel": 10
         },
         {
@@ -1638,12 +11353,19 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 5,
-      "rewardExpMul": 3.0499999523162842,
-      "rewardWpMul": 1.8999999761581421,
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 2.440000057220459,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 1.8199999332427979,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 1170,
+      "upgradeCostGold": 640,
       "weapons": {
         "uk_a_34_comet_default": {
           "costWp": 0,
@@ -1658,14 +11380,18 @@ return {
       "costGold": 0,
       "costWp": 684450,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
       "levelPreset": "tanks_7",
       "levelUpDiscount": 0.0,
-      "mRank": 4,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "uk_a_43_black_prince",
       "platoonUnits": [
@@ -1683,13 +11409,148 @@ return {
         }
       ],
       "rank": 7,
+      "releaseDate": 0,
       "rewardExpMul": 4.7699999809265137,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 2.0099999904632568,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 3670,
       "weapons": {
         "uk_a_43_black_prince_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_battlecruiser_glorious": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_17",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "uk_battlecruiser_glorious",
+      "platoonUnits": [],
+      "rank": 17,
+      "releaseDate": 0,
+      "rewardExpMul": 21.520000457763672,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.8799998760223389,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 2310,
+      "weapons": {
+        "uk_battlecruiser_glorious_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_battlecruiser_invincible": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 2190,
+      "costWp": 0,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_14",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "uk_battlecruiser_invincible",
+      "platoonUnits": [],
+      "rank": 14,
+      "releaseDate": 0,
+      "rewardExpMul": 14.159999847412109,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.7599999904632568,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 1240,
+      "weapons": {
+        "uk_battlecruiser_invincible_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_battleship_colossus": {
+      "attrPreset": "shipDefaultNoTorpedoNoAA",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_17",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "uk_battleship_colossus",
+      "platoonUnits": [],
+      "rank": 17,
+      "releaseDate": 0,
+      "rewardExpMul": 21.520000457763672,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.8799998760223389,
+      "skins": {
+        "black_longdiag": false,
+        "lightblue_splotch": false,
+        "mtb_spots_prem": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "battleship",
+      "unitType": "ship",
+      "upgradeCostGold": 2310,
+      "weapons": {
+        "uk_battleship_colossus_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -1702,21 +11563,32 @@ return {
       "costGold": 0,
       "costWp": 124500,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 2,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
       "levelPreset": "ships_13",
       "levelUpDiscount": 0.0,
       "mRank": 3,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "uk_battleship_dreadnought",
       "platoonUnits": [],
       "rank": 13,
+      "releaseDate": 0,
       "rewardExpMul": 6.1500000953674316,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.8500000238418579,
-      "unitClass": "cruiser",
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 1020,
       "weapons": {
@@ -1731,27 +11603,126 @@ return {
       "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 0,
+      "costWp": 849550,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "ships_21",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "uk_battleship_king_george_1945",
+      "platoonUnits": [],
+      "rank": 21,
+      "releaseDate": 0,
+      "rewardExpMul": 18.819999694824219,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0099999904632568,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
+      "unitType": "ship",
+      "upgradeCostGold": 4610,
+      "weapons": {
+        "uk_battleship_king_george_1945_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_battleship_marlborough": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
       "itemsPerUse": 4,
       "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
-      "modPreset": "empty",
-      "name": "uk_battleship_king_george_1945",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "uk_battleship_marlborough",
       "platoonUnits": [],
       "rank": 19,
-      "rewardExpMul": 14.229999542236328,
-      "rewardWpMul": 1.9800000190734863,
-      "unitClass": "cruiser",
+      "releaseDate": 1725494400,
+      "rewardExpMul": 28.459999084472656,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.9600000381469727,
+      "skins": {
+        "bluegray_geometry_prem": false,
+        "marine_geometry": false,
+        "threegreenspots": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 3440,
       "weapons": {
-        "uk_battleship_king_george_1945_default": {
+        "uk_battleship_marlborough_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_battleship_orion": {
+      "attrPreset": "shipDefaultNoAA",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_18",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "uk_battleship_orion",
+      "platoonUnits": [],
+      "rank": 18,
+      "releaseDate": 0,
+      "rewardExpMul": 24.760000228881836,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.9200000762939453,
+      "skins": {
+        "disruptive_gray": false,
+        "lightblue_splotch": false,
+        "mtb_spots_prem": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "battleship",
+      "unitType": "ship",
+      "upgradeCostGold": 2910,
+      "weapons": {
+        "uk_battleship_orion_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -1762,25 +11733,36 @@ return {
       "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 0,
+      "costWp": 1019400,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 4,
-      "levelPreset": "ships_19",
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "ships_25",
       "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modPreset": "empty",
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "uk_battleship_vanguard",
       "platoonUnits": [],
-      "rank": 19,
-      "rewardExpMul": 14.229999542236328,
-      "rewardWpMul": 1.9800000190734863,
-      "unitClass": "cruiser",
+      "rank": 25,
+      "releaseDate": 0,
+      "rewardExpMul": 32.919998168945312,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.070000171661377,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
-      "upgradeCostGold": 3440,
+      "upgradeCostGold": 5460,
       "weapons": {
         "uk_battleship_vanguard_default": {
           "costWp": 0,
@@ -1795,25 +11777,146 @@ return {
       "costGold": 0,
       "costWp": 440700,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 4,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
       "levelPreset": "ships_18",
       "levelUpDiscount": 0.0,
       "mRank": 3,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "uk_battleship_warspite",
       "platoonUnits": [],
       "rank": 18,
+      "releaseDate": 0,
       "rewardExpMul": 12.380000114440918,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.9600000381469727,
-      "unitClass": "cruiser",
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 2910,
       "weapons": {
         "uk_battleship_warspite_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_centurion_action_x": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "tanks_9",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "uk_centurion_action_x",
+      "platoonUnits": [
+        {
+          "name": "uk_eland_90_mk_7",
+          "reqLevel": 5
+        },
+        {
+          "name": "uk_fv4004_conway",
+          "reqLevel": 10
+        },
+        {
+          "name": "uk_skink_aa",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 9,
+      "releaseDate": 0,
+      "rewardExpMul": 14.899999618530273,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.1999998092651367,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 6030,
+      "weapons": {
+        "uk_centurion_action_x_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_chieftain_mk_10": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1726350,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 9,
+      "levelPreset": "tanks_16",
+      "levelUpDiscount": 0.0,
+      "mRank": 9,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "uk_chieftain_mk_10",
+      "platoonUnits": [
+        {
+          "name": "uk_olifant_mk_2",
+          "reqLevel": 5
+        },
+        {
+          "name": "uk_ratel_zt3",
+          "reqLevel": 10
+        },
+        {
+          "name": "uk_rooikat_za_35",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 16,
+      "releaseDate": 1715817600,
+      "rewardExpMul": 35.529998779296875,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.2899999618530273,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8990,
+      "weapons": {
+        "uk_chieftain_mk_10_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -1826,14 +11929,18 @@ return {
       "costGold": 0,
       "costWp": 0,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": false,
+      "isHidden": true,
       "isPremium": true,
-      "itemsPerUse": 2,
-      "levelPreset": "tanks_10",
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
+      "levelPreset": "tanks_12",
       "levelUpDiscount": 0.0,
       "mRank": 7,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "uk_chieftain_mk_3",
       "platoonUnits": [
@@ -1850,12 +11957,19 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 10,
-      "rewardExpMul": 18.619998931884766,
-      "rewardWpMul": 4.2599997520446777,
+      "rank": 12,
+      "releaseDate": 1711929600,
+      "rewardExpMul": 29.099998474121094,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.380000114440918,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 7180,
+      "upgradeCostGold": 8090,
       "weapons": {
         "uk_chieftain_mk_3_default": {
           "costWp": 0,
@@ -1870,23 +11984,34 @@ return {
       "costGold": 1190,
       "costWp": 0,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
-      "itemsPerUse": 1,
-      "levelPreset": "ships_7",
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_8",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "uk_cruiser_belfast",
       "platoonUnits": [],
-      "rank": 7,
-      "rewardExpMul": 5.3199996948242188,
-      "rewardWpMul": 3.2800002098083496,
+      "rank": 8,
+      "releaseDate": 0,
+      "rewardExpMul": 6.119999885559082,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.3799998760223389,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 590,
+      "upgradeCostGold": 620,
       "weapons": {
         "uk_cruiser_belfast_default": {
           "costWp": 0,
@@ -1895,26 +12020,123 @@ return {
         }
       }
     },
+    "uk_cruiser_cornwall": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_8",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "uk_cruiser_cornwall",
+      "platoonUnits": [],
+      "rank": 8,
+      "releaseDate": 1702512000,
+      "rewardExpMul": 6.119999885559082,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.3799998760223389,
+      "skins": {
+        "blackgray_stripes": false,
+        "factory": true,
+        "greenwhite_spots": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 620,
+      "weapons": {
+        "uk_cruiser_cornwall_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_cruiser_dido": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_9",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "uk_cruiser_dido",
+      "platoonUnits": [],
+      "rank": 9,
+      "releaseDate": 1720656000,
+      "rewardExpMul": 7.0399999618530273,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.4600000381469727,
+      "skins": {
+        "darkgray_blotch": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 650,
+      "weapons": {
+        "uk_cruiser_dido_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "uk_cruiser_kent": {
-      "attrPreset": "shipDefaultNoTorpedo",
+      "attrPreset": "shipDefault",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 38000,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
       "levelPreset": "ships_7",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "uk_cruiser_kent",
       "platoonUnits": [],
       "rank": 7,
+      "releaseDate": 0,
       "rewardExpMul": 2.6599998474121094,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.6400001049041748,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "cruiser",
       "unitType": "ship",
       "upgradeCostGold": 590,
@@ -1932,20 +12154,31 @@ return {
       "costGold": 0,
       "costWp": 55150,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 2,
       "levelPreset": "ships_10",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "uk_cruiser_southampton",
       "platoonUnits": [],
       "rank": 10,
+      "releaseDate": 0,
       "rewardExpMul": 4.0499997138977051,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.7599999904632568,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "cruiser",
       "unitType": "ship",
       "upgradeCostGold": 680,
@@ -1963,25 +12196,120 @@ return {
       "costGold": 0,
       "costWp": 20000,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "ships_1",
       "levelUpDiscount": 1.0,
       "mRank": 1,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "uk_destroyer_hunt_4series",
       "platoonUnits": [],
       "rank": 1,
+      "releaseDate": 0,
       "rewardExpMul": 1.1499999761581421,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.0,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 410,
       "weapons": {
         "uk_destroyer_hunt_4series_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_destroyer_rckt_devonshire": {
+      "attrPreset": "shipMissilesNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "ships_28",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "uk_destroyer_rckt_devonshire",
+      "platoonUnits": [],
+      "rank": 30,
+      "releaseDate": 0,
+      "rewardExpMul": 50.069999694824219,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.1099998950958252,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 2,
+      "suitableForOffer": false,
+      "unitClass": "destroyer",
+      "unitType": "ship",
+      "upgradeCostGold": 5590,
+      "weapons": {
+        "uk_destroyer_rckt_devonshire_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_destroyer_rckt_type23": {
+      "attrPreset": "shipDefaultMissiles",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 1046100,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "ships_27",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "uk_destroyer_rckt_type23",
+      "platoonUnits": [],
+      "rank": 27,
+      "releaseDate": 1718236800,
+      "rewardExpMul": 43.540000915527344,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0999999046325684,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "destroyer",
+      "unitType": "ship",
+      "upgradeCostGold": 5560,
+      "weapons": {
+        "uk_destroyer_rckt_type23_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -1994,20 +12322,31 @@ return {
       "costGold": 0,
       "costWp": 30250,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "ships_5",
       "levelUpDiscount": 0.0,
       "mRank": 1,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "uk_destroyer_tribal",
       "platoonUnits": [],
       "rank": 5,
+      "releaseDate": 0,
       "rewardExpMul": 2.0099999904632568,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.5300000905990601,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 550,
@@ -2023,16 +12362,20 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 1133600,
+      "costWp": 1363700,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 2,
-      "levelPreset": "tanks_9",
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "tanks_10",
       "levelUpDiscount": 0.0,
-      "mRank": 5,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "uk_fv4202",
       "platoonUnits": [
@@ -2049,12 +12392,19 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 9,
-      "rewardExpMul": 7.4499998092651367,
-      "rewardWpMul": 2.0999999046325684,
+      "rank": 10,
+      "releaseDate": 0,
+      "rewardExpMul": 9.3099994659423828,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.1299998760223389,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 6030,
+      "upgradeCostGold": 7180,
       "weapons": {
         "uk_fv4202_default": {
           "costWp": 0,
@@ -2063,88 +12413,139 @@ return {
         }
       }
     },
-    "uk_sherman_II": {
+    "uk_g6_spg": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
       "costWp": 0,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
       "isDefault": false,
       "isEvent": false,
       "isHidden": true,
       "isPremium": true,
-      "itemsPerUse": 1,
-      "levelPreset": "tanks_2",
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "tanks_7",
       "levelUpDiscount": 0.0,
-      "mRank": 1,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
-      "name": "uk_sherman_II",
+      "name": "uk_g6_spg",
       "platoonUnits": [
         {
-          "name": "uk_a_22_mk_1_churchill_1941",
+          "name": "uk_charioteer_mk_7",
           "reqLevel": 5
         },
         {
-          "name": "uk_a27m_cromwell_5",
+          "name": "uk_ratel_90_reskin",
           "reqLevel": 10
         },
         {
-          "name": "uk_armored_car_mk_2_aa",
+          "name": "uk_ystervark_spaa_reskin",
           "reqLevel": 15
         }
       ],
-      "rank": 2,
-      "rewardExpMul": 3.119999885559082,
-      "rewardWpMul": 3.1800000667572021,
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 9.5399999618530273,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.0199999809265137,
+      "skins": {
+        "desert": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 420,
+      "upgradeCostGold": 3670,
       "weapons": {
-        "uk_sherman_II_default": {
+        "uk_g6_spg_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
         }
       }
     },
-    "uk_sherman_ic_firefly": {
-      "attrPreset": "tankDefault",
-      "campaign": "tanks",
-      "costGold": 3860,
-      "costWp": 0,
+    "uk_sub_type_v": {
+      "attrPreset": "subArtillery",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 23600,
       "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
-      "isPremium": true,
+      "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
-      "levelPreset": "tanks_4",
+      "levelPreset": "ships_4",
       "levelUpDiscount": 0.0,
-      "mRank": 3,
-      "modPreset": "tank_default",
-      "name": "uk_sherman_ic_firefly",
-      "platoonUnits": [
-        {
-          "name": "uk_a_33_excelsior",
-          "reqLevel": 5
-        },
-        {
-          "name": "uk_ram_90mm_aa",
-          "reqLevel": 10
-        },
-        {
-          "name": "uk_bosvark",
-          "reqLevel": 15
-        }
-      ],
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "submarine_default",
+      "name": "uk_sub_type_v",
+      "platoonUnits": [],
       "rank": 4,
-      "rewardExpMul": 4.880000114440918,
-      "rewardWpMul": 3.6399998664855957,
-      "unitClass": "medium_tank",
-      "unitType": "tank",
-      "upgradeCostGold": 640,
+      "releaseDate": 1697500800,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 1.4599999189376831,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "submarine",
+      "unitType": "ship",
+      "upgradeCostGold": 520,
       "weapons": {
-        "uk_sherman_ic_firefly_default": {
+        "uk_sub_type_v_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_sub_valiant": {
+      "attrPreset": "subMissileNoGuns",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 1046100,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "ships_27",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "submarine_default",
+      "name": "uk_sub_valiant",
+      "platoonUnits": [],
+      "rank": 27,
+      "releaseDate": 1712793600,
+      "rewardExpMul": 43.540000915527344,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0999999046325684,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "submarine",
+      "unitType": "ship",
+      "upgradeCostGold": 5560,
+      "weapons": {
+        "uk_sub_valiant_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -2157,23 +12558,34 @@ return {
       "costGold": 0,
       "costWp": 0,
       "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
       "isDefault": false,
       "isEvent": false,
       "isHidden": true,
       "isPremium": false,
-      "itemsPerUse": 4,
-      "levelPreset": "ships_19",
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "ships_24",
       "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modPreset": "empty",
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "us_aircraftcarrier_essex",
       "platoonUnits": [],
-      "rank": 19,
-      "rewardExpMul": 14.229999542236328,
-      "rewardWpMul": 1.9800000190734863,
+      "rank": 24,
+      "releaseDate": 0,
+      "rewardExpMul": 28.629999160766602,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.059999942779541,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 3440,
+      "upgradeCostGold": 5360,
       "weapons": {
         "us_aircraftcarrier_essex_default": {
           "costWp": 0,
@@ -2188,20 +12600,31 @@ return {
       "costGold": 0,
       "costWp": 602650,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 4,
       "levelPreset": "ships_19",
       "levelUpDiscount": 0.0,
       "mRank": 4,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "us_battlecruiser_alaska_class",
       "platoonUnits": [],
       "rank": 19,
+      "releaseDate": 0,
       "rewardExpMul": 14.229999542236328,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.9800000190734863,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "cruiser",
       "unitType": "ship",
       "upgradeCostGold": 3440,
@@ -2216,24 +12639,35 @@ return {
     "us_battleship_arizona_1931": {
       "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
-      "costGold": 2490,
+      "costGold": 2600,
       "costWp": 0,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
+      "isUpgradeable": true,
       "itemsPerUse": 3,
       "levelPreset": "ships_15",
       "levelUpDiscount": 0.0,
       "mRank": 3,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "us_battleship_arizona_1931",
       "platoonUnits": [],
       "rank": 15,
+      "releaseDate": 0,
       "rewardExpMul": 16.279998779296875,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 3.7999999523162842,
-      "unitClass": "cruiser",
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 1540,
       "weapons": {
@@ -2244,29 +12678,84 @@ return {
         }
       }
     },
-    "us_battleship_iowa": {
+    "us_battleship_arkansas": {
       "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_18",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "us_battleship_arkansas",
+      "platoonUnits": [],
+      "rank": 18,
+      "releaseDate": 1702512000,
+      "rewardExpMul": 24.760000228881836,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.9200000762939453,
+      "skins": {
+        "bluegreen_splotch": false,
+        "bluewater_geometry": false,
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 2910,
+      "weapons": {
+        "us_battleship_arkansas_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_battleship_iowa": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 973800,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 4,
-      "levelPreset": "ships_19",
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "ships_23",
       "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modPreset": "empty",
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "us_battleship_iowa",
       "platoonUnits": [],
-      "rank": 19,
-      "rewardExpMul": 14.229999542236328,
-      "rewardWpMul": 1.9800000190734863,
-      "unitClass": "cruiser",
+      "rank": 23,
+      "releaseDate": 0,
+      "rewardExpMul": 24.889999389648438,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0399999618530273,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
-      "upgradeCostGold": 3440,
+      "upgradeCostGold": 5230,
       "weapons": {
         "us_battleship_iowa_default": {
           "costWp": 0,
@@ -2275,31 +12764,128 @@ return {
         }
       }
     },
-    "us_battleship_north_dakota": {
+    "us_battleship_mississippi": {
       "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "ships_22",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "us_battleship_mississippi",
+      "platoonUnits": [],
+      "rank": 22,
+      "releaseDate": 0,
+      "rewardExpMul": 43.279998779296875,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.059999942779541,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "battleship",
+      "unitType": "ship",
+      "upgradeCostGold": 5000,
+      "weapons": {
+        "us_battleship_mississippi_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_battleship_north_dakota": {
+      "attrPreset": "shipDefaultNoTorpedoNoAA",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 164700,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 3,
       "levelPreset": "ships_14",
       "levelUpDiscount": 0.0,
       "mRank": 3,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "us_battleship_north_dakota",
       "platoonUnits": [],
       "rank": 14,
+      "releaseDate": 0,
       "rewardExpMul": 7.0799999237060547,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.8799999952316284,
-      "unitClass": "cruiser",
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 1240,
       "weapons": {
         "us_battleship_north_dakota_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_battleship_texas": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_17",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "us_battleship_texas",
+      "platoonUnits": [],
+      "rank": 17,
+      "releaseDate": 1707955200,
+      "rewardExpMul": 21.520000457763672,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.8799998760223389,
+      "skins": {
+        "blue_stains": false,
+        "grayriver": false,
+        "greenriver_prem": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 2310,
+      "weapons": {
+        "us_battleship_texas_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -2312,25 +12898,120 @@ return {
       "costGold": 0,
       "costWp": 283150,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 3,
       "levelPreset": "ships_16",
       "levelUpDiscount": 0.0,
       "mRank": 3,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "us_battleship_wyoming_class",
       "platoonUnits": [],
       "rank": 16,
+      "releaseDate": 0,
       "rewardExpMul": 9.3599996566772461,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.9199999570846558,
-      "unitClass": "cruiser",
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 1840,
       "weapons": {
         "us_battleship_wyoming_class_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_cruiser_baltimore_class": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_12",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "us_cruiser_baltimore_class",
+      "platoonUnits": [],
+      "rank": 12,
+      "releaseDate": 1720656000,
+      "rewardExpMul": 10.699999809265137,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.6399998664855957,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 890,
+      "weapons": {
+        "us_cruiser_baltimore_class_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_cruiser_brooklyn_class_helena": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_8",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "us_cruiser_brooklyn_class_helena",
+      "platoonUnits": [],
+      "rank": 8,
+      "releaseDate": 1723075200,
+      "rewardExpMul": 6.119999885559082,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.3799998760223389,
+      "skins": {
+        "lightblue_geometry": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 620,
+      "weapons": {
+        "us_cruiser_brooklyn_class_helena_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -2343,25 +13024,80 @@ return {
       "costGold": 0,
       "costWp": 47700,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 2,
       "levelPreset": "ships_9",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "us_cruiser_cleveland_class_cleveland",
       "platoonUnits": [],
       "rank": 9,
+      "releaseDate": 0,
       "rewardExpMul": 3.5199999809265137,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.7300000190734863,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "cruiser",
       "unitType": "ship",
       "upgradeCostGold": 650,
       "weapons": {
         "us_cruiser_cleveland_class_cleveland_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_cruiser_des_moines_class": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_13",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "us_cruiser_des_moines_class",
+      "platoonUnits": [],
+      "rank": 13,
+      "releaseDate": 1697500800,
+      "rewardExpMul": 12.300000190734863,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.7000000476837158,
+      "skins": {
+        "bluewater_geometry": false,
+        "darkgray_blotch": false,
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 1020,
+      "weapons": {
+        "us_cruiser_des_moines_class_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -2374,25 +13110,164 @@ return {
       "costGold": 0,
       "costWp": 36700,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
       "levelPreset": "ships_6",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "us_cruiser_new_orleans_class",
       "platoonUnits": [],
       "rank": 6,
+      "releaseDate": 0,
       "rewardExpMul": 2.309999942779541,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.5900000333786011,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "cruiser",
       "unitType": "ship",
       "upgradeCostGold": 580,
       "weapons": {
         "us_cruiser_new_orleans_class_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_cruiser_pensacola_class": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "us_cruiser_pensacola_class",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 1712793600,
+      "rewardExpMul": 5.3199996948242188,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.2800002098083496,
+      "skins": {
+        "arctic_spots": false,
+        "blue_stains": false,
+        "greenwhite_spots": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 590,
+      "weapons": {
+        "us_cruiser_pensacola_class_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_cruiser_rckt_belknap": {
+      "attrPreset": "shipMissilesNoAA",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 1034000,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "ships_26",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "us_cruiser_rckt_belknap",
+      "platoonUnits": [],
+      "rank": 26,
+      "releaseDate": 1707955200,
+      "rewardExpMul": 37.860000610351562,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0799999237060547,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 5530,
+      "weapons": {
+        "us_cruiser_rckt_belknap_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_cruiser_rckt_truxtun": {
+      "attrPreset": "shipMissilesNoAANoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 1056450,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "ships_28",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "us_cruiser_rckt_truxtun",
+      "platoonUnits": [],
+      "rank": 28,
+      "releaseDate": 1720656000,
+      "rewardExpMul": 50.069999694824219,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.1099998950958252,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 5590,
+      "weapons": {
+        "us_cruiser_rckt_truxtun_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -2405,20 +13280,31 @@ return {
       "costGold": 0,
       "costWp": 20200,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "ships_1",
       "levelUpDiscount": 1.0,
       "mRank": 1,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "us_destroyer_fletcher",
       "platoonUnits": [],
       "rank": 1,
+      "releaseDate": 0,
       "rewardExpMul": 1.1499999761581421,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.0,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 410,
@@ -2436,23 +13322,34 @@ return {
       "costGold": 0,
       "costWp": 0,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
       "isDefault": false,
       "isEvent": false,
       "isHidden": true,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
-      "levelPreset": "ships_3",
+      "levelPreset": "ships_2",
       "levelUpDiscount": 0.0,
       "mRank": 1,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "us_destroyer_fletcher_nicholas",
       "platoonUnits": [],
-      "rank": 3,
-      "rewardExpMul": 1.5199999809265137,
-      "rewardWpMul": 1.3600000143051147,
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.3199999332427979,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 1.2300000190734863,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "destroyer",
       "unitType": "ship",
-      "upgradeCostGold": 480,
+      "upgradeCostGold": 420,
       "weapons": {
         "us_destroyer_fletcher_nicholas_default": {
           "costWp": 0,
@@ -2467,20 +13364,31 @@ return {
       "costGold": 1050,
       "costWp": 0,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "ships_5",
       "levelUpDiscount": 0.0,
       "mRank": 1,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "us_destroyer_mitscher",
       "platoonUnits": [],
       "rank": 5,
+      "releaseDate": 0,
       "rewardExpMul": 4.0199999809265137,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 3.0600001811981201,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 550,
@@ -2498,25 +13406,76 @@ return {
       "costGold": 0,
       "costWp": 28460,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "ships_3",
       "levelUpDiscount": 0.34999999403953552,
       "mRank": 1,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "us_destroyer_porter",
       "platoonUnits": [],
       "rank": 3,
+      "releaseDate": 0,
       "rewardExpMul": 1.5199999809265137,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.3600000143051147,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 480,
       "weapons": {
         "us_destroyer_porter_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_destroyer_selfridge": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 1,
+      "levelPreset": "ships_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "us_destroyer_selfridge",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 3.5,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.9199998378753662,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "destroyer",
+      "unitType": "ship",
+      "upgradeCostGold": 520,
+      "weapons": {
+        "us_destroyer_selfridge_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -2529,15 +13488,19 @@ return {
       "costGold": 0,
       "costWp": 1086800,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 2,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
       "levelPreset": "tanks_9",
       "levelUpDiscount": 0.0,
-      "mRank": 5,
-      "modPreset": "tank_default",
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke",
       "name": "us_m26e1_pershing",
       "platoonUnits": [
         {
@@ -2554,8 +13517,15 @@ return {
         }
       ],
       "rank": 9,
+      "releaseDate": 0,
       "rewardExpMul": 7.4499998092651367,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 2.0999999046325684,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 6030,
@@ -2571,17 +13541,21 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 0,
+      "costWp": 1449800,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 2,
-      "levelPreset": "tanks_10",
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
+      "levelPreset": "tanks_11",
       "levelUpDiscount": 0.0,
-      "mRank": 6,
-      "modPreset": "tank_default",
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
       "name": "us_m47_patton_II",
       "platoonUnits": [
         {
@@ -2597,12 +13571,19 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 10,
-      "rewardExpMul": 9.3099994659423828,
-      "rewardWpMul": 2.1299998760223389,
+      "rank": 11,
+      "releaseDate": 0,
+      "rewardExpMul": 11.639999389648438,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.1600000858306885,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 7180,
+      "upgradeCostGold": 7770,
       "weapons": {
         "us_m47_patton_II_default": {
           "costWp": 0,
@@ -2617,14 +13598,18 @@ return {
       "costGold": 1920,
       "costWp": 0,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
       "levelPreset": "tanks_3",
       "levelUpDiscount": 0.0,
       "mRank": 2,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "us_m4_sherman_calliope",
       "platoonUnits": [
@@ -2642,13 +13627,76 @@ return {
         }
       ],
       "rank": 3,
+      "releaseDate": 0,
       "rewardExpMul": 3.8999998569488525,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 3.4600000381469727,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 450,
       "weapons": {
         "us_m4_sherman_calliope_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_m4_sherman_reward": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 1,
+      "levelPreset": "tanks_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
+      "name": "us_m4_sherman_reward",
+      "platoonUnits": [
+        {
+          "name": "us_m24_chaffee_reward",
+          "reqLevel": 5
+        },
+        {
+          "name": "us_m10_reward",
+          "reqLevel": 10
+        },
+        {
+          "name": "us_halftrack_m16_reward",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 1,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 1.3600000143051147,
+      "skins": {
+        "forest": true,
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 410,
+      "weapons": {
+        "us_m4_sherman_reward_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -2661,15 +13709,19 @@ return {
       "costGold": 0,
       "costWp": 20000,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "tanks_1",
       "levelUpDiscount": 1.0,
       "mRank": 1,
-      "modPreset": "tank_default",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
       "name": "us_m4a1_1942_sherman",
       "platoonUnits": [
         {
@@ -2686,8 +13738,15 @@ return {
         }
       ],
       "rank": 1,
+      "releaseDate": 0,
       "rewardExpMul": 1.25,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.3600000143051147,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 410,
@@ -2705,15 +13764,19 @@ return {
       "costGold": 0,
       "costWp": 47950,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
       "levelPreset": "tanks_4",
       "levelUpDiscount": 0.0,
       "mRank": 3,
-      "modPreset": "tank_default",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
       "name": "us_m4a1_76w_sherman",
       "platoonUnits": [
         {
@@ -2730,8 +13793,15 @@ return {
         }
       ],
       "rank": 4,
+      "releaseDate": 0,
       "rewardExpMul": 2.440000057220459,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.8199999332427979,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 640,
@@ -2749,15 +13819,19 @@ return {
       "costGold": 0,
       "costWp": 20200,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
       "levelPreset": "tanks_2",
       "levelUpDiscount": 0.5,
       "mRank": 2,
-      "modPreset": "tank_default",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
       "name": "us_m4a2_sherman",
       "platoonUnits": [
         {
@@ -2774,13 +13848,132 @@ return {
         }
       ],
       "rank": 2,
+      "releaseDate": 0,
       "rewardExpMul": 1.559999942779541,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.5900000333786011,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 420,
       "weapons": {
         "us_m4a2_sherman_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_m4a3e2_76w_sherman_jumbo": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "tanks_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
+      "name": "us_m4a3e2_76w_sherman_jumbo",
+      "platoonUnits": [
+        {
+          "name": "us_m4a2_76w_sherman",
+          "reqLevel": 5
+        },
+        {
+          "name": "us_m36",
+          "reqLevel": 10
+        },
+        {
+          "name": "us_m42_duster_reskin7",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 6,
+      "releaseDate": 1710374400,
+      "rewardExpMul": 7.619999885559082,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.9200000762939453,
+      "skins": {
+        "desert": false,
+        "forest": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 2320,
+      "weapons": {
+        "us_m4a3e2_76w_sherman_jumbo_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_m4a3e2_sherman_jumbo_cobra_king": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 4290,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "tanks_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
+      "name": "us_m4a3e2_sherman_jumbo_cobra_king",
+      "platoonUnits": [
+        {
+          "name": "us_m18_hellcat_black_cat",
+          "reqLevel": 5
+        },
+        {
+          "name": "us_t20",
+          "reqLevel": 10
+        },
+        {
+          "name": "us_m42_duster_reskin2",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 6.0999999046325684,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.7999999523162842,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 1170,
+      "weapons": {
+        "us_m4a3e2_sherman_jumbo_cobra_king_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -2793,15 +13986,19 @@ return {
       "costGold": 0,
       "costWp": 387350,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
       "levelPreset": "tanks_6",
       "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modPreset": "tank_default",
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
       "name": "us_m4a3e8_76w_sherman",
       "platoonUnits": [
         {
@@ -2818,8 +14015,15 @@ return {
         }
       ],
       "rank": 6,
+      "releaseDate": 0,
       "rewardExpMul": 3.809999942779541,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.9600000381469727,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 2320,
@@ -2831,20 +14035,81 @@ return {
         }
       }
     },
-    "us_m60a1": {
+    "us_m56_scorpion": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
       "costWp": 0,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "tanks_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
+      "name": "us_m56_scorpion",
+      "platoonUnits": [
+        {
+          "name": "us_t25",
+          "reqLevel": 5
+        },
+        {
+          "name": "us_t26e5_reskin",
+          "reqLevel": 10
+        },
+        {
+          "name": "us_m42_duster_reskin5",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 7,
+      "releaseDate": 1715817600,
+      "rewardExpMul": 9.5399999618530273,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.0199999809265137,
+      "skins": {
+        "desert": false,
+        "forest": false,
+        "forest2": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 3670,
+      "weapons": {
+        "us_m56_scorpion_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_m60a1": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1545950,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 2,
-      "levelPreset": "tanks_10",
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_12",
       "levelUpDiscount": 0.0,
-      "mRank": 7,
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "us_m60a1",
       "platoonUnits": [
@@ -2861,14 +14126,131 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 10,
-      "rewardExpMul": 9.3099994659423828,
-      "rewardWpMul": 2.1299998760223389,
+      "rank": 12,
+      "releaseDate": 0,
+      "rewardExpMul": 14.549999237060547,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.190000057220459,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 7180,
+      "upgradeCostGold": 8090,
       "weapons": {
         "us_m60a1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_m728": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
+      "levelPreset": "tanks_11",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "us_m728",
+      "platoonUnits": [
+        {
+          "name": "us_t95e1",
+          "reqLevel": 5
+        },
+        {
+          "name": "us_m901_itv",
+          "reqLevel": 10
+        },
+        {
+          "name": "us_m163_vulcan_reskin2",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 11,
+      "releaseDate": 1720656000,
+      "rewardExpMul": 23.279998779296875,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.320000171661377,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 7770,
+      "weapons": {
+        "us_m728_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_mbt_70": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1759850,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 9,
+      "levelPreset": "tanks_17",
+      "levelUpDiscount": 0.0,
+      "mRank": 9,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "us_mbt_70",
+      "platoonUnits": [
+        {
+          "name": "us_m60a3_tts",
+          "reqLevel": 5
+        },
+        {
+          "name": "us_m3a3_bradley",
+          "reqLevel": 10
+        },
+        {
+          "name": "us_m247_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 17,
+      "releaseDate": 1723075200,
+      "rewardExpMul": 44.409999847412109,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.3100001811981201,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 9160,
+      "weapons": {
+        "us_mbt_70_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -2881,20 +14263,31 @@ return {
       "costGold": 0,
       "costWp": 57300,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 2,
       "levelPreset": "ships_10",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "submarine_default",
       "name": "us_sub_balao",
       "platoonUnits": [],
       "rank": 10,
+      "releaseDate": 0,
       "rewardExpMul": 4.0499997138977051,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.7599999904632568,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "submarine",
       "unitType": "ship",
       "upgradeCostGold": 680,
@@ -2906,29 +14299,82 @@ return {
         }
       }
     },
-    "us_sub_tang": {
-      "attrPreset": "shipNoGuns",
+    "us_sub_balao_ss286": {
+      "attrPreset": "subArtillery",
       "campaign": "ships",
       "costGold": 0,
       "costWp": 0,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_11",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "submarine_default",
+      "name": "us_sub_balao_ss286",
+      "platoonUnits": [],
+      "rank": 11,
+      "releaseDate": 0,
+      "rewardExpMul": 9.3000001907348633,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.5999999046325684,
+      "skins": {
+        "blackgray_stripes": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "submarine",
+      "unitType": "ship",
+      "upgradeCostGold": 760,
+      "weapons": {
+        "us_sub_balao_ss286_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_sub_tang": {
+      "attrPreset": "subNoGuns",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 377550,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 4,
-      "levelPreset": "ships_19",
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_17",
       "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modPreset": "empty",
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "submarine_default",
       "name": "us_sub_tang",
       "platoonUnits": [],
-      "rank": 19,
-      "rewardExpMul": 14.229999542236328,
-      "rewardWpMul": 1.9800000190734863,
+      "rank": 17,
+      "releaseDate": 0,
+      "rewardExpMul": 10.760000228881836,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 1.9399999380111694,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "submarine",
       "unitType": "ship",
-      "upgradeCostGold": 3440,
+      "upgradeCostGold": 2310,
       "weapons": {
         "us_sub_tang_default": {
           "costWp": 0,
@@ -2937,44 +14383,57 @@ return {
         }
       }
     },
-    "us_t20": {
+    "us_t29": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
-      "costGold": 4290,
+      "costGold": 0,
       "costWp": 0,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": false,
+      "isHidden": true,
       "isPremium": true,
-      "itemsPerUse": 1,
-      "levelPreset": "tanks_5",
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "tanks_8",
       "levelUpDiscount": 0.0,
-      "mRank": 3,
-      "modPreset": "tank_default",
-      "name": "us_t20",
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke",
+      "name": "us_t29",
       "platoonUnits": [
         {
-          "name": "us_m18_hellcat_black_cat",
+          "name": "us_m18_super_hellcat",
           "reqLevel": 5
         },
         {
-          "name": "us_m4a3e2_sherman_jumbo_cobra_king",
+          "name": "us_m6a2e1",
           "reqLevel": 10
         },
         {
-          "name": "us_m42_duster_reskin2",
+          "name": "us_m42_duster_reskin4",
           "reqLevel": 15
         }
       ],
-      "rank": 5,
-      "rewardExpMul": 6.0999999046325684,
-      "rewardWpMul": 3.7999999523162842,
+      "rank": 8,
+      "releaseDate": 1699920000,
+      "rewardExpMul": 11.920000076293945,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.119999885559082,
+      "skins": {
+        "forest": true,
+        "forest2": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 1170,
+      "upgradeCostGold": 4870,
       "weapons": {
-        "us_t20_default": {
+        "us_t29_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -2984,18 +14443,22 @@ return {
     "us_t54e1": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
-      "costGold": 0,
+      "costGold": 14790,
       "costWp": 0,
       "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
-      "itemsPerUse": 2,
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
       "levelPreset": "tanks_10",
       "levelUpDiscount": 0.0,
-      "mRank": 6,
-      "modPreset": "tank_default",
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke",
       "name": "us_t54e1",
       "platoonUnits": [
         {
@@ -3003,22 +14466,143 @@ return {
           "reqLevel": 5
         },
         {
-          "name": "us_m163_vulcan_reskin",
+          "name": "us_t32e1",
           "reqLevel": 10
         },
         {
-          "name": "us_t32e1",
+          "name": "us_m163_vulcan_reskin",
           "reqLevel": 15
         }
       ],
       "rank": 10,
+      "releaseDate": 0,
       "rewardExpMul": 18.619998931884766,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 4.2599997520446777,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 7180,
       "weapons": {
         "us_t54e1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_t54e2": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
+      "levelPreset": "tanks_10",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "us_t54e2",
+      "platoonUnits": [
+        {
+          "name": "us_m60",
+          "reqLevel": 5
+        },
+        {
+          "name": "us_m551",
+          "reqLevel": 10
+        },
+        {
+          "name": "us_m163_vulcan_reskin3",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 10,
+      "releaseDate": 0,
+      "rewardExpMul": 18.619998931884766,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.2599997520446777,
+      "skins": {
+        "desert": false,
+        "forest": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 7180,
+      "weapons": {
+        "us_t54e2_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "us_t92": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "tanks_8",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
+      "name": "us_t92",
+      "platoonUnits": [
+        {
+          "name": "us_m46_patton_73_armor_bat",
+          "reqLevel": 5
+        },
+        {
+          "name": "us_t95_reskin",
+          "reqLevel": 10
+        },
+        {
+          "name": "us_m42_duster_reskin6",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 8,
+      "releaseDate": 0,
+      "rewardExpMul": 11.920000076293945,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.119999885559082,
+      "skins": {
+        "desert": false,
+        "forest": true,
+        "forest2": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 4870,
+      "weapons": {
+        "us_t92_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -3031,23 +14615,36 @@ return {
       "costGold": 0,
       "costWp": 0,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
       "isDefault": false,
       "isEvent": false,
       "isHidden": true,
       "isPremium": true,
+      "isUpgradeable": true,
       "itemsPerUse": 4,
-      "levelPreset": "ships_19",
+      "levelPreset": "ships_21",
       "levelUpDiscount": 0.0,
       "mRank": 4,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "ussr_battlecruiser_kronshtadt",
       "platoonUnits": [],
-      "rank": 19,
-      "rewardExpMul": 28.459999084472656,
-      "rewardWpMul": 3.9600000381469727,
+      "rank": 21,
+      "releaseDate": 1697500800,
+      "rewardExpMul": 37.639999389648438,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.0199999809265137,
+      "skins": {
+        "disruptive_gray": false,
+        "factory": true,
+        "threegreenspots": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 3440,
+      "upgradeCostGold": 4610,
       "weapons": {
         "ussr_battlecruiser_kronshtadt_default": {
           "costWp": 0,
@@ -3060,25 +14657,36 @@ return {
       "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 0,
+      "costWp": 773150,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 4,
-      "levelPreset": "ships_19",
+      "levelPreset": "ships_20",
       "levelUpDiscount": 0.0,
       "mRank": 4,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "ussr_battlecruiser_stalingrad",
       "platoonUnits": [],
-      "rank": 19,
-      "rewardExpMul": 14.229999542236328,
-      "rewardWpMul": 1.9800000190734863,
+      "rank": 20,
+      "releaseDate": 0,
+      "rewardExpMul": 16.369998931884766,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "cruiser",
       "unitType": "ship",
-      "upgradeCostGold": 3440,
+      "upgradeCostGold": 4300,
       "weapons": {
         "ussr_battlecruiser_stalingrad_default": {
           "costWp": 0,
@@ -3093,25 +14701,124 @@ return {
       "costGold": 0,
       "costWp": 197300,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 3,
       "levelPreset": "ships_15",
       "levelUpDiscount": 0.0,
       "mRank": 3,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "ussr_battleship_imperatritsa_mariya",
       "platoonUnits": [],
       "rank": 15,
+      "releaseDate": 0,
       "rewardExpMul": 8.1399993896484375,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.8999999761581421,
-      "unitClass": "cruiser",
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 1540,
       "weapons": {
         "ussr_battleship_imperatritsa_mariya_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_battleship_marat": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "ships_16",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "ussr_battleship_marat",
+      "platoonUnits": [],
+      "rank": 16,
+      "releaseDate": 1710374400,
+      "rewardExpMul": 18.719999313354492,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.8399999141693115,
+      "skins": {
+        "blackgray_stripes": false,
+        "greencoast": false,
+        "north_fleet_prem": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "battleship",
+      "unitType": "ship",
+      "upgradeCostGold": 1840,
+      "weapons": {
+        "ussr_battleship_marat_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_battleship_novorossiysk": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "ships_19",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "ussr_battleship_novorossiysk",
+      "platoonUnits": [],
+      "rank": 19,
+      "releaseDate": 1718236800,
+      "rewardExpMul": 28.459999084472656,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.9600000381469727,
+      "skins": {
+        "arctic_minesweeper_block_prem": false,
+        "greencoast": false,
+        "lightblue_geometry": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "battleship",
+      "unitType": "ship",
+      "upgradeCostGold": 3440,
+      "weapons": {
+        "ussr_battleship_novorossiysk_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -3124,21 +14831,32 @@ return {
       "costGold": 0,
       "costWp": 377550,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 4,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
       "levelPreset": "ships_17",
       "levelUpDiscount": 0.0,
       "mRank": 3,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "ussr_battleship_parizhskaya_kommuna",
       "platoonUnits": [],
       "rank": 17,
+      "releaseDate": 0,
       "rewardExpMul": 10.760000228881836,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.9399999380111694,
-      "unitClass": "cruiser",
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 2310,
       "weapons": {
@@ -3155,21 +14873,32 @@ return {
       "costGold": 2330,
       "costWp": 0,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
+      "isUpgradeable": true,
       "itemsPerUse": 3,
       "levelPreset": "ships_14",
       "levelUpDiscount": 0.0,
       "mRank": 3,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "ussr_battleship_poltava",
       "platoonUnits": [],
       "rank": 14,
+      "releaseDate": 0,
       "rewardExpMul": 14.159999847412109,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 3.7599999904632568,
-      "unitClass": "cruiser",
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "battleship",
       "unitType": "ship",
       "upgradeCostGold": 1240,
       "weapons": {
@@ -3184,27 +14913,194 @@ return {
       "attrPreset": "shipDefaultNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 0,
+      "costWp": 1000850,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 4,
-      "levelPreset": "ships_19",
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "ships_24",
       "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modPreset": "empty",
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
       "name": "ussr_battleship_pr23_sovetskij_soyuz",
       "platoonUnits": [],
-      "rank": 19,
-      "rewardExpMul": 14.229999542236328,
-      "rewardWpMul": 1.9800000190734863,
-      "unitClass": "cruiser",
+      "rank": 24,
+      "releaseDate": 0,
+      "rewardExpMul": 28.629999160766602,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.059999942779541,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "battleship",
       "unitType": "ship",
-      "upgradeCostGold": 3440,
+      "upgradeCostGold": 5360,
       "weapons": {
         "ussr_battleship_pr23_sovetskij_soyuz_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_bmp_1": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "tanks_9",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "ussr_bmp_1",
+      "platoonUnits": [
+        {
+          "name": "ussr_is_3",
+          "reqLevel": 5
+        },
+        {
+          "name": "ussr_object_268",
+          "reqLevel": 10
+        },
+        {
+          "name": "ussr_zsu_57_2_reskin3",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 9,
+      "releaseDate": 0,
+      "rewardExpMul": 14.899999618530273,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.1999998092651367,
+      "skins": {
+        "fiction": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 6030,
+      "weapons": {
+        "ussr_bmp_1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_btr_80a": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "tanks_8",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "ussr_btr_80a",
+      "platoonUnits": [
+        {
+          "name": "ussr_t_44_100_reskin",
+          "reqLevel": 5
+        },
+        {
+          "name": "ussr_su_122_54",
+          "reqLevel": 10
+        },
+        {
+          "name": "ussr_zsu_57_2_reskin2",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 8,
+      "releaseDate": 1710374400,
+      "rewardExpMul": 11.920000076293945,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.119999885559082,
+      "skins": {
+        "fiction": false,
+        "forest": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 4870,
+      "weapons": {
+        "ussr_btr_80a_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_cruiser_chapayev": {
+      "attrPreset": "shipDefaultNoTorpedo",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_9",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "ship_default",
+      "name": "ussr_cruiser_chapayev",
+      "platoonUnits": [],
+      "rank": 9,
+      "releaseDate": 1707955200,
+      "rewardExpMul": 7.0399999618530273,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.4600000381469727,
+      "skins": {
+        "blackgray_stripes": false,
+        "factory": true,
+        "marine_geometry": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 650,
+      "weapons": {
+        "ussr_cruiser_chapayev_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -3217,25 +15113,120 @@ return {
       "costGold": 0,
       "costWp": 69150,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 2,
       "levelPreset": "ships_11",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "ussr_cruiser_kirov",
       "platoonUnits": [],
       "rank": 11,
+      "releaseDate": 0,
       "rewardExpMul": 4.6500000953674316,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.7999999523162842,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "cruiser",
       "unitType": "ship",
       "upgradeCostGold": 760,
       "weapons": {
         "ussr_cruiser_kirov_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_cruiser_maxim_gorky": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_12",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "ussr_cruiser_maxim_gorky",
+      "platoonUnits": [],
+      "rank": 12,
+      "releaseDate": 1725494400,
+      "rewardExpMul": 10.699999809265137,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.6399998664855957,
+      "skins": {
+        "threegreenspots": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 890,
+      "weapons": {
+        "ussr_cruiser_maxim_gorky_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_cruiser_rckt_pr58": {
+      "attrPreset": "shipMissilesNoAA",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 1056450,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "ships_28",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "ussr_cruiser_rckt_pr58",
+      "platoonUnits": [],
+      "rank": 30,
+      "releaseDate": 1725494400,
+      "rewardExpMul": 50.069999694824219,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.1099998950958252,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 2,
+      "suitableForOffer": true,
+      "unitClass": "cruiser",
+      "unitType": "ship",
+      "upgradeCostGold": 5590,
+      "weapons": {
+        "ussr_cruiser_rckt_pr58_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -3248,20 +15239,31 @@ return {
       "costGold": 0,
       "costWp": 40500,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
       "levelPreset": "ships_8",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "ussr_cruiser_sverdlov",
       "platoonUnits": [],
       "rank": 8,
+      "releaseDate": 0,
       "rewardExpMul": 3.059999942779541,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.6899999380111694,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "cruiser",
       "unitType": "ship",
       "upgradeCostGold": 620,
@@ -3279,20 +15281,31 @@ return {
       "costGold": 0,
       "costWp": 29120,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "ships_4",
       "levelUpDiscount": 0.15000000596046448,
       "mRank": 1,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "ussr_destroyer_7y",
       "platoonUnits": [],
       "rank": 4,
+      "releaseDate": 0,
       "rewardExpMul": 1.75,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.4599999189376831,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 520,
@@ -3310,20 +15323,31 @@ return {
       "costGold": 900,
       "costWp": 0,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "ships_3",
       "levelUpDiscount": 0.0,
       "mRank": 1,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "ussr_destroyer_pr30_ognevoy",
       "platoonUnits": [],
       "rank": 3,
+      "releaseDate": 0,
       "rewardExpMul": 3.0399999618530273,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 2.7200000286102295,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 480,
@@ -3341,25 +15365,232 @@ return {
       "costGold": 0,
       "costWp": 26000,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "ships_2",
       "levelUpDiscount": 1.0,
       "mRank": 1,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
       "name": "ussr_destroyer_pr56_spokoinyy",
       "platoonUnits": [],
       "rank": 2,
+      "releaseDate": 0,
       "rewardExpMul": 1.3199999332427979,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.2300000190734863,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 420,
       "weapons": {
         "ussr_destroyer_pr56_spokoinyy_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_destroyer_pr56_svetlyy": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 1,
+      "levelPreset": "ships_1",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "ussr_destroyer_pr56_svetlyy",
+      "platoonUnits": [],
+      "rank": 1,
+      "releaseDate": 1699920000,
+      "rewardExpMul": 2.2999999523162842,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0,
+      "skins": {
+        "arctic_spots": false,
+        "factory": true,
+        "olive_spots": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "destroyer",
+      "unitType": "ship",
+      "upgradeCostGold": 410,
+      "weapons": {
+        "ussr_destroyer_pr56_svetlyy_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_destroyer_rckt_pr57bis": {
+      "attrPreset": "shipDefaultMissiles",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 1046100,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "ships_27",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "ussr_destroyer_rckt_pr57bis",
+      "platoonUnits": [],
+      "rank": 27,
+      "releaseDate": 0,
+      "rewardExpMul": 43.540000915527344,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0999999046325684,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "destroyer",
+      "unitType": "ship",
+      "upgradeCostGold": 5560,
+      "weapons": {
+        "ussr_destroyer_rckt_pr57bis_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_is_1_reskin": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "tanks_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
+      "name": "ussr_is_1_reskin",
+      "platoonUnits": [
+        {
+          "name": "ussr_m4a2_76w_sherman_reskin",
+          "reqLevel": 5
+        },
+        {
+          "name": "ussr_su_122P_reskin",
+          "reqLevel": 10
+        },
+        {
+          "name": "ussr_type_65_aa_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 6.0999999046325684,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.7999999523162842,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 1170,
+      "weapons": {
+        "ussr_is_1_reskin_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_is_2_1943": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 662950,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "tanks_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
+      "name": "ussr_is_2_1943",
+      "platoonUnits": [
+        {
+          "name": "ussr_su_100_1945",
+          "reqLevel": 5
+        },
+        {
+          "name": "ussr_t_34_85_zis_53",
+          "reqLevel": 10
+        },
+        {
+          "name": "ussr_zsu_37_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 4.7699999809265137,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0099999904632568,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 3670,
+      "weapons": {
+        "ussr_is_2_1943_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -3372,14 +15603,18 @@ return {
       "costGold": 9570,
       "costWp": 0,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
       "levelPreset": "tanks_8",
       "levelUpDiscount": 0.0,
-      "mRank": 5,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "ussr_is_2_1944_revenge",
       "platoonUnits": [
@@ -3397,8 +15632,15 @@ return {
         }
       ],
       "rank": 8,
+      "releaseDate": 0,
       "rewardExpMul": 11.920000076293945,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 4.119999885559082,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 4870,
@@ -3410,21 +15652,139 @@ return {
         }
       }
     },
+    "ussr_is_6": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
+      "levelPreset": "tanks_12",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "ussr_is_6",
+      "platoonUnits": [
+        {
+          "name": "ussr_t_10m",
+          "reqLevel": 5
+        },
+        {
+          "name": "ussr_object_906_reskin",
+          "reqLevel": 10
+        },
+        {
+          "name": "ussr_zsu_37_2_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 12,
+      "releaseDate": 1715817600,
+      "rewardExpMul": 29.099998474121094,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.380000114440918,
+      "skins": {
+        "desert": false,
+        "fiction": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8090,
+      "weapons": {
+        "ussr_is_6_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_kv_122": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "tanks_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
+      "name": "ussr_kv_122",
+      "platoonUnits": [
+        {
+          "name": "ussr_pt_76b",
+          "reqLevel": 5
+        },
+        {
+          "name": "ussr_su_122P",
+          "reqLevel": 10
+        },
+        {
+          "name": "ussr_btr_zd",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 6,
+      "releaseDate": 1699920000,
+      "rewardExpMul": 7.619999885559082,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.9200000762939453,
+      "skins": {
+        "desert": false,
+        "forest": true,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 2320,
+      "weapons": {
+        "ussr_kv_122_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "ussr_kv_220": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
-      "costGold": 6150,
+      "costGold": 4415,
       "costWp": 0,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
-      "itemsPerUse": 1,
-      "levelPreset": "tanks_5",
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "tanks_6",
       "levelUpDiscount": 0.0,
-      "mRank": 3,
-      "modPreset": "tank_default",
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
       "name": "ussr_kv_220",
       "platoonUnits": [
         {
@@ -3440,12 +15800,19 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 5,
-      "rewardExpMul": 6.0999999046325684,
-      "rewardWpMul": 3.7999999523162842,
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 7.619999885559082,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.9200000762939453,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 1170,
+      "upgradeCostGold": 2320,
       "weapons": {
         "ussr_kv_220_default": {
           "costWp": 0,
@@ -3454,29 +15821,209 @@ return {
         }
       }
     },
-    "ussr_sub_pr613": {
-      "attrPreset": "shipDefault",
-      "campaign": "ships",
+    "ussr_kv_2_1940": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 1050,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 1,
+      "levelPreset": "tanks_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
+      "name": "ussr_kv_2_1940",
+      "platoonUnits": [
+        {
+          "name": "ussr_t_34_1941_cast_turret",
+          "reqLevel": 5
+        },
+        {
+          "name": "ussr_t_34E",
+          "reqLevel": 10
+        },
+        {
+          "name": "ussr_btr_152a",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 3.8999998569488525,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.4600000381469727,
+      "skins": {
+        "forest": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 450,
+      "weapons": {
+        "ussr_kv_2_1940_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_object_120": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
       "costGold": 0,
       "costWp": 0,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
+      "levelPreset": "tanks_11",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "ussr_object_120",
+      "platoonUnits": [
+        {
+          "name": "ussr_t_54_1947",
+          "reqLevel": 5
+        },
+        {
+          "name": "ussr_is_4m",
+          "reqLevel": 10
+        },
+        {
+          "name": "ussr_zsu_23_4_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 11,
+      "releaseDate": 0,
+      "rewardExpMul": 23.279998779296875,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.320000171661377,
+      "skins": {
+        "desert": false,
+        "forest": true,
+        "forest2": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 7770,
+      "weapons": {
+        "ussr_object_120_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_object_248": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "tanks_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "ussr_object_248",
+      "platoonUnits": [
+        {
+          "name": "ussr_t_34_85_zis_53_reskin",
+          "reqLevel": 5
+        },
+        {
+          "name": "ussr_su_100p",
+          "reqLevel": 10
+        },
+        {
+          "name": "ussr_btr_zd_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 7,
+      "releaseDate": 1718236800,
+      "rewardExpMul": 9.5399999618530273,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.0199999809265137,
+      "skins": {
+        "desert": false,
+        "forest": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 3670,
+      "weapons": {
+        "ussr_object_248_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_sub_pr613": {
+      "attrPreset": "subArtillery",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 927100,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 4,
-      "levelPreset": "ships_19",
+      "levelPreset": "ships_22",
       "levelUpDiscount": 0.0,
       "mRank": 4,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "submarine_default",
       "name": "ussr_sub_pr613",
       "platoonUnits": [],
-      "rank": 19,
-      "rewardExpMul": 14.229999542236328,
-      "rewardWpMul": 1.9800000190734863,
+      "rank": 22,
+      "releaseDate": 0,
+      "rewardExpMul": 21.639999389648438,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.0299999713897705,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "submarine",
       "unitType": "ship",
-      "upgradeCostGold": 3440,
+      "upgradeCostGold": 5000,
       "weapons": {
         "ussr_sub_pr613_default": {
           "costWp": 0,
@@ -3486,25 +16033,36 @@ return {
       }
     },
     "ussr_sub_pr641": {
-      "attrPreset": "shipNoGuns",
+      "attrPreset": "subNoGuns",
       "campaign": "ships",
       "costGold": 1670,
       "costWp": 0,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": true,
+      "isUpgradeable": true,
       "itemsPerUse": 2,
       "levelPreset": "ships_10",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "submarine_default",
       "name": "ussr_sub_pr641",
       "platoonUnits": [],
       "rank": 10,
+      "releaseDate": 0,
       "rewardExpMul": 8.0999994277954102,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 3.5199999809265137,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "submarine",
       "unitType": "ship",
       "upgradeCostGold": 680,
@@ -3522,20 +16080,31 @@ return {
       "costGold": 0,
       "costWp": 97800,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 2,
       "levelPreset": "ships_12",
       "levelUpDiscount": 0.0,
       "mRank": 2,
-      "modPreset": "empty",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "submarine_default",
       "name": "ussr_sub_type_k",
       "platoonUnits": [],
       "rank": 12,
+      "releaseDate": 0,
       "rewardExpMul": 5.3499999046325684,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.8199999332427979,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "submarine",
       "unitType": "ship",
       "upgradeCostGold": 890,
@@ -3547,44 +16116,101 @@ return {
         }
       }
     },
-    "ussr_t_34E": {
-      "attrPreset": "tankDefault",
-      "campaign": "tanks",
-      "costGold": 1050,
+    "ussr_sub_type_l3": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
       "costWp": 0,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": false,
+      "isHidden": true,
       "isPremium": true,
-      "itemsPerUse": 1,
-      "levelPreset": "tanks_1",
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "ships_7",
       "levelUpDiscount": 0.0,
-      "mRank": 1,
-      "modPreset": "tank_default",
-      "name": "ussr_t_34E",
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "submarine_default",
+      "name": "ussr_sub_type_l3",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 5.3199996948242188,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.2800002098083496,
+      "skins": {
+        "bluewater_geometry": false,
+        "disruptive_gray": false,
+        "greencoast": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "submarine",
+      "unitType": "ship",
+      "upgradeCostGold": 590,
+      "weapons": {
+        "ussr_sub_type_l3_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_t_34_1941_57": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 3,
+      "levelPreset": "tanks_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
+      "name": "ussr_t_34_1941_57",
       "platoonUnits": [
         {
-          "name": "ussr_t_34_1941_cast_turret",
+          "name": "ussr_kv_1e",
           "reqLevel": 5
         },
         {
-          "name": "ussr_kv_2_1940",
+          "name": "ussr_su_100Y",
           "reqLevel": 10
         },
         {
-          "name": "ussr_btr_152a",
+          "name": "ussr_btr_152d",
           "reqLevel": 15
         }
       ],
-      "rank": 1,
-      "rewardExpMul": 2.5,
-      "rewardWpMul": 2.7200000286102295,
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 4.880000114440918,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.6399998664855957,
+      "skins": {
+        "forest": true,
+        "forest2": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 410,
+      "upgradeCostGold": 640,
       "weapons": {
-        "ussr_t_34E_default": {
+        "ussr_t_34_1941_57_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -3597,15 +16223,19 @@ return {
       "costGold": 0,
       "costWp": 20000,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
+      "isUpgradeable": true,
       "itemsPerUse": 1,
       "levelPreset": "tanks_1",
       "levelUpDiscount": 1.0,
       "mRank": 1,
-      "modPreset": "tank_default",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
       "name": "ussr_t_34_1941_l_11",
       "platoonUnits": [
         {
@@ -3622,8 +16252,15 @@ return {
         }
       ],
       "rank": 1,
+      "releaseDate": 0,
       "rewardExpMul": 1.25,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.3600000143051147,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 410,
@@ -3641,15 +16278,19 @@ return {
       "costGold": 0,
       "costWp": 20000,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
       "levelPreset": "tanks_2",
       "levelUpDiscount": 0.5,
       "mRank": 2,
-      "modPreset": "tank_default",
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_system",
       "name": "ussr_t_34_1942",
       "platoonUnits": [
         {
@@ -3666,8 +16307,15 @@ return {
         }
       ],
       "rank": 2,
+      "releaseDate": 0,
       "rewardExpMul": 1.559999942779541,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 1.5900000333786011,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 420,
@@ -3683,17 +16331,21 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 48750,
+      "costWp": 158750,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 1,
-      "levelPreset": "tanks_4",
+      "isUpgradeable": true,
+      "itemsPerUse": 4,
+      "levelPreset": "tanks_5",
       "levelUpDiscount": 0.0,
-      "mRank": 3,
-      "modPreset": "tank_default",
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke",
       "name": "ussr_t_34_85_d_5t",
       "platoonUnits": [
         {
@@ -3709,58 +16361,21 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 4,
-      "rewardExpMul": 2.440000057220459,
-      "rewardWpMul": 1.8199999332427979,
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 3.0499999523162842,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 1.8999999761581421,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 640,
+      "upgradeCostGold": 1170,
       "weapons": {
         "ussr_t_34_85_d_5t_default": {
-          "costWp": 0,
-          "reqLevel": 0,
-          "visual": "pilon"
-        }
-      }
-    },
-    "ussr_t_34_85_zis_53": {
-      "attrPreset": "tankDefault",
-      "campaign": "tanks",
-      "costGold": 0,
-      "costWp": 662950,
-      "country": "country_ussr",
-      "isDefault": false,
-      "isEvent": false,
-      "isHidden": false,
-      "isPremium": false,
-      "itemsPerUse": 1,
-      "levelPreset": "tanks_7",
-      "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modPreset": "tank_default",
-      "name": "ussr_t_34_85_zis_53",
-      "platoonUnits": [
-        {
-          "name": "ussr_su_100_1945",
-          "reqLevel": 5
-        },
-        {
-          "name": "ussr_is_2_1943",
-          "reqLevel": 10
-        },
-        {
-          "name": "ussr_zsu_37_reskin",
-          "reqLevel": 15
-        }
-      ],
-      "rank": 7,
-      "rewardExpMul": 4.7699999809265137,
-      "rewardWpMul": 2.0099999904632568,
-      "unitClass": "medium_tank",
-      "unitType": "tank",
-      "upgradeCostGold": 3670,
-      "weapons": {
-        "ussr_t_34_85_zis_53_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -3771,16 +16386,20 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 1109950,
+      "costWp": 1133600,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 2,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
       "levelPreset": "tanks_9",
       "levelUpDiscount": 0.0,
-      "mRank": 5,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "ussr_t_44",
       "platoonUnits": [
@@ -3798,8 +16417,15 @@ return {
         }
       ],
       "rank": 9,
+      "releaseDate": 0,
       "rewardExpMul": 7.4499998092651367,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 2.0999999046325684,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 6030,
@@ -3815,16 +16441,20 @@ return {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
-      "costWp": 1363700,
+      "costWp": 1392300,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 2,
+      "isUpgradeable": true,
+      "itemsPerUse": 7,
       "levelPreset": "tanks_10",
       "levelUpDiscount": 0.0,
-      "mRank": 6,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "ussr_t_54_1949",
       "platoonUnits": [
@@ -3842,8 +16472,15 @@ return {
         }
       ],
       "rank": 10,
+      "releaseDate": 0,
       "rewardExpMul": 9.3099994659423828,
+      "rewardGoldMul": 0.0,
       "rewardWpMul": 2.1299998760223389,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
       "upgradeCostGold": 7180,
@@ -3855,20 +16492,81 @@ return {
         }
       }
     },
-    "ussr_t_55a": {
+    "ussr_t_55_amd_1": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
       "costGold": 0,
       "costWp": 0,
       "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_15",
+      "levelUpDiscount": 0.0,
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "ussr_t_55_amd_1",
+      "platoonUnits": [
+        {
+          "name": "ussr_object_685",
+          "reqLevel": 5
+        },
+        {
+          "name": "ussr_it_1_reskin",
+          "reqLevel": 10
+        },
+        {
+          "name": "ussr_zsu_37_2_reskin2",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 15,
+      "releaseDate": 1720656000,
+      "rewardExpMul": 56.840000152587891,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.5399999618530273,
+      "skins": {
+        "desert": false,
+        "forest": false,
+        "winter": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8810,
+      "weapons": {
+        "ussr_t_55_amd_1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "ussr_t_55a": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1620100,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
       "isHidden": false,
       "isPremium": false,
-      "itemsPerUse": 2,
-      "levelPreset": "tanks_10",
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_13",
       "levelUpDiscount": 0.0,
-      "mRank": 7,
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
       "modPreset": "tank_default",
       "name": "ussr_t_55a",
       "platoonUnits": [
@@ -3885,12 +16583,19 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 10,
-      "rewardExpMul": 9.3099994659423828,
-      "rewardWpMul": 2.1299998760223389,
+      "rank": 13,
+      "releaseDate": 0,
+      "rewardExpMul": 18.190000534057617,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.2200000286102295,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 7180,
+      "upgradeCostGold": 8360,
       "weapons": {
         "ussr_t_55a_default": {
           "costWp": 0,
@@ -3898,45 +16603,898 @@ return {
           "visual": "pilon"
         }
       }
+    },
+    "ussr_t_72a": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1790650,
+      "country": "country_ussr",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 9,
+      "levelPreset": "tanks_18",
+      "levelUpDiscount": 0.0,
+      "mRank": 9,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_no_smoke_shell",
+      "name": "ussr_t_72a",
+      "platoonUnits": [
+        {
+          "name": "ussr_t_64a_1971",
+          "reqLevel": 5
+        },
+        {
+          "name": "ussr_bmp_2",
+          "reqLevel": 10
+        },
+        {
+          "name": "ussr_9p149",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 18,
+      "releaseDate": 1725494400,
+      "rewardExpMul": 55.509998321533203,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.3299999237060547,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 9310,
+      "weapons": {
+        "ussr_t_72a_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "xp-50": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 5040,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "xp-50",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 3.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "xp-50_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "xp-55": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 2280,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "xp-55",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 2.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "xp-55_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "yak-1_early": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 28400,
+      "country": "country_ussr",
+      "dailyGoldLimit": 40,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 3,
+      "levelPreset": "air_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 3,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "yak-1_early",
+      "platoonUnits": [],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 1.25,
+      "rewardGoldMul": 1.25,
+      "rewardWpMul": 1.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "yak-1_early_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "yak-3": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_ussr",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "yak-3",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "yak-3_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "yak-3t": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 80,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "yak-3t",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 3.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "yak-3t_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "yak-7b": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_ussr",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_13_preset",
+      "name": "yak-7b",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "yak-7b_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "yak-9": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 70300,
+      "country": "country_ussr",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "yak-9",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 1.375,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "yak-9_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "yak-9_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 50,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 4,
+      "levelPreset": "air_4",
+      "levelUpDiscount": 0.0,
+      "mRank": 4,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "yak-9_prem",
+      "platoonUnits": [],
+      "rank": 4,
+      "releaseDate": 0,
+      "rewardExpMul": 1.375,
+      "rewardGoldMul": 1.375,
+      "rewardWpMul": 2.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "yak-9_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "yak-9m": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_ussr",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "yak-9m",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "yak-9m_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "yak-9m_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "yak-9m_prem",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 3.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "yak-9m_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "yak-9t": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 119200,
+      "country": "country_ussr",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_7_preset",
+      "name": "yak-9t",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 1.5,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 1.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "yak-9t_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "yak-9u": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 272200,
+      "country": "country_ussr",
+      "dailyGoldLimit": 70,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 6,
+      "levelPreset": "air_6",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "yak-9u",
+      "platoonUnits": [],
+      "rank": 6,
+      "releaseDate": 0,
+      "rewardExpMul": 1.625,
+      "rewardGoldMul": 1.625,
+      "rewardWpMul": 1.625,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "yak-9u_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "yak_2_kabb": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 15000,
+      "country": "country_ussr",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "yak_2_kabb",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "yak_2_kabb_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "yp-38": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 1080,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_10_preset",
+      "name": "yp-38",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 2.25,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "yp-38_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    }
+  },
+  "campaignCfg": {
+    "air": {
+      "bit": 4,
+      "minSlots": 4,
+      "releaseDate": 1727049600,
+      "slotAttrPreset": "airDefault",
+      "slotPriceGold": [0, 0, 0, 0],
+      "totalSlots": 4,
+      "version": 2
+    },
+    "ships": {
+      "bit": 2,
+      "minSlots": 0,
+      "releaseDate": 0,
+      "slotAttrPreset": "",
+      "slotPriceGold": [],
+      "totalSlots": 0,
+      "version": 1
+    },
+    "tanks": {
+      "bit": 1,
+      "minSlots": 0,
+      "releaseDate": 0,
+      "slotAttrPreset": "",
+      "slotPriceGold": [],
+      "totalSlots": 0,
+      "version": 12
     }
   },
   "circuit": {
     "actualVersion": "",
     "campaigns": {
-      "available": ["ships", "tanks"],
-      "visible": ["ships", "tanks"]
+      "available": ["ships", "tanks", "air"],
+      "visible": ["ships", "tanks", "air"]
     },
     "reqVersion": ""
   },
   "clientMissionRewards": {},
-  "firstBattlesRewards": [
-    {
-      "allowOffline": true,
-      "levelExpPart": 0.34999999403953552,
-      "levelForExp": 1,
-      "wp": 3500
-    },
-    {
-      "allowOffline": true,
-      "levelExpPart": 0.34999999403953552,
-      "levelForExp": 1,
-      "wp": 3500
-    },
-    {
-      "allowOffline": false,
-      "levelExpPart": 0.34999999403953552,
-      "levelForExp": 1,
-      "wp": 3500
-    }
-  ],
+  "firstBattlesRewards": {
+    "air": [
+      {
+        "allowOffline": true,
+        "exp": 200,
+        "minSlotExp": 0,
+        "wp": 5700
+      },
+      {
+        "allowOffline": false,
+        "exp": 280,
+        "minSlotExp": 500,
+        "wp": 8000
+      },
+      {
+        "allowOffline": false,
+        "exp": 280,
+        "minSlotExp": 0,
+        "wp": 8000
+      }
+    ],
+    "ships": [
+      {
+        "allowOffline": true,
+        "exp": 105,
+        "minSlotExp": 0,
+        "wp": 3500
+      },
+      {
+        "allowOffline": true,
+        "exp": 105,
+        "minSlotExp": 0,
+        "wp": 3500
+      },
+      {
+        "allowOffline": false,
+        "exp": 105,
+        "minSlotExp": 0,
+        "wp": 3500
+      }
+    ],
+    "tanks": [
+      {
+        "allowOffline": true,
+        "exp": 91,
+        "minSlotExp": 0,
+        "wp": 3500
+      },
+      {
+        "allowOffline": true,
+        "exp": 91,
+        "minSlotExp": 0,
+        "wp": 3500
+      },
+      {
+        "allowOffline": false,
+        "exp": 91,
+        "minSlotExp": 0,
+        "wp": 3500
+      }
+    ]
+  },
   "gameProfile": {
     "premiumBonuses": {
       "expMul": 1.5,
+      "goldMul": 2.0,
       "wpMul": 1.5
     },
     "upgradeUnitBonus": {
       "expMul": 2.0,
+      "goldMul": 1.0,
       "wpMul": 2.0
+    }
+  },
+  "goodsRewardSlots": {
+    "air_blueprints": {
+      "countMulMax": 1.2000000476837158,
+      "countMulMin": 0.80000001192092896,
+      "freeRerolls": 1,
+      "rerollCost": {
+        "currencyId": "wp",
+        "price": 5000
+      },
+      "variants": [
+        [
+          {
+            "count": 60,
+            "gType": "blueprint",
+            "id": "il_2m_1943",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 90,
+            "gType": "blueprint",
+            "id": "sb2u-3",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 60,
+            "gType": "blueprint",
+            "id": "me-410a-1",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 10,
+            "gType": "blueprint",
+            "id": "f2g-1",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 10,
+            "gType": "blueprint",
+            "id": "bf-109g-14",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 50,
+            "gType": "blueprint",
+            "id": "p-47d-28",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 60,
+            "gType": "blueprint",
+            "id": "f4f_4",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 70,
+            "gType": "blueprint",
+            "id": "bf-109e-3",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 60,
+            "gType": "blueprint",
+            "id": "yak-9",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 50,
+            "gType": "blueprint",
+            "id": "yak-9m",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 20,
+            "gType": "blueprint",
+            "id": "b-17g",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 50,
+            "gType": "blueprint",
+            "id": "bf-110g-2",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 70,
+            "gType": "blueprint",
+            "id": "p-400",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 90,
+            "gType": "blueprint",
+            "id": "he51b1",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 70,
+            "gType": "blueprint",
+            "id": "i_180",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 20,
+            "gType": "blueprint",
+            "id": "il-10_1946",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 10,
+            "gType": "blueprint",
+            "id": "la-11",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 90,
+            "gType": "blueprint",
+            "id": "i-15_1935",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 20,
+            "gType": "blueprint",
+            "id": "fw_190a_5_u14",
+            "subId": ""
+          }
+        ]
+      ]
     }
   },
   "itemsByAttributes": [
@@ -3953,198 +17511,7910 @@ return {
       "item": "tank_extinguisher"
     }
   ],
+  "itemsByModifications": [
+    {
+      "battleLimitMul": 0.69999998807907104,
+      "item": "ship_tool_kit",
+      "mod": "maintanance_powered_toolkit"
+    }
+  ],
   "lootboxesCfg": {
-    "every_day_award_big_pack_1": {
+    "debug_lootbox": {
+      "currencyId": "",
+      "dropLimit": {
+        "everyday_gold_big_1": 2
+      },
+      "fixedRewards": {
+        "10": "everyday_gold_big_1"
+      },
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {},
+      "name": "debug_lootbox",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
       "rewards": {
-        "everyday_wp_medium": 1.0
+        "debug_ship": 0.0099999997764825821,
+        "debug_tank": 0.0099999997764825821,
+        "everyday_decorator_avatar_1": 0.0099999997764825821,
+        "everyday_decorator_avatar_2": 0.0099999997764825821,
+        "everyday_decorator_frame_1": 0.0099999997764825821,
+        "everyday_decorator_frame_2": 0.0099999997764825821,
+        "everyday_decorator_title_1": 0.0099999997764825821,
+        "everyday_gold_big_1": 1.0,
+        "everyday_wp_big": 1.0,
+        "offer_gift_gold": 1.0,
+        "offer_gift_ship_repair": 1.0,
+        "offer_gift_ship_smoke": 1.0,
+        "offer_gift_spare": 1.0,
+        "offer_gift_tank_extinguisher": 1.0,
+        "offer_gift_tank_repair": 1.0,
+        "offer_gift_wp": 1.0
+      },
+      "rewardsInc": {
+        "debug_ship": 0.0010000000474974513,
+        "debug_tank": 0.0010000000474974513,
+        "everyday_decorator_avatar_1": 0.0010000000474974513,
+        "everyday_decorator_avatar_2": 0.0010000000474974513,
+        "everyday_decorator_frame_1": 0.0010000000474974513,
+        "everyday_decorator_frame_2": 0.0010000000474974513,
+        "everyday_decorator_title_1": 0.0010000000474974513
+      },
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_air_medium_season_13": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "air",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_air_medium_season_13",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_campaign_booster_05": 80.0,
+        "event_medium_box_decorator_avatar_season_8": 15.0,
+        "event_medium_box_decorator_frame_season_8": 15.0,
+        "event_medium_box_decorator_title_season_8": 15.0,
+        "event_medium_box_gold_1": 85.0,
+        "event_medium_box_gold_2": 85.0,
+        "event_medium_box_gold_3": 85.0,
+        "event_medium_box_keys_2": 15.0,
+        "event_medium_box_keys_4": 5.0,
+        "event_medium_box_warbonds": 15.0,
+        "event_medium_box_wp_1": 85.0,
+        "event_medium_box_wp_2": 85.0,
+        "event_medium_box_wp_3": 85.0,
+        "event_unit_booster_08": 80.0,
+        "event_wp_booster_05": 80.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1726826399,
+        "start": 1724148000
+      }
+    },
+    "event_ships_big_fixed_season_10": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_big_fixed_season_10",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_ship_season_10": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_big_fixed_season_11": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_big_fixed_season_11",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_ship_season_11": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_big_fixed_season_12": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_big_fixed_season_12",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_ship_season_12": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_big_fixed_season_13": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_big_fixed_season_13",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_ship_season_13": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_big_fixed_season_6": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_big_fixed_season_6",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_ship_season_6": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_big_fixed_season_7": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_big_fixed_season_7",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_ship_season_7": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_big_fixed_season_8": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_big_fixed_season_8",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_ship_season_8": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_big_fixed_season_9": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_big_fixed_season_9",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_ship_season_9": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_big_season_10": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "7": "event_ships_big_box_fixed_season_10"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_ships_big_season_10",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_10": 8.7720003128051758,
+        "event_big_box_decorator_frame_season_10": 8.7720003128051758,
+        "event_big_box_decorator_title_season_10": 8.7720003128051758,
+        "event_big_box_gold_1": 12.772000312805176,
+        "event_big_box_gold_2": 4.7719998359680176,
+        "event_big_box_gold_3": 3.5090000629425049,
+        "event_big_box_keys": 3.5090000629425049,
+        "event_big_box_ship_season_10": 3.5090000629425049,
+        "event_big_box_ship_skin_1_season_10": 8.7720003128051758,
+        "event_big_box_ship_skin_2_season_10": 8.7720003128051758,
+        "event_big_box_ship_skin_3_season_10": 8.7720003128051758,
+        "event_big_box_wp_1": 8.7720003128051758,
+        "event_big_box_wp_2": 8.7720003128051758,
+        "event_big_box_wp_3": 3.5090000629425049
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_ships_big_season_11": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "7": "event_ships_big_box_fixed_season_11"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_ships_big_season_11",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_11": 8.7720003128051758,
+        "event_big_box_decorator_frame_season_11": 8.7720003128051758,
+        "event_big_box_decorator_title_season_11": 8.7720003128051758,
+        "event_big_box_gold_1": 12.772000312805176,
+        "event_big_box_gold_2": 4.7719998359680176,
+        "event_big_box_gold_3": 3.5090000629425049,
+        "event_big_box_keys": 3.5090000629425049,
+        "event_big_box_ship_season_11": 3.5090000629425049,
+        "event_big_box_ship_skin_1_season_11": 8.7720003128051758,
+        "event_big_box_ship_skin_2_season_11": 8.7720003128051758,
+        "event_big_box_ship_skin_3_season_11": 8.7720003128051758,
+        "event_big_box_wp_1": 8.7720003128051758,
+        "event_big_box_wp_2": 8.7720003128051758,
+        "event_big_box_wp_3": 3.5090000629425049
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1724147999,
+        "start": 1722074400
+      }
+    },
+    "event_ships_big_season_12": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "14": "event_ships_big_box_fixed_season_12"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_ships_big_season_12",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_12": 10.0,
+        "event_big_box_decorator_frame_season_12": 10.0,
+        "event_big_box_decorator_title_season_12": 10.0,
+        "event_big_box_gold_1": 10.0,
+        "event_big_box_gold_1800": 1.0,
+        "event_big_box_gold_2": 3.0,
+        "event_big_box_keys_2": 3.0,
+        "event_big_box_ship_season_12": 1.0,
+        "event_big_box_ship_skin_1_season_12": 10.0,
+        "event_big_box_ship_skin_2_season_12": 10.0,
+        "event_big_box_ship_skin_3_season_12": 10.0,
+        "event_big_box_wp_1": 10.0,
+        "event_big_box_wp_2": 3.0,
+        "event_big_box_wp_360000": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1726826399,
+        "start": 1724752800
+      }
+    },
+    "event_ships_big_season_13": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "14": "event_ships_big_box_fixed_season_13"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_ships_big_season_13",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_13": 10.0,
+        "event_big_box_decorator_frame_season_13": 10.0,
+        "event_big_box_decorator_title_season_13": 10.0,
+        "event_big_box_gold_1": 10.0,
+        "event_big_box_gold_1800": 1.0,
+        "event_big_box_gold_2": 3.0,
+        "event_big_box_keys_2": 3.0,
+        "event_big_box_ship_season_13": 1.0,
+        "event_big_box_ship_skin_1_season_13": 10.0,
+        "event_big_box_ship_skin_2_season_13": 10.0,
+        "event_big_box_ship_skin_3_season_13": 10.0,
+        "event_big_box_wp_1": 10.0,
+        "event_big_box_wp_2": 3.0,
+        "event_big_box_wp_360000": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1729504799,
+        "start": 1727431200
+      }
+    },
+    "event_ships_big_season_6": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "7": "event_ships_big_box_fixed_season_6"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_ships_big_season_6",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_6": 8.7720003128051758,
+        "event_big_box_decorator_frame_season_6": 8.7720003128051758,
+        "event_big_box_decorator_title_season_6": 8.7720003128051758,
+        "event_big_box_gold_1": 12.772000312805176,
+        "event_big_box_gold_2": 4.7719998359680176,
+        "event_big_box_gold_3": 3.5090000629425049,
+        "event_big_box_keys": 3.5090000629425049,
+        "event_big_box_ship_season_6": 3.5090000629425049,
+        "event_big_box_ship_skin_1_season_6": 8.7720003128051758,
+        "event_big_box_ship_skin_2_season_6": 8.7720003128051758,
+        "event_big_box_ship_skin_3_season_6": 8.7720003128051758,
+        "event_big_box_wp_1": 8.7720003128051758,
+        "event_big_box_wp_2": 8.7720003128051758,
+        "event_big_box_wp_3": 3.5090000629425049
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_ships_big_season_7": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "7": "event_ships_big_box_fixed_season_7"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_ships_big_season_7",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_7": 8.7720003128051758,
+        "event_big_box_decorator_frame_season_7": 8.7720003128051758,
+        "event_big_box_decorator_title_season_7": 8.7720003128051758,
+        "event_big_box_gold_1": 12.772000312805176,
+        "event_big_box_gold_2": 4.7719998359680176,
+        "event_big_box_gold_3": 3.5090000629425049,
+        "event_big_box_keys": 3.5090000629425049,
+        "event_big_box_ship_season_7": 3.5090000629425049,
+        "event_big_box_ship_skin_1_season_7": 8.7720003128051758,
+        "event_big_box_ship_skin_2_season_7": 8.7720003128051758,
+        "event_big_box_ship_skin_3_season_7": 8.7720003128051758,
+        "event_big_box_wp_1": 8.7720003128051758,
+        "event_big_box_wp_2": 8.7720003128051758,
+        "event_big_box_wp_3": 3.5090000629425049
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_ships_big_season_8": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "7": "event_ships_big_box_fixed_season_8"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_ships_big_season_8",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_8": 8.7720003128051758,
+        "event_big_box_decorator_frame_season_8": 8.7720003128051758,
+        "event_big_box_decorator_title_season_8": 8.7720003128051758,
+        "event_big_box_gold_1": 12.772000312805176,
+        "event_big_box_gold_2": 4.7719998359680176,
+        "event_big_box_gold_3": 3.5090000629425049,
+        "event_big_box_keys": 3.5090000629425049,
+        "event_big_box_ship_season_8": 3.5090000629425049,
+        "event_big_box_ship_skin_1_season_8": 8.7720003128051758,
+        "event_big_box_ship_skin_2_season_8": 8.7720003128051758,
+        "event_big_box_ship_skin_3_season_8": 8.7720003128051758,
+        "event_big_box_wp_1": 8.7720003128051758,
+        "event_big_box_wp_2": 8.7720003128051758,
+        "event_big_box_wp_3": 3.5090000629425049
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_ships_big_season_9": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "7": "event_ships_big_box_fixed_season_9"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_ships_big_season_9",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_9": 8.7720003128051758,
+        "event_big_box_decorator_frame_season_9": 8.7720003128051758,
+        "event_big_box_decorator_title_season_9": 8.7720003128051758,
+        "event_big_box_gold_1": 12.772000312805176,
+        "event_big_box_gold_2": 4.7719998359680176,
+        "event_big_box_gold_3": 3.5090000629425049,
+        "event_big_box_keys": 3.5090000629425049,
+        "event_big_box_ship_season_9": 3.5090000629425049,
+        "event_big_box_ship_skin_1_season_9": 8.7720003128051758,
+        "event_big_box_ship_skin_2_season_9": 8.7720003128051758,
+        "event_big_box_ship_skin_3_season_9": 8.7720003128051758,
+        "event_big_box_wp_1": 8.7720003128051758,
+        "event_big_box_wp_2": 8.7720003128051758,
+        "event_big_box_wp_3": 3.5090000629425049
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_ships_medium_fixed_season_10": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_medium_fixed_season_10",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_10": 1.0,
+        "event_medium_box_ship_season_10": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_medium_fixed_season_11": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_medium_fixed_season_11",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_11": 1.0,
+        "event_medium_box_ship_season_11": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_medium_fixed_season_12": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_medium_fixed_season_12",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_12": 1.0,
+        "event_medium_box_ship_season_12": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_medium_fixed_season_13": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_medium_fixed_season_13",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_13": 1.0,
+        "event_medium_box_ship_season_13": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_medium_fixed_season_6": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_medium_fixed_season_6",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_6": 1.0,
+        "event_medium_box_ship_season_6": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_medium_fixed_season_7": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_medium_fixed_season_7",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_7": 1.0,
+        "event_medium_box_ship_season_7": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_medium_fixed_season_8": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_medium_fixed_season_8",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_8": 1.0,
+        "event_medium_box_ship_season_8": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_medium_fixed_season_9": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_medium_fixed_season_9",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_9": 1.0,
+        "event_medium_box_ship_season_9": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_medium_season_10": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_ships_medium_box_fixed_season_10",
+        "60": "event_ships_medium_box_fixed_season_10"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_ships_medium_season_10",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_10": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_10": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_10": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_1": 0.32499998807907104,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_ship_season_10": 0.32499998807907104,
+        "event_medium_box_ship_smoke_screen_system_mod_3": 4.125,
+        "event_medium_box_ship_tool_kit_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 16.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_ships_medium_season_11": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_ships_medium_box_fixed_season_11",
+        "60": "event_ships_medium_box_fixed_season_11"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_ships_medium_season_11",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_11": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_11": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_11": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_1": 0.32499998807907104,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_ship_season_11": 0.32499998807907104,
+        "event_medium_box_ship_smoke_screen_system_mod_3": 4.125,
+        "event_medium_box_ship_tool_kit_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 16.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1724147999,
+        "start": 1721469600
+      }
+    },
+    "event_ships_medium_season_12": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_ships_medium_box_fixed_season_12",
+        "60": "event_ships_medium_box_fixed_season_12"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_ships_medium_season_12",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_12": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_12": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_12": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_keys_4": 0.32499998807907104,
+        "event_medium_box_ship_season_12": 0.32499998807907104,
+        "event_medium_box_ship_smoke_screen_system_mod_3": 4.125,
+        "event_medium_box_ship_tool_kit_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 16.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1726826399,
+        "start": 1724148000
+      }
+    },
+    "event_ships_medium_season_13": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_ships_medium_box_fixed_season_13",
+        "60": "event_ships_medium_box_fixed_season_13"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_ships_medium_season_13",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_13": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_13": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_13": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_keys_4": 0.32499998807907104,
+        "event_medium_box_ship_season_13": 0.32499998807907104,
+        "event_medium_box_ship_smoke_screen_system_mod_3": 4.125,
+        "event_medium_box_ship_tool_kit_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 16.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1729504799,
+        "start": 1726826400
+      }
+    },
+    "event_ships_medium_season_6": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_ships_medium_box_fixed_season_6",
+        "60": "event_ships_medium_box_fixed_season_6"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_ships_medium_season_6",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_6": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_6": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_6": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_1": 0.32499998807907104,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_ship_season_6": 0.32499998807907104,
+        "event_medium_box_ship_smoke_screen_system_mod_3": 4.125,
+        "event_medium_box_ship_tool_kit_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 16.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_ships_medium_season_7": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_ships_medium_box_fixed_season_7",
+        "60": "event_ships_medium_box_fixed_season_7"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_ships_medium_season_7",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_7": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_7": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_7": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_1": 0.32499998807907104,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_ship_season_7": 0.32499998807907104,
+        "event_medium_box_ship_smoke_screen_system_mod_3": 4.125,
+        "event_medium_box_ship_tool_kit_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 16.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_ships_medium_season_8": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_ships_medium_box_fixed_season_8",
+        "60": "event_ships_medium_box_fixed_season_8"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_ships_medium_season_8",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_8": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_8": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_8": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_1": 0.32499998807907104,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_ship_season_8": 0.32499998807907104,
+        "event_medium_box_ship_smoke_screen_system_mod_3": 4.125,
+        "event_medium_box_ship_tool_kit_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 16.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_ships_medium_season_9": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_ships_medium_box_fixed_season_9",
+        "60": "event_ships_medium_box_fixed_season_9"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_ships_medium_season_9",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_9": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_9": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_9": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_1": 0.32499998807907104,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_ship_season_9": 0.32499998807907104,
+        "event_medium_box_ship_smoke_screen_system_mod_3": 4.125,
+        "event_medium_box_ship_tool_kit_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 16.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_small": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "event": "0",
+        "event_id": "main",
+        "event_slot": "0"
+      },
+      "name": "event_small",
+      "openType": "roulette_short",
+      "price": 10,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_small_box_gold_1": 0.5,
+        "event_small_box_gold_2": 0.5,
+        "event_small_box_gold_3": 0.5,
+        "event_small_box_ship_smoke_screen_system_mod": 0.25,
+        "event_small_box_ship_tool_kit": 0.25,
+        "event_small_box_tank_extinguisher": 0.25,
+        "event_small_box_tank_tool_kit_expendable": 0.25,
+        "event_small_box_warbonds_1": 0.5,
+        "event_small_box_warbonds_2": 0.10000000149011612,
+        "event_small_box_warbonds_3": 0.0099999997764825821,
+        "event_small_box_wp_1": 0.5,
+        "event_small_box_wp_2": 0.5,
+        "event_small_box_wp_3": 0.5
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 1697673600
+      }
+    },
+    "event_special_gift_ships_christmas_2023": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {},
+      "name": "event_special_gift_ships_christmas_2023",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_special_box_gold_1_christmas_2023": 24.75,
+        "event_special_box_gold_2_christmas_2023": 24.75,
+        "event_special_box_premiumDays_12_christmas_2023": 24.75,
+        "event_special_box_premiumDays_15_christmas_2023": 24.75,
+        "ships_germ_cruiser_admiral_graf_spee": 0.11100000143051147,
+        "ships_jp_armoredcruiser_ikoma": 0.11100000143051147,
+        "ships_uk_battlecruiser_invincible": 0.11100000143051147,
+        "ships_uk_cruiser_belfast": 0.11100000143051147,
+        "ships_us_battleship_arizona_1931": 0.11100000143051147,
+        "ships_us_destroyer_mitscher": 0.11100000143051147,
+        "ships_ussr_battleship_poltava": 0.11100000143051147,
+        "ships_ussr_destroyer_pr30_ognevoy": 0.11100000143051147,
+        "ships_ussr_sub_pr641": 0.11100000143051147
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_special_gift_tanks_christmas_2023": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {},
+      "name": "event_special_gift_tanks_christmas_2023",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_special_box_gold_1_christmas_2023": 24.75,
+        "event_special_box_gold_2_christmas_2023": 24.75,
+        "event_special_box_premiumDays_12_christmas_2023": 24.75,
+        "event_special_box_premiumDays_15_christmas_2023": 24.75,
+        "tank_fr_m4a4_cn_75_50": 0.090000003576278687,
+        "tank_germ_pzkpfw_VI_ausf_b_tiger_IIh_sla": 0.090000003576278687,
+        "tank_jp_st_a3": 0.090000003576278687,
+        "tank_uk_a_33_excelsior": 0.090000003576278687,
+        "tank_us_m4_sherman_calliope": 0.090000003576278687,
+        "tank_us_m4a3e2_sherman_jumbo_cobra_king": 0.090000003576278687,
+        "tank_us_t54e1": 0.090000003576278687,
+        "tank_ussr_is_2_1944_revenge": 0.090000003576278687,
+        "tank_ussr_kv_220": 0.090000003576278687,
+        "tank_ussr_kv_2_1940": 0.090000003576278687,
+        "utank_germ_pzsfl_IVa_dickermax": 0.090000003576278687
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_special_ships_anniversary_2024": {
+      "currencyId": "anniversarybond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "14": "event_special_ships_anniversary_2024_fixed_box"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event_id": "event_anniversary",
+        "event_slot": "2"
+      },
+      "name": "event_special_ships_anniversary_2024",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_campaign_booster_1": 8.4750003814697266,
+        "event_medium_box_gold_1": 8.4750003814697266,
+        "event_medium_box_gold_2": 8.4750003814697266,
+        "event_medium_box_gold_3": 8.4750003814697266,
+        "event_medium_box_wp_1": 8.4750003814697266,
+        "event_medium_box_wp_2": 8.4750003814697266,
+        "event_medium_box_wp_3": 8.4750003814697266,
+        "event_special_box_decorator_avatar_anniversary_2024_1": 5.0850000381469727,
+        "event_special_box_decorator_avatar_anniversary_2024_2": 5.0850000381469727,
+        "event_special_box_decorator_frame_anniversary_2024_1": 5.0850000381469727,
+        "event_special_box_decorator_frame_anniversary_2024_2": 5.0850000381469727,
+        "event_special_box_decorator_title_anniversary_2024_1": 5.0850000381469727,
+        "event_special_box_decorator_title_anniversary_2024_2": 5.0850000381469727,
+        "event_special_box_ship_anniversary_2024": 1.6950000524520874,
+        "event_wp_booster_1": 8.4750003814697266
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1724147999,
+        "start": 1722506400
+      }
+    },
+    "event_special_ships_anniversary_2024_fixed": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_special_ships_anniversary_2024_fixed",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_special_box_ship_anniversary_2024": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_special_ships_april_2024": {
+      "currencyId": "aprilbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "14": "event_special_ships_april_2024_fixed_box"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event_id": "event_april_2024",
+        "event_slot": "2"
+      },
+      "name": "event_special_ships_april_2024",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_campaign_booster_1": 8.4750003814697266,
+        "event_medium_box_gold_1": 8.4750003814697266,
+        "event_medium_box_gold_2": 8.4750003814697266,
+        "event_medium_box_gold_3": 8.4750003814697266,
+        "event_medium_box_wp_1": 8.4750003814697266,
+        "event_medium_box_wp_2": 8.4750003814697266,
+        "event_medium_box_wp_3": 8.4750003814697266,
+        "event_special_box_decorator_avatar_april_2024_1": 5.0850000381469727,
+        "event_special_box_decorator_avatar_april_2024_2": 5.0850000381469727,
+        "event_special_box_decorator_frame_april_2024_1": 5.0850000381469727,
+        "event_special_box_decorator_frame_april_2024_2": 5.0850000381469727,
+        "event_special_box_decorator_title_april_2024_1": 5.0850000381469727,
+        "event_special_box_decorator_title_april_2024_2": 5.0850000381469727,
+        "event_special_box_ship_april_2024": 1.6950000524520874,
+        "event_wp_booster_1": 8.4750003814697266
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1715162399,
+        "start": 1714039200
+      }
+    },
+    "event_special_ships_april_2024_fixed": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_special_ships_april_2024_fixed",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_special_box_ship_april_2024": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_special_ships_christmas_2023": {
+      "currencyId": "nybond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "45": "event_special_ships_box_fixed_christmas_2023"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event_id": "christmas",
+        "event_slot": "2"
+      },
+      "name": "event_special_ships_christmas_2023",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_special_box_decorator_avatar_christmas_2023_1": 3.0,
+        "event_special_box_decorator_avatar_christmas_2023_2": 3.5999999046325684,
+        "event_special_box_decorator_frame_christmas_2023_1": 1.7999999523162842,
+        "event_special_box_decorator_frame_christmas_2023_2": 2.4000000953674316,
+        "event_special_box_firework_kit": 87.900001525878906,
+        "event_special_box_ship_christmas_2023": 1.2000000476837158
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1705571999,
+        "start": 1702980000
+      }
+    },
+    "event_special_ships_fixed_christmas_2023": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_special_ships_fixed_christmas_2023",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_special_box_ship_christmas_2023": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_special_tanks_anniversary_2024": {
+      "currencyId": "anniversarybond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "14": "event_special_tanks_anniversary_2024_fixed_box"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event_id": "event_anniversary",
+        "event_slot": "2"
+      },
+      "name": "event_special_tanks_anniversary_2024",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_campaign_booster_1": 8.4750003814697266,
+        "event_medium_box_gold_1": 8.4750003814697266,
+        "event_medium_box_gold_2": 8.4750003814697266,
+        "event_medium_box_gold_3": 8.4750003814697266,
+        "event_medium_box_wp_1": 8.4750003814697266,
+        "event_medium_box_wp_2": 8.4750003814697266,
+        "event_medium_box_wp_3": 8.4750003814697266,
+        "event_special_box_decorator_avatar_anniversary_2024_1": 5.0850000381469727,
+        "event_special_box_decorator_avatar_anniversary_2024_2": 5.0850000381469727,
+        "event_special_box_decorator_frame_anniversary_2024_1": 5.0850000381469727,
+        "event_special_box_decorator_frame_anniversary_2024_2": 5.0850000381469727,
+        "event_special_box_decorator_title_anniversary_2024_1": 5.0850000381469727,
+        "event_special_box_decorator_title_anniversary_2024_2": 5.0850000381469727,
+        "event_special_box_tank_anniversary_2024": 1.6950000524520874,
+        "event_wp_booster_1": 8.4750003814697266
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1724147999,
+        "start": 1722506400
+      }
+    },
+    "event_special_tanks_anniversary_2024_fixed": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_special_tanks_anniversary_2024_fixed",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_special_box_tank_anniversary_2024": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_special_tanks_april_2024": {
+      "currencyId": "aprilbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "14": "event_special_tanks_april_2024_fixed_box"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event_id": "event_april_2024",
+        "event_slot": "2"
+      },
+      "name": "event_special_tanks_april_2024",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_campaign_booster_1": 8.4750003814697266,
+        "event_medium_box_gold_1": 8.4750003814697266,
+        "event_medium_box_gold_2": 8.4750003814697266,
+        "event_medium_box_gold_3": 8.4750003814697266,
+        "event_medium_box_wp_1": 8.4750003814697266,
+        "event_medium_box_wp_2": 8.4750003814697266,
+        "event_medium_box_wp_3": 8.4750003814697266,
+        "event_special_box_decorator_avatar_april_2024_1": 5.0850000381469727,
+        "event_special_box_decorator_avatar_april_2024_2": 5.0850000381469727,
+        "event_special_box_decorator_frame_april_2024_1": 5.0850000381469727,
+        "event_special_box_decorator_frame_april_2024_2": 5.0850000381469727,
+        "event_special_box_decorator_title_april_2024_1": 5.0850000381469727,
+        "event_special_box_decorator_title_april_2024_2": 5.0850000381469727,
+        "event_special_box_tank_april_2024": 1.6950000524520874,
+        "event_wp_booster_1": 8.4750003814697266
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1715162399,
+        "start": 1714039200
+      }
+    },
+    "event_special_tanks_april_2024_fixed": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_special_tanks_april_2024_fixed",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_special_box_tank_april_2024": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_special_tanks_christmas_2023": {
+      "currencyId": "nybond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "45": "event_special_tanks_box_fixed_christmas_2023"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event_id": "christmas",
+        "event_slot": "2"
+      },
+      "name": "event_special_tanks_christmas_2023",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_special_box_decorator_avatar_christmas_2023_1": 3.0,
+        "event_special_box_decorator_avatar_christmas_2023_2": 3.5999999046325684,
+        "event_special_box_decorator_frame_christmas_2023_1": 1.7999999523162842,
+        "event_special_box_decorator_frame_christmas_2023_2": 2.4000000953674316,
+        "event_special_box_firework_kit": 87.900001525878906,
+        "event_special_box_tank_christmas_2023": 1.2000000476837158
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1705571999,
+        "start": 1702980000
+      }
+    },
+    "event_special_tanks_fixed_christmas_2023": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_special_tanks_fixed_christmas_2023",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_special_box_tank_christmas_2023": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_big_fixed_season_10": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_big_fixed_season_10",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_tank_season_10": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_big_fixed_season_11": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_big_fixed_season_11",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_tank_season_11": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_big_fixed_season_12": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_big_fixed_season_12",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_tank_season_12": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_big_fixed_season_13": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_big_fixed_season_13",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_tank_season_13": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_big_fixed_season_6": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_big_fixed_season_6",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_tank_season_6": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_big_fixed_season_7": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_big_fixed_season_7",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_tank_season_7": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_big_fixed_season_8": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_big_fixed_season_8",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_tank_season_8": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_big_fixed_season_9": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_big_fixed_season_9",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_tank_season_9": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_big_season_10": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "7": "event_tanks_big_box_fixed_season_10"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_tanks_big_season_10",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_10": 8.7720003128051758,
+        "event_big_box_decorator_frame_season_10": 8.7720003128051758,
+        "event_big_box_decorator_title_season_10": 8.7720003128051758,
+        "event_big_box_gold_1": 12.772000312805176,
+        "event_big_box_gold_2": 4.7719998359680176,
+        "event_big_box_gold_3": 3.5090000629425049,
+        "event_big_box_keys": 3.5090000629425049,
+        "event_big_box_tank_season_10": 3.5090000629425049,
+        "event_big_box_tank_skin_1_season_10": 8.7720003128051758,
+        "event_big_box_tank_skin_2_season_10": 8.7720003128051758,
+        "event_big_box_tank_skin_3_season_10": 8.7720003128051758,
+        "event_big_box_wp_1": 8.7720003128051758,
+        "event_big_box_wp_2": 8.7720003128051758,
+        "event_big_box_wp_3": 3.5090000629425049
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_tanks_big_season_11": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "7": "event_tanks_big_box_fixed_season_11"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_tanks_big_season_11",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_11": 8.7720003128051758,
+        "event_big_box_decorator_frame_season_11": 8.7720003128051758,
+        "event_big_box_decorator_title_season_11": 8.7720003128051758,
+        "event_big_box_gold_1": 12.772000312805176,
+        "event_big_box_gold_2": 4.7719998359680176,
+        "event_big_box_gold_3": 3.5090000629425049,
+        "event_big_box_keys": 3.5090000629425049,
+        "event_big_box_tank_season_11": 3.5090000629425049,
+        "event_big_box_tank_skin_1_season_11": 8.7720003128051758,
+        "event_big_box_tank_skin_2_season_11": 8.7720003128051758,
+        "event_big_box_tank_skin_3_season_11": 8.7720003128051758,
+        "event_big_box_wp_1": 8.7720003128051758,
+        "event_big_box_wp_2": 8.7720003128051758,
+        "event_big_box_wp_3": 3.5090000629425049
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1724147999,
+        "start": 1722074400
+      }
+    },
+    "event_tanks_big_season_12": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "14": "event_tanks_big_box_fixed_season_12"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_tanks_big_season_12",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_12": 10.0,
+        "event_big_box_decorator_frame_season_12": 10.0,
+        "event_big_box_decorator_title_season_12": 10.0,
+        "event_big_box_gold_1": 10.0,
+        "event_big_box_gold_1800": 1.0,
+        "event_big_box_gold_2": 3.0,
+        "event_big_box_keys_2": 3.0,
+        "event_big_box_tank_season_12": 1.0,
+        "event_big_box_tank_skin_1_season_12": 10.0,
+        "event_big_box_tank_skin_2_season_12": 10.0,
+        "event_big_box_tank_skin_3_season_12": 10.0,
+        "event_big_box_wp_1": 10.0,
+        "event_big_box_wp_2": 3.0,
+        "event_big_box_wp_360000": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1726826399,
+        "start": 1724752800
+      }
+    },
+    "event_tanks_big_season_13": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "14": "event_tanks_big_box_fixed_season_13"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_tanks_big_season_13",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_13": 10.0,
+        "event_big_box_decorator_frame_season_13": 10.0,
+        "event_big_box_decorator_title_season_13": 10.0,
+        "event_big_box_gold_1": 10.0,
+        "event_big_box_gold_1800": 1.0,
+        "event_big_box_gold_2": 3.0,
+        "event_big_box_keys_2": 3.0,
+        "event_big_box_tank_season_13": 1.0,
+        "event_big_box_tank_skin_1_season_13": 10.0,
+        "event_big_box_tank_skin_2_season_13": 10.0,
+        "event_big_box_tank_skin_3_season_13": 10.0,
+        "event_big_box_wp_1": 10.0,
+        "event_big_box_wp_2": 3.0,
+        "event_big_box_wp_360000": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1729504799,
+        "start": 1727431200
+      }
+    },
+    "event_tanks_big_season_6": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "7": "event_tanks_big_box_fixed_season_6"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_tanks_big_season_6",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_6": 8.7720003128051758,
+        "event_big_box_decorator_frame_season_6": 8.7720003128051758,
+        "event_big_box_decorator_title_season_6": 8.7720003128051758,
+        "event_big_box_gold_1": 12.772000312805176,
+        "event_big_box_gold_2": 4.7719998359680176,
+        "event_big_box_gold_3": 3.5090000629425049,
+        "event_big_box_keys": 3.5090000629425049,
+        "event_big_box_tank_season_6": 3.5090000629425049,
+        "event_big_box_tank_skin_1_season_6": 8.7720003128051758,
+        "event_big_box_tank_skin_2_season_6": 8.7720003128051758,
+        "event_big_box_tank_skin_3_season_6": 8.7720003128051758,
+        "event_big_box_wp_1": 8.7720003128051758,
+        "event_big_box_wp_2": 8.7720003128051758,
+        "event_big_box_wp_3": 3.5090000629425049
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_tanks_big_season_7": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "7": "event_tanks_big_box_fixed_season_7"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_tanks_big_season_7",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_7": 8.7720003128051758,
+        "event_big_box_decorator_frame_season_7": 8.7720003128051758,
+        "event_big_box_decorator_title_season_7": 8.7720003128051758,
+        "event_big_box_gold_1": 12.772000312805176,
+        "event_big_box_gold_2": 4.7719998359680176,
+        "event_big_box_gold_3": 3.5090000629425049,
+        "event_big_box_keys": 3.5090000629425049,
+        "event_big_box_tank_season_7": 3.5090000629425049,
+        "event_big_box_tank_skin_1_season_7": 8.7720003128051758,
+        "event_big_box_tank_skin_2_season_7": 8.7720003128051758,
+        "event_big_box_tank_skin_3_season_7": 8.7720003128051758,
+        "event_big_box_wp_1": 8.7720003128051758,
+        "event_big_box_wp_2": 8.7720003128051758,
+        "event_big_box_wp_3": 3.5090000629425049
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_tanks_big_season_8": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "7": "event_tanks_big_box_fixed_season_8"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_tanks_big_season_8",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_8": 8.7720003128051758,
+        "event_big_box_decorator_frame_season_8": 8.7720003128051758,
+        "event_big_box_decorator_title_season_8": 8.7720003128051758,
+        "event_big_box_gold_1": 12.772000312805176,
+        "event_big_box_gold_2": 4.7719998359680176,
+        "event_big_box_gold_3": 3.5090000629425049,
+        "event_big_box_keys": 3.5090000629425049,
+        "event_big_box_tank_season_8": 3.5090000629425049,
+        "event_big_box_tank_skin_1_season_8": 8.7720003128051758,
+        "event_big_box_tank_skin_2_season_8": 8.7720003128051758,
+        "event_big_box_tank_skin_3_season_8": 8.7720003128051758,
+        "event_big_box_wp_1": 8.7720003128051758,
+        "event_big_box_wp_2": 8.7720003128051758,
+        "event_big_box_wp_3": 3.5090000629425049
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_tanks_big_season_9": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "7": "event_tanks_big_box_fixed_season_9"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_tanks_big_season_9",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_9": 8.7720003128051758,
+        "event_big_box_decorator_frame_season_9": 8.7720003128051758,
+        "event_big_box_decorator_title_season_9": 8.7720003128051758,
+        "event_big_box_gold_1": 12.772000312805176,
+        "event_big_box_gold_2": 4.7719998359680176,
+        "event_big_box_gold_3": 3.5090000629425049,
+        "event_big_box_keys": 3.5090000629425049,
+        "event_big_box_tank_season_9": 3.5090000629425049,
+        "event_big_box_tank_skin_1_season_9": 8.7720003128051758,
+        "event_big_box_tank_skin_2_season_9": 8.7720003128051758,
+        "event_big_box_tank_skin_3_season_9": 8.7720003128051758,
+        "event_big_box_wp_1": 8.7720003128051758,
+        "event_big_box_wp_2": 8.7720003128051758,
+        "event_big_box_wp_3": 3.5090000629425049
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_tanks_medium_fixed_season_10": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_medium_fixed_season_10",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_10": 1.0,
+        "event_medium_box_tank_season_10": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_medium_fixed_season_11": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_medium_fixed_season_11",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_11": 1.0,
+        "event_medium_box_tank_season_11": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_medium_fixed_season_12": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_medium_fixed_season_12",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_12": 1.0,
+        "event_medium_box_tank_season_12": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_medium_fixed_season_13": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_medium_fixed_season_13",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_13": 1.0,
+        "event_medium_box_tank_season_13": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_medium_fixed_season_6": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_medium_fixed_season_6",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_6": 1.0,
+        "event_medium_box_tank_season_6": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_medium_fixed_season_7": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_medium_fixed_season_7",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_7": 1.0,
+        "event_medium_box_tank_season_7": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_medium_fixed_season_8": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_medium_fixed_season_8",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_8": 1.0,
+        "event_medium_box_tank_season_8": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_medium_fixed_season_9": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_medium_fixed_season_9",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_9": 1.0,
+        "event_medium_box_tank_season_9": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_medium_season_10": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_tanks_medium_box_fixed_season_10",
+        "60": "event_tanks_medium_box_fixed_season_10"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_tanks_medium_season_10",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_10": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_10": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_10": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_1": 0.32499998807907104,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_tank_extinguisher_3": 4.125,
+        "event_medium_box_tank_season_10": 0.32499998807907104,
+        "event_medium_box_tank_tool_kit_expendable_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 14.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_tanks_medium_season_11": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_tanks_medium_box_fixed_season_11",
+        "60": "event_tanks_medium_box_fixed_season_11"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_tanks_medium_season_11",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_11": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_11": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_11": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_1": 0.32499998807907104,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_tank_extinguisher_3": 4.125,
+        "event_medium_box_tank_season_11": 0.32499998807907104,
+        "event_medium_box_tank_tool_kit_expendable_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 14.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1724147999,
+        "start": 1721469600
+      }
+    },
+    "event_tanks_medium_season_12": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_tanks_medium_box_fixed_season_12",
+        "60": "event_tanks_medium_box_fixed_season_12"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_tanks_medium_season_12",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_12": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_12": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_12": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_keys_4": 0.32499998807907104,
+        "event_medium_box_tank_extinguisher_3": 4.125,
+        "event_medium_box_tank_season_12": 0.32499998807907104,
+        "event_medium_box_tank_tool_kit_expendable_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 14.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1726826399,
+        "start": 1724148000
+      }
+    },
+    "event_tanks_medium_season_13": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_tanks_medium_box_fixed_season_13",
+        "60": "event_tanks_medium_box_fixed_season_13"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_tanks_medium_season_13",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_13": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_13": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_13": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_keys_4": 0.32499998807907104,
+        "event_medium_box_tank_extinguisher_3": 4.125,
+        "event_medium_box_tank_season_13": 0.32499998807907104,
+        "event_medium_box_tank_tool_kit_expendable_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 14.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1729504799,
+        "start": 1726826400
+      }
+    },
+    "event_tanks_medium_season_6": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_tanks_medium_box_fixed_season_6",
+        "60": "event_tanks_medium_box_fixed_season_6"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_tanks_medium_season_6",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_6": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_6": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_6": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_1": 0.32499998807907104,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_tank_extinguisher_3": 4.125,
+        "event_medium_box_tank_season_6": 0.32499998807907104,
+        "event_medium_box_tank_tool_kit_expendable_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 14.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_tanks_medium_season_7": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_tanks_medium_box_fixed_season_7",
+        "60": "event_tanks_medium_box_fixed_season_7"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_tanks_medium_season_7",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_7": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_7": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_7": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_1": 0.32499998807907104,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_tank_extinguisher_3": 4.125,
+        "event_medium_box_tank_season_7": 0.32499998807907104,
+        "event_medium_box_tank_tool_kit_expendable_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 14.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_tanks_medium_season_8": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_tanks_medium_box_fixed_season_8",
+        "60": "event_tanks_medium_box_fixed_season_8"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_tanks_medium_season_8",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_8": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_8": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_8": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_1": 0.32499998807907104,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_tank_extinguisher_3": 4.125,
+        "event_medium_box_tank_season_8": 0.32499998807907104,
+        "event_medium_box_tank_tool_kit_expendable_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 14.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "event_tanks_medium_season_9": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_tanks_medium_box_fixed_season_9",
+        "60": "event_tanks_medium_box_fixed_season_9"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_tanks_medium_season_9",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_season_9": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_9": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_9": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_1": 0.32499998807907104,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_tank_extinguisher_3": 4.125,
+        "event_medium_box_tank_season_9": 0.32499998807907104,
+        "event_medium_box_tank_tool_kit_expendable_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 14.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 2,
+        "start": 1
+      }
+    },
+    "every_day_award_big_pack_1": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {},
+      "name": "every_day_award_big_pack_1",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "everyday_decorator_avatar_1": 0.039999999105930328,
+        "everyday_decorator_avatar_2": 0.039999999105930328,
+        "everyday_decorator_frame_1": 0.0099999997764825821,
+        "everyday_decorator_frame_2": 0.019999999552965164,
+        "everyday_decorator_title_1": 0.11999999731779099,
+        "everyday_gold_big_1": 0.69999998807907104,
+        "everyday_gold_big_2": 0.2199999988079071,
+        "everyday_gold_jackpot_1": 0.10000000149011612,
+        "everyday_gold_small_1": 2.25,
+        "everyday_gold_small_2": 1.25,
+        "everyday_spare_medium": 0.10000000149011612,
+        "everyday_spare_small_1": 0.20000000298023224,
+        "everyday_spare_small_2": 0.20000000298023224,
+        "everyday_wp_jackpot_1": 0.10000000149011612
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
       }
     },
     "every_day_award_big_pack_2": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {},
+      "name": "every_day_award_big_pack_2",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
       "rewards": {
-        "everyday_gold": 1.0,
-        "everyday_wp_big": 1.0
+        "everyday_decorator_avatar_1": 0.039999999105930328,
+        "everyday_decorator_avatar_2": 0.039999999105930328,
+        "everyday_decorator_frame_1": 0.0099999997764825821,
+        "everyday_decorator_frame_2": 0.019999999552965164,
+        "everyday_decorator_title_1": 0.11999999731779099,
+        "everyday_gold_big_1": 0.69999998807907104,
+        "everyday_gold_jackpot_1": 0.2199999988079071,
+        "everyday_gold_jackpot_2": 0.10000000149011612,
+        "everyday_gold_medium": 1.25,
+        "everyday_gold_small_2": 2.25,
+        "everyday_spare_big": 0.05000000074505806,
+        "everyday_spare_medium": 0.10000000149011612,
+        "everyday_spare_small_1": 0.20000000298023224,
+        "everyday_wp_jackpot_2": 0.10000000149011612
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
       }
     },
-    "every_day_award_small_pack": {
+    "every_day_award_first": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {},
+      "name": "every_day_award_first",
+      "openType": "roulette_short",
+      "price": 0,
+      "reqPlayerLevel": 0,
       "rewards": {
-        "everyday_spare": 1.0,
-        "everyday_wp_small": 1.0
+        "everyday_campaign_booster_1": 1.440000057220459,
+        "everyday_decorator_avatar_1": 0.039999999105930328,
+        "everyday_decorator_avatar_2": 0.039999999105930328,
+        "everyday_decorator_frame_1": 0.0099999997764825821,
+        "everyday_decorator_frame_2": 0.019999999552965164,
+        "everyday_decorator_title_1": 0.11999999731779099,
+        "everyday_unit_booster_1": 1.440000057220459,
+        "everyday_wp_booster_1": 1.440000057220459,
+        "everyday_wp_medium": 0.34999999403953552,
+        "everyday_wp_small": 1.1000000238418579
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "every_day_award_medium_pack": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {},
+      "name": "every_day_award_medium_pack",
+      "openType": "roulette_short",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "everyday_campaign_booster_1": 1.1399999856948853,
+        "everyday_decorator_avatar_1": 0.039999999105930328,
+        "everyday_decorator_avatar_2": 0.039999999105930328,
+        "everyday_decorator_frame_1": 0.0099999997764825821,
+        "everyday_decorator_frame_2": 0.019999999552965164,
+        "everyday_decorator_title_1": 0.11999999731779099,
+        "everyday_spare_small_1": 0.20000000298023224,
+        "everyday_unit_booster_1": 1.1399999856948853,
+        "everyday_wp_big": 0.25,
+        "everyday_wp_booster_1": 1.1399999856948853,
+        "everyday_wp_medium": 0.5,
+        "everyday_wp_small": 1.25
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "gift_air_offer": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {},
+      "name": "gift_air_offer",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "offer_gift_gold": 1.0,
+        "offer_gift_gold_small": 1.0,
+        "offer_gift_spare": 1.0,
+        "offer_gift_wp": 1.0,
+        "offer_gift_wp_small": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
       }
     },
     "gift_ship_offer": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {},
+      "name": "gift_ship_offer",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
       "rewards": {
         "offer_gift_gold": 1.0,
         "offer_gift_ship_repair": 1.0,
         "offer_gift_ship_smoke": 1.0,
         "offer_gift_wp": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
       }
     },
     "gift_tank_offer": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {},
+      "name": "gift_tank_offer",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
       "rewards": {
         "offer_gift_gold": 1.0,
         "offer_gift_tank_extinguisher": 1.0,
         "offer_gift_tank_repair": 1.0,
         "offer_gift_wp": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_ships_seasons_1_to_3": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships"
+      },
+      "name": "past_events_box_ships_seasons_1_to_3",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_3": 10.0,
+        "event_big_box_decorator_frame_1": 10.0,
+        "event_big_box_decorator_frame_2": 10.0,
+        "event_big_box_decorator_frame_season_2": 10.0,
+        "event_big_box_decorator_title": 10.0,
+        "event_big_box_decorator_title_season_2": 10.0,
+        "event_big_box_decorator_title_season_3": 10.0,
+        "event_big_box_ship": 1.0,
+        "event_big_box_ship_season_2": 2.0,
+        "event_big_box_ship_season_3": 2.0,
+        "event_big_box_ship_skin_1_season_1": 5.0,
+        "event_big_box_ship_skin_1_season_2": 5.0,
+        "event_big_box_ship_skin_1_season_3": 5.0,
+        "event_big_box_ship_skin_2_season_1": 5.0,
+        "event_big_box_ship_skin_2_season_2": 5.0,
+        "event_big_box_ship_skin_2_season_3": 5.0,
+        "event_campaign_booster_1": 10.0,
+        "event_medium_box_decorator_frame": 10.0,
+        "event_medium_box_decorator_frame_season_2": 10.0,
+        "event_medium_box_decorator_frame_season_3": 10.0,
+        "event_medium_box_decorator_title": 10.0,
+        "event_medium_box_decorator_title_season_2": 10.0,
+        "event_medium_box_decorator_title_season_3": 10.0,
+        "event_medium_box_ship": 3.0,
+        "event_medium_box_ship_season_2": 3.0,
+        "event_medium_box_ship_season_3": 3.0,
+        "event_medium_box_ship_skin_1_season_1": 5.0,
+        "event_medium_box_ship_skin_1_season_2": 5.0,
+        "event_medium_box_ship_skin_1_season_3": 5.0,
+        "event_medium_box_ship_skin_2_season_1": 5.0,
+        "event_medium_box_ship_skin_2_season_2": 5.0,
+        "event_medium_box_ship_skin_2_season_3": 5.0,
+        "event_unit_booster_1": 10.0,
+        "event_wp_booster_1": 10.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_ships_seasons_1_to_5": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships"
+      },
+      "name": "past_events_box_ships_seasons_1_to_5",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_3": 1.8899999856948853,
+        "event_big_box_decorator_avatar_season_4": 1.8899999856948853,
+        "event_big_box_decorator_avatar_season_5": 1.8899999856948853,
+        "event_big_box_decorator_frame_1": 1.8899999856948853,
+        "event_big_box_decorator_frame_2": 1.8899999856948853,
+        "event_big_box_decorator_frame_season_2": 1.8899999856948853,
+        "event_big_box_decorator_frame_season_4": 1.8899999856948853,
+        "event_big_box_decorator_frame_season_5": 1.8899999856948853,
+        "event_big_box_decorator_title": 5.6710000038146973,
+        "event_big_box_decorator_title_season_2": 5.6710000038146973,
+        "event_big_box_decorator_title_season_3": 5.6710000038146973,
+        "event_big_box_decorator_title_season_4": 5.6710000038146973,
+        "event_big_box_decorator_title_season_5": 5.6710000038146973,
+        "event_big_box_ship": 0.15800000727176666,
+        "event_big_box_ship_season_2": 0.37799999117851257,
+        "event_big_box_ship_season_3": 0.37799999117851257,
+        "event_big_box_ship_season_4": 0.37799999117851257,
+        "event_big_box_ship_season_5": 0.37799999117851257,
+        "event_big_box_ship_skin_1_season_1": 1.8899999856948853,
+        "event_big_box_ship_skin_1_season_2": 1.8899999856948853,
+        "event_big_box_ship_skin_1_season_3": 1.8899999856948853,
+        "event_big_box_ship_skin_2_season_1": 1.8899999856948853,
+        "event_big_box_ship_skin_2_season_2": 1.8899999856948853,
+        "event_big_box_ship_skin_2_season_3": 1.8899999856948853,
+        "event_campaign_booster_3": 5.6710000038146973,
+        "event_medium_box_decorator_frame": 1.8899999856948853,
+        "event_medium_box_decorator_frame_season_2": 1.8899999856948853,
+        "event_medium_box_decorator_frame_season_3": 1.8899999856948853,
+        "event_medium_box_decorator_frame_season_4": 1.8899999856948853,
+        "event_medium_box_decorator_frame_season_5": 1.8899999856948853,
+        "event_medium_box_decorator_title": 5.6710000038146973,
+        "event_medium_box_decorator_title_season_2": 5.6710000038146973,
+        "event_medium_box_decorator_title_season_3": 5.6710000038146973,
+        "event_medium_box_decorator_title_season_4": 5.6710000038146973,
+        "event_medium_box_decorator_title_season_5": 5.6710000038146973,
+        "event_medium_box_ship": 0.56699997186660767,
+        "event_medium_box_ship_season_2": 0.56699997186660767,
+        "event_medium_box_ship_season_3": 0.56699997186660767,
+        "event_medium_box_ship_season_4": 0.56699997186660767,
+        "event_medium_box_ship_season_5": 0.56699997186660767,
+        "event_medium_box_ship_skin_1_season_1": 1.8899999856948853,
+        "event_medium_box_ship_skin_1_season_2": 1.8899999856948853,
+        "event_medium_box_ship_skin_1_season_3": 1.8899999856948853,
+        "event_medium_box_ship_skin_2_season_1": 1.8899999856948853,
+        "event_medium_box_ship_skin_2_season_2": 1.8899999856948853,
+        "event_medium_box_ship_skin_2_season_3": 1.8899999856948853,
+        "event_wp_booster_3": 5.6710000038146973
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_ships_seasons_1_to_6": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships"
+      },
+      "name": "past_events_box_ships_seasons_1_to_6",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_3": 1.2669999599456787,
+        "event_big_box_decorator_avatar_season_4": 1.2669999599456787,
+        "event_big_box_decorator_avatar_season_5": 1.2669999599456787,
+        "event_big_box_decorator_avatar_season_6": 1.2669999599456787,
+        "event_big_box_decorator_frame_1": 1.2669999599456787,
+        "event_big_box_decorator_frame_2": 1.2669999599456787,
+        "event_big_box_decorator_frame_season_2": 1.2669999599456787,
+        "event_big_box_decorator_frame_season_4": 1.2669999599456787,
+        "event_big_box_decorator_frame_season_5": 1.2669999599456787,
+        "event_big_box_decorator_frame_season_6": 1.2669999599456787,
+        "event_big_box_decorator_title": 3.8020000457763672,
+        "event_big_box_decorator_title_season_2": 3.8020000457763672,
+        "event_big_box_decorator_title_season_3": 3.8020000457763672,
+        "event_big_box_decorator_title_season_4": 3.8020000457763672,
+        "event_big_box_decorator_title_season_5": 3.8020000457763672,
+        "event_big_box_decorator_title_season_6": 3.8020000457763672,
+        "event_big_box_ship": 0.12700000405311584,
+        "event_big_box_ship_season_2": 0.25299999117851257,
+        "event_big_box_ship_season_3": 0.25299999117851257,
+        "event_big_box_ship_season_4": 0.25299999117851257,
+        "event_big_box_ship_season_5": 0.25299999117851257,
+        "event_big_box_ship_season_6": 0.25299999117851257,
+        "event_big_box_ship_skin_1_season_1": 1.2669999599456787,
+        "event_big_box_ship_skin_1_season_2": 1.2669999599456787,
+        "event_big_box_ship_skin_1_season_3": 1.2669999599456787,
+        "event_big_box_ship_skin_1_season_4": 1.2669999599456787,
+        "event_big_box_ship_skin_1_season_5": 1.2669999599456787,
+        "event_big_box_ship_skin_1_season_6": 1.2669999599456787,
+        "event_big_box_ship_skin_2_season_1": 1.2669999599456787,
+        "event_big_box_ship_skin_2_season_2": 1.2669999599456787,
+        "event_big_box_ship_skin_2_season_3": 1.2669999599456787,
+        "event_big_box_ship_skin_2_season_4": 1.2669999599456787,
+        "event_big_box_ship_skin_2_season_5": 1.2669999599456787,
+        "event_big_box_ship_skin_2_season_6": 1.2669999599456787,
+        "event_big_box_ship_skin_3_season_5": 1.2669999599456787,
+        "event_big_box_ship_skin_3_season_6": 1.2669999599456787,
+        "event_campaign_booster_3": 3.8020000457763672,
+        "event_medium_box_decorator_frame": 1.2669999599456787,
+        "event_medium_box_decorator_frame_season_2": 1.2669999599456787,
+        "event_medium_box_decorator_frame_season_3": 1.2669999599456787,
+        "event_medium_box_decorator_frame_season_4": 1.2669999599456787,
+        "event_medium_box_decorator_frame_season_5": 1.2669999599456787,
+        "event_medium_box_decorator_frame_season_6": 1.2669999599456787,
+        "event_medium_box_decorator_title": 3.8020000457763672,
+        "event_medium_box_decorator_title_season_2": 3.8020000457763672,
+        "event_medium_box_decorator_title_season_3": 3.8020000457763672,
+        "event_medium_box_decorator_title_season_4": 3.8020000457763672,
+        "event_medium_box_decorator_title_season_5": 3.8020000457763672,
+        "event_medium_box_decorator_title_season_6": 3.8020000457763672,
+        "event_medium_box_ship": 0.37999999523162842,
+        "event_medium_box_ship_season_2": 0.37999999523162842,
+        "event_medium_box_ship_season_3": 0.37999999523162842,
+        "event_medium_box_ship_season_4": 0.37999999523162842,
+        "event_medium_box_ship_season_5": 0.37999999523162842,
+        "event_medium_box_ship_season_6": 0.37999999523162842,
+        "event_medium_box_ship_skin_1_season_1": 1.2669999599456787,
+        "event_medium_box_ship_skin_1_season_2": 1.2669999599456787,
+        "event_medium_box_ship_skin_1_season_3": 1.2669999599456787,
+        "event_medium_box_ship_skin_1_season_4": 1.2669999599456787,
+        "event_medium_box_ship_skin_1_season_5": 1.2669999599456787,
+        "event_medium_box_ship_skin_1_season_6": 1.2669999599456787,
+        "event_medium_box_ship_skin_2_season_1": 1.2669999599456787,
+        "event_medium_box_ship_skin_2_season_2": 1.2669999599456787,
+        "event_medium_box_ship_skin_2_season_3": 1.2669999599456787,
+        "event_medium_box_ship_skin_2_season_4": 1.2669999599456787,
+        "event_medium_box_ship_skin_2_season_5": 1.2669999599456787,
+        "event_medium_box_ship_skin_2_season_6": 1.2669999599456787,
+        "event_wp_booster_3": 3.8020000457763672
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_ships_seasons_1_to_7": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships"
+      },
+      "name": "past_events_box_ships_seasons_1_to_7",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_3": 1.093999981880188,
+        "event_big_box_decorator_avatar_season_4": 1.093999981880188,
+        "event_big_box_decorator_avatar_season_5": 1.093999981880188,
+        "event_big_box_decorator_avatar_season_6": 1.093999981880188,
+        "event_big_box_decorator_avatar_season_7": 1.093999981880188,
+        "event_big_box_decorator_frame_1": 1.093999981880188,
+        "event_big_box_decorator_frame_2": 1.093999981880188,
+        "event_big_box_decorator_frame_season_2": 1.093999981880188,
+        "event_big_box_decorator_frame_season_4": 1.093999981880188,
+        "event_big_box_decorator_frame_season_5": 1.093999981880188,
+        "event_big_box_decorator_frame_season_6": 1.093999981880188,
+        "event_big_box_decorator_frame_season_7": 1.093999981880188,
+        "event_big_box_decorator_title": 3.2820000648498535,
+        "event_big_box_decorator_title_season_2": 3.2820000648498535,
+        "event_big_box_decorator_title_season_3": 3.2820000648498535,
+        "event_big_box_decorator_title_season_4": 3.2820000648498535,
+        "event_big_box_decorator_title_season_5": 3.2820000648498535,
+        "event_big_box_decorator_title_season_6": 3.2820000648498535,
+        "event_big_box_decorator_title_season_7": 3.2820000648498535,
+        "event_big_box_ship": 0.10899999737739563,
+        "event_big_box_ship_season_2": 0.21899999678134918,
+        "event_big_box_ship_season_3": 0.21899999678134918,
+        "event_big_box_ship_season_4": 0.21899999678134918,
+        "event_big_box_ship_season_5": 0.21899999678134918,
+        "event_big_box_ship_season_6": 0.21899999678134918,
+        "event_big_box_ship_season_7": 0.21899999678134918,
+        "event_big_box_ship_skin_1_season_1": 1.093999981880188,
+        "event_big_box_ship_skin_1_season_2": 1.093999981880188,
+        "event_big_box_ship_skin_1_season_3": 1.093999981880188,
+        "event_big_box_ship_skin_1_season_4": 1.093999981880188,
+        "event_big_box_ship_skin_1_season_5": 1.093999981880188,
+        "event_big_box_ship_skin_1_season_6": 1.093999981880188,
+        "event_big_box_ship_skin_1_season_7": 1.093999981880188,
+        "event_big_box_ship_skin_2_season_1": 1.093999981880188,
+        "event_big_box_ship_skin_2_season_2": 1.093999981880188,
+        "event_big_box_ship_skin_2_season_3": 1.093999981880188,
+        "event_big_box_ship_skin_2_season_4": 1.093999981880188,
+        "event_big_box_ship_skin_2_season_5": 1.093999981880188,
+        "event_big_box_ship_skin_2_season_6": 1.093999981880188,
+        "event_big_box_ship_skin_2_season_7": 1.093999981880188,
+        "event_big_box_ship_skin_3_season_5": 1.093999981880188,
+        "event_big_box_ship_skin_3_season_6": 1.093999981880188,
+        "event_big_box_ship_skin_3_season_7": 1.093999981880188,
+        "event_campaign_booster_3": 3.2820000648498535,
+        "event_medium_box_decorator_frame": 1.093999981880188,
+        "event_medium_box_decorator_frame_season_2": 1.093999981880188,
+        "event_medium_box_decorator_frame_season_3": 1.093999981880188,
+        "event_medium_box_decorator_frame_season_4": 1.093999981880188,
+        "event_medium_box_decorator_frame_season_5": 1.093999981880188,
+        "event_medium_box_decorator_frame_season_6": 1.093999981880188,
+        "event_medium_box_decorator_frame_season_7": 1.093999981880188,
+        "event_medium_box_decorator_title": 3.2820000648498535,
+        "event_medium_box_decorator_title_season_2": 3.2820000648498535,
+        "event_medium_box_decorator_title_season_3": 3.2820000648498535,
+        "event_medium_box_decorator_title_season_4": 3.2820000648498535,
+        "event_medium_box_decorator_title_season_5": 3.2820000648498535,
+        "event_medium_box_decorator_title_season_6": 3.2820000648498535,
+        "event_medium_box_decorator_title_season_7": 3.2820000648498535,
+        "event_medium_box_ship": 0.32800000905990601,
+        "event_medium_box_ship_season_2": 0.32800000905990601,
+        "event_medium_box_ship_season_3": 0.32800000905990601,
+        "event_medium_box_ship_season_4": 0.32800000905990601,
+        "event_medium_box_ship_season_5": 0.32800000905990601,
+        "event_medium_box_ship_season_6": 0.32800000905990601,
+        "event_medium_box_ship_season_7": 0.32800000905990601,
+        "event_medium_box_ship_skin_1_season_1": 1.093999981880188,
+        "event_medium_box_ship_skin_1_season_2": 1.093999981880188,
+        "event_medium_box_ship_skin_1_season_3": 1.093999981880188,
+        "event_medium_box_ship_skin_1_season_4": 1.093999981880188,
+        "event_medium_box_ship_skin_1_season_5": 1.093999981880188,
+        "event_medium_box_ship_skin_1_season_6": 1.093999981880188,
+        "event_medium_box_ship_skin_1_season_7": 1.093999981880188,
+        "event_medium_box_ship_skin_2_season_1": 1.093999981880188,
+        "event_medium_box_ship_skin_2_season_2": 1.093999981880188,
+        "event_medium_box_ship_skin_2_season_3": 1.093999981880188,
+        "event_medium_box_ship_skin_2_season_4": 1.093999981880188,
+        "event_medium_box_ship_skin_2_season_5": 1.093999981880188,
+        "event_medium_box_ship_skin_2_season_6": 1.093999981880188,
+        "event_medium_box_ship_skin_2_season_7": 1.093999981880188,
+        "event_wp_booster_3": 3.2820000648498535
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_ships_seasons_1_to_8": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships"
+      },
+      "name": "past_events_box_ships_seasons_1_to_8",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_3": 100.0,
+        "event_big_box_decorator_avatar_season_4": 100.0,
+        "event_big_box_decorator_avatar_season_5": 100.0,
+        "event_big_box_decorator_avatar_season_6": 100.0,
+        "event_big_box_decorator_avatar_season_7": 100.0,
+        "event_big_box_decorator_avatar_season_8": 100.0,
+        "event_big_box_decorator_frame_1": 100.0,
+        "event_big_box_decorator_frame_2": 100.0,
+        "event_big_box_decorator_frame_season_2": 100.0,
+        "event_big_box_decorator_frame_season_4": 100.0,
+        "event_big_box_decorator_frame_season_5": 100.0,
+        "event_big_box_decorator_frame_season_6": 100.0,
+        "event_big_box_decorator_frame_season_7": 100.0,
+        "event_big_box_decorator_frame_season_8": 100.0,
+        "event_big_box_decorator_title": 300.0,
+        "event_big_box_decorator_title_season_2": 300.0,
+        "event_big_box_decorator_title_season_3": 300.0,
+        "event_big_box_decorator_title_season_4": 300.0,
+        "event_big_box_decorator_title_season_5": 300.0,
+        "event_big_box_decorator_title_season_6": 300.0,
+        "event_big_box_decorator_title_season_7": 300.0,
+        "event_big_box_decorator_title_season_8": 300.0,
+        "event_big_box_ship": 10.0,
+        "event_big_box_ship_season_2": 20.0,
+        "event_big_box_ship_season_3": 20.0,
+        "event_big_box_ship_season_4": 20.0,
+        "event_big_box_ship_season_5": 20.0,
+        "event_big_box_ship_season_6": 20.0,
+        "event_big_box_ship_season_7": 20.0,
+        "event_big_box_ship_season_8": 20.0,
+        "event_big_box_ship_skin_1_season_1": 100.0,
+        "event_big_box_ship_skin_1_season_2": 100.0,
+        "event_big_box_ship_skin_1_season_3": 100.0,
+        "event_big_box_ship_skin_1_season_4": 100.0,
+        "event_big_box_ship_skin_1_season_5": 100.0,
+        "event_big_box_ship_skin_1_season_6": 100.0,
+        "event_big_box_ship_skin_1_season_7": 100.0,
+        "event_big_box_ship_skin_1_season_8": 100.0,
+        "event_big_box_ship_skin_2_season_1": 100.0,
+        "event_big_box_ship_skin_2_season_2": 100.0,
+        "event_big_box_ship_skin_2_season_3": 100.0,
+        "event_big_box_ship_skin_2_season_4": 100.0,
+        "event_big_box_ship_skin_2_season_5": 100.0,
+        "event_big_box_ship_skin_2_season_6": 100.0,
+        "event_big_box_ship_skin_2_season_7": 100.0,
+        "event_big_box_ship_skin_2_season_8": 100.0,
+        "event_big_box_ship_skin_3_season_5": 100.0,
+        "event_big_box_ship_skin_3_season_6": 100.0,
+        "event_big_box_ship_skin_3_season_7": 100.0,
+        "event_big_box_ship_skin_3_season_8": 100.0,
+        "event_campaign_booster_3": 300.0,
+        "event_medium_box_decorator_frame": 100.0,
+        "event_medium_box_decorator_frame_season_2": 100.0,
+        "event_medium_box_decorator_frame_season_3": 100.0,
+        "event_medium_box_decorator_frame_season_4": 100.0,
+        "event_medium_box_decorator_frame_season_5": 100.0,
+        "event_medium_box_decorator_frame_season_6": 100.0,
+        "event_medium_box_decorator_frame_season_7": 100.0,
+        "event_medium_box_decorator_frame_season_8": 100.0,
+        "event_medium_box_decorator_title": 300.0,
+        "event_medium_box_decorator_title_season_2": 300.0,
+        "event_medium_box_decorator_title_season_3": 300.0,
+        "event_medium_box_decorator_title_season_4": 300.0,
+        "event_medium_box_decorator_title_season_5": 300.0,
+        "event_medium_box_decorator_title_season_6": 300.0,
+        "event_medium_box_decorator_title_season_7": 300.0,
+        "event_medium_box_decorator_title_season_8": 300.0,
+        "event_medium_box_ship": 30.0,
+        "event_medium_box_ship_season_2": 30.0,
+        "event_medium_box_ship_season_3": 30.0,
+        "event_medium_box_ship_season_4": 30.0,
+        "event_medium_box_ship_season_5": 30.0,
+        "event_medium_box_ship_season_6": 30.0,
+        "event_medium_box_ship_season_7": 30.0,
+        "event_medium_box_ship_season_8": 30.0,
+        "event_medium_box_ship_skin_1_season_1": 100.0,
+        "event_medium_box_ship_skin_1_season_2": 100.0,
+        "event_medium_box_ship_skin_1_season_3": 100.0,
+        "event_medium_box_ship_skin_1_season_4": 100.0,
+        "event_medium_box_ship_skin_1_season_5": 100.0,
+        "event_medium_box_ship_skin_1_season_6": 100.0,
+        "event_medium_box_ship_skin_1_season_7": 100.0,
+        "event_medium_box_ship_skin_1_season_8": 100.0,
+        "event_medium_box_ship_skin_2_season_1": 100.0,
+        "event_medium_box_ship_skin_2_season_2": 100.0,
+        "event_medium_box_ship_skin_2_season_3": 100.0,
+        "event_medium_box_ship_skin_2_season_4": 100.0,
+        "event_medium_box_ship_skin_2_season_5": 100.0,
+        "event_medium_box_ship_skin_2_season_6": 100.0,
+        "event_medium_box_ship_skin_2_season_7": 100.0,
+        "event_medium_box_ship_skin_2_season_8": 100.0,
+        "event_wp_booster_3": 300.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_ships_seasons_1_to_9": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships"
+      },
+      "name": "past_events_box_ships_seasons_1_to_9",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_3": 100.0,
+        "event_big_box_decorator_avatar_season_4": 100.0,
+        "event_big_box_decorator_avatar_season_5": 100.0,
+        "event_big_box_decorator_avatar_season_6": 100.0,
+        "event_big_box_decorator_avatar_season_7": 100.0,
+        "event_big_box_decorator_avatar_season_8": 100.0,
+        "event_big_box_decorator_avatar_season_9": 100.0,
+        "event_big_box_decorator_frame_1": 100.0,
+        "event_big_box_decorator_frame_2": 100.0,
+        "event_big_box_decorator_frame_season_2": 100.0,
+        "event_big_box_decorator_frame_season_4": 100.0,
+        "event_big_box_decorator_frame_season_5": 100.0,
+        "event_big_box_decorator_frame_season_6": 100.0,
+        "event_big_box_decorator_frame_season_7": 100.0,
+        "event_big_box_decorator_frame_season_8": 100.0,
+        "event_big_box_decorator_frame_season_9": 100.0,
+        "event_big_box_decorator_title": 300.0,
+        "event_big_box_decorator_title_season_2": 300.0,
+        "event_big_box_decorator_title_season_3": 300.0,
+        "event_big_box_decorator_title_season_4": 300.0,
+        "event_big_box_decorator_title_season_5": 300.0,
+        "event_big_box_decorator_title_season_6": 300.0,
+        "event_big_box_decorator_title_season_7": 300.0,
+        "event_big_box_decorator_title_season_8": 300.0,
+        "event_big_box_decorator_title_season_9": 300.0,
+        "event_big_box_ship": 10.0,
+        "event_big_box_ship_season_2": 20.0,
+        "event_big_box_ship_season_3": 20.0,
+        "event_big_box_ship_season_4": 20.0,
+        "event_big_box_ship_season_5": 20.0,
+        "event_big_box_ship_season_6": 20.0,
+        "event_big_box_ship_season_7": 20.0,
+        "event_big_box_ship_season_8": 20.0,
+        "event_big_box_ship_season_9": 20.0,
+        "event_big_box_ship_skin_1_season_1": 100.0,
+        "event_big_box_ship_skin_1_season_2": 100.0,
+        "event_big_box_ship_skin_1_season_3": 100.0,
+        "event_big_box_ship_skin_1_season_4": 100.0,
+        "event_big_box_ship_skin_1_season_5": 100.0,
+        "event_big_box_ship_skin_1_season_6": 100.0,
+        "event_big_box_ship_skin_1_season_7": 100.0,
+        "event_big_box_ship_skin_1_season_8": 100.0,
+        "event_big_box_ship_skin_1_season_9": 100.0,
+        "event_big_box_ship_skin_2_season_1": 100.0,
+        "event_big_box_ship_skin_2_season_2": 100.0,
+        "event_big_box_ship_skin_2_season_3": 100.0,
+        "event_big_box_ship_skin_2_season_4": 100.0,
+        "event_big_box_ship_skin_2_season_5": 100.0,
+        "event_big_box_ship_skin_2_season_6": 100.0,
+        "event_big_box_ship_skin_2_season_7": 100.0,
+        "event_big_box_ship_skin_2_season_8": 100.0,
+        "event_big_box_ship_skin_2_season_9": 100.0,
+        "event_big_box_ship_skin_3_season_5": 100.0,
+        "event_big_box_ship_skin_3_season_6": 100.0,
+        "event_big_box_ship_skin_3_season_7": 100.0,
+        "event_big_box_ship_skin_3_season_8": 100.0,
+        "event_big_box_ship_skin_3_season_9": 100.0,
+        "event_campaign_booster_3": 300.0,
+        "event_medium_box_decorator_frame": 100.0,
+        "event_medium_box_decorator_frame_season_2": 100.0,
+        "event_medium_box_decorator_frame_season_3": 100.0,
+        "event_medium_box_decorator_frame_season_4": 100.0,
+        "event_medium_box_decorator_frame_season_5": 100.0,
+        "event_medium_box_decorator_frame_season_6": 100.0,
+        "event_medium_box_decorator_frame_season_7": 100.0,
+        "event_medium_box_decorator_frame_season_8": 100.0,
+        "event_medium_box_decorator_frame_season_9": 100.0,
+        "event_medium_box_decorator_title": 300.0,
+        "event_medium_box_decorator_title_season_2": 300.0,
+        "event_medium_box_decorator_title_season_3": 300.0,
+        "event_medium_box_decorator_title_season_4": 300.0,
+        "event_medium_box_decorator_title_season_5": 300.0,
+        "event_medium_box_decorator_title_season_6": 300.0,
+        "event_medium_box_decorator_title_season_7": 300.0,
+        "event_medium_box_decorator_title_season_8": 300.0,
+        "event_medium_box_decorator_title_season_9": 300.0,
+        "event_medium_box_ship": 30.0,
+        "event_medium_box_ship_season_2": 30.0,
+        "event_medium_box_ship_season_3": 30.0,
+        "event_medium_box_ship_season_4": 30.0,
+        "event_medium_box_ship_season_5": 30.0,
+        "event_medium_box_ship_season_6": 30.0,
+        "event_medium_box_ship_season_7": 30.0,
+        "event_medium_box_ship_season_8": 30.0,
+        "event_medium_box_ship_season_9": 30.0,
+        "event_medium_box_ship_skin_1_season_1": 100.0,
+        "event_medium_box_ship_skin_1_season_2": 100.0,
+        "event_medium_box_ship_skin_1_season_3": 100.0,
+        "event_medium_box_ship_skin_1_season_4": 100.0,
+        "event_medium_box_ship_skin_1_season_5": 100.0,
+        "event_medium_box_ship_skin_1_season_6": 100.0,
+        "event_medium_box_ship_skin_1_season_7": 100.0,
+        "event_medium_box_ship_skin_1_season_8": 100.0,
+        "event_medium_box_ship_skin_1_season_9": 100.0,
+        "event_medium_box_ship_skin_2_season_1": 100.0,
+        "event_medium_box_ship_skin_2_season_2": 100.0,
+        "event_medium_box_ship_skin_2_season_3": 100.0,
+        "event_medium_box_ship_skin_2_season_4": 100.0,
+        "event_medium_box_ship_skin_2_season_5": 100.0,
+        "event_medium_box_ship_skin_2_season_6": 100.0,
+        "event_medium_box_ship_skin_2_season_7": 100.0,
+        "event_medium_box_ship_skin_2_season_8": 100.0,
+        "event_medium_box_ship_skin_2_season_9": 100.0,
+        "event_wp_booster_3": 300.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_tanks_seasons_1_to_3": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks"
+      },
+      "name": "past_events_box_tanks_seasons_1_to_3",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_3": 10.0,
+        "event_big_box_decorator_frame_1": 10.0,
+        "event_big_box_decorator_frame_2": 10.0,
+        "event_big_box_decorator_frame_season_2": 10.0,
+        "event_big_box_decorator_title": 10.0,
+        "event_big_box_decorator_title_season_2": 10.0,
+        "event_big_box_decorator_title_season_3": 10.0,
+        "event_big_box_tank": 1.0,
+        "event_big_box_tank_season_2": 2.0,
+        "event_big_box_tank_season_3": 2.0,
+        "event_big_box_tank_skin_1_season_1": 5.0,
+        "event_big_box_tank_skin_1_season_2": 5.0,
+        "event_big_box_tank_skin_1_season_3": 5.0,
+        "event_big_box_tank_skin_2_season_1": 5.0,
+        "event_big_box_tank_skin_2_season_2": 5.0,
+        "event_big_box_tank_skin_2_season_3": 5.0,
+        "event_campaign_booster_1": 10.0,
+        "event_medium_box_decorator_frame": 10.0,
+        "event_medium_box_decorator_frame_season_2": 10.0,
+        "event_medium_box_decorator_frame_season_3": 10.0,
+        "event_medium_box_decorator_title": 10.0,
+        "event_medium_box_decorator_title_season_2": 10.0,
+        "event_medium_box_decorator_title_season_3": 10.0,
+        "event_medium_box_tank": 3.0,
+        "event_medium_box_tank_season_2": 3.0,
+        "event_medium_box_tank_season_3": 3.0,
+        "event_medium_box_tank_skin_1_season_1": 5.0,
+        "event_medium_box_tank_skin_1_season_2": 5.0,
+        "event_medium_box_tank_skin_1_season_3": 5.0,
+        "event_medium_box_tank_skin_2_season_1": 5.0,
+        "event_medium_box_tank_skin_2_season_2": 5.0,
+        "event_medium_box_tank_skin_2_season_3": 5.0,
+        "event_unit_booster_1": 10.0,
+        "event_wp_booster_1": 10.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_tanks_seasons_1_to_5": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks"
+      },
+      "name": "past_events_box_tanks_seasons_1_to_5",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_3": 1.8899999856948853,
+        "event_big_box_decorator_avatar_season_4": 1.8899999856948853,
+        "event_big_box_decorator_avatar_season_5": 1.8899999856948853,
+        "event_big_box_decorator_frame_1": 1.8899999856948853,
+        "event_big_box_decorator_frame_2": 1.8899999856948853,
+        "event_big_box_decorator_frame_season_2": 1.8899999856948853,
+        "event_big_box_decorator_frame_season_4": 1.8899999856948853,
+        "event_big_box_decorator_frame_season_5": 1.8899999856948853,
+        "event_big_box_decorator_title": 5.6710000038146973,
+        "event_big_box_decorator_title_season_2": 5.6710000038146973,
+        "event_big_box_decorator_title_season_3": 5.6710000038146973,
+        "event_big_box_decorator_title_season_4": 5.6710000038146973,
+        "event_big_box_decorator_title_season_5": 5.6710000038146973,
+        "event_big_box_tank": 0.15800000727176666,
+        "event_big_box_tank_season_2": 0.37799999117851257,
+        "event_big_box_tank_season_3": 0.37799999117851257,
+        "event_big_box_tank_season_4": 0.37799999117851257,
+        "event_big_box_tank_season_5": 0.37799999117851257,
+        "event_big_box_tank_skin_1_season_1": 1.8899999856948853,
+        "event_big_box_tank_skin_1_season_2": 1.8899999856948853,
+        "event_big_box_tank_skin_1_season_3": 1.8899999856948853,
+        "event_big_box_tank_skin_2_season_1": 1.8899999856948853,
+        "event_big_box_tank_skin_2_season_2": 1.8899999856948853,
+        "event_big_box_tank_skin_2_season_3": 1.8899999856948853,
+        "event_campaign_booster_3": 5.6710000038146973,
+        "event_medium_box_decorator_frame": 1.8899999856948853,
+        "event_medium_box_decorator_frame_season_2": 1.8899999856948853,
+        "event_medium_box_decorator_frame_season_3": 1.8899999856948853,
+        "event_medium_box_decorator_frame_season_4": 1.8899999856948853,
+        "event_medium_box_decorator_frame_season_5": 1.8899999856948853,
+        "event_medium_box_decorator_title": 5.6710000038146973,
+        "event_medium_box_decorator_title_season_2": 5.6710000038146973,
+        "event_medium_box_decorator_title_season_3": 5.6710000038146973,
+        "event_medium_box_decorator_title_season_4": 5.6710000038146973,
+        "event_medium_box_decorator_title_season_5": 5.6710000038146973,
+        "event_medium_box_tank": 0.56699997186660767,
+        "event_medium_box_tank_season_2": 0.56699997186660767,
+        "event_medium_box_tank_season_3": 0.56699997186660767,
+        "event_medium_box_tank_season_4": 0.56699997186660767,
+        "event_medium_box_tank_season_5": 0.56699997186660767,
+        "event_medium_box_tank_skin_1_season_1": 1.8899999856948853,
+        "event_medium_box_tank_skin_1_season_2": 1.8899999856948853,
+        "event_medium_box_tank_skin_1_season_3": 1.8899999856948853,
+        "event_medium_box_tank_skin_2_season_1": 1.8899999856948853,
+        "event_medium_box_tank_skin_2_season_2": 1.8899999856948853,
+        "event_medium_box_tank_skin_2_season_3": 1.8899999856948853,
+        "event_wp_booster_3": 5.6710000038146973
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_tanks_seasons_1_to_6": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks"
+      },
+      "name": "past_events_box_tanks_seasons_1_to_6",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_3": 1.2669999599456787,
+        "event_big_box_decorator_avatar_season_4": 1.2669999599456787,
+        "event_big_box_decorator_avatar_season_5": 1.2669999599456787,
+        "event_big_box_decorator_avatar_season_6": 1.2669999599456787,
+        "event_big_box_decorator_frame_1": 1.2669999599456787,
+        "event_big_box_decorator_frame_2": 1.2669999599456787,
+        "event_big_box_decorator_frame_season_2": 1.2669999599456787,
+        "event_big_box_decorator_frame_season_4": 1.2669999599456787,
+        "event_big_box_decorator_frame_season_5": 1.2669999599456787,
+        "event_big_box_decorator_frame_season_6": 1.2669999599456787,
+        "event_big_box_decorator_title": 3.8020000457763672,
+        "event_big_box_decorator_title_season_2": 3.8020000457763672,
+        "event_big_box_decorator_title_season_3": 3.8020000457763672,
+        "event_big_box_decorator_title_season_4": 3.8020000457763672,
+        "event_big_box_decorator_title_season_5": 3.8020000457763672,
+        "event_big_box_decorator_title_season_6": 3.8020000457763672,
+        "event_big_box_tank": 0.12700000405311584,
+        "event_big_box_tank_season_2": 0.25299999117851257,
+        "event_big_box_tank_season_3": 0.25299999117851257,
+        "event_big_box_tank_season_4": 0.25299999117851257,
+        "event_big_box_tank_season_5": 0.25299999117851257,
+        "event_big_box_tank_season_6": 0.25299999117851257,
+        "event_big_box_tank_skin_1_season_1": 1.2669999599456787,
+        "event_big_box_tank_skin_1_season_2": 1.2669999599456787,
+        "event_big_box_tank_skin_1_season_3": 1.2669999599456787,
+        "event_big_box_tank_skin_1_season_4": 1.2669999599456787,
+        "event_big_box_tank_skin_1_season_5": 1.2669999599456787,
+        "event_big_box_tank_skin_1_season_6": 1.2669999599456787,
+        "event_big_box_tank_skin_2_season_1": 1.2669999599456787,
+        "event_big_box_tank_skin_2_season_2": 1.2669999599456787,
+        "event_big_box_tank_skin_2_season_3": 1.2669999599456787,
+        "event_big_box_tank_skin_2_season_4": 1.2669999599456787,
+        "event_big_box_tank_skin_2_season_5": 1.2669999599456787,
+        "event_big_box_tank_skin_2_season_6": 1.2669999599456787,
+        "event_big_box_tank_skin_3_season_5": 1.2669999599456787,
+        "event_big_box_tank_skin_3_season_6": 1.2669999599456787,
+        "event_campaign_booster_3": 3.8020000457763672,
+        "event_medium_box_decorator_frame": 1.2669999599456787,
+        "event_medium_box_decorator_frame_season_2": 1.2669999599456787,
+        "event_medium_box_decorator_frame_season_3": 1.2669999599456787,
+        "event_medium_box_decorator_frame_season_4": 1.2669999599456787,
+        "event_medium_box_decorator_frame_season_5": 1.2669999599456787,
+        "event_medium_box_decorator_frame_season_6": 1.2669999599456787,
+        "event_medium_box_decorator_title": 3.8020000457763672,
+        "event_medium_box_decorator_title_season_2": 3.8020000457763672,
+        "event_medium_box_decorator_title_season_3": 3.8020000457763672,
+        "event_medium_box_decorator_title_season_4": 3.8020000457763672,
+        "event_medium_box_decorator_title_season_5": 3.8020000457763672,
+        "event_medium_box_decorator_title_season_6": 3.8020000457763672,
+        "event_medium_box_tank": 0.37999999523162842,
+        "event_medium_box_tank_season_2": 0.37999999523162842,
+        "event_medium_box_tank_season_3": 0.37999999523162842,
+        "event_medium_box_tank_season_4": 0.37999999523162842,
+        "event_medium_box_tank_season_5": 0.37999999523162842,
+        "event_medium_box_tank_season_6": 0.37999999523162842,
+        "event_medium_box_tank_skin_1_season_1": 1.2669999599456787,
+        "event_medium_box_tank_skin_1_season_2": 1.2669999599456787,
+        "event_medium_box_tank_skin_1_season_3": 1.2669999599456787,
+        "event_medium_box_tank_skin_1_season_4": 1.2669999599456787,
+        "event_medium_box_tank_skin_1_season_5": 1.2669999599456787,
+        "event_medium_box_tank_skin_2_season_1": 1.2669999599456787,
+        "event_medium_box_tank_skin_2_season_2": 1.2669999599456787,
+        "event_medium_box_tank_skin_2_season_3": 1.2669999599456787,
+        "event_medium_box_tank_skin_2_season_4": 1.2669999599456787,
+        "event_medium_box_tank_skin_2_season_5": 1.2669999599456787,
+        "event_wp_booster_3": 3.8020000457763672
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_tanks_seasons_1_to_7": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks"
+      },
+      "name": "past_events_box_tanks_seasons_1_to_7",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_3": 1.093999981880188,
+        "event_big_box_decorator_avatar_season_4": 1.093999981880188,
+        "event_big_box_decorator_avatar_season_5": 1.093999981880188,
+        "event_big_box_decorator_avatar_season_6": 1.093999981880188,
+        "event_big_box_decorator_avatar_season_7": 1.093999981880188,
+        "event_big_box_decorator_frame_1": 1.093999981880188,
+        "event_big_box_decorator_frame_2": 1.093999981880188,
+        "event_big_box_decorator_frame_season_2": 1.093999981880188,
+        "event_big_box_decorator_frame_season_4": 1.093999981880188,
+        "event_big_box_decorator_frame_season_5": 1.093999981880188,
+        "event_big_box_decorator_frame_season_6": 1.093999981880188,
+        "event_big_box_decorator_frame_season_7": 1.093999981880188,
+        "event_big_box_decorator_title": 3.2820000648498535,
+        "event_big_box_decorator_title_season_2": 3.2820000648498535,
+        "event_big_box_decorator_title_season_3": 3.2820000648498535,
+        "event_big_box_decorator_title_season_4": 3.2820000648498535,
+        "event_big_box_decorator_title_season_5": 3.2820000648498535,
+        "event_big_box_decorator_title_season_6": 3.2820000648498535,
+        "event_big_box_decorator_title_season_7": 3.2820000648498535,
+        "event_big_box_tank": 0.10899999737739563,
+        "event_big_box_tank_season_2": 0.21899999678134918,
+        "event_big_box_tank_season_3": 0.21899999678134918,
+        "event_big_box_tank_season_4": 0.21899999678134918,
+        "event_big_box_tank_season_5": 0.21899999678134918,
+        "event_big_box_tank_season_6": 0.21899999678134918,
+        "event_big_box_tank_season_7": 0.21899999678134918,
+        "event_big_box_tank_skin_1_season_1": 1.093999981880188,
+        "event_big_box_tank_skin_1_season_2": 1.093999981880188,
+        "event_big_box_tank_skin_1_season_3": 1.093999981880188,
+        "event_big_box_tank_skin_1_season_4": 1.093999981880188,
+        "event_big_box_tank_skin_1_season_5": 1.093999981880188,
+        "event_big_box_tank_skin_1_season_6": 1.093999981880188,
+        "event_big_box_tank_skin_1_season_7": 1.093999981880188,
+        "event_big_box_tank_skin_2_season_1": 1.093999981880188,
+        "event_big_box_tank_skin_2_season_2": 1.093999981880188,
+        "event_big_box_tank_skin_2_season_3": 1.093999981880188,
+        "event_big_box_tank_skin_2_season_4": 1.093999981880188,
+        "event_big_box_tank_skin_2_season_5": 1.093999981880188,
+        "event_big_box_tank_skin_2_season_6": 1.093999981880188,
+        "event_big_box_tank_skin_2_season_7": 1.093999981880188,
+        "event_big_box_tank_skin_3_season_5": 1.093999981880188,
+        "event_big_box_tank_skin_3_season_6": 1.093999981880188,
+        "event_big_box_tank_skin_3_season_7": 1.093999981880188,
+        "event_campaign_booster_3": 3.2820000648498535,
+        "event_medium_box_decorator_frame": 1.093999981880188,
+        "event_medium_box_decorator_frame_season_2": 1.093999981880188,
+        "event_medium_box_decorator_frame_season_3": 1.093999981880188,
+        "event_medium_box_decorator_frame_season_4": 1.093999981880188,
+        "event_medium_box_decorator_frame_season_5": 1.093999981880188,
+        "event_medium_box_decorator_frame_season_6": 1.093999981880188,
+        "event_medium_box_decorator_frame_season_7": 1.093999981880188,
+        "event_medium_box_decorator_title": 3.2820000648498535,
+        "event_medium_box_decorator_title_season_2": 3.2820000648498535,
+        "event_medium_box_decorator_title_season_3": 3.2820000648498535,
+        "event_medium_box_decorator_title_season_4": 3.2820000648498535,
+        "event_medium_box_decorator_title_season_5": 3.2820000648498535,
+        "event_medium_box_decorator_title_season_6": 3.2820000648498535,
+        "event_medium_box_decorator_title_season_7": 3.2820000648498535,
+        "event_medium_box_tank": 0.32800000905990601,
+        "event_medium_box_tank_season_2": 0.32800000905990601,
+        "event_medium_box_tank_season_3": 0.32800000905990601,
+        "event_medium_box_tank_season_4": 0.32800000905990601,
+        "event_medium_box_tank_season_5": 0.32800000905990601,
+        "event_medium_box_tank_season_6": 0.32800000905990601,
+        "event_medium_box_tank_season_7": 0.32800000905990601,
+        "event_medium_box_tank_skin_1_season_1": 1.093999981880188,
+        "event_medium_box_tank_skin_1_season_2": 1.093999981880188,
+        "event_medium_box_tank_skin_1_season_3": 1.093999981880188,
+        "event_medium_box_tank_skin_1_season_4": 1.093999981880188,
+        "event_medium_box_tank_skin_1_season_5": 1.093999981880188,
+        "event_medium_box_tank_skin_1_season_6": 1.093999981880188,
+        "event_medium_box_tank_skin_2_season_1": 1.093999981880188,
+        "event_medium_box_tank_skin_2_season_2": 1.093999981880188,
+        "event_medium_box_tank_skin_2_season_3": 1.093999981880188,
+        "event_medium_box_tank_skin_2_season_4": 1.093999981880188,
+        "event_medium_box_tank_skin_2_season_5": 1.093999981880188,
+        "event_medium_box_tank_skin_2_season_6": 1.093999981880188,
+        "event_wp_booster_3": 3.2820000648498535
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_tanks_seasons_1_to_8": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks"
+      },
+      "name": "past_events_box_tanks_seasons_1_to_8",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_3": 100.0,
+        "event_big_box_decorator_avatar_season_4": 100.0,
+        "event_big_box_decorator_avatar_season_5": 100.0,
+        "event_big_box_decorator_avatar_season_6": 100.0,
+        "event_big_box_decorator_avatar_season_7": 100.0,
+        "event_big_box_decorator_avatar_season_8": 100.0,
+        "event_big_box_decorator_frame_1": 100.0,
+        "event_big_box_decorator_frame_2": 100.0,
+        "event_big_box_decorator_frame_season_2": 100.0,
+        "event_big_box_decorator_frame_season_4": 100.0,
+        "event_big_box_decorator_frame_season_5": 100.0,
+        "event_big_box_decorator_frame_season_6": 100.0,
+        "event_big_box_decorator_frame_season_7": 100.0,
+        "event_big_box_decorator_frame_season_8": 100.0,
+        "event_big_box_decorator_title": 300.0,
+        "event_big_box_decorator_title_season_2": 300.0,
+        "event_big_box_decorator_title_season_3": 300.0,
+        "event_big_box_decorator_title_season_4": 300.0,
+        "event_big_box_decorator_title_season_5": 300.0,
+        "event_big_box_decorator_title_season_6": 300.0,
+        "event_big_box_decorator_title_season_7": 300.0,
+        "event_big_box_decorator_title_season_8": 300.0,
+        "event_big_box_tank": 10.0,
+        "event_big_box_tank_season_2": 20.0,
+        "event_big_box_tank_season_3": 20.0,
+        "event_big_box_tank_season_4": 20.0,
+        "event_big_box_tank_season_5": 20.0,
+        "event_big_box_tank_season_6": 20.0,
+        "event_big_box_tank_season_7": 20.0,
+        "event_big_box_tank_season_8": 20.0,
+        "event_big_box_tank_skin_1_season_1": 100.0,
+        "event_big_box_tank_skin_1_season_2": 100.0,
+        "event_big_box_tank_skin_1_season_3": 100.0,
+        "event_big_box_tank_skin_1_season_4": 100.0,
+        "event_big_box_tank_skin_1_season_5": 100.0,
+        "event_big_box_tank_skin_1_season_6": 100.0,
+        "event_big_box_tank_skin_1_season_7": 100.0,
+        "event_big_box_tank_skin_1_season_8": 100.0,
+        "event_big_box_tank_skin_2_season_1": 100.0,
+        "event_big_box_tank_skin_2_season_2": 100.0,
+        "event_big_box_tank_skin_2_season_3": 100.0,
+        "event_big_box_tank_skin_2_season_4": 100.0,
+        "event_big_box_tank_skin_2_season_5": 100.0,
+        "event_big_box_tank_skin_2_season_6": 100.0,
+        "event_big_box_tank_skin_2_season_7": 100.0,
+        "event_big_box_tank_skin_2_season_8": 100.0,
+        "event_big_box_tank_skin_3_season_5": 100.0,
+        "event_big_box_tank_skin_3_season_6": 100.0,
+        "event_big_box_tank_skin_3_season_7": 100.0,
+        "event_big_box_tank_skin_3_season_8": 100.0,
+        "event_campaign_booster_3": 300.0,
+        "event_medium_box_decorator_frame": 100.0,
+        "event_medium_box_decorator_frame_season_2": 100.0,
+        "event_medium_box_decorator_frame_season_3": 100.0,
+        "event_medium_box_decorator_frame_season_4": 100.0,
+        "event_medium_box_decorator_frame_season_5": 100.0,
+        "event_medium_box_decorator_frame_season_6": 100.0,
+        "event_medium_box_decorator_frame_season_7": 100.0,
+        "event_medium_box_decorator_frame_season_8": 100.0,
+        "event_medium_box_decorator_title": 300.0,
+        "event_medium_box_decorator_title_season_2": 300.0,
+        "event_medium_box_decorator_title_season_3": 300.0,
+        "event_medium_box_decorator_title_season_4": 300.0,
+        "event_medium_box_decorator_title_season_5": 300.0,
+        "event_medium_box_decorator_title_season_6": 300.0,
+        "event_medium_box_decorator_title_season_7": 300.0,
+        "event_medium_box_decorator_title_season_8": 300.0,
+        "event_medium_box_tank": 30.0,
+        "event_medium_box_tank_season_2": 30.0,
+        "event_medium_box_tank_season_3": 30.0,
+        "event_medium_box_tank_season_4": 30.0,
+        "event_medium_box_tank_season_5": 30.0,
+        "event_medium_box_tank_season_6": 30.0,
+        "event_medium_box_tank_season_7": 30.0,
+        "event_medium_box_tank_season_8": 30.0,
+        "event_medium_box_tank_skin_1_season_1": 100.0,
+        "event_medium_box_tank_skin_1_season_2": 100.0,
+        "event_medium_box_tank_skin_1_season_3": 100.0,
+        "event_medium_box_tank_skin_1_season_4": 100.0,
+        "event_medium_box_tank_skin_1_season_5": 100.0,
+        "event_medium_box_tank_skin_1_season_6": 100.0,
+        "event_medium_box_tank_skin_1_season_7": 100.0,
+        "event_medium_box_tank_skin_1_season_8": 100.0,
+        "event_medium_box_tank_skin_2_season_1": 100.0,
+        "event_medium_box_tank_skin_2_season_2": 100.0,
+        "event_medium_box_tank_skin_2_season_3": 100.0,
+        "event_medium_box_tank_skin_2_season_4": 100.0,
+        "event_medium_box_tank_skin_2_season_5": 100.0,
+        "event_medium_box_tank_skin_2_season_6": 100.0,
+        "event_medium_box_tank_skin_2_season_7": 100.0,
+        "event_medium_box_tank_skin_2_season_8": 100.0,
+        "event_wp_booster_3": 300.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_tanks_seasons_1_to_9": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks"
+      },
+      "name": "past_events_box_tanks_seasons_1_to_9",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_3": 100.0,
+        "event_big_box_decorator_avatar_season_4": 100.0,
+        "event_big_box_decorator_avatar_season_5": 100.0,
+        "event_big_box_decorator_avatar_season_6": 100.0,
+        "event_big_box_decorator_avatar_season_7": 100.0,
+        "event_big_box_decorator_avatar_season_8": 100.0,
+        "event_big_box_decorator_avatar_season_9": 100.0,
+        "event_big_box_decorator_frame_1": 100.0,
+        "event_big_box_decorator_frame_2": 100.0,
+        "event_big_box_decorator_frame_season_2": 100.0,
+        "event_big_box_decorator_frame_season_4": 100.0,
+        "event_big_box_decorator_frame_season_5": 100.0,
+        "event_big_box_decorator_frame_season_6": 100.0,
+        "event_big_box_decorator_frame_season_7": 100.0,
+        "event_big_box_decorator_frame_season_8": 100.0,
+        "event_big_box_decorator_frame_season_9": 100.0,
+        "event_big_box_decorator_title": 300.0,
+        "event_big_box_decorator_title_season_2": 300.0,
+        "event_big_box_decorator_title_season_3": 300.0,
+        "event_big_box_decorator_title_season_4": 300.0,
+        "event_big_box_decorator_title_season_5": 300.0,
+        "event_big_box_decorator_title_season_6": 300.0,
+        "event_big_box_decorator_title_season_7": 300.0,
+        "event_big_box_decorator_title_season_8": 300.0,
+        "event_big_box_decorator_title_season_9": 300.0,
+        "event_big_box_tank": 10.0,
+        "event_big_box_tank_season_2": 20.0,
+        "event_big_box_tank_season_3": 20.0,
+        "event_big_box_tank_season_4": 20.0,
+        "event_big_box_tank_season_5": 20.0,
+        "event_big_box_tank_season_6": 20.0,
+        "event_big_box_tank_season_7": 20.0,
+        "event_big_box_tank_season_8": 20.0,
+        "event_big_box_tank_season_9": 20.0,
+        "event_big_box_tank_skin_1_season_1": 100.0,
+        "event_big_box_tank_skin_1_season_2": 100.0,
+        "event_big_box_tank_skin_1_season_3": 100.0,
+        "event_big_box_tank_skin_1_season_4": 100.0,
+        "event_big_box_tank_skin_1_season_5": 100.0,
+        "event_big_box_tank_skin_1_season_6": 100.0,
+        "event_big_box_tank_skin_1_season_7": 100.0,
+        "event_big_box_tank_skin_1_season_8": 100.0,
+        "event_big_box_tank_skin_1_season_9": 100.0,
+        "event_big_box_tank_skin_2_season_1": 100.0,
+        "event_big_box_tank_skin_2_season_2": 100.0,
+        "event_big_box_tank_skin_2_season_3": 100.0,
+        "event_big_box_tank_skin_2_season_4": 100.0,
+        "event_big_box_tank_skin_2_season_5": 100.0,
+        "event_big_box_tank_skin_2_season_6": 100.0,
+        "event_big_box_tank_skin_2_season_7": 100.0,
+        "event_big_box_tank_skin_2_season_8": 100.0,
+        "event_big_box_tank_skin_2_season_9": 100.0,
+        "event_big_box_tank_skin_3_season_5": 100.0,
+        "event_big_box_tank_skin_3_season_6": 100.0,
+        "event_big_box_tank_skin_3_season_7": 100.0,
+        "event_big_box_tank_skin_3_season_8": 100.0,
+        "event_big_box_tank_skin_3_season_9": 100.0,
+        "event_campaign_booster_3": 300.0,
+        "event_medium_box_decorator_frame": 100.0,
+        "event_medium_box_decorator_frame_season_2": 100.0,
+        "event_medium_box_decorator_frame_season_3": 100.0,
+        "event_medium_box_decorator_frame_season_4": 100.0,
+        "event_medium_box_decorator_frame_season_5": 100.0,
+        "event_medium_box_decorator_frame_season_6": 100.0,
+        "event_medium_box_decorator_frame_season_7": 100.0,
+        "event_medium_box_decorator_frame_season_8": 100.0,
+        "event_medium_box_decorator_frame_season_9": 100.0,
+        "event_medium_box_decorator_title": 300.0,
+        "event_medium_box_decorator_title_season_2": 300.0,
+        "event_medium_box_decorator_title_season_3": 300.0,
+        "event_medium_box_decorator_title_season_4": 300.0,
+        "event_medium_box_decorator_title_season_5": 300.0,
+        "event_medium_box_decorator_title_season_6": 300.0,
+        "event_medium_box_decorator_title_season_7": 300.0,
+        "event_medium_box_decorator_title_season_8": 300.0,
+        "event_medium_box_decorator_title_season_9": 300.0,
+        "event_medium_box_tank": 30.0,
+        "event_medium_box_tank_season_2": 30.0,
+        "event_medium_box_tank_season_3": 30.0,
+        "event_medium_box_tank_season_4": 30.0,
+        "event_medium_box_tank_season_5": 30.0,
+        "event_medium_box_tank_season_6": 30.0,
+        "event_medium_box_tank_season_7": 30.0,
+        "event_medium_box_tank_season_8": 30.0,
+        "event_medium_box_tank_season_9": 30.0,
+        "event_medium_box_tank_skin_1_season_1": 100.0,
+        "event_medium_box_tank_skin_1_season_2": 100.0,
+        "event_medium_box_tank_skin_1_season_3": 100.0,
+        "event_medium_box_tank_skin_1_season_4": 100.0,
+        "event_medium_box_tank_skin_1_season_5": 100.0,
+        "event_medium_box_tank_skin_1_season_6": 100.0,
+        "event_medium_box_tank_skin_1_season_7": 100.0,
+        "event_medium_box_tank_skin_1_season_8": 100.0,
+        "event_medium_box_tank_skin_1_season_9": 100.0,
+        "event_medium_box_tank_skin_2_season_1": 100.0,
+        "event_medium_box_tank_skin_2_season_2": 100.0,
+        "event_medium_box_tank_skin_2_season_3": 100.0,
+        "event_medium_box_tank_skin_2_season_4": 100.0,
+        "event_medium_box_tank_skin_2_season_5": 100.0,
+        "event_medium_box_tank_skin_2_season_6": 100.0,
+        "event_medium_box_tank_skin_2_season_7": 100.0,
+        "event_medium_box_tank_skin_2_season_8": 100.0,
+        "event_medium_box_tank_skin_2_season_9": 100.0,
+        "event_wp_booster_3": 300.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
       }
     }
   },
   "playerLevelRewards": {},
   "playerLevels": {},
-  "playerStartLevel": {
-    "ships": 0,
-    "tanks": 0
-  },
-  "rewardsCfg": {
-    "everyday_gold": {
-      "decorators": [],
-      "gold": 150,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
+  "playerLevelsInfo": {
+    "air": {
+      "maxBaseLevel": 20,
+      "maxLevel": 20,
+      "maxStarLevel": 0,
+      "startLevel": 0
     },
-    "everyday_spare": {
-      "decorators": [],
-      "gold": 0,
-      "items": {
-        "spare": 1
-      },
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
+    "ships": {
+      "maxBaseLevel": 28,
+      "maxLevel": 30,
+      "maxStarLevel": 2,
+      "startLevel": 0
     },
-    "everyday_wp_big": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 30000
-    },
-    "everyday_wp_medium": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 20000
-    },
-    "everyday_wp_small": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 15000
-    },
-    "offer_gift_gold": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 10
-    },
-    "offer_gift_ship_repair": {
-      "decorators": [],
-      "gold": 0,
-      "items": {
-        "ship_tool_kit": 15
-      },
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "offer_gift_ship_smoke": {
-      "decorators": [],
-      "gold": 0,
-      "items": {
-        "ship_smoke_screen_system_mod": 15
-      },
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "offer_gift_spare": {
-      "decorators": [],
-      "gold": 0,
-      "items": {
-        "spare": 1
-      },
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "offer_gift_tank_extinguisher": {
-      "decorators": [],
-      "gold": 0,
-      "items": {
-        "tank_extinguisher": 5
-      },
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "offer_gift_tank_repair": {
-      "decorators": [],
-      "gold": 0,
-      "items": {
-        "tank_tool_kit_expendable": 10
-      },
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "offer_gift_wp": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 3000
+    "tanks": {
+      "maxBaseLevel": 18,
+      "maxLevel": 19,
+      "maxStarLevel": 1,
+      "startLevel": 0
     }
   },
+  "rewardsCfg": {
+    "debug_ship": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_destroyer_hunt_4series",
+        "subId": ""
+      }
+    ],
+    "debug_tank": [
+      {
+        "count": 0,
+        "gType": "unitUpgrade",
+        "id": "us_m4_sherman_reward",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_avatar_season_10": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_us_sailor_04",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_avatar_season_11": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ger_sailor_04",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_avatar_season_12": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_uk_sailor_04",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_avatar_season_13": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_uk_sailor_05",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_avatar_season_3": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ussr_tanker_02",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_avatar_season_4": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ussr_sailor_01",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_avatar_season_5": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_us_sailor_01",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_avatar_season_6": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_jp_sailor_01",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_avatar_season_7": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_us_sailor_pensacola",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_avatar_season_8": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ussr_sailor_rckt_pr57bis",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_avatar_season_9": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_uk_sailor",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "viking_helmet",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "iceberg",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_season_10": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "torch",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_season_11": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "blast",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_season_12": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "hammer_anvil",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_season_13": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "hammer_anvil",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_season_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "machete",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_season_4": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "flying_missile",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_season_5": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "spider",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_season_6": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "air_bomb",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_season_7": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "corinthian_helmet",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_season_8": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "aircraft_wings",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_season_9": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "sun_and_fighter",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "warrior_of_the_north",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title_season_10": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "poseidon",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title_season_11": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "bomberman",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title_season_12": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "tempered",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title_season_13": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "tempered",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title_season_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "predator",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title_season_3": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "lord_of_thunder",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title_season_4": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "desperado",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title_season_5": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "hunter",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title_season_6": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "sicarius",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title_season_7": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "garde_marine",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title_season_8": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "titan",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title_season_9": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "iron_ghost",
+        "subId": ""
+      }
+    ],
+    "event_big_box_gold_1": [
+      {
+        "count": 600,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_big_box_gold_1800": [
+      {
+        "count": 1800,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_big_box_gold_2": [
+      {
+        "count": 1200,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_big_box_gold_3": [
+      {
+        "count": 2400,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_big_box_gold_jackpot": [
+      {
+        "count": 2500,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_big_box_keys": [
+      {
+        "count": 3,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "event_big_box_keys_2": [
+      {
+        "count": 2,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "event_big_box_premiumDays_30": [
+      {
+        "count": 30,
+        "gType": "premium",
+        "id": "",
+        "subId": ""
+      }
+    ],
+    "event_big_box_premiumDays_7": [
+      {
+        "count": 7,
+        "gType": "premium",
+        "id": "",
+        "subId": ""
+      }
+    ],
+    "event_big_box_premiumDays_90": [
+      {
+        "count": 90,
+        "gType": "premium",
+        "id": "",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_battlecruiser_kronshtadt",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_season_10": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "jp_battleship_yamashiro",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_season_11": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_battleship_bayern",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_season_12": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_battleship_marlborough",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_battleship_orion",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_season_2": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_battlecruiser_von_der_tann",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_season_3": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_battleship_arkansas",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_season_4": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_battleship_westfalen",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_season_5": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_battleship_texas",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_season_6": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_battleship_marat",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_season_7": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "jp_battleship_mutsu",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_season_8": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_battleship_colossus",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_season_9": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_battleship_novorossiysk",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_skin_1_season_1": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_battlecruiser_kronshtadt",
+        "subId": "disruptive_gray"
+      }
+    ],
+    "event_big_box_ship_skin_1_season_10": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_battleship_yamashiro",
+        "subId": "asiatic_forest_prem"
+      }
+    ],
+    "event_big_box_ship_skin_1_season_11": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_battleship_bayern",
+        "subId": "marine_geometry"
+      }
+    ],
+    "event_big_box_ship_skin_1_season_12": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_battleship_marlborough",
+        "subId": "bluegray_geometry_prem"
+      }
+    ],
+    "event_big_box_ship_skin_1_season_13": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_battleship_orion",
+        "subId": "lightblue_splotch"
+      }
+    ],
+    "event_big_box_ship_skin_1_season_2": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_battlecruiser_von_der_tann",
+        "subId": "black_longdiag"
+      }
+    ],
+    "event_big_box_ship_skin_1_season_3": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_battleship_arkansas",
+        "subId": "bluewater_geometry"
+      }
+    ],
+    "event_big_box_ship_skin_1_season_4": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_battleship_westfalen",
+        "subId": "bluewater_geometry"
+      }
+    ],
+    "event_big_box_ship_skin_1_season_5": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_battleship_texas",
+        "subId": "blue_stains"
+      }
+    ],
+    "event_big_box_ship_skin_1_season_6": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_battleship_marat",
+        "subId": "blackgray_stripes"
+      }
+    ],
+    "event_big_box_ship_skin_1_season_7": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_battleship_mutsu",
+        "subId": "lightblue_geometry"
+      }
+    ],
+    "event_big_box_ship_skin_1_season_8": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_battleship_colossus",
+        "subId": "lightblue_splotch"
+      }
+    ],
+    "event_big_box_ship_skin_1_season_9": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_battleship_novorossiysk",
+        "subId": "lightblue_geometry"
+      }
+    ],
+    "event_big_box_ship_skin_2_season_1": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_battlecruiser_kronshtadt",
+        "subId": "threegreenspots"
+      }
+    ],
+    "event_big_box_ship_skin_2_season_10": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_battleship_yamashiro",
+        "subId": "bluegreen_splotch"
+      }
+    ],
+    "event_big_box_ship_skin_2_season_11": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_battleship_bayern",
+        "subId": "grayriver"
+      }
+    ],
+    "event_big_box_ship_skin_2_season_12": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_battleship_marlborough",
+        "subId": "marine_geometry"
+      }
+    ],
+    "event_big_box_ship_skin_2_season_13": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_battleship_orion",
+        "subId": "disruptive_gray"
+      }
+    ],
+    "event_big_box_ship_skin_2_season_2": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_battlecruiser_von_der_tann",
+        "subId": "greenwhite_spots"
+      }
+    ],
+    "event_big_box_ship_skin_2_season_3": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_battleship_arkansas",
+        "subId": "bluegreen_splotch"
+      }
+    ],
+    "event_big_box_ship_skin_2_season_4": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_battleship_westfalen",
+        "subId": "greenwhite_spots"
+      }
+    ],
+    "event_big_box_ship_skin_2_season_5": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_battleship_texas",
+        "subId": "grayriver"
+      }
+    ],
+    "event_big_box_ship_skin_2_season_6": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_battleship_marat",
+        "subId": "greencoast"
+      }
+    ],
+    "event_big_box_ship_skin_2_season_7": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_battleship_mutsu",
+        "subId": "grayriver"
+      }
+    ],
+    "event_big_box_ship_skin_2_season_8": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_battleship_colossus",
+        "subId": "black_longdiag"
+      }
+    ],
+    "event_big_box_ship_skin_2_season_9": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_battleship_novorossiysk",
+        "subId": "greencoast"
+      }
+    ],
+    "event_big_box_ship_skin_3_season_10": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_battleship_yamashiro",
+        "subId": "black_longdiag"
+      }
+    ],
+    "event_big_box_ship_skin_3_season_11": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_battleship_bayern",
+        "subId": "greyblack_geometry_prem"
+      }
+    ],
+    "event_big_box_ship_skin_3_season_12": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_battleship_marlborough",
+        "subId": "threegreenspots"
+      }
+    ],
+    "event_big_box_ship_skin_3_season_13": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_battleship_orion",
+        "subId": "mtb_spots_prem"
+      }
+    ],
+    "event_big_box_ship_skin_3_season_5": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_battleship_texas",
+        "subId": "greenriver_prem"
+      }
+    ],
+    "event_big_box_ship_skin_3_season_6": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_battleship_marat",
+        "subId": "north_fleet_prem"
+      }
+    ],
+    "event_big_box_ship_skin_3_season_7": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_battleship_mutsu",
+        "subId": "darkbrown_spots_prem"
+      }
+    ],
+    "event_big_box_ship_skin_3_season_8": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_battleship_colossus",
+        "subId": "mtb_spots_prem"
+      }
+    ],
+    "event_big_box_ship_skin_3_season_9": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_battleship_novorossiysk",
+        "subId": "arctic_minesweeper_block_prem"
+      }
+    ],
+    "event_big_box_tank": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_pzkpfw_Maus",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_season_10": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_t_55_amd_1",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_season_11": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "jp_type_74_mod_g_kai",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_season_12": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "il_merkava_mk_1",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_t54e2",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_season_2": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_t29",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_season_3": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_object_120",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_season_4": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_t92",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_season_5": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_ru251",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_season_6": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_btr_80a",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_season_7": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "fr_amx_13_hot",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_season_8": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_is_6",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_season_9": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "cn_type_69_2a",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_skin_1_season_1": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_pzkpfw_Maus",
+        "subId": "desert"
+      }
+    ],
+    "event_big_box_tank_skin_1_season_10": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_t_55_amd_1",
+        "subId": "desert"
+      }
+    ],
+    "event_big_box_tank_skin_1_season_11": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_type_74_mod_g_kai",
+        "subId": "desert"
+      }
+    ],
+    "event_big_box_tank_skin_1_season_12": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "il_merkava_mk_1",
+        "subId": "forest"
+      }
+    ],
+    "event_big_box_tank_skin_1_season_13": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "il_merkava_mk_1",
+        "subId": "forest"
+      }
+    ],
+    "event_big_box_tank_skin_1_season_2": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_t29",
+        "subId": "forest2"
+      }
+    ],
+    "event_big_box_tank_skin_1_season_3": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_object_120",
+        "subId": "forest2"
+      }
+    ],
+    "event_big_box_tank_skin_1_season_4": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_t92",
+        "subId": "forest2"
+      }
+    ],
+    "event_big_box_tank_skin_1_season_5": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_ru251",
+        "subId": "winter"
+      }
+    ],
+    "event_big_box_tank_skin_1_season_6": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_btr_80a",
+        "subId": "winter"
+      }
+    ],
+    "event_big_box_tank_skin_1_season_7": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "fr_amx_13_hot",
+        "subId": "desert"
+      }
+    ],
+    "event_big_box_tank_skin_1_season_8": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_is_6",
+        "subId": "desert"
+      }
+    ],
+    "event_big_box_tank_skin_1_season_9": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "cn_type_69_2a",
+        "subId": "forest"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_1": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_pzkpfw_Maus",
+        "subId": "winter"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_10": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_t_55_amd_1",
+        "subId": "winter"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_11": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_type_74_mod_g_kai",
+        "subId": "forest"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_12": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "il_merkava_mk_1",
+        "subId": "desert"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_13": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "il_merkava_mk_1",
+        "subId": "desert"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_2": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_t29",
+        "subId": "winter"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_3": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_object_120",
+        "subId": "desert"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_4": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_t92",
+        "subId": "desert"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_5": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_ru251",
+        "subId": "desert"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_6": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_btr_80a",
+        "subId": "forest"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_7": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "fr_amx_13_hot",
+        "subId": "desert2"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_8": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_is_6",
+        "subId": "winter"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_9": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "cn_type_69_2a",
+        "subId": "winter"
+      }
+    ],
+    "event_big_box_tank_skin_3_season_10": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_t_55_amd_1",
+        "subId": "forest"
+      }
+    ],
+    "event_big_box_tank_skin_3_season_11": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_type_74_mod_g_kai",
+        "subId": "winter"
+      }
+    ],
+    "event_big_box_tank_skin_3_season_12": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "il_merkava_mk_1",
+        "subId": "desert2"
+      }
+    ],
+    "event_big_box_tank_skin_3_season_13": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "il_merkava_mk_1",
+        "subId": "desert2"
+      }
+    ],
+    "event_big_box_tank_skin_3_season_5": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_ru251",
+        "subId": "fiction"
+      }
+    ],
+    "event_big_box_tank_skin_3_season_6": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_btr_80a",
+        "subId": "fiction"
+      }
+    ],
+    "event_big_box_tank_skin_3_season_7": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "fr_amx_13_hot",
+        "subId": "winter"
+      }
+    ],
+    "event_big_box_tank_skin_3_season_8": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_is_6",
+        "subId": "fiction"
+      }
+    ],
+    "event_big_box_tank_skin_3_season_9": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "cn_type_69_2a",
+        "subId": "forest2"
+      }
+    ],
+    "event_big_box_wp_1": [
+      {
+        "count": 120000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "event_big_box_wp_2": [
+      {
+        "count": 240000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "event_big_box_wp_3": [
+      {
+        "count": 480000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "event_big_box_wp_360000": [
+      {
+        "count": 360000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "event_campaign_booster_05": [
+      {
+        "count": 5,
+        "gType": "booster",
+        "id": "playerExp",
+        "subId": ""
+      }
+    ],
+    "event_campaign_booster_1": [
+      {
+        "count": 10,
+        "gType": "booster",
+        "id": "playerExp",
+        "subId": ""
+      }
+    ],
+    "event_campaign_booster_3": [
+      {
+        "count": 30,
+        "gType": "booster",
+        "id": "playerExp",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_avatar_season_10": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_chin_tanker_03",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_avatar_season_11": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_us_tanker_02",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_avatar_season_12": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_is_tanker_02",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_avatar_season_13": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ger_tanker_04",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_avatar_season_4": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_fr_tanker",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_avatar_season_5": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_it_tanker_01",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_avatar_season_6": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ussr_tanker_03",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_avatar_season_7": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ger_tanker_pzbefwg6p",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_avatar_season_8": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ussr_tanker_is_6",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_avatar_season_9": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_sw_tanker",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "white_squall",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame_season_10": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "shield",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame_season_11": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "turret",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame_season_12": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "steel_bars",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame_season_13": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "steel_bars",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame_season_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "jungle_leaf",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame_season_3": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "wrench",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame_season_4": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "impact_direction",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame_season_5": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "shuriken",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame_season_6": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "flame",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame_season_7": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "wasp",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame_season_8": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "tank_tracks",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame_season_9": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "antitank_hedgehog",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "seafarer",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title_season_10": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "defender",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title_season_11": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "gunner",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title_season_12": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "unbending",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title_season_13": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "unbending",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title_season_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "guerrilla",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title_season_3": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cannoneer",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title_season_4": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "fighter",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title_season_5": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "pathfinder",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title_season_6": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "riotous",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title_season_7": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "legionnaire",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title_season_8": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "stormy",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title_season_9": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "sentinel",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_gold_1": [
+      {
+        "count": 60,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_gold_2": [
+      {
+        "count": 100,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_gold_3": [
+      {
+        "count": 130,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_gold_jackpot": [
+      {
+        "count": 1000,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_keys_1": [
+      {
+        "count": 1,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_keys_2": [
+      {
+        "count": 2,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_keys_4": [
+      {
+        "count": 4,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_cruiser_des_moines_class",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_season_10": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_cruiser_dido",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_season_11": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_cruiser_brooklyn_class_helena",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_season_12": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_cruiser_maxim_gorky",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_sub_balao_ss286",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_season_2": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_destroyer_pr56_svetlyy",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_season_3": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_cruiser_cornwall",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_season_4": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "jp_cruiser_kako",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_season_5": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_cruiser_chapayev",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_season_6": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_sub_type_7_u305",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_season_7": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_cruiser_pensacola_class",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_season_8": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_sub_type_l3",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_season_9": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "jp_cruiser_mogami",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_skin_1_season_1": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_cruiser_des_moines_class",
+        "subId": "darkgray_blotch"
+      }
+    ],
+    "event_medium_box_ship_skin_1_season_2": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_destroyer_pr56_svetlyy",
+        "subId": "olive_spots"
+      }
+    ],
+    "event_medium_box_ship_skin_1_season_3": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_cruiser_cornwall",
+        "subId": "greenwhite_spots"
+      }
+    ],
+    "event_medium_box_ship_skin_1_season_4": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_cruiser_kako",
+        "subId": "threegreenspots"
+      }
+    ],
+    "event_medium_box_ship_skin_1_season_5": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_cruiser_chapayev",
+        "subId": "marine_geometry"
+      }
+    ],
+    "event_medium_box_ship_skin_1_season_6": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_sub_type_7_u305",
+        "subId": "blue_stains"
+      }
+    ],
+    "event_medium_box_ship_skin_1_season_7": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_cruiser_pensacola_class",
+        "subId": "blue_stains"
+      }
+    ],
+    "event_medium_box_ship_skin_1_season_8": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_sub_type_l3",
+        "subId": "bluewater_geometry"
+      }
+    ],
+    "event_medium_box_ship_skin_1_season_9": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_cruiser_mogami",
+        "subId": "darkgray_blotch"
+      }
+    ],
+    "event_medium_box_ship_skin_2_season_1": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_cruiser_des_moines_class",
+        "subId": "bluewater_geometry"
+      }
+    ],
+    "event_medium_box_ship_skin_2_season_2": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_destroyer_pr56_svetlyy",
+        "subId": "arctic_spots"
+      }
+    ],
+    "event_medium_box_ship_skin_2_season_3": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_cruiser_cornwall",
+        "subId": "blackgray_stripes"
+      }
+    ],
+    "event_medium_box_ship_skin_2_season_4": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_cruiser_kako",
+        "subId": "black_longdiag"
+      }
+    ],
+    "event_medium_box_ship_skin_2_season_5": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_cruiser_chapayev",
+        "subId": "blackgray_stripes"
+      }
+    ],
+    "event_medium_box_ship_skin_2_season_6": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_sub_type_7_u305",
+        "subId": "threegreenspots"
+      }
+    ],
+    "event_medium_box_ship_skin_2_season_7": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_cruiser_pensacola_class",
+        "subId": "arctic_spots"
+      }
+    ],
+    "event_medium_box_ship_skin_2_season_8": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_sub_type_l3",
+        "subId": "greencoast"
+      }
+    ],
+    "event_medium_box_ship_skin_2_season_9": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_cruiser_mogami",
+        "subId": "darkbrown_spots_prem"
+      }
+    ],
+    "event_medium_box_ship_smoke_screen_system_mod_3": [
+      {
+        "count": 18,
+        "gType": "item",
+        "id": "ship_smoke_screen_system_mod",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_ship_tool_kit_3": [
+      {
+        "count": 35,
+        "gType": "item",
+        "id": "ship_tool_kit",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_pzkpfw_VI_ausf_e_tiger",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_extinguisher_3": [
+      {
+        "count": 12,
+        "gType": "item",
+        "id": "tank_extinguisher",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_season_10": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_pzkpfw_V_ersatz_m10",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_season_11": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "fr_amx_30_auf_1",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_season_12": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_panzerbefelhswagen_jagdpanther",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_g6_spg",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_season_2": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_kv_122",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_season_3": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_t_34_1941_57",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_season_4": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "it_oto_r3_t20_fa",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_season_5": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "cn_t_34_85_d_5t",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_season_6": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_m4a3e2_76w_sherman_jumbo",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_season_7": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_panzerbefelhswagen_VI_P",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_season_8": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_m56_scorpion",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_season_9": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_object_248",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_tank_skin_1_season_1": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_pzkpfw_VI_ausf_e_tiger",
+        "subId": "forest2"
+      }
+    ],
+    "event_medium_box_tank_skin_1_season_2": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_kv_122",
+        "subId": "desert"
+      }
+    ],
+    "event_medium_box_tank_skin_1_season_3": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_t_34_1941_57",
+        "subId": "forest2"
+      }
+    ],
+    "event_medium_box_tank_skin_1_season_4": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "it_oto_r3_t20_fa",
+        "subId": "forest2"
+      }
+    ],
+    "event_medium_box_tank_skin_1_season_5": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "cn_t_34_85_d_5t",
+        "subId": "forest2"
+      }
+    ],
+    "event_medium_box_tank_skin_1_season_6": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_m4a3e2_76w_sherman_jumbo",
+        "subId": "desert"
+      }
+    ],
+    "event_medium_box_tank_skin_1_season_7": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_panzerbefelhswagen_VI_P",
+        "subId": "desert"
+      }
+    ],
+    "event_medium_box_tank_skin_1_season_8": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_m56_scorpion",
+        "subId": "forest2"
+      }
+    ],
+    "event_medium_box_tank_skin_1_season_9": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_object_248",
+        "subId": "winter"
+      }
+    ],
+    "event_medium_box_tank_skin_2_season_1": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_pzkpfw_VI_ausf_e_tiger",
+        "subId": "winter"
+      }
+    ],
+    "event_medium_box_tank_skin_2_season_2": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_kv_122",
+        "subId": "winter"
+      }
+    ],
+    "event_medium_box_tank_skin_2_season_3": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_t_34_1941_57",
+        "subId": "winter"
+      }
+    ],
+    "event_medium_box_tank_skin_2_season_4": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "it_oto_r3_t20_fa",
+        "subId": "desert"
+      }
+    ],
+    "event_medium_box_tank_skin_2_season_5": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "cn_t_34_85_d_5t",
+        "subId": "forest3"
+      }
+    ],
+    "event_medium_box_tank_skin_2_season_6": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_m4a3e2_76w_sherman_jumbo",
+        "subId": "winter"
+      }
+    ],
+    "event_medium_box_tank_skin_2_season_7": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "germ_panzerbefelhswagen_VI_P",
+        "subId": "winter"
+      }
+    ],
+    "event_medium_box_tank_skin_2_season_8": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_m56_scorpion",
+        "subId": "desert"
+      }
+    ],
+    "event_medium_box_tank_skin_2_season_9": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_object_248",
+        "subId": "desert"
+      }
+    ],
+    "event_medium_box_tank_tool_kit_expendable_3": [
+      {
+        "count": 24,
+        "gType": "item",
+        "id": "tank_tool_kit_expendable",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_warbonds": [
+      {
+        "count": 300,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_wp_1": [
+      {
+        "count": 12000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_wp_2": [
+      {
+        "count": 20000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_wp_3": [
+      {
+        "count": 27000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "event_ships_big_box_fixed_season_10": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_big_fixed_season_10",
+        "subId": ""
+      }
+    ],
+    "event_ships_big_box_fixed_season_11": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_big_fixed_season_11",
+        "subId": ""
+      }
+    ],
+    "event_ships_big_box_fixed_season_12": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_big_fixed_season_12",
+        "subId": ""
+      }
+    ],
+    "event_ships_big_box_fixed_season_13": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_big_fixed_season_13",
+        "subId": ""
+      }
+    ],
+    "event_ships_big_box_fixed_season_6": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_big_fixed_season_6",
+        "subId": ""
+      }
+    ],
+    "event_ships_big_box_fixed_season_7": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_big_fixed_season_7",
+        "subId": ""
+      }
+    ],
+    "event_ships_big_box_fixed_season_8": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_big_fixed_season_8",
+        "subId": ""
+      }
+    ],
+    "event_ships_big_box_fixed_season_9": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_big_fixed_season_9",
+        "subId": ""
+      }
+    ],
+    "event_ships_medium_box_fixed_season_10": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_medium_fixed_season_10",
+        "subId": ""
+      }
+    ],
+    "event_ships_medium_box_fixed_season_11": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_medium_fixed_season_11",
+        "subId": ""
+      }
+    ],
+    "event_ships_medium_box_fixed_season_12": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_medium_fixed_season_12",
+        "subId": ""
+      }
+    ],
+    "event_ships_medium_box_fixed_season_13": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_medium_fixed_season_13",
+        "subId": ""
+      }
+    ],
+    "event_ships_medium_box_fixed_season_6": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_medium_fixed_season_6",
+        "subId": ""
+      }
+    ],
+    "event_ships_medium_box_fixed_season_7": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_medium_fixed_season_7",
+        "subId": ""
+      }
+    ],
+    "event_ships_medium_box_fixed_season_8": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_medium_fixed_season_8",
+        "subId": ""
+      }
+    ],
+    "event_ships_medium_box_fixed_season_9": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_medium_fixed_season_9",
+        "subId": ""
+      }
+    ],
+    "event_small_box_gold_1": [
+      {
+        "count": 5,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_small_box_gold_2": [
+      {
+        "count": 7,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_small_box_gold_3": [
+      {
+        "count": 15,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_small_box_ship_smoke_screen_system_mod": [
+      {
+        "count": 3,
+        "gType": "item",
+        "id": "ship_smoke_screen_system_mod",
+        "subId": ""
+      }
+    ],
+    "event_small_box_ship_tool_kit": [
+      {
+        "count": 5,
+        "gType": "item",
+        "id": "ship_tool_kit",
+        "subId": ""
+      }
+    ],
+    "event_small_box_tank_extinguisher": [
+      {
+        "count": 2,
+        "gType": "item",
+        "id": "tank_extinguisher",
+        "subId": ""
+      }
+    ],
+    "event_small_box_tank_tool_kit_expendable": [
+      {
+        "count": 4,
+        "gType": "item",
+        "id": "tank_tool_kit_expendable",
+        "subId": ""
+      }
+    ],
+    "event_small_box_warbonds_1": [
+      {
+        "count": 10,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_small_box_warbonds_2": [
+      {
+        "count": 20,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_small_box_warbonds_3": [
+      {
+        "count": 100,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_small_box_wp_1": [
+      {
+        "count": 1000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "event_small_box_wp_2": [
+      {
+        "count": 1500,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "event_small_box_wp_3": [
+      {
+        "count": 3000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_avatar_anniversary_2024_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_anniversary_2024_1",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_avatar_anniversary_2024_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_anniversary_2024_2",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_avatar_april_2024_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_pony",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_avatar_april_2024_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_pony_human",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_avatar_christmas_2023_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_new_year_tanker",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_avatar_christmas_2023_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_new_year_sailor",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_frame_anniversary_2024_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "snail",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_frame_anniversary_2024_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "wreath",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_frame_april_2024_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "piece_of_cake",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_frame_april_2024_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "stars_sparkles",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_frame_christmas_2023_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "christmas_bauble",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_frame_christmas_2023_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "christmas_tree",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_title_anniversary_2024_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "loyal",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_title_anniversary_2024_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "chosen_one",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_title_april_2024_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "pie",
+        "subId": ""
+      }
+    ],
+    "event_special_box_decorator_title_april_2024_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "starburst",
+        "subId": ""
+      }
+    ],
+    "event_special_box_firework_kit": [
+      {
+        "count": 1,
+        "gType": "item",
+        "id": "firework_kit",
+        "subId": ""
+      }
+    ],
+    "event_special_box_gold_1_christmas_2023": [
+      {
+        "count": 600,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_special_box_gold_2_christmas_2023": [
+      {
+        "count": 720,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_special_box_premiumDays_12_christmas_2023": [
+      {
+        "count": 12,
+        "gType": "premium",
+        "id": "",
+        "subId": ""
+      }
+    ],
+    "event_special_box_premiumDays_15_christmas_2023": [
+      {
+        "count": 15,
+        "gType": "premium",
+        "id": "",
+        "subId": ""
+      }
+    ],
+    "event_special_box_ship_anniversary_2024": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "fr_destroyer_aigle_class_aigle",
+        "subId": ""
+      }
+    ],
+    "event_special_box_ship_april_2024": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_artilleriefahrprahm_typ_d3",
+        "subId": ""
+      }
+    ],
+    "event_special_box_ship_christmas_2023": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "fr_sub_surcouf",
+        "subId": ""
+      }
+    ],
+    "event_special_box_tank_anniversary_2024": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "it_44m_zrinyi_1",
+        "subId": ""
+      }
+    ],
+    "event_special_box_tank_april_2024": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_kv_1_kwk_40",
+        "subId": ""
+      }
+    ],
+    "event_special_box_tank_christmas_2023": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_is_1_reskin",
+        "subId": ""
+      }
+    ],
+    "event_special_ships_anniversary_2024_fixed_box": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_special_ships_anniversary_2024_fixed",
+        "subId": ""
+      }
+    ],
+    "event_special_ships_april_2024_fixed_box": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_special_ships_april_2024_fixed",
+        "subId": ""
+      }
+    ],
+    "event_special_ships_box_fixed_christmas_2023": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_special_ships_fixed_christmas_2023",
+        "subId": ""
+      }
+    ],
+    "event_special_tanks_anniversary_2024_fixed_box": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_special_tanks_anniversary_2024_fixed",
+        "subId": ""
+      }
+    ],
+    "event_special_tanks_april_2024_fixed_box": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_special_tanks_april_2024_fixed",
+        "subId": ""
+      }
+    ],
+    "event_special_tanks_box_fixed_christmas_2023": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_special_tanks_fixed_christmas_2023",
+        "subId": ""
+      }
+    ],
+    "event_tanks_big_box_fixed_season_10": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_big_fixed_season_10",
+        "subId": ""
+      }
+    ],
+    "event_tanks_big_box_fixed_season_11": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_big_fixed_season_11",
+        "subId": ""
+      }
+    ],
+    "event_tanks_big_box_fixed_season_12": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_big_fixed_season_12",
+        "subId": ""
+      }
+    ],
+    "event_tanks_big_box_fixed_season_13": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_big_fixed_season_13",
+        "subId": ""
+      }
+    ],
+    "event_tanks_big_box_fixed_season_6": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_big_fixed_season_6",
+        "subId": ""
+      }
+    ],
+    "event_tanks_big_box_fixed_season_7": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_big_fixed_season_7",
+        "subId": ""
+      }
+    ],
+    "event_tanks_big_box_fixed_season_8": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_big_fixed_season_8",
+        "subId": ""
+      }
+    ],
+    "event_tanks_big_box_fixed_season_9": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_big_fixed_season_9",
+        "subId": ""
+      }
+    ],
+    "event_tanks_medium_box_fixed_season_10": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_medium_fixed_season_10",
+        "subId": ""
+      }
+    ],
+    "event_tanks_medium_box_fixed_season_11": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_medium_fixed_season_11",
+        "subId": ""
+      }
+    ],
+    "event_tanks_medium_box_fixed_season_12": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_medium_fixed_season_12",
+        "subId": ""
+      }
+    ],
+    "event_tanks_medium_box_fixed_season_13": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_medium_fixed_season_13",
+        "subId": ""
+      }
+    ],
+    "event_tanks_medium_box_fixed_season_6": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_medium_fixed_season_6",
+        "subId": ""
+      }
+    ],
+    "event_tanks_medium_box_fixed_season_7": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_medium_fixed_season_7",
+        "subId": ""
+      }
+    ],
+    "event_tanks_medium_box_fixed_season_8": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_medium_fixed_season_8",
+        "subId": ""
+      }
+    ],
+    "event_tanks_medium_box_fixed_season_9": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_medium_fixed_season_9",
+        "subId": ""
+      }
+    ],
+    "event_unit_booster_08": [
+      {
+        "count": 8,
+        "gType": "booster",
+        "id": "unitExp",
+        "subId": ""
+      }
+    ],
+    "event_unit_booster_1": [
+      {
+        "count": 10,
+        "gType": "booster",
+        "id": "unitExp",
+        "subId": ""
+      }
+    ],
+    "event_unit_booster_3": [
+      {
+        "count": 30,
+        "gType": "booster",
+        "id": "unitExp",
+        "subId": ""
+      }
+    ],
+    "event_wp_booster_05": [
+      {
+        "count": 5,
+        "gType": "booster",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "event_wp_booster_1": [
+      {
+        "count": 10,
+        "gType": "booster",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "event_wp_booster_3": [
+      {
+        "count": 30,
+        "gType": "booster",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "everyday_campaign_booster_1": [
+      {
+        "count": 2,
+        "gType": "booster",
+        "id": "playerExp",
+        "subId": ""
+      }
+    ],
+    "everyday_decorator_avatar_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_us_tanker",
+        "subId": ""
+      }
+    ],
+    "everyday_decorator_avatar_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_us_sailor",
+        "subId": ""
+      }
+    ],
+    "everyday_decorator_frame_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "clover",
+        "subId": ""
+      }
+    ],
+    "everyday_decorator_frame_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "horseshoe",
+        "subId": ""
+      }
+    ],
+    "everyday_decorator_title_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "lucky",
+        "subId": ""
+      }
+    ],
+    "everyday_gold_big_1": [
+      {
+        "count": 150,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "everyday_gold_big_2": [
+      {
+        "count": 500,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "everyday_gold_jackpot_1": [
+      {
+        "count": 1000,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "everyday_gold_jackpot_2": [
+      {
+        "count": 2000,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "everyday_gold_medium": [
+      {
+        "count": 75,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "everyday_gold_small_1": [
+      {
+        "count": 10,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "everyday_gold_small_2": [
+      {
+        "count": 50,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "everyday_ship_smoke_screen_system_mod": [
+      {
+        "count": 40,
+        "gType": "item",
+        "id": "ship_smoke_screen_system_mod",
+        "subId": ""
+      }
+    ],
+    "everyday_ship_tool_kit": [
+      {
+        "count": 40,
+        "gType": "item",
+        "id": "ship_tool_kit",
+        "subId": ""
+      }
+    ],
+    "everyday_spare_big": [
+      {
+        "count": 5,
+        "gType": "item",
+        "id": "spare",
+        "subId": ""
+      }
+    ],
+    "everyday_spare_medium": [
+      {
+        "count": 3,
+        "gType": "item",
+        "id": "spare",
+        "subId": ""
+      }
+    ],
+    "everyday_spare_small_1": [
+      {
+        "count": 1,
+        "gType": "item",
+        "id": "spare",
+        "subId": ""
+      }
+    ],
+    "everyday_spare_small_2": [
+      {
+        "count": 2,
+        "gType": "item",
+        "id": "spare",
+        "subId": ""
+      }
+    ],
+    "everyday_tank_extinguisher": [
+      {
+        "count": 8,
+        "gType": "item",
+        "id": "tank_extinguisher",
+        "subId": ""
+      }
+    ],
+    "everyday_tank_tool_kit_expendable": [
+      {
+        "count": 16,
+        "gType": "item",
+        "id": "tank_tool_kit_expendable",
+        "subId": ""
+      }
+    ],
+    "everyday_unit_booster_1": [
+      {
+        "count": 2,
+        "gType": "booster",
+        "id": "unitExp",
+        "subId": ""
+      }
+    ],
+    "everyday_wp_big": [
+      {
+        "count": 25000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "everyday_wp_booster_1": [
+      {
+        "count": 2,
+        "gType": "booster",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "everyday_wp_jackpot_1": [
+      {
+        "count": 50000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "everyday_wp_jackpot_2": [
+      {
+        "count": 100000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "everyday_wp_medium": [
+      {
+        "count": 18000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "everyday_wp_small": [
+      {
+        "count": 12000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "offer_gift_gold": [
+      {
+        "count": 20,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "offer_gift_gold_small": [
+      {
+        "count": 15,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "offer_gift_ship_repair": [
+      {
+        "count": 30,
+        "gType": "item",
+        "id": "ship_tool_kit",
+        "subId": ""
+      }
+    ],
+    "offer_gift_ship_smoke": [
+      {
+        "count": 30,
+        "gType": "item",
+        "id": "ship_smoke_screen_system_mod",
+        "subId": ""
+      }
+    ],
+    "offer_gift_spare": [
+      {
+        "count": 1,
+        "gType": "item",
+        "id": "spare",
+        "subId": ""
+      }
+    ],
+    "offer_gift_tank_extinguisher": [
+      {
+        "count": 10,
+        "gType": "item",
+        "id": "tank_extinguisher",
+        "subId": ""
+      }
+    ],
+    "offer_gift_tank_repair": [
+      {
+        "count": 20,
+        "gType": "item",
+        "id": "tank_tool_kit_expendable",
+        "subId": ""
+      }
+    ],
+    "offer_gift_wp": [
+      {
+        "count": 6000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "offer_gift_wp_small": [
+      {
+        "count": 4000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "ships_germ_cruiser_admiral_graf_spee": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_cruiser_admiral_graf_spee",
+        "subId": ""
+      }
+    ],
+    "ships_jp_armoredcruiser_ikoma": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "jp_armoredcruiser_ikoma",
+        "subId": ""
+      }
+    ],
+    "ships_uk_battlecruiser_invincible": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_battlecruiser_invincible",
+        "subId": ""
+      }
+    ],
+    "ships_uk_cruiser_belfast": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_cruiser_belfast",
+        "subId": ""
+      }
+    ],
+    "ships_us_battleship_arizona_1931": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_battleship_arizona_1931",
+        "subId": ""
+      }
+    ],
+    "ships_us_destroyer_mitscher": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_destroyer_mitscher",
+        "subId": ""
+      }
+    ],
+    "ships_ussr_battleship_poltava": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_battleship_poltava",
+        "subId": ""
+      }
+    ],
+    "ships_ussr_destroyer_pr30_ognevoy": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_destroyer_pr30_ognevoy",
+        "subId": ""
+      }
+    ],
+    "ships_ussr_sub_pr641": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_sub_pr641",
+        "subId": ""
+      }
+    ],
+    "tank_fr_m4a4_cn_75_50": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "fr_m4a4_cn_75_50",
+        "subId": ""
+      }
+    ],
+    "tank_germ_pzkpfw_VI_ausf_b_tiger_IIh_sla": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_pzkpfw_VI_ausf_b_tiger_IIh_sla",
+        "subId": ""
+      }
+    ],
+    "tank_jp_st_a3": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "jp_st_a3",
+        "subId": ""
+      }
+    ],
+    "tank_uk_a_33_excelsior": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_a_33_excelsior",
+        "subId": ""
+      }
+    ],
+    "tank_us_m4_sherman_calliope": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_m4_sherman_calliope",
+        "subId": ""
+      }
+    ],
+    "tank_us_m4a3e2_sherman_jumbo_cobra_king": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_m4a3e2_sherman_jumbo_cobra_king",
+        "subId": ""
+      }
+    ],
+    "tank_us_t54e1": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_t54e1",
+        "subId": ""
+      }
+    ],
+    "tank_ussr_is_2_1944_revenge": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_is_2_1944_revenge",
+        "subId": ""
+      }
+    ],
+    "tank_ussr_kv_220": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_kv_220",
+        "subId": ""
+      }
+    ],
+    "tank_ussr_kv_2_1940": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_kv_2_1940",
+        "subId": ""
+      }
+    ],
+    "utank_germ_pzsfl_IVa_dickermax": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_pzsfl_IVa_dickermax",
+        "subId": ""
+      }
+    ]
+  },
   "schRewards": {},
-  "shopPresentations": {
-    "cleveland": {
-      "descLocId": "",
-      "image": "units/germ_cruiser_admiral_hipper",
-      "inLineProirity": 1,
-      "nameLocId": "us_cruiser_cleveland_class_cleveland_0",
-      "offerContainer": "",
-      "offerGroup": "",
-      "offerLine": 1,
-      "rowsHeight": []
+  "seasons": {
+    "big_boxes_and_keys_timeline": {
+      "idxOffset": 12,
+      "rangeList": [
+        {
+          "end": 1727949599,
+          "start": 1726135200
+        }
+      ],
+      "repeat": 2419200,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "birthday_offer_day_1_timeline": {
+      "idxOffset": 1,
+      "rangeList": [
+        {
+          "end": 1724407199,
+          "start": 1723716000
+        }
+      ],
+      "repeat": 31536000,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "birthday_offer_day_2_timeline": {
+      "idxOffset": 1,
+      "rangeList": [
+        {
+          "end": 1724407199,
+          "start": 1723802400
+        }
+      ],
+      "repeat": 31536000,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "birthday_offer_day_3_timeline": {
+      "idxOffset": 1,
+      "rangeList": [
+        {
+          "end": 1724407199,
+          "start": 1723888800
+        }
+      ],
+      "repeat": 31536000,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "birthday_offer_day_4_timeline": {
+      "idxOffset": 1,
+      "rangeList": [
+        {
+          "end": 1724407199,
+          "start": 1723975200
+        }
+      ],
+      "repeat": 31536000,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "event_anniversary_season": {
+      "idxOffset": 1,
+      "rangeList": [
+        {
+          "end": 1724147999,
+          "start": 1722506400
+        }
+      ],
+      "repeat": 2678400,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "event_april_fools_season": {
+      "idxOffset": 1,
+      "rangeList": [
+        {
+          "end": 1715162399,
+          "start": 1714039200
+        }
+      ],
+      "repeat": 2678400,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "event_christmas_season": {
+      "idxOffset": 1,
+      "rangeList": [
+        {
+          "end": 1705571999,
+          "start": 1702980000
+        }
+      ],
+      "repeat": 2678400,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "old_content_lootbox_timeline": {
+      "idxOffset": 12,
+      "rangeList": [
+        {
+          "end": 1727690399,
+          "start": 1726394400
+        }
+      ],
+      "repeat": 31536000,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "pre_resease_offer_timeline": {
+      "idxOffset": 3,
+      "rangeList": [
+        {
+          "end": 1721383199,
+          "start": 1720951200
+        }
+      ],
+      "repeat": 2678400,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "premiere_offer_timeline": {
+      "idxOffset": 5,
+      "rangeList": [
+        {
+          "end": 1725962399,
+          "start": 1725357600
+        }
+      ],
+      "repeat": 2678400,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "season": {
+      "idxOffset": 11,
+      "rangeList": [
+        {
+          "end": 1724147999,
+          "start": 1721469600
+        },
+        {
+          "end": 1726826399,
+          "start": 1724148000
+        }
+      ],
+      "repeat": 2678400,
+      "reward": {
+        "firstSeason": 9,
+        "rewards": [
+          {
+            "count": 300,
+            "gType": "currency",
+            "id": "warbond",
+            "subId": ""
+          }
+        ],
+        "unlockCampaignLevel": 3,
+        "unlockUnitMRank": 2
+      }
+    },
+    "seasonal_offer_timeline": {
+      "idxOffset": 12,
+      "rangeList": [
+        {
+          "end": 1727776799,
+          "start": 1727172000
+        }
+      ],
+      "repeat": 2678400,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    }
+  },
+  "skins": {
+    "arctic_minesweeper_block_prem": {
+      "ussr_battleship_novorossiysk": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "arctic_spots": {
+      "us_cruiser_pensacola_class": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_destroyer_pr56_svetlyy": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "asiatic_forest_prem": {
+      "jp_battleship_yamashiro": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "black_longdiag": {
+      "germ_battlecruiser_von_der_tann": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "jp_battleship_yamashiro": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "jp_cruiser_kako": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "uk_battleship_colossus": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "blackgray_stripes": {
+      "uk_cruiser_cornwall": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_battleship_marat": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_cruiser_chapayev": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "blue_stains": {
+      "germ_sub_type_7_u305": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_battleship_texas": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_cruiser_pensacola_class": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "bluegray_geometry_prem": {
+      "uk_battleship_marlborough": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "bluegreen_splotch": {
+      "jp_battleship_yamashiro": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_battleship_arkansas": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "bluewater_geometry": {
+      "germ_battleship_westfalen": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_battleship_arkansas": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_cruiser_des_moines_class": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_sub_type_l3": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "darkbrown_spots_prem": {
+      "jp_battleship_mutsu": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "jp_cruiser_mogami": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "darkgray_blotch": {
+      "jp_cruiser_mogami": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_cruiser_des_moines_class": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "desert": {
+      "fr_amx_13_hot": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "germ_panzerbefelhswagen_VI_P": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "germ_pzkpfw_Maus": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "germ_ru251": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "il_merkava_mk_1": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "it_oto_r3_t20_fa": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "jp_type_74_mod_g_kai": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_m4a3e2_76w_sherman_jumbo": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_m56_scorpion": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_t92": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_is_6": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_kv_122": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_object_120": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_object_248": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_t_55_amd_1": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "desert2": {
+      "fr_amx_13_hot": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "il_merkava_mk_1": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "disruptive_gray": {
+      "uk_battleship_orion": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_battlecruiser_kronshtadt": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "fiction": {
+      "germ_ru251": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_btr_80a": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_is_6": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "forest": {
+      "cn_type_69_2a": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "il_merkava_mk_1": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "jp_type_74_mod_g_kai": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_btr_80a": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_t_55_amd_1": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "forest2": {
+      "cn_t_34_85_d_5t": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "cn_type_69_2a": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "germ_pzkpfw_VI_ausf_e_tiger": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "it_oto_r3_t20_fa": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_m56_scorpion": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_t29": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_t92": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_object_120": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_t_34_1941_57": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "forest3": {
+      "cn_t_34_85_d_5t": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "grayriver": {
+      "germ_battleship_bayern": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "jp_battleship_mutsu": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_battleship_texas": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "greencoast": {
+      "ussr_battleship_marat": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_battleship_novorossiysk": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_sub_type_l3": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "greenriver_prem": {
+      "us_battleship_texas": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "greenwhite_spots": {
+      "germ_battlecruiser_von_der_tann": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "germ_battleship_westfalen": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "uk_cruiser_cornwall": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "greyblack_geometry_prem": {
+      "germ_battleship_bayern": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "lightblue_geometry": {
+      "jp_battleship_mutsu": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_battleship_novorossiysk": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "lightblue_splotch": {
+      "uk_battleship_colossus": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "uk_battleship_orion": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "marine_geometry": {
+      "germ_battleship_bayern": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "uk_battleship_marlborough": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_cruiser_chapayev": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "mtb_spots_prem": {
+      "uk_battleship_colossus": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "uk_battleship_orion": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "north_fleet_prem": {
+      "ussr_battleship_marat": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "olive_spots": {
+      "ussr_destroyer_pr56_svetlyy": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "threegreenspots": {
+      "germ_sub_type_7_u305": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "jp_cruiser_kako": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "uk_battleship_marlborough": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_battlecruiser_kronshtadt": {
+        "currencyId": "gold",
+        "price": 500
+      }
+    },
+    "winter": {
+      "cn_type_69_2a": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "fr_amx_13_hot": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "germ_panzerbefelhswagen_VI_P": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "germ_pzkpfw_Maus": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "germ_pzkpfw_VI_ausf_e_tiger": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "germ_ru251": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "jp_type_74_mod_g_kai": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_m4a3e2_76w_sherman_jumbo": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_t29": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_btr_80a": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_is_6": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_kv_122": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_object_248": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_t_34_1941_57": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "ussr_t_55_amd_1": {
+        "currencyId": "gold",
+        "price": 500
+      }
     }
   },
   "unitAttrCostTables": {
+    "25_levels_from_1_to_20": [
+      1,
+      2,
+      3,
+      3,
+      4,
+      5,
+      6,
+      6,
+      7,
+      8,
+      9,
+      9,
+      10,
+      11,
+      12,
+      12,
+      13,
+      14,
+      15,
+      15,
+      16,
+      17,
+      18,
+      18,
+      20
+    ],
     "5_levels_from_1_to_20": [1, 3, 5, 10, 20]
   },
   "unitAttrPresets": {
+    "": [],
+    "airDefault": [
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "plane_engine",
+            "levelCostTbl": "25_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "plane_fuselage",
+            "levelCostTbl": "25_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "plane_flaps_wings",
+            "levelCostTbl": "25_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "plane_compressor",
+            "levelCostTbl": "25_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "plane_flight_performance"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "plane_spotting",
+            "levelCostTbl": "25_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "plane_threat_recognition",
+            "levelCostTbl": "25_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "plane_overload_resistance",
+            "levelCostTbl": "25_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "plane_protection",
+            "levelCostTbl": "25_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "plane_accuracy",
+            "levelCostTbl": "25_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "plane_crew"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "plane_jamming",
+            "levelCostTbl": "25_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "plane_reloading",
+            "levelCostTbl": "25_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "plane_scatter",
+            "levelCostTbl": "25_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "plane_weapon"
+      }
+    ],
     "shipDefault": [
       {
         "attrList": [
@@ -4180,6 +25450,192 @@ return {
             "battleAttributes": [],
             "battleCategories": [],
             "id": "attrib_ai_aa_distance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_artillery"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_endurance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_max_speed",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_steering",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_engine_room"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_distance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_count",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_damage_control"
+      }
+    ],
+    "shipDefaultMissiles": [
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_he_shell_damage",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_accuracy",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_reload_rate",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ai_aa_accuracy",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ai_aa_distance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_artillery"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_endurance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_max_speed",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_steering",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_engine_room"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_distance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_count",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_damage_control"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_damage",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_capture_time",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_cm_lifetime",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_missiles"
+      }
+    ],
+    "shipDefaultNoAA": [
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_he_shell_damage",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_accuracy",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_reload_rate",
             "levelCostTbl": "5_levels_from_1_to_20",
             "useLeadership": false
           }
@@ -4300,6 +25756,333 @@ return {
         "id": "ship_engine_room"
       }
     ],
+    "shipDefaultNoTorpedoNoAA": [
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_he_shell_damage",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_accuracy",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_reload_rate",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_artillery"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_endurance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_max_speed",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_steering",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_engine_room"
+      }
+    ],
+    "shipMissilesNoAA": [
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_he_shell_damage",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_accuracy",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_reload_rate",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_artillery"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_endurance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_max_speed",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_steering",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_engine_room"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_distance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_count",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_damage_control"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_damage",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_capture_time",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_cm_lifetime",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_missiles"
+      }
+    ],
+    "shipMissilesNoAANoTorpedo": [
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_he_shell_damage",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_accuracy",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_reload_rate",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_artillery"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_endurance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_max_speed",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_steering",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_engine_room"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_damage",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_capture_time",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_cm_lifetime",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_missiles"
+      }
+    ],
+    "shipMissilesNoTorpedo": [
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_he_shell_damage",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_accuracy",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_reload_rate",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ai_aa_accuracy",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ai_aa_distance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_artillery"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_endurance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_max_speed",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_steering",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_engine_room"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_damage",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_capture_time",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_cm_lifetime",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_missiles"
+      }
+    ],
     "shipNoGuns": [
       {
         "attrList": [
@@ -4364,6 +26147,145 @@ return {
           }
         ],
         "id": "ship_damage_control"
+      }
+    ],
+    "subArtillery": [
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_he_shell_damage",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_accuracy",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_player_gun_reload_rate",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_artillery"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_endurance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_max_speed",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_steering",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_engine_room"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_distance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_count",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_damage_control"
+      }
+    ],
+    "subMissileNoGuns": [
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_endurance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_max_speed",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_ship_steering",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_engine_room"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_distance",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_torpedo_count",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_damage_control"
+      },
+      {
+        "attrList": [
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_damage",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          },
+          {
+            "battleAttributes": [],
+            "battleCategories": [],
+            "id": "attrib_rckt_capture_time",
+            "levelCostTbl": "5_levels_from_1_to_20",
+            "useLeadership": false
+          }
+        ],
+        "id": "ship_missiles"
       }
     ],
     "subNoGuns": [
@@ -4495,6 +26417,2550 @@ return {
     ]
   },
   "unitLevels": {
+    "air_0": [
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      },
+      {
+        "costGold": 2,
+        "exp": 32
+      }
+    ],
+    "air_1": [
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      },
+      {
+        "costGold": 6,
+        "exp": 76
+      }
+    ],
+    "air_10": [
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      },
+      {
+        "costGold": 35,
+        "exp": 1214
+      }
+    ],
+    "air_11": [
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      },
+      {
+        "costGold": 36,
+        "exp": 1391
+      }
+    ],
+    "air_12": [
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      },
+      {
+        "costGold": 36,
+        "exp": 1586
+      }
+    ],
+    "air_13": [
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      },
+      {
+        "costGold": 37,
+        "exp": 1803
+      }
+    ],
+    "air_14": [
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      },
+      {
+        "costGold": 37,
+        "exp": 2045
+      }
+    ],
+    "air_15": [
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      },
+      {
+        "costGold": 38,
+        "exp": 2314
+      }
+    ],
+    "air_16": [
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      },
+      {
+        "costGold": 38,
+        "exp": 2615
+      }
+    ],
+    "air_17": [
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      },
+      {
+        "costGold": 38,
+        "exp": 2952
+      }
+    ],
+    "air_18": [
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      },
+      {
+        "costGold": 38,
+        "exp": 3329
+      }
+    ],
+    "air_19": [
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      },
+      {
+        "costGold": 39,
+        "exp": 3751
+      }
+    ],
+    "air_2": [
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      },
+      {
+        "costGold": 7,
+        "exp": 111
+      }
+    ],
+    "air_20": [
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      },
+      {
+        "costGold": 39,
+        "exp": 4224
+      }
+    ],
+    "air_3": [
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      },
+      {
+        "costGold": 16,
+        "exp": 262
+      }
+    ],
+    "air_4": [
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      },
+      {
+        "costGold": 19,
+        "exp": 335
+      }
+    ],
+    "air_5": [
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      },
+      {
+        "costGold": 25,
+        "exp": 493
+      }
+    ],
+    "air_6": [
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      },
+      {
+        "costGold": 28,
+        "exp": 631
+      }
+    ],
+    "air_7": [
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      },
+      {
+        "costGold": 31,
+        "exp": 766
+      }
+    ],
+    "air_8": [
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      },
+      {
+        "costGold": 32,
+        "exp": 905
+      }
+    ],
+    "air_9": [
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      },
+      {
+        "costGold": 34,
+        "exp": 1053
+      }
+    ],
+    "air_slots": [
+      {
+        "costGold": 80,
+        "exp": 500
+      },
+      {
+        "costGold": 80,
+        "exp": 500
+      },
+      {
+        "costGold": 80,
+        "exp": 500
+      },
+      {
+        "costGold": 80,
+        "exp": 500
+      },
+      {
+        "costGold": 80,
+        "exp": 500
+      },
+      {
+        "costGold": 80,
+        "exp": 500
+      },
+      {
+        "costGold": 80,
+        "exp": 500
+      },
+      {
+        "costGold": 80,
+        "exp": 500
+      },
+      {
+        "costGold": 80,
+        "exp": 500
+      },
+      {
+        "costGold": 80,
+        "exp": 500
+      },
+      {
+        "costGold": 155,
+        "exp": 1000
+      },
+      {
+        "costGold": 155,
+        "exp": 1000
+      },
+      {
+        "costGold": 155,
+        "exp": 1000
+      },
+      {
+        "costGold": 155,
+        "exp": 1000
+      },
+      {
+        "costGold": 155,
+        "exp": 1000
+      },
+      {
+        "costGold": 155,
+        "exp": 1000
+      },
+      {
+        "costGold": 155,
+        "exp": 1000
+      },
+      {
+        "costGold": 155,
+        "exp": 1000
+      },
+      {
+        "costGold": 155,
+        "exp": 1000
+      },
+      {
+        "costGold": 155,
+        "exp": 1000
+      },
+      {
+        "costGold": 310,
+        "exp": 2000
+      },
+      {
+        "costGold": 310,
+        "exp": 2000
+      },
+      {
+        "costGold": 310,
+        "exp": 2000
+      },
+      {
+        "costGold": 310,
+        "exp": 2000
+      },
+      {
+        "costGold": 310,
+        "exp": 2000
+      },
+      {
+        "costGold": 310,
+        "exp": 2000
+      },
+      {
+        "costGold": 310,
+        "exp": 2000
+      },
+      {
+        "costGold": 310,
+        "exp": 2000
+      },
+      {
+        "costGold": 310,
+        "exp": 2000
+      },
+      {
+        "costGold": 310,
+        "exp": 2000
+      },
+      {
+        "costGold": 625,
+        "exp": 4000
+      },
+      {
+        "costGold": 625,
+        "exp": 4000
+      },
+      {
+        "costGold": 625,
+        "exp": 4000
+      },
+      {
+        "costGold": 625,
+        "exp": 4000
+      },
+      {
+        "costGold": 625,
+        "exp": 4000
+      },
+      {
+        "costGold": 625,
+        "exp": 4000
+      },
+      {
+        "costGold": 625,
+        "exp": 4000
+      },
+      {
+        "costGold": 625,
+        "exp": 4000
+      },
+      {
+        "costGold": 625,
+        "exp": 4000
+      },
+      {
+        "costGold": 625,
+        "exp": 4000
+      },
+      {
+        "costGold": 1250,
+        "exp": 8000
+      },
+      {
+        "costGold": 1250,
+        "exp": 8000
+      },
+      {
+        "costGold": 1250,
+        "exp": 8000
+      },
+      {
+        "costGold": 1250,
+        "exp": 8000
+      },
+      {
+        "costGold": 1250,
+        "exp": 8000
+      },
+      {
+        "costGold": 1250,
+        "exp": 8000
+      },
+      {
+        "costGold": 1250,
+        "exp": 8000
+      },
+      {
+        "costGold": 1250,
+        "exp": 8000
+      },
+      {
+        "costGold": 1250,
+        "exp": 8000
+      },
+      {
+        "costGold": 1250,
+        "exp": 8000
+      },
+      {
+        "costGold": 2340,
+        "exp": 15000
+      },
+      {
+        "costGold": 2340,
+        "exp": 15000
+      },
+      {
+        "costGold": 2340,
+        "exp": 15000
+      },
+      {
+        "costGold": 2340,
+        "exp": 15000
+      },
+      {
+        "costGold": 2340,
+        "exp": 15000
+      },
+      {
+        "costGold": 2340,
+        "exp": 15000
+      },
+      {
+        "costGold": 2340,
+        "exp": 15000
+      },
+      {
+        "costGold": 2340,
+        "exp": 15000
+      },
+      {
+        "costGold": 2340,
+        "exp": 15000
+      },
+      {
+        "costGold": 2340,
+        "exp": 15000
+      },
+      {
+        "costGold": 3120,
+        "exp": 20000
+      },
+      {
+        "costGold": 3120,
+        "exp": 20000
+      },
+      {
+        "costGold": 3120,
+        "exp": 20000
+      },
+      {
+        "costGold": 3120,
+        "exp": 20000
+      },
+      {
+        "costGold": 3120,
+        "exp": 20000
+      },
+      {
+        "costGold": 3120,
+        "exp": 20000
+      },
+      {
+        "costGold": 3120,
+        "exp": 20000
+      },
+      {
+        "costGold": 3120,
+        "exp": 20000
+      },
+      {
+        "costGold": 3120,
+        "exp": 20000
+      },
+      {
+        "costGold": 3120,
+        "exp": 20000
+      },
+      {
+        "costGold": 3900,
+        "exp": 25000
+      },
+      {
+        "costGold": 3900,
+        "exp": 25000
+      },
+      {
+        "costGold": 3900,
+        "exp": 25000
+      },
+      {
+        "costGold": 3900,
+        "exp": 25000
+      },
+      {
+        "costGold": 3900,
+        "exp": 25000
+      },
+      {
+        "costGold": 3900,
+        "exp": 25000
+      },
+      {
+        "costGold": 3900,
+        "exp": 25000
+      },
+      {
+        "costGold": 3900,
+        "exp": 25000
+      },
+      {
+        "costGold": 3900,
+        "exp": 25000
+      },
+      {
+        "costGold": 3900,
+        "exp": 25000
+      },
+      {
+        "costGold": 4680,
+        "exp": 30000
+      },
+      {
+        "costGold": 4680,
+        "exp": 30000
+      },
+      {
+        "costGold": 4680,
+        "exp": 30000
+      },
+      {
+        "costGold": 4680,
+        "exp": 30000
+      },
+      {
+        "costGold": 4680,
+        "exp": 30000
+      },
+      {
+        "costGold": 4680,
+        "exp": 30000
+      },
+      {
+        "costGold": 4680,
+        "exp": 30000
+      },
+      {
+        "costGold": 4680,
+        "exp": 30000
+      },
+      {
+        "costGold": 4680,
+        "exp": 30000
+      },
+      {
+        "costGold": 4680,
+        "exp": 30000
+      },
+      {
+        "costGold": 5150,
+        "exp": 33000
+      },
+      {
+        "costGold": 5150,
+        "exp": 33000
+      },
+      {
+        "costGold": 5150,
+        "exp": 33000
+      },
+      {
+        "costGold": 5150,
+        "exp": 33000
+      },
+      {
+        "costGold": 5150,
+        "exp": 33000
+      },
+      {
+        "costGold": 5150,
+        "exp": 33000
+      },
+      {
+        "costGold": 5150,
+        "exp": 33000
+      },
+      {
+        "costGold": 5150,
+        "exp": 33000
+      },
+      {
+        "costGold": 5150,
+        "exp": 33000
+      },
+      {
+        "costGold": 5150,
+        "exp": 33000
+      }
+    ],
     "ships_0": [
       {
         "costGold": 1,
@@ -6433,6 +30899,414 @@ return {
         "exp": 14474
       }
     ],
+    "ships_26": [
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      },
+      {
+        "costGold": 76,
+        "exp": 16279
+      }
+    ],
+    "ships_27": [
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      },
+      {
+        "costGold": 77,
+        "exp": 18292
+      }
+    ],
+    "ships_28": [
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      },
+      {
+        "costGold": 77,
+        "exp": 20540
+      }
+    ],
+    "ships_29": [
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      },
+      {
+        "costGold": 77,
+        "exp": 23053
+      }
+    ],
     "ships_3": [
       {
         "costGold": 3,
@@ -6533,6 +31407,108 @@ return {
       {
         "costGold": 3,
         "exp": 59
+      }
+    ],
+    "ships_30": [
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
+      },
+      {
+        "costGold": 77,
+        "exp": 25865
       }
     ],
     "ships_4": [
@@ -8473,618 +33449,6 @@ return {
         "exp": 138
       }
     ],
-    "tanks_20": [
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      },
-      {
-        "costGold": 39,
-        "exp": 37979
-      }
-    ],
-    "tanks_21": [
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      },
-      {
-        "costGold": 39,
-        "exp": 47703
-      }
-    ],
-    "tanks_22": [
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      },
-      {
-        "costGold": 39,
-        "exp": 59886
-      }
-    ],
-    "tanks_23": [
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      },
-      {
-        "costGold": 39,
-        "exp": 75151
-      }
-    ],
-    "tanks_24": [
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      },
-      {
-        "costGold": 40,
-        "exp": 94274
-      }
-    ],
-    "tanks_25": [
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      },
-      {
-        "costGold": 40,
-        "exp": 118226
-      }
-    ],
     "tanks_3": [
       {
         "costGold": 16,
@@ -9807,6 +34171,123 @@ return {
     }
   ],
   "unitLevelsSp": {
+    "": {
+      "average": 0,
+      "fullAttr": 0,
+      "levels": [],
+      "max": 0,
+      "min": 0,
+      "total": 0
+    },
+    "airDefault": {
+      "average": 254,
+      "fullAttr": 251,
+      "levels": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5,
+        6,
+        6,
+        7,
+        7,
+        8,
+        8,
+        9,
+        10,
+        11,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        18,
+        19,
+        20,
+        20,
+        21,
+        21,
+        22,
+        22,
+        23,
+        23,
+        24,
+        25,
+        25,
+        26,
+        27,
+        27,
+        28,
+        29,
+        30,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        48,
+        49,
+        50,
+        51,
+        53,
+        54,
+        56,
+        57,
+        59,
+        60,
+        62,
+        63,
+        65,
+        67,
+        69,
+        70,
+        72,
+        74,
+        76,
+        78,
+        80,
+        82,
+        85,
+        87,
+        89,
+        82
+      ],
+      "max": 254,
+      "min": 254,
+      "total": 3048
+    },
     "shipDefault": {
       "average": 39,
       "fullAttr": 43,
@@ -9840,6 +34321,74 @@ return {
       "max": 39,
       "min": 39,
       "total": 390
+    },
+    "shipDefaultMissiles": {
+      "average": 39,
+      "fullAttr": 43,
+      "levels": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        13,
+        15,
+        16,
+        19,
+        21,
+        24,
+        27,
+        30,
+        34,
+        38,
+        43,
+        48,
+        55,
+        60
+      ],
+      "max": 39,
+      "min": 39,
+      "total": 507
+    },
+    "shipDefaultNoAA": {
+      "average": 39,
+      "fullAttr": 43,
+      "levels": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        22,
+        23,
+        25,
+        24
+      ],
+      "max": 39,
+      "min": 39,
+      "total": 312
     },
     "shipDefaultNoTorpedo": {
       "average": 39,
@@ -9875,7 +34424,211 @@ return {
       "min": 39,
       "total": 312
     },
+    "shipDefaultNoTorpedoNoAA": {
+      "average": 39,
+      "fullAttr": 43,
+      "levels": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        9,
+        10,
+        10,
+        10,
+        11,
+        11,
+        12,
+        12,
+        12,
+        13,
+        13,
+        14,
+        14,
+        15,
+        15,
+        10
+      ],
+      "max": 39,
+      "min": 39,
+      "total": 234
+    },
+    "shipMissilesNoAA": {
+      "average": 39,
+      "fullAttr": 43,
+      "levels": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        14,
+        15,
+        17,
+        19,
+        21,
+        23,
+        25,
+        28,
+        31,
+        34,
+        38,
+        42,
+        46
+      ],
+      "max": 39,
+      "min": 39,
+      "total": 429
+    },
+    "shipMissilesNoAANoTorpedo": {
+      "average": 39,
+      "fullAttr": 43,
+      "levels": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        11,
+        12,
+        14,
+        15,
+        16,
+        17,
+        19,
+        20,
+        22,
+        24,
+        26,
+        28,
+        31,
+        32
+      ],
+      "max": 39,
+      "min": 39,
+      "total": 351
+    },
+    "shipMissilesNoTorpedo": {
+      "average": 39,
+      "fullAttr": 43,
+      "levels": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        14,
+        15,
+        17,
+        19,
+        21,
+        23,
+        25,
+        28,
+        31,
+        34,
+        38,
+        42,
+        46
+      ],
+      "max": 39,
+      "min": 39,
+      "total": 429
+    },
     "shipNoGuns": {
+      "average": 39,
+      "fullAttr": 43,
+      "levels": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        9,
+        10,
+        11,
+        11,
+        12,
+        12,
+        13,
+        14,
+        15,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        18
+      ],
+      "max": 39,
+      "min": 39,
+      "total": 273
+    },
+    "subArtillery": {
+      "average": 39,
+      "fullAttr": 43,
+      "levels": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        22,
+        23,
+        25,
+        24
+      ],
+      "max": 39,
+      "min": 39,
+      "total": 312
+    },
+    "subMissileNoGuns": {
       "average": 39,
       "fullAttr": 43,
       "levels": [
@@ -9979,84 +34732,3807 @@ return {
     }
   },
   "unitModPresets": {
+    "aircraft_mod_10_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.045627377927303314,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.22813688218593597,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.053231939673423767,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.06083650141954422,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.068441063165664673,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.076045624911785126,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.087452471256256104,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 13,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.098859317600727081,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.11026615649461746,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 19,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.17110265791416168,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_11_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.041379310190677643,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.15517240762710571,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.20689654350280762,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.048275861889123917,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.05517241358757019,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.062068965286016464,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.068965516984462738,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.079310342669487,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.082758620381355286,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.096551723778247833,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.10344827175140381,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_12_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.03498542308807373,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.1166180819272995,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.15160350501537323,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 23,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.17492711544036865,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.040816329419612885,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.04664723202586174,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 7,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.055393587797880173,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.064139947295188904,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.069970846176147461,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.075801752507686615,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.081632658839225769,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.087463557720184326,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_13_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.031746029853820801,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.10052909702062607,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.119047611951828,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.14550264179706573,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 24,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_13": {
+        "costGold": 0,
+        "costWpWeight": 0.158730149269104,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.037037037312984467,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.042328041046857834,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.047619044780731201,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.052910052239894867,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.058201055973768234,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.063492059707641602,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.068783067166805267,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.074074074625968933,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_14_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.025773195549845695,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.072164945304393768,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.097938142716884613,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.1159793809056282,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_13": {
+        "costGold": 0,
+        "costWpWeight": 0.14175257086753845,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 24,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_14": {
+        "costGold": 0,
+        "costWpWeight": 0.15463916957378387,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.030927833169698715,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.036082472652196884,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.041237112134695053,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.046391751617193222,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.051546391099691391,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.05670103058218956,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.06185566633939743,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.067010305821895599,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_15_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.024570023640990257,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.063882060348987579,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.068796068429946899,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.093366093933582306,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_13": {
+        "costGold": 0,
+        "costWpWeight": 0.11056511104106903,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_14": {
+        "costGold": 0,
+        "costWpWeight": 0.13513512909412384,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 24,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_15": {
+        "costGold": 0,
+        "costWpWeight": 0.14742013812065125,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.029484029859304428,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.03439803421497345,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.039312038570642471,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.044226042926311493,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.046683046966791153,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 9,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.049140047281980515,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.054054051637649536,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.058968059718608856,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_16_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.023696683347225189,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.056872040033340454,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.061611376702785492,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.06635071337223053,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_13": {
+        "costGold": 0,
+        "costWpWeight": 0.090047396719455719,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_14": {
+        "costGold": 0,
+        "costWpWeight": 0.10663507878780365,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_15": {
+        "costGold": 0,
+        "costWpWeight": 0.13033175468444824,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 24,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_16": {
+        "costGold": 0,
+        "costWpWeight": 0.14218010008335114,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.028436020016670227,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.033175356686115265,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.035545025020837784,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.037914693355560303,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.042654030025005341,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.045023698359727859,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 9,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.047393366694450378,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.052132703363895416,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_17_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.022123893722891808,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.053097344934940338,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.057522125542163849,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.061946902424097061,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_13": {
+        "costGold": 0,
+        "costWpWeight": 0.066371679306030273,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 19,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_14": {
+        "costGold": 0,
+        "costWpWeight": 0.084070794284343719,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_15": {
+        "costGold": 0,
+        "costWpWeight": 0.09955751895904541,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_16": {
+        "costGold": 0,
+        "costWpWeight": 0.12168141454458237,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 24,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_17": {
+        "costGold": 0,
+        "costWpWeight": 0.13274335861206055,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.026548672467470169,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.030973451212048531,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.033185839653015137,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.035398229956626892,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.039823010563850403,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.04203539714217186,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 9,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.044247787445783615,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.048672564327716827,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_18_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.021505376324057579,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.047311827540397644,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.051612906157970428,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.055913981050252914,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_13": {
+        "costGold": 0,
+        "costWpWeight": 0.0602150559425354,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_14": {
+        "costGold": 0,
+        "costWpWeight": 0.064516127109527588,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 19,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_15": {
+        "costGold": 0,
+        "costWpWeight": 0.081720434129238129,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_16": {
+        "costGold": 0,
+        "costWpWeight": 0.096774198114871979,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_17": {
+        "costGold": 0,
+        "costWpWeight": 0.11827956885099411,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 24,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_18": {
+        "costGold": 0,
+        "costWpWeight": 0.12903225421905518,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.025806453078985214,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.027956990525126457,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 3,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.0301075279712677,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.032258063554763794,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.034408602863550186,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.038709677755832672,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.040860217064619064,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 9,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.043010752648115158,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_19_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.020746888592839241,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.041493777185678482,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.0456431545317173,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.049792535603046417,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_13": {
+        "costGold": 0,
+        "costWpWeight": 0.053941912949085236,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_14": {
+        "costGold": 0,
+        "costWpWeight": 0.058091290295124054,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_15": {
+        "costGold": 0,
+        "costWpWeight": 0.062240667641162872,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 19,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_16": {
+        "costGold": 0,
+        "costWpWeight": 0.078838177025318146,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_17": {
+        "costGold": 0,
+        "costWpWeight": 0.09336099773645401,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_18": {
+        "costGold": 0,
+        "costWpWeight": 0.1141078919172287,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 24,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_19": {
+        "costGold": 0,
+        "costWpWeight": 0.12448133528232574,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.024896267801523209,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.026970956474542618,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 3,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.029045645147562027,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.031120333820581436,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.033195022493600845,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.035269711166620255,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 7,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.037344399839639664,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.039419088512659073,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 9,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_20_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.019880715757608414,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.039761431515216827,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.0417494997382164,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 11,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.043737571686506271,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_13": {
+        "costGold": 0,
+        "costWpWeight": 0.047713715583086014,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_14": {
+        "costGold": 0,
+        "costWpWeight": 0.051689859479665756,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_15": {
+        "costGold": 0,
+        "costWpWeight": 0.0556659996509552,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_16": {
+        "costGold": 0,
+        "costWpWeight": 0.059642143547534943,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 19,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_17": {
+        "costGold": 0,
+        "costWpWeight": 0.075546719133853912,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_18": {
+        "costGold": 0,
+        "costWpWeight": 0.089463219046592712,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_19": {
+        "costGold": 0,
+        "costWpWeight": 0.10934393107891083,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 24,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.023856857791543007,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_20": {
+        "costGold": 0,
+        "costWpWeight": 0.11928428709506989,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.025844929739832878,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 3,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.0278329998254776,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.029821071773767471,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.031809143722057343,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.033797215670347214,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 7,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.035785287618637085,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.037773359566926956,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 9,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_21_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.019011406227946281,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.038022812455892563,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.039923954755067825,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 11,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.041825093328952789,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_13": {
+        "costGold": 0,
+        "costWpWeight": 0.043726235628128052,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 13,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_14": {
+        "costGold": 0,
+        "costWpWeight": 0.045627377927303314,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_15": {
+        "costGold": 0,
+        "costWpWeight": 0.049429658800363541,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_16": {
+        "costGold": 0,
+        "costWpWeight": 0.053231939673423767,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_17": {
+        "costGold": 0,
+        "costWpWeight": 0.057034220546483994,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 19,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_18": {
+        "costGold": 0,
+        "costWpWeight": 0.072243347764015198,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_19": {
+        "costGold": 0,
+        "costWpWeight": 0.085551328957080841,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.022813688963651657,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_20": {
+        "costGold": 0,
+        "costWpWeight": 0.10456273704767227,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 24,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_21": {
+        "costGold": 0,
+        "costWpWeight": 0.11406844109296799,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.02471482940018177,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 3,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.026615969836711884,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.028517110273241997,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.03041825070977211,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.032319393008947372,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 7,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.034220531582832336,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.036121673882007599,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 9,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_22_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.018148820847272873,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.036297641694545746,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.038112521171569824,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 11,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.039927404373884201,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_13": {
+        "costGold": 0,
+        "costWpWeight": 0.041742287576198578,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 13,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_14": {
+        "costGold": 0,
+        "costWpWeight": 0.043557167053222656,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_15": {
+        "costGold": 0,
+        "costWpWeight": 0.045372050255537033,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_16": {
+        "costGold": 0,
+        "costWpWeight": 0.04718693345785141,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_17": {
+        "costGold": 0,
+        "costWpWeight": 0.050816696137189865,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_18": {
+        "costGold": 0,
+        "costWpWeight": 0.054446462541818619,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 19,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_19": {
+        "costGold": 0,
+        "costWpWeight": 0.068965516984462738,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.021778583526611328,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_20": {
+        "costGold": 0,
+        "costWpWeight": 0.08166968822479248,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_21": {
+        "costGold": 0,
+        "costWpWeight": 0.099818512797355652,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 24,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_22": {
+        "costGold": 0,
+        "costWpWeight": 0.10889292508363724,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.023593466728925705,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 3,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.025408348068594933,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.027223231270909309,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.029038112610578537,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.030852993950247765,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 7,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.032667875289916992,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.034482758492231369,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 9,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_23_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.017301037907600403,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.034602075815200806,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.036332182586193085,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 11,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.038062285631895065,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_13": {
+        "costGold": 0,
+        "costWpWeight": 0.039792388677597046,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 13,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_14": {
+        "costGold": 0,
+        "costWpWeight": 0.041522491723299026,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_15": {
+        "costGold": 0,
+        "costWpWeight": 0.043252594769001007,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_16": {
+        "costGold": 0,
+        "costWpWeight": 0.044982701539993286,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_17": {
+        "costGold": 0,
+        "costWpWeight": 0.046712804585695267,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 17,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_18": {
+        "costGold": 0,
+        "costWpWeight": 0.048442907631397247,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_19": {
+        "costGold": 0,
+        "costWpWeight": 0.051903117448091507,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 19,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.020761245861649513,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_20": {
+        "costGold": 0,
+        "costWpWeight": 0.06574394553899765,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_21": {
+        "costGold": 0,
+        "costWpWeight": 0.077854670584201813,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_22": {
+        "costGold": 0,
+        "costWpWeight": 0.095155715942382812,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 24,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_23": {
+        "costGold": 0,
+        "costWpWeight": 0.10380623489618301,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.022491350769996643,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 3,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.024221453815698624,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.025951558724045753,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.027681661769747734,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.029411764815449715,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 7,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.031141869723796844,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.032871972769498825,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 9,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_24_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.016181230545043945,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.032362461090087891,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.033980581909418106,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 11,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.03559870645403862,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_13": {
+        "costGold": 0,
+        "costWpWeight": 0.037216830998659134,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 13,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_14": {
+        "costGold": 0,
+        "costWpWeight": 0.038834951817989349,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_15": {
+        "costGold": 0,
+        "costWpWeight": 0.040453076362609863,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_16": {
+        "costGold": 0,
+        "costWpWeight": 0.042071197181940079,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_17": {
+        "costGold": 0,
+        "costWpWeight": 0.043689321726560593,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 17,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_18": {
+        "costGold": 0,
+        "costWpWeight": 0.045307446271181107,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_19": {
+        "costGold": 0,
+        "costWpWeight": 0.048543691635131836,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 19,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.019417475908994675,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_20": {
+        "costGold": 0,
+        "costWpWeight": 0.061488676816225052,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_21": {
+        "costGold": 0,
+        "costWpWeight": 0.064724922180175781,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 21,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_22": {
+        "costGold": 0,
+        "costWpWeight": 0.072815537452697754,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_23": {
+        "costGold": 0,
+        "costWpWeight": 0.088996767997741699,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 24,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_24": {
+        "costGold": 0,
+        "costWpWeight": 0.097087383270263672,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.021035598590970039,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 3,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.022653723135590553,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.024271845817565918,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.025889968499541283,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.027508091181516647,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 7,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.029126213863492012,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.030744338408112526,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 9,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_25_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.014992504380643368,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_10": {
+        "costGold": 0,
+        "costWpWeight": 0.029985008761286736,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_11": {
+        "costGold": 0,
+        "costWpWeight": 0.031484257429838181,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 11,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_12": {
+        "costGold": 0,
+        "costWpWeight": 0.032983507961034775,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_13": {
+        "costGold": 0,
+        "costWpWeight": 0.034482758492231369,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 13,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_14": {
+        "costGold": 0,
+        "costWpWeight": 0.035982009023427963,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_15": {
+        "costGold": 0,
+        "costWpWeight": 0.037481259554624557,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_16": {
+        "costGold": 0,
+        "costWpWeight": 0.038980510085821152,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_17": {
+        "costGold": 0,
+        "costWpWeight": 0.040479760617017746,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 17,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_18": {
+        "costGold": 0,
+        "costWpWeight": 0.04197901114821434,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_19": {
+        "costGold": 0,
+        "costWpWeight": 0.044977512210607529,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 19,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.017991004511713982,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_20": {
+        "costGold": 0,
+        "costWpWeight": 0.056971516460180283,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_21": {
+        "costGold": 0,
+        "costWpWeight": 0.059970017522573471,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 21,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_22": {
+        "costGold": 0,
+        "costWpWeight": 0.067466266453266144,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_23": {
+        "costGold": 0,
+        "costWpWeight": 0.073463268578052521,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 23,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_24": {
+        "costGold": 0,
+        "costWpWeight": 0.082458771765232086,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 24,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_25": {
+        "costGold": 0,
+        "costWpWeight": 0.089955024421215057,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.019490255042910576,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 3,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.02098950557410717,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.022488756105303764,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.023988006636500359,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.025487257167696953,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 7,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.026986507698893547,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.028485758230090141,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 9,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_2_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.3333333432674408,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.66666668653488159,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_3_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.14999999105930328,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.25,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.59999996423721313,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_4_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.11570247262716293,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.15702478587627411,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.23140494525432587,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.49586775898933411,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_5_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.084507040679454803,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.10563380271196365,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 5,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.17605634033679962,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.21126760542392731,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.42253521084785461,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_6_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.067415729165077209,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.089887641370296478,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 6,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.12359550595283508,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.15730337798595428,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.22471910715103149,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.33707866072654724,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_7_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.059405937790870667,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.069306932389736176,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.089108906686306,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.094059407711029053,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.11386138200759888,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 13,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.12871286273002625,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.14851485192775726,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.29702970385551453,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_8_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.044897958636283875,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.057142853736877441,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.073469385504722595,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.077551014721393585,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.093877546489238739,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 13,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.10612244158983231,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.11836734414100647,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 19,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.18367345631122589,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 22,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.24489794671535492,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_mod_9_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.054298646748065948,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 2,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.063348419964313507,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 4,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.072398193180561066,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 7,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.085972853004932404,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 10,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_5": {
+        "costGold": 0,
+        "costWpWeight": 0.099547512829303741,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_6": {
+        "costGold": 0,
+        "costWpWeight": 0.1085972934961319,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 14,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_7": {
+        "costGold": 0,
+        "costWpWeight": 0.11764706671237946,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 16,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_8": {
+        "costGold": 0,
+        "costWpWeight": 0.12669683992862701,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_9": {
+        "costGold": 0,
+        "costWpWeight": 0.27149322628974915,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_tutor_mod_3_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.10526315867900848,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.26315790414810181,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 12,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.63157898187637329,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "aircraft_tutor_mod_4_preset": {
+      "aircraft_mod_1": {
+        "costGold": 0,
+        "costWpWeight": 0.085470087826251984,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 1,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_2": {
+        "costGold": 0,
+        "costWpWeight": 0.16239316761493683,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 8,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_3": {
+        "costGold": 0,
+        "costWpWeight": 0.23931625485420227,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 18,
+        "reqMod": "",
+        "tier": 1
+      },
+      "aircraft_mod_4": {
+        "costGold": 0,
+        "costWpWeight": 0.5128205418586731,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
     "empty": {},
     "ship_default": {
       "maintanance_new_engines": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.1485714316368103,
         "group": "shipMaintanance",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 16,
         "reqMod": "",
         "tier": 1
       },
       "maintanance_new_propellers": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.085714288055896759,
         "group": "shipMaintanance",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 5,
         "reqMod": "",
         "tier": 1
       },
       "maintanance_powered_toolkit": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.18285714089870453,
         "group": "shipMaintanance",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 22,
         "reqMod": "",
         "tier": 1
       },
       "protection_ammo_wetting": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.10285714268684387,
         "group": "shipProtection",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 8,
         "reqMod": "",
         "tier": 1
       },
       "protection_new_fireProtection": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.16571427881717682,
         "group": "shipProtection",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 19,
         "reqMod": "",
         "tier": 1
       },
       "protection_new_sonar": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.13142856955528259,
         "group": "shipProtection",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 13,
         "reqMod": "",
         "tier": 1
       },
       "weapons_contact_mines": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.068571425974369049,
         "group": "shipWeapons",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 2,
         "reqMod": "",
         "tier": 1
       },
       "weapons_depth_charges": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.11428571492433548,
         "group": "shipWeapons",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 10,
         "reqMod": "",
         "tier": 1
@@ -10065,90 +38541,99 @@ return {
     "submarine_default": {
       "maintanance_new_engines": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.11055276542901993,
         "group": "shipMaintanance",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 12,
         "reqMod": "",
         "tier": 1
       },
       "maintanance_new_propellers": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.070351757109165192,
         "group": "shipMaintanance",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 4,
         "reqMod": "",
         "tier": 1
       },
       "maintanance_powered_toolkit": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.16080401837825775,
         "group": "shipMaintanance",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 22,
         "reqMod": "",
         "tier": 1
       },
       "protection_ammo_wetting": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.10050251334905624,
         "group": "shipProtection",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 10,
         "reqMod": "",
         "tier": 1
       },
       "protection_new_fireProtection": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.15075376629829407,
         "group": "shipProtection",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 20,
         "reqMod": "",
         "tier": 1
       },
       "protection_new_sonar": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.12562814354896545,
         "group": "shipProtection",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 15,
         "reqMod": "",
         "tier": 1
       },
       "weapons_contact_mines": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.060301505029201508,
         "group": "shipWeapons",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 2,
         "reqMod": "",
         "tier": 1
       },
       "weapons_torpedo_damage_mode": {
         "costGold": 0,
-        "costWp": 1000,
-        "group": "shipWeapons",
+        "costWpWeight": 0.13567839562892914,
+        "group": "shipTorpedoes",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 17,
         "reqMod": "",
         "tier": 1
       },
       "weapons_torpedo_movement_mode": {
         "costGold": 0,
-        "costWp": 1000,
-        "group": "shipWeapons",
+        "costWpWeight": 0.085427135229110718,
+        "group": "shipTorpedoes",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 7,
         "reqMod": "",
         "tier": 1
@@ -10157,120 +38642,402 @@ return {
     "tank_default": {
       "art_support": {
         "costGold": 0,
-        "costWp": 0,
-        "group": "",
+        "costWpWeight": 0.0,
+        "group": "art_support",
         "isAlwaysOn": true,
         "isDefault": true,
+        "isHidden": false,
         "reqLevel": 0,
         "reqMod": "",
         "tier": 1
       },
       "art_support_highcaliber": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.1111111119389534,
         "group": "art_support",
         "isAlwaysOn": false,
         "isDefault": false,
-        "reqLevel": 15,
+        "isHidden": false,
+        "reqLevel": 20,
         "reqMod": "",
         "tier": 1
       },
       "art_support_mortars": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.092592589557170868,
         "group": "art_support",
         "isAlwaysOn": false,
         "isDefault": false,
-        "reqLevel": 10,
+        "isHidden": false,
+        "reqLevel": 15,
         "reqMod": "",
         "tier": 1
       },
       "art_support_smoke": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.12962962687015533,
         "group": "art_support",
         "isAlwaysOn": false,
         "isDefault": false,
-        "reqLevel": 20,
+        "isHidden": false,
+        "reqLevel": 25,
         "reqMod": "",
         "tier": 1
       },
       "machinegun_belt_ap": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.1111111119389534,
         "group": "belts",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 20,
         "reqMod": "",
         "tier": 1
       },
       "machinegun_belt_stealth": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.12962962687015533,
         "group": "belts",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 25,
         "reqMod": "",
         "tier": 1
       },
       "machinegun_belt_tracer": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.092592589557170868,
         "group": "belts",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 15,
-        "reqMod": "",
-        "tier": 1
-      },
-      "ostketten_tank_tracks": {
-        "costGold": 0,
-        "costWp": 1000,
-        "group": "tracks",
-        "isAlwaysOn": false,
-        "isDefault": false,
-        "reqLevel": 25,
-        "reqMod": "",
-        "tier": 1
-      },
-      "tank_additional_armor": {
-        "costGold": 0,
-        "costWp": 1000,
-        "group": "",
-        "isAlwaysOn": false,
-        "isDefault": false,
-        "reqLevel": 25,
         "reqMod": "",
         "tier": 1
       },
       "tank_engine_smoke_screen_system": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.0,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": true,
+        "isHidden": true,
+        "reqLevel": 0,
+        "reqMod": "",
+        "tier": 1
+      },
+      "tank_smoke_screen_long_duration": {
+        "costGold": 0,
+        "costWpWeight": 0.1111111119389534,
         "group": "smoke",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 20,
         "reqMod": "",
         "tier": 1
       },
-      "tank_smoke_screen_system_mod": {
+      "tank_smoke_screen_low_cooldown": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.092592589557170868,
         "group": "smoke",
         "isAlwaysOn": false,
         "isDefault": false,
-        "reqLevel": 10,
+        "isHidden": false,
+        "reqLevel": 15,
         "reqMod": "",
         "tier": 1
       },
-      "winterketten_tank_tracks": {
+      "tank_smoke_screen_smoke_shell": {
         "costGold": 0,
-        "costWp": 1000,
-        "group": "tracks",
+        "costWpWeight": 0.12962962687015533,
+        "group": "smoke",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "tank_no_smoke": {
+      "art_support": {
+        "costGold": 0,
+        "costWpWeight": 0.0,
+        "group": "art_support",
+        "isAlwaysOn": true,
+        "isDefault": true,
+        "isHidden": false,
+        "reqLevel": 0,
+        "reqMod": "",
+        "tier": 1
+      },
+      "art_support_highcaliber": {
+        "costGold": 0,
+        "costWpWeight": 0.1666666716337204,
+        "group": "art_support",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "art_support_mortars": {
+        "costGold": 0,
+        "costWpWeight": 0.1388888955116272,
+        "group": "art_support",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      },
+      "art_support_smoke": {
+        "costGold": 0,
+        "costWpWeight": 0.1944444477558136,
+        "group": "art_support",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "machinegun_belt_ap": {
+        "costGold": 0,
+        "costWpWeight": 0.1666666716337204,
+        "group": "belts",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "machinegun_belt_stealth": {
+        "costGold": 0,
+        "costWpWeight": 0.1944444477558136,
+        "group": "belts",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "machinegun_belt_tracer": {
+        "costGold": 0,
+        "costWpWeight": 0.1388888955116272,
+        "group": "belts",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "tank_no_smoke_shell": {
+      "art_support": {
+        "costGold": 0,
+        "costWpWeight": 0.0,
+        "group": "art_support",
+        "isAlwaysOn": true,
+        "isDefault": true,
+        "isHidden": false,
+        "reqLevel": 0,
+        "reqMod": "",
+        "tier": 1
+      },
+      "art_support_highcaliber": {
+        "costGold": 0,
+        "costWpWeight": 0.12765957415103912,
+        "group": "art_support",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "art_support_mortars": {
+        "costGold": 0,
+        "costWpWeight": 0.10638297349214554,
+        "group": "art_support",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      },
+      "art_support_smoke": {
+        "costGold": 0,
+        "costWpWeight": 0.14893616735935211,
+        "group": "art_support",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "machinegun_belt_ap": {
+        "costGold": 0,
+        "costWpWeight": 0.12765957415103912,
+        "group": "belts",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "machinegun_belt_stealth": {
+        "costGold": 0,
+        "costWpWeight": 0.14893616735935211,
+        "group": "belts",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "machinegun_belt_tracer": {
+        "costGold": 0,
+        "costWpWeight": 0.10638297349214554,
+        "group": "belts",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      },
+      "tank_engine_smoke_screen_system": {
+        "costGold": 0,
+        "costWpWeight": 0.0,
+        "group": "",
+        "isAlwaysOn": false,
+        "isDefault": true,
+        "isHidden": true,
+        "reqLevel": 0,
+        "reqMod": "",
+        "tier": 1
+      },
+      "tank_smoke_screen_long_duration": {
+        "costGold": 0,
+        "costWpWeight": 0.12765957415103912,
+        "group": "smoke",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "tank_smoke_screen_low_cooldown": {
+        "costGold": 0,
+        "costWpWeight": 0.10638297349214554,
+        "group": "smoke",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      }
+    },
+    "tank_no_smoke_system": {
+      "art_support": {
+        "costGold": 0,
+        "costWpWeight": 0.0,
+        "group": "art_support",
+        "isAlwaysOn": true,
+        "isDefault": true,
+        "isHidden": false,
+        "reqLevel": 0,
+        "reqMod": "",
+        "tier": 1
+      },
+      "art_support_highcaliber": {
+        "costGold": 0,
+        "costWpWeight": 0.13953489065170288,
+        "group": "art_support",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "art_support_mortars": {
+        "costGold": 0,
+        "costWpWeight": 0.11627906560897827,
+        "group": "art_support",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      },
+      "art_support_smoke": {
+        "costGold": 0,
+        "costWpWeight": 0.1627907007932663,
+        "group": "art_support",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "machinegun_belt_ap": {
+        "costGold": 0,
+        "costWpWeight": 0.13953489065170288,
+        "group": "belts",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 20,
+        "reqMod": "",
+        "tier": 1
+      },
+      "machinegun_belt_stealth": {
+        "costGold": 0,
+        "costWpWeight": 0.1627907007932663,
+        "group": "belts",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 25,
+        "reqMod": "",
+        "tier": 1
+      },
+      "machinegun_belt_tracer": {
+        "costGold": 0,
+        "costWpWeight": 0.11627906560897827,
+        "group": "belts",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
+        "reqLevel": 15,
+        "reqMod": "",
+        "tier": 1
+      },
+      "tank_smoke_screen_smoke_shell": {
+        "costGold": 0,
+        "costWpWeight": 0.1627907007932663,
+        "group": "smoke",
+        "isAlwaysOn": false,
+        "isDefault": false,
+        "isHidden": false,
         "reqLevel": 25,
         "reqMod": "",
         "tier": 1
@@ -10279,634 +39046,3818 @@ return {
     "torpedo_ship": {
       "maintanance_new_engines": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.1165919303894043,
         "group": "shipMaintanance",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 16,
         "reqMod": "",
         "tier": 1
       },
       "maintanance_new_propellers": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.062780275940895081,
         "group": "shipMaintanance",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 4,
         "reqMod": "",
         "tier": 1
       },
       "maintanance_powered_toolkit": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.1434977650642395,
         "group": "shipMaintanance",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 22,
         "reqMod": "",
         "tier": 1
       },
       "protection_ammo_wetting": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.071748882532119751,
         "group": "shipProtection",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 6,
         "reqMod": "",
         "tier": 1
       },
       "protection_new_fireProtection": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.13452915847301483,
         "group": "shipProtection",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 20,
         "reqMod": "",
         "tier": 1
       },
       "protection_new_sonar": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.10762332379817963,
         "group": "shipProtection",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 14,
         "reqMod": "",
         "tier": 1
       },
       "weapons_contact_mines": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.053811661899089813,
         "group": "shipWeapons",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 2,
         "reqMod": "",
         "tier": 1
       },
       "weapons_depth_charges": {
         "costGold": 0,
-        "costWp": 1000,
+        "costWpWeight": 0.085201799869537354,
         "group": "shipWeapons",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 9,
         "reqMod": "",
         "tier": 1
       },
       "weapons_torpedo_damage_mode": {
         "costGold": 0,
-        "costWp": 1000,
-        "group": "shipWeapons",
+        "costWpWeight": 0.12556055188179016,
+        "group": "shipTorpedoes",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 18,
         "reqMod": "",
         "tier": 1
       },
       "weapons_torpedo_movement_mode": {
         "costGold": 0,
-        "costWp": 1000,
-        "group": "shipWeapons",
+        "costWpWeight": 0.098654717206954956,
+        "group": "shipTorpedoes",
         "isAlwaysOn": false,
         "isDefault": false,
+        "isHidden": false,
         "reqLevel": 12,
         "reqMod": "",
         "tier": 1
       }
     }
   },
-  "userstatRewards": {
-    "1": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 10000
-    },
-    "1000": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 3,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "1001": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [
-        "us_destroyer_fletcher_nicholas",
-        "fr_m4a4_sherman_reward"
-      ],
-      "wp": 0
-    },
-    "1002": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 1,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {
-        "every_day_award_small_pack": 1
+  "unitResearchExp": {
+    "a-20g": 1070,
+    "ar_2": 560,
+    "b-17e": 9080,
+    "b_25j_20": 2530,
+    "b_26b_c": 4090,
+    "b_34": 1070,
+    "bf-109b_2": 200,
+    "bf-109c_1": 560,
+    "bf-109e-1": 1070,
+    "bf-109f-2": 2530,
+    "bf-109f-4": 4090,
+    "bf-109f-4_trop": 9080,
+    "bf-109g-2": 9080,
+    "bf-110f-2": 2530,
+    "db_3b": 1070,
+    "do_17e_1": 200,
+    "do_17z_2": 560,
+    "do_335a_1": 9080,
+    "douglas_ad_2": 24900,
+    "er-2_m105_mv3": 4090,
+    "er-2_m105r_lu2b": 9080,
+    "f2a-1": 560,
+    "f3f-2": 200,
+    "f4f-3": 1070,
+    "f4u-1c": 9080,
+    "f4u-1d": 2530,
+    "f4u-4b": 24900,
+    "f4u_4": 4090,
+    "f8f1": 9080,
+    "fw-190a-4": 4090,
+    "fw-190a-5_cannons": 24900,
+    "fw-190a-5_u2": 4090,
+    "fw-190d-9": 9080,
+    "fw-190f-8": 24900,
+    "fw_190a_1": 2530,
+    "fw_200c_1": 1070,
+    "he-111h-16_winter": 2530,
+    "he51c1": 200,
+    "he_112b_0": 1070,
+    "hs-123a-1": 200,
+    "i-153_m62": 560,
+    "i-15_1934": 200,
+    "i-16_type10": 1070,
+    "i-16_type18": 560,
+    "i-16_type5": 200,
+    "i_185_m82": 4090,
+    "il-10": 24900,
+    "il-2i": 2530,
+    "il-2m": 4090,
+    "il_2_1941": 1070,
+    "il_4": 2530,
+    "ju-188a-2": 9080,
+    "ju-87b-2": 560,
+    "ju-87d-3": 1070,
+    "ju_87d_5": 2530,
+    "la-5_type37_early": 2530,
+    "la-5fn": 4090,
+    "la-7": 9080,
+    "la-7b-20": 24900,
+    "lagg-3-11": 1070,
+    "lagg-3-8": 560,
+    "me-410a-1_u2": 4090,
+    "me_264": 4090,
+    "p-36a": 200,
+    "p-36c": 560,
+    "p-40e": 560,
+    "p-40f_10": 1070,
+    "p-43a-1": 1070,
+    "p-47d_22_re": 4090,
+    "p-47n-15": 9080,
+    "p-51c-10-nt": 2530,
+    "p-51d-20-na": 4090,
+    "p-51d-5": 9080,
+    "p-63a-10": 4090,
+    "pby-5a": 560,
+    "pe-8_m82": 9080,
+    "sb2c_4": 2530,
+    "sb2u-2": 200,
+    "sb_2m_100": 200,
+    "sbd-3": 560,
+    "su-2_mv5": 200,
+    "su_6_single": 9080,
+    "tbd-1_1938": 200,
+    "yak-1_early": 1070,
+    "yak-3": 9080,
+    "yak-7b": 2530,
+    "yak-9t": 4090,
+    "yak-9u": 9080,
+    "yak_2_kabb": 560
+  },
+  "unitResearchLevels": {
+    "air": [
+      {
+        "costGold": 31,
+        "nextLevelExp": 200
       },
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2000": {
-      "decorators": ["tankman"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2001": {
-      "decorators": ["sailor"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2002": {
-      "decorators": ["pilot"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2003": {
-      "decorators": ["lieutenant"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2004": {
-      "decorators": ["colonel"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2005": {
-      "decorators": ["general"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2006": {
-      "decorators": ["captain-lieutenant"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2007": {
-      "decorators": ["captain_1st_rank"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2008": {
-      "decorators": ["rear_admiral"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2009": {
-      "decorators": ["alpha_tester"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2010": {
-      "decorators": ["beta_tester"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2011": {
-      "decorators": ["bullet"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2012": {
-      "decorators": ["cannon"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2013": {
-      "decorators": ["medal"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "2014": {
-      "decorators": ["aircraft"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "3": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {
-        "every_day_award_big_pack_1": 1
+      {
+        "costGold": 78,
+        "nextLevelExp": 560
       },
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "4": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {
-        "every_day_award_big_pack_2": 1
+      {
+        "costGold": 132,
+        "nextLevelExp": 1070
       },
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "5": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 1000
-    },
-    "6": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 2000
-    },
-    "7": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 3000
-    },
-    "8": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 6000
-    },
-    "reward_alpha_wipe_gift": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 3,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_daily_login_day_14": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {
-        "every_day_award_big_pack_2": 1
+      {
+        "costGold": 280,
+        "nextLevelExp": 2530
       },
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_daily_login_day_7": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {
-        "every_day_award_big_pack_1": 1
+      {
+        "costGold": 405,
+        "nextLevelExp": 4090
       },
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_daily_login_first": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 10000
-    },
-    "reward_daily_login_regular": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {
-        "every_day_award_small_pack": 1
+      {
+        "costGold": 803,
+        "nextLevelExp": 9080
       },
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_daily_quest_big": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 2000
-    },
-    "reward_daily_quest_small": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 1000
-    },
-    "reward_decorator_artillery_kill": {
-      "decorators": ["cannon"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_decorator_first_place_score": {
-      "decorators": ["medal"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_decorator_flyout": {
-      "decorators": ["aircraft"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_decorator_kills": {
-      "decorators": ["bullet"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_release_celebration_units": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [
-        "us_destroyer_fletcher_nicholas",
-        "fr_m4a4_sherman_reward"
-      ],
-      "wp": 0
-    },
-    "reward_title_air_kills": {
-      "decorators": ["pilot"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_title_alpha_member": {
-      "decorators": ["alpha_tester"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_title_beta_member": {
-      "decorators": ["beta_tester"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_title_ships_kills": {
-      "decorators": ["sailor"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_title_ships_level_15": {
-      "decorators": ["captain_1st_rank"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_title_ships_level_25": {
-      "decorators": ["rear_admiral"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_title_ships_level_3": {
-      "decorators": ["captain-lieutenant"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_title_tanks_kills": {
-      "decorators": ["tankman"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_title_tanks_level_14": {
-      "decorators": ["general"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_title_tanks_level_3": {
-      "decorators": ["lieutenant"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_title_tanks_level_7": {
-      "decorators": ["colonel"],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 0
-    },
-    "reward_weekly_quest_big": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 6000
-    },
-    "reward_weekly_quest_small": {
-      "decorators": [],
-      "gold": 0,
-      "items": {},
-      "lootboxes": {},
-      "premiumDays": 0,
-      "unitUpgrades": [],
-      "units": [],
-      "wp": 3000
+      {
+        "costGold": 1965,
+        "nextLevelExp": 24900
+      }
+    ]
+  },
+  "unitTreeNodes": {
+    "air": {
+      "a-20g": {
+        "country": "country_usa",
+        "name": "a-20g",
+        "reqUnits": ["sbd-3"],
+        "x": 4,
+        "y": 6
+      },
+      "ar_2": {
+        "country": "country_ussr",
+        "name": "ar_2",
+        "reqUnits": ["sb_2m_100"],
+        "x": 3,
+        "y": 7
+      },
+      "b-17e": {
+        "country": "country_usa",
+        "name": "b-17e",
+        "reqUnits": ["b_26b_c"],
+        "x": 7,
+        "y": 8
+      },
+      "b-17g": {
+        "country": "country_usa",
+        "name": "b-17g",
+        "reqUnits": [],
+        "x": 7,
+        "y": 7
+      },
+      "b-17g_prem": {
+        "country": "country_usa",
+        "name": "b-17g_prem",
+        "reqUnits": [],
+        "x": 7,
+        "y": 1
+      },
+      "b_25j_20": {
+        "country": "country_usa",
+        "name": "b_25j_20",
+        "reqUnits": ["b_34"],
+        "x": 5,
+        "y": 8
+      },
+      "b_26b_c": {
+        "country": "country_usa",
+        "name": "b_26b_c",
+        "reqUnits": ["b_25j_20"],
+        "x": 6,
+        "y": 8
+      },
+      "b_34": {
+        "country": "country_usa",
+        "name": "b_34",
+        "reqUnits": ["pby-5a"],
+        "x": 4,
+        "y": 8
+      },
+      "bf-109b_2": {
+        "country": "country_germany",
+        "name": "bf-109b_2",
+        "reqUnits": ["he51c1"],
+        "x": 2,
+        "y": 3
+      },
+      "bf-109c_1": {
+        "country": "country_germany",
+        "name": "bf-109c_1",
+        "reqUnits": ["bf-109b_2"],
+        "x": 3,
+        "y": 3
+      },
+      "bf-109e-1": {
+        "country": "country_germany",
+        "name": "bf-109e-1",
+        "reqUnits": ["bf-109c_1"],
+        "x": 4,
+        "y": 4
+      },
+      "bf-109e-3": {
+        "country": "country_germany",
+        "name": "bf-109e-3",
+        "reqUnits": [],
+        "x": 4,
+        "y": 3
+      },
+      "bf-109e-3_prem": {
+        "country": "country_germany",
+        "name": "bf-109e-3_prem",
+        "reqUnits": [],
+        "x": 4,
+        "y": 1
+      },
+      "bf-109f-2": {
+        "country": "country_germany",
+        "name": "bf-109f-2",
+        "reqUnits": ["bf-109e-1"],
+        "x": 5,
+        "y": 4
+      },
+      "bf-109f-4": {
+        "country": "country_germany",
+        "name": "bf-109f-4",
+        "reqUnits": ["fw_190a_1", "bf-109f-2"],
+        "x": 6,
+        "y": 4
+      },
+      "bf-109f-4_trop": {
+        "country": "country_germany",
+        "name": "bf-109f-4_trop",
+        "reqUnits": ["bf-109f-4"],
+        "x": 7,
+        "y": 4
+      },
+      "bf-109g-14": {
+        "country": "country_germany",
+        "name": "bf-109g-14",
+        "reqUnits": [],
+        "x": 8,
+        "y": 4
+      },
+      "bf-109g-14_prem": {
+        "country": "country_germany",
+        "name": "bf-109g-14_prem",
+        "reqUnits": [],
+        "x": 8,
+        "y": 1
+      },
+      "bf-109g-2": {
+        "country": "country_germany",
+        "name": "bf-109g-2",
+        "reqUnits": ["bf-109f-4"],
+        "x": 7,
+        "y": 5
+      },
+      "bf-109z": {
+        "country": "country_germany",
+        "name": "bf-109z",
+        "reqUnits": [],
+        "x": 7,
+        "y": 0
+      },
+      "bf-110f-2": {
+        "country": "country_germany",
+        "name": "bf-110f-2",
+        "reqUnits": ["ju-87d-3"],
+        "x": 5,
+        "y": 7
+      },
+      "bf-110g-2": {
+        "country": "country_germany",
+        "name": "bf-110g-2",
+        "reqUnits": [],
+        "x": 6,
+        "y": 6
+      },
+      "bf-110g-2_prem": {
+        "country": "country_germany",
+        "name": "bf-110g-2_prem",
+        "reqUnits": [],
+        "x": 6,
+        "y": 1
+      },
+      "db_3b": {
+        "country": "country_ussr",
+        "name": "db_3b",
+        "reqUnits": ["ar_2"],
+        "x": 4,
+        "y": 7
+      },
+      "do_17e_1": {
+        "country": "country_germany",
+        "name": "do_17e_1",
+        "reqUnits": ["he51c1"],
+        "x": 2,
+        "y": 6
+      },
+      "do_17z_2": {
+        "country": "country_germany",
+        "name": "do_17z_2",
+        "reqUnits": ["do_17e_1"],
+        "x": 3,
+        "y": 6
+      },
+      "do_335a_0": {
+        "country": "country_germany",
+        "name": "do_335a_0",
+        "reqUnits": [],
+        "x": 6,
+        "y": 0
+      },
+      "do_335a_1": {
+        "country": "country_germany",
+        "name": "do_335a_1",
+        "reqUnits": ["me-410a-1_u2"],
+        "x": 7,
+        "y": 7
+      },
+      "douglas_ad_2": {
+        "country": "country_usa",
+        "name": "douglas_ad_2",
+        "reqUnits": ["p-47n-15"],
+        "x": 8,
+        "y": 6
+      },
+      "er-2_m105_mv3": {
+        "country": "country_ussr",
+        "name": "er-2_m105_mv3",
+        "reqUnits": ["il_4"],
+        "x": 6,
+        "y": 8
+      },
+      "er-2_m105r_lu2b": {
+        "country": "country_ussr",
+        "name": "er-2_m105r_lu2b",
+        "reqUnits": ["er-2_m105_mv3"],
+        "x": 7,
+        "y": 8
+      },
+      "f2a-1": {
+        "country": "country_usa",
+        "name": "f2a-1",
+        "reqUnits": ["p-36a"],
+        "x": 3,
+        "y": 2
+      },
+      "f2g-1": {
+        "country": "country_usa",
+        "name": "f2g-1",
+        "reqUnits": [],
+        "x": 8,
+        "y": 3
+      },
+      "f2g-1_prem": {
+        "country": "country_usa",
+        "name": "f2g-1_prem",
+        "reqUnits": [],
+        "x": 8,
+        "y": 1
+      },
+      "f3f-2": {
+        "country": "country_usa",
+        "name": "f3f-2",
+        "reqUnits": [],
+        "x": 1,
+        "y": 4
+      },
+      "f4f-3": {
+        "country": "country_usa",
+        "name": "f4f-3",
+        "reqUnits": ["f2a-1", "p-36c"],
+        "x": 4,
+        "y": 2
+      },
+      "f4f_4": {
+        "country": "country_usa",
+        "name": "f4f_4",
+        "reqUnits": [],
+        "x": 5,
+        "y": 4
+      },
+      "f4f_4_prem": {
+        "country": "country_usa",
+        "name": "f4f_4_prem",
+        "reqUnits": [],
+        "x": 5,
+        "y": 1
+      },
+      "f4u-1c": {
+        "country": "country_usa",
+        "name": "f4u-1c",
+        "reqUnits": ["f4u_4"],
+        "x": 7,
+        "y": 2
+      },
+      "f4u-1d": {
+        "country": "country_usa",
+        "name": "f4u-1d",
+        "reqUnits": ["f4f-3"],
+        "x": 5,
+        "y": 2
+      },
+      "f4u-4b": {
+        "country": "country_usa",
+        "name": "f4u-4b",
+        "reqUnits": ["f4u-1c", "f8f1"],
+        "x": 8,
+        "y": 2
+      },
+      "f4u_4": {
+        "country": "country_usa",
+        "name": "f4u_4",
+        "reqUnits": ["f4u-1d", "p-51c-10-nt"],
+        "x": 6,
+        "y": 2
+      },
+      "f8f1": {
+        "country": "country_usa",
+        "name": "f8f1",
+        "reqUnits": ["f4u_4"],
+        "x": 7,
+        "y": 3
+      },
+      "fw-190a-4": {
+        "country": "country_germany",
+        "name": "fw-190a-4",
+        "reqUnits": ["fw_190a_1", "bf-109f-2"],
+        "x": 6,
+        "y": 2
+      },
+      "fw-190a-5_cannons": {
+        "country": "country_germany",
+        "name": "fw-190a-5_cannons",
+        "reqUnits": ["fw-190d-9"],
+        "x": 8,
+        "y": 2
+      },
+      "fw-190a-5_u2": {
+        "country": "country_germany",
+        "name": "fw-190a-5_u2",
+        "reqUnits": ["fw_190a_1", "bf-109f-2"],
+        "x": 6,
+        "y": 3
+      },
+      "fw-190c": {
+        "country": "country_germany",
+        "name": "fw-190c",
+        "reqUnits": [],
+        "x": 8,
+        "y": 0
+      },
+      "fw-190d-9": {
+        "country": "country_germany",
+        "name": "fw-190d-9",
+        "reqUnits": ["fw-190a-5_u2", "fw-190a-4"],
+        "x": 7,
+        "y": 2
+      },
+      "fw-190f-8": {
+        "country": "country_germany",
+        "name": "fw-190f-8",
+        "reqUnits": ["do_335a_1"],
+        "x": 8,
+        "y": 7
+      },
+      "fw_190a_1": {
+        "country": "country_germany",
+        "name": "fw_190a_1",
+        "reqUnits": ["he_112b_0"],
+        "x": 5,
+        "y": 2
+      },
+      "fw_190a_5_u14": {
+        "country": "country_germany",
+        "name": "fw_190a_5_u14",
+        "reqUnits": [],
+        "x": 7,
+        "y": 3
+      },
+      "fw_190a_5_u14_prem": {
+        "country": "country_germany",
+        "name": "fw_190a_5_u14_prem",
+        "reqUnits": [],
+        "x": 7,
+        "y": 1
+      },
+      "fw_200c_1": {
+        "country": "country_germany",
+        "name": "fw_200c_1",
+        "reqUnits": ["do_17z_2"],
+        "x": 4,
+        "y": 9
+      },
+      "he-111h-16_winter": {
+        "country": "country_germany",
+        "name": "he-111h-16_winter",
+        "reqUnits": ["fw_200c_1"],
+        "x": 5,
+        "y": 9
+      },
+      "he51b1": {
+        "country": "country_germany",
+        "name": "he51b1",
+        "reqUnits": [],
+        "x": 2,
+        "y": 4
+      },
+      "he51b1_prem": {
+        "country": "country_germany",
+        "name": "he51b1_prem",
+        "reqUnits": [],
+        "x": 2,
+        "y": 1
+      },
+      "he51c1": {
+        "country": "country_germany",
+        "name": "he51c1",
+        "reqUnits": [],
+        "x": 1,
+        "y": 4
+      },
+      "he_112a_0": {
+        "country": "country_germany",
+        "name": "he_112a_0",
+        "reqUnits": [],
+        "x": 3,
+        "y": 0
+      },
+      "he_112b_0": {
+        "country": "country_germany",
+        "name": "he_112b_0",
+        "reqUnits": ["bf-109c_1"],
+        "x": 4,
+        "y": 2
+      },
+      "hs-123a-1": {
+        "country": "country_germany",
+        "name": "hs-123a-1",
+        "reqUnits": ["he51c1"],
+        "x": 2,
+        "y": 5
+      },
+      "i-153_m62": {
+        "country": "country_ussr",
+        "name": "i-153_m62",
+        "reqUnits": ["i-16_type5"],
+        "x": 3,
+        "y": 3
+      },
+      "i-15_1934": {
+        "country": "country_ussr",
+        "name": "i-15_1934",
+        "reqUnits": [],
+        "x": 1,
+        "y": 4
+      },
+      "i-15_1935": {
+        "country": "country_ussr",
+        "name": "i-15_1935",
+        "reqUnits": [],
+        "x": 2,
+        "y": 4
+      },
+      "i-15_1935_prem": {
+        "country": "country_ussr",
+        "name": "i-15_1935_prem",
+        "reqUnits": [],
+        "x": 2,
+        "y": 1
+      },
+      "i-16_type10": {
+        "country": "country_ussr",
+        "name": "i-16_type10",
+        "reqUnits": ["i-153_m62", "i-16_type18"],
+        "x": 4,
+        "y": 3
+      },
+      "i-16_type18": {
+        "country": "country_ussr",
+        "name": "i-16_type18",
+        "reqUnits": ["i-16_type5"],
+        "x": 3,
+        "y": 4
+      },
+      "i-16_type5": {
+        "country": "country_ussr",
+        "name": "i-16_type5",
+        "reqUnits": ["i-15_1934"],
+        "x": 2,
+        "y": 3
+      },
+      "i_180": {
+        "country": "country_ussr",
+        "name": "i_180",
+        "reqUnits": [],
+        "x": 4,
+        "y": 5
+      },
+      "i_180_prem": {
+        "country": "country_ussr",
+        "name": "i_180_prem",
+        "reqUnits": [],
+        "x": 4,
+        "y": 1
+      },
+      "i_185_m82": {
+        "country": "country_ussr",
+        "name": "i_185_m82",
+        "reqUnits": ["la-5_type37_early", "yak-7b"],
+        "x": 6,
+        "y": 3
+      },
+      "il-10": {
+        "country": "country_ussr",
+        "name": "il-10",
+        "reqUnits": ["su_6_single"],
+        "x": 8,
+        "y": 6
+      },
+      "il-10_1946_prem": {
+        "country": "country_ussr",
+        "name": "il-10_1946_prem",
+        "reqUnits": [],
+        "x": 7,
+        "y": 1
+      },
+      "il-2i": {
+        "country": "country_ussr",
+        "name": "il-2i",
+        "reqUnits": ["il_2_1941"],
+        "x": 5,
+        "y": 6
+      },
+      "il-2m": {
+        "country": "country_ussr",
+        "name": "il-2m",
+        "reqUnits": ["il-2i"],
+        "x": 6,
+        "y": 6
+      },
+      "il_2_1941": {
+        "country": "country_ussr",
+        "name": "il_2_1941",
+        "reqUnits": ["yak_2_kabb"],
+        "x": 4,
+        "y": 6
+      },
+      "il_4": {
+        "country": "country_ussr",
+        "name": "il_4",
+        "reqUnits": ["db_3b"],
+        "x": 5,
+        "y": 7
+      },
+      "itp_m1": {
+        "country": "country_ussr",
+        "name": "itp_m1",
+        "reqUnits": [],
+        "x": 7,
+        "y": 0
+      },
+      "ju-188a-2": {
+        "country": "country_germany",
+        "name": "ju-188a-2",
+        "reqUnits": ["me_264"],
+        "x": 7,
+        "y": 9
+      },
+      "ju-87b-2": {
+        "country": "country_germany",
+        "name": "ju-87b-2",
+        "reqUnits": ["hs-123a-1"],
+        "x": 3,
+        "y": 5
+      },
+      "ju-87d-3": {
+        "country": "country_germany",
+        "name": "ju-87d-3",
+        "reqUnits": ["ju-87b-2"],
+        "x": 4,
+        "y": 5
+      },
+      "ju_87d_5": {
+        "country": "country_germany",
+        "name": "ju_87d_5",
+        "reqUnits": ["ju-87d-3"],
+        "x": 5,
+        "y": 5
+      },
+      "la-11": {
+        "country": "country_ussr",
+        "name": "la-11",
+        "reqUnits": [],
+        "x": 8,
+        "y": 3
+      },
+      "la-11_prem": {
+        "country": "country_ussr",
+        "name": "la-11_prem",
+        "reqUnits": [],
+        "x": 8,
+        "y": 1
+      },
+      "la-5_type37_early": {
+        "country": "country_ussr",
+        "name": "la-5_type37_early",
+        "reqUnits": ["i-16_type10"],
+        "x": 5,
+        "y": 2
+      },
+      "la-5fn": {
+        "country": "country_ussr",
+        "name": "la-5fn",
+        "reqUnits": ["la-5_type37_early", "yak-7b"],
+        "x": 6,
+        "y": 2
+      },
+      "la-7": {
+        "country": "country_ussr",
+        "name": "la-7",
+        "reqUnits": ["i_185_m82", "la-5fn"],
+        "x": 7,
+        "y": 2
+      },
+      "la-7b-20": {
+        "country": "country_ussr",
+        "name": "la-7b-20",
+        "reqUnits": ["la-7"],
+        "x": 8,
+        "y": 2
+      },
+      "lagg-3-11": {
+        "country": "country_ussr",
+        "name": "lagg-3-11",
+        "reqUnits": ["lagg-3-8"],
+        "x": 4,
+        "y": 2
+      },
+      "lagg-3-8": {
+        "country": "country_ussr",
+        "name": "lagg-3-8",
+        "reqUnits": ["i-16_type5"],
+        "x": 3,
+        "y": 2
+      },
+      "me-410a-1": {
+        "country": "country_germany",
+        "name": "me-410a-1",
+        "reqUnits": [],
+        "x": 5,
+        "y": 6
+      },
+      "me-410a-1_prem": {
+        "country": "country_germany",
+        "name": "me-410a-1_prem",
+        "reqUnits": [],
+        "x": 5,
+        "y": 1
+      },
+      "me-410a-1_u2": {
+        "country": "country_germany",
+        "name": "me-410a-1_u2",
+        "reqUnits": ["bf-110f-2"],
+        "x": 6,
+        "y": 7
+      },
+      "me_264": {
+        "country": "country_germany",
+        "name": "me_264",
+        "reqUnits": ["he-111h-16_winter"],
+        "x": 6,
+        "y": 9
+      },
+      "p-36a": {
+        "country": "country_usa",
+        "name": "p-36a",
+        "reqUnits": ["f3f-2"],
+        "x": 2,
+        "y": 3
+      },
+      "p-36c": {
+        "country": "country_usa",
+        "name": "p-36c",
+        "reqUnits": ["p-36a"],
+        "x": 3,
+        "y": 3
+      },
+      "p-38k": {
+        "country": "country_usa",
+        "name": "p-38k",
+        "reqUnits": [],
+        "x": 8,
+        "y": 0
+      },
+      "p-400": {
+        "country": "country_usa",
+        "name": "p-400",
+        "reqUnits": [],
+        "x": 4,
+        "y": 5
+      },
+      "p-400_prem": {
+        "country": "country_usa",
+        "name": "p-400_prem",
+        "reqUnits": [],
+        "x": 4,
+        "y": 1
+      },
+      "p-40e": {
+        "country": "country_usa",
+        "name": "p-40e",
+        "reqUnits": ["p-36a"],
+        "x": 3,
+        "y": 4
+      },
+      "p-40f_10": {
+        "country": "country_usa",
+        "name": "p-40f_10",
+        "reqUnits": ["p-40e"],
+        "x": 4,
+        "y": 4
+      },
+      "p-43a-1": {
+        "country": "country_usa",
+        "name": "p-43a-1",
+        "reqUnits": ["f2a-1", "p-36c"],
+        "x": 4,
+        "y": 3
+      },
+      "p-47d-28": {
+        "country": "country_usa",
+        "name": "p-47d-28",
+        "reqUnits": [],
+        "x": 6,
+        "y": 3
+      },
+      "p-47d-28_prem": {
+        "country": "country_usa",
+        "name": "p-47d-28_prem",
+        "reqUnits": [],
+        "x": 6,
+        "y": 1
+      },
+      "p-47d_22_re": {
+        "country": "country_usa",
+        "name": "p-47d_22_re",
+        "reqUnits": ["sb2c_4"],
+        "x": 6,
+        "y": 6
+      },
+      "p-47d_ussr": {
+        "country": "country_ussr",
+        "name": "p-47d_ussr",
+        "reqUnits": [],
+        "x": 6,
+        "y": 0
+      },
+      "p-47n-15": {
+        "country": "country_usa",
+        "name": "p-47n-15",
+        "reqUnits": ["p-47d_22_re"],
+        "x": 7,
+        "y": 6
+      },
+      "p-51c-10-nt": {
+        "country": "country_usa",
+        "name": "p-51c-10-nt",
+        "reqUnits": ["p-43a-1"],
+        "x": 5,
+        "y": 3
+      },
+      "p-51d-20-na": {
+        "country": "country_usa",
+        "name": "p-51d-20-na",
+        "reqUnits": ["p-51c-10-nt", "f4u-1d"],
+        "x": 6,
+        "y": 5
+      },
+      "p-51d-5": {
+        "country": "country_usa",
+        "name": "p-51d-5",
+        "reqUnits": ["p-51d-20-na", "p-63a-10"],
+        "x": 7,
+        "y": 4
+      },
+      "p-63a-10": {
+        "country": "country_usa",
+        "name": "p-63a-10",
+        "reqUnits": ["f4u-1d", "p-51c-10-nt"],
+        "x": 6,
+        "y": 4
+      },
+      "pby-5a": {
+        "country": "country_usa",
+        "name": "pby-5a",
+        "reqUnits": ["tbd-1_1938"],
+        "x": 3,
+        "y": 7
+      },
+      "pe-8_m82": {
+        "country": "country_ussr",
+        "name": "pe-8_m82",
+        "reqUnits": ["er-2_m105_mv3"],
+        "x": 7,
+        "y": 9
+      },
+      "sb2c_4": {
+        "country": "country_usa",
+        "name": "sb2c_4",
+        "reqUnits": ["a-20g"],
+        "x": 5,
+        "y": 6
+      },
+      "sb2u-2": {
+        "country": "country_usa",
+        "name": "sb2u-2",
+        "reqUnits": ["f3f-2"],
+        "x": 2,
+        "y": 5
+      },
+      "sb2u-3": {
+        "country": "country_usa",
+        "name": "sb2u-3",
+        "reqUnits": [],
+        "x": 2,
+        "y": 4
+      },
+      "sb2u-3_prem": {
+        "country": "country_usa",
+        "name": "sb2u-3_prem",
+        "reqUnits": [],
+        "x": 2,
+        "y": 1
+      },
+      "sb_2m_100": {
+        "country": "country_ussr",
+        "name": "sb_2m_100",
+        "reqUnits": ["i-15_1934"],
+        "x": 2,
+        "y": 6
+      },
+      "sbd-3": {
+        "country": "country_usa",
+        "name": "sbd-3",
+        "reqUnits": ["sb2u-2"],
+        "x": 3,
+        "y": 5
+      },
+      "su-2_mv5": {
+        "country": "country_ussr",
+        "name": "su-2_mv5",
+        "reqUnits": ["i-15_1934"],
+        "x": 2,
+        "y": 5
+      },
+      "su_6_single": {
+        "country": "country_ussr",
+        "name": "su_6_single",
+        "reqUnits": ["il-2m"],
+        "x": 7,
+        "y": 6
+      },
+      "tandem_mai": {
+        "country": "country_ussr",
+        "name": "tandem_mai",
+        "reqUnits": [],
+        "x": 3,
+        "y": 0
+      },
+      "tbd-1_1938": {
+        "country": "country_usa",
+        "name": "tbd-1_1938",
+        "reqUnits": ["f3f-2"],
+        "x": 2,
+        "y": 6
+      },
+      "xp-50": {
+        "country": "country_usa",
+        "name": "xp-50",
+        "reqUnits": [],
+        "x": 6,
+        "y": 0
+      },
+      "xp-55": {
+        "country": "country_usa",
+        "name": "xp-55",
+        "reqUnits": [],
+        "x": 5,
+        "y": 0
+      },
+      "yak-1_early": {
+        "country": "country_ussr",
+        "name": "yak-1_early",
+        "reqUnits": ["i-153_m62", "i-16_type18"],
+        "x": 4,
+        "y": 4
+      },
+      "yak-3": {
+        "country": "country_ussr",
+        "name": "yak-3",
+        "reqUnits": ["yak-9t"],
+        "x": 7,
+        "y": 5
+      },
+      "yak-3t": {
+        "country": "country_ussr",
+        "name": "yak-3t",
+        "reqUnits": [],
+        "x": 8,
+        "y": 0
+      },
+      "yak-7b": {
+        "country": "country_ussr",
+        "name": "yak-7b",
+        "reqUnits": ["yak-1_early"],
+        "x": 5,
+        "y": 4
+      },
+      "yak-9": {
+        "country": "country_ussr",
+        "name": "yak-9",
+        "reqUnits": [],
+        "x": 5,
+        "y": 5
+      },
+      "yak-9_prem": {
+        "country": "country_ussr",
+        "name": "yak-9_prem",
+        "reqUnits": [],
+        "x": 5,
+        "y": 1
+      },
+      "yak-9m": {
+        "country": "country_ussr",
+        "name": "yak-9m",
+        "reqUnits": [],
+        "x": 6,
+        "y": 5
+      },
+      "yak-9m_prem": {
+        "country": "country_ussr",
+        "name": "yak-9m_prem",
+        "reqUnits": [],
+        "x": 6,
+        "y": 1
+      },
+      "yak-9t": {
+        "country": "country_ussr",
+        "name": "yak-9t",
+        "reqUnits": ["la-5_type37_early", "yak-7b"],
+        "x": 6,
+        "y": 4
+      },
+      "yak-9u": {
+        "country": "country_ussr",
+        "name": "yak-9u",
+        "reqUnits": ["yak-9t"],
+        "x": 7,
+        "y": 4
+      },
+      "yak_2_kabb": {
+        "country": "country_ussr",
+        "name": "yak_2_kabb",
+        "reqUnits": ["su-2_mv5"],
+        "x": 3,
+        "y": 5
+      },
+      "yp-38": {
+        "country": "country_usa",
+        "name": "yp-38",
+        "reqUnits": [],
+        "x": 3,
+        "y": 0
+      }
     }
+  },
+  "unitsAvgCostWp": {
+    "air": [
+      0,
+      5700,
+      15000,
+      28400,
+      70300,
+      119200,
+      272200,
+      768100
+    ],
+    "ships": [
+      0,
+      20100,
+      25850,
+      27880,
+      27100,
+      30175,
+      35850,
+      37950,
+      43200,
+      47700,
+      56225,
+      69750,
+      96100,
+      122650,
+      166900,
+      210700,
+      283150,
+      377550,
+      468800,
+      602650,
+      773150,
+      849550,
+      927100,
+      973800,
+      1000850,
+      1019400,
+      1034000,
+      1046100,
+      1056450,
+      1056450,
+      1056450
+    ],
+    "tanks": [
+      0,
+      20200,
+      20166,
+      26600,
+      48800,
+      155783,
+      390150,
+      661200,
+      895900,
+      1110200,
+      1378000,
+      1466050,
+      1545950,
+      1610300,
+      1648300,
+      1690266,
+      1728133,
+      1754025,
+      1790650,
+      1804150
+    ]
+  },
+  "userstatRewards": {
+    "anniversarybond_125": [
+      {
+        "count": 125,
+        "gType": "currency",
+        "id": "anniversarybond",
+        "subId": ""
+      }
+    ],
+    "anniversarybond_reward_200": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "anniversarybond",
+        "subId": ""
+      }
+    ],
+    "anniversarybond_reward_50": [
+      {
+        "count": 50,
+        "gType": "currency",
+        "id": "anniversarybond",
+        "subId": ""
+      }
+    ],
+    "april_day_2024_event_quest_reward": [
+      {
+        "count": 125,
+        "gType": "currency",
+        "id": "aprilbond",
+        "subId": ""
+      }
+    ],
+    "avatar_annyversary_2024_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_anniversary_2024_1",
+        "subId": ""
+      }
+    ],
+    "avatar_annyversary_2024_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_anniversary_2024_2",
+        "subId": ""
+      }
+    ],
+    "avatar_annyversary_2024_3": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_anniversary_2024_3",
+        "subId": ""
+      }
+    ],
+    "avatar_independence": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_usa_day",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_avatar_1_season_10": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ussr_tanker_05",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_avatar_1_season_11": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_jp_tanker_01",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_avatar_1_season_12": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ussr_tanker_06",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_avatar_1_season_13": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_us_tanker_03",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_avatar_1_season_3": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ussr_tanker_01",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_avatar_1_season_4": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_it_tanker",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_avatar_1_season_5": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ger_tanker",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_avatar_1_season_6": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_is_tanker_01",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_avatar_1_season_7": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_brit_sailor_valiant",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_avatar_1_season_8": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_brit_tanker_chieftain_mk_10",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_avatar_1_season_9": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_chin_tanker_02",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_decorator_1_season_10": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "peaceful_atom",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_decorator_1_season_11": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "shell_barrel",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_decorator_1_season_12": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "punch",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_decorator_1_season_13": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "punch",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_decorator_1_season_3": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "pipe_wrench",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_decorator_1_season_4": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "gun_sight",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_decorator_1_season_5": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "shark",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_decorator_1_season_6": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "gas_mask",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_decorator_1_season_7": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "wolf_head",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_decorator_1_season_8": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "thunder_cloud",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_decorator_1_season_9": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "radio_tower",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_event_key_1": [
+      {
+        "count": 1,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_event_key_1_season_3": [
+      {
+        "count": 1,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_event_key_2": [
+      {
+        "count": 2,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_gold_1": [
+      {
+        "count": 120,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_gold_1_season_3": [
+      {
+        "count": 120,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_gold_2": [
+      {
+        "count": 240,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_gold_2_season_3": [
+      {
+        "count": 240,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_gold_3": [
+      {
+        "count": 360,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_gold_3_season_3": [
+      {
+        "count": 360,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_gold_4": [
+      {
+        "count": 480,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_gold_4_season_3": [
+      {
+        "count": 480,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_gold_5": [
+      {
+        "count": 600,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_gold_5_season_3": [
+      {
+        "count": 600,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_premium_1": [
+      {
+        "count": 1,
+        "gType": "premium",
+        "id": "",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_premium_1_season_3": [
+      {
+        "count": 1,
+        "gType": "premium",
+        "id": "",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_spare_1": [
+      {
+        "count": 1,
+        "gType": "item",
+        "id": "spare",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_spare_1_season_3": [
+      {
+        "count": 1,
+        "gType": "item",
+        "id": "spare",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_spare_2": [
+      {
+        "count": 5,
+        "gType": "item",
+        "id": "spare",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_spare_2_season_3": [
+      {
+        "count": 5,
+        "gType": "item",
+        "id": "spare",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_spare_3": [
+      {
+        "count": 7,
+        "gType": "item",
+        "id": "spare",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_spare_3_season_3": [
+      {
+        "count": 7,
+        "gType": "item",
+        "id": "spare",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_unit_season_3": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_pzkpfw_IV_ausf_F2",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_unit_upgrade_season_3": [
+      {
+        "count": 0,
+        "gType": "unitUpgrade",
+        "id": "germ_pzkpfw_IV_ausf_F2",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_warbonds_1": [
+      {
+        "count": 250,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_warbonds_1_season_3": [
+      {
+        "count": 250,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_wp_1": [
+      {
+        "count": 24000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_wp_1_season_3": [
+      {
+        "count": 24000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_wp_2": [
+      {
+        "count": 36000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_wp_2_season_3": [
+      {
+        "count": 36000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_wp_3": [
+      {
+        "count": 48000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_wp_3_season_3": [
+      {
+        "count": 48000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_wp_4": [
+      {
+        "count": 96000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_wp_4_season_3": [
+      {
+        "count": 96000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "cbt_air_reward": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "beta_tester_air",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "cbt_air_medal",
+        "subId": "season:12"
+      }
+    ],
+    "cros_promo_reward_avatar": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_crosspromo",
+        "subId": ""
+      }
+    ],
+    "cros_promo_reward_decorator": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "winged_diamond",
+        "subId": ""
+      }
+    ],
+    "cros_promo_reward_platoon": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_m4_sherman_reward",
+        "subId": ""
+      }
+    ],
+    "cros_promo_reward_ship": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "jp_destroyer_hatsuzuki",
+        "subId": ""
+      }
+    ],
+    "default_ships_rating_reward": [
+      {
+        "count": 100,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "default_tanks_rating_reward": [
+      {
+        "count": 100,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "default_wp_rating_reward": [
+      {
+        "count": 100,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_free_keys": [
+      {
+        "count": 1,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "event_free_warbonds": [
+      {
+        "count": 300,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_progress_reward_1": [
+      {
+        "count": 300,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_progress_reward_2": [
+      {
+        "count": 550,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_progress_reward_3": [
+      {
+        "count": 900,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_progress_reward_4": [
+      {
+        "count": 1150,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_progress_reward_4_v3": [
+      {
+        "count": 2,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "event_progress_reward_5": [
+      {
+        "count": 1400,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_progress_reward_new_1": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_progress_reward_new_2": [
+      {
+        "count": 400,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_progress_reward_new_3": [
+      {
+        "count": 600,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_progress_reward_new_4": [
+      {
+        "count": 1,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "event_progress_reward_new_5": [
+      {
+        "count": 800,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_quest_reward": [
+      {
+        "count": 25,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_special_christmas_2023_free_firework_kit": [
+      {
+        "count": 3,
+        "gType": "item",
+        "id": "firework_kit",
+        "subId": ""
+      }
+    ],
+    "event_special_gift_christmas_2023_reward_day_WP": [
+      {
+        "count": 20000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "event_special_gift_christmas_2023_reward_day_gold": [
+      {
+        "count": 100,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_special_gift_christmas_2023_reward_day_nybond": [
+      {
+        "count": 50,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_gift_christmas_2023_reward_day_premiumDays": [
+      {
+        "count": 1,
+        "gType": "premium",
+        "id": "",
+        "subId": ""
+      }
+    ],
+    "event_special_gift_christmas_2023_reward_day_warbond": [
+      {
+        "count": 50,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_capture_streak_reward_stage_1": [
+      {
+        "count": 50,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_capture_streak_reward_stage_2": [
+      {
+        "count": 100,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_capture_streak_reward_stage_3": [
+      {
+        "count": 150,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_capture_streak_reward_stage_4": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_capture_streak_reward_stage_5": [
+      {
+        "count": 250,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_first_place_score_reward_stage_1": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_first_place_score_reward_stage_2": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_first_place_score_reward_stage_3": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_first_place_score_reward_stage_4": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_first_place_score_reward_stage_5": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_flyout_reward_stage_1": [
+      {
+        "count": 100,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_flyout_reward_stage_2": [
+      {
+        "count": 150,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_flyout_reward_stage_3": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_flyout_reward_stage_4": [
+      {
+        "count": 250,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_flyout_reward_stage_5": [
+      {
+        "count": 300,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_kills_reward_stage_1": [
+      {
+        "count": 50,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_kills_reward_stage_2": [
+      {
+        "count": 100,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_kills_reward_stage_3": [
+      {
+        "count": 150,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_kills_reward_stage_4": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_kills_reward_stage_5": [
+      {
+        "count": 250,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_used_firework_reward": [
+      {
+        "count": 50,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_wins_reward_stage_1": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_wins_reward_stage_2": [
+      {
+        "count": 250,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_wins_reward_stage_3": [
+      {
+        "count": 300,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_wins_reward_stage_4": [
+      {
+        "count": 350,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "event_special_quest_christmas_2023_wins_reward_stage_5": [
+      {
+        "count": 400,
+        "gType": "currency",
+        "id": "nybond",
+        "subId": ""
+      }
+    ],
+    "fifty_percent_ships_rating_reward": [
+      {
+        "count": 150,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "fifty_percent_tanks_rating_reward": [
+      {
+        "count": 150,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "fifty_percent_wp_rating_reward": [
+      {
+        "count": 150,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "frame_eagle": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "eagle",
+        "subId": ""
+      }
+    ],
+    "frame_snail": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "snail",
+        "subId": ""
+      }
+    ],
+    "frame_star": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "star",
+        "subId": ""
+      }
+    ],
+    "frame_wreath": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "wreath",
+        "subId": ""
+      }
+    ],
+    "ircm_kit_5": [
+      {
+        "count": 5,
+        "gType": "item",
+        "id": "ircm_kit",
+        "subId": ""
+      }
+    ],
+    "mini_event_haloween_reward_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_halloween_usa",
+        "subId": ""
+      }
+    ],
+    "mini_event_quest_2024_battle_of_el_guettar_reward_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "scorpion",
+        "subId": ""
+      }
+    ],
+    "mini_event_quest_2024_battle_of_iwo_jima_reward_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "flag_on_mountain",
+        "subId": ""
+      }
+    ],
+    "mini_event_quest_2024_lunar_new_year_reward_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_lunar_new_year",
+        "subId": ""
+      }
+    ],
+    "mini_event_quest_2024_operation_grenade_reward_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "hand_grenade",
+        "subId": ""
+      }
+    ],
+    "mini_event_quest_2024_operation_sonnenblume_reward_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "crossed_swords",
+        "subId": ""
+      }
+    ],
+    "mini_event_quest_2024_pskov_operation_reward_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "bear_head",
+        "subId": ""
+      }
+    ],
+    "mini_event_quest_2024_saint_patrick_day_reward_1": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_saint_patrick",
+        "subId": ""
+      }
+    ],
+    "mini_event_quest_reward_campaign_booster": [
+      {
+        "count": 5,
+        "gType": "booster",
+        "id": "playerExp",
+        "subId": ""
+      }
+    ],
+    "mini_event_quest_reward_unit_booster": [
+      {
+        "count": 5,
+        "gType": "booster",
+        "id": "unitExp",
+        "subId": ""
+      }
+    ],
+    "mini_event_quest_reward_wp_1": [
+      {
+        "count": 50000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "mini_event_quest_reward_wp_booster": [
+      {
+        "count": 5,
+        "gType": "booster",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "pony_assault": [
+      {
+        "count": 2592000,
+        "gType": "battleMod",
+        "id": "pony_assault",
+        "subId": ""
+      }
+    ],
+    "pony_bomber": [
+      {
+        "count": 2592000,
+        "gType": "battleMod",
+        "id": "pony_bomber",
+        "subId": ""
+      }
+    ],
+    "pony_fighter": [
+      {
+        "count": 2592000,
+        "gType": "battleMod",
+        "id": "pony_fighter",
+        "subId": ""
+      }
+    ],
+    "pony_jet_fighter": [
+      {
+        "count": 2592000,
+        "gType": "battleMod",
+        "id": "pony_jet_fighter",
+        "subId": ""
+      }
+    ],
+    "pony_minigun_fighter": [
+      {
+        "count": 2592000,
+        "gType": "battleMod",
+        "id": "pony_minigun_fighter",
+        "subId": ""
+      }
+    ],
+    "pony_rocket_fighter": [
+      {
+        "count": 2592000,
+        "gType": "battleMod",
+        "id": "pony_rocket_fighter",
+        "subId": ""
+      }
+    ],
+    "reward_alpha_wipe_gift": [
+      {
+        "count": 3,
+        "gType": "premium",
+        "id": "",
+        "subId": ""
+      }
+    ],
+    "reward_avatar_battle_end_ships": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_default",
+        "subId": ""
+      }
+    ],
+    "reward_avatar_battle_end_tanks": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_tanker",
+        "subId": ""
+      }
+    ],
+    "reward_daily_login_day_14": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "every_day_award_big_pack_2",
+        "subId": ""
+      }
+    ],
+    "reward_daily_login_day_7": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "every_day_award_big_pack_1",
+        "subId": ""
+      }
+    ],
+    "reward_daily_login_first": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "every_day_award_first",
+        "subId": ""
+      }
+    ],
+    "reward_daily_login_regular": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "every_day_award_medium_pack",
+        "subId": ""
+      }
+    ],
+    "reward_daily_quest_big": [
+      {
+        "count": 2000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "reward_daily_quest_small": [
+      {
+        "count": 1000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "reward_decorator_artillery_kill": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cannon",
+        "subId": ""
+      }
+    ],
+    "reward_decorator_first_place_score": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "medal",
+        "subId": ""
+      }
+    ],
+    "reward_decorator_flyout": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "aircraft",
+        "subId": ""
+      }
+    ],
+    "reward_decorator_kills": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "bullet",
+        "subId": ""
+      }
+    ],
+    "reward_decorator_ships_collector": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "ship",
+        "subId": ""
+      }
+    ],
+    "reward_decorator_tanks_collector": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "tank",
+        "subId": ""
+      }
+    ],
+    "reward_default_campaign_avatars": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_default",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_tanker",
+        "subId": ""
+      }
+    ],
+    "reward_email_verified": [
+      {
+        "count": 100,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "reward_gold_easy_achievement": [
+      {
+        "count": 10,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "reward_gold_hard_achievement": [
+      {
+        "count": 10,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "reward_gold_medium_achievement": [
+      {
+        "count": 10,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "reward_gold_trivial_achievement": [
+      {
+        "count": 10,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "reward_release_celebration_units": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_destroyer_fletcher_nicholas",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "fr_m4a4_sherman_reward",
+        "subId": ""
+      }
+    ],
+    "reward_title_air_kills": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "pilot",
+        "subId": ""
+      }
+    ],
+    "reward_title_alpha_member": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "alpha_tester",
+        "subId": ""
+      }
+    ],
+    "reward_title_beta_member": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "beta_tester",
+        "subId": ""
+      }
+    ],
+    "reward_title_epic_battle_end": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "veteran_of_a_thousand_battles",
+        "subId": ""
+      }
+    ],
+    "reward_title_epic_capture_streak": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "conqueror",
+        "subId": ""
+      }
+    ],
+    "reward_title_epic_kill_ships": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "kraken",
+        "subId": ""
+      }
+    ],
+    "reward_title_epic_kill_tanks": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "grim_reaper",
+        "subId": ""
+      }
+    ],
+    "reward_title_epic_wins": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "god_of_war",
+        "subId": ""
+      }
+    ],
+    "reward_title_last_hero": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "last_hero",
+        "subId": ""
+      }
+    ],
+    "reward_title_ships_kills": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "sailor",
+        "subId": ""
+      }
+    ],
+    "reward_title_ships_level_15": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "captain_1st_rank",
+        "subId": ""
+      }
+    ],
+    "reward_title_ships_level_25": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "rear_admiral",
+        "subId": ""
+      }
+    ],
+    "reward_title_ships_level_3": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "captain-lieutenant",
+        "subId": ""
+      }
+    ],
+    "reward_title_tanks_kills": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "tankman",
+        "subId": ""
+      }
+    ],
+    "reward_title_tanks_level_14": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "general",
+        "subId": ""
+      }
+    ],
+    "reward_title_tanks_level_3": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "lieutenant",
+        "subId": ""
+      }
+    ],
+    "reward_title_tanks_level_7": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "colonel",
+        "subId": ""
+      }
+    ],
+    "reward_weekly_quest_big": [
+      {
+        "count": 6000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "reward_weekly_quest_small": [
+      {
+        "count": 3000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "ship_smoke_screen_system_mod_5": [
+      {
+        "count": 5,
+        "gType": "item",
+        "id": "ship_smoke_screen_system_mod",
+        "subId": ""
+      }
+    ],
+    "ship_tool_kit_5": [
+      {
+        "count": 5,
+        "gType": "item",
+        "id": "ship_tool_kit",
+        "subId": ""
+      }
+    ],
+    "spare_2": [
+      {
+        "count": 2,
+        "gType": "item",
+        "id": "spare",
+        "subId": ""
+      }
+    ],
+    "tank_extinguisher_1": [
+      {
+        "count": 1,
+        "gType": "item",
+        "id": "tank_extinguisher",
+        "subId": ""
+      }
+    ],
+    "tank_tool_kit_expendable_5": [
+      {
+        "count": 5,
+        "gType": "item",
+        "id": "tank_tool_kit_expendable",
+        "subId": ""
+      }
+    ],
+    "ten_percent_ships_rating_reward": [
+      {
+        "count": 1,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "ten_percent_ships_rating_reward_v2": [
+      {
+        "count": 2,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "ten_percent_tanks_rating_reward": [
+      {
+        "count": 1,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "ten_percent_tanks_rating_reward_v2": [
+      {
+        "count": 2,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
+    "ten_percent_wp_rating_reward": [
+      {
+        "count": 250,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "ten_place_air_rating_reward_season_12": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_battleship_marlborough",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "chain",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_air_top_10",
+        "subId": "season:12"
+      }
+    ],
+    "ten_place_ships_rating_reward": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_battlecruiser_kronshtadt",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_cruiser_des_moines_class",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "blazing_sunrise",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:1"
+      }
+    ],
+    "ten_place_ships_rating_reward_season_10": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "jp_battleship_yamashiro",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "justice_scale",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:10"
+      }
+    ],
+    "ten_place_ships_rating_reward_season_11": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_battleship_bayern",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "shells",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:11"
+      }
+    ],
+    "ten_place_ships_rating_reward_season_12": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_battleship_marlborough",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "chain",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:12"
+      }
+    ],
+    "ten_place_ships_rating_reward_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_battleship_orion",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "chain",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:13"
+      }
+    ],
+    "ten_place_ships_rating_reward_season_2": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_battlecruiser_von_der_tann",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "palm",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:2"
+      }
+    ],
+    "ten_place_ships_rating_reward_season_3": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_battleship_arkansas",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "hammer_and_caliper",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:3"
+      }
+    ],
+    "ten_place_ships_rating_reward_season_4": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_battleship_westfalen",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "clenched_fist",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:4"
+      }
+    ],
+    "ten_place_ships_rating_reward_season_5": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_battleship_texas",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "snake",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:5"
+      }
+    ],
+    "ten_place_ships_rating_reward_season_6": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_battleship_marat",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "meteorite",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:6"
+      }
+    ],
+    "ten_place_ships_rating_reward_season_7": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "jp_battleship_mutsu",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "laurel_wreath",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:7"
+      }
+    ],
+    "ten_place_ships_rating_reward_season_8": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_battleship_colossus",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "tornado",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:8"
+      }
+    ],
+    "ten_place_ships_rating_reward_season_9": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_battleship_novorossiysk",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "missle_strike",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:9"
+      }
+    ],
+    "ten_place_tanks_rating_reward": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_pzkpfw_VI_ausf_e_tiger",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_pzkpfw_Maus",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "blazing_sunrise",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:1"
+      }
+    ],
+    "ten_place_tanks_rating_reward_season_10": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_t_55_amd_1",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "justice_scale",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:10"
+      }
+    ],
+    "ten_place_tanks_rating_reward_season_11": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "jp_type_74_mod_g_kai",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "shells",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:11"
+      }
+    ],
+    "ten_place_tanks_rating_reward_season_12": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "il_merkava_mk_1",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "chain",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:12"
+      }
+    ],
+    "ten_place_tanks_rating_reward_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_t54e2",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "chain",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:13"
+      }
+    ],
+    "ten_place_tanks_rating_reward_season_2": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_t29",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "palm",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:2"
+      }
+    ],
+    "ten_place_tanks_rating_reward_season_3": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_object_120",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "hammer_and_caliper",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:3"
+      }
+    ],
+    "ten_place_tanks_rating_reward_season_4": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_t92",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "clenched_fist",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:4"
+      }
+    ],
+    "ten_place_tanks_rating_reward_season_5": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "germ_ru251",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "snake",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:5"
+      }
+    ],
+    "ten_place_tanks_rating_reward_season_6": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_btr_80a",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "meteorite",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:6"
+      }
+    ],
+    "ten_place_tanks_rating_reward_season_7": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "fr_amx_13_hot",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "laurel_wreath",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:7"
+      }
+    ],
+    "ten_place_tanks_rating_reward_season_8": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "ussr_is_6",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "tornado",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:8"
+      }
+    ],
+    "ten_place_tanks_rating_reward_season_9": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "cn_type_69_2a",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "missle_strike",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:9"
+      }
+    ],
+    "ten_place_wp_rating_reward": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "blazing_sunrise",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ger_tanker_01",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "jarl",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:1"
+      }
+    ],
+    "ten_place_wp_rating_reward_season_10": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "justice_scale",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_jp_sailor_02",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "spartan",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:10"
+      }
+    ],
+    "ten_place_wp_rating_reward_season_11": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "shells",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ger_sailor_03",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "sniper",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:11"
+      }
+    ],
+    "ten_place_wp_rating_reward_season_12": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "chain",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ussr_sailor_04",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "solid",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:12"
+      }
+    ],
+    "ten_place_wp_rating_reward_season_13": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "chain",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_us_sailor_05",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "solid",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:13"
+      }
+    ],
+    "ten_place_wp_rating_reward_season_2": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "palm",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_vo_nguyen_giap",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "jungle_king",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:2"
+      }
+    ],
+    "ten_place_wp_rating_reward_season_3": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "hammer_and_caliper",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ger_sailor_01",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "unsinkable_sam",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:3"
+      }
+    ],
+    "ten_place_wp_rating_reward_season_4": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "clenched_fist",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_jp_admiral",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "commander",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:4"
+      }
+    ],
+    "ten_place_wp_rating_reward_season_5": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "snake",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_chin_tanker",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "assassin",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:5"
+      }
+    ],
+    "ten_place_wp_rating_reward_season_6": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "meteorite",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ger_sailor_02",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "lionheart",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:6"
+      }
+    ],
+    "ten_place_wp_rating_reward_season_7": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "laurel_wreath",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_fr_tanker_amx13",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "centurion",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:7"
+      }
+    ],
+    "ten_place_wp_rating_reward_season_8": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "tornado",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_brit_sailor_colossus",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "colossus",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:8"
+      }
+    ],
+    "ten_place_wp_rating_reward_season_9": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "missle_strike",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ussr_sailor",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "duke",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:9"
+      }
+    ],
+    "thirty_percent_ships_rating_reward": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "thirty_percent_tanks_rating_reward": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
+    "thirty_percent_wp_rating_reward": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "title_chosen_one": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "chosen_one",
+        "subId": ""
+      }
+    ],
+    "title_independent": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "independent",
+        "subId": ""
+      }
+    ],
+    "title_liberator": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "liberator",
+        "subId": ""
+      }
+    ],
+    "title_loyal": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "loyal",
+        "subId": ""
+      }
+    ],
+    "title_warlord": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "warlord",
+        "subId": ""
+      }
+    ],
+    "wp_100000": [
+      {
+        "count": 100000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "wp_12000": [
+      {
+        "count": 12000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "wp_24000": [
+      {
+        "count": 24000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ],
+    "wp_48000": [
+      {
+        "count": 48000,
+        "gType": "currency",
+        "id": "wp",
+        "subId": ""
+      }
+    ]
   }
 }

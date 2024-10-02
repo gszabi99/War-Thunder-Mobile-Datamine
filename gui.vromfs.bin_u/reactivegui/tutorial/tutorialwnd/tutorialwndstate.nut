@@ -77,6 +77,24 @@ function onStepStatus(status) {
   tutorialConfig?.onStepStatus(tutorialConfig?.steps[stepIdx.value].id ?? stepIdx.value, status)
 }
 
+function tryCallWithRes(action, actionId) {
+  local res = null
+  try {
+    res = action?()
+  }
+  catch(_) {
+    logerr($"Tutorial interrupt by error: {tutorialConfig?.id}/{tutorialConfig?.steps[stepIdx.get()].id ?? stepIdx.get()}/{actionId}")
+    tutorialConfig = null
+    state.set({ version = state.get().version + 1, step = 0 })
+  }
+  return res
+}
+
+function tryCall(action, actionId) {
+  tryCallWithRes(action, actionId)
+  return tutorialConfig != null
+}
+
 function setTutorialConfig(config) {
   if (config != null && tutorialConfig != null) {
     logerr($"Try to start tutorial '{config?.id}' while other tutorial in progress '{tutorialConfig?.id}'")
@@ -89,9 +107,9 @@ function setTutorialConfig(config) {
     version = state.value.version + 1
     step = 0
   })
-  tutorialConfig?.steps[0].beforeStart() //only for debug purpose, when start from the middle of the tutorial.
 
-  onStepStatus("tutorial_started")
+  if (tryCall(tutorialConfig?.steps[0].beforeStart, "beforeStart")) //only for debug purpose, when start from the middle of the tutorial.
+    onStepStatus("tutorial_started")
 }
 
 let finishTutorial = @() setTutorialConfig(null)
@@ -102,10 +120,12 @@ function goToStep(idxOrId) {
   let { steps = [] } = tutorialConfig
   let idx = type(idxOrId) == "integer" ? idxOrId
     : (steps.findindex(@(s) s?.id == idxOrId) ?? -1)
-  steps?[stepIdx.value].onFinish()
+  if (!tryCall(steps?[stepIdx.value].onFinish, "onFinish"))
+    return
 
   if (idx in steps) { // waring disable: -in-instead-contains
-    steps?[idx].beforeStart()
+    if (!tryCall(steps?[idx].beforeStart, "beforeStart"))
+      return
     state.mutate(@(s) s.step <- idx)
     return
   }
@@ -120,7 +140,7 @@ let nextStep = @() goToStep(stepIdx.value + 1)
 function skipStepImpl() {
   let step = tutorialConfig?.steps[stepIdx.value]
   let onNextKey = step?.onNextKey ?? step?.objects[0].onClick
-  if (!onNextKey?())
+  if (!tryCallWithRes(onNextKey, "onNextKey"))
     nextStep()
 }
 
@@ -133,7 +153,7 @@ function skipStep() {
   onStepStatus("skip_step")
   let step = tutorialConfig?.steps[stepIdx.value]
   let onSkip = step?.onSkip ?? step?.onNextKey ?? step?.objects[0].onClick
-  if (!onSkip?())
+  if (!tryCallWithRes(onSkip, "onSkip"))
     nextStep()
 }
 

@@ -83,7 +83,6 @@ function updateCompletedTutorials() {
 }
 
 singleMissionResult.subscribe(function(_) {
-  debugBattleResult.set(null)
   updateCompletedTutorials()
 })
 
@@ -134,6 +133,8 @@ eventbus_subscribe("onSetQuitToDebriefing", function(_) {
   set_quit_to_debriefing_allowed(false)
 })
 
+isInBattle.subscribe(@(v) v ? debugBattleResult.set(null) : null)
+
 function onBattleResult(evt, _eid, comp) {
   let userId = comp.server_player__userId
   if (userId != myUserId.value)
@@ -145,7 +146,6 @@ function onBattleResult(evt, _eid, comp) {
       teams = get_mp_tbl_teams()
       userName = myUserName.value
     }))
-  debugBattleResult.set(null)
   updateCompletedTutorials()
 }
 

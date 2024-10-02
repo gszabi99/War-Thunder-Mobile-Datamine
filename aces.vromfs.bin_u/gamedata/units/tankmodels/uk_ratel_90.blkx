@@ -20,7 +20,7 @@
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
   "useSimpleDeathConditionsAndEffects": false,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
@@ -2981,6 +2981,12 @@
   },
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "uk_camo_very_dark_drab*",
+      "to": "rsa_camo_dark_earth*"
+    }
   },
   "upgraded_skin": {
     "replace_tex": {

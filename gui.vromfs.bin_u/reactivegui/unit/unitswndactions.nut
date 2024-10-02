@@ -264,7 +264,7 @@ function unitActionButtons() {
 
     if(blueprintsGoodsId)
       children.append(withGlareEffect(
-        textButtonMultiline(utf8ToUpper(loc("mainmenu/btnShop")),
+        textButtonMultiline(utf8ToUpper(loc("mainmenu/get_blueprints")),
           function() {
             openGoodsPreview(blueprintsGoodsId)
             openedUnitFromTree.set(curSelectedUnit.get())

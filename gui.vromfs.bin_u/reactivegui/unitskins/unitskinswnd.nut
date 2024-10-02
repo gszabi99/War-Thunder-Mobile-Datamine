@@ -491,6 +491,7 @@ let unitSkinsWnd = {
   key = {}
   size = flex()
   behavior = HangarCameraControl
+  eventPassThrough = true
   flow = FLOW_VERTICAL
   onAttach = @() isSkinsWndAttached.set(true)
   onDetach = @() isSkinsWndAttached.set(false)

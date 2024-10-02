@@ -1793,7 +1793,7 @@
               "counterIndex": 4
             },
             {
-              "trigger": "additional gun",
+              "trigger": "cannon",
               "blk": "gameData/Weapons/cannonMGFFM.blk",
               "emitter": "flare10",
               "flash": "flare10",
@@ -1807,7 +1807,7 @@
               ]
             },
             {
-              "trigger": "additional gun",
+              "trigger": "cannon",
               "blk": "gameData/Weapons/cannonMGFFM.blk",
               "emitter": "flare11",
               "flash": "flare11",

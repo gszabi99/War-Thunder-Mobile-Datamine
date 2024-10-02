@@ -86,7 +86,7 @@ function startTutor(id, currentUnitName = null) {
   if (!isSkippedTutor.get()?[id])
     eventbus_send("startSingleMission", {
       id = tutorialMissions.value[id],
-      unitName = !isCampaignWithUnitsResearch.get()
+      unitName = (!isCampaignWithUnitsResearch.get() || currentUnitName == "")
           ? null
         : currentUnitName
           ? currentUnitName

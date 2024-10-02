@@ -137,18 +137,22 @@ function loadSeenShells() {
 if (seenShells.value.len() == 0)
   loadSeenShells()
 
-let hasAvailableSlot = Computed(@() respawnsLeft.get() != 0 && respawnSlots.get().findvalue(@(s) s.canSpawn) != null)
+let canGoToBattle = @(slot, hasSpares) (slot?.canSpawn ?? false) && (!(slot?.isSpawnBySpare ?? false) || hasSpares)
+
+let hasAvailableSlot = Computed(@() respawnsLeft.get() != 0
+  && null != respawnSlots.get().findvalue(@(s) canGoToBattle(s, sparesNum.get() > 0)))
 let needAutospawn = keepref(Computed(@() isInRespawn.get() && isRespawnAttached.get()
   && hasAvailableSlot.get() && !hasRespawnSeparateSlots.get() && respawnSlots.get().len() == 1))
 let needSpectatorMode = keepref(Computed(@() isInRespawn.get() && !hasAvailableSlot.get()))
 needSpectatorMode.subscribe(onSpectatorMode)
 
 let selSlot = Computed(function() {
+  let hasSpares = sparesNum.get() > 0
   let slot = respawnSlots.value?[playerSelectedSlotIdx.value]
-  if (slot?.canSpawn ?? false)
+  if (canGoToBattle(slot, hasSpares))
     return slot
-  return respawnSlots.value.findvalue(@(s) s.isCurrent && s.canSpawn)
-    ?? respawnSlots.value.findvalue(@(s) s.canSpawn)
+  return respawnSlots.get().findvalue(@(s) s.isCurrent && canGoToBattle(s, hasSpares))
+    ?? respawnSlots.get().findvalue(@(s) canGoToBattle(s, hasSpares))
 })
 
 let selSlotUnitType = Computed(@() "name" not in selSlot.get() ? null
@@ -348,4 +352,6 @@ return {
   unitListScrollHandler
   hasRespawnSeparateSlots
   curUnitsAvgCostWp
+
+  canGoToBattle
 }

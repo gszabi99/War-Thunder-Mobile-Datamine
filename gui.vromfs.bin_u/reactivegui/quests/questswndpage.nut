@@ -205,7 +205,9 @@ function mkBtn(item, currencyReward, rewardsPreview, sProfile) {
 
 function mkItem(item, textCtor) {
   let isCompletedPrevQuest = Computed(@()
-    !item.meta?.chain_quest || (unlockProgress.get()?[item.requirement].isCompleted ?? false)
+    item.meta?.chain_quest == null
+      || (item.meta?.chain_quest && item.requirement == "")
+      || (unlockProgress.get()?[item.requirement].isCompleted ?? false)
   )
   let imgLockSize = hdpxi(60)
   let isUnseen = Computed(@() !item.hasReward
@@ -372,12 +374,32 @@ let questTimerUntilStart = @(curSectionId, firstDayTable, curTable) function() {
   }
 }
 
-function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
-  let itemsSort = @(a, b) b.hasReward <=> a.hasReward
-    || a.isFinished <=> b.isFinished
-    || a.name in seenQuests.value <=> b.name in seenQuests.value
-    || a.name <=> b.name
+let questsSort = @(a, b) b.hasReward <=> a.hasReward
+  || a.isFinished <=> b.isFinished
+  || a.name in seenQuests.value <=> b.name in seenQuests.value
+  || a.chainPos <=> b.chainPos
+  || a.name <=> b.name
 
+function createTablePosQuestsChain(eventsData, eventCategories) {
+  local eventTable = {}
+  foreach(specialEvent, categories in eventCategories) {
+    if (!specialEvent.startswith("special_event")) continue
+    foreach(category in categories) {
+      local questsInCategory = eventsData.rawget(category)
+      if (questsInCategory == null) continue
+      eventTable[category] <- {}
+      local currentQuest = questsInCategory.findvalue(@(v) v?.requirement == "")
+      local chainPosition = 0
+      while (currentQuest != null) {
+        eventTable[category][currentQuest.name] <- chainPosition++
+        currentQuest = questsInCategory.findvalue(@(v) v?.requirement == currentQuest.name)
+      }
+    }
+  }
+  return eventTable
+}
+
+function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
   let selSectionId = mkWatched(persist, $"selSectionId_{tabId}", null)
   let curSectionId = Computed(function() {
     let bySection = questsBySection.get()
@@ -396,6 +418,8 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
 
   let quests = Computed(@() questsBySection.value?[curSectionId.value ?? sections.value?[0]])
   let firstDayTable = Computed(@() questsBySection.value?[sections.value?[0]].findvalue(@(_) true).table)
+
+  let tableQuestsChainPos = Computed(@() createTablePosQuestsChain(questsBySection.get(), questsCfg.get()))
 
   let isCurSectionActive = Computed(@()
     isSectionActive(curSectionId.get(), questsBySection.get(), unlockTables.get()))
@@ -452,7 +476,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
     }
     children = [
       @() {
-        watch = [sections, questsBySection, isProgressBySection, isCurSectionActive, firstDayTable, quests]
+        watch = [sections, questsBySection, isProgressBySection, isCurSectionActive, firstDayTable, quests, tableQuestsChainPos]
         size = flex()
         flow = FLOW_VERTICAL
         gap = pageBlocksGap
@@ -481,8 +505,13 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
                           gap = hdpx(20)
                           children = quests.get()
                             .values()
-                            .sort(itemsSort)
-                            .map(@(item) itemCtor(item.__merge({ tabId, sectionId = curSectionId.get() })))
+                            .map(@(item) item.__merge({
+                                tabId,
+                                sectionId = curSectionId.get(),
+                                chainPos = tableQuestsChainPos.get()?[curSectionId.get()][item.name] ?? 0
+                            }))
+                            .sort(questsSort)
+                            .map(@(item) itemCtor(item))
                           onDetach = @() saveSeenQuestsForSection(curSectionId.value)
                         },
                         {},

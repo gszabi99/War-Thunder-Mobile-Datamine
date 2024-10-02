@@ -15,7 +15,7 @@ let { myUserId, myUserIdStr, myUserName } = require("%appGlobals/profileStates.n
 let { premiumEndsAt } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { premiumTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
+let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { is_ios, is_nswitch } = require("%sqstd/platform.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, openDecoratorsScene, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
@@ -23,6 +23,7 @@ let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { showHint } = require("%rGui/tooltip.nut")
 let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
 
 let canLinkToGaijinAccount = Computed(@() can_link_to_gaijin_account.get() && !is_nswitch
   && [ LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FACEBOOK ].contains(curLoginType.get()))
@@ -68,16 +69,6 @@ let levelMark = @() {
   ]
 }
 
-let iconBtn = @(path, size, stateFlags) @() {
-  watch = stateFlags
-  size = array(2, size)
-  rendObj = ROBJ_IMAGE
-  image = Picture($"{path}:{size}:{size}")
-  color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
-  transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-  transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
-}
-
 function mkAvatar() {
   let avatarBtnSize = hdpxi(40)
   let iconStateFlags = Watched(0)
@@ -107,7 +98,7 @@ function mkAvatar() {
           }
           {
             hplace = ALIGN_RIGHT
-            children = iconBtn("ui/gameuiskin#menu_edit.svg", avatarBtnSize, iconStateFlags)
+            children = mkIconBtn("ui/gameuiskin#menu_edit.svg", avatarBtnSize, iconStateFlags)
           }
         ]
       }
@@ -143,7 +134,7 @@ function mkUserName() {
         behavior = Behaviors.Button
         onElemState = @(s) iconStateFlags.set(s)
         onClick = @(evt) copyToClipboard(evt, myUserName.get())
-        children = iconBtn("ui/gameuiskin#icon_copy.svg", userNameBtnSize, iconStateFlags)
+        children = mkIconBtn("ui/gameuiskin#icon_copy.svg", userNameBtnSize, iconStateFlags)
       }
     ]
   }
@@ -165,7 +156,7 @@ function mkUserId() {
         rendObj = ROBJ_TEXT
         text = "".concat(loc("options/userId"), colon, myUserId.get())
       }.__update(fontTiny)
-      iconBtn("ui/gameuiskin#icon_copy.svg", idBtnSize, iconStateFlags)
+      mkIconBtn("ui/gameuiskin#icon_copy.svg", idBtnSize, iconStateFlags)
     ]
   }
 }

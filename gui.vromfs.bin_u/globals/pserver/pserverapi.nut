@@ -158,6 +158,24 @@ function mkProgress(id) {
   return res
 }
 
+function mkMultiProgress(id) {
+  let res = Watched({})
+  function upd(msg) {
+    let { value, isInProgress } = msg
+    if ((res.get()?[value] ?? false) == isInProgress)
+      return
+    res.mutate(function(v) {
+      if (isInProgress)
+        v[value] <- true
+      else
+        v.$rawdelete(value)
+    })
+  }
+  eventbus_subscribe($"profile_srv.progressStart.{id}", upd)
+  res.whiteListMutatorClosure(upd)
+  return res
+}
+
 function registerHandler(id, handler) {
   if (id in handlers) {
     logerr($"pServerApi handler {id} is already registered")
@@ -200,7 +218,7 @@ return {
   shopPurchaseInProgress = mkProgress(PROGRESS_SHOP)
   shopGenSlotInProgress = mkProgress(PROGRESS_SHOP_SLOT)
   decoratorInProgress = mkProgress(PROGRESS_DECORATORS)
-  schRewardInProgress = mkProgress(PROGRESS_SCH_REWARD)
+  schRewardInProgress = mkMultiProgress(PROGRESS_SCH_REWARD)
   lootboxInProgress = mkProgress(PROGRESS_LOOTBOX)
   levelInProgress = mkProgress(PROGRESS_LEVEL)
   modsInProgress = mkProgress(PROGRESS_MODS)

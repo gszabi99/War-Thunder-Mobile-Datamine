@@ -1682,7 +1682,7 @@
           "Weapon": [
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+              "blk": "gameData/Weapons/gunBrowning30_usaaf_early.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "mgun1_dm",
@@ -1694,7 +1694,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/gunBrowning50_early.blk",
+              "blk": "gameData/Weapons/gunBrowning50_old.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "mgun2_dm",

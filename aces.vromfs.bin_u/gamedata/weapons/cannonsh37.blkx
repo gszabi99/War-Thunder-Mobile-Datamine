@@ -406,7 +406,7 @@
       }
     }
   ],
-  "sh37_air_target": {
+  "sh37_air_targets": {
     "bullet": [
       {
         "mass": 0.735,
@@ -941,7 +941,7 @@
       }
     ]
   },
-  "sh37_armor_target": {
+  "sh37_armor_targets": {
     "bullet": [
       {
         "mass": 0.76,

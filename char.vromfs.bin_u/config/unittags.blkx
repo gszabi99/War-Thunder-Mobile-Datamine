@@ -86,6 +86,9 @@
       "rollRate": 77.0,
       "pylonCount": 5,
       "massPerSec": 3.1662,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "cannonAN_M2": {
           "type": "cannon",
@@ -163,6 +166,9 @@
       "rollRate": 146.0,
       "pylonCount": 0,
       "massPerSec": 2.97903,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -257,6 +263,9 @@
       "rollRate": 25.0,
       "pylonCount": 3,
       "massPerSec": 7.04031,
+      "crew": 10,
+      "pilotsCount": 2,
+      "gunnersCount": 8,
       "weapons": {
         "gunBrowning50_turret_late": {
           "type": "gunner0",
@@ -333,6 +342,9 @@
       "rollRate": 25.0,
       "pylonCount": 3,
       "massPerSec": 7.04031,
+      "crew": 10,
+      "pilotsCount": 2,
+      "gunnersCount": 8,
       "weapons": {
         "gunBrowning50_turret_late": {
           "type": "gunner0",
@@ -403,9 +415,12 @@
       "powerToWeightRatio": 0.45,
       "rollRate": 136.0,
       "pylonCount": 2,
-      "massPerSec": 0.485,
+      "massPerSec": 0.492,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
-        "gunPV1": {
+        "gunPV1_early": {
           "type": "machine gun",
           "gunsCount": 4,
           "ammoCount": 3000,
@@ -417,9 +432,9 @@
       }
     },
     "bullets": {
-      "gunPV1": {
+      "gunPV1_early": {
         "default": {
-          "icon": "t_ball/ball/ap_i_ball/he_ball/ap_i_ball/he_ball/"
+          "icon": "t_ball/ap_i_t_ball/he_ball/ap_i_t_ball/he_ball/"
         },
         "shkas_universal": {
           "icon": "t_ball/ap_i_ball/he_ball/ap_i_t_ball/",
@@ -463,9 +478,12 @@
       "powerToWeightRatio": 0.36,
       "rollRate": 105.0,
       "pylonCount": 2,
-      "massPerSec": 0.408,
+      "massPerSec": 0.4148,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
-        "gunMG17": {
+        "gunMG17_early": {
           "type": "machine gun",
           "gunsCount": 2,
           "ammoCount": 1000,
@@ -477,9 +495,9 @@
       }
     },
     "bullets": {
-      "gunMG17": {
+      "gunMG17_early": {
         "default": {
-          "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
+          "icon": "ap_t_ball/he_ball/ap_t_ball/ap_i_ball/he_ball/"
         },
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
@@ -524,6 +542,9 @@
       "rollRate": 80.0,
       "pylonCount": 2,
       "massPerSec": 2.16625,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -566,6 +587,144 @@
       }
     }
   },
+  "la-11": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_stalingrad",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "shvetsov",
+        "model": "M-82-fn",
+        "mass": 850.0
+      },
+      "tanks_params": {
+        "protected": true,
+        "protected_boost": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_ussr": true,
+      "type_fighter": true,
+      "korean_front": true,
+      "eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 10250.0,
+      "maxSpeed": 189.0,
+      "turnTime": 22.0,
+      "airfieldLen": 500.0,
+      "maxSpeedAlt": 6200.0,
+      "climbTime": 124.0,
+      "climbAlt": 2000.0,
+      "climbSpeed": 16.1,
+      "wingLoading": 225.54,
+      "powerToWeightRatio": 0.39,
+      "rollRate": 100.0,
+      "pylonCount": 0,
+      "massPerSec": 5.925,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "weapons": {
+        "cannonNS23": {
+          "type": "machine gun",
+          "gunsCount": 3,
+          "ammoCount": 225,
+          "shotFreq": 10.0
+        }
+      }
+    },
+    "bullets": {
+      "cannonNS23": {
+        "default": {
+          "icon": "ap_i/frag_i_t/"
+        },
+        "ns23_armor_targets": {
+          "icon": "frag_i_t/ap_i/ap_i/ap_i/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "ns23_air_targets": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/ap_i/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "ns23_stealth": {
+          "icon": "ap_i/",
+          "reqModification": "aircraft_mod_2"
+        }
+      }
+    }
+  },
+  "la-11_prem": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_stalingrad",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "shvetsov",
+        "model": "M-82-fn",
+        "mass": 850.0
+      },
+      "tanks_params": {
+        "protected": true,
+        "protected_boost": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_ussr": true,
+      "type_fighter": true,
+      "korean_front": true,
+      "eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 10250.0,
+      "maxSpeed": 189.0,
+      "turnTime": 22.0,
+      "airfieldLen": 500.0,
+      "maxSpeedAlt": 6200.0,
+      "climbTime": 124.0,
+      "climbAlt": 2000.0,
+      "climbSpeed": 16.1,
+      "wingLoading": 225.54,
+      "powerToWeightRatio": 0.39,
+      "rollRate": 100.0,
+      "pylonCount": 0,
+      "massPerSec": 5.925,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "weapons": {
+        "cannonNS23": {
+          "type": "machine gun",
+          "gunsCount": 3,
+          "ammoCount": 225,
+          "shotFreq": 10.0
+        }
+      }
+    },
+    "bullets": {
+      "cannonNS23": {
+        "default": {
+          "icon": "ap_i/frag_i_t/"
+        },
+        "ns23_armor_targets": {
+          "icon": "frag_i_t/ap_i/ap_i/ap_i/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "ns23_air_targets": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/ap_i/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "ns23_stealth": {
+          "icon": "ap_i/",
+          "reqModification": "aircraft_mod_2"
+        }
+      }
+    }
+  },
   "la-5_type37_early": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -593,6 +752,9 @@
       "rollRate": 111.0,
       "pylonCount": 2,
       "massPerSec": 2.3148,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonShVAKS": {
           "type": "cannon",
@@ -662,6 +824,9 @@
       "rollRate": 154.0,
       "pylonCount": 0,
       "massPerSec": 7.36631,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonB20S": {
           "type": "machine gun",
@@ -746,15 +911,18 @@
       "thrustToWeightRatio": 0.477,
       "rollRate": 70.0,
       "pylonCount": 2,
-      "massPerSec": 0.713083,
+      "massPerSec": 0.7023,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
-        "gunBrowning30_usaaf": {
+        "gunBrowning30_usaaf_early": {
           "type": "machine gun",
           "gunsCount": 1,
           "ammoCount": 500,
           "shotFreq": 16.6667
         },
-        "gunBrowning50_early": {
+        "gunBrowning50_old": {
           "type": "cannon",
           "gunsCount": 1,
           "ammoCount": 200,
@@ -766,9 +934,9 @@
       }
     },
     "bullets": {
-      "gunBrowning30_usaaf": {
+      "gunBrowning30_usaaf_early": {
         "default": {
-          "icon": "t_ball/ball/ball/ball/ap_ball/i_ball/"
+          "icon": "t_ball/i_ball/t_ball/ap_ball/i_ball/"
         },
         "30cal_universal": {
           "icon": "t_ball/ap_ball/i_ball/",
@@ -783,9 +951,9 @@
           "reqModification": "aircraft_mod_6"
         }
       },
-      "gunBrowning50_early": {
+      "gunBrowning50_old": {
         "default": {
-          "icon": "t_ball_M1/ball_M2/i_ball_M1/ap_ball_M2/"
+          "icon": "t_ball_M1/ball_M2/i_ball_M1/ap_ball_M2/i_ball_M1/"
         },
         "50cal_universal": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/i_ball_M1/",
@@ -835,6 +1003,9 @@
       "rollRate": 99.0,
       "pylonCount": 0,
       "massPerSec": 3.58625,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -924,6 +1095,9 @@
       "rollRate": 145.0,
       "pylonCount": 3,
       "massPerSec": 4.18525,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonMK103": {
           "type": "cannon",
@@ -1009,6 +1183,9 @@
       "rollRate": 145.0,
       "pylonCount": 3,
       "massPerSec": 4.18525,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonMK103": {
           "type": "cannon",
@@ -1084,6 +1261,9 @@
       "rollRate": 59.0,
       "pylonCount": 13,
       "massPerSec": 11.85,
+      "crew": 3,
+      "pilotsCount": 1,
+      "gunnersCount": 2,
       "weapons": {
         "cannonNR23": {
           "type": "cannon",
@@ -1166,6 +1346,9 @@
       "rollRate": 69.0,
       "pylonCount": 3,
       "massPerSec": 6.4625,
+      "crew": 3,
+      "pilotsCount": 1,
+      "gunnersCount": 2,
       "weapons": {
         "cannonHispanoMkV": {
           "type": "cannon",
@@ -1226,6 +1409,9 @@
       "rollRate": 80.0,
       "pylonCount": 5,
       "massPerSec": 20.84,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonDEFA551": {
           "type": "cannon",
@@ -1290,6 +1476,9 @@
       "rollRate": 89.0,
       "pylonCount": 0,
       "massPerSec": 10.8801,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonN37D": {
           "type": "cannon",
@@ -1361,6 +1550,9 @@
       "rollRate": 106.0,
       "pylonCount": 0,
       "massPerSec": 13.2,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonMK108": {
           "type": "cannon",
@@ -1413,6 +1605,9 @@
       "rollRate": 137.0,
       "pylonCount": 0,
       "massPerSec": 6.4625,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonHispanoMkV": {
           "type": "cannon",
@@ -1473,6 +1668,9 @@
       "rollRate": 127.0,
       "pylonCount": 0,
       "massPerSec": 3.3,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_early": {
           "type": "machine gun",
@@ -1530,6 +1728,9 @@
       "rollRate": 193.0,
       "pylonCount": 0,
       "massPerSec": 2.69233,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -1619,6 +1820,9 @@
       "rollRate": 61.0,
       "pylonCount": 4,
       "massPerSec": 1.39407,
+      "crew": 4,
+      "pilotsCount": 1,
+      "gunnersCount": 3,
       "weapons": {
         "gunShKAS_turret": {
           "type": "gunner2",
@@ -1733,6 +1937,9 @@
       "rollRate": 61.0,
       "pylonCount": 4,
       "massPerSec": 1.39407,
+      "crew": 4,
+      "pilotsCount": 1,
+      "gunnersCount": 3,
       "weapons": {
         "gunShKAS_turret": {
           "type": "gunner2",
@@ -1818,6 +2025,9 @@
       "rollRate": 36.0,
       "pylonCount": 3,
       "massPerSec": 1.2665,
+      "crew": 5,
+      "pilotsCount": 0,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG15_turret": {
           "type": "gunner0",
@@ -1897,6 +2107,9 @@
       "rollRate": 36.0,
       "pylonCount": 3,
       "massPerSec": 1.2665,
+      "crew": 5,
+      "pilotsCount": 0,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG15_turret": {
           "type": "gunner0",
@@ -1972,6 +2185,9 @@
       "rollRate": 63.0,
       "pylonCount": 3,
       "massPerSec": 10.4997,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "cannonMG15120": {
           "type": "cannon",
@@ -2126,6 +2342,9 @@
       "rollRate": 63.0,
       "pylonCount": 3,
       "massPerSec": 10.4997,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "cannonMG15120": {
           "type": "cannon",
@@ -2256,6 +2475,9 @@
       "rollRate": 49.0,
       "pylonCount": 6,
       "massPerSec": 5.30407,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -2411,6 +2633,9 @@
       "rollRate": 49.0,
       "pylonCount": 6,
       "massPerSec": 5.30407,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -2523,6 +2748,9 @@
       "rollRate": 138.0,
       "pylonCount": 0,
       "massPerSec": 2.07782,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonShVAK": {
           "type": "cannon",
@@ -2617,6 +2845,9 @@
       "rollRate": 87.0,
       "pylonCount": 2,
       "massPerSec": 6.4625,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "cannonHispanoMkV": {
           "type": "cannon",
@@ -2680,6 +2911,9 @@
       "rollRate": 80.0,
       "pylonCount": 11,
       "massPerSec": 6.4625,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonHispanoMkV": {
           "type": "cannon",
@@ -2766,6 +3000,9 @@
       "rollRate": 76.0,
       "pylonCount": 2,
       "massPerSec": 3.3,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_early": {
           "type": "machine gun",
@@ -2840,6 +3077,9 @@
       "rollRate": 76.0,
       "pylonCount": 2,
       "massPerSec": 3.3,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_early": {
           "type": "machine gun",
@@ -2905,6 +3145,9 @@
       "rollRate": 145.0,
       "pylonCount": 3,
       "massPerSec": 2.16625,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -2980,6 +3223,9 @@
       "rollRate": 145.0,
       "pylonCount": 3,
       "massPerSec": 2.16625,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -3047,6 +3293,9 @@
       "rollRate": 77.0,
       "pylonCount": 1,
       "massPerSec": 3.1662,
+      "crew": 2,
+      "pilotsCount": 0,
+      "gunnersCount": 0,
       "weapons": {
         "cannonAN_M2": {
           "type": "cannon",
@@ -3129,6 +3378,9 @@
       "rollRate": 77.0,
       "pylonCount": 1,
       "massPerSec": 3.1662,
+      "crew": 2,
+      "pilotsCount": 0,
+      "gunnersCount": 0,
       "weapons": {
         "cannonAN_M2": {
           "type": "cannon",
@@ -3208,6 +3460,9 @@
       "rollRate": 95.0,
       "pylonCount": 1,
       "massPerSec": 2.39959,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunType97": {
           "type": "machine gun",
@@ -3285,6 +3540,9 @@
       "rollRate": 100.0,
       "pylonCount": 2,
       "massPerSec": 4.3325,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -3344,6 +3602,9 @@
       "rollRate": 107.0,
       "pylonCount": 3,
       "massPerSec": 4.355,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG131": {
           "type": "machine gun",
@@ -3425,6 +3686,9 @@
       "rollRate": 115.0,
       "pylonCount": 0,
       "massPerSec": 3.24833,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonHispanoMkII": {
           "type": "cannon",
@@ -3506,6 +3770,9 @@
       "rollRate": 145.0,
       "pylonCount": 10,
       "massPerSec": 3.24938,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -3579,6 +3846,9 @@
       "rollRate": 145.0,
       "pylonCount": 10,
       "massPerSec": 3.24938,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -3653,6 +3923,9 @@
       "rollRate": 95.0,
       "pylonCount": 4,
       "massPerSec": 0.217967,
+      "crew": 3,
+      "pilotsCount": 1,
+      "gunnersCount": 2,
       "weapons": {
         "gunType92_turret": {
           "type": "gunner0",
@@ -3705,6 +3978,9 @@
       "rollRate": 95.0,
       "pylonCount": 2,
       "massPerSec": 0.272458,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunType97": {
           "type": "machine gun",
@@ -3777,6 +4053,9 @@
       "rollRate": 95.0,
       "pylonCount": 0,
       "massPerSec": 0.254515,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunVikkersE": {
           "type": "machine gun",
@@ -3848,6 +4127,9 @@
       "rollRate": 95.0,
       "pylonCount": 2,
       "massPerSec": 0.8676,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -3922,6 +4204,9 @@
       "rollRate": 67.0,
       "pylonCount": 2,
       "massPerSec": 2.39739,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -4018,6 +4303,9 @@
       "rollRate": 75.0,
       "pylonCount": 2,
       "massPerSec": 0.326183,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunBrowning30_usaaf": {
           "type": "machine gun",
@@ -4088,6 +4376,9 @@
       "rollRate": 75.0,
       "pylonCount": 2,
       "massPerSec": 0.326183,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunBrowning30_usaaf": {
           "type": "machine gun",
@@ -4157,6 +4448,9 @@
       "rollRate": 70.0,
       "pylonCount": 3,
       "massPerSec": 0.408,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -4227,6 +4521,9 @@
       "rollRate": 91.0,
       "pylonCount": 0,
       "massPerSec": 0.743438,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonMGC30L": {
           "type": "cannon",
@@ -4293,6 +4590,9 @@
       "rollRate": 72.0,
       "pylonCount": 0,
       "massPerSec": 2.42289,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -4386,6 +4686,9 @@
       "rollRate": 105.0,
       "pylonCount": 0,
       "massPerSec": 0.408,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -4452,6 +4755,9 @@
       "rollRate": 105.0,
       "pylonCount": 0,
       "massPerSec": 0.408,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -4517,8 +4823,11 @@
       "wingLoading": 217.0,
       "powerToWeightRatio": 0.43,
       "rollRate": 198.0,
-      "pylonCount": 1,
-      "massPerSec": 2.97903,
+      "pylonCount": 0,
+      "massPerSec": 4.85536,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -4532,7 +4841,12 @@
           "ammoCount": 500,
           "shotFreq": 11.66
         },
-        "default_common": {}
+        "cannonMGFFM": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 180,
+          "shotFreq": 8.66
+        }
       }
     },
     "bullets": {
@@ -4542,7 +4856,7 @@
         },
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
-          "reqModification": "aircraft_mod_3"
+          "reqModification": "aircraft_mod_4"
         },
         "mg_tracers": {
           "icon": "ap_t_ball/",
@@ -4550,7 +4864,7 @@
         },
         "mg_stealth": {
           "icon": "he_ball/ap_ball/ap_ball/ap_ball/he_ball/",
-          "reqModification": "aircraft_mod_5"
+          "reqModification": "aircraft_mod_7"
         }
       },
       "cannonMG15120": {
@@ -4559,15 +4873,15 @@
         },
         "mg151_universal": {
           "icon": "i_t/he_i_mine/he_i_mine/ap_i/",
-          "reqModification": "aircraft_mod_4"
+          "reqModification": "aircraft_mod_5"
         },
         "mg151_air_targets": {
           "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/",
-          "reqModification": "aircraft_mod_7"
+          "reqModification": "aircraft_mod_10"
         },
         "mg151_armor_targets": {
           "icon": "aphe/aphe/aphe/i_t/",
-          "reqModification": "aircraft_mod_8"
+          "reqModification": "aircraft_mod_11"
         },
         "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
@@ -4575,7 +4889,28 @@
         },
         "mg151_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
+          "reqModification": "aircraft_mod_8"
+        }
+      },
+      "cannonMGFFM": {
+        "default": {
+          "icon": "i_t/he_i_mine/aphe/"
+        },
+        "mgff_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/aphe/",
           "reqModification": "aircraft_mod_6"
+        },
+        "mgff_air_targets": {
+          "icon": "frag_i_t/he_i_mine/he_i_mine/frag_i_t/he_i_mine/he_i_mine/aphe/",
+          "reqModification": "aircraft_mod_12"
+        },
+        "mgff_tracers": {
+          "icon": "i_t/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "mgff_stealth": {
+          "icon": "aphe/he_i_mine/he_i_mine/he_i_mine/ap_i/",
+          "reqModification": "aircraft_mod_9"
         }
       }
     }
@@ -4618,6 +4953,9 @@
       "rollRate": 193.0,
       "pylonCount": 2,
       "massPerSec": 2.97903,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -4719,6 +5057,9 @@
       "rollRate": 193.0,
       "pylonCount": 3,
       "massPerSec": 2.57103,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonMG15120": {
           "type": "cannon",
@@ -4806,6 +5147,9 @@
       "rollRate": 127.0,
       "pylonCount": 3,
       "massPerSec": 3.3,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_early": {
           "type": "machine gun",
@@ -4883,6 +5227,9 @@
       "rollRate": 103.0,
       "pylonCount": 4,
       "massPerSec": 3.2325,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_usaaf": {
           "type": "machine gun",
@@ -4958,6 +5305,9 @@
       "rollRate": 103.0,
       "pylonCount": 2,
       "massPerSec": 5.68,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonAN_M2": {
           "type": "cannon",
@@ -5031,6 +5381,9 @@
       "rollRate": 112.0,
       "pylonCount": 0,
       "massPerSec": 1.81308,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_early": {
           "type": "cannon",
@@ -5087,6 +5440,178 @@
       }
     }
   },
+  "f2g-1": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_honolulu",
+    "releaseDate": "2020-11-15 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "p&w",
+        "model": "r_4360_4_wasp_major",
+        "mass": 1755.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "type_fighter": true,
+      "country_usa": true,
+      "korean_front": true,
+      "pacific": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 11800.0,
+      "maxSpeed": 196.0,
+      "maxSpeedAlt": 5000.0,
+      "turnTime": 21.0,
+      "airfieldLen": 180.0,
+      "climbTime": 150.0,
+      "climbAlt": 3000.0,
+      "climbSpeed": 20.0,
+      "wingLoading": 212.0,
+      "thrustToWeightRatio": 0.48,
+      "rollRate": 140.0,
+      "pylonCount": 10,
+      "massPerSec": 3.24938,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "weapons": {
+        "gunBrowning50_M2_late": {
+          "type": "machine gun",
+          "gunsCount": 6,
+          "ammoCount": 2350,
+          "shotFreq": 12.5
+        },
+        "rockets": {},
+        "250lb": {
+          "reqModification": "aircraft_mod_2"
+        },
+        "500lb": {
+          "reqModification": "aircraft_mod_4"
+        },
+        "1000lb": {
+          "reqModification": "aircraft_mod_8"
+        },
+        "tiny_tim": {
+          "reqModification": "aircraft_mod_6"
+        }
+      }
+    },
+    "bullets": {
+      "gunBrowning50_M2_late": {
+        "default": {
+          "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
+        },
+        "50cal_universal": {
+          "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_t_ball_M20/i_ball_M23/i_ball_M23/",
+          "reqModification": "aircraft_mod_5"
+        },
+        "50cal_ground_targets": {
+          "icon": "ap_i_t_ball_M20/i_ball_M23/ap_ball_M2/ap_ball_M2/ap_i_ball_M8/ap_i_ball_M8/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "50cal_tracers": {
+          "icon": "ap_i_t_ball_M20/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "50cal_stealth": {
+          "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/i_ball_M23/",
+          "reqModification": "aircraft_mod_7"
+        }
+      }
+    }
+  },
+  "f2g-1_prem": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_honolulu",
+    "releaseDate": "2020-11-15 00:00:00",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "p&w",
+        "model": "r_4360_4_wasp_major",
+        "mass": 1755.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "type_fighter": true,
+      "country_usa": true,
+      "korean_front": true,
+      "pacific": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 11800.0,
+      "maxSpeed": 196.0,
+      "maxSpeedAlt": 5000.0,
+      "turnTime": 21.0,
+      "airfieldLen": 180.0,
+      "climbTime": 150.0,
+      "climbAlt": 3000.0,
+      "climbSpeed": 20.0,
+      "wingLoading": 212.0,
+      "thrustToWeightRatio": 0.48,
+      "rollRate": 140.0,
+      "pylonCount": 10,
+      "massPerSec": 3.24938,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "weapons": {
+        "gunBrowning50_M2_late": {
+          "type": "machine gun",
+          "gunsCount": 6,
+          "ammoCount": 2350,
+          "shotFreq": 12.5
+        },
+        "rockets": {},
+        "250lb": {
+          "reqModification": "aircraft_mod_2"
+        },
+        "500lb": {
+          "reqModification": "aircraft_mod_4"
+        },
+        "1000lb": {
+          "reqModification": "aircraft_mod_8"
+        },
+        "tiny_tim": {
+          "reqModification": "aircraft_mod_6"
+        }
+      }
+    },
+    "bullets": {
+      "gunBrowning50_M2_late": {
+        "default": {
+          "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
+        },
+        "50cal_universal": {
+          "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_t_ball_M20/i_ball_M23/i_ball_M23/",
+          "reqModification": "aircraft_mod_5"
+        },
+        "50cal_ground_targets": {
+          "icon": "ap_i_t_ball_M20/i_ball_M23/ap_ball_M2/ap_ball_M2/ap_i_ball_M8/ap_i_ball_M8/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "50cal_tracers": {
+          "icon": "ap_i_t_ball_M20/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "50cal_stealth": {
+          "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/i_ball_M23/",
+          "reqModification": "aircraft_mod_7"
+        }
+      }
+    }
+  },
   "f4f-3": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -5125,6 +5650,9 @@
       "rollRate": 76.0,
       "pylonCount": 2,
       "massPerSec": 2.2,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_early": {
           "type": "machine gun",
@@ -5199,6 +5727,9 @@
       "rollRate": 76.0,
       "pylonCount": 2,
       "massPerSec": 3.3,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_early": {
           "type": "machine gun",
@@ -5282,6 +5813,9 @@
       "rollRate": 25.0,
       "pylonCount": 1,
       "massPerSec": 4.97529,
+      "crew": 9,
+      "pilotsCount": 2,
+      "gunnersCount": 7,
       "weapons": {
         "gunBrowning50_turret": {
           "type": "gunner0",
@@ -5371,6 +5905,9 @@
       "rollRate": 34.0,
       "pylonCount": 1,
       "massPerSec": 6.97531,
+      "crew": 7,
+      "pilotsCount": 2,
+      "gunnersCount": 5,
       "weapons": {
         "gunBrowning50_turret": {
           "type": "gunner0",
@@ -5480,6 +6017,9 @@
       "rollRate": 30.0,
       "pylonCount": 6,
       "massPerSec": 1.40933,
+      "crew": 6,
+      "pilotsCount": 2,
+      "gunnersCount": 4,
       "weapons": {
         "gunBrowning30_turret": {
           "type": "gunner0",
@@ -5600,6 +6140,9 @@
       "rollRate": 35.0,
       "pylonCount": 1,
       "massPerSec": 2.79924,
+      "crew": 5,
+      "pilotsCount": 1,
+      "gunnersCount": 4,
       "weapons": {
         "gunBrowning50_usaaf": {
           "type": "cannon",
@@ -5736,6 +6279,9 @@
       "rollRate": 56.0,
       "pylonCount": 15,
       "massPerSec": 3.55,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonAN_M3": {
           "type": "cannon",
@@ -5852,6 +6398,9 @@
       "rollRate": 109.0,
       "pylonCount": 5,
       "massPerSec": 4.3325,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -5934,6 +6483,9 @@
       "rollRate": 100.0,
       "pylonCount": 13,
       "massPerSec": 4.3325,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -6014,6 +6566,9 @@
       "rollRate": 114.0,
       "pylonCount": 0,
       "massPerSec": 5.17,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonHispanoMkII": {
           "type": "cannon",
@@ -6086,6 +6641,9 @@
       "rollRate": 64.0,
       "pylonCount": 3,
       "massPerSec": 1.4262,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunBrowning50_early": {
           "type": "machine gun",
@@ -6201,6 +6759,9 @@
       "rollRate": 69.0,
       "pylonCount": 0,
       "massPerSec": 3.9175,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2": {
           "type": "machine gun",
@@ -6300,6 +6861,9 @@
       "rollRate": 84.0,
       "pylonCount": 0,
       "massPerSec": 3.9175,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonAN_M2": {
           "type": "cannon",
@@ -6401,10 +6965,18 @@
       "wingLoading": 227.0,
       "powerToWeightRatio": 0.17,
       "rollRate": 99.0,
-      "pylonCount": 1,
-      "massPerSec": 2.80125,
+      "pylonCount": 0,
+      "massPerSec": 3.12742,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
-        "default_common": {},
+        "gunBrowning30_usaaf": {
+          "type": "machine gun",
+          "gunsCount": 2,
+          "ammoCount": 1000,
+          "shotFreq": 16.6667
+        },
         "gunBrowning50_early": {
           "type": "machine gun",
           "gunsCount": 2,
@@ -6420,25 +6992,42 @@
       }
     },
     "bullets": {
+      "gunBrowning30_usaaf": {
+        "default": {
+          "icon": "t_ball/ball/ball/ball/ap_ball/i_ball/"
+        },
+        "30cal_universal": {
+          "icon": "t_ball/ap_ball/i_ball/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "30cal_tracers": {
+          "icon": "ap_ball/t_ball/t_ball/t_ball/t_ball/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "30cal_stealth": {
+          "icon": "ap_ball/ap_ball/ap_ball/i_ball/i_ball/",
+          "reqModification": "aircraft_mod_6"
+        }
+      },
       "gunBrowning50_early": {
         "default": {
           "icon": "t_ball_M1/ball_M2/i_ball_M1/ap_ball_M2/"
         },
         "50cal_universal": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/i_ball_M1/",
-          "reqModification": "aircraft_mod_3"
+          "reqModification": "aircraft_mod_5"
         },
         "50cal_ground_targets": {
           "icon": "t_ball_M1/ap_ball_M2/ap_ball_M2/ap_ball_M2/",
-          "reqModification": "aircraft_mod_4"
+          "reqModification": "aircraft_mod_9"
         },
         "50cal_tracers": {
           "icon": "t_ball_M1/t_ball_M1/t_ball_M1/ap_ball_M2/",
-          "reqModification": "aircraft_mod_1"
+          "reqModification": "aircraft_mod_2"
         },
         "50cal_stealth": {
           "icon": "ap_ball_M2/i_ball_M1/ap_ball_M2/",
-          "reqModification": "aircraft_mod_6"
+          "reqModification": "aircraft_mod_7"
         }
       },
       "cannonM4": {
@@ -6447,15 +7036,15 @@
         },
         "m4_universal": {
           "icon": "he_frag_i_t/he_frag_i_t/ap_t/",
-          "reqModification": "aircraft_mod_2"
+          "reqModification": "aircraft_mod_4"
         },
         "m4_ground_targets": {
           "icon": "ap_t/",
-          "reqModification": "aircraft_mod_5"
+          "reqModification": "aircraft_mod_10"
         },
         "m4_air_targets": {
           "icon": "he_frag_i_t/",
-          "reqModification": "aircraft_mod_7"
+          "reqModification": "aircraft_mod_8"
         }
       }
     }
@@ -6499,6 +7088,9 @@
       "rollRate": 127.0,
       "pylonCount": 3,
       "massPerSec": 3.3,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_early": {
           "type": "machine gun",
@@ -6579,6 +7171,9 @@
       "rollRate": 59.0,
       "pylonCount": 3,
       "massPerSec": 4.83656,
+      "crew": 3,
+      "pilotsCount": 1,
+      "gunnersCount": 2,
       "weapons": {
         "gunBrowning50_turret": {
           "type": "gunner0",
@@ -6676,6 +7271,9 @@
       "rollRate": 77.0,
       "pylonCount": 3,
       "massPerSec": 0.497028,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunBrowning303": {
           "type": "machine gun",
@@ -6781,6 +7379,9 @@
       "rollRate": 77.0,
       "pylonCount": 3,
       "massPerSec": 2.73469,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunBrowning50_early": {
           "type": "machine gun",
@@ -6890,6 +7491,9 @@
       "rollRate": 77.0,
       "pylonCount": 3,
       "massPerSec": 2.73469,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunBrowning50_early": {
           "type": "machine gun",
@@ -6994,6 +7598,9 @@
       "rollRate": 109.0,
       "pylonCount": 13,
       "massPerSec": 4.3325,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -7079,6 +7686,9 @@
       "rollRate": 109.0,
       "pylonCount": 13,
       "massPerSec": 4.3325,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -7169,6 +7779,9 @@
       "rollRate": 89.0,
       "pylonCount": 13,
       "massPerSec": 0.7131,
+      "crew": 3,
+      "pilotsCount": 1,
+      "gunnersCount": 2,
       "weapons": {
         "gunBrowning50_early": {
           "type": "machine gun",
@@ -7273,6 +7886,9 @@
       "rollRate": 36.0,
       "pylonCount": 2,
       "massPerSec": 6.43656,
+      "crew": 6,
+      "pilotsCount": 2,
+      "gunnersCount": 4,
       "weapons": {
         "gunBrowning50_turret": {
           "type": "gunner0",
@@ -7380,6 +7996,9 @@
       "rollRate": 123.0,
       "pylonCount": 0,
       "massPerSec": 0.713083,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning30_usaaf": {
           "type": "machine gun",
@@ -7472,6 +8091,9 @@
       "rollRate": 123.0,
       "pylonCount": 0,
       "massPerSec": 1.03925,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning30_usaaf": {
           "type": "machine gun",
@@ -7566,6 +8188,9 @@
       "rollRate": 72.0,
       "pylonCount": 0,
       "massPerSec": 2.155,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_usaaf": {
           "type": "machine gun",
@@ -7635,6 +8260,9 @@
       "rollRate": 95.0,
       "pylonCount": 10,
       "massPerSec": 3.24938,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -7720,6 +8348,9 @@
       "rollRate": 102.0,
       "pylonCount": 10,
       "massPerSec": 3.24938,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -7796,6 +8427,9 @@
       "rollRate": 138.0,
       "pylonCount": 3,
       "massPerSec": 4.00369,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonM10": {
           "type": "cannon",
@@ -7889,8 +8523,11 @@
       "wingLoading": 178.49,
       "powerToWeightRatio": 0.32,
       "rollRate": 74.0,
-      "pylonCount": 2,
-      "massPerSec": 2.60792,
+      "pylonCount": 1,
+      "massPerSec": 3.26025,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonHispano404": {
           "type": "cannon",
@@ -7904,7 +8541,12 @@
           "ammoCount": 540,
           "shotFreq": 12.5
         },
-        "default_common": {},
+        "gunBrowning30_usaaf": {
+          "type": "machine gun",
+          "gunsCount": 4,
+          "ammoCount": 4000,
+          "shotFreq": 16.6667
+        },
         "500lb": {
           "reqModification": "aircraft_mod_7"
         }
@@ -7917,7 +8559,7 @@
         },
         "hispano_universal": {
           "icon": "he_frag_i/sapi/ap/t_shell/",
-          "reqModification": "aircraft_mod_3"
+          "reqModification": "aircraft_mod_4"
         },
         "hispano_tracers": {
           "icon": "ap/t_shell/he_frag_i/",
@@ -7925,11 +8567,11 @@
         },
         "hispano_ground_targets": {
           "icon": "ap/ap/ap/he_frag_i/t_shell/",
-          "reqModification": "aircraft_mod_8"
+          "reqModification": "aircraft_mod_11"
         },
         "hispano_stealth": {
           "icon": "he_frag_i/he_frag_i/sapi/ap/",
-          "reqModification": "aircraft_mod_5"
+          "reqModification": "aircraft_mod_8"
         }
       },
       "gunBrowning50_early": {
@@ -7938,11 +8580,11 @@
         },
         "50cal_universal": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/i_ball_M1/",
-          "reqModification": "aircraft_mod_4"
+          "reqModification": "aircraft_mod_5"
         },
         "50cal_ground_targets": {
           "icon": "t_ball_M1/ap_ball_M2/ap_ball_M2/ap_ball_M2/",
-          "reqModification": "aircraft_mod_9"
+          "reqModification": "aircraft_mod_12"
         },
         "50cal_tracers": {
           "icon": "t_ball_M1/t_ball_M1/t_ball_M1/ap_ball_M2/",
@@ -7950,7 +8592,24 @@
         },
         "50cal_stealth": {
           "icon": "ap_ball_M2/i_ball_M1/ap_ball_M2/",
+          "reqModification": "aircraft_mod_9"
+        }
+      },
+      "gunBrowning30_usaaf": {
+        "default": {
+          "icon": "t_ball/ball/ball/ball/ap_ball/i_ball/"
+        },
+        "30cal_universal": {
+          "icon": "t_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_6"
+        },
+        "30cal_tracers": {
+          "icon": "ap_ball/t_ball/t_ball/t_ball/t_ball/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "30cal_stealth": {
+          "icon": "ap_ball/ap_ball/ap_ball/i_ball/i_ball/",
+          "reqModification": "aircraft_mod_10"
         }
       }
     }
@@ -7989,8 +8648,11 @@
       "wingLoading": 178.49,
       "powerToWeightRatio": 0.32,
       "rollRate": 74.0,
-      "pylonCount": 2,
-      "massPerSec": 2.60792,
+      "pylonCount": 1,
+      "massPerSec": 3.26025,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonHispano404": {
           "type": "cannon",
@@ -8004,7 +8666,12 @@
           "ammoCount": 540,
           "shotFreq": 12.5
         },
-        "default_common": {},
+        "gunBrowning30_usaaf": {
+          "type": "machine gun",
+          "gunsCount": 4,
+          "ammoCount": 4000,
+          "shotFreq": 16.6667
+        },
         "500lb": {
           "reqModification": "aircraft_mod_7"
         }
@@ -8017,7 +8684,7 @@
         },
         "hispano_universal": {
           "icon": "he_frag_i/sapi/ap/t_shell/",
-          "reqModification": "aircraft_mod_3"
+          "reqModification": "aircraft_mod_4"
         },
         "hispano_tracers": {
           "icon": "ap/t_shell/he_frag_i/",
@@ -8025,11 +8692,11 @@
         },
         "hispano_ground_targets": {
           "icon": "ap/ap/ap/he_frag_i/t_shell/",
-          "reqModification": "aircraft_mod_8"
+          "reqModification": "aircraft_mod_11"
         },
         "hispano_stealth": {
           "icon": "he_frag_i/he_frag_i/sapi/ap/",
-          "reqModification": "aircraft_mod_5"
+          "reqModification": "aircraft_mod_8"
         }
       },
       "gunBrowning50_early": {
@@ -8038,11 +8705,11 @@
         },
         "50cal_universal": {
           "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/i_ball_M1/",
-          "reqModification": "aircraft_mod_4"
+          "reqModification": "aircraft_mod_5"
         },
         "50cal_ground_targets": {
           "icon": "t_ball_M1/ap_ball_M2/ap_ball_M2/ap_ball_M2/",
-          "reqModification": "aircraft_mod_9"
+          "reqModification": "aircraft_mod_12"
         },
         "50cal_tracers": {
           "icon": "t_ball_M1/t_ball_M1/t_ball_M1/ap_ball_M2/",
@@ -8050,7 +8717,24 @@
         },
         "50cal_stealth": {
           "icon": "ap_ball_M2/i_ball_M1/ap_ball_M2/",
+          "reqModification": "aircraft_mod_9"
+        }
+      },
+      "gunBrowning30_usaaf": {
+        "default": {
+          "icon": "t_ball/ball/ball/ball/ap_ball/i_ball/"
+        },
+        "30cal_universal": {
+          "icon": "t_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_6"
+        },
+        "30cal_tracers": {
+          "icon": "ap_ball/t_ball/t_ball/t_ball/t_ball/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "30cal_stealth": {
+          "icon": "ap_ball/ap_ball/ap_ball/i_ball/i_ball/",
+          "reqModification": "aircraft_mod_10"
         }
       }
     }
@@ -8094,6 +8778,9 @@
       "rollRate": 145.0,
       "pylonCount": 10,
       "massPerSec": 3.24938,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -8176,8 +8863,11 @@
       "wingLoading": 230.0,
       "powerToWeightRatio": 0.41,
       "rollRate": 193.0,
-      "pylonCount": 3,
-      "massPerSec": 2.97903,
+      "pylonCount": 2,
+      "massPerSec": 4.85536,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -8191,7 +8881,12 @@
           "ammoCount": 500,
           "shotFreq": 11.66
         },
-        "default_common": {},
+        "cannonMGFFM": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 180,
+          "shotFreq": 8.66
+        },
         "br20": {
           "reqModification": "aircraft_mod_4"
         }
@@ -8204,7 +8899,7 @@
         },
         "mg_universal": {
           "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
-          "reqModification": "aircraft_mod_3"
+          "reqModification": "aircraft_mod_5"
         },
         "mg_tracers": {
           "icon": "ap_t_ball/",
@@ -8212,7 +8907,7 @@
         },
         "mg_stealth": {
           "icon": "he_ball/ap_ball/ap_ball/ap_ball/he_ball/",
-          "reqModification": "aircraft_mod_6"
+          "reqModification": "aircraft_mod_8"
         }
       },
       "cannonMG15120": {
@@ -8221,15 +8916,15 @@
         },
         "mg151_universal": {
           "icon": "i_t/he_i_mine/he_i_mine/ap_i/",
-          "reqModification": "aircraft_mod_5"
+          "reqModification": "aircraft_mod_6"
         },
         "mg151_air_targets": {
           "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/",
-          "reqModification": "aircraft_mod_8"
+          "reqModification": "aircraft_mod_11"
         },
         "mg151_armor_targets": {
           "icon": "aphe/aphe/aphe/i_t/",
-          "reqModification": "aircraft_mod_9"
+          "reqModification": "aircraft_mod_13"
         },
         "mg151_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
@@ -8237,7 +8932,28 @@
         },
         "mg151_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
+          "reqModification": "aircraft_mod_9"
+        }
+      },
+      "cannonMGFFM": {
+        "default": {
+          "icon": "i_t/he_i_mine/aphe/"
+        },
+        "mgff_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/aphe/",
           "reqModification": "aircraft_mod_7"
+        },
+        "mgff_air_targets": {
+          "icon": "frag_i_t/he_i_mine/he_i_mine/frag_i_t/he_i_mine/he_i_mine/aphe/",
+          "reqModification": "aircraft_mod_12"
+        },
+        "mgff_tracers": {
+          "icon": "i_t/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "mgff_stealth": {
+          "icon": "aphe/he_i_mine/he_i_mine/he_i_mine/ap_i/",
+          "reqModification": "aircraft_mod_10"
         }
       }
     }
@@ -8279,6 +8995,9 @@
       "rollRate": 94.0,
       "pylonCount": 0,
       "massPerSec": 0.408,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -8346,6 +9065,9 @@
       "rollRate": 94.0,
       "pylonCount": 0,
       "massPerSec": 0.816,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -8412,6 +9134,9 @@
       "rollRate": 107.0,
       "pylonCount": 1,
       "massPerSec": 1.16007,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -8510,6 +9235,9 @@
       "rollRate": 133.0,
       "pylonCount": 1,
       "massPerSec": 0.816,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -8582,6 +9310,9 @@
       "rollRate": 133.0,
       "pylonCount": 1,
       "massPerSec": 2.42289,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -8681,6 +9412,9 @@
       "rollRate": 133.0,
       "pylonCount": 1,
       "massPerSec": 2.42289,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -8780,6 +9514,9 @@
       "rollRate": 107.0,
       "pylonCount": 3,
       "massPerSec": 1.69351,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -8893,6 +9630,9 @@
       "rollRate": 58.0,
       "pylonCount": 5,
       "massPerSec": 2.87083,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -9029,6 +9769,9 @@
       "rollRate": 58.0,
       "pylonCount": 5,
       "massPerSec": 14.8557,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "cannonMK108": {
           "type": "cannon",
@@ -9210,6 +9953,9 @@
       "rollRate": 58.0,
       "pylonCount": 5,
       "massPerSec": 14.8557,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "cannonMK108": {
           "type": "cannon",
@@ -9390,6 +10136,9 @@
       "rollRate": 69.0,
       "pylonCount": 1,
       "massPerSec": 4.05528,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -9515,6 +10264,9 @@
       "rollRate": 69.0,
       "pylonCount": 1,
       "massPerSec": 4.05528,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -9640,6 +10392,9 @@
       "rollRate": 69.0,
       "pylonCount": 2,
       "massPerSec": 6.62631,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -9754,6 +10509,9 @@
       "rollRate": 57.0,
       "pylonCount": 3,
       "massPerSec": 0.5865,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -9850,6 +10608,9 @@
       "rollRate": 63.0,
       "pylonCount": 3,
       "massPerSec": 0.95064,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -9967,6 +10728,9 @@
       "rollRate": 145.0,
       "pylonCount": 0,
       "massPerSec": 5.25214,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonMK103": {
           "type": "cannon",
@@ -10071,6 +10835,9 @@
       "rollRate": 40.0,
       "pylonCount": 7,
       "massPerSec": 3.7891,
+      "crew": 5,
+      "pilotsCount": 1,
+      "gunnersCount": 4,
       "weapons": {
         "cannonMG15120_turret": {
           "type": "gunner0",
@@ -10197,6 +10964,9 @@
       "rollRate": 64.0,
       "pylonCount": 1,
       "massPerSec": 0.526932,
+      "crew": 3,
+      "pilotsCount": 1,
+      "gunnersCount": 2,
       "weapons": {
         "gunMG15_turret": {
           "type": "gunner0",
@@ -10294,6 +11064,9 @@
       "rollRate": 64.0,
       "pylonCount": 1,
       "massPerSec": 1.41943,
+      "crew": 4,
+      "pilotsCount": 1,
+      "gunnersCount": 3,
       "weapons": {
         "gunMG15_turret": {
           "type": "gunner0",
@@ -10398,6 +11171,9 @@
       "rollRate": 19.0,
       "pylonCount": 1,
       "massPerSec": 0.714,
+      "crew": 6,
+      "pilotsCount": 2,
+      "gunnersCount": 4,
       "weapons": {
         "gunMG15_turret": {
           "type": "gunner0",
@@ -10473,6 +11249,9 @@
       "rollRate": 193.0,
       "pylonCount": 1,
       "massPerSec": 2.57103,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonMG15120": {
           "type": "cannon",
@@ -10553,6 +11332,9 @@
       "rollRate": 193.0,
       "pylonCount": 1,
       "massPerSec": 2.57103,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonMG15120": {
           "type": "cannon",
@@ -10631,6 +11413,9 @@
       "rollRate": 193.0,
       "pylonCount": 3,
       "massPerSec": 3.62603,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG131": {
           "type": "machine gun",
@@ -10749,6 +11534,9 @@
       "rollRate": 193.0,
       "pylonCount": 3,
       "massPerSec": 3.62603,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG131": {
           "type": "machine gun",
@@ -10889,6 +11677,9 @@
       "rollRate": 36.0,
       "pylonCount": 1,
       "massPerSec": 2.63452,
+      "crew": 5,
+      "pilotsCount": 1,
+      "gunnersCount": 4,
       "weapons": {
         "cannonMGFF_turret": {
           "type": "gunner0",
@@ -11011,6 +11802,9 @@
       "rollRate": 49.0,
       "pylonCount": 1,
       "massPerSec": 5.67687,
+      "crew": 9,
+      "pilotsCount": 1,
+      "gunnersCount": 8,
       "weapons": {
         "gunMG131_turret": {
           "type": "gunner1",
@@ -11058,6 +11852,234 @@
       }
     }
   },
+  "bf-109g-14": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_ruhr",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "daimler_benz",
+        "model": "db_605am",
+        "mass": 720.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "axis": true,
+      "country_germany": true,
+      "type_fighter": true,
+      "bulge": true,
+      "mediterranean": true,
+      "western_front": true,
+      "eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 11500.0,
+      "maxSpeed": 187.2,
+      "turnTime": 20.0,
+      "airfieldLen": 325.0,
+      "climbTime": 420.0,
+      "maxSpeedAlt": 5500.0,
+      "climbAlt": 6000.0,
+      "climbSpeed": 21.75,
+      "wingLoading": 205.0,
+      "powerToWeightRatio": 0.54,
+      "rollRate": 107.0,
+      "pylonCount": 3,
+      "massPerSec": 2.34052,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "weapons": {
+        "gunMG131": {
+          "type": "machine gun",
+          "gunsCount": 2,
+          "ammoCount": 600,
+          "shotFreq": 15.0
+        },
+        "cannonMG15120": {
+          "type": "cannon",
+          "gunsCount": 1,
+          "ammoCount": 200,
+          "shotFreq": 11.66
+        },
+        "R5": {
+          "reqModification": "aircraft_mod_6"
+        },
+        "R6": {
+          "reqModification": "aircraft_mod_11"
+        },
+        "sc250": {
+          "reqModification": "aircraft_mod_3"
+        }
+      }
+    },
+    "bullets": {
+      "gunMG131": {
+        "default": {
+          "icon": "i_t_ball/ap_t_ball/he_i_ball/"
+        },
+        "mg131_air_targets": {
+          "icon": "ap_t_ball/ap_t_ball/i_t_ball/i_t_ball/he_i_ball/",
+          "reqModification": "aircraft_mod_4"
+        },
+        "mg131_apt": {
+          "icon": "ap_t_ball/",
+          "reqModification": "aircraft_mod_9"
+        },
+        "mg131_heit": {
+          "icon": "he_i_ball/",
+          "reqModification": "aircraft_mod_7"
+        },
+        "mg131_stealth": {
+          "icon": "ap_i_ball/",
+          "reqModification": "aircraft_mod_1"
+        }
+      },
+      "cannonMG15120": {
+        "default": {
+          "icon": "i_t/i_t/aphe/he_i_mine/"
+        },
+        "mg151_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/ap_i/",
+          "reqModification": "aircraft_mod_5"
+        },
+        "mg151_air_targets": {
+          "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/",
+          "reqModification": "aircraft_mod_10"
+        },
+        "mg151_armor_targets": {
+          "icon": "aphe/aphe/aphe/i_t/",
+          "reqModification": "aircraft_mod_12"
+        },
+        "mg151_tracers": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "mg151_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
+          "reqModification": "aircraft_mod_8"
+        }
+      }
+    }
+  },
+  "bf-109g-14_prem": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_ruhr",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "daimler_benz",
+        "model": "db_605am",
+        "mass": 720.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "axis": true,
+      "country_germany": true,
+      "type_fighter": true,
+      "bulge": true,
+      "mediterranean": true,
+      "western_front": true,
+      "eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 11500.0,
+      "maxSpeed": 187.2,
+      "turnTime": 20.0,
+      "airfieldLen": 325.0,
+      "climbTime": 420.0,
+      "maxSpeedAlt": 5500.0,
+      "climbAlt": 6000.0,
+      "climbSpeed": 21.75,
+      "wingLoading": 205.0,
+      "powerToWeightRatio": 0.54,
+      "rollRate": 107.0,
+      "pylonCount": 3,
+      "massPerSec": 2.34052,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "weapons": {
+        "gunMG131": {
+          "type": "machine gun",
+          "gunsCount": 2,
+          "ammoCount": 600,
+          "shotFreq": 15.0
+        },
+        "cannonMG15120": {
+          "type": "cannon",
+          "gunsCount": 1,
+          "ammoCount": 200,
+          "shotFreq": 11.66
+        },
+        "R5": {
+          "reqModification": "aircraft_mod_6"
+        },
+        "R6": {
+          "reqModification": "aircraft_mod_10"
+        },
+        "sc250": {
+          "reqModification": "aircraft_mod_3"
+        }
+      }
+    },
+    "bullets": {
+      "gunMG131": {
+        "default": {
+          "icon": "i_t_ball/ap_t_ball/he_i_ball/"
+        },
+        "mg131_air_targets": {
+          "icon": "ap_t_ball/ap_t_ball/i_t_ball/i_t_ball/he_i_ball/",
+          "reqModification": "aircraft_mod_4"
+        },
+        "mg131_apt": {
+          "icon": "ap_t_ball/",
+          "reqModification": "aircraft_mod_9"
+        },
+        "mg131_heit": {
+          "icon": "he_i_ball/",
+          "reqModification": "aircraft_mod_7"
+        },
+        "mg131_stealth": {
+          "icon": "ap_i_ball/",
+          "reqModification": "aircraft_mod_1"
+        }
+      },
+      "cannonMG15120": {
+        "default": {
+          "icon": "i_t/i_t/aphe/he_i_mine/"
+        },
+        "mg151_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/ap_i/",
+          "reqModification": "aircraft_mod_5"
+        },
+        "mg151_air_targets": {
+          "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/",
+          "reqModification": "aircraft_mod_11"
+        },
+        "mg151_armor_targets": {
+          "icon": "aphe/aphe/aphe/i_t/",
+          "reqModification": "aircraft_mod_12"
+        },
+        "mg151_tracers": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "mg151_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
+          "reqModification": "aircraft_mod_8"
+        }
+      }
+    }
+  },
   "bf-109z": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -11101,6 +12123,9 @@
       "rollRate": 90.0,
       "pylonCount": 1,
       "massPerSec": 13.2,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonMK108": {
           "type": "cannon",
@@ -11170,6 +12195,9 @@
       "rollRate": 107.0,
       "pylonCount": 3,
       "massPerSec": 1.69351,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -11275,6 +12303,9 @@
       "rollRate": 107.0,
       "pylonCount": 3,
       "massPerSec": 1.69351,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunMG17": {
           "type": "machine gun",
@@ -11384,6 +12415,9 @@
       "rollRate": 89.0,
       "pylonCount": 3,
       "massPerSec": 1.446,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -11495,6 +12529,9 @@
       "rollRate": 99.0,
       "pylonCount": 6,
       "massPerSec": 5.30407,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -11649,6 +12686,9 @@
       "rollRate": 49.0,
       "pylonCount": 6,
       "massPerSec": 4.4884,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -11797,6 +12837,9 @@
       "rollRate": 38.0,
       "pylonCount": 3,
       "massPerSec": 0.8676,
+      "crew": 5,
+      "pilotsCount": 2,
+      "gunnersCount": 3,
       "weapons": {
         "gunShKAS_turret": {
           "type": "gunner0",
@@ -11889,6 +12932,9 @@
       "rollRate": 38.0,
       "pylonCount": 3,
       "massPerSec": 1.92054,
+      "crew": 5,
+      "pilotsCount": 2,
+      "gunnersCount": 3,
       "weapons": {
         "gunShKAS_turret": {
           "type": "gunner0",
@@ -11998,6 +13044,9 @@
       "rollRate": 25.0,
       "pylonCount": 3,
       "massPerSec": 4.70307,
+      "crew": 7,
+      "pilotsCount": 2,
+      "gunnersCount": 5,
       "weapons": {
         "gunShKAS_turret": {
           "type": "gunner1",
@@ -12136,6 +13185,9 @@
       "rollRate": 51.0,
       "pylonCount": 3,
       "massPerSec": 0.8676,
+      "crew": 4,
+      "pilotsCount": 1,
+      "gunnersCount": 3,
       "weapons": {
         "gunShKAS_turret": {
           "type": "gunner0",
@@ -12215,6 +13267,9 @@
       "rollRate": 138.0,
       "pylonCount": 0,
       "massPerSec": 2.07782,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonShVAK": {
           "type": "cannon",
@@ -12323,6 +13378,9 @@
       "rollRate": 138.0,
       "pylonCount": 0,
       "massPerSec": 2.07782,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonShVAK": {
           "type": "cannon",
@@ -12431,6 +13489,9 @@
       "rollRate": 99.0,
       "pylonCount": 6,
       "massPerSec": 9.14667,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "cannonNS23": {
           "type": "machine gun",
@@ -12568,6 +13629,9 @@
       "rollRate": 99.0,
       "pylonCount": 6,
       "massPerSec": 9.14667,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "cannonNS23": {
           "type": "machine gun",
@@ -12705,6 +13769,9 @@
       "rollRate": 49.0,
       "pylonCount": 6,
       "massPerSec": 3.1504,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -12867,6 +13934,9 @@
       "rollRate": 170.0,
       "pylonCount": 6,
       "massPerSec": 3.4722,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonShVAKS": {
           "type": "cannon",
@@ -12974,6 +14044,9 @@
       "rollRate": 49.0,
       "pylonCount": 6,
       "massPerSec": 5.30407,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -13140,6 +14213,9 @@
       "rollRate": 53.0,
       "pylonCount": 5,
       "massPerSec": 5.0668,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -13262,6 +14338,9 @@
       "rollRate": 62.0,
       "pylonCount": 1,
       "massPerSec": 3.1504,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -13368,6 +14447,9 @@
       "rollRate": 61.0,
       "pylonCount": 3,
       "massPerSec": 0.8676,
+      "crew": 4,
+      "pilotsCount": 1,
+      "gunnersCount": 3,
       "weapons": {
         "gunShKAS_turret": {
           "type": "gunner2",
@@ -13447,6 +14529,9 @@
       "rollRate": 51.0,
       "pylonCount": 1,
       "massPerSec": 1.1568,
+      "crew": 4,
+      "pilotsCount": 1,
+      "gunnersCount": 3,
       "weapons": {
         "gunShKAS_turret": {
           "type": "gunner0",
@@ -13513,6 +14598,9 @@
       "rollRate": 145.0,
       "pylonCount": 10,
       "massPerSec": 7.1,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonAN_M3": {
           "type": "cannon",
@@ -13585,6 +14673,9 @@
       "rollRate": 82.0,
       "pylonCount": 2,
       "massPerSec": 1.446,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -13665,6 +14756,9 @@
       "rollRate": 132.2,
       "pylonCount": 2,
       "massPerSec": 2.3148,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonShVAKS": {
           "type": "cannon",
@@ -13731,6 +14825,9 @@
       "rollRate": 112.0,
       "pylonCount": 2,
       "massPerSec": 2.3148,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonShVAKS": {
           "type": "cannon",
@@ -13814,6 +14911,9 @@
       "rollRate": 109.0,
       "pylonCount": 0,
       "massPerSec": 2.07782,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunUBS": {
           "type": "machine gun",
@@ -13911,6 +15011,9 @@
       "rollRate": 109.0,
       "pylonCount": 2,
       "massPerSec": 2.07782,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunUBS": {
           "type": "machine gun",
@@ -14019,6 +15122,9 @@
       "rollRate": 109.0,
       "pylonCount": 2,
       "massPerSec": 2.07782,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunUBS": {
           "type": "machine gun",
@@ -14126,6 +15232,9 @@
       "rollRate": 286.0,
       "pylonCount": 0,
       "massPerSec": 0.5784,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -14181,6 +15290,9 @@
       "rollRate": 136.0,
       "pylonCount": 2,
       "massPerSec": 0.485,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunPV1": {
           "type": "machine gun",
@@ -14239,6 +15351,9 @@
       "rollRate": 136.0,
       "pylonCount": 2,
       "massPerSec": 0.485,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunPV1": {
           "type": "machine gun",
@@ -14308,6 +15423,9 @@
       "rollRate": 231.0,
       "pylonCount": 2,
       "massPerSec": 1.1568,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -14369,6 +15487,9 @@
       "rollRate": 181.0,
       "pylonCount": 2,
       "massPerSec": 1.1568,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -14436,6 +15557,9 @@
       "rollRate": 121.0,
       "pylonCount": 2,
       "massPerSec": 1.1568,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunShKAS": {
           "type": "machine gun",
@@ -14500,6 +15624,9 @@
       "rollRate": 109.0,
       "pylonCount": 13,
       "massPerSec": 4.3325,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -14572,6 +15699,9 @@
       "rollRate": 138.0,
       "pylonCount": 2,
       "massPerSec": 2.07782,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunUBS": {
           "type": "machine gun",
@@ -14670,6 +15800,9 @@
       "rollRate": 154.0,
       "pylonCount": 0,
       "massPerSec": 2.86964,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonShVAK": {
           "type": "cannon",
@@ -14776,6 +15909,9 @@
       "rollRate": 154.0,
       "pylonCount": 0,
       "massPerSec": 3.69725,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonB20S": {
           "type": "cannon",
@@ -14870,6 +16006,9 @@
       "rollRate": 123.0,
       "pylonCount": 2,
       "massPerSec": 2.86964,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunUBS": {
           "type": "machine gun",
@@ -14976,6 +16115,9 @@
       "rollRate": 138.0,
       "pylonCount": 0,
       "massPerSec": 4.03099,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunUBS": {
           "type": "machine gun",
@@ -15061,6 +16203,9 @@
       "rollRate": 138.0,
       "pylonCount": 0,
       "massPerSec": 2.07782,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonShVAK": {
           "type": "cannon",
@@ -15158,6 +16303,9 @@
       "rollRate": 138.0,
       "pylonCount": 0,
       "massPerSec": 2.07782,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonShVAK": {
           "type": "cannon",
@@ -15255,6 +16403,9 @@
       "rollRate": 138.0,
       "pylonCount": 2,
       "massPerSec": 1.8644,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonShVAK": {
           "type": "cannon",
@@ -15350,6 +16501,9 @@
       "rollRate": 138.0,
       "pylonCount": 0,
       "massPerSec": 2.86964,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonShVAK": {
           "type": "cannon",
@@ -15443,6 +16597,9 @@
       "rollRate": 109.0,
       "pylonCount": 3,
       "massPerSec": 4.3325,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunBrowning50_M2_late": {
           "type": "machine gun",
@@ -15508,6 +16665,9 @@
       "rollRate": 112.0,
       "pylonCount": 0,
       "massPerSec": 3.61688,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonB20S": {
           "type": "cannon",
@@ -15572,6 +16732,9 @@
       "rollRate": 82.0,
       "pylonCount": 2,
       "massPerSec": 4.8743,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "cannonSH37": {
           "type": "cannon",
@@ -15604,11 +16767,11 @@
         "default": {
           "icon": "ap_t/he_i_t/"
         },
-        "sh37_air_target": {
+        "sh37_air_targets": {
           "icon": "he_i_t/he_i_t/he_i_t/",
           "reqModification": "aircraft_mod_10"
         },
-        "sh37_armor_target": {
+        "sh37_armor_targets": {
           "icon": "ap_t/ap_t/ap_t/",
           "reqModification": "aircraft_mod_7"
         }
@@ -15666,6 +16829,9 @@
       "rollRate": 170.0,
       "pylonCount": 4,
       "massPerSec": 2.16204,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunUBS": {
           "type": "cannon",
@@ -15758,6 +16924,9 @@
       "rollRate": 170.0,
       "pylonCount": 4,
       "massPerSec": 2.16204,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
       "weapons": {
         "gunUBS": {
           "type": "cannon",
@@ -21742,6 +22911,266 @@
           "gunsCount": 4,
           "caliber": 533.0,
           "ammoCount": 20,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "us_sub_balao_ss286": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 100,
+    "tierGroup": 4,
+    "tags": {
+      "country_germany": true,
+      "type_destroyer": true,
+      "ship": true,
+      "submarine": true
+    },
+    "Shop": {
+      "shipCrewMax": 80,
+      "shipCrewMin": 10,
+      "shipCrewRating": 0.797879,
+      "maxSpeed": 4.5,
+      "underwaterSpeed": 10.4175,
+      "turningTime": 30,
+      "addTorpedoesCountPack": 12,
+      "mainWeaponCaliber": 102.0,
+      "weapons": {
+        "102mm_50_4inch_bl_mk7_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 250.0,
+          "shotFreq": 0.5,
+          "gunsCount": 1,
+          "caliber": 102.0,
+          "ammoCount": 150,
+          "isBeltAmmo": false
+        },
+        "40mm_l60_bofors_mk3_single_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 28.0,
+          "shotFreq": 2.66,
+          "aimMaxDist": 3500.0,
+          "gunsCount": 1,
+          "caliber": 40.0,
+          "ammoCount": 2000,
+          "isBeltAmmo": true
+        },
+        "20mm_oerlikon_mk2_single_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 15.0,
+          "shotFreq": 7.5,
+          "aimMaxDist": 3500.0,
+          "gunsCount": 1,
+          "caliber": 20.0,
+          "ammoCount": 1800,
+          "isBeltAmmo": true
+        },
+        "us_533mm_21in_mark15_torpedo": {
+          "wtype": "torpedo",
+          "damage": 6000.0,
+          "shotFreq": 0.1,
+          "distToLive": 3500.0,
+          "gunsCount": 10,
+          "caliber": 533.0,
+          "ammoCount": 60,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "uk_destroyer_rckt_devonshire": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 100,
+    "tierGroup": 4,
+    "tags": {
+      "country_germany": true,
+      "type_destroyer": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 470,
+      "shipCrewMin": 50,
+      "shipCrewRating": 3.76485,
+      "maxSpeed": 16.19,
+      "turningTime": 24,
+      "asmCaptureDuration": 5.0,
+      "mainWeaponCaliber": 114.0,
+      "weapons": {
+        "114mm_50_qf_mk8_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 400.0,
+          "shotFreq": 0.4,
+          "gunsCount": 4,
+          "caliber": 114.0,
+          "ammoCount": 1200,
+          "isBeltAmmo": false
+        },
+        "20mm_oerlikon_mk2_single_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 15.0,
+          "shotFreq": 7.5,
+          "aimMaxDist": 3500.0,
+          "gunsCount": 2,
+          "caliber": 20.0,
+          "ammoCount": 3600,
+          "isBeltAmmo": true
+        },
+        "410mm_seaslug_alike_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 9000.0,
+          "shotFreq": 4.2,
+          "reloadTime": 15.0,
+          "rocketsSalvo": 2,
+          "distToLive": 10000.0,
+          "gunsCount": 1,
+          "caliber": 410.0,
+          "ammoCount": 400,
+          "isBeltAmmo": false
+        },
+        "190mm_sea_cat_alike_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 3000.0,
+          "shotFreq": 4.2,
+          "reloadTime": 15.0,
+          "rocketsSalvo": 4,
+          "distToLive": 10000.0,
+          "gunsCount": 1,
+          "caliber": 190.0,
+          "ammoCount": 400,
+          "isBeltAmmo": false
+        },
+        "countermeasure_launcher_ship": {
+          "wtype": "ircm",
+          "damage": 15.0,
+          "shotFreq": 0.066,
+          "cmLiveTime": 4.0,
+          "gunsCount": 6,
+          "caliber": 130.0,
+          "ammoCount": 600,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "jp_cruiser_agano": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 100,
+    "tierGroup": 4,
+    "tags": {
+      "country_germany": true,
+      "type_light_cruiser": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 700,
+      "shipCrewMin": 140,
+      "shipCrewRating": 1.99909,
+      "maxSpeed": 18.0,
+      "turningTime": 22,
+      "supportPlane": "e7k2",
+      "supportPlaneCount": 2,
+      "addTorpedoesCountPack": 4,
+      "mainWeaponCaliber": 152.0,
+      "weapons": {
+        "152mm_50_type_41_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 600.0,
+          "shotFreq": 0.2,
+          "gunsCount": 6,
+          "caliber": 152.0,
+          "ammoCount": 2790,
+          "isBeltAmmo": false
+        },
+        "80mm_60_type_98_naval_user_cannon": {
+          "wtype": "auxCannon",
+          "damage": 200.0,
+          "shotFreq": 0.5,
+          "gunsCount": 4,
+          "caliber": 76.2,
+          "ammoCount": 2000,
+          "isBeltAmmo": false
+        },
+        "25mm_60_type96_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 15.0,
+          "shotFreq": 4.35,
+          "aimMaxDist": 3500.0,
+          "gunsCount": 4,
+          "caliber": 25.0,
+          "ammoCount": 6000,
+          "isBeltAmmo": true
+        },
+        "jp_610mm_type93_model_1_mod2_torpedo": {
+          "wtype": "torpedo",
+          "damage": 9500.0,
+          "shotFreq": 0.29,
+          "distToLive": 3500.0,
+          "gunsCount": 2,
+          "caliber": 610.0,
+          "ammoCount": 48,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "uk_battleship_orion": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 100,
+    "tierGroup": 4,
+    "tags": {
+      "country_germany": true,
+      "type_light_cruiser": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 1110,
+      "shipCrewMin": 200,
+      "shipCrewRating": 2.28152,
+      "maxSpeed": 10.8,
+      "turningTime": 30,
+      "addTorpedoesCountPack": 3,
+      "mainWeaponCaliber": 343.0,
+      "weapons": {
+        "343mm_45_mk5h_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 2500.0,
+          "shotFreq": 0.067,
+          "gunsCount": 10,
+          "caliber": 343.0,
+          "ammoCount": 1700,
+          "isBeltAmmo": false
+        },
+        "102mm_50_4inch_bl_mk7_naval_user_cannon": {
+          "wtype": "auxCannon",
+          "damage": 250.0,
+          "shotFreq": 0.5,
+          "gunsCount": 8,
+          "gunsTotalCount": 16,
+          "gunsMult": 0.5,
+          "caliber": 102.0,
+          "ammoCount": 2400,
+          "isBeltAmmo": false
+        },
+        "uk_533mm_21in_mk4_torpedo": {
+          "wtype": "torpedo",
+          "damage": 5340.0,
+          "shotFreq": 0.05,
+          "distToLive": 2500.0,
+          "gunsCount": 2,
+          "caliber": 533.0,
+          "ammoCount": 21,
           "isBeltAmmo": false
         }
       }
@@ -44783,6 +46212,1007 @@
           "armorPower": 82.748,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 36.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "germ_leopard_2k": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "operatorCountry": "country_germany_modern",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_germany": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "bullets": {
+      "120mm_Rheinmetall_L44_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "120mm_NATO_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "120mm_DM_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 120.0,
+      "armorThicknessFront": [
+        0.55,
+        0.0,
+        0.45
+      ],
+      "armorThicknessSide": [
+        0.05,
+        0.0,
+        0.95
+      ],
+      "crew": 4,
+      "mass": 50000.0,
+      "maxSpeedForward": 20.0292,
+      "maxSpeedBackward": 20.0292,
+      "powerToWeightRatio": 30.0,
+      "weapons": {
+        "120mm_Rheinmetall_L44_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 120.0,
+          "armorPower": 480.0,
+          "reloadTime": 6.66667,
+          "gunnerTurretRotationSpeed": 40.0,
+          "isBeltAmmo": false
+        },
+        "20mm_Rh_202_user_cannon": {
+          "wtype": "machinegun",
+          "caliber": 20.0,
+          "armorPower": 30.963,
+          "reloadTime": 0.0666667,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        },
+        "7_92mm_MG3_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.05,
+          "gunnerTurretRotationSpeed": 5.5,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "germ_kpz_70": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "operatorCountry": "country_germany_modern",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_germany": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "bullets": {
+      "152mm_XM150E5_KPz_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "152mm_usa_XM578E1_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "152mm_XM410E1_Smoke": {},
+        "152mm_usa_MGM61C_HEAT": {
+          "maxCount": 6,
+          "icon": "hud_ammo_atgm_ap1_he1"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 152.0,
+      "armorThicknessFront": [
+        0.45,
+        0.2,
+        0.35
+      ],
+      "armorThicknessSide": [
+        0.1,
+        0.0,
+        0.9
+      ],
+      "crew": 3,
+      "mass": 51700.0,
+      "maxSpeedForward": 17.781,
+      "maxSpeedBackward": 17.781,
+      "powerToWeightRatio": 29.0135,
+      "weapons": {
+        "152mm_XM150E5_KPz_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 152.0,
+          "armorPower": 380.0,
+          "reloadTime": 5.9988,
+          "gunnerTurretRotationSpeed": 36.0,
+          "isBeltAmmo": false
+        },
+        "20mm_Rh_202_user_cannon": {
+          "wtype": "machinegun",
+          "caliber": 20.0,
+          "armorPower": 30.963,
+          "reloadTime": 0.0666667,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        },
+        "7_92mm_MG3_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.05,
+          "gunnerTurretRotationSpeed": 18.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "germ_begleitpanzer_57": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "operatorCountry": "country_germany_modern",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_germany": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
+    },
+    "bullets": {
+      "57mm_Bofors_L70_Mk_1_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_ap2_he0"
+        },
+        "57mm_germ_Bofors_SAP": {
+          "icon": "hud_ammo_ap1_he1"
+        },
+        "57mm_germ_Bofors_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "57mm_germ_Bofors_HE_VT": {
+          "icon": "hud_ammo_he3_vt"
+        }
+      },
+      "127mm_bgm_71c_itow_rocket_launcher": {
+        "default": {
+          "icon": "hud_ammo_atgm_ap1_he1"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 57.0,
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 3,
+      "mass": 28500.0,
+      "maxSpeedForward": 20.8562,
+      "maxSpeedBackward": 20.8562,
+      "powerToWeightRatio": 21.0526,
+      "weapons": {
+        "57mm_Bofors_L70_Mk_1_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 57.0,
+          "armorPower": 126.093,
+          "reloadTime": 0.300003,
+          "gunnerTurretRotationSpeed": 55.0,
+          "isBeltAmmo": false
+        },
+        "7_92mm_MG3_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.05,
+          "gunnerTurretRotationSpeed": 18.0,
+          "isBeltAmmo": true
+        },
+        "127mm_bgm_71c_itow_rocket_launcher": {
+          "wtype": "auxCannon",
+          "caliber": 127.0,
+          "armorPower": 630.0,
+          "reloadTime": 12.0048,
+          "gunnerTurretRotationSpeed": 25.0,
+          "isBeltAmmo": false
+        }
+      }
+    }
+  },
+  "germ_flakpz_I_Gepard_reskin2": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "operatorCountry": "country_germany_modern",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_germany": true,
+      "tank": true,
+      "type_spaa": true
+    },
+    "bullets": {
+      "35mm_Oerlikon_KDA_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "35mm_kda_APHEI": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "35mm_kda_HE": {
+          "icon": "hud_ammo_bullet_he"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 35.0,
+      "armorThicknessFront": [
+        0.05,
+        0.0,
+        0.95
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 3,
+      "mass": 46000.0,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 6.96214,
+      "powerToWeightRatio": 18.0435,
+      "weapons": {
+        "35mm_Oerlikon_KDA_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 35.0,
+          "armorPower": 36.8965,
+          "reloadTime": 0.10917,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "us_t54e2": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "bullets": {
+      "105mm_t140e3_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_ap1_he0"
+        },
+        "105mm_us_T279_APDS": {
+          "icon": "hud_ammo_apds"
+        },
+        "105mm_us_T298E1_HEAT": {
+          "icon": "hud_ammo_heat"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 105.0,
+      "armorThicknessFront": [
+        0.55,
+        0.05,
+        0.4
+      ],
+      "armorThicknessSide": [
+        0.2,
+        0.0,
+        0.8
+      ],
+      "crew": 4,
+      "mass": 49400.0,
+      "maxSpeedForward": 12.0462,
+      "maxSpeedBackward": 3.04539,
+      "powerToWeightRatio": 16.3968,
+      "weapons": {
+        "105mm_t140e3_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 105.0,
+          "armorPower": 266.821,
+          "reloadTime": 10.0,
+          "gunnerTurretRotationSpeed": 21.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_M1919A4_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.120048,
+          "gunnerTurretRotationSpeed": 5.5,
+          "isBeltAmmo": true
+        },
+        "12_7mm_M2_HB_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 23.3753,
+          "reloadTime": 0.104167,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "us_m60": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "bullets": {
+      "105mm_M68_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_apds"
+        },
+        "105mm_usa_HESH": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "105mm_usa_HEAT_FS": {
+          "icon": "hud_ammo_heat"
+        },
+        "105mm_us_M416_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 105.0,
+      "armorThicknessFront": [
+        0.75,
+        0.05,
+        0.2
+      ],
+      "armorThicknessSide": [
+        0.1,
+        0.0,
+        0.9
+      ],
+      "crew": 4,
+      "mass": 46200.0,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
+      "powerToWeightRatio": 16.2338,
+      "weapons": {
+        "105mm_M68_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 105.0,
+          "armorPower": 350.485,
+          "reloadTime": 6.66667,
+          "gunnerTurretRotationSpeed": 24.0,
+          "isBeltAmmo": false
+        },
+        "12_7mm_M85_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 25.7069,
+          "reloadTime": 0.0959997,
+          "gunnerTurretRotationSpeed": 24.0,
+          "isBeltAmmo": true
+        },
+        "7_62mm_M73_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.120048,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "us_m551": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
+    },
+    "bullets": {
+      "152mm_M81_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "152mm_usa_M657A2_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "152mm_usa_MGM61B_HEAT": {
+          "maxCount": 10,
+          "icon": "hud_ammo_atgm_ap1_he1"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 152.0,
+      "armorThicknessFront": [
+        0.05,
+        0.0,
+        0.95
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.05,
+        0.95
+      ],
+      "crew": 4,
+      "mass": 15200.0,
+      "maxSpeedForward": 19.2449,
+      "maxSpeedBackward": 4.09384,
+      "powerToWeightRatio": 19.7368,
+      "weapons": {
+        "152mm_M81_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 152.0,
+          "armorPower": 380.0,
+          "reloadTime": 12.0005,
+          "gunnerTurretRotationSpeed": 40.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_M73_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.120048,
+          "gunnerTurretRotationSpeed": 5.5,
+          "isBeltAmmo": true
+        },
+        "12_7mm_M2_HB_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 23.3753,
+          "reloadTime": 0.104167,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "us_m163_vulcan_reskin3": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_spaa": true
+    },
+    "bullets": {
+      "20mm_M168_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "20mm_Vulcan_API": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "20mm_Vulcan_HEI": {
+          "icon": "hud_ammo_bullet_he"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 20.0,
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 4,
+      "mass": 11203.0,
+      "maxSpeedForward": 17.8613,
+      "maxSpeedBackward": 4.10605,
+      "powerToWeightRatio": 18.9235,
+      "weapons": {
+        "20mm_M168_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 20.0,
+          "armorPower": 37.2245,
+          "reloadTime": 0.02,
+          "gunnerTurretRotationSpeed": 75.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "uk_g6_spg": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_uk": true,
+      "tank": true,
+      "type_tank_destroyer": true
+    },
+    "bullets": {
+      "155mm_G6_L45_user_cannon": {
+        "default": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "155mm_M1_HE_PF": {
+          "icon": "hud_ammo_he3_vt"
+        },
+        "155mm_G6_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 155.0,
+      "armorThicknessFront": [
+        0.05,
+        0.0,
+        0.95
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.05,
+        0.95
+      ],
+      "crew": 6,
+      "mass": 46000.0,
+      "maxSpeedForward": 25.8984,
+      "maxSpeedBackward": 2.3544,
+      "powerToWeightRatio": 11.9565,
+      "weapons": {
+        "155mm_G6_L45_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 155.0,
+          "armorPower": 63.6894,
+          "reloadTime": 14.9254,
+          "gunnerTurretRotationSpeed": 28.65,
+          "isBeltAmmo": false
+        }
+      }
+    }
+  },
+  "uk_charioteer_mk_7": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_uk": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "bullets": {
+      "84mm_QQF_20pdr_Mk_I_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_ap1_he0"
+        },
+        "84mm_britain_20pdr_APDS": {
+          "icon": "hud_ammo_apds"
+        },
+        "84mm_britain_20pdr_default_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "84mm_britain_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 83.4,
+      "armorThicknessFront": [
+        0.0,
+        0.05,
+        0.95
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.05,
+        0.95
+      ],
+      "crew": 3,
+      "mass": 30000.0,
+      "maxSpeedForward": 15.7576,
+      "maxSpeedBackward": 0.923724,
+      "powerToWeightRatio": 20.0,
+      "weapons": {
+        "84mm_QQF_20pdr_Mk_I_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 83.4,
+          "armorPower": 232.624,
+          "reloadTime": 6.25,
+          "gunnerTurretRotationSpeed": 20.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_L3A1_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.120048,
+          "gunnerTurretRotationSpeed": 5.5,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "uk_ratel_90_reskin": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_uk": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
+    },
+    "bullets": {
+      "90mm_GT_2_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "90mm_CN90_HE": {
+          "icon": "hud_ammo_he",
+          "isHE": true
+        },
+        "90mm_CN90_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 90.0,
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 3,
+      "mass": 20100.0,
+      "maxSpeedForward": 29.2298,
+      "maxSpeedBackward": 4.89599,
+      "powerToWeightRatio": 14.0299,
+      "weapons": {
+        "90mm_GT_2_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 90.0,
+          "armorPower": 320.0,
+          "reloadTime": 6.66667,
+          "gunnerTurretRotationSpeed": 23.8,
+          "isBeltAmmo": false
+        },
+        "7_62mm_Browning_MG4_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.120048,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "uk_ystervark_spaa_reskin": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_uk": true,
+      "tank": true,
+      "type_spaa": true
+    },
+    "bullets": {
+      "20mm_GAI_CO1_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "20mm_Oerlikon_AP": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "20mm_Oerlikon_HE": {
+          "icon": "hud_ammo_bullet_he"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 20.0,
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 3,
+      "mass": 20100.0,
+      "maxSpeedForward": 29.2298,
+      "maxSpeedBackward": 4.89599,
+      "powerToWeightRatio": 14.0299,
+      "weapons": {
+        "20mm_GAI_CO1_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 20.0,
+          "armorPower": 30.963,
+          "reloadTime": 0.060241,
+          "gunnerTurretRotationSpeed": 45.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "sw_k9_vidar": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_sweden": true,
+      "tank": true,
+      "type_tank_destroyer": true
+    },
+    "bullets": {
+      "155mm_CN98_user_cannon": {
+        "155mm_NATO_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "155mm_M107_HE_PF": {
+          "icon": "hud_ammo_he3_vt"
+        },
+        "default": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "155mm_M110_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 155.0,
+      "armorThicknessFront": [
+        0.15,
+        0.05,
+        0.8
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 5,
+      "mass": 48000.0,
+      "maxSpeedForward": 18.6308,
+      "maxSpeedBackward": 11.0091,
+      "powerToWeightRatio": 20.8333,
+      "weapons": {
+        "155mm_CN98_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 155.0,
+          "armorPower": 54.3,
+          "reloadTime": 5.9988,
+          "gunnerTurretRotationSpeed": 10.0,
+          "isBeltAmmo": false
+        },
+        "12_7mm_M2_HB_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 23.3753,
+          "reloadTime": 0.104167,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "sw_strv_103a": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_sweden": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "bullets": {
+      "105mm_L74_user_cannon": {
+        "105mm_sweden_APDS": {
+          "icon": "hud_ammo_apds"
+        },
+        "105mm_sweden_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "default": {
+          "icon": "hud_ammo_apds"
+        },
+        "105mm_us_M416_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 105.0,
+      "armorThicknessFront": [
+        0.4,
+        0.1,
+        0.5
+      ],
+      "armorThicknessSide": [
+        0.1,
+        0.0,
+        0.9
+      ],
+      "crew": 3,
+      "mass": 36900.0,
+      "maxSpeedForward": 13.7819,
+      "maxSpeedBackward": 12.1605,
+      "powerToWeightRatio": 14.6341,
+      "weapons": {
+        "105mm_L74_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 105.0,
+          "armorPower": 358.074,
+          "reloadTime": 4.0,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_Ksp_58_Strv_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "sw_landsverk_ush_405": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_germany_tft",
+    "tags": {
+      "country_sweden": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
+    },
+    "bullets": {
+      "81mm_Oerlikon_Typ_3Z_8Dla_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "81mm_sw_kan_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 81.0,
+      "mainWeaponType": "auxCannon",
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 2,
+      "mass": 5650.0,
+      "maxSpeedForward": 20.3537,
+      "maxSpeedBackward": 2.54421,
+      "powerToWeightRatio": 15.9292,
+      "weapons": {
+        "81mm_Oerlikon_Typ_3Z_8Dla_user_cannon": {
+          "wtype": "auxCannon",
+          "caliber": 81.0,
+          "armorPower": 330.0,
+          "reloadTime": 0.4,
+          "gunnerTurretRotationSpeed": 0.0,
+          "isBeltAmmo": false
+        }
+      }
+    }
+  },
+  "sw_veak_40_reskin": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_sweden": true,
+      "tank": true,
+      "type_spaa": true
+    },
+    "bullets": {
+      "40mm_Lva_kan_m48_VEAK_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "40mm_sw_kan_APC": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "40mm_sw_kan_HE": {
+          "icon": "hud_ammo_bullet_he"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 40.0,
+      "armorThicknessFront": [
+        0.0,
+        0.05,
+        0.95
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 3,
+      "mass": 29000.0,
+      "maxSpeedForward": 16.6783,
+      "maxSpeedBackward": 5.14249,
+      "powerToWeightRatio": 18.6207,
+      "weapons": {
+        "40mm_Lva_kan_m48_VEAK_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 40.0,
+          "armorPower": 35.7727,
+          "reloadTime": 0.2,
+          "gunnerTurretRotationSpeed": 85.0,
+          "isBeltAmmo": true
+        },
+        "7_62mm_Ksp_58_Strv_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 90.0,
           "isBeltAmmo": true
         }
       }

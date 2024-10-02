@@ -1901,10 +1901,16 @@
     }
   },
   "weapon_presets": {
-    "preset": {
-      "name": "he51c1_default",
-      "blk": "gameData/FlightModels/weaponPresets/he51c1_bombs.blk"
-    }
+    "preset": [
+      {
+        "name": "he51c1_default",
+        "blk": "gameData/FlightModels/weaponPresets/he51c1_default.blk"
+      },
+      {
+        "name": "he51c1_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/he51c1_bombs.blk"
+      }
+    ]
   },
   "WeaponSlots": {
     "HideNodes": {
@@ -1921,7 +1927,7 @@
           "Weapon": [
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunMG17.blk",
+              "blk": "gameData/Weapons/gunMG17_early.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "mgun1_dm",
@@ -1930,7 +1936,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunMG17.blk",
+              "blk": "gameData/Weapons/gunMG17_early.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "mgun2_dm",

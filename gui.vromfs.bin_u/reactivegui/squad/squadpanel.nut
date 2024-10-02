@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { isInSquad, squadMembers, squadMembersOrder, isInvitedToSquad, squadId, squadLeaderCampaign,
@@ -12,7 +13,6 @@ let { mkContactOnlineStatus } = require("%rGui/contacts/contactPresence.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { framedImageBtn, framedBtnSize } = require("%rGui/components/imageButton.nut")
 let invitationsBtn = require("%rGui/invitations/invitationsBtn.nut")
@@ -22,11 +22,10 @@ let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 let gap = hdpx(24)
-let memberSize = evenPx(100)
+let memberSize = evenPx(80)
 let borderWidth = hdpx(2)
 let statusSize = hdpxi(25)
 let avatarSize = memberSize - 2 * borderWidth
-let campIconSize = hdpxi(40)
 
 let borderColor = 0xA0000000
 let myBorderColor = 0xFF52C7E4
@@ -35,9 +34,17 @@ let spinner = mkSpinner(evenPx(50))
 let statusSpinner = mkSpinner(statusSize)
 
 let squadInviteButton = framedImageBtn("ui/gameuiskin#btn_inc.svg",
-  @() openContacts(friendsUids.value.len() > 0 ? FRIENDS_TAB : SEARCH_TAB), { sound = { click  = "meta_squad_button" }})
+  @() openContacts(friendsUids.value.len() > 0 ? FRIENDS_TAB : SEARCH_TAB),
+    {
+      sound = { click  = "meta_squad_button" }
+      size = [memberSize, memberSize]
+    })
 
-let contactsBtn = framedImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts, { sound = { click  = "meta_squad_button" }},
+let contactsBtn = framedImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts,
+  {
+    sound = { click  = "meta_squad_button" }
+    size = [memberSize, memberSize]
+  },
   @() {
     watch = requestsToMeUids
     pos = [0.5 * framedBtnSize[0], -0.5 * framedBtnSize[1]]
@@ -151,24 +158,11 @@ function squadMembersList() {
   }
 }
 
-let squadHeader = @() {
-  watch = squadLeaderCampaign
-  flow = FLOW_HORIZONTAL
+let squadHeader = {
+  rendObj = ROBJ_TEXT
+  text = utf8ToUpper(loc("squad/title"))
   valign = ALIGN_CENTER
-  gap = hdpx(12)
-  children = [
-    {
-      size = [campIconSize, campIconSize]
-      rendObj = ROBJ_IMAGE
-      image = Picture($"{getCampaignPresentation(squadLeaderCampaign.value).icon}:{campIconSize}:{campIconSize}:P")
-      keepAspect = true
-    }
-    {
-      rendObj = ROBJ_TEXT
-      text = loc("squad/title")
-    }.__update(fontSmallShaded)
-  ]
-}
+}.__update(fontTinyAccentedShaded)
 
 let buttonsRow = @(inSquad) {
   flow = FLOW_HORIZONTAL
@@ -185,7 +179,7 @@ return @() {
   watch = [isInSquad, maxSquadSize]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
-  gap
+  gap = hdpx(7)
   children = maxSquadSize.value <= 1 ? null
     : [
         isInSquad.value ? squadHeader : null

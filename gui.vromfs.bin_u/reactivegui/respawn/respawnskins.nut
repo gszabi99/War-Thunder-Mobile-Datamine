@@ -14,11 +14,18 @@ let aTimeSelected = 0.2
 
 let unitName = Computed(@() selSlot.get()?.name)
 
-unitName.subscribe(function(v) {
-  if (v != null && isAutoSkin(respawnUnitInfo.get()?.name) && !selectedSkins.get()?[v] && (respawnUnitSkins.get()?.len() ?? 0) > 0) {
-    let skin = chooseAutoSkin(v, respawnUnitSkins.get(), respawnSlots.get()?.findvalue(@(s) s.name == v).skin)
-    selectedSkins.mutate(@(skins) skins[v] <- skin)
+function refreshCurUnitAutoSkin() {
+  let name = unitName.get()
+  if (name != null && isAutoSkin(respawnUnitInfo.get()?.name) && !selectedSkins.get()?[name] && (respawnUnitSkins.get()?.len() ?? 0) > 0) {
+    let skin = chooseAutoSkin(name, respawnUnitSkins.get(), respawnSlots.get()?.findvalue(@(s) s.name == name).skin)
+    selectedSkins.mutate(@(skins) skins[name] <- skin)
   }
+}
+
+unitName.subscribe(@(_) refreshCurUnitAutoSkin())
+respawnUnitSkins.subscribe(function(_) {
+  selectedSkins.set({})
+  refreshCurUnitAutoSkin()
 })
 
 let function skinBtn(skin) {

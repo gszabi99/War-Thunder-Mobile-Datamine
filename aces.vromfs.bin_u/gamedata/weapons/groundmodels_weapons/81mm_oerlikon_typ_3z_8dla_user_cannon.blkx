@@ -15,13 +15,12 @@
   "maxDeltaAngle": 0.12,
   "maxDeltaAngleVertical": 0.12,
   "shotFreq": 2.5,
-  "shotFreqRndK": 0.05,
+  "shotFreqRndK": 0.5,
   "traceFreq": 4,
   "bEnablePause": false,
   "bullets": -1,
   "bulletsCluster": 1,
   "reloadTime": 2.0,
-  "bulletsCartridge": 9,
   "fxType": "muzzle_ground_40mm",
   "useSingleIconForBullet": true,
   "fxWaterShockWave": "dust_waterwave_medium",
@@ -170,7 +169,7 @@
       "endSpeed": 550.0,
       "maxSpeed": 820.0,
       "price": 3000.0,
-      "mesh": "m_8_rocket",
+      "mesh": "m8_rocket",
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -625,7 +624,7 @@
         "endSpeed": 550.0,
         "maxSpeed": 820.0,
         "price": 3000.0,
-        "mesh": "m_8_rocket",
+        "mesh": "m8_rocket",
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,

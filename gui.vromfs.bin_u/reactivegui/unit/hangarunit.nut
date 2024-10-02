@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+require("%rGui/onlyAfterLogin.nut")
 let DataBlock = require("DataBlock")
 let { set_weapon_visual_custom_blk } = require("unitCustomization")
 let { eventbus_subscribe } = require("eventbus")

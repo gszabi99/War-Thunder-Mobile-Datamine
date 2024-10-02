@@ -30,7 +30,7 @@ let MAX_MESSAGE_CHARS = 256
 let SUCCESS_WND_UID = "successReportWindow"
 let REPORT_WND_UID = "playerReportWindow"
 
-let categoryCfg = ["OTHER", "CHEAT", "ABUSE"]
+let categoryCfg = ["OTHER", "CHEAT", "TEAMKILL"]
 
 let selectedPlayerForReport = Watched(null)
 let isReportStatusSuccessed = Watched(false)

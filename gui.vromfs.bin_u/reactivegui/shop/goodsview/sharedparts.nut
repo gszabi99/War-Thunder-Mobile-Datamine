@@ -553,7 +553,7 @@ function mkTimeLeft(endTime, ovr = {}) {
 
 function mkOfferTexts(title, endTime) {
   let titleComp = textArea({
-    halign = ALIGN_RIGHT
+    halign = ALIGN_LEFT
     vplace = ALIGN_BOTTOM
     text = utf8ToUpper(title)
   }.__update(fontVeryTinyAccented))

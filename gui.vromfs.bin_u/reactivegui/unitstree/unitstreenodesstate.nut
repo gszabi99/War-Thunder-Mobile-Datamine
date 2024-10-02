@@ -5,6 +5,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { filters, filterCount } = require("%rGui/unit/unitsFilterPkg.nut")
+let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
 
 let countryPriority = {
   country_usa = 10
@@ -27,7 +28,8 @@ let mkCountries = @(nodeList) Computed(function(prev) {
 })
 
 let mkVisibleNodes = @() Computed(@()
-  nodes.get().filter(@(v) !allUnitsCfg.get()?[v.name].isHidden || v.name in myUnits.get()))
+  needToShowHiddenUnitsDebug.get() ? nodes.get()
+    : nodes.get().filter(@(v) !allUnitsCfg.get()?[v.name].isHidden || v.name in myUnits.get()))
 
 let mkFilteredNodes = @(nodeList) Computed(@()
   filterCount.get() == 0 ? nodeList.get()
@@ -73,6 +75,43 @@ let mkCountryNodesCfg = @(allNodes, curCountry) Computed(function(prev) {
     nodes = nodeList.map(@(n) n.__merge({ x = xRemap[n.x], y = yRemap[n.y] }))
   }
   return isEqual(res, prev) ? prev : res
+})
+
+let allBlueprints = Computed(@() serverConfigs.get()?.allBlueprints ?? {})
+let blueprintCounts = Computed(@() servProfile.get()?.blueprints ?? {})
+
+let availableBlueprints = Computed(@() allBlueprints.get()
+  .filter(@(_, unitName) unitName not in myUnits.get() || unitName in allUnitsCfg.get()))
+
+let blueprintUnitsStatus = Computed(function(prev) {
+  let list = {}
+  foreach (unitName, data in availableBlueprints.get()) {
+    let { targetCount = 1 } = data
+    let curCount = blueprintCounts.get()?[unitName] ?? 0
+
+    list[unitName] <- {
+      name = unitName
+      exp = curCount
+      reqExp = targetCount
+      isResearched = curCount >= targetCount
+      canBuy = curCount >= targetCount
+    }
+  }
+
+  if (type(prev) != "table" || prev.len() != list.len())
+    return list
+
+  let res = {}
+  local hasChanges = false
+  foreach (unitName, r in list)
+    if (isEqual(r, prev?[unitName]))
+      res[unitName] <- prev[unitName]
+    else {
+      res[unitName] <- r
+      hasChanges = true
+    }
+
+  return hasChanges ? res : prev
 })
 
 let unitsResearchStatus = Computed(function(prev) {
@@ -134,4 +173,5 @@ return {
   unitsResearchStatus
   currentResearch
   researchCountry
+  blueprintUnitsStatus
 }

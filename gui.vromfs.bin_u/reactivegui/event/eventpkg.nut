@@ -1,25 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
-let { REWARD_STYLE_TINY, mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon
+let { REWARD_STYLE_TINY, mkRewardPlate, mkRewardFixedIcon
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { mkCustomButton, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getLootboxRewardsViewInfo, isRewardReceived  } = require("%rGui/rewards/rewardViewInfo.nut")
+let { getLootboxRewardsViewInfo, isRewardReceived } = require("%rGui/rewards/rewardViewInfo.nut")
 let { CS_INCREASED_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
 let { bestCampLevel, eventSeason } = require("eventState.nut")
 let { canShowAds, adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { openLbWnd } = require("%rGui/leaderboard/lbState.nut")
 let { openEventQuestsWnd } = require("%rGui/quests/questsState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { schRewards, onSchRewardReceive, adBudget } = require("%rGui/shop/schRewardsState.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { getLootboxImage, lootboxFallbackPicture } = require("%appGlobals/config/lootboxPresentation.nut")
 
 
@@ -63,36 +61,43 @@ let infoCanvas = {
 let infoCanvasSmall = infoCanvas.__merge({ size = lootboxInfoSize })
 let infoCanvasBig = infoCanvas.__merge({ size = lootboxInfoSizeBig })
 
-function lootboxInfo(lootbox, sf) {
+let lootboxInfo = @(lootbox, stateFlags) function() {
   local rewards = []
   local slots = 0
-  foreach (reward in getLootboxRewardsViewInfo(lootbox)) {
-    if (reward?.isLastReward || slots + (reward?.slots ?? 0) > REWARDS + 1)
+  let allRewards = getLootboxRewardsViewInfo(lootbox)
+  let profile = servProfile.get()
+  foreach (reward in allRewards) {
+    if (reward?.isLastReward
+        || slots + (reward?.slots ?? 0) > REWARDS + 1
+        || isRewardReceived(lootbox, reward?.parentRewardId ?? reward.rewardId, reward.rewardCfg, profile))
       continue
     slots += reward?.slots ?? 0
     rewards.append(reward)
     if (slots >= REWARDS)
       break
   }
+  if (rewards.len() == 0) {
+    let last = allRewards.findvalue(@(v) v?.isLastReward ?? false)
+    if (last)
+      rewards.append(last)
+  }
 
-  return @() {
-    watch = [serverConfigs, servProfile, myUnits]
-    fillColor = sf & S_HOVER ? hoverColor : fillColor
-    transitions = [{ prop = AnimProp.fillColor, duration = 0.15, easing = Linear }]
-    children = rewards.map(function(r) {
-      let { rewardsCfg = null } = serverConfigs.value
-      let id = r?.rewardId
-      let showMark = (id in rewardsCfg && isRewardReceived(lootbox, id, rewardsCfg[id], servProfile.value))
-        || (r.rType == "blueprint" && r.id in myUnits.get())
-      return {
-        children = [
-          mkRewardPlate(r, REWARD_STYLE_TINY)
-          showMark ? mkRewardReceivedMark(REWARD_STYLE_TINY) : null
-          !showMark && (r?.isFixed || r?.isJackpot) ? mkRewardFixedIcon(REWARD_STYLE_TINY) : null
-        ]
-      }
-    })
-  }.__update(slots > REWARDS ? infoCanvasBig : infoCanvasSmall)
+  let children = rewards.map(@(r) {
+    children = [
+      mkRewardPlate(r, REWARD_STYLE_TINY),
+      (r?.isFixed || r?.isJackpot) ? mkRewardFixedIcon(REWARD_STYLE_TINY) : null
+    ]
+  })
+
+  return {
+    watch = servProfile
+    children = @() {
+      watch = stateFlags
+      fillColor = stateFlags.get() & S_HOVER ? hoverColor : fillColor
+      children
+      transitions = [{ prop = AnimProp.fillColor, duration = 0.15, easing = Linear }]
+    }.__update(slots > REWARDS ? infoCanvasBig : infoCanvasSmall)
+  }
 }
 
 function progressBar(stepsFinished, stepsToNext, ovr = {}) {

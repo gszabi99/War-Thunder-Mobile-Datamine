@@ -23,7 +23,6 @@ let { squadId, isReady, isInSquad, isSquadLeader, isInvitedToSquad, squadMembers
 } = squadState
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { maxSquadSize } = require("%rGui/gameModes/gameModeState.nut")
-let setReady = require("setReady.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let matching = require("%appGlobals/matching_api.nut")
 
@@ -48,9 +47,14 @@ squadId.subscribe(@(_) isSquadDataInited(false))
 isInSquad.subscribe(@(v) v ? squadJoinTime(get_time_msec()) : null)
 squadMembers.subscribe(@(list) validateNickNames(list.keys()))
 isInvitedToSquad.subscribe(@(list) validateNickNames(list.keys()))
-squadLeaderCampaign.subscribe(@(_) setReady(false))
-curCampaign.subscribe(@(v) v != squadLeaderCampaign.value ? setReady(false) : null)
-isInBattle.subscribe(@(_) setReady(false))
+
+function setReadyRaw(ready) {
+  if (ready != isReady.get() && isInSquad.get() && !isSquadLeader.get())
+    isReady.set(ready)
+}
+squadLeaderCampaign.subscribe(@(_) setReadyRaw(false))
+curCampaign.subscribe(@(v) v != squadLeaderCampaign.value ? setReadyRaw(false) : null)
+isInBattle.subscribe(@(_) setReadyRaw(false))
 
 let localMemberDecoratorHashes = squadMembers.get().map(@(data) data?.chosenDecoratorsHash)
 

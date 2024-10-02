@@ -139,6 +139,7 @@ return {
     {
       size = flex()
       behavior = TouchCameraControl
+      eventPassThrough = true
     }
     topLeft
     hudTopCenter

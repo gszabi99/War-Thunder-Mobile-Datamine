@@ -7,11 +7,15 @@ let { isProfileReceived, curCampaign,
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
+let { TUTORIAL_AFTER_REWARD_ID } = require("%rGui/tutorial/tutorialConst.nut")
+let { completedTutorials } = require("%rGui/tutorial/completedTutorials.nut")
+
 
 let UNITS_STATUS = {
   UNITS_INITIAL = null,
@@ -29,6 +33,20 @@ let unitsStatus = keepref(Computed(function() {
     ? UNITS_STATUS.UNITS_AVAILABLE
     : UNITS_STATUS.UNITS_UNAVAILABLE
 }))
+let needShow = keepref(Computed(@() !hasModalWindows.get()
+  && !isInLoadingScreen.get()
+  && !isTutorialActive.get()
+  && unitToShowAsReceived.get() != null
+  && isMainMenuAttached.get()
+  && isLoggedIn.get()))
+let needShowTutorialAfterLeaveGame = keepref(Computed(function() {
+  let { battles = 0, offlineBattles = 0 } = servProfile.get()?.sharedStatsByCampaign[curCampaign.get()]
+  return unitsStatus.get() == UNITS_STATUS.UNITS_AVAILABLE
+    && !needShowTutorialAfterReward.get()
+    && !needShow.get()
+    && !(completedTutorials.get()?[TUTORIAL_AFTER_REWARD_ID] ?? false)
+    && (battles == 0 && offlineBattles == 0)
+}))
 
 unitsStatus.subscribe(function(v) {
   let { prevCampaign = null, hasUnitsPrev = null } = prevState.get()
@@ -37,13 +55,7 @@ unitsStatus.subscribe(function(v) {
   if (hasUnitsPrev == false && v == UNITS_STATUS.UNITS_AVAILABLE)
     unitToShowAsReceived.set(myUnits.get().findvalue(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {})))
 })
-
-let needShow = keepref(Computed(@() !hasModalWindows.get()
-  && !isInLoadingScreen.get()
-  && !isTutorialActive.get()
-  && unitToShowAsReceived.get() != null
-  && isMainMenuAttached.get()
-  && isLoggedIn.get()))
+needShowTutorialAfterLeaveGame.subscribe(@(v) v ? needShowTutorialAfterReward.set(true) : null)
 
 function showReward() {
   if (!needShow.get())

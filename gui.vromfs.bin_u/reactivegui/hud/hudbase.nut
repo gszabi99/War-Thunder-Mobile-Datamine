@@ -64,6 +64,7 @@ let hudBase = {
     {
       size = flex()
       behavior = TouchCameraControl
+      eventPassThrough = true
     }
     @() {
       watch = [isInFlight, viewHudType, unitType]

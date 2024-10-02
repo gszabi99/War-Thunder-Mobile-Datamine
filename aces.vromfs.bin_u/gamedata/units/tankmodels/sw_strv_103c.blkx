@@ -1916,11 +1916,11 @@
     "horizontal": true
   },
   "sound": {
-    "EngineName": "engine_medium_diesel",
+    "EngineName": "engine_medium_turbine",
     "TrackSoundPathStudio": "ground/engines",
-    "TrackSoundName": "tracks_medium",
+    "TrackSoundName": "tracks_mbt",
     "EngineNameAi": "engine_tank_ai_middle",
-    "TrackSoundNameAi": "tracks_ai_medium",
+    "TrackSoundNameAi": "tracks_ai_mbt",
     "gun_turn": "turret_turn_mg_light"
   },
   "class_tags": {},

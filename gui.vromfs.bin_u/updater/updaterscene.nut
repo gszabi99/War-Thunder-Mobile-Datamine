@@ -14,7 +14,7 @@ let spinnerSize = hdpxi(100)
 let loadingScreensWhitelist = [
   "simple_ship_6"
   "simple_tank_7"
-  //"simple_airplane_3"
+  "simple_airplane_3"
 ]
 screenWeights.set(screensList
   .filter(@(_, k) loadingScreensWhitelist.contains(k))

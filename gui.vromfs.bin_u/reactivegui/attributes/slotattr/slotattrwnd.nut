@@ -4,9 +4,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { slotInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
 
 let { lastModifiedAttr, curCategoryId, getSpCostText } = require("%rGui/attributes/attrState.nut")
 let { gamercardWithoutLevelBlock, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
@@ -27,7 +25,7 @@ let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { isSlotAttrOpened, attrSlotData, slotUnitName, slotLevel,
   curCategory, applyAttributes, selAttrSpCost, slotLevelsToMax,
   isSlotMaxSkills, unseenSlotAttrByIdx, resetAttrState, leftSlotSp,
-  markSlotAttributesSeen, isSlotAttrAttached
+  markSlotAttributesSeen, isSlotAttrAttached, hasUpgradedAttrUnitNotUpdatable
 } = require("slotAttrState.nut")
 let { mkAttrTabs } = require("%rGui/attributes/attrWndTabs.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -186,18 +184,8 @@ let pageBlock = {
   ]
 }
 
-function hasUnitWithUpgradedAttribute() {
-  foreach(unit in servProfile.get().units)
-    if(!serverConfigs.get()?.allUnits[unit.name].isPremium && !unit.isUpgraded)
-      foreach(attributes in unit.attrLevels)
-        foreach(attr in attributes)
-          if(attr > 0)
-            return true
-  return false
-}
-
 let applyAction = function() {
-  if(!hasUnitWithUpgradedAttribute()) {
+  if(!hasUpgradedAttrUnitNotUpdatable()) {
     sendAppsFlyerEvent("add_unit_attributes")
   }
   applyAttributes()
@@ -218,7 +206,10 @@ let actionButtons = @() {
         @() buySlotLevelWnd(selectedSlotIdx.get()), { hotkeys = ["^J:Y"] })
     selAttrSpCost.get() <= 0 ? null
       : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction, {
-          ovr = { sound = { click  = "characteristics_apply" } }.__update(isWidescreen ? {} : { minWidth = hdpx(250) })
+          ovr = {
+            sound = { click  = "characteristics_apply" }
+            key = "slotAttrApplyBtn" //need for tutorial
+          }.__update(isWidescreen ? {} : { minWidth = hdpx(250) })
           hotkeys = ["^J:X"]
         })
   ]

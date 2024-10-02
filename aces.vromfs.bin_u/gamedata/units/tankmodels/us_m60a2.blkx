@@ -19,8 +19,6 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
-  "support_unit_class": "structures/ussr_152mm_d1",
-  "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
   "useTouchShooting": true,
   "ecsTemplate": "tank_wtm",
@@ -46,8 +44,11 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": [
+    0.95,
+    1.3
+  ],
   "autoSightDistanceCorrection": true,
-  "minRelativeTankCameraThreshold": 1.3,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "sound": {
@@ -1613,6 +1614,95 @@
       "fx": {
         "name": "tank_engine_fire"
       }
+    }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "us_camo_dark_green_light_olive*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_modern_seventh_army*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_modern_snow_temperate_ot*"
+      }
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.6109,
+        -1.02182e-7,
+        -0.0858353,
+        0.783739
+      ],
+      "decal0Line1": [
+        -0.0203348,
+        -2.53794,
+        -0.61853,
+        5.50029
+      ],
+      "decal0Line2": [
+        -2.6109,
+        -9.97489e-8,
+        -0.0858353,
+        0.216246
+      ],
+      "decal0Line3": [
+        -0.0203346,
+        -2.53794,
+        0.61853,
+        5.5004
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -0.0319227,
+        0.236903,
+        -0.971009,
+        -1.7262
+      ],
+      "decal0CPNormDepth1": [
+        -0.0319227,
+        0.236903,
+        0.971009,
+        -1.72602
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.382804
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.293149,
+      "decal0Tex": "back_02"
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "battleHideNodes": {

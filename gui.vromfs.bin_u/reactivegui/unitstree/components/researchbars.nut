@@ -39,23 +39,25 @@ function mkLevelLine(cur, req, color, ovr = {}) {
   }
 }
 
-function blueprintBar(unit){
+let mkBlueprintBarText = @(text) {
+  size = [statsWidth, SIZE_TO_CONTENT]
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  halign = ALIGN_CENTER
+  text
+}.__update(fontTiny)
+
+function blueprintBar(unit) {
   let curBluebrintsCount = Computed(@() servProfile.get()?.blueprints?[unit.name] ?? 0)
   let reqBluebrintsCount = Computed(@() serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1)
-  return  @() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in myUnits.get()
+  return @() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in myUnits.get()
     ? {
       watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, myUnits]
       size = [flex(), SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
-      gap = hdpx(10)
+      gap = hdpx(5)
       children = [
-        {
-          size = [statsWidth, SIZE_TO_CONTENT]
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          halign = ALIGN_CENTER
-          text = loc("blueprints/desc")
-        }.__update(fontTiny)
+        mkBlueprintBarText(loc("blueprints/desc"))
         mkLevelLine(curBluebrintsCount.get(), reqBluebrintsCount.get(), blueprintBarColor)
       ]}
     : { watch = [serverConfigs, myUnits]}
@@ -130,6 +132,7 @@ let researchBlock = @(unit) unit == null ? null
     }
 
 return {
+  mkBlueprintBarText
   blueprintBar
   researchBlock
 }

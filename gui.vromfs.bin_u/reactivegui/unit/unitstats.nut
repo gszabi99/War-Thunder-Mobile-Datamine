@@ -7,8 +7,9 @@ let { TANK, SHIP, SUBMARINE, AIR } = require("%appGlobals/unitConst.nut")
 let { get_game_params } = require("gameparams")
 let { attrPresets } = require("%rGui/attributes/attrState.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { getWeaponShortNameWithCount, getWeaponTypeName, getWeaponCaliber } = require("%rGui/weaponry/weaponsVisual.nut")
+let { getWeaponShortNameWithCount, getWeaponTypeName } = require("%rGui/weaponry/weaponsVisual.nut")
 let { getSpeedText } = require("%rGui/measureUnits.nut")
+let { format } = require("string")
 
 let aircraftMark = "▭"
 let cannonMark = "⋖"
@@ -33,7 +34,7 @@ let avgShellPenetrationMmByRank = [
 
 let valueRangeShip = {
   shipCrewRating = [0.0, 10.0]
-  maxSpeed = [7, 43]
+  maxSpeed = [5.3, 20.7] // m/s
   turningTime = [10, 60]
   mainCannonDps = [0, 5000]
   auxCannonDps = [0, 5000]
@@ -50,13 +51,13 @@ let valueRangeTank = {
   armorPower = [30, 800]
   reloadTime = [0, 45]
   gunnerTurretRotationSpeed = [2, 75]
-  maxSpeedForward = [0, 110]
-  maxSpeedBackward = [0, 110]
+  maxSpeedForward = [0, 31] // m/s
+  maxSpeedBackward = [0, 31] // m/s
   powerToWeightRatio = [0, 50]
 }
 
 let valueRangeAir = {
-  maxSpeed = [367, 730]
+  maxSpeed = [66, 706] // m/s
 }
 
 let valueRange = {
@@ -211,6 +212,10 @@ let statsAir = {
   pylonCount = {
     valueToText = @(v, _) v.tostring()
   }
+  crew = {
+    getHeader = @(__, _) loc("attrib_section/plane_crew")
+    valueToText = @(_, s) loc("stats/air_crew", { pilots = s?.pilotsCount ?? 0, gunners = s?.gunnersCount ?? 0 })
+  }
   massPerSec = {
     valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/kgPerSec"))
   }
@@ -287,6 +292,7 @@ let statsCfgTank = {
 let statsCfgAir = {
   full = [
     statsAir.pylonCount
+    statsAir.crew
     statsAir.maxSpeed
     statsAir.maxSpeedAlt
     statsAir.maxAltitude
@@ -297,6 +303,7 @@ let statsCfgAir = {
   short = [
     statsAir.massPerSec
     statsAir.pylonCount
+    statsAir.crew
     statsAir.maxSpeed
     statsAir.turnTime
     statsAir.climbSpeed
@@ -379,23 +386,38 @@ let weaponsCfgTank = {
   ]
 }
 
-function findWeapon(weaponSlots, wId) {
+function findWeapon(weaponSlots, wId, isFullName = true) {
+  if (isFullName)
+    foreach (weaponSlot in weaponSlots)
+      foreach (preset in weaponSlot?.wPresets ?? {})
+        foreach (weap in preset?.weapons ?? [])
+          if (weap.weaponId == wId)
+            return weap
   foreach (weaponSlot in weaponSlots)
-    foreach (preset in weaponSlot?.wPresets ?? {})
-      foreach (weap in preset?.weapons ?? [])
-        if (weap.weaponId == wId)
-          return weap
+    foreach (weap in weaponSlot?.wPresets?.default_common?.weapons ?? {})
+      if (weap.weaponId == wId)
+        return weap
   return null
 }
 
+function getTotalWeaponAmountByCaliberAndType(weaponSlots, caliber, weaponType) {
+  local total = 0
+  foreach (weaponSlot in weaponSlots)
+    foreach (weap in weaponSlot?.wPresets?.default_common?.weapons ?? {})
+      if (weap.bulletSets[weap.bulletSets.keys()[0]].caliber == caliber && weap.trigger == weaponType)
+        total += weap.guns
+  return total
+}
+
 function getAirGunName(s, u, isFullName = true) {
-  let weapon = findWeapon(loadUnitWeaponSlots(u.name), s.wId)
+  let weapon = findWeapon(loadUnitWeaponSlots(u.name), s.wId, isFullName)
   if (weapon == null)
     return ""
   let bSet = weapon.bulletSets[weapon.bulletSets.keys()[0]]
+  let totalWeapByCaliberAndType = getTotalWeaponAmountByCaliberAndType(loadUnitWeaponSlots(u.name), bSet.caliber, s.type)
   let withAnyCount = true
   return isFullName ? getWeaponShortNameWithCount(weapon, bSet, withAnyCount, "weapons/counter/right/short")
-    : getWeaponCaliber(weapon, bSet)
+    : $"{format(loc("caliber/mm"), bSet.caliber)} {format(loc("weapons/counter/right/short"), totalWeapByCaliberAndType)}"
 }
 
 let mkAirMainWeapon = @(id) mkStat(id, {

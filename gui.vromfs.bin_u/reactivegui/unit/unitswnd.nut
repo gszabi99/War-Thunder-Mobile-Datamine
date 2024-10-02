@@ -515,6 +515,7 @@ let unitsWnd = {
   stopMouse = true
   stopHotkeys = true
   behavior = HangarCameraControl
+  eventPassThrough = true
   function onAttach() {
     isUnitsWndAttached(true)
     sendNewbieBqEvent("openUnitsListWnd")

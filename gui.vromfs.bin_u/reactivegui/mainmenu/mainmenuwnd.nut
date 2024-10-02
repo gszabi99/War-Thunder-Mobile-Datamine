@@ -49,6 +49,7 @@ let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { DBGLEVEL } = require("dagor.system")
 let { slotBarMainMenu, slotBarSize } = require("%rGui/slotBar/slotBar.nut")
 let { slots } = require("%rGui/slotBar/slotBarState.nut")
+let { unseenCampaigns } = require("unseenCampaigns.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -86,28 +87,31 @@ let unitNameBlock = @() hangarUnit.get() == null ? { watch = hangarUnit }
     }
 
 let campaignsBtn = @() {
-  watch = [campaignsList, curCampaign]
+  watch = [campaignsList, curCampaign, unseenCampaigns]
   children = campaignsList.value.len() <= 1 || curCampaign.value == null  ? null
-    : framedImageBtn(getCampaignPresentation(curCampaign.value).icon, chooseCampaignWnd,
-        {
-          padding = [hdpx(0), hdpx(20), hdpx(0), hdpx(20) ]
-          size = SIZE_TO_CONTENT
-          sound = { click = "click" }
-          imageSize = [hdpx(70) , hdpx(70)]
-          flow = FLOW_HORIZONTAL
-          gap = hdpx(20)
-        },
-        {
-          size = [SIZE_TO_CONTENT, flex()]
-          rendObj = ROBJ_TEXT
-          valign = ALIGN_CENTER
-          color = 0xFFFFFFFF
-          text = loc("changeCampaignShort")
-          fontFx = FFT_GLOW
-          fontFxFactor = 64
-          fontFxColor = Color(0, 0, 0)
-        }.__update(fontTinyAccented)
-      )
+    : [
+        framedImageBtn(getCampaignPresentation(curCampaign.value).icon, chooseCampaignWnd,
+          {
+            padding = [hdpx(0), hdpx(20), hdpx(0), hdpx(20) ]
+            size = SIZE_TO_CONTENT
+            sound = { click = "click" }
+            imageSize = [hdpx(70) , hdpx(70)]
+            flow = FLOW_HORIZONTAL
+            gap = hdpx(20)
+          },
+          {
+            size = [SIZE_TO_CONTENT, flex()]
+            rendObj = ROBJ_TEXT
+            valign = ALIGN_CENTER
+            color = 0xFFFFFFFF
+            text = loc("changeCampaignShort")
+            fontFx = FFT_GLOW
+            fontFxFactor = 64
+            fontFxColor = Color(0, 0, 0)
+          }.__update(fontTinyAccented))
+        unseenCampaigns.get().len() == 0 ? null
+          : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(10), hdpx(-10)] })
+      ]
 }
 
 let mkOnlineInfoText = @(total) {
@@ -233,10 +237,9 @@ let toBattleButtonPlace = {
       ]
     }
     {
-      pos = [saBorders[0] * 0.5, 0]
       rendObj = ROBJ_9RECT
       image = gradTranspDoubleSideX
-      padding = [ hdpx(12), saBorders[0] * 0.5]
+      padding = [ 0, 0, 0, saBorders[0] * 0.5]
       texOffs = [0 , gradDoubleTexOffset]
       screenOffs = [0, hdpx(70)]
       color = 0x50000000
@@ -249,7 +252,6 @@ let toBattleButtonPlace = {
         mkMRankRange
       ]
     }
-    isWidescreen ? null : { size = [0, hdpx(40)] }
     toBattleButtonForRandomBattles
   ]
 }
@@ -277,6 +279,7 @@ return {
   key = {}
   size = saSize
   behavior = HangarCameraControl
+  eventPassThrough = true
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   onAttach = @() isMainMenuAttached(true)

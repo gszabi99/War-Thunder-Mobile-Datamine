@@ -73,23 +73,23 @@ let throttleToSlider = @(trt) trt > maxThrottle ? sliderWepValue //wep
 
 let throttleScale = {
   size = [3 * scaleWidth, throttleScaleHeight]
-  pos = [1.2 * scaleWidth, 0]
+  pos = [-knobSize, 0]
   padding = [throttleScaleHeight * (-sliderWepValue) / (maxThrottle - sliderWepValue), 0, 0, 0]
   children = {
     size = flex()
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = hdpx(5)
     commands = [
-      [VECTOR_LINE, 0, 0,  100, 0],
-      [VECTOR_LINE, 0, 10, 50,  10],
-      [VECTOR_LINE, 0, 20, 45,  20],
-      [VECTOR_LINE, 0, 30, 40,  30],
-      [VECTOR_LINE, 0, 40, 35,  40],
-      [VECTOR_LINE, 0, 50, 50,  50],
-      [VECTOR_LINE, 0, 60, 20,  60],
-      [VECTOR_LINE, 0, 70, 15,  70],
-      [VECTOR_LINE, 0, 80, 10,  80],
-      [VECTOR_LINE, 0, 90, 5,   90],
+      [VECTOR_LINE, 0, 0, 100, 0],
+      [VECTOR_LINE, 50, 10, 100,  10],
+      [VECTOR_LINE, 55, 20, 100,  20],
+      [VECTOR_LINE, 60, 30, 100,  30],
+      [VECTOR_LINE, 65, 40, 100,  40],
+      [VECTOR_LINE, 50, 50, 100,  50],
+      [VECTOR_LINE, 80, 60, 100,  60],
+      [VECTOR_LINE, 85, 70, 100,  70],
+      [VECTOR_LINE, 90, 80, 100,  80],
+      [VECTOR_LINE, 95, 90, 100,   90],
     ]
   }
 }
@@ -242,7 +242,7 @@ function throttleSlider() {
         watch = [Trt0, IsTrtWep0, wheelBrake, isOnGroundSmoothed]
         key = "air_throttle_slider_text"
         rendObj = ROBJ_TEXT
-        pos = [knobSize + hdpx(5), -knobPadding]
+        pos = [-knobSize - hdpx(10), -knobPadding - hdpx(5)]
         color = IsTrtWep0.get() && !wheelBrake.get() ? 0xFFFF0000 : knobColor
         text = wheelBrake.get() && isOnGroundSmoothed.get() ? loc("hotkeys/ID_WHEEL_BRAKE")
           : IsTrtWep0.get() ? wepText
@@ -282,8 +282,8 @@ function throttleSlider() {
             watch = Trt0
             rendObj = ROBJ_MASK
             size = [knobSize, throttleScaleHeight]
-            pos = [scaleWidth, 0]
-            image = getSvgImage("hud_plane_gradient", knobSize, throttleScaleHeight)
+            pos = [-knobSize, 0]
+            image = getSvgImage("hud_plane_gradient_left", knobSize, throttleScaleHeight)
             children = {
               rendObj = ROBJ_SOLID
               size = flex()

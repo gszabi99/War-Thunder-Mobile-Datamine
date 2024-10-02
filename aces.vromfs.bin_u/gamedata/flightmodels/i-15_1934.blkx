@@ -1798,7 +1798,7 @@
           "Weapon": [
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunPV1.blk",
+              "blk": "gameData/Weapons/gunPV1_early.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "shell": "emtr_shellrejection1",
@@ -1810,7 +1810,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunPV1.blk",
+              "blk": "gameData/Weapons/gunPV1_early.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "mgun2_dm",
@@ -1821,7 +1821,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunPV1.blk",
+              "blk": "gameData/Weapons/gunPV1_early.blk",
               "emitter": "flare3",
               "flash": "flare3",
               "dm": "mgun3_dm",
@@ -1831,7 +1831,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunPV1.blk",
+              "blk": "gameData/Weapons/gunPV1_early.blk",
               "emitter": "flare4",
               "flash": "flare4",
               "dm": "mgun4_dm",

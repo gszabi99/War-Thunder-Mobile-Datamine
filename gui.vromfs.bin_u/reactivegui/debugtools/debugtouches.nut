@@ -39,6 +39,7 @@ let debugTouchesUi = {
   key = {}
   size = flex()
   behavior = Behaviors.ProcessPointingInput
+  eventPassThrough = true
   function onPointerPress(evt) {
     let { pointerId, x, y } = evt
     pointerPos[pointerId] <- [x, y]

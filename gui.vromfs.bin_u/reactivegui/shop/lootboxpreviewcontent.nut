@@ -17,7 +17,7 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { lootboxInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { eventSeason, bestCampLevel } = require("%rGui/event/eventState.nut")
+let { eventSeason, bestCampLevel, curEventLootboxes } = require("%rGui/event/eventState.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { mkFreeAdsGoodsTimeProgress } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { schRewards } = require("%rGui/shop/schRewardsState.nut")
@@ -352,9 +352,16 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
     style = REWARD_STYLE_TINY_SMALL_GAP
 
   let jackpotCount = Computed(@() allRewards.get().findindex(@(r) !(r?.isFixed || r?.isJackpot)))
+  let lootBoxWithSameJackpot = Computed(function() {
+    if (lootbox.fixedRewards.len() == 0)
+      return null
+    let rewards = lootbox.fixedRewards.values()
+    return curEventLootboxes.get().findvalue(@(lb) lb.name != lootbox.name && lb.fixedRewards.len() > 0
+      && null != lb.fixedRewards.findvalue(@(fr) rewards.contains(fr)))
+  })
   return @() {
     key = {}
-    watch = jackpotCount
+    watch = [jackpotCount, lootBoxWithSameJackpot]
     size = [width, SIZE_TO_CONTENT]
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
@@ -365,11 +372,16 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
           itemsBlock(allRewards, width, style)
         ]
       : [
+          lootBoxWithSameJackpot.get() == null ? null
+            : mkText(loc("jackpot/sameJackpotHint", {
+                current = getLootboxName(lootbox.name, lootbox?.meta.event)
+                same = getLootboxName(lootBoxWithSameJackpot.get().name, lootBoxWithSameJackpot.get()?.meta.event)
+              }))
           mkText(loc("jackpot/rewardsHeader"))
           itemsBlock(Computed(@() allRewards.get().slice(0, jackpotCount.get())), width, style, {}, lootbox)
           mkText(loc("events/lootboxContains"))
           itemsBlock(Computed(@() allRewards.get().slice(jackpotCount.get())), width, style)
-        ]
+        ].filter(@(v) v != null)
     animations = wndSwitchAnim
   }.__update(ovr)
 }

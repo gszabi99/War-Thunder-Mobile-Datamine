@@ -24,12 +24,12 @@ let { justBoughtUnits, deleteJustBoughtUnit } = require("%rGui/unit/justUnlocked
 let { revealAnimation, raisePlatesAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { ceil } = require("math")
 let { scrollToUnit, nodeToScroll } = require("unitsTreeScroll.nut")
-let { unitsResearchStatus, researchCountry, currentResearch } = require("unitsTreeNodesState.nut")
+let { unitsResearchStatus, researchCountry, currentResearch, blueprintUnitsStatus } = require("unitsTreeNodesState.nut")
 let { mkPlateExpBar, mkPlateBlueprintBar, mkPlateExpBarAnimSlot, plateBarHeight } = require("unitResearchBar.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { animUnitAfterResearch, needShowPriceUnit, animExpPart, animNewUnitsAfterResearch, needDelayAnimation,
+let { animUnitAfterResearch, needShowPriceUnit, animExpPart, animNewUnitsAfterResearch, needDelayAnimation, loadStatusesAnimUnits,
   animNewUnitsAfterResearchTrigger, hasAnimDarkScreen, unitsForExpAnim, isBuyUnitWndOpened, canPlayAnimUnitAfterResearch
 } = require("animState.nut")
 let { animUnitSlot, mkUnitResearchPriceAnim, priceAnimDuration } = require("%rGui/unitsTree/components/unitPlateAnimations.nut")
@@ -67,7 +67,8 @@ function triggerAnim() {
 
 function openBuyUnitWnd(name) {
   let researchStatus = unitsResearchStatus.get()?[name]
-  if (researchStatus?.canBuy) {
+  let blueprintStatus = blueprintUnitsStatus.get()?[name]
+  if (researchStatus?.canBuy || blueprintStatus?.canBuy) {
     let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, name)
     purchaseUnit(name, bqPurchaseInfo, null, null, unitBuyWnd(name), loc("unitsTree/researchCompleted"),
       @() triggerAnim())
@@ -266,6 +267,8 @@ let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, x
                         openBuyUnitWnd(unit.name)
                       })
                       unitsForExpAnim.mutate(@(v) v.$rawdelete(unit.name))
+                      if(unit.name in serverConfigs.get()?.allBlueprints)
+                        loadStatusesAnimUnits()
                     }
                   }
                 ]
@@ -385,6 +388,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
 
   let stateFlags = Watched(0)
   let researchStatus = Computed(@() unitsResearchStatus.get()?[unit.name])
+  let blueprintStatus = Computed(@() blueprintUnitsStatus.get()?[unit.name])
   let isOwned = Computed(@() unit.name in myUnits.get())
   let isLocked = Computed(@() !isOwned.get() && (unit.name not in canBuyUnits.get()))
   let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
@@ -402,14 +406,14 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
   let needToShowHighlight = Computed(@() animNewUnitsAfterResearch.get().len() == 0
     && (currentResearch.get() ? currentResearch.get().name == unit.name : researchStatus.get()?.canResearch))
   return @() animUnitAfterResearch.get() == unit.name && canPlayAnimUnitAfterResearch.get()
-      ? mkTreeNodesUnitPlateSpeedUpAnim(unit, price, discount, researchStatus, xmbNode,
+      ? mkTreeNodesUnitPlateSpeedUpAnim(unit, price, discount, needShowBlueprintBar.get() ? blueprintStatus : researchStatus, xmbNode,
         ovr.__merge({ watch = [animUnitAfterResearch, canPlayAnimUnitAfterResearch] }))
     : animNewUnitsAfterResearch.get()?[unit.name]
       ? mkTreeNodesUnitPlateUnlockAnim(unit, xmbNode, ovr.__merge({ watch = animNewUnitsAfterResearch }))
     : {
       watch = [isSelected, isOwned, isLocked, canPurchase, researchStatus, needShowBlueprintBar,
         researchCountry, needToShowHighlight, animUnitAfterResearch, animNewUnitsAfterResearch,
-        needDelayAnimation]
+        needDelayAnimation, blueprintStatus]
       size = unitPlateTiny
       behavior = Behaviors.Button
       function onClick() {

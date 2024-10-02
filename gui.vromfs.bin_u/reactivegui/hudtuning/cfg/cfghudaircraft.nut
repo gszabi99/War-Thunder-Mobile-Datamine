@@ -56,7 +56,7 @@ return cfgHudCommon.__merge({
 
   zoomSlider = {
     ctor = @() zoomSlider
-    defTransform = mkLBPos([hdpx(100), hdpx(-350)])
+    defTransform = mkLBPos([hdpx(100), hdpx(-365)])
     editView = zoomSliderEditView
     priority = Z_ORDER.SLIDER
   }
@@ -71,7 +71,7 @@ return cfgHudCommon.__merge({
 
   rocket = {
     ctor = @() mkCircleWeaponryItem("ID_ROCKETS", RocketsState, hasRockets, "ui/gameuiskin#hud_rb_rocket.svg", true, false)
-    defTransform = mkLBPos([hdpx(272), hdpx(-148)])
+    defTransform = mkLBPos([hdpx(285), hdpx(-148)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_rb_rocket.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
     isVisibleInBattle = hasRockets
@@ -90,14 +90,14 @@ return cfgHudCommon.__merge({
       key = "plane_lock_target"
       children = mkCircleLockBtn("ID_LOCK_TARGET")
     }
-    defTransform = mkLBPos([hdpx(0), hdpx(-162)])
+    defTransform = mkLBPos([hdpx(0), hdpx(-220)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_target_tracking_off.svg")
     isVisibleInBattle = Computed(@() !isActiveTurretCamera.value)
   }
 
   zoom = {
     ctor = @() mkCircleZoom("ui/gameuiskin#hud_binoculars_zoom.svg", "ui/gameuiskin#hud_binoculars.svg")
-    defTransform = mkLBPos([hdpx(0), hdpx(-370)])
+    defTransform = mkLBPos([hdpx(0), hdpx(-445)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_binoculars.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
   }
@@ -143,7 +143,7 @@ return cfgHudCommon.__merge({
 
   radar = {
     ctor = @() aircraftRadar
-    defTransform = mkLTPos([hdpx(105), 0])
+    defTransform = mkLTPos([hdpx(120), 0])
     editView = aircraftRadarEditView
     hideForDelayed = false
     isVisibleInBattle = canShowRadar
@@ -209,14 +209,14 @@ return cfgHudCommon.__merge({
 
   viewBackButton = {
     ctor = mkViewBackButton
-    defTransform = mkLTPos([hdpx(0), hdpx(210)])
+    defTransform = mkLTPos([hdpx(0), hdpx(130)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_look_back.svg")
     priority = Z_ORDER.BUTTON
   }
 
   freeCameraButton = {
     ctor = mkFreeCameraButton
-    defTransform = mkLTPos([hdpx(0), hdpx(350)])
+    defTransform = mkLTPos([hdpx(0), hdpx(255)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_free_camera.svg")
     priority = Z_ORDER.BUTTON
   }
@@ -228,7 +228,7 @@ return cfgHudCommon.__merge({
       children = isActiveTurretCamera.get() ? mkCirclePlaneTurretsGuns(bigButtonSize, bigButtonImgSize)
         : mkCirclePlaneCourseGuns(bigButtonSize, bigButtonImgSize)
     }
-    defTransform = mkLBPos([hdpx(60), hdpx(-0)])
+    defTransform = mkLBPos([hdpx(105), hdpx(-60)])
     editView = mkBigCirclePlaneBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
     isVisible = @(options) !optDoubleCourseGuns.has(options)
@@ -255,7 +255,7 @@ return cfgHudCommon.__merge({
         : hasCanon0.get() ? mkCirclePlaneCourseGunsSingle("ID_FIRE_CANNONS", Cannon0, hasCanon0, bigButtonSize, bigButtonImgSize)
         : mkCirclePlaneCourseGunsSingle("ID_FIRE_MGUNS", MGun0, hasMGun0, bigButtonSize, bigButtonImgSize)
     }
-    defTransform = mkLBPos([hdpx(70), hdpx(-5)])
+    defTransform = mkLBPos([hdpx(105), hdpx(-60)])
     editView = mkBigCirclePlaneBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
     isVisible = optDoubleCourseGuns.has

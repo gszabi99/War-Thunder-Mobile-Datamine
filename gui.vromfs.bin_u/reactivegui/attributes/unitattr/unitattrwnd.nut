@@ -12,6 +12,7 @@ let { defButtonHeight, defButtonMinWidth, PRIMARY } = require("%rGui/components/
 let {isUnitAttrOpened, attrUnitData, attrUnitName, attrUnitLevelsToMax, curCategory, selAttrSpCost,
   leftUnitSp, isUnitMaxSkills, availableAttributes, resetAttrState, applyAttributes,
 } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
+let { hasUpgradedAttrUnitNotUpdatable } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { mkAttrTabs, contentMargin } = require("%rGui/attributes/attrWndTabs.nut")
 let { unitAttrPage } = require("%rGui/attributes/unitAttr/unitAttrWndPage.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -25,8 +26,6 @@ let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { lastModifiedAttr, curCategoryId, getSpCostText } = require("%rGui/attributes/attrState.nut")
 let { rowHeight, pageWidth } = require("%rGui/attributes/attrBlockComp.nut")
 let { defCategoryImage, categoryImages } = require("%rGui/attributes/attrValues.nut")
@@ -173,18 +172,8 @@ let pageBlock = {
   ]
 }
 
-function hasUnitWithUpgradedAttribute() {
-  foreach(unit in servProfile.get().units)
-    if(!serverConfigs.get()?.allUnits[unit.name].isPremium && !unit.isUpgraded)
-      foreach(attributes in unit.attrLevels)
-        foreach(attr in attributes)
-          if(attr > 0)
-            return true
-  return false
-}
-
 let applyAction = function() {
-  if(!hasUnitWithUpgradedAttribute()) {
+  if(!hasUpgradedAttrUnitNotUpdatable()) {
     sendAppsFlyerEvent("add_unit_attributes")
   }
   applyAttributes()
@@ -259,6 +248,7 @@ let unitAttrWnd = {
   size = flex()
   padding = saBordersRv
   behavior = HangarCameraControl
+  eventPassThrough = true
   flow = FLOW_VERTICAL
   children = [
     @(){

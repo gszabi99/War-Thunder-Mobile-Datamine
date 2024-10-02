@@ -280,7 +280,7 @@ function getLootboxFixedRewardsViewInfo(lootbox) {
     if (content?.rType == "lootbox") {
       let rewards = getLootboxCommonRewardsViewInfo(serverConfigs.value?.lootboxesCfg[content.id])
       foreach (r in rewards)
-        fixedRewards.append(r.__merge({ isJackpot = true, parentSource = lootbox?.name ?? "" }))
+        fixedRewards.append(r.__merge({ isJackpot = true, parentSource = lootbox?.name ?? "", parentRewardId = id }))
     }
     else
       fixedRewards.append({

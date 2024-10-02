@@ -503,6 +503,10 @@ return {
     "germ_battleship_westfalen": {
       "": "camo_blackwhite_geometry"
     },
+    "germ_begleitpanzer_57": {
+      "": "ger_camo_bronzegruen",
+      "upgraded": "ger_camo_carc_winter"
+    },
     "germ_cruiser_admiral_graf_spee": {
       "": "camo_sboat_splotch"
     },
@@ -586,6 +590,10 @@ return {
       "": "ger_camo_bronzegruen",
       "forest": "ger_camo_carc"
     },
+    "germ_flakpz_I_Gepard_reskin2": {
+      "": "ger_camo_bronzegruen",
+      "upgraded": "ger_camo_carc_winter"
+    },
     "germ_frigate_rckt_bremen": {
       "upgraded": "camo_blackgray_net"
     },
@@ -604,6 +612,10 @@ return {
       "fiction": "tl_camo_grey_pink_blots",
       "winter": "ussr_camo_winter"
     },
+    "germ_kpz_70": {
+      "": "ger_camo_bronzegruen",
+      "upgraded": "ger_camo_carc_winter"
+    },
     "germ_kv_1_kwk_40": {
       "": "ger_camo_hinterhalt_daimler",
       "desert": "ger_camo_dunkelgelb",
@@ -612,6 +624,10 @@ return {
     "germ_le_kpz_m41": {
       "": "ger_camo_bronzegruen",
       "forest": "ger_camo_carc"
+    },
+    "germ_leopard_2k": {
+      "": "ger_camo_bronzegruen",
+      "upgraded": "ger_camo_carc_winter"
     },
     "germ_leopard_I": {
       "": "ger_camo_bronzegruen",
@@ -1067,6 +1083,9 @@ return {
     "jp_battleship_yamato": {
       "upgraded": "camo_darkbrown_spots"
     },
+    "jp_cruiser_agano": {
+      "": "camo_bluegray_spots"
+    },
     "jp_cruiser_furutaka": {
       "upgraded": "camo_darkblue_waves"
     },
@@ -1359,6 +1378,14 @@ return {
       "": "se_camo_green",
       "upgraded": "fin_camo_black_green_white"
     },
+    "sw_k9_vidar": {
+      "": "se_camo_green",
+      "winter": "fin_camo_black_green_white"
+    },
+    "sw_landsverk_ush_405": {
+      "": "se_camo_green",
+      "winter": "se_camo_winter_bicolor"
+    },
     "sw_pvrbv_551": {
       "": "se_camo_green",
       "upgraded": "se_camo_modern_deform"
@@ -1366,6 +1393,10 @@ return {
     "sw_strf_90b": {
       "": "se_camo_green",
       "upgraded": "se_camo_modern_winter_m90"
+    },
+    "sw_strv_103a": {
+      "": "se_camo_green",
+      "winter": "se_camo_winter_bicolor"
     },
     "sw_strv_103c": {
       "": "se_camo_green",
@@ -1382,6 +1413,10 @@ return {
     "sw_veak_40": {
       "": "se_camo_green",
       "upgraded": "se_camo_modern_deform"
+    },
+    "sw_veak_40_reskin": {
+      "": "se_camo_green",
+      "winter": "se_camo_winter_bicolor"
     },
     "ta-152c": {
       "": "germ_ta152c"
@@ -1468,6 +1503,10 @@ return {
       "": "uk_camo_very_dark_drab",
       "upgraded": "rsa_camo_modern_three_color"
     },
+    "uk_charioteer_mk_7": {
+      "": "uk_camo_very_dark_drab",
+      "desert": "rsa_camo_modern_three_color"
+    },
     "uk_chieftain_mk_10": {
       "": "uk_camo_very_dark_drab",
       "upgraded": "chieftain_mk_10_skin"
@@ -1511,6 +1550,9 @@ return {
     "uk_destroyer_hunt_4series": {
       "upgraded": "camo_mtb_spots"
     },
+    "uk_destroyer_rckt_devonshire": {
+      "upgraded": "camo_bluewaves"
+    },
     "uk_destroyer_rckt_type23": {
       "upgraded": "camo_greygreen_curves"
     },
@@ -1541,6 +1583,10 @@ return {
       "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_middle_deep_bronze_greens"
     },
+    "uk_g6_spg": {
+      "": "rsa_camo_dark_earth",
+      "desert": "rsa_camo_modern_three_color"
+    },
     "uk_olifant_mk_2": {
       "": "rsa_camo_dark_earth",
       "upgraded": "rsa_camo_gray_earth_stone"
@@ -1556,6 +1602,10 @@ return {
     "uk_ratel_90": {
       "": "uk_camo_very_dark_drab",
       "upgraded": "rsa_camo_modern_three_color"
+    },
+    "uk_ratel_90_reskin": {
+      "": "rsa_camo_dark_earth",
+      "desert": "rsa_camo_modern_three_color"
     },
     "uk_ratel_zt3": {
       "": "rsa_camo_dark_earth",
@@ -1586,6 +1636,10 @@ return {
     "uk_ystervark_spaa": {
       "": "uk_camo_very_dark_drab",
       "upgraded": "rsa_camo_modern_three_color"
+    },
+    "uk_ystervark_spaa_reskin": {
+      "": "rsa_camo_dark_earth",
+      "desert": "rsa_camo_modern_three_color"
     },
     "us_aircraftcarrier_essex": {
       "upgraded": "camo_blackgray_spots"
@@ -1684,6 +1738,11 @@ return {
     "us_m163_vulcan_reskin2": {
       "": "us_camo_modern_green",
       "forest": "usa_pw_4"
+    },
+    "us_m163_vulcan_reskin3": {
+      "desert": "usa_modern_seventh_army",
+      "forest": "us_camo_dark_green_light_olive",
+      "winter": "usa_modern_snow_temperate_ot"
     },
     "us_m18_hellcat": {
       "": "us_camo_olive",
@@ -1842,11 +1901,21 @@ return {
       "": "us_camo_desert_pink_olive",
       "forest": "us_camo_olive"
     },
+    "us_m551": {
+      "desert": "usa_modern_seventh_army",
+      "forest": "us_camo_dark_green_light_olive",
+      "winter": "usa_modern_snow_temperate_ot"
+    },
     "us_m56_scorpion": {
       "": "us_camo_olive",
       "desert": "usa_camo_desert_brown_yellow_spots",
       "forest": "us_camo_dark_green_dark_earth",
       "forest2": "usa_camo_forest_green_threecolour_lines"
+    },
+    "us_m60": {
+      "desert": "usa_modern_seventh_army",
+      "forest": "us_camo_dark_green_light_olive",
+      "winter": "usa_modern_snow_temperate_ot"
     },
     "us_m60a1": {
       "": "us_camo_olive",
@@ -1937,6 +2006,11 @@ return {
     "us_t54e1": {
       "": "us_camo_desert_pink_lines",
       "forest": "us_camo_olive"
+    },
+    "us_t54e2": {
+      "desert": "usa_modern_seventh_army",
+      "forest": "us_camo_dark_green_light_olive",
+      "winter": "usa_modern_snow_temperate_ot"
     },
     "us_t92": {
       "": "us_camo_olive_drab",
@@ -2479,12 +2553,14 @@ return {
       "lightblue_geometry": "camo_lightblue_geometry",
       "lightblue_splotch": "camo_lightblue_splotch",
       "marine_geometry": "camo_marine_geometry",
+      "mtb_spots_prem": "camo_mtb_spots",
       "olive_spots": "camo_olive_spots",
       "threegreenspots": "camo_threegreenspots",
       "upgraded": "camo_navygrey_5"
     },
     "submarine": {
       "": "camo_navygrey_5",
+      "blackgray_stripes": "camo_blackgray_stripes",
       "blue_stains": "camo_blue_stains",
       "bluewater_geometry": "camo_bluewater_geometry",
       "disruptive_gray": "camo_disruptive_gray",

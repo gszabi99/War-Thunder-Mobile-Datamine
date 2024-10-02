@@ -189,7 +189,7 @@ function mkSlotHeaderIndicator(unit, idx, isSelected) {
   let unseenMods = mkListUnseenMods(unit)
   let unseenAttr = unseenSlotAttrByIdx(idx)
   let hasUnseenMods = Computed(@() unseenMods.get().len() > 0)
-  let mutateSlots = @(v) visibleNewModsSlots.mutate(@(nms) v ? nms.$rawset(idx, unit.get().name) : nms.$rawdelete(idx))
+  let mutateSlots = @(v) visibleNewModsSlots.mutate(@(nms) v ? nms.$rawset(idx, unit.get()?.name ?? "") : nms.$rawdelete(idx))
   return @() {
     watch = [hasUnseenMods, unseenAttr, isSelected]
     key = hasUnseenMods

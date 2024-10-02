@@ -191,6 +191,7 @@ let unitModsWnd = {
   size = flex()
   padding = saBordersRv
   behavior = HangarCameraControl
+  eventPassThrough = true
   flow = FLOW_VERTICAL
   children = [
     @(){

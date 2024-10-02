@@ -3,7 +3,6 @@ let { resetTimeout } = require("dagor.workcycle")
 let { addModalWindow, removeModalWindow, hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { msgBoxBg } = require("%rGui/components/msgBox.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { slotBarSelectWnd } = require("slotBar.nut")
 let { selectedUnitToSlot, slots, resetSelectedUnitToSlot, canOpenSelectUnitWithModal } = require("slotBarState.nut")
@@ -54,7 +53,10 @@ let openImpl = @(rect) addModalWindow({
     }
     mkBgText(rect)
   ]
-  animations = wndSwitchAnim
+  animations = [
+    { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.2, easing = OutQuad, play = true }
+    { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.1, easing = OutQuad, playFadeOut = true }
+  ]
 })
 
 function open() {

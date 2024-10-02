@@ -166,7 +166,7 @@ nextUpdate.subscribe(@(_) resetUpdateTimer())
 
 registerHandler("onSchRewardApplied", function(res, context) {
   if (res?.error != null)
-      return
+    return
   let { rewardId } = context
   lastAppliedSchReward({ rewardId, time = serverTime.value })
 })
@@ -175,7 +175,7 @@ let applyScheduledReward = @(rewardId)
   apply_scheduled_reward(rewardId, { id = "onSchRewardApplied", rewardId })
 
 function onSchRewardReceive(schReward) {
-  if (schRewardInProgress.value == schReward.id)
+  if (schReward.id in schRewardInProgress.get())
     return
   if (!schReward.isReady) {
     openMsgBox({ text = loc("msg/scheduledRewardNotReadyYet") })

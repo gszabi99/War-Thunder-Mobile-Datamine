@@ -94,6 +94,8 @@ let function unitsBlock(startUnit) {
       }
 
     let startUnitName = startUnit.get()?.name
+    if (startUnitName == null)
+      return []
     let resTable = {}
     let added = { [startUnitName] = true }
     let list = [startUnitName]

@@ -11,11 +11,6 @@
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "noEffectsDist": 8.0,
   "gyroSight": false,
-  "tpsCameraTargetOffsetAtZoom": [
-    -300.0,
-    60.0,
-    0.0
-  ],
   "type": [
     "typeBomber",
     "typeTransport"

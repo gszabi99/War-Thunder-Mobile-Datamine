@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { setChardToken } = require("chard")
-let { getPlayerToken } = require("auth_wt")
+let { getPlayerToken, get_user_info } = require("auth_wt")
 let contacts = require("contacts")
 let { BAN_USER_INFINITE_PENALTY } = require("penalty")
 let { format } =  require("string")
@@ -25,11 +25,14 @@ let customErrorMsg = {
 
   function BANNED(res) {
     let { message = "", duration = 0, start = 0 } = res?.details
+    let userId = get_user_info()?.userId.tostring() ?? ""
     if (duration.tointeger() >= BAN_USER_INFINITE_PENALTY) {
       openFMsgBox({
         text = "\n\n".concat(
           loc("charServer/ban/permanent"),
           message)
+        viewType = "accStatusMsg"
+        userId
       })
       return
     }
@@ -45,6 +48,8 @@ let customErrorMsg = {
         " ",
         message
       )
+      viewType = "accStatusMsg"
+      userId
     })
   }
 }

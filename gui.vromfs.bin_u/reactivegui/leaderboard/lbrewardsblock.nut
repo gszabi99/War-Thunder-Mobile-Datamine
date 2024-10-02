@@ -14,6 +14,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
 let { boxSize } = rewardStyle
+let { rewardPrizePlateCtors, isPrizeTicket } = require("%rGui/rewards/rewardPrizeView.nut")
 let prizeTextSlots = 2
 let defTxtColor = 0xFFD8D8D8
 let prizeIconSize = evenPx(70)
@@ -72,9 +73,15 @@ function mkRewardRow(rewardInfo, idx) {
     rewardSlots = min(minRewardsInRow, lbRewardsPerRow - prizeTextSlots)
     children = [mkPrizeInfo(rType, progress, idx, isReady)]
   }]
+
+  local extraHeight = 0
+
   foreach(rInfo in rewardsViewInfo) {
-    let comp = mkRewardPlate(rInfo, rewardStyle)
+    let comp = !isPrizeTicket(rInfo) ? mkRewardPlate(rInfo, rewardStyle)
+      : rewardPrizePlateCtors[rInfo.rType].ctor(rInfo.id, rewardStyle)
     local row = rows.findvalue(@(r, i) r.rewardSlots >= rInfo.slots || (i + 1) == totalRows)
+    if(isPrizeTicket(rInfo))
+      extraHeight += rewardPrizePlateCtors?[rInfo.rType].extraSize ?? 0
     if (row == null) {
       rows.append({
         leftSlots = lbRewardsPerRow - rInfo.slots
@@ -95,7 +102,7 @@ function mkRewardRow(rewardInfo, idx) {
 
   return @() {
     watch = isReady
-    size = [flex(), lbRewardRowHeight * rows.len() - lbRewardRowPadding * (rows.len() - 1)]
+    size = [flex(), lbRewardRowHeight * rows.len() - lbRewardRowPadding * (rows.len() - 1) + extraHeight]
     padding = lbRewardRowPadding
     rendObj = ROBJ_SOLID
     color = getRowBgColor(idx % 2, isReady.value)

@@ -288,10 +288,12 @@ let btnSkip = function() {
 
 function debriefingWnd() {
   let debrData = debriefingData.get()
-  let { campaign = "", isWon = false, roomInfo = null, isSeparateSlots = false,
+  let { campaign = "", isWon = false, isTutorial = false, roomInfo = null, isSeparateSlots = false,
     isFinished = false, isDeserter = false, isDisconnected = false, kickInactivity = false
   } = debrData
   let unitName = getBestUnitName(debrData)
+  let hasResearchedUnit = getResearchedUnit(debrData) != null
+  let isUnitResearchedAfterTutorial = isTutorial && hasResearchedUnit
   let unlockedReward = getSlotOrUnitLevelUnlockRewards(debrData)
   let hasAnyLevelUnlockRewards = unlockedReward.has
   let isFirstLvlUpForSlot = hasAnyLevelUnlockRewards
@@ -302,7 +304,8 @@ function debriefingWnd() {
     && unlockedReward.type == "arsenal"
     && debrData.completedTutorials?[TUTORIAL_UNITS_RESEARCH_ID]
     && !debrData.completedTutorials?[TUTORIAL_ARSENAL_ID]
-  let needForceQuitToHangar = ((debrData?.isTutorial ?? false) && getResearchedUnit(debrData) != null)
+    && !hasResearchedUnit
+  let needForceQuitToHangar = isUnitResearchedAfterTutorial
     || isFirstLvlUpForSlot
     || canStartArsenalTutorial
   let hasPlayerLevelUp = !needForceQuitToHangar && isPlayerReceiveLevel(debrData)

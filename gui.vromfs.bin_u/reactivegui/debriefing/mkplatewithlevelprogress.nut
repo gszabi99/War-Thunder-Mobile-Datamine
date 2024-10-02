@@ -10,6 +10,8 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank, unitPlateRatio, plateTexts
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getSlotLevelIcon } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
 let { getLevelProgress, getNextUnitLevelWithRewards } = require("%rGui/debriefing/debrUtils.nut")
+let { mkTotalRewardCountsUnit } = require("totalRewardCounts.nut")
+let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 
 let plateW = hdpx(350)
 let plateH = plateW * unitPlateRatio
@@ -386,7 +388,23 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
   let fullLevelDelayAnimTime = animStartTime + 0.5
   let curLevelIdxWatch = Watched(0)
 
-  let plateBaseComp = (isSlot ? mkSlotPlateBase : mkUnitPlateBase)(levelCfg, campaign)
+  let key = {}
+  let stateFlags = Watched(0)
+
+  let plateBaseComp = @() {
+      key
+      watch = stateFlags
+      behavior = Behaviors.Button
+      onElemState = withTooltip(stateFlags, key, function mkTooltip() {
+        let tooltipData = mkTotalRewardCountsUnit(debrData, 0.5, levelCfg)?.totalRewardCountsComp
+        return tooltipData == null
+          ? null
+          : { content = tooltipData, flow = FLOW_HORIZONTAL }
+      })
+      onDetach = tooltipDetach(stateFlags)
+      children = (isSlot ? mkSlotPlateBase : mkUnitPlateBase)(levelCfg, campaign)
+    }
+
   let plateLevelCompCtor = isSlot ? mkSlotPlateLevelComp : mkUnitPlateLevelComp
 
   let statusAppearAnimations = [
@@ -409,7 +427,7 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
           key = $"level_exp_{animId}"
           transform = {}
           animations = statusAppearAnimations
-          children = mkExpText(addExp, lineColor)
+          children = mkExpText(totalExp, lineColor)
         }
       }
       {

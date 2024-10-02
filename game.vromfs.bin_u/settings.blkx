@@ -563,6 +563,24 @@
         "mRank": 4
       }
     },
+    "pkg_uk_destroyer_rckt_devonshire": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_jp_cruiser_agano": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_uk_battleship_orion": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -809,6 +827,30 @@
         "mRank": 7
       }
     },
+    "pkg_germ_leopard_2k": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_us_t54e2": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_uk_g6_spg": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 5
+      }
+    },
+    "pkg_sw_k9_vidar": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
     "pkg_environment_uhq": {
       "base": false,
       "hq": false,
@@ -951,6 +993,7 @@
     "sceneResolutionPreset": "medium",
     "xrayOutlinesScale": 1.0,
     "hasLowresDecals": false,
+    "blendedAirplanesSkies": true,
     "riexCanIncreaseRenderBuffer": false,
     "riMaxModelsPerLevel": 1024,
     "taaSigmaScaleMin": 1.5,

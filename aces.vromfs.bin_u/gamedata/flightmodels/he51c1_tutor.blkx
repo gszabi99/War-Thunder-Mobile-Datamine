@@ -1927,7 +1927,7 @@
           "Weapon": [
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunMG17.blk",
+              "blk": "gameData/Weapons/gunMG17_early.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "mgun1_dm",
@@ -1936,7 +1936,7 @@
             },
             {
               "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunMG17.blk",
+              "blk": "gameData/Weapons/gunMG17_early.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "mgun2_dm",

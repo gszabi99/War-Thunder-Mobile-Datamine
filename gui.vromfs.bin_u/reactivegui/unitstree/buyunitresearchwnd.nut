@@ -31,16 +31,16 @@ let wndSize = [hdpx(1000), hdpx(600)]
 
 let close = @() unitName.set(null)
 
-function onClick() {
+function onClick(cost) {
   if (unitInProgress.value != null)
     return
   let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_RESEARCH, PURCH_TYPE_UNIT_EXP, unitName.get())
-  if (!showNoBalanceMsgIfNeed(unitResearchCfg.get()?.costGold, GOLD, bqPurchaseInfo, close)) {
+  if (!showNoBalanceMsgIfNeed(cost, GOLD, bqPurchaseInfo, close)) {
     animExpPart(1.0 * unitExp.get() / unitReqExp.get())
     buy_unit_research(
       unitName.get(),
       curCampaign.get(),
-      unitResearchCfg.get()?.costGold ?? 0,
+      cost,
       (unitResearchCfg.get()?.nextLevelExp ?? 0) - unitExp.get(),
       {
         id = "buyUnitResearch",
@@ -72,9 +72,10 @@ let function mkPrice() {
     watch = [unitInProgress, speedUpCost]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    children = unitInProgress.value != null ? spinner
+    children = speedUpCost.get() == null ? null
+      : unitInProgress.get() != null ? spinner
       : textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
-        mkCurrencyComp(speedUpCost.get(), "gold"), onClick)
+        mkCurrencyComp(speedUpCost.get(), "gold"), @() onClick(speedUpCost.get() ?? 0))
   }
 }
 

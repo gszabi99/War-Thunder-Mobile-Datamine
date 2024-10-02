@@ -81,7 +81,7 @@ function mkGiftSchRewardBtn(giftSchReward, posX) {
   }
   if (!isReady)
     return null
-  local isPurchasing = Computed(@() schRewardInProgress.value == giftSchReward.id)
+  local isPurchasing = Computed(@() giftSchReward.id in schRewardInProgress.get())
   return {
     size = [hdpx(130),hdpx(130)]
     pos = [posX + verticalGap,0]
@@ -272,7 +272,7 @@ function mkAirBranchUnitPlate(unit, platoonUnit, onSelectUnit){
     sound = { click  = "choose" }
     children = [
       {
-        size = unitPlateSizeSingle
+        size = unitPlateSize
         children = [
           mkUnitBg(unit)
           mkUnitSelectedGlow(unit, isSelected)
@@ -337,12 +337,13 @@ let singleUnitBlock = @() {
     : mkUnitPlate(0, previewGoodsUnit.value, { name = previewGoodsUnit.value.name, reqLevel = 0 })
 }
 
-function branchUnitsBlock(unitName){
-  let unit = Computed(@() allUnitsCfg.get()[unitName])
-  return @(){
+function branchUnitsBlock(unitName) {
+  let unit = Computed(@() allUnitsCfg.get()?[unitName])
+  return @() {
     watch = unit
-    children = mkAirBranchUnitPlate(unit.get(), { name = unitName, reqLevel = 0 },
-      @() curSelectedUnitId.set(unitName))
+    children = unit.get() == null ? null
+      : mkAirBranchUnitPlate(unit.get(), { name = unitName, reqLevel = 0 },
+          @() curSelectedUnitId.set(unitName))
   }
 }
 
@@ -434,7 +435,7 @@ let rightBlock = {
     {
       size = [flex(), SIZE_TO_CONTENT]
       children = unitInfoPanel({
-        maxHeight = hdpx(600)
+        maxHeight = hdpx(610)
         hplace = ALIGN_RIGHT
         behavior = [ Behaviors.Button, HangarCameraControl ]
         eventPassThrough = true
@@ -495,7 +496,7 @@ let gapForBranch = hdpx(20)
 
 let leftBlock = @(){
   watch = [previewGoodsUnit, schRewards, previewGoods]
-  size = [unitPlateSizeSingle[0] * 2 + 2*gapForBranch, SIZE_TO_CONTENT]
+  size = [unitPlateSize[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
   halign = ALIGN_CENTER
   children = @() (previewGoods.get()?.units.len() ?? 0) > 1
     ? {
@@ -552,23 +553,37 @@ let previewWnd = @() {
             balanceBlock
           ]
         }
+        @()(previewGoods.get()?.units.len() ?? 0) > 1
+          ? {
+            watch = previewGoods
+            rendObj = ROBJ_TEXT
+            text = loc("offer/airBranch/descBuy", {count =(previewGoods.get()?.units.len() ?? 0)})
+          }.__update(fontSmall)
+          : { watch = previewGoods}
         @() {
           watch = [previewGoodsUnit, schRewards, previewGoods, activeOffer]
           size = flex()
           children = [
             {
-              size = [unitPlateSizeSingle[0]*2 + 2*gapForBranch, SIZE_TO_CONTENT]
+              size = [unitPlateSizeSingle[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
               children = [
                 pannableArea(leftBlock, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
                 scrollArrowsBlock
               ]
             }
-            activeOffer.get()?.id == previewGoods.get()?.id ? mkGiftSchRewardBtn(schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"],
-              (previewGoods.get()?.units.len() ?? 0) > 1
-                ? unitPlateSizeSingle[0] * 2 + gapForBranch
-              : previewGoodsUnit.get()?.platoonUnits.len()
-                ? unitPlateSizeMain[0]
-              : unitPlateSizeSingle[0]) : null
+            {
+              size = [0, 0]
+              children = activeOffer.get()?.id != previewGoods.get()?.id ? null
+                : mkGiftSchRewardBtn(
+                    schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"],
+                    (previewGoods.get()?.units.len() ?? 0) > 1
+                        ? unitPlateSize[0] * 2 + gapForBranch
+                      : previewGoodsUnit.get()?.platoonUnits.len()
+                        ? unitPlateSizeMain[0]
+                      : (previewGoods.get()?.blueprints.len() ?? 0) > 0
+                        ? unitPlateWidth
+                      : unitPlateSizeSingle[0])
+            }
             rightBlock
           ]
         }

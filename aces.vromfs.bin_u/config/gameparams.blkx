@@ -15500,6 +15500,30 @@
         {
           "name": "wheel_l_03_",
           "modelNames": "tpk_641_vpc"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "g6_spg"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "g6_spg"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "g6_spg"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "g6_spg"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "g6_spg"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "g6_spg"
         }
       ]
     },
@@ -16327,7 +16351,31 @@
       "gr_island_e",
       "gr_island_f",
       "gr_island_g",
-      "gr_island_h"
+      "gr_island_h",
+      "scotland_a_cup_a",
+      "scotland_a_cup_b",
+      "scotland_a_cup_c",
+      "scotland_a_cup_d",
+      "scotland_a_cup_e",
+      "scotland_a_cup_f",
+      "scotland_a_cup_g",
+      "scotland_a_cup_h",
+      "scotland_a_cup_i",
+      "scandi_island_stone_snow_big_1000x1050_a",
+      "scandi_island_stone_snow_big_850x1050_a",
+      "scandi_island_stone_snow_big_950x1000_a",
+      "scandi_island_stone_snow_huge_1450x1250_a",
+      "scandi_island_stone_snow_medium_1000x450_a",
+      "scandi_island_stone_snow_medium_700x700_a",
+      "scandi_island_stone_snow_small_350x300_a",
+      "scandi_island_stone_snow_small_500x450_a",
+      "ships_graveyard_island_big_a",
+      "ships_graveyard_island_huge_a",
+      "ships_graveyard_island_medium_a",
+      "ships_graveyard_island_medium_b",
+      "ships_graveyard_island_medium_c",
+      "ships_graveyard_island_small_a",
+      "ships_graveyard_island_small_b"
     ]
   },
   "rendinstOpt": {

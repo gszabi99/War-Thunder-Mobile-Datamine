@@ -311,6 +311,15 @@ function equipBelt(weaponId, beltId) {
 let equipCurBelt = @() curBeltWeapon.get() == null ? null
   : equipBelt(curBeltWeapon.get().weaponId, curBelt.get()?.id ?? "")
 
+function weaponStates(weapon, unitMods, unit) {
+  let { reqModification = "" } = weapon
+  let mod = unitMods?[reqModification]
+  let { reqLevel = 0 } = mod
+  let isLocked = reqLevel > (unit?.level ?? 0) || (reqModification != "" && mod == null)
+  let isPurchased = reqModification == "" || unit?.mods[reqModification] != null
+  return { modName = reqModification, mod, reqLevel, isLocked, isPurchased }
+}
+
 function mkWeaponStates(weapon, unitMods, unit) {
   let modName = Computed(@() weapon.get()?.reqModification ?? "")
   let mod = Computed(@() unitMods.get()?[modName.get()])
@@ -514,6 +523,32 @@ function setCurBeltsWeaponIdx(idx) {
   curBeltsWeaponIdx.set(idx)
 }
 
+function findSlotWeaponsToBuyNonUpdatable() {
+  let available = {}
+  foreach (idx, belt in beltWeapons.get()) {
+    let weapBelts = mkWeaponBelts(openedUnitId.get(), belt)
+    foreach (weapBelt in weapBelts) {
+      let { isPurchased, isLocked } = weaponStates(weapBelt, curMods.get(), curUnit.get())
+      if (!isLocked && !isPurchased)
+        available[weapBelt.id] <- true
+    }
+    if (available.len() > 0)
+      return { idx, available, isBelt = true }
+  }
+
+  foreach (secondaryWeaps in weaponSlots.get().slice(1)) {
+    foreach (weap in secondaryWeaps?.wPresets ?? {}) {
+      let { isPurchased, isLocked } = weaponStates(weap, curMods.get(), curUnit.get())
+      if (!isLocked && !isPurchased)
+        available[weap.name] <- true
+    }
+    if (available.len() > 0)
+      return { idx = secondaryWeaps.index, available, isBelt = false }
+  }
+
+  return { idx = null, available, isBelt = null }
+}
+
 return {
   openUnitModsSlotsWnd = @() openedUnitId.set(hangarUnitName.get())
   openUnitModsSlotsWndByName = @(name) openedUnitId.set(name)
@@ -584,4 +619,6 @@ return {
   mirrorIdx
 
   weaponsScrollHandler
+
+  findSlotWeaponsToBuyNonUpdatable
 }

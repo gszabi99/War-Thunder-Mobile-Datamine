@@ -19,8 +19,6 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
-  "support_unit_class": "structures/ussr_152mm_d1",
-  "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
   "useTouchShooting": true,
   "ecsTemplate": "tank_wtm",
@@ -46,8 +44,11 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "minRelativeTankCameraThreshold": [
+    0.95,
+    1.32
+  ],
   "autoSightDistanceCorrection": true,
-  "minRelativeTankCameraThreshold": 1.32,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "smokeScreenActivateTime": 5.0,

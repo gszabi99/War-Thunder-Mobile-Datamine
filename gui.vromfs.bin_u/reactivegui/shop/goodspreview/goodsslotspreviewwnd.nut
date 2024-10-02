@@ -45,7 +45,7 @@ let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
-let { revealAnimation, scaleAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
+let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkUnitFlag } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
@@ -58,6 +58,15 @@ let blockGap = buttonsHGap
 let selBorderColor = 0xFFFFFFFF
 let hoverBorderColor = 0x40404040
 let borderHeight = hdpx(8)
+
+let rerollTrigger = {}
+let rerollUnitAnim = [{
+  prop = AnimProp.scale, from = [1.0, 1.0], to = [1.15, 1.15],
+  duration = 1, play = true, rerollTrigger, easing = DoubleBlink
+}]
+let rerollButtonStyle = PRIMARY.__merge({
+  ovr = PRIMARY.ovr.__merge({ animations = rerollUnitAnim, transform = {} })
+})
 
 
 let isAttached = Watched(false)
@@ -237,7 +246,7 @@ function mkSlot(slotIdx, reward, rStyle) {
   let unit = Computed(@() serverConfigs.value?.allUnits?[reward.id])
 
   return @() {
-    watch = [isSelected, stateFlags, rewardSlots, unit]
+    watch = [isSelected, stateFlags, rewardSlots, unit, openedUnitFromTree]
     size
     behavior = Behaviors.Button
     onElemState = @(v) rewardSlots.get()?.isPurchased ? null : stateFlags(v)
@@ -247,6 +256,7 @@ function mkSlot(slotIdx, reward, rStyle) {
         ? unitDetailsWnd({ name = reward.id })
       : selIndex.set(slotIdx)
     sound = rewardSlots.get()?.isPurchased ? {} : { click  = "click" }
+    onAttach = @() openedUnitFromTree.get() == unit.get()?.name ? selIndex.set(slotIdx) : null
 
     children = [
       mkRewardPlateBg(reward, rStyle)
@@ -260,6 +270,7 @@ function mkSlot(slotIdx, reward, rStyle) {
     ]
     transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14 }]
+    animations = openedUnitFromTree.get() == unit.get()?.name ? rerollUnitAnim : null
   }
 }
 
@@ -310,7 +321,6 @@ function increaseLimit(price, currencyId) {
   playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money")
 }
 
-let rerollTrigger = {}
 function rerollSlots(price, currencyId) {
   anim_start(rerollTrigger)
   let { id = null } = previewGoods.get()
@@ -335,7 +345,7 @@ function purchButton(text, priceCfg, purchAction, purchCount = 0, isFree = false
     styleOvr)
 }
 
-function buttons() {
+let buttons = @(hasRerollAnim) function() {
   let res = {
     watch = [shopGenSlotInProgress, shopPurchaseInProgress, previewGoods, rewardSlots, rerollCost,
       goodsLimitReset, serverTimeDay, freeRerolls
@@ -362,7 +372,8 @@ function buttons() {
                 : goodsLimitReset.get()?[id].count)
           ]
       : [
-          purchButton(loc("btn/rerollItems"), rerollCost.get(), rerollSlots, 0, isFree, PRIMARY)
+          purchButton(loc("btn/rerollItems"), rerollCost.get(), rerollSlots, 0, isFree,
+            hasRerollAnim ? rerollButtonStyle : PRIMARY)
           purchButton(loc("btn/buySelected"), price, purchaseSelectedSlot)
         ]
   })
@@ -372,13 +383,16 @@ function content() {
   let isActual = Computed(@() shopGenSlotInProgress.get() != previewGoods.get()?.id
     && getDay(rewardSlots.get()?.time ?? 0) == serverTimeDay.get())
   return function() {
-    let { goods = [] } = rewardSlots.get()
+    let { goods = [], isPurchased = false } = rewardSlots.get()
     let style = goods.len() > MAX_BIG_SLOTS ? REWARD_STYLE_SMALL : REWARD_STYLE_MEDIUM
     let { boxSize, boxGap } = style
     let slotsInRow = (maxWndWidth + boxGap) / (boxSize + boxGap)
     let rows = !isActual.get() || shopGenSlotInProgress.get() ? []
       : fillRewardsByRows(goods, slotsInRow, style)
     let curUnit = openedUnitFromTree.get()
+    let hasAnySlot = rows.len() > 0
+    let hasRerollHint = !isPurchased && hasAnySlot && curUnit != null
+      && !goods.reduce(@(res, g) res.$rawset(g[0].id, true), {})?[curUnit]
 
     return {
       watch = [rewardSlots, isActual, shopGenSlotInProgress, openedGoodsId, openedUnitFromTree]
@@ -401,16 +415,14 @@ function content() {
                 children
               })
         }
-        rewardSlots.get()?.isPurchased ? null
-          : txt(rows.len() > 0 ? utf8ToUpper(loc("shop/pickOneItem")) : utf8ToUpper(loc(getSlotsTexts(openedGoodsId.get()).missing)))
-        rows.len() > 0 ? buttons : null
-        rewardSlots.get()?.isPurchased || rows.len() <= 0 || curUnit == null
-          || goods.reduce(@(res, g) res.$rawset(g[0].id, true), {})?[curUnit]
-              ? null
-            : txt(loc("shop/hint/rerollForUnit", { unitName = loc(getUnitLocId(curUnit)) }), {
-                animations = scaleAnimation(0.1, [1.15, 1.15], 0.15, rerollTrigger)
-                transform = {}
-              })
+        isPurchased ? null
+          : txt(hasAnySlot ? utf8ToUpper(loc("shop/pickOneItem")) : utf8ToUpper(loc(getSlotsTexts(openedGoodsId.get()).missing)))
+        hasAnySlot ? buttons(hasRerollHint) : null
+        !hasRerollHint ? null
+          : txt(loc("shop/hint/rerollForUnit", { unitName = loc(getUnitLocId(curUnit)) }), {
+              animations = rerollUnitAnim
+              transform = {}
+            })
       ]
     }
   }

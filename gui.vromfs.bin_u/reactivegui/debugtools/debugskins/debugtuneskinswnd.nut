@@ -481,6 +481,7 @@ function mkDebugTuneSkinsWnd() {
     padding = saBordersRv
     flow = FLOW_VERTICAL
     behavior = HangarCameraControl
+    eventPassThrough = true
     function onAttach() {
       initSkinsWnd()
       onUnitOrSkinChange()

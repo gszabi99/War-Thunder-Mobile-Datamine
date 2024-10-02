@@ -6,6 +6,7 @@ let msgBoxError = require("%rGui/components/msgBoxError.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
+let openMsgAccStatus = require("%rGui/components/openMsgAccStatus.nut")
 
 let persistMsgBoxes = hardPersistWatched("persistMsgBoxes", [])
 
@@ -27,6 +28,7 @@ let getButtons = @(msg)
 
 let ctors = {
   errorMsg = @(msg) msgBoxError(msg.__merge({ buttons = getButtons(msg) }), KWARG_NON_STRICT)
+  accStatusMsg = @(msg) openMsgAccStatus(msg.__merge({ buttons = getButtons(msg) }))
 
   function withWndClose(msg) {
     let { text, title = null } = msg

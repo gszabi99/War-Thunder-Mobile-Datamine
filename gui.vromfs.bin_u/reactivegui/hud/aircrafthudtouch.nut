@@ -110,6 +110,16 @@ let airCircularIndicators = {
   ]
 }
 
+let targetSelectorLayer = {
+  size = [sw(100), sh(100)]
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  behavior = TargetSelector
+  eventPassThrough = true
+  selectAngle = 30
+  captureAngle = 7
+}
+
 let aircraftHud = {
   size = saSize
   hplace = ALIGN_CENTER
@@ -123,12 +133,7 @@ let aircraftHud = {
     hudTopMainLog
     hudBottomCenter
     currentWeaponNameText
-    {
-      size = flex()
-      behavior = TargetSelector
-      selectAngle = 30
-      captureAngle = 7
-    }
+    targetSelectorLayer
   ]
 }
 

@@ -92,7 +92,7 @@ registerHandler("onPurchasedMod", function equipOnPurchase(_, context) {
     let { mirror = -1 } = loadUnitWeaponSlots(unitName)[weapon.slotIdx]
     let weaponList = { [weapon.slotIdx] = weapon.weapon.name }
     if (mirror != -1)
-      weaponList.__update({ [mirror] = weapon.weapon.name })
+      weaponList.__update({ [mirror] = weapon.weapon?.mirrorId ?? weapon.weapon.name })
     customEquipCurWeaponMsg(weapon.slotIdx, weapon.weapon,
       equippedWeaponsBySlots.get(), @() equipWeaponList(weaponList), @(list) equipWeaponListWithMirrors(list, unitName))
   }
@@ -342,7 +342,7 @@ let beltsCount = Computed(@() curWeaponBeltsOrdered.get().len())
 let curBeltGunCount = Computed(@() curBeltWeapon.get() == null ? -1
   : equippedWeaponIdCount.get()?[curBeltWeapon.get().weaponId] ?? 0)
 let slotWeaponsBlock = @() {
-  watch = [weaponsCount, beltsCount]
+  watch = [weaponsCount, beltsCount, curBeltGunCount]
   size = [SIZE_TO_CONTENT, flex()]
   flow = curBeltGunCount.get() == 0 ? null : FLOW_HORIZONTAL
   gap = weaponGap
@@ -453,6 +453,7 @@ let unitModsWnd = {
   size = flex()
   padding = saBordersRv
   behavior = HangarCameraControl
+  eventPassThrough = true
   flow = FLOW_VERTICAL
   onAttach = @() isUnitModSlotsAttached.set(true)
   onDetach = @() isUnitModSlotsAttached.set(false)

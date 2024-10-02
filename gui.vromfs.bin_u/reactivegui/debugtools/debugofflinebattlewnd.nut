@@ -121,6 +121,7 @@ function mkOfflineBattleMenuWnd() {
     size = flex()
     padding = saBordersRv
     behavior = HangarCameraControl
+    eventPassThrough = true
     flow = FLOW_VERTICAL
     gap = hdpx(30)
     function onAttach() {

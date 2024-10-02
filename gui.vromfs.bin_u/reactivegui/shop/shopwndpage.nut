@@ -101,7 +101,7 @@ let mkGoodsState = @(goods) Computed(function() {
 })
 
 let mkSchRewardState = @(schReward) Computed(function() {
-  local res = schRewardInProgress.value == schReward.id ? PURCHASING : 0
+  local res = schReward.id in schRewardInProgress.get() ? PURCHASING : 0
   if (schReward.needAdvert && !canShowAds.value)
     res = res | NOT_READY
   return res

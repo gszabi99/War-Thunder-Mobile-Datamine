@@ -10,6 +10,8 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isInSquad, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
+let { unseenCampaigns, markAllCampaignsSeen } = require("unseenCampaigns.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let close = @() isOpened(false)
@@ -17,6 +19,8 @@ let backBtn = backButton(close)
 
 let needToForceOpen = keepref(Computed(@() isLoggedIn.value && !isAnyCampaignSelected.value
   && campaignsList.value.len() > 1))
+
+isOpened.subscribe(@(v) v ? null : markAllCampaignsSeen())
 
 let gap = hdpx(40)
 let maxCampaignButtonsHeight = saSize[1] - gap - hdpx(60)
@@ -110,7 +114,7 @@ let mkCampaignSkipTutorButton = @(campaign) {
 function mkCampaignButton(campaign, campaignW) {
   let stateFlags = Watched(0)
   return @() {
-    watch = stateFlags
+    watch = [stateFlags, unseenCampaigns]
     rendObj = ROBJ_SOLID
     size = [campaignW, imageRatio * campaignW]
     padding = hdpx(6)
@@ -123,8 +127,10 @@ function mkCampaignButton(campaign, campaignW) {
     sound = { click  = "click" }
 
     children = [
-      mkCampaignImage(campaign),
+      mkCampaignImage(campaign)
       mkCampaignName(loc($"campaign/{campaign}"), stateFlags.value)
+      campaign not in unseenCampaigns.get() ? null
+        : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(-20), hdpx(20)] })
     ]
   }
 }

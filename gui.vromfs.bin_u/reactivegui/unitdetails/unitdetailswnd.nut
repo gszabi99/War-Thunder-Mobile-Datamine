@@ -171,6 +171,7 @@ let sceneRoot = {
   key = openCount
   size = [ sw(100), sh(100) ]
   behavior = HangarCameraControl
+  eventPassThrough = true
   animations = wndSwitchAnim
 
   function onAttach() {
@@ -184,14 +185,14 @@ let sceneRoot = {
     hplace = ALIGN_CENTER
     children = [
       @(){
-        watch = [baseUnit, curCampaign]
+        watch = baseUnit
         children = mkLeftBlockUnitCampaign(
           function() {
             curSelectedUnitId.set(null)
             closeUnitDetailsWnd()
           },
-          $"gamercard/levelUnitDetails/desc/{curCampaign.get()}",
-          baseUnit.value)
+          $"gamercard/levelUnitDetails/desc/{baseUnit.get().campaign}",
+          baseUnit.get())
       }
       unitInfoPanelPlace
       {

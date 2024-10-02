@@ -5,7 +5,7 @@ let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { buy_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
-let { isCampaignWithUnitsResearch, curCampaignSlots } = require("%appGlobals/pServer/campaign.nut")
+let { isCampaignWithUnitsResearch, curCampaignSlots, sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { hasModalWindows, moveModalToTop } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
@@ -15,7 +15,7 @@ let { selectedSlotIdx, slotBarArsenalKey, slotBarSlotKey, visibleNewModsSlots } 
 let { curWeaponIdx, curBeltIdx, setCurSlotIdx, setCurBeltsWeaponIdx, isUnitModSlotsAttached, openUnitModsSlotsWndByName,
   slotWeaponKey, slotBeltKey, groupedCurUnseenMods, curWeaponBeltsOrdered, curWeaponsOrdered, weaponsScrollHandler,
   curWeapon, curWeaponModName, curUnitAllModsCost, curBelt, equippedWeaponId, equippedBeltId, curWeaponMod, curSlotIdx,
-  curBeltWeapon
+  curBeltWeapon, findSlotWeaponsToBuyNonUpdatable
 } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { weaponW, weaponGap } = require("%rGui/unitMods/slotWeaponCard.nut")
@@ -26,9 +26,9 @@ let { closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
 let { TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID } = require("tutorialConst.nut")
-let { firstBattlesReward } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 
 
+let MIN_BATLES_TO_START = 4
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let isFinished = mkIsTutorialCompleted(TUTORIAL_ARSENAL_ID)
 let isFinishedUnitsResearch = mkIsTutorialCompleted(TUTORIAL_UNITS_RESEARCH_ID)
@@ -37,7 +37,8 @@ let hasUnitModifications = Computed(@() visibleNewModsSlots.get().len() > 0)
 
 let needShowTutorial = Computed(@() !isInSquad.get()
   && !isFinished.get()
-  && firstBattlesReward.get() == null
+  && (sharedStatsByCampaign.get()?.battles ?? 0) + (sharedStatsByCampaign.get()?.offlineBattles ?? 0)
+    >= MIN_BATLES_TO_START
   && isFinishedUnitsResearch.get()
   && isCampaignWithUnitsResearch.get()
   && curCampaignSlots.get() != null
@@ -60,6 +61,20 @@ function selectUnit(unitIdx) {
     setCurrentUnit(unitName)
   curSelectedUnit.set(unitName)
   return true
+}
+
+function findModsToBuyNonUpdatable() {
+  let { beltUnseenMods, secondaryUnseenMods } = groupedCurUnseenMods.get()
+  if (beltUnseenMods.len() == 0 && secondaryUnseenMods.len() == 0) {
+    let { idx, available, isBelt } = findSlotWeaponsToBuyNonUpdatable()
+    return { isBelt, index = idx, modsToShow = available }
+  }
+
+  let isBelt = beltUnseenMods.len() > 0
+  let unseenMods = isBelt ? beltUnseenMods : secondaryUnseenMods
+  let firstAvaialableGroupIdx = 0
+  let index = unseenMods.keys()?[firstAvaialableGroupIdx]
+  return { isBelt, index, modsToShow = unseenMods?[index] ?? {} }
 }
 
 function startTutorial() {
@@ -104,16 +119,17 @@ function startTutorial() {
       {
         id = "s3_open_unit_mods"
         function beforeStart() {
-          let { beltUnseenMods, secondaryUnseenMods } = groupedCurUnseenMods.get()
-          let isBelt = beltUnseenMods.len() > 0
-          let unseenMods = isBelt ? beltUnseenMods : secondaryUnseenMods
-          let firstAvaialableGroupIdx = 0
-          let index = unseenMods.keys()[firstAvaialableGroupIdx]
+          let { index, isBelt, modsToShow } = findModsToBuyNonUpdatable()
+          if (index == null) {
+            logerr("No unit modification to buy in arsenal tutorial")
+            finishTutorial()
+            return
+          }
           if (isBelt)
             setCurBeltsWeaponIdx(index)
           else
             setCurSlotIdx(index)
-          foreach (v in unseenMods?[index].keys() ?? []) {
+          foreach (v in modsToShow.keys()) {
             let slotIdx = isBelt ? curWeaponBeltsOrdered.get().findindex(@(belt) belt.id == v)
               : curWeaponsOrdered.get().findindex(@(weap) weap.name == v)
             slotsForLastStep.append({

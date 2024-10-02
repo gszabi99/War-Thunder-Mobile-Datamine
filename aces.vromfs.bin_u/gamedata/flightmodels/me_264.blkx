@@ -12,11 +12,6 @@
   "gearSinkRangeLR": 0.315,
   "gearSinkRangeC": 0.3,
   "gyroSight": false,
-  "tpsCameraTargetOffsetAtZoom": [
-    -250.0,
-    65.0,
-    0.0
-  ],
   "type": [
     "typeBomber",
     "typeTransport"

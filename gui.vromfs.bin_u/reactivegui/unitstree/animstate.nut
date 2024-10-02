@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { playSound } = require("sound_wt")
 let { resetTimeout } = require("dagor.workcycle")
-let { unitsResearchStatus } = require("unitsTreeNodesState.nut")
+let { unitsResearchStatus, blueprintUnitsStatus, unitToScroll } = require("unitsTreeNodesState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { needSelectResearch } = require("selectResearchWnd.nut")
@@ -24,7 +24,7 @@ let animBuyRequirementsUnitId = mkWatched(persist, "animBuyRequirementsUnitId", 
 let animResearchRequirementsUnitId = mkWatched(persist, "animResearchRequirementsUnitId", null)
 let needDelayAnimation = mkWatched(persist, "needDelayAnimation", false)
 
-let animExpPart = mkWatched(persist, "animExpPart", false)
+let animExpPart = mkWatched(persist, "animExpPart", 0)
 local expPartValue = 0
 
 animUnitAfterResearch.subscribe(function(v) {
@@ -36,6 +36,8 @@ animUnitAfterResearch.subscribe(function(v) {
 
 isUnitsTreeOpen.subscribe(function(v){
   if(v && animUnitAfterResearch.get()) {
+    if (animUnitAfterResearch.get() in blueprintUnitsStatus.get())
+      unitToScroll(animUnitAfterResearch.get())
     animExpPart(expPartValue)
     resetTimeout(animExpPartDelay, @() animExpPart(1))
   }
@@ -61,7 +63,7 @@ function resetAnim() {
 let unitsForExpAnim = mkWatched(persist, "unitsForExpAnim", {})
 
 function loadStatusesAnimUnits(){
-  let list = unitsResearchStatus.get()
+  let list = {}.__merge(unitsResearchStatus.get(), blueprintUnitsStatus.get())
   let res = {}
   foreach(unitName, unit in list){
     res[unitName] <- {
@@ -72,10 +74,9 @@ function loadStatusesAnimUnits(){
 }
 
 isLoggedIn.subscribe(@(v) v ? loadStatusesAnimUnits() : null)
-
 needSelectResearch.subscribe(@(v) v ? loadStatusesAnimUnits() : null)
 
-unitsResearchStatus.subscribe(function(v){
+function updateUnitsResearchProgress(v){
   if(v){
     let list = unitsForExpAnim.get()
     foreach(key, value in list){
@@ -90,7 +91,10 @@ unitsResearchStatus.subscribe(function(v){
       }
     }
   }
-})
+}
+
+unitsResearchStatus.subscribe(updateUnitsResearchProgress)
+blueprintUnitsStatus.subscribe(updateUnitsResearchProgress)
 
 function mkAnimRequirements(unitId, allNodes, canAdd = @(_) true) {
   let res = {}
@@ -161,4 +165,5 @@ return {
   resetAnim
   needDelayAnimation
   canPlayAnimUnitAfterResearch
+  loadStatusesAnimUnits
 }

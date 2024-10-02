@@ -32,7 +32,7 @@ function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, ma
   }
 }
 
-function mkAttrRow(attr) {
+function mkAttrRow(attr, idx) {
   let shopCfg = getUnitTagsShop(slotUnitName.get())
   let catId = curCategoryId.get()
   let minLevel = Computed(@() slotAttributes.get()?[catId][attr.id] ?? 0) // Current applied level
@@ -75,7 +75,10 @@ function mkAttrRow(attr) {
           mkRowProgressBar(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick)
         ]
       }
-      mkProgressBtn(mkProgressBtnContentInc(canInc), mkBtnOnClick(1))
+      {
+        key = $"slotAttrProgressBtn_{idx}" //need for tutorial
+        children = mkProgressBtn(mkProgressBtnContentInc(canInc), mkBtnOnClick(1))
+      }
       hasSp.get() ? mkNextIncCost(nextIncCost, canInc, totalSlotSp) : null
     ]
   }

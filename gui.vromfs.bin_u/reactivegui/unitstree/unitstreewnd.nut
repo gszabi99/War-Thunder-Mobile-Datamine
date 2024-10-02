@@ -9,7 +9,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
-let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
+let { playerLevelInfo, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { platoonPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkProgressBar,
   progressBarHeight, bgLight, noUnitsMsg, btnSize, platesGap,
@@ -38,14 +38,13 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { slotBarTreeHeight } = require("%rGui/slotBar/slotBarConsts.nut")
 let { selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
-let { researchBlock } = require("%rGui/unitsTree/components/researchBars.nut")
+let { researchBlock, mkBlueprintBarText } = require("%rGui/unitsTree/components/researchBars.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 
 let infoPannelPadding = hdpx(30)
 let infoPanelFooterGap = hdpx(20)
 let filterIconSize = hdpxi(36)
 let clearIconSize = hdpxi(45)
-let researchBlockReservedHeight = hdpx(150)
 
 let isTreeNodes = Computed(@() curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
 
@@ -309,7 +308,6 @@ let unitsTreeGamercard = {
 }
 
 let infoPanelHeight = saSize[1] - gamercardHeight + gamercardOverlap + saBorders[1] - rankBlockOffset
-let unitInfoPanelHeight = infoPanelHeight - researchBlockReservedHeight - slotBarTreeHeight - infoPanelFooterGap - saBorders[1]
 
 function mkHasUnitActions(withTreeNodes) {
   if (!withTreeNodes)
@@ -332,6 +330,8 @@ let mkBottomInfoPanel = {
 
 function infoPanel() {
   let hasUnitActions = mkHasUnitActions(isTreeNodes.get())
+  let needShowBlueprintDescr = Computed(@() hangarUnit.get()?.name in serverConfigs.get()?.allBlueprints
+    && hangarUnit.get()?.name not in myUnits.get())
   return {
     watch = [curSelectedUnit, isTreeNodes]
     key = {}
@@ -369,7 +369,7 @@ function infoPanel() {
                 children = [
                   unitInfoPanel(
                     {
-                      size = [flex(), unitInfoPanelHeight]
+                      size = [flex(), SIZE_TO_CONTENT]
                       halign = ALIGN_RIGHT
                       hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
                       animations = wndSwitchAnim
@@ -383,6 +383,11 @@ function infoPanel() {
                     hplace = ALIGN_RIGHT
                     halign = ALIGN_RIGHT
                     children = [
+                      @() {
+                        watch = hangarUnit
+                        children = !needShowBlueprintDescr.get() ? null
+                          : mkBlueprintBarText(loc("blueprints/fullDescription"))
+                      }
                       researchBlock(hangarUnit.get())
                       @() {
                         watch = hasUnitActions

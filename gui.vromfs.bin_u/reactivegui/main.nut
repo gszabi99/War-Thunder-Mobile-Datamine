@@ -18,7 +18,6 @@ require("%sqstd/regScriptProfiler.nut")("darg", dlog) // warning disable: -forbi
 require("%rGui/notifications/foreignMsgBox.nut")
 require("%rGui/notifications/logEvents.nut")
 require("%rGui/options/guiOptions.nut") //need to register options before load profile
-require("debugTools/pServerConsoleCmd.nut")
 require("%appGlobals/clientState/initWindowState.nut")
 require("account/legalAcceptWnd.nut")
 require("%globalScripts/windowStateEs.nut")

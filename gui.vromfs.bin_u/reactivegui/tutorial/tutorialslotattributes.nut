@@ -1,17 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
 let logT = log_with_prefix("[SLOT_ATTR_TUTOR] ")
+let { playSound } = require("sound_wt")
 let { register_command } = require("console")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { curCampaignSlots } = require("%appGlobals/pServer/campaign.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
-let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId
+let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId, goToStep
 } = require("tutorialWnd/tutorialWndState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
-let { hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
-let { isSlotAttrAttached, openSlotAttrWnd } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
+let { hasSlotAttrPreset, curCategoryId, selAttributes, getMaxAttrLevelData
+} = require("%rGui/attributes/attrState.nut")
+let { isSlotAttrAttached, openSlotAttrWnd, curCategory, slotAttributes, leftSlotSp,
+  applyAttributes, hasUpgradedAttrUnitNotUpdatable
+} = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { selectedSlotIdx, slotBarSlotKey } = require("%rGui/slotBar/slotBarState.nut")
+let { applyAttrRowChange } = require("%rGui/attributes/attrBlockComp.nut")
+let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
+let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
 
+let FINISH_STEP = "s6_finish_slot_attributes_tutorial"
 
 const TUTORIAL_ID = "tutorialSlotAttributes"
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
@@ -110,6 +118,50 @@ function startTutorial() {
         objects = [
           { keys = ["upgradePoints", "upgradePointsValue"], sizeIncAdd = hdpx(5), needArrow = true }
           { keys = "slotAttributesList" }
+        ]
+      }
+      {
+        id = "s5_change_slot_attributes"
+        function beforeStart() {
+          if(!curCategory.get()?.attrList)
+            deferOnce(@() goToStep(FINISH_STEP))
+        }
+        text = loc("tutorial/slotAttributes/clickPlusBtn")
+        charId = "mary_points"
+        objects = (curCategory.get()?.attrList ?? []).map(@(attr, idx) {
+          keys = $"slotAttrProgressBtn_{idx}"
+          function onClick() {
+            let catId = curCategoryId.get()
+            let minLevel = slotAttributes.get()?[catId][attr.id] ?? 0
+            let selLevel = max(selAttributes.get()?[catId][attr.id] ?? minLevel, minLevel)
+            let { maxLevel } = getMaxAttrLevelData(attr, selLevel, leftSlotSp.get())
+            applyAttrRowChange(catId, attr.id, selLevel + 1, Watched(selLevel), Watched(minLevel), Watched(maxLevel))
+          }
+          needArrow = idx == 0
+        })
+      }
+      {
+        id = FINISH_STEP
+        nextKeyDelay = -1
+        charId = "mary_like"
+        text = loc("tutorial/slotAttributes/finish")
+      }
+      {
+        id = "s7_mark_slot_attr_apply_btn"
+        charId = null
+        objects = [
+          { keys = "sceneRoot" },
+          {
+            keys = "slotAttrApplyBtn"
+            needArrow = true
+            function onClick() {
+              if(!hasUpgradedAttrUnitNotUpdatable())
+                sendAppsFlyerEvent("add_unit_attributes")
+              applyAttributes()
+              backButtonBlink("UnitAttr")
+              playSound("characteristics_apply")
+            }
+          }
         ]
       }
     ]

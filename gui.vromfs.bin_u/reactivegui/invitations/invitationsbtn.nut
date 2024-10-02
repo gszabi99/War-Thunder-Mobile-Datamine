@@ -8,7 +8,10 @@ let invitationsBtn = @() {
   children = invitations.value.len() == 0 ? null
     : framedImageBtn("ui/gameuiskin#icon_party.svg",
         openInvitations,
-        { sound = { click  = "meta_squad_button" }},
+        {
+          sound = { click  = "meta_squad_button" }
+          size = [evenPx(80), evenPx(80)]
+        },
         @() {
           watch = [hasUnread, hasImportantUnread]
           pos = [0.5 * framedBtnSize[0], -0.5 * framedBtnSize[1]]

@@ -7,8 +7,8 @@
   "tps": {
     "type": "TpsFlightCamera",
     "fov": 90.0,
-    "zoomFov": 30.0,
-    "sliderFovMult": 2.0,
+    "zoomFov": 60.0,
+    "sliderFovMult": 3.0,
     "targetOffset": [
       500.0,
       0.0,

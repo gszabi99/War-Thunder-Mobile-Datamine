@@ -14,9 +14,11 @@ let { setTutorialConfig, isTutorialActive, finishTutorial,
   activeTutorialId } = require("tutorialWnd/tutorialWndState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
 let { needShowTutorialAfterReward } = require("%rGui/rewards/freeRewardCampaigns.nut")
+let { TUTORIAL_AFTER_REWARD_ID } = require("tutorialConst.nut")
+let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 
-const TUTORIAL_ID = "tutorialAfterFreeReward"
-let isFinished = mkIsTutorialCompleted(TUTORIAL_ID)
+
+let isFinished = mkIsTutorialCompleted(TUTORIAL_AFTER_REWARD_ID)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let needShowTutorial = Computed(@() !isInSquad.get()
   && !isFinished.get()
@@ -24,22 +26,23 @@ let needShowTutorial = Computed(@() !isInSquad.get()
   && needShowTutorialAfterReward.get())
 let canStartTutorial = Computed(@() !hasModalWindows.get()
   && isMainMenuAttached.get()
-  && !isTutorialActive.get())
+  && !isTutorialActive.get()
+  && !isPurchEffectVisible.get())
 let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
 
-let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.get() == TUTORIAL_ID
+let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.get() == TUTORIAL_AFTER_REWARD_ID
   && !isMainMenuAttached.get()))
 let finishEarly = @() shouldEarlyCloseTutorial.get() ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
 function startTutorial() {
   setTutorialConfig({
-    id = TUTORIAL_ID
+    id = TUTORIAL_AFTER_REWARD_ID
     function onStepStatus(stepId, status) {
       logFB($"{stepId}: {status}")
       if (status == "tutorial_finished") {
-        markTutorialCompleted(TUTORIAL_ID)
+        markTutorialCompleted(TUTORIAL_AFTER_REWARD_ID)
         needShowTutorialAfterReward.set(false)
       }
     }
@@ -84,6 +87,6 @@ startTutorialDelayed()
 showTutorial.subscribe(@(v) v ? startTutorialDelayed() : null)
 
 register_command(
-  @() activeTutorialId.get() != TUTORIAL_ID ? isDebugMode(true)
+  @() activeTutorialId.get() != TUTORIAL_AFTER_REWARD_ID ? isDebugMode(true)
     : finishTutorial(),
   "debug.tutorial_after_free_reward")

@@ -10,8 +10,7 @@ let { hexStringToInt } = require("%sqstd/string.nut")
 let { allPermissions, dbgPermissions } = require("%appGlobals/permissions.nut")
 let { localizeAddons } = require("%appGlobals/updater/addons.nut")
 let { debugDirtyWordsFilter } = require("%appGlobals/dirtyWordsFilter.nut")
-let { resetUnitSettings } = require("unit/unitSettings.nut")
-let { hangarUnitName } = require("unit/hangarUnit.nut")
+
 
 register_command(@() inspectorToggle(), "ui.inspector")
 
@@ -42,5 +41,3 @@ register_command(@(name) startSound(name), "debug.guiSound.start")
 register_command(@(name) stopSound(name), "debug.guiSound.stop")
 
 register_command(@(text) debugDirtyWordsFilter(text, console_print), "debug.dirty_words_filter")
-
-register_command(@() hangarUnitName.get() == null ? null : resetUnitSettings(hangarUnitName.get()), "ui.reset_hangar_unit_settings")

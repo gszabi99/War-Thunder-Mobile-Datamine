@@ -143,6 +143,7 @@ function mkLootboxBlock(lootbox, blockSize) {
   let stateFlags = Watched(0)
   let lootboxImage = mkLootboxImageWithTimer(name, blockSize, timeRange, reqPlayerLevel, sizeMul)
   let stepsToFixed = Computed(@() getStepsToNextFixed(lootbox, serverConfigs.value, servProfile.value))
+  let info = lootboxInfo(lootbox, stateFlags)
 
   return @() {
     watch = stateFlags
@@ -158,7 +159,7 @@ function mkLootboxBlock(lootbox, blockSize) {
     sound = { click  = "click" }
     clickableInfo = loc("mainmenu/btnSelect")
     children = [
-      lootboxInfo(lootbox, stateFlags.value)
+      info
 
       @() {
         watch = [unseenLootboxes, unseenLootboxesShowOnce, curEventName]

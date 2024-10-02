@@ -1662,7 +1662,7 @@
               "spread": 1.0
             },
             {
-              "trigger": "additional gun",
+              "trigger": "machine gun",
               "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
               "emitter": "flare4",
               "flash": "flare4",
@@ -1673,7 +1673,7 @@
               "spread": 1.2
             },
             {
-              "trigger": "additional gun",
+              "trigger": "machine gun",
               "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
               "emitter": "flare5",
               "flash": "flare5",
@@ -1684,7 +1684,7 @@
               "spread": 1.2
             },
             {
-              "trigger": "additional gun",
+              "trigger": "machine gun",
               "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
               "emitter": "flare6",
               "flash": "flare6",
@@ -1696,7 +1696,7 @@
               "spread": 1.2
             },
             {
-              "trigger": "additional gun",
+              "trigger": "machine gun",
               "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
               "emitter": "flare7",
               "flash": "flare7",

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { AIR } = require("%appGlobals/unitConst.nut")
+let { AIR, TANK } = require("%appGlobals/unitConst.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
@@ -18,6 +18,7 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { mkRewardCurrencyImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
+let { mkUnitRank } = require("%rGui/unit/components/unitPlateComp.nut")
 
 
 let fonticonPreview = "⌡"
@@ -245,12 +246,12 @@ function mkOfferUnit(goods, onClick, state) {
   } = goods
   let p = getUnitPresentation(unit)
   let bgImg = offerClass == "seasonal" ? "ui/gameuiskin#offer_bg_green.avif"
-    : unit?.unitType == "tank" ? "ui/gameuiskin#offer_bg_yellow.avif"
+    : unit?.unitType == TANK || unit?.unitType == AIR ? "ui/gameuiskin#offer_bg_yellow.avif"
     : "ui/gameuiskin#offer_bg_blue.avif"
   let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
   let image = mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image,
     unitOfferImageOvrByType?[unit?.unitType] ?? {})
-  let imageOffset = currencyId == null || unit?.unitType == "tank" ? 0
+  let imageOffset = currencyId == null || unit?.unitType == TANK? 0
     : hdpx(40)
   return mkOfferWrap(onClick,
     unit == null ? null : @(sf) [
@@ -261,6 +262,7 @@ function mkOfferUnit(goods, onClick, state) {
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
       mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
         endTime ?? timeRange?.end)
+      mkUnitRank(unit, {padding = offerPad})
       discountTagUnit(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))
 }
@@ -297,12 +299,12 @@ function mkOfferBranchUnit(goods, onClick, state) {
   } = goods
   let p = getUnitPresentation(unit)
   let bgImg = offerClass == "seasonal" ? "ui/gameuiskin#offer_bg_green.avif"
-    : unit?.unitType == "tank" ? "ui/gameuiskin#offer_bg_yellow.avif"
+    : unit?.unitType == TANK ? "ui/gameuiskin#offer_bg_yellow.avif"
     : "ui/gameuiskin#offer_bg_blue.avif"
   let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
   let image = mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image,
     branchOfferImageOvr)
-  let imageOffset = currencyId == null || unit?.unitType == "tank" ? 0
+  let imageOffset = currencyId == null || unit?.unitType == TANK ? 0
     : hdpx(40)
   return mkOfferWrap(onClick,
     unit == null ? null : @(sf) [

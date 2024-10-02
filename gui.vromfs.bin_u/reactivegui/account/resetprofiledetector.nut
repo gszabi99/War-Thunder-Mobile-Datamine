@@ -18,6 +18,7 @@ let isReseted = keepref(Computed(@() isLoggedIn.get() && lastResetTime.get() != 
 function processReset() {
   if (!isReseted.get())
     return
+  savedLastResetTime.set(lastResetTime.get())
   get_local_custom_settings_blk()[SAVE_ID] = lastResetTime.get()
   foreach(h in resetHandlers)
     h()

@@ -1,0 +1,36 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "rockets"
+    },
+    {
+      "slot": 2,
+      "preset": "rockets"
+    },
+    {
+      "slot": 3,
+      "preset": "rockets"
+    },
+    {
+      "slot": 4,
+      "preset": "rockets"
+    },
+    {
+      "slot": 7,
+      "preset": "rockets"
+    },
+    {
+      "slot": 8,
+      "preset": "rockets"
+    },
+    {
+      "slot": 9,
+      "preset": "rockets"
+    },
+    {
+      "slot": 10,
+      "preset": "rockets"
+    }
+  ]
+}

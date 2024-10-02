@@ -39,11 +39,9 @@ let backBtn = backButton(battleResume,
 let menuContent = @(isAlive, campaign) mkCustomMsgBoxWnd(loc("msgbox/leaveBattle/title"),
   loc(isAlive ? "msgbox/leaveBattle/giveUp" : "msgbox/leaveBattle/toPort"),
   [
-    textButtonBright(
-      utf8ToUpper(loc(isAlive ? "btn/giveUp"
-        : campaign == "ships" ? "return_to_port/short"
-        : "return_to_hangar/short")),
-      quitMission, { hotkeys = ["^J:LB"] })
+    isAlive ? textButtonCommon(utf8ToUpper(loc("btn/giveUp")), quitMission, { hotkeys = ["^J:LB"] })
+      : textButtonBright(utf8ToUpper(loc(campaign == "ships" ? "return_to_port/short"
+          : "return_to_hangar/short")), quitMission, { hotkeys = ["^J:LB"] })
     textButtonPrimary(utf8ToUpper(loc("btn/continueBattle")), battleResume,
       { hotkeys = [btnBEscUp] })
   ])

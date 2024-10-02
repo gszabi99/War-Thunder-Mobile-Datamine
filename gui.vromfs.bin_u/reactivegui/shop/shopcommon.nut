@@ -1,6 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopConst.nut" import *
 
+let defaultFeaturedIcon = "!ui/gameuiskin#shop_planes.svg"
+let featuredIcon = {
+  tanks = "!ui/gameuiskin#shop_tanks.svg"
+  ships = "!ui/gameuiskin#shop_ships.svg"
+  air = defaultFeaturedIcon
+}
+
 let shopCategoriesCfg = [
   {
     id = SC_OTHER
@@ -11,9 +18,7 @@ let shopCategoriesCfg = [
   {
     id = SC_FEATURED
     title = loc("shop/category/featured")
-    // TODO: replace icon
-    getImage =  @(campaign) campaign == "tanks" ? "!ui/gameuiskin#shop_tanks.svg"
-      : "!ui/gameuiskin#shop_ships.svg"
+    getImage =  @(campaign) featuredIcon?[campaign] ?? defaultFeaturedIcon
     gtypes = [ SGT_UNIT, SGT_SLOTS, SGT_LOOTBOX, SGT_BLUEPRINTS ]
   },
   {

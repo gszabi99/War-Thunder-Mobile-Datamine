@@ -9,7 +9,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlotContentGenId,
-  selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler
+  selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler, canGoToBattle
 } = require("respawnState.nut")
 let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets
 } = require("bulletsChoiceState.nut")
@@ -88,7 +88,7 @@ let topPanel = @() {
 function onSlotClick(slot) {
   //todo: validate spawn here
   sendPlayerActivityToServer()
-  if (slot.canSpawn) {
+  if (canGoToBattle(slot, sparesNum.get() > 0)) {
     playerSelectedSlotIdx(slot.id)
     return
   }
@@ -107,11 +107,32 @@ let sparePrice = {
   })
 }
 
+let mkSlotPlateContent = @(slot, unit, baseUnit, p, isSelected) function() {
+  let { isSpawnBySpare, country, mRank, isLocked = false, reqLevel = 0 } = slot
+  let canBattle = canGoToBattle(slot, sparesNum.get() > 0)
+  return {
+    watch = sparesNum
+    key = slot
+    size = [unitPlateWidth, unitPlateHeight]
+    children = [
+      mkUnitBg(unit, !canBattle)
+      canBattle ? mkUnitSelectedGlow(unit, isSelected) : null
+      mkUnitImage(unit, !canBattle)
+      mkUnitTexts(country == "" ? baseUnit : unit, loc(p.locId), !canBattle)
+      canBattle
+          ? mkUnitRank(mRank == 0 ? baseUnit : unit, { padding = [0, plateTextsSmallPad * 2, 0, 0] })
+        : isLocked && reqLevel <= 0
+          ? unitSlotLockedByQuests
+        : mkUnitSlotLockedLine(slot)
+      canBattle && isSpawnBySpare ? sparePrice : null
+    ]
+  }
+}
+
 function mkSlotPlate(slot, baseUnit) {
   let p = getUnitPresentation(slot.name)
   let isSelected = Computed(@() selSlot.value?.id == slot.id)
   let unit = baseUnit.__merge(slot)
-  let { canSpawn, isSpawnBySpare, country, mRank } = slot
   return {
     size = [slotPlateWidth, unitPlateHeight]
     behavior = Behaviors.Button
@@ -120,22 +141,7 @@ function mkSlotPlate(slot, baseUnit) {
     flow = FLOW_HORIZONTAL
     children = [
       mkUnitSelectedUnderlineVert(unit, isSelected)
-      {
-        key = slot
-        size = [unitPlateWidth, unitPlateHeight]
-        children = [
-          mkUnitBg(unit, !canSpawn)
-          canSpawn ? mkUnitSelectedGlow(unit, isSelected) : null
-          mkUnitImage(unit, !canSpawn)
-          mkUnitTexts(country == "" ? baseUnit : unit, loc(p.locId), !canSpawn)
-          canSpawn
-              ? mkUnitRank(mRank == 0 ? baseUnit : unit, { padding = [0, plateTextsSmallPad * 2, 0, 0] })
-            : slot?.isLocked && (slot?.reqLevel ?? 0) <= 0
-              ? unitSlotLockedByQuests
-            : mkUnitSlotLockedLine(slot)
-          canSpawn && isSpawnBySpare ? sparePrice : null
-        ]
-      }
+      mkSlotPlateContent(slot, unit, baseUnit, p, isSelected)
     ]
   }
 }
@@ -307,9 +313,9 @@ function toBattle() {
 }
 
 let buttons = @() {
-  watch = [needCancel, isRespawnStarted, selSlot]
+  watch = [needCancel, isRespawnStarted, selSlot, sparesNum]
   vplace = ALIGN_BOTTOM
-  children = !(selSlot.value?.canSpawn ?? false) ? null
+  children = !canGoToBattle(selSlot.get(), sparesNum.get() > 0) ? null
     : !isRespawnStarted.value ? toBattleButton(toBattle, { hotkeys = ["^J:X | Enter"] })
     : needCancel.value ? cancelBtn
     : spinner

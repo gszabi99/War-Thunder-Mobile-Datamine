@@ -30,7 +30,7 @@ let allLangs = [
   { id = "Ukrainian", icon = "#ui/gameuiskin#lang_ukraine.svg", chatId = "uk" }
   { id = "Turkish", icon = "#ui/gameuiskin#lang_turkey.svg", chatId = "tr" }
   { id = "Indonesian", icon = "#ui/gameuiskin#lang_indonesia.svg", chatId = "id" }
-  { id = "Chinese", icon = "#ui/gameuiskin#lang_china.svg", chatId = "zh" }
+  { id = "Chinese", icon = "#ui/gameuiskin#lang_china.svg", chatId = "zh", hasUnitSpeech = true  }
   { id = "TChinese", icon = "#ui/gameuiskin#lang_taiwan.svg", chatId = "zh" }
   { id = "Korean", icon = "#ui/gameuiskin#lang_korea.svg", chatId = "ko" }
   { id = "Japanese", icon = "#ui/gameuiskin#lang_japan.svg", chatId = "jp", hasUnitSpeech = true }

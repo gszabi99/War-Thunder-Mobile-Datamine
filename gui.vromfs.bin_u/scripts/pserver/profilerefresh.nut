@@ -37,6 +37,11 @@ function checkUpdateProfile() {
     isProfileChanged(true)
     return
   }
+  if (!isLoggedIn.get()) {
+    isProfileChanged.set(false)
+    isConfigsChanged.set(false)
+    return
+  }
 
   logPR($"Update profile: isProfileChanged = {isProfileChanged.value}, isConfigsChanged = {isConfigsChanged.value}")
   if (isConfigsChanged.value)

@@ -34,13 +34,13 @@ let info = Computed(function() {
   if (killData.value == null)
     return null
   let { killer, unitName, unitType } = killData.value
+  if (unitName == "")
+    return // AI unit
   local unitCfg = getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get())
   if (unitCfg == null && unitName in get_unittags_blk())
     unitCfg = mkFakeUnitCfg(unitName, unitType, killer.country)
-  if (unitCfg == null) {
-    logerr($"Player killed by unknown unit {unitName}, unitType = {unitType}") // AI unit?
+  if (unitCfg == null)
     return null
-  }
   let cStats = killer.isBot ? genBotCommonStats(killer.name, unitName, unitCfg, 0)
     : playersCommonStats.value?[killer.userId.tointeger()]
   let { hasPremium = false, decorators = null, units = null } = cStats
