@@ -325,16 +325,17 @@ let platoonUnitsBlock = @() {
   watch = previewGoodsUnit
   flow = FLOW_VERTICAL
   gap = unitPlatesGap
-  children = [ { name = previewGoodsUnit.value.name, reqLevel = 0 } ]
-    .extend(previewGoodsUnit.value?.platoonUnits)
-    .map(@(pu, idx) mkUnitPlate(idx, previewGoodsUnit.value, pu, @() curSelectedUnitId(pu.name)))
+  children = previewGoodsUnit.get() == null ? null
+    : [ { name = previewGoodsUnit.value.name, reqLevel = 0 } ]
+        .extend(previewGoodsUnit.value?.platoonUnits)
+        .map(@(pu, idx) mkUnitPlate(idx, previewGoodsUnit.value, pu, @() curSelectedUnitId(pu.name)))
 }
 
 let singleUnitBlock = @() {
   watch = [previewGoodsUnit, previewType]
-  children = previewType.get() == GPT_BLUEPRINT
-    ? mkBlueprintUnitPlate(previewGoodsUnit.get())
-    : mkUnitPlate(0, previewGoodsUnit.value, { name = previewGoodsUnit.value.name, reqLevel = 0 })
+  children = previewGoodsUnit.get() == null ? null
+    : previewType.get() == GPT_BLUEPRINT ? mkBlueprintUnitPlate(previewGoodsUnit.get())
+    : mkUnitPlate(0, previewGoodsUnit.get(), { name = previewGoodsUnit.get().name, reqLevel = 0 })
 }
 
 function branchUnitsBlock(unitName) {

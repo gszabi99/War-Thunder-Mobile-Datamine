@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
-let { mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideX, simpleVerGrad } = require("%rGui/style/gradients.nut")
@@ -32,28 +31,36 @@ let mkSliderPlate = @(isActive, size) {
   fillColor = isActive ? defColor : secondaryColor
 }
 
-let mkTitleText = @(text, maxWidth) {
-  rendObj = ROBJ_TEXTAREA
-  behavior = Behaviors.TextArea
-  maxWidth
-  halign = ALIGN_CENTER
-  text
-  color = secondaryColor
-}.__update(fontVeryTinyAccented)
+let mkRewardPlateBg = @(size) {
+  size
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/images/offer_item_slot_bg.avif:{size[0]}:{size[1]}:P")
+}
 
-function mkRewardSlider(rewards, onClick, rStyle = {}) {
+function mkRewardSlider(rewards, rewardCtors, onClick, rStyle = {}) {
   let activeSlideIdx = Watched(0)
   activeSlideIdx.subscribe(@(idx) idx == 0 ? resetTimeout(timeToDelay, @() anim_start(triggerStartAnimSlider)) : null)
 
   let slidesCount = rewards.len()
   let size = getRewardPlateSize(defaultSlots, rStyle)
   let containerMask = mkBitmapPictureLazy(size[0], 4, mkGradientCtorDoubleSideX(0, defColor, 0))
-  let row = rewards.map(@(rInfo) {
-    size
+
+  let mkRewardPlateImage = @(r, rewardStyle) (rewardCtors?[r?.rType] ?? rewardCtors.unknown).image(r, rewardStyle)
+  let mkRewardPlateTexts = @(r, rewardStyle) (rewardCtors?[r?.rType] ?? rewardCtors.unknown).texts(r, rewardStyle)
+
+  let mkRewardPlate = @(r, rewardStyle) {
+    transform = {}
     children = [
-      mkRewardPlate(rInfo, rStyle)
+      mkRewardPlateBg(size)
+      mkRewardPlateImage(r, rewardStyle)
+      mkRewardPlateTexts(r, rewardStyle)
       mkRewardPlateBlure()
     ]
+  }
+
+  let row = rewards.map(@(rInfo) {
+    size
+    children = mkRewardPlate(rInfo, rStyle)
   })
   let plateSize = [(size[0] - (slidesCount - 1) * plateGap) / slidesCount, plateHeight]
 
@@ -129,13 +136,8 @@ function mkRewardSlider(rewards, onClick, rStyle = {}) {
           }
         ]
       }
-      {
-        hplace = ALIGN_CENTER
-        vplace = ALIGN_TOP
-        children = mkTitleText(loc("events/choosePrize"), size[0])
-      }
     ]
   }
 }
 
-return { mkRewardSlider, plateHeight, plateGap, defaultSlots }
+return { mkRewardSlider, defaultSlots }

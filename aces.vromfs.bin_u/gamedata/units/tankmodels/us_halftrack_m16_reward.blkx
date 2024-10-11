@@ -2462,7 +2462,7 @@
   "default_skin": {
     "replace_tex": {
       "from": "us_camo_olive*",
-      "to": "camo_crosspromo*"
+      "to": "camo_crosspromo_tank*"
     }
   },
   "defaultDecals": {
@@ -2476,7 +2476,7 @@
     "forest": {
       "replace_tex": {
         "from": "us_camo_olive*",
-        "to": "camo_crosspromo*"
+        "to": "us_camo_olive*"
       },
       "decal": {
         "skin_condition": 100.0,

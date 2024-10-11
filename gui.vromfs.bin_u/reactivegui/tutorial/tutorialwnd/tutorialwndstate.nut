@@ -157,8 +157,7 @@ function skipStep() {
     nextStep()
 }
 
-let calcNextDelayByText = @(text)
-  clamp(0.03 * utf8(text).charCount(), 1.0, 5.0)
+let calcNextDelayByText = @(text) clamp(0.015 * utf8(text).charCount(), 0.5, 5.0)
 
 let allowNextKey = @() nextKeyAllowed(true)
 let allowSkipKey = @() skipKeyAllowed(true)

@@ -22999,7 +22999,7 @@
       "shipCrewRating": 3.76485,
       "maxSpeed": 16.19,
       "turningTime": 24,
-      "asmCaptureDuration": 5.0,
+      "asmCaptureDuration": 4.0,
       "mainWeaponCaliber": 114.0,
       "weapons": {
         "114mm_50_qf_mk8_naval_user_cannon": {
@@ -23035,7 +23035,7 @@
         },
         "190mm_sea_cat_alike_rocket_naval_bullet": {
           "wtype": "rockets",
-          "damage": 3000.0,
+          "damage": 3500.0,
           "shotFreq": 4.2,
           "reloadTime": 15.0,
           "rocketsSalvo": 4,
@@ -46233,10 +46233,12 @@
           "icon": "hud_ammo_heat"
         },
         "120mm_NATO_APDS_FS": {
-          "icon": "hud_ammo_apfsds"
+          "icon": "hud_ammo_apfsds",
+          "reqLevel": 3
         },
         "120mm_DM_APDS_FS": {
-          "icon": "hud_ammo_apfsds"
+          "icon": "hud_ammo_apfsds",
+          "reqLevel": 6
         }
       }
     },
@@ -46301,12 +46303,17 @@
           "icon": "hud_ammo_heat"
         },
         "152mm_usa_XM578E1_APDS_FS": {
-          "icon": "hud_ammo_apfsds"
+          "icon": "hud_ammo_apfsds",
+          "reqLevel": 8
         },
-        "152mm_XM410E1_Smoke": {},
         "152mm_usa_MGM61C_HEAT": {
+          "icon": "hud_ammo_atgm_ap1_he1",
           "maxCount": 6,
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "reqLevel": 11
+        },
+        "152mm_XM410E1_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
         }
       }
     },
@@ -46372,15 +46379,17 @@
         "default": {
           "icon": "hud_ammo_ap2_he0"
         },
-        "57mm_germ_Bofors_SAP": {
-          "icon": "hud_ammo_ap1_he1"
-        },
         "57mm_germ_Bofors_HE": {
           "isHE": true,
           "icon": "hud_ammo_he"
         },
+        "57mm_germ_Bofors_SAP": {
+          "icon": "hud_ammo_ap1_he1",
+          "reqLevel": 13
+        },
         "57mm_germ_Bofors_HE_VT": {
-          "icon": "hud_ammo_he3_vt"
+          "icon": "hud_ammo_he3_vt",
+          "reqLevel": 16
         }
       },
       "127mm_bgm_71c_itow_rocket_launcher": {
@@ -46453,7 +46462,8 @@
           "icon": "hud_ammo_bullet_ap"
         },
         "35mm_kda_HE": {
-          "icon": "hud_ammo_bullet_he"
+          "icon": "hud_ammo_bullet_he",
+          "reqLevel": 18
         }
       }
     },

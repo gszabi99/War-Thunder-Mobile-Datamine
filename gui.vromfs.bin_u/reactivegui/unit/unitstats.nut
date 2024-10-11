@@ -214,7 +214,10 @@ let statsAir = {
   }
   crew = {
     getHeader = @(__, _) loc("attrib_section/plane_crew")
-    valueToText = @(_, s) loc("stats/air_crew", { pilots = s?.pilotsCount ?? 0, gunners = s?.gunnersCount ?? 0 })
+    valueToText = @(_, s) (s?.gunnersCount ?? 0) != 0
+      ? loc("stats/air_crew", { pilots = s?.pilotsCount ?? 0, gunners = s?.gunnersCount ?? 0 })
+      : loc("stats/air_crew_pilots", { pilots = s?.pilotsCount ?? 0 })
+    isAvailable = @(s) (s?.pilotsCount ?? 0) + (s?.gunnersCount ?? 0) > 0
   }
   massPerSec = {
     valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/kgPerSec"))

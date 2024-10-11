@@ -7,7 +7,7 @@ let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { mkCustomButton, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getLootboxRewardsViewInfo, isRewardReceived } = require("%rGui/rewards/rewardViewInfo.nut")
+let { getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { CS_INCREASED_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
 let { bestCampLevel, eventSeason } = require("eventState.nut")
 let { canShowAds, adsButtonCounter } = require("%rGui/ads/adsState.nut")
@@ -61,25 +61,31 @@ let infoCanvas = {
 let infoCanvasSmall = infoCanvas.__merge({ size = lootboxInfoSize })
 let infoCanvasBig = infoCanvas.__merge({ size = lootboxInfoSizeBig })
 
+function canReceiveLastReward(lootbox, reward, profile) {
+  if (!(reward?.isJackpot || reward?.isFixed))
+    return true
+  let { name, fixedRewards } = lootbox
+  let openCount = profile?.lootboxStats[name].opened ?? 0
+  return null != fixedRewards.findindex(@(_, idxStr) idxStr.tointeger() > openCount)
+}
+
 let lootboxInfo = @(lootbox, stateFlags) function() {
   local rewards = []
   local slots = 0
   let allRewards = getLootboxRewardsViewInfo(lootbox)
   let profile = servProfile.get()
   foreach (reward in allRewards) {
-    if (reward?.isLastReward
+    if ((reward?.isLastReward && (rewards.len() != 0 || !canReceiveLastReward(lootbox, reward, profile)))
         || slots + (reward?.slots ?? 0) > REWARDS + 1
-        || isRewardReceived(lootbox, reward?.parentRewardId ?? reward.rewardId, reward.rewardCfg, profile))
+        || isRewardEmpty(reward.rewardCfg, profile)
+        || ((reward?.isJackpot || reward?.isFixed)
+          && !canReceiveFixedReward(lootbox, reward?.parentRewardId ?? reward.rewardId, reward.rewardCfg, profile))
+        )
       continue
     slots += reward?.slots ?? 0
     rewards.append(reward)
     if (slots >= REWARDS)
       break
-  }
-  if (rewards.len() == 0) {
-    let last = allRewards.findvalue(@(v) v?.isLastReward ?? false)
-    if (last)
-      rewards.append(last)
   }
 
   let children = rewards.map(@(r) {

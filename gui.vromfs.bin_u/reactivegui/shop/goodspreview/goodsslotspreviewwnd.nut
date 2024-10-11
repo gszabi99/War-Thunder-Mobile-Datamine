@@ -17,7 +17,7 @@ let { registerHandler, shopPurchaseInProgress, shopGenSlotInProgress,
   gen_goods_slots, buy_goods_slot, increase_goods_limit, reset_reward_slots
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
+let { openMsgBoxPurchase, showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, PURCH_TYPE_GOODS_LIMIT, PURCH_TYPE_GOODS_REROLL_SLOTS,
   mkBqPurchaseInfo
 } = require("%rGui/shop/bqPurchaseInfo.nut")
@@ -25,6 +25,7 @@ let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 
+let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
@@ -133,8 +134,8 @@ function headerText() {
   let excludeGoods = serverConfigs.get()?.allBlueprints.reduce(@(res, v, unitName) (myUnits.get()?[unitName] != null
     || (servProfile.get()?.blueprints[unitName] ?? 0) >= (v?.targetCount ?? 0)) ? res.$rawset(unitName, true)
       : res, {}) ?? {}
-  let allLeftSlotNames = goodsRewardSlots.get().variants.reduce(@(res, v)
-    !excludeGoods?[v[0].id] ? res.append(loc(getUnitLocId(v[0].id))) : res, [])
+  let allLeftSlotNames = goodsRewardSlots.get()?.variants.reduce(@(res, v)
+    !excludeGoods?[v[0].id] ? res.append(loc(getUnitLocId(v[0].id))) : res, []) ?? []
   let description = loc(getSlotsTexts(openedGoodsId.get()).description)
   return {
     watch = [previewGoods, openedGoodsId, goodsRewardSlots, myUnits, serverConfigs, servProfile]
@@ -295,54 +296,77 @@ function fillRewardsByRows(goods, slotsInRowMax, style) {
   return res
 }
 
-function purchaseSelectedSlot(price, currencyId) {
-  let slot = rewardSlots.get()?.goods[selIndex.get()][0]
-  if (slot == null) {
+let playPurchaseSound = @(currencyId)
+  playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money")
+
+function purchaseSelectedSlot(id, price, currencyId) {
+  buy_goods_slot(id, selIndex.get(), currencyId, price)
+  playPurchaseSound(currencyId)
+}
+
+function increaseLimit(id, price, currencyId) {
+  increase_goods_limit(id, currencyId, price)
+  playPurchaseSound(currencyId)
+}
+
+function rerollSlots(id, price, currencyId) {
+  gen_goods_slots(id, currencyId, price)
+  playPurchaseSound(currencyId)
+  anim_start(rerollTrigger)
+}
+
+let openSelGoodsMsgBoxPurch = @(text, price, currencyId, action, bqInfo) openMsgBoxPurchase(
+  loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, text)})
+  { price, currencyId }
+  @() previewGoods.get()?.id == null ? null : action(previewGoods.get()?.id, price, currencyId),
+  bqInfo
+)
+
+function tryOpenPurchSlotMsgBox(goodsId, price, currencyId) {
+  let { id = null, gType = null, count = null } = rewardSlots.get()?.goods[selIndex.get()][0]
+  if (id == null) {
     openMsgBox({ text = loc("msg/selectSlotForPurchase") })
     return
   }
-
-  let { id } = previewGoods.get()
-  let bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, $"{id}:{slot.gType}/{slot.id}x{slot.count}")
-  if (showNoBalanceMsgIfNeed(price, currencyId, bqInfo))
-    return
-  buy_goods_slot(id, selIndex.get(), currencyId, price)
-  playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money")
+  openSelGoodsMsgBoxPurch($"{loc("blueprints/title", { count })} {loc(getUnitLocId(id))}",
+    price, currencyId, purchaseSelectedSlot,
+    mkBqPurchaseInfo(PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, $"{goodsId}:{gType}/{id}x{count}"))
 }
 
-function increaseLimit(price, currencyId) {
-  let { id = null } = previewGoods.get()
-  if (id == null)
-    return
-  let bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, PURCH_TYPE_GOODS_LIMIT, id)
-  if (showNoBalanceMsgIfNeed(price, currencyId, bqInfo))
-    return
-  increase_goods_limit(id, currencyId, price)
-  playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money")
+function purchaseSlotBtn(id, priceCfg) {
+  let { price = 0, currencyId = "" } = priceCfg
+  if (price <= 0 || currencyId == "")
+    return null
+
+  return textButtonPricePurchase(utf8ToUpper(loc("btn/buySelected")),
+    mkCurrencyComp(price, currencyId),
+    @() tryOpenPurchSlotMsgBox(id, price, currencyId))
 }
 
-function rerollSlots(price, currencyId) {
-  anim_start(rerollTrigger)
-  let { id = null } = previewGoods.get()
-  if (id == null)
-    return
-  let bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, PURCH_TYPE_GOODS_REROLL_SLOTS, id)
-  if (showNoBalanceMsgIfNeed(price, currencyId, bqInfo))
-    return
-  gen_goods_slots(id, currencyId, price)
-  playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money")
+function rerollBtn(id, priceCfg, isFree, styleOvr) {
+  let { price = 0, currencyId = "" } = priceCfg
+  if (price <= 0 || currencyId == "")
+    return null
+
+  return textButtonPricePurchase(utf8ToUpper(loc("btn/rerollItems")),
+    isFree ? mkFreeText() : mkCurrencyComp(price, currencyId),
+    @() previewGoods.get()?.id == null || (!isFree
+          && showNoBalanceMsgIfNeed(price, currencyId, mkBqPurchaseInfo(PURCH_SRC_SHOP, PURCH_TYPE_GOODS_REROLL_SLOTS, id)))
+        ? null
+      : rerollSlots(previewGoods.get()?.id, price, currencyId),
+    styleOvr)
 }
 
-function purchButton(text, priceCfg, purchAction, purchCount = 0, isFree = false, styleOvr = {}) {
+function skipWaitBtn(id, priceCfg, purchCount) {
   let { price = 0, currencyId = "", priceInc = 0 } = priceCfg
   if (price <= 0 || currencyId == "")
     return null
 
   let priceFinal = price + priceInc * purchCount
-  return textButtonPricePurchase(utf8ToUpper(text),
-    isFree ? mkFreeText() : mkCurrencyComp(priceFinal, currencyId)
-    @() purchAction(priceFinal, currencyId),
-    styleOvr)
+  return textButtonPricePurchase(utf8ToUpper(loc("btn/skipWait")),
+    mkCurrencyComp(priceFinal, currencyId),
+    @() openSelGoodsMsgBoxPurch(loc("blueprints/skipWait"), priceFinal, currencyId, increaseLimit,
+      mkBqPurchaseInfo(PURCH_SRC_SHOP, PURCH_TYPE_GOODS_LIMIT, id)))
 }
 
 let buttons = @(hasRerollAnim) function() {
@@ -367,14 +391,12 @@ let buttons = @(hasRerollAnim) function() {
       : isPurchased
         ? [
             mkTimeLeftInfo()
-            purchButton(loc("btn/skipWait"), limitResetPrice, increaseLimit,
-              serverTimeDay.get() != getDay(goodsLimitReset.get()?[id].time ?? 0) ? 0
-                : goodsLimitReset.get()?[id].count)
+            skipWaitBtn(id, limitResetPrice,
+              serverTimeDay.get() != getDay(goodsLimitReset.get()?[id].time ?? 0) ? 0 : goodsLimitReset.get()?[id].count)
           ]
       : [
-          purchButton(loc("btn/rerollItems"), rerollCost.get(), rerollSlots, 0, isFree,
-            hasRerollAnim ? rerollButtonStyle : PRIMARY)
-          purchButton(loc("btn/buySelected"), price, purchaseSelectedSlot)
+          rerollBtn(id, rerollCost.get(), isFree, hasRerollAnim ? rerollButtonStyle : PRIMARY)
+          purchaseSlotBtn(id, price)
         ]
   })
 }
@@ -418,11 +440,16 @@ function content() {
         isPurchased ? null
           : txt(hasAnySlot ? utf8ToUpper(loc("shop/pickOneItem")) : utf8ToUpper(loc(getSlotsTexts(openedGoodsId.get()).missing)))
         hasAnySlot ? buttons(hasRerollHint) : null
-        !hasRerollHint ? null
-          : txt(loc("shop/hint/rerollForUnit", { unitName = loc(getUnitLocId(curUnit)) }), {
-              animations = rerollUnitAnim
-              transform = {}
-            })
+        {
+          size = [flex(), hdpx(24)]
+          valign = ALIGN_CENTER
+          halign = ALIGN_CENTER
+          children = !hasRerollHint ? null
+            : txt(loc("shop/hint/rerollForUnit", { unitName = loc(getUnitLocId(curUnit)) }), {
+                animations = rerollUnitAnim
+                transform = {}
+              })
+        }
       ]
     }
   }

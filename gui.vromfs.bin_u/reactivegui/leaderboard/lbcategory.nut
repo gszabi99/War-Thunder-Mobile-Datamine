@@ -57,6 +57,15 @@ let categories = {
     relWidth = 1.5
   }
 
+  AIR_RATING = {
+    field = "air_rating"
+    dataType = RATING
+    locId = "lb/rating"
+    hintLocId = "lb/hint/tanks/score"
+    icon = "ui/gameuiskin#lb_rating_icon.svg"
+    relWidth = 1.5
+  }
+
   WP_RATING = {
     field = "wp_rating"
     dataType = RATING
@@ -99,6 +108,13 @@ let categories = {
     dataType = NUM
     locId = "debriefing/destroyed"
     icon = "ui/gameuiskin#tanks_destroyed_icon.svg"
+  }
+
+  KILL_AIR = {
+    field = "kill"
+    dataType = NUM
+    locId = "debriefing/destroyed"
+    icon = "ui/gameuiskin#air_destroyed_icon.svg"
   }
 
   BATTLES = {

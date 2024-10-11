@@ -303,6 +303,9 @@ function getLootboxRewardsViewInfo(lootbox, needToGroup = false) {
   return fixedRewards.extend(needToGroup ? groupRewards(commonRewards) : commonRewards)
 }
 
+let getAllLootboxRewardsViewInfo = @(lootbox)
+  getLootboxFixedRewardsViewInfo(lootbox).extend(groupRewards(getLootboxCommonRewardsViewInfo(lootbox)))
+
 let receivedGoodsToViewInfo = @(rGoods)
   mkViewInfo(rGoods?.id ?? "", rGoods?.gType ?? "", rGoods.count ?? 0, rGoods?.subId ?? "")
 
@@ -365,11 +368,11 @@ function isViewInfoRewardEmpty(reward, profile) {
   return true
 }
 
-function isRewardReceived(lootbox, id, reward, profile) {
+function canReceiveFixedReward(lootbox, id, reward, profile) {
   let { name, fixedRewards } = lootbox
   let openCount = profile?.lootboxStats[name].opened ?? 0
-  let rollsToReceive = fixedRewards.findindex(@(r) r == id)?.tointeger()
-  return isRewardEmpty(reward, profile) || (rollsToReceive != null && rollsToReceive <= openCount)
+  let rollToReceive = fixedRewards.findindex(@(r, idxStr) r == id && idxStr.tointeger() > openCount)
+  return !isRewardEmpty(reward, profile) && rollToReceive != null
 }
 
 function fillRewardsCounts(rewards, profile, configs) {
@@ -435,10 +438,11 @@ return {
   joinViewInfo
   findIndexForJoin
   getLootboxRewardsViewInfo
+  getAllLootboxRewardsViewInfo
   receivedGoodsToViewInfo
   isRewardEmpty
   isViewInfoRewardEmpty
   isSingleViewInfoRewardEmpty
-  isRewardReceived
+  canReceiveFixedReward
   fillRewardsCounts
 }

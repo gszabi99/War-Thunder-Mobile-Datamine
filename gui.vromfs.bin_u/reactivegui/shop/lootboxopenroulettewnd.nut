@@ -587,23 +587,22 @@ recevedRewardAnimIdx.subscribe(function(idx) {
 
 function mkBlueprintPlateTexts(reward, unitRank, rStyle) {
   let { id } = reward
-  let countToDecrease = Computed(function() {
+  let countInc = Computed(function() {
     local totalCount = 0
     local rewards = receivedRewardsAll.get()
-    local openIdx = rouletteOpenIdx.get()
-    for (local i = rewards.len(); i >= openIdx; i--) {
-      let rReward = rewards?[i].viewInfo[0]
-      if (!rReward)
+    for (local i = 0; i < rewards.len(); i++) {
+      let rReward = rewards[i]?.viewInfo[0]
+      if (rReward == null || rReward.rType != G_BLUEPRINT || rReward.id != id)
         continue
-      if (consistentReceivedRewardIdx.get() == i)
-        return totalCount
-      if (rReward.rType == G_BLUEPRINT && rReward.id == id)
-        totalCount += rReward.count
+      if (consistentReceivedRewardIdx.get() < i)
+        totalCount -= rReward.count
+      else if (rReward.subId != "")
+        totalCount += rReward.subId.tointeger()
     }
     return totalCount
   })
 
-  let available = Computed(@() (servProfile.get()?.blueprints?[id] ?? 0) - countToDecrease.get())
+  let available = Computed(@() (servProfile.get()?.blueprints?[id] ?? 0) + countInc.get())
   let total = Computed(@() serverConfigs.get()?.allBlueprints?[id].targetCount ?? 1)
   let hasBlueprintUnit = Computed(@() id in myUnits.get())
 

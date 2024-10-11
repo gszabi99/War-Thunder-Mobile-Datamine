@@ -1,14 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
 
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-
-let { mkRewardSlider, plateHeight, plateGap, defaultSlots } = require("%rGui/rewards/components/mkRewardSlider.nut")
+let { REWARD_STYLE_MEDIUM, getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { bgMessage, bgHeader, bgShaded } = require("%rGui/style/backgrounds.nut")
-let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
-let { mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 
@@ -21,7 +17,16 @@ let mkPlateClickByType = {
   [G_UNIT_UPGRADE] = mkUnitPlateClick,
 }
 
-let mkPrizeTicketsContent = @(rewards, rStyle)
+function mkRewardPlateBg(r, rStyle) {
+  let size = getRewardPlateSize(r.slots, rStyle)
+  return {
+    size
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/images/offer_item_slot_bg.avif:{size[0]}:{size[1]}:P")
+  }
+}
+
+let mkPrizeTicketsContent = @(content)
   bgMessage.__merge({
     minWidth = hdpx(800)
     flow = FLOW_VERTICAL
@@ -45,62 +50,51 @@ let mkPrizeTicketsContent = @(rewards, rStyle)
         valign = ALIGN_TOP
         padding = hdpx(60)
         gap = hdpx(20)
-        children = rewards.map(@(reward) {
-          function onClick() {
-            mkPlateClickByType?[reward.rType](reward)
-            removeModalWindow(PRIZE_TICKETS_WND_UID)
-          }
-          sound = { click = "click" }
-          behavior = Behaviors.Button
-          children = mkRewardPlate(reward, rStyle)
-        })
+        children = content
       }
     ]
   })
 
-function mkPrizeTicket(id, rStyle) {
-  let { prizeTicketsCfg = {} } = serverConfigs.get()
+function openRewardPrizeView(rewards, rewardCtors) {
+  removeModalWindow(PRIZE_TICKETS_WND_UID)
 
-  if (!id || id not in prizeTicketsCfg)
-    return null
+  let mkRewardPlateImage = @(r, rStyle) (rewardCtors?[r?.rType] ?? rewardCtors.unknown).image(r, rStyle)
+  let mkRewardPlateTexts = @(r, rStyle) (rewardCtors?[r?.rType] ?? rewardCtors.unknown).texts(r, rStyle)
 
-  let rewards = []
-  foreach(value in (prizeTicketsCfg?[id].variants ?? []))
-    foreach(reward in value)
-      rewards.append(reward.__update({ slots = defaultSlots, rType = reward.gType }))
-
-  function onClick() {
-    removeModalWindow(PRIZE_TICKETS_WND_UID)
-    addModalWindow(bgShaded.__merge({
-      key = PRIZE_TICKETS_WND_UID
-      animations = wndSwitchAnim
-      sound = { click = "click" }
-      size = [sw(100), sh(100)]
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      children = {
-        key = {}
-        transform = {}
-        safeAreaMargin = saBordersRv
-        behavior = Behaviors.BoundToArea
-        children = mkPrizeTicketsContent(rewards, REWARD_STYLE_MEDIUM)
-      }
-    }))
+  let mkRewardPlate = @(r, rStyle) {
+    transform = {}
+    children = [
+      mkRewardPlateBg(r, rStyle)
+      mkRewardPlateImage(r, rStyle)
+      mkRewardPlateTexts(r, rStyle)
+    ]
   }
 
-  return mkRewardSlider(rewards, onClick, rStyle)
+  let content = rewards.map(@(reward) {
+    function onClick() {
+      mkPlateClickByType?[reward.rType](reward)
+      removeModalWindow(PRIZE_TICKETS_WND_UID)
+    }
+    sound = { click = "click" }
+    behavior = Behaviors.Button
+    children = mkRewardPlate(reward, REWARD_STYLE_MEDIUM)
+  })
+
+  addModalWindow(bgShaded.__merge({
+    key = PRIZE_TICKETS_WND_UID
+    animations = wndSwitchAnim
+    sound = { click = "click" }
+    size = [sw(100), sh(100)]
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = {
+      key = {}
+      transform = {}
+      safeAreaMargin = saBordersRv
+      behavior = Behaviors.BoundToArea
+      children = mkPrizeTicketsContent(content)
+    }
+  }))
 }
 
-let rewardPrizePlateCtors = {
-  prizeTicket = {
-    ctor = mkPrizeTicket
-    extraSize = plateHeight + plateGap
-  }
-}
-
-let isPrizeTicket = @(r) r.rType in rewardPrizePlateCtors
-
-return {
-  rewardPrizePlateCtors
-  isPrizeTicket
-}
+return { openRewardPrizeView }

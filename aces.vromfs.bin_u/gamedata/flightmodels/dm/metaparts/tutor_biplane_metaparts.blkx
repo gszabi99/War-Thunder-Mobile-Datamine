@@ -1,6 +1,6 @@
 {
   "wing1_r_structure": {
-    "hpRel": 0.4,
+    "hpRel": 0.2,
     "part": "wing2_r_dm",
     "effect": {
       "conditionDamageType": "collision",
@@ -9,7 +9,7 @@
     }
   },
   "wing1_l_structure": {
-    "hpRel": 0.4,
+    "hpRel": 0.2,
     "part": "wing2_l_dm",
     "effect": {
       "conditionDamageType": "collision",
@@ -18,7 +18,7 @@
     }
   },
   "wing_l_structure": {
-    "hpRel": 0.4,
+    "hpRel": 0.2,
     "part": [
       "wing_l_dm",
       "wing1_l_dm"
@@ -74,7 +74,7 @@
     ]
   },
   "spar_l_structure": {
-    "hpRel": 0.4,
+    "hpRel": 0.2,
     "part": [
       "spar_l_dm",
       "spar1_l_dm"
@@ -97,7 +97,7 @@
     ]
   },
   "spar_r_structure": {
-    "hpRel": 0.4,
+    "hpRel": 0.2,
     "part": [
       "spar_r_dm",
       "spar1_r_dm"
@@ -120,7 +120,7 @@
     ]
   },
   "fuse_structure": {
-    "hpRel": 0.4,
+    "hpRel": 0.2,
     "part": [
       "fuse_dm",
       "fuse1_dm",
@@ -149,7 +149,7 @@
     ]
   },
   "tail_structure": {
-    "hpRel": 0.4,
+    "hpRel": 0.2,
     "part": [
       "stab_dm",
       "stab1_dm",

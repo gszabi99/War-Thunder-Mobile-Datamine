@@ -4196,9 +4196,9 @@
         },
         "conditions": {},
         "actions": {
-          "changeUnit": [
+          "__changeUnit": [
             {
-              "unit_class": "i-15_1934",
+              "unit_class": "i-15_1934_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4206,7 +4206,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "f3f-2",
+              "unit_class": "f3f-2_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4214,7 +4214,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "he51c1",
+              "unit_class": "he51c1_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4222,7 +4222,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "i-15_1934",
+              "unit_class": "i-15_1934_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4230,7 +4230,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "f3f-2",
+              "unit_class": "f3f-2_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4238,7 +4238,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "i-15_1934",
+              "unit_class": "i-15_1934_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4246,7 +4246,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "f3f-2",
+              "unit_class": "f3f-2_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4254,7 +4254,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "i-15_1934",
+              "unit_class": "i-15_1934_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4262,7 +4262,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "he51c1",
+              "unit_class": "he51c1_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4270,7 +4270,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "i-15_1934",
+              "unit_class": "i-15_1934_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4278,7 +4278,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "f3f-2",
+              "unit_class": "f3f-2_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4286,7 +4286,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "he51c1",
+              "unit_class": "he51c1_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4294,7 +4294,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "he51c1",
+              "unit_class": "he51c1_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4302,7 +4302,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "f3f-2",
+              "unit_class": "f3f-2_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4310,7 +4310,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "f3f-2",
+              "unit_class": "f3f-2_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4318,7 +4318,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "i-15_1934",
+              "unit_class": "i-15_1934_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4326,7 +4326,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "i-15_1934",
+              "unit_class": "i-15_1934_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4334,7 +4334,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "he51c1",
+              "unit_class": "he51c1_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4342,7 +4342,7 @@
               "type": "plane"
             },
             {
-              "unit_class": "f3f-2",
+              "unit_class": "f3f-2_tutor",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -4515,7 +4515,7 @@
               ]
             },
             {
-              "name": "missionAssault",
+              "name": "missionFighter",
               "objects": [
                 "t1_bot_plane_08",
                 "t1_bot_plane_09",
@@ -4523,7 +4523,7 @@
               ]
             },
             {
-              "name": "missionAssault",
+              "name": "missionFighter",
               "objects": [
                 "t2_bot_plane_08",
                 "t2_bot_plane_09",
@@ -4540,13 +4540,20 @@
               "t1_bot_plane_sq",
               "t2_bot_plane_sq"
             ],
-            "stealthRadius": 8000.0
+            "stealthRadius": 8000.0,
+            "airEffShootingRate": 0.2
           },
           "unitAttackTarget": [
             {
               "playerAttracted": false,
               "object": "t1_bot_plane_sq",
-              "target": "t2_bot_plane_sq"
+              "target": "t2_bot_plane_sq",
+              "fireRandom": true,
+              "fightInArea": "fighters_area",
+              "fightAreaRadius": 2500.0,
+              "fightAreaOuterRadius": 5.0,
+              "maxNumAttackersPerTarget": 2,
+              "keepDeadUnitsInTargetList": true
             },
             {
               "playerAttracted": false,
@@ -4554,7 +4561,13 @@
               "target": [
                 "t1_bot_plane_sq",
                 "@t1_player_name"
-              ]
+              ],
+              "fireRandom": true,
+              "fightInArea": "fighters_area",
+              "fightAreaRadius": 2500.0,
+              "fightAreaOuterRadius": 5.0,
+              "maxNumAttackersPerTarget": 1,
+              "keepDeadUnitsInTargetList": true
             },
             {
               "playerAttracted": false,
@@ -4566,7 +4579,13 @@
               "target": [
                 "t2_bot_plane_sq",
                 "t2_quest_units_squad"
-              ]
+              ],
+              "fireRandom": true,
+              "fightInArea": "fighters_area",
+              "fightAreaRadius": 4000.0,
+              "fightAreaOuterRadius": 5.0,
+              "maxNumAttackersPerTarget": 2,
+              "keepDeadUnitsInTargetList": true
             },
             {
               "playerAttracted": false,
@@ -4579,7 +4598,13 @@
                 "t1_bot_plane_sq",
                 "@t1_player_name",
                 "t1_quest_units_squad"
-              ]
+              ],
+              "fireRandom": true,
+              "fightInArea": "fighters_area",
+              "fightAreaRadius": 4000.0,
+              "fightAreaOuterRadius": 5.0,
+              "maxNumAttackersPerTarget": 2,
+              "keepDeadUnitsInTargetList": true
             }
           ],
           "unitSetVar": {
@@ -5949,7 +5974,7 @@
             6840.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "i-15_1934_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6012,7 +6037,7 @@
             6840.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "f3f-2_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6075,7 +6100,7 @@
             6840.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "he51c1_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6138,7 +6163,7 @@
             6840.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "i-15_1934_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6201,7 +6226,7 @@
             6840.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "f3f-2_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6264,7 +6289,7 @@
             6840.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "i-15_1934_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6327,7 +6352,7 @@
             6840.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "f3f-2_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6390,7 +6415,7 @@
             6840.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "i-15_1934_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6453,7 +6478,7 @@
             6840.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "he51c1_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6516,7 +6541,7 @@
             6640.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "i-15_1934_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6579,7 +6604,7 @@
             6640.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "f3f-2_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6642,7 +6667,7 @@
             6640.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "he51c1_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6705,7 +6730,7 @@
             6640.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "he51c1_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6768,7 +6793,7 @@
             6640.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "f3f-2_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6831,7 +6856,7 @@
             6640.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "f3f-2_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6894,7 +6919,7 @@
             6640.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "i-15_1934_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -6957,7 +6982,7 @@
             6640.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "i-15_1934_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -7020,7 +7045,7 @@
             6640.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "he51c1_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -7083,7 +7108,7 @@
             6640.2
           ]
         ],
-        "unit_class": "he51c1",
+        "unit_class": "f3f-2_tutor",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,

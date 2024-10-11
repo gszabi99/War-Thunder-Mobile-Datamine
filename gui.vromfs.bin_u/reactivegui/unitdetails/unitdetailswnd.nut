@@ -186,12 +186,12 @@ let sceneRoot = {
     children = [
       @(){
         watch = baseUnit
-        children = mkLeftBlockUnitCampaign(
+        children = baseUnit.get() == null ? null : mkLeftBlockUnitCampaign(
           function() {
             curSelectedUnitId.set(null)
             closeUnitDetailsWnd()
           },
-          $"gamercard/levelUnitDetails/desc/{baseUnit.get().campaign}",
+          $"gamercard/levelUnitDetails/desc/{baseUnit.get()?.campaign ?? curCampaign.get()}",
           baseUnit.get())
       }
       unitInfoPanelPlace

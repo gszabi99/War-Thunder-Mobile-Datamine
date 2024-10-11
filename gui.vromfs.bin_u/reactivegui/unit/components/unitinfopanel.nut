@@ -22,7 +22,6 @@ let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
-let { blueprintBar } = require("%rGui/unitsTree/components/researchBars.nut")
 let { mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize } = require("%rGui/components/scrollArrows.nut")
 let { isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -471,7 +470,6 @@ let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = h
         unitStatsBlock(unitStats, prevStats)
         unitArmorBlock(unit.value, false)
         unitPriceBlock(unit.get())
-        !isUnitsTreeOpen.get() ? blueprintBar(unit.get()) : null
       ]
     }.__update(ovr)
 

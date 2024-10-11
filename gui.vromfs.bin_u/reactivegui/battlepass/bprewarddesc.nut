@@ -134,17 +134,18 @@ let bpRewardDesc = @(reward) function() {
     gap = hdpx(5)
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = [
-      (specialHeadCtors?[viewInfo?.rType] ?? mkDefaultRewardHeader)(viewInfo)
-      {
-        size = flex()
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = viewInfo == null ? null
-          : (infoImageCtors?[viewInfo.rType] ?? defImageCtor)(viewInfo)
-      }
-      reward.canReceive ? receiveBtn(reward) : rewardDesc(reward)
-    ]
+    children = viewInfo == null ? null
+      : [
+          (specialHeadCtors?[viewInfo?.rType] ?? mkDefaultRewardHeader)(viewInfo)
+          {
+            size = flex()
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            children = viewInfo == null ? null
+              : (infoImageCtors?[viewInfo.rType] ?? defImageCtor)(viewInfo)
+          }
+          reward.canReceive ? receiveBtn(reward) : rewardDesc(reward)
+        ]
   })
 }
 

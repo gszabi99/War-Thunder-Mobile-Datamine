@@ -3,7 +3,7 @@ from "%appGlobals/rewardType.nut" import *
 let { roundToDigits } = require("%sqstd/math.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { getLootboxImage, getLootboxName, lootboxFallbackPicture } = require("%appGlobals/config/lootboxPresentation.nut")
-let { getLootboxRewardsViewInfo, fillRewardsCounts, NO_DROP_LIMIT
+let { getAllLootboxRewardsViewInfo, getLootboxRewardsViewInfo, fillRewardsCounts, NO_DROP_LIMIT
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon, mkReceivedCounter,
   mkRewardLocked, mkRewardSearchPlate, mkRewardDisabledBkg
@@ -341,12 +341,8 @@ let itemsBlock = @(rewards, width, style, ovr = {}, lootbox = null) function() {
   }.__update(ovr)
 }
 
-let mkLootboxRewardsComp = @(lootbox)
-  Computed(@() fillRewardsCounts(getLootboxRewardsViewInfo(lootbox, true), servProfile.get(), serverConfigs.get()))
-
-
 let function lootboxContentBlock(lootbox, width, ovr = {}) {
-  let allRewards = mkLootboxRewardsComp(lootbox)
+  let allRewards = Computed(@() fillRewardsCounts(getAllLootboxRewardsViewInfo(lootbox), servProfile.get(), serverConfigs.get()))
   local style = REWARD_STYLE_MEDIUM
   if(allRewards.get().len() >= maxRewardsInLootboxBig)
     style = REWARD_STYLE_TINY_SMALL_GAP
@@ -396,7 +392,9 @@ let lootboxPreviewContent = @(lootbox, ovr = {}) lootbox == null ? { size = flex
         mkText(loc("events/lootboxContains"),
           { hplace = ALIGN_CENTER })
         lootboxImageWithTimer(lootbox)
-        itemsBlock(mkLootboxRewardsComp(lootbox), itemsBlockWidth, REWARD_STYLE_MEDIUM, { halign = ALIGN_CENTER })
+        itemsBlock(
+          Computed(@() fillRewardsCounts(getLootboxRewardsViewInfo(lootbox, true), servProfile.get(), serverConfigs.get())),
+          itemsBlockWidth, REWARD_STYLE_MEDIUM, { halign = ALIGN_CENTER })
       ]
     }.__update(ovr)
 

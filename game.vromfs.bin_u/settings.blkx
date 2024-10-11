@@ -1382,7 +1382,8 @@
     "flag": [
       "--norespatch",
       "--noupdate",
-      "--verbose"
+      "--verbose",
+      "--force_current"
     ],
     "android": {
       "flag": "--notime"
@@ -2882,7 +2883,8 @@
     "graphics": {
       "allowETC2": true,
       "asyncPSO": true,
-      "asyncLoadPSOCache": true
+      "asyncLoadPSOCache": true,
+      "resetManagedTexturesOnSettingsChanged": false
     },
     "texStreaming": {
       "forceMemQuotaKB": 2000000

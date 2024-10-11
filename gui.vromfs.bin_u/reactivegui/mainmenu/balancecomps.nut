@@ -39,7 +39,7 @@ let hoverBg = {
   texOffs = gradCircCornerOffset
 }
 
-let initCurrencyBalance = @(currencyId) currencyId in visibleBalance.value ? null
+let initCurrencyBalance = @(currencyId) currencyId in visibleBalance.value  || !currencyId ? null
   : visibleBalance.mutate(@(v) v[currencyId] <- balance.value?[currencyId])
 let initItemBalance = @(itemId) itemId in visibleBalance.value ? null
   : visibleBalance.mutate(@(v) v[itemId] <- items.value?[itemId].count

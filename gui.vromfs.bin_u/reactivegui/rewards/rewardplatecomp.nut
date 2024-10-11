@@ -26,6 +26,8 @@ let { mkBattleModEventUnitText, mkBattleModRewardUnitImage, mkBattleModCommonTex
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { NO_DROP_LIMIT } = require("%rGui/rewards/rewardViewInfo.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { mkRewardSlider, defaultSlots } = require("%rGui/rewards/components/mkRewardSlider.nut")
+let { openRewardPrizeView } = require("%rGui/rewards/rewardPrizeView.nut")
 
 let textPadding = [0, hdpx(5)]
 let fontLabelSmaller = fontVeryTiny
@@ -593,6 +595,36 @@ function mkRewardPlateBlueprintTexts(r, rStyle) {
   }
 }
 
+// PRIZE TICKET ///////////////////////////////////////////////////////////////
+
+function mkRewardPlatePrizeTicketImage(r, rStyle, rewardCtors) {
+  let { prizeTicketsCfg = {} } = serverConfigs.get()
+  let { id } = r
+
+  if (!id || id not in prizeTicketsCfg)
+    return null
+
+  let rewards = []
+  foreach(value in (prizeTicketsCfg?[id].variants ?? []))
+    foreach(reward in value)
+      rewards.append(reward.__update({ slots = defaultSlots, rType = reward.gType }))
+
+  return mkRewardSlider(rewards, rewardCtors, @() openRewardPrizeView(rewards, rewardCtors), rStyle)
+}
+
+let mkRewardPlatePrizeTicketTitle = @(slots, rStyle) {
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_TOP
+  children = {
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    maxWidth = rStyle.boxSize * slots
+    halign = ALIGN_CENTER
+    text = loc("events/choosePrize")
+    color = 0xFFC5C5C5
+  }.__update(fontVeryTinyAccented)
+}
+
 // UNKNOWN ////////////////////////////////////////////////////////////////////
 
 function mkRewardPlateUnknownImage(r, rStyle) {
@@ -640,7 +672,7 @@ let battleModeViewCtors = {
   }
 }
 
-let rewardPlateCtors = {
+let simpleRewardPlateCtors = {
   unknown = {
     image = mkRewardPlateUnknownImage
     texts = mkRewardPlateCountText
@@ -704,6 +736,15 @@ let rewardPlateCtors = {
     texts = mkRewardPlateBlueprintTexts
   }
 }
+
+let complexRewardPlateCtors = {
+  prizeTicket = {
+    image = @(r, rStyle) mkRewardPlatePrizeTicketImage(r, rStyle, simpleRewardPlateCtors)
+    texts = @(_, rStyle) mkRewardPlatePrizeTicketTitle(defaultSlots, rStyle)
+  }
+}
+
+let rewardPlateCtors = {}.__merge(simpleRewardPlateCtors, complexRewardPlateCtors)
 
 let mkRewardPlateImage = @(r, rStyle) (rewardPlateCtors?[r?.rType] ?? rewardPlateCtors.unknown).image(r, rStyle)
 let mkRewardPlateTexts = @(r, rStyle) (rewardPlateCtors?[r?.rType] ?? rewardPlateCtors.unknown).texts(r, rStyle)

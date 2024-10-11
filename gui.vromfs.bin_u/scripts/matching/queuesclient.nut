@@ -210,7 +210,7 @@ matching.subscribe("match.notify_queue_join", function(params) {
 
 matching.subscribe("match.notify_queue_leave", function(params) {
   logQ("match.notify_queue_leave ", params)
-  if (!isInQueue.value)
+  if (!isInQueue.get() || curQueue.get() == null)
     return
   let cluster = params?.cluster
   if (cluster == null) { //leave all

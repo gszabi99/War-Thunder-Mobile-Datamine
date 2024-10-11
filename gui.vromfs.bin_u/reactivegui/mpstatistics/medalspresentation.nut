@@ -83,6 +83,7 @@ let medalsPresentation = {
   lb_wp_top_10       = { ctor = mkLbMedalTop10("leaderboard_trophy_01.avif") }
   lb_tanks_top_10    = { ctor = mkLbMedalTop10("leaderboard_trophy_01.avif"), campaign = "tanks"}
   lb_ships_top_10    = { ctor = mkLbMedalTop10("leaderboard_trophy_01.avif"), campaign = "ships"}
+  lb_air_top_10      = { ctor = mkLbMedalTop10("leaderboard_trophy_01.avif"), campaign = "air"}
   cbt_air_medal      = { ctor = mkLbMedalTop10("leaderboard_trophy_06.avif"), campaign = "air"}
   def                = { ctor = mkUnknownMedal}
 }

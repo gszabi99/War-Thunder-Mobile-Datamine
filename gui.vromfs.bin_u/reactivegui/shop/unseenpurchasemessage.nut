@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { frnd } = require("dagor.random")
 let { parse_json } = require("json")
-let { arrayByRows } = require("%sqstd/underscore.nut")
+let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
@@ -45,6 +45,7 @@ let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkPro
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { mkMsgConvertBlueprint } = require("unseenPurchaseAddMessage.nut")
 
 let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel",
   "decorator", "medal", "booster", "skin",
@@ -96,10 +97,20 @@ let aTitleScaleMax = 1.1
 
 let stackData = Computed(function() {
   let stackRaw = {}
-  foreach (purch in activeUnseenPurchasesGroup.value.list)
+  local convertions = []
+  foreach (purch in activeUnseenPurchasesGroup.value.list){
+    convertions.extend(purch?.conversions ?? [])
+    let conversionRes = clone (purch?.conversions ?? [])
     foreach (data in purch.goods) {
-      let { id, gType, count, subId = "" } = data
+      let { id, gType, count, subId = ""} = data
       let rewId = gType in ignoreSubIdRTypes ? id : "".concat(id, subId)
+
+      let convIdx = conversionRes.findindex(@(c) isEqual(data, c.to))
+      if (convIdx != null) {
+        conversionRes.remove(convIdx)
+        continue
+      }
+
       if (gType not in stackRaw)
         stackRaw[gType] <- {}
       if (rewId not in stackRaw[gType])
@@ -107,7 +118,7 @@ let stackData = Computed(function() {
       else
         stackRaw[gType][rewId].count += count
     }
-
+  }
   if (stackRaw?.unit != null && stackRaw?.unitUpgrade != null)
     stackRaw.unit = stackRaw.unit.filter(@(_, unitName) stackRaw.unitUpgrade?[unitName] == null)
 
@@ -156,10 +167,14 @@ let stackData = Computed(function() {
     rewardIcons
     unitPlates
     battleMod
+    convertions
   }.filter(@(v) v.len() != 0))
 })
 
 let needShow = keepref(Computed(@() !hasActiveCustomUnseenView.value
+  && ((stackData.get()?.rewardIcons.len() ?? 0) > 0
+    || (stackData.get()?.unitPlates.len() ?? 0) > 0
+    || (stackData.get()?.battleMod.len() ?? 0) > 0)
   && activeUnseenPurchasesGroup.value.list.len() != 0
   && isInMenu.value
   && isLoggedIn.value
@@ -463,7 +478,7 @@ function mkBlueprintPlateTexts(r, rStyle) {
   }
 }
 
-function mkBkueprintRewardIcon(rewardInfo, rStyle) {
+function mkBlueprintRewardIcon(rewardInfo, rStyle) {
   let reward = getRewardsViewInfo([rewardInfo])?[0]
   let startDelay = rewardInfo.startDelay
 
@@ -517,7 +532,7 @@ let rewardCtors = {
       loc("skins/title", { unitName = loc(getUnitLocId(rewardInfo.id)) }))
   }
   blueprint = {
-    mkIcon = @(rewardInfo) mkBkueprintRewardIcon(rewardInfo, REWARD_STYLE_MEDIUM)
+    mkIcon = @(rewardInfo) mkBlueprintRewardIcon(rewardInfo, REWARD_STYLE_MEDIUM)
     mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay,
       "\n".concat(loc("blueprints/title", {count = rewardInfo.count}), loc(getUnitLocId(rewardInfo.id))))
   }
@@ -892,7 +907,7 @@ function onCloseRequest() {
   markPurchasesSeen(activeUnseenPurchasesGroup.value.list.keys())
 }
 
-function mkMsgContent(stackDataV, purchGroup) {
+function mkMsgContent(stackDataV, purchGroup, onClick) {
   let { rewardIcons = [], unitPlates = [], outroDelay, battleMod = [] } = stackDataV
   let { style = null } = purchGroup
   let title = titleCtors?[style](outroDelay, purchGroup) ?? wndTitle
@@ -910,7 +925,7 @@ function mkMsgContent(stackDataV, purchGroup) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     behavior = Behaviors.Button
-    onClick = onCloseRequest
+    onClick
     flow = FLOW_VERTICAL
     gap = hdpx(44)
     sound = {
@@ -938,16 +953,54 @@ function mkMsgContent(stackDataV, purchGroup) {
   return makeVertScroll(content, { size = SIZE_TO_CONTENT maxHeight = maxWndHeight })
 }
 
-let messageWnd = {
+let addRewardMessageWnd = @(onClick){
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   children = [
     bgGradientComp
     @() {
       watch = [stackData, activeUnseenPurchasesGroup]
-      children = mkMsgContent(stackData.value, activeUnseenPurchasesGroup.value)
+      children = mkMsgConvertBlueprint(stackData.get()?.convertions, onClick)
     }
   ]
+}
+
+let showAddRewardMessage = @() addModalWindow(bgShadedDark.__merge({
+  key = $"{WND_UID}_add"
+  size = flex()
+  function onAttach() {
+    if (!skipUnseenMessageAnimOnce.value)
+      return
+    skipUnseenMessageAnimOnce(false)
+    skipAnims()
+  }
+  onClick = onCloseRequest
+  vplace = ALIGN_CENTER
+  hplace = ALIGN_CENTER
+  children = @() addRewardMessageWnd(onCloseRequest)
+  animations = wndSwitchAnim
+  sound = { detach  = "meta_reward_window_close" }
+}))
+
+let messageWnd = @(onClick){
+  vplace = ALIGN_CENTER
+  hplace = ALIGN_CENTER
+  children = [
+    bgGradientComp
+    @() {
+      watch = [stackData, activeUnseenPurchasesGroup]
+      children = mkMsgContent(stackData.get(), activeUnseenPurchasesGroup.get(), onClick)
+    }
+  ]
+}
+
+function onClick(){
+  if((stackData.get()?.convertions.len() ?? 0) > 0){
+    close()
+    showAddRewardMessage()
+  }
+  else
+    onCloseRequest()
 }
 
 let showMessage = @() addModalWindow(bgShadedDark.__merge({
@@ -959,11 +1012,26 @@ let showMessage = @() addModalWindow(bgShadedDark.__merge({
     skipUnseenMessageAnimOnce(false)
     skipAnims()
   }
-  onClick = onCloseRequest
-  children = messageWnd
+  onClick
+  children = @() messageWnd(onClick)
   animations = wndSwitchAnim
   sound = { detach  = "meta_reward_window_close" }
 }))
+
+if((stackData.get()?.convertions.len()?? 0) > 0
+  && (stackData.get()?.rewardIcons.len() ?? 0) == 0){
+  showAddRewardMessage()
+  isAnimFinished(true)
+}
+
+stackData.subscribe(function(v) {
+  if((v?.convertions.len() ?? 0) > 0 && (stackData.get()?.rewardIcons.len() ?? 0) == 0){
+    showAddRewardMessage()
+    isAnimFinished(true)
+  }
+  else
+    removeModalWindow($"{WND_UID}_add")
+})
 
 if (needShow.value)
   showMessage()

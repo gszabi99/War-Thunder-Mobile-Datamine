@@ -177,7 +177,7 @@
       {
         "name": "us_m4a1_1942_sherman",
         "weight": 1.0,
-        "country": "germany"
+        "country": "usa"
       },
       {
         "name": "germ_pzkpfw_IV_ausf_F2",
@@ -200,17 +200,17 @@
           {
             "name": "us_m4a1_1942_sherman",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "us_m24_chaffee",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "us_m10",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "germ_pzkpfw_III_ausf_L",
@@ -268,32 +268,32 @@
           {
             "name": "jp_type_3_chi_nu_75cm_type_5",
             "weight": 1.0,
-            "country": "germany"
+            "country": "japan"
           },
           {
             "name": "jp_type_4_chi_to",
             "weight": 1.0,
-            "country": "germany"
+            "country": "japan"
           },
           {
             "name": "jp_type_5_na_to",
             "weight": 1.0,
-            "country": "germany"
+            "country": "japan"
           },
           {
             "name": "us_m4a2_sherman",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "us_t14",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "fr_m4a4_sherman_reskin",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "ussr_t_34_1942",
@@ -313,17 +313,17 @@
           {
             "name": "uk_a30_sp_avenger",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "uk_concept3_ngac",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "uk_churchill_na75",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           }
         ]
       },
@@ -336,47 +336,47 @@
           {
             "name": "fr_panhard_ebr_1951",
             "weight": 1.0,
-            "country": "germany"
+            "country": "france"
           },
           {
             "name": "fr_arl_44",
             "weight": 1.0,
-            "country": "germany"
+            "country": "france"
           },
           {
             "name": "fr_m4a1_sherman_fl_10",
             "weight": 1.0,
-            "country": "germany"
+            "country": "france"
           },
           {
             "name": "us_m4a1_76w_sherman",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "us_m6a1",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "us_m18_hellcat",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "uk_a_34_comet",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "uk_a30_challenger",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "uk_a_22f_mk_7_churchill_1944",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           }
         ]
       },
@@ -427,32 +427,32 @@
           {
             "name": "us_m4a3e8_76w_sherman",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "us_m41_walker_bulldog",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "us_t26e5",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "jp_st_a1",
             "weight": 1.0,
-            "country": "germany"
+            "country": "japan"
           },
           {
             "name": "jp_m41_walker_bulldog",
             "weight": 1.0,
-            "country": "germany"
+            "country": "japan"
           },
           {
             "name": "jp_m36b2_jgsdf",
             "weight": 1.0,
-            "country": "germany"
+            "country": "japan"
           },
           {
             "name": "germ_pzkpfw_V_ausf_d_panther",
@@ -487,17 +487,17 @@
           {
             "name": "uk_a_43_black_prince",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "uk_centurion_mk_1",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "uk_ratel_90",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           }
         ]
       },
@@ -525,32 +525,32 @@
           {
             "name": "fr_bat_chat_25t",
             "weight": 1.0,
-            "country": "germany"
+            "country": "france"
           },
           {
             "name": "fr_amx_m4",
             "weight": 1.0,
-            "country": "germany"
+            "country": "france"
           },
           {
             "name": "fr_amx_13_75",
             "weight": 1.0,
-            "country": "germany"
+            "country": "france"
           },
           {
             "name": "us_m26e1_pershing",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "us_t34",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "us_t95",
             "weight": 1.0,
-            "country": "germany"
+            "country": "usa"
           },
           {
             "name": "ussr_t_44",
@@ -570,17 +570,17 @@
           {
             "name": "uk_fv4202",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "uk_fv4005",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           },
           {
             "name": "uk_a39_tortoise",
             "weight": 1.0,
-            "country": "germany"
+            "country": "britain"
           }
         ]
       },
@@ -603,7 +603,37 @@
           {
             "name": "ussr_object_906",
             "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "germ_leopard_I",
+            "weight": 1.0,
             "country": "germany"
+          },
+          {
+            "name": "germ_mkpz_m48a2c",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_mkpz_m47",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "us_m47_patton_II",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m103",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_t114",
+            "weight": 1.0,
+            "country": "usa"
           }
         ]
       },
@@ -627,6 +657,101 @@
             "name": "ussr_it_1",
             "weight": 1.0,
             "country": "ussr"
+          },
+          {
+            "name": "us_m60a1",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m60a2",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "germ_leopard_I_a1",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_mkpz_m48a2ga2",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "jp_st_b1",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "jp_type_74_c",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "jp_type_87_rcv",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "fr_amx_30_b2_brenus",
+            "weight": 1.0,
+            "country": "france"
+          },
+          {
+            "name": "fr_amx_32_105",
+            "weight": 1.0,
+            "country": "france"
+          },
+          {
+            "name": "fr_mars_15",
+            "weight": 1.0,
+            "country": "france"
+          },
+          {
+            "name": "it_of_40_mk_2a",
+            "weight": 1.0,
+            "country": "italy"
+          },
+          {
+            "name": "it_leopard_1a5",
+            "weight": 1.0,
+            "country": "italy"
+          },
+          {
+            "name": "cn_ztz_88a",
+            "weight": 1.0,
+            "country": "china"
+          },
+          {
+            "name": "cn_type_59d",
+            "weight": 1.0,
+            "country": "china"
+          },
+          {
+            "name": "sw_strv_103c",
+            "weight": 1.0,
+            "country": "sweden"
+          },
+          {
+            "name": "sw_strv_104",
+            "weight": 1.0,
+            "country": "sweden"
+          },
+          {
+            "name": "il_magach_6r",
+            "weight": 1.0,
+            "country": "israel"
+          },
+          {
+            "name": "il_magach_6b",
+            "weight": 1.0,
+            "country": "israel"
+          },
+          {
+            "name": "il_centurion_shot_kal_gimel",
+            "weight": 1.0,
+            "country": "israel"
           }
         ]
       }
@@ -728,26 +853,6 @@
           {
             "name": "jp_cruiser_tone",
             "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "germ_sub_type_7",
-            "weight": 5.0,
-            "country": "germany"
-          },
-          {
-            "name": "us_sub_balao",
-            "weight": 5.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_sub_type_k",
-            "weight": 5.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_sub_pr641",
-            "weight": 5.0,
             "country": "germany"
           }
         ]

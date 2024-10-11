@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { OCT_TEXTINPUT, OCT_MULTISELECT } = require("%rGui/options/optCtrlType.nut")
 let { unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
-let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY, US_TOO_LOW_LEVEL, US_NOT_RESEARCHED,
   US_NEED_BLUEPRINTS, US_CAN_RESEARCH
 } = require("%appGlobals/unitsState.nut")
@@ -60,6 +60,7 @@ function mkOptMultiselect(id, override = {}) {
   let { getUnitValue = @(unit) unit?[id] } = override
   let allValues = override?.allValues
     ?? Computed(@() allUnitsCfg.value
+      .filter(@(u) !u?.isHidden || u.name in myUnits.value)
       .reduce(function(res, unit) {
         res[getUnitValue(unit)] <- true
         return res

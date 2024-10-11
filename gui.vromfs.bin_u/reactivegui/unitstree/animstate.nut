@@ -76,21 +76,22 @@ function loadStatusesAnimUnits(){
 isLoggedIn.subscribe(@(v) v ? loadStatusesAnimUnits() : null)
 needSelectResearch.subscribe(@(v) v ? loadStatusesAnimUnits() : null)
 
-function updateUnitsResearchProgress(v){
-  if(v){
-    let list = unitsForExpAnim.get()
-    foreach(key, value in list){
-      if(v?[key].exp != value?.expStart){
-        if(v?[key].isResearched){
-          expPartValue = (1.0 * (value?.expStart ?? 0))/(v?[key].reqExp ?? 1)
-          animUnitAfterResearch(key)
-        }
-        unitsForExpAnim.set(unitsForExpAnim.get().__merge({
-          [key] = { expStart = v?[key].exp }
-        }))
+function updateUnitsResearchProgress(v) {
+  if (!v)
+    return
+
+  let list = unitsForExpAnim.get()
+  let addList = {}
+  foreach(key, value in list)
+    if(v?[key].exp != value?.expStart){
+      if(v?[key].isResearched){
+        expPartValue = (1.0 * (value?.expStart ?? 0))/(v?[key].reqExp ?? 1)
+        animUnitAfterResearch(key)
       }
+      addList.__update({ [key] = { expStart = v?[key].exp } })
     }
-  }
+  if (addList.len() > 0)
+    unitsForExpAnim.set(unitsForExpAnim.get().__merge(addList))
 }
 
 unitsResearchStatus.subscribe(updateUnitsResearchProgress)

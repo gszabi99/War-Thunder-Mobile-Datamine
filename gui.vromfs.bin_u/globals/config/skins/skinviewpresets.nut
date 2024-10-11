@@ -126,6 +126,7 @@ let skinsByTag = {
     "camo_f_blue_orng"
     "us_camo_modern_desert_tan"
     "usa_modern_seventh_army"
+    "camo_crosspromo_tank"
   ],
 
   [WINTER] = [

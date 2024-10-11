@@ -54,8 +54,8 @@ let newbieGameModesConfig = {
     }
     {
       gmName = "plane_new_players_battle_coop"
-      isFit = @(s, mRank) mRank <= 1
-        && (s.anyBattles < 3 || (s.anyBattles < 5 && s.kills < 5))
+      isFit = @(s, mRank) mRank <= 2
+        && (s.anyBattles < 3 || (s.anyBattles < 6 && s.kills < 10))
     }
   ]
 }

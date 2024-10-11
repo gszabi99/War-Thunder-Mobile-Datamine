@@ -3,15 +3,15 @@ let logT = log_with_prefix("[SLOT_ATTR_TUTOR] ")
 let { playSound } = require("sound_wt")
 let { register_command } = require("console")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
-let { curCampaignSlots } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaignSlots, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId, goToStep
 } = require("tutorialWnd/tutorialWndState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
-let { hasSlotAttrPreset, curCategoryId, selAttributes, getMaxAttrLevelData
+let { hasSlotAttrPreset, curCategoryId, selAttributes, getMaxAttrLevelData, attrPresets
 } = require("%rGui/attributes/attrState.nut")
-let { isSlotAttrAttached, openSlotAttrWnd, curCategory, slotAttributes, leftSlotSp,
+let { isSlotAttrAttached, openSlotAttrWnd, slotAttributes, leftSlotSp,
   applyAttributes, hasUpgradedAttrUnitNotUpdatable
 } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { selectedSlotIdx, slotBarSlotKey } = require("%rGui/slotBar/slotBarState.nut")
@@ -29,6 +29,7 @@ let hasSlotForTutor = @(cSlots) cSlots != null && null != cSlots.slots.findindex
 let needShowTutorial = Computed(@() !isFinished.get()
   && hasSlotAttrPreset.get()
   && curCampaignSlots.get() != null
+  && selectedSlotIdx.get() != null
   && null == curCampaignSlots.get().slots.findvalue(@(slot) slot.attrLevels.len() > 0)
   && hasSlotForTutor(curCampaignSlots.get()))
 let canStartTutorial = Computed(@() !hasModalWindows.get()
@@ -57,12 +58,32 @@ function getTutorSlotIndex(cSlots) {
   return slotIdx
 }
 
+let getIncButtonsForTutorial = @(cat) cat?.attrList.map(@(attr, idx) {
+  keys = $"slotAttrProgressBtn_{idx}"
+  function onClick() {
+    let catId = curCategoryId.get()
+    let minLevel = slotAttributes.get()?[catId][attr.id] ?? 0
+    let selLevel = max(selAttributes.get()?[catId][attr.id] ?? minLevel, minLevel)
+    let { maxLevel } = getMaxAttrLevelData(attr, selLevel, leftSlotSp.get())
+    applyAttrRowChange(catId, attr.id, selLevel + 1, Watched(selLevel), Watched(minLevel), Watched(maxLevel))
+  }
+  needArrow = idx == 0
+}) ?? []
+
 function startTutorial() {
   let slotIdx = getTutorSlotIndex(curCampaignSlots.get())
   if (slotIdx == null) {
     logerr("Tutorial 'slot attributes' started without slotIdx")
     return
   }
+
+  let slotPresets = attrPresets.get()?[campConfigs.get()?.campaignCfg.slotAttrPreset] ?? []
+
+  if(curCategoryId.get() == null)
+    curCategoryId.set(slotPresets?[0].id)
+
+  let curSlotCategory = slotPresets.findvalue(@(p) p.id == curCategoryId.get())
+  let availableIncButtons = getIncButtonsForTutorial(curSlotCategory)
 
   logT($"Started for slot #{slotIdx + 1}")
   let isCurrentSlot = Computed(@() selectedSlotIdx.get() == slotIdx)
@@ -123,22 +144,12 @@ function startTutorial() {
       {
         id = "s5_change_slot_attributes"
         function beforeStart() {
-          if(!curCategory.get()?.attrList)
+          if(availableIncButtons.len() == 0)
             deferOnce(@() goToStep(FINISH_STEP))
         }
         text = loc("tutorial/slotAttributes/clickPlusBtn")
         charId = "mary_points"
-        objects = (curCategory.get()?.attrList ?? []).map(@(attr, idx) {
-          keys = $"slotAttrProgressBtn_{idx}"
-          function onClick() {
-            let catId = curCategoryId.get()
-            let minLevel = slotAttributes.get()?[catId][attr.id] ?? 0
-            let selLevel = max(selAttributes.get()?[catId][attr.id] ?? minLevel, minLevel)
-            let { maxLevel } = getMaxAttrLevelData(attr, selLevel, leftSlotSp.get())
-            applyAttrRowChange(catId, attr.id, selLevel + 1, Watched(selLevel), Watched(minLevel), Watched(maxLevel))
-          }
-          needArrow = idx == 0
-        })
+        objects = availableIncButtons
       }
       {
         id = FINISH_STEP

@@ -420,6 +420,8 @@ function mkItem(r, rStyle, idx, animStartTime) {
 }
 
 function mkPreviewItems(goods, animStartTime) {
+  if (goods == null)
+    return null
   let info = getRewardsViewInfo(goods.__merge({ units = [], unitUpgrades = [] }))
     .sort(sortRewardsViewInfo)
   return info.len() == 0 ? null : {

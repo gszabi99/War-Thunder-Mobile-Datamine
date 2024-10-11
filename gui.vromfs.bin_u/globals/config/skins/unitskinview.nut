@@ -297,7 +297,7 @@ return {
     },
     "fr_amx_13_fl_11_reward": {
       "": "tl_camo_grey_yellow_lines",
-      "upgraded": "fr_camo_vert_olive_arme"
+      "forest": "fr_camo_vert_olive_arme"
     },
     "fr_amx_13_hot": {
       "": "fr_camo_vert_olive_arme",
@@ -365,7 +365,7 @@ return {
     },
     "fr_arl_44_acl1_reward": {
       "": "tl_camo_grey_yellow_lines",
-      "upgraded": "fr_camo_vert_olive_arme"
+      "forest": "fr_camo_vert_olive_arme"
     },
     "fr_bat_chat_25t": {
       "": "fr_camo_vert_olive_arme",
@@ -380,7 +380,7 @@ return {
     },
     "fr_cckw_353_bofors_reward": {
       "": "tl_camo_grey_yellow_lines",
-      "upgraded": "fr_camo_vert_olive_arme"
+      "forest": "fr_camo_vert_olive_arme"
     },
     "fr_cruiser_emile_bertin": {
       "": "camo_multicolor_waves"
@@ -417,7 +417,8 @@ return {
       "upgraded": "us_camo_dark_green_dark_earth"
     },
     "fr_m4a4_sherman_reward": {
-      "": "tl_camo_grey_yellow_lines"
+      "": "tl_camo_grey_yellow_lines",
+      "forest": "fr_camo_vert_olive_arme"
     },
     "fr_mars_15": {
       "": "fr_camo_vert_olive_arme",
@@ -1712,7 +1713,7 @@ return {
       "upgraded": "us_camo_desert_pink_olive_drab_dark_earth_black"
     },
     "us_halftrack_m16_reward": {
-      "": "camo_crosspromo",
+      "": "camo_crosspromo_tank",
       "forest": "us_camo_olive"
     },
     "us_m10": {
@@ -1724,7 +1725,7 @@ return {
       "upgraded": "us_camo_desert_pink_olive"
     },
     "us_m10_reward": {
-      "": "camo_crosspromo",
+      "": "camo_crosspromo_tank",
       "forest": "us_camo_olive"
     },
     "us_m163_vulcan": {
@@ -1778,7 +1779,7 @@ return {
       "upgraded": "us_camo_desert_pink_olive_drab_dark_earth_black"
     },
     "us_m24_chaffee_reward": {
-      "": "camo_crosspromo",
+      "": "camo_crosspromo_tank",
       "forest": "us_camo_olive"
     },
     "us_m26e1_pershing": {
@@ -1858,7 +1859,7 @@ return {
       "forest": "us_camo_olive"
     },
     "us_m4_sherman_reward": {
-      "": "camo_crosspromo",
+      "": "camo_crosspromo_tank",
       "forest": "us_camo_olive"
     },
     "us_m4a1_1942_sherman": {

@@ -1864,7 +1864,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab50.blk",
-              "emitter": "bomb1",
+              "emitter": "bomb2",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -1971,7 +1971,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab50.blk",
-              "emitter": "bomb2",
+              "emitter": "bomb3",
               "bullets": 1,
               "external": true,
               "separate": true
