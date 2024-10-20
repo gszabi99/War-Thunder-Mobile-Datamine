@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-
 let { get_mission_time } = require("mission")
 let { eventbus_send } = require("eventbus")
 let { round, sqrt } = require("math")
@@ -24,9 +23,9 @@ let { collectibleTextColor, premiumTextColor, markTextColor } = require("%rGui/s
 let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
 let { textButtonCommon, textButtonBattle } = require("%rGui/components/textButton.nut")
 let { scoreBoard, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
-let { unitPlateWidth, unitPlateHeight, unitSelUnderlineFullSize, mkUnitPrice,
-  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, unitSlotLockedByQuests,
-  mkUnitSelectedUnderlineVert, mkUnitRank, unitPlatesGap, plateTextsSmallPad
+let { unitPlateWidth, unitPlateHeight, mkUnitPrice, mkUnitBg, mkUnitSelectedGlow,
+  mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, unitSlotLockedByQuests,
+  mkUnitSelectedUnderline, mkUnitInfo, unitPlatesGap, plateTextsSmallPad
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { logerrHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
@@ -46,8 +45,8 @@ let { respawnSkins, skinSize } = require("respawnSkins.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { sendPlayerActivityToServer } = require("playerActivity.nut")
+let { selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 
-let slotPlateWidth = unitPlateWidth + unitSelUnderlineFullSize
 let mapMaxSize = hdpx(650)
 let levelHolderSize = evenPx(84)
 let unitListGradientSize = [unitPlatesGap, saBorders[1]]
@@ -120,7 +119,7 @@ let mkSlotPlateContent = @(slot, unit, baseUnit, p, isSelected) function() {
       mkUnitImage(unit, !canBattle)
       mkUnitTexts(country == "" ? baseUnit : unit, loc(p.locId), !canBattle)
       canBattle
-          ? mkUnitRank(mRank == 0 ? baseUnit : unit, { padding = [0, plateTextsSmallPad * 2, 0, 0] })
+          ? mkUnitInfo(mRank == 0 ? baseUnit : unit, { padding = [0, plateTextsSmallPad * 2, 0, 0] })
         : isLocked && reqLevel <= 0
           ? unitSlotLockedByQuests
         : mkUnitSlotLockedLine(slot)
@@ -134,13 +133,17 @@ function mkSlotPlate(slot, baseUnit) {
   let isSelected = Computed(@() selSlot.value?.id == slot.id)
   let unit = baseUnit.__merge(slot)
   return {
-    size = [slotPlateWidth, unitPlateHeight]
     behavior = Behaviors.Button
     onClick = @() onSlotClick(slot)
-    sound = { click  = "choose" }
-    flow = FLOW_HORIZONTAL
+    sound = { click = "choose" }
+    flow = FLOW_VERTICAL
+    halign = ALIGN_CENTER
     children = [
-      mkUnitSelectedUnderlineVert(unit, isSelected)
+      mkUnitSelectedUnderline(unit, isSelected, null,
+        {
+          margin = 0
+          size = [flex(), selLineSize]
+        })
       mkSlotPlateContent(slot, unit, baseUnit, p, isSelected)
     ]
   }
@@ -164,7 +167,7 @@ function slotsBlockTitle(unit, isSeparateSlots) {
   let isElite = isPremium || isUpgraded
   let text = "  ".concat(getPlatoonName(name, loc), getUnitClassFontIcon(unit))
   let textLength = calc_str_box(text, fontTinyAccented)[0]
-  let textWidth = slotPlateWidth - levelHolderSize
+  let textWidth = unitPlateWidth - levelHolderSize
   let textColorOvr = isCollectible ? { color = collectibleTextColor }
     : isElite ? { color = premiumTextColor }
     : {}
@@ -204,7 +207,7 @@ function slotsBlock() {
   let list = respawnSlots.value.map(@(slot) mkSlotPlate(slot, respawnUnitInfo.value))
   return {
     watch = [respawnSlots, respawnUnitInfo, hasRespawnSeparateSlots]
-    size = [slotPlateWidth, SIZE_TO_CONTENT]
+    size = [unitPlateWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     gap = unitPlatesGap
     children = respawnUnitInfo.value == null ? null

@@ -3,6 +3,7 @@ let { allow_voice_messages } = require("%appGlobals/permissions.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK
 } = require("%rGui/hud/actionBar/actionType.nut")
+let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { EII_EXTINGUISHER, EII_TOOLKIT, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN,
   EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT
@@ -76,11 +77,12 @@ return {
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
-  machineGun = withActionButtonCtor(AB_MACHINE_GUN, mkCircleTankMachineGun,
-    {
-      defTransform = mkRBPos([hdpx(-155), hdpx(-155)])
-      editView = mkCircleBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
-    })
+  machineGun = {
+    ctor = @() mkCircleTankMachineGun(Computed(@() actionBarItems.get()?[AB_MACHINE_GUN]))
+    priority = Z_ORDER.BUTTON
+    defTransform = mkRBPos([hdpx(-155), hdpx(-155)])
+    editView = mkCircleBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
+  }
 
   zoom = {
     ctor = mkCircleZoom

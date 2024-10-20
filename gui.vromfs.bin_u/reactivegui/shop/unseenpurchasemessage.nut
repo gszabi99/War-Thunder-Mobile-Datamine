@@ -22,7 +22,7 @@ let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank, mkUnitFlag
+let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo, mkUnitFlag
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
@@ -100,14 +100,16 @@ let stackData = Computed(function() {
   local convertions = []
   foreach (purch in activeUnseenPurchasesGroup.value.list){
     convertions.extend(purch?.conversions ?? [])
-    let conversionRes = clone (purch?.conversions ?? [])
+    let conversionList = []
+    foreach(c in purch?.conversions ?? [])
+      conversionList.append(c.to, c.from)
     foreach (data in purch.goods) {
       let { id, gType, count, subId = ""} = data
       let rewId = gType in ignoreSubIdRTypes ? id : "".concat(id, subId)
 
-      let convIdx = conversionRes.findindex(@(c) isEqual(data, c.to))
+      let convIdx = conversionList.findindex(@(c) isEqual(data, c))
       if (convIdx != null) {
-        conversionRes.remove(convIdx)
+        conversionList.remove(convIdx)
         continue
       }
 
@@ -584,7 +586,7 @@ function mkUnitPlate(unitInfo) {
             mkUnitBg(unit)
             mkUnitImage(unit)
             mkUnitTexts(unit, loc(p.locId))
-            mkUnitRank(unit)
+            mkUnitInfo(unit)
           ]
         }
       }.__update(mkRewardAnimProps(startDelay, aUnitPlateSelfScale))

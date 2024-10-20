@@ -7,8 +7,11 @@ let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { discountTagUnit } = require("%rGui/components/discountTag.nut")
+let { unseenResearchedUnits } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 
-let hasUnseen = Computed(@() unseenUnits.get().len() > 0 || unseenSkins.get().len() > 0)
+let hasUnseen = Computed(@() unseenUnits.get().len() > 0
+  || unseenSkins.get().len() > 0
+  || unseenResearchedUnits.get().len() > 0)
 let discount = Computed(@() unitDiscounts.value.reduce(@(res, val) max(val.discount, res), 0.0))
 
 return @(){

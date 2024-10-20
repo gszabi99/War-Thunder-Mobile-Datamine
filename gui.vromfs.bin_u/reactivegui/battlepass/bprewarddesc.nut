@@ -8,7 +8,7 @@ let { getPlatoonName, getPlatoonOrUnitName, getUnitLocId } = require("%appGlobal
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { infoBlueButton } = require("%rGui/components/infoButton.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateRatio, mkUnitRank
+let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateRatio, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkGradRankLarge } = require("%rGui/components/gradTexts.nut")
 let { receiveBpRewards, isBpRewardsInProgress, curStage } = require("battlePassState.nut")
@@ -35,7 +35,7 @@ let mkUnitPlate = @(unitId) function() {
         mkUnitBg(unit)
         mkUnitImage(unit)
         mkUnitTexts(unit, getPlatoonOrUnitName(unit, loc))
-        mkUnitRank(unit)
+        mkUnitInfo(unit)
         mkGradRankLarge(unit.mRank, {
          padding = hdpx(10)
          hplace = ALIGN_RIGHT

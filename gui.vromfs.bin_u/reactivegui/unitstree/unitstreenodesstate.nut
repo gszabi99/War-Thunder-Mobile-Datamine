@@ -1,11 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
+let { eventbus_send } = require("eventbus")
+let { register_command } = require("console")
+let { get_local_custom_settings_blk } = require("blkGetters")
+
 let { isEqual } = require("%sqstd/underscore.nut")
+let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
+
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { filters, filterCount } = require("%rGui/unit/unitsFilterPkg.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
+
+let SEEN_RESEARCHED_UNITS = "seenResearchedUnits"
 
 let countryPriority = {
   country_usa = 10
@@ -15,6 +23,7 @@ let countryPriority = {
 
 let nodes = Computed(@() serverConfigs.get()?.unitTreeNodes[curCampaign.get()] ?? {})
 let selectedCountry = mkWatched(persist, "selectedCountry", null)
+let seenResearchedUnits = mkWatched(persist, SEEN_RESEARCHED_UNITS, {})
 let unitToScroll = Watched(null)
 
 let mkCountries = @(nodeList) Computed(function(prev) {
@@ -77,27 +86,7 @@ let mkCountryNodesCfg = @(allNodes, curCountry) Computed(function(prev) {
   return isEqual(res, prev) ? prev : res
 })
 
-let allBlueprints = Computed(@() serverConfigs.get()?.allBlueprints ?? {})
-let blueprintCounts = Computed(@() servProfile.get()?.blueprints ?? {})
-
-let availableBlueprints = Computed(@() allBlueprints.get()
-  .filter(@(_, unitName) unitName not in myUnits.get() || unitName in allUnitsCfg.get()))
-
-let blueprintUnitsStatus = Computed(function(prev) {
-  let list = {}
-  foreach (unitName, data in availableBlueprints.get()) {
-    let { targetCount = 1 } = data
-    let curCount = blueprintCounts.get()?[unitName] ?? 0
-
-    list[unitName] <- {
-      name = unitName
-      exp = curCount
-      reqExp = targetCount
-      isResearched = curCount >= targetCount
-      canBuy = curCount >= targetCount
-    }
-  }
-
+function computeChanges(prev, list) {
   if (type(prev) != "table" || prev.len() != list.len())
     return list
 
@@ -112,10 +101,40 @@ let blueprintUnitsStatus = Computed(function(prev) {
     }
 
   return hasChanges ? res : prev
+}
+
+let allBlueprints = Computed(@() serverConfigs.get()?.allBlueprints ?? {})
+let blueprintCounts = Computed(@() servProfile.get()?.blueprints ?? {})
+
+let availableBlueprints = Computed(@() allBlueprints.get()
+  .filter(@(_, unitName) unitName not in myUnits.get() || unitName in allUnitsCfg.get()))
+
+let blueprintUnitsStatus = Computed(function(prev) {
+  let list = {}
+  if (!isCampaignWithUnitsResearch.get())
+    return list
+  foreach (unitName, data in availableBlueprints.get()) {
+    let { targetCount = 1 } = data
+    let curCount = blueprintCounts.get()?[unitName] ?? 0
+    let country = nodes.get()?[unitName] ?? ""
+
+    list[unitName] <- {
+      name = unitName
+      exp = curCount
+      reqExp = targetCount
+      isResearched = curCount >= targetCount
+      canBuy = curCount >= targetCount
+      country
+    }
+  }
+
+  return computeChanges(prev, list)
 })
 
 let unitsResearchStatus = Computed(function(prev) {
   let list = {}
+  if (!isCampaignWithUnitsResearch.get())
+    return list
   let { unitResearchExp = {} } = serverConfigs.get()
   let { unitsResearch = {} } = servProfile.get()
   foreach (unitName, reqExp in unitResearchExp) {
@@ -136,20 +155,46 @@ let unitsResearchStatus = Computed(function(prev) {
     }
   }
 
-  if (type(prev) != "table" || prev.len() != list.len())
+  return computeChanges(prev, list)
+})
+
+let allPremiumUnits = Computed(@() allUnitsCfg.get().filter(@(u) u.isPremium || u.isUpgradeable))
+let premiumUnitsStatus = Computed(function(prev) {
+  let list = {}
+  if (!isCampaignWithUnitsResearch.get())
     return list
+  foreach (unitName, unit in allPremiumUnits.get()) {
+    if (!unit.isHidden) {
+      let country = nodes.get()?[unitName].country ?? ""
 
-  let res = {}
-  local hasChanges = false
-  foreach (unitName, r in list)
-    if (isEqual(r, prev?[unitName]))
-      res[unitName] <- prev[unitName]
-    else {
-      res[unitName] <- r
-      hasChanges = true
+      list[unitName] <- {
+        name = unitName
+        isResearched = unitName in myUnits.get()
+        country
+      }
     }
+  }
 
-  return hasChanges ? res : prev
+  return computeChanges(prev, list)
+})
+
+let unseenResearchedUnits = Computed(function() {
+  let res = {}
+  if (!isCampaignWithUnitsResearch.get())
+    return {}
+  let unitsList = {}.__merge(unitsResearchStatus.get(), blueprintUnitsStatus.get(), premiumUnitsStatus.get())
+
+  foreach(unitName, unit in unitsList) {
+    let { country, isResearched, canBuy = false } = unit
+
+    if(unitName not in seenResearchedUnits.get() && (canBuy || isResearched)) {
+      if(country not in res)
+        res[country] <- {}
+      res[country][unitName] <- true
+    }
+  }
+
+  return res
 })
 
 let currentResearch = Computed(@() unitsResearchStatus.get().findvalue(@(r) r.isCurrent))
@@ -161,6 +206,42 @@ unitToScroll.subscribe(function(v) {
   if (country != null)
     selectedCountry.set(country)
 })
+
+function setResearchedUnitsSeen(units) {
+  if (!units || units.len() == 0)
+    return
+
+  let sBlk = get_local_custom_settings_blk().addBlock(SEEN_RESEARCHED_UNITS)
+
+  seenResearchedUnits.mutate(function(v) {
+    foreach(unit, _ in units) {
+      v[unit] <- true
+      sBlk[unit] = true
+    }
+  })
+
+  eventbus_send("saveProfile", {})
+}
+
+function loadSeenResearchedUnits() {
+  let blk = get_local_custom_settings_blk()
+  let htBlk = blk?[SEEN_RESEARCHED_UNITS]
+  if (!isDataBlock(htBlk))
+    return seenResearchedUnits.set({})
+
+  let res = {}
+  eachParam(htBlk, @(isSeen, id) res[id] <- isSeen)
+  seenResearchedUnits.set(res)
+}
+
+if (seenResearchedUnits.get().len() == 0)
+  loadSeenResearchedUnits()
+
+register_command(function() {
+  seenResearchedUnits.set({})
+  get_local_custom_settings_blk().removeBlock(SEEN_RESEARCHED_UNITS)
+  eventbus_send("saveProfile", {})
+}, "debug.reset_seen_researched_units")
 
 return {
   nodes
@@ -174,4 +255,6 @@ return {
   currentResearch
   researchCountry
   blueprintUnitsStatus
+  unseenResearchedUnits
+  setResearchedUnitsSeen
 }

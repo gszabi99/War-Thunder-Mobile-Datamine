@@ -5,7 +5,7 @@ let { lerpClamped } = require("%sqstd/math.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 let { maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank, unitPlateRatio, plateTextsSmallPad,
+let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo, unitPlateRatio, plateTextsSmallPad,
   unitBgImageBase, bgUnit, mkPlateText, unitPlateNameOvr
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getSlotLevelIcon } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
@@ -76,7 +76,7 @@ let mkUnitPlateBase = @(unit, _campaign) {
   children = [
     mkUnitBg(unit)
     mkUnitImage(unit)
-    mkUnitRank(unit, rankOvr)
+    mkUnitInfo(unit, rankOvr)
     mkUnitTexts(unit, loc(getUnitPresentation(unit).locId))
   ]
 }

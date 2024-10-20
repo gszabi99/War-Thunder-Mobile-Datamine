@@ -45,8 +45,8 @@ let defaults = {
 
 let inProgress = { image = "!ui/unitskin#image_in_progress.avif" } // warning disable: -declared-never-used
 let overrides = {
+  // Put PUBLIC overrides here, before "if_def":
 //
-
 
 
 }

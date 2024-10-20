@@ -5,9 +5,8 @@ let { playerLevelInfo, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkPlatoonPlateFrame,
   mkUnitsTreePrice, bgPlatesTranslate, mkUnitBlueprintMark, mkUnitResearchPrice,
   mkUnitSelectedGlow, mkUnitEquippedIcon, mkPlateText, plateTextsSmallPad, unitPlateTiny,
-  bgUnit, bgUnitNotAvailable, mkUnitBgPremium, unitBgImageBase
+  bgUnit, bgUnitNotAvailable, mkUnitBgPremium, unitBgImageBase, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { getUnitLocId, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { canBuyUnits, buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { flagsWidth, unitPlateSize, blockSize } = require("unitsTreeComps.nut")
@@ -24,7 +23,8 @@ let { justBoughtUnits, deleteJustBoughtUnit } = require("%rGui/unit/justUnlocked
 let { revealAnimation, raisePlatesAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { ceil } = require("math")
 let { scrollToUnit, nodeToScroll } = require("unitsTreeScroll.nut")
-let { unitsResearchStatus, researchCountry, currentResearch, blueprintUnitsStatus } = require("unitsTreeNodesState.nut")
+let { unitsResearchStatus, researchCountry, currentResearch, blueprintUnitsStatus,
+  unseenResearchedUnits, selectedCountry } = require("unitsTreeNodesState.nut")
 let { mkPlateExpBar, mkPlateBlueprintBar, mkPlateExpBarAnimSlot, plateBarHeight } = require("unitResearchBar.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
@@ -37,6 +37,7 @@ let { PURCH_SRC_UNITS, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
 let unitBuyWnd = require("%rGui/unitsTree/components/unitBuyWnd.nut")
 let { aDelayPrice, aTimePriceScale, aTimePriceShake } = require("%rGui/unitsTree/treeAnimConsts.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 
 let framesGapMul = 0.7
 let scrollBlocks = ceil((saSize[0] - saBorders[0] - flagsWidth) / blockSize[0] / 2)
@@ -282,13 +283,6 @@ let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, x
   }
 }.__update(ovr)
 
-let mkUnitGradRank = @(rank) {
-  padding = hdpx(10)
-  hplace = ALIGN_RIGHT
-  vplace = ALIGN_BOTTOM
-  children = mkGradRank(rank)
-}
-
 let hasChangedColor = Watched(false)
 let mkUnitAnimGradColor = @(unit, animUnits, xmbNode, trigger) @() unitBgImageBase.__merge({
   watch = hasChangedColor,
@@ -324,7 +318,7 @@ function mkTreeNodesUnitPlateUnlockAnim(unit, xmbNode, ovr = {}) {
         }
         mkUnitImage(unit, true)
         mkUnitTexts(unit, loc(getUnitLocId(unit.name)), true)
-        mkUnitGradRank(unit.mRank)
+        mkUnitInfo(unit, {padding = hdpx(10)})
         {
           size = flex()
           valign = ALIGN_BOTTOM
@@ -399,8 +393,12 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
   let discount = Computed(@() unitDiscounts?.get()[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
   let isCollectible = unit?.isCollectible
-  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get() || unit.name in unseenSkins.get())
-  let needShowBlueprintBar = Computed(@() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in myUnits.get())
+  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get()
+    || unit.name in unseenSkins.get()
+    || unit.name in unseenResearchedUnits.get()?[selectedCountry.get()])
+  let needShowBlueprintBar = Computed(@() unit.name in serverConfigs.get()?.allBlueprints
+    && unit.name not in myUnits.get()
+    && (servProfile.get()?.blueprints[unit.name] ?? 0) < (serverConfigs.get()?.allBlueprints[unit.name].targetCount ?? 0))
   let trigger = $"{unit.name}_anim"
   let startCurAnim = @() anim_start(trigger)
   let needToShowHighlight = Computed(@() animNewUnitsAfterResearch.get().len() == 0
@@ -500,7 +498,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
               : null
           ]
         }
-        mkUnitGradRank(unit.mRank)
+        mkUnitInfo(unit, {padding = hdpx(10)})
         {
           size = flex()
           valign = ALIGN_TOP

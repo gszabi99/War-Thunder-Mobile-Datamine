@@ -317,8 +317,8 @@ let mkLeftBlock = @(backCb) {
   ]
 }
 
-let mkLeftBlockUnitCampaign = @(backCb, keyHintText, unit = null) @() {
-  watch = hangarUnit
+let mkLeftBlockUnitCampaign = @(backCb, keyHintText, unit = hangarUnit) @() {
+  watch = unit
   size = [ SIZE_TO_CONTENT, gamercardHeight ]
   flow = FLOW_HORIZONTAL
   hplace = ALIGN_LEFT
@@ -326,7 +326,7 @@ let mkLeftBlockUnitCampaign = @(backCb, keyHintText, unit = null) @() {
   gap = gamercardGap
   children = [
     backCb != null ? backButton(backCb, { vplace = ALIGN_CENTER }) : null
-    gamercardUnitLevelLine(unit ?? hangarUnit.value, keyHintText)
+    unit.get() == null ? null : gamercardUnitLevelLine(unit.get(), keyHintText)
   ]
 }
 
@@ -411,11 +411,11 @@ let gamercardWithoutLevelBlock = {
     }
 }
 
-let mkGamercardUnitCampaign = @(backCb, keyHintText){
+let mkGamercardUnitCampaign = @(backCb, keyHintText, unit = hangarUnit) {
   size = [ saSize[0], gamercardHeight ]
   hplace = ALIGN_CENTER
   children = [
-    mkLeftBlockUnitCampaign(backCb, keyHintText)
+    mkLeftBlockUnitCampaign(backCb, keyHintText, unit)
     gamercardWithoutLevelBlock
   ]
 }

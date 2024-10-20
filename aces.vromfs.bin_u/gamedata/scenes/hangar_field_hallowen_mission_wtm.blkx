@@ -657,6 +657,1280 @@
       "ecs_fx__res": "fire_torch_cmps_fx"
     },
     {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3718.3,
+          30.0,
+          3638.6
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3651.9,
+          30.0,
+          3637.8
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3583.7,
+          30.0,
+          3639.2
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3519.0,
+          30.0,
+          3633.2
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3565.9,
+          30.0,
+          3590.7
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3607.5,
+          30.0,
+          3552.0
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3707.7,
+          30.0,
+          3463.9
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3756.0,
+          30.0,
+          3421.2
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3804.0,
+          30.0,
+          3379.0
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3782.2,
+          30.0,
+          3447.5
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3770.2,
+          30.0,
+          3505.7
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3771.4,
+          30.0,
+          3565.9
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3771.2,
+          30.0,
+          3628.4
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3771.2,
+          30.0,
+          3628.4
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3772.2,
+          30.0,
+          3678.9
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3774.1,
+          30.0,
+          3737.1
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3775.7,
+          30.0,
+          3801.2
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3658.8,
+          30.0,
+          3504.2
+        ]
+      ],
+      "ecs_fx__res": "fire_base_small_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3738.6,
+          24.32,
+          3628.2
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3738.2,
+          24.32,
+          3604.0
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3737.8,
+          24.32,
+          3580.1
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3737.2,
+          24.32,
+          3556.1
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3738.6,
+          24.32,
+          3628.2
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3736.9,
+          24.68,
+          3532.5
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3736.4,
+          24.48,
+          3508.5
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3714.9,
+          24.28,
+          3503.1
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3696.6,
+          24.62,
+          3520.2
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3678.5,
+          24.4,
+          3536.7
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3661.7,
+          24.1,
+          3551.8
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3645.9,
+          24.64,
+          3566.4
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3631.2,
+          24.38,
+          3579.7
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3616.6,
+          24.28,
+          3592.7
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3601.2,
+          24.32,
+          3606.8
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          3585.1,
+          24.32,
+          3621.1
+        ]
+      ],
+      "ecs_fx__res": "fire_torch_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1485.2,
+          11.1,
+          1517.0
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1467.1,
+          11.1,
+          1521.7
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1448.8,
+          11.1,
+          1513.0
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1420.7,
+          11.1,
+          1508.9
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1422.2,
+          11.1,
+          1486.6
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1416.1,
+          11.1,
+          1472.4
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1433.7,
+          11.1,
+          1471.2
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1440.8,
+          11.1,
+          1458.4
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1467.9,
+          11.1,
+          1459.0
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1482.7,
+          11.1,
+          1454.1
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1488.6,
+          11.1,
+          1472.3
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1492.5,
+          11.1,
+          1488.3
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1480.8,
+          11.1,
+          1496.9
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1455.7,
+          11.1,
+          1533.9
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
+      "_template": "ecs_fx",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1421.0,
+          11.1,
+          1528.3
+        ]
+      ],
+      "ecs_fx__res": "fire_base_tiny_cmps_fx"
+    },
+    {
       "_template": "unit_loader",
       "setting__unitType": "objectGroups",
       "setting__playerNo": -1,
@@ -723,6 +1997,41 @@
           2104.9,
           13.0408,
           -2308.8
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "objectGroups",
+      "setting__playerNo": -1,
+      "setting__unit_class": "hangar_air_objects_hallowen",
+      "setting__name": "test_bridge",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 2,
+      "setting__count": 1,
+      "setting__active": true,
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3650.65,
+          23.7666,
+          3631.9
         ]
       ]
     },

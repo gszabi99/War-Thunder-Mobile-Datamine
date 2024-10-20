@@ -5,9 +5,9 @@ let { set_clipboard_text } = require("dagor.clipboard")
 let { screenlog } = require("dagor.debug")
 let { defer } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { reset_profile, reset_profile_with_stats, unlock_all_units, add_gold, add_wp, add_platinum,
+let { reset_profile, reset_profile_with_stats, unlock_all_units, add_currency_no_popup,
   add_premium, reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler,
-  royal_beta_units_unlock, add_warbond, add_event_key, add_nybond, add_aprilbond, add_all_skins_for_unit
+  royal_beta_units_unlock, add_all_skins_for_unit
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
@@ -31,6 +31,7 @@ let debugUnlocks = require("debugUnlocks.nut")
 let { mainHangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { startDebugNewbieMission, startLocalMultiplayerMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
+let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILBOND } = require("%appGlobals/currenciesState.nut")
 
 let wndWidth = sh(130)
 let gap = hdpx(10)
@@ -51,14 +52,14 @@ function resetProfileWithStats() {
 }
 
 let commandsList = [
-  { label = "meta.add_gold 1000", func = @() add_gold(1000, "sceenlogResult") }
-  { label = "meta.add_wp 100 000", func = @() add_wp(100000, "sceenlogResult") }
-  { label = "meta.add_platinum 1000", func = @() add_platinum(1000, "sceenlogResult") }
+  { label = "meta.add_gold 1000", func = @() add_currency_no_popup(GOLD, 1000, "sceenlogResult") }
+  { label = "meta.add_wp 100 000", func = @() add_currency_no_popup(WP, 100000, "sceenlogResult") }
+  { label = "meta.add_platinum 1000", func = @() add_currency_no_popup(PLATINUM, 1000, "sceenlogResult") }
   { label = "meta.add_premium 3600 sec", func = @() add_premium(3600, "sceenlogResult") }
-  { label = "meta.add_warbond 100", func = @() add_warbond(100, "sceenlogResult") }
-  { label = "meta.add_event_key 10", func = @() add_event_key(10, "sceenlogResult") }
-  { label = "meta.add_nybond 100", func = @() add_nybond(100, "sceenlogResult") }
-  { label = "meta.add_aprilbond 100", func = @() add_aprilbond(100, "sceenlogResult") }
+  { label = "meta.add_warbond 100", func = @() add_currency_no_popup(WARBOND, 100, "sceenlogResult") }
+  { label = "meta.add_event_key 10", func = @() add_currency_no_popup(EVENT_KEY, 10, "sceenlogResult") }
+  { label = "meta.add_nybond 100", func = @() add_currency_no_popup(NYBOND, 100, "sceenlogResult") }
+  { label = "meta.add_aprilbond 100", func = @() add_currency_no_popup(APRILBOND, 100, "sceenlogResult") }
   { label = "add_all_skins_for_unit", func = withClose(@() add_all_skins_for_unit(mainHangarUnitName.get(),
     mainHangarUnitName.get()?.isUpgraded || mainHangarUnitName.get()?.isPremium
       ? "consolePrintResult"

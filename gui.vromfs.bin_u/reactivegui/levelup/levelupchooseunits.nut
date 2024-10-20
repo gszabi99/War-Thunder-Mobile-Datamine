@@ -11,7 +11,7 @@ let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
-let { unitPlateRatio, unitSelUnderlineFullSize, unitPlatesGap, mkUnitRank,
+let { unitPlateRatio, unitSelUnderlineFullSize, unitPlatesGap, mkUnitInfo,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitPrice, mkUnitSelectedUnderlineVert
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -179,7 +179,7 @@ function mkUnitPlate(unit, onClick) {
           mkUnitSelectedGlow(unit, isSelected)
           mkUnitImage(unit)
           mkUnitTexts(unit, getPlatoonOrUnitName(unit, loc))
-          mkUnitRank(unit)
+          mkUnitInfo(unit)
           price != null ? mkUnitPrice(price) : null
         ]
       }

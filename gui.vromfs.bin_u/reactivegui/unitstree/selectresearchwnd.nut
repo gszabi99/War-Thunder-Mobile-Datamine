@@ -9,7 +9,7 @@ let { buttonsHGap, textButtonBattle } = require("%rGui/components/textButton.nut
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unitsResearchStatus, currentResearch, selectedCountry, nodes, mkCountries
 } = require("unitsTreeNodesState.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitRank
+let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkTreeNodesFlag } = require("unitsTreeComps.nut")
 let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
@@ -62,7 +62,7 @@ function mkUnitPlate(unit) {
       mkUnitBg(unit)
       mkUnitImage(unit)
       mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
-      mkUnitRank(unit)
+      mkUnitInfo(unit)
     ]
   }
 }

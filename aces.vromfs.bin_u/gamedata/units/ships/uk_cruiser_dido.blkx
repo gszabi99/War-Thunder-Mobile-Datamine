@@ -6711,6 +6711,30 @@
         "from": "camo_navygrey_5*",
         "to": "camo_darkgray_blotch*"
       }
+    },
+    "threegreenspots": {
+      "replace_tex": {
+        "from": "camo_navygrey_5*",
+        "to": "camo_threegreenspots*"
+      }
+    },
+    "polish_bluegeometry_prem": {
+      "replace_tex": {
+        "from": "camo_navygrey_5*",
+        "to": "camo_polish_bluegeometry*"
+      }
+    }
+  },
+  "defaultDecals": {
+    "threegreenspots": {
+      "skin_condition": 100.0,
+      "camo_scale": -35.0,
+      "camo_rotation": 35.0
+    },
+    "polish_bluegeometry_prem": {
+      "skin_condition": 100.0,
+      "camo_scale": 100.0,
+      "camo_rotation": 0.0
     }
   }
 }

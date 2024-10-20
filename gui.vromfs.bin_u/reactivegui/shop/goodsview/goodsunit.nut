@@ -18,7 +18,7 @@ let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { mkRewardCurrencyImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
-let { mkUnitRank } = require("%rGui/unit/components/unitPlateComp.nut")
+let { mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
 
 
 let fonticonPreview = "⌡"
@@ -262,7 +262,7 @@ function mkOfferUnit(goods, onClick, state) {
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
       mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
         endTime ?? timeRange?.end)
-      mkUnitRank(unit, {padding = offerPad})
+        mkUnitInfo(unit, {padding = offerPad})
       discountTagUnit(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))
 }

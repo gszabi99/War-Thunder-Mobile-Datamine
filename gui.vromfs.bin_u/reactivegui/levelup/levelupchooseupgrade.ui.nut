@@ -13,7 +13,7 @@ let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { textButtonPricePurchase, buttonStyles } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank
+let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkUnitBonuses } = require("%rGui/unit/components/unitInfoComps.nut")
 let { mkDiscountPriceComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
@@ -110,7 +110,7 @@ let mkUnitPlate = @(unit) {
       mkUnitBg(unit)
       mkUnitImage(unit)
       mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
-      mkUnitRank(unit)
+      mkUnitInfo(unit)
     ]
   }
 

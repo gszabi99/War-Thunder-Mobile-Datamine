@@ -8,7 +8,7 @@ let { mkUnitBonuses } = require("%rGui/unit/components/unitInfoComps.nut")
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { premiumTextColor, userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { unitPlateHeight, unitPlateWidth, mkUnitBg, mkUnitImage, mkUnitTexts, mkPlayerLevel,
-  mkUnitRank } = require("%rGui/unit/components/unitPlateComp.nut")
+  mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkCustomButton } = require("%rGui/components/textButton.nut")
@@ -134,7 +134,7 @@ let mkUnitPlate = @(unit) {
     mkUnitBg(unit)
     mkUnitImage(unit)
     mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
-    mkUnitRank(unit)
+    mkUnitInfo(unit)
   ]
 }
 

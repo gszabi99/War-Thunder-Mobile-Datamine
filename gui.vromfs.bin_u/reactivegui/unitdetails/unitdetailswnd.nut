@@ -5,7 +5,7 @@ let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { unitInfoPanelFull } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitRank
+let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitInfo
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -87,7 +87,7 @@ function mkUnitPlate(unit, platoonUnit, onClick) {
           mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
           mkUnitImage(platoonUnitFull, isLocked.get())
           mkUnitTexts(platoonUnitFull, loc(p.locId), isLocked.get())
-          !isLocked.value ? mkUnitRank(unit, { pos = [-hdpx(30), 0] }) : null
+          !isLocked.value ? mkUnitInfo(unit, { pos = [-hdpx(30), 0] }) : null
           mkUnitSlotLockedLine(platoonUnit, isLocked.value, justUnlockedDelay.value)
         ]
       }
@@ -192,7 +192,7 @@ let sceneRoot = {
             closeUnitDetailsWnd()
           },
           $"gamercard/levelUnitDetails/desc/{baseUnit.get()?.campaign ?? curCampaign.get()}",
-          baseUnit.get())
+          baseUnit)
       }
       unitInfoPanelPlace
       {

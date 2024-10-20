@@ -72,6 +72,8 @@ let mkRewardLabel = @(children, needPadding = true) {
   children
 }
 
+let mkRewardTextLabel = @(text, rStyle) mkRewardLabel(mkCommonLabelText(text, rStyle))
+
 let mkRewardSearchPlate = {
   fillColor = transparentBlackColor
   halign = ALIGN_CENTER
@@ -173,11 +175,11 @@ let mkProgressLabel = @(available, total, rStyle = {}) {
 }
 
 let mkRewardPlateCountText = @(r, rStyle)
-  mkRewardLabel(mkCommonLabelText(
+  mkRewardTextLabel(
     "countRange" in r
         ? "".concat(decimalFormat(r.count), "-", decimalFormat(r.countRange))
       : decimalFormat(r.count),
-    rStyle))
+    rStyle)
 
 
 let mkRewardFixedIcon = @(rStyle) {
@@ -320,7 +322,7 @@ function mkRewardPlatePremiumTexts(r, rStyle) {
   let days = r?.countRange && r.count != r?.countRange
     ? $"{r.count}-{r.countRange}"
     : $"{r.count}"
-  return mkRewardLabel(mkCommonLabelText("".concat(days, loc("measureUnits/days")), rStyle))
+  return mkRewardTextLabel("".concat(days, loc("measureUnits/days")), rStyle)
 }
 
 // DECORATOR //////////////////////////////////////////////////////////////////
@@ -802,6 +804,7 @@ return {
   mkProgressBarWithForecast
   mkProgressBarText
   mkProgressBar
+  mkRewardTextLabel
 
   decoratorIconContentCtors
 }

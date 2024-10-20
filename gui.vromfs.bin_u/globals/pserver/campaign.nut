@@ -9,7 +9,8 @@ let { setTimeout } = require("dagor.workcycle")
 let defaultCampaign = "tanks"
 
 let selectedCampaign = sharedWatched("selectedCampaign", @() null) //selectedByPlayer
-let savedCampaign = Computed(@() (servProfile.value?.levelInfo ?? {}).findindex(@(i) i?.isCurrent ?? false)) //saved on pServer
+let campaignsLevelInfo = Computed(@()(servProfile.get()?.levelInfo ?? {}))
+let savedCampaign = Computed(@() campaignsLevelInfo.get().findindex(@(i) i?.isCurrent ?? false)) //saved on pServer
 let isAnyCampaignSelected = Computed(@() (selectedCampaign.value ?? savedCampaign.value) != null)
 
 let campaignsList = Computed(@() serverConfigs.value?.circuit.campaigns.available ?? [ defaultCampaign ])
@@ -146,6 +147,7 @@ let curCampaignSlotUnits = Computed(function(prev) {
 
 return exportProfile.__update({
   isProfileReceived = Computed(@() servProfile.get().len() > 0)
+  campaignsLevelInfo
   curCampaign
   defaultCampaign
   setCampaign

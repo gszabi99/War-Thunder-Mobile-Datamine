@@ -316,8 +316,8 @@ function rerollSlots(id, price, currencyId) {
 }
 
 let openSelGoodsMsgBoxPurch = @(text, price, currencyId, action, bqInfo) openMsgBoxPurchase(
-  loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, text)})
-  { price, currencyId }
+  text,
+  { price, currencyId },
   @() previewGoods.get()?.id == null ? null : action(previewGoods.get()?.id, price, currencyId),
   bqInfo
 )
@@ -328,7 +328,8 @@ function tryOpenPurchSlotMsgBox(goodsId, price, currencyId) {
     openMsgBox({ text = loc("msg/selectSlotForPurchase") })
     return
   }
-  openSelGoodsMsgBoxPurch($"{loc("blueprints/title", { count })} {loc(getUnitLocId(id))}",
+  let text = $"{loc("blueprints/title", { count })} {loc(getUnitLocId(id))}"
+  openSelGoodsMsgBoxPurch(loc("shop/needMoneyQuestion_buy", { item = colorize(userlogTextColor, text) }),
     price, currencyId, purchaseSelectedSlot,
     mkBqPurchaseInfo(PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, $"{goodsId}:{gType}/{id}x{count}"))
 }
@@ -365,7 +366,7 @@ function skipWaitBtn(id, priceCfg, purchCount) {
   let priceFinal = price + priceInc * purchCount
   return textButtonPricePurchase(utf8ToUpper(loc("btn/skipWait")),
     mkCurrencyComp(priceFinal, currencyId),
-    @() openSelGoodsMsgBoxPurch(loc("blueprints/skipWait"), priceFinal, currencyId, increaseLimit,
+    @() openSelGoodsMsgBoxPurch(loc("shop/needMoneyQuestion_wait"), priceFinal, currencyId, increaseLimit,
       mkBqPurchaseInfo(PURCH_SRC_SHOP, PURCH_TYPE_GOODS_LIMIT, id)))
 }
 

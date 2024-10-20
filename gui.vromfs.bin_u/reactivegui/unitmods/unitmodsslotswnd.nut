@@ -460,7 +460,7 @@ let unitModsWnd = {
   children = [
     @(){
       watch = curCampaign
-      children = mkGamercardUnitCampaign(closeWithWarning, $"gamercard/levelUnitMod/desc/{curCampaign.value}")
+      children = mkGamercardUnitCampaign(closeWithWarning, $"gamercard/levelUnitMod/desc/{curCampaign.value}", curUnit)
     }
     {
       size = [saSize[0] + saBorders[0], flex()]

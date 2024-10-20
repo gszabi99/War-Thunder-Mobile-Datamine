@@ -156,11 +156,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -170,11 +172,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -184,11 +188,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -198,11 +204,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -212,11 +220,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -226,11 +236,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -240,11 +252,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -984,7 +998,7 @@
           ],
           [
             -18585.0,
-            167.0,
+            166.9,
             -950.514
           ]
         ],
@@ -10458,19 +10472,19 @@
       "type": "Sphere",
       "tm": [
         [
-          6128.35,
+          5362.31,
           0.0,
-          5142.3
+          4499.52
         ],
         [
           0.0,
-          8000.0,
+          7000.0,
           0.0
         ],
         [
-          -5142.3,
+          -4499.52,
           0.0,
-          6128.35
+          5362.31
         ],
         [
           -18441.7,
@@ -10525,9 +10539,9 @@
           192.836
         ],
         [
-          -21013.6,
+          -20691.5,
           1000.0,
-          3421.39
+          3036.9
         ]
       ],
       "props": {}
@@ -10536,19 +10550,19 @@
       "type": "Sphere",
       "tm": [
         [
-          9192.52,
+          7660.44,
           0.0,
-          7713.46
+          6427.89
         ],
         [
           0.0,
-          12000.0,
+          10000.0,
           0.0
         ],
         [
-          -7713.46,
+          -6427.89,
           0.0,
-          9192.52
+          7660.44
         ],
         [
           -18441.7,
@@ -10577,9 +10591,9 @@
           257.115
         ],
         [
-          -22298.5,
+          -21655.7,
           1700.0,
-          4952.24
+          4185.95
         ]
       ],
       "props": {}
@@ -10603,9 +10617,9 @@
           -192.836
         ],
         [
-          -15871.2,
+          -16191.8,
           1000.0,
-          -2708.86
+          -2325.45
         ]
       ],
       "props": {}
@@ -10629,9 +10643,9 @@
           -257.115
         ],
         [
-          -14587.5,
+          -15227.7,
           1700.0,
-          -4238.71
+          -3474.47
         ]
       ],
       "props": {}

@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let logNS = log_with_prefix("[NAV_STATE] ")
 let { deferOnce } = require("dagor.workcycle")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
@@ -43,22 +44,29 @@ function addScene(id) {
 
   scenesOrderSaved.mutate(function(v) {
     let idx = v.indexof(id)
-    if (idx != null)
+    if (idx != null) {
+      logNS($"Refresh scene {id}")
       v.remove(idx)
+    }
+    else
+      logNS($"Add scene {id}")
     v.append(id)
   })
 }
 
 function removeScene(id) {
   let idx = scenesOrderSaved.value.indexof(id)
-  if (idx != null)
-    scenesOrderSaved.mutate(@(v) v.remove(idx))
+  if (idx == null)
+    return
+  logNS($"Remove scene {id}")
+  scenesOrderSaved.mutate(@(v) v.remove(idx))
 }
 
 function moveSceneToTop(id) {
   let idx = scenesOrderSaved.value.indexof(id)
   if (idx == null)
     return false
+  logNS($"Move scene to top {id}")
   scenesOrderSaved.mutate(function(v) {
     v.remove(idx)
     v.append(id)

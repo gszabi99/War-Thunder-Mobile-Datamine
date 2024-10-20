@@ -13,7 +13,7 @@ let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGro
 let { gap, contactNameBlock, contactAvatar, contactLevelBlock, contactLevelSize
 } = require("%rGui/contacts/contactInfoPkg.nut")
 let { offlineColor, leaderColor, memberNotReadyColor, memberReadyColor } = require("%rGui/style/stdColors.nut")
-let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitRank
+let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
@@ -127,7 +127,7 @@ let unitInfo = @(unitW) function() {
       mkUnitBg(unit)
       mkUnitImage(unit)
       mkUnitTexts(unit, loc(p.locId))
-      mkUnitRank(unit)
+      mkUnitInfo(unit)
     ]
   })
 }

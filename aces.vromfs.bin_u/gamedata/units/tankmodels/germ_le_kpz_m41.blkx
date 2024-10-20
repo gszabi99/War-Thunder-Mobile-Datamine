@@ -3376,6 +3376,16 @@
       "decal2OppositeMirrored": false,
       "decal2WidthBox": 0.282457,
       "decal2Tex": "germany_numbers_1"
+    },
+    "forest2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -3383,11 +3393,18 @@
       "replace_tex": {
         "from": "ger_camo_bronzegruen*",
         "to": "ger_camo_carc*"
-      },
-      "set_tex": {
-        "from": "m41_bulldog_turret_c*",
-        "to": "m41_bulldog_skin_turret_c*",
-        "param": "camo_skin_tex"
+      }
+    },
+    "forest2": {
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "ger_camo_bundeswehr_afgan*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "ussr_camo_winter*"
       }
     }
   },

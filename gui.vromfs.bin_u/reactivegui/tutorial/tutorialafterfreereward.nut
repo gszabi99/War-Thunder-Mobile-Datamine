@@ -9,7 +9,7 @@ let { isInSquad } = require("%appGlobals/squadState.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
+let { isInMenuNoModals, isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial,
   activeTutorialId } = require("tutorialWnd/tutorialWndState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
@@ -25,14 +25,14 @@ let needShowTutorial = Computed(@() !isInSquad.get()
   && isCampaignWithUnitsResearch.get()
   && needShowTutorialAfterReward.get())
 let canStartTutorial = Computed(@() !hasModalWindows.get()
-  && isMainMenuAttached.get()
+  && isInMenuNoModals.get()
   && !isTutorialActive.get()
   && !isPurchEffectVisible.get())
 let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
 
 let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.get() == TUTORIAL_AFTER_REWARD_ID
-  && !isMainMenuAttached.get()))
+  && !isMainMenuTopScene.get()))
 let finishEarly = @() shouldEarlyCloseTutorial.get() ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
@@ -41,7 +41,7 @@ function startTutorial() {
     id = TUTORIAL_AFTER_REWARD_ID
     function onStepStatus(stepId, status) {
       logFB($"{stepId}: {status}")
-      if (status == "tutorial_finished") {
+      if (status == "tutorial_finished" && isMainMenuTopScene.get()) {
         markTutorialCompleted(TUTORIAL_AFTER_REWARD_ID)
         needShowTutorialAfterReward.set(false)
       }

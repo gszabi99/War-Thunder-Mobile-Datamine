@@ -27,6 +27,7 @@ let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { openBugReport } = require("%rGui/feedback/bugReport.nut")
 let { openOfflineBattleMenu } = require("%rGui/debugTools/debugOfflineBattleState.nut")
+let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 
 
 let TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
@@ -134,18 +135,20 @@ let OFFLINE_BATTLES = {
 }
 
 function getPublicButtons() {
-  let res = [OPTIONS, STORE, UNITS]
-  if (isGamepad.value)
+  let res = [OPTIONS, STORE]
+  if (!isCampaignWithUnitsResearch.get())
+    res.append(UNITS)
+  if (isGamepad.get())
     res.append(GAMEPAD_HELP)
-  if (isFeedReceived.value)
+  if (isFeedReceived.get())
     res.append(NEWS)
-  if (canShowLoginAwards.value || isUserstatMissingData.value)
+  if (canShowLoginAwards.get() || isUserstatMissingData.get())
     res.append(LOGIN_AWARD)
-  if (firstBattleTutor.value)
+  if (firstBattleTutor.get())
     res.append(TUTORIAL)
-  if (can_view_replays.value)
+  if (can_view_replays.get())
     res.append(REPLAYS)
-  if (can_write_replays.value && hasUnsavedReplay.value)
+  if (can_write_replays.get() && hasUnsavedReplay.get())
     res.append(SAVE_LAST_REPLAY)
   res.append(BUG_REPORT)
   return res

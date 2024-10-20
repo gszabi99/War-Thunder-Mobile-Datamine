@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { bgHeader } = require("%rGui/style/backgrounds.nut")
 let { round } = require("math")
-let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar
+let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkRewardTextLabel
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { REWARD_STYLE_MEDIUM,REWARD_STYLE_SMALL, getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -39,7 +39,17 @@ let wndTitle = bgHeader.__merge({
   }.__update(fontBig)
 })
 
-let mkUnitRow = @(reward) {
+let exceedBlueprintsProgress = @(count, targetCount) {
+  size = flex()
+  valign = ALIGN_BOTTOM
+  children = [
+    mkProgressBar(targetCount + count, targetCount)
+    mkProgressLabel(targetCount + count, targetCount, REWARD_STYLE_SMALL)
+  ]
+}
+
+let mkUnitRow = @(reward) @() {
+  watch = serverConfigs
   pos = [hdpx(35), 0]
   size = [SIZE_TO_CONTENT, evenPx(160)]
   flow = FLOW_HORIZONTAL
@@ -53,14 +63,9 @@ let mkUnitRow = @(reward) {
       children = [
         mkRewardPlateBg(reward, REWARD_STYLE_MEDIUM)
         mkRewardPlateImage(reward, REWARD_STYLE_MEDIUM)
-        {
-          size = flex()
-          valign = ALIGN_BOTTOM
-          children = [
-            mkProgressBar(reward.count, serverConfigs.get()?.allBlueprints[reward.id].targetCount ?? 1)
-            mkProgressLabel(reward.count, serverConfigs.get()?.allBlueprints[reward.id].targetCount, REWARD_STYLE_SMALL)
-          ]
-        }
+        reward.count >= 0
+          ? exceedBlueprintsProgress(reward.count, serverConfigs.get()?.allBlueprints[reward.id].targetCount ?? 1)
+          : mkRewardTextLabel(-reward.count, REWARD_STYLE_SMALL)
         mkUnitFlag(serverConfigs.value?.allUnits?[reward.id], REWARD_STYLE_MEDIUM)
       ]
     }
@@ -78,7 +83,7 @@ let mkUnitRow = @(reward) {
       children = {
         pos = [hdpx(-80), hdpx(30)]
         rendObj = ROBJ_TEXT
-        text = reward.subId
+        text = reward.toCount
       }.__update(fontMedium)
     }
   ]
@@ -100,13 +105,13 @@ let scrollArrowsBlock = {
 function mkMsgConvertBlueprint(stackDataV, onClick) {
   let mainRArray = {}
   local sum = 0
-  foreach(info in (stackDataV ?? [])){
-    sum = sum + info.from.count
-    mainRArray[info.from.id] <-{
+  foreach(info in (stackDataV ?? [])) {
+    sum = sum + info.to.count
+    mainRArray[info.from.id] <- {
       id = info.from.id
-      subId = info.from.count
+      toCount = info.to.count
       rType = info.from.gType
-      count = (serverConfigs.get()?.allBlueprints[info.from.id].targetCount ?? 1) + info.from.count
+      count = info.from.count
       slots = 2
     }
   }

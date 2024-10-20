@@ -3,7 +3,7 @@ let { round, ceil } = require("math")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkUnitSlotLockedLine,
-  platoonPlatesGap, unitPlateRatio, mkUnitRank
+  platoonPlatesGap, unitPlateRatio, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkModImage, bgShade } = require("%rGui/unitMods/modsComps.nut")
 let { getSpCostText } = require("%rGui/attributes/attrState.nut")
@@ -96,7 +96,7 @@ function mkDebrPlateUnit(unit, isUnlocked, unlockDelay, isPlayerProgress = false
         mkUnitBg(unit)
         mkUnitImage(unit)
         mkUnitTexts(unit, loc(p.locId))
-        mkUnitRank(unit)
+        mkUnitInfo(unit)
         mkLockedShade(isUnlocked, unlockDelay)
         isPlayerProgress
           ? mkUnitLock(unit, !isUnlocked, unlockDelay)

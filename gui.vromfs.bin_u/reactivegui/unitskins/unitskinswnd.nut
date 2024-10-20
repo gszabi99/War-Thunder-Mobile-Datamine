@@ -8,7 +8,7 @@ availableSkins, selectedSkinCfg } = require("unitSkinsState.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { GOLD, orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { getUnitPresentation, getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
-let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitRank
+let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitInfo
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, mkUnitSelectedUnderlineVert
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { curSelectedUnitId, baseUnit, platoonUnitsList, unitToShow, isSkinsWndAttached
@@ -98,7 +98,7 @@ function mkUnitPlate(unit, platoonUnit, onClick) {
           mkUnitSelectedGlow(unit, isSelected)
           mkUnitImage(platoonUnitFull, isLocked.get())
           mkUnitTexts(platoonUnitFull, loc(p.locId), isLocked.get())
-          !isLocked.get() ? mkUnitRank(unit, { pos = [-hdpx(30), 0] }) : null
+          !isLocked.get() ? mkUnitInfo(unit, { pos = [-hdpx(30), 0] }) : null
           mkUnitSlotLockedLine(platoonUnit, isLocked.get())
         ]
       }

@@ -5,7 +5,7 @@ let { decorativeLineBgMW, bgMW } = require("%rGui/style/stdColors.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let Rand = require("%sqstd/rand.nut")
 let { buyUnitsData } = require("%appGlobals/unitsState.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateSmall, mkUnitRank, mkUnitSelectedGlow
+let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateSmall, mkUnitInfo, mkUnitSelectedGlow
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let openBuyExpWithUnitWnd = require("%rGui/levelUp/buyExpWithUnitWnd.nut")
@@ -46,7 +46,7 @@ function mkUnitPlate(unit, onClick) {
           mkUnitSelectedGlow(unit, Computed(@() stateFlags.get() & S_HOVER))
           mkUnitImage(unit)
           mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
-          mkUnitRank(unit)
+          mkUnitInfo(unit)
         ]
       }
   }

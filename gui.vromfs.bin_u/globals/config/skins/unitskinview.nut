@@ -581,7 +581,9 @@ return {
     },
     "germ_flakpanzer_zerstorer_45": {
       "": "ger_camo_dunkelgelb",
-      "forest": "ger_camo_hinterhalt_tarnung"
+      "forest": "ger_camo_hinterhalt_tarnung",
+      "forest2": "ger_camo_dunkelgelb_green_braun_blots_small",
+      "winter": "ger_camo_winter_dunkelgelb"
     },
     "germ_flakpz_I_Gepard": {
       "": "ger_camo_bronzegruen",
@@ -624,7 +626,9 @@ return {
     },
     "germ_le_kpz_m41": {
       "": "ger_camo_bronzegruen",
-      "forest": "ger_camo_carc"
+      "forest": "ger_camo_carc",
+      "forest2": "ger_camo_bundeswehr_afgan",
+      "winter": "ussr_camo_winter"
     },
     "germ_leopard_2k": {
       "": "ger_camo_bronzegruen",
@@ -752,7 +756,9 @@ return {
     },
     "germ_pzkpfw_VI_ausf_b_tiger_IIp_reskin": {
       "": "ger_camo_dunkelgelb",
-      "forest": "ger_camo_hinterhalt_tarnung"
+      "forest": "ger_camo_hinterhalt_tarnung",
+      "forest2": "ger_camo_dunkelgelb_green_braun_blots_small",
+      "winter": "ger_camo_winter_dunkelgelb"
     },
     "germ_pzkpfw_VI_ausf_b_tiger_IIp_reskin2": {
       "": "ger_camo_dunkelgelb",
@@ -792,7 +798,9 @@ return {
     },
     "germ_pzkpfw_V_ersatz_m10": {
       "": "ger_camo_dunkelgelb",
-      "forest": "us_camo_olive"
+      "forest": "us_camo_olive",
+      "forest2": "ger_camo_dunkelgelb_green_braun_blots_small",
+      "winter": "ger_camo_winter_dunkelgelb"
     },
     "germ_pzsfl_IVa_dickermax": {
       "": "ger_camo_dunkelgelb_africa",
@@ -2556,6 +2564,7 @@ return {
       "marine_geometry": "camo_marine_geometry",
       "mtb_spots_prem": "camo_mtb_spots",
       "olive_spots": "camo_olive_spots",
+      "polish_bluegeometry_prem": "camo_polish_bluegeometry",
       "threegreenspots": "camo_threegreenspots",
       "upgraded": "camo_navygrey_5"
     },

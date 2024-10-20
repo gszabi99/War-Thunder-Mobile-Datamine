@@ -54,7 +54,7 @@ function missionsListUi() {
         text = loc("chapters/onlineBenchmark")
       }.__update(fontSmall),
       byRows(benchmarkGameModes.value.values()
-        .sort(@(a, b) a <=> b)
+        .sort(@(a, b) a.gameModeId <=> b.gameModeId)
         .map(@(gm) textButtonCommon(
           loc($"gameMode/{gm.name}", gm.name),
           function() {

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { mkCurrencyComp, mkDiscountPriceComp } = require("%rGui/components/currencyComp.nut")
-let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
+let { getUnitPresentation, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
 let { AIR, TANK, SHIP } = require("%appGlobals/unitConst.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { mkLevelBg, unitExpColor, playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
@@ -313,11 +313,22 @@ let mkAnimationUnitLock = @(justUnlockedDelay, level, lockBottomImg, callback = 
   ]
 }
 
-let mkUnitRank = @(unit, ovr = {}) mkGradRank(unit.mRank, {
+let mkUnitInfo = @(unit, ovr = {}) {
   padding = [plateTextsSmallPad * 0.5, plateTextsSmallPad]
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
-}.__update(ovr))
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(5)
+  children = [
+    unit.unitType != AIR ? null : {
+      rendObj = ROBJ_TEXT
+      size = SIZE_TO_CONTENT
+      text = getUnitClassFontIcon(unit)
+      pos = [0, hdpx(5)]
+    }.__update(fontTinyAccented),
+    mkGradRank(unit.mRank)
+  ]
+}.__update(ovr)
 
 let starRankOvr = {
   pos = [0, ph(40)]
@@ -347,7 +358,7 @@ function mkUnitLock(unit, isLocked, justUnlockedDelay = null){
         backButtonBlink("UnitsWnd")
       }))
   else
-    children.append(mkUnitRank(unit, { pos = [-hdpx(10), hdpx(5)] }))
+    children.append(mkUnitInfo(unit, { pos = [-hdpx(10), hdpx(5)] }))
   return {
     key = {}
     hplace = ALIGN_RIGHT
@@ -530,12 +541,12 @@ let mkUnitEquippedTopLine = @(unit, isEquipped, justUnlockedDelay = null) {
     : { watch = isEquipped }
 }
 
-let mkUnitSelectedUnderline = @(unit, isSelected, justUnlockedDelay = null) {
+let mkUnitSelectedUnderline = @(unit, isSelected, justUnlockedDelay = null, ovr = {}) {
   size = [flex(), unitSelUnderlineFullSize]
   margin = [unitSelUnderlineFullSize - selLineSize, 0, 0, 0]
   children = selectedLineHorUnits(isSelected, !!(unit?.isUpgraded || unit?.isPremium), unit?.isCollectible)
   animations = revealAnimation(justUnlockedDelay)
-}
+}.__update(ovr)
 
 let mkUnitSelectedUnderlineVert = @(unit, isSelected) {
   size = [unitSelUnderlineFullSize, flex()]
@@ -610,7 +621,7 @@ function mkSingleUnitPlate(unit) {
       mkUnitBg(unit)
       mkUnitImage(unit)
       mkUnitTexts(unit, loc(p.locId))
-      mRank > 0 ? mkUnitRank(unit) : null
+      mRank > 0 ? mkUnitInfo(unit) : null
     ]
   }
 }
@@ -661,7 +672,7 @@ return {
   mkUnitLock
   mkUnitLevel
   mkUnitPrice
-  mkUnitRank
+  mkUnitInfo
   mkUnitShortPrice
   mkUnitsTreePrice
   mkUnitSlotLockedLine

@@ -1,5 +1,6 @@
 from "auth_wt" import getCountryCode
 from "%globalScripts/logs.nut" import *
+from "%sqstd/string.nut" import utf8ToLower
 
 //
 // Dirty Words checker.
@@ -111,12 +112,6 @@ function continueInitAfterLogin() {
   pendingDict = null
 }
 
-local alphabet = {
-  upper = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ",
-  lower = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyz"
-};
-
-
 local preparereplace = [
   {
     pattern = regexp2(@"[\'\-\+\;\.\,\*\?\(\)]")
@@ -222,7 +217,7 @@ local function preparePhrase(text) {
 
 local function prepareWord(word) {
   // convert to lower
-  word = (utf8(word).strtr(alphabet.upper, alphabet.lower)).strip()
+  word = utf8ToLower(word.strip())
 
   // replaces
   foreach (p in prepareword)
@@ -320,14 +315,14 @@ local function checkPhrase(text) {
   if (maskChars != null)
     phrase = "".join(charsArray.map(@(c, i) maskChars[i] ? "**" : c))
 
-  local lowerPhrase = phrase.tolower()
+  local lowerPhrase = utf8ToLower(phrase)
   //To match a whole combination of words
   foreach (pattern in dict.badcombination)
     if (pattern.match(lowerPhrase)) {
       debugLogFunc?($"DirtyWordsFilter: Phrase matched pattern \"{pattern.pattern()}\"")
       let word = pattern.multiExtract("\\1", lowerPhrase)?[0] ?? ""
       phrase = pattern.replace(getMaskedWord(word), lowerPhrase)
-      lowerPhrase = phrase.tolower()
+      lowerPhrase = utf8ToLower(phrase)
     }
 
   local words = preparePhrase(phrase)

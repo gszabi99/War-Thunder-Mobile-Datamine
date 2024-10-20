@@ -3,14 +3,13 @@ let { set_clipboard_text } = require("dagor.clipboard")
 let { object_to_json_string } = require("json")
 let { roundToDigits, round_by_value } = require("%sqstd/math.nut")
 let pServerApi = require("%appGlobals/pServer/pServerApi.nut")
-let { add_unit_exp, add_player_exp, add_wp, add_gold, add_platinum, change_item_count, set_purch_player_type,
+let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, set_purch_player_type,
   check_new_offer, debug_offer_generation_stats, shift_all_offers_time, generate_fixed_type_offer,
   userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler,
   add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
-  apply_profile_mutation, add_lootbox, add_warbond, add_event_key,
-  get_base_lootbox_chances, get_my_lootbox_chances,
-  reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, add_nybond, halt_goods_purchase,
-  halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, add_aprilbond,
+  apply_profile_mutation, add_lootbox, get_base_lootbox_chances, get_my_lootbox_chances,
+  reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, halt_goods_purchase,
+  halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
   add_battle_mod, set_research_unit, add_slot_exp, update_branch_offer
 } = pServerApi
@@ -25,6 +24,8 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
+let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILBOND } = require("%appGlobals/currenciesState.nut")
+
 
 registerHandler("consolePrintResult",
   @(res) console_print(res?.error == null ? "SUCCESS" : "FAILED")) //warning disable: -forbidden-function
@@ -75,13 +76,13 @@ register_command(function(exp) {
 register_command(@() resetCustomSettings(), "meta.reset_custom_settings")
 
 register_command(@(exp) add_player_exp(curCampaign.value, exp, "consolePrintResult"), "meta.add_player_exp")
-register_command(@(wp) add_wp(wp, "consolePrintResult"), "meta.add_wp")
-register_command(@(platinum) add_platinum(platinum, "consolePrintResult"), "meta.add_platinum")
-register_command(@(gold) add_gold(gold, "consolePrintResult"), "meta.add_gold")
-register_command(@(warbond) add_warbond(warbond, "consolePrintResult"), "meta.add_warbond")
-register_command(@(event_key) add_event_key(event_key, "consolePrintResult"), "meta.add_event_key")
-register_command(@(nybond) add_nybond(nybond, "consolePrintResult"), "meta.add_nybond")
-register_command(@(aprilbond) add_aprilbond(aprilbond, "consolePrintResult"), "meta.add_aprilbond")
+register_command(@(wp) add_currency_no_popup(WP, wp, "consolePrintResult"), "meta.add_wp")
+register_command(@(platinum) add_currency_no_popup(PLATINUM, platinum, "consolePrintResult"), "meta.add_platinum")
+register_command(@(gold) add_currency_no_popup(GOLD, gold, "consolePrintResult"), "meta.add_gold")
+register_command(@(warbond) add_currency_no_popup(WARBOND, warbond, "consolePrintResult"), "meta.add_warbond")
+register_command(@(event_key) add_currency_no_popup(EVENT_KEY, event_key, "consolePrintResult"), "meta.add_event_key")
+register_command(@(nybond) add_currency_no_popup(NYBOND, nybond, "consolePrintResult"), "meta.add_nybond")
+register_command(@(aprilbond) add_currency_no_popup(APRILBOND, aprilbond, "consolePrintResult"), "meta.add_aprilbond")
 register_command(@(name, count) change_item_count(name, count, "consolePrintResult"), "meta.change_item_count")
 register_command(@(seconds) seconds < 0
     ? remove_premium(-seconds, "consolePrintResult")
@@ -134,12 +135,12 @@ register_command(@()
   "meta.remove_all_skins_for_hangar_unit")
 
 register_command(function(count) {
-  add_wp(count * 100)
-  add_gold(count * 10)
-  add_warbond(count * 10)
-  add_event_key(count * 1)
-  add_nybond(count * 10)
-  add_aprilbond(count * 10)
+  add_currency_no_popup(WP, count * 100)
+  add_currency_no_popup(GOLD, count * 10)
+  add_currency_no_popup(WARBOND, count * 10)
+  add_currency_no_popup(EVENT_KEY, count * 1)
+  add_currency_no_popup(NYBOND, count * 10)
+  add_currency_no_popup(APRILBOND, count * 10)
   foreach (item in itemsOrderFull)
     change_item_count(item, count)
   change_item_count("ircm_kit", count)

@@ -332,10 +332,14 @@ function mkCircleTankPrimaryGun(actionItem, key = "btn_weapon_primary", countCto
   }
 }
 
-function mkCircleTankMachineGun(actionItem) {
+function mkCircleTankMachineGun(actionItemW) {
   let isDisabled = mkIsControlDisabled("ID_FIRE_GM_MACHINE_GUN")
   let stateFlags = Watched(0)
   return function() {
+    let actionItem = actionItemW.get()
+    if (actionItem == null)
+      return { watch = actionItemW }
+
     let isAvailable = isActionAvailable(actionItem) && !isDisabled.get()
     let isWaitForAim = !(actionItem?.aimReady ?? true)
     let isInDeadZone = actionItem?.inDeadzone ?? false
@@ -352,7 +356,7 @@ function mkCircleTankMachineGun(actionItem) {
       stateFlags
     )
     return res.__update({
-      watch = [allowShoot, primaryRocketGun, isDisabled]
+      watch = [actionItemW, allowShoot, primaryRocketGun, isDisabled]
       key = "btn_machinegun"
       size = [buttonSize, buttonSize]
       behavior = TouchAreaOutButton

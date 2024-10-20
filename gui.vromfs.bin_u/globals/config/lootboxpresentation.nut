@@ -25,6 +25,8 @@ let customLootboxImages = {
   past_events_box_tanks_seasons_1_to_8 = "past_events_box_seasons_1_to_8.avif"
   past_events_box_ships_seasons_1_to_9 = "past_events_box_seasons_1_to_9.avif"
   past_events_box_tanks_seasons_1_to_9 = "past_events_box_seasons_1_to_9.avif"
+  past_events_box_ships_seasons_1_to_10 = "past_events_box_seasons_1_to_10.avif"
+  past_events_box_tanks_seasons_1_to_10 = "past_events_box_seasons_1_to_10.avif"
 }
 
 let imgIdBySeason = {

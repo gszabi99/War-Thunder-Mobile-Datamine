@@ -60,6 +60,7 @@ let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
     level = info?.level ?? -1
     rank = info?.rank ?? 0
     mRank = info?.mRank ?? 0
+    unitClass = info?.unitClass ?? ""
     country = info?.country ?? ""
     isCurrent = info?.isCurrent ?? false
   }

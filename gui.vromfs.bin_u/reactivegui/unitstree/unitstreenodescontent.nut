@@ -20,8 +20,8 @@ let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { unseenUnits, markUnitSeen } = require("%rGui/unit/unseenUnits.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
-let { selectedCountry, mkVisibleNodes, mkFilteredNodes, mkCountryNodesCfg, mkCountries,
-  currentResearch, researchCountry, unitToScroll, unitsResearchStatus
+let { selectedCountry, mkVisibleNodes, mkFilteredNodes, mkCountryNodesCfg, mkCountries, setResearchedUnitsSeen,
+  currentResearch, researchCountry, unitToScroll, unitsResearchStatus, unseenResearchedUnits
 } = require("unitsTreeNodesState.nut")
 let { slotBarUnitsTree, slotBarTreeHeight } = require("%rGui/slotBar/slotBar.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -503,6 +503,8 @@ let function mkUnitsNode(name, pos, hasDarkScreen) {
                 curSelectedUnit.set(name)
                 scrollToUnit(name, xmbNode)
                 markUnitSeen(curUnit)
+                if(name in unseenResearchedUnits.get()?[selectedCountry.get()])
+                  setResearchedUnitsSeen({ [name] = true })
               }
             })
         }
@@ -697,6 +699,11 @@ let function mkUnitsTreeNodesContent() {
         animResearchRequirements.unsubscribe(onAnimResearchChange)
         selectedCountry.unsubscribe(onCountryChange)
         resetAnim()
+        setResearchedUnitsSeen(unseenResearchedUnits.get().reduce(function(res, units) {
+          foreach (unit, _ in units)
+            res[unit] <- true
+          return res
+        }, {}))
       }
       children = [
         @() pannableArea(
@@ -757,8 +764,11 @@ let function mkUnitsTreeNodesContent() {
         .map(@(country) mkTreeNodesFlag(
           country,
           curCountry,
-          @() selectedCountry.set(country),
-          Computed(@() country in unseenNodesIndex.get()),
+          function () {
+            setResearchedUnitsSeen(unseenResearchedUnits.get()?[selectedCountry.get()] ?? {})
+            selectedCountry.set(country)
+          },
+          Computed(@() (unseenResearchedUnits.get()?[country].len() ?? 0) > 0 || country in unseenNodesIndex.get()),
           {},
           researchCountry.get()
         ))

@@ -136,9 +136,7 @@ recevedRewardAnimIdx.subscribe(function(v) {
 })
 
 let WND_UID = "lootboxOpenRouletteWindow"
-rouletteOpenId.subscribe(function(v) {
-  if (v != null)
-    return
+rouletteOpenId.subscribe(function(_) {
   resultVisibleIdx(-1)
   recevedRewardAnimIdx(-1)
   resultOffsetIdx(-1)
@@ -662,14 +660,8 @@ function mkSkinPlate(reward, rStyle, ovr = {}) {
   let isAvailable = Computed(function() {
     if (id not in myUnits.get())
       return false
-    for (local i = 0; i < rouletteOpenIdx.get(); i++) {
-      let rReward = receivedRewardsAll.get()?[i].viewInfo[0]
-      if (rReward?.rType == "unit" && rReward?.id == id)
-        return true
-      if (i == rouletteOpenIdx.get() - 1)
-        return false
-    }
-    return true
+    let unitIdx = receivedRewardsAll.get().findindex(@(rec) null != rec?.viewInfo.findvalue(@(r) r.rType == G_UNIT && r.id == id))
+    return unitIdx == null || unitIdx <= rouletteOpenIdx.get() - 1
   })
   return @() {
     watch = isAvailable

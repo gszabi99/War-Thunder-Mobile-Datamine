@@ -520,39 +520,9 @@ return {
     params = { itemdef, count, externalTag }
   }, cb)
 
-  add_wp = @(count, cb = null) request({
-    method = "add_wp"
-    params = { count }
-  }, cb)
-
-  add_gold = @(count, cb = null) request({
-    method = "add_gold"
-    params = { count }
-  }, cb)
-
-  add_platinum = @(count, cb = null) request({
-    method = "add_platinum"
-    params = { count }
-  }, cb)
-
-  add_warbond = @(count, cb = null) request({
-    method = "add_warbond"
-    params = { count }
-  }, cb)
-
-  add_event_key = @(count, cb = null) request({
-    method = "add_event_key"
-    params = { count }
-  }, cb)
-
-  add_nybond = @(count, cb = null) request({
-    method = "add_nybond"
-    params = { count }
-  }, cb)
-
-  add_aprilbond = @(count, cb = null) request({
-    method = "add_aprilbond"
-    params = { count }
+  add_currency_no_popup = @(currency, count, cb = null) request({
+    method = "add_currency_no_popup"
+    params = { currency, count }
   }, cb)
 
   apply_client_mission_reward = @(campaign, missionId, cb = null) request({

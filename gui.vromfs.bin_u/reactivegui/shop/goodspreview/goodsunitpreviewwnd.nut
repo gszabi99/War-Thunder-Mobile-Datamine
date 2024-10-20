@@ -23,7 +23,7 @@ let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
 let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
 let { getPlatoonOrUnitName, getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { unitSelUnderlineFullSize, unitPlatesGap, unitPlateSmall, mkUnitRank,
+let { unitSelUnderlineFullSize, unitPlatesGap, unitPlateSmall, mkUnitInfo,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSelectedUnderlineVert,
   unitPlateWidth, unitPlateHeight
 } = require("%rGui/unit/components/unitPlateComp.nut")
@@ -278,7 +278,7 @@ function mkAirBranchUnitPlate(unit, platoonUnit, onSelectUnit){
           mkUnitSelectedGlow(unit, isSelected)
           mkUnitImage(platoonUnitFull)
           mkUnitTexts(platoonUnitFull, loc(p.locId))
-          mkUnitRank(unit)
+          mkUnitInfo(unit)
         ]
       }
       {
@@ -312,7 +312,7 @@ function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
           mkUnitSelectedGlow(unit, isSelected)
           mkUnitImage(platoonUnitFull)
           mkUnitTexts(platoonUnitFull, loc(p.locId))
-          mkUnitRank(unit)
+          mkUnitInfo(unit)
         ]
       }
       onSelectUnit == null ? null : mkUnitSelectedUnderlineVert(unit, isSelected)

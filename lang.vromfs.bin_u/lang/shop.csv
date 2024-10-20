@@ -678,6 +678,8 @@ Bu eşyayı satın almak için bir füze gemisi açın.";"DLS Rounds can only be
 "lootbox/past_events_box_tanks_seasons_1_to_8";"Historical Trophy VI";"Trophée historique VI";"Trofeo Storico VI";"Historische Trophäe VI";"Trofeo Histórico VI";"Исторический трофей VI";"Історичний трофей VI";"Trofeum Historyczne VI";"Troféu Histórico VI";"Tarihi Ganimet VI";"Historická trofej VI";"Ιστορικό τρόπαιο VI";"Trofi Historis VI";"รางวัลอิงประวัติศาสตร์ VI";"히스토리컬 전리품 상자 VI";"往\t期\t战\t利\t品\t箱 VI";"歴史の\tトロフィー VI";"歷\t史\t獎\t盃 VI";;
 "lootbox/past_events_box_ships_seasons_1_to_9";"Historical Trophy VII";"Trophée historique VII";"Trofeo Storico VII";"Historische Trophäe VII";"Trofeo Histórico VII";"Исторический трофей VII";"Історичний трофей VII";"Trofeum Historyczne VII";"Troféu Histórico VII";"Tarihi Ganimet VII";"Historická trofej VII";"Ιστορικό τρόπαιο VII";"Trofi Historis VII";"รางวัลอิงประวัติศาสตร์ VII";"히스토리컬 전리품 상자 VII";"往\t期\t战\t利\t品\t箱 VII";"歴史の\tトロフィー VII";"歷\t史\t獎\t盃\tVII";;
 "lootbox/past_events_box_tanks_seasons_1_to_9";"Historical Trophy VII";"Trophée historique VII";"Trofeo Storico VII";"Historische Trophäe VII";"Trofeo Histórico VII";"Исторический трофей VII";"Історичний трофей VII";"Trofeum Historyczne VII";"Troféu Histórico VII";"Tarihi Ganimet VII";"Historická trofej VII";"Ιστορικό τρόπαιο VII";"Trofi Historis VII";"รางวัลอิงประวัติศาสตร์ VII";"히스토리컬 전리품 상자 VII";"往\t期\t战\t利\t品\t箱 VII";"歴史の\tトロフィー VII";"歷\t史\t獎\t盃\tVII";;
+"lootbox/past_events_box_ships_seasons_1_to_10";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Исторический трофей VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";"Historical Trophy VII";;
+"lootbox/past_events_box_tanks_seasons_1_to_10";"Historical Trophy VIII";"Historical Trophy VIII";"Historical Trophy VIII";"Historical Trophy VIII";"Historical Trophy VIII";"Исторический трофей VIII";"Historical Trophy VIII";"Historical Trophy VIII";"Historical Trophy VIII";"Historical Trophy VIII";"Historical Trophy VIII";"Historical Trophy VIII";"Historical Trophy VIII";"Historical Trophy VIII";"Historical Trophy VIII";"Historical Trophy VIII";"Historical Trophy VIII";"Historical Trophy VIII";;
 "offer/unit/tanks";"General's kit";"Kit du général";"Kit del Generale";"Paket des Generals";"Kit de General";"Набор генерала";"Набір генерала";"Zestaw generała";"Kit do General";"Generalin kiti";"Generálova sada";"Κιτ στρατηγού";"Kit Jenderal";"ชุดนายพล";"육군 사령관 키트";"陆\t军\t司\t令\t礼\t包";"将軍の\tキット";"陸\t軍\t司\t令\t禮\t包";;
 "offer/unit/ships";"Admiral's kit";"Kit de l'amiral";"Kit dell'Ammiraglio";"Paket des Admirals";"Kit del Almirante";"Набор адмирала";"Набір адмірала";"Zestaw admirała";"Kit do Almirante";"Amiralin kiti";"Admirálova sada";"Κιτ ναυάρχου";"Kit Laksamana";"ชุดพลเรือเอก";"해군 사령관 키트";"海\t军\t司\t令\t礼\t包";"提督の\tキット";"海\t軍\t司\t令\t禮\t包";;
 "offer/gold";"Big crate of gold";"Grande boîte d'or";"Grossa cassa con oro";"Große Kiste Gold";"Caja grande de oro";"Большой ящик с золотом";"Великий ящик золота";"Duża skrzynia ze złotem";"Caixote grande de ouro";"Büyük altın kutusu";"Velká bedna se zlatem";"Μεγάλο κιβώτιο με χρυσό";"Peti besar berisi emas";"ทองลังใหญ่";"대형 골드 상자";"大\t箱\t金\t币";"ゴールドの\t大きな\tクレート";"大\t箱\t金\t幣";;
@@ -825,27 +827,27 @@ Coba lagi nanti.";"ไอเทมไม่สามารถซื้อได�
 Change the list of blueprints with the ""REROLL ITEMS"" button and find the rare vehicles you want!
 Select a set of blueprints and purchase them with the ""BUY SELECTED"" button.
 
-The blueprints can be purchased only once a day, but Golden Eagles will help you to overcome the limitation via the button ""SKIP THE WAIT"". The price of the skip resets every day!";"Le dossier de plans représente l'opportunité de rechercher des véhicules uniques! Le choix vous appartient! 
- 
-Changez la liste de plans avec le bouton ""RÉINITIALISER LES OBJETS"" et trouvez les véhicules rares que vous souhaitez! 
-Sélectionnez un lot de plans et achetez-les avec le bouton ""ACHETER LA SELECTION"". 
- 
-Les plans peuvent être achetés seulement une fois par jour mais les Golden Eagles vous aideront à dépasser la limite via le bouton ""NE PAS ATTENDRE"". Le prix pour l'ignorer se réinitiailise chaque jour!";"La cartella dei progetti è un'opportunità per ricercare mezzi unici! Sta a te la scelta! 
- 
-Cambia la lista dei progetti con il tasto ""CAMBIA GLI OGGETTI"" e trova i mezzi rari che desideri! 
-Scegli un set di progetti ed acquistali con il tasto ""ACQUISTA I SELEZIONATI"". 
- 
-I progetti possono essere acquistati solo una volta al giorno, ma con le Aquile Dorate potrai superare questo limite con il tasto ""SALTA L'ATTESA"". Il prezzo di azzeramento si resetta ogni giorno!";"Der Ordner „Blaupausen“ bietet die Möglichkeit zur Forschung an einzigartigen Fahrzeugen! Du hast die Wahl! 
+The blueprints can be purchased only once a day, but Golden Eagles will help you to overcome the limitation via the button ""SKIP THE WAIT"". The price of the skip resets every day!";"Le dossier des plans est l'occasion pour vous de rechercher les véhicules uniques de vos rêves !
 
-Ändere die Liste der Blaupausen mit der Schaltfläche „ARTIKEL NEU WÜRFELN“ und finde die seltenen Fahrzeuge, die du haben möchtest! 
-Wähle einen Satz Blaupausen aus und kaufe sie mit der Schaltfläche „AUSGEWÄHLTE KAUFEN“. 
- 
-Die Blaupausen können nur einmal pro Tag gekauft werden, aber Golden Eagles helfen dir, diese Einschränkung über die Schaltfläche WARTEN ÜBERSPRINGEN zu umgehen. Der Preis für das Überspringen wird jeden Tag zurückgesetzt!";"¡La carpeta de planos es una oportunidad para investigar vehículos únicos! ¡La elección es tuya! 
- 
-¡Cambia la lista de planos con el botón ""VOLVER A ESCOGER OBJETOS"" y encuentra los vehículos raros que quieras! 
-Selecciona un conjunto de planos y cómpralos con el botón ""COMPRAR SELECCIONADOS"". 
- 
-Los planos sólo pueden comprarse una vez al día, pero las Águilas de Oro te ayudarán a superar la limitación mediante el botón ""SALTAR LA ESPERA"". ¡El precio del skip se reajusta cada día!";"Папка чертежей это возможность исследовать уникальную технику! Выбор за тобой!
+Modifiez la liste des plans à l'aide du bouton « RELANCER LES ÉLÉMENTS » et trouvez les véhicules rares de vos désirs !
+Sélectionnez un ensemble de plans et achetez-les avec le bouton « ACHETER LA SÉLECTION ».
+
+Les plans peuvent uniquement être achetés une fois par jour, mais vous pouvez dépenser des aigles dorés pour outrepasser cette limite grâce au bouton « PASSER L'ATTENTE ». Le prix pour passer l'attente est réinitialisé tous les jours !";"La cartella degli schemi è una opportunità per ricercare mezzi unici! La scelta sta a te!
+
+Cambia la lista degli schemi con il tasto ""RILANCIA OGGETTI"" e trova i mezzi più rari!
+Scegli un set di schemi ed acquistali col tasto ""ACQUISTA I SELEZIONATI"".
+
+Gli schemi possono essere acquistati solo 1 volta al giorno, ma con Aquile Dorate puoi bypassare la limitazione con il tasto ""SALTA L'ATTESA"". Il prezzo per saltare l'attesa si resetta ogni giorno!";"Der Ordner „Blaupausen“ bietet dir die Möglichkeit, einzigartige Fahrzeuge zu erforschen! Du hast die Wahl!
+
+Ändere die Liste der Blaupausen mit der Schaltfläche „ELEMENTE NEU WÜRFELN“ und finde die seltenen Fahrzeuge, die du haben möchtest!
+Wähle eine Reihe von Blaupausen aus und kaufe sie mit der Schaltfläche „AUSGEWÄHLTE KAUFEN“.
+
+Die Blaupausen können nur einmal am Tag gekauft werden, aber Golden Eagles helfen dir, diese Einschränkung über die Schaltfläche „WARTEN ÜBERSPRINGEN"" zu überwinden. Der Preis für das Überspringen wird jeden Tag zurückgesetzt!";"¡La carpeta de planos es una oportunidad para investigar vehículos únicos! ¡La elección es tuya!
+
+¡Cambia la lista de planos con el botón ""VOLVER A ESCOGER OBJETOS"" y encuentra los vehículos raros que quieras!
+Selecciona un conjunto de planos y cómpralos con el botón ""COMPRAR SELECCIONADOS"".
+
+Los planos sólo se pueden comprar una vez al día, pero las Águilas de Oro te ayudará a superar la limitación mediante el botón ""SALTAR LA ESPERA"". ¡El precio del salto se reajusta cada día!";"Папка чертежей это возможность исследовать уникальную технику! Выбор за тобой!
 
 Меняй список чертежей кнопкой ""СМЕНИТЬ ПРЕДМЕТЫ"" и найди желанную редкую технику!
 Выбирай набор чертежей и приобретай его по кнопке ""КУПИТЬ ВЫБРАННЫЙ"".
@@ -854,52 +856,52 @@ Los planos sólo pueden comprarse una vez al día, pero las Águilas de Oro te a
  
 Змінюйте список креслень за допомогою кнопки «ЗАМІНИТИ ПРЕДМЕТИ» та знаходьте рідкісну техніку!
 Виберіть потрібні креслення та придбайте їх, натиснувши кнопку «КУПИТИ ВИБРАНЕ».
- 
+
 Креслення можна придбати лише раз на день, але натиснувши кнопку «ПРОПУСТИТИ ОЧІКУВАННЯ» та сплативши Золоті орли, ви можете обійти це обмеження. Ціна таких пропусків щодня скидається!";"Folder ze schematami to okazja do badania unikalnych maszyn! Wybór należy do ciebie! 
- 
-Zmień listę planów za pomocą przycisku „PONOWNIE WYLOSUL PRZEDMIOTY” i znajdź rzadkie MASZYNY, które chcesz! 
-Wybierz zestaw schematów i kup je za pomocą przycisku „KUP WYBRANE”. 
+
+Zmień listę schematów za pomocą przycisku „PONOWNIE WYLOSUL PRZEDMIOTY” i znajdź rzadkie MASZYNY, które chcesz! Wybierz zestaw schematów i kup je za pomocą przycisku „KUP WYBRANE”. 
  
 Schematy można kupić tylko raz dziennie, ale Złote Orły pomogą ci pokonać to ograniczenie za pomocą przycisku „POMIŃ OCZEKIWANIE”. Cena pominięcia resetuje się każdego dnia!";"A pasta de projetos é uma oportunidade de pesquisar veículos únicos! A escolha é sua! 
  
 Altere a lista de projetos com o botão ""NOVOS ITENS"" e encontre os veículos raros que você deseja! 
 Selecione um conjunto de projetos e compre-os pelo botão ""COMPRAR SELECIONADOS"".
  
-Só é possível comprar projetos uma vez por dia, mas, com Águias Douradas, você poderá utilizar o botão ""PULAR ESPERA"" para ignorar essa limitação. O custo do pulo é reiniciado todos os dias!";"Şablonlar klasörü benzersiz araçları araştırmak için bir fırsattır! Seçim sizin! 
- 
-“ÖĞELERİ YENİLE” düğmesi ile şablon listesini değiştirin ve istediğiniz nadir araçları bulun! 
+Só é possível comprar projetos uma vez por dia, mas, com Águias Douradas, você poderá utilizar o botão ""PULAR ESPERA"" para ignorar essa limitação. O custo do pulo é reiniciado todos os dias!";"Şablonlar klasörü benzersiz araçları araştırmak için bir fırsattır! Seçim sizin! “ÖĞELERİ YENİLE” düğmesi ile şablon listesini değiştirin ve istediğiniz nadir araçları bulun! 
+
 Bir dizi şablon seçin ve “SEÇİLENLERİ SATIN AL” düğmesi ile satın alın. 
  
 Şablonlar günde sadece bir kez satın alınabilir, ancak Altın Kartal ile “BEKLEMEYİ ATLA” düğmesini kullanarak sınırlamayı aşabilirsiniz. Atlama fiyatı her gün sıfırlanır!";"Složka s výkresy je příležitostí k výzkumu jedinečné bojové techniky! Výběr je na vás! 
- 
-Změňte složku s výkresy pomocí tlačítka „Reroll předmětů“ a najděte vzácné stroje,! 
+
+Změňte složku s výkresy pomocí tlačítka „Reroll předmětů“ a najděte vzácné stroje! 
 Vyberte si složku výkresů a kupte ji pomocí tlačítka „KOUPIT VYBRANÉ“. 
  
-Výkresy lze zakoupit pouze jednou denně, ale Zlaté orlice vám pomohou toto omezení překonat pomocí tlačítka „Přeskočit čekání“. Cena přeskočení se každý den resetuje!";"Ο φάκελος με τα σχέδια είναι μια ευκαιρία για να ερευνήσετε μοναδικά οχήματα! Η επιλογή είναι δική σας! 
- 
-Αλλάξτε τη λίστα των σχεδίων με το κουμπί «ΑΝΑΚΑΤΕΨΤΕ ΞΑΝΑ ΤΑ ΑΝΤΙΚΕΙΜΕΝΑ» και βρείτε τα σπάνια οχήματα που θέλετε! 
-Επιλέξτε ένα σύνολο σχεδίων και αγοράστε τα με το κουμπί «ΑΓΟΡΑ ΕΠΙΛΕΓΜΕΝΩΝ». 
- 
-Μπορείτε να αγοράσετε σχέδια μόνο μία φορά την ημέρα αλλά οι Χρυσοί Αετοί θα σας βοηθήσουν να ξεπεράσετε αυτόν τον περιορισμό με το κουμπί «ΠΑΡΑΛΕΙΨΗ ΑΝΑΜΟΝΗΣ». Κάθε μέρα γίνεται επαναφορά της τιμής για την παράλειψη!";"Folder blueprint adalah kesempatan untuk meneliti kendaraan unik! Pilihan ada di tanganmu! 
- 
-Ganti daftar blueprint dengan tombol ""REROLL ITEM"" dan temukan kendaraan langka yang kamu inginkan! 
-Pilih set blueprint dan beli dengan tombol ""BELI YANG DIPILIH"". 
- 
-Blueprint hanya bisa dibeli sebanyak satu kali sehari, tetapi Elang Emas akan membantumu mengatasi batasan itu dengan tombol ""LEWATI MASA TUNGGU"". Harga pelewatan akan direset setiap hari!";"แฟ้มพิมพ์เขียวเป็นโอกาสในการวิจัยพาหนะพิเศษต่างๆ! คุณเป็นคนเลือกเอง! 
- 
-เปลี่ยนรายการพิมพ์เขียวด้วยปุ่ม ""สุ่มไอเทม"" แล้วหาพาหนะหายากที่คุณต้องการ! 
-เลือกเซ็ตพิมพ์เขียวแล้วซื้อด้วยปุ่ม ""ซื้อรายการที่เลือก""
- 
-สามารถซื้อพิมพ์เขียวได้เพียงวันละครั้ง แต่อินทรีทองช่วยให้คุณข้ามการจำกัดได้ด้วยปุ่ม ""ข้ามการรอ"" ราคาการข้ามจะรีเซ็ตทุกวัน!";"청사진 뭉치로 특별한 장비를 연구해보세요! n\ n\ ""아이템 리롤"" 버튼을 통해 청사진의 목록을 바꾸면, 원하는 희귀 장비의 청사진을 찾을 수 있습니다!
 
+Výkresy lze zakoupit pouze jednou denně, ale Zlaté orlice vám pomohou toto omezení překonat pomocí tlačítka „Přeskočit čekání“. Cena přeskočení se každý den resetuje!";"Ο φάκελος με τα σχέδια είναι μια ευκαιρία για να ερευνήσετε μοναδικά οχήματα! Η επιλογή είναι δική σας!
+
+Αλλάξτε τη λίστα των σχεδίων με το κουμπί «ΑΝΑΚΑΤΕΨΤΕ ΞΑΝΑ ΤΑ ΑΝΤΙΚΕΙΜΕΝΑ» και βρείτε τα σπάνια οχήματα που θέλετε!
+Επιλέξτε ένα σύνολο σχεδίων και αγοράστε τα με το κουμπί «ΑΓΟΡΑ ΕΠΙΛΕΓΜΕΝΩΝ».
+
+Μπορείτε να αγοράσετε σχέδια μόνο μία φορά την ημέρα αλλά οι Χρυσοί Αετοί θα σας βοηθήσουν να ξεπεράσετε αυτόν τον περιορισμό με το κουμπί «ΠΑΡΑΛΕΙΨΗ ΑΝΑΜΟΝΗΣ». Κάθε μέρα γίνεται επαναφορά της τιμής για την παράλειψη!";"Folder blueprint adalah kesempatan untuk meneliti kendaraan unik! Pilihan ada di tanganmu!
+
+Ganti daftar blueprint dengan tombol ""REROLL ITEM"" dan temukan kendaraan langka yang kamu inginkan!
+Pilih set blueprint dan beli dengan tombol ""BELI YANG DIPILIH"".
+
+Blueprint hanya bisa dibeli sebanyak satu kali sehari, tetapi Elang Emas akan membantumu mengatasi batasan itu dengan tombol ""LEWATI MASA TUNGGU"". Harga pelewatan akan direset setiap hari!";"แฟ้มพิมพ์เขียวเป็นโอกาสในการวิจัยพาหนะพิเศษต่างๆ! คุณเป็นคนเลือกเอง!
+
+เปลี่ยนรายการพิมพ์เขียวด้วยปุ่ม ""สุ่มไอเทม"" แล้วหาพาหนะหายากที่คุณต้องการ!
+เลือกเซ็ตพิมพ์เขียวแล้วซื้อด้วยปุ่ม ""ซื้อรายการที่เลือก""
+
+สามารถซื้อพิมพ์เขียวได้เพียงวันละครั้ง แต่อินทรีทองช่วยให้คุณข้ามการจำกัดได้ด้วยปุ่ม ""ข้ามการรอ"" ราคาการข้ามจะรีเซ็ตทุกวัน!";"청사진 뭉치로 특별한 장비를 연구해보세요!
+
+""아이템 리롤"" 버튼을 통해 청사진의 목록을 바꾸면, 원하는 희귀 장비의 청사진을 찾을수 있습니다!
 원하는 청사진을 선택한 뒤 ""선택한 아이템 구매"" 버튼을 눌러 청사진을 구매할 수 있습니다. 
  
- 청사진은 하루에 한 번만 구매할 수 있지만 골든 이글을 사용하여 ""대기 시간 건너뛰기"" 버튼을 누르면 제한 없이 구매할 수 있습니다. 건너뛰기 기능의 가격은 매일 초기화됩니다!";"开\t启\t蓝\t图\t文\t件\t夹\t即\t有\t机\t会\t研\t发\t特\t殊\t载\t具！\t研\t发\t选\t项\t由\t您\t定！
+청사진은 하루에 한 번만 구매할 수 있지만 골든 이글을 사용하여 ""대기 시간 건너뛰기"" 버튼을 누르면 제한 없이 구매할 수 있습니다. 건너뛰기 기능의 가격은 매일 초기화됩니다!";"开\t启\t蓝\t图\t文\t件\t夹\t即\t有\t机\t会\t研\t发\t特\t殊\t载\t具！\t研\t发\t选\t项\t由\t您\t定！
 
 点\t击\t“重\t新\t抽\t取”\t按\t钮\t即\t可\t更\t改\t当\t前\t蓝\t图\t阵\t容，\t直\t到\t找\t到\t您\t心\t仪\t的\t稀\t有\t载\t具\t为\t止！
 选\t定\t所\t需\t蓝\t图，\t点\t击\t“购\t买\t选\t中\t道\t具”\t按\t钮\t即\t可\t一\t键\t将\t选\t定\t蓝\t图\t收\t入\t囊\t中。
 
-蓝\t图\t每\t天\t仅\t限\t购\t买 1 次，\t花\t费\t金\t鹰\t可\t跳\t过\t补\t货\t时\t间，\t跳\t过\t等\t待\t时\t间\t所\t需\t的\t花\t费\t每\t天\t也\t会\t进\t行\t重\t置。";"設計図\tフォルダは、\tユニークな\t機体を\t研究できる\tチャンスです！\t選択肢はあなた\t次第！\t
+蓝\t图\t每\t天\t仅\t限\t购\t买 1 次，\t点\t击\t“跳\t过\t按\t钮”\t即\t可\t花\t费\t金\t鹰\t跳\t过\t补\t货\t时\t间。\t该\t选\t项\t所\t需\t花\t费\t每\t天\t也\t会\t进\t行\t重\t置。";"設計図\tフォルダは、\tユニークな\t機体を\t研究できる\tチャンスです！\t選択肢はあなた\t次第！\t
 
 「アイテムを\tリロール」\tボタンで\t設計図の\tリストを\t変更し、\t希望の\tレア\t機体を\t探すことができます！\t
 設計図の\tセットを\t選択し、\t「選択したものを\t購入」\tボタンで\t購入します。\t
