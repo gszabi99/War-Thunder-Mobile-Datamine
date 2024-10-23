@@ -1074,6 +1074,9 @@ return {
     "jp_armoredcruiser_ikoma": {
       "": "camo_darkgrey_big_spots"
     },
+    "jp_battlecruiser_amagi": {
+      "": "camo_darkblue_waves"
+    },
     "jp_battlecruiser_kongo": {
       "": "camo_redgreen_spots"
     },

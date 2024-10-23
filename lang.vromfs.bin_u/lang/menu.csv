@@ -331,43 +331,43 @@ Biaya:";"แน่ใจหรือไม่ว่าต้องการส�
 这\t将\t花\t费：";"本当に {item} を\t購入しますか? 次の\t費用がかかります:";"確\t定\t要\t購\t買 {item}？
 這\t將\t花\t費：";;
 "shop/needMoneyQuestion_buy";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Вы уверены, что хотите купить {item}?
-Стоимость:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";"Are you sure you want to buy {item}?
-It will cost you:";;
+It will cost you:";"Voulez-vous vraiment acheter « {item} » ?
+Cela vous coûtera :";"Sei sicuro di voler acquistare {item}?
+Ti costerà:";"Möchtest Du wirklich {item} kaufen?
+Die Kosten hierfür betragen:";"¿Estás seguro de que quieres comprar {item}?
+Te costará:";"Вы уверены, что хотите купить {item}?
+Стоимость:";"Ви впевнені, що хочете купити {item}?
+Вартість покупки:";"Czy na pewno chcesz kupić {item}?
+Będzie cię to kosztować:";"Quer mesmo comprar {item}?
+Custará:";"{item} almak istediğinden emin misiniz?
+Bedeli:";"Opravdu chceš koupit {item}?
+Bude tě to stát:";"Θέλετε σίγουρα να παραγγείλετε {item};
+Θα σας κοστίσει:";"Kamu yakin ingin membeli {item}?
+Biaya:";"แน่ใจหรือไม่ว่าต้องการซื้อ {item}?
+ต้นทุนที่ต้องใช้คือ:";"{item} 을(를) 구입하시겠습니까?
+비용은 다음과 같습니다:";"确\t定\t要\t购\t买 {item}？
+这\t将\t花\t费：";"{item} を\t購入してよろしいですか？
+次の\tコストがかかります：";"你\t確\t定\t要\t購\t買\t{item}\t嗎？
+這\t會\t需\t要\t消\t耗：";;
 "shop/needMoneyQuestion_wait";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Вы хотите пропустить ожидание?
-Стоимость:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";"Do you want to skip?
-It will cost you:";;
+It will cost you:";"Voulez-vous passer ?
+Cela vous coûtera :";"Sei sicuro di voler saltare l'attesa?
+Ti costerà:";"Möchtest du überspringen?
+Das kostet dich:";"¿Quieres saltarlo?
+Te costará:";"Вы хотите пропустить ожидание?
+Стоимость:";"Ви впевнені, що хочете пропустити?
+Вартість:";"Czy chcesz pominąć? 
+Będzie cię to kosztować:";"Quer pular?
+Custará:";"Atlamak istiyor musunuz?
+Ücreti:";"Chceš přeskočit?
+Bude tě to stát:";"Θέλετε να το παραλείψετε;
+Θα σας κοστίσει:";"Kamu ingin melewati?
+Biaya:";"ต้องการข้ามหรือไม่?
+ต้นทุนที่ต้องใช้คือ:";"건너뛰시겠습니까?
+비용은 다음과 같습니다:";"确\t定\t要\t跳\t过\t吗 ？
+这\t将\t花\t费：";"スキップしますか？
+次の\tコストがかかります：";"你\t是\t否\t要\t跳\t過？
+這\t會\t需\t要\t消\t耗：";;
 "shop/needMoneyQuestion_build";"Are you sure you want to order {item}?
 Cost of required parts:";"Êtes-vous sûr de vouloir commander {item}?
 Coût des pièces nécessaires:";"Sei sicuro di voler ordinare {item}?
@@ -1416,7 +1416,7 @@ Membutuhkan: {mode}";"คุณไม่มีสิทธิ์เข้าถ�
 "upgradeType/upgraded";"PREMIUM";"PREMIUM";"PREMIUM";"PREMIUM";"PREMIUM";"ПРЕМИУМ";"ПРЕМІУМ";"PREMIUM";"PREMIUM";"PREMİUM";"PRÉMIUM";"PREMIUM";"PREMIUM";"พรีเมียม";"프리미엄";"高\t级";"プレミアム";"高\t級";;
 "changeCampaignShort";"Change campaign";"Changer de campagne";"Cambia campagna";"Kampagne ändern";"Cambiar сampaña";"Сменить кампанию";"Змінити кампанію";"Zmień kampanię";"Mudar de campanha";"Harekatı değiştir";"Změna kampaně";"Αλλάξτε εκστρατεία";"Ganti kampanye";"เปลี่ยนแคมเปญ";"캠페인 변경";"切\t换\t军\t种";"キャンペーンを\t変更";"變\t更\t兵\t種";;
 "changeCampaign";"Change type of armed forces";"Choisissez le type de forces armées";"Cambia tipologia di forze armate";"Waffengattung ändern";"Cambiar el tipo de fuerzas armadas";"Сменить вид вооруженных сил";"Змінити вигляд збройних сил";"Zmień rodzaj sił zbrojnych";"Alterar o tipo de forças armadas";"Silahlı kuvvet tipini değiştir";"Změnit typ bojové techniky";"Αλλάξτε τύπο ενόπλων δυνάμεων";"Ganti jenis angkatan bersenjata";"เปลี่ยนประเภทของกองทัพ";"장비 변경";"切\t换\t军\t种";"軍隊の\tタイプを\t変更";"切\t換\t部\t隊\t類\t型";;
-"chooseCampaign";"Choose type of armed forces";"Choisissez le type de forces armées";"Cambia tipologia di forze armate";"Waffengattung wählen";"Escoger el tipo de fuerzas armadas";"Выберите вид вооруженных сил";"Виберіть вид збройних сил";"Wybierz rodzaj sił zbrojnych";"Escolher o tipo de forças armadas";"Silahlı kuvvetler tipini seç";"Vyber typ bojové techniky";"Επιλέξτε τύπο ενόπλων δυνάμεων";"Pilih jenis angkatan bersenjata";"เลือกประเภทของกองทัพ";"장비 변경";"选\t择\t军\t种";"軍隊の\tタイプを\t選択";"選\t擇\t部\t隊\t類\t型";;
+"chooseCampaign";"Choose type of armed forces";"Choose type of armed forces";"Choose type of armed forces";"Choose type of armed forces";"Choose type of armed forces";"Выберите вид вооруженных сил";"Choose type of armed forces";"Choose type of armed forces";"Choose type of armed forces";"Choose type of armed forces";"Choose type of armed forces";"Choose type of armed forces";"Choose type of armed forces";"Choose type of armed forces";"Choose type of armed forces";"Choose type of armed forces";"Choose type of armed forces";"Choose type of armed forces";;
 "campaign/ships";"Ships";"Navires";"Navi";"Schiffe";"Barcos";"Корабли";"Кораблі";"Okręty";"Navios";"Gemiler";"Lodě";"Πλοία";"Kapal";"เรือ";"함선";"海\t战";"艦艇";"水\t面\t艦\t艇";;
 "campaign/tanks";"Tanks";"Chars";"Carri armati";"Panzer";"Tanques";"Танки";"Танки";"Czołgi";"Tanques";"Tanklar";"Tanky";"Τανκς";"Tank";"รถถัง";"전차";"陆\t战";"戦車";"地\t面\t載\t具";;
 "campaign/air";"Aviation";"Aviation";"Aviazione";"Luftwaffe";"Aviación";"Авиация";"Авіація";"Lotnictwo";"Aviação";"Hava";"Letadla";"Αεροπορία";"Penerbangan";"อากาศยาน";"공군";"空\t战";"空軍";"飛\t行";;
@@ -1791,6 +1791,11 @@ Kamu tidak akan melihat lebih banyak atau lebih sedikit iklan, tetapi akan lebih
 "events/noAccess";"You can't get into battle if you don't have access to the event";"Vous ne pouvez pas combattre si vous n'avez pas accès à l'événement";"Non puoi entrare in battaglia se non hai l'accesso all' evento";"Du kannst nicht am Kampf teilnehmen, wenn du keinen Zugang zum Ereignis hast";"No puedes entrar en batalla si no tienes acceso al evento";"Нельзя попасть в бой, если у вас нет доступа к событию";"Ви не можете взяти участь у битві, якщо у вас немає доступу до події";"Nie możesz wziąć udziału w bitwie, jeśli nie masz dostępu do wydarzenia";"Não pode entrar na batalha se não tiver acesso ao evento";"Etkinliğe erişiminiz yoksa savaşa giremezsiniz";"Pokud nemáš přístup k akci, nemůžeš se dostat do bitvy";"Δεν μπορείτε να μπείτε στη μάχη αν δεν έχετε πρόσβαση στο γεγονός";"Kamu tidak bisa masuk ke pertempuran jika tidak punya akses ke event";"คุณไม่สามารถเข้าร่วมการต่อสู้ได้หากไม่มีสิทธิ์เข้าร่วมอีเวนต์";"이벤트 접근 권한 없이는 전투에 참여할 수 없습니다.";"如\t未\t获\t取\t对\t应\t权\t限\t资\t格\t则\t无\t法\t参\t加\t战\t斗";"イベントに\tアクセスできなければ、\tバトルに\t参加することはできません";"如\t果\t沒\t有\t參\t加\t活\t動\t的\t權\t限，\t就\t無\t法\t加\t入\t戰\t鬥";;
 "events/choosePrize";"Choose a prize";"Choisissez un prix.";"Scegli un premio";"Wähle einen Preis";"Escoge un premio";"Выберите приз";"Виберіть приз";"Wybierz nagrodę";"Escolha um prêmio";"Bir ödül seçin";"Vyber si odměnu";"Επιλέξτε ένα έπαθλο";"Pilih hadiah";"เลือกรางวัล";"보상 선택";"选\t择\t一\t项\t奖\t励";"賞品の\t選択";"選\t擇\t獎\t品";;
 "events/prizesToChoose";"Prizes to choose from";"Sélection de prix";"Premi da scegliere";"Preise zur Auswahl";"Premios a elegir";"Призы на выбор";"Призи на вибір";"Nagrody do wyboru";"Prêmios disponíveis";"Seçilecek ödüller";"Lze vybírat z odměn";"Έπαθλα για να επιλέξετε";"Pilihan hadiah";"รางวัลที่มีให้เลือก";"선택 가능한 보상";"奖\t励\t列\t表";"選択賞品";"可\t選\t擇\t的\t獎\t品";;
+"events/continueToChoose";"Continue to choose a reward";"Continue to choose a reward";"Continue to choose a reward";"Continue to choose a reward";"Continue to choose a reward";"Продолжите, чтобы выбрать награду";"Continue to choose a reward";"Continue to choose a reward";"Continue to choose a reward";"Continue to choose a reward";"Continue to choose a reward";"Continue to choose a reward";"Continue to choose a reward";"Continue to choose a reward";"Continue to choose a reward";"Continue to choose a reward";"Continue to choose a reward";"Continue to choose a reward";;
+"events/countPrizes";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=награда/награды}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";"{countPrize} {count=reward/rewards}";;
+"events/countPrizesChoosen";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Выбрано {count} {count=награда/награды} из {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";"Selected {count} {count=reward/rewards} out of {maxCount}";;
+"events/selectPrizeToReceive";"Select the reward you want to receive";"Select the reward you want to receive";"Select the reward you want to receive";"Select the reward you want to receive";"Select the reward you want to receive";"Выберите награду, которую хотите получить";"Select the reward you want to receive";"Select the reward you want to receive";"Select the reward you want to receive";"Select the reward you want to receive";"Select the reward you want to receive";"Select the reward you want to receive";"Select the reward you want to receive";"Select the reward you want to receive";"Select the reward you want to receive";"Select the reward you want to receive";"Select the reward you want to receive";"Select the reward you want to receive";;
+"events/warningSelectPrize";"No reward selected";"No reward selected";"No reward selected";"No reward selected";"No reward selected";"Награда не выбрана";"No reward selected";"No reward selected";"No reward selected";"No reward selected";"No reward selected";"No reward selected";"No reward selected";"No reward selected";"No reward selected";"No reward selected";"No reward selected";"No reward selected";;
 "insufficientFunds";"Insufficient funds";"Fonds insuffisants";"Fondi insufficienti";"Unzureichende Mittel";"Fondos insuficientes";"Недостаточно средств";"Недостатньо коштів";"Niewystarczająca ilość środków";"Fundos insuficientes";"Yetersiz para";"Nedostatečné prostředky";"Ανεπαρκείς πόροι";"Dana tidak cukup";"เงินไม่เพียงพอ";"자금이 부족합니다";"资\t金\t不\t足";"残高不足です";"資\t金\t不\t足";;
 "playBattles";"Play battles : {count}";"Jouer des batailles: {count}";"Gioca le battaglie : {count}";"Schlachten spielen: {count}";"Juega batallas : {count}";"Сыграй бой : {count}";"Зіграти битв: {count}";"Rozegraj {count} bitew";"Jogar batalhas : {count}";"Savaş yap: {count}";"Hrej bitvy: {count}";"Παίξτε μάχες: {count}";"Mainkan pertempuran: {count}";"เล่นการต่อสู้ : {count}";"{count}번의 전투 플레이";"参\t加\t战\t斗\t数：\t{count}";"バトルを\tプレイせよ：\t{count}";"參\t與\t戰\t鬥\t數：\t{count}";;
 "playOneBattle";"Play battle";"Jouer une bataille";"Gioca una battaglia";"Spiele eine Schlacht";"Juega una batalla";"Сыграй бой";"Зіграти бій";"Zagraj bitwę";"Jogar batalha";"Savaş yap";"Hrej bitvu";"Παίξτε μάχη";"Mainkan pertempuran";"เล่นการต่อสู้";"전투 플레이";"进\t行\t游\t戏";"バトルを\tプレイ";"進\t行\t戰\t鬥";;

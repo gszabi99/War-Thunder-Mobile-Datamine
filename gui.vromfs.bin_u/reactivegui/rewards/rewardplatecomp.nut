@@ -3,7 +3,7 @@ let { round } =  require("math")
 let { getCurrencyImage } = require("%appGlobals/config/currencyPresentation.nut")
 let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { fontLabel, labelHeight, REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
-  getRewardPlateSize, progressBarHeight
+  getRewardPlateSize, progressBarHeight, rewardTicketDefaultSlots
 } = require("rewardStyles.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -26,7 +26,7 @@ let { mkBattleModEventUnitText, mkBattleModRewardUnitImage, mkBattleModCommonTex
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { NO_DROP_LIMIT } = require("%rGui/rewards/rewardViewInfo.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
-let { mkRewardSlider, defaultSlots } = require("%rGui/rewards/components/mkRewardSlider.nut")
+let { mkRewardSlider } = require("%rGui/rewards/components/mkRewardSlider.nut")
 let { openRewardPrizeView } = require("%rGui/rewards/rewardPrizeView.nut")
 
 let textPadding = [0, hdpx(5)]
@@ -601,6 +601,7 @@ function mkRewardPlateBlueprintTexts(r, rStyle) {
 
 function mkRewardPlatePrizeTicketImage(r, rStyle, rewardCtors) {
   let { prizeTicketsCfg = {} } = serverConfigs.get()
+  let { needShowPreview = true } = rStyle
   let { id } = r
 
   if (!id || id not in prizeTicketsCfg)
@@ -609,12 +610,13 @@ function mkRewardPlatePrizeTicketImage(r, rStyle, rewardCtors) {
   let rewards = []
   foreach(value in (prizeTicketsCfg?[id].variants ?? []))
     foreach(reward in value)
-      rewards.append(reward.__update({ slots = defaultSlots, rType = reward.gType }))
+      rewards.append(reward.__update({ slots = rewardTicketDefaultSlots, rType = reward.gType }))
 
-  return mkRewardSlider(rewards, rewardCtors, @() openRewardPrizeView(rewards, rewardCtors), rStyle)
+  return mkRewardSlider(rewards, rewardCtors, @() !needShowPreview ? null
+    : openRewardPrizeView(rewards, rewardCtors), rStyle)
 }
 
-let mkRewardPlatePrizeTicketTitle = @(slots, rStyle) {
+let mkRewardPlatePrizeTicketTitle = @(r, slots, rStyle) {
   hplace = ALIGN_CENTER
   vplace = ALIGN_TOP
   children = {
@@ -622,7 +624,7 @@ let mkRewardPlatePrizeTicketTitle = @(slots, rStyle) {
     behavior = Behaviors.TextArea
     maxWidth = rStyle.boxSize * slots
     halign = ALIGN_CENTER
-    text = loc("events/choosePrize")
+    text = r?.label ?? loc("events/choosePrize")
     color = 0xFFC5C5C5
   }.__update(fontVeryTinyAccented)
 }
@@ -742,7 +744,7 @@ let simpleRewardPlateCtors = {
 let complexRewardPlateCtors = {
   prizeTicket = {
     image = @(r, rStyle) mkRewardPlatePrizeTicketImage(r, rStyle, simpleRewardPlateCtors)
-    texts = @(_, rStyle) mkRewardPlatePrizeTicketTitle(defaultSlots, rStyle)
+    texts = @(r, rStyle) mkRewardPlatePrizeTicketTitle(r, rewardTicketDefaultSlots, rStyle)
   }
 }
 

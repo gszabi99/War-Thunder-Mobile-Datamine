@@ -138,4 +138,5 @@ let getOptValue = @(id) isSettingsAvailable.get() ? get_gui_option(id) : null
 return export.__update({
   mkOptionValue
   getOptValue
+  optionValues
 })

@@ -758,4 +758,11 @@ return {
     progressId = PROGRESS_UNIT
     progressValue = unitName
   }, cb)
+
+  apply_prize_tickets = @(id, rewardIndexes, cb = null) request({
+    method = "apply_prize_tickets"
+    params = { id, rewardIndexes }
+    progressId = PROGRESS_REWARD
+    progressValue = rewardIndexes
+  }, cb)
 }

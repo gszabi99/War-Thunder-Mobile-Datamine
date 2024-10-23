@@ -39,16 +39,17 @@ let { eventSeason } = require("%rGui/event/eventState.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
 let { mkBattleModEventUnitText } = require("%rGui/rewards/battleModComp.nut")
-let { REWARD_STYLE_MEDIUM, getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
+let { REWARD_STYLE_MEDIUM, getRewardPlateSize, rewardTicketDefaultSlots } = require("%rGui/rewards/rewardStyles.nut")
 let { ignoreSubIdRTypes, getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkProgressBarText
-} = require("%rGui/rewards/rewardPlateComp.nut")
+let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkProgressBarText,
+  mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { mkMsgConvertBlueprint } = require("unseenPurchaseAddMessage.nut")
+let { showPrizeSelectDelayed, ticketToShow } = require("%rGui/rewards/rewardPrizeSelect.nut")
 
 let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel",
-  "decorator", "medal", "booster", "skin",
+  "decorator", "medal", "booster", "skin", "prizeTicket",
   "stat", "battleMod", "blueprint"
 ]
 
@@ -145,8 +146,9 @@ let stackData = Computed(function() {
     skin = [],
     battleMod = []
     blueprint = []
+    prizeTicket = []
   } = stacksSorted
-  let rewardIcons = [].extend(currency, premium, item, decorator, booster, skin, blueprint)
+  let rewardIcons = [].extend(currency, premium, item, decorator, booster, skin, blueprint, prizeTicket)
   let unitPlates = [].extend(unitUpgrade, unit)
 
   local lastIdx = -1
@@ -506,6 +508,27 @@ function mkBlueprintRewardIcon(rewardInfo, rStyle) {
   }
 }
 
+function mkPrizeTicketIcon(rewardInfo, rStyle) {
+  let reward = getRewardsViewInfo([rewardInfo])?[0]
+  let startDelay = rewardInfo.startDelay
+
+  let size = getRewardPlateSize(rewardTicketDefaultSlots, rStyle)
+
+  return {
+    size
+    halign = ALIGN_CENTER
+    children = [
+      {
+        hplace = ALIGN_CENTER
+        vplace = ALIGN_CENTER
+        children = mkHighlight(startDelay, aRewardIconFlareScale)
+      }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+      mkRewardPlate({ label = loc("events/continueToChoose")}.__merge(reward),
+        { needShowPreview = false }.__merge(rStyle))
+    ]
+  }
+}
+
 let rewardCtors = {
   currency = {
     mkIcon = @(rewardInfo) mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id)
@@ -537,6 +560,11 @@ let rewardCtors = {
     mkIcon = @(rewardInfo) mkBlueprintRewardIcon(rewardInfo, REWARD_STYLE_MEDIUM)
     mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay,
       "\n".concat(loc("blueprints/title", {count = rewardInfo.count}), loc(getUnitLocId(rewardInfo.id))))
+  }
+  prizeTicket = {
+    mkIcon = @(rewardInfo) mkPrizeTicketIcon(rewardInfo, REWARD_STYLE_MEDIUM)
+    mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, loc("events/countPrizes",
+      { countPrize = rewardInfo.count, count = rewardInfo.count }))
   }
 }
 
@@ -997,7 +1025,10 @@ let messageWnd = @(onClick){
 }
 
 function onClick(){
-  if((stackData.get()?.convertions.len() ?? 0) > 0){
+  if (ticketToShow.get())
+    showPrizeSelectDelayed()
+
+  if ((stackData.get()?.convertions.len() ?? 0) > 0) {
     close()
     showAddRewardMessage()
   }

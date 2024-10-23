@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
-let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
+let { getRewardPlateSize, rewardTicketDefaultSlots } = require("%rGui/rewards/rewardStyles.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorDoubleSideX, simpleVerGrad } = require("%rGui/style/gradients.nut")
 
@@ -10,7 +10,6 @@ let plateHeight = hdpx(8)
 let plateGap = hdpx(8)
 let timeToDelay = 5.0
 let durationTime = 0.5
-let defaultSlots = 2
 
 let triggerStartAnimSlider = "triggerStartAnimSlider"
 
@@ -42,7 +41,7 @@ function mkRewardSlider(rewards, rewardCtors, onClick, rStyle = {}) {
   activeSlideIdx.subscribe(@(idx) idx == 0 ? resetTimeout(timeToDelay, @() anim_start(triggerStartAnimSlider)) : null)
 
   let slidesCount = rewards.len()
-  let size = getRewardPlateSize(defaultSlots, rStyle)
+  let size = getRewardPlateSize(rewardTicketDefaultSlots, rStyle)
   let containerMask = mkBitmapPictureLazy(size[0], 4, mkGradientCtorDoubleSideX(0, defColor, 0))
 
   let mkRewardPlateImage = @(r, rewardStyle) (rewardCtors?[r?.rType] ?? rewardCtors.unknown).image(r, rewardStyle)
@@ -140,4 +139,4 @@ function mkRewardSlider(rewards, rewardCtors, onClick, rStyle = {}) {
   }
 }
 
-return { mkRewardSlider, defaultSlots }
+return { mkRewardSlider }

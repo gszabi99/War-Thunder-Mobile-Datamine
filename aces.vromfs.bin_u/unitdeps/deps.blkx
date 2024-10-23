@@ -1,9 +1,9 @@
 {
-  "version": "1.10.0.142",
-  "grpHash": "ea7979e364830a50dc1d61ac44ff2418",
+  "version": "1.10.0.150",
+  "grpHash": "74bfefff3bd36fa262e9da6710fdd293",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "99964431f899b8c165f10f63f1b10731",
+  "blkHash": "eb498ea0d485599395718334890cc50f",
   "genHash": "1e6cbd2338e3c521cbf041ec4d9a5179",
   "a-20g": {
     "dep": [
@@ -4218,6 +4218,13 @@
       "mine_emc"
     ]
   },
+  "jp_battlecruiser_amagi": {
+    "dep": [
+      "depth_charge_mk6",
+      "mine_emc",
+      "torpedo_g7a"
+    ]
+  },
   "jp_battlecruiser_kongo": {
     "dep": [
       "battlecruiser_kongo",
@@ -5883,6 +5890,16 @@
       "veak_40_xray_skeleton"
     ]
   },
+  "ta_154a_1": {
+    "dep": [
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "ta_154a_1",
+      "ta_154a_1_anim",
+      "ta_154a_1_skeleton"
+    ]
+  },
   "tandem_mai": {
     "dep": [
       "gunner_sit_su_500",
@@ -7495,6 +7512,21 @@
       "m247_xray_skeleton"
     ]
   },
+  "us_m247_reskin2": {
+    "dep": [
+      "grenade_l8",
+      "m247",
+      "m247_char",
+      "m247_collision",
+      "m247_dm_skeleton",
+      "m247_dmg",
+      "m247_dmg_skeleton",
+      "m247_fastphys",
+      "m247_skeleton",
+      "m247_xray",
+      "m247_xray_skeleton"
+    ]
+  },
   "us_m24_chaffee": {
     "dep": [
       "m24_chaffee",
@@ -7611,6 +7643,23 @@
     ]
   },
   "us_m3a3_bradley": {
+    "dep": [
+      "bgm_71_tow_rocket_char",
+      "bgm_71_tow_rocket_deployed",
+      "grenade_us_66mm",
+      "m3a3_bradley",
+      "m3a3_bradley_char",
+      "m3a3_bradley_collision",
+      "m3a3_bradley_dm_skeleton",
+      "m3a3_bradley_dmg",
+      "m3a3_bradley_dmg_skeleton",
+      "m3a3_bradley_fastphys",
+      "m3a3_bradley_skeleton",
+      "m3a3_bradley_xray",
+      "m3a3_bradley_xray_skeleton"
+    ]
+  },
+  "us_m3a3_bradley_reskin": {
     "dep": [
       "bgm_71_tow_rocket_char",
       "bgm_71_tow_rocket_deployed",
@@ -8066,6 +8115,20 @@
       "mgm_61b_rocket"
     ]
   },
+  "us_m60a3_slep": {
+    "dep": [
+      "grenade_us_66mm",
+      "m60a3_slep",
+      "m60a3_slep_collision",
+      "m60a3_slep_dm_skeleton",
+      "m60a3_slep_dmg",
+      "m60a3_slep_dmg_skeleton",
+      "m60a3_slep_fastphys",
+      "m60a3_slep_skeleton",
+      "m60a3_slep_xray",
+      "m60a3_slep_xray_skeleton"
+    ]
+  },
   "us_m60a3_tts": {
     "dep": [
       "grenade_us_66mm",
@@ -8439,6 +8502,20 @@
       "t95e1_skeleton",
       "t95e1_xray",
       "t95e1_xray_skeleton"
+    ]
+  },
+  "us_xm_8": {
+    "dep": [
+      "xm_8",
+      "xm_8_char",
+      "xm_8_collision",
+      "xm_8_dm_skeleton",
+      "xm_8_dmg",
+      "xm_8_dmg_skeleton",
+      "xm_8_fastphys",
+      "xm_8_skeleton",
+      "xm_8_xray",
+      "xm_8_xray_skeleton"
     ]
   },
   "uss_dd_sims": {

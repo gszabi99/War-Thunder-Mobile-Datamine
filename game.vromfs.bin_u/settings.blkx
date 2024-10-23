@@ -581,6 +581,12 @@
         "mRank": 3
       }
     },
+    "pkg_jp_battlecruiser_amagi": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 5
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
