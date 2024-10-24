@@ -40,4 +40,5 @@ register_command(@(name) playSound(name), "debug.guiSound.play")
 register_command(@(name) startSound(name), "debug.guiSound.start")
 register_command(@(name) stopSound(name), "debug.guiSound.stop")
 
-register_command(@(text) debugDirtyWordsFilter(text, console_print), "debug.dirty_words_filter")
+register_command(@(text) debugDirtyWordsFilter(text, false, console_print), "debug.dirty_words_filter.phrase")
+register_command(@(text) debugDirtyWordsFilter(text, true,  console_print), "debug.dirty_words_filter.name")

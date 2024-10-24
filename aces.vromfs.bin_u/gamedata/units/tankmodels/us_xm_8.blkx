@@ -50,14 +50,14 @@
   "canReloadNonGuns": true,
   "dm_for_shop": {
     "armorThicknessFront": [
-      0.01,
-      0.98,
-      0.01
+      0.2,
+      0.0,
+      0.8
     ],
     "armorThicknessSide": [
-      0.01,
-      0.98,
-      0.01
+      0.05,
+      0.0,
+      0.95
     ]
   },
   "DamageParts": {
@@ -2648,6 +2648,26 @@
     "replace_tex": {
       "from": "us_camo_olive*",
       "to": "us_camo_modern_green*"
+    }
+  },
+  "vehicleSkins": {
+    "winter": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "us_camo_modern_winter_tan*"
+      }
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "battleHideNodes": {

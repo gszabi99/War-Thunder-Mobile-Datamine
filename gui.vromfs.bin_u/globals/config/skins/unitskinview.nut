@@ -87,6 +87,9 @@ return {
     "bf-110g-2_prem": {
       "": "usa_f4u_4b"
     },
+    "ta_154a_1": {
+    "": "germ_ta_154a_1"
+    },
     "cn_cm11": {
       "": "us_camo_modern_green",
       "upgraded": "ger_camo_carc"
@@ -1785,6 +1788,10 @@ return {
       "": "us_camo_modern_green",
       "upgraded": "usa_modern_gray_desert"
     },
+    "us_m247_reskin2": {
+      "": "us_camo_modern_green",
+      "winter": "us_camo_modern_winter_tan"
+    },
     "us_m24_chaffee": {
       "": "us_camo_olive",
       "upgraded": "us_camo_desert_pink_olive_drab_dark_earth_black"
@@ -1810,6 +1817,10 @@ return {
     "us_m3a3_bradley": {
       "": "us_camo_modern_green",
       "upgraded": "usa_modern_gray_desert"
+    },
+    "us_m3a3_bradley_reskin": {
+      "": "us_camo_modern_green",
+      "winter": "us_camo_modern_winter_tan"
     },
     "us_m41_walker_bulldog": {
       "": "us_camo_olive",
@@ -1937,6 +1948,10 @@ return {
       "": "us_camo_olive",
       "upgraded": "usa_modern_tropical"
     },
+    "us_m60a3_slep": {
+      "": "us_camo_modern_green",
+      "winter": "us_camo_modern_winter_tan"
+    },
     "us_m60a3_tts": {
       "": "us_camo_modern_green",
       "upgraded": "usa_modern_gray_desert"
@@ -2043,6 +2058,10 @@ return {
     "us_t95e1": {
       "": "us_camo_modern_green",
       "forest": "usa_pw_4"
+    },
+    "us_xm_8": {
+      "": "us_camo_modern_green",
+      "winter": "us_camo_modern_winter_tan"
     },
     "ussr_9p149": {
       "": "ussr_camo_green",

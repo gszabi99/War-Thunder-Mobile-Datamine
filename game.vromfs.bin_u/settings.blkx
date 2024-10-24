@@ -857,6 +857,12 @@
         "mRank": 7
       }
     },
+    "pkg_us_m60a3_slep": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
     "pkg_environment_uhq": {
       "base": false,
       "hq": false,

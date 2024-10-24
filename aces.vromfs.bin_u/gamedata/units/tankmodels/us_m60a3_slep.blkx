@@ -50,14 +50,14 @@
   "canReloadNonGuns": true,
   "dm_for_shop": {
     "armorThicknessFront": [
-      0.01,
-      0.98,
-      0.01
+      0.5,
+      0.25,
+      0.25
     ],
     "armorThicknessSide": [
-      0.01,
-      0.98,
-      0.01
+      0.1,
+      0.0,
+      0.9
     ]
   },
   "DamageParts": {
@@ -2397,35 +2397,6 @@
             28.0
           ]
         }
-      },
-      {
-        "trigger": "gunner4",
-        "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
-        "emitter": "bone_camera_commander",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "parkInDeadzone": false,
-        "speedYaw": 30.0,
-        "speedPitch": 20.0,
-        "turret": {
-          "head": "bone_turret_02",
-          "gun": "bone_gun_barrel_02",
-          "rotatedTurret": "bone_turret_02",
-          "gunnerDm": "commander_dm",
-          "verDriveDm": "commander_panoramic_sight_dm",
-          "horDriveDm": "commander_panoramic_sight_dm"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -8.0,
-            15.0
-          ]
-        }
       }
     ]
   },
@@ -3342,35 +3313,6 @@
               }
             },
             {
-              "trigger": "gunner4",
-              "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "bone_camera_commander",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "parkInDeadzone": false,
-              "speedYaw": 30.0,
-              "speedPitch": 20.0,
-              "turret": {
-                "head": "bone_turret_02",
-                "gun": "bone_gun_barrel_02",
-                "rotatedTurret": "bone_turret_02",
-                "gunnerDm": "commander_dm",
-                "verDriveDm": "commander_panoramic_sight_dm",
-                "horDriveDm": "commander_panoramic_sight_dm"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -8.0,
-                  15.0
-                ]
-              }
-            },
-            {
               "trigger": "gunner5",
               "triggerGroup": "smoke",
               "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_us_smoke_grenade_launcher.blk",
@@ -3489,6 +3431,26 @@
     "replace_tex": {
       "from": "us_camo_olive*",
       "to": "us_camo_modern_green*"
+    }
+  },
+  "vehicleSkins": {
+    "winter": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "us_camo_modern_winter_tan*"
+      }
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "battleHideNodes": {

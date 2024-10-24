@@ -1,9 +1,9 @@
 {
-  "version": "1.10.0.150",
-  "grpHash": "74bfefff3bd36fa262e9da6710fdd293",
+  "version": "1.10.0.154",
+  "grpHash": "bcf260c2454eb5f1f816abf3c4d2a9f5",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "eb498ea0d485599395718334890cc50f",
+  "blkHash": "0ad5e20dab3c3c7adcd9c97b7e165a4f",
   "genHash": "1e6cbd2338e3c521cbf041ec4d9a5179",
   "a-20g": {
     "dep": [
@@ -4220,6 +4220,16 @@
   },
   "jp_battlecruiser_amagi": {
     "dep": [
+      "battlecruiser_amagi",
+      "battlecruiser_amagi_char",
+      "battlecruiser_amagi_collision",
+      "battlecruiser_amagi_dm_skeleton",
+      "battlecruiser_amagi_fastphys",
+      "battlecruiser_amagi_sections",
+      "battlecruiser_amagi_sections_remote",
+      "battlecruiser_amagi_skeleton",
+      "battlecruiser_amagi_xray",
+      "battlecruiser_amagi_xray_skeleton",
       "depth_charge_mk6",
       "mine_emc",
       "torpedo_g7a"

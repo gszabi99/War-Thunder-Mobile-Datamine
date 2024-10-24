@@ -158,6 +158,7 @@ let skinsByTag = {
     "se_camo_winter_bicolor"
     "usa_modern_snow_temperate_ot"
     "ger_camo_carc_winter"
+    "us_camo_modern_winter_tan"
   ],
 
   [NAVAL] = [
@@ -299,6 +300,7 @@ let skinsByTag = {
     "germ_me_410a_1"
     "germ_me_410a_1_grey"
     "germ_ta152c"
+    "germ_ta_154a_1"
     "germ_tropic_ju_87r_2"
     "usa_b_17g_8af_yellow"
     "usa_f2g_1_race_57"
