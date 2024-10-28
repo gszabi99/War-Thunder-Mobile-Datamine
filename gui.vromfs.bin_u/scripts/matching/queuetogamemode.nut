@@ -141,8 +141,6 @@ function getAllBattleUnits() {
     if (type(list) == "array")
       foreach(name in list)
         res[name] <- true
-    else if (list != null) //compatibility with 2024.05.15
-      res[list] <- true
   }
   return res.keys()
 }
@@ -198,7 +196,7 @@ function queueToGameModeImpl(mode) {
 
   //can check units here, but no unit rquirements in the current event yet.
   //so better to do it only when become need.
-  joinQueue({ mode = mode.name, isOnlyOverride = mode?.only_override_units ?? false })
+  joinQueue({ mode = mode.name })
 }
 
 function queueModeOnRandomUnit(mode) {

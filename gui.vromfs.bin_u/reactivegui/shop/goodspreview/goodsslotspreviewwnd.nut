@@ -43,7 +43,7 @@ let { mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts, mkRewardSearchPla
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
+let { withTooltip, tooltipDetach, mkTooltipText } = require("%rGui/tooltip.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
@@ -149,8 +149,8 @@ function headerText() {
         text = previewG == null ? null : getGoodsLocName(previewG)
       }.__update(fontBig)
       infoTooltipButton(
-        @() allLeftSlotNames.len() == 0 ? description
-          : "\n\n".concat(description, loc("shop/hint/availableSlots", { slots = ", ".join(allLeftSlotNames) })),
+        @() mkTooltipText(allLeftSlotNames.len() == 0 ? description
+          : "\n\n".concat(description, loc("shop/hint/availableSlots", { slots = ", ".join(allLeftSlotNames) })), fontTinyAccented),
         { halign = ALIGN_RIGHT },
         {
           size = [hdpx(52), hdpx(52)]

@@ -10,8 +10,8 @@
   },
   "bomb": {
     "mass": 500.0,
-    "explosiveType": "tnt",
-    "explosiveMass": 250.0,
+    "explosiveType": "fp60_40",
+    "explosiveMass": 260.0,
     "bombType": "he_bomb",
     "bombName": "sc500_k",
     "dragCx": 0.097,

@@ -6,13 +6,12 @@ let { curCategoryId, goodsByCategory, sortGoods, openShopWnd, goodsLinks } = req
 let { actualSchRewardByCategory, onSchRewardReceive } = require("schRewardsState.nut")
 let { purchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let { shopPurchaseInProgress, schRewardInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("goodsStates.nut")
+let { PURCHASING, DELAYED, HAS_PURCHASES } = require("goodsStates.nut")
 let { purchaseGoods } = require("purchaseGoods.nut")
 let { buyPlatformGoods, platformPurchaseInProgress, isGoodsOnlyInternalPurchase
 } = require("platformGoods.nut")
 let { mkGoods } = require("%rGui/shop/goodsView/goods.nut")
 let { goodsW, goodsH, goodsGap, goodsGlareAnimDuration  } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { canShowAds } = require("%rGui/ads/adsState.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
 let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
@@ -100,12 +99,7 @@ let mkGoodsState = @(goods) Computed(function() {
   return res
 })
 
-let mkSchRewardState = @(schReward) Computed(function() {
-  local res = schReward.id in schRewardInProgress.get() ? PURCHASING : 0
-  if (schReward.needAdvert && !canShowAds.value)
-    res = res | NOT_READY
-  return res
-})
+let mkSchRewardState = @(schReward) Computed(@() schReward.id in schRewardInProgress.get() ? PURCHASING : 0)
 
 function getGoodsCompareData(goods) {
   local res = null

@@ -1,7 +1,7 @@
 {
   "ecsTemplate": "ship_wtm",
   "hasQualityModels": true,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "radioDist": 50000.0,
   "model": "destroyer_pr56_spokoinyy",
   "subclass": "warShip",
@@ -28,7 +28,7 @@
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
-  "exhaustFx": "ship_exhaust_large",
+  "exhaustFx": "ship_exhaust_medium",
   "addTorpedoesCountPack": 4,
   "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,

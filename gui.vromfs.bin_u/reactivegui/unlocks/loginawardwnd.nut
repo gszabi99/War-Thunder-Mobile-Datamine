@@ -18,11 +18,11 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkRewardImage, getRewardName } = require("rewardsView/rewardsPresentation.nut")
 let { gradRadialSq, gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { textButtonBattle, textButtonPrimary, textButtonCommon, buttonsHGap
+let { textButtonBattle, textButtonPrimary, buttonsHGap
 } = require("%rGui/components/textButton.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { canShowAds, adsButtonCounter, showNotAvailableAdsMsg } = require("%rGui/ads/adsState.nut")
+let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let { isShowUnseenDelayed } = require("%rGui/shop/unseenPurchasesState.nut")
 let { playSound } = require("sound_wt")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
@@ -201,21 +201,14 @@ let watchAdsBtn = textButtonPrimary(
   btnStyle.__merge({ childOvr = adsButtonCounter.__merge(fontVeryTiny) })
 )
 
-let watchAdsNotReadyBtn = textButtonCommon(
-  utf8ToUpper(loc("shop/watchAdvert/short")),
-  null,
-  btnStyle.__merge({ childOvr = adsButtonCounter.__merge(fontVeryTiny) })
-)
-
 let activePlateButtonBlock = function() {
   let targetButtonComponent = @() {
-    watch = [loginAwardUnlock, hasLoginAwardByAds, canShowAds, isShowUnseenDelayed]
+    watch = [loginAwardUnlock, hasLoginAwardByAds, isShowUnseenDelayed]
     size = flex()
     children = isShowUnseenDelayed.value ? null //delay unseen for animation, so no need button at that time also.
       : loginAwardUnlock.value?.hasReward ? receiveBtn
       : !hasLoginAwardByAds.value ? null
-      : canShowAds.value ? watchAdsBtn
-      : watchAdsNotReadyBtn
+      : watchAdsBtn
   }
   let blockOvr = {
     size = [flex(), buttonHeight]
@@ -229,8 +222,7 @@ let activePlateButtonBlock = function() {
 let onActivePlateClick = @() isShowUnseenDelayed.value ? null
   : loginAwardUnlock.value?.hasReward ? receiveLoginAward()
   : !hasLoginAwardByAds.value ? null
-  : canShowAds.value ? showLoginAwardAds()
-  : showNotAvailableAdsMsg()
+  : showLoginAwardAds()
 
 function activePlateHotkeyComp() {
   let res = { watch = isGamepad }
@@ -261,8 +253,7 @@ function previewBtnBlock() {
 }
 
 function openPreview(reward) {
-  let lootboxId = "lootboxes" in reward ? reward.lootboxes.findindex(@(_) true) //compatibility with 2024.04.14
-    : reward.findvalue(@(g) g.gType == G_LOOTBOX)?.id
+  let lootboxId = reward.findvalue(@(g) g.gType == G_LOOTBOX)?.id
   if (lootboxId != null)
     openLootboxPreview(lootboxId)
 }
@@ -475,13 +466,26 @@ function rewardText() {
     }.__update(fontTiny))
 }
 
+function dayInRowInfo() {
+  let daysInRow = userstatStats.get()?.stats.daily.meta_common.every_day_login_stat ?? 0
+  return daysInRow < 1 ? { watch = userstatStats }
+    : mkText(loc("dailyRewards/daysInRow", { days = daysInRow })
+      { watch = userstatStats
+        size = flex()
+        valign = ALIGN_BOTTOM
+        halign = ALIGN_CENTER
+        color = activeTextColor
+      }.__update(fontSmall))
+}
+
 let content = {
   size = flex()
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_VERTICAL
-  gap = hdpx(50)
+  gap = hdpx(40)
   children = [
+    dayInRowInfo
     itemsBlock
     rewardText
   ]

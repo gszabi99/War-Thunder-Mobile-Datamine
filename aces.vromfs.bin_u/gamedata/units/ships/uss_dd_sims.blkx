@@ -8,7 +8,6 @@
   "subclass": "warShip",
   "dustFx": "water_units_dust",
   "exhaustFx": "ship_exhaust_large",
-  "dynCollisionGeom": true,
   "damageableByGun": false,
   "moveType": "ship",
   "maxFwdSpeed": 55.0,

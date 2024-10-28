@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { defer } = require("dagor.workcycle")
+let { abs } = require("math")
 let { registerScene } = require("%rGui/navState.nut")
 let { isUnitsTreeOpen, closeUnitsTreeWnd, unitsMapped, countriesCfg, countriesRows, columnsCfg,
   unitsMaxRank, unitsMaxStarRank, unitsTreeBg, unitsTreeOpenRank, isUnitsTreeAttached
@@ -9,7 +10,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
-let { playerLevelInfo, myUnits } = require("%appGlobals/pServer/profile.nut")
+let { playerLevelInfo, myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { platoonPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkProgressBar,
   progressBarHeight, bgLight, noUnitsMsg, btnSize, platesGap,
@@ -31,7 +32,7 @@ let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
 let { mkUnitsTreeNodesContent, mkHasDarkScreen } = require("unitsTreeNodesContent.nut")
 let { rankBlockOffset } = require("unitsTreeConsts.nut")
 let { mkUnitPlate, framesGapMul } = require("mkUnitPlate.nut")
-let { unseenArrowsBlock, scrollToUnit, scrollToRank, scrollHandler
+let { unseenArrowsBlock, scrollToRank, scrollHandler, startAnimScroll, interruptAnimScroll
 } = require("unitsTreeScroll.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -46,6 +47,7 @@ let infoPanelFooterGap = hdpx(20)
 let filterIconSize = hdpxi(36)
 let clearIconSize = hdpxi(45)
 
+let isTreeAttached = Watched(false)
 let isTreeNodes = Computed(@() curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
 
 let openFiltersPopup = @(e) openFilters(e, isTreeNodes.get(), {
@@ -54,7 +56,34 @@ let openFiltersPopup = @(e) openFilters(e, isTreeNodes.get(), {
   popupHalign = ALIGN_CENTER
 })
 
-curSelectedUnit.subscribe(@(v) v ? scrollHandlerInfoPanel.scrollToY(0) : null)
+function getTreeScrollPosX(name) {
+  let { rank = 0 } = allUnitsCfg.get()?[name]
+  if (rank <= 0)
+    return null
+  let scrollPosX = blockSize[0] * ((columnsCfg.get()?[rank] ?? 0) + 1) - (0.4 * (saSize[0] - flagsWidth))
+  return (abs(scrollPosX - (scrollHandler.elem?.getScrollOffsX() ?? 0)) > saSize[0] * 0.1) ? scrollPosX : null
+}
+
+function scrollToUnit(name) {
+  interruptAnimScroll()
+  let scrollPosX = getTreeScrollPosX(name)
+  if (scrollPosX == null)
+    return
+  scrollHandler.scrollToX(scrollPosX)
+}
+
+function animScrollToUnit(name) {
+  let scrollPosX = getTreeScrollPosX(name)
+  if (scrollPosX != null)
+    startAnimScroll([scrollPosX, scrollHandler.elem?.getScrollOffsY() ?? 0])
+}
+
+curSelectedUnit.subscribe(function(v) {
+  if (!v || !isTreeAttached.get())
+    return
+  scrollHandlerInfoPanel.scrollToY(0)
+  animScrollToUnit(v)
+})
 
 function tryAnimUnitInfoActionHint(unitId) {
   if (!unitId)
@@ -211,12 +240,17 @@ listWatches = listWatches.filter(@(w) w != null)
 
 let unitsTree = @() {
   watch = listWatches
+  ket = listWatches
   size = [
     columnsCfg.value["0"] * blockSize[0] + (!curSelectedUnit.get() ? 0 : (statsWidth + platesGap[0])),
     countriesRows * blockSize[1]]
-  onAttach = @() defer(@() unitsTreeOpenRank.get() != null
+  function onAttach() {
+    isTreeAttached.set(true)
+    defer(@() unitsTreeOpenRank.get() != null
       ? scrollToRank(unitsTreeOpenRank.get())
-    : scrollToUnit(curSelectedUnit.value ?? curUnitName.value))
+      : scrollToUnit(curSelectedUnit.value ?? curUnitName.value))
+  }
+  onDetach = @() isTreeAttached.set(false)
   children = [unselectBtn.__merge({ size = flex(), pos = [0, levelMarkSize]})]
     .extend(
       array(unitsMaxRank.value).map(mkLevelProgress),

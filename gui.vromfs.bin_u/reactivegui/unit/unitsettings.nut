@@ -129,6 +129,14 @@ function getChosenBelts(unitName) {
   return loadedSettings.get()?[unitName].belts ?? {}
 }
 
+function mkSavedWeaponPresets(unitNameW) {
+  let { unitSettings, updateUnitSettings } = mkUnitSettingsWatch(unitNameW)
+  let savedWeaponPresets = Computed(@() unitSettings.get()?.savedWeaponPresets ?? [])
+  let setSavedWeaponPresets = @(presets) isEqual(presets, savedWeaponPresets.get()) ? null
+    : updateUnitSettings({ savedWeaponPresets = presets })
+  return { savedWeaponPresets, setSavedWeaponPresets }
+}
+
 function mkSeenMods(unitNameW) {
   let { unitSettings, updateUnitSettings } = mkUnitSettingsWatch(unitNameW)
   let seenUnitMods = Computed(@() unitSettings.get()?.seenMods ?? {})
@@ -147,6 +155,7 @@ return {
   getWeaponPreset
   mkChosenBelts
   getChosenBelts
+  mkSavedWeaponPresets
   mkSeenMods
   resetUnitSettings
 }

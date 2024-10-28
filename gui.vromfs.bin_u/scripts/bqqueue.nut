@@ -83,8 +83,6 @@ function sendAll() {
     action = token == "" ? "noa_bigquery_client_noauth" : "cln_bq_put_batch_json"
     appid  = APP_ID
     token
-    withAppid = true
-    withCircuit = true
   }
 
   let remainingCount = remainingMsg.len()

@@ -1,7 +1,7 @@
 {
   "ecsTemplate": "ship_wtm+aircraft_carrier",
   "hasQualityModels": true,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "radioDist": 50000.0,
   "model": "battleship_king_george_1945",
   "subclass": "warShip",

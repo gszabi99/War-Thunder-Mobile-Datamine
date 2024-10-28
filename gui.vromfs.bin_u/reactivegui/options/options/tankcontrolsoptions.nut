@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { /* OPT_TANK_TARGETING_CONTROL,  */
-  OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_ARMOR_PIERCING_FIXED, OPT_AUTO_ZOOM,
+  OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_ARMOR_PIERCING_FIXED,
   OPT_AUTO_ZOOM_TANK, OPT_GEAR_DOWN_ON_STOP_BUTTON, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_CAMERA_SENSE,
   OPT_CAMERA_SENSE_IN_ZOOM, OPT_CAMERA_SENSE_TANK
   OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, OPT_SHOW_GRASS_IN_TANK_VISION, mkOptionValue, getOptValue
@@ -107,10 +107,8 @@ let autoZoomList = [false, true]
 let autoZoomDefault = Computed(@() (abTests.value?.tankAutoZoom ?? "false") == "true"
   || (sharedStats.value?.firstLoginTime ?? 0) > autoZoomDefaultTrueStart)
 let currentAutoZoomRaw = mkOptionValue(OPT_AUTO_ZOOM_TANK)
-let autoZoomCompatibility = mkOptionValue(OPT_AUTO_ZOOM)
 let currentAutoZoom = Computed(@()
   validate(currentAutoZoomRaw.value
-      ?? autoZoomCompatibility.value
       ?? autoZoomDefault.value,
     autoZoomList))
 set_auto_zoom(currentAutoZoom.value, false)

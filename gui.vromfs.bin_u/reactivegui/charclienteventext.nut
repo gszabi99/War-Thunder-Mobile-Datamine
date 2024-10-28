@@ -30,7 +30,7 @@ function charClientEventExt(name) {
       log($"EXT {label} {msg}: {shortKeyValue(output)}")
   }
 
-  local function process(r) {
+  function process(r) {
     local result = clone r
     assert("$action" in result, $"{name} process: No '$action' in result")
     let action  = result.$rawdelete("$action")

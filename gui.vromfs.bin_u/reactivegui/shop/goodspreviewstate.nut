@@ -24,6 +24,8 @@ let GPT_LOOTBOX = "lootbox"
 let GPT_SLOTS = "slots"
 let GPT_BLUEPRINT = "blueprint"
 
+let HIDE_PREVIEW_MODALS_ID = "goodsPreviewAnim"
+
 let openedUnitFromTree = mkWatched(persist, "openedUnitFromTree", null)
 let openedGoodsId = mkWatched(persist, "openedGoodsId", null)
 let closeGoodsPreview = @() openedGoodsId(null)
@@ -144,6 +146,8 @@ return {
   GPT_LOOTBOX
   GPT_SLOTS
   GPT_BLUEPRINT
+
+  HIDE_PREVIEW_MODALS_ID
 
   openGoodsPreview
   closeGoodsPreview

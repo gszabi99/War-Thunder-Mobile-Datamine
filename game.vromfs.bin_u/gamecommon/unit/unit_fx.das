@@ -6,10 +6,11 @@ require WTDamageModel
 require %game.utils.utils_common
 require %game.dm.fire_system_events
 require %game.events
+require %game.unit_events
 
 
 [es]
-def unit_fx_updater_es(info : ParallelUpdateFrameDelayed;
+def unit_fx_updater_es(info : UpdateStageInfoAct;
                        uid : int;
                        active : bool;
                        var unit_fx : UnitFx)
@@ -46,11 +47,10 @@ def unit_fx_hide_es(evt : CmdUnitFxHide;
     unit_fx |> hide(evt.hide)
 
 
-[es(on_event=EventBecameDelayed)]
-def unit_fx_became_delayed_es(evt : Event;
-                              active : bool;
+[es]
+def unit_fx_became_delayed_es(evt : EventUnitDelayedStatusChanged;
                               var unit_fx : UnitFx)
-  if active
+  if evt.isDelayed
     unit_fx |> stopAll(true)
 
 

@@ -25,7 +25,7 @@
     true
   ],
   "useSimpleDeathConditionsAndEffects": false,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
@@ -2132,7 +2132,37 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "ex_armor_l_01",
+        "ex_armor_l_02",
+        "ex_armor_l_03",
+        "ex_armor_l_04",
+        "ex_armor_l_05",
+        "ex_armor_r_01",
+        "ex_armor_r_02",
+        "ex_armor_r_03",
+        "ex_armor_r_04",
+        "ex_armor_r_05",
+        "ex_armor_l_06",
+        "ex_armor_l_07",
+        "ex_armor_r_06",
+        "ex_armor_02",
+        "ex_armor_03",
+        "ex_armor_04",
+        "ex_armor_05",
+        "ex_armor_06",
+        "ex_armor_07",
+        "ex_armor_08",
+        "ex_armor_09",
+        "ex_armor_10",
+        "ex_decor_03",
+        "hatch_10",
+        "ex_decor_05",
+        "antenna_01"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -3333,7 +3363,37 @@
                 ]
               }
             }
-          ]
+          ],
+          "hideNodes": {
+            "node": [
+              "ex_armor_l_01",
+              "ex_armor_l_02",
+              "ex_armor_l_03",
+              "ex_armor_l_04",
+              "ex_armor_l_05",
+              "ex_armor_r_01",
+              "ex_armor_r_02",
+              "ex_armor_r_03",
+              "ex_armor_r_04",
+              "ex_armor_r_05",
+              "ex_armor_l_06",
+              "ex_armor_l_07",
+              "ex_armor_r_06",
+              "ex_armor_02",
+              "ex_armor_03",
+              "ex_armor_04",
+              "ex_armor_05",
+              "ex_armor_06",
+              "ex_armor_07",
+              "ex_armor_08",
+              "ex_armor_09",
+              "ex_armor_10",
+              "ex_decor_03",
+              "hatch_10",
+              "ex_decor_05",
+              "antenna_01"
+            ]
+          }
         }
       }
     }

@@ -26,7 +26,7 @@
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "beginnerCoeff": 0.0,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",

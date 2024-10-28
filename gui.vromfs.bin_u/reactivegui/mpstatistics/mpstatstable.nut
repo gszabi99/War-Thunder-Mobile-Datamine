@@ -180,7 +180,7 @@ let columnsByCampaign = {
     { width = playerPlaceIconSize, contentCtor = mkPlaceContent }
     { width = flex(), halign = ALIGN_LEFT, contentCtor = mkNameContent }
     { width = hdpx(192), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat((100 * p.score).tointeger()) }
-    { fontIcon = "icon/mpstats/damageZone", getText = @(p) roundToDigits((p?.damageZone ?? 0) * KG_TO_TONS, 3),
+    { fontIcon = "icon/mpstats/damageZone", getText = @(p) roundToDigits(p.damageZone * KG_TO_TONS, 3),
       isVisible = @(missionName) damageZoneMission.match(missionName) }
     { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }
     { headerIcon = "ui/gameuiskin#air_defence_destroyed_icon.svg", getText = @(p) decimalFormat(p.aiGroundKills + p.aiNavalKills) }

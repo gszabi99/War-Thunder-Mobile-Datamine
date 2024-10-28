@@ -21,6 +21,5 @@ def aircarft_carrier_unit_group_attack_es(evt : CmdRequestSupportPlaneGroupAttac
 
 [es(tag=server)]
 def aircarft_carrier_unit_return(evt : CmdReturnAircraftToShip; uid : int)
-  let point = float3(0.0, 0.0, 0.0)
   get_unit_for_edit(uid) <| $(var unit)
-    *unit |> supportPlaneAddCommand(evt.idx, true, -1, -1, 5, -1, point)
+    *unit |> supportPlaneRemoveCommand(evt.idx, -1, true)

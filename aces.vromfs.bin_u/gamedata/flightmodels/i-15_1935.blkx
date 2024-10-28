@@ -1,7 +1,7 @@
 {
   "model": "i_15_1935",
   "fmFile": "fm/i-15_1935.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/biplane_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_low_common.blk",
   "gearSinkRangeLR": 0.25,

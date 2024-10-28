@@ -47,6 +47,7 @@ let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { mkMsgConvertBlueprint } = require("unseenPurchaseAddMessage.nut")
 let { showPrizeSelectDelayed, ticketToShow } = require("%rGui/rewards/rewardPrizeSelect.nut")
+let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
 
 let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel",
   "decorator", "medal", "booster", "skin", "prizeTicket",
@@ -349,16 +350,17 @@ function mkDecoratorRewardIcon(startDelay, decoratorId) {
   }
 }
 
-let customCurrencyIcons = {
-  gold = @(startDelay) mkRewardIcon(startDelay, "ui/gameuiskin#shop_eagles_02.avif", 1.61, 1.8, 0.12, -0.05)
-  wp = @(startDelay) mkRewardIcon(startDelay, "ui/gameuiskin#shop_lions_02.avif", 1.61, 1.8, 0.12, -0.05)
-  warbond = @(startDelay) mkDynamicRewardIcon(startDelay, "warbond", 1.0, 1.2)
-  eventKey = @(startDelay) mkDynamicRewardIcon(startDelay, "eventKey", 1.0, 1.0)
-  nybond = @(startDelay) mkRewardIcon(startDelay, "ui/gameuiskin#warbond_goods_christmas_01.avif", 1.0, 1.6)
-  aprilbond = @(startDelay) mkRewardIcon(startDelay, "ui/gameuiskin#warbond_april_01.avif", 1.0, 1.6)
+let mkCustomCurrencyIcon = {
+  gold = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.61, 1.8, 0.12, -0.05)
+  wp = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.61, 1.8, 0.12, -0.05)
+  warbond = @(id, startDelay) mkDynamicRewardIcon(startDelay, id, 1.0, 1.2)
+  eventKey = @(id, startDelay) mkDynamicRewardIcon(startDelay, id, 1.0, 1.0)
+  nybond = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
+  aprilbond = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
+  halloweenbond = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
 }
 
-let mkCurrencyIcon = @(startDelay, id)  customCurrencyIcons?[id](startDelay) ?? {
+let mkCurrencyIcon = @(startDelay, id) mkCustomCurrencyIcon?[id](id, startDelay) ?? {
   size = [rewIconSize, rewIconSize]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER

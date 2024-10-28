@@ -1,7 +1,7 @@
 {
   "ecsTemplate": "ship_wtm",
   "hasQualityModels": true,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "radioDist": 50000.0,
   "model": "destroyer_akizuki",
   "subclass": "warShip",
@@ -3704,5 +3704,19 @@
         "to": "camo_syntheticblackpaint*"
       }
     ]
+  },
+  "vehicleSkins": {
+    "factory": {
+      "replace_tex": [
+        {
+          "from": "camo_warshipdeepgray*",
+          "to": "camo_warshipdeepgray*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_rot_5*"
+        }
+      ]
+    }
   }
 }

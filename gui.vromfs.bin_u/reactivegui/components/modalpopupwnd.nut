@@ -64,7 +64,7 @@ let translateAnimation = @(flow, halign, valign, duration)
 
 
 local lastPopupIdx = 0
-local function add(rectOrPos, popup) {
+function add(rectOrPos, popup) {
   popup = POPUP_PARAMS.__merge(popup)
   popup.uid = popup?.uid ?? $"modal_popup_{lastPopupIdx++}"
   popup.hotkeys = popup.hotkeys ?? [[btnBEscUp, { action = @() remove(popup.uid), description = loc("Cancel") }]]

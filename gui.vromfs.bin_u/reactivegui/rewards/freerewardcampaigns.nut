@@ -11,10 +11,9 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
-let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { TUTORIAL_AFTER_REWARD_ID } = require("%rGui/tutorial/tutorialConst.nut")
 let { completedTutorials } = require("%rGui/tutorial/completedTutorials.nut")
+let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 
 
 let UNITS_STATUS = {
@@ -33,11 +32,10 @@ let unitsStatus = keepref(Computed(function() {
     ? UNITS_STATUS.UNITS_AVAILABLE
     : UNITS_STATUS.UNITS_UNAVAILABLE
 }))
-let needShow = keepref(Computed(@() !hasModalWindows.get()
+let needShow = keepref(Computed(@() isInMenuNoModals.get()
   && !isInLoadingScreen.get()
   && !isTutorialActive.get()
   && unitToShowAsReceived.get() != null
-  && isMainMenuAttached.get()
   && isLoggedIn.get()))
 let needShowTutorialAfterLeaveGame = keepref(Computed(function() {
   let { battles = 0, offlineBattles = 0 } = servProfile.get()?.sharedStatsByCampaign[curCampaign.get()]

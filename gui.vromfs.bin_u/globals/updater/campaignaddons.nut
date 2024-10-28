@@ -2,7 +2,7 @@ from "math" import max
 
 let { TANK, AIR, HELICOPTER } = require("%appGlobals/unitConst.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { naval, ground, extAddonsByRank, knownAddons, campaignPostfix
+let { commonAddonsByPostfix, extAddonsByRank, knownAddons, campaignPostfix
 } = require("%appGlobals/updater/addons.nut")
 
 let aircraftCbtPkgs = ["pkg_cbt_aircraft", "pkg_cbt_aircraft_hq"].filter(@(a) a in knownAddons)
@@ -32,8 +32,6 @@ let addonPostfixByType = {
   [AIR] = "aircraft",
   [HELICOPTER] = "aircraft",
 }
-
-let commonAddons = { ground, naval }
 let getAddonPostfix = @(unitName) addonPostfixByType?[getUnitType(unitName)] ?? defAddonPostfix
 let getCampaignByPostfix = @(postfix) campaignPostfix.findindex(@(v) v == postfix)
 
@@ -69,7 +67,7 @@ function getUnitPkgs(unitName, mRank) {
     return customUnitPkg[unitName] ?? []
   let postfix = getAddonPostfix(unitName)
   let campaign = getCampaignByPostfix(postfix)
-  let res = clone (commonAddons?[postfix] ?? [])
+  let res = clone (commonAddonsByPostfix?[postfix] ?? [])
   for (local i = mRank; i >= 1; i--) {
     appendRankAddon(res, postfix, i)
     appendCampaignExtAddons(res, campaign, i)
@@ -82,7 +80,7 @@ let getCampaignAddonPostfix = @(campaign) campaignPostfix?[campaign] ?? "naval"
 
 function getCampaignPkgsForOnlineBattle(campaign, mRank) {
   let postfix = getCampaignAddonPostfix(campaign)
-  let res = clone (commonAddons?[postfix] ?? [])
+  let res = clone (commonAddonsByPostfix?[postfix] ?? [])
   for (local i = mRank + 1; i >= 1 ; i--) {
     appendRankAddon(res, postfix, i)
     appendCampaignExtAddons(res, campaign, i)
@@ -93,7 +91,7 @@ function getCampaignPkgsForOnlineBattle(campaign, mRank) {
 
 function getCampaignPkgsForNewbieBattle(campaign, mRank, isSingle) {
   let postfix = getCampaignAddonPostfix(campaign)
-  let res = clone (commonAddons?[postfix] ?? [])
+  let res = clone (commonAddonsByPostfix?[postfix] ?? [])
   //we don't want to bots have higher rank than player in the single battle,
   //but mRank == 1 is tested regulary when test novice experience, but rare case about novice purchase high level tank not good tested.
   //so beeter player to download +1 pack as in the online mode in such case to ensure crash safe

@@ -48,17 +48,17 @@
         },
         "triggerEnable": {
           "target": [
-            "bomb_areas_0_2_check",
-            "bomb_areas_3_4_check",
-            "bomb_areas_5_6_check",
-            "bomb_areas_7_8_check",
+            "bomb_areas_0_1_check",
+            "bomb_areas_2_3_check",
+            "bomb_areas_4_5_check",
+            "bomb_areas_6_8_check",
             "bomb_areas_9_16_check"
           ]
         }
       },
       "else_actions": {}
     },
-    "bomb_areas_0_2_check": {
+    "bomb_areas_0_1_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -68,162 +68,28 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
         "varCompareInt": {
           "var_value": "bomb_areas_balance_level",
-          "value": 3,
+          "value": 2,
           "comparasion_func": "less"
         }
       },
       "actions": {
         "triggerDisable": {
           "target": [
-            "bomb_areas_3_4_check",
-            "bomb_areas_5_6_check",
-            "bomb_areas_7_8_check",
+            "bomb_areas_2_3_check",
+            "bomb_areas_4_5_check",
+            "bomb_areas_6_8_check",
             "bomb_areas_9_16_check"
           ]
         },
         "comment": [
           {
-            "value": "6000 dlya istorii, 15000 dlya arkady"
-          },
-          {
-            "value": "govorim chto dlya etih rangov 3 zony"
-          }
-        ],
-        "varSetReal": [
-          {
-            "value": 6000.0,
-            "var": "baseHP"
-          },
-          {
-            "value": 2.5,
-            "var": "arcade_HP_mul"
-          }
-        ],
-        "__varSetInt": {
-          "value": 3,
-          "var": "max_bomb_areas"
-        },
-        "triggerEnable": {
-          "target": [
-            "bomb_areas_arcade_check",
-            "bomb_areas_regular_check"
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "bomb_areas_3_4_check": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": [
-          {
-            "var_value": "bomb_areas_balance_level",
-            "value": 2,
-            "comparasion_func": "more"
-          },
-          {
-            "var_value": "bomb_areas_balance_level",
-            "value": 5,
-            "comparasion_func": "less"
-          }
-        ]
-      },
-      "actions": {
-        "triggerDisable": {
-          "target": [
-            "bomb_areas_0_2_check",
-            "bomb_areas_5_6_check",
-            "bomb_areas_7_8_check",
-            "bomb_areas_9_16_check"
-          ]
-        },
-        "comment": [
-          {
-            "value": "8000 dlya istorii, 25600 dlya arkady"
-          },
-          {
-            "value": "govorim chto dlya etih rangov 3 zony"
-          }
-        ],
-        "varSetReal": [
-          {
-            "value": 8000.0,
-            "var": "baseHP"
-          },
-          {
-            "value": 3.2,
-            "var": "arcade_HP_mul"
-          }
-        ],
-        "__varSetInt": {
-          "value": 3,
-          "var": "max_bomb_areas"
-        },
-        "triggerEnable": {
-          "target": [
-            "bomb_areas_arcade_check",
-            "bomb_areas_regular_check"
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "bomb_areas_5_6_check": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": [
-          {
-            "var_value": "bomb_areas_balance_level",
-            "value": 4,
-            "comparasion_func": "more"
-          },
-          {
-            "var_value": "bomb_areas_balance_level",
-            "value": 7,
-            "comparasion_func": "less"
-          }
-        ]
-      },
-      "actions": {
-        "triggerDisable": {
-          "target": [
-            "bomb_areas_0_2_check",
-            "bomb_areas_3_4_check",
-            "bomb_areas_7_8_check",
-            "bomb_areas_9_16_check"
-          ]
-        },
-        "comment": [
-          {
-            "value": "10000 dlya istorii, 32000 dlya arkady"
+            "value": "wtm only has arcade"
           },
           {
             "value": "govorim chto dlya etih rangov 3 zony"
@@ -235,11 +101,11 @@
             "var": "baseHP"
           },
           {
-            "value": 3.2,
+            "value": 1.0,
             "var": "arcade_HP_mul"
           }
         ],
-        "__varSetInt": {
+        "varSetInt": {
           "value": 3,
           "var": "max_bomb_areas"
         },
@@ -252,7 +118,7 @@
       },
       "else_actions": {}
     },
-    "bomb_areas_7_8_check": {
+    "bomb_areas_2_3_check": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -262,14 +128,148 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
         "varCompareInt": [
           {
             "var_value": "bomb_areas_balance_level",
+            "value": 1,
+            "comparasion_func": "more"
+          },
+          {
+            "var_value": "bomb_areas_balance_level",
+            "value": 4,
+            "comparasion_func": "less"
+          }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "bomb_areas_0_1_check",
+            "bomb_areas_4_5_check",
+            "bomb_areas_6_8_check",
+            "bomb_areas_9_16_check"
+          ]
+        },
+        "comment": [
+          {
+            "value": "wtm only has arcade"
+          },
+          {
+            "value": "govorim chto dlya etih rangov 3 zony"
+          }
+        ],
+        "varSetReal": [
+          {
+            "value": 30000.0,
+            "var": "baseHP"
+          },
+          {
+            "value": 1.0,
+            "var": "arcade_HP_mul"
+          }
+        ],
+        "varSetInt": {
+          "value": 3,
+          "var": "max_bomb_areas"
+        },
+        "triggerEnable": {
+          "target": [
+            "bomb_areas_arcade_check",
+            "bomb_areas_regular_check"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "bomb_areas_4_5_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareInt": [
+          {
+            "var_value": "bomb_areas_balance_level",
+            "value": 3,
+            "comparasion_func": "more"
+          },
+          {
+            "var_value": "bomb_areas_balance_level",
             "value": 6,
+            "comparasion_func": "less"
+          }
+        ]
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": [
+            "bomb_areas_0_1_check",
+            "bomb_areas_2_3_check",
+            "bomb_areas_6_8_check",
+            "bomb_areas_9_16_check"
+          ]
+        },
+        "comment": [
+          {
+            "value": "wtm only has arcade"
+          },
+          {
+            "value": "govorim chto dlya etih rangov 3 zony"
+          }
+        ],
+        "varSetReal": [
+          {
+            "value": 45000.0,
+            "var": "baseHP"
+          },
+          {
+            "value": 1.0,
+            "var": "arcade_HP_mul"
+          }
+        ],
+        "varSetInt": {
+          "value": 4,
+          "var": "max_bomb_areas"
+        },
+        "triggerEnable": {
+          "target": [
+            "bomb_areas_arcade_check",
+            "bomb_areas_regular_check"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "bomb_areas_6_8_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareInt": [
+          {
+            "var_value": "bomb_areas_balance_level",
+            "value": 5,
             "comparasion_func": "more"
           },
           {
@@ -282,15 +282,15 @@
       "actions": {
         "triggerDisable": {
           "target": [
-            "bomb_areas_0_2_check",
-            "bomb_areas_3_4_check",
-            "bomb_areas_5_6_check",
+            "bomb_areas_0_1_check",
+            "bomb_areas_2_3_check",
+            "bomb_areas_4_5_check",
             "bomb_areas_9_16_check"
           ]
         },
         "comment": [
           {
-            "value": "12000 dlya istorii, 50400 dlya arkady"
+            "value": "wtm only has arcade"
           },
           {
             "value": "govorim chto dlya etih rangov 4 zony"
@@ -298,15 +298,15 @@
         ],
         "varSetReal": [
           {
-            "value": 12000.0,
+            "value": 75000.0,
             "var": "baseHP"
           },
           {
-            "value": 4.2,
+            "value": 1.0,
             "var": "arcade_HP_mul"
           }
         ],
-        "__varSetInt": {
+        "varSetInt": {
           "value": 4,
           "var": "max_bomb_areas"
         },
@@ -329,7 +329,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 4.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -342,15 +342,15 @@
       "actions": {
         "triggerDisable": {
           "target": [
-            "bomb_areas_0_2_check",
-            "bomb_areas_3_4_check",
-            "bomb_areas_5_6_check",
-            "bomb_areas_7_8_check"
+            "bomb_areas_0_1_check",
+            "bomb_areas_2_3_check",
+            "bomb_areas_4_5_check",
+            "bomb_areas_6_8_check"
           ]
         },
         "comment": [
           {
-            "value": "12000 dlya istorii, 50400 dlya arkady"
+            "value": "wtm only has arcade"
           },
           {
             "value": "govorim chto dlya etih rangov 4 zony"
@@ -358,15 +358,15 @@
         ],
         "varSetReal": [
           {
-            "value": 12000.0,
+            "value": 75000.0,
             "var": "baseHP"
           },
           {
-            "value": 4.2,
+            "value": 1.0,
             "var": "arcade_HP_mul"
           }
         ],
-        "__varSetInt": {
+        "varSetInt": {
           "value": 4,
           "var": "max_bomb_areas"
         },
@@ -389,7 +389,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -430,7 +430,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -480,7 +480,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -532,7 +532,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {},
@@ -620,7 +620,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -672,7 +672,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -724,7 +724,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -776,7 +776,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -828,7 +828,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -880,7 +880,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -932,7 +932,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -984,7 +984,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -1387,7 +1387,7 @@
           "var": "t1_bases_reward_counter"
         },
         "gameMPChangeScore": {
-          "value": -5,
+          "value": -7,
           "valueSystem": "percentage",
           "team": "A"
         },
@@ -1630,7 +1630,7 @@
           "var": "t2_bases_reward_counter"
         },
         "gameMPChangeScore": {
-          "value": -5,
+          "value": -7,
           "valueSystem": "percentage",
           "team": "B"
         },
@@ -1798,7 +1798,7 @@
     }
   },
   "variables": {
-    "max_bomb_areas": 3,
+    "max_bomb_areas": 4,
     "t1_bases_counter": 3,
     "t2_bases_counter": 3,
     "t1_bases_reward_counter": 0,

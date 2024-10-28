@@ -8,7 +8,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlotContentGenId,
-  selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler, canGoToBattle
+  selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler
 } = require("respawnState.nut")
 let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets
 } = require("bulletsChoiceState.nut")
@@ -21,7 +21,8 @@ let { getUnitPresentation, getPlatoonName, getUnitClassFontIcon, getUnitLocId
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { collectibleTextColor, premiumTextColor, markTextColor } = require("%rGui/style/stdColors.nut")
 let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
-let { textButtonCommon, textButtonBattle } = require("%rGui/components/textButton.nut")
+let { textButtonCommon, textButtonBattle, iconButtonPrimary } = require("%rGui/components/textButton.nut")
+let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { scoreBoard, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
 let { unitPlateWidth, unitPlateHeight, mkUnitPrice, mkUnitBg, mkUnitSelectedGlow,
   mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, unitSlotLockedByQuests,
@@ -44,6 +45,7 @@ let { mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
 let { respawnSkins, skinSize } = require("respawnSkins.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
+let { openUnitWeaponPresetWnd } = require("%rGui/unit/unitWeaponPresetsWnd.nut")
 let { sendPlayerActivityToServer } = require("playerActivity.nut")
 let { selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 
@@ -87,7 +89,7 @@ let topPanel = @() {
 function onSlotClick(slot) {
   //todo: validate spawn here
   sendPlayerActivityToServer()
-  if (canGoToBattle(slot, sparesNum.get() > 0)) {
+  if (slot.canSpawn) {
     playerSelectedSlotIdx(slot.id)
     return
   }
@@ -106,32 +108,11 @@ let sparePrice = {
   })
 }
 
-let mkSlotPlateContent = @(slot, unit, baseUnit, p, isSelected) function() {
-  let { isSpawnBySpare, country, mRank, isLocked = false, reqLevel = 0 } = slot
-  let canBattle = canGoToBattle(slot, sparesNum.get() > 0)
-  return {
-    watch = sparesNum
-    key = slot
-    size = [unitPlateWidth, unitPlateHeight]
-    children = [
-      mkUnitBg(unit, !canBattle)
-      canBattle ? mkUnitSelectedGlow(unit, isSelected) : null
-      mkUnitImage(unit, !canBattle)
-      mkUnitTexts(country == "" ? baseUnit : unit, loc(p.locId), !canBattle)
-      canBattle
-          ? mkUnitInfo(mRank == 0 ? baseUnit : unit, { padding = [0, plateTextsSmallPad * 2, 0, 0] })
-        : isLocked && reqLevel <= 0
-          ? unitSlotLockedByQuests
-        : mkUnitSlotLockedLine(slot)
-      canBattle && isSpawnBySpare ? sparePrice : null
-    ]
-  }
-}
-
 function mkSlotPlate(slot, baseUnit) {
   let p = getUnitPresentation(slot.name)
   let isSelected = Computed(@() selSlot.value?.id == slot.id)
   let unit = baseUnit.__merge(slot)
+  let { canSpawn, isSpawnBySpare, country, mRank } = slot
   return {
     behavior = Behaviors.Button
     onClick = @() onSlotClick(slot)
@@ -144,7 +125,22 @@ function mkSlotPlate(slot, baseUnit) {
           margin = 0
           size = [flex(), selLineSize]
         })
-      mkSlotPlateContent(slot, unit, baseUnit, p, isSelected)
+      {
+        key = slot
+        size = [unitPlateWidth, unitPlateHeight]
+        children = [
+          mkUnitBg(unit, !canSpawn)
+          canSpawn ? mkUnitSelectedGlow(unit, isSelected) : null
+          mkUnitImage(unit, !canSpawn)
+          mkUnitTexts(country == "" ? baseUnit : unit, loc(p.locId), !canSpawn)
+          canSpawn
+              ? mkUnitInfo(mRank == 0 ? baseUnit : unit, { padding = [0, plateTextsSmallPad * 2, 0, 0] })
+            : slot?.isLocked && (slot?.reqLevel ?? 0) <= 0
+              ? unitSlotLockedByQuests
+            : mkUnitSlotLockedLine(slot)
+          canSpawn && isSpawnBySpare ? sparePrice : null
+        ]
+      }
     ]
   }
 }
@@ -316,12 +312,20 @@ function toBattle() {
 }
 
 let buttons = @() {
-  watch = [needCancel, isRespawnStarted, selSlot, sparesNum]
+  watch = [needCancel, isRespawnStarted, selSlot, selSlotUnitType]
   vplace = ALIGN_BOTTOM
-  children = !canGoToBattle(selSlot.get(), sparesNum.get() > 0) ? null
-    : !isRespawnStarted.value ? toBattleButton(toBattle, { hotkeys = ["^J:X | Enter"] })
-    : needCancel.value ? cancelBtn
-    : spinner
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(20)
+  children = [
+    selSlotUnitType.get() != AIR ? null
+      : iconButtonPrimary("ui/gameuiskin#icon_weapon_preset.svg", @() openUnitWeaponPresetWnd(selSlot.get()), {
+        ovr = { size = [defButtonHeight, defButtonHeight], minWidth = defButtonHeight }
+      }),
+    !(selSlot.get()?.canSpawn ?? false) ? null
+      : !isRespawnStarted.get() ? toBattleButton(toBattle, { hotkeys = ["^J:X | Enter"] })
+      : needCancel.get() ? cancelBtn
+      : spinner
+  ]
 }
 
 let rightBlock = {

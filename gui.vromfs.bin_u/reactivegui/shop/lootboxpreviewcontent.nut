@@ -65,8 +65,7 @@ function lootboxImageWithTimer(lootbox) {
   let { start = 0, end = 0 } = timeRange
 
   let adReward = Computed(@() schRewards.get().findvalue(
-    @(r) "rewards" not in r ? (r.lootboxes?[name] ?? 0) > 0 //compatibility with 2024.04.14
-      : (null != r.rewards.findvalue(@(g) g.id == name && g.gType == G_LOOTBOX))))
+    @(r) (null != r.rewards.findvalue(@(g) g.id == name && g.gType == G_LOOTBOX))))
   let needAdtimeProgress = Computed(@() !lootboxInProgress.get()
     && !(adReward.get()?.isReady ?? true))
 

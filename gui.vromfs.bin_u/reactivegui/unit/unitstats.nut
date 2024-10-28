@@ -36,6 +36,7 @@ let valueRangeShip = {
   shipCrewRating = [0.0, 10.0]
   maxSpeed = [5.3, 20.7] // m/s
   turningTime = [10, 60]
+  asmCaptureDuration = [3.2, 8]
   mainCannonDps = [0, 5000]
   auxCannonDps = [0, 5000]
   aaaDps = [0, 5000]
@@ -137,6 +138,10 @@ let statsShip = {
     getProgress = mkGetProgressInv(SHIP, "turningTime")
     valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
   }
+  asmCaptureDuration = {
+    getProgress = mkGetProgressInv(SHIP, "asmCaptureDuration")
+    valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
+  }
   allCannons = {
     isAvailable = @(s) s?.weapons.findvalue(@(w) w?.wtype in allCannons) != null
     getValue = @(s) (s?.weapons ?? []).reduce(function(res, w) {
@@ -172,10 +177,6 @@ let statsShip = {
     getHeader = @(s, _) " ".concat(aircraftMark, loc(getUnitLocId(s.supportPlane)))
     valueToText = @(_, s) $"x{s?.supportPlaneCount ?? 1}"
   }
-}.map(@(cfg, id) mkStat(id, cfg, SHIP))
-
-let statsSubmarine = {
-  maxSpeed = { valueToText = @(v, _) getSpeedText(v * (get_game_params()?.submarineMaxSpeedMult ?? 1.)) }
 }.map(@(cfg, id) mkStat(id, cfg, SHIP))
 
 let statsTank = {
@@ -249,29 +250,14 @@ let statsCfgShip = {
     statsShip.shipCrewMin
     statsShip.maxSpeed
     statsShip.turningTime
+    statsShip.asmCaptureDuration
     statsShip.supportPlane
   ]
   short = [
     statsShip.shipCrewAll
     statsShip.maxSpeed
     statsShip.turningTime
-    statsShip.allCannons
-    statsShip.special
-  ]
-}
-
-let statsCfgSubmarine = {
-  full = [
-    statsShip.shipCrewMax
-    statsShip.shipCrewMin
-    statsSubmarine.maxSpeed
-    statsShip.turningTime
-    statsShip.supportPlane
-  ]
-  short = [
-    statsShip.shipCrewAll
-    statsSubmarine.maxSpeed
-    statsShip.turningTime
+    statsShip.asmCaptureDuration
     statsShip.allCannons
     statsShip.special
   ]
@@ -315,7 +301,6 @@ let statsCfgAir = {
 
 let statsCfg = {
   [SHIP] = statsCfgShip,
-  [SUBMARINE] = statsCfgSubmarine,
   [TANK] = statsCfgTank,
   [AIR] = statsCfgAir
 }
@@ -371,7 +356,6 @@ let weaponsCfgTank = {
       isAvailable = @(_) true
     }, TANK)
     mkStat("reloadTime", {
-      getProgress = mkGetProgressInv(TANK, "reloadTime")
       valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
       isAvailable = @(_) true
     }, TANK)
@@ -511,7 +495,9 @@ function mkUnitStat(unit, stat, shopCfg, uid) {
   let header = stat.getHeader(shopCfg, unit)
   if (header == "")
     return null
-  let value = stat.getValue(shopCfg)
+  local value = stat.getValue(shopCfg)
+  if (unit.unitClass == SUBMARINE && uid == "maxSpeed")
+    value *= (get_game_params()?.submarineMaxSpeedMult ?? 1.)
   return {
     uid //for compare
     header
@@ -609,14 +595,14 @@ let setMaxAttrs = @(attrPreset) attrPresets.value?[attrPreset]
 
 function mkUnitStatsCompFull(unit, attrLevels, attrPreset, mods) {
   attrLevels = !attrLevels && (unit?.isPremium || unit?.isUpgraded) ? setMaxAttrs(unit.attrPreset) : attrLevels
-  let unitType = unit.unitClass == "submarine" ? "submarine" : unit.unitType
+  let unitType = unit.unitType
   let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset, mods)
   return getUnitStats(unit, stats, statsCfg?[unitType].full ?? [], weaponsCfg?[unitType].full ?? [])
 }
 
 function mkUnitStatsCompShort(unit, attrLevels, attrPreset, mods) {
   attrLevels = !attrLevels && (unit?.isPremium || unit?.isUpgraded) ? setMaxAttrs(unit.attrPreset) : attrLevels
-  let unitType = unit.unitClass == "submarine" ? "submarine" : unit.unitType
+  let unitType = unit.unitType
   let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset, mods)
   return getUnitStats(unit, stats, statsCfg?[unitType].short ?? [], weaponsCfg?[unitType].short ?? [])
 }

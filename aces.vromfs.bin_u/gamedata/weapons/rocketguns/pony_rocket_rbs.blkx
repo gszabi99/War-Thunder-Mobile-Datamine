@@ -53,7 +53,7 @@
     "autoaimEnabled": false,
     "aiGroundOnly": false,
     "aiAirOnly": false,
-    "fireEffect": "",
+    "fireEffect": "rocket_fire_light",
     "smokeEffect": "rocket_tail_rainbow",
     "smokeEffect2": "",
     "hazeEffect": "haze_missile",

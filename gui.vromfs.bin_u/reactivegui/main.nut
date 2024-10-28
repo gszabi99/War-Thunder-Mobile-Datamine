@@ -21,7 +21,7 @@ require("%rGui/options/guiOptions.nut") //need to register options before load p
 require("%appGlobals/clientState/initWindowState.nut")
 require("account/legalAcceptWnd.nut")
 require("%globalScripts/windowStateEs.nut")
-require("%globalScripts/windowState.nut").allowDebug(true)
+require("%appGlobals/windowState.nut").allowDebug(true)
 require("contacts/contactsState.nut") //need to catch notifications before login finish
 require("squad/squadManager.nut") //need to catch notifications before login finish
 require("initHangar.nut")
@@ -31,7 +31,7 @@ require("login/consentGoogleState.nut")
 require("login/previewIDFAWnd.nut")
 
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
-let { modalWindowsComponent, hideAllModalWindows, hasModalWindows } = require("%rGui/components/modalWindows.nut")
+let { modalWindowsComponent, closeAllModalWindows, hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isInLoadingScreen, isInBattle, isHudVisible } = require("%appGlobals/clientState/clientState.nut")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { isLoggedIn, isLoginRequired, isReadyToFullLoad } = require("%appGlobals/loginState.nut")
@@ -76,7 +76,7 @@ function loadAfterLoginImpl() {
   setIsScriptsLoading(true)
   let t = get_time_msec()
   log("LOAD RGUI SCRIPTS AFTER LOGIN")
-  sceneAfterLogin = require("%rGui/sceneAfterLogin.nut")
+  sceneAfterLogin = require("%rGui/sceneAfterLogin.nut") // -skip-require
   isAllScriptsLoaded(true)
   log($"DaRg scripts load after login {get_time_msec() - t} msec")
   setIsScriptsLoading(false)
@@ -95,8 +95,8 @@ function loadAfterLogin() {
 isReadyToFullLoad.subscribe(@(v) v ? loadAfterLogin() : null)
 isLoginRequired.subscribe(@(v) v ? null : loadAfterLogin())
 
-isLoggedIn.subscribe(@(v) v ? closeFMsgBox("errorMessageBox") : hideAllModalWindows())
-isInBattle.subscribe(@(_) hideAllModalWindows())
+isLoggedIn.subscribe(@(v) v ? closeFMsgBox("errorMessageBox") : closeAllModalWindows())
+isInBattle.subscribe(@(_) closeAllModalWindows())
 
 let debugSa = mkWatched(persist, "debugSa", false)
 register_command(function() {

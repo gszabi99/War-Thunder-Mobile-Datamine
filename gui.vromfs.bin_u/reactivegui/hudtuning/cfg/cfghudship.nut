@@ -10,7 +10,7 @@ let { EII_SMOKE_SCREEN, EII_TOOLKIT,
 let { AB_FIREWORK } = require("%rGui/hud/actionBar/actionType.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let cfgHudCommonNaval = require("cfgHudCommonNaval.nut")
-let { mkZoomButton, mkPlaneItem, mkSimpleButton } = require("%rGui/hud/weaponsButtonsView.nut")
+let { mkZoomButton, mkPlaneItem, mkSimpleButton, mkAntiairButton } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkWeaponBtnEditView, mkNumberedWeaponEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
 let { Z_ORDER, mkRBPos, mkLBPos, weaponryButtonCtor, weaponryButtonDynamicCtor,
   withActionBarButtonCtor, withActionButtonCtor

@@ -64,7 +64,8 @@ let hudBase = {
     {
       size = flex()
       behavior = TouchCameraControl
-      eventPassThrough = true
+      eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+      touchMarginPriority = TOUCH_BACKGROUND
     }
     @() {
       watch = [isInFlight, viewHudType, unitType]

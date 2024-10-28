@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%globalScripts/ecs.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setInterval, clearTimer } = require("dagor.workcycle")
-let { get_base_game_version_str } = require_optional("app")
-let { check_version } = require("%sqstd/version_compare.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { myUserId } = require("%appGlobals/profileStates.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -19,14 +19,27 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
 let { COMMON } = require("%rGui/components/buttonStyles.nut")
 let { isUnitDelayed, isUnitAlive, unitType } = require("%rGui/hudState.nut")
-let { respawnSlots, canUseSpare } = require("%rGui/respawn/respawnState.nut")
+let { respawnSlots, canUseSpare, isBailoutDeserter } = require("%rGui/respawn/respawnState.nut")
 let { resetGravityAxesZero } = require("%rGui/hud/aircraftMovementBlock.nut")
 let { isAircraftControlByGyro } = require("%rGui/options/options/airControlsOptions.nut")
 
 
-let hasGyroSupport = check_version(">=1.10.0.61", get_base_game_version_str())
 let spawnInfo = Watched(null)
-let aliveOrHasSpawn = Computed(@() (spawnInfo.get()?.isAlive ?? false) || (spawnInfo.get()?.hasSpawns ?? false))
+let canDeserter = Computed(function() {
+  let { isAlive = false, hasSpawns = false } = spawnInfo.get()
+  return isAlive
+    || isBailoutDeserter.get()
+    || (hasSpawns && (null != respawnSlots.get().findvalue(@(s) s.canSpawn && !s.isSpawnBySpare)))
+})
+register_es("on_change_lastBailoutTime", {
+    [["onInit", "onChange"]] = @(_, comp) comp.server_player__userId != myUserId.get() ? null
+      : isBailoutDeserter.set(comp.lastBailoutTime > 0.0)
+    onDestroy = @() isBailoutDeserter.set(false)
+  },
+  {
+    comps_track = [["lastBailoutTime", TYPE_FLOAT]],
+    comps_ro = [["server_player__userId", TYPE_UINT64]]
+  })
 eventbus_subscribe("localPlayerSpawnInfo", @(s) spawnInfo(s))
 
 let battleResume = @() eventbus_send("FlightMenu_doButtonAction", { buttonName = "Resume" })
@@ -36,10 +49,10 @@ let leaveVehicle = @() eventbus_send("FlightMenu_doButtonAction", { buttonName =
 let backBtn = backButton(battleResume,
   { hotkeys = [["^J:Start", loc("btn/continueBattle")]], clickableInfo = loc("btn/continueBattle") })
 
-let menuContent = @(isAlive, campaign) mkCustomMsgBoxWnd(loc("msgbox/leaveBattle/title"),
-  loc(isAlive ? "msgbox/leaveBattle/giveUp" : "msgbox/leaveBattle/toPort"),
+let menuContent = @(isGivingUp, campaign) mkCustomMsgBoxWnd(loc("msgbox/leaveBattle/title"),
+  loc(isGivingUp ? "msgbox/leaveBattle/giveUp" : "msgbox/leaveBattle/toPort"),
   [
-    isAlive ? textButtonCommon(utf8ToUpper(loc("btn/giveUp")), quitMission, { hotkeys = ["^J:LB"] })
+    isGivingUp ? textButtonCommon(utf8ToUpper(loc("btn/giveUp")), quitMission, { hotkeys = ["^J:LB"] })
       : textButtonBright(utf8ToUpper(loc(campaign == "ships" ? "return_to_port/short"
           : "return_to_hangar/short")), quitMission, { hotkeys = ["^J:LB"] })
     textButtonPrimary(utf8ToUpper(loc("btn/continueBattle")), battleResume,
@@ -50,8 +63,8 @@ let optionsButton = textButtonCommon(utf8ToUpper(loc("mainmenu/btnOptions")), op
   { hotkeys = ["^J:Y"] })
 let helpButton = textButtonCommon(utf8ToUpper(loc("flightmenu/btnControlsHelp")), controlsHelpWnd,
   { hotkeys = ["^J:X"] })
-let gyroResetButton = !hasGyroSupport ? null
-  : textButtonMultiline(utf8ToUpper(loc("mainmenu/btnGyroReset")), resetGravityAxesZero, COMMON)
+let gyroResetButton = textButtonMultiline(utf8ToUpper(loc("mainmenu/btnGyroReset")), resetGravityAxesZero,
+  COMMON)
 let leaveVehicleButton = textButtonMultiline(utf8ToUpper(loc("flightmenu/btnLeaveTheTank")), leaveVehicle,
   COMMON.__merge({ hotkeys = ["^J:LT"] }))
 
@@ -70,7 +83,7 @@ let customButtons = @() {
 let refreshSpawnInfo = @() eventbus_send("getLocalPlayerSpawnInfo", {})
 
 let flightMenu = @() bgShaded.__merge({
-  watch = [needShowDevMenu, aliveOrHasSpawn, battleCampaign]
+  watch = [needShowDevMenu, canDeserter, battleCampaign]
   key = needShowDevMenu
   function onAttach() {
     refreshSpawnInfo()
@@ -82,7 +95,7 @@ let flightMenu = @() bgShaded.__merge({
   padding = saBordersRv
   children = [
     backBtn
-    needShowDevMenu.get() ? devMenuContent : menuContent(aliveOrHasSpawn.get(), battleCampaign.get())
+    needShowDevMenu.get() ? devMenuContent : menuContent(canDeserter.get(), battleCampaign.get())
     customButtons
     @() {
       watch = [isUnitAlive, isUnitDelayed, respawnSlots, canBailoutFromFlightMenu, canUseSpare]

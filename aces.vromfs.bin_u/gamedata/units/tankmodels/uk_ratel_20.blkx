@@ -25,7 +25,7 @@
     true
   ],
   "useSimpleDeathConditionsAndEffects": false,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",

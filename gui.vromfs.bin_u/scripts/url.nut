@@ -135,7 +135,7 @@ function open(baseUrl, isAlreadyAuthenticated = false, onCloseUrl = "", useExter
   }
 }
 
-local function validateLink(link) {
+function validateLink(link) {
   if (link == null)
     return null
 

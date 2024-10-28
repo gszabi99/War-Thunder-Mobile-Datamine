@@ -52,12 +52,29 @@ let optBlock = @(header, content, openInfo, desc, locId, ovr = {}) {
 
 let optionCtors = {
   [OCT_SLIDER] = function(opt) {
-    let { value = null, ctrlOverride = {}, locId = "", valToString = @(v) v, setValue = null, onChangeValue = null} = opt
+    let { value = null, ctrlOverride = {}, locId = "", valToString = @(v) v, setValue = null, onChangeValue = null, visible = null} = opt
     if (value == null) {
       logerr($"Options: Missing value for option {opt?.locId}")
       return null
     }
     let sendChangeValue = @() onChangeValue?(value.get())
+    if (visible instanceof Watched)
+      return @() !visible.get() ? { watch = visible }
+        : { watch = visible
+            children = sliderWithButtons(value, loc(locId),
+            setValue == null && onChangeValue == null ? ctrlOverride
+              : ctrlOverride.__merge({
+                function onChange(v) {
+                  sliderValueSound()
+                  if (setValue != null)
+                    setValue(v)
+                  else
+                    value.set(v)
+                  resetTimeout(1, sendChangeValue)
+               }
+             }),
+            valToString)
+          }
     return sliderWithButtons(value, loc(locId),
       setValue == null && onChangeValue == null ? ctrlOverride
         : ctrlOverride.__merge({
@@ -75,7 +92,7 @@ let optionCtors = {
 
   [OCT_LIST] = function(opt) {
     let { value = null, setValue = null, onChangeValue = null, locId = "", list = [], valToString = @(v) v, openInfo = null,
-      description = "", mkContentCtor = null } = opt
+      description = "", mkContentCtor = null, columnsMaxCustom = columnsMax } = opt
     if (value == null) {
       logerr($"Options: Missing value for option {opt?.locId}")
       return null
@@ -92,7 +109,7 @@ let optionCtors = {
         : optBlock(loc(locId),
             listbox({ value, list = list.value, valToString,
               setValue = sendChangeValue,
-              columns = clamp(list.value.len(), columnsMin, columnsMax),
+              columns = clamp(list.value.len(), columnsMin, columnsMaxCustom),
               mkContentCtor
             }),
             openInfo, description, locId,
@@ -103,7 +120,7 @@ let optionCtors = {
     return optBlock(loc(locId),
       listbox({ value, list, valToString,
         setValue = sendChangeValue,
-        columns = clamp(list.len(), columnsMin, columnsMax),
+        columns = clamp(list.len(), columnsMin, columnsMaxCustom),
         mkContentCtor
       }),
       openInfo, description, locId)

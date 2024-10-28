@@ -159,7 +159,7 @@ function mkSkipButton(stepSkipDelay, boxes, style) {
   }
 }
 
-local function mkArrows(boxes, obstaclesVar, style) {
+function mkArrows(boxes, obstaclesVar, style) {
   boxes = boxes.filter(@(b) (b?.needArrow ?? false) && b.r - b.l > 0 && b.b - b.t > 0)
   if (boxes.len() == 0)
     return null

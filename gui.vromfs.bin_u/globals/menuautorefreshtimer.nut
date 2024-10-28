@@ -2,7 +2,7 @@ from "math" import max
 let { get_time_msec } = require("dagor.time")
 let { setTimeout } = require("dagor.workcycle")
 let { kwarg } = require("%sqstd/functools.nut")
-let { windowActive } = require("%globalScripts/windowState.nut")
+let { windowActive } = require("%appGlobals/windowState.nut")
 let { isLoggedIn } = require("loginState.nut")
 let { isInBattle } = require("clientState/clientState.nut")
 

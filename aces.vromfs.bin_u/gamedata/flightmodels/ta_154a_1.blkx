@@ -1596,6 +1596,10 @@
   "Params": {
     "Range": 1095.0
   },
+  "Sound": {
+    "Engine": "engine_bomber_radial",
+    "gun": "gun_default"
+  },
   "cockpit": {
     "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [

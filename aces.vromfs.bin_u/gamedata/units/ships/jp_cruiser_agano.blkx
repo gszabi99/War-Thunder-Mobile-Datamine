@@ -1,7 +1,7 @@
 {
   "ecsTemplate": "ship_wtm+aircraft_carrier",
   "hasQualityModels": true,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "radioDist": 50000.0,
   "model": "cruiser_agano",
   "subclass": "warShip",
@@ -2219,7 +2219,7 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 100.0,
+        "allowableDelta": 60.0,
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -2232,8 +2232,8 @@
         },
         "limits": {
           "yaw": [
-            -107.0,
-            107.0
+            -125.0,
+            125.0
           ],
           "pitch": [
             0.0,
@@ -2242,8 +2242,8 @@
         },
         "limitsDeadzone": {
           "yaw": [
-            -82.0,
-            82.0
+            -25.0,
+            0.0
           ],
           "pitch": [
             0.0,
@@ -2274,7 +2274,7 @@
         ],
         "startSpeed": 20.0,
         "useStartSpeed": true,
-        "allowableDelta": 100.0,
+        "allowableDelta": 60.0,
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
@@ -2287,8 +2287,8 @@
         },
         "limits": {
           "yaw": [
-            -110.0,
-            110.0
+            -130.0,
+            130.0
           ],
           "pitch": [
             0.0,
@@ -2297,8 +2297,8 @@
         },
         "limitsDeadzone": {
           "yaw": [
-            -77.0,
-            77.0
+            0.0,
+            25.0
           ],
           "pitch": [
             0.0,
@@ -3700,7 +3700,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 100.0,
+              "allowableDelta": 60.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -3713,8 +3713,8 @@
               },
               "limits": {
                 "yaw": [
-                  -107.0,
-                  107.0
+                  -125.0,
+                  125.0
                 ],
                 "pitch": [
                   0.0,
@@ -3723,8 +3723,8 @@
               },
               "limitsDeadzone": {
                 "yaw": [
-                  -82.0,
-                  82.0
+                  -25.0,
+                  0.0
                 ],
                 "pitch": [
                   0.0,
@@ -3755,7 +3755,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 100.0,
+              "allowableDelta": 60.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -3768,8 +3768,8 @@
               },
               "limits": {
                 "yaw": [
-                  -110.0,
-                  110.0
+                  -130.0,
+                  130.0
                 ],
                 "pitch": [
                   0.0,
@@ -3778,8 +3778,8 @@
               },
               "limitsDeadzone": {
                 "yaw": [
-                  -77.0,
-                  77.0
+                  0.0,
+                  25.0
                 ],
                 "pitch": [
                   0.0,
@@ -5178,7 +5178,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 100.0,
+              "allowableDelta": 60.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -5191,8 +5191,8 @@
               },
               "limits": {
                 "yaw": [
-                  -107.0,
-                  107.0
+                  -125.0,
+                  125.0
                 ],
                 "pitch": [
                   0.0,
@@ -5201,8 +5201,8 @@
               },
               "limitsDeadzone": {
                 "yaw": [
-                  -82.0,
-                  82.0
+                  -25.0,
+                  0.0
                 ],
                 "pitch": [
                   0.0,
@@ -5233,7 +5233,7 @@
               ],
               "startSpeed": 20.0,
               "useStartSpeed": true,
-              "allowableDelta": 100.0,
+              "allowableDelta": 60.0,
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
@@ -5246,8 +5246,8 @@
               },
               "limits": {
                 "yaw": [
-                  -110.0,
-                  110.0
+                  -130.0,
+                  130.0
                 ],
                 "pitch": [
                   0.0,
@@ -5256,8 +5256,8 @@
               },
               "limitsDeadzone": {
                 "yaw": [
-                  -77.0,
-                  77.0
+                  0.0,
+                  25.0
                 ],
                 "pitch": [
                   0.0,

@@ -46,6 +46,7 @@ struct EventOnZoneDamage
   dmg : float
   allDmg : float
   fullHp : float
+  isAirfield : bool
 
 [cpp_event(broadcast)]
 struct EventOnPlayerCriticalHit
@@ -76,6 +77,7 @@ struct EventOnZoneKill
   dmg : float
   allDmg : float
   fullHp : float
+  isAirfield : bool
 
 [cpp_event(broadcast)]
 struct EventOnPlayerDeath
@@ -183,3 +185,4 @@ struct EventOnPlayerBailout
 [event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
 struct EventZoneDamageMessage
   score : int
+  isAirfield : bool

@@ -3,14 +3,14 @@ let logUpdate = log_with_prefix("[UPDATE] googlePlay: ")
 let { eventbus_subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
-let { checkGooglePlayUpdate } = require("android.platform")
+let { checkAppUpdateOnMarket } = require("android.platform")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 
 
 const REQUEST_PERIOD_MSEC = 1800000
 let needSuggestToUpdate = hardPersistWatched("googlePlay.needSuggestToUpdate")
-let nextRequestTime = hardPersistWatched("needSuggestToUpdate.nextTime")
+let nextRequestTime = hardPersistWatched("googlePlay.needSuggestToUpdate.nextTime")
 let needRequest = Watched(nextRequestTime.value <= get_time_msec())
 let allowRequest = Computed(@() needRequest.value && !isInBattle.value && !isInLoadingScreen.value)
 
@@ -22,7 +22,7 @@ function requestNeedUpdate() {
     return
   needRequest(false)
   logUpdate("request")
-  checkGooglePlayUpdate()
+  checkAppUpdateOnMarket()
 }
 
 eventbus_subscribe("android.platform.onUpdateCheck", function(response) {

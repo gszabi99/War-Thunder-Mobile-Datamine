@@ -6,8 +6,7 @@ let { activeUnlocks, receiveUnlockRewards, unlockInProgress, getRelativeStageDat
 } = require("%rGui/unlocks/unlocks.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { deferOnce } = require("dagor.workcycle")
-let { isAdsAvailable, canShowAds, showAdsForReward } = require("%rGui/ads/adsState.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { isAdsAvailable, showAdsForReward } = require("%rGui/ads/adsState.nut")
 let { completeAnimDelay, moveCardsFullTime, moveCardsHalfTime, FULL_DAYS
 } = require("loginAwardPlaces.nut")
 let { delayUnseedPurchaseShow } = require("%rGui/shop/unseenPurchasesState.nut")
@@ -73,10 +72,6 @@ function receiveLoginAward() {
 function showLoginAwardAds() {
   if (!loginAwardUnlockByAds.value)
     return
-  if (!canShowAds.value) {
-    openMsgBox({ text = loc("msg/adsNotReadyYet") })
-    return
-  }
 
   let stage = loginAwardUnlockByAds.value.lastRewardedStage + 1
   showAdsForReward({

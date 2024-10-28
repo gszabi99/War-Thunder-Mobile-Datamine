@@ -9,43 +9,54 @@ let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardV
 let { REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, mkRewardPlate
 } = require("%rGui/rewards/rewardPlateComp.nut")
 
-let dbgRewardsTbl = {
-  currencies = {
-    gold = 9999
-    wp = 10000
-    warbond = 100
-    eventKey = 50
-  }
-  premiumDays = 14
-  items = {
-    ship_tool_kit = 50
-    ship_smoke_screen_system_mod = 50
-    tank_tool_kit_expendable = 50
-    tank_extinguisher = 50
-    spare = 50
-    firework_kit = 3
-    ircm_kit = 3
-  }
-  lootboxes = {
-    every_day_award_big_pack_1 = 3
-    every_day_award_first = 3
-  }
-  decorators = [
-    "cardicon_crosspromo"
-    "captain-lieutenant"
-    "pilot"
-    "cannon"
-    "bullet"
-  ]
-  units = [
-    "ussr_sub_pr641"
-    "ussr_t_34_85_d_5t"
-  ]
-  unitUpgrades = [
-    "uk_destroyer_tribal"
-    "ussr_t_34_85_d_5t"
-  ]
+let dbgRewardsTbl = []
+
+function apendDbgRewards(gType, list) {
+  if (type(list) == "table")
+    foreach(id, count in list)
+      dbgRewardsTbl.append({ gType, id, count, subId = "" })
+  else
+    foreach(id in list)
+      dbgRewardsTbl.append({ gType, id, count = 0, subId = "" })
 }
+
+apendDbgRewards("premium", { [""] = 14 })
+
+apendDbgRewards("currency", {
+  gold = 9999
+  wp = 10000
+  warbond = 100
+  eventKey = 50
+})
+
+apendDbgRewards("item", {
+  ship_tool_kit = 50
+  ship_smoke_screen_system_mod = 50
+  tank_tool_kit_expendable = 50
+  tank_extinguisher = 50
+  spare = 50
+  firework_kit = 3
+  ircm_kit = 3
+})
+apendDbgRewards("lootbox", {
+  every_day_award_big_pack_1 = 3
+  every_day_award_first = 3
+})
+apendDbgRewards("decorator", [
+  "cardicon_crosspromo"
+  "captain-lieutenant"
+  "pilot"
+  "cannon"
+  "bullet"
+])
+apendDbgRewards("unit", [
+  "ussr_sub_pr641"
+  "ussr_t_34_85_d_5t"
+])
+apendDbgRewards("unitUpgrade", [
+  "uk_destroyer_tribal"
+  "ussr_t_34_85_d_5t"
+])
 
 let dbgRewardsInfo = getRewardsViewInfo(dbgRewardsTbl).sort(sortRewardsViewInfo)
 

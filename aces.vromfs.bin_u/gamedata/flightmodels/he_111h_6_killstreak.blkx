@@ -1,7 +1,7 @@
 {
   "model": "he_111h_6",
   "fmFile": "fm/he_111h_6.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "gForceTolerationMult": 1.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",

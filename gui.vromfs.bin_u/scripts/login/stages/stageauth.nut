@@ -7,6 +7,7 @@ let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { authState } = require("%scripts/login/authState.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let googlePlayAccount = require("android.account.googleplay")
+let guestFirebaseAccount = require_optional("android.account.guest")
 let hmsAccount = require("android.account.huawei")
 let appleAccount = require("ios.account.apple")
 let { getUUID } = require("ios.platform")
@@ -160,7 +161,7 @@ eventbus_subscribe("android.account.huawei.onSignInCallback",
     }
     let parsed = parse_json(json)
     logStage("Huawei check_login_pass_async")
-    check_login_pass_async("CheckLoginPassDone.Huawei", "", parsed?.AccessToken, "huawei", "huawei", false, false)
+    check_login_pass_async("CheckLoginPassDone.Huawei", "", parsed?.IdToken, "huawei", "huawei", false, false)
   }))
 
 eventbus_subscribe("android.account.onGuestFIDReciveCallback",
@@ -238,7 +239,8 @@ let loginByType = {
 
   [LT_FIREBASE] = function(_as) {
     googlePlayAccount.signOut(false)
-    googlePlayAccount.loadGuestFID() //will be event android.account.onGuestFIDReciveCallback
+    if (guestFirebaseAccount)
+      guestFirebaseAccount.loadGuestFID() //will be event android.account.onGuestFIDReciveCallback
   },
 
   [LT_GUEST] = function(_as) {

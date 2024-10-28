@@ -9,9 +9,9 @@
   },
   "bomb": {
     "mass": 104.3,
-    "mass_lbs": 250.0,
+    "mass_lbs": 230.0,
     "explosiveType": "tnt",
-    "explosiveMass": 65.0,
+    "explosiveMass": 30.7,
     "bombType": "he_bomb",
     "bombName": "gp_250lb_mk_iv",
     "caliber": 0.259,

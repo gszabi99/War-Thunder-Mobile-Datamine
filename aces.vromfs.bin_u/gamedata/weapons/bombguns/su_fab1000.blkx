@@ -13,7 +13,7 @@
   "bomb": {
     "mass": 1080.0,
     "explosiveType": "tnt",
-    "explosiveMass": 350.0,
+    "explosiveMass": 485.0,
     "bombType": "he_bomb",
     "bombName": "fab1000sv_39",
     "bulletName": "su_fab1000",

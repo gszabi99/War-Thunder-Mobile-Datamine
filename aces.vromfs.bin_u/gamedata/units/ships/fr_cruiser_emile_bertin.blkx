@@ -1,7 +1,7 @@
 {
   "ecsTemplate": "ship_wtm+aircraft_carrier",
   "hasQualityModels": true,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "radioDist": 50000.0,
   "model": "cruiser_emile_bertin",
   "subclass": "warShip",

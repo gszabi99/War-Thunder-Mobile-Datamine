@@ -6,7 +6,7 @@ let { isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let openConfig = mkWatched(persist, "openConfig", null)
 let previewLootboxId = Computed(@() openConfig.value?.id)
 let previewLootbox = Computed(@() serverConfigs.value?.lootboxesCfg?[previewLootboxId.value]
-  .__merge({ name = previewLootboxId.value }) ?? {})
+  .__merge({ name = previewLootboxId.value }))
 
 function getStepsToNextFixed(lootbox, sConfigs, sProfile) {
   let { rewardsCfg = null } = sConfigs

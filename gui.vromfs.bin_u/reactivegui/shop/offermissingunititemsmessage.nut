@@ -13,7 +13,7 @@ let { decorativeLineBgMW } = require("%rGui/style/stdColors.nut")
 let { shopPurchaseInProgress, buy_goods } = require("%appGlobals/pServer/pServerApi.nut")
 let { mkCurrencyComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { shopGoodsToRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { REWARD_STYLE_MEDIUM, mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_HANGAR, PURCH_TYPE_CONSUMABLES, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
@@ -222,7 +222,7 @@ let countText = @(count){
 }.__update(fontTiny)
 
 let mkItemPlate = @(itemId, count, ovr = {})
-  mkRewardPlate(getRewardsViewInfo({ items = { [itemId] = count } })[0], REWARD_STYLE_MEDIUM, ovr)
+  mkRewardPlate(shopGoodsToRewardsViewInfo({ items = { [itemId] = count } })[0], REWARD_STYLE_MEDIUM, ovr)
 
 
 let mkSimpleContent = @(item){

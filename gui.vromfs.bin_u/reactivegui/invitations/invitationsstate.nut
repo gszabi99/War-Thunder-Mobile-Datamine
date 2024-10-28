@@ -65,7 +65,7 @@ let NOTIFICATION_PARAMS = {
   isImportant = false
   styleId = ""
 }
-local function pushNotification(notify = NOTIFICATION_PARAMS) {
+function pushNotification(notify = NOTIFICATION_PARAMS) {
   notify = NOTIFICATION_PARAMS.__merge({ time = serverTime.value }, notify)
 
   if (notify.id != null)

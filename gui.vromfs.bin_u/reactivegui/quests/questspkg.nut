@@ -8,7 +8,7 @@ let { progressBarRewardSize } = require("rewardsComps.nut")
 let { CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { canShowAds, adsButtonCounter } = require("%rGui/ads/adsState.nut")
+let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { sendBqQuestsSpeedUp } = require("bqQuests.nut")
 let { mkGlare } = require("%rGui/components/glare.nut")
@@ -145,7 +145,7 @@ function mkAdsBtn(unlock) {
   }
 
   return @() {
-    watch = [hasAdBudget, canShowAds]
+    watch = hasAdBudget
     children = mkCustomButton(
       {
         size = flex()
@@ -167,11 +167,11 @@ function mkAdsBtn(unlock) {
             halign = ALIGN_CENTER
             text = utf8ToUpper(hasAdBudget.value ? loc("quests/addProgress")
               : SPEED_UP_AD_COST <= 1 ? loc("playOneBattle") : loc("playBattles", { count = SPEED_UP_AD_COST }))
-          }.__update(hasAdBudget.value ? fontTinyShaded : fontTinyAccentedShaded, adsButtonCounter)
+          }.__update(hasAdBudget.value ? fontTinyShaded : fontSmallAccentedShaded, adsButtonCounter)
         ]
       },
       onClick,
-      mergeStyles(canShowAds.value && hasAdBudget.value ? buttonStyles.SECONDARY : buttonStyles.COMMON , btnStyleSound)
+      mergeStyles(hasAdBudget.value ? buttonStyles.SECONDARY : buttonStyles.COMMON , btnStyleSound)
     )
   }
 }

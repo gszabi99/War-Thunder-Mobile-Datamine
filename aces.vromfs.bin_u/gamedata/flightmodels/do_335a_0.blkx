@@ -1,7 +1,7 @@
 {
   "fmFile": "fm/do_335a_0.blk",
   "model": "do_335a_0",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
   "type": "typeFighter",

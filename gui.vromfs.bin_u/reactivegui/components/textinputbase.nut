@@ -106,6 +106,7 @@ function textInput(text_state, options = {}) {
       || isValidStrByType(new_value, inputType)
 
   let stateFlags = Watched(0)
+  let errorCount = Watched(0)
 
   function onBlurExt() {
     if (!isValidResult(text_state.value))
@@ -127,9 +128,10 @@ function textInput(text_state, options = {}) {
 
   function onChangeExt(new_val) {
     onChange?(new_val)
-    if (!isValidChange(new_val))
+    if (!isValidChange(new_val)) {
       anim_start(text_state)
-    else
+      errorCount.set(errorCount.get() + 1)
+     } else
       setValue(new_val)
   }
 
@@ -147,7 +149,8 @@ function textInput(text_state, options = {}) {
   }
 
   let inputObj = @() {
-    watch = [text_state, stateFlags]
+    // subscribe to errorCount is needed to show unchanged text if isValidChange check was failed
+    watch = [text_state, stateFlags, errorCount]
     rendObj = ROBJ_TEXT
     behavior = Behaviors.TextInput
 

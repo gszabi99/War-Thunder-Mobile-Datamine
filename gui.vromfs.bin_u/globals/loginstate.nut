@@ -5,6 +5,8 @@ let sharedWatched = require("%globalScripts/sharedWatched.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
+let { isHMSAvailable = @() false } = require("android.account.huawei")
+let { getBuildMarket = @() "googleplay" } = require("android.platform")
 
 let LOGIN_STATE = { //bit mask
   //before full load
@@ -78,7 +80,7 @@ let secondStepTypes = {
   SST_GP = "GP"
   SST_UNKNOWN = "Unknown"
 }
-
+let isGoogleBuild = getBuildMarket() == "googleplay"
 let isOnlyGuestLogin = get_settings_blk()?.onlyGuestLogin ?? false
 local availableLoginTypes = { [loginTypes.LT_GAIJIN] = true }
 if (is_ios) {
@@ -92,10 +94,10 @@ if (is_ios) {
     availableLoginTypes = { [loginTypes.LT_FIREBASE] = true }
   else
     availableLoginTypes.__update({
-      [loginTypes.LT_GOOGLE] = true,
+      [loginTypes.LT_GOOGLE] = isGoogleBuild,
       [loginTypes.LT_FIREBASE] = true,
-      [loginTypes.LT_FACEBOOK] = true,
-      [loginTypes.LT_HUAWEI] = true,
+      [loginTypes.LT_FACEBOOK] = isGoogleBuild,
+      [loginTypes.LT_HUAWEI] = isHMSAvailable(),
     })
 }
 

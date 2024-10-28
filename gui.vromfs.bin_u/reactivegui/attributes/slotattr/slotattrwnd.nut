@@ -24,7 +24,7 @@ let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { isSlotAttrOpened, attrSlotData, slotUnitName, slotLevel,
   curCategory, applyAttributes, selAttrSpCost, slotLevelsToMax,
-  isSlotMaxSkills, unseenSlotAttrByIdx, resetAttrState, leftSlotSp,
+  isSlotMaxSkills, mkUnseenSlotAttrByIdx, resetAttrState, leftSlotSp,
   markSlotAttributesSeen, isSlotAttrAttached, hasUpgradedAttrUnitNotUpdatable
 } = require("slotAttrState.nut")
 let { mkAttrTabs } = require("%rGui/attributes/attrWndTabs.nut")
@@ -75,18 +75,21 @@ let mkVerticalPannableArea = @(content, override = {}) {
   }
 }.__update(override)
 
-let categoriesBlock = @() {
-  watch = attrSlotData
-  size = [ flex(), SIZE_TO_CONTENT ]
-  flow = FLOW_VERTICAL
-  children = mkAttrTabs(attrSlotData.get().preset.map(@(page, idx) {
-      id = page.id
-      locId = loc($"attrib_section/{page.id}")
-      image = categoryImages?[page.id] ?? defCategoryImage
-      statusW = Computed(@() unseenSlotAttrByIdx(selectedSlotIdx.get()).get().statusByCat?[idx])
-    }),
-    curCategoryId
-  )
+function categoriesBlock() {
+  let unseenSlotAttrByIdx = mkUnseenSlotAttrByIdx(selectedSlotIdx.get())
+  return {
+    watch = [attrSlotData, selectedSlotIdx]
+    size = [ flex(), SIZE_TO_CONTENT ]
+    flow = FLOW_VERTICAL
+    children = mkAttrTabs(attrSlotData.get().preset.map(@(page, idx) {
+        id = page.id
+        locId = loc($"attrib_section/{page.id}")
+        image = categoryImages?[page.id] ?? defCategoryImage
+        statusW = Computed(@() unseenSlotAttrByIdx.get().statusByCat?[idx])
+      }),
+      curCategoryId
+    )
+  }
 }
 
 let connectLine = tooltipBg.__merge({

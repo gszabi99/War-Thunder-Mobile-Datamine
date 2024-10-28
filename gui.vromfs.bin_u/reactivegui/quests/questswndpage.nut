@@ -178,7 +178,7 @@ function mkBtn(item, currencyReward, rewardsPreview, sProfile) {
       flow = FLOW_VERTICAL
       gap = hdpx(10)
       children =[
-        textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
+        textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_complete")),
           mkCurrencyComp(price.price , price.currency),
           @() buyRewardMsgBox(item, rewardsPreview, price.price , price.currency, currencyReward),
           btnStyle)

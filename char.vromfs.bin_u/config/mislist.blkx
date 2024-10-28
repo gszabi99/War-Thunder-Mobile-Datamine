@@ -18,6 +18,9 @@
     }
   },
   "singleMission": {
+    "air": {
+      "m": "air_zhengzhou_single_GSn"
+    },
     "tank": {
       "m": "abandoned_factory_single_Conq2"
     },

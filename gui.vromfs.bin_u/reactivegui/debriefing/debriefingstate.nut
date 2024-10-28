@@ -44,7 +44,7 @@ let delayToDebrAnimFinish = keepref(Computed(function() {
     return 0
   local res = 0
   let tabsShowTime = debrTabsShowTime.get()
-  for (local i = idx; i < tabsShowTime.len(); i++)
+  for (local i = idx; i < tabsShowTime.len(); i++) // -w200
     res += tabsShowTime[i].timeShow
   return res
 }))

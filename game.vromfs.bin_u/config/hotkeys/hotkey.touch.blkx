@@ -1,0 +1,126 @@
+{
+  "controls": {
+    "version": 5,
+    "basePresetPaths": {
+      "default": "config/hotkeys/hotkey.empty.blk"
+    },
+    "hotkeys": {
+      "ID_REPLAY_PAUSE": {
+        "keyboardKey": 57
+      },
+      "ID_REPLAY_FASTER": {
+        "keyboardKey": 200
+      },
+      "ID_REPLAY_SLOWER": {
+        "keyboardKey": 208
+      },
+      "ID_REPLAY_PREVIOUS_ANCHOR": {
+        "keyboardKey": 203
+      },
+      "ID_REPLAY_NEXT_ANCHOR": {
+        "keyboardKey": 205
+      },
+      "ID_REPLAY_CAMERA_FREE": {
+        "keyboardKey": [
+          29,
+          63
+        ]
+      },
+      "ID_TOGGLE_FOLLOWING_CAMERA": {
+        "keyboardKey": 39
+      },
+      "cam_fwd_rangeMax": {
+        "keyboardKey": 17
+      },
+      "cam_fwd_rangeMin": {
+        "keyboardKey": 31
+      },
+      "cam_strafe_rangeMax": {
+        "keyboardKey": 32
+      },
+      "cam_strafe_rangeMin": {
+        "keyboardKey": 30
+      },
+      "ID_REPLAY_CAMERA_ZOOM_OUT": [
+        {
+          "keyboardKey": 44
+        },
+        {
+          "mouseButton": 3
+        }
+      ],
+      "ID_REPLAY_CAMERA_ZOOM_IN": [
+        {
+          "keyboardKey": 45
+        },
+        {
+          "mouseButton": 4
+        }
+      ],
+      "ID_FREECAM_ZOOM_OUT": {
+        "mouseButton": 3
+      },
+      "ID_FREECAM_ZOOM_IN": {
+        "mouseButton": 4
+      },
+      "cam_vert_rangeMax": {
+        "keyboardKey": 18
+      },
+      "cam_vert_rangeMin": {
+        "keyboardKey": 16
+      },
+      "ID_REPLAY_RESET_CAMERA_ROLL": {
+        "keyboardKey": 19
+      },
+      "cam_roll_rangeMax": {
+        "keyboardKey": 79
+      },
+      "cam_roll_rangeMin": {
+        "keyboardKey": 81
+      }
+    },
+    "axes": {
+      "ship_main_engine": {
+        "innerDeadzone": 0.02,
+        "relative": true,
+        "relStep": 0.5
+      },
+      "submarine_main_engine": {
+        "innerDeadzone": 0.02,
+        "relative": true,
+        "relStep": 0.5
+      },
+      "submarine_depth": {
+        "innerDeadzone": 0.02,
+        "rangeMin": 0.0,
+        "relative": true
+      },
+      "throttle": {
+        "relative": true,
+        "rangeMin": 0.0
+      },
+      "gm_steering": {
+        "nonlinearity": 0.0,
+        "kMul": 1.0
+      },
+      "cam_fwd": {
+        "axisId": 1,
+        "nonlinearity": 3.0,
+        "kMul": 0.8,
+        "relSens": 0.49
+      },
+      "cam_strafe": {
+        "axisId": 0,
+        "nonlinearity": 3.0,
+        "kMul": 0.8,
+        "relSens": 0.49
+      },
+      "cam_vert": {
+        "axisId": 4,
+        "nonlinearity": 3.0,
+        "kMul": 0.5,
+        "relSens": 0.49
+      }
+    }
+  }
+}

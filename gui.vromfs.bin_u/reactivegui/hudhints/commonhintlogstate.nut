@@ -24,8 +24,12 @@ let COUNTER_SAVE_ID = "hintCounter"
 
 let isCannonReloading = keepref(Computed(@() hasCanon0.get() && Cannon0.get().time > 0))
 let isMGunReloading = keepref(Computed(@() hasMGun0.get() && MGun0.get().time > 0))
+let isThrottleHintAvailable = Watched(false)
 
-isInBattle.subscribe(@(_) clearEvents())
+isInBattle.subscribe(function(_) {
+  clearEvents()
+  isThrottleHintAvailable(false)
+})
 
 //todo: export from native code to darg
 const MP_TEAM_NEUTRAL = 0
@@ -312,6 +316,10 @@ eventbus_subscribe("hint:bailout:startBailout", function(data) {
   addCommonHintWithTtl(loc("hints/can_leave_in_menu"), 5)
 })
 
+eventbus_subscribe("hint:bailout:offerBailout", function(_) {
+  addCommonHintWithTtl(loc("hints/can_leave_in_menu"), 10)
+})
+
 eventbus_subscribe("hint:bailout:notBailouts", function(_) {
   bailoutTimer.set(0)
 })
@@ -365,6 +373,13 @@ eventbus_subscribe("hint:need_lock_target", function(_) {
   if (incHintCounter("need_lock_target", 5)) {
     addCommonHintWithTtl(loc("hints/need_lock_target"), 5)
     anim_start("hint_need_lock_target")
+  }
+})
+
+eventbus_subscribe("hint:air_increase_throttle", function(_) {
+  if (isThrottleHintAvailable.value || incHintCounter("air_increase_throttle", 3)) {
+    addCommonHintWithTtl(loc("hints/air_increase_throttle"), 5)
+    isThrottleHintAvailable(true)
   }
 })
 

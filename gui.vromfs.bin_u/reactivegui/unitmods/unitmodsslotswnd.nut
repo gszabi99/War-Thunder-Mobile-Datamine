@@ -22,14 +22,15 @@ let { mkSlotWeapon, mkWeaponImage, mkWeaponDesc, mkEmptyText, weaponH, weaponW, 
   mkSlotText, mkBeltImage, mkSlotBelt, mkConflictsBorder
 } = require("slotWeaponCard.nut")
 let { mkBeltDesc, mkSlotWeaponDesc } = require("unitModsSlotsDesc.nut")
-let { textButtonPrimary, textButtonPurchase } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonPurchase, iconButtonPrimary } = require("%rGui/components/textButton.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
-let buttonStyles = require("%rGui/components/buttonStyles.nut")
+let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { tabsGap, bgColor, tabExtraWidth, mkTabs } = require("%rGui/components/tabs.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
+let { openUnitWeaponPresetWnd } = require("%rGui/unit/unitWeaponPresetsWnd.nut")
 let { PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { userlogTextColor, badTextColor2, commonTextColor } = require("%rGui/style/stdColors.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
@@ -59,11 +60,10 @@ let pageMask = mkBitmapPictureLazy((pageWidth / 10).tointeger(), 2, mkGradientCt
 
 let slotsScrollHandler = ScrollHandler()
 
-
-function closeWithWarning() {
+function actionWithOverloadWarning(actionFn) {
   let { overloads = [] } = overloadInfo.get()
   if (overloads.len() == 0) {
-    closeUnitModsSlotsWnd()
+    actionFn()
     return
   }
   openMsgBox({
@@ -74,10 +74,11 @@ function closeWithWarning() {
       { text = loc("btn/autoRemovePilons"),
         function cb() {
           fixCurPresetOverload()
-          closeUnitModsSlotsWnd()
-        }
+          actionFn()
+        },
+        multiLine = true
       }
-      { text = loc("btn/fixItMyself"), styleId = "PRIMARY", isCancel = true }
+      { text = loc("btn/fixItMyself"), styleId = "PRIMARY", isCancel = true, multiLine = true }
     ]
   })
 }
@@ -385,7 +386,7 @@ function overloadInfoBlock() {
 }
 
 let spinner = {
-  size = [buttonStyles.defButtonMinWidth, buttonStyles.defButtonHeight]
+  size = [defButtonMinWidth, defButtonHeight]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = mkSpinner
@@ -427,25 +428,35 @@ function onPurchaseMod() {
 
 let slotPresetButtons = @() {
   watch = [isOwn, curWeapon, curBelt, modsInProgress, curWeaponIsLocked, curWeaponReqLevel,
-    equippedWeaponId, curWeapons, equippedBeltId]
+    equippedWeaponId, curWeapons, equippedBeltId, curUnit]
   size = [flex(), SIZE_TO_CONTENT]
   halign = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
-  children = !isOwn.get() || (curWeapon.get() == null && curBelt.get() == null) ? null
-    : modsInProgress.get() != null ? spinner
-    : curWeaponIsLocked.get() && curWeaponReqLevel.get() > 0
-      ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), curWeaponReqLevel.get(),
-        @() curUnit.get() != null ? buyUnitLevelWnd(curUnit.get().name) : null, { hotkeys = ["^J:Y"] })
-    : curWeaponIsLocked.get() ? null
-    : !curWeaponIsPurchased.get()
-      ? textButtonPurchase(loc("mainmenu/btnBuy"), onPurchaseMod, { ovr = { key = "arsenal_purchase_tutor_btn" }})
-    : curWeapon.get() != null && equippedWeaponId.get() != curWeapon.get().name
-      ? textButtonPrimary(loc($"mod/enable{mirrorIdx.get() != -1 ? "/both_wings" : ""}"), equipCurWeaponMsg)
-    : curWeapon.get() != null
-      ? textButtonPrimary(loc($"mod/disable{mirrorIdx.get() != -1 ? "/both_wings" : ""}"), mirrorIdx.get() != -1 ? unequipCurWeaponFromWings : unequipCurWeapon)
-    : curBelt.get() != null && equippedBeltId.get() != curBelt.get().id
-      ? textButtonPrimary(loc("mod/enable"), equipCurBelt)
-    : null
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(20)
+  children = [
+    !isOwn.get() || (curWeapon.get() == null && curBelt.get() == null) ? null
+      : modsInProgress.get() != null ? spinner
+      : iconButtonPrimary("ui/gameuiskin#icon_weapon_preset.svg",
+        @() actionWithOverloadWarning(@() openUnitWeaponPresetWnd(curUnit.get())),
+        { ovr = { size = [defButtonHeight, defButtonHeight], minWidth = defButtonHeight }}
+      ),
+    !isOwn.get() || (curWeapon.get() == null && curBelt.get() == null) ? null
+      : modsInProgress.get() != null ? spinner
+      : curWeaponIsLocked.get() && curWeaponReqLevel.get() > 0
+        ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), curWeaponReqLevel.get(),
+          @() curUnit.get() != null ? buyUnitLevelWnd(curUnit.get().name) : null, { hotkeys = ["^J:Y"] })
+      : curWeaponIsLocked.get() ? null
+      : !curWeaponIsPurchased.get()
+        ? textButtonPurchase(loc("mainmenu/btnBuy"), onPurchaseMod, { ovr = { key = "arsenal_purchase_tutor_btn" }})
+      : curWeapon.get() != null && equippedWeaponId.get() != curWeapon.get().name
+        ? textButtonPrimary(loc($"mod/enable{mirrorIdx.get() != -1 ? "/both_wings" : ""}"), equipCurWeaponMsg)
+      : curWeapon.get() != null
+        ? textButtonPrimary(loc($"mod/disable{mirrorIdx.get() != -1 ? "/both_wings" : ""}"), mirrorIdx.get() != -1 ? unequipCurWeaponFromWings : unequipCurWeapon)
+      : curBelt.get() != null && equippedBeltId.get() != curBelt.get().id
+        ? textButtonPrimary(loc("mod/enable"), equipCurBelt)
+      : null
+  ]
 }
 
 let unitModsWnd = {
@@ -453,14 +464,15 @@ let unitModsWnd = {
   size = flex()
   padding = saBordersRv
   behavior = HangarCameraControl
-  eventPassThrough = true
+  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+  touchMarginPriority = TOUCH_BACKGROUND
   flow = FLOW_VERTICAL
   onAttach = @() isUnitModSlotsAttached.set(true)
   onDetach = @() isUnitModSlotsAttached.set(false)
   children = [
     @(){
       watch = curCampaign
-      children = mkGamercardUnitCampaign(closeWithWarning, $"gamercard/levelUnitMod/desc/{curCampaign.value}", curUnit)
+      children = mkGamercardUnitCampaign(@() actionWithOverloadWarning(closeUnitModsSlotsWnd), $"gamercard/levelUnitMod/desc/{curCampaign.value}", curUnit)
     }
     {
       size = [saSize[0] + saBorders[0], flex()]

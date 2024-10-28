@@ -31,8 +31,7 @@ let curProfileRewardId = Computed(@()
   (campProfile.value?.lastReceivedFirstBattlesRewardIds[curCampaign.value] ?? -1))
 let firstBattlesRewardId = Computed(@() 1 + max(curProfileRewardId.value, curDelayedRewardId.value))
 let firstBattlesReward = Computed(@()
-  serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][firstBattlesRewardId.get()]
-  ?? serverConfigs.get()?.firstBattlesRewards[firstBattlesRewardId.get()]) //compatibility with 2024.06.27
+  serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][firstBattlesRewardId.get()])
 
 let dbgTankMissionsPresetId = hardPersistWatched("dbgTankMissionsPresetId", null)
 let forcedTankMissionsPresetId = Computed(@() dbgTankMissionsPresetId.value ?? abTests.value?.tanksOfflineMissions)
@@ -159,12 +158,10 @@ debriefingData.subscribe(function(data) {
 
 function mkCurRewardBattleData(reward, predefinedId, unit) {
   let { level, exp, nextLevelExp } = playerLevelInfo.value
-  let { levelForExp = 1, levelExpPart = 0.35, wp = 0 } = reward
+  let { wp = 0 } = reward
   let premiumBonusesCfg = serverConfigs.value?.gameProfile.premiumBonuses
-  let levels = serverConfigs.value?.playerLevels[curCampaign.value]
 
-  let baseExp = reward?.exp
-    ?? (levelExpPart * (levels?[levelForExp].nextLevelExp ?? 0) + 0.5).tointeger() //compatibility with 2024.06.27
+  let baseExp = reward?.exp ?? 0
   let totalExp = !havePremium.value ? baseExp
     : (baseExp * (premiumBonusesCfg?.expMul ?? 1.0) + 0.5).tointeger()
   let totalWp = !havePremium.value ? wp : (wp * (premiumBonusesCfg?.wpMul ?? 1.0) + 0.5).tointeger()

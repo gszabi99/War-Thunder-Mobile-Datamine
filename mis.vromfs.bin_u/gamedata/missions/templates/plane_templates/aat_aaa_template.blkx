@@ -106,12 +106,11 @@
           }
         },
         "conditions": {
-          "airfieldIsModuleHP": {
+          "unitWhenRespawn": {
             "object_var_name": "visible_for_aaa",
             "object_var_comp_op": "equal",
             "object": "t1_players_squad",
-            "object_var_value": 1,
-            "hp_check_mode": "equal"
+            "object_var_value": 1
           }
         },
         "actions": {
@@ -144,12 +143,11 @@
           }
         },
         "conditions": {
-          "airfieldIsModuleHP": {
+          "unitWhenRespawn": {
             "object_var_name": "visible_for_aaa",
             "object_var_comp_op": "equal",
             "object": "t2_players_squad",
-            "object_var_value": 1,
-            "hp_check_mode": "equal"
+            "object_var_value": 1
           }
         },
         "actions": {

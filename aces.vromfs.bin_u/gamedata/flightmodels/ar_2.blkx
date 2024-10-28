@@ -1,7 +1,7 @@
 {
   "model": "ar2",
   "fmFile": "fm/ar_2.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
@@ -2065,7 +2065,7 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1530.0,
+    "maxloadMass": 1550.0,
     "maxloadMassLeftConsoles": 715.0,
     "maxloadMassRightConsoles": 715.0,
     "maxDisbalance": 580.0,

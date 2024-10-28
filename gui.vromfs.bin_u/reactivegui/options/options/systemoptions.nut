@@ -3,6 +3,15 @@ from "%rGui/options/optCtrlType.nut" import *
 
 let { isDebugTouchesActive } = require("%rGui/debugTools/debugTouches.nut")
 let { OPT_SHOW_TOUCHES_ENABLED, mkOptionValue } = require("%rGui/options/guiOptions.nut")
+let { isGameAutoUpdateVisible, isGameAutoUpdateEnabled, gameAutoUpdateList } = require("gameAutoUpdateOption.nut")
+
+let autoUpdateSetting = {
+  locId = "options/autoUpdate"
+  ctrlType = OCT_LIST
+  value = isGameAutoUpdateEnabled
+  list = gameAutoUpdateList
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+}
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 let showTouchesList = [false, true]
@@ -20,6 +29,7 @@ isDebugTouchesActive.set(isShowTouchesEnabled.get())
 
 return {
   systemOptions = [
+    isGameAutoUpdateVisible ? autoUpdateSetting : null
     showTouchesSetting
   ]
 }

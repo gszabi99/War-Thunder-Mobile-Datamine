@@ -548,7 +548,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
       v.ammo_stowage__combustionTime = 1.0f
     v.ammo_stowage__detonateProb = ammo_blk |> datablock_getReal("detonateProb", v.ammo_stowage__detonateProb)
     v.ammo_stowage__fatalDetonatePortion = ammo_blk |> datablock_getPoint2("detonatePortion", v.ammo_stowage__fatalDetonatePortion)
-    v.ammo_stowage__nonFatalDetonatePortion = ammo_blk |> datablock_getPoint2("ammoStowageDetonatePortion",  get_dm_params().ammoStowageDetonatePortion)
+    v.ammo_stowage__nonFatalDetonatePortion = ammo_blk |> datablock_getPoint2("ammoStowageDetonatePortion",  get_wt_dm_params().ammoStowageDetonatePortion)
     v.ammo_stowage__explosiveProperties |> explosive_props_load(ammo_blk, 1.f)
     v.ammo_stowage__splashProperties |> splash_props_load(ammo_blk)
 
@@ -614,7 +614,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
         v.ammo_stowages__powderMassToSplash[stowage_id].damage |> read_interpolate_tab_float_p2(
           *datablock_get_block_by_name_ex(*mass_to_splash_blk, "gunpowderMassToDamage"))
       else
-        v.ammo_stowages__powderMassToSplash[stowage_id] := get_dm_params().gunpowderToSplash
+        v.ammo_stowages__powderMassToSplash[stowage_id] := get_wt_dm_params().gunpowderToSplash
 
       var num_ammo_in_storage = 0
       var num_ammo_in_cartridge = 1

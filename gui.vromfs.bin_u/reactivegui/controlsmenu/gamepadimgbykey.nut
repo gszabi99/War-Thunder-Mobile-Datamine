@@ -107,7 +107,7 @@ let getBtnImageHeight = @(imageName, aHeight) ((heightMuls?[imageName] ?? defHei
 let defHeight = fontTiny.fontSize.tointeger()
 let getBtnPicture = @(imgId, hgt) Picture("ui/gameuiskin#{0}.svg:{1}:{1}:P".subst(imgId, hgt))
 
-local function mkBtnImageComp(hotkey, baseHeight = defHeight) {
+function mkBtnImageComp(hotkey, baseHeight = defHeight) {
   let imgId = keysToImageId?[hotkey]
   if (imgId == null)
     return null

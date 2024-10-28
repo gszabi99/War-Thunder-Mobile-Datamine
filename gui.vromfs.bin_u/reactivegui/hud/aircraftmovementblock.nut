@@ -26,10 +26,10 @@ let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnOutline, mkMove
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
-let { eventbus_subscribe } = require("eventbus")
+let { eventbus_subscribe, send } = require("eventbus")
 let { MechState, get_gears_current_state} = require("hudAircraftStates")
 let { ON } = MechState
-
+let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 let maxThrottle = 100
 let stepThrottle = 5
@@ -101,6 +101,20 @@ let percentText = loc("measureUnits/percent")
 
 let HAPT_THROTTLE = registerHapticPattern("ThrottleChange", { time = 0.0, intensity = 0.5, sharpness = 0.4, duration = 0.2, attack = 0.08, release = 1.0 })
 
+let throttleHitThreshold = 90
+let throttleHintMaxCount = 5
+let throttleHintDelay = 20
+let throttleHintCount = Watched(0)
+
+isInBattle.subscribe(@(_) throttleHintCount(0))
+
+function showIncreaseThrottleHint() {
+  send("hint:air_increase_throttle", {})
+  throttleHintCount(throttleHintCount.value + 1)
+  if (throttleHintCount.value < throttleHintMaxCount)
+    resetTimeout(throttleHintDelay, showIncreaseThrottleHint)
+}
+
 function changeThrottleValue(val) {
   val = clamp(val, sliderWepValue, maxThrottle)
   needOpacityThrottle(false)
@@ -115,6 +129,10 @@ function changeThrottleValue(val) {
     setShortcutOn("throttle_rangeMax")
   sliderValue(val)
   playHapticPattern(HAPT_THROTTLE)
+  if (throttleHintCount.value < throttleHintMaxCount && maxThrottle - val < throttleHitThreshold)
+    resetTimeout(throttleHintDelay, showIncreaseThrottleHint)
+  else
+    clearTimer(showIncreaseThrottleHint)
 }
 
 function mkGamepadHotkey(hotkey, isVisible, isActive, ovr) {

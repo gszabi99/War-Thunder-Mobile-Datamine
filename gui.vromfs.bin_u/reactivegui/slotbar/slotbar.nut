@@ -25,7 +25,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { openUnitModsSlotsWnd, mkListUnseenMods } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { mkSlotLevel } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
 let { priorityUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
-let { openSlotAttrWnd, unseenSlotAttrByIdx } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
+let { openSlotAttrWnd, mkUnseenSlotAttrByIdx } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { infoPanelWidth } = require("%rGui/unitsTree/unitsTreeComps.nut")
 let { gradTranspDoubleSideX, mkColoredGradientY } = require("%rGui/style/gradients.nut")
 
@@ -140,7 +140,7 @@ let mkMark = {
 }
 
 function statusAttrMark(idx) {
-  let unseenAttr = unseenSlotAttrByIdx(idx)
+  let unseenAttr = mkUnseenSlotAttrByIdx(idx)
   return @() {
     watch = unseenAttr
     children = unseenAttr.get().isUnseen ? priorityUnseenMark : null
@@ -187,7 +187,7 @@ let mkSlotHeaderTitle = @(text, isSelected) {
 
 function mkSlotHeaderIndicator(unit, idx, isSelected) {
   let unseenMods = mkListUnseenMods(unit)
-  let unseenAttr = unseenSlotAttrByIdx(idx)
+  let unseenAttr = mkUnseenSlotAttrByIdx(idx)
   let hasUnseenMods = Computed(@() unseenMods.get().len() > 0)
   let mutateSlots = @(v) visibleNewModsSlots.mutate(@(nms) v ? nms.$rawset(idx, unit.get()?.name ?? "") : nms.$rawdelete(idx))
   return @() {

@@ -369,13 +369,15 @@ def private tryAddBlobSpecializations(var blobType : TypeDeclPtr) : void
   let blobTypeHash = hash(mangledBlobTypeName)
 
   // We add 2 new types per blob type: blob request and blob handle
-  let vrrBase = typeinfo(ast_typedecl type<VirtualResourceRequest>).structType
+  var inscope vrr_type <- typeinfo(ast_typedecl type<VirtualResourceRequest>)
+  let vrrBase = vrr_type.structType
   var inscope blobRequestStruct <- clone_structure(vrrBase)
   blobRequestStruct.name := "VirtualBlobRequest`{blobTypeHash}"
   blobRequestStruct.parent := vrrBase
   blobRequestStruct.flags |= StructureFlags generated
 
-  let vrhBase = typeinfo(ast_typedecl type<VirtualResourceHandleBase>).structType
+  var inscope vrhb_type <- typeinfo(ast_typedecl type<VirtualResourceHandleBase>)
+  let vrhBase = vrhb_type.structType
   var inscope blobHandleStruct <- clone_structure(vrhBase)
   blobHandleStruct.name := "VirtualBlobHandle`{blobTypeHash}"
   blobHandleStruct.parent := vrhBase
@@ -419,6 +421,14 @@ def private tryAddBlobSpecializations(var blobType : TypeDeclPtr) : void
         delete deref(unsafe(reinterpret<$t(blobType)?> self));
       }
     compiling_module() |> add_function(blobDtorFn)
+
+    var inscope exprCastFrom <- qmacro(unsafe(reinterpret<$t(blobType) const?> from))
+    var inscope exprFrom <- new [[ExprPtr2Ref() subexpr <- exprCastFrom, assumeNoAlias=true]]
+    var inscope blobCopyFn <- qmacro_function("copy`{blobTypeHash}") <| \
+      $(var self : void?; from : void const?) : void {
+        $e(clone_expression(exprDeref)) = $e(exprFrom);
+      }
+    compiling_module() |> add_function(blobCopyFn)
 
   compiling_module() |> add_structure(blobRequestStruct)
   compiling_module() |> add_structure(blobHandleStruct)
@@ -467,11 +477,12 @@ class BlobMacro : AstCallMacro
             $(var res : ResourceData&) {
               static_if $v(useDasCtorDtor(blobType)) {
                 res |> setDescription($v(mangledBlobTypeName), $v(blobType.sizeOf), $v(blobType.alignOf),
-                  getTypeInfo(type<$t(blobType)>), @@$c("ctor`{blobTypeHash}"), @@$c("dtor`{blobTypeHash}"));
+                  getTypeInfo(type<$t(blobType)>), @@$c("ctor`{blobTypeHash}"), @@$c("dtor`{blobTypeHash}"), @@$c("copy`{blobTypeHash}"));
               } else {
                 let nullFunc = [[function<(var arg0 : void?) : void> ]];
+                let nullCopyFunc = [[function<(var arg0 : void?; arg1 : void const?) : void> ]];
                 res |> setDescription($v(mangledBlobTypeName), $v(blobType.sizeOf), $v(blobType.alignOf),
-                  getTypeInfo(type<$t(blobType)>), nullFunc, nullFunc);
+                  getTypeInfo(type<$t(blobType)>), nullFunc, nullFunc, nullCopyFunc);
               }
 
               res.resType = ResourceType Blob;
@@ -530,6 +541,8 @@ def bindToShaderVar(var self : auto(TT); name : string = "") : TT
       info.resource = self.resUid.nameId
       info.history = self.resUid.history
       bindings[svId] := info
+      self |> modifyRequest() <| $(var request : ResourceRequest&)
+        request |> useRequestTagForBinding(bindings[svId])
   else
     let selfName = self.registry.knownNames |> getName(self.nodeId)
     error("Encountered duplicate shader var {name} binding in {selfName} frame graph node! Ignoring one of the them!")

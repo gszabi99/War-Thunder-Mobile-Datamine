@@ -11,7 +11,7 @@ let { DBGLEVEL } = require("dagor.system")
 
 const REQUEST_PERIOD_MSEC = 1800000
 let needSuggestToUpdate = hardPersistWatched("appStore.needSuggestToUpdate")
-let nextRequestTime = hardPersistWatched("needSuggestToUpdate.nextTime")
+let nextRequestTime = hardPersistWatched("appStore.needSuggestToUpdate.nextTime")
 let needRequest = Watched(nextRequestTime.value <= get_time_msec())
 let allowRequest = Computed(@() needRequest.value && !isInBattle.value && !isInLoadingScreen.value)
 

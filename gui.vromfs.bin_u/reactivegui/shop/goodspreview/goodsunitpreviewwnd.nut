@@ -3,13 +3,15 @@ let { HangarCameraControl } = require("wt.behaviors")
 let { eventbus_subscribe } = require("eventbus")
 let { defer, resetTimeout } = require("dagor.workcycle")
 let { registerScene } = require("%rGui/navState.nut")
-let { GPT_UNIT, GPT_BLUEPRINT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount
+let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
+let { GPT_UNIT, GPT_BLUEPRINT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount,
+  HIDE_PREVIEW_MODALS_ID
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener,
-  ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem,
+  ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull,
   aTimeInfoItemOffset, aTimeInfoLight, horGap, activeItemHint
 } = require("goodsPreviewPkg.nut")
 let { start_prem_cutscene, stop_prem_cutscene, get_prem_cutscene_preset_ids, set_load_sounds_for_model, SHIP_PRESET_TYPE, TANK_PRESET_TYPE,
@@ -72,6 +74,8 @@ let aTimeFirstItemOfset = 0.1
 let aTimeInfoHeaderFull = aTimeInfoLight + 0.3 * aTimeInfoItem + aTimeFirstItemOfset + 3 * aTimeInfoItemOffset
 //anim price and time
 let aTimePriceStart = aTimePackInfoStart + aTimeInfoHeaderFull
+let aTimeShowModals = aTimePriceStart + aTimePriceFull
+
 
 function mkGiftSchRewardBtn(giftSchReward, posX) {
   local { isReady = false } = giftSchReward
@@ -105,13 +109,21 @@ function mkGiftSchRewardBtn(giftSchReward, posX) {
   }
 }
 
-let showUi = @() needShowUi(true)
+function showUi() {
+  resetTimeout(aTimeShowModals, @() unhideModals(HIDE_PREVIEW_MODALS_ID))
+  needShowUi.set(true)
+}
+
 isWindowAttached.subscribe(function(v) {
-  if (!v)
+  if (!v) {
+    unhideModals(HIDE_PREVIEW_MODALS_ID)
     return
+  }
   needShowUi(skipAnimsOnce.value)
-  if (!skipAnimsOnce.value)
+  if (!skipAnimsOnce.value) {
     resetTimeout(TIME_TO_SHOW_UI, showUi)
+    hideModals(HIDE_PREVIEW_MODALS_ID)
+  }
   else {
     skipAnimsOnce(false)
     defer(function() {
@@ -439,7 +451,8 @@ let rightBlock = {
         maxHeight = hdpx(610)
         hplace = ALIGN_RIGHT
         behavior = [ Behaviors.Button, HangarCameraControl ]
-        eventPassThrough = true
+        eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+        touchMarginPriority = TOUCH_BACKGROUND
         onClick = openDetailsWnd
         clickableInfo = loc("msgbox/btn_more")
       }, mkUnitTitle)

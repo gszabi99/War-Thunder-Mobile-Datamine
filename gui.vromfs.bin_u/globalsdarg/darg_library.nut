@@ -63,4 +63,7 @@ return dargBaseLib.__merge(
   ndash = loc("ui/ndash")
   colorize = @(color, text) text == "" || color == null ? text : $"<color={color}>{text}</color>"
   nbsp = "\u00A0" // Non-breaking space char
+
+  TOUCH_BACKGROUND = -10
+  TOUCH_MINOR = -1
 })

@@ -15,19 +15,25 @@ function mkCameraButton(shortcutId, image) {
   return function(ovr = {}) {
     let stateFlags = Watched(0)
     let picture = Picture($"{image}:{imgSize}:{imgSize}")
-
     return @() {
-      size = [touchButtonSize, touchButtonSize]
       watch = stateFlags
+      size = [touchButtonSize, touchButtonSize]
       rendObj = ROBJ_BOX
       borderColor = isActive(stateFlags.value) ? null : colorInactive
       fillColor = btnBgColor.empty
       borderWidth
-      hotkeys = mkGamepadHotkey(shortcutId)
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
+
       behavior = TouchAreaOutButton
-      eventPassThrough = true
+      onElemState = @(sf) stateFlags.set(sf)
+      onTouchBegin = @() setShortcutOn(shortcutId)
+      onTouchEnd = @() setShortcutOff(shortcutId)
+      onTouchInterrupt = @() setShortcutOff(shortcutId)
+      hotkeys = mkGamepadHotkey(shortcutId)
+
+      cameraControl = true
+
       children = [
         {
           rendObj = ROBJ_IMAGE
@@ -38,20 +44,6 @@ function mkCameraButton(shortcutId, image) {
         }
         mkGamepadShortcutImage(shortcutId, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(50)] })
       ]
-      onElemState = function onElemState(sf) {
-        let prevSf = stateFlags.value
-        stateFlags(sf)
-        let active = isActive(sf)
-        if (active != isActive(prevSf))
-          if (active)
-            setShortcutOn(shortcutId)
-          else
-            setShortcutOff(shortcutId)
-      }
-      function onDetach() {
-        stateFlags(0)
-        setShortcutOff(shortcutId)
-      }
     }.__update(ovr)
   }
 }

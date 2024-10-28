@@ -1,6 +1,11 @@
 return {
   "adsCfg": {},
   "allBlueprints": {
+    "am_1_mauler": {
+      "convertGoldRatio": 1,
+      "name": "am_1_mauler",
+      "targetCount": 1000
+    },
     "b-17g": {
       "convertGoldRatio": 1,
       "name": "b-17g",
@@ -51,14 +56,14 @@ return {
       "name": "i_180",
       "targetCount": 1000
     },
+    "i_225": {
+      "convertGoldRatio": 1,
+      "name": "i_225",
+      "targetCount": 1000
+    },
     "il-10_1946": {
       "convertGoldRatio": 1,
       "name": "il-10_1946",
-      "targetCount": 1000
-    },
-    "il_2m_1943": {
-      "convertGoldRatio": 1,
-      "name": "il_2m_1943",
       "targetCount": 1000
     },
     "la-11": {
@@ -101,13 +106,23 @@ return {
     "playerExp": {
       "add": 1.0,
       "battles": 10,
+      "campaigns": 7,
       "currencyId": "gold",
       "effect": "playerExp",
+      "price": 240
+    },
+    "slotExp": {
+      "add": 1.0,
+      "battles": 10,
+      "campaigns": 4,
+      "currencyId": "gold",
+      "effect": "slotExp",
       "price": 240
     },
     "unitExp": {
       "add": 1.0,
       "battles": 10,
+      "campaigns": 7,
       "currencyId": "gold",
       "effect": "unitExp",
       "price": 150
@@ -115,12 +130,21 @@ return {
     "wp": {
       "add": 1.0,
       "battles": 10,
+      "campaigns": 7,
       "currencyId": "gold",
       "effect": "wp",
       "price": 240
     }
   },
   "allDecorators": {
+    "ace": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "air_bomb": {
       "dType": "nickFrame",
       "isHidden": true,
@@ -601,6 +625,14 @@ return {
         "price": 0
       }
     },
+    "cardicon_wtm_us_pilot_02": {
+      "dType": "avatar",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "cardicon_wtm_us_pilot_1": {
       "dType": "avatar",
       "isHidden": true,
@@ -817,8 +849,24 @@ return {
         "price": 0
       }
     },
+    "cloud": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "clover": {
       "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "collector": {
+      "dType": "title",
       "isHidden": true,
       "price": {
         "currencyId": "",
@@ -1011,6 +1059,14 @@ return {
     },
     "gunner": {
       "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "half_star": {
+      "dType": "nickFrame",
       "isHidden": true,
       "price": {
         "currencyId": "",
@@ -1281,6 +1337,14 @@ return {
         "price": 0
       }
     },
+    "pilot_mask": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "pipe_wrench": {
       "dType": "nickFrame",
       "isHidden": true,
@@ -1290,6 +1354,14 @@ return {
       }
     },
     "poseidon": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "precursor": {
       "dType": "title",
       "isHidden": true,
       "price": {
@@ -1457,6 +1529,14 @@ return {
         "price": 0
       }
     },
+    "spades": {
+      "dType": "nickFrame",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "spartan": {
       "dType": "title",
       "isHidden": true,
@@ -1521,9 +1601,25 @@ return {
         "price": 0
       }
     },
+    "swift": {
+      "dType": "title",
+      "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
     "tank": {
       "dType": "nickFrame",
       "isHidden": false,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "tank_plane": {
+      "dType": "nickFrame",
+      "isHidden": true,
       "price": {
         "currencyId": "",
         "price": 0
@@ -1700,6 +1796,14 @@ return {
     "wrench": {
       "dType": "nickFrame",
       "isHidden": true,
+      "price": {
+        "currencyId": "",
+        "price": 0
+      }
+    },
+    "yin_yang": {
+      "dType": "nickFrame",
+      "isHidden": false,
       "price": {
         "currencyId": "",
         "price": 0
@@ -1926,7 +2030,7 @@ return {
       "name": "ship_tool_kit"
     },
     "spare": {
-      "battleLimit": 1,
+      "battleLimit": 4,
       "campaigns": 5,
       "itemsPerUse": 1,
       "name": "spare"
@@ -1979,6 +2083,86 @@ return {
       "upgradeCostGold": 0,
       "weapons": {
         "a-20g_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "am_1_mauler": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 768100,
+      "country": "country_usa",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "am_1_mauler",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 1.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "am_1_mauler_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "am_1_mauler_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_12_preset",
+      "name": "am_1_mauler_prem",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 3.5,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 3.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "assault",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "am_1_mauler_prem_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -2043,7 +2227,7 @@ return {
       "levelUpDiscount": 0.0,
       "mRank": 6,
       "modCostPart": 0.30000001192092896,
-      "modPreset": "aircraft_mod_5_preset",
+      "modPreset": "aircraft_mod_6_preset",
       "name": "b-17e",
       "platoonUnits": [],
       "rank": 6,
@@ -2075,7 +2259,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 6,
@@ -2128,7 +2312,7 @@ return {
       "platoonUnits": [],
       "rank": 6,
       "releaseDate": 0,
-      "rewardExpMul": 1.625,
+      "rewardExpMul": 3.25,
       "rewardGoldMul": 1.625,
       "rewardWpMul": 3.25,
       "skins": {},
@@ -2345,6 +2529,46 @@ return {
         }
       }
     },
+    "bf-109c_1_promo": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 30,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 2,
+      "levelPreset": "air_2",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_3_preset",
+      "name": "bf-109c_1_promo",
+      "platoonUnits": [],
+      "rank": 2,
+      "releaseDate": 0,
+      "rewardExpMul": 1.125,
+      "rewardGoldMul": 1.125,
+      "rewardWpMul": 1.125,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "bf-109c_1_promo_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "bf-109e-1": {
       "attrPreset": "",
       "campaign": "air",
@@ -2395,7 +2619,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 3,
@@ -2448,7 +2672,7 @@ return {
       "platoonUnits": [],
       "rank": 3,
       "releaseDate": 0,
-      "rewardExpMul": 1.25,
+      "rewardExpMul": 2.5,
       "rewardGoldMul": 1.25,
       "rewardWpMul": 2.5,
       "skins": {},
@@ -2595,7 +2819,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 7,
@@ -2648,7 +2872,7 @@ return {
       "platoonUnits": [],
       "rank": 7,
       "releaseDate": 0,
-      "rewardExpMul": 1.75,
+      "rewardExpMul": 3.5,
       "rewardGoldMul": 1.75,
       "rewardWpMul": 3.5,
       "skins": {},
@@ -2728,7 +2952,7 @@ return {
       "platoonUnits": [],
       "rank": 6,
       "releaseDate": 0,
-      "rewardExpMul": 1.625,
+      "rewardExpMul": 3.25,
       "rewardGoldMul": 1.625,
       "rewardWpMul": 3.25,
       "skins": {},
@@ -2795,7 +3019,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 5,
@@ -2848,7 +3072,7 @@ return {
       "platoonUnits": [],
       "rank": 5,
       "releaseDate": 0,
-      "rewardExpMul": 1.5,
+      "rewardExpMul": 3.0,
       "rewardGoldMul": 1.5,
       "rewardWpMul": 3.0,
       "skins": {},
@@ -3242,7 +3466,7 @@ return {
       "levelUpDiscount": 0.0,
       "mRank": 2,
       "modCostPart": 0.30000001192092896,
-      "modPreset": "aircraft_mod_6_preset",
+      "modPreset": "aircraft_mod_7_preset",
       "name": "do_17z_2",
       "platoonUnits": [],
       "rank": 2,
@@ -3287,7 +3511,7 @@ return {
       "platoonUnits": [],
       "rank": 5,
       "releaseDate": 0,
-      "rewardExpMul": 1.5,
+      "rewardExpMul": 3.0,
       "rewardGoldMul": 1.5,
       "rewardWpMul": 3.0,
       "skins": {},
@@ -3514,7 +3738,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 7,
@@ -3567,7 +3791,7 @@ return {
       "platoonUnits": [],
       "rank": 7,
       "releaseDate": 0,
-      "rewardExpMul": 1.75,
+      "rewardExpMul": 3.5,
       "rewardGoldMul": 1.75,
       "rewardWpMul": 3.5,
       "skins": {},
@@ -3674,7 +3898,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 4,
@@ -3727,7 +3951,7 @@ return {
       "platoonUnits": [],
       "rank": 4,
       "releaseDate": 0,
-      "rewardExpMul": 1.375,
+      "rewardExpMul": 2.75,
       "rewardGoldMul": 1.375,
       "rewardWpMul": 2.75,
       "skins": {},
@@ -4166,6 +4390,59 @@ return {
         }
       }
     },
+    "fr_amx_32": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_france",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 8,
+      "levelPreset": "tanks_15",
+      "levelUpDiscount": 0.0,
+      "mRank": 8,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "fr_amx_32",
+      "platoonUnits": [
+        {
+          "name": "fr_amx_30_b2",
+          "reqLevel": 5
+        },
+        {
+          "name": "fr_sk105_a2",
+          "reqLevel": 10
+        },
+        {
+          "name": "fr_amx_30_dca_reskin3",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 15,
+      "releaseDate": 0,
+      "rewardExpMul": 56.840000152587891,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.5399999618530273,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 8810,
+      "weapons": {
+        "fr_amx_32_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "fr_bat_chat_25t": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
@@ -4469,7 +4746,7 @@ return {
       "isEvent": false,
       "isHidden": true,
       "isPremium": false,
-      "isUpgradeable": true,
+      "isUpgradeable": false,
       "itemsPerUse": 1,
       "levelPreset": "tanks_1",
       "levelUpDiscount": 0.0,
@@ -4497,14 +4774,13 @@ return {
       "rewardGoldMul": 0.0,
       "rewardWpMul": 1.3600000143051147,
       "skins": {
-        "forest": true,
-        "upgraded": false
+        "forest": true
       },
       "starRank": 0,
       "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 410,
+      "upgradeCostGold": 0,
       "weapons": {
         "fr_m4a4_sherman_reward_default": {
           "costWp": 0,
@@ -4753,7 +5029,7 @@ return {
       "platoonUnits": [],
       "rank": 7,
       "releaseDate": 0,
-      "rewardExpMul": 1.75,
+      "rewardExpMul": 3.5,
       "rewardGoldMul": 1.75,
       "rewardWpMul": 3.5,
       "skins": {},
@@ -4900,7 +5176,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 6,
@@ -4953,7 +5229,7 @@ return {
       "platoonUnits": [],
       "rank": 6,
       "releaseDate": 0,
-      "rewardExpMul": 1.625,
+      "rewardExpMul": 3.25,
       "rewardGoldMul": 1.625,
       "rewardWpMul": 3.25,
       "skins": {},
@@ -5605,6 +5881,46 @@ return {
         }
       }
     },
+    "germ_destroyer_class1936c_z47": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 1,
+      "levelPreset": "ships_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 1,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "germ_destroyer_class1936c_z47",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 4.0199999809265137,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.0600001811981201,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "destroyer",
+      "unitType": "ship",
+      "upgradeCostGold": 550,
+      "weapons": {
+        "germ_destroyer_class1936c_z47_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "germ_destroyer_rckt_hamburg": {
       "attrPreset": "shipDefaultMissiles",
       "campaign": "ships",
@@ -5647,6 +5963,48 @@ return {
         }
       }
     },
+    "germ_frigate_rckt_brandenburg": {
+      "attrPreset": "shipMissilesNoAA",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "ships_29",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "germ_frigate_rckt_brandenburg",
+      "platoonUnits": [],
+      "rank": 29,
+      "releaseDate": 0,
+      "rewardExpMul": 57.579998016357422,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.119999885559082,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "destroyer",
+      "unitType": "ship",
+      "upgradeCostGold": 5590,
+      "weapons": {
+        "germ_frigate_rckt_brandenburg_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "germ_frigate_rckt_bremen": {
       "attrPreset": "shipMissilesNoAA",
       "campaign": "ships",
@@ -5668,7 +6026,7 @@ return {
       "modPreset": "torpedo_ship",
       "name": "germ_frigate_rckt_bremen",
       "platoonUnits": [],
-      "rank": 29,
+      "rank": 28,
       "releaseDate": 1723075200,
       "rewardExpMul": 50.069999694824219,
       "rewardGoldMul": 0.0,
@@ -5676,7 +6034,7 @@ return {
       "skins": {
         "upgraded": false
       },
-      "starRank": 1,
+      "starRank": 0,
       "suitableForOffer": true,
       "unitClass": "destroyer",
       "unitType": "ship",
@@ -5779,19 +6137,19 @@ return {
           "reqLevel": 15
         }
       ],
-      "rank": 19,
-      "releaseDate": 0,
+      "rank": 18,
+      "releaseDate": 1727913600,
       "rewardExpMul": 55.509998321533203,
       "rewardGoldMul": 0.0,
       "rewardWpMul": 2.3299999237060547,
       "skins": {
         "upgraded": false
       },
-      "starRank": 1,
+      "starRank": 0,
       "suitableForOffer": true,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 9450,
+      "upgradeCostGold": 9310,
       "weapons": {
         "germ_leopard_2k_default": {
           "costWp": 0,
@@ -6688,6 +7046,59 @@ return {
         }
       }
     },
+    "germ_sturmpanzer_IV_brummbar": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 2,
+      "levelPreset": "tanks_3",
+      "levelUpDiscount": 0.0,
+      "mRank": 2,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "germ_sturmpanzer_IV_brummbar",
+      "platoonUnits": [
+        {
+          "name": "ussr_asu_57",
+          "reqLevel": 5
+        },
+        {
+          "name": "fr_amx_13_chaffee",
+          "reqLevel": 10
+        },
+        {
+          "name": "us_halftrack_m15",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 3,
+      "releaseDate": 0,
+      "rewardExpMul": 3.8999998569488525,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 3.4600000381469727,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 450,
+      "weapons": {
+        "germ_sturmpanzer_IV_brummbar_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "germ_sub_type_21": {
       "attrPreset": "shipNoGuns",
       "campaign": "ships",
@@ -6866,7 +7277,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 1,
@@ -6919,7 +7330,7 @@ return {
       "platoonUnits": [],
       "rank": 1,
       "releaseDate": 0,
-      "rewardExpMul": 1.0,
+      "rewardExpMul": 2.0,
       "rewardGoldMul": 1.0,
       "rewardWpMul": 2.0,
       "skins": {},
@@ -6999,7 +7410,7 @@ return {
       "platoonUnits": [],
       "rank": 2,
       "releaseDate": 0,
-      "rewardExpMul": 1.125,
+      "rewardExpMul": 2.25,
       "rewardGoldMul": 1.125,
       "rewardWpMul": 2.25,
       "skins": {},
@@ -7186,7 +7597,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 1,
@@ -7239,7 +7650,7 @@ return {
       "platoonUnits": [],
       "rank": 1,
       "releaseDate": 0,
-      "rewardExpMul": 1.0,
+      "rewardExpMul": 2.0,
       "rewardGoldMul": 1.0,
       "rewardWpMul": 2.0,
       "skins": {},
@@ -7386,7 +7797,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 3,
@@ -7439,7 +7850,7 @@ return {
       "platoonUnits": [],
       "rank": 3,
       "releaseDate": 0,
-      "rewardExpMul": 1.25,
+      "rewardExpMul": 2.5,
       "rewardGoldMul": 1.25,
       "rewardWpMul": 2.5,
       "skins": {},
@@ -7496,6 +7907,86 @@ return {
         }
       }
     },
+    "i_225": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 768100,
+      "country": "country_ussr",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "i_225",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 1.75,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 1.75,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "i_225_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "i_225_prem": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_ussr",
+      "dailyGoldLimit": 80,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 7,
+      "levelPreset": "air_7",
+      "levelUpDiscount": 0.0,
+      "mRank": 7,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "i_225_prem",
+      "platoonUnits": [],
+      "rank": 7,
+      "releaseDate": 0,
+      "rewardExpMul": 3.5,
+      "rewardGoldMul": 1.75,
+      "rewardWpMul": 3.5,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "i_225_prem_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "il-10": {
       "attrPreset": "",
       "campaign": "air",
@@ -7546,7 +8037,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 6,
@@ -7599,7 +8090,7 @@ return {
       "platoonUnits": [],
       "rank": 6,
       "releaseDate": 0,
-      "rewardExpMul": 1.625,
+      "rewardExpMul": 3.25,
       "rewardGoldMul": 1.625,
       "rewardWpMul": 3.25,
       "skins": {},
@@ -7730,46 +8221,6 @@ return {
       "upgradeCostGold": 0,
       "weapons": {
         "il_2_1941_default": {
-          "costWp": 0,
-          "reqLevel": 0,
-          "visual": "pilon"
-        }
-      }
-    },
-    "il_2m_1943": {
-      "attrPreset": "",
-      "campaign": "air",
-      "costGold": 0,
-      "costWp": 70300,
-      "country": "country_ussr",
-      "dailyGoldLimit": 50,
-      "isCollectible": false,
-      "isDefault": false,
-      "isEvent": false,
-      "isHidden": true,
-      "isPremium": false,
-      "isUpgradeable": false,
-      "itemsPerUse": 4,
-      "levelPreset": "air_4",
-      "levelUpDiscount": 0.0,
-      "mRank": 4,
-      "modCostPart": 0.30000001192092896,
-      "modPreset": "aircraft_mod_14_preset",
-      "name": "il_2m_1943",
-      "platoonUnits": [],
-      "rank": 4,
-      "releaseDate": 0,
-      "rewardExpMul": 1.375,
-      "rewardGoldMul": 1.375,
-      "rewardWpMul": 1.375,
-      "skins": {},
-      "starRank": 0,
-      "suitableForOffer": false,
-      "unitClass": "assault",
-      "unitType": "air",
-      "upgradeCostGold": 0,
-      "weapons": {
-        "il_2m_1943_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -8173,7 +8624,7 @@ return {
       "platoonUnits": [],
       "rank": 6,
       "releaseDate": 0,
-      "rewardExpMul": 1.625,
+      "rewardExpMul": 3.25,
       "rewardGoldMul": 1.625,
       "rewardWpMul": 3.25,
       "skins": {},
@@ -8226,6 +8677,48 @@ return {
       "upgradeCostGold": 1020,
       "weapons": {
         "jp_armoredcruiser_ikoma_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "jp_battlecruiser_amagi": {
+      "attrPreset": "shipDefault",
+      "campaign": "ships",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 5,
+      "levelPreset": "ships_23",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "torpedo_ship",
+      "name": "jp_battlecruiser_amagi",
+      "platoonUnits": [],
+      "rank": 23,
+      "releaseDate": 0,
+      "rewardExpMul": 49.779998779296875,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.0799999237060547,
+      "skins": {
+        "factory": true
+      },
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "battleship",
+      "unitType": "ship",
+      "upgradeCostGold": 5230,
+      "weapons": {
+        "jp_battlecruiser_amagi_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -8840,7 +9333,7 @@ return {
       "isEvent": false,
       "isHidden": true,
       "isPremium": false,
-      "isUpgradeable": true,
+      "isUpgradeable": false,
       "itemsPerUse": 1,
       "levelPreset": "ships_2",
       "levelUpDiscount": 0.0,
@@ -8855,13 +9348,13 @@ return {
       "rewardGoldMul": 0.0,
       "rewardWpMul": 1.2300000190734863,
       "skins": {
-        "upgraded": false
+        "factory": true
       },
       "starRank": 0,
       "suitableForOffer": false,
       "unitClass": "destroyer",
       "unitType": "ship",
-      "upgradeCostGold": 420,
+      "upgradeCostGold": 0,
       "weapons": {
         "jp_destroyer_hatsuzuki_default": {
           "costWp": 0,
@@ -9132,6 +9625,59 @@ return {
         }
       }
     },
+    "jp_type_5_ho_ri_production": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_japan",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 6,
+      "levelPreset": "tanks_8",
+      "levelUpDiscount": 0.0,
+      "mRank": 6,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "jp_type_5_ho_ri_production",
+      "platoonUnits": [
+        {
+          "name": "jp_m47_patton_II",
+          "reqLevel": 5
+        },
+        {
+          "name": "jp_type_60_atm",
+          "reqLevel": 10
+        },
+        {
+          "name": "jp_type_87_rcv_prot",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 8,
+      "releaseDate": 0,
+      "rewardExpMul": 11.920000076293945,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.119999885559082,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 4870,
+      "weapons": {
+        "jp_type_5_ho_ri_production_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "jp_type_74_mod_g_kai": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
@@ -9359,7 +9905,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 7,
@@ -9412,7 +9958,7 @@ return {
       "platoonUnits": [],
       "rank": 7,
       "releaseDate": 0,
-      "rewardExpMul": 1.75,
+      "rewardExpMul": 3.5,
       "rewardGoldMul": 1.75,
       "rewardWpMul": 3.5,
       "skins": {},
@@ -9679,7 +10225,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 4,
@@ -9732,7 +10278,7 @@ return {
       "platoonUnits": [],
       "rank": 4,
       "releaseDate": 0,
-      "rewardExpMul": 1.375,
+      "rewardExpMul": 2.75,
       "rewardGoldMul": 1.375,
       "rewardWpMul": 2.75,
       "skins": {},
@@ -9932,7 +10478,7 @@ return {
       "platoonUnits": [],
       "rank": 7,
       "releaseDate": 0,
-      "rewardExpMul": 1.75,
+      "rewardExpMul": 3.5,
       "rewardGoldMul": 1.75,
       "rewardWpMul": 3.5,
       "skins": {},
@@ -9959,7 +10505,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 3,
@@ -10012,7 +10558,7 @@ return {
       "platoonUnits": [],
       "rank": 3,
       "releaseDate": 0,
-      "rewardExpMul": 1.25,
+      "rewardExpMul": 2.5,
       "rewardGoldMul": 1.25,
       "rewardWpMul": 2.5,
       "skins": {},
@@ -10159,7 +10705,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 5,
@@ -10212,7 +10758,7 @@ return {
       "platoonUnits": [],
       "rank": 5,
       "releaseDate": 0,
-      "rewardExpMul": 1.5,
+      "rewardExpMul": 3.0,
       "rewardGoldMul": 1.5,
       "rewardWpMul": 3.0,
       "skins": {},
@@ -10292,7 +10838,7 @@ return {
       "platoonUnits": [],
       "rank": 5,
       "releaseDate": 0,
-      "rewardExpMul": 1.5,
+      "rewardExpMul": 3.0,
       "rewardGoldMul": 1.5,
       "rewardWpMul": 3.0,
       "skins": {},
@@ -10343,6 +10889,46 @@ return {
       "upgradeCostGold": 0,
       "weapons": {
         "p-47n-15_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "p-51_mk1a_usaaf": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_5_preset",
+      "name": "p-51_mk1a_usaaf",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 3.0,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 3.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "p-51_mk1a_usaaf_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -10679,7 +11265,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 1,
@@ -10732,7 +11318,7 @@ return {
       "platoonUnits": [],
       "rank": 1,
       "releaseDate": 0,
-      "rewardExpMul": 1.0,
+      "rewardExpMul": 2.0,
       "rewardGoldMul": 1.0,
       "rewardWpMul": 2.0,
       "skins": {},
@@ -10999,7 +11585,7 @@ return {
         }
       ],
       "rank": 12,
-      "releaseDate": 0,
+      "releaseDate": 1727913600,
       "rewardExpMul": 29.099998474121094,
       "rewardGoldMul": 0.0,
       "rewardWpMul": 4.380000114440918,
@@ -11074,6 +11660,46 @@ return {
         }
       }
     },
+    "ta_154a_1": {
+      "attrPreset": "",
+      "campaign": "air",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_germany",
+      "dailyGoldLimit": 60,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": false,
+      "itemsPerUse": 5,
+      "levelPreset": "air_5",
+      "levelUpDiscount": 0.0,
+      "mRank": 5,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "aircraft_mod_8_preset",
+      "name": "ta_154a_1",
+      "platoonUnits": [],
+      "rank": 5,
+      "releaseDate": 0,
+      "rewardExpMul": 3.0,
+      "rewardGoldMul": 1.5,
+      "rewardWpMul": 3.0,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "fighter",
+      "unitType": "air",
+      "upgradeCostGold": 0,
+      "weapons": {
+        "ta_154a_1_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "tandem_mai": {
       "attrPreset": "",
       "campaign": "air",
@@ -11097,7 +11723,7 @@ return {
       "platoonUnits": [],
       "rank": 2,
       "releaseDate": 0,
-      "rewardExpMul": 1.125,
+      "rewardExpMul": 2.25,
       "rewardGoldMul": 1.125,
       "rewardWpMul": 2.25,
       "skins": {},
@@ -11703,11 +12329,11 @@ return {
       "levelUpDiscount": 0.0,
       "mRank": 3,
       "modCostPart": 0.30000001192092896,
-      "modPreset": "ship_default",
+      "modPreset": "torpedo_ship",
       "name": "uk_battleship_orion",
       "platoonUnits": [],
       "rank": 18,
-      "releaseDate": 0,
+      "releaseDate": 1727913600,
       "rewardExpMul": 24.760000228881836,
       "rewardGoldMul": 0.0,
       "rewardWpMul": 3.9200000762939453,
@@ -11862,6 +12488,61 @@ return {
       "upgradeCostGold": 6030,
       "weapons": {
         "uk_centurion_action_x_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
+    "uk_challenger_1": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 1818600,
+      "country": "country_uk",
+      "dailyGoldLimit": 0,
+      "isCollectible": false,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": false,
+      "isPremium": false,
+      "isUpgradeable": true,
+      "itemsPerUse": 10,
+      "levelPreset": "tanks_19",
+      "levelUpDiscount": 0.0,
+      "mRank": 10,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "uk_challenger_1",
+      "platoonUnits": [
+        {
+          "name": "uk_ttd",
+          "reqLevel": 5
+        },
+        {
+          "name": "uk_desert_warrior",
+          "reqLevel": 10
+        },
+        {
+          "name": "uk_rooikat_za_35_reskin",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 19,
+      "releaseDate": 0,
+      "rewardExpMul": 69.389999389648438,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 2.3399999141693115,
+      "skins": {
+        "upgraded": false
+      },
+      "starRank": 0,
+      "suitableForOffer": true,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 9450,
+      "weapons": {
+        "uk_challenger_1_default": {
           "costWp": 0,
           "reqLevel": 0,
           "visual": "pilon"
@@ -12091,7 +12772,9 @@ return {
       "rewardGoldMul": 0.0,
       "rewardWpMul": 3.4600000381469727,
       "skins": {
-        "darkgray_blotch": false
+        "darkgray_blotch": false,
+        "polish_bluegeometry_prem": false,
+        "threegreenspots": false
       },
       "starRank": 0,
       "suitableForOffer": false,
@@ -12236,33 +12919,33 @@ return {
       "attrPreset": "shipMissilesNoTorpedo",
       "campaign": "ships",
       "costGold": 0,
-      "costWp": 0,
+      "costWp": 1065950,
       "country": "country_uk",
       "dailyGoldLimit": 0,
-      "isCollectible": true,
+      "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": true,
       "itemsPerUse": 6,
-      "levelPreset": "ships_28",
+      "levelPreset": "ships_29",
       "levelUpDiscount": 0.0,
       "mRank": 6,
       "modCostPart": 0.30000001192092896,
       "modPreset": "ship_default",
       "name": "uk_destroyer_rckt_devonshire",
       "platoonUnits": [],
-      "rank": 30,
-      "releaseDate": 0,
-      "rewardExpMul": 50.069999694824219,
+      "rank": 29,
+      "releaseDate": 1727913600,
+      "rewardExpMul": 57.579998016357422,
       "rewardGoldMul": 0.0,
-      "rewardWpMul": 2.1099998950958252,
+      "rewardWpMul": 2.119999885559082,
       "skins": {
         "upgraded": false
       },
-      "starRank": 2,
-      "suitableForOffer": false,
+      "starRank": 0,
+      "suitableForOffer": true,
       "unitClass": "destroyer",
       "unitType": "ship",
       "upgradeCostGold": 5590,
@@ -12448,7 +13131,7 @@ return {
         }
       ],
       "rank": 7,
-      "releaseDate": 0,
+      "releaseDate": 1727913600,
       "rewardExpMul": 9.5399999618530273,
       "rewardGoldMul": 0.0,
       "rewardWpMul": 4.0199999809265137,
@@ -13328,7 +14011,7 @@ return {
       "isEvent": false,
       "isHidden": true,
       "isPremium": false,
-      "isUpgradeable": true,
+      "isUpgradeable": false,
       "itemsPerUse": 1,
       "levelPreset": "ships_2",
       "levelUpDiscount": 0.0,
@@ -13343,13 +14026,13 @@ return {
       "rewardGoldMul": 0.0,
       "rewardWpMul": 1.2300000190734863,
       "skins": {
-        "upgraded": false
+        "factory": true
       },
       "starRank": 0,
       "suitableForOffer": false,
       "unitClass": "destroyer",
       "unitType": "ship",
-      "upgradeCostGold": 420,
+      "upgradeCostGold": 0,
       "weapons": {
         "us_destroyer_fletcher_nicholas_default": {
           "costWp": 0,
@@ -13659,7 +14342,7 @@ return {
       "isEvent": false,
       "isHidden": true,
       "isPremium": false,
-      "isUpgradeable": true,
+      "isUpgradeable": false,
       "itemsPerUse": 1,
       "levelPreset": "tanks_1",
       "levelUpDiscount": 0.0,
@@ -13687,14 +14370,13 @@ return {
       "rewardGoldMul": 0.0,
       "rewardWpMul": 1.3600000143051147,
       "skins": {
-        "forest": true,
-        "upgraded": false
+        "forest": true
       },
       "starRank": 0,
       "suitableForOffer": false,
       "unitClass": "medium_tank",
       "unitType": "tank",
-      "upgradeCostGold": 410,
+      "upgradeCostGold": 0,
       "weapons": {
         "us_m4_sherman_reward_default": {
           "costWp": 0,
@@ -14147,6 +14829,59 @@ return {
         }
       }
     },
+    "us_m60a3_slep": {
+      "attrPreset": "tankDefault",
+      "campaign": "tanks",
+      "costGold": 0,
+      "costWp": 0,
+      "country": "country_usa",
+      "dailyGoldLimit": 0,
+      "isCollectible": true,
+      "isDefault": false,
+      "isEvent": false,
+      "isHidden": true,
+      "isPremium": true,
+      "isUpgradeable": true,
+      "itemsPerUse": 9,
+      "levelPreset": "tanks_18",
+      "levelUpDiscount": 0.0,
+      "mRank": 9,
+      "modCostPart": 0.30000001192092896,
+      "modPreset": "tank_default",
+      "name": "us_m60a3_slep",
+      "platoonUnits": [
+        {
+          "name": "us_xm_8",
+          "reqLevel": 5
+        },
+        {
+          "name": "us_m3a3_bradley_reskin",
+          "reqLevel": 10
+        },
+        {
+          "name": "us_m247_reskin2",
+          "reqLevel": 15
+        }
+      ],
+      "rank": 18,
+      "releaseDate": 0,
+      "rewardExpMul": 111.01999664306641,
+      "rewardGoldMul": 0.0,
+      "rewardWpMul": 4.6599998474121094,
+      "skins": {},
+      "starRank": 0,
+      "suitableForOffer": false,
+      "unitClass": "medium_tank",
+      "unitType": "tank",
+      "upgradeCostGold": 9310,
+      "weapons": {
+        "us_m60a3_slep_default": {
+          "costWp": 0,
+          "reqLevel": 0,
+          "visual": "pilon"
+        }
+      }
+    },
     "us_m728": {
       "attrPreset": "tankDefault",
       "campaign": "tanks",
@@ -14321,7 +15056,7 @@ return {
       "name": "us_sub_balao_ss286",
       "platoonUnits": [],
       "rank": 11,
-      "releaseDate": 0,
+      "releaseDate": 1727913600,
       "rewardExpMul": 9.3000001907348633,
       "rewardGoldMul": 0.0,
       "rewardWpMul": 3.5999999046325684,
@@ -14530,7 +15265,7 @@ return {
         }
       ],
       "rank": 10,
-      "releaseDate": 0,
+      "releaseDate": 1727913600,
       "rewardExpMul": 18.619998931884766,
       "rewardGoldMul": 0.0,
       "rewardWpMul": 4.2599997520446777,
@@ -15212,7 +15947,7 @@ return {
       "modPreset": "torpedo_ship",
       "name": "ussr_cruiser_rckt_pr58",
       "platoonUnits": [],
-      "rank": 30,
+      "rank": 28,
       "releaseDate": 1725494400,
       "rewardExpMul": 50.069999694824219,
       "rewardGoldMul": 0.0,
@@ -15220,7 +15955,7 @@ return {
       "skins": {
         "upgraded": false
       },
-      "starRank": 2,
+      "starRank": 0,
       "suitableForOffer": true,
       "unitClass": "cruiser",
       "unitType": "ship",
@@ -16682,7 +17417,7 @@ return {
       "platoonUnits": [],
       "rank": 5,
       "releaseDate": 0,
-      "rewardExpMul": 1.5,
+      "rewardExpMul": 3.0,
       "rewardGoldMul": 1.5,
       "rewardWpMul": 3.0,
       "skins": {},
@@ -16722,7 +17457,7 @@ return {
       "platoonUnits": [],
       "rank": 4,
       "releaseDate": 0,
-      "rewardExpMul": 1.375,
+      "rewardExpMul": 2.75,
       "rewardGoldMul": 1.375,
       "rewardWpMul": 2.75,
       "skins": {},
@@ -16842,7 +17577,7 @@ return {
       "platoonUnits": [],
       "rank": 7,
       "releaseDate": 0,
-      "rewardExpMul": 1.75,
+      "rewardExpMul": 3.5,
       "rewardGoldMul": 1.75,
       "rewardWpMul": 3.5,
       "skins": {},
@@ -16909,7 +17644,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 4,
@@ -16962,7 +17697,7 @@ return {
       "platoonUnits": [],
       "rank": 4,
       "releaseDate": 0,
-      "rewardExpMul": 1.375,
+      "rewardExpMul": 2.75,
       "rewardGoldMul": 1.375,
       "rewardWpMul": 2.75,
       "skins": {},
@@ -16989,7 +17724,7 @@ return {
       "isCollectible": false,
       "isDefault": false,
       "isEvent": false,
-      "isHidden": true,
+      "isHidden": false,
       "isPremium": false,
       "isUpgradeable": false,
       "itemsPerUse": 5,
@@ -17042,7 +17777,7 @@ return {
       "platoonUnits": [],
       "rank": 5,
       "releaseDate": 0,
-      "rewardExpMul": 1.5,
+      "rewardExpMul": 3.0,
       "rewardGoldMul": 1.5,
       "rewardWpMul": 3.0,
       "skins": {},
@@ -17202,7 +17937,7 @@ return {
       "platoonUnits": [],
       "rank": 2,
       "releaseDate": 0,
-      "rewardExpMul": 1.125,
+      "rewardExpMul": 2.25,
       "rewardGoldMul": 1.125,
       "rewardWpMul": 2.25,
       "skins": {},
@@ -17268,13 +18003,13 @@ return {
       },
       {
         "allowOffline": false,
-        "exp": 280,
+        "exp": 250,
         "minSlotExp": 500,
         "wp": 8000
       },
       {
         "allowOffline": false,
-        "exp": 280,
+        "exp": 250,
         "minSlotExp": 0,
         "wp": 8000
       }
@@ -17344,14 +18079,6 @@ return {
       "variants": [
         [
           {
-            "count": 60,
-            "gType": "blueprint",
-            "id": "il_2m_1943",
-            "subId": ""
-          }
-        ],
-        [
-          {
             "count": 90,
             "gType": "blueprint",
             "id": "sb2u-3",
@@ -17379,6 +18106,14 @@ return {
             "count": 10,
             "gType": "blueprint",
             "id": "bf-109g-14",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 10,
+            "gType": "blueprint",
+            "id": "i_225",
             "subId": ""
           }
         ],
@@ -17443,6 +18178,14 @@ return {
             "count": 70,
             "gType": "blueprint",
             "id": "p-400",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 10,
+            "gType": "blueprint",
+            "id": "am_1_mauler",
             "subId": ""
           }
         ],
@@ -17519,48 +18262,143 @@ return {
     }
   ],
   "lootboxesCfg": {
-    "debug_lootbox": {
+    "event_air_big_season_13": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "14": "event_air_medium_box_fixed_season_13"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "air",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_air_big_season_13",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_aircraft_1_blueprints_15_season_13": 6.6599998474121094,
+        "event_big_box_aircraft_1_blueprints_20_season_13": 3.3299999237060547,
+        "event_big_box_aircraft_1_blueprints_8_season_13": 16.659999847412109,
+        "event_big_box_aircraft_2_blueprints_15_season_13": 6.6599998474121094,
+        "event_big_box_aircraft_2_blueprints_20_season_13": 3.3299999237060547,
+        "event_big_box_aircraft_2_blueprints_8_season_13": 16.659999847412109,
+        "event_big_box_aircraft_3_blueprints_15_season_13": 6.6599998474121094,
+        "event_big_box_aircraft_3_blueprints_20_season_13": 3.3299999237060547,
+        "event_big_box_aircraft_3_blueprints_8_season_13": 16.659999847412109,
+        "event_big_box_decorator_avatar_season_13": 10.0,
+        "event_big_box_decorator_frame_season_13": 10.0,
+        "event_big_box_decorator_title_season_13": 10.0,
+        "event_big_box_gold_1": 10.0,
+        "event_big_box_gold_1800": 1.0,
+        "event_big_box_gold_2": 3.0,
+        "event_big_box_keys_2": 3.0,
+        "event_big_box_prem_aircraft_1_season_13": 0.6600000262260437,
+        "event_big_box_prem_aircraft_2_season_13": 0.6600000262260437,
+        "event_big_box_prem_aircraft_3_season_13": 0.6600000262260437
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1730368799,
+        "start": 1728554400
+      }
+    },
+    "event_air_big_season_14": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "14": "event_air_medium_box_fixed_season_14"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "air",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_air_big_season_14",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_aircraft_1_blueprints_15_season_14": 6.6599998474121094,
+        "event_big_box_aircraft_1_blueprints_20_season_14": 3.3299999237060547,
+        "event_big_box_aircraft_1_blueprints_8_season_14": 16.659999847412109,
+        "event_big_box_aircraft_2_blueprints_15_season_14": 6.6599998474121094,
+        "event_big_box_aircraft_2_blueprints_20_season_14": 3.3299999237060547,
+        "event_big_box_aircraft_2_blueprints_8_season_14": 16.659999847412109,
+        "event_big_box_aircraft_3_blueprints_15_season_14": 6.6599998474121094,
+        "event_big_box_aircraft_3_blueprints_20_season_14": 3.3299999237060547,
+        "event_big_box_aircraft_3_blueprints_8_season_14": 16.659999847412109,
+        "event_big_box_decorator_avatar_season_14": 10.0,
+        "event_big_box_decorator_frame_season_14": 10.0,
+        "event_big_box_decorator_title_season_14": 10.0,
+        "event_big_box_gold_1": 10.0,
+        "event_big_box_gold_1800": 1.0,
+        "event_big_box_gold_2": 3.0,
+        "event_big_box_keys_2": 3.0,
+        "event_big_box_prem_aircraft_1_season_14": 0.6600000262260437,
+        "event_big_box_prem_aircraft_2_season_14": 0.6600000262260437,
+        "event_big_box_prem_aircraft_3_season_14": 0.6600000262260437
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1732787999,
+        "start": 1730973600
+      }
+    },
+    "event_air_medium_fixed_season_13": {
       "currencyId": "",
       "dropLimit": {
-        "everyday_gold_big_1": 2
+        "event_medium_box_aircraft_1_blueprints_fixed_season_13": 1,
+        "event_medium_box_aircraft_2_blueprints_fixed_season_13": 1,
+        "event_medium_box_aircraft_3_blueprints_fixed_season_13": 1
       },
-      "fixedRewards": {
-        "10": "everyday_gold_big_1"
-      },
+      "fixedRewards": {},
       "hasBulkPurchase": false,
-      "lastReward": "",
+      "lastReward": "event_air_box_gold_jackpot",
       "meta": {},
-      "name": "debug_lootbox",
+      "name": "event_air_medium_fixed_season_13",
       "openType": "roulette",
       "price": 0,
       "reqPlayerLevel": 0,
       "rewards": {
-        "debug_ship": 0.0099999997764825821,
-        "debug_tank": 0.0099999997764825821,
-        "everyday_decorator_avatar_1": 0.0099999997764825821,
-        "everyday_decorator_avatar_2": 0.0099999997764825821,
-        "everyday_decorator_frame_1": 0.0099999997764825821,
-        "everyday_decorator_frame_2": 0.0099999997764825821,
-        "everyday_decorator_title_1": 0.0099999997764825821,
-        "everyday_gold_big_1": 1.0,
-        "everyday_wp_big": 1.0,
-        "offer_gift_gold": 1.0,
-        "offer_gift_ship_repair": 1.0,
-        "offer_gift_ship_smoke": 1.0,
-        "offer_gift_spare": 1.0,
-        "offer_gift_tank_extinguisher": 1.0,
-        "offer_gift_tank_repair": 1.0,
-        "offer_gift_wp": 1.0
+        "event_medium_box_aircraft_1_blueprints_fixed_season_13": 1.0,
+        "event_medium_box_aircraft_2_blueprints_fixed_season_13": 1.0,
+        "event_medium_box_aircraft_3_blueprints_fixed_season_13": 1.0
       },
-      "rewardsInc": {
-        "debug_ship": 0.0010000000474974513,
-        "debug_tank": 0.0010000000474974513,
-        "everyday_decorator_avatar_1": 0.0010000000474974513,
-        "everyday_decorator_avatar_2": 0.0010000000474974513,
-        "everyday_decorator_frame_1": 0.0010000000474974513,
-        "everyday_decorator_frame_2": 0.0010000000474974513,
-        "everyday_decorator_title_1": 0.0010000000474974513
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_air_medium_fixed_season_14": {
+      "currencyId": "",
+      "dropLimit": {
+        "event_medium_box_aircraft_1_blueprints_fixed_season_14": 1,
+        "event_medium_box_aircraft_2_blueprints_fixed_season_14": 1,
+        "event_medium_box_aircraft_3_blueprints_fixed_season_14": 1
       },
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_air_box_gold_jackpot",
+      "meta": {},
+      "name": "event_air_medium_fixed_season_14",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_aircraft_1_blueprints_fixed_season_14": 1.0,
+        "event_medium_box_aircraft_2_blueprints_fixed_season_14": 1.0,
+        "event_medium_box_aircraft_3_blueprints_fixed_season_14": 1.0
+      },
+      "rewardsInc": {},
       "timeRange": {
         "end": 0,
         "start": 0
@@ -17569,7 +18407,9 @@ return {
     "event_air_medium_season_13": {
       "currencyId": "warbond",
       "dropLimit": {},
-      "fixedRewards": {},
+      "fixedRewards": {
+        "50": "event_air_medium_box_fixed_season_13"
+      },
       "hasBulkPurchase": true,
       "lastReward": "",
       "meta": {
@@ -17584,9 +18424,22 @@ return {
       "reqPlayerLevel": 0,
       "rewards": {
         "event_campaign_booster_05": 80.0,
-        "event_medium_box_decorator_avatar_season_8": 15.0,
-        "event_medium_box_decorator_frame_season_8": 15.0,
-        "event_medium_box_decorator_title_season_8": 15.0,
+        "event_medium_box_aircraft_1_blueprints_10_season_13": 1.6599999666213989,
+        "event_medium_box_aircraft_1_blueprints_1_season_13": 47.0,
+        "event_medium_box_aircraft_1_blueprints_5_season_13": 6.6599998474121094,
+        "event_medium_box_aircraft_1_season_13": 0.6600000262260437,
+        "event_medium_box_aircraft_2_blueprints_10_season_13": 1.6599999666213989,
+        "event_medium_box_aircraft_2_blueprints_1_season_13": 47.0,
+        "event_medium_box_aircraft_2_blueprints_5_season_13": 6.6599998474121094,
+        "event_medium_box_aircraft_2_season_13": 0.6600000262260437,
+        "event_medium_box_aircraft_3_blueprints_10_season_13": 1.6599999666213989,
+        "event_medium_box_aircraft_3_blueprints_1_season_13": 47.0,
+        "event_medium_box_aircraft_3_blueprints_5_season_13": 6.6599998474121094,
+        "event_medium_box_aircraft_3_season_13": 0.6600000262260437,
+        "event_medium_box_decorator_avatar_2_season_13": 15.0,
+        "event_medium_box_decorator_avatar_season_13": 15.0,
+        "event_medium_box_decorator_frame_season_13": 15.0,
+        "event_medium_box_decorator_title_season_13": 15.0,
         "event_medium_box_gold_1": 85.0,
         "event_medium_box_gold_2": 85.0,
         "event_medium_box_gold_3": 85.0,
@@ -17601,8 +18454,62 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1726826399,
-        "start": 1724148000
+        "end": 1730368799,
+        "start": 1727949600
+      }
+    },
+    "event_air_medium_season_14": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "50": "event_air_medium_box_fixed_season_14"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "air",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_air_medium_season_14",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_campaign_booster_05": 80.0,
+        "event_medium_box_aircraft_1_blueprints_10_season_14": 1.6599999666213989,
+        "event_medium_box_aircraft_1_blueprints_1_season_14": 47.0,
+        "event_medium_box_aircraft_1_blueprints_5_season_14": 6.6599998474121094,
+        "event_medium_box_aircraft_1_season_14": 0.6600000262260437,
+        "event_medium_box_aircraft_2_blueprints_10_season_14": 1.6599999666213989,
+        "event_medium_box_aircraft_2_blueprints_1_season_14": 47.0,
+        "event_medium_box_aircraft_2_blueprints_5_season_14": 6.6599998474121094,
+        "event_medium_box_aircraft_2_season_14": 0.6600000262260437,
+        "event_medium_box_aircraft_3_blueprints_10_season_14": 1.6599999666213989,
+        "event_medium_box_aircraft_3_blueprints_1_season_14": 47.0,
+        "event_medium_box_aircraft_3_blueprints_5_season_14": 6.6599998474121094,
+        "event_medium_box_aircraft_3_season_14": 0.6600000262260437,
+        "event_medium_box_decorator_avatar_2_season_14": 15.0,
+        "event_medium_box_decorator_avatar_season_14": 15.0,
+        "event_medium_box_decorator_frame_season_14": 15.0,
+        "event_medium_box_decorator_title_season_14": 15.0,
+        "event_medium_box_gold_1": 85.0,
+        "event_medium_box_gold_2": 85.0,
+        "event_medium_box_gold_3": 85.0,
+        "event_medium_box_keys_2": 15.0,
+        "event_medium_box_keys_4": 5.0,
+        "event_medium_box_warbonds": 15.0,
+        "event_medium_box_wp_1": 85.0,
+        "event_medium_box_wp_2": 85.0,
+        "event_medium_box_wp_3": 85.0,
+        "event_unit_booster_08": 80.0,
+        "event_wp_booster_05": 80.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1732787999,
+        "start": 1730368800
       }
     },
     "event_ships_big_fixed_season_10": {
@@ -17678,6 +18585,26 @@ return {
       "reqPlayerLevel": 0,
       "rewards": {
         "event_big_box_ship_season_13": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_big_fixed_season_14": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_big_fixed_season_14",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_ship_season_14": 1.0
       },
       "rewardsInc": {},
       "timeRange": {
@@ -17801,8 +18728,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1723111199,
+        "start": 1721296800
       }
     },
     "event_ships_big_season_11": {
@@ -17841,8 +18768,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1724147999,
-        "start": 1722074400
+        "end": 1725530399,
+        "start": 1723716000
       }
     },
     "event_ships_big_season_12": {
@@ -17881,8 +18808,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1726826399,
-        "start": 1724752800
+        "end": 1727949599,
+        "start": 1726135200
       }
     },
     "event_ships_big_season_13": {
@@ -17921,8 +18848,48 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1729504799,
-        "start": 1727431200
+        "end": 1730368799,
+        "start": 1728554400
+      }
+    },
+    "event_ships_big_season_14": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "14": "event_ships_big_box_fixed_season_14"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_ships_big_season_14",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_14": 10.0,
+        "event_big_box_decorator_frame_season_14": 10.0,
+        "event_big_box_decorator_title_season_14": 10.0,
+        "event_big_box_gold_1": 10.0,
+        "event_big_box_gold_1800": 1.0,
+        "event_big_box_gold_2": 3.0,
+        "event_big_box_keys_2": 3.0,
+        "event_big_box_ship_season_14": 1.0,
+        "event_big_box_ship_skin_1_season_14": 10.0,
+        "event_big_box_ship_skin_2_season_14": 10.0,
+        "event_big_box_ship_skin_3_season_14": 10.0,
+        "event_big_box_wp_1": 10.0,
+        "event_big_box_wp_2": 3.0,
+        "event_big_box_wp_360000": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1732787999,
+        "start": 1730973600
       }
     },
     "event_ships_big_season_6": {
@@ -17961,8 +18928,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1712829599,
+        "start": 1711015200
       }
     },
     "event_ships_big_season_7": {
@@ -18001,8 +18968,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1715853599,
+        "start": 1713434400
       }
     },
     "event_ships_big_season_8": {
@@ -18041,8 +19008,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1718272799,
+        "start": 1716458400
       }
     },
     "event_ships_big_season_9": {
@@ -18081,8 +19048,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1720691999,
+        "start": 1718877600
       }
     },
     "event_ships_medium_fixed_season_10": {
@@ -18162,6 +19129,27 @@ return {
       "rewards": {
         "event_medium_box_decorator_frame_season_13": 1.0,
         "event_medium_box_ship_season_13": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_ships_medium_fixed_season_14": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_ships_medium_fixed_season_14",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_14": 1.0,
+        "event_medium_box_ship_season_14": 1.0
       },
       "rewardsInc": {},
       "timeRange": {
@@ -18291,8 +19279,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1723111199,
+        "start": 1720692000
       }
     },
     "event_ships_medium_season_11": {
@@ -18333,8 +19321,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1724147999,
-        "start": 1721469600
+        "end": 1725530399,
+        "start": 1723111200
       }
     },
     "event_ships_medium_season_12": {
@@ -18375,8 +19363,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1726826399,
-        "start": 1724148000
+        "end": 1727949599,
+        "start": 1725530400
       }
     },
     "event_ships_medium_season_13": {
@@ -18399,6 +19387,7 @@ return {
       "price": 100,
       "reqPlayerLevel": 0,
       "rewards": {
+        "event_medium_box_decorator_avatar_2_season_13": 0.32499998807907104,
         "event_medium_box_decorator_avatar_season_13": 0.32499998807907104,
         "event_medium_box_decorator_frame_season_13": 0.32499998807907104,
         "event_medium_box_decorator_title_season_13": 0.32499998807907104,
@@ -18417,8 +19406,51 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1729504799,
-        "start": 1726826400
+        "end": 1730368799,
+        "start": 1727949600
+      }
+    },
+    "event_ships_medium_season_14": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_ships_medium_box_fixed_season_14",
+        "60": "event_ships_medium_box_fixed_season_14"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_ships_medium_season_14",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_2_season_14": 0.32499998807907104,
+        "event_medium_box_decorator_avatar_season_14": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_14": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_14": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_keys_4": 0.32499998807907104,
+        "event_medium_box_ship_season_14": 0.32499998807907104,
+        "event_medium_box_ship_smoke_screen_system_mod_3": 4.125,
+        "event_medium_box_ship_tool_kit_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 16.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1732787999,
+        "start": 1730368800
       }
     },
     "event_ships_medium_season_6": {
@@ -18459,8 +19491,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1712829599,
+        "start": 1710410400
       }
     },
     "event_ships_medium_season_7": {
@@ -18501,8 +19533,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1715853599,
+        "start": 1712829600
       }
     },
     "event_ships_medium_season_8": {
@@ -18543,8 +19575,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1718272799,
+        "start": 1715853600
       }
     },
     "event_ships_medium_season_9": {
@@ -18585,8 +19617,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1720691999,
+        "start": 1718272800
       }
     },
     "event_small": {
@@ -18727,8 +19759,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1724147999,
-        "start": 1722506400
+        "end": 1724407199,
+        "start": 1723629600
       }
     },
     "event_special_ships_anniversary_2024_fixed": {
@@ -18787,8 +19819,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1715162399,
-        "start": 1714039200
+        "end": 1712570399,
+        "start": 1711958400
       }
     },
     "event_special_ships_april_2024_fixed": {
@@ -18898,8 +19930,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1724147999,
-        "start": 1722506400
+        "end": 1724407199,
+        "start": 1723629600
       }
     },
     "event_special_tanks_anniversary_2024_fixed": {
@@ -18958,8 +19990,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1715162399,
-        "start": 1714039200
+        "end": 1712570399,
+        "start": 1711958400
       }
     },
     "event_special_tanks_april_2024_fixed": {
@@ -19113,6 +20145,26 @@ return {
         "start": 0
       }
     },
+    "event_tanks_big_fixed_season_14": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_big_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_big_fixed_season_14",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_tank_season_14": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
     "event_tanks_big_fixed_season_6": {
       "currencyId": "",
       "dropLimit": {},
@@ -19229,8 +20281,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1723111199,
+        "start": 1721296800
       }
     },
     "event_tanks_big_season_11": {
@@ -19269,8 +20321,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1724147999,
-        "start": 1722074400
+        "end": 1725530399,
+        "start": 1723716000
       }
     },
     "event_tanks_big_season_12": {
@@ -19309,8 +20361,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1726826399,
-        "start": 1724752800
+        "end": 1727949599,
+        "start": 1726135200
       }
     },
     "event_tanks_big_season_13": {
@@ -19349,8 +20401,48 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1729504799,
-        "start": 1727431200
+        "end": 1730368799,
+        "start": 1728554400
+      }
+    },
+    "event_tanks_big_season_14": {
+      "currencyId": "eventKey",
+      "dropLimit": {},
+      "fixedRewards": {
+        "14": "event_tanks_big_box_fixed_season_14"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "2",
+        "event_id": "main",
+        "event_slot": "2"
+      },
+      "name": "event_tanks_big_season_14",
+      "openType": "roulette",
+      "price": 1,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_14": 10.0,
+        "event_big_box_decorator_frame_season_14": 10.0,
+        "event_big_box_decorator_title_season_14": 10.0,
+        "event_big_box_gold_1": 10.0,
+        "event_big_box_gold_1800": 1.0,
+        "event_big_box_gold_2": 3.0,
+        "event_big_box_keys_2": 3.0,
+        "event_big_box_tank_season_14": 1.0,
+        "event_big_box_tank_skin_1_season_14": 10.0,
+        "event_big_box_tank_skin_2_season_14": 10.0,
+        "event_big_box_tank_skin_3_season_14": 10.0,
+        "event_big_box_wp_1": 10.0,
+        "event_big_box_wp_2": 3.0,
+        "event_big_box_wp_360000": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1732787999,
+        "start": 1730973600
       }
     },
     "event_tanks_big_season_6": {
@@ -19389,8 +20481,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1712829599,
+        "start": 1711015200
       }
     },
     "event_tanks_big_season_7": {
@@ -19429,8 +20521,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1715853599,
+        "start": 1713434400
       }
     },
     "event_tanks_big_season_8": {
@@ -19469,8 +20561,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1718272799,
+        "start": 1716458400
       }
     },
     "event_tanks_big_season_9": {
@@ -19509,8 +20601,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1720691999,
+        "start": 1718877600
       }
     },
     "event_tanks_medium_fixed_season_10": {
@@ -19590,6 +20682,27 @@ return {
       "rewards": {
         "event_medium_box_decorator_frame_season_13": 1.0,
         "event_medium_box_tank_season_13": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "event_tanks_medium_fixed_season_14": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "event_medium_box_gold_jackpot",
+      "meta": {},
+      "name": "event_tanks_medium_fixed_season_14",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_frame_season_14": 1.0,
+        "event_medium_box_tank_season_14": 1.0
       },
       "rewardsInc": {},
       "timeRange": {
@@ -19719,8 +20832,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1723111199,
+        "start": 1720692000
       }
     },
     "event_tanks_medium_season_11": {
@@ -19761,8 +20874,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1724147999,
-        "start": 1721469600
+        "end": 1725530399,
+        "start": 1723111200
       }
     },
     "event_tanks_medium_season_12": {
@@ -19803,8 +20916,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1726826399,
-        "start": 1724148000
+        "end": 1727949599,
+        "start": 1725530400
       }
     },
     "event_tanks_medium_season_13": {
@@ -19827,6 +20940,7 @@ return {
       "price": 100,
       "reqPlayerLevel": 0,
       "rewards": {
+        "event_medium_box_decorator_avatar_2_season_13": 0.32499998807907104,
         "event_medium_box_decorator_avatar_season_13": 0.32499998807907104,
         "event_medium_box_decorator_frame_season_13": 0.32499998807907104,
         "event_medium_box_decorator_title_season_13": 0.32499998807907104,
@@ -19845,8 +20959,51 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 1729504799,
-        "start": 1726826400
+        "end": 1730368799,
+        "start": 1727949600
+      }
+    },
+    "event_tanks_medium_season_14": {
+      "currencyId": "warbond",
+      "dropLimit": {},
+      "fixedRewards": {
+        "40": "event_tanks_medium_box_fixed_season_14",
+        "60": "event_tanks_medium_box_fixed_season_14"
+      },
+      "hasBulkPurchase": true,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks",
+        "event": "1",
+        "event_id": "main",
+        "event_slot": "1"
+      },
+      "name": "event_tanks_medium_season_14",
+      "openType": "roulette",
+      "price": 100,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_medium_box_decorator_avatar_2_season_14": 0.32499998807907104,
+        "event_medium_box_decorator_avatar_season_14": 0.32499998807907104,
+        "event_medium_box_decorator_frame_season_14": 0.32499998807907104,
+        "event_medium_box_decorator_title_season_14": 0.32499998807907104,
+        "event_medium_box_gold_1": 20.250999450683594,
+        "event_medium_box_gold_2": 5.8340001106262207,
+        "event_medium_box_gold_3": 5.4169998168945312,
+        "event_medium_box_keys_2": 0.32499998807907104,
+        "event_medium_box_keys_4": 0.32499998807907104,
+        "event_medium_box_tank_extinguisher_3": 4.125,
+        "event_medium_box_tank_season_14": 0.32499998807907104,
+        "event_medium_box_tank_tool_kit_expendable_3": 4.125,
+        "event_medium_box_warbonds": 0.54199999570846558,
+        "event_medium_box_wp_1": 14.416999816894531,
+        "event_medium_box_wp_2": 9.8339996337890625,
+        "event_medium_box_wp_3": 5.4169998168945312
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 1732787999,
+        "start": 1730368800
       }
     },
     "event_tanks_medium_season_6": {
@@ -19887,8 +21044,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1712829599,
+        "start": 1710410400
       }
     },
     "event_tanks_medium_season_7": {
@@ -19929,8 +21086,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1715853599,
+        "start": 1712829600
       }
     },
     "event_tanks_medium_season_8": {
@@ -19971,8 +21128,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1718272799,
+        "start": 1715853600
       }
     },
     "event_tanks_medium_season_9": {
@@ -20013,8 +21170,8 @@ return {
       },
       "rewardsInc": {},
       "timeRange": {
-        "end": 2,
-        "start": 1
+        "end": 1720691999,
+        "start": 1718272800
       }
     },
     "every_day_award_big_pack_1": {
@@ -20101,6 +21258,7 @@ return {
         "everyday_decorator_frame_1": 0.0099999997764825821,
         "everyday_decorator_frame_2": 0.019999999552965164,
         "everyday_decorator_title_1": 0.11999999731779099,
+        "everyday_slot_booster_1": 1.440000057220459,
         "everyday_unit_booster_1": 1.440000057220459,
         "everyday_wp_booster_1": 1.440000057220459,
         "everyday_wp_medium": 0.34999999403953552,
@@ -20130,6 +21288,7 @@ return {
         "everyday_decorator_frame_1": 0.0099999997764825821,
         "everyday_decorator_frame_2": 0.019999999552965164,
         "everyday_decorator_title_1": 0.11999999731779099,
+        "everyday_slot_booster_1": 1.440000057220459,
         "everyday_spare_small_1": 0.20000000298023224,
         "everyday_unit_booster_1": 1.1399999856948853,
         "everyday_wp_big": 0.25,
@@ -20206,6 +21365,143 @@ return {
         "offer_gift_tank_extinguisher": 1.0,
         "offer_gift_tank_repair": 1.0,
         "offer_gift_wp": 1.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_ships_seasons_1_to_10": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "ships"
+      },
+      "name": "past_events_box_ships_seasons_1_to_10",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_10": 100.0,
+        "event_big_box_decorator_avatar_season_3": 100.0,
+        "event_big_box_decorator_avatar_season_4": 100.0,
+        "event_big_box_decorator_avatar_season_5": 100.0,
+        "event_big_box_decorator_avatar_season_6": 100.0,
+        "event_big_box_decorator_avatar_season_7": 100.0,
+        "event_big_box_decorator_avatar_season_8": 100.0,
+        "event_big_box_decorator_avatar_season_9": 100.0,
+        "event_big_box_decorator_frame_1": 100.0,
+        "event_big_box_decorator_frame_2": 100.0,
+        "event_big_box_decorator_frame_season_10": 100.0,
+        "event_big_box_decorator_frame_season_2": 100.0,
+        "event_big_box_decorator_frame_season_4": 100.0,
+        "event_big_box_decorator_frame_season_5": 100.0,
+        "event_big_box_decorator_frame_season_6": 100.0,
+        "event_big_box_decorator_frame_season_7": 100.0,
+        "event_big_box_decorator_frame_season_8": 100.0,
+        "event_big_box_decorator_frame_season_9": 100.0,
+        "event_big_box_decorator_title": 300.0,
+        "event_big_box_decorator_title_season_10": 300.0,
+        "event_big_box_decorator_title_season_2": 300.0,
+        "event_big_box_decorator_title_season_3": 300.0,
+        "event_big_box_decorator_title_season_4": 300.0,
+        "event_big_box_decorator_title_season_5": 300.0,
+        "event_big_box_decorator_title_season_6": 300.0,
+        "event_big_box_decorator_title_season_7": 300.0,
+        "event_big_box_decorator_title_season_8": 300.0,
+        "event_big_box_decorator_title_season_9": 300.0,
+        "event_big_box_ship": 10.0,
+        "event_big_box_ship_season_10": 20.0,
+        "event_big_box_ship_season_2": 20.0,
+        "event_big_box_ship_season_3": 20.0,
+        "event_big_box_ship_season_4": 20.0,
+        "event_big_box_ship_season_5": 20.0,
+        "event_big_box_ship_season_6": 20.0,
+        "event_big_box_ship_season_7": 20.0,
+        "event_big_box_ship_season_8": 20.0,
+        "event_big_box_ship_season_9": 20.0,
+        "event_big_box_ship_skin_1_season_1": 100.0,
+        "event_big_box_ship_skin_1_season_10": 100.0,
+        "event_big_box_ship_skin_1_season_2": 100.0,
+        "event_big_box_ship_skin_1_season_3": 100.0,
+        "event_big_box_ship_skin_1_season_4": 100.0,
+        "event_big_box_ship_skin_1_season_5": 100.0,
+        "event_big_box_ship_skin_1_season_6": 100.0,
+        "event_big_box_ship_skin_1_season_7": 100.0,
+        "event_big_box_ship_skin_1_season_8": 100.0,
+        "event_big_box_ship_skin_1_season_9": 100.0,
+        "event_big_box_ship_skin_2_season_1": 100.0,
+        "event_big_box_ship_skin_2_season_10": 100.0,
+        "event_big_box_ship_skin_2_season_2": 100.0,
+        "event_big_box_ship_skin_2_season_3": 100.0,
+        "event_big_box_ship_skin_2_season_4": 100.0,
+        "event_big_box_ship_skin_2_season_5": 100.0,
+        "event_big_box_ship_skin_2_season_6": 100.0,
+        "event_big_box_ship_skin_2_season_7": 100.0,
+        "event_big_box_ship_skin_2_season_8": 100.0,
+        "event_big_box_ship_skin_2_season_9": 100.0,
+        "event_big_box_ship_skin_3_season_10": 100.0,
+        "event_big_box_ship_skin_3_season_5": 100.0,
+        "event_big_box_ship_skin_3_season_6": 100.0,
+        "event_big_box_ship_skin_3_season_7": 100.0,
+        "event_big_box_ship_skin_3_season_8": 100.0,
+        "event_big_box_ship_skin_3_season_9": 100.0,
+        "event_campaign_booster_3": 300.0,
+        "event_medium_box_decorator_frame": 100.0,
+        "event_medium_box_decorator_frame_season_10": 100.0,
+        "event_medium_box_decorator_frame_season_2": 100.0,
+        "event_medium_box_decorator_frame_season_3": 100.0,
+        "event_medium_box_decorator_frame_season_4": 100.0,
+        "event_medium_box_decorator_frame_season_5": 100.0,
+        "event_medium_box_decorator_frame_season_6": 100.0,
+        "event_medium_box_decorator_frame_season_7": 100.0,
+        "event_medium_box_decorator_frame_season_8": 100.0,
+        "event_medium_box_decorator_frame_season_9": 100.0,
+        "event_medium_box_decorator_title": 300.0,
+        "event_medium_box_decorator_title_season_10": 300.0,
+        "event_medium_box_decorator_title_season_2": 300.0,
+        "event_medium_box_decorator_title_season_3": 300.0,
+        "event_medium_box_decorator_title_season_4": 300.0,
+        "event_medium_box_decorator_title_season_5": 300.0,
+        "event_medium_box_decorator_title_season_6": 300.0,
+        "event_medium_box_decorator_title_season_7": 300.0,
+        "event_medium_box_decorator_title_season_8": 300.0,
+        "event_medium_box_decorator_title_season_9": 300.0,
+        "event_medium_box_ship": 30.0,
+        "event_medium_box_ship_season_10": 30.0,
+        "event_medium_box_ship_season_2": 30.0,
+        "event_medium_box_ship_season_3": 30.0,
+        "event_medium_box_ship_season_4": 30.0,
+        "event_medium_box_ship_season_5": 30.0,
+        "event_medium_box_ship_season_6": 30.0,
+        "event_medium_box_ship_season_7": 30.0,
+        "event_medium_box_ship_season_8": 30.0,
+        "event_medium_box_ship_season_9": 30.0,
+        "event_medium_box_ship_skin_1_season_1": 100.0,
+        "event_medium_box_ship_skin_1_season_10": 100.0,
+        "event_medium_box_ship_skin_1_season_2": 100.0,
+        "event_medium_box_ship_skin_1_season_3": 100.0,
+        "event_medium_box_ship_skin_1_season_4": 100.0,
+        "event_medium_box_ship_skin_1_season_5": 100.0,
+        "event_medium_box_ship_skin_1_season_6": 100.0,
+        "event_medium_box_ship_skin_1_season_7": 100.0,
+        "event_medium_box_ship_skin_1_season_8": 100.0,
+        "event_medium_box_ship_skin_1_season_9": 100.0,
+        "event_medium_box_ship_skin_2_season_1": 100.0,
+        "event_medium_box_ship_skin_2_season_10": 100.0,
+        "event_medium_box_ship_skin_2_season_2": 100.0,
+        "event_medium_box_ship_skin_2_season_3": 100.0,
+        "event_medium_box_ship_skin_2_season_4": 100.0,
+        "event_medium_box_ship_skin_2_season_5": 100.0,
+        "event_medium_box_ship_skin_2_season_6": 100.0,
+        "event_medium_box_ship_skin_2_season_7": 100.0,
+        "event_medium_box_ship_skin_2_season_8": 100.0,
+        "event_medium_box_ship_skin_2_season_9": 100.0,
+        "event_wp_booster_3": 300.0
       },
       "rewardsInc": {},
       "timeRange": {
@@ -20756,6 +22052,143 @@ return {
         "event_medium_box_ship_skin_2_season_7": 100.0,
         "event_medium_box_ship_skin_2_season_8": 100.0,
         "event_medium_box_ship_skin_2_season_9": 100.0,
+        "event_wp_booster_3": 300.0
+      },
+      "rewardsInc": {},
+      "timeRange": {
+        "end": 0,
+        "start": 0
+      }
+    },
+    "past_events_box_tanks_seasons_1_to_10": {
+      "currencyId": "",
+      "dropLimit": {},
+      "fixedRewards": {},
+      "hasBulkPurchase": false,
+      "lastReward": "",
+      "meta": {
+        "campaign": "tanks"
+      },
+      "name": "past_events_box_tanks_seasons_1_to_10",
+      "openType": "roulette",
+      "price": 0,
+      "reqPlayerLevel": 0,
+      "rewards": {
+        "event_big_box_decorator_avatar_season_10": 100.0,
+        "event_big_box_decorator_avatar_season_3": 100.0,
+        "event_big_box_decorator_avatar_season_4": 100.0,
+        "event_big_box_decorator_avatar_season_5": 100.0,
+        "event_big_box_decorator_avatar_season_6": 100.0,
+        "event_big_box_decorator_avatar_season_7": 100.0,
+        "event_big_box_decorator_avatar_season_8": 100.0,
+        "event_big_box_decorator_avatar_season_9": 100.0,
+        "event_big_box_decorator_frame_1": 100.0,
+        "event_big_box_decorator_frame_2": 100.0,
+        "event_big_box_decorator_frame_season_10": 100.0,
+        "event_big_box_decorator_frame_season_2": 100.0,
+        "event_big_box_decorator_frame_season_4": 100.0,
+        "event_big_box_decorator_frame_season_5": 100.0,
+        "event_big_box_decorator_frame_season_6": 100.0,
+        "event_big_box_decorator_frame_season_7": 100.0,
+        "event_big_box_decorator_frame_season_8": 100.0,
+        "event_big_box_decorator_frame_season_9": 100.0,
+        "event_big_box_decorator_title": 300.0,
+        "event_big_box_decorator_title_season_10": 300.0,
+        "event_big_box_decorator_title_season_2": 300.0,
+        "event_big_box_decorator_title_season_3": 300.0,
+        "event_big_box_decorator_title_season_4": 300.0,
+        "event_big_box_decorator_title_season_5": 300.0,
+        "event_big_box_decorator_title_season_6": 300.0,
+        "event_big_box_decorator_title_season_7": 300.0,
+        "event_big_box_decorator_title_season_8": 300.0,
+        "event_big_box_decorator_title_season_9": 300.0,
+        "event_big_box_tank": 10.0,
+        "event_big_box_tank_season_10": 20.0,
+        "event_big_box_tank_season_2": 20.0,
+        "event_big_box_tank_season_3": 20.0,
+        "event_big_box_tank_season_4": 20.0,
+        "event_big_box_tank_season_5": 20.0,
+        "event_big_box_tank_season_6": 20.0,
+        "event_big_box_tank_season_7": 20.0,
+        "event_big_box_tank_season_8": 20.0,
+        "event_big_box_tank_season_9": 20.0,
+        "event_big_box_tank_skin_1_season_1": 100.0,
+        "event_big_box_tank_skin_1_season_10": 100.0,
+        "event_big_box_tank_skin_1_season_2": 100.0,
+        "event_big_box_tank_skin_1_season_3": 100.0,
+        "event_big_box_tank_skin_1_season_4": 100.0,
+        "event_big_box_tank_skin_1_season_5": 100.0,
+        "event_big_box_tank_skin_1_season_6": 100.0,
+        "event_big_box_tank_skin_1_season_7": 100.0,
+        "event_big_box_tank_skin_1_season_8": 100.0,
+        "event_big_box_tank_skin_1_season_9": 100.0,
+        "event_big_box_tank_skin_2_season_1": 100.0,
+        "event_big_box_tank_skin_2_season_10": 100.0,
+        "event_big_box_tank_skin_2_season_2": 100.0,
+        "event_big_box_tank_skin_2_season_3": 100.0,
+        "event_big_box_tank_skin_2_season_4": 100.0,
+        "event_big_box_tank_skin_2_season_5": 100.0,
+        "event_big_box_tank_skin_2_season_6": 100.0,
+        "event_big_box_tank_skin_2_season_7": 100.0,
+        "event_big_box_tank_skin_2_season_8": 100.0,
+        "event_big_box_tank_skin_2_season_9": 100.0,
+        "event_big_box_tank_skin_3_season_10": 100.0,
+        "event_big_box_tank_skin_3_season_5": 100.0,
+        "event_big_box_tank_skin_3_season_6": 100.0,
+        "event_big_box_tank_skin_3_season_7": 100.0,
+        "event_big_box_tank_skin_3_season_8": 100.0,
+        "event_big_box_tank_skin_3_season_9": 100.0,
+        "event_campaign_booster_3": 300.0,
+        "event_medium_box_decorator_frame": 100.0,
+        "event_medium_box_decorator_frame_season_10": 100.0,
+        "event_medium_box_decorator_frame_season_2": 100.0,
+        "event_medium_box_decorator_frame_season_3": 100.0,
+        "event_medium_box_decorator_frame_season_4": 100.0,
+        "event_medium_box_decorator_frame_season_5": 100.0,
+        "event_medium_box_decorator_frame_season_6": 100.0,
+        "event_medium_box_decorator_frame_season_7": 100.0,
+        "event_medium_box_decorator_frame_season_8": 100.0,
+        "event_medium_box_decorator_frame_season_9": 100.0,
+        "event_medium_box_decorator_title": 300.0,
+        "event_medium_box_decorator_title_season_10": 300.0,
+        "event_medium_box_decorator_title_season_2": 300.0,
+        "event_medium_box_decorator_title_season_3": 300.0,
+        "event_medium_box_decorator_title_season_4": 300.0,
+        "event_medium_box_decorator_title_season_5": 300.0,
+        "event_medium_box_decorator_title_season_6": 300.0,
+        "event_medium_box_decorator_title_season_7": 300.0,
+        "event_medium_box_decorator_title_season_8": 300.0,
+        "event_medium_box_decorator_title_season_9": 300.0,
+        "event_medium_box_tank": 30.0,
+        "event_medium_box_tank_season_10": 30.0,
+        "event_medium_box_tank_season_2": 30.0,
+        "event_medium_box_tank_season_3": 30.0,
+        "event_medium_box_tank_season_4": 30.0,
+        "event_medium_box_tank_season_5": 30.0,
+        "event_medium_box_tank_season_6": 30.0,
+        "event_medium_box_tank_season_7": 30.0,
+        "event_medium_box_tank_season_8": 30.0,
+        "event_medium_box_tank_season_9": 30.0,
+        "event_medium_box_tank_skin_1_season_1": 100.0,
+        "event_medium_box_tank_skin_1_season_10": 100.0,
+        "event_medium_box_tank_skin_1_season_2": 100.0,
+        "event_medium_box_tank_skin_1_season_3": 100.0,
+        "event_medium_box_tank_skin_1_season_4": 100.0,
+        "event_medium_box_tank_skin_1_season_5": 100.0,
+        "event_medium_box_tank_skin_1_season_6": 100.0,
+        "event_medium_box_tank_skin_1_season_7": 100.0,
+        "event_medium_box_tank_skin_1_season_8": 100.0,
+        "event_medium_box_tank_skin_1_season_9": 100.0,
+        "event_medium_box_tank_skin_2_season_1": 100.0,
+        "event_medium_box_tank_skin_2_season_10": 100.0,
+        "event_medium_box_tank_skin_2_season_2": 100.0,
+        "event_medium_box_tank_skin_2_season_3": 100.0,
+        "event_medium_box_tank_skin_2_season_4": 100.0,
+        "event_medium_box_tank_skin_2_season_5": 100.0,
+        "event_medium_box_tank_skin_2_season_6": 100.0,
+        "event_medium_box_tank_skin_2_season_7": 100.0,
+        "event_medium_box_tank_skin_2_season_8": 100.0,
+        "event_medium_box_tank_skin_2_season_9": 100.0,
         "event_wp_booster_3": 300.0
       },
       "rewardsInc": {},
@@ -21322,32 +22755,322 @@ return {
       "startLevel": 0
     },
     "ships": {
-      "maxBaseLevel": 28,
-      "maxLevel": 30,
-      "maxStarLevel": 2,
+      "maxBaseLevel": 29,
+      "maxLevel": 29,
+      "maxStarLevel": 0,
       "startLevel": 0
     },
     "tanks": {
-      "maxBaseLevel": 18,
+      "maxBaseLevel": 19,
       "maxLevel": 19,
-      "maxStarLevel": 1,
+      "maxStarLevel": 0,
       "startLevel": 0
     }
   },
+  "prizeTicketsCfg": {
+    "lb_airs_season_13": {
+      "lastReward": [
+        {
+          "count": 2,
+          "gType": "currency",
+          "id": "eventKey",
+          "subId": ""
+        }
+      ],
+      "variants": [
+        [
+          {
+            "count": 0,
+            "gType": "unit",
+            "id": "f2g-1",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 0,
+            "gType": "unit",
+            "id": "bf-109g-14",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 0,
+            "gType": "unit",
+            "id": "la-11",
+            "subId": ""
+          }
+        ]
+      ]
+    },
+    "lb_airs_season_14": {
+      "lastReward": [
+        {
+          "count": 2,
+          "gType": "currency",
+          "id": "eventKey",
+          "subId": ""
+        }
+      ],
+      "variants": [
+        [
+          {
+            "count": 0,
+            "gType": "unit",
+            "id": "f2g-1",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 0,
+            "gType": "unit",
+            "id": "bf-109g-14",
+            "subId": ""
+          }
+        ],
+        [
+          {
+            "count": 0,
+            "gType": "unit",
+            "id": "la-11",
+            "subId": ""
+          }
+        ]
+      ]
+    }
+  },
   "rewardsCfg": {
-    "debug_ship": [
+    "event_air_big_box_decorator_frame_season_13": [
       {
         "count": 0,
-        "gType": "unit",
-        "id": "uk_destroyer_hunt_4series",
+        "gType": "decorator",
+        "id": "pilot_mask",
         "subId": ""
       }
     ],
-    "debug_tank": [
+    "event_air_big_box_decorator_title_season_13": [
       {
         "count": 0,
-        "gType": "unitUpgrade",
-        "id": "us_m4_sherman_reward",
+        "gType": "decorator",
+        "id": "swift",
+        "subId": ""
+      }
+    ],
+    "event_air_box_gold_jackpot": [
+      {
+        "count": 1750,
+        "gType": "currency",
+        "id": "gold",
+        "subId": ""
+      }
+    ],
+    "event_air_medium_box_fixed_season_13": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_air_medium_fixed_season_13",
+        "subId": ""
+      }
+    ],
+    "event_air_medium_box_fixed_season_14": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_air_medium_fixed_season_14",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_1_blueprints_15_season_13": [
+      {
+        "count": 150,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_1_blueprints_15_season_14": [
+      {
+        "count": 150,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_1_blueprints_20_season_13": [
+      {
+        "count": 200,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_1_blueprints_20_season_14": [
+      {
+        "count": 200,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_1_blueprints_8_season_13": [
+      {
+        "count": 80,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_1_blueprints_8_season_14": [
+      {
+        "count": 80,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_1_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_1_season_14": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_2_blueprints_15_season_13": [
+      {
+        "count": 150,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_2_blueprints_15_season_14": [
+      {
+        "count": 150,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_2_blueprints_20_season_13": [
+      {
+        "count": 200,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_2_blueprints_20_season_14": [
+      {
+        "count": 200,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_2_blueprints_8_season_13": [
+      {
+        "count": 80,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_2_blueprints_8_season_14": [
+      {
+        "count": 80,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_2_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_2_season_14": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_3_blueprints_15_season_13": [
+      {
+        "count": 150,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_3_blueprints_15_season_14": [
+      {
+        "count": 150,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_3_blueprints_20_season_13": [
+      {
+        "count": 200,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_3_blueprints_20_season_14": [
+      {
+        "count": 200,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_3_blueprints_8_season_13": [
+      {
+        "count": 80,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_3_blueprints_8_season_14": [
+      {
+        "count": 80,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_3_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_big_box_aircraft_3_season_14": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "la-11",
         "subId": ""
       }
     ],
@@ -21376,6 +23099,14 @@ return {
       }
     ],
     "event_big_box_decorator_avatar_season_13": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_uk_sailor_05",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_avatar_season_14": [
       {
         "count": 0,
         "gType": "decorator",
@@ -21483,7 +23214,15 @@ return {
       {
         "count": 0,
         "gType": "decorator",
-        "id": "hammer_anvil",
+        "id": "tank_plane",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_frame_season_14": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "tank_plane",
         "subId": ""
       }
     ],
@@ -21579,7 +23318,15 @@ return {
       {
         "count": 0,
         "gType": "decorator",
-        "id": "tempered",
+        "id": "collector",
+        "subId": ""
+      }
+    ],
+    "event_big_box_decorator_title_season_14": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "collector",
         "subId": ""
       }
     ],
@@ -21703,6 +23450,54 @@ return {
         "subId": ""
       }
     ],
+    "event_big_box_prem_aircraft_1_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "bf-109g-14_prem",
+        "subId": ""
+      }
+    ],
+    "event_big_box_prem_aircraft_1_season_14": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "bf-109g-14_prem",
+        "subId": ""
+      }
+    ],
+    "event_big_box_prem_aircraft_2_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "f2g-1_prem",
+        "subId": ""
+      }
+    ],
+    "event_big_box_prem_aircraft_2_season_14": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "f2g-1_prem",
+        "subId": ""
+      }
+    ],
+    "event_big_box_prem_aircraft_3_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "la-11_prem",
+        "subId": ""
+      }
+    ],
+    "event_big_box_prem_aircraft_3_season_14": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "la-11_prem",
+        "subId": ""
+      }
+    ],
     "event_big_box_premiumDays_30": [
       {
         "count": 30,
@@ -21760,6 +23555,14 @@ return {
       }
     ],
     "event_big_box_ship_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_battleship_orion",
+        "subId": ""
+      }
+    ],
+    "event_big_box_ship_season_14": [
       {
         "count": 0,
         "gType": "unit",
@@ -21871,6 +23674,14 @@ return {
         "subId": "lightblue_splotch"
       }
     ],
+    "event_big_box_ship_skin_1_season_14": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_battleship_orion",
+        "subId": "lightblue_splotch"
+      }
+    ],
     "event_big_box_ship_skin_1_season_2": [
       {
         "count": 0,
@@ -21975,6 +23786,14 @@ return {
         "subId": "disruptive_gray"
       }
     ],
+    "event_big_box_ship_skin_2_season_14": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_battleship_orion",
+        "subId": "disruptive_gray"
+      }
+    ],
     "event_big_box_ship_skin_2_season_2": [
       {
         "count": 0,
@@ -22071,6 +23890,14 @@ return {
         "subId": "mtb_spots_prem"
       }
     ],
+    "event_big_box_ship_skin_3_season_14": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "uk_battleship_orion",
+        "subId": "mtb_spots_prem"
+      }
+    ],
     "event_big_box_ship_skin_3_season_5": [
       {
         "count": 0,
@@ -22144,6 +23971,14 @@ return {
       }
     ],
     "event_big_box_tank_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_t54e2",
+        "subId": ""
+      }
+    ],
+    "event_big_box_tank_season_14": [
       {
         "count": 0,
         "gType": "unit",
@@ -22251,7 +24086,15 @@ return {
       {
         "count": 0,
         "gType": "skin",
-        "id": "il_merkava_mk_1",
+        "id": "us_t54e2",
+        "subId": "forest"
+      }
+    ],
+    "event_big_box_tank_skin_1_season_14": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_t54e2",
         "subId": "forest"
       }
     ],
@@ -22355,7 +24198,15 @@ return {
       {
         "count": 0,
         "gType": "skin",
-        "id": "il_merkava_mk_1",
+        "id": "us_t54e2",
+        "subId": "desert"
+      }
+    ],
+    "event_big_box_tank_skin_2_season_14": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_t54e2",
         "subId": "desert"
       }
     ],
@@ -22451,8 +24302,16 @@ return {
       {
         "count": 0,
         "gType": "skin",
-        "id": "il_merkava_mk_1",
-        "subId": "desert2"
+        "id": "us_t54e2",
+        "subId": "winter"
+      }
+    ],
+    "event_big_box_tank_skin_3_season_14": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "us_t54e2",
+        "subId": "winter"
       }
     ],
     "event_big_box_tank_skin_3_season_5": [
@@ -22551,6 +24410,262 @@ return {
         "subId": ""
       }
     ],
+    "event_medium_box_aircraft_1_blueprints_10_season_13": [
+      {
+        "count": 100,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_1_blueprints_10_season_14": [
+      {
+        "count": 100,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_1_blueprints_1_season_13": [
+      {
+        "count": 10,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_1_blueprints_1_season_14": [
+      {
+        "count": 10,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_1_blueprints_5_season_13": [
+      {
+        "count": 50,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_1_blueprints_5_season_14": [
+      {
+        "count": 50,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_1_blueprints_fixed_season_13": [
+      {
+        "count": 700,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_1_blueprints_fixed_season_14": [
+      {
+        "count": 700,
+        "gType": "blueprint",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_1_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_1_season_14": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "bf-109g-14",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_2_blueprints_10_season_13": [
+      {
+        "count": 100,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_2_blueprints_10_season_14": [
+      {
+        "count": 100,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_2_blueprints_1_season_13": [
+      {
+        "count": 10,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_2_blueprints_1_season_14": [
+      {
+        "count": 10,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_2_blueprints_5_season_13": [
+      {
+        "count": 50,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_2_blueprints_5_season_14": [
+      {
+        "count": 50,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_2_blueprints_fixed_season_13": [
+      {
+        "count": 700,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_2_blueprints_fixed_season_14": [
+      {
+        "count": 700,
+        "gType": "blueprint",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_2_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_2_season_14": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "f2g-1",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_3_blueprints_10_season_13": [
+      {
+        "count": 100,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_3_blueprints_10_season_14": [
+      {
+        "count": 100,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_3_blueprints_1_season_13": [
+      {
+        "count": 10,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_3_blueprints_1_season_14": [
+      {
+        "count": 10,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_3_blueprints_5_season_13": [
+      {
+        "count": 50,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_3_blueprints_5_season_14": [
+      {
+        "count": 50,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_3_blueprints_fixed_season_13": [
+      {
+        "count": 700,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_3_blueprints_fixed_season_14": [
+      {
+        "count": 700,
+        "gType": "blueprint",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_3_season_13": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_aircraft_3_season_14": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "la-11",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_avatar_2_season_13": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_us_pilot_02",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_avatar_2_season_14": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_us_pilot_02",
+        "subId": ""
+      }
+    ],
     "event_medium_box_decorator_avatar_season_10": [
       {
         "count": 0,
@@ -22576,6 +24691,14 @@ return {
       }
     ],
     "event_medium_box_decorator_avatar_season_13": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_ger_tanker_04",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_avatar_season_14": [
       {
         "count": 0,
         "gType": "decorator",
@@ -22667,7 +24790,15 @@ return {
       {
         "count": 0,
         "gType": "decorator",
-        "id": "steel_bars",
+        "id": "cloud",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_frame_season_14": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cloud",
         "subId": ""
       }
     ],
@@ -22771,7 +24902,15 @@ return {
       {
         "count": 0,
         "gType": "decorator",
-        "id": "unbending",
+        "id": "precursor",
+        "subId": ""
+      }
+    ],
+    "event_medium_box_decorator_title_season_14": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "precursor",
         "subId": ""
       }
     ],
@@ -22935,6 +25074,14 @@ return {
         "subId": ""
       }
     ],
+    "event_medium_box_ship_season_14": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_sub_balao_ss286",
+        "subId": ""
+      }
+    ],
     "event_medium_box_ship_season_2": [
       {
         "count": 0,
@@ -23004,6 +25151,14 @@ return {
         "count": 0,
         "gType": "skin",
         "id": "us_cruiser_des_moines_class",
+        "subId": "darkgray_blotch"
+      }
+    ],
+    "event_medium_box_ship_skin_1_season_10": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_cruiser_mogami",
         "subId": "darkgray_blotch"
       }
     ],
@@ -23077,6 +25232,14 @@ return {
         "gType": "skin",
         "id": "us_cruiser_des_moines_class",
         "subId": "bluewater_geometry"
+      }
+    ],
+    "event_medium_box_ship_skin_2_season_10": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "jp_cruiser_mogami",
+        "subId": "darkbrown_spots_prem"
       }
     ],
     "event_medium_box_ship_skin_2_season_2": [
@@ -23207,6 +25370,14 @@ return {
         "subId": ""
       }
     ],
+    "event_medium_box_tank_season_14": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_g6_spg",
+        "subId": ""
+      }
+    ],
     "event_medium_box_tank_season_2": [
       {
         "count": 0,
@@ -23279,6 +25450,14 @@ return {
         "subId": "forest2"
       }
     ],
+    "event_medium_box_tank_skin_1_season_10": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_object_248",
+        "subId": "winter"
+      }
+    ],
     "event_medium_box_tank_skin_1_season_2": [
       {
         "count": 0,
@@ -23349,6 +25528,14 @@ return {
         "gType": "skin",
         "id": "germ_pzkpfw_VI_ausf_e_tiger",
         "subId": "winter"
+      }
+    ],
+    "event_medium_box_tank_skin_2_season_10": [
+      {
+        "count": 0,
+        "gType": "skin",
+        "id": "ussr_object_248",
+        "subId": "desert"
       }
     ],
     "event_medium_box_tank_skin_2_season_2": [
@@ -23487,6 +25674,14 @@ return {
         "subId": ""
       }
     ],
+    "event_ships_big_box_fixed_season_14": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_big_fixed_season_14",
+        "subId": ""
+      }
+    ],
     "event_ships_big_box_fixed_season_6": [
       {
         "count": 1,
@@ -23548,6 +25743,14 @@ return {
         "count": 1,
         "gType": "lootbox",
         "id": "event_ships_medium_fixed_season_13",
+        "subId": ""
+      }
+    ],
+    "event_ships_medium_box_fixed_season_14": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_ships_medium_fixed_season_14",
         "subId": ""
       }
     ],
@@ -23983,6 +26186,14 @@ return {
         "subId": ""
       }
     ],
+    "event_tanks_big_box_fixed_season_14": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_big_fixed_season_14",
+        "subId": ""
+      }
+    ],
     "event_tanks_big_box_fixed_season_6": [
       {
         "count": 1,
@@ -24044,6 +26255,14 @@ return {
         "count": 1,
         "gType": "lootbox",
         "id": "event_tanks_medium_fixed_season_13",
+        "subId": ""
+      }
+    ],
+    "event_tanks_medium_box_fixed_season_14": [
+      {
+        "count": 1,
+        "gType": "lootbox",
+        "id": "event_tanks_medium_fixed_season_14",
         "subId": ""
       }
     ],
@@ -24244,6 +26463,14 @@ return {
         "count": 40,
         "gType": "item",
         "id": "ship_tool_kit",
+        "subId": ""
+      }
+    ],
+    "everyday_slot_booster_1": [
+      {
+        "count": 2,
+        "gType": "booster",
+        "id": "slotExp",
         "subId": ""
       }
     ],
@@ -24670,11 +26897,11 @@ return {
       "idxOffset": 1,
       "rangeList": [
         {
-          "end": 1724147999,
-          "start": 1722506400
+          "end": 1724407199,
+          "start": 1723629600
         }
       ],
-      "repeat": 2678400,
+      "repeat": 31536000,
       "reward": {
         "firstSeason": 0,
         "rewards": [],
@@ -24686,11 +26913,11 @@ return {
       "idxOffset": 1,
       "rangeList": [
         {
-          "end": 1715162399,
-          "start": 1714039200
+          "end": 1712570399,
+          "start": 1711958400
         }
       ],
-      "repeat": 2678400,
+      "repeat": 31536000,
       "reward": {
         "firstSeason": 0,
         "rewards": [],
@@ -24706,7 +26933,67 @@ return {
           "start": 1702980000
         }
       ],
-      "repeat": 2678400,
+      "repeat": 31536000,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "offer_top_unit_air_first_timeline": {
+      "idxOffset": 12,
+      "rangeList": [
+        {
+          "end": 1725962399,
+          "start": 1725357600
+        },
+        {
+          "end": 1728554399,
+          "start": 1727949600
+        }
+      ],
+      "repeat": 2419200,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "offer_top_unit_air_second_timeline": {
+      "idxOffset": 12,
+      "rangeList": [
+        {
+          "end": 1726567199,
+          "start": 1725962400
+        },
+        {
+          "end": 1729159199,
+          "start": 1728554400
+        }
+      ],
+      "repeat": 2419200,
+      "reward": {
+        "firstSeason": 0,
+        "rewards": [],
+        "unlockCampaignLevel": 0,
+        "unlockUnitMRank": 0
+      }
+    },
+    "offer_top_unit_air_third_timeline": {
+      "idxOffset": 12,
+      "rangeList": [
+        {
+          "end": 1727171999,
+          "start": 1726567200
+        },
+        {
+          "end": 1729763999,
+          "start": 1729159200
+        }
+      ],
+      "repeat": 2419200,
       "reward": {
         "firstSeason": 0,
         "rewards": [],
@@ -24715,11 +27002,39 @@ return {
       }
     },
     "old_content_lootbox_timeline": {
-      "idxOffset": 12,
+      "idxOffset": 6,
       "rangeList": [
         {
-          "end": 1727690399,
-          "start": 1726394400
+          "end": 1712224799,
+          "start": 1711620000
+        },
+        {
+          "end": 1714730399,
+          "start": 1714125600
+        },
+        {
+          "end": 1717581599,
+          "start": 1717149600
+        },
+        {
+          "end": 1720173599,
+          "start": 1719568800
+        },
+        {
+          "end": 1722592799,
+          "start": 1721988000
+        },
+        {
+          "end": 1725011999,
+          "start": 1724407200
+        },
+        {
+          "end": 1727431199,
+          "start": 1726826400
+        },
+        {
+          "end": 1729850399,
+          "start": 1729245600
         }
       ],
       "repeat": 31536000,
@@ -24731,14 +27046,38 @@ return {
       }
     },
     "pre_resease_offer_timeline": {
-      "idxOffset": 3,
+      "idxOffset": 8,
       "rangeList": [
         {
-          "end": 1721383199,
-          "start": 1720951200
+          "end": 1716533999,
+          "start": 1716199200
+        },
+        {
+          "end": 1718953199,
+          "start": 1718618400
+        },
+        {
+          "end": 1721372399,
+          "start": 1721037600
+        },
+        {
+          "end": 1723791599,
+          "start": 1723456800
+        },
+        {
+          "end": 1726210799,
+          "start": 1725876000
+        },
+        {
+          "end": 1728629999,
+          "start": 1728295200
+        },
+        {
+          "end": 1731049199,
+          "start": 1730714400
         }
       ],
-      "repeat": 2678400,
+      "repeat": 2419200,
       "reward": {
         "firstSeason": 0,
         "rewards": [],
@@ -24747,14 +27086,38 @@ return {
       }
     },
     "premiere_offer_timeline": {
-      "idxOffset": 5,
+      "idxOffset": 8,
       "rangeList": [
         {
-          "end": 1725962399,
-          "start": 1725357600
+          "end": 1716199199,
+          "start": 1715853600
+        },
+        {
+          "end": 1718618399,
+          "start": 1718272800
+        },
+        {
+          "end": 1721037599,
+          "start": 1720692000
+        },
+        {
+          "end": 1723456799,
+          "start": 1723111200
+        },
+        {
+          "end": 1725875999,
+          "start": 1725530400
+        },
+        {
+          "end": 1728295199,
+          "start": 1727949600
+        },
+        {
+          "end": 1730714399,
+          "start": 1730368800
         }
       ],
-      "repeat": 2678400,
+      "repeat": 2419200,
       "reward": {
         "firstSeason": 0,
         "rewards": [],
@@ -24763,18 +27126,66 @@ return {
       }
     },
     "season": {
-      "idxOffset": 11,
+      "idxOffset": 1,
       "rangeList": [
         {
-          "end": 1724147999,
-          "start": 1721469600
+          "end": 1700096399,
+          "start": 1697677200
         },
         {
-          "end": 1726826399,
-          "start": 1724148000
+          "end": 1702461599,
+          "start": 1700128800
+        },
+        {
+          "end": 1705571999,
+          "start": 1702548000
+        },
+        {
+          "end": 1707991199,
+          "start": 1705572000
+        },
+        {
+          "end": 1710410399,
+          "start": 1707991200
+        },
+        {
+          "end": 1712829599,
+          "start": 1710410400
+        },
+        {
+          "end": 1715853599,
+          "start": 1712829600
+        },
+        {
+          "end": 1718272799,
+          "start": 1715853600
+        },
+        {
+          "end": 1720691999,
+          "start": 1718272800
+        },
+        {
+          "end": 1723111199,
+          "start": 1720692000
+        },
+        {
+          "end": 1725530399,
+          "start": 1723111200
+        },
+        {
+          "end": 1727949599,
+          "start": 1725530400
+        },
+        {
+          "end": 1730368799,
+          "start": 1727949600
+        },
+        {
+          "end": 1732787999,
+          "start": 1730368800
         }
       ],
-      "repeat": 2678400,
+      "repeat": 3024000,
       "reward": {
         "firstSeason": 9,
         "rewards": [
@@ -24790,14 +27201,42 @@ return {
       }
     },
     "seasonal_offer_timeline": {
-      "idxOffset": 12,
+      "idxOffset": 7,
       "rangeList": [
         {
-          "end": 1727776799,
-          "start": 1727172000
+          "end": 1712818799,
+          "start": 1712224800
+        },
+        {
+          "end": 1715842799,
+          "start": 1715162400
+        },
+        {
+          "end": 1718261999,
+          "start": 1717581600
+        },
+        {
+          "end": 1720681199,
+          "start": 1720087200
+        },
+        {
+          "end": 1723100399,
+          "start": 1722592800
+        },
+        {
+          "end": 1725519599,
+          "start": 1725012000
+        },
+        {
+          "end": 1727938799,
+          "start": 1727431200
+        },
+        {
+          "end": 1730357999,
+          "start": 1729850400
         }
       ],
-      "repeat": 2678400,
+      "repeat": 2419200,
       "reward": {
         "firstSeason": 0,
         "rewards": [],
@@ -24966,6 +27405,10 @@ return {
         "currencyId": "gold",
         "price": 500
       },
+      "us_t54e2": {
+        "currencyId": "gold",
+        "price": 500
+      },
       "us_t92": {
         "currencyId": "gold",
         "price": 500
@@ -25035,6 +27478,10 @@ return {
         "price": 500
       },
       "jp_type_74_mod_g_kai": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_t54e2": {
         "currencyId": "gold",
         "price": 500
       },
@@ -25253,6 +27700,10 @@ return {
         "price": 500
       },
       "us_t29": {
+        "currencyId": "gold",
+        "price": 500
+      },
+      "us_t54e2": {
         "currencyId": "gold",
         "price": 500
       },
@@ -26419,2144 +28870,818 @@ return {
   "unitLevels": {
     "air_0": [
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       },
       {
-        "costGold": 2,
-        "exp": 32
+        "costGold": 1,
+        "exp": 16
       }
     ],
     "air_1": [
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
+        "costGold": 3,
+        "exp": 33
       },
       {
-        "costGold": 6,
-        "exp": 76
-      }
-    ],
-    "air_10": [
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      },
-      {
-        "costGold": 35,
-        "exp": 1214
-      }
-    ],
-    "air_11": [
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      },
-      {
-        "costGold": 36,
-        "exp": 1391
-      }
-    ],
-    "air_12": [
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      },
-      {
-        "costGold": 36,
-        "exp": 1586
-      }
-    ],
-    "air_13": [
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      },
-      {
-        "costGold": 37,
-        "exp": 1803
-      }
-    ],
-    "air_14": [
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      },
-      {
-        "costGold": 37,
-        "exp": 2045
-      }
-    ],
-    "air_15": [
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      },
-      {
-        "costGold": 38,
-        "exp": 2314
-      }
-    ],
-    "air_16": [
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      },
-      {
-        "costGold": 38,
-        "exp": 2615
-      }
-    ],
-    "air_17": [
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      },
-      {
-        "costGold": 38,
-        "exp": 2952
-      }
-    ],
-    "air_18": [
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      },
-      {
-        "costGold": 38,
-        "exp": 3329
-      }
-    ],
-    "air_19": [
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
-      },
-      {
-        "costGold": 39,
-        "exp": 3751
+        "costGold": 3,
+        "exp": 33
       }
     ],
     "air_2": [
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
+        "costGold": 4,
+        "exp": 45
       },
       {
-        "costGold": 7,
-        "exp": 111
-      }
-    ],
-    "air_20": [
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
-      },
-      {
-        "costGold": 39,
-        "exp": 4224
+        "costGold": 4,
+        "exp": 45
       }
     ],
     "air_3": [
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       },
       {
-        "costGold": 16,
-        "exp": 262
+        "costGold": 6,
+        "exp": 72
       }
     ],
     "air_4": [
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       },
       {
-        "costGold": 19,
-        "exp": 335
+        "costGold": 9,
+        "exp": 104
       }
     ],
     "air_5": [
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       },
       {
-        "costGold": 25,
-        "exp": 493
+        "costGold": 18,
+        "exp": 206
       }
     ],
     "air_6": [
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       },
       {
-        "costGold": 28,
-        "exp": 631
+        "costGold": 45,
+        "exp": 504
       }
     ],
     "air_7": [
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
+        "costGold": 54,
+        "exp": 605
       },
       {
-        "costGold": 31,
-        "exp": 766
-      }
-    ],
-    "air_8": [
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      },
-      {
-        "costGold": 32,
-        "exp": 905
-      }
-    ],
-    "air_9": [
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
-      },
-      {
-        "costGold": 34,
-        "exp": 1053
+        "costGold": 54,
+        "exp": 605
       }
     ],
     "air_slots": [
@@ -31407,108 +32532,6 @@ return {
       {
         "costGold": 3,
         "exp": 59
-      }
-    ],
-    "ships_30": [
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
-      },
-      {
-        "costGold": 77,
-        "exp": 25865
       }
     ],
     "ships_4": [
@@ -39157,95 +40180,95 @@ return {
     }
   },
   "unitResearchExp": {
-    "a-20g": 1070,
-    "ar_2": 560,
-    "b-17e": 9080,
-    "b_25j_20": 2530,
-    "b_26b_c": 4090,
-    "b_34": 1070,
+    "a-20g": 850,
+    "ar_2": 500,
+    "b-17e": 5150,
+    "b_25j_20": 1800,
+    "b_26b_c": 2600,
+    "b_34": 850,
     "bf-109b_2": 200,
-    "bf-109c_1": 560,
-    "bf-109e-1": 1070,
-    "bf-109f-2": 2530,
-    "bf-109f-4": 4090,
-    "bf-109f-4_trop": 9080,
-    "bf-109g-2": 9080,
-    "bf-110f-2": 2530,
-    "db_3b": 1070,
+    "bf-109c_1": 500,
+    "bf-109e-1": 850,
+    "bf-109f-2": 1800,
+    "bf-109f-4": 2600,
+    "bf-109f-4_trop": 5150,
+    "bf-109g-2": 5150,
+    "bf-110f-2": 1800,
+    "db_3b": 850,
     "do_17e_1": 200,
-    "do_17z_2": 560,
-    "do_335a_1": 9080,
-    "douglas_ad_2": 24900,
-    "er-2_m105_mv3": 4090,
-    "er-2_m105r_lu2b": 9080,
-    "f2a-1": 560,
+    "do_17z_2": 500,
+    "do_335a_1": 5150,
+    "douglas_ad_2": 12600,
+    "er-2_m105_mv3": 2600,
+    "er-2_m105r_lu2b": 5150,
+    "f2a-1": 500,
     "f3f-2": 200,
-    "f4f-3": 1070,
-    "f4u-1c": 9080,
-    "f4u-1d": 2530,
-    "f4u-4b": 24900,
-    "f4u_4": 4090,
-    "f8f1": 9080,
-    "fw-190a-4": 4090,
-    "fw-190a-5_cannons": 24900,
-    "fw-190a-5_u2": 4090,
-    "fw-190d-9": 9080,
-    "fw-190f-8": 24900,
-    "fw_190a_1": 2530,
-    "fw_200c_1": 1070,
-    "he-111h-16_winter": 2530,
+    "f4f-3": 850,
+    "f4u-1c": 5150,
+    "f4u-1d": 1800,
+    "f4u-4b": 12600,
+    "f4u_4": 2600,
+    "f8f1": 5150,
+    "fw-190a-4": 2600,
+    "fw-190a-5_cannons": 12600,
+    "fw-190a-5_u2": 2600,
+    "fw-190d-9": 5150,
+    "fw-190f-8": 12600,
+    "fw_190a_1": 1800,
+    "fw_200c_1": 850,
+    "he-111h-16_winter": 1800,
     "he51c1": 200,
-    "he_112b_0": 1070,
+    "he_112b_0": 850,
     "hs-123a-1": 200,
-    "i-153_m62": 560,
+    "i-153_m62": 500,
     "i-15_1934": 200,
-    "i-16_type10": 1070,
-    "i-16_type18": 560,
+    "i-16_type10": 850,
+    "i-16_type18": 500,
     "i-16_type5": 200,
-    "i_185_m82": 4090,
-    "il-10": 24900,
-    "il-2i": 2530,
-    "il-2m": 4090,
-    "il_2_1941": 1070,
-    "il_4": 2530,
-    "ju-188a-2": 9080,
-    "ju-87b-2": 560,
-    "ju-87d-3": 1070,
-    "ju_87d_5": 2530,
-    "la-5_type37_early": 2530,
-    "la-5fn": 4090,
-    "la-7": 9080,
-    "la-7b-20": 24900,
-    "lagg-3-11": 1070,
-    "lagg-3-8": 560,
-    "me-410a-1_u2": 4090,
-    "me_264": 4090,
+    "i_185_m82": 2600,
+    "il-10": 12600,
+    "il-2i": 1800,
+    "il-2m": 2600,
+    "il_2_1941": 850,
+    "il_4": 1800,
+    "ju-188a-2": 5150,
+    "ju-87b-2": 500,
+    "ju-87d-3": 850,
+    "ju_87d_5": 1800,
+    "la-5_type37_early": 1800,
+    "la-5fn": 2600,
+    "la-7": 5150,
+    "la-7b-20": 12600,
+    "lagg-3-11": 850,
+    "lagg-3-8": 500,
+    "me-410a-1_u2": 2600,
+    "me_264": 2600,
     "p-36a": 200,
-    "p-36c": 560,
-    "p-40e": 560,
-    "p-40f_10": 1070,
-    "p-43a-1": 1070,
-    "p-47d_22_re": 4090,
-    "p-47n-15": 9080,
-    "p-51c-10-nt": 2530,
-    "p-51d-20-na": 4090,
-    "p-51d-5": 9080,
-    "p-63a-10": 4090,
-    "pby-5a": 560,
-    "pe-8_m82": 9080,
-    "sb2c_4": 2530,
+    "p-36c": 500,
+    "p-40e": 500,
+    "p-40f_10": 850,
+    "p-43a-1": 850,
+    "p-47d_22_re": 2600,
+    "p-47n-15": 5150,
+    "p-51c-10-nt": 1800,
+    "p-51d-20-na": 2600,
+    "p-51d-5": 5150,
+    "p-63a-10": 2600,
+    "pby-5a": 500,
+    "pe-8_m82": 5150,
+    "sb2c_4": 1800,
     "sb2u-2": 200,
     "sb_2m_100": 200,
-    "sbd-3": 560,
+    "sbd-3": 500,
     "su-2_mv5": 200,
-    "su_6_single": 9080,
+    "su_6_single": 5150,
     "tbd-1_1938": 200,
-    "yak-1_early": 1070,
-    "yak-3": 9080,
-    "yak-7b": 2530,
-    "yak-9t": 4090,
-    "yak-9u": 9080,
-    "yak_2_kabb": 560
+    "yak-1_early": 850,
+    "yak-3": 5150,
+    "yak-7b": 1800,
+    "yak-9t": 2600,
+    "yak-9u": 5150,
+    "yak_2_kabb": 500
   },
   "unitResearchLevels": {
     "air": [
@@ -39255,27 +40278,27 @@ return {
       },
       {
         "costGold": 78,
-        "nextLevelExp": 560
+        "nextLevelExp": 500
       },
       {
         "costGold": 132,
-        "nextLevelExp": 1070
+        "nextLevelExp": 850
       },
       {
         "costGold": 280,
-        "nextLevelExp": 2530
+        "nextLevelExp": 1800
       },
       {
         "costGold": 405,
-        "nextLevelExp": 4090
+        "nextLevelExp": 2600
       },
       {
         "costGold": 803,
-        "nextLevelExp": 9080
+        "nextLevelExp": 5150
       },
       {
         "costGold": 1965,
-        "nextLevelExp": 24900
+        "nextLevelExp": 12600
       }
     ]
   },
@@ -39287,6 +40310,20 @@ return {
         "reqUnits": ["sbd-3"],
         "x": 4,
         "y": 6
+      },
+      "am_1_mauler": {
+        "country": "country_usa",
+        "name": "am_1_mauler",
+        "reqUnits": [],
+        "x": 8,
+        "y": 5
+      },
+      "am_1_mauler_prem": {
+        "country": "country_usa",
+        "name": "am_1_mauler_prem",
+        "reqUnits": [],
+        "x": 9,
+        "y": 1
       },
       "ar_2": {
         "country": "country_ussr",
@@ -39350,6 +40387,13 @@ return {
         "reqUnits": ["bf-109b_2"],
         "x": 3,
         "y": 3
+      },
+      "bf-109c_1_promo": {
+        "country": "country_germany",
+        "name": "bf-109c_1_promo",
+        "reqUnits": [],
+        "x": 3,
+        "y": 2
       },
       "bf-109e-1": {
         "country": "country_germany",
@@ -39771,12 +40815,33 @@ return {
         "x": 6,
         "y": 3
       },
+      "i_225": {
+        "country": "country_ussr",
+        "name": "i_225",
+        "reqUnits": [],
+        "x": 8,
+        "y": 4
+      },
+      "i_225_prem": {
+        "country": "country_ussr",
+        "name": "i_225_prem",
+        "reqUnits": [],
+        "x": 9,
+        "y": 1
+      },
       "il-10": {
         "country": "country_ussr",
         "name": "il-10",
         "reqUnits": ["su_6_single"],
         "x": 8,
         "y": 6
+      },
+      "il-10_1946": {
+        "country": "country_ussr",
+        "name": "il-10_1946",
+        "reqUnits": [],
+        "x": 7,
+        "y": 7
       },
       "il-10_1946_prem": {
         "country": "country_ussr",
@@ -40023,6 +41088,13 @@ return {
         "x": 7,
         "y": 6
       },
+      "p-51_mk1a_usaaf": {
+        "country": "country_usa",
+        "name": "p-51_mk1a_usaaf",
+        "reqUnits": [],
+        "x": 6,
+        "y": 7
+      },
       "p-51c-10-nt": {
         "country": "country_usa",
         "name": "p-51c-10-nt",
@@ -40120,6 +41192,13 @@ return {
         "reqUnits": ["il-2m"],
         "x": 7,
         "y": 6
+      },
+      "ta_154a_1": {
+        "country": "country_germany",
+        "name": "ta_154a_1",
+        "reqUnits": [],
+        "x": 6,
+        "y": 5
       },
       "tandem_mai": {
         "country": "country_ussr",
@@ -40276,8 +41355,7 @@ return {
       1034000,
       1046100,
       1056450,
-      1056450,
-      1056450
+      1065950
     ],
     "tanks": [
       0,
@@ -40298,8 +41376,8 @@ return {
       1690266,
       1728133,
       1754025,
-      1790650,
-      1804150
+      1797400,
+      1818600
     ]
   },
   "userstatRewards": {
@@ -40399,6 +41477,14 @@ return {
         "subId": ""
       }
     ],
+    "battlepass_reward_avatar_1_season_14": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_us_tanker_03",
+        "subId": ""
+      }
+    ],
     "battlepass_reward_avatar_1_season_3": [
       {
         "count": 0,
@@ -40483,7 +41569,15 @@ return {
       {
         "count": 0,
         "gType": "decorator",
-        "id": "punch",
+        "id": "spades",
+        "subId": ""
+      }
+    ],
+    "battlepass_reward_decorator_1_season_14": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "spades",
         "subId": ""
       }
     ],
@@ -40821,6 +41915,14 @@ return {
         "subId": "season:12"
       }
     ],
+    "cros_promo_reward_air": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "bf-109c_1_promo",
+        "subId": ""
+      }
+    ],
     "cros_promo_reward_avatar": [
       {
         "count": 0,
@@ -40850,6 +41952,14 @@ return {
         "count": 0,
         "gType": "unit",
         "id": "jp_destroyer_hatsuzuki",
+        "subId": ""
+      }
+    ],
+    "default_air_rating_reward": [
+      {
+        "count": 100,
+        "gType": "currency",
+        "id": "warbond",
         "subId": ""
       }
     ],
@@ -41245,6 +42355,14 @@ return {
         "subId": ""
       }
     ],
+    "fifty_percent_air_rating_reward": [
+      {
+        "count": 150,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
+      }
+    ],
     "fifty_percent_ships_rating_reward": [
       {
         "count": 150,
@@ -41298,6 +42416,14 @@ return {
         "count": 0,
         "gType": "decorator",
         "id": "wreath",
+        "subId": ""
+      }
+    ],
+    "frame_yin_yang": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "yin_yang",
         "subId": ""
       }
     ],
@@ -41378,6 +42504,14 @@ return {
         "count": 5,
         "gType": "booster",
         "id": "playerExp",
+        "subId": ""
+      }
+    ],
+    "mini_event_quest_reward_slot_booster": [
+      {
+        "count": 5,
+        "gType": "booster",
+        "id": "slotExp",
         "subId": ""
       }
     ],
@@ -41833,6 +42967,14 @@ return {
         "subId": ""
       }
     ],
+    "ten_percent_air_rating_reward_v2": [
+      {
+        "count": 2,
+        "gType": "currency",
+        "id": "eventKey",
+        "subId": ""
+      }
+    ],
     "ten_percent_ships_rating_reward": [
       {
         "count": 1,
@@ -41873,24 +43015,44 @@ return {
         "subId": ""
       }
     ],
-    "ten_place_air_rating_reward_season_12": [
+    "ten_place_air_rating_reward_season_13": [
       {
         "count": 0,
-        "gType": "unit",
-        "id": "uk_battleship_marlborough",
+        "gType": "prizeTicket",
+        "id": "lb_airs_season_13",
         "subId": ""
       },
       {
         "count": 0,
         "gType": "decorator",
-        "id": "chain",
+        "id": "half_star",
         "subId": ""
       },
       {
         "count": 0,
         "gType": "medal",
         "id": "lb_air_top_10",
-        "subId": "season:12"
+        "subId": "season:13"
+      }
+    ],
+    "ten_place_air_rating_reward_season_14": [
+      {
+        "count": 0,
+        "gType": "prizeTicket",
+        "id": "lb_airs_season_14",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "half_star",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_air_top_10",
+        "subId": "season:14"
       }
     ],
     "ten_place_ships_rating_reward": [
@@ -41989,7 +43151,7 @@ return {
       {
         "count": 0,
         "gType": "decorator",
-        "id": "chain",
+        "id": "half_star",
         "subId": ""
       },
       {
@@ -41997,6 +43159,26 @@ return {
         "gType": "medal",
         "id": "lb_ships_top_10",
         "subId": "season:13"
+      }
+    ],
+    "ten_place_ships_rating_reward_season_14": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "uk_battleship_orion",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "half_star",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_ships_top_10",
+        "subId": "season:14"
       }
     ],
     "ten_place_ships_rating_reward_season_2": [
@@ -42255,7 +43437,7 @@ return {
       {
         "count": 0,
         "gType": "decorator",
-        "id": "chain",
+        "id": "half_star",
         "subId": ""
       },
       {
@@ -42263,6 +43445,26 @@ return {
         "gType": "medal",
         "id": "lb_tanks_top_10",
         "subId": "season:13"
+      }
+    ],
+    "ten_place_tanks_rating_reward_season_14": [
+      {
+        "count": 0,
+        "gType": "unit",
+        "id": "us_t54e2",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "half_star",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_tanks_top_10",
+        "subId": "season:14"
       }
     ],
     "ten_place_tanks_rating_reward_season_2": [
@@ -42533,7 +43735,7 @@ return {
       {
         "count": 0,
         "gType": "decorator",
-        "id": "chain",
+        "id": "half_star",
         "subId": ""
       },
       {
@@ -42545,7 +43747,7 @@ return {
       {
         "count": 0,
         "gType": "decorator",
-        "id": "solid",
+        "id": "ace",
         "subId": ""
       },
       {
@@ -42553,6 +43755,32 @@ return {
         "gType": "medal",
         "id": "lb_wp_top_10",
         "subId": "season:13"
+      }
+    ],
+    "ten_place_wp_rating_reward_season_14": [
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "half_star",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "cardicon_wtm_us_sailor_05",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "decorator",
+        "id": "ace",
+        "subId": ""
+      },
+      {
+        "count": 0,
+        "gType": "medal",
+        "id": "lb_wp_top_10",
+        "subId": "season:14"
       }
     ],
     "ten_place_wp_rating_reward_season_2": [
@@ -42761,6 +43989,14 @@ return {
         "gType": "medal",
         "id": "lb_wp_top_10",
         "subId": "season:9"
+      }
+    ],
+    "thirty_percent_air_rating_reward": [
+      {
+        "count": 200,
+        "gType": "currency",
+        "id": "warbond",
+        "subId": ""
       }
     ],
     "thirty_percent_ships_rating_reward": [

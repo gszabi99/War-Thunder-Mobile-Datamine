@@ -63,7 +63,7 @@ updateInterval.subscribe(function(interval) {
   setInterval(interval, updateCurBoxes)
 })
 
-local function mkArrows(boxes, obstaclesVar) {
+function mkArrows(boxes, obstaclesVar) {
   boxes = boxes.filter(@(b) b.r - b.l > 0 && b.b - b.t > 0)
   if (boxes.len() == 0)
     return null

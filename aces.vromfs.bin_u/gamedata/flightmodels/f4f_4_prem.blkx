@@ -1,6 +1,6 @@
 {
   "model": "f4f_4",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "gForceTolerationMult": 1.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",

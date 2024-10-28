@@ -21,7 +21,7 @@
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
   "useSimpleDeathConditionsAndEffects": false,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
   "autoSightDistanceCorrection": true,
   "subclass": "heavyVehicle",
@@ -61,6 +61,18 @@
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_medium",
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.05,
+      0.0,
+      0.95
+    ],
+    "armorThicknessSide": [
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -2755,18 +2767,6 @@
     "n": [
       "details_01",
       "details_02"
-    ]
-  },
-  "dm_for_shop": {
-    "armorThicknessFront": [
-      0.05,
-      0.0,
-      0.95
-    ],
-    "armorThicknessSide": [
-      0.0,
-      0.0,
-      1.0
     ]
   },
   "commonWeapons": {

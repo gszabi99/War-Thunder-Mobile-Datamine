@@ -1,7 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { get_base_game_version_str } = require_optional("app")
-let { check_version } = require("%sqstd/version_compare.nut")
 let {
   OPT_AIRCRAFT_FIXED_AIM_CURSOR,
   OPT_CAMERA_SENSE_IN_ZOOM_PLANE,
@@ -11,6 +9,8 @@ let {
   OPT_FREE_CAMERA_PLANE,
   OPT_CAMERA_VISC_PLANE,
   OPT_CAMERA_VISC_IN_ZOOM_PLANE,
+  OPT_CAMERA_VISC_PLANE_STICK,
+  OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK,
   OPT_AIRCRAFT_INVERTED_Y,
   OPT_AIRCRAFT_MOVEMENT_CONTROL,
   OPT_AIRCRAFT_CONTINUOUS_TURN_MODE,
@@ -26,6 +26,7 @@ let {
   OPT_AIRCRAFT_ADDITIONAL_FLY_CONTROLS,
   OPT_AIRCRAFT_TARGET_FOLLOWER,
   mkOptionValue,
+  optionValues,
   getOptValue } = require("%rGui/options/guiOptions.nut")
 let {
   set_aircraft_continuous_turn_mode,
@@ -47,8 +48,6 @@ let { crosshairOptions } = require("crosshairOptions.nut")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { setVirtualAxesAim, setVirtualAxesDirectControl } = require("%globalScripts/controls/shortcutActions.nut")
 let { eventbus_subscribe } = require("eventbus")
-
-let hasGyroSupport = check_version(">=1.10.0.61", get_base_game_version_str())
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "air", v)
@@ -256,12 +255,13 @@ let controlByGyroModeElevatorSensitivitySlider = {
   }
 }
 
-function cameraViscositySlider(inZoom, locId, optId, cur = 1.0, minVal = 0.03, step = 0.03, maxVal = 3.0) {
+function cameraViscositySlider(visibleWatch, inZoom, locId, optId, cur = 1.0, minVal = 0.03, step = 0.03, maxVal = 3.0) {
   let value = mkOptionValue(optId, cur)
-  if (inZoom)
-    set_camera_viscosity_in_zoom(max(maxVal - value.value, minVal))
-  else
-    set_camera_viscosity(max(maxVal - value.value, minVal))
+  if (visibleWatch.get())
+    if (inZoom)
+      set_camera_viscosity_in_zoom(max(maxVal - value.value, minVal))
+    else
+      set_camera_viscosity(max(maxVal - value.value, minVal))
   value.subscribe(@(v) inZoom ? set_camera_viscosity_in_zoom(max(maxVal - v, minVal)) : set_camera_viscosity(max(maxVal - v, minVal)))
   return {
     locId
@@ -274,8 +274,30 @@ function cameraViscositySlider(inZoom, locId, optId, cur = 1.0, minVal = 0.03, s
       max = maxVal
       unit = step
     }
+    visible = visibleWatch
   }
 }
+
+let CAM_VISC_LIMITS = {
+  [OPT_CAMERA_VISC_PLANE] = [0.03, 3.0],
+  [OPT_CAMERA_VISC_PLANE_STICK] = [0.03, 3.0],
+  [OPT_CAMERA_VISC_IN_ZOOM_PLANE] = [0.003, 10.0],
+  [OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK] = [0.003, 10.0]
+}
+
+currentAircraftCtrlType.subscribe( function(v) {
+  let optId = (v == "mouse_aim") ? OPT_CAMERA_VISC_PLANE : OPT_CAMERA_VISC_PLANE_STICK
+  let limits = CAM_VISC_LIMITS[optId]
+  let optValue = optionValues?[optId]
+  if (optValue != null)
+    set_camera_viscosity(max(limits[1] - optValue.get(), limits[0]))
+
+  let optZoomId = (v == "mouse_aim") ? OPT_CAMERA_VISC_IN_ZOOM_PLANE : OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK
+  let limitsZoom = CAM_VISC_LIMITS[optZoomId]
+  let optValueZoom = optionValues?[optZoomId]
+  if (optValueZoom != null)
+    set_camera_viscosity_in_zoom(max(limitsZoom[1] - optValueZoom.get(), limitsZoom[0]))
+})
 
 let tapSelectionList = [false, true]
 let currentTapSelection = mkOptionValue(OPT_AIRCRAFT_TAP_SELECTION, false, @(v) validate(v, tapSelectionList))
@@ -307,6 +329,9 @@ let currentTargetFollowerType = {
   description = loc("options/desc/target_follower")
 }
 
+let isMouseAim = Computed( @() currentAircraftCtrlType.get() == "mouse_aim")
+let isStick = Computed( @() currentAircraftCtrlType.get() != "mouse_aim")
+
 return {
   airControlsOptions = [
     aircraftControlType
@@ -314,24 +339,40 @@ return {
     currentinvertedYOptionType
     currentAdditionalFlyControlsType
     cameraSenseSlider(CAM_TYPE_NORMAL_PLANE, "options/cursor_sensitivity", OPT_CAMERA_SENSE_PLANE, getOptValue(OPT_CAMERA_SENSE)?? 1.0, 0.33, 3.0, 0.026)
-    cameraViscositySlider(false, "options/camera_sensitivity", OPT_CAMERA_VISC_PLANE)
+    cameraViscositySlider(isMouseAim, false, "options/camera_sensitivity", OPT_CAMERA_VISC_PLANE,
+      getOptValue(OPT_CAMERA_VISC_PLANE) ?? 1.0,
+      CAM_VISC_LIMITS[OPT_CAMERA_VISC_PLANE][0],
+      0.03,  //step
+      CAM_VISC_LIMITS[OPT_CAMERA_VISC_PLANE][1])
+    cameraViscositySlider(isStick, false, "options/camera_sensitivity_stick", OPT_CAMERA_VISC_PLANE_STICK,
+      getOptValue(OPT_CAMERA_VISC_PLANE_STICK) ?? CAM_VISC_LIMITS[OPT_CAMERA_VISC_PLANE_STICK][1],
+      CAM_VISC_LIMITS[OPT_CAMERA_VISC_PLANE_STICK][0],
+      0.03,  //step
+      CAM_VISC_LIMITS[OPT_CAMERA_VISC_PLANE_STICK][1])
     cameraSenseSlider(CAM_TYPE_BINOCULAR_PLANE, "options/cursor_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_PLANE, getOptValue(OPT_CAMERA_SENSE_IN_ZOOM)?? 1.0, 0.33, 3.0, 0.026)
-    cameraViscositySlider(true, "options/camera_sensitivity_in_zoom", OPT_CAMERA_VISC_IN_ZOOM_PLANE,1.0, 0.003, 0.1, 10.0)
+    cameraViscositySlider(isMouseAim, true, "options/camera_sensitivity_in_zoom", OPT_CAMERA_VISC_IN_ZOOM_PLANE,
+      getOptValue(OPT_CAMERA_VISC_IN_ZOOM_PLANE) ?? 1.0,
+      CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE][0],
+      0.1,  //step
+      CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE][1])
+    cameraViscositySlider(isStick, false, "options/camera_sensitivity_in_zoom_stick", OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK,
+      getOptValue(OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK) ?? CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK][1],
+      CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK][0],
+      0.1,  //step
+      CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK][1])
     cameraSenseSlider(CAM_TYPE_FREE_PLANE, "options/free_camera_sensitivity_plane", OPT_FREE_CAMERA_PLANE, 0.5, 0.125, 2.0, 0.0187)
     currentContinuousTurnModeType
-    hasGyroSupport ? controlThrottleStick : null
+    controlThrottleStick
     controlByGyroModeAileronsAssist
-    hasGyroSupport ? controlByGyroAimMode : null
-    hasGyroSupport ? controlByGyroDirectControl : null
+    controlByGyroAimMode
+    controlByGyroDirectControl
     controlByGyroModeAileronsDeadZoneSlider
     controlByGyroModeAileronsSensitivitySlider
-    hasGyroSupport ? controlByGyroModeElevatorDeadZoneSlider : null
-    hasGyroSupport ? controlByGyroModeElevatorSensitivitySlider : null
+    controlByGyroModeElevatorDeadZoneSlider
+    controlByGyroModeElevatorSensitivitySlider
     currentTapSelectionType
     currentTargetFollowerType
-  ]
-    .extend(crosshairOptions)
-    .filter(@(v) v != null)
+  ].extend(crosshairOptions)
   currentAircraftCtrlType,
   currentThrottleStick,
   currentControlByGyroModeAileronsAssist

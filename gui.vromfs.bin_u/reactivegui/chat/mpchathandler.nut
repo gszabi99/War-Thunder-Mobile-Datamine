@@ -61,7 +61,7 @@ let chatHandler = {
   onChatClear = clearLog
   onModeChanged = @(mode, _privPlayer) curChatMode.set(mode)
   onInputChanged = @(str) curChatInput.set(str)
-  onModeSwitched = @() chat_set_mode(chatModes[(chatModes.indexof(curChatMode.get()) ?? 0) % chatModes.len()])
+  onModeSwitched = @() chat_set_mode(chatModes[(chatModes.indexof(curChatMode.get()) ?? 0) % chatModes.len()], "")
 }
 
 set_chat_handler(chatHandler)

@@ -11,7 +11,7 @@ function orderLootboxesBySlot(lList) {
   let lootboxesBySlot = {}
   foreach (lootbox in lList) {
     let slot = lootbox?.meta.event_slot ?? ""
-    if (slot == "" || slot == "true") { //event == "true" is compatibility with pServer config version at 2023.11.10
+    if (slot == "") {
       res.append(lootbox)
       continue
     }

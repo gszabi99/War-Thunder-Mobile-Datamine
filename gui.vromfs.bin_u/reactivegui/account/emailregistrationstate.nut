@@ -9,7 +9,7 @@ let logGuest = log_with_prefix("[GUEST] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { authTags, isLoginByGajin } = require("%appGlobals/loginState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { windowActive } = require("%globalScripts/windowState.nut")
+let { windowActive } = require("%appGlobals/windowState.nut")
 
 let isGuestLoginBase = Computed(@() authTags.value.contains("guestlogin")
   || authTags.value.contains("firebaselogin"))

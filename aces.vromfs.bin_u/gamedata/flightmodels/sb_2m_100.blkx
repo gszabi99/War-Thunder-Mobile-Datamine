@@ -1,7 +1,7 @@
 {
   "model": "sb_2m_100",
   "fmFile": "fm/sb_2m_100.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,

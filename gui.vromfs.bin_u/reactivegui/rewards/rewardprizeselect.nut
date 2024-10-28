@@ -2,7 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
 
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { resetTimeout } = require("dagor.workcycle")
+let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
+let { get_time_msec } = require("dagor.time")
 
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -32,18 +33,24 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 let PRIZE_TICKETS_SELECT_WND_UID = "prizeTicketsSelectWndUid"
+let TIME_TO_DELAYED_RETRY = 30.0
+let MAX_COUNT_TO_TRY = 3
 
 let selBorderColor = 0xFFFFFFFF
 let hoverBorderColor = 0x40404040
 let borderHeight = hdpx(8)
 
+let notAppliedTickets = mkWatched(persist, "notAppliedTickets", {})
 let isModalAttached = Watched(false)
 let selIndexes = Watched([])
 let prizeTicketsProfile = Computed(@() servProfile.get()?.prizeTickets ?? {})
 let canSelectTicket = Computed(@() !isInBattle.get() && !lootboxInProgress.get() && !rewardInProgress.get())
 
 let prizeTicketId = Computed(@() !canSelectTicket.get() ? null
-  : prizeTicketsProfile.get().findindex(@(v, id) v > 0 && id in serverConfigs.get()?.prizeTicketsCfg))
+  : prizeTicketsProfile.get()
+    .findindex(@(v, id) v > 0
+      && id in serverConfigs.get()?.prizeTicketsCfg
+      && id not in notAppliedTickets.get()))
 
 let ticketToShow = Computed(@() prizeTicketId.get() != null
   ? serverConfigs.get().prizeTicketsCfg[prizeTicketId.get()]
@@ -91,8 +98,7 @@ let currentTicketCounts = Computed(function(){
 let hasLastReward = Computed(@() currentTicketCounts.get().lastReward > 0)
 let lastReward = Computed(@() hasLastReward.get() ? ticketToShow.get()?.lastReward : null)
 
-currentTicketCounts.subscribe(@(v) v.lastReward == 0 && v.availableVariants == 0
-  ? removeModalWindow(PRIZE_TICKETS_SELECT_WND_UID) : null)
+let closeModalWnd = @() removeModalWindow(PRIZE_TICKETS_SELECT_WND_UID)
 
 let mkUnitPlateTooltip = @(unit) unitInfoPanel({}, mkPlatoonOrUnitTitle, unit)
 let mkPlateTooltipByType = {
@@ -111,9 +117,71 @@ function selectSlot(selectedIdx) {
   })
 }
 
-registerHandler("onPrizeTicketsApplied", function(_) {
+function retryRequestWithDelay() {
+  if (notAppliedTickets.get().len() == 0 || !isLoggedIn.get())
+    return
+
+  let currentTime = get_time_msec()
+
+  foreach(ticketId, ticketData in notAppliedTickets.get()) {
+    let { indexes, lastTime, countTries } = ticketData
+
+    if (countTries >= MAX_COUNT_TO_TRY)
+      continue
+    else if (currentTime - lastTime > TIME_TO_DELAYED_RETRY * countTries * 1000)
+      apply_prize_tickets(ticketId, indexes, {
+        id = "onPrizeTicketsAppliedByRetry",
+        ticketId,
+      })
+  }
+}
+
+function onTicketNotApplied(context) {
+  let { ticketId, indexes } = context
+  notAppliedTickets.mutate(@(v) v[ticketId] <- { indexes, lastTime = get_time_msec(), countTries = 1 })
+
+  setInterval(TIME_TO_DELAYED_RETRY, retryRequestWithDelay)
+}
+
+notAppliedTickets.subscribe(@(v) v.len() == 0 ? clearTimer(retryRequestWithDelay) : null)
+isLoggedIn.subscribe(function(v) {
+  if (!v && notAppliedTickets.get().len() > 0) {
+    notAppliedTickets.set({})
+    clearTimer(retryRequestWithDelay)
+  }
+})
+
+if (notAppliedTickets.get().len() > 0 && isLoggedIn.get())
+  setInterval(TIME_TO_DELAYED_RETRY, retryRequestWithDelay)
+
+let needSkipError = @(errorMessage) errorMessage.startswith("Dont have enough prize tickets")
+
+registerHandler("onPrizeTicketsAppliedByRetry", function(res, context) {
+  let errorMessage = res?.error.message
+  let { ticketId } = context
+
+  if (!isLoggedIn.get() || ticketId not in notAppliedTickets.get())
+    return
+
+  let currentCountTries = notAppliedTickets.get()[ticketId].countTries
+
+  if (errorMessage != null && !needSkipError(errorMessage) && currentCountTries < MAX_COUNT_TO_TRY)
+    return notAppliedTickets.mutate(function(v) {
+      v[ticketId].lastTime = get_time_msec()
+      v[ticketId].countTries += 1
+    })
+
+  notAppliedTickets.mutate(@(v) v.$rawdelete(ticketId))
+})
+
+registerHandler("onPrizeTicketsApplied", function(res, context) {
+  let errorMessage = res?.error.message
+
+  if (errorMessage != null && isLoggedIn.get() && !needSkipError(errorMessage))
+    onTicketNotApplied(context)
+
   selIndexes.set([])
-  removeModalWindow(PRIZE_TICKETS_SELECT_WND_UID)
+  closeModalWnd()
 })
 
 function applyPrizeTickets() {
@@ -122,7 +190,11 @@ function applyPrizeTickets() {
   if (hasLastReward.get())
     indexes.extend(array(currentTicketCounts.get().lastReward, -1))
 
-  apply_prize_tickets(prizeTicketId.get(), indexes, "onPrizeTicketsApplied")
+  apply_prize_tickets(prizeTicketId.get(), indexes, {
+    id = "onPrizeTicketsApplied",
+    ticketId = prizeTicketId.get(),
+    indexes
+  })
 }
 
 let highlight = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
@@ -265,7 +337,7 @@ let mkContentChoose = @(rewards, lReward) @() {
 }
 
 function openRewardPrizeSelect() {
-  removeModalWindow(PRIZE_TICKETS_SELECT_WND_UID)
+  closeModalWnd()
   if (!needShowPrizeTickets.get())
     return null
 
@@ -290,7 +362,9 @@ function openRewardPrizeSelect() {
   }))
 }
 
-let showPrizeSelectDelayed = @() resetTimeout(0.5, @() needShowPrizeTickets.get() ? openRewardPrizeSelect() : null)
+let showPrizeSelectDelayed = @() resetTimeout(0.5, @() !isModalAttached.get() && needShowPrizeTickets.get()
+  ? openRewardPrizeSelect() : null)
 needShowPrizeTickets.subscribe(@(v) v? showPrizeSelectDelayed() : null)
+prizeTicketId.subscribe(@(v) v == null ? closeModalWnd() : null)
 
 return { showPrizeSelectDelayed, ticketToShow }

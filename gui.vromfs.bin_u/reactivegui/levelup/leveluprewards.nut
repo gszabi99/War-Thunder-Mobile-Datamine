@@ -43,19 +43,10 @@ let hideCurrencyTrigger = {}
 
 let rewardsSum = Computed(@() rewardsToReceive.value.reduce(
   function(res, rew) {
-    if (type(rew) == "table") { //compatibility with 2024.04.14
-      let result = {
-        wp = (res?.wp ?? 0) + (rew?.currencies.wp ?? 0) + (rew?.wp ?? 0)
-        gold = (res?.gold ?? 0) + (rew?.currencies.gold ?? 0) + (rew?.gold ?? 0)
-      }
-      foreach (id, count in (rew?.items ?? {}))
-        result[id] <- (res?[id] ?? 0) + count
-      return result
-    }
     let result = {}
     foreach(g in rew)
       if (g.gType == "currency" || g.gType == "item") //does not support to show other rewards yet
-        result[g.id] <- (result?[g.id] ?? 0) + g.count
+        result[g.id] <- (res?[g.id] ?? 0) + g.count
     return result
   },
   {}))

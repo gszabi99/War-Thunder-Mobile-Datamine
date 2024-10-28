@@ -22,7 +22,7 @@
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
@@ -3218,6 +3218,11 @@
     }
   },
   "battleHideNodes": {
-    "n": "details"
+    "n": [
+      "details",
+      "details_01",
+      "details_02",
+      "details_03"
+    ]
   }
 }

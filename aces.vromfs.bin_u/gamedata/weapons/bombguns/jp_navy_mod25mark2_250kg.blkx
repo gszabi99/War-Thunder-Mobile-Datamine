@@ -10,7 +10,7 @@
   },
   "bomb": {
     "mass": 253.0,
-    "mass_lbs": 500.0,
+    "mass_lbs": 470.0,
     "explosiveType": "tnt",
     "explosiveMass": 123.0,
     "bombType": "he_bomb",

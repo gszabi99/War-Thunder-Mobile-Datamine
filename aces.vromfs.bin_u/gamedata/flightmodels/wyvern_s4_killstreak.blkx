@@ -1,7 +1,7 @@
 {
   "model": "wyvern_s4",
   "fmFile": "fm/wyvern_s4.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "gForceTolerationMult": 1.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/postwar_fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",

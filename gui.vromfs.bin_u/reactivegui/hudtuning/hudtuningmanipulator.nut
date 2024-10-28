@@ -11,26 +11,42 @@ let START_MOVE_TIME_MSEC = 300
 let MOVE_MIN_THRESHOLD = sh(1) //ignore threshold after START_MOVE_TIME
 let pointer = Watched(null)
 
+let isHit = @(aabb, x, y) aabb.l <= x && aabb.r >= x && aabb.t <= y && aabb.b >= y
+let isHitInc = @(aabb, x, y) aabb.l - INC_AREA <= x && aabb.r + INC_AREA >= x
+  && aabb.t - INC_AREA <= y && aabb.b + INC_AREA >= y
+
 function findElemInScene(x, y) {
   let list = cfgByUnitTypeOrdered?[tuningUnitType.value]
   if (list == null)
     return null
 
+  let prevId = selectedId.get()
+  let prevIdx = prevId == null ? -1 : list.findindex(@(c) c.id == prevId) ?? -1
+  let total = list.len()
+
   local resByInc = null
-  foreach(cfg in list) {
+  for (local i = prevIdx + 1; i <= prevIdx + total; i++) {
+    let cfg = list[i % total]
     let { id } = cfg
     let aabb = gui_scene.getCompAABBbyKey(cfg?.editView.key)
     if (aabb == null)
       continue
-    if (aabb.l <= x && aabb.r >= x
-        && aabb.t <= y && aabb.b >= y)
+    if (isHit(aabb, x, y))
       return { id, aabb }
-    if (resByInc == null
-        && aabb.l - INC_AREA <= x && aabb.r + INC_AREA >= x
-        && aabb.t - INC_AREA <= y && aabb.b + INC_AREA >= y)
+    if (resByInc == null && isHitInc(aabb, x, y))
       resByInc = { id, aabb }
   }
   return resByInc
+}
+
+function getAabbIfHit(id, x, y) {
+  if (id == null)
+    return null
+  let cfg = cfgByUnitTypeOrdered?[tuningUnitType.get()].findvalue(@(c) c.id == id)
+  if (cfg == null)
+    return null
+  let aabb = gui_scene.getCompAABBbyKey(cfg?.editView.key)
+  return aabb != null && isHitInc(aabb, x, y) ? aabb : null
 }
 
 pointer.subscribe(function(p) {
@@ -62,16 +78,23 @@ let manipulator = {
   key = {}
   size = flex()
   behavior = Behaviors.ProcessPointingInput
+  touchMarginPriority = TOUCH_BACKGROUND
   function onPointerPress(evt) {
-    if (evt.accumRes == R_PROCESSED
+    if ((evt.accumRes & R_PROCESSED) != 0
         || (pointer.value != null && pointer.value.id != evt.pointerId))
       return 0
-    let elem = findElemInScene(evt.x, evt.y)
-    selectedId(elem?.id)
-    if (elem != null) {
-      pointer({ id = evt.pointerId, time = get_time_msec(),
+    local aabb = getAabbIfHit(selectedId.get(), evt.x, evt.y)
+    local isChangedOnPress = false
+    if (aabb == null) {
+      let elem = findElemInScene(evt.x, evt.y)
+      isChangedOnPress = selectedId.get() != elem?.id
+      selectedId.set(elem?.id)
+      aabb = elem?.aabb
+    }
+    if (aabb != null) {
+      pointer.set({ id = evt.pointerId, time = get_time_msec(),
         start = [evt.x, evt.y], offset = [0, 0],
-        aabb = elem.aabb, isInProgress = false
+        aabb, isChangedOnPress, isInProgress = false
       })
       isElemHold(true)
     }
@@ -80,6 +103,16 @@ let manipulator = {
   function onPointerRelease(evt) {
     if (pointer.value?.id != evt.pointerId)
       return 0
+
+    if (pointer.get() != null) {
+      let { isChangedOnPress, time } = pointer.get()
+      if (!isChangedOnPress && get_time_msec() < time + START_MOVE_TIME_MSEC) {
+        let elem = findElemInScene(evt.x, evt.y)
+        if (elem != null)
+          selectedId.set(elem.id == selectedId.get() ? null : elem.id)
+      }
+    }
+
     applyTransformProgress()
     pointer(null)
     isElemHold(false)

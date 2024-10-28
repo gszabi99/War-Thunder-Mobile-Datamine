@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { statsImages } = require("%appGlobals/config/rewardStatsPresentation.nut")
 
 let NO_DROP_LIMIT = 1000000
@@ -60,19 +59,15 @@ let sortRewardsViewInfo = @(a, b) getPriorirty(b) <=> getPriorirty(a)
   || a.id <=> b.id
   || (a?.subId ?? 0) <=> (b?.subId ?? 0)
 
-// No need to subscribe to allDecorators because it is loaded on game start
+// No need to subscribe to serverConfigs.get().allDecorators because it is loaded on game start
 let mkViewInfo = @(id, rType, count = 0, subId = "")
-  { id, subId, rType, count, slots = slotsByType?[rType] ?? slotsByDType?[allDecorators.value?[id].dType] ?? 1 }
+  { id, subId, rType, count, slots = slotsByType?[rType] ?? slotsByDType?[serverConfigs.get()?.allDecorators[id].dType] ?? 1 }
 
-function getRewardsViewInfo(data, multiply = 1) {
+let getRewardsViewInfo = @(data, multiply = 1)
+  (data ?? []).map(@(g) mkViewInfo(g.id, g.gType, g.count * multiply, g.subId))
+
+function shopGoodsToRewardsViewInfo(data, multiply = 1) {
   let res = []
-  if (!data)
-    return res
-
-  if (type(data) == "array")
-    return data.map(@(g) mkViewInfo(g.id, g.gType, g.count * multiply, g.subId))
-
-  //typeof(reward) == "table" //compatibility with 2024.04.14
   let { currencies = {}, premiumDays = 0, items = {}, lootboxes = {},
     decorators = [], unitUpgrades = [], units = [], boosters = [], skins = {},
     battleMods = {}
@@ -309,13 +304,6 @@ let getAllLootboxRewardsViewInfo = @(lootbox)
 let receivedGoodsToViewInfo = @(rGoods)
   mkViewInfo(rGoods?.id ?? "", rGoods?.gType ?? "", rGoods.count ?? 0, rGoods?.subId ?? "")
 
-let isEmptyByField = {
-  decorators = @(value, profile) value.findvalue(@(d) d not in profile?.decorators) == null
-  units = @(value, profile) value.findvalue(@(u) u not in profile?.units) == null
-  unitUpgrades = @(value, profile) value.findvalue(@(u) !profile?.units[u].isUpgraded) == null
-  skins = @(value, profile) value.findvalue(@(skinName, unitName) skinName not in profile?.skins[unitName]) == null
-}
-
 let isEmptyByRType = {
   [G_DECORATOR] = @(value, _, profile) value in profile?.decorators,
   [G_UNIT] = @(value, _, profile) value in profile?.units,
@@ -325,34 +313,13 @@ let isEmptyByRType = {
     || (profile?.blueprints?[value] ?? 0) >= serverConfigs.get().allBlueprints[value].targetCount
 }
 
-let isEmptyByType = {
-  table = @(value) value.len() == 0
-  array = @(value) value.len() == 0
-  integer = @(value) value == 0
-  float = @(value) value == 0
-}
-
 function isRewardEmpty(reward, profile) {
   local res = true
-  if (typeof(reward) == "table") //compatibility with 2024.04.14
-    foreach(id, value in reward) {
-      let empty = isEmptyByField?[id](value, profile)
-        ?? isEmptyByType?[type(value)](value)
-      if (empty == null) {
-        logerr($"Unknown reward field '{id}' type = {type(value)}")
-        break
-      }
-      if (!empty) {
-        res = false
-        break
-      }
+  foreach(r in reward)
+    if (!(isEmptyByRType?[r.gType](r.id, r.subId, profile) ?? false)) {
+      res = false
+      break
     }
-  else //typeof(reward) == "array"
-    foreach(r in reward)
-      if (!(isEmptyByRType?[r.gType](r.id, r.subId, profile) ?? false)) {
-        res = false
-        break
-      }
   return res
 }
 
@@ -432,6 +399,7 @@ return {
   ignoreSubIdRTypes
 
   getRewardsViewInfo
+  shopGoodsToRewardsViewInfo
   getStatsRewardsViewInfo
   getUnlockRewardsViewInfo
   sortRewardsViewInfo

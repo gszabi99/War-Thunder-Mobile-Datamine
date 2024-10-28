@@ -481,7 +481,8 @@ function mkDebugTuneSkinsWnd() {
     padding = saBordersRv
     flow = FLOW_VERTICAL
     behavior = HangarCameraControl
-    eventPassThrough = true
+    eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+    touchMarginPriority = TOUCH_BACKGROUND
     function onAttach() {
       initSkinsWnd()
       onUnitOrSkinChange()

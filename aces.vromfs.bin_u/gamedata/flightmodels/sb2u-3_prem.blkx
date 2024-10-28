@@ -1,7 +1,7 @@
 {
   "model": "sb2u_3",
   "fmFile": "fm/sb2u-3.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.175,

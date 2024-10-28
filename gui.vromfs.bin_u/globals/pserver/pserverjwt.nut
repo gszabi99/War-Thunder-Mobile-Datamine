@@ -19,7 +19,7 @@ function decodeJwtAndHandleErrors(data) {
   return { error = jwtError }
 }
 
-local function saveJwtResultToJson(jwt, payload, fileName) {
+function saveJwtResultToJson(jwt, payload, fileName) {
   local file = io.file($"{fileName}.json", "wt+")
   file.writestring(object_to_json_string(payload, true))
   file.close()

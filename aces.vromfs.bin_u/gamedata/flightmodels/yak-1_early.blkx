@@ -1,7 +1,7 @@
 {
   "model": "yak_1_early",
   "fmFile": "fm/yak-1_early.blk",
-  "useTouchShooting": [
+  "useTouchTargeting": [
     true,
     true
   ],

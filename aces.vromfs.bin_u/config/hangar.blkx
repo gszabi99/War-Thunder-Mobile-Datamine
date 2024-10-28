@@ -2209,7 +2209,7 @@
       "preset": [
         {
           "id": "v1",
-          "musicName": "naval/music/cutscene_offer_tanks",
+          "musicName": "naval/music/cutscene_offer_planes",
           "from": [
             4249.6,
             30.0,
@@ -2368,7 +2368,7 @@
         },
         {
           "id": "v2",
-          "musicName": "naval/music/cutscene_offer_tanks",
+          "musicName": "naval/music/cutscene_offer_planes",
           "from": [
             4249.6,
             30.0,
@@ -2527,7 +2527,7 @@
         },
         {
           "id": "v3",
-          "musicName": "naval/music/cutscene_offer_tanks",
+          "musicName": "naval/music/cutscene_offer_planes",
           "from": [
             3727.1,
             200.0,
@@ -2735,7 +2735,7 @@
         },
         {
           "id": "v4",
-          "musicName": "naval/music/cutscene_offer_tanks",
+          "musicName": "naval/music/cutscene_offer_planes",
           "from": [
             3727.1,
             200.0,
@@ -2947,7 +2947,7 @@
       "preset": [
         {
           "id": "v1",
-          "musicName": "naval/music/cutscene_offer_tanks",
+          "musicName": "naval/music/cutscene_offer_planes",
           "from": [
             3560.2,
             454.0,
@@ -3108,7 +3108,7 @@
         },
         {
           "id": "v2",
-          "musicName": "naval/music/cutscene_offer_tanks",
+          "musicName": "naval/music/cutscene_offer_planes",
           "from": [
             3560.2,
             454.0,
@@ -3269,7 +3269,7 @@
         },
         {
           "id": "v3",
-          "musicName": "naval/music/cutscene_offer_tanks",
+          "musicName": "naval/music/cutscene_offer_planes",
           "from": [
             3183.9,
             175.0,
@@ -3389,7 +3389,7 @@
         },
         {
           "id": "v4",
-          "musicName": "naval/music/cutscene_offer_tanks",
+          "musicName": "naval/music/cutscene_offer_planes",
           "from": [
             3183.9,
             175.0,

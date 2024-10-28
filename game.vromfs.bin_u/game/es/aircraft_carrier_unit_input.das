@@ -96,7 +96,7 @@ def aircarft_carrier_plane_return(evt : EventOnKeyUp;
   if evt.eventId != int(ShortcutEventId ID_WTM_AIRCRAFT_RETURN)
     return
 
-  set_player_command(5)
+  clear_player_commands()
 
   let unit = get_unit(uid)
   if unit.isGroundModel
@@ -108,3 +108,6 @@ def aircarft_carrier_plane_return(evt : EventOnKeyUp;
 
   let supportPlaneIdx = find_support_plane_index(ownedUnit.id, uid)
   sendEvent(ownedUnit.eid, [[CmdReturnAircraftToShip idx=supportPlaneIdx, rtb=true]])
+
+  let aimAngles = get_turret_aim_angles()
+  sendEvent(ownedUnit.eid, [[CmdRequestSwitchOnSupportPlane turnOn=false, idx=supportPlaneIdx, startAngles=float2(aimAngles.x, 0.f), switchOn=true]])

@@ -4,7 +4,8 @@ let { get_time_msec } = require("dagor.time")
 let { stop_prem_cutscene } = require("hangar")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { previewGoods, isPreviewGoodsPurchasing } = require("%rGui/shop/goodsPreviewState.nut")
+let { unhideModals } = require("%rGui/components/modalWindows.nut")
+let { previewGoods, isPreviewGoodsPurchasing, HIDE_PREVIEW_MODALS_ID } = require("%rGui/shop/goodsPreviewState.nut")
 let { purchaseGoods } = require("%rGui/shop/purchaseGoods.nut")
 let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -13,7 +14,7 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
 let { mkCurrencyComp, mkPriceExtText, CS_BIG } = require("%rGui/components/currencyComp.nut")
-let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { shopGoodsToRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { REWARD_STYLE_MEDIUM, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -210,7 +211,10 @@ function getPriceInfo(goods) {
       basePrice
       finalPrice = price.price
       currencyId = price.currencyId
-      buy = @() purchaseGoods(goods.id)
+      function buy() {
+        purchaseGoods(goods.id)
+        unhideModals(HIDE_PREVIEW_MODALS_ID)
+      }
     }
   }
   if ((priceExt?.price ?? 0) > 0) {
@@ -221,7 +225,10 @@ function getPriceInfo(goods) {
       basePrice
       finalPrice = priceExt.price
       currencyId = priceExt.currencyId
-      buy = @() buyPlatformGoods(goods)
+      function buy() {
+        buyPlatformGoods(goods)
+        unhideModals(HIDE_PREVIEW_MODALS_ID)
+      }
     }
   }
   return null
@@ -422,7 +429,7 @@ function mkItem(r, rStyle, idx, animStartTime) {
 function mkPreviewItems(goods, animStartTime) {
   if (goods == null)
     return null
-  let info = getRewardsViewInfo(goods.__merge({ units = [], unitUpgrades = [] }))
+  let info = shopGoodsToRewardsViewInfo(goods.__merge({ units = [], unitUpgrades = [] }))
     .sort(sortRewardsViewInfo)
   return info.len() == 0 ? null : {
     flow = FLOW_HORIZONTAL

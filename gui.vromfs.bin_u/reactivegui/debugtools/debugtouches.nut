@@ -39,7 +39,8 @@ let debugTouchesUi = {
   key = {}
   size = flex()
   behavior = Behaviors.ProcessPointingInput
-  eventPassThrough = true
+  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+  touchMarginPriority = TOUCH_BACKGROUND
   function onPointerPress(evt) {
     let { pointerId, x, y } = evt
     pointerPos[pointerId] <- [x, y]

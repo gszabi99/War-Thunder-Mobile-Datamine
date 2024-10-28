@@ -1631,6 +1631,14 @@
         ]
       },
       {
+        "name": "do_17z_2_killstreak",
+        "weap": "do_17z_2_killstreak_default",
+        "rankRange": [
+          2,
+          2
+        ]
+      },
+      {
         "name": "he_111h_6_killstreak",
         "weap": "he_111h_6_killstreak_default",
         "rankRange": [
@@ -1655,24 +1663,40 @@
         ]
       },
       {
-        "name": "he_111h_6_killstreak",
-        "weap": "he_111h_6_killstreak_default",
+        "name": "b_25j_20_killstreak",
+        "weap": "b_25j_20_killstreak_default",
+        "rankRange": [
+          3,
+          3
+        ]
+      },
+      {
+        "name": "sb2c_4_killstreak",
+        "weap": "sb2c_4_killstreak_default",
         "rankRange": [
           4,
           4
         ]
       },
       {
-        "name": "il_4_killstreak",
-        "weap": "il_4_killstreak_default",
+        "name": "er-2_m105_mv3_killstreak",
+        "weap": "er-2_m105_mv3_killstreak_default",
         "rankRange": [
           4,
           4
         ]
       },
       {
-        "name": "firefly_mk5_killstreak",
-        "weap": "firefly_mk5_killstreak_default",
+        "name": "he-111h-16_winter_killstreak",
+        "weap": "he-111h-16_winter_killstreak_default",
+        "rankRange": [
+          4,
+          4
+        ]
+      },
+      {
+        "name": "b_26b_c_killstreak",
+        "weap": "b_26b_c_killstreak_default",
         "rankRange": [
           4,
           4
@@ -1697,6 +1721,14 @@
       {
         "name": "do_335a_1_killstreak",
         "weap": "do_335a_1_killstreak_default",
+        "rankRange": [
+          5,
+          5
+        ]
+      },
+      {
+        "name": "douglas_ad_2_killstreak",
+        "weap": "douglas_ad_2_killstreak_default",
         "rankRange": [
           5,
           5
@@ -1785,6 +1817,14 @@
         ]
       },
       {
+        "name": "la-5_killstreak",
+        "weap": "la-5_killstreak_default",
+        "rankRange": [
+          2,
+          2
+        ]
+      },
+      {
         "name": "f4u_4_killstreak",
         "weap": "f4u_4_killstreak_default",
         "rankRange": [
@@ -1809,24 +1849,40 @@
         ]
       },
       {
-        "name": "f4u_4_killstreak",
-        "weap": "f4u_4_killstreak_default",
+        "name": "bf-109f-4_killstreak",
+        "weap": "bf-109f-4_killstreak_default",
+        "rankRange": [
+          3,
+          3
+        ]
+      },
+      {
+        "name": "f4u-4b_killstreak",
+        "weap": "f4u-4b_killstreak_default",
         "rankRange": [
           4,
           4
         ]
       },
       {
-        "name": "seafire_mk3_killstreak",
-        "weap": "seafire_mk3_killstreak_default",
+        "name": "fw-190a-5_cannons_killstreak",
+        "weap": "fw-190a-5_cannons_killstreak_default",
         "rankRange": [
           4,
           4
         ]
       },
       {
-        "name": "a6m5_zero_killstreak",
-        "weap": "a6m5_zero_killstreak_default",
+        "name": "la-11_killstreak",
+        "weap": "la-11_killstreak_default",
+        "rankRange": [
+          4,
+          4
+        ]
+      },
+      {
+        "name": "bf-109g-2_killstreak",
+        "weap": "bf-109g-2_killstreak_default",
         "rankRange": [
           4,
           4
@@ -1851,6 +1907,14 @@
       {
         "name": "la_9_killstreak",
         "weap": "la_9_killstreak_default",
+        "rankRange": [
+          5,
+          5
+        ]
+      },
+      {
+        "name": "fw-190d-9_killstreak",
+        "weap": "fw-190d-9_killstreak_default",
         "rankRange": [
           5,
           5
@@ -3898,12 +3962,12 @@
     "exp_cruiser_0": 2.0
   },
   "depthChargeSalvoParams": {
-    "salvoDuration": 16.5,
-    "salvoCountRel": 1.0,
+    "duration": 16.5,
+    "relativeCount": 1.0,
     "explosionDepth": [
       20.0,
       40.0
     ],
-    "uniteTriggerGroups": true
+    "checkBombs": true
   }
 }

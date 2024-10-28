@@ -20,7 +20,7 @@
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
   "canReloadNonGuns": true,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
@@ -1860,7 +1860,7 @@
         "turret": {
           "head": "bone_mg_gun_twin_01",
           "gun": "bone_mg_gun_twin_01",
-          "gunnerDm": "gunner_dm",
+          "gunnerDm": "commander_dm",
           "rotatedTurret": "bone_turret"
         },
         "limits": {
@@ -1907,7 +1907,7 @@
         "turret": {
           "head": "bone_mg_gun_twin_02",
           "gun": "bone_mg_gun_twin_02",
-          "gunnerDm": "gunner_dm",
+          "gunnerDm": "commander_dm",
           "rotatedTurret": "bone_turret"
         },
         "limits": {
@@ -1954,7 +1954,7 @@
         "turret": {
           "head": "bone_mg_gun_twin_03",
           "gun": "bone_mg_gun_twin_03",
-          "gunnerDm": "gunner_dm",
+          "gunnerDm": "commander_dm",
           "rotatedTurret": "bone_turret"
         },
         "limits": {
@@ -2001,7 +2001,7 @@
         "turret": {
           "head": "bone_mg_gun_twin_04",
           "gun": "bone_mg_gun_twin_04",
-          "gunnerDm": "gunner_dm",
+          "gunnerDm": "commander_dm",
           "rotatedTurret": "bone_turret"
         },
         "limits": {

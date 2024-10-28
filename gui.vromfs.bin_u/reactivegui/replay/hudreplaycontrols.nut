@@ -44,7 +44,7 @@ function makeArrow(isLeft, shortcutId) {
   let stateFlags = Watched(0)
   return {
     behavior = Behaviors.Button
-    eventPassThrough = true
+    cameraControl = true
     hotkeys = mkGamepadHotkey(shortcutId)
     onClick = @() toggleShortcut(shortcutId)
     onElemState = @(v) stateFlags(v)
@@ -88,7 +88,7 @@ function makeButton(label, shortcutId) {
   let stateFlags = Watched(0)
   return {
     behavior = Behaviors.Button
-    eventPassThrough = true
+    cameraControl = true
     hotkeys = mkGamepadHotkey(shortcutId)
     onClick = @() toggleShortcut(shortcutId)
     onElemState = @(v) stateFlags(v)

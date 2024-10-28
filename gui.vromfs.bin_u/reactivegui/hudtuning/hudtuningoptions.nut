@@ -64,7 +64,7 @@ let saveBtn = tuningBtnWithActivity(isCurPresetChanged, "ui/gameuiskin#icon_save
 
 let resetBtn = @() {
   watch = tuningState
-  children = tuningState.get().findindex(@(v) v.len() != 0) == null ? null
+  children = tuningState.get()?.findindex(@(v) v.len() != 0) == null ? null
     : tuningBtn("ui/gameuiskin#icon_reset_to_default.svg",
         clearTuningState,"hudTuning/reset/desc",
         { color = btnBgColorNegative })

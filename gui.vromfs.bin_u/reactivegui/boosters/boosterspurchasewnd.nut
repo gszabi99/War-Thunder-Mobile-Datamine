@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { isOpenedBoosterWnd } = require("boostersState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
@@ -247,12 +247,12 @@ let function boosterCard(bst) {
 }
 
 let goods = @() {
-  watch = serverConfigs
+  watch = campConfigs
   flow = FLOW_HORIZONTAL
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   gap = hdpx(50)
-  children = serverConfigs.get()?.allBoosters
+  children = campConfigs.get()?.allBoosters
     .map(@(b, id) b.__merge({ id }))
     .values()
     .sort(@(a, b) a.id <=> b.id)

@@ -9,7 +9,8 @@ let { isBPPurchaseWndOpened, closeBPPurchaseWnd, isBpSeasonActive, curStage, sen
 let { eventSeason } = require("%rGui/event/eventState.nut")
 let { purchaseGoods, purchaseGoodsSeq } = require("%rGui/shop/purchaseGoods.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getRewardsViewInfo, joinViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { getRewardsViewInfo, shopGoodsToRewardsViewInfo, joinViewInfo, sortRewardsViewInfo
+} = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
@@ -187,7 +188,7 @@ let rewardsList = @(selBpInfo) function() {
 
   let { goods = null } = selBpInfo.get()
   if (goods != null) {
-    let vi = getRewardsViewInfo(goods).sort(sortRewardsViewInfo)
+    let vi = shopGoodsToRewardsViewInfo(goods).sort(sortRewardsViewInfo)
     if (selBpInfo.get().bpType == BP_VIP)
       vi.each(@(v) v.$rawset("isVip", true))
     viewInfoExclusive.extend(vi)

@@ -1,7 +1,7 @@
 {
   "fmFile": "fm/me_262c_2b.blk",
   "model": "me_262c_2b",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "gForceTolerationMult": 10.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gyroSight": false,

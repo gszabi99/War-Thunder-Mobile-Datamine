@@ -5,21 +5,21 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { parse_json, object_to_json_string } = require("json")
 let { DBGLEVEL } = require("dagor.system")
 let { is_ios } = require("%sqstd/platform.nut")
-let { needAdsLoad, rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
+let { rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
   providerPriorities, onShowAds, openAdsPreloader, isOpenedAdsPreloaderWnd, closeAdsPreloader,
   hasAdsPreloadError, adsPreloadParams
 } = require("%rGui/ads/adsInternalState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let ads = is_ios ? require("ios.ads") : require("adsIosDbg.nut")
 let sendAdsBqEvent = is_ios ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
-let { sendUiBqEvent, sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
   setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
-  isAdsLoaded, loadAds, showAds, showConsent
+  isAdsLoaded, loadAds, showAds
 } = ads
 let { isGoogleConsentAllowAds } = require("%appGlobals/loginState.nut")
 let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
-let { can_preload_request_ads_consent } = require("%appGlobals/permissions.nut")
+
 
 let isInited = Watched(isAdsInited())
 let isLoaded = Watched(isAdsLoaded())
@@ -27,8 +27,8 @@ let loadedProvider = hardPersistWatched("adsIos.loadedProvider", "")
 let isAdsVisible = Watched(false)
 let failInARow = hardPersistWatched("adsIos.failsInARow", 0)
 
-let needAdsLoadExt = Computed(@() isGoogleConsentAllowAds.get() && isInited.get() && !isLoaded.get()
-  && (needAdsLoad.get() || isOpenedAdsPreloaderWnd.get()))
+let needAdsLoad = Computed(@() isGoogleConsentAllowAds.get() && isInited.get() && !isLoaded.get()
+  && isOpenedAdsPreloaderWnd.get())
 
 function isAllProvidersFailed(providers, statuses) {
   foreach(key, _ in providers)
@@ -94,9 +94,9 @@ function startLoading() {
   loadAds()
   sendAdsBqEvent("load_request", "", false)
 }
-if (needAdsLoadExt.value)
+if (needAdsLoad.value)
   startLoading()
-needAdsLoadExt.subscribe(function(v) {
+needAdsLoad.subscribe(function(v) {
   if (v)
     startLoading()
 })
@@ -104,7 +104,7 @@ needAdsLoadExt.subscribe(function(v) {
 local isRetryQueued = false
 function retryLoad() {
   isRetryQueued = false
-  if (!needAdsLoadExt.value || isLoadStarted)
+  if (!needAdsLoad.value || isLoadStarted)
     return
   logA($"Retry loading")
   isLoadStarted = true
@@ -132,7 +132,7 @@ eventbus_subscribe("ios.ads.onLoad",function (params) {
   if (provider not in providersStatuses)
     providersStatuses[provider] <- status
 
-  if (needAdsLoadExt.get() && !isRetryQueued) {
+  if (needAdsLoad.get() && !isRetryQueued) {
     isRetryQueued = true
     resetTimeout(RETRY_LOAD_TIMEOUT + failInARow.get() * RETRY_INC_TIMEOUT, retryLoad)
     failInARow(failInARow.get() + 1) //we can have several fail events on single adsLoad request
@@ -196,20 +196,9 @@ function showAdsForReward(rInfo) {
     openAdsPreloader(rInfo)
 }
 
-function onTryShowNotAvailableAds() {
-  if (isGoogleConsentAllowAds.get())
-    return false
-  sendUiBqEvent("ads_consent_google", { id = "show_on_try_watch_ads" })
-  showConsent()
-  return true
-}
-
-
 return {
   isAdsAvailable = WatchedRo(true)
   isAdsVisible
-  canShowAds = can_preload_request_ads_consent.get() ? isLoaded : Watched(true)
   showAdsForReward
   isLoaded
-  onTryShowNotAvailableAds
 }

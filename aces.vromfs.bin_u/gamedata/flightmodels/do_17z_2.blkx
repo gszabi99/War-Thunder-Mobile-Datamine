@@ -1,7 +1,7 @@
 {
   "fmFile": "fm/do_17z_2.blk",
   "model": "do_17z_2",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "tpsCameraOffset": [
     -6.0,
     2.0,
@@ -2008,11 +2008,88 @@
         "index": 1,
         "tier": 6,
         "order": 1,
+        "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
             "iconType": "bomb_50kg_group",
-            "name": "sc50",
+            "name": "sc50_10",
             "isDefault": true,
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+                "separate": true,
+                "emitter": "de_sc50_1",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+                "separate": true,
+                "emitter": "de_sc50_2",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+                "separate": true,
+                "emitter": "de_sc50_3",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+                "separate": true,
+                "emitter": "de_sc50_4",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+                "separate": true,
+                "emitter": "de_sc50_5",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+                "separate": true,
+                "emitter": "de_sc50_6",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+                "separate": true,
+                "emitter": "de_sc50_7",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+                "separate": true,
+                "emitter": "de_sc50_8",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+                "separate": true,
+                "emitter": "de_sc50_9",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
+                "separate": true,
+                "emitter": "de_sc50_10",
+                "bullets": 1
+              }
+            ]
+          },
+          {
+            "iconType": "bomb_50kg_group",
+            "name": "sc50",
             "Weapon": [
               {
                 "trigger": "bombs",
@@ -2176,6 +2253,33 @@
             ]
           }
         ]
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 2,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "bomb_250kg_group",
+          "name": "sc250_one",
+          "reqModification": "itc250",
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+            "emitter": "de_cs250_2",
+            "bullets": 1
+          },
+          "BannedWeaponPreset": [
+            {
+              "slot": 1,
+              "preset": "sc250"
+            },
+            {
+              "slot": 1,
+              "preset": "sc50"
+            }
+          ]
+        }
       }
     ]
   },

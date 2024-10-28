@@ -20,7 +20,7 @@
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
   "useSimpleDeathConditionsAndEffects": false,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
   "autoSightDistanceCorrection": true,
   "subclass": "heavyVehicle",
@@ -2397,6 +2397,35 @@
             28.0
           ]
         }
+      },
+      {
+        "trigger": "gunner4",
+        "triggerGroup": "commander",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_camera_commander",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "speedYaw": 30.0,
+        "speedPitch": 20.0,
+        "turret": {
+          "head": "bone_turret_02",
+          "gun": "bone_gun_barrel_02",
+          "rotatedTurret": "bone_turret_02",
+          "gunnerDm": "commander_dm",
+          "verDriveDm": "commander_panoramic_sight_dm",
+          "horDriveDm": "commander_panoramic_sight_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -8.0,
+            15.0
+          ]
+        }
       }
     ]
   },
@@ -3309,6 +3338,35 @@
                 "pitch": [
                   -5.0,
                   28.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner4",
+              "triggerGroup": "commander",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "bone_camera_commander",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "parkInDeadzone": false,
+              "speedYaw": 30.0,
+              "speedPitch": 20.0,
+              "turret": {
+                "head": "bone_turret_02",
+                "gun": "bone_gun_barrel_02",
+                "rotatedTurret": "bone_turret_02",
+                "gunnerDm": "commander_dm",
+                "verDriveDm": "commander_panoramic_sight_dm",
+                "horDriveDm": "commander_panoramic_sight_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -8.0,
+                  15.0
                 ]
               }
             },

@@ -14,7 +14,7 @@
     "caliber": 0.127,
     "length": 1.8,
     "explosiveType": "tnt",
-    "explosiveMass": 30.0,
+    "explosiveMass": 3.45,
     "mass": 62.8,
     "massEnd": 51.1,
     "statType": "hydra",

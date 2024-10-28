@@ -11,19 +11,7 @@ let mkCurrencyImage = @(amount, size, currencyId) {
 }
 
 function mkRewardImage(reward, size) {
-  if (type(reward) == "table") { //compatibility with 2024.04.14
-    let { lootboxes = {}, currencies = {} } = reward
-    if (lootboxes.len() > 0)
-      return mkLoootboxImage(lootboxes.findindex(@(_) true), size)
-
-    let cId = currencies?.findindex(@(_) true)
-    let cVal = currencies?[cId] ?? 0
-    if (cVal > 0)
-      return mkCurrencyImage(cVal, size, cId)
-    return null
-  }
-
-  //todo: use icons from the othe rewards
+  //todo: use icons from the other rewards
   foreach(g in reward)
     if (g.gType == G_LOOTBOX)
       return mkLoootboxImage(g.id, size)
@@ -34,12 +22,6 @@ function mkRewardImage(reward, size) {
 }
 
 function getRewardName(reward) {
-  if (type(reward) == "table") { //compatibility with 2024.04.14
-    let { lootboxes = {} } = reward
-    if (lootboxes.len() > 0)
-      return getLootboxName(lootboxes.findindex(@(_) true))
-    return ""
-  }
   foreach(g in reward)
     if (g.gType == G_LOOTBOX)
       return getLootboxName(g.id)

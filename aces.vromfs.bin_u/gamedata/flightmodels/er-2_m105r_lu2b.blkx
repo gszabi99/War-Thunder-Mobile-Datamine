@@ -1,7 +1,7 @@
 {
   "fmFile": "fm/er-2_m105_mv3.blk",
   "model": "er_2_m105r_lu2b",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "tpsCameraOffset": [
     -5.0,
     2.0,

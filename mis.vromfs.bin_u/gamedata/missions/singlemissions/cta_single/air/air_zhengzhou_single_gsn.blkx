@@ -968,7 +968,8 @@
         "hudElementBlink": {
           "element": "targetsCounter",
           "time": 20.0,
-          "blink": true
+          "blink": true,
+          "drawFromGui": false
         },
         "triggerEnable": {
           "target": "1st_battle_hints_indicator"
@@ -1013,7 +1014,8 @@
           {
             "element": "targetsCounter",
             "time": 20.0,
-            "blink": false
+            "blink": false,
+            "drawFromGui": false
           },
           {
             "drawFromGui": true,
@@ -6893,9 +6895,9 @@
             0.65882
           ],
           [
-            -9792.11,
+            -14727.7,
             168.0,
-            3109.84
+            4563.2
           ]
         ],
         "unit_class": "dummy",
@@ -8151,9 +8153,9 @@
           0.772329
         ],
         [
-          -9159.2,
+          -9313.45,
           479.102,
-          4450.45
+          4610.9
         ]
       ],
       "unit_class": "he51c1",

@@ -1,7 +1,7 @@
 {
   "model": "xp_50",
   "fmFile": "fm/xp-50.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_fighter_metaparts.blk",
   "gyroSight": false,
   "type": "typeFighter",

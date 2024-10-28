@@ -1,54 +1,31 @@
 from "%globalsDarg/darg_library.nut" import *
-let logA = log_with_prefix("[ADS] ")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { getCountryCode } = require("auth_wt")
 let { isDownloadedFromGooglePlay } = require("android.platform")
 let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { can_preload_request_ads_consent } = require("%appGlobals/permissions.nut")
 let { isConsentWasAutoSkipped, needOpenConsentWnd } = require("%rGui/notifications/consent/consentState.nut")
 let { set_mute_sound } = require("soundOptions")
 
 
-let LOAD_ADS_BEFORE_TIME = 120 //2 min before ads will be ready to watch
 let RETRY_LOAD_TIMEOUT = 120
 let RETRY_INC_TIMEOUT = 60 //increase time with each fail, but reset on success. Also retry after battle without timeout
 
 let hasAdsPreloadError = Watched(false)
 let adsPreloadParams = Watched(null)
-let isOpenedAdsPreloaderWnd = Computed(@() adsPreloadParams.get() != null && !isConsentWasAutoSkipped.get())
+let isOpenedAdsPreloaderWnd = Computed(@() adsPreloadParams.get() != null
+  && !isConsentWasAutoSkipped.get()
+  && isLoggedIn.get())
 
-let needAdsLoadByTime = Watched(false)
-let needAdsLoad = Computed(@() !isInBattle.get() && needAdsLoadByTime.get())
-let advertRewardsTimes = keepref(Computed(function() {
-  let received = receivedSchRewards.value
-  return (campConfigs.value?.schRewards ?? {})
-    .filter(@(r) r.needAdvert)
-    .map(@(r, id) (received?[id] ?? 0) + r.interval)
-}))
 let rewardInfo = mkWatched(persist, "rewardInfo", null)
 let debugAdsWndParams = Watched(null)
 let attachedAdsButtons = Watched(0)
 let isAnyAdsButtonAttached = Computed(@() attachedAdsButtons.get() > 0)
 
-needAdsLoad.subscribe(@(v) logA(v ? "Need to prepare ads load" : "no more need to load ads now"))
-function updateNeedAdsLoad() {
-  local nextTime = advertRewardsTimes.value.reduce(@(a, b) min(a, b))
-  needAdsLoadByTime(can_preload_request_ads_consent.get() && nextTime != null && nextTime - LOAD_ADS_BEFORE_TIME <= serverTime.get())
-  if (!needAdsLoadByTime.get() && nextTime != null)
-    resetTimeout(nextTime - serverTime.get() - LOAD_ADS_BEFORE_TIME, updateNeedAdsLoad)
-  else
-    clearTimer(updateNeedAdsLoad)
-}
-advertRewardsTimes.subscribe(@(_) updateNeedAdsLoad())
-updateNeedAdsLoad()
+isLoggedIn.subscribe(@(v) !v? adsPreloadParams.set(null) : null)
 
 function giveReward() {
   if (rewardInfo.value != null)
@@ -122,7 +99,6 @@ function openAdsPreloader(rInfo) {
 return {
   RETRY_LOAD_TIMEOUT
   RETRY_INC_TIMEOUT
-  needAdsLoad
   rewardInfo
   giveReward
   onFinishShowAds

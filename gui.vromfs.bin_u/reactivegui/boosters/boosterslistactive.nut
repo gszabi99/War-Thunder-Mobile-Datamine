@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { isOpenedBoosterWnd } = require("boostersState.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 
@@ -14,7 +14,7 @@ let boostersHeight = iconSize * 1.3
 let activeBoosters = Computed(function() {
   let res = []
   foreach(key, boost in (servProfile.value?.boosters ?? {}))
-    if (!boost.isDisabled && boost.battlesLeft > 0 && key in serverConfigs.get()?.allBoosters)
+    if (!boost.isDisabled && boost.battlesLeft > 0 && key in campConfigs.get()?.allBoosters)
       res.append(key)
   return res.sort(@(a, b) a <=> b)
 })

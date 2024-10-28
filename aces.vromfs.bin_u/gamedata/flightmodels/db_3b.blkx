@@ -1,6 +1,6 @@
 {
   "model": "db_3b",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "tpsCameraOffset": [
     -4.0,
     2.0,

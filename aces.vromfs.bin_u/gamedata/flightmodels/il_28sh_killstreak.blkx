@@ -1,7 +1,7 @@
 {
   "model": "il_28sh",
   "fmFile": "fm/il_28sh.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "gForceTolerationMult": 10.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "gearSinkRangeLR": 0.206,

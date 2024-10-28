@@ -63,6 +63,7 @@ let crosshairType = {
   value = currentCrosshairType
   list = aircraftCrosshairTypesList.map(@(_, idx) idx)
   mkContentCtor = @(v, _, _) mkImageContent(aircraftCrosshairTypesList?[v])
+  columnsMaxCustom = 6
 }
 
 return {

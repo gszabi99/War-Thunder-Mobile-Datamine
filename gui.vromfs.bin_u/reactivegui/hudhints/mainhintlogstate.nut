@@ -14,6 +14,9 @@ let { unitType } = require("%rGui/hudState.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { teamRedColor } = require("%rGui/style/teamColors.nut")
 let { EventZoneDamageMessage } = require("dasevents")
+let { setTimeout, clearTimer } = require("dagor.workcycle")
+
+const TIME_TO_RESET_SCORE = 1.0
 
 let state = require("%sqstd/mkEventLogState.nut")({
   persistId = "mainHintLogState"
@@ -25,6 +28,7 @@ let { addEvent, modifyOrAddEvent, removeEvent, clearEvents } = state
 isInBattle.subscribe(@(_) clearEvents())
 
 const MISSION_HINT = "mission_hint"
+const SCORE_HINT = "score_hint"
 
 eventbus_subscribe("hint:missionHint:set", @(data) data?.hintType == "bottom" ? null
   : modifyOrAddEvent(
@@ -110,19 +114,31 @@ eventbus_subscribe("zoneCapturingEvent", function(data) {
     @(ev) ev?.id == id && ev?.text == text)
 })
 
+local scoreAccumulated = 0.0
 
-register_es("on_zone_damage_message",
-  {
-    [EventZoneDamageMessage] = @(evt, _eid, _comp) addEvent({
-      hType = "simpleTextWithIcon",
-      text = loc("exp_reasons/damage_zone", {score = evt.score}),
+function resetScore() {
+  scoreAccumulated = 0.0
+}
+
+function showScore(score, isAirfield) {
+  clearTimer(resetScore)
+  scoreAccumulated += score
+  setTimeout(TIME_TO_RESET_SCORE, resetScore)
+  if (scoreAccumulated > 0) {
+    modifyOrAddEvent({
+      id = SCORE_HINT
+      zOrder = Layers.Upper
+      hType = "simpleTextWithIcon"
+      text = loc(isAirfield ? "exp_reasons/damage_airfield" : "exp_reasons/damage_zone", {score = scoreAccumulated}),
       icon = $"ui/gameuiskin#score_icon.svg"
       ttl = 3
-    })
-  },
-  {
-    comps_rq = [["server_player__userId", TYPE_UINT64]]
-  })
+    }, @(ev) ev?.id == SCORE_HINT)
+  }
+}
+
+register_es("on_zone_damage_message",
+  { [EventZoneDamageMessage] = @(evt, _eid, _comp) showScore(evt.score, evt.isAirfield) },
+  { comps_rq = [["server_player__userId", TYPE_UINT64]] })
 
 
 const MISSSION_RESULT = "mission_result"

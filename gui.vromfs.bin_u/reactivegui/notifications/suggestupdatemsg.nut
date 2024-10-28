@@ -2,16 +2,17 @@
 let { get_base_game_version_str } = require("app")
 let { eventbus_send } = require("eventbus")
 let { isDownloadedFromGooglePlay } = require("android.platform")
-let { is_ios } = require("%sqstd/platform.nut")
+let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
-let { can_view_update_suggestion } = require("%appGlobals/permissions.nut")
+let { can_view_update_suggestion, allow_apk_update } = require("%appGlobals/permissions.nut")
 let { check_version } = require("%sqstd/version_compare.nut")
 let { isOutOfBattleAndResults } = require("%appGlobals/clientState/clientState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { needSuggestToUpdate } = isDownloadedFromGooglePlay() ? require("needUpdate/needUpdateGooglePlay.nut")
   : is_ios ? require("needUpdate/needUpdateAppStore.nut")
   : require("needUpdate/needUpdateAndroidSite.nut")
+let { updateBySite, hasBackgroundUpdateBySite } = require("updateClientBySite.nut")
 
 const SUGGEST_UPDATE = "suggest_update_msg"
 
@@ -30,6 +31,8 @@ let needShowSuggestToUpdate = keepref(Computed(@() needSuggestToUpdate.value
   && !needExitToUpdate.value
   && isOutOfBattleAndResults.value))
 
+let needStartBackgroundUpdate = Computed(@() needShowSuggestToUpdate.get() && hasBackgroundUpdateBySite.get())
+
 needShowExitToUpdate.subscribe(function(v) {
   if (!v)
     return
@@ -46,7 +49,7 @@ subscribeFMsgBtns({
   markSuggestUpdateSeen = @(_) isSuggested(true)
 })
 
-function updateSuggestState(isActive) {
+function updateByStore(isActive) {
   if (isActive)
     openFMsgBox({
       uid = SUGGEST_UPDATE
@@ -59,5 +62,18 @@ function updateSuggestState(isActive) {
     closeFMsgBox(SUGGEST_UPDATE)
 }
 
+let updateSuggestState = is_android && !isDownloadedFromGooglePlay()
+  ? @(v) hasBackgroundUpdateBySite.set(v)
+  : updateByStore
+
+needStartBackgroundUpdate.subscribe(function(v) {
+  if (!v)
+    return
+  if (allow_apk_update.get())
+    updateBySite()
+  else
+    updateByStore(needShowSuggestToUpdate.get())
+})
+
 needShowSuggestToUpdate.subscribe(updateSuggestState)
-updateSuggestState(needShowSuggestToUpdate.value)
+updateSuggestState(needShowSuggestToUpdate.get())

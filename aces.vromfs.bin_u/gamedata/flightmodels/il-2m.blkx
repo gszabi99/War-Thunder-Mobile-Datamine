@@ -1,7 +1,7 @@
 {
   "model": "il_2m_type3_1945",
   "fmFile": "fm/il-2m.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "gForceTolerationMult": 1.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_attacker_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
@@ -1907,7 +1907,7 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 625.0,
+    "maxloadMass": 700.0,
     "maxloadMassLeftConsoles": 310.0,
     "maxloadMassRightConsoles": 310.0,
     "maxDisbalance": 200.0,
@@ -2227,36 +2227,6 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bomb_250kg",
-            "name": "fab250_slot2",
-            "reqModification": "il2_mdz_42",
-            "ShowNodes": {
-              "node": "pylon_bomb1"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_fab_250m_43.blk",
-              "emitter": "bomb1",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 3,
-                "preset": "12_25_slot3"
-              },
-              {
-                "slot": 3,
-                "preset": "fab50_x2_slot3"
-              },
-              {
-                "slot": 3,
-                "preset": "fab100_x2_slot3"
-              }
-            ]
-          },
-          {
             "iconType": "bomb_50kg",
             "name": "fab50_der31_left",
             "ShowNodes": {
@@ -2307,6 +2277,36 @@
                 0.1
               ]
             }
+          },
+          {
+            "iconType": "bomb_250kg",
+            "name": "fab250_slot2",
+            "reqModification": "il2_mdz_42",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_250m_43.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "12_25_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "fab50_x2_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "fab100_x2_slot3"
+              }
+            ]
           }
         ]
       },
@@ -2531,36 +2531,6 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bomb_250kg",
-            "name": "fab250_slot5",
-            "reqModification": "il2_mdz_42",
-            "ShowNodes": {
-              "node": "pylon_bomb2"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_fab_250m_43.blk",
-              "emitter": "bomb2",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 4,
-                "preset": "12_25_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "fab50_x2_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "fab100_x2_slot4"
-              }
-            ]
-          },
-          {
             "iconType": "bomb_50kg",
             "name": "fab50_der31_right",
             "ShowNodes": {
@@ -2611,6 +2581,36 @@
                 0.1
               ]
             }
+          },
+          {
+            "iconType": "bomb_250kg",
+            "name": "fab250_slot5",
+            "reqModification": "il2_mdz_42",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_250m_43.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "12_25_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "fab50_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "fab100_x2_slot4"
+              }
+            ]
           }
         ]
       },

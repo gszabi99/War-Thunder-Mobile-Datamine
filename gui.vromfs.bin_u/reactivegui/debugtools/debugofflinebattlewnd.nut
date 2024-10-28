@@ -121,7 +121,8 @@ function mkOfflineBattleMenuWnd() {
     size = flex()
     padding = saBordersRv
     behavior = HangarCameraControl
-    eventPassThrough = true
+    eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+    touchMarginPriority = TOUCH_BACKGROUND
     flow = FLOW_VERTICAL
     gap = hdpx(30)
     function onAttach() {
@@ -141,7 +142,7 @@ function mkOfflineBattleMenuWnd() {
           Computed(@() curData.get().units),
           @(value) savedUnitName.set(value),
           @(name) loc(getUnitLocId(name)),
-          @(allValues, mkLoc) allValues.keys().sort().map(@(value) { text = mkLoc(value), value }),
+          @(allValues, mkLoc) allValues.keys().sort().filter(@(v) v != "dummy_plane").map(@(value) { text = mkLoc(value), value }),
           loc("slotbar/selectUnit"))
       ])
       wndContent([

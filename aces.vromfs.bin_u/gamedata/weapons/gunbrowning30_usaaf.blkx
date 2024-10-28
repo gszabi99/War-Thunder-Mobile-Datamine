@@ -1792,7 +1792,7 @@
       }
     ]
   },
-  "30cal_tracer": {
+  "30cal_tracers": {
     "bullet": [
       {
         "mass": 0.0108,

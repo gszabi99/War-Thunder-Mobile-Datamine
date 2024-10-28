@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+let { fabs } = require("math")
+let { get_time_msec } = require("dagor.time")
+let { resetTimeout, defer, setInterval, clearTimer } = require("dagor.workcycle")
 let { isUnitsTreeOpen, columnsCfg } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { unseenUnits } = require("%rGui/unit/unseenUnits.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { availableUnitsList } = require("%rGui/unit/unitsWndState.nut")
 let { flagsWidth, blockSize, flagTreeOffset } = require("unitsTreeComps.nut")
-let { abs } = require("math")
-let { resetTimeout, defer } = require("dagor.workcycle")
 let { isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
@@ -17,24 +18,58 @@ let scrollHandler = ScrollHandler()
 let nodeToScroll = Watched(null)
 let scrollPos = Computed(@() (scrollHandler.elem?.getScrollOffsX() ?? 0))
 
-function scrollToUnit(name, xmbNode = null) {
-  if (!name)
+local animScrollCfg = null
+let aTimeScroll = 0.5
+let minScrollSpeed = hdpx(1000)
+
+
+function updateAnimScroll() {
+  if (animScrollCfg == null) {
+    clearTimer(updateAnimScroll)
     return
-  let selUnitIdx = availableUnitsList.value.findvalue(@(u) u.name == name)?.rank ?? 1
-  let scrollPosX = blockSize[0] * (columnsCfg.value[selUnitIdx] + 1) - (0.4 * (saSize[0] - flagsWidth))
-  if (abs(scrollPosX - scrollPos.value) > saSize[0] * 0.1)
-    if (!xmbNode)
-      scrollHandler.scrollToX(scrollPosX)
-    else
-      defer(@() gui_scene.setXmbFocus(xmbNode))
+  }
+  let { pos1, pos2, start, end, easing } = animScrollCfg
+  let time = get_time_msec()
+  if (time >= end)
+    clearTimer(updateAnimScroll)
+
+  let t = clamp((get_time_msec() - start).tofloat() / (end - start), 0, 1)
+  let v = easing(t)
+  scrollHandler.scrollToX(pos1[0] + (pos2[0] - pos1[0]) * v)
+  scrollHandler.scrollToY(pos1[1] + (pos2[1] - pos1[1]) * v)
+}
+
+function startAnimScroll(pos2) {
+  let pos1 = [
+    scrollHandler.elem?.getScrollOffsX() ?? 0
+    scrollHandler.elem?.getScrollOffsY() ?? 0
+  ]
+  let time = (1000 * min(aTimeScroll, max(fabs(pos1[0] - pos2[0]), fabs(pos1[1] - pos2[1])) / minScrollSpeed))
+    .tointeger()
+  if (time <= 0)
+    return
+
+  if (animScrollCfg != null)
+    clearTimer(updateAnimScroll)
+  let start = get_time_msec()
+  animScrollCfg = { pos1, pos2, start, end = start + time,
+    easing = @(t) t < 0.5 ? 2.0 * t * t : (1.0 - 2 * (1.0 - t) * (1.0 - t))
+  }
+  setInterval(0.01, updateAnimScroll)
+}
+
+function interruptAnimScroll() {
+  animScrollCfg = null
 }
 
 function scrollToRank(rank) {
+  interruptAnimScroll()
   let scrollPosX = blockSize[0] * ((columnsCfg.value?[rank] ?? 0) + 1) - 0.5 * (saSize[0] - flagsWidth)
   scrollHandler.scrollToX(scrollPosX)
 }
 
 function scrollForward() {
+  interruptAnimScroll()
   if (nodeToScroll.get() != null)
     resetTimeout(SCROLL_DELAY, @() defer(@() gui_scene.setXmbFocus(nodeToScroll.get())))
 }
@@ -101,9 +136,10 @@ return {
   scrollHandler
   scrollPos
   nodeToScroll
-  scrollToUnit
   scrollToRank
   scrollForward
   unseenArrowsBlock
   unseenArrowsBlockCtor
+  startAnimScroll
+  interruptAnimScroll
 }

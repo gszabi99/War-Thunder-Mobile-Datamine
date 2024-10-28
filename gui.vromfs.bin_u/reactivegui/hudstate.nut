@@ -3,7 +3,7 @@ from "%appGlobals/unitConst.nut" import *
 require("%rGui/onlyAfterLogin.nut")
 let { register_command } = require("console")
 let { round } =  require("math")
-let { setDrawNativeAirCrosshair  = null } = require("hudState")
+let { setDrawNativeAirCrosshair, setDrawNativeHitIndicator } = require("hudState")
 let interopGet = require("interopGen.nut")
 let { battleUnitName } = require("%appGlobals/clientState/clientState.nut")
 let { DM_TEST_EMPTY } = require("crosshair")
@@ -92,8 +92,12 @@ let aircraftCrosshairColor = Computed(function() {
   return (res & 0xFF000000) + (r << 16) + (g << 8) + b
 })
 
-setDrawNativeAirCrosshair?(false)
-isAppLoaded.subscribe(@(_) setDrawNativeAirCrosshair?(false))
+setDrawNativeAirCrosshair(false)
+setDrawNativeHitIndicator(false)
+isAppLoaded.subscribe(function(_) {
+  setDrawNativeAirCrosshair(false)
+  setDrawNativeHitIndicator(false)
+})
 
 return hudStateNative.__merge({
   areHintsHidden

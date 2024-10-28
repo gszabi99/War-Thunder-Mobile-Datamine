@@ -223,7 +223,7 @@ progressTime.subscribe(@(v) v != null ? progressUpdate() : null)
 let mkProgressText = @() {
   watch = progress
   rendObj = ROBJ_TEXT
-  pos = [0, -hdpx(20)]
+  pos = [0, -hdpx(30)]
   vplace = ALIGN_TOP
   halign = ALIGN_CENTER
   text = progress.get() ? progress.get() : ""
@@ -264,7 +264,8 @@ function mkIRCMActionItem(buttonConfig, actionItem) {
         hotkeys = mkGamepadHotkey(shortcutId)
         onElemState = @(v) stateFlags(v)
         children = [
-          progressTime.get() ? mkProgressText : mkActionItemProgress(actionItem, isAvailable && !isDisabled.value)
+          progressTime.get() ? mkProgressText : null
+          mkActionItemProgress(actionItem, isAvailable && !isDisabled.value)
           @() {
             watch = [stateFlags]
             rendObj = ROBJ_BOX
@@ -547,7 +548,6 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   let vibrationMult = getOptValue(OPT_HAPTIC_INTENSITY_ON_SHOOT)
 
   local isTouchPushed = false
-  local isHotkeyPushed = false
 
   function onStopTouch() {
     isTouchPushed = false
@@ -627,24 +627,25 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   function onStatePush() {
     if (isTouchPushed)
       return
-    isHotkeyPushed = true
     onButtonPush()
   }
   function onStateRelease() {
-    if (!isHotkeyPushed)
+    if (isTouchPushed)
       return
-    isHotkeyPushed = false
     onButtonReleaseWhileActiveZone()
   }
 
   let res = mkContinuousButtonParams(onStatePush, onStateRelease, hotkeyShortcut, stateFlags,
     isBulletBelt && (!isAvailable || isBlocked.value || (actionItem?.cooldownEndTime ?? 0) > get_mission_time()),  onStopTouch)
 
+  let behavior = [TouchAreaOutButton]
+  if (mainShortcut != "ID_BOMBS")
+    res.cameraControl <- true
+
   return @() res.__update({
     watch = isDisabled
     size = [touchButtonSize, touchButtonSize]
-    behavior = TouchAreaOutButton
-    eventPassThrough = mainShortcut != "ID_BOMBS"
+    behavior
     zoneRadiusX
     zoneRadiusY
     onTouchInsideChange = @(isInside) userHoldWeapInside.mutate(@(v) v[key] <- isInside)
@@ -696,7 +697,7 @@ function mkPlaneItem(buttonConfig, actionItem, ovr = {}) {
     watch = isGroupInAir
     size = [touchButtonSize, touchButtonSize]
     behavior = Behaviors.Button
-    eventPassThrough = true
+    cameraControl = true
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     hotkeys = mkGamepadHotkey(shortcutId)
@@ -750,9 +751,10 @@ function mkWeaponryContinuous(buttonConfig, actionItem, ovr = {}) {
     stateFlags)
   return res.__update({
     size = [touchButtonSize, touchButtonSize]
+    behavior = Behaviors.Button
+    cameraControl = true
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    eventPassThrough = true
     children = [
       mkRhombBtnBg(isAvailable, actionItem,
         @() playSound(key == TRIGGER_GROUP_PRIMARY ? "weapon_primary_ready" : "weapon_secondary_ready"))
@@ -880,7 +882,7 @@ function mkSimpleButton(buttonConfig, actionItem, ovr = {}) {
   let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
   return {
     behavior = Behaviors.Button
-    eventPassThrough = true
+    cameraControl = true
     size = [touchButtonSize, touchButtonSize]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
@@ -908,6 +910,11 @@ function mkSimpleButton(buttonConfig, actionItem, ovr = {}) {
   }.__update(ovr)
 }
 
+function mkAntiairButton(buttonConfig, actionItem, ovr = {}) {
+  let image = isInAntiairMode.get() ? "ui/gameuiskin#hud_ship_selection.svg" : "ui/gameuiskin#hud_ship_air_def_mode.svg"
+  return mkSimpleButton(buttonConfig.__merge({image}), actionItem, ovr)
+}
+
 let hasTargetCandidateTrigger = {}
 hasTargetCandidate.subscribe(@(v) v && !hasTarget.value ? anim_start(hasTargetCandidateTrigger) : null)
 
@@ -920,7 +927,7 @@ function mkFlagButton(getShortcut, iconComp, ovr) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     behavior = Behaviors.Button
-    eventPassThrough = true
+    cameraControl = true
     onElemState = @(v) stateFlags(v)
     onClick = @() toggleShortcut(shortcutId)
     hotkeys = mkGamepadHotkey(shortcutId)
@@ -965,7 +972,7 @@ function mkLockButtonImpl(getShortcut, ovr) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     behavior = Behaviors.Button
-    eventPassThrough = true
+    cameraControl = true
     onElemState = @(v) stateFlags(v)
     onClick = @() toggleShortcut(shortcutId)
     hotkeys = mkGamepadHotkey(shortcutId)
@@ -1008,7 +1015,7 @@ function mkDivingLockButton(buttonConfig, actionItem, ovr = {}) {
   return {
     key = shortcutId
     behavior = Behaviors.Button
-    eventPassThrough = true
+    cameraControl = true
     size = [touchButtonSize, touchButtonSize]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
@@ -1040,7 +1047,7 @@ function mkZoomButton(buttonConfig, actionItem, ovr = {}) {
     watch = [ canZoom, isDisabled, hasAimingModeForWeapon, isInZoom, unitType ]
     key = "btn_zoom"
     behavior = Behaviors.Button
-    eventPassThrough = true
+    cameraControl = true
     size = [touchButtonSize, touchButtonSize]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
@@ -1104,6 +1111,7 @@ return {
   mkGroupAttackButton
   mkZoomButton
   mkPlaneItem
+  mkAntiairButton
 
   mkActionItemEditView
   mkBulletEditView

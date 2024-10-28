@@ -1,0 +1,78 @@
+{
+  "bombGun": true,
+  "preset_cost": 200,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
+  "mesh": "us_1000lb_anm65a1",
+  "tags": {
+    "antiTankBomb": true,
+    "antiShipBomb": true
+  },
+  "bomb": {
+    "mass": 439.6,
+    "mass_lbs": 1000.0,
+    "explosiveType": "tnt",
+    "explosiveMass": 300.0,
+    "bombType": "he_bomb",
+    "bombName": "an_m65a1_fin_an_m113a1",
+    "dragCx": 0.042,
+    "caliber": 0.477,
+    "length": 1.765,
+    "distFromCmToStab": 1.05,
+    "sound": "weapon.bomb_std",
+    "explosionFx": "bomb_expl_500kg",
+    "explosionPatchRadius": 12.0,
+    "waterExplosionEffect": "bomb_water_explosion_big",
+    "explodeTreshold": 0.00001,
+    "explosionPatchHeightScale": 0.15,
+    "rendinstDamageRadius": 50.0,
+    "DamageParts": {
+      "body": {
+        "hp": 35.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
+      }
+    },
+    "damage": {
+      "explosive": {
+        "radius": 0.0,
+        "offset": 0.0
+      },
+      "shatter": {
+        "useRealShatters": true,
+        "countPortion": 0.0,
+        "segment": [
+          {
+            "radiusScale": 0.1,
+            "penetrationScale": 0.5,
+            "damageScale": 1.0,
+            "angles": [
+              0.0,
+              90.0
+            ],
+            "countPortion": 0.5
+          },
+          {
+            "radiusScale": 0.1,
+            "penetrationScale": 0.5,
+            "damageScale": 1.0,
+            "angles": [
+              270.0,
+              359.0
+            ],
+            "countPortion": 0.5
+          }
+        ]
+      }
+    },
+    "splash": {
+      "innerRadius": 7.0,
+      "outerRadius": 30.0,
+      "penetration": 125.0,
+      "damage": 6000.0,
+      "damageType": "explosion"
+    }
+  }
+}

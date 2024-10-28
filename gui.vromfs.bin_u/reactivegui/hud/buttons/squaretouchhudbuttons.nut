@@ -31,7 +31,7 @@ function mkSimpleSquareButton(shortcutId, img) {
   let stateFlags = Watched(0)
   return @() {
       behavior = Behaviors.Button
-      eventPassThrough = true
+      cameraControl = true
       size = [touchButtonSize, touchButtonSize]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER

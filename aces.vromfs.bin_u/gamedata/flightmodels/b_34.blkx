@@ -1,7 +1,7 @@
 {
   "model": "b_34",
   "fmFile": "fm/b_34.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_low_common.blk",
   "gyroSight": false,
@@ -2084,6 +2084,7 @@
         "index": 1,
         "tier": 6,
         "order": 1,
+        "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
             "iconType": "bomb_250kg_group",
@@ -2142,26 +2143,36 @@
             ]
           },
           {
-            "iconType": "bomb_500kg_group",
-            "name": "500lb",
-            "reqModification": "b-17_sbc",
+            "iconType": "bomb_250kg_group",
+            "name": "250lb_x4",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
-                "emitter": "bomb500_1",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb250_4",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
-                "emitter": "bomb500_2",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb250_5",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
-                "emitter": "bomb500_3",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb250_6",
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+                "separate": true,
+                "emitter": "bomb250_7",
                 "bullets": 1
               }
             ]
@@ -2178,6 +2189,47 @@
             }
           }
         ]
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 2,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "bomb_500kg_group",
+          "name": "500lb",
+          "reqModification": "b-17_sbc",
+          "Weapon": [
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb500_1",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb500_2",
+              "bullets": 1
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb500_3",
+              "bullets": 1
+            }
+          ],
+          "BannedWeaponPreset": [
+            {
+              "slot": 1,
+              "preset": "250lb"
+            },
+            {
+              "slot": 1,
+              "preset": "torp"
+            }
+          ]
+        }
       }
     ]
   },

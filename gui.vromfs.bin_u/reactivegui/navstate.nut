@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let logNS = log_with_prefix("[NAV_STATE] ")
 let { deferOnce } = require("dagor.workcycle")
+let { ComputedImmediate } = require("%sqstd/frp.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -11,7 +12,7 @@ let scenesVersion = Watched(0)
 let scenesOrderSaved = hardPersistWatched("navState.scenesOrder", [])
 let sceneBgList = Watched({})
 let sceneBgListFallback = Watched({})
-let scenesOrder = Computed(function(prev) {
+let scenesOrder = ComputedImmediate(function(prev) {
   let ver = scenesVersion //warning disable: -declared-never-used
   let top = []
   let res = []
@@ -85,7 +86,7 @@ function registerScene(id, scene, onClearScenes = null, openedCounterWatch = nul
   if (openedCounterWatch == null)
     return
 
-  let isOpenedWatch = Computed(@() type(openedCounterWatch.get()) == "bool" ? openedCounterWatch.get()
+  let isOpenedWatch = ComputedImmediate(@() type(openedCounterWatch.get()) == "bool" ? openedCounterWatch.get()
     : openedCounterWatch.get() > 0)
   let isOpened = scenesOrderSaved.value.indexof(id) != null
 

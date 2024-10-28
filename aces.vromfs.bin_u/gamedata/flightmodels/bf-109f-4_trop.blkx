@@ -1,7 +1,7 @@
 {
   "fmFile": "fm/bf-109f-4_trop.blk",
   "model": "bf_109f_4_trop",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,

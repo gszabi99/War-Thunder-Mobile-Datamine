@@ -5,7 +5,7 @@
   "subclass": "warShip",
   "dustFx": "water_units_dust",
   "useBotForAi": true,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "radioDist": 50000.0,
   "harmonizationSuffix": "_tomoe",
   "moveType": "ship",

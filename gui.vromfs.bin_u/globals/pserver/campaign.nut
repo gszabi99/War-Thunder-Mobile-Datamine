@@ -56,10 +56,11 @@ let campConfigs = Computed(function() {
   chooseByCampaign(res, "playerLevelRewards", campaign)
   filterByCampaign(res, "clientMissionRewards", campaign)
   filterByCampaign(res, "allUnits", campaign)
-  if ("campaign" in res?.allItems.findvalue(@(_) true)) //compatibility with 2024.08.26
-    filterByCampaign(res, "allItems", campaign)
+  if ("allBoosters" in res && "campaigns" not in res.allBoosters.findvalue(@(_) true)) //compatibility with 2024.10.15
+    res.allBoosters <- res.allBoosters.map(@(b) b.__merge({ campaigns = 0xFF }))
   else
-    filterByCampaignMask(res, "allItems", campaignBit)
+    filterByCampaignMask(res, "allBoosters", campaignBit)
+  filterByCampaignMask(res, "allItems", campaignBit)
   return res
 })
 
@@ -103,7 +104,6 @@ let campProfile = Computed(function(prev) {
   let { allUnits = {}, allItems = {} } = campConfigs.get()
   filterByListTbl(res, prev, "units", allUnits)
   filterByListTbl(res, prev, "items", allItems)
-  chooseListByCampaignTbl(res, prev, "receivedLevelsRewards", campaign) //compatibility with 2024.04.14
   chooseListByCampaignTbl(res, prev, "receivedLvlRewards", campaign)
   chooseListByCampaignTbl(res, prev, "levelInfo", campaign)
   chooseListByCampaignTbl(res, prev, "sharedStatsByCampaign", campaign)
@@ -122,7 +122,6 @@ let exportProfile = {
   premium = {}
   purchasesCount = {}
   todayPurchasesCount = {}
-  receivedLevelsRewards = {} //compatibility with 2024.04.14
   receivedLvlRewards = {}
   receivedMissionRewards = {}
   receivedSchRewards = {}

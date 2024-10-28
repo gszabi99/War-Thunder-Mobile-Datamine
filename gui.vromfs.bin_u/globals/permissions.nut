@@ -25,13 +25,14 @@ let defaults = {
   has_offline_battle_access = DBGLEVEL > 0
   can_view_player_uids = DBGLEVEL > 0
   can_view_update_suggestion = false
-  can_preload_request_ads_consent = false
   allow_chat = DBGLEVEL > 0
   allow_voice_messages = DBGLEVEL > 0
   can_skip_consent = false
   can_report_player = DBGLEVEL > 0
   has_payments_blocked_web_page = false
+  request_firebase_consent_eu_only = false
   has_att_warmingup_scene = false
+  allow_apk_update = false
 }
 
 let dbgPermissions = sharedWatched("dbgPermissions", @() {})

@@ -11,7 +11,7 @@ let { get_emulator_system_flags, get_emulator_input_flags, get_emulated_input_co
 let { get_platform_string_id } = require("platform")
 let { getCountryCode } = require("auth_wt")
 let { setInterval, clearTimer } = require("dagor.workcycle")
-let { is_texture_uhq_supported } = require("graphicsOptions")
+let { is_texture_uhq_supported, get_deferred_enabled } = require("graphicsOptions")
 let { get_common_local_settings_blk } = require("blkGetters")
 let { has_additional_graphics_content } = require("%appGlobals/permissions.nut")
 let { median } = require("%sqstd/math.nut")
@@ -30,6 +30,8 @@ let { isInSquad } = require("%appGlobals/squadState.nut")
 
 let OPT_GRAPHICS_QUALITY = addLocalUserOption("OPT_GRAPHICS_QUALITY")
 let OPT_FPS = addLocalUserOption("OPT_FPS")
+let OPT_RAYTRACING = addLocalUserOption("OPT_RAYTRACING")
+let OPT_AA = addLocalUserOption("OPT_AA")
 let OPT_TANK_MOVEMENT_CONTROL = addUserOption("OPT_TANK_MOVEMENT_CONTROL")
 
 let lastCluster = hardPersistWatched("lastCluster", "")
@@ -131,6 +133,7 @@ function onFrameTimes(evt, _eid, _comp) {
     mission = get_current_mission_name()
     fpsLimit = get_gui_option(OPT_FPS)
     videoSetting = get_gui_option(OPT_GRAPHICS_QUALITY)
+    raytracing = get_gui_option(OPT_RAYTRACING)
     sessionId = get_mp_session_id_int()
     tankMoveControlType = get_gui_option(OPT_TANK_MOVEMENT_CONTROL) ?? "stick_static"
     battery = get_battery()
@@ -153,6 +156,8 @@ function onFrameTimes(evt, _eid, _comp) {
     apkVersion = get_base_game_version_str()
     isSquad = wasInSquadLastBattle
     isUltraHigh = isUhq()
+    isDeferred = get_deferred_enabled()
+    aa = get_gui_option(OPT_AA)
   })
 
   sendCustomBqEvent("session_fps", data)

@@ -7,7 +7,7 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { slotBarSelectWnd } = require("slotBar.nut")
 let { selectedUnitToSlot, slots, resetSelectedUnitToSlot, canOpenSelectUnitWithModal } = require("slotBarState.nut")
 let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { unitToScroll } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { setUnitToScroll } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { treeNodeUnitPlateKey } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 
@@ -60,7 +60,7 @@ let openImpl = @(rect) addModalWindow({
 })
 
 function open() {
-  unitToScroll.set(selectedUnitToSlot.get())
+  setUnitToScroll(selectedUnitToSlot.get())
   resetTimeout(0.1, function() {
     if (!shouldOpen.get())
       return

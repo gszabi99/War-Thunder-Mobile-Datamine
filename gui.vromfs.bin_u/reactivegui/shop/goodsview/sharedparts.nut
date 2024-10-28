@@ -37,6 +37,7 @@ let offerW = hdpx(332)
 let offerH = hdpx(136)
 let offerPad = [hdpx(5), hdpx(20)]
 let titlePadding = hdpx(33)
+let titleWidth = hdpxi(250)
 
 let pricePlateH = goodsH - goodsBgH
 
@@ -555,6 +556,7 @@ function mkOfferTexts(title, endTime) {
   let titleComp = textArea({
     halign = ALIGN_LEFT
     vplace = ALIGN_BOTTOM
+    maxWidth = titleWidth
     text = utf8ToUpper(title)
   }.__update(fontVeryTinyAccented))
   return {

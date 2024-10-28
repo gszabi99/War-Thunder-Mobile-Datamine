@@ -791,6 +791,9 @@
     "template": "ex_decor_#20#",
     "externalArmor": true
   },
+  "firewall_armor_NN": {
+    "template": "firewall_armor_#80#"
+  },
   "fuse": {
     "fuse": {},
     "fuseN": {

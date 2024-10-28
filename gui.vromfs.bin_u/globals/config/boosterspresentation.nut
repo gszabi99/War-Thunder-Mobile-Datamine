@@ -4,6 +4,7 @@ let icons = {
   wp =        "ui/gameuiskin#wp_booster.avif"
   unitExp =   "ui/gameuiskin#unitExp_booster.avif"
   playerExp = "ui/gameuiskin#playerExp_booster.avif"
+  slotExp =  "ui/gameuiskin#slotsExp_booster.avif"
 }
 
 let getBoosterIcon = @(id) icons?[id] ?? unknownBooster

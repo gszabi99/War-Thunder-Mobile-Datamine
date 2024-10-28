@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
-let { windowActive } = require("%globalScripts/windowState.nut")
+let { windowActive } = require("%appGlobals/windowState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let cbs = hardPersistWatched("callbackWhenAppWillActive", [])

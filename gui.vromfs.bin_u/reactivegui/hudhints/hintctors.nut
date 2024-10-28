@@ -124,17 +124,18 @@ function mkTextWithIcon(text, icon, iconSize, width) {
   }
 }
 
-function simpleTextWithIcon(text, icon, width) {
+function simpleTextWithIcon(text, icon, bgColor, width) {
   let imgSize = array(2, hdpx(30)).map(@(v) v.tointeger())
-  return {
+  let textWidth = width - imgSize[0] - textGap
+  let content = {
     size = [width, SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL
     gap = textGap
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
-      mkTextByWidth(text, width - imgSize[0] - textGap,
-        { size = SIZE_TO_CONTENT, halign = ALIGN_LEFT, maxWidth = width })
+      mkTextByWidth(text, textWidth,
+        { size = SIZE_TO_CONTENT, halign = ALIGN_LEFT, maxWidth = textWidth })
       {
         rendObj = ROBJ_IMAGE
         size = imgSize
@@ -142,6 +143,7 @@ function simpleTextWithIcon(text, icon, width) {
       }
     ]
   }
+  return mkGradientBlock(bgColor, content, width)
 }
 
 function commonHintCtor(hint, bgColor, width = hintWidth) {
@@ -169,7 +171,7 @@ let hintCtors = {
       { halign = ALIGN_CENTER, maxWidth = maxHintWidth }.__update(fontTiny))
   chatLogTextTiny = @(hint) simpleText(hint.text,
     { halign = ALIGN_CENTER, maxWidth = maxChatLogWidth }.__update(fontTiny))
-  simpleTextWithIcon = @(hint) simpleTextWithIcon(hint?.text ?? "", hint?.icon, maxHintWidth)
+  simpleTextWithIcon = @(hint) simpleTextWithIcon(hint?.text ?? "", hint?.icon, defBgColor, maxHintWidth)
 }
 
 function registerHintCreator(id, ctor) {

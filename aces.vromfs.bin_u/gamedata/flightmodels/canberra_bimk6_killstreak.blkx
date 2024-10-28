@@ -6,7 +6,7 @@
     3.0,
     0.0
   ],
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "gForceTolerationMult": 10.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "gyroSight": false,

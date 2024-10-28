@@ -3,7 +3,7 @@ let { AIR, TANK } = require("%appGlobals/unitConst.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
-let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
+let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
 let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareIconBtn, purchasedPlate,
@@ -260,7 +260,7 @@ function mkOfferUnit(goods, onClick, state) {
       sf & S_HOVER ? bgHiglight : null
       currencyId == null ? null : mkCurrencyIcon(currencyId)
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
-      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
+      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : loc(getUnitLocId(unit)),
         endTime ?? timeRange?.end)
         mkUnitInfo(unit, {padding = offerPad})
       discountTagUnit(discountInPercent)

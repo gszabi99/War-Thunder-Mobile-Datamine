@@ -1,7 +1,7 @@
 {
   "model": "gloster_meteor_fmk8",
   "fmFile": "fm/meteor_fmk8.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "gForceTolerationMult": 10.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gearSinkRangeC": 0.09,

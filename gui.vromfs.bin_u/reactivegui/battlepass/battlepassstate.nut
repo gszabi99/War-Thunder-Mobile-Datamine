@@ -10,7 +10,7 @@ let { shopGoods } = require("%rGui/shop/shopState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { getRewardsViewInfo, shopGoodsToRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 
 
 let BP_GOODS_ID = "battle_pass"
@@ -162,7 +162,7 @@ let mkBpStagesList = @() Computed(function() {
     let goods = battlePassGoods.get()[bpType]
     if (goods == null)
       continue
-    foreach(viewInfo in getRewardsViewInfo(goods))
+    foreach(viewInfo in shopGoodsToRewardsViewInfo(goods))
       res.insert(0, {
         progress = addIdx--
         viewInfo

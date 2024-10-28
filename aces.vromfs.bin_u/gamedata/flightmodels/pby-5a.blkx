@@ -1,7 +1,7 @@
 {
   "model": "pby_5a",
   "fmFile": "fm/pby-5a.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "tpsCameraOffset": [
     -5.0,
     2.0,

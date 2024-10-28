@@ -1,6 +1,6 @@
 {
   "model": "il_10",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_attacker_metaparts.blk",
   "gyroSight": false,

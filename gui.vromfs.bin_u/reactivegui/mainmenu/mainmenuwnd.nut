@@ -14,7 +14,7 @@ let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut"
 let { btnOpenUnitAttr } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
 let { isMainMenuAttached } = require("mainMenuState.nut")
 let { totalPlayers } = require("%appGlobals/gameModes/gameModes.nut")
-let { curCampaign, campaignsList } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campaignsList, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let chooseCampaignWnd = require("chooseCampaignWnd.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -43,7 +43,6 @@ let { toBattleButtonForRandomBattles } = require("%rGui/mainMenu/toBattleButton.
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { boostersListActive, boostersHeight } = require("%rGui/boosters/boostersListActive.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { DBGLEVEL } = require("dagor.system")
@@ -229,10 +228,10 @@ let toBattleButtonPlace = {
       children = [
         squadPanel
         @() {
-          watch = serverConfigs
+          watch = campConfigs
           size = [SIZE_TO_CONTENT, boostersHeight]
           valign = ALIGN_CENTER
-          children = (serverConfigs.get()?.allBoosters.len() ?? 0) > 0 ? boostersListActive : null
+          children = (campConfigs.get()?.allBoosters.len() ?? 0) > 0 ? boostersListActive : null
         }
       ]
     }
@@ -279,7 +278,8 @@ return {
   key = {}
   size = saSize
   behavior = HangarCameraControl
-  eventPassThrough = true
+  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+  touchMarginPriority = TOUCH_BACKGROUND
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   onAttach = @() isMainMenuAttached(true)

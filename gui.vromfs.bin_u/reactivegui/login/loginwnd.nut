@@ -18,11 +18,9 @@ let { getCurrentLanguage } = require("dagor.localize")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { is_nswitch, is_ios } = require("%sqstd/platform.nut")
 let { GP_SUCCESS = 0, getGPStatus = @() 0 } = require("android.account.googleplay")
-let { isHMSAvailable = @() false } = require("android.account.huawei")
 
 let fbButtonVisible = getCurrentLanguage() != "Russian"
 let gpButtonVisible = getGPStatus() == GP_SUCCESS
-let hmsButtonVisible = isHMSAvailable()
 let loginName = mkWatched(persist, "loginName", "")
 let loginPas = mkWatched(persist, "loginPas", "")
 let twoStepAuthCode = mkWatched(persist, "twoStepAuthCode", "")
@@ -374,8 +372,7 @@ let loginButtonCtors = {
     : @() mkCustomButton(googleLoginButtonContent,
       @() eventbus_send("doLogin", { loginType = LT_GOOGLE }),
         BRIGHT),
-   [LT_HUAWEI] =  !hmsButtonVisible ? null
-    : @() mkCustomButton(huaweiLoginButtonContent,
+   [LT_HUAWEI] = @() mkCustomButton(huaweiLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_HUAWEI }),
         BRIGHT),
   [LT_APPLE] = @() mkCustomButton(appleLoginButtonContent,

@@ -150,6 +150,8 @@ function getPublicButtons() {
     res.append(REPLAYS)
   if (can_write_replays.get() && hasUnsavedReplay.get())
     res.append(SAVE_LAST_REPLAY)
+  if (has_offline_battle_access.get())
+    res.append(OFFLINE_BATTLES)
   res.append(BUG_REPORT)
   return res
 }
@@ -167,8 +169,6 @@ function getDevButtons() {
     res.append(DEBUG_CONFIGS, DEBUG_PROFILE, DEBUG_SHOP)
   if (can_use_debug_console.value)
     res.append(DEBUG_COMMANDS)
-  if (has_offline_battle_access.value)
-    res.append(OFFLINE_BATTLES)
   return res
 }
 

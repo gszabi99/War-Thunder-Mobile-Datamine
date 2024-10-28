@@ -13,7 +13,6 @@ let PKG_NAVAL_HQ = "pkg_naval_hq"
 let PKG_GROUND = "pkg_ground"
 let PKG_GROUND_HQ = "pkg_ground_hq"
 let PKG_LVL_AIR_LOCATIONS = "pkg_lvl_air_locations"
-let PKG_LVL_AIR_LOCATIONS_HQ = "pkg_lvl_air_locations_hq"
 let PKG_COMMON = "pkg_common"
 let PKG_COMMON_HQ = "pkg_common_hq"
 let PKG_DEV = "pkg_dev"
@@ -24,9 +23,11 @@ let MB = 1 << 20
 let nbsp = "\u00A0" // Non-breaking space char
 let comma = loc("ui/comma")
 
-let naval     = [ PKG_COMMON, PKG_NAVAL, PKG_COMMON_HQ, PKG_NAVAL_HQ ]
-let ground    = [ PKG_COMMON, PKG_GROUND, PKG_COMMON_HQ, PKG_GROUND_HQ ]
-let air       = [ PKG_COMMON, PKG_LVL_AIR_LOCATIONS, PKG_COMMON_HQ, PKG_LVL_AIR_LOCATIONS_HQ ]
+let commonAddonsByPostfix = {
+  naval     = [ PKG_COMMON, PKG_NAVAL, PKG_COMMON_HQ, PKG_NAVAL_HQ ],
+  ground    = [ PKG_COMMON, PKG_GROUND, PKG_COMMON_HQ, PKG_GROUND_HQ ],
+  aircraft  = [ PKG_COMMON, PKG_COMMON_HQ ],
+}
 let dev       = [ PKG_DEV ]
 let initialAddons = [ "pkg_secondary_hq", "pkg_secondary" ]
 let latestDownloadAddonsByCamp = { //addons to download after other required campaign addons is already downloaded
@@ -34,12 +35,12 @@ let latestDownloadAddonsByCamp = { //addons to download after other required cam
 }
 let latestDownloadAddons = []
 let commonUhqAddons = ["pkg_environment_uhq"]
-local ovrHangarAddon = null //{ addons : array<string>, hangarPath : string }
+let ovrHangarAddon = {addons = [], hangarPath=""}//{ addons : array<string>, hangarPath : string }
 
 let gameModeAddonToAddonSetMap = {
-  [PKG_NAVAL] = naval,
-  [PKG_GROUND] = ground,
-  [PKG_LVL_AIR_LOCATIONS] = air,
+  [PKG_NAVAL] = commonAddonsByPostfix.naval,
+  [PKG_GROUND] = commonAddonsByPostfix.ground,
+  [PKG_LVL_AIR_LOCATIONS] = commonAddonsByPostfix.aircraft,
 }
 
 let campaignPostfix = {
@@ -85,7 +86,8 @@ if (addonsBlk != null)
 
     let { hangarPath = "" } = b
     if (hangarPath != "") {
-      ovrHangarAddon = { addons = [addon], hangarPath }
+      ovrHangarAddon.clear()
+      ovrHangarAddon.__update({ addons = [addon], hangarPath })
       latestDownloadAddons.append(addon)
       if (hq) {
         latestDownloadAddons.append(addonHq)
@@ -202,8 +204,7 @@ function getAddonsSizeStr(addons) {
 
 return freeze({
   campaignPostfix
-  naval
-  ground
+  commonAddonsByPostfix
   dev
   initialAddons
   commonUhqAddons

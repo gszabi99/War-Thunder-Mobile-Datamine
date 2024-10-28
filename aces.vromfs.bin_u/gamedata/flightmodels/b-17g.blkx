@@ -1,7 +1,7 @@
 {
   "model": "b_17g",
   "fmFile": "fm/b-17g.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "tpsCameraOffset": [
     -11.0,
     3.0,

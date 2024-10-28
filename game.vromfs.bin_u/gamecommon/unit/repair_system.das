@@ -148,7 +148,7 @@ def repair_system_init_handle_es(evt : CmdInitComponent;
   // load parts
   load_repair_parts(
     unit,
-    unit.isTank || unit.isWalker || unit.isHuman ? get_dm_params().tankRepairParts : get_dm_params().shipRepairParts, false,
+    unit.isTank || unit.isWalker || unit.isHuman ? get_wt_dm_params().tankRepairParts : get_wt_dm_params().shipRepairParts, false,
     repair_system_parts_id,
     repair_system_parts_state,
     repair_system_parts_hp,
@@ -274,7 +274,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
   if gm != null
     repair_system_speed_multiplier *= gm.crewRepairSpeedMultiplier
   if get_flag(repair_system_state, RepairState REPAIR_ON_BASE)
-    repair_system_speed_multiplier *= get_dm_params().repairOnBaseMul
+    repair_system_speed_multiplier *= get_wt_dm_params().repairOnBaseMul
   if !get_flag(repair_system_state, RepairState HAS_REPAIR_TOOLKIT) && get_flag(repair_system_state, RepairState REPAIR_PENALTY_WITHOUT_TOOLKIT)
     repair_system_speed_multiplier *= repair_system_repair_hp_multiplier
 
@@ -468,25 +468,6 @@ def repair_system_update_es(act : UpdateStageInfoAct;
                       repairWithoutModsOnly=get_flag(repair_system_state, RepairState REPAIR_WITHOUT_MODS_ONLY)
                     ]])
 
-[es(tag=server)]
-def repair_system_on_damage_es(evt : EventUnitDamage;
-                               uid : int;
-                               repair_system_state : uint&;
-                               var repair_system_parts_hp : Point4List&;
-                               repair_system_parts_state : UInt32List&;
-                               repair_system_parts_id : PartIdList&)
-  if !get_flag(repair_system_state, RepairState SUITABLE_FOR_REPAIR)
-    return
-
-  var unit = get_unit(uid)
-  if unit == null || unit.isDelayed || !unit.isAuthority
-    return
-
-  for part_id, part_state, part_hp in repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp
-    if part_id.id == evt.partId.id && get_flag(part_state, DmPartRepairState IN_PROGRESS)
-      part_hp.x = get_part_hp(unit.dmData, part_id)
-      break
-
 
 [es]
 def repair_system_stop_repair_handle_es(evt : EventRepairSystemStopRepair;
@@ -612,7 +593,7 @@ def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingR
       else
         delay = 0.001f
     else
-      delay = get_dm_params().repairDelayTimerForTanks
+      delay = get_wt_dm_params().repairDelayTimerForTanks
 
     let can_start = can_start_repair(
       unit, repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,

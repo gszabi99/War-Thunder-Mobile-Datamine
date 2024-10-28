@@ -3,10 +3,10 @@ from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_common_local_settings_blk, get_settings_blk } = require("blkGetters")
 let { get_maximum_frames_per_second, is_broken_grass_flag_set, is_texture_uhq_supported, should_notify_about_restart,
-  get_platform_window_resolution, get_default_graphics_preset, get_deferred_enabled
+  get_platform_window_resolution, get_default_graphics_preset, is_broken_deferred_flag_set, is_metalfx_upscale_supported = @() false
 } = require("graphicsOptions")
 let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
-let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTION, OPT_AA, mkOptionValue
+let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTION, OPT_DEFERRED, OPT_AA, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
@@ -26,8 +26,6 @@ let graphicsQuality = mkOptionValue(OPT_GRAPHICS_QUALITY, defaultQuality, valida
 let resolutionList = (get_settings_blk()?.graphics.forceLowPreset ?? false) ? ["low"]
   : (is_android && (get_user_system_info()?.physicalMemory ?? minMemory) < minMemory) ? ["low", "medium"]
   : ["low", "medium", "high"]
-
-let aaList = (is_android || is_pc) ? (get_deferred_enabled() ? ["fxaa", "fxaa_hq", "taa"] : ["fxaa"]) : []
 
 let validateResolution = @(q) resolutionList.contains(q) ? q : resolutionList[0]
 
@@ -90,14 +88,33 @@ let optFpsLimit = {
   }
 }
 
-let defaultAA = aaList.len() > 0 ? aaList[0] : ""
-let validateAA = @(a) aaList.contains(a) ? a : defaultAA
-let aaValue = mkOptionValue(OPT_AA, defaultAA, validateAA)
+let force_forward = get_settings_blk()?.video.forceForward || is_broken_deferred_flag_set()
+let deferredValues = force_forward ? [false] : [false, true]
+let validateDeferred = @(a) deferredValues.contains(a) ? a : false
+let deferredValue = mkOptionValue(OPT_DEFERRED, deferredValues[0], validateDeferred)
+
+let aaList = Computed(@() deferredValue.get() ? ["low_fxaa", "high_fxaa", "mobile_taa"].extend(is_ios && is_metalfx_upscale_supported() ?
+  ["metalfx_fxaa"] : []) : (is_ios ? ["metalfx"] : ["low_fxaa"]))
+let validateAA = @(a) aaList.value.contains(a) ? a : aaList.value[0]
+let aaValue = mkOptionValue(OPT_AA, aaList.value[0], validateAA)
+
+let optDeferred = {
+  locId = "options/deferred"
+  ctrlType = OCT_LIST
+  value = deferredValue
+  list = deferredValues
+  valToString = @(v) loc(v ? "options/on" : "options/off")
+  function setValue(v) {
+    deferredValue(v)
+    aaValue(aaList.value[0])
+  }
+}
+
 let optAntiAliasing = {
   locId = "options/aa_options"
   ctrlType = OCT_LIST
   value = aaValue
-  list = aaList
+  list = Computed(@() aaList.value.len() > 1 ? aaList.value : [])
   valToString = @(v) loc($"options/aa_{v}")
   function setValue(v) {
     aaValue(v)
@@ -151,10 +168,11 @@ return {
     optQuality
     { comp = restartTxt }
     optResolution
-    aaList.len() > 1 ? optAntiAliasing : null
     optFpsLimit
     inline_raytracing_available() ? optRayTracing : null
     isUhqSupported ? optUhqTextures : null
+    force_forward ? null : optDeferred
+    optAntiAliasing
   ]
   isUhqAllowed = Computed(@() isUhqSupported && has_additional_graphics_content.value)
   needUhqTextures

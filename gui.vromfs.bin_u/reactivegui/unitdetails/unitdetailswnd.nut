@@ -116,7 +116,8 @@ let unitInfoPanelPlace = @() {
 
     hplace = ALIGN_RIGHT
     behavior = [ Behaviors.Button, HangarCameraControl ]
-    eventPassThrough = true
+    eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+    touchMarginPriority = TOUCH_BACKGROUND
     onClick = closeUnitDetailsWnd
   }, unitToShow)
 }
@@ -171,7 +172,8 @@ let sceneRoot = {
   key = openCount
   size = [ sw(100), sh(100) ]
   behavior = HangarCameraControl
-  eventPassThrough = true
+  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+  touchMarginPriority = TOUCH_BACKGROUND
   animations = wndSwitchAnim
 
   function onAttach() {

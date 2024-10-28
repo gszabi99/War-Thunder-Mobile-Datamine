@@ -540,7 +540,7 @@
             }
           ],
           "varSetBool": {
-            "value": true,
+            "value": false,
             "var": "is_change_units_random",
             "fromDescriptor": "isChangeUnitsRandom"
           },

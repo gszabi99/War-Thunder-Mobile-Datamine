@@ -75,7 +75,7 @@ let arrowAnimations = [
   { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.3, easing = OutQuad, playFadeOut = true }
 ]
 
-local function addArrow(orient, box, size, obstacles, res) {
+function addArrow(orient, box, size, obstacles, res) {
   local { pos, rotate } = orient
   pos[0] += box?.arrowOffset[0] ?? 0.
   pos[1] += box?.arrowOffset[1] ?? 0.
@@ -88,7 +88,7 @@ local function addArrow(orient, box, size, obstacles, res) {
   }))
 }
 
-local function mkArrows(boxes) {
+function mkArrows(boxes) {
   if (boxes.len() == 0)
     return []
   let obstacles = clone boxes

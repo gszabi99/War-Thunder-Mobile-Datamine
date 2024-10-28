@@ -1,6 +1,6 @@
 {
   "model": "f8f1",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "gForceTolerationMult": 1.3,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/postwar_fighter_metaparts.blk",
   "fmFile": "fm/f8f1.blk",

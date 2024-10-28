@@ -41,27 +41,27 @@ return {
       "name": "firework_kit"
     },
     "ircm_kit": {
-      "count": 1100,
+      "count": 1000,
       "name": "ircm_kit"
     },
     "ship_smoke_screen_system_mod": {
-      "count": 1050,
+      "count": 9351,
       "name": "ship_smoke_screen_system_mod"
     },
     "ship_tool_kit": {
-      "count": 1050,
+      "count": 17673,
       "name": "ship_tool_kit"
     },
     "spare": {
-      "count": 1021,
+      "count": 1203,
       "name": "spare"
     },
     "tank_extinguisher": {
-      "count": 1021,
+      "count": 4934,
       "name": "tank_extinguisher"
     },
     "tank_tool_kit_expendable": {
-      "count": 1040,
+      "count": 8161,
       "name": "tank_tool_kit_expendable"
     }
   },
@@ -169,6 +169,9 @@ return {
     "jp_armoredcruiser_ikoma": {
       "factory": true
     },
+    "jp_battlecruiser_amagi": {
+      "factory": true
+    },
     "jp_battlecruiser_kongo": {
       "factory": true
     },
@@ -176,6 +179,9 @@ return {
       "factory": true
     },
     "jp_cruiser_kako": {
+      "factory": true
+    },
+    "jp_destroyer_hatsuzuki": {
       "factory": true
     },
     "jp_st_a3": {
@@ -221,6 +227,9 @@ return {
       "factory": true
     },
     "us_cruiser_des_moines_class": {
+      "factory": true
+    },
+    "us_destroyer_fletcher_nicholas": {
       "factory": true
     },
     "us_destroyer_mitscher": {
@@ -290,7 +299,7 @@ return {
       "forest": true
     }
   },
-  "timeMs": 1727249518116,
+  "timeMs": 1728982336861,
   "units": {
     "a-20g": {
       "attrLevels": {},
@@ -306,6 +315,51 @@ return {
       "sp": 0,
       "weapons": {
         "a-20g_default": true
+      }
+    },
+    "am_1_mauler": {
+      "attrLevels": {},
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 0,
+      "mods": {},
+      "name": "am_1_mauler",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "am_1_mauler_default": true
+      }
+    },
+    "am_1_mauler_prem": {
+      "attrLevels": {},
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "aircraft_mod_1": true,
+        "aircraft_mod_10": true,
+        "aircraft_mod_11": true,
+        "aircraft_mod_12": true,
+        "aircraft_mod_2": true,
+        "aircraft_mod_3": true,
+        "aircraft_mod_4": true,
+        "aircraft_mod_5": true,
+        "aircraft_mod_6": true,
+        "aircraft_mod_7": true,
+        "aircraft_mod_8": true,
+        "aircraft_mod_9": true
+      },
+      "name": "am_1_mauler_prem",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "am_1_mauler_prem_default": true
       }
     },
     "ar_2": {
@@ -457,6 +511,22 @@ return {
       "sp": 0,
       "weapons": {
         "bf-109c_1_default": true
+      }
+    },
+    "bf-109c_1_promo": {
+      "attrLevels": {},
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 0,
+      "mods": {},
+      "name": "bf-109c_1_promo",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "bf-109c_1_promo_default": true
       }
     },
     "bf-109e-1": {
@@ -1384,6 +1454,50 @@ return {
         "fr_amx_30_b2_brenus_default": true
       }
     },
+    "fr_amx_32": {
+      "attrLevels": {
+        "tank_crew": {
+          "agility": 5,
+          "eyesight": 5,
+          "vitality": 5
+        },
+        "tank_fire_power": {
+          "accuracy": 5,
+          "loading_time_mult": 5,
+          "tracking": 5
+        },
+        "tank_protection": {
+          "battleRepairItems": 5,
+          "driving": 5,
+          "field_repair": 5
+        }
+      },
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "art_support": true,
+        "art_support_highcaliber": false,
+        "art_support_mortars": false,
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_engine_smoke_screen_system": true,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
+      },
+      "name": "fr_amx_32",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "fr_amx_32_default": true
+      }
+    },
     "fr_bat_chat_25t": {
       "attrLevels": {},
       "curencyOpId": -1,
@@ -2212,6 +2326,50 @@ return {
         "germ_destroyer_class1936a_mob_z32_default": true
       }
     },
+    "germ_destroyer_class1936c_z47": {
+      "attrLevels": {
+        "ship_artillery": {
+          "attrib_ai_aa_accuracy": 5,
+          "attrib_ai_aa_distance": 5,
+          "attrib_he_shell_damage": 5,
+          "attrib_player_gun_accuracy": 5,
+          "attrib_player_gun_reload_rate": 5
+        },
+        "ship_damage_control": {
+          "attrib_torpedo_count": 5,
+          "attrib_torpedo_distance": 5
+        },
+        "ship_engine_room": {
+          "attrib_ship_endurance": 5,
+          "attrib_ship_max_speed": 5,
+          "attrib_ship_steering": 5
+        }
+      },
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "maintanance_new_engines": true,
+        "maintanance_new_propellers": false,
+        "maintanance_powered_toolkit": false,
+        "protection_ammo_wetting": false,
+        "protection_new_fireProtection": true,
+        "protection_new_sonar": false,
+        "weapons_contact_mines": false,
+        "weapons_depth_charges": true,
+        "weapons_torpedo_damage_mode": false,
+        "weapons_torpedo_movement_mode": true
+      },
+      "name": "germ_destroyer_class1936c_z47",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "germ_destroyer_class1936c_z47_default": true
+      }
+    },
     "germ_destroyer_rckt_hamburg": {
       "attrLevels": {},
       "curencyOpId": -1,
@@ -2226,6 +2384,22 @@ return {
       "sp": 0,
       "weapons": {
         "germ_destroyer_rckt_hamburg_default": true
+      }
+    },
+    "germ_frigate_rckt_brandenburg": {
+      "attrLevels": {},
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 0,
+      "mods": {},
+      "name": "germ_frigate_rckt_brandenburg",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "germ_frigate_rckt_brandenburg_default": true
       }
     },
     "germ_frigate_rckt_bremen": {
@@ -2826,6 +3000,50 @@ return {
         "germ_ru251_default": true
       }
     },
+    "germ_sturmpanzer_IV_brummbar": {
+      "attrLevels": {
+        "tank_crew": {
+          "agility": 5,
+          "eyesight": 5,
+          "vitality": 5
+        },
+        "tank_fire_power": {
+          "accuracy": 5,
+          "loading_time_mult": 5,
+          "tracking": 5
+        },
+        "tank_protection": {
+          "battleRepairItems": 5,
+          "driving": 5,
+          "field_repair": 5
+        }
+      },
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "art_support": true,
+        "art_support_highcaliber": false,
+        "art_support_mortars": false,
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_engine_smoke_screen_system": true,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
+      },
+      "name": "germ_sturmpanzer_IV_brummbar",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "germ_sturmpanzer_IV_brummbar_default": true
+      }
+    },
     "germ_sub_type_21": {
       "attrLevels": {},
       "curencyOpId": -1,
@@ -3196,6 +3414,44 @@ return {
         "i_185_m82_default": true
       }
     },
+    "i_225": {
+      "attrLevels": {},
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 0,
+      "mods": {},
+      "name": "i_225",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "i_225_default": true
+      }
+    },
+    "i_225_prem": {
+      "attrLevels": {},
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "aircraft_mod_1": true,
+        "aircraft_mod_2": true,
+        "aircraft_mod_3": true,
+        "aircraft_mod_4": true,
+        "aircraft_mod_5": true
+      },
+      "name": "i_225_prem",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "i_225_prem_default": true
+      }
+    },
     "il-10": {
       "attrLevels": {},
       "curencyOpId": -1,
@@ -3302,22 +3558,6 @@ return {
       "sp": 0,
       "weapons": {
         "il_2_1941_default": true
-      }
-    },
-    "il_2m_1943": {
-      "attrLevels": {},
-      "curencyOpId": -1,
-      "currentSkins": {},
-      "exp": 0,
-      "isCurrent": false,
-      "isUpgraded": false,
-      "level": 0,
-      "mods": {},
-      "name": "il_2m_1943",
-      "seenLevel": -1,
-      "sp": 0,
-      "weapons": {
-        "il_2m_1943_default": true
       }
     },
     "il_4": {
@@ -3588,6 +3828,50 @@ return {
       "sp": 0,
       "weapons": {
         "jp_armoredcruiser_ikoma_default": true
+      }
+    },
+    "jp_battlecruiser_amagi": {
+      "attrLevels": {
+        "ship_artillery": {
+          "attrib_ai_aa_accuracy": 5,
+          "attrib_ai_aa_distance": 5,
+          "attrib_he_shell_damage": 5,
+          "attrib_player_gun_accuracy": 5,
+          "attrib_player_gun_reload_rate": 5
+        },
+        "ship_damage_control": {
+          "attrib_torpedo_count": 5,
+          "attrib_torpedo_distance": 5
+        },
+        "ship_engine_room": {
+          "attrib_ship_endurance": 5,
+          "attrib_ship_max_speed": 5,
+          "attrib_ship_steering": 5
+        }
+      },
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "maintanance_new_engines": true,
+        "maintanance_new_propellers": false,
+        "maintanance_powered_toolkit": false,
+        "protection_ammo_wetting": false,
+        "protection_new_fireProtection": true,
+        "protection_new_sonar": false,
+        "weapons_contact_mines": false,
+        "weapons_depth_charges": true,
+        "weapons_torpedo_damage_mode": false,
+        "weapons_torpedo_movement_mode": true
+      },
+      "name": "jp_battlecruiser_amagi",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "jp_battlecruiser_amagi_default": true
       }
     },
     "jp_battlecruiser_kongo": {
@@ -4096,6 +4380,50 @@ return {
       "sp": 0,
       "weapons": {
         "jp_type_3_chi_nu_75cm_type_5_default": true
+      }
+    },
+    "jp_type_5_ho_ri_production": {
+      "attrLevels": {
+        "tank_crew": {
+          "agility": 5,
+          "eyesight": 5,
+          "vitality": 5
+        },
+        "tank_fire_power": {
+          "accuracy": 5,
+          "loading_time_mult": 5,
+          "tracking": 5
+        },
+        "tank_protection": {
+          "battleRepairItems": 5,
+          "driving": 5,
+          "field_repair": 5
+        }
+      },
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "art_support": true,
+        "art_support_highcaliber": false,
+        "art_support_mortars": false,
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_engine_smoke_screen_system": true,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
+      },
+      "name": "jp_type_5_ho_ri_production",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "jp_type_5_ho_ri_production_default": true
       }
     },
     "jp_type_74_mod_g_kai": {
@@ -4662,6 +4990,28 @@ return {
         "p-47n-15_default": true
       }
     },
+    "p-51_mk1a_usaaf": {
+      "attrLevels": {},
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "aircraft_mod_1": true,
+        "aircraft_mod_2": true,
+        "aircraft_mod_3": true,
+        "aircraft_mod_4": true,
+        "aircraft_mod_5": true
+      },
+      "name": "p-51_mk1a_usaaf",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "p-51_mk1a_usaaf_default": true
+      }
+    },
     "p-51c-10-nt": {
       "attrLevels": {},
       "curencyOpId": -1,
@@ -4978,6 +5328,32 @@ return {
       "sp": 0,
       "weapons": {
         "sw_strv_103c_default": true
+      }
+    },
+    "ta_154a_1": {
+      "attrLevels": {},
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "aircraft_mod_1": true,
+        "aircraft_mod_2": true,
+        "aircraft_mod_3": true,
+        "aircraft_mod_4": true,
+        "aircraft_mod_5": true,
+        "aircraft_mod_6": true,
+        "aircraft_mod_7": true,
+        "aircraft_mod_8": true,
+        "aircraft_mod_9": true
+      },
+      "name": "ta_154a_1",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "ta_154a_1_default": true
       }
     },
     "tandem_mai": {
@@ -5389,7 +5765,9 @@ return {
         "protection_new_fireProtection": true,
         "protection_new_sonar": false,
         "weapons_contact_mines": false,
-        "weapons_depth_charges": true
+        "weapons_depth_charges": true,
+        "weapons_torpedo_damage_mode": false,
+        "weapons_torpedo_movement_mode": true
       },
       "name": "uk_battleship_orion",
       "seenLevel": -1,
@@ -5472,6 +5850,25 @@ return {
       "sp": 0,
       "weapons": {
         "uk_centurion_action_x_default": true
+      }
+    },
+    "uk_challenger_1": {
+      "attrLevels": {},
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 0,
+      "mods": {
+        "art_support": true,
+        "tank_engine_smoke_screen_system": true
+      },
+      "name": "uk_challenger_1",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "uk_challenger_1_default": true
       }
     },
     "uk_chieftain_mk_10": {
@@ -6748,6 +7145,50 @@ return {
       "sp": 0,
       "weapons": {
         "us_m60a1_default": true
+      }
+    },
+    "us_m60a3_slep": {
+      "attrLevels": {
+        "tank_crew": {
+          "agility": 5,
+          "eyesight": 5,
+          "vitality": 5
+        },
+        "tank_fire_power": {
+          "accuracy": 5,
+          "loading_time_mult": 5,
+          "tracking": 5
+        },
+        "tank_protection": {
+          "battleRepairItems": 5,
+          "driving": 5,
+          "field_repair": 5
+        }
+      },
+      "curencyOpId": -1,
+      "currentSkins": {},
+      "exp": 0,
+      "isCurrent": false,
+      "isUpgraded": false,
+      "level": 25,
+      "mods": {
+        "art_support": true,
+        "art_support_highcaliber": false,
+        "art_support_mortars": false,
+        "art_support_smoke": false,
+        "machinegun_belt_ap": true,
+        "machinegun_belt_stealth": false,
+        "machinegun_belt_tracer": false,
+        "tank_engine_smoke_screen_system": true,
+        "tank_smoke_screen_long_duration": false,
+        "tank_smoke_screen_low_cooldown": true,
+        "tank_smoke_screen_smoke_shell": false
+      },
+      "name": "us_m60a3_slep",
+      "seenLevel": -1,
+      "sp": 0,
+      "weapons": {
+        "us_m60a3_slep_default": true
       }
     },
     "us_m728": {

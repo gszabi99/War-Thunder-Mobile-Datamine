@@ -64,7 +64,7 @@ let isSlotMaxSkills = Computed(function() {
     null != cat.attrList.findvalue(@(attr) attr.levelCost.len() > (slot.attrLevels?[cat.id][attr.id] ?? 0)))
 })
 
-function unseenSlotAttrByIdx(idx) {
+function mkUnseenSlotAttrByIdx(idx) {
   let attrDataByIdx = Computed(function() {
     let slot = slots.get()?[idx]
     return {
@@ -208,7 +208,7 @@ return {
   totalSlotSp
   leftSlotSp
   isSlotMaxSkills
-  unseenSlotAttrByIdx
+  mkUnseenSlotAttrByIdx
   resetAttrState
   applyAttributes
   hasUpgradedAttrUnitNotUpdatable

@@ -305,12 +305,13 @@ function mkCircleTankPrimaryGun(actionItem, key = "btn_weapon_primary", countCto
 
     let res = needContinuous
       ? mkContinuousButtonParams(onTouchBegin, @() setShortcutOff("ID_FIRE_GM"), "ID_FIRE_GM", primStateFlags)
-          .__update({ behavior = TouchAreaOutButton })
+          .__update({ behavior = TouchAreaOutButton, cameraControl = true })
       : {
           behavior = Behaviors.Button
           onElemState = @(v) primStateFlags(v)
           hotkeys = mkGamepadHotkey("ID_FIRE_GM")
           onClick = onTouchBegin
+          cameraControl = true
         }
 
     return res.__update({ //warning disable: -unwanted-modification
@@ -318,7 +319,6 @@ function mkCircleTankPrimaryGun(actionItem, key = "btn_weapon_primary", countCto
       key
       size = [bigButtonSize, bigButtonSize]
       group = primGroup
-      eventPassThrough = true
       children = [
         mkCircleProgressBg(bigButtonSize, actionItem)
         mkBtnBorder(bigButtonSize, isAvailable, primStateFlags)
@@ -360,7 +360,7 @@ function mkCircleTankMachineGun(actionItemW) {
       key = "btn_machinegun"
       size = [buttonSize, buttonSize]
       behavior = TouchAreaOutButton
-      eventPassThrough = true
+      cameraControl = true
       children = [
         mkCircleProgressBg(buttonSize, actionItem)
         mkBtnBorder(buttonSize, isAvailable, stateFlags)
@@ -394,9 +394,10 @@ let mkCircleTankSecondaryGun = @(shortcutId, img = null) @(actionItem) function(
 
   return res.__update({
     watch = [allowShoot, primaryRocketGun]
+    behavior = Behaviors.Button
+    cameraControl = true
     key = "btn_weapon_secondary"
     size = [buttonSize, buttonSize]
-    eventPassThrough = true
     children = [
       mkCircleProgressBg(buttonSize, actionItem)
       mkBtnBorder(buttonSize, isAvailable, stateFlags)
@@ -418,7 +419,7 @@ function getWeapStateFlags(key) {
 
 let lowerCamera = @() lowerAircraftCamera(true)
 
-function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, eventPassThrough, canLowerCamera){
+function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, hasCameraControl, canLowerCamera){
   let isDisabled = mkIsControlDisabled(shortcutId)
   let isAvailable = Computed(@() isWeaponAvailable(weapon.get()) && !isDisabled.get())
   let stateFlags = getWeapStateFlags(shortcutId)
@@ -469,12 +470,13 @@ function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, eventPassThrou
   }
 
   let res = mkContinuousButtonParams(onStatePush, onStateRelease, shortcutId, stateFlags)
+  res.behavior <- [TouchAreaOutButton]
+  if (hasCameraControl)
+    res.cameraControl <- true
   return @() !hasWeapon.get() ? { watch = weapon, key = shortcutId }
     : res.__update({
       watch = [isDisabled, isAvailable]
       size = [airButtonSize, airButtonSize]
-      behavior = TouchAreaOutButton
-      eventPassThrough
       zoneRadiusX
       zoneRadiusY
       onTouchInsideChange = @(isInside) userHoldWeapInside.mutate(@(v) v[shortcutId] <- isInside)
@@ -534,7 +536,7 @@ function mkCirclePlaneCourseGuns(btnSize, imgSize) {
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
     .__update({
       behavior = TouchAreaOutButton
-      eventPassThrough = true
+      cameraControl = true
     })
 
   return @() !hasAnyWeapon.get() ? { watch = hasAnyWeapon, key = shortcutId }
@@ -604,7 +606,7 @@ function mkCircleSecondaryGuns(btnSize, imgSize) {
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
     .__update({
       behavior = TouchAreaOutButton
-      eventPassThrough = true
+      cameraControl = true
     })
 
   return @() !hasAnyWeapon.get() ? { watch = hasAnyWeapon, key = shortcutId }
@@ -660,7 +662,7 @@ function mkCirclePlaneCourseGunsSingle(shortcutId, weapon, hasWeapon,
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
     .__update({
       behavior = TouchAreaOutButton
-      eventPassThrough = true
+      cameraControl = true
     })
 
   return @() !hasWeapon.get() ? { watch = hasWeapon, key = shortcutId }
@@ -710,7 +712,7 @@ function mkCirclePlaneTurretsGuns(btnSize = buttonSize, btnImgSize = buttonImgSi
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
     .__update({
       behavior = TouchAreaOutButton
-      eventPassThrough = true
+      cameraControl = true
     })
 
   return @() res.__merge({
@@ -739,7 +741,7 @@ function mkCircleLockBtn(shortcutId){
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     behavior = Behaviors.Button
-    eventPassThrough = true
+    cameraControl = true
     onElemState = @(v) stateFlags(v)
     onClick = @() toggleShortcut(shortcutId)
     hotkeys = mkGamepadHotkey(shortcutId)
@@ -774,7 +776,7 @@ function mkCircleZoom(zoomInIcon = "ui/gameuiskin#hud_tank_binoculars_zoom.svg",
     key = "btn_zoom_circle"
     size = [buttonSize, buttonSize]
     behavior = Behaviors.Button
-    eventPassThrough = true
+    cameraControl = true
     hotkeys = mkGamepadHotkey("ID_ZOOM_TOGGLE")
     function onClick() {
       if (isDisabled.value)
@@ -808,7 +810,7 @@ function mkCircleTargetTrackingBtn() {
     key = "btn_target_tracking_circle"
     size = [bigButtonSize, bigButtonSize]
     behavior = Behaviors.Button
-    eventPassThrough = true
+    cameraControl = true
     hotkeys = mkGamepadHotkey("ID_TOGGLE_TARGET_TRACKING")
     onClick = @() toggleShortcut("ID_TOGGLE_TARGET_TRACKING")
     onElemState = @(v) stateFlags(v)
@@ -829,7 +831,7 @@ function mkSimpleCircleTouchBtn(image, shortcutId, ovr = {}) {
     key = "btn_zoom_circle"
     size = [buttonSize, buttonSize]
     behavior = TouchScreenButton
-    eventPassThrough = true
+    cameraControl = true
     hotkeys = mkGamepadHotkey(shortcutId)
     onTouchBegin = @() useShortcutOn(shortcutId)
     onTouchEnd = @() setShortcutOff(shortcutId)

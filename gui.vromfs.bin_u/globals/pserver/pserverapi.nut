@@ -87,7 +87,7 @@ function handleMessages(msg) {
         if (type(v) != "table" || k == "configs" || k == "removed")
           continue
         else {
-          if (k == "receivedLevelsRewards" || k == "receivedLvlRewards") { //compatibility with 2024.04.14
+          if (k == "receivedLvlRewards") {
             let curV = clone (newProfile?[k] ?? {})
             foreach (camp, list in v)
               curV[camp] <- (camp in curV) ? curV[camp].__merge(list) : list

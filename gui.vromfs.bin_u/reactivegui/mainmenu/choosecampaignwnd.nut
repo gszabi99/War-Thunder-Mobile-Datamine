@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { can_use_debug_console } = require("%appGlobals/permissions.nut")
 let { registerScene } = require("%rGui/navState.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
@@ -12,6 +13,7 @@ let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isInSquad, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
 let { unseenCampaigns, markAllCampaignsSeen } = require("unseenCampaigns.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { arrayByRows } = require("%sqstd/underscore.nut")
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let close = @() isOpened(false)
@@ -20,12 +22,13 @@ let backBtn = backButton(close)
 let needToForceOpen = keepref(Computed(@() isLoggedIn.value && !isAnyCampaignSelected.value
   && campaignsList.value.len() > 1))
 
+let skipTutor = mkWatched(persist, "skipTutorDev", false)
+
 isOpened.subscribe(@(v) v ? null : markAllCampaignsSeen())
 
 let gap = hdpx(40)
-let maxCampaignButtonsHeight = saSize[1] - gap - hdpx(60)
 
-let imageRatio = 600.0 / 800
+let campImageSize = [hdpx(540), hdpx(340)]
 let campagnImages = {
   ships = "ui/bkg/login_bkg_s_2.avif"
   tanks = "ui/bkg/login_bkg_t_2.avif"
@@ -59,13 +62,13 @@ let mkCampaignName = @(name, sf) {
   }.__update(fontSmall)
 }
 
-function onCampaignButtonClick(campaign, skipTutor = false) {
+function onCampaignButtonClick(campaign) {
   function applyCampaign() {
     close()
     setCampaign(campaign)
   }
 
-  if(skipTutor) {
+  if(skipTutor.get()) {
     setSkippedTutor(campaign)
     applyCampaign()
     return
@@ -102,21 +105,56 @@ function onCampaignButtonClick(campaign, skipTutor = false) {
   })
 }
 
-let mkCampaignSkipTutorButton = @(campaign) {
-  rendObj = ROBJ_TEXT
-  text = $"{loc("options/skip")} {loc("mainmenu/btnTutorial")}"
-  hplace = ALIGN_CENTER
-  behavior = Behaviors.Button
-  onClick = @() onCampaignButtonClick(campaign, true)
-  sound = { click  = "click" }
-}.__update(fontSmall)
+function mkCampaignSkipTutorButton(){
+  let listCampTutors = {}
+  campaignsList.get().map(@(c) listCampTutors.__update({
+    [c] = needFirstBattleTutorForCampaign(c)
+  }))
+  let isNeedSkipCheck = listCampTutors.findvalue(@(v) v)
+  return !isNeedSkipCheck
+    ? { watch = campaignsList }
+    : {
+      watch = [skipTutor, campaignsList]
+      flow = FLOW_HORIZONTAL
+      behavior = Behaviors.Button
+      onClick = @() skipTutor.set(!skipTutor.get())
+      hplace = ALIGN_RIGHT
+      valign = ALIGN_CENTER
+      gap = hdpx(10)
+      children = [
+        {
+          size = [hdpx(40), hdpx(40)]
+          rendObj = ROBJ_BOX
+          fillColor = 0
+          borderColor = 0x80FFFFFF
+          borderWidth = 2
+          children = skipTutor.get()
+            ? {
+              size = [hdpx(40), hdpx(40)]
+              rendObj = ROBJ_IMAGE
+              image = Picture($"ui/gameuiskin#check.svg:{hdpx(40)}:{hdpx(40)}:P")
+              keepAspect = true
+              color = 0xFF78FA78
+            }
+            : null
+        }
+        {
+          rendObj = ROBJ_TEXT
+          text = $"{loc("options/skip")} {loc("mainmenu/btnTutorial")}"
+          hplace = ALIGN_CENTER
+          sound = { click  = "click" }
+        }.__update(fontSmall)
+      ]
+    }
+}
 
-function mkCampaignButton(campaign, campaignW) {
+
+function mkCampaignButton(campaign) {
   let stateFlags = Watched(0)
   return @() {
     watch = [stateFlags, unseenCampaigns]
     rendObj = ROBJ_SOLID
-    size = [campaignW, imageRatio * campaignW]
+    size = campImageSize
     padding = hdpx(6)
     color = 0XFF323232
     behavior = Behaviors.Button
@@ -128,44 +166,57 @@ function mkCampaignButton(campaign, campaignW) {
 
     children = [
       mkCampaignImage(campaign)
-      mkCampaignName(loc($"campaign/{campaign}"), stateFlags.value)
+      mkCampaignName(utf8ToUpper(loc($"campaign/{campaign}")), stateFlags.value)
       campaign not in unseenCampaigns.get() ? null
         : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(-20), hdpx(20)] })
     ]
   }
 }
 
-function campaignsListUi() {
-  let campaignCount = campaignsList.value.len()
-  let campaignW = min(
-    campaignCount <= 1 ? 0.5 * saSize[0]
-      : ((saSize[0] - (campaignCount - 1) * gap) / campaignCount).tointeger(),
-    maxCampaignButtonsHeight / imageRatio
-  )
+function campaignsListUi(){
+  let campaignBtns = campaignsList.get().map(mkCampaignButton)
   return {
     watch = campaignsList
-    size = [flex(), SIZE_TO_CONTENT]
     gap
-    vplace = ALIGN_CENTER
-    hplace = ALIGN_CENTER
-    flow = FLOW_HORIZONTAL
-    children = campaignsList.value.map(
-      @(c) (can_use_debug_console.value && needFirstBattleTutorForCampaign(c)) ? {
-        flow = FLOW_VERTICAL
-        gap
-        children = [
-          mkCampaignButton(c, campaignW)
-          mkCampaignSkipTutorButton(c)
-        ]
-      } : mkCampaignButton(c, campaignW))
+    halign = ALIGN_CENTER
+    flow = FLOW_VERTICAL
+    children = arrayByRows(campaignBtns, 3).map(@(children) {
+      flow = FLOW_HORIZONTAL
+      gap
+      children
+    })
   }
+}
+
+let changeCampaignDesc = @() {
+  watch = campaignsList
+  size = [campImageSize[0] * campaignsList.get().len(), SIZE_TO_CONTENT]
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  text = loc("changeCampaign/desc")
+  color = 0xFFBCBCBC
+}.__update(fontTinyAccented)
+
+let content = {
+  flow = FLOW_VERTICAL
+  vplace = ALIGN_CENTER
+  hplace = ALIGN_CENTER
+  halign = ALIGN_LEFT
+  gap = hdpx(5)
+  children = [
+    {
+      rendObj = ROBJ_TEXT
+      text = loc("changeCampaign")
+    }.__update(fontMedium)
+    changeCampaignDesc
+    campaignsListUi
+  ]
 }
 
 let chooseCampaignScene = bgShaded.__merge({
   key = {}
   size = flex()
   padding = saBordersRv
-  flow = FLOW_VERTICAL
   gap
   function onAttach() {
     if (!isAnyCampaignSelected.value)
@@ -176,23 +227,14 @@ let chooseCampaignScene = bgShaded.__merge({
       watch = isAnyCampaignSelected
       size = [flex(), SIZE_TO_CONTENT]
       children = [
-        isAnyCampaignSelected.value ? backBtn : null
-        {
-          rendObj = ROBJ_TEXT
-          text = loc(isAnyCampaignSelected.value ? "changeCampaign" : "chooseCampaign")
-          hplace = ALIGN_CENTER
-          vplace = ALIGN_CENTER
-        }.__update(fontSmall)
+        isAnyCampaignSelected.get() ? backBtn : null
+        can_use_debug_console.get() ? mkCampaignSkipTutorButton : null
       ]
     }
-    {
-      size = flex()
-      children = campaignsListUi
-    }
+    content
   ]
   animations = wndSwitchAnim
 })
-
 registerScene("chooseCampaignWnd", chooseCampaignScene, close, isOpened)
 
 if (needToForceOpen.value)

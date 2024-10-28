@@ -1,6 +1,6 @@
 {
   "model": "p_38k",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_fighter_metaparts.blk",
   "fmFile": "fm/p-38k.blk",
   "gearSinkRangeLR": 0.22,

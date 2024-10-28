@@ -85,8 +85,9 @@ function getUnitRewards(unitName, debrData) {
 }
 
 function getSlotExpByUnit(unitName, debrData) {
-  let { exp = {}, addSlotExp = 0 } = getUnitRewards(unitName, debrData)
-  return addSlotExp <= 0 ? exp
+  let { exp = {}, addSlotExp = 0, slotExp = {} } = getUnitRewards(unitName, debrData)
+  return slotExp.len() > 0 ? slotExp
+    : addSlotExp <= 0 ? exp // Compatibility with dedicated 2024.10.17
     : exp.__merge({
         baseExp = (exp?.baseExp ?? 0) + addSlotExp
         totalExp = (exp?.totalExp ?? 0) + addSlotExp

@@ -1,7 +1,7 @@
 {
   "model": "i_15_1934",
   "fmFile": "fm/i-15_1934.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "gForceTolerationMult": 1.3,
   "MetaPartsBlk": [
     "gameData/FlightModels/dm/metaparts/biplane_metaparts.blk",

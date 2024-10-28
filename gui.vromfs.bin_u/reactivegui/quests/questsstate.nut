@@ -7,14 +7,13 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { canShowAds, showAdsForReward, showNotAvailableAdsMsg } = require("%rGui/ads/adsState.nut")
+let { showAdsForReward } = require("%rGui/ads/adsState.nut")
 let { playSound } = require("sound_wt")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { speed_up_unlock_progress } = require("%appGlobals/pServer/pServerApi.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
-let { specialEvents, MAIN_EVENT_ID, curEvent, AIR_CAMPAIGN_MIN_SEASON_IDX } = require("%rGui/event/eventState.nut")
+let { specialEvents, MAIN_EVENT_ID, curEvent } = require("%rGui/event/eventState.nut")
 let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
 
 let EVENT_PREFIX = "day"
@@ -168,10 +167,7 @@ if (seenQuests.value.len() == 0)
   loadSeenQuests()
 
 let hasUnseenQuestsBySection = Computed(@() questsBySection.value.map(@(quests)
-  null != quests.findindex(@(v, id)
-    ((v?.meta.event_id != MAIN_EVENT_ID || curCampaign.get() != "air" || (v?.activity.end_index ?? 0) >= AIR_CAMPAIGN_MIN_SEASON_IDX)
-      && (id not in seenQuests.value && id not in inactiveEventUnlocks.value))
-      || v.hasReward)))
+  null != quests.findindex(@(v, id) (id not in seenQuests.value && id not in inactiveEventUnlocks.value) || v.hasReward)))
 
 let saveSeenQuestsForSection = @(sectionId) !hasUnseenQuestsBySection.value?[sectionId] ? null
   : saveSeenQuests(questsBySection.value?[sectionId].filter(@(v) !v.hasReward).keys())
@@ -194,10 +190,6 @@ function onWatchQuestAd(unlock) {
   let { name, progressCorrectionStep = 0, isCompleted = false } = unlock
   if (adBudget.value == 0) {
     openMsgBox({ text = loc("playBattlesToUnlockAds") })
-    return false
-  }
-  if (!canShowAds.value) {
-    showNotAvailableAdsMsg()
     return false
   }
 

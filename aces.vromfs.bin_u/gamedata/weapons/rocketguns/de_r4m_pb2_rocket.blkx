@@ -110,7 +110,7 @@
     "ricochetEffect": "hit_59_80mm_metal_ap",
     "waterCollisionEffect": "hit_59_80mm_water",
     "explosionPatchRadius": 3.4,
-    "fireEffect": "",
+    "fireEffect": "rocket_fire_light",
     "smokeEffect": "",
     "smokeEffect2": "",
     "hazeEffect": "haze_missile",

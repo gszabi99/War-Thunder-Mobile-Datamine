@@ -24,7 +24,8 @@ let countryPriority = {
 let nodes = Computed(@() serverConfigs.get()?.unitTreeNodes[curCampaign.get()] ?? {})
 let selectedCountry = mkWatched(persist, "selectedCountry", null)
 let seenResearchedUnits = mkWatched(persist, SEEN_RESEARCHED_UNITS, {})
-let unitToScroll = Watched(null)
+let unitInfoToScroll = Watched(null)
+let unitToScroll = Computed(@() unitInfoToScroll.get()?.name)
 
 let mkCountries = @(nodeList) Computed(function(prev) {
   let resTbl = {}
@@ -158,36 +159,40 @@ let unitsResearchStatus = Computed(function(prev) {
   return computeChanges(prev, list)
 })
 
-let allPremiumUnits = Computed(@() allUnitsCfg.get().filter(@(u) u.isPremium || u.isUpgradeable))
-let premiumUnitsStatus = Computed(function(prev) {
-  let list = {}
-  if (!isCampaignWithUnitsResearch.get())
-    return list
-  foreach (unitName, unit in allPremiumUnits.get()) {
-    if (!unit.isHidden) {
-      let country = nodes.get()?[unitName].country ?? ""
-
-      list[unitName] <- {
-        name = unitName
-        isResearched = unitName in myUnits.get()
-        country
-      }
-    }
-  }
-
-  return computeChanges(prev, list)
-})
-
 let unseenResearchedUnits = Computed(function() {
   let res = {}
   if (!isCampaignWithUnitsResearch.get())
-    return {}
-  let unitsList = {}.__merge(unitsResearchStatus.get(), blueprintUnitsStatus.get(), premiumUnitsStatus.get())
+    return res
 
-  foreach(unitName, unit in unitsList) {
-    let { country, isResearched, canBuy = false } = unit
+  let { unitTreeNodes, unitResearchExp = {} } = serverConfigs.get()
+  let { unitsResearch = {} } = servProfile.get()
+  let curCampaignUnits = unitTreeNodes[curCampaign.get()]
+  let blueprints = availableBlueprints.get()
+  let bCounts = blueprintCounts.get()
+  let seenUnits = seenResearchedUnits.get()
 
-    if(unitName not in seenResearchedUnits.get() && (canBuy || isResearched)) {
+  foreach(unitName, node in curCampaignUnits) {
+    let unit = allUnitsCfg.get()?[unitName]
+    if (!unit || unit.isHidden || unitName in seenUnits)
+      continue
+
+    let { country = "" } = node
+
+    local isUnseenUnit = false
+
+    if (unitName not in myUnits.get() && unitName in unitResearchExp) {
+      let { isResearched = false, canBuy = false } = unitsResearch?[unitName]
+      isUnseenUnit = isResearched && canBuy
+    }
+    else if (unitName not in myUnits.get() && unitName in blueprints) {
+      let { targetCount } = blueprints[unitName]
+      let curCount = bCounts?[unitName] ?? 0
+      isUnseenUnit = curCount >= targetCount
+    }
+    else if (unit.isPremium)
+      isUnseenUnit = unitName in myUnits.get()
+
+    if(isUnseenUnit) {
       if(country not in res)
         res[country] <- {}
       res[country][unitName] <- true
@@ -247,6 +252,8 @@ return {
   nodes
   selectedCountry
   unitToScroll
+  unitInfoToScroll
+  setUnitToScroll = @(name, isAnimated = false) unitInfoToScroll.set({ name, isAnimated })
   mkCountries
   mkVisibleNodes
   mkFilteredNodes

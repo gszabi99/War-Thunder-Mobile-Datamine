@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { Indicator } = require("wt.behaviors")
-let { setDrawNativeAirCrosshair  = null } = require("hudState")
 let { hasTarget, targetUnitName, aircraftCrosshairColor, areSightHidden
 } = require("%rGui/hudState.nut")
 let { startCrosshairAnimationTime, pointCrosshairScreenPosition, crosshairDestinationScreenPosition
@@ -92,7 +91,6 @@ let aircraftSight = @() {
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = areSightHidden.get() ? null
-    : setDrawNativeAirCrosshair == null ? airTarget
     : [
         airCrosshair
         currentAircraftCtrlType.value == "mouse_aim" ? airDestination : null

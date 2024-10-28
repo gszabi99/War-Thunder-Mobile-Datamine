@@ -429,7 +429,7 @@
       }
     }
   ],
-  "shvak_turret_ap": {
+  "shvak_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.0969,
@@ -1005,7 +1005,7 @@
       }
     ]
   },
-  "shvak_turret_het": {
+  "shvak_turret_air_targets": {
     "bullet": [
       {
         "mass": 0.096,

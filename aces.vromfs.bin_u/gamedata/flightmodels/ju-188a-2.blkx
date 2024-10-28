@@ -1,7 +1,7 @@
 {
   "fmFile": "fm/ju-188a-2.blk",
   "model": "ju_188a_2",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "tpsCameraOffset": [
     -11.0,
     3.0,

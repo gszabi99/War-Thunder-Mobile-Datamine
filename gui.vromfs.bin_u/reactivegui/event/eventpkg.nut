@@ -7,10 +7,11 @@ let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { mkCustomButton, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+let { getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty, NO_DROP_LIMIT
+} = require("%rGui/rewards/rewardViewInfo.nut")
 let { CS_INCREASED_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
 let { bestCampLevel, eventSeason } = require("eventState.nut")
-let { canShowAds, adsButtonCounter } = require("%rGui/ads/adsState.nut")
+let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -69,6 +70,11 @@ function canReceiveLastReward(lootbox, reward, profile) {
   return null != fixedRewards.findindex(@(_, idxStr) idxStr.tointeger() > openCount)
 }
 
+function isDropLimitReached(reward, profile) {
+  let { dropLimitRaw = NO_DROP_LIMIT, source, rewardId } = reward
+  return dropLimitRaw != NO_DROP_LIMIT && dropLimitRaw <= (profile?.lootboxStats[source].total?[rewardId] ?? 0)
+}
+
 let lootboxInfo = @(lootbox, stateFlags) function() {
   local rewards = []
   local slots = 0
@@ -78,6 +84,7 @@ let lootboxInfo = @(lootbox, stateFlags) function() {
     if ((reward?.isLastReward && (rewards.len() != 0 || !canReceiveLastReward(lootbox, reward, profile)))
         || slots + (reward?.slots ?? 0) > REWARDS + 1
         || isRewardEmpty(reward.rewardCfg, profile)
+        || isDropLimitReached(reward, profile)
         || ((reward?.isJackpot || reward?.isFixed)
           && !canReceiveFixedReward(lootbox, reward?.parentRewardId ?? reward.rewardId, reward.rewardCfg, profile))
         )
@@ -199,7 +206,7 @@ let mkBtnContent = @(img, text, ovr = {}) {
 function mkAdsBtn(reqPlayerLevel, adReward) {
   let { cost = 0 } = adReward
   return @() {
-    watch = [bestCampLevel, canShowAds, adBudget]
+    watch = [bestCampLevel, adBudget]
     children = mkCustomButton(
       cost > adBudget.value
           ? mkBtnContent(null, cost <= 1 ? loc("playOneBattle") : loc("playBattles", { count = cost }))
@@ -208,7 +215,6 @@ function mkAdsBtn(reqPlayerLevel, adReward) {
           ? onSchRewardReceive(adReward)
         : openMsgBox({ text = loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) }) }),
       (bestCampLevel.value >= reqPlayerLevel
-        && canShowAds.value
         && adReward?.isReady
         && (cost < adBudget.value)
             ? buttonStyles.SECONDARY
@@ -245,8 +251,7 @@ function mkPurchaseBtns(lootbox, onPurchase) {
     && start < serverTime.value
     && (end <= 0 || end > serverTime.value))
   let adReward = Computed(@() schRewards.value.findvalue(
-    @(r) "rewards" not in r ? (r.lootboxes?[name] ?? 0) > 0 //compatibility with 2024.04.14
-      : (null != r.rewards.findvalue(@(g) g.id == name && g.gType == G_LOOTBOX))))
+    @(r) (null != r.rewards.findvalue(@(g) g.id == name && g.gType == G_LOOTBOX))))
 
   return @() {
     watch = [isActive, balance, adReward]

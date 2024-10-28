@@ -80,6 +80,7 @@ let shipGunHudModes = {
 }
 
 let weaponsHudModes = {
+  ["ID_ZOOM"] = HM_COMMON | HM_MANUAL_ANTIAIR,
   ["EII_MANUAL_ANTIAIR"] = HM_COMMON | HM_MANUAL_ANTIAIR
 }
 

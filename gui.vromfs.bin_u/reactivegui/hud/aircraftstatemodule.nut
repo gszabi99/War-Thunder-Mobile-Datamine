@@ -43,7 +43,8 @@ let xrayModel = @() {
   key = "aircraft_state_button"
   behavior = TouchAreaOutButton
   watch = isInZoom
-  eventPassThrough = true
+  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+  touchMarginPriority = TOUCH_BACKGROUND
   function onElemState(sf) {
     let prevSf = stateFlags.value
     stateFlags(sf)

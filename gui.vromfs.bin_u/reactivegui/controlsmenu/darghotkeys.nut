@@ -13,7 +13,7 @@ function parseDargHotkeys(hotkey) {
   return parsed[hotkey]
 }
 
-local function getGamepadHotkey(hotkeys) {
+function getGamepadHotkey(hotkeys) {
   if ((hotkeys?.len() ?? 0) == 0)
     return null
 

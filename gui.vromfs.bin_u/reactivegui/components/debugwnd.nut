@@ -232,7 +232,7 @@ let debugWndContent = @(tabs, curTab, filterText, close, textWatch, childrenOver
   ]
 }
 
-local function mkDebugScreen(tabs, close, rootOverride = {}, filterText = defFilterText) {
+function mkDebugScreen(tabs, close, rootOverride = {}, filterText = defFilterText) {
   if (!(tabs instanceof Watched))
     tabs = Watched(tabs)
 
@@ -246,7 +246,7 @@ local function mkDebugScreen(tabs, close, rootOverride = {}, filterText = defFil
   }.__update(rootOverride)
 }
 
-local function openDebugWnd(tabs, childrenOverTabs = null, rootOverride = {}, wndUid = "debugWnd", filterText = defFilterText
+function openDebugWnd(tabs, childrenOverTabs = null, rootOverride = {}, wndUid = "debugWnd", filterText = defFilterText
 ) {
   if (!(tabs instanceof Watched))
     tabs = Watched(tabs)

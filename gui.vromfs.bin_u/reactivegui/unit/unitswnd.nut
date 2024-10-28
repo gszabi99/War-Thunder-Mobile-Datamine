@@ -471,7 +471,8 @@ let gamercardPlace = {
       size = [SIZE_TO_CONTENT, flex()]
       hplace = ALIGN_RIGHT
       behavior = [ Behaviors.Button, HangarCameraControl ]
-      eventPassThrough = true
+      eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+      touchMarginPriority = TOUCH_BACKGROUND
       onClick = @() unitDetailsWnd({ name = hangarUnitName.value })
       clickableInfo = loc("msgbox/btn_more")
       hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
@@ -515,7 +516,8 @@ let unitsWnd = {
   stopMouse = true
   stopHotkeys = true
   behavior = HangarCameraControl
-  eventPassThrough = true
+  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+  touchMarginPriority = TOUCH_BACKGROUND
   function onAttach() {
     isUnitsWndAttached(true)
     sendNewbieBqEvent("openUnitsListWnd")

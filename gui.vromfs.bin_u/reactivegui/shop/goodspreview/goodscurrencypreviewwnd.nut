@@ -1,8 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
+let { resetTimeout } = require("dagor.workcycle")
 let { registerScene } = require("%rGui/navState.nut")
-let { GPT_CURRENCY, previewType, previewGoods, closeGoodsPreview, openPreviewCount
+let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
+let { GPT_CURRENCY, previewType, previewGoods, closeGoodsPreview, openPreviewCount, HIDE_PREVIEW_MODALS_ID
 } = require("%rGui/shop/goodsPreviewState.nut")
-let { mkPreviewHeader, mkPriceWithTimeBlockNoOldPrice,
+let { mkPreviewHeader, mkPriceWithTimeBlockNoOldPrice, aTimePriceFull,
   ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimeInfoItem, aTimeInfoItemOffset, aTimeInfoLight,
   aTimePriceStrike, opacityAnims, colorAnims, oldPriceBlock
 } = require("goodsPreviewPkg.nut")
@@ -26,6 +28,8 @@ let aTimeGoldStart = aTimeHeaderStart + aTimePackNameFull
 let aTimeGoldBack = 0.15
 let aTimeGoldFull = aTimeGoldBack + aTimeInfoLight + 0.3 * aTimeInfoItem + aTimeInfoItemOffset
 let aTimePriceStart = aTimeGoldStart + aTimeGoldFull
+
+let aTimeShowModals = aTimePriceStart + aTimePriceFull
 
 let currencyStyle = CS_BIG.__merge({
   textColor = 0xFFF4CC42,
@@ -129,7 +133,12 @@ let currencyEffectBw = {
 let previewWnd = @() {
   key = openCount
   size = flex()
-  onAttach = @() playSound("chest_appear")
+  function onAttach() {
+    playSound("chest_appear")
+    hideModals(HIDE_PREVIEW_MODALS_ID)
+    resetTimeout(aTimeShowModals, @() unhideModals(HIDE_PREVIEW_MODALS_ID))
+  }
+  onDetach = @() unhideModals(HIDE_PREVIEW_MODALS_ID)
 
   children = [
     previewBg

@@ -81,6 +81,8 @@ let skinsByTag = {
     "cn_camo_desert_green"
     "ussr_modern_def_gray"
     "us_camo_dark_green_light_olive"
+    "jp_camo_post_sand_gray_green"
+    "hw_camo"
   ],
 
   [DESERT] = [
@@ -127,6 +129,8 @@ let skinsByTag = {
     "us_camo_modern_desert_tan"
     "usa_modern_seventh_army"
     "camo_crosspromo_tank"
+    "fr_camo_desert_brown"
+    "uk_camo_standart_modern_desert_bicolor"
   ],
 
   [WINTER] = [
@@ -159,6 +163,8 @@ let skinsByTag = {
     "usa_modern_snow_temperate_ot"
     "ger_camo_carc_winter"
     "us_camo_modern_winter_tan"
+    "fr_camo_carc_winter"
+    "fr_camo_cenzub"
   ],
 
   [NAVAL] = [
@@ -296,6 +302,7 @@ let skinsByTag = {
     "germ_he51b1_spanish"
     "germ_he51c1"
     "germ_hs_123a1_late"
+    "germ_hs_129b_2_bloody_c"
     "germ_ju_188a_2_3color"
     "germ_me_410a_1"
     "germ_me_410a_1_grey"

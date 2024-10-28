@@ -139,9 +139,7 @@ function memberInfo(uid) {
   let status = statusBlock(uid)
   let battleStatus = inBattleBlock(uid)
   let bestUnit = Computed(function() {
-    local list = squadMembers.get()?[uid].units[squadLeaderCampaign.get()]
-    if (type(list) != "array")
-      list = [list] //compatibility with 2024.05.15
+    local list = squadMembers.get()?[uid].units[squadLeaderCampaign.get()] ?? []
     local res = null
     foreach(unitName in list) {
       let unit = serverConfigs.get()?.allUnits[unitName]

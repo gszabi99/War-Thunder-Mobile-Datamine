@@ -12,7 +12,7 @@ let { gm_mouse_aim_x, gm_mouse_aim_y, gm_throttle, gm_steering } = require("%rGu
 let { setMoveControlByArrows } = require("hudState")
 let { enabledControls, isAllControlsEnabled, isControlEnabled } = require("%rGui/controls/disabledControls.nut")
 
-let stickZoneSize = [shHud(40), shHud(40)]
+let stickZoneSize = [shHud(35), shHud(35)]
 let bgRadius = shHud(15)
 let imgBgSize = 2 * bgRadius
 let imgRotationSize = (0.1 * imgBgSize).tointeger()

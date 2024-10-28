@@ -1,7 +1,7 @@
 {
   "fmFile": "fm/he-111h-16_winter.blk",
   "model": "he_111h_16_winter",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "tpsCameraOffset": [
     -5.0,
     2.0,

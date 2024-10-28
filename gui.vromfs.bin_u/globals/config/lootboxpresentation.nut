@@ -13,6 +13,10 @@ let customLootboxImages = {
   event_special_tanks_anniversary_2024       = "event_special_anniversary_2024.avif"
   event_special_ships_anniversary_2024       = "event_special_anniversary_2024.avif"
 
+  event_special_tanks_halloween_2024         = "event_special_halloween_2024.avif"
+  event_special_ships_halloween_2024         = "event_special_halloween_2024.avif"
+  event_special_air_halloween_2024           = "event_special_halloween_2024.avif"
+
   past_events_box_tanks_seasons_1_to_3 = "past_events_box_ships_seasons_1_to_3.avif"
   past_events_box_ships_seasons_1_to_4 = "past_events_box_ships_seasons_1_to_3.avif"
   past_events_box_tanks_seasons_1_to_4 = "past_events_box_ships_seasons_1_to_3.avif"

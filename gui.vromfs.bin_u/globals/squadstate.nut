@@ -28,8 +28,6 @@ function getMemberMaxMRank(memberInfo, campaign, srvConfigs) {
   local list = memberInfo?.units[campaign]
   if (list == null)
     return -1
-  if (type(list) != "array")
-    list = [list] //compatibility with 2024.05.15
   return list.reduce(@(res, unitName) max(res, srvConfigs?.allUnits[unitName].mRank ?? 0), -1)
 }
 

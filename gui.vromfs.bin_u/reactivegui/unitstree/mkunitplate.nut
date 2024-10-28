@@ -22,7 +22,7 @@ let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { justBoughtUnits, deleteJustBoughtUnit } = require("%rGui/unit/justUnlockedUnits.nut")
 let { revealAnimation, raisePlatesAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { ceil } = require("math")
-let { scrollToUnit, nodeToScroll } = require("unitsTreeScroll.nut")
+let { nodeToScroll } = require("unitsTreeScroll.nut")
 let { unitsResearchStatus, researchCountry, currentResearch, blueprintUnitsStatus,
   unseenResearchedUnits, selectedCountry } = require("unitsTreeNodesState.nut")
 let { mkPlateExpBar, mkPlateBlueprintBar, mkPlateExpBarAnimSlot, plateBarHeight } = require("unitResearchBar.nut")
@@ -145,7 +145,6 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
       if (isLvlUpAnimated.get())
         return
       curSelectedUnit.set(unit.name)
-      scrollToUnit(unit.name, xmbNode)
       markUnitSeen(unit)
     }
     onAttach = unitsTreeOpenRank.get() != null
@@ -202,9 +201,6 @@ let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, x
   children = {
     key = treeNodeUnitPlateKey(unit.name)
     size = unitPlateTiny
-    function onAttach(){
-      scrollToUnit(unit.name, xmbNode)
-    }
     xmbNode
     children = [
       mkUnitBg(unit)
@@ -289,15 +285,18 @@ let mkUnitAnimGradColor = @(unit, animUnits, xmbNode, trigger) @() unitBgImageBa
   image = hasChangedColor.get() ? bgUnit : bgUnitNotAvailable,
   onAttach = @() hasChangedColor.set(false),
   onDetach = @() hasChangedColor.set(false),
-  animations = [{
-    trigger, prop = AnimProp.brightness, from = 1, to = 0,
-    duration = aTimeUnitFromRed, easing = InQuad, onFinish = @() hasChangedColor.set(true),
-    onStart = @() animUnits.values()?[ceil(animUnits.len() / 2.0) - 1] != unit.name ? null
-      : scrollToUnit(unit.name, xmbNode)
-  }, {
-    trigger, prop = AnimProp.brightness, from = 0, to = 1,
-    duration = aTimeUnitToGrey, easing = OutQuad, delay = aDelayUnitToGrey
-  }],
+  animations = [
+    {
+      trigger, prop = AnimProp.brightness, from = 1, to = 0,
+      duration = aTimeUnitFromRed, easing = InQuad, onFinish = @() hasChangedColor.set(true),
+      onStart = @() animUnits.values()?[ceil(animUnits.len() / 2.0) - 1] != unit.name ? null
+        : nodeToScroll.set(xmbNode)
+    },
+    {
+      trigger, prop = AnimProp.brightness, from = 0, to = 1,
+      duration = aTimeUnitToGrey, easing = OutQuad, delay = aDelayUnitToGrey
+    }
+  ],
 })
 
 function mkTreeNodesUnitPlateUnlockAnim(unit, xmbNode, ovr = {}) {
@@ -307,6 +306,7 @@ function mkTreeNodesUnitPlateUnlockAnim(unit, xmbNode, ovr = {}) {
     children = {
       key = treeNodeUnitPlateKey(unit.name)
       size = unitPlateTiny
+      onAttach = @() nodeToScroll.set(xmbNode)
       xmbNode
       children = [
         {
@@ -416,7 +416,6 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
       behavior = Behaviors.Button
       function onClick() {
         curSelectedUnit.set(unit.name)
-        scrollToUnit(unit.name, xmbNode)
         markUnitSeen(unit)
       }
       key = treeNodeUnitPlateKey(unit.name)

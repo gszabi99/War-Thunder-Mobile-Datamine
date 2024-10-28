@@ -1,7 +1,7 @@
 {
   "model": "fw_200c_1",
   "fmFile": "fm/fw_200c_1.blk",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "tpsCameraOffset": [
     -8.0,
     2.0,

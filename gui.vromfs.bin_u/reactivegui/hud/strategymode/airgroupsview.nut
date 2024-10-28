@@ -174,7 +174,7 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
             valign = ALIGN_CENTER
             children = [
               actionItem == null ? null : mkActionGlare(actionItem.value, buttonSize)
-              actionItem == null || actionItem.value.count == 0 ? null
+              actionItem == null || actionItem.value?.count == 0 ? null
                 : mkSquareButtonBg(actionItem.get(), buttonSize, @() playSound("weapon_secondary_ready"))
               {
                 size = flex()
@@ -200,7 +200,7 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
                     halign = ALIGN_CENTER
                     valign = ALIGN_BOTTOM
                     fillColor = borderColor
-                    text = $"{actionItem.value.count}"
+                    text = $"{actionItem.value?.count}"
                   }
                 ]
               }

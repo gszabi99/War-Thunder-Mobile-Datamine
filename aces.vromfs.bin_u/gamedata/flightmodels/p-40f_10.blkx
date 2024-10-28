@@ -1,6 +1,6 @@
 {
   "model": "p_40f_10",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "fmFile": "fm/p-40f.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",

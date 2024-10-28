@@ -6,6 +6,7 @@ let { round, round_by_value, fabs } = require("%sqstd/math.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
 let { get_modifications_blk } = require("blkGetters")
+let { TANK, SHIP, AIR } = require("%appGlobals/unitConst.nut")
 
 let iconDamage = "►"
 let iconCooldown = "▩"
@@ -229,6 +230,7 @@ let shipAttrs = {
     getBaseVal = @(shopCfg) shopCfg?.asmCaptureDuration ?? 0
     getMulMax = @(attrId) attrMaxMulsShip?[attrId].asmCaptureDurationMul ?? 1.0
     valueToText = @(v) "".concat(round_by_value(v, 0.1), iconCooldown)
+    relatedStat = "asmCaptureDuration"
   }
   attrib_rckt_cm_lifetime = {
     getBaseVal = @(shopCfg) (getTopWeaponByTypes(shopCfg?.weapons, ["ircm"])?.cmLiveTime ?? 0)
@@ -276,7 +278,13 @@ function mkAttrFromPlus0prcUp(attrId, roundBy = 0.1) {
 
 let tankAttrs = {
   loading_time_mult = mkAttrFromPlus0prcUp("loading_time_mult")
+    .__update({
+      updateStats = @(stats, mul) stats.weapons.each(@(el) mulStat(el, "reloadTime", 1 - (mul - 1)))
+    })
   tracking = mkAttrUpTo100prc("tracking")
+    .__update({
+      updateStats = @(stats, mul) stats.weapons.each(@(el) mulStat(el, "gunnerTurretRotationSpeed", mul / attrRangesTank.tracking.begin))
+    })
   accuracy = mkAttrUpTo100prc("accuracy")
   eyesight = mkAttrFrom100prcUp("eyesight")
   agility = {
@@ -338,9 +346,9 @@ let planeAttrs = {
 }
 
 let attrValCfg = {
-  ship = shipAttrs
-  tank = tankAttrs
-  air = planeAttrs
+  [SHIP] = shipAttrs,
+  [TANK] = tankAttrs,
+  [AIR] = planeAttrs,
 }
 
 let getAttrLabelText = @(unitType, attrId) loc(attrValCfg?[unitType][attrId].labelLocId ?? attrId)
@@ -366,18 +374,21 @@ function getAttrValData(unitType, attr, step, shopCfg, servConfigs, mods) {
 
 function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
   let stats = shopCfg != null ? deep_clone(shopCfg) : null
-  if (attrLevels == null || stats == null)
+  if (stats == null || attrPreset == null)
     return stats
 
-  foreach (catId, cat in attrLevels)
-    foreach (attrId, step in cat) {
+  foreach (preset in attrPreset) {
+    let catId = preset.id
+    foreach(attr in preset.attrList) {
+      let attrId = attr?.id
       let cfg = attrValCfg?[unitType][attrId]
       if (cfg?.updateStats == null)
-        continue
-      let stepsTotal = attrPreset?.findvalue(@(v) v.id == catId).attrList
-        .findvalue(@(v) v.id == attrId).levelCost.len() ?? 0
+          continue
+      let stepsTotal = attr.levelCost.len() ?? 0
+      let step = attrLevels?[catId][attrId] ?? 0
       cfg.updateStats(stats, getAttrMul(cfg, attrId, step, stepsTotal) * modsMul(attrId, mods))
     }
+  }
   return stats
 }
 

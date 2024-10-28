@@ -8,6 +8,7 @@ let { getGamepadHotkey } = require("%rGui/controlsMenu/dargHotkeys.nut")
 let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
 
 
+let ICON_SIZE = hdpx(70)
 let buttonsHGap = hdpx(64)
 let paddingX = hdpx(38)
 let hotkeySize = evenPx(50)
@@ -147,6 +148,16 @@ let mkImageTextContent = @(icon, iconSize, text, ovr = {}) {
   ]
 }.__update(ovr)
 
+function mkIcon(path, size) {
+  let iconSize = size ?? ICON_SIZE
+  return {
+    size = [iconSize, iconSize]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"{path}:{iconSize}:{iconSize}")
+    keepAspect = KEEP_ASPECT_FIT
+  }
+}
+
 function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
   let { ovr = {}, childOvr = {}, gradientOvr = {}, hotkeyBlockOvr = {}, hotkeys = null,
     tooltipCtor = null
@@ -228,4 +239,7 @@ return {
     mkCustomButton(mkPriceTextsComp(text, priceComp), onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) // Golden + Price
   textButtonPricePurchaseLow = @(text, priceComp, onClick, styleOvr = null)
     mkCustomButton(mkPriceTextsComp(text, priceComp, FLOW_HORIZONTAL), onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) // Golden + Price + narrow
+
+  iconButtonPrimary = @(iconPath, onClick, styleOvr = null)
+    mkCustomButton(mkIcon(iconPath, styleOvr?.iconSize), onClick, mergeStyles(buttonStyles.PRIMARY, styleOvr))
   }

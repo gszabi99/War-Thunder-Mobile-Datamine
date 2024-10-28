@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { playSound } = require("sound_wt")
 let { resetTimeout } = require("dagor.workcycle")
-let { unitsResearchStatus, blueprintUnitsStatus, unitToScroll } = require("unitsTreeNodesState.nut")
+let { unitsResearchStatus, blueprintUnitsStatus, setUnitToScroll } = require("unitsTreeNodesState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { needSelectResearch } = require("selectResearchWnd.nut")
@@ -37,7 +37,7 @@ animUnitAfterResearch.subscribe(function(v) {
 isUnitsTreeOpen.subscribe(function(v){
   if(v && animUnitAfterResearch.get()) {
     if (animUnitAfterResearch.get() in blueprintUnitsStatus.get())
-      unitToScroll(animUnitAfterResearch.get())
+      setUnitToScroll(animUnitAfterResearch.get())
     animExpPart(expPartValue)
     resetTimeout(animExpPartDelay, @() animExpPart(1))
   }

@@ -25,7 +25,7 @@ local isInited = false
 
 function initOnce() {
   let blk = DataBlock()
-  if (!blk.tryLoad("wtm/config/hud.blk"))
+  if (!blk.tryLoad("config/hud.blk"))
     return
 
   isInited = true

@@ -177,10 +177,7 @@ let actionBarItemsConfig = {
   },
   EII_MANUAL_ANTIAIR = {
     getShortcut = @(_, __) "ID_SHIP_MANUAL_ANTIAIR_TOGGLE"
-    image = "!ui/gameuiskin#icon_repeatable.svg"
     actionType = AB_MANUAL_ANTIAIR
-    mkButtonFunction = "mkWeaponryItem"
-    canShipLowerCamera = true
   },
   EII_DIVING_LOCK = {
     getShortcut = @(_, __) "ID_DIVING_LOCK"

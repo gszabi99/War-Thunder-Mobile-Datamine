@@ -72,9 +72,6 @@ function tryWriteMembersData() {
     }
     let isSlots = (serverConfigs.get()?.campaignCfg[campaign].totalSlots ?? 0) > 0
     local unitInfo = units?[campaign]
-    if (type(unitInfo) == "string") //compatibility with 2024.05.15
-      unitInfo = [unitInfo]
-
     let tokenUnitInfo = isSlots ? payload?.crafts_info.map(@(u) u.name)
       : [payload?.crafts_info[0].name]
 

@@ -15,7 +15,7 @@ let { setTutorialConfig, isTutorialActive, finishTutorial,
 let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
 let { needShowTutorialAfterReward } = require("%rGui/rewards/freeRewardCampaigns.nut")
 let { TUTORIAL_AFTER_REWARD_ID } = require("tutorialConst.nut")
-let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
+let { isPurchEffectVisible, hasUnitToShow } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 
 
 let isFinished = mkIsTutorialCompleted(TUTORIAL_AFTER_REWARD_ID)
@@ -26,6 +26,7 @@ let needShowTutorial = Computed(@() !isInSquad.get()
   && needShowTutorialAfterReward.get())
 let canStartTutorial = Computed(@() !hasModalWindows.get()
   && isInMenuNoModals.get()
+  && !hasUnitToShow.get()
   && !isTutorialActive.get()
   && !isPurchEffectVisible.get())
 let showTutorial = keepref(Computed(@() canStartTutorial.get()

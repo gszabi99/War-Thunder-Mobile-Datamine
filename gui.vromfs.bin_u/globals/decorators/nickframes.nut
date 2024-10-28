@@ -78,6 +78,8 @@ let nickFrames = {
   half_star = @(n) $"┇{n}┈"
   pilot_mask = @(n) $"⌠{n}⌠"
   yin_yang = @(n) $"␓{n}␓"
+  pumpkin = @(n) $"␣{n}␤"
+  eyes = @(n) $"─{n}━"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

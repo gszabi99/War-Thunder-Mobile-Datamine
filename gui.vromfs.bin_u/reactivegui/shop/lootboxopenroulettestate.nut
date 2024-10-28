@@ -143,8 +143,7 @@ function calcJackpotOpens(id, openCount, profile, configs) {
     if (idx <= hasOpens || idx > hasOpens + openCount)
       continue
     let rewCfg = configs?.rewardsCfg[rewardId] ?? []
-    let rewLootboxes = type(rewCfg) == "table" ? rewCfg.lootboxes //compatibility with 2024.04.14
-      : rewCfg.reduce(@(res, g) g.gType == "lootbox" ? res.$rawset(g.id, g.count) : res, {})
+    let rewLootboxes = rewCfg.reduce(@(res, g) g.gType == "lootbox" ? res.$rawset(g.id, g.count) : res, {})
     let jackpotId = rewLootboxes.findindex(@(_) true)
     if (jackpotId == null)
       continue

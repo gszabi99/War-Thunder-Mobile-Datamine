@@ -5,6 +5,7 @@ let { MechState, get_gears_current_state, get_gears_next_toggle_state,
   get_air_breaks_current_state, get_air_breaks_next_toggle_state,
   get_flaps_current_state, get_flaps_next_toggle_state
 } = require("hudAircraftStates")
+let { hasPrimaryWeapons } = require("vehicleModel")
 let { UNDEF, NOT_INSTALLED, NO_CONTROL, IS_CUT_OFF, OFF, ON } = MechState
 let { HudTextId, get_localized_text_by_id } = require("hudTexts")
 let { TXT_VOID, TXT_NO_FLAPS, TXT_FLAPS_ARE_SNAPPED_OFF, TXT_FLAPS_RAISED } = HudTextId
@@ -80,6 +81,18 @@ let ctrlPieCfgBase = [
     shortcutId = "ID_AIR_BRAKE"
     action = @() toggleShortcut("ID_AIR_BRAKE")
     isVisibleByUnit = @() isStateVisible(get_air_breaks_current_state())
+  }
+  {
+    function mkView(isEnabled) {
+      return {
+        label = loc("hotkeys/ID_RELOAD_GUNS")
+        icon = "icon_pie_reload.svg"
+        iconColor = !isEnabled ? imageDisabledColor : 0xFFFFFFFF
+      }
+    }
+    shortcutId = "ID_RELOAD_GUNS"
+    action = @() toggleShortcut("ID_RELOAD_GUNS")
+    isVisibleByUnit = @() hasPrimaryWeapons()
   }
 ]
 

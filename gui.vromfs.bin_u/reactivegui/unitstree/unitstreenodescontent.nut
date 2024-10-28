@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { PI, sin } = require("math")
-let { deferOnce, setInterval, clearTimer } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
+let { deferOnce } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { flagsWidth, bgLight, mkTreeNodesFlag,
   flagTreeOffset, gamercardOverlap } = require("unitsTreeComps.nut")
@@ -12,7 +11,8 @@ let { isSlotsAnimActive, selectedSlotIdx } = require("%rGui/slotBar/slotBarState
 let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { doubleSidePannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
-let { unseenArrowsBlockCtor, scrollHandler, scrollPos, scrollToUnit } = require("unitsTreeScroll.nut")
+let { unseenArrowsBlockCtor, scrollHandler, scrollPos, startAnimScroll, interruptAnimScroll
+} = require("unitsTreeScroll.nut")
 let { isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
 let { mkTreeNodesUnitPlate } = require("mkUnitPlate.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -20,8 +20,9 @@ let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { unseenUnits, markUnitSeen } = require("%rGui/unit/unseenUnits.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
-let { selectedCountry, mkVisibleNodes, mkFilteredNodes, mkCountryNodesCfg, mkCountries, setResearchedUnitsSeen,
-  currentResearch, researchCountry, unitToScroll, unitsResearchStatus, unseenResearchedUnits
+let { selectedCountry, mkVisibleNodes, mkFilteredNodes, mkCountryNodesCfg, mkCountries,
+  setResearchedUnitsSeen, currentResearch, researchCountry, unitsResearchStatus, unseenResearchedUnits,
+  setUnitToScroll, unitToScroll, unitInfoToScroll
 } = require("unitsTreeNodesState.nut")
 let { slotBarUnitsTree, slotBarTreeHeight } = require("%rGui/slotBar/slotBar.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -39,7 +40,6 @@ let aTimeAppearLink = 1
 let aTimeChangeLink = 0.5
 let aTimeDimmingScreen = 0.4
 let aTimeShowRequirements = 1
-let aTimeScroll = 0.5
 let darkScreenAnim = [
   { play = true, prop = AnimProp.opacity, from = 0, to = 1,
     duration = aTimeDimmingScreen, onFinish = @() hasAnimDarkScreen.set(false) }
@@ -63,7 +63,7 @@ let gapLineX2 = nodePlatesGap[0] / 2
 let halfSizeX = nodePlatesSize[0] / 2
 let halfSizeY = nodePlatesSize[1] / 2
 
-local animScrollCfg = null
+let isTreeNodesAttached = Watched(false)
 
 
 let mkRanksCfg = @(countryNodesCfg) Computed(function() {
@@ -109,32 +109,6 @@ let needShowArrowR = @(curCountry, unseenNodesIndex) Computed(function() {
 
 isUnitsTreeOpen.subscribe(@(v) v || currentResearch.get() == null ? null : selectedCountry.set(null))
 
-function updateAnimScroll() {
-  if (animScrollCfg == null) {
-    clearTimer(updateAnimScroll)
-    return
-  }
-  let { pos1, pos2, start, end, easing } = animScrollCfg
-  let time = get_time_msec()
-  if (time >= end)
-    clearTimer(updateAnimScroll)
-
-  let t = clamp((get_time_msec() - start).tofloat() / (end - start), 0, 1)
-  let v = easing(t)
-  scrollHandler.scrollToX(pos1[0] + (pos2[0] - pos1[0]) * v)
-  scrollHandler.scrollToY(pos1[1] + (pos2[1] - pos1[1]) * v)
-}
-
-function startAnimScroll(time, pos1, pos2) {
-  if (animScrollCfg != null)
-    clearTimer(updateAnimScroll)
-  animScrollCfg = { pos1, pos2, start = get_time_msec(),
-    end = get_time_msec() + (1000 * time).tointeger(),
-    easing = @(t) t < 0.5 ? 2.0 * t * t : (1.0 - 2 * (1.0 - t) * (1.0 - t))
-  }
-  setInterval(0.01, updateAnimScroll)
-}
-
 function getUnitCoordsRange(names, nodeList) {
   local x1 = null
   local x2 = null
@@ -172,15 +146,17 @@ function scrollAnimToUnitGroup(names, nodeList) {
   if (boundaries == null)
     return
   let { minX, minY, maxX, maxY } = boundaries
-  startAnimScroll(aTimeScroll, [curX, curY],
-    [ maxX <= minX ? maxX : clamp(curX, minX, maxX),
-      maxY <= minY ? maxY : clamp(curY, minY, maxY)])
+  startAnimScroll([
+    maxX <= minX ? maxX : clamp(curX, minX, maxX),
+    maxY <= minY ? maxY : clamp(curY, minY, maxY)
+  ])
 }
 
 function scrollToUnitGroupRight(names, nodeList) {
   let boundaries = calcBoundaries(names, nodeList)
   if (boundaries == null)
     return
+  interruptAnimScroll()
   let { minX, minY, maxX, maxY } = boundaries
   scrollHandler.scrollToX(max(minX, maxX))
   scrollHandler.scrollToY((minY + maxY) / 2)
@@ -190,12 +166,19 @@ function scrollToUnitGroupBottom(names, nodeList) {
   let boundaries = calcBoundaries(names, nodeList)
   if (boundaries == null)
     return
+  interruptAnimScroll()
   let { minX, minY, maxX, maxY } = boundaries
   scrollHandler.scrollToX((minX + maxX) / 2)
   scrollHandler.scrollToY(min(minY, maxY))
 }
 
+curSelectedUnit.subscribe(function(v) {
+  if (isTreeNodesAttached.get() && v)
+    setUnitToScroll(v, true)
+})
+
 function scrollToRank(rank, ranksCfg) {
+  interruptAnimScroll()
   let scrollPosX = nodeBlockSize[0] * ((ranksCfg?[rank].from ?? 0) + 1) - 0.5 * (saSize[0] - flagsWidth)
   scrollHandler.scrollToX(scrollPosX)
 }
@@ -501,7 +484,6 @@ let function mkUnitsNode(name, pos, hasDarkScreen) {
                 if (hasDarkScreen.get() && !currentResearch.get() && !unitsResearchStatus.get()?[name].canResearch)
                   return
                 curSelectedUnit.set(name)
-                scrollToUnit(name, xmbNode)
                 markUnitSeen(curUnit)
                 if(name in unseenResearchedUnits.get()?[selectedCountry.get()])
                   setResearchedUnitsSeen({ [name] = true })
@@ -669,8 +651,12 @@ let function mkUnitsTreeNodesContent() {
   function onUnitToScrollChange(v) {
     if (v == null)
       return
-    scrollToUnitGroupBottom([v], countryNodesCfg.get().nodes)
-    deferOnce(@() unitToScroll.set(null))
+    let { isAnimated = false } = unitInfoToScroll.get()
+    if (isAnimated)
+      scrollAnimToUnitGroup([v], countryNodesCfg.get().nodes)
+    else
+      scrollToUnitGroupBottom([v], countryNodesCfg.get().nodes)
+    deferOnce(@() setUnitToScroll(null))
   }
   let onAnimBuyChange = onAnimChange(animBuyRequirementsUnitId.get(), countryNodesCfg.get().nodes)
   let onAnimResearchChange = onAnimChange(animResearchRequirementsUnitId.get(), countryNodesCfg.get().nodes)
@@ -692,8 +678,10 @@ let function mkUnitsTreeNodesContent() {
         deferOnce(@() unitToScroll.get() != null ? onUnitToScrollChange(unitToScroll.get())
           : unitsTreeOpenRank.get() != null ? scrollToRank(unitsTreeOpenRank.get(), ranksCfg.get())
           : onUnitNodesAppear(selectedCountry.get(), countryNodesCfg.get().nodes))
+        isTreeNodesAttached.set(true)
       }
       function onDetach() {
+        isTreeNodesAttached.set(false)
         unitToScroll.unsubscribe(onUnitToScrollChange)
         animBuyRequirements.unsubscribe(onAnimBuyChange)
         animResearchRequirements.unsubscribe(onAnimResearchChange)

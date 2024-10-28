@@ -445,7 +445,7 @@
       }
     }
   },
-  "bk75_antitank": {
+  "bk75_armor_targets": {
     "bullet": {
       "bulletCount": 10,
       "mass": 4.1,

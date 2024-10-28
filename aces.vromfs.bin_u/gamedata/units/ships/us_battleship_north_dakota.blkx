@@ -1,7 +1,7 @@
 {
   "ecsTemplate": "ship_wtm",
   "hasQualityModels": true,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "radioDist": 50000.0,
   "model": "battleship_north_dakota",
   "subclass": "warShip",

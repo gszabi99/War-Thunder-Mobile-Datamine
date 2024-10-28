@@ -17,6 +17,7 @@ let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 let { DM_TEST_NOT_PENETRATE, DM_TEST_RICOCHET } = require("crosshair")
 let { currentArmorPiercingFixed } = require("%rGui/options/options/tankControlsOptions.nut")
 let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
+let { setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 
 
 let crosshairReadyColor = Color(232, 75, 60)
@@ -197,6 +198,8 @@ let gunReadyIndicator = @() {
   vplace = ALIGN_CENTER
   children = mkReadyPart(shootReadyness.value)
 }
+
+eventbus_subscribe("LocalPlayerDead", @(_) setShortcutOff("ID_FIRE_GM_MACHINE_GUN"))
 
 return {
   size = saSize

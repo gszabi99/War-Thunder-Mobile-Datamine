@@ -13,6 +13,7 @@ let wndPadding = [hdpx(20), hdpx(30)]
 
 let optionsBlock = @(options) {
   size = [hdpx(600) + wndPadding[1] * 2, SIZE_TO_CONTENT]
+  stopMouse = true
   padding = wndPadding
   rendObj = ROBJ_BOX
   fillColor = 0xDD000000

@@ -51,7 +51,8 @@ def components_to_blk(var blk : DataBlock; eid : EntityId)
                              setting__loadSound : bool;
                              setting__cannotMove : bool;
                              setting__ignoreCollisions : bool;
-                             setting__canControlInHangar : bool)
+                             setting__canControlInHangar : bool;
+                             setting__dynamicObstacle : bool)
     add(blk, "crewSkillK", setting__crewSkillK)
     add(blk, "weapons", setting__weapons)
     add(blk, "isPhysPredictionEnabled", setting__isPhysPredictionEnabled)
@@ -67,6 +68,7 @@ def components_to_blk(var blk : DataBlock; eid : EntityId)
     add(blk, "loadSound", setting__loadSound)
     add(blk, "ignoreCollisions", setting__ignoreCollisions)
     add(blk, "canControlInHangar", setting__canControlInHangar)
+    add(blk, "dynamicObstacle", setting__dynamicObstacle)
     for i in range(0, length(setting__bullets))
       let bullet = string(setting__bullets[i])
       add(blk, "bullets{i}", bullet)

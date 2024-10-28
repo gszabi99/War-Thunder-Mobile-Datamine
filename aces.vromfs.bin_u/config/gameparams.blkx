@@ -16375,7 +16375,13 @@
       "ships_graveyard_island_medium_b",
       "ships_graveyard_island_medium_c",
       "ships_graveyard_island_small_a",
-      "ships_graveyard_island_small_b"
+      "ships_graveyard_island_small_b",
+      "pacific_island_big_a",
+      "pacific_island_huge_a",
+      "pacific_island_medium_a",
+      "pacific_island_medium_b",
+      "pacific_island_small_a",
+      "pacific_island_small_b"
     ]
   },
   "rendinstOpt": {
@@ -17003,40 +17009,106 @@
     "woodMat": "wood"
   },
   "trackEffectsPresets": {
+    "legacyControl": true,
     "default": {
-      "effect": "track_dirt_back",
-      "effectFront": "track_dirt_front",
-      "effectTop": "",
-      "effectDust": "track_move_dirt",
-      "effectBack": "track_dirt_dust"
+      "effect": {
+        "fx": "track_dirt_back"
+      },
+      "effectFront": {
+        "fx": "track_dirt_front"
+      },
+      "effectTop": {
+        "fx": ""
+      },
+      "effectDust": {
+        "fx": "track_move_dirt"
+      },
+      "effectBack": {
+        "fx": "track_dirt_dust"
+      },
+      "effectCenter": {
+        "fx": ""
+      }
     },
     "sand": {
-      "effect": "track_sand_back",
-      "effectFront": "track_sand_front",
-      "effectTop": "track_sand_top",
-      "effectDust": "track_move_sand",
-      "effectBack": "track_sand_dust"
+      "effect": {
+        "fx": "track_sand_back"
+      },
+      "effectFront": {
+        "fx": "track_sand_front"
+      },
+      "effectTop": {
+        "fx": "track_sand_top"
+      },
+      "effectDust": {
+        "fx": "track_move_sand"
+      },
+      "effectBack": {
+        "fx": "track_sand_dust"
+      },
+      "effectCenter": {
+        "fx": ""
+      }
     },
     "snow": {
-      "effect": "track_snow_back",
-      "effectFront": "track_snow_front",
-      "effectTop": "track_snow_top",
-      "effectDust": "track_move_snow",
-      "effectBack": "track_snow_dust"
+      "effect": {
+        "fx": "track_snow_back"
+      },
+      "effectFront": {
+        "fx": "track_snow_front"
+      },
+      "effectTop": {
+        "fx": "track_snow_top"
+      },
+      "effectDust": {
+        "fx": "track_move_snow"
+      },
+      "effectBack": {
+        "fx": "track_snow_dust"
+      },
+      "effectCenter": {
+        "fx": ""
+      }
     },
     "soil": {
-      "effect": "track_dirt_back",
-      "effectFront": "track_dirt_front",
-      "effectTop": "track_dirt_top",
-      "effectDust": "track_move_dirt",
-      "effectBack": ""
+      "effect": {
+        "fx": "track_dirt_back"
+      },
+      "effectFront": {
+        "fx": "track_dirt_front"
+      },
+      "effectTop": {
+        "fx": "track_dirt_top"
+      },
+      "effectDust": {
+        "fx": "track_move_dirt"
+      },
+      "effectBack": {
+        "fx": ""
+      },
+      "effectCenter": {
+        "fx": ""
+      }
     },
     "ground": {
-      "effect": "track_ground_back",
-      "effectFront": "track_ground_front",
-      "effectTop": "track_ground_top",
-      "effectDust": "track_move_ground",
-      "effectBack": "track_ground_dust"
+      "effect": {
+        "fx": "track_ground_back"
+      },
+      "effectFront": {
+        "fx": "track_ground_front"
+      },
+      "effectTop": {
+        "fx": "track_ground_top"
+      },
+      "effectDust": {
+        "fx": "track_move_ground"
+      },
+      "effectBack": {
+        "fx": "track_ground_dust"
+      },
+      "effectCenter": {
+        "fx": ""
+      }
     }
   },
   "treeDestractible": {

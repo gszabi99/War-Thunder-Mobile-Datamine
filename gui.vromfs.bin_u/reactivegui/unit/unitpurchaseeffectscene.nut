@@ -5,6 +5,7 @@ let { hide_unit, show_unit, play_fx_on_unit,
 } = require("hangar")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { registerScene, scenesOrder } = require("%rGui/navState.nut")
+let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { hangarUnit, setCustomHangarUnit, isHangarUnitLoaded } = require("%rGui/unit/hangarUnit.nut")
 let { playSound } = require("sound_wt")
@@ -70,6 +71,7 @@ let unitEffectScene = @() {
   key = {}
 
   function onAttach() {
+    hideModals("unitPurchaseEffect")
     let unit = unitToShow.get()
     if (unit != null && hangarUnit.get()?.name != unit.name)
       setCustomHangarUnit(unit)
@@ -85,6 +87,7 @@ let unitEffectScene = @() {
     clearTimer(show_unit)
     clearTimer(playPurchSound)
     clearTimer(close)
+    unhideModals("unitPurchaseEffect")
   }
 
   children = purchaseEffectText(loc("msg/newUnitReceived"))
@@ -96,6 +99,7 @@ register_command(@() unitToShow(hangarUnit.get()), "ui.debug.unitPurchaseEffect"
 
 return {
   isPurchEffectVisible = isOpened
-  requestOpenUnitPurchEffect = @(unit) unitToShow(unit)
+  requestOpenUnitPurchEffect = @(unit) unitToShow.set(unit)
+  hasUnitToShow = Computed(@() unitToShow.get() != null)
   getEffectCfg
 }

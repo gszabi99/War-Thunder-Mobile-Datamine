@@ -6,16 +6,14 @@ let { shopCategoriesCfg, getGoodsType } = require("shopCommon.nut")
 let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
 let { schRewardInProgress, apply_scheduled_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { isAdsAvailable, canShowAds, showAdsForReward, showNotAvailableAdsMsg } = require("%rGui/ads/adsState.nut")
+let { isAdsAvailable, showAdsForReward } = require("%rGui/ads/adsState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { playSound } = require("sound_wt")
 
 
 function rewardsToGoodsFormat(schReward, id) {
-  let { rewards = null } = schReward
-  if (rewards == null) //compatibility with 2024.04.14
-    return schReward.__merge({ id, gtype = getGoodsType(schReward), isFreeReward = true })
+  let { rewards = [] } = schReward
 
   //temporary while goods rewards format not the same with userstat and lootboxes
   let res = schReward.__merge({
@@ -48,17 +46,7 @@ function rewardsToGoodsFormat(schReward, id) {
 }
 
 function isRewardsFitToCampaign(schReward, cConfigs) {
-  let { rewards = null } = schReward
-  if (rewards == null) {//compatibility with 2024.04.14
-    let { units = [], unitUpgrades = [], items = {} } = schReward
-    if (units.len() > 0)
-      return null != units.findvalue(@(u) u in cConfigs?.allUnits)
-    if (unitUpgrades.len() > 0)
-      return null != unitUpgrades.findvalue(@(u) u in cConfigs?.allUnits)
-    if (items.len() > 0)
-      return null != items.findvalue(@(_, i) i in cConfigs?.allItems)
-    return true
-  }
+  let { rewards = [] } = schReward
   foreach(g in rewards)
     if (g.gType == G_UNIT || g.gType == G_UNIT_UPGRADE)
       return g.id in cConfigs?.allUnits
@@ -190,12 +178,10 @@ function onSchRewardReceive(schReward) {
 
   if (!schReward.needAdvert)
     applyScheduledReward(schReward.id)
-  else if (canShowAds.value) {
+  else {
     playSound("meta_ad_button")
     showAdsForReward({ schRewardId = schReward.id, cost = schReward?.cost ?? 0, bqId = $"scheduled_{schReward.id}" })
   }
-  else
-    showNotAvailableAdsMsg()
 }
 
 eventbus_subscribe("adsRewardApply", function(data) {

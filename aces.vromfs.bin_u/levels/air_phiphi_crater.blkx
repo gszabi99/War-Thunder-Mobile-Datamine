@@ -3,7 +3,7 @@
   "lastclip_horizon": true,
   "clipmap_tex_mips": 6,
   "volumeCloudsActive": true,
-  "z_far": 50000.0,
+  "z_far": 30000.0,
   "mapCoord0": [
     -65536.0,
     -65536.0

@@ -1,7 +1,7 @@
 {
   "fmFile": "fm/do_17e_1.blk",
   "model": "do_17e_1",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "tpsCameraOffset": [
     -6.0,
     2.0,

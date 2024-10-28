@@ -27,7 +27,7 @@
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
   "waterBreakerAnimVar": "cm_25_break_water_action",
   "waterBreakerToggleTime": 4.0,

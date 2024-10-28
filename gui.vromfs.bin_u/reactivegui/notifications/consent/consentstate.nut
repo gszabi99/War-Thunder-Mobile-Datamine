@@ -15,9 +15,12 @@ let { setAppsFlyerConsent, startAppsFlyer } = require("appsFlyer")
 let { object_to_json_string } = require("json")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isIdfaDenied } = require("%rGui/login/stateIDFA.nut")
-
+let { request_firebase_consent_eu_only } = require("%appGlobals/permissions.nut")
+let { getCountryCode } = require("auth_wt")
 
 let CONSENT_OPTIONS_SAVE_ID = "consentManageOptions"
+
+let EU_REGION = ["BE","BG","CZ","DK","DE","EE","IE","GR","EL","ES","FR","HR","HU","IT","CY","LV","LT","LU","MT","NL","AT","PL","PT","RO","SI","SK","FI","SE","GB","UK","LI","NO","IS","CH"]
 
 let configManagePoints = [
   {
@@ -45,21 +48,23 @@ let points = Computed(@() defaultPointsTable.map(@(v, k) savedPoints.get()?[k] ?
 
 let isConsentAcceptedOnce = Computed(@() (savedPoints.get()?.len() ?? 0) != 0)
 
+let consentRequiredForCurrentRegion = Computed(@() !request_firebase_consent_eu_only.get() || EU_REGION.indexof(getCountryCode()) != null)
 let needOpenConsentWnd = mkWatched(persist, "consentMainWnd", false)
 let isConsentWasAutoSkipped = mkWatched(persist, "isConsentWasAutoSkipped", false)
 let needForceOpenConsetnWnd    = Computed(@() savedPoints.get() != null && !isConsentAcceptedOnce.get() && !isIdfaDenied.get())
 let needSkipConsentWnd = keepref(Computed(@() savedPoints.get() != null && !isConsentAcceptedOnce.get() && isIdfaDenied.get()))
+let needSkipForCurrentRegion = keepref(Computed(@() isReadyForConsent.get() && !consentRequiredForCurrentRegion.get()))
 
 let isOpenedConsentWnd = Computed(@()
   (needOpenConsentWnd.get() || needForceOpenConsetnWnd.get())
-  && isReadyForConsent.get())
+  && isReadyForConsent.get() && consentRequiredForCurrentRegion.get())
 
 function setupAnalytics() {
   let v = savedPoints.get()
   logC("analytics starting with consent:", v)
   setFirebaseConsent(object_to_json_string(v))
   setCollectionEnabled(true)
-  setAppsFlyerConsent(v?.ad_user_data ?? false, v?.ad_personalization ?? false, true)
+  setAppsFlyerConsent(v?.ad_user_data ?? false, v?.ad_personalization ?? false, !consentRequiredForCurrentRegion.get())
   startAppsFlyer()
 }
 
@@ -73,7 +78,21 @@ function autoSkipConsent() {
   isConsentWasAutoSkipped.set(true)
 }
 
+function autoAcceptForNonEURegion() {
+  if (isConsentAcceptedOnce.get())
+    return
+  logC("consent auto accepted for non EU region",getCountryCode())
+  savedPoints(defaultPointsTable.map(@(_) true))
+  sendUiBqEvent("ads_consent_firebase", { id = "consent_skip_by_region" })
+  setupAnalytics()
+}
+
 needSkipConsentWnd.subscribe(@(v) v ? deferOnce(autoSkipConsent) : null)
+
+needSkipForCurrentRegion.subscribe(@(v) v ? deferOnce(autoAcceptForNonEURegion) : null)
+
+if (needSkipForCurrentRegion.get())
+  autoAcceptForNonEURegion()
 
 let function loadPoints(){
   let res = {}
@@ -162,6 +181,7 @@ return {
   isConsentWasAutoSkipped
   applyConsent
   setupAnalytics
+  consentRequiredForCurrentRegion
 
   points
   defaultPointsTable

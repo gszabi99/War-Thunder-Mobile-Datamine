@@ -1,6 +1,6 @@
 {
   "model": "f3f_2",
-  "useTouchShooting": true,
+  "useTouchTargeting": true,
   "MetaPartsBlk": [
     "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
     "gameData/FlightModels/dm/metaparts/tutor_biplane_metaparts.blk"

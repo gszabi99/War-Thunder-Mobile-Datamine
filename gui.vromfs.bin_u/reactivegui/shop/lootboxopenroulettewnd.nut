@@ -764,19 +764,19 @@ function rouletteRewardsBlock() {
 
   return {
     watch = rouletteRewardsList
-    key = rouletteRewardsList
     size = [sw(100), rewardBoxSize + 2 * slotPadding + 2 * slotsGap]
-    function onAttach() {
-      if (isRouletteDebugMode.get())
-        logR($"Roulette attached")
-      startSound("meta_roulette_spin")
-    }
-    onDetach = @() stopSound("meta_roulette_spin")
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     animations = opacityAnim
     children = [
       {
+        key = rouletteRewardsList
+        function onAttach() {
+          if (isRouletteDebugMode.get())
+            logR($"Roulette attached")
+          startSound("meta_roulette_spin")
+        }
+        onDetach = @() stopSound("meta_roulette_spin")
         hplace = ALIGN_LEFT
         flow = FLOW_HORIZONTAL
         children = children.slice(0, midIdx)

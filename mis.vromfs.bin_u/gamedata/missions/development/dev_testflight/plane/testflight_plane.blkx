@@ -44,6 +44,12 @@
       },
       "conditions": {},
       "actions": {
+        "triggerActivate": {
+          "target": "player_respawn_rn",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "doNotChange"
+        },
         "unitSetIndication": {
           "target_marking": 0,
           "object_var_name": "",
@@ -66,17 +72,29 @@
           ],
           "attack_type": "hold_fire"
         },
-        "missionSetBombingArea": {
-          "army": 2,
-          "target": [
-            "bomb_area_01",
-            "bomb_area_02",
-            "bomb_area_03"
-          ],
-          "hp": 10000.0,
-          "hpFireMult": 0.1,
-          "fireSpeed": 0.03
-        }
+        "missionSetBombingArea": [
+          {
+            "army": 2,
+            "target": "bomb_area_01",
+            "hp": 10000.0,
+            "hpFireMult": 0.1,
+            "fireSpeed": 0.03
+          },
+          {
+            "army": 2,
+            "target": "bomb_area_02",
+            "hp": 20000.0,
+            "hpFireMult": 0.1,
+            "fireSpeed": 0.03
+          },
+          {
+            "army": 2,
+            "target": "bomb_area_03",
+            "hp": 30000.0,
+            "hpFireMult": 0.1,
+            "fireSpeed": 0.03
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -216,6 +234,28 @@
       },
       "else_actions": {}
     },
+    "init_ai": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "__unitLoadBehTree": {
+          "name": "wtmBenchmark",
+          "objects": "plane_sq"
+        }
+      },
+      "else_actions": {}
+    },
     "player_respawn": {
       "is_enabled": true,
       "comments": "",
@@ -226,7 +266,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -256,24 +296,39 @@
       },
       "else_actions": {}
     },
-    "init_ai": {
+    "player_respawn_rn": {
       "is_enabled": true,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
         "conditionsType": "ALL",
-        "enableAfterComplete": false
+        "enableAfterComplete": true
       },
       "events": {
         "periodicEvent": {
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isKilled",
+          "check_players": "any"
+        }
+      },
       "actions": {
-        "__unitLoadBehTree": {
-          "name": "wtmBenchmark",
-          "objects": "plane_sq"
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "t1_player01",
+          "target": "player_respawn"
+        },
+        "spawnOnAirfield": {
+          "runwayName": "airfield_01",
+          "objects": "t1_player01"
         }
       },
       "else_actions": {}

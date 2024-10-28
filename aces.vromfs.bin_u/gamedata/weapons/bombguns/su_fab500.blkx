@@ -11,7 +11,7 @@
   "bomb": {
     "mass": 508.3,
     "explosiveType": "tnt",
-    "explosiveMass": 250.0,
+    "explosiveMass": 325.0,
     "bombType": "he_bomb",
     "bombName": "fab500sv_39",
     "dragCx": 0.097,
