@@ -1,4 +1,5 @@
-let { Computed } = require("frp")
+from "%sqstd/frp.nut" import ComputedImmediate
+
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { eventbus_subscribe } = require("eventbus")
 let logW = require("%globalScripts/logs.nut").log_with_prefix("[WINDOW] ")
@@ -6,7 +7,7 @@ let { is_mobile } = require("%appGlobals/clientState/platform.nut")
 
 
 let windowInactiveFlags = hardPersistWatched("globals.windowInactiveFlags", {})
-let windowActive = Computed(@() windowInactiveFlags.value.len() == 0)
+let windowActive = ComputedImmediate(@() windowInactiveFlags.value.len() == 0)
 local needDebug = false
 
 function blockWindow(flag) {

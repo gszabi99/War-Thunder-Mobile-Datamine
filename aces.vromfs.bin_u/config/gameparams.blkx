@@ -15524,6 +15524,30 @@
         {
           "name": "wheel_l_03_",
           "modelNames": "g6_spg"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "type_87_rcv_prot"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "type_87_rcv_prot"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "type_87_rcv_prot"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "type_87_rcv_prot"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "type_87_rcv_prot"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "type_87_rcv_prot"
         }
       ]
     },

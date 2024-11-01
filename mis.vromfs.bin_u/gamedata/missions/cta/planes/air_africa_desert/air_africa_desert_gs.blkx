@@ -50,7 +50,7 @@
       "type": "domination",
       "environment": "Day",
       "weather": "good",
-      "locName": "missions/_GS/medium_tank;africa_desert/name",
+      "locName": "missions/_GS/medium_tank;location/air_africa_desert",
       "locDesc": "missions/_GS/desc",
       "scoreLimit": 3800,
       "timeLimit": 15,
@@ -9976,9 +9976,9 @@
           216.322
         ],
         [
-          -6613.84,
-          183.403,
-          5248.26
+          -6596.2,
+          155.0,
+          5214.2
         ]
       ],
       "objLayer": 0,
@@ -10003,9 +10003,9 @@
           327.193
         ],
         [
-          8834.45,
-          19.4261,
-          -3834.04
+          8838.85,
+          -171.3,
+          -3783.55
         ]
       ],
       "objLayer": 0,

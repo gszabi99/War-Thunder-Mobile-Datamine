@@ -7,7 +7,7 @@
   "hasDmg2": true,
   "hasDmg": false,
   "damageableByGun": false,
-  "expClass": "exp_bridge",
+  "expClass": "exp_zero",
   "renderInWaterReflection": true,
   "class_tags": {
     "fortest": true

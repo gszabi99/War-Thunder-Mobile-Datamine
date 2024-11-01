@@ -3,6 +3,12 @@ return {
     "a-20g": {
       "": "ussr_p_47d_ussr"
     },
+    "am_1_mauler": {
+      "": "usa_am_1_mauler"
+    },
+    "am_1_mauler_prem": {
+      "": "usa_am_1_mauler_prem"
+    },
     "ar_2": {
       "": "ussr_yak_2_kabb"
     },
@@ -969,6 +975,12 @@ return {
     },
     "i_185_m82": {
       "": "ussr_tandem_mai"
+    },
+    "i_225": {
+      "": "ussr_i_15_1935_moscow"
+    },
+    "i_225_prem": {
+      "": "ussr_il_4"
     },
     "il-10": {
       "": "ussr_il_10"

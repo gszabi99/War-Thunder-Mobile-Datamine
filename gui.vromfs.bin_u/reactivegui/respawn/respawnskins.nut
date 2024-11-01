@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { checkIcon } = require("%rGui/unitSkins/unitSkinsComps.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
-let { respawnUnitSkins, respawnUnitInfo } = require("%appGlobals/clientState/respawnStateBase.nut")
+let { respawnUnitInfo, respawnUnitSkins } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { isAutoSkin } = require("%rGui/unit/unitSettings.nut")
 let { chooseAutoSkin, respawnSlots, selSlot, selectedSkins } = require("%rGui/respawn/respawnState.nut")
 let { curLevelTags } = require("%rGui/unitSkins/levelSkinTags.nut")
@@ -16,9 +16,10 @@ let unitName = Computed(@() selSlot.get()?.name)
 
 function refreshCurUnitAutoSkin() {
   let name = unitName.get()
-  if (name != null && isAutoSkin(respawnUnitInfo.get()?.name) && !selectedSkins.get()?[name] && (respawnUnitSkins.get()?.len() ?? 0) > 0) {
-    let skin = chooseAutoSkin(name, respawnUnitSkins.get(), respawnSlots.get()?.findvalue(@(s) s.name == name).skin)
-    selectedSkins.mutate(@(skins) skins[name] <- skin)
+  let { skins = {} } = selSlot.get()
+  if (name != null && isAutoSkin(respawnUnitInfo.get()?.name) && !selectedSkins.get()?[name] && skins.len() > 0) {
+    let skin = chooseAutoSkin(name, skins, respawnSlots.get()?.findvalue(@(s) s.name == name).skin)
+    selectedSkins.mutate(@(s) s[name] <- skin)
   }
 }
 
@@ -77,10 +78,10 @@ let function skinBtn(skin) {
 }
 
 let respawnSkins = @() {
-  watch = [respawnUnitSkins, selSlot, curLevelTags, unitName]
+  watch = [selSlot, curLevelTags, unitName]
   flow = FLOW_HORIZONTAL
   gap = skinGap
-  children = respawnUnitSkins.get().keys().append("")
+  children = (selSlot.get()?.skins ?? {}).keys().append("")
     .sort(@(a, b) (b == (selSlot.get()?.skin ?? "")) <=> (a == (selSlot.get()?.skin ?? ""))
       || curLevelTags.get()?[getSkinPresentation(unitName.get(), b).tag]
         <=> curLevelTags.get()?[getSkinPresentation(unitName.get(), a).tag]

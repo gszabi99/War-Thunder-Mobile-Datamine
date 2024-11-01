@@ -25,11 +25,33 @@ let mkRow = @(t1, t2, icon = null) {
   ]
 }
 
-function mkStatRow(stats, config, campaign) {
+let mkMarqueeText = @(text)
+  mkText(text).__update({ behavior = Behaviors.Marquee })
+
+let mkMarqueeRow = @(t1, t2, icon = null) {
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(10)
+  children = [
+    mkMarqueeText(t1).__update({ maxWidth = pw(70) })
+    icon
+    {
+      size = flex()
+      halign = ALIGN_RIGHT
+      children = mkText(t2)
+    }
+  ]
+}
+
+function mkStatRow(stats, config, campaign, ctor = null) {
   let configCamp = config?.campaign ?? campaign
   if (configCamp == campaign) {
     let value = config.value(stats)
-    return value > 0 ? mkRow(config.name, config?.format(value) ?? value, config?.icon) : null
+    return value > 0
+      ? ctor != null
+        ? ctor(config.name, config?.format(value) ?? value, config?.icon)
+        : mkRow(config.name, config?.format(value) ?? value, config?.icon)
+      : null
   }
   return null
 }
@@ -67,5 +89,7 @@ let viewStats = [
 return {
   viewStats
   mkRow
+  mkMarqueeRow
+  mkMarqueeText
   mkStatRow
 }

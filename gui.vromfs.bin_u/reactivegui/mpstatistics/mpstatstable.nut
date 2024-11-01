@@ -96,7 +96,11 @@ function mkNameContent(player, teamColor, halign) {
       mkGradRankSmall(player.mRank)
       cellTextProps.__merge({
         maxWidth = pw(100)
+        size = flex()
         halign
+        behavior = Behaviors.Marquee
+        delay = defMarqueeDelay
+        speed = hdpx(30)
         color = getColorUnitName(player)
         text = getUnitNameText(unitName, player.unitClass, halign)
       })

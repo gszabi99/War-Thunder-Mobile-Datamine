@@ -13,7 +13,7 @@ let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlotContentGen
 let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets
 } = require("bulletsChoiceState.nut")
 let { slotAABB, selSlotLinesSteps, lineSpeed } = require("respawnAnimState.nut")
-let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, respawnUnitItems, respawnUnitSkins,
+let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, respawnUnitItems,
   hasRespawnSeparateSlots
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { getUnitPresentation, getPlatoonName, getUnitClassFontIcon, getUnitLocId
@@ -56,6 +56,7 @@ let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
 let skinTextHeight = hdpx(45)
 let skinPadding = hdpx(10)
 
+let hasSkins = Computed(@() (selSlot.get()?.skins.len() ?? 0) > 0)
 let needCancel = Computed(@() isRespawnStarted.value && !isRespawnInProgress.value && respawnSlots.value.len() > 1)
 let showLowBulletsWarning = Watched(true)
 let startRespawnTime = mkWatched(persist, "startRespawnTime", -1)
@@ -350,16 +351,16 @@ let isFixedPositionByUnitType = {
   [AIR] = true
 }
 
-function calcPos(content, contentAABB) {
+function calcPos(content, contentAABB, slotAABBV, hasSkinsBlock) {
   let size = calc_comp_size(content)
-  let posY = (slotAABB.value.t + slotAABB.value.b - size[1]) / 2  - contentAABB.t
+  let posY = (slotAABBV.t + slotAABBV.b - size[1]) / 2  - contentAABB.t
   let maxY = max(0, contentAABB.b - contentAABB.t - size[1])
   let maxYWithSkins = max(0, contentAABB.b - contentAABB.t - size[1] - skinSize - skinTextHeight - skinPadding * 2 - hdpx(15))
-  return [0, clamp(posY, 0, !respawnUnitSkins.get() ? maxY : maxYWithSkins)]
+  return [0, clamp(posY, 0, !hasSkinsBlock ? maxY : maxYWithSkins)]
 }
 
 function respawnBulletsPlace() {
-  let res = { watch = [slotAABB, respawnUnitSkins, selSlotUnitType, selSlot], onAttach = @() deferOnce(updateSlotAABB) }
+  let res = { watch = [slotAABB, hasSkins, selSlotUnitType, selSlot], onAttach = @() deferOnce(updateSlotAABB) }
   if (slotAABB.value == null)
     return res
   let contentAABB = gui_scene.getCompAABBbyKey("respawnWndContent")
@@ -373,17 +374,20 @@ function respawnBulletsPlace() {
     children = {
       key = slotAABB.value
       onAttach = @() selSlotContentGenId.set(selSlotContentGenId.get() + 1)
-      pos = [0, (isFixedPositionByUnitType?[selSlotUnitType.get()] ?? false) ? 0 : calcPos(content, contentAABB)[1]]
+      pos = [0,
+        (isFixedPositionByUnitType?[selSlotUnitType.get()] ?? false) ? 0
+          : calcPos(content, contentAABB, slotAABB.get(), hasSkins.get())[1]
+      ]
       children = content
     }
   })
 }
 
 let skinsList = @() {
-  watch = respawnUnitSkins
+  watch = hasSkins
   size = flex()
   valign = ALIGN_BOTTOM
-  children = !respawnUnitSkins.get() ? null : {
+  children = !hasSkins.get() ? null : {
     rendObj = ROBJ_SOLID
     color = 0x99000000
     pos = [bulletsBlockMargin, 0]

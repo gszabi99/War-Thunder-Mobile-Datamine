@@ -13,6 +13,9 @@ let { getWeaponShortNamesList, getBulletBeltShortName } = require("%rGui/weaponr
 let { getBulletBeltImage, TOTAL_VIEW_BULLETS } = require("%appGlobals/config/bulletsPresentation.nut")
 let { contentMargin } = require("unitModsConst.nut")
 let { warningTextColor } = require("%rGui/style/stdColors.nut")
+let { myUnits } = require("%appGlobals/pServer/profile.nut")
+
+let unitUpgOrPremNotInMyHangar = Computed(@() !(curUnit.get()?.name in myUnits.get()) && (curUnit.get()?.isPremium || curUnit.get()?.isUpgraded))
 
 let weaponGap = hdpx(10)
 let selLineGap = hdpx(14)
@@ -148,15 +151,16 @@ function mkSlotWeaponContent(idx) {
   let id = Computed(@() weapon.get()?.name)
   let { mod, reqLevel, isLocked, isPurchased } = mkWeaponStates(weapon, curMods, curUnit)
   let isEquipped = Computed(@() equippedWeaponId.get() == id.get())
-  return {
+  return @() {
+    watch = unitUpgOrPremNotInMyHangar
     size = [weaponW, weaponH]
     children = [
       mkWeaponImage(weapon)
       mkWeaponDesc(weapon)
-      mkNotPurchasedShade(isPurchased)
+      unitUpgOrPremNotInMyHangar.get() ? null : mkNotPurchasedShade(isPurchased)
       mkEquippedFrame(isEquipped)
       mkEquippedIcon(isEquipped)
-      mkLevelLockInfo(isLocked, reqLevel)
+      unitUpgOrPremNotInMyHangar.get() ? null : mkLevelLockInfo(isLocked, reqLevel)
       mkModCost(isPurchased, isLocked, mod, curUnitAllModsCost)
       mkUnseenModIndicator(Computed(@() id.get() in curUnseenMods.get()?[curSlotIdx.get()]))
       mkConflictsBorder(mkHasConflicts(weapon, equippedWeaponsBySlots))
@@ -227,16 +231,16 @@ function mkSlotBeltContent(idx) {
 
   let isUnseen = Computed(@() id.get() in curUnseenMods.get()?[curBeltsWeaponIdx.get()])
   return @() {
-    watch = belt
+    watch = [belt, unitUpgOrPremNotInMyHangar]
     size = [weaponW, weaponH]
     children = belt.get() == null ? null
       : [
           mkBeltImage(belt.get().bullets)
           mkSlotText(getBulletBeltShortName(belt.get().id))
-          mkNotPurchasedShade(isPurchased)
+          unitUpgOrPremNotInMyHangar.get() ? null : mkNotPurchasedShade(isPurchased)
           mkEquippedFrame(isEquipped)
           mkEquippedIcon(isEquipped)
-          mkLevelLockInfo(isLocked, reqLevel)
+          unitUpgOrPremNotInMyHangar.get() ? null : mkLevelLockInfo(isLocked, reqLevel)
           mkModCost(isPurchased, isLocked, mod, curUnitAllModsCost)
           mkUnseenModIndicator(isUnseen)
         ]

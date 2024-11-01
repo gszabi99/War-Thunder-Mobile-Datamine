@@ -196,6 +196,7 @@ let mkSlotTitle = @(title, ovr = {}) title == "" ? null
         hplace = ALIGN_CENTER
         behavior = Behaviors.Marquee
         delay = defMarqueeDelay
+        threshold = hdpx(2)
         speed = hdpx(30)
       }.__update(fontVeryTinyShaded)
     }.__update(ovr)

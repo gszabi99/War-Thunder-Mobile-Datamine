@@ -23,12 +23,12 @@
     ]
   ],
   "aiMapCoord0": [
-    -67536.0,
-    -67536.0
+    -32768.0,
+    -32768.0
   ],
   "aiMapCoord1": [
-    67536.0,
-    67536.0
+    32768.0,
+    32768.0
   ],
   "gridSteps": [
     8192.0,
@@ -82,7 +82,7 @@
       "microdetail_soil_b_tex_n*",
       "microdetail_sand_c_tex_n*",
       "microdetail_soil_a_tex_n*",
-      "microdetail_none_tex_n*",
+      "microdetail_liquid_a_tex_n*",
       "microdetail_grass_a_tex_n*",
       "microdetail_forest_floor_a_tex_n*",
       "microdetail_fabric_a_tex_n*",

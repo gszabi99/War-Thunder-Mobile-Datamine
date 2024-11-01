@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { round } = require("math")
 let { can_use_debug_console } = require("%appGlobals/permissions.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -27,24 +28,38 @@ let skipTutor = mkWatched(persist, "skipTutorDev", false)
 isOpened.subscribe(@(v) v ? null : markAllCampaignsSeen())
 
 let gap = hdpx(40)
+let campImageFrameWidth = hdpxi(6)
+let campBtnSize = [hdpxi(540), hdpxi(340)]
+let campImageSize = [campBtnSize[0] - (campImageFrameWidth * 2), campBtnSize[1] - (campImageFrameWidth * 2)]
 
-let campImageSize = [hdpx(540), hdpx(340)]
 let campagnImages = {
-  ships = "ui/bkg/login_bkg_s_2.avif"
-  tanks = "ui/bkg/login_bkg_t_2.avif"
-  air   = "ui/bkg/login_bkg_a_2.avif"
+  ships = { img = $"ui/bkg/login_bkg_s_2.avif", srcSize = [2700, 1080] }
+  tanks = { img = $"ui/bkg/login_bkg_t_2.avif", srcSize = [2700, 1080] }
+  air   = { img = $"ui/bkg/login_bkg_a_2.avif", srcSize = [800, 600] }
+}
+
+function mkResampledImgPath(imgCfg, destSize) {
+  let { img, srcSize } = imgCfg
+  foreach (n in [ srcSize[0], srcSize[1], destSize[0], destSize[1] ])
+    assert(n != 0 && type(n) == "integer", "Bad params in mkResampledImgPath")
+  let srcAR = 1.0 * srcSize[0] / srcSize[1]
+  let destAR = 1.0 * destSize[0] / destSize[1]
+  let resampleSize = (srcAR >= destAR)
+    ? [ round(destSize[1] * srcAR).tointeger(), destSize[1] ]
+    : [ destSize[0], round(destSize[0] / srcAR).tointeger() ]
+  return $"{img}:{resampleSize[0]}:{resampleSize[1]}"
 }
 
 let mkCampaignImage = @(campaign) {
   size = flex()
   clipChildren = true
   children = {
-    size = flex()
+    size = campImageSize
     rendObj = ROBJ_IMAGE
     keepAspect = KEEP_ASPECT_FILL
     imageHalign = ALIGN_CENTER
     imageValign = ALIGN_TOP
-    image = campaign in campagnImages ? Picture(campagnImages[campaign])
+    image = campaign in campagnImages ? Picture(mkResampledImgPath(campagnImages[campaign], campImageSize))
       : null
   }
 }
@@ -151,11 +166,12 @@ function mkCampaignSkipTutorButton(){
 
 function mkCampaignButton(campaign) {
   let stateFlags = Watched(0)
+  let campaignImage = mkCampaignImage(campaign)
   return @() {
     watch = [stateFlags, unseenCampaigns]
     rendObj = ROBJ_SOLID
-    size = campImageSize
-    padding = hdpx(6)
+    size = campBtnSize
+    padding = campImageFrameWidth
     color = 0XFF323232
     behavior = Behaviors.Button
     onClick = @() onCampaignButtonClick(campaign)
@@ -165,7 +181,7 @@ function mkCampaignButton(campaign) {
     sound = { click  = "click" }
 
     children = [
-      mkCampaignImage(campaign)
+      campaignImage
       mkCampaignName(utf8ToUpper(loc($"campaign/{campaign}")), stateFlags.value)
       campaign not in unseenCampaigns.get() ? null
         : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(-20), hdpx(20)] })
@@ -190,7 +206,7 @@ function campaignsListUi(){
 
 let changeCampaignDesc = @() {
   watch = campaignsList
-  size = [campImageSize[0] * campaignsList.get().len(), SIZE_TO_CONTENT]
+  size = [flex(), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text = loc("changeCampaign/desc")

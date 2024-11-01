@@ -6,7 +6,7 @@ let { getMedalPresentation } = require("%rGui/mpStatistics/medalsPresentation.nu
 let { actualizeStats, userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { viewStats, mkRow, mkStatRow } = require("%rGui/mpStatistics/statRow.nut")
+let { viewStats, mkStatRow, mkMarqueeRow, mkMarqueeText } = require("%rGui/mpStatistics/statRow.nut")
 
 let playerStats = Computed( @() userstatStats.get()?.stats["global"])
 
@@ -25,20 +25,20 @@ let mkMedals = @(selCampaign) function() {
   }
   return {
     watch = servProfile
+    size = [pw(35), SIZE_TO_CONTENT]
+    padding = [0, hdpx(25), 0, hdpx(50)]
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(30)
-    children = children.len() > 0
-      ? [
-          mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
-          {
-            valign = ALIGN_CENTER
-            flow = FLOW_HORIZONTAL
-            gap = hdpx(30)
-            children
-          }
-        ]
-      : mkText(loc("mainmenu/noMedal"))
+    children = [
+      mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
+      {
+        valign = ALIGN_CENTER
+        flow = FLOW_HORIZONTAL
+        gap = hdpx(30)
+        children = children.len() > 0 ? children : mkMarqueeText(loc("mainmenu/noMedal"))
+      }
+    ]
   }
 }
 
@@ -62,9 +62,9 @@ function mkInfo(campaign, unitsStats) {
         }.__update(fontSmallAccented)
       })
       {
+        size = [pw(100), SIZE_TO_CONTENT]
         flow = FLOW_HORIZONTAL
-        margin = [hdpx(20), hdpx(50)]
-        gap = hdpx(50)
+        padding = [hdpx(20), 0]
         children = [
           mkMedals(campaign)
           function() {
@@ -72,23 +72,23 @@ function mkInfo(campaign, unitsStats) {
             let all = unitsStats.get().all[campaign]
             return {
               watch = unitsStats
-              minWidth = SIZE_TO_CONTENT
-              size = [flex(), SIZE_TO_CONTENT]
+              size = [pw(35), SIZE_TO_CONTENT]
+              padding = [0, hdpx(25)]
               valign = ALIGN_CENTER
               flow = FLOW_VERTICAL
               gap = hdpx(5)
               children = [
                 mkText(loc("lobby/vehicles"), hlColor).__update(fontTinyAccented)
-                mkRow(loc("stats/line"), $"{my.wp}/{all.wp}")
-                mkRow(loc("stats/maxLevel"), $"{my.maxLevel}/{my.wp + my.prem + my.rare}")
-                mkRow(loc("stats/premium"), $"{my.prem}/{all.prem}", {
+                mkMarqueeRow(loc("stats/line"), $"{my.wp}/{all.wp}")
+                mkMarqueeRow(loc("stats/maxLevel"), $"{my.maxLevel}/{my.wp + my.prem + my.rare}")
+                mkMarqueeRow(loc("stats/premium"), $"{my.prem}/{all.prem}", {
                   size = iconSize
                   rendObj = ROBJ_IMAGE
                   keepAspect = KEEP_ASPECT_FIT
                   image = Picture($"ui/gameuiskin#icon_premium.svg:{iconSize[0]}:{iconSize[1]}:P")
                   vplace = ALIGN_CENTER
                 })
-                mkRow(loc("stats/rare"), $"{my.rare}")
+                mkMarqueeRow(loc("stats/rare"), $"{my.rare}")
               ]
             }
           }
@@ -96,11 +96,13 @@ function mkInfo(campaign, unitsStats) {
             let stats = playerStats.get()?[campaign] ?? {}
             return {
               watch = playerStats
+              size = [pw(30), SIZE_TO_CONTENT]
+              padding = [0, hdpx(50), 0, hdpx(25)]
               valign = ALIGN_CENTER
               flow = FLOW_VERTICAL
               gap = hdpx(5)
               children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
-                .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign)))
+                .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign, mkMarqueeRow)))
             }
           }
         ]

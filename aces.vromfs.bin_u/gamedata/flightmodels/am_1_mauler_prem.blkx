@@ -1625,6 +1625,10 @@
   "Params": {
     "Range": 1778.33
   },
+  "Sound": {
+    "Engine": "engine_radial",
+    "gun": "gun_default"
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,

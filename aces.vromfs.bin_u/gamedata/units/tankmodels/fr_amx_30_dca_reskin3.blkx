@@ -3199,7 +3199,7 @@
     }
   },
   "enabled_modifications": {
-    "tank_engine_smoke_screen_system": true
+    "tank_smoke_screen_system_mod": true
   },
   "vehicleSkins": {
     "forest": {

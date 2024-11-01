@@ -149,11 +149,11 @@ function mkGamepadHotkey(hotkey, isVisible, isActive, ovr) {
 let btnImageThrottleInc = mkGamepadHotkey(axisMinToHotkey(throttle_axis),
   Computed(@() sliderValue.value > sliderWepValue),
   Computed(@() isThrottleAxisActive.value && throttleAxisVal.value > 0),
-  { hplace = ALIGN_RIGHT, pos = [pw(-100), 0] })
+  { hplace = ALIGN_RIGHT, pos = [pw(90), 0] })
 let btnImageThrottleDec = mkGamepadHotkey(axisMaxToHotkey(throttle_axis),
   Computed(@() sliderValue.value < maxThrottle),
   Computed(@() isThrottleAxisActive.value && throttleAxisVal.value < 0),
-  { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [pw(-100), 0] })
+  { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM, pos = [pw(90), 0] })
 
 let isStateVisible = @(state) state == ON
 

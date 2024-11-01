@@ -9,7 +9,7 @@ let { onSpectatorMode } = require("guiSpectator")
 let { is_bit_set, ceil } = require("%sqstd/math.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft, respawnUnitItems,
-  hasRespawnSeparateSlots, curUnitsAvgCostWp
+  hasRespawnSeparateSlots, curUnitsAvgCostWp, respawnUnitSkins
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { getUnitTags, getUnitType } = require("%appGlobals/unitTags.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
@@ -64,6 +64,7 @@ let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
     unitClass = info?.unitClass ?? ""
     country = info?.country ?? ""
     isCurrent = info?.isCurrent ?? false
+    skins = info?.skins ?? {}
   }
 
 let canUseSpare = Computed(@() (respawnUnitItems.get()?.spare ?? 0) > 0)
@@ -82,11 +83,13 @@ let respawnSlots = Computed(function() {
     res.append(mkSlot(res.len(), sUnit, defMods).__update({ reqLevel = sUnit?.reqLevel ?? 0, isLocked = true }))
   if (!hasRespawnSeparateSlots.get()) {
     let { level = -1, isCollectible = false, isPremium = false, isUpgraded = false } = respawnUnitInfo.get()
+    let skins = respawnUnitSkins.get()
     res.each(function(s) {
       s.level = level
       s.isCollectible = isCollectible
       s.isPremium = isPremium
       s.isUpgraded = isUpgraded
+      s.skins = skins
     })
   }
   return res

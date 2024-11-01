@@ -80,6 +80,9 @@ let nickFrames = {
   yin_yang = @(n) $"␓{n}␓"
   pumpkin = @(n) $"␣{n}␤"
   eyes = @(n) $"─{n}━"
+  two_stars = @(n) $"┶{n}┶"
+  parachute = @(n) $"┷{n}┷"
+  bomb_and_plane = @(n) $"┸{n}┹"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

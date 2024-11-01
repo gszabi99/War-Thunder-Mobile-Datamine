@@ -1808,12 +1808,16 @@
           {
             "playerAttracted": false,
             "object": "@t1_airfield_aaa_name",
-            "target": "t2_players_squad"
+            "target": "t2_players_squad",
+            "fireRandom": true,
+            "targetDistMax": 4000.0
           },
           {
             "playerAttracted": false,
             "object": "@t2_airfield_aaa_name",
-            "target": "t1_players_squad"
+            "target": "t1_players_squad",
+            "fireRandom": true,
+            "targetDistMax": 4000.0
           }
         ]
       },

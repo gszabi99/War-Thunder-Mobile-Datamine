@@ -548,6 +548,7 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   let vibrationMult = getOptValue(OPT_HAPTIC_INTENSITY_ON_SHOOT)
 
   local isTouchPushed = false
+  local isHotkeyPushed = false
 
   function onStopTouch() {
     isTouchPushed = false
@@ -627,11 +628,13 @@ function mkWeaponryItem(buttonConfig, actionItem, ovr = {}) {
   function onStatePush() {
     if (isTouchPushed)
       return
+    isHotkeyPushed = true
     onButtonPush()
   }
   function onStateRelease() {
-    if (isTouchPushed)
+    if (!isHotkeyPushed)
       return
+    isHotkeyPushed = false
     onButtonReleaseWhileActiveZone()
   }
 

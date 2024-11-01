@@ -31,6 +31,7 @@ let mkCardTitle = @(title) title == "" ? null
         text = title
         behavior = Behaviors.Marquee
         delay = defMarqueeDelay
+        threshold = hdpx(2)
         speed = hdpx(30)
       }.__update(fontVeryTinyShaded)
     }

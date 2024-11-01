@@ -1235,7 +1235,8 @@
     "virtualTextureAnisotropy": 1,
     "cachesCount": 2,
     "buffersCount": 2,
-    "growTexSizeWithRenderingResolution": true
+    "growTexSizeWithRenderingResolution": true,
+    "shaderlodMode": "always_high"
   },
   "clipmapImpostor": {
     "enabled": false,
@@ -1566,7 +1567,7 @@
         "staticCascadeUseRiSecLayer": false,
         "staticCascadeMinHeight": -20.0,
         "staticCascadeMaxHeight": 4500.0,
-        "staticMaxHeightRange": 2200.0,
+        "staticMaxHeightRange": 4550.0,
         "staticCascadeTransition": false,
         "optimizeBigQuadRenderForSmallCascade": true,
         "staticCascadeDualPass": false,
@@ -1645,7 +1646,7 @@
         "staticCascadeUseRiSecLayer": false,
         "staticCascadeMinHeight": -20.0,
         "staticCascadeMaxHeight": 4500.0,
-        "staticMaxHeightRange": 2200.0,
+        "staticMaxHeightRange": 4550.0,
         "staticCascadeTransition": false,
         "optimizeBigQuadRenderForSmallCascade": true,
         "staticCascadeDualPass": false,
@@ -1724,7 +1725,7 @@
         "staticCascadeUseRiSecLayer": false,
         "staticCascadeMinHeight": -20.0,
         "staticCascadeMaxHeight": 4500.0,
-        "staticMaxHeightRange": 2200.0,
+        "staticMaxHeightRange": 4550.0,
         "staticCascadeTransition": false,
         "optimizeBigQuadRenderForSmallCascade": true,
         "staticCascadeDualPass": false,
@@ -1803,7 +1804,7 @@
         "staticCascadeUseRiSecLayer": false,
         "staticCascadeMinHeight": -20.0,
         "staticCascadeMaxHeight": 4500.0,
-        "staticMaxHeightRange": 2200.0,
+        "staticMaxHeightRange": 4550.0,
         "staticCascadeTransition": false,
         "optimizeBigQuadRenderForSmallCascade": true,
         "staticCascadeDualPass": false,
@@ -2156,7 +2157,10 @@
         "swFeedbackOuterMipTiles": 4,
         "virtualTextureAnisotropy": 1,
         "texelSizeMul": 2.0,
-        "hwfeedback": false
+        "hwfeedback": false,
+        "cachesCount": 1,
+        "buffersCount": 1,
+        "shaderlodMode": "always_low"
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -2233,7 +2237,10 @@
         "swFeedbackOuterMipTiles": 4,
         "virtualTextureAnisotropy": 2,
         "texelSizeMul": 1.0,
-        "hwfeedback": true
+        "hwfeedback": true,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "auto"
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -2310,7 +2317,10 @@
         "swFeedbackOuterMipTiles": 4,
         "virtualTextureAnisotropy": 4,
         "texelSizeMul": 1.0,
-        "hwfeedback": true
+        "hwfeedback": true,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "auto"
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -2387,7 +2397,10 @@
         "swFeedbackOuterMipTiles": 6,
         "virtualTextureAnisotropy": 4,
         "texelSizeMul": 1.0,
-        "hwfeedback": true
+        "hwfeedback": true,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "always_high"
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -2464,7 +2477,10 @@
         "swFeedbackOuterMipTiles": 6,
         "virtualTextureAnisotropy": -1,
         "texelSizeMul": 0.5,
-        "hwfeedback": true
+        "hwfeedback": true,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "always_high"
       },
       "debug": {
         "lodDistanceScale": 0.5
@@ -2536,7 +2552,10 @@
         "virtualTextureAnisotropy": 2,
         "texelSizeMul": 3.0,
         "max_clipmap_tex_mips": 5,
-        "hwfeedback": false
+        "hwfeedback": false,
+        "cachesCount": 1,
+        "buffersCount": 1,
+        "shaderlodMode": "always_low"
       }
     },
     "medium": {
@@ -2603,7 +2622,10 @@
         "max_clipmap_tex_mips": 10,
         "virtualTextureAnisotropy": 4,
         "texTileSize": 256,
-        "hwfeedback": true
+        "hwfeedback": true,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "auto"
       }
     },
     "high": {
@@ -2670,7 +2692,10 @@
         "max_clipmap_tex_mips": 10,
         "virtualTextureAnisotropy": 4,
         "texTileSize": 256,
-        "hwfeedback": true
+        "hwfeedback": true,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "always_high"
       }
     },
     "max": {
@@ -2737,7 +2762,10 @@
         "max_clipmap_tex_mips": 10,
         "virtualTextureAnisotropy": 4,
         "texTileSize": 256,
-        "hwfeedback": true
+        "hwfeedback": true,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "always_high"
       }
     }
   },

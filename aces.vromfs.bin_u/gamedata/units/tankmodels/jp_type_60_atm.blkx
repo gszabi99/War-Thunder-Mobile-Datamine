@@ -47,17 +47,18 @@
   "destroysTrees": true,
   "type": "typeTankDestroyer",
   "minRelativeTankCameraThreshold": 1.4,
+  "isSequentialPrimaryShot": true,
   "rearmTimeOnField": 45.0,
   "dm_for_shop": {
     "armorThicknessFront": [
-      1.0,
       0.0,
-      0.0
+      0.0,
+      1.0
     ],
     "armorThicknessSide": [
-      1.0,
       0.0,
-      0.0
+      0.0,
+      1.0
     ]
   },
   "DamageParts": {
@@ -352,14 +353,17 @@
     },
     "equipment_body_turret": {
       "armorClass": "tank_structural_steel",
-      "hp": 150.0,
+      "hp": 250.0,
+      "armorThickness": 2.0,
       "armorThrough": 15.0,
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "drive_turret_v_dm": {
+        "hp": 150.0,
         "armorThrough": 15.0
       },
       "drive_turret_h_dm": {
+        "hp": 150.0,
         "armorThrough": 15.0
       },
       "drive_turret_v_01_dm": {
@@ -378,48 +382,20 @@
         "hp": 40.0,
         "armorThrough": 15.0
       },
-      "drive_turret_v_03_dm": {
-        "hp": 40.0,
-        "armorThrough": 15.0
-      },
-      "drive_turret_h_03_dm": {
-        "hp": 40.0,
-        "armorThrough": 15.0
-      },
-      "drive_turret_v_04_dm": {
-        "hp": 40.0,
-        "armorThrough": 15.0
-      },
-      "drive_turret_h_04_dm": {
-        "hp": 40.0,
-        "armorThrough": 15.0
-      },
-      "drive_turret_v_05_dm": {
-        "hp": 40.0,
-        "armorThrough": 15.0
-      },
-      "drive_turret_h_05_dm": {
-        "hp": 40.0,
-        "armorThrough": 15.0
-      },
       "radiator_dm": {
-        "hp": 50.0,
+        "hp": 40.0,
         "armorThrough": 5.0
       },
       "radiator_l_dm": {
-        "hp": 50.0,
+        "hp": 40.0,
         "armorThrough": 5.0
       },
       "radiator_r_dm": {
-        "hp": 50.0,
+        "hp": 40.0,
         "armorThrough": 5.0
       },
       "radio_station_dm": {
-        "hp": 50.0,
-        "armorThrough": 3.0
-      },
-      "radio_station_01_dm": {
-        "hp": 50.0,
+        "hp": 20.0,
         "armorThrough": 3.0
       }
     },
@@ -430,34 +406,28 @@
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "cannon_breech_dm": {
-        "restrainDamage": 0.5,
-        "armorThrough": 150.0
+        "restrainDamage": 0.5
       },
       "cannon_breech_01_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       },
       "cannon_breech_02_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       },
       "cannon_breech_03_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       },
       "cannon_breech_04_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       },
       "cannon_breech_05_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       }
     },
     "power_block": {
       "armorClass": "armor_tank_engine",
       "hp": 100.0,
-      "armorThickness": 50.0,
+      "armorThickness": 150.0,
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
@@ -467,11 +437,11 @@
       "armorClass": "tank_structural_steel",
       "hp": 250.0,
       "armorThickness": 2.0,
-      "armorThrough": 10.0,
-      "fireProtectionHp": 10.0,
+      "armorThrough": 12.0,
+      "fireProtectionHp": 15.0,
       "createSecondaryShatters": false,
-      "fireParamsPreset": "fuel_internal",
       "stopChanceOnDeadPart": 0.0,
+      "fireParamsPreset": "fuel_internal",
       "fuel_tank_dm": {},
       "fuel_tank_01_dm": {},
       "fuel_tank_02_dm": {},
@@ -493,16 +463,20 @@
       "armorClass": "tank_structural_steel",
       "hp": 250.0,
       "armorThickness": 2.0,
-      "armorThrough": 10.0,
-      "fireProtectionHp": 10.0,
-      "createSecondaryShatters": false,
+      "armorThrough": 12.0,
+      "fireProtectionHp": 15.0,
       "fireParamsPreset": "fuel_exterior",
+      "stopChanceOnDeadPart": 0.0,
       "fuel_tank_exterior_r_01_dm": {},
       "fuel_tank_exterior_r_02_dm": {},
       "fuel_tank_exterior_r_03_dm": {},
+      "fuel_tank_exterior_r_04_dm": {},
+      "fuel_tank_exterior_r_05_dm": {},
       "fuel_tank_exterior_l_01_dm": {},
       "fuel_tank_exterior_l_02_dm": {},
       "fuel_tank_exterior_l_03_dm": {},
+      "fuel_tank_exterior_l_04_dm": {},
+      "fuel_tank_exterior_l_05_dm": {},
       "fuel_tank_exterior_01_dm": {},
       "fuel_tank_exterior_02_dm": {},
       "fuel_tank_exterior_03_dm": {}
@@ -1403,7 +1377,8 @@
       "cutDamage": 500.0,
       "deviation": 0.5,
       "rotation": 0.5,
-      "collisionNode": "cls_turret_01"
+      "collisionNode": "cls_turret_01",
+      "reqVisualNodes": false
     }
   },
   "unitFx": {
@@ -1810,10 +1785,6 @@
     }
   },
   "cockpit": {
-    "zoomOutFov": 10.21,
-    "zoomInFov": 9.21,
-    "sightFov": 5.0,
-    "sightName": "stormer_sight",
     "headPos": [
       0.0,
       3.4,

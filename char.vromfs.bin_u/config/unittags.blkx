@@ -23927,7 +23927,7 @@
         "410mm_45_type_3_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 3000.0,
-          "shotFreq": 0.045,
+          "shotFreq": 0.053,
           "gunsCount": 10,
           "caliber": 410.0,
           "ammoCount": 1200,

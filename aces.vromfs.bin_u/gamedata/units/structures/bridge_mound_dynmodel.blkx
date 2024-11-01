@@ -7,7 +7,7 @@
   "hasDmg2Collision": false,
   "hasDmg": false,
   "damageableByGun": false,
-  "expClass": "exp_bridge",
+  "expClass": "exp_zero",
   "renderInWaterReflection": true,
   "DamageParts": {
     "steel": {

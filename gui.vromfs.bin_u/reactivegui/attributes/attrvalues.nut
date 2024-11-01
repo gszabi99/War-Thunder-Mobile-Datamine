@@ -264,22 +264,20 @@ function mkAttrUpTo100prc(attrId, roundBy = 0.1) {
   }
 }
 
-function mkAttrFromPlus0prcUp(attrId, roundBy = 0.1) {
+function mkAttrFromMinus0prcUp(attrId, roundBy = 0.1) {
   let { begin, end } = attrRangesTank[attrId]
-  let rMin = begin < end ? begin : end
-  let rMax = begin < end ? end : begin
-  let mulMax = rMin != 0 ? (rMax / rMin) : 1.0
   return {
     getBaseVal = @(_shopCfg) 1.0
-    getMulMax = @(_attrId) mulMax
-    valueToText = @(v) "".concat("+", round_by_value((v - 1.0) * 100, roundBy), "%")
+    getMulMin = @(_attrId) 0.0
+    getMulMax = @(_attrId) begin - end
+    valueToText = @(v) "".concat("+", round_by_value(v * 100, roundBy), "%")
   }
 }
 
 let tankAttrs = {
-  loading_time_mult = mkAttrFromPlus0prcUp("loading_time_mult")
+  loading_time_mult = mkAttrFromMinus0prcUp("loading_time_mult")
     .__update({
-      updateStats = @(stats, mul) stats.weapons.each(@(el) mulStat(el, "reloadTime", 1 - (mul - 1)))
+      updateStats = @(stats, mul) stats.weapons.each(@(el) mulStat(el, "reloadTime", attrRangesTank["loading_time_mult"].begin - mul))
     })
   tracking = mkAttrUpTo100prc("tracking")
     .__update({

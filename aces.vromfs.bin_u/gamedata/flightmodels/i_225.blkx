@@ -1862,13 +1862,5 @@
       1.29608,
       0.0
     ]
-  },
-  "vehicleSkins": {
-    "i_225_green": {
-      "replace_tex": {
-        "from": "i_225_c*",
-        "to": "i_225_green_c*"
-      }
-    }
   }
 }

@@ -24,6 +24,7 @@ let { mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
 let fonticonPreview = "⌡"
 let consumableSize = hdpx(120)
 let eliteMarkSize = [hdpxi(70), hdpxi(45)]
+let currencyIconSize = hdpxi(170)
 
 let currenciesOnOfferBanner = [ PLATINUM, EVENT_KEY, GOLD, WARBOND ]
 
@@ -235,7 +236,7 @@ let mkCurrencyIcon = @(currencyId) {
   margin = offerPad
   hplace = ALIGN_RIGHT
   vplace = ALIGN_CENTER
-  children = mkRewardCurrencyImage(currencyId, hdpxi(170))
+  children = mkRewardCurrencyImage(currencyId, [currencyIconSize, currencyIconSize])
   keepAspect = true
 }
 

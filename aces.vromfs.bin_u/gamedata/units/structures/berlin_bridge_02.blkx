@@ -7,7 +7,7 @@
   "hasDmg2Collision": true,
   "hasDmg": false,
   "damageableByGun": false,
-  "expClass": "exp_bridge",
+  "expClass": "exp_zero",
   "renderInWaterReflection": true,
   "DamageParts": {
     "armor45": {

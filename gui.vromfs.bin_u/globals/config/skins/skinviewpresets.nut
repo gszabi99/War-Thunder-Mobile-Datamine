@@ -309,6 +309,8 @@ let skinsByTag = {
     "germ_ta152c"
     "germ_ta_154a_1"
     "germ_tropic_ju_87r_2"
+    "usa_am_1_mauler_prem"
+    "usa_am_1_mauler"
     "usa_b_17g_8af_yellow"
     "usa_f2g_1_race_57"
     "usa_f4f_4_gray"

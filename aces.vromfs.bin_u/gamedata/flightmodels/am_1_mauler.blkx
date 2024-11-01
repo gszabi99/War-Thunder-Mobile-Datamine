@@ -1625,6 +1625,10 @@
   "Params": {
     "Range": 1778.33
   },
+  "Sound": {
+    "Engine": "engine_radial",
+    "gun": "gun_default"
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -2730,19 +2734,5 @@
       0.672546,
       -2.35787
     ]
-  },
-  "vehicleSkins": {
-    "am_1_metal": {
-      "replace_tex": [
-        {
-          "from": "am_1_mauler_c*",
-          "to": "am_1_mauler_metal_c*"
-        },
-        {
-          "from": "am_1_mauler_n*",
-          "to": "am_1_mauler_metal_n*"
-        }
-      ]
-    }
   }
 }

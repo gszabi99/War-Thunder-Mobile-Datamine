@@ -265,7 +265,7 @@ function mkSlot(slotIdx, reward, rStyle) {
       !isSelected.get() && !(stateFlags.get() & S_HOVER) ? null
         : mkHightlightPlate(isSelected.get())
       mkRewardPlateTexts(reward, rStyle)
-      reward.rType == GPT_BLUEPRINT ? mkUnitFlag(unit.get(), rStyle) : null
+      reward.rType == GPT_BLUEPRINT && unit.get() != null ? mkUnitFlag(unit.get(), rStyle) : null
       !rewardSlots.get()?.isPurchased ? null
         : mkDisableBkgWithTooltip(rewardSlots.get()?.purchasedIdx == slotIdx, rStyle)
     ]

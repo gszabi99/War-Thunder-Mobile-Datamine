@@ -2004,6 +2004,111 @@
       "_template": "unit_loader",
       "setting__unitType": "objectGroups",
       "setting__playerNo": -1,
+      "setting__unit_class": "hangar_water_objects",
+      "setting__name": "test_bridge",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 2,
+      "setting__count": 1,
+      "setting__active": true,
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1675.2,
+          7.0,
+          -2355.9
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "objectGroups",
+      "setting__playerNo": -1,
+      "setting__unit_class": "hangar_air_objects",
+      "setting__name": "test_bridge",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 2,
+      "setting__count": 1,
+      "setting__active": true,
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3651.5,
+          46.0,
+          3641.45
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "objectGroups",
+      "setting__playerNo": -1,
+      "setting__unit_class": "hangar_major_flags_air_hallowen",
+      "setting__name": "test_bridge",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 2,
+      "setting__count": 1,
+      "setting__active": true,
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3786.4,
+          23.7745,
+          3555.1
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "objectGroups",
+      "setting__playerNo": -1,
       "setting__unit_class": "hangar_air_objects_hallowen",
       "setting__name": "test_bridge",
       "setting__weapons": "",
@@ -2032,6 +2137,41 @@
           3650.65,
           23.7666,
           3631.9
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "objectGroups",
+      "setting__playerNo": -1,
+      "setting__unit_class": "hangar_major_flags_hallowen",
+      "setting__name": "test_bridge",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 2,
+      "setting__count": 1,
+      "setting__active": true,
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1430.05,
+          8.07079,
+          1522.15
         ]
       ]
     },
