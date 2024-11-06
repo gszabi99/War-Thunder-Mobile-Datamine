@@ -49,6 +49,7 @@ let clearIconSize = hdpxi(45)
 
 let isTreeAttached = Watched(false)
 let isTreeNodes = Computed(@() curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
+let hasSelectedUnit = Computed(@() curSelectedUnit.get() != null)
 
 let openFiltersPopup = @(e) openFilters(e, isTreeNodes.get(), {
   popupOffset = levelMarkSize + hdpx(10)
@@ -367,12 +368,12 @@ function infoPanel() {
   let needShowBlueprintDescr = Computed(@() hangarUnit.get()?.name in serverConfigs.get()?.allBlueprints
     && hangarUnit.get()?.name not in myUnits.get())
   return {
-    watch = [curSelectedUnit, isTreeNodes]
+    watch = [hasSelectedUnit, isTreeNodes]
     key = {}
     size = flex()
-    children = !curSelectedUnit.get() && !isTreeNodes.get() ? null
+    children = !hasSelectedUnit.get() && !isTreeNodes.get() ? null
       : [
-          !curSelectedUnit.get()
+          !hasSelectedUnit.get()
             ? @() {
                 watch = selectedSlotIdx
                 rendObj = ROBJ_SOLID

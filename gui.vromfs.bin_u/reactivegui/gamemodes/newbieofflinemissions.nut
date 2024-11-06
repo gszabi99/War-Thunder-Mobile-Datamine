@@ -6,7 +6,7 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { endswith } = require("string")
 let logO = log_with_prefix("[OFFLINE_BATTLE] ")
 let { chooseRandom } = require("%sqstd/rand.nut")
-let { curCampaign, campProfile, abTests, curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campProfile, curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let { curUnit, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let newbieModeStats = require("newbieModeStats.nut")
@@ -33,17 +33,11 @@ let firstBattlesRewardId = Computed(@() 1 + max(curProfileRewardId.value, curDel
 let firstBattlesReward = Computed(@()
   serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][firstBattlesRewardId.get()])
 
-let dbgTankMissionsPresetId = hardPersistWatched("dbgTankMissionsPresetId", null)
-let forcedTankMissionsPresetId = Computed(@() dbgTankMissionsPresetId.value ?? abTests.value?.tanksOfflineMissions)
 let missionsList = Computed(function() {
   let singleBattleCfg = newbieGameModesConfig?[curCampaign.value]
     .findvalue(@(cfg) (cfg?.offlineMissions ?? []).len() != 0
       && cfg.isFit(newbieModeStats.value, curUnit.value?.mRank ?? 0))
   let defaultMissions = singleBattleCfg?.offlineMissions
-
-  if (curCampaign.value == "tanks")
-    return singleBattleCfg?.offlineMissionsSets[forcedTankMissionsPresetId.value]
-      ?? defaultMissions
 
   return defaultMissions
 })
@@ -209,10 +203,8 @@ function startLocalMPMission(missions, reward, predefinedId) {
 let startCurNewbieMission = @()
   startNewbieMission(newbieOfflineMissions.value, firstBattlesReward.value, firstBattlesRewardId.value)
 let dbgCurrentNewbieMission = Computed(function() {
-  let { offlineMissions = [], offlineMissionsSets = null } = newbieGameModesConfig?[curCampaign.value]
+  let { offlineMissions = [] } = newbieGameModesConfig?[curCampaign.value]
     .findvalue(@(cfg) (cfg?.offlineMissions ?? []).len() != 0)
-  if (curCampaign.value == "tanks")
-    return offlineMissionsSets?[forcedTankMissionsPresetId.value] ?? offlineMissions
   return offlineMissions
 })
 let startDebugNewbieMission = @()
@@ -232,21 +224,6 @@ let startLocalMultiplayerMission = function() {
 
 register_command(startDebugNewbieMission, "ui.startFirstBattlesOfflineMission")
 register_command(startLocalMultiplayerMission, "ui.startLocalMultiplayerMission")
-register_command(function() {
-  let presets = newbieGameModesConfig.tanks
-    .findvalue(@(cfg) "offlineMissionsSets" in cfg)?.offlineMissionsSets
-  if (!presets) {
-    dlog("no presets are specified") // warning disable: -forbidden-function
-    return
-  }
-  let presetsKeys = presets.keys()
-  let currentPresetIdx = presetsKeys
-    .indexof(dbgTankMissionsPresetId.value ?? abTests.value?.tanksOfflineMissions)
-    ?? 0
-  let newPresetId = presetsKeys[(currentPresetIdx + 1) % presetsKeys.len()]
-  dbgTankMissionsPresetId(newPresetId)
-  dlog("new offline missions preset: ", presets?[dbgTankMissionsPresetId.value]) // warning disable: -forbidden-function
-}, "debug.abTests.tanksOfflineMissions")
 
 return {
   newbieOfflineMissions

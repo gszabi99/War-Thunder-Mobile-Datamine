@@ -248,9 +248,7 @@
     "pkg_common": {},
     "pkg_ground": {},
     "pkg_naval": {},
-    "pkg_lvl_hangar_halloween": {
-      "hangarPath": "config/hangar_field_hallowen.blk"
-    },
+    "pkg_lvl_hangar_halloween": {},
     "pkg_tier_1_naval": {},
     "pkg_tier_2_naval": {},
     "pkg_tier_3_naval": {},
@@ -1040,6 +1038,7 @@
     "csmAllowDynrendPrepareJobsInThreads": false,
     "sky_panorama_async_pipelines": true,
     "forceImpostorsOutsideShadows": false,
+    "frameBoundaryBufferInitialSize": 4096,
     "raytraced_shadows": {
       "maxBlasBuildsPerFrame": 30,
       "additionalElementsCheck": false

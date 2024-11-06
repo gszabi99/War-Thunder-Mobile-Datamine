@@ -30,8 +30,12 @@ let savedBullets = Watched(null)
 function loadSavedBullets(name) {
   if (name == null)
     return null
-  let sBlk = get_local_custom_settings_blk()
-  let res = getBlkValueByPath(sBlk, $"{SAVE_ID}/{name}")
+  let blk = get_local_custom_settings_blk()
+  if (SAVE_ID not in blk)
+    return null
+  let sBlk = DataBlock()
+  sBlk.setFrom(blk[SAVE_ID])
+  let res = getBlkValueByPath(sBlk, $"/{name}")
   return isDataBlock(res) ? res : null
 }
 let applySavedBullets = @(name) savedBullets(loadSavedBullets(name))

@@ -1,8 +1,7 @@
-
 from "%scripts/dagui_library.nut" import *
 let logL = log_with_prefix("[LoginState] ")
 let { register_command } = require("console")
-let { FRP_INITIAL } = require("frp")
+let { FRP_INITIAL, ComputedImmediate } = require("%sqstd/frp.nut")
 let { LOGIN_STATE, loginState, getLoginStateDebugStr } = require("%appGlobals/loginState.nut")
 
 let debugState = @(shouldShowNotSetBits = false) console_print(
@@ -29,10 +28,11 @@ function logChanges(state, prev) {
   logL(msg)
 }
 
-keepref(Computed(function(prev) {
+let logComputed = keepref(ComputedImmediate(function(prev) {
   //use computed here only for side effect that it calculate before any subscribers on loginState will be called
   let state = loginState.value
   if (prev != FRP_INITIAL)
     logChanges(state, prev)
   return state
 }))
+logComputed.subscribe(@(_) null) //need log before all suscriptions

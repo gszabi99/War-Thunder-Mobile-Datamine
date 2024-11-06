@@ -83,7 +83,7 @@ let respawnSlots = Computed(function() {
     res.append(mkSlot(res.len(), sUnit, defMods).__update({ reqLevel = sUnit?.reqLevel ?? 0, isLocked = true }))
   if (!hasRespawnSeparateSlots.get()) {
     let { level = -1, isCollectible = false, isPremium = false, isUpgraded = false } = respawnUnitInfo.get()
-    let skins = respawnUnitSkins.get()
+    let skins = respawnUnitSkins.get() ?? {}
     res.each(function(s) {
       s.level = level
       s.isCollectible = isCollectible

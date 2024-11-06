@@ -872,11 +872,11 @@
         "default": {
           "icon": "he_frag_i_t/he_frag_i_t/ap_i_t/"
         },
-        "ns37_air_target": {
+        "ns37_air_targets": {
           "icon": "he_frag_i_t/he_frag_i/he_frag_i/",
           "reqModification": "aircraft_mod_7"
         },
-        "ns37_armor_target": {
+        "ns37_armor_targets": {
           "icon": "ap_i_t/",
           "reqModification": "aircraft_mod_5"
         }
@@ -1653,10 +1653,10 @@
         "default": {
           "icon": "he_frag_i_t/he_frag_i_t/ap_i_t/"
         },
-        "ns37_air_target": {
+        "ns37_air_targets": {
           "icon": "he_frag_i_t/he_frag_i/he_frag_i/"
         },
-        "ns37_armor_target": {
+        "ns37_armor_targets": {
           "icon": "ap_i_t/"
         }
       },
@@ -23373,7 +23373,7 @@
           "wtype": "rockets",
           "damage": 3500.0,
           "shotFreq": 4.2,
-          "reloadTime": 15.0,
+          "reloadTime": 20.0,
           "rocketsSalvo": 2,
           "distToLive": 10000.0,
           "gunsCount": 1,
@@ -23594,7 +23594,7 @@
       "shipCrewRating": 3.76485,
       "maxSpeed": 16.19,
       "turningTime": 24,
-      "asmCaptureDuration": 4.0,
+      "asmCaptureDuration": 5.0,
       "mainWeaponCaliber": 114.0,
       "weapons": {
         "114mm_50_qf_mk8_naval_user_cannon": {
@@ -23818,7 +23818,7 @@
           "distToLive": 3500.0,
           "gunsCount": 2,
           "caliber": 533.0,
-          "ammoCount": 6,
+          "ammoCount": 16,
           "isBeltAmmo": false
         }
       }
@@ -23870,7 +23870,7 @@
           "wtype": "rockets",
           "damage": 7360.0,
           "shotFreq": 4.2,
-          "reloadTime": 20.0,
+          "reloadTime": 15.0,
           "rocketsSalvo": 4,
           "distToLive": 10000.0,
           "gunsCount": 1,
@@ -48719,11 +48719,11 @@
     },
     "bullets": {
       "120mm_M256_KE_W_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_heat"
-        },
         "120mm_NATO_APDS_FS": {
           "icon": "hud_ammo_apfsds"
+        },
+        "default": {
+          "icon": "hud_ammo_heat"
         }
       }
     }
@@ -48785,18 +48785,18 @@
     },
     "bullets": {
       "105mm_XM_35_user_cannon": {
+        "105mm_usa_M735_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
         "default": {
           "icon": "hud_ammo_heat"
-        },
-        "105mm_usa_HESH": {
-          "isHE": true,
-          "icon": "hud_ammo_he"
         },
         "105mm_NATO_APDS_FS": {
           "icon": "hud_ammo_apfsds"
         },
-        "105mm_usa_M735_APDS_FS": {
-          "icon": "hud_ammo_apfsds"
+        "105mm_usa_HESH": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
         },
         "105mm_us_M416_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -49279,20 +49279,18 @@
     },
     "bullets": {
       "90mm_M36_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap2_he0"
+        "90mm_us_M82_APCBC": {
+          "icon": "hud_ammo_ap1_he1"
         },
         "90mm_us_M71_HE": {
           "icon": "hud_ammo_he",
           "isHE": true
         },
-        "90mm_us_M82_APCBC": {
-          "icon": "hud_ammo_ap1_he1",
-          "reqLevel": 3
-        },
         "90mm_us_M332_APCR": {
-          "icon": "hud_ammo_apcr",
-          "reqLevel": 9
+          "icon": "hud_ammo_apcr"
+        },
+        "default": {
+          "icon": "hud_ammo_ap2_he0"
         },
         "90mm_us_M313_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -49318,14 +49316,14 @@
       "mainWeaponCaliber": 120.0,
       "mainWeaponType": "auxCannon",
       "armorThicknessFront": [
-        1.0,
         0.0,
-        0.0
+        0.0,
+        1.0
       ],
       "armorThicknessSide": [
-        1.0,
         0.0,
-        0.0
+        0.0,
+        1.0
       ],
       "crew": 6,
       "mass": 12000.0,
@@ -49382,14 +49380,14 @@
     "Shop": {
       "mainWeaponCaliber": 20.0,
       "armorThicknessFront": [
-        1.0,
         0.0,
-        0.0
+        0.0,
+        1.0
       ],
       "armorThicknessSide": [
-        1.0,
         0.0,
-        0.0
+        0.0,
+        1.0
       ],
       "crew": 5,
       "mass": 15000.0,

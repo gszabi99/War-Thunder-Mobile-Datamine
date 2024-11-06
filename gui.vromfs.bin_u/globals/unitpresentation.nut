@@ -45,6 +45,38 @@ let defaults = {
 
 let inProgress = { image = "!ui/unitskin#image_in_progress.avif" } // warning disable: -declared-never-used
 let overrides = {
+  ["sb2c_1c_killstreak"] = { image = "!ui/unitskin#sb2c_1c.avif" },
+  ["il_2m_1943_killstreak"] = { image = "!ui/unitskin#il_2_1941.avif" },
+  ["ju_87d_5_killstreak"] = { image = "!ui/unitskin#ju_87d_5.avif" },
+  ["do_17z_2_killstreak"] = { image = "!ui/unitskin#do_17z_2.avif" },
+  ["p_40e_killstreak"] = { image = "!ui/unitskin#p_40e.avif" },
+  ["yak_9_killstreak"] = { image = "!ui/unitskin#yak_9.avif" },
+  ["fw_190a_1_killstreak"] = { image = "!ui/unitskin#fw_190a_1.avif" },
+  ["la-5_killstreak"] = { image = "!ui/unitskin#la-5fn.avif" },
+  ["he_111h_6_killstreak"] = { image = "!ui/unitskin#he_111h_6.avif" },
+  ["il_4_killstreak"] = { image = "!ui/unitskin#il_4.avif" },
+  ["firefly_mk5_killstreak"] = { image = "!ui/unitskin#firefly_mk5.avif" },
+  ["b_25j_20_killstreak"] = { image = "!ui/unitskin#b_25j_20.avif" },
+  ["f4u_4_killstreak"] = { image = "!ui/unitskin#f4u_4_killstreak.avif" },
+  ["seafire_mk3_killstreak"] = { image = "!ui/unitskin#seafire_mk3.avif" },
+  ["a6m5_zero_killstreak"] = { image = "!ui/unitskin#a6m5_zero.avif" },
+  ["bf-109f-4_killstreak"] = { image = "!ui/unitskin#bf-109f-4.avif" },
+  ["sb2c_4_killstreak"] = { image = "!ui/unitskin#sb2c_4_killstreak.avif" },
+  ["er-2_m105_mv3_killstreak"] = { image = "!ui/unitskin#er-2_m105_mv3.avif" },
+  ["he-111h-16_winter_killstreak"] = { image = "!ui/unitskin#he-111h-16_winter.avif" },
+  ["b_26b_c_killstreak"] = { image = "!ui/unitskin#b_26b_c.avif" },
+  ["f4u-4b_killstreak"] = { image = "!ui/unitskin#f4u-4b.avif" },
+  ["fw-190a-5_cannons_killstreak"] = { image = "!ui/unitskin#fw-190a-5_cannons.avif" },
+  ["la-11_killstreak"] = { image = "!ui/unitskin#la-11.avif" },
+  ["bf-109g-2_killstreak"] = { image = "!ui/unitskin#bf-109g-2.avif" },
+  ["p_47n_15_killstreak"] = { image = "!ui/unitskin#p_47n_15.avif" },
+  ["wyvern_s4_killstreak"] = { image = "!ui/unitskin#wyvern_s4.avif" },
+  ["do_335a_1_killstreak"] = { image = "!ui/unitskin#do_335a_1.avif" },
+  ["douglas_ad_2_killstreak"] = { image = "!ui/unitskin#douglas_ad_2.avif" },
+  ["f8f1_killstreak"] = { image = "!ui/unitskin#f8f1.avif" },
+  ["bf_109k_4_killstreak"] = { image = "!ui/unitskin#bf_109k_4.avif" },
+  ["la_9_killstreak"] = { image = "!ui/unitskin#la_9.avif" },
+  ["fw-190d-9_killstreak"] = { image = "!ui/unitskin#fw-190d-9.avif" }
   // Put PUBLIC overrides here, before "if_def":
 //
 

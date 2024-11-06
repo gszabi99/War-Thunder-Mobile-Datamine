@@ -31,7 +31,7 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_large",
-  "asmCaptureDuration": 4.0,
+  "asmCaptureDuration": 5.0,
   "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,
   "smokeScreenEffectTime": 30.0,

@@ -671,7 +671,7 @@
       }
     }
   ],
-  "ns37_air_target": {
+  "ns37_air_targets": {
     "bullet": [
       {
         "mass": 0.735,
@@ -1285,7 +1285,7 @@
       }
     ]
   },
-  "ns37_armor_target": {
+  "ns37_armor_targets": {
     "bullet": {
       "mass": 0.76,
       "caliber": 0.037,

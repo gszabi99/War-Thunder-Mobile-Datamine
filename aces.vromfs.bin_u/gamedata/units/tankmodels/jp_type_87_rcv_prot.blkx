@@ -165,14 +165,14 @@
   },
   "dm_for_shop": {
     "armorThicknessFront": [
-      1.0,
       0.0,
-      0.0
+      0.0,
+      1.0
     ],
     "armorThicknessSide": [
-      1.0,
       0.0,
-      0.0
+      0.0,
+      1.0
     ]
   },
   "DamageParts": {

@@ -471,7 +471,7 @@ function dayInRowInfo() {
   return daysInRow < 1 ? { watch = userstatStats }
     : mkText(loc("dailyRewards/daysInRow", { days = daysInRow })
       { watch = userstatStats
-        size = flex()
+        size = [flex(), SIZE_TO_CONTENT]
         valign = ALIGN_BOTTOM
         halign = ALIGN_CENTER
         color = activeTextColor

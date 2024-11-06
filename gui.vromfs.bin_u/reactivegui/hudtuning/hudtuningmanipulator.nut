@@ -74,6 +74,10 @@ pointer.subscribe(function(p) {
   transformInProgress({ align = alignH | alignV, pos = [x, y] })
 })
 
+let wasMoved = @(pointerV, x, y) pointerV.time + START_MOVE_TIME_MSEC > get_time_msec()
+  && abs(pointerV.start[0] - x) < MOVE_MIN_THRESHOLD
+  && abs(pointerV.start[1] - y) < MOVE_MIN_THRESHOLD
+
 let manipulator = {
   key = {}
   size = flex()
@@ -105,8 +109,8 @@ let manipulator = {
       return 0
 
     if (pointer.get() != null) {
-      let { isChangedOnPress, time } = pointer.get()
-      if (!isChangedOnPress && get_time_msec() < time + START_MOVE_TIME_MSEC) {
+      let { isChangedOnPress } = pointer.get()
+      if (!isChangedOnPress && wasMoved(pointer.get(), evt.x, evt.y)) {
         let elem = findElemInScene(evt.x, evt.y)
         if (elem != null)
           selectedId.set(elem.id == selectedId.get() ? null : elem.id)
@@ -122,16 +126,13 @@ let manipulator = {
     if (pointer.value?.id != evt.pointerId)
       return 0
     let { x, y } = evt
-    if (!pointer.value.isInProgress
-        && pointer.value.time + START_MOVE_TIME_MSEC > get_time_msec()
-        && abs(pointer.value.start[0] - x) < MOVE_MIN_THRESHOLD
-        && abs(pointer.value.start[1] - y) < MOVE_MIN_THRESHOLD)
+    if (!pointer.value.isInProgress && wasMoved(pointer.get(), x, y))
       return 1
     pointer.mutate(@(v) v.__update({
       isInProgress = true
       offset = [x - v.start[0], y - v.start[1]]
     }))
-    return 0
+    return 1
   }
   function onDetach() {
     transformInProgress(null)

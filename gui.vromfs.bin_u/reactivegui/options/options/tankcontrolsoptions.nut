@@ -10,7 +10,7 @@ let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle,
   set_auto_zoom, CAM_TYPE_NORMAL_TANK, CAM_TYPE_BINOCULAR_TANK
 } = require("controlsOptions")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { abTests, sharedStats } = require("%appGlobals/pServer/campaign.nut")
+let { sharedStats } = require("%appGlobals/pServer/campaign.nut")
 let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
 } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
 let { openChooseMovementControls
@@ -86,10 +86,9 @@ let targetTrackingType = {
 }
 
 let armorPiercingFixedList = [false, true]
-let piercingIndicatorDefault = Computed(@() (abTests.value?.fixedPiercingIndicator ?? "true") == "true")
 let currentArmorPiercingFixedRaw = mkOptionValue(OPT_ARMOR_PIERCING_FIXED)
 let currentArmorPiercingFixed = Computed(@()
-  validate(currentArmorPiercingFixedRaw.value ?? piercingIndicatorDefault.value, armorPiercingFixedList))
+  validate(currentArmorPiercingFixedRaw.get() ?? true, armorPiercingFixedList))
 set_armor_piercing_fixed(currentArmorPiercingFixed.value)
 currentArmorPiercingFixed.subscribe(@(v) set_armor_piercing_fixed(v))
 let currentArmorPiercingType = {
@@ -104,8 +103,7 @@ let currentArmorPiercingType = {
 }
 
 let autoZoomList = [false, true]
-let autoZoomDefault = Computed(@() (abTests.value?.tankAutoZoom ?? "false") == "true"
-  || (sharedStats.value?.firstLoginTime ?? 0) > autoZoomDefaultTrueStart)
+let autoZoomDefault = Computed(@() (sharedStats.get()?.firstLoginTime ?? 0) > autoZoomDefaultTrueStart)
 let currentAutoZoomRaw = mkOptionValue(OPT_AUTO_ZOOM_TANK)
 let currentAutoZoom = Computed(@()
   validate(currentAutoZoomRaw.value
@@ -149,10 +147,8 @@ let showGrassInTankVision = {
 }
 
 let hudScoreTankList = ["score", "kills"]
-let hudScoreTankDefault = Computed(@() validate(abTests.value?.tankHudScores, hudScoreTankList))
 let hudScoreTankRaw = mkOptionValue(OPT_HUD_TANK_SHOW_SCORE)
-let hudScoreTank = Computed(@()
-  validate(hudScoreTankRaw.value ?? hudScoreTankDefault.value, hudScoreTankList))
+let hudScoreTank = Computed(@() validate(hudScoreTankRaw.get() ?? "kills", hudScoreTankList))
 let optHudScoreTank = {
   locId = "options/tankHudScores"
   ctrlType = OCT_LIST

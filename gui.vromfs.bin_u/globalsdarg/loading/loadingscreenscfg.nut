@@ -141,7 +141,7 @@ let screensList = {
   }
   simple_tank_17 = {
     camp = [ "tanks" ]
-    weight = 2.0
+    weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_17.avif")
   }
   simple_tank_18 = {

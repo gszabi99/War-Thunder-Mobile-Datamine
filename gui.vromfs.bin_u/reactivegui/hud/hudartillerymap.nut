@@ -8,9 +8,7 @@ let { getMapRelativePlayerPos, getArtilleryRange, getArtilleryDispersion,
 } = require("guiArtillery")
 let { getActionBarItems } = require("hudActionBar")
 local { EII_ARTILLERY_TARGET } = require("hudActionBarConst")
-let { get_local_custom_settings_blk } = require("blkGetters")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { unitType } = require("%rGui/hudState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { textButtonBattle } = require("%rGui/components/textButton.nut")
@@ -19,9 +17,6 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { textColor, goodTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
 let { tacticalMapMarkersLayer } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
 let mkTacticalMapPointingInputProcessor = require("%rGui/hud/tacticalMap/tacticalMapPointingProcessor.nut")
-
-// TODO: Remove this hack when artillery targeting on 3D-scene will be disabled in WTM:
-isInBattle.subscribe(@(_) get_local_custom_settings_blk().artilleryTargettingUseMapFirst = null)
 
 const DATA_UPDATE_TIMEOUT = 0.2
 

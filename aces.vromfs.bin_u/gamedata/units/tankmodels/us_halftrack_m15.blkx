@@ -2302,6 +2302,10 @@
         "steeringTau": 1000000.0,
         "steeringSpd": 1.0,
         "steeringNeutralSpd": 3.0
+      },
+      "wheelsDamageWeight": {
+        "wheel_l_01": 0.3,
+        "wheel_r_01": 0.3
       }
     }
   },
