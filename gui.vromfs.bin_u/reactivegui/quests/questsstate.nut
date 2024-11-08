@@ -167,7 +167,7 @@ if (seenQuests.value.len() == 0)
   loadSeenQuests()
 
 let hasUnseenQuestsBySection = Computed(@() questsBySection.value.map(@(quests)
-  null != quests.findindex(@(v, id) (id not in seenQuests.value && id not in inactiveEventUnlocks.value) || v.hasReward)))
+  null != quests.findindex(@(v, id) id not in inactiveEventUnlocks.get() && (id not in seenQuests.get() || v.hasReward))))
 
 let saveSeenQuestsForSection = @(sectionId) !hasUnseenQuestsBySection.value?[sectionId] ? null
   : saveSeenQuests(questsBySection.value?[sectionId].filter(@(v) !v.hasReward).keys())

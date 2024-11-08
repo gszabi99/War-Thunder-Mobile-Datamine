@@ -55,6 +55,7 @@ let unitListGradientSize = [unitPlatesGap, saBorders[1]]
 let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
 let skinTextHeight = hdpx(45)
 let skinPadding = hdpx(10)
+let marginBottom = hdpx(50)
 
 let hasSkins = Computed(@() (selSlot.get()?.skins.len() ?? 0) > 0)
 let needCancel = Computed(@() isRespawnStarted.value && !isRespawnInProgress.value && respawnSlots.value.len() > 1)
@@ -354,7 +355,7 @@ let isFixedPositionByUnitType = {
 function calcPos(content, contentAABB, slotAABBV, hasSkinsBlock) {
   let size = calc_comp_size(content)
   let posY = (slotAABBV.t + slotAABBV.b - size[1]) / 2  - contentAABB.t
-  let maxY = max(0, contentAABB.b - contentAABB.t - size[1])
+  let maxY = max(0, contentAABB.b - contentAABB.t - size[1] - marginBottom)
   let maxYWithSkins = max(0, contentAABB.b - contentAABB.t - size[1] - skinSize - skinTextHeight - skinPadding * 2 - hdpx(15))
   return [0, clamp(posY, 0, !hasSkinsBlock ? maxY : maxYWithSkins)]
 }

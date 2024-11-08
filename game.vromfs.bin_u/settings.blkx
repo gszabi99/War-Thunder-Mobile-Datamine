@@ -918,7 +918,7 @@
     "vrStreamerMode": false,
     "vreye": "left",
     "fpsLimitOnUpdater": 10,
-    "forceForward": false
+    "forceForward": true
   },
   "graphics": {
     "useHdr": true,

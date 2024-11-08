@@ -214,8 +214,6 @@ function movementBlock(unitType) {
 
   return @() {
     watch = [isUnitDelayed, isGamepad]
-    vplace = ALIGN_BOTTOM
-    hplace = ALIGN_LEFT
     flow = FLOW_HORIZONTAL
     children = isUnitDelayed.value ? null
       : [

@@ -150,7 +150,7 @@
       {
         "range": [
           7,
-          7
+          50
         ],
         "aircraft": [
           {
@@ -165,29 +165,6 @@
           },
           {
             "name": "la-7b-20",
-            "weight": 1.0,
-            "country": "ussr"
-          }
-        ]
-      },
-      {
-        "range": [
-          8,
-          50
-        ],
-        "aircraft": [
-          {
-            "name": "f4u-4b",
-            "weight": 1.0,
-            "country": "usa"
-          },
-          {
-            "name": "fw-190d-12",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "yak-9ut",
             "weight": 1.0,
             "country": "ussr"
           }

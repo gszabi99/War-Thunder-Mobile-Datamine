@@ -15,6 +15,7 @@ let { TANK } = require("%appGlobals/unitConst.nut")
 let { teamRedColor } = require("%rGui/style/teamColors.nut")
 let { EventZoneDamageMessage } = require("dasevents")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { ceil } = require("%sqstd/math.nut")
 
 const TIME_TO_RESET_SCORE = 1.0
 
@@ -117,22 +118,22 @@ eventbus_subscribe("zoneCapturingEvent", function(data) {
 local scoreAccumulated = 0.0
 
 function resetScore() {
-  scoreAccumulated = 0.0
+  scoreAccumulated = scoreAccumulated - ceil(scoreAccumulated.tointeger())
 }
 
 function showScore(score, isAirfield) {
   clearTimer(resetScore)
   scoreAccumulated += score
-  setTimeout(TIME_TO_RESET_SCORE, resetScore)
-  if (scoreAccumulated > 0) {
+  if (scoreAccumulated > 1.0) {
     modifyOrAddEvent({
       id = SCORE_HINT
       zOrder = Layers.Upper
       hType = "simpleTextWithIcon"
-      text = loc(isAirfield ? "exp_reasons/damage_airfield" : "exp_reasons/damage_zone", {score = scoreAccumulated}),
+      text = loc(isAirfield ? "exp_reasons/damage_airfield" : "exp_reasons/damage_zone", {score = ceil(scoreAccumulated.tointeger())}),
       icon = $"ui/gameuiskin#score_icon.svg"
       ttl = 3
     }, @(ev) ev?.id == SCORE_HINT)
+    setTimeout(TIME_TO_RESET_SCORE, resetScore)
   }
 }
 

@@ -1827,6 +1827,9 @@
           "iconType": "bomb_500kg",
           "name": "sc500",
           "reqModification": "etc500_3_mod",
+          "ShowNodes": {
+            "node": "pylon_bomb1"
+          },
           "Weapon": {
             "trigger": "bombs",
             "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
@@ -1850,6 +1853,9 @@
           "name": "sc250",
           "reqModification": "etc250_2_mod",
           "isDefault": true,
+          "ShowNodes": {
+            "node": "pylon_bomb2"
+          },
           "Weapon": {
             "trigger": "bombs",
             "blk": "gameData/Weapons/BombGuns/de_sc250.blk",

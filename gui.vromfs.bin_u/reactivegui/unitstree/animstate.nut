@@ -123,15 +123,18 @@ function mkAnimRequirements(unitId, allNodes, canAdd = @(_) true) {
 
 let allNodes = Computed(@() serverConfigs.get()?.unitTreeNodes[curCampaign.get()])
 let animBuyRequirements = Computed(@() mkAnimRequirements(animBuyRequirementsUnitId.get(), allNodes.get()).res)
-let animResearchRequirementsInfo = Computed(@() mkAnimRequirements(
-  animResearchRequirementsUnitId.get(),
-  allNodes.get(),
-  function(u) {
-    let researchStatus = unitsResearchStatus.get()?[u]
-    if (researchStatus == null)
-      return false
-    return !researchStatus.isResearched || researchStatus.canResearch
-  }))
+let animResearchRequirementsInfo = Computed(function() {
+  let status = unitsResearchStatus.get()
+  return mkAnimRequirements(
+    animResearchRequirementsUnitId.get(),
+    allNodes.get(),
+    function(u) {
+      let researchStatus = status?[u]
+      if (researchStatus == null)
+        return false
+      return !researchStatus.isResearched || researchStatus.canResearch
+    })
+})
 let animResearchRequirements = Computed(@() animResearchRequirementsInfo.get().res)
 let animResearchRequirementsAncestors = Computed(@() animResearchRequirementsInfo.get().ancestors)
 

@@ -1763,6 +1763,9 @@
         "WeaponPreset": {
           "iconType": "bomb_1000kg",
           "name": "rocket",
+          "ShowNodes": {
+            "node": "pylon_bomb1"
+          },
           "Weapon": {
             "trigger": "bombs",
             "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
@@ -1868,8 +1871,11 @@
         "tier": 5,
         "order": 2,
         "WeaponPreset": {
-          "iconType": "bomb_100kg",
+          "iconType": "bomb_1000kg",
           "name": "rocket",
+          "ShowNodes": {
+            "node": "pylon_bomb2"
+          },
           "Weapon": {
             "trigger": "bombs",
             "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",

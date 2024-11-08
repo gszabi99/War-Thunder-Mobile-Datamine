@@ -2411,14 +2411,10 @@
     ]
   },
   "WeaponSlots": {
-    "hideNodes": {
-      "node": [
-        "pilon1",
-        "pilon2",
-        "pilon3",
-        "pilon4"
-      ]
-    },
+    "maxloadMass": 5200.0,
+    "maxloadMassLeftConsoles": 1800.0,
+    "maxloadMassRightConsoles": 1800.0,
+    "maxDisbalance": 900.0,
     "WeaponSlot": [
       {
         "index": 0,
@@ -2631,137 +2627,404 @@
       },
       {
         "index": 1,
+        "tier": 7,
+        "order": 3,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "bomb_250kg_group",
+          "name": "sc250_slot1",
+          "isDefault": true,
+          "Weapon": [
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+              "emitter": "bomb10",
+              "external": false,
+              "bullets": 1,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+              "emitter": "bomb11",
+              "external": false,
+              "bullets": 1,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+              "emitter": "bomb12",
+              "external": false,
+              "bullets": 1,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          ],
+          "BannedWeaponPreset": [
+            {
+              "slot": 2,
+              "preset": "sc1000_slot2"
+            },
+            {
+              "slot": 2,
+              "preset": "pc1000_slot2"
+            },
+            {
+              "slot": 2,
+              "preset": "pc1600_slot2"
+            }
+          ]
+        }
+      },
+      {
+        "index": 2,
         "tier": 6,
-        "order": 1,
+        "order": 2,
+        "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
             "iconType": "bomb_250kg_group",
-            "name": "sc250_mid",
+            "name": "sc250_slot2",
             "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-                "emitter": "bomb10",
-                "bullets": 1
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-                "emitter": "bomb11",
-                "bullets": 1
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-                "emitter": "bomb12",
-                "bullets": 1
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
                 "emitter": "bomb13",
-                "bullets": 1
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
               },
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
                 "emitter": "bomb14",
-                "bullets": 1
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
               },
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
                 "emitter": "bomb15",
-                "bullets": 1
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "sc1000_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "pc1000_slot3"
+              }
+            ]
+          },
+          {
+            "iconType": "bomb_500kg_group",
+            "name": "sc500_slot2",
+            "reqModification": "ju-88_2xSC500",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+                "emitter": "bomb22",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-                "emitter": "bomb16",
-                "bullets": 1
+                "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+                "emitter": "bomb23",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
               },
               {
                 "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-                "emitter": "bomb17",
-                "bullets": 1
+                "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+                "emitter": "bomb24",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "sc1000_slot3"
               },
               {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
-                "emitter": "bomb18",
-                "bullets": 1
+                "slot": 3,
+                "preset": "pc1000_slot3"
               }
             ]
           },
           {
             "iconType": "bomb_1000kg_group",
-            "name": "sc1000_mid",
+            "name": "sc1000_slot2",
             "reqModification": "ju-88_etc1000",
             "Weapon": [
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
                 "emitter": "bomb1",
+                "external": false,
                 "bullets": 1,
-                "separate": true
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
-                "emitter": "bomb2",
-                "bullets": 1,
-                "separate": true
+                "separate": true,
+                "machLimit": 1.01
               },
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
                 "emitter": "bomb3",
+                "external": false,
                 "bullets": 1,
-                "separate": true
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": {
+              "slot": 1,
+              "preset": "sc250_slot1"
+            }
+          },
+          {
+            "iconType": "bomb_1500kg_group",
+            "name": "pc1000_slot2",
+            "reqModification": "ju-88_etc1000",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_pc1000_ap.blk",
+                "emitter": "bomb1",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
               },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_pc1000_ap.blk",
+                "emitter": "bomb3",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": {
+              "slot": 1,
+              "preset": "sc250_slot1"
+            }
+          },
+          {
+            "iconType": "bomb_2000kg_group",
+            "name": "sc1800_slot2",
+            "reqModification": "etc1800",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc1800b.blk",
+                "emitter": "bomb6",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc1800b.blk",
+                "emitter": "bomb5",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "sc250_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "sc500_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "sc1000_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "pc1000_slot3"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 1,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bomb_250kg_group",
+            "name": "sc250_slot3",
+            "isDefault": true,
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+                "emitter": "bomb16",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+                "emitter": "bomb17",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+                "emitter": "bomb18",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": {
+              "slot": 2,
+              "preset": "sc1800_slot2"
+            }
+          },
+          {
+            "iconType": "bomb_500kg_group",
+            "name": "sc500_slot3",
+            "reqModification": "ju-88_2xSC500",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+                "emitter": "bomb25",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+                "emitter": "bomb26",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+                "emitter": "bomb27",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": {
+              "slot": 2,
+              "preset": "sc1800_slot2"
+            }
+          },
+          {
+            "iconType": "bomb_1000kg_group",
+            "name": "sc1000_slot3",
+            "reqModification": "ju-88_etc1000",
+            "Weapon": [
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
                 "emitter": "bomb4",
+                "external": false,
                 "bullets": 1,
-                "separate": true
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
+                "emitter": "bomb2",
+                "external": false,
+                "bullets": 1,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "sc250_slot2"
+              },
+              {
+                "slot": 2,
+                "preset": "sc500_slot2"
               }
             ]
           },
           {
             "iconType": "bomb_1500kg_group",
-            "name": "xpc1000_mid",
+            "name": "pc1000_slot3",
             "reqModification": "ju-88_etc1000",
             "Weapon": [
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/de_pc1000_ap.blk",
-                "emitter": "bomb1",
+                "emitter": "bomb4",
+                "external": false,
                 "bullets": 1,
-                "separate": true
+                "separate": true,
+                "machLimit": 1.01
               },
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/de_pc1000_ap.blk",
                 "emitter": "bomb2",
+                "external": false,
                 "bullets": 1,
-                "separate": true
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "sc250_slot2"
               },
               {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_pc1000_ap.blk",
-                "emitter": "bomb3",
-                "bullets": 1,
-                "separate": true
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/de_pc1000_ap.blk",
-                "emitter": "bomb4",
-                "bullets": 1,
-                "separate": true
+                "slot": 2,
+                "preset": "sc500_slot2"
               }
             ]
           }

@@ -6079,13 +6079,13 @@
         },
         "500lb_x8": {},
         "2000lb": {
-          "reqModification": "aircraft_mod_2"
+          "reqModification": "aircraft_mod_5"
         },
         "500lb": {
-          "reqModification": "aircraft_mod_4"
+          "reqModification": "aircraft_mod_2"
         },
         "1000lb": {
-          "reqModification": "aircraft_mod_5"
+          "reqModification": "aircraft_mod_4"
         }
       }
     },
@@ -11659,7 +11659,7 @@
       "wingLoading": 172.0,
       "powerToWeightRatio": 0.04,
       "rollRate": 19.0,
-      "pylonCount": 1,
+      "pylonCount": 5,
       "massPerSec": 0.714,
       "crew": 6,
       "pilotsCount": 2,
@@ -11671,14 +11671,51 @@
           "ammoCount": 6000,
           "shotFreq": 17.5
         },
-        "250kg": {},
-        "500kg": {
+        "250_slot1": {},
+        "500_slot1": {
           "reqModification": "aircraft_mod_2"
         },
-        "pc500kg": {
+        "1000_slot1": {
+          "reqModification": "aircraft_mod_6"
+        },
+        "500_ap_slot1": {
           "reqModification": "aircraft_mod_4"
         },
-        "pc1000kg": {
+        "1000_ap_slot1": {
+          "reqModification": "aircraft_mod_5"
+        },
+        "250_slot2": {},
+        "500_slot2": {
+          "reqModification": "aircraft_mod_2"
+        },
+        "500_ap_slot2": {
+          "reqModification": "aircraft_mod_4"
+        },
+        "250_x2_slot3": {},
+        "500_x2_slot3": {
+          "reqModification": "aircraft_mod_2"
+        },
+        "500_ap_x2_slot3": {
+          "reqModification": "aircraft_mod_4"
+        },
+        "250_slot4": {},
+        "500_slot4": {
+          "reqModification": "aircraft_mod_2"
+        },
+        "500_ap_slot4": {
+          "reqModification": "aircraft_mod_4"
+        },
+        "250_slot5": {},
+        "500_slot5": {
+          "reqModification": "aircraft_mod_2"
+        },
+        "1000_slot5": {
+          "reqModification": "aircraft_mod_6"
+        },
+        "500_ap_slot5": {
+          "reqModification": "aircraft_mod_4"
+        },
+        "1000_ap_slot5": {
           "reqModification": "aircraft_mod_5"
         }
       }
@@ -12290,7 +12327,7 @@
       "wingLoading": 280.0,
       "powerToWeightRatio": 0.115,
       "rollRate": 49.0,
-      "pylonCount": 1,
+      "pylonCount": 3,
       "massPerSec": 5.67687,
       "crew": 9,
       "pilotsCount": 1,
@@ -12308,11 +12345,28 @@
           "ammoCount": 1650,
           "shotFreq": 12.5
         },
-        "sc250_mid": {},
-        "sc1000_mid": {
+        "sc250_slot1": {},
+        "sc250_slot2": {},
+        "sc500_slot2": {
           "reqModification": "aircraft_mod_2"
         },
-        "xpc1000_mid": {
+        "sc1000_slot2": {
+          "reqModification": "aircraft_mod_6"
+        },
+        "pc1000_slot2": {
+          "reqModification": "aircraft_mod_5"
+        },
+        "sc1800_slot2": {
+          "reqModification": "aircraft_mod_7"
+        },
+        "sc250_slot3": {},
+        "sc500_slot3": {
+          "reqModification": "aircraft_mod_2"
+        },
+        "sc1000_slot3": {
+          "reqModification": "aircraft_mod_6"
+        },
+        "pc1000_slot3": {
           "reqModification": "aircraft_mod_5"
         }
       }

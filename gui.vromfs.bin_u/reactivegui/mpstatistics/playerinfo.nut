@@ -409,6 +409,7 @@ selectedPlayerForInfo.subscribe(function(v) {
 
 return {
   mkPlayerInfo
+  levelHolderSize
   levelMark
 
   defColor

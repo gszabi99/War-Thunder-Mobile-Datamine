@@ -48,7 +48,7 @@ let buyUnitsData = Computed(function() {
       canBuy[name] <- unit
       return US_CAN_BUY
     }
-    else if (rank == level + 1)
+    else if (rank == level + 1 && !isCampaignWithUnitsResearch.get())
       canBuyOnLvlUp[name] <- unit
     return name in unitTreeNodes?[unit.campaign] ? US_NOT_RESEARCHED : US_TOO_LOW_LEVEL
   })

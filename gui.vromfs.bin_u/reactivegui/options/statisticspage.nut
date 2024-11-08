@@ -1,13 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
 let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
 let { bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
-let { levelMark, defColor, hlColor, iconSize, mkText } = require("%rGui/mpStatistics/playerInfo.nut")
+let { levelMark, defColor, hlColor, iconSize, mkText, levelHolderSize } = require("%rGui/mpStatistics/playerInfo.nut")
 let { getMedalPresentation } = require("%rGui/mpStatistics/medalsPresentation.nut")
 let { actualizeStats, userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { viewStats, mkStatRow, mkMarqueeRow, mkMarqueeText } = require("%rGui/mpStatistics/statRow.nut")
+let { arrayByRows } = require("%sqstd/underscore.nut")
+let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
+let { contentWidthFull } = require("%rGui/options/optionsStyle.nut")
 
+
+let infoBlockPadding = [hdpx(20), hdpx(50)]
+let scrollMedalsPadding = [hdpx(20), hdpx(20), 0, hdpx(10)]
+let medalsGap = hdpx(25)
+let infoBlockPartsGap = hdpx(50)
+let infoBlockParts = 3
+
+let medalsBlockWidth = (contentWidthFull - infoBlockPadding[1] * 2 - ((infoBlockParts - 1) * infoBlockPartsGap)) / infoBlockParts
+let scrollPaddingsWidth = scrollMedalsPadding[1] + scrollMedalsPadding[3]
+
+let minMedalsInRow = 4
+let columns = max(((medalsBlockWidth - scrollPaddingsWidth) / (medalsGap + levelHolderSize)).tointeger(), minMedalsInRow)
 let playerStats = Computed( @() userstatStats.get()?.stats["global"])
 
 let mkMedals = @(selCampaign) function() {
@@ -25,19 +40,26 @@ let mkMedals = @(selCampaign) function() {
   }
   return {
     watch = servProfile
-    size = [pw(35), SIZE_TO_CONTENT]
-    padding = [0, hdpx(25), 0, hdpx(50)]
+    size = flex()
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(30)
     children = [
       mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
-      {
+      makeVertScroll({
+        size = [flex(), SIZE_TO_CONTENT]
+        padding = scrollMedalsPadding
         valign = ALIGN_CENTER
-        flow = FLOW_HORIZONTAL
-        gap = hdpx(30)
-        children = children.len() > 0 ? children : mkMarqueeText(loc("mainmenu/noMedal"))
-      }
+        flow = FLOW_VERTICAL
+        gap = hdpx(25)
+        children = children.len() == 0
+          ? mkMarqueeText(loc("mainmenu/noMedal")).__update({ maxWidth = pw(100) })
+          : arrayByRows(children, columns).map(@(item) {
+              flow = FLOW_HORIZONTAL
+              gap = medalsGap
+              children = item
+            })
+      })
     ]
   }
 }
@@ -62,9 +84,10 @@ function mkInfo(campaign, unitsStats) {
         }.__update(fontSmallAccented)
       })
       {
-        size = [pw(100), SIZE_TO_CONTENT]
+        size = [flex(), SIZE_TO_CONTENT]
         flow = FLOW_HORIZONTAL
-        padding = [hdpx(20), 0]
+        padding = infoBlockPadding
+        gap = infoBlockPartsGap
         children = [
           mkMedals(campaign)
           function() {
@@ -72,8 +95,7 @@ function mkInfo(campaign, unitsStats) {
             let all = unitsStats.get().all[campaign]
             return {
               watch = unitsStats
-              size = [pw(35), SIZE_TO_CONTENT]
-              padding = [0, hdpx(25)]
+              size = [flex(), SIZE_TO_CONTENT]
               valign = ALIGN_CENTER
               flow = FLOW_VERTICAL
               gap = hdpx(5)
@@ -96,8 +118,7 @@ function mkInfo(campaign, unitsStats) {
             let stats = playerStats.get()?[campaign] ?? {}
             return {
               watch = playerStats
-              size = [pw(30), SIZE_TO_CONTENT]
-              padding = [0, hdpx(50), 0, hdpx(25)]
+              size = [flex(), SIZE_TO_CONTENT]
               valign = ALIGN_CENTER
               flow = FLOW_VERTICAL
               gap = hdpx(5)

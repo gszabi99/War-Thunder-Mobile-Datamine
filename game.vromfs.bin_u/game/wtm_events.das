@@ -184,5 +184,5 @@ struct EventOnPlayerBailout
 
 [event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
 struct EventZoneDamageMessage
-  score : int
+  score : float
   isAirfield : bool

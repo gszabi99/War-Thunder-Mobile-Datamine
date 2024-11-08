@@ -23,6 +23,7 @@ let tabs = [
   {
     locId = "flightmenu/btnStats"
     image = "ui/gameuiskin#menu_stats.svg"
+    isFullWidth = true
     content = statisticsPage
   }
   {
