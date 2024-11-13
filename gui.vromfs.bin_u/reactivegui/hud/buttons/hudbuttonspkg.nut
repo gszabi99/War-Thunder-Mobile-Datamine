@@ -7,7 +7,7 @@ let { imageColor, textDisabledColor } = require("%rGui/hud/hudTouchButtonStyle.n
 let defShortcutOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, ph(-50)] }
 
 function mkBtnZone(key, zoneRadiusX, zoneRadiusY) {
-  let isVisible = Computed(@() !isGamepad.value && (userHoldWeapKeys.value?[key] ?? false))
+  let isVisible = Computed(@() !isGamepad.value && (userHoldWeapKeys.value?[key].isHold ?? false))
   let isInside = Computed(@() userHoldWeapInside.value?[key] ?? true)
   return @() !isVisible.value ? { watch = isVisible }
     : {

@@ -1,4 +1,5 @@
 let { sw, sh } = require("daRg")
+let { round } =  require("math")
 
 let HDPX_H = 1080
 
@@ -19,6 +20,8 @@ let oddPx = @(px) notZero(px, 1 + hdpx((px - 1) / 2.0).tointeger() * 2)
 let fsh = canScaleBySh ? sh : @(v) sw(swMul * v)
 let shHud = @(value) (fsh(value)).tointeger()
 
+let scaleEven = @(px, scale) notZero(px, 2 * round(0.5 * px * scale).tointeger())
+
 return {
   hdpx
   hdpxi
@@ -26,4 +29,5 @@ return {
   oddPx
   fsh
   shHud
+  scaleEven
 }

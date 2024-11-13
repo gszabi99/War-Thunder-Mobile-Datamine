@@ -51,16 +51,9 @@ let mkPlateClickByType = {
   [G_UNIT_UPGRADE] = mkUnitPlateClick,
 }
 
-let textStyle = {
-  color = 0xFFFFFFFF
-  fontFx = FFT_GLOW
-  fontFxFactor = max(64, hdpx(64))
-  fontFxColor = 0xFF000000
-}
-
-let mkText = @(text, ovr = {}) textStyle.__merge({ rendObj = ROBJ_TEXT, text }, fontSmall, ovr)
+let mkText = @(text, ovr = {}) { rendObj = ROBJ_TEXT, text }.__update(fontSmallShaded, ovr)
 let mkTextArea = @(text, maxWidth)
-  textStyle.__merge({ rendObj = ROBJ_TEXTAREA, text, behavior = Behaviors.TextArea, maxWidth }, fontTiny)
+  { rendObj = ROBJ_TEXTAREA, text, behavior = Behaviors.TextArea, maxWidth }.__update(fontTinyShaded)
 
 function lootboxImageWithTimer(lootbox) {
   let { name, timeRange = null, reqPlayerLevel = 0 } = lootbox

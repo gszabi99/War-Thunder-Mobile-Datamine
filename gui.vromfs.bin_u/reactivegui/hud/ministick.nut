@@ -4,26 +4,33 @@ let { TouchScreenStick } = require("wt.behaviors")
 let { Point2 } = require("dagor.math")
 let { rnd_int } = require("dagor.random")
 
+
 let stickHeadSize = evenPx(120)
 let stickTouchAreaSize = stickHeadSize
 let stickDragAreaSize = 2 * (stickHeadSize * 0.82 + 0.5).tointeger()
 
-let stickDragAreaBg = {
-  size = [stickDragAreaSize, stickDragAreaSize]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#hud_voice_stick_bg.svg:{stickDragAreaSize}:{stickDragAreaSize}:P")
-  color = 0xFFFFFFFF
+function stickDragAreaBg(scale) {
+  let size = scaleEven(stickDragAreaSize, scale)
+  return {
+    size = [size, size]
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#hud_voice_stick_bg.svg:{size}:{size}:P")
+    color = 0xFFFFFFFF
+  }
 }
 
-let stickHeadBg = {
-  size = [stickHeadSize, stickHeadSize]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#joy_head.svg:{stickHeadSize}:{stickHeadSize}:P")
-  color = 0xFFFFFFFF
+function stickHeadBg(scale, ovr) {
+  let size = scaleEven(stickHeadSize, scale)
+  return {
+    size = [size, size]
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#joy_head.svg:{size}:{size}:P")
+    color = 0xFFFFFFFF
+  }.__update(ovr)
 }
 
 /**
@@ -32,7 +39,7 @@ let stickHeadBg = {
  *                                        Just pass Watched(false) here, stick will control this state itself.
  * @param {Watched(Point2)} stickDelta - Watched X/Y coordinates of current stick position (get it from miniStick).
  *                                       Just pass Watched(Point2(0, 0)) here, stick will control this state itself.
- * @param {table} [stickHeadChild] - Optional component to be placed on stick head (for example icon).
+ * @param {function(scale, isEnabled)} [stickHeadChild] - Optional component to be placed on stick head (for example icon).
  * @param {Watched(float)} [stickCooldownEndTime] - Optional watched mission time when cooldown should finish.
  *                                                  When no cooldown, pass any time less than current mission time (like -1).
  * @param {Watched(float)} [stickCooldownTimeSec] - Optional watched total cooldown time in seconds. Should be > 0, can be constant.
@@ -50,27 +57,22 @@ let mkMiniStick = kwarg(function mkMiniStick(
 ) {
   let animUID = rnd_int(0, 0xFFFF)
 
-  let stickHeadBase = stickHeadBg.__merge({
-    children = stickHeadChild
-  })
+  let stickHeadBase = @(scale, ovr = {}) stickHeadBg(scale, { children = stickHeadChild?(scale, true) }.__update(ovr))
+  let stickHeadControl = @(scale) stickHeadBase(scale, { transform = {} })
 
-  let stickHeadControl = stickHeadBase.__merge({
-    transform = {}
-  })
-
-  let stickDragAreaControl = @() {
+  let stickDragAreaControl = @(scale) @() {
     watch = isStickActive
     size = flex()
     transform = {}
-    children = isStickActive.get() ? stickDragAreaBg : null
+    children = isStickActive.get() ? stickDragAreaBg(scale) : null
   }
 
-  let stickControlEnabled = {
+  let stickControlEnabled = @(size, scale) {
     behavior = TouchScreenStick
-    size = [stickTouchAreaSize, stickTouchAreaSize]
+    size = [size, size]
 
     useCenteringOnTouchBegin = true
-    maxValueRadius = stickDragAreaSize / 2
+    maxValueRadius = scaleEven(stickDragAreaSize, 0.5 * scale)
     deadZone = 0.5
 
     onChange = @(v) stickDelta.set(Point2(v.x, v.y))
@@ -80,44 +82,48 @@ let mkMiniStick = kwarg(function mkMiniStick(
     onDetach = @() isStickActive.set(false)
 
     children = [
-      stickDragAreaControl
-      stickHeadControl
+      stickDragAreaControl(scale)
+      stickHeadControl(scale)
     ]
   }
 
-  let stickControlDisabled = {
-    size = [stickTouchAreaSize, stickTouchAreaSize]
+  let stickControlDisabled = @(size, scale) {
+    size = [size, size]
     function children() {
       let cdLeft = stickCooldownEndTime.get() - get_mission_time()
       let isCdValid = cdLeft > 0 && stickCooldownTimeSec.get() > 0
-      return stickHeadBase.__merge({
-        children = stickHeadChild?.__merge({ opacity = 0.5 })
-      }, !isCdValid ? {} : {
-        watch = [stickCooldownEndTime, stickCooldownTimeSec]
-        rendObj = ROBJ_PROGRESS_CIRCULAR
-        fgColor = 0xFFFFFFFF
-        bgColor = 0
-        fValue = 1.0
-        key = $"{animUID}_{stickCooldownEndTime.get()}"
-        animations = [
-          {
-            prop = AnimProp.fValue, to = 1.0, play = true,
-            from = 1.0 - (cdLeft / stickCooldownTimeSec.get()),
-            duration = cdLeft
-          }
-        ]
-      })
+      return stickHeadBase(scale,
+        { children = stickHeadChild?(scale, false) }
+          .__update(!isCdValid ? {}
+            : {
+                watch = [stickCooldownEndTime, stickCooldownTimeSec]
+                rendObj = ROBJ_PROGRESS_CIRCULAR
+                fgColor = 0xFFFFFFFF
+                bgColor = 0
+                fValue = 1.0
+                key = $"{animUID}_{stickCooldownEndTime.get()}"
+                animations = [
+                  {
+                    prop = AnimProp.fValue, to = 1.0, play = true,
+                    from = 1.0 - (cdLeft / stickCooldownTimeSec.get()),
+                    duration = cdLeft
+                  }
+                ]
+              }))
     }
   }
 
-  let stickControl = @() { watch = isStickEnabled }
-    .__update(isStickEnabled?.get() ? stickControlEnabled : stickControlDisabled)
+  function stickControl(scale) {
+    let size = scaleEven(stickTouchAreaSize, scale)
+    return @() { watch = isStickEnabled }
+      .__update(isStickEnabled?.get() ? stickControlEnabled(size, scale) : stickControlDisabled(size, scale))
+  }
 
   let stickView = {
     size = [stickTouchAreaSize, stickTouchAreaSize]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = stickHeadBase
+    children = stickHeadBase(1)
   }
 
   return {

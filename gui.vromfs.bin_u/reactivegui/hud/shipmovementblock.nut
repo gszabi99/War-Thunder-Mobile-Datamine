@@ -1,7 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/controls/shortcutConsts.nut" import *
 let { SUBMARINE } = require("%appGlobals/unitConst.nut")
-let { lerpClamped } = require("%sqstd/math.nut")
+let { lerpClamped, round } = require("%sqstd/math.nut")
+let { scaleArr } = require("%globalsDarg/screenMath.nut")
+let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
 let { setShortcutOn, setShortcutOff, setVirtualAxisValue } = require("%globalScripts/controls/shortcutActions.nut")
 let { speedValue, speedUnits, averageSpeed, machineSpeedLoc, isStoppedSpeedStep, machineSpeedDirection
@@ -13,7 +15,7 @@ let { speed, hasDebuffEngines, hasDebuffMoveControl, currentMaxThrottle } = requ
 let { playSound } = require("sound_wt")
 let { btnBgColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnAnimBg, mkMoveVertBtnOutline,
-  mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, fillMoveColorBlocked
+  mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, fillMoveColorBlocked, arrowsVerSize
 } = require("%rGui/components/movementArrows.nut")
 let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let axisListener = require("%rGui/controls/axisListener.nut")
@@ -28,7 +30,7 @@ let HAPT_BACKWARD = registerHapticPattern("Backward", { time = 0.0, intensity = 
 let speedHeight = shHud(2.8)
 let speedImageHeight = (0.7 * speedHeight).tointeger()
 let speedImageWidth = (0.73 * speedImageHeight).tointeger()
-let speedImagePadding = shHud(1.6).tointeger()
+let speedImagePadding = hdpxi(10)
 
 let isMoveCtrlHitShowed = Watched(false)
 function showCtrlHint() {
@@ -58,7 +60,8 @@ let fillColor = Computed(@()
   : hasDebuffEngines.value || currentMaxThrottle.value < 1.0 ? btnBgColor.broken
   : fillMoveColorDef)
 
-let mkSteerParams = @(id, disableId) {
+let mkSteerParams = @(id, disableId, scale) {
+  scale
   ovr = { key = id }
   shortcutId = id
   outlineColor
@@ -78,7 +81,7 @@ function calcBackSpeedPart() {
   let maxSpeed = maxSpeedBySteps.value?[ - 1] ?? 0
   return maxSpeed < 0 ? clamp(speed.value / maxSpeed, 0.0, 1.0) : 0
 }
-let mkBackwardArrow = @(id, isEngineDisabled) mkMoveVertBtn(
+let mkBackwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
   function onTouchBegin() {
     if (!isControlsBlocked.value) {
       setShortcutOn(id)
@@ -90,17 +93,19 @@ let mkBackwardArrow = @(id, isEngineDisabled) mkMoveVertBtn(
   id,
   {
     key = id
+    size = verSize
     flipY = true
     children = @() {
       watch = isEngineDisabled
       size = flex()
       children = isEngineDisabled.value ? null
         : [
-            mkMoveVertBtnAnimBg(true, calcBackSpeedPart, fillColor)
-            mkMoveVertBtnOutline(true, outlineColor)
+            mkMoveVertBtnAnimBg(true, calcBackSpeedPart, verSize, fillColor)
+            mkMoveVertBtnOutline(true, verSize, outlineColor)
             mkMoveVertBtnCorner(true,
-              Computed(@() averageSpeedDirection.value == "back" ? fillColor.value : 0xFFFFFFFF))
-            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(50)] })
+              Computed(@() averageSpeedDirection.value == "back" ? fillColor.value : 0xFFFFFFFF),
+              verSize)
+            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(50)] }, scale)
           ]
     }
   })
@@ -120,7 +125,7 @@ function calcForwSpeedPart2() {
 }
 
 let fwdDirections = { forward = true, forward2 = true }
-let mkForwardArrow = @(id, isEngineDisabled) mkMoveVertBtn(
+let mkForwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
   function onTouchBegin() {
     if (!isControlsBlocked.value) {
       setShortcutOn(id)
@@ -132,55 +137,61 @@ let mkForwardArrow = @(id, isEngineDisabled) mkMoveVertBtn(
   id,
   {
     key = id
+    size = verSize
     children = @() {
       watch = isEngineDisabled
       size = flex()
       children = isEngineDisabled.value ? null
         : [
-            mkMoveVertBtnAnimBg(false, calcForwSpeedPart, fillColor)
-            mkMoveVertBtnOutline(false, outlineColor)
+            mkMoveVertBtnAnimBg(false, calcForwSpeedPart, verSize, fillColor)
+            mkMoveVertBtnOutline(false, verSize, outlineColor)
             mkMoveVertBtnCorner(false,
-              Computed(@() averageSpeedDirection.value in fwdDirections ? fillColor.value : 0xFFFFFFFF))
+              Computed(@() averageSpeedDirection.value in fwdDirections ? fillColor.value : 0xFFFFFFFF),
+              verSize)
             mkMoveVertBtn2step(calcForwSpeedPart2,
               Computed(@() averageSpeedDirection.value == "forward2" ? fillColor.value : 0x00000000),
+              verSize,
               fillColor)
-            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-50)] })
+            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-50)] }, scale)
           ]
     }
   })
 
-let mkStopImage = @(ovr = {}) @() !isStoppedSpeedStep.value ? { watch = isStoppedSpeedStep }
-  : {
-      watch = isStoppedSpeedStep
-      rendObj = ROBJ_IMAGE
-      size = [speedImageWidth, speedImageHeight]
-      hplace = ALIGN_LEFT
-      image = Picture($"!ui/gameuiskin#hud_movement_stop_selection_left.svg:{speedImageWidth}:{speedImageHeight}")
-    }.__update(ovr)
+function mkStopImage(scale, ovr = {}) {
+  let size = scaleArr([speedImageWidth, speedImageHeight], scale)
+  return @() !isStoppedSpeedStep.value ? { watch = isStoppedSpeedStep }
+    : {
+        watch = isStoppedSpeedStep
+        size
+        rendObj = ROBJ_IMAGE
+        hplace = ALIGN_LEFT
+        image = Picture($"!ui/gameuiskin#hud_movement_stop_selection_left.svg:{size[0]}:{size[1]}")
+      }.__update(ovr)
+}
 
-let machineSpeed = {
+let machineSpeed = @(scale) {
   size = [flex(), speedHeight]
-  padding = [0, speedImagePadding]
+  padding = [0, round(speedImagePadding * scale)]
   valign = ALIGN_CENTER
   children = [
-    mkStopImage()
+    mkStopImage(scale)
     @() {
       watch = [averageSpeed]
       rendObj = ROBJ_TEXT
       hplace = ALIGN_CENTER
       text = machineSpeedLoc[averageSpeed.value]
-    }.__update(fontTinyShaded)
-    mkStopImage({ flipX = true, hplace = ALIGN_RIGHT })
+    }.__update(getScaledFont(fontTinyShaded, scale))
+    mkStopImage(scale, { flipX = true, hplace = ALIGN_RIGHT })
   ]
 }
 
-let speedComp = {
+let speedComp = @(scale) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_BOTTOM
   gap = hdpx(2)
   children = [
-    speedValue
-    speedUnits
+    speedValue(scale)
+    speedUnits(scale)
   ]
 }
 
@@ -192,7 +203,7 @@ let shortcutsByType = {
   },
 }
 
-function movementBlock(unitType) {
+function movementBlock(unitType, scale) {
   let {
     engineAxis = "ship_main_engine",
     steeringAxis = "ship_steering",
@@ -208,9 +219,16 @@ function movementBlock(unitType) {
     [gamepadAxes[aim_y]] = @(v) setVirtualAxisValue(aim_y, v),
   })
 
-  let leftArrow = mkMoveLeftBtn(mkSteerParams($"{steeringAxis}_rangeMax", steeringAxis))
-  let rightArrow = mkMoveRightBtn(mkSteerParams($"{steeringAxis}_rangeMin", steeringAxis))
+  let leftArrow = mkMoveLeftBtn(mkSteerParams($"{steeringAxis}_rangeMax", steeringAxis, scale))
+  let rightArrow = mkMoveRightBtn(mkSteerParams($"{steeringAxis}_rangeMin", steeringAxis, scale))
+
+  let verSize = scaleArr(arrowsVerSize, scale)
   let isEngineDisabled = mkIsControlDisabled(engineAxis)
+  let middle = [
+    mkForwardArrow(engine_max, isEngineDisabled, verSize, scale)
+    machineSpeed(scale)
+    mkBackwardArrow(engine_min, isEngineDisabled, verSize, scale)
+  ]
 
   return @() {
     watch = [isUnitDelayed, isGamepad]
@@ -221,17 +239,13 @@ function movementBlock(unitType) {
           {
             flow = FLOW_VERTICAL
             halign = ALIGN_CENTER
-            children = [
-              mkForwardArrow(engine_max, isEngineDisabled)
-              machineSpeed
-              mkBackwardArrow(engine_min, isEngineDisabled)
-            ]
+            children = middle
           }
           {
             size = [SIZE_TO_CONTENT, flex()]
             children = [
               rightArrow
-              speedComp
+              speedComp(scale)
             ]
           }
           isGamepad.value ? gamepadShipAxisListener : null

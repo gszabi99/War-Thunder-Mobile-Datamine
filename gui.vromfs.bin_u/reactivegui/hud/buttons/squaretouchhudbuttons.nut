@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { touchButtonSize, btnBgColor,borderColor, borderColorPushed } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { round } = require("math")
+let { touchButtonSize, btnBgColor, borderColor, borderColorPushed, borderWidth
+} = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { defShortcutOvr}  = require("hudButtonsPkg.nut")
@@ -16,7 +18,7 @@ let mkSquareButtonEditView = @(img){
       size = flex()
       rendObj = ROBJ_BOX
       borderColor = borderColor
-      borderWidth = [hdpx(3)]
+      borderWidth
     }
     {
       rendObj = ROBJ_IMAGE
@@ -27,12 +29,15 @@ let mkSquareButtonEditView = @(img){
   ]
 }
 
-function mkSimpleSquareButton(shortcutId, img) {
+function mkSimpleSquareButton(shortcutId, img, scale) {
   let stateFlags = Watched(0)
+  let bgSize = scaleEven(touchButtonSize, scale)
+  let imgSize = scaleEven(defImageSize, scale)
+  let borderW = round(borderWidth * scale)
   return @() {
       behavior = Behaviors.Button
       cameraControl = true
-      size = [touchButtonSize, touchButtonSize]
+      size = [bgSize, bgSize]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       onClick = @() toggleShortcut(shortcutId)
@@ -44,16 +49,16 @@ function mkSimpleSquareButton(shortcutId, img) {
           size = flex()
           rendObj = ROBJ_BOX
           borderColor = (stateFlags.value & S_ACTIVE) != 0 ? borderColorPushed : borderColor
-          borderWidth = [hdpx(3)]
+          borderWidth = borderW
           fillColor = btnBgColor.empty
         }
         {
           rendObj = ROBJ_IMAGE
-          size = [defImageSize, defImageSize]
-          image = Picture($"{img}:{defImageSize}:{defImageSize}:P")
+          size = [imgSize, imgSize]
+          image = Picture($"{img}:{imgSize}:{imgSize}:P")
           keepAspect = true
         }
-        mkGamepadShortcutImage(shortcutId, defShortcutOvr)
+        mkGamepadShortcutImage(shortcutId, defShortcutOvr, scale)
       ]
     }
 }

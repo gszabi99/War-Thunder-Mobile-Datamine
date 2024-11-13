@@ -23,7 +23,7 @@ let areaTopBottom = {
   hplace = ALIGN_RIGHT
   vplace = ALIGN_TOP
   gap = hdpx(40)
-  children = hitCamera
+  children = hitCamera(1)
 }
 
 let areaBottomLeft = @() {

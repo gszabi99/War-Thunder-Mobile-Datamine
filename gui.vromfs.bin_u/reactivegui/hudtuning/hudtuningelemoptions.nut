@@ -2,17 +2,21 @@ from "%globalsDarg/darg_library.nut" import *
 from "hudTuningConsts.nut" import *
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { cfgByUnitType } = require("cfgByUnitType.nut")
-let { isElemHold, tuningState, tuningOptions, tuningTransform, tuningUnitType, selectedId
+let { isElemHold, tuningState, setTuningState, tuningOptions, tuningTransform, tuningUnitType, selectedId,
+  isAllElemsOptionsOpened
 } = require("hudTuningState.nut")
 let { tuningBtnGap, tuningBtnSize } = require("tuningBtn.nut")
-let mkElemOption = require("mkElemOption.nut")
+let { mkElemOption, mkAllElemsOption } = require("mkElemOption.nut")
+let { optScale, allElemOptionsList } = require("cfg/cfgOptions.nut")
+
 
 let offset = hdpx(20)
-let minTop = saBorders[1] + tuningBtnSize + tuningBtnGap + offset
+let topPanelSize = saBorders[1] + tuningBtnSize + tuningBtnGap
+let minTop = topPanelSize + offset
 let wndPadding = [hdpx(20), hdpx(30)]
 
-let optionsBlock = @(options) {
-  size = [hdpx(600) + wndPadding[1] * 2, SIZE_TO_CONTENT]
+let optionsBlockBg = {
+  size = [optionWidth + wndPadding[1] * 2, SIZE_TO_CONTENT]
   stopMouse = true
   padding = wndPadding
   rendObj = ROBJ_BOX
@@ -20,16 +24,41 @@ let optionsBlock = @(options) {
   borderColor = 0xFF808080
   borderWidth = hdpxi(4)
   flow = FLOW_VERTICAL
-  children = options.map(@(o) mkElemOption(o, tuningOptions,
-    function(modify) {
-      if (tuningState.get() == null)
-        return
-      let ts = tuningState.get()
-      let optionsVal = deep_clone(ts.options)
-      modify(optionsVal)
-      tuningState.set(ts.__merge({ options = optionsVal }))
-    }))
 }
+
+function modifyOptions(modify, changeUid = "", changeStackTime = 0) {
+  if (tuningState.get() == null)
+    return
+  let ts = tuningState.get()
+  let optionsVal = deep_clone(ts.options)
+  modify(optionsVal)
+  setTuningState(ts.__merge({ options = optionsVal }), changeUid, changeStackTime)
+}
+
+let optionsBlock = @(id, options) optionsBlockBg.__merge({
+  children = options.map(@(o) mkElemOption(o, id, tuningOptions, modifyOptions))
+})
+
+let optionsBlockAllElems = @(options) @() optionsBlockBg.__merge({
+  watch = tuningUnitType
+  children = [
+    {
+      size = [flex(), SIZE_TO_CONTENT]
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      text = loc("hudTuning/allElemsOptions/desc")
+      color = 0xC0C0C0C0
+    }.__update(fontTiny)
+  ]
+    .extend(options.map(function(o) {
+      let allIds = cfgByUnitType?[tuningUnitType.get()]
+        .filter(@(cfg) cfg?.options.contains(o) ?? false)
+        .keys()
+        ?? []
+      return allIds.len() == 0 ? null
+        : mkAllElemsOption(o, allIds, tuningOptions, modifyOptions)
+    }))
+})
 
 function calcPos(size, transform) {
   let { align = 0, pos = [0, 0] } = transform
@@ -42,9 +71,13 @@ function calcPos(size, transform) {
   return [pos[0] + left, pos[1] + top]
 }
 
-function optionsPosBlock(options, editView, transform) {
-  let children = optionsBlock(options)
-  let viewSize = calc_comp_size(editView)
+function optionsPosBlock(id, options, editView, transform) {
+  let isForAllElems = id == null
+  let children = isForAllElems ? optionsBlockAllElems(options) : optionsBlock(id, options)
+  let curOptionsV = tuningOptions.get() //no need to subcribe, need set position only on open
+  let scale = optScale.getValue(curOptionsV, id)
+  let viewSize = calc_comp_size(type(editView) == "function" ? editView(curOptionsV) : editView)
+    .map(@(v) (v * scale).tointeger())
   let viewPos = calcPos(viewSize, transform)
   let optionsSize = calc_comp_size(children)
 
@@ -75,14 +108,27 @@ function optionsPosBlock(options, editView, transform) {
   }
 }
 
+let allElemsCfg = {
+  defTransform = { pos = [saBorders[0], -saBorders[1]], align = ALIGN_RT }
+  editView = { size = [topPanelSize, topPanelSize] }
+  options = allElemOptionsList
+}
+
 function hudTuningElemOptions() {
   let id = selectedId.get()
-  let { editView = null, options = null, defTransform = {} } = cfgByUnitType?[tuningUnitType.get()][id]
+  let { defTransform = {}, editView = null, options = [],
+  } = cfgByUnitType?[tuningUnitType.get()][id]
+    ?? (isAllElemsOptionsOpened.get() ? allElemsCfg : {})
+  let watch = [isElemHold, tuningUnitType, selectedId, isAllElemsOptionsOpened]
+  foreach(o in options)
+    if ("isAvailable" in o)
+      watch.append(o.isAvailable)
+  let availOptions = options.filter(@(o) o?.isAvailable.get() ?? true)
   return {
-    watch = [isElemHold, tuningUnitType, selectedId]
+    watch
     size = flex()
-    children = isElemHold.get() || options == null ? null
-      : optionsPosBlock(options, editView, tuningTransform.get()?[id] ?? defTransform) //no need to subscribe on tuningTransform because it important only on opening
+    children = isElemHold.get() || availOptions.len() == 0 ? null
+      : optionsPosBlock(id, options, editView, tuningTransform.get()?[id] ?? defTransform) //no need to subscribe on tuningTransform because it important only on opening
   }
 }
 

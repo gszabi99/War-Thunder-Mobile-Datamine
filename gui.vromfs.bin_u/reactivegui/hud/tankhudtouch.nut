@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
-let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
+let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
 let { tankSight, crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
 let { tankCrosshairColor, tankZoomAutoAimMode, tankCrosshairDmTestResult, isFreeCamera

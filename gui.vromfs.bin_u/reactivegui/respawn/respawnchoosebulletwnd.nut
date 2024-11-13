@@ -137,7 +137,13 @@ function bulletsList() {
   if (bulletsInfo.value == null)
     return { watch = bulletsInfo }
   let { bulletSets, bulletsOrder, fromUnitTags } = bulletsInfo.value
-  let visibleBulletsList = bulletsOrder.filter(@(name) visibleBullets.value?[name] ?? false)
+  let visibleBulletsList = bulletsOrder.filter(function(name) {
+    let { isExternalAmmo = false } = fromUnitTags?[name]
+    let isVisible = visibleBullets.get()?[name] ?? false
+    if (openedSlot.get() == 0)
+      return isVisible && !isExternalAmmo
+    return isVisible
+  })
   let numberBullets = visibleBulletsList.len()
   let columns = bulletsColumnsCount(numberBullets)
   let rows = ceil(numberBullets.tofloat()/columns)

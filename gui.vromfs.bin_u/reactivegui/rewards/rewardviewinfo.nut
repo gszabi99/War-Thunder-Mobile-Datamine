@@ -59,6 +59,13 @@ let sortRewardsViewInfo = @(a, b) getPriorirty(b) <=> getPriorirty(a)
   || a.id <=> b.id
   || (a?.subId ?? 0) <=> (b?.subId ?? 0)
 
+let sortRewardsWithOrder = @(a, b) b.rewardOrder <=> a.rewardOrder
+  || b.slots <=> a.slots
+  || a.dropLimit <=> b.dropLimit
+  || (a?.isLastReward ?? false) <=> (b?.isLastReward ?? false)
+  || a.chance <=> b.chance
+  || sortRewardsViewInfo(a, b)
+
 // No need to subscribe to serverConfigs.get().allDecorators because it is loaded on game start
 let mkViewInfo = @(id, rType, count = 0, subId = "")
   { id, subId, rType, count, slots = slotsByType?[rType] ?? slotsByDType?[serverConfigs.get()?.allDecorators[id].dType] ?? 1 }
@@ -204,6 +211,8 @@ function groupRewards(rewards) {
         slots = group[0].slots
         count = group[0].count
         countRange = group[group.len() - 1].count
+        chance = group[0].chance
+        rewardOrder = group.findvalue(@(r) (r?.rewardOrder ?? 0) != 0)?.rewardOrder ?? 0
         agregatedRewards = group.map(@(r) {
           count = r.count
           id = r.rewardId
@@ -215,13 +224,14 @@ function groupRewards(rewards) {
 }
 
 function getLootboxCommonRewardsViewInfo(lootbox) {
-  let { name = "", lastReward = "" } = lootbox
+  let { name = "", lastReward = "", rewardsOrder = {} } = lootbox
   let rewards = lootbox.rewards.map(function(chance, id) {
     let rewardCfg = serverConfigs.value?.rewardsCfg[id]
     let content = getRewardsViewInfo(rewardCfg)?[0]
     return {
       id
       source = name
+      rewardOrder = rewardsOrder?[id] ?? 0
       rewardCfg
       chance
       content
@@ -237,6 +247,7 @@ function getLootboxCommonRewardsViewInfo(lootbox) {
     rewards.append({
       id = lastReward
       source = name
+      rewardOrder = rewardsOrder?[lastReward] ?? 0
       rewardCfg
       chance = 0
       content = getRewardsViewInfo(rewardCfg)?[0]
@@ -247,16 +258,19 @@ function getLootboxCommonRewardsViewInfo(lootbox) {
 
   return rewards
     .filter(@(r) r.content != null)
-    .sort(@(a, b) b.content.slots <=> a.content.slots
+    .sort(@(a, b) b.rewardOrder <=> a.rewardOrder
+      || b.content.slots <=> a.content.slots
       || a.dropLimit <=> b.dropLimit
       || (a?.isLastReward ?? false) <=> (b?.isLastReward ?? false)
       || a.chance <=> b.chance
       || sortRewardsViewInfo(a.content, b.content))
     .map(@(v) v.content.__update({
+        chance = v.chance
         rewardId = v.id
         source = v.source
         rewardCfg = v.rewardCfg
         dropLimit = v.dropLimit
+        rewardOrder = v?.rewardOrder ?? 0
         dropLimitRaw = v?.dropLimitRaw ?? NO_DROP_LIMIT
         isLastReward = v?.isLastReward ?? false
       }))
@@ -299,7 +313,8 @@ function getLootboxRewardsViewInfo(lootbox, needToGroup = false) {
 }
 
 let getAllLootboxRewardsViewInfo = @(lootbox)
-  getLootboxFixedRewardsViewInfo(lootbox).extend(groupRewards(getLootboxCommonRewardsViewInfo(lootbox)))
+  getLootboxFixedRewardsViewInfo(lootbox).extend(
+    groupRewards(getLootboxCommonRewardsViewInfo(lootbox)).sort(sortRewardsWithOrder))
 
 let receivedGoodsToViewInfo = @(rGoods)
   mkViewInfo(rGoods?.id ?? "", rGoods?.gType ?? "", rGoods.count ?? 0, rGoods?.subId ?? "")

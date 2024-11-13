@@ -25,19 +25,20 @@ let blinking = [{
   play = true
 }]
 
-let getThreatImg = @(threatType) {
-  size = [imgSize, imgSize]
-  vplace = ALIGN_CENTER
+let getThreatImg = @(threatType, size = imgSize) {
+  size = [size, size]
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#{imageType?[threatType] ?? imageType[0]}.svg:{imgSize}:{imgSize}:P")
+  image = Picture($"ui/gameuiskin#{imageType?[threatType] ?? imageType[0]}.svg:{size}:{size}:P")
 }
-let getThreatImgBlinking = @(threatType) getThreatImg(threatType).__merge({ key = {} animations = blinking })
+let getThreatImgBlinking = @(threatType, size = imgSize)
+  getThreatImg(threatType, size).__merge({ key = {} animations = blinking })
 
 let mkRecord = function(count, time, threatType) {
   let isBlinking = time < blinkingTime
   return {
     flow = FLOW_HORIZONTAL
     gap = textPadding
+    valign = ALIGN_CENTER
     children = [
       isBlinking ? getThreatImgBlinking(threatType) : getThreatImg(threatType)
       {
@@ -50,11 +51,10 @@ let mkRecord = function(count, time, threatType) {
   }
 }
 
-let blinkingThreatImg = getThreatImgBlinking(0)
-
-let simpleThreatRocketsIndicator = @() {
+let simpleThreatRocketsIndicator = @(scale) @() {
   watch = [threatRockets, hasCountermeasures]
-  children = (!hasCountermeasures.value && threatRockets.value.len() > 0) ? blinkingThreatImg : null
+  children = hasCountermeasures.get() || threatRockets.get().len() == 0 ? null
+    : getThreatImgBlinking(0, scaleEven(imgSize, scale))
 }
 
 let threatRocketsBlock = @() {

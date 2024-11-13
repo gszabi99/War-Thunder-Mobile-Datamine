@@ -1605,7 +1605,9 @@
       "is_ground_effect": true
     }
   },
-  "base_unit_ext": {},
+  "base_unit_ext": {
+    "base_unit__kill_score_mult": 1.0
+  },
   "aircraft_ext": {},
   "barrage_ballon_ext": {},
   "ground_unit_ext": {},

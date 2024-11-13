@@ -3,6 +3,7 @@ let { round } = require("math")
 let { frnd } = require("dagor.random")
 let { parse_json } = require("json")
 let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
+let { rewardTypeByValue } = require("%appGlobals/rewardType.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
@@ -49,10 +50,6 @@ let { mkMsgConvertBlueprint } = require("unseenPurchaseAddMessage.nut")
 let { showPrizeSelectDelayed, ticketToShow } = require("%rGui/rewards/rewardPrizeSelect.nut")
 let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
 
-let knownGTypes = [ "currency", "premium", "item", "unitUpgrade", "unit", "unitMod", "unitLevel",
-  "decorator", "medal", "booster", "skin", "prizeTicket",
-  "stat", "battleMod", "blueprint"
-]
 
 let bgGradient = bgMessage.__merge({size = flex()})
 let wndWidth = saSize[0]
@@ -127,7 +124,7 @@ let stackData = Computed(function() {
     stackRaw.unit = stackRaw.unit.filter(@(_, unitName) stackRaw.unitUpgrade?[unitName] == null)
 
   foreach (gType, _ in stackRaw)
-    if (!knownGTypes.contains(gType))
+    if (gType not in rewardTypeByValue)
       logerr($"Unknown reward goods type: {gType}")
 
   let stacksSorted = stackRaw.map(@(v) v.values())

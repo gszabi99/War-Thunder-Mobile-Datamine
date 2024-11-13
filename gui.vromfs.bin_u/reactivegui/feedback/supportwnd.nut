@@ -1,8 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
+let { getLocalLanguage } = require("language")
 let { utf8ToUpper, validateEmail } = require("%sqstd/string.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let { myUserIdStr, myUserName } = require("%appGlobals/profileStates.nut")
 let { sendErrorBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -14,35 +16,31 @@ let { textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nu
 let { textInput } = require("%rGui/components/textInput.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { canUseZendeskApi } = require("%rGui/feedback/supportState.nut")
+let { toggleWithLabel } = require("%rGui/components/toggle.nut")
+let { canUseZendeskApi, langCfg, categoryCfg } = require("%rGui/feedback/supportState.nut")
 let { hasLogFile } = require("logFileAttachment.nut")
 let { requestState, submitSupportRequest, onRequestResultSeen } = require("supportRequest.nut")
-
-let categoryCfg = [
-  { id = "gameplay",  zenId = "\u0438\u0433\u0440\u043e\u0432\u043e\u0439_\u043f\u0440\u043e\u0446\u0435\u0441\u0441_\u043c\u043e\u0431" }
-  { id = "financial", zenId = "\u0444\u0438\u043d\u0430\u043d\u0441\u043e\u0432\u044b\u0435_\u0432\u043e\u043f\u0440\u043e\u0441\u044b_\u043c\u043e\u0431" }
-  { id = "personal",  zenId = "\u043f\u0435\u0440\u0441\u043e\u043d\u0430\u043b\u044c\u043d\u044b\u0435_\u0434\u0430\u043d\u043d\u044b\u0435_\u043c\u043e\u0431" }
-]
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let onClose = @() isOpened(false)
 
 let fieldEmail = hardPersistWatched("fieldEmail", "")
-let fieldName = hardPersistWatched("fieldName", "")
 let fieldCategory = hardPersistWatched("fieldCategory", "")
 let fieldSubject = hardPersistWatched("fieldSubject", "")
 let fieldMessage = hardPersistWatched("fieldMessage", "")
+let tglNeedAttachLogFile = hardPersistWatched("tglNeedAttachLogFile", false)
 
 function resetForm() {
-  foreach (field in [ fieldEmail, fieldName, fieldCategory, fieldSubject, fieldMessage ])
-    field("")
+  foreach (field in [ fieldEmail, fieldCategory, fieldSubject, fieldMessage ])
+    field.set("")
+  tglNeedAttachLogFile.set(false)
 }
 
 function getFormValidationError() {
   let err = []
   if (fieldCategory.value == "")
     err.append(loc("support/form/hint/select_a_category"))
-  foreach (field in [ fieldEmail, fieldName, fieldSubject, fieldMessage ])
+  foreach (field in [ fieldEmail, fieldSubject, fieldMessage ])
     if (field.value == "") {
       err.append(loc("support/form/hint/fill_all_text_fields"))
       break
@@ -52,15 +50,20 @@ function getFormValidationError() {
   return "\n".join(err)
 }
 
-let submitImpl = @() submitSupportRequest({
-  email = fieldEmail.value
-  name = fieldName.value
-  category = categoryCfg.findvalue(@(v) v.id == fieldCategory.value)?.zenId ?? ""
-  subject = fieldSubject.value
-  message = fieldMessage.value
-  locale = "en-US"
-  lang = "english"
-})
+function submitImpl() {
+  let { locale, lang } = langCfg?[getLocalLanguage()] ?? langCfg.English
+  submitSupportRequest({
+    email = fieldEmail.get()
+    userId = myUserIdStr.get()
+    name = myUserName.get()
+    category = categoryCfg.findvalue(@(v) v.id == fieldCategory.get())?.zenId ?? ""
+    subject = fieldSubject.get()
+    message = fieldMessage.get()
+    locale
+    lang
+    needAttachLogFile = tglNeedAttachLogFile.get()
+  })
+}
 
 function onSubmit() {
   let errorText = getFormValidationError()
@@ -122,7 +125,6 @@ let formBlock = {
   gap = hdpx(25)
   children = [
     mkOption(optCategory)
-    mkTextInputField(fieldName, loc("support/form/your_name"), { maxChars = 80 })
     mkTextInputField(fieldSubject, loc("support/form/subject"), { maxChars = 150 })
     mkTextInputField(fieldMessage, loc("support/form/message"), { maxChars = 2048 })
     mkTextInputField(fieldEmail, loc("support/form/your_email"), { maxChars = 80, inputType = "mail" })
@@ -132,9 +134,12 @@ let formBlock = {
       flow = FLOW_HORIZONTAL
       gap = buttonsHGap
       children = [
-        hasLogFile()
-          ? txtArea({ text = loc("support/form/log_file_attachment") })
-          : null
+        {
+          size = [flex(), SIZE_TO_CONTENT]
+          children = hasLogFile()
+            ? toggleWithLabel(tglNeedAttachLogFile, loc("support/form/log_file_attachment/checkbox"))
+            : null
+        }
         textButtonPrimary(utf8ToUpper(loc("msgbox/btn_submit")), onSubmit)
       ]
     }

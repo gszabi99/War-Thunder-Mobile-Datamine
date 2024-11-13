@@ -79,7 +79,7 @@ let textResultBlock = @(id, style) {
 }
 
 function textsList() {
-  let fontBoxes = fontsLists.common
+  let fontBoxes = [].extend(fontsLists.common, fontsLists.accented, fontsLists.monospace)
     .reduce(@(res, style, idx) res.append({ id = fontStyleAll.findindex(@(v) v == style) ?? idx, style }), [])
     .sort(@(a, b)  (a.style?.fontSize ?? 0) <=> (b.style?.fontSize ?? 0))
     .map(@(d) textResultBlock(d.id, d.style))

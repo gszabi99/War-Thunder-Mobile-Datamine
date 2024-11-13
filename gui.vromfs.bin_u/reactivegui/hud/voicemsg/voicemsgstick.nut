@@ -5,14 +5,18 @@ let { isVoiceMsgStickActive, voiceMsgStickDelta, voiceMsgCooldownEndTime, COOLDO
 
 let stickHeadIconSize = 2 * (stickHeadSize / 4.0 + 0.5).tointeger()
 
-let stickHeadIcon = {
-  size = [stickHeadIconSize, stickHeadIconSize]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#voice_messages.svg:{stickHeadIconSize}:{stickHeadIconSize}:P")
-  keepAspect = true
-  color = 0xFFFFFFFF
+function stickHeadIcon(scale, isEnabled) {
+  let size = scaleEven(stickHeadIconSize, scale)
+  return {
+    size = [size, size]
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#voice_messages.svg:{size}:{size}:P")
+    keepAspect = true
+    color = 0xFFFFFFFF
+    opacity = isEnabled ? 1.0 : 0.5
+  }
 }
 
 let { stickControl, stickView } = mkMiniStick({

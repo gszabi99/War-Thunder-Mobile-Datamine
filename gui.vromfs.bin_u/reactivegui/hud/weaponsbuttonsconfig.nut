@@ -1,12 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
-  AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3, AB_SUPPORT_PLANE_4, AB_DIVING_LOCK, AB_STRATEGY_MODE,
-  AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_MANUAL_ANTIAIR, AB_ELECTRONIC_WARFARE
+  AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY,
+  AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_ELECTRONIC_WARFARE
 } = require("actionBar/actionType.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("hudHaptic.nut")
-let supportPlaneConfig = require("%rGui/hud/supportPlaneConfig.nut")
 
 function getActionBarShortcut(unitType, itemConfig) {
   let shortcutIdx = itemConfig.shortcutIdx
@@ -64,7 +62,7 @@ let actionBarItemsConfig = {
     getShortcut = @(_, __) "ID_IRCM_SWITCH_SHIP"
     getImage = @(_) "ui/gameuiskin#icon_ircm.svg"
     actionType = AB_IRCM
-    mkButtonFunction = "mkIRCMActionItem"
+    mkButtonFunction = "mkCountermeasureItem"
     haptPatternId = HAPT_IRCM
   }
   EII_ELECTRONIC_WARFARE = {
@@ -132,68 +130,6 @@ let actionBarItemsConfig = {
     hasAim = true
     needCheckRocket = true
     relImageSize = 0.85
-  },
-  EII_SUPPORT_PLANE = {
-    getShortcut = @(_, __) "ID_WTM_LAUNCH_AIRCRAFT"
-    getPlaneImage = @(inAir) inAir ? supportPlaneConfig["EII_SUPPORT_PLANE"].imageSwitch
-      : supportPlaneConfig["EII_SUPPORT_PLANE"].image
-    actionType = AB_SUPPORT_PLANE
-    mkButtonFunction = "mkPlaneItem"
-    getWeaponLocText = @(weaponName) $"{loc("mainmenu/type_air")} {loc(getUnitLocId(weaponName))}"
-    groupInAirIdx = supportPlaneConfig["EII_SUPPORT_PLANE"].groupIdx
-  },
-  EII_SUPPORT_PLANE_2 = {
-    getShortcut = @(_, __) "ID_WTM_LAUNCH_AIRCRAFT_2"
-    getPlaneImage = @(inAir) inAir ? supportPlaneConfig["EII_SUPPORT_PLANE_2"].imageSwitch
-      : supportPlaneConfig["EII_SUPPORT_PLANE_2"].image
-    actionType = AB_SUPPORT_PLANE_2
-    mkButtonFunction = "mkPlaneItem"
-    getWeaponLocText = @(weaponName) $"{loc("mainmenu/type_air")} {loc(getUnitLocId(weaponName))}"
-    groupInAirIdx = supportPlaneConfig["EII_SUPPORT_PLANE_2"].groupIdx
-  },
-  EII_SUPPORT_PLANE_3 = {
-    getShortcut = @(_, __) "ID_WTM_LAUNCH_AIRCRAFT_3"
-    getPlaneImage = @(inAir) inAir ? supportPlaneConfig["EII_SUPPORT_PLANE_3"].imageSwitch
-      : supportPlaneConfig["EII_SUPPORT_PLANE_3"].image
-    actionType = AB_SUPPORT_PLANE_3
-    mkButtonFunction = "mkPlaneItem"
-    getWeaponLocText = @(weaponName) $"{loc("mainmenu/type_air")} {loc(getUnitLocId(weaponName))}"
-    groupInAirIdx = supportPlaneConfig["EII_SUPPORT_PLANE_3"].groupIdx
-  },
-  EII_SUPPORT_PLANE_4 = {
-    getShortcut = @(_, __) "ID_WTM_LAUNCH_AIRCRAFT_4"
-    getPlaneImage = @(inAir) inAir ? supportPlaneConfig["EII_SUPPORT_PLANE_4"].imageSwitch
-      : supportPlaneConfig["EII_SUPPORT_PLANE_4"].image
-    actionType = AB_SUPPORT_PLANE_4
-    mkButtonFunction = "mkPlaneItem"
-    getWeaponLocText = @(weaponName) $"{loc("mainmenu/type_air")} {loc(getUnitLocId(weaponName))}"
-    groupInAirIdx = supportPlaneConfig["EII_SUPPORT_PLANE_4"].groupIdx
-  },
-  EII_STRATEGY_MODE = {
-    getShortcut = @(_, __) "ID_SHIP_STRATEGY_MODE_TOGGLE"
-    image = "!ui/gameuiskin#menu_lang.svg"
-    mkButtonFunction = "mkSimpleButton"
-    actionType = AB_STRATEGY_MODE
-  },
-  EII_MANUAL_ANTIAIR = {
-    getShortcut = @(_, __) "ID_SHIP_MANUAL_ANTIAIR_TOGGLE"
-    actionType = AB_MANUAL_ANTIAIR
-  },
-  EII_DIVING_LOCK = {
-    getShortcut = @(_, __) "ID_DIVING_LOCK"
-    actionType = AB_DIVING_LOCK
-    mkButtonFunction = "mkDivingLockButton"
-  },
-  ID_WTM_RETURN_TO_SHIP_ARCADE = {
-    getShortcut = @(_, __) "ID_WTM_LAUNCH_AIRCRAFT_4"
-    image = "!ui/gameuiskin#hud_ship_selection.svg"
-    mkButtonFunction = "mkSimpleButton"
-    actionType = AB_SUPPORT_PLANE_4
-  },
-  ID_ZOOM = {
-    getShortcut = @(_, __) "ID_ZOOM_TOGGLE"
-    mkButtonFunction = "mkZoomButton"
-    isAlwaysVisible = true
   },
   EII_SPECIAL_UNIT = {
     getShortcut = getActionBarShortcut

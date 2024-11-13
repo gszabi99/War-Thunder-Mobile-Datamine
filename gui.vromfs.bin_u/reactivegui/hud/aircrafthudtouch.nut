@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
 let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
-let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
+let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
 let aircraftSight = require("%rGui/hud/aircraftSight.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")

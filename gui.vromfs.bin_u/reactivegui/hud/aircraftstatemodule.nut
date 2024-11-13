@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { round } =  require("math")
 let { TouchAreaOutButton } = require("wt.behaviors")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
@@ -14,20 +15,23 @@ let iconColumnCount = 5
 
 let dmModulesSize = [iconSize * iconColumnCount, SIZE_TO_CONTENT]
 let xrayDollSize = hdpx(150)
-let xrayDoll = @(stateFlags) {
-  size = [xrayDollSize, xrayDollSize]
-  children = [
-    damagePanelBacklight(stateFlags, xrayDollSize)
-    {
-      rendObj = ROBJ_XRAYDOLL
-      size = flex()
-      rotateWithCamera = true
-      drawOutlines = false
-      drawSilhouette = true
-      drawTargetingSightLine = true
-      modulateSilhouetteColor = true
-    }
-  ]
+function xrayDoll(stateFlags, scale) {
+  let size = round(xrayDollSize * scale)
+  return {
+    size = [size, size]
+    children = [
+      damagePanelBacklight(stateFlags, [size, size])
+      {
+        rendObj = ROBJ_XRAYDOLL
+        size = flex()
+        rotateWithCamera = true
+        drawOutlines = false
+        drawSilhouette = true
+        drawTargetingSightLine = true
+        modulateSilhouetteColor = true
+      }
+    ]
+  }
 }
 
 function useShortcutOn(shortcutId) {
@@ -39,10 +43,10 @@ let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [
 let shortcutId = "ID_SHOW_HERO_MODULES"
 let stateFlags = Watched(0)
 let isActive = @(sf) (sf & S_ACTIVE) != 0
-let xrayModel = @() {
+let xrayModel = @(scale) @() {
+  watch = isInZoom
   key = "aircraft_state_button"
   behavior = TouchAreaOutButton
-  watch = isInZoom
   eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
   touchMarginPriority = TOUCH_BACKGROUND
   function onElemState(sf) {
@@ -62,45 +66,48 @@ let xrayModel = @() {
   }
   hotkeys = mkGamepadHotkey(shortcutId)
   children = [
-    xrayDoll(isInZoom.value ? null : stateFlags)
-    mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
+    xrayDoll(isInZoom.value ? null : stateFlags, scale)
+    mkGamepadShortcutImage(shortcutId, abShortcutImageOvr, scale)
   ]
 }
 
-let mkIcon = @(iconId, color = null) {
+let mkIcon = @(iconCfg, size = iconSize) {
   rendObj = ROBJ_IMAGE
-  size = [iconSize, iconSize]
-  image = Picture($"ui/gameuiskin#{iconId}:{iconSize}:{iconSize}")
-  color
+  size = [size, size]
+  image = Picture($"ui/gameuiskin#{iconCfg.icon}:{size}:{size}")
+  color = iconCfg?.color
 }
 
 let red = 0xFFE95E5E
 
 let dmIcons = [
-  mkIcon("dmg_air_altitude_control.svg")
-  mkIcon("dmg_air_rudder.svg")
-  mkIcon("dmg_air_flaps.svg")
-  mkIcon("dmg_air_aileron.svg")
-  mkIcon("dmg_air_chassis.svg", red)
-  mkIcon("dmg_air_gunner.svg", red)
-  mkIcon("dmg_air_engine.svg", red)
-  mkIcon("dmg_air_fire.svg", red)
-  mkIcon("dmg_air_oil.svg", red)
-  mkIcon("dmg_air_water.svg", red)
+  { icon = "dmg_air_altitude_control.svg" }
+  { icon = "dmg_air_rudder.svg" }
+  { icon = "dmg_air_flaps.svg" }
+  { icon = "dmg_air_aileron.svg" }
+  { icon = "dmg_air_chassis.svg", color = red }
+  { icon = "dmg_air_gunner.svg", color = red }
+  { icon = "dmg_air_engine.svg", color = red }
+  { icon = "dmg_air_fire.svg", color = red }
+  { icon = "dmg_air_oil.svg", color = red }
+  { icon = "dmg_air_water.svg", color = red }
 ]
 
-let dmModules = @() {
-  watch = DmStateMask
-  size = dmModulesSize
-  flow = FLOW_VERTICAL
-  valign = ALIGN_BOTTOM
-  children = arrayByRows(dmIcons.filter(@(_, idx) DmStateMask.get() & (1 << idx)), iconColumnCount)
-    .map(@(row) {
-      size = [flex(), SIZE_TO_CONTENT]
-      flow = FLOW_HORIZONTAL
-      halign = ALIGN_RIGHT
-      children = row
-    })
+function dmModules(scale) {
+  let size = scaleEven(iconSize, scale)
+  return @() {
+    watch = DmStateMask
+    size = dmModulesSize
+    flow = FLOW_VERTICAL
+    valign = ALIGN_BOTTOM
+    children = arrayByRows(dmIcons.filter(@(_, idx) DmStateMask.get() & (1 << idx)), iconColumnCount)
+      .map(@(row) {
+        size = [flex(), SIZE_TO_CONTENT]
+        flow = FLOW_HORIZONTAL
+        halign = ALIGN_RIGHT
+        children = row.map(@(c) mkIcon(c, size))
+      })
+  }
 }
 
 let dmModulesEditView = {
@@ -110,7 +117,7 @@ let dmModulesEditView = {
   borderColor
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
-  children = arrayByRows(dmIcons, iconColumnCount)
+  children = arrayByRows(dmIcons.map(@(c) mkIcon(c)), iconColumnCount)
     .map(@(row) {
       size = [flex(), SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL

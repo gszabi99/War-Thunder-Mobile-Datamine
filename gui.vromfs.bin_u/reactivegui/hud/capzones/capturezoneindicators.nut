@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { CaptureZone } = require("wt.behaviors")
 let { capZones, capZonesCount } = require("capZonesState.nut")
-let { capZoneCtr, getZoneIcon } = require("capZonesList.ui.nut")
+let { capZoneCtr, getZoneIcon } = require("capZones.nut")
 let { round_by_value } = require("%sqstd/math.nut")
 
 let zoneSize = evenPx(45)

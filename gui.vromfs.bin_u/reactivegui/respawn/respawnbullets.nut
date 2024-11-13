@@ -1,16 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
 let { deferOnce } = require("dagor.workcycle")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bulletsInfo, chosenBullets, bulletStep, bulletTotalSteps, bulletLeftSteps, setCurUnitBullets
+let { bulletsInfo, chosenBullets, bulletStep, bulletTotalSteps, bulletLeftSteps, setCurUnitBullets,
+  maxBulletsCountForExtraAmmo, hasExtraBullets
 } = require("bulletsChoiceState.nut")
 let { bulletsAABB } = require("respawnAnimState.nut")
-let { bg, bulletsBlockWidth, headerMargin, headerText, header, gap, bulletsLegend } = require("respawnComps.nut")
+let { bg, bulletsBlockWidth, headerMargin, headerText, header, bulletsLegend } = require("respawnComps.nut")
 let { slider, sliderValueSound, sliderBtn, mkSliderKnob } = require("%rGui/components/slider.nut")
 let mkBulletSlot = require("mkBulletSlot.nut")
 let { showRespChooseWnd, openedSlot } = require("respawnChooseBulletWnd.nut")
 let { mkCustomButton } = require("%rGui/components/textButton.nut")
 let { selSlot, hasUnseenShellsBySlot } = require("respawnState.nut")
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
+let { unitPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
 
 let padding = hdpx(10)
 let headerHeight = hdpx(108)
@@ -106,24 +108,29 @@ let knobCtor = @(relValue, stateFlags, fullW)
   mkSliderKnob(relValue, stateFlags, fullW, { size = [knobSize, knobSize] })
 
 function bulletSlider(bSlot, maxCount) {
-  let count = Computed(@() bSlot.value?.count ?? 0)
-  let minOvr = Computed(@() count.value == 0 ? inactiveBtnOvr : {})
-  let maxOvr = Computed(@() (bulletLeftSteps.value == 0
-    || count.value >= maxCount.value * bulletStep.value)
+  let count = Computed(@() bSlot.get()?.count ?? 0)
+  let maxBulletsWithExtraCount = Computed(@() maxBulletsCountForExtraAmmo.get()?[bSlot.get()?.idx])
+  let minOvr = Computed(@() count.get() == 0 ? inactiveBtnOvr : {})
+  let maxOvr = Computed(@() (bulletLeftSteps.get() == 0
+    || count.get() >= (hasExtraBullets.get()
+        ? maxBulletsWithExtraCount.get()
+        : (maxCount.get() * bulletStep.get())))
       ? inactiveBtnOvr
       : {})
   function onChange(value) {
-    if (bSlot.value == null)
+    if (bSlot.get() == null)
       return
-    let newVal = clamp(value, 0, count.value + bulletLeftSteps.value * bulletStep.value)
-    if (newVal == count.value)
+    let newVal = clamp(value, 0, !hasExtraBullets.get()
+      ? (count.get() + bulletLeftSteps.get() * bulletStep.get())
+      : maxBulletsWithExtraCount.get())
+    if (newVal == count.get())
       return
     sliderValueSound()
-    let { name, idx } = bSlot.value
+    let { name, idx } = bSlot.get()
     setCurUnitBullets(idx, name, newVal)
   }
   return @() bg.__merge({
-    watch = [ maxCount, bulletStep ]
+    watch = [ maxCount, bulletStep, hasExtraBullets, maxBulletsWithExtraCount ]
     size = [ flex(), headerHeight ]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
@@ -131,20 +138,20 @@ function bulletSlider(bSlot, maxCount) {
     gap = sliderGap
     children = [
       sliderBtn(btnTextDec(minOvr),
-        @() onChange(count.value - bulletStep.value),
-        Computed(@() btnBgOvr.__merge(minOvr.value)))
+        @() onChange(count.get() - bulletStep.get()),
+        Computed(@() btnBgOvr.__merge(minOvr.get())))
       slider(count,
         {
           size = sliderSize
-          unit = bulletStep.value
+          unit = hasExtraBullets.get() ? maxBulletsWithExtraCount.get() : bulletStep.get()
           min = 0
-          max = maxCount.value * bulletStep.value
+          max = hasExtraBullets.get() ? maxBulletsWithExtraCount.get() : maxCount.get() * bulletStep.get()
           onChange
         },
         knobCtor)
       sliderBtn(btnTextInc(maxOvr),
-        @() onChange(count.value + bulletStep.value),
-        Computed(@() btnBgOvr.__merge(maxOvr.value)))
+        @() onChange(count.get() + bulletStep.get()),
+        Computed(@() btnBgOvr.__merge(maxOvr.get())))
     ]
   })
 }
@@ -152,9 +159,13 @@ function bulletSlider(bSlot, maxCount) {
 function mkBulletSliderSlot(idx) {
   let bSlot = Computed(@() chosenBullets.value?[idx])
   let bInfo = Computed(@() bulletsInfo.value?.bulletSets[bSlot.value?.name])
-  let maxCount = Computed(@() min(bulletTotalSteps.value,
-    bulletsInfo.value?.fromUnitTags[bSlot.value?.name]?.maxCount ?? bulletTotalSteps.value))
-  let countText = Computed(@() $"{bSlot.value?.count ?? 0}/{bulletStep.value * maxCount.value}")
+  let maxCount = Computed(@() min(bulletTotalSteps.get(),
+    bulletsInfo.get()?.fromUnitTags[bSlot.get()?.name]?.maxCount ?? bulletTotalSteps.get()))
+  let maxCountByStep = Computed(@() maxCount.get() * bulletStep.get())
+  let maxBulletsWithExtraCount = Computed(@() maxBulletsCountForExtraAmmo.get()?[idx])
+  let maxCountText = Computed(@() $"{!hasExtraBullets.get() ? maxCountByStep.get() : maxBulletsWithExtraCount.get()}")
+  let countText = Computed(@() $"{bSlot.get()?.count ?? 0}/{maxCountText.get()}")
+
   return @() {
     watch = bulletTotalSteps
     children = [
@@ -190,7 +201,7 @@ function respawnBullets() {
       {
         margin = headerMargin
         flow = FLOW_VERTICAL
-        gap
+        gap = unitPlatesGap
         children = [header(headerText(loc("respawn/chooseBullets")))]
           .extend(array(choiceCount.value).map(@(_, idx) mkBulletSliderSlot(idx)))
       },

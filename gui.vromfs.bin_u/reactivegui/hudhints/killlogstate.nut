@@ -9,9 +9,10 @@ let { localMPlayerTeam, isInBattle } = require("%appGlobals/clientState/clientSt
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
 let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
 
+let maxKillLogEvents = 5
 let state = require("%sqstd/mkEventLogState.nut")({
   persistId = "killLogState"
-  maxActiveEvents = 5
+  maxActiveEvents = maxKillLogEvents
   defTtl = 10
   isEventsEqual = @(a, b) a?.text == b?.text
 })
@@ -74,4 +75,4 @@ eventbus_subscribe("HudMessage", function(data) {
   addEvent({ hType = "chatLogTextTiny", text })
 })
 
-return state
+return state.__merge({ maxKillLogEvents })

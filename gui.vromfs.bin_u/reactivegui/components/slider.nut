@@ -15,9 +15,9 @@ let sliderH = evenPx(80)
 let sliderVisibleH = evenPx(10)
 let sliderW = hdpx(750)
 let sliderBlockH = hdpx(160)
-let btnSize = evenPx(100)
+let sliderBtnSize = evenPx(100)
 let iconSize = evenPx(34)
-let gap = btnSize / 2
+let sliderGap = sliderBtnSize / 2
 let firstTick = 0.3
 let btnRepeatTick = 0.025
 let btnRepeatTime = [firstTick, 0.25, 0.2, 0.15, 0.1, 0.075, 0.05, btnRepeatTick]
@@ -48,7 +48,7 @@ let mkSliderKnob = @(relValue, stateFlags, fullW, ovr = {}) @() {
 }.__update(ovr)
 
 let btnBg = freeze({
-  size  = [btnSize, btnSize]
+  size  = [sliderBtnSize, sliderBtnSize]
   rendObj = ROBJ_VECTOR_CANVAS
   commands = [[VECTOR_POLY, 0, 50, 50, 0, 100, 50, 50, 100]]
   color = borderColor
@@ -115,6 +115,7 @@ let sliderHeader = @(text, valueTextWatch, override = {}) {
   size = [flex(), SIZE_TO_CONTENT]
   valign = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
+  gap = hdpx(20)
   children = [
     {
       size = [flex(), SIZE_TO_CONTENT]
@@ -126,6 +127,7 @@ let sliderHeader = @(text, valueTextWatch, override = {}) {
     @() {
       watch = valueTextWatch
       hplace = ALIGN_RIGHT
+      halign = ALIGN_RIGHT
       rendObj = ROBJ_TEXT
       color = textColor
       minWidth = maxValueWidth
@@ -221,14 +223,14 @@ function sliderWithButtons(valueWatch, header, sliderOverride = {}, valToString 
   return {
     minHeight = sliderBlockH
     flow = FLOW_HORIZONTAL
-    gap
+    gap = sliderGap
     valign = ALIGN_BOTTOM
     children = [
       sliderBtn(@(sf) mkIconBtn(sf & S_HOVER ? btnTextDec.__merge({ color = hoverColor }) : btnTextDec),
         mkOnClick(-unit))
       {
         flow = FLOW_VERTICAL
-        padding = [0, 0, (btnSize - knobSize - sliderVisibleH) / 2, 0]
+        padding = [0, 0, (sliderBtnSize - knobSize - sliderVisibleH) / 2, 0]
         children = [
           sliderHeader(header, valueTextWatch)
           slider(valueWatch, sliderOverride)
@@ -241,6 +243,10 @@ function sliderWithButtons(valueWatch, header, sliderOverride = {}, valToString 
 }
 
 return {
+  sliderH
+  sliderBtnSize
+  sliderGap
+
   slider
   sliderHeader
   sliderBtn

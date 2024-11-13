@@ -16,8 +16,8 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { registerHandler, shopPurchaseInProgress, shopGenSlotInProgress,
   gen_goods_slots, buy_goods_slot, increase_goods_limit, reset_reward_slots
 } = require("%appGlobals/pServer/pServerApi.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { openMsgBoxPurchase, showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
+let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
+let { openMsgBoxPurchase, showNoBalanceMsgIfNeed, PURCHASE_BOX_UID } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, PURCH_TYPE_GOODS_LIMIT, PURCH_TYPE_GOODS_REROLL_SLOTS,
   mkBqPurchaseInfo
 } = require("%rGui/shop/bqPurchaseInfo.nut")
@@ -89,6 +89,11 @@ let needFreeRefreshSlots = keepref(Computed(function() {
     return false
   return getDay(rewardSlots.get()?.time ?? 0) != serverTimeDay.get()
 }))
+
+selIndex.subscribe(function(_) {
+  if (isAttached.get())
+    closeMsgBox(PURCHASE_BOX_UID)
+})
 
 let resetError = @() freeRefreshErrorSoon.set(null)
 registerHandler("autoGenerateGoodsSlots",
@@ -300,6 +305,8 @@ let playPurchaseSound = @(currencyId)
   playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money")
 
 function purchaseSelectedSlot(id, price, currencyId) {
+  if (selIndex.get() < 0) //blueprints list was refreashed behind confirm message
+    return
   buy_goods_slot(id, selIndex.get(), currencyId, price)
   playPurchaseSound(currencyId)
 }

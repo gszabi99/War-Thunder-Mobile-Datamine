@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
+let { round } =  require("math")
 let { TouchScreenButton } = require("wt.behaviors")
+let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { mkContinuousButtonParams, mkGamepadShortcutImage
 } = require("%rGui/controls/shortcutSimpleComps.nut")
 
@@ -10,7 +12,7 @@ let horAnimSizeMul = [0.175, 0.17]
 let verSize = toInt([shHud(16), shHud(12.8)])
 let verCornerSizeMul = [0.61, 0.24]
 let ver2stepSizeMul = [0.85, 0.34]
-let stopSize = toInt([shHud(9.3), shHud(9.3)])
+let stopSizeMul = [0.581, 0.726]
 let horSizeAir = toInt([shHud(9), shHud(12)])
 let verSizeAir = toInt([shHud(12), shHud(10)])
 
@@ -24,13 +26,18 @@ let outlineColorDef = Watched(0xFFFFFFFF)
 let fillColorDef = Watched(fillMoveColorDef)
 
 let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = null,
-  ovr = {}, outlineColor = outlineColorDef, isDisabled = Watched(false)
+  ovr = {}, outlineColor = outlineColorDef, isDisabled = Watched(false), scale = 1
 ) {
   let stateFlags = Watched(0)
-  let { size = horSize } = ovr
-  let horAnimSize = horAnimSizeMul.map(@(v, i) (v * size[i]).tointeger())
-  let cornerOffset = (0.72 * horAnimSize[0]).tointeger()
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
+
+  let size = scaleArr(ovr?.size ?? horSize, scale)
+  let ovrExt = clone ovr
+  if ("size" in ovrExt)
+    ovrExt.$rawdelete("size")
+  let horAnimSize = horAnimSizeMul.map(@(v, i) round(v * size[i]).tointeger())
+  let cornerOffset = (0.72 * horAnimSize[0]).tointeger()
+
   return @() res.__update({
     watch = isDisabled
     size
@@ -81,15 +88,20 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
           }
           mkGamepadShortcutImage(shortcutId,
             flipX ? { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(-20), 0] }
-              : { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(20), 0] })
+              : { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(20), 0] },
+            scale)
         ])
-  }, ovr)
+  }, ovrExt)
 })
 
-let mkStopBtn = kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = null, ovr = {}, outlineColor = outlineColorDef) {
+let mkStopBtn = kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = null, ovr = {},
+  outlineColor = outlineColorDef
+) {
   let stateFlags = Watched(0)
   let { size = verSize } = ovr
+  let stopSize = stopSizeMul.map(@(v, i) (v * size[i]).tointeger())
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
+  let scale = size[0].tofloat() / verSize[0]
   return res.__update({
     size
     vplace = ALIGN_CENTER
@@ -103,12 +115,12 @@ let mkStopBtn = kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = 
         size = stopSize
         image = Picture($"ui/gameuiskin#hud_movement_stop2_bg.svg:{stopSize[0]}:{stopSize[1]}")
         color = (stateFlags.value & S_ACTIVE) != 0 ? bgColorPushed : bgColor
-        children =
-        {
+        children = {
           rendObj = ROBJ_TEXT
           vplace = ALIGN_CENTER
           hplace = ALIGN_CENTER
           text =loc("hud/movementArrows/stopBtn")
+          transform = scale == 1 ? null : { pivot = [0.5, 0.5], scale = [scale, scale] }
         }.__update(fontTiny)
       }
       @() {
@@ -123,7 +135,7 @@ let mkStopBtn = kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = 
   }, ovr)
 })
 
-let mkMoveVertBtnAnimBg = @(flipY, calcPart = @() 1.0, fillColor = fillColorDef, size = verSize) {
+let mkMoveVertBtnAnimBg = @(flipY, calcPart = @() 1.0, size = verSize, fillColor = fillColorDef) {
   rendObj = ROBJ_MASK
   size
   image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_selection.svg:{size[0]}:{size[1]}")
@@ -140,7 +152,7 @@ let mkMoveVertBtnAnimBg = @(flipY, calcPart = @() 1.0, fillColor = fillColorDef,
   }
 }
 
-let mkMoveVertBtnOutline = @(flipY, outlineColor = outlineColorDef, size = verSize) @() {
+let mkMoveVertBtnOutline = @(flipY, size = verSize, outlineColor = outlineColorDef) @() {
   watch = outlineColor
   rendObj = ROBJ_IMAGE
   size
@@ -179,22 +191,8 @@ function mkMoveVertBtn(onTouchBegin, onTouchEnd, shortcutId, ovr = {}) {
   }, ovr)
 }
 
-function mkMoveVertBtnNoHotkey(ovr = {}) {
-  let stateFlags = Watched(0)
-  let { size = verSize } = ovr
-  return @() {
-    watch = stateFlags
-    behavior = TouchScreenButton
-    size
-    onElemState = @(sf) stateFlags(sf)
-    rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_bg.svg:{size[0]}:{size[1]}")
-    color = (stateFlags.value & S_ACTIVE) != 0 ? bgColorPushed : bgColor
-  }.__update(ovr)
-}
-
 function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(0xFFFFFFFF),
-  fillColor = fillColorDef, btnSize = verSize
+  btnSize = verSize, fillColor = fillColorDef
 ) {
   let size = ver2stepSizeMul.map(@(v, i) (v * btnSize[i]).tointeger())
   let verCornerSize = verCornerSizeMul.map(@(v, i) (v * btnSize[i]).tointeger())
@@ -346,10 +344,11 @@ let mkMoveArrowsAirView = @() {
 let moveArrowsAirView = mkMoveArrowsAirView()
 
 return {
+  arrowsVerSize = verSize
+
   mkMoveLeftBtn = mkMoveHorCtor(false)
   mkMoveRightBtn = mkMoveHorCtor(true)
   mkMoveVertBtn
-  mkMoveVertBtnNoHotkey
   mkMoveVertBtnAnimBg
   mkMoveVertBtnOutline
   mkMoveVertBtnCorner

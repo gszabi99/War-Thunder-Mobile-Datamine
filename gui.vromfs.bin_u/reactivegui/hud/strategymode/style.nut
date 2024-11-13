@@ -119,12 +119,8 @@ let nodesStyle = {
   }
 }
 
-let airGroupIcons = {
-  [-1] = iconShip,
-  [0] = supportPlaneConfig["EII_SUPPORT_PLANE"].image,
-  [1] = supportPlaneConfig["EII_SUPPORT_PLANE_2"].image,
-  [2] = supportPlaneConfig["EII_SUPPORT_PLANE_3"].image,
-}
+let airGroupIcons = supportPlaneConfig.reduce(@(res, v, i) res.$rawset(i, v.image),
+  { [-1] = iconShip })
 
 let airGroupAttackIcons = {
   [AIR_GROUP_TYPE.SHIP_SELF] = iconAttack,

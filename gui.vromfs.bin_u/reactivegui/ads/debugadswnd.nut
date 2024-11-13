@@ -3,12 +3,13 @@ let { eventbus_send } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { sin, cos, PI } = require("math")
-let { registerScene } = require("%rGui/navState.nut")
+let { addDbgOverlay, removeDbgOverlay } = require("%rGui/components/debugOverlay.nut")
 let { debugAdsWndParams } = require("adsInternalState.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 
 
-let isOpened = Computed(@() debugAdsWndParams.value != null)
+let WND_UID = "debugAdsWnd"
+let isOpened = keepref(Computed(@() debugAdsWndParams.value != null))
 function sendEnvet(evt) {
   let evtId = debugAdsWndParams.value?[$"{evt}Event"]
   if (evtId != null)
@@ -64,11 +65,9 @@ let animBlock = {
   children = array(totalAnim).map(@(_, i) animPoint(i))
 }
 
-let debugAdsScene = {
-  key = isOpened
-  size = flex()
-  rendObj = ROBJ_SOLID
-  color = 0xFF00000000
+let openScene = @() addDbgOverlay({
+  key = WND_UID
+  color = 0xFF050520
   halign = ALIGN_CENTER
   function onAttach() {
     isRewardReceived(false)
@@ -94,6 +93,8 @@ let debugAdsScene = {
     }
     textButtonPrimary("Debug cancel", close, { ovr = { vplace = ALIGN_BOTTOM, hplace = ALIGN_RIGHT, margin = sh(5) } })
   ]
-}
+})
 
-registerScene("debugAdsWnd", debugAdsScene, close, isOpened)
+if (isOpened.get())
+  openScene()
+isOpened.subscribe(@(v) v ? openScene() : removeDbgOverlay(WND_UID))

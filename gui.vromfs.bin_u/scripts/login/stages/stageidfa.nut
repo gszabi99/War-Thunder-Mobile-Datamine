@@ -1,9 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 let { defer } = require("dagor.workcycle")
 let { eventbus_subscribe } = require("eventbus")
+let { get_local_custom_settings_blk } = require("blkGetters")
 let iOsPlaform = require("ios.platform")
 let { requestTrackingPermission, getTrackingPermission, ATT_NOT_DETERMINED } = iOsPlaform
-let { LOGIN_STATE, isPreviewIDFAShowed, isReadyForShowPreviewIdfa } = require("%appGlobals/loginState.nut")
+let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
+let { LOGIN_STATE, isPreviewIDFAShowed, isReadyForShowPreviewIdfa, CONSENT_OPTIONS_SAVE_ID
+} = require("%appGlobals/loginState.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { has_att_warmingup_scene } = require("%appGlobals/permissions.nut")
 
@@ -31,8 +34,20 @@ eventbus_subscribe("ios.platform.onPermissionTrackCallback", function(p) {
   finalizeStage()
 })
 
+function isOurConsentAccepted() {
+  let blk = get_local_custom_settings_blk()?[CONSENT_OPTIONS_SAVE_ID]
+  if (!isDataBlock(blk))
+    return false
+  local res = false
+  eachParam(blk, function(v) {
+    if (v == true)
+      res = true
+  })
+  return res
+}
+
 function start() {
-  if (getTrackingPermission() == ATT_NOT_DETERMINED) {
+  if (getTrackingPermission() == ATT_NOT_DETERMINED && isOurConsentAccepted()) {
     if (has_att_warmingup_scene.get())
       isReadyForShowPreviewIdfa.set(true)
     else

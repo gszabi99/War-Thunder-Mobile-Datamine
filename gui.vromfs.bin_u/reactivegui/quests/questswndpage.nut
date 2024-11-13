@@ -12,7 +12,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, mkTimeUntil,
   allQuestsCompleted, mkAdsBtn, btnSize } = require("questsPkg.nut")
-let { mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon, progressBarRewardSize
+let { mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon, progressBarRewardSize, mkRewardsPreviewFull
 } = require("rewardsComps.nut")
 let { mkQuestBar, mkProgressBar } = require("questBar.nut")
 let { getUnlockRewardsViewInfo, sortRewardsViewInfo, isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
@@ -125,7 +125,7 @@ let purchaseContent = @(rewardsPreview, item){
     {
       flow = FLOW_HORIZONTAL
       gap = hdpx(10)
-      children = mkRewardsPreview(rewardsPreview, item?.isFinished)
+      children = mkRewardsPreviewFull(rewardsPreview, item?.isFinished)
     }
     msgBoxText(loc("shop/cost"), { size = SIZE_TO_CONTENT })
   ]

@@ -8,7 +8,7 @@ let HINT_TYPE = "deathTimer"
 let alert = Color(221, 17, 17)
 let showTimeToDeath = keepref(Computed(@() timeToDeath.value > 0))
 
-registerHintCreator(HINT_TYPE, @(_) @() {
+registerHintCreator(HINT_TYPE, @(_, __) @() {
   flow = FLOW_HORIZONTAL
   children =  [
     {

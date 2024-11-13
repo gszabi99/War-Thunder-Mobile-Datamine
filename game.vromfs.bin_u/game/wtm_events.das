@@ -186,3 +186,7 @@ struct EventOnPlayerBailout
 struct EventZoneDamageMessage
   score : float
   isAirfield : bool
+
+[cpp_event(unicast)]
+struct CmdSetScoreKillMult
+  mult : float

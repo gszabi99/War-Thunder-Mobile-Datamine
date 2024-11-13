@@ -10,7 +10,7 @@ let { eventbus_subscribe } = require("eventbus")
 let HINT_TYPE = "returnToMapMessage"
 let alert = Color(221, 17, 17)
 
-registerHintCreator(HINT_TYPE, @(hint) {
+registerHintCreator(HINT_TYPE, @(hint, _) {
   vplace = ALIGN_CENTER
   rendObj = ROBJ_TEXT
   color = alert

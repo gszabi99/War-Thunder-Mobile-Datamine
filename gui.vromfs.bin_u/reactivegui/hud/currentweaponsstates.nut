@@ -5,48 +5,23 @@ let { EventOnSupportUnitSpawn } = require("dasevents")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { actionBarItems } = require("actionBar/actionBarState.nut")
-let { unitType, HM_COMMON, HM_MANUAL_ANTIAIR } = require("%rGui/hudState.nut")
+let { unitType, HM_MANUAL_ANTIAIR } = require("%rGui/hudState.nut")
 let { MainMask } = require("%rGui/hud/airState.nut")
 let { selectActionBarAction } = require("hudActionBar")
 let weaponsButtonsConfig = require("%rGui/hud/weaponsButtonsConfig.nut")
 let { playHapticPattern, HAPT_WEAP_SELECT } = require("hudHaptic.nut")
 let { playSound } = require("sound_wt")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 
 
 const REPAY_TIME = 0.3
 
 let shipWeaponsList = [
-  "ID_ZOOM"
   "EII_ROCKET"
   "EII_ROCKET_SECONDARY"
   "EII_TORPEDO"
   "EII_MINE"
   "EII_DEPTH_CHARGE"
   "EII_MORTAR"
-  "EII_SUPPORT_PLANE"
-  "EII_SUPPORT_PLANE_2"
-  "EII_SUPPORT_PLANE_3"
-  "EII_SUPPORT_PLANE_4"
-  "EII_DIVING_LOCK"
-  "EII_STRATEGY_MODE"
-  "EII_MANUAL_ANTIAIR"
-]
-
-let submarineWeaponList = [
-  "ID_ZOOM"
-  "EII_ROCKET"
-  "EII_ROCKET_SECONDARY"
-  "EII_TORPEDO"
-  "EII_MINE"
-  "EII_DEPTH_CHARGE"
-  "EII_MORTAR"
-  "EII_SUPPORT_PLANE"
-  "EII_SUPPORT_PLANE_2"
-  "EII_SUPPORT_PLANE_3"
-  "EII_SUPPORT_PLANE_4"
-  "EII_DIVING_LOCK"
-  "EII_STRATEGY_MODE"
 ]
 
 let shipGunInsertIdx = 1
@@ -79,24 +54,8 @@ let shipGunHudModes = {
   [TRIGGER_GROUP_MACHINE_GUN] = HM_MANUAL_ANTIAIR
 }
 
-let weaponsHudModes = {
-  ["ID_ZOOM"] = HM_COMMON | HM_MANUAL_ANTIAIR,
-  ["EII_MANUAL_ANTIAIR"] = HM_COMMON | HM_MANUAL_ANTIAIR
-}
-
-let fixedPositionWeapons = [
-  "ID_ZOOM",
-  "EII_SUPPORT_PLANE",
-  "EII_SUPPORT_PLANE_2",
-  "EII_SUPPORT_PLANE_3",
-  "EII_DIVING_LOCK",
-  "EII_STRATEGY_MODE",
-  "EII_MANUAL_ANTIAIR"
-].reduce(@(res, v) res.__update({ [v] = true }), {})
-
-let weaponsList = Computed(@() unitType.value == AIR ? []
-  : unitType.value == TANK ? []
-  : (unitType.value == SUBMARINE ? submarineWeaponList : shipWeaponsList))
+let weaponsList = Computed(@() unitType.get() == AIR || unitType.get() == TANK ? []
+  : shipWeaponsList)
 
 let gunsList = Computed(function() {
   if (unitType.value == AIR || unitType.value == TANK)
@@ -188,7 +147,7 @@ local visibleWeaponsList = Computed(function(prev) {
       res.append({ id = weapon, actionItem, viewCfg })
     }
     else
-      res.append({ id = weapon, actionItem, hudMode = weaponsHudModes?[weapon] })
+      res.append({ id = weapon, actionItem })
 
     if (idx < insertIdx)
       gunsIdx = res.len()
@@ -220,20 +179,23 @@ let visibleWeaponsMap = Computed(function() {
 })
 
 let visibleWeaponsDynamic = Computed(@()
-  visibleWeaponsMap.value.filter(@(_, id) id not in fixedPositionWeapons)
+  visibleWeaponsMap.get()
     .values().sort(@(a, b) (a?.actionItem.id ?? 0) <=> (b?.actionItem.id ?? 0)))
 
 let userHoldWeapKeys = Watched({})
 let userHoldWeapInside = Watched({})
 let holdTimers = {}
 
-function markWeapKeyHold(key) {
-  if (key in userHoldWeapKeys.value)
+function markWeapKeyHold(key, name = null, isOnlyHint = false) {
+  if (key in userHoldWeapKeys.get() && userHoldWeapKeys.get()[key].name == name)
     return
-  userHoldWeapKeys.mutate(@(v) v[key] <- false)
+  userHoldWeapKeys.mutate(@(v) v[key] <- { name, isHold = false, isOnlyHint })
+
+  if (key in holdTimers)
+    return
   function onTimer() {
     holdTimers?.$rawdelete(key)
-    userHoldWeapKeys.mutate(@(v) v[key] <- true)
+    userHoldWeapKeys.mutate(@(v) v[key] <- v[key].__merge({ isHold = true }))
   }
   holdTimers[key] <- onTimer
   setTimeout(REPAY_TIME, onTimer)
@@ -251,7 +213,7 @@ function unmarkWeapKeyHold(key) {
 
 let defWeaponKey = Computed(@() unitType.value == AIR ? "ID_BOMBS" : TRIGGER_GROUP_PRIMARY)
 let currentWeaponInfo = Computed(function() {
-  let key = userHoldWeapKeys.value.findindex(@(v) v)
+  let key = userHoldWeapKeys.value.findindex(@(v) v.isHold && !v.isOnlyHint)
     ?? defWeaponKey.value
   return visibleWeaponsList.value.findvalue(@(v) v.id == key)
 })
@@ -275,8 +237,11 @@ currentWeaponKey.subscribe(function(id) {
 })
 
 let currentHoldWeaponName = Computed(function() {
-  if (!userHoldWeapKeys.value.findvalue(@(v) v))
+  let weapInfo = userHoldWeapKeys.value.findvalue(@(v) v.isHold)
+  if (weapInfo == null)
     return null
+  if (weapInfo.name != null)
+    return weapInfo.name
   let { id = null, actionItem = null } = currentWeaponInfo.value
   if (id == null || actionItem == null)
     return null
@@ -285,9 +250,6 @@ let currentHoldWeaponName = Computed(function() {
   if (weaponName == "")
     weaponName = actionItem?.bulletName ?? ""
 
-  if (id == "EII_SUPPORT_PLANE" || id == "EII_SUPPORT_PLANE_2" ||
-      id == "EII_SUPPORT_PLANE_3" || id == "EII_SUPPORT_PLANE_4")
-    return loc(getUnitLocId(weaponName))
   return loc($"weapons/{weaponName}/short")
 })
 
@@ -302,11 +264,8 @@ let hasAimingModeForWeapon = Computed(@() unitType.value == TANK
   || (getViewCfg(currentWeaponInfo.value)?.hasAimingMode ?? true))
 let isCurHoldWeaponInCancelZone = Computed(@() !(userHoldWeapInside.value.findvalue(@(v) !v) ?? true))
 
-let isChainedWeapons = mkWatched(persist, "isChainedWeapons", true)
-
 return {
   visibleWeaponsList
-  visibleWeaponsMap
   visibleWeaponsDynamic
   hasCrosshairForWeapon
   hasAimingModeForWeapon
@@ -316,5 +275,4 @@ return {
   unmarkWeapKeyHold
   userHoldWeapKeys
   userHoldWeapInside
-  isChainedWeapons
 }

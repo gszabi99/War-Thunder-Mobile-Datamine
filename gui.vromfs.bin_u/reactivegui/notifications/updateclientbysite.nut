@@ -15,7 +15,6 @@ let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 
-let hasBackgroundUpdateBySite = hardPersistWatched("hasBackgroundUpdateBySite", false)
 let isSuggested = hardPersistWatched("suggestInstall.isSuggested", false)
 let SUGGEST_INSTALL_APK = "suggestInstallApk"
 let apkToInstall = "wtm_rc.apk"
@@ -90,4 +89,4 @@ needShowModal.subscribe(@(v) v ? deferOnce(showSuggestInstallModal) : null)
 
 let updateBySite = @() getOptValue(OPT_AUTO_UPDATE_ENABLED) ? downloadAPK() : null
 
-return { hasBackgroundUpdateBySite, updateBySite }
+return { updateBySite }

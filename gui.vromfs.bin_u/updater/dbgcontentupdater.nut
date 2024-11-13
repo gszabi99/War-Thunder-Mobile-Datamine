@@ -96,4 +96,5 @@ return {
   get_total_download_mb
   get_eta
   get_download_speed
+  set_accept_user_react = @() null
 }

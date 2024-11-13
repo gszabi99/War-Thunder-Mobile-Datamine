@@ -33,7 +33,7 @@ function updateDebugDistanceTimer(isDebug) {
 updateDebugDistanceTimer(isDebugDistance.get())
 isDebugDistance.subscribe(updateDebugDistanceTimer)
 
-registerHintCreator(HINT_TYPE, @(_) @() {
+registerHintCreator(HINT_TYPE, @(_, __) @() {
   watch = [textToShow, distanceToObstacleExt]
   key = textToShow
   size = [saSize[0] - hdpx(1100), SIZE_TO_CONTENT]

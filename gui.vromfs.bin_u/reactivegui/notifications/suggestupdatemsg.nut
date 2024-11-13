@@ -12,7 +12,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { needSuggestToUpdate } = isDownloadedFromGooglePlay() ? require("needUpdate/needUpdateGooglePlay.nut")
   : is_ios ? require("needUpdate/needUpdateAppStore.nut")
   : require("needUpdate/needUpdateAndroidSite.nut")
-let { updateBySite, hasBackgroundUpdateBySite } = require("updateClientBySite.nut")
+let { updateBySite } = require("updateClientBySite.nut")
 
 const SUGGEST_UPDATE = "suggest_update_msg"
 
@@ -25,13 +25,18 @@ let needExitToUpdate = Computed(function() {
 let needShowExitToUpdate = keepref(Computed(@() needExitToUpdate.value && isOutOfBattleAndResults.value))
 
 let isSuggested = hardPersistWatched("suggestUpdate.isSuggested", false)
-let needShowSuggestToUpdate = keepref(Computed(@() needSuggestToUpdate.value
+let needProcessUpdate = keepref(Computed(@() needSuggestToUpdate.value
   && can_view_update_suggestion.get()
   && !isSuggested.value
   && !needExitToUpdate.value
   && isOutOfBattleAndResults.value))
 
-let needStartBackgroundUpdate = Computed(@() needShowSuggestToUpdate.get() && hasBackgroundUpdateBySite.get())
+let isProcessByBgUpdate = is_android && !isDownloadedFromGooglePlay()
+  ? allow_apk_update
+  : Watched(false)
+
+let needSuggestMessage = keepref(Computed(@() needProcessUpdate.get() && !isProcessByBgUpdate.get()))
+let needStartBackgroundUpdate = keepref(Computed(@() needProcessUpdate.get() && isProcessByBgUpdate.get()))
 
 needShowExitToUpdate.subscribe(function(v) {
   if (!v)
@@ -49,7 +54,7 @@ subscribeFMsgBtns({
   markSuggestUpdateSeen = @(_) isSuggested(true)
 })
 
-function updateByStore(isActive) {
+function showMsg(isActive) {
   if (isActive)
     openFMsgBox({
       uid = SUGGEST_UPDATE
@@ -62,18 +67,9 @@ function updateByStore(isActive) {
     closeFMsgBox(SUGGEST_UPDATE)
 }
 
-let updateSuggestState = is_android && !isDownloadedFromGooglePlay()
-  ? @(v) hasBackgroundUpdateBySite.set(v)
-  : updateByStore
+needStartBackgroundUpdate.subscribe(@(v) v ? updateBySite() : null)
+if (needStartBackgroundUpdate.get())
+  updateBySite()
 
-needStartBackgroundUpdate.subscribe(function(v) {
-  if (!v)
-    return
-  if (allow_apk_update.get())
-    updateBySite()
-  else
-    updateByStore(needShowSuggestToUpdate.get())
-})
-
-needShowSuggestToUpdate.subscribe(updateSuggestState)
-updateSuggestState(needShowSuggestToUpdate.get())
+needSuggestMessage.subscribe(showMsg)
+showMsg(needSuggestMessage.get())

@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { allow_voice_messages } = require("%appGlobals/permissions.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
@@ -6,7 +7,7 @@ let { isVoiceMsgEnabled } = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
 let { isVoiceMsgMapSceneOpened } = require("%rGui/hud/voiceMsg/hudVoiceMsgMapScene.nut")
 let { tacticalMapMarkersLayer } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
 
-let size = [hdpx(325), hdpx(325)]
+let tacticalMapSize = [hdpx(325), hdpx(325)]
 
 let commonMinimapLayers = [
   {
@@ -22,15 +23,16 @@ let commonMinimapLayers = [
   tacticalMapMarkersLayer
 ]
 
-let mkTacticalMap = @(extraLayers = []) {
+let mkTacticalMap = @(size, extraLayers = []) {
   size
   children = [].extend(commonMinimapLayers, extraLayers)
 }
 
-let tacticalMap = mkTacticalMap()
+let tacticalMap = mkTacticalMap(tacticalMapSize)
 
-function mkTacticalMapForHud() {
+function mkTacticalMapForHud(scale) {
   let stateFlags = Watched(0)
+  let size = scaleArr(tacticalMapSize, scale)
   let voiceMsgBtn = @() {
     watch = stateFlags
     size = flex()
@@ -42,17 +44,18 @@ function mkTacticalMapForHud() {
     rendObj = ROBJ_SOLID
     color = stateFlags.get() & S_ACTIVE ? 0x28000000 : 0
   }
-  return mkTacticalMap([
-    @() {
-      watch = [allow_voice_messages, isInMpSession, isVoiceMsgEnabled]
-      size = flex()
-      children = allow_voice_messages.get() && isInMpSession.get() && isVoiceMsgEnabled.get() ? voiceMsgBtn : null
-    }
-  ])
+  return mkTacticalMap(size,
+    [
+      @() {
+        watch = [allow_voice_messages, isInMpSession, isVoiceMsgEnabled]
+        size = flex()
+        children = allow_voice_messages.get() && isInMpSession.get() && isVoiceMsgEnabled.get() ? voiceMsgBtn : null
+      }
+    ])
 }
 
 let tacticalMapEditView = {
-  size
+  size = tacticalMapSize
   rendObj = ROBJ_BOX
   borderWidth = hdpx(3)
   borderColor
@@ -68,6 +71,6 @@ return {
   tacticalMap
   mkTacticalMapForHud
 
-  tacticalMapSize = size
+  tacticalMapSize
   tacticalMapEditView
 }

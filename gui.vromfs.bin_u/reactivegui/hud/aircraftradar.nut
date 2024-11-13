@@ -3,8 +3,8 @@ let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 
 let radarSize = hdpx(300)
 
-let aircraftRadar = @() {
-  size = [hdpx(300), hdpx(300)]
+let aircraftRadar = @(scale) {
+  size = array(2, scaleEven(radarSize, scale))
   rendObj = ROBJ_RADAR
 }
 

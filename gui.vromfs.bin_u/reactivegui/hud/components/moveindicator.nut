@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_game_params_blk } = require("blkGetters")
+let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { isInZoom } = require("%rGui/hudState.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 
@@ -8,10 +9,13 @@ let NEED_SHOW_POSE_INDICATOR = get_game_params_blk()?.unitPoseIndicator.enableHu
 let posIndicatorSize = [shHud(25), shHud(15)]
 let iconSize = (posIndicatorSize[1] * 0.7).tointeger()
 
-let moveIndicator = !NEED_SHOW_POSE_INDICATOR ? null : @() {
-  watch = isInZoom
-  size = posIndicatorSize
-  rendObj = isInZoom.value ? ROBJ_UNIT_POSE_INDICATOR : null
+function mkMoveIndicator(scale) {
+  let size = scaleArr(posIndicatorSize, scale)
+  return @() {
+    watch = isInZoom
+    size
+    rendObj = isInZoom.value ? ROBJ_UNIT_POSE_INDICATOR : null
+  }
 }
 
 let moveIndicatorEditView = @(image) {
@@ -26,6 +30,7 @@ let moveIndicatorEditView = @(image) {
       size = [iconSize, iconSize]
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#{image}:{iconSize}:{iconSize}")
+      keepAspect = true
     }
     {
       size = [iconSize * 0.5, iconSize * 0.5]
@@ -42,7 +47,7 @@ let moveIndicatorShipEditView = !NEED_SHOW_POSE_INDICATOR ? null : moveIndicator
 
 return {
   NEED_SHOW_POSE_INDICATOR
-  moveIndicator
+  mkMoveIndicator
   moveIndicatorTankEditView
   moveIndicatorShipEditView
 }

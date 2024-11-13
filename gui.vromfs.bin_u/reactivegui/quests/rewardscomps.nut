@@ -125,6 +125,8 @@ let mkQuestRewardPlate = @(r, startIdx, isQuestFinished = false, rStyle = rStyle
   ]
 }
 
+let mkRewardsPreviewFull = @(rewards, isQuestFinished) rewards.map(@(r, idx) mkQuestRewardPlate(r, idx, isQuestFinished))
+
 function mkRewardsPreview(rewards, isQuestFinished) {
   local rewardsSize = 0
   local res = []
@@ -141,6 +143,7 @@ return {
   mkRewardsPreview
   mkQuestRewardPlate
   rewardProgressBarCtor
+  mkRewardsPreviewFull
 
   questItemsGap
   rewardsBtnSize

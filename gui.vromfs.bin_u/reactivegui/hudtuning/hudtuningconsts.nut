@@ -43,4 +43,6 @@ return {
   ALIGN_CB = ALIGN_C | ALIGN_B
 
   alignToDargPlace
+
+  optionWidth = hdpx(870)
 }

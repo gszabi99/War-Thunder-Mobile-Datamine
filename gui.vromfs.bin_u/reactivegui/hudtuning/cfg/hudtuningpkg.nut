@@ -2,8 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { ALIGN_RB, ALIGN_LB, ALIGN_RT, ALIGN_LT, ALIGN_CT, ALIGN_CB } = require("%rGui/hudTuning/hudTuningConsts.nut")
 let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
 let weaponsButtonsConfig = require("%rGui/hud/weaponsButtonsConfig.nut")
-let { visibleWeaponsMap, visibleWeaponsDynamic } = require("%rGui/hud/currentWeaponsStates.nut")
-let { mkChainedWeapons } = require("%rGui/hud/weaponryBlockImpl.nut")
+let { visibleWeaponsDynamic } = require("%rGui/hud/currentWeaponsStates.nut")
 let weaponsButtonsView = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkNumberedWeaponEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
 let { hudMode, HM_COMMON } = require("%rGui/hudState.nut")
@@ -16,12 +15,12 @@ enum Z_ORDER {
   STICK
 }
 
-let withActionButtonCtor = @(aType, actionCtor, cfg) {
-  function ctor() {
+let withActionButtonScaleCtor = @(aType, actionCtor, cfg) {
+  function ctor(scale) {
     let action = Computed(@() actionBarItems.value?[aType])
     return @() {
       watch = action
-      children = action.value == null ? null : actionCtor(action.value)
+      children = action.get() == null ? null : actionCtor(action.get(), scale)
     }
   }
   priority = Z_ORDER.BUTTON
@@ -30,7 +29,7 @@ let withActionButtonCtor = @(aType, actionCtor, cfg) {
 function withActionBarButtonCtor(config, unitType, cfg) {
   let { actionType, mkButtonFunction, getImage } = config
   let ctor = weaponsButtonsView[mkButtonFunction]
-  return withActionButtonCtor(actionType, @(v) ctor(config, v), {
+  return withActionButtonScaleCtor(actionType, @(v, scale) ctor(config, v, scale), {
     editView = weaponsButtonsView.mkActionItemEditView(getImage(unitType))
     priority = Z_ORDER.BUTTON
   }.__update(cfg))
@@ -39,14 +38,14 @@ function withActionBarButtonCtor(config, unitType, cfg) {
 function withAnyActionBarButtonCtor(configsList, unitType, cfg) {
   let aTypesList = configsList.map(@(c) c.actionType)
   return {
-    function ctor() {
+    function ctor(scale) {
       let aType = Computed(@() aTypesList.findvalue(@(t) t in actionBarItems.value) ?? aTypesList[0])
       let action = Computed(@() actionBarItems.value?[aType.value])
       let configW = Computed(@() configsList.findvalue(@(c) c.actionType == aType.value))
       return @() {
         watch = [action, configW]
         children = action.value == null ? null
-          : weaponsButtonsView[configW.value.mkButtonFunction](configW.value, action.value)
+          : weaponsButtonsView[configW.value.mkButtonFunction](configW.value, action.value, scale)
       }
     }
     editView = weaponsButtonsView.mkActionItemEditView(configsList[0].getImage(unitType))
@@ -54,27 +53,8 @@ function withAnyActionBarButtonCtor(configsList, unitType, cfg) {
   }.__update(cfg)
 }
 
-function weaponryButtonCtor(id, actionCtor, cfg) {
-  if (id not in weaponsButtonsConfig) {
-    logerr($"Error using weaponryButtonCtor: {id} is not in weaponsButtonsConfig")
-    return cfg
-  }
-  return {
-    function ctor() {
-      let isVisible = Computed(@() id in visibleWeaponsMap.value)
-      let actionItem = Computed(@() visibleWeaponsMap.value?[id].actionItem)
-      let buttonConfig = weaponsButtonsConfig?[id]
-      let isVisibleInHudMode = Computed(@()(visibleWeaponsMap.value?[id]?.hudMode ?? HM_COMMON) & hudMode.value)
-      return @() {
-        watch = [actionItem, isVisible, isVisibleInHudMode]
-        children = !isVisible.value || !isVisibleInHudMode.value ? null : actionCtor(buttonConfig, actionItem.value)
-      }
-    }
-    priority = Z_ORDER.BUTTON
-  }.__update(cfg)}
-
 let weaponryButtonDynamicCtor = @(idx, cfg) {
-  function ctor() {
+  function ctor(scale) {
     let currentWeapon = Computed(@() visibleWeaponsDynamic.value?[idx])
     let actionItem = Computed(@() currentWeapon.value?.actionItem)
     let buttonConfig = Computed(@() currentWeapon.value?.buttonConfig)
@@ -82,51 +62,15 @@ let weaponryButtonDynamicCtor = @(idx, cfg) {
     return @() {
       watch = [currentWeapon, actionItem, buttonConfig, isVisibleInHudMode]
       children = !currentWeapon.value || !isVisibleInHudMode.value ? null
-        : weaponsButtonsView?[buttonConfig.value?.mkButtonFunction
-          ?? weaponsButtonsConfig?[currentWeapon.value?.id]?.mkButtonFunction] (
-            buttonConfig.value ?? weaponsButtonsConfig?[currentWeapon.value?.id], actionItem.value)
+        : weaponsButtonsView?[
+            buttonConfig.value?.mkButtonFunction ?? weaponsButtonsConfig?[currentWeapon.value?.id]?.mkButtonFunction
+          ] (buttonConfig.value ?? weaponsButtonsConfig?[currentWeapon.value?.id], actionItem.value, scale)
     }
   }
 }.__update({
   editView = mkNumberedWeaponEditView("ui/gameuiskin#hud_ship_calibre_main_3_left.svg", idx + 1)
   priority = Z_ORDER.BUTTON
 }, cfg)
-
-function weaponryButtonsGroupCtor(ids, actionCtor, cfg) {
-  if (ids.findindex(@(id) id not in weaponsButtonsConfig) != null) {
-    logerr("Error using weaponryButtonsGroupCtor: id is not in weaponsButtonsConfig")
-    return cfg
-  }
-  return {
-    function ctor() {
-      let id = Computed(@() ids.findvalue(@(i) i in visibleWeaponsMap.value))
-      let actionItem = Computed(@() visibleWeaponsMap.value?[id.value].actionItem)
-      let buttonConfig = Computed(@() weaponsButtonsConfig?[id.value])
-      return @() {
-        watch = [actionItem, buttonConfig]
-        children = buttonConfig.value == null ? null : actionCtor(buttonConfig.value, actionItem.value)
-      }
-    }
-    priority = Z_ORDER.BUTTON
-  }.__update(cfg)
-}
-
-function weaponryButtonsChainedCtor(ids, actionCtor, cfg) {
-  if (ids.findindex(@(id) id not in weaponsButtonsConfig) != null) {
-    logerr("Error using weaponryButtonsChainedCtor: id is not in weaponsButtonsConfig")
-    return cfg
-  }
-  return {
-    function ctor() {
-      let visibleIds = Computed(@() ids.filter(@(id) id in visibleWeaponsMap.value))
-      return @() {
-        watch = visibleIds
-        children = mkChainedWeapons(actionCtor, visibleIds.value)
-      }
-    }
-  priority = Z_ORDER.BUTTON
-  }.__update(cfg)
-}
 
 let mkRBPos = @(pos) {
   pos
@@ -161,13 +105,10 @@ let mkCBPos = @(pos) {
 return {
   Z_ORDER
 
-  withActionButtonCtor
+  withActionButtonScaleCtor
   withActionBarButtonCtor
   withAnyActionBarButtonCtor
-  weaponryButtonCtor
   weaponryButtonDynamicCtor
-  weaponryButtonsGroupCtor
-  weaponryButtonsChainedCtor
 
   mkRBPos
   mkLBPos

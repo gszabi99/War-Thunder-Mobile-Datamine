@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { fabs } = require("math")
+let { fabs, round } = require("math")
 let { XrayDoll, TouchAreaOutButton } = require("wt.behaviors")
+let { scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
 let { hasDebuffGuns, hasDebuffTurretDrive, hasDebuffEngine, hasDebuffTracks, hasDebuffFire, speed,
   hasDebuffDriver, hasDebuffGunner, hasDebuffLoader
 } = require("%rGui/hud/tankState.nut")
@@ -17,6 +18,21 @@ let damagePanelSize = hdpxi(175)
 let moveTypeImageSize = hdpxi(50)
 let iconSize = hdpxi(53)
 
+let mkDebuffCfg = @(watch, imageId) { watch, icon = $"ui/gameuiskin#{imageId}" }
+
+let crewDebuffsCfg = [
+  mkDebuffCfg(hasDebuffGunner, "crew_gunner_indicator.svg")
+  mkDebuffCfg(hasDebuffDriver, "crew_driver_indicator.svg")
+  mkDebuffCfg(hasDebuffLoader, "crew_loader_indicator.svg")
+]
+
+let techDebuffsCfg = [
+  mkDebuffCfg(hasDebuffGuns, "gun_state_indicator.svg")
+  mkDebuffCfg(hasDebuffTurretDrive, "turret_gear_state_indicator.svg")
+  mkDebuffCfg(hasDebuffEngine, "engine_state_indicator.svg")
+  mkDebuffCfg(hasDebuffTracks, "track_state_indicator.svg")
+  mkDebuffCfg(hasDebuffFire, "fire_indicator.svg")
+]
 
 let moveType = Computed(function() {
   let sd = stickDelta.value
@@ -34,98 +50,76 @@ let moveType = Computed(function() {
   return { image, isForward, isRight }
 })
 
-let moveTypeImage = @() moveType.value == null ? { watch = moveType }
+let moveTypeImage = @(size) @() moveType.value == null ? { watch = moveType }
   : {
       watch = moveType
-      size = [moveTypeImageSize, moveTypeImageSize]
+      size = [size, size]
       hplace = ALIGN_CENTER
-      pos = moveType.value.isForward ? [0, -moveTypeImageSize] : [0, ph(100)]
+      pos = moveType.value.isForward ? [0, -size] : [0, ph(100)]
       rendObj = ROBJ_IMAGE
       keepAspect = KEEP_ASPECT_FIT
-      image = Picture($"{moveType.value.image}:{moveTypeImageSize}:{moveTypeImageSize}:P")
+      image = Picture($"{moveType.value.image}:{size}:{size}:P")
       flipX = !moveType.value.isRight
       flipY = !moveType.value.isForward
     }
 
-let mkDebuffCfg = @(watch, imageId) {
-  watch
-  icon = mkDebuffIcon($"ui/gameuiskin#{imageId}:{iconSize}:{iconSize}", iconSize)
+let mkDebuffsRowCtor = @(debuffsCfg) function(scale) {
+  let size = scaleEven(iconSize, scale)
+  return function() {
+    local count = 0
+    let children = []
+    foreach (cfg in debuffsCfg) {
+      let { watch, icon } = cfg
+      if (!watch.get())
+        continue
+      children.append(mkDebuffIcon(icon, size).__merge({
+        key = watch
+        transform = { translate = [(count++) * (-size), 0] }
+        transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+      }))
+    }
+    return {
+      watch = debuffsCfg.map(@(c) c.watch)
+      size = [debuffsCfg.len() * size, size]
+      halign = ALIGN_RIGHT
+      children
+    }
+  }
 }
 
-let mkDebuffsRow = @(debuffsCfg) function() {
-  local count = 0
-  let children = []
-  foreach (cfg in debuffsCfg) {
-    let { watch, icon } = cfg
-    if (!watch.value)
-      continue
-    children.append(icon.__merge({
-      key = watch
-      transform = { translate = [(count++) * (-iconSize), 0] }
-      transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
-    }))
-  }
+let mkCrewDebuffs = mkDebuffsRowCtor(crewDebuffsCfg)
+let mkTechDebuffs = mkDebuffsRowCtor(techDebuffsCfg)
+
+let mkDebuffsEditView = @(cfg) {
+  size = [cfg.len() * iconSize, iconSize]
+  flow = FLOW_HORIZONTAL
+  halign = ALIGN_RIGHT
+  children = cfg.map(@(c) mkDebuffIconEditView(c.icon, iconSize))
+    .reverse()
+}
+
+let crewDebuffsEditView = mkDebuffsEditView(crewDebuffsCfg)
+let techDebuffsEditView = mkDebuffsEditView(techDebuffsCfg)
+
+function mkSpeedText(scale) {
+  let monoFont = scaleFontWithTransform(fontMonoTinyShaded, scale, [1, 1])
+  let font = scaleFontWithTransform(fontVeryTinyShaded, scale, [0, 1])
   return {
-    watch = debuffsCfg.map(@(c) c.watch)
-    size = [debuffsCfg.len() * iconSize, iconSize]
-    halign = ALIGN_RIGHT
-    children
+    flow = FLOW_HORIZONTAL
+    valign = ALIGN_BOTTOM
+    gap = hdpx(2)
+    children = [
+      @() {
+        watch = speed
+        rendObj = ROBJ_TEXT
+        text = speed.get()
+      }.__update(monoFont)
+      {
+        rendObj = ROBJ_TEXT
+        text = loc("measureUnits/kmh")
+      }.__update(font)
+    ]
   }
-}
-
-let crewDebuffs = mkDebuffsRow([
-  mkDebuffCfg(hasDebuffGunner, "crew_gunner_indicator.svg")
-  mkDebuffCfg(hasDebuffDriver, "crew_driver_indicator.svg")
-  mkDebuffCfg(hasDebuffLoader, "crew_loader_indicator.svg")
-])
-
-let techDebuffs = mkDebuffsRow([
-  mkDebuffCfg(hasDebuffGuns, "gun_state_indicator.svg")
-  mkDebuffCfg(hasDebuffTurretDrive, "turret_gear_state_indicator.svg")
-  mkDebuffCfg(hasDebuffEngine, "engine_state_indicator.svg")
-  mkDebuffCfg(hasDebuffTracks, "track_state_indicator.svg")
-  mkDebuffCfg(hasDebuffFire, "fire_indicator.svg")
-])
-
-let crewDebuffsEditView = {
-  size = [3 * iconSize, iconSize]
-  flow = FLOW_HORIZONTAL
-  halign = ALIGN_RIGHT
-  children = [
-    mkDebuffIconEditView($"ui/gameuiskin#crew_loader_indicator.svg:{iconSize}:{iconSize}", iconSize)
-    mkDebuffIconEditView($"ui/gameuiskin#crew_driver_indicator.svg:{iconSize}:{iconSize}", iconSize)
-    mkDebuffIconEditView($"ui/gameuiskin#crew_gunner_indicator.svg:{iconSize}:{iconSize}", iconSize)
-  ]
-}
-
-let techDebuffsEditView = {
-  size = [5 * iconSize, iconSize]
-  flow = FLOW_HORIZONTAL
-  halign = ALIGN_RIGHT
-  children = [
-    mkDebuffIconEditView($"ui/gameuiskin#fire_indicator.svg:{iconSize}:{iconSize}", iconSize)
-    mkDebuffIconEditView($"ui/gameuiskin#track_state_indicator.svg:{iconSize}:{iconSize}", iconSize)
-    mkDebuffIconEditView($"ui/gameuiskin#engine_state_indicator.svg:{iconSize}:{iconSize}", iconSize)
-    mkDebuffIconEditView($"ui/gameuiskin#turret_gear_state_indicator.svg:{iconSize}:{iconSize}", iconSize)
-    mkDebuffIconEditView($"ui/gameuiskin#gun_state_indicator.svg:{iconSize}:{iconSize}", iconSize)
-  ]
-}
-
-let speedText = {
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_BOTTOM
-  gap = hdpx(2)
-  children = [
-    @() {
-      watch = speed
-      rendObj = ROBJ_TEXT
-      text = speed.value
-    }.__update(fontMonoTinyShaded)
-    {
-      rendObj = ROBJ_TEXT
-      text = loc("measureUnits/kmh")
-    }.__update(fontVeryTinyShaded)
-  ]
 }
 
 let speedTextEditView = {
@@ -133,10 +127,10 @@ let speedTextEditView = {
   text = "".concat("XX ", loc("measureUnits/kmh"))
 }.__update(fontVeryTinyShaded)
 
-let xrayDoll = @(stateFlags) @() {
-  size = [damagePanelSize, damagePanelSize]
+let xrayDoll = @(stateFlags, moveChild, size) @() {
+  size = [size, size]
   children = [
-    damagePanelBacklight(stateFlags, damagePanelSize)
+    damagePanelBacklight(stateFlags, [size, size])
     {
       rendObj = ROBJ_XRAYDOLL
       size = flex()
@@ -149,7 +143,9 @@ let xrayDoll = @(stateFlags) @() {
         size = flex()
         behavior = XrayDoll
         transform = {}
-        children = moveTypeImage
+        children = [
+          moveChild
+        ]
       }
     }
   ]
@@ -177,41 +173,46 @@ let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [
 let shortcutId = "ID_SHOW_HERO_MODULES"
 let stateFlags = Watched(0)
 let isActive = @(sf) (sf & S_ACTIVE) != 0
-let doll =  @() {
-  key = "tank_state_button"
-  behavior = TouchAreaOutButton
-  watch = isInZoom
-  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
-  touchMarginPriority = TOUCH_MINOR
-  function onElemState(sf) {
-    let prevSf = stateFlags.value
-    stateFlags(sf)
-    let active = isActive(sf) && !isInZoom.value
+function mkDoll(scale) {
+  let size = round(damagePanelSize * scale).tointeger()
+  let shortcutImage = mkGamepadShortcutImage(shortcutId, abShortcutImageOvr, scale)
+  let moveChild = moveTypeImage(round(moveTypeImageSize * scale).tointeger())
+  return @() {
+    key = "tank_state_button"
+    behavior = TouchAreaOutButton
+    watch = isInZoom
+    eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+    touchMarginPriority = TOUCH_MINOR
+    function onElemState(sf) {
+      let prevSf = stateFlags.value
+      stateFlags(sf)
+      let active = isActive(sf) && !isInZoom.value
 
-    if (active != isActive(prevSf))
-      if (active)
-        useShortcutOn(shortcutId)
-      else
-        setShortcutOff(shortcutId)
+      if (active != isActive(prevSf))
+        if (active)
+          useShortcutOn(shortcutId)
+        else
+          setShortcutOff(shortcutId)
+    }
+    function onDetach() {
+      stateFlags(0)
+      setShortcutOff(shortcutId)
+    }
+    hotkeys = mkGamepadHotkey(shortcutId)
+    children = [
+      xrayDoll(isInZoom.value ? null : stateFlags, moveChild, size)
+      shortcutImage
+    ]
   }
-  function onDetach() {
-    stateFlags(0)
-    setShortcutOff(shortcutId)
-  }
-  hotkeys = mkGamepadHotkey(shortcutId)
-  children = [
-    xrayDoll(isInZoom.value ? null : stateFlags)
-    mkGamepadShortcutImage(shortcutId, abShortcutImageOvr)
-  ]
 }
 
 return {
-  doll
+  mkDoll
   dollEditView
-  speedText
+  mkSpeedText
   speedTextEditView
-  crewDebuffs
+  mkCrewDebuffs
   crewDebuffsEditView
-  techDebuffs
+  mkTechDebuffs
   techDebuffsEditView
 }

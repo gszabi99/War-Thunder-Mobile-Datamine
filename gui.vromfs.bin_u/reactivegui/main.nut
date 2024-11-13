@@ -32,6 +32,7 @@ require("login/previewIDFAWnd.nut")
 
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
 let { modalWindowsComponent, closeAllModalWindows, hasModalWindows } = require("%rGui/components/modalWindows.nut")
+let { dbgOverlayComponent } = require("%rGui/components/debugOverlay.nut")
 let { isInLoadingScreen, isInBattle, isHudVisible } = require("%appGlobals/clientState/clientState.nut")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { isLoggedIn, isLoginRequired, isReadyToFullLoad } = require("%appGlobals/loginState.nut")
@@ -152,7 +153,8 @@ return function() {
       ? [sceneBeforeLogin, modalWindowsComponent]
     : isInLoadingScreen.value ? [loadingScreen]
     : [sceneAfterLogin]
-  children.append(hotkeysPanel, tooltipComp, inspectorRoot, debugSafeArea, fpsLineComp, deviceStateArea, waitbox)
+  children.append(hotkeysPanel, tooltipComp, inspectorRoot, debugSafeArea, fpsLineComp,
+    deviceStateArea, waitbox, dbgOverlayComponent)
   if (isDebugTouchesActive.value)
     children.append(debugTouchesUi)
   return {

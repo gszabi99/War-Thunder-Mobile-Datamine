@@ -12,110 +12,120 @@ let { gm_mouse_aim_x, gm_mouse_aim_y, gm_throttle, gm_steering } = require("%rGu
 let { setMoveControlByArrows } = require("hudState")
 let { enabledControls, isAllControlsEnabled, isControlEnabled } = require("%rGui/controls/disabledControls.nut")
 
-let stickZoneSize = [shHud(35), shHud(35)]
-let bgRadius = shHud(15)
+let stickZoneSize = evenPx(380)
+let bgRadius = evenPx(160)
+let zoneToBgRadius = bgRadius.tofloat() / stickZoneSize
 let imgBgSize = 2 * bgRadius
 let imgRotationSize = (0.1 * imgBgSize).tointeger()
 let imgArrowW = (0.1 * imgBgSize).tointeger()
 let imgArrowH = (23.0 / 35 * imgArrowW).tointeger()
-let imgArrowGap = shHud(0.4)
+let imgArrowGapPw = 3
 let imgArrowSmallW = (0.08 * imgBgSize).tointeger()
 let imgArrowSmallH = (23.0 / 35 * imgArrowW).tointeger()
-let imgArrowSmallPosX = 0.35 * imgBgSize + 0.5 * imgArrowSmallW
-let imgArrowSmallPosY = 0.35 * imgBgSize + 0.5 * imgArrowSmallH
+let diagArrowOffsetPw = 40
 let stickSize = shHud(11)
 
 let isTankMoveEnabled = Computed(@()
   isControlEnabled("gm_throttle", enabledControls.get(), isAllControlsEnabled.get())
     || isControlEnabled("gm_steering", enabledControls.get(), isAllControlsEnabled.get()))
 
-let imgRotaion = {
-  size = [imgRotationSize, imgRotationSize]
-  pos = [-0.5 * imgRotationSize, 0]
+let mkImgRotaion = @(size) {
+  size = [size, size]
+  pos = [-0.5 * size, 0]
   vplace = ALIGN_CENTER
-  image = Picture($"ui/gameuiskin#hud_tank_stick_rotation.svg:{imgRotationSize}:{imgRotationSize}:P")
+  image = Picture($"ui/gameuiskin#hud_tank_stick_rotation.svg:{size}:{size}:P")
   rendObj = ROBJ_IMAGE
 }
 
-let imgArrow = {
-  size = [imgArrowW, imgArrowH]
-  pos = [0, -imgArrowH - imgArrowGap]
+let mkImgArrow = @(w, h) {
+  size = [w, h]
   hplace = ALIGN_CENTER
-  image = Picture($"ui/gameuiskin#hud_tank_stick_arrow.svg:{imgArrowW}:{imgArrowH}:P")
+  image = Picture($"ui/gameuiskin#hud_tank_stick_arrow.svg:{w}:{h}:P")
   rendObj = ROBJ_IMAGE
 }
 
-let imgArrowSmall = {
-  size = [imgArrowSmallW, imgArrowSmallH]
-  pos = [ -imgArrowSmallPosX, -imgArrowSmallPosY ]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  image = Picture($"ui/gameuiskin#hud_tank_stick_arrow.svg:{imgArrowSmallW}:{imgArrowSmallH}:P")
-  rendObj = ROBJ_IMAGE
-  transform = { rotate = -45 }
+function imgBg(scale) {
+  let size = scaleEven(imgBgSize, scale)
+  return {
+    size = [size, size]
+    image = Picture($"ui/gameuiskin#hud_tank_stick_bg.svg:{size}:{size}:P")
+    rendObj = ROBJ_IMAGE
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    color = borderColor
+  }
 }
 
-let imgBg = {
-  size = [imgBgSize, imgBgSize]
-  image = Picture($"ui/gameuiskin#hud_tank_stick_bg.svg:{imgBgSize}:{imgBgSize}:P")
-  rendObj = ROBJ_IMAGE
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  color = borderColor
+function fullImgBg(scale) {
+  let rotSize = scaleEven(imgRotationSize, scale)
+  let imgRotaion = mkImgRotaion(rotSize)
+  let imgArrow = mkImgArrow(scaleEven(imgArrowW, scale), scaleEven(imgArrowH, scale))
+  let imgArrowSmall = mkImgArrow(scaleEven(imgArrowSmallW, scale), scaleEven(imgArrowSmallH, scale))
+    .__merge({ vplace = ALIGN_CENTER })
+  return imgBg(scale).__merge({
+    children = [
+      imgRotaion.__merge({
+        flipX = true
+      })
+      imgRotaion.__merge({
+        pos = [0.5 * rotSize, 0]
+        hplace = ALIGN_RIGHT
+      })
+      imgArrow.__merge({
+        pos = [0, pw(-100 - imgArrowGapPw)]
+        vplace = ALIGN_BOTTOM
+      })
+      imgArrow.__merge({
+        pos = [0, pw(100 + imgArrowGapPw)]
+        transform = { rotate = 180 }
+      })
+      imgArrowSmall.__merge({
+        pos = [ pw(-diagArrowOffsetPw), pw(-diagArrowOffsetPw) ]
+        transform = { rotate = -45 }
+      })
+      imgArrowSmall.__merge({
+        pos = [ pw(diagArrowOffsetPw), pw(-diagArrowOffsetPw) ]
+        transform = { rotate = 45 }
+      })
+      imgArrowSmall.__merge({
+        pos = [ pw(diagArrowOffsetPw), pw(diagArrowOffsetPw) ]
+        transform = { rotate = 135 }
+      })
+      imgArrowSmall.__merge({
+        pos = [ pw(-diagArrowOffsetPw), pw(diagArrowOffsetPw) ]
+        transform = { rotate = 225 }
+      })
+    ]
+  })
 }
 
-let fullImgBg = imgBg.__merge({ children = [
-  imgRotaion.__merge({
-    flipX = true
-  })
-  imgRotaion.__merge({
-    pos = [0.5 * imgRotationSize, 0]
-    hplace = ALIGN_RIGHT
-  })
-  imgArrow
-  imgArrow.__merge({
-    pos = [0, imgArrowH + imgArrowGap]
-    vplace = ALIGN_BOTTOM
-    transform = { rotate = 180 }
-  })
-  imgArrowSmall
-  imgArrowSmall.__merge({
-    pos = [ imgArrowSmallPosX, -imgArrowSmallPosY ]
-    transform = { rotate = 45 }
-  })
-  imgArrowSmall.__merge({
-    pos = [ imgArrowSmallPosX, imgArrowSmallPosY ]
-    transform = { rotate = 135 }
-  })
-  imgArrowSmall.__merge({
-    pos = [ -imgArrowSmallPosX, imgArrowSmallPosY ]
-    transform = { rotate = 225 }
-  })
-] })
 
-
-let imgBgComp = @() {
+let imgBgComp = @(scale) @() {
   watch = isStickActiveByStick
   size = flex()
   opacity = isStickActiveByStick.value ? 0.5 : 1.0
-  children = isStickActiveByStick.value ? imgBg : fullImgBg
+  children = isStickActiveByStick.value ? imgBg(scale) : fullImgBg(scale)
   transform = {}
 }
 
-let imgStick = {
-  size = [stickSize, stickSize]
-  image = Picture($"ui/gameuiskin#joy_head.svg:{stickSize}:{stickSize}:P")
-  rendObj = ROBJ_IMAGE
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  transform = {}
+function imgStick(scale) {
+  let size = scaleEven(stickSize, scale)
+  return {
+    size = [size, size]
+    image = Picture($"ui/gameuiskin#joy_head.svg:{size}:{size}:P")
+    rendObj = ROBJ_IMAGE
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    transform = {}
+  }
 }
 
-let tankMoveStickBase  = @() {
+let tankMoveStickBase = @(zoneSize, scale) @() {
   watch = [IsTracked, currentTankMoveCtrlType]
   key = currentTankMoveCtrlType
+  size = [zoneSize, zoneSize]
+
   behavior = TouchScreenSteeringStick
-  size = stickZoneSize
   touchStickAction = {
     horizontal = "gm_steering"
     vertical = "gm_throttle"
@@ -130,7 +140,7 @@ let tankMoveStickBase  = @() {
     [74, 0.9],
     [75, 1.0]
   ]
-  maxValueRadius = bgRadius
+  maxValueRadius = zoneSize * zoneToBgRadius
   useCenteringOnTouchBegin = currentTankMoveCtrlType.value == "stick"
 
   onChange = @(v) stickDelta(Point2(v.x, v.y))
@@ -154,30 +164,37 @@ let tankMoveStickBase  = @() {
     setMoveControlByArrows(true)
   }
   children = [
-    imgBgComp
-    imgStick
+    imgBgComp(scale)
+    imgStick(scale)
   ]
 }
 
-let tankMoveStick = @() {
-  watch = isTankMoveEnabled
-  size = stickZoneSize
-  vplace = ALIGN_BOTTOM
-  hplace = ALIGN_LEFT
-  children = isTankMoveEnabled.value ? tankMoveStickBase : imgBg
+function tankMoveStick(scale) {
+  let zoneSize = scaleEven(stickZoneSize, scale)
+  return @() {
+    watch = isTankMoveEnabled
+    size = [zoneSize, zoneSize]
+    vplace = ALIGN_BOTTOM
+    hplace = ALIGN_LEFT
+    children = isTankMoveEnabled.get() ? tankMoveStickBase(zoneSize, scale)
+      : imgBg(scale)
+  }
 }
 
-function gamepadStick() {
-  let dir = Point2(stickDelta.value)
-  if (dir.lengthSq() > 1)
-    dir.normalize()
-  return {
-    watch = stickDelta
-    size = [0, 0]
-    pos = [pw(50.0 - 50.0 * dir.x), ph(50.0 - 50.0 * dir.y)]
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    children = imgStick
+function gamepadStick(scale) {
+  let children = imgStick(scale)
+  return function() {
+    let dir = Point2(stickDelta.value)
+    if (dir.lengthSq() > 1)
+      dir.normalize()
+    return {
+      watch = stickDelta
+      size = [0, 0]
+      pos = [pw(50.0 - 50.0 * dir.x), ph(50.0 - 50.0 * dir.y)]
+      valign = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      children
+    }
   }
 }
 
@@ -196,9 +213,9 @@ let gamepadAxisListener = axisListener({
 
 let updateStickActive = @(delta) isStickActiveByStick(delta.lengthSq() > 0.04)
 
-let tankGamepadStick = {
+let tankGamepadStick = @(scale) {
   key = {}
-  size = [imgBgSize, imgBgSize]
+  size = array(2, scaleEven(imgBgSize, scale))
   function onAttach() {
     stickDelta.subscribe(updateStickActive)
     updateStickActive(stickDelta.value)
@@ -211,28 +228,28 @@ let tankGamepadStick = {
     {
       size = flex()
       opacity = 0.75
-      children = fullImgBg
+      children = fullImgBg(scale)
     }
-    gamepadStick
+    gamepadStick(scale)
     gamepadAxisListener
   ]
 }
 
-let tankGamepadMoveBlock = @() {
+let tankGamepadMoveBlock = @(scale) @() {
   watch = isTankMoveEnabled
-  size = stickZoneSize
+  size = array(2, scaleEven(stickZoneSize, scale))
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  children = isTankMoveEnabled.value ? tankGamepadStick : null
+  children = isTankMoveEnabled.get() ? tankGamepadStick(scale) : null
 }
 
 let tankMoveStickView = {
-  size = stickZoneSize
+  size = [stickZoneSize, stickZoneSize]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = [
-    fullImgBg
-    imgStick
+    fullImgBg(1)
+    imgStick(1)
   ]
 }
 

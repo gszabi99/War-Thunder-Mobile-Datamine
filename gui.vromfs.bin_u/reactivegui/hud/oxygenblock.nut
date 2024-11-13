@@ -1,13 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { scopeSize } = require("%rGui/hud/commonSight.nut")
+let { scaleArr } = require("%globalsDarg/screenMath.nut")
+let { prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
 let { oxygen, waterDist, periscopeDepthCtrl } = require("%rGui/hud/shipState.nut")
 
-let mText = loc("measureUnits/meters_alt")
+
 let textPadding = hdpx(5)
+let depthWidth = hdpxi(165)
+let depthHeight = hdpxi(105)
+let oxigenProgressSize = [hdpx(108), hdpx(10)]
+let oxigenBlockSize = [oxigenProgressSize[0], hdpx(70)]
 
 let zeroOxygen = Computed(@() oxygen.value.tointeger() == 0)
-let depthWidth = scopeSize[0] / 3
-let depthHeight = scopeSize[1] * 0.6
 let depthText = Computed(@() zeroOxygen.value ? loc("controls/lack_of_oxygen")
   : waterDist.value.tointeger() == 0 ? loc("controls/submarine_on_water")
   : waterDist.value.tointeger() <= periscopeDepthCtrl.value.tointeger() ? loc("controls/submarine_depth_periscope")
@@ -19,66 +22,72 @@ depthText.subscribe(@(_) zeroOxygen.value
   : anim_start("depth_status_highlight")
 )
 
-let oxygenMark = {
+let oxygenMark = @(scale) {
   flow = FLOW_HORIZONTAL
   children = [
     {
       rendObj = ROBJ_TEXT
       text =  "O"
-    }.__update(fontMediumShaded)
+    }.__update(prettyScaleForSmallNumberCharVariants(fontMediumShaded, scale))
     {
       rendObj = ROBJ_TEXT
-      pos = [0, hdpx(20)]
+      pos = [0, hdpx(20 * scale)]
       text =  "2"
-    }.__update(fontTinyShaded)
+    }.__update(prettyScaleForSmallNumberCharVariants(fontTinyShaded, scale))
   ]
 }
 
-let depthControl = {
-  halign = ALIGN_RIGHT
-  valign = ALIGN_BOTTOM
-  gap = hdpx(5)
-  size = [depthWidth, depthHeight]
-  flow = FLOW_VERTICAL
-  children = [
-    @() {
-      watch = waterDist
-      rendObj = ROBJ_TEXT
-      text = $"{waterDist.value.tointeger()} {mText}"
-      padding = [0, textPadding, 0, 0]
-    }.__update(fontTinyAccentedShaded)
-    {
-      size = [flex(), SIZE_TO_CONTENT]
-      rendObj = ROBJ_SOLID
-      color = 0,
-      padding = textPadding
-      animations = [
-        {
-          prop = AnimProp.color,
-          to = Color(44, 253, 255, 80),
-          duration = 1,
-          easing = CosineFull,
-          trigger = "depth_status_highlight"
-        }
-        {
-          prop = AnimProp.color,
-          from = Color(0, 0, 0, 0),
-          to = Color(255, 1, 1, 80),
-          duration = 1,
-          easing = CosineFull,
-          trigger = "depth_oxygen_highlight"
-        }
-      ]
-      children = @() {
-        watch = [waterDist, periscopeDepthCtrl]
-        rendObj = ROBJ_TEXTAREA
+let mText = loc("measureUnits/meters_alt")
+
+function depthControl(scale) {
+  let font1 = prettyScaleForSmallNumberCharVariants(fontTinyAccentedShaded, scale)
+  let font2 = prettyScaleForSmallNumberCharVariants(fontVeryTinyShaded, scale)
+  return {
+    halign = ALIGN_RIGHT
+    valign = ALIGN_BOTTOM
+    gap = hdpx(5 * scale)
+    size = scaleArr([depthWidth, depthHeight], scale)
+    flow = FLOW_VERTICAL
+    children = [
+      @() {
+        watch = waterDist
+        rendObj = ROBJ_TEXT
+        text = $"{waterDist.value.tointeger()} {mText}"
+        padding = [0, textPadding, 0, 0]
+      }.__update(font1)
+      {
         size = [flex(), SIZE_TO_CONTENT]
-        halign = ALIGN_RIGHT
-        behavior = [Behaviors.TextArea]
-        text = depthText.value
-      }.__update(fontVeryTinyShaded)
-    }
-  ]
+        rendObj = ROBJ_SOLID
+        color = 0,
+        padding = textPadding
+        animations = [
+          {
+            prop = AnimProp.color,
+            to = Color(44, 253, 255, 80),
+            duration = 1,
+            easing = CosineFull,
+            trigger = "depth_status_highlight"
+          }
+          {
+            prop = AnimProp.color,
+            from = Color(0, 0, 0, 0),
+            to = Color(255, 1, 1, 80),
+            duration = 1,
+            easing = CosineFull,
+            trigger = "depth_oxygen_highlight"
+          }
+        ]
+        children = @() {
+          watch = [waterDist, periscopeDepthCtrl]
+          rendObj = ROBJ_TEXTAREA
+          size = [flex(), SIZE_TO_CONTENT]
+          halign = ALIGN_RIGHT
+          behavior = [Behaviors.TextArea]
+          text = depthText.value
+        }.__update(font2)
+      }
+    ]
+  }
 }
 
 let depthControlEditView = {
@@ -104,15 +113,15 @@ let depthControlEditView = {
   ]
 }
 
-let oxygenLevel = {
+let oxygenLevel = @(scale) {
+  size = scaleArr(oxigenBlockSize, scale)
   halign = ALIGN_RIGHT
-  gap = hdpx(5)
   flow = FLOW_VERTICAL
-  size = [depthWidth, SIZE_TO_CONTENT]
+  gap = hdpx(5 * scale)
   children = [
-    oxygenMark
+    oxygenMark(scale)
     {
-      size = [shHud(10), hdpx(10)]
+      size = scaleArr(oxigenProgressSize, scale)
       children = [
         {
           rendObj = ROBJ_SOLID
@@ -133,14 +142,14 @@ let oxygenLevel = {
 }
 
 let oxygenLevelEditView = {
+  size = oxigenBlockSize
   halign = ALIGN_RIGHT
   gap = hdpx(5)
   flow = FLOW_VERTICAL
-  size = [depthWidth, SIZE_TO_CONTENT]
   children = [
-    oxygenMark
+    oxygenMark(1)
     {
-      size = [shHud(10), hdpx(10)]
+      size = oxigenProgressSize
       children = [
         {
           rendObj = ROBJ_SOLID

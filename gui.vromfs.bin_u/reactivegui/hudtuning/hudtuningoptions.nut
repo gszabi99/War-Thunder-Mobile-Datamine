@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isCurPresetChanged, transformInProgress, closeTuning, saveCurrentTransform, tuningState,
-  history, curHistoryIdx, tuningUnitType, clearTuningState
+  setByHistory, history, curHistoryIdx, tuningUnitType, clearTuningState, isAllElemsOptionsOpened
 } = require("hudTuningState.nut")
+let { hasAnyOfAllElemOptions } = require("cfg/cfgOptions.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { tuningBtn, tuningBtnWithActivity, tuningBtnImg,
   btnBgColorPositive, btnBgColorNegative, btnBgColorDisabled, btnBgColorDefault,
@@ -71,13 +72,13 @@ let resetBtn = @() {
 }
 
 function historyBack() {
-  if ((curHistoryIdx.value ?? 0) != 0 && history.value.len() != 0)
-    tuningState(history.value[min(curHistoryIdx.value - 1, history.value.len() - 1)])
+  if ((curHistoryIdx.get() ?? 0) != 0 && history.get().len() != 0)
+    setByHistory(min(curHistoryIdx.get() - 1, history.get().len() - 1))
 }
 
 function historyFwd() {
-  if (curHistoryIdx.value != null && curHistoryIdx.value < history.value.len() - 1)
-    tuningState(history.value[curHistoryIdx.value + 1])
+  if (curHistoryIdx.get() != null && curHistoryIdx.get() < history.get().len() - 1)
+    setByHistory(curHistoryIdx.get() + 1)
 }
 
 let historyBackBtn = tuningBtnWithActivity(Computed(@() (curHistoryIdx.value ?? 0) > 0),
@@ -91,7 +92,7 @@ function historyFwdBtn() {
     children = tuningBtn(
       tuningBtnImg("ui/gameuiskin#icon_cancel.svg",
         { flipX = true, color = isAvailable ? btnImgColor : btnImgColorDisabled }),
-      historyFwd,"hudTuning/fwd/desc",
+      historyFwd, "hudTuning/fwd/desc",
       {
         color = isAvailable ? btnBgColorDefault : btnBgColorDisabled
       })
@@ -101,6 +102,11 @@ function historyFwdBtn() {
 let changeUnitTypeBtn = tuningBtn("ui/gameuiskin#campaign.svg", chooseTuningUnitTypeWnd,
   "hudTuning/changeHudType/desc")
 
+let allElemsOptions = tuningBtnWithActivity(Computed(@() !isAllElemsOptionsOpened.get()),
+  "ui/gameuiskin#btn_apply_all.svg",
+  @() isAllElemsOptionsOpened.set(!isAllElemsOptionsOpened.get()),
+  "hudTuning/allElemsOptions/desc")
+
 let curUnitTypeInfo = @() {
   watch = tuningUnitType
   rendObj = ROBJ_TEXT
@@ -108,7 +114,8 @@ let curUnitTypeInfo = @() {
   color = 0xC0C0C0C0
 }.__update(fontSmall)
 
-let content = {
+let content = @() {
+  watch = hasAnyOfAllElemOptions
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -122,6 +129,7 @@ let content = {
     resetBtn
     { size = flex() }
     curUnitTypeInfo
+    hasAnyOfAllElemOptions.get() ? allElemsOptions : null
   ]
 }
 

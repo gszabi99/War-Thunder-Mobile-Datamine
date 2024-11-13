@@ -467,7 +467,7 @@ function rewardText() {
 }
 
 function dayInRowInfo() {
-  let daysInRow = userstatStats.get()?.stats.daily.meta_common.every_day_login_stat ?? 0
+  let daysInRow = userstatStats.get()?.stats.daily.meta_common.login_streak ?? 0
   return daysInRow < 1 ? { watch = userstatStats }
     : mkText(loc("dailyRewards/daysInRow", { days = daysInRow })
       { watch = userstatStats

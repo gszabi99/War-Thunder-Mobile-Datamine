@@ -587,7 +587,13 @@ Tank nişancı modu <color=@userlogColoredText>Shift</color> olarak değiştiril
 Hedef kamerası (havacılık) fonksişyonu tuşu <color=@userlogColoredText>Shift</color> olarak değiştirildi (önceden <color=@userlogColoredText>Alt</color> tuşuydu)
 Savaşte Fare İşaretçisini Göster fonksiyonu <color=@userlogColoredText>Alt</color> tuşuna atandı.
 
-Ayarlarınızı istediğiniz zaman Kontrol Ayarları menüsünden eski haline getirebilirsiniz";"Předvolby ovládacích prvků si můžeš kdykoli změnit na původní v Nastavení ovládacích prvků";"Η λειτουργία επισκευής τανκ μεταφέρθηκε στο κουμπί <color=@userlogColoredText>F</color> (βρισκόταν στο κουμπί <color=@userlogColoredText>U</color>)
+Ayarlarınızı istediğiniz zaman Kontrol Ayarları menüsünden eski haline getirebilirsiniz";"Funkce opravy tanku přesunuta na tlačítko <color=@userlogColoredText>F</color> (byla na tlačítku <color=@userlogColoredText>U</color>).
+Funkce rentgenu přesunuta na tlačítko <color=@userlogColoredText>Y</color> (byla na tlačítku <color=@userlogColoredText>O</color>).
+Režim odstřelovače v tanku přesunut na tlačítko <color=@userlogColoredText>Shift</color> (byl na tlačítku <color=@userlogColoredText>V</color>).
+Cílová kamera (letecká) přesunuta na tlačítko <color=@userlogColoredText>Shift</color> (byla na tlačítku <color=@userlogColoredText>Alt</color>).
+Zobrazení kurzoru myši v bitvě bylo nastaveno na tlačítko <color=@userlogColoredText>Alt</color>.
+
+Předvolbu ovládání můžete kdykoli změnit na předchozí v nabídce Nastavení ovládání";"Η λειτουργία επισκευής τανκ μεταφέρθηκε στο κουμπί <color=@userlogColoredText>F</color> (βρισκόταν στο κουμπί <color=@userlogColoredText>U</color>)
 Η λειτουργία Ακτίνες Χ μεταφέρθηκε στο κουμπί <color=@userlogColoredText>Y</color> (βρισκόταν στο κουμπί <color=@userlogColoredText>O</color>)
 Η λειτουργία Ελεύθερης Σκόπευσης Τανκ μεταφέρθηκε στο κουμπί <color=@userlogColoredText>Shift</color> (βρισκόταν στο κουμπί <color=@userlogColoredText>V</color>)
 Η κάμερα στόχου (αεροπορίας) μεταφέρθηκε στο κουμπί <color=@userlogColoredText>Shift</color> (βρισκόταν στο κουμπί <color=@userlogColoredText>Alt</color>)
@@ -659,7 +665,10 @@ Função de zoom removido do botão <color=@userlogColoredText>RMB</color>
 Sempre pode alterar seus controles predefinidos para os anteriores nas configurações de controle no menu";"Hedef Kamerası <color=@userlogColoredText>RMB</color> tuşuna atandı (daha önce seçili değildi)
 Yakınlaştırma işlevi <color=@userlogColoredText>RMB</color> tuşundan silindi
 
-Kontrol Ayarları menüsünden her zaman ayarları değiştirebilirsiniz";"Předvolby ovládacích prvků si můžeš kdykoli změnit na původní v Nastavení ovládacích prvků";"Η κάμερα στόχου ρυθμίζεται από το κουμπί <color=@userlogColoredText>RMB</color> (δεν υπήρχε πριν)
+Kontrol Ayarları menüsünden her zaman ayarları değiştirebilirsiniz";"Cílová kamera přiřazená tlačítku <color=@userlogColoredText>RMB</color> (dříve tam nebyla)
+Odstranění funkce zoomu z tlačítka <color=@userlogColoredText>RMB</color>
+
+V nabídce Nastavení ovládání lze vždy změnit předvolbu ovládání na předchozí nastavení";"Η κάμερα στόχου ρυθμίζεται από το κουμπί <color=@userlogColoredText>RMB</color> (δεν υπήρχε πριν)
 Η λειτουργία Ζουμ αφαιρείται από το κουμπί <color=@userlogColoredText>RMB</color>
 
 Μπορείτε πάντα να επιστρέψετε στις προηγούμενες προεπιλογές των στοιχείων ελέγχου από το μενού Ρυθμίσεις Στοιχείων Ελέγχου";"Kamera target diatur ke tombol <color=@userlogColoredText>RMB</color> (sebelumnya tidak ada)
@@ -701,7 +710,9 @@ Zawsze możesz dokonać zmiany ustawień domyślnych w menu Ustawienia Sterowani
 
 You can always change your controls preset to the previous one in the Control Settings menu";"Mürettebat üyesi pozisyon değiştirme <color=@userlogColoredText>G</color> tuşuna atandı (sadece tanklar) (daha önce seçili değildi)
 
-Kontrol Ayarları menüsünden her zaman ayarları değiştirebilirsiniz";"Předvolby ovládacích prvků si můžeš kdykoli změnit na původní v Nastavení ovládacích prvků";"Η αλλαγή θέσης μέλους τους πληρώματος γίνεται με το κουμπί <color=@userlogColoredText>G</color> (Μόνο για τανκς) (δεν υπήρχε πριν)
+Kontrol Ayarları menüsünden her zaman ayarları değiştirebilirsiniz";"Změna pozice člena osádky přiřazená tlačítku <color=@userlogColoredText>G</color> (pouze tanky) (dříve tam nebyla)
+
+V nabídce Nastavení ovládání můžete vždy změnit předvolbu ovládání na předchozí";"Η αλλαγή θέσης μέλους τους πληρώματος γίνεται με το κουμπί <color=@userlogColoredText>G</color> (Μόνο για τανκς) (δεν υπήρχε πριν)
 
 Μπορείτε πάντα να επιστρέψετε στις προηγούμενες προεπιλογές των στοιχείων ελέγχου από το μενού Ρυθμίσεις Στοιχείων Ελέγχου";"Pergantian posisi anggota kru diatur ke tombol <color=@userlogColoredText>G</color> (khusus Tank) (sebelumnya tidak ada)
 
@@ -746,7 +757,10 @@ Zoom function removed from the <color=@userlogColoredText>RMB</color> button
 You can always change your controls preset to the previous one in the Control Settings menu";"Hedef Kamerası <color=@userlogColoredText>RMB</color> tuşuna atandı (daha önce seçili değildi)
 Yakınlaştırma işlevi <color=@userlogColoredText>RMB</color> tuşundan silindi
 
-Kontrol Ayarları menüsünden her zaman ayarları değiştirebilirsiniz";"Předvolby ovládacích prvků si můžeš kdykoli změnit na původní v Nastavení ovládacích prvků";"Η κάμερα στόχου ρυθμίζεται από το κουμπί <color=@userlogColoredText>RMB</color> (δεν υπήρχε πριν)
+Kontrol Ayarları menüsünden her zaman ayarları değiştirebilirsiniz";"Cílová kamera přiřazená tlačítku <color=@userlogColoredText>RMB</color> (dříve tam nebyla)
+Odstranění funkce zoomu z tlačítka <color=@userlogColoredText>RMB</color>
+
+V nabídce Nastavení ovládání lze vždy změnit předvolbu ovládání na předchozí nastavení";"Η κάμερα στόχου ρυθμίζεται από το κουμπί <color=@userlogColoredText>RMB</color> (δεν υπήρχε πριν)
 Η λειτουργία Ζουμ αφαιρείται από το κουμπί <color=@userlogColoredText>RMB</color>
 
 Μπορείτε πάντα να επιστρέψετε στις προηγούμενες προεπιλογές των στοιχείων ελέγχου από το μενού Ρυθμίσεις Στοιχείων Ελέγχου";"Kamera target diatur ke tombol <color=@userlogColoredText>RMB</color> (sebelumnya tidak ada)
@@ -788,7 +802,9 @@ Zawsze możesz dokonać zmiany ustawień domyślnych w menu Ustawienia Sterowani
 
 You can always change your controls preset to the previous one in the Control Settings menu";"Mürettebat üyesi pozisyon değiştirme <color=@userlogColoredText>G</color> tuşuna atandı (sadece tanklar) (daha önce seçili değildi)
 
-Kontrol Ayarları menüsünden her zaman ayarları değiştirebilirsiniz";"Předvolby ovládacích prvků si můžeš kdykoli změnit na původní v Nastavení ovládacích prvků";"Η αλλαγή θέσης μέλους τους πληρώματος γίνεται με το κουμπί <color=@userlogColoredText>G</color> (Μόνο για τανκς) (δεν υπήρχε πριν)
+Kontrol Ayarları menüsünden her zaman ayarları değiştirebilirsiniz";"Změna pozice člena posádky přiřazená tlačítku <color=@userlogColoredText>G</color> (pouze tanky) (dříve tam nebyla)
+
+V nabídce Nastavení ovládání můžete vždy změnit předvolbu ovládání na předchozí";"Η αλλαγή θέσης μέλους τους πληρώματος γίνεται με το κουμπί <color=@userlogColoredText>G</color> (Μόνο για τανκς) (δεν υπήρχε πριν)
 
 Μπορείτε πάντα να επιστρέψετε στις προηγούμενες προεπιλογές των στοιχείων ελέγχου από το μενού Ρυθμίσεις Στοιχείων Ελέγχου";"Pergantian posisi anggota kru diatur ke tombol <color=@userlogColoredText>G</color> (khusus Tank) (sebelumnya tidak ada)
 
@@ -823,7 +839,9 @@ Możesz zmienić przypisanie klawiszy w menu Sterowania";"Target camera assigned
 
 You can always change your controls preset to the previous one in the Control Settings menu";"Hedef kamerası <color=@userlogColoredText>L2</color> tuşuna atandı (daha önce seçili değildi)
 
-Kontrol Ayarları menüsünden her zaman ayarları değiştirebilirsiniz";"Předvolby ovládacích prvků si můžeš kdykoli změnit na původní v Nastavení ovládacích prvků";"Η κάμερα στόχου ρυθμίζεται από το κουμπί <color=@userlogColoredText>L2</color> (δεν υπήρχε πριν)
+Kontrol Ayarları menüsünden her zaman ayarları değiştirebilirsiniz";"Cílová kamera přiřazená tlačítku <color=@userlogColoredText>L2</color> (dříve tam nebyla)
+
+Předvolbu ovládání lze kdykoli změnit na předchozí v nabídce Nastavení ovládání";"Η κάμερα στόχου ρυθμίζεται από το κουμπί <color=@userlogColoredText>L2</color> (δεν υπήρχε πριν)
 
 Μπορείτε πάντα να επιστρέψετε στις προηγούμενες προεπιλογές των στοιχείων ελέγχου από το μενού Ρυθμίσεις Στοιχείων Ελέγχου";"Kamera target diatur ke tombol <color=@userlogColoredText>L2</color> (sebelumnya tidak ada)
 
@@ -858,7 +876,9 @@ Możesz zmienić przypisanie klawiszy w menu Sterowania";"Target camera assigned
 
 You can always change your controls preset to the previous one in the Control Settings menu";"Hedef kamerası daha önce kullanılmayan <color=@userlogColoredText>LT</color> tuşuna atandı
 
-Kontrol Ayarları menüsünden istediğin zaman eski kontrollerine dönebilirsin";"Předvolby ovládacích prvků si můžeš kdykoli změnit na původní v Nastavení ovládacích prvků";"Η κάμερα στόχου ρυθμίζεται από το κουμπί <color=@userlogColoredText>LT</color> (δεν υπήρχε πριν)
+Kontrol Ayarları menüsünden istediğin zaman eski kontrollerine dönebilirsin";"Cílová kamera přiřazená tlačítku <color=@userlogColoredText>LT</color> (dříve tam nebyla)
+
+Předvolbu ovládání lze kdykoli změnit na předchozí v nabídce Nastavení ovládání";"Η κάμερα στόχου ρυθμίζεται από το κουμπί <color=@userlogColoredText>LT</color> (δεν υπήρχε πριν)
 
 Μπορείτε πάντα να επιστρέψετε στις προηγούμενες προεπιλογές των στοιχείων ελέγχου από το μενού Ρυθμίσεις Στοιχείων Ελέγχου";"Kamera target diatur ke tombol <color=@userlogColoredText>LT</color> (sebelumnya tidak ada)
 

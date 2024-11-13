@@ -9,7 +9,8 @@ let { shell_execute } = require("dagor.shell")
 let { dgs_get_settings, exit } = require("dagor.system")
 let { send_counter = @(_, __, ___) null } = require_optional("statsd")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { needUpdateMsg, needRestartMsg } = require("updaterState.nut")
+let { needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, totalSizeBytes, closeDownloadWarning } = require("updaterState.nut")
+let { totalSizeText } = require("%globalsDarg/updaterUtils.nut")
 let { mkColoredGradientY, gradTranspDoubleSideX, gradDoubleTexOffset } = require("gradients.nut")
 
 
@@ -147,17 +148,27 @@ let updateMsg = mkMsgBox(loc("updater/newVersion/header"),
   mkButton(utf8ToUpper(loc("updater/btnUpdate")), openUpdateUrl))
 let restartMsg = mkMsgBox(loc("updater/newVersion/header"),
   loc("updater/restartForUpdate/desc"),
-    mkButton(utf8ToUpper(loc("msgbox/btn_restart")), @() exit(0)))
+  mkButton(utf8ToUpper(loc("msgbox/btn_restart")), @() exit(0)))
+let downloadMsg = @(bytes) mkMsgBox(loc("updater/downloadWarning/header"),
+  loc("updater/downloadWarning/desc", { totalSizeBytes = totalSizeText(bytes) }),
+  mkButton(utf8ToUpper(loc("msgbox/btn_confirm")),
+    function() {
+      needDownloadAcceptMsg(false)
+      closeDownloadWarning()
+    }))
+
 
 register_command(@() needUpdateMsg(!needUpdateMsg.value), "debug.updateMessage")
 register_command(@() needRestartMsg(!needRestartMsg.value), "debug.restartMessage")
+register_command(@() needDownloadAcceptMsg(!needDownloadAcceptMsg.value), "debug.downloadMessage")
 
 return @() {
-  watch = [needUpdateMsg, needRestartMsg]
+  watch = [needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, totalSizeBytes]
   pos = [0, -hdpx(100)]
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   children = needUpdateMsg.get() ? updateMsg
     : needRestartMsg.get() ? restartMsg
+    : needDownloadAcceptMsg.get() ? downloadMsg(totalSizeBytes.get())
     : null
 }

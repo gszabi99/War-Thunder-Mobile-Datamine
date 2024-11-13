@@ -17,6 +17,9 @@ let style = {
   touchMenuButtonSize    = shHud(6)
   borderWidth            = hdpx(3)
 
+  zoneRadiusX = 2.5 * touchButtonSize
+  zoneRadiusY = touchButtonSize
+
   getSvgImage = @(id, sizeX, sizeY = null) Picture($"ui/gameuiskin#{id}.svg:{sizeX}:{sizeY ?? sizeX}")
 
   imageColor             = Color(255, 255, 255)

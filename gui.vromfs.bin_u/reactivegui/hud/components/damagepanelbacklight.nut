@@ -10,7 +10,7 @@ let damagePanelBacklight = @(stateFlags, size) @() !stateFlags || !(stateFlags.v
       watch = stateFlags
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
-      size = [size, size]
+      size
       rendObj = ROBJ_IMAGE
       image = gradient()
       color = btnBgColor.ready

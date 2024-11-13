@@ -6,6 +6,8 @@ let { cfgByUnitTypeOrdered } = require("cfgByUnitType.nut")
 let { isTuningOpened, tuningUnitType, tuningTransform, transformInProgress, selectedId,
   allTuningUnitTypes, closeTuning, tuningOptions
 } = require("hudTuningState.nut")
+let { optScale } = require("cfg/cfgOptions.nut")
+
 let manipulator = require("hudTuningManipulator.nut")
 let hudTuningOptions = require("hudTuningOptions.nut")
 let hudTuningElemOptions = require("hudTuningElemOptions.nut")
@@ -50,41 +52,59 @@ let selectBorder = {
   ].map(@(ovr) point.__merge(ovr))
 }
 
+
+
 function mkHudTuningElem(cfg) {
-  let { id, editView, defTransform = {}, isVisibleInEditor = null, isVisible = null } = cfg
+  let { id, editView, editViewKey, defTransform = {}, isVisibleInEditor = null, isVisible = null, hasScale } = cfg
   let transform = Computed(@() (selectedId.value == id ? transformInProgress.value : null)
     ?? tuningTransform.get()?[id]
     ?? defTransform)
   let isSelected = Computed(@() selectedId.value == id)
-  let viewWithBorder = {
-    children = [
-      editView
-      selectBorder
-    ]
-  }
+
+  let viewWithBorder = type(editView) == "function"
+    ? @() {
+        watch = [isSelected, tuningOptions]
+        key = editViewKey
+        children = [
+          editView(tuningOptions.get())
+          isSelected.get() ? selectBorder : null
+        ]
+      }
+    : @() {
+        watch = isSelected
+        key = editViewKey
+        children = [
+          editView
+          isSelected.get() ? selectBorder : null
+        ]
+      }
+
+  let scale = !hasScale ? Watched(1)
+    : Computed(@() optScale.getValue(tuningOptions.get(), id))
 
   let res = function() {
     let { align = 0, pos = null } = transform.value
+    let scaleOvr = scale.get() == 1 ? {} : { transform = { scale = array(2, scale.get()) } }
     return {
-      watch = [isSelected, transform]
+      watch = [transform, scale]
       size = [0, 0]
       pos
-      children = isSelected.value ? viewWithBorder : editView
-    }.__update(alignToDargPlace(align))
+      children = viewWithBorder
+    }.__update(alignToDargPlace(align), scaleOvr)
   }
 
   if (isVisibleInEditor == null && isVisible == null)
     return res
 
-  let watch = []
+  let isVisibleW = isVisible == null ? Watched(true)
+    : Computed(@() isVisible(tuningOptions.get()))
+  let watch = [isVisibleW]
   if (isVisibleInEditor != null)
     watch.append(isVisibleInEditor)
-  if (isVisible != null)
-    watch.append(tuningOptions)
   return @() {
     watch
     size = flex()
-    children = (isVisibleInEditor?.get() ?? true) && (isVisible?(tuningOptions.get()) ?? true) ? res : null
+    children = (isVisibleInEditor?.get() ?? true) && isVisibleW.get() ? res : null
   }
 }
 

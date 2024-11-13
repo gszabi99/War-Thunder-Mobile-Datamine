@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { borderWidth, btnBgColor, borderColor, borderNoAmmoColor, imageColor
     } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { shipDebuffs, crewHealth} = require("%rGui/hud/shipStateModule.nut")
+let { mkShipDebuffs, mkCrewHealth} = require("%rGui/hud/shipStateModule.nut")
 let { actionBarItems, startActionBarUpdate, stopActionBarUpdate } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3 } = require("%rGui/hud/actionBar/actionType.nut")
 let { strategyDataRest, curAirGroupIndex, optDebugDraw } = require("%rGui/hud/strategyMode/strategyState.nut")
@@ -130,8 +130,8 @@ let shipUi = {
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   children = [
-    shipDebuffs
-    crewHealth
+    mkShipDebuffs(1)
+    mkCrewHealth(1)
   ]
 }
 

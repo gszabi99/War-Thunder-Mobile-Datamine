@@ -9,7 +9,7 @@ let { infoGreyButton } = require("%rGui/components/infoButton.nut")
 let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
 
 
-let mkIconPrem = @() mkBgImg("ui/gameuiskin/premium_active_big.avif")
+let mkIconPrem = @() mkBgImg("ui/gameuiskin/premium_active_big.avif:0:P")
   .__update({
     vplace = ALIGN_CENTER
     size = [hdpx(300), hdpx(200)]

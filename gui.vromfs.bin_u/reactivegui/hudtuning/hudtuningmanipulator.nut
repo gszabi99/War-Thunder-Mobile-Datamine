@@ -3,7 +3,8 @@ from "hudTuningConsts.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { abs } = require("%sqstd/math.nut")
 let { cfgByUnitTypeOrdered } = require("cfgByUnitType.nut")
-let { tuningUnitType, transformInProgress, isElemHold, applyTransformProgress, selectedId
+let { tuningUnitType, transformInProgress, isElemHold, applyTransformProgress, selectedId,
+  isAllElemsOptionsOpened
 } = require("hudTuningState.nut")
 
 let INC_AREA = sh(2)
@@ -28,7 +29,7 @@ function findElemInScene(x, y) {
   for (local i = prevIdx + 1; i <= prevIdx + total; i++) {
     let cfg = list[i % total]
     let { id } = cfg
-    let aabb = gui_scene.getCompAABBbyKey(cfg?.editView.key)
+    let aabb = gui_scene.getCompAABBbyKey(cfg?.editViewKey)
     if (aabb == null)
       continue
     if (isHit(aabb, x, y))
@@ -45,7 +46,7 @@ function getAabbIfHit(id, x, y) {
   let cfg = cfgByUnitTypeOrdered?[tuningUnitType.get()].findvalue(@(c) c.id == id)
   if (cfg == null)
     return null
-  let aabb = gui_scene.getCompAABBbyKey(cfg?.editView.key)
+  let aabb = gui_scene.getCompAABBbyKey(cfg?.editViewKey)
   return aabb != null && isHitInc(aabb, x, y) ? aabb : null
 }
 
@@ -94,6 +95,7 @@ let manipulator = {
       isChangedOnPress = selectedId.get() != elem?.id
       selectedId.set(elem?.id)
       aabb = elem?.aabb
+      isAllElemsOptionsOpened.set(false)
     }
     if (aabb != null) {
       pointer.set({ id = evt.pointerId, time = get_time_msec(),

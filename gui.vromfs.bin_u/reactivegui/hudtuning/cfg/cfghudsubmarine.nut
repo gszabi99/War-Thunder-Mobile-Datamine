@@ -5,9 +5,9 @@ let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { EII_SMOKE_SCREEN, EII_TOOLKIT } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let cfgHudCommonNaval = require("cfgHudCommonNaval.nut")
-let { mkZoomButton, mkDivingLockButton } = require("%rGui/hud/weaponsButtonsView.nut")
+let { mkRhombZoomButton, mkDivingLockButton } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
 let { mkWeaponBtnEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
-let { Z_ORDER, mkRBPos, mkLBPos, weaponryButtonCtor, weaponryButtonDynamicCtor,
+let { Z_ORDER, mkRBPos, mkLBPos, weaponryButtonDynamicCtor,
   withActionBarButtonCtor } = require("hudTuningPkg.nut")
 let { depthSliderBlock, depthSliderEditView } = require("%rGui/hud/submarineDepthBlock.nut")
 let shipMovementBlock = require("%rGui/hud/shipMovementBlock.nut")
@@ -17,17 +17,17 @@ let { oxygenLevel, oxygenLevelEditView, depthControl, depthControlEditView
 } = require("%rGui/hud/oxygenBlock.nut")
 
 return cfgHudCommon.__merge(cfgHudCommonNaval, {
-  zoom = weaponryButtonCtor("ID_ZOOM", mkZoomButton,
-    {
-      defTransform = mkRBPos([hdpx(-506), hdpx(-220)])
-      editView = mkWeaponBtnEditView("ui/gameuiskin#hud_binoculars.svg", 1.34)
-    })
+  zoom = {
+    ctor = mkRhombZoomButton
+    defTransform = mkRBPos([hdpx(-506), hdpx(-220)])
+    editView = mkWeaponBtnEditView("ui/gameuiskin#hud_binoculars.svg", 1.34)
+  }
 
-  divingLock = weaponryButtonCtor("EII_DIVING_LOCK", mkDivingLockButton,
-    {
-      defTransform = mkRBPos([hdpx(-181), hdpx(-329)])
-      editView = mkWeaponBtnEditView("ui/gameuiskin#hud_submarine_diving.svg", 1.34)
-    })
+  divingLock = {
+    ctor = mkDivingLockButton
+    defTransform = mkRBPos([hdpx(-181), hdpx(-329)])
+    editView = mkWeaponBtnEditView("ui/gameuiskin#hud_submarine_diving.svg", 1.34)
+  }
 
   weapon1 = weaponryButtonDynamicCtor(0,
     {
@@ -54,9 +54,9 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     })
 
   depthSLider = {
-    ctor = @() depthSliderBlock
+    ctor = depthSliderBlock
     defTransform = mkRBPos([hdpx(20), hdpx(-129)])
-    editView = depthSliderEditView()
+    editView = depthSliderEditView
     priority = Z_ORDER.SLIDER
   }
 
@@ -66,7 +66,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     { defTransform = mkRBPos([hdpx(-650), hdpx(43)]) })
 
   voiceCmdStick = {
-    ctor = @() voiceMsgStickBlock
+    ctor = voiceMsgStickBlock
     defTransform = mkRBPos([hdpx(-10), hdpx(-10)])
     editView = voiceMsgStickView
     isVisibleInEditor = allow_voice_messages
@@ -75,21 +75,21 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
   }
 
   moveArrows = {
-    ctor = @() shipMovementBlock(SUBMARINE)
+    ctor = @(scale) shipMovementBlock(SUBMARINE, scale)
     defTransform = mkLBPos([0, -hdpx(54)])
     editView = moveArrowsViewWithMode
     priority = Z_ORDER.STICK
   }
 
   oxygen = {
-    ctor = @() oxygenLevel
+    ctor = oxygenLevel
     defTransform = mkRBPos([hdpx(-180), hdpx(-500)])
     editView = oxygenLevelEditView
     hideForDelayed = false
   }
 
   depthControl = {
-    ctor = @() depthControl
+    ctor = depthControl
     defTransform = mkRBPos([0, hdpx(-500)])
     editView = depthControlEditView
     hideForDelayed = false

@@ -6,6 +6,7 @@ let { object_to_json_string, parse_json } = require("json")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { eventbus_send } = require("eventbus")
 let { round } =  require("math")
+let { get_time_msec } = require("dagor.time")
 let { eachParam, isDataBlock } = require("%sqstd/datablock.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
@@ -33,18 +34,23 @@ let hudTuningStateByUnitType = Computed(@() presetsSaved.value.map(
       options
     }
   }))
-let tuningState = mkWatched(persist, "tuningState", null)
+let tuningStateWithLastChange = mkWatched(persist, "tuningStateWithLastChange", null) //ts, changeUid, timeEnd
+let tuningState = Computed(@() tuningStateWithLastChange.get()?.ts)
 let tuningTransform = Computed(@() tuningState.get()?.transforms)
 let tuningOptions = Computed(@() tuningState.get()?.options)
 let selectedId = mkWatched(persist, "selectedId", null)
+let isAllElemsOptionsOpened = mkWatched(persist, "isAllElemsOptionsOpened", false)
 let transformInProgress = Watched(null)
 let isElemHold = Watched(false)
 let history = mkWatched(persist, "history", [])
-let curHistoryIdx = Computed(@() history.get().indexof(tuningState.get()))
+let curHistoryIdx = Computed(@() history.get().findindex(@(h) h.ts == tuningState.get()))
 
 let canShowRadar = mkWatched(persist, "canShowRadar", true)
 
 let mkEmptyTuningState = @() { transforms = {}, options = {} }
+
+selectedId.subscribe(@(v) v != null ? isAllElemsOptionsOpened.set(false) : null)
+isAllElemsOptionsOpened.subscribe(@(v) v ? selectedId.set(null) : null)
 
 let isCurPresetChanged = Computed(function() {
   let ut = tuningUnitType.value
@@ -85,27 +91,45 @@ function savePreset(unitType, preset) {
 }
 
 local lastHistoryIdx = curHistoryIdx.value
-tuningState.subscribe(function(t) {
+tuningStateWithLastChange.subscribe(function(t) {
   if (t == null || curHistoryIdx.value != null) {
     lastHistoryIdx = curHistoryIdx.value
     return
   }
-  local h = clone history.value
-  if (lastHistoryIdx != null && lastHistoryIdx < h.len())
-    h = h.slice(0, lastHistoryIdx + 1)
-  h.append(t)
-  if (h.len() > MAX_HISTORY_LEN)
-    h.remove(0)
-  lastHistoryIdx = curHistoryIdx.value
-  history(h)
+  local h = clone history.get()
+  let lastHistory = h?[h.len() - 1]
+  let isStackToLast = lastHistory != null
+    && lastHistory.changeUid == t.changeUid
+    && lastHistory.timeEnd >= get_time_msec()
+
+  if (isStackToLast)
+    h[h.len() - 1] = t
+  else {
+    if (lastHistoryIdx != null && lastHistoryIdx < h.len())
+      h = h.slice(0, lastHistoryIdx + 1)
+    h.append(t)
+    if (h.len() > MAX_HISTORY_LEN)
+      h.remove(0)
+  }
+  lastHistoryIdx = curHistoryIdx.get()
+  history.set(h)
 })
+
+let setTuningState = @(ts, changeUid = "", changeStackTime = 0)
+  tuningStateWithLastChange.set({ ts, changeUid, timeEnd = get_time_msec() + (1000 * changeStackTime).tointeger() })
+
+function setByHistory(historyIdx) {
+  let h = history.get()?[historyIdx]
+  if (h != null)
+    tuningStateWithLastChange.set(h)
+}
 
 tuningUnitType.subscribe(function(ut) {
   history.set([])
-  tuningState.set(ut == null ? null : freeze(hudTuningStateByUnitType.get()?[ut] ?? mkEmptyTuningState()))
+  setTuningState(ut == null ? null : freeze(hudTuningStateByUnitType.get()?[ut] ?? mkEmptyTuningState()))
 })
 
-let clearTuningState = @() tuningState.set(mkEmptyTuningState())
+let clearTuningState = @() setTuningState(mkEmptyTuningState())
 
 let saveCurrentTransform = @() tuningUnitType.value == null ? null
   : savePreset(tuningUnitType.value,
@@ -116,7 +140,7 @@ function applyTransformProgress() {
   if (selectedId.value == null || transformInProgress.value == null)
     return
   let state = tuningState.get()
-  tuningState(state.__merge({
+  setTuningState(state.__merge({
     transforms = state.transforms.__merge({ [selectedId.value] = transformInProgress.get() })
   }))
   transformInProgress(null)
@@ -149,9 +173,12 @@ return {
   tuningState
   tuningTransform
   tuningOptions
+  setTuningState
+  setByHistory
   transformInProgress
   isElemHold
   selectedId
+  isAllElemsOptionsOpened
   history
   curHistoryIdx
   isCurPresetChanged

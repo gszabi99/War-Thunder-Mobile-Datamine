@@ -96,7 +96,10 @@ let fontWtExtraLarge = {
   fontSize = hdpxi(150)
 }
 
+let fontVeryVeryTinyShaded = fontVeryVeryTiny.__merge(shadeTiny)
+let fontVeryVeryTinyAccentedShaded = fontVeryVeryTinyAccented.__merge(shadeTiny)
 let fontVeryTinyShaded = fontVeryTiny.__merge(shadeTiny)
+let fontVeryTinyAccentedShaded = fontVeryTinyAccented.__merge(shadeTiny)
 let fontTinyShaded = fontTiny.__merge(shadeTiny)
 let fontTinyAccentedShaded = fontTinyAccented.__merge(shadeTiny)
 let fontSmallShaded = fontSmall.__merge(shade)
@@ -105,42 +108,53 @@ let fontMediumShaded = fontMedium.__merge(shade)
 let fontBigShaded = fontBig.__merge(shade)
 let fontVeryLargeShaded = fontVeryLarge.__merge(shade)
 
+let fontMonoVeryTiny = fontVeryTiny.__merge({ font = muller_mono_regular })
 let fontMonoTiny = fontTiny.__merge({ font = muller_mono_regular })
 let fontMonoMedium = fontMedium.__merge({ font = muller_mono_medium })
 
+let fontMonoVeryTinyShaded = fontVeryTiny.__merge({ font = muller_mono_regular }, shadeTiny)
 let fontMonoTinyShaded = fontTiny.__merge({ font = muller_mono_regular }, shadeTiny)
 let fontMonoTinyAccentedShaded = fontTinyAccented.__merge({ font = muller_mono_medium }, shadeTiny)
 
 let fontsSets = {
   common = {
     fontVeryVeryTiny
-    fontVeryVeryTinyAccented
     fontVeryTiny
-    fontVeryTinyAccented
     fontTiny
-    fontTinyAccented
     fontSmall
-    fontSmallAccented
     fontMedium
     fontBig
     fontLarge
     fontVeryLarge
   }
   commonShaded = {
+    fontVeryVeryTinyShaded
     fontVeryTinyShaded
     fontTinyShaded
-    fontTinyAccentedShaded
     fontSmallShaded
-    fontSmallAccentedShaded
     fontMediumShaded
     fontBigShaded
     fontVeryLargeShaded
   }
+  accented = {
+    fontVeryVeryTinyAccented
+    fontVeryTinyAccented
+    fontTinyAccented
+    fontSmallAccented
+  }
+  accentedShaded = {
+    fontVeryVeryTinyAccentedShaded
+    fontVeryTinyAccentedShaded
+    fontTinyAccentedShaded
+    fontSmallAccentedShaded
+  }
   monospace = {
+    fontMonoVeryTiny
     fontMonoTiny
     fontMonoMedium
   }
   monospaceShaded = {
+    fontMonoVeryTinyShaded
     fontMonoTinyShaded
     fontMonoTinyAccentedShaded
   }

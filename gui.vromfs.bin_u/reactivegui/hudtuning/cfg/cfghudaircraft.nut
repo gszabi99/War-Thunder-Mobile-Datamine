@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+from "app" import is_dev_version
 let { allow_voice_messages } = require("%appGlobals/permissions.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
@@ -22,15 +23,16 @@ let { ctrlPieStickBlock, ctrlPieStickView } = require("%rGui/hud/controlsPieMenu
 let { isCtrlPieAvailable } = require("%rGui/hud/controlsPieMenu/ctrlPieState.nut")
 let { isCameraPieAvailable } = require("%rGui/hud/cameraPieMenu/cameraPieState.nut")
 let { cameraPieStickBlock, cameraPieStickView } = require("%rGui/hud/cameraPieMenu/cameraPieStick.nut")
+let { bombPieStickBlockCtor, bombPieStickView } = require("%rGui/hud/bombPieMenu/bombPieStick.nut")
 let { aircraftRadarEditView, aircraftRadar } = require("%rGui/hud/aircraftRadar.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
 let { mkFreeCameraButton, mkViewBackButton } = require("%rGui/hud/buttons/cameraButtons.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
-let { mkMyPlace, myPlaceUi, mkAirMyScores, myScoresUi } = require("%rGui/hud/myScores.nut")
+let { mkMyPlace, mkMyPlaceUi, mkAirMyScores, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
 let { xrayModel, dmModules, xrayModelEditView, dmModulesEditView, xrayDollSize } = require("%rGui/hud/aircraftStateModule.nut")
 let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkCircleBtnPlaneEditView, mkCirclePlaneTurretsGuns,
-  bigButtonSize, bigButtonImgSize, mkCircleZoom, mkCircleWeaponryItem, mkCircleLockBtn, mkBigCirclePlaneBtnEditView, airButtonSize,
+  bigButtonSize, bigButtonImgSize, mkCircleZoomCtor, mkCircleWeaponryItemCtor, mkCircleLockBtn, mkBigCirclePlaneBtnEditView, airButtonSize,
   buttonAirImgSize, mkCircleSecondaryGuns
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
 let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun,
@@ -40,9 +42,8 @@ let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun,
   isActiveTurretCamera
 } = require("%rGui/hud/airState.nut")
 let { mkSimpleSquareButton, mkSquareButtonEditView } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
-let { zoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
+let { mkZoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
 let { moveArrowsAirView } = require("%rGui/components/movementArrows.nut")
-let { chatLogAndKillLogPlace, chatLogAndKillLogEditView } = require("%rGui/hudHints/hintBlocks.nut")
 let { canShowRadar } = require("%rGui/hudTuning/hudTuningState.nut")
 let { curActionBarTypes } = require("%rGui/hud/actionBar/actionBarState.nut")
 let returnToShipShortcutIds = {
@@ -55,22 +56,23 @@ let returnToShipShortcutIds = {
 return cfgHudCommon.__merge({
 
   zoomSlider = {
-    ctor = @() zoomSlider
+    ctor = mkZoomSlider
     defTransform = mkLBPos([hdpx(100), hdpx(-365)])
     editView = zoomSliderEditView
     priority = Z_ORDER.SLIDER
   }
 
   bomb = {
-    ctor = @() mkCircleWeaponryItem("ID_BOMBS", BombsState, hasBombs, "ui/gameuiskin#hud_bomb.svg", false, true)
+    ctor = is_dev_version() ? bombPieStickBlockCtor
+      : mkCircleWeaponryItemCtor("ID_BOMBS", BombsState, hasBombs, "ui/gameuiskin#hud_bomb.svg", false, true)
     defTransform = mkLBPos([hdpx(327), hdpx(-5)])
-    editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_bomb.svg")
+    editView = is_dev_version() ? bombPieStickView : mkCircleBtnPlaneEditView("ui/gameuiskin#hud_bomb.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
     isVisibleInBattle = hasBombs
   }
 
   rocket = {
-    ctor = @() mkCircleWeaponryItem("ID_ROCKETS", RocketsState, hasRockets, "ui/gameuiskin#hud_rb_rocket.svg", true, false)
+    ctor = mkCircleWeaponryItemCtor("ID_ROCKETS", RocketsState, hasRockets, "ui/gameuiskin#hud_rb_rocket.svg", true, false)
     defTransform = mkLBPos([hdpx(285), hdpx(-148)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_rb_rocket.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
@@ -78,7 +80,7 @@ return cfgHudCommon.__merge({
   }
 
   torpedo = {
-    ctor = @() mkCircleWeaponryItem("ID_WTM_AIRCRAFT_TORPEDOES", TorpedoesState, hasTorpedos, "ui/gameuiskin#hud_torpedo.svg", true, false)
+    ctor = mkCircleWeaponryItemCtor("ID_WTM_AIRCRAFT_TORPEDOES", TorpedoesState, hasTorpedos, "ui/gameuiskin#hud_torpedo.svg", true, false)
     defTransform = mkLBPos([hdpx(435), hdpx(-107)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_torpedo.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
@@ -86,9 +88,9 @@ return cfgHudCommon.__merge({
   }
 
   lock = {
-    ctor = @() {
+    ctor = @(scale) {
       key = "plane_lock_target"
-      children = mkCircleLockBtn("ID_LOCK_TARGET")
+      children = mkCircleLockBtn("ID_LOCK_TARGET", scale)
     }
     defTransform = mkLBPos([hdpx(0), hdpx(-220)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_target_tracking_off.svg")
@@ -96,7 +98,7 @@ return cfgHudCommon.__merge({
   }
 
   zoom = {
-    ctor = @() mkCircleZoom("ui/gameuiskin#hud_binoculars_zoom.svg", "ui/gameuiskin#hud_binoculars.svg")
+    ctor = mkCircleZoomCtor("ui/gameuiskin#hud_binoculars_zoom.svg", "ui/gameuiskin#hud_binoculars.svg")
     defTransform = mkLBPos([hdpx(0), hdpx(-445)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_binoculars.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
@@ -124,10 +126,11 @@ return cfgHudCommon.__merge({
 
 
   back = {
-    ctor = @() @() {
+    ctor = @(scale) @() {
       watch = curActionBarTypes
       children = returnToShipShortcutIds.findvalue(@(_, id) id in curActionBarTypes.get())
-          ? mkSimpleSquareButton(returnToShipShortcutIds.findvalue(@(_, id) id in curActionBarTypes.get()), "ui/gameuiskin#hud_ship_selection.svg")
+          ? mkSimpleSquareButton(returnToShipShortcutIds.findvalue(@(_, id) id in curActionBarTypes.get()),
+              "ui/gameuiskin#hud_ship_selection.svg", scale)
         : null
     }
     defTransform = mkRBPos([hdpx(-240), hdpx(-0)])
@@ -135,14 +138,14 @@ return cfgHudCommon.__merge({
   }
 
   hitCamera = {
-    ctor = @() hitCamera
+    ctor = hitCamera
     defTransform = mkRTPos([0, 0])
     editView = hitCameraCommonEditView
     hideForDelayed = false
   }
 
   radar = {
-    ctor = @() aircraftRadar
+    ctor = aircraftRadar
     defTransform = mkLTPos([hdpx(120), 0])
     editView = aircraftRadarEditView
     hideForDelayed = false
@@ -150,35 +153,35 @@ return cfgHudCommon.__merge({
   }
 
   myPlace = {
-    ctor = @() myPlaceUi
+    ctor = mkMyPlaceUi
     defTransform = isWidescreen ? mkCTPos([hdpx(290), 0]) : mkRTPos([-hdpx(90), hdpx(260)])
     editView = mkMyPlace(1)
     hideForDelayed = false
   }
 
   myScores = {
-    ctor = @() myScoresUi
+    ctor = mkMyScoresUi
     defTransform = isWidescreen ? mkCTPos([hdpx(380), 0]) : mkRTPos([0, hdpx(260)])
     editView = { children = mkAirMyScores(221) }
     hideForDelayed = false
   }
 
   dmModules = {
-    ctor = @() dmModules
+    ctor = dmModules
     defTransform = mkLBPos([hdpx(480) + xrayDollSize, hdpx(30)])
     editView = dmModulesEditView
     hideForDelayed = false
   }
 
   xpayModel = {
-    ctor = @() xrayModel
+    ctor = xrayModel
     defTransform = mkLBPos([hdpx(480), hdpx(30)])
     editView = xrayModelEditView
     hideForDelayed = false
   }
 
   voiceCmdStick = {
-    ctor = @() voiceMsgStickBlock
+    ctor = voiceMsgStickBlock
     defTransform = mkRBPos([0, hdpx(-0)])
     editView = voiceMsgStickView
     isVisibleInEditor = allow_voice_messages
@@ -187,21 +190,21 @@ return cfgHudCommon.__merge({
   }
 
   movement = {
-    ctor = @() aircraftMovement
+    ctor = aircraftMovement
     defTransform = mkRBPos([hdpx(-140), 0])
     editView = aircraftMovementEditView
     priority = Z_ORDER.STICK
   }
 
   brakeButton = {
-    ctor = @() brakeButton
+    ctor = brakeButton
     defTransform = mkRBPos([hdpx(-10), hdpx(-130)])
     editView = brakeButtonEditView
     priority = Z_ORDER.BUTTON
   }
 
   indicators = {
-    ctor = @() aircraftIndicators
+    ctor = aircraftIndicators
     defTransform = mkRBPos([hdpx(-20), hdpx(-500)])
     editView = aircraftIndicatorsEditView
     hideForDelayed = false
@@ -222,11 +225,11 @@ return cfgHudCommon.__merge({
   }
 
   courseGuns = {
-    ctor = @() @() {
+    ctor = @(scale) @() {
       key = "air_course_guns_main"
       watch = isActiveTurretCamera
-      children = isActiveTurretCamera.get() ? mkCirclePlaneTurretsGuns(bigButtonSize, bigButtonImgSize)
-        : mkCirclePlaneCourseGuns(bigButtonSize, bigButtonImgSize)
+      children = isActiveTurretCamera.get() ? mkCirclePlaneTurretsGuns(bigButtonSize, bigButtonImgSize, scale)
+        : mkCirclePlaneCourseGuns(bigButtonSize, bigButtonImgSize, scale)
     }
     defTransform = mkLBPos([hdpx(105), hdpx(-60)])
     editView = mkBigCirclePlaneBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
@@ -235,12 +238,12 @@ return cfgHudCommon.__merge({
     options = [ optDoubleCourseGuns ]
   }
   courseGunsSecondBtn = {
-    ctor = @() @() {
+    ctor = @(scale) @() {
       key = "air_course_guns_second"
       watch = [isGamepad, isActiveTurretCamera]
       children = isGamepad.get() ? null
-        : isActiveTurretCamera.get() ? mkCirclePlaneTurretsGuns(bigButtonSize, bigButtonImgSize)
-        : mkCirclePlaneCourseGuns(airButtonSize, buttonAirImgSize)
+        : isActiveTurretCamera.get() ? mkCirclePlaneTurretsGuns(airButtonSize, buttonAirImgSize, scale)
+        : mkCirclePlaneCourseGuns(airButtonSize, buttonAirImgSize, scale)
     }
     defTransform = mkRBPos([hdpx(-300), hdpx(-280)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
@@ -248,12 +251,12 @@ return cfgHudCommon.__merge({
   }
 
   cannons = {
-    ctor = @() @() {
+    ctor = @(scale) @() {
       watch = [hasCanon0, hasMGun0, isActiveTurretCamera]
       key = "air_cannon"
-      children = isActiveTurretCamera.get() ? mkCirclePlaneTurretsGuns(bigButtonSize, bigButtonImgSize)
-        : hasCanon0.get() ? mkCirclePlaneCourseGunsSingle("ID_FIRE_CANNONS", Cannon0, hasCanon0, bigButtonSize, bigButtonImgSize)
-        : mkCirclePlaneCourseGunsSingle("ID_FIRE_MGUNS", MGun0, hasMGun0, bigButtonSize, bigButtonImgSize)
+      children = isActiveTurretCamera.get() ? mkCirclePlaneTurretsGuns(bigButtonSize, bigButtonImgSize, scale)
+        : hasCanon0.get() ? mkCirclePlaneCourseGunsSingle("ID_FIRE_CANNONS", Cannon0, hasCanon0, scale, bigButtonSize, bigButtonImgSize)
+        : mkCirclePlaneCourseGunsSingle("ID_FIRE_MGUNS", MGun0, hasMGun0, scale, bigButtonSize, bigButtonImgSize)
     }
     defTransform = mkLBPos([hdpx(105), hdpx(-60)])
     editView = mkBigCirclePlaneBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
@@ -263,12 +266,12 @@ return cfgHudCommon.__merge({
   }
 
   miniguns = {
-    ctor = @() @() {
+    ctor = @(scale) @() {
       watch = hasCanon0
       key = "air_minigun"
       children = hasCanon0.get()
-        ? mkCircleSecondaryGuns(airButtonSize, buttonAirImgSize)
-        : mkCirclePlaneCourseGunsSingle("ID_FIRE_ADDITIONAL_GUNS", AddGun, hasAddGun)
+        ? mkCircleSecondaryGuns(airButtonSize, buttonAirImgSize, scale)
+        : mkCirclePlaneCourseGunsSingle("ID_FIRE_ADDITIONAL_GUNS", AddGun, hasAddGun, scale)
     }
     defTransform = mkLBPos([hdpx(142), hdpx(-245)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
@@ -278,7 +281,7 @@ return cfgHudCommon.__merge({
   }
 
   controlsStick = {
-    ctor = @() ctrlPieStickBlock
+    ctor = ctrlPieStickBlock
     defTransform = mkRBPos([hdpx(-535), hdpx(-0)])
     editView = ctrlPieStickView
     isVisibleInBattle = isCtrlPieAvailable
@@ -286,7 +289,7 @@ return cfgHudCommon.__merge({
   }
 
   cameraStick = {
-    ctor = @() cameraPieStickBlock
+    ctor = cameraPieStickBlock
     defTransform = mkRBPos([hdpx(-395), hdpx(-0)])
     editView = cameraPieStickView
     isVisibleInBattle = isCameraPieAvailable
@@ -294,18 +297,14 @@ return cfgHudCommon.__merge({
   }
 
   moveStick = {
-    ctor = @() @() {
-      children = aircraftMoveStick
-    }
+    ctor = aircraftMoveStick
     defTransform = mkRBPos([hdpx(-20), hdpx(-320)])
     editView = aircraftMoveStickView
     priority = Z_ORDER.STICK
   }
 
   moveSecondaryStick = {
-    ctor = @() @() {
-      children = aircraftMoveSecondaryStick
-    }
+    ctor = aircraftMoveSecondaryStick
     defTransform = mkLBPos([hdpx(200), hdpx(-320)])
     editView = aircraftMoveStickView
     priority = Z_ORDER.STICK
@@ -319,9 +318,5 @@ return cfgHudCommon.__merge({
     isVisibleInBattle = isAircraftMoveArrowsAvailable
   }
 
-  chatLogAndKillLog = {
-    ctor = chatLogAndKillLogPlace
-    defTransform = mkLTPos([hdpx(220), hdpx(320)])
-    editView = chatLogAndKillLogEditView
-  }
+  chatLogAndKillLog = cfgHudCommon.chatLogAndKillLog.__merge({ defTransform = mkLTPos([hdpx(220), hdpx(320)]) })
 })

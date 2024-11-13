@@ -48,8 +48,10 @@ let bulletStep = Computed(function() {
   let { catridge = 1, guns = 1 } = bulletsInfo.value
   return max(catridge * guns, 1)
 })
+let bulletTotalCount = Computed(@() (bulletsInfo.value?.total ?? 1).tofloat())
 let bulletTotalSteps = Computed(@()
-  ceil((bulletsInfo.value?.total ?? 1).tofloat() / bulletStep.value).tointeger())
+  ceil(bulletTotalCount.get() / bulletStep.value).tointeger())
+let hasExtraBullets = Computed(@() bulletStep.get() * bulletTotalSteps.get() > bulletTotalCount.get())
 
 let visibleBullets = Computed(function() {
   let res = {}
@@ -64,6 +66,25 @@ let visibleBullets = Computed(function() {
   return res
 })
 
+let maxBulletsCountForExtraAmmo = Computed(function() {
+  if(!hasExtraBullets.get())
+    return {}
+  let bulletSlots = min(BULLETS_SLOTS, bulletTotalSteps.get())
+  let { catridge = 1 } = bulletsInfo.get()
+
+  return array(bulletSlots).map(@(_, idx) idx).reduce(function(res, slotIdx) {
+    let remaining = bulletTotalCount.get() - res.total
+
+    local curCount = catridge * bulletSlots
+    let maxCountSteps = (bulletTotalCount.get() / curCount).tointeger()
+    curCount = curCount * maxCountSteps
+
+    res.maxCounts[slotIdx] <- remaining >= curCount ? curCount : remaining
+    res.total += curCount
+    return res
+  }, { maxCounts = {}, total = 0 }).maxCounts
+})
+
 let chosenBullets = Computed(function() {
   let res = []
   if (bulletsInfo.value == null)
@@ -72,22 +93,30 @@ let chosenBullets = Computed(function() {
   let level = unitLevel.value
   let stepSize = bulletStep.value
   let visible = visibleBullets.value
+  let maxBullets = maxBulletsCountForExtraAmmo.get()
+  let hasExtra = hasExtraBullets.get()
   local leftSteps = bulletTotalSteps.value
   local bulletSlots = min(BULLETS_SLOTS, bulletTotalSteps.value)
   let used = {}
   if (savedBullets.value != null)
     eachBlock(savedBullets.value, function(blk) {
       let { name = null, count = 0 } = blk
+      let { reqLevel = 0, isExternalAmmo = false, maxCount = leftSteps } = fromUnitTags?[name]
       if (res.len() >= bulletSlots
           || !visible?[name]
           || name in used
-          || (fromUnitTags?[name].reqLevel ?? 0) > level)
+          || reqLevel > level
+          || (res.len() == 0 && isExternalAmmo))
         return
-      local steps = min(ceil(count.tofloat() / stepSize), leftSteps, fromUnitTags?[name].maxCount ?? leftSteps)
+      local steps = min(ceil(count.tofloat() / stepSize), leftSteps, maxCount)
       if (bulletTotalSteps.value == 1) //special case when user have saved 0 (and disabled choose slider)
         steps = 1
       leftSteps -= steps
-      res.append({ name, count = steps * stepSize, idx = res.len() })
+      let countBullets = steps * stepSize
+      let maxBulletsCount = maxBullets?[res.len()] ?? 0
+      res.append({ name, idx = res.len(), count = !hasExtra ? countBullets
+        : count == 0 ? count
+        : maxBulletsCount })
       used[name] <- true
     })
 
@@ -113,7 +142,9 @@ let chosenBullets = Computed(function() {
         if (leftSteps > 0) {
           let steps = min(stepsPerUnit, leftSteps, fromUnitTags?[bData.name].maxCount ?? leftSteps)
           leftSteps -= steps
-          bData.count = stepSize * steps
+          let countBullets = steps * stepSize
+          let maxBulletsCount = maxBullets?[bData.idx] ?? 0
+          bData.count = !hasExtra ? countBullets : min(countBullets, maxBulletsCount)
           notInitedCount--
         }
       }
@@ -124,7 +155,7 @@ let chosenBullets = Computed(function() {
 
 let bulletsToSpawn = Computed(function() {
   let { catridge = 1 } = bulletsInfo.value
-  let res = chosenBullets.value.map(@(b) { name = b.name, count = b.count / catridge }) //need send catriges count for spawn instead of bullets count
+  let res = chosenBullets.value.map(@(b) { name = b.name, count = ceil(b.count / catridge).tointeger() }) //need send catriges count for spawn instead of bullets count
 
   if (bulletsInfoSec.value == null)
     return res
@@ -137,6 +168,9 @@ let chosenBulletsAmount = Computed(@() chosenBullets.value.reduce(@(acc, bullet)
 let hasZeroBullets = Computed(@() chosenBulletsAmount.value == 0)
 let hasLowBullets = Computed(@() chosenBulletsAmount.value < BULLETS_LOW_AMOUNT
   || chosenBulletsAmount.value < bulletsInfo.value.total * BULLETS_LOW_PERCENT / 100)
+let hasZeroMainBullets = Computed(@() hasExtraBullets.get()
+  && bulletsToSpawn.get().len() > 0
+  && bulletsToSpawn.get()[0].count == 0)
 
 function saveBullets(name, blk) {
   hasChangedCurSlotBullets(true)
@@ -162,26 +196,30 @@ function setCurUnitBullets(slotIdx, bName, bCount) {
 }
 
 function setOrSwapUnitBullet(slotIdx, bName) {
-  if (unitName.value == null || slotIdx not in chosenBullets.value)
+  if (unitName.get() == null || slotIdx not in chosenBullets.get())
     return
-  let prevIdx = chosenBullets.value.findindex(@(s) s.name == bName)
+  let prevIdx = chosenBullets.get().findindex(@(s) s.name == bName)
   if (prevIdx == slotIdx)
     return
 
   let newNames = { [slotIdx] = bName }
   if (prevIdx != null)
-    newNames[prevIdx] <- chosenBullets.value[slotIdx].name
+    newNames[prevIdx] <- chosenBullets.get()[slotIdx].name
 
   let blk = DataBlock()
-  foreach (idx, slot in chosenBullets.value) {
+  foreach (idx, slot in chosenBullets.get()) {
+    let maxBulletsCount = maxBulletsCountForExtraAmmo.get()?[idx] ?? 0
+    let { name, count } = slot
     let bBlk = DataBlock()
-    bBlk.name = newNames?[idx] ?? slot.name
-    bBlk.count = slot.count
+    bBlk.name = newNames?[idx] ?? name
+    bBlk.count = !hasExtraBullets.get() ? count
+      : count == 0 ? count
+      : maxBulletsCount
     blk.bullet <- bBlk
   }
   savedBullets(blk)
   cancelRespawn() //to respawn on chosen bullets after
-  saveBullets(unitName.value, blk)
+  saveBullets(unitName.get(), blk)
 }
 
 let bulletLeftSteps = Computed(function() {
@@ -203,6 +241,9 @@ return {
   hasLowBullets
   hasZeroBullets
   hasChangedCurSlotBullets
+  hasExtraBullets
+  hasZeroMainBullets
+  maxBulletsCountForExtraAmmo
 
   setCurUnitBullets
   setOrSwapUnitBullet

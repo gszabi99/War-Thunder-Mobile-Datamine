@@ -51,7 +51,7 @@ let questRewardsWnd = {
     @() {
       watch = rewardsList
       size = [flex(), SIZE_TO_CONTENT]
-      children = mkContent(rewardsList.value)
+      children = mkContent(rewardsList.get() ?? [])
     }
   ]
 }

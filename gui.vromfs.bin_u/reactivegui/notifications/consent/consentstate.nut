@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let logC = log_with_prefix("[consent] ")
 let { deferOnce } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
-let { isConsentAllowLogin, isReadyForConsent } = require("%appGlobals/loginState.nut")
+let { isConsentAllowLogin, isReadyForConsent, CONSENT_OPTIONS_SAVE_ID } = require("%appGlobals/loginState.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
@@ -18,7 +18,6 @@ let { isIdfaDenied } = require("%rGui/login/stateIDFA.nut")
 let { request_firebase_consent_eu_only } = require("%appGlobals/permissions.nut")
 let { getCountryCode } = require("auth_wt")
 
-let CONSENT_OPTIONS_SAVE_ID = "consentManageOptions"
 
 let EU_REGION = ["BE","BG","CZ","DK","DE","EE","IE","GR","EL","ES","FR","HR","HU","IT","CY","LV","LT","LU","MT","NL","AT","PL","PT","RO","SI","SK","FI","SE","GB","UK","LI","NO","IS","CH"]
 

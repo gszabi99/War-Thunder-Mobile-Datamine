@@ -19,6 +19,7 @@ let tuningBtnImg = @(image, ovr = {}) {
   rendObj = ROBJ_IMAGE
   image = Picture($"{image}:{imgSize}:{imgSize}:P")
   color = btnImgColor
+  keepAspect = true
 }.__update(ovr)
 
 function tuningBtn(image, onClick, description, ovr = {}) {

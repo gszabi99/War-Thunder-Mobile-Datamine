@@ -1,10 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
 let { TouchScreenSteeringStick } = require("wt.behaviors")
-let { fabs, lerp } = require("%sqstd/math.nut")
 let { Point3 } = require("dagor.math")
+let { fabs, lerp } = require("%sqstd/math.nut")
+let { scaleArr } = require("%globalsDarg/screenMath.nut")
+let { getScaledFont, prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
 let { setAxisValue,  setShortcutOn, setShortcutOff, setVirtualAxisValue, setVirtualAxesAileronsElevatorValue,
-      setVirtualAxesAim =  null, setVirtualAxesAileronsAssist = null, setVirtualAxesDirectControl = null } = require("%globalScripts/controls/shortcutActions.nut")
+  setVirtualAxesAim =  null, setVirtualAxesAileronsAssist = null, setVirtualAxesDirectControl = null
+} = require("%globalScripts/controls/shortcutActions.nut")
 let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround, isActiveTurretCamera, wheelBrake } = require("%rGui/hud/airState.nut")
 let { getSvgImage, borderColor, btnBgColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
@@ -22,7 +25,8 @@ let { currentControlByGyroModeAileronsAssist, currentControlByGyroAimMode, curre
       currentAircraftCtrlType, currentThrottleStick, currentAdditionalFlyControls } = require("%rGui/options/options/airControlsOptions.nut")
 let { set_mouse_aim } = require("controlsOptions")
 let { isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
-let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnOutline, mkMoveVertBtnCorner } = require("%rGui/components/movementArrows.nut")
+let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnOutline, mkMoveVertBtnCorner
+} = require("%rGui/components/movementArrows.nut")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
@@ -44,14 +48,25 @@ let throttlePerTick = throttleAxisUpdateTick * maxThrottleChangeSpeed
 let redColor = 0xFFFF5A52
 let neutralColor = 0xFFFFFFFF
 
-let height = hdpxi(270)
-let scaleWidth = evenPx(18)
-let knobSize = 3 * scaleWidth
-let knobPadding = scaleWidth
-let sliderPadding = 2 * scaleWidth
-let fullWidth = knobSize + 2 * sliderPadding
-let throttleScaleHeight = height - knobSize
-let brakeBtnSize = [5 * scaleWidth, 3 * scaleWidth]
+let brakeBtnSize = [hdpx(90), hdpx(54)]
+
+function getSizes(scale) {
+  let height = hdpxi(270 * scale)
+  let scaleWidth = evenPx(18 * scale)
+  let knobSize = 3 * scaleWidth
+  let sliderPadding = 2 * scaleWidth
+  return {
+    scale
+    height
+    scaleWidth
+    knobSize
+    knobPadding = scaleWidth
+    sliderPadding
+    fullWidth = knobSize + 2 * sliderPadding
+    throttleScaleHeight = height - knobSize
+    lineWidth = hdpx(5 * scale)
+  }
+}
 
 let idleTimeForThrottleOpacity = 5
 let needOpacityThrottle = Watched(false)
@@ -71,14 +86,14 @@ let sliderToThrottleAxisValue = @(sliderV) sliderV >= stepThrottle ? (maxThrottl
 let throttleToSlider = @(trt) trt > maxThrottle ? sliderWepValue //wep
   : maxThrottle - trt
 
-let throttleScale = {
+let throttleScale = @(scaleWidth, throttleScaleHeight, knobSize, lineWidth) {
   size = [3 * scaleWidth, throttleScaleHeight]
   pos = [-knobSize, 0]
   padding = [throttleScaleHeight * (-sliderWepValue) / (maxThrottle - sliderWepValue), 0, 0, 0]
   children = {
     size = flex()
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(5)
+    lineWidth
     commands = [
       [VECTOR_LINE, 0, 0, 100, 0],
       [VECTOR_LINE, 50, 10, 100,  10],
@@ -170,14 +185,14 @@ IsOnGround.subscribe(function(v) {
     resetTimeout(1.0, setIsOnGroundSmoothed)
 })
 
-let brakeBtnText = {
+let brakeBtnText = @(scale) {
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   rendObj = ROBJ_TEXT
   text = loc("HUD/BRAKE_SHORT")
-}.__update(fontTiny)
+}.__update(getScaledFont(fontTiny, scale))
 
-function brakeButton() {
+function brakeButtonImpl(scale) {
   local wasBrakeOnTouchBegin = false
 
   function onTouchBegin() {
@@ -191,9 +206,9 @@ function brakeButton() {
   }
 
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd , "ID_WHEEL_BRAKE")
-  res.__update({
-    size = brakeBtnSize
-    children =[
+  return res.__update({
+    size = scaleArr(brakeBtnSize, scale)
+    children = [
       @() {
         watch = wheelBrake
         size = flex()
@@ -203,7 +218,7 @@ function brakeButton() {
       {
         size = flex()
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpxi(2)
+        lineWidth = hdpxi(2 * scale)
         commands = [
           [VECTOR_LINE, 0, 0, 100, 0],
           [VECTOR_LINE, 100, 0, 100, 100],
@@ -211,14 +226,15 @@ function brakeButton() {
           [VECTOR_LINE, 0, 100, 0, 0],
         ]
         color = borderColor
-        children = brakeBtnText
+        children = brakeBtnText(scale)
       }
-  ]
+    ]
   })
-  return {
-    watch = isOnGroundSmoothed
-    children = isOnGroundSmoothed.get() ? res : null
-  }
+}
+
+let brakeButton = @(scale) @() {
+  watch = isOnGroundSmoothed
+  children = isOnGroundSmoothed.get() ? brakeButtonImpl(scale) : null
 }
 
 let brakeButtonEditView = {
@@ -232,11 +248,13 @@ let brakeButtonEditView = {
       rendObj = ROBJ_SOLID
       color = btnBgColor.empty
     }
-    brakeBtnText
+    brakeBtnText(1)
   ]
 }
 
-function throttleSlider() {
+let throttleSlider = kwarg(@(height, scaleWidth, knobSize, knobPadding, sliderPadding, fullWidth,
+  throttleScaleHeight, lineWidth, scale
+) function() {
   let sliderV = sliderValue.get()
   let knobPos = sliderV <= sliderWepValue ? 0
     : ((clamp(sliderV, 0, maxThrottle) - sliderWepValue).tofloat()
@@ -260,13 +278,15 @@ function throttleSlider() {
         watch = [Trt0, IsTrtWep0, wheelBrake, isOnGroundSmoothed]
         key = "air_throttle_slider_text"
         rendObj = ROBJ_TEXT
-        pos = [-knobSize - hdpx(10), -knobPadding - hdpx(5)]
+        pos = [-1.1 * knobSize, pw(-80)]
+        hplace = ALIGN_RIGHT
+        vplace = ALIGN_BOTTOM
         color = IsTrtWep0.get() && !wheelBrake.get() ? 0xFFFF0000 : knobColor
         text = wheelBrake.get() && isOnGroundSmoothed.get() ? loc("hotkeys/ID_WHEEL_BRAKE")
           : IsTrtWep0.get() ? wepText
           : Trt0.get() >= maxThrottle ? maxThrottleText
           : $"{Trt0.get()}{percentText}"
-      }.__update(wheelBrake.get() && isOnGroundSmoothed.get() ? fontVeryTinyShaded : fontTinyShaded)
+      }.__update(getScaledFont(wheelBrake.get() && isOnGroundSmoothed.get() ? fontVeryTinyShaded : fontTinyShaded, scale))
     ]
   }
   return {
@@ -295,7 +315,7 @@ function throttleSlider() {
         rendObj = ROBJ_IMAGE
         image = throttleBgrImage
         children = [
-          throttleScale
+          throttleScale(scaleWidth, throttleScaleHeight, knobSize, lineWidth)
           @() {
             watch = Trt0
             rendObj = ROBJ_MASK
@@ -328,7 +348,7 @@ function throttleSlider() {
     }
     onChange = !isThrottleDisabled.get() ? changeThrottleValue : null
   }
-}
+})
 
 eventbus_subscribe("throttleFromMission", function(msg) {
   sliderValue(throttleToSlider(msg.value * 100))
@@ -353,9 +373,11 @@ isThrottleAxisActive.subscribe(function(isActive) {
 
 isRespawnStarted.subscribe(@(v) v ? setVirtualAxisValue("throttle", 0) : null)
 
+let setThrottleAxisVal = @(v) isThrottleDisabled.get() ? null : throttleAxisVal.set(v)
+
 let gamepadMouseAimAxisListener = axisListener({
   [ailerons] = @(v) setVirtualAxisValue("ailerons", v),
-  [throttle_axis] = @(v) throttleAxisVal(v),
+  [throttle_axis] = @(v) setThrottleAxisVal(v),
   [mouse_aim_x] = @(v) setVirtualAxisValue("mouse_aim_x", v),
   [mouse_aim_y] = @(v) setVirtualAxisValue("mouse_aim_y", v)
 })
@@ -364,12 +386,12 @@ let gamepadAxisListener = axisListener({
  [ailerons] = @(v) setVirtualAxisValue("ailerons", v),
  [elevator] = @(v) setVirtualAxisValue("elevator", v),
  [rudder] = @(v) setVirtualAxisValue("rudder", v),
- [throttle_axis] = @(v) throttleAxisVal(v),
+ [throttle_axis] = @(v) setThrottleAxisVal(v),
 })
 
 let gamepadGunnerAxisListener = axisListener({
   [ailerons] = @(v) setVirtualAxisValue("ailerons", v),
-  [throttle_axis] = @(v) throttleAxisVal(v),
+  [throttle_axis] = @(v) setThrottleAxisVal(v),
   [turret_x] = @(v) setVirtualAxisValue("turret_x", v),
   [turret_y] = @(v) setVirtualAxisValue("turret_y", -v)
  })
@@ -459,143 +481,161 @@ let imuAxesListenerAim = axisListener( makeGravityListenerMap(setVirtualAxesAimV
 let imuAxesListenerAleronsAssist = axisListener( makeGravityListenerMap(setVirtualAxesAileronsAssistValueFromGravity) )
 let imuAxesListenerDirectControl = axisListener( makeGravityListenerMap(setVirtualAxesDirectControlValuesFromGravity) )
 
-let stickZoneSize = [hdpx(280), hdpx(280)]
+let stickZoneSize = hdpx(280)
 let bgRadius = hdpx(140)
 let imgBgSize = 2 * bgRadius
 let stickSize = hdpx(100)
 
-let imgBg = {
-  size = [imgBgSize, imgBgSize]
-  image = Picture($"ui/gameuiskin#hud_tank_stick_bg.svg:{imgBgSize}:{imgBgSize}:P")
+let imgBg = @(size) {
+  size = [size, size]
+  image = Picture($"ui/gameuiskin#hud_tank_stick_bg.svg:{size}:{size}:P")
   rendObj = ROBJ_IMAGE
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   color = borderColor
 }
 
-let imgBgComp = @() {
+let mkImgBgComp = @(scale) {
   size = flex()
   opacity = 0.5
-  children = imgBg
+  children = imgBg(scaleEven(imgBgSize, scale))
   transform = {}
 }
 
-let imgStick = {
-  size = [stickSize, stickSize]
-  image = Picture($"ui/gameuiskin#joy_head.svg:{stickSize}:{stickSize}:P")
-  rendObj = ROBJ_IMAGE
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  transform = {}
+function mkImgStick(scale) {
+  let size = scaleEven(stickSize, scale)
+  return {
+    size = [size, size]
+    image = Picture($"ui/gameuiskin#joy_head.svg:{size}:{size}:P")
+    rendObj = ROBJ_IMAGE
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    transform = {}
+  }
 }
 
-let aircraftMoveStickBase  = @() {
+function aircraftMoveStickBase(scale) {
+  let imgStick = mkImgStick(scale)
+  let imgBgComp = mkImgBgComp(scale)
+  let maxValueRadius = scaleEven(bgRadius, scale)
+  return @() {
+    watch = currentAircraftCtrlType
+    key = currentAircraftCtrlType
+    behavior = TouchScreenSteeringStick
+    size = flex()
+    touchStickAction = {
+      horizontal = "ailerons"
+      vertical = "elevator"
+    }
+    isForAircraft = true
+    invertedX=true
+    maxValueRadius
+    useCenteringOnTouchBegin = currentAircraftCtrlType.value == "stick"
+
+    function onAttach() {
+      set_mouse_aim(false)
+    }
+    function onDetach() {
+      setVirtualAxisValue("elevator", 0)
+      setVirtualAxisValue("ailerons", 0)
+      set_mouse_aim(true)
+    }
+    children = [
+      imgBgComp
+      imgStick
+    ]
+  }
+}
+
+let aircraftMoveStick = @(scale) @() {
   watch = currentAircraftCtrlType
-  key = currentAircraftCtrlType
-  behavior = TouchScreenSteeringStick
-  size = stickZoneSize
-  touchStickAction = {
-    horizontal = "ailerons"
-    vertical = "elevator"
-  }
-  isForAircraft = true
-  invertedX=true
-  maxValueRadius = bgRadius
-  useCenteringOnTouchBegin = currentAircraftCtrlType.value == "stick"
-
-  function onAttach() {
-    set_mouse_aim(false)
-  }
-  function onDetach() {
-    setVirtualAxisValue("elevator", 0)
-    setVirtualAxisValue("ailerons", 0)
-    set_mouse_aim(true)
-  }
-  children = [
-    imgBgComp
-    imgStick
-  ]
+  size = array(2, scaleEven(stickZoneSize, scale))
+  children = currentAircraftCtrlType.value == "stick" || currentAircraftCtrlType.value == "stick_static"
+    ? aircraftMoveStickBase(scale)
+    : null
 }
 
-let aircraftMoveStick = @() {
-  watch = currentAircraftCtrlType
-  size = stickZoneSize
-  vplace = ALIGN_BOTTOM
-  hplace = ALIGN_LEFT
-  children = currentAircraftCtrlType.value == "stick" || currentAircraftCtrlType.value == "stick_static" ? aircraftMoveStickBase : null
+function aircraftMoveSecondaryStickBase(scale) {
+  let imgStick = mkImgStick(scale)
+  let imgBgComp = mkImgBgComp(scale)
+  let maxValueRadius = scaleEven(bgRadius, scale)
+  return @() {
+    watch = currentAircraftCtrlType
+    key = currentAircraftCtrlType
+    size = flex()
+    behavior = TouchScreenSteeringStick
+    touchStickAction = {
+      horizontal = "rudder"
+      vertical = "throttle"
+    }
+    isForAircraft = true
+    invertedX=true
+    maxValueRadius
+    useCenteringOnTouchBegin = currentAircraftCtrlType.value == "stick"
+
+    function onAttach() {
+      set_mouse_aim(false)
+    }
+    function onDetach() {
+      setVirtualAxisValue("rudder", 0)
+      setVirtualAxisValue("throttle", 0)
+      set_mouse_aim(true)
+    }
+    children = [
+      imgBgComp
+      imgStick
+    ]
+  }
 }
 
-let aircraftMoveSecondaryStickBase  = @() {
-  watch = currentAircraftCtrlType
-  key = currentAircraftCtrlType
-  behavior = TouchScreenSteeringStick
-  size = stickZoneSize
-  touchStickAction = {
-    horizontal = "rudder"
-    vertical = "throttle"
-  }
-  isForAircraft = true
-  invertedX=true
-  maxValueRadius = bgRadius
-  useCenteringOnTouchBegin = currentAircraftCtrlType.value == "stick"
+function aircraftMoveRudderStickBase(scale) {
+  let imgStick = mkImgStick(scale)
+  let imgBgComp = mkImgBgComp(scale)
+  let maxValueRadius = scaleEven(bgRadius, scale)
+  return @() {
+    watch = currentAircraftCtrlType
+    key = currentAircraftCtrlType
+    size = flex()
+    behavior = TouchScreenSteeringStick
+    touchStickAction = {
+      horizontal = "rudder"
+      vertical = "climb"
+    }
+    isForAircraft = true
+    invertedX=true
+    maxValueRadius
+    useCenteringOnTouchBegin = currentAircraftCtrlType.value == "stick"
 
-  function onAttach() {
-    set_mouse_aim(false)
+    function onAttach() {
+      set_mouse_aim(false)
+    }
+    function onDetach() {
+      setVirtualAxisValue("rudder", 0)
+      setVirtualAxisValue("climb", 0)
+      set_mouse_aim(true)
+    }
+    children = [
+      imgBgComp
+      imgStick
+    ]
   }
-  function onDetach() {
-    setVirtualAxisValue("rudder", 0)
-    setVirtualAxisValue("throttle", 0)
-    set_mouse_aim(true)
-  }
-  children = [
-    imgBgComp
-    imgStick
-  ]
 }
 
-let aircraftMoveRudderStickBase  = @() {
-  watch = currentAircraftCtrlType
-  key = currentAircraftCtrlType
-  behavior = TouchScreenSteeringStick
-  size = stickZoneSize
-  touchStickAction = {
-    horizontal = "rudder"
-    vertical = "climb"
-  }
-  isForAircraft = true
-  invertedX=true
-  maxValueRadius = bgRadius
-  useCenteringOnTouchBegin = currentAircraftCtrlType.value == "stick"
-
-  function onAttach() {
-    set_mouse_aim(false)
-  }
-  function onDetach() {
-    setVirtualAxisValue("rudder", 0)
-    set_mouse_aim(true)
-  }
-  children = [
-    imgBgComp
-    imgStick
-  ]
-}
-
-let aircraftMoveSecondaryStick = @() {
+let aircraftMoveSecondaryStick = @(scale) @() {
   watch = [currentAircraftCtrlType, currentThrottleStick]
-  size = stickZoneSize
-  vplace = ALIGN_BOTTOM
-  hplace = ALIGN_LEFT
-  children = currentAircraftCtrlType.value == "stick" || currentAircraftCtrlType.value == "stick_static" ?
-    (currentThrottleStick.value ? aircraftMoveSecondaryStickBase : aircraftMoveRudderStickBase) : null
+  size = array(2, scaleEven(stickZoneSize, scale))
+  children = currentAircraftCtrlType.get() != "stick" && currentAircraftCtrlType.get() != "stick_static" ? null
+    : currentThrottleStick.get() ? aircraftMoveSecondaryStickBase(scale)
+    : aircraftMoveRudderStickBase(scale)
 }
 
 let aircraftMoveStickView = {
-  size = stickZoneSize
+  size = [stickZoneSize, stickZoneSize]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = [
-    imgBgComp
-    imgStick
+    mkImgBgComp(1)
+    mkImgStick(1)
   ]
 }
 
@@ -624,9 +664,9 @@ function getImuAxesListener(controlType, gyroAimMode, aileronsAssistMode, direct
     return directControlMode ? imuAxesListenerDirectControl : null
 }
 
-let aircraftMovement = {
+let aircraftMovement = @(scale) {
   children = [
-    throttleSlider
+    throttleSlider(getSizes(scale))
     @() {
       watch = [ isGamepad, currentAircraftCtrlType, currentControlByGyroModeAileronsAssist, currentControlByGyroAimMode, currentControlByGyroDirectControl,
         currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity]
@@ -638,32 +678,38 @@ let aircraftMovement = {
   ]
 }
 
-let aircraftMovementEditView = {
-  size = [fullWidth, height]
-  padding = [0, sliderPadding]
-  children = [
-    {
-      size = [scaleWidth, throttleScaleHeight]
-      pos =  [scaleWidth, 0]
-      vplace = ALIGN_CENTER
-      rendObj = ROBJ_IMAGE
-      image = throttleBgrImage
-      children = [
-        throttleScale
-        {
-          rendObj = ROBJ_MASK
-          size = [knobSize, throttleScaleHeight]
-          pos = [scaleWidth, 0]
-          image = getSvgImage("hud_plane_gradient", knobSize, throttleScaleHeight)
-          children = {
-            rendObj = ROBJ_SOLID
-            size = flex()
+function mkEditView() {
+  let { fullWidth, height, sliderPadding, scaleWidth, throttleScaleHeight, knobSize, lineWidth
+  } = getSizes(1)
+  return {
+    size = [fullWidth, height]
+    padding = [0, sliderPadding]
+    children = [
+      {
+        size = [scaleWidth, throttleScaleHeight]
+        pos =  [scaleWidth, 0]
+        vplace = ALIGN_CENTER
+        rendObj = ROBJ_IMAGE
+        image = throttleBgrImage
+        children = [
+          throttleScale(scaleWidth, throttleScaleHeight, knobSize, lineWidth)
+          {
+            rendObj = ROBJ_MASK
+            size = [knobSize, throttleScaleHeight]
+            pos = [scaleWidth, 0]
+            image = getSvgImage("hud_plane_gradient", knobSize, throttleScaleHeight)
+            children = {
+              rendObj = ROBJ_SOLID
+              size = flex()
+            }
           }
-        }
-      ]
-    }
-  ]
+        ]
+      }
+    ]
+  }
 }
+
+let aircraftMovementEditView = mkEditView()
 
 let showModelNameOff = @() showModelName(false)
 
@@ -684,64 +730,68 @@ let txtAltitudeUnits = loc("measureUnits/meters_alt")
 
 let altitudeMeters = Computed(@() DistanceToGround.get().tointeger())
 
-let aircraftIndicators = {
-  size = [hdpx(250), hdpx(150)]
-  valign = ALIGN_BOTTOM
-  flow = FLOW_VERTICAL
-  gap = hdpx(5)
-  children = [
-    @() !showModelName.value ? { watch = showModelName }
-    : {
-        watch = [showModelName, playerUnitName]
-        rendObj = ROBJ_TEXT
-        color = neutralColor
-        text = loc($"{playerUnitName.value}_1", loc(playerUnitName.value))
-      }.__update(fontTinyAccentedShaded)
-    @() {
-      watch = IsSpdCritical
-      key = "plane_speed_indicator"
-      flow = FLOW_HORIZONTAL
-      gap = hdpx(8)
-      children = [
-        {
+function aircraftIndicators(scale) {
+  let font = prettyScaleForSmallNumberCharVariants(fontTinyAccentedShaded, scale)
+  let fontMono = prettyScaleForSmallNumberCharVariants(fontMonoTinyAccentedShaded, scale)
+  return {
+    size = [hdpx(250 * scale), hdpx(150 * scale)]
+    valign = ALIGN_BOTTOM
+    flow = FLOW_VERTICAL
+    gap = hdpx(5 * scale)
+    children = [
+      @() !showModelName.value ? { watch = showModelName }
+      : {
+          watch = [showModelName, playerUnitName]
           rendObj = ROBJ_TEXT
-          color = IsSpdCritical.get() ? redColor : neutralColor
-          text = txtSpeedLabel
-        }.__update(fontTinyAccentedShaded)
-        @() {
-          watch = Spd
-          rendObj = ROBJ_TEXT
-          color = IsSpdCritical.get() ? redColor : neutralColor
-          text = Spd.get()
-        }.__update(fontMonoTinyAccentedShaded)
-        {
-          rendObj = ROBJ_TEXT
-          color = IsSpdCritical.get() ? redColor : neutralColor
-          text = txtSpeedUnits
-        }.__update(fontTinyAccentedShaded)
-      ]
-    }
-    {
-      key = "plane_altitude_indicator"
-      flow = FLOW_HORIZONTAL
-      gap = hdpx(8)
-      children = [
-        {
-          rendObj = ROBJ_TEXT
-          text = txtAltitudeLabel
-        }.__update(fontTinyAccentedShaded)
-        @() {
-          watch = altitudeMeters
-          rendObj = ROBJ_TEXT
-          text = altitudeMeters.get()
-        }.__update(fontMonoTinyAccentedShaded)
-        {
-          rendObj = ROBJ_TEXT
-          text = txtAltitudeUnits
-        }.__update(fontTinyAccentedShaded)
-      ]
-    }
-  ]
+          color = neutralColor
+          text = loc($"{playerUnitName.value}_1", loc(playerUnitName.value))
+        }.__update(font)
+      @() {
+        watch = IsSpdCritical
+        key = "plane_speed_indicator"
+        flow = FLOW_HORIZONTAL
+        gap = hdpx(8 * scale)
+        children = [
+          {
+            rendObj = ROBJ_TEXT
+            color = IsSpdCritical.get() ? redColor : neutralColor
+            text = txtSpeedLabel
+          }.__update(font)
+          @() {
+            watch = Spd
+            rendObj = ROBJ_TEXT
+            color = IsSpdCritical.get() ? redColor : neutralColor
+            text = Spd.get()
+          }.__update(fontMono)
+          {
+            rendObj = ROBJ_TEXT
+            color = IsSpdCritical.get() ? redColor : neutralColor
+            text = txtSpeedUnits
+          }.__update(font)
+        ]
+      }
+      {
+        key = "plane_altitude_indicator"
+        flow = FLOW_HORIZONTAL
+        gap = hdpx(8 * scale)
+        children = [
+          {
+            rendObj = ROBJ_TEXT
+            text = txtAltitudeLabel
+          }.__update(font)
+          @() {
+            watch = altitudeMeters
+            rendObj = ROBJ_TEXT
+            text = altitudeMeters.get()
+          }.__update(fontMono)
+          {
+            rendObj = ROBJ_TEXT
+            text = txtAltitudeUnits
+          }.__update(font)
+        ]
+      }
+    ]
+  }
 }
 
 let aircraftIndicatorsEditView = {
@@ -771,9 +821,9 @@ let outlineColor = Watched(0x4D4D4D4D)
 let isAircraftMoveArrowsAvailable = Computed(@() currentAdditionalFlyControls.value)
 let toInt = @(list) list.map(@(v) v.tointeger())
 let horSize = toInt([shHud(9), shHud(12)])
-let verSize = toInt([shHud(12), shHud(10)])
+let verSizeBase = toInt([shHud(12), shHud(10)])
 
-let mkVerticalArrow = @(id, isControlDisabled, upDirection) mkMoveVertBtn(
+let mkVerticalArrow = @(id, isControlDisabled, verSize, upDirection) mkMoveVertBtn(
   function onTouchBegin() {
     setShortcutOn(id)
   },
@@ -788,13 +838,14 @@ let mkVerticalArrow = @(id, isControlDisabled, upDirection) mkMoveVertBtn(
       children = isControlDisabled.value ? null
         : [
             mkMoveVertBtnCorner(upDirection, Watched(0xFFFFFFFF), verSize)
-            mkMoveVertBtnOutline(upDirection, outlineColor, verSize)
-            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(50)] })
+            mkMoveVertBtnOutline(upDirection, verSize, outlineColor)
+            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(50)] }, verSize)
           ]
     }
   })
 
-let mkHorizontalMovementParams = @(id, disableId) {
+let mkHorizontalMovementParams = @(id, disableId, scale) {
+  scale
   ovr = { key = id, size = horSize }
   shortcutId = id
   outlineColor
@@ -805,16 +856,21 @@ let mkHorizontalMovementParams = @(id, disableId) {
   isDisabled = mkIsControlDisabled(disableId)
 }
 
-function aircraftMoveArrows() {
+function aircraftMoveArrows(scale) {
   let vertical = "elevator"
   let horizontal = "ailerons"
   let vertical_max = $"{vertical}_rangeMax"
   let vertical_min = $"{vertical}_rangeMin"
 
-  let leftArrow = mkMoveLeftBtn(mkHorizontalMovementParams($"{horizontal}_rangeMin", horizontal))
-  let rightArrow = mkMoveRightBtn(mkHorizontalMovementParams($"{horizontal}_rangeMax", horizontal))
+  let leftArrow = mkMoveLeftBtn(mkHorizontalMovementParams($"{horizontal}_rangeMin", horizontal, scale))
+  let rightArrow = mkMoveRightBtn(mkHorizontalMovementParams($"{horizontal}_rangeMax", horizontal, scale))
 
   let isControlDisabled = mkIsControlDisabled(vertical)
+  let verSize = scaleArr(verSizeBase, scale)
+  let vertArrows = [
+    mkVerticalArrow(vertical_min, isControlDisabled, verSize, false)
+    mkVerticalArrow(vertical_max, isControlDisabled, verSize, true)
+  ]
 
   return @() {
     watch = [isUnitDelayed, isGamepad]
@@ -826,10 +882,7 @@ function aircraftMoveArrows() {
           {
             flow = FLOW_VERTICAL
             halign = ALIGN_CENTER
-            children = [
-              mkVerticalArrow(vertical_min, isControlDisabled, false)
-              mkVerticalArrow(vertical_max, isControlDisabled, true)
-            ]
+            children = vertArrows
           }
           rightArrow
           isGamepad.value ? gamepadMouseAimAxisListener : null

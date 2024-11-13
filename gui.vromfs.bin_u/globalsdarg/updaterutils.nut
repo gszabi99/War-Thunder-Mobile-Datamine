@@ -24,6 +24,7 @@ let getDownloadInfoText = @(downloadSize, etaSec, dspeed)
 
 return {
   getDownloadInfoText
+  totalSizeText
   KB
   MB
   GB

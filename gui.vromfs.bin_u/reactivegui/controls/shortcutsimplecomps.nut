@@ -5,12 +5,12 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 
 let defBtnHeight = hdpxi(50)
 
-let mkGamepadShortcutImage = @(shortcutId, ovr = {}) @() {
+let mkGamepadShortcutImage = @(shortcutId, ovr = {}, scale = 1.0) @() {
   watch = isGamepad
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = !isGamepad.value || shortcutId not in gamepadShortcuts ? null
-    : mkBtnImageComp(gamepadShortcuts?[shortcutId], ovr?.size[1] ?? defBtnHeight)
+    : mkBtnImageComp(gamepadShortcuts?[shortcutId], min(1.0, scale) * (ovr?.size[1] ?? defBtnHeight))
 }.__update(ovr)
 
 let mkGamepadHotkey = @(shortcutId, action = null) shortcutId not in allShortcutsUp ? null

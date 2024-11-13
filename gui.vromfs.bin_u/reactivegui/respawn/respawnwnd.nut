@@ -10,7 +10,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlotContentGenId,
   selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler
 } = require("respawnState.nut")
-let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets
+let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets, hasZeroMainBullets
 } = require("bulletsChoiceState.nut")
 let { slotAABB, selSlotLinesSteps, lineSpeed } = require("respawnAnimState.nut")
 let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, respawnUnitItems,
@@ -116,6 +116,7 @@ function mkSlotPlate(slot, baseUnit) {
   let unit = baseUnit.__merge(slot)
   let { canSpawn, isSpawnBySpare, country, mRank } = slot
   return {
+    key = slot
     behavior = Behaviors.Button
     onClick = @() onSlotClick(slot)
     sound = { click = "choose" }
@@ -128,7 +129,6 @@ function mkSlotPlate(slot, baseUnit) {
           size = [flex(), selLineSize]
         })
       {
-        key = slot
         size = [unitPlateWidth, unitPlateHeight]
         children = [
           mkUnitBg(unit, !canSpawn)
@@ -237,7 +237,7 @@ let map = {
   maxHeight = mapMaxSize + headerHeight + gap
   maxWidth = mapMaxSize
   flow = FLOW_VERTICAL
-  gap
+  gap = unitPlatesGap
   children = [
     header(headerText(loc("respawn/choose_respawn_point")))
     bg.__merge({
@@ -298,6 +298,8 @@ function toBattle() {
     respawn(selSlot.value, bulletsToSpawn.value)
   else if (hasZeroBullets.value)
     openMsgBox({ text = loc("respawn/zero_ammo") })
+  else if (hasZeroMainBullets.get())
+    openMsgBox({ text = loc("respawn/zero_main_ammo") })
   else if (hasLowBullets.value && hasChangedCurSlotBullets.value && showLowBulletsWarning.value) {
     openMsgBox({
       text = loc("respawn/low_ammo")

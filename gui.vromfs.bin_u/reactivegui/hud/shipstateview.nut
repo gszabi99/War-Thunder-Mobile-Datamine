@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { speed, portSideMachine, sideboardSideMachine } = require("%rGui/hud/shipState.nut")
 
 const IS_STOPPED_STEP = 3
@@ -33,19 +34,19 @@ let machineSpeedDirection = [
   "back"
 ]
 
-let defFont = fontVeryTiny
-let defFontMono = fontMonoTiny
+function speedValue(scale) {
+  let font = getScaledFont(fontMonoTinyShaded, scale)
+  return @() {
+    watch = speed
+    rendObj = ROBJ_TEXT
+    text = speed.value.tostring()
+  }.__update(font)
+}
 
-let speedValue = @() {
-  watch = speed
-  rendObj = ROBJ_TEXT
-  text = speed.value.tostring()
-}.__update(defFontMono)
-
-let speedUnits = @() {
+let speedUnits = @(scale) {
   rendObj = ROBJ_TEXT
   text = loc("measureUnits/kmh")
-}.__update(defFont)
+}.__update(getScaledFont(fontVeryTinyShaded, scale))
 
 let averageSpeed = Computed(@() clamp((portSideMachine.value + sideboardSideMachine.value) / 2, 0, machineSpeedLoc.len()))
 

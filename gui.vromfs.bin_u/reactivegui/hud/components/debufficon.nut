@@ -22,7 +22,7 @@ let mkDebuffIcon = @(image, iconSize) {
   size = [iconSize, iconSize]
   rendObj = ROBJ_IMAGE
   color = debuffColor
-  image = Picture(image)
+  image = Picture($"{image}:{iconSize}:{iconSize}:P")
   transform = {}
   animations = debuffAnims
 }
@@ -31,7 +31,7 @@ let mkDebuffIconEditView = @(image, iconSize) {
   size = [iconSize, iconSize]
   rendObj = ROBJ_IMAGE
   color = borderColor
-  image = Picture(image)
+  image = Picture($"{image}:{iconSize}:{iconSize}:P")
 }
 
 return {

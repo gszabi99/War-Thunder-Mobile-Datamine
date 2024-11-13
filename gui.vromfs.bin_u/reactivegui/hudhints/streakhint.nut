@@ -7,7 +7,7 @@ let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
 
 let HINT_TYPE = "streak"
 
-registerHintCreator(HINT_TYPE, function(data) {
+registerHintCreator(HINT_TYPE, function(data, _) {
   let { unlockId = "", wp = 0, stage = 1, sound = "streak" } = data
   let id = getMultiStageUnlockId(unlockId, stage)
   let content = {

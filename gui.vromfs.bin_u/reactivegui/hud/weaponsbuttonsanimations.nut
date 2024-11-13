@@ -4,41 +4,42 @@ let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { spendItemsQueue, removeSpendItem } = require("%rGui/hud/spendItems.nut")
 
-let btnGlareSize = (1.62 * touchButtonSize).tointeger()
-
 let consumableIconSize = hdpx(50)
 let consumableAnimationBottom = hdpx(-80)
 let consumableAnimationTop = hdpx(-130)
 let FADE = 0.2
 let SHOW = 0.8
 
-let mkBtnGlare = @(trigger) {
-  key = trigger
-  size = [btnGlareSize, btnGlareSize]
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  rendObj = ROBJ_MASK
-  image = Picture($"ui/gameuiskin#hud_bg_rhombus_glare_mask.svg:{btnGlareSize}:{btnGlareSize}:P")
-  clipChildren = true
-  children = {
-    size = [0.4 * btnGlareSize, 2 * btnGlareSize]
+function mkBtnGlare(trigger, btnSize = touchButtonSize) {
+  let btnGlareSize = (1.62 * btnSize).tointeger()
+  return {
+    key = trigger
+    size = [btnGlareSize, btnGlareSize]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    rendObj = ROBJ_IMAGE
-    image = gradTranspDoubleSideX
-    color = 0x00A0A0A0
-    transform = { rotate = 25, translate = [-btnGlareSize, -btnGlareSize] }
-    animations = [{
-      prop = AnimProp.translate, duration = 0.4, delay = 0.05, trigger
-      from = [-btnGlareSize, -btnGlareSize], to = [0.5 * btnGlareSize, 0.5 * btnGlareSize]
-    }]
-  }
+    rendObj = ROBJ_MASK
+    image = Picture($"ui/gameuiskin#hud_bg_rhombus_glare_mask.svg:{btnGlareSize}:{btnGlareSize}:P")
+    clipChildren = true
+    children = {
+      size = [0.4 * btnGlareSize, 2 * btnGlareSize]
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
+      image = gradTranspDoubleSideX
+      color = 0x00A0A0A0
+      transform = { rotate = 25, translate = [-btnGlareSize, -btnGlareSize] }
+      animations = [{
+        prop = AnimProp.translate, duration = 0.4, delay = 0.05, trigger
+        from = [-btnGlareSize, -btnGlareSize], to = [0.5 * btnGlareSize, 0.5 * btnGlareSize]
+      }]
+    }
 
-  transform = { scale = [0.0, 0.0] } //zero size mask will not render. So just optimization
-  animations = [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.0, 1.0], duration = 0.5, trigger }]
+    transform = { scale = [0.0, 0.0] } //zero size mask will not render. So just optimization
+    animations = [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.0, 1.0], duration = 0.5, trigger }]
+  }
 }
 
-function mkActionGlare(actionItem,  buttonSize = touchButtonSize) {
+function mkActionGlare(actionItem, buttonSize = touchButtonSize) {
   let trigger = $"action_cd_finish_{actionItem?.id}"
   let actionGlareSize = (1.15 * buttonSize).tointeger()
   return {
@@ -114,7 +115,8 @@ function mkConsumableSpend(itemId, start = consumableAnimationBottom, finish = c
   }
 }
 
-let mkActionBtnGlare = @(actionItem) mkBtnGlare($"action_cd_finish_{actionItem?.id}")
+let mkActionBtnGlare = @(actionItem, btnSize = touchButtonSize)
+  mkBtnGlare($"action_cd_finish_{actionItem?.id}", btnSize)
 
 return {
   mkBtnGlare

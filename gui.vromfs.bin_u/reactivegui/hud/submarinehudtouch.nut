@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
-let { hudTopMainLog } = require("%rGui/hud/hudTopCenter.nut")
+let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
 let hudBottomCenter = require("hudBottomCenter.nut")
 let { shipSight } = require("%rGui/hud/sight.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")

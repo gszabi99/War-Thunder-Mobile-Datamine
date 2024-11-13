@@ -126,7 +126,7 @@ function onSendFormFailure(errInfo) {
 }
 
 function sendFormData() {
-  let { email, name, category, subject, message, locale, lang } = requestState.value.formData
+  let { email, userId, name, category, subject, message, locale, lang, needAttachLogFile } = requestState.get().formData
   let { attachments } = requestState.value
   logZ($"Sending request from user {email}")
   let data = {
@@ -137,12 +137,13 @@ function sendFormData() {
       comment = { body = message }
       custom_fields = [
         { id = 360000060018, value = category }
+        { id = 21445500020242, value = userId }
         { id = 23145413, value = name }
         { id = 23166961, value = lang }
       ]
     }
   }
-  if (attachments.len())
+  if (needAttachLogFile && attachments.len())
     data.request.comment.__update({ uploads = attachments.map(@(v) v.token) })
   if (isDebug.get())
     logZ(data)
@@ -165,7 +166,7 @@ function submitSupportRequest(formData) {
     formData
     errInfo = null
   }))
-  if (requestState.value.attachments.len() == 0)
+  if (formData.needAttachLogFile && requestState.get().attachments.len() == 0)
     uploadAttachment(getLogFileData(), sendFormData)
   else
     sendFormData()

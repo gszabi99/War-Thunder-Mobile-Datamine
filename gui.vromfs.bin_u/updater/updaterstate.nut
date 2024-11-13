@@ -6,7 +6,7 @@ let { is_android, is_ios } = require("%sqstd/platform.nut")
 
 
 let contentUpdater = (is_android || is_ios) ? require("contentUpdater") : require("dbgContentUpdater.nut")
-let { get_total_download_mb, get_progress_percent, get_eta, get_download_speed,
+let { set_accept_user_react = @() null, get_total_download_mb, get_progress_percent, get_eta, get_download_speed,
   UPDATER_DOWNLOADING, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
   UPDATER_EVENT_ERROR, UPDATER_EVENT_INCOMPATIBLE_VERSION
 } = contentUpdater
@@ -22,6 +22,7 @@ let progressPercent = Computed(@() progress.value.percent)
 let updaterError = Watched(null)
 let needUpdateMsg = mkWatched(persist, "needUpdateMsg", false)
 let needRestartMsg = mkWatched(persist, "needRestartMsg", false)
+let needDownloadAcceptMsg = mkWatched(persist, "needDownloadAcceptMsg", false)
 
 let statusText = Computed(@() updaterError.value != null ? loc($"updater/error/{updaterError.value}")
   : updaterStage.value != UPDATER_DOWNLOADING ? loc("pl1/check_profile")
@@ -31,7 +32,16 @@ let statusText = Computed(@() updaterError.value != null ? loc($"updater/error/{
 
 let updaterEvents = {
   [UPDATER_EVENT_STAGE]         = @(evt) updaterStage(evt.stage),
-  [UPDATER_EVENT_DOWNLOAD_SIZE] = @(evt) totalSizeBytes(evt.toDownload),
+  [UPDATER_EVENT_DOWNLOAD_SIZE] = function (evt) {
+    totalSizeBytes(evt.toDownload)
+    local showWarning = evt?.showWarning ?? false
+    if (is_ios && evt.toDownload > 0 && showWarning) {
+      logU($"Download size: {evt.toDownload}, waiting for user accept on iOS")
+      needDownloadAcceptMsg(true)
+    } else {
+      set_accept_user_react()
+    }
+  },
   [UPDATER_EVENT_PROGRESS]      = @(evt) progress({
     percent = evt.percent
     etaSec = evt.etaSec
@@ -66,4 +76,7 @@ return {
   progressPercent
   needUpdateMsg
   needRestartMsg
+  needDownloadAcceptMsg
+  totalSizeBytes
+  closeDownloadWarning = set_accept_user_react
 }

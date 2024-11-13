@@ -4,14 +4,18 @@ let { isCameraPieStickActive, cameraPieStickDelta, isCameraPieItemsEnabled } = r
 
 let stickHeadIconSize = 2 * (stickHeadSize * 0.38 + 0.5).tointeger()
 
-let stickHeadIcon = {
-  size = [stickHeadIconSize, stickHeadIconSize]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#icon_pie_view_menu.svg:{stickHeadIconSize}:{stickHeadIconSize}:P")
-  keepAspect = true
-  color = 0xFFFFFFFF
+function stickHeadIcon(scale, isEnabled) {
+  let size = scaleEven(stickHeadIconSize, scale)
+  return {
+    size = [size, size]
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#icon_pie_view_menu.svg:{size}:{size}:P")
+    keepAspect = true
+    color = 0xFFFFFFFF
+    opacity = isEnabled ? 1.0 : 0.5
+  }
 }
 
 let { stickControl, stickView } = mkMiniStick({

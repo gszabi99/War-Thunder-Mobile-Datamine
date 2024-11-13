@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { touchButtonSize, btnBgColor, borderColorPushed } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { currentBulletName, toggleNextBullet, bulletsInfo, nextBulletName, mainBulletInfo, extraBulletInfo,
   mainBulletCount, extraBulletCount } = require("hudUnitBulletsState.nut")
@@ -11,7 +12,7 @@ let colorActive = 0xFFDADADA
 let colorInactive = 0x806D6D6D
 let borderWidth = hdpxi(1)
 let borderWidthCurrent = hdpxi(3)
-let imgSize = (touchButtonSize * 0.75).tointeger()
+let imgSizeBase = (touchButtonSize * 0.75).tointeger()
 
 function onToggleBullet(isNext, isCurrent) {
   if (!isGamepad.value && (isNext || (isCurrent && !nextBulletName.value)))
@@ -26,10 +27,9 @@ function getBulletIcon(id, isBulletBelt) {
   return (isBulletBelt ?? false) ? "hud_ammo_bullet_ap.svg" : "hud_ammo_ap1_he1.svg"
 }
 
-function bulletIcon(id, isNext, isCurrent, isBulletBelt) {
+function bulletIcon(id, isNext, isCurrent, isBulletBelt, imgSize) {
   let stateFlags = Watched(0)
   let icon = getBulletIcon(id, isBulletBelt)
-
   return @() {
     watch = stateFlags
     size = flex()
@@ -54,15 +54,13 @@ function bulletIcon(id, isNext, isCurrent, isBulletBelt) {
   }
 }
 
-function bulletName(name) {
-  let text = getAmmoTypeShortText(name)
-  return {
-    rendObj = ROBJ_TEXT
-    vplace = ALIGN_BOTTOM
-    hplace = ALIGN_CENTER
-    text
-  }.__update(fontVeryTinyShaded)
-}
+let bulletName = @(name, scale) {
+  margin = borderWidthCurrent
+  rendObj = ROBJ_TEXT
+  vplace = ALIGN_BOTTOM
+  hplace = ALIGN_CENTER
+  text = getAmmoTypeShortText(name)
+}.__update(getScaledFont(fontVeryTinyShaded, scale))
 
 
 let fontCurrent = getFontToFitWidth({ rendObj = ROBJ_TEXT, text = loc("hint/currentBullet/short") }.__update(fontTiny),
@@ -71,7 +69,7 @@ let fontNext = getFontToFitWidth({ rendObj = ROBJ_TEXT, text = loc("hint/nextBul
   touchButtonSize * 1.5, [fontVeryTinyShaded, fontTinyShaded])
 let bulletStatusFont = fontCurrent.fontSize < fontNext.fontSize ? fontCurrent : fontNext
 
-let bulletStatus = @(isNext, isCurrent) {
+let bulletStatus = @(isNext, isCurrent, scale) {
   rendObj = ROBJ_TEXT
   hplace = ALIGN_CENTER
   pos = [0, ph(100)]
@@ -79,38 +77,38 @@ let bulletStatus = @(isNext, isCurrent) {
   text = isCurrent ? loc("hint/currentBullet/short")
     : isNext ? loc("hint/nextBullet/short")
     : null
-}.__update(bulletStatusFont)
+}.__update(getScaledFont(bulletStatusFont, scale))
 
-function bulletButton(isMain) {
-  let bulletInfo = Computed(@() isMain ? mainBulletInfo.value : extraBulletInfo.value)
-  let bulletCount = Computed(@() isMain ? mainBulletCount.value : extraBulletCount.value)
+function bulletButton(bulletInfo, bulletCount, scale) {
   let name = Computed(@() bulletInfo.value?.bullets[0])
   let id = Computed(@() bulletInfo.value?.id)
   let isNext = Computed(@() id.value == nextBulletName.value)
   let isCurrent = Computed(@() id.value == currentBulletName.value)
   let isBulletBelt = Computed(@() bulletInfo.value?.isBulletBelt)
-
+  let btnSize = scaleEven(touchButtonSize, scale)
+  let imgSize = scaleEven(imgSizeBase, scale)
   return @() bulletCount.get() == 0 ? { watch = bulletCount } : {
     watch = [name, id, isNext, isCurrent, isBulletBelt, bulletCount]
-    size = [touchButtonSize, touchButtonSize]
+    size = [btnSize, btnSize]
     children = [
-      bulletIcon(id.value, isNext.value, isCurrent.value, isBulletBelt.value)
-      bulletName(name.value)
-      bulletStatus(isNext.value, isCurrent.value)
+      bulletIcon(id.value, isNext.value, isCurrent.value, isBulletBelt.value, imgSize)
+      bulletName(name.value, scale)
+      bulletStatus(isNext.value, isCurrent.value, scale)
       mkGamepadShortcutImage("ID_NEXT_BULLET_TYPE",
-        { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(50)] })
+        { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(50)] },
+        scale)
       @() {
         watch = bulletCount
         padding = [0, 0, 0, hdpx(4)]
         rendObj = ROBJ_TEXT
         text = bulletCount.value
-      }.__update(fontVeryTinyShaded)
+      }.__update(getScaledFont(fontVeryTinyShaded, scale))
     ]
   }
 }
 
 return {
   bulletButton
-  bulletMainButton = bulletButton(true)
-  bulletExtraButton = bulletButton(false)
+  bulletMainButton = @(scale) bulletButton(mainBulletInfo, mainBulletCount, scale)
+  bulletExtraButton = @(scale) bulletButton(extraBulletInfo, extraBulletCount, scale)
 }

@@ -64,6 +64,10 @@ function discountTagUnitCtor(discount, height, ovr) {
 return {
   discountTag
   discountTagBig
-  discountTagUnit    = @(discount) discountTagUnitCtor(discount, hdpxi(42), {margin = [0, hdpx(30), 0, hdpx(15)] pos = [0, hdpx(3)]}.__update(fontTiny))
-  discountTagUnitBig = @(discount) discountTagUnitCtor(discount, hdpxi(60), {margin = [0, hdpx(40), 0, hdpx(20)] pos = [0, hdpx(5)]}.__update(fontSmall))
+  discountTagUnit = @(discount)
+    discountTagUnitCtor(discount, hdpxi(42), { margin = [0, hdpx(30), 0, hdpx(15)] pos = [0, hdpx(3)] }.__update(fontTiny))
+  discountTagUnitBig = @(discount)
+    discountTagUnitCtor(discount, hdpxi(60), { margin = [0, hdpx(40), 0, hdpx(20)] pos = [0, hdpx(5)] }.__update(fontSmall))
+  discountTagUnitSmall = @(discount)
+    discountTagUnitCtor(discount, hdpxi(36), { margin = [0, hdpx(15), 0, hdpx(5)] pos = [0, hdpx(3)] }.__update(fontVeryTinyAccented))
 }

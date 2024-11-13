@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { SHIP, BOAT } = require("%appGlobals/unitConst.nut")
 let { hcUnitType, hcInfo, hcDamageStatus } = require("hitCameraState.nut")
 
@@ -30,31 +31,35 @@ let stateByValue = @(cur, vMax, crit, vMin) cur < vMin ? KILLED
   : cur < vMax ? GOOD
   : HEALTHY
 
-let mkCommonDebuff = @(icon, textW, stateW) @() {
-  watch = stateW
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  children = stateW.value == HIDDEN ? null
-    : [
-        {
-          size = [iconSize, iconSize]
-          rendObj = ROBJ_IMAGE
-          image = Picture($"{icon}:{iconSize}:{iconSize}")
-          color = iconColor?[stateW.value] ?? defIconColor
-        }
-        @() {
-          watch = textW
-          rendObj = ROBJ_TEXT
-          color = textColor?[stateW.value] ?? defTextColor
-          text = textW.value
-        }.__update(fontVeryTiny)
-      ]
+function mkCommonDebuff(icon, scale, textW, stateW) {
+  let size = scaleEven(iconSize, scale)
+  let font = getScaledFont(fontVeryTiny, scale)
+  return @() {
+    watch = stateW
+    flow = FLOW_HORIZONTAL
+    valign = ALIGN_CENTER
+    children = stateW.value == HIDDEN ? null
+      : [
+          {
+            size = [size, size]
+            rendObj = ROBJ_IMAGE
+            image = Picture($"{icon}:{size}:{size}")
+            color = iconColor?[stateW.value] ?? defIconColor
+          }
+          @() {
+            watch = textW
+            rendObj = ROBJ_TEXT
+            color = textColor?[stateW.value] ?? defTextColor
+            text = textW.value
+          }.__update(font)
+        ]
+  }
 }
 
 let shipDebuffs = [
-  function() {
+  function(scale) {
     let buoyancy = Computed(@() hcDamageStatus.value?.buoyancy ?? hcInfo.value?.buoyancy ?? 1.0)
-    return mkCommonDebuff("ui/gameuiskin#buoyancy_icon.svg",
+    return mkCommonDebuff("ui/gameuiskin#buoyancy_icon.svg", scale,
       Computed(@() $"{(100 * buoyancy.value + 0.5).tointeger()}%"),
       Computed(@() buoyancy.value > 0.995 ? HIDDEN
         : stateByValue(buoyancy.value, 0.995, 0.505, 0.005)))
@@ -66,11 +71,11 @@ let debuffsByType = {
   [BOAT] = shipDebuffs,
 }
 
-let hitCameraDebuffs = @() {
+let hitCameraDebuffs = @(scale) @() {
   watch = hcUnitType
   padding = hdpx(6)
   flow = FLOW_VERTICAL
-  children = (debuffsByType?[hcUnitType.value] ?? []).map(@(ctor) ctor())
+  children = (debuffsByType?[hcUnitType.value] ?? []).map(@(ctor) ctor(scale))
 }
 
 return hitCameraDebuffs

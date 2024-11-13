@@ -265,6 +265,8 @@
     "enableUGC": true,
     "enableApex": true,
     "skinsDecalsCacheSz": 1073741824,
+    "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
+    "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
     "contentUpdater": {
       "enabled": true,
       "shouldLogToCrashlytics": true,

@@ -6568,6 +6568,9 @@
             "show": true,
             "time": 0
           },
+          "wait": {
+            "time": 1.3
+          },
           "triggerEnable": {
             "target": [
               "retry_training_crash",

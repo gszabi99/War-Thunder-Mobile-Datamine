@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { clearTimer, setInterval } = require("dagor.workcycle")
 let { get_local_mplayer } = require("mission")
+let { getScaledFont, scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
 let { mkPlaceIcon, playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
 let { shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { battleCampaign, battleUnitClasses } = require("%appGlobals/clientState/missionState.nut")
@@ -15,6 +16,7 @@ let counterOffsets = hdpx(8)
 let blinkTime = 0.3
 let scoreTrigger = {}
 let localMPlayer = Watched(null)
+let defValueFont = fontVeryTiny
 
 let icons = {
   damage = "ui/gameuiskin#damage_icon.svg"
@@ -53,7 +55,7 @@ let myPlace = Computed(function() {
 
 let isPlaceVisible = Computed(@() myPlace.value > 0)
 
-let mkValueText = @(value) {
+let mkValueText = @(value, font = defValueFont) {
   rendObj = ROBJ_TEXT
   text = shortTextFromNum(value.tointeger())
   transform = {}
@@ -61,35 +63,39 @@ let mkValueText = @(value) {
     prop = AnimProp.scale, from = [1.0, 1.0], to = [1.4, 1.4], easing = Blink
     duration = blinkTime, trigger = scoreTrigger
   }]
-}.__update(fontVeryTiny)
+}.__update(font)
 
-let mkImageWithCount = @(value, image) {
-  size = [playerPlaceIconSize, playerPlaceIconSize]
-  halign = ALIGN_CENTER
-  children = [
-    {
-      size = [countImageSize, countImageSize]
-      rendObj = ROBJ_IMAGE
-      image = Picture($"{image}:{countImageSize}:{countImageSize}:P")
-      keepAspect = true
-      imageValign = ALIGN_CENTER
-    }
-    {
-      minWidth = hdpx(70)
-      padding = [hdpx(3), hdpx(8), hdpx(4), hdpx(8)]
-      vplace = ALIGN_BOTTOM
+function mkImageWithCount(value, image, scale = 1) {
+  let imgSize = scaleEven(countImageSize, scale)
+  let font = getScaledFont(defValueFont, scale)
+  return {
+    size = array(2, scaleEven(playerPlaceIconSize, scale))
+    halign = ALIGN_CENTER
+    children = [
+      {
+        size = [imgSize, imgSize]
+        rendObj = ROBJ_IMAGE
+        image = Picture($"{image}:{imgSize}:{imgSize}:P")
+        keepAspect = true
+        imageValign = ALIGN_CENTER
+      }
+      {
+        minWidth = scaleEven(hdpx(70), scale)
+        padding = [hdpx(3), hdpx(8), hdpx(4), hdpx(8)]
+        vplace = ALIGN_BOTTOM
 
-      rendObj = ROBJ_9RECT
-      image = Picture($"ui/gameuiskin#hud_counter.svg:{counterBgSize}:{counterBgSize}:P")
-      screenOffs = counterOffsets
-      texOffs = counterOffsets
+        rendObj = ROBJ_9RECT
+        image = Picture($"ui/gameuiskin#hud_counter.svg:{counterBgSize}:{counterBgSize}:P")
+        screenOffs = counterOffsets
+        texOffs = counterOffsets
 
-      halign = ALIGN_CENTER
-      children = value instanceof Watched
-        ? @() mkValueText(value.value).__update({ watch = value})
-        : mkValueText(value)
-    }
-  ]
+        halign = ALIGN_CENTER
+        children = value instanceof Watched
+          ? @() mkValueText(value.value, font).__update({ watch = value})
+          : mkValueText(value, font)
+      }
+    ]
+  }
 }
 
 let mkMyScores = @(score) mkImageWithCount(score, icons.score)
@@ -100,17 +106,22 @@ let mkTankMyScores = @(score) @()
 let mkAirMyScores = @(score) mkImageWithCount(score, icons.kills)
 
 
-let myPlaceUi = @() {
-  watch = [isPlaceVisible, myPlace]
-  children = !isPlaceVisible.value ? null
-    : mkPlaceIcon(myPlace.value).__update({
-        key = myPlace.value
-        transform = {}
-        animations = [{
-          prop = AnimProp.scale, from = [1.0, 1.0], to = [1.4, 1.4], easing = Blink
-          duration = blinkTime, play = true
-        }]
-      })
+function mkMyPlaceUi(scale) {
+  let size = scaleEven(playerPlaceIconSize, scale)
+  let font = scaleFontWithTransform(fontTiny, scale, [0.5, 0.5])
+  return @() {
+    watch = [isPlaceVisible, myPlace]
+    children = !isPlaceVisible.value ? null
+      : mkPlaceIcon(myPlace.get(), size, font)
+          .__update({
+            key = myPlace.value
+            transform = {}
+            animations = [{
+              prop = AnimProp.scale, from = [1.0, 1.0], to = [1.4, 1.4], easing = Blink
+              duration = blinkTime, play = true
+            }]
+          })
+  }
 }
 
 function updateLocalMPlayerForScore() {
@@ -118,7 +129,7 @@ function updateLocalMPlayerForScore() {
     localMPlayer(get_local_mplayer())
 }
 
-function myScoresUi() {
+let mkMyScoresUi = @(scale) function() {
   let res = { watch = [viewScoreKey, isPlaceVisible] }
   if (!isPlaceVisible.value)
     return res
@@ -129,7 +140,7 @@ function myScoresUi() {
   score.subscribe(@(_) anim_start(scoreTrigger))
 
   return res.__update({
-    children = mkImageWithCount(score, icons?[key] ?? icons.score)
+    children = mkImageWithCount(score, icons?[key] ?? icons.score, scale)
       .__update({
         key = viewScoreKey
         function onAttach() {
@@ -154,6 +165,6 @@ return {
   mkMyPlace = mkPlaceIcon
   mkImageWithCount
 
-  myPlaceUi
-  myScoresUi
+  mkMyPlaceUi
+  mkMyScoresUi
 }

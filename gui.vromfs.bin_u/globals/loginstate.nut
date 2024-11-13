@@ -23,8 +23,9 @@ let LOGIN_STATE = { //bit mask
   LEGAL_ACCEPTED              = 0x00200
   CONTACTS_LOGGED_IN          = 0x00400
   GOOGLE_CONSENT              = 0x00800
-  IOS_IDFA                    = 0x01000
-  CONSENT_WND                 = 0x02000
+  CONSENT_WND                 = 0x01000
+  IOS_IDFA                    = 0x02000
+
 
   //not required for login
   HANGAR_LOADED               = 0x10000
@@ -36,8 +37,8 @@ let LOGIN_STATE = { //bit mask
   AUTH_AND_UPDATED            = 0x00003
   READY_TO_FULL_LOAD          = 0x00107
   READY_FOR_GOOGLE_CONSENT    = 0x00700
-  READY_FOR_IDFA              = 0x00F00
-  READY_FOR_OUR_CONSENT       = 0x01F00
+  READY_FOR_OUR_CONSENT       = 0x00F00
+  READY_FOR_IDFA              = 0x01F00
   LOGGED_IN                   = 0x03FF7 // logged in to all hosts and all configs are loaded
 }
 
@@ -120,6 +121,8 @@ return loginTypes.__merge(secondStepTypes, {
   isGoogleConsentAllowAds
   isReadyForShowPreviewIdfa
   isPreviewIDFAShowed
+
+  CONSENT_OPTIONS_SAVE_ID = "consentManageOptions"
 
   isLoginStarted = Computed(@() (loginState.value & LOGIN_STATE.LOGIN_STARTED) != 0)
   isAuthorized = Computed(@() (loginState.value & LOGIN_STATE.AUTHORIZED) != 0)

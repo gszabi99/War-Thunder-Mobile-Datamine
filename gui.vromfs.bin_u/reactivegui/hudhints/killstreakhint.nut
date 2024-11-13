@@ -85,7 +85,7 @@ let participantsRow = @(participants, slotsCount) function() {
   }
 }
 
-registerHintCreator(HINT_TYPE, function(data) {
+registerHintCreator(HINT_TYPE, function(data, _) {
   let { timeSeconds = 0, locId = null, noKeyLocId = null, slotsCount = 1, player, participants }  = data
 
   return {

@@ -1029,6 +1029,9 @@
               "object": "@t2_bot10_name"
             }
           ],
+          "wait": {
+            "time": 2.0
+          },
           "triggerEnable": {
             "target": "bots_set_respawn"
           }
@@ -1186,7 +1189,9 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": {}
+          "periodicEvent": {
+            "time": 0.01
+          }
         },
         "conditions": {},
         "actions": {

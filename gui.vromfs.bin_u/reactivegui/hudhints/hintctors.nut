@@ -9,23 +9,15 @@ let warningBgColor = 0x66664102 //0xFFffa406
 let hintWidth = hdpx(800)
 let hintSideGradWidth = hdpx(150)
 let maxHintWidth = min(saSize[0] - hdpx(1100), hintWidth)
-let freeSpaceToCenter = sw(50) - saBorders[0]
-let maxChatLogHeight = hdpx(250)
-let maxChatLogWidth = freeSpaceToCenter - freeSpaceToCenter * 0.30
 let textGap = hdpx(10)
 
 let appearTime = 0.4
 let bounceTime = 0.35
 let fadeOutTime = 0.3
 
-let fontShade = {
-  fontFx = FFT_GLOW
-  fontFxFactor = max(64, hdpx(64))
-  fontFxColor = 0xFF000000
-}
 
 let fontByWidth = @(text, width) calc_str_box(text, fontSmall)[0] > width
-  ? fontTiny : fontSmall
+  ? fontTinyShaded : fontSmallShaded
 
 let mkGradientBlock = @(color, children, width = hintWidth, padding = hdpx(10)) {
   size = [width, SIZE_TO_CONTENT]
@@ -75,15 +67,15 @@ let mkTextByWidth = @(text, width = hintWidth, ovr = {}) {
   color = 0xFFFFFFFF
   halign = ALIGN_CENTER
   colorTable = teamColors
-}.__update(fontByWidth(text, width), fontShade, ovr)
+}.__update(fontByWidth(text, width), ovr)
 
-let errorText = @(text) {
+let errorText = @(text, ovr = {}) {
   size = [0.3 * saSize[0], SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text
   color = 0xFFFF1010
-}.__update(fontVeryTiny, fontShade)
+}.__update(fontVeryTinyShaded, ovr)
 
 let simpleText = @(text, ovr = {}) {
   rendObj = ROBJ_TEXTAREA
@@ -91,7 +83,7 @@ let simpleText = @(text, ovr = {}) {
   text
   color = 0xFFFFFFFF
   colorTable = teamColors
-}.__update(fontSmall, fontShade, ovr)
+}.__update(fontSmallShaded, ovr)
 
 let warningText = @(text, ovr = {}) {
   rendObj = ROBJ_TEXTAREA
@@ -102,7 +94,7 @@ let warningText = @(text, ovr = {}) {
   animations = [
     { prop = AnimProp.opacity, from = 0.0, to = 1.0, easing = CosineFull, duration = 0.8, play = true, loop = true  }
   ]
-}.__update(fontSmall, fontShade, ovr)
+}.__update(fontSmallShaded, ovr)
 
 function mkTextWithIcon(text, icon, iconSize, width) {
   let imgSize = (iconSize ?? array(2, hdpx(30))).map(@(v) v.tointeger())
@@ -152,26 +144,26 @@ function commonHintCtor(hint, bgColor, width = hintWidth) {
 }
 
 let hintCtors = {
-  win = @(hint) commonHintCtor(hint, winBgColor)
-  fail = @(hint) commonHintCtor(hint, failBgColor)
-  mission = @(hint) commonHintCtor(hint, defBgColor, isWidescreen ? hintWidth : hdpx(600))
+  win = @(hint, _) commonHintCtor(hint, winBgColor)
+  fail = @(hint, _) commonHintCtor(hint, failBgColor)
+  mission = @(hint, _) commonHintCtor(hint, defBgColor, isWidescreen ? hintWidth : hdpx(600))
 
-  warningWithIcon = @(hint) mkGradientBlock(warningBgColor,
+  warningWithIcon = @(hint, _) mkGradientBlock(warningBgColor,
     mkTextWithIcon(hint?.text ?? "", hint?.icon, hint?.iconSize, maxHintWidth),
     maxHintWidth,
     hdpx(10))
 
-  errorText = @(hint) errorText(hint.text)
-  simpleText = @(hint) simpleText(hint.text, { maxWidth = maxHintWidth })
-  simpleTextTiny = @(hint) simpleText(hint.text,
+  errorText = @(hint, fontOvr) errorText(hint.text, fontOvr)
+  simpleText = @(hint, fontOvr) simpleText(hint.text, { maxWidth = maxHintWidth }.__update(fontOvr))
+  simpleTextTiny = @(hint, _) simpleText(hint.text,
     { halign = ALIGN_CENTER, maxWidth = maxHintWidth }.__update(fontTiny))
-  simpleTextTinyGrad = @(hint) mkGradientBlock(defBgColor, simpleText(hint.text,
+  simpleTextTinyGrad = @(hint, _) mkGradientBlock(defBgColor, simpleText(hint.text,
     { halign = ALIGN_CENTER }.__update(fontTiny)), hintWidth, 0)
-  warningTextTiny = @(hint) warningText(hint.text,
+  warningTextTiny = @(hint, _) warningText(hint.text,
       { halign = ALIGN_CENTER, maxWidth = maxHintWidth }.__update(fontTiny))
-  chatLogTextTiny = @(hint) simpleText(hint.text,
-    { halign = ALIGN_CENTER, maxWidth = maxChatLogWidth }.__update(fontTiny))
-  simpleTextWithIcon = @(hint) simpleTextWithIcon(hint?.text ?? "", hint?.icon, defBgColor, maxHintWidth)
+  chatLogTextTiny = @(hint, fontOvr) simpleText(hint.text,
+    { halign = ALIGN_CENTER }.__update(fontTiny, fontOvr))
+  simpleTextWithIcon = @(hint, _) simpleTextWithIcon(hint?.text ?? "", hint?.icon, defBgColor, maxHintWidth)
 }
 
 function registerHintCreator(id, ctor) {
@@ -184,12 +176,10 @@ function registerHintCreator(id, ctor) {
 
 return {
   hintCtors = freeze(hintCtors)
-  defaultHintCtor = @(hint) commonHintCtor(hint, defBgColor)
+  defaultHintCtor = @(hint, _) commonHintCtor(hint, defBgColor)
   registerHintCreator
   mkGradientBlock
   maxHintWidth
-  maxChatLogWidth
-  maxChatLogHeight
 
   failBgColor
   defBgColor

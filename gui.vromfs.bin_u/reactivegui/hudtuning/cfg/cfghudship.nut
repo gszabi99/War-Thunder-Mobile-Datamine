@@ -7,33 +7,39 @@ let { EII_SMOKE_SCREEN, EII_TOOLKIT,
 
 
   EII_IRCM } = require("%rGui/hud/weaponsButtonsConfig.nut")
-let { AB_FIREWORK } = require("%rGui/hud/actionBar/actionType.nut")
+let { AB_FIREWORK, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3,
+//
+
+
+} = require("%rGui/hud/actionBar/actionType.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let cfgHudCommonNaval = require("cfgHudCommonNaval.nut")
-let { mkZoomButton, mkPlaneItem, mkSimpleButton, mkAntiairButton } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkWeaponBtnEditView, mkNumberedWeaponEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
-let { Z_ORDER, mkRBPos, mkLBPos, weaponryButtonCtor, weaponryButtonDynamicCtor,
-  withActionBarButtonCtor, withActionButtonCtor
+let { Z_ORDER, mkRBPos, mkLBPos, weaponryButtonDynamicCtor,
+  withActionBarButtonCtor, withActionButtonScaleCtor
 } = require("hudTuningPkg.nut")
 let shipMovementBlock = require("%rGui/hud/shipMovementBlock.nut")
 let { moveArrowsViewWithMode } = require("%rGui/components/movementArrows.nut")
 let { voiceMsgStickBlock, voiceMsgStickView } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
-let { mkRhombFireworkBtn } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
+let { mkRhombFireworkBtn, mkRhombZoomButton, mkSupportPlaneBtn, mkAntiairButton, mkRhombSimpleActionBtn
+} = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
 let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
+let supportPlaneConfig = require("%rGui/hud/supportPlaneConfig.nut")
 
 return cfgHudCommon.__merge(cfgHudCommonNaval, {
-  zoom = weaponryButtonCtor("ID_ZOOM", mkZoomButton,
-    {
-      defTransform = mkRBPos([hdpx(-380), hdpx(-220)])
-      editView = mkWeaponBtnEditView("ui/gameuiskin#hud_binoculars.svg", 1.34)
-    })
+  zoom = {
+    ctor = mkRhombZoomButton
+    defTransform = mkRBPos([hdpx(-380), hdpx(-220)])
+    editView = mkWeaponBtnEditView("ui/gameuiskin#hud_binoculars.svg", 1.34)
+  }
 
-  plane1 = weaponryButtonCtor("EII_SUPPORT_PLANE", mkPlaneItem,
-    {
-      defTransform = mkRBPos([0, hdpx(-220)])
-      editView = mkNumberedWeaponEditView("ui/gameuiskin#hud_aircraft_fighter.svg", 1, false)
-    })
+  plane1 = {
+    ctor = @(scale) mkSupportPlaneBtn(AB_SUPPORT_PLANE, supportPlaneConfig[0], scale)
+    defTransform = mkRBPos([0, hdpx(-220)])
+    editView = mkNumberedWeaponEditView(supportPlaneConfig[0].image, 1, false)
+  }
 //
+
 
 
 
@@ -111,7 +117,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
 
 
 
-  firework = withActionButtonCtor(AB_FIREWORK, mkRhombFireworkBtn,
+  firework = withActionButtonScaleCtor(AB_FIREWORK, mkRhombFireworkBtn,
     {
       defTransform = mkRBPos([hdpx(-216), hdpx(-436)])
       editView = mkWeaponBtnEditView("ui/gameuiskin#hud_ammo_fireworks.svg", 1.0)
@@ -120,7 +126,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     })
 
   voiceCmdStick = {
-    ctor = @() voiceMsgStickBlock
+    ctor = voiceMsgStickBlock
     defTransform = mkRBPos([hdpx(5), 0])
     editView = voiceMsgStickView
     isVisibleInEditor = allow_voice_messages
@@ -129,7 +135,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
   }
 
   moveArrows = {
-    ctor = @() shipMovementBlock(SHIP)
+    ctor = @(scale) shipMovementBlock(SHIP, scale)
     defTransform = mkLBPos([0, -hdpx(54)])
     editView = moveArrowsViewWithMode
     priority = Z_ORDER.STICK

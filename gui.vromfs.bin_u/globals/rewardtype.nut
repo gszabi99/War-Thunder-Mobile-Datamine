@@ -1,4 +1,4 @@
-return {
+let allTypes = {
   G_BATTLE_MOD = "battleMod"
   G_BLUEPRINT = "blueprint"
   G_BOOSTER = "booster"
@@ -15,4 +15,12 @@ return {
   G_UNIT_LEVEL = "unitLevel"
   G_UNIT_MOD = "unitMod"
   G_UNIT_EXP = "unitExp"
+  G_PRIZE_TICKET = "prizeTicket"
+  G_RESEARCH_EXP = "researchExp"
 }
+
+let rewardTypeByValue = allTypes.reduce(@(res, v, k) res.$rawset(v, k), {})
+
+return allTypes.__merge({
+  rewardTypeByValue
+})

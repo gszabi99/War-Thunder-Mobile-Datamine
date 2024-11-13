@@ -1,8 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
+let { sqrt } = require("math")
 let { get_mission_time } = require("mission")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { playSound } = require("sound_wt")
 let { TouchAreaOutButton, TouchScreenButton } = require("wt.behaviors")
+let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { btnBgColor, borderColorPushed, borderNoAmmoColor, borderColor,
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -157,11 +159,11 @@ let mkBtnBorder = @(size, isAvailable, stateFlags) @() {
     : borderColor
 }
 
-let mkBorderPlane = @(size, isAvailable, stateFlags) @() {
+let mkBorderPlane = @(size, isAvailable, stateFlags, scale = 1) @() {
   watch = stateFlags
   size = [size, size]
   rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = hdpx(3)
+  lineWidth = hdpx(3 * scale)
   fillColor = 0
   commands = [
     [VECTOR_ELLIPSE, 50, 50, 50, 50],
@@ -241,49 +243,67 @@ let mkCircleBtnPlaneEditView = circleBtnPlaneEditViewCtor(airButtonSize, buttonA
 let mkBigCircleBtnEditView = circleBtnEditViewCtor(bigButtonSize, bigButtonImgSize)
 let mkBigCirclePlaneBtnEditView = circleBtnPlaneEditViewCtor(bigButtonSize, bigButtonImgSize)
 
-let countTextStyle = {
+
+let countTextFont = fontVeryTinyShaded
+
+let mkCountTextRight = @(text, color, scale = 1) {
   rendObj = ROBJ_TEXT
   vplace = ALIGN_BOTTOM
-}.__update(fontVeryTinyShaded)
+  pos = [pw(80), ph(-90)]
+  color
+  text
+}.__update(getScaledFont(countTextFont, scale))
 
-let mkCountTextRight = @(text, color)
-  countTextStyle.__merge({
-    pos = [pw(80), ph(-90)]
-    color
-    text
-  })
-
-let mkCountTextLeft = @(text, color)
-  countTextStyle.__merge({
-    hplace = ALIGN_RIGHT
-    pos = [pw(-80), ph(-90)]
-    color
-    text
-  })
-
-let mkCountTextLeftUpper = [
-  [pw(-85), ph(-85)],
-  [pw(-100), ph(-70)],
-  [pw(-105), ph(-55)],
-]
-  .map(@(pos) @(ovr) countTextStyle.__merge({ hplace = ALIGN_RIGHT, pos }, ovr))
-
-let waitForAimIcon = {
-  rendObj = ROBJ_IMAGE
-  size = [aimImageSize, aimImageSize]
-  pos = [0, 0.5 * aimImageSize]
+let mkCountTextLeft = @(text, color, scale = 1) {
+  rendObj = ROBJ_TEXT
   vplace = ALIGN_BOTTOM
-  hplace = ALIGN_CENTER
-  valign = ALIGN_BOTTOM
-  image = Picture($"ui/gameuiskin#hud_debuff_rotation.svg:{aimImageSize}:{aimImageSize}")
-  keepAspect = KEEP_ASPECT_FIT
-  animations = wndSwitchAnim
+  hplace = ALIGN_RIGHT
+  pos = [pw(-80), ph(-90)]
+  color
+  text
+}.__update(getScaledFont(countTextFont, scale))
+
+function mkCountTextLeftUpperlist(btnSize, scale, count) {
+  let font = getScaledFont(countTextFont, scale)
+  let { fontSize } = font
+  let gap = fontSize / 5
+  let step = fontSize + gap
+  let offset = fontSize * 3 / 4
+  return array(count)
+    .map(function(_, i) {
+      let y = offset + i * step
+      let yExt = btnSize / 2 - y + (y - step / 2 > btnSize / 2 ? step : 0)
+      let pos = [-sqrt(btnSize * btnSize / 4 - yExt * yExt) - btnSize / 2, -btnSize + y]
+      return @(ovr) {
+        rendObj = ROBJ_TEXT
+        vplace = ALIGN_BOTTOM
+        hplace = ALIGN_RIGHT
+        pos
+      }.__update(font, ovr)
+    })
+}
+
+function mkWaitForAimIcon(scale) {
+  let size = scaleEven(aimImageSize, scale)
+  return {
+    rendObj = ROBJ_IMAGE
+    size = [size, size]
+    pos = [0, 0.5 * size]
+    vplace = ALIGN_BOTTOM
+    hplace = ALIGN_CENTER
+    valign = ALIGN_BOTTOM
+    image = Picture($"ui/gameuiskin#hud_debuff_rotation.svg:{size}:{size}")
+    keepAspect = KEEP_ASPECT_FIT
+    animations = wndSwitchAnim
+  }
 }
 
 let primStateFlags = Watched(0) //same state flags for all primary buttons on the screen
 let primGroup = ElemGroup()
-function mkCircleTankPrimaryGun(actionItem, key = "btn_weapon_primary", countCtor = mkCountTextLeft) {
+function mkCircleTankPrimaryGun(actionItem, scale, key = "btn_weapon_primary", countCtor = mkCountTextLeft) {
   let isDisabled = mkIsControlDisabled("ID_FIRE_GM")
+  let bgSize = scaleEven(bigButtonSize, scale)
+  let imgSize = scaleEven(bigButtonImgSize, scale)
   return function() {
     let isAvailable = isActionAvailable(actionItem) && !isDisabled.get()
     let { count, countEx, isBulletBelt = false, isContinuous = false } = actionItem
@@ -317,24 +337,26 @@ function mkCircleTankPrimaryGun(actionItem, key = "btn_weapon_primary", countCto
     return res.__update({ //warning disable: -unwanted-modification
       watch = [allowShoot, primaryRocketGun, isDisabled]
       key
-      size = [bigButtonSize, bigButtonSize]
+      size = [bgSize, bgSize]
       group = primGroup
       children = [
-        mkCircleProgressBg(bigButtonSize, actionItem)
-        mkBtnBorder(bigButtonSize, isAvailable, primStateFlags)
-        mkBtnImage(bigButtonImgSize, image, color)
-        count < 0 ? null : countCtor(isBulletBelt ? $"{count}/{countEx}" : count, color)
-        isWaitForAim ? waitForAimIcon : null
-        mkCircleGlare(bigButtonSize, actionItem?.id)
-        mkGamepadShortcutImage("ID_FIRE_GM", defShortcutOvr)
+        mkCircleProgressBg(bgSize, actionItem)
+        mkBtnBorder(bgSize, isAvailable, primStateFlags)
+        mkBtnImage(imgSize, image, color)
+        count < 0 ? null : countCtor(isBulletBelt ? $"{count}/{countEx}" : count, color, scale)
+        isWaitForAim ? mkWaitForAimIcon(scale) : null
+        mkCircleGlare(bgSize, actionItem?.id)
+        mkGamepadShortcutImage("ID_FIRE_GM", defShortcutOvr, scale)
       ]
     })
   }
 }
 
-function mkCircleTankMachineGun(actionItemW) {
+function mkCircleTankMachineGun(actionItemW, scale) {
   let isDisabled = mkIsControlDisabled("ID_FIRE_GM_MACHINE_GUN")
   let stateFlags = Watched(0)
+  let bgSize = scaleEven(buttonSize, scale)
+  let imgSize = scaleEven(buttonImgSize, scale)
   return function() {
     let actionItem = actionItemW.get()
     if (actionItem == null)
@@ -358,55 +380,59 @@ function mkCircleTankMachineGun(actionItemW) {
     return res.__update({
       watch = [actionItemW, allowShoot, primaryRocketGun, isDisabled]
       key = "btn_machinegun"
-      size = [buttonSize, buttonSize]
+      size = [bgSize, bgSize]
       behavior = TouchAreaOutButton
       cameraControl = true
       children = [
-        mkCircleProgressBg(buttonSize, actionItem)
-        mkBtnBorder(buttonSize, isAvailable, stateFlags)
-        mkBtnImage(buttonImgSize, "ui/gameuiskin#hud_aircraft_machine_gun.svg", color)
-        actionItem.count < 0 ? null : mkCountTextLeft(actionItem.count, color)
-        isWaitForAim ? waitForAimIcon : null
-        mkGamepadShortcutImage("ID_FIRE_GM_MACHINE_GUN", defShortcutOvr)
+        mkCircleProgressBg(bgSize, actionItem)
+        mkBtnBorder(bgSize, isAvailable, stateFlags)
+        mkBtnImage(imgSize, "ui/gameuiskin#hud_aircraft_machine_gun.svg", color)
+        actionItem.count < 0 ? null : mkCountTextLeft(actionItem.count, color, scale)
+        isWaitForAim ? mkWaitForAimIcon(scale) : null
+        mkGamepadShortcutImage("ID_FIRE_GM_MACHINE_GUN", defShortcutOvr, scale)
       ]
     })
   }
 }
 
-let mkCircleTankSecondaryGun = @(shortcutId, img = null) @(actionItem) function() {
-  let isAvailable = isActionAvailable(actionItem)
-  let isWaitForAim = !(actionItem?.aimReady ?? true)
-  let isWaitToShoot = !allowShoot.value && !primaryRocketGun.value
-  let color = !isAvailable || isWaitToShoot || (primaryRocketGun.value && isWaitForAim) ? disabledColor : 0xFFFFFFFF
-  let stateFlags = Watched(0)
-  let image = weaponTouchIcons?[actionItem.weaponName] ?? img
-  let res = mkContinuousButtonParams(
-    function onTouchBegin() {
-      if (isWaitForAim && (isWaitToShoot || primaryRocketGun.value))
-        addCommonHint(loc("hints/wait_for_aiming"))
-      else if (isActionAvailable(actionItem))
-        useShortcutOn(shortcutId)
-    },
-    @() setShortcutOff(shortcutId),
-    shortcutId,
-    stateFlags
-  )
+let mkCircleTankSecondaryGun = @(shortcutId, img = null) function(actionItem, scale) {
+  let bgSize = scaleEven(buttonSize, scale)
+  let imgSize = scaleEven(buttonImgSize, scale)
+  return function() {
+    let isAvailable = isActionAvailable(actionItem)
+    let isWaitForAim = !(actionItem?.aimReady ?? true)
+    let isWaitToShoot = !allowShoot.value && !primaryRocketGun.value
+    let color = !isAvailable || isWaitToShoot || (primaryRocketGun.value && isWaitForAim) ? disabledColor : 0xFFFFFFFF
+    let stateFlags = Watched(0)
+    let image = weaponTouchIcons?[actionItem.weaponName] ?? img
+    let res = mkContinuousButtonParams(
+      function onTouchBegin() {
+        if (isWaitForAim && (isWaitToShoot || primaryRocketGun.value))
+          addCommonHint(loc("hints/wait_for_aiming"))
+        else if (isActionAvailable(actionItem))
+          useShortcutOn(shortcutId)
+      },
+      @() setShortcutOff(shortcutId),
+      shortcutId,
+      stateFlags
+    )
 
-  return res.__update({
-    watch = [allowShoot, primaryRocketGun]
-    behavior = Behaviors.Button
-    cameraControl = true
-    key = "btn_weapon_secondary"
-    size = [buttonSize, buttonSize]
-    children = [
-      mkCircleProgressBg(buttonSize, actionItem)
-      mkBtnBorder(buttonSize, isAvailable, stateFlags)
-      mkBtnImage(buttonImgSize, image,  color)
-      actionItem.count < 0 ? null : mkCountTextLeft(actionItem.count, color)
-      isWaitForAim ? waitForAimIcon : null
-      mkGamepadShortcutImage(shortcutId, defShortcutOvr)
-    ]
-  })
+    return res.__update({
+      watch = [allowShoot, primaryRocketGun]
+      behavior = Behaviors.Button
+      cameraControl = true
+      key = "btn_weapon_secondary"
+      size = [bgSize, bgSize]
+      children = [
+        mkCircleProgressBg(bgSize, actionItem)
+        mkBtnBorder(bgSize, isAvailable, stateFlags)
+        mkBtnImage(imgSize, image,  color)
+        actionItem.count < 0 ? null : mkCountTextLeft(actionItem.count, color, scale)
+        isWaitForAim ? mkWaitForAimIcon(scale) : null
+        mkGamepadShortcutImage(shortcutId, defShortcutOvr, scale)
+      ]
+    })
+  }
 }
 
 let weaponryItemStateFlags = {}
@@ -419,7 +445,7 @@ function getWeapStateFlags(key) {
 
 let lowerCamera = @() lowerAircraftCamera(true)
 
-function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, hasCameraControl, canLowerCamera){
+let mkCircleWeaponryItemCtor = @(shortcutId, weapon, hasWeapon, img, hasCameraControl, canLowerCamera) function(scale) {
   let isDisabled = mkIsControlDisabled(shortcutId)
   let isAvailable = Computed(@() isWeaponAvailable(weapon.get()) && !isDisabled.get())
   let stateFlags = getWeapStateFlags(shortcutId)
@@ -473,12 +499,17 @@ function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, hasCameraContr
   res.behavior <- [TouchAreaOutButton]
   if (hasCameraControl)
     res.cameraControl <- true
+
+  let bgSize = scaleEven(airButtonSize, scale)
+  let imgSize = scaleEven(buttonImgSize, scale)
+  let radiusX = scaleEven(zoneRadiusX, scale)
+  let radiusY = scaleEven(zoneRadiusY, scale)
   return @() !hasWeapon.get() ? { watch = weapon, key = shortcutId }
     : res.__update({
       watch = [isDisabled, isAvailable]
-      size = [airButtonSize, airButtonSize]
-      zoneRadiusX
-      zoneRadiusY
+      size = [bgSize, bgSize]
+      zoneRadiusX = radiusX
+      zoneRadiusY = radiusY
       onTouchInsideChange = @(isInside) userHoldWeapInside.mutate(@(v) v[shortcutId] <- isInside)
       onTouchInterrupt = onStopTouch
       onTouchBegin
@@ -487,24 +518,27 @@ function mkCircleWeaponryItem(shortcutId, weapon, hasWeapon, img, hasCameraContr
         @() {
           watch = weapon
           size = flex()
-          children = mkCircleProgressBgWeapon(airButtonSize, shortcutId, weapon.get(), isAvailable.get())
+          children = mkCircleProgressBgWeapon(bgSize, shortcutId, weapon.get(), isAvailable.get())
         }
-        mkBorderPlane(airButtonSize, isAvailable.get(), stateFlags)
-        mkBtnZone(shortcutId, zoneRadiusX, zoneRadiusY)
-        mkBtnImage(buttonImgSize, img)
+        mkBorderPlane(bgSize, isAvailable.get(), stateFlags, scale)
+        mkBtnZone(shortcutId, radiusX, radiusY)
+        mkBtnImage(imgSize, img)
         @() {
           watch = [weapon, isAvailable]
         }.__update(weapon.get().count < 0 ? {}
-          : mkCountTextLeft(weapon.get().count, isAvailable.get() ? 0xFFFFFFFF : disabledColor))
-        mkCircleGlare(airButtonSize, shortcutId)
-        mkGamepadShortcutImage(shortcutId, defShortcutOvr)
+          : mkCountTextLeft(weapon.get().count, isAvailable.get() ? 0xFFFFFFFF : disabledColor, scale))
+        mkCircleGlare(bgSize, shortcutId)
+        mkGamepadShortcutImage(shortcutId, defShortcutOvr, scale)
       ]
   })
 }
 
-function mkCirclePlaneCourseGuns(btnSize, imgSize) {
+function mkCirclePlaneCourseGuns(btnSizeBase, imgSizeBase, scale) {
   let shortcutId = "ID_FIRE_COURSE_GUNS"
   let stateFlags = Watched(0)
+  let btnSize = scaleEven(btnSizeBase, scale)
+  let imgSize = scaleEven(imgSizeBase, scale)
+  let mkCountTextLeftUpper = mkCountTextLeftUpperlist(btnSize, scale, 3)
 
   let mGunsDisabled = mkIsControlDisabled("ID_FIRE_MGUNS")
   let cannonsDisabled = mkIsControlDisabled("ID_FIRE_CANNONS")
@@ -551,7 +585,7 @@ function mkCirclePlaneCourseGuns(btnSize, imgSize) {
             size = flex()
             children = mkCircleProgressBgWeapon(btnSize, "course_gun", availableWeapon.get(), isAnyWeaponAvailable.get())
           }
-          mkBorderPlane(btnSize, isAnyWeaponAvailable.get(), stateFlags)
+          mkBorderPlane(btnSize, isAnyWeaponAvailable.get(), stateFlags, scale)
           mkBtnImage(imgSize, "ui/gameuiskin#hud_aircraft_canons.svg", isAnyWeaponAvailable.get() ? 0xFFFFFFFF : disabledColor)
           @() {
             watch = [isCannonsAvailable, isMgunsAvailable, isAddGunsAvailable]
@@ -571,14 +605,17 @@ function mkCirclePlaneCourseGuns(btnSize, imgSize) {
               }))
           }
           mkCircleGlare(btnSize, "course_gun")
-          mkGamepadShortcutImage(shortcutId, defShortcutOvr)
+          mkGamepadShortcutImage(shortcutId, defShortcutOvr, scale)
         ]
       })
 }
 
-function mkCircleSecondaryGuns(btnSize, imgSize) {
+function mkCircleSecondaryGuns(btnSizeBase, imgSizeBase, scale) {
   let shortcutId = "ID_FIRE_MGUNS"
   let stateFlags = Watched(0)
+  let btnSize = scaleEven(btnSizeBase, scale)
+  let imgSize = scaleEven(imgSizeBase, scale)
+  let mkCountTextLeftUpper = mkCountTextLeftUpperlist(btnSize, scale, 2)
 
   let mGunsDisabled = mkIsControlDisabled("ID_FIRE_MGUNS")
   let addGunsDisabled = mkIsControlDisabled("ID_FIRE_ADDITIONAL_GUNS")
@@ -621,7 +658,7 @@ function mkCircleSecondaryGuns(btnSize, imgSize) {
             size = flex()
             children = mkCircleProgressBgWeapon(btnSize, "secondary_gun", availableWeapon.get(), isAnyWeaponAvailable.get())
           }
-          mkBorderPlane(btnSize, isAnyWeaponAvailable.get(), stateFlags)
+          mkBorderPlane(btnSize, isAnyWeaponAvailable.get(), stateFlags, scale)
           mkBtnImage(imgSize, "ui/gameuiskin#hud_aircraft_canons.svg", isAnyWeaponAvailable.get() ? 0xFFFFFFFF : disabledColor)
           @() {
             watch = [isMgunsAvailable, isAddGunsAvailable]
@@ -640,15 +677,17 @@ function mkCircleSecondaryGuns(btnSize, imgSize) {
               }))
           }
           mkCircleGlare(btnSize, "secondary_gun")
-          mkGamepadShortcutImage(shortcutId, defShortcutOvr)
+          mkGamepadShortcutImage(shortcutId, defShortcutOvr, scale)
         ]
       })
 }
 
-function mkCirclePlaneCourseGunsSingle(shortcutId, weapon, hasWeapon,
-  btnSize = buttonSize, btnImgSize = buttonImgSize
+function mkCirclePlaneCourseGunsSingle(shortcutId, weapon, hasWeapon, scale,
+  btnSizeBase = buttonSize, btnImgSizeBase = buttonImgSize
 ) {
   let stateFlags = Watched(0)
+  let btnSize = scaleEven(btnSizeBase, scale)
+  let btnImgSize = scaleEven(btnImgSizeBase, scale)
 
   let isDisabled = mkIsControlDisabled(shortcutId)
   let isAvailable = Computed(@() isWeaponAvailable(weapon.get()) && !isDisabled.get())
@@ -677,21 +716,23 @@ function mkCirclePlaneCourseGunsSingle(shortcutId, weapon, hasWeapon,
             size = flex()
             children = mkCircleProgressBgWeapon(btnSize, shortcutId, weapon.get(), isAvailable.get())
           }
-          mkBorderPlane(btnSize, isAvailable.get(), stateFlags)
+          mkBorderPlane(btnSize, isAvailable.get(), stateFlags, scale)
           mkBtnImage(btnImgSize, "ui/gameuiskin#hud_aircraft_canons.svg", isAvailable.get() ? 0xFFFFFFFF : disabledColor)
           @() {
             watch = [weapon, isAvailable]
           }.__update(weapon.get().count < 0 ? {}
-            : mkCountTextLeft(weapon.get().count, isAvailable.get() ? 0xFFFFFFFF : disabledColor))
+            : mkCountTextLeft(weapon.get().count, isAvailable.get() ? 0xFFFFFFFF : disabledColor, scale))
           mkCircleGlare(btnSize, shortcutId)
-          mkGamepadShortcutImage(shortcutId, defShortcutOvr)
+          mkGamepadShortcutImage(shortcutId, defShortcutOvr, scale)
         ]
       })
 }
 
-function mkCirclePlaneTurretsGuns(btnSize = buttonSize, btnImgSize = buttonImgSize) {
+function mkCirclePlaneTurretsGuns(btnSizeBase, btnImgSizeBase, scale) {
   let shortcutId = "ID_FIRE_MGUNS"
   let stateFlags = Watched(0)
+  let btnSize = scaleEven(btnSizeBase, scale)
+  let btnImgSize = scaleEven(btnImgSizeBase, scale)
 
   let isDisabled = mkIsControlDisabled(shortcutId)
   let isActiveTurretsAvailable = Computed(function() {
@@ -722,22 +763,25 @@ function mkCirclePlaneTurretsGuns(btnSize = buttonSize, btnImgSize = buttonImgSi
     halign = ALIGN_CENTER
     children = [
       mkCircleBgWeapon(btnSize, shortcutId, isAvailable.get())
-      mkBorderPlane(btnSize, isAvailable.get(), stateFlags)
+      mkBorderPlane(btnSize, isAvailable.get(), stateFlags, scale)
       mkBtnImage(btnImgSize, "ui/gameuiskin#hud_aircraft_machine_gun.svg",
         isAvailable.get() ? 0xFFFFFFFF : disabledColor)
       mkCircleGlare(btnSize, shortcutId)
-      mkGamepadShortcutImage(shortcutId, defShortcutOvr)
+      mkGamepadShortcutImage(shortcutId, defShortcutOvr, scale)
     ]
   })
 }
 
-function mkCircleLockBtn(shortcutId){
+function mkCircleLockBtn(shortcutId, scale) {
   let stateFlags = Watched(0)
   let isDisabled = mkIsControlDisabled(shortcutId)
+  let bgSize = scaleEven(airButtonSize, scale)
+  let imgSize = scaleEven(targetTrackingImgSize, scale)
+  let offImgSize = scaleEven(targetTrackingOffImgSize, scale)
   return @() {
     watch = isDisabled
     key = shortcutId
-    size = [airButtonSize, airButtonSize]
+    size = [bgSize, bgSize]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     behavior = Behaviors.Button
@@ -748,7 +792,7 @@ function mkCircleLockBtn(shortcutId){
     children = [
       @() {
         watch = [stateFlags, canLock]
-        size = [airButtonSize, airButtonSize]
+        size = [bgSize, bgSize]
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = hdpx(3)
         fillColor = 0
@@ -757,68 +801,71 @@ function mkCircleLockBtn(shortcutId){
         ]
         color = (stateFlags.value & S_ACTIVE) != 0 ? borderColorPushed : canLock.value ? borderColor: borderNoAmmoColor
       }
-      lockButtonIcon(targetTrackingImgSize, targetTrackingOffImgSize)
-      mkCircleGlare(airButtonSize, "lock")
+      lockButtonIcon(imgSize, offImgSize)
+      mkCircleGlare(bgSize, "lock")
       isDisabled.get() ? null
-        : mkGamepadShortcutImage(shortcutId, defShortcutOvr)
+        : mkGamepadShortcutImage(shortcutId, defShortcutOvr, scale)
     ]
     transform = {}
     animations = [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.2, 1.2], duration = 2.0,  easing = DoubleBlink, trigger = "hint_need_lock_target" }]
   }
 }
 
-function mkCircleZoom(zoomInIcon = "ui/gameuiskin#hud_tank_binoculars_zoom.svg", zoomOutIcon = "ui/gameuiskin#hud_tank_binoculars.svg" ) {
-  let stateFlags = Watched(0)
-  let isDisabled = mkIsControlDisabled("ID_ZOOM_TOGGLE")
-  let imgSize = (0.8 * buttonSize).tointeger()
-  return @() {
-    watch = [canZoom, isInZoom, isDisabled]
-    key = "btn_zoom_circle"
-    size = [buttonSize, buttonSize]
-    behavior = Behaviors.Button
-    cameraControl = true
-    hotkeys = mkGamepadHotkey("ID_ZOOM_TOGGLE")
-    function onClick() {
-      if (isDisabled.value)
-        return
-      if (canZoom.value)
-        toggleShortcut("ID_ZOOM_TOGGLE")
-      else
-        addCommonHint(loc("hints/select_enemy_to_aim"))
+let mkCircleZoomCtor = @(zoomInIcon = "ui/gameuiskin#hud_tank_binoculars_zoom.svg", zoomOutIcon = "ui/gameuiskin#hud_tank_binoculars.svg" )
+  function(scale) {
+    let stateFlags = Watched(0)
+    let isDisabled = mkIsControlDisabled("ID_ZOOM_TOGGLE")
+    let bgSize = scaleEven(buttonSize, scale)
+    let imgSize = scaleEven(0.8 * buttonImgSize, scale)
+    return @() {
+      watch = [canZoom, isInZoom, isDisabled]
+      key = "btn_zoom_circle"
+      size = [bgSize, bgSize]
+      behavior = Behaviors.Button
+      cameraControl = true
+      hotkeys = mkGamepadHotkey("ID_ZOOM_TOGGLE")
+      function onClick() {
+        if (isDisabled.value)
+          return
+        if (canZoom.value)
+          toggleShortcut("ID_ZOOM_TOGGLE")
+        else
+          addCommonHint(loc("hints/select_enemy_to_aim"))
+      }
+      onElemState = @(v) stateFlags(v)
+      children = [
+        mkBtnBg(bgSize, btnBgColor.empty)
+        mkBtnBorder(bgSize, canZoom.value && !isDisabled.value, stateFlags)
+        mkBtnImage(imgSize,
+          isInZoom.value ? zoomInIcon : zoomOutIcon,
+          isDisabled.value ? disabledColor : 0xFFFFFFFF)
+        isDisabled.value ? null
+          : mkGamepadShortcutImage("ID_ZOOM_TOGGLE", defShortcutOvr, scale)
+      ]
     }
-    onElemState = @(v) stateFlags(v)
-    children = [
-      mkBtnBg(buttonSize, btnBgColor.empty)
-      mkBtnBorder(buttonSize, canZoom.value && !isDisabled.value, stateFlags)
-      mkBtnImage(imgSize,
-        isInZoom.value ? zoomInIcon : zoomOutIcon,
-        isDisabled.value ? disabledColor : 0xFFFFFFFF)
-      isDisabled.value ? null
-        : mkGamepadShortcutImage("ID_ZOOM_TOGGLE", defShortcutOvr)
-    ]
   }
-}
 
-function mkCircleTargetTrackingBtn() {
+function mkCircleTargetTrackingBtn(scale) {
   let stateFlags = Watched(0)
-  let imgSize = (0.8 * buttonSize).tointeger()
+  let bgSize = scaleEven(buttonSize, scale)
+  let imgSize = scaleEven(0.8 * buttonSize, scale)
   let color = Computed(@() isTrackingActive.value ? 0xFFFFFFFF : disabledColor)
   let bgColor = Computed(@() isTrackingActive.value ? btnBgColor.ready : btnBgColor.empty)
 
   return @() {
     watch = isTrackingActive
     key = "btn_target_tracking_circle"
-    size = [bigButtonSize, bigButtonSize]
+    size = [bgSize, bgSize]
     behavior = Behaviors.Button
     cameraControl = true
     hotkeys = mkGamepadHotkey("ID_TOGGLE_TARGET_TRACKING")
     onClick = @() toggleShortcut("ID_TOGGLE_TARGET_TRACKING")
     onElemState = @(v) stateFlags(v)
     children = [
-      mkBtnBg(bigButtonSize, bgColor.value)
-      mkBtnBorder(bigButtonSize, canZoom.value, stateFlags)
+      mkBtnBg(bgSize, bgColor.value)
+      mkBtnBorder(bgSize, canZoom.value, stateFlags)
       mkBtnImage(imgSize, "ui/gameuiskin#hud_tank_target_tracking.svg", color.value)
-      mkGamepadShortcutImage("ID_TOGGLE_TARGET_TRACKING", defShortcutOvr)
+      mkGamepadShortcutImage("ID_TOGGLE_TARGET_TRACKING", defShortcutOvr, scale)
     ]
   }
 }
@@ -846,8 +893,10 @@ function mkSimpleCircleTouchBtn(image, shortcutId, ovr = {}) {
 }
 
 let fwStateFlags = Watched(0)
-function mkCircleFireworkBtn(actionItem) {
+function mkCircleFireworkBtn(actionItem, scale) {
   let isDisabled = mkIsControlDisabled("ID_FIREWORK")
+  let bgSize = scaleEven(buttonSize, scale)
+  let imgSize = scaleEven(buttonImgSize, scale)
   return function() {
     let isAvailable = isActionAvailable(actionItem) && !isDisabled.get()
     let { count } = actionItem
@@ -855,18 +904,18 @@ function mkCircleFireworkBtn(actionItem) {
     return {
       watch = isDisabled
       key = fwStateFlags
-      size = [buttonSize, buttonSize]
+      size = [bgSize, bgSize]
       behavior = Behaviors.Button
       onElemState = @(v) fwStateFlags(v)
       hotkeys = mkGamepadHotkey("ID_FIREWORK")
       onClick = @() useShortcut("ID_FIREWORK")
       children = [
-        mkCircleProgressBg(buttonSize, actionItem)
-        mkBtnBorder(buttonSize, isAvailable, fwStateFlags)
-        mkBtnImage(buttonImgSize, "ui/gameuiskin#hud_ammo_fireworks.svg", color)
-        count < 0 ? null : mkCountTextLeft(count, color)
-        mkCircleGlare(buttonSize, actionItem?.id)
-        mkGamepadShortcutImage("ID_FIREWORK", defShortcutOvr)
+        mkCircleProgressBg(bgSize, actionItem)
+        mkBtnBorder(bgSize, isAvailable, fwStateFlags)
+        mkBtnImage(imgSize, "ui/gameuiskin#hud_ammo_fireworks.svg", color)
+        count < 0 ? null : mkCountTextLeft(count, color, scale)
+        mkCircleGlare(bgSize, actionItem?.id)
+        mkGamepadShortcutImage("ID_FIREWORK", defShortcutOvr, scale)
       ]
     }
   }
@@ -876,7 +925,7 @@ return {
   mkCircleTankPrimaryGun
   mkCircleTankMachineGun
   mkCircleTankSecondaryGun
-  mkCircleZoom
+  mkCircleZoomCtor
   mkCircleLockBtn
   mkSimpleCircleTouchBtn
   mkCountTextRight
@@ -886,12 +935,21 @@ return {
   mkCircleSecondaryGuns
   mkCirclePlaneCourseGunsSingle
   mkCirclePlaneTurretsGuns
-  mkCircleWeaponryItem
+  mkCircleWeaponryItemCtor
 
   mkCircleBtnEditView
   mkCircleBtnPlaneEditView
   mkBigCircleBtnEditView
   mkBigCirclePlaneBtnEditView
+
+  mkBorderPlane
+  mkBtnImage
+  mkCountTextLeft
+  mkCircleProgressBgWeapon
+  mkCircleGlare
+  mkCircleBg
+
+  circleBtnPlaneEditViewCtor
 
   buttonSize
   buttonImgSize

@@ -199,12 +199,12 @@ function fillSlowdownPoints(state, allowedIndexes) {
     if (offsetSum < minOffset)
       continue
     slowStartOffset = offsetSum + fullSize * circles
-    slowStartIndex = idx + total * circles
+    slowStartIndex = idx + 1 + total * circles
     break
   }
 
   let endIndex = slowStartIndex + slowestCount + total + 1
-  for(local i = slowStartIndex + slowestCount + 1; i < endIndex; i++)
+  for(local i = slowStartIndex + slowestCount; i < endIndex; i++)
     if (allowedIndexes?[i % total]) {
       tgtIndex = i
       break
@@ -233,25 +233,13 @@ function fillSlowdownPoints(state, allowedIndexes) {
   if (isMoveBack)
     stopOffset -= rnd_int(0, MAX_STOP_BORDER_OFFSET_PART * sizes[(tgtIndex - 1) % total])
 
-  let sizeOccurs = sizes
-    .reduce(function(res, s) {
-      res[s] <- (res?[s] ?? 0) + 1
-      return res
-    }, {})
-  local commonSize = null
-  local commonSizeOccur = null
-  foreach(size, occur in sizeOccurs)
-    if (commonSize == null || commonSizeOccur < occur) {
-      commonSize = size
-      commonSizeOccur = occur
-    }
-
   let curTime = get_time_msec()
   let rollDist = slowStartOffset - offset - slowdownDist
   let rollTime = rollDist / speed
   let slowTime = (stopOffset - slowStartOffset) / MIN_SLOW_MOVE_SPEED
 
   state.__update({
+    isMoveBack
     curIndex
     tgtIndex
 
@@ -272,7 +260,6 @@ function fillSlowdownPoints(state, allowedIndexes) {
 
     sizesSum
     slowestCount
-    commonSize
 
     isLastReward = (receivedRewardsAll.value.len() - 1) == rouletteOpenIdx.value
     openIdx = rouletteOpenIdx.value

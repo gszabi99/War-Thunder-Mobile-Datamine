@@ -11,7 +11,7 @@ let { getUnitLocId, getUnitPresentation } = require("%appGlobals/unitPresentatio
 let { canBuyUnits, buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { flagsWidth, unitPlateSize, blockSize } = require("unitsTreeComps.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
-let { discountTagUnit } = require("%rGui/components/discountTag.nut")
+let { discountTagUnitSmall } = require("%rGui/components/discountTag.nut")
 let { curSelectedUnit, curUnitName } = require("%rGui/unit/unitsWndState.nut")
 let { unseenUnits, markUnitSeen } = require("%rGui/unit/unseenUnits.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
@@ -177,7 +177,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
         vplace = ALIGN_BOTTOM
         valign = ALIGN_BOTTOM
         children = [
-          discount.get() != null ? discountTagUnit(discount.get().discount) : null
+          discount.get() != null ? discountTagUnitSmall(discount.get().discount) : null
           price.get() != null && price.get().price > 0
               ? mkUnitsTreePrice(price.get(), justUnlockedDelay.get())
             : null
@@ -246,7 +246,7 @@ let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, x
               valign = ALIGN_BOTTOM
               children = {
                 children = [
-                  discount.get() != null ? discountTagUnit(discount.get().discount) : null
+                  discount.get() != null ? discountTagUnitSmall(discount.get().discount) : null
                   price.get() != null && price.get().price > 0
                       ? mkUnitsTreePrice(price.get())
                     : null
@@ -453,7 +453,6 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
         mkUnitTexts(unit, loc(getUnitLocId(unit.name)), isLocked.get())
         mkPriorityUnseenMarkWatch(needShowUnseenMark)
         @() {
-          padding = hdpx(10)
           watch = [price, discount, canPurchase, researchStatus]
           key = price
           flow = FLOW_HORIZONTAL
@@ -461,7 +460,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
           vplace = ALIGN_BOTTOM
           valign = ALIGN_BOTTOM
           children = !price.get() ? null : [
-            discount.get() != null ? discountTagUnit(discount.get().discount) : null
+            discount.get() != null ? discountTagUnitSmall(discount.get().discount) : null
             price.get() != null && price.get().price > 0
                 ? mkUnitsTreePrice(price.get(), null, canPurchase.get())
               : null
@@ -497,7 +496,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
               : null
           ]
         }
-        mkUnitInfo(unit, {padding = hdpx(10)})
+        mkUnitInfo(unit)
         {
           size = flex()
           valign = ALIGN_TOP

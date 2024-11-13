@@ -7,8 +7,11 @@ let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
 let { switchSpectatorTarget, getSpectatorTargetId } = require("guiSpectator")
-let { hudTopCenter } = require("%rGui/hud/hudTopCenter.nut")
 let { tacticalMap } = require("components/tacticalMap.nut")
+let { scoreBoard, needScoreBoard } = require("%rGui/hud/scoreBoard.nut")
+let { capZonesList } = require("capZones/capZones.nut")
+let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
+
 
 let bgButtonColor = Color(32, 34, 38, 216)
 let bgButtonColorPushed = Color(16, 18, 22, 216)
@@ -128,6 +131,17 @@ let spectatorControlsBlock = {
   ]
 }
 
+let hudTopCenter = @() {
+  watch = needScoreBoard
+  hplace = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  flow = FLOW_VERTICAL
+  children = [
+    needScoreBoard.get() ? scoreBoard : null
+    capZonesList(1)
+  ]
+}
+
 return {
   key = {}
   onAttach = @() isAttached(true)
@@ -144,6 +158,7 @@ return {
     }
     topLeft
     hudTopCenter
+    hudTopMainLog
     spectatorControlsBlock
   ]
 }

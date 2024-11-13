@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getHeroTankMaxSpeedBySteps } = require("hudState")
 let { lerpClamped } = require("%sqstd/math.nut")
+let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { setVirtualAxisValue, changeCruiseControl } = require("%globalScripts/controls/shortcutActions.nut")
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
 let { speed, cruiseControl } = require("%rGui/hud/tankState.nut")
 let { playSound } = require("sound_wt")
 let { setTimeout, setInterval, resetTimeout, clearTimer } = require("dagor.workcycle")
-let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtnOutline, mkMoveVertBtnAnimBg,
+let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtnOutline, mkMoveVertBtnAnimBg, arrowsVerSize,
   mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, mkMoveVertBtn, mkStopBtn
 } = require("%rGui/components/movementArrows.nut")
 let { playerUnitName } = require("%rGui/hudState.nut")
@@ -108,7 +109,7 @@ function steeringAxelerate(id, flipX) {
   setVirtualAxisValue(id, steerWatch.value)
 }
 
-function mkSteerParams(isRight) {
+function mkSteerParams(isRight, scale) {
   function onTouchUpdate() {
     steeringAxelerate("gm_steering", isRight)
     if (speed.value == 0)
@@ -116,6 +117,7 @@ function mkSteerParams(isRight) {
   }
   let shortcutId = isRight ? "gm_steering_right" : "gm_steering_left"
   return {
+    scale
     ovr = { key = shortcutId }
     shortcutId
     function onTouchBegin() {
@@ -139,10 +141,10 @@ function mkSteerParams(isRight) {
   }
 }
 
-function mkStopParams() {
+function mkStopParams(verSize) {
   let shortcutId = "ID_TRANS_GEAR_DOWN"
    return {
-    ovr = { key = "gm_brake" }
+    ovr = { key = "gm_brake", size = verSize }
     shortcutId
     function onTouchBegin() {
       setGmBrakeAxis(1)
@@ -161,12 +163,9 @@ function mkStopParams() {
   }
 }
 
-let leftArrow = mkMoveLeftBtn(mkSteerParams(false))
-let rightArrow = mkMoveRightBtn(mkSteerParams(true))
-let stopBtn = mkStopBtn(mkStopParams())
 let isMoveCtrlHitShowed = Watched(false)
 
-function mkEngineBtn(isBackward, id, children) {
+function mkEngineBtn(isBackward, id, verSize, children) {
   let onTouchUpdate = @() updateAxeleration(isBackward)
   return mkMoveVertBtn(
     function onTouchBegin() {
@@ -186,6 +185,7 @@ function mkEngineBtn(isBackward, id, children) {
     id,
     {
       key = id
+      size = verSize
       flipY = isBackward
       children
     })
@@ -198,12 +198,13 @@ function calcBackSpeedPart() {
   return maxSpeed < 0 ? clamp(speed.value / maxSpeed.tofloat(), 0.0, 1.0) : 0
 }
 
-let backwardArrow = mkEngineBtn(true, "ID_TRANS_GEAR_DOWN",
+let backwardArrow = @(verSize) mkEngineBtn(true, "ID_TRANS_GEAR_DOWN", verSize,
   [
-    mkMoveVertBtnAnimBg(true, calcBackSpeedPart)
-    mkMoveVertBtnOutline(true)
+    mkMoveVertBtnAnimBg(true, calcBackSpeedPart, verSize)
+    mkMoveVertBtnOutline(true, verSize)
     mkMoveVertBtnCorner(true,
-      Computed(@() cruiseControl.value == CRUISE_CONTROL_R ? fillMoveColorDef : 0xFFFFFFFF))
+      Computed(@() cruiseControl.value == CRUISE_CONTROL_R ? fillMoveColorDef : 0xFFFFFFFF),
+      verSize)
   ])
 
 function calcForwSpeedPart() {
@@ -222,41 +223,40 @@ function calcForwSpeedPart2() {
 }
 
 let fwdControl = { [CRUISE_CONTROL_1] = true, [CRUISE_CONTROL_MAX] = true }
-let forwardArrow = mkEngineBtn(false, "ID_TRANS_GEAR_UP",
+let forwardArrow = @(verSize) mkEngineBtn(false, "ID_TRANS_GEAR_UP", verSize,
   [
-    mkMoveVertBtnAnimBg(false, calcForwSpeedPart)
-    mkMoveVertBtnOutline(false)
+    mkMoveVertBtnAnimBg(false, calcForwSpeedPart, verSize)
+    mkMoveVertBtnOutline(false, verSize)
     mkMoveVertBtnCorner(false,
-      Computed(@() cruiseControl.value in fwdControl ? fillMoveColorDef : 0xFFFFFFFF))
+      Computed(@() cruiseControl.value in fwdControl ? fillMoveColorDef : 0xFFFFFFFF),
+      verSize)
     mkMoveVertBtn2step(calcForwSpeedPart2,
-      Computed(@() cruiseControl.value == CRUISE_CONTROL_MAX ? fillMoveColorDef : 0x00000000))
+      Computed(@() cruiseControl.value == CRUISE_CONTROL_MAX ? fillMoveColorDef : 0x00000000),
+      verSize)
   ])
 
-return {
-  vplace = ALIGN_BOTTOM
-  hplace = ALIGN_LEFT
-  margin = [0, 0, shHud(1), 0]
-  flow = FLOW_HORIZONTAL
-  children = [
-    leftArrow
-    {
-      flow = FLOW_VERTICAL
-      halign = ALIGN_CENTER
-      gap = shHud(2)
-      children = [
-        forwardArrow
-
-        @() {
-          watch = isStopButtonVisible
-          children = isStopButtonVisible.value ? stopBtn : backwardArrow
-        }
-      ]
-    }
-    {
-      size = [SIZE_TO_CONTENT, flex()]
-      children = [
-        rightArrow
-      ]
-    }
-  ]
+return function(scale) {
+  let verSize = scaleArr(arrowsVerSize, scale)
+  return {
+    vplace = ALIGN_BOTTOM
+    hplace = ALIGN_LEFT
+    margin = [0, 0, shHud(1), 0]
+    flow = FLOW_HORIZONTAL
+    children = [
+      mkMoveLeftBtn(mkSteerParams(false, scale))
+      {
+        flow = FLOW_VERTICAL
+        halign = ALIGN_CENTER
+        gap = shHud(2)
+        children = [
+          forwardArrow(verSize)
+          @() {
+            watch = isStopButtonVisible
+            children = isStopButtonVisible.value ? mkStopBtn(mkStopParams(verSize)) : backwardArrow(verSize)
+          }
+        ]
+      }
+      mkMoveRightBtn(mkSteerParams(true, scale))
+    ]
+  }
 }

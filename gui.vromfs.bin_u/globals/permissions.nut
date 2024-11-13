@@ -32,6 +32,7 @@ let defaults = {
   has_payments_blocked_web_page = false
   request_firebase_consent_eu_only = false
   has_att_warmingup_scene = false
+  can_scale_in_hud_tuning = DBGLEVEL > 0
   allow_apk_update = false
 }
 
