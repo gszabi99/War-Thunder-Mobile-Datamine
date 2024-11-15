@@ -2862,6 +2862,15 @@
       },
       "ARM": {
         "driverProps": {
+          "brokenSubpasses": {
+            "entry": {
+              "gpu": "G610",
+              "driverInfo": "ce623b7dd8f8f92ae690a9a38057e2b5",
+              "data": {
+                "affected": true
+              }
+            }
+          },
           "brokenInstanceID": {
             "entry": [
               {

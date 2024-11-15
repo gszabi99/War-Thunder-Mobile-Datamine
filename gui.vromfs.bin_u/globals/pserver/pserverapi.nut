@@ -470,9 +470,9 @@ return {
     params = { shopId }
   }, cb)
 
-  buy_goods = @(shopId, currencyId, price, count = 1, cb = null) request({
+  buy_goods = @(shopId, currencyId, price, cb = null) request({
     method = "buy_goods"
-    params = { shopId, currencyId, price, count }
+    params = { shopId, currencyId, price }
     progressId = PROGRESS_SHOP
     progressValue = shopId
   }, cb)

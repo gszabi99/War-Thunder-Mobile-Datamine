@@ -286,7 +286,9 @@ return {
     },
     "fr_amx_13_75_reskin": {
       "": "fr_camo_vert_olive_arme",
-      "forest": "fr_camo_carc"
+      "desert": "fr_camo_carc_desert",
+      "forest": "fr_camo_carc",
+      "winter": "fr_camo_winter_green_white"
     },
     "fr_amx_13_chaffee": {
       "": "hw_camo",
@@ -330,7 +332,9 @@ return {
     },
     "fr_amx_30_auf_1": {
       "": "fr_camo_vert_olive_arme",
-      "forest": "fr_camo_carc"
+      "desert": "fr_camo_carc_desert",
+      "forest": "fr_camo_carc",
+      "winter": "fr_camo_winter_green_white"
     },
     "fr_amx_30_b2": {
       "": "fr_camo_vert_olive_arme",
@@ -421,7 +425,9 @@ return {
     },
     "fr_lorraine_40t": {
       "": "fr_camo_vert_olive_arme",
-      "forest": "fr_camo_carc"
+      "desert": "fr_camo_carc_desert",
+      "forest": "fr_camo_carc",
+      "winter": "fr_camo_winter_green_white"
     },
     "fr_m36b2_cefeo": {
       "": "fr_camo_green_sand_brown",
@@ -470,7 +476,9 @@ return {
     },
     "fr_tpk_641_vpc": {
       "": "fr_camo_vert_olive_arme",
-      "forest": "fr_camo_carc"
+      "desert": "fr_camo_carc_desert",
+      "forest": "fr_camo_carc",
+      "winter": "fr_camo_winter_green_white"
     },
     "fw-189a-1": {
       "": "germ_fw_189a_1"
@@ -2675,6 +2683,7 @@ return {
       "lightblue_geometry": "camo_lightblue_geometry",
       "lightblue_splotch": "camo_lightblue_splotch",
       "marine_geometry": "camo_marine_geometry",
+      "modern_nordgeometry_prem": "camo_modern_nordgeometry",
       "mtb_spots_prem": "camo_mtb_spots",
       "olive_spots": "camo_olive_spots",
       "polish_bluegeometry_prem": "camo_polish_bluegeometry",

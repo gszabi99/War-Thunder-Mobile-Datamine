@@ -811,12 +811,14 @@ function mkCircleLockBtn(shortcutId, scale) {
   }
 }
 
-let mkCircleZoomCtor = @(zoomInIcon = "ui/gameuiskin#hud_tank_binoculars_zoom.svg", zoomOutIcon = "ui/gameuiskin#hud_tank_binoculars.svg" )
+let mkCircleZoomCtor = @(zoomInIcon = "ui/gameuiskin#hud_tank_binoculars_zoom.svg",
+    zoomOutIcon = "ui/gameuiskin#hud_tank_binoculars.svg",
+    imgSizeMul = 1.0)
   function(scale) {
     let stateFlags = Watched(0)
     let isDisabled = mkIsControlDisabled("ID_ZOOM_TOGGLE")
     let bgSize = scaleEven(buttonSize, scale)
-    let imgSize = scaleEven(0.8 * buttonImgSize, scale)
+    let imgSize = scaleEven(imgSizeMul * buttonImgSize, scale)
     return @() {
       watch = [canZoom, isInZoom, isDisabled]
       key = "btn_zoom_circle"

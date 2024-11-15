@@ -9470,6 +9470,25 @@
         "from": "camo_navygrey_5*",
         "to": "camo_lightblue_geometry*"
       }
+    },
+    "blackgray_stripes": {
+      "replace_tex": {
+        "from": "camo_navygrey_5*",
+        "to": "camo_blackgray_stripes*"
+      }
+    },
+    "modern_nordgeometry_prem": {
+      "replace_tex": {
+        "from": "camo_navygrey_5*",
+        "to": "camo_modern_nordgeometry*"
+      }
+    }
+  },
+  "defaultDecals": {
+    "modern_nordgeometry_prem": {
+      "skin_condition": 100.0,
+      "camo_scale": 6.0,
+      "camo_rotation": 16.0
     }
   }
 }

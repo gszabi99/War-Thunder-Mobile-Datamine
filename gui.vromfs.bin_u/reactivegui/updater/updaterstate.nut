@@ -25,6 +25,7 @@ let { isConnectionLimited, hasConnection } = require("%appGlobals/clientState/co
 let { isRandomBattleNewbie, isRandomBattleNewbieSingle } = require("%rGui/gameModes/gameModeState.nut")
 let { squadAddons } = require("%rGui/squad/squadAddons.nut")
 let { needUhqTextures } = require("%rGui/options/options/graphicOptions.nut")
+let { reqAddonsToShowOffer } = require("%rGui/shop/offerState.nut")
 
 let DOWNLOAD_ADDONS_EVENT_ID = "downloadAddonsEvent"
 let ALLOW_LIMITED_DOWNLOAD_SAVE_ID = "allowLimitedConnectionDownload"
@@ -68,6 +69,7 @@ let initialAddonsToDownload = Computed(@(prev) mkAddonsToDownload(initialAddons,
 let latestAddonsToDownload = Computed(@(prev) mkAddonsToDownload(
   (clone latestDownloadAddons).extend(latestDownloadAddonsByCamp?[curCampaign.value] ?? []),
   hasAddons.value, prev))
+let offerAddonsToDownload = Computed(@(prev) mkAddonsToDownload(reqAddonsToShowOffer.get(), hasAddons.value, prev))
 
 let uhqAddonsToDownload = Computed(function(prev) {
   if (!needUhqTextures.value || (get_settings_blk()?.graphics.uhqForceDisabled ?? true))
@@ -124,8 +126,9 @@ let wantStartDownloadAddons = Computed(function(prev) {
 
   if (addonsToDownload.value.len() != 0)
     return prevIfEqual(prev, addonsToDownload.value)
-
-  return prevIfEqual(prev, uhqAddonsToDownload.value)
+  if (uhqAddonsToDownload.get().len() != 0)
+    return prevIfEqual(prev, uhqAddonsToDownload.get())
+  return prevIfEqual(prev, offerAddonsToDownload.get())
 })
 
 let needStartDownloadAddons = keepref(Computed(@()
@@ -267,7 +270,8 @@ let maxCurCampaignMRank = Computed(function() {
 let addonsToAutoDownload = keepref(Computed(function() {
   if (!isAnyCampaignSelected.value)
     return initialAddonsToDownload.value?.keys()
-  let list = initialAddonsToDownload.value.__merge(latestAddonsToDownload.value, squadAddons.value)
+  let list = initialAddonsToDownload.value.__merge(latestAddonsToDownload.get(), squadAddons.get(),
+    offerAddonsToDownload.get())
   foreach(a in getCampaignPkgsForOnlineBattle(curCampaign.value, maxCurCampaignMRank.value))
     list[a] <- true
   foreach(a in soloNewbieByCampaign?[curCampaign.get()] ?? [])

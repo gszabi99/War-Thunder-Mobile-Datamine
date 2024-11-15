@@ -38,13 +38,18 @@ function mkHeader(header, child) {
   }
 }
 
+let mkTooltipContentCtor = @(title, desc) @() "\n".concat(
+  colorize("@darken", title),
+  type(desc) == "function" ? desc() : desc
+)
+
 let optBlock = @(header, content, openInfo, desc, locId, ovr = {}) {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   children = [
     mkHeader(header,
       openInfo != null ? infoCommonButton(openInfo)
-        : desc != "" ? infoTooltipButton(@() "\n".concat(colorize("@darken", loc(locId)), desc), { halign = ALIGN_LEFT })
+        : desc != "" ? infoTooltipButton(mkTooltipContentCtor(loc(locId), desc), { halign = ALIGN_LEFT })
         : null)
     content
   ]

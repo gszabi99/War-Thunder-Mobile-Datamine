@@ -1714,7 +1714,7 @@
         "defaultPitch": 0.0,
         "speedYaw": 90.0,
         "speedPitch": 42.0,
-        "bullets": 320,
+        "bullets": 340,
         "rearmCartridgeTime": 20.0,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
@@ -1854,7 +1854,7 @@
         "defaultPitch": 0.0,
         "speedYaw": 90.0,
         "speedPitch": 42.0,
-        "bullets": 320,
+        "bullets": 340,
         "rearmCartridgeTime": 20.0,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
@@ -2629,6 +2629,9 @@
         "wreckedPartId": 0,
         "ammo_body_dm": {
           "count": 640
+        },
+        "ammo_turret_01_dm": {
+          "count": 40
         }
       }
     }
@@ -2704,7 +2707,7 @@
               "defaultPitch": 0.0,
               "speedYaw": 90.0,
               "speedPitch": 42.0,
-              "bullets": 320,
+              "bullets": 340,
               "rearmCartridgeTime": 20.0,
               "fireConeAngle": 5.0,
               "ChainfireTime": 0.5,
@@ -2844,7 +2847,7 @@
               "defaultPitch": 0.0,
               "speedYaw": 90.0,
               "speedPitch": 42.0,
-              "bullets": 320,
+              "bullets": 340,
               "rearmCartridgeTime": 20.0,
               "fireConeAngle": 5.0,
               "ChainfireTime": 0.5,

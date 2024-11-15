@@ -3,7 +3,7 @@ let logD = log_with_prefix("[DOWNLOAD] ")
 let { deferOnce } = require("dagor.workcycle")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
-let { enqueueDownload, queryDownloadStatus, tryToInstall, DOWNLOAD_STASUS_UNKNOWN,
+let { enqueueDownload, queryDownloadStatus, tryToInstall, getApkFileVersion = null, DOWNLOAD_STASUS_UNKNOWN,
   DOWNLOAD_STATUS_PENDING, DOWNLOAD_STATUS_RUNNING, DOWNLOAD_STATUS_PAUSED, DOWNLOAD_STATUS_SUCCESSFUL,
   DOWNLOAD_STATUS_FAILED } = require("android.platform")
   let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -14,6 +14,8 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
+let { actualGameVersion } = require("needUpdate/needUpdateAndroidSite.nut")
+let { get_base_game_version_str } = require("app")
 
 let isSuggested = hardPersistWatched("suggestInstall.isSuggested", false)
 let SUGGEST_INSTALL_APK = "suggestInstallApk"
@@ -69,6 +71,31 @@ eventbus_subscribe("android.platform.onCompleteApkDownload", function (event) {
 function downloadAPK() {
   if (getDownloadedId() != null && queryDownloadStatus(getDownloadedId()) == DOWNLOAD_STATUS_SUCCESSFUL)
     return customStatusHandlers[DOWNLOAD_STATUS_SUCCESSFUL](getDownloadedId())
+
+  let availableForDownload = actualGameVersion.value
+  logD($"Available for download: {availableForDownload}")
+
+  if (availableForDownload == null) {
+    logD("Available for download version is unknown")
+    return
+  }
+
+  let installedVersion = get_base_game_version_str()
+  logD($"Installed version: {installedVersion}")
+
+  if (installedVersion == availableForDownload) {
+    logD("No new vesion available")
+    return
+  }
+
+  let downloadedVersion = getApkFileVersion?(apkToInstall)
+  logD($"Ready to install version: {downloadedVersion}")
+
+  if (downloadedVersion == null || downloadedVersion == availableForDownload) {
+    logD("The most recent version is already downloaded")
+    hasDownloadedApk.set(true)
+    return
+  }
 
   let downloadId = enqueueDownload("https://wtmobile.com/apk", apkToInstall, "Download WTM RC", false, false)
   let status = queryDownloadStatus(downloadId)

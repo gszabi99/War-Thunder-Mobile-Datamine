@@ -34163,6 +34163,11 @@
         "35mm_kda_HE": {
           "icon": "hud_ammo_bullet_he",
           "reqLevel": 18
+        },
+        "35mm_kda_APDS": {
+          "icon": "hud_ammo_bullet_ap",
+          "reqLevel": 21,
+          "isExternalAmmo": "true"
         }
       }
     },
@@ -34831,12 +34836,10 @@
           "icon": "hud_ammo_bullet_ap_he"
         },
         "40mm_SGT_YORK_AP": {
-          "icon": "hud_ammo_bullet_ap",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_ap"
         },
         "40mm_SGT_YORK_HE": {
           "icon": "hud_ammo_bullet_he",
-          "maxCount": 1,
           "reqLevel": 18
         }
       }
@@ -36944,22 +36947,19 @@
     "bullets": {
       "35mm_PG_99_35_2_user_cannon": {
         "default": {
-          "icon": "hud_ammo_bullet_ap_he",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_ap_he"
         },
         "35mm_kda_APHEI": {
-          "icon": "hud_ammo_bullet_ap",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_ap"
         },
         "35mm_kda_HE": {
           "icon": "hud_ammo_bullet_he",
-          "reqLevel": 18,
-          "maxCount": 1
+          "reqLevel": 18
         },
         "35mm_kda_APDS": {
           "icon": "hud_ammo_bullet_ap",
           "reqLevel": 21,
-          "maxCount": 1
+          "isExternalAmmo": "true"
         }
       }
     },
@@ -37856,22 +37856,19 @@
     "bullets": {
       "35mm_Oerlikon_KDA_user_cannon": {
         "default": {
-          "icon": "hud_ammo_bullet_ap_he",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_ap_he"
         },
         "35mm_kda_APHEI": {
-          "icon": "hud_ammo_bullet_ap",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_ap"
         },
         "35mm_kda_HE": {
           "icon": "hud_ammo_bullet_he",
-          "maxCount": 1,
           "reqLevel": 18
         },
         "35mm_kda_APDS": {
           "icon": "hud_ammo_bullet_ap",
-          "maxCount": 1,
-          "reqLevel": 21
+          "reqLevel": 21,
+          "isExternalAmmo": "true"
         }
       }
     },
@@ -39224,13 +39221,16 @@
     "bullets": {
       "25mm_Oerlikon_KBA_user_cannon": {
         "default": {
-          "icon": "hud_ammo_bullet_he",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_he"
+        },
+        "25mm_kba_universal": {
+          "icon": "hud_ammo_bullet_ap_he",
+          "reqLevel": 18
         },
         "25mm_kba_APDS": {
           "icon": "hud_ammo_bullet_ap",
-          "reqLevel": 18,
-          "maxCount": 1
+          "reqLevel": 21,
+          "isExternalAmmo": "true"
         }
       }
     },
@@ -41271,16 +41271,14 @@
     "bullets": {
       "25mm_Oerlikon_KBA_user_cannon": {
         "default": {
-          "icon": "hud_ammo_bullet_he",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_he"
         },
         "25mm_kba_APDS": {
           "icon": "hud_ammo_bullet_ap",
-          "maxCount": 1
+          "isExternalAmmo": "true"
         },
         "25mm_kba_universal": {
           "icon": "hud_ammo_bullet_ap_he",
-          "maxCount": 1,
           "reqLevel": 18
         }
       }
@@ -43069,22 +43067,19 @@
     "bullets": {
       "35mm_Oerlikon_KDA_marksman_user_cannon": {
         "default": {
-          "icon": "hud_ammo_bullet_ap_he",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_ap_he"
         },
         "35mm_kda_HE": {
-          "icon": "hud_ammo_bullet_he",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_he"
         },
         "35mm_kda_APHEI": {
           "icon": "hud_ammo_bullet_ap",
-          "reqLevel": 18,
-          "maxCount": 1
+          "reqLevel": 18
         },
         "35mm_kda_APDS": {
           "icon": "hud_ammo_bullet_ap",
           "reqLevel": 21,
-          "maxCount": 1
+          "isExternalAmmo": "true"
         }
       }
     }
@@ -44061,22 +44056,19 @@
     "bullets": {
       "35mm_PG_99_35_2_user_cannon": {
         "default": {
-          "icon": "hud_ammo_bullet_ap_he",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_ap_he"
         },
         "35mm_kda_APHEI": {
-          "icon": "hud_ammo_bullet_ap",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_ap"
         },
         "35mm_kda_HE": {
           "icon": "hud_ammo_bullet_he",
-          "reqLevel": 18,
-          "maxCount": 1
+          "reqLevel": 18
         },
         "35mm_kda_APDS": {
           "icon": "hud_ammo_bullet_ap",
           "reqLevel": 21,
-          "maxCount": 1
+          "isExternalAmmo": "true"
         }
       }
     },
@@ -45081,12 +45073,10 @@
           "icon": "hud_ammo_bullet_ap_he"
         },
         "40mm_SGT_YORK_AP": {
-          "icon": "hud_ammo_bullet_ap",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_ap"
         },
         "40mm_SGT_YORK_HE": {
           "icon": "hud_ammo_bullet_he",
-          "maxCount": 1,
           "reqLevel": 18
         },
         "40mm_SGT_YORK_HE_prox": {
@@ -45353,22 +45343,19 @@
     "bullets": {
       "35mm_Oerlikon_KDA_user_cannon": {
         "default": {
-          "icon": "hud_ammo_bullet_ap_he",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_ap_he"
         },
         "35mm_kda_APHEI": {
-          "icon": "hud_ammo_bullet_ap",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_ap"
         },
         "35mm_kda_HE": {
           "icon": "hud_ammo_bullet_he",
-          "maxCount": 1,
           "reqLevel": 18
         },
         "35mm_kda_APDS": {
           "icon": "hud_ammo_bullet_ap",
-          "maxCount": 1,
-          "reqLevel": 21
+          "reqLevel": 21,
+          "isExternalAmmo": "true"
         }
       }
     },
@@ -45843,6 +45830,11 @@
         "35mm_kda_HE": {
           "icon": "hud_ammo_bullet_he",
           "reqLevel": 18
+        },
+        "35mm_kda_APDS": {
+          "icon": "hud_ammo_bullet_ap",
+          "reqLevel": 21,
+          "isExternalAmmo": "true"
         }
       }
     },
@@ -47435,6 +47427,11 @@
         "35mm_kda_HE": {
           "icon": "hud_ammo_bullet_he",
           "reqLevel": 18
+        },
+        "35mm_kda_APDS": {
+          "icon": "hud_ammo_bullet_ap",
+          "reqLevel": 21,
+          "isExternalAmmo": "true"
         }
       }
     },
@@ -48949,12 +48946,10 @@
           "icon": "hud_ammo_bullet_ap_he"
         },
         "40mm_SGT_YORK_AP": {
-          "icon": "hud_ammo_bullet_ap",
-          "maxCount": 1
+          "icon": "hud_ammo_bullet_ap"
         },
         "40mm_SGT_YORK_HE": {
           "icon": "hud_ammo_bullet_he",
-          "maxCount": 1,
           "reqLevel": 18
         },
         "40mm_SGT_YORK_HE_prox": {

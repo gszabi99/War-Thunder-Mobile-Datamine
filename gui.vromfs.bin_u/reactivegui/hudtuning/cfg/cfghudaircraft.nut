@@ -98,7 +98,7 @@ return cfgHudCommon.__merge({
   }
 
   zoom = {
-    ctor = mkCircleZoomCtor("ui/gameuiskin#hud_binoculars_zoom.svg", "ui/gameuiskin#hud_binoculars.svg")
+    ctor = mkCircleZoomCtor("ui/gameuiskin#hud_binoculars_zoom.svg", "ui/gameuiskin#hud_binoculars.svg", 1.2)
     defTransform = mkLBPos([hdpx(0), hdpx(-445)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_binoculars.svg")
     priority = Z_ORDER.BUTTON_PRIMARY

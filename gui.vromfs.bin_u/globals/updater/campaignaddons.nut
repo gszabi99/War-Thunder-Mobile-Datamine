@@ -6,6 +6,7 @@ let { commonAddonsByPostfix, extAddonsByRank, knownAddons, campaignPostfix
 } = require("%appGlobals/updater/addons.nut")
 
 let aircraftCbtPkgs = ["pkg_cbt_aircraft", "pkg_cbt_aircraft_hq"].filter(@(a) a in knownAddons)
+let airStarterPkgs = ["pkg_tier_1_aircraft"].filter(@(a) a in knownAddons)
 let customUnitPkg = {
   //ships
   germ_destroyer_class1934a_1940 = null
@@ -23,7 +24,20 @@ let customUnitPkg = {
   il_2m_1943 = null,
   ["p-38k"] = aircraftCbtPkgs,
   ["yak-3t"] = aircraftCbtPkgs,
-  ["fw-190c"] = aircraftCbtPkgs
+  ["fw-190c"] = aircraftCbtPkgs,
+
+  ["p-400"]            = airStarterPkgs,
+  ["p-400_prem"]       = airStarterPkgs,
+  ["me-410a-1"]        = airStarterPkgs,
+  ["me-410a-1_prem"]   = airStarterPkgs,
+  ["bf-109e-3"]        = airStarterPkgs,
+  ["bf-109e-3_prem"]   = airStarterPkgs,
+  i_180                = airStarterPkgs,
+  i_180_prem           = airStarterPkgs,
+  f4f_4                = airStarterPkgs,
+  f4f_4_prem           = airStarterPkgs,
+  ["yak-9"]            = airStarterPkgs,
+  ["yak-9_prem"]       = airStarterPkgs,
 }
 
 let defAddonPostfix = "naval"

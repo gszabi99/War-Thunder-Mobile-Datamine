@@ -48,7 +48,7 @@ registerHandler("onShopGoodsPurchase",
 function purchaseGoodsImpl(goodsId, currencyId, price) {
   if (shopPurchaseInProgress.value != null)
     return "shopPurchaseInProgress"
-  buy_goods(goodsId, currencyId, price, 1, "onShopGoodsPurchase")
+  buy_goods(goodsId, currencyId, price, "onShopGoodsPurchase")
   return ""
 }
 
@@ -65,7 +65,7 @@ registerHandler("onShopGoodsPurchaseSequence",
     let { id, price } = nextGoods[0]
     let newNextGoods = clone nextGoods
     newNextGoods.remove(0)
-    buy_goods(id, price.currencyId, price.price, 1, { id = "onShopGoodsPurchaseSequence", nextGoods = newNextGoods })
+    buy_goods(id, price.currencyId, price.price, { id = "onShopGoodsPurchaseSequence", nextGoods = newNextGoods })
   })
 
 function purchaseGoodsSeqImpl(goodsList) {
@@ -74,7 +74,7 @@ function purchaseGoodsSeqImpl(goodsList) {
   let nextGoods = goodsList.map(@(g) { id = g.id, price = g.price })
   let { id, price } = nextGoods[0]
   nextGoods.remove(0)
-  buy_goods(id, price.currencyId, price.price, 1, { id = "onShopGoodsPurchaseSequence", nextGoods })
+  buy_goods(id, price.currencyId, price.price, { id = "onShopGoodsPurchaseSequence", nextGoods })
   return ""
 }
 

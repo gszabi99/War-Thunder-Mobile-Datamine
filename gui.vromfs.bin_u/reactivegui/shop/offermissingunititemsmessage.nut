@@ -7,7 +7,7 @@ let { shopGoods } = require("shopState.nut")
 let { itemsCfgOrdered, orderByItems } = require("%appGlobals/itemsState.nut")
 let { items } = require("%appGlobals/pServer/campaign.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { textButtonBattle, mkCustomButton } = require("%rGui/components/textButton.nut")
+let { textButtonBattle, mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, PURCHASE } = require("%rGui/components/buttonStyles.nut")
 let { decorativeLineBgMW } = require("%rGui/style/stdColors.nut")
 let { shopPurchaseInProgress, buy_goods } = require("%appGlobals/pServer/pServerApi.nut")
@@ -22,7 +22,7 @@ let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("unseenPurchasesState.nut")
 let { balanceWp, balanceGold, balance } = require("%appGlobals/currenciesState.nut")
-let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
+let { CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
 let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unitAttributes } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
@@ -135,12 +135,10 @@ let mkMissingItemsComp = @(unit, timeWndShowing) Computed(function() {
     let hasUsing = ceil(hasItems/(perUse == 0 ? 1 : perUse))
     let goods = getCheapestGoods(shopGoods.get(),
       @(g) (g?.items[name] ?? 0) > 0 && g?.gtype == SGT_CONSUMABLES && (g?.items.len() ?? 0) > 0)
-    let neededCountOfGoods = ceil((reqItems - hasItems).tofloat() / goods.items[name])
     let { price = 0, currencyId = ""} = goods?.price
-    let priceForGoods = price * neededCountOfGoods
-    let canBuyItem = priceForGoods <= (balance.get()?[goods?.price?.currencyId] ?? 0)
+    let canBuyItem = price <= (balance.get()?[goods?.price?.currencyId] ?? 0)
     let timeInterval = itemShowCd?[name][canBuyItem ? "hasBalance" : "noBalance"] ?? 0
-    if (priceForGoods <= 0)
+    if (price <= 0)
       continue
     if (name in itemShowCd) {
       let sBlk = get_local_custom_settings_blk()
@@ -148,21 +146,18 @@ let mkMissingItemsComp = @(unit, timeWndShowing) Computed(function() {
       if (timeWndShowing - (blk?[name] ?? 0) <= timeInterval)
         continue
     }
-    res.append({ itemId = name, reqItems, hasItems, goods, hasUsing, limitItems, price, currencyId, neededCountOfGoods})
+    res.append({ itemId = name, reqItems, hasItems, goods, hasUsing, limitItems, price, currencyId})
   }
   return res
 })
 
-function mkItemsRewards(item) {
-  let goods = item.goods
+function mkItemsRewards(goods) {
   if (goods.items.len() == 0)
     return null
   let list = []
   foreach (itemId, count in goods.items)
     if (count > 0)
-      list.append({
-        itemId,
-        count = count * item.neededCountOfGoods,
+      list.append({ itemId, count,
         order = orderByItems?[itemId] ?? orderByItems.len()
       })
   list.sort(@(a, b) a.order <=> b.order)
@@ -182,14 +177,13 @@ function saveTimeShowingWnd(itemId){
   }
 }
 
-function mkPurchaseBtn(item, toBattle) {
-  let { goods, itemId, neededCountOfGoods } = item
+function mkPurchaseBtn(goods, itemId, toBattle) {
   let { currencyId, price } = goods.price
-  let totalPrice = price * neededCountOfGoods
   let userBalance = currencyId == "wp" ? balanceWp : balanceGold
-  let textColor = CS_COMMON.__merge({
-    textColor = userBalance.get() < totalPrice ? 0xFFFF0000 : 0xFFFFFFFF
+  let textColor = CS_GAMERCARD.__merge({
+    textColor = userBalance.value < price ? 0xFFFF0000 : 0xFFFFFFFF
   })
+  let stylePurchase = mergeStyles(PURCHASE,textColor)
   return [
       textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
         function() {
@@ -197,19 +191,19 @@ function mkPurchaseBtn(item, toBattle) {
           close()
           toBattle()
       })
-    mkCustomButton(mkCurrencyComp(totalPrice, currencyId, textColor),
+    mkCustomButton(mkCurrencyComp(price, currencyId),
       function() {
         saveTimeShowingWnd(itemId)
         let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_HANGAR, PURCH_TYPE_CONSUMABLES, goods.id)
-        if (!showNoBalanceMsgIfNeed(totalPrice, currencyId, bqPurchaseInfo, close))
-          buy_goods(goods.id, currencyId, totalPrice, neededCountOfGoods)
-    }, PURCHASE)
+        if (!showNoBalanceMsgIfNeed(price, currencyId, bqPurchaseInfo, close))
+          buy_goods(goods.id, currencyId, price)
+    }, stylePurchase)
   ]
 }
 
-let mkMsButtons = @(item, toBattle)
+let mkMsButtons = @(goods, itemId, toBattle)
   mkSpinnerHideBlock(Computed(@() shopPurchaseInProgress.value != null),
-    mkPurchaseBtn(item, toBattle),
+    mkPurchaseBtn(goods, itemId, toBattle),
     {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       valign = ALIGN_CENTER
@@ -251,7 +245,7 @@ let mkSimpleContent = @(item){
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       flow = FLOW_HORIZONTAL
-      children = mkItemsRewards(item)
+      children = mkItemsRewards(item.goods)
     }
   ]
 }
@@ -322,7 +316,7 @@ let mkContWithTransfToSkill = @(item) {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       flow = FLOW_HORIZONTAL
-      children = mkItemsRewards(item)
+      children = mkItemsRewards(item.goods)
     }
   ]
 }
@@ -344,7 +338,7 @@ let mkMsgContent = @(item, needSwitchAnim, toBattle, unit) {
   children = [
     itemBuyingHeader(unit, item.itemId)
     item.itemId in battleItemsIcons ? mkContWithTransfToSkill(item) : mkSimpleContent(item)
-    mkMsButtons(item, toBattle)
+    mkMsButtons(item.goods, item.itemId, toBattle)
   ]
   transform = {}
   animations = [

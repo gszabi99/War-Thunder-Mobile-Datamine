@@ -3401,6 +3401,18 @@
         "from": "fr_camo_vert_olive_arme*",
         "to": "fr_camo_carc*"
       }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_carc_desert*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_winter_green_white*"
+      }
     }
   },
   "defaultDecals": {
@@ -3410,6 +3422,16 @@
       "camo_rotation": 0.0
     },
     "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "winter": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0

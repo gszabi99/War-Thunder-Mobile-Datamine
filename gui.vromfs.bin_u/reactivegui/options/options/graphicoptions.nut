@@ -8,6 +8,7 @@ let { get_maximum_frames_per_second, is_broken_grass_flag_set, is_texture_uhq_su
 let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
 let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTION, OPT_DEFERRED, OPT_AA, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
+let mkOptionDescFromValsList = require("%rGui/options/mkOptionDescFromValsList.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
 let { has_additional_graphics_content } = require("%appGlobals/permissions.nut")
@@ -97,6 +98,7 @@ let aaList = Computed(@() deferredValue.get() ? ["low_fxaa", "high_fxaa", "mobil
   ["metalfx_fxaa"] : []) : (is_ios ? ["metalfx"] : ["low_fxaa"]))
 let validateAA = @(a) aaList.value.contains(a) ? a : aaList.value[0]
 let aaValue = mkOptionValue(OPT_AA, aaList.value[0], validateAA)
+let aaValToDescriptionMap = { low_fxaa = "fxaa", high_fxaa = "fxaa", mobile_taa = "taa", metalfx_fxaa = "metalfx" }
 
 let optDeferred = {
   locId = "options/deferred"
@@ -119,6 +121,7 @@ let optAntiAliasing = {
   function setValue(v) {
     aaValue(v)
   }
+  description = @() mkOptionDescFromValsList(aaList.get(), "options/desc/aa_options", aaValToDescriptionMap)
 }
 
 let rayTracingValues = [0, 1, 2]

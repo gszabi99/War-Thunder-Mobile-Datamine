@@ -131,6 +131,7 @@ let skinsByTag = {
     "camo_crosspromo_tank"
     "fr_camo_desert_brown"
     "uk_camo_standart_modern_desert_bicolor"
+    "fr_camo_carc_desert"
   ],
 
   [WINTER] = [

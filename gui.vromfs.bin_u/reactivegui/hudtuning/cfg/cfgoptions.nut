@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { get_base_game_version_str } = require("app")
 let { check_version } = require("%sqstd/version_compare.nut")
-let can_scale_in_hud_tuning = check_version(get_base_game_version_str(), ">=1.11.0.71")
+let can_scale_in_hud_tuning = check_version(">=1.11.0.71", get_base_game_version_str())
   ? require("%appGlobals/permissions.nut").can_scale_in_hud_tuning
   : Watched(false)
 
