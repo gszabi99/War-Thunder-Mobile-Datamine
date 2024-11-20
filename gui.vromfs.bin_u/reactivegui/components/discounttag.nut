@@ -4,6 +4,9 @@ let discountTagW = hdpxi(100)
 let discountTagH = hdpxi(50)
 let discountTagBigW = hdpxi(120)
 let discountTagBigH = hdpxi(60)
+let discountOfferTagW = hdpxi(150)
+let discountOfferTagH = hdpxi(50)
+let discountOfferTagHTexOffs = [ 0, discountOfferTagH / 10, 0, discountOfferTagH / 2 ]
 
 let discountTag = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc >= 100 ? null : {
   size  = [ discountTagW, discountTagH ]
@@ -39,6 +42,22 @@ let discountTagBig = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc >=
   }.__update(fontSmall)
 }.__update(ovr)
 
+let discountTagOffer = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc >= 100 ? null : {
+  size  = [ discountOfferTagW, discountOfferTagH ]
+  rendObj = ROBJ_9RECT
+  image = Picture($"ui/gameuiskin#tag_first_purchase.svg:{discountOfferTagW}:{discountOfferTagH}")
+  keepAspect = KEEP_ASPECT_NONE
+  screenOffs = discountOfferTagHTexOffs
+  texOffs = discountOfferTagHTexOffs
+  color = 0xFFD22A19
+  children = {
+    pos = [ 0, hdpx(5) ]
+    hplace = ALIGN_CENTER
+    rendObj = ROBJ_TEXT
+    text = $"-{discountPrc}%"
+  }.__update(fontTinyAccentedShaded)
+}.__update(ovr)
+
 function discountTagUnitCtor(discount, height, ovr) {
   let markTexOffs = [ 0, height / 2, 0, 0 ]
   let discountPrc = (discount * 100 + 0.5).tointeger()
@@ -64,6 +83,7 @@ function discountTagUnitCtor(discount, height, ovr) {
 return {
   discountTag
   discountTagBig
+  discountTagOffer
   discountTagUnit = @(discount)
     discountTagUnitCtor(discount, hdpxi(42), { margin = [0, hdpx(30), 0, hdpx(15)] pos = [0, hdpx(3)] }.__update(fontTiny))
   discountTagUnitBig = @(discount)

@@ -115,20 +115,24 @@ eventbus_subscribe("zoneCapturingEvent", function(data) {
 })
 
 local scoreAccumulated = 0.0
+local scoreShowed = 0.0
+local scoreToShow = 0.0
 
 function resetScore() {
-  scoreAccumulated = scoreAccumulated - scoreAccumulated.tointeger()
+  scoreShowed += scoreToShow
+  scoreToShow = 0.0
 }
 
 function showScore(score, isAirfield) {
   clearTimer(resetScore)
   scoreAccumulated += score
-  if (scoreAccumulated >= 1.0) {
+  scoreToShow = (scoreAccumulated - scoreShowed).tointeger()
+  if (scoreToShow >= 1.0) {
     modifyOrAddEvent({
       id = SCORE_HINT
       zOrder = Layers.Upper
       hType = "simpleTextWithIcon"
-      text = loc(isAirfield ? "exp_reasons/damage_airfield" : "exp_reasons/damage_zone", {score = scoreAccumulated.tointeger()}),
+      text = loc(isAirfield ? "exp_reasons/damage_airfield" : "exp_reasons/damage_zone", {score = scoreToShow}),
       icon = $"ui/gameuiskin#score_icon.svg"
       ttl = 3
     }, @(ev) ev?.id == SCORE_HINT)

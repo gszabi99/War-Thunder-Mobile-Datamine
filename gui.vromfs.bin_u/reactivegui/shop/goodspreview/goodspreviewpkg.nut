@@ -4,6 +4,7 @@ let { get_time_msec } = require("dagor.time")
 let { stop_prem_cutscene } = require("hangar")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { abTests } = require("%appGlobals/pServer/campaign.nut")
 let { unhideModals } = require("%rGui/components/modalWindows.nut")
 let { previewGoods, isPreviewGoodsPurchasing, HIDE_PREVIEW_MODALS_ID } = require("%rGui/shop/goodsPreviewState.nut")
 let { purchaseGoods } = require("%rGui/shop/purchaseGoods.nut")
@@ -13,7 +14,7 @@ let { secondsToTimeSimpleString, TIME_DAY_IN_SECONDS } = require("%sqstd/time.nu
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
-let { mkCurrencyComp, mkPriceExtText, CS_BIG } = require("%rGui/components/currencyComp.nut")
+let { mkCurrencyComp, mkPriceExtText, CS_BIG, CS_COMMON } = require("%rGui/components/currencyComp.nut")
 let { shopGoodsToRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { REWARD_STYLE_MEDIUM, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts
 } = require("%rGui/rewards/rewardPlateComp.nut")
@@ -23,6 +24,8 @@ let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/componen
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { getEventLoc, MAIN_EVENT_ID, eventSeason, specialEvents } = require("%rGui/event/eventState.nut")
+let { discountTagOffer } = require("%rGui/components/discountTag.nut")
+
 
 let activeItemId = Watched(null)
 
@@ -207,6 +210,7 @@ function getPriceInfo(goods) {
     local basePrice = discountInPercent <= 0 ? price.price
       : unifyBasePrice(round(price.price / (1.0 - (discountInPercent / 100.0))), price.price).tointeger()
     return {
+      discountInPercent
       priceCtor = mkCurrencyComp
       basePrice
       finalPrice = price.price
@@ -221,6 +225,7 @@ function getPriceInfo(goods) {
     local basePrice = discountInPercent <= 0 ? priceExt.price
       : unifyBasePrice(round(priceExt.price / (1.0 - (discountInPercent / 100.0))), priceExt.price).tointeger()
     return {
+      discountInPercent
       priceCtor = mkPriceExtText
       basePrice
       finalPrice = priceExt.price
@@ -234,23 +239,61 @@ function getPriceInfo(goods) {
   return null
 }
 
+let discountMarginBlock = [hdpx(32), 0, 0, 0]
+let abTestDiscountViewCfg = {
+  group_0 = {
+    discountCtor = @(priceBlock, _) priceBlock
+    gap = purchGap
+    priceStyle = CS_BIG
+  }
+  group_1 = {
+    discountCtor = @(priceBlock, discountPrice) {
+      flow = FLOW_HORIZONTAL
+      margin = discountMarginBlock
+      valign = ALIGN_CENTER
+      hplace = ALIGN_RIGHT
+      gap = hdpx(32)
+      children = [
+        priceBlock
+        discountTagOffer(discountPrice)
+      ]
+    }
+    gap = 0
+    priceStyle = CS_COMMON
+  }
+  group_2 = {
+    discountCtor = @(_, discountPrice) {
+      margin = discountMarginBlock
+      hplace = ALIGN_RIGHT
+      children = discountTagOffer(discountPrice)
+    }
+    gap = 0
+    priceStyle = CS_COMMON
+  }
+}
+
 let purchaseButtonBlock = @(animStartTime) function() {
   let res = {
-    watch = previewGoods
+    watch = [previewGoods, abTests]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
-    gap = purchGap
   }
   let goods = previewGoods.value
   let info = getPriceInfo(goods)
   if (info == null)
     return res
 
-  let { priceCtor, basePrice, finalPrice, currencyId, buy } = info
+  let { gap = purchGap, priceStyle = CS_BIG,
+    discountCtor = @(priceBlock, _) priceBlock
+  } = abTestDiscountViewCfg?[abTests.get()?.offerDiscountView] ?? abTestDiscountViewCfg.group_0
+  res.gap <- gap
+
+  let { priceCtor, basePrice, finalPrice, currencyId, buy, discountInPercent } = info
+  let priceBlock = finalPrice == basePrice ? null
+    : oldPriceBlock(priceCtor(basePrice, currencyId, priceStyle), animStartTime)
   return res.__update({
     children = [
-      finalPrice == basePrice ? null
-        : oldPriceBlock(priceCtor(basePrice, currencyId, currencyStyle), animStartTime)
+      discountCtor(priceBlock, discountInPercent)
       mkPurchButton(
         priceCtor(finalPrice, currencyId, currencyStyle),
         withBqEvent(goods, buy),

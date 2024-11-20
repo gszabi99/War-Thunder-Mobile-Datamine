@@ -2975,7 +2975,8 @@
     "fastShutdown": true,
     "graphics": {
       "compress_panorama": false,
-      "allowETC2": false
+      "allowETC2": false,
+      "allowClipmapDXT": false
     },
     "texStreaming": {
       "memReserveKB": 600000

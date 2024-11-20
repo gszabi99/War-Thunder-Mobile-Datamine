@@ -19,8 +19,8 @@ let { get_base_game_version_str } = require("app")
 
 let isSuggested = hardPersistWatched("suggestInstall.isSuggested", false)
 let SUGGEST_INSTALL_APK = "suggestInstallApk"
-let apkToInstall = "wtm_rc.apk"
 let DOWNLOAD_SUCCESSFUL_BY_SITE = "downloadSuccessfulBySite"
+let getApkName = @() $"wtm_production_{actualGameVersion.get()}.apk"
 
 let hasDownloadedApk = Watched(false)
 
@@ -72,7 +72,8 @@ function downloadAPK() {
   if (getDownloadedId() != null && queryDownloadStatus(getDownloadedId()) == DOWNLOAD_STATUS_SUCCESSFUL)
     return customStatusHandlers[DOWNLOAD_STATUS_SUCCESSFUL](getDownloadedId())
 
-  let availableForDownload = actualGameVersion.value
+  let apkToInstall = getApkName()
+  let availableForDownload = actualGameVersion.get()
   logD($"Available for download: {availableForDownload}")
 
   if (availableForDownload == null) {
@@ -107,7 +108,7 @@ subscribeFMsgBtns({
   tryToInstallApk = function(_) {
     saveDownloadId(null)
     hasDownloadedApk.set(false)
-    tryToInstall(apkToInstall)
+    tryToInstall(getApkName())
   }
   markSuggestInstallSeen = @(_) isSuggested.set(true)
 })
