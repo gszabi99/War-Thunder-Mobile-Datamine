@@ -23,8 +23,10 @@ let DOWNLOAD_SUCCESSFUL_BY_SITE = "downloadSuccessfulBySite"
 let getApkName = @() $"wtm_production_{actualGameVersion.get()}.apk"
 
 let hasDownloadedApk = Watched(false)
+let isDownloadInProgress = Watched(false)
 
 let needShowModal = keepref(Computed(@() !hasModalWindows.get()
+  && !isDownloadInProgress.get()
   && !isInLoadingScreen.get()
   && !isTutorialActive.get()
   && !isSuggested.get()
@@ -58,8 +60,12 @@ let customStatusHandlers = {
     logD("Download successful")
     saveDownloadId(id)
     hasDownloadedApk.set(true)
+    isDownloadInProgress.set(false)
   },
-  [DOWNLOAD_STATUS_FAILED] = @(id) logerr($"Download failed: {id}")
+  [DOWNLOAD_STATUS_FAILED] = function(id) {
+    logerr($"Download failed: {id}")
+    isDownloadInProgress.set(false)
+  }
 }
 
 eventbus_subscribe("android.platform.onCompleteApkDownload", function (event) {
@@ -71,6 +77,11 @@ eventbus_subscribe("android.platform.onCompleteApkDownload", function (event) {
 function downloadAPK() {
   if (getDownloadedId() != null && queryDownloadStatus(getDownloadedId()) == DOWNLOAD_STATUS_SUCCESSFUL)
     return customStatusHandlers[DOWNLOAD_STATUS_SUCCESSFUL](getDownloadedId())
+
+  if (isDownloadInProgress.get()) {
+    logD("Download is already in progress")
+    return
+  }
 
   let apkToInstall = getApkName()
   let availableForDownload = actualGameVersion.get()
@@ -98,6 +109,8 @@ function downloadAPK() {
     return
   }
 
+  isDownloadInProgress.set(true)
+
   let downloadId = enqueueDownload("https://wtmobile.com/apk", apkToInstall, "Download WTM RC", false, false)
   let status = queryDownloadStatus(downloadId)
 
@@ -117,4 +130,4 @@ needShowModal.subscribe(@(v) v ? deferOnce(showSuggestInstallModal) : null)
 
 let updateBySite = @() getOptValue(OPT_AUTO_UPDATE_ENABLED) ? downloadAPK() : null
 
-return { updateBySite }
+return { updateBySite, isDownloadInProgress }

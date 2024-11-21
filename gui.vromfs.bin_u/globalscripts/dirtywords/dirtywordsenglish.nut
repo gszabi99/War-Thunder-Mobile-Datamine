@@ -690,6 +690,10 @@ badphrases =
   "n[il1][qg6]([qg6]?[e3]r|[qg6]a)"
 ]
 
+forbiddennames = [
+  "hither"
+]
+
 badcombination =
 [
   "14.{0,3}88",

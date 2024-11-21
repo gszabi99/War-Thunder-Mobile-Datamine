@@ -189,7 +189,7 @@ function openQuestsWndOnTab(tabId) {
 function onWatchQuestAd(unlock) {
   let { name, progressCorrectionStep = 0, isCompleted = false } = unlock
   if (adBudget.value == 0) {
-    openMsgBox({ text = loc("playBattlesToUnlockAds") })
+    openMsgBox({ text = loc("msg/adsLimitReached") })
     return false
   }
 

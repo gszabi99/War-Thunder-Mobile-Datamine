@@ -23,6 +23,7 @@ let sectionBtnHeight = hdpx(70)
 let sectionBtnMaxWidth = hdpx(400)
 let sectionBtnGap = hdpx(10)
 let linkToEventWidth = hdpx(240)
+let linkToEventIconSize = hdpxi(74)
 let iconSize = CS_INCREASED_ICON.iconSize
 let btnSize = [isWidescreen ? hdpx(300) : hdpx(230), hdpx(90)]
 let childOvr = isWidescreen ? {} : fontSmallShaded
@@ -118,9 +119,9 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null) {
         children = [
           @() {
             watch = iconWatch
-            size = flex()
+            size = [linkToEventIconSize, linkToEventIconSize]
             rendObj = ROBJ_IMAGE
-            image = Picture($"{iconWatch.get()}:0:P")
+            image = Picture($"{iconWatch.get()}:{linkToEventIconSize}:{linkToEventIconSize}:P")
             keepAspect = KEEP_ASPECT_FIT
           }
           {
@@ -165,9 +166,8 @@ function mkAdsBtn(unlock) {
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             halign = ALIGN_CENTER
-            text = utf8ToUpper(hasAdBudget.value ? loc("quests/addProgress")
-              : SPEED_UP_AD_COST <= 1 ? loc("playOneBattle") : loc("playBattles", { count = SPEED_UP_AD_COST }))
-          }.__update(hasAdBudget.value ? fontTinyShaded : fontSmallAccentedShaded, adsButtonCounter)
+            text = utf8ToUpper(hasAdBudget.get() ? loc("quests/addProgress") : loc("btn/adsLimitReached"))
+          }.__update(fontTinyShaded, adsButtonCounter)
         ]
       },
       onClick,

@@ -208,8 +208,7 @@ function mkAdsBtn(reqPlayerLevel, adReward) {
   return @() {
     watch = [bestCampLevel, adBudget]
     children = mkCustomButton(
-      cost > adBudget.value
-          ? mkBtnContent(null, cost <= 1 ? loc("playOneBattle") : loc("playBattles", { count = cost }))
+      cost >= adBudget.get() ? mkBtnContent(null, loc("btn/adsLimitReached"))
         : mkBtnContent("ui/gameuiskin#watch_ads.svg", loc("shop/watchAdvert/short"), adsButtonCounter),
       @() bestCampLevel.value >= reqPlayerLevel
           ? onSchRewardReceive(adReward)

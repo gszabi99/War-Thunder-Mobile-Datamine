@@ -1208,7 +1208,6 @@ fouldata =
 badphrases =
 [
   @"анепош[е]?л[и]?бы[вт]ы",
-  { value = "бандер", regions = REGIONS_RU },
   "еханыйбабай",
   "идинахуй",
   "гитл[е3]р",
@@ -1217,9 +1216,18 @@ badphrases =
   @"тык[ао]зел",
   @"отс[ао]сатьу",
   @"отс[ао]сичлен",
-  { value = "шухевич", regions = REGIONS_RU },
-  { value = "bander", regions = REGIONS_RU },
-  { value = "shuhevich", regions = REGIONS_RU },
+  "шалав",
+]
+
+forbiddennames = [
+  { value = "бандер", regions = REGIONS_RU }
+  { value = "украин", regions = REGIONS_RU }
+  { value = "шухевич", regions = REGIONS_RU }
+  { value = "bander", regions = REGIONS_RU }
+  { value = "[bd][oa][ml]bil[db][oa][nm]bas", regions = REGIONS_RU }
+  "i4trumpнашslon"
+  { value = "shuhevich", regions = REGIONS_RU }
+  { value = "ukrain", regions = REGIONS_RU }
 ]
 
 badcombination =

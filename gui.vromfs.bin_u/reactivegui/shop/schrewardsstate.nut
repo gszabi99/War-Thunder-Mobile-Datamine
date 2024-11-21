@@ -172,7 +172,7 @@ function onSchRewardReceive(schReward) {
 
   let { cost = 0 } = schReward
   if (cost > adBudget.value) {
-    openMsgBox({ text = loc("playBattlesToUnlockAds") })
+    openMsgBox({ text = loc("msg/adsLimitReached") })
     return
   }
 

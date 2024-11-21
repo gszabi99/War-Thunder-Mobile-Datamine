@@ -4,7 +4,6 @@ let { getUnitType, getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { applyAttrLevels } = require("%rGui/attributes/attrValues.nut")
 let { TANK, SHIP, SUBMARINE, AIR } = require("%appGlobals/unitConst.nut")
-let { get_game_params } = require("gameparams")
 let { attrPresets } = require("%rGui/attributes/attrState.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { getWeaponShortNameWithCount, getWeaponTypeName } = require("%rGui/weaponry/weaponsVisual.nut")
@@ -34,7 +33,9 @@ let avgShellPenetrationMmByRank = [
 
 let valueRangeShip = {
   shipCrewRating = [0.0, 10.0]
-  maxSpeed = [5.3, 20.7] // m/s
+  maxSpeed = [4, 23] // m/s
+  surfaceSpeed = [4, 23] // m/s
+  periscopeSpeed = [4, 23] // m/s
   turningTime = [10, 60]
   asmCaptureDuration = [3.2, 8]
   mainCannonDps = [0, 5000]
@@ -134,6 +135,8 @@ let statsShip = {
   }
 
   maxSpeed = { valueToText = @(v, _) getSpeedText(v) }
+  surfaceSpeed = { valueToText = @(v, _) getSpeedText(v) }
+  periscopeSpeed = { valueToText = @(v, _) getSpeedText(v) }
   turningTime = {
     getProgress = mkGetProgressInv(SHIP, "turningTime")
     valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
@@ -248,6 +251,8 @@ let statsCfgShip = {
   full = [
     statsShip.shipCrewMax
     statsShip.shipCrewMin
+    statsShip.surfaceSpeed
+    statsShip.periscopeSpeed
     statsShip.maxSpeed
     statsShip.turningTime
     statsShip.asmCaptureDuration
@@ -496,8 +501,6 @@ function mkUnitStat(unit, stat, shopCfg, uid) {
   if (header == "")
     return null
   local value = stat.getValue(shopCfg)
-  if (unit.unitClass == SUBMARINE && uid == "maxSpeed")
-    value *= (get_game_params()?.submarineMaxSpeedMult ?? 1.)
   return {
     uid //for compare
     header

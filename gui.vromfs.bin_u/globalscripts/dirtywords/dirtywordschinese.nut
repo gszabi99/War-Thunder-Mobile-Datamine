@@ -3,7 +3,7 @@ from "%globalScripts/logs.nut" import *
 // Dirty Words tables for Chinese language.
 //
 
-let REGIONS_CN = [ "CN" ]
+let LANGS_CN = [ "Chinese" ]
 
 return {
   badsegments = [
@@ -68,7 +68,7 @@ return {
 
   forbiddennamesegments = [
     {
-      regions = REGIONS_CN // This list is only for China region!!!
+      langs = LANGS_CN
       list = {
         ["中"] =
           [
@@ -253,8 +253,8 @@ return {
     }
   ]
 
-  badphrases = [
-    { value = "\\bpla\\b", regions = REGIONS_CN }
+  forbiddennames = [
+    { value = "\\bpla\\b", langs = LANGS_CN }
   ]
 
   badcombination = [

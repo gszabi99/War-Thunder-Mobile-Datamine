@@ -101,7 +101,9 @@ function initSavedData() {
   if (!isOnlineSettingsAvailable.get())
     return
   let blk = get_local_custom_settings_blk()
-  voiceMsgPieOrder.set(getBlkValueByPath(blk, SAVE_ID_ORDER)?.split(";") ?? (clone voiceMsgPieOrderDefault))
+  let pieOrder = getBlkValueByPath(blk, SAVE_ID_ORDER)?.split(";") ?? (clone voiceMsgPieOrderDefault)
+  pieOrder.extend(voiceMsgPieOrderDefault.filter(@(v) !pieOrder.contains(v)))
+  voiceMsgPieOrder.set(pieOrder)
   voiceMsgPieHidden.set(getBlkValueByPath(blk, SAVE_ID_HIDDEN)?.split(";") ?? [])
 }
 isOnlineSettingsAvailable.subscribe(@(_) initSavedData())

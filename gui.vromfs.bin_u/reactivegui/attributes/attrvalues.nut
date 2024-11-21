@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { Point2 } = require("dagor.math")
+let { get_game_params } = require("gameparams")
 let { isDataBlock, blk2SquirrelObjNoArrays, getBlkByPathArray, blkOptFromPath
 } = require("%sqstd/datablock.nut")
 let { round, round_by_value, fabs } = require("%sqstd/math.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
-let { get_modifications_blk } = require("blkGetters")
+let { get_modifications_blk, get_game_params_blk } = require("blkGetters")
 let { TANK, SHIP, AIR } = require("%appGlobals/unitConst.nut")
 
 let iconDamage = "►"
@@ -212,6 +213,11 @@ let shipAttrs = {
     getMulMax = @(attrId) attrMaxMulsShip?[attrId].mulMaxSpeed ?? 1.0
     valueToText = @(v) "".concat(round(v * 3.6), loc("measureUnits/kmh"))
     relatedStat = "maxSpeed"
+    function updateStats(stats, mul) {
+      mulStat(stats, "surfaceSpeed", mul * (get_game_params_blk()?.difficulty_settings.noArcadeBoost.off.submarineSurfaceSlowMult ?? 1))
+      mulStat(stats, "periscopeSpeed", mul * (get_game_params_blk()?.difficulty_settings.noArcadeBoost.off.submarineSurfaceSlowMult ?? 1))
+      mulStat(stats, "maxSpeed", mul)
+    }
   }
   attrib_ship_steering = {
     function getMulMax(attrId) {
@@ -359,13 +365,17 @@ function getAttrValData(unitType, attr, step, shopCfg, servConfigs, mods) {
   let attrId = attr.id
   let stepsTotal = attr.levelCost.len() // Total level progress steps
   let cfg = attrValCfg?[unitType][attrId] ?? attrValCfgDefault
+  local submarineMul = 1
+  if ("periscopeSpeed" in shopCfg && attrId == "attrib_ship_max_speed") {
+    submarineMul = get_game_params()?.submarineMaxSpeedMult ?? 1.
+  }
 
   let data = cfg?.getValDataByServConfigs(attr, step, servConfigs)
   if (data != null)
     return data
 
   let textVal = cfg?.getAttrValText(attrId, step, stepsTotal, shopCfg)
-    ?? cfg.valueToText(cfg.getBaseVal(shopCfg) * getAttrMul(cfg, attrId, step, stepsTotal) * modsMul(attrId, mods))
+    ?? cfg.valueToText(cfg.getBaseVal(shopCfg) * getAttrMul(cfg, attrId, step, stepsTotal) * modsMul(attrId, mods) * submarineMul)
     ?? ""
   return textVal == "" ? [] : [{ ctor = ROBJ_TEXT, value = textVal }]
 }
@@ -384,7 +394,11 @@ function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
           continue
       let stepsTotal = attr.levelCost.len() ?? 0
       let step = attrLevels?[catId][attrId] ?? 0
-      cfg.updateStats(stats, getAttrMul(cfg, attrId, step, stepsTotal) * modsMul(attrId, mods))
+      local submarineMul = 1
+      if ("periscopeSpeed" in shopCfg && attrId == "attrib_ship_max_speed") {
+        submarineMul = get_game_params()?.submarineMaxSpeedMult ?? 1.
+      }
+      cfg.updateStats(stats, getAttrMul(cfg, attrId, step, stepsTotal) * modsMul(attrId, mods) * submarineMul)
     }
   }
   return stats

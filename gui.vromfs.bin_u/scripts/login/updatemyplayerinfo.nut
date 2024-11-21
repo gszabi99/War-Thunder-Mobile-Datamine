@@ -5,7 +5,7 @@ let { isAuthorized, isAuthAndUpdated } = require("%appGlobals/loginState.nut")
 let { myInfo } = require("%appGlobals/profileStates.nut")
 let { removePlatformPostfix } = require("%appGlobals/user/nickTools.nut")
 let { shouldDisableMenu } = require("%appGlobals/clientState/initialState.nut")
-let { getNickOrig, getNickSfx } = require("auth_wt")
+let { getNickOrig } = require("auth_wt")
 let { INVALID_USER_ID } = require("matching.errors")
 
 isAuthorized.subscribe(@(v) myInfo.mutate(@(p) p.__update({
@@ -16,9 +16,9 @@ isAuthAndUpdated.subscribe(function(v) {
   let info = v ? get_cur_rank_info() : null //why so hard way to get userId?
   let realName = info?.name ?? ""
   let nickOrig = getNickOrig() // User's custom nickname (currently only Gaijin accounts have it)
-  let nickSfx = getNickSfx() // Suffix like "#123" which makes the custom nickname unique
+  let name = removePlatformPostfix(nickOrig != "" ? nickOrig : realName)
   myInfo.mutate(@(p) p.__update({
-    name = nickOrig != "" ? "".concat(nickOrig, nickSfx) : removePlatformPostfix(realName) // Name for displaying in UI
+    name // Name for displaying in UI
     realName // Unique name as ID. For non-Gaijin accounts it contains a platform suffix like "name@googleplay"
   }))
 })

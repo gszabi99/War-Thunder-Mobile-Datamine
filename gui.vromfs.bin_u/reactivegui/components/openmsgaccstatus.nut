@@ -1,17 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { msgBoxText, openMsgBox } = require("%rGui/components/msgBox.nut")
-let { set_clipboard_text } = require("dagor.clipboard")
-let { showHint } = require("%rGui/tooltip.nut")
+let { copyToClipboard } = require("%rGui/components/clipboard.nut")
 let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
 
 let wndWidth = hdpx(1500)
 let wndHeight = hdpx(700)
 let idBtnSize = hdpxi(30)
-
-function copyToClipboard(evt, text) {
-  set_clipboard_text(text)
-  showHint(evt.targetRect, loc("msgbox/copied"), 2)
-}
 
 function userIdBlock(userId) {
   if (userId == "")

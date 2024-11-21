@@ -1,5 +1,6 @@
-from "auth_wt" import getCountryCode
 from "%globalScripts/logs.nut" import *
+from "auth_wt" import getCountryCode
+from "language" import getLocalLanguage
 from "%sqstd/string.nut" import utf8ToLower
 
 //
@@ -27,6 +28,7 @@ let dict = {
   foulcore        = null
   fouldata        = null
   badphrases      = null
+  forbiddennames  = null
   badcombination  = null
 }
 
@@ -54,7 +56,11 @@ function updateAsianDict(lookupTbl, upd) {
 // Collect language tables
 function init(langSources) {
   let myLocation = getCountryCode()
-  let isMyLocationKnown = myLocation != "" // is true only after login
+  let myLanguage = getLocalLanguage()
+  let isMyLocationKnown = myLocation != "" // is true only after first login
+  pendingDict = null
+  pendingDictAsian = null
+
   foreach (varName, _val in dict) {
     dict[varName] = []
     let mkRegexp = toRegexpFunc?[varName] ?? toRegexpFunc.default
@@ -66,8 +72,11 @@ function init(langSources) {
         if (tVSrc == "string")
           v = mkRegexp(vSrc)
         else if (tVSrc == "table") {
-          hasRegions = "regions" in vSrc
-          if (hasRegions && isMyLocationKnown && !vSrc.regions.contains(myLocation))
+          let { langs = null, regions = null } = vSrc
+          if (langs != null && !langs.contains(myLanguage))
+            continue
+          hasRegions = regions != null
+          if (hasRegions && isMyLocationKnown && !regions.contains(myLocation))
             continue
           v = clone vSrc
           if ("value" in v)
@@ -92,10 +101,13 @@ function init(langSources) {
   }
 
   foreach (varName, collection in dictAsian) {
+    collection.clear()
     foreach (source in langSources) {
       foreach (cfg in (source?[varName] ?? {})) {
-        let { regions = null, list = {} } = cfg
-        local hasRegions = regions != null
+        let { langs = null, regions = null, list = {} } = cfg
+        if (langs != null && !langs.contains(myLanguage))
+          continue
+        let hasRegions = regions != null
         if (hasRegions && isMyLocationKnown && !regions.contains(myLocation))
           continue
         let isPending = hasRegions && !isMyLocationKnown
@@ -110,9 +122,6 @@ function init(langSources) {
       }
     }
   }
-
-  foreach (source in langSources)
-    source.clear()
 }
 
 function continueInitAfterLogin() {
@@ -266,7 +275,7 @@ function checkRegexps(word, regexps, accuse) {
 }
 
 // Checks that one word is correct.
-function checkWord(word) {
+function checkWord(word, isName) {
   word = prepareWord(word)
 
   local status = true
@@ -282,6 +291,9 @@ function checkWord(word) {
 
   if (status)
     status = checkRegexps(word, dict.badphrases, true)
+
+  if (status && isName)
+    status = checkRegexps(word, dict.forbiddennames, true)
 
   if (!status)
     status = checkRegexps(word, dict.excludescore, false)
@@ -356,7 +368,7 @@ function checkPhraseInternal(text, isName) {
   let words = preparePhrase(phrase)
 
   foreach (w in words)
-    if (!checkWord(w))
+    if (!checkWord(w, isName))
       phrase = regexp2(w).replace(getMaskedWord(w), phrase)
 
   return phrase

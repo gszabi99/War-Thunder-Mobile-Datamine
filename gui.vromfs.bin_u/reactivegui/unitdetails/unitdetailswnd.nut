@@ -156,9 +156,15 @@ let buttonsBlock = @() {
           valign = ALIGN_BOTTOM
           children = [
             @() {
-              watch = hasSlotAttrPreset
-              children = !hasSlotAttrPreset.get() ? btnOpenUnitAttrBig
-                : btnOpenUnitMods({ hotkeys = ["^J:Y"] })
+              watch = [hasSlotAttrPreset, baseUnit]
+              children = hasSlotAttrPreset.get()
+                  ? btnOpenUnitMods({ hotkeys = ["^J:Y"] })
+                : !isShowedUnitOwned.get()
+                  ? null
+                : (myUnits.get()[baseUnit.get().name]?.isUpgraded == baseUnit.get()?.isUpgraded
+                    || baseUnit.get()?.isPremium)
+                  ? btnOpenUnitAttrBig
+                : null
             }
             lvlUpButton
             { size = flex() }

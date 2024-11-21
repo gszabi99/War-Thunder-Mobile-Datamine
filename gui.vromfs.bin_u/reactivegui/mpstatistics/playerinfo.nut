@@ -28,6 +28,8 @@ let { textButtonCommon, mkCustomButton, mergeStyles } = require("%rGui/component
 let { mkTimeToNextReport } = require("%rGui/report/reportPlayerState.nut")
 let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
 let { COMMON } = require("%rGui/components/buttonStyles.nut")
+let { copyToClipboard } = require("%rGui/components/clipboard.nut")
+let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
 
 let defColor = 0xFFFFFFFF
 let hlColor = 0xFF5FC5FF
@@ -114,15 +116,32 @@ let mkBotNameContent = @(player, info) function() {
 }
 
 function mkPlayerUidInfo(player, contact) {
-  let res = { watch = can_view_player_uids }
-  if (!can_view_player_uids.get())
-    return @() res
-  return @() {
-    watch = [can_view_player_uids, contact]
-    rendObj = ROBJ_TEXT
-    text = player?.isBot ? loc("multiplayer/state/bot_ready") : $"UID: {player?.userId} | {contact.get()?.realnick}"
-    grayColor
-  }.__update(fontTiny)
+  let stateFlags = Watched(0)
+  return function() {
+    let res = { watch = can_view_player_uids }
+    if (!can_view_player_uids.get())
+      return res
+    if (player?.isBot)
+      return res.__update({
+        children = mkText("".concat("Debug: ", loc("multiplayer/state/bot_ready")), grayColor)
+      })
+    let uidInfoText = $"{player?.userId} ({contact.get()?.realnick})"
+    return {
+      watch = [can_view_player_uids, contact, stateFlags]
+      behavior = Behaviors.Button
+      onClick = @(evt) copyToClipboard(evt, uidInfoText)
+      onElemState = @(s) stateFlags.set(s)
+      transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
+      transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
+      flow = FLOW_HORIZONTAL
+      valign = ALIGN_CENTER
+      gap = hdpx(10)
+      children = [
+        mkText($"Debug: UID {uidInfoText}", grayColor)
+        mkIconBtn("ui/gameuiskin#icon_copy.svg", fontTiny.fontSize, stateFlags, grayColor)
+      ]
+    }
+  }
 }
 
 let actions = [
