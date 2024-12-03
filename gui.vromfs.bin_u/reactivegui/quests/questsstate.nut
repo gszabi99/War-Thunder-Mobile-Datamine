@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { activeUnlocks, allUnlocksRaw, unlockTables, unlockProgress } = require("%rGui/unlocks/unlocks.nut")
+let { campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockProgress } = require("%rGui/unlocks/unlocks.nut")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
@@ -12,7 +12,7 @@ let { playSound } = require("sound_wt")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { speed_up_unlock_progress } = require("%appGlobals/pServer/pServerApi.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
-let { specialEvents, MAIN_EVENT_ID, curEvent } = require("%rGui/event/eventState.nut")
+let { specialEvents, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
 let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 
 
@@ -39,13 +39,13 @@ let closeRewardsList = @() rewardsList(null)
 
 let mkEventSectionName = @(day, eventName) "".concat(eventName, "_", EVENT_PREFIX, day)
 
-let inactiveEventUnlocks = Computed(@() allUnlocksRaw.value
+let inactiveEventUnlocks = Computed(@() allUnlocksDesc.value
   .filter(@(u) u?.meta.event_day != null && !(unlockTables.value?[u?.table] ?? false))
   .map(@(u, id) u.__merge(unlockProgress.value?[id] ?? {})))
 
 let eventUnlocksByDays = Computed(function() {
   let days = {}
-  let unlocks = {}.__merge(activeUnlocks.value, inactiveEventUnlocks.value)
+  let unlocks = {}.__merge(campaignActiveUnlocks.value, inactiveEventUnlocks.value)
   foreach (name, u in unlocks) {
     let { event_day = null, event_id = null } = u?.meta
     if (!event_id || !event_day)
@@ -99,7 +99,7 @@ let questsBySection = Computed(function() {
   let res = {}
   foreach (sections in questsCfg.get())
     foreach (section in sections)
-      res[section] <- activeUnlocks.value.filter(@(u) section in u?.meta || u?.meta.event_id == section) ?? {}
+      res[section] <- campaignActiveUnlocks.value.filter(@(u) section in u?.meta || u?.meta.event_id == section) ?? {}
   foreach (eventName, unlocks in eventUnlocksByDays.get())
     res.__update(unlocks.reduce(function(acc, v, key) {
       acc[mkEventSectionName(key, eventName)] <- v
@@ -108,13 +108,22 @@ let questsBySection = Computed(function() {
   return res
 })
 
-let progressUnlockByTab = Computed(@() {
-  [EVENT_TAB] = activeUnlocks.get().findvalue(@(unlock) "event_progress" in unlock?.meta),
+let progressUnlockByTab = Computed(function() {
+  let res = {}
+  foreach(unlock in campaignActiveUnlocks.get())
+    if ("event_progress" in unlock?.meta) {
+      let { event_id = MAIN_EVENT_ID } = unlock.meta
+      let key = event_id == MAIN_EVENT_ID || event_id == "" ? EVENT_TAB
+        : specialEvents.get().findindex(@(e) e.eventName == event_id)
+      if (key != null)
+        res[key] <- unlock
+    }
+  return res
 })
 
 let progressUnlockBySection = Computed(@() {
-  [DAILY_SECTION] = activeUnlocks.get().findvalue(@(unlock) "daily_progress" in unlock?.meta),
-  [WEEKLY_SECTION] = activeUnlocks.get().findvalue(@(unlock) "weekly_progress" in unlock?.meta)
+  [DAILY_SECTION] = campaignActiveUnlocks.get().findvalue(@(unlock) "daily_progress" in unlock?.meta),
+  [WEEKLY_SECTION] = campaignActiveUnlocks.get().findvalue(@(unlock) "weekly_progress" in unlock?.meta)
 })
 
 function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, sConfigs) {
@@ -217,7 +226,7 @@ register_command(function() {
 return {
   openQuestsWnd
   openQuestsWndOnTab
-  openEventQuestsWnd = @() openQuestsWndOnTab(curEvent.value)
+  openEventQuestsWnd = openQuestsWndOnTab
   isQuestsOpen
 
   rewardsList

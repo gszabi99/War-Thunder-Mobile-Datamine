@@ -1,17 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { chosenAvatar, allAvatars, availAvatars, getReceiveReason, unseenDecorators,
+let { chosenAvatar, allAvatars, availAvatars, unseenDecorators,
   markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
 } = require("decoratorState.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { set_current_decorator, unset_current_decorator, decoratorInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { textButtonPrimary, textButtonCommon, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { contentWidthFull } = require("%rGui/options/optionsStyle.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let hoverHoldAction = require("%darg/helpers/hoverHoldAction.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
@@ -21,6 +20,7 @@ let { CS_COMMON, CS_INCREASED_ICON } = require("%rGui/components/currencyStyles.
 let purchaseDecorator = require("purchaseDecorator.nut")
 let { PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { mkDecoratorUnlockProgress } = require("mkDecoratorUnlockProgress.nut")
 
 let gap = hdpx(15)
 let avatarSize = hdpxi(200)
@@ -46,8 +46,6 @@ function applySelectedAvatar() {
     buySelectedAvatar()
     return
   }
-
-  openMsgBox({ text = getReceiveReason(selectedAvatar.value) ?? loc("decor/avatarIsNotOpen") })
 }
 
 let header = {
@@ -138,7 +136,6 @@ function footer() {
   let canBuy = (price?.price ?? 0) > 0
   let canEquip = selectedAvatar.value in availAvatars.value || selectedAvatar.value == null
   let isCurrent = selectedAvatar.value == chosenAvatar.value?.name
-
   return {
     watch = [selectedAvatar, chosenAvatar]
     size = [flex(), defButtonHeight]
@@ -152,14 +149,7 @@ function footer() {
         ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
             mkCurrencyComp(price.price, price.currencyId, CS_INCREASED_ICON),
             buySelectedAvatar)
-      : [
-          textButtonCommon(loc("mainmenu/btnEquip"), applySelectedAvatar)
-          {
-            rendObj = ROBJ_TEXT
-            vplace = ALIGN_CENTER
-            text = getReceiveReason(selectedAvatar.value) ?? loc("decor/avatarIsNotOpen")
-          }.__update(fontSmallAccented)
-        ]
+      : mkDecoratorUnlockProgress(selectedAvatar.get())
   }
 }
 

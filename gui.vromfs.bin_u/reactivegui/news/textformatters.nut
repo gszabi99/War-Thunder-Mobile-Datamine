@@ -32,7 +32,7 @@ let openUrl = @(url) eventbus_send("openUrl", { baseUrl = urlAliases?[url] ?? ur
 let textArea = @(params) {
   size = [flex(), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
-  text = wordHyphenation(params?.v ?? "")
+  text = wordHyphenation((params?.v == "" && params?.t == "paragraph" ? "\n" : params?.v) ?? "")
   behavior = Behaviors.TextArea
   color = commonTextColor
   colorTable = locColorTable
@@ -65,7 +65,8 @@ function url(data, _, __) {
   }
 }
 
-let mkUlElement = @(bullet) function(elem) {
+let mkUlElement = @(bullet) function(elem, level = 0) {
+  local indent = hdpx(level * 50)
   if (elem == null)
     return null
   let children = [bullet]
@@ -76,16 +77,29 @@ let mkUlElement = @(bullet) function(elem) {
   return {
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL
+    margin = [0, 0, 0, indent]
     children
   }
 }
 
-let mkList = @(elemFunc) @(obj, formatTextFunc, _)
-  obj.__merge({
+function objListToArrayWithLevels(x, level = 0) {
+  let result = []
+  foreach (e in x.v) {
+    if (type(e) == "string") {
+      result.append({ text = e, level = level })
+    } else if (type(e) == "table" && "v" in e) {
+      let subResult = objListToArrayWithLevels(e, level + 1)
+      result.extend(subResult)
+    }
+  }
+  return result
+}
+
+let mkList = @(elemFunc) @(obj, formatTextFunc, _) {
     flow = FLOW_VERTICAL
     size = [flex(), SIZE_TO_CONTENT]
-    children = obj.v.map(@(e) elemFunc(formatTextFunc(e)))
-  })
+    children = objListToArrayWithLevels(obj).map(@(e) elemFunc(formatTextFunc(e.text), e.level))
+  }
 
 let ulBullet = { rendObj = ROBJ_TEXT, text = " • " }.__update(fontSmall)
 let ulNoBullet = ulBullet.__merge({ text = "   " })

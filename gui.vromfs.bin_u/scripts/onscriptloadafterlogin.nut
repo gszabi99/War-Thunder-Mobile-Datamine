@@ -8,6 +8,7 @@ foreach (fn in [
   "%scripts/missions/missionsUtils.nut"
 
   "%scripts/matchingRooms/sessionLobby.nut"
+  "%scripts/matchingRooms/roomInfo.nut"
 
   "%scripts/flightMenu.nut"
   "%scripts/respawn.nut"

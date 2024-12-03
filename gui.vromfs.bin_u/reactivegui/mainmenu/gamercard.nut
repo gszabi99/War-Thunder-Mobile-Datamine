@@ -46,7 +46,7 @@ let openCfg = {
   [PLATINUM] = @() openShopWnd(SC_PLATINUM),
 }
 
-let openBuyCurrencyWnd = @(curId, eventId = null) openCfg?[curId] ?? @() openBuyEventCurrenciesWnd(curId, eventId)
+let openBuyCurrencyWnd = @(curId) openCfg?[curId] ?? @() openBuyEventCurrenciesWnd(curId)
 
 let needShopUnseenMark = Computed(@() hasUnseenGoodsByCategory.value.findindex(@(category) category == true))
 
@@ -420,7 +420,7 @@ let mkGamercardUnitCampaign = @(backCb, keyHintText, unit = hangarUnit) {
   ]
 }
 
-let mkCurrenciesBtns = @(currencies, eventId = null, ovr = {}) {
+let mkCurrenciesBtns = @(currencies, ovr = {}) {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   halign = ALIGN_RIGHT
@@ -429,7 +429,7 @@ let mkCurrenciesBtns = @(currencies, eventId = null, ovr = {}) {
   children = !currencies ? null
     : [].extend(currencies)
         .sort(@(a, b) (orderByCurrency?[b] ?? 0) <=> (orderByCurrency?[a] ?? 0))
-        .map(@(c) mkCurrencyBalance(c, openBuyCurrencyWnd(c, eventId)))
+        .map(@(c) mkCurrencyBalance(c, openBuyCurrencyWnd(c)))
 }.__update(ovr)
 
 let gamercardBalanceBtns = mkCurrenciesBtns([WP, GOLD])

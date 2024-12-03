@@ -15,10 +15,12 @@ let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isInBattle, isLocalMultiplayer } = require("%appGlobals/clientState/clientState.nut")
 let { isInRespawn, respawnUnitInfo, respawnUnitItems, isRespawnStarted, timeToRespawn, isRespawnInProgress,
   isRespawnDataInProgress, isBatleDataRequired, respawnsLeft, respawnUnitSkins, hasRespawnSeparateSlots, curUnitsAvgCostWp,
-  isBattleDataFake
+  isBattleDataFake, hasPredefinedReward, dailyBonus
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 
 let isFake = keepref(Computed(@() battleData.get()?.isFake))
+let predefinedReward = keepref(Computed(@() battleData.get()?.predefinedReward))
+let dailyUnitBonus = keepref(Computed(@() battleData.get()?.dailyUnitBonus))
 let unitToSpawn = Computed(@() !isBatleDataRequired.value || isBattleDataReceived.value || isLocalMultiplayer.value
   ? curBattleUnit.value : null)
 let respawnData = mkWatched(persist, "respawnData", null)
@@ -50,6 +52,11 @@ curBattleSkins.subscribe(@(v) isInRespawn.value ? respawnUnitSkins(v) : null)
 isSeparateSlots.subscribe(@(v) hasRespawnSeparateSlots.set(v))
 unitsAvgCostWp.subscribe(@(v) isInRespawn.get() ? curUnitsAvgCostWp.set(v) : null)
 isFake.subscribe(@(v) isBattleDataFake.set(v))
+predefinedReward.subscribe(@(v) hasPredefinedReward.set(v != null))
+dailyUnitBonus.subscribe(@(v) dailyBonus.set(v))
+
+hasPredefinedReward.set(predefinedReward.get() != null)
+dailyBonus.set(dailyUnitBonus.get())
 if (isInRespawn.value && unitToSpawn.value != null)
   updateRespawnUnitInfo()
 

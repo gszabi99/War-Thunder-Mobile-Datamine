@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkGoodsWrap, txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsLimit,
-  priceBgGradDefault
+let { mkGoodsWrap, txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsLimitAndEndTime
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 
 let getLocNameDefault = @(goods) loc($"shop/{goods.id}")
@@ -11,9 +10,9 @@ let mkGoodsDefault = @(goods, onClick, state, animParams) mkGoodsWrap(
   @(_, _) [
     goods?.isShowDebugOnly ? underConstructionBg : null
     txt({ text = getLocNameDefault(goods), margin = [ hdpx(55), 0, 0, hdpx(35) ] })
-    mkGoodsLimit(goods)
+    mkGoodsLimitAndEndTime(goods)
   ].extend(mkGoodsCommonParts(goods, state)),
-  mkPricePlate(goods, priceBgGradDefault, state, animParams))
+  mkPricePlate(goods, state, animParams))
 
 return {
   getLocNameDefault

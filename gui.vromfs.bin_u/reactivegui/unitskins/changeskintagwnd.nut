@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { round } = require("math")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let closeWndBtn = require("%rGui/components/closeWndBtn.nut")
 let { tankTagsOrder, getTagName } = require("%appGlobals/config/skins/skinTags.nut")
@@ -15,6 +16,7 @@ let close = @() removeModalWindow(wndUid)
 
 let gap = hdpx(20)
 let skinSize = hdpxi(110)
+let skinBorderRadius = round(skinSize*0.2).tointeger()
 
 let content = @(curTag, setTag) @() {
   watch = curTag
@@ -64,14 +66,10 @@ function changeSkinTagWnd(unitName, skinName) {
           children = [
             {
               size = [skinSize, skinSize]
-              rendObj = ROBJ_MASK
-              image = Picture($"ui/gameuiskin#slot_mask.svg:{skinSize}:{skinSize}:P")
-              children = {
-                size = [skinSize, skinSize]
-                rendObj = ROBJ_IMAGE
-                image = Picture($"ui/gameuiskin#{image}:{skinSize}:{skinSize}:P")
-                keepAspect = true
-              }
+              rendObj = ROBJ_BOX
+              fillColor = 0xFFFFFFFF
+              borderRadius = skinBorderRadius
+              image = Picture($"ui/gameuiskin#{image}:{skinSize}:{skinSize}:P")
             }
             {
               size = [flex(), SIZE_TO_CONTENT]

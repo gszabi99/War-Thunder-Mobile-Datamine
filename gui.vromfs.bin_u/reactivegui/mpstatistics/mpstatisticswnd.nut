@@ -16,6 +16,7 @@ let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut"
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
+let { squadLabels } = require("%appGlobals/squadLabelState.nut")
 
 const STATS_UPDATE_TIMEOUT = 1.0
 
@@ -38,6 +39,7 @@ let playersByTeam = Computed(function() {
         let isUnitCollectible = unit?.isCollectible ?? false
         let isUnitPremium = unit?.isPremium ?? false
         let isUnitUpgraded = unit?.isUpgraded ?? false
+        let squadLabel = squadLabels.get()?[userId] ?? -1
         return p.__merge({
           damage
           score
@@ -52,6 +54,7 @@ let playersByTeam = Computed(function() {
           isUnitPremium
           isUnitUpgraded
           userId
+          squadLabel
         })
       })))
   let maxTeamSize = res.reduce(@(maxSize, t) max(maxSize, t.len()), 0)

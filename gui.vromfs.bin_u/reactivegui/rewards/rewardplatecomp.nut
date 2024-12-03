@@ -275,6 +275,7 @@ let currencyImgCtors = {
   warbond = @(id, size, iconShiftY) mkDynamicCurrencyIcon(id, size, iconShiftY, 0.85)
   eventKey = @(id, size, iconShiftY) mkDynamicCurrencyIcon(id, size, iconShiftY, 0.65)
   halloweenbond = @(id, size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, getCurrencyBigIcon(id), 0.85)
+  blackfridaybond = @(id, size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, getCurrencyBigIcon(id), 0.85)
 }
 
 function mkRewardPlateCurrencyImage(r, rStyle) {
@@ -466,6 +467,7 @@ function mkRewardPlateSkinImage(r, rStyle) {
   let { iconShiftY } = rStyle
   let size = getRewardPlateSize(r.slots, rStyle)
   let iconSize = size.map(@(v) (v * 0.55).tointeger())
+  let iconBorderRadius = round(iconSize[0]*0.2).tointeger()
   let skinPresentation = getSkinPresentation(id, subId)
 
   return {
@@ -475,13 +477,10 @@ function mkRewardPlateSkinImage(r, rStyle) {
     children = {
       size = iconSize
       pos = [0, iconShiftY * 1.2]
-      rendObj = ROBJ_MASK
-      image = Picture($"ui/gameuiskin#slot_mask.svg:{iconSize[0]}:{iconSize[1]}:P")
-      children = iconBase.__merge({
-        size = iconSize
-        rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#{skinPresentation.image}:{iconSize[0]}:{iconSize[1]}:P")
-      })
+      rendObj = ROBJ_BOX
+      fillColor = 0xFFFFFFFF
+      borderRadius = iconBorderRadius
+      image = Picture($"ui/gameuiskin#{skinPresentation.image}:{iconSize[0]}:{iconSize[1]}:P")
     }
   }
 }

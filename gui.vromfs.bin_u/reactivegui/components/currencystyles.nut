@@ -39,8 +39,9 @@ return freeze({
   CS_SMALL = CS_COMMON.__merge({ fontStyle = fontTiny, iconSize = hdpxi(30) })
   CS_SMALL_INCREASED_ICON
   CS_COMMON
-  CS_NO_BALANCE = CS_COMMON.__merge({ textColor = 0xFFFF4040 })
+  CS_NO_BALANCE = CS_COMMON.__merge({ textColor = 0xFFFFFFFF })
   CS_INCREASED_ICON
   CS_GAMERCARD
   CS_BIG = CS_INCREASED_ICON.__merge({ fontStyle = fontMedium, iconSize = hdpxi(60) })
+  CS_RESPAWN = CS_INCREASED_ICON.__merge({ iconGap = 0 })
 })

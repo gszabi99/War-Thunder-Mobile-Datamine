@@ -4,7 +4,6 @@ let { mkCurrencyComp, CS_NO_BALANCE, CS_INCREASED_ICON } = require("%rGui/compon
 let { openMsgBox, msgBoxText, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { openShopWndByCurrencyId } = require("%rGui/shop/shopState.nut")
-let { curEvent } = require("%rGui/event/eventState.nut")
 let { openBuyEventCurrenciesWnd } = require("%rGui/event/buyEventCurrenciesState.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 
@@ -56,7 +55,7 @@ function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop, cancelF
           if (currencyId in openBuyWnd)
             openBuyWnd[currencyId](bqPurchaseInfo)
           else
-            openBuyEventCurrenciesWnd(currencyId, curEvent.get())
+            openBuyEventCurrenciesWnd(currencyId)
           onGoToShop?()
         }
       }

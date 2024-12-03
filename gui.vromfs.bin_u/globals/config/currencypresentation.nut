@@ -1,4 +1,5 @@
 let { max } = require("math")
+let { loc } = require("dagor.localize")
 
 let iconsScale = {
   ship_tool_kit = 1.6
@@ -13,6 +14,7 @@ let iconsScale = {
   aprilbond = 1.4
   anniversarybond = 1.4
   halloweenbond = 1.4
+  blackfridaybond = 1.4
   ircm_kit = 1.4
 }
 let maxIconsScale = iconsScale.reduce(@(a, b) max(a, b))
@@ -33,6 +35,7 @@ let icons = {
   aprilbond = "ui/gameuiskin#warbond_icon_april.avif"
   anniversarybond = "ui/gameuiskin#warbond_icon_anniversarybond.avif"
   halloweenbond = "ui/gameuiskin#warbond_icon_halloween_2024.avif"
+  blackfridaybond = "ui/gameuiskin#warbond_icon_black_friday_2024.avif"
   // Consumables
   ship_tool_kit = "ui/gameuiskin#shop_consumables_repair_gamercard.avif"
   ship_smoke_screen_system_mod = "ui/gameuiskin#shop_consumables_smoke_gamercard.avif"
@@ -49,6 +52,7 @@ let bigIcons = {
   nybond = "ui/gameuiskin#warbond_goods_christmas_01.avif"
   aprilbond = "ui/gameuiskin#warbond_april_01.avif"
   halloweenbond = "ui/gameuiskin#halloweenbond_goods_01.avif"
+  blackfridaybond = "ui/gameuiskin#blackfridaybond_goods_01.avif"
 }
 
 let placeholder = "ui/gameuiskin#icon_primary_attention.svg"
@@ -64,6 +68,10 @@ let currencyIconsColor = {
   slotExp = 0xFF009900
 }
 
+let currencyEventDescriptions = {
+  blackfridaybond = "events/buyCurrency/desc/blackfridaybond"
+}
+
 let getCommonIcon = @(id) icons?[id] ?? placeholder
 let getCurrencyImage = @(id, season = 0) season <= 0 || id not in seasonIcons
   ? getCommonIcon(id)
@@ -74,6 +82,7 @@ let getCurrencyFallback = @(id, season = 0) season <= 0 || id not in seasonIcons
 let getCurrencyBigIcon = @(id) id in bigIcons
   ? bigIcons[id]
   : getCommonIcon(id)
+let getCurrencyDescription = @(id) loc(currencyEventDescriptions?[id] ?? "events/buyCurrency/desc")
 
 return {
   getIconSize
@@ -82,4 +91,5 @@ return {
   getCurrencyFallback
   getCurrencyBigIcon
   maxIconsScale
+  getCurrencyDescription
 }

@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize, mkGoodsImg, mkCurrencyAmountTitle,
-   mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit,
-   priceBgGradDefault
+let { mkGoodsWrap, borderBgGold, mkSlotBgImg, goodsSmallSize, mkGoodsImg, mkCurrencyAmountTitle,
+  mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTime,
+  mkBorderByCurrency
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { PLATINUM } = require("%appGlobals/currenciesState.nut")
@@ -19,7 +19,7 @@ let bgHiglight = {
 function getImgByAmount(amount) {
   let imgCfg = getCurrencyGoodsPresentation(PLATINUM)
   let idxByAmount = imgCfg.findindex(@(v) v.amountAtLeast > amount) ?? imgCfg.len()
-  return mkGoodsImg(imgCfg?[max(0, idxByAmount - 1)].img)
+  return mkGoodsImg(imgCfg?[max(0, idxByAmount - 1)].img, null, { keepAspect = KEEP_ASPECT_FILL })
 }
 
 function getLocNamePlatinum(goods) {
@@ -28,9 +28,10 @@ function getLocNamePlatinum(goods) {
 }
 
 function mkGoodsPlatinum(goods, onClick, state, animParams) {
-  let { viewBaseValue = 0, isShowDebugOnly = false } = goods
+  let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let platinum = goods?.currencies.platinum ?? 0
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
+  let border = mkBorderByCurrency(borderBgGold, isFreeReward, price?.currencyId)
 
   return mkGoodsWrap(
     goods,
@@ -39,13 +40,13 @@ function mkGoodsPlatinum(goods, onClick, state, animParams) {
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
       bgParticles
-      borderBg
+      border
       sf & S_HOVER ? bgHiglight : null
       getImgByAmount(platinum)
       mkCurrencyAmountTitle(platinum, viewBaseValue, titleFontGrad)
-      mkGoodsLimit(goods)
+      mkGoodsLimitAndEndTime(goods)
     ].extend(mkGoodsCommonParts(goods, state)),
-    mkPricePlate(goods, priceBgGradDefault, state, animParams), {size = goodsSmallSize})
+    mkPricePlate(goods, state, animParams), {size = goodsSmallSize})
 }
 
 return {

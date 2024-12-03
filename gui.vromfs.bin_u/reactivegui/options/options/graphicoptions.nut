@@ -3,7 +3,7 @@ from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_common_local_settings_blk, get_settings_blk } = require("blkGetters")
 let { get_maximum_frames_per_second, is_broken_grass_flag_set, is_texture_uhq_supported, should_notify_about_restart,
-  get_platform_window_resolution, get_default_graphics_preset, is_broken_deferred_flag_set, is_metalfx_upscale_supported = @() false
+  get_platform_window_resolution, get_default_graphics_preset, is_metalfx_upscale_supported = @() false
 } = require("graphicsOptions")
 let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
 let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTION, OPT_DEFERRED, OPT_AA, mkOptionValue
@@ -39,12 +39,29 @@ let resolutionValue = mkOptionValue(OPT_GRAPHICS_SCENE_RESOLUTION,
   getResolutionByQuality(get_default_graphics_preset()),
   validateResolution)
 
+let renderModeOverride = get_settings_blk()?.video.renderModeOverride
+let deferredValues = (renderModeOverride == "forward") ? [false] : ((renderModeOverride == "deferred") ? [true] : [false, true])
+let validateDeferred = @(a) deferredValues.contains(a) ? a : deferredValues[0]
+let deferredValue = mkOptionValue(OPT_DEFERRED, deferredValues[0], validateDeferred)
+
+let aaList = Computed(@() deferredValue.get() ? ["low_fxaa", "high_fxaa", "mobile_taa"].extend(is_ios && is_metalfx_upscale_supported() ?
+  ["metalfx_fxaa"] : []) : (is_ios ? ["metalfx"] : ["low_fxaa"]))
+let validateAA = @(a) aaList.value.contains(a) ? a : aaList.value[0]
+function getAAByQuality(quality) {
+  if (!deferredValue.get())
+    return aaList.value[0]
+  let graphicsPresets = (is_android || is_pc) ? (get_settings_blk()?.android_presets) : get_settings_blk()?.ios_presets
+  return validateAA(graphicsPresets?[quality].graphics.defaultPresetAA ?? aaList.value[0])
+}
+let aaValue = mkOptionValue(OPT_AA, getAAByQuality(get_default_graphics_preset()), validateAA)
+
 function setGraphicsQuality(v) {
   if (!qualitiesList.contains(v))
     return
 
-  graphicsQuality(v)
-  resolutionValue(getResolutionByQuality(v))
+  graphicsQuality.set(v)
+  resolutionValue.set(getResolutionByQuality(v))
+  aaValue(getAAByQuality(v))
 
   if (is_broken_grass_flag_set() && (v == "high" || v == "max"))
     openFMsgBox({ text = loc("msg/qualityNotFullySupported") })
@@ -65,9 +82,6 @@ let optResolution = {
   value = resolutionValue
   list = resolutionList
   valToString = @(v) loc($"options/resolution_{v}")
-  function setValue(v) {
-    resolutionValue(v)
-  }
 }
 
 let allFpsValues = [30, 60, 120]
@@ -79,25 +93,16 @@ let optFpsLimit = {
   value = fpsValue
   list = maxFps < allFpsValues[0] ? allFpsValues : allFpsValues.filter(@(v) v <= maxFps)
   function setValue(v) {
-    fpsValue(v)
+    fpsValue.set(v)
     if (v == 120) {
       if (is_ios)
-        resolutionValue(validateResolution(get_settings_blk()?.sceneResolutionPresetAt120 ?? "low"))
+        resolutionValue.set(validateResolution(get_settings_blk()?.sceneResolutionPresetAt120 ?? "low"))
 
       openFMsgBox({ text = loc("msg/deviceMayStartToWarmUp") })
     }
   }
 }
 
-let force_forward = get_settings_blk()?.video.forceForward || is_broken_deferred_flag_set()
-let deferredValues = force_forward ? [false] : [false, true]
-let validateDeferred = @(a) deferredValues.contains(a) ? a : false
-let deferredValue = mkOptionValue(OPT_DEFERRED, deferredValues[0], validateDeferred)
-
-let aaList = Computed(@() deferredValue.get() ? ["low_fxaa", "high_fxaa", "mobile_taa"].extend(is_ios && is_metalfx_upscale_supported() ?
-  ["metalfx_fxaa"] : []) : (is_ios ? ["metalfx"] : ["low_fxaa"]))
-let validateAA = @(a) aaList.value.contains(a) ? a : aaList.value[0]
-let aaValue = mkOptionValue(OPT_AA, aaList.value[0], validateAA)
 let aaValToDescriptionMap = { low_fxaa = "fxaa", high_fxaa = "fxaa", mobile_taa = "taa", metalfx_fxaa = "metalfx" }
 
 let optDeferred = {
@@ -107,8 +112,8 @@ let optDeferred = {
   list = deferredValues
   valToString = @(v) loc(v ? "options/on" : "options/off")
   function setValue(v) {
-    deferredValue(v)
-    aaValue(aaList.value[0])
+    deferredValue.set(v)
+    aaValue(getAAByQuality(graphicsQuality.get()))
   }
 }
 
@@ -116,11 +121,8 @@ let optAntiAliasing = {
   locId = "options/aa_options"
   ctrlType = OCT_LIST
   value = aaValue
-  list = Computed(@() aaList.value.len() > 1 ? aaList.value : [])
+  list = Computed(@() aaList.get().len() > 1 ? aaList.get() : [])
   valToString = @(v) loc($"options/aa_{v}")
-  function setValue(v) {
-    aaValue(v)
-  }
   description = @() mkOptionDescFromValsList(aaList.get(), "options/desc/aa_options", aaValToDescriptionMap)
 }
 
@@ -139,7 +141,7 @@ let needUhqTexturesRaw = Watched(isUhqSupported
   && !!get_common_local_settings_blk()?.uhqTextures) //machine storage
 
 let needShowRestartNotify = Watched(should_notify_about_restart())
-eventbus_subscribe("presets.restartNotifyChanged", @(params) needShowRestartNotify(params?.status ?? false))
+eventbus_subscribe("presets.restartNotifyChanged", @(params) needShowRestartNotify.set(params?.status ?? false))
 
 let restartTxt = @() !needShowRestartNotify.get() ? { watch = needShowRestartNotify }
 : {
@@ -149,10 +151,10 @@ let restartTxt = @() !needShowRestartNotify.get() ? { watch = needShowRestartNot
     text = loc("msg/needRestartToApplySettings")
 }.__update(fontTiny)
 
-let needUhqTextures = Computed(@() needUhqTexturesRaw.value && has_additional_graphics_content.value)
+let needUhqTextures = Computed(@() needUhqTexturesRaw.get() && has_additional_graphics_content.get())
 function setNeedUhqTextures(v) {
   get_common_local_settings_blk().uhqTextures = v
-  needUhqTexturesRaw(v)
+  needUhqTexturesRaw.set(v)
   eventbus_send("saveProfile", {})
   if (v)
     openFMsgBox({ text = loc("msg/needRestartToApplyTextures") })
@@ -162,7 +164,7 @@ let optUhqTextures = {
   ctrlType = OCT_LIST
   value = needUhqTextures
   setValue = setNeedUhqTextures
-  list = Computed(@() has_additional_graphics_content.value ? [false, true] : [])
+  list = Computed(@() has_additional_graphics_content.get() ? [false, true] : [])
   valToString = @(v) loc(v ? "msgbox/btn_download" : "options/off")
 }
 
@@ -174,10 +176,10 @@ return {
     optFpsLimit
     inline_raytracing_available() ? optRayTracing : null
     isUhqSupported ? optUhqTextures : null
-    force_forward ? null : optDeferred
+    deferredValues.len() > 1 ? optDeferred : null
     optAntiAliasing
   ]
-  isUhqAllowed = Computed(@() isUhqSupported && has_additional_graphics_content.value)
+  isUhqAllowed = Computed(@() isUhqSupported && has_additional_graphics_content.get())
   needUhqTextures
   setNeedUhqTextures
   graphicsQuality = Computed(@() graphicsQuality.get())

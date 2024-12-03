@@ -196,8 +196,7 @@ let mkShopGamercard = @(onClose) function(){
       premiumDays > 0 ? premIconWithTimeOnChange : null
       gamercardShopItemsBalanceBtns(orderItems)
       mkCurrenciesBtns(currencies.keys().sort(@(a, b) orderByCurrency[a] <=> orderByCurrency[b]),
-        null,
-        {size = SIZE_TO_CONTENT} )
+        { size = SIZE_TO_CONTENT })
     ]
   }
 }

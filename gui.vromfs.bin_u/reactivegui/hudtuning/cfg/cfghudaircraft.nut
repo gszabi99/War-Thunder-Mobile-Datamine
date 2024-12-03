@@ -18,13 +18,14 @@ let {
   brakeButton,
   brakeButtonEditView
 } = require("%rGui/hud/aircraftMovementBlock.nut")
+let { radarHudCtor, radarHudEditView } = require("%rGui/radar/radar.nut")
 let { voiceMsgStickBlock, voiceMsgStickView } = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
 let { ctrlPieStickBlock, ctrlPieStickView } = require("%rGui/hud/controlsPieMenu/ctrlPieStick.nut")
 let { isCtrlPieAvailable } = require("%rGui/hud/controlsPieMenu/ctrlPieState.nut")
 let { isCameraPieAvailable } = require("%rGui/hud/cameraPieMenu/cameraPieState.nut")
 let { cameraPieStickBlock, cameraPieStickView } = require("%rGui/hud/cameraPieMenu/cameraPieStick.nut")
 let { bombPieStickBlockCtor, bombPieStickView } = require("%rGui/hud/bombPieMenu/bombPieStick.nut")
-let { aircraftRadarEditView, aircraftRadar } = require("%rGui/hud/aircraftRadar.nut")
+let { airMapEditView, airMap } = require("%rGui/hud/airMap.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
 let { mkFreeCameraButton, mkViewBackButton } = require("%rGui/hud/buttons/cameraButtons.nut")
@@ -133,7 +134,7 @@ return cfgHudCommon.__merge({
               "ui/gameuiskin#hud_ship_selection.svg", scale)
         : null
     }
-    defTransform = mkRBPos([hdpx(-240), hdpx(-0)])
+    defTransform = mkRBPos([hdpx(-680), hdpx(-0)])
     editView = mkSquareButtonEditView("ui/gameuiskin#hud_ship_selection.svg")
   }
 
@@ -145,9 +146,9 @@ return cfgHudCommon.__merge({
   }
 
   radar = {
-    ctor = aircraftRadar
+    ctor = airMap
     defTransform = mkLTPos([hdpx(120), 0])
-    editView = aircraftRadarEditView
+    editView = airMapEditView
     hideForDelayed = false
     isVisibleInBattle = canShowRadar
   }
@@ -191,7 +192,7 @@ return cfgHudCommon.__merge({
 
   movement = {
     ctor = aircraftMovement
-    defTransform = mkRBPos([hdpx(-140), 0])
+    defTransform = mkRBPos([hdpx(-120), 0])
     editView = aircraftMovementEditView
     priority = Z_ORDER.STICK
   }
@@ -282,7 +283,7 @@ return cfgHudCommon.__merge({
 
   controlsStick = {
     ctor = ctrlPieStickBlock
-    defTransform = mkRBPos([hdpx(-535), hdpx(-0)])
+    defTransform = mkRBPos([hdpx(-545), hdpx(-0)])
     editView = ctrlPieStickView
     isVisibleInBattle = isCtrlPieAvailable
     priority = Z_ORDER.STICK
@@ -290,7 +291,7 @@ return cfgHudCommon.__merge({
 
   cameraStick = {
     ctor = cameraPieStickBlock
-    defTransform = mkRBPos([hdpx(-395), hdpx(-0)])
+    defTransform = mkRBPos([hdpx(-415), hdpx(-0)])
     editView = cameraPieStickView
     isVisibleInBattle = isCameraPieAvailable
     priority = Z_ORDER.STICK
@@ -316,6 +317,13 @@ return cfgHudCommon.__merge({
     editView = moveArrowsAirView
     priority = Z_ORDER.STICK
     isVisibleInBattle = isAircraftMoveArrowsAvailable
+  }
+
+  radarHud = {
+    ctor = radarHudCtor
+    defTransform = mkRBPos([hdpx(-180), hdpx(-20)])
+    editView = radarHudEditView
+    priority = Z_ORDER.BUTTON
   }
 
   chatLogAndKillLog = cfgHudCommon.chatLogAndKillLog.__merge({ defTransform = mkLTPos([hdpx(220), hdpx(320)]) })

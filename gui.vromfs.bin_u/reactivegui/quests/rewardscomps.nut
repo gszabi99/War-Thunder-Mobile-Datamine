@@ -10,6 +10,8 @@ let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut"
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
+let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
+let { PRIMARY } = require("%rGui/components/buttonStyles.nut")
 
 
 let rStyleDefault = REWARD_STYLE_SMALL
@@ -34,17 +36,20 @@ let rewardsListIcon = {
   image = Picture($"ui/gameuiskin#circle.svg:{rewardsListIconSize}:{rewardsListIconSize}:P")
 }
 
-let mkRewardsListBtn = @(rewards) {
-  size = [rewardsBtnSize, rewardsBtnSize]
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/images/offer_item_slot_bg.avif:{rewardsBtnSize}:{rewardsBtnSize}:P")
-  behavior = Behaviors.Button
-  onClick = @() openRewardsList(rewards)
+let buttonDots = {
   flow = FLOW_HORIZONTAL
   gap = rewardsListIconSize / 2
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  children = array(3).map(@(_) rewardsListIcon)
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  children = array(3, rewardsListIcon)
+}
+
+let mkRewardsListBtn = @(rewards, style, isQuestFinished = false) {
+  children = [
+    mkCustomButton(buttonDots, @() openRewardsList(rewards),
+      mergeStyles(PRIMARY, { ovr = { size = [style.boxSize, style.boxSize], minWidth = style.boxSize } }))
+    isQuestFinished ? mkRewardReceivedMark(style) : null
+  ]
 }
 
 let mkLockedIcon = @(ovr = {}) mkIcon("ui/gameuiskin#lock_icon.svg", [statusIconSize, statusIconSize], ovr)
@@ -117,9 +122,9 @@ let mkQuestRewardPlate = @(r, startIdx, isQuestFinished = false, rStyle = rStyle
     })
     @() {
       watch = servProfile
-      size = getRewardPlateSize(r.slots, REWARD_STYLE_SMALL)
+      size = getRewardPlateSize(r.slots, rStyle)
       children = isQuestFinished || isSingleViewInfoRewardEmpty(r, servProfile.value)
-          ? mkRewardReceivedMark(REWARD_STYLE_SMALL)
+          ? mkRewardReceivedMark(rStyle)
         : null
     }
   ]
@@ -127,14 +132,14 @@ let mkQuestRewardPlate = @(r, startIdx, isQuestFinished = false, rStyle = rStyle
 
 let mkRewardsPreviewFull = @(rewards, isQuestFinished) rewards.map(@(r, idx) mkQuestRewardPlate(r, idx, isQuestFinished))
 
-function mkRewardsPreview(rewards, isQuestFinished) {
+function mkRewardsPreview(rewards, isQuestFinished, maxSlotsCount = REWARDS_PREVIEW_SLOTS, style = rStyleDefault) {
   local rewardsSize = 0
   local res = []
   foreach (idx, r in rewards) {
     rewardsSize += r.slots
-    if (rewardsSize > REWARDS_PREVIEW_SLOTS || (rewardsSize == REWARDS_PREVIEW_SLOTS && rewards.len() > idx + 1))
-      return res.append(mkRewardsListBtn(rewards))
-    res.append(mkQuestRewardPlate(r, idx, isQuestFinished))
+    if (rewardsSize > maxSlotsCount || (rewardsSize == maxSlotsCount && rewards.len() > idx + 1))
+      return res.append(mkRewardsListBtn(rewards, style, isQuestFinished))
+    res.append(mkQuestRewardPlate(r, idx, isQuestFinished, style))
   }
   return res
 }

@@ -1,7 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
+let logU = log_with_prefix("[userstat] ")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { ndbTryRead } = require("nestdb")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
+let { rnd_float } = require("dagor.random")
+let { isEqual } = require("%sqstd/underscore.nut")
 let charClientEventExt = require("%rGui/charClientEventExt.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -10,6 +13,7 @@ let { parseUnixTimeCached } = require("%appGlobals/timeToText.nut")
 let { request, registerHandler, registerExecutor } = charClientEventExt("userStats")
 
 let STATS_ACTUAL_TIMEOUT = 900
+const MAX_TABLES_UPDATE_DELAY = 10 //to prevent all users update tables at once.
 
 function mkUserstatWatch(id, defValue = {}) {
   let key = $"userstat.{id}"
@@ -23,6 +27,7 @@ let userstatUnlocks = mkUserstatWatch("unlocks")
 let userstatStats = mkUserstatWatch("stats")
 let userstatInfoTables = mkUserstatWatch("infoTables")
 let statsInProgress = mkWatched(persist, "statsInProgress", {})
+let tablesActivityOvr = Watched({}) //tables activity override while wait for server update
 
 let getStatsActualTimeLeft = @() (userstatStats.value?.timestamp ?? 0) + STATS_ACTUAL_TIMEOUT - serverTime.value
 let isStatsActualByTime = Watched(getStatsActualTimeLeft() > 0)
@@ -44,8 +49,10 @@ let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
   || userstatInfoTables.value.len() == 0)
 
 function actualizeStats() {
-  if (!isStatsActual.value)
-    eventbus_send($"userstat.stats.refresh", {})
+  if (isStatsActual.value)
+    return
+  logU("request stats refresh")
+  eventbus_send($"userstat.stats.refresh", {})
 }
 
 registerHandler("ClnChangeStats", function(result, context) {
@@ -125,12 +132,58 @@ function resetUpdateTimer() {
 resetUpdateTimer()
 nextUpdateIntervals.subscribe(@(_) resetUpdateTimer())
 
+
+function updateTableActivityTimer() {
+  if (!isServerTimeValid.get())
+    return
+  let stats = userstatStats.get()
+  let curTime = serverTime.get()
+  local nextTime = null
+  local needRefreshStats = false
+  let activityOvr = {}
+  foreach (tblId, tbl in stats?.stats ?? {}) {
+    let time = tbl?["$endsAt"] ?? 0
+    if (time <= 0)
+      continue
+    if (time <= curTime) {
+      activityOvr[tblId] <- false
+      needRefreshStats = true
+    }
+    else
+      nextTime = min(nextTime ?? time, time)
+  }
+  foreach (tblId, tbl in stats?.inactiveTables ?? {}) {
+    let start = tbl?["$startsAt"] ?? 0
+    let end = tbl?["$endsAt"] ?? 0
+    if (start > curTime)
+      nextTime = min(nextTime ?? start, start)
+    else if (end > curTime) {
+      activityOvr[tblId] <- true
+      needRefreshStats = true
+    }
+  }
+
+  if (nextTime != null && nextTime - curTime > 0)
+    resetTimeout(nextTime - curTime, updateTableActivityTimer)
+  if (!isEqual(tablesActivityOvr.get(), activityOvr))
+    tablesActivityOvr.set(activityOvr)
+  if (needRefreshStats) {
+    logU("Deactualize stats by tables time range")
+    isStatsActualByTime.set(false)
+    resetTimeout(rnd_float(0.001, 1.0) * MAX_TABLES_UPDATE_DELAY, actualizeStats)
+  }
+}
+updateTableActivityTimer()
+isServerTimeValid.subscribe(@(_) updateTableActivityTimer())
+userstatStats.subscribe(@(_) updateTableActivityTimer())
+
 return {
   isUserstatMissingData
   userstatInfoTables
   userstatDescList
   userstatUnlocks
   userstatStats
+  tablesActivityOvr
   isStatsActual
   actualizeStats
   forceRefreshDescList = @() eventbus_send($"userstat.descList.forceRefresh", {})

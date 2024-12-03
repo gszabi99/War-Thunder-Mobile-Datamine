@@ -15,7 +15,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
-let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
+let { randomBattleMode, isRandomBattleNewbieTutorial } = require("%rGui/gameModes/gameModeState.nut")
 let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 
 const TUTORIAL_ID = "startFirstBattle"
@@ -87,7 +87,7 @@ function startTutorial() {
         objects = [{
           keys = "toBattleButton"
           function onClick() {
-            if (newbieOfflineMissions.value != null) {
+            if (newbieOfflineMissions.get() != null && !isRandomBattleNewbieTutorial.get()) {
               sendNewbieBqEvent("pressToBattleFromUITutor", { status = "offline_battle", params = ", ".join(newbieOfflineMissions.value) })
               startCurNewbieMission()
             }

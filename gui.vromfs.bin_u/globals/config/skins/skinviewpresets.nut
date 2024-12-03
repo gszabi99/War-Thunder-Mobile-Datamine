@@ -132,6 +132,7 @@ let skinsByTag = {
     "fr_camo_desert_brown"
     "uk_camo_standart_modern_desert_bicolor"
     "fr_camo_carc_desert"
+    "ger_camo_modern_desert_threecolor"
   ],
 
   [WINTER] = [
@@ -266,6 +267,7 @@ let skinsByTag = {
     "camo_sboat_fleet"
     "camo_multicolor_waves"
     "camo_blackblue_geometry"
+    "camo_redblack_spots"
   ],
 
   [AIR] = [
@@ -286,6 +288,8 @@ let skinsByTag = {
     "germ_bf_110g_2"
     "germ_bf_110g_2_night"
     "germ_do335a_1"
+    "germ_do_217m_1"
+    "germ_do_217m_1_prem"
     "germ_dornier_do_17e_1"
     "germ_fw_189a_1"
     "germ_fw_190a_1"
@@ -317,6 +321,7 @@ let skinsByTag = {
     "usa_f4f_4_gray"
     "usa_f4u_1c"
     "usa_f4u_4b"
+    "usa_f_82e"
     "usa_f8f1b_bearcat"
     "usa_p_40c_metal"
     "usa_p_51_mk1a_trop"
@@ -355,6 +360,7 @@ let skinsByTag = {
     "ussr_pe_8_m82"
     "ussr_sb_2m_100"
     "ussr_tandem_mai"
+    "ussr_tu_1_prem"
     "ussr_yak_1_early_green"
     "ussr_yak_2_kabb"
     "ussr_yak_3"

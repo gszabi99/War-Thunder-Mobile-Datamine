@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { mkGoodsWrap, borderBg, mkCurrencyAmountTitleArea, mkPricePlate, mkGoodsCommonParts,
-  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit,
-  priceBgGradConsumables, titleFontGradConsumables
+  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTime,
+  titleFontGradConsumables, mkBorderByCurrency
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 
@@ -43,10 +43,11 @@ let mkImgs = @(list){
 let getLocNameBooster = @(goods) comma.join(goods.boosters.keys().map(@(id) loc($"boosters/{id}")))
 
 function mkGoodsBooster(goods, onClick, state, animParams) {
-  let { viewBaseValue = 0, isShowDebugOnly = false } = goods
+  let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let nameBooster = @(id) loc($"boosters/{id}")
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
   let boostersList = goods.boosters
+  let border = mkBorderByCurrency(borderBg, isFreeReward, price?.currencyId)
   return mkGoodsWrap(
     goods,
     onClick,
@@ -54,7 +55,7 @@ function mkGoodsBooster(goods, onClick, state, animParams) {
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
       bgParticles
-      borderBg
+      border
       sf & S_HOVER ? bgHiglight : null
       mkImgs(boostersList)
       slotNameBG.__merge({
@@ -66,9 +67,9 @@ function mkGoodsBooster(goods, onClick, state, animParams) {
             titleFontGradConsumables,
             nameBooster(id))).values()
       })
-      mkGoodsLimit(goods)
+      mkGoodsLimitAndEndTime(goods)
     ].extend(mkGoodsCommonParts(goods, state)),
-    mkPricePlate(goods, priceBgGradConsumables, state, animParams), {size = goodsSmallSize})
+    mkPricePlate(goods, state, animParams), {size = goodsSmallSize})
 }
 
 return {

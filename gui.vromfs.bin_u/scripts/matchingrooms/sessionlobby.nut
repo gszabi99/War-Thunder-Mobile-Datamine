@@ -11,7 +11,7 @@ let { debug_dump_stack } = require("dagor.debug")
 let { get_mp_session_id_str, destroy_session } = require("multiplayer")
 let base64 = require("base64")
 let DataBlock = require("DataBlock")
-let { eventbus_subscribe }  = require("eventbus")
+let { eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { isEqual, isDataBlock } = require("%sqstd/underscore.nut")
@@ -151,10 +151,10 @@ let SessionLobbyState = persist("SessionLobbyState", @(){
 
 let lastRoom = mkWatched(persist, "lastRoom")
 let lastRoomId = Computed(@() lastRoom.get()?.roomId ?? INVALID_ROOM_ID)
+let roomInfo = mkWatched(persist, "roomInfo")
 let MRoomsHandlersState  = persist("MRoomsHandlersState", @() {
   hostId = null  //user host id
   roomId = INVALID_ROOM_ID
-  room   = null
   roomMembers = []
   isConnectAllowed = false
   roomOps = {}
@@ -1098,12 +1098,12 @@ let MRoomsHandlers = class {
   }
 
   function __cleanupRoomState() {
-    if (MRoomsHandlersState.room == null)
+    if (roomInfo.get() == null)
       return
 
     MRoomsHandlersState.hostId = null
     MRoomsHandlersState.roomId = INVALID_ROOM_ID
-    MRoomsHandlersState.room   = null
+    roomInfo.set(null)
     MRoomsHandlersState.roomMembers.clear()
     MRoomsHandlersState.roomOps.clear()
     MRoomsHandlersState.isConnectAllowed = false
@@ -1200,6 +1200,8 @@ let MRoomsHandlers = class {
   }
 
   function __mergeAttribs(attr_from, attr_to) {
+    if (!attr_to)
+      return attr_to
     let updateAttribs = function(upd_data, attribs) {
       foreach (key, value in upd_data) {
         if (value == null && (key in attribs))
@@ -1224,6 +1226,7 @@ let MRoomsHandlers = class {
       else
         attr_to.public <- pub
     }
+    return attr_to
   }
 
   function __isNotifyForCurrentRoom(notify) {
@@ -1249,7 +1252,7 @@ let MRoomsHandlers = class {
     }
 
     let hostPub = host.public
-    let roomPub = MRoomsHandlersState.room.public
+    let roomPub = roomInfo.get().public
 
     if (!("room_key" in roomPub)) {
       let mePub = tostring_r(me?.public, 3)          // warning disable: -declared-never-used
@@ -1322,7 +1325,7 @@ let MRoomsHandlers = class {
     if (!this.__isNotifyForCurrentRoom(notify))
       return
 
-    this.__mergeAttribs(notify, MRoomsHandlersState.room)
+    roomInfo.set(clone (this.__mergeAttribs(notify, roomInfo.get())))
     notify_room_attribs_changed(notify)
   }
 
@@ -1365,12 +1368,12 @@ let MRoomsHandlers = class {
     this.__cleanupRoomState()
 
     lastRoom.set(resp)
-    MRoomsHandlersState.room = resp
-    MRoomsHandlersState.roomId = MRoomsHandlersState.room.roomId
-    foreach (member in MRoomsHandlersState.room.members)
+    roomInfo.set(resp)
+    MRoomsHandlersState.roomId = resp.roomId
+    foreach (member in roomInfo.get().members)
       this.__addRoomMember(member)
 
-    if (getTblValue("connect_on_join", MRoomsHandlersState.room.public)) {
+    if (getTblValue("connect_on_join", roomInfo.get().public)) {
       log("room with auto-connect feature")
       MRoomsHandlersState.isSelfReady = true
       this.__onSelfReady()
@@ -1388,4 +1391,5 @@ return {
   joinRoom = @(roomId) SessionLobby.joinRoom(roomId)
   lastRoomId
   lastRoom
+  roomInfo
 }

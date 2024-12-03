@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, mkOfferWrap, borderBg, mkBgImg, mkSlotBgImg, goodsSmallSize, mkGoodsImg, mkCurrencyAmountTitle,
+let { mkGoodsWrap, mkOfferWrap, borderBgGold, mkBgImg, mkSlotBgImg, goodsSmallSize, mkGoodsImg, mkCurrencyAmountTitle,
   mkOfferTexts, mkFitCenterImg, mkPricePlate, mkGoodsCommonParts, mkOfferCommonParts, goodsBgH, mkBgParticles,
-  underConstructionBg, mkGoodsLimit, priceBgGradGold
+  underConstructionBg, mkGoodsLimitAndEndTime, mkBorderByCurrency
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { discountTagBig } = require("%rGui/components/discountTag.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
@@ -20,7 +20,7 @@ let bgHiglight = {
 function getImgByAmount(amount) {
   let imgCfg = getCurrencyGoodsPresentation(GOLD)
   let idxByAmount = imgCfg.findindex(@(v) v.amountAtLeast > amount) ?? imgCfg.len()
-  return mkGoodsImg(imgCfg?[max(0, idxByAmount - 1)].img)
+  return mkGoodsImg(imgCfg?[max(0, idxByAmount - 1)].img, null, { keepAspect = KEEP_ASPECT_FILL })
 }
 
 function getLocNameGold(goods) {
@@ -29,9 +29,10 @@ function getLocNameGold(goods) {
 }
 
 function mkGoodsGold(goods, onClick, state, animParams) {
-  let { viewBaseValue = 0, isShowDebugOnly = false } = goods
+  let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let gold = goods?.currencies.gold ?? 0
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
+  let border = mkBorderByCurrency(borderBgGold, isFreeReward, price?.currencyId)
 
   return mkGoodsWrap(
     goods,
@@ -40,13 +41,13 @@ function mkGoodsGold(goods, onClick, state, animParams) {
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
       bgParticles
-      borderBg
+      border
       sf & S_HOVER ? bgHiglight : null
       getImgByAmount(gold)
       mkCurrencyAmountTitle(gold, viewBaseValue, titleFontGrad)
-      mkGoodsLimit(goods)
+      mkGoodsLimitAndEndTime(goods)
     ].extend(mkGoodsCommonParts(goods, state)),
-    mkPricePlate(goods, priceBgGradGold, state, animParams), {size = goodsSmallSize})
+    mkPricePlate(goods, state, animParams), {size = goodsSmallSize})
 }
 
 function mkOfferGold(goods, onClick, state) {

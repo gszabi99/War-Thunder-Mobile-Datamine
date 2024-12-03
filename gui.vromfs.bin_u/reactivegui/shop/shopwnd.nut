@@ -5,7 +5,8 @@ let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { shopCategoriesCfg } = require("shopCommon.nut")
-let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount, saveSeenGoodsCurrent
+let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount, saveSeenGoodsCurrent,
+  pageScrollHandler
 } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory } = require("schRewardsState.nut")
 let { mkShopTabs, tabW } = require("%rGui/shop/shopWndTabs.nut")
@@ -32,7 +33,6 @@ let curCategoriesCfg = Computed(@() shopCategoriesCfg
   .filter(@(c) c.id in actualSchRewardByCategory.get()
     || c.id in goodsByCategory.get()))
 
-let pageScrollHandler = ScrollHandler()
 curCategoryId.subscribe(@(_) pageScrollHandler.scrollToX(0))
 
 let pannable = @(ovr) {
@@ -66,6 +66,35 @@ let scrollArrowsBlock = {
   ]
 }
 
+let shopContent = {
+  size = [saSize[0] + opacityGradWidth, flex()]
+  flow = FLOW_HORIZONTAL
+  children = [
+    {
+      size = [tabW, flex()]
+      clipChildren = true
+      children = @() pannable({
+        watch = [curCategoriesCfg, curCampaign]
+        children = @() mkShopTabs(curCategoriesCfg.get(), curCategoryId, curCampaign.get())
+      })
+    }
+    {
+      size = [shopPageW, shopPageH]
+      children = [
+        horizontalPannableAreaCtor(shopPageW, [opacityGradWidth, opacityGradWidth])(
+          mkShopPage(shopPageW, shopPageH),
+          { pos = [0, 0] },
+          {
+            behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
+            scrollHandler = pageScrollHandler
+            onScroll = @(elem) lastScrollPosX = elem.getScrollOffsX() ?? 0
+          })
+        scrollArrowsBlock
+      ]
+    }
+  ]
+}
+
 let shopScene = bgShaded.__merge({
   key = {}
   size = flex()
@@ -80,34 +109,7 @@ let shopScene = bgShaded.__merge({
   onDetach = @() removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
   children = [
     mkShopGamercard(onClose)
-    {
-      size = [saSize[0] + opacityGradWidth, flex()]
-      flow = FLOW_HORIZONTAL
-      children = [
-        {
-          size = [tabW, flex()]
-          clipChildren = true
-          children = @() pannable({
-            watch = [curCategoriesCfg, curCampaign]
-            children = @() mkShopTabs(curCategoriesCfg.get(), curCategoryId, curCampaign.get())
-          })
-        }
-        {
-          size = [shopPageW, shopPageH]
-          children = [
-            horizontalPannableAreaCtor(shopPageW, [opacityGradWidth, opacityGradWidth])(
-              mkShopPage(shopPageW, shopPageH),
-              { pos = [0, 0] },
-              {
-                behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
-                scrollHandler = pageScrollHandler
-                onScroll = @(elem) lastScrollPosX = elem.getScrollOffsX() ?? 0
-              })
-            scrollArrowsBlock
-          ]
-        }
-      ]
-    }
+    shopContent
   ]
   animations = wndSwitchAnim
 })

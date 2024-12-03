@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { clearTimer, setInterval } = require("dagor.workcycle")
+let { clearTimer, setInterval, resetTimeout } = require("dagor.workcycle")
 let { get_local_mplayer } = require("mission")
 let { getScaledFont, scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
 let { mkPlaceIcon, playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
@@ -10,6 +10,7 @@ let { getScoreKey } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { hudScoreTank } = require("%rGui/options/options/tankControlsOptions.nut")
 let { playerUnitName } = require("%rGui/hudState.nut")
 
+let delayForUpdatePlace = 0.1
 let countImageSize = evenPx(60)
 let counterBgSize = evenPx(40)
 let counterOffsets = hdpx(8)
@@ -23,6 +24,10 @@ let icons = {
   score = "ui/gameuiskin#score_icon.svg"
   groundKills = "ui/gameuiskin#tanks_destroyed_icon.svg"
   kills = "ui/gameuiskin#stats_airplanes_destroyed.svg"
+}
+
+let iconsAlign = {
+  groundKills = ALIGN_BOTTOM
 }
 
 let viewMuls = {
@@ -52,8 +57,13 @@ let myPlace = Computed(function() {
       res++
   return res
 })
+let myPlaceDelayed = Watched(myPlace.get())
+let setMyPlaceDelayed = @() myPlaceDelayed.set(myPlace.get())
 
-let isPlaceVisible = Computed(@() myPlace.value > 0)
+myPlace.subscribe(@(_) resetTimeout(delayForUpdatePlace, setMyPlaceDelayed))
+
+let isPlaceVisible = Computed(@() myPlaceDelayed.get() > 0)
+let isScoreVisible = Computed(@() myPlace.get() > 0)
 
 let mkValueText = @(value, font = defValueFont) {
   rendObj = ROBJ_TEXT
@@ -65,7 +75,7 @@ let mkValueText = @(value, font = defValueFont) {
   }]
 }.__update(font)
 
-function mkImageWithCount(value, image, scale = 1) {
+function mkImageWithCount(value, image, scale = 1, key = null) {
   let imgSize = scaleEven(countImageSize, scale)
   let font = getScaledFont(defValueFont, scale)
   return {
@@ -77,7 +87,7 @@ function mkImageWithCount(value, image, scale = 1) {
         rendObj = ROBJ_IMAGE
         image = Picture($"{image}:{imgSize}:{imgSize}:P")
         keepAspect = true
-        imageValign = ALIGN_CENTER
+        imageValign = iconsAlign?[key] ?? ALIGN_CENTER
       }
       {
         minWidth = scaleEven(hdpx(70), scale)
@@ -110,14 +120,14 @@ function mkMyPlaceUi(scale) {
   let size = scaleEven(playerPlaceIconSize, scale)
   let font = scaleFontWithTransform(fontTiny, scale, [0.5, 0.5])
   return @() {
-    watch = [isPlaceVisible, myPlace]
-    children = !isPlaceVisible.value ? null
-      : mkPlaceIcon(myPlace.get(), size, font)
+    watch = [isPlaceVisible, myPlaceDelayed]
+    children = !isPlaceVisible.get() ? null
+      : mkPlaceIcon(myPlaceDelayed.get(), size, font)
           .__update({
-            key = myPlace.value
+            key = myPlaceDelayed.get()
             transform = {}
             animations = [{
-              prop = AnimProp.scale, from = [1.0, 1.0], to = [1.4, 1.4], easing = Blink
+              prop = AnimProp.scale, from = [1.0, 1.0], to = [2, 2], easing = Blink
               duration = blinkTime, play = true
             }]
           })
@@ -130,17 +140,17 @@ function updateLocalMPlayerForScore() {
 }
 
 let mkMyScoresUi = @(scale) function() {
-  let res = { watch = [viewScoreKey, isPlaceVisible] }
-  if (!isPlaceVisible.value)
+  let res = { watch = [viewScoreKey, isScoreVisible] }
+  if (!isScoreVisible.get())
     return res
 
-  let key = viewScoreKey.value
+  let key = viewScoreKey.get()
   let mul = viewMuls?[key] ?? 1.0
-  local score = Computed(@() mul * (localPlayerDamageStats.value?[key] ?? localMPlayer.value?[key] ?? 0))
+  local score = Computed(@() mul * (localPlayerDamageStats.get()?[key] ?? localMPlayer.get()?[key] ?? 0))
   score.subscribe(@(_) anim_start(scoreTrigger))
 
   return res.__update({
-    children = mkImageWithCount(score, icons?[key] ?? icons.score, scale)
+    children = mkImageWithCount(score, icons?[key] ?? icons.score, scale, key)
       .__update({
         key = viewScoreKey
         function onAttach() {
@@ -148,6 +158,11 @@ let mkMyScoresUi = @(scale) function() {
           setInterval(1.0, updateLocalMPlayerForScore)
         }
         onDetach = @() clearTimer(updateLocalMPlayerForScore)
+        transform = {}
+        animations = [{
+          prop = AnimProp.scale, from = [1.0, 1.0], to = [2, 2], easing = Blink
+          duration = blinkTime, trigger = scoreTrigger
+        }]
       })
   })
 }

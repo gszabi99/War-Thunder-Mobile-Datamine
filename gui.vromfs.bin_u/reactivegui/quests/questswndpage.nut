@@ -431,6 +431,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
 
   let tabProgressUnlock = Computed(@() progressUnlockByTab.get()?[tabId])
   let progressUnlock = Computed(@() tabProgressUnlock.get() ?? progressUnlockBySection.get()?[curSectionId.get()])
+  let progressUnlockName = Computed(@() progressUnlock.get()?.name)
   let isProgressBySection = Computed(@() tabProgressUnlock.get() == null)
 
   let blocksOnTop = Computed(function() {
@@ -499,11 +500,12 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
                   : [
                       pannableCtors[blocksOnTop.value](
                         @() {
-                          watch = [curSectionId, seenQuests, unlockProgress]
+                          watch = [curSectionId, seenQuests, unlockProgress, quests, progressUnlockName]
                           size = [flex(), SIZE_TO_CONTENT]
                           flow = FLOW_VERTICAL
                           gap = hdpx(20)
                           children = quests.get()
+                            .filter(@(u) u.name != progressUnlockName.get())
                             .values()
                             .map(@(item) item.__merge({
                                 tabId,

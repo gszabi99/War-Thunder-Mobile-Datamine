@@ -4,14 +4,14 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 
 let { balanceGold } = require("%appGlobals/currenciesState.nut")
 
-let { mkDiscountPriceComp, CS_COMMON } = require("%rGui/components/currencyComp.nut")
+let { mkDiscountPriceComp, CS_COMMON, CS_NO_BALANCE } = require("%rGui/components/currencyComp.nut")
 let { discountTag } = require("%rGui/components/discountTag.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { getSpCostText } = require("attrState.nut")
-let { gradCircularSmallHorCorners, gradCircCornerOffset, mkFontGradient, gradCircularSqCorners,
-  mkColoredGradientY
+let { gradCircularSmallHorCorners, gradCircCornerOffset, mkFontGradient, gradCircularSqCorners
 } = require("%rGui/style/gradients.nut")
 let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
+let { priceBgGradDefault } = require("%rGui/shop/goodsView/sharedParts.nut")
 
 
 let patternImgAR = 0.71
@@ -19,10 +19,8 @@ let blockSize = [hdpxi(500), evenPx(200)]
 let patternSize = [(patternImgAR * blockSize[1]).tointeger(), blockSize[1]].map(@(v) ceil(0.5 * v).tointeger())
 let numberSize = hdpx(100)
 let textGradient = mkFontGradient(0xFFFFFFFF, 0xFF12B2E6)
-let priceBgGradient = mkColoredGradientY(0xFF00AAF8, 0xFF007683, 12)
-let priceBgBorder = 0x7F003570  //0xB2004A9D//0xFF006AE1
 let priceStyle = CS_COMMON
-let priceNoBalanceStyle = CS_COMMON.__merge({ textColor = 0xFFF03535 })
+let priceNoBalanceStyle = CS_NO_BALANCE
 
 let patternImage = {
   size = patternSize
@@ -151,14 +149,7 @@ let mkLevelPrice = @(fullCostGold, costGold, costMul, isInProgress) @() {
         {
           size = flex()
           rendObj = ROBJ_IMAGE
-          image = priceBgGradient
-        }
-        {
-          size = flex()
-          rendObj = ROBJ_BOX
-          fillColor = 0
-          borderColor = priceBgBorder
-          borderWidth = hdpx(3)
+          image = priceBgGradDefault
         }
         mkDiscountPriceComp(fullCostGold, costGold, "gold",
           balanceGold.get() >= costGold ? priceStyle : priceNoBalanceStyle)
@@ -167,6 +158,8 @@ let mkLevelPrice = @(fullCostGold, costGold, costMul, isInProgress) @() {
 }
 
 function mkLevelBlock(value, costMul, levelParams, isInProgress, handleClick) {
+  if (!value)
+    return null
   let { levels, levelsSp, maxLevels } = levelParams
   let { level, exp } = value
   let expTotal = maxLevels?[level].exp ?? 1
@@ -204,8 +197,6 @@ function mkLevelBlock(value, costMul, levelParams, isInProgress, handleClick) {
 return {
   generateDataDiscount
   priceNoBalanceStyle
-  priceBgGradient
-  priceBgBorder
   patternImgAR
   mkLevelBlock
   mkLevelInfo

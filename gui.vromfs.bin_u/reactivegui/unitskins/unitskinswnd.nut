@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/config/skins/skinTags.nut" import *
+let { round } = require("math")
 let { HangarCameraControl } = require("wt.behaviors")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
@@ -51,6 +52,7 @@ let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut"
 let SKINS_IN_ROW = 4
 let SKINS_IN_ROW_TAGS = 3
 let skinSize = hdpxi(110)
+let skinBorderRadius = round(skinSize*0.2).tointeger()
 let skinGap = evenPx(20)
 let tagNameSize = hdpx(210)
 let skinsRowWidth = skinSize * SKINS_IN_ROW + skinGap * (SKINS_IN_ROW - 1)
@@ -282,9 +284,12 @@ let function skinBtn(skinPresentation) {
   let currencyId = Computed(@() serverConfigs.get()?.skins[name][baseUnit.get()?.name].currencyId)
   let canChangeTags = Computed(@() hasTagsChoice.get() && isSelected.get() && !isLocked.get())
   return @() {
-    watch = stateFlags
-    rendObj = ROBJ_MASK
-    image = Picture($"ui/gameuiskin#slot_mask.svg:{skinSize}:{skinSize}:P")
+    watch = [stateFlags, isLocked]
+    size = [skinSize, skinSize]
+    rendObj = ROBJ_BOX
+    fillColor = isLocked.get() ? 0xFF909090 : 0xFFFFFFFF
+    borderRadius = skinBorderRadius
+    image = Picture($"ui/gameuiskin#{image}:{skinSize}:{skinSize}:P")
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags(sf)
     function onClick() {
@@ -297,13 +302,6 @@ let function skinBtn(skinPresentation) {
     transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     children = [
       @() {
-        watch = isLocked
-        size = [skinSize, skinSize]
-        rendObj = ROBJ_IMAGE
-        color = isLocked.get() ? 0xFF909090 : 0xFFFFFFFF
-        image = Picture($"ui/gameuiskin#{image}:{skinSize}:{skinSize}:P")
-      }
-      @() {
         watch = isSelected
         size = flex()
         rendObj = ROBJ_IMAGE
@@ -314,9 +312,10 @@ let function skinBtn(skinPresentation) {
       @() {
         watch = stateFlags
         size = flex()
-        rendObj = ROBJ_IMAGE
+        rendObj = ROBJ_BOX
         image = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
-        color = stateFlags.get() & S_HOVER ? selectedColor : 0
+        fillColor = stateFlags.get() & S_HOVER ? selectedColor : 0
+        borderRadius = skinBorderRadius
         transitions = [{ prop = AnimProp.color, duration = aTimeSelected }]
         transform = { rotate = 180 }
       }

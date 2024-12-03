@@ -37,12 +37,19 @@ eventbus_subscribe("warn:stamina_loose_control", function(data) {
 
 eventbus_subscribe("warn:crit_overload", function(data) {
   let overloadText = "".concat(loc("HUD_CRIT_OVERLOAD")," ", data?.val ?? "", loc("HUD_CRIT_OVERLOAD_G"))
-  addWarning(overloadText, "warn:crit_overload", 3)
+  if (data?.isVisible)
+    addWarning(overloadText, "warn:overload")
+  else
+    removeEvent({id = "warn:overload"})
+
 })
 
 eventbus_subscribe("warn:danger_overload", function(data) {
   let overloadText = "".concat(loc("HUD_DANGEROUS_OVERLOAD")," ", data?.val ?? "", loc("HUD_CRIT_OVERLOAD_G"))
-  addWarning(overloadText, "warn:danger_overload", 3)
+  if (data?.isVisible)
+    addWarning(overloadText, "warn:overload")
+  else
+    removeEvent({id = "warn:overload"})
 })
 
 let handleSimpleWarning = @(name, data) data?.isVisible

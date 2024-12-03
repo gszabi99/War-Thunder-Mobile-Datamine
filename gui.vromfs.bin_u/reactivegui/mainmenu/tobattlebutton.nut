@@ -11,7 +11,7 @@ let { textButtonBattle, textButtonCommon, textButtonPrimary } = require("%rGui/c
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { firstBattleTutor, needFirstBattleTutor, startTutor } = require("%rGui/tutorial/tutorialMissions.nut")
-let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
+let { randomBattleMode, isRandomBattleNewbieTutorial } = require("%rGui/gameModes/gameModeState.nut")
 let { startTestFlight, startOfflineBattle } = require("%rGui/gameModes/startOfflineMode.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let setReady = require("%rGui/squad/setReady.nut")
@@ -79,7 +79,7 @@ let startOfflineMissionButton = textButtonBattle(toBattleText,
   battleBtnOvr)
 
 let readyButton = textButtonBattle(utf8ToUpper(loc("mainmenu/btnReady")),
-  @() setReady(true),
+  @() showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), @() setReady(true))),
   { hotkeys = hotkeyX })
 let notReadyButton = textButtonCommon(utf8ToUpper(loc("multiplayer/state/player_not_ready")),
   @() setReady(false),
@@ -90,7 +90,7 @@ let readyCheckButtonInactive = textButtonCommon(readyCheckText, initiateReadyChe
 
 let toBattleButtonForRandomBattles = @() {
   watch = [ needReadyCheckButton, isReadyCheckSuspended, isSquadLeader, isInSquad, isReady,
-    needFirstBattleTutor, newbieOfflineMissions ]
+    needFirstBattleTutor, newbieOfflineMissions, isRandomBattleNewbieTutorial ]
   children = needReadyCheckButton.get() && isReadyCheckSuspended.get() ? readyCheckButtonInactive
     : needReadyCheckButton.get() ? readyCheckButton
     : isSquadLeader.get() ? toSquadBattleButton_RandomBattles
@@ -98,7 +98,7 @@ let toBattleButtonForRandomBattles = @() {
     : isInSquad.get() && isReady.get() ? notReadyButton
     : isOfflineMenu ? startOfflineBattleButton
     : needFirstBattleTutor.get() ? startTutorButton
-    : newbieOfflineMissions.get() != null ? startOfflineMissionButton
+    : newbieOfflineMissions.get() != null && !isRandomBattleNewbieTutorial.get() ? startOfflineMissionButton
     : toBattleButton_RandomBattles
 }
 

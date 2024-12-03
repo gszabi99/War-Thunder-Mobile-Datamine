@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { round } = require("math")
 let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { deferOnce } = require("dagor.workcycle")
@@ -39,6 +40,7 @@ let hasViewChanges = Watched(false) //it become not actual after script reload
 let wndHeaderHeight = hdpx(60)
 let presetColumns = 5
 let presetSize = hdpxi(110)
+let presetBorderSize = round(presetSize*0.2).tointeger()
 let presetGap = hdpx(20)
 let selectedColor = 0x8052C4E4
 let checkSize = [hdpxi(50), hdpxi(25)]
@@ -54,7 +56,7 @@ function initSkinsWnd() {
 
 isOpened.subscribe(function(v) {
   if (!v && hasViewChanges.get())
-    eventbus_send("reloadDargVM", null)
+    eventbus_send("reloadDargVM", { msg = "debug skins apply" })
 })
 
 function saveSkinView(view) {
@@ -271,18 +273,15 @@ let function presetBtn(preset, isCurrentForUnit, isDefaultForSkin) {
     watch = stateFlags
     key = preset
     size = [presetSize, presetSize]
-    rendObj = ROBJ_MASK
-    image = Picture($"ui/gameuiskin#slot_mask.svg:{presetSize}:{presetSize}:P")
+    rendObj = ROBJ_BOX
+    fillColor = 0xFFFFFFFF
+    borderRadius = presetBorderSize
+    image = Picture($"ui/gameuiskin#{image}:{presetSize}:{presetSize}:P")
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags(sf)
     onClick = @() selPreset.set(preset)
     transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     children = [
-      {
-        size = [presetSize, presetSize]
-        rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#{image}:{presetSize}:{presetSize}:P")
-      }
       @() {
         watch = [isSelected, stateFlags]
         size = flex()
@@ -330,8 +329,10 @@ let function presetView(preset, curSkinUnitPreset, curSkinDefaultPreset) {
   let isDefaultForSkin = Computed(@() curSkinDefaultPreset.get()?.id == id)
   return {
     size = [presetSize, presetSize]
-    rendObj = ROBJ_MASK
-    image = Picture($"ui/gameuiskin#slot_mask.svg:{presetSize}:{presetSize}:P")
+    rendObj = ROBJ_BOX
+    fillColor = 0xFFFFFFFF
+    borderRadius = presetBorderSize
+    image = Picture($"ui/gameuiskin#{image}:{presetSize}:{presetSize}:P")
     children = [
       {
         size = [presetSize, presetSize]

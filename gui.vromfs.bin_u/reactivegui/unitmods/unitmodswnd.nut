@@ -108,7 +108,7 @@ let mkModIcon = @() {
   watch = curMod
   size = [iconSize * 2.3, iconSize]
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#{curMod.value?.name}.avif:0:P")
+  image = curMod.get()?.name ? Picture($"ui/gameuiskin#{curMod.get().name}.avif:0:P") : null
   keepAspect = KEEP_ASPECT_FILL
 }
 

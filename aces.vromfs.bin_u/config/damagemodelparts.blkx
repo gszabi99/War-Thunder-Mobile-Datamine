@@ -26,7 +26,7 @@
     "body_bottom": {},
     "ship_hull": {},
     "composite_armor_hull_NN": {
-      "template": "composite_armor_hull_#16#"
+      "template": "composite_armor_hull_#30#"
     },
     "composite_armor_turret_NN": {
       "template": "composite_armor_turret_#15#"

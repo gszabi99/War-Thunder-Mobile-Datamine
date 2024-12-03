@@ -2,9 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { userstatDescList, userstatUnlocks, userstatStats, userstatRequest, userstatRegisterHandler,
-  forceRefreshUnlocks, forceRefreshStats
+  forceRefreshUnlocks, forceRefreshStats, tablesActivityOvr
 } = require("userstat.nut")
-
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
 let emptyProgress = {
   stage = 0
@@ -25,14 +25,15 @@ let unlockTables = Computed(function(prev) {
   let res = {}
   foreach (name, _value in stats?.stats ?? {})
     res[name] <- true
-  foreach (name in battlePassTables)
-    res[name] <- true
   foreach (name, _value in stats?.inactiveTables ?? {})
     res[name] <- false
+  res.__update(tablesActivityOvr.get())
+  foreach (name in battlePassTables)
+    res[name] <- true //FIXME: why we need this hack?
   return prevIfEqual(prev, res)
 })
 
-let allUnlocksRaw = Computed(@() (userstatDescList.value?.unlocks ?? {})
+let allUnlocksDesc = Computed(@() (userstatDescList.value?.unlocks ?? {})
   .map(@(u) u.__merge({
     stages = (u?.stages ?? []).map(@(stage) stage.__merge({ progress = (stage?.progress ?? 1).tointeger() }))
   })))
@@ -70,14 +71,19 @@ function calcUnlockProgress(progressData, unlockDesc) {
 
 let unlockProgress = Computed(function() {
   let progressList = userstatUnlocks.value?.unlocks ?? {}
-  let unlockDataList = allUnlocksRaw.value
+  let unlockDataList = allUnlocksDesc.value
   let allKeys = progressList.__merge(unlockDataList) //use only keys from it
   return allKeys.map(@(_, name) calcUnlockProgress(progressList?[name], unlockDataList?[name]))
 })
 
-let activeUnlocks = Computed(@() allUnlocksRaw.value
+let activeUnlocks = Computed(@() allUnlocksDesc.value
   .filter(@(u) (unlockTables.value?[u?.table] ?? false) || u?.type == "INDEPENDENT")
   .map(@(u, id) u.__merge(unlockProgress.value?[id] ?? {})))
+
+let campaignActiveUnlocks = Computed(function(){
+  let curC = curCampaign.get()
+  return activeUnlocks.get().filter(@(u) (u?.meta?.campaign == null || curC == u?.meta?.campaign) )
+})
 
 let mkPrice = @(price = 0, currency = "") { currency, price }
 function getStagePrice(stage) {
@@ -177,17 +183,27 @@ function resetUserstatAppData(needScreenLog = false) {
   userstatRequest("ResetAppData", {}, { needScreenLog })
 }
 
+function hasUnlockReward(unlock, isFit) {
+  foreach (stage in unlock.stages)
+    foreach (rId, _ in stage?.rewards ?? {})
+      if (isFit(rId))
+        return true
+  return false
+}
+
 return {
   activeUnlocks
+  campaignActiveUnlocks
   unlockProgress
   emptyProgress = freeze(emptyProgress)
   getRelativeStageData
   unlockTables
-  allUnlocksRaw
+  allUnlocksDesc
   buyUnlock
   getUnlockPrice
 
   unlockInProgress
   receiveUnlockRewards
   resetUserstatAppData
+  hasUnlockReward
 }

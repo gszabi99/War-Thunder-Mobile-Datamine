@@ -2554,7 +2554,7 @@
             },
             "Weapon": [
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare16",
                 "flash": "flare16",
@@ -2568,7 +2568,7 @@
                 "mass": 101.0
               },
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare17",
                 "flash": "flare17",
@@ -2580,7 +2580,7 @@
                 "external": true
               },
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare18",
                 "flash": "flare18",
@@ -2592,7 +2592,7 @@
                 "external": true
               },
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare19",
                 "flash": "flare19",
@@ -2604,7 +2604,7 @@
                 "external": true
               },
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare20",
                 "flash": "flare20",
@@ -2616,7 +2616,7 @@
                 "external": true
               },
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare21",
                 "flash": "flare21",
@@ -2649,7 +2649,7 @@
             },
             "Weapon": [
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
                 "emitter": "flare8",
                 "flash": "flare8",
@@ -2661,7 +2661,7 @@
                 "external": true
               },
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
                 "emitter": "flare9",
                 "flash": "flare9",
@@ -3377,7 +3377,7 @@
             },
             "Weapon": [
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare10",
                 "flash": "flare10",
@@ -3391,7 +3391,7 @@
                 "mass": 101.0
               },
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare11",
                 "flash": "flare11",
@@ -3403,7 +3403,7 @@
                 "external": true
               },
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare12",
                 "flash": "flare12",
@@ -3415,7 +3415,7 @@
                 "external": true
               },
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare13",
                 "flash": "flare13",
@@ -3427,7 +3427,7 @@
                 "external": true
               },
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare14",
                 "flash": "flare14",
@@ -3439,7 +3439,7 @@
                 "external": true
               },
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/gunMG81_underwing.blk",
                 "emitter": "flare15",
                 "flash": "flare15",
@@ -3472,7 +3472,7 @@
             },
             "Weapon": [
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
                 "emitter": "flare6",
                 "flash": "flare6",
@@ -3484,7 +3484,7 @@
                 "external": true
               },
               {
-                "trigger": "cannon",
+                "trigger": "additional gun",
                 "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
                 "emitter": "flare7",
                 "flash": "flare7",

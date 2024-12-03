@@ -1,14 +1,27 @@
 from "%globalsDarg/darg_library.nut" import *
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
-let { openEventWnd, specialEventsWithLootboxes, unseenLootboxes, unseenLootboxesShowOnce } = require("%rGui/event/eventState.nut")
+let { openEventWnd, specialEventsLootboxesState, unseenLootboxes, unseenLootboxesShowOnce } = require("%rGui/event/eventState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
 let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
+let { openQuestsWndOnTab, questsCfg, progressUnlockByTab, progressUnlockBySection,
+  hasUnseenQuestsBySection } = require("%rGui/quests/questsState.nut")
 
+
+let statusMark = @(eventId) @() {
+  watch = [hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection]
+  hplace = ALIGN_RIGHT
+  pos = [hdpx(4), hdpx(-4)]
+  children = progressUnlockByTab.get()?[eventId].hasReward
+      || questsCfg.get()?[eventId].findvalue(@(s) !!hasUnseenQuestsBySection.get()?[s]
+        || !!progressUnlockBySection.get()?[s].hasReward) != null
+    ? priorityUnseenMark
+    : null
+}
 
 function btnsOpenSpecialEvents() {
   let children = []
-  specialEventsWithLootboxes.get().each(@(evt)
+  specialEventsLootboxesState.get().withLootboxes.each(@(evt)
     children.append(translucentButton($"ui/gameuiskin#icon_event_{evt.eventName}.svg",
       "",
       @() openEventWnd(evt.eventId),
@@ -22,13 +35,19 @@ function btnsOpenSpecialEvents() {
             : null
       }
     )))
+  specialEventsLootboxesState.get().withoutLootboxes.each(@(evt)
+    children.append(translucentButton($"ui/gameuiskin#icon_event_{evt.eventName}_quests.svg",
+      "",
+      @() openQuestsWndOnTab(evt.eventId)
+      @(_) statusMark(evt.eventId)
+    )))
   gmEventsList.get().each(@(id)
     children.append(translucentButton(gmEventPresentation(id).image,
       "",
       @() openGmEventWnd(id))))
 
   return {
-    watch = specialEventsWithLootboxes
+    watch = specialEventsLootboxesState
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)
     children

@@ -41,6 +41,7 @@ let voiceMsgPieOrderDefault = freeze([
   "no"
   "yes"
   "thank_you"
+  "sorry"
 ])
 
 let voiceMsgParamsOvr = {

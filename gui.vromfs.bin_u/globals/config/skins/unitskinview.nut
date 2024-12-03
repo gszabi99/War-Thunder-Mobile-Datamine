@@ -201,6 +201,13 @@ return {
     "do_17z_2": {
       "": "germ_bf_109e_3"
     },
+    "do_217m_1": {
+      "": "germ_fw_190a_1",
+      "winter": "germ_do_217m_1"
+    },
+    "do_217m_1_prem": {
+      "": "germ_do_217m_1_prem"
+    },
     "do_335a_0": {
       "": "germ_do335a_1"
     },
@@ -224,6 +231,9 @@ return {
     },
     "er-2_m105r_lu2b": {
       "": "ussr_yak_9_green"
+    },
+    "f-82e": {
+      "": "usa_f_82e"
     },
     "f2a-1": {
       "": "usa_tbd_1_1938"
@@ -419,6 +429,9 @@ return {
     },
     "fr_cruiser_emile_bertin": {
       "": "camo_multicolor_waves"
+    },
+    "fr_cruiser_suffren_class_dupleix": {
+      "": "camo_redblack_spots"
     },
     "fr_destroyer_aigle_class_aigle": {
       "": "ann_camo"
@@ -642,6 +655,10 @@ return {
       "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_carc_winter"
     },
+    "germ_flakpz_I_Gepard_reskin3": {
+      "": "ger_camo_bronzegruen",
+      "desert": "ger_camo_modern_desert_threecolor"
+    },
     "germ_frigate_rckt_brandenburg": {
       "upgraded": "camo_threegray_spots"
     },
@@ -678,6 +695,10 @@ return {
       "forest2": "ger_camo_bundeswehr_afgan",
       "winter": "ussr_camo_winter"
     },
+    "germ_leopard_2av": {
+      "": "ger_camo_bronzegruen",
+      "desert": "ger_camo_modern_desert_threecolor"
+    },
     "germ_leopard_2k": {
       "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_carc_winter"
@@ -700,6 +721,10 @@ return {
       "": "ger_camo_bronzegruen",
       "forest": "ger_camo_carc"
     },
+    "germ_leopard_c2_mexas": {
+      "": "ger_camo_bronzegruen",
+      "desert": "ger_camo_modern_desert_threecolor"
+    },
     "germ_marder_1a1": {
       "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_carc"
@@ -715,6 +740,10 @@ return {
     "germ_mkpz_m48a2ga2": {
       "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_modern_threecolor"
+    },
+    "germ_mkpz_super_m48": {
+      "": "ger_camo_bronzegruen",
+      "desert": "ger_camo_modern_desert_threecolor"
     },
     "germ_panzerbefelhswagen_VI_P": {
       "": "ger_camo_dunkelgelb",
@@ -1516,6 +1545,13 @@ return {
     "tbd-1_1938": {
       "": "usa_tbd_1_1938"
     },
+    "tu-1": {
+      "": "ussr_la_11_standard",
+      "summer": "ussr_il_10"
+    },
+    "tu-1_prem": {
+      "": "ussr_tu_1_prem"
+    },
     "uk_a27m_cromwell_5": {
       "": "uk_camo_light_stone_slate_grey",
       "forest": "uk_camo_very_dark_drab"
@@ -2250,6 +2286,9 @@ return {
     "ussr_destroyer_pr56_svetlyy": {
       "": "camo_arctic_minesweeper_block"
     },
+    "ussr_destroyer_rckt_pr1155": {
+      "upgraded": "camo_northern_fleet"
+    },
     "ussr_destroyer_rckt_pr57bis": {
       "upgraded": "camo_violetgray_geometry"
     },
@@ -2685,6 +2724,7 @@ return {
       "marine_geometry": "camo_marine_geometry",
       "modern_nordgeometry_prem": "camo_modern_nordgeometry",
       "mtb_spots_prem": "camo_mtb_spots",
+      "nato_blue_geometry_prem": "camo_nato_blue_geometry",
       "olive_spots": "camo_olive_spots",
       "polish_bluegeometry_prem": "camo_polish_bluegeometry",
       "threegreenspots": "camo_threegreenspots",

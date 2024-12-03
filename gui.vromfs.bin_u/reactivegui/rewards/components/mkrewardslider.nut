@@ -6,8 +6,7 @@ let { mkGradientCtorDoubleSideX, simpleVerGrad } = require("%rGui/style/gradient
 
 let defColor = 0xFFFFFFFF
 let secondaryColor = 0xFFC5C5C5
-let plateHeight = hdpx(8)
-let plateGap = hdpx(8)
+let pointSize = hdpx(11)
 let timeToDelay = 5.0
 let durationTime = 0.5
 
@@ -24,10 +23,11 @@ let mkRewardPlateBlure = @() {
   }
 }
 
-let mkSliderPlate = @(isActive, size) {
-  rendObj = ROBJ_BOX
-  size
-  fillColor = isActive ? defColor : secondaryColor
+let mkSliderPoint = @(isActive) {
+  rendObj = ROBJ_IMAGE
+  size = [pointSize, pointSize]
+  image = Picture($"ui/gameuiskin#circle.svg:{pointSize}:{pointSize}:P")
+  color = isActive ? defColor : secondaryColor
 }
 
 let mkRewardPlateBg = @(size) {
@@ -61,7 +61,6 @@ function mkRewardSlider(rewards, rewardCtors, onClick, rStyle = {}) {
     size
     children = mkRewardPlate(rInfo, rStyle)
   })
-  let plateSize = [(size[0] - (slidesCount - 1) * plateGap) / slidesCount, plateHeight]
 
   function mkAnimations() {
     let animations = []
@@ -105,7 +104,7 @@ function mkRewardSlider(rewards, rewardCtors, onClick, rStyle = {}) {
   }
 
   return {
-    size = [size[0], size[1] + plateHeight + plateGap]
+    size
     halign = ALIGN_LEFT
     rendObj = ROBJ_MASK
     image = containerMask()
@@ -116,24 +115,21 @@ function mkRewardSlider(rewards, rewardCtors, onClick, rStyle = {}) {
     sound = { click = "click" }
     children = [
       {
-        flow = FLOW_VERTICAL
-        gap = hdpx(5)
-        children = [
-          {
-            key = {}
-            flow = FLOW_HORIZONTAL
-            transform = {}
-            animations = mkAnimations()
-            children = row
-          }
-          @() {
-            watch = activeSlideIdx
-            vplace = ALIGN_BOTTOM
-            flow = FLOW_HORIZONTAL
-            gap = plateGap
-            children = rewards.map(@(_, idx) mkSliderPlate(activeSlideIdx.get() == idx, plateSize))
-          }
-        ]
+        key = {}
+        flow = FLOW_HORIZONTAL
+        transform = {}
+        animations = mkAnimations()
+        children = row
+      }
+      @() {
+        watch = activeSlideIdx
+        size = flex()
+        valign = ALIGN_BOTTOM
+        halign = ALIGN_CENTER
+        flow = FLOW_HORIZONTAL
+        gap = hdpx(8)
+        padding = hdpx(5)
+        children = rewards.map(@(_, idx) mkSliderPoint(activeSlideIdx.get() == idx))
       }
     ]
   }

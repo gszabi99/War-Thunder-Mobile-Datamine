@@ -470,9 +470,9 @@ return {
     params = { shopId }
   }, cb)
 
-  buy_goods = @(shopId, currencyId, price, cb = null) request({
+  buy_goods = @(shopId, currencyId, price, count = 1, cb = null) request({
     method = "buy_goods"
-    params = { shopId, currencyId, price }
+    params = { shopId, currencyId, price, count }
     progressId = PROGRESS_SHOP
     progressValue = shopId
   }, cb)
@@ -702,6 +702,16 @@ return {
   debug_apply_boosters_in_battle = @(boosters, cb = null) request({
     method = "debug_apply_boosters_in_battle"
     params = { boosters }
+  }, cb)
+
+  debug_apply_unit_daily_bonus_in_battle = @(unitName, cb = null) request({
+    method = "debug_apply_unit_daily_bonus_in_battle"
+    params = { unitName }
+  }, cb)
+
+  debug_reset_all_unit_daily_bonus = @(cb = null) request({
+    method = "debug_reset_all_unit_daily_bonus"
+    params = {}
   }, cb)
 
   buy_booster = @(name, currencyId, price, cb = null) request({

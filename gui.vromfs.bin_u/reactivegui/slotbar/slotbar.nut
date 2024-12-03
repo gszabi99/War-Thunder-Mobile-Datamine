@@ -7,7 +7,7 @@ let { translucentSlotButton, getBorderCommand, lineWidth, slotBtnSize,
 let { myUnits, allUnitsCfg, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, bgUnit, mkUnitSelectedGlow,
-  mkUnitPlateBorder
+  mkUnitPlateBorder, mkProfileUnitDailyBonus
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
@@ -260,6 +260,11 @@ let function mkUnitSlot(unit, idx, onClick) {
       mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
       mkUnitLock(unit, false)
       mkUnitPlateBorder(isSelected)
+      {
+        padding = [0, 0, hdpx(3), hdpx(3)]
+        vplace = ALIGN_BOTTOM
+        children = mkProfileUnitDailyBonus(unit)
+      }
     ]
     transform = { pivot = [0.5, 0.5] }
     animations = [

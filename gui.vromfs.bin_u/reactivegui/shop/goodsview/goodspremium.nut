@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { trim, utf8ToUpper } = require("%sqstd/string.nut")
-let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, mkBgImg, borderBg, numberToTextForWtFont, mkPricePlate, mkGoodsCommonParts, mkSlotBgImg,
-  oldAmountStrikeThrough, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit
+let { mkFontGradient } = require("%rGui/style/gradients.nut")
+let { mkGoodsWrap, mkBgImg, borderBgGold, numberToTextForWtFont, mkPricePlate, mkGoodsCommonParts, mkSlotBgImg, mkBorderByCurrency,
+  oldAmountStrikeThrough, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTime
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let openPremiumDescription = require("%rGui/shop/premiumDescription.nut")
 let { infoGreyButton } = require("%rGui/components/infoButton.nut")
@@ -14,7 +14,6 @@ let mkIconPrem = @() mkBgImg("ui/gameuiskin/premium_active_big.avif:0:P")
     vplace = ALIGN_CENTER
     size = [hdpx(300), hdpx(200)]
   })
-let priceBgGrad = mkColoredGradientY(0xFFE26C16, 0xFF7E1C03, 12)
 let numFontGrad = mkFontGradient(0xFFF2E46B, 0xFFCE733B, 11, 5, 2)
 let daysFontGrad = mkFontGradient(0xFFF2E46B, 0xFFCE733B, 11, 6, 2)
 
@@ -69,7 +68,7 @@ let infoBtn = infoGreyButton(
 )
 
 function mkGoodsPremium(goods, onClick, state, animParams) {
-  let { premiumDays, viewBaseValue = 0, isShowDebugOnly = false } = goods
+  let { premiumDays, viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let premIconAndDaysTitleWrapper = {
     margin = [ sh(1), 0, 0, 0 ]
     size = flex()
@@ -79,6 +78,7 @@ function mkGoodsPremium(goods, onClick, state, animParams) {
     ]
   }
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
+  let border = mkBorderByCurrency(borderBgGold, isFreeReward, price?.currencyId)
 
   return mkGoodsWrap(
     goods,
@@ -87,13 +87,13 @@ function mkGoodsPremium(goods, onClick, state, animParams) {
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
       bgParticles
-      borderBg
+      border
       sf & S_HOVER ? bgHiglight : null
       premIconAndDaysTitleWrapper
       infoBtn
-      mkGoodsLimit(goods)
+      mkGoodsLimitAndEndTime(goods)
     ].extend(mkGoodsCommonParts(goods, state)),
-    mkPricePlate(goods, priceBgGrad, state, animParams), {size = goodsSmallSize})
+    mkPricePlate(goods, state, animParams), {size = goodsSmallSize})
 }
 
 return {

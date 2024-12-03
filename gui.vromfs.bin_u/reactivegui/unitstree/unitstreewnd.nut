@@ -338,7 +338,7 @@ let unitsTreeGamercard = {
 
     { size = flex() }
 
-    mkCurrenciesBtns([WP, GOLD], null, { pos = [0, hdpx(5)] })
+    mkCurrenciesBtns([WP, GOLD], { pos = [0, hdpx(5)] })
   ]
 }
 

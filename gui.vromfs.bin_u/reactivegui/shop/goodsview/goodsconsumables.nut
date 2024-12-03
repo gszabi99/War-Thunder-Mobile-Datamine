@@ -3,8 +3,8 @@ let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, borderBg, mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonParts,
-  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimit,
-  priceBgGradConsumables, titleFontGradConsumables
+  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTime,
+  titleFontGradConsumables, mkBorderByCurrency
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 
 let icons = {
@@ -81,9 +81,10 @@ function getLocNameConsumables(goods) {
 
 function mkGoodsConsumables(goods, onClick, state, animParams) {
   let data = getConsumablesInfo(goods)
-  let { viewBaseValue = 0, isShowDebugOnly = false } = goods
+  let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let nameConsumable = data.len() != 1 ? loc($"goods/{goods.id}") : loc($"item/{data[0].id}")
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
+  let border = mkBorderByCurrency(borderBg, isFreeReward, price?.currencyId)
 
   return mkGoodsWrap(
     goods,
@@ -92,7 +93,7 @@ function mkGoodsConsumables(goods, onClick, state, animParams) {
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
       bgParticles
-      borderBg
+      border
       sf & S_HOVER ? bgHiglight : null
       mkImgs(data.map(@(item) item.id), itemImageOptionsStack?[data.len() - 1] ?? itemImageOptionsStack.top())
       slotNameBG.__merge({
@@ -100,9 +101,9 @@ function mkGoodsConsumables(goods, onClick, state, animParams) {
         padding = [hdpx(20), 0]
         children = mkCurrencyAmountTitle(data.map(@(item) item.amount), viewBaseValue, titleFontGradConsumables, nameConsumable)
       })
-      mkGoodsLimit(goods)
+      mkGoodsLimitAndEndTime(goods)
     ].extend(mkGoodsCommonParts(goods, state)),
-    mkPricePlate(goods, priceBgGradConsumables, state, animParams), {size = goodsSmallSize})
+    mkPricePlate(goods, state, animParams), {size = goodsSmallSize})
 }
 
 return {

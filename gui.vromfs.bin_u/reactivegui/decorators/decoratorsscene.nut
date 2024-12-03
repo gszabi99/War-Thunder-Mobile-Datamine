@@ -7,7 +7,6 @@ let changeNameScene = require("changeNameScene.nut")
 let { gamercardBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { isDecoratorsSceneOpened, unseenDecorators, availNickFrames, availAvatars,
 availTitles } = require("decoratorState.nut")
-let { authTags } = require("%appGlobals/loginState.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 
 let tabs = [
@@ -39,7 +38,6 @@ let tabs = [
     locId = "changeName"
     image = "ui/gameuiskin#profile_name_icon.svg"
     content = changeNameScene
-    isVisible = Computed(@() !authTags.value.contains("gplogin"))
   }
 ]
 

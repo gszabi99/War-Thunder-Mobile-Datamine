@@ -19,7 +19,6 @@ let lbRewardsPerRow = isWidescreen ? 6 : 5
 let lbRewardRowHeightBase = (lbDotsRowHeight + 11 * lbRowHeight) / (isWidescreen ? 5 : 6)
 let lbRewardsGap = clamp((lbRewardRowHeightBase - rewardStyle.boxSize) / 2, lbTableBorderWidth, rewardStyle.boxGap)
 let lbRewardRowPadding = lbRewardsGap
-let lbRewardRowHeight = rewardStyle.boxSize + 2 * lbRewardRowPadding
 let lbRewardsBlockWidth = rewardStyle.boxSize * lbRewardsPerRow + lbRewardsGap * (lbRewardsPerRow - 1)
   + 2 * lbTableBorderWidth + 2 * lbRewardRowPadding
 
@@ -40,7 +39,6 @@ let rowBgMyOddColor = 0x600A2630
 let rowBgMyEvenColor = 0x60104051
 
 return {
-  rowBgHeaderColor = 0xC0000000
   rowBgOddColor
   rowBgEvenColor
   rowBgMyOddColor
@@ -50,7 +48,6 @@ return {
           : (isMy ? rowBgMyEvenColor : rowBgEvenColor)
 
   lbHeaderHeight
-  lbFooterHeight
   lbVGap
   lbTableHeight
   lbHeaderRowHeight
@@ -61,10 +58,8 @@ return {
   lbTabIconSize
 
   rewardStyle
-  lbRewardsPerRow
   lbRewardsBlockWidth
   lbRewardRowPadding
-  lbRewardRowHeight
   lbRewardsGap
   prizeIcons
 }

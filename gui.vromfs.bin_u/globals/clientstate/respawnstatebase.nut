@@ -14,6 +14,8 @@ let timeToRespawn = sharedWatched("timeToRespawn", @() -1)
 let hasRespawnSeparateSlots = sharedWatched("hasRespawnSeparateSlots", @() false)
 let curUnitsAvgCostWp = sharedWatched("curUnitsAvgCostWp", @() null)
 let isBattleDataFake = sharedWatched("isBattleDataFake", @() null)
+let hasPredefinedReward = sharedWatched("hasPredefinedReward", @() false)
+let dailyBonus = sharedWatched("dailyBonus", @() null)
 
 return {
   isInRespawn
@@ -29,4 +31,6 @@ return {
   hasRespawnSeparateSlots
   curUnitsAvgCostWp
   isBattleDataFake
+  hasPredefinedReward
+  dailyBonus
 }

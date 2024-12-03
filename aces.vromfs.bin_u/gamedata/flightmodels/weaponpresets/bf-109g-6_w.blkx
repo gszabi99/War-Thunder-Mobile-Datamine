@@ -1,0 +1,47 @@
+{
+  "HideNodes": {
+    "node": [
+      "pylon_cannon_l",
+      "pylon_cannon_r",
+      "pylon_cannon_r6_l",
+      "pylon_cannon_r6_r",
+      "flare4",
+      "flare5",
+      "flare6",
+      "flare7"
+    ]
+  },
+  "HideDmParts": {
+    "node": [
+      "cannon3_dm",
+      "cannon4_dm",
+      "cover5_dm",
+      "cover6_dm"
+    ]
+  },
+  "Weapon": [
+    {
+      "trigger": "rockets",
+      "separate": true,
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/de_br20.blk",
+      "emitter": "210_mm_1",
+      "bullets": 1
+    },
+    {
+      "trigger": "rockets",
+      "separate": true,
+      "external": true,
+      "blk": "gameData/Weapons/rocketGuns/de_br20.blk",
+      "emitter": "210_mm_2",
+      "bullets": 1
+    }
+  ],
+  "WeaponContainers": {
+    "blk": "gameData/Weapons/rocketGuns/de_br20.blk",
+    "node": [
+      "210mm_tube_l",
+      "210mm_tube_r"
+    ]
+  }
+}

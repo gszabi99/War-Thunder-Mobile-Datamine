@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { statsImages } = require("%appGlobals/config/rewardStatsPresentation.nut")
+let { hasStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
 
 let NO_DROP_LIMIT = 1000000
 
@@ -40,6 +40,7 @@ let slotsByType = {
   battleMod = 2
   unit = 2
   blueprint = 2
+  prizeTicket = 2
 }
 
 let slotsByDType = {
@@ -111,7 +112,7 @@ function shopGoodsToRewardsViewInfo(data, multiply = 1) {
 function getStatsRewardsViewInfo(unlockStage) {
   let res = []
   foreach(stat in unlockStage?.updStats ?? {})
-    if (stat.name in statsImages && stat.value.tointeger() > 0)
+    if (hasStatsImage(stat.name) && stat.value.tointeger() > 0)
       res.append({
         rType = "stat"
         count = stat.value.tointeger()

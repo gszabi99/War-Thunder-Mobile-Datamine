@@ -3038,12 +3038,12 @@
         "index": 1,
         "tier": 6,
         "order": 1,
-        "ShowNodes": {
-          "node": "pylon_2000lb_l"
-        },
         "WeaponPreset": {
           "iconType": "bomb_2000kg",
           "name": "2000lb_left",
+          "ShowNodes": {
+            "node": "pylon_1000lb_l"
+          },
           "Weapon": {
             "trigger": "bombs",
             "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",
@@ -3359,12 +3359,12 @@
         "index": 3,
         "tier": 8,
         "order": 2,
-        "ShowNodes": {
-          "node": "pylon_2000lb_r"
-        },
         "WeaponPreset": {
           "iconType": "bomb_2000kg",
           "name": "2000lb_right",
+          "ShowNodes": {
+            "node": "pylon_1000lb_r"
+          },
           "Weapon": {
             "trigger": "bombs",
             "blk": "gameData/Weapons/BombGuns/us_2000lbs_anm66.blk",

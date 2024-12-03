@@ -25,7 +25,16 @@ let state = require("%sqstd/mkEventLogState.nut")({
 })
 let { addEvent, modifyOrAddEvent, removeEvent, clearEvents } = state
 
-isInBattle.subscribe(@(_) clearEvents())
+local scoreAccumulated = mkWatched(persist, "scoreAccumulated", 0.0)
+local scoreShowed = mkWatched(persist, "scoreShowed", 0.0)
+local scoreToShow = mkWatched(persist, "scoreToShow", 0.0)
+
+isInBattle.subscribe(function(_) {
+  clearEvents()
+  scoreAccumulated(0.0)
+  scoreShowed(0.0)
+  scoreToShow(0.0)
+})
 
 const MISSION_HINT = "mission_hint"
 const SCORE_HINT = "score_hint"
@@ -114,25 +123,21 @@ eventbus_subscribe("zoneCapturingEvent", function(data) {
     @(ev) ev?.id == id && ev?.text == text)
 })
 
-local scoreAccumulated = 0.0
-local scoreShowed = 0.0
-local scoreToShow = 0.0
-
 function resetScore() {
-  scoreShowed += scoreToShow
-  scoreToShow = 0.0
+  scoreShowed(scoreShowed.value + scoreToShow.value)
+  scoreToShow(0.0)
 }
 
 function showScore(score, isAirfield) {
   clearTimer(resetScore)
-  scoreAccumulated += score
-  scoreToShow = (scoreAccumulated - scoreShowed).tointeger()
-  if (scoreToShow >= 1.0) {
+  scoreAccumulated(scoreAccumulated.value + score)
+  scoreToShow((scoreAccumulated.value - scoreShowed.value).tointeger())
+  if (scoreToShow.value >= 1.0) {
     modifyOrAddEvent({
       id = SCORE_HINT
       zOrder = Layers.Upper
       hType = "simpleTextWithIcon"
-      text = loc(isAirfield ? "exp_reasons/damage_airfield" : "exp_reasons/damage_zone", {score = scoreToShow}),
+      text = loc(isAirfield ? "exp_reasons/damage_airfield" : "exp_reasons/damage_zone", {score = scoreToShow.value}),
       icon = $"ui/gameuiskin#score_icon.svg"
       ttl = 3
     }, @(ev) ev?.id == SCORE_HINT)

@@ -1,150 +1,111 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let scrollbarWidth = sh(1)
+let minKnobSizePart = 0.005
 
-let defStyling = {
-  Bar = function(has_scroll) {
-    if (has_scroll) {
-      return {
+let defStyle = {
+  scrollbarWidth = hdpxi(10)
+  barStyleCtor = @(has_scroll) !has_scroll ? {}
+    : {
         rendObj = ROBJ_SOLID
         color = Color(40, 40, 40, 160)
-        _width = scrollbarWidth
-        _height = scrollbarWidth
       }
-    }
-    else
-      return {
-        _width = scrollbarWidth
-        _height = scrollbarWidth
-    }
-  }
-  Knob = {
+  knobStyle = {
     rendObj = ROBJ_SOLID
     colorCalc = @(sf) (sf & S_ACTIVE) ? Color(255, 255, 255)
                     : (sf & S_HOVER)  ? Color(110, 120, 140, 80)
                                       : Color(110, 120, 140, 160)
   }
 
-  ContentRoot = {
+  rootBase = {
     size = flex()
     behavior = Behaviors.Pannable
   }
 }
 
-
-function resolveBarClass(bar, has_scroll) {
-  if (type(bar) == "function") {
-    return bar(has_scroll)
-  }
-  return bar
-}
-
-function calcBarSize(bar_class, axis) {
-  return axis == 0 ? [flex(), bar_class._height] : [bar_class._width, flex()]
-}
-
+let calcBarSize = @(scrollbarWidth, isVertical) isVertical ? [scrollbarWidth, flex()] : [flex(), scrollbarWidth]
 
 function scrollbar(scroll_handler, options = {}) {
   let stateFlags = Watched(0)
-  let styling   = options?.styling ?? defStyling
-  let barClass  = options?.barStyle ?? styling.Bar
-  let knobClass = options?.knobStyle ?? styling.Knob
+  let {
+    knobStyle = defStyle.knobStyle,
+    barStyleCtor = defStyle.barStyleCtor,
+    scrollbarWidth = defStyle.scrollbarWidth,
+    orientation = O_VERTICAL,
+    needReservePlace = true,
+  } = options
 
-  let orientation = options?.orientation ?? O_VERTICAL
-  let axis        = orientation == O_VERTICAL ? 1 : 0
+  let isVertical = orientation == O_VERTICAL
+  let elemSize = isVertical
+    ? Computed(@() (scroll_handler.elem?.getHeight() ?? 0))
+    : Computed(@() (scroll_handler.elem?.getWidth() ?? 0))
+  let maxV = isVertical
+    ? Computed(@() (scroll_handler.elem?.getContentHeight() ?? 0) - elemSize.get())
+    : Computed(@() (scroll_handler.elem?.getContentWidth() ?? 0) - elemSize.get())
+  let fValue = isVertical
+    ? Computed(@() scroll_handler.elem?.getScrollOffsY() ?? 0)
+    : Computed(@() scroll_handler.elem?.getScrollOffsX() ?? 0)
+  let isElemFit = Computed(@() maxV.get() <= 0)
+  let knob = @() {
+    watch = stateFlags
+    key = "knob"
+    size = [flex(), flex()]
+    rendObj = ROBJ_SOLID
+    color = knobStyle?.colorCalc(stateFlags.get()) ?? knobStyle?.color
+  }
 
-  return function() {
-    let elem = scroll_handler.elem
-
-    if (!elem) {
-      let cls = resolveBarClass(barClass, false)
-      return cls.__merge({
-        key = scroll_handler
-        behavior = Behaviors.Slider
-        watch = scroll_handler
-        size = (options?.needReservePlace ?? true) ? calcBarSize(cls, axis) : null
-      })
-    }
-
-    local contentSize, elemSize, scrollPos
-    if (axis == 0) {
-      contentSize = elem.getContentWidth()
-      elemSize = elem.getWidth()
-      scrollPos = elem.getScrollOffsX()
-    }
-    else {
-      contentSize = elem.getContentHeight()
-      elemSize = elem.getHeight()
-      scrollPos = elem.getScrollOffsY()
-    }
-
-    if (contentSize <= elemSize) {
-      let cls = resolveBarClass(barClass, false)
-      return cls.__merge({
-        key = scroll_handler
-        behavior = Behaviors.Slider
-        watch = scroll_handler
-        size = (options?.needReservePlace ?? true) ? calcBarSize(cls, axis) : null
-      })
-    }
-
-
-    let minV = 0
-    let maxV = contentSize - elemSize
-    let fValue = scrollPos
-
-    let color = "colorCalc" in knobClass
-      ? knobClass.colorCalc(stateFlags.value)
-      : knobClass?.color
-
-    let knob = knobClass.__merge({
-      size = [flex(elemSize), flex(elemSize)]
-      color = color
-      key = "knob"
-
-      children = "hoverChild" in knobClass ? knobClass.hoverChild(stateFlags.value) : null
-    })
-
-    let cls = resolveBarClass(barClass, true)
-    return cls.__merge({
-      key = scroll_handler
-      behavior = Behaviors.Slider
-
-      watch = [scroll_handler, stateFlags]
-      fValue = fValue
-
-      knob = knob
-      min = minV //warning disable : -ident-hides-std-function
-      max = maxV //warning disable : -ident-hides-std-function
-      unit = 1
-
-      flow = axis == 0 ? FLOW_HORIZONTAL : FLOW_VERTICAL
+  function view() {
+    let sizeMul = elemSize.get() == 0 || maxV.get() == 0 ? 1
+      : elemSize.get() <= minKnobSizePart * maxV.get() ? 1.0 / maxV.get() / minKnobSizePart
+      : 1.0 / elemSize.get()
+    return {
+      watch = [elemSize, maxV, fValue]
+      size = flex()
+      flow = isVertical ? FLOW_VERTICAL : FLOW_HORIZONTAL
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
 
-      pageScroll = (axis == 0 ? -1 : 1) * (maxV - minV) / 100.0 // TODO probably needed sync with container wheelStep option
-
-      orientation = orientation
-      size = calcBarSize(cls, axis)
-
       children = [
-        { size = [flex(fValue), flex(fValue)] }
+        { size = array(2, flex(fValue.get() * sizeMul)) }
         knob
-        { size = [flex(maxV - fValue), flex(maxV - fValue)] }
+        { size = array(2, flex((maxV.get() - fValue.get()) * sizeMul)) }
       ]
+    }
+  }
 
-      onChange = @(val) axis == 0
-        ? scroll_handler.scrollToX(val)
-        : scroll_handler.scrollToY(val)
+  return {
+    isElemFit
+    function scrollComp() {
+      if (isElemFit.get())
+        return barStyleCtor(false).__merge({
+          watch = isElemFit
+          size = needReservePlace ? calcBarSize(scrollbarWidth, isVertical) : null
+          key = scroll_handler
+          behavior = Behaviors.Slider
+        })
+      return barStyleCtor(true).__merge({
+        watch = [isElemFit, maxV, elemSize]
+        key = scroll_handler
+        size = calcBarSize(scrollbarWidth, isVertical)
 
-      onElemState = @(sf) stateFlags.update(sf)
-    })
+        behavior = Behaviors.Slider
+        orientation
+        fValue = fValue.get()
+        knob
+        min = 0
+        max = maxV.get()
+        unit = 1
+        pageScroll = (isVertical ? 1 : -1) * maxV.get() / 100.0 // TODO probably needed sync with container wheelStep option
+        onChange = @(val) isVertical ? scroll_handler.scrollToY(val)
+          : scroll_handler.scrollToX(val)
+        onElemState = @(sf) stateFlags.set(sf)
+
+        children = view
+      })
+    }
   }
 }
 
-let DEF_SIDE_SCROLL_OPTIONS = { //const
-  styling = defStyling
-  rootBase = null
+let DEF_SIDE_SCROLL_OPTIONS = defStyle.__merge({ //const
   scrollAlign = ALIGN_RIGHT
   orientation = O_VERTICAL
   size = flex()
@@ -153,47 +114,46 @@ let DEF_SIDE_SCROLL_OPTIONS = { //const
   needReservePlace = true //need reserve place for scrollbar when it not visible
   clipChildren  = true
   joystickScroll = true
-}
+})
 
 function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
   options = DEF_SIDE_SCROLL_OPTIONS.__merge(options)
 
-  let styling = options.styling
   let scrollHandler = options?.scrollHandler ?? ScrollHandler()
-  let rootBase = options.rootBase ?? styling.ContentRoot
+  let { rootBase, size, orientation, joystickScroll, maxHeight, maxWidth, clipChildren
+  } = options
   let scrollAlign = options.scrollAlign
 
-  function contentRoot() {
-    local bhv = rootBase?.behavior ?? []
-    if (type(bhv) != "array")
-      bhv = [bhv]
-    else
-      bhv = clone bhv
-    bhv.append(Behaviors.WheelScroll, Behaviors.ScrollEvent)
+  let rootBhv = [Behaviors.WheelScroll, Behaviors.ScrollEvent]
+  if (type(rootBase?.behavior) == "array")
+    rootBhv.extend(rootBase.behavior)
+  else if (rootBase?.behavior != null)
+    rootBhv.append(rootBase.behavior)
+  let contentRoot = rootBase.__merge({
+    size
+    behavior = rootBhv
+    scrollHandler
+    wheelStep = 0.8
+    orientation
+    joystickScroll
+    maxHeight
+    maxWidth
+    children = content
+  })
 
-    return rootBase.__merge({
-      size = options.size
-      behavior = bhv
-      scrollHandler = scrollHandler
-      wheelStep = 0.8
-      orientation = options.orientation
-      joystickScroll = options.joystickScroll
-      maxHeight = options.maxHeight
-      maxWidth = options.maxWidth
-      children = content
-    })
-  }
+  let { isElemFit, scrollComp } = scrollbar(scrollHandler, options)
 
   let childrenContent = scrollAlign == ALIGN_LEFT || scrollAlign == ALIGN_TOP
-    ? [scrollbar(scrollHandler, options), contentRoot]
-    : [contentRoot, scrollbar(scrollHandler, options)]
+    ? [scrollComp, contentRoot]
+    : [contentRoot, scrollComp]
 
-  return {
-    size = options.size
-    maxHeight = options.maxHeight
-    maxWidth = options.maxWidth
-    flow = (options.orientation == O_VERTICAL) ? FLOW_HORIZONTAL : FLOW_VERTICAL
-    clipChildren = options.clipChildren
+  return @() {
+    watch = isElemFit
+    size
+    maxHeight
+    maxWidth
+    flow = orientation == O_VERTICAL ? FLOW_HORIZONTAL : FLOW_VERTICAL
+    clipChildren
 
     children = childrenContent
   }
@@ -201,26 +161,20 @@ function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
 
 
 function makeHVScrolls(content, options = {}) {
-  let styling = options?.styling ?? defStyling
-  let scrollHandler = options?.scrollHandler ?? ScrollHandler()
-  let rootBase = options?.rootBase ?? styling.ContentRoot
+  let { rootBase = defStyle.rootBase, scrollHandler = ScrollHandler() } = options
 
-  function contentRoot() {
-    local bhv = rootBase?.behavior ?? []
-    if (type(bhv) != "array")
-      bhv = [bhv]
-    else
-      bhv = clone bhv
-    bhv.append(Behaviors.WheelScroll, Behaviors.ScrollEvent)
+  let rootBhv = [Behaviors.WheelScroll, Behaviors.ScrollEvent]
+  if (type(rootBase?.behavior) == "array")
+    rootBhv.extend(rootBase.behavior)
+  else if (rootBase?.behavior != null)
+    rootBhv.append(rootBase.behavior)
+  let contentRoot = rootBase.__merge({
+    behavior = rootBhv
+    scrollHandler
+    joystickScroll = true
 
-    return rootBase.__merge({
-      behavior = bhv
-      scrollHandler = scrollHandler
-      joystickScroll = true
-
-      children = content
-    })
-  }
+    children = content
+  })
 
   return {
     size = flex()
@@ -233,10 +187,10 @@ function makeHVScrolls(content, options = {}) {
         clipChildren = true
         children = [
           contentRoot
-          scrollbar(scrollHandler, options.__merge({ orientation = O_VERTICAL }))
+          scrollbar(scrollHandler, options.__merge({ orientation = O_VERTICAL })).scrollComp
         ]
       }
-      scrollbar(scrollHandler, options.__merge({ orientation = O_HORIZONTAL }))
+      scrollbar(scrollHandler, options.__merge({ orientation = O_HORIZONTAL })).scrollComp
     ]
   }
 }
@@ -259,10 +213,8 @@ function makeHorizScroll(content, options = {}) {
 
 
 return {
-  styling = defStyling
-  scrollbarWidth
+  scrollbarWidth = defStyle.scrollbarWidth
 
-  scrollbar
   makeHorizScroll
   makeVertScroll
   makeHVScrolls

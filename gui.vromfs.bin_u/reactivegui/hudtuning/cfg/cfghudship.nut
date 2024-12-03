@@ -26,6 +26,8 @@ let { mkRhombFireworkBtn, mkRhombZoomButton, mkSupportPlaneBtn, mkAntiairButton,
 let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
 let supportPlaneConfig = require("%rGui/hud/supportPlaneConfig.nut")
 
+let consumableStart = hdpx(-372)
+let consumableGap = isWidescreen ? hdpx(-150) : hdpx(-128)
 return cfgHudCommon.__merge(cfgHudCommonNaval, {
   zoom = {
     ctor = mkRhombZoomButton
@@ -104,13 +106,13 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
 
 
   abSmokeScreen = withActionBarButtonCtor(EII_SMOKE_SCREEN, SHIP,
-    { defTransform = mkRBPos([hdpx(-450), hdpx(43)]) })
+    { defTransform = mkRBPos([consumableStart, hdpx(43)]) })
 
   abToolkit = withActionBarButtonCtor(EII_TOOLKIT, SHIP,
-    { defTransform = mkRBPos([hdpx(-600), hdpx(43)]) })
+    { defTransform = mkRBPos([consumableStart + consumableGap, hdpx(43)]) })
 
   abIrcm = withActionBarButtonCtor(EII_IRCM, SHIP,
-     { defTransform = mkRBPos([hdpx(-750), hdpx(43)]) })
+     { defTransform = mkRBPos([consumableStart + consumableGap * 2, hdpx(43)]) })
 
 //
 

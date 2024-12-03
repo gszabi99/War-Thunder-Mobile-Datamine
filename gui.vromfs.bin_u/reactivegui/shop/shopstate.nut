@@ -19,6 +19,9 @@ let { sendBqEventOnOpenCurrencyShop } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 
+
+let pageScrollHandler = ScrollHandler()
+
 let isShopOpened = mkWatched(persist, "isShopOpened", false)
 let shopOpenCount = Watched(0)
 
@@ -40,7 +43,8 @@ let sortCurrency = @(a, b) (a.currencies?.platinum ?? 0) <=> (b.currencies?.plat
   || (a.currencies?.wp ?? 0) <=> (b.currencies?.wp ?? 0)
 
 let sortGoods = @(a, b)
-  a.gtype <=> b.gtype
+  b.meta?.eventId <=> a.meta?.eventId
+  || a.gtype <=> b.gtype
   || sortCurrency(a, b)
   || a.premiumDays <=> b.premiumDays
   || a.price.currencyId <=> b.price.currencyId
@@ -131,19 +135,15 @@ let shopGoodsAllCampaigns = Computed(function() {
 
 let goodsByCategory = Computed(function() {
   let res = {}
-  let goodsListByType = {}
-  foreach (c in shopCategoriesCfg) {
-    let list = []
-    res[c.id] <- list
-    foreach (gt in c.gtypes)
-      goodsListByType[gt] <- list
-  }
-  foreach (goods in shopGoods.value) {
+  foreach (goods in shopGoods.get()) {
     if (goods.isHidden) // Hidden for shop
       continue
-    goodsListByType[goods.gtype].append(goods)
+    let cat = getShopCategory(goods.gtype, goods.meta)
+    if (cat not in res)
+      res[cat] <- []
+    res[cat].append(goods)
   }
-  return res.filter(@(list) list.len() > 0)
+  return res
 })
 
 let goodsIdsByCategory = Computed(function() {
@@ -320,6 +320,7 @@ return {
   shopGoodsInternal
   goodsLinks
   sortGoods
+  inactiveGoodsByTime
 
   hasUnseenGoodsByCategory
   shopSeenGoods
@@ -327,4 +328,6 @@ return {
   saveSeenGoods
   saveSeenGoodsCurrent
   onTabChange
+
+  pageScrollHandler
 }

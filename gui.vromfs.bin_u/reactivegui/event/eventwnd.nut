@@ -5,7 +5,7 @@ let { eventWndOpenCounter, closeEventWnd, curEventEndsAt,
   unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
   bestCampLevel, curEventLootboxes, curEventLoc,
   curEvent, MAIN_EVENT_ID, curEventCurrencies, curEventSeason, isCurEventActive,
-  eventBgFallback, curEventBg, curEventName
+  curEventBg, curEventName
 } = require("eventState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkTimeUntil } = require("%rGui/quests/questsPkg.nut")
@@ -43,6 +43,7 @@ let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollA
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardPlateComp.nut")
 let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
 let { customEventLootboxScale } = require("%appGlobals/config/lootboxPresentation.nut")
+let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
 
 
 let MAX_LOOTBOXES_AMOUNT = 3
@@ -205,14 +206,14 @@ function mkCurrencies() {
   let baseCurrencies = [WP, GOLD].filter(@(v) curEventCurrencies.value.findindex(@(c) c == v) == null)
   let res = [].extend(curEventCurrencies.value, baseCurrencies)
   return {
-    watch = [curEventCurrencies, curEvent]
+    watch = curEventCurrencies
     children = {
       pos = [saBorders[0] * 0.5, 0]
       padding = [saBorders[0] * 0.025, saBorders[0] * 0.5]
       rendObj = ROBJ_9RECT
       image = gradTranspDoubleSideX
       color = 0x70000000
-      children = mkCurrenciesBtns(res, curEvent.get()).__update({ size = SIZE_TO_CONTENT })
+      children = mkCurrenciesBtns(res).__update({ size = SIZE_TO_CONTENT })
     }
   }
 }

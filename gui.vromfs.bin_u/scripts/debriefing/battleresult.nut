@@ -23,6 +23,7 @@ let { get_mp_local_team, get_mplayers_list } = require("mission")
 let { get_mp_tbl_teams } = require("guiMission")
 let mkCommonExtras = require("mkCommonExtras.nut")
 let { lastRoom } = require("%scripts/matchingRooms/sessionLobby.nut")
+let { squadLabels } = require("%appGlobals/squadLabelState.nut")
 
 
 const destroySessionTimeout = 2.0
@@ -163,8 +164,10 @@ register_es("battle_result_mplayers_es",
       let res = evt.data.__merge({ players = clone (evt.data?.players ?? {}) })
       let localPlayers = get_mplayers_list(GET_MPLAYERS_LIST, true)
       foreach(p in localPlayers)
-        if (p.userId in res.players)
+        if (p.userId in res.players){
           res.players[p.userId] = p.__merge(res.players[p.userId])
+          res.players[p.userId].squadLabel <- (squadLabels.get()?[p.userId] ?? -1)
+        }
       resultPlayers(res)
     },
   }, {})

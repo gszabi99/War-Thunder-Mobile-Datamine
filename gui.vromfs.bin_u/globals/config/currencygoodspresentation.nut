@@ -1,4 +1,4 @@
-let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILBOND } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILBOND, BLACK_FRIDAY_BOND } = require("%appGlobals/currenciesState.nut")
 
 let SEASON_EMPTY = "season_0"
 
@@ -60,7 +60,14 @@ let imgCfgByCurrency = {
       { img = $"event_keys_02.avif", amountAtLeast = 2 }
       { img = $"event_keys_03.avif", amountAtLeast = 10 }
     ],
-  }
+  },
+  [BLACK_FRIDAY_BOND] = {
+    def = [
+      { img = "blackfridaybond_goods_01.avif", amountAtLeast = 0 }
+      { img = "blackfridaybond_goods_02.avif", amountAtLeast = 500 }
+      { img = "blackfridaybond_goods_03.avif", amountAtLeast = 1000 }
+    ]
+  },
 }
 
 let cfgCtors = {

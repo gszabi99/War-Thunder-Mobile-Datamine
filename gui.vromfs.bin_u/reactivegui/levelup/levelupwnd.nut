@@ -31,17 +31,6 @@ let lineAnimTime = 0.5
 let balanceAppearDelay = animStartDelay + flagAnimFullTime
 let balanceAppearTime = 2.0
 
-let lvlUpUnitsPkgs = Computed(@() buyUnitsData.value.canBuyOnLvlUp
-  .reduce(function(res, u) {
-      let pkgs = getUnitPkgs(u.name, u.mRank)
-      foreach (pkg in pkgs)
-        res[pkg] <- true
-      return res
-    }, {})
-  .keys()
-  .filter(@(v) !hasAddons.value?[v]))
-let hasLvlUpPkgs = Computed(@() lvlUpUnitsPkgs.value.len() == 0)
-
 let lineGradient = mkLinearGradientImg({
   points = [{ offset = 0, color = colorArr(0) }, { offset = 100, color = colorArr(headerLineColor) }]
   width = lineTexW
@@ -85,16 +74,16 @@ function closeByBackButton() {
 
 let wpStyle = CS_GAMERCARD.__merge({ iconKey = "levelUpWp" })
 let goldStyle = CS_GAMERCARD.__merge({ iconKey = "levelUpGold" })
-let headerPanel = @() {
+let headerPanel = @(hasLvlUpPkgs) @() {
   watch = maxRewardLevelInfo
   size = [flex(), SIZE_TO_CONTENT]
   halign = ALIGN_CENTER
   children = [
     @() {
-      watch = [upgradeUnitName, hasLvlUpPkgs]
+      watch = upgradeUnitName
       hplace = ALIGN_LEFT
       children = upgradeUnitName.value != null ? backButton(@() upgradeUnitName(null))
-        : !hasLvlUpPkgs.value ? backButton(closeByBackButton)
+        : !hasLvlUpPkgs ? backButton(closeByBackButton)
         : null
     }
     {
@@ -114,49 +103,61 @@ let headerPanel = @() {
   ]
 }
 
-let levelUpRequirePkgDownload = {
+let levelUpRequirePkgDownload = @(lvlUpUnitsPkgs) {
   size = flex()
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   gap = hdpx(40)
   children = [
-    @() {
-      watch = lvlUpUnitsPkgs
+    {
       size = [hdpx(600), SIZE_TO_CONTENT]
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       halign = ALIGN_CENTER
       color = 0xFFFFFFFF
       text = loc("msg/needDownloadPackForLevelUp", {
-        pkg = localizeAddons(lvlUpUnitsPkgs.value)?[0] ?? "???"
-        size = getAddonsSizeStr(lvlUpUnitsPkgs.value)
+        pkg = localizeAddons(lvlUpUnitsPkgs)?[0] ?? "???"
+        size = getAddonsSizeStr(lvlUpUnitsPkgs)
       })
       fontFxColor = Color(0, 0, 0, 255)
       fontFxFactor = 50
       fontFx = FFT_GLOW
     }.__update(fontSmall)
-    textButtonBattle(utf8ToUpper(loc("msgbox/btn_download")), @() openDownloadAddonsWnd(lvlUpUnitsPkgs.value))
+    textButtonBattle(utf8ToUpper(loc("msgbox/btn_download")), @() openDownloadAddonsWnd(lvlUpUnitsPkgs))
   ]
 }
 
-let levelUpWnd = @() {
-  watch = [upgradeUnitName, hasLvlUpPkgs]
-  key = isLvlUpOpened
-  onAttach = @() sendNewbieBqEvent("openLevelUpWnd")
-  onDetach = @() sendNewbieBqEvent("closeLevelUpWnd")
-  size = flex()
-  padding = saBordersRv
-  behavior = HangarCameraControl
-  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
-  touchMarginPriority = TOUCH_BACKGROUND
-  flow = FLOW_VERTICAL
-  children = [
-    headerPanel
-    upgradeUnitName.value != null ? levelUpChooseUpgrade
-      : hasLvlUpPkgs.value ? levelUpChooseUnits
-      : levelUpRequirePkgDownload
-  ]
-}.__update(upgradeUnitName.value != null ? bgShaded : {})
+function levelUpWnd() {
+  let lvlUpUnitsPkgs = buyUnitsData.get().canBuyOnLvlUp
+    .reduce(function(res, u) {
+        let pkgs = getUnitPkgs(u.name, u.mRank)
+        foreach (pkg in pkgs)
+          res[pkg] <- true
+        return res
+      }, {})
+    .keys()
+    .filter(@(v) !hasAddons.get()?[v])
+  let hasLvlUpPkgs = lvlUpUnitsPkgs.len() == 0
+
+  return {
+    watch = [upgradeUnitName, buyUnitsData, hasAddons]
+    key = isLvlUpOpened
+    onAttach = @() sendNewbieBqEvent("openLevelUpWnd")
+    onDetach = @() sendNewbieBqEvent("closeLevelUpWnd")
+    size = flex()
+    padding = saBordersRv
+    behavior = HangarCameraControl
+    eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+    touchMarginPriority = TOUCH_BACKGROUND
+    flow = FLOW_VERTICAL
+    children = [
+      headerPanel(hasLvlUpPkgs)
+      upgradeUnitName.get() != null ? levelUpChooseUpgrade
+        : hasLvlUpPkgs ? levelUpChooseUnits
+        : levelUpRequirePkgDownload(lvlUpUnitsPkgs)
+    ]
+  }.__update(upgradeUnitName.value != null ? bgShaded : {})
+}
 
 registerScene("levelUpWnd", levelUpWnd, closeLvlUpWnd, isLvlUpOpened)

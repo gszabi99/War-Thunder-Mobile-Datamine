@@ -1,0 +1,12 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "45_36nu"
+    },
+    {
+      "slot": 3,
+      "preset": "45_36nu"
+    }
+  ]
+}

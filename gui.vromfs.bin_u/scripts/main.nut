@@ -131,7 +131,10 @@ isLoginRequired.subscribe(@(v) v ? null : loadScriptsAfterLoginOnce())
 
 let { defer } = require("dagor.workcycle")
 let { reloadDargUiScript } = require("reactiveGuiCommand")
-eventbus_subscribe("reloadDargVM", @(_) defer(@() reloadDargUiScript(false)))
+eventbus_subscribe("reloadDargVM", function(v) {
+  log("Request reloadDargVM: ", v?.msg)
+  defer(@() reloadDargUiScript(false))
+})
 
 let { registerMplayerCallbacks } = require("mplayer_callbacks")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")

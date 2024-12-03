@@ -5,7 +5,7 @@ let { playerLevelInfo, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkPlatoonPlateFrame,
   mkUnitsTreePrice, bgPlatesTranslate, mkUnitBlueprintMark, mkUnitResearchPrice,
   mkUnitSelectedGlow, mkUnitEquippedIcon, mkPlateText, plateTextsSmallPad, unitPlateTiny,
-  bgUnit, bgUnitNotAvailable, mkUnitBgPremium, unitBgImageBase, mkUnitInfo
+  bgUnit, bgUnitNotAvailable, mkUnitBgPremium, unitBgImageBase, mkUnitInfo, mkProfileUnitDailyBonus
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { canBuyUnits, buyUnitsData } = require("%appGlobals/unitsState.nut")
@@ -183,6 +183,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
             : null
         ]
       }
+      mkProfileUnitDailyBonus(unit)
       mkPlatoonPlateFrame(unit, isEquipped, isSelected, justUnlockedDelay.get())
       mkUnitEquippedIcon(unit, isEquipped, justUnlockedDelay.get())
       unit.platoonUnits.len() == 0 ?{
@@ -404,14 +405,14 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
   let needToShowHighlight = Computed(@() animNewUnitsAfterResearch.get().len() == 0
     && (currentResearch.get() ? currentResearch.get().name == unit.name : researchStatus.get()?.canResearch))
   return @() animUnitAfterResearch.get() == unit.name && canPlayAnimUnitAfterResearch.get()
-      ? mkTreeNodesUnitPlateSpeedUpAnim(unit, price, discount, needShowBlueprintBar.get() ? blueprintStatus : researchStatus, xmbNode,
-        ovr.__merge({ watch = [animUnitAfterResearch, canPlayAnimUnitAfterResearch] }))
+      ? mkTreeNodesUnitPlateSpeedUpAnim(unit, price, discount, blueprintStatus.get() != null ? blueprintStatus : researchStatus, xmbNode,
+        ovr.__merge({ watch = [animUnitAfterResearch, canPlayAnimUnitAfterResearch, blueprintStatus] }))
     : animNewUnitsAfterResearch.get()?[unit.name]
       ? mkTreeNodesUnitPlateUnlockAnim(unit, xmbNode, ovr.__merge({ watch = animNewUnitsAfterResearch }))
     : {
       watch = [isSelected, isOwned, isLocked, canPurchase, researchStatus, needShowBlueprintBar,
         researchCountry, needToShowHighlight, animUnitAfterResearch, animNewUnitsAfterResearch,
-        needDelayAnimation, blueprintStatus]
+        needDelayAnimation, canPlayAnimUnitAfterResearch]
       size = unitPlateTiny
       behavior = Behaviors.Button
       function onClick() {
@@ -514,6 +515,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
               borderWidth = hdpxi(2)
           }
           : {watch = researchStatus}
+        mkProfileUnitDailyBonus(unit)
       ]
       transform = {}
       animations = [

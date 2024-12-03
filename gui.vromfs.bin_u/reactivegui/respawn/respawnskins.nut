@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { round } = require("math")
 let { checkIcon } = require("%rGui/unitSkins/unitSkinsComps.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { respawnUnitInfo, respawnUnitSkins } = require("%appGlobals/clientState/respawnStateBase.nut")
@@ -8,6 +9,7 @@ let { curLevelTags } = require("%rGui/unitSkins/levelSkinTags.nut")
 
 
 let skinSize = hdpxi(110)
+let skinBorderRadius = round(skinSize*0.2).tointeger()
 let skinGap = hdpx(20)
 let selectedColor = 0x8052C4E4
 let aTimeSelected = 0.2
@@ -35,20 +37,17 @@ let function skinBtn(skin) {
 
   return @() {
     watch = [stateFlags, unitName]
-    rendObj = ROBJ_MASK
-    image = Picture($"ui/gameuiskin#slot_mask.svg:{skinSize}:{skinSize}:P")
+    size = [skinSize, skinSize]
+    rendObj = ROBJ_BOX
+    fillColor = 0xFFFFFFFF
+    borderRadius = skinBorderRadius
+    image = Picture($"ui/gameuiskin#{getSkinPresentation(unitName.get(), skin).image}:{skinSize}:{skinSize}:P")
     xmbNode = {}
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags(sf)
     onClick = @() selectedSkins.mutate(@(skins) skins[unitName.get()] <- skin)
     transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     children = [
-      @() {
-        watch = unitName
-        size = [skinSize, skinSize]
-        rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#{getSkinPresentation(unitName.get(), skin).image}:{skinSize}:{skinSize}:P")
-      }
       @() {
         watch = isSelected
         size = flex()
@@ -60,9 +59,10 @@ let function skinBtn(skin) {
       @() {
         watch = stateFlags
         size = flex()
-        rendObj = ROBJ_IMAGE
+        rendObj = ROBJ_BOX
+        fillColor = stateFlags.get() & S_HOVER ? selectedColor : 0
+        borderRadius = skinBorderRadius
         image = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
-        color = stateFlags.get() & S_HOVER ? selectedColor : 0
         transitions = [{ prop = AnimProp.color, duration = aTimeSelected }]
         transform = { rotate = 180 }
       }

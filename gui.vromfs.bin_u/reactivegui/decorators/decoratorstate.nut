@@ -2,7 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 let { decorators, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { myUserName } = require("%appGlobals/profileStates.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
-let { doesLocTextExist } = require("dagor.localize")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { register_command } = require("console")
 let { mark_decorators_seen, mark_decorators_unseen } = require("%appGlobals/pServer/pServerApi.nut")
@@ -35,15 +34,6 @@ let chosenDecoratorsHash = Computed(@() (chosenTitle.get()?.name ?? "").hash() +
 
 let myNameWithFrame = Computed(@() frameNick(myUserName.value, chosenNickFrame.value?.name))
 let myAvatarImage = Computed(@() getAvatarImage(chosenAvatar.value?.name))
-
-function getReceiveReason(decName){
-  if(decName == null)
-    return null
-  let locId = $"decor/{decName}/receiveReason"
-  if(doesLocTextExist(locId))
-    return loc(locId)
-  return loc("decor/decorNotAvailable")
-}
 
 function markDecoratorsSeen(names) {
   let unseenNames = names.filter(@(name) name in unseenDecorators.value)
@@ -97,6 +87,5 @@ return {
   chosenDecoratorsHash
 
   myNameWithFrame
-  getReceiveReason
   myAvatarImage
 }

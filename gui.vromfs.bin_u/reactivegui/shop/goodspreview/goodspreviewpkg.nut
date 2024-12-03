@@ -329,7 +329,7 @@ let mkTimeLeftText = @(endTime) function() {
       color = 0xFFFFA406
     }, fontSmall)
   if (timeLeft >= TIME_DAY_IN_SECONDS)
-    return res.__update({ text = secondsToHoursLoc(timeLeft) }, fontMedium)
+    return res.__update({ text = $"▩{secondsToHoursLoc(timeLeft)}" }, fontMedium)
   return res.__update({
     text = secondsToTimeSimpleString(timeLeft)
     monoWidth = hdpx(38)

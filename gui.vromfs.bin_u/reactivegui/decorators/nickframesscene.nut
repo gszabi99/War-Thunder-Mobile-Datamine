@@ -3,7 +3,7 @@ let { arrayByRows } = require("%sqstd/underscore.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { myUserName } = require("%appGlobals/profileStates.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { chosenNickFrame, allFrames, availNickFrames, getReceiveReason,
+let { chosenNickFrame, allFrames, availNickFrames,
   unseenDecorators, markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
 } = require("decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
@@ -14,15 +14,15 @@ let { hoverColor } = require("%rGui/style/stdColors.nut")
 let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { contentWidthFull } = require("%rGui/options/optionsStyle.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { CS_SMALL, CS_INCREASED_ICON } = require("%rGui/components/currencyStyles.nut")
+let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
 let purchaseDecorator = require("purchaseDecorator.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let hoverHoldAction = require("%darg/helpers/hoverHoldAction.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { choosenMark } = require("decoratorsPkg.nut")
+let { mkDecoratorUnlockProgress } = require("mkDecoratorUnlockProgress.nut")
 
 
 let gap = hdpx(15)
@@ -59,8 +59,6 @@ function applySelectedDecorator() {
     buySelectedDecorator()
     return
   }
-
-  openMsgBox({ text = getReceiveReason(selectedDecorator.value) ?? loc("decor/decorNotAvailable") })
 }
 
 let header = {
@@ -177,14 +175,10 @@ function footer() {
             { hotkeys = ["^J:X | Enter"] })
         : canBuy
           ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
-              mkCurrencyComp(price.price, price.currencyId, CS_INCREASED_ICON),
+              mkCurrencyComp(price.price, price.currencyId),
               buySelectedDecorator)
         : null
-      {
-        rendObj = ROBJ_TEXT
-        vplace = ALIGN_CENTER
-        text = canEquip || canBuy || isCurrent ? null : getReceiveReason(selectedDecorator.value)
-      }.__update(fontSmallAccented)
+      canEquip || canBuy || isCurrent ? null : mkDecoratorUnlockProgress(selectedDecorator.get())
     ]
   }
 }

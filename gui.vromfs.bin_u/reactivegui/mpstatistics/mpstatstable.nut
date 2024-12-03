@@ -20,6 +20,8 @@ let rowBgEvenColor = Color(0, 0, 0, 0)
 let rowHeight = hdpx(76)
 let rowHeadIconSize = hdpx(44)
 let avatarHeight = rowHeight - hdpx(2)
+let squadLabelWidth = hdpx(34)
+let squadLabelHeight = hdpx(41)
 
 let cellTextProps = {
   rendObj = ROBJ_TEXT
@@ -70,8 +72,35 @@ let function getColorUnitName(player){
   return cellTextColor
 }
 
+function mkSquadLabel(player, color){
+  let res = {
+    rendObj = ROBJ_BOX
+    size = [squadLabelWidth, flex()]
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+  }
+  if ((player?.squadLabel ?? -1) == -1)
+    return res
+  return res.__update({
+    children = [
+      {
+        rendObj = ROBJ_IMAGE
+        size = [squadLabelWidth, squadLabelHeight]
+        image = Picture($"ui/gameuiskin#icon_leaderboard_squad.svg:{squadLabelWidth}:{squadLabelHeight}:P")
+      }
+      {
+        rendObj = ROBJ_TEXT
+        halign = ALIGN_RIGHT
+        text = player.squadLabel
+        color
+      }
+    ]
+  })
+}
+
 function mkNameContent(player, teamColor, halign) {
   let { unitName } = player
+  let nameColor = player.isLocal ? cellTextColor : teamColor
   let nameCell = {
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
@@ -80,7 +109,7 @@ function mkNameContent(player, teamColor, halign) {
       cellTextProps.__merge({
         maxWidth = pw(100)
         halign
-        color = player.isLocal ? cellTextColor : teamColor
+        color = nameColor
         text = player.name
       })
       player.hasPremium ? premiumMark : null
@@ -112,13 +141,14 @@ function mkNameContent(player, teamColor, halign) {
     halign
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
-    gap = hdpx(10)
+    gap = hdpx(4)
     children = [
       {
         size = [avatarHeight, avatarHeight]
         rendObj = ROBJ_IMAGE
         image = Picture($"{getAvatarImage(player?.decorators.avatar)}:{avatarHeight}:{avatarHeight}:P")
       }
+      mkSquadLabel(player, nameColor)
       {
         size = flex()
         halign

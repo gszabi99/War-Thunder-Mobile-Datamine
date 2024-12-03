@@ -16,6 +16,8 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { mkQuestsHeaderBtn } = require("questsPkg.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { shopGoods, openShopWnd } = require("%rGui/shop/shopState.nut")
+let { SC_FEATURED } = require("%rGui/shop/shopCommon.nut")
 
 
 let iconSize = hdpxi(100)
@@ -44,6 +46,19 @@ let linkToBattlePassBtnCtor = @() mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
     margin = unseenMarkMargin
     children = hasBpRewardsToReceive.get() ? priorityUnseenMark : null
   })
+
+function linkToStoreBtnCtor(id) {
+  let eventName = Computed(@() questsCfg.get()?[id][0] ?? "")
+  let eventIcon = Computed(@() $"ui/gameuiskin#icon_event_{eventName.get()}_quests.svg")
+  let hasGoods = Computed(@() eventName.get() != ""
+    && shopGoods.get().findindex(@(item) item?.meta.eventId == eventName.get()) != null)
+
+  return @() {
+    watch = hasGoods
+    children = !hasGoods.get() ? null
+      : mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openShopWnd(SC_FEATURED))
+  }
+}
 
 function eventTabContent(){
   let eventSeasonName = Computed(function() {
@@ -128,7 +143,7 @@ function mkSpecialQuestsTab(idx) {
     id
     tabContent = mkSpecialEventTabContent(idx)
     isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value?[id] ?? []), mkQuest, id)
+    content = questsWndPage(Computed(@() questsCfg.value?[id] ?? []), mkQuest, id, @() linkToStoreBtnCtor(id))
     isVisible = Computed(@() questsCfg.value?[id].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
 }
@@ -184,7 +199,7 @@ foreach(tab in tabs)
 let gamercardQuestBtns = @() {
   watch = curTabParams
   size = flex()
-  children = mkCurrenciesBtns(curTabParams.get()?.currencies ?? [], curTabParams.get()?.tabId)
+  children = mkCurrenciesBtns(curTabParams.get()?.currencies ?? [])
 }
 
 mkOptionsScene("questsWnd", tabs, isQuestsOpen, curTabId, gamercardQuestBtns)

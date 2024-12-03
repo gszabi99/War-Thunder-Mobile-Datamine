@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { G_UNIT, G_UNIT_UPGRADE, G_ITEM, G_CURRENCY, G_LOOTBOX, G_PREMIUM } = require("%appGlobals/rewardType.nut")
-let { shopCategoriesCfg, getGoodsType } = require("shopCommon.nut")
+let { getShopCategory, getGoodsType } = require("shopCommon.nut")
 let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
 let { schRewardInProgress, apply_scheduled_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -65,26 +65,21 @@ let schRewards = Computed(@() schRewardsBase.value
 
 let schRewardsByCategory = Computed(function() {
   let res = {}
-  let listByType = {}
   let hiddenList = []
-  foreach (c in shopCategoriesCfg) {
-    let list = []
-    res[c.id] <- list
-    foreach (gt in c.gtypes)
-      listByType[gt] <- list
-  }
   let hasAds = isAdsAvailable.get()
-  foreach (goods in schRewardsBase.value) {
-    if (goods?.isHidden) { // Hidden for shop
+  foreach (goods in schRewardsBase.get()) {
+    if (goods?.isHidden || (goods.needAdvert && !hasAds)) { // Hidden for shop
       hiddenList.append(goods)
       continue
     }
 
-    if (!goods.needAdvert || hasAds)
-      listByType[goods.gtype].append(goods)
+    let cat = getShopCategory(goods.gtype)
+    if (cat not in res)
+      res[cat] <- []
+    res[cat].append(goods)
   }
 
-  return { shop = res.filter(@(list) list.len() > 0), hidden = hiddenList }
+  return { shop = res, hidden = hiddenList }
 })
 
 let actualSchRewardByCategory = Watched({})

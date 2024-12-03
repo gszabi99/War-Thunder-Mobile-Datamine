@@ -48,8 +48,8 @@ def torpedo_guns_to_target(info : UpdateStageInfoAct;
 def torpedo_guns_to_target_client(info : UpdateStageInfoAct;
                                   uid : int;
                                   torpedo_auto_aim__targetAngles : float2)
-  get_unit_for_edit(uid) <| $(var unit)
-    if unit.weap != null
+  get_unit_for_edit_with_target(uid) <| $(var unit; target)
+    if unit.weap != null && target != null
       foreach_torpedo_gun(unit.weap.Weapons) <| $(var weapon)
         assume turret = unit.weap.turret[weapon.turretNo]
         turret.yawLim   = torpedo_auto_aim__targetAngles.x

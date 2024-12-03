@@ -163,6 +163,18 @@
   "iPhone 15 Pro Max": {
     "codename": "iPhone16,2"
   },
+  "iPhone 16 Pro": {
+    "codename": "iPhone17,1"
+  },
+  "iPhone 16 Pro Max": {
+    "codename": "iPhone17,2"
+  },
+  "iPhone 16": {
+    "codename": "iPhone17,3"
+  },
+  "iPhone 16 Plus": {
+    "codename": "iPhone17,4"
+  },
   "iPod 1st Gen": {
     "codename": "iPod1,1"
   },
@@ -422,6 +434,18 @@
       "iPad16,6",
       "iPad16,6-A",
       "iPad16,6-B"
+    ]
+  },
+  "iPad Air 7": {
+    "codename": [
+      "iPad14,10",
+      "iPad14,11"
+    ]
+  },
+  "iPad Mini 7": {
+    "codename": [
+      "iPad16,1",
+      "iPad16,2"
     ]
   }
 }

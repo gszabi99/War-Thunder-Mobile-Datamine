@@ -13,7 +13,7 @@ let textBtnComp = @(text){
   vplace = ALIGN_CENTER
   halign = ALIGN_CENTER
   text
-}.__update(fontTinyAccented)
+}.__update(fontTinyAccentedShaded)
 
 function mkCostComp(cost) {
   let { price = 0, currencyId = "" } = cost

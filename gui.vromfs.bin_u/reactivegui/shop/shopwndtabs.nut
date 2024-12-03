@@ -2,12 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkTabs } = require("%rGui/components/tabs.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { hasUnseenGoodsByCategory, curCategoryId, onTabChange } = require("shopState.nut")
+let { iconSize, iconMarginW, tabW, tabH } = require("shopWndConst.nut")
 
-let tabW = hdpx(450)
-let tabH = hdpx(123)
-
-let textColor = 0xFFFFFFFF
-let iconSize = hdpxi(104)
 
 function tabData(tab, campaign) {
   let { id = "", image = null, title = "", getImage = null, getTitle = null } = tab
@@ -29,9 +25,8 @@ function tabData(tab, campaign) {
                 keepAspect = KEEP_ASPECT_FIT
                 imageHalign = ALIGN_LEFT
                 imageValign = ALIGN_CENTER
-                color = textColor
                 vplace = ALIGN_CENTER
-                margin = [0, hdpx(10)]
+                margin = [0, iconMarginW]
               }
               : null
             {
@@ -41,7 +36,6 @@ function tabData(tab, campaign) {
               rendObj = ROBJ_TEXTAREA
               behavior = Behaviors.TextArea
               textOverflowX = TOVERFLOW_WORD
-              color = textColor
               text = getTitle?(campaign) ?? title
               fontFx = FFT_GLOW
               fontFxFactor = hdpx(48)

@@ -6,9 +6,10 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { bgShadedLight } = require("%rGui/style/backgrounds.nut")
 let { unitWeaponPresetWeaponry, curUnit, onDelete, onApply, openEditNameWnd, isCurrentPreset,
   isNotSavedPreset, isMaxSavedPresetAmountReached } = require("unitWeaponPresetsWeaponry.nut")
-let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonCommon, iconButtonPrimary, iconButtonCommon } = require("%rGui/components/textButton.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 
 let isOpenedPresetWnd = Watched(false)
 let WND_UID = "PRESET_WND"
@@ -30,27 +31,17 @@ function closeUnitWeaponPresetWnd() {
   curUnit.set(null)
 }
 
-function mkCustomIconButton(iconPath, onClick, isDisabled) {
-  let btn = (isDisabled ? textButtonCommon : textButtonPrimary)(
-    null,
-    onClick,
-    {ovr = { size = [BTN_ICON_SIZE, BTN_ICON_SIZE], minWidth = BTN_ICON_SIZE}}
+function mkCustomIconButton(iconPath, onClick, isDisabled, isGamepadConnected) {
+  let mkButton = isDisabled ? iconButtonCommon : iconButtonPrimary
+  return mkButton(
+    iconPath,
+    onClick
+    { iconSize = ICON_SIZE, ovr = { size = isGamepadConnected ? [SIZE_TO_CONTENT, BTN_ICON_SIZE] : [BTN_ICON_SIZE, BTN_ICON_SIZE], minWidth = BTN_ICON_SIZE}}
   )
-  let icon = {
-    size = [ICON_SIZE, ICON_SIZE]
-    rendObj = ROBJ_IMAGE
-    image = Picture($"{iconPath}:{ICON_SIZE}:{ICON_SIZE}")
-    keepAspect = KEEP_ASPECT_FIT
-  }
-  return {
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    children = [btn, icon]
-  }
 }
 
 let mkButtons = @() {
-  watch = [isCurrentPreset, isNotSavedPreset, isMaxSavedPresetAmountReached]
+  watch = [isCurrentPreset, isNotSavedPreset, isMaxSavedPresetAmountReached, isGamepad]
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   halign = ALIGN_RIGHT
@@ -60,17 +51,20 @@ let mkButtons = @() {
     mkCustomIconButton(
       "ui/gameuiskin#btn_trash.svg",
       onDelete,
-      isNotSavedPreset.get()
+      isNotSavedPreset.get(),
+      isGamepad.get()
     ),
     mkCustomIconButton(
       "ui/gameuiskin#menu_edit.svg",
       @() openEditNameWnd(false),
-      isNotSavedPreset.get()
+      isNotSavedPreset.get(),
+      isGamepad.get()
     ),
     mkCustomIconButton(
       "ui/gameuiskin#icon_save.svg",
       @() openEditNameWnd(true),
-      !isNotSavedPreset.get() || isMaxSavedPresetAmountReached.get()
+      !isNotSavedPreset.get() || isMaxSavedPresetAmountReached.get(),
+      isGamepad.get()
     ),
     (isCurrentPreset.get() ? textButtonCommon : textButtonPrimary)(
       utf8ToUpper(loc("mainmenu/btnApply")),

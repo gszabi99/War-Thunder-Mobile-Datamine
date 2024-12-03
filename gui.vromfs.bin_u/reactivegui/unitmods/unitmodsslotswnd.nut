@@ -39,6 +39,7 @@ let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { mkUnseenModIndicator } = require("modsComps.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 
 let blocksGap = hdpx(60)
 let slotW = weaponW + hdpx(20)
@@ -428,7 +429,7 @@ function onPurchaseMod() {
 
 let slotPresetButtons = @() {
   watch = [isOwn, curWeapon, curBelt, modsInProgress, curWeaponIsLocked, curWeaponReqLevel,
-    equippedWeaponId, curWeapons, equippedBeltId, curUnit]
+    equippedWeaponId, curWeapons, equippedBeltId, curUnit, isGamepad]
   size = [flex(), SIZE_TO_CONTENT]
   halign = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
@@ -439,7 +440,7 @@ let slotPresetButtons = @() {
       : modsInProgress.get() != null ? spinner
       : iconButtonPrimary("ui/gameuiskin#icon_weapon_preset.svg",
         @() actionWithOverloadWarning(@() openUnitWeaponPresetWnd(curUnit.get())),
-        { ovr = { size = [defButtonHeight, defButtonHeight], minWidth = defButtonHeight }}
+        { ovr = { size = isGamepad.get() ? [SIZE_TO_CONTENT, defButtonHeight] : [defButtonHeight, defButtonHeight], minWidth = defButtonHeight }}
       ),
     !isOwn.get() || (curWeapon.get() == null && curBelt.get() == null) ? null
       : modsInProgress.get() != null ? spinner

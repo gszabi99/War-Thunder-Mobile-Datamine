@@ -1,3 +1,5 @@
+let eventBgFallback = "ui/images/event_bg.avif"
+
 let presentations = {
   season_5 = { color = 0xA500A556 }
   season_6 = { imageOffset = [0, -0.06] }
@@ -8,6 +10,10 @@ let presentations = {
   season_12 = { color = 0xFFFF8000 }
   season_13 = { color = 0xFF2E87D9 }
   season_14 = { color = 0xFF00A556 }
+  season_15 = { color = 0xFF5C67FB }
+
+  blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
+  event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
 }
 
 let genParams = {
@@ -15,6 +21,7 @@ let genParams = {
   image = @(name) $"ui/gameuiskin#banner_event_{name}.avif"
   color = @(_) 0xA5FF2B00
   imageOffset = @(_) [0, 0]
+  bg = @(name) (name ?? "") == "" ? eventBgFallback : $"ui/images/event_bg_{name}.avif"
 }
 
 function mkEventPresentation(name) {
@@ -27,12 +34,13 @@ function mkEventPresentation(name) {
 
 let cache = {}
 
-function getEventPresentationByName(name) {
+function getEventPresentation(name) {
   if (name not in cache)
     cache[name ?? ""] <- mkEventPresentation(name)
   return cache[name ?? ""]
 }
 
 return {
-  getEventPresentation = @(name) getEventPresentationByName(name)
+  getEventPresentation
+  eventBgFallback
 }

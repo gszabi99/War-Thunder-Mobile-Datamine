@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { ceil } = require("%sqstd/math.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { myUserName } = require("%appGlobals/profileStates.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { chosenTitle, allTitles, chosenNickFrame, availTitles, getReceiveReason,
+let { chosenTitle, allTitles, chosenNickFrame, availTitles,
   unseenDecorators, markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
 } = require("decoratorState.nut")
 let { set_current_decorator, unset_current_decorator, decoratorInProgress
@@ -11,14 +12,17 @@ let { set_current_decorator, unset_current_decorator, decoratorInProgress
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let hoverHoldAction = require("%darg/helpers/hoverHoldAction.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { choosenMark } = require("decoratorsPkg.nut")
+let { mkDecoratorUnlockProgress } = require("mkDecoratorUnlockProgress.nut")
+let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
+let purchaseDecorator = require("purchaseDecorator.nut")
+let { PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 
 
 let gap = hdpx(15)
@@ -37,13 +41,8 @@ function applySelectedTitle(){
     unset_current_decorator("title")
     return
   }
-  if (selectedTitle.value not in availTitles.value){
-    openMsgBox({
-      text = getReceiveReason(selectedTitle.value) ?? loc("decor/decorNotAvailable")
-      buttons = [{ id = "ok", isCancel = true }]
-    })
+  if (selectedTitle.value not in availTitles.value)
     return
-  }
   set_current_decorator(selectedTitle.value)
 }
 
@@ -135,26 +134,28 @@ let emptyRow = @(rowIdx) {
   color = bgColor(rowIdx)
 }
 
-let footer = @() {
-  watch = [selectedTitle, chosenTitle]
-  size = [flex(), defButtonHeight]
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(50)
-  children = selectedTitle.value == chosenTitle.value?.name
-      ? null
-    : selectedTitle.value in availTitles.value || selectedTitle.value == ""
-      ? textButtonPrimary(loc("mainmenu/btnEquip"), applySelectedTitle,
-        { hotkeys = ["^J:X | Enter"] })
-    : [
-        textButtonCommon(loc("mainmenu/btnEquip"), applySelectedTitle)
-        {
-          size = flex()
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          valign = ALIGN_CENTER
-          text = getReceiveReason(selectedTitle.value)
-        }.__update(fontSmallAccented)
-      ]
+let buySelectedDecorator = @()
+  purchaseDecorator(selectedTitle.get(), loc($"title/{selectedTitle.get()}"),
+    mkBqPurchaseInfo(PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, selectedTitle.get()))
+
+function footer(){
+  let { price = null } = allTitles.get()?[selectedTitle.get()]
+  return {
+    watch = [selectedTitle, chosenTitle]
+    size = [flex(), defButtonHeight]
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(50)
+    children = selectedTitle.value == chosenTitle.value?.name
+        ? null
+      : selectedTitle.value in availTitles.value || selectedTitle.value == ""
+        ? textButtonPrimary(loc("mainmenu/btnEquip"), applySelectedTitle,
+          { hotkeys = ["^J:X | Enter"] })
+      : (price?.price ?? 0) > 0
+        ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
+            mkCurrencyComp(price.price, price.currencyId),
+            buySelectedDecorator, { hotkeys = ["^J:X | Enter"]  })
+      : mkDecoratorUnlockProgress(selectedTitle.get())
+  }
 }
 
 function titlesList() {

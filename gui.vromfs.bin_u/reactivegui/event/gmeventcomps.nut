@@ -1,15 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { onGoodsClick, mkGoodsState } = require("%rGui/shop/shopWndPage.nut")
-let { mkGoodsWrap, mkSlotBgImg, mkPricePlate, mkGoodsCommonParts, mkBgParticles, mkSquareIconBtn, mkCanPurchase
-} = require("%rGui/shop/goodsView/sharedParts.nut")
-let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
+let { mkGoodsWrap, mkSlotBgImg, mkPricePlate, mkGoodsCommonParts, mkBgParticles, mkSquareIconBtn,
+  mkCanPurchase } = require("%rGui/shop/goodsView/sharedParts.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
 let { SGT_UNIT } = require("%rGui/shop/shopConst.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-
-let priceBgGrad = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
 
 let icons = {
   air_cbt_p_38k = "ui/gameuiskin#p_38k_300x300_clear.avif"
@@ -78,7 +75,7 @@ function mkGmGoods(goods, mkOnClick, state, animParams) {
       !isUnit ? null : mkSquareIconBtn(fonticonPreview, @() canPurchase ? openGoodsPreview(goods.id) : unitDetailsWnd(unit),
         { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
     ].extend(mkGoodsCommonParts(goods, state)),
-    mkPricePlate(goods, priceBgGrad, state, animParams),
+    mkPricePlate(goods, state, animParams),
     { size = goodsSize, onClick },
     { size = goodsBgSize })
 }

@@ -1,13 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isBuyCurrencyWndOpen, closeBuyEventCurrenciesWnd, isParentEventActive, bgImage, bgFallback
+let { currencyWndOpenCount, closeBuyEventCurrenciesWnd, bgImage
 } = require("buyEventCurrenciesState.nut")
 let { registerScene, setSceneBgFallback, setSceneBg } = require("%rGui/navState.nut")
 let { buyEventCurrenciesHeader, mkEventCurrenciesGoods, buyEventCurrenciesGamercard,
   buyEventCurrenciesDesc } = require("buyEventCurrenciesComps.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
 
-
-isParentEventActive.subscribe(@(isActive) isActive ? null : closeBuyEventCurrenciesWnd())
 
 let buyEventCurrenciesWnd = {
   key = {}
@@ -31,7 +30,7 @@ let buyEventCurrenciesWnd = {
 }
 
 let sceneId = "buyEventCurrenciesWnd"
-registerScene("buyEventCurrenciesWnd", buyEventCurrenciesWnd, closeBuyEventCurrenciesWnd, isBuyCurrencyWndOpen)
-setSceneBgFallback(sceneId, bgFallback)
+registerScene("buyEventCurrenciesWnd", buyEventCurrenciesWnd, closeBuyEventCurrenciesWnd, currencyWndOpenCount)
+setSceneBgFallback(sceneId, eventBgFallback)
 setSceneBg(sceneId, bgImage.get())
 bgImage.subscribe(@(v) setSceneBg(sceneId, v))

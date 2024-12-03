@@ -13,6 +13,8 @@ let { doesLocTextExist } = require("dagor.localize")
 let { unlockTables, activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { closeLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
+let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
+
 
 let SEEN_LOOTBOXES = "seenLootboxes"
 let LOOTBOXES_AVAILABILITY = "lootboxesAvailability"
@@ -77,20 +79,27 @@ let specialEventsOrdered = Computed(function() {
 
 let specialEvents = Computed(@() specialEventsOrdered.get().reduce(@(res, v) res.$rawset(v.eventId, v), {}))
 
-let specialEventsWithLootboxes = Computed(function() {
+let specialEventsLootboxesState = Computed(function() {
   let lootboxesEventIds = {}
   foreach(l in eventLootboxesRaw.get()) {
     let { event_id = null } = l?.meta
     if (event_id != null)
       lootboxesEventIds[event_id] <- true
   }
-  return specialEvents.get().filter(@(se) se.eventName in lootboxesEventIds)
+  let res = { withLootboxes = {}, withoutLootboxes = {} }
+
+  foreach (se in specialEvents.get()) {
+    let { eventName } = se
+    if (eventName in lootboxesEventIds)
+      res.withLootboxes[eventName] <- se
+    else
+      res.withoutLootboxes[eventName] <- se
+  }
+  return res
 })
 
-let getEventBg = @(eventId, eSeason, sEvents, bgFallback) !eventId ? bgFallback
-  : $"ui/images/event_bg_{eventId == MAIN_EVENT_ID ? eSeason : sEvents?[eventId].eventName}.avif"
-let eventBgFallback = "ui/images/event_bg.avif"
-let curEventBg = Computed(@() getEventBg(curEvent.get(), eventSeason.get(), specialEvents.get(), eventBgFallback))
+let getEventPresentationId = @(eventId, eSeason, sEvents) eventId == MAIN_EVENT_ID ? eSeason : sEvents?[eventId].eventName
+let curEventBg = Computed(@() getEventPresentation(getEventPresentationId(curEvent.get(), eventSeason.get(), specialEvents.get())).bg)
 
 function getEventLoc(eventId, eSeason, sEvents) {
   local locId = eventId == MAIN_EVENT_ID
@@ -289,13 +298,12 @@ return {
   MAIN_EVENT_ID
   specialEvents
   specialEventsOrdered
-  specialEventsWithLootboxes
+  specialEventsLootboxesState
   getSpecialEventName
   curEventLootboxes
   curEventCurrencies
   specialEventGamercardItems
 
-  eventBgFallback
   curEventBg
-  getEventBg
+  getEventPresentationId
 }

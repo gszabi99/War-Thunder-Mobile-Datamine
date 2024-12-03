@@ -31,7 +31,7 @@ let debugUnlocks = require("debugUnlocks.nut")
 let { mainHangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { startDebugNewbieMission, startLocalMultiplayerMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
-let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILBOND } = require("%appGlobals/currenciesState.nut")
+let { currencyOrder, getDbgCurrencyCount } = require("%appGlobals/currenciesState.nut")
 
 let wndWidth = sh(130)
 let gap = hdpx(10)
@@ -51,68 +51,66 @@ function resetProfileWithStats() {
   resetUserstatAppData(true)
 }
 
-let commandsList = [
-  { label = "meta.add_gold 1000", func = @() add_currency_no_popup(GOLD, 1000, "sceenlogResult") }
-  { label = "meta.add_wp 100 000", func = @() add_currency_no_popup(WP, 100000, "sceenlogResult") }
-  { label = "meta.add_platinum 1000", func = @() add_currency_no_popup(PLATINUM, 1000, "sceenlogResult") }
-  { label = "meta.add_premium 3600 sec", func = @() add_premium(3600, "sceenlogResult") }
-  { label = "meta.add_warbond 100", func = @() add_currency_no_popup(WARBOND, 100, "sceenlogResult") }
-  { label = "meta.add_event_key 10", func = @() add_currency_no_popup(EVENT_KEY, 10, "sceenlogResult") }
-  { label = "meta.add_nybond 100", func = @() add_currency_no_popup(NYBOND, 100, "sceenlogResult") }
-  { label = "meta.add_aprilbond 100", func = @() add_currency_no_popup(APRILBOND, 100, "sceenlogResult") }
-  { label = "add_all_skins_for_unit", func = withClose(@() add_all_skins_for_unit(mainHangarUnitName.get(),
-    mainHangarUnitName.get()?.isUpgraded || mainHangarUnitName.get()?.isPremium
-      ? "consolePrintResult"
-      : { id = "upgradeUnit", name = mainHangarUnitName.get() })) }
-  { label = "meta.reset_profile_with_stats", func = withClose(resetProfileWithStats) }
-  { label = "meta.reset_profile_only", func = withClose(reset_profile) }
-  { label = "reset_scheduled_reward_timers", func = withClose(reset_scheduled_reward_timers) }
-  { label = "meta.unlock_all_units", func = withClose(unlock_all_units) }
-  { label = "meta.royal_beta_units_unlock", func = withClose(royal_beta_units_unlock) }
-  { label = "upgrade_cur_unit", func = withClose(@() upgrade_unit(mainHangarUnitName.get())) }
-  { label = "downgrade_cur_unit", func = withClose(@() downgrade_unit(mainHangarUnitName.get())) }
-  { label = "meta.reset_custom_settings", func = withClose(resetCustomSettings) }
-  { label = "debug.first_battle_tutorial", func = withClose(@() isTutorialMissionsDebug(!isTutorialMissionsDebug.value)) }
-  { label = "startFirstBattlesOfflineMission",
-    func = withClose(@() notAvailableForSquadMsg(startDebugNewbieMission)) }
-  { label = "startLocalMultiplayerMission",
-    func = withClose(@() notAvailableForSquadMsg(startLocalMultiplayerMission)) }
-  { label = "copy_last_debriefing",
-    function func() {
-      close()
-      if (debriefingData.value == null)
-        return dlog("Debriefing data is empty") //warning disable: -forbidden-function
-      set_clipboard_text(object_to_json_string(debriefingData.value, true))
-      return dlog("Debriefing data copied to clipboard") //warning disable: -forbidden-function
-    }
-  }
-  { label = "debug_game_modes", func = withClose(debugGameModesWnd) }
-  { label = "debug_offers", func = withClose(debugOffersWnd) }
-  { label = "debug_unlocks", func = withClose(debugUnlocks) }
-  {
-    function customBtn() {
-      let list = newbieGameModesConfig?[curCampaign.value]
-      let curMode = list == null ? "not allowed"
-        : forceNewbieModeIdx.value < 0 ? "cur = default"
-        : forceNewbieModeIdx.value >= list.len() ? "cur = not newbie"
-        : $"cur = newbie {forceNewbieModeIdx.value}"
-      return {
-        watch = [curCampaign, forceNewbieModeIdx]
-        size = [flex(), SIZE_TO_CONTENT]
-        children = mkBtn($"Toggle newbie mode ({curMode})",
-          function() {
-            if (list == null) {
-              dlog("Newbie modes not allowed for campaign: ", curCampaign.value) //warning disable: -forbidden-function
-              return
-            }
-            forceNewbieModeIdx((forceNewbieModeIdx.value + 2) % (list.len() + 2) - 1)
-            dlog("Mode name by main battle button: ", randomBattleMode.value?.name) //warning disable: -forbidden-function
-          })
+let commandsList = [].extend(
+  currencyOrder.map(function(c) {
+    let amount = getDbgCurrencyCount(c)
+    return { label = $"meta.add_{c} {amount}", func = @() add_currency_no_popup(c, amount, "sceenlogResult") }
+  }),
+  [
+    { label = "meta.add_premium 3600 sec", func = @() add_premium(3600, "sceenlogResult") }
+    { label = "add_all_skins_for_unit", func = withClose(@() add_all_skins_for_unit(mainHangarUnitName.get(),
+      mainHangarUnitName.get()?.isUpgraded || mainHangarUnitName.get()?.isPremium
+        ? "consolePrintResult"
+        : { id = "upgradeUnit", name = mainHangarUnitName.get() })) }
+    { label = "meta.reset_profile_with_stats", func = withClose(resetProfileWithStats) }
+    { label = "meta.reset_profile_only", func = withClose(reset_profile) }
+    { label = "reset_scheduled_reward_timers", func = withClose(reset_scheduled_reward_timers) }
+    { label = "meta.unlock_all_units", func = withClose(unlock_all_units) }
+    { label = "meta.royal_beta_units_unlock", func = withClose(royal_beta_units_unlock) }
+    { label = "upgrade_cur_unit", func = withClose(@() upgrade_unit(mainHangarUnitName.get())) }
+    { label = "downgrade_cur_unit", func = withClose(@() downgrade_unit(mainHangarUnitName.get())) }
+    { label = "meta.reset_custom_settings", func = withClose(resetCustomSettings) }
+    { label = "debug.first_battle_tutorial", func = withClose(@() isTutorialMissionsDebug(!isTutorialMissionsDebug.value)) }
+    { label = "startFirstBattlesOfflineMission",
+      func = withClose(@() notAvailableForSquadMsg(startDebugNewbieMission)) }
+    { label = "startLocalMultiplayerMission",
+      func = withClose(@() notAvailableForSquadMsg(startLocalMultiplayerMission)) }
+    { label = "copy_last_debriefing",
+      function func() {
+        close()
+        if (debriefingData.value == null)
+          return dlog("Debriefing data is empty") //warning disable: -forbidden-function
+        set_clipboard_text(object_to_json_string(debriefingData.value, true))
+        return dlog("Debriefing data copied to clipboard") //warning disable: -forbidden-function
       }
     }
-  }
-  { label = "download_dev_addons", func = withClose(@() openDownloadAddonsWnd(addons.dev)) }
-]
+    { label = "debug_game_modes", func = withClose(debugGameModesWnd) }
+    { label = "debug_offers", func = withClose(debugOffersWnd) }
+    { label = "debug_unlocks", func = withClose(debugUnlocks) }
+    {
+      function customBtn() {
+        let list = newbieGameModesConfig?[curCampaign.value]
+        let curMode = list == null ? "not allowed"
+          : forceNewbieModeIdx.value < 0 ? "cur = default"
+          : forceNewbieModeIdx.value >= list.len() ? "cur = not newbie"
+          : $"cur = newbie {forceNewbieModeIdx.value}"
+        return {
+          watch = [curCampaign, forceNewbieModeIdx]
+          size = [flex(), SIZE_TO_CONTENT]
+          children = mkBtn($"Toggle newbie mode ({curMode})",
+            function() {
+              if (list == null) {
+                dlog("Newbie modes not allowed for campaign: ", curCampaign.value) //warning disable: -forbidden-function
+                return
+              }
+              forceNewbieModeIdx((forceNewbieModeIdx.value + 2) % (list.len() + 2) - 1)
+              dlog("Mode name by main battle button: ", randomBattleMode.value?.name) //warning disable: -forbidden-function
+            })
+        }
+      }
+    }
+    { label = "download_dev_addons", func = withClose(@() openDownloadAddonsWnd(addons.dev)) }
+  ])
 
 function mkCommandsList() {
   let list = commandsList.map(@(c) c?.customBtn ?? mkBtn(c.label, c.func))

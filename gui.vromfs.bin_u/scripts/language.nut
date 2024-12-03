@@ -36,6 +36,7 @@ let allLangs = [
   { id = "Korean",      chatId = "ko" }
   { id = "Japanese",    chatId = "jp", hasUnitSpeech = true }
   { id = "Thai",        chatId = "th" }
+  { id = "Arabic",      chatId = "ar" }
 ]
   .map(function(lang) {
     let { id } = lang
@@ -90,7 +91,7 @@ local isListInited = false
 function setGameLocalization(langId, isForced = false) {
   if (langId == currentLanguage && !isForced)
     return
-
+  log($"setGameLocalization from {currentLanguage} to {langId}")
   fonts.discardLoadedData()
   setSystemConfigOption("language", langId)
   set_language(langId)

@@ -108,7 +108,7 @@ function mkCircleProgressBg(size, actionItem, onFinishExt = @() playSound("weapo
   })
 }
 
-function mkCircleProgressBgWeapon(size, id, weaponData, isAvailable, onFinishExt = @() playSound("weapon_primary_ready")) {
+function mkCircleProgressBgWeapon(size, id, weaponData, isAvailable, onFinishExt = @() playSound("weapon_primary_ready"), ovr = {}) {
   let { endTime = 0, time = 1 } = weaponData
   let misTime = get_mission_time()
   let hasCooldown = endTime > misTime
@@ -137,7 +137,7 @@ function mkCircleProgressBgWeapon(size, id, weaponData, isAvailable, onFinishExt
     fgColor = isAvailable ? ready : noAmmo
     bgColor = empty
     animations
-  })
+  }, ovr)
 }
 
 function mkCircleBgWeapon(size, id, isAvailable) {

@@ -24,6 +24,8 @@ let dont_need_space_around <- [[auto "("; ")"; "["; "]"; "\{"; "\}";
 
 let type_after_keyword <- [[auto "generator"; "cast"; "upcast"; "smart_ptr"; "match_type";
     "type"; "reinterpret"; "variant"; "variant_index"; "function"; "has_field"; "default";
+    "array"; "fixed_array"; "table"; "iterator"; "tuple"; "struct_get_annotation_argument";
+    "struct_has_annotation_argument"; "class"
     ]]
 
 enum TokenType
@@ -502,7 +504,9 @@ def mark_token_context(var ctx: FormatterCtx)
     // type in angle brackets
     for i in range(0, length(ctx.tokens) - 3)
         if ctx.tokens[i].tokenType == TokenType KEYWORD_OR_IDENTIFIER
-            if (type_after_keyword |> find_index(ctx.tokens[i].str) >= 0)
+            if (type_after_keyword |> find_index(ctx.tokens[i].str) >= 0 ||
+                ((ctx |> eq(i, "new") || ctx |> eq(i, "struct")) && ctx |> eq(i + 1, "<"))
+               )
                 ctx |> mark_tokens_as_type_inside_angle(i + 1)
 
     // type macros  $t(identifier)
@@ -644,14 +648,10 @@ def fmt_function_arguments(var ctx: FormatterCtx)
         i++
 
 
-def fmt_remove_space_before_generator_args(var ctx: FormatterCtx)
-    // generator<int> () -> generator<int>()
-    for i in range(0, length(ctx.tokens) - 3)
-        if ctx |> eq(i, "generator") && ctx |> eq(i + 1, "<")
-            var beginParams = i + 1
-            var endParams = ctx |> find_pair_angle(i + 1)
-            if ctx |> eq(endParams + 1, "(")
-                ctx |> remove_space_before(endParams + 1)
+def fmt_remove_space_before_args(var ctx: FormatterCtx)
+    for i in range(1, length(ctx.tokens) - 1)
+        if ctx |> eq(i, "(") && !ctx.tokens[i].isInType && ctx.tokens[i - 1].isInType
+            ctx |> remove_space_before(i)
 
 
 def debug_print_tokens(ctx: FormatterCtx)
@@ -862,6 +862,27 @@ def fmt_remove_space_before_as(var ctx: FormatterCtx)
             ctx |> remove_space_before(i)
 
 
+def fmt_remove_space_before_end_of_object(var ctx: FormatterCtx)
+    // HACK: [[array<InspectorDesc>__remove_this_space__]]
+    for i in range(1, length(ctx.tokens) - 2)
+        if !new_line_before(ctx, i) && ctx |> eq(i, "]") && ctx |> eq(i + 1, "]") && (!ctx |> eq(i - 1, "]"))
+            ctx |> remove_space_before(i)
+
+
+def fmt_remove_space_before_object_type(var ctx: FormatterCtx)
+    // HACK: [[__remove_this_space__array<InspectorDesc>]]
+    for i in range(2, length(ctx.tokens) - 1)
+        if !new_line_before(ctx, i) && ctx |> eq(i - 2, "[") && ctx |> eq(i - 1, "[") && ctx.tokens[i].tokenType == TokenType KEYWORD_OR_IDENTIFIER
+            ctx |> remove_space_before(i)
+
+
+def fmt_remove_space_before_array_of_type(var ctx: FormatterCtx)
+    // HACK: array<InspectorDesc>__remove_this_space__[16]
+    for i in range(1, length(ctx.tokens) - 2)
+        if !new_line_before(ctx, i) && ctx |> eq(i - 1, ">") && ctx.tokens[i - 1].isInType && ctx |> eq(i, "[")
+            ctx |> remove_space_before(i)
+
+
 let type_specifiers = [[string "?"; "&"; "#"]]
 
 def fmt_glue_type_specifiers(var ctx: FormatterCtx)
@@ -912,7 +933,10 @@ def do_format(var ctx: FormatterCtx)
     ctx |> fmt_space_after_paren()
     ctx |> fmt_space_after_square_brackets()
     ctx |> fmt_function_arguments()
-    ctx |> fmt_remove_space_before_generator_args()
+    ctx |> fmt_remove_space_before_args()
+    ctx |> fmt_remove_space_before_end_of_object()
+    ctx |> fmt_remove_space_before_object_type()
+    ctx |> fmt_remove_space_before_array_of_type()
 
 
 def public format_source_string(file_data: string const& implicit): string

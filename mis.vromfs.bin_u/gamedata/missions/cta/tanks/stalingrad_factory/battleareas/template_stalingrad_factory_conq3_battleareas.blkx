@@ -23,11 +23,13 @@
       "importTriggers": true,
       "importMissionObjectives": true,
       "importWayPoints": true,
+      "importDialogs": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -130,8 +132,8 @@
         ],
         [
           3201.25,
-          7.8,
-          2138.45
+          7.0,
+          2119.25
         ]
       ],
       "objLayer": 4,

@@ -10,7 +10,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty, NO_DROP_LIMIT
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { CS_INCREASED_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
-let { bestCampLevel, eventSeason } = require("eventState.nut")
+let { bestCampLevel, eventSeason, curEvent } = require("eventState.nut")
 let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -229,7 +229,7 @@ let leaderbordBtn = mkCustomButton(
 
 let questsBtn = mkCustomButton(
   mkBtnContent("ui/gameuiskin#quests.svg", loc("mainmenu/btnQuests")),
-  openEventQuestsWnd,
+  @() openEventQuestsWnd(curEvent.get()),
   buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:Y"] }))
 
 let mkCurrencyComp = @(value, currencyId) {

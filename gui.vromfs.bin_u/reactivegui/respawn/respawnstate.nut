@@ -65,6 +65,7 @@ let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
     country = info?.country ?? ""
     isCurrent = info?.isCurrent ?? false
     skins = info?.skins ?? {}
+    hasDailyBonus = info?.hasDailyBonus ?? false
   }
 
 let canUseSpare = Computed(@() (respawnUnitItems.get()?.spare ?? 0) > 0)

@@ -578,6 +578,30 @@
         "mRank": 4
       }
     },
+    "pkg_ussr_destroyer_rckt_pr1155": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_jp_cruiser_myoko": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_fr_cruiser_suffren_class_dupleix": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_uk_battleship_centurion": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -878,6 +902,30 @@
         "mRank": 2
       }
     },
+    "pkg_germ_leopard_2av": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_ussr_t_72b_1989": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 10
+      }
+    },
+    "pkg_us_xm1_chrysler": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_it_fiat_6614_106sr": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 5
+      }
+    },
     "pkg_environment_uhq": {
       "base": false,
       "hq": false,
@@ -918,7 +966,7 @@
     "vrStreamerMode": false,
     "vreye": "left",
     "fpsLimitOnUpdater": 10,
-    "forceForward": false
+    "renderModeOverride": "deferred"
   },
   "graphics": {
     "useHdr": true,
@@ -1021,6 +1069,7 @@
     "refractionDistMulForShips": 0.1,
     "forceLowPreset": false,
     "sceneResolutionPreset": "medium",
+    "defaultPresetAA": "low_fxaa",
     "xrayOutlinesScale": 1.0,
     "hasLowresDecals": false,
     "blendedAirplanesSkies": true,
@@ -2088,6 +2137,7 @@
     "low": {
       "graphics": {
         "sceneResolutionPreset": "medium",
+        "defaultPresetAA": "low_fxaa",
         "limitPlayerAirplaneUnitsLod": 1,
         "limitPlayerTankUnitsLod": 2,
         "limitPlayerShipUnitsLod": 1,
@@ -2168,6 +2218,7 @@
     "medium": {
       "graphics": {
         "sceneResolutionPreset": "medium",
+        "defaultPresetAA": "low_fxaa",
         "limitPlayerAirplaneUnitsLod": 1,
         "limitPlayerTankUnitsLod": 1,
         "limitPlayerShipUnitsLod": 1,
@@ -2248,6 +2299,7 @@
     "high": {
       "graphics": {
         "sceneResolutionPreset": "high",
+        "defaultPresetAA": "high_fxaa",
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
@@ -2328,6 +2380,7 @@
     "max": {
       "graphics": {
         "sceneResolutionPreset": "high",
+        "defaultPresetAA": "mobile_taa",
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
@@ -2408,6 +2461,7 @@
     "movie": {
       "graphics": {
         "sceneResolutionPreset": "high",
+        "defaultPresetAA": "mobile_taa",
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
@@ -2490,6 +2544,7 @@
     "low": {
       "graphics": {
         "sceneResolutionPreset": "low",
+        "defaultPresetAA": "low_fxaa",
         "fxDensityMul": 0.2,
         "compatibilityShadowQuality": "low",
         "hangarShadowQuality": "low",
@@ -2560,6 +2615,7 @@
     "medium": {
       "graphics": {
         "sceneResolutionPreset": "low",
+        "defaultPresetAA": "low_fxaa",
         "fxDensityMul": 0.8,
         "compatibilityShadowQuality": "high",
         "hangarShadowQuality": "high",
@@ -2630,6 +2686,7 @@
     "high": {
       "graphics": {
         "sceneResolutionPreset": "medium",
+        "defaultPresetAA": "high_fxaa",
         "fxDensityMul": 1.0,
         "compatibilityShadowQuality": "high",
         "hangarShadowQuality": "high",
@@ -2700,6 +2757,7 @@
     "max": {
       "graphics": {
         "sceneResolutionPreset": "high",
+        "defaultPresetAA": "mobile_taa",
         "fxDensityMul": 1.0,
         "compatibilityShadowQuality": "max",
         "hangarShadowQuality": "max",
@@ -2872,25 +2930,11 @@
             }
           },
           "brokenInstanceID": {
-            "entry": [
-              {
-                "driverInfo": "-01bet",
-                "data": {
-                  "affected": true
-                }
-              },
-              {
-                "gpu": [
-                  "G57",
-                  "G52"
-                ],
-                "driverMinVer0": 34,
-                "driverMaxVer0": 34,
-                "data": {
-                  "affected": true
-                }
+            "entry": {
+              "data": {
+                "affected": true
               }
-            ]
+            }
           },
           "extensions": {
             "entry": {
@@ -2977,9 +3021,6 @@
       "compress_panorama": false,
       "allowETC2": false,
       "allowClipmapDXT": false
-    },
-    "texStreaming": {
-      "memReserveKB": 600000
     }
   },
   "iOS": {

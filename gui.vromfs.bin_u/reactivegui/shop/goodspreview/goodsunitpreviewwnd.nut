@@ -88,7 +88,7 @@ function mkGiftSchRewardBtn(giftSchReward, posX) {
   local isPurchasing = Computed(@() giftSchReward.id in schRewardInProgress.get())
   return {
     size = [hdpx(130),hdpx(130)]
-    pos = [posX + verticalGap,0]
+    pos = [posX + verticalGap, 0]
     rendObj = ROBJ_IMAGE
     image = Picture("ui/gameuiskin#offer_gift_icon.avif:0:P")
     behavior = Behaviors.Button
@@ -370,17 +370,17 @@ let mkHeader = @() mkPreviewHeader(
 
 let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
   children = [
-    {
-      size = flex()
-      pos = [-saBorders[0], REWARD_STYLE_MEDIUM.boxSize * 1.1 * hintOffsetMulY]
-      valign = hintOffsetMulY > 0 ? ALIGN_TOP : ALIGN_BOTTOM
-      children = activeItemHint
-    }
     @() {
       watch = previewGoods
       flow = FLOW_HORIZONTAL
       children = mkPreviewItems(previewGoods.value, aTimePackInfoStart + aTimeFirstItemOfset)
       animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
+    },
+    {
+      size = flex()
+      pos = [-saBorders[0], REWARD_STYLE_MEDIUM.boxSize * 1.1 * hintOffsetMulY]
+      valign = hintOffsetMulY > 0 ? ALIGN_TOP : ALIGN_BOTTOM
+      children = activeItemHint
     }
   ]
 }.__update(ovr)
@@ -411,13 +411,16 @@ let balanceBlock = @() {
   animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)
 }
 
-let itemsDesc = {
-  padding = [hdpx(20), hdpx(20)]
-  rendObj = ROBJ_TEXT
-  valign = ALIGN_CENTER
-  text = loc("offer/itemsDesc")
-  animations = opacityAnims(aTimePackInfoHeader, aTimePackInfoStart)
-}.__update(fontSmall)
+let itemsDesc = @() previewGoods.get().items.len() < 1
+  ? { watch = previewGoods }
+  : {
+    watch = previewGoods
+    padding = [hdpx(20), hdpx(20)]
+    rendObj = ROBJ_TEXT
+    valign = ALIGN_CENTER
+    text = loc("offer/itemsDesc")
+    animations = opacityAnims(aTimePackInfoHeader, aTimePackInfoStart)
+  }.__update(fontSmall)
 
 let leftBlockPlatoon = {
   size = flex()
@@ -436,7 +439,7 @@ let leftBlockSingleUnit = {
   gap = verticalGap * 2
   children = [
     singleUnitBlock
-    packInfo
+    packInfo(-1, { pos = [unitSelUnderlineFullSize, 0] })
   ]
 }
 
@@ -509,10 +512,23 @@ let scrollArrowsBlock = {
 let gapForBranch = hdpx(20)
 
 let leftBlock = @(){
-  watch = [previewGoodsUnit, schRewards, previewGoods]
+  watch = [previewGoodsUnit, schRewards, previewGoods, activeOffer]
   size = [unitPlateSize[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
   halign = ALIGN_CENTER
-  children = @() (previewGoods.get()?.units.len() ?? 0) > 1
+  children = [
+    {
+      children = activeOffer.get()?.id != previewGoods.get()?.id ? null
+        : mkGiftSchRewardBtn(
+            schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"],
+            (previewGoods.get()?.units.len() ?? 0) > 1
+                ? unitPlateSizeMain[0] + verticalGap
+              : previewGoodsUnit.get()?.platoonUnits.len()
+                ? hdpx(130) - (unitPlateSizeSingle[0] - unitPlateSizeMain[0])
+              : (previewGoods.get()?.blueprints.len() ?? 0) > 0
+                ? unitPlateWidth
+              : hdpx(130))
+    }
+    @() (previewGoods.get()?.units.len() ?? 0) > 1
     ? {
       watch = sortedBranchUnits
       flow = FLOW_VERTICAL
@@ -526,7 +542,7 @@ let leftBlock = @(){
           })
     }
     : previewGoodsUnit.get()?.platoonUnits.len() == 0 ? leftBlockSingleUnit : leftBlockPlatoon
-
+  ]
 }
 
 let previewWnd = @() {
@@ -575,7 +591,7 @@ let previewWnd = @() {
           }.__update(fontSmall)
           : { watch = previewGoods}
         @() {
-          watch = [previewGoodsUnit, schRewards, previewGoods, activeOffer]
+          watch = [previewGoodsUnit, schRewards, previewGoods]
           size = flex()
           children = [
             {
@@ -584,19 +600,6 @@ let previewWnd = @() {
                 pannableArea(leftBlock, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
                 scrollArrowsBlock
               ]
-            }
-            {
-              size = [0, 0]
-              children = activeOffer.get()?.id != previewGoods.get()?.id ? null
-                : mkGiftSchRewardBtn(
-                    schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"],
-                    (previewGoods.get()?.units.len() ?? 0) > 1
-                        ? unitPlateSize[0] * 2 + gapForBranch
-                      : previewGoodsUnit.get()?.platoonUnits.len()
-                        ? unitPlateSizeMain[0]
-                      : (previewGoods.get()?.blueprints.len() ?? 0) > 0
-                        ? unitPlateWidth
-                      : unitPlateSizeSingle[0])
             }
             rightBlock
           ]

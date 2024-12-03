@@ -97,7 +97,7 @@ let mkAttrDetailsText = @(attrId) {
   text = loc($"attr_desc/{attrId}")
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-}.__update(fontTiny)
+}.__update(fontTinyAccentedShaded)
 
 function mkAttrDetailsRow(attrId, lastModifiedAttrId) {
   let isLastModified = attrId == lastModifiedAttrId
@@ -192,7 +192,7 @@ let mkMoreDetailBtn = @(text) {
     vplace = ALIGN_CENTER
     halign = ALIGN_CENTER
     text
-  }.__update(fontTinyAccented)
+  }.__update(fontTinyAccentedShaded)
 }
 
 let actionButtons = @() {

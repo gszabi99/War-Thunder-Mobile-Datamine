@@ -14,7 +14,7 @@ let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCu
 } = require("bulletsChoiceState.nut")
 let { slotAABB, selSlotLinesSteps, lineSpeed } = require("respawnAnimState.nut")
 let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, respawnUnitItems,
-  hasRespawnSeparateSlots
+  hasRespawnSeparateSlots, hasPredefinedReward, dailyBonus
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { getUnitPresentation, getPlatoonName, getUnitClassFontIcon, getUnitLocId
 } = require("%appGlobals/unitPresentation.nut")
@@ -26,7 +26,8 @@ let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { scoreBoard, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
 let { unitPlateWidth, unitPlateHeight, mkUnitPrice, mkUnitBg, mkUnitSelectedGlow,
   mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, unitSlotLockedByQuests,
-  mkUnitSelectedUnderline, mkUnitInfo, unitPlatesGap, plateTextsSmallPad
+  mkUnitSelectedUnderline, mkUnitInfo, unitPlatesGap, plateTextsSmallPad,
+  mkUnitDailyBonus
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { logerrHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
@@ -48,6 +49,9 @@ let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollA
 let { openUnitWeaponPresetWnd } = require("%rGui/unit/unitWeaponPresetsWnd.nut")
 let { sendPlayerActivityToServer } = require("playerActivity.nut")
 let { selLineSize } = require("%rGui/components/selectedLineUnits.nut")
+let { CS_RESPAWN } = require("%rGui/components/currencyStyles.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
+
 
 let mapMaxSize = hdpx(650)
 let levelHolderSize = evenPx(84)
@@ -102,12 +106,14 @@ function onSlotClick(slot) {
 }
 
 let sparePrice = {
-  size = flex()
+  hplace = ALIGN_RIGHT
+  halign = ALIGN_TOP
+  padding = [hdpx(20), hdpx(20), 0, 0]
   children = mkUnitPrice({
     fullPrice = 1,
     price = 1,
     currencyId = SPARE
-  })
+  }, null, CS_RESPAWN)
 }
 
 function mkSlotPlate(slot, baseUnit) {
@@ -115,7 +121,8 @@ function mkSlotPlate(slot, baseUnit) {
   let isSelected = Computed(@() selSlot.value?.id == slot.id)
   let unit = baseUnit.__merge(slot)
   let { canSpawn, isSpawnBySpare, country, mRank } = slot
-  return {
+  return @() {
+    watch = hasRespawnSeparateSlots
     key = slot
     behavior = Behaviors.Button
     onClick = @() onSlotClick(slot)
@@ -141,6 +148,10 @@ function mkSlotPlate(slot, baseUnit) {
               ? unitSlotLockedByQuests
             : mkUnitSlotLockedLine(slot)
           canSpawn && isSpawnBySpare ? sparePrice : null
+          unit?.hasDailyBonus || (!hasRespawnSeparateSlots.get() && baseUnit?.hasDailyBonus)
+            ? mkUnitDailyBonus(Computed(@() !hasPredefinedReward.get()), Computed(@() dailyBonus.get()?.wpMul ?? 1),
+              Computed(@() dailyBonus.get()?.expMul ?? 1))
+            : null
         ]
       }
     ]
@@ -316,14 +327,14 @@ function toBattle() {
 }
 
 let buttons = @() {
-  watch = [needCancel, isRespawnStarted, selSlot, selSlotUnitType]
+  watch = [needCancel, isRespawnStarted, selSlot, selSlotUnitType, isGamepad]
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   gap = hdpx(20)
   children = [
     selSlotUnitType.get() != AIR ? null
       : iconButtonPrimary("ui/gameuiskin#icon_weapon_preset.svg", @() openUnitWeaponPresetWnd(selSlot.get()), {
-        ovr = { size = [defButtonHeight, defButtonHeight], minWidth = defButtonHeight }
+        ovr = { size = isGamepad.get() ? [SIZE_TO_CONTENT, defButtonHeight] : [defButtonHeight, defButtonHeight], minWidth = defButtonHeight }
       }),
     !(selSlot.get()?.canSpawn ?? false) ? null
       : !isRespawnStarted.get() ? toBattleButton(toBattle, { hotkeys = ["^J:X | Enter"] })

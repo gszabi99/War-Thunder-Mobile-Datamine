@@ -186,15 +186,16 @@
     }
   },
   "player_battle_data": {
+    "isBoostersApplied": false,
     "isOfflineUser": false,
     "_group": {
       "_replicate": true,
       "isBattleDataReceived": false,
       "isUnitsOverrided": false,
-      "isBoostersApplied": false,
       "unitSlots:list<t>": {},
       "commonStats:object": {}
     },
+    "unitDailyApplied:object": {},
     "battleData:object": {}
   },
   "wtm_local_player": {

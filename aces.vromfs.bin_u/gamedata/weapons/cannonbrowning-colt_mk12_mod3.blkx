@@ -3410,9 +3410,9 @@
   "gunSound": {
     "path": "sounds/guns",
     "pathStudio": "aircraft/weapon",
-    "outside": "m3_gun_outside",
-    "cockpit": "m3_gun_outside",
-    "ai": "m3_gun_ai"
+    "outside": "m2_gun_outside",
+    "cockpit": "m2_gun_inside",
+    "ai": "m2_gun_ai"
   },
   "mk_12_mod3_new_gun": {
     "maxDeltaAngle": 0.96,

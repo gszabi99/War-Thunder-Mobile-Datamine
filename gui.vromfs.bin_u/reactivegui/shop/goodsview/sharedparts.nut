@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
 let { round } = require("math")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { WP } = require("%appGlobals/currenciesState.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -20,12 +21,11 @@ let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { mkGradText, mkGradGlowText, mkGradGlowMultiLine } = require("%rGui/components/gradTexts.nut")
 let { withGlareEffect } = require("%rGui/components/glare.nut")
 let { purchasesCount, todayPurchasesCount, goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
+let { goodsSmallSizeW, goodsH, goodsGap } = require("%rGui/shop/shopWndConst.nut")
 
 
 let goodsW = hdpxi(555)
-let goodsH = hdpxi(378)
-let goodsSmallSize = [hdpxi(468), goodsH]
-let goodsGap = hdpx(47)
+let goodsSmallSize = [goodsSmallSizeW, goodsH]
 let goodsBgH = hdpxi(291)
 let timerSize = hdpxi(80)
 let advertSize = hdpxi(60)
@@ -36,17 +36,19 @@ let goodsGlareAnimDuration = 0.2
 let offerW = hdpx(332)
 let offerH = hdpx(136)
 let offerPad = [hdpx(5), hdpx(20)]
+let bottomPad = [hdpx(15), hdpx(20)]
 let titlePadding = hdpx(33)
 let titleWidth = hdpxi(250)
+let firstPuchaseBottomOffset = [0, hdpx(-50)]
 
 let pricePlateH = goodsH - goodsBgH
 
 let tagRedColor = 0xC8C80000
 let freeBgGrad = mkColoredGradientY(0xFF57B624, 0xFF548115, 12)
 let priceBgGradDefault = mkColoredGradientY(0xFF74A1D2, 0xFF567F8E, 12)
-let priceBgGradGold = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
-let priceBgGradConsumables = mkColoredGradientY(0xFF09C6F9, 0xFF00808E, 12)
+let priceBgGradPremium = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
 let titleFontGradConsumables = mkFontGradient(0xFFffFFFF, 0xFF8bdeea, 11, 6, 2)
+let limitFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
 
 let txtBase = {
   rendObj = ROBJ_TEXT
@@ -85,9 +87,23 @@ let mkBgParticles = @(effectSize) {
 let borderBg = {
   size  = [flex(), goodsH]
   rendObj = ROBJ_BOX
-  borderColor = 0xFF085a78
-  borderWidth = 2
+  borderColor = 0xFF74A1D2
+  borderWidth = [hdpx(2), hdpx(2), 0, hdpx(2)]
 }
+
+let borderBgGold = borderBg.__merge({ borderColor = 0xFFD2A51E })
+let borderBgFree = borderBg.__merge({ borderColor = 0xFF57B624 })
+
+let currencyToPlateBg = {
+  platinum = priceBgGradPremium
+}
+
+let currencyToPlateBorder = {
+  platinum = borderBgGold
+}
+
+let mkBorderByCurrency = @(defBorder, isFreeReward, currencyId) isFreeReward ? borderBgFree
+  : currencyToPlateBorder?[currencyId] ?? defBorder
 
 let mkFitCenterImg = @(img, ovr = {}) {
   size = flex()
@@ -148,6 +164,15 @@ let mkCurrencyAmountTitle = @(amount, oldAmount, fontTex, slotName = null) {
           ]
     }
   ]
+}
+
+let mkGradeTitle = @(title, fontTex) {
+  padding = [hdpx(20), titlePadding]
+  halign = ALIGN_RIGHT
+  flow = FLOW_VERTICAL
+  hplace = ALIGN_RIGHT
+  clipChildren = true
+  children = mkGradGlowMultiLine(title, fontWtSmall, fontTex, goodsSmallSize[0] - titlePadding * 2)
 }
 
 let mkCurrencyAmountTitleArea = @(amount, oldAmount, fontTex, slotName = null) {
@@ -214,6 +239,30 @@ let popularMark = {
     text = utf8ToUpper(loc("shop/item/popular/short"))
     vplace = ALIGN_CENTER
   })
+}
+
+let dailyBonusTagH = hdpxi(27)
+let dailyBonusTagHTexOffs = [ 0, dailyBonusTagH / 2, 0, dailyBonusTagH / 10 ]
+let iconSize = hdpx(20)
+let dailyBonusTag = @(wpMul, expMul) {
+  size  = [ SIZE_TO_CONTENT, dailyBonusTagH ]
+  rendObj = ROBJ_9RECT
+  image = Picture($"ui/gameuiskin#tag_popular.svg:{dailyBonusTagH}:{dailyBonusTagH}")
+  keepAspect = KEEP_ASPECT_NONE
+  screenOffs = dailyBonusTagHTexOffs
+  texOffs = dailyBonusTagHTexOffs
+  color = 0xFFC80000
+  gap = hdpx(4)
+  flow = FLOW_HORIZONTAL
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  padding = [ 0, hdpx(15), 0, hdpx(10) ]
+  children = [
+    txt(fontVeryTinyAccented.__merge({ text = loc("dailyBonus/multiplier", { mul = wpMul }) }))
+    mkCurrencyImage(WP, iconSize)
+    txt(fontVeryTinyAccented.__merge({ text = loc("dailyBonus/multiplier", { mul = expMul }) }))
+    mkCurrencyImage("unitExp", iconSize)
+  ]
 }
 
 function mkGoodsNewPopularMark(goods) {
@@ -288,21 +337,24 @@ let mkFirstPurchBonusMark = @(goods, state) (goods?.firstPurchaseBonus?.len() ??
       })
     }
 
-function mkCommonPricePlate(goods, priceBgTex, state, needDiscountTag = true) {
+function mkCommonPricePlate(goods, state, needDiscountTag = true) {
   let { discountInPercent, priceExt = null } = goods
   let { price, currencyId } = goods.price
+  let isRealCurrency = "priceText" in priceExt
   let basePrice = discountInPercent <= 0 ? price : round(price / (1.0 - (discountInPercent / 100.0)))
+  let background = isRealCurrency ? priceBgGradPremium : currencyToPlateBg?[goods?.price.currencyId] ?? priceBgGradDefault
+
   return @() {
     watch = state
     size = flex()
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
-    image = priceBgTex
+    image = background
     picSaturate = state.get() & DELAYED ? 0 : 1.0
     children = [
       price > 0 && currencyId != "" ? mkDiscountPriceComp(basePrice, price, currencyId, CS_COMMON.__merge({fontStyle = fontMedium}))
-        : "priceText" in priceExt ? txt({ text = priceExt.priceText }.__update(fontMedium))
+        : isRealCurrency ? txt({ text = priceExt.priceText }.__update(fontMedium))
         : null
       needDiscountTag ? mkDiscountCorner(discountInPercent) : null
     ]
@@ -341,9 +393,9 @@ function mkFreePricePlate(goods, state) {
   }
 }
 
-function mkPricePlate(goods, priceBgTex, state, animParams = null, needDiscountTag = true) {
+function mkPricePlate(goods, state, animParams = null, needDiscountTag = true) {
   let { isFreeReward = false, isReady = true } = goods
-  let pricePlateComp = isFreeReward ? mkFreePricePlate(goods, state) : mkCommonPricePlate(goods, priceBgTex, state, needDiscountTag)
+  let pricePlateComp = isFreeReward ? mkFreePricePlate(goods, state) : mkCommonPricePlate(goods, state, needDiscountTag)
   return @() {
     watch = state
     size = flex()
@@ -373,7 +425,7 @@ let purchasedPlate = {
 let skipPurchasedPlate = {
   size = flex()
   rendObj = ROBJ_IMAGE
-  image = priceBgGradGold
+  image = priceBgGradPremium
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = {
@@ -383,12 +435,13 @@ let skipPurchasedPlate = {
   }.__update(fontSmallAccentedShaded)
 }
 
-let mkCanPurchase = @(id, limit, dailyLimit, isPurchaseFull = true) Computed(function() {
+let mkCanPurchase = @(id, limit, dailyLimit, isPurchaseFull = Watched(true)) Computed(function() {
+  if (!isPurchaseFull.get())
+    return false
   let { time = 0, count = 0 } = goodsLimitReset.get()?[id]
   let limitInc = getDay(time) == serverTimeDay.get() ? count : 0
   return (limit <= 0 || (purchasesCount.get()?[id].count ?? 0) < limit + limitInc)
     && (dailyLimit <= 0 || (todayPurchasesCount.get()?[id].count ?? 0) < dailyLimit + limitInc)
-    && isPurchaseFull
 })
 
 let mkCanShowTimeProgress = @(goods) Computed(function() {
@@ -410,9 +463,11 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
   let canShowTimeProgress = mkCanShowTimeProgress(goods)
   let canShowSkipPurchase = Computed(@() canShowTimeProgress.get() && hasLimitResetPrice)
 
+  let ovrWatch = ovr?.watch ?? []
+  let watch = [stateFlags, canPurchase, canShowSkipPurchase].extend(type(ovrWatch) == "array" ? ovrWatch : [ovrWatch])
+
   return @() bgShaded.__merge({
     size = [ goodsW, goodsH ]
-    watch = [stateFlags, canPurchase, canShowSkipPurchase]
     behavior = Behaviors.Button
     clickableInfo = loc("mainmenu/btnBuy")
     onClick = canPurchase.get() ? onClick : null
@@ -435,7 +490,7 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
           ? skipPurchasedPlate
         : purchasedPlate
     ]
-  }).__update(ovr)
+  }).__update(ovr, { watch })
 }
 
 function mkOfferWrap(onClick, mkContent) {
@@ -645,17 +700,40 @@ function mkGoodsLimitText(goods, limitFontGradient) {
   }
 }
 
-let limitFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
-let function mkGoodsLimit(goods) {
+function mkEndTimeImpl(goods, ovr = {}) {
+  let { end = 0 } = goods?.timeRange
+  if (end <= 0)
+    return null
+  let countdownText = Computed(function() {
+    let leftTime = end - serverTime.get()
+    return leftTime <= 0 ? "" : $"▩{secondsToHoursLoc(leftTime)}"
+  })
   return @() {
-    margin = [hdpx(15), hdpx(20)]
-    pos = [0, (goods?.firstPurchaseBonus?.len() ?? 0) == 0 ? 0 : hdpx(-50)]
-    size = flex()
-    halign = ALIGN_RIGHT
-    valign = ALIGN_BOTTOM
-    flow = FLOW_VERTICAL
-    children = mkGoodsLimitText(goods, limitFontGrad)
-  }
+    watch = countdownText
+    hplace = ALIGN_RIGHT
+    vplace = ALIGN_BOTTOM
+    rendObj = ROBJ_TEXT
+    text = countdownText.get()
+  }.__update(fontTinyShaded, ovr)
+}
+
+let mkEndTime = @(goods, ovr = {}) mkEndTimeImpl(goods,
+  {
+    pos = (goods?.firstPurchaseBonus?.len() ?? 0) == 0 ? null : firstPuchaseBottomOffset,
+    margin = bottomPad
+  }.__update(ovr))
+
+let mkGoodsLimitAndEndTime = @(goods) {
+  size = [flex(), SIZE_TO_CONTENT]
+  margin = bottomPad
+  pos = (goods?.firstPurchaseBonus?.len() ?? 0) == 0 ? null : firstPuchaseBottomOffset
+  halign = ALIGN_RIGHT
+  vplace = ALIGN_BOTTOM
+  flow = FLOW_VERTICAL
+  children = [
+    mkEndTimeImpl(goods)
+    mkGoodsLimitText(goods, limitFontGrad)
+  ]
 }
 
 return {
@@ -670,9 +748,9 @@ return {
   offerH
 
   priceBgGradDefault
-  priceBgGradGold
-  priceBgGradConsumables
+  priceBgGradPremium
   titleFontGradConsumables
+  limitFontGrad
 
   mkGoodsWrap
   mkOfferWrap
@@ -681,11 +759,15 @@ return {
   mkBgImg
   mkSlotBgImg
   borderBg
+  borderBgGold
+  borderBgFree
+  mkBorderByCurrency
   tagRedColor
   mkFitCenterImg
   mkGoodsImg
   mkCurrencyAmountTitle
   mkCurrencyAmountTitleArea
+  mkGradeTitle
   numberToTextForWtFont
   mkPricePlate
   purchasedPlate
@@ -698,12 +780,16 @@ return {
   underConstructionBg
   mkSquareIconBtn
   mkTimeLeft
-  mkGoodsLimit
   mkGoodsLimitText
+  mkEndTime
+  mkGoodsLimitAndEndTime
   mkCanPurchase
   skipPurchasedPlate
   mkCanShowTimeProgress
 
   goodsGlareAnimDuration
   mkBgParticles
+  mkGoodsTimeProgress
+
+  dailyBonusTag
 }

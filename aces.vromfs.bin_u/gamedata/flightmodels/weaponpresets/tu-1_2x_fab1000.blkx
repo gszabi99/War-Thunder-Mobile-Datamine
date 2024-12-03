@@ -1,0 +1,30 @@
+{
+  "hideNodes": {
+    "node": [
+      "torpedo_pylon1",
+      "torpedo_pylon2",
+      "bomb_pylon3",
+      "bomb_pylon4",
+      "bay_pylon1",
+      "bay_pylon2"
+    ]
+  },
+  "Weapon": [
+    {
+      "trigger": "bombs",
+      "blk": "gameData/Weapons/BombGuns/su_fab_1000m_44.blk",
+      "emitter": "bomb_1000kg_1",
+      "external": true,
+      "bullets": 1,
+      "separate": true
+    },
+    {
+      "trigger": "bombs",
+      "blk": "gameData/Weapons/BombGuns/su_fab_1000m_44.blk",
+      "emitter": "bomb_1000kg_2",
+      "external": true,
+      "bullets": 1,
+      "separate": true
+    }
+  ]
+}

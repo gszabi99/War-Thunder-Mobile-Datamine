@@ -193,6 +193,7 @@ function mkPrizeCell(category, rowData) {
       rendObj = ROBJ_IMAGE
       image = rewardIdx.value not in prizeIcons ? null
         : Picture($"ui/gameuiskin#{prizeIcons[rewardIdx.value]}:{headerIconHeight}:{headerIconHeight}:P")
+      keepAspect = true
     }
   }
 }

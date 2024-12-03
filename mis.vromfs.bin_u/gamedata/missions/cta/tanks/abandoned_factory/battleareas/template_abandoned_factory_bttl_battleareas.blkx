@@ -23,11 +23,13 @@
       "importTriggers": true,
       "importMissionObjectives": true,
       "importWayPoints": true,
+      "importDialogs": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -108,9 +110,9 @@
       "type": "Box",
       "tm": [
         [
-          0.00008138,
+          0.000111897,
           0.0,
-          800.0
+          1100.0
         ],
         [
           0.0,
@@ -118,14 +120,14 @@
           0.0
         ],
         [
-          -800.0,
+          -1100.0,
           0.0,
-          0.00008138
+          0.000111897
         ],
         [
-          2104.1,
+          2184.0,
           7.79997,
-          2105.6
+          2064.39
         ]
       ],
       "objLayer": 4,

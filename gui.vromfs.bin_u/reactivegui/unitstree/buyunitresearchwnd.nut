@@ -103,7 +103,7 @@ function mkContent() {
         size = [unitPlateWidth, unitPlateHeight]
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        children = mkTreeNodesUnitPlateSimple(unit.get())
+        children = unit.get() ? mkTreeNodesUnitPlateSimple(unit.get()) : null
       }
     ]
     transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }

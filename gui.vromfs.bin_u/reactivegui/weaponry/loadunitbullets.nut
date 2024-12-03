@@ -231,7 +231,9 @@ function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
 
 function loadAllBullets(weaponBlkName) {
   let weaponBlk = blkOptFromPath(weaponBlkName)
-  let { bullets = 0, bulletsCartridge = 1, useSingleIconForBullet = false, mass = 0.0 } = weaponBlk
+  let { bullets = 0, bulletsCartridge = 1, useSingleIconForBullet = false, mass = 0.0,
+    container = false, blk = ""
+  } = weaponBlk
   let isBulletBelt = !useSingleIconForBullet
     && ((weaponBlk?.isBulletBelt ?? true) || bulletsCartridge > 1)
 
@@ -240,8 +242,11 @@ function loadAllBullets(weaponBlkName) {
     total = bullets
     gunMass = mass
     bulletSets = {}
+    blk = container ? blk : weaponBlkName
   }
-  let defBullets = loadBullets(weaponBlk, "", weaponBlkName, isBulletBelt)
+  let defBullets = container
+    ? loadBullets(blkOptFromPath(blk), "", blk, isBulletBelt)
+    : loadBullets(weaponBlk, "", weaponBlkName, isBulletBelt)
   if (defBullets != null)
     res.bulletSets[""] <- defBullets
   eachBlock(weaponBlk, function(b) {
@@ -431,6 +436,10 @@ function loadUnitBulletsFullImpl(unitName) {
       reqModifications[reqModification] <- true
       foreach(wData in preset) {
         let w = wData.__merge(loadBulletsCached(wData.blk, bulletsCache))
+        if (wData.blk != w.blk) {
+          w.totalBullets = w.guns * w.total
+          w.weaponId = getWeaponId(w.blk)
+        }
         weapons.append(w)
         mass += calcMass(w)
         massLbs += calcMassLbs(w)

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopConst.nut" import *
 
+let EVENT_BLACK_FRIDAY = "event_black_friday_season"
 let defaultFeaturedIcon = "!ui/gameuiskin#shop_planes.svg"
 let featuredIcon = {
   tanks = "!ui/gameuiskin#shop_tanks.svg"
@@ -13,46 +14,59 @@ let shopCategoriesCfg = [
     id = SC_OTHER
     title = loc("shop/category/other")
     image = null
-    gtypes = [ SGT_UNKNOWN ]
   },
   {
     id = SC_FEATURED
     title = loc("shop/category/featured")
     getImage =  @(campaign) featuredIcon?[campaign] ?? defaultFeaturedIcon
-    gtypes = [ SGT_UNIT, SGT_SLOTS, SGT_LOOTBOX, SGT_BLUEPRINTS ]
   },
   {
     id = SC_GOLD
     title = loc("shop/category/gold")
     image = "!ui/gameuiskin#shop_eagles.svg"
-    gtypes = [ SGT_GOLD ]
   },
   {
     id = SC_WP
     title = loc("shop/category/wp")
     image = "!ui/gameuiskin#shop_lions.svg"
-    gtypes = [ SGT_WP ]
   },
   {
     id = SC_PLATINUM
     title = loc("shop/category/platinum")
     image = "!ui/gameuiskin#shop_wolves.svg"
-    gtypes = [ SGT_PLATINUM ]
   },
   {
     id = SC_PREMIUM
     title = loc("shop/category/premium")
     image = "!ui/gameuiskin#shop_premium.svg"
-    gtypes = [ SGT_PREMIUM ]
   },
   {
     id = SC_CONSUMABLES
     title = loc("shop/category/consumables")
     image = "!ui/gameuiskin#shop_consumables.svg"
-    gtypes = [ SGT_CONSUMABLES, SGT_BOOSTERS ]
   }
 ]
 
+let gtypeToShopCategory = {
+  [SGT_UNIT] = SC_FEATURED,
+  [SGT_SLOTS] = SC_FEATURED,
+  [SGT_LOOTBOX] = SC_FEATURED,
+  [SGT_BLUEPRINTS] = SC_FEATURED,
+  [SGT_GOLD] = SC_GOLD,
+  [SGT_WP] = SC_WP,
+  [SGT_PLATINUM] = SC_PLATINUM,
+  [SGT_PREMIUM] = SC_PREMIUM,
+  [SGT_CONSUMABLES] = SC_CONSUMABLES,
+  [SGT_BOOSTERS] = SC_CONSUMABLES,
+  [SGT_DECORATOR] = SC_FEATURED,
+}
+
+function getShopCategory(gtype, meta = {}) {
+  if (meta?.eventId == EVENT_BLACK_FRIDAY)
+    return SC_FEATURED
+
+  return gtypeToShopCategory?[gtype] ?? SC_OTHER
+}
 
 function getGoodsType(goods) {
   if ((goods?.slotsPreset ?? "") != "")
@@ -69,6 +83,8 @@ function getGoodsType(goods) {
     return SGT_PREMIUM
   if ((goods?.boosters.len() ?? 0) > 0)
     return SGT_BOOSTERS
+  if ((goods?.decorators.len() ?? 0) > 0)
+    return SGT_DECORATOR
   if ((goods?.blueprints.len() ?? 0) > 0)
     return SGT_BLUEPRINTS
   else if (goods.currencies.len() == 1)
@@ -93,6 +109,7 @@ function isGoodsFitToCampaign(goods, cConfigs, curCampaign = null) {
 
 return {
   shopCategoriesCfg
+  getShopCategory
   getGoodsType
   isGoodsFitToCampaign
 }.__merge(shopCategories, goodsTypes)

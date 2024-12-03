@@ -84,6 +84,7 @@ let nickFrames = {
   parachute = @(n) $"┷{n}┷"
   bomb_and_plane = @(n) $"┸{n}┹"
   diamond = @(n) $"␘{n}␘"
+  tank_cart = @(n) $"␞{n}␟"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

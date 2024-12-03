@@ -37,7 +37,7 @@ eventbus_subscribe("controls.joystickDisconnected", updateVendor)
 
 function reloadVmIfNeed() {
   if (presetId.value != presetIdToShow)
-    eventbus_send("reloadDargVM", null)
+    eventbus_send("reloadDargVM", { msg = "gamepad vendor changed" })
 }
 presetId.subscribe(@(_) resetTimeout(0.1, reloadVmIfNeed))
 

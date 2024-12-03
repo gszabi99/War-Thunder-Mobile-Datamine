@@ -9,7 +9,7 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
   apply_profile_mutation, add_lootbox, get_base_lootbox_chances, get_my_lootbox_chances,
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, halt_goods_purchase,
-  halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle,
+  halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, debug_apply_unit_daily_bonus_in_battle,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
   add_battle_mod, set_research_unit, add_slot_exp, update_branch_offer
 } = pServerApi
@@ -24,7 +24,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
-let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILBOND } = require("%appGlobals/currenciesState.nut")
+let { currencyOrder, getDbgCurrencyCount } = require("%appGlobals/currenciesState.nut")
 
 
 registerHandler("consolePrintResult",
@@ -75,14 +75,10 @@ register_command(function(exp) {
 
 register_command(@() resetCustomSettings(), "meta.reset_custom_settings")
 
+currencyOrder.each(@(c)
+  register_command(@(count) add_currency_no_popup(c, count, "consolePrintResult"), $"meta.add_{c}"))
+
 register_command(@(exp) add_player_exp(curCampaign.value, exp, "consolePrintResult"), "meta.add_player_exp")
-register_command(@(wp) add_currency_no_popup(WP, wp, "consolePrintResult"), "meta.add_wp")
-register_command(@(platinum) add_currency_no_popup(PLATINUM, platinum, "consolePrintResult"), "meta.add_platinum")
-register_command(@(gold) add_currency_no_popup(GOLD, gold, "consolePrintResult"), "meta.add_gold")
-register_command(@(warbond) add_currency_no_popup(WARBOND, warbond, "consolePrintResult"), "meta.add_warbond")
-register_command(@(event_key) add_currency_no_popup(EVENT_KEY, event_key, "consolePrintResult"), "meta.add_event_key")
-register_command(@(nybond) add_currency_no_popup(NYBOND, nybond, "consolePrintResult"), "meta.add_nybond")
-register_command(@(aprilbond) add_currency_no_popup(APRILBOND, aprilbond, "consolePrintResult"), "meta.add_aprilbond")
 register_command(@(name, count) change_item_count(name, count, "consolePrintResult"), "meta.change_item_count")
 register_command(@(seconds) seconds < 0
     ? remove_premium(-seconds, "consolePrintResult")
@@ -120,6 +116,9 @@ register_command(
 register_command(
   @() debug_apply_boosters_in_battle(servProfile.get()?.boosters.filter(@(v) v.battlesLeft > 0 && !v.isDisabled).keys() ?? [], "consolePrintResult"),
   "meta.debug_apply_boosters_in_battle")
+register_command(
+  @() debug_apply_unit_daily_bonus_in_battle(mainHangarUnitName.get() ?? "", "consolePrintResult"),
+  "meta.debug_apply_unit_daily_bonus_in_battle")
 
 register_command(@() upgrade_unit(mainHangarUnitName.get(), "consolePrintResult"), "meta.upgrade_hangar_unit")
 register_command(@() downgrade_unit(mainHangarUnitName.get(), "consolePrintResult"), "meta.downgrade_hangar_unit")
@@ -135,15 +134,10 @@ register_command(@()
   "meta.remove_all_skins_for_hangar_unit")
 
 register_command(function(count) {
-  add_currency_no_popup(WP, count * 100)
-  add_currency_no_popup(GOLD, count * 10)
-  add_currency_no_popup(WARBOND, count * 10)
-  add_currency_no_popup(EVENT_KEY, count * 1)
-  add_currency_no_popup(NYBOND, count * 10)
-  add_currency_no_popup(APRILBOND, count * 10)
+  foreach(c in currencyOrder)
+    add_currency_no_popup(c, max(1, count * getDbgCurrencyCount(c) / 10))
   foreach (item in itemsOrderFull)
     change_item_count(item, count)
-  change_item_count("ircm_kit", count)
 
   let seconds = count * 60
   if (seconds < 0)
@@ -168,7 +162,7 @@ register_command(@() update_branch_offer(curCampaign.get()),
 
 foreach (cmd in ["get_all_configs", "reset_profile",
   "unlock_all_common_units", "unlock_all_premium_units", "unlock_all_units", "check_purchases",
-  "reset_mutations_timestamp", "reset_scheduled_reward_timers"
+  "reset_mutations_timestamp", "reset_scheduled_reward_timers", "debug_reset_all_unit_daily_bonus"
 ]) {
   let action = pServerApi[cmd]
   register_command(@() action("consolePrintResult"), $"meta.{cmd}")

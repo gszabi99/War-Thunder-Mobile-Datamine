@@ -9,12 +9,19 @@ let { selSlot, cancelRespawn } = require("respawnState.nut")
 let { respawnUnitItems } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
+let { register_command } = require("console")
 
 
 const BULLETS_SLOTS = 2
 const SAVE_ID = "bullets"
 let BULLETS_LOW_AMOUNT = 5
 let BULLETS_LOW_PERCENT = 25.0
+
+let ammoReductionFactorDef = 0.6 // for only one slot
+let ammoReductionFactorsByIdx = {
+  [0] = 0.45, // for first slot
+  [1] = 0.15 // for second slot
+}
 
 let unitName = Computed(@() selSlot.value?.name)
 let unitLevel = Computed(@() selSlot.value?.level ?? 0)
@@ -133,18 +140,23 @@ let chosenBullets = Computed(function() {
 
   local notInitedCount = res.reduce(@(accum, bData) bData.count < 0 ? accum + 1 : accum, 0)
   if (notInitedCount > 0) {
-    if (leftSteps > 1)
-      leftSteps = leftSteps / 2 //fill only half by default
-    let stepsPerUnit = max(leftSteps / notInitedCount, 1);
+    let bulletSlotsCount = res.len()
+    let totalSteps = bulletTotalSteps.get()
     foreach (bData in res)
       if (bData.count < 0) {
         bData.count = 0
         if (leftSteps > 0) {
-          let steps = min(stepsPerUnit, leftSteps, fromUnitTags?[bData.name].maxCount ?? leftSteps)
+          local steps = min(leftSteps, fromUnitTags?[bData.name].maxCount ?? leftSteps)
+          if (!hasExtra) {
+            if (bulletSlotsCount == 1 && leftSteps > 1)
+              steps = min(ceil(totalSteps * ammoReductionFactorDef), leftSteps)
+            else if(bulletSlotsCount > 1)
+              steps = min(ceil(totalSteps * (ammoReductionFactorsByIdx?[bData.idx] ?? 1)), leftSteps)
+            bData.count = steps * stepSize
+          }
+          else
+            bData.count = min(steps * stepSize, (maxBullets?[bData.idx] ?? 0))
           leftSteps -= steps
-          let countBullets = steps * stepSize
-          let maxBulletsCount = maxBullets?[bData.idx] ?? 0
-          bData.count = !hasExtra ? countBullets : min(countBullets, maxBulletsCount)
           notInitedCount--
         }
       }
@@ -229,6 +241,15 @@ let bulletLeftSteps = Computed(function() {
     leftSteps -= bData.count / stepSize
   return leftSteps
 })
+
+function resetSavedBullets() {
+  get_local_custom_settings_blk().removeBlock(SAVE_ID)
+  if (unitName.get() != null)
+    applySavedBullets(unitName.get())
+  eventbus_send("saveProfile", {})
+}
+
+register_command(resetSavedBullets, "debug.reset_saved_bullets")
 
 return {
   bulletsInfo

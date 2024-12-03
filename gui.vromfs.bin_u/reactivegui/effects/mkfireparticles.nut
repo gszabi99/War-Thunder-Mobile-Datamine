@@ -4,14 +4,16 @@ let { fabs, sqrt, PI, atan2 } = require("%sqstd/math.nut")
 let rand = require("%sqstd/rand.nut")()
 let { gradRadial } = require("%rGui/style/gradients.nut")
 
-let maxSpeedX = 0.5
+let maxStartSpeedXMul = 0.5
 let chanceToBeColored = 0.3
 let sparkColor = 0x80F95927
 let upstreamAcc = hdpx(20)
 let viscosity = 0.1
+let maxScaleBySpeed = 10.0
+let maxSpeed = hdpxi(10000)
 
 function fillNewForce(state, time, speedY) {
-  state.accChangeTime <- time + (speedY == 0 ? 200 : (hdpx(50) / speedY * rand.rfloat(100, 1000)).tointeger())
+  state.accChangeTime <- time + (speedY == 0 ? 200 : max(100, (hdpx(50) / speedY * rand.rfloat(100, 100)).tointeger()))
   let randomAcc = rand.rfloat(- speedY * speedY / hdpx(100), speedY * speedY / hdpx(100))
   state.acc <- [randomAcc, randomAcc + upstreamAcc]
 }
@@ -21,7 +23,7 @@ function initSparkState(state, halfSize, time, speedY, fill = false) {
   state.isActive <- true
   let startY = fill ? rand.rfloat( - halfSize[1], halfSize[1]) : halfSize[1]
   state.pos <- [rand.rfloat(- halfSize[0], halfSize[0]), startY]
-  state.speed <- [rand.rfloat(- maxSpeedX * speedY, maxSpeedX * speedY), speedY]
+  state.speed <- [rand.rfloat(- maxStartSpeedXMul * speedY, maxStartSpeedXMul * speedY), speedY]
   fillNewForce(state, time, speedY)
 }
 
@@ -29,7 +31,7 @@ function updateSparkState(state, time) {
   let { pos, speed, lastTime, accChangeTime, acc } = state
   let dt = 0.001 * (time - lastTime)
   state.pos = pos.map(@(v, i) v - speed[i] * dt)
-  state.speed = speed.map(@(v, i) v + (acc[i] - v * viscosity) * dt)
+  state.speed = speed.map(@(v, i) clamp(v + (acc[i] - v * viscosity) * dt, -maxSpeed, maxSpeed))
   state.lastTime = time
   if (accChangeTime <= time)
     fillNewForce(state, time, speed[1])
@@ -65,7 +67,7 @@ function updateParticles(state, halfSize, particleSize, speedY, scaleBySpeed, op
     updateSparkState(state, time)
 
   let { pos, speed } = state
-  let moveScale = 1 + scaleBySpeed / hdpx(200) * length(speed)
+  let moveScale = min(maxScaleBySpeed, 1 + scaleBySpeed / hdpx(200) * length(speed))
   let maxOfs = moveScale * particleSize
   let isOutsideTheFrame = fabs(pos[0]) > halfSize[0] + maxOfs || fabs(pos[1]) > halfSize[1] + maxOfs
 

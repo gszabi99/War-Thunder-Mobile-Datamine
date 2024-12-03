@@ -7,6 +7,9 @@ let setReady = require("setReady.nut")
 let { isInDebriefing, isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
+let { curUnit } = require("%appGlobals/pServer/profile.nut")
+let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
+let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
 
 let MSG_UID = "readyCheck"
 let CAN_REPEAT_SEC = 15
@@ -54,7 +57,7 @@ function showReadyCheck() {
       { text = loc("status/squad_not_ready"), isCancel = true,
         cb = @() applyReadyCheckResult(false) }
       { text = loc("status/squad_ready"), styleId = "PRIMARY", isDefault = true,
-        cb = @() applyReadyCheckResult(true) }
+        cb = @() showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), @() applyReadyCheckResult(true), @() applyReadyCheckResult(false))) }
     ]
   })
 }

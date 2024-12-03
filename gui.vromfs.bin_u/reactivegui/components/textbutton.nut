@@ -242,4 +242,6 @@ return {
 
   iconButtonPrimary = @(iconPath, onClick, styleOvr = null)
     mkCustomButton(mkIcon(iconPath, styleOvr?.iconSize), onClick, mergeStyles(buttonStyles.PRIMARY, styleOvr))
+  iconButtonCommon = @(iconPath, onClick, styleOvr = null)
+    mkCustomButton(mkIcon(iconPath, styleOvr?.iconSize), onClick, mergeStyles(buttonStyles.COMMON, styleOvr))
   }

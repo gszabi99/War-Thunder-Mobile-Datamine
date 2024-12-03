@@ -1,9 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { mkCurrencyComp, mkDiscountPriceComp } = require("%rGui/components/currencyComp.nut")
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { getUnitPresentation, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
 let { AIR, TANK, SHIP } = require("%appGlobals/unitConst.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
+let { serverTimeDay, getDay } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { mkLevelBg, unitExpColor, playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { mkColoredGradientY, mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { shakeAnimation, fadeAnimation, revealAnimation, scaleAnimation, colorAnimation, unlockAnimation,
@@ -22,6 +24,10 @@ let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
+let { dailyBonusTag } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { firstBattlesReward } = require("%rGui/gameModes/newbieOfflineMissions.nut")
+let { isDailyBonusActive } = require("%rGui/unit/dailyBonusState.nut")
+
 
 let unitPlateWidth = hdpx(406)
 let unitPlateHeight = hdpx(158)
@@ -409,14 +415,14 @@ let mkUnitTexts = @(unit, unitLocName, isLocked = false) {
   ]
 }
 
-let mkUnitPrice = @(price, justUnlockedDelay = null) {
+let mkUnitPrice = @(price, justUnlockedDelay = null, style = CS_COMMON) {
   vplace = ALIGN_BOTTOM
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   margin = [ 0, 0, plateTextsSmallPad, plateTextsSmallPad ]
   transform = {}
   animations = revealAnimation(justUnlockedDelay)?.extend(scaleAnimation(justUnlockedDelay))
-  children = mkDiscountPriceComp(price.fullPrice, price.price, price.currencyId)
+  children = mkDiscountPriceComp(price.fullPrice, price.price, price.currencyId, style)
 }
 
 let mkUnitShortPrice = @(price, justUnlockedDelay = null) {
@@ -648,6 +654,23 @@ let function mkUnitResearchPrice(researchStatus, ovr = {}) {
   }.__update(ovr)
 }
 
+let mkUnitDailyBonus = @(canActivateDailyBonus, wpMul, expMul) @() {
+  watch = [canActivateDailyBonus, wpMul, expMul]
+  children = canActivateDailyBonus.get() ? dailyBonusTag(wpMul.get(), expMul.get()) : null
+  vplace = ALIGN_BOTTOM
+  hplace = ALIGN_LEFT
+}
+
+function mkProfileUnitDailyBonus(unit) {
+  let canActivateDailyBonus = Computed(@() firstBattlesReward.get() == null
+    && unit.name in myUnits.get()
+    && isDailyBonusActive.get()
+    && unit?.dailyBonusTime != null
+    && serverTimeDay.get() != getDay(unit.dailyBonusTime))
+  let wpMul = Computed(@() campConfigs.get()?.gameProfile.dailyUnitBonus.wpMul ?? 1)
+  let expMul = Computed(@() campConfigs.get()?.gameProfile.dailyUnitBonus.expMul ?? 1)
+  return mkUnitDailyBonus(canActivateDailyBonus, wpMul, expMul)
+}
 
 return {
   unitPlateWidth
@@ -691,6 +714,8 @@ return {
   mkUnitResearchPrice
   mkUnitBgPremium
   mkUnitPlateBorder
+  mkUnitDailyBonus
+  mkProfileUnitDailyBonus
 
   mkPlatoonPlateFrame
   mkPlatoonBgPlates

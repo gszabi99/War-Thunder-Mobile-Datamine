@@ -8,7 +8,7 @@ let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
 let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareIconBtn, purchasedPlate,
   mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, mkAirBranchOfferTexts, underConstructionBg, goodsH, goodsSmallSize, offerPad,
-  priceBgGradGold, offerW,  offerH
+  offerW, offerH, borderBg, mkBorderByCurrency, mkEndTime
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { discountTagBig, discountTag } = require("%rGui/components/discountTag.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -196,7 +196,8 @@ function mkGoodsUnit(goods, onClick, state, animParams) {
   let p = getUnitPresentation(unit)
   let isPurchased = isUnitOrUnitUpgradePurchased(myUnits.value, unit)
   let platoonOffset = platoonPlatesGap * (unit?.platoonUnits.len() ?? 0)
-  let { isShowDebugOnly = false } = goods
+  let { isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
+  let border = mkBorderByCurrency(borderBg, isFreeReward, price?.currencyId)
 
   function onUnitClick() {
     if (isPurchased)
@@ -221,12 +222,13 @@ function mkGoodsUnit(goods, onClick, state, animParams) {
         { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
       mkConsumableIcons(goods?.items.topairs())
       mkMRank(unit?.mRank)
-      unitFrame
+      mkEndTime(goods, { pos = [hdpx(-50), 0] })
+      border
     ].extend(mkGoodsCommonParts(goods, state)),
-    isPurchased ? purchasedPlate : mkPricePlate(goods, priceBgGradGold, state, animParams),
+    isPurchased ? purchasedPlate : mkPricePlate(goods, state, animParams),
     {
       watch = [myUnits, serverConfigs]
-      size = [goodsSmallSize[0], goodsH - platoonOffset / 2]
+      size = [goodsSmallSize[0], goodsH]
       pos = [0, platoonOffset]
     }
   )

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getLocNameDefault } = require("goodsDefault.nut")
-let { txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsLimit,
-  priceBgGradDefault, goodsH, goodsSmallSize, goodsBgH, mkBgImg, mkBgParticles, borderBg,
+let { txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsLimitAndEndTime,
+  goodsH, goodsSmallSize, goodsBgH, mkBgImg, mkBgParticles, borderBg,
   mkSquareIconBtn, skipPurchasedPlate, purchasedPlate, mkCanPurchase, goodsW, mkCanShowTimeProgress
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { getGoodsIcon } = require("%appGlobals/config/goodsPresentation.nut")
@@ -26,7 +26,7 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
   let { price = 0, currencyId = "" } = limitResetPrice
   let hasLimitResetPrice = price > 0 && currencyId != ""
 
-  let canPurchase = mkCanPurchase(id, limit, dailyLimit, isGoodsFull.get())
+  let canPurchase = mkCanPurchase(id, limit, dailyLimit, isGoodsFull)
   let canShowTimeProgress = mkCanShowTimeProgress(goods)
   let canShowSkipPurchase = Computed(@() isGoodsFull.get() && canShowTimeProgress.get() && hasLimitResetPrice)
 
@@ -84,9 +84,9 @@ function mkGoodsSlots(goods, _, state, animParams) {
         text = getLocNameDefault(goods)
       }.__update(fontSmall))
       mkSquareIconBtn(fontIconPreview, onClick, { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
-      canPurchase ? mkGoodsLimit(goods) : null
+      canPurchase ? mkGoodsLimitAndEndTime(goods) : null
     ].extend(mkGoodsCommonParts(goods, state)),
-    mkPricePlate(goods, priceBgGradDefault, state, animParams)
+    mkPricePlate(goods, state, animParams)
     { size = [goodsSmallSize[0], goodsH], onClick })
 }
 

@@ -7,7 +7,7 @@ let isReplayShortcuts = isPlayingReplay.value
 
 function reloadVmIfNeed() {
   if (isPlayingReplay.value != isReplayShortcuts && !isInLoadingScreen.value)
-    eventbus_send("reloadDargVM", null)
+    eventbus_send("reloadDargVM", { msg = "replay shortcuts changed" })
 }
 isPlayingReplay.subscribe(@(_) resetTimeout(0.1, reloadVmIfNeed))
 isInLoadingScreen.subscribe(@(_) resetTimeout(0.1, reloadVmIfNeed))

@@ -46,7 +46,7 @@ let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkPro
   mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { mkMsgConvertBlueprint } = require("unseenPurchaseAddMessage.nut")
+let { mkMsgConvert } = require("unseenPurchaseAddMessage.nut")
 let { showPrizeSelectDelayed, ticketToShow } = require("%rGui/rewards/rewardPrizeSelect.nut")
 let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
 
@@ -355,6 +355,7 @@ let mkCustomCurrencyIcon = {
   nybond = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
   aprilbond = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
   halloweenbond = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
+  blackfridaybond = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
 }
 
 let mkCurrencyIcon = @(startDelay, id) mkCustomCurrencyIcon?[id](id, startDelay) ?? {
@@ -416,6 +417,7 @@ let mkDecoratorRewardLabel = @(startDelay, decoratorId)
   }
 
 let skinIconSize = round(rewIconSize * 0.75).tointeger()
+let skinIconBroderRadius = round(skinIconSize*0.2).tointeger()
 function mkSkinRewardIcon(startDelay, unitName, skinName) {
   let skinPresentation = getSkinPresentation(unitName, skinName)
   return {
@@ -426,13 +428,10 @@ function mkSkinRewardIcon(startDelay, unitName, skinName) {
       mkHighlight(startDelay, aRewardIconFlareScale)
       {
         size = [skinIconSize, skinIconSize]
-        rendObj = ROBJ_MASK
-        image = Picture($"ui/gameuiskin#slot_mask.svg:{skinIconSize}:{skinIconSize}:P")
-        children = {
-          size = [skinIconSize, skinIconSize]
-          rendObj = ROBJ_IMAGE
-          image = Picture($"ui/gameuiskin#{skinPresentation.image}:{skinIconSize}:{skinIconSize}:P")
-        }
+        rendObj = ROBJ_BOX
+        fillColor = 0xFFFFFFFF
+        borderRadius = skinIconBroderRadius
+        image = Picture($"ui/gameuiskin#{skinPresentation.image}:{skinIconSize}:{skinIconSize}:P")
       }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
     ]
   }
@@ -989,7 +988,8 @@ let addRewardMessageWnd = @(onClick){
     bgGradientComp
     @() {
       watch = [stackData, activeUnseenPurchasesGroup]
-      children = mkMsgConvertBlueprint(stackData.get()?.convertions, onClick)
+      children = stackData.get()?.convertions == null ? null
+        : mkMsgConvert(stackData.get().convertions, onClick)
     }
   ]
 }

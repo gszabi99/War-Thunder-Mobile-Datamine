@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { ComputedImmediate } = require("%sqstd/frp.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { msgBoxBg, msgBoxHeaderWithClose } = require("%rGui/components/msgBox.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
@@ -19,7 +20,7 @@ let WND_UID = "buyUnitLevelWnd" //we no need several such messages at all.
 let unitName = mkWatched(persist, "unitName", null)
 let unit = Computed(@() myUnits.get()?[unitName.get()])
 let levelsToMax = Computed(@() (unit.get()?.levels.len() ?? 0) - (unit.get()?.level ?? 0))
-let needShowWnd = keepref(Computed(@() levelsToMax.get() > 0))
+let needShowWnd = keepref(ComputedImmediate(@() levelsToMax.get() > 0))
 
 let close = @() unitName(null)
 

@@ -38,6 +38,7 @@ let rewardsInfoCfg = {
     getBasic = @(debrData) (debrData?.reward.playerWp.baseWp ?? 0)
       + (debrData?.reward.playerWp.misStatusWp ?? 0)
       + (debrData?.reward.playerWp.bonusWp ?? 0)
+    getDailyBonus = @(debrData) debrData?.reward.playerWp.dailyBonusWp ?? 0
     getBooster = @(debrData) debrData?.reward.playerWp.boosterWp ?? 0
     getStreaks = @(debrData) debrData?.reward.playerWp.streaksWp ?? 0
     getIsPremiumIncluded = getIsPremiumIncludedWp
@@ -74,6 +75,7 @@ let rewardsInfoCfg = {
     getBasic = @(debrData) (debrData?.reward.playerExp.baseExp ?? 0)
       + (debrData?.reward.playerExp.misStatusExp ?? 0)
       + (debrData?.reward.playerExp.bonusExp ?? 0)
+    getDailyBonus = @(debrData) debrData?.reward.playerExp.dailyBonusExp ?? 0
     getBooster = @(debrData) debrData?.reward.playerExp.boosterExp ?? 0
     getStreaks = @(_debrData) 0
     getIsPremiumIncluded = getIsPremiumIncludedExp
@@ -92,6 +94,7 @@ let rewardsInfoCfg = {
       let { baseExp = 0, misStatusExp = 0, bonusExp = 0 } = getUnitRewards(getBestUnitName(debrData), debrData)?.exp
       return baseExp + misStatusExp + bonusExp
     }
+    getDailyBonus = @(debrData) getUnitRewards(getBestUnitName(debrData), debrData)?.exp.dailyBonusExp ?? 0
     getBooster = @(debrData) getUnitRewards(getBestUnitName(debrData), debrData)?.exp.boosterExp ?? 0
     getStreaks = @(_debrData) 0
     getIsPremiumIncluded = getIsPremiumIncludedExp
@@ -122,6 +125,7 @@ let unitOrSlotRewardsCfg = {
     let { baseExp = 0, misStatusExp = 0, bonusExp = 0 } = getUnitOrSlotRewardsExp(unit, debrData)
     return baseExp + misStatusExp + bonusExp
   }
+  getDailyBonus = @(debrData, unit) getUnitOrSlotRewardsExp(unit, debrData)?.dailyBonusExp ?? 0
   getBooster = @(debrData, unit) getUnitOrSlotRewardsExp(unit, debrData)?.boosterExp ?? 0
   getStreaks = @(_debrData) 0
   getIsPremiumIncluded = getIsPremiumIncludedExp
@@ -143,7 +147,7 @@ let unitOrSlotRewardsCfg = {
 
 function getRewardsInfoUnit(preset, debrData, unit) {
   let isSlot = unit?.isSlot ?? false
-  let { getHasUnitProgress, getBasic, getBooster, getStreaks,
+  let { getHasUnitProgress, getBasic, getBooster, getStreaks, getDailyBonus,
     getIsPremiumIncluded, getTotalWithoutPremium, getTotalWithPremium,
     getTotalGoldWithoutPremium = null, getTotalGoldWithPremium = null } = unitOrSlotRewardsCfg
   let isPremiumIncluded = getIsPremiumIncluded(debrData)
@@ -157,6 +161,7 @@ function getRewardsInfoUnit(preset, debrData, unit) {
   let totalWithPremRaw = getTotalWithPremium(debrData, unit)
   let totalWithPrem = totalWithPremRaw > total ? totalWithPremRaw : 0
   let streaks = getStreaks(debrData)
+  let dailyBonus = getDailyBonus(debrData, unit)
   let totalGoldWithPremium = getTotalGoldWithPremium ? getTotalGoldWithPremium(debrData) : 0
   let totalGoldWithoutPremium = getTotalGoldWithoutPremium ? getTotalGoldWithoutPremium(debrData) : 0
   return {
@@ -166,6 +171,7 @@ function getRewardsInfoUnit(preset, debrData, unit) {
     basic
     booster
     streaks
+    dailyBonus
     total
     totalWithPrem
     totalGoldWithPremium
@@ -174,7 +180,7 @@ function getRewardsInfoUnit(preset, debrData, unit) {
 }
 
 function getRewardsInfo(preset, debrData) {
-  let { getHasProgress, getBasic, getBooster, getStreaks,
+  let { getHasProgress, getBasic, getBooster, getStreaks, getDailyBonus,
     getIsPremiumIncluded, getTotalWithoutPremium, getTotalWithPremium,
     getTotalGoldWithoutPremium = null, getTotalGoldWithPremium = null } = rewardsInfoCfg[preset]
   let hasProgress = getHasProgress(debrData)
@@ -182,6 +188,7 @@ function getRewardsInfo(preset, debrData) {
   let booster = hasProgress ? getBooster(debrData) : 0
   let streaks = hasProgress ? getStreaks(debrData) : 0
   let isPremiumIncluded = getIsPremiumIncluded(debrData)
+  let dailyBonus = hasProgress ? getDailyBonus(debrData) : 0
   let total = hasProgress ? getTotalWithoutPremium(debrData) : 0
   let totalWithPremRaw = hasProgress ? getTotalWithPremium(debrData) : 0
   let totalWithPrem = totalWithPremRaw > total ? totalWithPremRaw : 0
@@ -193,6 +200,7 @@ function getRewardsInfo(preset, debrData) {
     basic
     booster
     streaks
+    dailyBonus
     total
     totalWithPrem
     totalGoldWithPremium
@@ -258,6 +266,13 @@ let cfgRowBasic = {
   getLabelIcon = @(_ri) null
 }
 
+let cfgRowDailyBonus = {
+  needShow = @(ri) ri.dailyBonus != 0
+  getVal = @(ri) ri.dailyBonus
+  getLabelText = @(_ri) loc("debriefing/rewards/daily")
+  getLabelIcon = @(_ri) null
+}
+
 let cfgRowBooster = {
   needShow = @(ri) ri.booster != 0
   getVal = @(ri) ri.booster
@@ -293,6 +308,7 @@ let rewardRowsCfg = {
   [REWARDS_SCORES] = [
     cfgRowGold.__merge(ovrCtorGold)
     cfgRowBasic.__merge(ovrCtorWp)
+    cfgRowDailyBonus.__merge(ovrCtorWp)
     cfgRowBooster.__merge(ovrCtorWp)
     cfgRowStreaks.__merge(ovrCtorWp)
     cfgRowTotal.__merge(ovrCtorWpTotal)
@@ -300,12 +316,14 @@ let rewardRowsCfg = {
   ],
   [REWARDS_CAMPAIGN] = [
     cfgRowBasic.__merge(ovrCtorExpPlayer)
+    cfgRowDailyBonus.__merge(ovrCtorExpPlayer)
     cfgRowBooster.__merge(ovrCtorExpPlayer)
     cfgRowTotal.__merge(ovrCtorExpPlayerTotal)
     cfgRowTotalWithPrem.__merge(ovrCtorExpPlayerTotal)
   ],
   [REWARDS_UNIT] = [
     cfgRowBasic.__merge(ovrCtorExpUnit)
+    cfgRowDailyBonus.__merge(ovrCtorExpUnit)
     cfgRowBooster.__merge(ovrCtorExpUnit)
     cfgRowTotal.__merge(ovrCtorExpUnitTotal)
     cfgRowTotalWithPrem.__merge(ovrCtorExpUnitTotal)
