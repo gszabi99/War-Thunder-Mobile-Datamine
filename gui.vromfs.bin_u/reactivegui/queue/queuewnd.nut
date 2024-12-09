@@ -30,6 +30,7 @@ let { leaveSquad } = require("%rGui/squad/squadManager.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { addFpsLimit, removeFpsLimit } = require("%rGui/guiFpsLimit.nut")
+let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 
 let textColor = 0xFFF0F0F0
 let timeToShowCancelJoining = 30
@@ -50,10 +51,12 @@ isInJoiningGame.subscribe(@(_) canCancelJoining(false))
 let lastQueueMode = mkWatched(persist, "lastQueueMode", "")
 curQueue.subscribe(@(v) (v?.params.mode ?? "") == "" ? null : lastQueueMode.set(v.params.mode))
 
+let campaignByMode = Computed(@() allGameModes.get().findvalue(@(gm) gm?.name == lastQueueMode.get())?.campaign)
+
 let airEventPrefixes = [ "air_event", "event_plane", "plane_" ]
 let missionCampaign = Computed(@() airEventPrefixes.findindex(@(v) lastQueueMode.get().startswith(v)) != null
   ? "air"
-  : curCampaign.get())
+  : campaignByMode.get() ?? curCampaign.get())
 
 let playersCountInQueue = Computed(function() {
   if (curQueue.value == null || queueInfo.value == null)

@@ -94,21 +94,18 @@ let infoEllipseButton = mkInfoEllipseButtonCtor( 0x80AAAAAA, 0x80000000)
 
 function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
+  let stateFlags = Watched(0)
   return @() {
+    watch = stateFlags
     size
     rendObj = ROBJ_SOLID
     behavior = Behaviors.Button
+    onElemState = @(sf) stateFlags(sf)
     onClick
     color = 0x28262626
-    children = [
-      {
-        size = flex()
-        rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#gradient_button.svg")
-        color = 0x0A262626
-      }
-      iText.__merge(textOvr)
-    ]
+    children = iText.__merge(textOvr)
+    transform = { scale = stateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1, 1] }
+    transitions = [{ prop = AnimProp.scale, duration = 0.3, easing = Linear }]
   }.__update(ovr)
 }
 

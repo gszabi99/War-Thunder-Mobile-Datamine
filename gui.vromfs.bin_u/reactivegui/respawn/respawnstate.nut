@@ -11,7 +11,7 @@ let { chooseRandom } = require("%sqstd/rand.nut")
 let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft, respawnUnitItems,
   hasRespawnSeparateSlots, curUnitsAvgCostWp, respawnUnitSkins
 } = require("%appGlobals/clientState/respawnStateBase.nut")
-let { getUnitTags, getUnitType } = require("%appGlobals/unitTags.nut")
+let { getUnitTags, getUnitType, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
@@ -62,7 +62,7 @@ let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
     rank = info?.rank ?? 0
     mRank = info?.mRank ?? 0
     unitClass = info?.unitClass ?? ""
-    country = info?.country ?? ""
+    country = getUnitTagsCfg(info?.name)?.operatorCountry ?? info?.country ?? respawnUnitInfo.get()?.country ?? ""
     isCurrent = info?.isCurrent ?? false
     skins = info?.skins ?? {}
     hasDailyBonus = info?.hasDailyBonus ?? false

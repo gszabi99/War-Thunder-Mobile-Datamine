@@ -789,10 +789,6 @@
     "airfieldLineWidth": 2.0,
     "airfieldLineBorderWidth": 1.0,
     "airfieldLineMinLength": 12.0,
-    "specialIcons": {
-      "iconNYPresent": "icon_hud_gift.svg:16:16:K",
-      "iconNYtree": "icon_hud_base_new_year.svg:36:36:K"
-    },
     "tankHudIcons": {
       "iconLightTank": "gnd_light_tank_radar.svg:13:7:K",
       "iconLightTankTarget": "gnd_light_tank_radar_target.svg:15:9:K",

@@ -3,7 +3,6 @@ from "%globalsDarg/darg_library.nut" import *
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { backButton, backButtonWidth } = require("%rGui/components/backButton.nut")
 let { bgMessage, bgHeader, bgShaded } = require("%rGui/style/backgrounds.nut")
-let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 
@@ -25,7 +24,7 @@ let openRewardsPreviewModal = @(content, title, onClick = null)
   addModalWindow(bgShaded.__merge({
     key = REWARDS_PREVIEW_MODAL_UID
     animations = wndSwitchAnim
-    onClick = EMPTY_ACTION
+    onDetach = onClick
     size = [sw(100), sh(100)]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER

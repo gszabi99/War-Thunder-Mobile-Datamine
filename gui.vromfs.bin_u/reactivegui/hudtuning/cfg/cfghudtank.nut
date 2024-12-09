@@ -37,6 +37,7 @@ let { bulletMainButton, bulletExtraButton } = require("%rGui/hud/bullets/bulletB
 let { mkBulletEditView } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkMyPlace, mkMyPlaceUi, mkTankMyScores, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
 let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
+let { missionScoreCtr, missionScoreEditView } = require("%rGui/hud/missionScore.nut")
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.value) && !isGamepad.value)
@@ -248,5 +249,11 @@ return {
     defTransform = mkLBPos([hdpx(255), 0])
     editView = techDebuffsEditView
     hideForDelayed = false
+  }
+
+  missionScore = {
+    ctor = missionScoreCtr
+    defTransform = mkRTPos([hdpx(80), hdpx(20)])
+    editView = missionScoreEditView
   }
 }.__update(cfgHudCommon).filter(@(v) v != null)

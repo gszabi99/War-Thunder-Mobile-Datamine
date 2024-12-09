@@ -88,7 +88,7 @@ function mkGiftSchRewardBtn(giftSchReward, posX) {
   local isPurchasing = Computed(@() giftSchReward.id in schRewardInProgress.get())
   return {
     size = [hdpx(130),hdpx(130)]
-    pos = [posX + verticalGap, 0]
+    pos = [posX + verticalGap,0]
     rendObj = ROBJ_IMAGE
     image = Picture("ui/gameuiskin#offer_gift_icon.avif:0:P")
     behavior = Behaviors.Button
@@ -370,17 +370,17 @@ let mkHeader = @() mkPreviewHeader(
 
 let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
   children = [
-    @() {
-      watch = previewGoods
-      flow = FLOW_HORIZONTAL
-      children = mkPreviewItems(previewGoods.value, aTimePackInfoStart + aTimeFirstItemOfset)
-      animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
-    },
     {
       size = flex()
       pos = [-saBorders[0], REWARD_STYLE_MEDIUM.boxSize * 1.1 * hintOffsetMulY]
       valign = hintOffsetMulY > 0 ? ALIGN_TOP : ALIGN_BOTTOM
       children = activeItemHint
+    }
+    @() {
+      watch = previewGoods
+      flow = FLOW_HORIZONTAL
+      children = mkPreviewItems(previewGoods.value, aTimePackInfoStart + aTimeFirstItemOfset)
+      animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
     }
   ]
 }.__update(ovr)
@@ -439,7 +439,7 @@ let leftBlockSingleUnit = {
   gap = verticalGap * 2
   children = [
     singleUnitBlock
-    packInfo(-1, { pos = [unitSelUnderlineFullSize, 0] })
+    packInfo
   ]
 }
 
@@ -512,37 +512,24 @@ let scrollArrowsBlock = {
 let gapForBranch = hdpx(20)
 
 let leftBlock = @(){
-  watch = [previewGoodsUnit, schRewards, previewGoods, activeOffer]
+  watch = [previewGoodsUnit, schRewards, previewGoods]
   size = [unitPlateSize[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
   halign = ALIGN_CENTER
-  children = [
-    {
-      children = activeOffer.get()?.id != previewGoods.get()?.id ? null
-        : mkGiftSchRewardBtn(
-            schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"],
-            (previewGoods.get()?.units.len() ?? 0) > 1
-                ? unitPlateSizeMain[0] + verticalGap
-              : previewGoodsUnit.get()?.platoonUnits.len()
-                ? hdpx(130) - (unitPlateSizeSingle[0] - unitPlateSizeMain[0])
-              : (previewGoods.get()?.blueprints.len() ?? 0) > 0
-                ? unitPlateWidth
-              : hdpx(130))
-    }
-    @() (previewGoods.get()?.units.len() ?? 0) > 1
-    ? {
-      watch = sortedBranchUnits
-      flow = FLOW_VERTICAL
-      gap = gapForBranch
-      children = arrayByRows(sortedBranchUnits.get().map(@(u) branchUnitsBlock(u)), 2)
-        .map(@(u)
-          {
-            flow = FLOW_HORIZONTAL
-            gap = gapForBranch
-            children = u
-          })
-    }
+  children = (previewGoods.get()?.units.len() ?? 0) > 1
+    ? @() {
+        watch = sortedBranchUnits
+        flow = FLOW_VERTICAL
+        gap = gapForBranch
+        children = arrayByRows((sortedBranchUnits.get() ?? []).map(@(u) branchUnitsBlock(u)), 2)
+          .map(@(u)
+            {
+              flow = FLOW_HORIZONTAL
+              gap = gapForBranch
+              children = u
+            })
+      }
     : previewGoodsUnit.get()?.platoonUnits.len() == 0 ? leftBlockSingleUnit : leftBlockPlatoon
-  ]
+
 }
 
 let previewWnd = @() {
@@ -591,7 +578,7 @@ let previewWnd = @() {
           }.__update(fontSmall)
           : { watch = previewGoods}
         @() {
-          watch = [previewGoodsUnit, schRewards, previewGoods]
+          watch = [previewGoodsUnit, schRewards, previewGoods, activeOffer]
           size = flex()
           children = [
             {
@@ -600,6 +587,19 @@ let previewWnd = @() {
                 pannableArea(leftBlock, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
                 scrollArrowsBlock
               ]
+            }
+            {
+              size = [0, 0]
+              children = activeOffer.get()?.id != previewGoods.get()?.id ? null
+                : mkGiftSchRewardBtn(
+                    schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"],
+                    (previewGoods.get()?.units.len() ?? 0) > 1
+                        ? unitPlateSize[0] * 2 + gapForBranch
+                      : previewGoodsUnit.get()?.platoonUnits.len()
+                        ? unitPlateSizeMain[0]
+                      : (previewGoods.get()?.blueprints.len() ?? 0) > 0
+                        ? unitPlateWidth
+                      : unitPlateSizeSingle[0])
             }
             rightBlock
           ]

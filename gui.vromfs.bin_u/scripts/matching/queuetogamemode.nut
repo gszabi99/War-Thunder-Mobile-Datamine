@@ -19,10 +19,11 @@ let { isInSquad, isSquadLeader, squadMembers, squadId, isInvitedToSquad, squadOn
 } = require("%appGlobals/squadState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getRomanNumeral } = require("%sqstd/math.nut")
-let { isOnline, isDisconnected } = require("%appGlobals/clientState/clientState.nut")
+let { isOnline, isDisconnected, canBattleWithoutAddons } = require("%appGlobals/clientState/clientState.nut")
 let { checkReconnect } = require("%scripts/matchingRooms/sessionReconnect.nut")
 let { activeBattleMods } = require("%appGlobals/pServer/battleMods.nut")
 let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
+
 
 let startBattleDelayed = persist("startBattleDelayed", @() { modeId = null })
 let maxSquadRankDiff = mkWatched(persist, "minSquadRankDiff", MAX_SQUAD_MRANK_DIFF)
@@ -167,7 +168,7 @@ function queueToGameModeImpl(mode) {
   if (!isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods))
     return
 
-  if (addonsToDownload.len() > 0) {
+  if (addonsToDownload.len() > 0 && !canBattleWithoutAddons.get()) {
     let isUpdate = updateDiff >= 0
     let locs = localizeAddons(addonsToDownload)
     addonsToDownload.each(@(a) log($"[ADDONS] Ask update addon {a} on try to join queue (cur version = '{get_addon_version(a)}')"))
@@ -190,8 +191,11 @@ function queueToGameModeImpl(mode) {
     return
   }
 
-  let { campaign = null } = mode
-  if (campaign != null && campaign != curCampaign.value)
+  if (addonsToDownload.len())
+    log("[ADDONS] Queue game mode while missing addons: ", addonsToDownload)
+
+  let { campaign = null, only_override_units = false } = mode
+  if (campaign != null && campaign != curCampaign.value && !only_override_units)
     setCampaign(campaign)
 
   //can check units here, but no unit rquirements in the current event yet.

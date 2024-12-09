@@ -5,7 +5,7 @@ let { contentWidth } = require("optionsStyle.nut")
 let { sliderWithButtons, sliderValueSound } = require("%rGui/components/slider.nut")
 let listbox = require("%rGui/components/listbox.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { infoCommonButton, infoTooltipButton } = require("%rGui/components/infoButton.nut")
+let { infoGreyButton, infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { resetTimeout } = require("dagor.workcycle")
 
 
@@ -28,12 +28,14 @@ function mkHeader(header, child) {
     return textComp
 
   return {
-    flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     gap = hdpx(10)
     children = [
+      {
+        pos = [hdpx(-70), 0]
+        children = child
+      }
       textComp
-      child
     ]
   }
 }
@@ -48,7 +50,7 @@ let optBlock = @(header, content, openInfo, desc, locId, ovr = {}) {
   flow = FLOW_VERTICAL
   children = [
     mkHeader(header,
-      openInfo != null ? infoCommonButton(openInfo)
+      openInfo != null ? infoGreyButton(openInfo, {size = [evenPx(50), evenPx(50)], color = 0x80000000})
         : desc != "" ? infoTooltipButton(mkTooltipContentCtor(loc(locId), desc), { halign = ALIGN_LEFT })
         : null)
     content

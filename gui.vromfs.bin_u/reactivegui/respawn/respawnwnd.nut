@@ -120,7 +120,7 @@ function mkSlotPlate(slot, baseUnit) {
   let p = getUnitPresentation(slot.name)
   let isSelected = Computed(@() selSlot.value?.id == slot.id)
   let unit = baseUnit.__merge(slot)
-  let { canSpawn, isSpawnBySpare, country, mRank } = slot
+  let { canSpawn, isSpawnBySpare, mRank } = slot
   return @() {
     watch = hasRespawnSeparateSlots
     key = slot
@@ -141,7 +141,7 @@ function mkSlotPlate(slot, baseUnit) {
           mkUnitBg(unit, !canSpawn)
           canSpawn ? mkUnitSelectedGlow(unit, isSelected) : null
           mkUnitImage(unit, !canSpawn)
-          mkUnitTexts(country == "" ? baseUnit : unit, loc(p.locId), !canSpawn)
+          mkUnitTexts(unit, loc(p.locId), !canSpawn)
           canSpawn
               ? mkUnitInfo(mRank == 0 ? baseUnit : unit, { padding = [0, plateTextsSmallPad * 2, 0, 0] })
             : slot?.isLocked && (slot?.reqLevel ?? 0) <= 0
@@ -334,7 +334,8 @@ let buttons = @() {
   children = [
     selSlotUnitType.get() != AIR ? null
       : iconButtonPrimary("ui/gameuiskin#icon_weapon_preset.svg", @() openUnitWeaponPresetWnd(selSlot.get()), {
-        ovr = { size = isGamepad.get() ? [SIZE_TO_CONTENT, defButtonHeight] : [defButtonHeight, defButtonHeight], minWidth = defButtonHeight }
+        ovr = { size = isGamepad.get() ? [defButtonHeight*2, defButtonHeight] : [defButtonHeight, defButtonHeight], minWidth = defButtonHeight }
+        hotkeys = ["^J:Y | Enter"]
       }),
     !(selSlot.get()?.canSpawn ?? false) ? null
       : !isRespawnStarted.get() ? toBattleButton(toBattle, { hotkeys = ["^J:X | Enter"] })

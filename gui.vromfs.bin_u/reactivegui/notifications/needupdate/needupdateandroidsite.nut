@@ -25,12 +25,15 @@ let tag = {
 
 
 let actualGameVersion = hardPersistWatched("actualGameVersion.value")
+let actualGameHash = hardPersistWatched("actualGameVersion.hash")
 let nextRequestTime = hardPersistWatched("actualGameVersion.nextTime")
 let needRequest = Watched(nextRequestTime.value <= get_time_msec())
 let allowRequest = Computed(@() needRequest.value && !isInBattle.value && !isInLoadingScreen.value)
 
 needRequest.subscribe(@(v) v ? null
   : nextRequestTime(get_time_msec() + REQUEST_PERIOD_MSEC))
+
+let getApkLinkWithCash = @(gameHash) $"https://gdn.gaijin.net/apk/download?proj={proj}&tag={tag}&hash={gameHash}"
 
 let updateGameVersionImpl = proj == null ? @() null
   : @() httpRequest({
@@ -57,8 +60,10 @@ eventbus_subscribe(ACTUAL_VERSION_ID, function(response) {
     result = body != null ? parse_json(body.as_string()) : null
   }
   catch(e) {}
-  if (result?.status == "OK")
+  if (result?.status == "OK") {
     actualGameVersion(result?.version)
+    actualGameHash(result?.hash)
+  }
   logUpdate($"status = {status}, version = {result?.version}")
 })
 
@@ -82,5 +87,7 @@ let needSuggestToUpdate = Computed(function() {
 
 return {
   actualGameVersion
+  actualGameHash
+  getApkLinkWithCash
   needSuggestToUpdate
 }

@@ -35,7 +35,6 @@ excludesdata =
     arr =
     [
       "homochka",
-      "hor[adimnorstu]",
     ]
   },
   {
@@ -282,7 +281,7 @@ fouldata =
     arr =
     [
       "^h[o0]r[e3]",
-      "^h[o0](|o|0)r",
+      "^h[o0](o|0)?r$",
       "^h4x0r",
       "^hairpie",
       "^hakujakusha",

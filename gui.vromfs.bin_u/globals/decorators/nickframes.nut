@@ -85,6 +85,13 @@ let nickFrames = {
   bomb_and_plane = @(n) $"┸{n}┹"
   diamond = @(n) $"␘{n}␘"
   tank_cart = @(n) $"␞{n}␟"
+  ice_tower = @(n) $"⚀{n}⚀"
+  ice_ax = @(n) $"⚁{n}⚂"
+  icicles = @(n) $"⚃{n}⚄"
+  snowflake = @(n) $"⚅{n}⚅"
+  lollipop = @(n) $"♺{n}♻"
+  deer_sled = @(n) $"♼{n}♽"
+  bell = @(n) $"♾{n}♿"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

@@ -3,11 +3,12 @@ from "%globalsDarg/darg_library.nut" import *
 let touchButtonSize = shHud(10)
 
 let btnBgColor = {
-  empty     = 0x60000000
+  empty     = 0x26000000
   emptyWithBackground = 0x80000000
+  background = 0x60000000
   ready     = 0x80177274
   broken    = 0x99996203
-  noAmmo    = 0x21000000
+  noAmmo    = 0x0D000000
 }
 
 let btnBgColorShaded = btnBgColor.map(@(c) (mul_color(c, 0.65) & 0xFFFFFF) | (c & 0xCC000000))

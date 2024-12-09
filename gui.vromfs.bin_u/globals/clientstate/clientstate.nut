@@ -24,6 +24,7 @@ let isHudVisible = sharedWatched("isHudVisible", @() false)
 let isInMpSession = Watched(get_mp_session_id_int() != -1)
 let isLocalMultiplayer = Watched(is_local_multiplayer())
 let isInMpBattle = Computed(@() isInBattle.value && isInMpSession.value)
+let canBattleWithoutAddons = sharedWatched("canBattleWithoutAddons", @() false)
 
 eventbus_subscribe("onJoinMatch", function(_) {
   let sessionId = get_mp_session_id_int()
@@ -58,4 +59,5 @@ return {
   canBailoutFromFlightMenu
   isMpStatisticsActive
   isHudVisible
+  canBattleWithoutAddons
 }

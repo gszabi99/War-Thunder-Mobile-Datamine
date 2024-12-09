@@ -21,7 +21,7 @@ let { HAPT_SHOOT_ITEM } = require("%rGui/hud/hudHaptic.nut")
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { btnBgColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { emptyWithBackground, empty, ready, noAmmo } = btnBgColor
+let { emptyWithBackground, ready, noAmmo, background } = btnBgColor
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 
@@ -231,7 +231,7 @@ function stickControl(scale) {
                 ]
                 borderRadius = hdpx(1000)
                 rendObj = ROBJ_BOX
-                fillColor = empty
+                fillColor = background
                 transform = { rotate = seriesAngle }
               }
               {

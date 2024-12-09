@@ -31,12 +31,16 @@ function closeUnitWeaponPresetWnd() {
   curUnit.set(null)
 }
 
-function mkCustomIconButton(iconPath, onClick, isDisabled, isGamepadConnected) {
+function mkCustomIconButton(iconPath, onClick, isDisabled, isGamepadConnected, hotkeys = null) {
   let mkButton = isDisabled ? iconButtonCommon : iconButtonPrimary
   return mkButton(
     iconPath,
     onClick
-    { iconSize = ICON_SIZE, ovr = { size = isGamepadConnected ? [SIZE_TO_CONTENT, BTN_ICON_SIZE] : [BTN_ICON_SIZE, BTN_ICON_SIZE], minWidth = BTN_ICON_SIZE}}
+    {
+      iconSize = ICON_SIZE,
+      ovr = { size = isGamepadConnected ? [BTN_ICON_SIZE*2, BTN_ICON_SIZE] : [BTN_ICON_SIZE, BTN_ICON_SIZE], minWidth = BTN_ICON_SIZE}
+      hotkeys
+    }
   )
 }
 
@@ -52,24 +56,31 @@ let mkButtons = @() {
       "ui/gameuiskin#btn_trash.svg",
       onDelete,
       isNotSavedPreset.get(),
-      isGamepad.get()
+      isGamepad.get(),
+      ["^J:LT"]
     ),
     mkCustomIconButton(
       "ui/gameuiskin#menu_edit.svg",
       @() openEditNameWnd(false),
       isNotSavedPreset.get(),
-      isGamepad.get()
+      isGamepad.get(),
+      ["^J:LB"]
     ),
     mkCustomIconButton(
       "ui/gameuiskin#icon_save.svg",
       @() openEditNameWnd(true),
       !isNotSavedPreset.get() || isMaxSavedPresetAmountReached.get(),
-      isGamepad.get()
+      isGamepad.get(),
+      ["^J:Y"]
     ),
     (isCurrentPreset.get() ? textButtonCommon : textButtonPrimary)(
       utf8ToUpper(loc("mainmenu/btnApply")),
       onApply,
-      {ovr = {size = [SIZE_TO_CONTENT, BTN_HEIGHT], minWidth = BTN_WIDTH}, childOvr = fontTinyAccentedShaded}
+      {
+          ovr = {size = [SIZE_TO_CONTENT, BTN_HEIGHT], minWidth = BTN_WIDTH},
+          childOvr = fontTinyAccentedShaded,
+          hotkeys = ["^J:X"]
+      },
     )
   ]
 }

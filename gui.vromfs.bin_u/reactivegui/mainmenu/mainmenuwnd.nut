@@ -5,7 +5,7 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
 let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
-let { gamercardGap, CS_COMMON } = require("%rGui/components/currencyStyles.nut")
+let { gamercardGap, CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
 let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
 let { unitSpecificItems } = require("%appGlobals/unitSpecificItems.nut")
@@ -211,9 +211,9 @@ let gamercardBattleItemsBalanceBtns = @(){
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = gamercardGap
-  children = specialEventGamercardItems.get().map(@(v) mkItemsBalance(v.itemId, @() openEventWnd(v.eventName), CS_COMMON))
-    .extend(itemsOrder.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_COMMON)))
-    .extend(unitSpecificItems.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_COMMON)))
+  children = specialEventGamercardItems.get().map(@(v) mkItemsBalance(v.itemId, @() openEventWnd(v.eventName), CS_GAMERCARD))
+    .extend(itemsOrder.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_GAMERCARD)))
+    .extend(unitSpecificItems.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_GAMERCARD)))
 }
 
 let toBattleButtonPlace = {

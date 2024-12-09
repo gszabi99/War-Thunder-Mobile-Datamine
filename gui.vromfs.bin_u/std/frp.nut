@@ -3,6 +3,13 @@ from "frp" import Computed, Watched, FRP_INITIAL, FRP_DONT_CHECK_NESTED, set_nes
 
 // set_default_deferred(false)
 
+function WatchedImmediate(...) {
+  let w = Watched.acall([this].extend(vargv))
+  if ("setDeferred" in w)
+    w.setDeferred(false)
+  return w
+}
+
 function ComputedImmediate(...) {
   let c = Computed.acall([this].extend(vargv))
   c.setDeferred(false)
@@ -195,6 +202,7 @@ return {
   Computed
   ComputedImmediate
   Watched
+  WatchedImmediate
   FRP_INITIAL
   FRP_DONT_CHECK_NESTED
   set_nested_observable_debug

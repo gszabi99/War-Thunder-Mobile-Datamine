@@ -3,15 +3,20 @@
   "name": "GNEYS-5S",
   "transivers": {
     "search": {
-      "pulsePower": 450.0,
-      "pulseWidth": 0.000001,
-      "prf": 2700.0,
-      "band": 1,
-      "range": 4000.0,
-      "rangeMax": 4000.0,
+      "power": 100.0,
+      "band": 0,
+      "rcs": 3.0,
+      "range": 7000.0,
+      "rangeMax": 8000.0,
       "antenna": {
-        "angleHalfSens": 60.0,
-        "sideLobesSensitivity": -10.0
+        "azimuth": {
+          "angleHalfSens": 60.0,
+          "sideLobesSensitivity": -9.0
+        },
+        "elevation": {
+          "angleHalfSens": 40.0,
+          "sideLobesSensitivity": -9.0
+        }
       }
     }
   },
@@ -22,8 +27,8 @@
         30.0
       ],
       "elevationLimits": [
-        -30.0,
-        30.0
+        -20.0,
+        20.0
       ],
       "type": "no"
     }
@@ -38,13 +43,12 @@
       "distance": {
         "presents": true,
         "minValue": 200.0,
-        "maxValue": 4000.0,
-        "maxUnambiguousValue": 220000.0
+        "maxValue": 8000.0
       }
     }
   },
   "scopeRanges": {
-    "range1": 4000.0
+    "range1": 8000.0
   },
   "fsms": {
     "main": {
@@ -57,8 +61,15 @@
           "setTransiver": {
             "transiver": "search"
           },
-          "setScopeRange": {
-            "scopeRangeIndex": 0
+          "setTargetDesignationRange": {
+            "azimuthRange": [
+              -30.0,
+              30.0
+            ],
+            "distanceRange": [
+              0.0,
+              8000.0
+            ]
           }
         },
         "setStandbyMode": {
@@ -73,8 +84,7 @@
           },
           "setScanPattern": {
             "scanPattern": "search"
-          },
-          "clearTargets": {}
+          }
         },
         "setSearchMode": {
           "setModeName": {

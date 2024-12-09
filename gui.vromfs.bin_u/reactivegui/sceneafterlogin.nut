@@ -102,6 +102,7 @@ require("%rGui/loading/loadingScreen.nut")
 require("%rGui/chat/mpChatHandler.nut")
 require("levelUp/levelUpRewards.nut")
 require("consoleCmdAfterLogin.nut")
+require("%rGui/hud/indicators/missionIndicatorsMgr.nut")
 
 
 let { modalWindowsComponent } = require("%rGui/components/modalWindows.nut")

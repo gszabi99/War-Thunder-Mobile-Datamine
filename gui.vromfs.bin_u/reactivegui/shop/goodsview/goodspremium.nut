@@ -42,14 +42,14 @@ let mkPremiumDaysTitle = function(amount, oldAmount) {
         pos = [ 0, hdpx(38) ]
         children = [
           mkGradGlowText(numberToTextForWtFont(amount), fontWtExtraLarge, numFontGrad)
-          oldAmount <= 0 ? null
-            : mkGradGlowText(numberToTextForWtFont(oldAmount), fontWtBig, numFontGrad, {
-                pos = [pw(-90), ph(-15)]
-                hplace = ALIGN_RIGHT
-                children = oldAmountStrikeThrough
-              })
         ]
       }
+      oldAmount <= 0 ? null
+        : mkGradGlowText(numberToTextForWtFont(oldAmount), fontWtBig, numFontGrad, {
+            pos = [-hdpx(25), hdpx(5)]
+            hplace = ALIGN_RIGHT
+            children = oldAmountStrikeThrough
+          })
       mkGradGlowText(daysText, fontWtBig, daysFontGrad, {
         pos = [ daysOffset, hdpx(173) ]
       })
@@ -62,15 +62,16 @@ let infoBtn = infoGreyButton(
   openPremiumDescription,
   {
     size = [evenPx(60), evenPx(60)]
-    margin = [hdpx(12), hdpx(16)]
-    hplace = ALIGN_RIGHT
+    color = 0x50000000
+    margin = [hdpx(12), hdpx(12)]
+    hplace = ALIGN_LEFT
+    vplace = ALIGN_BOTTOM
   }
 )
 
 function mkGoodsPremium(goods, onClick, state, animParams) {
   let { premiumDays, viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let premIconAndDaysTitleWrapper = {
-    margin = [ sh(1), 0, 0, 0 ]
     size = flex()
     children = [
       mkIconPrem()

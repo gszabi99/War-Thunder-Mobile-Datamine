@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { getRewardPlateSize, rewardTicketDefaultSlots } = require("%rGui/rewards/rewardStyles.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { mkGradientCtorDoubleSideX, simpleVerGrad } = require("%rGui/style/gradients.nut")
+let { mkGradientCtorDoubleSideX } = require("%rGui/style/gradients.nut")
 
 let defColor = 0xFFFFFFFF
 let secondaryColor = 0xFFC5C5C5
@@ -11,17 +11,6 @@ let timeToDelay = 5.0
 let durationTime = 0.5
 
 let triggerStartAnimSlider = "triggerStartAnimSlider"
-
-let mkRewardPlateBlure = @() {
-  size = flex()
-  rendObj = ROBJ_IMAGE
-  image = simpleVerGrad
-  color = 0xFF000000
-  opacity = 0.9
-  transform = {
-    scale = [1, 1.1]
-  }
-}
 
 let mkSliderPoint = @(isActive) {
   rendObj = ROBJ_IMAGE
@@ -53,7 +42,6 @@ function mkRewardSlider(rewards, rewardCtors, onClick, rStyle = {}) {
       mkRewardPlateBg(size)
       mkRewardPlateImage(r, rewardStyle)
       mkRewardPlateTexts(r, rewardStyle)
-      mkRewardPlateBlure()
     ]
   }
 

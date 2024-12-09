@@ -12,6 +12,7 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, debug_apply_unit_daily_bonus_in_battle,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
   add_battle_mod, set_research_unit, add_slot_exp, update_branch_offer
+  shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -30,6 +31,8 @@ let { currencyOrder, getDbgCurrencyCount } = require("%appGlobals/currenciesStat
 registerHandler("consolePrintResult",
   @(res) console_print(res?.error == null ? "SUCCESS" : "FAILED")) //warning disable: -forbidden-function
 registerHandler("consolePrint", console_print) //warning disable: -forbidden-function
+registerHandler("consolePrintError",
+  @(res) console_print(res?.error == null ? "SUCCESS" : console_print(res))) //warning disable: -forbidden-function
 
 let infoTextOvr = {
   size = [flex(), SIZE_TO_CONTENT]
@@ -195,3 +198,10 @@ register_command(function(id) {
   $"meta.add_lb_reward")
 
 register_command(@(unitname) set_research_unit("air", unitname), "meta.set_research_unit")
+
+register_command(@() shift_all_personal_goods_time(24 * 3600, "consolePrintResult"), "meta.shift_personal_goods_1_day")
+register_command(@() shift_all_personal_goods_time(7 * 24 * 3600, "consolePrintResult"), "meta.shift_personal_goods_7_days")
+register_command(@(goodsId) halt_personal_goods_purchase(goodsId, "consolePrintResult"), "meta.halt_personal_goods_purchase")
+
+register_command(@(id) authorize_deeplink_reward(id, "consolePrintError"), "meta.authorize_deeplink_reward")
+register_command(@(id) apply_deeplink_reward(id, curCampaign.get(), "consolePrintError"), "meta.apply_deeplink_reward")

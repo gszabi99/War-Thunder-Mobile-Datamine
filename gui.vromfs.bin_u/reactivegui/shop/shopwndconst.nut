@@ -1,12 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
+let { selLineGap, selLineSize } = require("%rGui/components/tabs.nut")
+
+
+let goodsGap = hdpx(20)
+let goodsSmallSizeW = hdpxi(488)
+let goodsPerRow = 3
+let iconSize = hdpxi(120)
+let iconMarginW = hdpx(16)
+let tabW = iconSize + iconMarginW * 2
+let fullTabW = tabW + selLineGap + selLineSize
 
 
 return {
-  goodsGap = hdpx(47)
+  goodsGap
   goodsH = hdpxi(378)
-  goodsSmallSizeW = hdpxi(468)
-  iconSize = hdpxi(104)
-  iconMarginW = hdpx(10)
-  tabW = hdpx(450)
-  tabH = hdpx(123)
+  goodsSmallSizeW
+  goodsPerRow
+  iconSize
+  iconMarginW
+  tabW
+  tabH = iconSize
+  fullTabW
+  categoryGap = hdpx(80)
+  shopGap = (sw(100) - saBorders[0] * 2 - fullTabW - (goodsPerRow - 1) * goodsGap - goodsPerRow * goodsSmallSizeW) / 2
+  titleGap = hdpx(4)
+  titleH = hdpxi(52)
 }

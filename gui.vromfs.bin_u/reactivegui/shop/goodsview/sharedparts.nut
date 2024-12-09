@@ -7,7 +7,7 @@ let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON } = require("%rGui/components/currencyComp.nut")
-let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES } = require("%rGui/shop/goodsStates.nut")
+let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES, ALL_PURCHASED } = require("%rGui/shop/goodsStates.nut")
 let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -52,12 +52,8 @@ let limitFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
 
 let txtBase = {
   rendObj = ROBJ_TEXT
-  size = SIZE_TO_CONTENT
   color = 0xFFFFFFFF
-  fontFx = FFT_GLOW
-  fontFxFactor = hdpx(64)
-  fontFxColor = 0xFF000000
-}.__update(fontTiny)
+}.__update(fontTinyShaded)
 
 let txt = @(ovr) txtBase.__merge(ovr)
 
@@ -223,10 +219,10 @@ let mkDiscountCorner = @(discountPrc) discountPrc <= 0 || discountPrc >= 100 ? n
   })
 }
 
-let popularMarkH = hdpxi(50)
+let popularMarkH = hdpxi(28)
 let popularMarkTexOffs = [ 0, popularMarkH / 2, 0, popularMarkH / 10 ]
 
-let popularMark = {
+let popularMark = @(text = null) {
   size  = [ SIZE_TO_CONTENT, popularMarkH ]
   rendObj = ROBJ_9RECT
   image = Picture($"ui/gameuiskin#tag_popular.svg:{popularMarkH}:{popularMarkH}")
@@ -234,46 +230,49 @@ let popularMark = {
   screenOffs = popularMarkTexOffs
   texOffs = popularMarkTexOffs
   color = tagRedColor
-  padding = [ 0, hdpx(30), 0, hdpx(20) ]
-  children = txt({
-    text = utf8ToUpper(loc("shop/item/popular/short"))
+  padding = [ 0, hdpx(20), 0, hdpx(10) ]
+  children = {
+    rendObj = ROBJ_TEXT
+    text = text ?? utf8ToUpper(loc("shop/item/popular/short"))
     vplace = ALIGN_CENTER
-  })
+  }.__update(fontVeryTinyShaded)
 }
 
 let dailyBonusTagH = hdpxi(27)
 let dailyBonusTagHTexOffs = [ 0, dailyBonusTagH / 2, 0, dailyBonusTagH / 10 ]
 let iconSize = hdpx(20)
-let dailyBonusTag = @(wpMul, expMul) {
+let dailyBonusTag = @(wpMul, expMul) wpMul <= 1 && expMul <= 1 ? null : {
   size  = [ SIZE_TO_CONTENT, dailyBonusTagH ]
   rendObj = ROBJ_9RECT
   image = Picture($"ui/gameuiskin#tag_popular.svg:{dailyBonusTagH}:{dailyBonusTagH}")
   keepAspect = KEEP_ASPECT_NONE
   screenOffs = dailyBonusTagHTexOffs
   texOffs = dailyBonusTagHTexOffs
-  color = 0xFFC80000
+  color = 0xFFB02020
   gap = hdpx(4)
   flow = FLOW_HORIZONTAL
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   padding = [ 0, hdpx(15), 0, hdpx(10) ]
   children = [
-    txt(fontVeryTinyAccented.__merge({ text = loc("dailyBonus/multiplier", { mul = wpMul }) }))
-    mkCurrencyImage(WP, iconSize)
-    txt(fontVeryTinyAccented.__merge({ text = loc("dailyBonus/multiplier", { mul = expMul }) }))
-    mkCurrencyImage("unitExp", iconSize)
+    wpMul > 1 ? txt(fontVeryTinyAccented.__merge({ text = loc("dailyBonus/multiplier", { mul = wpMul }) })) : null
+    wpMul > 1 ? mkCurrencyImage(WP, iconSize) : null
+    expMul > 1 ? txt(fontVeryTinyAccented.__merge({ text = loc("dailyBonus/multiplier", { mul = expMul }) })) : null
+    expMul > 1 ? mkCurrencyImage("unitExp", iconSize) : null
   ]
 }
 
-function mkGoodsNewPopularMark(goods) {
+function mkGoodsNewPopularMark(goods, state) {
   let isPopular = goods?.isPopular
   let isNew = Computed(@() goods.id in shopUnseenGoods.get())
+  let isPurchased = Computed(@() (state.get() & ALL_PURCHASED) != 0)
 
   return @() {
-    watch = isNew
-    margin = isNew.get() ? hdpx(30) : null
-    children = isNew.get() ? priorityUnseenMark
-      : isPopular ? popularMark
+    watch = [isNew, isPurchased]
+    margin = isNew.get() && !isPurchased.get() ? hdpx(30) : null
+    children = isPurchased.get() ? null
+      : isNew.get() ? priorityUnseenMark
+      : isPopular ? popularMark(goods?.popularText)
       : null
   }
 }
@@ -296,16 +295,13 @@ let firstPurchBonusBg = {
   color = tagRedColor
   padding = [ 0, hdpx(12), 0, hdpx(40) ]
   flow = FLOW_HORIZONTAL
-  gap = hdpx(25)
+  gap = hdpx(10)
 }
 
 let firstPurchTxt = @(ovr) txtBase.__merge({
   font = Fonts.wtfont
-  fontSize = hdpxi(33)
-  fontFx = FFT_BLUR
-  fontFxFactor = hdpx(32)
-  fontFxColor = 0x60000000
-}, ovr)
+  fontSize = hdpxi(28)
+}, ovr, shadeTiny)
 
 let firstPurchLabel = firstPurchTxt({ text = utf8ToUpper(loc("shop/item/first_purchase/short")) })
 firstPurchLabel.fontSize = getFontSizeToFitWidth(firstPurchLabel, firstPurchLabelMaxWidth, fontVeryVeryTiny.fontSize)
@@ -323,7 +319,7 @@ let mkFirstPurchBonusMark = @(goods, state) (goods?.firstPurchaseBonus?.len() ??
         : {
             valign = ALIGN_CENTER
             flow = FLOW_HORIZONTAL
-            gap = hdpx(6)
+            gap = hdpx(10)
             children = [
               firstPurchTxt({ text = numberToTextForWtFont("".concat("+", value)) })
               mkCurrencyImage(currencyId, firstPurchBonusCurrencyIcoSize)
@@ -371,6 +367,31 @@ let advertMark = {
   hplace = ALIGN_CENTER
 }.__update(adsButtonCounter)
 
+let purchasedPlate = {
+  size = flex()
+  rendObj = ROBJ_SOLID
+  color = 0x990C1113
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc("shop/unit_bought")
+  }.__update(fontMedium)
+}
+
+let skipPurchasedPlate = {
+  size = flex()
+  rendObj = ROBJ_IMAGE
+  image = priceBgGradPremium
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc("btn/skipWait")
+    color = 0xFFFFFFFF
+  }.__update(fontSmallAccentedShaded)
+}
+
 
 function mkFreePricePlate(goods, state) {
   let { isReady = false, needAdvert = false } = goods
@@ -399,40 +420,16 @@ function mkPricePlate(goods, state, animParams = null, needDiscountTag = true) {
   return @() {
     watch = state
     size = flex()
-    children = animParams == null || !isReady || (state.get() & (PURCHASING | NOT_READY)) ? pricePlateComp
+    children = (state.get() & ALL_PURCHASED) != 0 ? purchasedPlate
+      : animParams == null || !isReady || (state.get() & (PURCHASING | NOT_READY)) ? pricePlateComp
       : withGlareEffect(
           pricePlateComp,
           goodsW,
           { duration = goodsGlareAnimDuration, delay = animParams?.delay, repeatDelay = animParams?.repeatDelay },
           { glareWidth },
-          { translateXMult = 1.5, animToXMult = -1 }
+          { translateXMult = 1.5 }
         ).__update({ size = flex() })
   }
-}
-
-let purchasedPlate = {
-  size = flex()
-  rendObj = ROBJ_SOLID
-  color = 0x990C1113
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  children = {
-    rendObj = ROBJ_TEXT
-    text = loc("shop/unit_bought")
-  }.__update(fontMedium)
-}
-
-let skipPurchasedPlate = {
-  size = flex()
-  rendObj = ROBJ_IMAGE
-  image = priceBgGradPremium
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  children = {
-    rendObj = ROBJ_TEXT
-    text = loc("btn/skipWait")
-    color = 0xFFFFFFFF
-  }.__update(fontSmallAccentedShaded)
 }
 
 let mkCanPurchase = @(id, limit, dailyLimit, isPurchaseFull = Watched(true)) Computed(function() {
@@ -453,13 +450,14 @@ let mkCanShowTimeProgress = @(goods) Computed(function() {
 })
 
 function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
-  let { limit = 0, dailyLimit = 0, id = null, limitResetPrice = {} } = goods
+  let { limit = 0, dailyLimit = 0, id = null, limitResetPrice = {}, isPurchased = null } = goods
   let stateFlags = Watched(0)
 
   let { price = 0, currencyId = "" } = limitResetPrice
   let hasLimitResetPrice = price > 0 && currencyId != ""
 
-  let canPurchase = mkCanPurchase(id, limit, dailyLimit)
+  let canPurchase = isPurchased == null ? mkCanPurchase(id, limit, dailyLimit)
+    : Watched(!isPurchased)
   let canShowTimeProgress = mkCanShowTimeProgress(goods)
   let canShowSkipPurchase = Computed(@() canShowTimeProgress.get() && hasLimitResetPrice)
 
@@ -520,6 +518,7 @@ function mkOfferWrap(onClick, mkContent) {
 let fadeAnims = [
   { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.3, easing = InQuad, playFadeOut = true }
 ]
+
 let mkGoodsTimeProgress = @(fValue, text) {
   size = flex()
   rendObj = ROBJ_SOLID
@@ -554,7 +553,7 @@ let mkGoodsTimeProgress = @(fValue, text) {
 
 function mkCalcDailyLimitGoodsTimeProgress() {
   let sec = Computed(@() untilNextDaySec(serverTime.get()))
-  let fValue = Computed(@() max(0, clamp(1.0 - sec.get() / TIME_DAY_IN_SECONDS_F, 0, 1)))
+  let fValue = Computed(@() clamp(1.0 - sec.get() / TIME_DAY_IN_SECONDS_F, 0, 1))
   let timeText = Computed(@() secondsToHoursLoc(sec.get()))
   return mkGoodsTimeProgress(fValue, timeText)
 }
@@ -582,7 +581,7 @@ function mkFreeAdsGoodsTimeProgress(goods) {
 }
 
 let mkGoodsCommonParts = @(goods, state) [
-  mkGoodsNewPopularMark(goods)
+  mkGoodsNewPopularMark(goods, state)
   mkFirstPurchBonusMark(goods, state)
   mkWaitDimmingSpinner(Computed(@() (state.value & PURCHASING) != 0))
   mkFreeAdsGoodsTimeProgress(goods)
@@ -676,7 +675,12 @@ function mkSquareIconBtn(text, onClick, ovr) {
   }.__merge(ovr)
 }
 
-function mkGoodsLimitText(goods, limitFontGradient) {
+let mkLimitText = @(cur, total, locId = "shop/limit", fontGradient = limitFontGrad) mkGradGlowText(
+  loc(locId, { available = cur, limit = total }),
+  fontTiny,
+  fontGradient)
+
+function mkGoodsLimitText(goods, fontGrad) {
   let { limit = 0, dailyLimit = 0, id = null } = goods
   if (limit <= 0 && dailyLimit <= 0)
     return null
@@ -692,11 +696,7 @@ function mkGoodsLimitText(goods, limitFontGradient) {
   return @() {
     watch = limitExt
     children = limit <= 0 && limitExt.get() <= 0 ? null
-      : mkGradGlowText(
-          loc(dailyLimit > 0 ? "shop/dailyLimit" : "shop/limit",
-            { available = limitExt.get(), limit = max(limit, dailyLimit) }),
-          fontTiny,
-          limitFontGradient)
+      : mkLimitText(limitExt.get(), max(limit, dailyLimit), dailyLimit > 0 ? "shop/dailyLimit" : "shop/limit", fontGrad)
   }
 }
 
@@ -743,9 +743,11 @@ return {
   goodsBgH
   goodsGap
   offerPad
+  bottomPad
   titlePadding
   offerW
   offerH
+  pricePlateH
 
   priceBgGradDefault
   priceBgGradPremium
@@ -789,6 +791,7 @@ return {
 
   goodsGlareAnimDuration
   mkBgParticles
+  mkLimitText
   mkGoodsTimeProgress
 
   dailyBonusTag

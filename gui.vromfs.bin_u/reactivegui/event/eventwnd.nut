@@ -337,7 +337,7 @@ function mkLootboxPreviewContent() {
 
 function eventWndContent() {
   let blockSize = Computed(@() min(saSize[0] / clamp(curEventLootboxes.value.len(), 1, MAX_LOOTBOXES_AMOUNT), hdpx(700)))
-  let modeId = Computed(@() allGameModes.get().findindex(@(v) v.tag == curEventName.get()))
+  let modeId = Computed(@() allGameModes.get().findindex(@(v) v?.eventId == curEventName.get()))
   return @() {
     watch = [isEmbeddedLootboxPreviewOpen, modeId]
     size = flex()

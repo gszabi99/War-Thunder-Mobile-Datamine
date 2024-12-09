@@ -6,9 +6,9 @@ let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
-let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareIconBtn, purchasedPlate,
+let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareIconBtn,
   mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, mkAirBranchOfferTexts, underConstructionBg, goodsH, goodsSmallSize, offerPad,
-  offerW, offerH, borderBg, mkBorderByCurrency, mkEndTime
+  offerW, offerH, borderBg, mkBorderByCurrency, mkEndTime, goodsBgH
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { discountTagBig, discountTag } = require("%rGui/components/discountTag.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -19,6 +19,7 @@ let { mkRewardCurrencyImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
 let { mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
+let { ALL_PURCHASED } = require("%rGui/shop/goodsStates.nut")
 
 
 let fonticonPreview = "⌡"
@@ -76,12 +77,10 @@ let getLocNameUnit = function(goods) {
   return unit != null ? getPlatoonOrUnitName(unit, loc) : goods.id
 }
 
-let imgSize = [hdpxi(500), hdpxi(250)]
-let mkUnitImg = @(img) {
-  size = imgSize
-  margin = [ hdpx(40), hdpx(40), 0, 0 ]
+let mkUnitImg = @(img, size) {
+  size
   rendObj = ROBJ_IMAGE
-  image = Picture($"{img}:{imgSize[0]}:{imgSize[1]}:P")
+  image = Picture($"{img}:{size[0]}:{size[1]}:P")
   keepAspect = KEEP_ASPECT_FIT
   imageHalign = ALIGN_LEFT
   imageValign = ALIGN_BOTTOM
@@ -136,38 +135,6 @@ function mkUnitTexts(goods, unit) {
   }
 }
 
-let unitFrame = {
-  size = flex()
-  rendObj = ROBJ_FRAME
-  borderWidth = hdpx(2)
-  color = 0xFFFFFFFF
-}
-
-let platoonPlatesGap = hdpx(6)
-let bgPlatesTranslate = @(platoonSize, idx)
-  [(idx - platoonSize) * platoonPlatesGap, (idx - platoonSize) * platoonPlatesGap]
-
-function mkPlatoonBgPlates(unit, platoonUnits) {
-  if (!platoonUnits)
-    return null
-  let platoonSize = platoonUnits.len()
-  let bgPlatesComp = {
-    size = flex()
-    children = [
-      mkBgImg($"!ui/unitskin#flag_{unit.country}.avif")
-      mkBgImg($"!ui/unitskin#bg_ground_{unit.unitType}.avif")
-      unitFrame
-    ]
-  }
-
-  return {
-    size = flex()
-    children = platoonUnits.map(@(_, idx) bgPlatesComp.__merge({
-      transform = { translate = bgPlatesTranslate(platoonSize, idx) }
-    }))
-  }
-}
-
 let mkConsumableIcons = @(items) {
   flow = FLOW_HORIZONTAL
   hplace = ALIGN_RIGHT
@@ -195,7 +162,6 @@ function mkGoodsUnit(goods, onClick, state, animParams) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
   let p = getUnitPresentation(unit)
   let isPurchased = isUnitOrUnitUpgradePurchased(myUnits.value, unit)
-  let platoonOffset = platoonPlatesGap * (unit?.platoonUnits.len() ?? 0)
   let { isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let border = mkBorderByCurrency(borderBg, isFreeReward, price?.currencyId)
 
@@ -207,16 +173,16 @@ function mkGoodsUnit(goods, onClick, state, animParams) {
     saveSeenGoods([goods.id])
   }
 
+  let ovrState = Computed(@() state.get() | (isPurchased ? ALL_PURCHASED : 0))
   return mkGoodsWrap(
     goods,
     onUnitClick,
     unit == null ? null : @(sf, _) [
-      mkPlatoonBgPlates(unit, unit?.platoonUnits)
       mkBgImg($"!ui/unitskin#flag_{unit.country}.avif")
       mkBgImg($"!ui/unitskin#bg_ground_{unit.unitType}.avif")
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
-      mkUnitImg(p.image)
+      mkUnitImg(p.image, [goodsSmallSize[0], goodsBgH])
       mkUnitTexts(goods, unit)
       mkSquareIconBtn(fonticonPreview, @() isPurchased ? unitDetailsWnd(unit) : openGoodsPreview(goods.id),
         { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
@@ -224,13 +190,9 @@ function mkGoodsUnit(goods, onClick, state, animParams) {
       mkMRank(unit?.mRank)
       mkEndTime(goods, { pos = [hdpx(-50), 0] })
       border
-    ].extend(mkGoodsCommonParts(goods, state)),
-    isPurchased ? purchasedPlate : mkPricePlate(goods, state, animParams),
-    {
-      watch = [myUnits, serverConfigs]
-      size = [goodsSmallSize[0], goodsH]
-      pos = [0, platoonOffset]
-    }
+    ].extend(mkGoodsCommonParts(goods, ovrState)),
+    mkPricePlate(goods, ovrState, animParams),
+    { size = [goodsSmallSize[0], goodsH] }
   )
 }
 

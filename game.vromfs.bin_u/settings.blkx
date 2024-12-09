@@ -965,8 +965,7 @@
     "latency": 0,
     "vrStreamerMode": false,
     "vreye": "left",
-    "fpsLimitOnUpdater": 10,
-    "renderModeOverride": "deferred"
+    "fpsLimitOnUpdater": 10
   },
   "graphics": {
     "useHdr": true,
@@ -2145,8 +2144,9 @@
         "limitNonPlayerTankUnitsLod": 2,
         "limitNonPlayerShipUnitsLod": 1,
         "hangarTankLod": 1,
-        "hangarShipLod": 1,
+        "hangarShipLod": 0,
         "hangarAirplaneLod": 1,
+        "battleHideNodesInHangar": true,
         "compatibilityShadowQuality": "low",
         "hangarShadowQuality": "low",
         "grassRadiusMul": 0.5,
@@ -2228,6 +2228,7 @@
         "hangarTankLod": 1,
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
         "compatibilityShadowQuality": "low",
         "hangarShadowQuality": "low",
         "grassRadiusMul": 0.45,
@@ -2309,6 +2310,7 @@
         "hangarTankLod": 0,
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
         "compatibilityShadowQuality": "high",
         "hangarShadowQuality": "high",
         "grassRadiusMul": 0.8,
@@ -2390,6 +2392,7 @@
         "hangarTankLod": 0,
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
         "compatibilityShadowQuality": "max",
         "hangarShadowQuality": "max",
         "grassRadiusMul": 1.0,
@@ -2471,6 +2474,7 @@
         "hangarTankLod": 0,
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
         "compatibilityShadowQuality": "movie",
         "hangarShadowQuality": "movie",
         "grassRadiusMul": 2.0,
@@ -2555,8 +2559,9 @@
         "limitNonPlayerTankUnitsLod": 2,
         "limitNonPlayerShipUnitsLod": 1,
         "hangarTankLod": 1,
-        "hangarShipLod": 1,
+        "hangarShipLod": 0,
         "hangarAirplaneLod": 1,
+        "battleHideNodesInHangar": true,
         "force8bitRT": true,
         "usePostfxGlow": false,
         "lenseFlares": false,
@@ -2628,6 +2633,7 @@
         "hangarTankLod": 0,
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
         "force8bitRT": false,
         "usePostfxGlow": true,
         "lenseFlares": true,
@@ -2699,6 +2705,7 @@
         "hangarTankLod": 0,
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
         "force8bitRT": false,
         "usePostfxGlow": true,
         "lenseFlares": true,
@@ -2770,6 +2777,7 @@
         "hangarTankLod": 0,
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
         "force8bitRT": false,
         "usePostfxGlow": true,
         "lenseFlares": true,
@@ -2910,7 +2918,7 @@
           "brokenSubpasses": {
             "entry": {
               "driverMaxVer0": 512,
-              "driverMaxVer1": 415,
+              "driverMaxVer1": 420,
               "data": {
                 "affected": true
               }
@@ -2923,7 +2931,8 @@
           "brokenSubpasses": {
             "entry": {
               "gpu": "G610",
-              "driverInfo": "ce623b7dd8f8f92ae690a9a38057e2b5",
+              "driverMinVer0": 38,
+              "driverMaxVer0": 38,
               "data": {
                 "affected": true
               }

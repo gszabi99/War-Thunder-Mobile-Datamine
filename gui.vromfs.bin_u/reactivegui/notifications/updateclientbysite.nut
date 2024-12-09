@@ -14,7 +14,7 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { actualGameVersion } = require("needUpdate/needUpdateAndroidSite.nut")
+let { actualGameVersion, actualGameHash, getApkLinkWithCash } = require("needUpdate/needUpdateAndroidSite.nut")
 let { get_base_game_version_str } = require("app")
 
 let isSuggested = hardPersistWatched("suggestInstall.isSuggested", false)
@@ -111,7 +111,7 @@ function downloadAPK() {
 
   isDownloadInProgress.set(true)
 
-  let downloadId = enqueueDownload("https://wtmobile.com/apk", apkToInstall, "Download WTM RC", false, false)
+  let downloadId = enqueueDownload(getApkLinkWithCash(actualGameHash.get()), apkToInstall, "Download WTM RC", false, false)
   let status = queryDownloadStatus(downloadId)
 
   customStatusHandlers[status](downloadId)

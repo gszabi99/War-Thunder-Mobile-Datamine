@@ -412,17 +412,15 @@ function infoPanel() {
                   {
                     size = flex()
                   }
-                  {
+                  @() {
+                    watch = hangarUnit
                     flow = FLOW_VERTICAL
                     gap = infoPanelFooterGap
                     hplace = ALIGN_RIGHT
                     halign = ALIGN_RIGHT
                     children = [
-                      @() {
-                        watch = hangarUnit
-                        children = !needShowBlueprintDescr.get() ? null
-                          : mkBlueprintBarText(loc("blueprints/fullDescription"))
-                      }
+                      !needShowBlueprintDescr.get() ? null
+                        : mkBlueprintBarText(loc("blueprints/fullDescription"))
                       researchBlock(hangarUnit.get())
                       @() {
                         watch = hasUnitActions

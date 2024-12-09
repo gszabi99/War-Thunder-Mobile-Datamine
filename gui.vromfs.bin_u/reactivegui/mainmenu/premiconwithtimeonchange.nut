@@ -12,9 +12,10 @@ let { mkBalanceDiffAnims, mkBalanceHiglightAnims } = require("balanceAnimations.
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
+let { CS_GAMERCARD, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 
-let premIconW = hdpxi(90)
-let premIconH = hdpxi(70)
+let premIconW = CS_INCREASED_ICON.iconSize
+let premIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
 let highlightTrigger = {}
 
 let visibleEndsAt = hardPersistWatched("premium.visibleEndsAt", premiumEndsAt.value ?? -1)
@@ -58,7 +59,7 @@ let premImageMain = @() premImage.__merge({
   }.__update(fontBigShaded)
 })
 
-function premiumTime() {
+function premiumTime(style = CS_GAMERCARD) {
   local timeLeft = max(0, visibleEndsAt.value - serverTime.value)
   if (timeLeft >= 3 * TIME_DAY_IN_SECONDS)  //we do not show hours in such case
     timeLeft = round_by_value(timeLeft, TIME_HOUR_IN_SECONDS).tointeger()
@@ -83,7 +84,10 @@ function premiumTime() {
       { prop = AnimProp.translate, to = [0, hdpx(50)], duration = 0.3, easing = OutQuad,
         playFadeOut = true, trigger = "premiumAnimSkip" }
     ]
-  }.__update(fontSmallShaded)
+    fontFxColor = style.fontFxColor
+    fontFxFactor = style.fontFxFactor
+    fontFx = style.fontFx
+  }.__update(style.fontStyle)
 }
 
 function onChangeAnimFinish(change) {
@@ -132,6 +136,7 @@ let withHoveredBg = @(content, stateFlags) {
       watch = stateFlags
       key = stateFlags
       size = flex()
+      padding = [hdpx(3), 0]
       children =  stateFlags.value & S_HOVER ? hoverBg : null
     }
     content

@@ -171,7 +171,7 @@ let fontsSets = {
 let sortFunc = @(a, b) a.fontSize <=> b.fontSize
 let fontsLists = fontsSets.map(@(v) v.values().sort(sortFunc))
 
-let res = { fontsLists }
+let res = { fontsLists, shadeTiny }
 fontsSets.each(@(set) res.__update(set))
 
 return freeze(res)

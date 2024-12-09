@@ -25,7 +25,6 @@ let { PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
 let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
-let { openBugReport } = require("%rGui/feedback/bugReport.nut")
 let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
 
 let headerGap = hdpx(30)
@@ -222,13 +221,6 @@ let footer = @() {
   valign = ALIGN_BOTTOM
   children = curGmList.get().len() == 0 ? null
     : [
-        @() {
-          watch = hasAccessCurGmEvent
-          valign = ALIGN_BOTTOM
-          children = hasAccessCurGmEvent.get()
-            ? textButtonPrimary(utf8ToUpper(loc("mainmenu/btnFeedback")), openBugReport)
-            : null
-        }
         {
           hplace = ALIGN_CENTER
           children = squadPanel

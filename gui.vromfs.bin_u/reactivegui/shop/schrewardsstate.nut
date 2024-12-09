@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { G_UNIT, G_UNIT_UPGRADE, G_ITEM, G_CURRENCY, G_LOOTBOX, G_PREMIUM } = require("%appGlobals/rewardType.nut")
-let { getShopCategory, getGoodsType } = require("shopCommon.nut")
+let { G_UNIT, G_UNIT_UPGRADE, G_ITEM } = require("%appGlobals/rewardType.nut")
+let { getShopCategory } = require("shopCommon.nut")
 let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
 let { schRewardInProgress, apply_scheduled_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -10,40 +10,11 @@ let { isAdsAvailable, showAdsForReward } = require("%rGui/ads/adsState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { playSound } = require("sound_wt")
+let rewardsToShopGoods = require("rewardsToShopGoods.nut")
 
 
-function rewardsToGoodsFormat(schReward, id) {
-  let { rewards = [] } = schReward
-
-  //temporary while goods rewards format not the same with userstat and lootboxes
-  let res = schReward.__merge({
-    id
-    isFreeReward = true
-    units = []
-    unitUpgrades = []
-    items = {}
-    lootboxes = {}
-    premiumDays = 0
-    currencies = {}
-  })
-
-  foreach(g in rewards)
-    if (g.gType == G_UNIT)
-      res.units.append(g.id)
-    else if (g.gType == G_UNIT_UPGRADE)
-      res.unitUpgrades.append(g.id)
-    else if (g.gType == G_ITEM)
-      res.items[g.id] <- g.count
-    else if (g.gType == G_LOOTBOX)
-      res.lootboxes[g.id] <- g.count
-    else if (g.gType == G_CURRENCY)
-      res.currencies[g.id] <- g.count
-    else if (g.gType == G_PREMIUM)
-      res.premiumDays += g.count
-
-  res.gtype <- getGoodsType(res)
-  return res
-}
+let rewardsToGoodsFormat = @(schReward, id)
+  schReward.__merge({ id, isFreeReward = true }, rewardsToShopGoods(schReward?.rewards ?? []))
 
 function isRewardsFitToCampaign(schReward, cConfigs) {
   let { rewards = [] } = schReward

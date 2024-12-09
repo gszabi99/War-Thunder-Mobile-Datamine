@@ -617,19 +617,6 @@ function mkRewardPlatePrizeTicketImage(r, rStyle, rewardCtors) {
     : openRewardPrizeView(rewards, rewardCtors), rStyle)
 }
 
-let mkRewardPlatePrizeTicketTitle = @(r, slots, rStyle) {
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_TOP
-  children = {
-    rendObj = ROBJ_TEXTAREA
-    behavior = Behaviors.TextArea
-    maxWidth = rStyle.boxSize * slots
-    halign = ALIGN_CENTER
-    text = r?.label ?? loc("events/choosePrize")
-    color = 0xFFC5C5C5
-  }.__update(fontVeryTinyAccented)
-}
-
 // UNKNOWN ////////////////////////////////////////////////////////////////////
 
 function mkRewardPlateUnknownImage(r, rStyle) {
@@ -745,7 +732,7 @@ let simpleRewardPlateCtors = {
 let complexRewardPlateCtors = {
   prizeTicket = {
     image = @(r, rStyle) mkRewardPlatePrizeTicketImage(r, rStyle, simpleRewardPlateCtors)
-    texts = @(r, rStyle) mkRewardPlatePrizeTicketTitle(r, rewardTicketDefaultSlots, rStyle)
+    texts = @(_, _) null
   }
 }
 

@@ -22,6 +22,7 @@ const PROGRESS_MODS = "ModsInProgress"
 const PROGRESS_SKINS = "SkinsInProgress"
 const PROGRESS_BOOSTER = "BoosterInProgress"
 const PROGRESS_SLOT = "SlotInProgress"
+const PROGRESS_PERSONAL_GOODS = "PersonalGoodsInProgress"
 
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
@@ -225,6 +226,7 @@ return {
   skinsInProgress = mkProgress(PROGRESS_SKINS)
   boosterInProgress = mkProgress(PROGRESS_BOOSTER)
   slotInProgress = mkProgress(PROGRESS_SLOT)
+  personalGoodsInProgress = mkProgress(PROGRESS_PERSONAL_GOODS)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -389,6 +391,12 @@ return {
 
   get_battle_data_for_overrided_mission = @(cb = null)
     request({ method = "get_battle_data_for_overrided_mission" }, cb)
+
+  get_battle_data_for_overrided_preset = @(preset, unitList, cb = null)
+    request({
+      method = "get_battle_data_for_overrided_preset"
+      params = { preset, unitList }
+    }, cb)
 
   get_battle_data_jwt = @(unitId, cb = null) request({
     method = "get_battle_data_jwt"
@@ -774,5 +782,42 @@ return {
     params = { id, rewardIndexes }
     progressId = PROGRESS_REWARD
     progressValue = rewardIndexes
+  }, cb)
+
+  check_new_personal_goods = @(cb = null) request({
+    method = "check_new_personal_goods"
+    progressId = PROGRESS_PERSONAL_GOODS
+    progressValue = ""
+  }, cb)
+
+  shift_all_personal_goods_time = @(time, cb = null) request({
+    method = "shift_all_personal_goods_time"
+    params = { time }
+    progressId = PROGRESS_PERSONAL_GOODS
+    progressValue = ""
+  }, cb)
+
+  buy_personal_goods = @(goodsId, groupId, variantId, currencyId, price, cb = null) request({
+    method = "buy_personal_goods"
+    params = { goodsId, groupId, variantId, currencyId, price }
+    progressId = PROGRESS_PERSONAL_GOODS
+    progressValue = ""
+  }, cb)
+
+  halt_personal_goods_purchase = @(goodsId, cb = null) request({
+    method = "halt_personal_goods_purchase"
+    params = { goodsId }
+    progressId = PROGRESS_PERSONAL_GOODS
+    progressValue = ""
+  }, cb)
+
+  apply_deeplink_reward = @(id, campaign, cb = null) request({
+    method = "apply_deeplink_reward"
+    params = { id, campaign }
+  }, cb)
+
+  authorize_deeplink_reward = @(id, cb = null) request({
+    method = "authorize_deeplink_reward"
+    params = { id }
   }, cb)
 }

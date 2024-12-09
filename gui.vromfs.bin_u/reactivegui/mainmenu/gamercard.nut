@@ -7,19 +7,19 @@ let { WP, GOLD, PLATINUM, orderByCurrency } = require("%appGlobals/currenciesSta
 let { SC_GOLD, SC_WP, SC_PLATINUM, SC_FEATURED } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByCategory } = require("%rGui/shop/shopState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate
+let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate, levelProgressBarWidth
 } = require("%rGui/components/levelBlockPkg.nut")
 let accountOptionsScene = require("%rGui/options/accountOptionsScene.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
 let { mkCurrencyBalance, mkItemsBalance } = require("balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
-let { textColor, premiumTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
+let { textColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let premIconWithTimeOnChange = require("premIconWithTimeOnChange.nut")
 let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { priorityUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
 let { openBuyEventCurrenciesWnd } = require("%rGui/event/buyEventCurrenciesState.nut")
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { mkUnitLevelBlock } = require("%rGui/unit/components/unitLevelComp.nut")
@@ -27,6 +27,8 @@ let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
+let { CS_GAMERCARD, CS_COMMON } = require("%rGui/components/currencyComp.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 
 
 let nextLevelBorderColor = 0xFFDADADA
@@ -58,9 +60,12 @@ let avatar = @() {
   watch = [myAvatarImage, hasUnseenDecorators]
   rendObj = ROBJ_IMAGE
   size = [avatarSize, avatarSize]
-  image = Picture($"{myAvatarImage.value}:{avatarSize}:{avatarSize}:P")
+  image = Picture($"{myAvatarImage.get()}:{avatarSize}:{avatarSize}:P")
   halign = ALIGN_RIGHT
-  children = hasUnseenDecorators.value ? priorityUnseenMark : null
+  children = {
+    pos = [unseenSize[0] / 2, -unseenSize[1] / 2]
+    children = hasUnseenDecorators.get() ? priorityUnseenMark : null
+  }
 }
 
 let name =  @() textParams.__merge({
@@ -206,31 +211,30 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
 
 
 let hoverBg = {
-  vplace = ALIGN_CENTER
-  size = [pw(150), ph(130)]
+  size = [pw(120), flex()]
   color = 0x8052C4E4
-  opacity =  0.5
+  opacity = 1
   rendObj = ROBJ_9RECT
   image = gradCircularSmallHorCorners
   screenOffs = hdpx(100)
   texOffs = gradCircCornerOffset
 }
 
-let gamercardProfile = {
+let gamercardProfile = @() {
+  watch = profileStateFlags
+  behavior = Behaviors.Button
+  onElemState = @(sf) profileStateFlags.set(sf)
+  onClick = @() accountOptionsScene()
+  sound = { click  = "meta_profile_button" }
   children = [
-    @() {
-      watch = profileStateFlags
-      size = flex()
-      children = profileStateFlags.value & S_HOVER ? hoverBg : null
+    {
+      size = [levelProgressBarWidth + avatarSize, flex()]
+      children = profileStateFlags.get() & S_HOVER ? hoverBg : null
     }
     {
       flow = FLOW_HORIZONTAL
       size = [SIZE_TO_CONTENT, avatarSize]
       gap = profileGap
-      behavior = Behaviors.Button
-      onElemState = @(sf) profileStateFlags(sf)
-      onClick = @() accountOptionsScene()
-      sound = { click  = "meta_profile_button" }
       children = [
         avatar
         {
@@ -330,30 +334,56 @@ let mkLeftBlockUnitCampaign = @(backCb, keyHintText, unit = hangarUnit) @() {
   ]
 }
 
-function mkImageBtn(image, onClick, children = null, ovr = {}) {
+function mkShopImage(style) {
+  let iconSize = style.iconSize
+  return @() {
+    watch = needShopUnseenMark
+    rendObj = ROBJ_IMAGE
+    size = [iconSize, iconSize]
+    vplace = ALIGN_CENTER
+    color = 0xFFFFFFFF
+    keepAspect = KEEP_ASPECT_FIT
+    image = Picture($"ui/gameuiskin#icon_shop.svg:{iconSize}:{iconSize}:P")
+    children = needShopUnseenMark.get() ? priorityUnseenMark : null
+  }
+}
+
+let mkShopText = @(style) {
+  rendObj = ROBJ_TEXT
+  text = utf8ToUpper(loc("topmenu/store"))
+  color = style.textColor
+  fontFxColor = style.fontFxColor
+  fontFxFactor = style.fontFxFactor
+  fontFx = style.fontFx
+}.__update(style.fontStyle)
+
+function shopBtn() {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
-    size = [hdpxi(65), hdpxi(60)]
-    onElemState = @(sf) stateFlags(sf)
     behavior = Behaviors.Button
-    rendObj = ROBJ_IMAGE
-    onClick
-    color = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
-    image = Picture($"{image}:{hdpxi(65)}:{hdpxi(60)}:P")
-    transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    children
-  }.__update(ovr)
+    onClick = @() openShopWnd(SC_FEATURED)
+    onElemState = @(sf) stateFlags.set(sf)
+    sound = { click  = "meta_shop_buttons" }
+    children = [
+      {
+        size = flex()
+        vplace = ALIGN_CENTER
+        padding = [hdpx(3), 0]
+        children = stateFlags.get() & S_HOVER ? hoverBg : null
+      }
+      {
+        flow = FLOW_HORIZONTAL
+        valign = ALIGN_CENTER
+        gap = hdpx(12)
+        children = [
+          mkShopImage(CS_COMMON)
+          mkShopText(CS_GAMERCARD)
+        ]
+      }
+    ]
+  }
 }
-
-let shopBtn = mkImageBtn("ui/gameuiskin#icon_shop.svg", @() openShopWnd(SC_FEATURED),
-  @() {
-    watch = needShopUnseenMark
-    pos = [hdpx(5), -hdpx(5)]
-    hplace = ALIGN_RIGHT
-    children = needShopUnseenMark.value ? priorityUnseenMark : null
-  },
-  { sound = { click  = "meta_shop_buttons" } } )
 
 let mkGamercard = @(menuBtn, backCb = null) {
   size = [ saSize[0], gamercardHeight ]
@@ -367,12 +397,15 @@ let mkGamercard = @(menuBtn, backCb = null) {
       valign = ALIGN_CENTER
       gap = gamercardGap
       children = [
-        shopBtn
+        shopBtn()
         premIconWithTimeOnChange
         mkCurrencyBalance(WP, openBuyCurrencyWnd(WP))
         mkCurrencyBalance(GOLD, openBuyCurrencyWnd(GOLD))
         mkCurrencyBalance(PLATINUM, openBuyCurrencyWnd(PLATINUM))
-        menuBtn
+        {
+          margin = [0, 0, 0, hdpx(20)]
+          children = menuBtn
+        }
       ]
     }
   ]
@@ -403,7 +436,7 @@ let gamercardWithoutLevelBlock = {
       valign = ALIGN_CENTER
       gap = gamercardGap
       children = [
-        shopBtn
+        shopBtn()
         premIconWithTimeOnChange
         mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
         mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))

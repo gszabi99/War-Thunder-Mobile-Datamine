@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-from "app" import is_dev_version
 let { allow_voice_messages } = require("%appGlobals/permissions.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
@@ -36,11 +35,8 @@ let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkCircleBtnPlaneEd
   bigButtonSize, bigButtonImgSize, mkCircleZoomCtor, mkCircleWeaponryItemCtor, mkCircleLockBtn, mkBigCirclePlaneBtnEditView, airButtonSize,
   buttonAirImgSize, mkCircleSecondaryGuns
 } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
-let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun,
-  BombsState, hasBombs,
-  RocketsState, hasRockets,
-  TorpedoesState, hasTorpedos,
-  isActiveTurretCamera
+let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun, isActiveTurretCamera
+  hasBombs, RocketsState, hasRockets, TorpedoesState, hasTorpedos,
 } = require("%rGui/hud/airState.nut")
 let { mkSimpleSquareButton, mkSquareButtonEditView } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
 let { mkZoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
@@ -64,10 +60,9 @@ return cfgHudCommon.__merge({
   }
 
   bomb = {
-    ctor = is_dev_version() ? bombPieStickBlockCtor
-      : mkCircleWeaponryItemCtor("ID_BOMBS", BombsState, hasBombs, "ui/gameuiskin#hud_bomb.svg", false, true)
+    ctor = bombPieStickBlockCtor
     defTransform = mkLBPos([hdpx(327), hdpx(-5)])
-    editView = is_dev_version() ? bombPieStickView : mkCircleBtnPlaneEditView("ui/gameuiskin#hud_bomb.svg")
+    editView = bombPieStickView
     priority = Z_ORDER.BUTTON_PRIMARY
     isVisibleInBattle = hasBombs
   }

@@ -4,6 +4,7 @@ let { openEventWnd, specialEventsLootboxesState, unseenLootboxes, unseenLootboxe
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
 let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
+let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { openQuestsWndOnTab, questsCfg, progressUnlockByTab, progressUnlockBySection,
   hasUnseenQuestsBySection } = require("%rGui/quests/questsState.nut")
 
@@ -22,7 +23,7 @@ let statusMark = @(eventId) @() {
 function btnsOpenSpecialEvents() {
   let children = []
   specialEventsLootboxesState.get().withLootboxes.each(@(evt)
-    children.append(translucentButton($"ui/gameuiskin#icon_event_{evt.eventName}.svg",
+    children.append(translucentButton(getEventPresentation(evt.eventName).icon,
       "",
       @() openEventWnd(evt.eventId),
       @(_) @() {
@@ -36,7 +37,7 @@ function btnsOpenSpecialEvents() {
       }
     )))
   specialEventsLootboxesState.get().withoutLootboxes.each(@(evt)
-    children.append(translucentButton($"ui/gameuiskin#icon_event_{evt.eventName}_quests.svg",
+    children.append(translucentButton(getEventPresentation(evt.eventName).icon,
       "",
       @() openQuestsWndOnTab(evt.eventId)
       @(_) statusMark(evt.eventId)

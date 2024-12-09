@@ -27,11 +27,10 @@ let gamercardGap = sw(100) >= hdpx(2200) ? hdpx(45)
   : sw(100) >= hdpx(2000) ? hdpx(30)
   : hdpx(25)
 
-let CS_GAMERCARD = sw(100) >= hdpx(2100)
-  ? CS_INCREASED_ICON
-  : CS_COMMON.__merge({
-      fontStyle = fontTinyAccented
-    })
+let CS_GAMERCARD = CS_COMMON.__merge({
+  fontStyle = fontTinyAccented
+  iconSize = hdpxi(40)
+})
 
 return freeze({
   gamercardGap

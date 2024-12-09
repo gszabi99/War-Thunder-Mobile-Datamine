@@ -26311,7 +26311,7 @@
           "ammoCount": 36,
           "isBeltAmmo": false
         },
-        "420mm_kh35_alike_rocket_naval_bullet": {
+        "574mm_85ru_alike_rocket_naval_bullet": {
           "wtype": "rockets",
           "damage": 9000.0,
           "shotFreq": 4.2,
@@ -26319,7 +26319,7 @@
           "rocketsSalvo": 4,
           "distToLive": 10000.0,
           "gunsCount": 1,
-          "caliber": 420.0,
+          "caliber": 580.0,
           "ammoCount": 400,
           "isBeltAmmo": false
         },
@@ -26448,8 +26448,8 @@
           "wtype": "auxCannon",
           "damage": 250.0,
           "shotFreq": 0.385,
-          "gunsCount": 8,
-          "gunsTotalCount": 16,
+          "gunsCount": 7,
+          "gunsTotalCount": 14,
           "gunsMult": 0.5,
           "caliber": 102.0,
           "ammoCount": 2100,
@@ -26457,9 +26457,9 @@
         },
         "uk_533mm_21in_mk4_torpedo": {
           "wtype": "torpedo",
-          "damage": 5340.0,
+          "damage": 6030.0,
           "shotFreq": 0.05,
-          "distToLive": 2500.0,
+          "distToLive": 3500.0,
           "gunsCount": 2,
           "caliber": 533.0,
           "ammoCount": 20,

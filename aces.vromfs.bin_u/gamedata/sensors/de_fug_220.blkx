@@ -59,9 +59,6 @@
           "setTransiver": {
             "transiver": "search"
           },
-          "setScopeRange": {
-            "scopeRangeIndex": 0
-          },
           "setCenterElevation": {
             "source": "constant",
             "value": -17.5
@@ -79,8 +76,7 @@
           },
           "setScanPattern": {
             "scanPattern": "search"
-          },
-          "clearTargets": {}
+          }
         },
         "setSearchMode": {
           "setModeName": {

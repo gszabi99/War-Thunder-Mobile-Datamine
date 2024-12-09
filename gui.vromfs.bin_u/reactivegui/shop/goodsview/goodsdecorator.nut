@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsWrap
   goodsH, goodsSmallSize, goodsBgH, mkSlotBgImg, mkBgParticles, borderBg,
-  purchasedPlate, goodsW, limitFontGrad, mkGradeTitle, mkEndTime
+  goodsW, limitFontGrad, mkGradeTitle, mkEndTime
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let { allDecorators, myDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { getGoodsIcon } = require("%appGlobals/config/goodsPresentation.nut")
+let { ALL_PURCHASED } = require("%rGui/shop/goodsStates.nut")
 
 
 let bgSize = [goodsSmallSize[0], goodsBgH]
@@ -92,8 +93,8 @@ let mkDecoratorContent = @(decoratorId) function() {
 
 function mkGoodsDecorator(goods, onClick, state, animParams) {
   let decoratorId = goods?.decorators[0]
-  let myDecorator = Computed(@() myDecorators.get()?[decoratorId])
-  let onDecoratorClick = myDecorator.get() == null ? onClick : null
+  let ovrState = Computed(@() state.get() | (myDecorators.get()?[decoratorId] != null ? ALL_PURCHASED : 0))
+  let onDecoratorClick = (ovrState.get() & ALL_PURCHASED) == 0 ? onClick : null
   return mkGoodsWrap(
     goods,
     onDecoratorClick,
@@ -104,9 +105,9 @@ function mkGoodsDecorator(goods, onClick, state, animParams) {
       borderBg
       mkDecoratorContent(decoratorId)
       mkEndTime(goods)
-    ].extend(mkGoodsCommonParts(goods, state)),
-    myDecorator.get() == null ? mkPricePlate(goods, state, animParams) : purchasedPlate
-    { watch = myDecorator, size = [goodsSmallSize[0], goodsH] })
+    ].extend(mkGoodsCommonParts(goods, ovrState)),
+    mkPricePlate(goods, ovrState, animParams)
+    { size = [goodsSmallSize[0], goodsH] })
 }
 
 function getLocNameDecorator(goods) {

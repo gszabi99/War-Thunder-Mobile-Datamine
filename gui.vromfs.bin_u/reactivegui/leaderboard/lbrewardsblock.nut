@@ -85,7 +85,7 @@ function mkRewardRow(rewardInfo, idx) {
         flow = FLOW_HORIZONTAL
         halign = ALIGN_RIGHT
         gap = lbRewardsGap
-        children = mkRewardsPreview(rewardsViewInfo, !isReady.get(), MAX_REWARDS_SLOTS_COUNT, rewardStyle)
+        children = mkRewardsPreview(rewardsViewInfo, false, MAX_REWARDS_SLOTS_COUNT, rewardStyle)
       }
     ]
   }

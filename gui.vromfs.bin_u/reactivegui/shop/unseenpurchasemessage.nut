@@ -521,8 +521,7 @@ function mkPrizeTicketIcon(rewardInfo, rStyle) {
         vplace = ALIGN_CENTER
         children = mkHighlight(startDelay, aRewardIconFlareScale)
       }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
-      mkRewardPlate({ label = loc("events/continueToChoose")}.__merge(reward),
-        { needShowPreview = false }.__merge(rStyle))
+      mkRewardPlate(reward, { needShowPreview = false }.__merge(rStyle))
     ]
   }
 }
@@ -561,8 +560,11 @@ let rewardCtors = {
   }
   prizeTicket = {
     mkIcon = @(rewardInfo) mkPrizeTicketIcon(rewardInfo, REWARD_STYLE_MEDIUM)
-    mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, loc("events/countPrizes",
-      { countPrize = rewardInfo.count, count = rewardInfo.count }))
+    mkText = function(rewardInfo) {
+      let { count } = rewardInfo
+      let key = count > 1 ? "events/continueToChooseSome" : "events/continueToChoose"
+      return mkRewardLabel(rewardInfo.startDelay, loc(key, { countPrize = count, count }))
+    }
   }
 }
 

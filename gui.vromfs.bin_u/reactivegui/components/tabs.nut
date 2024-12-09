@@ -90,4 +90,6 @@ return {
   mkTabs
   tabsGap
   bgColor
+  selLineGap
+  selLineSize
 }

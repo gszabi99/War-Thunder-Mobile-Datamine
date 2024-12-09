@@ -14,12 +14,12 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
-let { framedImageBtn, framedBtnSize } = require("%rGui/components/imageButton.nut")
+let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let invitationsBtn = require("%rGui/invitations/invitationsBtn.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let squadMemberInfoWnd = require("squadMemberInfoWnd.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { priorityUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
 
 let gap = hdpx(24)
 let memberSize = evenPx(80)
@@ -46,9 +46,12 @@ let contactsBtn = framedImageBtn("ui/gameuiskin#icon_contacts.svg", openContacts
     size = [memberSize, memberSize]
   },
   @() {
+    size = flex()
     watch = requestsToMeUids
-    pos = [0.5 * framedBtnSize[0], -0.5 * framedBtnSize[1]]
-    children = requestsToMeUids.value.len() > 0 ? priorityUnseenMark : null
+    halign = ALIGN_RIGHT
+    valign = ALIGN_TOP
+    pos = [unseenSize[0] / 2, -unseenSize[1] / 2]
+    children = requestsToMeUids.get().len() > 0 ? priorityUnseenMark : null
   })
 
 let mkAvatar = @(info, onlineStatus, isInviteeV) function() {

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { hasUnread, hasImportantUnread, openInvitations, invitations } = require("invitationsState.nut")
-let { framedImageBtn, framedBtnSize } = require("%rGui/components/imageButton.nut")
-let { priorityUnseenMark, unseenMark } = require("%rGui/components/unseenMark.nut")
+let { framedImageBtn } = require("%rGui/components/imageButton.nut")
+let { priorityUnseenMark, unseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
 
 let invitationsBtn = @() {
   watch = invitations
@@ -14,9 +14,12 @@ let invitationsBtn = @() {
         },
         @() {
           watch = [hasUnread, hasImportantUnread]
-          pos = [0.5 * framedBtnSize[0], -0.5 * framedBtnSize[1]]
-          children = hasImportantUnread.value ? priorityUnseenMark
-            : hasUnread.value ? unseenMark
+          size = flex()
+          halign = ALIGN_RIGHT
+          valign = ALIGN_TOP
+          pos = [unseenSize[0] / 2, -unseenSize[1] / 2]
+          children = hasImportantUnread.get() ? priorityUnseenMark
+            : hasUnread.get() ? unseenMark
             : null
         })
 }

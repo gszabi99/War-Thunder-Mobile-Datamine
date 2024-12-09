@@ -18,6 +18,7 @@ let { doesLocTextExist } = require("dagor.localize")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { shopGoods, openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_FEATURED } = require("%rGui/shop/shopCommon.nut")
+let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 
 
 let iconSize = hdpxi(100)
@@ -49,7 +50,7 @@ let linkToBattlePassBtnCtor = @() mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
 
 function linkToStoreBtnCtor(id) {
   let eventName = Computed(@() questsCfg.get()?[id][0] ?? "")
-  let eventIcon = Computed(@() $"ui/gameuiskin#icon_event_{eventName.get()}_quests.svg")
+  let eventIcon = Computed(@() getEventPresentation(eventName.get()).icon)
   let hasGoods = Computed(@() eventName.get() != ""
     && shopGoods.get().findindex(@(item) item?.meta.eventId == eventName.get()) != null)
 
@@ -95,7 +96,7 @@ function eventTabContent(){
 function mkSpecialEventTabContent(idx) {
   let endsAt = Computed(@() specialEventsOrdered.get()?[idx].endsAt)
   let locId = Computed(@() $"events/name/{specialEventsOrdered.get()?[idx].eventName}")
-  let image = Computed(@() $"ui/gameuiskin#icon_event_{specialEventsOrdered.get()?[idx].eventName}_quests_wnd.svg")
+  let image = Computed(@() getEventPresentation(specialEventsOrdered.get()?[idx].eventName).icon)
 
   return {
     size = flex()

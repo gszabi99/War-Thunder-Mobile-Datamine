@@ -83,6 +83,8 @@ let skinsByTag = {
     "us_camo_dark_green_light_olive"
     "jp_camo_post_sand_gray_green"
     "hw_camo"
+    "ussr_modern_def_sand"
+    "usa_modern_winter_verdant"
   ],
 
   [DESERT] = [
@@ -133,6 +135,7 @@ let skinsByTag = {
     "uk_camo_standart_modern_desert_bicolor"
     "fr_camo_carc_desert"
     "ger_camo_modern_desert_threecolor"
+    "usa_modern_red_desert"
   ],
 
   [WINTER] = [
@@ -167,6 +170,7 @@ let skinsByTag = {
     "us_camo_modern_winter_tan"
     "fr_camo_carc_winter"
     "fr_camo_cenzub"
+    "ussr_camo_arctic"
   ],
 
   [NAVAL] = [

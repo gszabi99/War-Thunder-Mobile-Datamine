@@ -3,7 +3,7 @@ let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
 let { btnBEsc } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 
-let menuButtonSize = hdpx(60)
+let menuButtonSize = hdpx(45)
 let separatorWidth = hdpx(2)
 
 function makeMenuBtn(onClick) {

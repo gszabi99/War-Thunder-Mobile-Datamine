@@ -1,39 +1,37 @@
 from "%globalsDarg/darg_library.nut" import *
+let { ceil } = require("%sqstd/math.nut")
 let { defer } = require("dagor.workcycle")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { shopCategoriesCfg } = require("shopCommon.nut")
 let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount, saveSeenGoodsCurrent,
-  pageScrollHandler
+  pageScrollHandler, onTabChange
 } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory } = require("schRewardsState.nut")
-let { mkShopTabs, tabW } = require("%rGui/shop/shopWndTabs.nut")
+let { personalGoodsByShopCategory } = require("personalGoodsState.nut")
+let { mkShopTabs } = require("%rGui/shop/shopWndTabs.nut")
 let { mkShopPage, mkShopGamercard } = require("%rGui/shop/shopWndPage.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("unseenPurchasesState.nut")
 let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { fullTabW, shopGap, titleH, titleGap, goodsH, goodsPerRow, goodsGap, categoryGap } = require("shopWndConst.nut")
+let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 
-let gapFromGamercard = hdpx(40)
-let opacityGradWidth = saBorders[0]
-let shopPageH = saSize[1] - gapFromGamercard - gamercardHeight
-let shopPageW = saSize[0] - tabW + opacityGradWidth
 
-local lastScrollPosX = 0
-let resetScrollPos = @() lastScrollPosX = 0
+let gapFromGamercard = hdpx(20)
+let marginTopFromGamercard = hdpx(20)
+let shopContentGradient = marginTopFromGamercard + hdpx(8)
+let shopContentW = saSize[0] + saBorders[0] - fullTabW
+let shopContentH = saSize[1] + saBorders[1] - gapFromGamercard - gamercardHeight
+
+local lastScrollPosY = 0
+let resetScrollPos = @() lastScrollPosY = 0
 let close = @() isShopOpened.set(false)
 isShopOpened.subscribe(@(v) v ? null : resetScrollPos())
 isPurchEffectVisible.subscribe(@(v) v && isShopOpened.get() ? close() : null)
-
-let curCategoriesCfg = Computed(@() shopCategoriesCfg
-  .filter(@(c) c.id in actualSchRewardByCategory.get()
-    || c.id in goodsByCategory.get()))
-
-curCategoryId.subscribe(@(_) pageScrollHandler.scrollToX(0))
 
 let pannable = @(ovr) {
   size = flex()
@@ -56,60 +54,105 @@ function onClose() {
   close()
 }
 
-let scrollArrowsBlock = {
-  size = [shopPageW + hdpx(30), SIZE_TO_CONTENT]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  children = [
-    mkScrollArrow(pageScrollHandler, MR_L)
-    mkScrollArrow(pageScrollHandler, MR_R)
-  ]
+let pannableArea = verticalPannableAreaCtor(shopContentH, [shopContentGradient, saBorders[1] + shopContentGradient])
+
+function mkShopContent() {
+  let curCategoriesCfg = Computed(@() shopCategoriesCfg
+    .filter(@(c) c.id in actualSchRewardByCategory.get() || c.id in goodsByCategory.get() || c.id in personalGoodsByShopCategory.get()))
+  let distances = Computed(function() {
+    let allGoodsLists = goodsByCategory.get()
+    let allRewards = actualSchRewardByCategory.get()
+    let allPersonal = personalGoodsByShopCategory.get()
+    local top = 0
+    local totalRows = 0
+    local totalHeaders = 0
+    let res = {}
+    foreach (cfg in curCategoriesCfg.get()) {
+      let { id = "" } = cfg
+      let goodsRewardLen = (allGoodsLists?[id] ?? []).len() + (allRewards?[id] == null ? 0 : 1) + (allPersonal?[id].len() ?? 0)
+      let rows = ceil(1.0 * goodsRewardLen / goodsPerRow)
+      let bottom = top + titleH + titleGap + rows * goodsH + (rows - 1) * goodsGap + categoryGap
+      let additionalTriggerSpace = categoryGap + goodsH / 3
+      res[id] <- {
+        top = top <= 0 ? 0 : top - additionalTriggerSpace
+        scrollTo = top
+        bottom = bottom - 1 - additionalTriggerSpace
+        rowsBefore = totalRows
+        headersBefore = totalHeaders
+      }
+      top = bottom
+      if (goodsRewardLen > 0) {
+        totalRows += rows
+        totalHeaders++
+      }
+    }
+    return res
+  })
+
+  function tryDoActionForCurrentScroll(action) {
+    let currentY = pageScrollHandler?.elem.getScrollOffsY()
+    if (currentY == null)
+      return
+    let idx = distances.get().findindex(@(v) currentY >= v.top && currentY <= v.bottom)
+    if (idx != curCategoryId.get() && idx != null)
+      action(idx)
+  }
+
+  let scrollToCurCategory = @() pageScrollHandler.scrollToY(distances.get()[curCategoryId.get()].scrollTo)
+  let onPageScroll = @(_) tryDoActionForCurrentScroll(@(idx) onTabChange(idx))
+  let onChangeCategory = @(_) tryDoActionForCurrentScroll(@(_) scrollToCurCategory())
+
+  return {
+    key = distances
+    size = [shopContentW + fullTabW, flex()]
+    flow = FLOW_HORIZONTAL
+    clipChildren = true
+    function onAttach() {
+      pageScrollHandler.scrollToY(lastScrollPosY)
+      resetScrollPos()
+      pageScrollHandler.subscribe(onPageScroll)
+      curCategoryId.subscribe(onChangeCategory)
+      scrollToCurCategory()
+    }
+    function onDetach() {
+      pageScrollHandler.unsubscribe(onPageScroll)
+      curCategoryId.unsubscribe(onChangeCategory)
+    }
+    children = [
+      {
+        margin = [marginTopFromGamercard, 0, 0, 0]
+        size = [fullTabW, flex()]
+        children = @() pannable({
+          watch = [curCategoriesCfg, curCampaign]
+          children = @() mkShopTabs(curCategoriesCfg.get(), curCategoryId, curCampaign.get())
+        })
+      }
+      pannableArea(mkShopPage(curCategoriesCfg, distances),
+        { pos = [0, 0] },
+        {
+          size = [SIZE_TO_CONTENT, flex()]
+          minWidth = shopContentW
+          padding = [0, 0, 0, shopGap]
+          behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
+          flow = FLOW_VERTICAL
+          scrollHandler = pageScrollHandler
+          onScroll = @(elem) lastScrollPosY = elem.getScrollOffsY() ?? 0
+        })
+    ]
+  }
 }
 
-let shopContent = {
-  size = [saSize[0] + opacityGradWidth, flex()]
-  flow = FLOW_HORIZONTAL
-  children = [
-    {
-      size = [tabW, flex()]
-      clipChildren = true
-      children = @() pannable({
-        watch = [curCategoriesCfg, curCampaign]
-        children = @() mkShopTabs(curCategoriesCfg.get(), curCategoryId, curCampaign.get())
-      })
-    }
-    {
-      size = [shopPageW, shopPageH]
-      children = [
-        horizontalPannableAreaCtor(shopPageW, [opacityGradWidth, opacityGradWidth])(
-          mkShopPage(shopPageW, shopPageH),
-          { pos = [0, 0] },
-          {
-            behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
-            scrollHandler = pageScrollHandler
-            onScroll = @(elem) lastScrollPosX = elem.getScrollOffsX() ?? 0
-          })
-        scrollArrowsBlock
-      ]
-    }
-  ]
-}
-
-let shopScene = bgShaded.__merge({
-  key = {}
+let shopScene = @() bgShaded.__merge({
+  key = isShopOpened
   size = flex()
-  padding = saBordersRv
+  padding = [saBorders[1], saBorders[0], 0, saBorders[0]]
   flow = FLOW_VERTICAL
   gap = gapFromGamercard
-  function onAttach() {
-    addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
-    pageScrollHandler.scrollToX(lastScrollPosX)
-    resetScrollPos()
-  },
+  onAttach = @() addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
   onDetach = @() removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
   children = [
     mkShopGamercard(onClose)
-    shopContent
+    mkShopContent()
   ]
   animations = wndSwitchAnim
 })

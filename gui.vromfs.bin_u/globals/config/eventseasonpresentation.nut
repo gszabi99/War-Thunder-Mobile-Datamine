@@ -14,10 +14,12 @@ let presentations = {
 
   blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
+  event_new_year               = { icon = "ui/gameuiskin#icon_event_christmas.svg" }
 }
 
 let genParams = {
   name = @(name) name
+  icon = @(name) $"ui/gameuiskin#icon_event_{name}.svg"
   image = @(name) $"ui/gameuiskin#banner_event_{name}.avif"
   color = @(_) 0xA5FF2B00
   imageOffset = @(_) [0, 0]

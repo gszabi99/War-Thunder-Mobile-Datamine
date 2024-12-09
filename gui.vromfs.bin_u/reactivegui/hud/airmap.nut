@@ -17,7 +17,7 @@ let airMapEditView = {
   valign = ALIGN_CENTER
   children = {
     rendObj = ROBJ_TEXT
-    text = loc("air_map")
+    text = loc("hotkeys/ID_TACTICAL_MAP")
   }.__update(fontSmall)
 }
 

@@ -192,6 +192,7 @@
       "_replicate": true,
       "isBattleDataReceived": false,
       "isUnitsOverrided": false,
+      "ovrUnitUpgradesPreset": "",
       "unitSlots:list<t>": {},
       "commonStats:object": {}
     },

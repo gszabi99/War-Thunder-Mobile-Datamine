@@ -10,7 +10,7 @@ let { get_mp_session_id_str, is_local_multiplayer } = require("multiplayer")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { splitStringBySize } = require("%sqstd/string.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { battleData, isBattleDataActual, actualizeBattleData,
+let { battleData, isBattleDataActual, actualizeBattleData, bdOvrMissionParams,
  battleDataOvrMission, isBattleDataOvrMissionActual, actualizeBattleDataOvrMission
 } = require("menuBattleData.nut")
 let getDefaultBattleData = require("%appGlobals/data/getDefaultBattleData.nut")
@@ -37,7 +37,7 @@ enum ACTION {
 }
 
 let curUnitName = mkWatched(persist, "battleDataUnit", null)
-let state = mkWatched(persist, "state", null) //eid, sessionId, slots, isSlots, data, isBattleDataReceived, isUnitsOverrided
+let state = mkWatched(persist, "state", null) //eid, sessionId, slots, isSlots, data, isBattleDataReceived, isUnitsOverrided, ovrUnitUpgradesPreset
 let isBattleDataApplied = mkWatched(persist, "isBattleDataApplied", false)
 let wasBattleDataApplied = mkWatched(persist, "wasBattleDataApplied", false)
 let lastClientBattleData = mkWatched(persist, "lastAppliedClientBattleData", null)
@@ -49,7 +49,7 @@ function isUnitsInfoSame(unitsInfo, isSlots, slots) {
 }
 
 let curAction = keepref(Computed(function() {
-  let { isBattleDataReceived = null, isUnitsOverrided = null, sessionId = -1, data = null,
+  let { isBattleDataReceived = null, isUnitsOverrided = null, ovrUnitUpgradesPreset = "", sessionId = -1, data = null,
     isSlots = false, slots = null
   } = state.get()
   if (isBattleDataReceived == null || sessionId != get_mp_session_id_str())
@@ -61,9 +61,12 @@ let curAction = keepref(Computed(function() {
     return ACTION.NOTHING
 
   if (isUnitsOverrided) {
-    if ((shouldDisableMenu || isOfflineMenu) && !isBattleDataOvrMissionActual.get()) //actual battle data has info from jwt token
+    let isActual = isBattleDataOvrMissionActual.get()
+      && (bdOvrMissionParams.get()?.preset ?? "") == ovrUnitUpgradesPreset
+      && (ovrUnitUpgradesPreset == "" || isEqual(bdOvrMissionParams.get()?.unitList, slots))
+    if ((shouldDisableMenu || isOfflineMenu) && !isActual) //actual battle data has info from jwt token
       return ACTION.SET_AND_SEND_DEFAULT
-    if (data == null && (!isBattleDataOvrMissionActual.get()))
+    if (data == null && !isActual)
       return ACTION.ACTUALIZE_OVR_MISSION
     return ACTION.SEND_OVR_MISSION
   }
@@ -79,7 +82,7 @@ let curAction = keepref(Computed(function() {
 
 let actions = {
   [ACTION.ACTUALIZE] = @() actualizeBattleData(state.get().isSlots ? state.get().slots : state.get().slots[0]),
-  [ACTION.ACTUALIZE_OVR_MISSION] = @() actualizeBattleDataOvrMission(),
+  [ACTION.ACTUALIZE_OVR_MISSION] = @() actualizeBattleDataOvrMission(state.get()?.ovrUnitUpgradesPreset ?? "", state.get()?.slots ?? []),
   [ACTION.SET_AND_SEND] = function() {
     let { payload, jwt } = battleData.value
     state.mutate(@(v) v.data <- payload)
@@ -108,10 +111,12 @@ function onChangeSlots(eid, comp) {
     return
   if (get_mp_session_id_str() == state.value?.sessionId
       && (state.value?.slots.len() ?? 0) > 0) {
-    logBD($"[sessionId={get_mp_session_id_str()}] Battle data received by dedicated: {comp.isBattleDataReceived}, isUnitsOverrided = {comp.isUnitsOverrided}")
+    logBD($"[sessionId={get_mp_session_id_str()}] Battle data received by dedicated: {comp.isBattleDataReceived},",
+      $"isUnitsOverrided = {comp.isUnitsOverrided}, ovrUnitUpgradesPreset = {comp.ovrUnitUpgradesPreset}")
     state.mutate(function(v) {
       v.isBattleDataReceived <- comp.isBattleDataReceived
       v.isUnitsOverrided <- comp.isUnitsOverrided
+      v.ovrUnitUpgradesPreset <- comp.ovrUnitUpgradesPreset
     })
     return
   }
@@ -121,10 +126,14 @@ function onChangeSlots(eid, comp) {
     slots = [get_arg_value_by_name("unitModel") ?? "germ_cruiser_admiral_hipper"]
   let campaign = serverConfigs.get()?.allUnits[slots[0]].campaign ?? ""
   local isSlots = (serverConfigs.get()?.campaignCfg[campaign].totalSlots ?? 0) > 0
-  logBD($"[sessionId={get_mp_session_id_str()}] Init slots. isBattleDataReceived = {comp.isBattleDataReceived}, isUnitsOverrided = {comp.isUnitsOverrided}, isSlots = {isSlots}, slots = ", slots)
+  logBD($"[sessionId={get_mp_session_id_str()}] Init slots. isBattleDataReceived = {comp.isBattleDataReceived},",
+    $"isUnitsOverrided = {comp.isUnitsOverrided}, ovrUnitUpgradesPreset = {comp.ovrUnitUpgradesPreset}, isSlots = {isSlots},",
+    "slots = ",
+    slots)
   state({ eid, sessionId = get_mp_session_id_str(), isSlots, slots,
     isBattleDataReceived = comp.isBattleDataReceived,
-    isUnitsOverrided = comp.isUnitsOverrided
+    isUnitsOverrided = comp.isUnitsOverrided,
+    ovrUnitUpgradesPreset = comp.ovrUnitUpgradesPreset,
   })
 }
 
@@ -168,6 +177,7 @@ ecs.register_es("player_battle_data_es",
       ["unitSlots", ecs.TYPE_STRING_LIST],
       ["isBattleDataReceived", ecs.TYPE_BOOL],
       ["isUnitsOverrided", ecs.TYPE_BOOL],
+      ["ovrUnitUpgradesPreset", ecs.TYPE_STRING],
     ]
   })
 

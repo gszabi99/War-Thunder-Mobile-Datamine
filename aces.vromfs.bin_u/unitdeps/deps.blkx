@@ -1,9 +1,9 @@
 {
-  "version": "1.11.0.126",
-  "grpHash": "3c2d762878f85aa179e122e0689344ff",
+  "version": "1.11.0.148",
+  "grpHash": "41e5b3c91868e4fd320dd97c52e0f82b",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "92222ab122611c9bc64b852790cb98e4",
+  "blkHash": "6efa060b85ffe24fa74b2f17ee5895cb",
   "genHash": "1e6cbd2338e3c521cbf041ec4d9a5179",
   "a-20g": {
     "dep": [
@@ -4557,6 +4557,22 @@
       "italian_gunner_char"
     ]
   },
+  "it_fiat_6614_106sr": {
+    "dep": [
+      "fiat_6614_106sr",
+      "fiat_6614_106sr_char",
+      "fiat_6614_106sr_collision",
+      "fiat_6614_106sr_dm_skeleton",
+      "fiat_6614_106sr_dmg",
+      "fiat_6614_106sr_dmg_skeleton",
+      "fiat_6614_106sr_fastphys",
+      "fiat_6614_106sr_skeleton",
+      "fiat_6614_106sr_xray",
+      "fiat_6614_106sr_xray_skeleton",
+      "grenade_zd17",
+      "italian_gunner_char"
+    ]
+  },
   "it_leopard_1a5": {
     "dep": [
       "grenade_zd17",
@@ -4570,6 +4586,34 @@
       "leopard_1a5_skeleton",
       "leopard_1a5_xray",
       "leopard_1a5_xray_skeleton"
+    ]
+  },
+  "it_leopard_bofors": {
+    "dep": [
+      "italian_gunner_char",
+      "leopard_bofors",
+      "leopard_bofors_collision",
+      "leopard_bofors_dm_skeleton",
+      "leopard_bofors_dmg",
+      "leopard_bofors_dmg_skeleton",
+      "leopard_bofors_fastphys",
+      "leopard_bofors_skeleton",
+      "leopard_bofors_xray",
+      "leopard_bofors_xray_skeleton"
+    ]
+  },
+  "it_m109g": {
+    "dep": [
+      "grenade_zd17",
+      "m109g_it",
+      "m109g_it_collision",
+      "m109g_it_dm_skeleton",
+      "m109g_it_dmg",
+      "m109g_it_dmg_skeleton",
+      "m109g_it_fastphys",
+      "m109g_it_skeleton",
+      "m109g_it_xray",
+      "m109g_it_xray_skeleton"
     ]
   },
   "it_m113a1_tow": {
@@ -4617,6 +4661,19 @@
       "m18_hellcat_skeleton",
       "m18_hellcat_xray",
       "m18_hellcat_xray_skeleton"
+    ]
+  },
+  "it_m26a1_pershing": {
+    "dep": [
+      "m26a1_pershing",
+      "m26a1_pershing_collision",
+      "m26a1_pershing_dm_skeleton",
+      "m26a1_pershing_dmg",
+      "m26a1_pershing_dmg_skeleton",
+      "m26a1_pershing_fastphys",
+      "m26a1_pershing_skeleton",
+      "m26a1_pershing_xray",
+      "m26a1_pershing_xray_skeleton"
     ]
   },
   "it_m36b1": {
@@ -8345,6 +8402,21 @@
       "m247_xray_skeleton"
     ]
   },
+  "us_m247_reskin3": {
+    "dep": [
+      "grenade_l8",
+      "m247",
+      "m247_char",
+      "m247_collision",
+      "m247_dm_skeleton",
+      "m247_dmg",
+      "m247_dmg_skeleton",
+      "m247_fastphys",
+      "m247_skeleton",
+      "m247_xray",
+      "m247_xray_skeleton"
+    ]
+  },
   "us_m24_chaffee": {
     "dep": [
       "m24_chaffee",
@@ -8418,6 +8490,23 @@
     ]
   },
   "us_m3_bradley": {
+    "dep": [
+      "bgm_71_tow_rocket_char",
+      "bgm_71_tow_rocket_deployed",
+      "grenade_l8",
+      "m3_bradley",
+      "m3_bradley_char",
+      "m3_bradley_collision",
+      "m3_bradley_dm_skeleton",
+      "m3_bradley_dmg",
+      "m3_bradley_dmg_skeleton",
+      "m3_bradley_fastphys",
+      "m3_bradley_skeleton",
+      "m3_bradley_xray",
+      "m3_bradley_xray_skeleton"
+    ]
+  },
+  "us_m3_bradley_reskin": {
     "dep": [
       "bgm_71_tow_rocket_char",
       "bgm_71_tow_rocket_deployed",
@@ -8917,6 +9006,21 @@
       "m60a1_xray_skeleton"
     ]
   },
+  "us_m60a1_rise_passive_era": {
+    "dep": [
+      "grenade_us_66mm",
+      "us_m60a1_era",
+      "us_m60a1_era_char",
+      "us_m60a1_era_collision",
+      "us_m60a1_era_dm_skeleton",
+      "us_m60a1_era_dmg",
+      "us_m60a1_era_dmg_skeleton",
+      "us_m60a1_era_fastphys",
+      "us_m60a1_era_skeleton",
+      "us_m60a1_era_xray",
+      "us_m60a1_era_xray_skeleton"
+    ]
+  },
   "us_m60a2": {
     "dep": [
       "grenade_l8",
@@ -9322,6 +9426,20 @@
       "t95e1_xray_skeleton"
     ]
   },
+  "us_xm1_chrysler": {
+    "dep": [
+      "xm1_chrysler",
+      "xm1_chrysler_char",
+      "xm1_chrysler_collision",
+      "xm1_chrysler_dm_skeleton",
+      "xm1_chrysler_dmg",
+      "xm1_chrysler_dmg_skeleton",
+      "xm1_chrysler_fastphys",
+      "xm1_chrysler_skeleton",
+      "xm1_chrysler_xray",
+      "xm1_chrysler_xray_skeleton"
+    ]
+  },
   "us_xm_8": {
     "dep": [
       "xm_8",
@@ -9541,6 +9659,23 @@
       "bmp_2_skeleton",
       "bmp_2_xray",
       "bmp_2_xray_skeleton",
+      "grenade_zd17"
+    ]
+  },
+  "ussr_bmp_2m": {
+    "dep": [
+      "9m133_rocket_char",
+      "9m133_rocket_deployed",
+      "bmp_2m",
+      "bmp_2m_char",
+      "bmp_2m_collision",
+      "bmp_2m_dm_skeleton",
+      "bmp_2m_dmg",
+      "bmp_2m_dmg_skeleton",
+      "bmp_2m_fastphys",
+      "bmp_2m_skeleton",
+      "bmp_2m_xray",
+      "bmp_2m_xray_skeleton",
       "grenade_zd17"
     ]
   },
@@ -10744,6 +10879,22 @@
       "t_62_xray_skeleton"
     ]
   },
+  "ussr_t_64_b_1984": {
+    "dep": [
+      "125mm_9m119m",
+      "grenade_zd17",
+      "t_64_bv_1987",
+      "t_64_bv_1987_char",
+      "t_64_bv_1987_collision",
+      "t_64_bv_1987_dm_skeleton",
+      "t_64_bv_1987_dmg",
+      "t_64_bv_1987_dmg_skeleton",
+      "t_64_bv_1987_fastphys",
+      "t_64_bv_1987_skeleton",
+      "t_64_bv_1987_xray",
+      "t_64_bv_1987_xray_skeleton"
+    ]
+  },
   "ussr_t_64a_1971": {
     "dep": [
       "t_64_a_1971",
@@ -10771,6 +10922,22 @@
       "t_72a_skeleton",
       "t_72a_xray",
       "t_72a_xray_skeleton"
+    ]
+  },
+  "ussr_t_72b_1989": {
+    "dep": [
+      "125mm_9m119m",
+      "grenade_zd17",
+      "t_72b_1989",
+      "t_72b_1989_char",
+      "t_72b_1989_collision",
+      "t_72b_1989_dm_skeleton",
+      "t_72b_1989_dmg",
+      "t_72b_1989_dmg_skeleton",
+      "t_72b_1989_fastphys",
+      "t_72b_1989_skeleton",
+      "t_72b_1989_xray",
+      "t_72b_1989_xray_skeleton"
     ]
   },
   "ussr_type_65_aa": {
@@ -10850,6 +11017,20 @@
     ]
   },
   "ussr_zsu_23_4_reskin": {
+    "dep": [
+      "zsu_23_4",
+      "zsu_23_4_char",
+      "zsu_23_4_collision",
+      "zsu_23_4_dm_skeleton",
+      "zsu_23_4_dmg",
+      "zsu_23_4_dmg_skeleton",
+      "zsu_23_4_fastphys",
+      "zsu_23_4_skeleton",
+      "zsu_23_4_xray",
+      "zsu_23_4_xray_skeleton"
+    ]
+  },
+  "ussr_zsu_23_4_reskin2": {
     "dep": [
       "zsu_23_4",
       "zsu_23_4_char",

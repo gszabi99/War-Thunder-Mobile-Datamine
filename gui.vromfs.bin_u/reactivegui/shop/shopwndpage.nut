@@ -1,17 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { floor, ceil } = require("%sqstd/math.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { SGT_UNIT, SGT_BLUEPRINTS, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
 let { curCategoryId, goodsByCategory, sortGoods, openShopWnd, goodsLinks } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory, onSchRewardReceive } = require("schRewardsState.nut")
-let { purchasesCount } = require("%appGlobals/pServer/campaign.nut")
-let { shopPurchaseInProgress, schRewardInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { personalGoodsByShopCategory, purchasePersonalGoods } = require("personalGoodsState.nut")
+let { purchasesCount, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { shopPurchaseInProgress, schRewardInProgress, personalGoodsInProgress
+} = require("%appGlobals/pServer/pServerApi.nut")
 let { PURCHASING, DELAYED, HAS_PURCHASES } = require("goodsStates.nut")
 let { purchaseGoods } = require("purchaseGoods.nut")
 let { buyPlatformGoods, platformPurchaseInProgress, isGoodsOnlyInternalPurchase
 } = require("platformGoods.nut")
-let { mkGoods } = require("%rGui/shop/goodsView/goods.nut")
-let { goodsW, goodsH, goodsGap, goodsGlareAnimDuration  } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { mkGoods } = require("goodsView/goods.nut")
+let { goodsGap, goodsGlareAnimDuration, mkLimitText, bottomPad, pricePlateH, mkGoodsTimeProgress
+} = require("goodsView/sharedParts.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
 let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
@@ -23,7 +28,14 @@ let { gamercardHeight, mkLeftBlock, mkCurrenciesBtns } = require("%rGui/mainMenu
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
+let { categoryGap, titleGap, goodsPerRow, titleH } = require("shopWndConst.nut")
+let rewardsToShopGoods = require("rewardsToShopGoods.nut")
 
+
+let goodsGlareRepeatDelay = 3
+let glareRowOffsetMul    = 0.18 * goodsGlareAnimDuration
+let glareColOffsetMul    = 0.62 * goodsGlareAnimDuration
+let glareHeaderOffsetMul = 0.06 * goodsGlareAnimDuration
 
 let tabTranslateWithOpacitySwitchAnim = [
   { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.4, easing = InQuart, play = true }
@@ -32,8 +44,6 @@ let tabTranslateWithOpacitySwitchAnim = [
   { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.1, easing = OutQuad, playFadeOut = true }
   { prop = AnimProp.translate, from = [0, 0], to = [50, 0], duration = 0.1, easing = OutQuad, playFadeOut = true }
 ]
-
-let goodsGlareRepeatDelay = 3
 
 let positive = @(id, value) value > 0 ? { id, value } : null
 let goodsCompareCfg = [
@@ -92,14 +102,12 @@ let mkGoodsState = @(goods) Computed(function() {
       res = res | PURCHASING
   }
   foreach(id in goodsLinks.get()?[goods.id] ?? [goods.id])
-    if ((purchasesCount.value?[id].count ?? 0) != 0) {
+    if (purchasesCount.value?[id].isFirstPurchaseBonusReceived ?? false) {
       res = res | HAS_PURCHASES
       break
     }
   return res
 })
-
-let mkSchRewardState = @(schReward) Computed(@() schReward.id in schRewardInProgress.get() ? PURCHASING : 0)
 
 function getGoodsCompareData(goods) {
   local res = null
@@ -175,6 +183,9 @@ let mkShopGamercard = @(onClose) function(){
   let currencies = {}
   let items = {}
   local premiumDays = 0
+  foreach (goods in personalGoodsByShopCategory.get()?[curCategoryId.get()] ?? [])
+    if(goods.price.currencyId != "")
+      currencies[goods.price.currencyId] <- true
   foreach (goods in goodsByCategory.get()?[curCategoryId.get()] ?? []) {
     if(goods.price.currencyId != "")
       currencies[goods.price.currencyId] <- true
@@ -185,7 +196,7 @@ let mkShopGamercard = @(onClose) function(){
   let orderItems = items.keys().sort(@(a,b)
     itemsOrderFull.findindex(@(v) v == a) <=> itemsOrderFull.findindex(@(v) v == b))
   return {
-    watch = [ goodsByCategory, curCategoryId ]
+    watch = [ goodsByCategory, curCategoryId, personalGoodsByShopCategory ]
     size = [ saSize[0], gamercardHeight ]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
@@ -201,65 +212,136 @@ let mkShopGamercard = @(onClose) function(){
   }
 }
 
-let mkShopPage = @(pageW, pageH) function() {
-  let goodsListBase = Computed(@() goodsByCategory.get()?[curCategoryId.get()] ?? [])
-  let schReward = Computed(@() actualSchRewardByCategory.get()?[curCategoryId.get()])
+function mkAnimParams(idx, headers) {
+  let col = idx % goodsPerRow
+  let row = idx / goodsPerRow
+  return {
+    delay = goodsGlareRepeatDelay + col * glareColOffsetMul + row * glareRowOffsetMul + headers * glareHeaderOffsetMul,
+    repeatDelay = goodsGlareRepeatDelay
+  }
+}
 
-  let hasSchReward = schReward.get() != null
+let mkGoodsCard = @(goods, animParams) mkGoods(
+  goods,
+  @() onGoodsClick(goods),
+  mkGoodsState(goods),
+  animParams
+)
 
-  let goodsList = mkGoodsListWithBaseValue(goodsListBase.get())
-  goodsList.sort(sortGoods)
-  let goodsTotal = goodsList.len() + (hasSchReward ? 1 : 0)
-  let maxGoodsPerW = floor((pageW + goodsGap + 1) / (goodsW + goodsGap))
-  let maxGoodsPerH = floor((pageH + goodsGap + 1) / (goodsH + goodsGap))
-  let goodsPerW = max(min(goodsTotal, maxGoodsPerW, 1), ceil(goodsTotal * 1.0 / maxGoodsPerH))
+let mkSchRewardCard = @(schGoods, animParams) mkGoods(
+  schGoods,
+  @() onSchRewardReceive(schGoods),
+  Computed(@() schGoods.id in schRewardInProgress.get() ? PURCHASING : 0),
+  animParams
+)
 
-  let allRows = []
-  if (hasSchReward)
-    allRows.append(schReward.get())
-  allRows.extend(goodsList)
-  let rows = arrayByRows(allRows, goodsPerW)
+function mkPersonalGoodsCard(pGoods, animParams) {
+  let { isPurchased, endTime, lifeTime } = pGoods
+  let goods = rewardsToShopGoods(pGoods.goods).__update(
+    pGoods,
+    {
+      isPopular = true
+      popularText = loc($"shop/{pGoods.id}")
+      meta = {}
+    })
 
-  let resultRows = rows
-    .map(@(row, rowIdx) row
-      .map(function(good, goodIdx) {
-        if (rowIdx == 0 && good == schReward.get())
-          return mkGoods(
-            good,
-            @() onSchRewardReceive(good),
-            mkSchRewardState(good),
-            {
-              delay = goodsGlareRepeatDelay,
-              repeatDelay = goodsGlareAnimDuration * rows[0].len()
-            }
-          )
-        return mkGoods(
-          good,
-          @() onGoodsClick(good),
-          mkGoodsState(good),
-          {
-            delay = goodIdx * goodsGlareAnimDuration + goodsGlareRepeatDelay + rowIdx * goodsGlareAnimDuration / 3
-            repeatDelay = goodsGlareAnimDuration * (rows[0].len() - goodIdx) - rowIdx * goodsGlareAnimDuration / 3
-          }
-        )
-      })
-    )
+  local child = null
+  if (isPurchased) {
+    let sec = Computed(@() max(0, endTime - serverTime.get()))
+    child = mkGoodsTimeProgress(
+      Computed(@() clamp(1.0 - sec.get().tofloat() / lifeTime, 0, 1)),
+      Computed(@() secondsToHoursLoc(sec.get()))
+    ).__update({ margin = [0, 0, pricePlateH, 0] })
+  }
+  else
+    child = {
+      margin = [bottomPad[0] + pricePlateH, bottomPad[1]]
+      hplace = ALIGN_RIGHT
+      vplace = ALIGN_BOTTOM
+      children = mkLimitText(1, 1)
+    }
 
   return {
-    watch = [ goodsListBase, curCategoryId, schReward ]
-    children = {
-      key = curCategoryId.get()
-      flow = FLOW_VERTICAL
-      gap = goodsGap
-      children = resultRows.map(@(children) {
-        flow = FLOW_HORIZONTAL
-        gap = goodsGap
-        children
-      })
-      transform = {}
-      animations = tabTranslateWithOpacitySwitchAnim
+    children = [
+      mkGoods(
+        goods,
+        @() purchasePersonalGoods(pGoods, goods),
+        Computed(@() pGoods.id == personalGoodsInProgress.get() || personalGoodsInProgress.get() == "" ? PURCHASING : 0),
+        animParams)
+      child
+    ]
+  }
+}
+
+function mkShopCategoryGoods(categoryCfg, distances) {
+  let { id = "", title = "", getTitle = null } = categoryCfg
+  let goodsListBase = Computed(@() goodsByCategory.get()?[id] ?? [])
+  let schReward = Computed(@() actualSchRewardByCategory.get()?[id])
+  let personalList = Computed(@() personalGoodsByShopCategory.get()?[id])
+  let rowsBefore = Computed(@() distances.get()?[id].rowsBefore ?? 0)
+  let headersBefore = Computed(@() distances.get()?[id].headersBefore ?? 0)
+  let watch = [ goodsListBase, schReward, curCampaign, personalList, rowsBefore, headersBefore ]
+  return function() {
+    let goodsListByCategory = goodsListBase.get()
+    let hasSchReward = schReward.get() != null
+    if (goodsListByCategory.len() == 0 && !hasSchReward && !personalList.get())
+      return { watch }
+
+    let goodsList = mkGoodsListWithBaseValue(goodsListByCategory)
+    goodsList.sort(sortGoods)
+
+    let animIdxOffset = rowsBefore.get() * goodsPerRow
+    let headers = headersBefore.get()
+    let allCards = []
+    if (personalList.get())
+      foreach (goods in personalList.get())
+        allCards.append(
+          mkPersonalGoodsCard(goods, mkAnimParams(allCards.len() + animIdxOffset, headers)))
+    if (hasSchReward)
+      allCards.append(
+        mkSchRewardCard(schReward.get(), mkAnimParams(allCards.len() + animIdxOffset, headers)))
+
+    foreach (goods in goodsList)
+      allCards.append(
+        mkGoodsCard(goods, mkAnimParams(allCards.len() + animIdxOffset, headers)))
+
+    let rows = arrayByRows(allCards, goodsPerRow)
+
+    return {
+      key = id
+      watch
+      children = {
+        flow = FLOW_VERTICAL
+        gap = titleGap
+        children = [
+          {
+            size = [SIZE_TO_CONTENT, titleH]
+            color = 0xFFFFFFFF
+            rendObj = ROBJ_TEXT
+            text = utf8ToUpper(getTitle?(curCampaign.get()) ?? title)
+          }.__update(fontMediumShaded)
+          {
+            flow = FLOW_VERTICAL
+            gap = goodsGap
+            children = rows.map(@(children) {
+              flow = FLOW_HORIZONTAL
+              gap = goodsGap
+              children
+            })
+          }
+        ]
+        transform = {}
+        animations = tabTranslateWithOpacitySwitchAnim
+      }
     }
   }
+}
+
+let mkShopPage = @(curCategoriesCfg, distances) @() {
+  watch = curCategoriesCfg
+  flow = FLOW_VERTICAL
+  gap = categoryGap
+  children = curCategoriesCfg.get().map(@(categoryCfg) mkShopCategoryGoods(categoryCfg, distances))
 }
 
 return {

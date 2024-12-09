@@ -10,7 +10,7 @@ let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { get_battle_data_jwt, get_battle_data_slots_jwt, registerHandler, callHandler,
-  lastProfileKeysUpdated, get_battle_data_for_overrided_mission
+  lastProfileKeysUpdated, get_battle_data_for_overrided_mission, get_battle_data_for_overrided_preset
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { decodeJwtAndHandleErrors, saveJwtResultToJson } = require("%appGlobals/pServer/pServerJwt.nut")
 let { register_command } = require("console")
@@ -25,6 +25,7 @@ let needRefresh = mkWatched(persist, "needRefresh", false)
 let lastResult = mkWatched(persist, "lastResult", null)
 let needRefreshOvrMission = mkWatched(persist, "needRefreshOvrMission", false)
 let lastOvrMissionResult = mkWatched(persist, "lastOvrMissionResult", null)
+let bdOvrMissionParams = mkWatched(persist, "bdOvrMissionParams", null)
 let hasBattleUnit = Computed(@() battleUnitsInfo.get() != null
   && (!battleUnitsInfo.get().isSlots ? battleUnitsInfo.get().unit in servProfile.value?.units
     : (null == battleUnitsInfo.get().unitList.findvalue(@(u) u not in servProfile.value?.units))))
@@ -179,27 +180,40 @@ needActualize.subscribe(function(v) {
     delayedActualize()
 })
 
-function actualizeBattleDataOvrMission(executeAfterExt = null) {
-  if (isBattleDataOvrMissionActual.get()) {
+function actualizeBattleDataOvrMission(preset, unitList, executeAfterExt = null) {
+  if (isBattleDataOvrMissionActual.get()
+      && preset == (bdOvrMissionParams.get()?.preset ?? "")
+      && (preset == "" || isEqual(unitList, bdOvrMissionParams.get()?.unitList))) {
     callHandler(executeAfterExt, lastOvrMissionResult.get())
     return
   }
-  get_battle_data_for_overrided_mission({ id = "onGetMenuBattleDataOvrMission", executeAfterExt })
+  needRefreshOvrMission.set(true)
+  bdOvrMissionParams.set({ preset, unitList })
+  if (preset == "")
+    get_battle_data_for_overrided_mission({ id = "onGetMenuBattleDataOvrMission", executeAfterExt, preset, unitList })
+  else
+    get_battle_data_for_overrided_preset(preset, unitList,
+      { id = "onGetMenuBattleDataOvrMission", executeAfterExt, preset, unitList })
 }
 
 registerHandler("onGetMenuBattleDataOvrMission", function(res, context) {
-  let { executeAfterExt = null } = context
+  let { executeAfterExt = null, preset = "", unitList = [] } = context
+  if (preset != (bdOvrMissionParams.get()?.preset ?? "")
+      || (preset != "" && !isEqual(unitList, bdOvrMissionParams.get()?.unitList))) {
+    callHandler(executeAfterExt, { error = "Not actual ovr params on result" })
+    return
+  }
   if (res?.error != null) {
-    lastOvrMissionResult(res)
-    callHandler(executeAfterExt, lastResult)
+    lastOvrMissionResult.set(res)
+    callHandler(executeAfterExt, lastOvrMissionResult.get())
     return
   }
 
   let result = isOfflineMenu ? {} : decodeJwtAndHandleErrors(res)
-  lastOvrMissionResult(result)
+  lastOvrMissionResult.set(result)
   callHandler(executeAfterExt, result)
   if ("error" not in result)
-    needRefreshOvrMission(false)
+    needRefreshOvrMission.set(false)
 })
 
 if (shouldDisableMenu) {
@@ -248,9 +262,17 @@ register_command(function() {
 
 register_command(function() {
   needRefreshOvrMission(true)
-  actualizeBattleDataOvrMission("saveMenuBattleDataOvrMissionToJwt")
+  actualizeBattleDataOvrMission("", [], "saveMenuBattleDataOvrMissionToJwt")
   return console_print($"Request battle data for mission with override")
 }, "meta.debugCurBattleDataOvrMission")
+
+register_command(function(preset, unitName1, unitName2, unitName3, unitName4) {
+  needRefreshOvrMission(true)
+  actualizeBattleDataOvrMission(preset,
+    [unitName1, unitName2, unitName3, unitName4].filter(@(v) v != ""),
+    "saveMenuBattleDataOvrMissionToJwt")
+  return console_print($"Request battle data for mission with override")
+}, "meta.debugCurBattleDataOvrPreset")
 
 register_command(function() {
   if (lastResult.value?.payload == null)
@@ -272,4 +294,5 @@ return {
   battleDataOvrMission = Computed(@() lastOvrMissionResult.get())
   isBattleDataOvrMissionActual
   actualizeBattleDataOvrMission
+  bdOvrMissionParams
 }

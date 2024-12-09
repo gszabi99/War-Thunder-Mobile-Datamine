@@ -7,7 +7,7 @@ let { defer } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { reset_profile, reset_profile_with_stats, unlock_all_units, add_currency_no_popup,
   add_premium, reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler,
-  royal_beta_units_unlock, add_all_skins_for_unit
+  royal_beta_units_unlock, add_all_skins_for_unit, shift_all_personal_goods_time
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
@@ -18,8 +18,6 @@ let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
-let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
-let addons = require("%appGlobals/updater/addons.nut")
 let { isTutorialMissionsDebug } = require("%rGui/tutorial/tutorialMissions.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let debugGameModesWnd = require("debugGameModesWnd.nut")
@@ -32,6 +30,7 @@ let { mainHangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { startDebugNewbieMission, startLocalMultiplayerMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { currencyOrder, getDbgCurrencyCount } = require("%appGlobals/currenciesState.nut")
+let { canBattleWithoutAddons } = require("%appGlobals/clientState/clientState.nut")
 
 let wndWidth = sh(130)
 let gap = hdpx(10)
@@ -65,6 +64,8 @@ let commandsList = [].extend(
     { label = "meta.reset_profile_with_stats", func = withClose(resetProfileWithStats) }
     { label = "meta.reset_profile_only", func = withClose(reset_profile) }
     { label = "reset_scheduled_reward_timers", func = withClose(reset_scheduled_reward_timers) }
+    { label = "shift_personal_goods_1_day", func = withClose(@() shift_all_personal_goods_time(24 * 3600)) }
+    { label = "shift_personal_goods_7_days", func = withClose(@() shift_all_personal_goods_time(7 * 24 * 3600)) }
     { label = "meta.unlock_all_units", func = withClose(unlock_all_units) }
     { label = "meta.royal_beta_units_unlock", func = withClose(royal_beta_units_unlock) }
     { label = "upgrade_cur_unit", func = withClose(@() upgrade_unit(mainHangarUnitName.get())) }
@@ -109,7 +110,12 @@ let commandsList = [].extend(
         }
       }
     }
-    { label = "download_dev_addons", func = withClose(@() openDownloadAddonsWnd(addons.dev)) }
+    { label = "allow_battle_no_addons",
+      func = withClose(function() {
+        canBattleWithoutAddons.set(!canBattleWithoutAddons.get())
+        dlog(canBattleWithoutAddons.get() ? "Allowed" : "Disable") //warning disable: -forbidden-function
+      })
+    }
   ])
 
 function mkCommandsList() {

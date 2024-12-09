@@ -29,6 +29,8 @@ let noNeedLogerrOnErrors = {
   ["Couldn't connect to server"] = true,
   ["Timeout was reached"] = true,
   RETRY_LIMIT_EXCEED = true,
+  unknownDeeplinkReward = true,
+  notAllowedDeeplinkReward = true,
 }
 
 function startProgress(id, value) {
@@ -94,14 +96,17 @@ function checkAndLogError(id, action, cb, data) {
     return
   }
 
+  local errId = err
   local logErr = err
-  if (type(err) == "table" && "message" in err)
+  if (type(err) == "table" && "message" in err) {
+    errId = err.message
     logErr = " ".concat(err.message, "code" in err ? $"(code: {err.code})" : "")
+  }
   else if (type(err) != "string") {
     let dumpStr = object_to_json_string(data)
     logErr = " ".concat("(full answer dump)", dumpStr)
   }
-  if (logErr not in noNeedLogerrOnErrors)
+  if (errId not in noNeedLogerrOnErrors)
     logerr($"[profileServerClient] {action} returned error: {logErr}")
   cb?({ error = err })
 }

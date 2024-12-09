@@ -11,6 +11,10 @@ let allPresentations = {
     bgImage = "ui/images/air_beta_access_bg.avif"
     accessStat = "air_beta_access"
   }
+
+  event_ny_ctf = {
+    image = "ui/gameuiskin#icon_event_christmas.svg"
+  }
 }
   .map(@(cfg, id) defCfg.__merge(cfg, { id }))
 

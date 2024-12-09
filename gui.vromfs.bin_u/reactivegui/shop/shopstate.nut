@@ -54,6 +54,7 @@ let sortGoods = @(a, b)
 let goodsWithTimers = Computed(@() (campConfigs.value?.allGoods ?? {})
   .filter(@(g) (g?.timeRange.start ?? 0) > 0 || (g?.timeRange.end ?? 0) > 0))
 let inactiveGoodsByTime = Watched({})
+let finishedGoodsByTime = Watched({})
 let nextUpdateTime = Watched({ time = 0 })
 let goodsLinks = Computed(@() (campConfigs.get()?.allGoods ?? [])
   .reduce(function(res, goods) {
@@ -69,6 +70,7 @@ let startNextDayTime = @() TIME_DAY_IN_SECONDS - (serverTime.get() % TIME_DAY_IN
 
 function updateGoodsTimers() {
   let inactive = {}
+  let finished = {}
   local nextTime = 0
   let curTime = serverTime.get()
   let isValid = isServerTimeValid.get()
@@ -86,8 +88,10 @@ function updateGoodsTimers() {
     }
     else if (end <= 0)
       continue
-    else if (end <= curTime)
+    else if (end <= curTime) {
       inactive[id] <- true
+      finished[id] <- true
+    }
     else if (end <= startNextDayTime() && dailyLimit > 0 && todayPurchasesCount.get()?[id].count == dailyLimit)
       inactive[id] <- true
     else
@@ -96,6 +100,8 @@ function updateGoodsTimers() {
 
   if (!isEqual(inactive, inactiveGoodsByTime.get()))
     inactiveGoodsByTime.set(inactive)
+  if (!isEqual(finished, finishedGoodsByTime.get()))
+    finishedGoodsByTime.set(finished)
   nextUpdateTime({ time = nextTime })
 }
 
@@ -321,6 +327,7 @@ return {
   goodsLinks
   sortGoods
   inactiveGoodsByTime
+  finishedGoodsByTime
 
   hasUnseenGoodsByCategory
   shopSeenGoods

@@ -440,8 +440,9 @@ let slotPresetButtons = @() {
       : modsInProgress.get() != null ? spinner
       : iconButtonPrimary("ui/gameuiskin#icon_weapon_preset.svg",
         @() actionWithOverloadWarning(@() openUnitWeaponPresetWnd(curUnit.get())),
-        { ovr = { size = isGamepad.get() ? [SIZE_TO_CONTENT, defButtonHeight] : [defButtonHeight, defButtonHeight], minWidth = defButtonHeight }}
-      ),
+        { ovr = { size = isGamepad.get() ? [defButtonHeight*2, defButtonHeight] : [defButtonHeight, defButtonHeight], minWidth = defButtonHeight },
+        hotkeys = ["^J:X | Enter"]
+      }),
     !isOwn.get() || (curWeapon.get() == null && curBelt.get() == null) ? null
       : modsInProgress.get() != null ? spinner
       : curWeaponIsLocked.get() && curWeaponReqLevel.get() > 0
