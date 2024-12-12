@@ -63,7 +63,7 @@ return cfgHudCommon.__merge({
     ctor = bombPieStickBlockCtor
     defTransform = mkLBPos([hdpx(327), hdpx(-5)])
     editView = bombPieStickView
-    priority = Z_ORDER.BUTTON_PRIMARY
+    priority = Z_ORDER.STICK
     isVisibleInBattle = hasBombs
   }
 

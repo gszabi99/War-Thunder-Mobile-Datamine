@@ -35,6 +35,7 @@ let { unitSpecificItemsCfg } = require("%appGlobals/unitSpecificItems.nut")
 let { SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
 let { isInSquad, isReady, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { markTextColor } = require("%rGui/style/stdColors.nut")
+let { getUnitBlkDetails } = require("%rGui/unitDetails/unitBlkDetails.nut")
 
 let itemsGap = hdpx(50)
 
@@ -57,6 +58,10 @@ let itemShowCd = {
     hasBalance = TIME_DAY_IN_SECONDS
     noBalance = 7 * TIME_DAY_IN_SECONDS
   }
+}
+
+let canUseItemByUnit = {
+  ship_smoke_screen_system_mod = @(unitName) getUnitBlkDetails(unitName).hasShipSmokeScreen
 }
 
 let battleItemsIcons = {
@@ -121,7 +126,7 @@ function getCheapestGoods(allGoods, isFit) {
 let mkMissingItemsComp = @(unit, timeWndShowing) Computed(function() {
   let res = []
   let unitItemsPerUse = unit?.itemsPerUse ?? 0
-  foreach (cfg in [].extend(itemsCfgOrdered.get(), unitSpecificItemsCfg.get())) {
+  foreach (cfg in [].extend(itemsCfgOrdered.get().filter(@(v) canUseItemByUnit?[v.name](unit.name) ?? true), unitSpecificItemsCfg.get())) {
     let { battleLimit = 0, itemsPerUse = 0, name = "" } = cfg
     let { itemsByAttributes = [], itemsByModifications = [] } = serverConfigs.get()
     if (battleLimit <= 0)

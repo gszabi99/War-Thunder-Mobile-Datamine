@@ -10,6 +10,8 @@ let { getGoodsType } = require("shopCommon.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
+
 
 let attachedOfferScenes = Watched({})
 let isOfferAttached = Computed(@() attachedOfferScenes.value.len() > 0)
@@ -68,6 +70,8 @@ let offerPurchasingState = Computed(function() {
 })
 
 let reqAddonsToShowOffer = Computed(function() {
+  if (!isReadyToFullLoad.get())
+    return []
   let unitId = visibleOffer.get()?.unitUpgrades[0]
     ?? visibleOffer.get()?.units[0]
     ?? visibleOffer.get()?.blueprints.findindex(@(_) true)

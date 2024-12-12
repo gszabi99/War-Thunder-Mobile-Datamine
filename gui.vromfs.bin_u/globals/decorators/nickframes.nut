@@ -89,9 +89,6 @@ let nickFrames = {
   ice_ax = @(n) $"⚁{n}⚂"
   icicles = @(n) $"⚃{n}⚄"
   snowflake = @(n) $"⚅{n}⚅"
-  lollipop = @(n) $"♺{n}♻"
-  deer_sled = @(n) $"♼{n}♽"
-  bell = @(n) $"♾{n}♿"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

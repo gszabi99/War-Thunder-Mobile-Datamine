@@ -49,6 +49,7 @@ let { DBGLEVEL } = require("dagor.system")
 let { slotBarMainMenu, slotBarSize } = require("%rGui/slotBar/slotBar.nut")
 let { slots } = require("%rGui/slotBar/slotBarState.nut")
 let { unseenCampaigns } = require("unseenCampaigns.nut")
+let { getUnitBlkDetails } = require("%rGui/unitDetails/unitBlkDetails.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -206,13 +207,19 @@ let leftTopButtons = {
   ]
 }
 
+let canUseItemByUnit = {
+  ship_smoke_screen_system_mod = @(unitName) getUnitBlkDetails(unitName).hasShipSmokeScreen
+}
+
 let gamercardBattleItemsBalanceBtns = @(){
-  watch = [itemsOrder, specialEventGamercardItems, unitSpecificItems]
+  watch = [itemsOrder, specialEventGamercardItems, unitSpecificItems, hangarUnit]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = gamercardGap
   children = specialEventGamercardItems.get().map(@(v) mkItemsBalance(v.itemId, @() openEventWnd(v.eventName), CS_GAMERCARD))
-    .extend(itemsOrder.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_GAMERCARD)))
+    .extend(itemsOrder.get()
+      .filter(@(v) hangarUnit.get()?.name == null || (canUseItemByUnit?[v](hangarUnit.get().name) ?? true))
+      .map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_GAMERCARD)))
     .extend(unitSpecificItems.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_GAMERCARD)))
 }
 
