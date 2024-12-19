@@ -257,13 +257,16 @@ function respawn(slot, bullets) {
 
   let spawnSkin = selectedSkins.get()?[name] ?? skin
 
+  let weaponPreset = getUnitSlotsPresetNonUpdatable(name, mods)
+    .reduce(@(res, v, k) res.$rawset(k.tostring(), v), {})
+
   eventbus_send("requestRespawn", {
     name
     weapon
     respBaseId
     idInCountry = id
     skin = spawnSkin
-    weaponPreset = getUnitSlotsPresetNonUpdatable(name, mods)
+    weaponPreset
   }.__update(bulletsData))
 }
 

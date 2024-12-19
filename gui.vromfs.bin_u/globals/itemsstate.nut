@@ -20,7 +20,7 @@ let itemsOrderFull = [
   "firework_kit"
 ]
 
-let hiddenItems = ["ircm_kit", "firework_kit"].reduce(@(res, v) res.$rawset(v, true), {})
+let hiddenItems = ["firework_kit"].reduce(@(res, v) res.$rawset(v, true), {})
 
 let orderByItems = {}
 foreach (idx, itemId in itemsOrderFull)

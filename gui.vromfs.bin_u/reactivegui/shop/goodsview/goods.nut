@@ -56,8 +56,8 @@ let function getGoodsLocName(goods){
   return customName ? loc(customLocId[customName])
     : (locNameGetters?[goods.gtype] ?? locNameGetters[SGT_UNKNOWN])(goods)
 }
-let mkGoods = @(goods, onClick, state, animParams = null)
-  (constructors?[goods.gtype] ?? constructors[SGT_UNKNOWN])(goods, onClick, state, animParams)
+let mkGoods = @(goods, onClick, state, animParams = null, addChildren = [])
+  (constructors?[goods.gtype] ?? constructors[SGT_UNKNOWN])(goods, onClick, state, animParams, addChildren)
 
 return {
   getGoodsLocName

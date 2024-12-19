@@ -171,6 +171,8 @@ let bulletsToSpawn = Computed(function() {
 
   if (bulletsInfoSec.value == null)
     return res
+  if (res.len() < 2)
+    res.resize(2, { name = "", count = 0 }) //native code count first 2 slots as for primary gun
   let { bulletsOrder, total } = bulletsInfoSec.value
   res.append({ name = bulletsOrder[0], count = total })
   return res

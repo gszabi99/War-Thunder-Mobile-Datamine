@@ -1,9 +1,9 @@
 {
-  "version": "1.11.0.150",
-  "grpHash": "41e5b3c91868e4fd320dd97c52e0f82b",
+  "version": "1.11.0.187",
+  "grpHash": "b7bb3fa73a904d13fe8dac28b3a5b953",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "a34b54fcbdaf68d1879ae7310d70338a",
+  "blkHash": "0b5967d782ed24caba73a0d46e9b8767",
   "genHash": "1e6cbd2338e3c521cbf041ec4d9a5179",
   "a-20g": {
     "dep": [
@@ -4293,6 +4293,19 @@
       "su_ros_82_497_rocket"
     ]
   },
+  "il_2_37_1943": {
+    "dep": [
+      "gunner_sit_su_500",
+      "il_2_37_1943",
+      "il_2_37_1943_anim",
+      "il_2_37_1943_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_50sv_37"
+    ]
+  },
   "il_2m_1943": {
     "dep": [
       "gunner_sit_su_500",
@@ -7691,6 +7704,22 @@
       "skink_aa_xray_skeleton"
     ]
   },
+  "uk_sub_m1": {
+    "dep": [
+      "mine_emc",
+      "sub_m1",
+      "sub_m1_char",
+      "sub_m1_collision",
+      "sub_m1_dm_skeleton",
+      "sub_m1_fastphys",
+      "sub_m1_sections",
+      "sub_m1_sections_remote",
+      "sub_m1_skeleton",
+      "sub_m1_xray",
+      "sub_m1_xray_skeleton",
+      "torpedo_g7a"
+    ]
+  },
   "uk_sub_type_v": {
     "dep": [
       "mine_emc",
@@ -8310,6 +8339,22 @@
       "us_gunner_officer_char"
     ]
   },
+  "us_m18_hellcat_event": {
+    "dep": [
+      "m18_hellcat",
+      "m18_hellcat_char",
+      "m18_hellcat_collision",
+      "m18_hellcat_dm_skeleton",
+      "m18_hellcat_dmg",
+      "m18_hellcat_dmg_skeleton",
+      "m18_hellcat_fastphys",
+      "m18_hellcat_skeleton",
+      "m18_hellcat_xray",
+      "m18_hellcat_xray_skeleton",
+      "us_gunner_char",
+      "us_gunner_officer_char"
+    ]
+  },
   "us_m18_super_hellcat": {
     "dep": [
       "m18_superhellcat",
@@ -8613,6 +8658,22 @@
       "us_gunner_officer_char"
     ]
   },
+  "us_m42_duster_event": {
+    "dep": [
+      "m42_duster",
+      "m42_duster_char",
+      "m42_duster_collision",
+      "m42_duster_dm_skeleton",
+      "m42_duster_dmg",
+      "m42_duster_dmg_skeleton",
+      "m42_duster_fastphys",
+      "m42_duster_skeleton",
+      "m42_duster_xray",
+      "m42_duster_xray_skeleton",
+      "us_gunner_char",
+      "us_gunner_officer_char"
+    ]
+  },
   "us_m42_duster_reskin1": {
     "dep": [
       "m42_duster",
@@ -8823,6 +8884,20 @@
     ]
   },
   "us_m4a1_76w_sherman": {
+    "dep": [
+      "m4a1_76w_sherman",
+      "m4a1_76w_sherman_char",
+      "m4a1_76w_sherman_collision",
+      "m4a1_76w_sherman_dm_skeleton",
+      "m4a1_76w_sherman_dmg",
+      "m4a1_76w_sherman_dmg_skeleton",
+      "m4a1_76w_sherman_fastphys",
+      "m4a1_76w_sherman_skeleton",
+      "m4a1_76w_sherman_xray",
+      "m4a1_76w_sherman_xray_skeleton"
+    ]
+  },
+  "us_m4a1_76w_sherman_event": {
     "dep": [
       "m4a1_76w_sherman",
       "m4a1_76w_sherman_char",
@@ -9067,6 +9142,20 @@
     ]
   },
   "us_m6a1": {
+    "dep": [
+      "m6a1",
+      "m6a1_char",
+      "m6a1_collision",
+      "m6a1_dm_skeleton",
+      "m6a1_dmg",
+      "m6a1_dmg_skeleton",
+      "m6a1_fastphys",
+      "m6a1_skeleton",
+      "m6a1_xray",
+      "m6a1_xray_skeleton"
+    ]
+  },
+  "us_m6a1_event": {
     "dep": [
       "m6a1",
       "m6a1_char",
@@ -9679,6 +9768,19 @@
       "grenade_zd17"
     ]
   },
+  "ussr_bt_7a_f32": {
+    "dep": [
+      "bt_7a_f32",
+      "bt_7a_f32_collision",
+      "bt_7a_f32_dm_skeleton",
+      "bt_7a_f32_dmg",
+      "bt_7a_f32_dmg_skeleton",
+      "bt_7a_f32_fastphys",
+      "bt_7a_f32_skeleton",
+      "bt_7a_f32_xray",
+      "bt_7a_f32_xray_skeleton"
+    ]
+  },
   "ussr_btr_152a": {
     "dep": [
       "btr_152a",
@@ -10165,6 +10267,20 @@
       "kv_1e_xray_skeleton"
     ]
   },
+  "ussr_kv_1s": {
+    "dep": [
+      "kv_1s",
+      "kv_1s_char",
+      "kv_1s_collision",
+      "kv_1s_dm_skeleton",
+      "kv_1s_dmg",
+      "kv_1s_dmg_skeleton",
+      "kv_1s_fastphys",
+      "kv_1s_skeleton",
+      "kv_1s_xray",
+      "kv_1s_xray_skeleton"
+    ]
+  },
   "ussr_kv_220": {
     "dep": [
       "kv_220",
@@ -10418,6 +10534,22 @@
       "su_152_skeleton",
       "su_152_xray",
       "su_152_xray_skeleton"
+    ]
+  },
+  "ussr_su_85a": {
+    "dep": [
+      "soviet_gunner_char",
+      "soviet_gunner_officer_char",
+      "su_85a",
+      "su_85a_char",
+      "su_85a_collision",
+      "su_85a_dm_skeleton",
+      "su_85a_dmg",
+      "su_85a_dmg_skeleton",
+      "su_85a_fastphys",
+      "su_85a_skeleton",
+      "su_85a_xray",
+      "su_85a_xray_skeleton"
     ]
   },
   "ussr_su_85m": {
@@ -10988,6 +11120,21 @@
     ]
   },
   "ussr_zis_43": {
+    "dep": [
+      "soviet_gunner_char",
+      "soviet_gunner_officer_char",
+      "zis_43",
+      "zis_43_collision",
+      "zis_43_dm_skeleton",
+      "zis_43_dmg",
+      "zis_43_dmg_skeleton",
+      "zis_43_fastphys",
+      "zis_43_skeleton",
+      "zis_43_xray",
+      "zis_43_xray_skeleton"
+    ]
+  },
+  "ussr_zis_43_reskin": {
     "dep": [
       "soviet_gunner_char",
       "soviet_gunner_officer_char",

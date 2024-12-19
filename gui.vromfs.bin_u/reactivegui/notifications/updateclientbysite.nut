@@ -52,7 +52,7 @@ let showSuggestInstallModal = @() openFMsgBox({
   ]})
 
 let customStatusHandlers = {
-  [DOWNLOAD_STASUS_UNKNOWN] = @(id) logerr($"Unknown download status: {id}"),
+  [DOWNLOAD_STASUS_UNKNOWN] = @(id) logD($"Unknown download status for download: {id}"),
   [DOWNLOAD_STATUS_PENDING] = @(id) logD($"Download pending: {id}"),
   [DOWNLOAD_STATUS_RUNNING] = @(id) logD($"Download running: {id}"),
   [DOWNLOAD_STATUS_PAUSED] = @(id) logD($"Download paused: {id}"),
@@ -124,6 +124,7 @@ subscribeFMsgBtns({
     tryToInstall(getApkName())
   }
   markSuggestInstallSeen = @(_) isSuggested.set(true)
+  tryToDownloadApkFromSite = @(_) downloadAPK()
 })
 
 needShowModal.subscribe(@(v) v ? deferOnce(showSuggestInstallModal) : null)

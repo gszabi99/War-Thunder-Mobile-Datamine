@@ -10,6 +10,7 @@ let { viewStats, mkStatRow, mkMarqueeRow, mkMarqueeText } = require("%rGui/mpSta
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { contentWidthFull } = require("%rGui/options/optionsStyle.nut")
+let { releasedUnits } = require("%rGui/unit/unitState.nut")
 
 
 let infoBlockPadding = [hdpx(20), hdpx(50)]
@@ -146,6 +147,8 @@ return function() {
 
     foreach (id, v in allUnits) {
       let { levelPreset = "0", campaign = "", isHidden = false, isPremium = false, costWp = 0 } = v
+      if (id not in releasedUnits.get())
+        continue
       if (campaign not in all)
         all[campaign] <- { prem = 0, wp = 0 }
       if (campaign not in my)

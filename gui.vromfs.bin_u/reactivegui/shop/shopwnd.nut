@@ -6,7 +6,7 @@ let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { shopCategoriesCfg } = require("shopCommon.nut")
 let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount, saveSeenGoodsCurrent,
-  pageScrollHandler, onTabChange
+  pageScrollHandler, onTabChange, hasGoodsCategoryNonUpdatable
 } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory } = require("schRewardsState.nut")
 let { personalGoodsByShopCategory } = require("personalGoodsState.nut")
@@ -98,7 +98,8 @@ function mkShopContent() {
       action(idx)
   }
 
-  let scrollToCurCategory = @() pageScrollHandler.scrollToY(distances.get()[curCategoryId.get()].scrollTo)
+  let scrollToCurCategory = @() curCategoryId.get() not in distances.get() ? null
+    : pageScrollHandler.scrollToY(distances.get()[curCategoryId.get()].scrollTo)
   let onPageScroll = @(_) tryDoActionForCurrentScroll(@(idx) onTabChange(idx))
   let onChangeCategory = @(_) tryDoActionForCurrentScroll(@(_) scrollToCurCategory())
 
@@ -108,6 +109,9 @@ function mkShopContent() {
     flow = FLOW_HORIZONTAL
     clipChildren = true
     function onAttach() {
+      if (!hasGoodsCategoryNonUpdatable(curCategoryId.get()))
+        curCategoryId.set(shopCategoriesCfg.findvalue(@(c) hasGoodsCategoryNonUpdatable(c.id))?.id)
+
       pageScrollHandler.scrollToY(lastScrollPosY)
       resetScrollPos()
       pageScrollHandler.subscribe(onPageScroll)

@@ -9,15 +9,13 @@ let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlock
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { check_version } = require("%sqstd/version_compare.nut")
 let { allow_review_cue } = require("%appGlobals/permissions.nut")
-let { sendCustomBqEvent, sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { lastBattles } = require("%appGlobals/pServer/campaign.nut")
 let { isOnlineSettingsAvailable, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { debriefingData, isNoExtraScenesAfterDebriefing } = require("%rGui/debriefing/debriefingState.nut")
 let { getScoreKeyRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
-let { battlesMin, killsMin, placeMax, reqVictory, reqMultiplayer, reqNoExtraScenes, isTestingBattlesMin
-} = require("%rGui/feedback/rateGameTests.nut")
 
 local appStoreProdVersion = mkWatched(persist, "appStoreProdVersion", "")
 let {
@@ -81,7 +79,7 @@ function initSavedData() {
 isOnlineSettingsAvailable.subscribe(@(_) initSavedData())
 initSavedData()
 
-let showAfterBattlesCount = Computed(@() lastSeenDate.value == 0 ? battlesMin.value
+let showAfterBattlesCount = Computed(@() lastSeenDate.value == 0 ? 0
   : (lastSeenBattles.value + SKIP_BATTLES_WHEN_REJECTED)
 )
 
@@ -92,54 +90,33 @@ let isGameUnrated = Computed(@()
   && (SHOULD_USE_REVIEW_CUE || !isOldFeedbackCompleted.value) //warning disable: -const-in-bool-expr
 )
 
-function needRateGameByDebriefing(dData, killsMinV, placeMaxV, reqVictoryV, reqMultiplayerV) {
-  let { sessionId = -1, isWon = false, isFinished = false, isTutorial = false, campaign = "", players = {} } = dData
+function needRateGameByDebriefing(dData) {
+  let { sessionId = -1, isFinished = false, isTutorial = false, campaign = "", players = {} } = dData
   if (!isFinished || isTutorial)
     return false
   let isMultiplayer = sessionId != -1
-  if (!isMultiplayer && reqMultiplayerV)
-    return false
-  if (!isWon && reqVictoryV)
-    return false
-  let myUserIdStr = myUserId.value.tostring()
+  let myUserIdStr = myUserId.get().tostring()
   let player = players?[myUserIdStr]
-  if (player == null && reqMultiplayerV)
+  if (player == null)
     return false
-  let { kills = 0, groundKills = 0, navalKills = 0, team = null } = player
-  let killsTotal = kills + groundKills + navalKills
-  if (killsTotal < killsMinV)
-    return false
+  let { team = null } = player
   if (!isMultiplayer)
     return true
-
-  let key = getScoreKeyRaw(campaign)
-  let score = player?[key] ?? 0
-  if (team == null || score <= 0)
-    return false
-
-  local place = 1
-  foreach(p in players)
-    if (p.team == team && (p?[key] ?? 0) > score)
-      place++
-  return place <= placeMaxV
+  let score = player?[getScoreKeyRaw(campaign)] ?? 0
+  return team != null && score > 0
 }
 
 let canRateGameByCurTime = @() lastSeenDate.value + (SKIP_HOURS_WHEN_REJECTED * 3600) <= serverTime.value
 
-let needRateGame = Computed(@() allow_review_cue.value
+let needRateGame = Computed(@() allow_review_cue.get()
   && REVIEW_IS_AVAILABLE //warning disable: -const-in-bool-expr
-  && isGameUnrated.value
-  && !isRateGameSeen.value
-  && lastBattles.value.len() >= showAfterBattlesCount.value
+  && isGameUnrated.get()
+  && !isRateGameSeen.get()
+  && lastBattles.get().len() >= showAfterBattlesCount.get()
   && canRateGameByCurTime()
-  && (isNoExtraScenesAfterDebriefing.value || !reqNoExtraScenes.value)
-  && needRateGameByDebriefing(debriefingData.value, killsMin.value, placeMax.value, reqVictory.value, reqMultiplayer.value)
+  && isNoExtraScenesAfterDebriefing.get()
+  && needRateGameByDebriefing(debriefingData.get())
 )
-
-function onRateGameOpen() {
-  if (lastSeenDate.value == 0 && isTestingBattlesMin.value)
-    sendUiBqEvent("first_open_feedback_window", { params = lastBattles.value.len().tostring() })
-}
 
 function sendGameRating(rating, comment) {
   let questions = [
@@ -200,7 +177,6 @@ register_command(function() {
 return {
   SHOULD_USE_REVIEW_CUE
   needRateGame
-  onRateGameOpen
   sendGameRating
   platformAppReview
   isRateGameSeen

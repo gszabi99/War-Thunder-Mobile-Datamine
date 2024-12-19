@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { registerScene } = require("%rGui/navState.nut")
+let { registerScene, setSceneBgFallback, setSceneBg } = require("%rGui/navState.nut")
 let { GPT_LOOTBOX, previewType, previewGoods, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { getLootboxName, lootboxPreviewBg } = require("%appGlobals/config/lootboxPresentation.nut")
 
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
@@ -11,7 +12,9 @@ let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollA
 let { mkPreviewHeader, mkTimeBlockCentered, mkPriceBlockCentered, opacityAnims
 } = require("goodsPreviewPkg.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { lootboxImageWithTimer, lootboxContentBlock, lootboxHeader } = require("%rGui/shop/lootboxPreviewContent.nut")
+let { lootboxImageWithTimer, lootboxContentBlock, mkJackpotProgress
+} = require("%rGui/shop/lootboxPreviewContent.nut")
+let { getStepsToNextFixed } = require("%rGui/shop/lootboxPreviewState.nut")
 
 
 let wndHeaderHeight = hdpx(110)
@@ -25,6 +28,8 @@ let aTimePriceStart = aTimeHeaderStart + 0.3
 
 let openCount = Computed(@() previewType.get() == GPT_LOOTBOX ? openPreviewCount.get() : 0)
 let lootbox = Computed(@() serverConfigs.get()?.lootboxesCfg[previewGoods.get()?.lootboxes.findindex(@(_) true)])
+let lootboxAmount = Computed(@() previewGoods.get()?.lootboxes.findvalue(@(_) true))
+let bgImage = keepref(Computed(@() lootboxPreviewBg?[lootbox.get()?.name]))
 
 
 let header = mkPreviewHeader(
@@ -54,19 +59,12 @@ let headerPanel = {
   ]
 }
 
-let previewBg = @() {
-  size = flex()
-  rendObj = ROBJ_IMAGE
-  image = Picture("ui/images/event_bg.avif")
-  animations = wndSwitchAnim
-}
-
 let pannableArea = verticalPannableAreaCtor(wndContentHeight + contentGradientSize[0] + contentGradientSize[1],
   contentGradientSize)
 let scrollHandler = ScrollHandler()
 
 let content = @() {
-  watch = lootbox
+  watch = [lootbox, lootboxAmount]
   size = flex()
   flow = FLOW_HORIZONTAL
   gap = contentGap
@@ -87,11 +85,12 @@ let content = @() {
           flow = FLOW_VERTICAL
           halign = ALIGN_CENTER
           children = [
-            lootboxHeader(lootbox.get())
-            lootboxImageWithTimer(lootbox.get())
+            lootboxImageWithTimer(lootbox.get(), lootboxAmount.get())
             { size = flex() }
+            mkJackpotProgress(Computed(@() getStepsToNextFixed(lootbox.get(), serverConfigs.get(), servProfile.get())))
+            { size = [0, hdpx(10)] }
             mkTimeBlockCentered(aTimePriceStart)
-            { size = [0, hdpx(20)] }
+            { size = [0, hdpx(10)] }
             mkPriceBlockCentered(aTimePriceStart)
           ]
         }
@@ -102,20 +101,22 @@ let previewWnd = @() {
   key = openCount
   size = flex()
 
-  children = [
-    previewBg
-    {
-      size = saSize
-      vplace = ALIGN_CENTER
-      hplace = ALIGN_CENTER
-      flow = FLOW_VERTICAL
-      gap = contentGap
-      children = [
-        headerPanel
-        content
-      ]
-    }
-  ]
+  children = {
+    size = saSize
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    flow = FLOW_VERTICAL
+    gap = contentGap
+    children = [
+      headerPanel
+      content
+    ]
+  }
+  animations = wndSwitchAnim
 }
 
-registerScene("goodsLootboxPreviewWnd", previewWnd, closeGoodsPreview, openCount)
+let sceneId = "goodsLootboxPreviewWnd"
+registerScene(sceneId, previewWnd, closeGoodsPreview, openCount)
+setSceneBgFallback(sceneId, "ui/images/event_bg.avif")
+setSceneBg(sceneId, bgImage.get())
+bgImage.subscribe(@(v) setSceneBg(sceneId, v))

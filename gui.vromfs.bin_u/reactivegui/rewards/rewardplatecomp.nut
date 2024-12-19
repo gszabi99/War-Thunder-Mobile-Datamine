@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
 let { getCurrencyImage, getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
+let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
-let { fontLabel, labelHeight, REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
+let { REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
   getRewardPlateSize, progressBarHeight, rewardTicketDefaultSlots
 } = require("rewardStyles.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
@@ -30,10 +31,8 @@ let { mkRewardSlider } = require("%rGui/rewards/components/mkRewardSlider.nut")
 let { openRewardPrizeView } = require("%rGui/rewards/rewardPrizeView.nut")
 
 let textPadding = [0, hdpx(5)]
-let fontLabelSmaller = fontVeryTiny
+let cornerIconMargin = hdpx(5)
 let fontLabelBig = fontSmall
-let searchPlateSize = [evenPx(40), evenPx(40)]
-let searchIconSize = evenPx(30)
 let transparentBlackColor = 0x80000000
 
 let iconBase = {
@@ -47,8 +46,8 @@ let mkCommonLabelText = @(text, rStyle) {
   maxWidth = rStyle.boxSize
   rendObj = ROBJ_TEXT
   text
-}.__update(getFontToFitWidth({ rendObj = ROBJ_TEXT, text }.__update(fontLabel),
-  rStyle.boxSize - textPadding[1] * 2, [fontLabelSmaller, fontLabel]))
+}.__update(getFontToFitWidth({ rendObj = ROBJ_TEXT, text }.__update(rStyle.textStyle),
+  rStyle.boxSize - textPadding[1] * 2, [rStyle.textStyleSmall, rStyle.textStyle]))
 
 let mkCommonLabelTextMarquee = @(text, rStyle) {
   maxWidth = rStyle.boxSize - textPadding[1] * 2
@@ -57,10 +56,10 @@ let mkCommonLabelTextMarquee = @(text, rStyle) {
   speed = hdpx(30)
   delay = defMarqueeDelay
   text
-}.__update(fontLabelSmaller)
+}.__update(rStyle.textStyleSmall)
 
-let mkRewardLabel = @(children, needPadding = true) {
-  size = [flex(), labelHeight]
+let mkRewardLabel = @(children, rStyle, needPadding = true) {
+  size = [flex(), rStyle.labelHeight]
   padding = needPadding ? textPadding : null
   vplace = ALIGN_BOTTOM
   valign = ALIGN_CENTER
@@ -72,23 +71,26 @@ let mkRewardLabel = @(children, needPadding = true) {
   children
 }
 
-let mkRewardTextLabel = @(text, rStyle) mkRewardLabel(mkCommonLabelText(text, rStyle))
+let mkRewardTextLabel = @(text, rStyle) mkRewardLabel(mkCommonLabelText(text, rStyle), rStyle)
 
-let mkRewardSearchPlate = {
-  fillColor = transparentBlackColor
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  rendObj = ROBJ_VECTOR_CANVAS
-  size = searchPlateSize
-  lineWidth = hdpx(1)
-  commands = [
-    [VECTOR_ELLIPSE, 50, 50, 50, 50],
-  ]
-  children = {
-    size = [searchIconSize, searchIconSize]
-    rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#btn_search.svg:{searchIconSize}:{searchIconSize}:P")
-    color = 0xFFFFFFFF
+function mkRewardSearchPlate(rStyle) {
+  let { markSmallSize, markSize } = rStyle
+  return {
+    size = [markSize, markSize]
+    fillColor = transparentBlackColor
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = hdpx(1)
+    commands = [
+      [VECTOR_ELLIPSE, 50, 50, 50, 50],
+    ]
+    children = {
+      size = [markSmallSize, markSmallSize]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#btn_search.svg:{markSmallSize}:{markSmallSize}:P")
+      color = 0xFFFFFFFF
+    }
   }
 }
 
@@ -151,8 +153,8 @@ let mkProgressBar = @(available, total) @() {
   }
 }
 
-let mkProgressLabel = @(available, total, rStyle = {}) {
-  size = [flex(), labelHeight]
+let mkProgressLabel = @(available, total, rStyle) {
+  size = [flex(), rStyle.labelHeight]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_BOTTOM
   children = {
@@ -184,9 +186,10 @@ let mkRewardPlateCountText = @(r, rStyle)
 
 let mkRewardFixedIcon = @(rStyle) {
   size = [rStyle.markSize, rStyle.markSize]
-  pos = [hdpx(8), hdpx(4)]
+  margin = cornerIconMargin
   rendObj = ROBJ_IMAGE
   keepAspect = KEEP_ASPECT_FIT
+  imageValign = ALIGN_TOP
   image = Picture($"ui/gameuiskin#events_chest_icon.svg:{rStyle.markSize}:{rStyle.markSize}:P")
 }
 
@@ -299,9 +302,7 @@ function mkRewardPlateCurrencyTexts(r, rStyle) {
     : labelCurrencyNeedCompact
       ? shortTextFromNum(r.count)
     : decimalFormat(r.count)
-  return mkRewardLabel([
-    mkCommonLabelText(countText, rStyle)
-  ])
+  return mkRewardLabel(mkCommonLabelText(countText, rStyle), rStyle)
 }
 
 // PREMIUM ////////////////////////////////////////////////////////////////////
@@ -353,12 +354,12 @@ let mkDecoratorIconTitle = @(decoratorId, rStyle, size) decoratorFontIconBase.__
     text = loc($"title/{decoratorId}")
   },
   getFontToFitWidth({ rendObj = ROBJ_TEXT, text = loc($"title/{decoratorId}") }.__update(fontLabelBig),
-    size[0] - textPadding[1] * 2, [fontLabel, fontLabelBig]))
+    size[0] - textPadding[1] * 2, [rStyle.textStyle, fontLabelBig]))
 
 let mkDecoratorIconNickFrame = @(decoratorId, rStyle, size) decoratorFontIconBase.__merge({
   pos = [ 0, rStyle.iconShiftY ]
   text = frameNick("", decoratorId)
-  font = fontLabel.font
+  font = rStyle.textStyle.font
   fontSize = round(size[0] / 2.75)
 })
 
@@ -383,8 +384,9 @@ function mkRewardPlateDecoratorTexts(r, rStyle) {
   let { id } = r
   let decoratorType = Computed(@() (allDecorators.value?[id].dType))
   let comp = { watch = decoratorType }
-  return @() decoratorType.value == null ? comp : comp.__update(mkRewardLabel(
-    mkCommonLabelTextMarquee(loc($"decorator/{allDecorators.value?[id].dType}"), rStyle)))
+  return @() decoratorType.value == null ? comp
+    : comp.__update(
+        mkRewardLabel(mkCommonLabelTextMarquee(loc($"decorator/{allDecorators.value?[id].dType}"), rStyle), rStyle))
 }
 
 // ITEM ///////////////////////////////////////////////////////////////////////
@@ -408,8 +410,7 @@ function mkRewardPlateLootboxImage(r, rStyle) {
   let iconSize = round(size[1] * 0.67).tointeger()
   return {
     size
-    children = mkLoootboxImage(r.id, iconSize,
-      { pos = [ 0, iconShiftY ] }.__merge(iconBase))
+    children = mkLoootboxImage(r.id, iconSize).__update({ pos = [ 0, iconShiftY ] }).__merge(iconBase)
   }
 }
 
@@ -485,10 +486,8 @@ function mkRewardPlateSkinImage(r, rStyle) {
   }
 }
 
-function mkRewardPlateSkinTexts(r, rStyle) {
-  let { id } = r
-  return mkRewardLabel(mkCommonLabelTextMarquee(loc(getUnitLocId(id)), rStyle))
-}
+let mkRewardPlateSkinTexts = @(r, rStyle)
+  mkRewardLabel(mkCommonLabelTextMarquee(loc(getUnitLocId(r.id)), rStyle), rStyle)
 
 //  UNIT ///////////////////////////////////////////////////////////////////////
 
@@ -515,7 +514,7 @@ function mkUnitTextsImpl(r, rStyle, isUpgraded) {
           halign = ALIGN_RIGHT
           children = [
             mkUnitNameText(unitNameLoc, size, rStyle)
-            mkPlateText(getUnitClassFontIcon(unit.value), fontLabel)
+            mkPlateText(getUnitClassFontIcon(unit.value), rStyle.textStyle)
           ]
         }
         {
@@ -609,9 +608,10 @@ function mkRewardPlatePrizeTicketImage(r, rStyle, rewardCtors) {
     return null
 
   let rewards = []
-  foreach(value in (prizeTicketsCfg?[id].variants ?? []))
-    foreach(reward in value)
-      rewards.append(reward.__update({ slots = rewardTicketDefaultSlots, rType = reward.gType }))
+  foreach(variant in (prizeTicketsCfg?[id].variants ?? [])) {
+    let reward = variant.top()
+    rewards.append({ slots = rewardTicketDefaultSlots, rType = reward.gType }.__merge(reward))
+  }
 
   return mkRewardSlider(rewards, rewardCtors, @() !needShowPreview ? null
     : openRewardPrizeView(rewards, rewardCtors), rStyle)
@@ -772,6 +772,23 @@ let mkRewardLocked = @(rStyle) {
   }
 }
 
+let function mkRewardUnitFlag(unit, rStyle) {
+  let operatorCountry = getUnitTagsCfg(unit.name)?.operatorCountry
+  if (operatorCountry == "")
+    return null
+  let countryId = operatorCountry ?? unit.country
+  let w = rStyle.markSize
+  let h = round(w * (66.0 / 84)).tointeger()
+  return {
+    size = [w, h]
+    margin = cornerIconMargin
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#{countryId}.avif:{w}:{h}")
+    fallbackImage = Picture($"ui/gameuiskin#menu_lang.svg:{w}:{h}:P")
+    keepAspect = true
+  }
+}
+
 return {
   REWARD_STYLE_TINY
   REWARD_STYLE_SMALL
@@ -795,6 +812,7 @@ return {
   mkProgressBarText
   mkProgressBar
   mkRewardTextLabel
+  mkRewardUnitFlag
 
   decoratorIconContentCtors
 }

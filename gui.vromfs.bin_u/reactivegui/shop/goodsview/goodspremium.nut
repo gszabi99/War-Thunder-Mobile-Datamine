@@ -69,7 +69,7 @@ let infoBtn = infoGreyButton(
   }
 )
 
-function mkGoodsPremium(goods, onClick, state, animParams) {
+function mkGoodsPremium(goods, onClick, state, animParams, addChildren) {
   let { premiumDays, viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let premIconAndDaysTitleWrapper = {
     size = flex()
@@ -93,7 +93,7 @@ function mkGoodsPremium(goods, onClick, state, animParams) {
       premIconAndDaysTitleWrapper
       infoBtn
       mkGoodsLimitAndEndTime(goods)
-    ].extend(mkGoodsCommonParts(goods, state)),
+    ].extend(mkGoodsCommonParts(goods, state), addChildren),
     mkPricePlate(goods, state, animParams), {size = goodsSmallSize})
 }
 

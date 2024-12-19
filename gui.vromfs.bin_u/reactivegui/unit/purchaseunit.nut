@@ -41,7 +41,7 @@ registerHandler("onUnitPurchaseResult",
     }
   })
 
-function purchaseUnit(unitId, bqPurchaseInfo, isUpgraded = false, executeAfter = null, content = null, title = null, executeAfterCancel = null) {
+function purchaseUnit(unitId, bqInfo, isUpgraded = false, executeAfter = null, content = null, title = null, onCancel = null) {
   if (unitInProgress.value != null)
     return
   let unit = allUnitsCfg.value?[unitId]
@@ -64,22 +64,24 @@ function purchaseUnit(unitId, bqPurchaseInfo, isUpgraded = false, executeAfter =
     return
 
   let isFree = price.price == 0
-  let purchaseFunc = @()
+  let purchase = @()
     buy_unit(unitId, price.currencyId, price.price,
       { id = "onUnitPurchaseResult", unitId, executeAfter })
 
   if (isFree) {
-    purchaseFunc()
+    purchase()
     return
   }
 
   if (needSaveUnitDataForTutorial.get())
     delayedPurchaseUnitData.set({ unitId, currencyId = price.currencyId, price = price.price })
 
-  let contPurch = content ?? loc(!isCampaignWithUnitsResearch.get() ? "shop/needMoneyQuestion" : "shop/needMoneyQuestion_build",
+  let text = content ?? loc(!isCampaignWithUnitsResearch.get() ? "shop/needMoneyQuestion" : "shop/needMoneyQuestion_build",
     { item = colorize(userlogTextColor, loc(getUnitPresentation(unit).locId)) })
-  openMsgBoxPurchase(contPurch, price, purchaseFunc, bqPurchaseInfo, title, executeAfterCancel,
-    isCampaignWithUnitsResearch.get() ? "msgbox/btn_build" : "msgbox/btn_purchase")
+  openMsgBoxPurchase({
+    text, price, purchase, bqInfo, title, onCancel,
+    purchaseLocId = isCampaignWithUnitsResearch.get() ? "msgbox/btn_build" : "msgbox/btn_purchase"
+  })
   playSound("meta_new_technics_for_gold")
 }
 

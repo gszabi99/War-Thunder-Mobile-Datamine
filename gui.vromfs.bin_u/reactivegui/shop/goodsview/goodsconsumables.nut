@@ -79,7 +79,7 @@ function getLocNameConsumables(goods) {
     : loc($"consumable/amount/{data[0].id}", { amountTxt = decimalFormat(amount), amount })
 }
 
-function mkGoodsConsumables(goods, onClick, state, animParams) {
+function mkGoodsConsumables(goods, onClick, state, animParams, addChildren) {
   let data = getConsumablesInfo(goods)
   let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let nameConsumable = data.len() != 1 ? loc($"goods/{goods.id}") : loc($"item/{data[0].id}")
@@ -102,7 +102,7 @@ function mkGoodsConsumables(goods, onClick, state, animParams) {
         children = mkCurrencyAmountTitle(data.map(@(item) item.amount), viewBaseValue, titleFontGradConsumables, nameConsumable)
       })
       mkGoodsLimitAndEndTime(goods)
-    ].extend(mkGoodsCommonParts(goods, state)),
+    ].extend(mkGoodsCommonParts(goods, state), addChildren),
     mkPricePlate(goods, state, animParams), {size = goodsSmallSize})
 }
 

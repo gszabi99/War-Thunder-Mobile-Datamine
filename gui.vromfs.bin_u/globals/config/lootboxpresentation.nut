@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let regexp2 = require("regexp2")
+let { round } = require("math")
 
 let lootboxFallbackPicture = Picture("ui/gameuiskin#daily_box_small.avif:0:P")
 
@@ -16,6 +17,14 @@ let customLootboxImages = {
   event_special_tanks_halloween_2024         = "event_special_halloween_2024.avif"
   event_special_ships_halloween_2024         = "event_special_halloween_2024.avif"
   event_special_air_halloween_2024           = "event_special_halloween_2024.avif"
+
+  event_special_tanks_new_year_2025         = "event_special_ships_christmas_2024.avif"
+  event_special_ships_new_year_2025         = "event_special_ships_christmas_2024.avif"
+  event_special_air_new_year_2025           = "event_special_ships_christmas_2024.avif"
+
+  event_special_gift_tanks_new_year_2025         = "event_christmas_gift_box.avif"
+  event_special_gift_ships_new_year_2025         = "event_christmas_gift_box.avif"
+  event_special_gift_air_new_year_2025           = "event_christmas_gift_box.avif"
 
   past_events_box_tanks_seasons_1_to_3 = "past_events_box_ships_seasons_1_to_3.avif"
   past_events_box_ships_seasons_1_to_4 = "past_events_box_ships_seasons_1_to_3.avif"
@@ -35,6 +44,16 @@ let customLootboxImages = {
   past_events_box_tanks_seasons_1_to_11 = "past_events_box_seasons_1_to_11.avif"
 }
 
+let customRouletteImages = {
+  event_special_tanks_new_year_2025 = "ui/images/event_bg_roulette_christmas_2024.avif"
+  event_special_ships_new_year_2025 = "ui/images/event_bg_roulette_christmas_2024.avif"
+  event_special_air_new_year_2025 = "ui/images/event_bg_roulette_christmas_2024.avif"
+
+  event_special_gift_tanks_new_year_2025 = "ui/images/event_bg_roulette_christmas_2024.avif"
+  event_special_gift_ships_new_year_2025 = "ui/images/event_bg_roulette_christmas_2024.avif"
+  event_special_gift_air_new_year_2025   = "ui/images/event_bg_roulette_christmas_2024.avif"
+}
+
 let imgIdBySeason = {
   event_small = @(season) $"event_small_{season}",
 }
@@ -44,9 +63,21 @@ let defaultSeasonImages = [
   { re = regexp2(@"^event_air_(medium|big)_season_\d+$"),   mkImg = @(id) id.replace("air", "ships") },
 ]
 
+let lootboxPreviewBg = { //todo: should merge all presentations to the single table
+  event_special_gift_tanks_new_year_2025         = "ui/images/event_bg_christmas_2024.avif"
+  event_special_gift_ships_new_year_2025         = "ui/images/event_bg_christmas_2024.avif"
+  event_special_gift_air_new_year_2025           = "ui/images/event_bg_christmas_2024.avif"
+}
+
 let customEventLootboxScale = {
   event_special_tanks_anniversary_2024 = 1.2
   event_special_ships_anniversary_2024 = 1.2
+}
+
+let customGoodsLootboxScale = {
+  event_special_gift_tanks_new_year_2025 = 0.7
+  event_special_gift_ships_new_year_2025 = 0.7
+  event_special_gift_air_new_year_2025   = 0.7
 }
 
 let lootboxLocIdBySlot = {
@@ -76,20 +107,46 @@ function getLootboxImage(id, season = null, size = null) {
   return !size ? Picture($"ui/gameuiskin/{img}:0:P") : Picture($"ui/gameuiskin#{img}:{size}:{size}:P")
 }
 
-let mkLoootboxImage = @(id, size = null, ovr = {}) {
-  size = size ? [size, size] : SIZE_TO_CONTENT
-  rendObj = ROBJ_IMAGE
-  image = getLootboxImage(id, null, size)
-  fallbackImage = lootboxFallbackPicture
-  keepAspect = true
-}.__update(ovr)
+let getRouletteImage = @(id) customRouletteImages?[id] ?? "ui/images/event_bg.avif"
+
+let mkTagLayersCtor = @(image) function(size) {
+  let tagSize = round(0.35 * size).tointeger()
+  return {
+    size = [tagSize, tagSize]
+    pos = [-0.04 * size, 0.2 * size]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#{image}:{tagSize}:{tagSize}:P")
+    keepAspect = true
+  }
+}
+
+let lootboxLayers = {
+  event_special_gift_tanks_new_year_2025 = mkTagLayersCtor("event_christmas_gift_tag_tanks.avif")
+  event_special_gift_ships_new_year_2025 = mkTagLayersCtor("event_christmas_gift_tag_ships.avif")
+  event_special_gift_air_new_year_2025   = mkTagLayersCtor("event_christmas_gift_tag_planes.avif")
+}
+
+function mkLoootboxImage(id, size, scale = 1, ovr = {}) {
+  let scaledSize = (size * scale).tointeger()
+  return {
+    size = [scaledSize, scaledSize]
+    rendObj = ROBJ_IMAGE
+    image = getLootboxImage(id, null, scaledSize)
+    fallbackImage = lootboxFallbackPicture
+    keepAspect = true
+    children = lootboxLayers?[id](scaledSize)
+  }.__update(ovr)
+}
 
 let getLootboxName = @(id, slot = "") loc(lootboxLocIdBySlot?[slot] ?? $"lootbox/{id}")
 
 return {
   getLootboxImage
+  getRouletteImage
   lootboxFallbackPicture
   mkLoootboxImage
   getLootboxName
   customEventLootboxScale
+  customGoodsLootboxScale
+  lootboxPreviewBg
 }

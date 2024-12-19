@@ -27,7 +27,7 @@ function getLocNameWp(goods) {
   return loc("shop/item/wp/amount", { amountTxt = decimalFormat(amount), amount })
 }
 
-function mkGoodsWp(goods, onClick, state, animParams) {
+function mkGoodsWp(goods, onClick, state, animParams, addChildren) {
   let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let wp = goods?.currencies.wp ?? 0
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
@@ -45,7 +45,7 @@ function mkGoodsWp(goods, onClick, state, animParams) {
       getImgByAmount(wp)
       mkCurrencyAmountTitle(wp, viewBaseValue, titleFontGrad)
       mkGoodsLimitAndEndTime(goods)
-    ].extend(mkGoodsCommonParts(goods, state)),
+    ].extend(mkGoodsCommonParts(goods, state), addChildren),
     mkPricePlate(goods, state, animParams),  {size = goodsSmallSize})
 }
 

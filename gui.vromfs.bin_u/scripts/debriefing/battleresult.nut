@@ -22,6 +22,7 @@ let { compatibilityConvertCommonStats } = require("%appGlobals/commonStatsUtils.
 let { get_mp_local_team, get_mplayers_list } = require("mission")
 let { get_mp_tbl_teams } = require("guiMission")
 let mkCommonExtras = require("mkCommonExtras.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { lastRoom } = require("%scripts/matchingRooms/sessionLobby.nut")
 let { squadLabels } = require("%appGlobals/squadLabelState.nut")
 
@@ -44,11 +45,8 @@ let battleResult = Computed(function() {
   if (debugBattleResult.get())
     return debugBattleResult.get()
   local res
-  if (battleSessionId.get() == -1) {
-    if (singleMissionResult.get() == null)
-      return null
-    res = mkCommonExtras(singleMissionResult.get()).__merge(singleMissionResult.get())
-  }
+  if (battleSessionId.get() == -1)
+    return singleMissionResult.get()
   else {
     res = baseBattleResult.get()?.__merge({ roomInfo = roomInfo.get() })
     if (res?.sessionId != battleSessionId.get())
@@ -60,7 +58,6 @@ let battleResult = Computed(function() {
       res = { playersCommonStats = playersCommonStats.get() }.__merge(res)
     if (questProgressDiff.get() != null)
       res = { quests = questProgressDiff.get() }.__merge(res)
-    res = mkCommonExtras(baseBattleResult.get()).__merge(res)
   }
   if (unitWeaponry.get() != null)
     res = { unitWeaponry = unitWeaponry.get() }.__merge(res)
@@ -140,13 +137,16 @@ function onBattleResult(evt, _eid, comp) {
   let userId = comp.server_player__userId
   if (userId != myUserId.value)
     return
-  baseBattleResult(evt.data.__merge(
-    battleData.value ?? {}
-    {
-      localTeam = get_mp_local_team()
-      teams = get_mp_tbl_teams()
-      userName = myUserName.value
-    }))
+
+  let resultWithBd = evt.data.__merge(battleData.get() ?? {})
+  baseBattleResult.set(mkCommonExtras(resultWithBd, serverConfigs.get())
+    .__merge(
+      resultWithBd,
+      {
+        localTeam = get_mp_local_team()
+        teams = get_mp_tbl_teams()
+        userName = myUserName.value
+      }))
   updateCompletedTutorials()
 }
 

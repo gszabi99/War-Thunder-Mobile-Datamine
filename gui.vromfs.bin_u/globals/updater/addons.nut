@@ -122,7 +122,7 @@ if (addonsBlk != null)
       if (hq)
         extAddonsByRank[campaign][mRank].append(addonHq)
 
-      if (campaign in campaignPostfix) {
+      if (campaign in campaignPostfix && !doesLocTextExist($"addon/{addon}")) {
         let cfg = { locId = $"addon/{campaignPostfix[campaign]}_tier", mRank }
         addonLocIdWithMRank[addon] <- cfg
         addonLocIdWithMRank[addonHq] <- cfg

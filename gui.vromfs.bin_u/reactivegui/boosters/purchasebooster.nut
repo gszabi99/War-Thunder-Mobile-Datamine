@@ -4,7 +4,7 @@ let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 
-function purchaseBooster(id, localizedName, bqPurchaseInfo) {
+function purchaseBooster(id, localizedName, bqInfo) {
   if (boosterInProgress.value != null)
     return
 
@@ -17,15 +17,13 @@ function purchaseBooster(id, localizedName, bqPurchaseInfo) {
     logerr("Try to purchase booster without price")
     return
   }
-  openMsgBoxPurchase(
-    loc("shop/needMoneyQuestion",
+  openMsgBoxPurchase({
+    text = loc("shop/needMoneyQuestion",
       { item = colorize(userlogTextColor, localizedName) }),
-    {
-      price
-      currencyId
-    },
-    @() buy_booster(effect, currencyId, price),
-    bqPurchaseInfo)
-  }
+    price = { price, currencyId },
+    purchase = @() buy_booster(effect, currencyId, price),
+    bqInfo
+  })
+}
 
-  return purchaseBooster
+return purchaseBooster

@@ -1,20 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.nut")
 let { eventWndOpenCounter, closeEventWnd, curEventEndsAt,
   unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
   bestCampLevel, curEventLootboxes, curEventLoc,
-  curEvent, MAIN_EVENT_ID, curEventCurrencies, curEventSeason, isCurEventActive,
+  curEvent, MAIN_EVENT_ID, curEventSeason, isCurEventActive,
   curEventBg, curEventName
 } = require("eventState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkTimeUntil } = require("%rGui/quests/questsPkg.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { lootboxInfo, progressBar, mkLootboxImageWithTimer, mkPurchaseBtns, lootboxHeight,
- smallChestIcon, leaderbordBtn, questsBtn } = require("eventPkg.nut")
+let { lootboxInfo, mkLootboxImageWithTimer, mkPurchaseBtns, lootboxHeight, leaderbordBtn, questsBtn
+} = require("eventPkg.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
-let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { buy_lootbox, lootboxInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { PURCH_SRC_EVENT, PURCH_TYPE_LOOTBOX, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
@@ -27,7 +25,9 @@ let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { has_leaderboard } = require("%appGlobals/permissions.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { lootboxImageWithTimer, lootboxContentBlock, lootboxHeader } = require("%rGui/shop/lootboxPreviewContent.nut")
+let { lootboxImageWithTimer, lootboxContentBlock, lootboxHeader, mkJackpotProgress, mkJackpotProgressBar,
+  smallChestIcon
+} = require("%rGui/shop/lootboxPreviewContent.nut")
 let { isEmbeddedLootboxPreviewOpen, openEmbeddedLootboxPreview, closeLootboxPreview, previewLootbox,
   getStepsToNextFixed
 } = require("%rGui/shop/lootboxPreviewState.nut")
@@ -44,7 +44,12 @@ let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardPlateComp.nut")
 let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
 let { customEventLootboxScale } = require("%appGlobals/config/lootboxPresentation.nut")
 let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
-
+let { itemsCfgByCampaignOrdered, orderByItems, SPARE } = require("%appGlobals/itemsState.nut")
+let { specialEventGamercardItems } = require("%rGui/event/eventState.nut")
+let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
+let { openShopWnd } = require("%rGui/shop/shopState.nut")
+let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
+let { gamercardGap, CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
 
 let MAX_LOOTBOXES_AMOUNT = 3
 let headerGap = hdpx(30)
@@ -106,36 +111,8 @@ let mkProgress = @(stepsToFixed) @() {
             text = stepsToFixed.value[1] - stepsToFixed.value[0]
           }.__update(fontTinyShaded)
         ])
-        progressBar(stepsToFixed.value[0], stepsToFixed.value[1], { margin = [hdpx(20), 0, hdpx(10), 0] })
+        mkJackpotProgressBar(stepsToFixed.value[0], stepsToFixed.value[1], { margin = [hdpx(20), 0, hdpx(10), 0] })
       ]
-}
-
-let mkProgressFull = @(stepsToFixed) @() {
-  watch = stepsToFixed
-  flow = FLOW_VERTICAL
-  children = stepsToFixed.value[1] - stepsToFixed.value[0] <= 0 ? null : [
-    mkRow([
-      {
-        rendObj = ROBJ_TEXT
-        text = utf8ToUpper(loc("events/jackpot"))
-      }.__update(fontVeryTinyAccented)
-      {
-        rendObj = ROBJ_TEXT
-        text = stepsToFixed.value[1] - stepsToFixed.value[0]
-      }.__update(fontVeryTinyAccented)
-    ])
-    progressBar(stepsToFixed.value[0], stepsToFixed.value[1], { margin = [hdpx(10), 0] })
-    mkRow([
-      {
-        maxWidth = hdpx(400)
-        rendObj = ROBJ_TEXTAREA
-        behavior = Behaviors.TextArea
-        text = loc("events/guaranteedReward")
-      }.__update(fontVeryTiny)
-      { size = [hdpx(10), 0] }
-      smallChestIcon
-    ])
-  ]
 }
 
 function mkLootboxBlock(lootbox, blockSize) {
@@ -203,36 +180,58 @@ isCurEventActive.subscribe(function(isActive) {
 })
 
 function mkCurrencies() {
-  let baseCurrencies = [WP, GOLD].filter(@(v) curEventCurrencies.value.findindex(@(c) c == v) == null)
-  let res = [].extend(curEventCurrencies.value, baseCurrencies)
+  let currensiesByLootbox = previewLootbox.get()?.currencyId
+    ? [previewLootbox.get().currencyId]
+    : curEventLootboxes.get()
+        .reduce(@(res, l) res.$rawset(l.currencyId, true), {})
+        .keys()
   return {
-    watch = curEventCurrencies
-    children = {
-      pos = [saBorders[0] * 0.5, 0]
-      padding = [saBorders[0] * 0.025, saBorders[0] * 0.5]
-      rendObj = ROBJ_9RECT
-      image = gradTranspDoubleSideX
-      color = 0x70000000
-      children = mkCurrenciesBtns(res).__update({ size = SIZE_TO_CONTENT })
-    }
+    watch = [curEventLootboxes, previewLootbox]
+    children = currensiesByLootbox.len() < 1 ? null
+      : {
+        pos = [saBorders[0] * 0.5, 0]
+        padding = [saBorders[0] * 0.025, saBorders[0] * 0.5]
+        rendObj = ROBJ_9RECT
+        image = gradTranspDoubleSideX
+        color = 0x70000000
+        children = mkCurrenciesBtns(currensiesByLootbox).__update({ size = SIZE_TO_CONTENT })
+      }
   }
 }
 
-let toBattleHint = {
+let consumablesPlate = @(battleCampaign, itemsByGameMode) @(){
+  watch = [itemsCfgByCampaignOrdered, specialEventGamercardItems]
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  gap = gamercardGap
+  children = specialEventGamercardItems.get().map(@(v) mkItemsBalance(v.itemId, null, CS_GAMERCARD))
+    .extend(itemsCfgByCampaignOrdered.get()[battleCampaign].filter(@(v) itemsByGameMode?[v.name] ?? true)
+      .reduce(@(res, l) res.$rawset(l.name, true), {})
+      .keys()
+      .sort(@(a, b) orderByItems[a] <=> orderByItems[b])
+        .map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_GAMERCARD)))
+}
+
+let toBattleHint = @(battleCampaign, itemsByGameMode) battleCampaign == null ? null : {
   hplace = ALIGN_RIGHT
   pos = [saBorders[0] * 0.5, 0]
+  flow = FLOW_VERTICAL
   rendObj = ROBJ_9RECT
   image = gradTranspDoubleSideX
   padding = [saBorders[0] * 0.2, saBorders[0] * 0.5]
   texOffs = [0, gradDoubleTexOffset]
   screenOffs = [0, saBorders[0]]
   color = 0x70000000
-  children = {
-    size = [defButtonMinWidth, SIZE_TO_CONTENT]
-    rendObj = ROBJ_TEXTAREA
-    behavior = Behaviors.TextArea
-    text = loc("events/toBattle")
-  }.__update(fontTinyAccented)
+  halign = ALIGN_RIGHT
+  children = [
+    {
+      size = [defButtonMinWidth, SIZE_TO_CONTENT]
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      text = loc("events/toBattle")
+    }.__update(fontTinyAccented)
+    consumablesPlate(battleCampaign, itemsByGameMode)
+  ]
 }
 
 let mkToBattleButton = @(modeId, modeName) mkToBattleButtonWithSquadManagement(function() {
@@ -294,7 +293,7 @@ let scrollArrowsBlock = {
 }
 
 function mkLootboxPreviewContent() {
-  let progressInfo = mkProgressFull(
+  let progressInfo = mkJackpotProgress(
     Computed(@() getStepsToNextFixed(previewLootbox.value, serverConfigs.value, servProfile.value)))
   return @() {
     watch = previewLootbox
@@ -337,9 +336,14 @@ function mkLootboxPreviewContent() {
 
 function eventWndContent() {
   let blockSize = Computed(@() min(saSize[0] / clamp(curEventLootboxes.value.len(), 1, MAX_LOOTBOXES_AMOUNT), hdpx(700)))
-  let modeId = Computed(@() allGameModes.get().findindex(@(v) v?.eventId == curEventName.get()))
+  let battleInfo = Computed(@() allGameModes.get().findvalue(@(v) v?.eventId == curEventName.get()))
+  let modeId = Computed(@() battleInfo.get()?.gameModeId)
+  let battleCampaign = Computed(@() battleInfo.get()?.campaign)
+  let itemsByGameMode = Computed(@() {
+    [SPARE] = battleInfo.get()?.mission_decl.allowSpare ?? true
+  })
   return @() {
-    watch = [isEmbeddedLootboxPreviewOpen, modeId]
+    watch = [isEmbeddedLootboxPreviewOpen, modeId, battleCampaign, itemsByGameMode]
     size = flex()
     padding = saBordersRv
     flow = FLOW_VERTICAL
@@ -407,7 +411,7 @@ function eventWndContent() {
                       flow = FLOW_VERTICAL
                       gap = hdpx(10)
                       children = [
-                        toBattleHint
+                        toBattleHint(battleCampaign.get(), itemsByGameMode.get())
                         mkToBattleButton(modeId.get(), curEventName.get())
                       ]
                     }

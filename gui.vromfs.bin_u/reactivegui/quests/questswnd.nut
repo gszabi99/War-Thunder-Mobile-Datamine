@@ -7,8 +7,8 @@ let { questsWndPage, mkQuest, mkAchievement, unseenMarkMargin } = require("quest
 let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
 let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { eventSeason, eventEndsAt, isEventActive, specialEventsOrdered, openEventWnd, getSpecialEventName
-} = require("%rGui/event/eventState.nut")
+let { eventSeason, eventEndsAt, isEventActive, specialEventsOrdered, openEventWnd, getSpecialEventName,
+   specialEventsLootboxesState } = require("%rGui/event/eventState.nut")
 let { openBattlePassWnd, hasBpRewardsToReceive, isBpSeasonActive
 } = require("%rGui/battlePass/battlePassState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -17,7 +17,7 @@ let { mkQuestsHeaderBtn } = require("questsPkg.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { shopGoods, openShopWnd } = require("%rGui/shop/shopState.nut")
-let { SC_FEATURED } = require("%rGui/shop/shopCommon.nut")
+let { defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 
 
@@ -25,6 +25,7 @@ let iconSize = hdpxi(100)
 let iconColor = 0xFFFFFFFF
 
 let iconSeason = Computed(@() $"ui/gameuiskin#banner_event_{eventSeason.get()}.avif")
+let imageSizeMul = Computed(@() getEventPresentation(eventSeason.get()).imageSizeMul)
 
 let mkUnseen = @(tabId) Computed(function() {
   if (progressUnlockByTab.get()?[tabId].hasReward)
@@ -35,30 +36,44 @@ let mkUnseen = @(tabId) Computed(function() {
     : SEEN
 })
 
-let linkToEventBtnCtor = @() mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
-  iconSeason,
-  @() openEventWnd())
+let linkToEventBtnCtor = @() {
+  watch = imageSizeMul
+  children = mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
+    iconSeason,
+    @() openEventWnd(), null, imageSizeMul.get())
+}
 
-let linkToBattlePassBtnCtor = @() mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
-  iconSeason,
-  openBattlePassWnd,
-  @() {
-    watch = hasBpRewardsToReceive
-    margin = unseenMarkMargin
-    children = hasBpRewardsToReceive.get() ? priorityUnseenMark : null
-  })
+let linkToBattlePassBtnCtor = @() {
+  watch = imageSizeMul
+  children = mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
+    iconSeason,
+    openBattlePassWnd,
+    @() {
+      watch = hasBpRewardsToReceive
+      margin = unseenMarkMargin
+      children = hasBpRewardsToReceive.get() ? priorityUnseenMark : null
+    },
+    imageSizeMul.get())
+}
 
-function linkToStoreBtnCtor(id) {
+function linkToStoreBtnCtor(idx) {
+  let lootboxInfo = Computed(@() specialEventsLootboxesState.get().withLootboxes.findvalue(@(v) v.idx == idx))
+  let id = getSpecialEventName(idx + 1)
   let eventName = Computed(@() questsCfg.get()?[id][0] ?? "")
-  let eventIcon = Computed(@() getEventPresentation(eventName.get()).icon)
+  let eventIcon = Computed(@() lootboxInfo.get()
+    ? getEventPresentation(lootboxInfo.get().eventName).icon
+    : getEventPresentation(eventName.get()).icon)
   let hasGoods = Computed(@() eventName.get() != ""
     && shopGoods.get().findindex(@(item) item?.meta.eventId == eventName.get()) != null)
 
   return @() {
-    watch = hasGoods
-    children = !hasGoods.get() ? null
-      : mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openShopWnd(SC_FEATURED))
-  }
+    watch = [hasGoods, lootboxInfo]
+    children = hasGoods.get()
+        ? mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openShopWnd(defaultShopCategory))
+      : lootboxInfo.get()
+        ? mkQuestsHeaderBtn(loc("mainmenu/rewardsList"), eventIcon, @() openEventWnd(lootboxInfo.get().eventId))
+      : null
+    }
 }
 
 function eventTabContent(){
@@ -144,7 +159,7 @@ function mkSpecialQuestsTab(idx) {
     id
     tabContent = mkSpecialEventTabContent(idx)
     isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value?[id] ?? []), mkQuest, id, @() linkToStoreBtnCtor(id))
+    content = questsWndPage(Computed(@() questsCfg.value?[id] ?? []), mkQuest, id, linkToStoreBtnCtor(idx))
     isVisible = Computed(@() questsCfg.value?[id].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
 }
@@ -154,7 +169,7 @@ let tabs = [
     id = COMMON_TAB
     locId = "quests/common"
     image = iconSeason
-    imageSizeMul = 1.2
+    imageSizeMul = imageSizeMul
     isFullWidth = true
     content = questsWndPage(Computed(@() questsCfg.value[COMMON_TAB]), mkQuest, COMMON_TAB, linkToBattlePassBtnCtor)
     isVisible = Computed(@() questsCfg.value[COMMON_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null
@@ -163,7 +178,7 @@ let tabs = [
   {
     id = EVENT_TAB
     image = iconSeason
-    imageSizeMul = 1.2
+    imageSizeMul = imageSizeMul
     isFullWidth = true
     content = questsWndPage(Computed(@() questsCfg.value[EVENT_TAB]), mkQuest, EVENT_TAB, linkToEventBtnCtor)
     tabContent = eventTabContent()

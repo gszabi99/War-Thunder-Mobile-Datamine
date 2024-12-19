@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { allow_voice_messages } = require("%appGlobals/permissions.nut")
 let { SUBMARINE } = require("%appGlobals/unitConst.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
-let { EII_SMOKE_SCREEN, EII_TOOLKIT } = require("%rGui/hud/weaponsButtonsConfig.nut")
+let { EII_TOOLKIT } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let cfgHudCommonNaval = require("cfgHudCommonNaval.nut")
 let { mkRhombZoomButton, mkDivingLockButton } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
@@ -60,8 +60,6 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     priority = Z_ORDER.SLIDER
   }
 
-  abSmokeScreen = withActionBarButtonCtor(EII_SMOKE_SCREEN, SUBMARINE,
-    { defTransform = mkRBPos([hdpx(-500), hdpx(43)]) })
   abToolkit = withActionBarButtonCtor(EII_TOOLKIT, SUBMARINE,
     { defTransform = mkRBPos([hdpx(-650), hdpx(43)]) })
 

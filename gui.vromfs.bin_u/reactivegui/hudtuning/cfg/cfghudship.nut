@@ -121,7 +121,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
 
   firework = withActionButtonScaleCtor(AB_FIREWORK, mkRhombFireworkBtn,
     {
-      defTransform = mkRBPos([hdpx(-216), hdpx(-436)])
+      defTransform = mkRBPos([hdpx(-285), hdpx(-505)])
       editView = mkWeaponBtnEditView("ui/gameuiskin#hud_ammo_fireworks.svg", 1.0)
       isVisibleInEditor = fwVisibleInEditor
       isVisibleInBattle = fwVisibleInBattle

@@ -27,7 +27,7 @@ let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
 let { getPlatoonOrUnitName, getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { unitSelUnderlineFullSize, unitPlatesGap, unitPlateSmall, mkUnitInfo,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSelectedUnderlineVert,
-  unitPlateWidth, unitPlateHeight
+  unitPlateWidth, unitPlateHeight, mkUnitSlotLockedLine
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
@@ -311,20 +311,23 @@ function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
   let size = idx != 0 ? unitPlateSize
     : onSelectUnit == null ? unitPlateSizeSingle
     : unitPlateSizeMain
-
+  let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
+  let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (myUnits.value?[unit.name].level ?? 0))
   return {
     behavior = Behaviors.Button
     onClick = onSelectUnit
     sound = { click  = "choose" }
     children = [
       {
+        watched = isLocked
         size
         children = [
           mkUnitBg(unit)
           mkUnitSelectedGlow(unit, isSelected)
           mkUnitImage(platoonUnitFull)
           mkUnitTexts(platoonUnitFull, loc(p.locId))
-          mkUnitInfo(unit)
+          !isLocked.value ? mkUnitInfo(unit) : null
+          mkUnitSlotLockedLine(platoonUnit, isLocked.get())
         ]
       }
       onSelectUnit == null ? null : mkUnitSelectedUnderlineVert(unit, isSelected)

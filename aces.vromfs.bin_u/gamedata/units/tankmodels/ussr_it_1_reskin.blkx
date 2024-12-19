@@ -1973,7 +1973,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/180mm_2k4_rocket_launcher.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/180mm_2k4_launcher_user_cannon.blk",
         "weaponType": "rockets",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,

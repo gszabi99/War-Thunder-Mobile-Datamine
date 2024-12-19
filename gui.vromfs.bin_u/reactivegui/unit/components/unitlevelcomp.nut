@@ -32,7 +32,7 @@ let mkUnitLevel = @(level){
 
 function mkUnitLevelBlock(unit, override = {}) {
   let { level = 0, exp = 0, levels = []} = unit
-  let isMaxLevel = level == levels.len() || unit?.isUpgraded || unit?.isPremium
+  let isMaxLevel = (level == levels.len() && levels.len() != 0) || unit?.isUpgraded || unit?.isPremium
   let nextLevelExp = levels?[level].exp ?? 0
   let percent = isMaxLevel
       ? 1.0

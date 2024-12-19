@@ -285,14 +285,14 @@ function mkPurchaseFunc(unit, campaign, lvlCost, levelInfo) {
     )
 }
 
-let openConfirmationWnd = @(unit, campaign, lvlUpPrice, levelInfo) openMsgBoxPurchase(
-    loc("shop/needMoneyQuestion",
+let openConfirmationWnd = @(unit, campaign, lvlUpPrice, levelInfo) openMsgBoxPurchase({
+    text = loc("shop/needMoneyQuestion",
       { item = colorize(userlogTextColor
         $"{loc(getUnitPresentation(unit).locId)}") })
-    mkPriceParameters(unit)
-    mkPurchaseFunc(unit, campaign, lvlUpPrice, levelInfo)
-    mkBqPurchaseInfo(PURCH_SRC_HANGAR, PURCH_TYPE_PLAYER_LEVEL, (levelInfo.level + 1).tostring())
-  )
+    price = mkPriceParameters(unit)
+    purchase = mkPurchaseFunc(unit, campaign, lvlUpPrice, levelInfo)
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_HANGAR, PURCH_TYPE_PLAYER_LEVEL, (levelInfo.level + 1).tostring())
+  })
 
 function mkBuyBtn(unit) {
   let content = {

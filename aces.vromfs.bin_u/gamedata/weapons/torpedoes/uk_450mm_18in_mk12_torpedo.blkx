@@ -11,7 +11,7 @@
     "antiShipBomb": true
   },
   "torpedo": {
-    "armDistance": 50.0,
+    "armDistance": 10.0,
     "dropSpeedRange": [
       -10.0,
       78.0
@@ -25,8 +25,8 @@
       90.0
     ],
     "bulletType": "torpedo",
-    "distToLive": 2500.0,
-    "maxSpeedInWater": 13.89,
+    "distToLive": 3500.0,
+    "maxSpeedInWater": 22.63,
     "diveDepth": 1.0,
     "detonationRadius": 0.1,
     "detonationDepth": 4.0,
@@ -47,14 +47,42 @@
     "aaSpeedPrediction": 0.0,
     "aaAccelPrediction": 0.0,
     "aaAngleCorrection": 0.0,
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
+    "explodeTreshold": 0.00001,
     "relativeVelHitShift": [
       300.0,
       1000.0
     ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "splash": {
+      "innerRadius": 9.0,
+      "penetration": 125.0,
+      "damage": 4880.0,
+      "damageType": "explosionTorpedo"
+    },
+    "arcadeProp": {
+      "dropSpeedRange": [
+        -10.0,
+        160.0
+      ],
+      "dropHeightRange": [
+        -10.0,
+        150.0
+      ],
+      "dropAngleRange": [
+        -90.0,
+        90.0
+      ]
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 100.0,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
     "damage": {
       "explosive": {
         "radius": 0.0,
@@ -85,13 +113,6 @@
             "countPortion": 0.5
           }
         ]
-      }
-    },
-    "DamageParts": {
-      "body": {
-        "hp": 100.0,
-        "armorClass": "ship_structural_steel",
-        "armorThickness": 1.0
       }
     }
   }

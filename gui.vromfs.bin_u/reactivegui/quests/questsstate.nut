@@ -133,7 +133,7 @@ function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnl
       pUnlockBySection?[s],
       idx == 0 ? pUnlockByTab?[tabId] : null
     ).filter(@(v) v)) {
-      let stage = quest.stages?[quest.stage]
+      let stage = quest.stages?[quest.stage] ?? quest.stages?[quest.stages.len() - 1]
       if (stage != null){
         if ((stage?.price ?? 0) > 0 && !res.contains(stage?.currencyCode) && !quest?.isCompleted)
           res.append(stage?.currencyCode)

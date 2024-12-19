@@ -171,6 +171,7 @@ let skinsByTag = {
     "fr_camo_carc_winter"
     "fr_camo_cenzub"
     "ussr_camo_arctic"
+    "camo_ny_24"
   ],
 
   [NAVAL] = [
@@ -191,6 +192,8 @@ let skinsByTag = {
     "camo_syntheticblackpaint"
     "camo_warshipdeepgray"
     "camo_wood"
+    "destroyer_class1936c_z47_halloween_camo"
+    "sub_m1_ny_camo"
 
     "camo_3gray_colors_geometry"
     "camo_blackgray_net"
@@ -347,6 +350,7 @@ let skinsByTag = {
     "ussr_i_180s_red"
     "ussr_il_2m"
     "ussr_il_2m_type3_1945"
+    "ussr_il_2_37_1943_wo13_c"
     "ussr_il_4"
     "ussr_il_10"
     "ussr_il_10_winter44"

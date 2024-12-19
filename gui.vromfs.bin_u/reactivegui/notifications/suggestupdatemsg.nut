@@ -42,6 +42,11 @@ let needStartBackgroundUpdate = keepref(Computed(@() needProcessUpdate.get()
   && isProcessByBgUpdate.get()
   && isGameAutoUpdateEnabled.get()))
 
+let needSuggestMessageBySite = keepref(Computed(@() needProcessUpdate.get()
+  && !isDownloadInProgress.get()
+  && isProcessByBgUpdate.get()
+  && !isGameAutoUpdateEnabled.get()))
+
 needShowExitToUpdate.subscribe(function(v) {
   if (!v)
     return
@@ -71,9 +76,25 @@ function showMsg(isActive) {
     closeFMsgBox(SUGGEST_UPDATE)
 }
 
+function showMsgForSite(isActive) {
+  if (isActive)
+    openFMsgBox({
+      uid = SUGGEST_UPDATE
+      text = loc("msg/updateAvailable/optional")
+      buttons = [
+        { id = "cancel", eventId = "markSuggestUpdateSeen", isCancel = true }
+        { text = loc("ugm/btnUpdate"), eventId = "tryToDownloadApkFromSite", styleId = "PRIMARY", isDefault = true }
+      ]})
+  else
+    closeFMsgBox(SUGGEST_UPDATE)
+}
+
 needStartBackgroundUpdate.subscribe(@(v) v ? updateBySite() : null)
 if (needStartBackgroundUpdate.get())
   updateBySite()
 
 needSuggestMessage.subscribe(showMsg)
 showMsg(needSuggestMessage.get())
+
+needSuggestMessageBySite.subscribe(showMsgForSite)
+showMsgForSite(needSuggestMessageBySite.get())

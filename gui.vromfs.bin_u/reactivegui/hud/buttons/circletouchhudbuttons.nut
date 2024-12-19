@@ -908,6 +908,7 @@ function mkCircleFireworkBtn(actionItem, scale) {
       key = fwStateFlags
       size = [bgSize, bgSize]
       behavior = Behaviors.Button
+      cameraControl = true
       onElemState = @(v) fwStateFlags(v)
       hotkeys = mkGamepadHotkey("ID_FIREWORK")
       onClick = @() useShortcut("ID_FIREWORK")

@@ -9,15 +9,16 @@ let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentati
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
 let { activeUnlocks, allUnlocksDesc, hasUnlockReward } = require("%rGui/unlocks/unlocks.nut")
+let { eventLootboxesRaw } = require("eventLootboxes.nut")
 
 
 let currencyIdToOpen = mkWatched(persist, "currencyIdToOpen", null)
 
 let parentEventName = Computed(function() {
   let cId = currencyIdToOpen.get()
-  foreach(lbox in serverConfigs.get()?.lootboxesCfg ?? {})
-    if (lbox.currencyId == cId && lbox?.meta.event_id != null)
-     return lbox.meta.event_id
+  foreach(lbox in eventLootboxesRaw.get())
+    if (lbox.currencyId == cId)
+      return lbox?.meta.event_id ?? MAIN_EVENT_ID
 
   let rewards = (serverConfigs.get()?.userstatRewards ?? {})
     .filter(@(list) null != list.findvalue(@(g) g.id == cId && g.gType == G_CURRENCY))

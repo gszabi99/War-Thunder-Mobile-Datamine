@@ -1,19 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopConst.nut" import *
 
-let EVENT_BLACK_FRIDAY = "event_black_friday_season"
 let defaultFeaturedIcon = "!ui/gameuiskin#shop_planes.svg"
 let featuredIcon = {
   tanks = "!ui/gameuiskin#shop_tanks.svg"
   ships = "!ui/gameuiskin#shop_ships.svg"
   air = defaultFeaturedIcon
 }
+let defaultShopCategory = SC_EVENTS
 
 let shopCategoriesCfg = [
   {
     id = SC_OTHER
     title = loc("shop/category/other")
     image = null
+  },
+  {
+    id = SC_EVENTS
+    title = loc("shop/category/events")
+    image = "ui/gameuiskin#shop_event.svg"
   },
   {
     id = SC_FEATURED
@@ -62,8 +67,8 @@ let gtypeToShopCategory = {
 }
 
 function getShopCategory(gtype, meta = {}) {
-  if (meta?.eventId == EVENT_BLACK_FRIDAY)
-    return SC_FEATURED
+  if (meta?.eventId)
+    return SC_EVENTS
 
   return gtypeToShopCategory?[gtype] ?? SC_OTHER
 }
@@ -108,6 +113,7 @@ function isGoodsFitToCampaign(goods, cConfigs, curCampaign = null) {
 }
 
 return {
+  defaultShopCategory
   shopCategoriesCfg
   getShopCategory
   getGoodsType

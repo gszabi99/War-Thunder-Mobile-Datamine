@@ -6,7 +6,7 @@ let { setVirtualAxisValue, changeCruiseControl } = require("%globalScripts/contr
 let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
 let { speed, cruiseControl } = require("%rGui/hud/tankState.nut")
 let { playSound } = require("sound_wt")
-let { setTimeout, setInterval, resetTimeout, clearTimer } = require("dagor.workcycle")
+let { setInterval, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtnOutline, mkMoveVertBtnAnimBg, arrowsVerSize,
   mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, mkMoveVertBtn, mkStopBtn
 } = require("%rGui/components/movementArrows.nut")
@@ -143,7 +143,7 @@ function mkSteerParams(isRight, scale) {
 
 function mkStopParams(verSize) {
   let shortcutId = "ID_TRANS_GEAR_DOWN"
-   return {
+  return {
     ovr = { key = "gm_brake", size = verSize }
     shortcutId
     function onTouchBegin() {
@@ -152,7 +152,7 @@ function mkStopParams(verSize) {
       if (fullStopOnTouchButton.get())
         isStopButtonVisible(false)
       else
-        setTimeout(delayReverse, toReverse)
+        resetTimeout(delayReverse, toReverse)
     }
     function onTouchEnd() {
       if (!fullStopOnTouchButton.value)
@@ -172,7 +172,7 @@ function mkEngineBtn(isBackward, id, verSize, children) {
       setGmBrakeAxis(0)
       playHapticPattern(isBackward ? HAPT_BACKWARD : HAPT_FORWARD)
       if (axelerate(isBackward))
-        setTimeout(delayLow, onTouchUpdate)
+        resetTimeout(delayLow, onTouchUpdate)
       if (!isMoveCtrlHitShowed.value) {
         eventbus_send("hint:dont_hold_ctrl_to_move_tank:show", {})
         isMoveCtrlHitShowed(true)

@@ -404,10 +404,10 @@ function onPurchaseMod() {
   let weaponName = curBelt.get() != null
     ? getBulletBeltShortName(curBelt.get().id)
     : comma.join(getWeaponShortNamesList(curWeapon.get()?.weapons ?? []))
-  openMsgBoxPurchase(
-    loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, weaponName) }),
-    { price, currencyId },
-    @() buy_unit_mod(unitName, modName, currencyId, price,
+  openMsgBoxPurchase({
+    text = loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, weaponName) }),
+    price = { price, currencyId },
+    purchase = @() buy_unit_mod(unitName, modName, currencyId, price,
       {
         id = "onPurchasedMod",
         weapon = curWeapon.get() != null && equippedWeaponId.get() != curWeapon.get().name
@@ -424,7 +424,8 @@ function onPurchaseMod() {
           : null
         unitName
       }),
-    mkBqPurchaseInfo(PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, $"{unitName} {modName}"))
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, $"{unitName} {modName}")
+  })
 }
 
 let slotPresetButtons = @() {

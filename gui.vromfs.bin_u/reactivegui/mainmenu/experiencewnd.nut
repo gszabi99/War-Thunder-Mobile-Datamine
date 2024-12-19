@@ -7,8 +7,7 @@ let { buy_player_level, levelup_without_unit, levelInProgress, registerHandler
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { gradTranspDoubleSideX, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
-let { decorativeLineBgMW, bgMW, userlogTextColor } = require("%rGui/style/stdColors.nut")
+let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { mkCustomButton } = require("%rGui/components/textButton.nut")
 let { PURCHASE, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
@@ -22,7 +21,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateSmall, mkUnitInfo, mkUnitSele
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let openBuyExpWithUnitWnd = require("%rGui/levelUp/buyExpWithUnitWnd.nut")
 let { isExperienceWndOpen } = require("expWndState.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { bgShaded, bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { levelBlock } = require("%rGui/mainMenu/gamercard.nut")
 let { playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
@@ -30,8 +29,6 @@ let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { PURCH_SRC_HANGAR, PURCH_TYPE_PLAYER_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 
-
-let wndWidth = hdpx(1400)
 let expStarIconSize = hdpx(35)
 
 let expBuyWndUid = "exp_buy_wnd_uid"
@@ -90,14 +87,15 @@ function buyLevelNoUnitBtn(lvlInfo, cost, campaign) {
         }
       )
     },
-    @() openMsgBoxPurchase(
-      loc("shop/needMoneyQuestion_buy", { item = colorize(userlogTextColor, loc("unitsTree/campaignLevel")) }),
-      {
+    @() openMsgBoxPurchase({
+      text = loc("shop/needMoneyQuestion_buy", { item = colorize(userlogTextColor, loc("unitsTree/campaignLevel")) }),
+      price = {
         price = cost
         currencyId = GOLD
       },
-      @() buy_player_level(campaign, level, nextLevelExp - exp, cost, { id = "onLvlPurchaseNoUnit", campaign }),
-      mkBqPurchaseInfo(PURCH_SRC_HANGAR, PURCH_TYPE_PLAYER_LEVEL, (level + 1).tostring())),
+      purchase = @() buy_player_level(campaign, level, nextLevelExp - exp, cost, { id = "onLvlPurchaseNoUnit", campaign }),
+      bqInfo = mkBqPurchaseInfo(PURCH_SRC_HANGAR, PURCH_TYPE_PLAYER_LEVEL, (level + 1).tostring())
+    }),
     PURCHASE)
 }
 
@@ -106,6 +104,7 @@ let chooseUnitBlock = @() {
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = hdpx(50)
+  padding = [0,hdpx(50)]
   children = availableUnitsList.get().len() > 0
     ? [
         {
@@ -142,41 +141,43 @@ let chooseUnitBlock = @() {
       ]
 }
 
-let decorativeLine = {
-  rendObj = ROBJ_IMAGE
-  image = gradTranspDoubleSideX
-  color = decorativeLineBgMW
-  size = [ flex(), hdpx(6) ]
-}
 
-let experienceWndHeader = {
-  rendObj = ROBJ_TEXT
-  text = loc("mainmenu/campaign_levelup")
-}.__update(fontMedium)
+let experienceWndHeader = bgHeader.__merge({
+  padding = hdpx(10)
+  size = [flex(), SIZE_TO_CONTENT]
+  halign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc("mainmenu/campaign_levelup")
+  }.__update(fontMedium)
 
-let mkLevelBlock = @(exp, nextLevelExp) levelBlock({ pos = [0, 0] }, {
+})
+
+let mkLevelBlock = levelBlock({ pos = [0, 0] }, {
   children = [
     {
       size = flex()
       rendObj = ROBJ_SOLID
       color = 0xFFFFFFFF
     }
-    {
-      size = [pw(clamp(99.0 * exp / nextLevelExp, 0, 99)), flex()]
+    @(){
+      watch = playerLevelInfo
+      size = [pw(clamp(99.0 * (playerLevelInfo.get()?.exp ?? 0) / (playerLevelInfo.get()?.nextLevelExp ?? 1), 0, 99)), flex()]
       rendObj = ROBJ_SOLID
       color = playerExpColor
     }
   ]
 }, true)
 
-let necessaryPoints = @(needExp){
+let necessaryPoints = @(){
   flow = FLOW_HORIZONTAL
   hplace = ALIGN_RIGHT
   margin = [0, hdpx(60), 0, 0]
   children = [
-    {
+    @(){
+      watch = playerLevelInfo
       rendObj = ROBJ_TEXT
-      text = $"+{needExp}"
+      text = $"+{(playerLevelInfo.get()?.nextLevelExp ?? 0) - (playerLevelInfo.get()?.exp ?? 0)}"
       color = playerExpColor
     }.__merge(fontTinyAccented)
     {
@@ -189,15 +190,8 @@ let necessaryPoints = @(needExp){
 }
 
 function experienceWnd(){
-  let { exp, nextLevelExp } = playerLevelInfo.value
-  return{
-    watch = playerLevelInfo
-    minWidth = wndWidth
-    rendObj  =  ROBJ_9RECT
-    color = bgMW
-    image = gradTranspDoubleSideX
-    texOffs = [gradCircCornerOffset, gradCircCornerOffset]
-    screenOffs = [hdpx(350), hdpx(130)]
+  return bgMessage.__merge({
+    padding = [0,0, hdpx(50), 0]
     flow = FLOW_VERTICAL
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
@@ -205,20 +199,18 @@ function experienceWnd(){
     gap = hdpx(50)
     sound = { detach  = "menu_close" }
     children = [
-      decorativeLine
       experienceWndHeader
       {
         halign = ALIGN_CENTER
         flow = FLOW_VERTICAL
         children = [
-          mkLevelBlock(exp, nextLevelExp)
-          necessaryPoints(nextLevelExp - exp)
+          mkLevelBlock
+          necessaryPoints
         ]
       }
       chooseUnitBlock
-      decorativeLine
     ]
-  }
+  })
 }
 
 let experienceBuyingWnd = bgShaded.__merge({

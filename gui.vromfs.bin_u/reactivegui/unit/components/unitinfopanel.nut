@@ -15,7 +15,6 @@ let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
-let { getUnitBlkDetails } = require("%rGui/unitDetails/unitBlkDetails.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
@@ -25,6 +24,7 @@ let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize } = require("%rGui/components/scrollArrows.nut")
 let { isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
 
 
 let statsWidth = hdpx(495)
@@ -42,10 +42,6 @@ let diffAnimDelay = 0.5
 let diffAnimTime = 0.5
 
 let scrollHandlerInfoPanel = ScrollHandler()
-
-let canUseItemByUnit = {
-  ship_smoke_screen_system_mod = @(unitName) getUnitBlkDetails(unitName).hasShipSmokeScreen
-}
 
 let mkText = @(override = {}) {
   color = textColor
@@ -358,7 +354,7 @@ let unitConsumablesBlock = @(unit, itemsList) {
   gap = statsGap + statsInsideGap + progressHt
   flow = FLOW_VERTICAL
   children = itemsList
-    .filter(@(cfg) (cfg?.itemsPerUse != 1) && (canUseItemByUnit?[cfg.name](unit.name) ?? true))
+    .filter(@(cfg) (cfg?.itemsPerUse != 1) && isItemAllowedForUnit(cfg.name, unit.name))
     .map(@(itemCfg)
       mkConsumableRow(itemCfg.name, (itemCfg?.itemsPerUse ?? 0) > 0 ? itemCfg.itemsPerUse : unit.itemsPerUse))
 }

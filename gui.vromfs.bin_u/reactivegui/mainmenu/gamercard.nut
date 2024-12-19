@@ -4,14 +4,13 @@ let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD, PLATINUM, orderByCurrency } = require("%appGlobals/currenciesState.nut")
-let { SC_GOLD, SC_WP, SC_PLATINUM, SC_FEATURED } = require("%rGui/shop/shopCommon.nut")
+let { SC_GOLD, SC_WP, SC_PLATINUM, defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByCategory } = require("%rGui/shop/shopState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate, levelProgressBarWidth
 } = require("%rGui/components/levelBlockPkg.nut")
 let accountOptionsScene = require("%rGui/options/accountOptionsScene.nut")
-let { itemsOrder } = require("%appGlobals/itemsState.nut")
-let { mkCurrencyBalance, mkItemsBalance } = require("balanceComps.nut")
+let { mkCurrencyBalance } = require("balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { textColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
@@ -362,7 +361,7 @@ function shopBtn() {
   return @() {
     watch = stateFlags
     behavior = Behaviors.Button
-    onClick = @() openShopWnd(SC_FEATURED)
+    onClick = @() openShopWnd(defaultShopCategory)
     onElemState = @(sf) stateFlags.set(sf)
     sound = { click  = "meta_shop_buttons" }
     children = [
@@ -411,20 +410,6 @@ let mkGamercard = @(menuBtn, backCb = null) {
   ]
 }
 
-let gamercardBalanceNotButtons = @() {
-  watch = itemsOrder
-  flow = FLOW_HORIZONTAL
-  hplace = ALIGN_RIGHT
-  valign = ALIGN_CENTER
-  gap = gamercardGap
-  children = itemsOrder.value
-    .map(@(id) mkItemsBalance(id))
-    .append(
-      mkCurrencyBalance(WP)
-      mkCurrencyBalance(GOLD)
-    )
-}
-
 let gamercardWithoutLevelBlock = {
   size = [ saSize[0], gamercardHeight ]
   hplace = ALIGN_CENTER
@@ -453,7 +438,7 @@ let mkGamercardUnitCampaign = @(backCb, keyHintText, unit = hangarUnit) {
   ]
 }
 
-let mkCurrenciesBtns = @(currencies, ovr = {}) {
+let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}) {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   halign = ALIGN_RIGHT
@@ -462,8 +447,8 @@ let mkCurrenciesBtns = @(currencies, ovr = {}) {
   children = !currencies ? null
     : [].extend(currencies)
         .sort(@(a, b) (orderByCurrency?[b] ?? 0) <=> (orderByCurrency?[a] ?? 0))
-        .map(@(c) mkCurrencyBalance(c, openBuyCurrencyWnd(c)))
-}.__update(ovr)
+        .map(@(c) mkCurrencyBalance(c, noActionCurrencies?[c] ? null : openBuyCurrencyWnd(c)))
+}
 
 let gamercardBalanceBtns = mkCurrenciesBtns([WP, GOLD])
 
@@ -475,7 +460,6 @@ return {
   mkGamercard
   mkGamercardUnitCampaign
   gamercardHeight
-  gamercardBalanceNotButtons
   gamercardBalanceBtns
   mkCurrenciesBtns
 }

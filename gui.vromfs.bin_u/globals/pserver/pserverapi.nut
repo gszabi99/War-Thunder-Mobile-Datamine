@@ -389,9 +389,6 @@ return {
     progressValue = unitName
   }, cb)
 
-  get_battle_data_for_overrided_mission = @(cb = null)
-    request({ method = "get_battle_data_for_overrided_mission" }, cb)
-
   get_battle_data_for_overrided_preset = @(preset, unitList, cb = null)
     request({
       method = "get_battle_data_for_overrided_preset"

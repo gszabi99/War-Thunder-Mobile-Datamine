@@ -133,6 +133,7 @@ let exportProfile = {
   decorators = {}
   blueprints = {}
   goodsLimitReset = {}
+  lootboxes = {}
 }.map(@(value, key) Computed(@() campProfile.value?[key] ?? value))
 
 let curCampaignSlots = Computed(@() (campConfigs.get()?.campaignCfg.totalSlots ?? 0) <= 0 ? null

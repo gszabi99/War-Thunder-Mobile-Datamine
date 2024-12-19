@@ -12,6 +12,7 @@ let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/
 let { allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
 let { filters, filterCount } = require("%rGui/unit/unitsFilterPkg.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
+let { releasedUnits } = require("%rGui/unit/unitState.nut")
 
 let SEEN_RESEARCHED_UNITS = "seenResearchedUnits"
 
@@ -39,7 +40,8 @@ let mkCountries = @(nodeList) Computed(function(prev) {
 
 let mkVisibleNodes = @() Computed(@()
   needToShowHiddenUnitsDebug.get() ? nodes.get()
-    : nodes.get().filter(@(v) !allUnitsCfg.get()?[v.name].isHidden || v.name in myUnits.get()))
+    : nodes.get().filter(@(v) (!allUnitsCfg.get()?[v.name].isHidden && v.name in releasedUnits.get())
+      || v.name in myUnits.get()))
 
 let mkFilteredNodes = @(nodeList) Computed(@()
   filterCount.get() == 0 ? nodeList.get()

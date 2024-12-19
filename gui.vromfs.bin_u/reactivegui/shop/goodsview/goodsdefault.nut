@@ -4,14 +4,14 @@ let { mkGoodsWrap, txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg, m
 
 let getLocNameDefault = @(goods) loc($"shop/{goods.id}")
 
-let mkGoodsDefault = @(goods, onClick, state, animParams) mkGoodsWrap(
+let mkGoodsDefault = @(goods, onClick, state, animParams, addChildren) mkGoodsWrap(
   goods,
   onClick,
   @(_, _) [
     goods?.isShowDebugOnly ? underConstructionBg : null
     txt({ text = getLocNameDefault(goods), margin = [ hdpx(55), 0, 0, hdpx(35) ] })
     mkGoodsLimitAndEndTime(goods)
-  ].extend(mkGoodsCommonParts(goods, state)),
+  ].extend(mkGoodsCommonParts(goods, state), addChildren),
   mkPricePlate(goods, state, animParams))
 
 return {

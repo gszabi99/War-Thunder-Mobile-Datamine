@@ -574,6 +574,190 @@ Target angkatan darat:
 任\t務\t目\t標：
 • 摧\t毀\t敵\t方\t的\t地\t面\t部\t隊
 • 攻\t占\t並\t防\t守\t戰\t區 ╸";;
+"missions/_CTF";"[Capture the Flag]";"[Capture de drapeau]";"[Cattura la Bandiera]";"[Erobere die Flagge]";"[Capturar la Bandera]";"[Захват Флага]";"[Захоплення прапора]";"[Przejęcie flagi]";"[Capturar a Bandeira]";"[Bayrak Ele Geçirme]";"[Boj o vlajku]";"[Αιχμαλωτίστε τη Σημαία]";"[Rebut Bendera]";"[ยึดธง]";"[깃발 뺏기]";"【夺\t旗\t】";"[旗の\t確保]";"【奪\t旗\t】";;
+"missions/_CTF/desc";"
+
+In [Capture the Flag] mode, teams will have to capture the enemy Flag at an enemy point and bring it to an allied point.
+
+Ground forces objectives:
+- Capture the enemy's Flag and deliver it to an allied point ╸";"
+
+En mode [Capture de drapeau], les équipes devront capturer le drapeau ennemi à un point ennemi et le ramener à un point allié. 
+
+Objectifs des forces terrestres : 
+- Capturer le drapeau de l'ennemi et l'amener à un point allié ╸";"
+
+In modalità [Cattura la Bandiera], le squadre devono catturare la Bandiera sul punto nemico e portarla a quello alleato.
+
+Obiettivi forze di terra:
+- Cattura la Bandiera nemica e trasportala al punto alleato -";"
+
+Im Flaggeneroberungsmodus müssen die Teams die gegnerische Flagge an einem gegnerischen Punkt erobern und sie zu einem verbündeten Punkt bringen
+
+Ziele der Bodentruppen:
+- Erobere die feindliche Flagge und bringe sie zu einem verbündeten Punkt ╸";"
+
+En el modo [Capturar la Bandera], los equipos tendrán que capturar la Bandera enemiga en un punto enemigo y llevarla a un punto aliado.
+
+Objetivos de las fuerzas terrestres:
+- Capturar la Bandera enemiga y llevarla a un punto aliado ╸";"
+
+В режиме [Захват Флага] командам предстоит захватить Флаг противника на вражеской точке и принести его на союзную точку.
+
+Задачи сухопутных войск:
+- Захватить Флаг противника и доставить его на союзную точку ╸";"
+
+У режимі [Захоплення прапора] командам потрібно захопити прапор противника на ворожій точці та доставити його до точки союзників.
+
+Цілі сухопутних військ:
+— захопити прапор противника та доставити його до точки союзників ╸";"
+
+W trybie [Przejęcie flagi] drużyny będą musiały przejąć flagę wroga w punkcie przeciwnika i dostarczyć ją do punktu sojuszniczego.
+
+Cele sił naziemnych:
+- Przechwyć flagę wroga i dostarcz ją do sojuszniczego punktu ╸";"
+
+No modo [Capturar a Bandeira], as equipas terão de capturar a Bandeira inimiga num ponto inimigo e levá-la para um ponto aliado.
+
+Objetivos das forças terrestres:
+- Capturar a Bandeira inimiga e levá-la para um ponto aliado ╸";"
+
+[Bayrağı Ele Geçir] modunda, takımların düşman noktasındaki düşman Bayrağını ele geçirmesi ve müttefik bir noktaya getirmesi gerekir.
+
+Kara kuvvetleri hedefleri:
+- Düşman Bayrağını ele geçirin ve müttefik bir noktaya teslim edin ╸";"
+
+V režimu [Boj o vlajku] mají týmy za úkol zmocnit se nepřátelské vlajky na nepřátelském bodě a dopravit ji na spojenecký bod.
+
+Cíle pozemních sil:
+- Zajměte vlajku nepřítele a doručte ji na spojenecký bod ╸";"
+
+Στη λειτουργία [Αιχμαλωτίστε τη Σημαία], οι ομάδες θα πρέπει να αιχμαλωτίσουν τη Σημαία του εχθρού σε κάποιο εχθρικό σημείο και να τη φέρουν σε ένα συμμαχικό σημείο.
+
+Στόχοι χερσαίων δυνάμεων:
+- Αιχμαλωτίστε τη Σημαία του εχθρού και παραδώστε τη σε ένα συμμαχικό σημείο ╸";"
+
+Dalam mode [Rebut Bendera], tim harus merebut Bendera musuh di titik musuh dan membawanya ke titik sekutu.
+
+Target angkatan darat:
+- Rebut Bendera musuh dan kirimkan ke titik sekutu ╸";"
+
+ในโหมด [ยึดธง] แต่ละทีมจะต้องยึดธงศัตรูที่ตำแหน่งของศัตรูแล้วนำมายังตำแหน่งฝ่ายเดียวกัน
+
+เป้าหมายทัพบก:
+- ยึดธงของศัตรูแล้วนำมายังตำแหน่งฝ่ายเดียวกัน -";"
+
+[깃발 뺏기] 모드에서 각 편은 적의 깃발을 탈취한 뒤 아군 지역으로 가져와야 합니다.
+
+지상군 목표:
+- 적의 깃발을 탈취한 뒤 아군 지역에 전달하라╸";"
+
+在\t【夺\t旗\t】\t模\t式\t下，\t双\t方\t队\t伍\t将\t争\t夺\t对\t方\t据\t点\t内\t的\t敌\t方\t旗\t帜，\t并\t将\t其\t护\t送\t至\t友\t方\t点\t位。
+
+地\t面\t部\t队\t目\t标：
+- 夺\t取\t敌\t方\t旗\t帜，\t将\t其\t护\t送\t至\t友\t方\t点\t位 ╸";"
+
+[旗の\t確保]モードでは、\tチームは\t敵拠点にある\t旗を\t奪い、\tそれを\t味方の\t拠点まで\t持ち\t帰る\t必要があります。\t
+
+地上部隊目標：\t
+- 敵の\t旗を\t奪い、\t自軍の\t拠点へ\t届ける ╸";"
+
+在\t【奪\t旗\t】\t模\t式\t下，\t雙\t方\t團\t隊\t將\t需\t要\t奪\t取\t對\t方\t據\t點\t內\t的\t旗\t幟，\t將\t其\t護\t送\t回\t己\t方\t據\t點\t以\t獲\t取\t優\t勢。
+
+地\t面\t部\t隊\t目\t標：
+- 奪\t取\t敵\t方\t旗\t幟，\t將\t其\t運\t回\t友\t方\t據\t點 ╸";;
+"missions/_CTC";"[Capture the Cargo]";"[Capture de la cargaison]";"[Cattura il Carico]";"[Eroberung die Fracht]";"[Captura la Carga]";"[Захват Груза]";"[Захоплення вантажу]";"[Przejmij ładunek]";"[Capturar a Carga]";"[Kargo'yu ele geçir]";"[Boj o náklad]";"[Αιχμαλωτίστε το Φορτίο]";"[Rebut Kargo]";"[ยึดสินค้า]";"[화물 확보]";"【坦\t克\t速\t递\t】";"[貨物争奪]";"【戰\t車\t速\t遞\t】";;
+"missions/_CTC/desc";"
+
+In [Capture the Cargo] mode, teams will have to capture the Cargo and deliver it to an allied point.
+
+Ground forces objectives:
+- Capture and deliver most of the Cargo to an allied point ╸";"
+
+En mode [Capture de la cargaison], les équipes devront capturer la cargaison et la livrer à un point allié. 
+
+Objectifs des forces terrestres : 
+- Capturer et livrer la plus grande partie de la cargaison à un point allié ╸";"
+
+In modalità [Cattura il Carico], le squadre devono catturare il Carico e trasportarlo al punto alleato.
+
+Obiettivi forze terrestri:
+- Cattura e porta il maggior numero di Carichi al punto alleato ╸";"
+
+Im Modus [Eroberung der Fracht] müssen Teams die Fracht erobern und an einen verbündeten Punkt liefern.
+
+Ziele der Bodentruppen:
+- Den Großteil der Fracht erbeuten und an einen verbündeten Punkt liefern ╸";"
+
+En el modo [Capturar la Carga], los equipos tendrán que capturar la Carga y entregarla en un punto aliado.
+
+Objetivos de las fuerzas terrestres:
+- Capturar y entregar la mayor parte de la Carga a un punto aliado ╸";"
+
+В режиме [Захват Груза] командам предстоит захватить Груз и доставить его на союзную точку.
+
+Задачи сухопутных войск:
+- Захватить и доставить бóльшую часть Груза на союзную точку.";"
+
+У режимі [Захоплення вантажу] командам потрібно захопити вантаж і доставити його до точки союзників.
+
+Цілі сухопутних військ:
+— захопити якнайбільшу частину вантажу та доставити його до точки союзників ╸";"
+
+W trybie [Przejmij ładunek] drużyny będą musiały przechwycić ładunek i dostarczyć go do sojuszniczego punktu.
+
+Cele sił naziemnych:
+- Przechwyć i dostarcz większość ładunku do sojuszniczego punktu ╸";"
+
+No modo [Capturar a Carga], as equipas terão de capturar a Carga e levá-la para um ponto aliado.
+
+Objetivos das forças terrestres:
+- Capturar e entregar a maior parte da Carga num ponto aliado ╸";"
+
+[Kargoyu Ele Geçir] modunda, takımlar Kargo'yu ele geçirmeli ve müttefik bir noktaya teslim etmelidir.
+
+Kara kuvvetleri hedefleri:
+- Kargo'nun çoğunu ele geçirin ve müttefik bir noktaya teslim edin ╸";"
+
+V režimu [Boj o náklad] musí týmy zajmout náklad a doručit ho na spojenecký bod.
+
+Cíle pozemních sil:
+- Zajměte a doručte většinu nákladu do spojeneckého bodu ╸";"
+
+Στη λειτουργία [Αιχμαλωτίστε το Φορτίο], οι ομάδες θα πρέπει να αιχμαλωτίσουν το Φορτίο και να το παραδώσουν σε ένα συμμαχικό σημείο.
+
+Στόχοι χερσαίων δυνάμεων:
+- Αιχμαλωτίστε και παραδώστε το μεγαλύτερο μέρος του Φορτίου σε ένα συμμαχικό σημείο ╸";"
+
+Dalam mode [Rebut Kargo], tim harus merebut Kargo dan mengirimkannya ke titik sekutu.
+
+Target angkatan darat:
+- Rebut dan kirimkan sebagian besar Kargo ke titik sekutu ╸";"
+
+ในโหมด [ยึดสินค้า] แต่ละทีมจะต้องยึดสินค้าแล้วนำมายังตำแหน่งฝ่ายเดียวกัน
+
+เป้าหมายทัพบก:
+- ยึดสินค้าแล้วนำมายังตำแหน่งฝ่ายเดียวกันให้มากที่สุด ╸";"
+
+[화물 확보] 모드에서 각 편은 화물을 확보한 뒤 아군 지역으로 가져와야 합니다.
+
+지상군 목표:
+- 아군 지역에 최대한 많은 화물을 확보하라╸";"
+
+在\t【坦\t克\t速\t递\t】\t模\t式\t下，\t双\t方\t队\t伍\t将\t围\t绕\t货\t物\t展\t开\t争\t夺，\t成\t功\t将\t货\t物\t护\t送\t至\t友\t方\t点\t位\t的\t队\t伍\t可\t获\t得\t优\t势。
+
+地\t面\t部\t队\t目\t标：
+- 夺\t取\t货\t物，\t将\t大\t部\t分\t货\t物\t护\t送\t至\t友\t方\t点\t位 ╸";"
+
+[貨物争奪]モードでは、\tチームは\t貨物を\t奪い、\tそれを\t味方の\t拠点まで\t持ち\t帰る\t必要があります。\t
+
+地上部隊目標：\t
+- 貨物の\t大半を\t捕獲し、\t味方の\tポイントに\t届ける。\t ╸";"
+
+在\t【戰\t車\t速\t遞\t】\t模\t式\t下，\t雙\t方\t團\t隊\t將\t圍\t繞\t貨\t物\t展\t開\t爭\t奪，\t將\t貨\t物\t護\t送\t回\t己\t方\t據\t點\t可\t獲\t取\t優\t勢。
+
+地\t面\t部\t隊\t目\t標：
+- 奪\t取\t盡\t可\t能\t多\t的\t貨\t物，\t將\t其\t運\t回\t友\t方\t據\t點 ╸";;
 "missions/_GS/light_tank";"[Ground Strike ⋢]";"[Attaque au sol ⋢]";"[Attacco al suolo ⋢]";"[Bodenangriff ⋢]";"[Ataque a Tierra ⋢]";"[Штурмовка ⋢]";"[Штурмування ⋢]";"[Atak na cele naziemne ⋢]";"[Ground Strike ⋢]";"[Kara Saldırısı ⋢]";"[Nálet ⋢]";"[Χτύπημα εδάφους ⋢]";"[Serangan Darat ⋢]";"[จู่โจมภาคพื้นดิน ⋢]";"[지상 공격 ⋢]";"【对\t地\t攻\t击 ⋢\t】";"[地上攻撃 ⋢]";"【對\t地\t攻\t擊 ⋢\t】";;
 "missions/_GS/medium_tank";"[Ground Strike ⋤]";"[Attaque au sol ⋤]";"[Attacco al suolo ⋤]";"[Bodenangriff ⋤]";"[Ataque a Tierra ⋤]";"[Штурмовка ⋤]";"[Штурмування ⋤]";"[Atak na cele naziemne ⋤]";"[Ground Strike ⋤]";"[Kara Saldırısı ⋤]";"[Nálet ⋤]";"[Χτύπημα εδάφους ⋤]";"[Serangan Darat ⋤]";"[จู่โจมภาคพื้นดิน ⋤]";"[지상 공격 ⋤]";"【对\t地\t攻\t击 ⋤\t】";"[地上攻撃 ⋤]";"【對\t地\t攻\t擊 ⋤\t】";;
 "missions/_GS/medium_tank_ship";"[Ground Strike ⋤/⋩]";"[Attaque au sol ⋤/⋩]";"[Attacco al suolo ⋤/⋩]";"[Bodenangriff ⋤/⋩]";"[Ataque a Tierra ⋤/⋩]";"[Штурмовка ⋤/⋩]";"[Штурмування ⋤/⋩]";"[Atak na cele naziemne ⋤/⋩]";"[Ground Strike ⋤/⋩]";"[Kara Saldırısı ⋤/⋩]";"[Nálet ⋤/⋩]";"[Χτύπημα εδάφους ⋤/⋩]";"[Serangan Darat ⋤/⋩]";"[จู่โจมภาคพื้นดิน ⋤/⋩]";"[지상 공격 ⋤/⋩]";"【对\t地\t攻\t击 ⋤\t/\t⋩\t】";"[地上攻撃 ⋤/⋩]";"【對\t地\t攻\t擊 ⋤\t/\t⋩\t】";;
@@ -581,35 +765,6 @@ Target angkatan darat:
 "missions/_GS/heavy_tank_ship";"[Ground Strike ⋣/⋩]";"[Attaque au sol ⋣/⋩]";"[Attacco al suolo ⋣/⋩]";"[Bodenangriff ⋣/⋩]";"[Ataque a Tierra ⋣/⋩]";"[Штурмовка ⋣/⋩]";"[Штурмування ⋣/⋩]";"[Atak na cele naziemne ⋣/⋩]";"[Ground Strike ⋣/⋩]";"[Kara Saldırısı ⋣/⋩]";"[Nálet ⋣/⋩]";"[Χτύπημα εδάφους ⋣/⋩]";"[Serangan Darat ⋣/⋩]";"[จู่โจมภาคพื้นดิน ⋣/⋩]";"[지상 공격 ⋣/⋩]";"【对\t地\t攻\t击 ⋣\t/\t⋩\t】";"[地上攻撃 ⋣/⋩]";"【對\t地\t攻\t擊 ⋣\t/\t⋩\t】";;
 "missions/_GS/ship";"[Ground Strike ⋩]";"[Attaque au sol ⋩]";"[Attacco al suolo ⋩]";"[Bodenangriff ⋩]";"[Ataque a Tierra ⋩]";"[Штурмовка ⋩]";"[Штурмування ⋩]";"[Atak na cele naziemne ⋩]";"[Ataque ao solo ⋩]";"[Kara Saldırısı ⋩]";"[Nálet ⋩]";"[Χτύπημα εδάφους ⋩]";"[Serangan Darat ⋩]";"[จู่โจมภาคพื้นดิน ⋩]";"[지상 공격 ⋩]";"【对\t地\t攻\t击 ⋩\t】";"[地上攻撃 ⋩]";"【對\t地\t攻\t擊 ⋩\t】";;
 "missions/_GS/desc";"In [Ground Strike] mode, teams should destroy indicated targets and fulfil other tasks in order to win. Every destroyed unit affects the result!";"Dans le mode [Attaque au sol], les équipes devront détruire les cibles indiquées et compléter les tâches afin de gagner. Chaque unité détruite affecte le résultat!";"In modalità [Attacco al suolo] le squadre devono distruggere i bersagli indicati e soddisfare le altre missioni per vincere.Ciascuna unità distrutta influisce sul risultato!";"Im Modus [Bodenangriff] sollten Teams angezeigte Ziele zerstören und andere Aufgaben erfüllen, um zu gewinnen. Jede zerstörte Einheit beeinflusst das Ergebnis!";"En el modo [Ataque a Tierra] los equipos deben destruir los objetivos indicados y completar otras tareas para ganar. Cada unidad destruida afecta el resultado.";"В режиме [Штурмовка] команды должны уничтожать отмеченные цели и выполнять сопутствующие задания для достижения победы. Каждая уничтоженная единица техники влияет на результат!";"У режимі [Штурмування] команди повинні знищувати зазначені цілі і виконувати супутні завдання для досягнення перемоги. Кожна знищена одиниця техніки впливає на результат!";"W misji [Atak na Cele Naziemne] celem jest zniszczenie wskazanych celów oraz wypełnienie pozostałych zadań. Liczy się każda zniszczona jednostka!";"In [Ground Strike] mode, teams should destroy indicated targets and fulfil other tasks in order to win. Every destroyed unit affects the result!";"[Kara Saldırısı] modunda takımlar kazanmak için belirtilmiş hedefleri yok etmeli ve diğer görevleri de tamamlamalıdır. Her yok edilen birim sonucu etkiler!";"V režimu [Nálet] musí týmy zničit určené cíle a splnit další úkoly, aby vyhrály. Každá zničená jednotka ovlivňuje výsledek!";"Στη λειτουργία [Χτύπημα εδάφους], οι ομάδες πρέπει να καταστρέψουν τους στόχους που υποδεικνύονται και να ολοκληρώσουν κι άλλες αποστολές για να κερδίσουν. Κάθε μονάδα που καταστρέφεται επηρεάζει το αποτέλεσμα!";"Dalam mode [Serangan Darat], tim harus menghancurkan target yang ditunjukkan dan memenuhi berbagai tugas lain untuk menang. Setiap unit yang dihancurkan akan memengaruhi hasil!";"ในโหมด [จู่โจมภาคพื้นดิน] แต่ละทีมจะต้องทำลายเป้าหมายที่ระบุและทำงานอีกอย่างหนึ่งให้สำเร็จเพื่อคว้าชัยชนะ พาหนะที่ถูกทำลายทั้งหมดจะส่งผลต่อผลลัพธ์!";"[지상 공격] 모드에서, 팀들은 지정된 목표를 격파하고 다른 임무를 완료해야 승리할 수 있다. 모든 파괴한 적은 결과에 영향을 미칩니다!";"在\t【对\t地\t攻\t击\t】\t模\t式\t中，\t玩\t家\t必\t须\t摧\t毁\t敌\t军\t的\t地\t面\t目\t标，\t并\t完\t成\t一\t系\t列\t任\t务\t才\t能\t获\t胜。\t你\t所\t摧\t毁\t的\t每\t一\t个\t单\t位\t都\t将\t影\t响\t战\t争\t进\t程！";"[地上攻撃]モードでは、\tチームの\t勝利のために\t指定された\tターゲットの\t破壊や\t他の\tタスクを\t実行する\t必要があります。\t 破壊された\tユニットの\t数が\t勝敗に\t影響します！";"在\t【對\t地\t攻\t擊\t】\t模\t式\t中，\t玩\t家\t必\t須\t摧\t毀\t敵\t軍\t的\t地\t面\t目\t標，\t並\t完\t成\t一\t系\t列\t任\t務\t才\t能\t獲\t勝。\t你\t所\t摧\t毀\t的\t每\t一\t個\t單\t位\t都\t將\t影\t響\t戰\t爭\t進\t程！";;
-"poland/name";"Poland";"Pologne";"Polonia (Città)";"Polen";"Polonia";"Польша";"Польща";"Polska";"Polónia";"Polonya";"Polsko";"Πολωνία";"Polandia";"โปแลนด์";"폴란드";"波\t兰 • 镜\t湖";"ポーランド";"波\t蘭 • 鏡\t湖";;
-"poland/desc";;;;;;;;;;;;;;;;;;;;
-"normandy/name";"Normandy";"Normandie";"Normandia";"Normandie";"Normandía";"Нормандия";"Нормандія";"Normandia";"Normandia";"Normandiya";"Normandie";"Νορμανδία";"Normandy";"นอร์มังดี";"노르망디";"诺\t曼\t底";"ノルマンディー";"諾\t曼\t第";;
-"normandy/desc";;;;;;;;;;;;;;;;;;;;
-"rheinland_short/name";"Rhine";"Rhin";"Il Reno";"Rhein";"Rin";"Рейн";"Рейн";"Ren";"Reno";"Ren nehri";"Rýn";"Ρήνος";"Rhine";"ไรน์";"라인강";"莱\t茵\t河\t畔";"ライン";"萊\t茵\t河\t畔";;
-"rheinland/name";"Rheinland";"Rheinland";"Rheinland";"Rheinland";"Rheinland";"Рейнланд";"Рейн";"Rheinland";"Rheinland";"Rheinland";"Porýní";"Ρηνανία";"Rheinland";"ไรน์ลันท์";"라인란트";"莱\t茵\t兰";"ラインランド";"萊\t茵\t蘭";;
-"rheinland/desc";;;;;;;;;;;;;;;;;;;;
-"stalingrad_factory/name";"Stalingrad";"Stalingrad";"Stalingrado";"Stalingrad";"Stalingrado";"Сталинград";"Сталінград";"Stalingrad";"Stalinegrado";"Stalingrad";"Stalingrad";"Stalingrad";"Stalingrad";"สตาลินกราด";"스탈린그라드";"斯\t大\t林\t格\t勒";"スターリングラード";"史\t達\t林\t格\t勒";;
-"stalingrad_factory/desc";;;;;;;;;;;;;;;;;;;;
-"abandoned_factory/name";"Abandoned factory";"Usine abandonnée";"Fabbrica Abbandonata";"Verlassene Fabrik";"Fábrica abandonada";"Заброшенный завод";"Покинутий завод";"Opuszczona fabryka";"Fábrica Abandonada";"Terk edilmiş fabrika";"Opuštěná továrna";"Εγκαταλελειμμένο εργοστάσιο";"Pabrik Terbengkalai";"โรงงานทิ้งร้าง";"버려진 공장";"废\t弃\t工\t厂";"廃工場";"廢\t棄\t工\t廠";;
-"abandoned_factory/desc";;;;;;;;;;;;;;;;;;;;
-"japan/name";"Japan";"Japon";"Giappone";"Japan";"Japón";"Япония";"Японія";"Japonia";"Japão";"Japonya";"Japonsko";"Ιαπωνία";"Jepang";"ญี่ปุ่น";"일본";"日\t本";"日本";"日\t本";;
-"japan/desc";;;;;;;;;;;;;;;;;;;;
-"american_valley/name";"American Desert";"Désert américain";"Deserto Americano";"Amerikanische Wüste";"Desierto de América";"Американская пустыня";"Американська пустеля";"Amerykańska pustynia";"Deserto Americano";"Amerikan Çölü";"American Desert";"Αμερικανική έρημος";"Gurun Amerika";"ทะเลทรายอเมริกา";"아메리칸 데저트";"美\t国 • 沙\t漠\t之\t城";"アメリカの\t砂漠";"美\t國 • 沙\t漠\t之\t城";;
-"american_valley/desc";;;;;;;;;;;;;;;;;;;;
-"pacific_island/name";"Pacific Islands";"Îles du Pacifique";"Isole del Pacifico";"Inseln im Pazifik";"Islas del Pacífico";"Тихоокеанские острова";"Тихоокеанські острови";"Wyspy pacyficzne";"Ilhas do Pacífico";"Pasifik Adaları";"Tichomořské ostrovy";"Νησιά του Ειρηνικού";"Kepulauan Pasifik";"หมู่เกาะแปซิฟิก";"태평양의 섬";"太\t平\t洋\t岛\t屿";"太平洋諸島";"太\t平\t洋\t島\t嶼";;
-"pacific_island/desc";;;;;;;;;;;;;;;;;;;;
-"ice_shelf/name";"Ice shelf";"Plateau de glace";"Piattaforma Ghiacciata";"Eisschelf";"Plataforma de hielo";"Шельфовые ледники";"Шельфові льодовики";"Lodowiec szelfowy";"Plataforma de gelo";"Buz sahanlığı";"Ledový šelf";"Παγοκρηπίδα";"Lempengan Es";"หิ้งน้ำแข็ง";"빙붕";"冰\t架";"棚氷";"冰\t架";;
-"ice_shelf/desc";;;;;;;;;;;;;;;;;;;;
-"scotland/name";"Scotland";"Écosse";"Scozia";"Schottland";"Escocia";"Шотландия";"Шотландія";"Szkocja";"Escócia";"İskoçya";"Skotsko";"Σκωτία";"Skotlandia";"สกอตแลนด์";"스코틀랜드";"苏\t格\t兰";"スコットランド";"蘇\t格\t蘭";;
-"scotland/desc";;;;;;;;;;;;;;;;;;;;
-"ships_graveyard/name";"Ships Graveyard";"Cimetière de Navires";"Cimitero Navale";"Schiffsfriedhof";"Cementerio de Barcos";"Кладбище кораблей";"Кладовище кораблів";"Cmentarzysko okrętów";"Cemitério de Navios";"Gemi Mezarlığı";"Hřbitov lodí";"Νεκροταφείο πλοίων";"Kuburan Kapal";"สุสานเรือ";"함선들의 무덤";"船\t舶\t坟\t场";"船の\t墓場";"船\t舶\t墳\t場";;
-"ships_graveyard/desc";;;;;;;;;;;;;;;;;;;;
-"white_rocks/name";"White Rocks";"White Rocks";"Rocce Bianche";"Weiße Felsen";"Rocas Blancas";"Белые скалы";"Білі скелі";"White Rocks";"Rochedos Brancos";"Beyaz Kayalar";"Bílá skaliska";"Λευκοί βράχοι";"Tebing Putih";"ไวท์ร็อค";"백색 바위";"英\t吉\t利\t云\t崖";"白岩";"英\t吉\t利\t雲\t崖";;
-"white_rocks/desc";;;;;;;;;;;;;;;;;;;;
-"greece/name";"Greek archipelago";"Archipel grec";"Arcipelago Greco";"Griechische Inselgruppe";"Archipiélago Griego";"Греческий архипелаг";"Грецький архіпелаг";"Grecki archipelag";"Arquipélago grego";"Yunan Adaları";"Řecké souostroví";"Ελληνικό αρχιπέλαγος";"Kepulauan Yunani";"หมู่เกาะกรีก";"그리스의 군도";"希\t腊\t群\t岛";"ギリシャ\t群島";"希\t臘\t群\t島";;
-"greece/desc";;;;;;;;;;;;;;;;;;;;
-"lofoten_islands/name";"Lofoten Islands";"Lofoten Islands";"Isole Lofoten";"Lofoten";"Islas Lofoten";"Лофотенские острова";"Лофотенські острови";"Wyspy Lofoten";"Ilhas Lofoten";"Lofoten Adaları";"Lofotské ostrovy";"Νησιά Λοφότεν";"Kepulauan Lofoten";"หมู่เกาะโลโฟเทน";"로포텐 제도";"罗\t弗\t敦\t群\t岛";"ロフォーテン\t諸島";"羅\t弗\t敦\t群\t島";;
-"lofoten_islands/desc";;;;;;;;;;;;;;;;;;;;
 "missions/_NTdm_WTM";"[┚ Encounter]";"[┚ Encounter]";"[┚ Scontro]";"[┚ Zusammenstoß]";"[┚ Encuentro]";"[┚ Столкновение]";"[┚ Зіткнення]";"[┚ Starcie]";"[┚ Encontro]";"[┚ Karşılaşma]";"[┚ Střetnutí]";"[┚ Συμπλοκή]";"[┚ Konfrontasi]";"[เผชิญหน้า ┚]";"[┚조우전]";"【┚ 海\t上\t交\t锋\t】";"[┚ 会戦]";"【┚ 海\t上\t交\t鋒\t】";;
 "missions/_NTdm_WTM/desc";"
 
@@ -699,5 +854,3 @@ Target armada:
 
 任\t務\t目\t標：
 • 摧\t毀\t敵\t方\t艦\t隊";;
-"vietnam_hills/name";"Vietnam";"Viêtnam";"Vietnam";"Vietnam";"Vietnam";"Вьетнам";"В'єтнам";"Wietnam";"Vietname";"Vietnam";"Vietnam";"Βιετνάμ";"Vietnam";"เวียดนาม";"베트남";"越\t南 • 高\t地";"ベトナム";"越\t南 • 高\t地";;
-"vietnam_hills/desc";;;;;;;;;;;;;;;;;;;;

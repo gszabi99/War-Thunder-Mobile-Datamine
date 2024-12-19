@@ -2,19 +2,23 @@ from "%globalsDarg/darg_library.nut" import *
 let logR = log_with_prefix("[UNSEEN_REWARDS] ")
 let { resetTimeout } = require("dagor.workcycle")
 let { register_command } = require("console")
-let { unseenPurchases } = require("%appGlobals/pServer/campaign.nut")
+let { unseenPurchases, lootboxes } = require("%appGlobals/pServer/campaign.nut")
 let { clear_unseen_purchases } = require("%appGlobals/pServer/pServerApi.nut")
 let unseenPurchasesDebug = require("unseenPurchasesDebug.nut")
 
-let invisibleGoodsTypes = ["lootbox", "stat", "medal"] //temporary medals no need to be shown
+let invisibleGoodsTypes = ["stat", "medal"] //temporary medals no need to be shown
   .reduce(@(res, v) res.$rawset(v, true), {})
 
 let ignoreUnseen = Watched({}) //no need to persist them if has errors with pServer, better to show window again after reload scripts.
 let isShowDelayed = Watched(false)
 let skipUnseenMessageAnimOnce = Watched(false)
-let isGoodsVisible = @(goods) goods.gType not in invisibleGoodsTypes
-let seenPurchasesNoNeedToShow = Computed(@() unseenPurchases.value
-  .filter(@(data) data.goods.findvalue(isGoodsVisible) == null))
+let isUnseenGoodsVisible = @(goods, source, lboxes) (goods.gType not in invisibleGoodsTypes)
+  && (goods.gType != "lootbox" || (source == "lootbox" && (lboxes?[goods.id] ?? 0) > 0))  //show not opened lootboxes
+let seenPurchasesNoNeedToShow = Computed(function() {
+  let lboxes = lootboxes.get()
+  return unseenPurchases.value
+    .filter(@(data) data.goods.findvalue(@(g) isUnseenGoodsVisible(g, data.source, lboxes)) == null)
+})
 let unseenPurchasesExt = Computed(@() unseenPurchasesDebug.value
   ?? (isShowDelayed.value ? {}
     : unseenPurchases.value.filter(@(_, id) id not in ignoreUnseen.value
@@ -128,4 +132,5 @@ return {
   delayUnseedPurchaseShow = delayShow
   isShowUnseenDelayed = isShowDelayed
   skipUnseenMessageAnimOnce
+  isUnseenGoodsVisible
 }

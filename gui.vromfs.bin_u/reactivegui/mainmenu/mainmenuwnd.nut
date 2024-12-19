@@ -8,7 +8,6 @@ let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut
 let { gamercardGap, CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
 let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
-let { unitSpecificItems } = require("%appGlobals/unitSpecificItems.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { btnOpenUnitAttr } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
@@ -49,7 +48,7 @@ let { DBGLEVEL } = require("dagor.system")
 let { slotBarMainMenu, slotBarSize } = require("%rGui/slotBar/slotBar.nut")
 let { slots } = require("%rGui/slotBar/slotBarState.nut")
 let { unseenCampaigns } = require("unseenCampaigns.nut")
-let { getUnitBlkDetails } = require("%rGui/unitDetails/unitBlkDetails.nut")
+let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -207,20 +206,15 @@ let leftTopButtons = {
   ]
 }
 
-let canUseItemByUnit = {
-  ship_smoke_screen_system_mod = @(unitName) getUnitBlkDetails(unitName).hasShipSmokeScreen
-}
-
 let gamercardBattleItemsBalanceBtns = @(){
-  watch = [itemsOrder, specialEventGamercardItems, unitSpecificItems, hangarUnit]
+  watch = [itemsOrder, specialEventGamercardItems, hangarUnit]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = gamercardGap
   children = specialEventGamercardItems.get().map(@(v) mkItemsBalance(v.itemId, @() openEventWnd(v.eventName), CS_GAMERCARD))
     .extend(itemsOrder.get()
-      .filter(@(v) hangarUnit.get()?.name == null || (canUseItemByUnit?[v](hangarUnit.get().name) ?? true))
+      .filter(@(v) hangarUnit.get()?.name == null || isItemAllowedForUnit(v, hangarUnit.get().name))
       .map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_GAMERCARD)))
-    .extend(unitSpecificItems.get().map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_GAMERCARD)))
 }
 
 let toBattleButtonPlace = {

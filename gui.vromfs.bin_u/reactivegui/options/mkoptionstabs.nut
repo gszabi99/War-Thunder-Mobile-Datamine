@@ -26,9 +26,25 @@ function mkTabImage(image, imageSizeMul) {
   }
 }
 
+let mkImage = @(image, imageSizeMul) function() {
+  let imageTab = image instanceof Watched ? image.get() : image
+  let imageTabSizeMul = imageSizeMul instanceof Watched ? imageSizeMul.get() : imageSizeMul ?? 1
+
+  local watchesList = []
+  if(image instanceof Watched)
+    watchesList.append(image)
+  if(imageSizeMul instanceof Watched)
+    watchesList.append(imageSizeMul)
+
+  return {
+    watch = watchesList
+    vplace = ALIGN_CENTER
+    children = imageTab == null ? null : mkTabImage(imageTab, imageTabSizeMul)
+  }
+}
+
 function tabData(tab, idx, curTabIdx) {
-  let { locId  = "", image = null, isVisible = null, unseen = null, tabContent = null, tabHeight = tabH,
-    imageSizeMul = 1.0 } = tab
+  let { locId  = "", image = null, imageSizeMul = null, isVisible = null, unseen = null, tabContent = null, tabHeight = tabH } = tab
   let padding = [hdpx(10), hdpx(20)]
   let unseenMarkPos = [padding[1] + unseenSize[1] / 5, -padding[0] - unseenSize[1] / 5]
   local unseenMark = null
@@ -49,9 +65,7 @@ function tabData(tab, idx, curTabIdx) {
           flow = FLOW_HORIZONTAL
           gap = hdpx(10)
           children = [
-            image == null ? null
-              : image instanceof Watched ? @() mkTabImage(image.get(), imageSizeMul).__update({ watch = image })
-              : mkTabImage(image, imageSizeMul)
+            mkImage(image, imageSizeMul)
             tabContent ?? {
               size = flex()
               rendObj = ROBJ_TEXTAREA

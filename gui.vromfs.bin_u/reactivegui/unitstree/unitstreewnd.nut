@@ -196,7 +196,7 @@ function mkUnitsBlock(listByCountry, rowIdx) {
   }
 }
 
-function mkLevelProgress(_, idx) {
+let mkLevelProgress = @(_, idx) function() {
   let slots = columnsCfg.value[idx + 2] - columnsCfg.value[idx + 1]
   if (slots <= 0)
     return null
@@ -214,7 +214,7 @@ function mkLevelProgress(_, idx) {
   let levelCompletion = current >= required || required == 0 ? 1.0
     : clamp(current.tofloat() / required * 0.97, 0.0, 0.97)
 
-  return @() {
+  return {
     watch = [columnsCfg, playerLevelInfo, sizePlatoon, unitsMaxRank, unitsMaxStarRank]
     pos = [blockSize[0] * (columnsCfg.value[idx + 1] + 0.5) - levelMarkSize * 0.5, 0]
     children = [
@@ -241,7 +241,7 @@ listWatches = listWatches.filter(@(w) w != null)
 
 let unitsTree = @() {
   watch = listWatches
-  ket = listWatches
+  key = listWatches
   size = [
     columnsCfg.value["0"] * blockSize[0] + (!curSelectedUnit.get() ? 0 : (statsWidth + platesGap[0])),
     countriesRows * blockSize[1]]
@@ -338,7 +338,7 @@ let unitsTreeGamercard = {
 
     { size = flex() }
 
-    mkCurrenciesBtns([WP, GOLD], { pos = [0, hdpx(5)] })
+    mkCurrenciesBtns([WP, GOLD]).__update({ pos = [0, hdpx(5)] })
   ]
 }
 

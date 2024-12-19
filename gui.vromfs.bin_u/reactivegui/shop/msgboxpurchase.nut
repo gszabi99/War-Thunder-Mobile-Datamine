@@ -11,9 +11,9 @@ let NO_BALANCE_UID = "no_balance_msg"
 let PURCHASE_BOX_UID = "purchase_msg_box"
 
 let openBuyWnd = {
-  [WP] = @(bqPurchaseInfo) openShopWndByCurrencyId(WP, bqPurchaseInfo),
-  [GOLD] = @(bqPurchaseInfo) openShopWndByCurrencyId(GOLD, bqPurchaseInfo),
-  [PLATINUM] = @(bqPurchaseInfo) openShopWndByCurrencyId(PLATINUM, bqPurchaseInfo),
+  [WP] = @(bqInfo) openShopWndByCurrencyId(WP, bqInfo),
+  [GOLD] = @(bqInfo) openShopWndByCurrencyId(GOLD, bqInfo),
+  [PLATINUM] = @(bqInfo) openShopWndByCurrencyId(PLATINUM, bqInfo),
 }
 
 let mkText = @(text) {
@@ -22,7 +22,7 @@ let mkText = @(text) {
   text
 }.__update(fontSmall)
 
-function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop, cancelFunc = null) {
+function showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel = null) {
   let notEnough = Computed(@() price - (balance.value?[currencyId] ?? 0))
   notEnough.subscribe(@(v) v <= 0 ? closeMsgBox(NO_BALANCE_UID) : null)
   let replaceTable = {
@@ -49,11 +49,11 @@ function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop, cancelF
         })
     }
     buttons = [
-      { id = "cancel", isCancel = true, cb = cancelFunc }
+      { id = "cancel", isCancel = true, cb = onCancel }
       { id = "replenish", styleId = "PRIMARY", isDefault = true,
         function cb() {
           if (currencyId in openBuyWnd)
-            openBuyWnd[currencyId](bqPurchaseInfo)
+            openBuyWnd[currencyId](bqInfo)
           else
             openBuyEventCurrenciesWnd(currencyId)
           onGoToShop?()
@@ -63,12 +63,12 @@ function showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop, cancelF
   })
 }
 
-function showNoBalanceMsgIfNeed(price, currencyId, bqPurchaseInfo, onGoToShop = null, cancelFunc = null) {
+function showNoBalanceMsgIfNeed(price, currencyId, bqInfo, onGoToShop = null, onCancel = null) {
   let hasBalance = (balance.value?[currencyId] ?? 0) >= price
   if (hasBalance)
     return false
 
-  showNoBalanceMsg(price, currencyId, bqPurchaseInfo, onGoToShop, cancelFunc)
+  showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel)
   return true
 }
 
@@ -87,15 +87,15 @@ let msgContent = @(text, priceComp) {
   ]
 }
 
-function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo, title = null, cancelFunc = null, purchaseLocId = "msgbox/btn_purchase") {
+function openMsgBoxPurchase(text, price, purchase, bqInfo, title = null, onCancel = null, purchaseLocId = "msgbox/btn_purchase") {
   let priceComp = []
-  let priceList = type(prices) == "array" ? prices : [prices]
-  foreach(price in priceList) {
-    if (showNoBalanceMsgIfNeed(price.price, price.currencyId, bqPurchaseInfo, null, cancelFunc))
+  let priceList = type(price) == "array" ? price : [price]
+  foreach(p in priceList) {
+    if (showNoBalanceMsgIfNeed(p.price, p.currencyId, bqInfo, null, onCancel))
       return
 
     priceComp.append(
-      mkCurrencyComp(decimalFormat(price.price), price.currencyId, CS_INCREASED_ICON)
+      mkCurrencyComp(decimalFormat(p.price), p.currencyId, CS_INCREASED_ICON)
         .__update({ margin = [ hdpx(25), 0, 0, 0 ] })
     )
   }
@@ -104,15 +104,21 @@ function openMsgBoxPurchase(text, prices, purchaseFunc, bqPurchaseInfo, title = 
     uid = PURCHASE_BOX_UID
     text = msgContent(text, priceComp),
     buttons = [
-      { id = "cancel", cb = cancelFunc, isCancel = true }
-      { text = loc(purchaseLocId), cb = purchaseFunc, styleId = "PURCHASE", isDefault = true, key = "purchase_tutor_btn" }
+      { id = "cancel", cb = onCancel, isCancel = true }
+      { text = loc(purchaseLocId), cb = purchase, styleId = "PURCHASE", isDefault = true, key = "purchase_tutor_btn" }
     ],
     title
   })
 }
 
+function closePurchaseAndBalanceBoxes() {
+  closeMsgBox(PURCHASE_BOX_UID)
+  closeMsgBox(NO_BALANCE_UID)
+}
+
 return {
   showNoBalanceMsgIfNeed
-  openMsgBoxPurchase
+  openMsgBoxPurchase = kwarg(openMsgBoxPurchase)
   PURCHASE_BOX_UID
+  closePurchaseAndBalanceBoxes
 }

@@ -42,7 +42,7 @@ let mkImgs = @(list){
 
 let getLocNameBooster = @(goods) comma.join(goods.boosters.keys().map(@(id) loc($"boosters/{id}")))
 
-function mkGoodsBooster(goods, onClick, state, animParams) {
+function mkGoodsBooster(goods, onClick, state, animParams, addChildren) {
   let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let nameBooster = @(id) loc($"boosters/{id}")
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
@@ -68,7 +68,7 @@ function mkGoodsBooster(goods, onClick, state, animParams) {
             nameBooster(id))).values()
       })
       mkGoodsLimitAndEndTime(goods)
-    ].extend(mkGoodsCommonParts(goods, state)),
+    ].extend(mkGoodsCommonParts(goods, state), addChildren),
     mkPricePlate(goods, state, animParams), {size = goodsSmallSize})
 }
 

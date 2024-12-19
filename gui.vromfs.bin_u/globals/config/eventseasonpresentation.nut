@@ -10,11 +10,11 @@ let presentations = {
   season_12 = { color = 0xFFFF8000 }
   season_13 = { color = 0xFF2E87D9 }
   season_14 = { color = 0xFF00A556 }
-  season_15 = { color = 0xFF5C67FB }
+  season_15 = { color = 0xFF5C67FB, imageSizeMul = 2}
 
   blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
-  event_new_year               = { icon = "ui/gameuiskin#icon_event_christmas.svg" }
+  event_new_year               = { icon = "ui/gameuiskin#icon_event_christmas.svg", bg = "ui/images/event_bg_christmas_2024.avif" }
 }
 
 let genParams = {
@@ -23,6 +23,7 @@ let genParams = {
   image = @(name) $"ui/gameuiskin#banner_event_{name}.avif"
   color = @(_) 0xA5FF2B00
   imageOffset = @(_) [0, 0]
+  imageSizeMul = @(_) 1.2
   bg = @(name) (name ?? "") == "" ? eventBgFallback : $"ui/images/event_bg_{name}.avif"
 }
 

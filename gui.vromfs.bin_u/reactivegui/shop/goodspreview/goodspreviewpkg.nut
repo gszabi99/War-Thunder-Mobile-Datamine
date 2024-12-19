@@ -5,6 +5,7 @@ let { stop_prem_cutscene } = require("hangar")
 let { lerpClamped } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { abTests } = require("%appGlobals/pServer/campaign.nut")
+let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { unhideModals } = require("%rGui/components/modalWindows.nut")
 let { previewGoods, isPreviewGoodsPurchasing, HIDE_PREVIEW_MODALS_ID } = require("%rGui/shop/goodsPreviewState.nut")
 let { purchaseGoods } = require("%rGui/shop/purchaseGoods.nut")
@@ -20,7 +21,8 @@ let { REWARD_STYLE_MEDIUM, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTex
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
+let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY
+} = require("%rGui/components/gradientDefComps.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { getEventLoc, MAIN_EVENT_ID, eventSeason, specialEvents } = require("%rGui/event/eventState.nut")
@@ -336,23 +338,26 @@ let mkTimeLeftText = @(endTime) function() {
   }, fontBig)
 }
 
-let previewGoodsTimeLeft = @(halign) function() {
+let previewGoodsTimeLeft = @(halign, width = hdpx(350)) function() {
   let endTime = previewGoods.get()?.endTime ?? previewGoods.get()?.timeRange.end ?? 0
   if (endTime <= 0)
     return { watch = previewGoods }
+  let text = utf8ToUpper(loc("limitedTimeOffer"))
   return {
     watch = previewGoods
     flow = FLOW_VERTICAL
     halign
     children = [
       {
-        size = [hdpx(350), SIZE_TO_CONTENT]
+        size = [width, SIZE_TO_CONTENT]
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
-        text = utf8ToUpper(loc("limitedTimeOffer"))
+        text
         color = 0xFFFFFFFF
         halign
-      }.__update(fontTiny)
+      }.__update(
+        getFontToFitWidth({ rendObj = ROBJ_TEXT, text }.__update(fontTiny),
+          width, [fontVeryTiny, fontTiny]))
       mkTimeLeftText(endTime)
     ]
   }
@@ -401,9 +406,10 @@ let mkPriceWithTimeBlock = @(animStartTime) mkTimeBlock(animStartTime, purchaseB
 let mkPriceWithTimeBlockNoOldPrice = @(animStartTime) mkTimeBlock(animStartTime, purchaseButtonNoOldPrice)
 
 let mkTimeBlockCentered = @(animStartTime) doubleSideGradient.__merge({
+  padding = [doubleSideGradientPaddingY, hdpx(25)]
   hplace = ALIGN_CENTER
   halign = ALIGN_CENTER
-  children = previewGoodsTimeLeft(ALIGN_CENTER)
+  children = previewGoodsTimeLeft(ALIGN_CENTER, hdpx(500))
   animations = opacityAnims(aTimeTime, animStartTime, "price")
 })
 

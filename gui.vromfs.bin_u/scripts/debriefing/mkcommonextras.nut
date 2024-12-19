@@ -1,12 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 
-function mkCommonExtras(battleResult) {
+function mkCommonExtras(battleResult, srvConfigs) {
   let res = {}
   if ((battleResult?.reward.playerExp.totalExp ?? 0) > 0) {
-    let { unitResearchExp = null, unitTreeNodes = null } = serverConfigs.get()
+    let { unitResearchExp = null, unitTreeNodes = null } = srvConfigs
     let isCampaignWithResearch = battleResult?.campaign in unitTreeNodes
     // For campaigns with campaign level progress unit rewards
     if (!isCampaignWithResearch) {

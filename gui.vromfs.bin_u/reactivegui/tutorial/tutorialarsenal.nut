@@ -161,10 +161,12 @@ function startTutorial() {
             let mod = curWeaponMod.get()
             let weaponName = curBelt.get() != null ? getBulletBeltShortName(curBelt.get().id)
               : comma.join(getWeaponShortNamesList(curWeapon.get()?.weapons ?? []))
-            openMsgBoxPurchase(
-              loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, weaponName) }),
-              { price = getModCost(mod, curUnitAllModsCost.get()), currencyId = getModCurrency(mod) },
-              @() null, null)
+            openMsgBoxPurchase({
+              text = loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, weaponName) }),
+              price = { price = getModCost(mod, curUnitAllModsCost.get()), currencyId = getModCurrency(mod) },
+              purchase = @() null,
+              bqInfo = null
+            })
           }
         }]
       }

@@ -91,7 +91,7 @@ let mkDecoratorContent = @(decoratorId) function() {
   }
 }
 
-function mkGoodsDecorator(goods, onClick, state, animParams) {
+function mkGoodsDecorator(goods, onClick, state, animParams, addChildren) {
   let decoratorId = goods?.decorators[0]
   let ovrState = Computed(@() state.get() | (myDecorators.get()?[decoratorId] != null ? ALL_PURCHASED : 0))
   let onDecoratorClick = (ovrState.get() & ALL_PURCHASED) == 0 ? onClick : null
@@ -105,7 +105,7 @@ function mkGoodsDecorator(goods, onClick, state, animParams) {
       borderBg
       mkDecoratorContent(decoratorId)
       mkEndTime(goods)
-    ].extend(mkGoodsCommonParts(goods, ovrState)),
+    ].extend(mkGoodsCommonParts(goods, ovrState), addChildren),
     mkPricePlate(goods, ovrState, animParams)
     { size = [goodsSmallSize[0], goodsH] })
 }

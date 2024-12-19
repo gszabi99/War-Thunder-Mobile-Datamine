@@ -22583,6 +22583,169 @@
       "fx": "ad_dust_stucco",
       "fxScale": 1.0
     },
+    "arch_ny_led_number_0": {
+      "physRes": "arch_ny_led_number_0_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "arch_ny_led_number_1": {
+      "physRes": "arch_ny_led_number_1_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "arch_ny_led_number_2": {
+      "physRes": "arch_ny_led_number_2_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "arch_ny_led_number_3": {
+      "physRes": "arch_ny_led_number_3_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "arch_ny_led_number_4": {
+      "physRes": "arch_ny_led_number_4_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "arch_ny_led_number_5": {
+      "physRes": "arch_ny_led_number_5_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "arch_ny_led_number_6": {
+      "physRes": "arch_ny_led_number_6_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "arch_ny_led_number_7": {
+      "physRes": "arch_ny_led_number_7_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "arch_ny_led_number_8": {
+      "physRes": "arch_ny_led_number_8_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "arch_ny_led_number_9": {
+      "physRes": "arch_ny_led_number_9_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "arch_ny_led_number_dome": {
+      "physRes": "arch_ny_led_number_dome_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    "snow_fort_big_a": {
+      "physRes": "snow_fort_big_a_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_dust_snow",
+      "fxScale": 1.0,
+      "material": "snow"
+    },
+    "snow_fortress_a": {
+      "physRes": "snow_fortress_a_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_dust_snow",
+      "fxScale": 1.0,
+      "material": "snow"
+    },
+    "xmas_stuff_sweets_cane": {
+      "physRes": "xmas_stuff_sweets_cane_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_dust_snow",
+      "fxScale": 1.0,
+      "material": "snow"
+    },
+    "xmas_stuff_gingerbread_a": {
+      "physRes": "xmas_stuff_gingerbread_a_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_dust_snow",
+      "fxScale": 1.0,
+      "material": "snow"
+    },
+    "xmas_stuff_gingerbread_b": {
+      "physRes": "xmas_stuff_gingerbread_b_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_dust_snow",
+      "fxScale": 1.0,
+      "material": "snow"
+    },
+    "xmas_stuff_gingerbread_c": {
+      "physRes": "xmas_stuff_gingerbread_c_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_dust_snow",
+      "fxScale": 1.0,
+      "material": "snow"
+    },
+    "xmas_gift_pile_a": {
+      "nextRes": "xmas_gift_pile_a_dmg",
+      "physRes": "xmas_gift_pile_a_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_dust_snow",
+      "fxScale": 1.0,
+      "material": "snow"
+    },
+    "xmas_gift_pile_b": {
+      "nextRes": "xmas_gift_pile_b_dmg",
+      "physRes": "xmas_gift_pile_b_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_dust_snow",
+      "fxScale": 1.0,
+      "material": "snow"
+    },
+    "xmas_gift_pile_c": {
+      "nextRes": "xmas_gift_pile_c_dmg",
+      "physRes": "xmas_gift_pile_c_destr_phobj",
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_dust_snow",
+      "fxScale": 1.0,
+      "material": "snow"
+    },
     "tram_pole_concrete_a": {
       "nextRes": "tram_pole_concrete_a_dmg",
       "physRes": "tram_pole_concrete_a_destr_phobj",

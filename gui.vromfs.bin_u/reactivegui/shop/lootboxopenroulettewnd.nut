@@ -7,16 +7,16 @@ let { rnd_int } = require("dagor.random")
 let { playSound, startSound, stopSound } = require("sound_wt")
 let { lerpClamped, cos, sin, PI, pow } = require("%sqstd/math.nut")
 let ln = require("math").log
-let { registerScene, scenesOrder } = require("%rGui/navState.nut")
+let { registerScene, scenesOrder, setSceneBg } = require("%rGui/navState.nut")
 let { rouletteOpenId, rouletteOpenType, rouletteOpenResult, nextOpenCount, curJackpotInfo,
   rouletteRewardsList, receivedRewardsCur, receivedRewardsAll, rouletteOpenIdx, nextFixedReward,
   isCurRewardFixed, requestOpenCurLootbox, closeRoulette, lastJackpotIdx, logOpenConfig,
-  rouletteLastReward, isRouletteDebugMode, isAllJackpotsReceived
+  rouletteLastReward, isRouletteDebugMode, isAllJackpotsReceived, rouletteOpenRewards
 } = require("lootboxOpenRouletteState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { delayUnseedPurchaseShow, skipUnseenMessageAnimOnce } = require("%rGui/shop/unseenPurchasesState.nut")
 let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardLocked, mkRewardPlateBg, mkProgressBar,
-  mkRewardPlateImage, mkProgressLabel, mkProgressBarWithForecast, mkProgressBarText
+  mkRewardPlateImage, mkProgressLabel, mkProgressBarWithForecast, mkProgressBarText, mkRewardUnitFlag
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { ignoreSubIdRTypes, joinViewInfo, findIndexForJoin } = require("%rGui/rewards/rewardViewInfo.nut")
 let { addCompToCompAnim } = require("%darg/helpers/compToCompAnim.nut")
@@ -30,7 +30,7 @@ let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { mkUnitFlag } = require("%rGui/unit/components/unitPlateComp.nut")
+let { getRouletteImage } = require("%appGlobals/config/lootboxPresentation.nut")
 
 let markSize = evenPx(40)
 let markMaxOffset = hdpx(20)
@@ -87,12 +87,13 @@ let isSameByType = {
 }
 
 function isReceivedSame(received, rewardInfo) {
-  foreach(rec in received) {
-    let { rType } = rec
-    foreach(info in rewardInfo)
-      if (info.rType == rType && (isSameByType?[rType] ?? isRewardSameDefault)(rec, info))
-        return true //support only single reward drop from lootboxes atm.
-  }
+  let rec = received?[0]
+  if (rec == null)
+    return false
+  let { rType } = rec
+  foreach(info in rewardInfo)
+    if (info.rType == rType && (isSameByType?[rType] ?? isRewardSameDefault)(rec, info))
+      return true //support only single reward drop from lootboxes atm.
   return false
 }
 
@@ -637,7 +638,7 @@ function mkBlueprintPlate(reward, rStyle, ovr = {}) {
       mkRewardPlateBg(reward, rStyle)
       mkRewardPlateImage(reward, rStyle)
       mkBlueprintPlateTexts(reward, unit.get()?.mRank, rStyle)
-      mkUnitFlag(unit.get(), rStyle)
+      mkRewardUnitFlag(unit.get(), rStyle)
     ]
   }.__update(ovr)
 }
@@ -828,10 +829,12 @@ function rouletteRewardsBlock() {
 
 function receivedRewardsBlock() {
   let widthSum = []
-  local visibleWidth = 0
-  for(local i = 0; i <= resultOffsetIdx.value; i++) {
+  let openRewardsWidth = rouletteOpenRewards.get()
+    .reduce(@(res, v) res + slotsGap + v.slots * rewardBoxSize + (v.slots - 1) * rewardBoxGap, 0)
+  local visibleWidth = openRewardsWidth
+  foreach(vi in visibleInfos.get()) {
     widthSum.append(visibleWidth)
-    let { slots = 0 } = visibleInfos.get()?[i]
+    let { slots = 0 } = vi
     visibleWidth += slotsGap + slots * rewardBoxSize + (slots - 1) * rewardBoxGap
   }
 
@@ -841,21 +844,32 @@ function receivedRewardsBlock() {
     + 0.5 * rewardBoxGap
 
   return {
-    watch = [visibleInfos, rouletteOpenResult, resultVisibleIdx, resultOffsetIdx]
+    watch = [visibleInfos, rouletteOpenResult, resultVisibleIdx, resultOffsetIdx, rouletteOpenRewards]
     size = [0, rewardBoxSize]
     hplace = ALIGN_CENTER
     valign = ALIGN_BOTTOM
-    children = !rouletteOpenResult.value || receivedRewardsAll.value.len() == 0 ? null
-      : visibleInfos.get().map(@(viewInfo, idx)
-          mkRewardBlock(viewInfo, REWARD_STYLE_MEDIUM,
-            {
-              key = getRewardResultKey(idx)
-              opacity = idx <= resultVisibleIdx.value ? 1 : 0
-              transform = {
-                translate = [idx <= resultOffsetIdx.value ? offsetVisible + widthSum[idx] : posInvisible, 0]
-              }
-              transitions = [{ prop = AnimProp.translate, duration = 0.3, easing = InOutQuad }]
-            }))
+    children = [
+      {
+        key = "openRewards"
+        size = [SIZE_TO_CONTENT, rewardBoxSize]
+        flow = FLOW_HORIZONTAL
+        gap = slotsGap
+        children = rouletteOpenRewards.get().map(@(v) mkRewardBlock(v, REWARD_STYLE_MEDIUM))
+        transform = { translate = [offsetVisible, 0] }
+        transitions = [{ prop = AnimProp.translate, duration = 0.3, easing = InOutQuad }]
+      }
+    ].extend(
+      !rouletteOpenResult.value || receivedRewardsAll.value.len() == 0 ? []
+        : visibleInfos.get().map(@(viewInfo, idx)
+            mkRewardBlock(viewInfo, REWARD_STYLE_MEDIUM,
+              {
+                key = getRewardResultKey(idx)
+                opacity = idx <= resultVisibleIdx.value ? 1 : 0
+                transform = {
+                  translate = [idx <= resultOffsetIdx.value ? offsetVisible + widthSum[idx] : posInvisible, 0]
+                }
+                transitions = [{ prop = AnimProp.translate, duration = 0.3, easing = InOutQuad }]
+              })))
   }
 }
 
@@ -1075,10 +1089,6 @@ let lootboxWnd = @() {
   watch = scenesOrder
   key = WND_UID
   size = flex()
-  rendObj = ROBJ_IMAGE
-  keepAspect = KEEP_ASPECT_FILL
-  image = Picture("ui/images/event_bg.avif")
-  color = 0xFFFFFFFF
   onClick = @() null
   children = {
     size = flex()
@@ -1088,4 +1098,7 @@ let lootboxWnd = @() {
   animations = scenesOrder.value?[0] == "eventWnd" ? null : wndSwitchAnim
 }
 
-registerScene("lootboxOpenRoulette", lootboxWnd, closeRoulette, keepref(Computed(@() rouletteOpenId.value != null)), true)
+let sceneId = "lootboxOpenRoulette"
+registerScene(sceneId, lootboxWnd, closeRoulette, keepref(Computed(@() rouletteOpenId.value != null)), true)
+setSceneBg(sceneId, getRouletteImage(rouletteOpenId.get()))
+rouletteOpenId.subscribe(@(v) setSceneBg(sceneId, getRouletteImage(v)))

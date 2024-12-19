@@ -173,12 +173,13 @@ function onPurchase() {
   let modName = curMod.value.name
   let price = getModCost(curMod.value, curUnitAllModsCost.value)
   let currencyId = getModCurrency(curMod.value)
-  openMsgBoxPurchase(
-    loc("shop/needMoneyQuestion",
+  openMsgBoxPurchase({
+    text = loc("shop/needMoneyQuestion",
       { item = colorize(userlogTextColor, loc($"modification/{modName}")) }),
-    { price, currencyId },
-    @() buy_unit_mod(unitName, modName, currencyId, price),
-    mkBqPurchaseInfo(PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, $"{unitName} {modName}"))
+    price = { price, currencyId },
+    purchase = @() buy_unit_mod(unitName, modName, currencyId, price),
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, $"{unitName} {modName}")
+  })
 }
 
 function onClose() {

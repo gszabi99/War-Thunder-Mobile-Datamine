@@ -84,7 +84,7 @@ let borderBg = {
   size  = [flex(), goodsH]
   rendObj = ROBJ_BOX
   borderColor = 0xFF74A1D2
-  borderWidth = [hdpx(2), hdpx(2), 0, hdpx(2)]
+  borderWidth = hdpx(2)
 }
 
 let borderBgGold = borderBg.__merge({ borderColor = 0xFFD2A51E })

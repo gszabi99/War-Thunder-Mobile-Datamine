@@ -317,6 +317,10 @@ let getAllLootboxRewardsViewInfo = @(lootbox)
   getLootboxFixedRewardsViewInfo(lootbox).extend(
     groupRewards(getLootboxCommonRewardsViewInfo(lootbox)).sort(sortRewardsWithOrder))
 
+
+let getLootboxOpenRewardViewInfo = @(lootbox, servConfigs, multiply = 1)
+  getRewardsViewInfo(servConfigs?.rewardsCfg[lootbox?.openReward] ?? [], multiply)
+
 let receivedGoodsToViewInfo = @(rGoods)
   mkViewInfo(rGoods?.id ?? "", rGoods?.gType ?? "", rGoods.count ?? 0, rGoods?.subId ?? "")
 
@@ -423,6 +427,7 @@ return {
   findIndexForJoin
   getLootboxRewardsViewInfo
   getAllLootboxRewardsViewInfo
+  getLootboxOpenRewardViewInfo
   receivedGoodsToViewInfo
   isRewardEmpty
   isViewInfoRewardEmpty

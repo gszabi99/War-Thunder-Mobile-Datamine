@@ -12,7 +12,8 @@ let { rewardInProgress, lootboxInProgress, apply_prize_tickets,
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
-let { mkRewardPlate, mkRewardDisabledBkg, mkRewardReceivedMark } = require("%rGui/rewards/rewardPlateComp.nut")
+let { mkRewardPlate, mkRewardDisabledBkg, mkRewardReceivedMark, mkRewardUnitFlag
+} = require("%rGui/rewards/rewardPlateComp.nut")
 let { unseenPurchasesExt, isShowUnseenDelayed } = require("%rGui/shop/unseenPurchasesState.nut")
 let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { REWARD_STYLE_MEDIUM, getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
@@ -25,7 +26,6 @@ let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nu
 let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { bgMessage, bgHeader, bgShaded } = require("%rGui/style/backgrounds.nut")
-let { mkUnitFlag } = require("%rGui/unit/components/unitPlateComp.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
@@ -293,7 +293,7 @@ function mkSlot(slotIdx, reward, rStyle) {
     sound = { click  = "click" }
     children = [
       mkRewardPlate(reward, rStyle)
-      unit.get() ? mkUnitFlag(unit.get(), rStyle) : null
+      unit.get() ? mkRewardUnitFlag(unit.get(), rStyle) : null
       isPurchased.get() || (!isSelected.get() && !(stateFlags.get() & S_HOVER)) ? null
         : mkHightlightPlate(isSelected.get())
       isDisabled.get() ? mkDisableBkgWithTooltip(isPurchased.get(), rStyle) : null

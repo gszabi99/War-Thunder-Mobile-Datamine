@@ -2715,6 +2715,13 @@
     "sightName": "default_tank_spg",
     "detectionHeight": 2.82
   },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
   "skin": [
     {
       "name": "us_camo_dark_green_dark_earth",

@@ -13,7 +13,7 @@ registerHandler("onDecoratorPurchaseResult",
     set_current_decorator(decId)
   })
 
-function purchaseDecorator(decId, localizedName, bqPurchaseInfo) {
+function purchaseDecorator(decId, localizedName, bqInfo) {
   if (decoratorInProgress.value != null)
     return
   if (decId in myDecorators.value) {
@@ -31,15 +31,13 @@ function purchaseDecorator(decId, localizedName, bqPurchaseInfo) {
     return
   }
 
-  let purchaseFunc = @()
-    buy_decorator(decId, currencyId, price, { id = "onDecoratorPurchaseResult", decId })
-
-  openMsgBoxPurchase(
-    loc("shop/needMoneyQuestion",
+  openMsgBoxPurchase({
+    text = loc("shop/needMoneyQuestion",
       { item = colorize(userlogTextColor, localizedName) }),
-    decor.price,
-    purchaseFunc,
-    bqPurchaseInfo)
+    price = decor.price,
+    purchase = @() buy_decorator(decId, currencyId, price, { id = "onDecoratorPurchaseResult", decId }),
+    bqInfo
+  })
 }
 
 return purchaseDecorator

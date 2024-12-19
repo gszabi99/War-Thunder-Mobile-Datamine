@@ -34,9 +34,10 @@ return function (priceVal, context) {
   if (price <= 0 || currency == "")
     return
 
-  openMsgBoxPurchase(
-    purchaseContent(context),
-    { price currencyId = currency },
-    buyBPLevel,
-    mkBqPurchaseInfo(PURCH_SRC_BATTLE_PASS, PURCH_TYPE_BP_LEVEL, BP_PROGRESS_UNLOCK_ID))
+  openMsgBoxPurchase({
+    text = purchaseContent(context),
+    price = { price currencyId = currency },
+    purchase = buyBPLevel,
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_BATTLE_PASS, PURCH_TYPE_BP_LEVEL, BP_PROGRESS_UNLOCK_ID)
+  })
 }

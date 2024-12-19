@@ -24,7 +24,7 @@ let shade = {
 
 let fontVeryVeryTiny = {
   font = muller_regular
-  fontSize = hdpxi(15)
+  fontSize = hdpxi(17)
 }
 let fontVeryVeryTinyAccented = {
   font = muller_regular

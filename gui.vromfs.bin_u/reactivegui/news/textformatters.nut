@@ -2,12 +2,11 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { platformId, aliases } = require("%sqstd/platform.nut")
 let { toIntegerSafe } = require("%sqstd/string.nut")
-let mkFormatAst = require("%darg/helpers/mkFormatAst.nut")
+let { mkFormatAst, widthImgMax } = require("mkFormatAstWithInsideBlock.nut")
 let urlAliases = require("urlAliases.nut")
 let wordHyphenation = require("%globalScripts/wordHyphenation.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
 
-let selectorBtnW = hdpx(465)
 let commonTextColor = 0xFFC0C0C0
 let activeTextColor = 0xFFFFFFFF
 let urlColor = 0xFF17C0FC
@@ -15,7 +14,6 @@ let urlHoverColor = 0xFF84E0FA
 let urlLineWidth = hdpx(1)
 let separatorColor = 0x33333333
 let accentBgColor = 0x1E001E32
-let widthImgMax = saSize[0] - saBordersRv[1]*2 - selectorBtnW
 
 let blockInterval = hdpx(6)
 let headerMargin = 2 * blockInterval
@@ -194,7 +192,7 @@ function video(obj, _, __) {
   }.__update(obj)
 }
 
-let image = @(obj, _, __) {
+let image = @(obj, _, style = {}) {
   size = obj?.width == null || obj?.height == null ? [flex(), SIZE_TO_CONTENT]
     : obj.width > widthImgMax ? [widthImgMax, widthImgMax * (obj.height.tofloat() / obj.width.tofloat())]
     : [obj.width, obj.height]
@@ -204,6 +202,7 @@ let image = @(obj, _, __) {
   image = Picture(obj.v)
   margin = [hdpx(15), 0, hdpx(10)]
   imageAffectsLayout = true
+  keepAspect = true
   children = {
     rendObj = ROBJ_TEXT
     text = obj?.caption
@@ -212,7 +211,7 @@ let image = @(obj, _, __) {
     fontFxFactor = min(64, hdpx(64))
     fontFx = FFT_GLOW
   }
-}.__update(obj)
+}.__update(obj, style)
 
 let textAreaFormatter = @(obj, _ = null, __ = null) textArea(obj)
 let mkTextFormatter = @(ovr) @(obj, _ = null, __ = null) textArea(obj.__merge(ovr))
@@ -254,5 +253,4 @@ let filterFormat = @(o) o?.platform != null
 return {
   formatText = mkFormatAst({ formatters, style = { lineGaps = hdpx(5) }, filter = filterFormat })
   formatters
-  selectorBtnW
 }

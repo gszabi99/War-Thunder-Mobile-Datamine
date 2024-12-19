@@ -9,6 +9,7 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { mkFlagImage } = require("%rGui/unitsTree/unitsTreeComps.nut")
 let { isUnitNameMatchSearchStr } = require("%rGui/unit/unitNameSearch.nut")
+let { releasedUnits } = require("%rGui/unit/unitState.nut")
 
 
 let statusLoc = {
@@ -60,7 +61,7 @@ function mkOptMultiselect(id, override = {}) {
   let { getUnitValue = @(unit) unit?[id] } = override
   let allValues = override?.allValues
     ?? Computed(@() allUnitsCfg.value
-      .filter(@(u) !u?.isHidden || u.name in myUnits.value)
+      .filter(@(u) (!u?.isHidden && u.name in releasedUnits.get()) || u.name in myUnits.value)
       .reduce(function(res, unit) {
         res[getUnitValue(unit)] <- true
         return res

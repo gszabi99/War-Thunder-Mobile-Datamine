@@ -97,8 +97,9 @@ let allQuestsCompleted = {
   text = loc("quests/allCompleted")
 }.__update(fontMedium)
 
-function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null) {
+function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeMul = 1) {
   let stateFlags = Watched(0)
+  let headerIconSize = (linkToEventIconSize * imageSizeMul).tointeger()
   return @() {
     watch = stateFlags
     size = [linkToEventWidth, progressBarRewardSize]
@@ -114,15 +115,19 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null) {
     children = [
       {
         size = flex()
-        flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
+        valign = ALIGN_BOTTOM
         children = [
           @() {
-            watch = iconWatch
-            size = [linkToEventIconSize, linkToEventIconSize]
-            rendObj = ROBJ_IMAGE
-            image = Picture($"{iconWatch.get()}:{linkToEventIconSize}:{linkToEventIconSize}:P")
-            keepAspect = KEEP_ASPECT_FIT
+            minHeight = progressBarRewardSize
+            children = @() {
+              margin = [hdpx(5), 0, 0, 0]
+              watch = iconWatch
+              size = [headerIconSize, headerIconSize]
+              rendObj = ROBJ_IMAGE
+              image = Picture($"{iconWatch.get()}:{headerIconSize}:{headerIconSize}:P")
+              keepAspect = KEEP_ASPECT_FIT
+            }
           }
           {
             rendObj = ROBJ_TEXT

@@ -485,8 +485,8 @@
     "bomber_outline": "objective_bomber_outline.svg:36:36:K",
     "helicopter": "objective_helicopter.svg:36:36:K",
     "helicopter_outline": "objective_helicopter_outline.svg:36:36:K",
-    "april_event_unit": "objective_pony.svg:48:48:K",
-    "exoskeleton": "objective_pony.svg:48:48:K",
+    "april_event_unit": "icon_hud_base_new_year.svg:48:48:K",
+    "exoskeleton": "icon_hud_gift.svg:48:48:K",
     "truck": "objective_truck",
     "mark": "objective_mark.svg:21:21:K",
     "sunk_carrier": "objective_sunk_carrier",
@@ -789,6 +789,10 @@
     "airfieldLineWidth": 2.0,
     "airfieldLineBorderWidth": 1.0,
     "airfieldLineMinLength": 12.0,
+    "specialIcons": {
+      "iconNYPresent": "icon_hud_gift.svg:16:16:K",
+      "iconNYtree": "icon_hud_base_new_year.svg:36:36:K"
+    },
     "tankHudIcons": {
       "iconLightTank": "gnd_light_tank_radar.svg:13:7:K",
       "iconLightTankTarget": "gnd_light_tank_radar_target.svg:15:9:K",
@@ -2957,6 +2961,7 @@
     "iconHeli": "objective_helicopter.svg:36:26:K",
     "iconTroops": "objective_troops",
     "iconTruck": "objective_truck",
+    "iconScore": "icon_hud_gift.svg:36:26:K",
     "blinkFreq": 2.0,
     "colorUnderAttack": [
       0,

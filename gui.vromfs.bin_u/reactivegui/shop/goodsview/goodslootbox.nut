@@ -2,9 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkFontGradient } = require("%rGui/style/gradients.nut")
 let { mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize, mkSquareIconBtn,
    mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkTimeLeft,
-   mkGoodsLimitText, mkBorderByCurrency
+   mkGoodsLimitText, mkBorderByCurrency, mkCurrencyAmountTitle
 } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { getLootboxName, mkLoootboxImage } = require("%appGlobals/config/lootboxPresentation.nut")
+let { getLootboxName, mkLoootboxImage, customGoodsLootboxScale } = require("%appGlobals/config/lootboxPresentation.nut")
 let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -49,7 +49,7 @@ let function mkLootboxTitle(goods, ovr = {}) {
   }.__update(ovr)
 }
 
-function mkGoodsLootbox(goods, _, state, animParams) {
+function mkGoodsLootbox(goods, _, state, animParams, addChildren) {
   let { lootboxes, isShowDebugOnly = false, timeRange = null, isFreeReward = false, price = {} } = goods
   let lootboxId = lootboxes.findindex(@(_) true)
   let onClick = @() openGoodsPreview(goods.id)
@@ -66,12 +66,14 @@ function mkGoodsLootbox(goods, _, state, animParams) {
       border
       sf & S_HOVER ? bgHiglight : null
       lootboxId == null ? null
-        : mkLoootboxImage(lootboxId, lootboxIconSize, { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, lootboxIconSize * 0.1] })
+        : mkLoootboxImage(lootboxId, lootboxIconSize, customGoodsLootboxScale?[lootboxId] ?? 1)
+            .__update({ hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, lootboxIconSize * 0.1] })
+      mkCurrencyAmountTitle(lootboxes?[lootboxId], 0, titleFontGrad).__update({ margin = [hdpx(32), 0] })
       mkLootboxTitle(goods, timeRange == null ? { size = flex() } : {})
       !canPurchase ? null : mkSquareIconBtn(fonticonPreview, onClick, { vplace = ALIGN_BOTTOM, margin = contentMargin })
       timeRange == null ? null
         : mkTimeLeft(timeRange.end, { vplace = ALIGN_BOTTOM, margin = textMargin })
-    ].extend(mkGoodsCommonParts(goods, state)),
+    ].extend(mkGoodsCommonParts(goods, state), addChildren),
     mkPricePlate(goods, state, animParams), { size = goodsSmallSize })
 }
 

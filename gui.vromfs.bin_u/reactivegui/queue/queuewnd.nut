@@ -21,6 +21,7 @@ let helpTankControls = require("%rGui/loading/complexScreens/helpTankControls.nu
 let helpTankCaptureZone = require("%rGui/loading/complexScreens/helpTankCaptureZone.nut")
 let helpTankParts = require("%rGui/loading/complexScreens/helpTankParts.nut")
 let helpAirAiming = require("%rGui/loading/complexScreens/helpAirAiming.nut")
+let helpEventChristmas = require("%rGui/loading/complexScreens/helpEventChristmas.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
@@ -73,6 +74,8 @@ let playersCountInQueue = Computed(function() {
       res += qStats?[rankStr] ?? 0
   return max(1, res) //never show zero, because im in queue
 })
+
+let isOnlyOverrideUnits = Computed(@() allGameModes.get().findvalue(@(mode) mode.name == curQueue.get()?.params.mode)?.only_override_units ?? false)
 
 let textParams = {
   rendObj = ROBJ_TEXT
@@ -251,15 +254,19 @@ let mkBgImagesByCampaign = {
   tanks = @() tanksScreensOrder[(sharedStatsByCampaign.value?.battles ?? 0) % tanksScreensOrder.len()]()
 }
 
+let mkBgImageByGameMode = {
+  tank_event_ny_ctf_mode = @() helpEventChristmas
+}
+
 let bgImage = @() {
-  watch = missionCampaign
+  watch = [missionCampaign, lastQueueMode]
   size = flex()
-  children = mkBgImagesByCampaign?[missionCampaign.get()]()
+  children = mkBgImageByGameMode?[lastQueueMode.get()]() ?? mkBgImagesByCampaign?[missionCampaign.get()]()
 }
 
 let key = {}
 let queueWindow = @() {
-  watch = isInJoiningGame
+  watch = [isInJoiningGame, isOnlyOverrideUnits]
   key
   onAttach = function() {
     sendNewbieBqEvent("openQueueWindow")
@@ -283,7 +290,7 @@ let queueWindow = @() {
             aimingHint
             playersCount
             waitingBlock
-            cancelQueueButton(curQueue.get()?.params.isOnlyOverride ?? false)
+            cancelQueueButton(isOnlyOverrideUnits.get())
           ]
     }
   ]

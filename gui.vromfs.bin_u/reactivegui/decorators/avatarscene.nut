@@ -137,7 +137,7 @@ function footer() {
   let canEquip = selectedAvatar.value in availAvatars.value || selectedAvatar.value == null
   let isCurrent = selectedAvatar.value == chosenAvatar.value?.name
   return {
-    watch = [selectedAvatar, chosenAvatar]
+    watch = [selectedAvatar, chosenAvatar, availAvatars, allAvatars]
     size = [flex(), defButtonHeight]
     flow = FLOW_HORIZONTAL
     gap = hdpx(50)

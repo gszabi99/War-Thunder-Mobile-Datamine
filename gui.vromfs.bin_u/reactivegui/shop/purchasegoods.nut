@@ -1,12 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let logShop = log_with_prefix("[SHOP] ")
+let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { shopPurchaseInProgress, buy_goods, buy_offer, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
 let { activeOffer } = require("offerState.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
+let { openMsgBoxPurchase, closePurchaseAndBalanceBoxes } = require("%rGui/shop/msgBoxPurchase.nut")
 let { PURCH_SRC_SHOP, getPurchaseTypeByGoodsType, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { msgBoxText, openMsgBox } = require("%rGui/components/msgBox.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
@@ -102,6 +104,15 @@ function currencyWithIconComp(item){
   }
 }
 
+function startRemoveTimer(goods) {
+  let { end = 0 } = goods?.timeRange
+  let timeLeft = end - serverTime.get()
+  if (timeLeft <= 0)
+    clearTimer(closePurchaseAndBalanceBoxes)
+  else
+    resetTimeout(timeLeft, closePurchaseAndBalanceBoxes)
+}
+
 function purchaseGoods(goodsId) {
   logShop($"User tries to purchase: {goodsId}")
   if (shopPurchaseInProgress.value != null)
@@ -123,20 +134,23 @@ function purchaseGoods(goodsId) {
   if (!canPurchase)
     return
 
-  function purchaseFunc() {
+  startRemoveTimer(goods)
+
+  function purchase() {
     let errString = isOffer ? purchaseOfferImpl(goods, currencyId, price)
       : purchaseGoodsImpl(goodsId, currencyId, price)
     if (errString != "")
       logShop($"ERROR: {errString}")
   }
 
-  openMsgBoxPurchase(
-    goods.gtype == SGT_EVT_CURRENCY
+  openMsgBoxPurchase({
+    text = goods.gtype == SGT_EVT_CURRENCY
       ? currencyWithIconComp(goods)
       : loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, getGoodsLocName(goods).replace(" ", nbsp)) }),
-    { price = price, currencyId },
-    purchaseFunc,
-    mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goods.gtype), $"pack {goods.id}"))
+    price = { price, currencyId },
+    purchase,
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goods.gtype), $"pack {goods.id}")
+  })
   playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money" )
 }
 
@@ -167,18 +181,18 @@ function purchaseGoodsSeq(goodsList, name) {
     sum += price
   }
 
-  function purchaseFunc() {
+  function purchase() {
     let errString = purchaseGoodsSeqImpl(goodsList)
     if (errString != "")
       logShop($"ERROR: {errString}")
   }
 
-  openMsgBoxPurchase(
-    loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, name) }),
-    { price = sum, currencyId = currency },
-    purchaseFunc,
-    mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goodsList[0].gtype), $"pack {",".join(goodsList.map(@(v) v.id))}")
-  )
+  openMsgBoxPurchase({
+    text = loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, name) }),
+    price = { price = sum, currencyId = currency },
+    purchase,
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goodsList[0].gtype), $"pack {",".join(goodsList.map(@(v) v.id))}")
+  })
   playSound(currency == GOLD ? "meta_products_for_gold" : "meta_products_for_money" )
 }
 

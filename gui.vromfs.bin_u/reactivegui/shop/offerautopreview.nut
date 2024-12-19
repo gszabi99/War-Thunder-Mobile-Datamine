@@ -8,14 +8,16 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { hasSavedDeepLink } = require("%rGui/notifications/appsFlierDeepLink.nut")
 
 let showedTime = hardPersistWatched("offerAutoPreview.showedTime", {})
 let enteredMenuTime = hardPersistWatched("offerAutoPreview.enteredMenuTime", {})
-let canShow = Computed(@() visibleOffer.value != null
-  && !isInBattle.value
-  && reqAddonsToShowOffer.value.len() == 0
-  && isInMenuNoModals.value
-  && (visibleOffer.value?.endTime ?? 0) > (showedTime.value?[visibleOffer.value?.campaign] ?? 0))
+let canShow = Computed(@() visibleOffer.get() != null
+  && !hasSavedDeepLink.get()
+  && !isInBattle.get()
+  && reqAddonsToShowOffer.get().len() == 0
+  && isInMenuNoModals.get()
+  && (visibleOffer.get()?.endTime ?? 0) > (showedTime.value?[visibleOffer.get()?.campaign] ?? 0))
 
 let needShow = keepref(Computed(@() canShow.value
   && (showedTime.value?[visibleOffer.value?.campaign] ?? 0) == 0))

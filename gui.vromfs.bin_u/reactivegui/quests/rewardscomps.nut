@@ -130,6 +130,13 @@ let mkQuestRewardPlate = @(r, startIdx, isQuestFinished = false, rStyle = rStyle
   ]
 }
 
+let mkRewardPlateWithAnim = @(r, appearTime, rStyle = rStyleDefault) mkRewardPlate(r, rStyle, {
+  key = {}
+  behavior = Behaviors.Button
+  onClick = @() r.rType == "unit" ? unitDetailsWnd({name = r.id}) : null
+  animations = opacityAnims(aTimeInfoItem, appearTime)
+})
+
 let mkRewardsPreviewFull = @(rewards, isQuestFinished) rewards.map(@(r, idx) mkQuestRewardPlate(r, idx, isQuestFinished))
 
 function mkRewardsPreview(rewards, isQuestFinished, maxSlotsCount = REWARDS_PREVIEW_SLOTS, style = rStyleDefault) {
@@ -147,6 +154,7 @@ function mkRewardsPreview(rewards, isQuestFinished, maxSlotsCount = REWARDS_PREV
 return {
   mkRewardsPreview
   mkQuestRewardPlate
+  mkRewardPlateWithAnim
   rewardProgressBarCtor
   mkRewardsPreviewFull
 

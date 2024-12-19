@@ -43,6 +43,7 @@ let { mkZoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
 let { moveArrowsAirView } = require("%rGui/components/movementArrows.nut")
 let { canShowRadar } = require("%rGui/hudTuning/hudTuningState.nut")
 let { curActionBarTypes } = require("%rGui/hud/actionBar/actionBarState.nut")
+
 let returnToShipShortcutIds = {
   AB_SUPPORT_PLANE = "ID_WTM_LAUNCH_AIRCRAFT"
   AB_SUPPORT_PLANE_2 = "ID_WTM_LAUNCH_AIRCRAFT_2"

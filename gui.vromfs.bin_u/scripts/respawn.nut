@@ -94,7 +94,7 @@ function applyRespawnData() {
   let wBlk = DataBlock()
   foreach(slotId, presetId in weaponPreset) {
     let blk = DataBlock()
-    blk.slot = slotId
+    blk.slot = slotId.tointeger() //slotId changed it type after eventbus
     blk.preset = presetId
     wBlk.Weapon <- blk
   }

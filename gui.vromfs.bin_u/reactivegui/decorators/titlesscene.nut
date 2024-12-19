@@ -141,7 +141,7 @@ let buySelectedDecorator = @()
 function footer(){
   let { price = null } = allTitles.get()?[selectedTitle.get()]
   return {
-    watch = [selectedTitle, chosenTitle]
+    watch = [selectedTitle, chosenTitle, availTitles, allTitles]
     size = [flex(), defButtonHeight]
     flow = FLOW_HORIZONTAL
     gap = hdpx(50)

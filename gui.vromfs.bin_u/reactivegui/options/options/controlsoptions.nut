@@ -11,10 +11,7 @@ let { get_option_multiplier, set_option_multiplier, OPTION_FREE_CAMERA_INERTIA }
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { openTuningRecommended } = require("%rGui/hudTuning/hudTuningState.nut")
 let { openVoiceMsgPieEditor } = require("%rGui/hud/voiceMsg/voiceMsgPieEditor.nut")
-let { abTests } = require("%appGlobals/pServer/campaign.nut")
-let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
-let sendChange = @(id, v) sendSettingChangeBqEvent(id, "tanks", v)
 
 function cameraSenseSlider(camType, locId, optId, cur = 1.0, minVal = 0.03, maxVal = 3.0, stepVal = 0.03) {
   let value = mkOptionValue(optId, cur)
@@ -72,19 +69,13 @@ let optFreeCameraInertia = {
 let validate = @(val, list) list.contains(val) ? val : list[0]
 
 let cameraRotationAssistList = [false, true]
-let cameraRotationAssistDefault = Computed(@() (abTests.value?.tankCameraRotationAssist ?? "true") == "true")
-let currentCameraRotationAssistRaw = mkOptionValue(OPT_CAMERA_ROTATION_ASSIST)
-let currentCameraRotationAssist = Computed(@() validate(
-  currentCameraRotationAssistRaw.value ?? cameraRotationAssistDefault
-  cameraRotationAssistList))
-set_camera_rotation_assist(currentCameraRotationAssist.value)
+let currentCameraRotationAssist = mkOptionValue(OPT_CAMERA_ROTATION_ASSIST, true, @(v) validate(v, cameraRotationAssistList))
+set_camera_rotation_assist(currentCameraRotationAssist.get())
 currentCameraRotationAssist.subscribe(@(v) set_camera_rotation_assist(v))
 let cameraRotationAssist = {
   locId = "options/camera_rotation_assist"
   ctrlType = OCT_LIST
   value = currentCameraRotationAssist
-  setValue = @(v) currentCameraRotationAssistRaw(v)
-  onChangeValue = @(v) sendChange("camera_rotation_assist", v)
   list = cameraRotationAssistList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
   description = loc("options/desc/camera_rotation_assist")

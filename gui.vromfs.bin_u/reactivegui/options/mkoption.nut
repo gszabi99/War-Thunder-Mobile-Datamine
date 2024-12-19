@@ -51,7 +51,7 @@ let optBlock = @(header, content, openInfo, desc, locId, ovr = {}) {
   children = [
     mkHeader(header,
       openInfo != null ? infoGreyButton(openInfo, {size = [evenPx(50), evenPx(50)], color = 0x80000000})
-        : desc != "" ? infoTooltipButton(mkTooltipContentCtor(loc(locId), desc), { halign = ALIGN_LEFT })
+        : desc != "" ? infoTooltipButton(mkTooltipContentCtor(loc(locId), desc), { flowOffset = hdpx(100) })
         : null)
     content
   ]

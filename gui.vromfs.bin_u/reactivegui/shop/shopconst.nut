@@ -6,6 +6,7 @@ let shopCategories = [
   "SC_PREMIUM"
   "SC_CONSUMABLES"
   "SC_PLATINUM"
+  "SC_EVENTS"
 ].map(@(v, i) [ v, 100 + i ]).totable()
 
 let goodsTypes = [

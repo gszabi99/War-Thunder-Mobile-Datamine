@@ -3594,6 +3594,29 @@
     "sfxPathStudio": "naval/gui",
     "sfxEvent": "misc_open_tank"
   },
+  "misc_christmas_cracker": {
+    "fx": "misc_christmas_cracker_cmps_fx",
+    "sfxPathStudio": "event/explosions",
+    "sfxEvent": "gift_destroy"
+  },
+  "misc_christmas_gift_add": {
+    "fx": "misc_christmas_gift_add_cmps_fx"
+  },
+  "misc_christmas_gift_appear": {
+    "fx": "misc_christmas_gift_appear_cmps_fx",
+    "sfxPathStudio": "event/ui",
+    "sfxEvent": "gift_appear",
+    "soundEnableDistance": 50.0
+  },
+  "misc_christmas_gift_idle": {
+    "fx": "misc_christmas_gift_idle_cmps_fx"
+  },
+  "misc_christmas_gift_up": {
+    "fx": "misc_christmas_gift_up_cmps_fx",
+    "sfxPathStudio": "event/ui",
+    "sfxEvent": "gift_up",
+    "soundEnableDistance": 50.0
+  },
   "explosion_pony_blue": {
     "fx": "explosion_pony_blue_cmps_fx",
     "sfxPathStudio": "event/explosions",

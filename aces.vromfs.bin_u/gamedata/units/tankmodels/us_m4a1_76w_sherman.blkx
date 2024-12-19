@@ -2978,6 +2978,26 @@
       }
     }
   },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "vehicleSkins": {
+    "winter": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "us_camo_winter_olive*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    }
+  },
   "upgraded_skin": {
     "replace_tex": {
       "from": "us_camo_olive*",

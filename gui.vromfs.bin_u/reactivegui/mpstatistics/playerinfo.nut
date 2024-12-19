@@ -30,6 +30,7 @@ let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
 let { COMMON } = require("%rGui/components/buttonStyles.nut")
 let { copyToClipboard } = require("%rGui/components/clipboard.nut")
 let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
+let { releasedUnits } = require("%rGui/unit/unitState.nut")
 
 let defColor = 0xFFFFFFFF
 let hlColor = 0xFF5FC5FF
@@ -393,7 +394,9 @@ selectedPlayerForInfo.subscribe(function(v) {
       all[camp] <- { prem = 0, wp = 0 }
     }
     foreach (unit in allUnits) {
-      let { campaign = "", isHidden = false, isPremium = false, costWp = 0} = unit
+      let { campaign = "", isHidden = false, isPremium = false, costWp = 0, name = ""} = unit
+      if (name not in releasedUnits.get())
+        continue
       if (campaign not in all)
         all[campaign] <- { prem = 0, wp = 0 }
       if (isPremium && !isHidden)

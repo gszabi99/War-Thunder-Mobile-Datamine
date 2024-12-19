@@ -158,7 +158,7 @@ let mkMRank = @(mRank) !mRank ? null : {
   children = mkGradRank(mRank)
 }
 
-function mkGoodsUnit(goods, onClick, state, animParams) {
+function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
   let p = getUnitPresentation(unit)
   let isPurchased = isUnitOrUnitUpgradePurchased(myUnits.value, unit)
@@ -190,7 +190,7 @@ function mkGoodsUnit(goods, onClick, state, animParams) {
       mkMRank(unit?.mRank)
       mkEndTime(goods, { pos = [hdpx(-50), 0] })
       border
-    ].extend(mkGoodsCommonParts(goods, ovrState)),
+    ].extend(mkGoodsCommonParts(goods, ovrState), addChildren),
     mkPricePlate(goods, ovrState, animParams),
     { size = [goodsSmallSize[0], goodsH] }
   )

@@ -9,10 +9,11 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { isInQueue } = require("%appGlobals/queueState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { activeUnseenPurchasesGroup, markPurchasesSeen, hasActiveCustomUnseenView, skipUnseenMessageAnimOnce
+let { activeUnseenPurchasesGroup, markPurchasesSeen, hasActiveCustomUnseenView, skipUnseenMessageAnimOnce, isUnseenGoodsVisible
 } = require("unseenPurchasesState.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { lootboxes } = require("%appGlobals/pServer/campaign.nut")
 let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { bgShadedDark, bgHeader, bgMessage } = require("%rGui/style/backgrounds.nut")
@@ -23,7 +24,7 @@ let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo, mkUnitFlag
+let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
@@ -43,12 +44,14 @@ let { mkBattleModEventUnitText } = require("%rGui/rewards/battleModComp.nut")
 let { REWARD_STYLE_MEDIUM, getRewardPlateSize, rewardTicketDefaultSlots } = require("%rGui/rewards/rewardStyles.nut")
 let { ignoreSubIdRTypes, getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkProgressBarText,
-  mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
+  mkRewardPlate, mkRewardUnitFlag
+} = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { mkMsgConvert } = require("unseenPurchaseAddMessage.nut")
 let { showPrizeSelectDelayed, ticketToShow } = require("%rGui/rewards/rewardPrizeSelect.nut")
 let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
+let { mkLoootboxImage } = require("%appGlobals/config/lootboxPresentation.nut")
 
 
 let bgGradient = bgMessage.__merge({size = flex()})
@@ -97,7 +100,8 @@ let aTitleScaleMax = 1.1
 let stackData = Computed(function() {
   let stackRaw = {}
   local convertions = []
-  foreach (purch in activeUnseenPurchasesGroup.value.list){
+  let lboxes = lootboxes.get()
+  foreach (purch in activeUnseenPurchasesGroup.value.list) {
     convertions.extend(purch?.conversions ?? [])
     let conversionList = []
     foreach(c in purch?.conversions ?? [])
@@ -111,6 +115,9 @@ let stackData = Computed(function() {
         conversionList.remove(convIdx)
         continue
       }
+
+      if (!isUnseenGoodsVisible(data, purch.source, lboxes))
+        continue
 
       if (gType not in stackRaw)
         stackRaw[gType] <- {}
@@ -145,8 +152,9 @@ let stackData = Computed(function() {
     battleMod = []
     blueprint = []
     prizeTicket = []
+    lootbox = []
   } = stacksSorted
-  let rewardIcons = [].extend(currency, premium, item, decorator, booster, skin, blueprint, prizeTicket)
+  let rewardIcons = [].extend(lootbox, currency, premium, item, decorator, booster, skin, blueprint, prizeTicket)
   let unitPlates = [].extend(unitUpgrade, unit)
 
   local lastIdx = -1
@@ -501,7 +509,7 @@ function mkBlueprintRewardIcon(rewardInfo, rStyle) {
       mkRewardPlateBg(reward, rStyle)
       mkRewardPlateImage(reward, rStyle)
       mkBlueprintPlateTexts(reward, rStyle)
-      mkUnitFlag(unit.get(), rStyle)
+      mkRewardUnitFlag(unit.get(), rStyle)
     ]
   }
 }
@@ -524,6 +532,16 @@ function mkPrizeTicketIcon(rewardInfo, rStyle) {
       mkRewardPlate(reward, { needShowPreview = false }.__merge(rStyle))
     ]
   }
+}
+
+let mkLootboxIcon = @(startDelay, id) mkCustomCurrencyIcon?[id](id, startDelay) ?? {
+  size = [rewIconSize, rewIconSize]
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = [
+    mkHighlight(startDelay, aRewardIconFlareScale)
+    mkLoootboxImage(id, rewIconSize, 1, mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+  ]
 }
 
 let rewardCtors = {
@@ -560,10 +578,18 @@ let rewardCtors = {
   }
   prizeTicket = {
     mkIcon = @(rewardInfo) mkPrizeTicketIcon(rewardInfo, REWARD_STYLE_MEDIUM)
-    mkText = function(rewardInfo) {
+    function mkText(rewardInfo) {
       let { count } = rewardInfo
       let key = count > 1 ? "events/continueToChooseSome" : "events/continueToChoose"
       return mkRewardLabel(rewardInfo.startDelay, loc(key, { countPrize = count, count }))
+    }
+  }
+  lootbox = {
+    mkIcon = @(rewardInfo) mkLootboxIcon(rewardInfo.startDelay, rewardInfo.id)
+    function mkText(rewardInfo) {
+      let { count } = rewardInfo
+      let key = count == 1 ? "events/continueToOpenOne" : "events/continueToOpenSeveral"
+      return mkRewardLabel(rewardInfo.startDelay, loc(key, { count }))
     }
   }
 }

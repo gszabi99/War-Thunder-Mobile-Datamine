@@ -24,7 +24,6 @@ let { minContentOffset, tabW } = require("%rGui/options/optionsStyle.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let { defer } = require("dagor.workcycle")
@@ -135,15 +134,13 @@ eventbus_subscribe("quests.buyUnlock", function(data) {
   receiveReward(data.item, data.currencyReward)
 })
 
-let buyRewardMsgBox = @(item, rewardsPreview, price, currency, currencyReward) openMsgBoxPurchase(
-  purchaseContent(rewardsPreview, item),
-  { price
-    currencyId = currency},
-  function(){
-    buyUnlock(item.name, 1, currency, price,
+let buyRewardMsgBox = @(item, rewardsPreview, price, currencyId, currencyReward) openMsgBoxPurchase({
+  text = purchaseContent(rewardsPreview, item),
+  price = { price, currencyId },
+  purchase = @() buyUnlock(item.name, 1, currencyId, price,
       { onSuccessCb = { id = "quests.buyUnlock", item, currencyReward }})
-  }
-  mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, item.name))
+  bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, item.name)
+})
 
 function mkBtn(item, currencyReward, rewardsPreview, sProfile) {
   let { name, progressCorrectionStep = 0 } = item
@@ -220,8 +217,8 @@ function mkItem(item, textCtor) {
   let eventCurrencyReward = Computed(@() rewardsPreview.value.findvalue(@(r) r.id == WARBOND || r.id == NYBOND || r.id == APRILBOND))
 
   let headerPadding = Computed(@() item.hasReward ? unseenMarkMargin * 2
-  : isUnseen.value ? newMarkSize[0]
-  : 0)
+    : isUnseen.value ? newMarkSize[0]
+    : 0)
 
   return {
     rendObj = ROBJ_SOLID
@@ -260,9 +257,9 @@ function mkItem(item, textCtor) {
             ] : [
               {
                 rendObj = ROBJ_TEXT
-                size = [hdpx(800), hdpx(90)]
+                size = [flex(), hdpx(90)]
                 flow = FLOW_HORIZONTAL
-                halign = ALIGN_CENTER
+                halign = ALIGN_LEFT
                 valign = ALIGN_CENTER
                 text = loc("quests/requiredCompletePreviousQuest")
               }.__update(fontSmall)
@@ -303,11 +300,14 @@ function mkItem(item, textCtor) {
   }
 }
 
-let sectionPart = 0.9
+let sectionPart = 0.97
 let gapPart = 1 - sectionPart
 
+let getSectionTableUnlock = @(sectionUnlocks) sectionUnlocks.findvalue(@(u) (u?.requirement ?? "") == "")
+  ?? sectionUnlocks.findvalue(@(_) true)
+
 function isSectionActive(sectionId, questsBySectionV, unlockTablesV) {
-  let u = questsBySectionV?[sectionId].findvalue(@(_) true)
+  let u = getSectionTableUnlock(questsBySectionV?[sectionId] ?? [])
   return u?.type == "INDEPENDENT" || (unlockTablesV?[u?.table] ?? false)
 }
 
@@ -352,25 +352,21 @@ function mkSectionTabs(sections, curSectionId, onSectionChange) {
   }
 }
 
-let questTimerUntilStart = @(curSectionId, firstDayTable, curTable) function() {
-  let firstDayStartedAt = userstatStats.value?.stats[firstDayTable]["$startedAt"]
-  let curSectionDay = inactiveEventUnlocks.value
-    .findvalue(@(u) u.table == curTable)?.meta.event_day
-    .tointeger()
+function questTimerUntilStart(curSectionId) {
+  let sectionTable = Computed(@() getSectionTableUnlock(questsBySection.get()?[curSectionId.get()] ?? [])?.table)
+  let startedAt = Computed(@() userstatStats.get()?.inactiveTables[sectionTable.get()]["$startsAt"] ?? 0)
+  let timeText = Computed(function() {
+    let timeLeft = startedAt.get() - serverTime.get()
+    return timeLeft > 0 ? secondsToHoursLoc(timeLeft) : ""
+  })
 
-  local relativeStartTime = null
-  if (curSectionDay != null && firstDayStartedAt != null) {
-    local firstDayStartTime = firstDayStartedAt - serverTime.value
-    relativeStartTime = firstDayStartTime + (curSectionDay - 1) * TIME_DAY_IN_SECONDS
-  }
-
-  return {
-    watch = [serverTime, curSectionId, userstatStats, inactiveEventUnlocks]
+  return @() {
+    watch = timeText
     size = flex()
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = relativeStartTime <= 0 ? null
-      : mkTimeUntil(secondsToHoursLoc(relativeStartTime), "quests/untilTheStart", fontMedium)
+    children = timeText.get() == "" ? null
+      : mkTimeUntil(timeText.get(), "quests/untilTheStart", fontMedium)
   }
 }
 
@@ -399,6 +395,17 @@ function createTablePosQuestsChain(eventsData, eventCategories) {
   return eventTable
 }
 
+let headerLine = @(headerChildCtor, child) {
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_HORIZONTAL
+  gap = isWidescreen ? hdpx(20) : hdpx(5)
+  valign = ALIGN_CENTER
+  children = [
+    headerChildCtor
+    child
+  ]
+}
+
 function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
   let selSectionId = mkWatched(persist, $"selSectionId_{tabId}", null)
   let curSectionId = Computed(function() {
@@ -417,8 +424,6 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
   })
 
   let quests = Computed(@() questsBySection.value?[curSectionId.value ?? sections.value?[0]])
-  let firstDayTable = Computed(@() questsBySection.value?[sections.value?[0]].findvalue(@(_) true).table)
-
   let tableQuestsChainPos = Computed(@() createTablePosQuestsChain(questsBySection.get(), questsCfg.get()))
 
   let isCurSectionActive = Computed(@()
@@ -449,20 +454,30 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
   let scrollHandler = ScrollHandler()
   curSectionId.subscribe(@(_) scrollHandler.scrollToY(0))
 
-  let progressBlock = @() !progressUnlock.get() && headerChildCtor == null ? { watch = progressUnlock }
-    : {
-        watch = [progressUnlock, curSectionId]
-        size = [flex(), progressBarRewardSize]
-        flow = FLOW_HORIZONTAL
-        gap = isWidescreen ? hdpx(20) : hdpx(5)
-        valign = ALIGN_CENTER
-        children = [
-          headerChildCtor?()
-          progressUnlock.get() == null ? null
-            : mkProgressBar(progressUnlock.get().__merge({ tabId, sectionId = curSectionId.get() }))
-        ]
-      }
+  function header() {
 
+    let progressBlock = !progressUnlock.get() ? null
+      : headerLine(headerChildCtor,
+        mkProgressBar(progressUnlock.get().__merge({ tabId, sectionId = curSectionId.get() })))
+
+    let sectionsComp = sections.value.findindex(@(s) questsBySection.value[s].len() > 0) == null
+        ? allQuestsCompleted
+      : sections.value.len() > 1
+        ? mkSectionTabs(sections.value, curSectionId, onSectionChange)
+      : null
+
+    let sectionsBlock = !progressBlock
+      ? headerLine(headerChildCtor, sectionsComp)
+      : sectionsComp
+
+    return {
+      watch = [isProgressBySection, sections, curSectionId, questsBySection, progressUnlock]
+      size = [flex(), SIZE_TO_CONTENT]
+      gap = pageBlocksGap
+      flow = FLOW_VERTICAL
+      children = isProgressBySection.get() ? [sectionsBlock, progressBlock] : [progressBlock, sectionsBlock]
+    }
+  }
   return @() {
     watch = tabCurrencies
     key = sections
@@ -477,22 +492,15 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
     }
     children = [
       @() {
-        watch = [sections, questsBySection, isProgressBySection, isCurSectionActive, firstDayTable, quests, tableQuestsChainPos]
+        watch = [ isCurSectionActive, quests, tableQuestsChainPos]
         size = flex()
         flow = FLOW_VERTICAL
         gap = pageBlocksGap
         children = [
-          isProgressBySection.get() ? null : progressBlock
-
-          sections.value.findindex(@(s) questsBySection.value[s].len() > 0) == null ? allQuestsCompleted : null
-
-          sections.value.len() <= 1 ? null
-            : mkSectionTabs(sections.value, curSectionId, onSectionChange)
-
-          isProgressBySection.get() ? progressBlock : null
+          header
 
           !isCurSectionActive.get()
-              ? questTimerUntilStart(curSectionId, firstDayTable.get(), quests.get().findvalue(@(_) true)?.table)
+              ? questTimerUntilStart(curSectionId)
             : @() {
                 watch = [isCurSectionActive, blocksOnTop]
                 size = flex()

@@ -6,7 +6,8 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { SGT_UNIT, SGT_BLUEPRINTS, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
 let { curCategoryId, goodsByCategory, sortGoods, openShopWnd, goodsLinks } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory, onSchRewardReceive } = require("schRewardsState.nut")
-let { personalGoodsByShopCategory, purchasePersonalGoods } = require("personalGoodsState.nut")
+let { personalGoodsByShopCategory } = require("personalGoodsState.nut")
+let { purchasePersonalGoods } = require("personalGoodsPurchase.nut")
 let { purchasesCount, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { shopPurchaseInProgress, schRewardInProgress, personalGoodsInProgress
 } = require("%appGlobals/pServer/pServerApi.nut")
@@ -15,7 +16,7 @@ let { purchaseGoods } = require("purchaseGoods.nut")
 let { buyPlatformGoods, platformPurchaseInProgress, isGoodsOnlyInternalPurchase
 } = require("platformGoods.nut")
 let { mkGoods } = require("goodsView/goods.nut")
-let { goodsGap, goodsGlareAnimDuration, mkLimitText, bottomPad, pricePlateH, mkGoodsTimeProgress
+let { goodsGap, goodsGlareAnimDuration, mkLimitText, bottomPad, mkGoodsTimeProgress
 } = require("goodsView/sharedParts.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
@@ -183,9 +184,12 @@ let mkShopGamercard = @(onClose) function(){
   let currencies = {}
   let items = {}
   local premiumDays = 0
-  foreach (goods in personalGoodsByShopCategory.get()?[curCategoryId.get()] ?? [])
-    if(goods.price.currencyId != "")
+  foreach (goods in personalGoodsByShopCategory.get()?[curCategoryId.get()] ?? []) {
+    if (goods.price.currencyId != "")
       currencies[goods.price.currencyId] <- true
+    if (goods.varId in orderByCurrency)
+      currencies[goods.varId] <- true
+  }
   foreach (goods in goodsByCategory.get()?[curCategoryId.get()] ?? []) {
     if(goods.price.currencyId != "")
       currencies[goods.price.currencyId] <- true
@@ -206,8 +210,8 @@ let mkShopGamercard = @(onClose) function(){
       {size = flex()}
       premiumDays > 0 ? premIconWithTimeOnChange : null
       gamercardShopItemsBalanceBtns(orderItems)
-      mkCurrenciesBtns(currencies.keys().sort(@(a, b) orderByCurrency[a] <=> orderByCurrency[b]),
-        { size = SIZE_TO_CONTENT })
+      mkCurrenciesBtns(currencies.keys().sort(@(a, b) orderByCurrency[a] <=> orderByCurrency[b]))
+        .__update({ size = SIZE_TO_CONTENT })
     ]
   }
 }
@@ -245,32 +249,28 @@ function mkPersonalGoodsCard(pGoods, animParams) {
       meta = {}
     })
 
-  local child = null
+  local addChildren = []
   if (isPurchased) {
     let sec = Computed(@() max(0, endTime - serverTime.get()))
-    child = mkGoodsTimeProgress(
+    addChildren.append(mkGoodsTimeProgress(
       Computed(@() clamp(1.0 - sec.get().tofloat() / lifeTime, 0, 1)),
       Computed(@() secondsToHoursLoc(sec.get()))
-    ).__update({ margin = [0, 0, pricePlateH, 0] })
+    ))
   }
   else
-    child = {
-      margin = [bottomPad[0] + pricePlateH, bottomPad[1]]
+    addChildren.append({
+      margin = bottomPad
       hplace = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM
       children = mkLimitText(1, 1)
-    }
+    })
 
-  return {
-    children = [
-      mkGoods(
-        goods,
-        @() purchasePersonalGoods(pGoods, goods),
-        Computed(@() pGoods.id == personalGoodsInProgress.get() || personalGoodsInProgress.get() == "" ? PURCHASING : 0),
-        animParams)
-      child
-    ]
-  }
+  return mkGoods(
+    goods,
+    @() purchasePersonalGoods(pGoods, goods),
+    Computed(@() pGoods.id == personalGoodsInProgress.get() || personalGoodsInProgress.get() == "" ? PURCHASING : 0),
+    animParams,
+    addChildren)
 }
 
 function mkShopCategoryGoods(categoryCfg, distances) {

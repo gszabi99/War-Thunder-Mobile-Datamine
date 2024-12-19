@@ -1,4 +1,6 @@
 from "%globalScripts/logs.nut" import *
+import regexp2
+import utf8
 from "auth_wt" import getCountryCode
 from "language" import getLocalLanguage
 from "%sqstd/string.nut" import utf8ToLower
@@ -16,9 +18,6 @@ from "%sqstd/string.nut" import utf8ToLower
 // checkPhrase("何かがおかしい慰安婦フラップが壊れています")
 // Result: "何かがおかしい******フラップが壊れています"
 //
-
-let regexp2 = require("regexp2")
-let utf8 = require("utf8")
 
 local debugLogFunc = null
 
@@ -39,6 +38,8 @@ let dictAsian = {
 
 local pendingDict = null
 local pendingDictAsian = null
+
+let similarCharsMapsByAlphabet = []
 
 let toRegexpFunc = {
   default = @(str) regexp2(str)
@@ -121,6 +122,13 @@ function init(langSources) {
         }
       }
     }
+  }
+
+  similarCharsMapsByAlphabet.clear()
+  foreach (source in langSources) {
+    let { similarChars = null } = source
+    if (similarChars != null && !similarCharsMapsByAlphabet.contains(similarChars))
+      similarCharsMapsByAlphabet.append(similarChars)
   }
 }
 
@@ -275,7 +283,7 @@ function checkRegexps(word, regexps, accuse) {
 }
 
 // Checks that one word is correct.
-function checkWord(word, isName) {
+function checkWordInternal(word, isName) {
   word = prepareWord(word)
 
   local status = true
@@ -304,6 +312,27 @@ function checkWord(word, isName) {
         status = checkRegexps(word, section.arr, false)
 
   return status
+}
+
+function checkWord(word, isName) {
+  let isPassed = checkWordInternal(word, isName)
+  if (!isPassed || !isName)
+    return isPassed
+
+  let checkedNames = [ word ]
+  let nameU = utf8(word)
+  let nameChars = []
+  for (local idx = 0; idx < nameU.charCount(); idx++)
+    nameChars.append(nameU.slice(idx, idx + 1))
+  foreach (alphabet in similarCharsMapsByAlphabet) {
+    let tryName = "".join(nameChars.map(@(ch) alphabet?[ch] ?? ch))
+    if (checkedNames.contains(tryName))
+      continue
+    if (!checkWordInternal(tryName, isName))
+      return false
+    checkedNames.append(tryName)
+  }
+  return true
 }
 
 function getUnicodeCharsArray(str) {

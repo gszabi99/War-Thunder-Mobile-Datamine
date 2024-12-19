@@ -58,7 +58,7 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
   }).__update(ovr)
 }
 
-function mkGoodsSlots(goods, _, state, animParams) {
+function mkGoodsSlots(goods, _, state, animParams, addChildren) {
   let bg = mkBgImg("ui/gameuiskin/shop_bg_blue.avif")
   let bgParticles = mkBgParticles(bgSize)
   let onClick = @() openGoodsPreview(goods.id)
@@ -85,7 +85,7 @@ function mkGoodsSlots(goods, _, state, animParams) {
       }.__update(fontSmall))
       mkSquareIconBtn(fontIconPreview, onClick, { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
       canPurchase ? mkGoodsLimitAndEndTime(goods) : null
-    ].extend(mkGoodsCommonParts(goods, state)),
+    ].extend(mkGoodsCommonParts(goods, state), addChildren),
     mkPricePlate(goods, state, animParams)
     { size = [goodsSmallSize[0], goodsH], onClick })
 }

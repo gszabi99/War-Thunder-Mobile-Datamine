@@ -1959,46 +1959,6 @@
       }
     },
     {
-      "id": "heroic_water",
-      "type": "streak",
-      "amount_exp": 0,
-      "amount_warpoints": 1250,
-      "isAfterFlight": true,
-      "userstat_stat_id": "top_navy_assaulter_hero",
-      "mode": {
-        "type": "killedGroundBest",
-        "mulArcade": 1,
-        "mulRealistic": 2,
-        "mulHardcore": 3,
-        "minVal": 18,
-        "bestId": "heroic_water",
-        "includeBots": true,
-        "isShip": true,
-        "condition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "offenderType",
-            "unitType": "aircraft"
-          },
-          {
-            "type": "targetIsPlayer",
-            "includePlayers": false,
-            "includeAI": true
-          },
-          {
-            "type": "missionType",
-            "missionType": [
-              0,
-              1,
-              2
-            ]
-          }
-        ]
-      }
-    },
-    {
       "id": "trophy_near_bomber",
       "type": "streak",
       "amount_exp": 0,
@@ -2014,46 +1974,6 @@
         "bestId": "trophy_near_bomber",
         "includeBots": true,
         "isShip": false,
-        "condition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "offenderType",
-            "unitType": "aircraft"
-          },
-          {
-            "type": "targetIsPlayer",
-            "includePlayers": false,
-            "includeAI": true
-          },
-          {
-            "type": "missionType",
-            "missionType": [
-              0,
-              1,
-              2
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "id": "trophy_near_water",
-      "type": "streak",
-      "amount_exp": 0,
-      "amount_warpoints": 500,
-      "isAfterFlight": true,
-      "userstat_stat_id": "navy_assaulter_hero",
-      "mode": {
-        "type": "killedGroundBest",
-        "mulArcade": 1,
-        "mulRealistic": 2,
-        "mulHardcore": 3,
-        "maxVal": 17,
-        "bestId": "trophy_near_water",
-        "includeBots": true,
-        "isShip": true,
         "condition": [
           {
             "type": "online"

@@ -47,6 +47,8 @@ let editNameWndMinWidth = hdpx(250)
 let editNameBtnHeight = hdpx(70)
 let editNameInputHeight = hdpx(70)
 
+let presetBlockScrollHandler = ScrollHandler()
+
 let activePresetIdx = Watched(-1)
 let currentPresetName = Watched("")
 let isOpenedEditWnd = Watched(false)
@@ -72,7 +74,8 @@ let { savedWeaponPresets, setSavedWeaponPresets } = mkSavedWeaponPresets(unitNam
 
 let presets = Computed(function() {
   let savedPresets = savedWeaponPresets.get()
-  let currentIdx = savedPresets.findindex(@(p) isEqual(p.weaponPreset, weaponPreset.get()) && isEqual(p.beltPreset, chosenBelts.get())) ?? -1
+  let currentIdx = savedPresets.findindex(@(p) isEqual(p.weaponPreset, weaponPreset.get())
+    && (isEqual(p.beltPreset.filter(@(belt) belt != ""), chosenBelts.get().filter(@(belt) belt != "")))) ?? -1
   if (currentIdx == -1)
     return [{
       name = ""
@@ -433,8 +436,9 @@ let presetsBlocks = {
     watch = presets
     flow = FLOW_VERTICAL
     gap = contentGap
+    onAttach = @() presetBlockScrollHandler.scrollToY((presetBlockHeight + contentGap) * activePresetIdx.get())
     children = presets.get().map(@(v, idx) presetBlock(v, idx))
-  }, {scrollAlign = ALIGN_LEFT})
+  }, { scrollAlign = ALIGN_LEFT, scrollHandler = presetBlockScrollHandler })
 }
 
 let unitWeaponPresetWeaponry = {

@@ -1,14 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
-let { roundToDigits } = require("%sqstd/math.nut")
+let { roundToDigits, ceil } = require("%sqstd/math.nut")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { getLootboxImage, getLootboxName, lootboxFallbackPicture } = require("%appGlobals/config/lootboxPresentation.nut")
-let { getAllLootboxRewardsViewInfo, getLootboxRewardsViewInfo, fillRewardsCounts, NO_DROP_LIMIT
+let { getAllLootboxRewardsViewInfo, getLootboxRewardsViewInfo, fillRewardsCounts, NO_DROP_LIMIT,
+  getLootboxOpenRewardViewInfo
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon, mkReceivedCounter,
-  mkRewardLocked, mkRewardSearchPlate, mkRewardDisabledBkg
+  mkRewardLocked, mkRewardSearchPlate, mkRewardDisabledBkg, mkRewardUnitFlag
 } = require("%rGui/rewards/rewardPlateComp.nut")
-let { REWARD_STYLE_TINY_SMALL_GAP, REWARD_STYLE_MEDIUM, progressBarHeight
+let { REWARD_STYLE_TINY_SMALL_GAP, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, progressBarHeight
 } = require("%rGui/rewards/rewardStyles.nut")
 let { mkLootboxChancesComp, mkIsLootboxChancesInProgress } = require("%rGui/rewards/lootboxRewardChances.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -22,40 +24,54 @@ let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { mkFreeAdsGoodsTimeProgress } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { schRewards } = require("%rGui/shop/schRewardsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { myUnits } = require("%appGlobals/pServer/profile.nut")
 let { mkButtonHoldTooltip  } = require("%rGui/tooltip.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { getStepsToNextFixed } = require("lootboxPreviewState.nut")
+let { getStepsToNextFixed, openLootboxPreview } = require("lootboxPreviewState.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let currencyStyles = require("%rGui/components/currencyStyles.nut")
 let { CS_COMMON } = currencyStyles
-let { mkUnitFlag } = require("%rGui/unit/components/unitPlateComp.nut")
+let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
+let { mkFontGradient } = require("%rGui/style/gradients.nut")
+
+
+let titleFontGrad = mkFontGradient(0xFFFBF1B9, 0xFFCE733B, 11, 6, 2)
 
 let lootboxImageSize = hdpxi(400)
 let blueprintSize = hdpxi(30)
+
+let jpBarHeight = hdpx(10)
+let jpBorderWidth = hdpx(1)
+let jpBgColor = 0x80000000
+let jpBarColor = premiumTextColor
+let smallChestIconSize = hdpxi(40)
 
 let spinner = mkSpinner(hdpx(100))
 
 let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
 let columnsCount = (saSize[0] + saBorders[0] + boxGap) / (boxSize + boxGap) //allow items a bit go out of safearea to fit more items
 let itemsBlockWidth = isWidescreen ? saSize[0] : columnsCount * (boxSize + boxGap)
-
-let maxRewardsInLootboxBig = 24
+let headerTextHeight = calc_str_box("A", fontSmallShaded)[1]
+let maxNoScrollHeight = saSize[1] - hdpx(110) //sa - <common header height>
 
 let chanceStyle = CS_COMMON
+
+let getSlotsInRow = @(width, style) 2 * max(1, (width + style.boxGap).tointeger() / (style.boxSize + style.boxGap) / 2)
 
 let mkUnitPlateClick = @(r) @() unitDetailsWnd({ name = r.id, isUpgraded = r.rType == G_UNIT_UPGRADE })
 let mkPlateClickByType = {
   [G_BLUEPRINT] = mkUnitPlateClick,
   [G_UNIT] = mkUnitPlateClick,
   [G_UNIT_UPGRADE] = mkUnitPlateClick,
+  [G_LOOTBOX] = @(r) @() openLootboxPreview(r.id),
 }
 
 let mkText = @(text, ovr = {}) { rendObj = ROBJ_TEXT, text }.__update(fontSmallShaded, ovr)
 let mkTextArea = @(text, maxWidth)
   { rendObj = ROBJ_TEXTAREA, text, behavior = Behaviors.TextArea, maxWidth }.__update(fontTinyShaded)
 
-function lootboxImageWithTimer(lootbox) {
+function lootboxImageWithTimer(lootbox, lootboxAmount = null) {
   let { name, timeRange = null, reqPlayerLevel = 0 } = lootbox
   let { start = 0, end = 0 } = timeRange
 
@@ -82,6 +98,14 @@ function lootboxImageWithTimer(lootbox) {
     brightness = isAvailable.get() ? 1.0 : 0.5
     picSaturate = isAvailable.get() ? 1.0 : 0.2
     children = [
+      lootboxAmount == null ? null
+        : mkGradGlowText(loc("ui/count", { count = lootboxAmount }), fontWtExtraLarge, titleFontGrad)
+            .__update({
+              halign = ALIGN_RIGHT
+              valign = ALIGN_BOTTOM
+              vplace = ALIGN_BOTTOM
+              hplace = ALIGN_RIGHT
+            })
       @() {
         watch = [needAdtimeProgress, adReward, lootboxInProgress]
         hplace = ALIGN_CENTER
@@ -217,7 +241,7 @@ function mkChanceContent(reward, rewardStatus, stepsCount) { //-return-different
   }
 }
 
-function mkOvrSearchPlate(reward, ovr = {}) {
+function mkPreviewIconImpl(reward, rStyle, ovr = {}) {
   let onClick = mkPlateClickByType?[reward.rType](reward)
   let ovr2 = onClick == null ? {}
     : {
@@ -233,32 +257,36 @@ function mkOvrSearchPlate(reward, ovr = {}) {
       vplace = ALIGN_BOTTOM
       hplace = ALIGN_LEFT
       padding = hdpx(5)
-      children = mkRewardSearchPlate
+      children = mkRewardSearchPlate(rStyle)
     }.__update(ovr2, ovr)
   }
 }
 
-function mkBlueprintPlate(reward, rStyle) {
-  let { isJackpot = false } = reward
+function mkRewardFlag(reward, rStyle) {
   let unit = Computed(@() serverConfigs.value?.allUnits?[reward.id])
   return @() {
     watch = unit
-    size = flex()
-    children = [
-      mkOvrSearchPlate(reward, { pos = [0, -progressBarHeight] })
-      !isJackpot ? mkUnitFlag(unit.get(), rStyle) : null
-    ]
+    children = mkRewardUnitFlag(unit.get(), rStyle)
   }
 }
 
-let ovrRewardPlateCtors = {
-  [G_BLUEPRINT] = mkBlueprintPlate,
-  [G_UNIT_UPGRADE] = @(reward, _) mkOvrSearchPlate(reward),
-  [G_UNIT] = @(reward, _) mkOvrSearchPlate(reward)
+let topLeftIconCtor = {
+  [G_BLUEPRINT] = mkRewardFlag,
+  [G_UNIT_UPGRADE] = mkRewardFlag,
+  [G_UNIT] = mkRewardFlag,
 }
 
+let previewIconOvr = {
+  [G_BLUEPRINT] = @(_) { pos = [0, -progressBarHeight] },
+  [G_LOOTBOX] = @(rStyle) { pos = [0, -rStyle.labelHeight] },
+}
+
+let mkPreviewIcon = @(reward, rStyle) mkPreviewIconImpl(reward, rStyle, previewIconOvr?[reward.rType](rStyle) ?? {})
+
 function mkReward(reward, lootbox, rStyle) {
-  let { rType, id, dropLimit, dropLimitRaw, received = 0, isJackpot = false } = reward
+  let { rType, id, dropLimit = NO_DROP_LIMIT, dropLimitRaw = NO_DROP_LIMIT, received = 0,
+    isJackpot = false, isOpenReward = false
+  } = reward
   let stateFlags = Watched(0)
   let key = {}
   local ovr = {}
@@ -274,13 +302,16 @@ function mkReward(reward, lootbox, rStyle) {
   local ovrRewardPlate = null
   local stepsToFixed = []
 
-  if (rType in ovrRewardPlateCtors)
-    ovrRewardPlate = ovrRewardPlateCtors[rType](reward, rStyle)
   if (isJackpot)
     stepsToFixed = getStepsToNextFixed(lootbox, serverConfigs.get(), servProfile.get())
 
   let stepsCount = stepsToFixed.len() ? stepsToFixed[1] - stepsToFixed[0] : 0
   let needDisabledBkg = isJackpot && stepsCount < 0 && !isAllReceived
+
+  let topLeftIcon = !isAvailable.get() ? mkRewardLocked(rStyle)
+    : !isAllReceived && (reward?.isFixed ?? isJackpot) ? mkRewardFixedIcon(rStyle)
+    : !isAllReceived && dropLimitRaw != NO_DROP_LIMIT ? mkReceivedCounter(received, dropLimit)
+    : topLeftIconCtor?[rType](reward, rStyle)
 
   return @() {
     watch = [isAvailable, stateFlags]
@@ -289,32 +320,31 @@ function mkReward(reward, lootbox, rStyle) {
     children = [
       mkRewardPlate(reward, rStyle)
       ovrRewardPlate
-      !isAvailable.get() ? mkRewardLocked(rStyle)
-        : isAllReceived ? mkRewardReceivedMark(rStyle)
-        : (reward?.isFixed ?? isJackpot) ? mkRewardFixedIcon(rStyle)
-        : dropLimitRaw != NO_DROP_LIMIT ? mkReceivedCounter(received, dropLimit)
-        : null
+      onClick == null ? null : mkPreviewIcon(reward, rStyle)
+      topLeftIcon
+      isAllReceived ? mkRewardReceivedMark(rStyle) : null
       needDisabledBkg ? mkRewardDisabledBkg : null
     ]
   }.__update(ovr,
     mkButtonHoldTooltip(onClick, stateFlags, key,
       @() {
-        content = mkChanceContent(reward,
-          {
-            isAvailable,
-            isAllReceived,
-            isJackpot
-          },
-          stepsCount)
+        content = isOpenReward ? loc("lootbox/eachOpenReward")
+          : mkChanceContent(reward,
+              {
+                isAvailable,
+                isAllReceived,
+                isJackpot
+              },
+              stepsCount)
       },
       0.01))
 }
 
-let itemsBlock = @(rewards, width, style, ovr = {}, lootbox = null) function() {
-  let slotsInRow = 2 * max(1, (width + style.boxGap).tointeger() / (style.boxSize + style.boxGap) / 2)
+function itemsBlock(rewards, width, style, ovr = {}, lootbox = null) {
+  let slotsInRow = getSlotsInRow(width, style)
   let rows = []
   local slotsLeft = 0
-  foreach(r in rewards.get()) {
+  foreach(r in rewards) {
     if (r.slots > slotsLeft) {
       rows.append([])
       slotsLeft = slotsInRow
@@ -323,7 +353,6 @@ let itemsBlock = @(rewards, width, style, ovr = {}, lootbox = null) function() {
     rows.top().append(mkReward(r, lootbox, style))
   }
   return {
-    watch = rewards
     size = [width, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     gap = style.boxGap
@@ -335,13 +364,36 @@ let itemsBlock = @(rewards, width, style, ovr = {}, lootbox = null) function() {
   }.__update(ovr)
 }
 
+let blockWithHeaderArray = @(text, rewards, width, style, lootbox = null) rewards.len() == 0 ? []
+ : [
+     mkText(text)
+     itemsBlock(rewards, width, style, {}, lootbox)
+   ]
+
+function calcBlockHeightWithGap(rewards, slotsInRow, style) {
+  if (rewards.len() == 0)
+    return 0
+  let rows = ceil(rewards.reduce(@(res, r) res + r.slots, 0).tofloat() / slotsInRow).tointeger()
+  return headerTextHeight + style.boxGap + rows * (style.boxSize + style.boxGap)
+}
+
+let mkStyleComp = @(width, r1, r2, r3) Computed(function() {
+  foreach(style in [REWARD_STYLE_MEDIUM, REWARD_STYLE_SMALL]) {
+    let slotsInRow = getSlotsInRow(width, style)
+    let height = calcBlockHeightWithGap(r1.get(), slotsInRow, style)
+      + calcBlockHeightWithGap(r2.get(), slotsInRow, style)
+      + calcBlockHeightWithGap(r3.get(), slotsInRow, style)
+    if (height <= maxNoScrollHeight)
+      return style
+  }
+  return REWARD_STYLE_TINY_SMALL_GAP
+})
+
 let function lootboxContentBlock(lootbox, width, ovr = {}) {
   let allRewards = Computed(@() fillRewardsCounts(getAllLootboxRewardsViewInfo(lootbox), servProfile.get(), serverConfigs.get()))
-  local style = REWARD_STYLE_MEDIUM
-  if(allRewards.get().len() >= maxRewardsInLootboxBig)
-    style = REWARD_STYLE_TINY_SMALL_GAP
-
   let jackpotCount = Computed(@() allRewards.get().findindex(@(r) !(r?.isFixed || r?.isJackpot)))
+  let jackpotRewards = Computed(@() allRewards.get().slice(0, jackpotCount.get()))
+  let commonRewards = Computed(@() jackpotCount.get() == 0 ? allRewards.get() : allRewards.get().slice(jackpotCount.get()))
   let lootBoxWithSameJackpot = Computed(function() {
     if (lootbox.fixedRewards.len() == 0)
       return null
@@ -349,54 +401,124 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
     return curEventLootboxes.get().findvalue(@(lb) lb.name != lootbox.name && lb.fixedRewards.len() > 0
       && null != lb.fixedRewards.findvalue(@(fr) rewards.contains(fr)))
   })
+  let openRewards = Computed(@() getLootboxOpenRewardViewInfo(lootbox, serverConfigs.get())
+    .map(@(v) v.$rawset("isOpenReward", true)))
+
+  let style = mkStyleComp(width, openRewards, jackpotRewards, commonRewards)
   return @() {
     key = {}
-    watch = [jackpotCount, lootBoxWithSameJackpot]
+    watch = [style, jackpotRewards, commonRewards, lootBoxWithSameJackpot, openRewards]
     size = [width, SIZE_TO_CONTENT]
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
-    gap = style.boxGap
-    children = jackpotCount.get() == 0
-      ? [
-          mkText(loc("events/lootboxContains"))
-          itemsBlock(allRewards, width, style)
-        ]
-      : [
-          lootBoxWithSameJackpot.get() == null ? null
-            : mkTextArea(loc("jackpot/sameJackpotHint", {
-                current = getLootboxName(lootbox.name, lootbox?.meta.event)
-                same = getLootboxName(lootBoxWithSameJackpot.get().name, lootBoxWithSameJackpot.get()?.meta.event)
-              }), width)
-          mkText(loc("jackpot/rewardsHeader"))
-          itemsBlock(Computed(@() allRewards.get().slice(0, jackpotCount.get())), width, style, {}, lootbox)
-          mkText(loc("events/lootboxContains"))
-          itemsBlock(Computed(@() allRewards.get().slice(jackpotCount.get())), width, style)
-        ].filter(@(v) v != null)
+    gap = style.get().boxGap
+    children = blockWithHeaderArray(loc("lootbox/eachOpenReward"), openRewards.get(), width, style.get())
+      .append(lootBoxWithSameJackpot.get() == null ? null
+        : mkTextArea(loc("jackpot/sameJackpotHint", {
+            current = getLootboxName(lootbox.name, lootbox?.meta.event)
+            same = getLootboxName(lootBoxWithSameJackpot.get().name, lootBoxWithSameJackpot.get()?.meta.event)
+          }), width))
+      .extend(
+        blockWithHeaderArray(loc("jackpot/rewardsHeader"), jackpotRewards.get(), width, style.get(), lootbox)
+        blockWithHeaderArray(loc("events/lootboxContains"), commonRewards.get(), width, style.get())
+      )
+      .filter(@(v) v != null)
     animations = wndSwitchAnim
   }.__update(ovr)
 }
 
-let lootboxPreviewContent = @(lootbox, ovr = {}) lootbox == null ? { size = flex() }.__update(ovr)
-  : {
-      size = flex()
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      flow = FLOW_VERTICAL
-      children = [
-        mkText(loc("events/lootboxContains"),
-          { hplace = ALIGN_CENTER })
-        lootboxImageWithTimer(lootbox)
-        itemsBlock(
-          Computed(@() fillRewardsCounts(getLootboxRewardsViewInfo(lootbox, true), servProfile.get(), serverConfigs.get())),
-          itemsBlockWidth, REWARD_STYLE_MEDIUM, { halign = ALIGN_CENTER })
-      ]
-    }.__update(ovr)
+function lootboxPreviewContent(lootbox, ovr = {}) {
+  if (lootbox == null)
+    return { size = flex() }.__update(ovr)
+  let rewards = Computed(@() fillRewardsCounts(getLootboxRewardsViewInfo(lootbox, true), servProfile.get(), serverConfigs.get()))
+  return @() {
+    watch = rewards
+    size = flex()
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    flow = FLOW_VERTICAL
+    children = [
+      mkText(loc("events/lootboxContains"),
+        { hplace = ALIGN_CENTER })
+      lootboxImageWithTimer(lootbox)
+      itemsBlock(
+        rewards.get(),
+        itemsBlockWidth, REWARD_STYLE_MEDIUM, { halign = ALIGN_CENTER })
+    ]
+  }.__update(ovr)
+}
 
 let lootboxHeader = @(lootbox) mkText(getLootboxName(lootbox.name, lootbox?.meta.event))
+
+let mkRow = @(children) {
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(8)
+  valign = ALIGN_CENTER
+  children
+}
+
+let smallChestIcon = {
+  size = [smallChestIconSize, smallChestIconSize]
+  rendObj = ROBJ_IMAGE
+  keepAspect = KEEP_ASPECT_FIT
+  image = Picture($"ui/gameuiskin#events_chest_icon.svg:{smallChestIconSize}:{smallChestIconSize}:P")
+}
+
+function mkJackpotProgressBar(stepsFinished, stepsToNext, ovr = {}) {
+  if (stepsToNext - stepsFinished <= 0)
+    return { size = [flex(), jpBarHeight] }
+  let questCompletion = stepsFinished.tofloat() / stepsToNext
+
+  return {
+    rendObj = ROBJ_BOX
+    size = [flex(), jpBarHeight]
+    fillColor = jpBgColor
+    borderWidth = jpBorderWidth
+    borderColor = jpBarColor
+    children = [
+      {
+        rendObj = ROBJ_BOX
+        size = [pw(100 * questCompletion), jpBarHeight]
+        fillColor = jpBarColor
+      }
+    ]
+  }.__update(ovr)
+}
+
+let mkJackpotProgress = @(stepsToFixed) @() {
+  watch = stepsToFixed
+  flow = FLOW_VERTICAL
+  children = stepsToFixed.value[1] - stepsToFixed.value[0] <= 0 ? null : [
+    mkRow([
+      {
+        rendObj = ROBJ_TEXT
+        text = utf8ToUpper(loc("events/jackpot"))
+      }.__update(fontVeryTinyAccented)
+      {
+        rendObj = ROBJ_TEXT
+        text = stepsToFixed.value[1] - stepsToFixed.value[0]
+      }.__update(fontVeryTinyAccented)
+    ])
+    mkJackpotProgressBar(stepsToFixed.value[0], stepsToFixed.value[1], { margin = [hdpx(10), 0] })
+    mkRow([
+      {
+        maxWidth = hdpx(400)
+        rendObj = ROBJ_TEXTAREA
+        behavior = Behaviors.TextArea
+        text = loc("events/guaranteedReward")
+      }.__update(fontVeryTiny)
+      { size = [hdpx(10), 0] }
+      smallChestIcon
+    ])
+  ]
+}
 
 return {
   lootboxPreviewContent
   lootboxImageWithTimer
   lootboxContentBlock
   lootboxHeader
+  mkJackpotProgress
+  mkJackpotProgressBar
+  smallChestIcon
 }

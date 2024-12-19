@@ -3,10 +3,11 @@ let { setHangarUnit } = require("hangarUnit.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { allUnitsCfg, myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { sortUnits } = require("%rGui/unit/unitUtils.nut")
+let { releasedUnits } = require("%rGui/unit/unitState.nut")
 
 
 let availableUnitsList = Computed(@() allUnitsCfg.value
-  .filter(@(u) !u?.isHidden || u.name in myUnits.value)
+  .filter(@(u) (!u?.isHidden && u.name in releasedUnits.get()) || u.name in myUnits.value)
   .map(@(u, id) myUnits.value?[id] ?? u)
   .values()
   .sort(sortUnits))

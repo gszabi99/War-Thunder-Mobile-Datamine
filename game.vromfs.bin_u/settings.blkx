@@ -248,7 +248,9 @@
     "pkg_common": {},
     "pkg_ground": {},
     "pkg_naval": {},
-    "pkg_lvl_hangar_halloween": {},
+    "pkg_lvl_hangar_ny": {
+      "hangarPath": "config/hangar_field_ny.blk"
+    },
     "pkg_tier_1_naval": {},
     "pkg_tier_2_naval": {},
     "pkg_tier_3_naval": {},
@@ -602,6 +604,12 @@
         "mRank": 3
       }
     },
+    "pkg_uk_sub_m1": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -902,12 +910,6 @@
         "mRank": 2
       }
     },
-    "pkg_germ_leopard_2av": {
-      "conditions": {
-        "campaign": "tanks",
-        "mRank": 9
-      }
-    },
     "pkg_ussr_t_72b_1989": {
       "conditions": {
         "campaign": "tanks",
@@ -924,6 +926,18 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 5
+      }
+    },
+    "pkg_germ_leopard_2av": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_ussr_kv_1s": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 2
       }
     },
     "pkg_environment_uhq": {
@@ -1087,6 +1101,7 @@
     "sky_panorama_async_pipelines": true,
     "forceImpostorsOutsideShadows": false,
     "frameBoundaryBufferInitialSize": 4096,
+    "anchorStaticShadowsToUnitInHangar": true,
     "raytraced_shadows": {
       "maxBlasBuildsPerFrame": 30,
       "additionalElementsCheck": false
@@ -3030,6 +3045,9 @@
       "compress_panorama": false,
       "allowETC2": false,
       "allowClipmapDXT": false
+    },
+    "texStreaming": {
+      "minMemQuotaKB": 1000000
     }
   },
   "iOS": {
@@ -3038,6 +3056,9 @@
       "allowETC2": true,
       "asyncPSO": true,
       "asyncLoadPSOCache": true
+    },
+    "texStreaming": {
+      "minMemQuotaKB": 1000000
     },
     "debug": {
       "showFreeMemThresholdMb": 0

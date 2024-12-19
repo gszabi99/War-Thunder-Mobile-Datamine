@@ -4,7 +4,8 @@ let { log10, round, ceil } = require("math")
 let { register_command } = require("console")
 let Rand = require("%sqstd/rand.nut")
 let { lootboxes, canOpenWithWindow, wasErrorSoon } = require("autoOpenLootboxes.nut")
-let { sortRewardsViewInfo, getRewardsViewInfo, isRewardEmpty, isViewInfoRewardEmpty, receivedGoodsToViewInfo
+let { sortRewardsViewInfo, getRewardsViewInfo, isRewardEmpty, isViewInfoRewardEmpty, receivedGoodsToViewInfo,
+  getLootboxOpenRewardViewInfo
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -70,7 +71,6 @@ function getOpenResultViewInfos(result) {
     if (goods.len() == 0)
       continue
     let viewInfo = goods.map(receivedGoodsToViewInfo)
-    viewInfo.sort(sortRewardsViewInfo)
     res.append({ viewInfo, openCount = unseen?.paramInt ?? 0 })
   }
   res.sort(@(a, b) a.openCount <=> b.openCount)
@@ -130,6 +130,12 @@ let nextFixedReward = Computed(function() {
 
 let isCurRewardFixed = Computed(@() nextFixedReward.value != null
   && nextFixedReward.value?.total == nextFixedReward.value?.current)
+
+let rouletteOpenRewards = Computed(function() {
+  let rewards = getLootboxOpenRewardViewInfo(serverConfigs.get()?.lootboxesCfg[rouletteOpenId.value],
+    serverConfigs.get(), openConfig.get()?.openCountAtOnce ?? 1)
+  return rewards.sort(sortRewardsViewInfo)
+})
 
 function calcJackpotOpens(id, openCount, profile, configs) {
   let { fixedRewards = {} } = configs?.lootboxesCfg[id]
@@ -260,7 +266,8 @@ let openDelayed = @() deferOnce(function() {
     rewardsList
     lastReward
     jackpots
-    finalOpenCount = (servProfile.value?.lootboxStats[id].opened ?? 0) + nextOpenCount.value
+    openCountAtOnce = nextOpenCount.get()
+    finalOpenCount = (servProfile.value?.lootboxStats[id].opened ?? 0) + nextOpenCount.get()
   })
 })
 if (needOpen.value)
@@ -376,6 +383,7 @@ return {
   rouletteLastReward
   rouletteOpenResult
   rouletteOpenIdx
+  rouletteOpenRewards
   nextOpenId
   nextOpenCount
   nextFixedReward

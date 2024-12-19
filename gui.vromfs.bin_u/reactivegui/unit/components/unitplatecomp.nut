@@ -688,7 +688,6 @@ return {
   plateTextsSmallPad
 
   mkUnitBg
-  mkUnitFlag
   mkUnitSelectedGlow
   mkUnitImage
   mkUnitTexts

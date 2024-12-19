@@ -10,7 +10,7 @@ let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { get_battle_data_jwt, get_battle_data_slots_jwt, registerHandler, callHandler,
-  lastProfileKeysUpdated, get_battle_data_for_overrided_mission, get_battle_data_for_overrided_preset
+  lastProfileKeysUpdated, get_battle_data_for_overrided_preset
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { decodeJwtAndHandleErrors, saveJwtResultToJson } = require("%appGlobals/pServer/pServerJwt.nut")
 let { register_command } = require("console")
@@ -189,11 +189,8 @@ function actualizeBattleDataOvrMission(preset, unitList, executeAfterExt = null)
   }
   needRefreshOvrMission.set(true)
   bdOvrMissionParams.set({ preset, unitList })
-  if (preset == "")
-    get_battle_data_for_overrided_mission({ id = "onGetMenuBattleDataOvrMission", executeAfterExt, preset, unitList })
-  else
-    get_battle_data_for_overrided_preset(preset, unitList,
-      { id = "onGetMenuBattleDataOvrMission", executeAfterExt, preset, unitList })
+  get_battle_data_for_overrided_preset(preset, unitList,
+    { id = "onGetMenuBattleDataOvrMission", executeAfterExt, preset, unitList })
 }
 
 registerHandler("onGetMenuBattleDataOvrMission", function(res, context) {

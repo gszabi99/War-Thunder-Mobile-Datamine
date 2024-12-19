@@ -1,15 +1,16 @@
 from "%scripts/dagui_library.nut" import *
-
 let { eventbus_subscribe } = require("eventbus")
 let { get_game_mode } = require("mission")
 let { GO_WIN, GO_EARLY, get_game_over_reason } = require("guiMission")
+let { get_current_mission_info_cached } = require("blkGetters")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isInBattle, battleSessionId, battleUnitName } = require("%appGlobals/clientState/clientState.nut")
 let { lastClientBattleData, wasBattleDataApplied } = require("%scripts/battleData/battleData.nut")
 let { offlineKills } = require("offlineMissionStats.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
-let { get_current_mission_info_cached } = require("blkGetters")
+let mkCommonExtras = require("mkCommonExtras.nut")
+
 
 let singleMissionResult = mkWatched(persist, "singleMissionResult", null)
 let lastRewardData = persist("lastRewardData", @() { val = null })
@@ -79,7 +80,8 @@ function getSingleMissionResult(rewardData) {
 eventbus_subscribe("lastSingleMissionRewardData", @(msg) lastRewardData.val = msg)
 
 isInBattle.subscribe(function(val) {
-  singleMissionResult(val ? null : getSingleMissionResult(lastRewardData.val))
+  let sResult = val ? null : getSingleMissionResult(lastRewardData.val)
+  singleMissionResult.set(sResult == null ? null : mkCommonExtras(sResult, serverConfigs.get()).__merge(sResult))
   if (!val)
     lastRewardData.val = null
 })

@@ -8,6 +8,7 @@ let { openGoodsPreview, previewType } = require("%rGui/shop/goodsPreviewState.nu
 let { buyPlatformGoods } = require("platformGoods.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
+let { eventGift, eventGiftGap } = require("%rGui/event/eventGift.nut")
 
 
 function previewOffer() {
@@ -51,13 +52,22 @@ let offerPromo = @() {
   key = promoKey
   onAttach = @() onOfferSceneAttach(promoKey)
   onDetach = @() onOfferSceneDetach(promoKey)
-  flow = FLOW_VERTICAL
-  gap = hdpx(5)
+  flow = FLOW_HORIZONTAL
+  halign = ALIGN_RIGHT
+  gap = eventGiftGap
   children = [
-    visibleOffer.get() == null ? null
-      : mkOffer(visibleOffer.get(), previewOffer, offerPurchasingState)
-    activeOfferByGoods.get() == null ? null
-      : mkOffer(activeOfferByGoods.get(), previewOfferByGoods, offerByGoodsPurchasingState)
+    eventGift
+    visibleOffer.get() == null && activeOfferByGoods.get() == null ? null
+      : {
+          flow = FLOW_VERTICAL
+          gap = hdpx(5)
+          children = [
+            visibleOffer.get() == null ? null
+              : mkOffer(visibleOffer.get(), previewOffer, offerPurchasingState)
+            activeOfferByGoods.get() == null ? null
+              : mkOffer(activeOfferByGoods.get(), previewOfferByGoods, offerByGoodsPurchasingState)
+          ]
+        }
   ]
 }
 

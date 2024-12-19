@@ -741,4 +741,5 @@ badcombination =
   "卍",
 ]
 
+similarChars = require("similarCharsLatin.nut")
 }

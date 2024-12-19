@@ -91,11 +91,12 @@ let function buyUnitSlot() {
   let price = newSlotPriceGold.get()
   let campaign = curCampaign.get()
   let idx = curCampaignSlots.get()?.totalSlots
-  openMsgBoxPurchase(
-    loc("slotbar/purchase"),
-    { price, currencyId = GOLD },
-    @() buy_unit_slot(campaign, idx, price),
-    mkBqPurchaseInfo(PURCH_SRC_SLOTBAR, PURCH_TYPE_SLOT, idx))
+  openMsgBoxPurchase({
+    text = loc("slotbar/purchase"),
+    price = { price, currencyId = GOLD },
+    purchase = @() buy_unit_slot(campaign, idx, price),
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_SLOTBAR, PURCH_TYPE_SLOT, idx)
+  })
 }
 
 let function clearUnitSlot(unitName) {

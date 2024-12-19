@@ -39,7 +39,7 @@ let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, getRewardPlateSize, progressBarHeight
 } = require("%rGui/rewards/rewardStyles.nut")
 let { mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts, mkRewardSearchPlate,
-  mkRewardDisabledBkg, mkRewardReceivedMark
+  mkRewardDisabledBkg, mkRewardReceivedMark, mkRewardUnitFlag
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
@@ -48,7 +48,6 @@ let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
-let { mkUnitFlag } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 
 
@@ -188,7 +187,7 @@ let headerPanel = {
 let highlight = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(0xFFFFFFFF, 0, 25, 22, 31,-22))
 
-let mkHightlightPlate = @(isSelected) {
+let mkHightlightPlate = @(isSelected, rStyle) {
   size = flex()
   children = [
     {
@@ -213,7 +212,7 @@ let mkHightlightPlate = @(isSelected) {
           vplace = ALIGN_BOTTOM
           hplace = ALIGN_LEFT
           padding = hdpx(5)
-          children = mkRewardSearchPlate
+          children = mkRewardSearchPlate(rStyle)
         }
   ]
 }
@@ -268,9 +267,9 @@ function mkSlot(slotIdx, reward, rStyle) {
       mkRewardPlateBg(reward, rStyle)
       mkRewardPlateImage(reward, rStyle)
       !isSelected.get() && !(stateFlags.get() & S_HOVER) ? null
-        : mkHightlightPlate(isSelected.get())
+        : mkHightlightPlate(isSelected.get(), rStyle)
       mkRewardPlateTexts(reward, rStyle)
-      reward.rType == GPT_BLUEPRINT && unit.get() != null ? mkUnitFlag(unit.get(), rStyle) : null
+      reward.rType == GPT_BLUEPRINT && unit.get() != null ? mkRewardUnitFlag(unit.get(), rStyle) : null
       !rewardSlots.get()?.isPurchased ? null
         : mkDisableBkgWithTooltip(rewardSlots.get()?.purchasedIdx == slotIdx, rStyle)
     ]
@@ -322,12 +321,12 @@ function rerollSlots(id, price, currencyId) {
   anim_start(rerollTrigger)
 }
 
-let openSelGoodsMsgBoxPurch = @(text, price, currencyId, action, bqInfo) openMsgBoxPurchase(
+let openSelGoodsMsgBoxPurch = @(text, price, currencyId, action, bqInfo) openMsgBoxPurchase({
   text,
-  { price, currencyId },
-  @() previewGoods.get()?.id == null ? null : action(previewGoods.get()?.id, price, currencyId),
+  price = { price, currencyId },
+  purchase = @() previewGoods.get()?.id == null ? null : action(previewGoods.get()?.id, price, currencyId),
   bqInfo
-)
+})
 
 function tryOpenPurchSlotMsgBox(goodsId, price, currencyId) {
   let { id = null, gType = null, count = null } = rewardSlots.get()?.goods[selIndex.get()][0]

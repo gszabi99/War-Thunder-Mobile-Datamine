@@ -28,7 +28,7 @@ function getLocNameGold(goods) {
   return loc("shop/item/gold/amount", { amountTxt = decimalFormat(amount), amount })
 }
 
-function mkGoodsGold(goods, onClick, state, animParams) {
+function mkGoodsGold(goods, onClick, state, animParams, addChildren) {
   let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let gold = goods?.currencies.gold ?? 0
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
@@ -46,7 +46,7 @@ function mkGoodsGold(goods, onClick, state, animParams) {
       getImgByAmount(gold)
       mkCurrencyAmountTitle(gold, viewBaseValue, titleFontGrad)
       mkGoodsLimitAndEndTime(goods)
-    ].extend(mkGoodsCommonParts(goods, state)),
+    ].extend(mkGoodsCommonParts(goods, state), addChildren),
     mkPricePlate(goods, state, animParams), {size = goodsSmallSize})
 }
 

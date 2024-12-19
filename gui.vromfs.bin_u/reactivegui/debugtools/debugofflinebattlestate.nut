@@ -5,6 +5,8 @@ let { get_meta_missions_info_by_chapters } = require("guiMission")
 let { get_unittags_blk } = require("blkGetters")
 let { startOfflineBattle } = require("%rGui/gameModes/startOfflineMode.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
+let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { releasedUnits } = require("%rGui/unit/unitState.nut")
 
 let GM_SINGLE_MISSION = 3
 
@@ -63,7 +65,11 @@ let mkCfg = Computed(function() {
 
   foreach(unitName, _ in get_unittags_blk()) {
     let { unitType, tags } = getUnitTagsCfg(unitName)
-    if (unitType not in missions || "hide_in_offline_test" in tags)
+    let unit = allUnitsCfg.get()?[unitName] ?? {}
+    let { isHidden = false } = unit
+    let isReleased = unitName in releasedUnits.get()
+
+    if (unitType not in missions || "hide_in_offline_test" in tags || !isReleased || isHidden)
       continue
     if (unitType not in unitTypes) {
       allUnits[unitType] <- {}

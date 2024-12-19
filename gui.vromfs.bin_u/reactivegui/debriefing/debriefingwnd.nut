@@ -54,7 +54,7 @@ local isAttached = false
 let closeDebriefing = @() eventbus_send("Debriefing_CloseInDagui", {})
 let startBattle = @(modeId) eventbus_send("queueToGameMode", { modeId })
 let function openSpecialEvent() {
-  let eventName = allGameModes.get().findvalue(@(m) m.name == debriefingData.get()?.roomInfo.game_mode_name)?.tag
+  let eventName = allGameModes.get().findvalue(@(m) m.name == debriefingData.get()?.roomInfo.game_mode_name)?.eventId
   let eventId = specialEvents.get().findindex(@(e) e.eventName == eventName)
   if (eventId)
     openEventWnd(eventId)

@@ -3,7 +3,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 
-
+let MAIN_EVENT_ID = "main"
 let sortLootboxes = @(a, b) (a?.meta.event ?? "") <=> (b?.meta.event ?? "") || a.name <=> b.name
 
 function orderLootboxesBySlot(lList) {
@@ -26,13 +26,18 @@ function orderLootboxesBySlot(lList) {
   return res.sort(sortLootboxes)
 }
 
+function isFitCurSeason(timeRange, seasonName, userstatStatsV) {
+  let { start = 0, end = 0 } = timeRange
+  return start < (userstatStatsV?.stats[seasonName]["$endsAt"] ?? 0)
+    && (end <= 0 || end > (userstatStatsV?.stats[seasonName]["$startedAt"] ?? 0))
+}
+
 let eventLootboxesRaw = Computed(@() serverConfigs.value?.lootboxesCfg
   .filter(function(v) {
-    let { start = 0, end = 0 } = v?.timeRange
-    return v?.meta.event_slot
-      && start < (userstatStats.get()?.stats.season["$endsAt"] ?? 0)
-      && (end <= 0 || end > (userstatStats.get()?.stats.season["$startedAt"] ?? 0))
+    let { event_id = MAIN_EVENT_ID, event_slot = null } = v?.meta
+    return event_slot != null
       && (v?.meta.campaign == null || curCampaign.value == v?.meta.campaign)
+      && (event_id != MAIN_EVENT_ID || isFitCurSeason(v?.timeRange, "season", userstatStats.get()))
   })
     ?? {})
 

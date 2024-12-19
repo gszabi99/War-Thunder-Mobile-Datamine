@@ -28,7 +28,7 @@ function getImgByAmount(amount, curId, season) {
   return mkGoodsImg(cfg?.img, cfg?.fallbackImg, imgStyle)
 }
 
-function mkGoodsEventCurrency(goods, onClick, state, animParams) {
+function mkGoodsEventCurrency(goods, onClick, state, animParams, addChildren) {
   let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   local cId = goods.currencies.findindex(@(v) v > 0) ?? ""
   local amount = goods.currencies?[cId] ?? 0
@@ -49,7 +49,7 @@ function mkGoodsEventCurrency(goods, onClick, state, animParams) {
         getImgByAmount(amount, cId, eventSeason.get())
         mkCurrencyAmountTitle(amount, viewBaseValue, titleFontGrad)
         mkGoodsLimitAndEndTime(goods)
-      ].extend(mkGoodsCommonParts(goods, state)),
+      ].extend(mkGoodsCommonParts(goods, state), addChildren),
       mkPricePlate(goods, state, animParams), {size = goodsSmallSize})
   }
 }

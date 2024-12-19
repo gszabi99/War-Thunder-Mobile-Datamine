@@ -121,16 +121,18 @@ function platoonUnitsBlock() {
 }
 
 function onPurchase() {
+  if (selectedSkinCfg.get() == null)
+    return
   let unitName = baseUnit.get().name
   let skinName = selectedSkin.get()
-  let skinCfg = selectedSkinCfg.get()
-  let currencyId = selectedSkinCfg.get()?.currencyId
-  let price = selectedSkinCfg.get()?.price
-  openMsgBoxPurchase(
-    loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, loc("skins")) }),
-    skinCfg,
-    @() buy_unit_skin(unitName, skinName, currencyId, price),
-    mkBqPurchaseInfo(PURCH_SRC_SKINS, PURCH_TYPE_SKIN, skinName))
+  let { currencyId, price } = selectedSkinCfg.get()
+  let locSkinName = loc("skins/title", { unitName = getPlatoonOrUnitName(baseUnit.get(), loc) })
+  openMsgBoxPurchase({
+    text = loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, locSkinName) }),
+    price = { currencyId, price },
+    purchase = @() buy_unit_skin(unitName, skinName, currencyId, price),
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_SKINS, PURCH_TYPE_SKIN, skinName)
+  })
 }
 
 let mkInfoTextarea = @(text, ovr = {}) doubleSideGradient.__merge({

@@ -7,6 +7,7 @@ let { filters, filterCount } = require("%rGui/unit/unitsFilterPkg.nut")
 let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
+let { releasedUnits } = require("%rGui/unit/unitState.nut")
 
 let bgByHangar = {
   tanks = {
@@ -37,11 +38,13 @@ let unitsMapped = Computed(function() {
   let res = {}
   let visibleCountries = {}
   local allUnits = needToShowHiddenUnitsDebug.get()
-  ? allUnitsCfg.value
-    .map(@(u, id) myUnits.value?[id] ?? u)
-  : allUnitsCfg.value
-    .filter(@(u) !u?.isHidden || u.name in myUnits.value || (blueprints.get()?[u.name] ?? 0) > 0)
-    .map(@(u, id) myUnits.value?[id] ?? u)
+    ? allUnitsCfg.value
+      .map(@(u, id) myUnits.value?[id] ?? u)
+    : allUnitsCfg.value
+      .filter(@(u) (!u?.isHidden && u.name in releasedUnits.get())
+        || u.name in myUnits.value
+        || (blueprints.get()?[u.name] ?? 0) > 0)
+      .map(@(u, id) myUnits.value?[id] ?? u)
 
   if (filterCount.get() > 0)
     foreach (f in filters) {

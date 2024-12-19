@@ -3,7 +3,6 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 let { REWARD_STYLE_TINY, mkRewardPlate, mkRewardFixedIcon
 } = require("%rGui/rewards/rewardPlateComp.nut")
-let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { mkCustomButton, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -23,17 +22,12 @@ let { getLootboxImage, lootboxFallbackPicture } = require("%appGlobals/config/lo
 
 
 let REWARDS = 3
-let bgColor = 0x80000000
-let questBarColor = premiumTextColor
-let barHeight = hdpx(10)
-let borderWidth = hdpx(1)
 let fillColor = 0x70000000
 let hoverColor = 0xA0000000
 let iconStyle = CS_INCREASED_ICON
 let iconSize = iconStyle.iconSize
 let lootboxHeight = hdpxi(320)
 let rewardGap = REWARD_STYLE_TINY.boxGap
-let smallChestIconSize = hdpxi(40)
 
 let rewardsSize = REWARD_STYLE_TINY.boxSize
 let lootboxInfoSize = [rewardsSize * REWARDS + rewardGap * (REWARDS + 1),
@@ -111,27 +105,6 @@ let lootboxInfo = @(lootbox, stateFlags) function() {
       transitions = [{ prop = AnimProp.fillColor, duration = 0.15, easing = Linear }]
     }.__update(slots > REWARDS ? infoCanvasBig : infoCanvasSmall)
   }
-}
-
-function progressBar(stepsFinished, stepsToNext, ovr = {}) {
-  if (stepsToNext - stepsFinished <= 0)
-    return { size = [flex(), barHeight] }
-  let questCompletion = stepsFinished.tofloat() / stepsToNext
-
-  return {
-    rendObj = ROBJ_BOX
-    size = [flex(), barHeight]
-    fillColor = bgColor
-    borderWidth
-    borderColor = questBarColor
-    children = [
-      {
-        rendObj = ROBJ_BOX
-        size = [pw(100 * questCompletion), barHeight]
-        fillColor = questBarColor
-      }
-    ]
-  }.__update(ovr)
 }
 
 let mkEventLoootboxImage = @(id, size = null, ovr = {}) @() {
@@ -275,24 +248,12 @@ function mkPurchaseBtns(lootbox, onPurchase) {
   }
 }
 
-let smallChestIcon = {
-  size = [smallChestIconSize, smallChestIconSize]
-  rendObj = ROBJ_IMAGE
-  keepAspect = KEEP_ASPECT_FIT
-  image = Picture($"ui/gameuiskin#events_chest_icon.svg:{smallChestIconSize}:{smallChestIconSize}:P")
-}
-
 return {
   lootboxInfo
-  progressBar
   mkLootboxImageWithTimer
   lootboxHeight
   mkPurchaseBtns
 
   leaderbordBtn
   questsBtn
-
-  smallChestIcon
-  smallChestIconSize
-  barHeight
 }

@@ -14,6 +14,7 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewards
 } = require("schRewardsState.nut")
+let { personalGoodsByShopCategory } = require("personalGoodsState.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { sendBqEventOnOpenCurrencyShop } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
@@ -287,14 +288,18 @@ function onTabChange(id) {
   curCategoryId(id)
 }
 
+let hasGoodsCategoryNonUpdatable = @(catId) catId in goodsByCategory.get()
+  || catId in personalGoodsByShopCategory.get()
+  || catId in actualSchRewardByCategory.get()
+
 function openShopWnd(catId = null, bqPurchaseInfo = null) {
   if (isOfflineMenu) {
     openFMsgBox({ text = "Not supported in the offline mode" })
     return
   }
 
-  curCategoryId(catId in goodsByCategory.value ? catId
-    : shopCategoriesCfg.findvalue(@(c) c.id in goodsByCategory.value)?.id)
+  curCategoryId.set(hasGoodsCategoryNonUpdatable(catId) ? catId
+    : shopCategoriesCfg.findvalue(@(c) hasGoodsCategoryNonUpdatable(c.id))?.id)
   shopOpenCount(shopOpenCount.value + 1)
   sendBqEventOnOpenCurrencyShop(bqPurchaseInfo)
   isShopOpened(true)
@@ -335,6 +340,7 @@ return {
   saveSeenGoods
   saveSeenGoodsCurrent
   onTabChange
+  hasGoodsCategoryNonUpdatable
 
   pageScrollHandler
 }
