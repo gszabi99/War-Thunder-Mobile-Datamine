@@ -6683,6 +6683,18 @@
           "to": "camo_fadedgreen*"
         }
       ]
+    },
+    "lightblue_geometry": {
+      "replace_tex": {
+        "from": "camo_hazegray*",
+        "to": "camo_lightblue_geometry*"
+      }
+    },
+    "greenwhite_spots": {
+      "replace_tex": {
+        "from": "camo_hazegray*",
+        "to": "camo_greenwhite_spots*"
+      }
     }
   },
   "defaultDecals": {

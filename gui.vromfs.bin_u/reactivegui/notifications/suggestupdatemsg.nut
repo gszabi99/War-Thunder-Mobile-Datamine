@@ -7,7 +7,7 @@ let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { can_view_update_suggestion, allow_apk_update } = require("%appGlobals/permissions.nut")
 let { check_version } = require("%sqstd/version_compare.nut")
-let { isOutOfBattleAndResults } = require("%appGlobals/clientState/clientState.nut")
+let { isOutOfBattleAndResults, isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { needSuggestToUpdate } = isDownloadedFromGooglePlay() ? require("needUpdate/needUpdateGooglePlay.nut")
   : is_ios ? require("needUpdate/needUpdateAppStore.nut")
@@ -18,19 +18,19 @@ let { isGameAutoUpdateEnabled } = require("%rGui/options/options/gameAutoUpdateO
 const SUGGEST_UPDATE = "suggest_update_msg"
 
 let needExitToUpdate = Computed(function() {
-  let { reqVersion = "" } = campConfigs.value?.circuit
+  let { reqVersion = "" } = campConfigs.get()?.circuit
   let version = get_base_game_version_str()
-  return reqVersion == "" || version == "" ? false : !check_version(reqVersion, version)
+  return isInMenu.get() && (reqVersion == "" || version == "" ? false : !check_version(reqVersion, version))
 })
 
-let needShowExitToUpdate = keepref(Computed(@() needExitToUpdate.value && isOutOfBattleAndResults.value))
+let needShowExitToUpdate = keepref(Computed(@() needExitToUpdate.get() && isOutOfBattleAndResults.get()))
 
 let isSuggested = hardPersistWatched("suggestUpdate.isSuggested", false)
-let needProcessUpdate = keepref(Computed(@() needSuggestToUpdate.value
+let needProcessUpdate = keepref(Computed(@() needSuggestToUpdate.get()
   && can_view_update_suggestion.get()
-  && !isSuggested.value
-  && !needExitToUpdate.value
-  && isOutOfBattleAndResults.value))
+  && !isSuggested.get()
+  && !needExitToUpdate.get()
+  && isOutOfBattleAndResults.get()))
 
 let isProcessByBgUpdate = is_android && !isDownloadedFromGooglePlay()
   ? allow_apk_update

@@ -65,7 +65,9 @@ function secureDiv(a, b) {
 let viewStats = [
   {
     name = loc("lb/battles")
-    value = @(stats) stats?.battle_end ?? 0
+    value = @(stats) max(stats?.battles ?? 0,
+      stats?.profile_stat_battle_end ?? 0,
+      stats?.battle_end ?? 0)
   }
   {
     name = loc("stats/missions_wins")

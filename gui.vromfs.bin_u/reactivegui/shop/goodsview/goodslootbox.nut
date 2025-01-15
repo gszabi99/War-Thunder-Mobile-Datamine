@@ -55,7 +55,7 @@ function mkGoodsLootbox(goods, _, state, animParams, addChildren) {
   let onClick = @() openGoodsPreview(goods.id)
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
   let border = mkBorderByCurrency(borderBg, isFreeReward, price?.currencyId)
-
+  let amount = lootboxes?[lootboxId] ?? 0
   return mkGoodsWrap(
     goods,
     onClick,
@@ -68,7 +68,9 @@ function mkGoodsLootbox(goods, _, state, animParams, addChildren) {
       lootboxId == null ? null
         : mkLoootboxImage(lootboxId, lootboxIconSize, customGoodsLootboxScale?[lootboxId] ?? 1)
             .__update({ hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, lootboxIconSize * 0.1] })
-      mkCurrencyAmountTitle(lootboxes?[lootboxId], 0, titleFontGrad).__update({ margin = [hdpx(32), 0] })
+      amount <= 1
+        ? null
+        : mkCurrencyAmountTitle(lootboxes?[lootboxId], 0, titleFontGrad).__update({ margin = [hdpx(32), 0] })
       mkLootboxTitle(goods, timeRange == null ? { size = flex() } : {})
       !canPurchase ? null : mkSquareIconBtn(fonticonPreview, onClick, { vplace = ALIGN_BOTTOM, margin = contentMargin })
       timeRange == null ? null

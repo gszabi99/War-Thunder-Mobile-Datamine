@@ -353,6 +353,7 @@ function checkPhraseInternal(text, isName) {
   local phrase = text
 
   // In Asian languages, there is no spaces to separate words.
+  // This part is case sensitive, so it is also suitable for detecting abbreviations written in CAPS.
   local maskChars = null
   let charsArray = getUnicodeCharsArray(phrase)
   foreach (char in charsArray) {

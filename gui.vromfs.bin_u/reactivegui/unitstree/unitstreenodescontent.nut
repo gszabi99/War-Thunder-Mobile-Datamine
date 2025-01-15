@@ -584,7 +584,9 @@ let mkUnitsTreeFull = @(countryNodesCfg, hasDarkScreen) {
 
 function onUnitNodesAppear(prevCountry, nodes) {
   let unitExists = @(name) name != null && nodes?[name] != null
-  let uToScroll = unitToScroll.get()
+  let hasSelectedUnit = curSelectedUnit.get() != null
+  let uToScroll = hasSelectedUnit ? curSelectedUnit.get() : unitToScroll.get()
+
   if (unitExists(uToScroll)) {
     scrollToUnitGroupBottom([uToScroll], nodes)
     return

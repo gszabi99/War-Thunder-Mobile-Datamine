@@ -623,6 +623,7 @@
 "f4u-4b";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";;
 "f4u-4b_killstreak";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";"F4U-4B";;
 "tandem_mai";"Tandem MAI";"Tandem MAI";"Tandem MAI";"Tandem MAI";"Tandem MAI";"Тандем МАИ";"Tandem MAI";"Tandem MAI";"Tandem MAI";"Tandem MAI";"Tandem MAI";"Tandem MAI";"Tandem MAI";"Tandem MAI";"탄뎀 MAI";"莫\t航\t串\t列\t翼\t试\t验\t机";"タンデム MAI";"莫\t航\t串\t列\t翼\t試\t驗\t機";;
+"tis_ma";"TIS MA";"TIS MA";"TIS MA";"TIS MA";"TIS MA";"ТИС МА";"TIS MA";"TIS MA";"TIS MA";"TIS MA";"TIS MA";"TIS MA";"TIS MA";"TIS MA";"TIS MA";"TIS MA";"TIS MA";"TIS MA";;
 "la-5fn";"La-5FN";"La-5FN";"La-5FN";"La-5FN";"La-5FN";"Ла-5ФН";"Ла-5ФН";"Ła-5FN";"La-5FN";"La-5FN";"La-5FN";"La-5FN";"La-5FN";"La-5FN";"La-5FN";"拉\t-5FN";"La-5FN";"拉\t-5FN";;
 "la-7";"La-7";"La-7";"La-7";"La-7";"La-7";"Ла-7";"Ла-7";"Ła-7";"La-7";"La-7";"La-7";"La-7";"La-7";"La-7";"La-7";"拉\t-7";"La-7";"拉\t-7";;
 "lagg-3-8";"LaGG-3-8";"LaGG-3-8";"LaGG-3-8";"LaGG-3-8";"LaGG-3-8";"ЛаГГ-3-8";"ЛаГГ-3-8";"ŁaGG-3-8";"LaGG-3-8";"LaGG-3-8";"LaGG-3-8";"LaGG-3-8";"LaGG-3-8";"LaGG-3-8";"LaGG-3-8";"拉\t格\t-3 8 型";"LaGG-3-8";"拉\t格\t-3-8";;
@@ -755,6 +756,7 @@
 "uk_battleship_centurion";"HMS Centurion";"HMS Centurion";"HMS Centurion";"HMS Centurion";"HMS Centurion";"HMS Centurion";"HMS Centurion";"HMS Centurion";"HMS Centurion";"HMS Centurion";"HMS Centurion";"HMS Centurion";"HMS Centurion";"HMS Centurion";"HMS 센츄리온";"百\t夫\t长";"イギリス\t海軍 センチュリオン";"HMS 百\t夫\t長";;
 "fr_cruiser_suffren_class_dupleix";"Dupleix";"Dupleix";"Dupleix";"Dupleix";"Dupleix";"Dupleix";"Dupleix";"Dupleix";"Dupleix";"Dupleix";"Dupleix";"Dupleix";"Dupleix";"Dupleix";"뒤플렉스";"杜\t布\t雷";"デュプレクス";"杜\t布\t雷";;
 "uk_sub_m1";"HMS M1";"HMS M1";"HMS M1";"HMS M1";"HMS M1";"HMS M1";"HMS M1";"HMS M1";"HMS M1";"HMS M1";"HMS M1";"HMS M1";"HMS M1";"HMS M1";"HMS M1";"M1";"HMS M1";"HMS M1";;
+"it_cruiser_zara_class";"RN Zara";"RN Zara";"RN Zara";"RN Zara";"RN Zara";"RN Zara";"RN Zara";"RN Zara";"RN Zara";"RN Zara";"RN Zara";"RN Zara";"RN Zara";"RN Zara";"RN 차라";"扎\t拉";"RN ザラ";"扎\t拉";;
 "uk_challenger_1";"Challenger Mk.2";"Challenger Mk.2";"Challenger Mk.2";"Challenger Mk.2";"Challenger Mk.2";"Challenger Mk.2";"Challenger Mk.2";"Challenger Mk.2";"Challenger Mk.2";"Challenger Mk.2";"Challenger Mk.2";"Challenger Mk.2";"Challenger Mk.2";"Challenger Mk.2";"챌린저 Mk.2";"挑\t战\t者 Mk 2";"チャレンジャー Mk.2";"挑\t戰\t者 Mk.2";;
 "uk_ttd";"TTD";"TTD";"TTD";"TTD";"TTD";"TTD";"ТТД";"TTD";"TTD";"TTD";"TTD";"TTD";"TTD";"TTD";"TTD";"TTD";"TTD";"TTD";;
 "uk_desert_warrior";"Desert Warrior";"Desert Warrior";"Desert Warrior";"Desert Warrior";"Desert Warrior";"Desert Warrior";"Desert Warrior";"Desert Warrior";"Desert Warrior";"Desert Warrior";"Desert Warrior";"Desert Warrior";"Desert Warrior";"Desert Warrior";"데저트 워리어";"沙\t漠\t武\t士";"Desert Warrior";"沙\t漠\t武\t士";;
@@ -810,4 +812,8 @@
 "us_m18_hellcat_event";"M18 GMC";"M18 GMC";"M18 GMC";"M18 GMC";"M18 GMC";"M18 GMC";"M18 GMC";"M18 GMC";"M18 GMC";"M18 GMC";"M18 GMC";"M18 GMC";"M18 GMC";"M18 GMC";"M18 GMC";"M18";"M18 対戦車自走砲";"M18 GMC";;
 "us_m42_duster_event";"M42";"M42";"M42";"M42";"M42";"M42";"M42";"M42";"M42";"M42";"M42";"M42";"M42";"M42";"M42";"M42";"M42";"M42";;
 "us_m6a1_event";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";"M6A1";;
+"ussr_object_775";"Object 775";"Object 775";"Objekt 775";"Objekt 775";"Object 775";"Объект 775";"Об’єкт 775";"Obiekt 775";"Object 775";"Object 775";"Objekt 775";"Object 775";"Object 775";"Object 775";"오비옉트 775";"775 工\t程";"Object 775";"775 工\t程";;
+"ussr_t_62m1";"T-62M-1";"T-62M-1";"T-62M-1";"T-62M-1";"T-62M-1";"Т-62М-1";"T-62M-1";"T-62M-1";"T-62M-1";"T-62M-1";"T-62M-1";"T-62M-1";"T-62M-1";"T-62M-1";"T-62M-1";"T-62M-1";"T-62M-1";"T-62M-1";;
+"ussr_t_55_am";"T-55AM-1";"T-55AM-1";"T-55AM-1";"T-55AM-1";"T-55AM-1";"Т-55АМ-1";"T-55AM-1";"T-55AM-1";"T-55AM-1";"T-55AM-1";"T-55AM-1";"T-55AM-1";"T-55AM-1";"T-55AM-1";"T-55AM-1";"T-55AM-1";"T-55AM-1";"T-55AM-1";;
+"ussr_zsu_37_2_reskin3";"ZSU-37-2";"ZSU-37-2";"ZSU-37-2";"ZSU-37-2";"ZSU-37-2";"ЗСУ-37-2";"ЗСУ-37-2";"ZSU-37-2";"ZSU-37-2";"ZSU-37-2";"ZSU-37-2";"ZSU-37-2";"ZSU-37-2";"ZSU-37-2";"ZSU-37-2";"ZSU-37-2";"ZSU-37-2";"ZSU-37-2";;
 "SHIPS_LANG_KEEP_IT_ALWAYS_FIRST";;;;;;;;;;;;;;;;;;;"";

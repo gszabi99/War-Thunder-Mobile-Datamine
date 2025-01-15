@@ -275,6 +275,8 @@ let skinsByTag = {
     "camo_multicolor_waves"
     "camo_blackblue_geometry"
     "camo_redblack_spots"
+    "camo_redwhite_stripes"
+    "it_camo_blackgreen_deforming"
   ],
 
   [AIR] = [

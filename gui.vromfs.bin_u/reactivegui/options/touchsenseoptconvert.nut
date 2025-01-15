@@ -10,6 +10,7 @@ let { get_platform_window_resolution } = require("graphicsOptions")
 let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { check_version } = require("%sqstd/version_compare.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { optionValues, OPT_CAMERA_SENSE_TANK, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_CAMERA_SENSE_SHIP, OPT_CAMERA_SENSE_IN_ZOOM_SHIP,
 } = require("%rGui/options/guiOptions.nut")
 
@@ -26,15 +27,19 @@ let { getScreenPPI = @() DEFAULT_PPI } = is_ios ? require("ios.platform")
   : is_android ? require("android.platform")
   : null
 
-// Need to convert options AFTER "isSettingsAvailable", because
-// on "isSettingsAvailable" every option reads its value from profile settings.
+// Need to convert options AFTER "isSettingsAvailable" and "isProfileReceived", because
+// on "isSettingsAvailable" every option reads its value from profile settings,
+// and also it needs "isProfileReceived" to check which campaignes user has played.
 let isReadyToConvert = isLoggedIn
 
+let hasPlayedTank = @() (servProfile.get()?.levelInfo.tanks.level ?? 0) > 0
+let hasPlayedShip = @() (servProfile.get()?.levelInfo.ships.level ?? 0) > 0
+
 let cameraSenseOptionsCfg = [
-  OPT_CAMERA_SENSE_TANK
-  OPT_CAMERA_SENSE_IN_ZOOM_TANK
-  OPT_CAMERA_SENSE_SHIP
-  OPT_CAMERA_SENSE_IN_ZOOM_SHIP
+  { id = OPT_CAMERA_SENSE_TANK,         needConv = hasPlayedTank }
+  { id = OPT_CAMERA_SENSE_IN_ZOOM_TANK, needConv = hasPlayedTank }
+  { id = OPT_CAMERA_SENSE_SHIP,         needConv = hasPlayedShip }
+  { id = OPT_CAMERA_SENSE_IN_ZOOM_SHIP, needConv = hasPlayedShip }
 ]
 
 let normalizeVal = @(v) clamp(round(v / STEP_VAL) * STEP_VAL, MIN_VAL, MAX_VAL)
@@ -62,22 +67,27 @@ function convertCameraSenseOptionsToV202410() {
   else if (is_ios && ppi == DEFAULT_PPI)
     logOP("Conversion skipped completely (default PPI, no changes required)")
   else {
-    foreach (id in cameraSenseOptionsCfg) {
+    foreach (v in cameraSenseOptionsCfg) {
+      let { id, needConv } = v
+      if (!needConv()) {
+        logOP($"  {id} - Skipped (campaign not played)")
+        continue
+      }
       let prevVal = optionValues?[id].get()
       if (prevVal == null) {
         logOP($"  {id} - Skipped (is null)")
         continue
       }
-      if (isNearDefault(prevVal)) {
-        logOP($"  {id} - Skipped ({prevVal}, is default)")
+      let newValRaw = is_android ? (1.0 * prevVal  * scrW / wndW)
+        : is_ios ? (1.0 * prevVal * ppi / DEFAULT_PPI)
+        : (1.0 * prevVal)
+      let newVal = normalizeVal(newValRaw)
+      if (isApproxEqual(prevVal, DEF_VAL) && isNearDefault(newVal)) {
+        logOP($"  {id} - Skipped ({newVal} is normalized default, no change required)")
         continue
       }
-      let newValRaw = is_android ? (prevVal * scrW / wndW)
-        : is_ios ? (prevVal * ppi / DEFAULT_PPI)
-        : prevVal
-      let newVal = normalizeVal(newValRaw)
       if (isApproxEqual(prevVal, newVal)) {
-        logOP($"  {id} - Skipped ({newVal}, no change required)")
+        logOP($"  {id} - Skipped ({prevVal} ~= {newVal}, no change required)")
         continue
       }
       optionValues[id].set(newVal)
@@ -100,7 +110,8 @@ tryConvertOptions()
 register_command(function() {
     let isConverted = get_local_custom_settings_blk()?[SAVE_ID_TOUCH_SENSE_OPT_CONVERTED] != null
     console_print($"Applied conversion: {isConverted}") // warning disable: -forbidden-function
-    foreach (id in cameraSenseOptionsCfg) {
+    foreach (v in cameraSenseOptionsCfg) {
+      let { id } = v
       let val = optionValues?[id].get()
       let isDefault = val == DEF_VAL
       console_print($"    {id} = {val}{isDefault ? " (default)" : ""}") // warning disable: -forbidden-function
@@ -108,9 +119,11 @@ register_command(function() {
   }, "ui.debug.camera_sense_options.print")
 
 register_command(function() {
-    foreach (id in cameraSenseOptionsCfg)
+    foreach (v in cameraSenseOptionsCfg) {
+      let { id } = v
       if (optionValues?[id].get() != null)
         optionValues?[id].set(DEF_VAL)
+    }
     get_local_custom_settings_blk()[SAVE_ID_TOUCH_SENSE_OPT_CONVERTED] = null
     eventbus_send("saveProfile", {})
     console_print($"Camera Sense options reset to defaults") // warning disable: -forbidden-function

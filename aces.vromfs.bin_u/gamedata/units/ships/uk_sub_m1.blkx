@@ -794,7 +794,7 @@
         "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_mk12_torpedo.blk",
         "emitter": "bone_torpedo_01",
         "useEmitter": true,
-        "bullets": 40,
+        "bullets": 60,
         "startFx": "underwater_start_torpedo",
         "startFxOffset": [
           4.0,
@@ -1090,7 +1090,7 @@
               "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_mk12_torpedo.blk",
               "emitter": "bone_torpedo_01",
               "useEmitter": true,
-              "bullets": 40,
+              "bullets": 60,
               "startFx": "underwater_start_torpedo",
               "startFxOffset": [
                 4.0,

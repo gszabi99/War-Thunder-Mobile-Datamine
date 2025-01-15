@@ -8,6 +8,8 @@
   "model": "pt_109_a",
   "subclass": "warShip",
   "dustFx": "water_units_dust",
+  "dynCollisionGeom": true,
+  "isDynCollisionGeomForShells": false,
   "moveType": "ship",
   "maxFwdSpeed": 80.0,
   "maxRevSpeed": 5.0,

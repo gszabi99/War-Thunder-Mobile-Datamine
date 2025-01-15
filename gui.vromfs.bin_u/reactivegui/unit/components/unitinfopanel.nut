@@ -22,7 +22,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize } = require("%rGui/components/scrollArrows.nut")
-let { isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
+let { isUnitsTreeAttached } = require("%rGui/unitsTree/unitsTreeState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
 
@@ -439,7 +439,7 @@ let scrollArrowsBlock = {
   children = mkScrollArrow(scrollHandlerInfoPanel, MR_B, scrollArrowImageSmall)
 }
 
-let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit, ovr = {}, mkScroll = null)
+let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit, childOvr = {}, mkScroll = null)
   function() {
     if (unit.value == null)
       return { watch = unit }
@@ -467,10 +467,10 @@ let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = h
         unitArmorBlock(unit.value, false)
         unitPriceBlock(unit.get())
       ]
-    }.__update(ovr)
+    }.__update(childOvr)
 
     let content = {
-      watch = [unit, unitMods, attrPresets, isUnitsTreeOpen]
+      watch = [unit, unitMods, attrPresets, isUnitsTreeAttached]
       clipChildren = true
       stopMouse = true
       children = !mkScroll ? children
@@ -478,9 +478,9 @@ let unitInfoPanel = @(override = {}, headerCtor = mkPlatoonOrUnitTitle, unit = h
             mkScroll(children)
             scrollArrowsBlock
           ]
-    }.__merge(override)
+    }.__merge(ovr)
 
-    return isUnitsTreeOpen.get() ? content : panelBg.__merge(content)
+    return isUnitsTreeAttached.get() ? content : panelBg.__merge(content)
   }
 
 let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {

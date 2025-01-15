@@ -1,9 +1,9 @@
 {
-  "version": "1.11.0.187",
-  "grpHash": "b7bb3fa73a904d13fe8dac28b3a5b953",
+  "version": "1.11.0.206",
+  "grpHash": "211cf35a97dc96420e1fa050c80b7300",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "0b5967d782ed24caba73a0d46e9b8767",
+  "blkHash": "0d539b76d0907a8d69b79b9f45c34935",
   "genHash": "1e6cbd2338e3c521cbf041ec4d9a5179",
   "a-20g": {
     "dep": [
@@ -4570,6 +4570,22 @@
       "italian_gunner_char"
     ]
   },
+  "it_cruiser_zara_class": {
+    "dep": [
+      "cruiser_zara_class",
+      "cruiser_zara_class_char",
+      "cruiser_zara_class_collision",
+      "cruiser_zara_class_dm_skeleton",
+      "cruiser_zara_class_fastphys",
+      "cruiser_zara_class_sections",
+      "cruiser_zara_class_sections_remote",
+      "cruiser_zara_class_skeleton",
+      "cruiser_zara_class_xray",
+      "cruiser_zara_class_xray_skeleton",
+      "depth_charge_mk6",
+      "mine_emc"
+    ]
+  },
   "it_fiat_6614_106sr": {
     "dep": [
       "fiat_6614_106sr",
@@ -6676,6 +6692,22 @@
       "us_mk13_torpedo",
       "us_mk13_torpedo_no_case",
       "usa_paratrooper_char"
+    ]
+  },
+  "tis_ma": {
+    "dep": [
+      "gunner_sit_su_500",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "su_fab_100sv",
+      "su_fab_250sv",
+      "su_fab_500sv",
+      "su_m_13uk_1944_rocket",
+      "su_rbs_132_rocket",
+      "tis_ma",
+      "tis_ma_anim",
+      "tis_ma_skeleton"
     ]
   },
   "tu-1": {
@@ -10394,6 +10426,21 @@
       "object_685_xray_skeleton"
     ]
   },
+  "ussr_object_775": {
+    "dep": [
+      "object_775",
+      "object_775_char",
+      "object_775_collision",
+      "object_775_dm_skeleton",
+      "object_775_dmg",
+      "object_775_dmg_skeleton",
+      "object_775_fastphys",
+      "object_775_skeleton",
+      "object_775_xray",
+      "object_775_xray_skeleton",
+      "rubin_rocket_deployed"
+    ]
+  },
   "ussr_object_906": {
     "dep": [
       "object_906",
@@ -10965,6 +11012,22 @@
       "t_54_1951_xray_skeleton"
     ]
   },
+  "ussr_t_55_am": {
+    "dep": [
+      "9m117_rocket",
+      "grenade_zd17",
+      "t_55_am",
+      "t_55_am_char",
+      "t_55_am_collision",
+      "t_55_am_dm_skeleton",
+      "t_55_am_dmg",
+      "t_55_am_dmg_skeleton",
+      "t_55_am_fastphys",
+      "t_55_am_skeleton",
+      "t_55_am_xray",
+      "t_55_am_xray_skeleton"
+    ]
+  },
   "ussr_t_55_amd_1": {
     "dep": [
       "3uof_14_rocket",
@@ -11009,6 +11072,22 @@
       "t_62_skeleton",
       "t_62_xray",
       "t_62_xray_skeleton"
+    ]
+  },
+  "ussr_t_62m1": {
+    "dep": [
+      "9m117_rocket",
+      "grenade_zd17",
+      "t_62m1",
+      "t_62m1_char",
+      "t_62m1_collision",
+      "t_62m1_dm_skeleton",
+      "t_62m1_dmg",
+      "t_62m1_dmg_skeleton",
+      "t_62m1_fastphys",
+      "t_62m1_skeleton",
+      "t_62m1_xray",
+      "t_62m1_xray_skeleton"
     ]
   },
   "ussr_t_64_b_1984": {
@@ -11235,6 +11314,20 @@
     ]
   },
   "ussr_zsu_37_2_reskin2": {
+    "dep": [
+      "zsu_37_2",
+      "zsu_37_2_char",
+      "zsu_37_2_collision",
+      "zsu_37_2_dm_skeleton",
+      "zsu_37_2_dmg",
+      "zsu_37_2_dmg_skeleton",
+      "zsu_37_2_fastphys",
+      "zsu_37_2_skeleton",
+      "zsu_37_2_xray",
+      "zsu_37_2_xray_skeleton"
+    ]
+  },
+  "ussr_zsu_37_2_reskin3": {
     "dep": [
       "zsu_37_2",
       "zsu_37_2_char",

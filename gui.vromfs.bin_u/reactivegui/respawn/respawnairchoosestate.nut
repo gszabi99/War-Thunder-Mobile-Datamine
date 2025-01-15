@@ -52,6 +52,8 @@ function fixCurPresetOverload() {
   setWeaponPreset(preset)
 }
 
+let sortByCaliber = @(a, b) b.caliber <=> a.caliber
+
 let beltSlotsByGroup = Computed(function() {
   let allSlots = []
   let courseSlots = []
@@ -80,6 +82,11 @@ let beltSlotsByGroup = Computed(function() {
       }
     }
   }
+
+  allSlots.sort(sortByCaliber)
+  courseSlots.sort(sortByCaliber)
+  turretSlots.sort(sortByCaliber)
+
   return { allSlots, courseSlots, turretSlots }
 })
 let beltSlots = Computed(@() beltSlotsByGroup.get().allSlots)

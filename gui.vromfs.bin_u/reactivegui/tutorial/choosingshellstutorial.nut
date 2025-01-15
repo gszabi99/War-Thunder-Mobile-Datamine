@@ -9,7 +9,7 @@ let { isInSquad } = require("%appGlobals/squadState.nut")
 let { isInRespawn, isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { showRespChooseWnd, curSlotName, applyBullet } = require("%rGui/respawn/respawnChooseBulletWnd.nut")
-let { bulletsInfo, visibleBullets, chosenBullets } = require("%rGui/respawn/bulletsChoiceState.nut")
+let { bulletsInfo, chosenBullets } = require("%rGui/respawn/bulletsChoiceState.nut")
 let { selSlot } = require("%rGui/respawn/respawnState.nut")
 let { lightCtor } = require("tutorialWnd/tutorialWndDefStyle.nut")
 let { bulletsLegend, headerMargin, gap } = require("%rGui/respawn/respawnComps.nut")
@@ -18,13 +18,18 @@ let { moveModalToTop } = require("%rGui/components/modalWindows.nut")
 
 const TUTORIAL_ID = "choosingShells"
 
+let unitLevel = Computed(@() selSlot.get()?.level ?? 0)
+let unitModsPresets = Computed(@() selSlot.get()?.mods ?? {})
 let choiceCount = Computed(@() chosenBullets.get().len())
-let objectsForSixStep = Watched([])
 let setCurSlot = @(name) curSlotName.set(name)
 
 let isFinished = mkIsTutorialCompleted(TUTORIAL_ID)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
-let hasEnoughBullets = Computed(@() visibleBullets.get().len() >= 3)
+let allowedBullets = Computed(@() choiceCount.get() > 1
+  ? bulletsInfo.get()?.fromUnitTags.filter(@(bullet) (bullet?.reqLevel ?? 0) <= unitLevel.get()
+    && (!bullet?.reqModification || bullet.reqModification in unitModsPresets.get())) ?? {}
+  : {})
+let hasEnoughBullets = Computed(@() allowedBullets.get().len() >= 3)
 let needShowTutorial = Computed(@() hasEnoughBullets.get()
   && !isInSquad.get()
   && !isFinished.get())
@@ -49,24 +54,16 @@ let runMsgBox = @() openMsgBox({
   ]
 })
 
-function setTutorialBulletsData() {
-  let { bulletsOrder = null, bulletSets = null } = bulletsInfo.get()
-  if(!bulletsOrder || !bulletSets)
-    return
-  objectsForSixStep.set(bulletsOrder
-    .filter(@(name) (visibleBullets.get()?[name] ?? false)
-      && name != curSlotName.get())
-        .map(@(name) {
-          keys = name
-          function onClick() {
-            setCurSlot(name)
-          }
-        })
-  )
-}
-
 function startTutorial() {
   let unitsListShowEnough = Watched(false)
+  let allowedBulletsForChoose = allowedBullets.get()
+    .filter(@(_, name) name != curSlotName.get())
+    .map(@(_, name) {
+      keys = name
+      function onClick() {
+        setCurSlot(name)
+      }
+    })
   setTutorialConfig({
     id = TUTORIAL_ID
     function onStepStatus(stepId, status) {
@@ -112,7 +109,7 @@ function startTutorial() {
       {
         id = "s5_select_new_shell"
         text = loc("tutorial_select_new_shell")
-        objects = objectsForSixStep.get()
+        objects = allowedBulletsForChoose
       }
       {
         id = "s6_compare_shells"
@@ -124,7 +121,7 @@ function startTutorial() {
         id = "s7_quick_compare_shells"
         nextKeyDelay = 1
         text = loc("tutorial_quick_compare_shells")
-        objects = objectsForSixStep.get().map(@(obj) { keys = $"{obj.keys}_icon" })
+        objects = allowedBulletsForChoose.map(@(obj) { keys = $"{obj.keys}_icon" })
       }
       {
         id = "s8_shell_properties"
@@ -157,7 +154,6 @@ function startTutorial() {
 let startTutorialDelayed = @() deferOnce(function() {
   if (!showTutorial.get())
     return
-  setTutorialBulletsData()
   startTutorial()
   isDebugMode.set(false)
 })

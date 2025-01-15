@@ -11,6 +11,13 @@ let btnBgColor = {
   noAmmo    = 0x0D000000
 }
 
+let btnBgColorAlphablend = btnBgColor.map(function toAlphaBlendColor(c) {
+  let aBits = c & 0xFF000000
+  let a = aBits >> 24
+  let mul = a != 0 ? (255.0 / a) : 255
+  return aBits | (mul_color(c, mul) & 0xFFFFFF)
+})
+
 let btnBgColorShaded = btnBgColor.map(@(c) (mul_color(c, 0.65) & 0xFFFFFF) | (c & 0xCC000000))
 
 let style = {
@@ -31,6 +38,7 @@ let style = {
   textDisabledColor      = Color(77, 77, 77, 77)
 
   btnBgColor
+  btnBgColorAlphablend
   btnBgColorShaded
 
   borderColor            = Color(218, 218, 218)

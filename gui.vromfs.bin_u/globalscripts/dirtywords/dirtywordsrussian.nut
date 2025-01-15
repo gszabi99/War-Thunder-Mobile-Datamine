@@ -4,6 +4,7 @@ from "%globalScripts/logs.nut" import *
 //
 
 let REGIONS_RU = [ "RU", "BY" ]
+let REGIONS_UA = [ "UA" ]
 
 return {
 
@@ -1219,8 +1220,25 @@ badphrases =
   "шалав",
 ]
 
+forbiddennamesegments = [
+  {
+    regions = REGIONS_UA
+    list = {
+      ["D"] =
+        [
+          "DNR"
+        ],
+      ["Z"] =
+        [
+          "ZOV"
+        ],
+    }
+  }
+]
+
 forbiddennames = [
   { value = "бандер", regions = REGIONS_RU }
+  "г[оа]вн[аеоу]"
   { value = "украин", regions = REGIONS_RU }
   { value = "шухевич", regions = REGIONS_RU }
   { value = "bander", regions = REGIONS_RU }
@@ -1228,6 +1246,7 @@ forbiddennames = [
   "i4trumpнашslon"
   { value = "shuhevich", regions = REGIONS_RU }
   { value = "ukrain", regions = REGIONS_RU }
+  "спе[рr]м"
 ]
 
 badcombination =

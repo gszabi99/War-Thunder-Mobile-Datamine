@@ -248,9 +248,6 @@
     "pkg_common": {},
     "pkg_ground": {},
     "pkg_naval": {},
-    "pkg_lvl_hangar_ny": {
-      "hangarPath": "config/hangar_field_ny.blk"
-    },
     "pkg_tier_1_naval": {},
     "pkg_tier_2_naval": {},
     "pkg_tier_3_naval": {},
@@ -610,6 +607,12 @@
         "mRank": 2
       }
     },
+    "pkg_it_cruiser_zara_class": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -938,6 +941,12 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 2
+      }
+    },
+    "pkg_ussr_object_775": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
       }
     },
     "pkg_environment_uhq": {
@@ -1480,8 +1489,7 @@
     "flag": [
       "--norespatch",
       "--noupdate",
-      "--verbose",
-      "--force_current"
+      "--verbose"
     ],
     "android": {
       "flag": "--notime"
@@ -1506,6 +1514,7 @@
       "flag": [
         "--clear",
         "--onlypacks",
+        "--force_current",
         "--enable_tag",
         "update_vroms"
       ]
@@ -1519,6 +1528,7 @@
       "flag": [
         "--clear",
         "--onlypacks",
+        "--noversion",
         "--enable_tag",
         "min_core"
       ]
@@ -1532,7 +1542,8 @@
       "stopMetric": "background_addons_update_stop",
       "flag": [
         "--clear",
-        "--onlypacks"
+        "--onlypacks",
+        "--noversion"
       ]
     },
     "optional_game_resources": {

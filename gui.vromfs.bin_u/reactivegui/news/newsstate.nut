@@ -262,6 +262,8 @@ function openNewsWndTagged(tag) {
   let article = newsfeed.value.findvalue(@(v) v.tags?.contains(tag))
   if (article)
     playerSelectedArticleId.set(article.id)
+  else
+    logN($"No news article found with tag: \"{tag}\"")
   openNewsWnd()
 }
 

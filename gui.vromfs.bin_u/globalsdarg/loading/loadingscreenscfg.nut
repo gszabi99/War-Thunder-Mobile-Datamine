@@ -151,12 +151,12 @@ let screensList = {
   }
   simple_tank_19 = {
     camp = [ "tanks" ]
-    weight = 1.0
+    weight = 2.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_19.avif")
   }
   simple_tank_20 = {
     camp = [ "tanks" ]
-    weight = 2.0
+    weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_20.avif")
   }
   simple_airplane_1 = {

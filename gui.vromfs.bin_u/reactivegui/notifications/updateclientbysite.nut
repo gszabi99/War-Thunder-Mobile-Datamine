@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let logD = log_with_prefix("[DOWNLOAD] ")
-let { deferOnce } = require("dagor.workcycle")
+let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { enqueueDownload, queryDownloadStatus, tryToInstall, getApkFileVersion = null, DOWNLOAD_STASUS_UNKNOWN,
@@ -18,8 +18,10 @@ let { actualGameVersion, actualGameHash, getApkLinkWithCash } = require("needUpd
 let { get_base_game_version_str } = require("app")
 
 let isSuggested = hardPersistWatched("suggestInstall.isSuggested", false)
+let cachedDownloadId = hardPersistWatched("suggestInstall.downloadId", null)
 let SUGGEST_INSTALL_APK = "suggestInstallApk"
 let DOWNLOAD_SUCCESSFUL_BY_SITE = "downloadSuccessfulBySite"
+let TIME_TO_CHECK_DOWNLOAD_STATUS = 2
 let getApkName = @() $"wtm_production_{actualGameVersion.get()}.apk"
 
 let hasDownloadedApk = Watched(false)
@@ -74,7 +76,26 @@ eventbus_subscribe("android.platform.onCompleteApkDownload", function (event) {
   customStatusHandlers[status](downloadId)
 })
 
+function delayedCheckDownloadStatus() {
+  if (!isLoggedIn.get()) {
+    let downloadId = cachedDownloadId.get()
+    let status = queryDownloadStatus(downloadId)
+
+    cachedDownloadId.set(null)
+
+    if (isDownloadInProgress.get() && status != DOWNLOAD_STATUS_FAILED)
+      eventbus_send("exit_for_download_apk", { message = loc("updater/newVersion/exitGame", { actionBtn = loc("msgbox/btn_exit")}) })
+    else
+      eventbus_send("fMsgBox.onClick.exitAndLinkToStore", null)
+  }
+}
+
+if (cachedDownloadId.get() != null)
+  resetTimeout(TIME_TO_CHECK_DOWNLOAD_STATUS, delayedCheckDownloadStatus)
+
 function downloadAPK() {
+  resetTimeout(TIME_TO_CHECK_DOWNLOAD_STATUS, delayedCheckDownloadStatus)
+
   if (getDownloadedId() != null && queryDownloadStatus(getDownloadedId()) == DOWNLOAD_STATUS_SUCCESSFUL)
     return customStatusHandlers[DOWNLOAD_STATUS_SUCCESSFUL](getDownloadedId())
 
@@ -114,6 +135,7 @@ function downloadAPK() {
   let downloadId = enqueueDownload(getApkLinkWithCash(actualGameHash.get()), apkToInstall, "Download WTM RC", false, false)
   let status = queryDownloadStatus(downloadId)
 
+  cachedDownloadId.set(downloadId)
   customStatusHandlers[status](downloadId)
 }
 

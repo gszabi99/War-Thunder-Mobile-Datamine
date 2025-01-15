@@ -25,6 +25,26 @@
     "body_top": {},
     "body_bottom": {},
     "ship_hull": {},
+    "body_NN_front": {
+      "template": "body_#15#_front",
+      "externalArmorForHitDecals": false
+    },
+    "body_NN_back": {
+      "template": "body_#15#_back",
+      "externalArmorForHitDecals": false
+    },
+    "body_NN_side": {
+      "template": "body_#15#_side",
+      "externalArmorForHitDecals": false
+    },
+    "body_NN_top": {
+      "template": "body_#15#_top",
+      "externalArmorForHitDecals": false
+    },
+    "body_NN_bottom": {
+      "template": "body_#15#_bottom",
+      "externalArmorForHitDecals": false
+    },
     "composite_armor_hull_NN": {
       "template": "composite_armor_hull_#30#"
     },

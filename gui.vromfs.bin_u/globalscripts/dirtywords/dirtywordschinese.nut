@@ -418,6 +418,10 @@ return {
     {
       langs = LANGS_CN
       list = {
+        ["P"] =
+          [
+            "PLA"
+          ],
         ["中"] =
           [
             "中国人民解放军"
@@ -641,8 +645,6 @@ return {
 
   forbiddennames = [
     { value = "b(vv|yy|w)d", langs = LANGS_CN }
-    { value = "\\bpla\\b", langs = LANGS_CN }
-    { value = "rnm", langs = LANGS_CN }
   ]
 
   badcombination = [

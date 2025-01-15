@@ -34,6 +34,7 @@ excludesdata =
     key = "h",
     arr =
     [
+      "hoary",
       "homochka",
     ]
   },
@@ -483,7 +484,6 @@ fouldata =
       "^put[ao]",
       "^pola[ck](|k)",
       "^poonani",
-      "^pr[1i](|c)",
       "^p[uv][5sz][5sz](|5|s|z)[135iley](|es)",
       "^pub[1ie](|c)",
       "^punal",
@@ -685,12 +685,13 @@ fouldata =
 
 badphrases =
 [
-  "[hн][iіï1İl](tll?|ll?t)[eеσ3]r"
+  "[hнg][iіï1İl](tll?|ll?t)[eеσ3]r"
   "n[il1][qg6]([qg6]?[e3]r|[qg6]a)"
 ]
 
 forbiddennames = [
   "hither"
+  "eichmann"
 ]
 
 badcombination =

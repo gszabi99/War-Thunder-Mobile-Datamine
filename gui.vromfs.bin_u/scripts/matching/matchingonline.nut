@@ -19,6 +19,7 @@ let { SERVER_ERROR_INVALID_VERSION, CLIENT_ERROR_CONNECTION_CLOSED } = require("
 let matching = require("%appGlobals/matching_api.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { isDownloadedFromSite } = require("%appGlobals/clientState/clientState.nut")
 
 isMatchingOnline(is_online_available())
 
@@ -29,16 +30,22 @@ subscribeFMsgBtns({
   })
   matchingExitGame = @(_) exitGame()
 
+  function exitAndLinkToStore (_) {
+    let url = dgs_get_settings()?.storeUrl
+    if (url != null)
+      shell_execute({ cmd = "action", file = url })
+    exitGame()
+  }
+
   function exitGameForUpdate(_) {
     if (is_ios)
       shell_execute({ cmd = "open", file = "itms-apps://itunes.apple.com/app/apple-store/id1577525428?mt=8" })
     else if (isDownloadedFromGooglePlay())
       shell_execute({ cmd = "action", file = $"market://details?id={getPackageName()}" })
-    else {
-      let url = dgs_get_settings()?.storeUrl
-      if (url != null)
-        shell_execute({ cmd = "action", file = url })
-    }
+    else if (isDownloadedFromSite)
+      eventbus_send("fMsgBox.onClick.tryToDownloadApkFromSite", null)
+    else
+      eventbus_send("fMsgBox.onClick.exitAndLinkToStore", null)
   }
 })
 
@@ -139,6 +146,17 @@ function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false) {
     }))
 }
 
+function exitForDownloadApkMsgBox(message) {
+  destroyConnectProgressMessages()
+  sendErrorBqEvent("Exit for download Apk")
+  openFMsgBox({
+    uid = "exitForDownloadApkMessageBox"
+    text = message
+    buttons = [{ id = "exit", eventId = "matchingExitGame", styleId = "PRIMARY", isDefault = true }]
+    isPersist = true
+  })
+}
+
 eventbus_subscribe("on_online_unavailable", function(_) {
   logMC("on_online_unavailable")
   isMatchingOnline(false)
@@ -159,6 +177,8 @@ eventbus_subscribe("exit_queue_with_msgbox", @(params)
 
 eventbus_subscribe("exit_with_msgbox", @(params)
   logoutWithMsgBox(params.reason, params?.message, params.reasonDomain, true))
+
+eventbus_subscribe("exit_for_download_apk", @(params) exitForDownloadApkMsgBox(params.message))
 
 register_command(
   @() logoutWithMsgBox(SERVER_ERROR_INVALID_VERSION, "Test invalid version", null, false),

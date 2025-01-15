@@ -9,7 +9,7 @@ let { getScaledFont, scaleFontWithTransform } = require("%globalsDarg/fontScale.
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
-let { touchButtonSize, borderWidth, btnBgColor, getSvgImage, imageColor, imageDisabledColor,
+let { touchButtonSize, borderWidth, btnBgColor, btnBgColorAlphablend, imageColor, imageDisabledColor,
   borderColor, borderColorPushed, borderNoAmmoColor, textColor, zoneRadiusX, zoneRadiusY
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
@@ -38,9 +38,6 @@ let { getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT } = require("%rGui/options/guiO
 let defImageSize = (0.75 * touchButtonSize).tointeger()
 let weaponNumberSize = (0.3 * touchButtonSize).tointeger()
 let wNumberColor = 0xFF1C9496
-
-let cooldownImgSize = (1.42 * touchButtonSize).tointeger()
-let actionBarCooldownImg = getSvgImage("controls_help_point", cooldownImgSize)
 
 let aimImgWidth = (0.8 * touchButtonSize).tointeger()
 let aimImgHeight = (0.44 * aimImgWidth).tointeger()
@@ -87,17 +84,13 @@ function mkActionItemProgress(itemValue, isAvailable) {
   let trigger = $"action_cd_finish_{id}"
   return {
     size = flex()
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    clipChildren = true
     children = {
-      size = [cooldownImgSize, cooldownImgSize]
+      size = flex()
       rendObj = ROBJ_PROGRESS_CIRCULAR
-      image = actionBarCooldownImg
-      fgColor = !isAvailable ? btnBgColor.noAmmo
-        : (itemValue?.broken ?? false) ? btnBgColor.broken
-        : btnBgColor.ready
-      bgColor = btnBgColor.empty
+      fgColor = !isAvailable ? btnBgColorAlphablend.noAmmo
+        : (itemValue?.broken ?? false) ? btnBgColorAlphablend.broken
+        : btnBgColorAlphablend.ready
+      bgColor = btnBgColorAlphablend.empty
       fValue = 1.0
       key = $"action_bg_{id}_{endTime}_{time}_{isAvailable}"
       animations = [

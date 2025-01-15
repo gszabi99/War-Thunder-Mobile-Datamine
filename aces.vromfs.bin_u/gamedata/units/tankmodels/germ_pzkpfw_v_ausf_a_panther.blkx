@@ -2912,6 +2912,18 @@
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_dunkelgelb_green_braun_blots_man*"
       }
+    },
+    "forest2": {
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_winter_lines*"
+      }
     }
   },
   "defaultDecals": {
@@ -3112,6 +3124,63 @@
       "decal3OppositeMirrored": false,
       "decal3WidthBox": 0.23386,
       "decal3Tex": "germany_numbers_8"
+    },
+    "forest2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.60257,
+        -6.80406e-8,
+        0.186116,
+        1.81618
+      ],
+      "decal0Line1": [
+        0.0758653,
+        -2.38261,
+        -1.06087,
+        5.21846
+      ],
+      "decal0Line2": [
+        -2.60257,
+        -8.26207e-8,
+        0.186117,
+        -0.816179
+      ],
+      "decal0Line3": [
+        0.0758655,
+        -2.3826,
+        1.06087,
+        5.21846
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.0651354,
+        0.407623,
+        -0.910824,
+        -1.7958
+      ],
+      "decal0CPNormDepth1": [
+        0.0651354,
+        0.407623,
+        0.910824,
+        -1.7958
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.383257
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.215318,
+      "decal0Tex": "back_16"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "battleHideNodes": {

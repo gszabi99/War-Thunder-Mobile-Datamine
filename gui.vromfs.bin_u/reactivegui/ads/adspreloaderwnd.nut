@@ -22,7 +22,7 @@ hasAdsPreloadError.subscribe(function(v) {
   if (!v || !isOpenedAdsPreloaderWnd.get() || !!debugAdsWndParams.get())
     return
   closeAdsPreloader()
-  openMsgBox({ text = loc("error/googleplay/GP_SERVICE_UNAVAILABLE") })
+  openMsgBox({ text = loc("error/ads/fail") })
 })
 
 isLoaded.subscribe(function(v) {

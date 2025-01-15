@@ -617,7 +617,9 @@ return {
     },
     "germ_flakpanzer_IV_Ostwind_2_reskin": {
       "": "ger_camo_dunkelgelb",
-      "forest": "ger_camo_dunkelgelb_green_braun_blots_man"
+      "forest": "ger_camo_dunkelgelb_green_braun_blots_man",
+      "forest2": "ger_camo_dunkelgelb_green",
+      "winter": "ger_camo_winter_lines"
     },
     "germ_flakpanzer_IV_Ostwind_reskin": {
       "": "ger_camo_dunkelgelb_green",
@@ -756,7 +758,9 @@ return {
     },
     "germ_panzerbefelhswagen_jagdpanther": {
       "": "ger_camo_dunkelgelb",
-      "forest": "ger_camo_dunkelgelb_green_braun_blots_man"
+      "forest": "ger_camo_dunkelgelb_green_braun_blots_man",
+      "forest2": "ger_camo_dunkelgelb_green",
+      "winter": "ger_camo_winter_lines"
     },
     "germ_panzerjager_nashorn": {
       "": "ger_camo_dunkelgelb",
@@ -842,7 +846,9 @@ return {
     },
     "germ_pzkpfw_VI_ausf_b_tiger_IIp_reskin2": {
       "": "ger_camo_dunkelgelb",
-      "forest": "ger_camo_dunkelgelb_green_braun_blots_man"
+      "forest": "ger_camo_dunkelgelb_green_braun_blots_man",
+      "forest2": "ger_camo_dunkelgelb_green",
+      "winter": "ger_camo_winter_lines"
     },
     "germ_pzkpfw_VI_ausf_e_tiger": {
       "": "ger_camo_dunkelgelb_green",
@@ -862,7 +868,9 @@ return {
     },
     "germ_pzkpfw_V_ausf_a_panther": {
       "": "ger_camo_dunkelgelb",
-      "forest": "ger_camo_dunkelgelb_green_braun_blots_man"
+      "forest": "ger_camo_dunkelgelb_green_braun_blots_man",
+      "forest2": "ger_camo_dunkelgelb_green",
+      "winter": "ger_camo_winter_lines"
     },
     "germ_pzkpfw_V_ausf_d_panther": {
       "": "ger_camo_dunkelgelb",
@@ -1106,6 +1114,10 @@ return {
     "it_breda_52_autocannone": {
       "": "ann_camo",
       "forest": "it_camo_olive_green"
+    },
+    "it_cruiser_zara_class": {
+      "": "it_camo_blackgreen_deforming",
+      "factory": "camo_redwhite_stripes"
     },
     "it_fiat_6614_106sr": {
       "": "it_camo_olive_green",
@@ -1568,6 +1580,9 @@ return {
     },
     "tbd-1_1938": {
       "": "usa_tbd_1_1938"
+    },
+    "tis_ma": {
+      "": "ussr_la_7"
     },
     "tu-1": {
       "": "ussr_la_11_standard",
@@ -2459,6 +2474,10 @@ return {
       "forest": "ussr_camo_fiction_var1",
       "winter": "ussr_camo_winter_white_olive"
     },
+    "ussr_object_775": {
+      "": "se_camo_winter_bicolor",
+      "forest": "ussr_camo_green"
+    },
     "ussr_object_906": {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_dkgreen_ltgreen_brown"
@@ -2625,6 +2644,10 @@ return {
       "fiction": "us_t32_akai_victory",
       "winter": "ussr_camo_winter"
     },
+    "ussr_t_55_am": {
+      "": "se_camo_winter_bicolor",
+      "forest": "ussr_camo_green"
+    },
     "ussr_t_55_amd_1": {
       "": "ussr_camo_green",
       "desert": "ussr_modern_desert",
@@ -2638,6 +2661,10 @@ return {
     "ussr_t_62": {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_winter_lines"
+    },
+    "ussr_t_62m1": {
+      "": "se_camo_winter_bicolor",
+      "forest": "ussr_camo_green"
     },
     "ussr_t_64_b_1984": {
       "": "ussr_camo_green",
@@ -2708,6 +2735,10 @@ return {
       "desert": "ussr_modern_desert",
       "forest": "ussr_camo_fiction_var1",
       "winter": "ussr_camo_winter_white_olive"
+    },
+    "ussr_zsu_37_2_reskin3": {
+      "": "se_camo_winter_bicolor",
+      "forest": "ussr_camo_green"
     },
     "ussr_zsu_37_reskin": {
       "": "ussr_camo_green",

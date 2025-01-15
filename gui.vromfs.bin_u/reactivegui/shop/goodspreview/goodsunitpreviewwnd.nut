@@ -63,6 +63,7 @@ let isWindowAttached = Watched(false)
 let needShowUi = Watched(false)
 let skipAnimsOnce = Watched(false)
 let openCount = Computed(@() previewType.value == GPT_UNIT || previewType.value == GPT_BLUEPRINT ? openPreviewCount.get() : 0)
+let needScroll = Computed(@() (previewGoods.get()?.units.len() ?? 0) + (previewGoods.get()?.unitUpgrades.len() ?? 0) > 8)
 
 //anim pack info
 let aTimePackInfoStart = aTimePackNameFull
@@ -531,8 +532,8 @@ let leftBlock = @(){
               children = u
             })
       }
-    : previewGoodsUnit.get()?.platoonUnits.len() == 0 ? leftBlockSingleUnit : leftBlockPlatoon
-
+    : previewGoodsUnit.get()?.platoonUnits.len() == 0 ? leftBlockSingleUnit
+    : leftBlockPlatoon
 }
 
 let previewWnd = @() {
@@ -543,6 +544,7 @@ let previewWnd = @() {
   flow = FLOW_VERTICAL
   gap = verticalGap
   behavior = HangarCameraControl
+  touchMarginPriority = TOUCH_BACKGROUND
   stopMouse = true
   stopHotkeys = true
 
@@ -581,13 +583,14 @@ let previewWnd = @() {
           }.__update(fontSmall)
           : { watch = previewGoods}
         @() {
-          watch = [previewGoodsUnit, schRewards, previewGoods, activeOffer]
+          watch = [previewGoodsUnit, schRewards, previewGoods, activeOffer, needScroll]
           size = flex()
           children = [
             {
               size = [unitPlateSizeSingle[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
               children = [
-                pannableArea(leftBlock, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+                !needScroll.get() ? leftBlock
+                  : pannableArea(leftBlock, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
                 scrollArrowsBlock
               ]
             }

@@ -33,7 +33,7 @@ let CS_DECORATORS = CS_SMALL.__merge({
 })
 
 let maxDecInRow = 9
-let columns = min(contentWidthFull / (gap + squareSize[0]), maxDecInRow)
+let columns = min((contentWidthFull / (gap + squareSize[0])).tointeger(), maxDecInRow)
 
 let selectedDecorator = Watched(chosenNickFrame.value?.name)
 
