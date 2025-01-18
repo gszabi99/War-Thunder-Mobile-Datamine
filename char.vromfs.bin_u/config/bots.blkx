@@ -131,7 +131,7 @@
         ],
         "aircraft": [
           {
-            "name": "p-51d-5",
+            "name": "p-51d-20-na",
             "weight": 1.0,
             "country": "usa"
           },
@@ -154,7 +154,7 @@
         ],
         "aircraft": [
           {
-            "name": "f4u-1c",
+            "name": "f4u-4b",
             "weight": 1.0,
             "country": "usa"
           },
@@ -752,6 +752,74 @@
             "name": "il_centurion_shot_kal_gimel",
             "weight": 1.0,
             "country": "israel"
+          }
+        ]
+      },
+      {
+        "range": [
+          9,
+          50
+        ],
+        "tank": [
+          {
+            "name": "ussr_t_72a",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_t_64a_1971",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "us_mbt_70",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m60a3_tts",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "germ_leopard_2k",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_kpz_70",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "uk_chieftain_mk_10",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "uk_olifant_mk_2",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "cn_ztz_96",
+            "weight": 1.0,
+            "country": "china"
+          },
+          {
+            "name": "cn_cm11",
+            "weight": 1.0,
+            "country": "china"
+          },
+          {
+            "name": "sw_cv_90105_tml",
+            "weight": 1.0,
+            "country": "sweden"
+          },
+          {
+            "name": "sw_strv_105",
+            "weight": 1.0,
+            "country": "sweden"
           }
         ]
       }

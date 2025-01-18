@@ -1,11 +1,13 @@
 from "%scripts/dagui_natives.nut" import set_presence_to_player
 from "%scripts/dagui_library.nut" import *
+let { format } = require("string")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { destroy_session } = require("multiplayer")
 let { loadJson, saveJson } = require("%sqstd/json.nut")
 let { register_command } = require("console")
 let { file_exists } = require("dagor.fs")
 let { resetTimeout } = require("dagor.workcycle")
+let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
 let { needLogoutAfterSession, startLogout } = require("%scripts/login/logout.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -74,10 +76,16 @@ function loadDebriefing(fileName) {
   return true
 }
 
+let function getTimestampStr() {
+  let t = unixtime_to_local_timetbl(get_local_unixtime())
+  return format("%02d%02d%02d_%02d%02d%02d", t.year, t.month + 1, t.day, t.hour, t.min, t.sec)
+}
+
 const SAVE_FILE = "wtmDebriefingData.json"
 register_command(@() saveDebriefing(SAVE_FILE), "debriefing.debriefing_save")
 register_command(@() loadDebriefing(SAVE_FILE), "debriefing.debriefing_load")
 register_command(@(fileName) saveDebriefing(fileName), "debriefing.debriefing_save_by_name")
 register_command(@(fileName) loadDebriefing(fileName), "debriefing.debriefing_load_by_name")
+register_command(@() saveDebriefing($"wtmDebriefingData_{getTimestampStr()}.json"), "debriefing.debriefing_save_with_timestamp")
 
 eventbus_subscribe("Debriefing_CloseInDagui", @(_) closeDebriefing())

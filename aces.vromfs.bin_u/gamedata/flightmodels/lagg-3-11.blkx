@@ -104,7 +104,7 @@
     "Range": 556.0
   },
   "Sound": {
-    "Engine": "engine_bomber_radial",
+    "Engine": "engine_v12",
     "gun": "gun_yak3"
   },
   "turbulence": {

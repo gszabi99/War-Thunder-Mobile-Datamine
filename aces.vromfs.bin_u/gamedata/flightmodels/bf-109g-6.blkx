@@ -2,11 +2,6 @@
   "model": "bf_109g_6",
   "fmFile": "fm/bf-109g-6.blk",
   "useTouchTargeting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,

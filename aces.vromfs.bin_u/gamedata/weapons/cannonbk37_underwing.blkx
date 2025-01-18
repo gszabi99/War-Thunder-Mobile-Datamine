@@ -409,7 +409,7 @@
       }
     }
   ],
-  "bk37_antitank": {
+  "bk37_armor_targets": {
     "bullet": {
       "mass": 0.41,
       "caliber": 0.037,
@@ -603,7 +603,7 @@
       }
     }
   },
-  "bk37_antibomber": {
+  "bk37_air_targets": {
     "bullet": {
       "mass": 0.55,
       "caliber": 0.037,

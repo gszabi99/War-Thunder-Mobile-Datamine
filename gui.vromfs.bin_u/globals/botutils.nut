@@ -28,7 +28,7 @@ function calcUnitClassByUnitTags(tags, defValue) {
 function genBotCommonStats(name, unitName, unitCfg, defLevel) {
   let playerHash = name.hash()
   let unitHash = unitName.hash()
-  let avatars = serverConfigs.value?.allDecorators.filter(@(dec) dec.dType == "avatar")
+  let avatars = serverConfigs.get()?.allDecorators.filter(@(dec) dec.dType == "avatar" && !(dec?.isHiddenForBot ?? false))
   let { tags = null, mRank = unitCfg?.mRank, isPremium = unitCfg?.isPremium ?? false } = get_unittags_blk()?[unitName]
   return {
     level = unitCfg?.rank ?? defLevel

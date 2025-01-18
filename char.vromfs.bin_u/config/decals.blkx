@@ -63,6 +63,7 @@
   "uk_numbers_1": {},
   "uk_numbers_2": {},
   "uk_numbers_3": {},
+  "uk_numbers_4": {},
   "uk_numbers_5": {},
   "uk_numbers_6": {},
   "uk_numbers_7": {},
@@ -106,6 +107,7 @@
   "ussr_12th_guards_tank_corps": {},
   "ussr_numbers_red_0": {},
   "ussr_numbers_red_1": {},
+  "ussr_numbers_red_2": {},
   "ussr_numbers_red_5": {},
   "ussr_numbers_0": {},
   "ussr_numbers_1": {},
@@ -209,5 +211,11 @@
   "flag_austria": {},
   "jp_71st_tank_reg": {},
   "jp_3rd_tank_bat": {},
-  "uk_tank_weight_15": {}
+  "uk_tank_weight_15": {},
+  "china_numbers_1": {},
+  "china_numbers_2": {},
+  "china_numbers_3": {},
+  "china_numbers_9": {},
+  "decal_215": {},
+  "uk_79_armoured_division": {}
 }

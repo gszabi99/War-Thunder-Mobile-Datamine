@@ -646,8 +646,4 @@ return {
   forbiddennames = [
     { value = "b(vv|yy|w)d", langs = LANGS_CN }
   ]
-
-  badcombination = [
-    "希 特 勒"
-  ]
 }

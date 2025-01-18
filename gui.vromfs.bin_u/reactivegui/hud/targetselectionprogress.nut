@@ -4,6 +4,7 @@ let { get_mission_time } = require("mission")
 let { eventbus_subscribe } = require("eventbus")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { targetUnitName } = require("%rGui/hudState.nut")
+let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 let color = 0xFFFFFFFF
 let cooldownColor = 0xFFB0B0B0
@@ -34,16 +35,23 @@ eventbus_subscribe("on_asm_capture:show", function(data) {
   asmCaptureTime.set(lockTime)
 })
 
-eventbus_subscribe("on_asm_capture:hide", function(_) {
+function hide_asm() {
   asmCaptureEndTime.set(0.0)
   asmCaptureTime.set(0.0)
-})
+}
 
-eventbus_subscribe("on_delayed_target_select:hide", function(_) {
+function hide_delayed_target_select() {
   cooldownEndTime.set(0.0)
   asmCaptureEndTime.set(0.0)
   showTargetName.set(false)
+}
+
+isInBattle.subscribe(function(_) {
+  hide_asm()
+  hide_delayed_target_select()
 })
+eventbus_subscribe("on_asm_capture:hide", @(_) hide_asm())
+eventbus_subscribe("on_delayed_target_select:hide", @(_) hide_delayed_target_select())
 
 let mkTargetCorner = @(cdLeft, delay, ovr) {
   rendObj = ROBJ_PROGRESS_CIRCULAR

@@ -633,6 +633,7 @@
 "152mm_9m123f";"9M123F";"9M123F";"9M123F";"9M123F";"9M123F";"9М123Ф";"9М123Ф";"9M123F";"9M123F";"9M123F";"9M123F";"9M123F";"9M123F";"9M123F";"9M123F";"9M123F 菊\t花";"9M123F";"9M123F 菊\t花";;
 "130mm_starstreak_hvm";"Starstreak HVM";"Starstreak HVM";"Starstreak HVM";"Starstreak HVM";"Starstreak HVM";"Starstreak HVM";"Starstreak HVM";"Starstreak HVM";"Starstreak HVM";"Starstreak HVM";"Starstreak HVM";"Starstreak HVM";"Starstreak HVM";"Starstreak HVM";"스타스트릭 HVM";"星\t痕 高\t速\t导\t弹";"スターストリーク HVM";"星\t光 高\t速\t飛\t彈";;
 "136mm_k3s_hot";"HOT";"HOT";"HOT";"HOT";"HOT";"HOT";"HOT";"HOT";"HOT";"HOT";"HOT";"HOT";"HOT";"HOT";"HOT";"HOT";"HOT";"HOT";;
+"150mm_k3s_hot_2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";"HOT-2";;
 "130mm_9m114";"9M114";"9M114";"9M114";"9M114";"9M114";"9M114";"9M114";"9M114";"9M114";"9M114";"9M114";"9M114";"9M114";"9M114";"9M114";"9M114 蚕\t茧";"9M114";"9M114 繭";;
 "130mm_9m120";"9M120";"9M120";"9M120";"9M120";"9M120";"9M120";"9M120";"9M120";"9M120";"9M120";"9M120";"9M120";"9M120";"9M120";"9M120";"9M120 攻\t击";"9M120";"9M120 衝\t鋒";;
 "130mm_9m120f_1";"9M120F-1";"9M120F-1";"9M120F-1";"9M120F-1";"9M120F-1";"9M120Ф-1";"9M120Ф-1";"9M120F-1";"9M120F-1";"9M120F-1";"9M120F-1";"9M120F-1";"9M120F-1";"9M120F-1";"9M120F-1";"9M120F-1 攻\t击";"9M120F-1";"9M120F-1 衝\t鋒";;
@@ -829,7 +830,9 @@
 "105mm_TYPE83_APDS";"Type-83 APDS";"Type-83 APDS";"APDS Tipo 83";"Typ 83 APDS";"APDS Tipo 83";"Type-83 APDS";"Type-83 APDS";"APDS Typ 83";"Type-83 APDS";"Type-83 APDS";"Typ 83 APDS";"Type-83 APDS";"Type-83 APDS";"Type-83 APDS";"83식 분리철갑탄";"DTW1-105";"Type-83 APDS";"DTW1-105";;
 "105mm_TYPE83_HEAT";"Type-83 HEAT";"Type-83 HEAT";"HEAT Tipo 83";"Typ 83 HEAT";"HEAT Tipo 83";"Type-83 HEAT";"Type-83 HEAT";"HEAT Typ 83";"Type-83 HEAT";"Type-83 HEAT";"Typ 83 HEAT";"Type-83 HEAT";"Type-83 HEAT";"Type-83 HEAT";"83식 대전차고폭탄";"DTP1-105";"Type-83 HEAT";"83 式\t反\t戰\t車\t高\t爆\t彈";;
 "105mm_TYPE83_HESH";"Type-83 HESH";"Type-83 HESH";"HESH Tipo 83";"Typ 83 HESH";"HEAT Tipo 83";"Type-83 HESH";"Type-83 HESH";"HESH Typ 83";"Type-83 HESH";"Type-83 HESH";"Typ 83 HESH";"Type-83 HESH";"Type-83 HESH";"Type-83 HESH";"83식 점착유탄";"DTJ1-105";"Type-83 HESH";"DTJ1-105";;
+"105mm_dtw2_105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";"DTW2-105";;
 "105mm_dtb_1_he";"DTB-1";"DTB-1";"DTB-1";"DTB-1 ";"DTB-1 ";"DTB-1";"DTB-1 ";"DTB-1";"DTB-1";"DTB-1";"DTB-1";"DTB-1";"DTB-1";"DTB-1";"DTB-1 ";"DTB-1";"DTB-1";"DTB1";;
+"105mm_btm_1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";"BTM1";;
 "28_20mm_pzgr41";"2.8/2 cm Pzgr.41";"2.8/2 cm Pzgr.41";"2.8/2cm Pzgr.41";"2,8/2 cm Pzgr.41";"2.8/2cm Pzgr.41";"2.8/2cm Pzgr.41";"2.8/2cm Pzgr.41";"2.8/2cm Pzgr.41";"2.8/2cm Pzgr.41";"2.8/2 cm Pzgr.41";"2,8/2 cm Pzgr 41";"2.8/2 cm Pzgr.41";"2.8/2 cm/Pzgr.41";"2.8/2 ซม. Pzgr.41";"2.8/2cm Pzgr.41";"PzGr. 41";"2.8/2cm Pzgr.41";"PzGr. 41";;
 "120mm_ke_w";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";"KE-W";;
 "120mm_m830a1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";"M830A1";;
@@ -892,6 +895,7 @@
 "105mm_ofl_105_f1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";"OFL 105 F1";;
 "105mm_ofl_105_g1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";"OFL 105 G1";;
 "105mm_oe_f1_mle60";"OE 105 F1 Mle.60";"OE 105 F1 Mle.60";"OE 105 F1 Mod.60";"OE 105 F1 Mle.60";"OE 105 F1 Mle.60";"OE 105 F1 Mle.60";"OE 105 F1 Mle.60";"OE 105 F1 Mle.60";"OE 105 F1 Mle.60";"OE 105 F1 Mle.60";"OE 105 F1 model 60";"OE 105 F1 Mle.60";"OE 105 F1 Mle.60";"OE 105 F1 Mle.60";"OE 105 F1 Mle.60";"OE 105 F1 60 型";"OE 105 F1 Mle.60";"OE 105 F1 60 型";;
+"105mm_oe_60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";"OE 105-60";;
 "105mm_ofph_f1";"OFPH 105 F1";"OFPH 105 F1";"OFPH 105 F1";"OFPH 105 F1";"OFPH 105 F1";"OFPH 105 F1";"OFPH 105 F1";"OFPH 105 F1";"OFPH 105 F1";"OFPH 105 F1";"OFPH 105 F1";"OFPH 105 F1";"OFPH 105 F1";"OFPH 105 F1";"OFPH 105 F1";"OFUM PH 105 F1";"OFPH 105 F1";"OFUM PH 105 F1";;
 "90mm_sa45_apc";"Obus de rupture";"Obus de rupture";"Obus de rupture";"Obus de rupture";"Obus de rupture";"Obus de rupture";"Obus de rupture";"Obus de rupture";"Obus de rutura";"Obus de rupture";"Obus de rupture";"Obus de rupture";"Obus de rupture";"Obus de rupture";"Obus de rupture";"穿\t甲\t弹";"Obus de rupture";"穿\t甲\t彈";;
 "90mm_sa45_he";"Obus explosif";"Obus explosif";"Obus explosif";"Obus explosif";"Obus explosif";"Obus explosif";"Obus explosif";"Obus explosif";"Obus explosivo";"Obus explosif";"Obus explosif";"Obus explosif";"Obus explosif";"Obus explosif";"Obus explosif";"榴\t弹";"Obus explosif";"高\t爆\t彈";;
@@ -1071,6 +1075,7 @@
 "152mm_m69_apds_fs";"APDS-FS";"APDS-FS";"APDS-FS";"APDS-FS";"APDS-FS";"ОБПС";"APDS-FS";"APDS-FS";"APDS-FS";"APDS-FS";"APDS-FS";"APDS-FS";"APDS-FS";"APDS-FS";"APDS-FS";"尾\t翼\t稳\t定\t脱\t壳\t穿\t甲\t弹";"APDS-FS";"APDS-FS";;
 "152mm_m69_heat";"HEAT-FS";"HEAT-FS";"HEAT-FS";"HEAT-FS";"HEAT-FS";"КС";"HEAT-FS";"HEAT-FS";"HEAT-FS";"HEAT-FS";"HEAT-FS";"HEAT-FS";"HEAT-FS";"HEAT-FS";"HEAT-FS";"尾\t翼\t稳\t定\t破\t甲\t弹";"HEAT-FS";"尾\t翼\t稳\t定\t反\t戰\t車\t高\t爆\t彈";;
 "132mm_m_13";"M-13";"M-13";"M-13";"M-13";"M-13";"М-13";"M-13";"M-13";"M-13";"M-13";"M-13";"M-13";"M-13";"M-13";"M-13";"M-13";"M-13";"М\t-13";;
+"100mm_aps_03";"APS03";"APS03";"APS03";"APS03";"APS03";"APS03";"APS03";"APS03";"APS03";"APS03";"APS03";"APS03";"APS03";"APS03";"APS03";"APS03";"APS03";"APS03";;
 "100mm_3bk_17m";"3BK17M";"3BK17M";"3BK17M";"3BK17M";"3BK17M";"3БК17М";"3BK17M";"3BK17M";"3BK17M";"3BK17M";"3BK17M";"3BK17M";"3BK17M";"3BK17M";"3BK17M";"3BK17M";"3BK17M";"3BK17M";;
 "100mm_3bm25";"3BM25";"3BM25";"3BM25";"3BM25";"3BM25";"3БМ25";"3BM25";"3BM25";"3BM25";"3BM25";"3BM25";"3BM25";"3BM25";"3BM25";"3BM25";"3BM25";"3BM25";"3BM25";;
 "100mm_3of_32";"3OF32";"3OF32";"3OF32";"3OF32";"3OF32";"3ОФ32";"3ОФ32";"3OF32";"3OF32";"3OF32";"3OF32";"3OF32";"3OF32";"3OF32";"3OF32";"3OF32";"3OF32";"3OF32";;

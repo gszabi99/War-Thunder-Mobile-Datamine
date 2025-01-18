@@ -28,6 +28,7 @@ let needShowExitToUpdate = keepref(Computed(@() needExitToUpdate.get() && isOutO
 let isSuggested = hardPersistWatched("suggestUpdate.isSuggested", false)
 let needProcessUpdate = keepref(Computed(@() needSuggestToUpdate.get()
   && can_view_update_suggestion.get()
+  && isInMenu.get()
   && !isSuggested.get()
   && !needExitToUpdate.get()
   && isOutOfBattleAndResults.get()))

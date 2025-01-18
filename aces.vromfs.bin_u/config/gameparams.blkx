@@ -15548,6 +15548,86 @@
         {
           "name": "wheel_l_03_",
           "modelNames": "type_87_rcv_prot"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "ztl_11"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "ztl_11"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "ztl_11"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "ztl_11"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "ztl_11"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "ztl_11"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "ztl_11"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "ztl_11"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "vextra_105"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "vextra_105"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "vextra_105"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "vextra_105"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "vextra_105"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "vextra_105"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "vextra_105"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "vextra_105"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "vcac_mephisto"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "vcac_mephisto"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "vcac_mephisto"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "vcac_mephisto"
         }
       ]
     },

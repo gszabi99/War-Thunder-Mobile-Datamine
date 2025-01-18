@@ -613,6 +613,24 @@
         "mRank": 2
       }
     },
+    "pkg_us_battleship_tennessee": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_jp_destroyer_rckt_hatsuyuki": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_jp_cruiser_sendai": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -941,6 +959,24 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 2
+      }
+    },
+    "pkg_uk_centurion_mk_5_avre_era": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_fr_amx_40": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_cn_ztz_96a": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 10
       }
     },
     "pkg_ussr_object_775": {
@@ -1489,7 +1525,8 @@
     "flag": [
       "--norespatch",
       "--noupdate",
-      "--verbose"
+      "--verbose",
+      "--force_current"
     ],
     "android": {
       "flag": "--notime"
@@ -1514,7 +1551,6 @@
       "flag": [
         "--clear",
         "--onlypacks",
-        "--force_current",
         "--enable_tag",
         "update_vroms"
       ]
@@ -1528,7 +1564,6 @@
       "flag": [
         "--clear",
         "--onlypacks",
-        "--noversion",
         "--enable_tag",
         "min_core"
       ]
@@ -1542,8 +1577,7 @@
       "stopMetric": "background_addons_update_stop",
       "flag": [
         "--clear",
-        "--onlypacks",
-        "--noversion"
+        "--onlypacks"
       ]
     },
     "optional_game_resources": {
@@ -1961,6 +1995,21 @@
     }
   },
   "overrides": {
+    "mali_g720_xiaomi_k70_ultra_device_lost_check": {
+      "codename": [
+        "2407FRK8EC",
+        "2407FPN8EG"
+      ],
+      "vulkan": {
+        "preRotation": false
+      }
+    },
+    "adreno_xiaomi_pad_device_lost_check": {
+      "codename": "23043RP34G",
+      "graphics": {
+        "disableWaterEffectsTemporarily": true
+      }
+    },
     "xiaomi_11t": {
       "codename": "21081111RG",
       "vulkan": {

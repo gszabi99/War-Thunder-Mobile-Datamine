@@ -1,0 +1,23 @@
+{
+  "hideNodes": {
+    "node": [
+      "mk103",
+      "flare5",
+      "gun_75mm",
+      "75mm_bk",
+      "flare6",
+      "gun_37mm",
+      "37mm_bk",
+      "flare7"
+    ]
+  },
+  "hideDmParts": {
+    "node": [
+      "cannon3_dm",
+      "cannon4_dm",
+      "cover4_dm",
+      "cannon5_dm",
+      "cover5_dm"
+    ]
+  }
+}

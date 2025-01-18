@@ -11,6 +11,7 @@ let presentations = {
   season_13 = { color = 0xFF2E87D9 }
   season_14 = { color = 0xFF00A556 }
   season_15 = { color = 0xFF5C67FB, imageSizeMul = 2}
+  season_16 = { color = 0xFF85C523 }
 
   blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }

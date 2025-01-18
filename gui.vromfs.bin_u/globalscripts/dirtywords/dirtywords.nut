@@ -1,9 +1,11 @@
 from "%globalScripts/logs.nut" import *
 import regexp2
 import utf8
+from "string" import format
 from "auth_wt" import getCountryCode
 from "language" import getLocalLanguage
-from "%sqstd/string.nut" import utf8ToLower
+from "%sqstd/string.nut" import utf8ToLower, utf8CharToInt
+from "nameVisibility.nut" import isNameNormallyVisible, clearAllWhitespace, getUnicodeCharsArray
 
 //
 // Dirty Words checker.
@@ -335,15 +337,8 @@ function checkWord(word, isName) {
   return true
 }
 
-function getUnicodeCharsArray(str) {
-  let res = []
-  let utfStr = utf8(str)
-  for (local i = 0; i < utfStr.charCount(); i++) {
-    let char = utfStr.slice(i, i + 1)
-    res.append(char)
-  }
-  return res
-}
+let toCharcodeStr = @(c) format("\\u%04X", utf8CharToInt(c))
+let stringToUtf8CharCodesStr = @(str) "".join(getUnicodeCharsArray(str).map(toCharcodeStr))
 
 function getMaskedWord(w, maskChar = "*") {
   return "".join(array(utf8(w).charCount(), maskChar))
@@ -411,10 +406,23 @@ let checkPhrase = @(text) checkPhraseInternal(text, false)
 let isPhrasePassing = @(text) checkPhrase(text) == text
 
 // Returns censored version of username.
-let checkName = @(name) checkPhraseInternal(name, true)
+let checkName = function(name) {
+  if (!isNameNormallyVisible(name)) {
+    debugLogFunc?($"DirtyWordsFilter: Name visibility tricks detected: \"{stringToUtf8CharCodesStr(name)}\"")
+    return getMaskedWord(name)
+  }
+  let noWhitespaceName = clearAllWhitespace(name)
+  let stringsToCheck = [ noWhitespaceName ]
+  if (name != noWhitespaceName)
+    stringsToCheck.append(name)
+  foreach (str in stringsToCheck)
+    if (checkPhraseInternal(str, true) != str)
+      return getMaskedWord(name)
+  return name
+}
 
 // Checks that username is correct.
-let isNamePassing = @(name) checkName(name) == name
+let isNamePassing = @(name) name != "" && checkName(name) == name
 
 // Set debug logging func to enable debug mode, or null to disable it.
 function setDebugLogFunc(funcOrNull) {
@@ -444,6 +452,7 @@ return {
   isPhrasePassing
   checkName
   isNamePassing
+  clearAllWhitespace
   setDebugLogFunc
   debugDirtyWordsFilter
 }

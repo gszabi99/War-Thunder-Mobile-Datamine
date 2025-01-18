@@ -155,7 +155,7 @@ register_command(@() shift_all_offers_time(86400, "onCheatShiftTime"),
   "meta.gen_next_day_offer")
 register_command(@() debug_offer_generation_stats(curCampaign.value, "consolePrint"),
   "meta.debug_offer_generation_stats")
-foreach (ot in ["start", "gold", "collection", "sidegrade", "upgrade", "premAir", "branchAir", "whale", "blueprint", "startAir"]) {
+foreach (ot in ["start", "gold", "collection", "sidegrade", "upgrade", "premAir", "branchAir", "whale", "blueprint"]) {
   let offerType = ot
   register_command(@() generate_fixed_type_offer(curCampaign.value, offerType, "consolePrintResult"),
     $"meta.generate_offer_{offerType}")

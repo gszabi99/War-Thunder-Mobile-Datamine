@@ -723,8 +723,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object": "t1_ships_squad",
-          "target": "t2_ships_squad",
-          "object_var_value": 0
+          "target": "t2_ships_squad"
         }
       },
       "actions": {
@@ -894,16 +893,15 @@
                 1.0
               ],
               [
-                -3532.21,
-                1.0,
-                -3343.08
+                -3490.05,
+                0.999939,
+                -3500.0
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -1022,16 +1020,15 @@
                 1.0
               ],
               [
-                -1539.77,
+                -1613.75,
                 22.3755,
-                -3362.45
+                -3360.35
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -1054,16 +1051,15 @@
                 1.0
               ],
               [
-                -1236.12,
+                -1269.45,
                 22.5935,
-                -3374.15
+                -3359.3
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -1095,7 +1091,6 @@
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -1630,16 +1625,15 @@
                 1.0
               ],
               [
-                2936.68,
-                2.415,
-                289.412
+                3017.6,
+                2.41492,
+                270.39
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -1726,16 +1720,15 @@
                 1.0
               ],
               [
-                3548.98,
+                3526.0,
                 1.0,
-                1819.77
+                1809.4
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -1918,9 +1911,9 @@
                 1.0
               ],
               [
-                2502.16,
-                8.0312,
-                3201.15
+                2621.75,
+                8.03125,
+                3039.6
               ]
             ],
             "props": {
@@ -1950,9 +1943,9 @@
                 1.0
               ],
               [
-                2348.99,
+                2303.45,
                 24.5947,
-                2863.54
+                2922.95
               ]
             ],
             "props": {
@@ -1982,16 +1975,15 @@
                 1.0
               ],
               [
-                1963.59,
+                1922.05,
                 25.9868,
-                2944.42
+                2978.7
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -2014,9 +2006,9 @@
                 1.0
               ],
               [
-                1488.19,
+                1463.3,
                 1.0,
-                3139.01
+                3089.2
               ]
             ],
             "props": {
@@ -2078,16 +2070,15 @@
                 1.0
               ],
               [
-                299.188,
+                331.1,
                 10.4106,
-                3193.23
+                3225.3
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -2110,16 +2101,15 @@
                 1.0
               ],
               [
-                -169.291,
+                -86.25,
                 1.0,
-                3318.66
+                3351.5
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -2142,16 +2132,15 @@
                 1.0
               ],
               [
-                -461.291,
+                -385.55,
                 1.0,
-                3406.27
+                3436.35
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -2174,16 +2163,15 @@
                 1.0
               ],
               [
-                -980.47,
+                -1009.5,
                 1.0,
-                2907.51
+                2833.25
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -2206,16 +2194,15 @@
                 1.0
               ],
               [
-                -1603.98,
+                -1588.7,
                 1.0,
-                2807.86
+                2845.5
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -2776,16 +2763,15 @@
                 1.0
               ],
               [
-                4348.03,
-                36.5327,
-                3814.13
+                4157.85,
+                36.5331,
+                3889.9
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -2808,16 +2794,15 @@
                 1.0
               ],
               [
-                3897.61,
+                3827.05,
                 36.5327,
-                3781.48
+                3755.4
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -2840,16 +2825,15 @@
                 1.0
               ],
               [
-                3502.2,
+                3374.0,
                 34.1377,
-                3257.43
+                3412.75
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -2904,9 +2888,9 @@
                 1.0
               ],
               [
-                2510.7,
-                8.3179,
-                3199.05
+                2630.29,
+                8.31795,
+                3037.5
               ]
             ],
             "props": {
@@ -2936,9 +2920,9 @@
                 1.0
               ],
               [
-                2344.28,
+                2298.74,
                 23.9389,
-                2894.07
+                2953.48
               ]
             ],
             "props": {
@@ -2968,16 +2952,15 @@
                 1.0
               ],
               [
-                1961.72,
+                1915.7,
                 25.9238,
-                2936.79
+                2975.6
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -3000,9 +2983,9 @@
                 1.0
               ],
               [
-                1487.89,
+                1463.0,
                 1.0,
-                3133.17
+                3083.36
               ]
             ],
             "props": {
@@ -3064,16 +3047,15 @@
                 1.0
               ],
               [
-                291.411,
-                9.5122,
-                3183.29
+                297.95,
+                9.51221,
+                3165.7
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -3192,16 +3174,15 @@
                 1.0
               ],
               [
-                -129.292,
+                -92.465,
                 36.5327,
-                1474.95
+                1415.84
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -3384,16 +3365,15 @@
                 1.0
               ],
               [
-                -3228.8,
+                -3161.5,
                 1.0,
-                815.077
+                1019.45
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -3480,16 +3460,15 @@
                 1.0
               ],
               [
-                -2830.84,
+                -2944.1,
                 1.0,
-                -1691.65
+                -1764.65
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -3544,16 +3523,15 @@
                 1.0
               ],
               [
-                -3175.47,
+                -3202.95,
                 1.0,
-                -2790.05
+                -2792.4
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -3576,16 +3554,15 @@
                 1.0
               ],
               [
-                -3554.47,
-                36.5327,
-                -3437.67
+                -3531.9,
+                36.5328,
+                -3429.75
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -3640,16 +3617,15 @@
                 1.0
               ],
               [
-                -1485.38,
-                96.3604,
-                -3295.36
+                -1519.7,
+                96.3603,
+                -3372.2
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -4024,16 +4000,15 @@
                 1.0
               ],
               [
-                3281.41,
+                3294.1,
                 1.0,
-                -155.964
+                -175.5
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -4056,16 +4031,15 @@
                 1.0
               ],
               [
-                3220.49,
-                3.4453,
-                318.549
+                3073.7,
+                3.44531,
+                118.85
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -4402,16 +4376,15 @@
                 1.0
               ],
               [
-                -3589.24,
-                0.609398,
-                -3286.26
+                -3685.9,
+                0.609558,
+                -3374.55
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -4530,16 +4503,15 @@
                 1.0
               ],
               [
-                -2889.92,
+                -2935.2,
                 24.1074,
-                -1815.05
+                -1797.55
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5298,16 +5270,15 @@
                 1.0
               ],
               [
-                -1294.19,
+                -1270.0,
                 22.019,
-                -3376.81
+                -3354.6
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5362,16 +5333,15 @@
                 1.0
               ],
               [
-                -1959.87,
+                -2043.6,
                 11.5322,
-                -3073.02
+                -2965.9
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5458,16 +5428,15 @@
                 1.0
               ],
               [
-                -1228.49,
+                -1198.34,
                 1.0,
-                -1667.18
+                -1816.72
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5490,16 +5459,15 @@
                 1.0
               ],
               [
-                -1280.62,
+                -1310.84,
                 -0.0717773,
-                -1129.88
+                -1143.09
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5554,16 +5522,15 @@
                 1.0
               ],
               [
-                -918.068,
+                -938.731,
                 1.0,
-                -541.081
+                -573.324
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5740,16 +5707,15 @@
                 1.0
               ],
               [
-                -3471.1,
-                4.6142,
-                -3359.85
+                -3429.75,
+                4.61401,
+                -3529.4
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5804,16 +5770,15 @@
                 1.0
               ],
               [
-                -2470.15,
+                -2498.85,
                 17.9714,
-                -3141.05
+                -3188.95
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -5836,16 +5801,15 @@
                 1.0
               ],
               [
-                -2106.19,
+                -2157.75,
                 20.0473,
-                -2912.78
+                -2872.1
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -6028,16 +5992,15 @@
                 1.0
               ],
               [
-                -1214.07,
+                -1242.71,
                 1.0,
-                -1414.51
+                -1307.93
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -6060,16 +6023,15 @@
                 1.0
               ],
               [
-                -1274.6,
+                -1297.37,
                 1.0,
-                -984.793
+                -981.854
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -6444,16 +6406,15 @@
                 1.0
               ],
               [
-                -555.548,
+                -510.85,
                 1.0,
-                2706.47
+                2685.3
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7078,16 +7039,15 @@
                 1.0
               ],
               [
-                -3876.32,
+                -3733.85,
                 -37.8728,
-                -3541.39
+                -3448.5
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7142,16 +7102,15 @@
                 1.0
               ],
               [
-                -3095.21,
+                -3226.5,
                 27.7573,
-                -2772.5
+                -2774.9
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7206,16 +7165,15 @@
                 1.0
               ],
               [
-                -2931.95,
-                23.3056,
-                -1921.84
+                -2946.35,
+                23.3055,
+                -1900.9
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7407,7 +7365,6 @@
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7718,9 +7675,9 @@
                 1.0
               ],
               [
-                1408.18,
+                1383.29,
                 4.3559,
-                3152.71
+                3102.9
               ]
             ],
             "props": {
@@ -7750,16 +7707,15 @@
                 1.0
               ],
               [
-                1808.73,
-                29.5434,
-                3173.71
+                1715.7,
+                29.5435,
+                3014.55
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7782,16 +7738,15 @@
                 1.0
               ],
               [
-                2064.54,
+                2052.15,
                 24.9087,
-                2866.46
+                2983.15
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7814,16 +7769,15 @@
                 1.0
               ],
               [
-                2457.04,
-                4.7934,
-                3042.46
+                2460.25,
+                4.79321,
+                3004.55
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7846,16 +7800,15 @@
                 1.0
               ],
               [
-                2563.11,
+                2712.07,
                 12.0596,
-                3267.71
+                3049.15
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7878,16 +7831,15 @@
                 1.0
               ],
               [
-                2941.25,
+                2871.3,
                 18.9722,
-                3192.77
+                3001.32
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -7910,16 +7862,15 @@
                 1.0
               ],
               [
-                3303.09,
+                3233.0,
                 12.4214,
-                2619.25
+                2630.99
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8006,16 +7957,15 @@
                 1.0
               ],
               [
-                3607.64,
+                3574.75,
                 1.0,
-                1829.94
+                1830.55
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8102,16 +8052,15 @@
                 1.0
               ],
               [
-                3060.89,
-                1.0,
-                240.009
+                3054.7,
+                0.999908,
+                200.89
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8550,16 +8499,15 @@
                 1.0
               ],
               [
-                984.815,
+                912.946,
                 25.751,
-                -2441.85
+                -2575.43
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8783,7 +8731,6 @@
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8806,16 +8753,15 @@
                 1.0
               ],
               [
-                -1346.98,
+                -1301.45,
                 22.009,
-                -3362.54
+                -3344.9
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8870,16 +8816,15 @@
                 1.0
               ],
               [
-                -2116.09,
+                -2101.3,
                 17.9619,
-                -2991.66
+                -2954.05
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8934,16 +8879,15 @@
                 1.0
               ],
               [
-                -1297.63,
+                -1159.23,
                 0.759766,
-                -1912.05
+                -1826.32
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -8998,16 +8942,15 @@
                 1.0
               ],
               [
-                -1296.5,
+                -1317.27,
                 1.0,
-                -1174.02
+                -1250.37
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9030,16 +8973,15 @@
                 1.0
               ],
               [
-                -1210.73,
+                -1192.98,
                 1.0,
-                -752.799
+                -725.812
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9216,16 +9158,15 @@
                 1.0
               ],
               [
-                4392.95,
+                4378.85,
                 1.0,
-                3838.79
+                3679.65
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9280,9 +9221,9 @@
                 1.0
               ],
               [
-                3787.25,
+                3755.95,
                 1.0,
-                3101.17
+                2958.15
               ]
             ],
             "props": {
@@ -9376,16 +9317,15 @@
                 1.0
               ],
               [
-                3486.03,
+                3487.9,
                 1.0,
-                1692.81
+                1786.65
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9696,16 +9636,15 @@
                 1.0
               ],
               [
-                2229.28,
+                2243.54,
                 1.0,
-                -1077.67
+                -1050.3
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -9728,16 +9667,15 @@
                 1.0
               ],
               [
-                2178.45,
+                2139.34,
                 1.0,
-                -747.14
+                -801.123
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10048,16 +9986,15 @@
                 1.0
               ],
               [
-                -201.896,
+                -199.759,
                 1.0,
-                1734.6
+                1668.89
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10240,16 +10177,15 @@
                 1.0
               ],
               [
-                1692.61,
-                21.885,
-                3105.11
+                1427.25,
+                21.8853,
+                3060.45
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10272,16 +10208,15 @@
                 1.0
               ],
               [
-                2015.55,
+                2033.35,
                 25.0984,
-                2884.65
+                2930.8
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10336,9 +10271,9 @@
                 1.0
               ],
               [
-                1386.46,
+                1370.9,
                 12.1514,
-                1742.46
+                1740.25
               ]
             ],
             "props": {
@@ -10400,16 +10335,15 @@
                 1.0
               ],
               [
-                370.77,
-                1.0,
-                748.419
+                389.1,
+                0.999268,
+                921.0
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10522,16 +10456,15 @@
                 1.0
               ],
               [
-                4522.43,
+                4312.9,
                 48.1431,
-                3883.5
+                3955.45
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10650,9 +10583,9 @@
                 1.0
               ],
               [
-                2547.74,
+                2667.33,
                 11.9397,
-                3234.84
+                3073.29
               ]
             ],
             "props": {
@@ -10682,9 +10615,9 @@
                 1.0
               ],
               [
-                2352.73,
+                2307.19,
                 23.3093,
-                2918.41
+                2977.82
               ]
             ],
             "props": {
@@ -10714,16 +10647,15 @@
                 1.0
               ],
               [
-                1985.22,
+                2031.85,
                 25.0483,
-                2861.39
+                2970.9
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10746,16 +10678,15 @@
                 1.0
               ],
               [
-                1723.91,
-                24.1147,
-                3118.03
+                1656.3,
+                24.1151,
+                3054.7
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -10778,9 +10709,9 @@
                 1.0
               ],
               [
-                1344.7,
+                1319.81,
                 21.2886,
-                3133.91
+                3084.1
               ]
             ],
             "props": {
@@ -10938,16 +10869,15 @@
                 1.0
               ],
               [
-                -123.02,
+                -71.8928,
                 1.0,
-                1671.6
+                1499.52
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -11226,16 +11156,15 @@
                 1.0
               ],
               [
-                -737.962,
+                -783.412,
                 27.216,
-                -765.425
+                -621.056
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -11546,16 +11475,15 @@
                 1.0
               ],
               [
-                2912.02,
+                3024.4,
                 -4.22021,
-                202.933
+                221.05
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -11578,16 +11506,15 @@
                 1.0
               ],
               [
-                3425.99,
+                3596.35,
                 1.0,
-                -235.369
+                -359.95
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -11610,16 +11537,15 @@
                 1.0
               ],
               [
-                3609.27,
+                3642.75,
                 -4.20264,
-                -607.654
+                -541.45
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -11892,16 +11818,15 @@
                 1.0
               ],
               [
-                4468.88,
+                4446.35,
                 57.6893,
-                3920.04
+                3727.95
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -11924,16 +11849,15 @@
                 1.0
               ],
               [
-                4459.23,
+                4447.45,
                 15.925,
-                3779.45
+                3675.95
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -11988,9 +11912,9 @@
                 1.0
               ],
               [
-                3801.4,
+                3770.1,
                 1.0,
-                3132.03
+                2989.01
               ]
             ],
             "props": {
@@ -12020,16 +11944,15 @@
                 1.0
               ],
               [
-                3574.11,
+                3435.55,
                 14.3667,
-                2604.89
+                2578.55
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -12148,16 +12071,15 @@
                 1.0
               ],
               [
-                3186.5,
-                1.0,
-                411.297
+                3168.58,
+                0.999878,
+                246.176
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -12180,16 +12102,15 @@
                 1.0
               ],
               [
-                3137.0,
+                3139.25,
                 1.0,
-                38.5918
+                81.95
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -12212,16 +12133,15 @@
                 1.0
               ],
               [
-                3347.47,
+                3389.3,
                 1.0,
-                -220.5
+                -210.3
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -12980,16 +12900,15 @@
                 1.0
               ],
               [
-                3244.63,
+                3155.1,
                 1.0,
-                607.83
+                425.8
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -13012,16 +12931,15 @@
                 1.0
               ],
               [
-                3628.68,
+                3622.4,
                 26.2871,
-                1317.34
+                1233.15
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -13044,16 +12962,15 @@
                 1.0
               ],
               [
-                3425.34,
+                3473.0,
                 1.0,
-                1858.01
+                1770.85
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -13204,16 +13121,15 @@
                 1.0
               ],
               [
-                1968.74,
+                1975.1,
                 1.0,
-                2789.53
+                2793.4
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -13268,9 +13184,9 @@
                 1.0
               ],
               [
-                1374.43,
+                1358.87,
                 11.6055,
-                1705.92
+                1703.71
               ]
             ],
             "props": {
@@ -13454,16 +13370,15 @@
                 1.0
               ],
               [
-                -3532.21,
-                1.0,
-                -3343.08
+                -3458.65,
+                1.00043,
+                -3507.95
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -14190,16 +14105,15 @@
                 1.0
               ],
               [
-                2936.68,
-                2.415,
-                289.412
+                2959.91,
+                2.4151,
+                273.232
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -14295,7 +14209,6 @@
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -14478,9 +14391,9 @@
                 1.0
               ],
               [
-                2502.16,
-                8.0312,
-                3201.15
+                2621.75,
+                8.03125,
+                3039.6
               ]
             ],
             "props": {
@@ -14510,9 +14423,9 @@
                 1.0
               ],
               [
-                2348.99,
+                2303.45,
                 24.5947,
-                2863.54
+                2922.95
               ]
             ],
             "props": {
@@ -14542,16 +14455,15 @@
                 1.0
               ],
               [
-                1963.59,
+                1920.7,
                 25.9868,
-                2944.42
+                2982.75
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -14574,9 +14486,9 @@
                 1.0
               ],
               [
-                1488.19,
+                1463.3,
                 1.0,
-                3139.01
+                3089.2
               ]
             ],
             "props": {
@@ -14638,16 +14550,15 @@
                 1.0
               ],
               [
-                299.188,
+                307.2,
                 10.4106,
-                3193.23
+                3207.4
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -14670,16 +14581,15 @@
                 1.0
               ],
               [
-                -169.291,
+                -149.95,
                 1.0,
-                3318.66
+                3347.35
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -14702,16 +14612,15 @@
                 1.0
               ],
               [
-                -461.291,
+                -372.7,
                 1.0,
-                3406.27
+                3409.7
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -14734,16 +14643,15 @@
                 1.0
               ],
               [
-                -980.47,
+                -1043.55,
                 1.0,
-                2907.51
+                2837.9
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -15336,16 +15244,15 @@
                 1.0
               ],
               [
-                4348.03,
-                36.5327,
-                3814.13
+                4182.4,
+                36.533,
+                3812.3
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -15368,16 +15275,15 @@
                 1.0
               ],
               [
-                3897.61,
+                3818.65,
                 36.5327,
-                3781.48
+                3742.85
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -15400,16 +15306,15 @@
                 1.0
               ],
               [
-                3502.2,
+                3367.15,
                 34.1377,
-                3257.43
+                3450.75
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -15464,9 +15369,9 @@
                 1.0
               ],
               [
-                2510.7,
-                8.3179,
-                3199.05
+                2630.29,
+                8.31795,
+                3037.5
               ]
             ],
             "props": {
@@ -15496,9 +15401,9 @@
                 1.0
               ],
               [
-                2344.28,
+                2298.74,
                 23.9389,
-                2894.07
+                2953.48
               ]
             ],
             "props": {
@@ -15528,16 +15433,15 @@
                 1.0
               ],
               [
-                1961.72,
+                1917.1,
                 25.9238,
-                2936.79
+                2971.6
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -15560,9 +15464,9 @@
                 1.0
               ],
               [
-                1487.89,
+                1463.0,
                 -7.0264,
-                3133.17
+                3083.36
               ]
             ],
             "props": {
@@ -15752,16 +15656,15 @@
                 1.0
               ],
               [
-                -129.292,
+                -115.138,
                 36.5327,
-                1474.95
+                1425.61
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -15848,16 +15751,15 @@
                 1.0
               ],
               [
-                -1576.41,
-                1.0,
-                766.551
+                -1563.9,
+                0.999634,
+                674.95
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -15912,16 +15814,15 @@
                 1.0
               ],
               [
-                -3328.73,
+                -3169.75,
                 1.0,
-                805.248
+                1035.45
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -16040,16 +15941,15 @@
                 1.0
               ],
               [
-                -3220.86,
+                -3248.6,
                 1.0,
-                -2554.1
+                -2771.1
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -16081,7 +15981,6 @@
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -16168,16 +16067,15 @@
                 1.0
               ],
               [
-                -1901.2,
+                -2081.05,
                 36.5327,
-                -3119.12
+                -2991.6
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -16200,16 +16098,15 @@
                 1.0
               ],
               [
-                -1460.28,
+                -1488.0,
                 36.5347,
-                -3338.66
+                -3320.45
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -16616,16 +16513,15 @@
                 1.0
               ],
               [
-                3220.49,
-                3.4453,
-                318.549
+                3059.25,
+                3.44531,
+                136.25
               ]
             ],
             "props": {
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -16964,7 +16860,7 @@
           ],
           [
             5338.43,
-            214.689,
+            1.1,
             4790.39
           ]
         ],
@@ -17236,9 +17132,9 @@
                 1.0
               ],
               [
-                5581.22,
-                1.0,
-                8923.94
+                5845.25,
+                0.999756,
+                8919.0
               ]
             ],
             "props": {
@@ -17268,9 +17164,9 @@
                 1.0
               ],
               [
-                5528.91,
-                1.0,
-                7862.37
+                5818.15,
+                0.999512,
+                7869.7
               ]
             ],
             "props": {
@@ -17437,7 +17333,6 @@
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -17710,9 +17605,9 @@
                 1.0
               ],
               [
-                5526.5,
-                1.00037,
-                8790.27
+                5790.53,
+                1.00013,
+                8785.33
               ]
             ],
             "props": {
@@ -17742,9 +17637,9 @@
                 1.0
               ],
               [
-                5474.19,
-                1.00037,
-                7728.7
+                5763.43,
+                0.999882,
+                7736.03
               ]
             ],
             "props": {
@@ -17870,16 +17765,15 @@
                 1.0
               ],
               [
-                4324.37,
+                4303.25,
                 1.00037,
-                3769.57
+                3764.25
               ]
             ],
             "props": {
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -17902,16 +17796,15 @@
                 1.0
               ],
               [
-                3707.04,
+                3774.65,
                 1.00037,
-                3598.68
+                3741.6
               ]
             ],
             "props": {
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -18184,9 +18077,9 @@
                 1.0
               ],
               [
-                5652.62,
-                1.00049,
-                8782.03
+                5916.65,
+                1.00025,
+                8777.09
               ]
             ],
             "props": {
@@ -18216,9 +18109,9 @@
                 1.0
               ],
               [
-                5600.31,
-                1.00049,
-                7720.46
+                5889.55,
+                1.0,
+                7727.79
               ]
             ],
             "props": {
@@ -18376,16 +18269,15 @@
                 1.0
               ],
               [
-                3833.16,
+                3916.6,
                 1.00049,
-                3590.44
+                3702.5
               ]
             ],
             "props": {
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -18408,16 +18300,15 @@
                 1.0
               ],
               [
-                2944.43,
-                1.00049,
-                3224.47
+                3094.69,
+                1.00104,
+                3011.22
               ]
             ],
             "props": {
               "speed": 10.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -18658,9 +18549,9 @@
                 1.0
               ],
               [
-                5775.04,
-                1.00061,
-                8784.36
+                6039.07,
+                1.00037,
+                8779.42
               ]
             ],
             "props": {
@@ -18690,9 +18581,9 @@
                 1.0
               ],
               [
-                5722.73,
-                1.00061,
-                7722.79
+                6011.97,
+                1.00012,
+                7730.12
               ]
             ],
             "props": {
@@ -18818,16 +18709,15 @@
                 1.0
               ],
               [
-                4572.91,
+                4560.5,
                 1.00061,
-                3763.66
+                3757.7
               ]
             ],
             "props": {
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -18850,16 +18740,15 @@
                 1.0
               ],
               [
-                4000.21,
-                1.00079,
-                3685.59
+                3929.45,
+                1.00085,
+                3733.1
               ]
             ],
             "props": {
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -18972,9 +18861,9 @@
                 1.0
               ],
               [
-                4374.88,
+                4407.65,
                 1.0,
-                -8601.26
+                -8797.85
               ]
             ],
             "props": {
@@ -19036,9 +18925,9 @@
                 1.0
               ],
               [
-                7386.85,
+                7439.9,
                 1.0,
-                -4040.67
+                -4051.1
               ]
             ],
             "props": {
@@ -19196,9 +19085,9 @@
                 1.0
               ],
               [
-                6247.54,
+                6218.95,
                 1.0,
-                6373.48
+                6399.95
               ]
             ],
             "props": {
@@ -19228,9 +19117,9 @@
                 1.0
               ],
               [
-                5622.01,
-                1.0,
-                5248.04
+                5561.1,
+                1.00012,
+                5262.1
               ]
             ],
             "props": {
@@ -19292,16 +19181,15 @@
                 1.0
               ],
               [
-                4155.26,
-                1.0,
-                3250.67
+                4025.3,
+                1.00018,
+                3070.7
               ]
             ],
             "props": {
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -19324,16 +19212,15 @@
                 1.0
               ],
               [
-                4320.88,
-                1.0,
-                2823.73
+                4223.91,
+                1.00018,
+                2681.79
               ]
             ],
             "props": {
               "speed": 10.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -19414,9 +19301,9 @@
                 1.0
               ],
               [
-                4344.16,
+                4376.93,
                 1.0,
-                -8644.95
+                -8841.54
               ]
             ],
             "props": {
@@ -19478,9 +19365,9 @@
                 1.0
               ],
               [
-                7356.12,
+                7409.17,
                 1.0,
-                -4084.36
+                -4094.79
               ]
             ],
             "props": {
@@ -19637,9 +19524,9 @@
                 1.0
               ],
               [
-                6262.12,
+                6233.53,
                 1.0,
-                6299.84
+                6326.31
               ]
             ],
             "props": {
@@ -19669,9 +19556,9 @@
                 1.0
               ],
               [
-                5591.29,
-                1.0,
-                5204.34
+                5530.38,
+                1.00012,
+                5218.4
               ]
             ],
             "props": {
@@ -19855,9 +19742,9 @@
                 1.0
               ],
               [
-                4313.96,
+                4346.73,
                 1.0,
-                -8707.35
+                -8903.94
               ]
             ],
             "props": {
@@ -19919,9 +19806,9 @@
                 1.0
               ],
               [
-                7325.92,
+                7378.97,
                 1.0,
-                -4146.76
+                -4157.19
               ]
             ],
             "props": {
@@ -20079,9 +19966,9 @@
                 1.0
               ],
               [
-                6277.13,
+                6248.54,
                 1.0,
-                6241.77
+                6268.24
               ]
             ],
             "props": {
@@ -20111,9 +19998,9 @@
                 1.0
               ],
               [
-                5561.08,
-                1.0,
-                5141.95
+                5500.17,
+                1.00012,
+                5156.01
               ]
             ],
             "props": {
@@ -20297,9 +20184,9 @@
                 1.0
               ],
               [
-                4215.69,
+                4248.46,
                 1.0,
-                -8838.44
+                -9035.03
               ]
             ],
             "props": {
@@ -20361,9 +20248,9 @@
                 1.0
               ],
               [
-                7467.37,
+                7520.42,
                 1.00061,
-                -4166.19
+                -4176.62
               ]
             ],
             "props": {
@@ -20521,9 +20408,9 @@
                 1.0
               ],
               [
-                6303.3,
+                6274.71,
                 1.0,
-                6217.18
+                6243.65
               ]
             ],
             "props": {
@@ -20553,9 +20440,9 @@
                 1.0
               ],
               [
-                5462.82,
-                1.0,
-                5010.85
+                5401.91,
+                1.00012,
+                5024.91
               ]
             ],
             "props": {
@@ -20739,9 +20626,9 @@
                 1.0
               ],
               [
-                4176.66,
+                4209.43,
                 1.0,
-                -8913.07
+                -9109.66
               ]
             ],
             "props": {
@@ -20803,9 +20690,9 @@
                 1.0
               ],
               [
-                7509.33,
+                7562.38,
                 0.999939,
-                -4199.16
+                -4209.59
               ]
             ],
             "props": {
@@ -20963,9 +20850,9 @@
                 1.0
               ],
               [
-                6354.08,
+                6325.49,
                 1.0,
-                6196.22
+                6222.69
               ]
             ],
             "props": {
@@ -20995,16 +20882,15 @@
                 1.0
               ],
               [
-                5423.78,
-                1.0,
-                4936.22
+                5540.7,
+                1.00012,
+                5192.25
               ]
             ],
             "props": {
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -21181,9 +21067,9 @@
                 1.0
               ],
               [
-                7535.85,
+                7721.7,
                 1.0,
-                -2180.18
+                -2292.25
               ]
             ],
             "props": {
@@ -21212,9 +21098,9 @@
                 1.0
               ],
               [
-                7377.38,
+                7430.43,
                 1.0,
-                -3957.08
+                -3967.51
               ]
             ],
             "props": {
@@ -21274,9 +21160,9 @@
                 1.0
               ],
               [
-                4480.54,
+                4567.15,
                 1.0,
-                -8441.01
+                -8555.0
               ]
             ],
             "props": {
@@ -21305,9 +21191,9 @@
                 1.0
               ],
               [
-                -1447.03,
-                1.0,
-                -10179.8
+                -1465.5,
+                0.999695,
+                -10327.8
               ]
             ],
             "props": {
@@ -21398,9 +21284,9 @@
                 1.0
               ],
               [
-                -6655.07,
+                -6820.2,
                 1.0,
-                -5878.15
+                -5999.1
               ]
             ],
             "props": {
@@ -21491,9 +21377,9 @@
                 1.0
               ],
               [
-                -3481.31,
+                -3498.85,
                 1.0,
-                -3624.95
+                -3648.7
               ]
             ],
             "props": {
@@ -21580,9 +21466,9 @@
                 1.0
               ],
               [
-                7590.79,
+                7776.64,
                 1.0,
-                -2172.26
+                -2284.33
               ]
             ],
             "props": {
@@ -21612,9 +21498,9 @@
                 1.0
               ],
               [
-                7445.49,
+                7498.54,
                 1.0,
-                -3974.21
+                -3984.64
               ]
             ],
             "props": {
@@ -21676,9 +21562,9 @@
                 1.0
               ],
               [
-                4526.65,
+                4613.26,
                 1.0,
-                -8504.89
+                -8618.88
               ]
             ],
             "props": {
@@ -21708,9 +21594,9 @@
                 1.0
               ],
               [
-                -1433.17,
-                1.0,
-                -10251.6
+                -1451.64,
+                0.999695,
+                -10399.6
               ]
             ],
             "props": {
@@ -21804,9 +21690,9 @@
                 1.0
               ],
               [
-                -6674.31,
+                -6839.44,
                 1.0,
-                -5849.24
+                -5970.19
               ]
             ],
             "props": {
@@ -21932,16 +21818,15 @@
                 1.0
               ],
               [
-                -3501.15,
+                -3495.1,
                 1.0,
-                -3456.65
+                -3521.75
               ]
             ],
             "props": {
               "speed": 10.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -22022,9 +21907,9 @@
                 1.0
               ],
               [
-                7647.13,
+                7832.98,
                 1.00024,
-                -2174.72
+                -2286.79
               ]
             ],
             "props": {
@@ -22054,9 +21939,9 @@
                 1.0
               ],
               [
-                7527.6,
+                7580.65,
                 0.999512,
-                -3995.35
+                -4005.78
               ]
             ],
             "props": {
@@ -22118,9 +22003,9 @@
                 1.0
               ],
               [
-                4529.22,
+                4615.83,
                 1.00049,
-                -8572.95
+                -8686.94
               ]
             ],
             "props": {
@@ -22150,9 +22035,9 @@
                 1.0
               ],
               [
-                -1427.06,
-                0.999268,
-                -10307.6
+                -1445.53,
+                0.998963,
+                -10455.6
               ]
             ],
             "props": {
@@ -22246,9 +22131,9 @@
                 1.0
               ],
               [
-                -6704.79,
+                -6869.92,
                 1.0,
-                -5807.89
+                -5928.84
               ]
             ],
             "props": {
@@ -22374,16 +22259,15 @@
                 1.0
               ],
               [
-                -3377.34,
+                -3421.65,
                 1.0,
-                -3596.62
+                -3595.35
               ]
             ],
             "props": {
               "speed": 10.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -22464,9 +22348,9 @@
                 1.0
               ],
               [
-                7678.24,
+                7864.09,
                 1.00049,
-                -2146.59
+                -2258.66
               ]
             ],
             "props": {
@@ -22496,9 +22380,9 @@
                 1.0
               ],
               [
-                7575.67,
+                7628.72,
                 0.999268,
-                -4018.6
+                -4029.03
               ]
             ],
             "props": {
@@ -22560,9 +22444,9 @@
                 1.0
               ],
               [
-                4545.71,
+                4632.32,
                 1.00049,
-                -8640.15
+                -8754.14
               ]
             ],
             "props": {
@@ -22592,9 +22476,9 @@
                 1.0
               ],
               [
-                -1467.78,
-                0.999023,
-                -10391.5
+                -1486.25,
+                0.998718,
+                -10539.5
               ]
             ],
             "props": {
@@ -22688,9 +22572,9 @@
                 1.0
               ],
               [
-                -6785.48,
+                -6950.61,
                 1.0,
-                -5734.15
+                -5855.1
               ]
             ],
             "props": {
@@ -22816,16 +22700,15 @@
                 1.0
               ],
               [
-                -3512.22,
+                -3650.25,
                 1.0,
-                -3383.12
+                -3503.0
               ]
             ],
             "props": {
               "speed": 10.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -22906,16 +22789,15 @@
                 1.0
               ],
               [
-                7535.85,
+                7701.1,
                 1.0,
-                -2180.18
+                -2281.7
               ]
             ],
             "props": {
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -22938,9 +22820,9 @@
                 1.0
               ],
               [
-                7377.38,
+                7430.43,
                 1.0,
-                -3957.07
+                -3967.5
               ]
             ],
             "props": {
@@ -23002,9 +22884,9 @@
                 1.0
               ],
               [
-                4480.54,
+                4567.15,
                 1.0,
-                -8441.01
+                -8555.0
               ]
             ],
             "props": {
@@ -23034,9 +22916,9 @@
                 1.0
               ],
               [
-                -1447.03,
-                1.0,
-                -10179.8
+                -1465.5,
+                0.999695,
+                -10327.8
               ]
             ],
             "props": {
@@ -23130,9 +23012,9 @@
                 1.0
               ],
               [
-                -6655.07,
+                -6820.2,
                 1.0,
-                -5878.15
+                -5999.1
               ]
             ],
             "props": {
@@ -23226,16 +23108,15 @@
                 1.0
               ],
               [
-                -3481.3,
+                -3497.05,
                 1.0,
-                -3624.95
+                -3643.55
               ]
             ],
             "props": {
               "speed": 10.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -23348,9 +23229,9 @@
                 1.0
               ],
               [
-                -4074.42,
+                -4092.45,
                 1.0,
-                6811.0
+                6834.4
               ]
             ],
             "props": {
@@ -23412,9 +23293,9 @@
                 1.0
               ],
               [
-                -7472.07,
-                0.999878,
-                4304.41
+                -7794.8,
+                1.0,
+                4367.1
               ]
             ],
             "props": {
@@ -23444,9 +23325,9 @@
                 1.0
               ],
               [
-                -10646.7,
-                0.999878,
-                2094.74
+                -10911.8,
+                1.0,
+                2149.7
               ]
             ],
             "props": {
@@ -23476,9 +23357,9 @@
                 1.0
               ],
               [
-                -10846.2,
+                -10966.8,
                 1.0,
-                430.141
+                396.75
               ]
             ],
             "props": {
@@ -23508,9 +23389,9 @@
                 1.0
               ],
               [
-                -8965.52,
+                -8999.5,
                 1.00012,
-                -5908.96
+                -6000.25
               ]
             ],
             "props": {
@@ -23540,9 +23421,9 @@
                 1.0
               ],
               [
-                -7145.22,
+                -7180.7,
                 1.00012,
-                -5773.76
+                -5873.4
               ]
             ],
             "props": {
@@ -23758,9 +23639,9 @@
                 1.0
               ],
               [
-                -4118.16,
+                -4136.19,
                 1.0,
-                6864.86
+                6888.26
               ]
             ],
             "props": {
@@ -23822,9 +23703,9 @@
                 1.0
               ],
               [
-                -7494.07,
-                0.999634,
-                4341.63
+                -7816.8,
+                0.999756,
+                4404.32
               ]
             ],
             "props": {
@@ -23854,9 +23735,9 @@
                 1.0
               ],
               [
-                -10718.6,
-                0.999756,
-                2122.84
+                -10983.7,
+                0.999878,
+                2177.8
               ]
             ],
             "props": {
@@ -23886,9 +23767,9 @@
                 1.0
               ],
               [
-                -10929.6,
+                -11050.2,
                 1.0,
-                408.452
+                375.061
               ]
             ],
             "props": {
@@ -23918,9 +23799,9 @@
                 1.0
               ],
               [
-                -9027.02,
+                -9061.0,
                 1.0,
-                -5939.03
+                -6030.32
               ]
             ],
             "props": {
@@ -23950,9 +23831,9 @@
                 1.0
               ],
               [
-                -7142.78,
+                -7178.26,
                 1.00012,
-                -5829.8
+                -5929.44
               ]
             ],
             "props": {
@@ -24168,9 +24049,9 @@
                 1.0
               ],
               [
-                -4172.79,
+                -4190.82,
                 0.999512,
-                6906.85
+                6930.25
               ]
             ],
             "props": {
@@ -24232,9 +24113,9 @@
                 1.0
               ],
               [
-                -7552.35,
-                0.999634,
-                4411.12
+                -7875.08,
+                0.999756,
+                4473.81
               ]
             ],
             "props": {
@@ -24264,9 +24145,9 @@
                 1.0
               ],
               [
-                -10794.5,
-                0.999634,
-                2144.29
+                -11059.6,
+                0.999756,
+                2199.25
               ]
             ],
             "props": {
@@ -24296,9 +24177,9 @@
                 1.0
               ],
               [
-                -11052.4,
+                -11173.0,
                 1.0,
-                326.677
+                293.286
               ]
             ],
             "props": {
@@ -24328,9 +24209,9 @@
                 1.0
               ],
               [
-                -9045.57,
+                -9079.55,
                 1.0,
-                -6001.34
+                -6092.63
               ]
             ],
             "props": {
@@ -24360,9 +24241,9 @@
                 1.0
               ],
               [
-                -7114.65,
+                -7150.13,
                 1.0,
-                -5919.78
+                -6019.42
               ]
             ],
             "props": {
@@ -24456,16 +24337,15 @@
                 1.0
               ],
               [
-                -3907.75,
+                -4371.05,
                 0.999878,
-                -3454.32
+                -3861.1
               ]
             ],
             "props": {
               "speed": 10.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -24578,9 +24458,9 @@
                 1.0
               ],
               [
-                -4031.87,
+                -4049.9,
                 0.999878,
-                6767.58
+                6790.98
               ]
             ],
             "props": {
@@ -24642,9 +24522,9 @@
                 1.0
               ],
               [
-                -7435.35,
-                0.999878,
-                4257.94
+                -7758.08,
+                1.0,
+                4320.63
               ]
             ],
             "props": {
@@ -24674,9 +24554,9 @@
                 1.0
               ],
               [
-                -10617.3,
-                0.999878,
-                2084.42
+                -10882.4,
+                1.0,
+                2139.38
               ]
             ],
             "props": {
@@ -24706,9 +24586,9 @@
                 1.0
               ],
               [
-                -10784.7,
+                -10905.3,
                 0.999878,
-                446.429
+                413.038
               ]
             ],
             "props": {
@@ -24738,9 +24618,9 @@
                 1.0
               ],
               [
-                -8968.9,
-                0.999878,
-                -5834.3
+                -9002.88,
+                0.99988,
+                -5925.59
               ]
             ],
             "props": {
@@ -24770,9 +24650,9 @@
                 1.0
               ],
               [
-                -7158.79,
+                -7194.27,
                 1.0011,
-                -5722.41
+                -5822.05
               ]
             ],
             "props": {
@@ -29912,5 +29792,15 @@
       }
     ]
   },
-  "wayPoints": {}
+  "wayPoints": {},
+  "__viewPoints": {
+    "viewpt_01": {
+      "pos": [
+        5210.99,
+        -62.0553,
+        4591.6
+      ],
+      "ht": 1.5
+    }
+  }
 }

@@ -3,6 +3,13 @@ return {
     "a-20g": {
       "": "ussr_p_47d_ussr"
     },
+    "a-26b": {
+      "": "usa_p38k_usaaf",
+      "steel": "usa_p_40c_metal"
+    },
+    "a-26b_prem": {
+      "": "usa_f_82e"
+    },
     "am_1_mauler": {
       "": "usa_am_1_mauler"
     },
@@ -19,6 +26,9 @@ return {
       "": "usa_pby_5a_early_a"
     },
     "b-17g_prem": {
+      "": "usa_tbd_1_1938"
+    },
+    "b_10b": {
       "": "usa_tbd_1_1938"
     },
     "b_24d": {
@@ -87,6 +97,9 @@ return {
     "bf-109z": {
       "": "germ_bf_109z"
     },
+    "bf-110c-6": {
+      "": "germ_bf_110c_6_c"
+    },
     "bf-110f-2": {
       "": "germ_bf_110f_2"
     },
@@ -132,6 +145,10 @@ return {
       "": "ussr_camo_green",
       "upgraded": "cn_camo_sand_ltgreen_dkgreen_lines"
     },
+    "cn_pgz_09_reskin2": {
+      "": "ussr_camo_green",
+      "upgraded": "cn_camo_sand_ltgreen_dkgreen_deform"
+    },
     "cn_plz_83_130": {
       "": "ussr_camo_green",
       "forest": "cn_camo_desert_green"
@@ -174,11 +191,19 @@ return {
       "": "ussr_camo_green",
       "forest": "cn_camo_desert_green"
     },
+    "cn_zbd_04a": {
+      "": "ussr_camo_green",
+      "upgraded": "cn_camo_sand_ltgreen_dkgreen_deform"
+    },
     "cn_zsd63_pg87": {
       "": "cn_camo_green_yellow_black",
       "forest": "ussr_camo_green",
       "forest2": "cn_camo_green_yellow_black_lines",
       "forest3": "cn_camo_dkgreen"
+    },
+    "cn_ztl_11": {
+      "": "ussr_camo_green",
+      "upgraded": "cn_camo_sand_ltgreen_dkgreen_deform"
     },
     "cn_ztz_59a": {
       "": "ussr_camo_green",
@@ -191,6 +216,10 @@ return {
     "cn_ztz_96": {
       "": "ussr_camo_green",
       "upgraded": "cn_camo_sand_ltgreen_dkgreen_lines"
+    },
+    "cn_ztz_96a": {
+      "": "ussr_camo_green",
+      "upgraded": "cn_camo_sand_ltgreen_dkgreen_deform"
     },
     "db_3b": {
       "": "ussr_db_3b"
@@ -376,6 +405,12 @@ return {
       "forest": "fr_camo_carc",
       "winter": "fr_camo_carc_winter"
     },
+    "fr_amx_30_dca_reskin4": {
+      "": "fr_camo_vert_olive_arme",
+      "desert": "fr_camo_desert_brown",
+      "forest": "fr_camo_carc",
+      "winter": "fr_camo_carc_winter"
+    },
     "fr_amx_32": {
       "": "fr_camo_vert_olive_arme",
       "desert": "fr_camo_desert_brown",
@@ -385,6 +420,12 @@ return {
     "fr_amx_32_105": {
       "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_modern_urban"
+    },
+    "fr_amx_40": {
+      "": "fr_camo_vert_olive_arme",
+      "desert": "fr_camo_desert_brown",
+      "forest": "fr_camo_carc",
+      "winter": "fr_camo_carc_winter"
     },
     "fr_amx_50_1950": {
       "": "fr_camo_vert_olive_arme",
@@ -493,6 +534,18 @@ return {
       "forest": "fr_camo_carc",
       "winter": "fr_camo_winter_green_white"
     },
+    "fr_vcac_mephisto": {
+      "": "fr_camo_vert_olive_arme",
+      "desert": "fr_camo_desert_brown",
+      "forest": "fr_camo_carc",
+      "winter": "fr_camo_carc_winter"
+    },
+    "fr_vextra_105": {
+      "": "fr_camo_vert_olive_arme",
+      "desert": "fr_camo_desert_brown",
+      "forest": "fr_camo_carc",
+      "winter": "fr_camo_carc_winter"
+    },
     "fw-189a-1": {
       "": "germ_fw_189a_1"
     },
@@ -509,7 +562,11 @@ return {
       "": "germ_fw-190d-9"
     },
     "fw-190a-8": {
-      "": "germ_fw_190_a8"
+      "": "germ_fw_190_a8",
+      "black": "germ_fw_190a_5_blue_13_a"
+    },
+    "fw-190a-8_prem": {
+      "": "germ_fw_190a_5_east43_a"
     },
     "fw-190c": {
       "": "germ_fw_190c"
@@ -985,6 +1042,9 @@ return {
     "hs-123a-1": {
       "": "germ_hs_123a1_late"
     },
+    "hs-129b-2": {
+      "": "germ_hs_129b_2_africa_c"
+    },
     "hs-129b-3": {
       "": "germ_hs_129b_2_bloody_c",
       "standart": "germ_me_410a_1"
@@ -1030,6 +1090,9 @@ return {
     },
     "i_225_prem": {
       "": "ussr_il_4"
+    },
+    "i_29": {
+      "": "ussr_i_180s_red"
     },
     "il-10": {
       "": "ussr_il_10"
@@ -1243,6 +1306,9 @@ return {
       "": "camo_crosspromo",
       "upgraded": "camo_redgreen_spots"
     },
+    "jp_destroyer_rckt_hatsuyuki": {
+      "upgraded": "camo_darkblue_waves"
+    },
     "jp_destroyer_rckt_takatsuki": {
       "upgraded": "camo_asiatic_forest"
     },
@@ -1398,6 +1464,9 @@ return {
     "lagg-3-11": {
       "": "ussr_lagg_3_series_11"
     },
+    "lagg-3-34": {
+      "": "ussr_yak_9_green"
+    },
     "lagg-3-8": {
       "": "ussr_sb_2m_100"
     },
@@ -1460,6 +1529,9 @@ return {
     },
     "p-47d_ussr": {
       "": "usa_p-47n-15"
+    },
+    "p-47m-1-re": {
+      "": "usa_p_47m_1_re_bostwick_a"
     },
     "p-47n-15": {
       "": "usa_p_40c_metal"
@@ -1667,6 +1739,10 @@ return {
       "": "uk_camo_very_dark_drab",
       "upgraded": "rsa_camo_modern_three_color"
     },
+    "uk_centurion_mk_5_avre_era": {
+      "": "uk_camo_very_dark_drab",
+      "forest": "uk_camo_middle_deep_bronze_greens"
+    },
     "uk_challenger_1": {
       "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_standart_modern_desert_bicolor"
@@ -1739,9 +1815,17 @@ return {
       "": "uk_camo_light_mud_slate_grey",
       "forest": "uk_camo_very_dark_drab"
     },
+    "uk_falcon_reskin": {
+      "": "uk_camo_very_dark_drab",
+      "forest": "uk_camo_middle_deep_bronze_greens"
+    },
     "uk_fv102_striker": {
       "": "uk_camo_light_mud_slate_grey",
       "forest": "uk_camo_very_dark_drab"
+    },
+    "uk_fv221_caernarvon": {
+      "": "uk_camo_very_dark_drab",
+      "forest": "uk_camo_middle_deep_bronze_greens"
     },
     "uk_fv4004_conway": {
       "": "uk_camo_middle_deep_bronze_greens",
@@ -1754,6 +1838,10 @@ return {
     "uk_fv4202": {
       "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_middle_deep_bronze_greens"
+    },
+    "uk_fv438_swingfire": {
+      "": "uk_camo_very_dark_drab",
+      "forest": "uk_camo_middle_deep_bronze_greens"
     },
     "uk_g6_spg": {
       "": "rsa_camo_dark_earth",
@@ -2761,6 +2849,9 @@ return {
     "ussr_zsu_57_2_reskin3": {
       "": "ussr_camo_green",
       "fiction": "ussr_t_34_85_zis_53_dislike"
+    },
+    "xf5f": {
+      "": "usa_tbd_1_1938"
     },
     "xp-50": {
       "": "usa_pby_5a_early_a"

@@ -92,6 +92,10 @@ let nickFrames = {
   lollipop = @(n) $"♺{n}♻"
   deer_sled = @(n) $"♼{n}♽"
   bell = @(n) $"♾{n}♿"
+  island = @(n) $"⚆{n}⚇"
+  cartridges = @(n) $"⚈{n}⚉"
+  lighthouse = @(n) $"⚊{n}⚋"
+  mask = @(n) $"⚌{n}⚌"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

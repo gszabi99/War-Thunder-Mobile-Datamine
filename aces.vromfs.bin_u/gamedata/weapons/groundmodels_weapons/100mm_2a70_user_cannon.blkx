@@ -1013,7 +1013,7 @@
         "endSpeed": 370.0,
         "price": 3000.0,
         "mesh": "9m117_rocket",
-        "shotFreq": 0.05,
+        "shotFreq": 0.25,
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
