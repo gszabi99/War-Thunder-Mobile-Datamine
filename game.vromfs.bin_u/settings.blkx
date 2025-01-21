@@ -2004,12 +2004,6 @@
         "preRotation": false
       }
     },
-    "adreno_xiaomi_pad_device_lost_check": {
-      "codename": "23043RP34G",
-      "graphics": {
-        "disableWaterEffectsTemporarily": true
-      }
-    },
     "xiaomi_11t": {
       "codename": "21081111RG",
       "vulkan": {
