@@ -18,9 +18,8 @@ let pannableBase = {
     screenSpaceNav = true
   }
 }
-
-function mkBitmapPictureLazyExt(w, h, errId, fillCb) {
-  if (!isScriptsLoading.value) {
+function mkBitmapPictureLazyCached(w, h, errId, fillCb) {
+  if (!isScriptsLoading.value && !__static_analysis__) {
     logerr($"Try to create {errId} mask not on scripts load")
     return @() null
   }
@@ -38,7 +37,7 @@ function mkBitmapPictureLazyExt(w, h, errId, fillCb) {
 function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = null) {
   scrollOffset = scrollOffset ?? gradientOffset
   let scaleMul = max(0.1, 4.0 / max(4, gradientOffset[0]), 4.0 / max(4, gradientOffset[1]))
-  let pageMask = mkBitmapPictureLazyExt(4, (height * scaleMul + 0.5).tointeger(),
+  let pageMask = mkBitmapPictureLazyCached(4, (height * scaleMul + 0.5).tointeger(),
     "verticalPannableAreaCtor",
     function(params, bmp) {
       let { w, h } = params
@@ -105,7 +104,7 @@ function verticalPannableAreaCtor(height, gradientOffset, scrollOffset = null) {
 function horizontalPannableAreaCtor(width, gradientOffset, scrollOffset = null) {
   scrollOffset = scrollOffset ?? gradientOffset
   let scaleMul = max(0.1, 4.0 / max(4, gradientOffset[0]), 4.0 / max(4, gradientOffset[1]))
-  let pageMask = mkBitmapPictureLazyExt((width * scaleMul + 0.5).tointeger(), 4,
+  let pageMask = mkBitmapPictureLazyCached((width * scaleMul + 0.5).tointeger(), 4,
     "horizontalPannableAreaCtor",
     function(params, bmp) {
       let { w, h } = params
@@ -176,7 +175,7 @@ function doubleSidePannableAreaCtor(width, height, gradientOffsetX, gradientOffs
   gradientOffsetY = gradientOffsetY ?? gradientOffsetX
   let scaleMulX = 0.1
   let scaleMulY = 0.1
-  let pageMask = mkBitmapPictureLazyExt((width * scaleMulX + 0.5).tointeger(), (height * scaleMulY + 0.5).tointeger(),
+  let pageMask = mkBitmapPictureLazyCached((width * scaleMulX + 0.5).tointeger(), (height * scaleMulY + 0.5).tointeger(),
     "doubleSidePannableAreaCtor",
     function(params, bmp) {
       let { w, h } = params

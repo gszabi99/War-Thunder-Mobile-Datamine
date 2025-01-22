@@ -41,6 +41,7 @@ function winchButton(scale) {
       fillColor = btnBgColor.empty
       borderWidth
       behavior = Behaviors.Button
+      cameraControl = true
       onClick = @() toggleShortcut(shortcutId)
       onElemState = @(v) stateFlags(v)
       hotkeys = mkGamepadHotkey(shortcutId)

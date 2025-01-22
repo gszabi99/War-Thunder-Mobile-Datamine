@@ -129,22 +129,26 @@ function startTutorial() {
             setCurBeltsWeaponIdx(index)
           else
             setCurSlotIdx(index)
+          local firstSlot = 1000
           foreach (v in modsToShow.keys()) {
             let slotIdx = isBelt ? curWeaponBeltsOrdered.get().findindex(@(belt) belt.id == v)
               : curWeaponsOrdered.get().findindex(@(weap) weap.name == v)
+            firstSlot = min(firstSlot, slotIdx)
             slotsForLastStep.append({
               keys = isBelt ? slotBeltKey(slotIdx) : slotWeaponKey(slotIdx)
               needArrow = true
               onClick = @() isBelt ? curBeltIdx.set(slotIdx) : curWeaponIdx.set(slotIdx)
             })
           }
-          resetTimeout(0.5, @() wndShowEnough.set(true))
+          resetTimeout(0.5, function() {
+            weaponsScrollHandler.scrollToX(firstSlot * (weaponW + weaponGap))
+            wndShowEnough.set(true)
+          })
         }
         nextStepAfter = wndShowEnough
         objects = [{ keys = "sceneRoot" }]
       }
       {
-        beforeStart = @() weaponsScrollHandler.scrollToX(weaponW + weaponGap)
         id = "s4_press_unit_mods_slot"
         text = loc("tutorial/arsenal/arsenalInfo")
         charId = "mary_points"

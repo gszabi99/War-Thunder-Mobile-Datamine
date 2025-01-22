@@ -4,7 +4,7 @@ let { isReplayShortcuts } = require("shortcutFlags.nut")
 let allShortcuts = isReplayShortcuts ? {}
 : {
   // Shared shortcuts:
-  ID_FLIGHTMENU = "J:Start" //can't be changed. Need here for correct show in the controls help.
+  ID_FLIGHTMENU = "J:Start | Esc" //can't be changed. Need here for correct show in the controls help.
   ID_CONTINUE = "J:RT | Space"
   ID_MPSTATSCREEN =  "J:Back | Tab"
   ID_ZOOM_TOGGLE = "J:RS | L.Shift"

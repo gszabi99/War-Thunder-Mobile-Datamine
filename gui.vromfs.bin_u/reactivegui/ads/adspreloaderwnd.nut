@@ -5,7 +5,8 @@ let { isOpenedAdsPreloaderWnd, closeAdsPreloader, hasAdsPreloadError, debugAdsWn
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bgMessage, bgHeader, bgShaded } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
@@ -34,24 +35,15 @@ isLoaded.subscribe(function(v) {
   }
 })
 
-let mkContent = @()
-  bgMessage.__merge({
+let content = @()
+  modalWndBg.__merge({
     size = [hdpx(800), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     valign = ALIGN_TOP
     stopMouse = true
     children = [
-      bgHeader.__merge({
-        size = [flex(), SIZE_TO_CONTENT]
-        padding = hdpx(20)
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = @() {
-          watch = isLoaded
-          rendObj = ROBJ_TEXT
-          text = isLoaded.get() ? loc("shop/watchAdvert/trying") : loc("shop/watchAdvert/loading")
-        }.__update(fontSmallAccented)
-      })
+      @() modalWndHeader(isLoaded.get() ? loc("shop/watchAdvert/trying") : loc("shop/watchAdvert/loading"),
+        { watch = isLoaded })
       {
         size = [flex(), SIZE_TO_CONTENT]
         flow = FLOW_VERTICAL
@@ -94,24 +86,18 @@ isOpenedAdsPreloaderWnd.subscribe(function(v) {
           ]
         })
     }
+    function onAttach() {
+      canClosePreloader.set(false)
+      resetTimeout(CLOSE_BUTTON_DELAYED_TIME, setCanClosePreloader)
+    }
+    function onDetach() {
+      clearTimer(setCanClosePreloader)
+      hasAdsPreloadError.set(false)
+    }
     sound = { click = "click" }
     size = [sw(100), sh(100)]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = {
-      key = isOpenedAdsPreloaderWnd
-      function onAttach() {
-        canClosePreloader.set(false)
-        resetTimeout(CLOSE_BUTTON_DELAYED_TIME, setCanClosePreloader)
-      }
-      function onDetach() {
-        clearTimer(setCanClosePreloader)
-        hasAdsPreloadError.set(false)
-      }
-      transform = {}
-      safeAreaMargin = saBordersRv
-      behavior = Behaviors.BoundToArea
-      children = mkContent
-    }
+    children = content
   }))
 })

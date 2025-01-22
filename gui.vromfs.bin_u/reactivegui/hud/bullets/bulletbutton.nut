@@ -40,6 +40,7 @@ function bulletIcon(id, isNext, isCurrent, isBulletBelt, imgSize) {
     valign = ALIGN_TOP
     halign = ALIGN_CENTER
     behavior = Behaviors.Button
+    cameraControl = true
     onClick = @() onToggleBullet(isNext, isCurrent)
     onElemState = @(v) stateFlags(v)
     hotkeys = mkGamepadHotkey("ID_NEXT_BULLET_TYPE")

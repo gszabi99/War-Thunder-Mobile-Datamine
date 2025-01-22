@@ -21,12 +21,13 @@ let { setTutorialConfig, isTutorialActive, finishTutorial, WND_UID, goToStep,
 let { setResearchUnit } = require("%rGui/unit/unitsWndActions.nut")
 let { PURCHASE_BOX_UID } = require("%rGui/shop/msgBoxPurchase.nut")
 let { slots, setUnitToSlot, canOpenSelectUnitWithModal, slotBarSelectWndAttached
-  selectedUnitToSlot } = require("%rGui/slotBar/slotBarState.nut")
+  selectedUnitToSlot, closeSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { triggerAnim } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { TUTORIAL_UNITS_RESEARCH_ID } = require("tutorialConst.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
+let { btnBEsc } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 
 let STEP_SELECT_NEXT_RESEARCH_DESCRIPTION = "s6_select_next_research_description"
@@ -88,7 +89,7 @@ function getObjectsForTutorial() {
 
 function forcedUnitPurchaseSkip() {
   if (!isBuyUnitWndOpened.get() || animUnitAfterResearch.get() == null || !animExpPart.get()) {
-    selectedUnitToSlot.set(null)
+    closeSelectUnitToSlotWnd()
     goToStep(STEP_SELECT_NEXT_RESEARCH_DESCRIPTION)
   }
   else
@@ -213,6 +214,7 @@ function startTutorial() {
           sizeIncAdd = hdpx(20)
           needArrow = true
           onClick = @() isUnitsTreeOpen.set(false)
+          hotkeys = [btnBEsc]
         }]
       }
       {

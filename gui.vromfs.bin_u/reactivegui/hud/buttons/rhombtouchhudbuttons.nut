@@ -102,6 +102,7 @@ function mkRhombSimpleActionBtn(actionItem, shortcutId, image, scale) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     behavior = Behaviors.Button
+    cameraControl = true
     onElemState = @(v) stateFlags(v)
     hotkeys = mkGamepadHotkey(shortcutId)
     onClick = @() useShortcut(shortcutId)

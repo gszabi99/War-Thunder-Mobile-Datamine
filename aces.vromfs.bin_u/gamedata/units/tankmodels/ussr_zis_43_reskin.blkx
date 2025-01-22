@@ -45,7 +45,7 @@
   "destroysTrees": true,
   "type": "typeTankDestroyer",
   "deadZoneForTurnAround": 90.0,
-  "minRelativeTankCameraThreshold": 1.45,
+  "minRelativeTankCameraThreshold": 1.35,
   "arcadeTurnPowerMult": 1.2,
   "ikGunner": [
     {

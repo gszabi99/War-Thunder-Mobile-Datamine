@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-let { allow_voice_messages } = require("%appGlobals/permissions.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
 let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK
 } = require("%rGui/hud/actionBar/actionType.nut")
@@ -154,8 +153,7 @@ return {
     ctor = voiceMsgStickBlock
     defTransform = mkRBPos([hdpx(5), hdpx(-130)])
     editView = voiceMsgStickView
-    isVisibleInEditor = allow_voice_messages
-    isVisibleInBattle = Computed(@() allow_voice_messages.get() && isInMpSession.get())
+    isVisibleInBattle = isInMpSession
     priority = Z_ORDER.STICK
   }
 

@@ -223,6 +223,7 @@ return {
   platformGoodsDebugInfo = products
   platformGoods
   platformOffer
+  platformSubs = Watched({})
   buyPlatformGoods
   platformPurchaseInProgress
   vatMsg

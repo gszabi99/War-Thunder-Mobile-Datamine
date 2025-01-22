@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let size = hdpx(40)
+let closeWndBtnSize = evenPx(40)
+let margin = closeWndBtnSize / 2
 let lineWidth = evenPx(6)
-let l = 50.0 * lineWidth / size
+let l = 50.0 * lineWidth / closeWndBtnSize
 let r = 100.0 - l
 let btnBase = {
-  size = [size, size]
-  margin = [hdpx(20), hdpx(20)]
+  size = [closeWndBtnSize, closeWndBtnSize]
+  margin
   hplace = ALIGN_RIGHT
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth
@@ -18,7 +19,7 @@ let btnBase = {
   sound = { click  = "click" }
 }
 
-return function(onClick, override = {}) {
+function closeWndBtn(onClick, override = {}) {
   let stateFlags = Watched(0)
   return @() btnBase.__merge({
     watch = stateFlags
@@ -31,3 +32,7 @@ return function(onClick, override = {}) {
   }, override)
 }
 
+return {
+  closeWndBtn
+  closeWndBtnSize
+}

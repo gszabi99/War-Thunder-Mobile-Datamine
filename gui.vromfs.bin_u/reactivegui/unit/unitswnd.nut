@@ -6,7 +6,7 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { wndSwitchAnim, WND_REVEAL } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { levelBlock, gamercardWithoutLevelBlock, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
-let { playerLevelInfo, allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
+let { playerLevelInfo, campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { hangarUnitName, loadedHangarUnitName } = require("hangarUnit.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
@@ -70,13 +70,13 @@ let scrollPos = Computed(@() (scrollHandler.elem?.getScrollOffsX() ?? 0))
 
 let gap = Computed(@() (sizePlatoon.value + 0.8) * platoonSelPlatesGap)
 
-let isShowedUnitOwned = Computed(@() hangarUnitName.value in myUnits.value)
+let isShowedUnitOwned = Computed(@() hangarUnitName.value in campMyUnits.get())
 
 let isFitAllFilters = @(unit) filters.findvalue(@(f) f.value.value != null && !f.isFit(unit, f.value.value)) == null
 curFilters.subscribe(function(v) {
   if (v.len() == 0 || !isUnitsWndOpened.get())
     return
-  let unit = allUnitsCfg.value?[curSelectedUnit.value]
+  let unit = campUnitsCfg.get()?[curSelectedUnit.value]
   if (unit != null && isFitAllFilters(unit))
     return
   let first = availableUnitsList.value.findvalue(isFitAllFilters)
@@ -145,7 +145,7 @@ function isHold(id) {
 function mkPlatoonPlates(unit) {
   let platoonUnits = unit.platoonUnits
   let platoonSize = platoonUnits?.len() ?? 0
-  let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
+  let isLocked = Computed(@() (unit.name not in campMyUnits.get()) && (unit.name not in canBuyUnits.value))
   let isSelected = Computed(@() curSelectedUnit.value == unit.name)
   let isEquipped = Computed(@() unit.name == curUnitName.value)
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
@@ -187,7 +187,7 @@ function mkPlatoonPlate(unit) {
   let isSelected = Computed(@() curSelectedUnit.value == unit.name || (stateFlags.value & S_HOVER))
   let isEquipped = Computed(@() unit.name == curUnitName.value)
   let canPurchase = Computed(@() unit.name in canBuyUnits.value)
-  let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
+  let isLocked = Computed(@() (unit.name not in campMyUnits.get()) && (unit.name not in canBuyUnits.value))
   let canBuyForLvlUp = Computed(@() playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp))
   let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value, unitDiscounts.value) : null)
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
@@ -249,7 +249,7 @@ function mkUnitPlate(unit) {
   let canPurchase = Computed(@() unit.name in canBuyUnits.value)
   let canBuyForLvlUp = Computed(@() playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp))
   let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value, unitDiscounts.value) : null)
-  let isLocked = Computed(@() (unit.name not in myUnits.value) && (unit.name not in canBuyUnits.value))
+  let isLocked = Computed(@() (unit.name not in campMyUnits.get()) && (unit.name not in canBuyUnits.value))
   let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
   let discount = Computed(@() unitDiscounts?.value[unit.name])
@@ -471,7 +471,6 @@ let gamercardPlace = {
       size = [SIZE_TO_CONTENT, flex()]
       hplace = ALIGN_RIGHT
       behavior = [ Behaviors.Button, HangarCameraControl ]
-      eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
       touchMarginPriority = TOUCH_BACKGROUND
       onClick = @() unitDetailsWnd({ name = hangarUnitName.value })
       clickableInfo = loc("msgbox/btn_more")
@@ -516,7 +515,6 @@ let unitsWnd = {
   stopMouse = true
   stopHotkeys = true
   behavior = HangarCameraControl
-  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
   touchMarginPriority = TOUCH_BACKGROUND
   function onAttach() {
     isUnitsWndAttached(true)
@@ -554,7 +552,7 @@ let unitsWnd = {
           flow = FLOW_VERTICAL
           gap = hdpx(20)
           children = [
-            mkUnitPkgDownloadInfo(Computed(@() allUnitsCfg.value?[curSelectedUnit.value]))
+            mkUnitPkgDownloadInfo(Computed(@() campUnitsCfg.get()?[curSelectedUnit.value]))
             platoonsHeader
           ]
         }

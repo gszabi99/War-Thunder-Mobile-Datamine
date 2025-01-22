@@ -16,6 +16,7 @@ let cannonMark = "⋖"
 let goodPenetrationColor = 0xFF64B140
 let normalPenetrationColor = 0xFFFFD966
 let badPenetrationColor = 0xFFE06666
+let addedFromSlot = 0xFF65BC82
 
 let MAX_ATTR_VALUE = 5
 
@@ -111,6 +112,7 @@ function mkStat(id, cfg, unitType) {
     getRowListHeader = @(_) null
     getRowListValue = @(_) null
     valueToText = @(v, _) v?.tostring()
+    valueToTextAttr = @(v, _) v?.tostring()
   }.__update(cfg)
 }
 
@@ -494,17 +496,19 @@ function mkTitle(uid, header, value = "") {
   }
 }
 
-function mkUnitStat(unit, stat, shopCfg, uid) {
+function mkUnitStat(unit, stat, shopCfg, uid, statsWithAttr = {}) {
   if (!stat.isAvailable(shopCfg))
     return null
   let header = stat.getHeader(shopCfg, unit)
   if (header == "")
     return null
   local value = stat.getValue(shopCfg)
+  local valueWithAttr = stat.getValue(statsWithAttr)
   return {
     uid //for compare
     header
     value = stat.valueToText(value, shopCfg)
+    valueAttr = stat.valueToTextAttr(value, valueWithAttr)
     progress = stat.getProgress?(value)
     progressColor = stat.getProgressColor(unit, value)
     isMultiline = fullGunWeaponId == stat?.id
@@ -523,10 +527,12 @@ let isWeaponById = @(stat, weaponKey) weaponKey.contains(stat?.secondaryId, 0) |
 
 // ToDo: Extract the air logic in another funtion to not complicate it.
 // ToDo: Get the whole air card info from the weapon slots, but not from unit tags.
-function getUnitStats(unit, shopCfg, statsList, weapStatsList) {
+function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
   if (shopCfg == null)
     return []
-  let unitStats = statsList.map(@(stat) mkUnitStat(unit, stat, shopCfg, stat.id))
+  if (statsWithAttr == null)
+    return []
+  let unitStats = statsList.map(@(stat) mkUnitStat(unit, stat, shopCfg, stat.id, statsWithAttr))
   let weapByType = (shopCfg?.weapons ?? {}).reduce(function(res, wCfg, wId) {
     let wtype = wCfg?.wtype ?? wCfg?.type ?? "null"
     res[wtype] <- (res?[wtype] ?? []).append(wCfg.__update({ wId }))
@@ -600,14 +606,14 @@ function mkUnitStatsCompFull(unit, attrLevels, attrPreset, mods) {
   attrLevels = !attrLevels && (unit?.isPremium || unit?.isUpgraded) ? setMaxAttrs(unit.attrPreset) : attrLevels
   let unitType = unit.unitType
   let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset, mods)
-  return getUnitStats(unit, stats, statsCfg?[unitType].full ?? [], weaponsCfg?[unitType].full ?? [])
+  return getUnitStats(unit, stats, getUnitTagsShop(unit.name), statsCfg?[unitType].full ?? [], weaponsCfg?[unitType].full ?? [])
 }
 
 function mkUnitStatsCompShort(unit, attrLevels, attrPreset, mods) {
   attrLevels = !attrLevels && (unit?.isPremium || unit?.isUpgraded) ? setMaxAttrs(unit.attrPreset) : attrLevels
   let unitType = unit.unitType
   let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset, mods)
-  return getUnitStats(unit, stats, statsCfg?[unitType].short ?? [], weaponsCfg?[unitType].short ?? [])
+  return getUnitStats(unit, stats, getUnitTagsShop(unit.name), statsCfg?[unitType].short ?? [], weaponsCfg?[unitType].short ?? [])
 }
 
 function appendStatValue(res, stat, shopCfg) {
@@ -656,4 +662,5 @@ return {
   gatherUnitStatsLimits
   armorProtectionPercentageColors
   avgShellPenetrationMmByRank
+  addedFromSlot
 }

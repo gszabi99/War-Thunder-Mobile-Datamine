@@ -3,7 +3,9 @@ let { ceil } = require("math")
 let { defer } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bulletsInfo, chosenBullets, setOrSwapUnitBullet, visibleBullets } = require("bulletsChoiceState.nut")
+let { bulletsInfo, bulletsSecInfo, chosenBullets, chosenBulletsSec, setOrSwapUnitBullet,
+  visibleBullets, visibleBulletsSec, BULLETS_PRIM_SLOTS
+} = require("bulletsChoiceState.nut")
 let { selSlot, hasUnseenShellsBySlot, saveSeenShells } = require("respawnState.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let mkBulletSlot = require("mkBulletSlot.nut")
@@ -43,7 +45,12 @@ let bulletsListWidth = @(columns) max((minBulletWidth * columns) + slotsGap, min
 let openedSlot = Watched(-1)
 let openParams = mkWatched(persist, "openParams", null)
 let curSlotName = mkWatched(persist, "curSlotName", "")
-let savedSlotName = Computed(@() chosenBullets.value?[openParams.value?.slotIdx].name ?? curSlotName.get())
+let isBulletSec = Computed(@() openedSlot.get() >= BULLETS_PRIM_SLOTS)
+let savedSlotName = Computed(function() {
+  let bullets = isBulletSec.get() ? chosenBulletsSec.get() : chosenBullets.get()
+  return openParams.get()?.slotIdx == null ? curSlotName.get()
+    : (bullets?[openParams.get().slotIdx % BULLETS_PRIM_SLOTS].name ?? curSlotName.get())
+})
 let wndAABB = Watched(null)
 
 let hasBulletsVideo = Computed(@() hasAddons.value?.pkg_video ?? false)
@@ -55,6 +62,7 @@ function close(){
 }
 savedSlotName.subscribe(@(v) curSlotName(v))
 chosenBullets.subscribe(@(_) curSlotName(savedSlotName.value))
+chosenBulletsSec.subscribe(@(_) curSlotName.set(savedSlotName.get()))
 openParams.subscribe(@(_) wndAABB(null))
 curSlotName.subscribe(@(_) defer( function() {
   let aabb = gui_scene.getCompAABBbyKey(wndKey)
@@ -62,16 +70,16 @@ curSlotName.subscribe(@(_) defer( function() {
     wndAABB(aabb)
 }))
 
-function mkBulletButton(name, bSet, fromUnitTags, id) {
+function mkBulletButton(isSecondary, name, bSet, fromUnitTags, id) {
   let isCurrent = Computed(@() name == curSlotName.value)
   let isLockedSlot = Computed(@() (fromUnitTags?.reqLevel ?? 0) > (selSlot.value?.level ?? 0))
   let hasUnseenBullets = Computed(@() hasUnseenShellsBySlot.value?[selSlot.value?.id ?? 0][name])
   let children = [
-    @(){
+    @() {
       watch = isLockedSlot
       valign = ALIGN_TOP
       children = [
-        @() mkBulletSlot(bSet, fromUnitTags,
+        @() mkBulletSlot(isSecondary, bSet, fromUnitTags,
           {
             color = isCurrent.value ? 0xFF51C1D1 : 0x402C2C2C
             opacity = isLockedSlot.value ? 0.5 : 1
@@ -79,8 +87,8 @@ function mkBulletButton(name, bSet, fromUnitTags, id) {
             image = isCurrent.value ? slotBGImage() : null
           }, {
             key = $"{name}_icon" //for UI tutorial
-          } {
-            watch = [ isCurrent, isLockedSlot]
+          }, {
+            watch = [ isCurrent, isLockedSlot ]
             key = name //for UI tutorial
           })
         @() {
@@ -110,7 +118,7 @@ function mkBulletButton(name, bSet, fromUnitTags, id) {
             }.__update(fontVeryTiny)
           }
           : null
-        @(){
+        @() {
           watch = isLockedSlot
           size = [flex(), hdpx(108)]
           rendObj = ROBJ_BOX
@@ -134,42 +142,40 @@ function mkBulletButton(name, bSet, fromUnitTags, id) {
 }
 
 function bulletsList() {
-  if (bulletsInfo.value == null)
-    return { watch = bulletsInfo }
-  let { bulletSets, bulletsOrder, fromUnitTags } = bulletsInfo.value
+  let bInfo = isBulletSec.get() ? bulletsSecInfo.get() : bulletsInfo.get()
+  if (bInfo == null)
+    return { watch = [bulletsInfo, bulletsSecInfo, isBulletSec] }
+
+  let { bulletSets, bulletsOrder, fromUnitTags } = bInfo
   let visibleBulletsList = bulletsOrder.filter(function(name) {
     let { isExternalAmmo = false } = fromUnitTags?[name]
-    let isVisible = visibleBullets.get()?[name] ?? false
-    if (openedSlot.get() == 0)
-      return isVisible && !isExternalAmmo
-    return isVisible
+    let bullets = isBulletSec.get() ? visibleBulletsSec.get() : visibleBullets.get()
+    let isVisible = bullets?[name] ?? false
+    return openedSlot.get() == 0 ? isVisible && !isExternalAmmo : isVisible
   })
   let numberBullets = visibleBulletsList.len()
   let columns = bulletsColumnsCount(numberBullets)
-  let rows = ceil(numberBullets.tofloat()/columns)
+  let rows = ceil(numberBullets.tofloat() / columns)
+  let rowsWithBullets = arrayByRows(visibleBulletsList.map(@(name, id)
+    mkBulletButton(isBulletSec.get(), name, bulletSets[name], fromUnitTags?[name], id)), columns)
   return {
-    watch = [bulletsInfo, visibleBullets]
+    watch = [bulletsInfo, bulletsSecInfo, openedSlot, isBulletSec, visibleBullets, visibleBulletsSec]
     key = "bulletsList" //for UI tutorial
     size = [bulletsListWidth(columns), bulletHeight * rows]
     flow = FLOW_VERTICAL
     gap = slotsGap
-    children = (arrayByRows(
-      visibleBulletsList
-        .map(@(name, id) mkBulletButton(name, bulletSets[name], fromUnitTags?[name], id)), columns)
-      .map(@(item) {
-        flow = FLOW_HORIZONTAL
-        children = item
-        gap = slotsGap
-      })).append(
-        {
-          key = "saveSection"
-          size = flex()
-          function onDetach() {
-            if (selSlot.value?.name != null)
-              saveSeenShells(selSlot.value.name, visibleBulletsList.map(@(name) name))
-          }
-        }
-      )
+    children = rowsWithBullets.map(@(item) {
+      flow = FLOW_HORIZONTAL
+      children = item
+      gap = slotsGap
+    }).append({
+      key = "saveSection"
+      size = flex()
+      function onDetach() {
+        if (selSlot.get()?.name != null)
+          saveSeenShells(selSlot.get().name, visibleBulletsList.map(@(name) name))
+      }
+    })
   }
 }
 
@@ -231,10 +237,11 @@ function mkShellVideo(videos, width) {
 }
 
 function curBulletInfo() {
-  if (bulletsInfo.value == null)
-    return { watch = bulletsInfo }
+  let bInfo = isBulletSec.get() ? bulletsSecInfo.get() : bulletsInfo.get()
+  if (bInfo == null)
+    return { watch = [bulletsInfo, bulletsSecInfo, isBulletSec] }
 
-  let { bulletSets, fromUnitTags, unitName } = bulletsInfo.value
+  let { bulletSets, fromUnitTags, unitName } = bInfo
   let { caliber = 0.0 } = bulletSets.findvalue(@(_) true)
   let bSet = bulletSets?[curSlotName.value]
   let tags = fromUnitTags?[curSlotName.value]
@@ -264,7 +271,7 @@ function curBulletInfo() {
   children.extend(getBulletStats(bSet, tags, unitName).map(@(s) mkStatRow(s.nameText, s.valueText)))
 
   return {
-    watch = [bulletsInfo, curSlotName]
+    watch = [bulletsInfo, bulletsSecInfo, isBulletSec, curSlotName]
     key = "curBulletInfo" //for UI tutorial
     size = [flex(), SIZE_TO_CONTENT]
     minHeight = hdpx(500)
@@ -275,13 +282,13 @@ function curBulletInfo() {
 }
 
 function applyBullet() {
-  setOrSwapUnitBullet(openParams.value?.slotIdx, curSlotName.value)
+  setOrSwapUnitBullet(openParams.get()?.slotIdx, curSlotName.get())
   close()
 }
 
 let applyText = utf8ToUpper(loc("msgbox/btn_choose"))
 function applyButton() {
-  let { fromUnitTags = null } = bulletsInfo.value
+  let { fromUnitTags = null } = isBulletSec.get() ? bulletsSecInfo.get() : bulletsInfo.get()
   let { reqLevel = 0 } = fromUnitTags?[curSlotName.value]
   let isEnoughLevel = reqLevel <= (selSlot.value?.level ?? 0)
   let children = savedSlotName.value == curSlotName.value
@@ -296,7 +303,7 @@ function applyButton() {
       applyBullet,
       { ovr = { key = "applyButton" }}) // key for UI tutorial
   return {
-    watch = [savedSlotName, curSlotName, bulletsInfo, selSlot]
+    watch = [savedSlotName, curSlotName, bulletsInfo, bulletsSecInfo, isBulletSec, selSlot]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     size = [flex(), hdpx(110)]

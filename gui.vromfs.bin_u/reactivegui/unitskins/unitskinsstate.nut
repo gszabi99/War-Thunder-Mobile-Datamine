@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { baseUnit, curSelectedUnitId, curSelectedUnitSkin } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
@@ -9,7 +9,7 @@ let openForUnit = mkWatched(persist, "openForUnit", null)
 let openCount = Watched(openForUnit.get() == null ? 0 : 1)
 let unitSkinsOpenCount = Computed(@() openForUnit.get() == null || openForUnit.get() != baseUnit.get()?.name ? 0
   : openCount.get())
-let unitSkins = Computed(@() { "" : "true" }.__merge(allUnitsCfg.get()?[openForUnit.get()].skins ?? {}))
+let unitSkins = Computed(@() { "" : "true" }.__merge(campUnitsCfg.get()?[openForUnit.get()].skins ?? {}))
 let availableSkins = Computed(@() { "" : "true" }.__merge(servProfile.get()?.skins[openForUnit.get()] ?? {}))
 let currentSkin = Computed(@() baseUnit.get()?.currentSkins[curSelectedUnitId.get() ?? openForUnit.get()] ?? "")
 let selectedSkinCfg = Computed(@() serverConfigs.get()?.skins[curSelectedUnitSkin.get()][openForUnit.get()])

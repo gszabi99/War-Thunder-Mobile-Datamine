@@ -11,13 +11,13 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, halt_goods_purchase,
   halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, debug_apply_unit_daily_bonus_in_battle,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
-  add_battle_mod, set_research_unit, add_slot_exp, update_branch_offer
+  add_battle_mod, set_research_unit, add_slot_exp, update_branch_offer, apply_unit_level_rewards,
   shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
-let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
 let { mainHangarUnitName, mainHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { register_command } = require("console")
@@ -68,9 +68,9 @@ registerHandler("downgradeUnit",
 
 register_command(function(exp) {
   let name = mainHangarUnitName.get()
-  if (name not in allUnitsCfg.value)
+  if (name not in campUnitsCfg.get())
     return $"Unit '{name}' not exists"
-  if (name not in myUnits.value)
+  if (name not in campMyUnits.get())
     return $"Unit '{name}' not own"
   add_unit_exp(name, exp, "consolePrintResult")
   return "OK"
@@ -82,7 +82,7 @@ currencyOrder.each(@(c)
   register_command(@(count) add_currency_no_popup(c, count, "consolePrintResult"), $"meta.add_{c}"))
 
 register_command(@(exp) add_player_exp(curCampaign.value, exp, "consolePrintResult"), "meta.add_player_exp")
-register_command(@(name, count) change_item_count(name, count, "consolePrintResult"), "meta.change_item_count")
+register_command(@(name, count) change_item_count(name, count, "consolePrintResult"), "meta.add_item")
 register_command(@(seconds) seconds < 0
     ? remove_premium(-seconds, "consolePrintResult")
     : add_premium(seconds, "consolePrintResult"),
@@ -105,6 +105,7 @@ register_command(@(id, count) add_lootbox(id, count, "consolePrintResult"), "met
 register_command(@(id) halt_goods_purchase(id, "consolePrintResult"), "meta.halt_goods_purchase")
 register_command(@(id) halt_offer_purchase(id, "consolePrintResult"), "meta.halt_offer_purchase")
 register_command(@(slotIdx, exp) add_slot_exp(curCampaign.get(), slotIdx, exp, "consolePrintResult"), "meta.add_slot_exp")
+register_command(@(unitName) apply_unit_level_rewards(unitName, curCampaign.get()), "meta.apply_unit_level_rewards")
 
 register_command(@(id) get_my_lootbox_chances(id, "onDebugLootboxChances"), "meta.debug_lootbox_chances_my")
 register_command(@(id) get_base_lootbox_chances(id, "onDebugLootboxChances"), "meta.debug_lootbox_chances_base")

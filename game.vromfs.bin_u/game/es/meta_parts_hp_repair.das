@@ -9,7 +9,9 @@ require %game.events
 require WarShipModel
 require DagorDataBlock
 require DagorConsole
+require %game.unit.unit_events
 require %appGame.wtm_events
+
 
 [es(tag=server)]
 def repair_meta_parts_on_damage_es(evt : EventOnMetaPartDamage;
@@ -19,15 +21,13 @@ def repair_meta_parts_on_damage_es(evt : EventOnMetaPartDamage;
   meta_parts_hp_repair__maxHp -= damage * meta_parts_hp_repair__lostMult
 
 
-[es(tag=server, on_appear)]
-def repair_meta_parts_init_es(evt : Event;
-                              uid : int;
+[es(tag=server)]
+def repair_meta_parts_init_es(evt : CmdInitComponent;
+                              var unit__ref : UnitRef;
                               var meta_parts_hp_repair__duration : float&;
                               var meta_parts_hp_repair__speed : float&;
                               var meta_parts_hp_repair__maxHp : float&)
-  var unit = get_unit(uid)
-  if unit == null
-    return
+  var unit = unit__ref.unit
   let modBlk = unit.modBlk
   let durationMul = modBlk |> datablock_getReal("durationMul", 1.)
   let repairSpeedMul = modBlk |> datablock_getReal("repairSpeedMul", 1.)
@@ -40,7 +40,7 @@ def repair_meta_parts_init_es(evt : Event;
 
 [es(tag=server, on_event = EventRepairMetaPart)]
 def start_meta_parts_repair_es(evt : Event;
-                               uid : int;
+                               unit__ref : UnitRef;
                                var meta_parts_hp_repair__progress : float&;
                                meta_parts_hp_repair__duration : float;
                                meta_parts_hp_repair__boost : float;
@@ -51,12 +51,11 @@ def start_meta_parts_repair_es(evt : Event;
   meta_parts_hp_repair__nextAtTime = float(get_total_time())
   meta_parts_hp_repair__progress = meta_parts_hp_repair__duration / meta_parts_hp_repair__boost
   meta_parts_hp_repair__startBoost = meta_parts_hp_repair__boost
-  let unit = get_unit(uid)
-  if unit != null
-    let hpWillBeRepaired = int(100. * min((meta_parts_hp_repair__maxHp - unit.relativeHealth), meta_parts_hp_repair__duration * meta_parts_hp_repair__speed))
-    let player = unit.myPlayer
-    if player != null
-      broadcastEvent([[EventOnPlayerRepair userId = player.id, hpRepaired = hpWillBeRepaired]])
+  let unit = unit__ref.unit
+  let hpWillBeRepaired = int(100. * min((meta_parts_hp_repair__maxHp - unit.relativeHealth), meta_parts_hp_repair__duration * meta_parts_hp_repair__speed))
+  let player = unit.myPlayer
+  if player != null
+    broadcastEvent([[EventOnPlayerRepair userId = player.id, hpRepaired = hpWillBeRepaired]])
 
 def repair_meta_parts(var unit_dm : DamageableVisualModel?;
                       repair_speed : float;
@@ -82,7 +81,7 @@ def repair_meta_parts(var unit_dm : DamageableVisualModel?;
 
 [es(tag=server, no_order)]
 def repair_meta_parts_hp_es(info : UpdateStageInfoAct;
-                            uid : int;
+                            var unit__ref : UnitRef;
                             eid : EntityId;
                             var meta_parts_hp_repair__nextAtTime : float&;
                             var meta_parts_hp_repair__progress : float&;
@@ -95,9 +94,9 @@ def repair_meta_parts_hp_es(info : UpdateStageInfoAct;
                             meta_parts_hp_repair__timeToBoost : float;
                             meta_parts_hp_repair__earlyExit : bool;
                             var meta_parts_hp_repair__prevProgress : float&)
-  var unit = get_unit(uid)
+  var unit = unit__ref.unit
   var ship = unit |> as_ship()
-  if unit == null || unit.isDelayed || unit.visual == null || ship == null
+  if unit.isDelayed || unit.visual == null || ship == null
     return
 
   meta_parts_hp_repair__boost = (info.curTime - unit.lastDamageTime) > meta_parts_hp_repair__timeToBoost ? meta_parts_hp_repair__boostVal : 1.
@@ -136,11 +135,11 @@ def repair_meta_parts_hp_es(info : UpdateStageInfoAct;
 
 [es(tag=netClient, REQUIRE=(controlledHero), no_order)]
 def repair_meta_parts_hp_client_es(info : UpdateStageInfoAct;
-                                   uid : int;
+                                   var unit__ref : UnitRef;
                                    var meta_parts_hp_repair__prevProgress : float&)
-  let unit = get_unit(uid)
+  var unit = unit__ref.unit
   var ship = unit |> as_ship()
-  if unit == null || unit.isDelayed || unit.visual == null || ship == null
+  if unit.isDelayed || unit.visual == null || ship == null
     return
 
   if ship.metapartsRepairProgress <= 0. && meta_parts_hp_repair__prevProgress > 0.

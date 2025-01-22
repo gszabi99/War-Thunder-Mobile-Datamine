@@ -36,7 +36,6 @@ let allLangs = [
   { id = "Korean",      chatId = "ko" }
   { id = "Japanese",    chatId = "jp", hasUnitSpeech = true }
   { id = "Thai",        chatId = "th" }
-  { id = "Arabic",      chatId = "ar" }
 ]
   .map(function(lang) {
     let { id } = lang

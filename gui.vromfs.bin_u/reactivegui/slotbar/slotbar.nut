@@ -4,7 +4,7 @@ let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
 let { translucentSlotButton, getBorderCommand, lineWidth, slotBtnSize,
   COMMADN_STATE
 } = require("%rGui/components/translucentButton.nut")
-let { myUnits, allUnitsCfg, curUnit } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits, campUnitsCfg, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, bgUnit, mkUnitSelectedGlow,
   mkUnitPlateBorder, mkProfileUnitDailyBonus
@@ -28,6 +28,7 @@ let { priorityUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nu
 let { openSlotAttrWnd, mkUnseenSlotAttrByIdx } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { infoPanelWidth } = require("%rGui/unitsTree/unitsTreeComps.nut")
 let { gradTranspDoubleSideX, mkColoredGradientY } = require("%rGui/style/gradients.nut")
+let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 
 
 let slotsGap = hdpx(4)
@@ -236,7 +237,7 @@ function mkSlotHeader(slot, idx, unit, isSelected) {
   }
 }
 
-let function mkUnitSlot(unit, idx, onClick) {
+let function mkUnitSlot(unit, idx, onClick, hasUnseenRewards = false) {
   if (unit == null)
     return emptySelectSlot(idx)
 
@@ -264,6 +265,11 @@ let function mkUnitSlot(unit, idx, onClick) {
         padding = [0, 0, hdpx(3), hdpx(3)]
         vplace = ALIGN_BOTTOM
         children = mkProfileUnitDailyBonus(unit)
+      }
+      {
+        pos = [hdpx(10), hdpx(3)]
+        vplace = ALIGN_CENTER
+        children = hasUnseenRewards ? priorityUnseenMark : null
       }
     ]
     transform = { pivot = [0.5, 0.5] }
@@ -332,9 +338,11 @@ function onUnitSlotClick(unit, idx) {
 }
 
 let function mkSlotWithButtons(slot, idx) {
-  let unit = Computed(@() myUnits.get()?[slot?.name] ?? allUnitsCfg.get()?[slot?.name])
+  let unit = Computed(@() campMyUnits.get()?[slot?.name] ?? campUnitsCfg.get()?[slot?.name])
+  let isSelected = Computed(@() selectedSlotIdx.get() == idx)
+  let hasUnseenRewards = Computed(@() unit.get()?.name in unseenUnitLvlRewardsList.get())
   return @() {
-    watch = [unit, slots]
+    watch = [unit, slots, hasUnseenRewards, isSelected]
     flow = FLOW_VERTICAL
     children = [
       actionBtns(unit, idx)
@@ -342,8 +350,8 @@ let function mkSlotWithButtons(slot, idx) {
         key = slotBarSlotKey(idx) //for tutorial
         flow = FLOW_VERTICAL
         children = [
-          mkSlotHeader(slot, idx, unit, Computed(@() selectedSlotIdx.get() == idx))
-          mkUnitSlot(unit.get(), idx, @() onUnitSlotClick(unit, idx))
+          mkSlotHeader(slot, idx, unit, isSelected)
+          mkUnitSlot(unit.get(), idx, @() onUnitSlotClick(unit, idx), !isSelected.get() && hasUnseenRewards.get())
         ]
       }
     ]
@@ -362,7 +370,7 @@ let slotBarMainMenu = mainMenuPannable(@() {
 
 function mkSlotCommon(slot, idx) {
   let { name = "" } = slot
-  let unit = Computed(@() myUnits.get()?[name] ?? allUnitsCfg.get()?[name])
+  let unit = Computed(@() campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name])
   return @() {
     watch = unit
     flow = FLOW_VERTICAL
@@ -417,7 +425,7 @@ let frame = {
 }
 
 function mkSlotSelect(slot, idx) {
-  let unit = Computed(@() myUnits.get()?[slot?.name] ?? allUnitsCfg.get()?[slot?.name])
+  let unit = Computed(@() campMyUnits.get()?[slot?.name] ?? campUnitsCfg.get()?[slot?.name])
   return @() {
     watch = unit
     key = $"select_slot_{idx}" // need for tutorial

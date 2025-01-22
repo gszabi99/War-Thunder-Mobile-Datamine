@@ -7,8 +7,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let scrollbar = require("%rGui/components/scrollbar.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { formatText } = require("textFormatters.nut")
-let { selectorBtnW } = require("mkFormatAstWithInsideBlock.nut")
+let { formatText, selectorBtnW } = require("textFormatters.nut")
 let { isNewsWndOpened, curArticleId, curArticleIdx, playerSelectedArticleId, nextArticle, prevArticle,
   newsfeed, curArticleContent, articlesPerPage, pagesCount, curPageIdx,
   unreadArticles, markCurArticleSeen, closeNewsWnd

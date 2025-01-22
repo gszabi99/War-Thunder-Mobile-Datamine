@@ -1598,7 +1598,6 @@
     "path": "sounds/guns",
     "pathStudio": "aircraft/weapon",
     "outside": "mgc30l_gun_outside",
-    "cockpit": "mgc30l_gun_inside",
     "ai": "mgc30l_gun_ai"
   },
   "mgc30l_new_gun": {

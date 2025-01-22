@@ -25,7 +25,9 @@ function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, ma
   if (!applyAttrRowChange(catId, attr.id, tryValue, selLevel, minLevel, maxLevel)) {
     let currTime = get_time_msec()
     if (lastClickTime + boost_cooldown < currTime) { //cooldown check
-      let nextIncCost = attr.levelCost?[selLevel.get()] ?? 0 //for max level reach condition
+      let nextIncCost = tryValue < selLevel.get() // in case when tryValue less than current value
+        ? 0
+        : attr.levelCost?[selLevel.get()] ?? 0 //for max level reach condition
       if (nextIncCost > 0)
         buySlotLevelWnd(selectedSlotIdx.get())
     }
@@ -44,7 +46,7 @@ function mkAttrRow(attr, idx) {
   let canInc = Computed(@() selLevel.get() < maxLevel.get())
   let attrLocName = getAttrLabelText(curCampaign.get(), attr.id)
   let mkBtnOnClick = @(diff) @() applyAttrRowChangeOrBoost(catId, attr, selLevel.get() + diff, selLevel, minLevel, maxLevel)
-  let mkCellOnClick = @(val) @() applyAttrRowChange(catId, attr.id, val, selLevel, minLevel, maxLevel)
+  let mkCellOnClick = @(val) applyAttrRowChange(catId, attr.id, val, selLevel, minLevel, maxLevel)
   let curValueData = Computed(@() getAttrValData(curCampaign.get(), attr, minLevel.get(), shopCfg, serverConfigs.get(), unitMods.get()))
   let selValueData = Computed(@() selLevel.get() > minLevel.get()
     ? getAttrValData(curCampaign.get(), attr, selLevel.get(), shopCfg, serverConfigs.get(), unitMods.get())

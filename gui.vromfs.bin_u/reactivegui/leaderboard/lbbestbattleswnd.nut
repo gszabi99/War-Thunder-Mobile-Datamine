@@ -6,7 +6,8 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { actualizeStats } = require("%rGui/unlocks/userstat.nut")
 let { LOG_TIME } = require("lbCategory.nut")
 
-let { bgShaded, bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeaderBg } = require("%rGui/components/modalWnd.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { lbHeaderHeight, lbVGap, lbHeaderRowHeight, lbTableBorderWidth,
   rowBgOddColor, rowBgEvenColor, getRowBgColor
@@ -140,13 +141,12 @@ function content() {
       color = (rowsChildren.len() % 2) ? rowBgOddColor : rowBgEvenColor
     })
 
-  return bgMessage.__merge({
+  return modalWndBg.__merge({
     watch = [curLbCfg, bestBattles, ratingBattlesCount]
     size = [tableWidth, flex()]
-    hplace = ALIGN_CENTER
     flow = FLOW_VERTICAL
     children = [
-       bgHeader.__merge({
+       modalWndHeaderBg.__merge({
          size = [flex(), lbHeaderRowHeight]
          padding = !hasScroll ? lbTableBorderWidth
            : [lbTableBorderWidth, lbTableBorderWidth + scrollbarWidth, lbTableBorderWidth, lbTableBorderWidth]

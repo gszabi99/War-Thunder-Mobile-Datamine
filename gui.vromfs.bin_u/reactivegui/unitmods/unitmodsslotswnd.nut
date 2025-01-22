@@ -467,7 +467,6 @@ let unitModsWnd = {
   size = flex()
   padding = saBordersRv
   behavior = HangarCameraControl
-  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
   touchMarginPriority = TOUCH_BACKGROUND
   flow = FLOW_VERTICAL
   onAttach = @() isUnitModSlotsAttached.set(true)

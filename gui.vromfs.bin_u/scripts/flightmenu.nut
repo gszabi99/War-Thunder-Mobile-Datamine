@@ -172,13 +172,13 @@ let flightMenuButtons = [
     action = quitMission
   }
   {
-    name = "(DEV) FREE CAMERA"
-    isVisible = @() is_dev_version()
+    name = "FREE CAMERA"
+    isVisible = is_dev_version
     action = startFreecam
   }
   {
-    name = "(DEV) HITCAM FIXED"
-    isVisible = @() is_dev_version()
+    name = "HITCAM FIXED"
+    isVisible = is_dev_version
     action = toggleHitCamShowFixed
   }
 ]

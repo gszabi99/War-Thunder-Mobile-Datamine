@@ -11,7 +11,7 @@ let isFiltersVisible = Watched(false)
 let filters = [optName, optStatus, optUnitClass, optMRank, optCountry]
 let filtersTreeNodes = [optName, optStatus, optUnitClass, optMRank]
 let activeFilters = Watched(0)
-let filterCount = Watched(0)
+let filterGenId = Watched(0)
 
 const FILTER_UID = "units_filter"
 let closeFilters = @() modalPopupWnd.remove(FILTER_UID)
@@ -38,7 +38,7 @@ let getFiltersText = @(count) count <= 0 ? loc("showFilters") : loc("activeFilte
 
 
 function countActiveFilters() {
-  filterCount.set(filterCount.get() + 1)
+  filterGenId.set(filterGenId.get() + 1)
   return activeFilters(filters.reduce(function(res, f) {
     let { value } = f.value
     if (value != null && value != ""
@@ -51,14 +51,36 @@ countActiveFilters()
 foreach (f in filters) {
   f.value.subscribe(@(_) countActiveFilters())
   f?.allValues.subscribe(@(_) countActiveFilters())
+  f?.valueWatch.subscribe(@(_) countActiveFilters())
+}
+
+function mkFilteredUnits(units) {
+  let res = Computed(@() filterGenId.get() == 0 ? units.get()
+    : units.get().filter(function(unit) {
+        foreach (f in filters) {
+          let value = f.value.get()
+          if (value != null && !f.isFit(unit, value))
+            return false
+        }
+        return true
+      }))
+  foreach (f in filters) {
+    let { allValues = null, valueWatch = null } = f
+    if (allValues != null)
+      res._noComputeErrorFor(allValues) //recalc by filterGenId
+    if (valueWatch != null)
+      res._noComputeErrorFor(valueWatch) //recalc by filterGenId
+  }
+  return res
 }
 
 return {
   isFiltersVisible
   filterStateFlags
   activeFilters
-  filterCount
+  filterGenId
   filters
   getFiltersText
   openFilters
+  mkFilteredUnits
 }

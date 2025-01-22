@@ -31,7 +31,7 @@ Tutoral config:
                          //function which return key or array of keys to highlight
                          //Observable which value is key or array of keys to highlight
           onClick : function(state) //action onClick. If return true, next step will be not called
-          hotkey : string //custom hotkey to activate this onClickAction
+          hotkeys : string //custom hotkey to activate this onClickAction
           sizeIncAdd : int //higlight size increase. Default value = 0
           ctor : function(box) //custom creator for this box
           needArrow : bool //show pointer arrow to this object if it not zero size.

@@ -353,12 +353,24 @@ eventbus_subscribe("hint:aim_for_lead_indicator", function(_) {
   addCommonHintWithTtl(loc("hints/aim_for_lead_indicator"), 10)
 })
 
-eventbus_subscribe("CaptureBlockerActive", function(_) {
+eventbus_subscribe("hint:capture_blocker_active", function(_) {
   addCommonHintWithTtl(loc("hints/capture_blocker_active"), 5)
 })
 
-eventbus_subscribe("CaptureInterrupted", function(_) {
+eventbus_subscribe("hint:capture_interrupted", function(_) {
   addCommonHintWithTtl(loc("hints/capture_interrupted"), 5)
+})
+
+eventbus_subscribe("hint:rocket_blocker_active", function(_) {
+  addCommonHintWithTtl(loc("hints/rocket_blocker_active"), 5)
+})
+
+eventbus_subscribe("hint:rocket_blocker_success", function(_) {
+  addCommonHintWithTtl(loc("hints/rocket_blocker_success"), 5)
+})
+
+eventbus_subscribe("hint:rocket_intercepted", function(_) {
+    addCommonHintWithTtl(loc("hints/rocket_intercepted"), 5)
 })
 
 eventbus_subscribe("hint:enemy_too_far", function(_) {

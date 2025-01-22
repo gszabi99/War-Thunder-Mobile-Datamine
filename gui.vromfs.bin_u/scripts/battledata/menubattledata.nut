@@ -133,12 +133,14 @@ function actualizeBattleData(unitNameOrSlots, executeAfterExt = null) {
       executeAfterExt)
 }
 
-function actualizeBattleDataIfOwn(unitNameOrSlots) {
+function actualizeBattleDataIfOwn(unitNameOrSlots, executeAfterExt = null) {
   let isOwn = type(unitNameOrSlots) == "array"
     ? null == unitNameOrSlots.findvalue(@(u) u not in servProfile.value?.units)
     : unitNameOrSlots in servProfile.value?.units
   if (isOwn)
-    actualizeBattleData(unitNameOrSlots)
+    actualizeBattleData(unitNameOrSlots, executeAfterExt)
+  else
+    callHandler(executeAfterExt, { error = "Not own unit" })
 }
 
 registerHandler("onGetMenuBattleData", function(res, context) {

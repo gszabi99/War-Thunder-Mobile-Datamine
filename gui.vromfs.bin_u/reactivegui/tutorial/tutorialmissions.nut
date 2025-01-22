@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
+let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { receivedMissionRewards, curCampaign, isProfileReceived, isAnyCampaignSelected, abTests,
   isCampaignWithUnitsResearch
 } = require("%appGlobals/pServer/campaign.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { myUnits, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { apply_client_mission_reward } = require("%appGlobals/pServer/pServerApi.nut")
 let { register_command } = require("console")
 let { eventbus_send } = require("eventbus")
@@ -39,7 +39,7 @@ let needFirstBattleTutorByStats = @(stats) (stats?.battles ?? 0) == 0
 let needFirstBattleTutor = Computed(@()
   (firstBattleTutor.value in missionsWithRewards.value
     && isProfileReceived.value
-    && (myUnits.value.len() == 0
+    && (campMyUnits.get().len() == 0
       || needFirstBattleTutorByStats(servProfile.value?.sharedStatsByCampaign?[curCampaign.value]))
     && (!isCampaignWithUnitsResearch.get() || currentResearch.get() != null)
   )
@@ -92,7 +92,7 @@ function startTutor(id, currentUnitName = null) {
           ? currentUnitName
         : isDebugMode.get() && hangarUnit.get()?.name
           ? hangarUnit.get().name
-        : myUnits.get().findindex(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {}))
+        : campMyUnits.get().findindex(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {}))
           ?? currentResearch.get()?.name
     })
   resetTimeout(0.1, @() isDebugMode(false))
@@ -104,7 +104,12 @@ function rewardTutorialMission(campaign) {
     apply_client_mission_reward(campaign, id)
 }
 
-needForceStartTutorial.subscribe(@(v) v ? startTutor(firstBattleTutor.value) : null)
+function autoStartTutorial() {
+  if (needForceStartTutorial.get())
+    startTutor(firstBattleTutor.get())
+}
+
+needForceStartTutorial.subscribe(@(v) v ? deferOnce(autoStartTutorial) : null)
 
 register_command(@() isDebugMode(!isDebugMode.value), "debug.first_battle_tutorial")
 register_command(function() {

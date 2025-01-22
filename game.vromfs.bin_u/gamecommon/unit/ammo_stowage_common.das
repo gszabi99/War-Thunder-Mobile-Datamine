@@ -546,7 +546,7 @@ def ammo_stowage_subtract_weapon_ammo(weap : WeaponController const?; ammo_type 
       var gun : Gun? = null
       var bullet_set_idx = 0
       for weapon_i in weapon_range.x..weapon_range.y
-        let gun_i = as_gun(weap.Weapons |> get_weapon(v.ammo_stowage__weaponsIds[weapon_i]))
+        var gun_i = as_gun(weap.Weapons |> get_weapon(v.ammo_stowage__weaponsIds[weapon_i]))
         if gun_i == null
           return
         let bullet_set_range = iter_all_bullet_sets ? int2(0, length(gun_i.properties.bulletSets)) : int2(ammo_type_remap.w, ammo_type_remap.w + 1)

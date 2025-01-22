@@ -8,7 +8,8 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { mkPublicInfo, refreshPublicInfo, mkIsPublicInfoWait } = require("%rGui/contacts/contactPublicInfo.nut")
 let { mkStatsInfo, mkIsStatsWait, refreshUserStats } = require("%rGui/contacts/userstatPublicInfo.nut")
 let { calcPosition } = require("%rGui/tooltip.nut")
-let { bgMessage, bgHeader, bgShaded } = require("%rGui/style/backgrounds.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkBotStats, mkBotInfo } = require("botsInfoState.nut")
 let { viewStats, mkRow, mkStatRow } = require("%rGui/mpStatistics/statRow.nut")
@@ -285,19 +286,13 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
   let isWaitInfo = mkIsPublicInfoWait(userId)
   let publicStats = isBot ? mkBotStats(player) : mkStatsInfo(userId)
   let isWaitStats = mkIsStatsWait(userId)
-  return bgMessage.__merge({
+  return modalWndBg.__merge({
+    size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     valign = ALIGN_TOP
     stopMouse = true
-    size = [flex(), SIZE_TO_CONTENT]
     children = [
-      bgHeader.__merge({
-        size = [flex(), SIZE_TO_CONTENT]
-        padding = hdpx(15)
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = {rendObj = ROBJ_TEXT text = loc("mainmenu/titlePlayerProfile")}.__update(fontSmallAccented)
-      })
+      modalWndHeader(loc("mainmenu/titlePlayerProfile"))
       {
         hplace = ALIGN_CENTER
         flow = FLOW_VERTICAL
@@ -350,6 +345,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
                   ]
                 }
               }
+              { size = flex() }
               function() {
                 let stats = publicStats.get()?.stats["global"][campaign]
                 if (isWaitStats.get())

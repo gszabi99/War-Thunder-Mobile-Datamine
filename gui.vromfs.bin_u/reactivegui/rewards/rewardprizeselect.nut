@@ -25,7 +25,8 @@ let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.
 let { hasJustUnlockedUnitsAnimation } = require("%rGui/unit/justUnlockedUnits.nut")
 let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
-let { bgMessage, bgHeader, bgShaded } = require("%rGui/style/backgrounds.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
@@ -227,23 +228,13 @@ let mkDisableBkgWithTooltip = @(isPurchased, rStyle) isPurchased
   : mkRewardDisabledBkg
 
 let mkPrizeTicketsContent = @(content, title)
-  bgMessage.__merge({
+  modalWndBg.__merge({
     minWidth = hdpx(800)
     flow = FLOW_VERTICAL
     valign = ALIGN_TOP
     halign = ALIGN_CENTER
-    stopMouse = true
     children = [
-      bgHeader.__merge({
-        size = [flex(), SIZE_TO_CONTENT]
-        padding = hdpx(20)
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = {
-          rendObj = ROBJ_TEXT
-          text = title
-        }.__update(fontSmallAccented)
-      })
+      modalWndHeader(title)
       {
         flow = FLOW_HORIZONTAL
         halign = ALIGN_CENTER
@@ -351,14 +342,7 @@ function openRewardPrizeSelect() {
     onAttach = @() isModalAttached.set(true)
     onDetach = @() isModalAttached.set(false)
     onClick = @() null
-    children = {
-      key = {}
-      transform = {}
-      safeAreaMargin = saBordersRv
-      behavior = Behaviors.BoundToArea
-      children = mkPrizeTicketsContent(mkContentChoose(currentVariants, lastReward),
-        loc("events/selectPrizeToReceive"))
-    }
+    children = mkPrizeTicketsContent(mkContentChoose(currentVariants, lastReward), loc("events/selectPrizeToReceive"))
   }))
 }
 

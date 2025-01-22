@@ -142,7 +142,8 @@ let mkIcoBtnContent = @(icon, needUpsideDown = false) {
   transform = needUpsideDown ? { rotate = 180 } : {}
 }
 
-let footer = {
+let footer = @() {
+  watch = [voiceMsgPieHidden, selItemId]
   size = [flex(), SIZE_TO_CONTENT]
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
@@ -150,7 +151,11 @@ let footer = {
   children = [
     textButtonCommon(utf8ToUpper(loc("msgbox/btn_reset")), resetVoiceMsgPieUserConfig, { hotkeys = ["^J:X"] })
     { size = flex() }
-    mkCustomButton(mkIcoBtnContent("btn_trash.svg"), onBtnVisibility, icoBtnStyle.__merge({ hotkeys = ["^J:Y"] }))
+    mkCustomButton(
+      mkIcoBtnContent(voiceMsgPieHidden.get().contains(selItemId.get()) ? "btn_trash_return.svg" : "btn_trash.svg"),
+      onBtnVisibility,
+      icoBtnStyle.__merge({hotkeys = ["^J:Y"]})
+    )
     mkCustomButton(mkIcoBtnContent("roulette_pointer.svg", true), onBtnUp, icoBtnStyle.__merge({ hotkeys = ["^J:LT"] }))
     mkCustomButton(mkIcoBtnContent("roulette_pointer.svg"), onBtnDown, icoBtnStyle.__merge({ hotkeys = ["^J:RT"] }))
   ]

@@ -5,7 +5,7 @@ let { LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEB
 } = require("%appGlobals/loginState.nut")
 let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { defButtonHeight, BRIGHT } = require("%rGui/components/buttonStyles.nut")
+let { defButtonHeight, BRIGHT, HUAWEI } = require("%rGui/components/buttonStyles.nut")
 let { mkCustomButton, textButtonBright, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { urlText, urlLikeButton } = require("%rGui/components/urlText.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
@@ -18,6 +18,7 @@ let { getCurrentLanguage } = require("dagor.localize")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { is_nswitch, is_ios } = require("%sqstd/platform.nut")
 let { GP_SUCCESS = 0, getGPStatus = @() 0 } = require("android.account.googleplay")
+let { isHMSAvailable = @() false } = require("android.account.huawei")
 
 let fbButtonVisible = getCurrentLanguage() != "Russian"
 let gpButtonVisible = getGPStatus() == GP_SUCCESS
@@ -67,6 +68,8 @@ let refrIconSize = hdpxi(37)
 let cancelText = utf8ToUpper(loc("mainmenu/btnCancel"))
 
 let urlColor = Color(0, 204, 255)
+let loginButtonStyle = isHMSAvailable() ? HUAWEI : BRIGHT
+let loginButtonsHGap = isHMSAvailable() ? hdpx(16) : buttonsHGap
 
 let resendTimeout = 30
 
@@ -317,6 +320,13 @@ let huaweiLoginButtonContent = {
   gap = hdpx(15)
   children = [
     {
+      size = [ googleLogoWidth, googleLogoHeight ]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#huawei_logo.svg:{googleLogoWidth}:{googleLogoHeight}")
+      keepAspect = KEEP_ASPECT_FIT
+      color = Color(203, 1, 33)
+    }
+    {
       rendObj = ROBJ_TEXT
       text = "Sign in with HUAWEI ID"
       color = Color(0, 0, 0)
@@ -367,38 +377,40 @@ let firebaseLoginButtonContent = freeze({
 let guestLoginButtonContent = firebaseLoginButtonContent
 
 let loginButtonCtors = {
-  [LT_GAIJIN] = @() mkCustomButton(mkGaijinLogo(), @() isLoginByGajin.update(true), BRIGHT),
-  [LT_GOOGLE] =  !gpButtonVisible ? null
-    : @() mkCustomButton(googleLoginButtonContent,
-      @() eventbus_send("doLogin", { loginType = LT_GOOGLE }),
-        BRIGHT),
-   [LT_HUAWEI] = @() mkCustomButton(huaweiLoginButtonContent,
+  [LT_GAIJIN] = @() mkCustomButton(mkGaijinLogo(),
+    @() isLoginByGajin.update(true),
+    loginButtonStyle),
+  [LT_GOOGLE] = !gpButtonVisible ? null : @() mkCustomButton(googleLoginButtonContent,
+    @() eventbus_send("doLogin", { loginType = LT_GOOGLE }),
+    loginButtonStyle),
+  [LT_HUAWEI] = @() mkCustomButton(huaweiLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_HUAWEI }),
-        BRIGHT),
+    loginButtonStyle),
   [LT_APPLE] = @() mkCustomButton(appleLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_APPLE }),
-    BRIGHT),
+    loginButtonStyle),
   [LT_NSWITCH] = @() mkCustomButton(nswitchLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_NSWITCH }),
-    BRIGHT),
+    loginButtonStyle),
   [LT_FIREBASE] = @() mkCustomButton(firebaseLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_FIREBASE }),
-    BRIGHT),
+    loginButtonStyle),
   [LT_GUEST] = @() mkCustomButton(guestLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_GUEST }),
-    BRIGHT),
-  [LT_FACEBOOK] = !fbButtonVisible ? null
-    : @() mkCustomButton(fbLoginButtonContent,
-        @() eventbus_send("doLogin", { loginType = LT_FACEBOOK }),
-         BRIGHT),
+    loginButtonStyle),
+  [LT_FACEBOOK] = !fbButtonVisible ? null : @() mkCustomButton(fbLoginButtonContent,
+    @() eventbus_send("doLogin", { loginType = LT_FACEBOOK }),
+    loginButtonStyle),
 }.filter(@(btnCtor) btnCtor != null)
 
-function mkMainAuthorizationButtons() {
-  let res = [LT_APPLE, LT_GOOGLE, LT_HUAWEI, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_GAIJIN, LT_NSWITCH]
-    .filter(@(lt) availableLoginTypes?[lt] ?? false)
-    .map(@(lt) loginButtonCtors?[lt]())
-  if (!is_nswitch)
-    res.insert(0, {
+let mainAuthorizationButtons = {
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  flow = FLOW_VERTICAL
+  gap = buttonsHGap
+  children = [
+    is_nswitch ? null : {
       rendObj = ROBJ_TEXT
       halign = ALIGN_CENTER
       text = loc("choose_authorization_method")
@@ -406,8 +418,18 @@ function mkMainAuthorizationButtons() {
       fontFx = FFT_GLOW
       fontFxFactor = 64
       fontFxColor = Color(0, 0, 0)
-    }.__update(fontMedium))
-  return res
+    }.__update(fontMedium)
+    {
+      gap = loginButtonsHGap
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      flow = FLOW_VERTICAL
+      children = [LT_APPLE, LT_GOOGLE, LT_HUAWEI, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_GAIJIN, LT_NSWITCH]
+        .filter(@(lt) availableLoginTypes?[lt] ?? false)
+        .map(@(lt) loginButtonCtors?[lt]())
+    }
+  ]
 }
 
 let langOptionsContent = {
@@ -426,11 +448,9 @@ let contentBlock = @() {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   halign = ALIGN_CENTER
-  flow = FLOW_VERTICAL
-  gap = buttonsHGap
   children = isShowLanguagesList.value ? langOptionsContent
     : isLoginByGajin.value ? gaijinAuthorization
-    : mkMainAuthorizationButtons()
+    : mainAuthorizationButtons
 }
 
 let supportBlock = {

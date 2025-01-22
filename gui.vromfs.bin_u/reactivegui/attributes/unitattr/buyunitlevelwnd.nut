@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { ComputedImmediate } = require("%sqstd/frp.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { msgBoxBg, msgBoxHeaderWithClose } = require("%rGui/components/msgBox.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { buy_unit_level, unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
@@ -18,7 +18,7 @@ let { generateDataDiscount, mkLevelBlock } = require("%rGui/attributes/buyLevelC
 let WND_UID = "buyUnitLevelWnd" //we no need several such messages at all.
 
 let unitName = mkWatched(persist, "unitName", null)
-let unit = Computed(@() myUnits.get()?[unitName.get()])
+let unit = Computed(@() campMyUnits.get()?[unitName.get()])
 let levelsToMax = Computed(@() (unit.get()?.levels.len() ?? 0) - (unit.get()?.level ?? 0))
 let needShowWnd = keepref(ComputedImmediate(@() levelsToMax.get() > 0))
 
@@ -60,12 +60,12 @@ let openImpl = @() addModalWindow(bgShaded.__merge({
   key = WND_UID
   size = flex()
   onClick = close
-  children = @() msgBoxBg.__merge({
+  children = @() modalWndBg.__merge({
     watch = unitName
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     children = [
-      msgBoxHeaderWithClose(loc("header/unitLevelBoost", { unitName = loc(getUnitLocId(unitName.get())) }),
+      modalWndHeaderWithClose(loc("header/unitLevelBoost", { unitName = loc(getUnitLocId(unitName.get())) }),
         close,
         {
           minWidth = SIZE_TO_CONTENT,

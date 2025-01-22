@@ -13,7 +13,8 @@ let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
 let { actualizeStats } = require("%rGui/unlocks/userstat.nut")
 let { secondsToHoursLoc, parseUnixTimeCached } = require("%appGlobals/timeToText.nut")
-let { bgShaded, bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeaderBg } = require("%rGui/components/modalWnd.nut")
 let { localPlayerColor } = require("%rGui/style/stdColors.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
@@ -305,12 +306,13 @@ function lbTableFull(categories, lbData, selfRow) {
       color = (rowsChildren.len() % 2) ? rowBgOddColor : rowBgEvenColor
     })
 
-  return bgMessage.__merge({
+  return modalWndBg.__merge({
     key = categories
     size = [flex(), lbTableHeight]
+    vplace = ALIGN_TOP
     flow = FLOW_VERTICAL
     children = [
-       bgHeader.__merge({
+       modalWndHeaderBg.__merge({
          size = [flex(), lbHeaderRowHeight]
          padding = lbTableBorderWidth
          flow = FLOW_HORIZONTAL

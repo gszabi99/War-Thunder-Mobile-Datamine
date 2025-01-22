@@ -865,7 +865,7 @@
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
-        "shotFreq": 0.1,
+        "shotFreq": 0.067,
         "turret": {
           "head": "bone_torpedo_01",
           "gun": "bone_torpedo_01"
@@ -901,7 +901,7 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
-        "shotFreq": 0.1,
+        "shotFreq": 0.067,
         "turret": {
           "head": "bone_torpedo_02",
           "gun": "bone_torpedo_02"
@@ -937,7 +937,7 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
-        "shotFreq": 0.1,
+        "shotFreq": 0.067,
         "turret": {
           "head": "bone_torpedo_03",
           "gun": "bone_torpedo_03"
@@ -973,7 +973,7 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
-        "shotFreq": 0.1,
+        "shotFreq": 0.067,
         "turret": {
           "head": "bone_torpedo_04",
           "gun": "bone_torpedo_04"
@@ -1009,7 +1009,7 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
-        "shotFreq": 0.1,
+        "shotFreq": 0.067,
         "turret": {
           "head": "bone_torpedo_05",
           "gun": "bone_torpedo_05"
@@ -1329,7 +1329,7 @@
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
-              "shotFreq": 0.1,
+              "shotFreq": 0.067,
               "turret": {
                 "head": "bone_torpedo_01",
                 "gun": "bone_torpedo_01"
@@ -1365,7 +1365,7 @@
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
-              "shotFreq": 0.1,
+              "shotFreq": 0.067,
               "turret": {
                 "head": "bone_torpedo_02",
                 "gun": "bone_torpedo_02"
@@ -1401,7 +1401,7 @@
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
-              "shotFreq": 0.1,
+              "shotFreq": 0.067,
               "turret": {
                 "head": "bone_torpedo_03",
                 "gun": "bone_torpedo_03"
@@ -1437,7 +1437,7 @@
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
-              "shotFreq": 0.1,
+              "shotFreq": 0.067,
               "turret": {
                 "head": "bone_torpedo_04",
                 "gun": "bone_torpedo_04"
@@ -1473,7 +1473,7 @@
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
-              "shotFreq": 0.1,
+              "shotFreq": 0.067,
               "turret": {
                 "head": "bone_torpedo_05",
                 "gun": "bone_torpedo_05"

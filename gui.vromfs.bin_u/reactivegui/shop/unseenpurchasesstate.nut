@@ -35,6 +35,11 @@ let unseenGroups = [
     sourcePrefix = "userstatReward&"
     style = "leaderboard"
   }
+  {
+    isFit = @(purch) purch?.source.endswith("&customStyle") ?? false
+    sourcePostfix = "&customStyle"
+    style = "customTexts"
+  }
 ]
 
 let activeUnseenPurchasesGroup = Computed(function() {
@@ -101,6 +106,8 @@ function addCustomUnseenPurchHandler(isUnseenFit, showUnseen) {
   incCustomVersion()
 }
 
+let unseenPurchaseUnitPlateKey = @(name) name == null ? null : $"unseenPurchaseUnitPlate:{name}"
+
 function undelayShow() {
   logR("undelayShow unseen")
   isShowDelayed(false)
@@ -133,4 +140,5 @@ return {
   isShowUnseenDelayed = isShowDelayed
   skipUnseenMessageAnimOnce
   isUnseenGoodsVisible
+  unseenPurchaseUnitPlateKey
 }

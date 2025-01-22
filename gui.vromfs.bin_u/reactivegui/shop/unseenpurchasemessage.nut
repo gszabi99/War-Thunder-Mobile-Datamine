@@ -2,21 +2,25 @@ from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { frnd } = require("dagor.random")
 let { parse_json } = require("json")
+let { doesLocTextExist } = require("dagor.localize")
 let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
+let { ComputedImmediate } = require("%sqstd/frp.nut")
 let { rewardTypeByValue } = require("%appGlobals/rewardType.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { isInQueue } = require("%appGlobals/queueState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { activeUnseenPurchasesGroup, markPurchasesSeen, hasActiveCustomUnseenView, skipUnseenMessageAnimOnce, isUnseenGoodsVisible
+let { activeUnseenPurchasesGroup, markPurchasesSeen, hasActiveCustomUnseenView,
+  skipUnseenMessageAnimOnce, isUnseenGoodsVisible, unseenPurchaseUnitPlateKey
 } = require("unseenPurchasesState.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { lootboxes } = require("%appGlobals/pServer/campaign.nut")
+let { lootboxes, curCampaign, curCampaignSlots } = require("%appGlobals/pServer/campaign.nut")
 let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
-let { bgShadedDark, bgHeader, bgMessage } = require("%rGui/style/backgrounds.nut")
+let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
 let { getTextScaleToFitWidth, getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
@@ -27,7 +31,7 @@ let { getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentatio
 let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
@@ -52,9 +56,14 @@ let { mkMsgConvert } = require("unseenPurchaseAddMessage.nut")
 let { showPrizeSelectDelayed, ticketToShow } = require("%rGui/rewards/rewardPrizeSelect.nut")
 let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
 let { mkLoootboxImage } = require("%appGlobals/config/lootboxPresentation.nut")
+let { slots, openSelectUnitToSlotWnd, canOpenSelectUnitWithModal } = require("%rGui/slotBar/slotBarState.nut")
+let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
+let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
+let { curUnitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 
 
-let bgGradient = bgMessage.__merge({size = flex()})
 let wndWidth = saSize[0]
 let maxWndHeight = saSize[1]
 let rewBlockWidth = hdpx(340)
@@ -96,6 +105,16 @@ let aTitleScaleUpTime = 0.15
 let aTitleScaleDownTime = aTitleScaleUpTime
 let aTitleScaleMin = 0.75
 let aTitleScaleMax = 1.1
+
+let infoTextBySource = {
+  premium_convert_by_subscription = @(count) loc("reward/premium_convert_by_subscription/desc",
+    { time = secondsToHoursLoc(count) })
+}
+
+function defaultInfoText(id, paramInt) {
+  let locId = $"reward/{id}/desc"
+  return doesLocTextExist(locId) ? loc(locId, { count = paramInt }) : ""
+}
 
 let stackData = Computed(function() {
   let stackRaw = {}
@@ -181,7 +200,7 @@ let stackData = Computed(function() {
   }.filter(@(v) v.len() != 0))
 })
 
-let needShow = keepref(Computed(@() !hasActiveCustomUnseenView.value
+let needShow = keepref(ComputedImmediate(@() !hasActiveCustomUnseenView.value
   && ((stackData.get()?.rewardIcons.len() ?? 0) > 0
     || (stackData.get()?.unitPlates.len() ?? 0) > 0
     || (stackData.get()?.battleMod.len() ?? 0) > 0)
@@ -193,6 +212,7 @@ let needShow = keepref(Computed(@() !hasActiveCustomUnseenView.value
   && !hasJustUnlockedUnitsAnimation.value))
 
 let WND_UID = "unseenPurchaseWindow"
+
 let close = @() removeModalWindow(WND_UID)
 
 let isAnimFinished = Watched(false)
@@ -450,7 +470,7 @@ function mkBlueprintPlateTexts(r, rStyle) {
   let available = Computed(@() servProfile.get()?.blueprints?[id] ?? 0)
   let total = Computed(@() serverConfigs.get()?.allBlueprints?[id].targetCount ?? 1)
   let unitRank = Computed(@() serverConfigs.value?.allUnits?[id]?.mRank)
-  let hasBlueprintUnit = Computed(@() id in myUnits.get())
+  let hasBlueprintUnit = Computed(@() id in campMyUnits.get())
 
   return {
     size = flex()
@@ -624,9 +644,20 @@ function mkUnitPlate(unitInfo) {
   let { unit, startDelay } = unitInfo
   if (unit == null)
     return null
+  let stateFlags = Watched(0)
+  let key = unseenPurchaseUnitPlateKey(unitInfo.id)
+
   let p = getUnitPresentation(unit)
-  return {
+  return @(){
+    key
+    watch = stateFlags
     size = [ unitPlateWidth, unitPlateHeight ]
+    behavior = Behaviors.Button
+    onElemState = withTooltip(stateFlags, key, @() {
+      content = unitInfoPanel({}, mkPlatoonOrUnitTitle, Watched(unit)),
+      flow = FLOW_HORIZONTAL
+    })
+    onDetach = tooltipDetach(stateFlags)
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
@@ -646,6 +677,22 @@ function mkUnitPlate(unitInfo) {
       }.__update(mkRewardAnimProps(startDelay, aUnitPlateSelfScale))
     ]
   }
+}
+
+function mkUnitButton(unitInfo, myUnits, cUnitInProgress, cSlots, cCampaignSlots) {
+  if (unitInfo?.unit == null)
+    return null
+  let btnOvr = {ovr = { size = [unitPlateWidth, hdpx(70)], margin = [hdpx(10),0,0,0]}, hasPattern = false}
+  if (cCampaignSlots != null) {
+    let onClick = @() openSelectUnitToSlotWnd(unitInfo.id, unseenPurchaseUnitPlateKey(unitInfo.id))
+    return cSlots.findindex(@(slot) slot.name == unitInfo.id) == null
+      ? textButtonPrimary(loc("mainmenu/btnEquip"), onClick, btnOvr)
+      : textButtonCommon(loc("mainmenu/btnEquipped"), onClick, btnOvr)
+  }
+
+  return cUnitInProgress == null && unitInfo.id in myUnits && !myUnits[unitInfo.id].isCurrent
+    ? textButtonPrimary(loc("mainmenu/btnEquip"), @() setCurrentUnit(unitInfo.id), btnOvr)
+    : null
 }
 
 function mkBattleModEventUnitPlate(bmp, reward) {
@@ -731,7 +778,7 @@ let mkBattleModeRewards = @(rewards) rewards.len() == 0 ? null : @() {
 }
 
 let mkUnitRewards = @(unitsData) unitsData.len() == 0 ? null : @() {
-  watch = serverConfigs
+  watch = [serverConfigs, slots, campMyUnits, curUnitInProgress, curCampaignSlots, curCampaign]
   flow = FLOW_VERTICAL
   gap = unitPlatesGap
   children =
@@ -743,15 +790,23 @@ let mkUnitRewards = @(unitsData) unitsData.len() == 0 ? null : @() {
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       gap = unitPlatesGap
-      children = row.map(mkUnitPlate)
+      children = row.map(@(u) {
+        flow = FLOW_VERTICAL
+        children = [
+          mkUnitPlate(u),
+          u?.unit.campaign == curCampaign.get()
+            ? mkUnitButton(u, campMyUnits.get(), curUnitInProgress.get(), slots.get(), curCampaignSlots.get())
+            : null
+        ]
+      })
     })
 }
 
-let bgGradientComp = bgGradient.__merge({
-  animations = [ { prop = AnimProp.scale, from = [1, 0], to = [1, 1],
-    duration = aIntroTime,
-    play = true, trigger = ANIM_SKIP } ]
-})
+let wndAnimations = [{
+  prop = AnimProp.scale, from = [1, 0], to = [1, 1],
+  duration = aIntroTime,
+  play = true, trigger = ANIM_SKIP
+}]
 
 let mkTitleAnimations = @(startDelay) [
   { prop = AnimProp.opacity, from = 0, to = 0,
@@ -770,19 +825,6 @@ let mkTitleAnimations = @(startDelay) [
     delay = startDelay + aTitleScaleDelayTime + aTitleScaleUpTime, duration = aTitleScaleDownTime,
     play = true, trigger = ANIM_SKIP, onFinish = @() isAnimFinished(true) }
 ]
-
-let wndTitle = bgHeader.__merge({
-  size = [flex(), SIZE_TO_CONTENT]
-  margin = [0, 0, hdpx(55), 0]
-  padding = hdpx(15)
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  children = {
-    color = textColor
-    rendObj = ROBJ_TEXT
-    text = loc("mainmenu/you_received")
-  }.__update(fontBig)
-})
 
 let lbValueFields = ["tillPlaces", "place", "tillPercent", "percent"]
 let LB_BIG = 100000000
@@ -890,19 +932,14 @@ function mkLbInfoTable(texts) {
 function mkLeaderboardRewardTitle(startDelay, activeGroup) {
   let texts = getLbRewardTexts(activeGroup)
   if (texts.len() == 0)
-    return wndTitle
+    return modalWndHeader(loc("mainmenu/you_received"))
 
   return {
     margin = [0, 0, hdpx(20), 0]
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     children = [
-      bgHeader.__merge({
-        padding = [hdpx(15), hdpx(100)]
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = mkText(loc("lb/rewardHeader"), fontSmall)
-      })
+      modalWndHeader(loc("lb/rewardHeader"))
       { size = [0, hdpx(30)] }
       mkLbInfoTable(texts)
       { size = [0, hdpx(60)] }
@@ -913,12 +950,54 @@ function mkLeaderboardRewardTitle(startDelay, activeGroup) {
   }
 }
 
+function getCustomTexts(activeGroup) {
+  let { sourcePostfix = "", list } = activeGroup
+  let { source = "", paramInt = 0 } = list.findvalue(@(_) true)
+  let id = sourcePostfix == "" ? source : source.slice(0, -sourcePostfix.len())
+  let titleLocId = $"reward/{id}/title"
+  return {
+    title = doesLocTextExist(titleLocId) ? loc(titleLocId) : loc("mainmenu/you_received")
+    infoText = id in infoTextBySource ? infoTextBySource[id](paramInt) : defaultInfoText(id, paramInt)
+  }
+}
+
+function mkCustomTextRewardTitle(startDelay, activeGroup) {
+  let { title, infoText } = getCustomTexts(activeGroup)
+  if (infoText == "")
+    return modalWndHeader(title)
+
+  return {
+    size = [flex(), SIZE_TO_CONTENT]
+    margin = [0, 0, hdpx(20), 0]
+    halign = ALIGN_CENTER
+    flow = FLOW_VERTICAL
+    children = [
+      modalWndHeader(title)
+      { size = [0, hdpx(30)] }
+      {
+        size = [flex(), SIZE_TO_CONTENT]
+        padding = [0, hdpx(30)]
+        maxWidth = hdpx(1100)
+        rendObj = ROBJ_TEXTAREA
+        behavior = Behaviors.TextArea
+        halign = ALIGN_CENTER
+        color = textColor
+        text = infoText
+      }.__update(fontTinyAccented)
+    ]
+    transform = {}
+    animations = mkTitleAnimations(startDelay)
+  }
+}
+
 let titleCtors = {
   leaderboard = mkLeaderboardRewardTitle
+  customTexts = mkCustomTextRewardTitle
 }
 
 let wndOvr = {
   leaderboard = { gap = hdpx(20) }
+  customTexts = { gap = hdpx(20) }
 }
 
 let mkTapToContinueText = @(startDelay) {
@@ -948,16 +1027,12 @@ function onCloseRequest() {
     skipAnims()
     return
   }
-  // Setting the received unit as current
   let unitId = stackData.value?.unitPlates.findvalue(@(_) true)?.id
-  let unit = myUnits.value?[unitId]
+  let unit = campMyUnits.get()?[unitId]
   if (unit != null && canResetToMainScene()) {
-    let errString = unitId == curUnit.get()?.name ? "" : setCurrentUnit(unitId)
-    if (errString == "") {
-      tryResetToMainScene()
-      setHangarUnit(unitId)
-      requestOpenUnitPurchEffect(unit)
-    }
+    tryResetToMainScene()
+    setHangarUnit(unitId)
+    requestOpenUnitPurchEffect(unit)
   }
   // Marking purchases as seen
   markPurchasesSeen(activeUnseenPurchasesGroup.value.list.keys())
@@ -966,7 +1041,7 @@ function onCloseRequest() {
 function mkMsgContent(stackDataV, purchGroup, onClick) {
   let { rewardIcons = [], unitPlates = [], outroDelay, battleMod = [] } = stackDataV
   let { style = null } = purchGroup
-  let title = titleCtors?[style](outroDelay, purchGroup) ?? wndTitle
+  let title = titleCtors?[style](outroDelay, purchGroup) ?? modalWndHeader(loc("mainmenu/you_received"))
   let size = [
     max(
       unitPlates.len() * unitPlateWidth,
@@ -976,6 +1051,8 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
     SIZE_TO_CONTENT
   ]
   let content = {
+    onAttach = @() canOpenSelectUnitWithModal.set(true)
+    onDetach = @() canOpenSelectUnitWithModal.set(false)
     minWidth = hdpx(900)
     padding = [0, 0, hdpx(38), 0]
     halign = ALIGN_CENTER
@@ -1009,18 +1086,14 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
   return makeVertScroll(content, { size = SIZE_TO_CONTENT maxHeight = maxWndHeight })
 }
 
-let addRewardMessageWnd = @(onClick){
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  children = [
-    bgGradientComp
-    @() {
-      watch = [stackData, activeUnseenPurchasesGroup]
-      children = stackData.get()?.convertions == null ? null
-        : mkMsgConvert(stackData.get().convertions, onClick)
-    }
-  ]
-}
+let addRewardMessageWnd = @(onClick) modalWndBg.__merge({
+  children = @() {
+    watch = [stackData, activeUnseenPurchasesGroup]
+    children = stackData.get()?.convertions == null ? null
+      : mkMsgConvert(stackData.get().convertions, onClick)
+  }
+  animations = wndAnimations
+})
 
 let showAddRewardMessage = @() addModalWindow(bgShadedDark.__merge({
   key = $"{WND_UID}_add"
@@ -1039,17 +1112,13 @@ let showAddRewardMessage = @() addModalWindow(bgShadedDark.__merge({
   sound = { detach  = "meta_reward_window_close" }
 }))
 
-let messageWnd = @(onClick){
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  children = [
-    bgGradientComp
-    @() {
-      watch = [stackData, activeUnseenPurchasesGroup]
-      children = mkMsgContent(stackData.get(), activeUnseenPurchasesGroup.get(), onClick)
-    }
-  ]
-}
+let messageWnd = @(onClick) modalWndBg.__merge({
+  children =  @() {
+    watch = [stackData, activeUnseenPurchasesGroup]
+    children = mkMsgContent(stackData.get(), activeUnseenPurchasesGroup.get(), onClick)
+  }
+  animations = wndAnimations
+})
 
 function onClick(){
   if (ticketToShow.get())

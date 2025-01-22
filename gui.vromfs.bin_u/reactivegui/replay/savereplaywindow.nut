@@ -3,7 +3,8 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { msgBoxHeaderWithClose, msgBoxBg, openMsgBox } = require("%rGui/components/msgBox.nut")
+let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { saveLastReplay } = require("lastReplayState.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 let { buttonsHGap, textButton } = require("%rGui/components/textButton.nut")
@@ -57,11 +58,11 @@ let saveReplayWnd = bgShaded.__merge({
   key = WND_UID
   size = flex()
   onAttach = @() set_kb_focus(replayName)
-  children = @() msgBoxBg.__merge({
+  children = @() modalWndBg.__merge({
     size = [hdpx(800), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     children = [
-      msgBoxHeaderWithClose(loc("mainmenu/btnSaveReplay"), close)
+      modalWndHeaderWithClose(loc("mainmenu/btnSaveReplay"), close)
       wndContent
     ]
   })

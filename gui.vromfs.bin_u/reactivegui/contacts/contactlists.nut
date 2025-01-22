@@ -9,6 +9,7 @@ let contactsListsMap = {
   rejectedByMeUids = "rejectedByMe"
   myBlacklistUids = "myBlacklist"
   meInBlacklistUids = "meInBlacklist"
+  wtmLink = "wtmlink_g"
 }
 
 let contactsLists = {}
@@ -19,12 +20,16 @@ foreach(exportId, listId in contactsListsMap) {
   contactsLists[listId] <- list
 }
 
-let { friendsUids } = export
+let { friendsUids, wtmLink } = export
 let friendsOnlineUids = Computed(@()
   friendsUids.value.filter(@(_, userId) isContactOnline(userId, onlineStatus.value)).keys()
 )
 
+let accountLink = Computed(@() wtmLink.get().findvalue(@(_) true))
+accountLink.subscribe(@(a) log("Found account link: ", a))
+
 return {
   contactsLists
   friendsOnlineUids
+  accountLink
 }.__update(export)

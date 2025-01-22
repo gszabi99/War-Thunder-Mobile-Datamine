@@ -82,7 +82,11 @@ let needAutoLevelUp = keepref(Computed(@() !levelInProgress.get()
   && buyUnitsData.value.canBuyOnLvlUp.len() == 0
   && !isInBattle.value))
 
-let skipLevelUpUnitPurchase = @() levelup_without_unit(curCampaign.value)
+function skipLevelUpUnitPurchase() {
+  if (levelInProgress.get())
+    return
+  levelup_without_unit(curCampaign.get())
+}
 
 function onNeedAutoLevelUp() {
   if (needAutoLevelUp.get())

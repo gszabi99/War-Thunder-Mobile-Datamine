@@ -12,7 +12,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitSlotsPresetNonUpdatable, getUnitBeltsNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
 
 
@@ -33,7 +33,7 @@ let testFlightByUnitType = {
 function getBulletsForTestFlight(unitName) {
   if (getUnitType(unitName) == AIR) {
     let res = []
-    let belts = getUnitBeltsNonUpdatable(unitName, myUnits.get()?[unitName].mods)
+    let belts = getUnitBeltsNonUpdatable(unitName, campMyUnits.get()?[unitName].mods)
     foreach(name in belts)
       res.append({ name, count = 10000 })
     return res
@@ -83,7 +83,8 @@ function startTestFlightImpl(unitName, missionName, skin) {
     skin
     missionName = missionName ?? testFlightByUnitType?[unitType] ?? defTestFlight
     bullets = getBulletsForTestFlight(unitName)
-    weaponPreset = getUnitSlotsPresetNonUpdatable(unitName, myUnits.get()?[unitName].mods)
+    weaponPreset = getUnitSlotsPresetNonUpdatable(unitName, campMyUnits.get()?[unitName].mods)
+      .reduce(@(res, v, k) res.$rawset(k.tostring(), v), {})
   }
   donloadUnitPacksAndSend(unitName, testFlightExtPacks?[getAddonPostfix(unitName)] ?? [],
     "startTestFlight", params)
@@ -109,6 +110,7 @@ function startOfflineBattle(unit, missionName) {
       missionName
       bullets = getBulletsForTestFlight(unit.name)
       weaponPreset = getUnitSlotsPresetNonUpdatable(unit.name, unit?.mods)
+        .reduce(@(res, v, k) res.$rawset(k.tostring(), v), {})
     })
 }
 

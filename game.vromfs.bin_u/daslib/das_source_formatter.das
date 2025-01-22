@@ -702,6 +702,10 @@ def need_spaces_around(ctx: FormatterCtx; index: int): bool
         return false
     if t.isInType && (t.str == ":" || t.str == "<" || t.str == ">" || t.str == ">>" || t.str == ">>>" || empty(t.str))
         return false
+    if index < length(ctx.tokens) - 1
+        assume next = ctx.tokens[index + 1]
+        if t.str == "@" && next.tokenType == TokenType KEYWORD_OR_IDENTIFIER
+            return false
     return true
 
 
@@ -741,6 +745,10 @@ let tokens_before_unary <- [[auto "("; "["; "?["; "\{"; "auto"; "int"; "float"; 
 def is_unary(ctx: FormatterCtx; index: int): bool
     if ctx |> eq(index, "!") || ctx |> eq(index, "~")
         return true
+
+    if ctx |> eq(index, "*") && index > 0 && ctx.tokens[index - 1].isInType
+        return true
+
     if ctx |> eq(index, "+") || ctx |> eq(index, "-") || ctx |> eq(index, "*")
         if (tokens_before_unary |> find_index(ctx.tokens[index - 1].str) >= 0) || ctx |> new_line_before(index)
             return true
@@ -815,6 +823,8 @@ def fmt_function_call_param_paren_call(var ctx: FormatterCtx)
 def fmt_spaces_around_operators(var ctx: FormatterCtx)
     for i in range(1, length(ctx.tokens) - 1)
         if !empty(ctx.tokens[i].str)
+            if is_unary(ctx, i) && !new_line_before(ctx, i)
+                ctx |> remove_space_before(i + 1)
             if ctx |> need_space_only_before(i) && !is_unary(ctx, i)
                 ctx |> add_space_before(i)
             elif ctx |> need_spaces_around(i) && !is_unary(ctx, i)
@@ -907,6 +917,11 @@ def fmt_space_after_cast_type(var ctx: FormatterCtx)
                         ctx |> add_space_before(j)
                         break
 
+def fmt_destructure_space(var ctx: FormatterCtx)
+    for i in range(0, length(ctx.tokens) - 1)
+        if ctx |> eq(i, "let", "var") && ctx.tokens[i + 1].spaces == 0
+            ctx |> add_space_before(i + 1)
+
 
 def do_format(var ctx: FormatterCtx)
     ctx |> parse_all_tokens()
@@ -937,6 +952,14 @@ def do_format(var ctx: FormatterCtx)
     ctx |> fmt_remove_space_before_end_of_object()
     ctx |> fmt_remove_space_before_object_type()
     ctx |> fmt_remove_space_before_array_of_type()
+    ctx |> fmt_destructure_space()
+
+    let top = length(ctx.tokens) - 1
+    for it in range(16)
+        let i = top - it
+        if i < 0 || !empty(ctx.tokens[i].str)
+            break
+        ctx.tokens[i].spaces = 0
 
 
 def public format_source_string(file_data: string const& implicit): string

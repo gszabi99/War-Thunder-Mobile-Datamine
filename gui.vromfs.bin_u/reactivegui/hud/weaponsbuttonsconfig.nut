@@ -70,7 +70,7 @@ let actionBarItemsConfig = {
     getImage = @(_) "ui/gameuiskin#icon_capture_blocker.svg"
     alternativeImage = @(_) "ui/gameuiskin#icon_rocket_blocker.svg"
     actionType = AB_ELECTRONIC_WARFARE
-    mkButtonFunction = "mkActionItem"
+    mkButtonFunction = "mkCountermeasureItem"
     haptPatternId = HAPT_IRCM
   }
   EII_SMOKE_GRENADE = {

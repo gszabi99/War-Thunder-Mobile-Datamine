@@ -178,10 +178,10 @@ function mkDoll(scale) {
   let shortcutImage = mkGamepadShortcutImage(shortcutId, abShortcutImageOvr, scale)
   let moveChild = moveTypeImage(round(moveTypeImageSize * scale).tointeger())
   return @() {
+    watch = isInZoom
     key = "tank_state_button"
     behavior = TouchAreaOutButton
-    watch = isInZoom
-    eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
+    cameraControl = true
     touchMarginPriority = TOUCH_MINOR
     function onElemState(sf) {
       let prevSf = stateFlags.value

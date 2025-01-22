@@ -10,6 +10,7 @@ let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
 
 let ICON_SIZE = hdpx(70)
 let buttonsHGap = hdpx(64)
+let buttonsVGap = hdpx(20)
 let paddingX = hdpx(38)
 let hotkeySize = evenPx(50)
 let hotkeyGap = evenPx(10)
@@ -74,6 +75,7 @@ let mergeStyles = @(s1, s2) (s2?.len() ?? 0) == 0 ? s1
       hotkeys = s2?.hotkeys ?? s1?.hotkeys
       stateFlags = s2?.stateFlags ?? s1?.stateFlags
       tooltipCtor = s1?.tooltipCtor ?? s2?.tooltipCtor
+      hasPattern = s2?.hasPattern ?? s1?.hasPattern ?? true
     }
 
 let btnImgCache = {}
@@ -160,7 +162,7 @@ function mkIcon(path, size) {
 
 function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
   let { ovr = {}, childOvr = {}, gradientOvr = {}, hotkeyBlockOvr = {}, hotkeys = null,
-    tooltipCtor = null
+    tooltipCtor = null, hasPattern = true
   } = style
   let stateFlags = style?.stateFlags ?? Watched(0)
   let contentExt = mkButtonContentWithHotkey(stateFlags, hotkeys,
@@ -195,7 +197,7 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
     }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     children = [
-      pattern
+      hasPattern ? pattern : null
       mkGradient(gradientOvr)
     ].append(contentExt, addChild)
   }.__update(ovrExt,
@@ -221,6 +223,7 @@ return {
   textButtonMultiline
   mergeStyles
   buttonsHGap
+  buttonsVGap
   buttonStyles
 
   textButtonPrimary = @(text, onClick, styleOvr = null)

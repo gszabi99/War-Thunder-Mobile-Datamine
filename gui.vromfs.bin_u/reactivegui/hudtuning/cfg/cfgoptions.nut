@@ -1,10 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { get_base_game_version_str } = require("app")
-let { check_version } = require("%sqstd/version_compare.nut")
-let can_scale_in_hud_tuning = check_version(">=1.11.0.71", get_base_game_version_str())
-  ? require("%appGlobals/permissions.nut").can_scale_in_hud_tuning
-  : Watched(false)
 
 
 let mkSetValue = @(key) function setValue(options, id, value) {
@@ -29,7 +24,6 @@ let optDoubleCourseGuns = {
 let optScale = {
   locId = "options/scale"
   ctrlType = OCT_SLIDER
-  isAvailable = can_scale_in_hud_tuning
   getValue = @(options, id) options?.scale[id] ?? 1
   setValue = mkSetValue("scale")
   valToString = @(v) $"{(v * 100).tointeger()}%"
@@ -45,7 +39,6 @@ let getTextWidth = @(options, id) options?.textWidth[id] ?? 1
 let optTextWidth = {
   locId = "options/width"
   ctrlType = OCT_SLIDER
-  isAvailable = can_scale_in_hud_tuning
   getValue = getTextWidth
   setValue = mkSetValue("textWidth")
   valToString = @(v) $"{(v * 100).tointeger()}%"
@@ -75,7 +68,6 @@ let getElemFont = @(options, id) fontsById[getElemFontId(options, id)].font
 let optFontSize = {
   locId = "options/fontSize"
   ctrlType = OCT_LIST
-  isAvailable = can_scale_in_hud_tuning
   list = fontsList.map(@(f) f.id)
   getValue = getElemFontId
   setValue = mkSetValue("fontSize")

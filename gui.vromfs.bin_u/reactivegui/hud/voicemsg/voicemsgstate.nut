@@ -10,7 +10,6 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { allow_voice_messages } = require("%appGlobals/permissions.nut")
 let { isInBattle, localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
 let { getPieMenuSelectedIdx } = require("%rGui/hud/pieMenu.nut")
 let { CMD_MSG_PREFIX, registerChatCmdHandler, sendChatMessage } = require("%rGui/chat/mpChatState.nut")
@@ -162,7 +161,7 @@ isVoiceMsgStickActive.subscribe(function(isActive) {
 })
 
 function voiceMsgChatCmdHandlerFunc(sender, msg) {
-  if (!allow_voice_messages.get() || !msg.startswith(CMD_MSG_PREFIX_VOICE))
+  if (!msg.startswith(CMD_MSG_PREFIX_VOICE))
     return null
   let params = msg.slice(CMD_MSG_PREFIX_VOICE.len()).split(":")
   let id = params[0]
@@ -192,10 +191,7 @@ function voiceMsgChatCmdHandlerFunc(sender, msg) {
   return locText
 }
 
-let register = @() registerChatCmdHandler(CMD_MSG_PREFIX_VOICE, voiceMsgChatCmdHandlerFunc)
-allow_voice_messages.subscribe(@(v) v ? register() : null)
-if (allow_voice_messages.get())
-  register()
+registerChatCmdHandler(CMD_MSG_PREFIX_VOICE, voiceMsgChatCmdHandlerFunc)
 
 return {
   COOLDOWN_TIME_SEC

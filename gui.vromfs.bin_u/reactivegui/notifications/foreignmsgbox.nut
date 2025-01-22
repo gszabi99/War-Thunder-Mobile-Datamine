@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
-let { openMsgBox, closeMsgBox, defaultBtnsCfg, msgBoxHeaderWithClose } = require("%rGui/components/msgBox.nut")
+let { openMsgBox, closeMsgBox, defaultBtnsCfg } = require("%rGui/components/msgBox.nut")
+let { modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let msgBoxError = require("%rGui/components/msgBoxError.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -36,7 +37,7 @@ let ctors = {
     openMsgBox(
       msg.__merge({
         uid
-        title = msgBoxHeaderWithClose(title,
+        title = modalWndHeaderWithClose(title,
           function() {
             removeMsg(msg)
             closeMsgBox(uid)

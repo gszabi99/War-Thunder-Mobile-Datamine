@@ -3,11 +3,10 @@ let logD = log_with_prefix("[DOWNLOAD] ")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
-let { enqueueDownload, queryDownloadStatus, tryToInstall, getApkFileVersion = null, DOWNLOAD_STASUS_UNKNOWN,
+let { enqueueDownload, queryDownloadStatus, tryToInstall, getApkFileVersion, DOWNLOAD_STASUS_UNKNOWN,
   DOWNLOAD_STATUS_PENDING, DOWNLOAD_STATUS_RUNNING, DOWNLOAD_STATUS_PAUSED, DOWNLOAD_STATUS_SUCCESSFUL,
   DOWNLOAD_STATUS_FAILED } = require("android.platform")
-  let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { OPT_AUTO_UPDATE_ENABLED, getOptValue } = require("%rGui/options/guiOptions.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -16,6 +15,8 @@ let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { actualGameVersion, actualGameHash, getApkLinkWithCash } = require("needUpdate/needUpdateAndroidSite.nut")
 let { get_base_game_version_str } = require("app")
+let { isConnectionLimited } = require("%appGlobals/clientState/connectionStatus.nut")
+let { isGameAutoUpdateEnabled } = require("%rGui/options/options/gameAutoUpdateOption.nut")
 
 let isSuggested = hardPersistWatched("suggestInstall.isSuggested", false)
 let cachedDownloadId = hardPersistWatched("suggestInstall.downloadId", null)
@@ -121,10 +122,10 @@ function downloadAPK() {
     return
   }
 
-  let downloadedVersion = getApkFileVersion?(apkToInstall)
+  let downloadedVersion = getApkFileVersion(apkToInstall)
   logD($"Ready to install version: {downloadedVersion}")
 
-  if (downloadedVersion == null || downloadedVersion == availableForDownload) {
+  if (downloadedVersion == availableForDownload) {
     logD("The most recent version is already downloaded")
     hasDownloadedApk.set(true)
     return
@@ -151,6 +152,9 @@ subscribeFMsgBtns({
 
 needShowModal.subscribe(@(v) v ? deferOnce(showSuggestInstallModal) : null)
 
-let updateBySite = @() getOptValue(OPT_AUTO_UPDATE_ENABLED) ? downloadAPK() : null
+let canUpdateByConnectionStatus = Computed(function() {
+  let statusOpt = isGameAutoUpdateEnabled.get()
+  return statusOpt == "allow_always" || (statusOpt == "allow_only_wifi" && !isConnectionLimited.get())
+})
 
-return { updateBySite, isDownloadInProgress }
+return { updateBySite = downloadAPK, isDownloadInProgress, canUpdateByConnectionStatus }

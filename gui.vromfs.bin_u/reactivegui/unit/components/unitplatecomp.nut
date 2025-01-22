@@ -20,7 +20,7 @@ let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
 let { selectedLineVertUnits, selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
@@ -193,10 +193,10 @@ let getComponentsByUnitType = @(unitType)
 let mkUnitBlueprintMark = @(unit, ovr = {}) function() {
   let count = servProfile.get()?.blueprints?[unit.name] ?? 0
   let tgtCount = serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 0
-  return count >= tgtCount || unit.name in myUnits.get()
-    ? { watch = [servProfile, serverConfigs, myUnits] }
+  return count >= tgtCount || unit.name in campMyUnits.get()
+    ? { watch = [servProfile, serverConfigs, campMyUnits] }
     : {
-        watch = [servProfile, serverConfigs, myUnits]
+        watch = [servProfile, serverConfigs, campMyUnits]
         hplace = ALIGN_LEFT
         vplace = ALIGN_BOTTOM
         flow = FLOW_HORIZONTAL
@@ -663,7 +663,7 @@ let mkUnitDailyBonus = @(canActivateDailyBonus, wpMul, expMul) @() {
 
 function mkProfileUnitDailyBonus(unit) {
   let canActivateDailyBonus = Computed(@() firstBattlesReward.get() == null
-    && unit.name in myUnits.get()
+    && unit.name in campMyUnits.get()
     && isDailyBonusActive.get()
     && unit?.dailyBonusTime != null
     && serverTimeDay.get() != getDay(unit.dailyBonusTime))

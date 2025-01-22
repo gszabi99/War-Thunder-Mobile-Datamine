@@ -19,14 +19,14 @@ def regen_meta_parts_hp_delay_es(evt : EventOnMetaPartDamage;
 
 [es(tag=server)]
 def regen_meta_parts_hp_es(info : UpdateStageInfoAct;
-                           uid : int;
+                           var unit__ref : UnitRef;
                            eid : EntityId;
                            var meta_parts_hp_regen__nextAtTime : float&;
                            meta_parts_hp_regen__interval : float;
                            meta_parts_hp_regen__speed : float;
                            meta_parts_hp_regen__limitFixed : uint16)
-  var unit = get_unit(uid)
-  if unit == null || unit.isDelayed || unit.visual == null || meta_parts_hp_regen__speed <= 0.
+  var unit = unit__ref.unit
+  if unit.isDelayed || unit.visual == null || meta_parts_hp_regen__speed <= 0.
     return
 
   if info.curTime < meta_parts_hp_regen__nextAtTime

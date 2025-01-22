@@ -1160,7 +1160,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/136mm_k3s_hot_launcher_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/136mm_k3s_hot_rocket_launcher.blk",
         "weaponType": "rockets",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -1988,7 +1988,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "primary",
-              "blk": "gameData/Weapons/groundModels_weapons/136mm_k3s_hot_launcher_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/136mm_k3s_hot_rocket_launcher.blk",
               "weaponType": "rockets",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,

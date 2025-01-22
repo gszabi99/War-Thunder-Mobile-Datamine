@@ -17,6 +17,7 @@ let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { randomBattleMode, isRandomBattleNewbieTutorial } = require("%rGui/gameModes/gameModeState.nut")
 let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { btnBEsc } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 const TUTORIAL_ID = "startFirstBattle"
 let isFinished = mkIsTutorialCompleted(TUTORIAL_ID)
@@ -76,6 +77,7 @@ function startTutorial() {
           sizeIncAdd = hdpx(20)
           needArrow = true
           onClick = @() isUnitsTreeOpen(false)
+          hotkeys = [btnBEsc]
         }]
       }
       //main menu
@@ -97,6 +99,7 @@ function startTutorial() {
             }
           }
           needArrow = true
+          hotkeys = ["^J:X | Enter"]
         }]
       }
     ]

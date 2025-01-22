@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { round } = require("math")
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
 
 let levelUpSizePx = [400, 220]
@@ -21,6 +22,11 @@ let textTime = starStartTime - textStartTime
 let flagAnimFullTime = flagStartTime + flagTime1 + flagTime2 + flagTimeDiff
 
 let mkSizeByParent = @(size) [pw(100.0 * size[0] / levelUpSizePx[0]), ph(100.0 * size[1] / levelUpSizePx[1])]
+let mkSizeElemByParent = @(size, parentSize)
+  [
+    round(parentSize[0] * size[0] / levelUpSizePx[0]).tointeger(),
+    round(parentSize[1] * size[1] / levelUpSizePx[1]).tointeger()
+  ]
 
 let wingAnims = @(dir) @(delay, _) [
   { prop = AnimProp.scale, from = [0.8, 0.8], to = [0.8, 0.8], duration = delay,
@@ -54,61 +60,80 @@ function flagAnims(dir, baseDelay) {
   }
 }
 
-let elems = [
+let flagPresentation = {
+  unitLevelUp = [
+    "ui/gameuiskin#levelup_wing_left.avif",
+    "ui/gameuiskin#levelup_wing_right.avif",
+    "ui/gameuiskin#levelup_vehicle_center.avif",
+    "ui/gameuiskin#levelup_vehicle_flag_left.avif",
+    "ui/gameuiskin#levelup_vehicle_flag_right.avif",
+    "ui/gameuiskin#levelup_vehicle_star.avif"
+  ],
+  levelUp = [
+    "ui/gameuiskin#levelup_wing_left.avif",
+    "ui/gameuiskin#levelup_wing_right.avif",
+    "ui/gameuiskin#levelup_center.avif",
+    "ui/gameuiskin#levelup_flag_left.avif",
+    "ui/gameuiskin#levelup_flag_right.avif",
+    "ui/gameuiskin#levelup_star.avif"
+  ]
+}
+
+let elemsCfg = [
   {
     size = [135, 210]
     pos = [-140, 0]
-    image = Picture("ui/gameuiskin#levelup_wing_left.avif")
     transform = { pivot = [1, 1] }
     animations = wingAnims(1)
   }
   {
     size = [135, 210]
     pos = [140, 0]
-    image = Picture("ui/gameuiskin#levelup_wing_right.avif")
     transform = { pivot = [0, 1] }
     animations = wingAnims(-1)
   }
   {
     size = [270, 254]
-    image = Picture("ui/gameuiskin#levelup_center.avif")
   }
   {
     size = [270, 254]
     pos = [-70, 0]
-    image = Picture("ui/gameuiskin#levelup_flag_left.avif")
     animations = flagAnims(1, flagStartTime)
   }
   {
     size = [270, 254]
     pos = [65, 0]
-    image = Picture("ui/gameuiskin#levelup_flag_right.avif")
     animations = flagAnims(-1, flagStartTime + flagTimeDiff)
   }
   {
     size = [170, 170]
     pos = [0, 10]
-    image = Picture("ui/gameuiskin#levelup_star.avif")
     animations = @(delay, _) [
       { prop = AnimProp.scale, from = [1, 1], to = [1.2, 1.2], delay = delay + starStartTime, duration = starTime,
         easing = CosineFull, play = true }
     ]
   }
 ]
-  .map(function prepareElem(elem) {
-    let res = {
-      rendObj = ROBJ_IMAGE
-      transform = {}
-    }.__update(elem)
-    foreach (key in ["size", "pos"])
-      if (key in res)
-        res[key] = mkSizeByParent(res[key])
-    return res
-  })
 
-let mkElem = @(elem, height, delay) type(elem?.animations) == "function"
-  ? elem.__merge({ animations = elem.animations(delay, height) })
-  : elem
+let mkImageCtor = @(img, size) Picture($"{img}:{size[0]}:{size[1]}:P")
+
+let elems = elemsCfg.map(@(elem) {
+  rendObj = ROBJ_IMAGE
+  transform = {}
+}.__update(elem))
+
+function mkElem(elem, image, parentSize, delay) {
+  let res = clone elem
+
+  foreach (key in ["size", "pos"])
+    if (key in res)
+      res[key] = mkSizeElemByParent(res[key], parentSize)
+
+  if (type(res?.animations) == "function")
+    return res.__merge({ animations = res.animations(delay, parentSize[1]), image = mkImageCtor(image, res.size) })
+
+  return res.__merge({ image = mkImageCtor(image, res.size) })
+}
 
 
 function mkLevelAnimations(baseDelay) {
@@ -145,18 +170,31 @@ let mkStarLevelText = @(starLevel, baseDelay) {
   animations = mkLevelAnimations(baseDelay)
 }
 
-let levelUpFlag = @(height, level, starLevel, delay = 0, override = {}) {
-  size = [levelUpSizePx[0].tofloat() / levelUpSizePx[1] * height, height]
+let defLevelUpFlag = @(size, children) {
+  size
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  children = elems.map(@(e) mkElem(e, height, delay))
-    .append(mkLevelText(height, level - starLevel, delay),
+  children
+}
+
+let createLevelUpFlag = @(flagType, size, level, starLevel, delay = 0, override = {})
+  defLevelUpFlag(size, elems.map(@(e, idx) mkElem(e, flagPresentation?[flagType][idx] ?? "", size, delay))
+    .append(mkLevelText(size[1], level - starLevel, delay),
       mkStarLevelText(starLevel, delay))
-}.__update(override)
+  ).__update(override)
+
+let mkFlagSize = @(height) [levelUpSizePx[0].tofloat() / levelUpSizePx[1] * height, height]
+
+let levelUpFlag = @(height, level, starLevel, delay = 0, override = {})
+  createLevelUpFlag("levelUp", mkFlagSize(height), level, starLevel, delay, override)
+
+let levelUpUnitFlag = @(height, level, starLevel, delay = 0, override = {})
+  createLevelUpFlag("unitLevelUp", mkFlagSize(height), level, starLevel, delay, override)
 
 return {
   flagAnimFullTime
   flagHeight
   levelUpSizePx
   levelUpFlag
+  levelUpUnitFlag
 }

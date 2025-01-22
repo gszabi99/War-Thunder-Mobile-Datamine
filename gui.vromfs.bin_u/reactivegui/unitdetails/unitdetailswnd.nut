@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
 let { registerScene } = require("%rGui/navState.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { unitInfoPanelFull } = require("%rGui/unit/components/unitInfoPanel.nut")
@@ -9,7 +9,7 @@ let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitInfo
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { textButtonPrimary } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonMultiline, mergeStyles } = require("%rGui/components/textButton.nut")
 let { can_debug_units } = require("%appGlobals/permissions.nut")
 let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -28,12 +28,15 @@ let { curSelectedUnitId, openUnitOvr, closeUnitDetailsWnd, baseUnit,
 let { selectedLineHorUnitsCustomSize, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let { hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
 let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
+let { openUnitRewardsModal, unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
+let { PURCHASE } = require("%rGui/components/buttonStyles.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 
 let buttonsGap = hdpx(40)
 
 let openCount = Computed(@() baseUnit.value != null ? unitDetailsOpenCount.get() : 0)
-let isShowedUnitOwned = Computed(@() baseUnit.value?.name in myUnits.value)
+let isShowedUnitOwned = Computed(@() baseUnit.value?.name in campMyUnits.get())
 
 let nextLevelToUnlockUnit = Computed(function() {
   if ("level" not in baseUnit.value)
@@ -61,7 +64,7 @@ function mkUnitPlate(unit, platoonUnit, onClick) {
   let platoonUnitFull = unit.__merge(platoonUnit)
   let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
   let isSelected = Computed(@() unitToShow.get()?.name == platoonUnit.name)
-  let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (myUnits.value?[unit.name].level ?? 0))
+  let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (campMyUnits.get()?[unit.name].level ?? 0))
   let justUnlockedDelay = Computed(@() justUnlockedPlatoonUnits.value.indexof(platoonUnit.name) != null ? UNIT_DELAY : null)
   let isCollectible = unit?.isCollectible
   return @() {
@@ -116,10 +119,27 @@ let unitInfoPanelPlace = @() {
 
     hplace = ALIGN_RIGHT
     behavior = [ Behaviors.Button, HangarCameraControl ]
-    eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
     touchMarginPriority = TOUCH_BACKGROUND
     onClick = closeUnitDetailsWnd
   }, unitToShow)
+}
+
+function rewardsButton() {
+  let hasUnseenRewards = Computed(@() baseUnit.get()?.name in unseenUnitLvlRewardsList.get())
+
+  return @() {
+    watch = [hasUnseenRewards, baseUnit]
+    children = !hasUnseenRewards.get() ? null
+      : [
+          textButtonMultiline(loc("unitLevelUp/rewardBtn"),
+            @() openUnitRewardsModal(baseUnit.get()),
+            mergeStyles(PURCHASE, { hotkeys = ["^J:B"]} ))
+          {
+            margin = hdpx(10)
+            children = priorityUnseenMark
+          }
+        ]
+  }
 }
 
 let testDriveButton = @() {
@@ -146,6 +166,7 @@ let buttonsBlock = @() {
   children = [
     { size = flex() }
     mkUnitPkgDownloadInfo(baseUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
+    rewardsButton()
     testDriveButton
     !(curCampaign.get() == "air" || isShowedUnitOwned.get()) ? null
       : {
@@ -161,7 +182,7 @@ let buttonsBlock = @() {
                   ? btnOpenUnitMods({ hotkeys = ["^J:Y"] })
                 : !isShowedUnitOwned.get()
                   ? null
-                : (myUnits.get()[baseUnit.get().name]?.isUpgraded == baseUnit.get()?.isUpgraded
+                : (campMyUnits.get()[baseUnit.get().name]?.isUpgraded == baseUnit.get()?.isUpgraded
                     || baseUnit.get()?.isPremium)
                   ? btnOpenUnitAttrBig
                 : null
@@ -178,7 +199,6 @@ let sceneRoot = {
   key = openCount
   size = [ sw(100), sh(100) ]
   behavior = HangarCameraControl
-  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
   touchMarginPriority = TOUCH_BACKGROUND
   animations = wndSwitchAnim
 

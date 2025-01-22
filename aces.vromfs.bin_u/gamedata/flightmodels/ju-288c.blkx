@@ -3087,6 +3087,29 @@
                 "external": false
               }
             ]
+          },
+          {
+            "iconType": "bomb_2000kg_group",
+            "name": "2500kg",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sb2500.blk",
+                "emitter": "sc1800_1",
+                "bullets": 1,
+                "external": false
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/de_sb2500.blk",
+                "emitter": "sc1800_2",
+                "bullets": 1,
+                "external": false
+              }
+            ]
           }
         ]
       }

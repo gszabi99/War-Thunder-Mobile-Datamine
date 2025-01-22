@@ -1,26 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getBulletImage } = require("%appGlobals/config/bulletsPresentation.nut")
 let { getAmmoTypeShortText, getAmmoNameShortText } = require("%rGui/weaponry/weaponsVisual.nut")
-let { chosenBullets } = require("bulletsChoiceState.nut")
+let { chosenBullets, chosenBulletsSec } = require("bulletsChoiceState.nut")
 
 let ICON_SIZE = hdpxi(80)
 let headerHeight = hdpxi(108)
 let bulletIconSize = [hdpxi(214), headerHeight]
 
-function getSlotNumber(chosenBulletsList, id){
-  let slotNumber = chosenBulletsList.findvalue(@(bullet) bullet.name == id )?.idx
-  if(slotNumber == null)
-    return ""
-  return "".concat(loc("icon/mpstats/rowNo"), (slotNumber + 1))
+function getSlotNumber(chosenBulletsList, id) {
+  let slotNumber = chosenBulletsList.findvalue(@(b) b.name == id)?.idx
+  return slotNumber == null ? "" : "".concat(loc("icon/mpstats/rowNo"), (slotNumber + 1))
 }
 
-let slotNumber = @(id) @(){
-  watch = chosenBullets
+let slotNumber = @(id, isSecBullet) @() {
+  watch = isSecBullet ? chosenBulletsSec : chosenBullets
   hplace = ALIGN_LEFT
   vplace = ALIGN_BOTTOM
   rendObj = ROBJ_TEXT
   padding = hdpx(5)
-  text = getSlotNumber(chosenBullets.value, id)
+  text = getSlotNumber(isSecBullet ? chosenBulletsSec.get() : chosenBullets.get(), id)
 }.__update(fontTiny)
 
 let nameBullet = @(bulletInfo) {
@@ -44,7 +42,7 @@ let imageBullet = @(imageBulletName) {
   keepAspect = KEEP_ASPECT_FIT
 }
 
-function mkBulletSlot(bulletInfo, bInfoFromUnitTags, ovrBulletImage = {}, ovrBulletIcon = {}, ovr = {}) {
+function mkBulletSlot(isSecBullet, bulletInfo, bInfoFromUnitTags, ovrBulletImage = {}, ovrBulletIcon = {}, ovr = {}) {
   if (bulletInfo == null)
     return null
   local { icon = null } = bInfoFromUnitTags
@@ -64,7 +62,7 @@ function mkBulletSlot(bulletInfo, bInfoFromUnitTags, ovrBulletImage = {}, ovrBul
         hplace = ALIGN_CENTER
         children = [
           imageBullet(imageBulletName)
-          slotNumber(bulletInfo.id)
+          slotNumber(bulletInfo.id, isSecBullet)
           nameBullet(bulletInfo)
         ]
       }.__update(ovrBulletImage)

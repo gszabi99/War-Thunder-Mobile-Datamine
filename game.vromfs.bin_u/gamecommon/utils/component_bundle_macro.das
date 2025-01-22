@@ -151,7 +151,7 @@ def apply_to_func(var func; blk : block<(var func : FunctionPtr; var args : dasv
     if firstBlk is ExprCall
       let call = firstBlk as ExprCall
       if call.name == "ecs::process_view" && length(call.arguments) > 1 && call.arguments[1] is ExprMakeBlock
-        var makeEsBlk := call.arguments[1] as ExprMakeBlock
+        var makeEsBlk = call.arguments[1] as ExprMakeBlock
         var inscope esBlk : ExpressionPtr := makeEsBlk._block
         blk |> invoke(func, (esBlk as ExprBlock).arguments, esBlk, true)
         return

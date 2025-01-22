@@ -1,9 +1,9 @@
-
 from "%globalScripts/logs.nut" import *
 let { Watched } = require("frp")
 let { eventbus_send,eventbus_subscribe } = require("eventbus")
 let { rnd_int } = require("dagor.random")
 let { loc } = require("dagor.localize")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let servProfile = require("servProfile.nut")
 let { updateAllConfigs } = require("servConfigs.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
@@ -27,6 +27,9 @@ const PROGRESS_PERSONAL_GOODS = "PersonalGoodsInProgress"
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
 let lastProfileKeysUpdated = Watched({})
+let progressList = {}
+let progressUpdate = {}
+
 
 function call(id, result, context) {
   if (id not in handlers)
@@ -142,40 +145,54 @@ function addCallback(idStr, cb) {
     logerr($"Bad type of pServerApi callback data: {type(cb)}. String, table or array required")
 }
 
+function onProgressChange(id, value, isInProgress) {
+  let update = progressUpdate?[id]
+  let watch = progressList?[id]
+  if (update == null || watch == null)
+    return
+  update(watch, isInProgress, value)
+}
+
+eventbus_subscribe($"profile_srv.progressChange", @(m) onProgressChange(m.id, m.value, m.isInProgress))
+
 function request(data, cb = null) {
   requestData.id = requestData.id + 1
   let idStr = requestData.id.tostring()
   if (cb != null)
     addCallback(idStr, cb)
 
+  let { progressId = null, progressValue = null } = data
+  if (progressId != null)
+    onProgressChange(progressId, progressValue, true)
+
   eventbus_send("profile_srv.request", { id = idStr, data })
 }
 
-function mkProgress(id) {
-  let res = Watched(null)
-  let upd = @(msg) res(msg.isInProgress ? msg.value : null)
-  eventbus_subscribe($"profile_srv.progressStart.{id}", upd)
-  res.whiteListMutatorClosure(upd)
-  return res
+function mkProgressImpl(id, update, defValue = null) {
+  if (id in progressUpdate)
+    logerr($"Duplicate pServerApi progress create {id}")
+  else {
+    progressUpdate[id] <- update
+    progressList[id] <- hardPersistWatched($"pServerApi.progress.{id}", defValue)
+    progressList[id].whiteListMutatorClosure(update)
+  }
+  return progressList[id]
 }
 
-function mkMultiProgress(id) {
-  let res = Watched({})
-  function upd(msg) {
-    let { value, isInProgress } = msg
-    if ((res.get()?[value] ?? false) == isInProgress)
+let mkProgress = @(id) mkProgressImpl(id, @(watch, isInProgress, value) watch.set(isInProgress ? value : null))
+
+let mkMultiProgress = @(id) mkProgressImpl(id,
+  function(watch, isInProgress, value) {
+    if ((watch.get()?[value] ?? false) == isInProgress)
       return
-    res.mutate(function(v) {
+    watch.mutate(function(v) {
       if (isInProgress)
         v[value] <- true
       else
         v.$rawdelete(value)
     })
-  }
-  eventbus_subscribe($"profile_srv.progressStart.{id}", upd)
-  res.whiteListMutatorClosure(upd)
-  return res
-}
+  },
+  {})
 
 function registerHandler(id, handler) {
   if (id in handlers) {
@@ -779,6 +796,13 @@ return {
     params = { id, rewardIndexes }
     progressId = PROGRESS_REWARD
     progressValue = rewardIndexes
+  }, cb)
+
+  apply_unit_level_rewards = @(unitName, campaign, cb = null)  request({
+    method = "apply_unit_level_rewards"
+    params = { unitName, campaign }
+    progressId = PROGRESS_UNIT
+    progressValue = unitName
   }, cb)
 
   check_new_personal_goods = @(cb = null) request({

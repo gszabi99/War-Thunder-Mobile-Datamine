@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopConst.nut" import *
+let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 
 let defaultFeaturedIcon = "!ui/gameuiskin#shop_planes.svg"
 let featuredIcon = {
@@ -112,10 +113,30 @@ function isGoodsFitToCampaign(goods, cConfigs, curCampaign = null) {
   return true
 }
 
+function getSubsPeriodString(subs) {
+  let { duration = 0, billingPeriod = null } = subs
+  if (duration > 0)
+    return secondsToHoursLoc(duration)
+
+  if (billingPeriod == null)
+    return ""
+  if (billingPeriod.len() == 1)
+    foreach (period, n in billingPeriod) {
+      let locId = n == 1 ? $"measureUnits/single/{period}" : $"measureUnits/full/{period}"
+      return loc(locId, { n }) //--unconditional-terminated-loop
+    }
+
+  let list = []
+  foreach (period, n in billingPeriod)
+    list.append(loc($"measureUnits/full/{period}", { n }))
+  return comma.join(list)
+}
+
 return {
   defaultShopCategory
   shopCategoriesCfg
   getShopCategory
   getGoodsType
   isGoodsFitToCampaign
+  getSubsPeriodString
 }.__merge(shopCategories, goodsTypes)

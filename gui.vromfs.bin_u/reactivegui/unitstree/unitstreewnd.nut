@@ -2,15 +2,16 @@ from "%globalsDarg/darg_library.nut" import *
 let { defer } = require("dagor.workcycle")
 let { abs } = require("math")
 let { registerScene } = require("%rGui/navState.nut")
-let { isUnitsTreeOpen, closeUnitsTreeWnd, unitsMapped, countriesCfg, countriesRows, columnsCfg,
-  unitsMaxRank, unitsMaxStarRank, unitsTreeBg, unitsTreeOpenRank, isUnitsTreeAttached
+let { isUnitsTreeOpen, closeUnitsTreeWnd, mkAllTreeUnits, countriesCfg, countriesRows,
+  unitsMaxRank, unitsMaxStarRank, unitsTreeBg, unitsTreeOpenRank, isUnitsTreeAttached,
+  mapUnitsByCountryGroup, getColumnsCfg
 } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { levelInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
 let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
-let { playerLevelInfo, myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { playerLevelInfo, campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { platoonPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkProgressBar,
   progressBarHeight, bgLight, noUnitsMsg, btnSize, platesGap,
@@ -18,21 +19,23 @@ let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkP
 } = require("unitsTreeComps.nut")
 let { animBuyRequirementsUnitId, animResearchRequirementsUnitId } = require("animState.nut")
 let { unitInfoPanel, mkUnitTitle, statsWidth, scrollHandlerInfoPanel } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { curSelectedUnit, sizePlatoon, curUnitName } = require("%rGui/unit/unitsWndState.nut")
+let { curSelectedUnit, sizePlatoon, curUnitName,availableUnitsList } = require("%rGui/unit/unitsWndState.nut")
 let { unitActions, discountBlock } = require("%rGui/unit/unitsWndActions.nut")
+let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
+let { unseenUnits } = require("%rGui/unit/unseenUnits.nut")
+let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
 let { levelBorder } = require("%rGui/components/levelBlockPkg.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { lvlUpCost, openLvlUpWndIfCan, isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
-let { isFiltersVisible, filterStateFlags, openFilters, filters, activeFilters
+let { isFiltersVisible, filterStateFlags, openFilters, activeFilters, mkFilteredUnits
 } = require("%rGui/unit/unitsFilterPkg.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
 let { mkUnitsTreeNodesContent, mkHasDarkScreen } = require("unitsTreeNodesContent.nut")
 let { rankBlockOffset } = require("unitsTreeConsts.nut")
 let { mkUnitPlate, framesGapMul } = require("mkUnitPlate.nut")
-let { unseenArrowsBlock, scrollToRank, scrollHandler, startAnimScroll, interruptAnimScroll
+let { scrollHandler, startAnimScroll, interruptAnimScroll, scrollPos, unseenArrowsBlockCtor
 } = require("unitsTreeScroll.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -57,34 +60,57 @@ let openFiltersPopup = @(e) openFilters(e, isTreeNodes.get(), {
   popupHalign = ALIGN_CENTER
 })
 
-function getTreeScrollPosX(name) {
-  let { rank = 0 } = allUnitsCfg.get()?[name]
+function getTreeScrollPosX(columnsCfgV, name) {
+  let { rank = 0 } = campUnitsCfg.get()?[name]
   if (rank <= 0)
     return null
-  let scrollPosX = blockSize[0] * ((columnsCfg.get()?[rank] ?? 0) + 1) - (0.4 * (saSize[0] - flagsWidth))
+  let scrollPosX = blockSize[0] * ((columnsCfgV?[rank] ?? 0) + 1) - (0.4 * (saSize[0] - flagsWidth))
   return (abs(scrollPosX - (scrollHandler.elem?.getScrollOffsX() ?? 0)) > saSize[0] * 0.1) ? scrollPosX : null
 }
 
-function scrollToUnit(name) {
+function scrollToUnit(columnsCfgV, name) {
   interruptAnimScroll()
-  let scrollPosX = getTreeScrollPosX(name)
+  let scrollPosX = getTreeScrollPosX(columnsCfgV, name)
   if (scrollPosX == null)
     return
   scrollHandler.scrollToX(scrollPosX)
 }
 
-function animScrollToUnit(name) {
-  let scrollPosX = getTreeScrollPosX(name)
+function animScrollToUnit(columnsCfgV, name) {
+  let scrollPosX = getTreeScrollPosX(columnsCfgV, name)
   if (scrollPosX != null)
     startAnimScroll([scrollPosX, scrollHandler.elem?.getScrollOffsY() ?? 0])
 }
 
-curSelectedUnit.subscribe(function(v) {
-  if (!v || !isTreeAttached.get())
-    return
-  scrollHandlerInfoPanel.scrollToY(0)
-  animScrollToUnit(v)
-})
+function scrollToRank(columnsCfgV, rank) {
+  interruptAnimScroll()
+  let scrollPosX = blockSize[0] * ((columnsCfgV?[rank] ?? 0) + 1) - 0.5 * (saSize[0] - flagsWidth)
+  scrollHandler.scrollToX(scrollPosX)
+}
+
+function mkNeedArrows(columnsCfg) {
+  let unseenUnitsIndex = Computed(function() {
+    let res = {}
+    if (!isUnitsTreeOpen.get() || (unseenUnits.get().len() == 0 && unseenSkins.get().len() == 0))
+      return res
+    foreach(unit in availableUnitsList.get()) {
+      if ((unit.name in unseenUnits.get() || unit.name in unseenSkins.get()) && unit.rank in columnsCfg)
+        res[unit.name] <- columnsCfg[unit.rank]
+    }
+    return res
+  })
+  return {
+    needShowArrowL = Computed(function() {
+      let offsetIdx = (scrollPos.get() - flagTreeOffset).tofloat() / blockSize[0] - 1
+      return null != unseenUnitsIndex.get().findvalue(@(index) offsetIdx > index)
+    })
+    needShowArrowR = Computed(function() {
+      let offsetIdx = (scrollPos.get() + sw(100) - 2 * saBorders[0] - flagsWidth - flagTreeOffset).tofloat() / blockSize[0]
+        - 1
+      return null != unseenUnitsIndex.get().findvalue(@(index) offsetIdx < index)
+    })
+  }
+}
 
 function tryAnimUnitInfoActionHint(unitId) {
   if (!unitId)
@@ -173,38 +199,39 @@ let mkTreeBg = @(isVisible) @() !isVisible.value ? { watch = isVisible } : {
   image = Picture($"ui/images/{unitsTreeBg.get()}:0:P")
 }.__merge(unselectBtn)
 
-function mkUnitsBlock(listByCountry, rowIdx) {
-  let mkPos = @(idx, slot) [
-    blockSize[0] * (columnsCfg.value[idx + 1] + slot)
-      + platoonPlatesGap * framesGapMul * sizePlatoon.value
-      + platesGap[0] * 0.5,
-    blockSize[1] * rowIdx
-      + platoonPlatesGap * framesGapMul * sizePlatoon.value * 0.5
-      + platesGap[1] * 0.5
-      + levelMarkSize
-  ]
+let mkUnitsBlock = @(columnsCfgV, listByCountry, rowIdx) function() {
+  let children = []
+  foreach (rank, units in listByCountry)
+    foreach (slot, unit in units)
+      children.append(mkUnitPlate(unit, XmbNode(),
+        {
+          pos = [
+            blockSize[0] * (columnsCfgV[rank] + slot)
+              + platoonPlatesGap * framesGapMul * sizePlatoon.get()
+              + platesGap[0] * 0.5,
+            blockSize[1] * rowIdx
+              + platoonPlatesGap * framesGapMul * sizePlatoon.get() * 0.5
+              + platesGap[1] * 0.5
+              + levelMarkSize
+          ]
+        }))
 
-  return @() {
-    watch = [columnsCfg, sizePlatoon]
+  return {
+    watch = sizePlatoon
     valign = ALIGN_CENTER
-    children = listByCountry.values().map(@(units, idx) {
-      children = units.map(function(u, slot) {
-        let xmbNode = XmbNode()
-        return mkUnitPlate(u, xmbNode, { pos = mkPos(idx, slot) })
-      })
-    })
+    children
   }
 }
 
-let mkLevelProgress = @(_, idx) function() {
-  let slots = columnsCfg.value[idx + 2] - columnsCfg.value[idx + 1]
+let mkLevelProgress = @(columnsCfgV, idx) function() {
+  let slots = (columnsCfgV?[idx + 2] ?? 0) - (columnsCfgV?[idx + 1] ?? 0)
   if (slots <= 0)
     return null
 
   let { level, exp, nextLevelExp } = playerLevelInfo.value
-  let hasLevelGap = columnsCfg.get()?[idx + 3] == columnsCfg.get()[idx + 2]
+  let hasLevelGap = (columnsCfgV?[idx + 3] ?? 0) == columnsCfgV[idx + 2]
   let hasNextLevel = level >=
-    (columnsCfg.get().findindex(@(v, key) v > columnsCfg.get()[idx + 1] && columnsCfg.get()?[key + 1] != v) ?? 0)
+    (columnsCfgV.findindex(@(v, key) type(key) == "integer" && v > columnsCfgV[idx + 1] && columnsCfgV?[key + 1] != v) ?? 0)
   let barWidth = slots * blockSize[0] - levelMarkSize + progressBarHeight + levelBorder
   let levelCompleted = level >= idx + 2
   let current = levelCompleted ? 1
@@ -215,8 +242,8 @@ let mkLevelProgress = @(_, idx) function() {
     : clamp(current.tofloat() / required * 0.97, 0.0, 0.97)
 
   return {
-    watch = [columnsCfg, playerLevelInfo, sizePlatoon, unitsMaxRank, unitsMaxStarRank]
-    pos = [blockSize[0] * (columnsCfg.value[idx + 1] + 0.5) - levelMarkSize * 0.5, 0]
+    watch = [playerLevelInfo, sizePlatoon, unitsMaxRank, unitsMaxStarRank]
+    pos = [blockSize[0] * (columnsCfgV[idx + 1] + 0.5) - levelMarkSize * 0.5, 0]
     children = [
       {
         size = [SIZE_TO_CONTENT, levelMarkSize]
@@ -234,70 +261,96 @@ let mkLevelProgress = @(_, idx) function() {
   }
 }
 
-local listWatches = [unitsMapped, columnsCfg, unitsMaxRank, curUnitName, curSelectedUnit]
-foreach (f in filters)
-  listWatches.append(f?.value, f?.allValues)
-listWatches = listWatches.filter(@(w) w != null)
-
-let unitsTree = @() {
-  watch = listWatches
-  key = listWatches
-  size = [
-    columnsCfg.value["0"] * blockSize[0] + (!curSelectedUnit.get() ? 0 : (statsWidth + platesGap[0])),
-    countriesRows * blockSize[1]]
-  function onAttach() {
-    isTreeAttached.set(true)
-    defer(@() unitsTreeOpenRank.get() != null
-      ? scrollToRank(unitsTreeOpenRank.get())
-      : scrollToUnit(curSelectedUnit.value ?? curUnitName.value))
+function unitsTree(unitsByGroup, columnsCfg) {
+  function onChangeSelectedUnit(unitName) {
+    if (!unitName)
+      return
+    scrollHandlerInfoPanel.scrollToY(0)
+    animScrollToUnit(columnsCfg.get(), unitName)
   }
-  onDetach = @() isTreeAttached.set(false)
-  children = [unselectBtn.__merge({ size = flex(), pos = [0, levelMarkSize]})]
-    .extend(
-      array(unitsMaxRank.value).map(mkLevelProgress),
-      unitsMapped.get().units.len() == 0 ? [noUnitsMsg] : unitsMapped.get().units.values().map(mkUnitsBlock))
+
+  return @() {
+    watch = [unitsByGroup, columnsCfg, unitsMaxRank, hasSelectedUnit]
+    key = unitsByGroup
+    size = [
+      columnsCfg.get().total * blockSize[0] + (!hasSelectedUnit.get() ? 0 : (statsWidth + platesGap[0])),
+      countriesRows * blockSize[1]
+    ]
+    function onAttach() {
+      isTreeAttached.set(true)
+      curSelectedUnit.subscribe(onChangeSelectedUnit)
+      defer(@() unitsTreeOpenRank.get() != null
+        ? scrollToRank(columnsCfg.get(), unitsTreeOpenRank.get())
+        : scrollToUnit(columnsCfg.get(), curSelectedUnit.value ?? curUnitName.value))
+    }
+    function onDetach() {
+      isTreeAttached.set(false)
+      curSelectedUnit.unsubscribe(onChangeSelectedUnit)
+    }
+    children = [unselectBtn.__merge({ size = flex(), pos = [0, levelMarkSize]})]
+      .extend(
+        array(unitsMaxRank.value).map(@(_, idx) mkLevelProgress(columnsCfg.get(), idx)),
+        unitsByGroup.get().len() == 0 ? [noUnitsMsg]
+          : unitsByGroup.get()
+              .map(@(list, group) { group, list })
+              .values()
+              .sort(@(a, b) a.group <=> b.group)
+              .map(@(v, rowIdx) mkUnitsBlock(columnsCfg.get(), v.list, rowIdx)))
+  }
 }
 
 let pannableArea = horizontalPannableAreaCtor(sw(100) - flagsWidth - saBorders[0], [flagTreeOffset, saBorders[0]])
 
-let unitsTreeContent = {
-  pos = [0, gamercardHeight + saBorders[1] - gamercardOverlap]
-  children = [
-    {
-      pos = [0, levelMarkSize]
-      flow = FLOW_VERTICAL
-      children = array(countriesRows).map(@(_, rowIdx)
-        { size = [sw(100), blockSize[1]] }.__merge(unselectBtn, rowIdx % 2 == 1 ? {} : bgLight))
-    }
-    {
-      pos = [saBorders[0] + flagsWidth + flagTreeOffset, 0]
-      size = [sw(100) - flagsWidth - 2 * saBorders[0] - flagTreeOffset, blockSize[1] * countriesRows + levelMarkSize]
-      children = [
-        pannableArea(
-          unitsTree,
-          {},
-          {
-            behavior = [Behaviors.Pannable, Behaviors.ScrollEvent],
-            scrollHandler
-            xmbNode = {
-              canFocus = false
-              scrollSpeed = 2.5
-              isViewport = true
-              scrollToEdge = false
-              screenSpaceNav = true
-            }
+function mkUnitsTreeContent() {
+  let allUnits = mkAllTreeUnits()
+  let visibleUnits = mkFilteredUnits(allUnits)
+  let visibleCountries = Computed(@() visibleUnits.get().reduce(@(res, unit) res.$rawset(unit.country, true), {}))
+  let unitsByGroup = Computed(@() mapUnitsByCountryGroup(visibleUnits.get()))
+  let columnsCfg = Computed(@() getColumnsCfg(unitsByGroup.get(), unitsMaxRank.get()))
+  let { needShowArrowL, needShowArrowR } = mkNeedArrows(columnsCfg)
+  return {
+    pos = [0, gamercardHeight + saBorders[1] - gamercardOverlap]
+    children = [
+      {
+        pos = [0, levelMarkSize]
+        flow = FLOW_VERTICAL
+        children = array(countriesRows).map(@(_, rowIdx)
+          { size = [sw(100), blockSize[1]] }.__merge(unselectBtn, rowIdx % 2 == 1 ? {} : bgLight))
+      }
+      {
+        pos = [saBorders[0] + flagsWidth + flagTreeOffset, 0]
+        size = [sw(100) - flagsWidth - 2 * saBorders[0] - flagTreeOffset, blockSize[1] * countriesRows + levelMarkSize]
+        children = [
+          pannableArea(
+            unitsTree(unitsByGroup, columnsCfg),
+            {},
+            {
+              behavior = [Behaviors.Pannable, Behaviors.ScrollEvent],
+              scrollHandler
+              xmbNode = {
+                canFocus = false
+                scrollSpeed = 2.5
+                isViewport = true
+                scrollToEdge = false
+                screenSpaceNav = true
+              }
+            })
+          @() unseenArrowsBlockCtor(needShowArrowL, needShowArrowR)
+        ]
+      }
+      @() {
+        watch = visibleCountries
+        pos = [saBorders[0], levelMarkSize]
+        flow = FLOW_VERTICAL
+        children = countriesCfg
+          .map(function(list) {
+            let vis = list.filter(@(country) visibleCountries.get()?[country] ?? false)
+            return vis.len() == 0 ? null : mkFlags(vis)
           })
-        unseenArrowsBlock
-      ]
-    }
-    @() {
-      watch = unitsMapped
-      pos = [saBorders[0], levelMarkSize]
-      flow = FLOW_VERTICAL
-      children = unitsMapped.get().units.keys()
-        .map(@(idx) mkFlags(countriesCfg?[idx].filter(@(country) unitsMapped.get().visibleCountries?[country])))
-    }
-  ]
+          .filter(@(c) c != null)
+      }
+    ]
+  }
 }
 
 let unitsTreeGamercard = {
@@ -366,7 +419,7 @@ let mkBottomInfoPanel = {
 function infoPanel() {
   let hasUnitActions = mkHasUnitActions(isTreeNodes.get())
   let needShowBlueprintDescr = Computed(@() hangarUnit.get()?.name in serverConfigs.get()?.allBlueprints
-    && hangarUnit.get()?.name not in myUnits.get())
+    && hangarUnit.get()?.name not in campMyUnits.get())
   return {
     watch = [hasSelectedUnit, isTreeNodes]
     key = {}
@@ -442,7 +495,7 @@ let unitsTreeWnd = {
 
     @() {
       watch = isTreeNodes
-      children = isTreeNodes.get() ? mkUnitsTreeNodesContent() : unitsTreeContent
+      children = isTreeNodes.get() ? mkUnitsTreeNodesContent() : mkUnitsTreeContent()
     }
 
     {

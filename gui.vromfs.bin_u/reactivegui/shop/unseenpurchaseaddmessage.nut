@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
+let { modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { G_CURRENCY, G_BLUEPRINT, G_UNIT } = require("%appGlobals/rewardType.nut")
-let { bgHeader } = require("%rGui/style/backgrounds.nut")
 let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkRewardTextLabel, mkRewardPlateTexts,
   mkRewardPlate, mkRewardUnitFlag
 } = require("%rGui/rewards/rewardPlateComp.nut")
@@ -23,19 +23,6 @@ let mkTapToContinueText = @() {
   text = loc("TapAnyToContinue")
   vplace = ALIGN_BOTTOM
 }.__update(fontSmall)
-
-
-let wndTitle = bgHeader.__merge({
-  size = [flex(), SIZE_TO_CONTENT]
-  padding = hdpx(15)
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  children = {
-    color = textColor
-    rendObj = ROBJ_TEXT
-    text = loc("mainmenu/convert")
-  }.__update(fontBig)
-})
 
 let exceedBlueprintsProgress = @(count, targetCount) {
   size = flex()
@@ -147,7 +134,7 @@ function mkMsgConvert(stackDataV, onClick) {
     onClick
     flow = FLOW_VERTICAL
     children = [
-      wndTitle
+      modalWndHeader(loc("mainmenu/convert"))
       {
         flow = FLOW_VERTICAL
         padding = padding

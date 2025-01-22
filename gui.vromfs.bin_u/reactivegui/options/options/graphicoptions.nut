@@ -3,7 +3,7 @@ from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_common_local_settings_blk, get_settings_blk } = require("blkGetters")
 let { get_maximum_frames_per_second, is_broken_grass_flag_set, is_texture_uhq_supported, should_notify_about_restart,
-  get_platform_window_resolution, get_default_graphics_preset, is_metalfx_upscale_supported = @() false
+  get_platform_window_resolution, get_default_graphics_preset, is_metalfx_upscale_supported
 } = require("graphicsOptions")
 let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
 let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTION, OPT_DEFERRED, OPT_AA, mkOptionValue
@@ -39,19 +39,14 @@ let resolutionValue = mkOptionValue(OPT_GRAPHICS_SCENE_RESOLUTION,
   getResolutionByQuality(get_default_graphics_preset()),
   validateResolution)
 
-let renderModeOverride = get_settings_blk()?.video.renderModeOverride
-let deferredValues = (renderModeOverride == "forward") ? [false] : ((renderModeOverride == "deferred") ? [true] : [false, true])
-let validateDeferred = @(a) deferredValues.contains(a) ? a : deferredValues[0]
-let deferredValue = mkOptionValue(OPT_DEFERRED, deferredValues[0], validateDeferred)
-
+let deferredValues = [false, true]
+let deferredValue = mkOptionValue(OPT_DEFERRED, deferredValues[0])
 let aaList = Computed(@() deferredValue.get() ? ["low_fxaa", "high_fxaa", "mobile_taa"].extend(is_ios && is_metalfx_upscale_supported() ?
-  ["metalfx_fxaa"] : []) : (is_ios ? ["metalfx"] : ["low_fxaa"]))
-let validateAA = @(a) aaList.value.contains(a) ? a : aaList.value[0]
+  ["metalfx_fxaa"] : []) : ["high_fxaa"])
+let validateAA = @(a) aaList.get().contains(a) ? a : aaList.get()[0]
 function getAAByQuality(quality) {
-  if (!deferredValue.get())
-    return aaList.value[0]
   let graphicsPresets = (is_android || is_pc) ? (get_settings_blk()?.android_presets) : get_settings_blk()?.ios_presets
-  return validateAA(graphicsPresets?[quality].graphics.defaultPresetAA ?? aaList.value[0])
+  return validateAA(graphicsPresets?[quality].graphics.defaultPresetAA ?? aaList.get()[0])
 }
 let aaValue = mkOptionValue(OPT_AA, getAAByQuality(get_default_graphics_preset()), validateAA)
 
@@ -61,7 +56,7 @@ function setGraphicsQuality(v) {
 
   graphicsQuality.set(v)
   resolutionValue.set(getResolutionByQuality(v))
-  aaValue(getAAByQuality(v))
+  aaValue.set(getAAByQuality(v))
 
   if (is_broken_grass_flag_set() && (v == "high" || v == "max"))
     openFMsgBox({ text = loc("msg/qualityNotFullySupported") })
@@ -113,7 +108,7 @@ let optDeferred = {
   valToString = @(v) loc(v ? "options/on" : "options/off")
   function setValue(v) {
     deferredValue.set(v)
-    aaValue(getAAByQuality(graphicsQuality.get()))
+    aaValue.set(aaList.get()[0])
   }
 }
 
@@ -176,7 +171,7 @@ return {
     optFpsLimit
     inline_raytracing_available() ? optRayTracing : null
     isUhqSupported ? optUhqTextures : null
-    deferredValues.len() > 1 ? optDeferred : null
+    optDeferred
     optAntiAliasing
   ]
   isUhqAllowed = Computed(@() isUhqSupported && has_additional_graphics_content.get())

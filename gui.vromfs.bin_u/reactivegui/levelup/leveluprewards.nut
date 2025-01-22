@@ -1,6 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { lerpClamped } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { rewardsToReceive, failedRewardsLevelStr, maxRewardLevelInfo, isRewardsModalOpen,
@@ -11,45 +9,29 @@ let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { maxIconsScale } = require("%appGlobals/config/currencyPresentation.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
-let { mkPlayerLevel } = require("%rGui/unit/components/unitPlateComp.nut")
+let { mkPlayerLevel, mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateSmall, mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { gradTranspDoubleSideX, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
-let { bgMW } = require("%rGui/style/stdColors.nut")
-let { levelUpFlag, flagHeight } = require("levelUpFlag.nut")
+let { levelUpFlag } = require("levelUpFlag.nut")
 let { resetTimeout } = require("dagor.workcycle")
-let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
+let { playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeaderBg } = require("%rGui/components/modalWnd.nut")
+let { mkRewardPlate, REWARD_STYLE_SMALL } = require("%rGui/rewards/rewardPlateComp.nut")
+let { receivedGoodsToViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
+let { boughtUnit } = require("%rGui/unit/selectNewUnitWnd.nut")
+let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 
 
 let WND_UID = "levelup_rewards_wnd"
 let sceneAppearDelay = 0.6
 let sceneAppearTime = 0.5
-let rewardAppearDelay = sceneAppearDelay + sceneAppearTime
-let rewardAppearTime = 0.3
-let rewardStartCount = rewardAppearDelay + rewardAppearTime
-let rewardStartCountOffset = 0.3
-let rewardCountPerSec = { wp = 40000, gold = 200 }
-let maxRewardCountTime = 1.0
-let buttonAppearDelay = rewardStartCount + maxRewardCountTime
-let buttonAppearTime = 1.0
+let eachRewardsAnimDuration = 0.2
+let wndOpacityAnimDuration = 0.2
+
+
 let flagStartDelay = 0.3
-
-let iconSize = hdpxi(160)
-let hideCurrencyTrigger = {}
-
-let rewardsSum = Computed(@() rewardsToReceive.value.reduce(
-  function(res, rew) {
-    let result = {}
-    foreach(g in rew)
-      if (g.gType == "currency" || g.gType == "item") //does not support to show other rewards yet
-        result[g.id] <- (res?[g.id] ?? 0) + g.count
-    return result
-  },
-  {}))
 
 function afterReceiveRewards() {
   closeRewardsModal()
@@ -89,83 +71,39 @@ registerHandler("playerLevelRewards.receiveNext",
 let receiveBtn = mkSpinnerHideBlock(Computed(@() rewardInProgress.value != null),
   textButtonPrimary(utf8ToUpper(loc("btn/receive")), receiveRewards, { hotkeys = [btnAUp] }),
   {
-    size = [flex(), defButtonHeight]
+    margin = [hdpx(20),0,0,0]
+    size = [SIZE_TO_CONTENT, defButtonHeight]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    animations = appearAnim(buttonAppearDelay, buttonAppearTime)
   })
 
-let startTimes = {} //outside to not break after parent recalc.
-let countTextStyle = { halign = ALIGN_CENTER }.__merge(fontMonoMedium)
-function mkCurrencyReward(id, amount, countDelay) {
-  let countTimeMsec = (1000 * min(amount.tofloat() / (rewardCountPerSec?[id] ?? amount), maxRewardCountTime)).tointeger()
-  return {
-    key = id
-    flow = FLOW_VERTICAL
-    gap = hdpx(20)
-    halign = ALIGN_CENTER
-    children = [
-      {
-        size = [iconSize * maxIconsScale, iconSize * maxIconsScale]
-        halign = ALIGN_CENTER
-        children = mkCurrencyImage(id, iconSize, {
-          key = $"received_{id}"
-          animations = [{
-            prop = AnimProp.opacity, duration = 10000, trigger = hideCurrencyTrigger, from = 0, to = 0
-          }]
-        })
-      }
-      {
-        size = calc_str_box({ text = decimalFormat(amount) }.__update(countTextStyle))
-        rendObj = ROBJ_TEXT
-        text = ""
-        onAttach = @() startTimes[id] <- get_time_msec() + (1000 * countDelay).tointeger()
-        behavior = Behaviors.RtPropUpdate
-        function update() {
-          if (id not in startTimes)
-            return null
-          let curTime = get_time_msec()
-          if (curTime < startTimes[id])
-            return null
-          let startTime = startTimes[id]
-          let endTime = startTime + countTimeMsec
-          if (curTime >= endTime)
-            startTimes.$rawdelete(id)
-          return {
-            text = curTime >= endTime ? decimalFormat(amount)
-              : decimalFormat(lerpClamped(startTime, endTime, 0, amount, curTime).tointeger())
-          }
-        }
-        animations = [
-          { prop = AnimProp.opacity, duration = 0.15, trigger = hideCurrencyTrigger, from = 1, to = 0 }
-          { prop = AnimProp.opacity, delay = 0.15, duration = 10000, trigger = hideCurrencyTrigger, from = 0, to = 0 }
-        ]
-      }.__update(countTextStyle)
-    ]
-  }
-}
 
-let allRewardsOrder = ["wp", "gold"].extend(itemsOrderFull)
 function rewardsList() {
-  let rewards = rewardsSum.value
-  let children = []
-  foreach (id in allRewardsOrder)
-    if ((rewards?[id] ?? 0) > 0)
-      children.append(
-        mkCurrencyReward(id, rewards[id], rewardStartCount + rewardStartCountOffset * children.len()))
-
-  return {
-    watch = rewardsSum
+  let rewards = rewardsToReceive.get().values()?[0].map(receivedGoodsToViewInfo) ?? 0
+  return rewardsToReceive.get().len() > 0 ? {
+    watch = rewardsToReceive
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
-    gap = hdpx(100)
-    children
-    animations = appearAnim(rewardAppearDelay, rewardAppearTime)
-  }
+    gap = hdpx(35)
+    children = rewards?.map(@(r, idx) {
+      children = mkRewardPlate(r, REWARD_STYLE_SMALL)
+      transform = {}
+      animations = appearAnim(sceneAppearDelay, sceneAppearTime)
+        .append(
+          { prop = AnimProp.scale, from = [1, 1], to = [1.2, 1.2], duration = eachRewardsAnimDuration,
+            delay = eachRewardsAnimDuration * idx + sceneAppearDelay , play = true, easing = Linear }
+          { prop = AnimProp.scale, from = [1.2, 1.2], to = [1, 1], duration = eachRewardsAnimDuration,
+            delay = eachRewardsAnimDuration * idx + sceneAppearDelay + eachRewardsAnimDuration, play = true, easing = Linear,
+            onFinish = (idx + 1) == rewardsToReceive.get().len() ? @() anim_start("unitRAnim") : null
+          }
+        )
+    })
+  } : null
 }
 
 let levelUpText = @() {
+  padding = [0, hdpx(150)]
   watch = maxRewardLevelInfo
   hplace = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
@@ -179,38 +117,63 @@ let levelUpText = @() {
   )
 }
 
-let levelUpRewards = {
-  key = WND_UID
-  size = flex()
-  padding = saBordersRv
-  onClick = receiveRewards
-  children = {
-    size = flex()
-    rendObj = ROBJ_9RECT
-    color = bgMW
-    image = gradTranspDoubleSideX
-    texOffs = [0, gradCircCornerOffset]
-    screenOffs = [0, hdpx(150)]
-    children = {
-      size = flex()
-      flow = FLOW_VERTICAL
-      gap = hdpx(50)
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      children = [
-        @() {
-          watch = maxRewardLevelInfo
-          children = levelUpFlag(flagHeight, maxRewardLevelInfo.value.level, maxRewardLevelInfo.value.starLevel, flagStartDelay)
-        }
-        levelUpText
-        rewardsList
-        receiveBtn
-      ]
-      animations = appearAnim(sceneAppearDelay, sceneAppearTime)
-        .append({ prop = AnimProp.opacity, from = 1, to = 0, duration = 0.2, easing = OutQuad, playFadeOut = true })
-    }
+function mkUnitPlate(){
+  let unit = Computed(@() campMyUnits.get()?[boughtUnit.get()])
+  return @() !unit.get() ? { watch = unit } : {
+    watch = [unit, boughtUnit, rewardsToReceive]
+    size = unitPlateSmall
+    children = [
+      mkUnitBg(unit.get())
+      mkUnitImage(unit.get())
+      mkUnitTexts(unit.get(), loc(getUnitLocId(boughtUnit.get())))
+      mkUnitInfo(unit.get())
+    ]
+    transform = {}
+    animations = appearAnim(sceneAppearDelay, sceneAppearTime)
+      .append(
+        { prop = AnimProp.scale, from = [1, 1], to = [1.2, 1.2], duration = eachRewardsAnimDuration,
+          delay = eachRewardsAnimDuration * rewardsToReceive.get().len(), trigger = "unitRAnim", easing = Linear }
+        { prop = AnimProp.scale, from = [1.2, 1.2], to = [1, 1], duration = eachRewardsAnimDuration,
+          delay = eachRewardsAnimDuration * rewardsToReceive.get().len() + eachRewardsAnimDuration, trigger = "unitRAnim", easing = Linear }
+      )
   }
 }
+
+let content = modalWndBg.__merge({
+  padding = [0,0,hdpx(50), 0]
+  onClick = receiveRewards
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = {
+    flow = FLOW_VERTICAL
+    gap = hdpx(50)
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = [
+      @() modalWndHeaderBg.__merge({
+        margin = [0, 0, hdpx(20), 0]
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        watch = maxRewardLevelInfo
+        children = levelUpFlag(hdpx(150), maxRewardLevelInfo.get().level, maxRewardLevelInfo.get().starLevel, flagStartDelay)
+      })
+      levelUpText
+      rewardsList
+      mkUnitPlate()
+      receiveBtn
+    ]
+    animations = appearAnim(sceneAppearDelay, sceneAppearTime)
+      .append({ prop = AnimProp.opacity, from = 1, to = 0, duration = wndOpacityAnimDuration, easing = OutQuad, playFadeOut = true })
+  }
+})
+
+let levelUpRewards = bgShaded.__merge({
+  key = WND_UID
+  size = flex()
+  onClick = receiveRewards
+  children = content
+  animations = wndSwitchAnim
+})
 
 if (isRewardsModalOpen.get() && rewardsToReceive.get().len() > 0)
   addModalWindow(levelUpRewards)

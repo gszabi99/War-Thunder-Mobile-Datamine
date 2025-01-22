@@ -56,10 +56,7 @@ let campConfigs = Computed(function() {
   chooseByCampaign(res, "playerLevelRewards", campaign)
   filterByCampaign(res, "clientMissionRewards", campaign)
   filterByCampaign(res, "allUnits", campaign)
-  if ("allBoosters" in res && "campaigns" not in res.allBoosters.findvalue(@(_) true)) //compatibility with 2024.10.15
-    res.allBoosters <- res.allBoosters.map(@(b) b.__merge({ campaigns = 0xFF }))
-  else
-    filterByCampaignMask(res, "allBoosters", campaignBit)
+  filterByCampaignMask(res, "allBoosters", campaignBit)
   filterByCampaignMask(res, "allItems", campaignBit)
   return res
 })
@@ -120,6 +117,7 @@ let exportProfile = {
   levelInfo = {}
   lastBattles = {}
   premium = {}
+  subscriptions = {}
   purchasesCount = {}
   todayPurchasesCount = {}
   receivedLvlRewards = {}

@@ -6,10 +6,14 @@ let { eventbus_send } = require("eventbus")
 
 let storeId = "UpdateAuthStatsCalled"
 let needCall = Watched(false)
+
+let statsUpdateAuthTags = ["fblogin", "gplogin", "applelogin"]
+  .reduce(@(res, v) res.$rawset(v, true), {})
+
 let needCheck = Computed(@() needCall.get()
   && isStatsActual.get()
-  && authTags.value.contains("email_verified")
-  && authTags.value.contains("fblogin"))
+  && authTags.get().contains("email_verified")
+  && null != authTags.get().findvalue(@(t) t in statsUpdateAuthTags))
 
 let updateNeedCall = @() needCall(!get_local_custom_settings_blk()?[storeId])
 updateNeedCall()
@@ -30,7 +34,7 @@ userstatRegisterHandler("UpdateAuthStats", function(result) {
   }
 })
 
-if (needCheck.value)
+if (needCheck.get())
   updateAuthStats()
 needCheck.subscribe(@(v) v ? updateAuthStats() : null)
 

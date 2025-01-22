@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
-let { bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
-let { levelMark, defColor, hlColor, iconSize, mkText, levelHolderSize } = require("%rGui/mpStatistics/playerInfo.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
+let { levelMark, hlColor, iconSize, mkText, levelHolderSize } = require("%rGui/mpStatistics/playerInfo.nut")
 let { getMedalPresentation } = require("%rGui/mpStatistics/medalsPresentation.nut")
 let { actualizeStats, userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -13,7 +13,7 @@ let { contentWidthFull } = require("%rGui/options/optionsStyle.nut")
 let { releasedUnits } = require("%rGui/unit/unitState.nut")
 
 
-let infoBlockPadding = [hdpx(20), hdpx(50)]
+let infoBlockPadding = [hdpx(10), hdpx(50)]
 let scrollMedalsPadding = [hdpx(20), hdpx(20), 0, hdpx(10)]
 let medalsGap = hdpx(25)
 let infoBlockPartsGap = hdpx(50)
@@ -65,73 +65,60 @@ let mkMedals = @(selCampaign) function() {
   }
 }
 
-function mkInfo(campaign, unitsStats) {
-
-  return bgMessage.__merge({
-    minWidth = SIZE_TO_CONTENT
-    size = [flex(), SIZE_TO_CONTENT]
-    flow = FLOW_VERTICAL
-    halign = ALIGN_CENTER
-    children = [
-      bgHeader.__merge({
-        size = [flex(), SIZE_TO_CONTENT]
-        padding = hdpx(5)
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = {
-          rendObj = ROBJ_TEXT
-          color = defColor
-          text = loc($"campaign/{campaign}")
-        }.__update(fontSmallAccented)
-      })
-      {
-        size = [flex(), SIZE_TO_CONTENT]
-        flow = FLOW_HORIZONTAL
-        padding = infoBlockPadding
-        gap = infoBlockPartsGap
-        children = [
-          mkMedals(campaign)
-          function() {
-            let my = unitsStats.get().my[campaign]
-            let all = unitsStats.get().all[campaign]
-            return {
-              watch = unitsStats
-              size = [flex(), SIZE_TO_CONTENT]
-              valign = ALIGN_CENTER
-              flow = FLOW_VERTICAL
-              gap = hdpx(5)
-              children = [
-                mkText(loc("lobby/vehicles"), hlColor).__update(fontTinyAccented)
-                mkMarqueeRow(loc("stats/line"), $"{my.wp}/{all.wp}")
-                mkMarqueeRow(loc("stats/maxLevel"), $"{my.maxLevel}/{my.wp + my.prem + my.rare}")
-                mkMarqueeRow(loc("stats/premium"), $"{my.prem}/{all.prem}", {
-                  size = iconSize
-                  rendObj = ROBJ_IMAGE
-                  keepAspect = KEEP_ASPECT_FIT
-                  image = Picture($"ui/gameuiskin#icon_premium.svg:{iconSize[0]}:{iconSize[1]}:P")
-                  vplace = ALIGN_CENTER
-                })
-                mkMarqueeRow(loc("stats/rare"), $"{my.rare}")
-              ]
-            }
+let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
+  minWidth = SIZE_TO_CONTENT
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
+  halign = ALIGN_CENTER
+  children = [
+    modalWndHeader(loc($"campaign/{campaign}"), { size = [flex(), SIZE_TO_CONTENT], padding = hdpx(5) })
+    {
+      size = [flex(), SIZE_TO_CONTENT]
+      flow = FLOW_HORIZONTAL
+      padding = infoBlockPadding
+      gap = infoBlockPartsGap
+      children = [
+        mkMedals(campaign)
+        function() {
+          let my = unitsStats.get().my[campaign]
+          let all = unitsStats.get().all[campaign]
+          return {
+            watch = unitsStats
+            size = [flex(), SIZE_TO_CONTENT]
+            valign = ALIGN_CENTER
+            flow = FLOW_VERTICAL
+            gap = hdpx(5)
+            children = [
+              mkText(loc("lobby/vehicles"), hlColor).__update(fontTinyAccented)
+              mkMarqueeRow(loc("stats/line"), $"{my.wp}/{all.wp}")
+              mkMarqueeRow(loc("stats/maxLevel"), $"{my.maxLevel}/{my.wp + my.prem + my.rare}")
+              mkMarqueeRow(loc("stats/premium"), $"{my.prem}/{all.prem}", {
+                size = iconSize
+                rendObj = ROBJ_IMAGE
+                keepAspect = KEEP_ASPECT_FIT
+                image = Picture($"ui/gameuiskin#icon_premium.svg:{iconSize[0]}:{iconSize[1]}:P")
+                vplace = ALIGN_CENTER
+              })
+              mkMarqueeRow(loc("stats/rare"), $"{my.rare}")
+            ]
           }
-          function() {
-            let stats = playerStats.get()?[campaign] ?? {}
-            return {
-              watch = playerStats
-              size = [flex(), SIZE_TO_CONTENT]
-              valign = ALIGN_CENTER
-              flow = FLOW_VERTICAL
-              gap = hdpx(5)
-              children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
-                .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign, mkMarqueeRow)))
-            }
+        }
+        function() {
+          let stats = playerStats.get()?[campaign] ?? {}
+          return {
+            watch = playerStats
+            size = [flex(), SIZE_TO_CONTENT]
+            valign = ALIGN_CENTER
+            flow = FLOW_VERTICAL
+            gap = hdpx(5)
+            children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
+              .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign, mkMarqueeRow)))
           }
-        ]
-      }
-    ]
-  })
-}
+        }
+      ]
+    }
+  ]
+})
 
 return function() {
   let unitsStats = Computed(function() {

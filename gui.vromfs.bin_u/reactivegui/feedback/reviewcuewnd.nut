@@ -4,24 +4,11 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset, mkColoredGradientY } = require("%rGui/style/gradients.nut")
+let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { textButtonBattle, textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 let { isRateGameSeen, sendGameRating, platformAppReview } = require("%rGui/feedback/rateGameState.nut")
 
-let bgMessage = {
-  rendObj = ROBJ_IMAGE
-  image = mkColoredGradientY(0xFF304453, 0xFF030C13)
-}
-
-let bgHeader = {
-  rendObj = ROBJ_9RECT
-  size=[flex(), SIZE_TO_CONTENT]
-  image = gradTranspDoubleSideX
-  texOffs = [0, gradDoubleTexOffset]
-  screenOffs = [0, hdpx(300)]
-  color = 0xFF4D88A4
-}
 
 const RATE_STARS_TOTAL = 5
 
@@ -71,20 +58,7 @@ function onBtnApply(isApply = true) {
   close()
 }
 
-let btnClose = {
-  size  = [hdpx(30), hdpx(30)]
-  margin = [hdpx(35), hdpx(45)]
-  hplace = ALIGN_RIGHT
-  rendObj = ROBJ_VECTOR_CANVAS
-  commands = [
-    [VECTOR_LINE, 0, 0, 100, 100],
-    [VECTOR_LINE, 0, 100, 100, 0]
-  ]
-  color = 0xFFA0A0A0
-  lineWidth = hdpx(6)
-  behavior = Behaviors.Button
-  onClick = @() onBtnApply(false)
-}
+let onCloseButton = @() onBtnApply(false)
 
 let textarea = {
   size = [flex(), SIZE_TO_CONTENT]
@@ -93,11 +67,6 @@ let textarea = {
   halign = ALIGN_CENTER
   color = 0xFFFFFFFF
 }.__update(fontSmall)
-
-let mkTitle = @(text) textarea.__merge({
-  pos = [0, hdpx(20)]
-  text
-}, fontMedium)
 
 function mkRateStarsRow(valueWatch, needInteractive, needBig) {
   let iconSize = needBig ? starIconSize : starIconSizeSmall
@@ -135,12 +104,7 @@ let pageRating = {
   size = flex()
   halign = ALIGN_CENTER
   children = [
-    bgHeader.__merge({
-      children = [
-        mkTitle(loc("rateGame/title"))
-        btnClose
-      ]
-    })
+    modalWndHeaderWithClose(loc("rateGame/title"), onCloseButton)
     textarea.__merge({
       vplace = ALIGN_CENTER
       pos = [0, -hdpx(150)]
@@ -160,12 +124,7 @@ let pageThankYou = {
   size = flex()
   halign = ALIGN_CENTER
   children = [
-    bgHeader.__merge({
-      children = [
-        mkTitle(loc("rateGame/thanks_for_rating"))
-        btnClose
-      ]
-    })
+    modalWndHeaderWithClose(loc("rateGame/thanks_for_rating"), onCloseButton)
     mkRateStarsRow(fieldRating, false, true)
     mkBtnPlace(textButtonPrimary(utf8ToUpper(loc("msgbox/btn_excellent")), onBtnApply))
   ]
@@ -175,12 +134,7 @@ let pageComment = {
   size = flex()
   halign = ALIGN_CENTER
   children = [
-    bgHeader.__merge({
-      children = [
-        mkTitle(loc("rateGame/thanks_for_rating"))
-        btnClose
-      ]
-    })
+    modalWndHeaderWithClose(loc("rateGame/thanks_for_rating"), onCloseButton)
     mkRateStarsRow(fieldRating, false, false).__update({
       pos = [0, -hdpx(170)]
     })
@@ -230,10 +184,8 @@ let reviewCueWnd = bgShaded.__merge({
   size = flex()
   children = [
     imagesPreloadComp
-    bgMessage.__merge({
+    modalWndBg.__merge({
       size = [contentW, contentH]
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_CENTER
       children = [
         @() {
           watch = [hasAppliedRating, isRatedExcellent]

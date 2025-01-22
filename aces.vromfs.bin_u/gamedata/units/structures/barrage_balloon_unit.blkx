@@ -12,6 +12,8 @@
   ],
   "balloonCxOnSq": 500.0,
   "liftForce": 100500.0,
+  "liftForceApproachMult": 10.0,
+  "deadLigtForceApproachMult": 1.0,
   "ropeStiffness": 100000.0,
   "mass": 2800.0,
   "toGround": false,

@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { format } = require("string")
+let { skinSize } = require("respawnSkins.nut")
+let { hasSkins } = require("respawnState.nut")
 let { scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
 let { unitPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getBulletBeltImage, TOTAL_VIEW_BULLETS } = require("%appGlobals/config/bulletsPresentation.nut")
@@ -29,6 +31,36 @@ let defPadding = hdpxi(3)
 let weaponSize = imgSize + 2 * padding
 let weaponGroupWidth = hdpx(600)
 
+let headerSlotHeight = hdpx(108)
+let skinTextHeight = hdpx(29)
+let topSkinPadding = hdpx(6)
+let skinPadding = hdpx(10)
+let skinGap = hdpx(12)
+let minBSlotHeight = hdpx(204)
+let maxBSlotHeight = hdpx(226)
+let minGapHeight = hdpx(8)
+let maxGapHeight = unitPlatesGap
+let skinsListHeight = skinTextHeight + topSkinPadding + skinPadding + skinSize
+
+let mkBulletHeightInfo = @(primaryBulletSlots, secondaryBulletSlots) Computed(function() {
+  let slots = primaryBulletSlots.get() + secondaryBulletSlots.get()
+  if (slots == 0)
+    return { slotSliderHeight = 0, gapHeight = 0 }
+  if (!hasSkins.get())
+    return {
+      slotSliderHeight = maxBSlotHeight - headerSlotHeight
+      gapHeight = maxGapHeight
+    }
+  let gaps = max(1, slots - 1)
+  let currentBContentHeight = sh(100)- saBordersRv[0] * 2
+    - contentOffset - scoreBoardHeight - skinsListHeight - headerHeight - unitPlatesGap - skinGap
+  let slotBHeight = clamp(((currentBContentHeight - minGapHeight * gaps) / slots).tointeger(), minBSlotHeight, maxBSlotHeight)
+  return {
+    slotSliderHeight = slotBHeight - headerSlotHeight
+    gapHeight = clamp(((currentBContentHeight - slotBHeight * slots) / gaps).tointeger(), minGapHeight, maxGapHeight)
+  }
+})
+
 let defaultTitle = @(w) format(loc("weapons/counter/right/short"), (w?.count ?? 1) * (w?.weapons[0].totalBullets ?? 1))
 
 function caliberTitle(w) {
@@ -54,11 +86,11 @@ let bg = {
   color = 0x99000000
 }
 
-let headerText = @(text, ovr = {}) {
+let headerText = @(text) {
   rendObj = ROBJ_TEXT
   text
   color = textColor
-}.__update(fontTinyAccented, ovr)
+}.__update(fontTinyAccented)
 
 let header = @(children, ovr = {}) bg.__merge({
   size = [flex(), headerHeight]
@@ -189,6 +221,13 @@ return {
   turretTitleKey
   secondaryMenuKey
   secondaryTitleKey
+
+  skinTextHeight
+  topSkinPadding
+  skinPadding
+  headerSlotHeight
+
+  mkBulletHeightInfo
 
   mkBeltImage
 }

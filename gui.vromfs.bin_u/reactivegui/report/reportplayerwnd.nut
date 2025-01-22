@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let utf8 = require("utf8")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bgMessage, bgHeader, bgShaded, bgShadedDark } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
+let { bgShaded, bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { dropDownMenu } = require("%rGui/components/dropDownMenu.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -19,7 +20,7 @@ let aTitleScaleDownTime = 0.15
 let defColor = 0xFFFFFFFF
 let componentWidth = hdpx(780)
 
-let bgGradient = bgMessage.__merge({size = flex()})
+let bgGradient = modalWndBg.__merge({ size = flex() })
 let bgGradientComp = bgGradient.__merge({
   animations = [ { prop = AnimProp.scale, from = [1, 0], to = [1, 1],
     duration = 0.2,
@@ -56,16 +57,7 @@ let messageWnd = {
       valign = ALIGN_TOP
       stopMouse = true
       children = [
-        bgHeader.__merge({
-          size = [flex(), SIZE_TO_CONTENT]
-          padding = hdpx(15)
-          halign = ALIGN_CENTER
-          valign = ALIGN_CENTER
-          children = {
-            rendObj = ROBJ_TEXT
-            text = loc("support/form/report/success")
-          }.__update(fontMedium)
-        })
+        modalWndHeader(loc("support/form/report/success"))
         {
           size = SIZE_TO_CONTENT
           halign = ALIGN_CENTER
@@ -189,19 +181,12 @@ let mkButtons = {
   ]
 }
 
-let mkContent = @()
-  bgMessage.__merge({
+let content = @()
+  modalWndBg.__merge({
     flow = FLOW_VERTICAL
     valign = ALIGN_TOP
-    stopMouse = true
     children = [
-      bgHeader.__merge({
-        size = [flex(), SIZE_TO_CONTENT]
-        padding = hdpx(15)
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        children = {rendObj = ROBJ_TEXT text = loc("mainmenu/titlePlayerReport")}.__update(fontSmallAccented)
-      })
+      modalWndHeader(loc("mainmenu/titlePlayerReport"))
       {
         flow = FLOW_VERTICAL
         valign = ALIGN_TOP
@@ -247,12 +232,6 @@ selectedPlayerForReport.subscribe(function(v) {
     size = [sw(100), sh(100)]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = {
-      size = [hdpx(1000), SIZE_TO_CONTENT]
-      transform = {}
-      safeAreaMargin = saBordersRv
-      behavior = Behaviors.BoundToArea
-      children = mkContent
-    }
+    children = content
   }))
 })

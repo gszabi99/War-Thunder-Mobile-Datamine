@@ -2,8 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
 let { doesLocTextExist } = require("dagor.localize")
 let { roundToDigits } = require("%sqstd/math.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { campaignPresentations } = require("%appGlobals/config/campaignPresentation.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
@@ -170,27 +168,19 @@ function mkItemsUsedRows(itemsUsed, delay) {
   items.sort(@(a, b) a.order <=> b.order)
   return items.map(function(item, i) {
     let startTime = delay + (offsetTime * i)
-    let { id, count = 0, used = 0 } = item
+    let { id, count = 0 } = item
     local locId = $"debriefing/spent/{id}"
     if (!doesLocTextExist(locId))
       locId = "debriefing/spent/default"
-    let usedWidth = max(calc_str_box(decimalFormat(used), fontTiny)[0],
-                        calc_str_box(decimalFormat(0),    fontTiny)[0])
     return {
       size = [flex(), SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
-      children =
-        mkTextRow(loc(locId, { count = used }),
-          mkText,
-          {
-            ["{countAnim}"] = mkAnimatedCount(id, used, null, startTime, //warning disable: -forgot-subst
-              { size = [usedWidth, SIZE_TO_CONTENT], halign = ALIGN_CENTER })
-          })
-        .append(
-          mkAnimatedCount($"count_{id}", count, null, startTime)
-          mkInlineIcon(mkCurrencyImage(id, iconSize))
-        )
+      children = [
+        mkText(loc(locId))
+        mkAnimatedCount($"count_{id}", count, null, startTime)
+        mkInlineIcon(mkCurrencyImage(id, iconSize))
+      ]
     }
   })
 }

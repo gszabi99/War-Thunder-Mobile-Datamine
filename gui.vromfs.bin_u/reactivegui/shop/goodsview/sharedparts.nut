@@ -7,7 +7,8 @@ let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON } = require("%rGui/components/currencyComp.nut")
-let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES, ALL_PURCHASED } = require("%rGui/shop/goodsStates.nut")
+let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES, ALL_PURCHASED, IS_ACTIVE
+} = require("%rGui/shop/goodsStates.nut")
 let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -113,8 +114,8 @@ let mkFitCenterImg = @(img, ovr = {}) {
 let mkGoodsImg = @(img, fallbackImg = null, ovr = {}) {
   size = flex()
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#{img}:0:P")
-  fallbackImage = fallbackImg ? Picture($"ui/gameuiskin#{fallbackImg}:0:P") : null
+  image = Picture($"ui/gameuiskin/{img}:0:P")
+  fallbackImage = fallbackImg ? Picture($"ui/gameuiskin/{fallbackImg}:0:P") : null
   keepAspect = KEEP_ASPECT_FIT
   imageHalign = ALIGN_LEFT
   imageValign = ALIGN_BOTTOM
@@ -388,10 +389,20 @@ let skipPurchasedPlate = {
   children = {
     rendObj = ROBJ_TEXT
     text = loc("btn/skipWait")
-    color = 0xFFFFFFFF
   }.__update(fontSmallAccentedShaded)
 }
 
+let subsActivePlate = {
+  size = flex()
+  rendObj = ROBJ_IMAGE
+  image = priceBgGradPremium
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc("subscription/active")
+  }.__update(fontSmallAccentedShaded)
+}
 
 function mkFreePricePlate(goods, state) {
   let { isReady = false, needAdvert = false } = goods
@@ -422,6 +433,44 @@ function mkPricePlate(goods, state, animParams = null, needDiscountTag = true) {
     size = flex()
     children = (state.get() & ALL_PURCHASED) != 0 ? purchasedPlate
       : animParams == null || !isReady || (state.get() & (PURCHASING | NOT_READY)) ? pricePlateComp
+      : withGlareEffect(
+          pricePlateComp,
+          goodsW,
+          { duration = goodsGlareAnimDuration, delay = animParams?.delay, repeatDelay = animParams?.repeatDelay },
+          { glareWidth },
+          { translateXMult = 1.5 }
+        ).__update({ size = flex() })
+  }
+}
+
+function mkCommonSubsPricePlate(subs) {
+  let { priceText = "" } = subs.priceExt
+  return {
+    size = flex()
+    padding = [0, 0, hdpx(6), 0]
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    rendObj = ROBJ_IMAGE
+    image = priceBgGradPremium
+    flow = FLOW_VERTICAL
+    gap = hdpx(-6)
+    children = [
+      txt({
+        text = loc("pricePerTime", { price = priceText, time = getSubsPeriodString(subs) })
+      }.__update(fontMedium))
+      txt({ text = loc("subscrition/autoRenewal") })
+    ]
+    transitions = [{ prop = AnimProp.picSaturate, duration = 1.0, easing = InQuad }]
+  }
+}
+
+function mkSubsPricePlate(subs, state, animParams = null) {
+  let pricePlateComp = mkCommonSubsPricePlate(subs)
+  return @() {
+    watch = state
+    size = flex()
+    children = (state.get() & IS_ACTIVE) != 0 ? subsActivePlate
+      : animParams == null ? pricePlateComp
       : withGlareEffect(
           pricePlateComp,
           goodsW,
@@ -772,6 +821,7 @@ return {
   mkGradeTitle
   numberToTextForWtFont
   mkPricePlate
+  mkSubsPricePlate
   purchasedPlate
   mkGoodsCommonParts
   mkOfferCommonParts

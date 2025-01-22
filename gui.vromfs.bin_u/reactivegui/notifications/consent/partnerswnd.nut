@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bgShaded, bgMessage } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { eventbus_send } = require("eventbus")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { gapAfterPoint, urlUnderline, linkColor } = require("consentComps.nut")
-let { msgBoxHeaderWithClose } = require("%rGui/components/msgBox.nut")
 let { isOpenedPartners } = require("consentState.nut")
 
 let key = "consentPartners"
@@ -58,13 +58,11 @@ let closeBtn = {
   children = textButtonPrimary(loc("msgbox/btn_ok"), close)
 }
 
-let content = bgMessage.__merge({
+let content = modalWndBg.__merge({
   size = [hdpx(700), hdpx(700)]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
   flow = FLOW_VERTICAL
   children = [
-    msgBoxHeaderWithClose(loc("consentWnd/main/partners"), close)
+    modalWndHeaderWithClose(loc("consentWnd/main/partners"), close)
   ].extend(partners.map(partnerRow))
   .append(closeBtn)
 })

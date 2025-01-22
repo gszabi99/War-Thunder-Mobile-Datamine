@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { setInterval, clearTimer, deferOnce } = require("dagor.workcycle")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
+let { addModalWindow, removeModalWindow, MWP_ALWAYS_TOP } = require("%rGui/components/modalWindows.nut")
 let tutorialWndDefStyle = require("tutorialWndDefStyle.nut")
 let { isTutorialActive, tutorialConfigVersion, getTutorialConfig, stepIdx, WND_UID,
   nextStep, nextStepByDefaultHotkey, skipStep, nextKeyAllowed, skipKeyAllowed, getTimeAfterStepStart
@@ -17,7 +17,7 @@ let boxUpdateCountWithStep = Computed(@() boxUpdateCount.value + stepIdx.value)
 
 
 let mkLightCtorExt = @(lightCtor, nextStepDelay) function(box) {
-  let { ctor = null, onClick = null } = box
+  let { ctor = null, onClick = null, hotkeys = null } = box
   if (ctor != null)
     return ctor(box)
 
@@ -27,7 +27,7 @@ let mkLightCtorExt = @(lightCtor, nextStepDelay) function(box) {
       nextStep()
   }
 
-  return lightCtor(box, { onClick = onClickExt })
+  return lightCtor(box, { onClick = onClickExt, hotkeys = hotkeys })
 }
 
 function mkBg(boxes, style, nextStepDelay) {
@@ -270,6 +270,7 @@ function tutorialWnd() {
 let close = @() removeModalWindow(WND_UID)
 let open = @() addModalWindow({
   key = WND_UID
+  priority = MWP_ALWAYS_TOP
   size = [sw(100), sh(100)]
   children = tutorialWnd
   onClick = @() null

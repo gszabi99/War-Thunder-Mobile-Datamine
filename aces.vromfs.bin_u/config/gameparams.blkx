@@ -136,6 +136,8 @@
     -10.0,
     0.0
   ],
+  "missleWarningDistance": 1000.0,
+  "missleWarningTargetSize": 80.0,
   "teleScale": 0.03,
   "minSkyAmbientLighting": [
     0.00954,
@@ -229,6 +231,7 @@
   "criticalOffenderMetricsDiffMin": 0.3,
   "leaveKillerSearchDistanceMax": 3000.0,
   "airfieldSafeLeaveZoneRadius": -1.0,
+  "enableAircraftSevereDamage": true,
   "showDamageReport": false,
   "damageReportTimeOut": 1.0,
   "showFireDamageReport": true,
@@ -335,6 +338,10 @@
   "shipTouchAimSensMult": 0.3,
   "aircraftTouchSensMult": 1.0,
   "aircraftTouchAimSensMult": 0.7,
+  "touchSensMultTank": 0.12,
+  "touchAimSensMultTank": 0.12,
+  "touchSensMultShip": 0.1,
+  "touchAimSensMultShip": 0.158,
   "touchSensMultPlane": 0.105,
   "touchAimSensMultPlane": 0.075,
   "loadNetEffectiveness": 100,
@@ -9277,7 +9284,8 @@
     "maxNumberOfDestructableBodies": 100,
     "numOfDestrBodiesForScaleDt": 50,
     "distForScaleDt": 100.0,
-    "maxScaleDt": 3.0
+    "maxScaleDt": 3.0,
+    "errorOnBodiesOverflow": true
   },
   "clouds": {
     "mapTexWidth": 256,
@@ -15548,86 +15556,6 @@
         {
           "name": "wheel_l_03_",
           "modelNames": "type_87_rcv_prot"
-        },
-        {
-          "name": "wheel_r_01_",
-          "modelNames": "ztl_11"
-        },
-        {
-          "name": "wheel_l_01_",
-          "modelNames": "ztl_11"
-        },
-        {
-          "name": "wheel_r_02_",
-          "modelNames": "ztl_11"
-        },
-        {
-          "name": "wheel_l_02_",
-          "modelNames": "ztl_11"
-        },
-        {
-          "name": "wheel_r_03_",
-          "modelNames": "ztl_11"
-        },
-        {
-          "name": "wheel_l_03_",
-          "modelNames": "ztl_11"
-        },
-        {
-          "name": "wheel_r_04_",
-          "modelNames": "ztl_11"
-        },
-        {
-          "name": "wheel_l_04_",
-          "modelNames": "ztl_11"
-        },
-        {
-          "name": "wheel_r_01_",
-          "modelNames": "vextra_105"
-        },
-        {
-          "name": "wheel_l_01_",
-          "modelNames": "vextra_105"
-        },
-        {
-          "name": "wheel_r_02_",
-          "modelNames": "vextra_105"
-        },
-        {
-          "name": "wheel_l_02_",
-          "modelNames": "vextra_105"
-        },
-        {
-          "name": "wheel_r_03_",
-          "modelNames": "vextra_105"
-        },
-        {
-          "name": "wheel_l_03_",
-          "modelNames": "vextra_105"
-        },
-        {
-          "name": "wheel_r_04_",
-          "modelNames": "vextra_105"
-        },
-        {
-          "name": "wheel_l_04_",
-          "modelNames": "vextra_105"
-        },
-        {
-          "name": "wheel_r_01_",
-          "modelNames": "vcac_mephisto"
-        },
-        {
-          "name": "wheel_l_01_",
-          "modelNames": "vcac_mephisto"
-        },
-        {
-          "name": "wheel_r_02_",
-          "modelNames": "vcac_mephisto"
-        },
-        {
-          "name": "wheel_l_02_",
-          "modelNames": "vcac_mephisto"
         }
       ]
     },

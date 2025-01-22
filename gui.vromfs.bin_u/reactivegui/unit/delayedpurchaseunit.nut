@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { deferOnce, setTimeout } = require("dagor.workcycle")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 
@@ -38,7 +38,7 @@ function showPurchases() {
     setCurrentUnit(listForRequest.top())
 
   foreach (idx, unitId in listForRequest) {
-    let unit = myUnits.get()?[unitId]
+    let unit = campMyUnits.get()?[unitId]
     if (unit)
       setTimeout(idx * TIME_TO_DELAY, function() {
         setHangarUnit(unit.name)

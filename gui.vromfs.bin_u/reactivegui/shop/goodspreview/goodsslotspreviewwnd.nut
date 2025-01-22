@@ -8,7 +8,7 @@ let { GPT_SLOTS, previewType, previewGoods, closeGoodsPreview, openPreviewCount,
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
 let { serverTimeDay, getDay, untilNextDaySec } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -135,14 +135,14 @@ function balanceButtons() {
 
 function headerText() {
   let previewG = previewGoods.get()
-  let excludeGoods = serverConfigs.get()?.allBlueprints.reduce(@(res, v, unitName) (myUnits.get()?[unitName] != null
+  let excludeGoods = serverConfigs.get()?.allBlueprints.reduce(@(res, v, unitName) (campMyUnits.get()?[unitName] != null
     || (servProfile.get()?.blueprints[unitName] ?? 0) >= (v?.targetCount ?? 0)) ? res.$rawset(unitName, true)
       : res, {}) ?? {}
   let allLeftSlotNames = goodsRewardSlots.get()?.variants.reduce(@(res, v)
     !excludeGoods?[v[0].id] ? res.append(loc(getUnitLocId(v[0].id))) : res, []) ?? []
   let description = loc(getSlotsTexts(openedGoodsId.get()).description)
   return {
-    watch = [previewGoods, openedGoodsId, goodsRewardSlots, myUnits, serverConfigs, servProfile]
+    watch = [previewGoods, openedGoodsId, goodsRewardSlots, campMyUnits, serverConfigs, servProfile]
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)
     valign = ALIGN_CENTER

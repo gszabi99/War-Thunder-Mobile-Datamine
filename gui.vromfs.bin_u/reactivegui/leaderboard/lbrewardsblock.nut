@@ -11,7 +11,7 @@ let { lbMyPlace, lbTotalPlaces } = require("lbState.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkRewardsPreview } = require("%rGui/quests/rewardsComps.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
-let { bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeaderBg } = require("%rGui/components/modalWnd.nut")
 let { boxSize } = rewardStyle
 
 
@@ -103,12 +103,13 @@ function rewardsList(rewards) {
   }
 }
 
-return bgMessage.__merge({
+return modalWndBg.__merge({
   size = [lbRewardsBlockWidth, lbTableHeight]
   key = {}
+  vplace = ALIGN_TOP
   flow = FLOW_VERTICAL
   children = [
-    bgHeader.__merge({
+    modalWndHeaderBg.__merge({
       size = [flex(), lbHeaderRowHeight]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER

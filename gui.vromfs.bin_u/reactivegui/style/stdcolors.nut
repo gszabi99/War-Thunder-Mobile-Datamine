@@ -49,5 +49,13 @@ return {
     indigo = 0xFF7B5AFF
     violet = 0xFF9F53FF
     margenta = 0xFFDE3AE1
+
+    accent = 0xFFFF4567
+    info = 0xFF3F8CFF
+    warning = 0xFFFFCE21
+    interesting = 0xFF8B55FF
+    bronze = 0xFFE0B095
+    silver = 0xFFB4CEE7
+    gold = 0xFFE4CB88
   }
 }

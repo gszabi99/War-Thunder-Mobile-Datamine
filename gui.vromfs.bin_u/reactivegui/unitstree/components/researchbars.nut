@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkProgressLevelBg } = require("%rGui/components/levelBlockPkg.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -50,9 +50,9 @@ let mkBlueprintBarText = @(text) {
 function blueprintBar(unit) {
   let curBluebrintsCount = Computed(@() servProfile.get()?.blueprints?[unit.name] ?? 0)
   let reqBluebrintsCount = Computed(@() serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1)
-  return @() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in myUnits.get()
+  return @() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in campMyUnits.get()
     ? {
-      watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, myUnits]
+      watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, campMyUnits]
       size = [flex(), SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       gap = hdpx(5)
@@ -60,14 +60,14 @@ function blueprintBar(unit) {
         mkBlueprintBarText(loc("blueprints/desc"))
         mkLevelLine(curBluebrintsCount.get(), reqBluebrintsCount.get(), blueprintBarColor)
       ]}
-    : { watch = [serverConfigs, myUnits]}
+    : { watch = [serverConfigs, campMyUnits]}
 }
 
 let unitExpBar = @(unitName, unitResearch) function() {
   let { isCurrent = false, canResearch = false, exp = 0, reqExp = 1 } = unitResearch.get()
   return {
-    watch = [unitResearch, myUnits]
-    children = unitName not in myUnits.get() && (isCurrent || canResearch)
+    watch = [unitResearch, campMyUnits]
+    children = unitName not in campMyUnits.get() && (isCurrent || canResearch)
       ? mkLevelLine(exp, reqExp, unitResearchExpColor)
       : null
   }
@@ -76,7 +76,7 @@ let unitExpBar = @(unitName, unitResearch) function() {
 function unitResearchBar(unitName) {
   let unitResearch = Computed(@() unitsResearchStatus.get()?[unitName])
   let hintLocId = Computed(function() {
-    if (unitName in myUnits.get())
+    if (unitName in campMyUnits.get())
       return curCampaignSlotUnits.get()?.findvalue(@(v) v == unitName) != null
         ? "slotbar/installedUnit"
         : null
@@ -90,7 +90,7 @@ function unitResearchBar(unitName) {
       : null
   })
 
-  let needHint = Computed(@() hintLocId.get() != null || unitName not in myUnits.get())
+  let needHint = Computed(@() hintLocId.get() != null || unitName not in campMyUnits.get())
   return @() !needHint.get() ? { watch = needHint }
     : {
         watch = needHint

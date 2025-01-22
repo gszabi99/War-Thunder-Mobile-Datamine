@@ -109,12 +109,18 @@ function steeringAxelerate(id, flipX) {
   setVirtualAxisValue(id, steerWatch.value)
 }
 
+let steeringUpdate = [false, true]
+  .reduce(@(res, isRight)
+    res.$rawset(isRight,
+      function() {
+        steeringAxelerate("gm_steering", isRight)
+        if (speed.get() == 0)
+          toNeutral()
+      }),
+    {})
+
 function mkSteerParams(isRight, scale) {
-  function onTouchUpdate() {
-    steeringAxelerate("gm_steering", isRight)
-    if (speed.value == 0)
-      toNeutral()
-  }
+  let onTouchUpdate = steeringUpdate[isRight]
   let shortcutId = isRight ? "gm_steering_right" : "gm_steering_left"
   return {
     scale
@@ -125,6 +131,7 @@ function mkSteerParams(isRight, scale) {
       if (cruiseControl.value == 0)
         curSteerValue = 1
       steeringAxelerate("gm_steering", isRight)
+      clearTimer(onTouchUpdate)
       setInterval(0.3, onTouchUpdate)
       playSound("steer")
       if (!isTurnTypesCtrlShowed.value) {

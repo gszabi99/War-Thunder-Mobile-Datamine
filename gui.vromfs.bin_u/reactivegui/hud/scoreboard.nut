@@ -142,6 +142,7 @@ let mkScoreBoard = @(scale) function() {
     watch = missionProgressType
     hplace = ALIGN_CENTER
     behavior = Behaviors.Button
+    cameraControl = true
     onClick = @() isHudAttached.get() ? toggleShortcut(shortcutId) : eventbus_send("toggleMpstatscreen", {})
     hotkeys = mkGamepadHotkey(shortcutId)
     sound = { click  = "click" }

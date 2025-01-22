@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let closeWndBtn = require("%rGui/components/closeWndBtn.nut")
+let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
 let { tankTagsOrder, getTagName } = require("%appGlobals/config/skins/skinTags.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { mkSkinCustomTags } = require("%rGui/unit/unitSettings.nut")

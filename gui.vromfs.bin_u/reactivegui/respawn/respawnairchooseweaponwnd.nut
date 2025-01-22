@@ -4,7 +4,8 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { openMsgBox, msgBoxBg, msgBoxHeader } = require("%rGui/components/msgBox.nut")
+let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
 let { textButtonPrimary, textButtonCommon, textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { mkLevelLockSmall, mkNotPurchasedShade, mkModCost } = require("%rGui/unitMods/modsComps.nut")
@@ -558,10 +559,10 @@ let mkBeltLines = @() function() {
 
 let mkLines = mkContentByType(mkWeaponLines, mkBeltLines, null)
 let contentHeader = mkContentByType(
-  @() msgBoxHeader(loc("weaponry/secondaryWeapons")),
-  @() msgBoxHeader(loc("weaponry/gunBelts")))
+  @() modalWndHeader(loc("weaponry/secondaryWeapons")),
+  @() modalWndHeader(loc("weaponry/gunBelts")))
 
-let mainContent = msgBoxBg.__merge({
+let mainContent = modalWndBg.__merge({
   flow = FLOW_VERTICAL
   children = [
     contentHeader

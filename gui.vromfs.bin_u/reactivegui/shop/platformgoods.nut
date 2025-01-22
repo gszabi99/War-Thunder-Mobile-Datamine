@@ -1,11 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { is_android, is_ios, is_nswitch } = require("%sqstd/platform.nut")
-let { isDownloadedFromGooglePlay = @() false } = require("android.platform")
+let { isDownloadedFromGooglePlay = @() false, getBuildMarket = @() "googleplay" } = require("android.platform")
 let { isGuestLogin, renewGuestRegistrationTags } = require("%rGui/account/emailRegistrationState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { platformGoods, platformOffer, platformGoodsDebugInfo, buyPlatformGoods,
+let isHuaweiBuild = getBuildMarket() == "appgallery"
+let { platformGoods, platformOffer, platformSubs, platformGoodsDebugInfo, buyPlatformGoods,
+  activatePlatfromSubscription = @(_) null,
   platformPurchaseInProgress = Watched(null)
-} = is_android && isDownloadedFromGooglePlay() ? require("byPlatform/goodsAndroid.nut")
+} = is_android && isHuaweiBuild ? require("byPlatform/goodsHuawei.nut")
+  : is_android && isDownloadedFromGooglePlay() ? require("byPlatform/goodsAndroid.nut")
   : is_ios ? require("byPlatform/goodsIos.nut")
   : is_nswitch ? require("byPlatform/goodsNSwitch.nut")
   : require("byPlatform/goodsGaijin.nut")
@@ -52,9 +55,8 @@ function buyPlatformGoodsExt(goodsOrId) {
     })
     return
   }
-
   let goods = type(goodsOrId) == "table" ? goodsOrId : platformGoods.value?[goodsOrId]
-  if (isForbiddenPlatformPurchaseFromRussia(goods)) {
+  if (is_android && !isHuaweiBuild && isForbiddenPlatformPurchaseFromRussia(goods)) {
     if(has_payments_blocked_web_page.get())
       openMsgBoxInAppPurchasesFromRussia(goods)
     else{
@@ -77,8 +79,10 @@ let isGoodsOnlyInternalPurchase = @(goods) (goods?.purchaseGuids.len() ?? 0) == 
 return {
   platformGoods
   platformOffer
+  platformSubs
   platformGoodsDebugInfo
   buyPlatformGoods = buyPlatformGoodsExt
+  activatePlatfromSubscription
   platformPurchaseInProgress
   isGoodsOnlyInternalPurchase
 }

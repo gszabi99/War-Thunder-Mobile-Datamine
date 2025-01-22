@@ -13,13 +13,19 @@ let getGaijinGuid = @(goods) goods?.purchaseGuids.gaijin.guid ?? ""
 
 let goodsIdByGuid = Computed(function() {
   let res = {}
-  foreach (id, goods in campConfigs.value?.allGoods ?? {})
+  let { allGoods = {}, subscriptionsCfg = {} } = campConfigs.get()
+  foreach (id, goods in allGoods)
     if ((can_debug_shop.value || !goods.isShowDebugOnly)
         && !goods?.isHiddenInGaijinStore) {
       let guid = getGaijinGuid(goods)
       if (guid != "")
         res[guid] <- id
     }
+  foreach (id, subs in subscriptionsCfg) {
+    let guid = getGaijinGuid(subs)
+    if (guid != "")
+      res[guid] <- id
+  }
   return res
 })
 
@@ -48,11 +54,12 @@ function buildPurchaseUrl(info) {
 function mkGoods(baseGoods, info) {
   if (baseGoods == null || info == null)
     return null
-  let { shop_price = 0, shop_price_curr = "" } = info
+  let { shop_price = 0, shop_price_curr = "", duration = 0 } = info
   if (shop_price <= 0)
     return null
   let currencyId = shop_price_curr.tolower()
   return baseGoods.__merge({
+    duration = duration.tointeger()
     purchaseUrl = buildPurchaseUrl(info)
     priceExt = {
       price = shop_price
@@ -75,6 +82,16 @@ let platformGoods = Computed(function() {
   return res
 })
 
+let platformSubs = Computed(function() {
+  let res = {}
+  foreach (id, subs in campConfigs.get()?.subscriptionsCfg ?? {}) {
+    let subsExt = mkGoods(subs, goodsInfo.get()?[getGaijinGuid(subs)])
+    if (subsExt != null)
+      res[id] <- subsExt
+  }
+  return res
+})
+
 let platformOffer = Computed(@()
   mkGoods(activeOffers.value, goodsInfo.value?[getGaijinGuid(activeOffers.value)]))
 
@@ -87,10 +104,21 @@ function buyPlatformGoods(goodsOrId) {
   severalCheckPurchasesOnActivate()
 }
 
+function activatePlatfromSubscription(subsOrId) {
+  local baseUrl = subsOrId?.purchaseUrl ?? platformSubs.get()?[subsOrId].purchaseUrl
+  if (baseUrl == null)
+    return
+  baseUrl = " ".concat("auto_local", "auto_login", baseUrl)
+  eventbus_send("openUrl", { baseUrl, onCloseUrl = successPaymentUrl })
+  severalCheckPurchasesOnActivate()
+}
+
 return {
   platformGoodsDebugInfo = goodsInfo
   platformGoods
   platformGoodsFromRussia = platformGoods
   platformOffer
+  platformSubs
   buyPlatformGoods
+  activatePlatfromSubscription
 }

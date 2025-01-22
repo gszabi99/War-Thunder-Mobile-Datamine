@@ -50,6 +50,11 @@ let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
 let { gamercardGap, CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
+let { onCampaignChange } = require("%rGui/mainMenu/chooseCampaignWnd.nut")
+let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { needFirstBattleTutorForCampaign } = require("%rGui/tutorial/tutorialMissions.nut")
+
+let campToBack = mkWatched(persist, "campToBack", null)
 
 let MAX_LOOTBOXES_AMOUNT = 3
 let headerGap = hdpx(30)
@@ -163,6 +168,7 @@ function mkLootboxBlock(lootbox, blockSize) {
 }
 
 function onClose() {
+  campToBack.set(null)
   if (isEmbeddedLootboxPreviewOpen.value)
     closeLootboxPreview()
   else {
@@ -209,7 +215,19 @@ let consumablesPlate = @(battleCampaign, itemsByGameMode) @(){
       .reduce(@(res, l) res.$rawset(l.name, true), {})
       .keys()
       .sort(@(a, b) orderByItems[a] <=> orderByItems[b])
-        .map(@(id) mkItemsBalance(id, @() openShopWnd(SC_CONSUMABLES), CS_GAMERCARD)))
+        .map(@(id) mkItemsBalance(id, function(){
+          if(curCampaign.get() != battleCampaign){
+            if(needFirstBattleTutorForCampaign(battleCampaign))
+              onCampaignChange(battleCampaign, onClose)
+            else {
+              campToBack.set(curCampaign.get())
+              setCampaign(battleCampaign)
+              openShopWnd(SC_CONSUMABLES)
+            }
+          }
+          else
+            openShopWnd(SC_CONSUMABLES)
+        }, CS_GAMERCARD)))
 }
 
 let toBattleHint = @(battleCampaign, itemsByGameMode) battleCampaign == null ? null : {
@@ -426,8 +444,15 @@ function eventWndContent() {
 
 let wndKey = {}
 let eventWnd = @() {
+  watch = [curCampaign, campToBack]
   key = wndKey
   size = flex()
+  function onAttach(){
+    if(campToBack.get() != curCampaign.get() && campToBack.get() != null){
+      setCampaign(campToBack.get())
+      campToBack.set(null)
+    }
+  }
   children = eventWndContent()
   animations = wndSwitchAnim
 }

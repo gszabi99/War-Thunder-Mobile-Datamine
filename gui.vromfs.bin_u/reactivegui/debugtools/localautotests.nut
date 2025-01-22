@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_send, send } = require("eventbus")
 let { debugModes } = require("%rGui/gameModes/gameModeState.nut")
 let { curCampaign, curCampaignSlots, campaignsList, setCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { set_unit_to_slot } = require("%appGlobals/pServer/pServerApi.nut")
 let { rnd } = require("dagor.random")
@@ -52,7 +52,7 @@ function selectRandomCampaignHangar(msg) {
 }
 
 function selectRandomUnitHangar(msg) {
-  let units = myUnits.get()
+  let units = campMyUnits.get()
   if (units.len() <= 0)
     return;
   let index = getIndexOrRandom(msg, units.len())

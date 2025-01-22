@@ -77,8 +77,9 @@ let mkCampaignName = @(name, sf) {
   }.__update(fontSmall)
 }
 
-function onCampaignButtonClick(campaign) {
+function onCampaignChange(campaign, onChangeCamp = null) {
   function applyCampaign() {
+    onChangeCamp?()
     close()
     setCampaign(campaign)
   }
@@ -174,7 +175,7 @@ function mkCampaignButton(campaign) {
     padding = campImageFrameWidth
     color = 0XFF323232
     behavior = Behaviors.Button
-    onClick = @() onCampaignButtonClick(campaign)
+    onClick = @() onCampaignChange(campaign)
     onElemState = @(v) stateFlags(v)
     transform = { scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
@@ -257,4 +258,7 @@ if (needToForceOpen.value)
   isOpened(true)
 needToForceOpen.subscribe(@(v) v ? isOpened(true) : null)
 
-return @() isOpened(true)
+return {
+  onCampaignChange
+  chooseCampaignWnd = @() isOpened(true)
+}

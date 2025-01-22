@@ -2,22 +2,31 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { platformId, aliases } = require("%sqstd/platform.nut")
 let { toIntegerSafe } = require("%sqstd/string.nut")
-let { mkFormatAst, widthImgMax } = require("mkFormatAstWithInsideBlock.nut")
+let mkFormatAst = require("%darg/helpers/mkFormatAst.nut")
 let urlAliases = require("urlAliases.nut")
 let wordHyphenation = require("%globalScripts/wordHyphenation.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
+
+let selectorBtnW = hdpx(465)
+let widthImgMax = saSize[0] - saBordersRv[1]*2 - selectorBtnW
+let insideBlockPadding = [hdpx(10), hdpx(20)]
+let blockInterval = hdpx(6)
+let headerMargin = 2 * blockInterval
+let urlLineWidth = hdpx(1)
+let borderWidth = hdpx(1)
+
+let contentBackground = 0xFF464646
+let headerBackground = 0xFF507878
+let btnDef = 0x00000000
+let btnHov = 0x14505064
+let btnTextDef = 0xFFB4B4B4
 
 let commonTextColor = 0xFFC0C0C0
 let activeTextColor = 0xFFFFFFFF
 let urlColor = 0xFF17C0FC
 let urlHoverColor = 0xFF84E0FA
-let urlLineWidth = hdpx(1)
 let separatorColor = 0x33333333
-let accentBgColor = 0x1E001E32
-
-let blockInterval = hdpx(6)
-let headerMargin = 2 * blockInterval
-let borderWidth = hdpx(1)
+let accentDefaultColor = locColorTable.info
 
 let h1Style = { color = 0xFFDCDCFA, margin = [headerMargin, 0] }.__update(fontBig)
 let h2Style = { color = 0xFFDCDCFA, margin = [headerMargin, 0] }.__update(fontMedium)
@@ -130,10 +139,23 @@ let vertical = @(obj, formatTextFunc, _) obj.__merge({
 
 let accent = @(obj, formatTextFunc, _) obj.__merge({
   size = [flex(), SIZE_TO_CONTENT]
-  rendObj = ROBJ_SOLID
-  color = accentBgColor
-  flow = FLOW_HORIZONTAL
-  children = formatList(obj.v, formatTextFunc)
+  margin = blockInterval
+  children = [
+    {
+      size = flex()
+      rendObj = ROBJ_SOLID
+      color = locColorTable?[obj?.color] ?? accentDefaultColor
+      opacity = 0.2
+    }
+    {
+      size = [flex(), SIZE_TO_CONTENT]
+      rendObj = ROBJ_BOX
+      borderWidth = [0, 0, 0, hdpx(4)]
+      borderColor = locColorTable?[obj?.color] ?? accentDefaultColor
+      padding = [hdpx(20), hdpx(40)]
+      flow = FLOW_VERTICAL
+      children = formatList(obj.v, formatTextFunc).map(@(p) p.__merge({color = locColorTable?[obj?.color] ?? accentDefaultColor}))
+  }]
 })
 
 let getColWeightByPresetAndIdx = @(idx, preset) toIntegerSafe(preset?[idx + 1], 100, false)
@@ -213,6 +235,107 @@ let image = @(obj, _, style = {}) {
   }
 }.__update(obj, style)
 
+function spoiler(obj, formatTextFunc, __) {
+  let isExpanded = Watched(false)
+  let isHover = Watched(false)
+  let button = {
+    size = [flex(), hdpx(100)]
+    rendObj = ROBJ_SOLID
+    color = headerBackground
+    children = @() {
+      watch = [isExpanded, isHover]
+      size = flex()
+      padding = insideBlockPadding
+      rendObj = ROBJ_BOX
+      fillColor = isHover.get() ? btnHov : btnDef
+      behavior = Behaviors.Button
+      onClick = @() isExpanded(!isExpanded.get())
+      onHover = @(sf) isHover(sf)
+      children = {
+        vplace = ALIGN_CENTER
+        rendObj = ROBJ_TEXTAREA
+        behavior = Behaviors.TextArea
+        text = !isExpanded.get() ? loc("ui/expand") : loc("ui/collapse")
+        color = !isExpanded.get() ? activeTextColor : btnTextDef
+      }.__update(fontSmall)
+    }
+  }
+  return {
+    size = [flex(), SIZE_TO_CONTENT]
+    margin = [headerMargin, 0]
+    flow = FLOW_VERTICAL
+    clipChildren = true
+    rendObj = ROBJ_BOX
+    fillColor = contentBackground
+    children = [
+      button,
+      @() {
+        watch = isExpanded
+        size = [flex(), isExpanded.get() ? SIZE_TO_CONTENT : 0]
+        padding = insideBlockPadding
+        clipChildren = true
+        children = {
+          flow = FLOW_VERTICAL
+          children = obj.v.map(@(item) formatList(item, formatTextFunc))
+        }
+      }
+
+    ]
+  }
+}
+
+function tabs(obj, formatTextFunc, __) {
+  let currentTab = Watched(obj.v?[0])
+  function createCaptionBtn(tab) {
+    let stateFlags = Watched(0)
+    return function() {
+      let sf = stateFlags.get()
+      return {
+        watch = [stateFlags, currentTab]
+        size = flex()
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        rendObj = ROBJ_BOX
+        fillColor = (sf & S_HOVER) ? btnHov : btnDef
+        behavior = Behaviors.Button
+        onElemState = @(x) stateFlags(x)
+        onClick = @() currentTab(tab)
+        children = {
+          rendObj = ROBJ_TEXT
+          text = tab?.header ?? "untitled"
+          color = currentTab.get()?.header == tab?.header ? activeTextColor : btnTextDef
+        }.__update(fontSmall)
+      }
+    }
+  }
+  return @() {
+    watch = currentTab
+    size = [flex(),SIZE_TO_CONTENT]
+    margin = [headerMargin, 0]
+    flow = FLOW_VERTICAL
+    rendObj = ROBJ_SOLID
+    color = contentBackground
+    children = [
+      @() {
+        size = [flex(),hdpx(100)]
+        valign = ALIGN_CENTER
+        flow = FLOW_HORIZONTAL
+        clipChildren = true
+        rendObj = ROBJ_SOLID
+        color = headerBackground
+        children = obj.v.map(@(tab) createCaptionBtn(tab))
+      },
+      {
+        size = [flex(), SIZE_TO_CONTENT]
+        flow = FLOW_VERTICAL
+        padding = hdpx(20)
+        clipChildren = true
+        children = currentTab.get()?.v.map(@(item) formatList(item, formatTextFunc))
+      }
+    ]
+  }
+}
+
 let textAreaFormatter = @(obj, _ = null, __ = null) textArea(obj)
 let mkTextFormatter = @(ovr) @(obj, _ = null, __ = null) textArea(obj.__merge(ovr))
 let formatters = {
@@ -245,6 +368,8 @@ let formatters = {
   horizontal
   vertical
   accent
+  spoiler
+  tabs
 }
 
 let filterFormat = @(o) o?.platform != null
@@ -253,4 +378,5 @@ let filterFormat = @(o) o?.platform != null
 return {
   formatText = mkFormatAst({ formatters, style = { lineGaps = hdpx(5) }, filter = filterFormat })
   formatters
+  selectorBtnW
 }

@@ -24,7 +24,7 @@ let helpAirAiming = require("%rGui/loading/complexScreens/helpAirAiming.nut")
 let helpEventChristmas = require("%rGui/loading/complexScreens/helpEventChristmas.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { curUnit, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { mkMRankRange } = require("%rGui/state/matchingRank.nut")
 let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { leaveSquad } = require("%rGui/squad/squadManager.nut")
@@ -64,7 +64,7 @@ let playersCountInQueue = Computed(function() {
     return null
   let unitInfo = curQueue.value?.unitInfo
   let unitName = type(unitInfo) == "array" ? unitInfo?[0] : unitInfo
-  let { rank = null } = allUnitsCfg.get()?[unitName] ?? curUnit.get() //why rank here instead of matching rank?
+  let { rank = null } = campUnitsCfg.get()?[unitName] ?? curUnit.get() //why rank here instead of matching rank?
   if (rank == null)
     return null
   let rankStr = rank.tostring()

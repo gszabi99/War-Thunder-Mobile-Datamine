@@ -13,7 +13,7 @@ let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 
@@ -30,6 +30,8 @@ let openedUnitFromTree = mkWatched(persist, "openedUnitFromTree", null)
 let openedGoodsId = mkWatched(persist, "openedGoodsId", null)
 let closeGoodsPreview = @() openedGoodsId(null)
 let openPreviewCount = Watched(openedGoodsId.get() == null ? 0 : 1)
+let openedSubsId = mkWatched(persist, "openedSubsId", null)
+
 
 let getPkgsByUnit = @(unit) unit == null ? [] : getUnitPkgs(unit.name, unit.mRank)
 
@@ -125,12 +127,12 @@ servProfile.subscribe(function(v){
   let offersBlueprint = activeOffer.get()?.blueprints.findindex(@(_) true)
   if(!offersBlueprint)
     return
-  if (offersBlueprint in myUnits.get()
+  if (offersBlueprint in campMyUnits.get()
       || v?.blueprints[offersBlueprint] == serverConfigs.get()?.allBlueprints?[offersBlueprint].targetCount)
     check_empty_offer(curCampaign.get())
 })
 
-myUnits.subscribe(function(list){
+campMyUnits.subscribe(function(list){
   if ((activeOffer.get()?.id ?? "") == "branch_offer")
     foreach (unitName in activeOffer.get().units)
       if (unitName in list) {
@@ -160,4 +162,8 @@ return {
   previewType
   isPreviewGoodsPurchasing
   openGoodsPreviewInMenuOnly
+
+  openSubsPreview = @(id) openedSubsId.set(id)
+  closeSubsPreview = @() openedSubsId.set(null)
+  openedSubsId
 }

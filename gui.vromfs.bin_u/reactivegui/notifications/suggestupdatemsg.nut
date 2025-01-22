@@ -12,7 +12,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { needSuggestToUpdate } = isDownloadedFromGooglePlay() ? require("needUpdate/needUpdateGooglePlay.nut")
   : is_ios ? require("needUpdate/needUpdateAppStore.nut")
   : require("needUpdate/needUpdateAndroidSite.nut")
-let { updateBySite, isDownloadInProgress } = require("updateClientBySite.nut")
+let { updateBySite, isDownloadInProgress, canUpdateByConnectionStatus } = require("updateClientBySite.nut")
 let { isGameAutoUpdateEnabled } = require("%rGui/options/options/gameAutoUpdateOption.nut")
 
 const SUGGEST_UPDATE = "suggest_update_msg"
@@ -39,6 +39,7 @@ let isProcessByBgUpdate = is_android && !isDownloadedFromGooglePlay()
 
 let needSuggestMessage = keepref(Computed(@() needProcessUpdate.get() && !isProcessByBgUpdate.get()))
 let needStartBackgroundUpdate = keepref(Computed(@() needProcessUpdate.get()
+  && canUpdateByConnectionStatus.get()
   && !isDownloadInProgress.get()
   && isProcessByBgUpdate.get()
   && isGameAutoUpdateEnabled.get()))

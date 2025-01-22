@@ -5,7 +5,7 @@ let { textButtonPrimary, textButtonCommon, buttonsHGap } = require("%rGui/compon
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { isOpenedManage, consentRequiredForCurrentRegion } = require("%rGui/notifications/consent/consentState.nut")
 let { openLicenseWnd, licenseFileName } = require("licenseWnd.nut")
-let { file_exists, read_text_from_file_on_disk = null } = require("dagor.fs")
+let { file_exists } = require("dagor.fs")
 
 let buttonsWidthStyle = {
   ovr = {
@@ -32,7 +32,7 @@ return @() {
     textButtonCommon(loc("mainmenu/btnAccountDelete"), logoutToDeleteAccountMsgBox, buttonsWidthStyle)
     textButtonPrimary(loc("options/personalData"), @() eventbus_send("openUrl", { baseUrl = PRIVACY_POLICY_URL }), buttonsWidthStyle)
     consentRequiredForCurrentRegion.get() ? textButtonPrimary(loc("mainmenu/consentPrivacy"), @() isOpenedManage(true), buttonsWidthStyle) : null
-    read_text_from_file_on_disk == null || !file_exists(licenseFileName) ? null
+    !file_exists(licenseFileName) ? null
       : textButtonPrimary(loc("options/license"), openLicenseWnd, buttonsWidthStyle)
   ]
 }

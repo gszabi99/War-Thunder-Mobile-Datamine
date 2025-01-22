@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
+from "warpoints" import *
 
 let { eventbus_subscribe } = require("eventbus")
 let { get_mplayer_by_id } = require("mission")
@@ -8,10 +9,10 @@ let { GO_WIN, GO_FAIL, GO_EARLY, GO_WAITING_FOR_RESULT, GO_NONE, MISSION_CAPTURI
 } = require("guiMission")
 let { localMPlayerId, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
-let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { startMissionHintSeria, captureHintSeria } = require("missionNewbiesHints.nut")
 let { unitType } = require("%rGui/hudState.nut")
-let { TANK } = require("%appGlobals/unitConst.nut")
+let { TANK, AIR } = require("%appGlobals/unitConst.nut")
 let { teamRedColor } = require("%rGui/style/teamColors.nut")
 let { EventZoneDamageMessage } = require("dasevents")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
@@ -38,6 +39,7 @@ isInBattle.subscribe(function(_) {
 
 const MISSION_HINT = "mission_hint"
 const SCORE_HINT = "score_hint"
+const EXP_HINT = "exp_hint"
 
 eventbus_subscribe("hint:missionHint:set", @(data) data?.hintType == "bottom" ? null
   : modifyOrAddEvent(
@@ -82,11 +84,11 @@ let addHudMessage = {
     if (!isKill || localMPlayerId.value != playerId)
       return
 
-    let classIcon = getUnitClassFontIcon(allUnitsCfg.value?[victimUnitName])
+    let classIcon = getUnitClassFontIcon(campUnitsCfg.get()?[victimUnitName])
     let victim = get_mplayer_by_id(victimPlayerId)
     addEvent(data.__merge({
       id = $"kill_{victimPlayerId}"
-      hType = "mission"
+      hType = "expHint"
       ttl = 5
       text = loc("multiplayer/playerUnitDestroyed",
         { name = " ".join([ colorize(teamRedColor, victim?.name ?? data?.victimUnitNameLoc), classIcon ], true) })
@@ -174,5 +176,24 @@ eventbus_subscribe("MissionResult", function(data) {
 })
 
 eventbus_subscribe("MissionContinue", @(_) removeEvent({ id = MISSSION_RESULT }))
+
+let expEventType = {
+  [EXP_EVENT_CRITICAL_HIT]  = "exp_reasons/critical_hit",
+  [EXP_EVENT_SEVERE_DAMAGE] = "exp_reasons/severe_damage",
+  // [EXP_EVENT_ASSIST]        = "exp_reasons/assist",
+}
+
+eventbus_subscribe("ExpEvent", function(evt) {
+  let msg = expEventType?[evt.messageCode];
+  if (unitType.value == AIR && msg) {
+    modifyOrAddEvent({
+      id = EXP_HINT
+      zOrder = Layers.Upper
+      hType = "expHint"
+      text = " ".concat(loc(msg), colorize(teamRedColor, evt.victim))
+      ttl = 3
+    }, @(ev) ev?.id == EXP_HINT)
+  }
+})
 
 return state

@@ -21,7 +21,8 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateSmall, mkUnitInfo, mkUnitSele
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let openBuyExpWithUnitWnd = require("%rGui/levelUp/buyExpWithUnitWnd.nut")
 let { isExperienceWndOpen } = require("expWndState.nut")
-let { bgShaded, bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { levelBlock } = require("%rGui/mainMenu/gamercard.nut")
 let { playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
@@ -69,7 +70,8 @@ registerHandler("onLvlPurchaseNoUnit",
     if (res?.error != null)
       return
     openLvlUpWndIfCan()
-    levelup_without_unit(context.campaign)
+    if (!levelInProgress.get())
+      levelup_without_unit(context.campaign)
   })
 
 function buyLevelNoUnitBtn(lvlInfo, cost, campaign) {
@@ -141,18 +143,6 @@ let chooseUnitBlock = @() {
       ]
 }
 
-
-let experienceWndHeader = bgHeader.__merge({
-  padding = hdpx(10)
-  size = [flex(), SIZE_TO_CONTENT]
-  halign = ALIGN_CENTER
-  children = {
-    rendObj = ROBJ_TEXT
-    text = loc("mainmenu/campaign_levelup")
-  }.__update(fontMedium)
-
-})
-
 let mkLevelBlock = levelBlock({ pos = [0, 0] }, {
   children = [
     {
@@ -189,29 +179,25 @@ let necessaryPoints = @(){
   ]
 }
 
-function experienceWnd(){
-  return bgMessage.__merge({
-    padding = [0,0, hdpx(50), 0]
-    flow = FLOW_VERTICAL
-    hplace = ALIGN_CENTER
-    vplace = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    gap = hdpx(50)
-    sound = { detach  = "menu_close" }
-    children = [
-      experienceWndHeader
-      {
-        halign = ALIGN_CENTER
-        flow = FLOW_VERTICAL
-        children = [
-          mkLevelBlock
-          necessaryPoints
-        ]
-      }
-      chooseUnitBlock
-    ]
-  })
-}
+let experienceWnd = @() modalWndBg.__merge({
+  padding = [0,0, hdpx(50), 0]
+  flow = FLOW_VERTICAL
+  halign = ALIGN_CENTER
+  gap = hdpx(50)
+  sound = { detach  = "menu_close" }
+  children = [
+    modalWndHeader(loc("mainmenu/campaign_levelup"))
+    {
+      halign = ALIGN_CENTER
+      flow = FLOW_VERTICAL
+      children = [
+        mkLevelBlock
+        necessaryPoints
+      ]
+    }
+    chooseUnitBlock
+  ]
+})
 
 let experienceBuyingWnd = bgShaded.__merge({
   size = flex()

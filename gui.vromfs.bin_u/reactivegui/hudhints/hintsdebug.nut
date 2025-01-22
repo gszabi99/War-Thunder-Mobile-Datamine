@@ -6,7 +6,7 @@ let { HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_STREAK_EX, UT_Unknown, UT_Ship } = requir
 let { GO_WIN, GO_FAIL, GO_NONE } = require("guiMission")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { localMPlayerId, localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
-let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { debugHudType, HT_CUTSCENE } = require("%appGlobals/clientState/hudState.nut")
 let { areHintsHidden } = require("%rGui/hudState.nut")
 let { playersCommonStats, dbgCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
@@ -82,13 +82,13 @@ register_command(
       : localMPlayerId.value == 0 ? 1
       : 0,
     team = localMPlayerTeam.value
-    unitName = allUnitsCfg.value.findvalue(@(_) true)?.name ?? ""
+    unitName = campUnitsCfg.get().findvalue(@(_) true)?.name ?? ""
     unitType = UT_Ship
     unitNameLoc = "Killer Unit"
 
     victimPlayerId = localMPlayerId.value == 0 ? 1 : 0,
     victimTeam = 3- localMPlayerTeam.value
-    victimUnitName = allUnitsCfg.value.findvalue(@(_) true)?.name ?? ""
+    victimUnitName = campUnitsCfg.get().findvalue(@(_) true)?.name ?? ""
     victimUnitType = UT_Ship
     victimUnitNameLoc = "Victim Unit"
   }),
@@ -110,7 +110,7 @@ register_command(
       debugHudType(null)
       return
     }
-    let unit = allUnitsCfg.value.findvalue(@(_) true)
+    let unit = campUnitsCfg.get().findvalue(@(_) true)
     let unitType = hudMessagesUnitTypesMap.findindex(@(v) v == unit?.unitType) ?? UT_Unknown
     eventbus_send("HudMessage", {
       type = HUD_MSG_MULTIPLAYER_DMG

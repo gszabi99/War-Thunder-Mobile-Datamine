@@ -106,7 +106,7 @@ function getDefaultImgFilename(id) {
 function getLootboxImage(id, season = null, size = null) {
   let finalId = imgIdBySeason?[id](season) ?? id
   let img = customLootboxImages?[finalId] ?? getDefaultImgFilename(finalId)
-  return !size ? Picture($"ui/gameuiskin/{img}:0:P") : Picture($"ui/gameuiskin#{img}:{size}:{size}:P")
+  return !size ? Picture($"ui/gameuiskin/{img}:0:P") : Picture($"ui/gameuiskin/{img}:{size}:{size}:P")
 }
 
 let getRouletteImage = @(id) customRouletteImages?[id] ?? "ui/images/event_bg.avif"
@@ -117,7 +117,7 @@ let mkTagLayersCtor = @(image) function(size) {
     size = [tagSize, tagSize]
     pos = [-0.04 * size, 0.2 * size]
     rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#{image}:{tagSize}:{tagSize}:P")
+    image = Picture($"ui/gameuiskin/{image}:{tagSize}:{tagSize}:P")
     keepAspect = true
   }
 }

@@ -1807,6 +1807,7 @@
       "id": "streak_firework_new_year",
       "type": "streak",
       "amount_warpoints": 10000,
+      "exclude_from_rating": true,
       "isMultiStage": true,
       "isAfterFlight": false,
       "wpA": [

@@ -99,6 +99,7 @@ register_command(@() unitToShow(hangarUnit.get()), "ui.debug.unitPurchaseEffect"
 
 return {
   isPurchEffectVisible = isOpened
+  needOpenPurchEffect = needOpen
   requestOpenUnitPurchEffect = @(unit) unitToShow.set(unit)
   hasUnitToShow = Computed(@() unitToShow.get() != null)
   getEffectCfg

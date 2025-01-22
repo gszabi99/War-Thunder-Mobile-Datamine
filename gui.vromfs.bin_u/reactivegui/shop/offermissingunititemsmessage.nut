@@ -6,7 +6,8 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { shopGoods } = require("shopState.nut")
 let { itemsCfgOrdered, orderByItems } = require("%appGlobals/itemsState.nut")
 let { items } = require("%appGlobals/pServer/campaign.nut")
-let { bgShaded, bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { textButtonBattle, mkCustomButton } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, PURCHASE } = require("%rGui/components/buttonStyles.nut")
 let { shopPurchaseInProgress, buy_goods } = require("%appGlobals/pServer/pServerApi.nut")
@@ -75,21 +76,6 @@ let purchaseDesc = {
   spare = "item/spare/desc"
   ircm_kit = "msg/purchaseDesc/ircmKit"
 }
-
-let itemBuyingHeader = bgHeader.__merge({
-  size = [ itemBuyingWidth, SIZE_TO_CONTENT ]
-  children = {
-    size = [flex(), hdpx(80)]
-    colorTable = {
-      shipNameColor = 0x1052C4E4
-    }
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    rendObj = ROBJ_TEXTAREA
-    behavior = Behaviors.TextArea
-    text = loc("missingItemsWnd/header")
-  }.__update(fontBig)
-})
 
 let titleWnd = @(unit, itemId){
   margin = [hdpx(20), 0,0,0]
@@ -333,17 +319,15 @@ let mkContWithTransfToSkill = @(item) {
   ]
 }
 
-let mkMsgContent = @(item, needSwitchAnim, toBattle, unit) bgMessage.__merge({
+let mkMsgContent = @(item, needSwitchAnim, toBattle, unit) modalWndBg.__merge({
   key = item.itemId
-  behavior = Behaviors.Button
-  padding = [0,0, insideIndent, 0 ]
   size = [ flex(), SIZE_TO_CONTENT ]
+  padding = [0, 0, insideIndent, 0]
   flow = FLOW_VERTICAL
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  vplace = ALIGN_CENTER
   children = [
-    itemBuyingHeader
+    modalWndHeader(loc("missingItemsWnd/header"))
     titleWnd(unit, item.itemId)
     item.itemId in battleItemsIcons ? mkContWithTransfToSkill(item) : mkSimpleContent(item)
     mkMsButtons(item, toBattle)

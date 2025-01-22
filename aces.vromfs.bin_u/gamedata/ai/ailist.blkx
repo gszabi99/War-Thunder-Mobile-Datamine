@@ -5734,9 +5734,37 @@
             "findLeader": {
               "findOwnedUnit": false
             },
-            "followTarget": {
-              "offsetFromBot": true,
-              "useTarget": false
+            "ifThenElse": {
+              "sequencer": {
+                "hasReturnedPlanes": {},
+                "isPlayerOrderActive": {},
+                "setHostAs": {
+                  "varName": "vip",
+                  "forWingmen": true
+                },
+                "setUnitAsLeader": {
+                  "varName": "vip"
+                }
+              },
+              "parallel": {
+                "followTarget": {
+                  "offsetFromBot": false,
+                  "useTarget": false,
+                  "offset": [
+                    0.0,
+                    600.0,
+                    0.0
+                  ]
+                },
+                "returnTo": {
+                  "varName": "vip",
+                  "distMax": 300.0
+                }
+              },
+              "followTarget": {
+                "offsetFromBot": true,
+                "useTarget": false
+              }
             },
             "sequencer": {
               "setControls": {
@@ -5958,14 +5986,19 @@
                       },
                       "selector": {
                         "selectStrategy": "ordered",
-                        "torpedoTarget": {
+                        "fighterAttackGround": {
                           "instantAttack": true,
-                          "fireMode": "salvo"
+                          "fireMode": "salvo",
+                          "onlyRocketAttack": true
                         },
                         "bombTarget": {
                           "instantAttack": true,
                           "fireMode": "salvo",
                           "carpetBombing": false
+                        },
+                        "torpedoTarget": {
+                          "instantAttack": true,
+                          "fireMode": "salvo"
                         },
                         "sequencer": {
                           "hasDependentAttackers": {},
@@ -5974,6 +6007,7 @@
                               "hasGroupWeaponTypes": {
                                 "weaponType": [
                                   "bombs",
+                                  "rockets",
                                   "torpedoes"
                                 ]
                               }
@@ -5989,14 +6023,14 @@
                       },
                       "selector": {
                         "selectStrategy": "ordered",
+                        "fighterAttackGround": {
+                          "instantAttack": true,
+                          "fireMode": "salvo"
+                        },
                         "bombTarget": {
                           "instantAttack": true,
                           "fireMode": "salvo",
                           "carpetBombing": false
-                        },
-                        "fighterAttackGround": {
-                          "instantAttack": true,
-                          "fireMode": "salvo"
                         },
                         "sequencer": {
                           "hasDependentAttackers": {},
@@ -6132,9 +6166,37 @@
             "findLeader": {
               "findOwnedUnit": false
             },
-            "followTarget": {
-              "offsetFromBot": true,
-              "useTarget": false
+            "ifThenElse": {
+              "and": {
+                "hasReturnedPlanes": {},
+                "isPlayerOrderActive": {},
+                "setHostAs": {
+                  "varName": "vip",
+                  "forWingmen": true
+                },
+                "setUnitAsLeader": {
+                  "varName": "vip"
+                }
+              },
+              "parallel": {
+                "followTarget": {
+                  "offsetFromBot": false,
+                  "useTarget": false,
+                  "offset": [
+                    0.0,
+                    600.0,
+                    0.0
+                  ]
+                },
+                "returnTo": {
+                  "varName": "vip",
+                  "distMax": 300.0
+                }
+              },
+              "followTarget": {
+                "offsetFromBot": true,
+                "useTarget": false
+              }
             },
             "sequencer": {
               "setControls": {
@@ -6356,11 +6418,11 @@
                       },
                       "selector": {
                         "selectStrategy": "ordered",
-                        "diveBombTarget": {
+                        "torpedoTarget": {
                           "instantAttack": true,
                           "fireMode": "salvo"
                         },
-                        "torpedoTarget": {
+                        "diveBombTarget": {
                           "instantAttack": true,
                           "fireMode": "salvo"
                         },
@@ -6528,9 +6590,37 @@
             "findLeader": {
               "findOwnedUnit": false
             },
-            "followTarget": {
-              "offsetFromBot": true,
-              "useTarget": false
+            "ifThenElse": {
+              "sequencer": {
+                "hasReturnedPlanes": {},
+                "isPlayerOrderActive": {},
+                "setHostAs": {
+                  "varName": "vip",
+                  "forWingmen": true
+                },
+                "setUnitAsLeader": {
+                  "varName": "vip"
+                }
+              },
+              "parallel": {
+                "followTarget": {
+                  "offsetFromBot": false,
+                  "useTarget": false,
+                  "offset": [
+                    0.0,
+                    600.0,
+                    0.0
+                  ]
+                },
+                "returnTo": {
+                  "varName": "vip",
+                  "distMax": 300.0
+                }
+              },
+              "followTarget": {
+                "offsetFromBot": true,
+                "useTarget": false
+              }
             },
             "sequencer": {
               "setControls": {

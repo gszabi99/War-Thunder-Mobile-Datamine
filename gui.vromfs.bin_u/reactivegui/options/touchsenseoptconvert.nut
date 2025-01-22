@@ -50,7 +50,7 @@ function convertCameraSenseOptionsToV202410() {
   let isConverted = get_local_custom_settings_blk()?[SAVE_ID_TOUCH_SENSE_OPT_CONVERTED] != null
   if (isConverted)
     return
-  let isNewTouchSenseSupported = check_version(">=1.10.0.69", get_base_game_version_str())
+  let isNewTouchSenseSupported = check_version(">=1.11.0.0", get_base_game_version_str())
   let isNewTouchSenseEnabled = get_game_params_blk()?.touchSensMultShip != null
   if (!isNewTouchSenseSupported || ! isNewTouchSenseEnabled)
     return

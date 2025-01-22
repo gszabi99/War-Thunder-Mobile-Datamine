@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { AIR, TANK } = require("%appGlobals/unitConst.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
@@ -56,9 +56,9 @@ let discountTagUnit = @(percent) discountTag(percent, {
   size = [hdpx(93), hdpx(46)]
 })
 
-function isUnitOrUnitUpgradePurchased(myUnitsValue, unit) {
+function isUnitOrUnitUpgradePurchased(myCampaignUnitsValue, unit) {
   let { name = "", isUpgraded = false } = unit
-  let ownUnit = myUnitsValue?[name]
+  let ownUnit = myCampaignUnitsValue?[name]
   return ownUnit != null && (!isUpgraded || ownUnit.isUpgraded)
 }
 
@@ -161,7 +161,7 @@ let mkMRank = @(mRank) !mRank ? null : {
 function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
   let p = getUnitPresentation(unit)
-  let isPurchased = isUnitOrUnitUpgradePurchased(myUnits.value, unit)
+  let isPurchased = isUnitOrUnitUpgradePurchased(campMyUnits.get(), unit)
   let { isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let border = mkBorderByCurrency(borderBg, isFreeReward, price?.currencyId)
 

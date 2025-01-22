@@ -2,13 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { doesLocTextExist } = require("dagor.localize")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { can_debug_missions } = require("%appGlobals/permissions.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
+let { textButtonMultiline, buttonsVGap, mergeStyles } = require("%rGui/components/textButton.nut")
 let optionsScene = require("%rGui/options/optionsScene.nut")
 let { replayCamerasButtons } = require("replayMenu.nut")
 let { isPlayingReplay } = require("%rGui/hudState.nut")
+let { COMMON, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 
 let isShowDevMenu = mkWatched(persist, "isShowDevMenu", false)
 
@@ -32,45 +32,39 @@ function getFlightButtonText(buttonName) {
   return doesLocTextExist(locId) ? loc(locId) : buttonName
 }
 
-let devMenuContent = @() {
-  key = buttonsList
+let devMenuContent = @(menuBtnWidth) @() {
   watch = isPlayingReplay
-  size = flex()
-  flow = FLOW_HORIZONTAL
-  halign = ALIGN_CENTER
+  flow = FLOW_VERTICAL
   valign = ALIGN_CENTER
-  gap = hdpx(30)
+  halign = ALIGN_CENTER
+  gap = buttonsVGap
   children = [
     @() {
       watch = buttonsList
-      size = flex()
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      gap = hdpx(30)
-      children = buttonsList.value.map(@(b) textButtonCommon(utf8ToUpper(getFlightButtonText(b)),
-        flightMenuButtonsAction?[b] ?? getFlightMenuButtonAction(b)))
+      gap = buttonsVGap
+      children = buttonsList.get().map(@(b) textButtonMultiline(utf8ToUpper(getFlightButtonText(b)),
+        flightMenuButtonsAction?[b] ?? getFlightMenuButtonAction(b),
+        mergeStyles(COMMON, { ovr = { size = [menuBtnWidth, defButtonHeight] } })))
     }
-    !isPlayingReplay.value ? null
+    !isPlayingReplay.get() ? null
       : {
-          size = flex()
           flow = FLOW_VERTICAL
           halign = ALIGN_CENTER
-          valign = ALIGN_CENTER
-          gap = hdpx(30)
-          children = replayCamerasButtons.map(@(b) textButtonCommon(utf8ToUpper(getFlightButtonText(b.name)), b.action))
+          gap = buttonsVGap
+          children = replayCamerasButtons.map(@(b) textButtonMultiline(utf8ToUpper(getFlightButtonText(b.name)), b.action,
+            mergeStyles(COMMON, { ovr = { size = [menuBtnWidth, defButtonHeight] } })))
         }
   ]
-  animations = wndSwitchAnim
 }
 
-let openDevMenuButton = @() {
+let openDevMenuButton = @(menuBtnWidth) @() {
   watch = [can_debug_missions, isShowDevMenu]
-  hplace = ALIGN_RIGHT
-  vplace = ALIGN_BOTTOM
+  hplace = ALIGN_CENTER
   children = can_debug_missions.value
-    ? textButtonCommon(isShowDevMenu.value ? "Close Dev Menu" : "Open Dev Menu", switchShowDevMenu,
-        { hotkeys = ["^J:RT"] })
+    ? textButtonMultiline(isShowDevMenu.value ? "Close Dev Menu" : "Open Dev Menu", switchShowDevMenu,
+        mergeStyles(COMMON, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
     : null
 }
 

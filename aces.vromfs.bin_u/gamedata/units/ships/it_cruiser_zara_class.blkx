@@ -803,7 +803,7 @@
     "binoculars": "navy_binoculars"
   },
   "supportPlane": {
-    "supportPlaneClass": "soc_1",
+    "supportPlaneClass": "ro_43",
     "behTreeName": "supportPlaneBot",
     "planeStartThrottle": 1.0,
     "needDespawnOnReturn": true,

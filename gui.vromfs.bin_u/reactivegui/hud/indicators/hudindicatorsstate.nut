@@ -3,12 +3,7 @@ let { sqrt, pow, fabs } = require("math")
 let { get_time_msec } = require("dagor.time")
 let { setTimeout, setInterval, clearTimer } = require("dagor.workcycle")
 let { get_mplayer_by_id } = require("mission")
-let {
-  getPlayerWorldPos = function getPlayerWorldPos(id) {
-    let mp = require("guiTacticalMap").getPlayerMapPos(id)
-    return mp == null ? null : require("guiTacticalMap").mapPosToWorldPos(mp)
-  }
-} = require("guiTacticalMap")
+let { getPlayerWorldPos } = require("guiTacticalMap")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { isInBattle, localMPlayerId } = require("%appGlobals/clientState/clientState.nut")

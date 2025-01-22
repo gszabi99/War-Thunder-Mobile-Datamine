@@ -14,7 +14,7 @@ let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { curSelectedUnitId, baseUnit, platoonUnitsList, unitToShow, isSkinsWndAttached
 } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
@@ -83,7 +83,7 @@ function mkUnitPlate(unit, platoonUnit, onClick) {
   let platoonUnitFull = unit.__merge(platoonUnit)
   let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
   let isSelected = Computed(@() unitToShow.get()?.name == platoonUnit.name)
-  let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (myUnits.get()?[unit.name].level ?? 0))
+  let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (campMyUnits.get()?[unit.name].level ?? 0))
 
   return @() {
     watch = isLocked
@@ -257,12 +257,12 @@ let function selectBtns(unit, vehicleName, skinName, cSkin) {
 }
 
 let actionBtn = @() {
-  watch = [selectedSkin, availableSkins, currentSkin, selectedSkinCfg, myUnits, unitToShow, skinsInProgress, baseUnit]
+  watch = [selectedSkin, availableSkins, currentSkin, selectedSkinCfg, campMyUnits, unitToShow, skinsInProgress, baseUnit]
   size = [flex(), defButtonHeight]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   animations = wndSwitchAnim
-  children = !selectedSkin.get() || baseUnit.get()?.name not in myUnits.get() || unitToShow.get() == null
+  children = !selectedSkin.get() || baseUnit.get()?.name not in campMyUnits.get() || unitToShow.get() == null
       ? null
     : skinsInProgress.get() ? spinner
     : selectedSkin.get() == "upgraded" && !baseUnit.get()?.isUpgraded
@@ -490,7 +490,6 @@ let unitSkinsWnd = {
   key = {}
   size = flex()
   behavior = HangarCameraControl
-  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
   touchMarginPriority = TOUCH_BACKGROUND
   flow = FLOW_VERTICAL
   onAttach = @() isSkinsWndAttached.set(true)

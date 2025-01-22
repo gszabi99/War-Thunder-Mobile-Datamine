@@ -22720,7 +22720,6 @@
       "material": "snow"
     },
     "xmas_gift_pile_a": {
-      "nextRes": "xmas_gift_pile_a_dmg",
       "physRes": "xmas_gift_pile_a_destr_phobj",
       "hp": 5.0,
       "impulseThreshold": 1.0,
@@ -22729,7 +22728,6 @@
       "material": "snow"
     },
     "xmas_gift_pile_b": {
-      "nextRes": "xmas_gift_pile_b_dmg",
       "physRes": "xmas_gift_pile_b_destr_phobj",
       "hp": 5.0,
       "impulseThreshold": 1.0,
@@ -22738,7 +22736,6 @@
       "material": "snow"
     },
     "xmas_gift_pile_c": {
-      "nextRes": "xmas_gift_pile_c_dmg",
       "physRes": "xmas_gift_pile_c_destr_phobj",
       "hp": 5.0,
       "impulseThreshold": 1.0,

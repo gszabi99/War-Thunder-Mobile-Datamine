@@ -7,7 +7,7 @@ let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.
 let { isMatchingOnline, showMatchingConnectProgress } = require("matchingOnline.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { isInQueue, joinQueue } = require("queuesClient.nut")
 let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
 let { curCampaign, setCampaign, curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
@@ -211,7 +211,7 @@ function queueModeOnRandomUnit(mode) {
   }
 
   let unitsList = []
-  foreach (unit in myUnits.value)
+  foreach (unit in campMyUnits.get())
     foreach (range in mmRanges)
       if (unit.mRank >= range[0] && unit.mRank <= range[1]) {
         unitsList.append(unit)

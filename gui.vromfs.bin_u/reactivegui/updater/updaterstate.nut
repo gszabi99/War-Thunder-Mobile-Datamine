@@ -2,10 +2,11 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
-let { download_addons_in_background, stop_updater, is_updater_running, get_addon_version,
-  get_incomplete_addons, is_addon_exists_in_game_folder, UPDATER_RESULT_SUCCESS, UPDATER_ERROR,
-  UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS, UPDATER_EVENT_ERROR,
-  UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING, UPDATER_EVENT_INCOMPATIBLE_VERSION
+let { get_free_disk_space = @() -1,
+  download_addons_in_background, stop_updater, is_updater_running, get_addon_version,
+  get_incomplete_addons, is_addon_exists_in_game_folder, get_addons_size,
+  UPDATER_RESULT_SUCCESS, UPDATER_ERROR, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
+  UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING, UPDATER_EVENT_INCOMPATIBLE_VERSION
 } = require("contentUpdater")
 let { get_local_custom_settings_blk, get_settings_blk } = require("blkGetters")
 let logA = log_with_prefix("[ADDONS] ")
@@ -20,15 +21,18 @@ let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
 } = require("%appGlobals/updater/campaignAddons.nut")
 let { isAnyCampaignSelected, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { myUnits, battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits, battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
 let { isConnectionLimited, hasConnection } = require("%appGlobals/clientState/connectionStatus.nut")
 let { isRandomBattleNewbie, isRandomBattleNewbieSingle } = require("%rGui/gameModes/gameModeState.nut")
 let { squadAddons } = require("%rGui/squad/squadAddons.nut")
 let { needUhqTextures } = require("%rGui/options/options/graphicOptions.nut")
 let { reqAddonsToShowOffer } = require("%rGui/shop/offerState.nut")
+let msgBoxError = require("%rGui/components/msgBoxError.nut")
+let { totalSizeText } = require("%globalsDarg/updaterUtils.nut")
 
 let DOWNLOAD_ADDONS_EVENT_ID = "downloadAddonsEvent"
 let ALLOW_LIMITED_DOWNLOAD_SAVE_ID = "allowLimitedConnectionDownload"
+let SIZE_INCREASE_MULTIPLIER = 1.2
 
 let addonsToDownload = hardPersistWatched("updater.addonsToDownload",
   get_incomplete_addons().reduce(function(res, v) {
@@ -174,6 +178,15 @@ function updateStartDownload() {
   }
 
   let addons = needStartDownloadAddons.value.keys()
+  let totalSize = get_addons_size(addons)
+  let freeSpace = get_free_disk_space()
+  logA($"total size to download: {totalSize}, free space: {freeSpace}")
+  if (freeSpace > 0 && totalSize > freeSpace){
+    stop_updater()
+    downloadInProgress({})
+    msgBoxError({ text = loc("msgbox/notEnoughSpace", {space = totalSizeText(((totalSize - freeSpace) * SIZE_INCREASE_MULTIPLIER).tointeger())}) })
+    return
+  }
   let isStarted = download_addons_in_background(DOWNLOAD_ADDONS_EVENT_ID, addons)
   logA(isStarted ? "start download " : "ignore download ",
     ", ".join(addons.map(@(a) $"{a}: {is_addon_exists_in_game_folder(a) ? "exists in game folder" : get_addon_version(a)}")))
@@ -262,7 +275,7 @@ let downloadAddonsStr = Computed(function() {
 
 let maxCurCampaignMRank = Computed(function() {
   local res = 0
-  foreach(unit in myUnits.value)
+  foreach(unit in campMyUnits.get())
     res = max(res, unit.mRank)
   return res
 })

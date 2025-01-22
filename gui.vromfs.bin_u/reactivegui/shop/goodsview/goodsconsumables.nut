@@ -8,12 +8,12 @@ let { mkGoodsWrap, borderBg, mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonP
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 
 let icons = {
-  ship_tool_kit = "ui/gameuiskin#shop_consumables_repair.avif"
-  ship_smoke_screen_system_mod = "ui/gameuiskin#shop_consumables_smoke.avif"
-  tank_tool_kit_expendable = "ui/gameuiskin#shop_consumables_tank_repair.avif"
-  tank_extinguisher = "ui/gameuiskin#shop_consumables_tank_extinguisher.avif"
-  spare = "ui/gameuiskin#shop_consumables_tank_cards.avif"
-  ircm_kit = "ui/gameuiskin#shop_consumables_ircm.avif"
+  ship_tool_kit = "ui/gameuiskin/shop_consumables_repair.avif"
+  ship_smoke_screen_system_mod = "ui/gameuiskin/shop_consumables_smoke.avif"
+  tank_tool_kit_expendable = "ui/gameuiskin/shop_consumables_tank_repair.avif"
+  tank_extinguisher = "ui/gameuiskin/shop_consumables_tank_extinguisher.avif"
+  spare = "ui/gameuiskin/shop_consumables_tank_cards.avif"
+  ircm_kit = "ui/gameuiskin/shop_consumables_ircm.avif"
 }
 
 let imgSize = hdpx(500)
@@ -46,11 +46,11 @@ let itemImageOptionsStack = [
   ]
 ]
 
-let mkImg = @(id, size, pos) {
+let mkImg = @(id, size, pos) id not in icons ? null : {
   size
   pos
   rendObj = ROBJ_IMAGE
-  image = Picture(icons?[id] ?? "")
+  image = Picture($"{icons[id]}:{size[0]}:{size[1]}:P")
   keepAspect = true
 }
 

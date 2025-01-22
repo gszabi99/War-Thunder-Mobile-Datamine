@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+let logG = log_with_prefix("[GOODS] ")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
-let logG = log_with_prefix("[GOODS] ")
 let { is_pc } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
+let { parse_duration } = require("%sqstd/iso8601.nut")
 let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
 let { isAuthorized, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
@@ -35,6 +36,7 @@ let { //defaults only to allow test this module on PC
         description = $"{id} description",
         price = getDebugPrice(id)
         price_currency = "RUB"
+        subscriptionPeriod = "P1M"
       })
     }
     setTimeout(0.1, @() eventbus_send("ios.billing.onInitAndDataRequested", result))
@@ -52,7 +54,7 @@ let purchaseInProgress = mkWatched(persist, "purchaseInProgress", null)
 let availablePrices = Computed(function() {
   let res = {}
   foreach (info in products.value) {
-    let { productId = null, price_currency = null, price = null } = info
+    let { productId = null, price_currency = null, price = null, subscriptionPeriod = "" } = info
     if (productId == null || price == null || price_currency == null)
       continue
     let currencyId = price_currency.tolower()
@@ -60,6 +62,7 @@ let availablePrices = Computed(function() {
       price
       currencyId
       priceText = getPriceExtStr(price, currencyId)
+      billingPeriod = parse_duration(subscriptionPeriod)
     }
   }
   return res
@@ -146,6 +149,7 @@ eventbus_subscribe("ios.billing.onInitAndDataRequested", function(result) {
 })
 
 let getProductId = @(goods) goods?.purchaseGuids.iOS.extId
+let getPlanId = @(goods) goods?.purchaseGuids.iOS.planId
 
 let goodsIdByProductId = Computed(function() {
   let res = {}
@@ -158,16 +162,29 @@ let goodsIdByProductId = Computed(function() {
   return res
 })
 
+let subsIdByProductId = Computed(function() {
+  let res = {}
+  foreach (id, subs in campConfigs.value?.subscriptionsCfg ?? {}) {
+    let productId = getPlanId(subs)
+    if (productId != null)
+      res[productId] <- id
+  }
+  return res
+})
+
 let offerProductId = Computed(@() getProductId(activeOffers.value))
 
 let productsForRequest = keepref(Computed(function(prev) {
   if (!isAuthorized.value)
     return []
-  let res = goodsIdByProductId.value.filter(@(_, id) id not in products.value)
+  let received = products.get()
+  let res = goodsIdByProductId.get().filter(@(_, id) id not in received)
     .keys()
-  let offerId = offerProductId.value
-  if (offerId != null && (offerId not in products.value))
+  let offerId = offerProductId.get()
+  if (offerId != null && (offerId not in received))
     res.append(offerId)
+  res.extend(subsIdByProductId.get().filter(@(_, id) id not in received)
+    .keys())
   return isEqual(prev, res) ? prev : res
 }))
 
@@ -212,6 +229,19 @@ let platformGoods = Computed(function() {
   return res
 })
 
+let platformSubs = Computed(function() {
+  let { subscriptionsCfg = {} } = campConfigs.get()
+  let prices = availablePrices.get()
+  let res = {}
+  foreach (productId, subsId in subsIdByProductId.get()) {
+    let priceExt = prices?[productId]
+    let subs = subscriptionsCfg?[subsId]
+    if (priceExt != null && subs != null)
+      res[subsId] <- subs.__merge({ priceExt, billingPeriod = priceExt.billingPeriod })
+  }
+  return res
+})
+
 let platformOffer = Computed(function() {
   let priceExt = availablePrices.value?[getProductId(activeOffers.value)]
   return priceExt == null || activeOffers.value == null ? null
@@ -219,22 +249,24 @@ let platformOffer = Computed(function() {
 })
 
 function buyPlatformGoods(goodsOrId) {
-  let productId = getProductId(platformGoods.value?[goodsOrId] ?? goodsOrId)
+  let productId = getPlanId(platformSubs.get()?[goodsOrId] ?? goodsOrId)
+    ?? getProductId(platformGoods.value?[goodsOrId] ?? goodsOrId)
   if (productId == null)
     return
   startPurchaseAsync(productId)
   purchaseInProgress(productId)
 }
 
-
-let platformPurchaseInProgress = Computed(@() offerProductId.get() == null ? null
+let platformPurchaseInProgress = Computed(@() purchaseInProgress.get() == null ? null
   : offerProductId.get() == purchaseInProgress.get() ? activeOffers.get()?.id
-  : goodsIdByProductId.get()?[purchaseInProgress.get()])
+  : (goodsIdByProductId.get()?[purchaseInProgress.get()] ?? subsIdByProductId.get()?[purchaseInProgress.get()]))
 
 return {
   platformGoodsDebugInfo = products
   platformGoods
   platformOffer
+  platformSubs
   buyPlatformGoods
+  activatePlatfromSubscription = buyPlatformGoods
   platformPurchaseInProgress
 }

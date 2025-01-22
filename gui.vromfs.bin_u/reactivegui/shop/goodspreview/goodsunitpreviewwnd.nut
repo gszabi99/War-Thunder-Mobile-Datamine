@@ -21,7 +21,7 @@ let { loadedHangarUnitName, setCustomHangarUnit, resetCustomHangarUnit,
 let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
 } = require("%rGui/shop/unseenPurchasesState.nut")
-let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
 let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
 let { getPlatoonOrUnitName, getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
@@ -38,17 +38,15 @@ let { animatedProgressBar } = require("%rGui/unitsTree/components/unitPlateNodeC
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { schRewards, onSchRewardReceive } = require("%rGui/shop/schRewardsState.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let { schRewardInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { schRewards } = require("%rGui/shop/schRewardsState.nut")
 let { activeOffer } = require("%rGui/shop/offerState.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { backButtonHeight } = require("%rGui/components/backButton.nut")
 let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
-
+let mkGiftSchRewardBtn = require("mkGiftSchRewardBtn.nut")
+let { doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 
 
 let TIME_TO_SHOW_UI = 5.0 //timer need to show UI even with bug with cutscene
@@ -66,6 +64,7 @@ let openCount = Computed(@() previewType.value == GPT_UNIT || previewType.value 
 let needScroll = Computed(@() (previewGoods.get()?.units.len() ?? 0) + (previewGoods.get()?.unitUpgrades.len() ?? 0) > 8)
 
 //anim pack info
+let aTimeHeaderStart = 0
 let aTimePackInfoStart = aTimePackNameFull
 let aTimePackInfoHeader = 0.3
 let aTimePackUnitInfoStart = aTimePackInfoHeader + 0.05
@@ -76,39 +75,6 @@ let aTimeInfoHeaderFull = aTimeInfoLight + 0.3 * aTimeInfoItem + aTimeFirstItemO
 //anim price and time
 let aTimePriceStart = aTimePackInfoStart + aTimeInfoHeaderFull
 let aTimeShowModals = aTimePriceStart + aTimePriceFull
-
-
-function mkGiftSchRewardBtn(giftSchReward, posX) {
-  local { isReady = false } = giftSchReward
-  function schRewardAndSkipAnim(){
-    onSchRewardReceive(giftSchReward)
-    skipAnimsOnce(true)
-  }
-  if (!isReady)
-    return null
-  local isPurchasing = Computed(@() giftSchReward.id in schRewardInProgress.get())
-  return {
-    size = [hdpx(130),hdpx(130)]
-    pos = [posX + verticalGap,0]
-    rendObj = ROBJ_IMAGE
-    image = Picture("ui/gameuiskin#offer_gift_icon.avif:0:P")
-    behavior = Behaviors.Button
-    onClick = schRewardAndSkipAnim
-    children = [
-      {
-        hplace = ALIGN_RIGHT
-        margin = [hdpx(10), hdpx(10), 0, 0]
-        children = priorityUnseenMark
-      }
-      @() {
-        watch = isPurchasing
-        hplace = ALIGN_CENTER
-        vplace = ALIGN_CENTER
-        children = isPurchasing.get() ? spinner : null
-      }
-    ]
-  }
-}
 
 function showUi() {
   resetTimeout(aTimeShowModals, @() unhideModals(HIDE_PREVIEW_MODALS_ID))
@@ -150,7 +116,7 @@ let unitForShow = keepref(Computed(function() {
   let unitName = curSelectedUnitId.value
   if (unitName == previewGoodsUnit.value.name || unitName == "")
     return previewGoodsUnit.value
-  return allUnitsCfg.get()?[unitName] ?? previewGoodsUnit.value.__merge({ name = unitName })
+  return campUnitsCfg.get()?[unitName] ?? previewGoodsUnit.value.__merge({ name = unitName })
 }))
 
 unitForShow.subscribe(function(unit) {
@@ -313,7 +279,7 @@ function mkUnitPlate(idx, unit, platoonUnit, onSelectUnit = null) {
     : onSelectUnit == null ? unitPlateSizeSingle
     : unitPlateSizeMain
   let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
-  let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (myUnits.value?[unit.name].level ?? 0))
+  let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (campMyUnits.get()?[unit.name].level ?? 0))
   return {
     behavior = Behaviors.Button
     onClick = onSelectUnit
@@ -355,7 +321,7 @@ let singleUnitBlock = @() {
 }
 
 function branchUnitsBlock(unitName) {
-  let unit = Computed(@() allUnitsCfg.get()?[unitName])
+  let unit = Computed(@() campUnitsCfg.get()?[unitName])
   return @() {
     watch = unit
     children = unit.get() == null ? null
@@ -370,7 +336,7 @@ let mkHeader = @() mkPreviewHeader(
     : previewGoodsUnit.get() ? getPlatoonOrUnitName(previewGoodsUnit.get(), loc)
     : ""),
   closeGoodsPreview,
-  0)
+  aTimeHeaderStart)
 
 let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
   children = [
@@ -458,7 +424,6 @@ let rightBlock = {
         maxHeight = hdpx(610)
         hplace = ALIGN_RIGHT
         behavior = [ Behaviors.Button, HangarCameraControl ]
-        eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
         touchMarginPriority = TOUCH_BACKGROUND
         onClick = openDetailsWnd
         clickableInfo = loc("msgbox/btn_more")
@@ -475,10 +440,10 @@ let rightBlock = {
 }
 
 let isPurchNoNeedResultWindow = @(purch) purch?.source == "purchaseInternal"
-  && null == purch.goods.findvalue(@(g) g.gType != "unit" && g.gType != "unitUpgrade" && g.gType != "unitLevel")
+  && null == purch.goods.findvalue(@(g) g.gType != "unitUpgrade" && g.gType != "unitLevel")
 let markPurchasesSeenDelayed = function(purchList) {
   defer(function() {
-    local unit = myUnits.value?[purchList.findvalue(@(_) true)?.goods[0].id]
+    local unit = campMyUnits.get()?[purchList.findvalue(@(_) true)?.goods[0].id]
     if (unit == null)
       return
     markPurchasesSeen(purchList.keys())
@@ -497,8 +462,8 @@ let sortedBranchUnits = Computed(function(){
   let units = clone previewGoods.get()?.units
   if (units)
     return units
-      .filter(@(u) u not in myUnits.get())
-      .sort(@(a,b) allUnitsCfg.get()[b].mRank <=> allUnitsCfg.get()[a].mRank)
+      .filter(@(u) u not in campMyUnits.get())
+      .sort(@(a,b) campUnitsCfg.get()[b].mRank <=> campUnitsCfg.get()[a].mRank)
 })
 
 let pannableArea = verticalPannableAreaCtor(sh(100) - saBorders[1] - backButtonHeight - 2*hdpx(20), [saBorders[1],saBorders[1]])
@@ -571,7 +536,22 @@ let previewWnd = @() {
           size = [flex(), SIZE_TO_CONTENT]
           valign = ALIGN_CENTER
           children = [
-            mkHeader
+            {
+              pos = [-doubleSideGradientPaddingX, 0]
+              flow = FLOW_HORIZONTAL
+              children = [
+                mkHeader
+                @() {
+                  watch = [previewGoodsUnit, schRewards, activeOffer, previewGoods]
+                  size = [0, 0]
+                  children = activeOffer.get()?.id != previewGoods.get()?.id ? null :
+                    mkGiftSchRewardBtn(
+                      schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"]
+                      aTimeHeaderStart,
+                      skipAnimsOnce)
+                }
+              ]
+            }
             balanceBlock
           ]
         }
@@ -583,7 +563,7 @@ let previewWnd = @() {
           }.__update(fontSmall)
           : { watch = previewGoods}
         @() {
-          watch = [previewGoodsUnit, schRewards, previewGoods, activeOffer, needScroll]
+          watch = needScroll
           size = flex()
           children = [
             {
@@ -593,19 +573,6 @@ let previewWnd = @() {
                   : pannableArea(leftBlock, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
                 scrollArrowsBlock
               ]
-            }
-            {
-              size = [0, 0]
-              children = activeOffer.get()?.id != previewGoods.get()?.id ? null
-                : mkGiftSchRewardBtn(
-                    schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"],
-                    (previewGoods.get()?.units.len() ?? 0) > 1
-                        ? unitPlateSize[0] * 2 + gapForBranch
-                      : previewGoodsUnit.get()?.platoonUnits.len()
-                        ? unitPlateSizeMain[0]
-                      : (previewGoods.get()?.blueprints.len() ?? 0) > 0
-                        ? unitPlateWidth
-                      : unitPlateSizeSingle[0])
             }
             rightBlock
           ]

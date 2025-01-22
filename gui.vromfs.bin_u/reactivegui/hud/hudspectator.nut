@@ -11,6 +11,7 @@ let { tacticalMap } = require("components/tacticalMap.nut")
 let { scoreBoard, needScoreBoard } = require("%rGui/hud/scoreBoard.nut")
 let { capZonesList } = require("capZones/capZones.nut")
 let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
+let { mkMyPlaceUi, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
 
 
 let bgButtonColor = Color(32, 34, 38, 216)
@@ -26,6 +27,7 @@ let buttonImageSize = (0.9 * buttonHeight).tointeger()
 let gap = hdpx(40)
 
 let isAttached = Watched(false)
+let needShowMsgForScore = Watched(false)
 
 let watchedHeroId = mkWatched(persist, "watchedHeroId", -1)
 eventbus_subscribe("WatchedHeroChanged", @(_) watchedHeroId(getSpectatorTargetId()))
@@ -54,6 +56,7 @@ function mkTargetButton(isNext = false) {
   let stateFlags = Watched(0)
   return @() {
     behavior = Behaviors.Button
+    cameraControl = true
     watch = stateFlags
     size = [buttonWidth, buttonHeight]
     halign = ALIGN_CENTER
@@ -80,6 +83,7 @@ let nextTargetButton = mkTargetButton(true)
 let returnBtnSf = Watched(0)
 let returnToHangarButton = @() {
   behavior = Behaviors.Button
+  cameraControl = true
   watch = returnBtnSf
   size = [SIZE_TO_CONTENT, buttonHeight]
   halign = ALIGN_CENTER
@@ -142,6 +146,41 @@ let hudTopCenter = @() {
   ]
 }
 
+let hudRight = @() {
+  watch = needShowMsgForScore
+  behavior = Behaviors.Button
+  cameraControl = true
+  function onClick() {
+    needShowMsgForScore.set(false)
+    eventbus_send("toggleMpstatscreen", {})
+  }
+  sound = { click  = "click" }
+  hplace = ALIGN_RIGHT
+  halign = ALIGN_CENTER
+  flow = FLOW_VERTICAL
+  gap = hdpx(10)
+  children = [
+    {
+      flow = FLOW_HORIZONTAL
+      children = [
+        mkMyPlaceUi(1)
+        mkMyScoresUi(1)
+      ]
+    }
+    !needShowMsgForScore.get() ? null
+    : {
+        key = {}
+        rendObj = ROBJ_TEXT
+        text = "tap for stats"
+        transform = {}
+        animations = [{
+          prop = AnimProp.scale, from = [1.0, 1.0], to = [1.1, 1.1], easing = InOutCubic
+          duration = 2, play = true, loop = true
+        }]
+      }
+  ]
+}
+
 return {
   key = {}
   onAttach = @() isAttached(true)
@@ -153,11 +192,11 @@ return {
     {
       size = flex()
       behavior = TouchCameraControl
-      eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
       touchMarginPriority = TOUCH_BACKGROUND
     }
     topLeft
     hudTopCenter
+    hudRight
     hudTopMainLog
     spectatorControlsBlock
   ]

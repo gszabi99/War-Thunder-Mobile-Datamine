@@ -10,12 +10,15 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { authTags, isLoginByGajin } = require("%appGlobals/loginState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { windowActive } = require("%appGlobals/windowState.nut")
+let { accountLink } = require("%rGui/contacts/contactLists.nut")
+
 
 let isGuestLoginBase = Computed(@() authTags.value.contains("guestlogin")
   || authTags.value.contains("firebaselogin"))
 let isDebugGuestLogin = mkWatched(persist, "isDebugGuestLogin", false)
 let isGuestLogin = Computed(@() isGuestLoginBase.value != isDebugGuestLogin.value)
 let needVerifyEmailBase = Computed(@() !isGuestLogin.value
+  && accountLink.get() == null
   && !authTags.value.contains("email_verified")
   && !(authTags.value.contains("gplogin") || authTags.value.contains("applelogin")
         || authTags.value.contains("fblogin") || authTags.value.contains("hwlogin")))

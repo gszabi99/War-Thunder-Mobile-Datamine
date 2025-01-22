@@ -7,7 +7,7 @@ let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { PURCH_SRC_SLOT_UPGRADES, PURCH_TYPE_SLOT_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { generateDataDiscount, mkLevelBlock } = require("%rGui/attributes/buyLevelComp.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { msgBoxBg, msgBoxHeaderWithClose } = require("%rGui/components/msgBox.nut")
+let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
 let { slots, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
 let { buttonsHGap } = require("%rGui/components/textButton.nut")
@@ -64,12 +64,12 @@ let openImpl = @() addModalWindow(bgShaded.__merge({
   key = WND_UID
   size = flex()
   onClick = close
-  children = @() msgBoxBg.__merge({
+  children = @() modalWndBg.__merge({
     watch = slotIndex
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     children = [
-      msgBoxHeaderWithClose(
+      modalWndHeaderWithClose(
         loc("header/slotLevelBoost", { slotName = loc("gamercard/slot/title", { idx = (slotIndex.get() ?? 0) + 1 }) }),
         close,
         {

@@ -1,10 +1,10 @@
 {
-  "version": "1.11.0.216",
-  "grpHash": "16cb029aa15661322e1fac275777fd45",
+  "version": "1.12.0.42",
+  "grpHash": "89bb88a015f242acc9628d2d639b33f2",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "60e1d352b3e7fce8f68461dbd5b517c0",
-  "genHash": "1e6cbd2338e3c521cbf041ec4d9a5179",
+  "blkHash": "7a8ecfc26d098d4bd2063e2b9a61b5cd",
+  "genHash": "cfb62754ffa65bd022f81cd1ac191e2e",
   "a-20g": {
     "dep": [
       "a_20",
@@ -1032,6 +1032,7 @@
   },
   "do_217m_1": {
     "dep": [
+      "de_f5w_torpedo",
       "do_217m_1",
       "do_217m_1_anim",
       "do_217m_1_skeleton",
@@ -1043,12 +1044,12 @@
       "sc1000_c",
       "sc250_b",
       "sc50",
-      "sc500_2_b",
-      "torpedo_g7a"
+      "sc500_2_b"
     ]
   },
   "do_217m_1_prem": {
     "dep": [
+      "de_f5w_torpedo",
       "do_217m_1",
       "do_217m_1_anim",
       "do_217m_1_skeleton",
@@ -1060,8 +1061,7 @@
       "sc1000_c",
       "sc250_b",
       "sc50",
-      "sc500_2_b",
-      "torpedo_g7a"
+      "sc500_2_b"
     ]
   },
   "do_335a_0": {
@@ -4169,6 +4169,7 @@
   },
   "he_111h_6": {
     "dep": [
+      "de_f5w_torpedo",
       "de_fx1400",
       "de_pc1000_ap",
       "german_paratrooper_char",
@@ -4180,12 +4181,12 @@
       "pilot_lw_500",
       "sc1000_c",
       "sc250_b",
-      "sc50",
-      "torpedo_g7a"
+      "sc50"
     ]
   },
   "he_111h_6_killstreak": {
     "dep": [
+      "de_f5w_torpedo",
       "de_fx1400",
       "de_pc1000_ap",
       "german_paratrooper_char",
@@ -4197,8 +4198,7 @@
       "pilot_lw_500",
       "sc1000_c",
       "sc250_b",
-      "sc50",
-      "torpedo_g7a"
+      "sc50"
     ]
   },
   "he_112a_0": {
@@ -5853,6 +5853,7 @@
   },
   "ju-288c": {
     "dep": [
+      "de_sb2500",
       "de_sc1800b",
       "german_paratrooper_char",
       "gunner_sit_lw_500",
@@ -7082,10 +7083,10 @@
       "pilot_su_500",
       "pilot_su_char",
       "soviet_paratrooper_char",
+      "su_45_36an_1939_torpedo",
       "su_fab_1000m_44",
       "su_fab_250m_44",
       "su_fab_500m_44",
-      "torpedo_g7a",
       "tu_1",
       "tu_1_anim",
       "tu_1_skeleton"
@@ -7097,10 +7098,10 @@
       "pilot_su_500",
       "pilot_su_char",
       "soviet_paratrooper_char",
+      "su_45_36an_1939_torpedo",
       "su_fab_1000m_44",
       "su_fab_250m_44",
       "su_fab_500m_44",
-      "torpedo_g7a",
       "tu_1",
       "tu_1_anim",
       "tu_1_skeleton"

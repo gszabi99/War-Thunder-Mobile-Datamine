@@ -9,6 +9,7 @@ const CASE_PAIR_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍ�
 local INVALID_INDEX = -1
 
 local intRegExp = null
+local possibleNotStrRegExp = null
 local floatRegExp = null
 local trimRegExp = null
 local stripTagsConfig = null
@@ -55,10 +56,14 @@ function split(joined, glue, isIgnoreEmpty = false) {
             : joined.split(glue).filter(@(v) v!="")
 }
 
+const intre = @"^-?\d+$"
+const floatre = @"^-?\d+\.?\d*([eE][-+]?\d{1,3})?$"
+let notstringre = @"(^-?\d+$)|(^-?\d+\.?\d*([eE][-+]?\d{1,3})?$)|^(null|true|false)$"
 if (regexp2 != null) {
-  intRegExp = regexp2(@"^-?\d+$")
-  floatRegExp  = regexp2(@"^-?\d+\.?\d*([eE][-+]?\d{1,3})?$")
+  intRegExp = regexp2(intre)
+  floatRegExp  = regexp2(floatre)
   trimRegExp = regexp2(@"^\s+|\s+$")
+  possibleNotStrRegExp = regexp2(notstringre)
   stripTagsConfig = [
     {
       re2 = regexp2("~")
@@ -94,8 +99,9 @@ if (regexp2 != null) {
     })
 }
 else if (regexp != null) {
-  intRegExp = regexp(@"^-?(\d+)$")
-  floatRegExp  = regexp(@"^-?\d+\.?\d*([eE][-+]?\d{1,3})?$")
+  intRegExp = regexp(intre)
+  possibleNotStrRegExp = regexp(notstringre)
+  floatRegExp  = regexp(floatre)
   trimRegExp = regexp(@"^(\s+)|(\s+)$")
   stripTagsConfig = [
     {
@@ -130,6 +136,12 @@ else if (regexp != null) {
       re2 = regexp(format(@"\x%02X", ch))
       repl = format(@"\\u%04X", ch)
     })
+}
+
+function isStringObviousString(str) {
+  if (possibleNotStrRegExp != null)
+    return !possibleNotStrRegExp.match(str)
+  return false
 }
 
 let defTostringParams = freeze({
@@ -219,7 +231,9 @@ function tostring_any(input, tostringfunc=null, compact=true) {
   else if (typ == "string"){
     if (input=="")
       return "\"\""
-    return compact ? input : $"\"{input}\""
+    if (!compact || !isStringObviousString(input))
+      return $"\"{input}\""
+    return input
   }
   else if (typ == "null"){
     return "null"
@@ -229,7 +243,7 @@ function tostring_any(input, tostringfunc=null, compact=true) {
     return r.contains(".") || r.contains("e") ? r : $"{r}.0"
   }
   else if (typ=="instance"){
-    return input.tostring()
+    return $"\"{input.tostring()}\""
   }
   else if (typ == "userdata"){
     return "#USERDATA#"
@@ -320,7 +334,17 @@ function tostring_r(inp, params=defTostringParams) {
       arrInd=indent
     local out = []
     local li = 0
-    local maxind = (type(input?.len) == "function" ? input.len() : 0) - 1
+    local maxind = -1
+    try {
+      if (input?.len && type(input?.len)=="function") {
+        let info = input.len.getfuncinfos()
+        if (!info.native && info.parameters.len()==1)
+          maxind = input.len()-1
+        else if (info.native && info.typecheck.len()==1 && (info.typecheck[0]==32|| info.typecheck[0]==64)) //this is instance
+          maxind = input.len()-1
+      }
+    }
+    catch(e){}
     foreach (key, value in input) {
       local typ = type(value)
       local isArray = typ=="array"
@@ -586,7 +610,6 @@ function floatToStringRounded(value, presize) {
   }
   return format("%.{0}f".subst(-math.log10(presize).tointeger()), value)
 }
-
 function isStringInteger(str) {
   if (type(str) == "integer")
     return true

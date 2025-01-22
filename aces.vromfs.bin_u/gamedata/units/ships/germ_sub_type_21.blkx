@@ -596,7 +596,7 @@
     }
   },
   "oxygenSystem": {
-    "totalAmount": 2400.0,
+    "totalAmount": 2760.0,
     "spendingRate": 30.0,
     "replenishmentDepth": 20.0,
     "replenishmentRate": 20.0,
@@ -1113,7 +1113,7 @@
   },
   "torpedoSeries": {
     "delay": 1.0,
-    "count": 5
+    "count": 6
   },
   "modifications": {
     "ship_tool_kit": {},

@@ -3,15 +3,16 @@ let logC = log_with_prefix("[consent] ")
 
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bgShaded, bgMessage } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { urlUnderline, linkColor } = require("consentComps.nut")
-let { msgBoxHeader, wndWidthDefault } = require("%rGui/components/msgBox.nut")
+let { wndWidthDefault } = require("%rGui/components/msgBox.nut")
 let { isOpenedConsentWnd,needOpenConsentWnd, isOpenedPartners, isOpenedManage,
   defaultPointsTable, applyConsent, savedPoints, isConsentAcceptedOnce, setupAnalytics} = require("consentState.nut")
 let { can_skip_consent } = require("%appGlobals/permissions.nut")
-let closeWndBtn = require("%rGui/components/closeWndBtn.nut")
+let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
 
 let key = "consentMain"
 let close = @() needOpenConsentWnd(false)
@@ -58,10 +59,8 @@ let desc = {
 }
 
 
-let content = bgMessage.__merge({
+let content = modalWndBg.__merge({
   size = [wndWidthDefault, hdpx(880)]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
   flow = FLOW_VERTICAL
   children = [
     @(){
@@ -69,7 +68,7 @@ let content = bgMessage.__merge({
       size = [flex(), SIZE_TO_CONTENT]
       valign = ALIGN_CENTER
       children = [
-        msgBoxHeader(loc("consentWnd/main/header"))
+        modalWndHeader(loc("consentWnd/main/header"))
         can_skip_consent.get()
           ? closeWndBtn(function(){
             if (!isConsentAcceptedOnce.get()) {

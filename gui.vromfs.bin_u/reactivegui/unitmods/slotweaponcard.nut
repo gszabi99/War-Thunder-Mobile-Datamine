@@ -13,9 +13,9 @@ let { getWeaponShortNamesList, getBulletBeltShortName } = require("%rGui/weaponr
 let { getBulletBeltImage, TOTAL_VIEW_BULLETS } = require("%appGlobals/config/bulletsPresentation.nut")
 let { contentMargin } = require("unitModsConst.nut")
 let { warningTextColor } = require("%rGui/style/stdColors.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 
-let unitUpgOrPremNotInMyHangar = Computed(@() !(curUnit.get()?.name in myUnits.get()) && (curUnit.get()?.isPremium || curUnit.get()?.isUpgraded))
+let unitUpgOrPremNotInMyHangar = Computed(@() !(curUnit.get()?.name in campMyUnits.get()) && (curUnit.get()?.isPremium || curUnit.get()?.isUpgraded))
 
 let weaponGap = hdpx(10)
 let selLineGap = hdpx(14)

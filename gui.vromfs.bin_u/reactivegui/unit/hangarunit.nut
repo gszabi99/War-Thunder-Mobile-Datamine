@@ -9,7 +9,7 @@ let { hangar_load_model_with_skin, hangar_move_cam_to_unit_place,
   hangar_get_current_unit_name, hangar_get_loaded_unit_name, change_background_models_list_with_skin,
   change_one_background_model_with_skin, hangar_get_current_unit_skin, get_current_background_models_list
 } = require("hangar")
-let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { isInMenu, isInMpSession, isInLoadingScreen, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
@@ -33,19 +33,19 @@ local wasLoadBgModelsAfterLoading = false
 let mainHangarUnit = Computed(function() {
   let { name = loadedHangarUnitName.value, custom = null } = hangarUnitData.value
   if (custom != null) {
-    if (custom.name not in allUnitsCfg.get()) {
-      let mainName = allUnitsCfg.get().findindex(@(u) u.platoonUnits.findvalue(@(pu) pu.name == custom.name) != null)
+    if (custom.name not in campUnitsCfg.get()) {
+      let mainName = campUnitsCfg.get().findindex(@(u) u.platoonUnits.findvalue(@(pu) pu.name == custom.name) != null)
       if (mainName != null)
         return custom.__merge({ name = mainName })
     }
     return custom
   }
 
-  local unit = myUnits.get()?[name] ?? allUnitsCfg.get()?[name]
+  local unit = campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name]
   if (unit != null || name == "")
     return unit
 
-  foreach (src in [ myUnits, allUnitsCfg ]) {
+  foreach (src in [ campMyUnits, campUnitsCfg ]) {
     unit = src.get().findvalue(@(u) u.platoonUnits.findvalue(@(pu) pu.name == name) != null)
     if (unit != null)
       return unit
@@ -147,7 +147,7 @@ function setHangarUnitWeaponPreset(unitName, preset) {
 function loadModel(unitName, skin, weapPreset) {
   if ((unitName ?? "") == "" && hangar_get_current_unit_name() == "")
     //fallback to any unit from config units
-    unitName = (myUnits.value.findvalue(@(_) true) ?? allUnitsCfg.value.findvalue(@(_) true))?.name
+    unitName = (campMyUnits.get().findvalue(@(_) true) ?? campUnitsCfg.get().findvalue(@(_) true))?.name
 
   if ((unitName ?? "") == "")
     return
@@ -280,7 +280,7 @@ return {
   hangarUnitSkin
   hangarUnitDataBackup
 
-  setHangarUnit  //unit will be used from own units or from allUnitsCfg
+  setHangarUnit  //unit will be used from own units or from campUnitsCfg
   setHangarUnitWithSkin
   setCustomHangarUnit  //will be forced cutsom unit params
   resetCustomHangarUnit //restore previous unit after custom one

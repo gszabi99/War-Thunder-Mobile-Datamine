@@ -67,6 +67,8 @@ function mkAnimatedCountText(needStart, startV, endV, key) {
 
   return animCountBaseComp.__merge({
     key
+    size = [calc_comp_size({rendObj = ROBJ_TEXT, text = endV}.__update(fontVeryTiny))[0], flex()]
+    rendObj = ROBJ_TEXT
     text = startV
     behavior = Behaviors.RtPropUpdate
     function onAttach() {
@@ -94,7 +96,7 @@ function mkAnimatedCountText(needStart, startV, endV, key) {
 }
 
 let function mkUnitResearchPriceAnim(researchStatus, ovr = {}) {
-  let { exp = 0, reqExp = 0 } = researchStatus
+  let { exp = 0, reqExp = 0, isResearched = false } = researchStatus
   return @() {
     watch = animUnitAfterResearch
     padding = plateTextsSmallPad
@@ -104,7 +106,7 @@ let function mkUnitResearchPriceAnim(researchStatus, ovr = {}) {
     flow = FLOW_HORIZONTAL
     children = [
       mkIcon("ui/gameuiskin#unit_exp_icon.svg", [hdpxi(28), hdpxi(28)], {margin = [0, hdpx(10), 0, 0]})
-      mkAnimatedCountText(animUnitAfterResearch.get(), exp, reqExp, exp)
+      mkAnimatedCountText(animUnitAfterResearch.get(), isResearched ? reqExp : exp, reqExp, isResearched ? reqExp : exp)
       {
         rendObj = ROBJ_TEXT
         text = $"/{reqExp}"

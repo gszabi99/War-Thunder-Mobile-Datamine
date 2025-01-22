@@ -2,6 +2,7 @@ require ecs
 require Mission
 require DagorDataBlock
 require DagorSystem
+require strings
 
 def components_to_blk(var blk : DataBlock; eid : EntityId)
   ecs::query(eid) <| $ [es] (setting__crewSkillK : float;
@@ -51,8 +52,7 @@ def components_to_blk(var blk : DataBlock; eid : EntityId)
                              setting__loadSound : bool;
                              setting__cannotMove : bool;
                              setting__ignoreCollisions : bool;
-                             setting__canControlInHangar : bool;
-                             setting__dynamicObstacle : bool)
+                             setting__canControlInHangar : bool)
     add(blk, "crewSkillK", setting__crewSkillK)
     add(blk, "weapons", setting__weapons)
     add(blk, "isPhysPredictionEnabled", setting__isPhysPredictionEnabled)
@@ -68,7 +68,6 @@ def components_to_blk(var blk : DataBlock; eid : EntityId)
     add(blk, "loadSound", setting__loadSound)
     add(blk, "ignoreCollisions", setting__ignoreCollisions)
     add(blk, "canControlInHangar", setting__canControlInHangar)
-    add(blk, "dynamicObstacle", setting__dynamicObstacle)
     for i in range(0, length(setting__bullets))
       let bullet = string(setting__bullets[i])
       add(blk, "bullets{i}", bullet)
@@ -110,7 +109,7 @@ def components_to_blk(var blk : DataBlock; eid : EntityId)
         let target = string(setting__unit_target_list[i])
         add(tBlk, "t", target)
 
-[es(on_event=EventLevelLoaded)]
+[es(on_event=EventLevelLoaded, tag=server)]
 def unit_loader_init(evt : Event;
                      eid : EntityId;
                      setting__unitType, setting__className : string;
@@ -140,4 +139,8 @@ def unit_loader_init(evt : Event;
     elif setting__unitType == "human"
       create_human(setting__className, setting__tm, settingsBlk, setting__playerNo, setting__flags)
 
+    let customTemplatePrefix = "template:"
+    if starts_with(setting__unitType, customTemplatePrefix)
+      add(settingsBlk, "ecsTemplateOverride", slice(setting__unitType, length(customTemplatePrefix)))
+      create_tank(setting__className, setting__tm, settingsBlk, setting__playerNo, 0)
   destroyEntity(eid)

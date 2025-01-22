@@ -181,7 +181,7 @@
       "mesh": "type_64_mat_rocket_deployed",
       "hasTracerTrail": true,
       "tracerTrailEmitter": [
-        0.05,
+        -0.5,
         0.0,
         0.0
       ],
@@ -650,7 +650,7 @@
         "mesh": "type_64_mat_rocket_deployed",
         "hasTracerTrail": true,
         "tracerTrailEmitter": [
-          0.05,
+          -0.5,
           0.0,
           0.0
         ],

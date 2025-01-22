@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { playSound } = require("sound_wt")
+let { debounceImmediate } = require("%sqstd/timers.nut")
 
 let { btnTextDec, btnTextInc, mkIconBtn, btnBg, slider, mkSliderKnob, sliderValueSound } = require("%rGui/components/slider.nut")
 let { textColor, badTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
@@ -243,27 +243,23 @@ let knobCtor = @(relValue, stateFlags, fullW)
     })
 
 function mkProgressBarSlider(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick) {
-  let intermediateValue = Watched(selLevel.get())
-
-  selLevel.subscribe(@(v) intermediateValue.set(v))
-  intermediateValue.subscribe(function(v) {
-    if (v != selLevel.get())
-      deferOnce(mkCellOnClick(v))
-  })
+  let debouncedSound = debounceImmediate(@() playSound("meta_denied"), 1)
 
   let sliderOverride = {
     min = 0
     max = totalLevels
     size = [sliderWidth, sliderTouchableHeight]
     function onChange(v) {
-      if (v < minLevel.get() || v > maxLevel.get())
+      if (v < minLevel.get() || v > maxLevel.get()) {
+        debouncedSound()
         return
+      }
       sliderValueSound()
-      intermediateValue.set(v)
+      mkCellOnClick(v)
     }
   }
 
-  return slider(intermediateValue, sliderOverride, knobCtor)
+  return slider(selLevel, sliderOverride, knobCtor)
 }
 
 function mkProgressBarIndicators(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick) {

@@ -29,7 +29,7 @@ let commonAddonsByPostfix = {
   aircraft  = [ PKG_COMMON, PKG_COMMON_HQ ],
 }
 let dev       = [ PKG_DEV ]
-let initialAddons = [ "pkg_secondary_hq", "pkg_secondary" ]
+let initialAddons = [ "pkg_secondary_hq", "pkg_secondary", "pkg_models_min" ]
 let latestDownloadAddonsByCamp = { //addons to download after other required campaign addons is already downloaded
   tanks = ["pkg_video"]
 }

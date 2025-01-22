@@ -3,7 +3,7 @@ let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { blk2SquirrelObjNoArrays, isDataBlock } = require("%sqstd/datablock.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
@@ -17,7 +17,7 @@ let mySkinsToMark = Computed(function() {
   let allMySkins = mySkins.get()
   if (allMySkins.len() == 0)
     return res
-  foreach(name, unit in myUnits.get()) {
+  foreach(name, unit in campMyUnits.get()) {
     let { skins = null } = unit
     let resSkins = allMySkins?[name].filter(@(_, s) s in skins && !skins[s] && s != "upgraded")
     if (resSkins != null && resSkins.len() != 0)

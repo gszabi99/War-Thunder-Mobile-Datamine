@@ -35,11 +35,10 @@ let debugTouchesView = @() {
     .map(mkPointer)
 }
 
-let debugTouchesUi = {
+let debugTouchesHandlerComp = {
   key = {}
   size = flex()
   behavior = Behaviors.ProcessPointingInput
-  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
   touchMarginPriority = TOUCH_BACKGROUND
   function onPointerPress(evt) {
     let { pointerId, x, y } = evt
@@ -59,12 +58,17 @@ let debugTouchesUi = {
     return 0
   }
   onDetach = @() activePointers({})
+}
 
+let debugTouchesUi = {
+  key = {}
+  size = flex()
   waitForChildrenFadeOut = true
   children = debugTouchesView
 }
 
 return {
   isDebugTouchesActive
+  debugTouchesHandlerComp
   debugTouchesUi
 }

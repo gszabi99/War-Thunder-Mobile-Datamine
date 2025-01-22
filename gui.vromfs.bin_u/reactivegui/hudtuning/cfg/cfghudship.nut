@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { allow_voice_messages, has_strategy_mode } = require("%appGlobals/permissions.nut")
+let { has_strategy_mode } = require("%appGlobals/permissions.nut")
 let { SHIP } = require("%appGlobals/unitConst.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { EII_SMOKE_SCREEN, EII_TOOLKIT,
@@ -131,8 +131,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     ctor = voiceMsgStickBlock
     defTransform = mkRBPos([hdpx(5), 0])
     editView = voiceMsgStickView
-    isVisibleInEditor = allow_voice_messages
-    isVisibleInBattle = Computed(@() allow_voice_messages.get() && isInMpSession.get())
+    isVisibleInBattle = isInMpSession
     priority = Z_ORDER.STICK
   }
 

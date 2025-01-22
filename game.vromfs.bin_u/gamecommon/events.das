@@ -8,6 +8,7 @@ require %game.unit.ammo_stowage_events
 require %game.unit.repair_system_events
 require %game.unit.extinguish_system_events
 require %game.unit.ship_events
+require Weapon
 
 
 [cpp_event(broadcast)]
@@ -116,7 +117,7 @@ struct EventGunShot
 
 [cpp_event(unicast)]
 struct CmdDisableMove
-  uid : int
+  eid : EntityId
   name : string
 
 [cpp_event(broadcast, with_scheme)]
@@ -165,12 +166,12 @@ struct EventOnTrailerDead
 
 [cpp_event(broadcast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER)]
 struct EventTryControlBurav
-  uid : int
+  eid : EntityId
   target : float2
 
 [cpp_event(unicast, with_scheme)]
 struct EventKilledByBurav
-  killerUid : int
+  killerEid : EntityId
 
 [cpp_event(unicast)]
 struct CmdSetOperatorCountry
@@ -184,6 +185,7 @@ struct EventOnPlayerUnlockStreak
   statIdName : string
   amountWp : int
   stage : int
+  isExcludeFromRating : bool
 
 [event(broadcast)]
 struct EventSoundAreaInit
@@ -234,3 +236,24 @@ struct EventRendInstDestroyed
 
 [cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER)]
 struct CmdActionInRespawn {}
+
+[cpp_event(unicast, with_scheme)]
+struct EventTryBuildObject {}
+
+[cpp_event(unicast, with_scheme)]
+struct EventToggleBuildingPreview
+  enable : bool
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct CmdBuildObject
+  tm : float3x4
+  objectTemplate : string
+  triggerGroup : WeaponTriggerGroups
+
+[cpp_event(unicast, with_scheme)]
+struct EventRearmFromAmmoBox
+  count : int
+
+[cpp_event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
+struct EventCantReloadingFromBox
+{}

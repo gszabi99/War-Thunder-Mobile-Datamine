@@ -3,15 +3,15 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
 
 let boosterDescUid = "booster_desc_wnd_uid"
 
 let close = @() removeModalWindow(boosterDescUid)
 
-let descriptionWndBg = 0x90000000
 let descriptionWndWidth = hdpx(1000)
 
 let backBtn = {
@@ -19,29 +19,20 @@ let backBtn = {
   children = backButton(close)
 }
 
-let decorativeLine = {
-  rendObj = ROBJ_IMAGE
-  image = gradTranspDoubleSideX
-  color = 0xFFFFFFFF
-  size = [ descriptionWndWidth, hdpx(6) ]
-}
+let header = @(bst) modalWndHeader(loc($"boosters/{bst}"))
 
 let rewardInfo = @(bst) {
-  size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
-  rendObj = ROBJ_9RECT
-  image = gradTranspDoubleSideX
-  texOffs = [0 , gradDoubleTexOffset]
-  screenOffs = [0, hdpx(250)]
-  color = 0xFF000000
+  hplace = ALIGN_CENTER
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  padding = [hdpx(50), 0]
+  padding = hdpx(50)
   gap = hdpx(30)
   children = [
     mkCurrencyImage(bst, hdpxi(100))
     {
-      size = [pw(50), hdpx(150)]
+      size = [flex(), SIZE_TO_CONTENT]
+      minWidth = hdpx(500)
       rendObj = ROBJ_TEXTAREA
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
@@ -52,24 +43,28 @@ let rewardInfo = @(bst) {
   ]
 }
 
-let content = @(bst) {
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
+let content = @(bst) modalWndBg.__merge({
+  size = [descriptionWndWidth, SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   children = [
-    decorativeLine
+    header(bst)
     rewardInfo(bst)
-    decorativeLine
+    {
+      padding = [hdpx(20),0,hdpx(50),0]
+      hplace = ALIGN_CENTER
+      rendObj = ROBJ_TEXT
+      color = 0xFFE0E0E0
+      text = loc("TapAnyToContinue")
+    }.__update(fontSmallAccentedShaded)
   ]
-}
+})
 
-let boosterDescWnd = @(bst) addModalWindow({
+let boosterDescWnd = @(bst) addModalWindow(bgShaded.__merge({
   key = boosterDescUid
   hotkeys = [[btnBEscUp, { action = close }]]
   onClick = close
   rendObj = ROBJ_SOLID
   size = flex()
-  color = descriptionWndBg
   padding = saBordersRv
   behavior = Behaviors.Button
   children = [
@@ -78,6 +73,6 @@ let boosterDescWnd = @(bst) addModalWindow({
   ]
   animations = wndSwitchAnim
 
-})
+}))
 
 return boosterDescWnd

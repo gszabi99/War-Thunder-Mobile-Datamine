@@ -1020,6 +1020,12 @@
     "sfxPathStudio": "aircraft/effects",
     "sfxEvent": "firework"
   },
+  "misc_ecm_line": {
+    "fx": "misc_ecm_line_cmps_fx"
+  },
+  "misc_ecm_radius": {
+    "fx": "misc_ecm_radius_cmps_fx"
+  },
   "flare_fire": {
     "fx": "fires_flare_tail_cmps_fx",
     "sfxPath": "sounds/effects",

@@ -18,15 +18,15 @@ let defaultProfileLevelInfo = {
   isStarProgress = false
 }
 
-let allUnitsCfg = Computed(function() {
+let campUnitsCfg = Computed(function() {
   let unitLevels = campConfigs.value?.unitLevels ?? {}
   return (campConfigs.value?.allUnits ?? {}).map(@(u) u.__merge({
     levels = unitLevels?[u?.levelPreset ?? "0"] ?? []
   }))
 })
 
-let myUnits = Computed(function() {
-  let cfg = allUnitsCfg.value
+let campMyUnits = Computed(function() {
+  let cfg = campUnitsCfg.get()
   let { upgradeUnitBonus = {} } = campConfigs.value?.gameProfile
   return units.value.map(@(u)
     (cfg?[u.name] ?? {}).__merge(u, (u?.isUpgraded ?? false) ? upgradeUnitBonus : {}))
@@ -37,7 +37,7 @@ curUnitInProgress.subscribe(@(v) v != null ? curUnitInProgressExt(v)
   : deferOnce(@() curUnitInProgressExt(curUnitInProgress.value)))
 
 let curUnit = Computed(function() {
-  let my = myUnits.get()
+  let my = campMyUnits.get()
   local res = my?[curUnitInProgressExt.value]
     ?? my.findvalue(@(u) u?.isCurrent)
   let slots = curCampaignSlotUnits.get()
@@ -75,8 +75,8 @@ let playerLevelInfo = Computed(function() {
 })
 
 return {
-  allUnitsCfg
-  myUnits
+  campUnitsCfg
+  campMyUnits
   curUnit
   battleUnitsMaxMRank
   curUnitName

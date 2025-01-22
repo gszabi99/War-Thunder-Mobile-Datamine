@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { add_unit_attributes } = require("%appGlobals/pServer/pServerApi.nut")
 let { selAttributes, curCategoryId, attrPresets, calcStatus, sumCost, MAX_AVAIL_STATUS
 } = require("%rGui/attributes/attrState.nut")
@@ -8,7 +8,7 @@ let { selAttributes, curCategoryId, attrPresets, calcStatus, sumCost, MAX_AVAIL_
 let isUnitAttrOpened = mkWatched(persist, "isUnitAttrOpened", false)
 
 let attrUnitData = Computed(function() {
-  let unit = myUnits.get()?[hangarUnitName.get()]
+  let unit = campMyUnits.get()?[hangarUnitName.get()]
   return {
     unit
     preset = attrPresets.get()?[unit?.attrPreset] ?? []

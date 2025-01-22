@@ -1,9 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 require("%rGui/onlyAfterLogin.nut")
-let { allUnitsCfg, myUnits, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
+let { campUnitsCfg, campMyUnits, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { ovrHangarAddon } = require("%appGlobals/updater/addons.nut")
 let { curCampaign, blueprints } = require("%appGlobals/pServer/campaign.nut")
-let { filters, filterCount } = require("%rGui/unit/unitsFilterPkg.nut")
 let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
@@ -31,59 +30,42 @@ let isUnitsTreeOpen = mkWatched(persist, "isUnitsTreeOpen", false)
 let isUnitsTreeAttached = Watched(false)
 let unitsTreeOpenRank = Watched(null)
 
-let unitsMaxRank = Computed(@() allUnitsCfg.value.map(@(v) v.rank).reduce(@(a, b) max(a, b)) ?? 0)
-let unitsMaxStarRank = Computed(@() allUnitsCfg.value.map(@(v) v.starRank).reduce(@(a, b) max(a, b)) ?? 0)
+let unitsMaxRank = Computed(@() campUnitsCfg.get().map(@(v) v.rank).reduce(@(a, b) max(a, b)) ?? 0)
+let unitsMaxStarRank = Computed(@() campUnitsCfg.get().map(@(v) v.starRank).reduce(@(a, b) max(a, b)) ?? 0)
 
-let unitsMapped = Computed(function() {
+let mkAllTreeUnits = @() Computed(@() needToShowHiddenUnitsDebug.get()
+  ? campUnitsCfg.get()
+    .map(@(u, id) campMyUnits.get()?[id] ?? u)
+  : campUnitsCfg.get()
+    .filter(@(u) (!u?.isHidden && u.name in releasedUnits.get())
+      || u.name in campMyUnits.get()
+      || (blueprints.get()?[u.name] ?? 0) > 0)
+    .map(@(u, id) campMyUnits.get()?[id] ?? u))
+
+function mapUnitsByCountryGroup(units) {
   let res = {}
-  let visibleCountries = {}
-  local allUnits = needToShowHiddenUnitsDebug.get()
-    ? allUnitsCfg.value
-      .map(@(u, id) myUnits.value?[id] ?? u)
-    : allUnitsCfg.value
-      .filter(@(u) (!u?.isHidden && u.name in releasedUnits.get())
-        || u.name in myUnits.value
-        || (blueprints.get()?[u.name] ?? 0) > 0)
-      .map(@(u, id) myUnits.value?[id] ?? u)
-
-  if (filterCount.get() > 0)
-    foreach (f in filters) {
-      let value = f.value.get()
-      if (value != null)
-        allUnits = allUnits.filter(@(u) f.isFit(u, value))
-    }
-
-  for (local g = 0; g < countriesRows; g++) {
-    res[g] <- {}
-    for (local r = 1; r <= unitsMaxRank.value; r++)
-      res[g][r] <- []
-  }
-
-  foreach (unit in allUnits) {
+  foreach (unit in units) {
     let { country, rank } = unit
-    visibleCountries[country] <- true
     let countriesGroup = countryGroup?[country] ?? defaultCountryGroup
+    if (countriesGroup not in res)
+      res[countriesGroup] <- {}
+    if (rank not in res[countriesGroup])
+      res[countriesGroup][rank] <- []
     res[countriesGroup][rank].append(unit)
   }
-
-  return {
-    units = res.filter(@(v) v.findindex(@(u) u.len() > 0) != null)
-    visibleCountries
-  }
-})
-
-let columnsCfg = Computed(function() {
-  let res = { "0" : 0 }
-  for (local i = 1; i <= unitsMaxRank.value + 1; i++){
-    let unitsInRank = unitsMapped.value.units
-      .map(@(unitsByCountry) unitsByCountry?[i].len() ?? 0)
-      .reduce(@(a, b) max(a, b))
-        ?? 0
-    res[i] <- res["0"]
-    res["0"] += unitsInRank // total columns amount
-  }
   return res
-})
+}
+
+function getColumnsCfg(unitsByGroup, maxRank) {
+  let cfg = { total = 0 }
+  for (local i = 1; i <= maxRank; i++) {
+    let unitsInRank = unitsByGroup
+      .reduce(@(res, unitsByCountry) max(res, unitsByCountry?[i].len() ?? 0), 0)
+    cfg[i] <- cfg.total
+    cfg.total += unitsInRank
+  }
+  return cfg
+}
 
 let unitsTreeBg = Computed(function() {
   let addonHangar = ovrHangarAddon?.hangarPath
@@ -113,12 +95,14 @@ return {
   openUnitsTreeAtCurRank
   openUnitsTreeAtUnit
 
-  unitsMapped
   unitsMaxRank
   unitsMaxStarRank
   unitsTreeBg
 
+  mkAllTreeUnits
+  mapUnitsByCountryGroup
+  getColumnsCfg
+
   countriesCfg
   countriesRows
-  columnsCfg
 }

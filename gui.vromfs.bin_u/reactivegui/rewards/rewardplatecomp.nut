@@ -26,7 +26,7 @@ let { mkBattleModEventUnitText, mkBattleModRewardUnitImage, mkBattleModCommonTex
   mkBattleModCommonImage } = require("%rGui/rewards/battleModComp.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { NO_DROP_LIMIT } = require("%rGui/rewards/rewardViewInfo.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { mkRewardSlider } = require("%rGui/rewards/components/mkRewardSlider.nut")
 let { openRewardPrizeView } = require("%rGui/rewards/rewardPrizeView.nut")
 
@@ -554,7 +554,7 @@ function mkRewardPlateBlueprintTexts(r, rStyle) {
   let available = Computed(@() servProfile.get()?.blueprints?[id] ?? 0)
   let total = Computed(@() serverConfigs.get()?.allBlueprints?[id].targetCount ?? 1)
   let unitRank = Computed(@() serverConfigs.get()?.allUnits?[id]?.mRank)
-  let hasBlueprintUnit = Computed(@() id in myUnits.get())
+  let hasBlueprintUnit = Computed(@() id in campMyUnits.get())
   let isAllReceived = ("dropLimit" in r && "received" in r)
     ? r.dropLimit != NO_DROP_LIMIT && r.dropLimit <= r.received
     : false

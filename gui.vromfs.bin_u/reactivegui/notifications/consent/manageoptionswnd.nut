@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bgShaded, bgMessage } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { urlUnderline, gapAfterPoint, linkColor } = require("consentComps.nut")
-let { msgBoxHeaderWithClose, openMsgBox, msgBoxText, wndWidthDefault } = require("%rGui/components/msgBox.nut")
+let { openMsgBox, msgBoxText, wndWidthDefault } = require("%rGui/components/msgBox.nut")
 let { isOpenedManage, defaultPointsTable, savedPoints,
   applyConsent} = require("consentState.nut")
 
@@ -112,13 +113,11 @@ let pointsComp = @() {
   children = choosenPoints.get()?.keys().map(optionRow) ?? []
 }
 
-let content = bgMessage.__merge({
+let content = modalWndBg.__merge({
   size = [wndWidthDefault, hdpx(880)]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
   flow = FLOW_VERTICAL
   children = [
-    msgBoxHeaderWithClose(loc("consentWnd/main/manage"), close)
+    modalWndHeaderWithClose(loc("consentWnd/main/manage"), close)
     pointsComp
     manageButtons
   ]

@@ -6,7 +6,7 @@ let { loadUnitWeaponSlots, loadUnitSlotsParams, loadUnitReqModifications
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { mkWeaponPreset, getWeaponPreset, mkChosenBelts, getChosenBelts, mkSeenMods
 } = require("%rGui/unit/unitSettings.nut")
@@ -14,13 +14,14 @@ let { mkUnitAllModsCost, getModCurrency, getModCost, hasEnoughCurrencies } = req
 let { getEquippedWeapon, getEqippedWithoutOverload, hasConflictWeapons } = require("equippedSecondaryWeapons.nut")
 
 
-let WS_SEEN_AVAILALE = true
+let WS_SEEN_AVAILABLE = true
 let WS_SEEN_UNAVAILABLE = false
 
 let DEFAULT_SLOT_IDX = 1
 
 let seenIndexedSlotMods = mkWatched(persist, "seenIndexedSlotMods", {})
 let openedUnitId = mkWatched(persist, "openedUnitId", null)
+let needSetSlotOnOpen = mkWatched(persist, "needSetSlotOnOpen", true)
 let unitModSlotsOpenCount = Watched(openedUnitId.get() == null ? 0 : 1)
 let isUnitModSlotsAttached = mkWatched(persist, "isUnitModSlotsAttached", false)
 let curSlotIdx = mkWatched(persist, "curSlotIdx", DEFAULT_SLOT_IDX)
@@ -33,8 +34,8 @@ let slotWeaponKey = @(idx) $"unit_mods_slot_weapon_{idx}"
 
 let weaponsScrollHandler = ScrollHandler()
 
-let curUnit = Computed(@() myUnits.get()?[openedUnitId.get()] || allUnitsCfg.get()?[openedUnitId.get()])
-let isOwn = Computed(@() openedUnitId.get() in myUnits.get())
+let curUnit = Computed(@() campMyUnits.get()?[openedUnitId.get()] || campUnitsCfg.get()?[openedUnitId.get()])
+let isOwn = Computed(@() openedUnitId.get() in campMyUnits.get())
 let isHangarUnitHasWeaponSlots = Computed(@() isLoggedIn.get() && loadUnitWeaponSlots(hangarUnitName.get()).len() > 0)
 
 let weaponSlots = Computed(@() openedUnitId.get() == null ? [] : loadUnitWeaponSlots(openedUnitId.get()))
@@ -43,15 +44,23 @@ let curWeapons = Computed(@() curSlot.get()?.wPresets ?? {})
 
 openedUnitId.subscribe(function(v) {
   unitModSlotsOpenCount.set(v == null ? 0 : unitModSlotsOpenCount.get() + 1)
-  if (weaponSlots.get().len() > 1)
-    curSlotIdx.set(DEFAULT_SLOT_IDX)
-  else
-    curBeltsWeaponIdx.set(0)
+  if (needSetSlotOnOpen.get()) {
+    if (weaponSlots.get().len() > 1)
+      curSlotIdx.set(DEFAULT_SLOT_IDX)
+    else
+      curBeltsWeaponIdx.set(0)
+    needSetSlotOnOpen.set(false)
+  }
   seenIndexedSlotMods.set({})
 })
 
 curBeltsWeaponIdx.subscribe(@(v) v < 0 ? null : curSlotIdx.set(-1))
 curSlotIdx.subscribe(@(v) v < 0 ? null : curBeltsWeaponIdx.set(-1))
+
+function openUnitModsSlotsWndByName(name) {
+  openedUnitId.set(name)
+  needSetSlotOnOpen.set(true)
+}
 
 function isBeltWeapon(weapon) {
   let { trigger, turrets } = weapon
@@ -447,7 +456,7 @@ function mkListUnseenMods(slotUnit) {
         || !level
         || data.reqLevel > level
         || modName in mods
-        || (modName in seenSlotModsByUnit.get() && seenSlotModsByUnit.get()[modName] == WS_SEEN_AVAILALE)
+        || (modName in seenSlotModsByUnit.get() && seenSlotModsByUnit.get()[modName] == WS_SEEN_AVAILABLE)
         || !hasEnoughCurrencies(data, slotUnitAllModsCost.get()))
         continue
       else
@@ -516,11 +525,13 @@ let markCurTabSeen = @() curSlotIdx.get() >= 0
 function setCurSlotIdx(idx) {
   markCurTabSeen()
   curSlotIdx.set(idx)
+  needSetSlotOnOpen.set(false)
 }
 
 function setCurBeltsWeaponIdx(idx) {
   markCurTabSeen()
   curBeltsWeaponIdx.set(idx)
+  needSetSlotOnOpen.set(false)
 }
 
 function findSlotWeaponsToBuyNonUpdatable() {
@@ -550,8 +561,8 @@ function findSlotWeaponsToBuyNonUpdatable() {
 }
 
 return {
-  openUnitModsSlotsWnd = @() openedUnitId.set(hangarUnitName.get())
-  openUnitModsSlotsWndByName = @(name) openedUnitId.set(name)
+  openUnitModsSlotsWnd = @() openUnitModsSlotsWndByName(hangarUnitName.get())
+  openUnitModsSlotsWndByName
   closeUnitModsSlotsWnd
   unitModSlotsOpenCount
   isHangarUnitHasWeaponSlots

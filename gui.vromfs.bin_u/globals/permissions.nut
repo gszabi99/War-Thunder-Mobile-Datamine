@@ -19,6 +19,7 @@ let defaults = {
   can_view_replays = DBGLEVEL > 0 || isOfflineMenu
   can_write_replays = DBGLEVEL > 0
   can_link_to_gaijin_account = DBGLEVEL > 0
+  can_link_email_for_gaijin_login = DBGLEVEL > 0
   has_additional_graphics_content = DBGLEVEL > 0
   has_leaderboard = DBGLEVEL > 0
   has_strategy_mode = DBGLEVEL > 0
@@ -26,14 +27,13 @@ let defaults = {
   can_view_player_uids = DBGLEVEL > 0
   can_view_update_suggestion = false
   allow_chat = DBGLEVEL > 0
-  allow_voice_messages = DBGLEVEL > 0
   can_skip_consent = false
-  can_report_player = DBGLEVEL > 0
   has_payments_blocked_web_page = false
   request_firebase_consent_eu_only = false
   has_att_warmingup_scene = false
-  can_scale_in_hud_tuning = DBGLEVEL > 0
   allow_apk_update = false
+  allow_background_resource_update = DBGLEVEL > 0
+  allow_subscriptions = false
 }
 
 let dbgPermissions = sharedWatched("dbgPermissions", @() {})

@@ -1,7 +1,7 @@
 let { loc } = require("dagor.localize")
 let { Computed } = require("frp")
 let { set_current_unit, curUnitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { myUnits, playerLevelInfo, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits, playerLevelInfo, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
@@ -23,9 +23,9 @@ let buyUnitsData = Computed(function() {
   let canBuy = {}
   let canBuyOnLvlUp = {}
   local hasOwnUnitForCurrentLevelUp = false
-  let unitStatus = allUnitsCfg.value.map(function(unit) {
+  let unitStatus = campUnitsCfg.get().map(function(unit) {
     let { name, rank } = unit
-    if (name in myUnits.value) {
+    if (name in campMyUnits.get()) {
       if (rank == level + 1)
         hasOwnUnitForCurrentLevelUp = true
       return US_OWN
@@ -61,7 +61,7 @@ let buyUnitsData = Computed(function() {
 
 let unlockedPlatoonUnits = Computed(function() {
   let res = []
-  foreach(unit in myUnits.value) {
+  foreach(unit in campMyUnits.get()) {
     let { level = 0, platoonUnits = [] } = unit
     platoonUnits.each(@(pu) level >= pu.reqLevel ? res.append(pu.name) : null)
   }
@@ -84,9 +84,9 @@ function getUnitLockedShortText(unit, status, reqPlayerLevel) {
 function setCurrentUnit(unitName) {
   if (curUnitInProgress.get() != null)
     return "unitInProgress"
-  if (unitName not in myUnits.get())
+  if (unitName not in campMyUnits.get())
     return "unitNotOwn"
-  if (myUnits.get()[unitName].isCurrent)
+  if (campMyUnits.get()[unitName].isCurrent)
     return "unitIsAlreadyCurrent"
 
   set_current_unit(unitName)

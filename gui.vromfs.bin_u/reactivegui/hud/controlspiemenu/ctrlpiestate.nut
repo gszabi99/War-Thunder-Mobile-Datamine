@@ -113,7 +113,6 @@ let updateVisibleByUnit = @() visibleByUnit.set(!isUnitAlive.get() || isUnitDela
   : ctrlPieCfgBase.map(@(c) c?.isVisibleByUnit() ?? true))
 updateVisibleByUnit()
 
-visibleByUnit.subscribe(@(_) deferOnce(updateVisibleByUnit))
 playerUnitName.subscribe(@(_) deferOnce(updateVisibleByUnit))
 isUnitDelayed.subscribe(@(_) deferOnce(updateVisibleByUnit))
 isUnitAlive.subscribe(@(_) deferOnce(updateVisibleByUnit))

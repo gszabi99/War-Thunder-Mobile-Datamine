@@ -1,17 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
+let { eventbus_send } = require("eventbus")
+let { get_local_custom_settings_blk } = require("blkGetters")
+let { register_command } = require("console")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { campConfigs, curCampaign, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
-let { can_debug_shop } = require("%appGlobals/permissions.nut")
-let { platformGoods } = require("platformGoods.nut")
+let { can_debug_shop, allow_subscriptions } = require("%appGlobals/permissions.nut")
+let { platformGoods, platformSubs } = require("platformGoods.nut")
 let { WP, GOLD, PLATINUM, orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { register_command } = require("console")
 let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewards
 } = require("schRewardsState.nut")
 let { personalGoodsByShopCategory } = require("personalGoodsState.nut")
@@ -54,7 +54,6 @@ let sortGoods = @(a, b)
   || sortCurrency(a, b)
   || a.price.price <=> b.price.price
   || a.premiumDays <=> b.premiumDays
-  || a.price.currencyId <=> b.price.currencyId
   || a.id <=> b.id
 
 let goodsWithTimers = Computed(@() (campConfigs.value?.allGoods ?? {})
@@ -123,14 +122,19 @@ updateGoodsTimers()
 goodsWithTimers.subscribe(@(_) updateGoodsTimers())
 isServerTimeValid.subscribe(@(_) updateGoodsTimers())
 
+let allowWithSubs = @(goods) goods.premiumDays == 0
+
 let shopGoodsInternal = Computed(@() (campConfigs.get()?.allGoods ?? {})
   .filter(@(g) (can_debug_shop.get() || !g.isShowDebugOnly)
     && (g?.price.price ?? 0) > 0)
   .map(@(g) g.__merge({ gtype = getGoodsType(g) }))
 )
 
-let allCampaignsShopGoods = Computed(@() shopGoodsInternal.get()
-  .__merge(platformGoods.get().map(@(g) g.__merge({ gtype = getGoodsType(g) }))))
+let allCampaignsShopGoods = Computed(function() {
+  let res = shopGoodsInternal.get()
+    .__merge(platformGoods.get().map(@(g) g.__merge({ gtype = getGoodsType(g) })))
+  return !allow_subscriptions.get() ? res : res.filter(allowWithSubs)
+})
 
 let allShopGoods = Computed(@() allCampaignsShopGoods.get()
   .filter(@(g) isGoodsFitToCampaign(g, campConfigs.get(), curCampaign.get())))
@@ -145,6 +149,8 @@ let shopGoodsAllCampaigns = Computed(function() {
   return allCampaignsShopGoods.get().filter(@(_, id) id not in exclude)
 })
 
+let allSubs = Computed(@() allow_subscriptions.get() ? platformSubs.get() : {})
+
 let goodsByCategory = Computed(function() {
   let res = {}
   foreach (goods in shopGoods.get()) {
@@ -158,6 +164,9 @@ let goodsByCategory = Computed(function() {
   return res
 })
 
+let subsByCategory = Computed(@() allSubs.get().len() == 0 ? {}
+  : { [SC_PREMIUM] = allSubs.get().values() })
+
 let goodsIdsByCategory = Computed(function() {
   let goods = {}
   foreach (cat, val in goodsByCategory.value){
@@ -165,6 +174,11 @@ let goodsIdsByCategory = Computed(function() {
     val.map(@(item) goods[cat].append(item?.id))
     if (actualSchRewardByCategory.value?[cat]?.id)
       goods[cat].append(actualSchRewardByCategory.value[cat].id)
+  }
+  foreach (cat, list in subsByCategory.get()) {
+    if (cat not in goods)
+      goods[cat] <- []
+    goods[cat].extend(list.map(@(v) v.id))
   }
   return goods
 })
@@ -329,7 +343,6 @@ return {
 
   curCategoryId
   goodsByCategory
-  goodsIdsByCategory
   allShopGoods
   shopGoodsAllCampaigns
   shopGoods
@@ -338,6 +351,8 @@ return {
   sortGoods
   inactiveGoodsByTime
   finishedGoodsByTime
+  allSubs
+  subsByCategory
 
   hasUnseenGoodsByCategory
   shopSeenGoods

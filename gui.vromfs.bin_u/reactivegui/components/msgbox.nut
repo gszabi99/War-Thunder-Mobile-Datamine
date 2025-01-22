@@ -2,19 +2,18 @@ from "%globalsDarg/darg_library.nut" import *
 let logM = log_with_prefix("[MSGBOX] ")
 let { register_command } = require("console")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { addModalWindow, removeModalWindow } = require("modalWindows.nut")
+let { addModalWindow, removeModalWindow, MWP_COMMON } = require("modalWindows.nut")
 let { textButtonMultiline, buttonsHGap, mergeStyles, textButton } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { bgShaded, bgMessage, bgHeader } = require("%rGui/style/backgrounds.nut")
-let closeWndBtn = require("%rGui/components/closeWndBtn.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { btnAUp, btnBEscUp, EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 
 let wndWidthDefault = hdpx(1106) // 1-2 buttons
 let wndWidthWide = hdpx(1500) // 3 buttons
 let wndHeight = hdpx(652)
-let wndHeaderHeight = hdpx(105)
 let { defButtonHeight } = buttonStyles
 
 function mkBtn(b, wndUid) {
@@ -56,43 +55,11 @@ let msgBoxText = @(text, ovr = {}) {
   colorTable = locColorTable
 }.__update(fontSmall, ovr)
 
-let msgBoxBg = bgMessage.__merge({
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  stopMouse = true
-})
-
-let headerBg = bgHeader.__merge({
-  size = [ flex(), wndHeaderHeight ]
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-})
-
-let msgBoxHeader = @(text, ovr = {}) headerBg.__merge({
-  children = {
-    rendObj = ROBJ_TEXT
-    text
-  }.__update(fontSmall)
-}, ovr)
-
-let msgBoxHeaderWithClose = @(text, close, ovr = {}) headerBg.__merge({
-  children = [
-    {
-      rendObj = ROBJ_TEXT
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      padding = [0,hdpx(50), 0, hdpx(50)]
-      text
-    }.__update(fontSmall)
-    closeWndBtn(close)
-  ]
-}, ovr)
-
-let mkCustomMsgBoxWnd = @(title, content, buttonsArray, ovr = {}) msgBoxBg.__merge({
+let mkCustomMsgBoxWnd = @(title, content, buttonsArray, ovr = {}) modalWndBg.__merge({
   size = [ buttonsArray.len() <= 2 ? wndWidthDefault : wndWidthWide, wndHeight ]
   flow = FLOW_VERTICAL
   children = [
-    type(title) == "string" ? msgBoxHeader(title) : title,
+    type(title) == "string" ? modalWndHeader(title) : title,
     {
       size = flex()
       flow = FLOW_VERTICAL
@@ -119,12 +86,13 @@ function closeMsgBox(uid) {
     logM($"close '{uid}'")
 }
 
-function openMsgBox(text, uid = null, title = null, buttons = defaultBtnsCfg, wndOvr = {}) {
+function openMsgBox(text, uid = null, title = null, buttons = defaultBtnsCfg, wndOvr = {}, modalPriority = MWP_COMMON) {
   uid = uid ?? $"msgbox_{text}"
   closeMsgBox(uid)
   logM($"open '{uid}'")
   addModalWindow(bgShaded.__merge({
     key = uid
+    priority = modalPriority
     size = flex()
     children = mkCustomMsgBoxWnd(title, text, mkMsgBoxBtnsSet(uid, buttons), wndOvr)
     onClick = EMPTY_ACTION
@@ -150,9 +118,6 @@ return {
   mkMsgBoxBtnsSet
   msgBoxText
   defaultBtnsCfg
-  msgBoxBg
-  msgBoxHeader
-  msgBoxHeaderWithClose
   mkBtn
 
   wndWidthDefault

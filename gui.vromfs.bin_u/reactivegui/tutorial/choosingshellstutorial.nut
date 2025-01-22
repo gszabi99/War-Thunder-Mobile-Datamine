@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let logFB = log_with_prefix("[FIRST_BATTLE_TUTOR] ")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { register_command } = require("console")
-let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId, nextStep, WND_UID
+let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId, nextStep
 } = require("tutorialWnd/tutorialWndState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
@@ -14,7 +14,7 @@ let { selSlot } = require("%rGui/respawn/respawnState.nut")
 let { lightCtor } = require("tutorialWnd/tutorialWndDefStyle.nut")
 let { bulletsLegend, headerMargin, gap } = require("%rGui/respawn/respawnComps.nut")
 let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
-let { moveModalToTop } = require("%rGui/components/modalWindows.nut")
+let { MWP_ALWAYS_TOP } = require("%rGui/components/modalWindows.nut")
 
 const TUTORIAL_ID = "choosingShells"
 
@@ -41,6 +41,7 @@ let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
 
 let runMsgBox = @() openMsgBox({
+  modalPriority = MWP_ALWAYS_TOP
   text = loc("tutorial_open_third_shell_prompt"),
   buttons = [
     {
@@ -99,7 +100,6 @@ function startTutorial() {
         id = "s4_view_ammo_details"
         function beforeStart() {
           showRespChooseWnd(1, null, null)
-          moveModalToTop(WND_UID)
         }
         text = loc("tutorial_view_ammo_details")
         charId = "mary_points"
@@ -164,4 +164,4 @@ showTutorial.subscribe(@(v) v ? startTutorialDelayed() : null)
 register_command(
   @() activeTutorialId.get() != TUTORIAL_ID ? isDebugMode.set(true)
     : finishTutorial(),
-  "debug.choosing_shells_ui_tutorial")
+  "debug.tutorial_choosing_shells")

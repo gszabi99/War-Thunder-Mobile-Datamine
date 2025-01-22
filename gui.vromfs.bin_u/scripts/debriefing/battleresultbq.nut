@@ -11,7 +11,7 @@ let { get_emulator_system_flags, get_emulator_input_flags, get_emulated_input_co
 let { get_platform_string_id } = require("platform")
 let { getCountryCode } = require("auth_wt")
 let { setInterval, clearTimer } = require("dagor.workcycle")
-let { is_texture_uhq_supported, get_deferred_enabled } = require("graphicsOptions")
+let { is_texture_uhq_supported } = require("graphicsOptions")
 let { get_common_local_settings_blk } = require("blkGetters")
 let { has_additional_graphics_content } = require("%appGlobals/permissions.nut")
 let { median } = require("%sqstd/math.nut")
@@ -156,7 +156,7 @@ function onFrameTimes(evt, _eid, _comp) {
     apkVersion = get_base_game_version_str()
     isSquad = wasInSquadLastBattle
     isUltraHigh = isUhq()
-    isDeferred = get_deferred_enabled()
+    isDeferred = true
     aa = get_gui_option(OPT_AA)
   })
 

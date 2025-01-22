@@ -2,6 +2,7 @@ require ecs
 require DagorMath
 require math.base
 require DagorSystem
+require DagorRandom
 require DagorConsole
 require Unit
 require IGroundModel
@@ -18,10 +19,11 @@ require Sound
 [es(tag=sound)]
 def gm_engine_sound_init_es(evt : CmdInitComponent;
                             eid : EntityId;
-                            uid : int;
+                            var unit__ref : UnitRef;
                             playerNo : int;
                             className : string;
                             unitType : int;
+                            var gm_engine_sound__cached_params : FloatList&;
                             var gm_engine_sound__pos_offset : float3&;
                             var gm_engine_sound__load_smooth : float&;
                             var gm_engine_sound__event_name : das_string&;
@@ -30,10 +32,8 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
                             var gm_engine_sound__stop_event_name : das_string&;
                             var gm_engine_sound__start_inside_name : das_string&;
                             var gm_engine_sound__stop_inside_name : das_string&)
-  let unit = get_unit(uid)
-  if unit == null
-    addSubTemplate(eid, "disabled_update")
-    return
+  let unit = unit__ref.unit
+  assert(unit != null)
 
   let gm = unit |> as_gm()
   if gm == null
@@ -47,6 +47,8 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
   if modelSoundBlk == null
     addSubTemplate(eid, "disabled_update")
     return
+
+  gm_engine_sound__cached_params |> resize(10)
 
   var modifyEngineSound = false
   if *modelSoundBlk |> datablock_param_exists("EngineNameModification", -1) && unit.modBlk != null
@@ -66,7 +68,7 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
         let mainEngineBlkName = modelSoundBlk |> datablock_getStr("EngineName", "")
         var mainEngineBlk = sndBlk |> datablock_get_block_by_name(mainEngineBlkName)
         if mainEngineBlk != null
-          let aiBlk = *mainEngineBlk |> datablock_get_block_by_name("ai")
+          var aiBlk = *mainEngineBlk |> datablock_get_block_by_name("ai")
           if aiBlk != null
             engineBlk = aiBlk
       if engineBlk == null
@@ -168,21 +170,24 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
 
 [es(tag=sound, REQUIRE = controlledHero, REQUIRE_NOT = disabled)]
 def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
-                                     uid : int;
+                                     unit__ref : UnitRef;
                                      gm_engine_sound__should_play : bool;
                                      gm_engine_sound__event_inside_name : das_string;
                                      var gm_engine_sound__loadswitch : bool&;
                                      var gm_engine_sound__is_inside : bool&;
+                                     var gm_engine_sound__cached_params : FloatList&;
                                      var gm_engine_sound__event : SoundEvent&;
                                      var gm_engine_sound__start_inside_event : SoundEvent&;
                                      var gm_engine_sound__stop_inside_event : SoundEvent&;
                                      var gm_engine_sound__event_inside : SoundEvent&)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  let unit = unit__ref.unit
+  if unit.isDelayed
     return
 
   if gm_engine_sound__is_inside != unit.isCameraInCockpit
     gm_engine_sound__loadswitch = false
+    for p in gm_engine_sound__cached_params
+      p = -1.f
   gm_engine_sound__is_inside = unit.isCameraInCockpit
 
   if unit.isCameraInCockpit
@@ -199,9 +204,17 @@ def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
   if !is_playing(gm_engine_sound__stop_inside_event)
     abandon(gm_engine_sound__stop_inside_event)
 
+def set_param_cached(sound_event : SoundEvent;
+                     name : string;
+                     new_val : float;
+                     var cached_val : float&)
+  if !is_equal_float(cached_val, new_val, 0.1)
+    sound_event |> set_var_optional(name, new_val)
+    cached_val = new_val
+
 [es(tag=sound, REQUIRE_NOT = disabled, after = gm_engine_sound_update_inside_es)]
 def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
-                              uid : int;
+                              unit__ref : UnitRef;
                               var gm_engine_sound__is_playing : bool&;
                               var gm_engine_sound__loadswitch : bool&;
                               gm_engine_sound__load_smooth : float;
@@ -210,29 +223,31 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
                               var gm_engine_sound__start_event : SoundEvent&;
                               var gm_engine_sound__stop_event : SoundEvent&;
                               var gm_engine_sound__event : SoundEvent&;
+                              var gm_engine_sound__cached_params : FloatList&;
                               gm_engine_sound__event_inside : SoundEvent;
                               gm_engine_sound__pos_offset : float3;
                               gm_engine_sound__is_inside : bool;
                               var gm_engine_sound__pos : float3&)
-  let unit = get_unit(uid)
-  if unit == null
-    return
+  let unit = unit__ref.unit
   let gm = unit |> as_gm()
-  if gm == null
+  if gm == null || unit.isDelayed
     return
 
-  gm_engine_sound__update_interval += act.dt
-  if gm_engine_sound__update_interval < gm.engineSoundUpdateInterval
+  gm_engine_sound__update_interval -= act.dt
+  if gm_engine_sound__update_interval > 0.
     return
   else
-    gm_engine_sound__update_interval = 0.
+    let gmInterval = gm.engineSoundUpdateInterval
+    gm_engine_sound__update_interval = rnd_float(gmInterval * 0.5, gmInterval)
 
   gm_engine_sound__is_playing = is_playing(gm_engine_sound__event) || is_playing(gm_engine_sound__event_inside)
-  gm_engine_sound__pos = unit.unitTm * gm_engine_sound__pos_offset
-  if gm_engine_sound__is_playing
-    gm_engine_sound__event |> set_pos_and_ori(gm_engine_sound__pos, gm.velocity, unit.unitTm[0], unit.unitTm[1])
-  gm_engine_sound__stop_event |> set_pos(gm_engine_sound__pos)
-  gm_engine_sound__start_event |> set_pos(gm_engine_sound__pos)
+  let newPos = unit.unitTm * gm_engine_sound__pos_offset
+  if length_sq(newPos - gm_engine_sound__pos) > 0.09
+    if gm_engine_sound__is_playing
+      gm_engine_sound__event |> set_pos_and_ori(gm_engine_sound__pos, gm.velocity, unit.unitTm[0], unit.unitTm[1])
+    gm_engine_sound__stop_event |> set_pos(gm_engine_sound__pos)
+    gm_engine_sound__start_event |> set_pos(gm_engine_sound__pos)
+    gm_engine_sound__pos = newPos
 
   if unit.isDelayed
     return
@@ -265,16 +280,16 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
   let visible = gm.isVisibleFromHero ? 1. : 0.
   assume curEvent = gm_engine_sound__is_inside ? gm_engine_sound__event_inside : gm_engine_sound__event
   if gm_engine_sound__is_playing
-    curEvent |> set_var_optional("rpm", rpm)
-    curEvent |> set_var_optional("swim", swim)
-    curEvent |> set_var_optional("broken", broken)
-    curEvent |> set_var_optional("load", gm_engine_sound__load)
-    curEvent |> set_var_optional("loadswitch", gm_engine_sound__loadswitch ? rawLoad : 0.)
-    curEvent |> set_var_optional("speed", speed)
-    curEvent |> set_var_optional("climb", climb)
-    curEvent |> set_var_optional("is_visible", visible)
-    curEvent |> set_var_optional("building_density", gm.buildingDensity)
-    curEvent |> set_var_optional("depth", depth)
+    set_param_cached(curEvent, "rpm", rpm, gm_engine_sound__cached_params[0])
+    set_param_cached(curEvent, "swim", swim, gm_engine_sound__cached_params[1])
+    set_param_cached(curEvent, "broken", broken, gm_engine_sound__cached_params[2])
+    set_param_cached(curEvent, "load", gm_engine_sound__load, gm_engine_sound__cached_params[3])
+    set_param_cached(curEvent, "loadswitch", gm_engine_sound__loadswitch ? rawLoad : 0., gm_engine_sound__cached_params[4])
+    set_param_cached(curEvent, "speed", speed, gm_engine_sound__cached_params[5])
+    set_param_cached(curEvent, "climb", climb, gm_engine_sound__cached_params[6])
+    set_param_cached(curEvent, "is_visible", visible, gm_engine_sound__cached_params[7])
+    set_param_cached(curEvent, "building_density", gm.buildingDensity, gm_engine_sound__cached_params[8])
+    set_param_cached(curEvent, "depth", depth, gm_engine_sound__cached_params[9])
 
   if !is_playing(gm_engine_sound__event) && is_valid_event(gm_engine_sound__event)
     release(gm_engine_sound__event)
@@ -391,13 +406,13 @@ def gm_additional__on_steal_es(evt : CmdEngineStealSound;
 
 [es(tag=sound, REQUIRE_NOT = disabled, after = gm_engine_sound_update_inside_es)]
 def gm_additional_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
-                                         uid : int;
+                                         unit__ref : UnitRef;
                                          gm_engine_sound__load : float;
                                          var gm_additional_engine_sound__pos : float3&;
                                          gm_additional_engine_sound__pos_offset : float3;
                                          gm_additional_engine_sound__event : SoundEvent)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  let unit = unit__ref.unit
+  if unit.isDelayed
     return
   let gm = unit |> as_gm()
   if gm == null

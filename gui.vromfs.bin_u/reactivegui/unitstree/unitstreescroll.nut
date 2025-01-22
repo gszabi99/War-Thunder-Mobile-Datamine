@@ -2,11 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { fabs } = require("math")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, defer, setInterval, clearTimer } = require("dagor.workcycle")
-let { isUnitsTreeOpen, columnsCfg } = require("%rGui/unitsTree/unitsTreeState.nut")
-let { unseenUnits } = require("%rGui/unit/unseenUnits.nut")
-let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
-let { availableUnitsList } = require("%rGui/unit/unitsWndState.nut")
-let { flagsWidth, blockSize, flagTreeOffset } = require("unitsTreeComps.nut")
+let { flagTreeOffset } = require("unitsTreeComps.nut")
 let { isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
@@ -62,40 +58,12 @@ function interruptAnimScroll() {
   animScrollCfg = null
 }
 
-function scrollToRank(rank) {
-  interruptAnimScroll()
-  let scrollPosX = blockSize[0] * ((columnsCfg.value?[rank] ?? 0) + 1) - 0.5 * (saSize[0] - flagsWidth)
-  scrollHandler.scrollToX(scrollPosX)
-}
-
 function scrollForward() {
   interruptAnimScroll()
   if (nodeToScroll.get() != null)
     resetTimeout(SCROLL_DELAY, @() defer(@() gui_scene.setXmbFocus(nodeToScroll.get())))
 }
 isLvlUpAnimated.subscribe(@(v) v ? scrollForward() : null)
-
-let unseenUnitsIndex = Computed(function() {
-  let res = {}
-  if (!isUnitsTreeOpen.get() || (unseenUnits.get().len() == 0 && unseenSkins.get().len() == 0))
-    return res
-  foreach(unit in availableUnitsList.value) {
-    if(unit.name in unseenUnits.get() || unit.name in unseenSkins.get())
-      res[unit.name] <- columnsCfg.value[unit.rank]
-  }
-  return res
-})
-
-let needShowArrowL = Computed(function() {
-  let offsetIdx = (scrollPos.get() - flagTreeOffset).tofloat() / blockSize[0] - 1
-  return null != unseenUnitsIndex.get().findvalue(@(index) offsetIdx > index)
-})
-
-let needShowArrowR = Computed(function() {
-  let offsetIdx = (scrollPos.get() + sw(100) - 2 * saBorders[0] - flagsWidth - flagTreeOffset).tofloat() / blockSize[0]
-    - 1
-  return null != unseenUnitsIndex.get().findvalue(@(index) offsetIdx < index)
-})
 
 let unseenArrowsBlockCtor = @(needShowL, needShowR, ovr = {}) {
   size = [flex(), SIZE_TO_CONTENT]
@@ -130,15 +98,11 @@ let unseenArrowsBlockCtor = @(needShowL, needShowR, ovr = {}) {
   ]
 }.__update(ovr)
 
-let unseenArrowsBlock = @() unseenArrowsBlockCtor(needShowArrowL, needShowArrowR)
-
 return {
   scrollHandler
   scrollPos
   nodeToScroll
-  scrollToRank
   scrollForward
-  unseenArrowsBlock
   unseenArrowsBlockCtor
   startAnimScroll
   interruptAnimScroll

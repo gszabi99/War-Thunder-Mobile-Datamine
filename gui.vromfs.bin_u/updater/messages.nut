@@ -16,7 +16,7 @@ let { mkColoredGradientY, gradTranspDoubleSideX, gradDoubleTexOffset } = require
 
 let wndWidth = hdpx(1100)
 let wndHeight = hdpx(550)
-let wndHeaderHeight = hdpx(105)
+let wndHeaderHeight = evenPx(76)
 let buttonHeight = hdpx(105)
 let buttonMinWidth = hdpx(370)
 let buttonsHGap = hdpx(64)

@@ -4,7 +4,7 @@ let { deferOnce } = require("dagor.workcycle")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { isProfileReceived, curCampaign,
   isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -28,7 +28,7 @@ let prevState = Watched(null)
 let unitsStatus = keepref(Computed(function() {
   if (!isProfileReceived.get() || !isCampaignWithUnitsResearch.get())
     return UNITS_STATUS.UNITS_INITIAL
-  return myUnits.get().findvalue(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {})) != null
+  return campMyUnits.get().findvalue(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {})) != null
     ? UNITS_STATUS.UNITS_AVAILABLE
     : UNITS_STATUS.UNITS_UNAVAILABLE
 }))
@@ -51,7 +51,7 @@ unitsStatus.subscribe(function(v) {
   if (prevCampaign == null || prevCampaign != curCampaign.get())
     return prevState.set({ prevCampaign = curCampaign.get(), hasUnitsPrev = v })
   if (hasUnitsPrev == false && v == UNITS_STATUS.UNITS_AVAILABLE)
-    unitToShowAsReceived.set(myUnits.get().findvalue(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {})))
+    unitToShowAsReceived.set(campMyUnits.get().findvalue(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {})))
 })
 needShowTutorialAfterLeaveGame.subscribe(@(v) v ? needShowTutorialAfterReward.set(true) : null)
 

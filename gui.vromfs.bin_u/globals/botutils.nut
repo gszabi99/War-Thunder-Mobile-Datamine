@@ -25,10 +25,17 @@ function calcUnitClassByUnitTags(tags, defValue) {
   return res == "" ? defValue : res
 }
 
+function genBotDecorators(name) {
+  let playerHash = name.hash()
+  let avatars = serverConfigs.get()?.allDecorators.filter(@(dec) dec.dType == "avatar" && !(dec?.isHiddenForBot ?? false))
+  return {
+    avatar = avatars?.keys()[(playerHash) % (avatars?.len() ?? 1)]
+  }
+}
+
 function genBotCommonStats(name, unitName, unitCfg, defLevel) {
   let playerHash = name.hash()
   let unitHash = unitName.hash()
-  let avatars = serverConfigs.get()?.allDecorators.filter(@(dec) dec.dType == "avatar" && !(dec?.isHiddenForBot ?? false))
   let { tags = null, mRank = unitCfg?.mRank, isPremium = unitCfg?.isPremium ?? false } = get_unittags_blk()?[unitName]
   return {
     level = unitCfg?.rank ?? defLevel
@@ -43,12 +50,11 @@ function genBotCommonStats(name, unitName, unitCfg, defLevel) {
         isPremium
       }
     }
-    decorators = {
-      avatar = avatars?.keys()[(playerHash) % (avatars?.len() ?? 1)]
-    }
+    decorators = genBotDecorators(name)
   }
 }
 
 return {
   genBotCommonStats
+  genBotDecorators
 }

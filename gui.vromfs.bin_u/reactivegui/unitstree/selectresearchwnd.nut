@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { msgBoxBg, msgBoxHeader } = require("%rGui/components/msgBox.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -13,7 +13,7 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitInfo
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { mkTreeNodesFlag } = require("unitsTreeComps.nut")
 let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { set_research_unit, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
@@ -32,7 +32,7 @@ let maxAmountOfUnitsOnScreen = (saSize[0] / (unitPlateTiny[0] + buttonsHGap)).to
 let needSelectResearch = keepref(Computed(@() isCampaignWithUnitsResearch.get()
   && currentResearch.get() == null
   && null != unitsResearchStatus.get().findvalue(@(r) r.canResearch || r.isResearched)
-  && null == myUnits.get().findindex(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {}))))
+  && null == campMyUnits.get().findindex(@(u) u.name in (serverConfigs.get()?.unitResearchExp ?? {}))))
 
 function closeSelectResearch() {
   sendUiBqEvent("first_country_choice", { id = "finish_select_research" })
@@ -203,14 +203,14 @@ function openImpl() {
     key = WND_UID
     size = flex()
     onClick = EMPTY_ACTION
-    children = msgBoxBg.__merge({
+    children = modalWndBg.__merge({
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
       gap = hdpx(40)
       padding = [0,0,hdpx(20),0]
       minWidth = minWidthWnd
       children = [
-        msgBoxHeader(loc("unitsTree/chooseCountryResearch"), { padding = [0, buttonsHGap] })
+        modalWndHeader(loc("unitsTree/chooseCountryResearch"), { padding = [0, buttonsHGap] })
         wndContent(startUnit, allCountries, curCountry)
         mkSmallText(loc("unitsTree/changeResearchHint"), {
           maxWidth = hdpx(700)

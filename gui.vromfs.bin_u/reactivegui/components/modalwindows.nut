@@ -3,10 +3,14 @@ let logM = log_with_prefix("[ModalWnd] ")
 let { register_command } = require("console")
 let { EMPTY_ACTION, btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
+let MWP_COMMON = 0
+let MWP_ALWAYS_TOP = 1000
+
 let WND_PARAMS = {
   key = null //generate automatically when not set
   children = null
   onClick = null //remove current modal window when not set
+  priority = MWP_COMMON
 
   size = flex()
   behavior = Behaviors.Button
@@ -26,11 +30,24 @@ let modalWindowsGeneration = Watched(0)
 let hasModalWindows = Computed(@() modalWindowsGeneration.get() >= 0 && modalWindows.len() > 0)
 let isModalsHidden = Computed(@() hideModalsIds.get().len() > 0)
 
+function appendModal(wnd) {
+  if ((modalWindows?[modalWindows.len() - 1].priority ?? MWP_COMMON) <= wnd.priority) {
+    modalWindows.append(wnd)
+    return
+  }
+  for (local i = modalWindows.len() - 2; i >= 0; i--)
+    if (modalWindows[i].priority <= wnd.priority) {
+      modalWindows.insert(i + 1, wnd)
+      return
+    }
+  modalWindows.insert(0, wnd)
+}
+
 function moveModalToTop(key) {
   let idx = modalWindows.findindex(@(m) m.key == key)
   if (idx == null)
     return false
-  modalWindows.append(modalWindows.remove(idx))
+  appendModal(modalWindows.remove(idx))
   modalWindowsGeneration.set(modalWindowsGeneration.get() + 1)
   return true
 }
@@ -58,7 +75,7 @@ function addModalWindow(wnd = {}) {
   wnd.onClick = wnd.onClick ?? @() removeModalWindow(wnd.key)
   if (wnd.onClick == EMPTY_ACTION)
     wnd.behavior = null
-  modalWindows.append(wnd)
+  appendModal(wnd)
   modalWindowsGeneration.set(modalWindowsGeneration.get() + 1)
 }
 
@@ -110,4 +127,7 @@ return {
   moveModalToTop
   hideModals
   unhideModals
+
+  MWP_ALWAYS_TOP
+  MWP_COMMON
 }

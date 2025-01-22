@@ -22,7 +22,7 @@ let progressTimeouts = hardPersistWatched("pserver.inProgress", {}) //progressId
 let nextTimeout = keepref(Computed(@() progressTimeouts.value
   .reduce(@(res, v) res <= 0 ? v.timeout : min(res, v.timeout), 0)))
 
-let sendProgress = @(id, value, isInProgress) eventbus_send($"profile_srv.progressStart.{id}", { value, isInProgress })
+let sendProgress = @(id, value, isInProgress) eventbus_send($"profile_srv.progressChange", { id, value, isInProgress })
 let get_time_sec = @() (get_time_msec() * 0.001).tointeger()
 
 let noNeedLogerrOnErrors = {

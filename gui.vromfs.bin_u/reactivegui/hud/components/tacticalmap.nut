@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { allow_voice_messages } = require("%appGlobals/permissions.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { isVoiceMsgEnabled } = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
 let { isVoiceMsgMapSceneOpened } = require("%rGui/hud/voiceMsg/hudVoiceMsgMapScene.nut")
@@ -37,6 +36,7 @@ function mkTacticalMapForHud(scale) {
     watch = stateFlags
     size = flex()
     behavior = Behaviors.Button
+    cameraControl = true
     sound = { click  = "click" }
     onElemState = @(sf) stateFlags.set(sf)
     onClick = @() isVoiceMsgMapSceneOpened.set(true)
@@ -47,9 +47,9 @@ function mkTacticalMapForHud(scale) {
   return mkTacticalMap(size,
     [
       @() {
-        watch = [allow_voice_messages, isInMpSession, isVoiceMsgEnabled]
+        watch = [isInMpSession, isVoiceMsgEnabled]
         size = flex()
-        children = allow_voice_messages.get() && isInMpSession.get() && isVoiceMsgEnabled.get() ? voiceMsgBtn : null
+        children = isInMpSession.get() && isVoiceMsgEnabled.get() ? voiceMsgBtn : null
       }
     ])
 }

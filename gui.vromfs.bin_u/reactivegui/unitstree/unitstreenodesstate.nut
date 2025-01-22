@@ -9,8 +9,8 @@ let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
-let { allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
-let { filters, filterCount } = require("%rGui/unit/unitsFilterPkg.nut")
+let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { filters, filterGenId } = require("%rGui/unit/unitsFilterPkg.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
 let { releasedUnits } = require("%rGui/unit/unitState.nut")
 
@@ -40,16 +40,16 @@ let mkCountries = @(nodeList) Computed(function(prev) {
 
 let mkVisibleNodes = @() Computed(@()
   needToShowHiddenUnitsDebug.get() ? nodes.get()
-    : nodes.get().filter(@(v) (!allUnitsCfg.get()?[v.name].isHidden && v.name in releasedUnits.get())
-      || v.name in myUnits.get()))
+    : nodes.get().filter(@(v) (!campUnitsCfg.get()?[v.name].isHidden && v.name in releasedUnits.get())
+      || v.name in campMyUnits.get()))
 
 let mkFilteredNodes = @(nodeList) Computed(@()
-  filterCount.get() == 0 ? nodeList.get()
+  filterGenId.get() == 0 ? nodeList.get()
     : nodeList.get()
       .filter(function(node) {
         foreach (f in filters) {
           let value = f.value.get()
-          if (value != null && !f.isFit(allUnitsCfg.get()?[node.name], value))
+          if (value != null && !f.isFit(campUnitsCfg.get()?[node.name], value))
             return false
         }
         return true
@@ -110,7 +110,7 @@ let allBlueprints = Computed(@() serverConfigs.get()?.allBlueprints ?? {})
 let blueprintCounts = Computed(@() servProfile.get()?.blueprints ?? {})
 
 let availableBlueprints = Computed(@() allBlueprints.get()
-  .filter(@(_, unitName) unitName not in myUnits.get() || unitName in allUnitsCfg.get()))
+  .filter(@(_, unitName) unitName not in campMyUnits.get() || unitName in campUnitsCfg.get()))
 
 let blueprintUnitsStatus = Computed(function(prev) {
   let list = {}
@@ -141,7 +141,7 @@ let unitsResearchStatus = Computed(function(prev) {
   let { unitResearchExp = {} } = serverConfigs.get()
   let { unitsResearch = {} } = servProfile.get()
   foreach (unitName, reqExp in unitResearchExp) {
-    if (unitName in myUnits.get() || unitName not in allUnitsCfg.get())
+    if (unitName in campMyUnits.get() || unitName not in campUnitsCfg.get())
       continue
     let { reqUnits = [] , country = "" } = nodes.get()?[unitName]
     let { exp = 0, isCurrent = false, isResearched = false, canBuy = false, canResearch = false } = unitsResearch?[unitName]
@@ -174,7 +174,7 @@ let unseenResearchedUnits = Computed(function() {
   let seenUnits = seenResearchedUnits.get()
 
   foreach(unitName, node in curCampaignUnits) {
-    let unit = allUnitsCfg.get()?[unitName]
+    let unit = campUnitsCfg.get()?[unitName]
     if (!unit || unit.isHidden || unitName in seenUnits)
       continue
 
@@ -182,17 +182,17 @@ let unseenResearchedUnits = Computed(function() {
 
     local isUnseenUnit = false
 
-    if (unitName not in myUnits.get() && unitName in unitResearchExp) {
+    if (unitName not in campMyUnits.get() && unitName in unitResearchExp) {
       let { isResearched = false, canBuy = false } = unitsResearch?[unitName]
       isUnseenUnit = isResearched && canBuy
     }
-    else if (unitName not in myUnits.get() && unitName in blueprints) {
+    else if (unitName not in campMyUnits.get() && unitName in blueprints) {
       let { targetCount } = blueprints[unitName]
       let curCount = bCounts?[unitName] ?? 0
       isUnseenUnit = curCount >= targetCount
     }
     else if (unit.isPremium)
-      isUnseenUnit = unitName in myUnits.get()
+      isUnseenUnit = unitName in campMyUnits.get()
 
     if(isUnseenUnit) {
       if(country not in res)

@@ -1,16 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { addModalWindow, removeModalWindow, hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { msgBoxBg } = require("%rGui/components/msgBox.nut")
+let { modalWndBg } = require("%rGui/components/modalWnd.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { slotBarSelectWnd } = require("slotBar.nut")
-let { selectedUnitToSlot, slots, resetSelectedUnitToSlot, canOpenSelectUnitWithModal } = require("slotBarState.nut")
+let { selectedUnitToSlot, slots, closeSelectUnitToSlotWnd, canOpenSelectUnitWithModal, selectedUnitAABBKey } = require("slotBarState.nut")
 let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { setUnitToScroll } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { treeNodeUnitPlateKey } = require("%rGui/unitsTree/mkUnitPlate.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-
 
 let WND_UID = "selectUnitToSlot"
 
@@ -21,11 +19,6 @@ let needOpen = Computed(@() selectedUnitToSlot.get() != null
 )
 let canOpen = Computed(@() !hasModalWindows.get() || canOpenSelectUnitWithModal.get())
 let shouldOpen = Computed(@() needOpen.get() && canOpen.get())
-
-function close() {
-  resetSelectedUnitToSlot()
-  removeModalWindow(WND_UID)
-}
 
 function mkBgText(rect) {
   let text = loc("slotbar/chooseSlot", { unit = loc(getUnitLocId(selectedUnitToSlot.get())) })
@@ -42,14 +35,14 @@ function mkBgText(rect) {
 
 let openImpl = @(rect) addModalWindow({
   key = WND_UID
-  onClick = close
+  onClick = closeSelectUnitToSlotWnd
   children = [
     mkCutBg([rect])
     {
       margin = [rect.b + hdpx(50), 0, saBorders[1], 0]
       vplace = ALIGN_BOTTOM
       hplace = ALIGN_LEFT
-      children = msgBoxBg.__merge({ children = slotBarSelectWnd })
+      children = modalWndBg.__merge({ children = slotBarSelectWnd })
     }
     mkBgText(rect)
   ]
@@ -64,7 +57,7 @@ function open() {
   resetTimeout(0.1, function() {
     if (!shouldOpen.get())
       return
-    let rect = gui_scene.getCompAABBbyKey(treeNodeUnitPlateKey(selectedUnitToSlot.get()))
+    let rect = gui_scene.getCompAABBbyKey(selectedUnitAABBKey.get())
     if (rect)
       openImpl(rect)
   })
@@ -73,4 +66,4 @@ function open() {
 if (shouldOpen.get())
   open()
 shouldOpen.subscribe(@(v) v ? open() : null)
-needOpen.subscribe(@(v) v ? null : close())
+needOpen.subscribe(@(v) v ? null : removeModalWindow(WND_UID))

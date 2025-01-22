@@ -1031,7 +1031,7 @@ return {
       "": "germ_he51c1"
     },
     "he_112a_0": {
-      "": "usa_p_40c_metal"
+      "": "ussr_il_2_37_1943_wo13_c"
     },
     "he_112b_0": {
       "": "germ_me_410a_1"

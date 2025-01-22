@@ -25,7 +25,7 @@ let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { opacityAnim, lightAnim } = require("lootboxOpenRouletteAnims.nut")
 let lootboxOpenRouletteConfig = require("lootboxOpenRouletteConfig.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -590,7 +590,7 @@ function mkBlueprintPlateTexts(reward, unitRank, rStyle) {
 
   let available = Computed(@() (servProfile.get()?.blueprints?[id] ?? 0) + countInc.get())
   let total = Computed(@() serverConfigs.get()?.allBlueprints?[id].targetCount ?? 1)
-  let hasBlueprintUnit = Computed(@() id in myUnits.get())
+  let hasBlueprintUnit = Computed(@() id in campMyUnits.get())
 
   return @() {
     watch = consistentReceivedRewardIdx
@@ -646,7 +646,7 @@ function mkBlueprintPlate(reward, rStyle, ovr = {}) {
 function mkSkinPlate(reward, rStyle, ovr = {}) {
   let { id } = reward
   let isAvailable = Computed(function() {
-    if (id not in myUnits.get())
+    if (id not in campMyUnits.get())
       return false
     let unitIdx = receivedRewardsAll.get().findindex(@(rec) null != rec?.viewInfo.findvalue(@(r) r.rType == G_UNIT && r.id == id))
     return unitIdx == null || unitIdx <= rouletteOpenIdx.get() - 1

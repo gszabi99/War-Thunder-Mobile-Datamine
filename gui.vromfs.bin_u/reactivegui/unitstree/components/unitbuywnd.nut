@@ -1,13 +1,13 @@
 
 from "%globalsDarg/darg_library.nut" import *
-let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { mkTreeNodesUnitPlateBuy } = require("%rGui/unitsTree/components/unitPlateNodeComp.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 
 function purchUnitContent(unitId){
-  let unit = allUnitsCfg.value?[unitId]
+  let unit = campUnitsCfg.get()?[unitId]
   return{
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER

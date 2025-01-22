@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let logShop = log_with_prefix("[SHOP] ")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { shopPurchaseInProgress, buy_goods, buy_offer, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
@@ -18,7 +18,7 @@ let { mkCurrencyComp, CS_INCREASED_ICON } = require("%rGui/components/currencyCo
 let { SGT_EVT_CURRENCY } = require("%rGui/shop/shopConst.nut")
 
 function getCantPurchaseReason(goods) {
-  let hasUnits = goods.units.filter(@(unitId) myUnits.value?[unitId] != null)
+  let hasUnits = goods.units.filter(@(unitId) campMyUnits.get()?[unitId] != null)
   if (hasUnits.len())
     return {
       canPurchase = false
@@ -28,7 +28,7 @@ function getCantPurchaseReason(goods) {
             @(unitId) colorize(userlogTextColor, loc(getUnitLocId(unitId))))) })
     }
 
-  let hasUpgraded = goods.unitUpgrades.filter(@(unitId) myUnits.value?[unitId]?.isUpgraded ?? false)
+  let hasUpgraded = goods.unitUpgrades.filter(@(unitId) campMyUnits.get()?[unitId]?.isUpgraded ?? false)
   if (hasUpgraded.len())
     return {
       canPurchase = false

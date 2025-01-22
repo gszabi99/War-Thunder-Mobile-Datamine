@@ -6,7 +6,7 @@ let { registerScene, moveSceneToTop } = require("%rGui/navState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { shopCategoriesCfg } = require("shopCommon.nut")
 let { isShopOpened, curCategoryId, goodsByCategory, shopOpenCount, saveSeenGoodsCurrent,
-  pageScrollHandler, onTabChange, hasGoodsCategoryNonUpdatable
+  pageScrollHandler, onTabChange, hasGoodsCategoryNonUpdatable, subsByCategory
 } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory } = require("schRewardsState.nut")
 let { personalGoodsByShopCategory } = require("personalGoodsState.nut")
@@ -58,11 +58,15 @@ let pannableArea = verticalPannableAreaCtor(shopContentH, [shopContentGradient, 
 
 function mkShopContent() {
   let curCategoriesCfg = Computed(@() shopCategoriesCfg
-    .filter(@(c) c.id in actualSchRewardByCategory.get() || c.id in goodsByCategory.get() || c.id in personalGoodsByShopCategory.get()))
+    .filter(@(c) c.id in actualSchRewardByCategory.get()
+      || c.id in goodsByCategory.get()
+      || c.id in personalGoodsByShopCategory.get()
+      || c.id in subsByCategory.get()))
   let distances = Computed(function() {
     let allGoodsLists = goodsByCategory.get()
     let allRewards = actualSchRewardByCategory.get()
     let allPersonal = personalGoodsByShopCategory.get()
+    let allSubs = subsByCategory.get()
     local top = 0
     local totalRows = 0
     local totalHeaders = 0
@@ -70,6 +74,7 @@ function mkShopContent() {
     foreach (cfg in curCategoriesCfg.get()) {
       let { id = "" } = cfg
       let goodsRewardLen = (allGoodsLists?[id] ?? []).len() + (allRewards?[id] == null ? 0 : 1) + (allPersonal?[id].len() ?? 0)
+         + (allSubs?[id].len() ?? 0)
       let rows = ceil(1.0 * goodsRewardLen / goodsPerRow)
       let bottom = top + titleH + titleGap + rows * goodsH + (rows - 1) * goodsGap + categoryGap
       let additionalTriggerSpace = categoryGap + goodsH / 3
@@ -128,7 +133,7 @@ function mkShopContent() {
         size = [fullTabW, flex()]
         children = @() pannable({
           watch = [curCategoriesCfg, curCampaign]
-          children = @() mkShopTabs(curCategoriesCfg.get(), curCategoryId, curCampaign.get())
+          children = mkShopTabs(curCategoriesCfg.get(), curCategoryId, curCampaign.get())
         })
       }
       pannableArea(mkShopPage(curCategoriesCfg, distances),

@@ -3,7 +3,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
 let { progressbarAnimDuration,  progressbarAnimDurationShort } = require("%rGui/unitsTree/components/unitPlateAnimations.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 
 let plateBarHeight = hdpx(10)
 let bgColor = 0x80000000
@@ -51,10 +51,10 @@ function mkPlateExpBar(researchStatus, ovr = {}) {
 function mkPlateBlueprintBar(unit, ovr = {}) {
   let curBluebrintsCount = Computed(@() servProfile.get()?.blueprints?[unit.name] ?? 0)
   let reqBluebrintsCount = Computed(@() serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1)
-  return @() unit.name not in serverConfigs.get()?.allBlueprints || unit.name in myUnits.get()
-    ? { watch = [serverConfigs myUnits] }
+  return @() unit.name not in serverConfigs.get()?.allBlueprints || unit.name in campMyUnits.get()
+    ? { watch = [serverConfigs campMyUnits] }
     : {
-      watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, myUnits]
+      watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, campMyUnits]
       rendObj = ROBJ_SOLID
       size = [pw(100), plateBarHeight]
       vplace = ALIGN_BOTTOM

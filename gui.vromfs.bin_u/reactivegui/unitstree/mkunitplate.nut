@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { unitsMaxRank, unitsTreeOpenRank } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
-let { playerLevelInfo, myUnits } = require("%appGlobals/pServer/profile.nut")
+let { playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkPlatoonPlateFrame,
   mkUnitsTreePrice, bgPlatesTranslate, mkUnitBlueprintMark, mkUnitResearchPrice,
   mkUnitSelectedGlow, mkUnitEquippedIcon, mkPlateText, plateTextsSmallPad, unitPlateTiny,
@@ -38,6 +38,7 @@ let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
 let unitBuyWnd = require("%rGui/unitsTree/components/unitBuyWnd.nut")
 let { aDelayPrice, aTimePriceScale, aTimePriceShake } = require("%rGui/unitsTree/treeAnimConsts.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 
 let framesGapMul = 0.7
 let scrollBlocks = ceil((saSize[0] - saBorders[0] - flagsWidth) / blockSize[0] / 2)
@@ -80,7 +81,7 @@ function openBuyUnitWnd(name) {
 function mkPlatoonPlates(unit) {
   let { platoonUnits = [] } = unit
   let platoonSize = platoonUnits.len()
-  let isLocked = Computed(@() (unit.name not in myUnits.get()) && (unit.name not in canBuyUnits.get()))
+  let isLocked = Computed(@() (unit.name not in campMyUnits.get()) && (unit.name not in canBuyUnits.get()))
   let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
   let isEquipped = Computed(@() unit.name == curUnitName.get())
   let justBoughtDelay = Computed(@() justBoughtUnits.get()?[unit.name] != null ? 0.5 : null)
@@ -118,7 +119,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
     return null
 
   let stateFlags = Watched(0)
-  let isLocked = Computed(@() (unit.name not in myUnits.get()) && (unit.name not in canBuyUnits.get()))
+  let isLocked = Computed(@() (unit.name not in campMyUnits.get()) && (unit.name not in canBuyUnits.get()))
   let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
   let isEquipped = Computed(@() unit.name == curUnitName.get())
   let canPurchase = Computed(@() unit.name in canBuyUnits.get())
@@ -127,7 +128,10 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
   let discount = Computed(@() unitDiscounts?.get()[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
   let isCollectible = unit?.isCollectible
-  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get() || unit.name in unseenSkins.get())
+  let hasUnseenRewards = Computed(@() unit.name in unseenUnitLvlRewardsList.get())
+  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get()
+    || unit.name in unseenSkins.get()
+    || hasUnseenRewards.get())
   let justUnlockedDelay = Computed(@() hasModalWindows.get() && canBuyForLvlUp.get()
       ? 1000000.0
     : canBuyForLvlUp.get()
@@ -166,7 +170,6 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
       })
       mkUnitTexts(unit, loc(getUnitLocId(unit.name)), isLocked.get())
       mkUnitLock(unit, isLocked.get(), justUnlockedDelay.get())
-      mkPriorityUnseenMarkWatch(needShowUnseenMark)
       mkPlateBlueprintBar(unit, {
         pos = [0, 0]
       })
@@ -192,6 +195,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
         pos = [0, -selLineSize]
         children = selectedLineHorUnits(isSelected, isPremium, isCollectible)
       } : null
+      mkPriorityUnseenMarkWatch(needShowUnseenMark)
     ]
   }.__update(ovr)
 }
@@ -384,21 +388,23 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
   let stateFlags = Watched(0)
   let researchStatus = Computed(@() unitsResearchStatus.get()?[unit.name])
   let blueprintStatus = Computed(@() blueprintUnitsStatus.get()?[unit.name])
-  let isOwned = Computed(@() unit.name in myUnits.get())
+  let isOwned = Computed(@() unit.name in campMyUnits.get())
   let isLocked = Computed(@() !isOwned.get() && (unit.name not in canBuyUnits.get()))
   let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
   let canPurchase = Computed(@() unit.name in canBuyUnits.get())
-  let price = Computed(@() canPurchase.get() || (researchStatus.get()?.isResearched && unit.name not in myUnits.get())
+  let price = Computed(@() canPurchase.get() || (researchStatus.get()?.isResearched && unit.name not in campMyUnits.get())
       ? getUnitAnyPrice(unit, false, unitDiscounts.get())
     : null)
   let discount = Computed(@() unitDiscounts?.get()[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
   let isCollectible = unit?.isCollectible
+  let hasUnseenRewards = Computed(@() unit.name in unseenUnitLvlRewardsList.get())
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get()
     || unit.name in unseenSkins.get()
-    || unit.name in unseenResearchedUnits.get()?[selectedCountry.get()])
+    || unit.name in unseenResearchedUnits.get()?[selectedCountry.get()]
+    || hasUnseenRewards.get())
   let needShowBlueprintBar = Computed(@() unit.name in serverConfigs.get()?.allBlueprints
-    && unit.name not in myUnits.get()
+    && unit.name not in campMyUnits.get()
     && (servProfile.get()?.blueprints[unit.name] ?? 0) < (serverConfigs.get()?.allBlueprints[unit.name].targetCount ?? 0))
   let trigger = $"{unit.name}_anim"
   let startCurAnim = @() anim_start(trigger)
@@ -452,7 +458,6 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
           : null
         mkUnitImage(unit, canPurchase.get() || isLocked.get())
         mkUnitTexts(unit, loc(getUnitLocId(unit.name)), isLocked.get())
-        mkPriorityUnseenMarkWatch(needShowUnseenMark)
         @() {
           watch = [price, discount, canPurchase, researchStatus]
           key = price
@@ -504,6 +509,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
           pos = [0, -selLineSize]
           children = selectedLineHorUnits(isSelected, isPremium, isCollectible)
         }
+        mkPriorityUnseenMarkWatch(needShowUnseenMark)
         @() researchStatus.get()?.isCurrent
           ? {
               watch = researchStatus

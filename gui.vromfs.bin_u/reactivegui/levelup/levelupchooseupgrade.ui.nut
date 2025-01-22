@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getPlatoonOrUnitName, getUnitLocId, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
-let { allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { upgradeUnitName } = require("levelUpState.nut")
 let { getUnitAnyPrice, getShortPrice } = require("%rGui/unit/unitUtils.nut")
@@ -47,7 +47,7 @@ registerHandler("onPurchaseUnitInLevelUp",
 function purchaseHandler(unitName, isUpgraded = false) {
   sendNewbieBqEvent("buyUnitInLevelUpWnd", { status = unitName, params = isUpgraded ? "upgraded" : "common" })
   if (isUpgraded)
-    setCustomHangarUnit(allUnitsCfg.value[unitName].__merge({ isUpgraded = true }))
+    setCustomHangarUnit(campUnitsCfg.get()[unitName].__merge({ isUpgraded = true }))
   let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, unitName)
   purchaseUnit(unitName, bqPurchaseInfo, isUpgraded, "onPurchaseUnitInLevelUp")
 }
@@ -132,15 +132,15 @@ let unitBlock = @(unit) {
       color = 0xFFFFFFFF
     }.__update(fontMedium)
     @() {
-      watch = [allUnitsCfg, unitDiscounts]
-      children = buttonBlock(unit?.isUpgraded ? buyButtonUpgraded(unit, allUnitsCfg.value) : buyButtonPrimary(unit, unitDiscounts.value))
+      watch = [campUnitsCfg, unitDiscounts]
+      children = buttonBlock(unit?.isUpgraded ? buyButtonUpgraded(unit, campUnitsCfg.get()) : buyButtonPrimary(unit, unitDiscounts.value))
     }
   ]
 }
 
 function unitsList() {
-  let res = { watch = [allUnitsCfg, upgradeUnitName, campConfigs] }
-  let unit = allUnitsCfg.value?[upgradeUnitName.value]
+  let res = { watch = [campUnitsCfg, upgradeUnitName, campConfigs] }
+  let unit = campUnitsCfg.get()?[upgradeUnitName.value]
   if (unit == null)
     return res
   let upgradedUnit = unit.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}, { isUpgraded = true })

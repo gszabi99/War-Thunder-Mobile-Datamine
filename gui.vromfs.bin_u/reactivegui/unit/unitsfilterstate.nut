@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { OCT_TEXTINPUT, OCT_MULTISELECT } = require("%rGui/options/optCtrlType.nut")
 let { unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
-let { allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY, US_TOO_LOW_LEVEL, US_NOT_RESEARCHED,
   US_NEED_BLUEPRINTS, US_CAN_RESEARCH
 } = require("%appGlobals/unitsState.nut")
@@ -60,8 +60,8 @@ let optName = {
 function mkOptMultiselect(id, override = {}) {
   let { getUnitValue = @(unit) unit?[id] } = override
   let allValues = override?.allValues
-    ?? Computed(@() allUnitsCfg.value
-      .filter(@(u) (!u?.isHidden && u.name in releasedUnits.get()) || u.name in myUnits.value)
+    ?? Computed(@() campUnitsCfg.get()
+      .filter(@(u) (!u?.isHidden && u.name in releasedUnits.get()) || u.name in campMyUnits.get())
       .reduce(function(res, unit) {
         res[getUnitValue(unit)] <- true
         return res
@@ -90,7 +90,7 @@ let optUnitClass = mkOptMultiselect("unitClass", { inBoxValue = @(v) {
 
 let allStatuses = Computed(@() canBuyUnitsStatus.value
   .reduce(function(res, status, unitName) {
-    if (!allUnitsCfg.get()?[unitName].isHidden)
+    if (!campUnitsCfg.get()?[unitName].isHidden)
       res[status] <- true
     return res
   }, {})
@@ -99,6 +99,7 @@ let allStatuses = Computed(@() canBuyUnitsStatus.value
 let optStatus = mkOptMultiselect("unitStatus", {
   allValues = allStatuses
   getUnitValue = @(unit) canBuyUnitsStatus.value?[unit.name] ?? US_UNKNOWN
+  valueWatch = canBuyUnitsStatus
   valToString = @(st) loc(statusLoc?[st] ?? "???")
   locId = null
 })

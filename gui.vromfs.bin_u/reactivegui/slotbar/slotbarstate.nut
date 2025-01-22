@@ -35,7 +35,9 @@ let slotsNeedAddAnim = mkWatched(persist, "slotsNeedAddAnim", {})
 let isAnimChangedSoon = mkWatched(persist, "isAnimChangedSoon", false)
 let isSlotsAnimActive = Computed(@() isAnimChangedSoon.get() && slotsNeedAddAnim.get().len() > 0)
 let newSlotPriceGold = Computed(@() campConfigs.get()?.campaignCfg.slotPriceGold[curCampaignSlots.get()?.totalSlots])
-let selectedUnitToSlot = Watched(null)
+let slotBarOpenParams = Watched(null)
+let selectedUnitToSlot = Computed(@() slotBarOpenParams.get()?.unitName)
+let selectedUnitAABBKey = Computed(@() slotBarOpenParams.get()?.aabb)
 let canOpenSelectUnitWithModal = Watched(false)
 let slotBarSelectWndAttached = Watched(false)
 
@@ -72,19 +74,19 @@ slotsNeedAddAnim.subscribe(function(_) {
 let onFinishSlotAnim = @(idx) idx not in slotsNeedAddAnim.get() ? null
   : slotsNeedAddAnim.mutate(@(v) v.$rawdelete(idx))
 
-function resetSelectedUnitToSlot() {
+function closeSelectUnitToSlotWnd() {
   if (animUnitWithLink.get() != null && !canPlayAnimUnitWithLink.get()) {
     canPlayAnimUnitWithLink.set(true)
     anim_start(animNewUnitsAfterResearchTrigger)
   }
-  selectedUnitToSlot.set(null)
+  slotBarOpenParams.set(null)
 }
 
 let function setUnitToSlot(idx) {
   if (selectedUnitToSlot.get() == null)
     return
   set_unit_to_slot(selectedUnitToSlot.get(), idx)
-  resetSelectedUnitToSlot()
+  closeSelectUnitToSlotWnd()
 }
 
 let function buyUnitSlot() {
@@ -109,11 +111,13 @@ return {
   newSlotPriceGold
   selectedUnitToSlot
   setUnitToSlot
+  selectedUnitAABBKey
   buyUnitSlot
   clearUnitSlot
-  resetSelectedUnitToSlot
+  closeSelectUnitToSlotWnd
   canOpenSelectUnitWithModal
   slotBarSelectWndAttached
+  openSelectUnitToSlotWnd = @(unitName, aabb) slotBarOpenParams.set({ unitName, aabb })
 
   slotsNeedAddAnim
   getSlotAnimTrigger

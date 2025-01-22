@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { bgShadedDark, bgHeader, bgMessage } = require("%rGui/style/backgrounds.nut")
+let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
@@ -40,16 +41,6 @@ let infoText = Computed(function() {
     bonusUnitExp = expMul
     bonusGold = bonusMultText(premiumBonusesCfg.get()?.goldMul || 1.0)
   })
-})
-
-let premHeader = bgHeader.__merge({
-  size = [ flex(), sh(8) ]
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  children = {
-    rendObj = ROBJ_TEXT
-    text = loc("premBuyWnd/header")
-  }.__update(fontMedium)
 })
 
 let premDesc = @() infoText.value
@@ -97,7 +88,7 @@ let window = @(toBattle){
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   children = [
-    premHeader
+    modalWndHeader(loc("premBuyWnd/header"))
     premIcon
     premDesc
     buttons(toBattle)
@@ -109,11 +100,7 @@ let showNoPremWnd = @(toBattle) addModalWindow(bgShadedDark.__merge({
   size = flex()
   hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   onClick = close
-  children = {
-    hplace = ALIGN_CENTER
-    vplace = ALIGN_CENTER
-    children = [ bgMessage.__merge(window(toBattle)) ]
-  }
+  children = modalWndBg.__merge(window(toBattle))
   animations = wndSwitchAnim
 }))
 

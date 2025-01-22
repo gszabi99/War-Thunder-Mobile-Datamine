@@ -44,7 +44,7 @@ let { closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { needCursorForActiveInputDevice, isGamepad } = require("%appGlobals/activeControls.nut")
 let { enableClickButtons }  = require("%rGui/controlsMenu/gpActBtn.nut")
 let hotkeysPanel = require("controlsMenu/hotkeysPanel.nut")
-let { debugTouchesUi, isDebugTouchesActive } = require("debugTools/debugTouches.nut")
+let { debugTouchesUi, debugTouchesHandlerComp, isDebugTouchesActive } = require("debugTools/debugTouches.nut")
 let deviceStateArea = require("%rGui/hud/deviceState.nut")
 let { tooltipComp } = require("tooltip.nut")
 let { waitboxes } = require("notifications/waitBox.nut")
@@ -77,7 +77,7 @@ function loadAfterLoginImpl() {
   setIsScriptsLoading(true)
   let t = get_time_msec()
   log("LOAD RGUI SCRIPTS AFTER LOGIN")
-  sceneAfterLogin = require("%rGui/sceneAfterLogin.nut") // -skip-require
+  sceneAfterLogin = require("%rGui/sceneAfterLogin.nut")
   isAllScriptsLoaded(true)
   log($"DaRg scripts load after login {get_time_msec() - t} msec")
   setIsScriptsLoading(false)
@@ -155,8 +155,10 @@ return function() {
     : [sceneAfterLogin]
   children.append(hotkeysPanel, tooltipComp, inspectorRoot, debugSafeArea, fpsLineComp,
     deviceStateArea, waitbox, dbgOverlayComponent)
-  if (isDebugTouchesActive.value)
+  if (isDebugTouchesActive.get()) {
+    children.insert(0, debugTouchesHandlerComp)
     children.append(debugTouchesUi)
+  }
   return {
     watch = [isInLoadingScreen, isLoggedIn, isLoginRequired, isAllScriptsLoaded, isDebugTouchesActive, needShowCursor]
     key = "sceneRoot"

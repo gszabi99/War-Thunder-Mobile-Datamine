@@ -26,9 +26,9 @@
     "ri_extra__destroyed": false,
     "ri_extra__toGround": false,
     "ri_extra__destructable": false,
-    "ri_extra__enableDM": false,
-    "ri_extra__origCell": -1,
-    "ri_extra__origOffset": -1,
+    "ri_extra__enableDM": true,
+    "ri_extra__riCellIdx": -1,
+    "ri_extra__riOffset": -1,
     "riExtraAuthority:tag": {
       "_tags": "server"
     },
@@ -68,5 +68,13 @@
       "rendinst",
       "replicating"
     ]
+  },
+  "rendinst_owned": {
+    "_use": "rendinst",
+    "ri_extra__armyId": -1,
+    "ri_extra__allyDontDamage": false,
+    "ri_extra__enemyDontDamage": false,
+    "ri_extra__ownerDontDamage": false,
+    "ri_extra__owner:eid": {}
   }
 }

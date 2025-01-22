@@ -19,6 +19,8 @@
   "entitiesBlk": "%gameBase/templates/entities_wtm.blk",
   "game_das_script_init": "%appGame/wtm_init.das",
   "game_das_loading_threads": 2,
+  "localizationVrom": "lang.vromfs.bin",
+  "localizationRegionalVrom": "",
   "addAllAddonsToBasePath": false,
   "clientBitType": "auto",
   "releaseChannel": "",
@@ -104,7 +106,7 @@
       "forVromfs": "das"
     },
     "%lang": {
-      "forSource": "../develop/gameBase/lang_src/lang",
+      "forSource": "../../skyquake/prog/gamebase_wtm/lang_src/lang",
       "forVromfs": "lang"
     },
     "%gui": {
@@ -128,7 +130,7 @@
       "forVromfs": ""
     },
     "%wtlibs": {
-      "forSource": "../../skyquake/prog/gameBase/wtlibs",
+      "forSource": "../../skyquake/prog/wtlibs",
       "forVromfs": "wtlibs"
     }
   },
@@ -136,20 +138,25 @@
     "addon": [
       {
         "vrom": "aces.vromfs.bin",
+        "tag": "configs",
         "src": [
           "../develop/gameBase",
-          "../develop/gameBase/lang_src",
+          "../prog/gamebase_wtm/lang_src",
           "../develop/gameBase/pkg_dev"
         ]
       },
       {
-        "vrom": "char.vromfs.bin"
+        "vrom": "char.vromfs.bin",
+        "notImportantForSession": true
       },
       {
-        "vrom": "mis.vromfs.bin"
+        "vrom": "mis.vromfs.bin",
+        "tag": "missions",
+        "notImportantForSession": true
       },
       {
-        "vrom": "game.vromfs.bin"
+        "vrom": "game.vromfs.bin",
+        "tag": "game-scripts"
       },
       {
         "vrom": "regional.vromfs.bin",
@@ -178,6 +185,7 @@
       },
       {
         "vrom": "gui.vromfs.bin",
+        "tag": "gui-scripts",
         "vromIgnoreForServer": true
       },
       {
@@ -228,13 +236,21 @@
     ]
   },
   "addons": {
+    "modelsPatchFolder": "content/pkg_models",
+    "pkg_models_min": {
+      "contentForAllPackages": true,
+      "hq": false,
+      "modelsPatch": false
+    },
     "hq_tex": {
       "folder": "content.hq/hq_tex",
       "disableReload": true,
-      "hq": false
+      "hq": false,
+      "modelsPatch": false
     },
     "pkg_video": {
-      "hq": false
+      "hq": false,
+      "modelsPatch": false
     },
     "pkg_secondary": {
       "base": true,
@@ -242,7 +258,8 @@
     },
     "pkg_secondary_hq": {
       "folder": "content.hq/pkg_secondary_hq",
-      "hq": false
+      "hq": false,
+      "modelsPatch": false
     },
     "pkg_dev": {},
     "pkg_common": {},
@@ -589,6 +606,12 @@
         "mRank": 2
       }
     },
+    "pkg_uk_sub_m1": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
     "pkg_fr_cruiser_suffren_class_dupleix": {
       "conditions": {
         "campaign": "ships",
@@ -599,18 +622,6 @@
       "conditions": {
         "campaign": "ships",
         "mRank": 3
-      }
-    },
-    "pkg_uk_sub_m1": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
-    "pkg_it_cruiser_zara_class": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
       }
     },
     "pkg_us_battleship_tennessee": {
@@ -626,6 +637,12 @@
       }
     },
     "pkg_jp_cruiser_sendai": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_it_cruiser_zara_class": {
       "conditions": {
         "campaign": "ships",
         "mRank": 2
@@ -988,17 +1005,20 @@
     "pkg_environment_uhq": {
       "base": false,
       "hq": false,
-      "uhq": true
+      "uhq": true,
+      "modelsPatch": false
     },
     "pkg_ground_uhq": {
       "base": false,
       "hq": false,
-      "uhq": true
+      "uhq": true,
+      "modelsPatch": false
     },
     "pkg_naval_uhq": {
       "base": false,
       "hq": false,
-      "uhq": true
+      "uhq": true,
+      "modelsPatch": false
     }
   },
   "addonToXboxChunk": {
@@ -1013,7 +1033,6 @@
     "allowDx10Fallback": false,
     "adaptive_vsync": false,
     "compatibilityMode": true,
-    "useTiledRender": true,
     "postfx_antialiasing": "fxaa",
     "alpha_to_coverage": false,
     "instancing": "auto",
@@ -1024,7 +1043,8 @@
     "latency": 0,
     "vrStreamerMode": false,
     "vreye": "left",
-    "fpsLimitOnUpdater": 10
+    "fpsLimitOnUpdater": 10,
+    "forceForward": false
   },
   "graphics": {
     "useHdr": true,
@@ -1109,15 +1129,11 @@
     "dynrendInitialMainRingBufferSize": 65536,
     "dynrendInitialRingBufferSize": 65536,
     "enableZoomVignette": true,
-    "allowDepthResolvePath": true,
     "resetManagedTexturesOnSettingsChanged": true,
     "allow_uhq_textures": false,
     "uhqForceDisabled": true,
     "shoreHeightmapRange": 200.0,
-    "msaaQuality": 4,
     "wfxHeightLimit": 1.0,
-    "waterVisibilityUseLegacy": false,
-    "waterVisibilityLegacyThreshold": 10,
     "waterVisibilityOffDelaySeconds": 4.0,
     "allowHighresFxDepthReprojection": true,
     "csmReflectionSampleBias": -0.0075,
@@ -1138,15 +1154,24 @@
     "taaSigmaScaleMax": 2.5,
     "taaSigmaScaleMaxHangar": 7.5,
     "taaMotionScale": 2500.0,
-    "forwardSpeedLines": false,
     "volumetricAfterBurner": false,
     "backbufferHolderReadable": false,
     "useUnderwaterFogPrepassPlane": true,
     "csmAllowDynrendPrepareJobsInThreads": false,
+    "maxPrepareDynmodelsJobCount": 1,
     "sky_panorama_async_pipelines": true,
     "forceImpostorsOutsideShadows": false,
     "frameBoundaryBufferInitialSize": 4096,
+    "fxApproximateBoundaryComputation": true,
+    "allowSortingOfTransparentObjects": false,
     "anchorStaticShadowsToUnitInHangar": true,
+    "useTacView": false,
+    "useRocketWires": false,
+    "useUIBlur": false,
+    "useFarAwayRenderer": false,
+    "useCurvedDecals": false,
+    "useMFD": false,
+    "allowAnimatedDay": false,
     "raytraced_shadows": {
       "maxBlasBuildsPerFrame": 30,
       "additionalElementsCheck": false
@@ -1207,7 +1232,6 @@
     "gamepadInBackground": true,
     "useDpadDiagonals": false,
     "helicopterGame": true,
-    "colorMips": false,
     "sharpenTextures": false,
     "centerWeight": 1.8,
     "orthogonalWeight": -0.1,
@@ -1221,11 +1245,9 @@
     "forcedFrameTimeSec": -1.0,
     "smoothDt": true,
     "warningOnFrameTimeSec": 0.066,
-    "limitFps": 0.0,
     "checkModels": false,
     "shouldCheckDm": true,
     "consoleLines": 20,
-    "debugFlush": false,
     "fatalOnCheckSanityFail": false,
     "x360EnableFatal": true,
     "maxScriptMsec": 1000,
@@ -1267,7 +1289,7 @@
     "enableNvHighlights": "auto",
     "logerrOnSecLayer": true,
     "mobileStyleFpsString": true,
-    "maxWorkThreads": 3,
+    "maxWorkThreads": 1,
     "sendFullLogOnFatalIntervalHours": 4,
     "useANRWatcherThreadProbability": 0.1,
     "logSignificantChangesAsWarnings": true,
@@ -1308,8 +1330,7 @@
     "wakeFoamWithoutAA": true,
     "ssrQuality": 0,
     "haze": false,
-    "ssao": true,
-    "ssaoQuality": 1,
+    "ssaoQuality": 0,
     "rendinstGlobalShadows": true,
     "grassInCompatibility": true,
     "grassInCompatibilityHangar": true,
@@ -1525,8 +1546,7 @@
     "flag": [
       "--norespatch",
       "--noupdate",
-      "--verbose",
-      "--force_current"
+      "--verbose"
     ],
     "android": {
       "flag": "--notime"
@@ -1551,6 +1571,7 @@
       "flag": [
         "--clear",
         "--onlypacks",
+        "--force_current",
         "--enable_tag",
         "update_vroms"
       ]
@@ -1564,6 +1585,7 @@
       "flag": [
         "--clear",
         "--onlypacks",
+        "--noversion",
         "--enable_tag",
         "min_core"
       ]
@@ -1577,7 +1599,8 @@
       "stopMetric": "background_addons_update_stop",
       "flag": [
         "--clear",
-        "--onlypacks"
+        "--onlypacks",
+        "--noversion"
       ]
     },
     "optional_game_resources": {
@@ -2017,19 +2040,10 @@
     },
     "xiaomi_11tpro": {
       "codename": "2107113SG",
-      "vulkan": {
-        "blackUnitWorkaround": true
-      },
       "android": {
         "highPerfCores": 240,
         "antiThrottlingSleepMs": 5,
         "antiThrottlingFpsLimit": 50
-      }
-    },
-    "a52s": {
-      "codename": "SM-A528B",
-      "vulkan": {
-        "blackUnitWorkaround": true
       }
     },
     "ipad_pro": {
@@ -2098,10 +2112,7 @@
         "iPad Air 2"
       ],
       "graphics": {
-        "shaderlod": [
-          "low",
-          "low"
-        ],
+        "shaderlod": "low",
         "underwaterFogUseSimple": true,
         "enableWaterReflections": false,
         "forceLowPreset": true
@@ -2109,6 +2120,31 @@
       "clipmap": {
         "hwfeedback": false,
         "texTileSize": 128
+      }
+    }
+  },
+  "gamepad_layout": {
+    "nintendo": {
+      "config": [
+        {
+          "vendor": 3695,
+          "product": 390,
+          "name": "Lic Pro Controller"
+        },
+        {
+          "vendor": 1406,
+          "name": "Switch Pro Controller"
+        }
+      ]
+    },
+    "sony": {
+      "config": {
+        "vendor": 1356
+      }
+    },
+    "xbox": {
+      "config": {
+        "vendor": 1118
       }
     }
   },
@@ -2278,7 +2314,8 @@
         "hwfeedback": false,
         "cachesCount": 1,
         "buffersCount": 1,
-        "shaderlodMode": "always_low"
+        "shaderlodMode": "always_low",
+        "updateCountHigh": 4
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -2360,7 +2397,8 @@
         "hwfeedback": true,
         "cachesCount": 2,
         "buffersCount": 2,
-        "shaderlodMode": "auto"
+        "shaderlodMode": "auto",
+        "updateCountHigh": 4
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -2442,7 +2480,8 @@
         "hwfeedback": true,
         "cachesCount": 2,
         "buffersCount": 2,
-        "shaderlodMode": "auto"
+        "shaderlodMode": "auto",
+        "updateCountHigh": 8
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -2524,7 +2563,8 @@
         "hwfeedback": true,
         "cachesCount": 2,
         "buffersCount": 2,
-        "shaderlodMode": "always_high"
+        "shaderlodMode": "always_high",
+        "updateCountHigh": 8
       },
       "debug": {
         "lodDistanceScale": 1.0
@@ -2606,7 +2646,8 @@
         "hwfeedback": true,
         "cachesCount": 2,
         "buffersCount": 2,
-        "shaderlodMode": "always_high"
+        "shaderlodMode": "always_high",
+        "updateCountHigh": 8
       },
       "debug": {
         "lodDistanceScale": 0.5
@@ -2683,7 +2724,8 @@
         "hwfeedback": false,
         "cachesCount": 1,
         "buffersCount": 1,
-        "shaderlodMode": "always_low"
+        "shaderlodMode": "always_low",
+        "updateCountHigh": 4
       }
     },
     "medium": {
@@ -2755,7 +2797,8 @@
         "hwfeedback": true,
         "cachesCount": 2,
         "buffersCount": 2,
-        "shaderlodMode": "auto"
+        "shaderlodMode": "auto",
+        "updateCountHigh": 8
       }
     },
     "high": {
@@ -2827,7 +2870,8 @@
         "hwfeedback": true,
         "cachesCount": 2,
         "buffersCount": 2,
-        "shaderlodMode": "always_high"
+        "shaderlodMode": "always_high",
+        "updateCountHigh": 8
       }
     },
     "max": {
@@ -2899,7 +2943,8 @@
         "hwfeedback": true,
         "cachesCount": 2,
         "buffersCount": 2,
-        "shaderlodMode": "always_high"
+        "shaderlodMode": "always_high",
+        "updateCountHigh": 8
       }
     }
   },
@@ -2987,7 +3032,7 @@
           "brokenSubpasses": {
             "entry": {
               "driverMaxVer0": 512,
-              "driverMaxVer1": 420,
+              "driverMaxVer1": 415,
               "data": {
                 "affected": true
               }
@@ -3000,8 +3045,7 @@
           "brokenSubpasses": {
             "entry": {
               "gpu": "G610",
-              "driverMinVer0": 38,
-              "driverMaxVer0": 38,
+              "driverInfo": "ce623b7dd8f8f92ae690a9a38057e2b5",
               "data": {
                 "affected": true
               }
@@ -3048,7 +3092,7 @@
               }
             }
           },
-          "brokenRecreateImage": {
+          "brokenMTRecreateImage": {
             "entry": {
               "gpu": [
                 "G52",

@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { /* OPT_TANK_TARGETING_CONTROL,  */
-  OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_ARMOR_PIERCING_FIXED,
+  OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_SHOW_MOVE_DIRECTION_IN_SIGHT, OPT_ARMOR_PIERCING_FIXED,
   OPT_AUTO_ZOOM_TANK, OPT_GEAR_DOWN_ON_STOP_BUTTON, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_CAMERA_SENSE,
-  OPT_CAMERA_SENSE_IN_ZOOM, OPT_CAMERA_SENSE_TANK
+  OPT_CAMERA_SENSE_IN_ZOOM, OPT_CAMERA_SENSE_TANK, OPT_FREE_CAMERA_TANK,
   OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, OPT_SHOW_GRASS_IN_TANK_VISION, mkOptionValue, getOptValue
 } = require("%rGui/options/guiOptions.nut")
 let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle,
-  set_auto_zoom, CAM_TYPE_NORMAL_TANK, CAM_TYPE_BINOCULAR_TANK
+  set_auto_zoom, CAM_TYPE_NORMAL_TANK, CAM_TYPE_BINOCULAR_TANK, CAM_TYPE_FREE_TANK
 } = require("controlsOptions")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { sharedStats } = require("%appGlobals/pServer/campaign.nut")
@@ -134,6 +134,19 @@ let showMoveDirection = {
   description = loc("options/desc/show_move_direction")
 }
 
+let moveDirectionInSightList = [false, true]
+let currentShowMoveDirectionInSight = mkOptionValue(OPT_SHOW_MOVE_DIRECTION_IN_SIGHT, true,
+  @(v) validate(v, moveDirectionInSightList))
+let showModeDirectionInSight = {
+  locId = "options/show_move_direction_in_sight"
+  ctrlType = OCT_LIST
+  value = currentShowMoveDirectionInSight
+  onChangeValue = @(v) sendChange("show_move_direction_in_sight", v)
+  list = moveDirectionInSightList
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+  description = loc("options/desc/show_move_direction_in_sight")
+}
+
 let grassInTankVisionList = [false, true]
 let currentGrassInTankVision = mkOptionValue(OPT_SHOW_GRASS_IN_TANK_VISION, true, @(v) validate(v, grassInTankVisionList))
 let showGrassInTankVision = {
@@ -167,11 +180,13 @@ return {
   tankControlsOptions = [
     tankMoveControlType
     cameraSenseSlider(CAM_TYPE_NORMAL_TANK, "options/camera_sensitivity", OPT_CAMERA_SENSE_TANK, getOptValue(OPT_CAMERA_SENSE)?? 1.0)
+    cameraSenseSlider(CAM_TYPE_FREE_TANK, "options/free_camera_sensitivity_tank", OPT_FREE_CAMERA_TANK, 2.0, 0.5, 8.0)
     cameraSenseSlider(CAM_TYPE_BINOCULAR_TANK, "options/camera_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_TANK, getOptValue(OPT_CAMERA_SENSE_IN_ZOOM)?? 1.0)
     gearDownOnStopButtonTouch
     targetTrackingType
     // tankTargetControlType
     showMoveDirection
+    showModeDirectionInSight
     showGrassInTankVision
     currentArmorPiercingType
     showReticleButtonTouch

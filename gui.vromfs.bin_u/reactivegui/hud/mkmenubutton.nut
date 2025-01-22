@@ -10,6 +10,7 @@ let menuImage = getSvgImage("hud_menu", touchMenuButtonSize)
 
 let mkMenuButton = @(overrideParams = {}) {
   behavior = Behaviors.Button
+  cameraControl = true
   rendObj = ROBJ_IMAGE
   size = [touchMenuButtonSize, touchMenuButtonSize]
   valign = ALIGN_CENTER

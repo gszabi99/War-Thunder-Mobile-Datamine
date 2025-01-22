@@ -157,6 +157,8 @@ let selSlot = Computed(function() {
     ?? respawnSlots.value.findvalue(@(s) s.canSpawn)
 })
 
+let hasSkins = Computed(@() (selSlot.get()?.skins.len() ?? 0) > 0)
+
 let selSlotUnitType = Computed(@() "name" not in selSlot.get() ? null
   : getUnitType(selSlot.get().name))
 
@@ -349,6 +351,7 @@ return {
   hasUnseenShellsBySlot
   selSlotContentGenId
   isBailoutDeserter
+  hasSkins
 
   respawn
   cancelRespawn

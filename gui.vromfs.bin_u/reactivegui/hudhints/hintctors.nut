@@ -143,10 +143,16 @@ function commonHintCtor(hint, bgColor, width = hintWidth) {
   return hint?.key == null ? res : res.__update({ key = hint.key })
 }
 
+function expHint(hint) {
+  let res = mkGradientBlock(defBgColor, simpleText(hint.text, { maxWidth = maxHintWidth }.__update(fontSmallShaded)))
+  return hint?.key == null ? res : res.__update({ key = hint.key })
+}
+
 let hintCtors = {
   win = @(hint, _) commonHintCtor(hint, winBgColor)
   fail = @(hint, _) commonHintCtor(hint, failBgColor)
   mission = @(hint, _) commonHintCtor(hint, defBgColor, isWidescreen ? hintWidth : hdpx(600))
+  expHint = @(hint, _) expHint(hint)
 
   warningWithIcon = @(hint, _) mkGradientBlock(warningBgColor,
     mkTextWithIcon(hint?.text ?? "", hint?.icon, hint?.iconSize, maxHintWidth),

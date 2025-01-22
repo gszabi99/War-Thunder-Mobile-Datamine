@@ -6,17 +6,16 @@ let { mkUnitLevelBlock, levelHolderSize } = require("%rGui/unit/components/unitL
 let { mkCurrencyImage, mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 let { mkUnitStatsCompShort, mkUnitStatsCompFull, armorProtectionPercentageColors,
-  avgShellPenetrationMmByRank } = require("%rGui/unit/unitStats.nut")
-let { attrPresets } = require("%rGui/attributes/attrState.nut")
+  avgShellPenetrationMmByRank, addedFromSlot } = require("%rGui/unit/unitStats.nut")
+let { attrPresets, hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
 let { mkUnitBonuses, mkUnitDailyLimit, mkBonusTiny, bonusTinySize } = require("unitInfoComps.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { itemsCfgByCampaignOrdered } = require("%appGlobals/itemsState.nut")
 let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
 let { TANK } = require("%appGlobals/unitConst.nut")
-let { unitMods } = require("%rGui/unitMods/unitModsState.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { campConfigs, curCampaignSlots } = require("%appGlobals/pServer/campaign.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
@@ -26,13 +25,12 @@ let { isUnitsTreeAttached } = require("%rGui/unitsTree/unitsTreeState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
 
-
 let statsWidth = hdpx(495)
 let textColor = 0xFFFFFFFF
 let progressBgColor = 0xFF606060
-let progressFgColor = 0xFF10AFE2
-let progressFgPositiveColor = 0xFF18FFFF
-let progressFgNegativeColor = 0xFFDE83FF
+let progressFgColor = 0xFFFFFFFF
+let progressFgPositiveColor = 0xFF00D427
+let progressFgNegativeColor = 0xFFFF0202
 let progressBorderW = hdpx(2)
 let progressHt = hdpx(5) + 2 * progressBorderW
 let statsGap = hdpx(5)
@@ -128,7 +126,7 @@ function setScrollStr(text){
 
 function mkStatRow(data, prevProgress) {
   let { header = null, value = null, progress = null,
-    progressColor = null, uid = null, isMultiline = false } = data
+    progressColor = null, uid = null, isMultiline = false, progressAttr = 0 } = data
   return {
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
@@ -139,7 +137,7 @@ function mkStatRow(data, prevProgress) {
         valign = ALIGN_BOTTOM
         children = [
           isMultiline ? mkTextArea({ text = header }) : mkText(setScrollStr(header))
-          mkText({ text = value, hplace = ALIGN_RIGHT })
+          mkTextArea({ text = value, halign = ALIGN_RIGHT })
         ]
       }
       progress == null ? null
@@ -160,7 +158,13 @@ function mkStatRow(data, prevProgress) {
               (prevProgress ?? progress) == progress ? null
                 : prevProgress > progress
                   ? diffProgress(pw((prevProgress - progress) * 100), pw(progress * 100), 0.0, progressFgNegativeColor)
-                : diffProgress(pw((progress - prevProgress) * 100), pw(prevProgress * 100), 1.0, progressFgPositiveColor)
+                : diffProgress(pw((progress - prevProgress) * 100), pw(prevProgress * 100), 1.0, progressFgPositiveColor),
+              {
+                size = [pw(progress * 100 * progressAttr), flex()]
+                pos = [pw(progress * 100), flex()]
+                rendObj = ROBJ_SOLID
+                color = addedFromSlot
+              }
             ]
           }
     ].filter(@(v) v != null)
@@ -308,12 +312,12 @@ function unitArmorBlock(unit, needLabels) {
 
 function unitPriceBlock(unit) {
   if (unit?.campaign not in serverConfigs.get()?.unitTreeNodes
-      || unit.name in myUnits.get())
+      || unit.name in campMyUnits.get())
     return null
   let price = Computed(@() getUnitAnyPrice(unit, false, unitDiscounts.get()))
   return @() price.get()?.price
     ? {
-      watch = [serverConfigs, myUnits, price]
+      watch = [serverConfigs, campMyUnits, price]
       size = [statsWidth, SIZE_TO_CONTENT]
       margin = [statsGap, 0, 0, 0]
       flow = FLOW_HORIZONTAL
@@ -416,7 +420,7 @@ let unitRewardsDailyBlock = @(unit, title, unitsGold) unit?.dailyGoldLimit == 0 
 }
 
 let unitHeaderBlock = @(unit, unitTitleCtor) @(){
-  watch = myUnits
+  watch = campMyUnits
   hplace = ALIGN_RIGHT
   minWidth = statsWidth
   padding = hdpx(10)
@@ -439,14 +443,22 @@ let scrollArrowsBlock = {
   children = mkScrollArrow(scrollHandlerInfoPanel, MR_B, scrollArrowImageSmall)
 }
 
+let getAttrLevels = @(unit) campConfigs.get()?.campaignCfg?.slotAttrPreset != ""
+    ? curCampaignSlots.get()?.slots.findvalue(@(slot) slot.name == unit?.name)?.attrLevels ?? {}
+    : unit?.attrLevels ?? {}
+
+let getAttrPreset = @(unit) hasSlotAttrPreset.get()
+  ? attrPresets.value?[campConfigs.get()?.campaignCfg?.slotAttrPreset]
+  : attrPresets.value?[unit?.attrPreset]
+
 let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit, childOvr = {}, mkScroll = null)
   function() {
     if (unit.value == null)
       return { watch = unit }
 
     let prevStats = lastUnitStats
-    let unitStats = mkUnitStatsCompShort(unit.value, unit.value?.attrLevels,
-      attrPresets.value?[unit.value?.attrPreset], unitMods.value)
+    let unitStats = mkUnitStatsCompShort(unit.get(), getAttrLevels(unit.get()),
+      getAttrPreset(unit.get()), unit.get()?.mods)
     lastUnitStats = unitStats
 
     let children = {
@@ -470,7 +482,7 @@ let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangar
     }.__update(childOvr)
 
     let content = {
-      watch = [unit, unitMods, attrPresets, isUnitsTreeAttached]
+      watch = [unit, attrPresets, isUnitsTreeAttached]
       clipChildren = true
       stopMouse = true
       children = !mkScroll ? children
@@ -488,12 +500,12 @@ let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
     return { watch = unit }
 
   let prevStats = lastUnitStats
-  let unitStats = mkUnitStatsCompFull(unit.value, unit.value?.attrLevels,
-    attrPresets.value?[unit.value?.attrPreset], unitMods.value)
+  let unitStats = mkUnitStatsCompFull(unit.get(), getAttrLevels(unit.get()),
+    getAttrPreset(unit.get()), unit.get()?.mods)
   lastUnitStats = unitStats
 
   return panelBg.__merge({
-    watch = [ unit, itemsCfgByCampaignOrdered, unitMods, attrPresets ]
+    watch = [ unit, itemsCfgByCampaignOrdered, attrPresets ]
     children = unit.value == null ? null
       : [
           unitMRankBlock(unit.value?.mRank)

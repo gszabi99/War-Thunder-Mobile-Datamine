@@ -517,13 +517,13 @@
       ]
     },
     "engines": {
-      "maxSpeed": 5.27,
+      "maxSpeed": 5.8,
       "maxReverseSpeed": 3.0,
       "periscopeSpeedMult": 1.098,
       "surfaceSlowMult": 1.647,
       "speedToTime": {
         "row": [
-          5.2,
+          5.8,
           20.0
         ]
       },
@@ -712,7 +712,7 @@
         "blk": "gameData/Weapons/torpedoes/uk_533mm_21in_mk5_torpedo.blk",
         "emitter": "bone_torpedo_01",
         "useEmitter": true,
-        "bullets": 8,
+        "bullets": 32,
         "startFx": "underwater_start_torpedo",
         "startFxOffset": [
           4.0,
@@ -725,7 +725,7 @@
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
-        "shotFreq": 0.1,
+        "shotFreq": 0.067,
         "turret": {
           "head": "bone_torpedo_01",
           "gun": "bone_torpedo_01"
@@ -747,7 +747,7 @@
         "external": true,
         "blk": "gameData/Weapons/torpedoes/uk_533mm_21in_mk5_torpedo.blk",
         "emitter": "bone_torpedo_02",
-        "bullets": 8,
+        "bullets": 0,
         "isSharedAmmoOnTriggerGroup": true,
         "startFx": "underwater_start_torpedo",
         "startFxOffset": [
@@ -761,7 +761,7 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
-        "shotFreq": 0.1,
+        "shotFreq": 0.067,
         "turret": {
           "head": "bone_torpedo_02",
           "gun": "bone_torpedo_02"
@@ -783,7 +783,7 @@
         "external": true,
         "blk": "gameData/Weapons/torpedoes/uk_533mm_21in_mk5_torpedo.blk",
         "emitter": "bone_torpedo_03",
-        "bullets": 8,
+        "bullets": 0,
         "isSharedAmmoOnTriggerGroup": true,
         "startFx": "underwater_start_torpedo",
         "startFxOffset": [
@@ -797,7 +797,7 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
-        "shotFreq": 0.1,
+        "shotFreq": 0.067,
         "turret": {
           "head": "bone_torpedo_03",
           "gun": "bone_torpedo_03"
@@ -819,7 +819,7 @@
         "external": true,
         "blk": "gameData/Weapons/torpedoes/uk_533mm_21in_mk5_torpedo.blk",
         "emitter": "bone_torpedo_04",
-        "bullets": 8,
+        "bullets": 0,
         "isSharedAmmoOnTriggerGroup": true,
         "startFx": "underwater_start_torpedo",
         "startFxOffset": [
@@ -833,7 +833,7 @@
         "gyroAngle": 0.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
-        "shotFreq": 0.1,
+        "shotFreq": 0.067,
         "turret": {
           "head": "bone_torpedo_04",
           "gun": "bone_torpedo_04"
@@ -935,7 +935,7 @@
               "blk": "gameData/Weapons/torpedoes/uk_533mm_21in_mk5_torpedo.blk",
               "emitter": "bone_torpedo_01",
               "useEmitter": true,
-              "bullets": 8,
+              "bullets": 32,
               "startFx": "underwater_start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -948,7 +948,7 @@
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
-              "shotFreq": 0.1,
+              "shotFreq": 0.067,
               "turret": {
                 "head": "bone_torpedo_01",
                 "gun": "bone_torpedo_01"
@@ -970,7 +970,7 @@
               "external": true,
               "blk": "gameData/Weapons/torpedoes/uk_533mm_21in_mk5_torpedo.blk",
               "emitter": "bone_torpedo_02",
-              "bullets": 8,
+              "bullets": 0,
               "isSharedAmmoOnTriggerGroup": true,
               "startFx": "underwater_start_torpedo",
               "startFxOffset": [
@@ -984,7 +984,7 @@
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
-              "shotFreq": 0.1,
+              "shotFreq": 0.067,
               "turret": {
                 "head": "bone_torpedo_02",
                 "gun": "bone_torpedo_02"
@@ -1006,7 +1006,7 @@
               "external": true,
               "blk": "gameData/Weapons/torpedoes/uk_533mm_21in_mk5_torpedo.blk",
               "emitter": "bone_torpedo_03",
-              "bullets": 8,
+              "bullets": 0,
               "isSharedAmmoOnTriggerGroup": true,
               "startFx": "underwater_start_torpedo",
               "startFxOffset": [
@@ -1020,7 +1020,7 @@
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
-              "shotFreq": 0.1,
+              "shotFreq": 0.067,
               "turret": {
                 "head": "bone_torpedo_03",
                 "gun": "bone_torpedo_03"
@@ -1042,7 +1042,7 @@
               "external": true,
               "blk": "gameData/Weapons/torpedoes/uk_533mm_21in_mk5_torpedo.blk",
               "emitter": "bone_torpedo_04",
-              "bullets": 8,
+              "bullets": 0,
               "isSharedAmmoOnTriggerGroup": true,
               "startFx": "underwater_start_torpedo",
               "startFxOffset": [
@@ -1056,7 +1056,7 @@
               "gyroAngle": 0.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
-              "shotFreq": 0.1,
+              "shotFreq": 0.067,
               "turret": {
                 "head": "bone_torpedo_04",
                 "gun": "bone_torpedo_04"

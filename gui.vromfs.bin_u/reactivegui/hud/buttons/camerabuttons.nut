@@ -29,7 +29,6 @@ let mkCameraButton = @(shortcutId, image) function(scale) {
     halign = ALIGN_CENTER
 
     behavior = TouchAreaOutButton
-    cameraControl = true
 
     children = [
       {

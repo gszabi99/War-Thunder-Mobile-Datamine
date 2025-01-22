@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { is_ios, is_android } = require("%appGlobals/clientState/platform.nut")
 let { logEvent, setAppsFlyerCUID } = require("appsFlyer")
+let { logEventFB } = require("android.account.fb")
 let { setBillingUUID = @(_) null } = is_ios ? require("ios.billing.appstore") : {}
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { INVALID_USER_ID } = require("matching.errors")
@@ -18,6 +19,7 @@ const FIRST_LOGIN_EVENT = "first_login_event"
 function sendEvent(id) {
   log($"[telemetry] send event {id}")
   logEvent($"af_{id}", "")
+  logEventFB($"fb_{id}")
   //do not use event names from this list https://firebase.google.com/docs/reference/ios/firebaseanalytics/api/reference/Classes/FIRAnalytics#/c:objc(cs)FIRAnalytics(cm)logEventWithName:parameters:
   //standart event names can use optinal parameters https://firebase.google.com/docs/reference/ios/firebaseanalytics/api/reference/Constants#/c:FIREventNames.h
   logFirebaseEvent(id)
@@ -33,6 +35,7 @@ myUserId.subscribe(function(v) {
     let wasLoginedBefore = blk?[FIRST_LOGIN_EVENT] ?? false
     if (!wasLoginedBefore) {
       logEvent("af_first_login",object_to_json_string({cuid = uid}, false))
+      logEventFB("fb_first_login")
       logFirebaseEventWithJson("first_login",object_to_json_string({cuid = uid}, false))
       blk[FIRST_LOGIN_EVENT] = true
       eventbus_send("saveProfile", {})

@@ -1,12 +1,11 @@
 from "frp" import Computed, Watched, FRP_INITIAL, FRP_DONT_CHECK_NESTED, set_nested_observable_debug,
   make_all_observables_immutable, recalc_all_computed_values, gather_graph_stats, update_deferred, set_default_deferred
 
-// set_default_deferred(false)
+// set_default_deferred(false, false) // Computed, Watched
 
 function WatchedImmediate(...) {
   let w = Watched.acall([this].extend(vargv))
-  if ("setDeferred" in w)
-    w.setDeferred(false)
+  w.setDeferred(false)
   return w
 }
 

@@ -24,6 +24,7 @@ let { myUserId } = require("%appGlobals/profileStates.nut")
 let { battleCampaign, battleUnitClasses, mainBattleUnitName } = require("%appGlobals/clientState/missionState.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
+let { registerRespondent } = require("scriptRespondent")
 
 
 enum ACTION {
@@ -238,7 +239,7 @@ function setBattleDataToClientEcs(bd) {
 function createBattleDataForLocalMP() {
   let unitName = curUnit.value?.name ?? curUnitName.value
   let slots = curCampaignSlotUnits.get()
-  logBD("createBattleDataForLocalMP ", unitName, slots)
+  logBD("createBattleDataForLocalMP ", unitName, slots, isBattleDataActual.get())
   if (slots != null)
     actualizeBattleData(slots)
   else if (unitName != null)
@@ -250,11 +251,14 @@ function createBattleDataForLocalMP() {
     logBD("Ignore set battle data to localMP because of not actual")
 }
 
-eventbus_subscribe("CreateBattleDataForClient",
-  @(_) is_local_multiplayer() ? createBattleDataForLocalMP()
-    : is_multiplayer() ? setBattleDataToClientEcs(state.value?.data)
-    : isBattleDataActual.value ? setBattleDataToClientEcs(battleData.value?.payload)
-    : logBD("Ignore set battle data to client because of not actual"))
+let onCreateBattleDataForClient = @() is_local_multiplayer() ? createBattleDataForLocalMP()
+  : is_multiplayer() ? setBattleDataToClientEcs(state.value?.data)
+  : isBattleDataActual.value ? setBattleDataToClientEcs(battleData.value?.payload)
+  : logBD("Ignore set battle data to client because of not actual")
+
+registerRespondent("create_battle_data_for_local_mp", onCreateBattleDataForClient) //compatibility for exe version 2025.01.13
+registerRespondent("create_battle_data_for_client", onCreateBattleDataForClient)
+eventbus_subscribe("CreateBattleDataForClient", @(_) onCreateBattleDataForClient())
 
 let mpBattleDataForClientEcs = keepref(Computed(@() !isInBattle.value || !is_multiplayer() ? null
   : state.value?.data))

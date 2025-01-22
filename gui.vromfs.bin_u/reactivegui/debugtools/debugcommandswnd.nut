@@ -31,6 +31,8 @@ let { startDebugNewbieMission, startLocalMultiplayerMission } = require("%rGui/g
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { currencyOrder, getDbgCurrencyCount } = require("%appGlobals/currenciesState.nut")
 let { canBattleWithoutAddons } = require("%appGlobals/clientState/clientState.nut")
+let debugPermissionsWnd = require("debugPermissionsWnd.nut")
+
 
 let wndWidth = sh(130)
 let gap = hdpx(10)
@@ -116,6 +118,7 @@ let commandsList = [].extend(
         dlog(canBattleWithoutAddons.get() ? "Allowed" : "Disable") //warning disable: -forbidden-function
       })
     }
+    { label = "permissions", func = withClose(debugPermissionsWnd) }
   ])
 
 function mkCommandsList() {

@@ -8,13 +8,13 @@ let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut
 let { gamercardGap, CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
 let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
-let { curUnit, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { curUnit, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { btnOpenUnitAttr } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
 let { isMainMenuAttached } = require("mainMenuState.nut")
 let { totalPlayers } = require("%appGlobals/gameModes/gameModes.nut")
 let { curCampaign, campaignsList, campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let chooseCampaignWnd = require("chooseCampaignWnd.nut")
+let { chooseCampaignWnd } = require("chooseCampaignWnd.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
@@ -49,6 +49,7 @@ let { slotBarMainMenu, slotBarSize } = require("%rGui/slotBar/slotBar.nut")
 let { slots } = require("%rGui/slotBar/slotBarState.nut")
 let { unseenCampaigns } = require("unseenCampaigns.nut")
 let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
+let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -56,30 +57,35 @@ let mainMenuUnitToShow = keepref(Computed(function() {
   if (!isMainMenuAttached.value)
     return null
   return curUnit.value?.name
-    ?? allUnitsCfg.value.reduce(@(res, unit) res == null || res.rank > unit.rank ? unit : res)?.name
+    ?? campUnitsCfg.get().reduce(@(res, unit) res == null || res.rank > unit.rank ? unit : res)?.name
 }))
 
 mainMenuUnitToShow.subscribe(@(unitId) unitId == null ? null : setHangarUnit(unitId))
 
-let mkUnitName = @(unit) @() {
-  watch = unitNameStateFlags
-  onElemState = @(sf) unitNameStateFlags(sf)
-  behavior = Behaviors.Button
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(24)
-  onClick = @() unitDetailsWnd({ name = unit.name })
-  children = [
-    mkPlatoonOrUnitTitle(
-      unit, {}, unitNameStateFlags.value & S_HOVER ? { color = hoverColor } : {})
-    mkGradRank(unit.mRank)
-  ]
+function mkUnitName(unit) {
+  let hasUnseenRewards = Computed(@() unit.get()?.name in unseenUnitLvlRewardsList.get())
+  return @() {
+    watch = [unit, unitNameStateFlags, hasUnseenRewards]
+    onElemState = @(sf) unitNameStateFlags(sf)
+    behavior = Behaviors.Button
+    flow = FLOW_HORIZONTAL
+    valign = ALIGN_CENTER
+    gap = hdpx(24)
+    onClick = @() unitDetailsWnd({ name = unit.get().name })
+    children = [
+      hasUnseenRewards.get() ? priorityUnseenMark : null
+      mkPlatoonOrUnitTitle(
+        unit.get(), {}, unitNameStateFlags.value & S_HOVER ? { color = hoverColor } : {})
+      mkGradRank(unit.get().mRank)
+    ]
+  }
 }
 
 let unitNameBlock = @() hangarUnit.get() == null ? { watch = hangarUnit }
   : {
       watch = [hangarUnit, unseenSkins]
       children = [
-        mkUnitName(hangarUnit.get())
+        mkUnitName(hangarUnit)
         hangarUnit.get().name not in unseenSkins.get() ? null
           : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(20), hdpx(-20)] })
       ]
@@ -279,7 +285,6 @@ return {
   key = {}
   size = saSize
   behavior = HangarCameraControl
-  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
   touchMarginPriority = TOUCH_BACKGROUND
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER

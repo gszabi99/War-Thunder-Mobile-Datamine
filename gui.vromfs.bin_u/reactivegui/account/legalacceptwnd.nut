@@ -6,7 +6,7 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { msgBoxHeader, msgBoxBg } = require("%rGui/components/msgBox.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { urlText } = require("%rGui/components/urlText.nut")
 let { buttonsHGap, mkCustomButton, buttonStyles } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -97,11 +97,11 @@ let legalWnd = bgShaded.__merge({
   size = flex()
   onAttach = @() sendUiBqEvent("legal_accept_wnd", { id = "open" })
   onClick = EMPTY_ACTION
-  children = @() msgBoxBg.__merge({
+  children = @() modalWndBg.__merge({
     flow = FLOW_VERTICAL
     size = [ wndWidthDefault, wndHeight ]
     children = [
-      msgBoxHeader(loc("terms_wnd/header"), { minWidth = SIZE_TO_CONTENT, padding = [ 0, buttonsHGap ] })
+      modalWndHeader(loc("terms_wnd/header"), { minWidth = SIZE_TO_CONTENT, padding = [ 0, buttonsHGap ] })
       wndContent
     ]
   })

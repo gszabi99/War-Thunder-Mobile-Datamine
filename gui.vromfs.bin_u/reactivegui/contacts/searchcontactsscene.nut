@@ -4,7 +4,7 @@ let { searchContactsResult, isSearchInProgress, searchContacts, searchedNick, cl
 } = require("contactsState.nut")
 let { floatingTextInput, floatingTextInputHeight } = require("%rGui/components/textInput.nut")
 let { spinner, spinnerOpacityAnim } = require("%rGui/components/spinner.nut")
-let closeWndBtn = require("%rGui/components/closeWndBtn.nut")
+let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
 let mkContactRow = require("mkContactRow.nut")
 let { mkContactActionBtnPrimary, mkContactActionBtn } = require("mkContactActionBtn.nut")
 let { INVITE_TO_FRIENDS, CANCEL_INVITE, ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST,

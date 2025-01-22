@@ -2,27 +2,37 @@ from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setInterval, clearTimer } = require("dagor.workcycle")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { btnBEscUp, EMPTY_ACTION, btnB } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { textButtonBright, textButtonPrimary, textButtonCommon, textButtonMultiline, buttonsHGap
+let { textButtonBright, textButtonPrimary, textButtonCommon, textButtonMultiline, buttonsVGap, mergeStyles
 } = require("%rGui/components/textButton.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
+let { backButton, backButtonWidth } = require("%rGui/components/backButton.nut")
 let { devMenuContent, openDevMenuButton, needShowDevMenu } = require("%rGui/flightMenu/devFlightMenu.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkCustomMsgBoxWnd } = require("%rGui/components/msgBox.nut")
+let { modalWndBg, modalWndHeaderBg } = require("%rGui/components/modalWnd.nut")
 let optionsScene = require("%rGui/options/optionsScene.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
-let { COMMON } = require("%rGui/components/buttonStyles.nut")
+let { COMMON, PRIMARY, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { isUnitDelayed, isUnitAlive, unitType } = require("%rGui/hudState.nut")
 let { respawnSlots, canUseSpare, isBailoutDeserter } = require("%rGui/respawn/respawnState.nut")
 let { resetGravityAxesZero } = require("%rGui/hud/aircraftMovementBlock.nut")
 let { isAircraftControlByGyro } = require("%rGui/options/options/airControlsOptions.nut")
+let { AIR } = require("%appGlobals/unitConst.nut")
+let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 
+
+let LEAVE_BATTLE_MSG_UID = "leaveBattleMsgUID"
+
+let flightMenuWidth = hdpx(600)
+let buttonsPadding = hdpx(40)
+let menuBtnWidth = flightMenuWidth - 2 * buttonsPadding
+let backButtonSize = [backButtonWidth / 2, backButtonWidth / 2]
 
 let spawnInfo = Watched(null)
 let canDeserter = Computed(function() {
@@ -42,12 +52,20 @@ register_es("on_change_lastBailoutTime", {
   })
 eventbus_subscribe("localPlayerSpawnInfo", @(s) spawnInfo(s))
 
-let battleResume = @() eventbus_send("FlightMenu_doButtonAction", { buttonName = "Resume" })
+function battleResume() {
+  removeModalWindow(LEAVE_BATTLE_MSG_UID)
+  eventbus_send("FlightMenu_doButtonAction", { buttonName = "Resume" })
+}
 let quitMission = @() eventbus_send("quitMission", {})
 let leaveVehicle = @() eventbus_send("FlightMenu_doButtonAction", { buttonName = "LeaveTheTank" })
 
 let backBtn = backButton(battleResume,
-  { hotkeys = [["^J:Start", loc("btn/continueBattle")]], clickableInfo = loc("btn/continueBattle") })
+  {
+    hotkeys = [[$"^J:Start | Esc | {btnB}", loc("btn/continueBattle")]],
+    clickableInfo = loc("btn/continueBattle"),
+    size = backButtonSize
+    image = Picture($"ui/gameuiskin#mark_cross_white.svg:{backButtonSize[0]}:{backButtonSize[1]}")
+  })
 
 let menuContent = @(isGivingUp, campaign) mkCustomMsgBoxWnd(loc("msgbox/leaveBattle/title"),
   loc(isGivingUp ? "msgbox/leaveBattle/giveUp" : "msgbox/leaveBattle/toPort"),
@@ -59,73 +77,107 @@ let menuContent = @(isGivingUp, campaign) mkCustomMsgBoxWnd(loc("msgbox/leaveBat
       { hotkeys = [btnBEscUp] })
   ])
 
-let optionsButton = textButtonCommon(utf8ToUpper(loc("mainmenu/btnOptions")), optionsScene,
-  { hotkeys = ["^J:Y"] })
-let helpButton = textButtonCommon(utf8ToUpper(loc("flightmenu/btnControlsHelp")), controlsHelpWnd,
-  { hotkeys = ["^J:X"] })
+function openLeaveBattleMsg() {
+  removeModalWindow(LEAVE_BATTLE_MSG_UID)
+  addModalWindow({
+    key = LEAVE_BATTLE_MSG_UID
+    children = @() {
+      watch = [canDeserter, battleCampaign]
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      children = menuContent(canDeserter.get(), battleCampaign.get())
+    }
+    onClick = EMPTY_ACTION
+  })
+}
+
+let optionsButton = textButtonMultiline(utf8ToUpper(loc("mainmenu/btnOptions")), optionsScene,
+  mergeStyles(PRIMARY, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
+let helpButton = textButtonMultiline(utf8ToUpper(loc("flightmenu/btnControlsHelp")), controlsHelpWnd,
+  mergeStyles(PRIMARY, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
 let gyroResetButton = textButtonMultiline(utf8ToUpper(loc("mainmenu/btnGyroReset")), resetGravityAxesZero,
-  COMMON)
+  mergeStyles(PRIMARY, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
 let leaveVehicleButton = textButtonMultiline(utf8ToUpper(loc("flightmenu/btnLeaveTheTank")), leaveVehicle,
-  COMMON.__merge({ hotkeys = ["^J:LT"] }))
+  mergeStyles(PRIMARY, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
+let leaveBattleButton = textButtonMultiline(utf8ToUpper(loc("msgbox/leaveBattle/btn")), openLeaveBattleMsg,
+  mergeStyles(COMMON, { ovr = { size = [menuBtnWidth, defButtonHeight] } }))
 
 let customButtons = @() {
   watch = isGamepad
-  vplace = ALIGN_BOTTOM
-  flow = FLOW_HORIZONTAL
+  flow = FLOW_VERTICAL
   valign = ALIGN_CENTER
-  gap = buttonsHGap
+  gap = buttonsVGap
   children = [
     optionsButton
     isGamepad.get() ? helpButton : null
   ]
 }
 
+let gyroButtons = @() {
+  watch = [unitType, isAircraftControlByGyro]
+  valign = ALIGN_CENTER
+  children = unitType.get() == AIR && isAircraftControlByGyro.get()
+    ? gyroResetButton
+    : null
+}
+
 let refreshSpawnInfo = @() eventbus_send("getLocalPlayerSpawnInfo", {})
 
 let flightMenu = @() bgShaded.__merge({
-  watch = [needShowDevMenu, canDeserter, battleCampaign]
+  watch = [canDeserter, battleCampaign]
   key = needShowDevMenu
   function onAttach() {
     refreshSpawnInfo()
     setInterval(1.0, refreshSpawnInfo)
   }
   onDetach = @() clearTimer(refreshSpawnInfo)
-
   size = flex()
   padding = saBordersRv
-  children = [
-    backBtn
-    needShowDevMenu.get() ? devMenuContent : menuContent(canDeserter.get(), battleCampaign.get())
-    customButtons
-    @() {
-      watch = [isUnitAlive, isUnitDelayed, respawnSlots, canBailoutFromFlightMenu, canUseSpare]
-      flow = FLOW_HORIZONTAL
-      gap = buttonsHGap
-      hplace = ALIGN_RIGHT
-      vplace = ALIGN_BOTTOM
-      valign = ALIGN_BOTTOM
-      children = [
-        isUnitAlive.get() && !isUnitDelayed.get()
-            && canBailoutFromFlightMenu.get()
-            && (respawnSlots.get().len() > 1 || canUseSpare.get())
-          ? leaveVehicleButton
-          : null
-        @() {
-          watch = [unitType, isAircraftControlByGyro]
-          flow = FLOW_VERTICAL
-          gap = buttonsHGap
-          hplace = ALIGN_RIGHT
-          vplace = ALIGN_BOTTOM
-          children = [
-            openDevMenuButton
-            unitType.get() == "air" && isAircraftControlByGyro.get()
-              ? gyroResetButton
-              : null
-          ]
-        }
-      ]
-    }
-  ]
+  children = modalWndBg.__merge({
+    size = [flightMenuWidth, SIZE_TO_CONTENT]
+    flow = FLOW_VERTICAL
+    children = [
+      modalWndHeaderBg.__merge({
+        size = [flex(), SIZE_TO_CONTENT]
+        padding = [hdpx(20), buttonsPadding]
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        children = [
+          {
+            size = [flex(), SIZE_TO_CONTENT]
+            hplace = ALIGN_RIGHT
+            halign = ALIGN_RIGHT
+            children = backBtn
+          }
+          @() {
+            watch = needShowDevMenu
+            rendObj = ROBJ_TEXT
+            text = needShowDevMenu.get() ? "DEV MENU" : utf8ToUpper(loc("mainmenu/menu"))
+          }.__update(fontSmallAccented)
+        ]
+      })
+      @() {
+        watch = [isUnitAlive, isUnitDelayed, respawnSlots, canBailoutFromFlightMenu, canUseSpare, needShowDevMenu]
+        flow = FLOW_VERTICAL
+        halign = ALIGN_CENTER
+        hplace = ALIGN_CENTER
+        padding = buttonsPadding
+        gap = buttonsVGap
+        children = needShowDevMenu.get() ? [devMenuContent(menuBtnWidth), openDevMenuButton(menuBtnWidth)]
+          : [
+              isUnitAlive.get() && !isUnitDelayed.get()
+                  && canBailoutFromFlightMenu.get()
+                  && (respawnSlots.get().len() > 1 || canUseSpare.get())
+                ? leaveVehicleButton
+                : null
+              customButtons
+              gyroButtons
+              leaveBattleButton
+              openDevMenuButton(menuBtnWidth)
+            ]
+      }
+    ]
+  })
   animations = wndSwitchAnim
 })
 

@@ -25,7 +25,7 @@ let { mkFreeAdsGoodsTimeProgress } = require("%rGui/shop/goodsView/sharedParts.n
 let { schRewards } = require("%rGui/shop/schRewardsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { mkButtonHoldTooltip  } = require("%rGui/tooltip.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { getStepsToNextFixed, openLootboxPreview } = require("lootboxPreviewState.nut")
@@ -297,7 +297,7 @@ function mkReward(reward, lootbox, rStyle) {
       clickableInfo = loc("mainmenu/btnPreview")
     }
   let isAllReceived = dropLimit != NO_DROP_LIMIT && dropLimit <= received
-  let isAvailable = Computed(@() rType != "skin" || id in myUnits.get())
+  let isAvailable = Computed(@() rType != "skin" || id in campMyUnits.get())
 
   local ovrRewardPlate = null
   local stepsToFixed = []

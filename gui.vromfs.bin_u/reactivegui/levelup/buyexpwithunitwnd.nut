@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { gamercardBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { playerLevelInfo, allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
+let { curUnit, playerLevelInfo, campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { GOLD, WP } = require("%appGlobals/currenciesState.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkUnitBonuses } = require("%rGui/unit/components/unitInfoComps.nut")
@@ -30,12 +30,14 @@ let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene
 let { openRewardsModal, lvlUpCost } = require("%rGui/levelUp/levelUpState.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { wpOfferCard, premOfferCard, gapCards, battleRewardsTitle } = require("chooseUpgradePkg.nut")
+let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
+let { boughtUnit } = require("%rGui/unit/selectNewUnitWnd.nut")
 
 let fonticonPreview = "⌡"
 
-let curUnit = mkWatched(persist, "curUnit", null)
+let curUnitWithExp = mkWatched(persist, "curUnitWithExp", null)
 
-let close = @() curUnit(null)
+let close = @() curUnitWithExp(null)
 
 let lvlText = @(level, starLevel) {
   size = [SIZE_TO_CONTENT, hdpx(50)]
@@ -238,13 +240,19 @@ registerHandler("onUnitPurchaseWithLevel",
     if (res?.error != null)
       return
     let { unitId } = context
-    let errString = setCurrentUnit(unitId)
-    if (errString != "") {
-      logerr($"On choose unit after purchase: {errString}")
-      return
-    }
+    curSelectedUnit.set(unitId)
+
+    if (curUnit.get() == null) {
+      let errString = setCurrentUnit(unitId)
+      if (errString != "") {
+        logerr($"On choose unit after purchase: {errString}")
+        return
+      }
+    } else
+      boughtUnit.set(unitId)
+
     openRewardsModal()
-    requestOpenUnitPurchEffect(myUnits.value?[unitId])
+    requestOpenUnitPurchEffect(campMyUnits.get()?[unitId])
   }
 )
 
@@ -338,8 +346,8 @@ let mkCardContent = @(unit) {
 }
 
 function offerCards() {
-  let watch = [allUnitsCfg, campConfigs]
-  let unit = allUnitsCfg.value?[curUnit.value]
+  let watch = [campUnitsCfg, campConfigs]
+  let unit = campUnitsCfg.get()?[curUnitWithExp.get()]
   let upgradedUnit = unit?.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
     { isUpgraded = true })
   if (unit == null)
@@ -371,6 +379,6 @@ let buyExpWithUnitWnd = bgShadedDark.__merge({
 })
 
 registerScene("buyExpWithUnitWnd", buyExpWithUnitWnd, close,
-  keepref(Computed(@() curUnit.value != null)))
+  keepref(Computed(@() curUnitWithExp.get() != null)))
 
-return @(unit) curUnit(unit)
+return @(unit) curUnitWithExp(unit)

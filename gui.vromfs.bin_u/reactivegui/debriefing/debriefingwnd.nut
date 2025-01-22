@@ -6,7 +6,7 @@ let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { curUnit, playerLevelInfo, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { curUnit, playerLevelInfo, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { textButtonPrimary, textButtonBattle, buttonsHGap } = require("%rGui/components/textButton.nut")
@@ -207,7 +207,7 @@ let mkBtnUpgradeUnit = @(needShow, campaign) mkBtnAppearAnim(true, needShow, tex
       countUpgradeButtonPushed.set(countUpgradeButtonPushed.get() + 1)
       get_local_custom_settings_blk()[SAVE_ID_UPGRADE_BUTTON_PUSHED] = countUpgradeButtonPushed.get()
       eventbus_send("saveProfile", {})
-      let unit = allUnitsCfg.get()?[getBestUnitName(debriefingData.get())]
+      let unit = campUnitsCfg.get()?[getBestUnitName(debriefingData.get())]
       if (unit != null) {
         updateHangarUnit(unit.name)
         openUnitAttrWnd()
@@ -259,7 +259,7 @@ let mkBtnNewPlatoonUnit = @(needShow, newPlatoonUnit) mkBtnAppearAnim(true, need
   function() {
     isNoExtraScenesAfterDebriefing.set(false)
     function nextAction() {
-      let unit = allUnitsCfg.get()?[getBestUnitName(debriefingData.get())]
+      let unit = campUnitsCfg.get()?[getBestUnitName(debriefingData.get())]
       if (unit != null) {
         unitDetailsWnd({ name = unit.name, selUnitName = newPlatoonUnit.name })
         requestOpenUnitPurchEffect(newPlatoonUnit)
@@ -292,8 +292,8 @@ function debriefingWnd() {
     isFinished = false, isDeserter = false, isDisconnected = false, kickInactivity = false
   } = debrData
   let unitName = getBestUnitName(debrData)
-  let hasResearchedUnit = getResearchedUnit(debrData) != null
-  let isUnitResearchedAfterTutorial = isTutorial && hasResearchedUnit
+  let researchedUnit = getResearchedUnit(debrData)
+  let isUnitResearchedAfterTutorial = isTutorial && researchedUnit != null
   let unlockedReward = getSlotOrUnitLevelUnlockRewards(debrData)
   let hasAnyLevelUnlockRewards = unlockedReward.has
   let isFirstLvlUpForSlot = hasAnyLevelUnlockRewards
@@ -304,14 +304,13 @@ function debriefingWnd() {
     && unlockedReward.type == "arsenal"
     && debrData.completedTutorials?[TUTORIAL_UNITS_RESEARCH_ID]
     && !debrData.completedTutorials?[TUTORIAL_ARSENAL_ID]
-    && !hasResearchedUnit
+    && researchedUnit == null
   let needForceQuitToHangar = isUnitResearchedAfterTutorial
     || isFirstLvlUpForSlot
     || canStartArsenalTutorial
   let hasPlayerLevelUp = !needForceQuitToHangar && isPlayerReceiveLevel(debrData)
   let hasUnitLevelUp = !needForceQuitToHangar && !isSeparateSlots && isUnitReceiveLevel(unitName, debrData)
   let newPlatoonUnit = needForceQuitToHangar ? null : getNewPlatoonUnit(unitName, debrData)
-  let researchedUnit = needForceQuitToHangar ? null : getResearchedUnit(debrData)
 
   let tabsParams = {
     needBtnCampaign = hasPlayerLevelUp || researchedUnit != null

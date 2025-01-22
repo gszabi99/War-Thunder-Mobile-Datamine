@@ -5,18 +5,18 @@ let { GPT_LOOTBOX, previewType, previewGoods, closeGoodsPreview, openPreviewCoun
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { getLootboxName, lootboxPreviewBg } = require("%appGlobals/config/lootboxPresentation.nut")
-
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { mkPreviewHeader, mkTimeBlockCentered, mkPriceBlockCentered, opacityAnims
+let { mkPreviewHeader, mkTimeBlockCentered, mkPriceBlockCentered, opacityAnims, horGap
 } = require("goodsPreviewPkg.nut")
 let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { lootboxImageWithTimer, lootboxContentBlock, mkJackpotProgress
 } = require("%rGui/shop/lootboxPreviewContent.nut")
 let { getStepsToNextFixed } = require("%rGui/shop/lootboxPreviewState.nut")
-
-
+let mkGiftSchRewardBtn = require("mkGiftSchRewardBtn.nut")
+let { schRewards } = require("%rGui/shop/schRewardsState.nut")
+let { doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 let wndHeaderHeight = hdpx(110)
 let contentGap = hdpx(30)
 let wndContentHeight = saSize[1] - wndHeaderHeight - contentGap
@@ -54,7 +54,20 @@ let headerPanel = {
   hplace = ALIGN_LEFT
   valign = ALIGN_CENTER
   children = [
-    header
+    {
+      pos = [-doubleSideGradientPaddingX, 0]
+      size = flex()
+      flow = FLOW_HORIZONTAL
+      gap = horGap
+      children = [
+        header
+        @() {
+          watch = [previewGoods, schRewards]
+          children = mkGiftSchRewardBtn(schRewards.get()?[$"gift_{previewGoods.get()?.meta.campaign}_goods_preview"],
+            aTimeHeaderStart)
+        }
+      ]
+    }
     balanceButtons
   ]
 }

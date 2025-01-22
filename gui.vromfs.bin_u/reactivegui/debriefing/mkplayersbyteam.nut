@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
+let { genBotDecorators } = require("%appGlobals/botUtils.nut")
 
 function mkPlayersByTeam(debrData) {
   let { localTeam = 0, isSeparateSlots = false, players = {}, playersCommonStats = {} } = debrData
@@ -16,6 +17,10 @@ function mkPlayersByTeam(debrData) {
       : isLocal ? localUserName // debrData.userName is a local player's myUserName value.
       : getPlayerName(name) // For players, p.name is a realName (with platform suffix).
     let visualName = frameNick(namePrepared, frameId)
+
+    local botDecorators = null
+    if (isBot)
+      botDecorators = genBotDecorators(namePrepared)
 
     local unitName = isSeparateSlots ? aircraftName : mainUnitName
     if (isSeparateSlots) {
@@ -48,7 +53,7 @@ function mkPlayersByTeam(debrData) {
       isUnitUpgraded
       unitClass
       mRank
-      decorators
+      decorators = botDecorators ?? decorators
     })
   })
   let teamsOrder = localTeam == 2 ? [ 2, 1 ] : [ 1, 2 ]

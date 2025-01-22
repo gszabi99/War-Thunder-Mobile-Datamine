@@ -8,7 +8,8 @@ function mkBattleResultUnitWeaponry(unitName) {
   foreach (ws in unitWeaponSlots) {
     foreach (wpId, wp in ws.wPresets)
       if (wp?.reqModification != "")
-        weaponPresets[wpId] <- wp
+        weaponPresets[wpId] <- wp.__update({ banPresets = wp.banPresets
+          .reduce(@(res, v, k) res.$rawset(k.tostring(), v), {})})
   }
 
   let ammoForWeapons = {}

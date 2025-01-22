@@ -43,6 +43,7 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
     size
     vplace = ALIGN_CENTER
     behavior = Behaviors.Button
+    cameraControl = false
     children = [
       @() {
         watch = stateFlags
@@ -107,6 +108,7 @@ let mkStopBtn = kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = 
     vplace = ALIGN_CENTER
     halign = ALIGN_CENTER
     behavior = TouchScreenButton
+    cameraControl = false
     children = [
       @() {
         watch = stateFlags
@@ -188,6 +190,7 @@ function mkMoveVertBtn(onTouchBegin, onTouchEnd, shortcutId, ovr = {}) {
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_bg.svg:{size[0]}:{size[1]}")
     color = (stateFlags.value & S_ACTIVE) != 0 ? bgColorPushed : bgColor
+    cameraControl = false
   }, ovr)
 }
 

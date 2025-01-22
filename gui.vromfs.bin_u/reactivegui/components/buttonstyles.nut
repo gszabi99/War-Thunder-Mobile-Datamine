@@ -52,6 +52,19 @@ return freeze({
       fontFxFactor = 0
     }
   }
+  HUAWEI = { // Huawei
+    ovr = {
+      size = [SIZE_TO_CONTENT, defButtonHeight]
+      minWidth = hdpx(566)
+      fillColor = Color(255, 255, 255)
+      borderColor = Color(184, 184, 155)
+    }
+    childOvr = {
+      color = Color(0, 0, 0)
+      fontFxFactor = 0
+    }
+    hasPattern = false
+  }
   COMMON = { // Gray
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]

@@ -2,13 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 
 let supportPlaneConfig = [
   {
-    image = "ui/gameuiskin#hud_aircraft_bomber.svg"
-    imageSwitch = "ui/gameuiskin#hud_aircraft_bomber_switch.svg"
+    image = "ui/gameuiskin#hud_aircraft_torpedo.svg"
+    imageSwitch = "ui/gameuiskin#hud_aircraft_torpedo_switch.svg"
     shortcutId = "ID_WTM_LAUNCH_AIRCRAFT"
   },
   {
-    image = "ui/gameuiskin#hud_aircraft_torpedo.svg"
-    imageSwitch = "ui/gameuiskin#hud_aircraft_torpedo_switch.svg"
+    image = "ui/gameuiskin#hud_aircraft_bomber.svg"
+    imageSwitch = "ui/gameuiskin#hud_aircraft_bomber_switch.svg"
     shortcutId = "ID_WTM_LAUNCH_AIRCRAFT_2"
   },
   {

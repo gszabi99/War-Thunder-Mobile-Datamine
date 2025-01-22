@@ -77,7 +77,6 @@
     "setting__loadSound": true,
     "setting__aiEnabled": true,
     "setting__canControlInHangar": false,
-    "setting__dynamicObstacle": false,
     "setting__bullets:list<t>": {},
     "setting__bulletsCount:list<i>": {},
     "setting__unit_target_list:list<t>": {}

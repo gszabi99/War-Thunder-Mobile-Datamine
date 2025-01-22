@@ -160,6 +160,7 @@ let tankMoveStickBase = @(zoneSize, scale) @() {
   function onDetach() {
     setVirtualAxisValue("gm_brake_left", 0)
     setVirtualAxisValue("gm_brake_right", 0)
+    setVirtualAxisValue("gm_steering", 0)
     isStickActiveByStick(false)
     setMoveControlByArrows(true)
   }

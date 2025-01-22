@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { myUnits } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { setCustomHangarUnit, resetCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
@@ -21,7 +21,7 @@ let function setUnit(unit) {
 
 let baseUnit = Computed(function() {
   let { name = null, canShowOwnUnit = true} = openUnitOvr.value
-  local res = canShowOwnUnit ? myUnits.value?[name] ?? serverConfigs.value?.allUnits[name]
+  local res = canShowOwnUnit ? campMyUnits.get()?[name] ?? serverConfigs.value?.allUnits[name]
     : serverConfigs.value?.allUnits[name]
   if (res == null)
     return res

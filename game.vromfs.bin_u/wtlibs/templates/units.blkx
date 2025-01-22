@@ -280,7 +280,8 @@
     "gm_engine_sound__start_event:SoundEvent": {},
     "gm_engine_sound__stop_event:SoundEvent": {},
     "gm_engine_sound__start_inside_event:SoundEvent": {},
-    "gm_engine_sound__stop_inside_event:SoundEvent": {}
+    "gm_engine_sound__stop_inside_event:SoundEvent": {},
+    "gm_engine_sound__cached_params:list<r>": {}
   },
   "gm_additional_engine_sound": {
     "_tags": "sound",
@@ -318,7 +319,8 @@
     "_use": [
       "root",
       "replicating",
-      "base_unit_ext"
+      "base_unit_ext",
+      "replicate_early"
     ],
     "uid": -1,
     "className": "",
@@ -333,13 +335,45 @@
     "unit__ref": {},
     "killerEid:eid": {}
   },
+  "shell_start_fx": {
+    "shell_start_fx__timeFx": 0.0,
+    "shell_start_fx__offset": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "shell_start_fx__fx:EffectRef": {
+      "_tags": "render"
+    },
+    "shell_start_fx__fxFlags:u32": {}
+  },
   "aircraft": {
     "_use": [
       "base_unit",
       "aircraft_ext"
     ],
     "unit_storage__aircraft": {},
-    "unit_tag__aircraft:tag": {}
+    "unit_tag__aircraft:tag": {},
+    "shell_start_fx_eids:list<eid>": {
+      "_tags": "render"
+    }
   },
   "barrage_ballon": {
     "_use": [
@@ -368,6 +402,9 @@
     "fuel_tanks": {},
     "modEids:list<eid>": {
       "_replicate": true
+    },
+    "shell_start_fx_eids:list<eid>": {
+      "_tags": "render"
     }
   },
   "tank": {
@@ -377,6 +414,7 @@
       "gm_engine_sound",
       "tank_phys_tracks"
     ],
+    "_replicated": "reloadedFromAmmoBoxCount",
     "unit_storage__tank": {},
     "unit_tag__tank:tag": {},
     "unit_tag__gm:tag": {},
@@ -395,6 +433,11 @@
       "primary": 0,
       "secondary": 0,
       "special": 0
+    },
+    "canReloadFromBox:list<b>": {
+      "primary": false,
+      "secondary": false,
+      "special": false
     }
   },
   "ship": {
@@ -440,7 +483,6 @@
       "simple_ground_unit",
       "simple_tank_ext"
     ],
-    "unit__dynamicObstacle": false,
     "unit_storage__tank": {},
     "unit_tag__tank:tag": {},
     "unit_tag__gm:tag": {}
@@ -507,7 +549,10 @@
     "unit_tag__infantry_troop:tag": {}
   },
   "expendable_mod": {
-    "_use": "replicating",
+    "_use": [
+      "replicating",
+      "replicate_early"
+    ],
     "mod__enabled_without_mod": false,
     "mod__count_effects_mod": false,
     "mod__send_economic_spend": true,

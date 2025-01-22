@@ -16,7 +16,7 @@ let { unitPlateRatio, unitSelUnderlineFullSize, unitPlatesGap, mkUnitInfo,
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { playerLevelInfo, allUnitsCfg, myUnits } = require("%appGlobals/pServer/profile.nut")
+let { playerLevelInfo, campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -51,7 +51,7 @@ let needSkipBtn = Computed(@() buyUnitsData.value.canLevelUpWithoutBuy
 let nextFreeUnitLevel = Computed(function() {
   local res = 0
   let newLevel = playerLevelInfo.value.level + 1
-  foreach (u in allUnitsCfg.value)
+  foreach (u in campUnitsCfg.get())
     if (u.rank > newLevel && (res == 0 || u.rank < res) && getUnitAnyPrice(u, true, unitDiscounts.value)?.discount == 1.0)
       res = u.rank
   return res
@@ -60,7 +60,7 @@ let nextFreeUnitLevel = Computed(function() {
 function onBuyUnit() {
   if (curSelectedUnit.value == null || unitInProgress.value != null)
     return
-  let unit = allUnitsCfg.value?[curSelectedUnit.value]
+  let unit = campUnitsCfg.get()?[curSelectedUnit.value]
   if (unit == null)
     return
   sendNewbieBqEvent("chooseUnitInLevelUpWnd", { status = curSelectedUnit.value })
@@ -140,12 +140,12 @@ let navBarPlace = {
   flow = FLOW_VERTICAL
   gap = buttonsHGap
   children = @() {
-    watch = myUnits
+    watch = campMyUnits
     hplace = ALIGN_RIGHT
     flow = FLOW_HORIZONTAL
     gap = buttonsHGap
     children = [
-      myUnits.value.len() > 0 ? btnLater : null //do not allow to later when player does not have units at all
+      campMyUnits.get().len() > 0 ? btnLater : null //do not allow to later when player does not have units at all
       unitActions
     ]
   }
@@ -243,7 +243,6 @@ return {
     unitInfoPanel({
       hplace=ALIGN_RIGHT
       behavior = [ Behaviors.Button, HangarCameraControl ]
-      eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
       touchMarginPriority = TOUCH_BACKGROUND
       onClick = @() unitDetailsWnd({ name = curSelectedUnit.value })
     })

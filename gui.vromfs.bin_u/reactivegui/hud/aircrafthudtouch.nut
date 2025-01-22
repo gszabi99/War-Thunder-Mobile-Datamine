@@ -171,7 +171,6 @@ let targetSelectorLayer = {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   behavior = TargetSelector
-  eventPassThrough = true //compatibility with 2024.09.26 (before touchMarginPriority introduce)
   touchMarginPriority = TOUCH_BACKGROUND
   selectAngle = 30
   captureAngle = 7
@@ -185,12 +184,12 @@ let aircraftHud = {
   onAttach = @() startActionBarUpdate("airHud")
   onDetach = @() stopActionBarUpdate("airHud")
   children = [
+    targetSelectorLayer
     hudTuningElems
     menuButton
     hudTopMainLog
     hudBottomCenter
     currentWeaponNameText
-    targetSelectorLayer
   ]
 }
 

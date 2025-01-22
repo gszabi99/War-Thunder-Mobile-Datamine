@@ -4,15 +4,15 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
+let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { bgShadedDark, bgHeader, bgMessage } = require("%rGui/style/backgrounds.nut")
+let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 
 
 let premDescWndUid = "prem_desc_wnd_uid"
 
 let isPremiumDescriptionWndVisible = Watched(false)
 let premiumDescriptionWidth = sw(50)
-let premiumDescriptionHeaderHeight = sh(8)
 
 let premiumBonusesCfg = Computed(@() serverConfigs.value?.gameProfile.premiumBonuses)
 let bonusMultText = @(v) $"{v}x"
@@ -30,13 +30,6 @@ let infoText = Computed(function() {
 
 let closePremiumDescriptionWnd = @() isPremiumDescriptionWndVisible(false)
 
-let premiumDescriptionHeader = bgHeader.__merge({
-  size = [ flex(), premiumDescriptionHeaderHeight ]
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  children = { rendObj = ROBJ_TEXT, text = loc("charServer/entitlement/PremiumAccount") }.__update(fontMedium)
-})
-
 let premiumDescription = {
   flow = FLOW_VERTICAL
   hplace = ALIGN_CENTER
@@ -44,7 +37,7 @@ let premiumDescription = {
   halign = ALIGN_CENTER
   size = [ premiumDescriptionWidth, SIZE_TO_CONTENT ]
   children = [
-    premiumDescriptionHeader
+    modalWndHeader(loc("charServer/entitlement/PremiumAccount"))
     {
       padding = hdpx(48)
       size = [ flex(), SIZE_TO_CONTENT ]
@@ -89,14 +82,7 @@ let premiumDescriptionWnd = {
   onClick = @() closePremiumDescriptionWnd()
   children = [
     backBtn
-    {
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_CENTER
-      children = [
-        bgMessage.__merge({size = flex()})
-        premiumDescription
-      ]
-    }
+    modalWndBg.__merge({ children = premiumDescription })
   ]
 }
 

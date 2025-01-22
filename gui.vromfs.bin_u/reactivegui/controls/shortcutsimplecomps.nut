@@ -25,6 +25,7 @@ function mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFla
   return {
     key = shortcutId
     behavior = Behaviors.Button
+    cameraControl = true
     function onElemState(sf) {
       let prevSf = stateFlags.value
       stateFlags(sf)

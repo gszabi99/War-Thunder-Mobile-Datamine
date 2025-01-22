@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-let { allow_voice_messages } = require("%appGlobals/permissions.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { Z_ORDER, mkLBPos, mkLTPos, mkRBPos, mkRTPos, mkCTPos } = require("hudTuningPkg.nut")
@@ -69,7 +68,7 @@ return cfgHudCommon.__merge({
   }
 
   rocket = {
-    ctor = mkCircleWeaponryItemCtor("ID_ROCKETS", RocketsState, hasRockets, "ui/gameuiskin#hud_rb_rocket.svg", true, false)
+    ctor = mkCircleWeaponryItemCtor("ID_ROCKETS", RocketsState, hasRockets, "ui/gameuiskin#hud_rb_rocket.svg", false)
     defTransform = mkLBPos([hdpx(285), hdpx(-148)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_rb_rocket.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
@@ -77,7 +76,7 @@ return cfgHudCommon.__merge({
   }
 
   torpedo = {
-    ctor = mkCircleWeaponryItemCtor("ID_WTM_AIRCRAFT_TORPEDOES", TorpedoesState, hasTorpedos, "ui/gameuiskin#hud_torpedo.svg", true, false)
+    ctor = mkCircleWeaponryItemCtor("ID_WTM_AIRCRAFT_TORPEDOES", TorpedoesState, hasTorpedos, "ui/gameuiskin#hud_torpedo.svg", false)
     defTransform = mkLBPos([hdpx(435), hdpx(-107)])
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_torpedo.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
@@ -127,11 +126,11 @@ return cfgHudCommon.__merge({
       watch = curActionBarTypes
       children = returnToShipShortcutIds.findvalue(@(_, id) id in curActionBarTypes.get())
           ? mkSimpleSquareButton(returnToShipShortcutIds.findvalue(@(_, id) id in curActionBarTypes.get()),
-              "ui/gameuiskin#hud_ship_selection.svg", scale)
+              "ui/gameuiskin#hud_ship_switch.svg", scale)
         : null
     }
     defTransform = mkRBPos([hdpx(-680), hdpx(-0)])
-    editView = mkSquareButtonEditView("ui/gameuiskin#hud_ship_selection.svg")
+    editView = mkSquareButtonEditView("ui/gameuiskin#hud_ship_switch.svg")
   }
 
   hitCamera = {
@@ -181,8 +180,7 @@ return cfgHudCommon.__merge({
     ctor = voiceMsgStickBlock
     defTransform = mkRBPos([0, hdpx(-0)])
     editView = voiceMsgStickView
-    isVisibleInEditor = allow_voice_messages
-    isVisibleInBattle = Computed(@() allow_voice_messages.get() && isInMpSession.get())
+    isVisibleInBattle = isInMpSession
     priority = Z_ORDER.STICK
   }
 

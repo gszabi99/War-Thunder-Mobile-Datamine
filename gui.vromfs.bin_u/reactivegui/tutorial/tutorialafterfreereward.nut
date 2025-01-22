@@ -15,7 +15,7 @@ let { setTutorialConfig, isTutorialActive, finishTutorial,
 let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
 let { needShowTutorialAfterReward } = require("%rGui/rewards/freeRewardCampaigns.nut")
 let { TUTORIAL_AFTER_REWARD_ID } = require("tutorialConst.nut")
-let { isPurchEffectVisible, hasUnitToShow } = require("%rGui/unit/unitPurchaseEffectScene.nut")
+let { isPurchEffectVisible, needOpenPurchEffect, hasUnitToShow } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 
 
 let isFinished = mkIsTutorialCompleted(TUTORIAL_AFTER_REWARD_ID)
@@ -28,7 +28,8 @@ let canStartTutorial = Computed(@() !hasModalWindows.get()
   && isInMenuNoModals.get()
   && !hasUnitToShow.get()
   && !isTutorialActive.get()
-  && !isPurchEffectVisible.get())
+  && !isPurchEffectVisible.get()
+  && !needOpenPurchEffect.get())
 let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
 
@@ -70,6 +71,7 @@ function startTutorial() {
               eventbus_send("queueToGameMode", { modeId = randomBattleMode.get()?.gameModeId })
             }
           }
+          hotkeys = ["^J:X | Enter"]
           needArrow = true
         }]
       }

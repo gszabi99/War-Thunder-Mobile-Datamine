@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { setHangarUnit } = require("hangarUnit.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { allUnitsCfg, myUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
+let { campUnitsCfg, campMyUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { sortUnits } = require("%rGui/unit/unitUtils.nut")
 let { releasedUnits } = require("%rGui/unit/unitState.nut")
 
 
-let availableUnitsList = Computed(@() allUnitsCfg.value
-  .filter(@(u) (!u?.isHidden && u.name in releasedUnits.get()) || u.name in myUnits.value)
-  .map(@(u, id) myUnits.value?[id] ?? u)
+let availableUnitsList = Computed(@() campUnitsCfg.get()
+  .filter(@(u) (!u?.isHidden && u.name in releasedUnits.get()) || u.name in campMyUnits.get())
+  .map(@(u, id) campMyUnits.get()?[id] ?? u)
   .values()
   .sort(sortUnits))
 

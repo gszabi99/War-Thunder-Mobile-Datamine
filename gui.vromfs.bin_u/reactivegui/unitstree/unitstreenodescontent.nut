@@ -5,7 +5,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { flagsWidth, bgLight, mkTreeNodesFlag,
   flagTreeOffset, gamercardOverlap } = require("unitsTreeComps.nut")
 let { unitsTreeOpenRank, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
-let { myUnits, allUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { curSelectedUnit, curUnitName, availableUnitsList } = require("%rGui/unit/unitsWndState.nut")
 let { isSlotsAnimActive, selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
 let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
@@ -70,7 +70,7 @@ let mkRanksCfg = @(countryNodesCfg) Computed(function() {
   let res = {}
   foreach (node in countryNodesCfg.get().nodes) {
     let { x, name } = node
-    let rank = allUnitsCfg.get()[name]?.rank ?? 0
+    let rank = campUnitsCfg.get()[name]?.rank ?? 0
     if (rank not in res)
       res[rank] <- { from = x, to = x }
     else {
@@ -185,7 +185,7 @@ function scrollToRank(rank, ranksCfg) {
 
 let mkLinks = @(linksCfg) function() {
   let { linesFrom, linesTo } = linksCfg
-  let own = myUnits.get()
+  let own = campMyUnits.get()
   let status = unitsResearchStatus.get()
   let animUnlockUnit = animUnitWithLink.get()
   let animLockUnit = animBuyRequirementsUnitId.get() ?? animResearchRequirementsUnitId.get()
@@ -239,7 +239,7 @@ let mkLinks = @(linksCfg) function() {
   }
 
   return {
-    watch = [unitsResearchStatus, myUnits, animUnitWithLink, canPlayAnimUnitWithLink,
+    watch = [unitsResearchStatus, campMyUnits, animUnitWithLink, canPlayAnimUnitWithLink,
       animBuyRequirementsUnitId, animBuyRequirements, animResearchRequirements, animResearchRequirementsUnitId,
       animResearchRequirementsAncestors
     ]
@@ -468,7 +468,7 @@ function genLinks(nodes, positions, size) {
 
 let function mkUnitsNode(name, pos, hasDarkScreen) {
   let xmbNode = XmbNode()
-  let unit = Computed(@() myUnits.get()?[name] ?? allUnitsCfg.get()?[name])
+  let unit = Computed(@() campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name])
   let watch = [unit, hasDarkScreen]
   return function() {
     let curUnit = unit.get()
@@ -621,7 +621,7 @@ function onUnitNodesAppear(prevCountry, nodes) {
 
 let onAnimChange = @(unitId, nodes) @(v) scrollAnimToUnitGroup(
   v.keys()
-    .filter(@(name) name not in myUnits.get())
+    .filter(@(name) name not in campMyUnits.get())
     .append(unitId),
   nodes
 )
