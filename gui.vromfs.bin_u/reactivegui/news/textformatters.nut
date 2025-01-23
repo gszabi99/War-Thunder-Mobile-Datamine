@@ -15,14 +15,15 @@ let headerMargin = 2 * blockInterval
 let urlLineWidth = hdpx(1)
 let borderWidth = hdpx(1)
 
-let contentBackground = 0xFF464646
-let headerBackground = 0xFF507878
-let btnDef = 0x00000000
-let btnHov = 0x14505064
-let btnTextDef = 0xFFB4B4B4
+let contentBackground = 0x66000000
+
+let btnActive = 0xFFCFCFCF
+let btnHovActive = 0xFFFFFFFF
+let btnDef = 0xFF507878
+let btnHovDef = 0xFF709898
 
 let commonTextColor = 0xFFC0C0C0
-let activeTextColor = 0xFFFFFFFF
+let activeTextColor = 0xFF333333
 let urlColor = 0xFF17C0FC
 let urlHoverColor = 0xFF84E0FA
 let separatorColor = 0x33333333
@@ -240,14 +241,15 @@ function spoiler(obj, formatTextFunc, __) {
   let isHover = Watched(false)
   let button = {
     size = [flex(), hdpx(100)]
-    rendObj = ROBJ_SOLID
-    color = headerBackground
+    rendObj = ROBJ_BOX
     children = @() {
       watch = [isExpanded, isHover]
       size = flex()
       padding = insideBlockPadding
       rendObj = ROBJ_BOX
-      fillColor = isHover.get() ? btnHov : btnDef
+      fillColor = isHover.get() && isExpanded.get() ? btnHovActive
+        : !isHover.get() && isExpanded.get() ? btnActive
+        : !isHover.get() && !isExpanded.get()? btnDef : btnHovDef
       behavior = Behaviors.Button
       onClick = @() isExpanded(!isExpanded.get())
       onHover = @(sf) isHover(sf)
@@ -256,7 +258,7 @@ function spoiler(obj, formatTextFunc, __) {
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         text = !isExpanded.get() ? loc("ui/expand") : loc("ui/collapse")
-        color = !isExpanded.get() ? activeTextColor : btnTextDef
+        color = isExpanded.get() ? activeTextColor : commonTextColor
       }.__update(fontSmall)
     }
   }
@@ -290,20 +292,24 @@ function tabs(obj, formatTextFunc, __) {
     let stateFlags = Watched(0)
     return function() {
       let sf = stateFlags.get()
+      let isHovered = sf & S_HOVER
       return {
         watch = [stateFlags, currentTab]
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         rendObj = ROBJ_BOX
-        fillColor = (sf & S_HOVER) ? btnHov : btnDef
+        fillColor = currentTab.get()?.header == tab?.header && !isHovered ? btnActive
+          : currentTab.get()?.header == tab?.header && isHovered ? btnHovActive
+          : currentTab.get()?.header != tab?.header && isHovered ? btnHovDef : btnDef
         behavior = Behaviors.Button
+        margin = obj.v?[obj.v.len() - 1] != tab ? [0, hdpx(10), 0, 0] : 0
         onElemState = @(x) stateFlags(x)
         onClick = @() currentTab(tab)
         children = {
           rendObj = ROBJ_TEXT
           text = tab?.header ?? "untitled"
-          color = currentTab.get()?.header == tab?.header ? activeTextColor : btnTextDef
+          color = currentTab.get()?.header == tab?.header ? activeTextColor : commonTextColor
         }.__update(fontSmall)
       }
     }
@@ -313,20 +319,20 @@ function tabs(obj, formatTextFunc, __) {
     size = [flex(),SIZE_TO_CONTENT]
     margin = [headerMargin, 0]
     flow = FLOW_VERTICAL
-    rendObj = ROBJ_SOLID
-    color = contentBackground
+    rendObj = ROBJ_BOX
     children = [
       @() {
         size = [flex(),hdpx(100)]
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
         clipChildren = true
-        rendObj = ROBJ_SOLID
-        color = headerBackground
+        rendObj = ROBJ_BOX
         children = obj.v.map(@(tab) createCaptionBtn(tab))
       },
       {
         size = [flex(), SIZE_TO_CONTENT]
+        rendObj = ROBJ_SOLID
+        color = contentBackground
         flow = FLOW_VERTICAL
         padding = hdpx(20)
         clipChildren = true

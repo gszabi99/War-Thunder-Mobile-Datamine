@@ -15,8 +15,16 @@ let paddingX = hdpx(38)
 let hotkeySize = evenPx(50)
 let hotkeyGap = evenPx(10)
 let paddingXWithHotkey = paddingX - (hotkeySize + hotkeyGap) / 2
+let textButtonUnseenMargin = hdpx(15)
 
 let { defButtonHeight, defButtonMinWidth } = buttonStyles
+
+let buttonFrames = {
+  laurels = {
+    left = "ui/gameuiskin#button_laurels_left.svg"
+    right = "ui/gameuiskin#button_laurels_right.svg"
+  }
+}
 
 let patternImage = {
   size = [ph(100), ph(100)]
@@ -60,6 +68,29 @@ let mkPriceTextsComp = @(text, priceComp, flow = FLOW_VERTICAL) {
   children = [
     !text ? null : mkButtonText(text, fontTiny)
     priceComp
+  ]
+}
+
+let mkFrameImg = @(text, frameId, iconSize) {
+  key = text
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(5)
+  children = [
+    {
+      size = [iconSize, iconSize]
+      rendObj = ROBJ_IMAGE
+      keepAspect = true
+      image = Picture($"{buttonFrames?[frameId].left}:{iconSize}:{iconSize}")
+    }
+    text
+    {
+      size = [iconSize, iconSize]
+      rendObj = ROBJ_IMAGE
+      keepAspect = true
+      image = Picture($"{buttonFrames?[frameId].right}:{iconSize}:{iconSize}")
+    }
   ]
 }
 
@@ -217,14 +248,17 @@ let textButtonMultiline = @(text, onClick, style = buttonStyles.COMMON)
 
 return {
   paddingX
+  mkFrameImg
   mkCustomButton
   mkImageTextContent
+  mkButtonTextMultiline
   textButton
   textButtonMultiline
   mergeStyles
   buttonsHGap
   buttonsVGap
   buttonStyles
+  textButtonUnseenMargin
 
   textButtonPrimary = @(text, onClick, styleOvr = null)
     textButton(text, onClick, mergeStyles(buttonStyles.PRIMARY, styleOvr)) // Blue

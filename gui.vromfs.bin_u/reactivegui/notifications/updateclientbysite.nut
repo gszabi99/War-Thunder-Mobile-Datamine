@@ -78,17 +78,18 @@ eventbus_subscribe("android.platform.onCompleteApkDownload", function (event) {
 })
 
 function delayedCheckDownloadStatus() {
-  if (!isLoggedIn.get()) {
-    let downloadId = cachedDownloadId.get()
-    let status = queryDownloadStatus(downloadId)
+  if (isLoggedIn.get() || cachedDownloadId.get() == null)
+    return
 
-    cachedDownloadId.set(null)
+  let downloadId = cachedDownloadId.get()
+  let status = queryDownloadStatus(downloadId)
 
-    if (isDownloadInProgress.get() && status != DOWNLOAD_STATUS_FAILED)
-      eventbus_send("exit_for_download_apk", { message = loc("updater/newVersion/exitGame", { actionBtn = loc("msgbox/btn_exit")}) })
-    else
-      eventbus_send("fMsgBox.onClick.exitAndLinkToStore", null)
-  }
+  cachedDownloadId.set(null)
+
+  if (isDownloadInProgress.get() && status != DOWNLOAD_STATUS_FAILED)
+    eventbus_send("exit_for_download_apk", { message = loc("updater/newVersion/exitGame", { actionBtn = loc("msgbox/btn_exit")}) })
+  else
+    eventbus_send("fMsgBox.onClick.exitAndLinkToStore", null)
 }
 
 if (cachedDownloadId.get() != null)

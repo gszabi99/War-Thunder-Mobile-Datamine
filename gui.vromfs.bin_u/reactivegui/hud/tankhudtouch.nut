@@ -33,6 +33,10 @@ let sizeAimRv = [sizeAim[1], sizeAim[0]]
 let hasNoPenetrationState = Computed(@() tankCrosshairDmTestResult.value == DM_TEST_NOT_PENETRATE ||
                                          tankCrosshairDmTestResult.value == DM_TEST_RICOCHET)
 
+let isCrosshairVisible = Computed(@() crosshairScreenPosition.value.x > 0 && crosshairScreenPosition.value.y > 0)
+let isSecondaryCrosshairVisible = Computed(@() crosshairSecondaryScreenPosition.value.x > 0
+                                               && crosshairSecondaryScreenPosition.value.y > 0)
+
 let triggers = [TRIGGER_GROUP_PRIMARY, TRIGGER_GROUP_SECONDARY, TRIGGER_GROUP_COAXIAL_GUN, TRIGGER_GROUP_MACHINE_GUN]
   .reduce(function(res, t) {
     res[t] <- $"bullet_shot_{t}"
@@ -160,11 +164,20 @@ function mkCircleGunPosition(for_secondary) {
 }
 
 let arcadeCrosshair = @() {
-  watch = [currentArmorPiercingFixed, primaryRocketGun, hasSecondaryGun, isFreeCamera, allowShoot]
+  watch = [
+    currentArmorPiercingFixed,
+    primaryRocketGun,
+    hasSecondaryGun,
+    isFreeCamera,
+    allowShoot,
+    isCrosshairVisible,
+    isSecondaryCrosshairVisible
+  ]
   children = [
     primaryRocketGun.value || isFreeCamera.value ? null : arcadeCrosshairSight
-    currentArmorPiercingFixed.value && !primaryRocketGun.value && allowShoot.value ? mkCircleGunPosition(false) : null
-    hasSecondaryGun.value && allowShoot.value ? mkCircleGunPosition(true) : null
+    currentArmorPiercingFixed.value && !primaryRocketGun.value && allowShoot.value && isCrosshairVisible.value
+      ? mkCircleGunPosition(false) : null
+    hasSecondaryGun.value && allowShoot.value && isSecondaryCrosshairVisible.value ? mkCircleGunPosition(true) : null
   ]
 }
 

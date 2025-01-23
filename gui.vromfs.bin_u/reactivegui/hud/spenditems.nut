@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
 let { register_command } = require("console")
-let { EventSpendItems } = require("dasevents")
+let { EventSpendItems = 0 } = require_optional("dasevents")
 
 let spendItemsQueue = Watched([])
 
@@ -13,13 +13,14 @@ function removeSpendItem(itemData) {
     spendItemsQueue.mutate(@(v) v.remove(idx))
 }
 
-register_es("spend_items_es",
-  {
-    [EventSpendItems] = @(evt, _eid, _comp) addSpendItem(evt.itemId, evt.count)
-  },
-  {
-    comps_rq = [["server_player__userId", TYPE_UINT64]]
-  })
+if (EventSpendItems != 0)
+  register_es("spend_items_es",
+    {
+      [EventSpendItems] = @(evt, _eid, _comp) addSpendItem(evt.itemId, evt.count)
+    },
+    {
+      comps_rq = [["server_player__userId", TYPE_UINT64]]
+    })
 
 register_command(@(amount) addSpendItem("ship_tool_kit", amount), "debug.spend_item_ship_toolkit")
 register_command(@(amount) addSpendItem("tank_tool_kit_expendable", amount), "debug.spend_item_tank_toolkit")

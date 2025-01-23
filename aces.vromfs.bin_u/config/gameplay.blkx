@@ -2209,8 +2209,8 @@
     }
   },
   "common": {
-    "gunReloadCooldownTime": 20.0,
-    "cannonReloadCooldownTime": 30.0,
+    "gunReloadCooldownTime": 24.0,
+    "cannonReloadCooldownTime": 36.0,
     "rocketReloadCooldownTime": 60.0,
     "bombReloadCooldownTime": 60.0,
     "torpedoReloadCooldownTime": 60.0,

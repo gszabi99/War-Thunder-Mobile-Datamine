@@ -22,9 +22,11 @@ let { mkSlotWeapon, mkWeaponImage, mkWeaponDesc, mkEmptyText, weaponH, weaponW, 
   mkSlotText, mkBeltImage, mkSlotBelt, mkConflictsBorder
 } = require("slotWeaponCard.nut")
 let { mkBeltDesc, mkSlotWeaponDesc } = require("unitModsSlotsDesc.nut")
-let { textButtonPrimary, textButtonPurchase, iconButtonPrimary } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonPurchase, iconButtonPrimary, mkButtonTextMultiline
+  mergeStyles, mkCustomButton, mkFrameImg, textButtonUnseenMargin
+} = require("%rGui/components/textButton.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
-let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+let { defButtonMinWidth, defButtonHeight, PRIMARY } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { tabsGap, bgColor, tabExtraWidth, mkTabs } = require("%rGui/components/tabs.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
@@ -40,6 +42,8 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { mkUnseenModIndicator } = require("modsComps.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
+let { openUnitRewardsModal, unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
+let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 let blocksGap = hdpx(60)
 let slotW = weaponW + hdpx(20)
@@ -428,23 +432,39 @@ function onPurchaseMod() {
   })
 }
 
+let isNotAvailableForUse = Computed(@() !isOwn.get() || (curWeapon.get() == null && curBelt.get() == null))
+let hasUnseenRewards = Computed(@() curUnit.get()?.name in unseenUnitLvlRewardsList.get())
+
 let slotPresetButtons = @() {
-  watch = [isOwn, curWeapon, curBelt, modsInProgress, curWeaponIsLocked, curWeaponReqLevel,
-    equippedWeaponId, curWeapons, equippedBeltId, curUnit, isGamepad]
+  watch = [isNotAvailableForUse, curWeapon, curBelt, modsInProgress, curWeaponIsLocked, curWeaponReqLevel,
+    equippedWeaponId, curWeapons, equippedBeltId, curUnit, isGamepad, hasUnseenRewards]
   size = [flex(), SIZE_TO_CONTENT]
   halign = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   gap = hdpx(20)
   children = [
-    !isOwn.get() || (curWeapon.get() == null && curBelt.get() == null) ? null
+    isNotAvailableForUse.get() || !hasUnseenRewards.get() ? null
+      : {
+          children = [
+            mkCustomButton(
+              mkFrameImg(mkButtonTextMultiline(loc("unitLevelUp/rewardBtn")), "laurels", hdpxi(50)),
+              @() openUnitRewardsModal(curUnit.get()),
+              mergeStyles(PRIMARY, { hotkeys = ["^J:LB"] }))
+            {
+              margin = textButtonUnseenMargin
+              children = priorityUnseenMark
+            }
+          ]
+        }
+    isNotAvailableForUse.get() ? null
       : modsInProgress.get() != null ? spinner
       : iconButtonPrimary("ui/gameuiskin#icon_weapon_preset.svg",
         @() actionWithOverloadWarning(@() openUnitWeaponPresetWnd(curUnit.get())),
         { ovr = { size = isGamepad.get() ? [defButtonHeight*2, defButtonHeight] : [defButtonHeight, defButtonHeight], minWidth = defButtonHeight },
         hotkeys = ["^J:X | Enter"]
-      }),
-    !isOwn.get() || (curWeapon.get() == null && curBelt.get() == null) ? null
+      })
+    isNotAvailableForUse.get() ? null
       : modsInProgress.get() != null ? spinner
       : curWeaponIsLocked.get() && curWeaponReqLevel.get() > 0
         ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), curWeaponReqLevel.get(),

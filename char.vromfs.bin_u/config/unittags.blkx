@@ -54406,7 +54406,8 @@
       },
       "152mm_9M133_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_tandem_ap1_he1"
+          "icon": "hud_ammo_atgm_tandem_ap1_he1",
+          "isHidden": true
         }
       },
       "30mm_AG_30_user_cannon": {

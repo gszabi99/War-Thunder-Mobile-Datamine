@@ -35,6 +35,9 @@ let canFetchContacts = Computed(@() isContactsLoggedIn.get()
   && (!isInBattle.get() || needFetchContactsInBattle.get()))
 let canRequestToContacts = Computed(@() isContactsLoggedIn.value && isMatchingConnected.value)
 let isFetchDelayed = hardPersistWatched("contacts.isFetchDelayed", false)
+let isContactsReceived = hardPersistWatched("contacts.isContactsReceived", false)
+
+isContactsLoggedIn.subscribe(@(v) v ? null : isContactsReceived.set(false))
 
 let searchContactsResult = Computed(function() {
   let result = searchContactsResultRaw.value
@@ -126,6 +129,7 @@ function updateAllLists(new_contacts) {
 }
 
 function onFetchContacts(result) {
+  isContactsReceived.set(true)
   if ("groups" in result)
     updateAllLists(result.groups)
   if ("presences" in result)
@@ -306,6 +310,7 @@ return {
   needFetchContactsInBattle
 
   contactsInProgress
+  isContactsReceived
   addToFriendList
   removeFromFriendList
   cancelMyFriendRequest

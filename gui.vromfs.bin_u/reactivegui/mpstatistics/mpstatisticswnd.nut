@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { get_mplayers_list, GET_MPLAYERS_LIST, get_mp_local_team, get_current_mission_name } = require("mission")
+let { get_mplayers_list, GET_MPLAYERS_LIST = -1, get_mp_local_team, get_current_mission_name } = require("mission")
 let { GO_WIN, GO_FAIL } = require("guiMission")
 let { gameOverReason } = require("%rGui/missionState.nut")
 let { allMainUnitsByPlatoon, getPlatoonUnitCfg } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")

@@ -5,7 +5,7 @@ let { object_to_json_string } = require("json")
 let io = require("io")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
-let { sendNetEvent, CmdApplyMyBattleResultOnExit } = require("dasevents")
+let { sendNetEvent = @(...) null, CmdApplyMyBattleResultOnExit = null } = require_optional("dasevents")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
@@ -19,7 +19,9 @@ let { get_mp_session_id_int, destroy_session, set_quit_to_debriefing_allowed } =
 let { getPlatoonUnitCfgNonUpdatable } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
 let { compatibilityConvertCommonStats } = require("%appGlobals/commonStatsUtils.nut")
-let { get_mp_local_team, get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
+let missionModule = require("mission")
+let { get_mp_local_team, get_mplayers_list } = missionModule
+let GET_MPLAYERS_LIST_EXT = missionModule?.GET_MPLAYERS_LIST ?? getconsttable()?.GET_MPLAYERS_LIST ?? -1
 let { get_mp_tbl_teams } = require("guiMission")
 let mkCommonExtras = require("mkCommonExtras.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -162,7 +164,7 @@ register_es("battle_result_mplayers_es",
   {
     [EventResultMPlayers] = function(evt, _eid, _comp) {
       let res = evt.data.__merge({ players = clone (evt.data?.players ?? {}) })
-      let localPlayers = get_mplayers_list(GET_MPLAYERS_LIST, true)
+      let localPlayers = get_mplayers_list(GET_MPLAYERS_LIST_EXT, true)
       foreach(p in localPlayers)
         if (p.userId in res.players){
           res.players[p.userId] = p.__merge(res.players[p.userId])
@@ -206,7 +208,8 @@ isInBattle.subscribe(@(v) v ? playersCommonStats({}) : null)
 
 function requestEarlyExitRewards() {
   logBD("Request early exit rewards")
-  sendNetEvent(find_local_player_eid(), CmdApplyMyBattleResultOnExit())
+  if (CmdApplyMyBattleResultOnExit != null)
+    sendNetEvent(find_local_player_eid(), CmdApplyMyBattleResultOnExit?())
   if (isOnline.get())
     eventbus_send("matchingApiNotify", { name = "match.remove_from_session" }) //no need reconnect
 }

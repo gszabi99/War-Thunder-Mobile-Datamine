@@ -14,7 +14,7 @@ let { startMissionHintSeria, captureHintSeria } = require("missionNewbiesHints.n
 let { unitType } = require("%rGui/hudState.nut")
 let { TANK, AIR } = require("%appGlobals/unitConst.nut")
 let { teamRedColor } = require("%rGui/style/teamColors.nut")
-let { EventZoneDamageMessage } = require("dasevents")
+let { EventZoneDamageMessage = 0 } = require_optional("dasevents")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 const TIME_TO_RESET_SCORE = 1.0
@@ -147,9 +147,10 @@ function showScore(score, isAirfield) {
   }
 }
 
-register_es("on_zone_damage_message",
-  { [EventZoneDamageMessage] = @(evt, _eid, _comp) showScore(evt.score, evt.isAirfield) },
-  { comps_rq = [["server_player__userId", TYPE_UINT64]] })
+if (EventZoneDamageMessage != 0)
+  register_es("on_zone_damage_message",
+    { [EventZoneDamageMessage] = @(evt, _eid, _comp) showScore(evt.score, evt.isAirfield) },
+    { comps_rq = [["server_player__userId", TYPE_UINT64]] })
 
 
 const MISSSION_RESULT = "mission_result"

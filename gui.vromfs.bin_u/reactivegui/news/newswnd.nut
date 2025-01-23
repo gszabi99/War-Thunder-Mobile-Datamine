@@ -18,6 +18,10 @@ let textColor = 0xFFFFFFFF
 let contentBgColor = 0x990C1113
 let tagRedColor = 0xC8C80000
 
+let btnActive = 0xFFCFCFCF
+let btnHovActive = 0xFFFFFFFF
+let activeTextColor = 0xFF333333
+
 let scrollHandler = ScrollHandler()
 let scrollStep = hdpx(75)
 let selectorBtnH = hdpx(110)
@@ -131,6 +135,20 @@ function articleTabBase(info, sf, isSelected, isUnseen) {
         color = contentBgColor
       }
       pinned > 0 ? pinIcon : null
+      @() { watch = isUnseen }.__update(isUnseen.value ? newMark : {})
+      {
+        size = flex()
+        rendObj = ROBJ_BOX
+        fillColor = isActive && isHovered ? btnHovActive
+          : !isHovered && isActive ? btnActive
+          : 0
+        borderColor = textColor
+        borderWidth = isActive ? 0 : hdpx(2)
+        opacity = isActive ? 1
+          : isHovered ? 0.5
+          : 0
+        transitions = opacityTransition
+      }
       {
         size = flex()
         valign = ALIGN_CENTER
@@ -145,7 +163,7 @@ function articleTabBase(info, sf, isSelected, isUnseen) {
             behavior = [Behaviors.TextArea, Behaviors.Marquee]
             rendObj = ROBJ_TEXTAREA
             halign = ALIGN_RIGHT
-            color = textColor
+            color = isActive ? activeTextColor : textColor
             text = shortTitle ?? title
 
             // For marquee:
@@ -154,18 +172,6 @@ function articleTabBase(info, sf, isSelected, isUnseen) {
             delay = defMarqueeDelay
           }.__update(fontTiny)
         ]
-      }
-      @() { watch = isUnseen }.__update(isUnseen.value ? newMark : {})
-      {
-        size = flex()
-        rendObj = ROBJ_BOX
-        fillColor = 0
-        borderColor = textColor
-        borderWidth = hdpx(2)
-        opacity = isActive ? 1
-          : isHovered ? 0.5
-          : 0
-        transitions = opacityTransition
       }
     ]
   }

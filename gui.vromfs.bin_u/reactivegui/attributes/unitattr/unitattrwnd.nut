@@ -29,6 +29,7 @@ let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
 let { lastModifiedAttr, curCategoryId, getSpCostText } = require("%rGui/attributes/attrState.nut")
 let { rowHeight, pageWidth } = require("%rGui/attributes/attrBlockComp.nut")
 let { defCategoryImage, categoryImages } = require("%rGui/attributes/attrValues.nut")
+let { mainHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
 isUnitAttrOpened.subscribe(function(v) {
   resetAttrState()
@@ -268,13 +269,16 @@ let unitAttrWnd = {
               size = [ tabW, flex() ]
               margin = [ hdpx(24), 0, 0, 0 ]
             })
-            btnOpenUnitMods({
-              hotkeys = ["^J:X"],
-              ovr = {
-                margin = [0, 0, 0, contentMargin]
-                size = [isWidescreen ? (tabW - contentMargin) : SIZE_TO_CONTENT, defButtonHeight]
-              },
-            })
+            @() {
+              watch = mainHangarUnit
+              children = btnOpenUnitMods(mainHangarUnit, {
+                hotkeys = ["^J:X"],
+                ovr = {
+                  margin = [0, 0, 0, contentMargin]
+                  size = [isWidescreen ? (tabW - contentMargin) : SIZE_TO_CONTENT, defButtonHeight]
+                },
+              })
+            }
           ]
         }
         {

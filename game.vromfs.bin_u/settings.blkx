@@ -3032,7 +3032,7 @@
           "brokenSubpasses": {
             "entry": {
               "driverMaxVer0": 512,
-              "driverMaxVer1": 415,
+              "driverMaxVer1": 420,
               "data": {
                 "affected": true
               }
@@ -3045,7 +3045,8 @@
           "brokenSubpasses": {
             "entry": {
               "gpu": "G610",
-              "driverInfo": "ce623b7dd8f8f92ae690a9a38057e2b5",
+              "driverMinVer0": 38,
+              "driverMaxVer0": 38,
               "data": {
                 "affected": true
               }

@@ -623,12 +623,13 @@ Kamu selalu bisa mengganti prasetel kontrol ke prasetel sebelumnya di menu Penga
 空\t战\t模\t式\t目\t标\t追\t踪\t视\t角\t的\t按\t键\t由 <color=@userlogColoredText>Alt</color> 改\t为 <color=@userlogColoredText>Shift</color>
 加\t入\t作\t战\t时\t显\t示\t鼠\t标\t指\t针\t的\t功\t能\t键 <color=@userlogColoredText>Alt</color>
 
-可\t随\t时\t在\t“按\t键\t设\t置”\t中\t更\t改\t按\t键\t映\t射。";"戦車の\t修理機能は <color=@userlogColoredText>F</color> キーに\t変わりました。\t
-X\t線 (レントゲン) 機能は <color=@userlogColoredText>Y</color> に\t変わりました。\t(以前は <color=@userlogColoredText>O</color> キーに\t割り\t当てられていました)
-ターゲットカメラ (航空機) 機能は <color=@userlogColoredText>Shift</color> キーに\t変わりました。\t(以前は <color=@userlogColoredText>Alt</color> キーに\t割当てられていました)
-戦闘中に\tマウスカーソルを\t表示するには <color=@userlogColoredText>Alt</color> キーを\t使用してください。\t
+可\t随\t时\t在\t“按\t键\t设\t置”\t中\t更\t改\t按\t键\t映\t射。";"Tank repair function moved to the <color=@userlogColoredText>F</color> button (was on the <color=@userlogColoredText>U</color> button)
+X-Ray function moved to the <color=@userlogColoredText>Y</color> button (was on the <color=@userlogColoredText>O</color> button)
+Tank Sniper Mode moved to the <color=@userlogColoredText>Shift</color> button (was on the <color=@userlogColoredText>V</color> button)
+Target camera (aviation) moved to the <color=@userlogColoredText>Shift</color> button (was on the <color=@userlogColoredText>Alt</color> button)
+Show Mouse Cursor in battle was set up to the <color=@userlogColoredText>Alt</color> button
 
-プリセット\t設定はいつでも「コントロール」\tメニューから\t以前のものに\t変えられます。";"維\t修\t戰\t車\t功\t能\t調\t整\t為 <color=@userlogColoredText>F</color> 按\t鍵 (原\t本\t為 <color=@userlogColoredText>U</color> 按\t鍵)
+You can always change your controls preset to the previous one in the Control Settings menu";"維\t修\t戰\t車\t功\t能\t調\t整\t為 <color=@userlogColoredText>F</color> 按\t鍵 (原\t本\t為 <color=@userlogColoredText>U</color> 按\t鍵)
 展\t示\t內\t部\t結\t構\t功\t能\t調\t整\t為 <color=@userlogColoredText>Y</color> 按\t鍵 (原\t本\t為 <color=@userlogColoredText>O</color> 按\t鍵)
 戰\t車\t狙\t擊\t模\t式\t調\t整\t為 <color=@userlogColoredText>Shift</color> 按\t鍵 (原\t本\t為 <color=@userlogColoredText>V</color> 按\t鍵)
 目\t標\t視\t角 (空\t軍) 調\t整\t為 <color=@userlogColoredText>Shift</color> 按\t鍵 (原\t本\t為 <color=@userlogColoredText>Alt</color> 按\t鍵)

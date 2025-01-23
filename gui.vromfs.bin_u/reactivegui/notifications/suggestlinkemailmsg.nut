@@ -9,12 +9,15 @@ let { eventbus_send } = require("eventbus")
 let { LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { accountLink } = require("%rGui/contacts/contactLists.nut")
+let { isContactsReceived } = require("%rGui/contacts/contactsState.nut")
+
 
 const SUGGEST_LINK_ACC = "suggest_link_acc"
 let { isTimerPassed, setLastTime } = require("%rGui/globals/mkStoredAlarm.nut")(SUGGEST_LINK_ACC, 604800/*s in one week*/)
 
 let loginVariants = [LT_GOOGLE, LT_APPLE, LT_FACEBOOK]
-let needLinkToGaijinAccount = Computed(@() accountLink.get() == null
+let needLinkToGaijinAccount = Computed(@() isContactsReceived.get()
+  && accountLink.get() == null
   && !authTags.get().contains("email_verified")
   && loginVariants.contains(curLoginType.get()))
 let isSuggested = hardPersistWatched("suggestLinkFacebook.isSuggested", false)

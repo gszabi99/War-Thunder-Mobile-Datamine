@@ -1,6 +1,6 @@
 let {dgs_get_settings, DBGLEVEL, get_arg_value_by_name} = require("dagor.system")
 let platform = require("platform")
-let {get_platform_string_id, get_console_model, get_console_model_revision, is_gdk_used} = platform
+let {get_platform_string_id, get_console_model, get_console_model_revision, is_gdk_used = @() false } = platform
 let { is_running_on_steam_deck = @() false } = require_optional("steam")
 
 let systemPlatformId = get_platform_string_id()

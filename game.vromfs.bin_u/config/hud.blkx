@@ -1227,7 +1227,8 @@
       255,
       255
     ],
-    "arcadeCutoff": 45.0,
+    "arcadeCutoff": 35.0,
+    "unselectedCutoff": 5.0,
     "autoTargetCutoff": 45.0,
     "targetSelectCutoff": 5.0,
     "maxAutoTargetOpacity": 0.9,

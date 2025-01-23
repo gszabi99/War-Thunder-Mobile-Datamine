@@ -11,6 +11,7 @@ let { authTags, isLoginByGajin } = require("%appGlobals/loginState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { windowActive } = require("%appGlobals/windowState.nut")
 let { accountLink } = require("%rGui/contacts/contactLists.nut")
+let { isContactsReceived } = require("%rGui/contacts/contactsState.nut")
 
 
 let isGuestLoginBase = Computed(@() authTags.value.contains("guestlogin")
@@ -18,6 +19,7 @@ let isGuestLoginBase = Computed(@() authTags.value.contains("guestlogin")
 let isDebugGuestLogin = mkWatched(persist, "isDebugGuestLogin", false)
 let isGuestLogin = Computed(@() isGuestLoginBase.value != isDebugGuestLogin.value)
 let needVerifyEmailBase = Computed(@() !isGuestLogin.value
+  && isContactsReceived.get()
   && accountLink.get() == null
   && !authTags.value.contains("email_verified")
   && !(authTags.value.contains("gplogin") || authTags.value.contains("applelogin")

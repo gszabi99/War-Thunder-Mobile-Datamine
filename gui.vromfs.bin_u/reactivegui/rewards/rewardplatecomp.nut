@@ -347,10 +347,10 @@ let decoratorFontIconBase = {
 
 let mkDecoratorIconTitle = @(decoratorId, rStyle, size) decoratorFontIconBase.__merge(
   {
-    pos = [ 0, rStyle.iconShiftY ]
-    behavior = Behaviors.Marquee
-    speed = hdpx(30)
-    delay = defMarqueeDelay
+    pos = [0, rStyle.iconShiftY]
+    valign = ALIGN_CENTER
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
     text = loc($"title/{decoratorId}")
   },
   getFontToFitWidth({ rendObj = ROBJ_TEXT, text = loc($"title/{decoratorId}") }.__update(fontLabelBig),

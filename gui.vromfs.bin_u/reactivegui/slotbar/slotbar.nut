@@ -150,9 +150,11 @@ function statusAttrMark(idx) {
 
 function statusArsenalMark(unit) {
   let unseenMods = mkListUnseenMods(unit)
+  let hasUnseenRewards = Computed(@() unit.get()?.name in unseenUnitLvlRewardsList.get())
+  let hasUnseenMarker = Computed(@() hasUnseenRewards.get() || unseenMods.get().len() > 0)
   return @() {
-    watch = unseenMods
-    children = unseenMods.get().len() > 0 ? priorityUnseenMark : null
+    watch = hasUnseenMarker
+    children = hasUnseenMarker.get() ? priorityUnseenMark : null
   }.__update(mkMark)
 }
 
@@ -190,16 +192,17 @@ function mkSlotHeaderIndicator(unit, idx, isSelected) {
   let unseenMods = mkListUnseenMods(unit)
   let unseenAttr = mkUnseenSlotAttrByIdx(idx)
   let hasUnseenMods = Computed(@() unseenMods.get().len() > 0)
+  let hasUnseenRewards = Computed(@() unit.get()?.name in unseenUnitLvlRewardsList.get())
   let mutateSlots = @(v) visibleNewModsSlots.mutate(@(nms) v ? nms.$rawset(idx, unit.get()?.name ?? "") : nms.$rawdelete(idx))
   return @() {
-    watch = [hasUnseenMods, unseenAttr, isSelected]
+    watch = [hasUnseenMods, unseenAttr, isSelected, hasUnseenRewards]
     key = hasUnseenMods
     function onAttach() {
       mutateSlots(hasUnseenMods.get())
       hasUnseenMods.subscribe(mutateSlots)
     }
     onDetach = @() mutateSlots(hasUnseenMods.get())
-    children = isSelected.get() || (!hasUnseenMods.get() && !unseenAttr.get().isUnseen) ? null
+    children = isSelected.get() || (!hasUnseenMods.get() && !unseenAttr.get().isUnseen && !hasUnseenRewards.get()) ? null
       : mkUnseenIndicator({ pos = [-hdpx(25), 0], key = {} })
   }
 }
@@ -237,7 +240,7 @@ function mkSlotHeader(slot, idx, unit, isSelected) {
   }
 }
 
-let function mkUnitSlot(unit, idx, onClick, hasUnseenRewards = false) {
+let function mkUnitSlot(unit, idx, onClick) {
   if (unit == null)
     return emptySelectSlot(idx)
 
@@ -265,11 +268,6 @@ let function mkUnitSlot(unit, idx, onClick, hasUnseenRewards = false) {
         padding = [0, 0, hdpx(3), hdpx(3)]
         vplace = ALIGN_BOTTOM
         children = mkProfileUnitDailyBonus(unit)
-      }
-      {
-        pos = [hdpx(10), hdpx(3)]
-        vplace = ALIGN_CENTER
-        children = hasUnseenRewards ? priorityUnseenMark : null
       }
     ]
     transform = { pivot = [0.5, 0.5] }
@@ -340,9 +338,8 @@ function onUnitSlotClick(unit, idx) {
 let function mkSlotWithButtons(slot, idx) {
   let unit = Computed(@() campMyUnits.get()?[slot?.name] ?? campUnitsCfg.get()?[slot?.name])
   let isSelected = Computed(@() selectedSlotIdx.get() == idx)
-  let hasUnseenRewards = Computed(@() unit.get()?.name in unseenUnitLvlRewardsList.get())
   return @() {
-    watch = [unit, slots, hasUnseenRewards, isSelected]
+    watch = [unit, slots, isSelected]
     flow = FLOW_VERTICAL
     children = [
       actionBtns(unit, idx)
@@ -351,7 +348,7 @@ let function mkSlotWithButtons(slot, idx) {
         flow = FLOW_VERTICAL
         children = [
           mkSlotHeader(slot, idx, unit, isSelected)
-          mkUnitSlot(unit.get(), idx, @() onUnitSlotClick(unit, idx), !isSelected.get() && hasUnseenRewards.get())
+          mkUnitSlot(unit.get(), idx, @() onUnitSlotClick(unit, idx))
         ]
       }
     ]

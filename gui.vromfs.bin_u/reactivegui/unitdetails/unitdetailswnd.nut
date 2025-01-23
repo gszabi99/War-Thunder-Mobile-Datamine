@@ -9,7 +9,8 @@ let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitInfo
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { textButtonPrimary, textButtonMultiline, mergeStyles } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, mkButtonTextMultiline, mergeStyles, mkCustomButton, mkFrameImg, textButtonUnseenMargin
+} = require("%rGui/components/textButton.nut")
 let { can_debug_units } = require("%appGlobals/permissions.nut")
 let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -29,7 +30,7 @@ let { selectedLineHorUnitsCustomSize, selLineSize } = require("%rGui/components/
 let { hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
 let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { openUnitRewardsModal, unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
-let { PURCHASE } = require("%rGui/components/buttonStyles.nut")
+let { PRIMARY, defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 
 
@@ -37,6 +38,12 @@ let buttonsGap = hdpx(40)
 
 let openCount = Computed(@() baseUnit.value != null ? unitDetailsOpenCount.get() : 0)
 let isShowedUnitOwned = Computed(@() baseUnit.value?.name in campMyUnits.get())
+let hasUnseenRewards = Computed(@() baseUnit.get()?.name in unseenUnitLvlRewardsList.get())
+
+let frameButtonIconSize = hdpxi(50)
+let frameButtonGap = hdpx(5)
+
+let leftBtnSizeWithRewardBtn = [defButtonMinWidth + frameButtonIconSize * 2 + frameButtonGap * 2, defButtonHeight]
 
 let nextLevelToUnlockUnit = Computed(function() {
   if ("level" not in baseUnit.value)
@@ -124,30 +131,27 @@ let unitInfoPanelPlace = @() {
   }, unitToShow)
 }
 
-function rewardsButton() {
-  let hasUnseenRewards = Computed(@() baseUnit.get()?.name in unseenUnitLvlRewardsList.get())
-
-  return @() {
-    watch = [hasUnseenRewards, baseUnit]
-    children = !hasUnseenRewards.get() ? null
-      : [
-          textButtonMultiline(loc("unitLevelUp/rewardBtn"),
-            @() openUnitRewardsModal(baseUnit.get()),
-            mergeStyles(PURCHASE, { hotkeys = ["^J:B"]} ))
-          {
-            margin = hdpx(10)
-            children = priorityUnseenMark
-          }
-        ]
-  }
+let rewardsButton = @() {
+  watch = [hasUnseenRewards, baseUnit]
+  children = !hasUnseenRewards.get() ? null
+    : [
+        mkCustomButton(
+          mkFrameImg(mkButtonTextMultiline(loc("unitLevelUp/rewardBtn")), "laurels", frameButtonIconSize),
+          @() openUnitRewardsModal(baseUnit.get()),
+          mergeStyles(PRIMARY, { hotkeys = ["^J:LB"] }))
+        {
+          margin = textButtonUnseenMargin
+          children = priorityUnseenMark
+        }
+      ]
 }
 
 let testDriveButton = @() {
-  watch = can_debug_units
+  watch = [can_debug_units, hasUnseenRewards]
   children = !can_debug_units.value ? null
     : textButtonPrimary("Test Drive",
         @() startTestFlight(unitToShow.get()),
-        { hotkeys = ["^J:X | Enter"] })
+        { hotkeys = ["^J:X | Enter"], ovr = hasUnseenRewards.get() ? { size = leftBtnSizeWithRewardBtn } : {} })
 }
 
 let lvlUpButton = @() {
@@ -166,7 +170,7 @@ let buttonsBlock = @() {
   children = [
     { size = flex() }
     mkUnitPkgDownloadInfo(baseUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
-    rewardsButton()
+    rewardsButton
     testDriveButton
     !(curCampaign.get() == "air" || isShowedUnitOwned.get()) ? null
       : {
@@ -177,9 +181,12 @@ let buttonsBlock = @() {
           valign = ALIGN_BOTTOM
           children = [
             @() {
-              watch = [hasSlotAttrPreset, baseUnit]
+              watch = [hasSlotAttrPreset, baseUnit, hasUnseenRewards]
               children = hasSlotAttrPreset.get()
-                  ? btnOpenUnitMods({ hotkeys = ["^J:Y"] })
+                  ? btnOpenUnitMods(baseUnit, {
+                    hotkeys = ["^J:Y"]
+                    ovr = hasUnseenRewards.get() ? { size = leftBtnSizeWithRewardBtn } : {}
+                  })
                 : !isShowedUnitOwned.get()
                   ? null
                 : (campMyUnits.get()[baseUnit.get().name]?.isUpgraded == baseUnit.get()?.isUpgraded
