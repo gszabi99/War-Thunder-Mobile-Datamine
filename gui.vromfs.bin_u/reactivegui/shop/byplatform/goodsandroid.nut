@@ -151,6 +151,7 @@ eventbus_subscribe("android.billing.googleplay.onInitAndDataRequested", function
 
 let getSku = @(goods) goods?.purchaseGuids.android.extId
 let getPlanId = @(goods) goods?.purchaseGuids.android.planId
+let getAndroidDiscount = @(goods) goods?.purchaseGuids.android.discountInPercent ?? 0
 
 let goodsIdBySku = Computed(function() {
   let res = {}
@@ -235,8 +236,11 @@ let platformGoods = Computed(function() {
   foreach (sku, priceExt in availableSkusPrices.value) {
     let goodsId = skuToGoodsId?[sku]
     let goods = allGoods?[goodsId]
-    if (goods != null)
-      res[goodsId] <- goods.__merge({ priceExt }) //warning disable: -potentially-nulled-index
+    if (goods != null) {
+      let platformDiscount = getAndroidDiscount(goods)
+      let discountInPercent = platformDiscount != 0 ? platformDiscount : (goods?.discountInPercent ?? 0)
+      res[goodsId] <- goods.__merge({ priceExt, discountInPercent }) //warning disable: -potentially-nulled-index
+    }
   }
   return res
 })

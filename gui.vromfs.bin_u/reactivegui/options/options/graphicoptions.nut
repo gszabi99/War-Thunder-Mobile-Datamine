@@ -108,7 +108,7 @@ let optDeferred = {
   valToString = @(v) loc(v ? "options/on" : "options/off")
   function setValue(v) {
     deferredValue.set(v)
-    aaValue.set(aaList.get()[0])
+    aaValue.set(getAAByQuality(graphicsQuality.get()))
   }
 }
 

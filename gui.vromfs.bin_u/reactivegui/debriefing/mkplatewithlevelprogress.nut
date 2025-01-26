@@ -331,7 +331,7 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
   let unlockedLevel = isLevelUp
     ? getLevelProgress(levelCfg, reward).unlockedLevel
     : level
-  let nextLevelWithRewards = isMaxLevel ? 0
+  let nextLevelWithRewards = isMaxLevel ? -1
     : isSlot ? (level + 1)
     : getNextUnitLevelWithRewards(level + 1, levelsExp.len(), modPresetCfg, unitWeaponry?[name])
   let hasLevelUnlockRewards = isLevelUp && nextLevelWithRewards <= unlockedLevel
@@ -450,7 +450,9 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
                 })
           : isMaxLevel
             ? mkLevelStatusText(loc("battlepass/maxLevel"), false)
-          : mkLevelStatusText(loc("debriefing/requiresLevelN", { level = nextLevelWithRewards }), false)
+          : nextLevelWithRewards != -1
+            ?  mkLevelStatusText(loc("debriefing/requiresLevelN", { level = nextLevelWithRewards }), false)
+          : null
       }
     ]
   }

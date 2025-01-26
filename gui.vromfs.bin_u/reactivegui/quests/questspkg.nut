@@ -25,6 +25,7 @@ let sectionBtnGap = hdpx(10)
 let linkToEventWidth = hdpx(240)
 let linkToEventIconSize = hdpxi(74)
 let iconSize = CS_INCREASED_ICON.iconSize
+let headerLineGap = isWidescreen ? hdpx(20) : hdpx(8)
 let btnSize = [isWidescreen ? hdpx(300) : hdpx(230), hdpx(90)]
 let childOvr = isWidescreen ? {} : fontSmallShaded
 let btnStyle = { ovr = { size = btnSize, minWidth = 0 }, childOvr }
@@ -190,6 +191,8 @@ return {
   mkTimeUntil
   allQuestsCompleted
   mkQuestsHeaderBtn
+  linkToEventWidth
+  headerLineGap
 
   btnSize
   btnStyle

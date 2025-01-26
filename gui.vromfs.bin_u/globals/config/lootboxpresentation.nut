@@ -26,6 +26,10 @@ let customLootboxImages = {
   event_special_gift_ships_new_year_2025         = "event_christmas_gift_box.avif"
   event_special_gift_air_new_year_2025           = "event_christmas_gift_box.avif"
 
+  event_special_tanks_lunar_ny_2025         = "event_special_lunar_ny.avif"
+  event_special_ships_lunar_ny_2025         = "event_special_lunar_ny.avif"
+  event_special_air_lunar_ny_2025           = "event_special_lunar_ny.avif"
+
   past_events_box_tanks_seasons_1_to_3 = "past_events_box_ships_seasons_1_to_3.avif"
   past_events_box_ships_seasons_1_to_4 = "past_events_box_ships_seasons_1_to_3.avif"
   past_events_box_tanks_seasons_1_to_4 = "past_events_box_ships_seasons_1_to_3.avif"

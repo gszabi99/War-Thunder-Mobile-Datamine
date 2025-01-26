@@ -16,6 +16,7 @@ let presentations = {
   blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
   event_new_year               = { icon = "ui/gameuiskin#icon_event_christmas.svg", bg = "ui/images/event_bg_christmas_2024.avif" }
+  event_lunar_ny_season        = { icon = "ui/gameuiskin#icon_event_event_lunar_ny_season.svg", bg = "ui/images/event_bg_lunar.avif" }
 }
 
 let genParams = {

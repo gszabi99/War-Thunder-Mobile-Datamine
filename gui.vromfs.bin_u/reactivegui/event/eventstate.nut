@@ -246,6 +246,7 @@ function openEventWnd(eventName = MAIN_EVENT_ID) {
 let gamercardItemsBySpecialEvent = {
   christmas = [ "firework_kit" ]
   event_new_year = [ "firework_kit" ]
+  event_lunar_ny_season = [ "firework_kit" ]
 }
 let specialEventGamercardItems = Computed(function() {
   let specialEventsList = specialEvents.get().reduce(function(acc, e) {

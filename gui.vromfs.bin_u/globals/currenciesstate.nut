@@ -16,6 +16,7 @@ let isValidBalance = Computed(@() balance.value.findindex(@(val) val < 0) == nul
 
 let currencyOrder = [PLATINUM, GOLD, WP, WARBOND, EVENT_KEY, NYBOND, APRILBOND, BLACK_FRIDAY_BOND]
 let orderByCurrency = currencyOrder.reduce(@(res, c, i) res.$rawset(c, i + 1), {})
+let sortByCurrencyId = @(a, b) (orderByCurrency?[a] ?? -1) <=> (orderByCurrency?[b] ?? -1)
 
 let dbgCurrencyCount = {
   [WP] = 100000,
@@ -37,6 +38,7 @@ return {
   balanceGold = Computed(@() balance.value?[GOLD] ?? 0)
   isValidBalance
   orderByCurrency
+  sortByCurrencyId
   currencyOrder
   getDbgCurrencyCount
 }

@@ -19,7 +19,7 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
+let { sortByCurrencyId } = require("%appGlobals/currenciesState.nut")
 let { getCurrencyDescription } = require("%appGlobals/config/currencyPresentation.nut")
 
 let tasksBgGrad = mkColoredGradientY(0xFF09C6F9, 0xFF00808E, 12)
@@ -149,7 +149,7 @@ let scrollArrowsBlock = {
   ]
 }
 
-let sortByCurrencyAndAmount = @(a, b) (orderByCurrency?[a.price.currencyId] ?? -1) <=> (orderByCurrency?[b.price.currencyId] ?? -1)
+let sortByCurrencyAndAmount = @(a, b) sortByCurrencyId(a.price.currencyId, b.price.currencyId)
   || a.price.price <=> b.price.price
 
 let mkCurrenciesList = @(cId, goodsList, showQuestsLink, needUseScroll, ovr = {}) {

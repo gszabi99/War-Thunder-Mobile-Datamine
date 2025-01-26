@@ -265,6 +265,9 @@
     "pkg_common": {},
     "pkg_ground": {},
     "pkg_naval": {},
+    "pkg_lvl_lunar_ny": {
+      "hangarPath": "config/hangar_field_lunar_ny.blk"
+    },
     "pkg_tier_1_naval": {},
     "pkg_tier_2_naval": {},
     "pkg_tier_3_naval": {},
@@ -648,6 +651,12 @@
         "mRank": 2
       }
     },
+    "pkg_us_destroyer_gearing": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 1
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -1002,6 +1011,12 @@
         "mRank": 8
       }
     },
+    "pkg_cn_type_64": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
+    },
     "pkg_environment_uhq": {
       "base": false,
       "hq": false,
@@ -1174,7 +1189,8 @@
     "allowAnimatedDay": false,
     "raytraced_shadows": {
       "maxBlasBuildsPerFrame": 30,
-      "additionalElementsCheck": false
+      "additionalElementsCheck": false,
+      "geometryLimit": 1024
     },
     "cellsVBcfg": {
       "min_allocation_size": 8388608
@@ -1289,7 +1305,7 @@
     "enableNvHighlights": "auto",
     "logerrOnSecLayer": true,
     "mobileStyleFpsString": true,
-    "maxWorkThreads": 1,
+    "maxWorkThreads": 2,
     "sendFullLogOnFatalIntervalHours": 4,
     "useANRWatcherThreadProbability": 0.1,
     "logSignificantChangesAsWarnings": true,
@@ -3043,14 +3059,25 @@
       "ARM": {
         "driverProps": {
           "brokenSubpasses": {
-            "entry": {
-              "gpu": "G610",
-              "driverMinVer0": 38,
-              "driverMaxVer0": 38,
-              "data": {
-                "affected": true
+            "entry": [
+              {
+                "gpu": "G610",
+                "driverMinVer0": 38,
+                "data": {
+                  "affected": true
+                }
+              },
+              {
+                "gpu": "G52",
+                "driverMinVer0": 25,
+                "driverMinVer1": 1,
+                "driverMaxVer0": 25,
+                "driverMaxVer1": 1,
+                "data": {
+                  "affected": true
+                }
               }
-            }
+            ]
           },
           "brokenInstanceID": {
             "entry": {
@@ -3132,6 +3159,7 @@
           },
           "latencyWait": {
             "waitWorker": false,
+            "waitApp": false,
             "deltaUs": 300
           }
         }

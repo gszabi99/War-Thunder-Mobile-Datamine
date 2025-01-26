@@ -279,6 +279,41 @@
     },
     {
       "_template": "unit_loader",
+      "setting__unitType": "objectGroups",
+      "setting__playerNo": -1,
+      "setting__unit_class": "hangar_air_objects",
+      "setting__name": "test_bridge",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 2,
+      "setting__count": 1,
+      "setting__active": true,
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3651.5,
+          46.0,
+          3641.45
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
       "setting__unitType": "tank",
       "setting__playerNo": -1,
       "setting__className": "tankModels/us_halftrack_m16",

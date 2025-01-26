@@ -173,6 +173,7 @@ let skinsByTag = {
     "fr_camo_cenzub"
     "ussr_camo_arctic"
     "camo_ny_24"
+    "camo_lunar_ny_25"
   ],
 
   [NAVAL] = [
@@ -278,6 +279,7 @@ let skinsByTag = {
     "camo_redblack_spots"
     "camo_redwhite_stripes"
     "it_camo_blackgreen_deforming"
+    "camo_destroyer_gearing_lny"
   ],
 
   [AIR] = [
@@ -338,6 +340,8 @@ let skinsByTag = {
     "usa_f_82e"
     "usa_f8f1b_bearcat"
     "usa_p_40c_metal"
+    "usa_p_40c_china_snake_c"
+    "usa_p-40c_china_c"
     "usa_p_47m_1_re_bostwick_a"
     "usa_p_51_mk1a_trop"
     "usa_p_400"

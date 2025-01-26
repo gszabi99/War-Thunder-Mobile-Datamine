@@ -22,7 +22,7 @@ let { goodsGap, goodsGlareAnimDuration, mkLimitText, bottomPad, mkGoodsTimeProgr
 } = require("goodsView/sharedParts.nut")
 let { openGoodsPreview, openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
-let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
+let { orderByCurrency, sortByCurrencyId } = require("%appGlobals/currenciesState.nut")
 let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.nut")
 let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
@@ -212,7 +212,7 @@ let mkShopGamercard = @(onClose) function(){
       {size = flex()}
       premiumDays > 0 ? premIconWithTimeOnChange : null
       gamercardShopItemsBalanceBtns(orderItems)
-      mkCurrenciesBtns(currencies.keys().sort(@(a, b) orderByCurrency[a] <=> orderByCurrency[b]))
+      mkCurrenciesBtns(currencies.keys().sort(sortByCurrencyId))
         .__update({ size = SIZE_TO_CONTENT })
     ]
   }

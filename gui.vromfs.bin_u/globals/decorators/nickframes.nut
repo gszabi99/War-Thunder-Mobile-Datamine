@@ -96,6 +96,8 @@ let nickFrames = {
   cartridges = @(n) $"⚈{n}⚉"
   lighthouse = @(n) $"⚊{n}⚋"
   mask = @(n) $"⚌{n}⚌"
+  cn_lamp = @(n) $"␆{n}␆"
+  salut = @(n) $"␇{n}␈"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

@@ -150,6 +150,7 @@ eventbus_subscribe("ios.billing.onInitAndDataRequested", function(result) {
 
 let getProductId = @(goods) goods?.purchaseGuids.iOS.extId
 let getPlanId = @(goods) goods?.purchaseGuids.iOS.planId
+let getIosDiscount = @(goods) goods?.purchaseGuids.iOS.discountInPercent ?? 0
 
 let goodsIdByProductId = Computed(function() {
   let res = {}
@@ -223,8 +224,11 @@ let platformGoods = Computed(function() {
   foreach (productId, priceExt in availablePrices.value) {
     let goodsId = productToGoodsId?[productId]
     let goods = allGoods?[goodsId]
-    if (goods != null)
-      res[goodsId] <- goods.__merge({ priceExt }) //warning disable: -potentially-nulled-index
+    if (goods != null) {
+      let platformDiscount = getIosDiscount(goods)
+      let discountInPercent = platformDiscount != 0 ? platformDiscount : (goods?.discountInPercent ?? 0)
+      res[goodsId] <- goods.__merge({ priceExt, discountInPercent }) //warning disable: -potentially-nulled-index
+    }
   }
   return res
 })

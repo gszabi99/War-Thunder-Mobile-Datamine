@@ -11,7 +11,7 @@ let { receiveUnlockRewards, unlockInProgress, unlockTables, unlockProgress,
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, mkTimeUntil,
-  allQuestsCompleted, mkAdsBtn, btnSize } = require("questsPkg.nut")
+  allQuestsCompleted, mkAdsBtn, btnSize, headerLineGap } = require("questsPkg.nut")
 let { mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon, progressBarRewardSize, mkRewardsPreviewFull
 } = require("rewardsComps.nut")
 let { mkQuestBar, mkProgressBar } = require("questBar.nut")
@@ -398,7 +398,7 @@ function createTablePosQuestsChain(eventsData, eventCategories) {
 let headerLine = @(headerChildCtor, child) {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
-  gap = isWidescreen ? hdpx(20) : hdpx(5)
+  gap = headerLineGap
   valign = ALIGN_CENTER
   children = [
     headerChildCtor

@@ -10,7 +10,7 @@ let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { campConfigs, curCampaign, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let { can_debug_shop, allow_subscriptions } = require("%appGlobals/permissions.nut")
 let { platformGoods, platformSubs } = require("platformGoods.nut")
-let { WP, GOLD, PLATINUM, orderByCurrency } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD, PLATINUM, sortByCurrencyId } = require("%appGlobals/currenciesState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewards
 } = require("schRewardsState.nut")
@@ -43,13 +43,10 @@ let sortCurrency = @(a, b) (a.currencies?.platinum ?? 0) <=> (b.currencies?.plat
   || (a.currencies?.gold ?? 0) <=> (b.currencies?.gold ?? 0)
   || (a.currencies?.wp ?? 0) <=> (b.currencies?.wp ?? 0)
 
-let sortByCurrencyId = @(a, b)
-  (orderByCurrency?[a.price.currencyId] ?? -1) <=> (orderByCurrency?[b.price.currencyId] ?? -1)
-
 let sortGoods = @(a, b)
   b.meta?.eventId <=> a.meta?.eventId
   || b.meta?.order <=> a.meta?.order
-  || sortByCurrencyId(a, b)
+  || sortByCurrencyId(a.price.currencyId, b.price.currencyId)
   || a.gtype <=> b.gtype
   || sortCurrency(a, b)
   || a.price.price <=> b.price.price

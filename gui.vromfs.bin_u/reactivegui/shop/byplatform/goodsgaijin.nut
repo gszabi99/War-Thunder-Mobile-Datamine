@@ -10,6 +10,7 @@ let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let successPaymentUrl = "https://store.gaijin.net/success_payment.php" //webview should close on success payment url
 
 let getGaijinGuid = @(goods) goods?.purchaseGuids.gaijin.guid ?? ""
+let getGaijinDiscount = @(goods) goods?.purchaseGuids.gaijin.discountInPercent ?? 0
 
 let goodsIdByGuid = Computed(function() {
   let res = {}
@@ -58,7 +59,9 @@ function mkGoods(baseGoods, info) {
   if (shop_price <= 0)
     return null
   let currencyId = shop_price_curr.tolower()
+  let platformDiscount = getGaijinDiscount(baseGoods)
   return baseGoods.__merge({
+    discountInPercent = platformDiscount != 0 ? platformDiscount : (baseGoods?.discountInPercent ?? 0)
     duration = duration.tointeger()
     purchaseUrl = buildPurchaseUrl(info)
     priceExt = {

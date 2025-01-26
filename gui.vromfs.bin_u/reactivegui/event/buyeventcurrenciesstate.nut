@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
+let { sortByCurrencyId } = require("%appGlobals/currenciesState.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { allShopGoods, finishedGoodsByTime } = require("%rGui/shop/shopState.nut")
@@ -74,7 +74,7 @@ let buyCurrencyWndGamercardCurrencies = Computed(function() {
   let priceCurrencies = eventCurrenciesGoods.get()
     .reduce(@(res, v) res.$rawset(v.price.currencyId, true), {})
     .keys()
-  priceCurrencies.sort(@(a, b) (orderByCurrency?[b] ?? 0) <=> (orderByCurrency?[a] ?? 0))
+  priceCurrencies.sort(@(a, b) sortByCurrencyId(b, a)) //-param-pos
   return [ currencyId.get() ].extend(priceCurrencies)
 })
 

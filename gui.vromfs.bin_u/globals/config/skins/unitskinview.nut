@@ -127,6 +127,14 @@ return {
       "forest2": "cn_camo_green_yellow_black_lines",
       "forest3": "cn_camo_dkgreen"
     },
+    "cn_isu_152": {
+      "": "camo_lunar_ny_25",
+      "forest": "ussr_camo_green"
+    },
+    "cn_m42_duster": {
+      "": "camo_lunar_ny_25",
+      "forest": "us_camo_olive_late"
+    },
     "cn_m_41d": {
       "": "us_camo_modern_green",
       "forest": "cn_camo_green_brown_black",
@@ -136,6 +144,10 @@ return {
     "cn_object_122tm": {
       "": "ussr_camo_green",
       "forest": "cn_camo_desert_green"
+    },
+    "cn_object_211": {
+      "": "camo_lunar_ny_25",
+      "forest": "ussr_camo_green"
     },
     "cn_pgz_09": {
       "": "ussr_camo_green",
@@ -174,6 +186,10 @@ return {
     "cn_type_59d": {
       "": "ussr_camo_green",
       "upgraded": "cn_camo_sand_ltgreen_dkgreen"
+    },
+    "cn_type_64": {
+      "": "camo_lunar_ny_25",
+      "forest": "us_camo_olive_late"
     },
     "cn_type_69_2a": {
       "": "ussr_camo_green",
@@ -1509,6 +1525,10 @@ return {
     "p-40c": {
       "": "usa_p_40c_metal"
     },
+    "p-40c_china": {
+      "": "usa_p_40c_china_snake_c",
+      "china": "usa_p-40c_china_c"
+    },
     "p-40e": {
       "": "usa_p38k_usaaf"
     },
@@ -1968,6 +1988,9 @@ return {
     "us_destroyer_fletcher_nicholas": {
       "": "camo_multicolor_cubes",
       "upgraded": "camo_measure_geometry"
+    },
+    "us_destroyer_gearing": {
+      "": "camo_destroyer_gearing_lny"
     },
     "us_destroyer_mitscher": {
       "": "camo_greenriver_curves"

@@ -50,6 +50,7 @@
   "destroysTrees": true,
   "type": "typeTankDestroyer",
   "minRelativeTankCameraThreshold": 1.45,
+  "isSequentialPrimaryShot": true,
   "rearmSmokeTimeOnField": 60.0,
   "dm_for_shop": {
     "armorThicknessFront": [

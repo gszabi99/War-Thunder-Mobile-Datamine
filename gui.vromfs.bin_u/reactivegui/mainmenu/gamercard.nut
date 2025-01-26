@@ -3,7 +3,7 @@ from "%rGui/style/gamercardStyle.nut" import *
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { WP, GOLD, PLATINUM, orderByCurrency } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD, PLATINUM, sortByCurrencyId } = require("%appGlobals/currenciesState.nut")
 let { SC_GOLD, SC_WP, SC_PLATINUM, defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByCategory } = require("%rGui/shop/shopState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
@@ -446,7 +446,7 @@ let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}) {
   gap = gamercardGap
   children = !currencies ? null
     : [].extend(currencies)
-        .sort(@(a, b) (orderByCurrency?[b] ?? 0) <=> (orderByCurrency?[a] ?? 0))
+        .sort(@(a, b) sortByCurrencyId(b, a)) //-param-pos
         .map(@(c) mkCurrencyBalance(c, noActionCurrencies?[c] ? null : openBuyCurrencyWnd(c)))
 }
 

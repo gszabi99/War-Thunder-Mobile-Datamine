@@ -1,9 +1,9 @@
 {
-  "version": "1.12.0.51",
-  "grpHash": "0cb44c7d14a5f8a7d9f3838bc46e60d0",
+  "version": "1.12.0.58",
+  "grpHash": "a53a8505b57be21fe28b3e7fe0f8c34c",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "ffb358c6fa8d6decfd60d5d524646331",
+  "blkHash": "bb3c54b6c6a83678ae64d039ec9bc469",
   "genHash": "cfb62754ffa65bd022f81cd1ac191e2e",
   "a-20g": {
     "dep": [
@@ -658,6 +658,35 @@
       "isu_122_xray_skeleton"
     ]
   },
+  "cn_isu_152": {
+    "dep": [
+      "isu_152",
+      "isu_152_char",
+      "isu_152_collision",
+      "isu_152_dm_skeleton",
+      "isu_152_dmg",
+      "isu_152_dmg_skeleton",
+      "isu_152_fastphys",
+      "isu_152_skeleton",
+      "isu_152_xray",
+      "isu_152_xray_skeleton"
+    ]
+  },
+  "cn_m42_duster": {
+    "dep": [
+      "chinese_gunner_char",
+      "m42_duster",
+      "m42_duster_char",
+      "m42_duster_collision",
+      "m42_duster_dm_skeleton",
+      "m42_duster_dmg",
+      "m42_duster_dmg_skeleton",
+      "m42_duster_fastphys",
+      "m42_duster_skeleton",
+      "m42_duster_xray",
+      "m42_duster_xray_skeleton"
+    ]
+  },
   "cn_m4a4_sherman": {
     "dep": [
       "m4a4_sherman",
@@ -701,6 +730,20 @@
       "object_122tm_skeleton",
       "object_122tm_xray",
       "object_122tm_xray_skeleton"
+    ]
+  },
+  "cn_object_211": {
+    "dep": [
+      "object_211",
+      "object_211_char",
+      "object_211_collision",
+      "object_211_dm_skeleton",
+      "object_211_dmg",
+      "object_211_dmg_skeleton",
+      "object_211_fastphys",
+      "object_211_skeleton",
+      "object_211_xray",
+      "object_211_xray_skeleton"
     ]
   },
   "cn_pgz_09": {
@@ -817,6 +860,20 @@
       "type_59d_skeleton",
       "type_59d_xray",
       "type_59d_xray_skeleton"
+    ]
+  },
+  "cn_type_64": {
+    "dep": [
+      "chinese_gunner_char",
+      "type_64",
+      "type_64_collision",
+      "type_64_dm_skeleton",
+      "type_64_dmg",
+      "type_64_dmg_skeleton",
+      "type_64_fastphys",
+      "type_64_skeleton",
+      "type_64_xray",
+      "type_64_xray_skeleton"
     ]
   },
   "cn_type_69_2a": {
@@ -6265,6 +6322,27 @@
       "usa_paratrooper_char"
     ]
   },
+  "p-40c": {
+    "dep": [
+      "p_40c",
+      "p_40c_anim",
+      "p_40c_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_500lb_anm64a1",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-40c_china": {
+    "dep": [
+      "p_40c",
+      "p_40c_anim",
+      "p_40c_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "usa_paratrooper_char"
+    ]
+  },
   "p-40e": {
     "dep": [
       "p_40e",
@@ -8581,6 +8659,23 @@
       "destroyer_fletcher_skeleton",
       "destroyer_fletcher_xray",
       "destroyer_fletcher_xray_skeleton",
+      "mine_emc",
+      "torpedo_g7a"
+    ]
+  },
+  "us_destroyer_gearing": {
+    "dep": [
+      "depth_charge_mk6",
+      "destroyer_gearing",
+      "destroyer_gearing_char",
+      "destroyer_gearing_collision",
+      "destroyer_gearing_dm_skeleton",
+      "destroyer_gearing_fastphys",
+      "destroyer_gearing_sections",
+      "destroyer_gearing_sections_remote",
+      "destroyer_gearing_skeleton",
+      "destroyer_gearing_xray",
+      "destroyer_gearing_xray_skeleton",
       "mine_emc",
       "torpedo_g7a"
     ]

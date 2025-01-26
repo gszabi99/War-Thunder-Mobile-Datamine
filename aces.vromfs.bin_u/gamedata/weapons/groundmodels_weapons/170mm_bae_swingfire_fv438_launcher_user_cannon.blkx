@@ -39,6 +39,7 @@
   "notUseDefaultBulletInGui": true,
   "drawRocketInBullet": true,
   "mesh": "bae_swingfire_rocket_deployed",
+  "allowRearmOnField": true,
   "animChar": "bae_swingfire_rocket_char",
   "reloadAnimParam": "rocket_hide",
   "bullet": {
