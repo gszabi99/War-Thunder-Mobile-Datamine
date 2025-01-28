@@ -23,7 +23,6 @@ let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
 let { getTextScaleToFitWidth, getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
@@ -380,21 +379,10 @@ let mkCustomCurrencyIcon = {
   wp = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.61, 1.8, 0.12, -0.05)
   warbond = @(id, startDelay) mkDynamicRewardIcon(startDelay, id, 1.0, 1.2)
   eventKey = @(id, startDelay) mkDynamicRewardIcon(startDelay, id, 1.0, 1.0)
-  nybond = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
-  aprilbond = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
-  halloweenbond = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
-  blackfridaybond = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
 }
 
-let mkCurrencyIcon = @(startDelay, id) mkCustomCurrencyIcon?[id](id, startDelay) ?? {
-  size = [rewIconSize, rewIconSize]
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  children = [
-    mkHighlight(startDelay, aRewardIconFlareScale)
-    mkCurrencyImage(id, rewIconSize, mkRewardAnimProps(startDelay, aRewardIconSelfScale))
-  ]
-}
+let mkCurrencyIcon = @(startDelay, id) mkCustomCurrencyIcon?[id](id, startDelay)
+  ?? mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
 
 function mkRewardLabel(startDelay, text) {
   let res = {

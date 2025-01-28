@@ -492,12 +492,12 @@ let streaksPresentation = {
 
   streak_firework_new_year = {
     name = "streaks/streak_firework_new_year"
-    bgImage = "ui/gameuiskin#streak_christmas.avif"
+    bgImage = "ui/gameuiskin#streak_lunar.avif"
   }
 
   streak_firework_lunar_new_year = {
     name = "streaks/streak_firework_lunar_new_year"
-    bgImage = "ui/gameuiskin#streak_christmas.avif"
+    bgImage = "ui/gameuiskin#streak_lunar.avif"
   }
 
   heroic_fighter = {

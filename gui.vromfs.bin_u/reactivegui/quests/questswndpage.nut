@@ -14,7 +14,7 @@ let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap
   allQuestsCompleted, mkAdsBtn, btnSize, headerLineGap } = require("questsPkg.nut")
 let { mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon, progressBarRewardSize, mkRewardsPreviewFull
 } = require("rewardsComps.nut")
-let { mkQuestBar, mkProgressBar } = require("questBar.nut")
+let { mkQuestBar, mkQuestListProgressBar } = require("questBar.nut")
 let { getUnlockRewardsViewInfo, sortRewardsViewInfo, isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
@@ -437,6 +437,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
   let tabProgressUnlock = Computed(@() progressUnlockByTab.get()?[tabId])
   let progressUnlock = Computed(@() tabProgressUnlock.get() ?? progressUnlockBySection.get()?[curSectionId.get()])
   let progressUnlockName = Computed(@() progressUnlock.get()?.name)
+  let hasProgressUnlock = Computed(@() progressUnlock.get() != null)
   let isProgressBySection = Computed(@() tabProgressUnlock.get() == null)
 
   let blocksOnTop = Computed(function() {
@@ -454,16 +455,13 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
   let scrollHandler = ScrollHandler()
   curSectionId.subscribe(@(_) scrollHandler.scrollToY(0))
 
+  let isSectionsEmpty = Computed(@() sections.get().findindex(@(s) questsBySection.get()[s].len() > 0) == null)
   function header() {
+    let progressBlock = !hasProgressUnlock.get() ? null
+      : headerLine(headerChildCtor, mkQuestListProgressBar(progressUnlock, tabId, curSectionId))
 
-    let progressBlock = !progressUnlock.get() ? null
-      : headerLine(headerChildCtor,
-        mkProgressBar(progressUnlock.get().__merge({ tabId, sectionId = curSectionId.get() })))
-
-    let sectionsComp = sections.value.findindex(@(s) questsBySection.value[s].len() > 0) == null
-        ? allQuestsCompleted
-      : sections.value.len() > 1
-        ? mkSectionTabs(sections.value, curSectionId, onSectionChange)
+    let sectionsComp = isSectionsEmpty.get() ? allQuestsCompleted
+      : sections.value.len() > 1 ? mkSectionTabs(sections.value, curSectionId, onSectionChange)
       : null
 
     let sectionsBlock = !progressBlock
@@ -471,7 +469,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
       : sectionsComp
 
     return {
-      watch = [isProgressBySection, sections, curSectionId, questsBySection, progressUnlock]
+      watch = [isProgressBySection, sections, isSectionsEmpty, hasProgressUnlock]
       size = [flex(), SIZE_TO_CONTENT]
       gap = pageBlocksGap
       flow = FLOW_VERTICAL

@@ -27,7 +27,7 @@ let BAR_COLOR_SHOW = 0.4
 let BAR_COLOR_BLINK = 1.0
 
 let fadeWidth = hdpx(10)
-let minStageWidth = progressBarRewardSize + hdpx(82)
+let minStageWidth = progressBarRewardSize + hdpx(100)
 let progressBarWidth = sw(100) - saBorders[0] * 2 - tabW - minContentOffset - headerLineGap - linkToEventWidth - starIconOffset
 
 let bgGradient = {
@@ -86,7 +86,13 @@ function mkQuestBar(quest) {
 let scrollHandler = ScrollHandler()
 let pannableArea = horizontalPannableAreaCtor(progressBarWidth, [fadeWidth, fadeWidth])
 
-function mkStages(progressUnlock, stageWidth, curStageIdx) {
+function getCurStageIdx(unlock) {
+  let { stages = [], current = 0 } = unlock
+  return stages.findindex(@(s) s.progress >= current)
+}
+
+function mkStages(progressUnlock, stageWidth, tabId, curSectionId) {
+  let curStageIdx = getCurStageIdx(progressUnlock)
   let { hasReward = false, stage, stages, current = 0, name } = progressUnlock
   let required = stages?[curStageIdx].progress
   let isRewardInProgress = Computed(@() name in unlockInProgress.value)
@@ -107,7 +113,8 @@ function mkStages(progressUnlock, stageWidth, curStageIdx) {
       let claimReward = isUnlocked && hasReward && (idx + 1) >= stage
           ? function() {
               receiveUnlockRewards(name, stage, { stage, finalStage = idx + 1 })
-              sendBqQuestsStage(progressUnlock, rewardPreview.value?.count ?? 0, rewardPreview.value?.id)
+              sendBqQuestsStage(progressUnlock.__merge({ tabId, sectionId = curSectionId.get() }),
+                rewardPreview.value?.count ?? 0, rewardPreview.value?.id)
             }
         : null
 
@@ -123,7 +130,12 @@ function mkStages(progressUnlock, stageWidth, curStageIdx) {
                 size = [flex(), progressBarHeight]
                 children = [
                   {
-                    key = progressUnlock?.sectionId
+                    rendObj = ROBJ_SOLID
+                    size = flex()
+                    color = bgColor
+                  }
+                  {
+                    key = progressUnlock?.name
                     rendObj = ROBJ_SOLID
                     size = flex()
                     color = progressBarColorLight
@@ -134,7 +146,7 @@ function mkStages(progressUnlock, stageWidth, curStageIdx) {
                     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
                   }
                   {
-                    key = progressUnlock?.sectionId
+                    key = progressUnlock?.name
                     rendObj = ROBJ_SOLID
                     size = flex()
                     color = progressBarColor
@@ -167,64 +179,60 @@ function mkStages(progressUnlock, stageWidth, curStageIdx) {
   }
 }
 
-function mkProgressBar(progressUnlock) {
-  let { stages, current = 0 } = progressUnlock
-  let curStageIdx = stages.findindex(@(s) s.progress >= current)
-  let hasScroll = stages.len() * minStageWidth > progressBarWidth
-  let stageWidth = hasScroll ? minStageWidth : progressBarWidth / stages.len()
-  let stagesContent = mkStages(progressUnlock, stageWidth, curStageIdx)
-  return {
-    size = [flex(), progressBarHeight]
-    padding = [0, 0, 0, starIconOffset]
-    children = [
-      {
-        size = flex()
-        rendObj = ROBJ_BOX
-        fillColor = bgColor
-      }
-      !hasScroll ? stagesContent
-        : {
-            key = {}
-            size = [progressBarWidth + fadeWidth * 2, progressBarHeight]
-            hplace = ALIGN_CENTER
-            vplace = ALIGN_CENTER
-            onAttach = curStageIdx == null ? null : @() scrollHandler.scrollToX(curStageIdx * minStageWidth)
-            children = [
-              pannableArea(stagesContent,
-                { pos = [0, 0], size = [flex(), SIZE_TO_CONTENT], vplace = ALIGN_CENTER, clipChildren = false },
-                {
-                  size = [flex(), SIZE_TO_CONTENT]
-                  behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
-                  scrollHandler
-                })
-              {
-                size = [progressBarWidth + minStageWidth, SIZE_TO_CONTENT]
+function mkQuestListProgressBar(progressUnlock, tabId, curSectionId) {
+  let hasScroll = Computed(@() (progressUnlock.get()?.stages.len() ?? 0) * minStageWidth > progressBarWidth)
+  return @() progressUnlock.get() == null ? { watch = progressUnlock }
+    : {
+        watch = [progressUnlock, hasScroll]
+        size = [flex(), progressBarHeight]
+        padding = [0, 0, 0, starIconOffset]
+        children = [
+          !hasScroll
+            ? mkStages(progressUnlock.get(), progressBarWidth / (progressUnlock.get()?.stages.len() || 1),
+                tabId, curSectionId)
+            : {
+                key = hasScroll
+                size = [progressBarWidth + fadeWidth * 2, progressBarHeight]
                 hplace = ALIGN_CENTER
                 vplace = ALIGN_CENTER
+                function onAttach() {
+                  let curStageIdx = getCurStageIdx(progressUnlock.get())
+                  if (curStageIdx != null)
+                    scrollHandler.scrollToX(curStageIdx * minStageWidth)
+                }
                 children = [
-                  mkScrollArrow(scrollHandler, MR_L, scrollArrowImageSmall)
-                  mkScrollArrow(scrollHandler, MR_R, scrollArrowImageSmall)
+                  pannableArea(mkStages(progressUnlock.get(), minStageWidth, tabId, curSectionId),
+                    { pos = [0, 0], size = [flex(), SIZE_TO_CONTENT], vplace = ALIGN_CENTER, clipChildren = false },
+                    {
+                      size = [flex(), SIZE_TO_CONTENT]
+                      behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
+                      scrollHandler
+                    })
+                  {
+                    size = [progressBarWidth + minStageWidth, SIZE_TO_CONTENT]
+                    hplace = ALIGN_CENTER
+                    vplace = ALIGN_CENTER
+                    children = mkScrollArrow(scrollHandler, MR_R, scrollArrowImageSmall)
+                  }
                 ]
               }
-            ]
+          {
+            key = progressUnlock?.name
+            size = [starIconSize, starIconSize]
+            vplace = ALIGN_CENTER
+            pos = [-starIconOffset, hdpx(-7)]
+            rendObj = ROBJ_IMAGE
+            image = Picture("ui/gameuiskin#quest_experience_icon.avif:0:P")
+            transform = {}
+            animations = [statsAnimation]
           }
-      {
-        key = progressUnlock?.sectionId
-        size = [starIconSize, starIconSize]
-        vplace = ALIGN_CENTER
-        pos = [-starIconOffset, hdpx(-7)]
-        rendObj = ROBJ_IMAGE
-        image = Picture("ui/gameuiskin#quest_experience_icon.avif:0:P")
-        transform = {}
-        animations = [statsAnimation]
+        ]
       }
-    ]
-  }
 }
 
 return {
   mkQuestBar
-  mkProgressBar
+  mkQuestListProgressBar
 
   progressBarHeight
 }

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
-let { getCurrencyImage, getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
+let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
@@ -271,14 +271,12 @@ function mkDynamicCurrencyIcon(curId, size, iconShiftY, scale, aspectRatio = 1.0
   }.__update(iconBase)
 }
 
-let defCurrencyImgCtor = @(id, size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, getCurrencyImage(id), 0.8)
+let defCurrencyImgCtor = @(id, size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, getCurrencyBigIcon(id), 0.85)
 let currencyImgCtors = {
   gold = @(id, size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, getCurrencyBigIcon(id))
   wp = @(id, size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, getCurrencyBigIcon(id))
   warbond = @(id, size, iconShiftY) mkDynamicCurrencyIcon(id, size, iconShiftY, 0.85)
   eventKey = @(id, size, iconShiftY) mkDynamicCurrencyIcon(id, size, iconShiftY, 0.65)
-  halloweenbond = @(id, size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, getCurrencyBigIcon(id), 0.85)
-  blackfridaybond = @(id, size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, getCurrencyBigIcon(id), 0.85)
 }
 
 function mkRewardPlateCurrencyImage(r, rStyle) {

@@ -17,6 +17,7 @@ let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { logEvent } = require("appsFlyer")
 
 let isDebugMode = is_pc
 let getDebugPriceMicros = @(sku) (sku.hash() % 1000) * 1000000 + ((sku.hash() / 7) % 1000000)
@@ -241,11 +242,26 @@ function buyPlatformGoods(goodsOrId) {
 
 let noNeedLogerr = [ HMS_ORDER_STATE_CANCEL, HMS_ORDER_STATE_NET_ERROR, HMS_ORDER_STATE_CALLS_FREQUENT, HMS_ORDER_STATE_DEFAULT_CODE ]
 
+function sendLogPurchaseData(json_value) {
+  //see more here: https://support.appsflyer.com/hc/en-us/articles/4410481112081
+  local resp = parse_json(json_value)
+  let { orderId = null, productId = null } = resp
+  local af = {
+    af_order_id = orderId
+    af_content_id = productId
+    af_revenue = availableSkusPrices.value?[productId].price ?? -1
+    af_price = availableSkusPrices.value?[productId].price ?? -1
+    af_currency = availableSkusPrices.value?[productId].currencyId ?? "USD" //or af_purchase_currency?
+  }
+  logEvent("af_purchase", object_to_json_string(af, true))
+}
+
 eventbus_subscribe("android.billing.huawei.onHuaweiPurchaseCallback", function(result) {
   let { status, value = "" } = result
   let statusName = getStatusName(status)
   if (status == HMS_ORDER_STATE_SUCCESS) {
     register_huawei_purchase(value, false, "auth.onRegisterHuaweiPurchase")
+    sendLogPurchaseData(value)
     return
   }
   purchaseInProgress.set(null)

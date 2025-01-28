@@ -1,9 +1,9 @@
 {
-  "version": "1.12.0.58",
-  "grpHash": "a53a8505b57be21fe28b3e7fe0f8c34c",
+  "version": "1.12.0.66",
+  "grpHash": "447f1a2d06d15135cb8578a29a3212cd",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "bb3c54b6c6a83678ae64d039ec9bc469",
+  "blkHash": "2f6d3b37a161195a52d2d973bb49386c",
   "genHash": "cfb62754ffa65bd022f81cd1ac191e2e",
   "a-20g": {
     "dep": [

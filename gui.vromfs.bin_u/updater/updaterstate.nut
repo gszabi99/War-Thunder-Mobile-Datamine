@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
-let { deferOnce } = require("dagor.workcycle")
+let { defer } = require("dagor.workcycle")
 let logU = log_with_prefix("[UPDATER] ")
 let { getDownloadInfoText, MB } = require("%globalsDarg/updaterUtils.nut")
 let { is_android, is_ios } = require("%sqstd/platform.nut")
@@ -31,12 +31,8 @@ let statusText = Computed(@() updaterError.value != null ? loc($"updater/error/{
       getDownloadInfoText(totalSizeBytes.value, progress.value.etaSec, progress.value.dspeed))
 )
 
-let progressTmp = Watched(progress.get())
-let updateProgress = @() progress.set(progressTmp.get())
-progressTmp.subscribe(@(_) deferOnce(updateProgress))
-
 let updaterEvents = {
-  [UPDATER_EVENT_STAGE]         = @(evt) updaterStage(evt.stage),
+  [UPDATER_EVENT_STAGE]         = @(evt) defer(@() updaterStage.set(evt.stage)),
   [UPDATER_EVENT_DOWNLOAD_SIZE] = function (evt) {
     totalSizeBytes(evt.toDownload)
     local showWarning = evt?.showWarning ?? false
@@ -47,12 +43,12 @@ let updaterEvents = {
       set_accept_user_react()
     }
   },
-  [UPDATER_EVENT_PROGRESS]      = @(evt) progressTmp.set({
+  [UPDATER_EVENT_PROGRESS]      = @(evt) defer(@() progress.set({
     percent = evt.percent
     etaSec = evt.etaSec
     dspeed = evt.dspeed
-  }),
-  [UPDATER_EVENT_ERROR]         = @(evt) updaterError(evt.error),
+  })),
+  [UPDATER_EVENT_ERROR]         = @(evt) defer(@() updaterError.set(evt.error)),
   [UPDATER_EVENT_INCOMPATIBLE_VERSION] = @(p) (p?.needExeUpdate ?? true) ? needUpdateMsg(true) : needRestartMsg(true),
 }
 

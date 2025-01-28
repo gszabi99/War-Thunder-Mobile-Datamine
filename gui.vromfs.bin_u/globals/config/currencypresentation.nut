@@ -73,6 +73,7 @@ let currencyIconsColor = {
 
 let currencyEventDescriptions = {
   blackfridaybond = "events/buyCurrency/desc/blackfridaybond"
+  lunarbond = "events/buyCurrency/desc/lunarbond"
 }
 
 let getCommonIcon = @(id) icons?[id] ?? placeholder
