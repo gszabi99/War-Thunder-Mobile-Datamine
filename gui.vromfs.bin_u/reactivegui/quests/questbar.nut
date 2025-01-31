@@ -198,7 +198,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId) {
                 function onAttach() {
                   let curStageIdx = getCurStageIdx(progressUnlock.get())
                   if (curStageIdx != null)
-                    scrollHandler.scrollToX(curStageIdx * minStageWidth)
+                    scrollHandler.scrollToX(max(0, curStageIdx * minStageWidth - progressBarRewardSize / 4))
                 }
                 children = [
                   pannableArea(mkStages(progressUnlock.get(), minStageWidth, tabId, curSectionId),

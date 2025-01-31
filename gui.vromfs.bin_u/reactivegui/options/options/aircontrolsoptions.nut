@@ -338,7 +338,7 @@ return {
     currentFixedAimCursorType
     currentinvertedYOptionType
     currentAdditionalFlyControlsType
-    cameraSenseSlider(CAM_TYPE_NORMAL_PLANE, "options/cursor_sensitivity", OPT_CAMERA_SENSE_PLANE, getOptValue(OPT_CAMERA_SENSE)?? 1.0, 0.33, 3.0, 0.026)
+    cameraSenseSlider(CAM_TYPE_NORMAL_PLANE, "options/cursor_sensitivity", OPT_CAMERA_SENSE_PLANE, getOptValue(OPT_CAMERA_SENSE)?? 1.0, 0.33, 5.67, 0.0267)
     cameraViscositySlider(isMouseAim, false, "options/camera_sensitivity", OPT_CAMERA_VISC_PLANE,
       getOptValue(OPT_CAMERA_VISC_PLANE) ?? 1.0,
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_PLANE][0],
@@ -349,7 +349,7 @@ return {
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_PLANE_STICK][0],
       0.03,  //step
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_PLANE_STICK][1])
-    cameraSenseSlider(CAM_TYPE_BINOCULAR_PLANE, "options/cursor_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_PLANE, getOptValue(OPT_CAMERA_SENSE_IN_ZOOM)?? 1.0, 0.33, 3.0, 0.026)
+    cameraSenseSlider(CAM_TYPE_BINOCULAR_PLANE, "options/cursor_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_PLANE, getOptValue(OPT_CAMERA_SENSE_IN_ZOOM)?? 1.0, 0.33, 5.67, 0.0267)
     cameraViscositySlider(isMouseAim, true, "options/camera_sensitivity_in_zoom", OPT_CAMERA_VISC_IN_ZOOM_PLANE,
       getOptValue(OPT_CAMERA_VISC_IN_ZOOM_PLANE) ?? 1.0,
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE][0],
@@ -360,7 +360,7 @@ return {
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK][0],
       0.1,  //step
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK][1])
-    cameraSenseSlider(CAM_TYPE_FREE_PLANE, "options/free_camera_sensitivity_plane", OPT_FREE_CAMERA_PLANE, 0.5, 0.125, 2.0, 0.0187)
+    cameraSenseSlider(CAM_TYPE_FREE_PLANE, "options/free_camera_sensitivity_plane", OPT_FREE_CAMERA_PLANE, 0.5, 0.125, 3.875, 0.01875)
     currentContinuousTurnModeType
     controlThrottleStick
     controlByGyroModeAileronsAssist

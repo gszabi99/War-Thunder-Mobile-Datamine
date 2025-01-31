@@ -136,7 +136,7 @@ function sendFormData() {
       subject
       comment = { body = message }
       custom_fields = [
-        { id = 360000060018, value = category }
+        { id = 23973816368914, value = category }
         { id = 21445500020242, value = userId }
         { id = 23145413, value = name }
         { id = 23166961, value = lang }

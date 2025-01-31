@@ -6459,7 +6459,8 @@
           "gunsCount": 2,
           "ammoCount": 470,
           "shotFreq": 12.5
-        }
+        },
+        "500lb": {}
       }
     },
     "bullets": {

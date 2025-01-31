@@ -623,13 +623,13 @@ Kamu selalu bisa mengganti prasetel kontrol ke prasetel sebelumnya di menu Penga
 空\t战\t模\t式\t目\t标\t追\t踪\t视\t角\t的\t按\t键\t由 <color=@userlogColoredText>Alt</color> 改\t为 <color=@userlogColoredText>Shift</color>
 加\t入\t作\t战\t时\t显\t示\t鼠\t标\t指\t针\t的\t功\t能\t键 <color=@userlogColoredText>Alt</color>
 
-可\t随\t时\t在\t“按\t键\t设\t置”\t中\t更\t改\t按\t键\t映\t射。";"Tank repair function moved to the <color=@userlogColoredText>F</color> button (was on the <color=@userlogColoredText>U</color> button)
-X-Ray function moved to the <color=@userlogColoredText>Y</color> button (was on the <color=@userlogColoredText>O</color> button)
-Tank Sniper Mode moved to the <color=@userlogColoredText>Shift</color> button (was on the <color=@userlogColoredText>V</color> button)
-Target camera (aviation) moved to the <color=@userlogColoredText>Shift</color> button (was on the <color=@userlogColoredText>Alt</color> button)
-Show Mouse Cursor in battle was set up to the <color=@userlogColoredText>Alt</color> button
+可\t随\t时\t在\t“按\t键\t设\t置”\t中\t更\t改\t按\t键\t映\t射。";"戦車の\t修理機能は <color=@userlogColoredText>F</color> キーに\t変わりました。\t（以前は <color=@userlogColoredText>U</color> キーでした）\t
+X\t線（レントゲン）\t機能は <color=@userlogColoredText>Y</color> キーに\t変わりました。\t（以前は <color=@userlogColoredText>O</color> キーでした）\t
+戦車\tスナイパーモードは <color=@userlogColoredText>Shift</color> キーに\t変わりました。\t（以前は <color=@userlogColoredText>V</color> キーでした）\t
+ターゲットカメラ（航空機）\t機能は <color=@userlogColoredText>Shift</color> キーに\t変わりました（以前は <color=@userlogColoredText>Alt</color> キーでした）\t
+戦闘中に\tマウスカーソルを\t表示するには <color=@userlogColoredText>Alt</color> キーを\t使用してください。\t
 
-You can always change your controls preset to the previous one in the Control Settings menu";"維\t修\t戰\t車\t功\t能\t調\t整\t為 <color=@userlogColoredText>F</color> 按\t鍵 (原\t本\t為 <color=@userlogColoredText>U</color> 按\t鍵)
+操作方法の\tプリセットはいつでも「コントロール\t設定」\tメニューから\t以前のものに\t変えられます";"維\t修\t戰\t車\t功\t能\t調\t整\t為 <color=@userlogColoredText>F</color> 按\t鍵 (原\t本\t為 <color=@userlogColoredText>U</color> 按\t鍵)
 展\t示\t內\t部\t結\t構\t功\t能\t調\t整\t為 <color=@userlogColoredText>Y</color> 按\t鍵 (原\t本\t為 <color=@userlogColoredText>O</color> 按\t鍵)
 戰\t車\t狙\t擊\t模\t式\t調\t整\t為 <color=@userlogColoredText>Shift</color> 按\t鍵 (原\t本\t為 <color=@userlogColoredText>V</color> 按\t鍵)
 目\t標\t視\t角 (空\t軍) 調\t整\t為 <color=@userlogColoredText>Shift</color> 按\t鍵 (原\t本\t為 <color=@userlogColoredText>Alt</color> 按\t鍵)
@@ -1347,7 +1347,7 @@ indirmek ister misiniz?";"Chceš stáhnout %s teď?";"Θέλετε να κατε
 "updater/error/1";"Unknown error";"Erreur inconnue";"Errore sconosciuto";"Unbekannter Fehler";"Error desconocido";"Неизвестная ошибка";"Невідома помилка";"Nieznany błąd";"Erro desconhecido";"Bilinmeyen hata";"Neznámá chyba";"Άγνωστο σφάλμα";"Terjadi kesalahan yang tidak diketahui";"ข้อผิดพลาดที่ไม่รู้จัก";"알 수 없는 오류";"未\t知\t错\t误";"不明な\tエラー";"未\t知\t錯\t誤";"UPDATER_ERROR_CONFIG";
 "updater/error/2";"Network error";"Erreur réseau";"Errore di rete";"Netzwerkfehler";"Error de red";"Сетевая ошибка";"Мережева помилка";"Błąd sieci";"Erro de rede";"Ağ hatası";"Chyba sítě";"Σφάλμα δικτύου";"Terjadi kesalahan jaringan";"ข้อผิดพลาดของเครือข่าย";"네트워크 오류";"网\t络\t错\t误";"ネットワークエラー";"網\t路\t錯\t誤";"UPDATER_ERROR_HTTP";
 "updater/error/3";"Disk I/O error";"Erreur inconnue";"Errore sconosciuto";"Unbekannter Fehler";"Error desconocido";"Ошибка записи на диск";"Помилка запису на диск";"Nieznany błąd";"Erro de disco I/O";"Bilinmeyen hata";"Neznámá chyba";"Σφάλμα δίσκου I/O";"Terjadi kesalahan Disk I/O";"ข้อผิดพลาดของ Disk I/O";"디스크 I/O 오류";"未\t知\t错\t误";"不明な\tエラー";"未\t知\t錯\t誤";"UPDATER_ERROR_FILE_ACCESS";
-"updater/error/4";"Disk I/O error";"Erreur inconnue";"Errore sconosciuto";"Unbekannter Fehler";"Error desconocido";"Ошибка записи на диск";"Помилка запису на диск";"Nieznany błąd";"Erro de disco I/O";"Bilinmeyen hata";"Neznámá chyba";"Σφάλμα δίσκου I/O";"Terjadi kesalahan Disk I/O";"ข้อผิดพลาดของ Disk I/O";"디스크 I/O 오류";"未\t知\t错\t误";"不明な\tエラー";"未\t知\t錯\t誤";"UPDATER_ERROR_DISK_SPACE";
+"updater/error/4";"Disk I/O error";"Espace de stockage insuffisant";"Non hai abbastanza spazio";"Nicht genug Speicherplatz";"No hay suficiente espacio de almacenamiento";"Ошибка записи на диск";"Недостатньо вільного місця";"Zbyt mało miejsca na dysku";"Espaço insuficiente no disco";"Yeterli depolama alanı yok";"Nedostatečné místo na disku";"Δεν επαρκεί ο χώρος αποθήκευσης";"Ruang penyimpanan tidak cukup";"พื้นที่จัดเก็บข้อมูลไม่พอ";"저장공간이 부족합니다";"设\t备\t存\t储\t空\t间\t不\t足";"ストレージ\t容量が\t不足しています";"余\t下\t存\t儲\t空\t間\t不\t足";"UPDATER_ERROR_DISK_SPACE";
 "updater/error/5";"Unknown error";"Erreur inconnue";"Errore sconosciuto";"Unbekannter Fehler";"Error desconocido";"Неизвестная ошибка";"Невідома помилка";"Nieznany błąd";"Erro desconhecido";"Bilinmeyen hata";"Neznámá chyba";"Άγνωστο σφάλμα";"Terjadi kesalahan yang tidak diketahui";"ข้อผิดพลาดที่ไม่รู้จัก";"알 수 없는 오류";"未\t知\t错\t误";"不明な\tエラー";"未\t知\t錯\t誤";"UPDATER_ERROR_EXE_RUNNING";
 "updater/error/6";"Unknown error";"Erreur inconnue";"Errore sconosciuto";"Unbekannter Fehler";"Error desconocido";"Неизвестная ошибка";"Невідома помилка";"Nieznany błąd";"Unknown error";"Bilinmeyen hata";"Neznámá chyba";"Άγνωστο σφάλμα";"Terjadi kesalahan yang tidak diketahui";"ข้อผิดพลาดที่ไม่รู้จัก";"알 수 없는 오류";"未\t知\t错\t误";"不明な\tエラー";"未\t知\t錯\t誤";"UPDATER_ERROR_YUP";
 "updater/error/7";"Disk I/O error";"Erreur inconnue";"Errore sconosciuto";"Unbekannter Fehler";"Error desconocido";"Ошибка записи на диск";"Помилка запису на диск";"Nieznany błąd";"Erro de disco I/O";"Bilinmeyen hata";"Neznámá chyba";"Σφάλμα δίσκου I/O";"Terjadi kesalahan Disk I/O";"ข้อผิดพลาดของ Disk I/O";"디스크 I/O 오류";"未\t知\t错\t误";"不明な\tエラー";"未\t知\t錯\t誤";"UPDATER_ERROR_DISK";
@@ -1401,168 +1401,183 @@ please log in with it now <color=@goodTextColor>to link</color> it with your Ste
 If you already used Steam login option before, just use it now as well.
 If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-If you have questions or problems contact our technical support";"Si vous <color=@goodTextColor> avez déjà</color> un compte Gaijin.net, merci de vous connecter avec maintenant<color=@goodTextColor>afin de le relier</color> à votre compte Steam et <color=@goodTextColor>de conserver</color> votre progression actuelle en jeu.
-Si vous utilisiez déjà l'option de connexion Steam, continuez à l'utiliser.
-
-Si vous avez des questions ou des problèmes contactez notre support technique";"Se <color=@goodTextColor> hai già</color> un account Gaijin.net,
-esegui il log in <color=@goodTextColor>per collegarlo</color> al tuo account di Steam e <color=@goodTextColor>mantenere</color> i progressi di gioco.
-Se hai già usato l'opzione login di Steam, utilizza quello.
-Se questo è il primo avvio del gioco, dopo aver cliccato sul Login di Steam verrà creato un nuovo account.
-
-Se hai domande o problemi contatta il nostro supporto tecnico";"Falls du <color=@goodTextColor>bereits ein</color> Gaijin.net-Konto besitzt, melde dich mit diesem nun bitte an um ihn mit deinem Steam-Account <color=@goodTextColor>zu verbinden</color> und deinen Spielfortschritt zu <color=@goodTextColor>behalten</color>.
-Wenn du bereits die Steam-Anmelde-Funktion genutzt hast, nutze diese nun auch.
-Wenn das der erste Start des Spiels ist, wird beim Klick auf Steam-Login ein neues Konto erstellt.
-
-Solltest du Fragen oder Probleme haben, bitte kontaktiere unseren technischen Kundendienst";"Si <color=@goodTextColor>ya posee</color> una cuenta de Gaijin.net,
-por favor ingrese con ella <color=@goodTextColor>para vincularla</color> con su cuenta de Steam y
-<color=@goodTextColor>mantener</color> su progreso existente en el juego.
-Si ya ha usado la opción de ingreso por Steam antes, úsela ahora.
-Si es su primera vez entrando al juego, entonces se creará una nueva cuenta al seleccionar Ingreso por Steam.
-
-Si tiene alguna pregunta o problema contacte nuestro soporte técnico";"Если у вас уже <color=@goodTextColor>есть аккаунт Gaijin.net</color>,
-пожалуйста, войдите в него сейчас, чтобы <color=@goodTextColor>связать</color> его со своей учётной записью Steam и <color=@goodTextColor>сохранить</color> существующий прогресс.
-Если вы ранее уже заходили в игру через Steam авторизацию, то воспользуйтесь этой опцией и сейчас.
-Если это первый вход в игру, то при выборе Steam авторизации будет создан новый аккаунт.
-
-Если у вас есть вопросы или проблемы обратитесь в техподдержку";"Якщо у вас вже <color=@goodTextColor>є аккаунт Gaijin.net</color>,
-будь ласка, увійдіть в нього зараз, щоб <color=@goodTextColor>зв'язати</color> його зі свого облікового запису Steam і <color=@goodTextColor>зберегти</color> ваш існуючий прогрес.
-Якщо ви раніше вже заходили в гру через Steam авторизацію, то скористайтеся цією опцією і зараз.
-
-Якщо у вас є питання або проблеми зверніться в техпідтримку";"Jeśli <color=@goodTextColor>masz już</color> konto Gaijin.net,
-zaloguj się teraz, <color=@goodTextColor>aby połączyć</color> je ze swoim kontem Steam i <color=@goodTextColor>zachować</color> dotychczasowe postępy w grze.
-Jeśli już wcześniej korzystałeś z opcji logowania przez Steam, skorzystaj z niej jak zwykle.
-Jeśli to pierwsze uruchomienie gry, kliknięcie przycisku „Logowanie przez Steam” spowoduje utworzenie nowego konta.
-
-Jeśli masz pytania lub problemy skontaktuj się z naszym wsparciem technicznym";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
 please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
 If you already used Steam login option before, just use it now as well.
 If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-If you have questions or problems contact our technical support";"Eğer bir Gaijin.net hesabınız <color=@goodTextColor>zaten var ise</color> lütfen Steam hesabınız ile <color=@goodTextColor>birleştirmek için</color> ve mevcut oyun ilerleyişinizi <color=@goodTextColor>elinizde tutmak için</color> giriş yapın.
-Eğer Steam ile giriş seçeneğini önceden zaten kullanmış iseniz şuan da kullanın.
-Eğer bu War Thunder'ın ilk başlatılışı ise Steam Girişi'ne tıklayarak yeni bir hesap oluşturabilirsiniz.
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-Eğer bir sorunuz veya şikayetiniz var ise teknik desteğimiz ile iletişime geçiniz";"Pokud <color=@goodTextColor>již máš</color> účet na Gaijin.net,
-přihlas se s ním nyní <color=@goodTextColor>pro jeho propojení</color> s tvým Steam účtem a <color=@goodTextColor>zachování</color> stávajícího postupu ve hře.
-Pokud jsi již dříve použil možnost přihlášení ke službě Steam, použij ji i nyní.
-Pokud se jedná o první spuštění hry, pak se kliknutím na možnost Přihlášení ke službě Steam vytvoří nový účet.
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-V případě dotazů nebo problémů kontaktujte naši technickou podporu";"Αν <color=@goodTextColor>έχετε ήδη</color> λογαριασμό στην Gaijin.net,
-συνδεθείτε με αυτόν τώρα <color=@goodTextColor>για να τον συνδέσετε</color> με τον λογαριασμό Steam και <color=@goodTextColor>να διατηρήσετε</color> την τρέχουσα πρόοδο στο παιχνίδι.
-Αν ήδη χρησιμοποιήσατε την επιλογή Steam Login νωρίτερα, απλά χρησιμοποιήστε την και τώρα.
-Αν αυτή είναι η πρώτη εκκίνηση του Παιχνιδιού, τότε πατώντας στο Steam Login θα δημιουργηθεί ένας νέος λογαριασμός.
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-Αν έχετε ερωτήσεις ή προβλήματα, επικοινωνήστε με την τεχνική μας υποστήριξη";"Jika kamu <color=@goodTextColor>sudah punya</color> akun Gaijin.net,
-login dengan akun itu sekarang juga <color=@goodTextColor>untuk menautkan</color> akun tersebut dengan akun Steam milikmu dan <color=@goodTextColor>menyimpan</color> progres game yang sudah ada.
-Jika kamu sudah pernah menggunakan opsi login Steam sebelumnya, gunakan juga opsi itu sekarang.
-Jika ini adalah peluncuran pertama Game, maka dengan mengetuk Login Steam, akun baru akan dibuat.
+If you have questions or problems contact our technical support";"Если у вас уже <color=@goodTextColor>есть аккаунт Gaijin.net</color>,
+пожалуйста, войдите в него сейчас, чтобы <color=@goodTextColor>связать</color> его со своей учётной записью Steam и <color=@goodTextColor>сохранить</color> существующий прогресс.
+Если вы ранее уже заходили в игру через Steam авторизацию, то воспользуйтесь этой опцией и сейчас.
+Если это первый вход в игру, то при выборе Steam авторизации будет создан новый аккаунт.
 
-Hubungi dukungan teknis kami jika kamu punya pertanyaan atau masalah.";"หากคุณมีบัญชี Gaijin.net <color=@goodTextColor>อยู่แล้ว</color>,
-กรุณาเข้าสู่ระบบตอนนี้<color=@goodTextColor>เพื่อผูก</color>บัญชีกับบัญชี Steam และ<color=@goodTextColor>เก็บ</color>ความคืบหน้าของเกมในปัจจุบันไว้
-หากคุณเคยใช้ตัวเลือกเข้าสู่ระบบด้วย Steam มาก่อน ให้เข้าสู่ระบบด้วยวิธีเดียวกันในตอนนี้
-หากนี่เป็นการเปิดเกมครั้งแรก คุณจะสร้างบัญชีใหม่เมื่อกดเข้าสู่ระบบด้วย Steam
+Если у вас есть вопросы или проблемы обратитесь в техподдержку";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-หากคุณประสบปัญหาหรือมีข้อสงสัย กรุณาติดต่อฝ่ายสนับสนุนเชิงเทคนิคของเรา";"만약 Gaijin.net <color=@goodTextColor>소유하고 계시다면</color> Gaijin.net 계정으로 로그인하신 후 Steam 계정과 <color=@goodTextColor>연동</color>하여도 현재의 진행 상황을 <color=@goodTextColor>이어나갈</color> 수 있습니다.
-이미 Steam으로 로그인 기능을 사용 중이시라면, 그대로 사용하셔도 무방합니다.
-만약 이번이 처음으로 게임을 실행한 것이라면 Steam으로 로그인 기능을 사용하실 경우 새 계정이 생성됩니다.
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-문제 혹은 질의사항이 있다면 기술 지원 팀에 문의해주시기 바랍니다.";"若\t<color=@goodTextColor>\t已\t有\t</color> Gaijin.net 的\t账\t号，
-请\t登\t录\t后\t<color=@goodTextColor>\t关\t联\t</color> Steam 账\t号\t并\t<color=@goodTextColor>\t保\t存\t</color>\t现\t有\t游\t戏\t进\t度。
-若\t已\t使\t用 Steam 账\t号\t登\t入，\t则\t可\t继\t续\t使\t用。
-若\t首\t次\t启\t动\t游\t戏，\t点\t击\t“使\t用 Steam 帐\t号\t登\t录”\t可\t创\t建\t游\t戏\t账\t号。
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-有\t任\t何\t问\t题\t请\t联\t系\t我\t们\t的\t技\t术\t支\t持。";"Gaijin.netの\tアカウントを<color=@goodTextColor>すでに</color>お\t持ちの\t場合、\tアカウントを\tSteam\tアカウントに<color=@goodTextColor>リンク</color>し、\t既存の\tゲーム\t進捗を<color=@goodTextColor>保持</color>するため、\t所有している\tGaijin.netの\tアカウントで\tログインしてください。\t
-以前、\tすでに\tSteamで\tログインしたことがある\t場合は、\t今回の\tログインでも\t同様の\tアカウントで\tログインしてください。";"若\t<color=@goodTextColor>\t已\t有\t</color> Gaijin.net 的\t帳\t號，
-請\t登\t入\t後\t<color=@goodTextColor>\t關\t聯\t</color> Steam 帳\t號\t並\t<color=@goodTextColor>\t保\t存\t</color>\t現\t有\t遊\t戲\t進\t度。
-若\t已\t使\t用 Steam 帳\t號\t登\t入，\t則\t可\t繼\t續\t使\t用。
-若\t首\t次\t啟\t動\t遊\t戲，\t點\t擊\t“使\t用 Steam 帳\t號\t登\t入”\t可\t創\t建\t遊\t戲\t帳\t號。
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-有\t任\t何\t問\t題\t請\t聯\t繫\t我\t們\t的\t技\t術\t支\t持。";;
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now <color=@goodTextColor>to link</color> it with your Steam account and <color=@goodTextColor>keep</color> existing game progress.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";;
 "steam/login/linkQuestion/noLink";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
 please log in with it now.
 If you already used Steam login option before, just use it now as well.
 If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-If you have questions or problems contact our technical support";"Si vous <color=@goodTextColor>avez déjà</color> un compte Gaijin.net, merci de vous connecter avec maintenant.
-Si vous utilisez déjà l'option de connexion Steam, continuez à l'utiliser.
-S'il s'agit du premier lancement du jeu, un nouveau compte sera créé en cliquant sur Connexion Steam.
-
-Si vous avez des questions ou des problèmes, contactez notre support technique";"Se <color=@goodTextColor> hai già</color> un account Gaijin.net,
-esegui il log in.
-Se hai già usato l'opzione login di Steam, utilizza quello.
-Se questo è il primo avvio del gioco, dopo aver cliccato sul Login di Steam verrà creato un nuovo account.
-
-Se hai domande o problemi contatta il nostro supporto tecnico";"Wenn du <color=@goodTextColor>schon einen</color> Gaijin.net-Konto besitzt,
-melde dich bitte mit diesem an.
-Wenn du bereits die Steam-Anmelde-Funktion genutzt hast, nutze diese nun auch.
-Wenn das der erste Start des Spiels ist, wird beim Klick auf Steam-Login ein neues Konto erstellt.
-
-Solltest du Fragen oder Probleme haben, bitte kontaktiere unseren technischen Kundendienst";"Si <color=@goodTextColor>ya posee</color> una cuenta de Gaijin.net,
-por favor ingrese con ella ahora.
-Si ya ha usado la opción de ingreso por Steam antes, úsela ahora.
-Si es su primera vez entrando al juego, entonces se creará una nueva cuenta al seleccionar Ingreso por Steam.
-
-Si tiene alguna pregunta o problema contacte nuestro soporte técnico";"Если у вас уже <color=@goodTextColor>есть аккаунт Gaijin.net</color>,
-пожалуйста, войдите в него сейчас.
-Если вы ранее уже заходили в игру через Steam авторизацию, то воспользуйтесь этой опцией и сейчас.
-Если это первый вход в игру, то при выборе Steam авторизации будет создан новый аккаунт.
-
-Если у вас есть вопросы или проблемы обратитесь в техподдержку";"Якщо у вас вже <color=@goodTextColor>є акаунт Gaijin.net</color>,
-будь ласка, увійдіть в нього зараз.
-Якщо ви раніше вже заходили в гру через Steam авторизацію, то скористайтеся цією опцією і зараз.
-Якщо це перший вхід в гру, то при виборі Steam авторизації буде створено новий обліковий запис.
-
-Якщо у вас є питання або проблеми зверніться в техпідтримку";"Jeśli <color=@goodTextColor>masz już</color> konto Gaijin.net,
-zaloguj się na nie teraz.
-Jeśli już wcześniej korzystałeś z opcji logowania przez Steam, skorzystaj z niej jak zwykle.
-Jeśli to pierwsze uruchomienie gry, kliknięcie przycisku „Logowanie przez Steam” spowoduje utworzenie nowego konta.
-
-Jeśli masz pytania lub problemy skontaktuj się z naszym wsparciem technicznym";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
 please log in with it now.
 If you already used Steam login option before, just use it now as well.
 If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-If you have questions or problems contact our technical support";"Eğer bir Gaijin.net hesabınız <color=@goodTextColor>zaten var ise</color> lütfen onun ile giriş yapın.
-Eğer Steam ile giriş seçeneğini önceden zaten kullanmış iseniz şuan da kullanın.
-Eğer bu War Thunder'ın ilk başlatılışı ise Steam Girişi'ne tıklayarak yeni bir hesap oluşturabilirsiniz.
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-Eğer bir sorunuz veya şikayetiniz var ise teknik desteğimiz ile iletişime geçiniz";"Pokud <color=@goodTextColor>již máš</color> účet na Gaijin.net,
-přihlas se jím.
-Pokud jsi již dříve použil možnost přihlášení přes službu Steam, použij ji i nyní.
-Pokud se jedná o první spuštění hry, pak se po kliknutí na možnost Přihlášení přes Steam vytvoří nový účet.
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-Pokud máte dotazy nebo problémy, obraťte se na naši technickou podporu";"Αν <color=@goodTextColor>έχετε ήδη</color> λογαριασμό στην Gaijin.net,
-συνδεθείτε με αυτόν τώρα.
-Αν ήδη χρησιμοποιήσατε την επιλογή Steam Login νωρίτερα, απλά χρησιμοποιήστε την και τώρα.
-Αν αυτή είναι η πρώτη εκκίνηση του Παιχνιδιού, τότε πατώντας στο Steam Login θα δημιουργηθεί ένας νέος λογαριασμός.
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-Αν έχετε ερωτήσεις ή προβλήματα, επικοινωνήστε με την τεχνική μας υποστήριξη";"Jika kamu <color=@goodTextColor>sudah punya</color> akun Gaijin.net,
-login dengan akun itu sekarang juga.
-Jika kamu sudah pernah menggunakan opsi login Steam sebelumnya, gunakan juga opsi itu sekarang.
-Jika ini adalah peluncuran pertama Game, maka dengan mengetuk Login Steam, akun baru akan dibuat.
+If you have questions or problems contact our technical support";"Если у вас уже <color=@goodTextColor>есть аккаунт Gaijin.net</color>,
+пожалуйста, войдите в него сейчас.
+Если вы ранее уже заходили в игру через Steam авторизацию, то воспользуйтесь этой опцией и сейчас.
+Если это первый вход в игру, то при выборе Steam авторизации будет создан новый аккаунт.
 
-Hubungi dukungan teknis kami jika kamu punya pertanyaan atau masalah.";"หากคุณมีบัญชี Gaijin.net <color=@goodTextColor>อยู่แล้ว</color>,
-กรุณาเข้าสู่ระบบตอนนี้
-หากคุณเคยใช้ตัวเลือกเข้าสู่ระบบด้วย Steam มาก่อน ให้เข้าสู่ระบบด้วยวิธีเดียวกันในตอนนี้
-หากนี่เป็นการเปิดเกมครั้งแรก คุณจะสร้างบัญชีใหม่เมื่อกดเข้าสู่ระบบด้วย Steam
+Если у вас есть вопросы или проблемы обратитесь в техподдержку";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-หากคุณประสบปัญหาหรือมีข้อสงสัย กรุณาติดต่อฝ่ายสนับสนุนเชิงเทคนิคของเรา";"만약 Gaijin.net 계정을 <color=@goodTextColor>이미 소유하고 계시다면</color> Gaijin.net 계정으로 로그인해주시기 바랍니다.
-이미 Steam으로 로그인 기능을 사용 중이시라면, 그대로 사용하셔도 무방합니다.
-만약 이번이 처음으로 게임을 실행한 것이라면 Steam으로 로그인을 클릭하실 경우 새 계정이 생성됩니다.
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-문제 혹은 질의사항이 있다면 기술 지원 팀에 문의해주시기 바랍니다.";"若\t<color=@goodTextColor>\t已\t有\t</color> Gaijin.net 的\t账\t号，
-请\t用\t其\t登\t录。
-若\t已\t使\t用 Steam 账\t号\t登\t入，\t则\t可\t继\t续\t使\t用。
-若\t首\t次\t启\t动\t游\t戏，\t点\t击\t“使\t用 Steam 帐\t号\t登\t录”\t可\t创\t建\t游\t戏\t账\t号。
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-有\t任\t何\t问\t题\t请\t联\t系\t我\t们\t的\t技\t术\t支\t持。";"Gaijin.netの\tアカウントを<color=@goodTextColor>すでに</color>所有している\t場合、\t該当の\tアカウントで\tログインしてください。\tすでに\tSteamで\t以前に\tログインしている\t場合、\tSteam Loginを\tクリックすることで、\t新しい\tアカウントを\t作成することができます。\t
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-ご\t質問や\t問題があった\t場合、\t『War Thunder』\tテクニカルサポートまでご\t連絡ください。";"若\t<color=@goodTextColor>\t已\t有\t</color> Gaijin.net 的\t帳\t號，
-請\t用\t其\t登\t入。
-若\t已\t使\t用 Steam 帳\t號\t登\t入，\t則\t可\t繼\t續\t使\t用。
-若\t首\t次\t啟\t動\t遊\t戲，\t點\t擊\t“使\t用 Steam 帳\t號\t登\t入”\t可\t創\t建\t遊\t戲\t帳\t號。
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
 
-有\t任\t何\t問\t題\t請\t聯\t繫\t我\t們\t的\t技\t術\t支\t持。";;
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";"If you <color=@goodTextColor>already have</color> a Gaijin.net account,
+please log in with it now.
+If you already used Steam login option before, just use it now as well.
+If this is the first launch of the Game, then by clicking Steam Login a new account will be created.
+
+If you have questions or problems contact our technical support";;
 "msgbox/hdr_failed";"HDR initialization failed. The output display is not in a HDR mode.";"L'initialisation du HDR a échouée. Le périphérique de sortie n'est pas en mode HDR.";"Inizializzazione HDR fallita. Il monitor di uscita non è in modalità HDR.";"HDR Initialisierung fehlgeschlagen. Die Ausgabenanzeige ist nicht im HDR Modus.";"Inicialización de HDR fallida. La pantalla de salida no está en modo HDR.";"Ошибка инициализации HDR. Выбранный монитор не в режиме HDR.";"Помилка ініціалізації HDR. Обраний монітор не в режимі HDR.";"Nie udało się uruchomić HDR. Wyświetlacz wyjściowy nie działa w trybie HDR.";"Falou a inicialização do HDR. O display não se encontra no modo de HDR.";"HDR başlatılışı başarısız. Çıkış görüntüsü HDR modunda değil.";"HDR initialization failed. The output display is not in a HDR mode.";"Η αρχικοποίηση HDR απέτυχε. Η οθόνη εξόδου δεν είναι σε λειτουργία HDR.";"Inisialisasi HDR gagal. Tampilan output tidak tersedia dalam mode HDR.";"การเริ่มต้น HDR ไม่สำเร็จ หน้าจอแสดงผลไม่ได้อยู่ในโหมด HDR";"출력 디스플레이에 HDR 모드가 설정되지 않아 HDR 설치에 실패하였습니다.";"HDR 初\t始\t化\t失\t败。\t显\t示\t输\t出\t端\t未\t开\t启 HDR 模\t式。";"ハイダイナミックレンジ（HDR）\tの\t初期化に\t失敗しました。\t出力表示が\tHDR\tモードになっていません。";"HDR 初\t始\t化\t失\t敗。\t顯\t示\t輸\t出\t端\t未\t開\t啟 HDR 模\t式。";;
 "inventoryError/INVENTORY_TARGET_ITEM_IS_EXPIRED";"Item {itemName} has expired";"L’objet {itemName} a expiré";"L'oggetto {itemName} e scaduto";"Gegenstand {itemName} ist ausgelaufen.";"Artículo {itemName} ha caducado";"Срок действия предмета {itemName} прошёл";"Термін дії предмета {itemName} пройшов";"Czas ważności przedmiotu {itemName} wygasł ";"Item {itemName} expirou";"{itemName} öğesinin süresi doldu";"Item {itemName} has expired";"Το στοιχείο {itemName} έχει λήξει";"Item {itemName} telah kedaluwarsa";"ไอเทม {itemName} หมดอายุแล้ว";"{itemName} 아이템이 만료되었습니다.";"道\t具\t失\t效：\t{itemName}";"アイテム {itemName} の\t有効期限が\t切れています";"道\t具\t失\t效：\t{itemName}";;
 "inventoryError/INVENTORY_TARGET_ITEM_CANT_BE_EARNED";"You have already received all possible items.";"Vous avez déjà reçu tous les objets disponibles.";"Hai già ricevuto tutti i possibili oggetti.";"Sie haben bereits alle möglichen Artikel erhalten.";"Ya ha recibido todos los artículos posibles.";"Вы уже получили все возможные предметы.";"Ви вже отримали всі можливі предмети.";"Otrzymałeś już wszystkie możliwe przedmioty.";"You have already received all possible items.";"Bütüm mümkün öğelere çoktan sahipsin.";"Už jste dostali všechny dostupné předměty.";"Έχετε ήδη λάβει όλα τα πιθανά αντικείμενα.";"Kamu telah menerima semua item yang memungkinkan.";"คุณได้รับไอเทมที่เป็นไปได้ทั้งหมดแล้ว";"획득할 수 있는 모든 아이템을 획득하였습니다.";"已\t获\t得\t了\t全\t部\t可\t用\t道\t具。";"獲得可能な\tアイテムをすべて\t獲得しています。";"已\t獲\t得\t了\t全\t部\t可\t用\t道\t具。";;

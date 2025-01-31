@@ -180,7 +180,7 @@ return {
   tankControlsOptions = [
     tankMoveControlType
     cameraSenseSlider(CAM_TYPE_NORMAL_TANK, "options/camera_sensitivity", OPT_CAMERA_SENSE_TANK, getOptValue(OPT_CAMERA_SENSE)?? 1.0)
-    cameraSenseSlider(CAM_TYPE_FREE_TANK, "options/free_camera_sensitivity_tank", OPT_FREE_CAMERA_TANK, 2.0, 0.5, 8.0)
+    cameraSenseSlider(CAM_TYPE_FREE_TANK, "options/free_camera_sensitivity_tank", OPT_FREE_CAMERA_TANK, 2.0, 0.5, 15.5, 0.075)
     cameraSenseSlider(CAM_TYPE_BINOCULAR_TANK, "options/camera_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_TANK, getOptValue(OPT_CAMERA_SENSE_IN_ZOOM)?? 1.0)
     gearDownOnStopButtonTouch
     targetTrackingType

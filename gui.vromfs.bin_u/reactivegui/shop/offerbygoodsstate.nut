@@ -4,7 +4,7 @@ let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { platformPurchaseInProgress, isGoodsOnlyInternalPurchase } = require("platformGoods.nut")
 let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { shopGoods } = require("shopState.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, purchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let { PURCHASING, DELAYED } = require("goodsStates.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -27,6 +27,8 @@ let activeOfferByGoods = Computed(function() {
   foreach (unitName in res.unitUpgrades)
     if (servProfile.get()?.units[unitName].isUpgraded)
       return null
+  if (purchasesCount.get()?[res.id])
+    return null
 
   return res.__merge({ campaign, offerClass = "seasonal" })
 })

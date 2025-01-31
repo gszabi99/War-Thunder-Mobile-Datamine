@@ -2789,6 +2789,18 @@
         "from": "uk_camo_very_dark_drab*",
         "to": "rsa_camo_modern_three_color*"
       }
+    },
+    "desert2": {
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "rsa_camo_gray_earth_stone*"
+      }
+    },
+    "forest": {
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "us_camo_modern_green*"
+      }
     }
   },
   "defaultDecals": {
@@ -2848,6 +2860,63 @@
       "decal0OppositeMirrored": true,
       "decal0WidthBox": 0.259425,
       "decal0Tex": "uk_red_squadron_b"
+    },
+    "desert2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.25698,
+        -1.06776e-7,
+        1.76675,
+        -0.428597
+      ],
+      "decal0Line1": [
+        0.536811,
+        -2.73074,
+        -0.685763,
+        5.68155
+      ],
+      "decal0Line2": [
+        -2.25698,
+        -1.70842e-7,
+        1.76675,
+        1.4286
+      ],
+      "decal0Line3": [
+        0.536811,
+        -2.73074,
+        0.685763,
+        5.68155
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.587257,
+        0.303841,
+        -0.750207,
+        -1.56722
+      ],
+      "decal0CPNormDepth1": [
+        0.587257,
+        0.303841,
+        0.750207,
+        -1.56722
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.348888
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.280621,
+      "decal0Tex": "uk_yellow_squadron_c"
     }
   },
   "battleHideNodes": {

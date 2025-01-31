@@ -13,7 +13,7 @@ let { openTuningRecommended } = require("%rGui/hudTuning/hudTuningState.nut")
 let { openVoiceMsgPieEditor } = require("%rGui/hud/voiceMsg/voiceMsgPieEditor.nut")
 
 
-function cameraSenseSlider(camType, locId, optId, cur = 1.0, minVal = 0.03, maxVal = 3.0, stepVal = 0.03) {
+function cameraSenseSlider(camType, locId, optId, cur = 1.0, minVal = 0.03, maxVal = 5.97, stepVal = 0.0297) {
   let value = mkOptionValue(optId, cur)
   set_camera_sens(camType, value.value)
   value.subscribe(@(v) set_camera_sens(camType, v))
@@ -21,7 +21,7 @@ function cameraSenseSlider(camType, locId, optId, cur = 1.0, minVal = 0.03, maxV
     locId
     value
     ctrlType = OCT_SLIDER
-    valToString = @(v) $"{(((v-minVal)/(maxVal - minVal))*100 + 0.5).tointeger()}%"
+    valToString = @(v) $"{(((v-minVal)/(maxVal - minVal))*200 + 0.5).tointeger()}%"
     ctrlOverride = {
       min = minVal
       max = maxVal

@@ -2970,7 +2970,8 @@ return {
       "disruptive_gray": "camo_disruptive_gray",
       "factory": "camo_navygrey_5",
       "greencoast": "camo_greencoast",
-      "threegreenspots": "camo_threegreenspots"
+      "threegreenspots": "camo_threegreenspots",
+      "measure_geometry": "camo_measure_geometry"
     },
     "tank": {
       "": "us_camo_olive",

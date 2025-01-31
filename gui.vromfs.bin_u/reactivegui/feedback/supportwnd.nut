@@ -9,23 +9,21 @@ let { sendErrorBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { OCT_LIST } = require("%rGui/options/optCtrlType.nut")
-let mkOption = require("%rGui/options/mkOption.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { textButtonPrimary, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { toggleWithLabel } = require("%rGui/components/toggle.nut")
-let { canUseZendeskApi, langCfg, categoryCfg } = require("%rGui/feedback/supportState.nut")
+let { canUseZendeskApi, langCfg, getCategoryLocName, fieldCategory } = require("%rGui/feedback/supportState.nut")
 let { hasLogFile } = require("logFileAttachment.nut")
 let { requestState, submitSupportRequest, onRequestResultSeen } = require("supportRequest.nut")
+let supportChooseCategory = require("supportChooseCategory.nut")
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let onClose = @() isOpened(false)
 
 let fieldEmail = hardPersistWatched("fieldEmail", "")
-let fieldCategory = hardPersistWatched("fieldCategory", "")
 let fieldSubject = hardPersistWatched("fieldSubject", "")
 let fieldMessage = hardPersistWatched("fieldMessage", "")
 let tglNeedAttachLogFile = hardPersistWatched("tglNeedAttachLogFile", false)
@@ -56,7 +54,7 @@ function submitImpl() {
     email = fieldEmail.get()
     userId = myUserIdStr.get()
     name = myUserName.get()
-    category = categoryCfg.findvalue(@(v) v.id == fieldCategory.get())?.zenId ?? ""
+    category = fieldCategory.get()
     subject = fieldSubject.get()
     message = fieldMessage.get()
     locale
@@ -105,26 +103,29 @@ let mkVerticalPannableArea = @(content, override) {
   }
 }.__update(override)
 
+function categoryComp() {
+  let text = fieldCategory.get() == ""
+    ? loc("support/form/hint/select_a_category")
+    : "".concat(loc("support/form/category"), colon, getCategoryLocName(fieldCategory.get()))
+  return {
+    watch = fieldCategory
+    size = [flex(), SIZE_TO_CONTENT]
+    children = textButtonCommon(text, supportChooseCategory)
+  }
+}
+
 let mkTextInputField = @(textWatch, placeholderText, options = {}) textInput(textWatch, {
   placeholder = placeholderText
   onChange = @(value) textWatch(value)
   onEscape = @() textWatch("")
 }.__update(options))
 
-let optCategory = {
-  locId = "support/form/category"
-  ctrlType = OCT_LIST
-  value = fieldCategory
-  list = Watched(categoryCfg.map(@(v) v.id))
-  valToString = @(id) loc($"support/form/category/{id}")
-}
-
 let formBlock = {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   gap = hdpx(25)
   children = [
-    mkOption(optCategory)
+    categoryComp
     mkTextInputField(fieldSubject, loc("support/form/subject"), { maxChars = 150 })
     mkTextInputField(fieldMessage, loc("support/form/message"), { maxChars = 2048 })
     mkTextInputField(fieldEmail, loc("support/form/your_email"), { maxChars = 80, inputType = "mail" })

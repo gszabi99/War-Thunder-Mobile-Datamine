@@ -1,9 +1,9 @@
 {
-  "version": "1.12.0.66",
-  "grpHash": "447f1a2d06d15135cb8578a29a3212cd",
+  "version": "0.0.0.0",
+  "grpHash": "ee4d0305389aaa6ebefe11df68e9e060",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "2f6d3b37a161195a52d2d973bb49386c",
+  "blkHash": "b8af8f79ed40c5afbc60b3442a184a98",
   "genHash": "cfb62754ffa65bd022f81cd1ac191e2e",
   "a-20g": {
     "dep": [
@@ -6340,6 +6340,7 @@
       "p_40c_skeleton",
       "pilot_us_500",
       "pilot_us_char",
+      "us_500lb_anm64a1",
       "usa_paratrooper_char"
     ]
   },

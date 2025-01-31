@@ -2516,6 +2516,30 @@
           "to": "camo_blackgray_stripes*"
         }
       ]
+    },
+    "greencoast": {
+      "replace_tex": [
+        {
+          "from": "camo_inside_white*",
+          "to": "camo_greencoast*"
+        },
+        {
+          "from": "camo_deckgrey*",
+          "to": "camo_bottom_green*"
+        }
+      ]
+    },
+    "measure_geometry": {
+      "replace_tex": [
+        {
+          "from": "camo_inside_white*",
+          "to": "camo_measure_geometry*"
+        },
+        {
+          "from": "camo_deckgrey*",
+          "to": "camo_bottom_green*"
+        }
+      ]
     }
   },
   "defaultDecals": {

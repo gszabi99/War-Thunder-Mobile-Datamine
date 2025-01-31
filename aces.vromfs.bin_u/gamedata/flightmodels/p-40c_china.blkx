@@ -1721,78 +1721,105 @@
     ]
   },
   "WeaponSlots": {
-    "HideNodes": {},
-    "WeaponSlot": {
-      "index": 0,
-      "WeaponPreset": {
-        "name": "default_common",
-        "Weapon": [
-          {
-            "trigger": "machine gun",
-            "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
-            "emitter": "flare1",
-            "flash": "flare1",
-            "dm": "mgun1_dm",
-            "bullets": 480,
-            "light": true,
-            "spread": 1.0
+    "HideNodes": {
+      "node": [
+        "pylon_bomb2",
+        "pylon_bomb3"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "mgun1_dm",
+              "bullets": 480,
+              "light": true,
+              "spread": 1.0
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "mgun2_dm",
+              "bullets": 500,
+              "light": true,
+              "spread": 1.0
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "mgun3_dm",
+              "bullets": 500,
+              "light": true,
+              "spread": 1.0
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "mgun4_dm",
+              "bullets": 480,
+              "light": true,
+              "spread": 1.0
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/gunBrowning50_early.blk",
+              "emitter": "flare5",
+              "flash": "flare5",
+              "dm": "mgun5_dm",
+              "bullets": 235,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 2
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/gunBrowning50_early.blk",
+              "emitter": "flare6",
+              "flash": "flare6",
+              "shell": "emtr_shellrejection4",
+              "dm": "mgun6_dm",
+              "bullets": 235,
+              "light": true,
+              "spread": 1.2,
+              "traceOffset": 1
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "bomb_500kg",
+          "name": "500lb",
+          "reqModification": "fmbc_mk1",
+          "ShowNodes": {
+            "node": "pylon_bomb1"
           },
-          {
-            "trigger": "machine gun",
-            "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
-            "emitter": "flare2",
-            "flash": "flare2",
-            "dm": "mgun2_dm",
-            "bullets": 500,
-            "light": true,
-            "spread": 1.0
-          },
-          {
-            "trigger": "machine gun",
-            "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
-            "emitter": "flare3",
-            "flash": "flare3",
-            "dm": "mgun3_dm",
-            "bullets": 500,
-            "light": true,
-            "spread": 1.0
-          },
-          {
-            "trigger": "machine gun",
-            "blk": "gameData/Weapons/gunBrowning30_usaaf.blk",
-            "emitter": "flare4",
-            "flash": "flare4",
-            "dm": "mgun4_dm",
-            "bullets": 480,
-            "light": true,
-            "spread": 1.0
-          },
-          {
-            "trigger": "cannon",
-            "blk": "gameData/Weapons/gunBrowning50_early.blk",
-            "emitter": "flare5",
-            "flash": "flare5",
-            "dm": "mgun5_dm",
-            "bullets": 235,
-            "light": false,
-            "spread": 1.2,
-            "traceOffset": 2
-          },
-          {
-            "trigger": "cannon",
-            "blk": "gameData/Weapons/gunBrowning50_early.blk",
-            "emitter": "flare6",
-            "flash": "flare6",
-            "shell": "emtr_shellrejection4",
-            "dm": "mgun6_dm",
-            "bullets": 235,
-            "light": true,
-            "spread": 1.2,
-            "traceOffset": 1
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+            "emitter": "bomb1",
+            "bullets": 1,
+            "external": true
           }
-        ]
+        }
       }
-    }
+    ]
   },
   "jetwash": {
     "radius": 10.0,

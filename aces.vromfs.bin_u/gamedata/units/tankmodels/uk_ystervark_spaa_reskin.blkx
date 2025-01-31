@@ -2809,6 +2809,18 @@
         "from": "uk_camo_very_dark_drab*",
         "to": "rsa_camo_modern_three_color*"
       }
+    },
+    "desert2": {
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "rsa_camo_gray_earth_stone*"
+      }
+    },
+    "forest": {
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "us_camo_modern_green*"
+      }
     }
   },
   "defaultDecals": {
@@ -2818,6 +2830,16 @@
       "camo_rotation": 0.0
     },
     "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "desert2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0

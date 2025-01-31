@@ -3,6 +3,7 @@ let { eventbus_send } = require("eventbus")
 let { getCountryCode } = require("auth_wt")
 let { get_cur_circuit_name } = require("app")
 let { get_network_block } = require("blkGetters")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
 // Zendesk.com website, Zendesk API (used in in-game support request form)
@@ -47,11 +48,21 @@ let langCfg = {
   Russian = { locale = "ru",    lang = "russian" }
 }
 
-let categoryCfg = [
-  { id = "gameplay",  zenId = "\u0438\u0433\u0440\u043e\u0432\u043e\u0439_\u043f\u0440\u043e\u0446\u0435\u0441\u0441_\u043c\u043e\u0431" }
-  { id = "financial", zenId = "\u0444\u0438\u043d\u0430\u043d\u0441\u043e\u0432\u044b\u0435_\u0432\u043e\u043f\u0440\u043e\u0441\u044b_\u043c\u043e\u0431" }
-  { id = "personal",  zenId = "\u043f\u0435\u0440\u0441\u043e\u043d\u0430\u043b\u044c\u043d\u044b\u0435_\u0434\u0430\u043d\u043d\u044b\u0435_\u043c\u043e\u0431" }
+let categoryList = [
+  "events_wtm"
+  "violation_complaint_wtm"
+  "game_suggestions_wtm"
+  "bug_report_wtm"
+  "account_block_wtm"
+  "loss_account_wtm"
+  "financial_issues_wtm"
+  "gameplay_wtm"
+  "technical_problems_wtm"
 ]
+
+let getCategoryLocName = @(id) loc($"support/form/category/{id}")
+
+let fieldCategory = hardPersistWatched("fieldCategory", "")
 
 return {
   zendeskApiUploadsUrl
@@ -59,5 +70,7 @@ return {
   canUseZendeskApi
   openSuportWebsite = @() eventbus_send("openUrl", { baseUrl = supportUrl.value })
   langCfg
-  categoryCfg
+  categoryList
+  getCategoryLocName
+  fieldCategory
 }
