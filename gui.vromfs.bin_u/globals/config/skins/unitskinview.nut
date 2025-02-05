@@ -1769,7 +1769,9 @@ return {
     },
     "uk_charioteer_mk_7": {
       "": "uk_camo_very_dark_drab",
-      "desert": "rsa_camo_modern_three_color"
+      "desert": "rsa_camo_modern_three_color",
+      "desert2": "rsa_camo_gray_earth_stone",
+      "forest": "us_camo_modern_green"
     },
     "uk_chieftain_mk_10": {
       "": "uk_camo_very_dark_drab",
@@ -1865,7 +1867,9 @@ return {
     },
     "uk_g6_spg": {
       "": "rsa_camo_dark_earth",
-      "desert": "rsa_camo_modern_three_color"
+      "desert": "rsa_camo_modern_three_color",
+      "desert2": "rsa_camo_gray_earth_stone",
+      "forest": "us_camo_modern_green"
     },
     "uk_olifant_mk_2": {
       "": "rsa_camo_dark_earth",
@@ -1885,7 +1889,9 @@ return {
     },
     "uk_ratel_90_reskin": {
       "": "rsa_camo_dark_earth",
-      "desert": "rsa_camo_modern_three_color"
+      "desert": "rsa_camo_modern_three_color",
+      "desert2": "rsa_camo_gray_earth_stone",
+      "forest": "us_camo_modern_green"
     },
     "uk_ratel_zt3": {
       "": "rsa_camo_dark_earth",
@@ -1930,7 +1936,9 @@ return {
     },
     "uk_ystervark_spaa_reskin": {
       "": "rsa_camo_dark_earth",
-      "desert": "rsa_camo_modern_three_color"
+      "desert": "rsa_camo_modern_three_color",
+      "desert2": "rsa_camo_gray_earth_stone",
+      "forest": "us_camo_modern_green"
     },
     "us_aircraftcarrier_essex": {
       "upgraded": "camo_blackgray_spots"

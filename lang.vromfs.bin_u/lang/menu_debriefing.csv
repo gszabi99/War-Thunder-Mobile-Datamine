@@ -27,7 +27,7 @@
 "debriefing/success";"Success";"Succès";"Successo";"Erfolg";"Éxito";"Миссия выполнена";"Місія виконана";"Sukces";"Sucesso";"Başarı";"Úspěch";"Επιτυχία";"Berhasil";"สำเร็จ";"성공";"成\t功";"成功";"成\t功";;
 "debriefing/fail";"Failure";"Échec";"Fallimento";"Misserfolg";"Fracaso";"Миссия провалена";"Місія провалена";"Porażka";"Falha";"Başarısızlık";"Selhání";"Αποτυχία";"Gagal";"ไม่สำเร็จ";"실패";"失\t败";"失敗";"失\t敗";;
 "debriefing/tragic";"This time you failed to carry out the orders. Try again.";"Vous avez échoué à suivre les instructions. Réessayez.";"Questa volta non hai portato a termine gli ordini. Riprova.";"Dieses Mal hast du deine Befehle nicht ausgeführt. Probiere es erneut.";"Esta vez no lograste cumplir las órdenes. Vuelve a intentarlo.";"В этот раз вам не удалось выполнить приказы командования.";"Цього разу вам не вдалося виконати накази командування.";"Tym razem nie udało ci się wykonać rozkazów. Spróbuj jeszcze raz.";"Desta vez você falhou em cumprir as ordens. Tentar novamente.";"Bu sefer emirleri yerine getirmeyi başaramadın, tekrar dene.";"Tentokrát se ti rozkazy splnit nepodařilo, zkus to znovu";"Αυτή τη φορά δεν καταφέρατε να εκτελέσατε τις εντολές. Δοκιμάστε ξανά.";"Kali ini, kamu gagal menjalankan perintah. Coba lagi.";"คุณปฏิบัติตามคำสั่งไม่สำเร็จในครั้งนี้ ลองใหม่อีกครั้ง";"명령을 수행하지 못했습니다, 다시 시도하십시오.";"任\t务\t失\t败。\t请\t再\t试\t一\t次。";"作戦は\t失敗に\t終わった。\t再度挑戦せよ。";"任\t務\t失\t敗。\t請\t再\t試\t一\t次。";;
-"debriefing/win_bonus";"Bonus for winning: +60%▉, +60%▻";"Bonus pour la victoire: +60%▉, +60%▻";"Bonus per la vittoria: +60%▉, +60%▻";"Siegesprämie: +60%▉, +60%▻";"Bonificación por ganar: +60%▉, +60%▻";"Бонус за победу: +60%▉, +60%▻";"Нагорода за перемогу: +60%▉, +60%€";"Bonus za wygraną: +60 %▉, +60% ▻";"Bónus pela vitória: +60%▉, +60%▻";"Kazanma bonusu: +60%▉, +60%▻";"Bonus za vítězství: +60%▉, +60%▻";"Μπόνους για τη νίκη: +60%▉, +60%▻";"Bonus kemenangan: +60%▉, +60▻";"โบนัสสำหรับชัยชนะ: +60%▉, +60%▻";"승리 보너스: +60%▉, +60%▻";"获\t胜\t加\t成：\t+60%\t▉、\t+60%\t▻";"勝利\tボーナス：\t+60%▉、\t+60%▻";"獲\t勝\t加\t成：\t+60%\t▉、\t+60%\t▻";;
+"debriefing/win_bonus";"Bonus for winning: +60%▉, +60%▻";"Bonus pour la victoire: +60%▉, +60%▻";"Bonus per la vittoria: +60%▉, +60%▻";"Siegesprämie: +60%▉, +60%▻";"Bonificación por ganar: +60%▉, +60%▻";"Бонус за победу: +60%▉, +60%▻";"Нагорода за перемогу: +60%▉, +60%▻";"Bonus za wygraną: +60 %▉, +60% ▻";"Bónus pela vitória: +60%▉, +60%▻";"Kazanma bonusu: +60%▉, +60%▻";"Bonus za vítězství: +60%▉, +60%▻";"Μπόνους για τη νίκη: +60%▉, +60%▻";"Bonus kemenangan: +60%▉, +60▻";"โบนัสสำหรับชัยชนะ: +60%▉, +60%▻";"승리 보너스: +60%▉, +60%▻";"获\t胜\t加\t成：\t+60%\t▉、\t+60%\t▻";"勝利\tボーナス：\t+60%▉、\t+60%▻";"獲\t勝\t加\t成：\t+60%\t▉、\t+60%\t▻";;
 "pilots/newRank";"Pilot received a new rank";"Le pilote a atteint un nouveau rang";"Il pilota ha ricevuto un nuovo grado";"Pilot hat einen neuen Rang erhalten";"El piloto obtuvo un nuevo rango.";"Пилот получил новое звание";"Пілот отримав нове звання";"Pilot otrzymał awans";"Piloto adquiriu uma nova patente";"Pilot yeni bir rütbe aldı";"Pilot získal novou úroveň";"Ο πιλότος έλαβε νέο βαθμό";"Pilot mendapatkan rank baru";"นักบินเลื่อนสู่ระดับใหม่";"파일럿의 랭크가 올랐습니다.";"人\t物\t等\t级\t提\t升！";"パイロットの\tランクが\t上がりました";"人\t物\t等\t級\t提\t升！";;
 "debriefing/budget";"Mission cost";"Coût de la mission";"Costo missione";"Missionskosten";"Coste de la misión";"Стоимость миссии";"Вартість місії";"Koszt misji";"Custo da missão";"Görev bedeli";"Cena mise";"Κόστος αποστολής";"Biaya misi";"ต้นทุนภารกิจ";"임무 비용";"任\t务\t费\t用";"ミッション\t費用";"任\t務\t費\t用";;
 "debriefing/kills";"Kills and assists";"Tués et blessés";"Abbattimenti e assist";"Abschüsse und Abschusshilfen";"Derribos y asistencias";"Убийства и совместные убийства";"Вбивства і спільні вбивства";"Liczba zabójstw i asyst";"Mortes e assistências";"Öldürmeler ve yardımlar";"Zničení a asistence";"Kills και assists";"Kill dan assist";"ฆ่าและร่วมฆ่า";"격파 및 어시스트";"击\t杀\t与\t助\t攻";"撃墜および\tアシスト";"擊\t殺\t與\t助\t攻";;
@@ -193,12 +193,12 @@ Tus posibilidades de ganar trofeos dependen de la efectividad en combate, el tie
 1000000 ▻
 
 Вероятность получения боевых трофеев зависит от боевой эффективности, времени, проведённого в бою, а также количества игроков в сессии.";"Після кожного бою у вас є можливість отримати один з бойових трофеїв:
-1000 €
-5000 €
-10000 €
-50000 €
-100000 €
-1000000 €
+1000 ▻
+5000 ▻
+10000 ▻
+50000 ▻
+100000 ▻
+1000000 ▻
 
 Вірогідність отримання бойових трофеїв залежить від бойової ефективності, часу, проведеного в бою, а також кількості гравців в сесії.";"Masz szansę otrzymania poniższych trofeów bitewnych po każdej bitwie:
 1000 ▻

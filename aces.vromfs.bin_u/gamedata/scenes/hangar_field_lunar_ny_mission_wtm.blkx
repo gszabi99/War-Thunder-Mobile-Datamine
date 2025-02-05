@@ -163,32 +163,6 @@
       "forPremiumVehicle": false
     },
     {
-      "_template": "ecs_fx",
-      "transform": [
-        [
-          1.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          2133.7,
-          8.04736,
-          1892.3
-        ]
-      ],
-      "ecs_fx__res": "fire_ground_medium_fx"
-    },
-    {
       "_template": "camera_fx",
       "transform": [
         [

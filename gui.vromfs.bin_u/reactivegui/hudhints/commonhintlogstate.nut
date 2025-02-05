@@ -25,6 +25,7 @@ let COUNTER_SAVE_ID = "hintCounter"
 let isCannonReloading = keepref(Computed(@() hasCanon0.get() && Cannon0.get().time > 0))
 let isMGunReloading = keepref(Computed(@() hasMGun0.get() && MGun0.get().time > 0))
 let isThrottleHintAvailable = Watched(false)
+let warningColor = Color(255, 35, 30, 255)
 
 isInBattle.subscribe(function(_) {
   clearEvents()
@@ -395,13 +396,20 @@ eventbus_subscribe("hint:air_increase_throttle", function(_) {
   }
 })
 
-const CAPTURED_BY_ENEMY = "can_use_air_support"
+const CAPTURED_BY_ENEMY = "CAPTURED_BY_ENEMY"
 
 eventbus_subscribe("CapturedByEnemy:show",
   @(_) addCommonHintWithTtl(loc("hints/ship_is_captured_by_enemy"), -1, CAPTURED_BY_ENEMY))
 
 eventbus_subscribe("CapturedByEnemy:hide",
   @(_) removeEvent({ id = CAPTURED_BY_ENEMY }))
+
+const LAUNCH_WARNING = "LAUNCH_WARNING"
+
+eventbus_subscribe("ShipLauchWarning", function(_) {
+  removeEvent({ id = CAPTURED_BY_ENEMY })
+  addCommonHintWithTtl(colorize(warningColor, loc("hints/ship_lauch_warning")), 5, LAUNCH_WARNING)
+})
 
 register_command(function() {
     let sBlk = get_local_custom_settings_blk()

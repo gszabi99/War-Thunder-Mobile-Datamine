@@ -13,7 +13,6 @@ let { needSuggestToUpdate } = isDownloadedFromGooglePlay() ? require("needUpdate
   : is_ios ? require("needUpdate/needUpdateAppStore.nut")
   : require("needUpdate/needUpdateAndroidSite.nut")
 let { updateBySite, isDownloadInProgress, canUpdateByConnectionStatus } = require("updateClientBySite.nut")
-let { isGameAutoUpdateEnabled } = require("%rGui/options/options/gameAutoUpdateOption.nut")
 
 const SUGGEST_UPDATE = "suggest_update_msg"
 
@@ -41,13 +40,12 @@ let needSuggestMessage = keepref(Computed(@() needProcessUpdate.get() && !isProc
 let needStartBackgroundUpdate = keepref(Computed(@() needProcessUpdate.get()
   && canUpdateByConnectionStatus.get()
   && !isDownloadInProgress.get()
-  && isProcessByBgUpdate.get()
-  && isGameAutoUpdateEnabled.get()))
+  && isProcessByBgUpdate.get()))
 
 let needSuggestMessageBySite = keepref(Computed(@() needProcessUpdate.get()
   && !isDownloadInProgress.get()
   && isProcessByBgUpdate.get()
-  && !isGameAutoUpdateEnabled.get()))
+  && !canUpdateByConnectionStatus.get()))
 
 needShowExitToUpdate.subscribe(function(v) {
   if (!v)

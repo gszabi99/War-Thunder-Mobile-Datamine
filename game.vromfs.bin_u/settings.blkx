@@ -3062,7 +3062,6 @@
             "entry": [
               {
                 "gpu": "G610",
-                "driverMinVer0": 38,
                 "data": {
                   "affected": true
                 }
