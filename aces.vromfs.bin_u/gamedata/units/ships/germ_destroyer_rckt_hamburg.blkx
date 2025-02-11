@@ -1829,6 +1829,14 @@
       "blk": "gameData/units/ships/weaponPresets/germ_destroyer_rckt_hamburg_default.blk"
     }
   },
+  "rocketBlocker": {
+    "duration": 5.0,
+    "cooldown": 80.0,
+    "maxDistance": 11000.0,
+    "timeToSupress": 0.1,
+    "maxAngle": 1.0,
+    "blockedShowDuration": 5.0
+  },
   "ircm": {
     "reloadDuration": 10.0,
     "totalCount": 10

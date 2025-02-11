@@ -1405,6 +1405,14 @@
       "blk": "gameData/units/ships/weaponPresets/uk_destroyer_rckt_devonshire_default.blk"
     }
   },
+  "rocketBlocker": {
+    "duration": 5.0,
+    "cooldown": 80.0,
+    "maxDistance": 11000.0,
+    "timeToSupress": 0.1,
+    "maxAngle": 1.0,
+    "blockedShowDuration": 5.0
+  },
   "ircm": {
     "reloadDuration": 10.0,
     "totalCount": 10

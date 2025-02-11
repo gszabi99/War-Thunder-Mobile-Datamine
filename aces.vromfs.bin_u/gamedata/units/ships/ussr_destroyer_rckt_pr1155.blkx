@@ -22,7 +22,7 @@
   "SoundMove": "models.Ship",
   "tailStartOffset": 10.0,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 86210.0,
+  "multHpFromMetaparts": 98880.0,
   "type": "typeDestroyer",
   "expClass": "exp_destroyer",
   "timeToFire": 40.0,
@@ -273,7 +273,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 86210.0,
+      "hp": 98880.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "compartment_01_dm": {
@@ -299,7 +299,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 86210.0,
+      "hp": 98880.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "fireParamsPreset": "common_ship_fire",
@@ -309,7 +309,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 86210.0,
+      "hp": 98880.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
       "main_caliber_turret_01_dm": {},
@@ -319,7 +319,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 86210.0,
+      "hp": 98880.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "auxiliary_caliber_turret_01_dm": {},
@@ -329,7 +329,7 @@
     "fire_control": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 86210.0,
+      "hp": 98880.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.05,
       "fireParamsPreset": "ship_aux_fire",
@@ -375,7 +375,7 @@
     "torpedo_tubes": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 86210.0,
+      "hp": 98880.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "tt_01_dm": {},
@@ -594,7 +594,7 @@
   },
   "MetaParts": {
     "hull": {
-      "hp": 86210.0,
+      "hp": 98880.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",
@@ -713,7 +713,7 @@
   "cockpit": {
     "headPos": [
       0.0,
-      29.0,
+      35.0,
       -70.0
     ],
     "headPosOnShooting": [
@@ -723,11 +723,10 @@
     ],
     "headPosOnSides": [
       0.0,
-      23.0,
-      -85.0
+      29.0,
+      -110.0
     ],
-    "detectionHeight": 24.4,
-    "cameraAhead": true
+    "detectionHeight": 24.4
   },
   "sound": {
     "EngineName": "engine_shipmid01",
@@ -1295,6 +1294,10 @@
       "name": "ussr_destroyer_rckt_pr1155_default",
       "blk": "gameData/units/ships/weaponPresets/ussr_destroyer_rckt_pr1155_default.blk"
     }
+  },
+  "captureBlocker": {
+    "duration": 15.0,
+    "cooldown": 70.0
   },
   "threatRocketsParams": {
     "groupTime": 2.0,

@@ -1,16 +1,18 @@
 from "%scripts/dagui_library.nut" import *
-
 let { get_user_system_info, get_battery, is_charging, get_thermal_state } = require("sysinfo")
 let { get_game_version_str, get_base_game_version_str } = require("app")
 let { getCountryCode } = require("auth_wt")
 let { getLocalLanguage } = require("language")
 let { get_gui_option, addUserOption } = require("guiOptions")
-let { myUserName } = require("%appGlobals/profileStates.nut")
 let { getAppsFlyerUID } = require("appsFlyer")
+let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
+let { is_android, is_ios } = require("%sqstd/platform.nut")
+let { myUserName } = require("%appGlobals/profileStates.nut")
 let { authState } = require("authState.nut")
 
 let fieldsToClear = ["MAC", "uuid0", "uuid1", "uuid2", "uuid3"]
 let OPT_TANK_MOVEMENT_CONTROL = addUserOption("OPT_TANK_MOVEMENT_CONTROL")
+let isHuaweiBuild = getBuildMarket() == "appgallery"
 
 function getSysInfo() {
   let tbl = get_user_system_info()
@@ -25,6 +27,10 @@ function getSysInfo() {
   tbl.authorization <- authState.value.loginType
   tbl.location <- getCountryCode() // Overrides location from get_user_system_info()
   tbl.gameLanguage <- getLocalLanguage() // Overrides gameLanguage from get_user_system_info()
+  tbl.installStore <- is_android && isHuaweiBuild ? "huawei"
+    : is_android && isDownloadedFromGooglePlay() ? "google"
+    : is_ios ? "iOS"
+    : "other"
 
   foreach (key in fieldsToClear)
     tbl?.$rawdelete(key)

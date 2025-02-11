@@ -294,12 +294,15 @@ registerHandler("onRouletteOpenLootbox", function(res, context) {
   if (openConfig.value == null || context?.mainId != rouletteOpenId.value)
     return
 
+  let { jackpots = [] } = openConfig.value
   if ((context?.openCount ?? 0) > MAX_ROULETTE_OPEN) {
+    foreach(j in jackpots) {
+      let { jackpotId, count } = j
+      open_lootbox_several(jackpotId, count)
+    }
     closeRoulette()
     return
   }
-
-  let { jackpots = [] } = openConfig.value
 
   let { jackpotIdx = -1 } = context
   let openResFull = (clone rouletteOpenResultFull.value) ?? {}

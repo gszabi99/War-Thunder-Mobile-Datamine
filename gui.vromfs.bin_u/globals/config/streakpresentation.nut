@@ -312,6 +312,22 @@ let streaksPresentation = {
     ]
   }
 
+  uprank_kill_grade_2 = {
+    name = "streaks/uprank_kill_grade_2"
+    bgImage = "ui/gameuiskin#streaks_marks_bg.avif"
+    stackImages = [
+      mkStackImage("streaks_marks_killed_plane_15_ranks_higher.avif", [62, 62])
+    ]
+  }
+
+  uprank_kill_grade_3 = {
+    name = "streaks/uprank_kill_grade_3"
+    bgImage = "ui/gameuiskin#streaks_marks_bg.avif"
+    stackImages = [
+      mkStackImage("streaks_marks_killed_plane_20_ranks_higher.avif", [62, 62])
+    ]
+  }
+
   row_air_assist = {
     name = "streaks/row_air_assist"
     bgImage = "ui/gameuiskin#streaks_row_bg.avif"
@@ -536,6 +552,24 @@ let streaksPresentation = {
     numberCtor = mkNumberCtor([12, 18], [5, 20])
   }
 
+  heroic_bomber_navy = {
+    name = "streaks/heroic_bomber_navy"
+    bgImage = "ui/gameuiskin#streaks_heroic_bg.avif"
+    stackImages = [
+      mkStackImage("streaks_ship_two_kills_at_one_blow.avif", [62, 62])
+    ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
+  }
+
+  trophy_near_bomber_navy = {
+    name = "streaks/trophy_near_bomber_navy"
+    bgImage = "ui/gameuiskin#streaks_event_bg2.avif"
+    stackImages = [
+      mkStackImage("streaks_ship_two_kills_at_one_blow.avif", [62, 62])
+    ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
+  }
+
   marks_5_bombers = {
     name = "streaks/marks_5_bombers"
     bgImage = "ui/gameuiskin#streaks_marks_bg.avif"
@@ -550,6 +584,24 @@ let streaksPresentation = {
     bgImage = "ui/gameuiskin#streaks_marks_bg.avif"
     stackImages = [
       mkStackImage("fighter_killer.avif", [62, 62])
+    ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
+  }
+
+  air_to_air_rocket_kill = {
+    name = "streaks/air_to_air_rocket_kill"
+    bgImage = "ui/gameuiskin#streaks_marks_bg.avif"
+    stackImages = [
+      mkStackImage("air_rocket_kill.avif", [62, 62])
+    ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
+  }
+
+  air_to_air_bomb_kill = {
+    name = "streaks/air_to_air_bomb_kill"
+    bgImage = "ui/gameuiskin#streaks_marks_bg.avif"
+    stackImages = [
+      mkStackImage("air_bomb_kill.avif", [62, 62])
     ]
     numberCtor = mkNumberCtor([12, 18], [5, 20])
   }

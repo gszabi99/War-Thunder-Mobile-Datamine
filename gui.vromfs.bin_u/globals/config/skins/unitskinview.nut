@@ -109,6 +109,9 @@ return {
     "bf-110g-2_prem": {
       "": "usa_f4u_4b"
     },
+    "bv-155b-1": {
+      "": "germ_do335a_1"
+    },
     "cn_cm11": {
       "": "us_camo_modern_green",
       "upgraded": "ger_camo_carc"
@@ -324,6 +327,13 @@ return {
     },
     "f7f1": {
       "": "usa_f8f1b_bearcat"
+    },
+    "f7f3": {
+      "": "usa_f8f1b_bearcat",
+      "yellow": "usa_tbd_1_1938"
+    },
+    "f7f3_prem": {
+      "": "ussr_i_180s_red"
     },
     "f8f1": {
       "": "usa_f8f1b_bearcat"
@@ -1047,7 +1057,7 @@ return {
       "": "germ_he51c1"
     },
     "he_112a_0": {
-      "": "ussr_il_2_37_1943_wo13_c"
+      "": "usa_p_40c_metal"
     },
     "he_112b_0": {
       "": "germ_me_410a_1"
@@ -1189,6 +1199,9 @@ return {
     "it_b1_centauro_romor": {
       "": "it_camo_green",
       "upgraded": "it_camo_modern_three_color"
+    },
+    "it_battleship_francesco_caracciolo": {
+      "": "camo_blue_geometry"
     },
     "it_breda_52_autocannone": {
       "": "ann_camo",
@@ -1841,6 +1854,10 @@ return {
       "": "uk_camo_very_dark_drab",
       "forest": "uk_camo_middle_deep_bronze_greens"
     },
+    "uk_falcon_reskin2": {
+      "": "uk_camo_standart_modern_desert_bicolor",
+      "forest": "uk_camo_very_dark_drab"
+    },
     "uk_fv102_striker": {
       "": "uk_camo_light_mud_slate_grey",
       "forest": "uk_camo_very_dark_drab"
@@ -1865,11 +1882,19 @@ return {
       "": "uk_camo_very_dark_drab",
       "forest": "uk_camo_middle_deep_bronze_greens"
     },
+    "uk_fv510_isv": {
+      "": "uk_camo_standart_modern_desert_bicolor",
+      "forest": "uk_camo_very_dark_drab"
+    },
     "uk_g6_spg": {
       "": "rsa_camo_dark_earth",
       "desert": "rsa_camo_modern_three_color",
       "desert2": "rsa_camo_gray_earth_stone",
       "forest": "us_camo_modern_green"
+    },
+    "uk_khalid": {
+      "": "uk_khalid",
+      "forest": "uk_camo_very_dark_drab"
     },
     "uk_olifant_mk_2": {
       "": "rsa_camo_dark_earth",
@@ -1929,6 +1954,10 @@ return {
     "uk_ttd": {
       "": "rsa_camo_dark_earth",
       "upgraded": "rsa_camo_gray_earth_stone"
+    },
+    "uk_vickers_mk_11": {
+      "": "uk_camo_standart_modern_desert_bicolor",
+      "forest": "uk_camo_very_dark_drab"
     },
     "uk_ystervark_spaa": {
       "": "uk_camo_very_dark_drab",
@@ -2930,7 +2959,11 @@ return {
       "": "ussr_yak_3t_gray"
     },
     "yak-9ut": {
-      "": "ussr_yak_3t_gray"
+      "": "ussr_yak_3t_gray",
+      "red": "ussr_la_11_standard_red"
+    },
+    "yak-9ut_prem": {
+      "": "ussr_il_10_winter44"
     },
     "yak_2_kabb": {
       "": "ussr_yak_2_kabb"
@@ -2963,6 +2996,7 @@ return {
       "lightblue_splotch": "camo_lightblue_splotch",
       "marine_geometry": "camo_marine_geometry",
       "modern_nordgeometry_prem": "camo_modern_nordgeometry",
+      "mtb_spots": "camo_mtb_spots",
       "mtb_spots_prem": "camo_mtb_spots",
       "nato_blue_geometry_prem": "camo_nato_blue_geometry",
       "olive_spots": "camo_olive_spots",

@@ -652,7 +652,12 @@
     "enemy_destr_by_ship": "enemy_destroyed",
     "enemy_destr_by_tank": "enemy_tank_destroyed",
     "session_start": "session_start",
-    "target_lock": "target_lock"
+    "target_lock": "target_lock",
+    "target_lock_lost": "target_lock_lost",
+    "ew_our_ship_locked": "ew_our_ship_locked",
+    "ew_blocking_end": "ew_blocking_end",
+    "ew_blocking_successful": "ew_blocking_successful",
+    "ew_missile_suppressed": "ew_missile_suppressed"
   },
   "rocket_effects": {
     "hellfire": {
@@ -8048,11 +8053,6 @@
       "ship": {
         "path": "naval/effects"
       }
-    },
-    "grd_roland_reload": {
-      "path": "ground/effects",
-      "event": "reload_roland",
-      "time": 10.0
     },
     "grd_sturm_s_reload": {
       "path": "ground/effects",

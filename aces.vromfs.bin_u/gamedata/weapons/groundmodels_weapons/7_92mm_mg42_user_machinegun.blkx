@@ -23,7 +23,7 @@
   "fxType": "muzzle_ground_8mm",
   "fxMultipleSpawn": true,
   "shouldCollideWithRendinsts": true,
-  "sfxReloadBullet": "grd_cannon_belt_reload",
+  "sfxReloadBullet": "grd_gun_reload",
   "sound_path": "tanks/weapon_tanks/mguns",
   "sound_pathStudio": "ground/weapon/mguns",
   "sound": "8mm_mg42",

@@ -1,9 +1,9 @@
 {
   "version": "0.0.0.0",
-  "grpHash": "ee4d0305389aaa6ebefe11df68e9e060",
+  "grpHash": "2683cfd419b0f992c12fc6af2b300f6a",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "2f103906974dd70ecbbf0820ce0729d3",
+  "blkHash": "83deb943978b3eac0673728b4dadb084",
   "genHash": "cfb62754ffa65bd022f81cd1ac191e2e",
   "a-20g": {
     "dep": [
@@ -573,6 +573,16 @@
       "pilot_german_char",
       "pilot_lw_500",
       "sc500_2_b"
+    ]
+  },
+  "bv-155b-1": {
+    "dep": [
+      "bv_155b_1",
+      "bv_155b_1_anim",
+      "bv_155b_1_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500"
     ]
   },
   "canberra_bimk6_killstreak": {
@@ -1517,6 +1527,40 @@
       "usa_paratrooper_char"
     ]
   },
+  "f7f3": {
+    "dep": [
+      "f7f_3",
+      "f7f_3_anim",
+      "f7f_3_skeleton",
+      "mine_mk13_mod0",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_1000lb_anm65a1",
+      "us_1600lb_ap_an_mk1",
+      "us_2000lbs_an66",
+      "us_500lb_anm64a1",
+      "us_5in_hvar_a",
+      "us_tiny_tim_navy2",
+      "usa_paratrooper_char"
+    ]
+  },
+  "f7f3_prem": {
+    "dep": [
+      "f7f_3",
+      "f7f_3_anim",
+      "f7f_3_skeleton",
+      "mine_mk13_mod0",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_1000lb_anm65a1",
+      "us_1600lb_ap_an_mk1",
+      "us_2000lbs_an66",
+      "us_500lb_anm64a1",
+      "us_5in_hvar_a",
+      "us_tiny_tim_navy2",
+      "usa_paratrooper_char"
+    ]
+  },
   "f8f1": {
     "dep": [
       "f8f1",
@@ -1536,6 +1580,20 @@
       "f8f1",
       "f8f1_anim",
       "f8f1_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "us_1000lb_anm65a1",
+      "us_500lb_anm64a1",
+      "us_5in_hvar_a",
+      "us_tiny_tim_navy2",
+      "usa_paratrooper_char"
+    ]
+  },
+  "f8f1b": {
+    "dep": [
+      "f8f1b",
+      "f8f1b_anim",
+      "f8f1b_skeleton",
       "pilot_us_500",
       "pilot_us_char",
       "us_1000lb_anm65a1",
@@ -2417,6 +2475,19 @@
       "pilot_lw_500"
     ]
   },
+  "fw-190d-12": {
+    "dep": [
+      "fw_190d_11",
+      "fw_190d_11_anim",
+      "fw_190d_11_skeleton",
+      "german_paratrooper_char",
+      "pilot_german_char",
+      "pilot_lw_500",
+      "sc250_b",
+      "sc50",
+      "sc500_2_b"
+    ]
+  },
   "fw-190d-9": {
     "dep": [
       "fw_190d_9",
@@ -2529,6 +2600,22 @@
       "artilleriefahrprahm_typ_d3_skeleton",
       "artilleriefahrprahm_typ_d3_xray",
       "artilleriefahrprahm_typ_d3_xray_skeleton",
+      "depth_charge_mk6",
+      "mine_emc"
+    ]
+  },
+  "germ_battlecruiser_derfflinger": {
+    "dep": [
+      "battlecruiser_derfflinger",
+      "battlecruiser_derfflinger_char",
+      "battlecruiser_derfflinger_collision",
+      "battlecruiser_derfflinger_dm_skeleton",
+      "battlecruiser_derfflinger_fastphys",
+      "battlecruiser_derfflinger_sections",
+      "battlecruiser_derfflinger_sections_remote",
+      "battlecruiser_derfflinger_skeleton",
+      "battlecruiser_derfflinger_xray",
+      "battlecruiser_derfflinger_xray_skeleton",
       "depth_charge_mk6",
       "mine_emc"
     ]
@@ -4862,6 +4949,22 @@
       "b1_centauro_romor_xray_skeleton"
     ]
   },
+  "it_battleship_francesco_caracciolo": {
+    "dep": [
+      "battleship_francesco_caracciolo",
+      "battleship_francesco_caracciolo_char",
+      "battleship_francesco_caracciolo_collision",
+      "battleship_francesco_caracciolo_dm_skeleton",
+      "battleship_francesco_caracciolo_fastphys",
+      "battleship_francesco_caracciolo_sections",
+      "battleship_francesco_caracciolo_sections_remote",
+      "battleship_francesco_caracciolo_skeleton",
+      "battleship_francesco_caracciolo_xray",
+      "battleship_francesco_caracciolo_xray_skeleton",
+      "depth_charge_mk6",
+      "mine_emc"
+    ]
+  },
   "it_breda_52_autocannone": {
     "dep": [
       "breda_52_autocannone",
@@ -6099,6 +6202,16 @@
       "la_7b_20",
       "la_7b_20_anim",
       "la_7b_20_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char"
+    ]
+  },
+  "la_9": {
+    "dep": [
+      "la_9",
+      "la_9_anim",
+      "la_9_skeleton",
       "pilot_su_500",
       "pilot_su_char",
       "soviet_paratrooper_char"
@@ -7393,6 +7506,23 @@
       "mine_emc"
     ]
   },
+  "uk_battlecruiser_renown": {
+    "dep": [
+      "battlecruiser_renown",
+      "battlecruiser_renown_char",
+      "battlecruiser_renown_collision",
+      "battlecruiser_renown_dm_skeleton",
+      "battlecruiser_renown_fastphys",
+      "battlecruiser_renown_sections",
+      "battlecruiser_renown_sections_remote",
+      "battlecruiser_renown_skeleton",
+      "battlecruiser_renown_xray",
+      "battlecruiser_renown_xray_skeleton",
+      "depth_charge_mk6",
+      "mine_emc",
+      "torpedo_g7a"
+    ]
+  },
   "uk_battleship_centurion": {
     "dep": [
       "battleship_centurion",
@@ -7970,6 +8100,20 @@
       "falcon_xray_skeleton"
     ]
   },
+  "uk_falcon_reskin2": {
+    "dep": [
+      "falcon",
+      "falcon_char",
+      "falcon_collision",
+      "falcon_dm_skeleton",
+      "falcon_dmg",
+      "falcon_dmg_skeleton",
+      "falcon_fastphys",
+      "falcon_skeleton",
+      "falcon_xray",
+      "falcon_xray_skeleton"
+    ]
+  },
   "uk_fv102_striker": {
     "dep": [
       "bae_swingfire_rocket_deployed",
@@ -8061,6 +8205,23 @@
       "grenade_uk_66mm"
     ]
   },
+  "uk_fv510_isv": {
+    "dep": [
+      "fv510_isv",
+      "fv510_isv_char",
+      "fv510_isv_collision",
+      "fv510_isv_dm_skeleton",
+      "fv510_isv_dmg",
+      "fv510_isv_dmg_skeleton",
+      "fv510_isv_fastphys",
+      "fv510_isv_skeleton",
+      "fv510_isv_xray",
+      "fv510_isv_xray_skeleton",
+      "grenade_uk_66mm",
+      "milan_2_rocket_char",
+      "milan_2_rocket_deployed"
+    ]
+  },
   "uk_g6_spg": {
     "dep": [
       "g6_spg",
@@ -8076,6 +8237,21 @@
       "grenade_zd17",
       "uk_gunner_char",
       "uk_gunner_officer_char"
+    ]
+  },
+  "uk_khalid": {
+    "dep": [
+      "grenade_uk_66mm",
+      "khalid",
+      "khalid_char",
+      "khalid_collision",
+      "khalid_dm_skeleton",
+      "khalid_dmg",
+      "khalid_dmg_skeleton",
+      "khalid_fastphys",
+      "khalid_skeleton",
+      "khalid_xray",
+      "khalid_xray_skeleton"
     ]
   },
   "uk_olifant_mk_2": {
@@ -8305,6 +8481,22 @@
       "ttd_skeleton",
       "ttd_xray",
       "ttd_xray_skeleton"
+    ]
+  },
+  "uk_vickers_mk_11": {
+    "dep": [
+      "grenade_uk_66mm",
+      "us_gunner_char",
+      "vickers_mk_11",
+      "vickers_mk_11_char",
+      "vickers_mk_11_collision",
+      "vickers_mk_11_dm_skeleton",
+      "vickers_mk_11_dmg",
+      "vickers_mk_11_dmg_skeleton",
+      "vickers_mk_11_fastphys",
+      "vickers_mk_11_skeleton",
+      "vickers_mk_11_xray",
+      "vickers_mk_11_xray_skeleton"
     ]
   },
   "uk_ystervark_spaa": {
@@ -8628,6 +8820,25 @@
       "mine_emc",
       "rocket_mm38_exocet",
       "rocket_rim24_tartar"
+    ]
+  },
+  "us_cruiser_rckt_virginia": {
+    "dep": [
+      "cruiser_rckt_virginia",
+      "cruiser_rckt_virginia_char",
+      "cruiser_rckt_virginia_collision",
+      "cruiser_rckt_virginia_dm_skeleton",
+      "cruiser_rckt_virginia_fastphys",
+      "cruiser_rckt_virginia_sections",
+      "cruiser_rckt_virginia_sections_remote",
+      "cruiser_rckt_virginia_skeleton",
+      "cruiser_rckt_virginia_xray",
+      "cruiser_rckt_virginia_xray_skeleton",
+      "depth_charge_mk6",
+      "mine_emc",
+      "rocket_mm38_exocet",
+      "rocket_rim24_tartar",
+      "torpedo_g7a"
     ]
   },
   "us_destroyer_fletcher": {
@@ -12129,6 +12340,26 @@
     ]
   },
   "yak-9u": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "yak_9u",
+      "yak_9u_anim",
+      "yak_9u_skeleton"
+    ]
+  },
+  "yak-9ut": {
+    "dep": [
+      "pilot_su_500",
+      "pilot_su_char",
+      "soviet_paratrooper_char",
+      "yak_9u",
+      "yak_9u_anim",
+      "yak_9u_skeleton"
+    ]
+  },
+  "yak-9ut_prem": {
     "dep": [
       "pilot_su_500",
       "pilot_su_char",

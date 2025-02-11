@@ -163,13 +163,15 @@ let statsShip = {
     isAvailable = @(_) true
     function getHeader(s, _) {
       let list = []
-      let { weapons = [], supportPlane = "" } = s
+      let { weapons = [], supportPlane = "", ecmType = "" } = s
       if (weapons.findvalue(@(w) w?.wtype == "aaa"))
         list.append(loc("stats/aaa/short"))
       if (weapons.findvalue(@(w) w?.wtype == "mine"))
         list.append(loc("stats/mine"))
       if (weapons.findvalue(@(w) w?.wtype == "bomb"))
         list.append(loc("stats/bomb"))
+      if (ecmType != "")
+        list.append(loc($"stats/{ecmType}/short"))
       if (supportPlane != "")
         list.append(" ".concat(aircraftMark, loc(getUnitLocId(supportPlane))))
       return ", ".join(list)
@@ -181,6 +183,12 @@ let statsShip = {
     isAfterWeapons = true
     getHeader = @(s, _) " ".concat(aircraftMark, loc(getUnitLocId(s.supportPlane)))
     valueToText = @(_, s) $"x{s?.supportPlaneCount ?? 1}"
+  }
+
+  ecmDuration = {
+    isAfterWeapons = true
+    getHeader = @(s, _) loc($"stats/{s?.ecmType ?? ""}")
+    valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
   }
 }.map(@(cfg, id) mkStat(id, cfg, SHIP))
 
@@ -259,6 +267,7 @@ let statsCfgShip = {
     statsShip.turningTime
     statsShip.asmCaptureDuration
     statsShip.supportPlane
+    statsShip.ecmDuration
   ]
   short = [
     statsShip.shipCrewAll

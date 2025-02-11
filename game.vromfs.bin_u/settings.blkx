@@ -265,9 +265,6 @@
     "pkg_common": {},
     "pkg_ground": {},
     "pkg_naval": {},
-    "pkg_lvl_lunar_ny": {
-      "hangarPath": "config/hangar_field_lunar_ny.blk"
-    },
     "pkg_tier_1_naval": {},
     "pkg_tier_2_naval": {},
     "pkg_tier_3_naval": {},
@@ -287,6 +284,7 @@
     "pkg_tier_5_aircraft": {},
     "pkg_tier_6_aircraft": {},
     "pkg_tier_7_aircraft": {},
+    "pkg_tier_8_aircraft": {},
     "pkg_common_2_aircraft": {},
     "pkg_common_3_aircraft": {},
     "pkg_common_4_aircraft": {},
@@ -657,6 +655,30 @@
         "mRank": 1
       }
     },
+    "pkg_it_battleship_francesco_caracciolo": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_us_cruiser_rckt_virginia": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_uk_battlecruiser_renown": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_germ_battlecruiser_derfflinger": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -1015,6 +1037,12 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 3
+      }
+    },
+    "pkg_uk_khalid": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
       }
     },
     "pkg_environment_uhq": {
@@ -3067,10 +3095,10 @@
                 }
               },
               {
-                "gpu": "G52",
-                "driverMinVer0": 25,
+                "gpu": "G710",
+                "driverMinVer0": 38,
                 "driverMinVer1": 1,
-                "driverMaxVer0": 25,
+                "driverMaxVer0": 38,
                 "driverMaxVer1": 1,
                 "data": {
                   "affected": true

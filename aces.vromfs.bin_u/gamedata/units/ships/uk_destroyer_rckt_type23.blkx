@@ -1283,6 +1283,10 @@
       "blk": "gameData/units/ships/weaponPresets/uk_destroyer_rckt_type23_default.blk"
     }
   },
+  "captureBlocker": {
+    "duration": 15.0,
+    "cooldown": 70.0
+  },
   "ircm": {
     "reloadDuration": 10.0,
     "totalCount": 10

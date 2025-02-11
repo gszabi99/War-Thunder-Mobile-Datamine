@@ -1188,6 +1188,10 @@
       "blk": "gameData/units/ships/weaponPresets/germ_frigate_rckt_brandenburg_default.blk"
     }
   },
+  "captureBlocker": {
+    "duration": 15.0,
+    "cooldown": 70.0
+  },
   "ircm": {
     "reloadDuration": 10.0,
     "totalCount": 10

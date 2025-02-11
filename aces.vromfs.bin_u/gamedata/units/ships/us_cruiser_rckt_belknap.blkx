@@ -1242,6 +1242,10 @@
       "blk": "gameData/units/ships/weaponPresets/us_cruiser_rckt_belknap_default.blk"
     }
   },
+  "captureBlocker": {
+    "duration": 15.0,
+    "cooldown": 70.0
+  },
   "ircm": {
     "reloadDuration": 10.0,
     "totalCount": 10

@@ -86,6 +86,8 @@ let skinsByTag = {
     "ussr_modern_def_sand"
     "usa_modern_winter_verdant"
     "cn_camo_sand_ltgreen_dkgreen_deform"
+    "hu_camo_four_color"
+    "hu_camo_green_brown_black"
   ],
 
   [DESERT] = [
@@ -137,6 +139,7 @@ let skinsByTag = {
     "fr_camo_carc_desert"
     "ger_camo_modern_desert_threecolor"
     "usa_modern_red_desert"
+    "uk_khalid"
   ],
 
   [WINTER] = [

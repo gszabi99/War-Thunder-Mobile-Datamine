@@ -187,7 +187,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId) {
         size = [flex(), progressBarHeight]
         padding = [0, 0, 0, starIconOffset]
         children = [
-          !hasScroll
+          !hasScroll.get()
             ? mkStages(progressUnlock.get(), progressBarWidth / (progressUnlock.get()?.stages.len() || 1),
                 tabId, curSectionId)
             : {

@@ -51,6 +51,7 @@
 "quests/rewardsList";"Rewards list";"Liste des récompenses";"Lista ricompense";"Liste der Belohnungen";"Lista de recompensas";"Список наград";"Список нагород";"Lista nagród";"Lista de recompensas";"Ödül listesi";"Seznam odměn";"Λίστα ανταμοιβών";"Daftar imbalan";"รายการรางวัล";"보상 목록";"奖\t励\t列\t表";"報酬\tリスト";"獎\t勵\t列\t表";;
 "quests/common";"Battle Pass";"Battle Pass";"Battle Pass";"Battle Pass";"Pase de Batalla";"Боевой пропуск";"Бойова Перепустка";"Przepustka bitewna";"Battle Pass";"Battle Pass";"Bitevní pas";"Battle Pass";"Battle Pass";"แบทเทิลพาส";"배틀 패스";"战\t斗\t通\t行\t证";"バトルパス";"戰\t鬥\t通\t行\t證";;
 "quests/addProgress";"Add progress";"Ajouter la progression";"Aggiungi progressi";"Fortschritt hinzufügen";"Añadir progreso";"Ускорить прогресс";"Додати прогрес";"Dodaj postęp";"Adicionar progresso";"İlerleyiş ekle";"Přidat postup";"Προσθήκη προόδου";"Tambahkan progres";"เพิ่มความคืบหน้า";"진행도 추가";"增\t加\t进\t度";"進捗を\t追加";"增\t加\t進\t度";;
+"quests/addProgress_budget";"Add (left {num})";"Ajoutez (restant {num})";"Aggiungi ({num} rimasti)";"Hinzufügen (übrig {num})";"Añadir (restante {num})";"Ускорить (осталось {num})";"Додати (залишилося {num})";"Dodaj (pozostały {num})";"Adicionar (restam {num})";"Ekle (kalan {num})";"Přidat (zbývá {num})";"Προσθήκη ({num} αριστερά)";"Tambahkan (tersisa {num})";"เพิ่ม (เหลือ {num})";"추가 ({num} 개 남음)";"添\t加 (尚\t余 {num})";"追加（残り{num}）";"增\t加 (餘\t下 {num})";;
 "quests/untilTheEnd";"Until the end {time}";"Jusqu'à la fin {time}";"Fino alla fine {time}";"Bis zum Ende {time}";"Hasta el final {time}";"До окончания {time}";"До кінця: {time}";"Do końca {time}";"Até ao final {time}";"Kalan zaman: {time}";"Do konce zbývá {time}";"Μέχρι το τέλος {time}";"Hingga akhir {time}";"จนสิ้นสุด {time}";"마감 시간: {time}";"截\t止\t时\t间：\t{time}";"{time}の\t終了まで";"截\t止\t時\t間：\t{time}";;
 "quests/untilTheStart";"Available in {time}";"Disponible dans {time}";"Disponibile tra {time}";"Verfügbar in {time}";"Disponible en {time}";"Доступны через {time}";"Доступно через {time}";"Dostępne za {time}";"Disponível dentro de {time}";"Kullanılabileceği zaman: {time}";"Dostupné za {time}";"Διαθέσιμο σε {time}";"Tersedia dalam {time}";"เริ่มได้ใน {time}";"{time} 후 진행 가능";"即\t将\t开\t放：\t{time}";"利用可能まで{time}";"即\t將\t開\t放：\t{time}";;
 "quests/completed";"Completed";"Terminé";"Completata";"Abgeschlossen";"Completado";"Выполнено";"Завершено";"Ukończone";"Cumprida";"Tamamlandı";"Dokončené";"Ολοκληρωμένο";"Selesai";"เสร็จสิ้นแล้ว";"완료";"已\t完\t成";"完了";"已\t完\t成";;
@@ -354,6 +355,43 @@ Biaya:";"แน่ใจหรือไม่ว่าต้องการส�
 비용은 다음과 같습니다:";"确\t定\t要\t购\t买 {item}？
 这\t将\t花\t费：";"本当に {item} を\t購入しますか? 次の\t費用がかかります:";"確\t定\t要\t訂\t購 {item}？
 這\t將\t花\t費：";;
+"shop/needMoneyQuestion/desc";"Are you sure you want to order {item}?
+{description}
+It will cost you:";"Êtes-vous certain de vouloir commander {item}?
+{description}
+Cela vous coûtera:";"Sei sicuro di voler ordinare {item}?
+{description}
+Ti costerà:";"Möchtest du wirklich {item} bestellen?
+{description}
+Die Kosten hierfür betragen:";"¿Estás seguro de que quieres pedir {item}?
+{description}
+Te costará:";"Вы уверены, что хотите заказать {item}?
+{description}
+Стоимость заказа:";"Ви впевнені, що хочете замовити {item}?
+{description}
+Вартість покупки:";"Czy na pewno chcesz zamówić {item}?
+{description}
+Będzie cię to kosztować:";"Quer mesmo comprar {item}?
+{description}
+Irá custar-lhe:";"{item} sipariş etmek istediğinden emin misin?
+{description}
+Bedeli:";"Opravdu chceš koupit {item}?
+{description}
+Bude tě to stát:";"Θέλετε σίγουρα να παραγγείλετε {item};
+{description}
+Θα σας κοστίσει:";"Kamu yakin ingin memesan {item}?
+{description}
+Biaya:";"แน่ใจหรือไม่ว่าต้องการสั่งซื้อ {item}?
+{description}
+ต้นทุนที่ต้องใช้คือ:";"{item} 을(를) 주문하시겠습니까?
+{description}
+비용은 다음과 같습니다:";"确\t定\t要\t购\t买 {item}？
+{description}
+这\t将\t花\t费：";"{item}を\t注文してよろしいですか？
+{description}
+次の\tコストがかかります：";"確\t定\t要\t購\t買 {item}？
+{description}
+這\t將\t花\t費：";;
 "shop/needMoneyQuestion_buy";"Are you sure you want to buy {item}?
 It will cost you:";"Voulez-vous vraiment acheter « {item} »?
 Cela vous coûtera:";"Sei sicuro di voler acquistare {item}?
@@ -411,6 +449,25 @@ Biaya untuk suku cadang yang dibutuhkan:";"แน่ใจหรือไม่�
 需\t要\t下\t列\t部\t件：";"{item}を\t注文してよろしいですか？
 必要部品の\tコスト：";"你\t確\t定\t要\t訂\t購 {item} 嗎？
 所\t需\t零\t件\t的\t成\t本：";;
+"shop/needMoneyQuestion_reroll";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Вы уверены, что хотите сменить предметы?
+Стоимость:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";"Do you want to reroll items?
+It will cost you:";;
 "shop/buyUnitWnd";"Do you want to order {item}?
 It will cost you:";"Voulez vous commander {item}? 
 Cela vous coûtera:";"Vuoi ordinare {item}?
@@ -1136,6 +1193,7 @@ Reset pengaturan ini ke default?";"รีเซ็ตตัวเลือกท
 "battlepass/buyBattlepass";"Buy battlepass";"Acheter le Battle Pass";"Acquista il Battle Pass";"Battle Pass kaufen";"Comprar pase de batalla";"Купить батлпасc";"Купуйте бойову перепустку";"Zakup przepustkę bitewną";"Comprar Battle Pass";"Battlepass satın al";"Kup Bitevní pas";"Αγοράστε battlepass";"Beli Battle Pass";"ซื้อแบทเทิลพาส";"배틀패스 구매하기";"购\t买\t战\t斗\t通\t行\t证";"バトルパスを\t購入";"購\t買\t戰\t鬥\t通\t行\t證";;
 "battlepass/active";"Pass active";"Pass actif";"Pass attivo";"Pass aktiv";"Pase activo";"Боевой пропуск активирован";"Перепустка активна";"Przepustka aktywna";"Pass ativo";"Pass etkin";"Pas je aktivní";"Το pass είναι ενεργό";"Pass aktif";"พาสเปิดใช้งาน";"패스 활성화";"通\t行\t证\t已\t激\t活";"パスを\t有効にする";"已\t啟\t用\t通\t行\t證";;
 "battlepass/endsin";"Ends in {time}";"Fin dans {time}";"Termina tra {time}";"Endet in: {time}";"Acaba en {time}";"Заканчивается через {time}";"Закінчується через {time}";"Kończy się za {time}";"Termina dentro de {time}";"{time} içinde bitiyor";"Končí za {time}";"Λήγει σε {time}";"Berakhir dalam {time}";"สิ้นสุดใน {time}";"{time} 후 종료";"剩\t余\t时\t间：\t{time}";"終了まで{time}";"剩\t餘\t時\t間：\t{time}";;
+"battlepass/remainder";"The purchased battle pass will remain active for another {time}";"Le Battle Pass acheté restera actif pendant encore {time}";"Il battle pass acquistato rimarrà attivo per altri {time}";"Der gekaufte Battle Pass bleibt für weitere {time} aktiv";"El pase de batalla adquirido permanecerá activo durante {time}";"Купленый батлпас будет действовать еще {time}";"Придбана бойова перепустка залишатиметься активною ще {time}";"Zakupiona przepustka bojowa pozostanie aktywna przez kolejne {time}";"O Passe de Batalha adquirido continuará ativo durante mais {time}";"Satın alınan Battle Pass {time} daha aktif kalacak";"Zakoupený Bitevní pas bude aktivní ještě {time}";"Το battle pass που αγοράσατε θα παραμείνει ενεργό για ακόμα {time}";"Battle Pass yang dibeli akan tetap aktif selama {time} lagi";"แบทเทิลพาสที่ซื้อไว้จะเปิดใช้งานต่ออีก {time}";"구매한 배틀 패스는 추가로 {time} 동안 유효합니다.";"已\t购\t入\t的\t战\t斗\t通\t行\t证\t有\t效\t期\t还\t将\t生\t效 {time}";"購入した\tバトルパスはあと{time}有効です";"已\t購\t買\t的\t戰\t鬥\t通\t行\t證\t還\t會\t生\t效 {time}";;
 "mainmenu/btnBugReport";"Report an Issue";"Signaler un problème";"Comunica un problema";"Ein Problem melden";"Reportar un Problema";"Сообщить о проблеме";"Повідомити про проблему";"Zgłoś problem";"Reportar problema";"Sorun Bildir";"Nahlásit problém";"Αναφέρετε ένα πρόβλημα";"Laporkan Masalah";"รายงานปัญหา";"문제점/버그 제보";"问\t题\t反\t馈";"問題を\t報告する";"報\t告\t問\t題";;
 "mainmenu/btnFeedback";"Feedback";"Commentaire";"Feedback";"Feedback";"Opiniones";"Обратная связь";"Відгук";"Feedback";"Feedback";"Geri bildirim";"Zpětná vazba";"Ανατροφοδότηση";"Masukan";"ความคิดเห็น";"피드백";"反\t馈";"フィードバック";"意\t見\t回\t饋";;
 "NoUpdateInfo";"Oops... No information yet :(";"Oups, pas d'informations pour le moment :(";"Oops... ancora nessuna informazione :(";"Hoppla … Enthält noch keine Informationen. :(";"Ups... No hay información :(";"Ой... Пока что нет информации :(";"Ой... Поки що немає інформації про оновлення :(";"Ups... Na razie brak informacji :(";"Oops... Ainda não há informação :(";"Tüh... Henüz hiç bilgi yok :(";"Jejda... tady zatím nic není :(";"Ουπς... Καμία πληροφορία ακόμα :(";"Ups... Belum ada informasi :(";"อุ๊ย... ยังไม่มีข้อมูลเลย :(";"이런... 아직 정보가 없군요 :(";"啊\t哦\t…\t…\t暂\t无\t相\t关\t信\t息 :(";"おっと…まだ\t情報がありません:(";"啊\t哦\t…\t…\t暫\t無\t相\t關\t信\t息 :(";"This information should if there is no localization or no info on update";
@@ -1895,6 +1953,7 @@ Kamu tidak akan melihat lebih banyak atau lebih sedikit iklan, tetapi akan lebih
 "events/name/season_14";"Steep Dive";"Plongeon vertigineux";"Picchiata in Affondo";"Sturzflug";"Steep Dive";"Крутое Пике";"Стрімке занурення";"Steep Dive";"Mergulho íngreme";"Steep Dive";"Prudké klesání";"Απότομη Βουτιά";"Steep Dive";"ดำดิ่ง";"스팁 다이브";"俯\t冲\t直\t下";"急降下";"急\t速\t俯\t衝";;
 "events/name/season_15";"Frozen Front";"Front gelé";"Fronte Ghiacciato";"Frozen Front";"Frozen Front";"Ледяной Фронт";"Зледенілий фронт";"Mroźny front";"Front Congelado";"Frozen Front";"Frozen Front";"Παγωμένο μέτωπο";"Frozen Front";"สมรภูมิเยือกแข็ง";"프로즌 프론트";"冰\t霜\t前\t线";"凍てつく\t戦線";"冰\t霜\t前\t線";;
 "events/name/season_16";"Wild islands";"Îles sauvages";"Isole selvagge";"Wilde Inseln";"Wild islands";"Дикие острова";"Дикі острови";"Dzikie wyspy";"Ilhas selvagens";"Wild islands";"Divoké ostrovy";"Άγρια νησιά";"Wild Islands";"หมู่เกาะดิบเถื่อน";"와일드 아일랜드";"狂\t野\t群\t岛";"ワイルド\t諸島";"狂\t野\t群\t島";;
+"events/name/season_17";"Hunters Roar";"Hunters Roar";"Hunters Roar";"Hunters Roar";"Hunters Roar";"Рёв Охотников";"Hunters Roar";"Hunters Roar";"Hunters Roar";"Hunters Roar";"Hunters Roar";"Hunters Roar";"Hunters Roar";"Hunters Roar";"Hunters Roar";"Hunters Roar";"Hunters Roar";"Hunters Roar";;
 "events/name/mini_event_5";"Operation Grenade";"Opération Grenade";"Operazione Granade";"Operation Grenade";"Operación Granada";"Операция Граната";"Операція «Гренейд»";"Operacja Grenade";"Operação Granada";"Grenade Harekatı";"Operace Granát";"Επιχείρηση Χειροβομβίδα";"Operation Grenade";"ปฏิบัติการเกรเนด";"그레나데 작전";"手\t榴\t弹\t行\t动";"グレネード\t作戦";"手\t榴\t彈\t行\t動";;
 "events/name/mini_event_6";"Pskov operation";"Opération Pskov";"Operazione Pskov";"Pskow Operation";"Operación Pskov";"Псковская операция";"Псковська операція";"Operacja Pskowska";"Operação Pskov";"Pskov Harekatı";"Pskovská operace";"Επιχείρηση Pskov";"Pskov Operation";"ปฏิบัติการพิสคอฟ";"프스코프 작전";"普\t斯\t科\t夫\t行\t动";"プスコフ\t作戦";"普\t斯\t科\t夫\t行\t動";;
 "events/name/mini_event_7";"Saint Patrick's Day";"Jour de la Saint Patrick";"Giornata di San Patrizio";"St. Patrick's Day";"Día de San Patricio";"День святого Патрика";"День святого Патрика";"Dzień św. Patryka";"Dia de São Patrício";"Saint Patrick Günü";"Den svatého Patrika";"Ημέρα του Αγίου Πατρικίου";"Saint Patrick's Day";"วันนักบุญแพทริค";"성 패트릭의 날";"圣\t帕\t特\t里\t克\t节";"聖\tパトリックの\t日";"聖\t派\t翠\t克\t節";;
@@ -2184,3 +2243,6 @@ Dengan aktivasi langganan, jumlah tersebut akan dikonversi menjadi Serigala Plat
 订\t阅\t服\t务\t后\t已\t自\t动\t转\t换\t为\t铂\t狼。";"プレミアムの\t残り\t時間は{time}でした。\t
 サブスクリプションの\t有効化により、\tそれらは\tプラチナウルフに\t変換されました。";"先\t前\t剩\t餘\t高\t級\t賬\t戶\t時\t長\t為 {time}
 開\t啓\t訂\t閲\t服\t務\t后\t已\t自\t動\t轉\t換\t爲\t鉑\t狼\t貨\t幣。";;
+"reward/premium_welcome_bonus/title";"Premium account activated";"Compte Premium activé";"Account premium attivato";"Premium-Konto aktiviert";"Cuenta Premium activada";"Премиум аккаунт активирован";"Преміальний акаунт активований";"Konto premium aktywowane";"Conta Premium ativada";"Premium hesap aktifleştirildi";"Prémiový účet byl aktivován";"Ο λογαριασμός Premium ενεργοποιήθηκε";"Akun Premium diaktifkan";"เปิดใช้งานบัญชีพรีเมียมแล้ว";"프리미엄 계정이 활성화되었습니다";"高\t级\t账\t号\t已\t激\t活";"プレミアムアカウントが\t有効になりました";"已\t啟\t用\t高\t級\t帳\t號";;
+"reward/premium_welcome_bonus/desc";"Premium account as a gift!";"Compte Premium en cadeau!";"Account premio come regalo!";"Premium-Konto als Geschenk!";"¡Cuenta premium de regalo!";"Премиум аккаунт в подарок!";"Преміальний акаунт у подарунок!";"Konto Premium jako prezent!";"Conta Premium de presente!";"Premuim hesap hediyesi!";"Prémiový účet jako dárek!";"Λογαριασμός Premium για δώρο!";"Akun Premium sebagai hadiah!";"บัญชีพรีเมียมเป็นของขวัญ!";"프리미엄 계정을 선물로 드립니다!";"高\t级\t账\t号\t好\t礼！";"プレミアムアカウントの\tギフト！";"高\t級\t賬\t號\t好\t禮\t到！";;
+"reward/huawei_release_bonus/desc";"Gift for new AppGallery players!";"Un cadeau pour les nouveaux joueurs AppGallery!";"Regalo per i nuovi giocatori dell'AppGallery!";"Geschenk für neue AppGallery-Spieler!";"¡Regalo para los nuevos jugadores de AppGallery!";"Подарок новым игрокам AppGallery!";"Подарунок для нових гравців AppGallery!";"Prezent dla nowych graczy AppGallery!";"Presente para novos jogadores de AppGallery!";"Yeni AppGallery oyuncuları için hediye!";"Dárek pro nové hráče AppGallery!";"Δώρο για νέους παίκτες του AppGallery!";"Hadiah untuk pemain AppGallery baru!";"ของขวัญสำหรับผู้เล่น AppGallery ใหม่!";"AppGallery 신규 플레이어를 위한 선물!";"华\t为\t应\t用\t商\t城\t新\t用\t户\t好\t礼！";"新しい\tAppGallery\tプレイヤーへの\tギフト！";"華\t爲 AppGallery 新\t玩\t家\t專\t享\t禮！";;

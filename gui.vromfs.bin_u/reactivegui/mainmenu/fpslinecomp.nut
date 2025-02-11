@@ -7,6 +7,8 @@ let { toUpper } = require("%sqstd/string.nut")
 let { isInBattle, isInMenu, battleSessionId, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 
+let DEBUG_INTERFACE_SHIFT_PX = -hdpx(16)
+
 let state = Watched({
   gpu = ""
   preset = ""
@@ -17,12 +19,12 @@ let state = Watched({
 })
 
 let gameVersion = Watched("")
+let hasDebugInterfaceInMpSession = Watched(false)
 
 function initSubscription() {
-  if (isShowDebugInterface())
-    return
   eventbus_subscribe("updateStatusString", @(s) state(state.value.__merge(s)))
   gameVersion.set(get_base_game_version_str())
+  hasDebugInterfaceInMpSession.set(isShowDebugInterface())
 }
 if (is_app_loaded())
   initSubscription()
@@ -50,6 +52,10 @@ let gap = hdpx(10)
 
 let defColor = 0xFFc0c0c0
 let fadedColor = 0x70707070
+
+let bottomShift = Computed(@() hasDebugInterfaceInMpSession.get() && sessionId.get() != ""
+  ? DEBUG_INTERFACE_SHIFT_PX
+  : 0)
 
 let textStyle = {
   halign = ALIGN_CENTER
@@ -109,11 +115,11 @@ let presetMenu = [
 ]
 
 let fpsLineComp = @() {
-  watch = [isInBattle, isInMenu]
+  watch = [bottomShift, isInBattle, isInMenu]
   flow = FLOW_HORIZONTAL
   vplace = ALIGN_BOTTOM
   valign = ALIGN_BOTTOM
-  pos = [saBorders[0], 0]
+  pos = [saBorders[0], bottomShift.get()]
   gap
   children = isInBattle.get() ? presetBattle
     : isInMenu.get() ? presetMenu

@@ -3095,9 +3095,15 @@
     "hit_fire": "hit_icon_fire.svg:50:50:K",
     "hit_module": "hit_icon_module.svg:50:50:K",
     "hit_crew": "hit_icon_crew.svg:50:50:K",
+    "hit_rocket": "hit_icon_rocket.svg:22:22:K",
+    "hit_capture": "hit_icon_capture.svg:22:22:K",
     "hit_bg_pen": "hit_bg_pen",
     "hit_bg_no_pen": "hit_bg_no_pen",
     "hit_bg_simple": "hit_bg_no_pen_red",
+    "bg_threat": "hit_bg_threat.svg:240:26:K",
+    "bg_threat_outline": "hit_bg_threat_outline.svg:241:27:K",
+    "hit_rocket_bg": "hit_icon_rocket_bg.svg:45:45:K",
+    "hit_capture_bg": "hit_icon_capture_bg.svg:45:45:K",
     "minAngle": 3.0,
     "relativeRadius": 0.33,
     "scale": 0.8,
@@ -3109,7 +3115,28 @@
     "alphaMin": 230.0,
     "alphaMax": 255.0,
     "hitsForColorMax": 3,
-    "maxHits": 5
+    "maxHits": 5,
+    "ecm": {
+      "maxDistance": 10000.0,
+      "highPriorityColor": [
+        37,
+        37,
+        253,
+        220
+      ],
+      "normalPriorityColor": [
+        28,
+        174,
+        241,
+        220
+      ],
+      "lowPriorityColor": [
+        132,
+        195,
+        87,
+        220
+      ]
+    }
   },
   "hit_indicator_simple": {
     "segment": "hit_segment",

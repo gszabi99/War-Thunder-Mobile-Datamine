@@ -31,6 +31,7 @@ let needShowMsgForScore = Watched(false)
 
 let watchedHeroId = mkWatched(persist, "watchedHeroId", -1)
 eventbus_subscribe("WatchedHeroChanged", @(_) watchedHeroId(getSpectatorTargetId()))
+eventbus_subscribe("toggleMpstatscreen", @(_) needShowMsgForScore.set(false))
 
 let watchedHero = Computed(@() isAttached.get() ? get_mplayer_by_id(watchedHeroId.get()) : null)
 let watchedHeroName = Computed(@() watchedHero.value == null ? "" : watchedHero.value.name)
@@ -150,10 +151,7 @@ let hudRight = @() {
   watch = needShowMsgForScore
   behavior = Behaviors.Button
   cameraControl = true
-  function onClick() {
-    needShowMsgForScore.set(false)
-    eventbus_send("toggleMpstatscreen", {})
-  }
+  onClick = @() eventbus_send("toggleMpstatscreen", {})
   sound = { click  = "click" }
   hplace = ALIGN_RIGHT
   halign = ALIGN_CENTER
@@ -168,16 +166,19 @@ let hudRight = @() {
       ]
     }
     !needShowMsgForScore.get() ? null
-    : {
-        key = {}
-        rendObj = ROBJ_TEXT
-        text = "tap for stats"
-        transform = {}
-        animations = [{
-          prop = AnimProp.scale, from = [1.0, 1.0], to = [1.1, 1.1], easing = InOutCubic
-          duration = 2, play = true, loop = true
-        }]
-      }
+      : {
+          key = {}
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          maxWidth = hdpx(200)
+          halign = ALIGN_CENTER
+          text = loc("hints/tap_for_stats")
+          transform = {}
+          animations = [{
+            prop = AnimProp.scale, from = [1.0, 1.0], to = [1.1, 1.1], easing = InOutCubic
+            duration = 2, play = true, loop = true
+          }]
+        }
   ]
 }
 
