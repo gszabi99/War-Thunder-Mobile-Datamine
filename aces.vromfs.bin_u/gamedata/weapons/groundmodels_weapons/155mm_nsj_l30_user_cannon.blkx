@@ -57,8 +57,11 @@
     "shellAnimation": "video/shells_animations/he.ivf",
     "bulletName": "155mm_m107",
     "hitPowerMult": 50.0,
+    "fuseOnWater": true,
+    "fuseOnWaterProbability": 1.0,
+    "ricochetTimeToLive": 0.085,
     "explodeTreshold": 0.1,
-    "fuseDelayDist": 0.0,
+    "fuseDelayDist": 0.3,
     "selfDestructionFx": "explosion_air_selfexplosion_big",
     "explosionEffect": "hit_106_132mm_metal_he",
     "groundCollisionEffect": "hit_106_132mm_dirt_he",
@@ -81,6 +84,24 @@
     },
     "pressureDamage": {
       "damageType": "pressure"
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": {
+          "break_fuse": 1.0
+        },
+        "onKill": {
+          "destruction": 1.0
+        }
+      }
     },
     "hitpower": {
       "HitPower0m": [
@@ -194,6 +215,20 @@
     },
     "shatterDamage": {
       "breachConeAngle": 45.0
+    },
+    "armorpower": {
+      "ArmorPower0m": [
+        20.0,
+        100.0
+      ],
+      "ArmorPower4000m": [
+        16.0,
+        4000.0
+      ],
+      "ArmorPower10000m": [
+        0.0,
+        10000.0
+      ]
     },
     "visual": {
       "range_percent_of_ammo": [
@@ -313,8 +348,11 @@
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "155mm_m107",
       "hitPowerMult": 50.0,
+      "fuseOnWater": true,
+      "fuseOnWaterProbability": 1.0,
+      "ricochetTimeToLive": 0.085,
       "explodeTreshold": 0.1,
-      "fuseDelayDist": 0.0,
+      "fuseDelayDist": 0.3,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
@@ -337,6 +375,24 @@
       },
       "pressureDamage": {
         "damageType": "pressure"
+      },
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": {
+            "break_fuse": 1.0
+          },
+          "onKill": {
+            "destruction": 1.0
+          }
+        }
       },
       "hitpower": {
         "HitPower0m": [
@@ -450,6 +506,20 @@
       },
       "shatterDamage": {
         "breachConeAngle": 45.0
+      },
+      "armorpower": {
+        "ArmorPower0m": [
+          20.0,
+          100.0
+        ],
+        "ArmorPower4000m": [
+          16.0,
+          4000.0
+        ],
+        "ArmorPower10000m": [
+          0.0,
+          10000.0
+        ]
       },
       "visual": {
         "range_percent_of_ammo": [

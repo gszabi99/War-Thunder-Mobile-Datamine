@@ -57,7 +57,6 @@ let { //defaults only to allow test this module on PC
       value = "{ \"orderId\" : -1, \"productId\" : \"debug\" }"
     })),
   confirmPurchase = @(_) setTimeout(1.0, @() eventbus_send("android.billing.huawei.onConfirmPurchaseCallback", { status = 0, value = "{}" })),
-  checkPurchases = @() null
 } = !isDebugMode ? billingModule : {}
 let register_huawei_purchase = !is_pc ? registerHuaweiPurchase
   : @(_, __, eventId) setTimeout(0.1, @() eventbus_send(eventId, { status = 0, item_id = "id", purch_token = "token" })) //for debug on pc
@@ -68,7 +67,6 @@ let lastInitStatus = hardPersistWatched("goodsHuawei.lastInitStatus", HMS_ORDER_
 let skusInfo = hardPersistWatched("goodsHuawei.skusInfo", {})
 let purchaseInProgress = mkWatched(persist, "purchaseInProgress", null)
 let nextRefreshTime = Watched(-1)
-local purchasesCheckedOnStart = false
 
 let availableSkusPrices = Computed(function() {
   let res = {}
@@ -119,13 +117,10 @@ eventbus_subscribe("android.billing.huawei.onInitAndDataRequested", function(res
     if (productId != null)
       allInfo[productId] <- v
   }))
-  if (!purchasesCheckedOnStart) {
-    purchasesCheckedOnStart = true
-    checkPurchases()
-  }
 })
 
 let getSku = @(goods) goods?.purchaseGuids.huawei.extId
+let getHuaweiDiscount = @(goods) goods?.purchaseGuids.huawei.discountInPercent ?? 0
 let getPlanId = @(goods) goods?.purchaseGuids.android.planId
 
 let goodsIdBySku = Computed(function() {
@@ -205,8 +200,11 @@ let platformGoods = Computed(function() {
   foreach (sku, priceExt in availableSkusPrices.value) {
     let goodsId = skuToGoodsId?[sku]
     let goods = allGoods?[goodsId]
-    if (goods != null)
-      res[goodsId] <- goods.__merge({ priceExt }) //warning disable: -potentially-nulled-index
+    if (goods == null)
+      continue
+    let platformDiscount = getHuaweiDiscount(goods)
+    let discountInPercent = platformDiscount != 0 ? platformDiscount : (goods?.discountInPercent ?? 0)
+    res[goodsId] <- goods.__merge({ priceExt, discountInPercent }) //warning disable: -potentially-nulled-index
   }
   return res
 })
@@ -225,9 +223,15 @@ let platformSubs = Computed(function() {
 })
 
 let platformOffer = Computed(function() {
-  let priceExt = availableSkusPrices.value?[getSku(activeOffers.value)]
-  return priceExt == null || activeOffers.value == null ? null
-    : activeOffers.value.__merge({ priceExt })
+  let offer = activeOffers.get()
+  let priceExt = availableSkusPrices.value?[getSku(offer)]
+  if (priceExt == null || offer == null)
+    return null
+  let platformDiscount = getHuaweiDiscount(offer)
+  return offer.__merge({
+    priceExt
+    discountInPercent = platformDiscount != 0 ? platformDiscount : (offer?.discountInPercent ?? 0)
+  })
 })
 
 function buyPlatformGoods(goodsOrId) {

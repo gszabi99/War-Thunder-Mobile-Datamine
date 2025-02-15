@@ -1,9 +1,9 @@
 {
   "version": "0.0.0.0",
-  "grpHash": "2683cfd419b0f992c12fc6af2b300f6a",
+  "grpHash": "0b6c634de1ad7d36ac3a26227f8419de",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "83deb943978b3eac0673728b4dadb084",
+  "blkHash": "bf7dda99d51d367ae5b7b66c0a8ab984",
   "genHash": "cfb62754ffa65bd022f81cd1ac191e2e",
   "a-20g": {
     "dep": [
@@ -1986,6 +1986,20 @@
       "grenade_zd17"
     ]
   },
+  "fr_amx_50_foch": {
+    "dep": [
+      "amx_50_foch",
+      "amx_50_foch_char",
+      "amx_50_foch_collision",
+      "amx_50_foch_dm_skeleton",
+      "amx_50_foch_dmg",
+      "amx_50_foch_dmg_skeleton",
+      "amx_50_foch_fastphys",
+      "amx_50_foch_skeleton",
+      "amx_50_foch_xray",
+      "amx_50_foch_xray_skeleton"
+    ]
+  },
   "fr_amx_50_surbaisse": {
     "dep": [
       "amx_50_surbaisse",
@@ -2002,6 +2016,20 @@
     ]
   },
   "fr_amx_m4": {
+    "dep": [
+      "amx_m4",
+      "amx_m4_char",
+      "amx_m4_collision",
+      "amx_m4_dm_skeleton",
+      "amx_m4_dmg",
+      "amx_m4_dmg_skeleton",
+      "amx_m4_fastphys",
+      "amx_m4_skeleton",
+      "amx_m4_xray",
+      "amx_m4_xray_skeleton"
+    ]
+  },
+  "fr_amx_m4_reskin": {
     "dep": [
       "amx_m4",
       "amx_m4_char",
@@ -2309,6 +2337,21 @@
       "panhard_ebr_1951_xray_skeleton"
     ]
   },
+  "fr_panhard_ebr_1963": {
+    "dep": [
+      "grenade_zd17",
+      "panhard_ebr_1963",
+      "panhard_ebr_1963_char",
+      "panhard_ebr_1963_collision",
+      "panhard_ebr_1963_dm_skeleton",
+      "panhard_ebr_1963_dmg",
+      "panhard_ebr_1963_dmg_skeleton",
+      "panhard_ebr_1963_fastphys",
+      "panhard_ebr_1963_skeleton",
+      "panhard_ebr_1963_xray",
+      "panhard_ebr_1963_xray_skeleton"
+    ]
+  },
   "fr_sk105_a2": {
     "dep": [
       "grenade_zd17",
@@ -2341,6 +2384,20 @@
     ]
   },
   "fr_tpk_641_vpc": {
+    "dep": [
+      "french_gunner_char",
+      "tpk_641_vpc",
+      "tpk_641_vpc_collision",
+      "tpk_641_vpc_dm_skeleton",
+      "tpk_641_vpc_dmg",
+      "tpk_641_vpc_dmg_skeleton",
+      "tpk_641_vpc_fastphys",
+      "tpk_641_vpc_skeleton",
+      "tpk_641_vpc_xray",
+      "tpk_641_vpc_xray_skeleton"
+    ]
+  },
+  "fr_tpk_641_vpc_reskin": {
     "dep": [
       "french_gunner_char",
       "tpk_641_vpc",
@@ -2617,7 +2674,8 @@
       "battlecruiser_derfflinger_xray",
       "battlecruiser_derfflinger_xray_skeleton",
       "depth_charge_mk6",
-      "mine_emc"
+      "mine_emc",
+      "torpedo_g7a"
     ]
   },
   "germ_battlecruiser_von_der_tann": {
@@ -3167,6 +3225,21 @@
       "grenade_zd17"
     ]
   },
+  "germ_flakpz_i_gepard_reskin4": {
+    "dep": [
+      "flakpz_I_gepard",
+      "flakpz_I_gepard_char",
+      "flakpz_I_gepard_collision",
+      "flakpz_I_gepard_dm_skeleton",
+      "flakpz_I_gepard_dmg",
+      "flakpz_I_gepard_dmg_skeleton",
+      "flakpz_I_gepard_fastphys",
+      "flakpz_I_gepard_skeleton",
+      "flakpz_I_gepard_xray",
+      "flakpz_I_gepard_xray_skeleton",
+      "grenade_zd17"
+    ]
+  },
   "germ_frigate_rckt_brandenburg": {
     "dep": [
       "depth_charge_mk6",
@@ -3306,6 +3379,21 @@
       "leopard_1a5_skeleton",
       "leopard_1a5_xray",
       "leopard_1a5_xray_skeleton"
+    ]
+  },
+  "germ_leopard_2a4": {
+    "dep": [
+      "grenade_germ_76mm",
+      "leopard_2a4",
+      "leopard_2a4_char",
+      "leopard_2a4_collision",
+      "leopard_2a4_dm_skeleton",
+      "leopard_2a4_dmg",
+      "leopard_2a4_dmg_skeleton",
+      "leopard_2a4_fastphys",
+      "leopard_2a4_skeleton",
+      "leopard_2a4_xray",
+      "leopard_2a4_xray_skeleton"
     ]
   },
   "germ_leopard_2av": {
@@ -4183,6 +4271,21 @@
       "th_800_bismark_xray_skeleton"
     ]
   },
+  "germ_thyssen_henschel_tam_2c": {
+    "dep": [
+      "grenade_germ_76mm",
+      "thyssen_henschel_tam_2c",
+      "thyssen_henschel_tam_2c_char",
+      "thyssen_henschel_tam_2c_collision",
+      "thyssen_henschel_tam_2c_dm_skeleton",
+      "thyssen_henschel_tam_2c_dmg",
+      "thyssen_henschel_tam_2c_dmg_skeleton",
+      "thyssen_henschel_tam_2c_fastphys",
+      "thyssen_henschel_tam_2c_skeleton",
+      "thyssen_henschel_tam_2c_xray",
+      "thyssen_henschel_tam_2c_xray_skeleton"
+    ]
+  },
   "germ_thyssen_henschel_tam_2ip": {
     "dep": [
       "grenade_germ_76mm",
@@ -4238,6 +4341,22 @@
       "wiesel_1_mk20_skeleton",
       "wiesel_1_mk20_xray",
       "wiesel_1_mk20_xray_skeleton"
+    ]
+  },
+  "germ_wiesel_1_tow": {
+    "dep": [
+      "bgm_71_tow_rocket_char",
+      "bgm_71_tow_rocket_deployed",
+      "wiesel_1_tow",
+      "wiesel_1_tow_char",
+      "wiesel_1_tow_collision",
+      "wiesel_1_tow_dm_skeleton",
+      "wiesel_1_tow_dmg",
+      "wiesel_1_tow_dmg_skeleton",
+      "wiesel_1_tow_fastphys",
+      "wiesel_1_tow_skeleton",
+      "wiesel_1_tow_xray",
+      "wiesel_1_tow_xray_skeleton"
     ]
   },
   "he-111h-16_winter": {
@@ -4935,6 +5054,21 @@
       "nebelwerfer_42_rocket"
     ]
   },
+  "it_aubl_74_60_70m": {
+    "dep": [
+      "aubl_74_60_70m",
+      "aubl_74_60_70m_char",
+      "aubl_74_60_70m_collision",
+      "aubl_74_60_70m_dm_skeleton",
+      "aubl_74_60_70m_dmg",
+      "aubl_74_60_70m_dmg_skeleton",
+      "aubl_74_60_70m_fastphys",
+      "aubl_74_60_70m_skeleton",
+      "aubl_74_60_70m_xray",
+      "aubl_74_60_70m_xray_skeleton",
+      "grenade_zd17"
+    ]
+  },
   "it_b1_centauro_romor": {
     "dep": [
       "b1_centauro_romor",
@@ -5129,6 +5263,21 @@
       "m36b1_xray_skeleton"
     ]
   },
+  "it_of_40_mk_1": {
+    "dep": [
+      "grenade_l8",
+      "of_40_mk_1",
+      "of_40_mk_1_char",
+      "of_40_mk_1_collision",
+      "of_40_mk_1_dm_skeleton",
+      "of_40_mk_1_dmg",
+      "of_40_mk_1_dmg_skeleton",
+      "of_40_mk_1_fastphys",
+      "of_40_mk_1_skeleton",
+      "of_40_mk_1_xray",
+      "of_40_mk_1_xray_skeleton"
+    ]
+  },
   "it_of_40_mk_2a": {
     "dep": [
       "grenade_l8",
@@ -5186,6 +5335,21 @@
       "otobreda_sidam_25_xray_skeleton"
     ]
   },
+  "it_pzh_2000_hu": {
+    "dep": [
+      "grenade_zd17",
+      "pzh_2000_hu",
+      "pzh_2000_hu_char",
+      "pzh_2000_hu_collision",
+      "pzh_2000_hu_dm_skeleton",
+      "pzh_2000_hu_dmg",
+      "pzh_2000_hu_dmg_skeleton",
+      "pzh_2000_hu_fastphys",
+      "pzh_2000_hu_skeleton",
+      "pzh_2000_hu_xray",
+      "pzh_2000_hu_xray_skeleton"
+    ]
+  },
   "it_sherman_vc_firefly": {
     "dep": [
       "grenade_l8",
@@ -5229,6 +5393,20 @@
       "vcc_80_hitfist_60_skeleton",
       "vcc_80_hitfist_60_xray",
       "vcc_80_hitfist_60_xray_skeleton"
+    ]
+  },
+  "it_zsu_23_4": {
+    "dep": [
+      "zsu_23_4",
+      "zsu_23_4_char",
+      "zsu_23_4_collision",
+      "zsu_23_4_dm_skeleton",
+      "zsu_23_4_dmg",
+      "zsu_23_4_dmg_skeleton",
+      "zsu_23_4_fastphys",
+      "zsu_23_4_skeleton",
+      "zsu_23_4_xray",
+      "zsu_23_4_xray_skeleton"
     ]
   },
   "itp_m1": {
@@ -6060,6 +6238,17 @@
       "sc50",
       "sc500_2_b",
       "sc500_2_b_87"
+    ]
+  },
+  "ju-87g_2": {
+    "dep": [
+      "german_paratrooper_char",
+      "gunner_sit_lw_500",
+      "ju_87g_2",
+      "ju_87g_2_anim",
+      "ju_87g_2_skeleton",
+      "pilot_german_char",
+      "pilot_lw_500"
     ]
   },
   "ju-87r-2": {
@@ -7299,6 +7488,22 @@
       "tu_1_skeleton"
     ]
   },
+  "uk_17_pdr_m10_achilles": {
+    "dep": [
+      "m10_achilles",
+      "m10_achilles_char",
+      "m10_achilles_collision",
+      "m10_achilles_dm_skeleton",
+      "m10_achilles_dmg",
+      "m10_achilles_dmg_skeleton",
+      "m10_achilles_fastphys",
+      "m10_achilles_skeleton",
+      "m10_achilles_xray",
+      "m10_achilles_xray_skeleton",
+      "uk_gunner_char",
+      "uk_gunner_officer_char"
+    ]
+  },
   "uk_a27m_cromwell_5": {
     "dep": [
       "a27m_cromwell_5",
@@ -7459,7 +7664,35 @@
       "grenade_l8"
     ]
   },
+  "uk_ac1_sentinel": {
+    "dep": [
+      "ac1_sentinel",
+      "ac1_sentinel_char",
+      "ac1_sentinel_collision",
+      "ac1_sentinel_dm_skeleton",
+      "ac1_sentinel_dmg",
+      "ac1_sentinel_dmg_skeleton",
+      "ac1_sentinel_fastphys",
+      "ac1_sentinel_skeleton",
+      "ac1_sentinel_xray",
+      "ac1_sentinel_xray_skeleton"
+    ]
+  },
   "uk_armored_car_mk_2_aa": {
+    "dep": [
+      "armored_car_mk_2_aa",
+      "armored_car_mk_2_aa_char",
+      "armored_car_mk_2_aa_collision",
+      "armored_car_mk_2_aa_dm_skeleton",
+      "armored_car_mk_2_aa_dmg",
+      "armored_car_mk_2_aa_dmg_skeleton",
+      "armored_car_mk_2_aa_fastphys",
+      "armored_car_mk_2_aa_skeleton",
+      "armored_car_mk_2_aa_xray",
+      "armored_car_mk_2_aa_xray_skeleton"
+    ]
+  },
+  "uk_armored_car_mk_2_aa_reskin": {
     "dep": [
       "armored_car_mk_2_aa",
       "armored_car_mk_2_aa_char",
@@ -8483,6 +8716,21 @@
       "ttd_xray_skeleton"
     ]
   },
+  "uk_valentine_mk_9": {
+    "dep": [
+      "grenade_zd17",
+      "mk_9_valentine",
+      "mk_9_valentine_char",
+      "mk_9_valentine_collision",
+      "mk_9_valentine_dm_skeleton",
+      "mk_9_valentine_dmg",
+      "mk_9_valentine_dmg_skeleton",
+      "mk_9_valentine_fastphys",
+      "mk_9_valentine_skeleton",
+      "mk_9_valentine_xray",
+      "mk_9_valentine_xray_skeleton"
+    ]
+  },
   "uk_vickers_mk_11": {
     "dep": [
       "grenade_uk_66mm",
@@ -8910,6 +9158,23 @@
     ]
   },
   "us_destroyer_porter": {
+    "dep": [
+      "depth_charge_mk6",
+      "destroyer_porter",
+      "destroyer_porter_char",
+      "destroyer_porter_collision",
+      "destroyer_porter_dm_skeleton",
+      "destroyer_porter_fastphys",
+      "destroyer_porter_sections",
+      "destroyer_porter_sections_remote",
+      "destroyer_porter_skeleton",
+      "destroyer_porter_xray",
+      "destroyer_porter_xray_skeleton",
+      "mine_emc",
+      "torpedo_g7a"
+    ]
+  },
+  "us_destroyer_selfridge": {
     "dep": [
       "depth_charge_mk6",
       "destroyer_porter",

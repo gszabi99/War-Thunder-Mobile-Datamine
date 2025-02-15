@@ -3,7 +3,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { defer } = require("dagor.workcycle")
 let { activeOffer } = require("offerState.nut")
-let { activeOfferByGoods } = require("offerByGoodsState.nut")
+let { activeOffersByGoods } = require("offerByGoodsState.nut")
 let { shopGoodsAllCampaigns } = require("shopState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { shopPurchaseInProgress, check_empty_offer, update_branch_offer } = require("%appGlobals/pServer/pServerApi.nut")
@@ -52,13 +52,13 @@ function getAddonsToShowGoods(goods, allUnits, excludeAddons) {
   return res.keys().filter(@(a) !excludeAddons?[a])
 }
 
-let getPreviewGoods = @(id, activeOff, activeOffByGoods, shopGoods)
+let getPreviewGoods = @(id, activeOff, activeOffsByGoods, shopGoods)
   activeOff?.id == id ? activeOff
-    : activeOffByGoods?.id == id ? activeOffByGoods
+    : id in activeOffsByGoods ? activeOffsByGoods[id]
     : shopGoods?[id]
 
 function openGoodsPreview(id) {
-  let goods = getPreviewGoods(id, activeOffer.get(), activeOfferByGoods.get(), shopGoodsAllCampaigns.get())
+  let goods = getPreviewGoods(id, activeOffer.get(), activeOffersByGoods.get(), shopGoodsAllCampaigns.get())
   let addons = getAddonsToShowGoods(goods, serverConfigs.get()?.allUnits, hasAddons.get())
   if (addons.len() != 0) {
     openDownloadAddonsWnd(addons, "openGoodsPreview", { id })
@@ -70,7 +70,7 @@ function openGoodsPreview(id) {
 }
 
 function openGoodsPreviewInMenuOnly(id) {
-  let goods = getPreviewGoods(id, activeOffer.get(), activeOfferByGoods.get(), shopGoodsAllCampaigns.get())
+  let goods = getPreviewGoods(id, activeOffer.get(), activeOffersByGoods.get(), shopGoodsAllCampaigns.get())
   let addons = getAddonsToShowGoods(goods, serverConfigs.get()?.allUnits, hasAddons.get())
   if (addons.len() != 0) {
     openDownloadAddonsWnd(addons, "openGoodsPreviewInMenuNoModals", { id })
@@ -85,7 +85,7 @@ function openGoodsPreviewInMenuOnly(id) {
 }
 
 let previewGoods = Computed(@() getPreviewGoods(openedGoodsId.get(), activeOffer.get(),
-  activeOfferByGoods.get(), shopGoodsAllCampaigns.get()))
+  activeOffersByGoods.get(), shopGoodsAllCampaigns.get()))
 
 let previewGoodsUnit = Computed(@() getBestUnitByGoods(previewGoods.get(), serverConfigs.get()))
 

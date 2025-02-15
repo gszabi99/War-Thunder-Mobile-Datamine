@@ -1,41 +1,37 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { platformPurchaseInProgress, isGoodsOnlyInternalPurchase } = require("platformGoods.nut")
 let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { shopGoods } = require("shopState.nut")
 let { curCampaign, purchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let { PURCHASING, DELAYED } = require("goodsStates.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 
 
-let activeOfferByGoods = Computed(function() {
+let activeOffersByGoods = Computed(function() {
   let campaign = curCampaign.get()
-  let res = shopGoods.get()
-    .findvalue(function(g) {
-      let { showAsOffer = null } = g?.meta
-      return showAsOffer == "" || showAsOffer == campaign
-    })
-  if (res == null)
-    return null
+  let servProfileUnits = servProfile.get()?.units
 
-  foreach (unitName in res.units)
-    if (unitName in servProfile.get()?.units)
-      return null
-  foreach (unitName in res.unitUpgrades)
-    if (servProfile.get()?.units[unitName].isUpgraded)
-      return null
-  if (purchasesCount.get()?[res.id])
-    return null
-
-  return res.__merge({ campaign, offerClass = "seasonal" })
+  return shopGoods.get().reduce(function(res, g) {
+    let { showAsOffer = null } = g?.meta
+    if (showAsOffer != "" && showAsOffer != campaign)
+      return res
+    let { units, unitUpgrades, id } = g
+    if (purchasesCount.get()?[id])
+      return res
+    foreach (unitName in units)
+      if (unitName in servProfileUnits)
+        return res
+    foreach (unitName in unitUpgrades)
+      if (servProfileUnits?[unitName].isUpgraded)
+        return res
+    res[id] <- g.__merge({ campaign, offerClass = "seasonal" })
+    return res
+  }, {})
 })
 
-let offerByGoodsPurchasingState = Computed(function() {
+let mkOfferByGoodsPurchasingState = @(id) Computed(function() {
   local res = 0
-  let goods = activeOfferByGoods.get()
+  let goods = activeOffersByGoods?[id].get()
   if (goods == null)
     return 0
   let idInProgress = isGoodsOnlyInternalPurchase(goods) ? shopPurchaseInProgress.get()
@@ -48,15 +44,7 @@ let offerByGoodsPurchasingState = Computed(function() {
   return res
 })
 
-let reqAddonsToShowOfferByGoods = Computed(function() {
-  let unit = serverConfigs.get()?.allUnits[activeOfferByGoods.get()?.unitUpgrades[0] ?? activeOfferByGoods.get()?.units[0]]
-  if (unit == null || !isReadyToFullLoad.get())
-    return []
-  return getUnitPkgs(unit.name, unit.mRank).filter(@(a) !hasAddons.get()?[a])
-})
-
 return {
-  activeOfferByGoods
-  offerByGoodsPurchasingState
-  reqAddonsToShowOfferByGoods
+  activeOffersByGoods
+  mkOfferByGoodsPurchasingState
 }

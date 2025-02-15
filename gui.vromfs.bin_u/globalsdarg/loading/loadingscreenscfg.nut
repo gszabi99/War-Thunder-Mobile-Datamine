@@ -56,7 +56,7 @@ let screensList = {
   }
   simple_ship_7 = {
     camp = [ "ships" ]
-    weight = 2.0
+    weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_s_7.avif")
   }
   complex_ship_1 = {
@@ -159,14 +159,18 @@ let screensList = {
     weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_19.avif")
   }
-  simple_tank_20 = {
-    camp = [ "tanks" ]
+  event_christmas = {
     weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_20.avif")
   }
   event_lunar_ny = {
     weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_21.avif")
+  }
+  simple_tank_20 = {
+    camp = [ "tanks" ]
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_22.avif")
   }
   simple_airplane_1 = {
     camp = [ "air" ]

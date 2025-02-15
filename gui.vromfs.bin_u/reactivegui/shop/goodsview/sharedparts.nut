@@ -36,7 +36,7 @@ let goodsGlareAnimDuration = 0.2
 
 let offerW = hdpx(332)
 let offerH = hdpx(136)
-let offerPad = [hdpx(5), hdpx(20)]
+let offerPad = [hdpx(5), hdpx(15), hdpx(10), hdpx(15)]
 let bottomPad = [hdpx(15), hdpx(20)]
 let titlePadding = hdpx(33)
 let titleWidth = hdpxi(250)
@@ -661,10 +661,10 @@ function mkOfferTexts(title, endTime) {
     vplace = ALIGN_BOTTOM
     maxWidth = titleWidth
     text = utf8ToUpper(title)
-  }.__update(fontVeryTinyAccented))
+  }.__update(fontVeryTinyAccented, { fontSize = hdpxi(21) }))
   return {
     size = flex()
-    margin = offerPad
+    margin = [offerPad[0], offerPad[1], offerPad[2] + hdpx(5), offerPad[3]]
     children = [
       mkTimeLeft(endTime)
       titleComp

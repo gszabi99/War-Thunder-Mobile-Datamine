@@ -1039,10 +1039,34 @@
         "mRank": 3
       }
     },
+    "pkg_germ_leopard_2a4": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 10
+      }
+    },
+    "pkg_it_pzh_2000_hu": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_fr_amx_50_foch": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
     "pkg_uk_khalid": {
       "conditions": {
         "campaign": "tanks",
         "mRank": 8
+      }
+    },
+    "pkg_uk_valentine_mk_9": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 1
       }
     },
     "pkg_environment_uhq": {

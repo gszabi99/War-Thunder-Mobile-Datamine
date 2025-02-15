@@ -227,7 +227,7 @@ function mkOfferUnit(goods, onClick, state) {
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
       mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : loc(getUnitLocId(unit)),
         endTime ?? timeRange?.end)
-        mkUnitInfo(unit, {padding = offerPad})
+      mkUnitInfo(unit).__update({ margin = offerPad, padding = null })
       discountTagUnit(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))
 }

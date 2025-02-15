@@ -25,7 +25,7 @@ let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { rnd_int } = require("dagor.random")
 let { SHIP, AIR } = require("%appGlobals/unitConst.nut")
 let { getPlatoonOrUnitName, getUnitPresentation, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { unitSelUnderlineFullSize, unitPlatesGap, unitPlateSmall, mkUnitInfo,
+let { unitPlatesGap, unitPlateSmall, mkUnitInfo,
   mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSelectedUnderlineVert,
   unitPlateWidth, unitPlateHeight, mkUnitSlotLockedLine
 } = require("%rGui/unit/components/unitPlateComp.nut")
@@ -381,7 +381,7 @@ let balanceBlock = @() {
   animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)
 }
 
-let itemsDesc = @() previewGoods.get().items.len() < 1
+let itemsDesc = @() previewGoods.get().items.len() < 1 && previewGoods.get().decorators.len() < 1
   ? { watch = previewGoods }
   : {
     watch = previewGoods
@@ -397,18 +397,19 @@ let leftBlockPlatoon = {
   flow = FLOW_VERTICAL
   children = [
     platoonUnitsBlock
-    { size = flex() }
+    {size = flex()}
     itemsDesc
-    packInfo(-1, { pos = [unitSelUnderlineFullSize, 0] })
+    packInfo(-1, { pos = [0, 0] })
   ]
 }
 
 let leftBlockSingleUnit = {
   size = flex()
   flow = FLOW_VERTICAL
-  gap = verticalGap * 2
+  gap = verticalGap
   children = [
     singleUnitBlock
+    itemsDesc
     packInfo
   ]
 }
@@ -482,8 +483,10 @@ let gapForBranch = hdpx(20)
 
 let leftBlock = @(){
   watch = [previewGoodsUnit, schRewards, previewGoods]
-  size = [unitPlateSize[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
-  halign = ALIGN_CENTER
+  size = (previewGoods.get()?.units.len() ?? 0) > 1
+    ? [unitPlateSize[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
+    : flex()
+  halign = ALIGN_LEFT
   children = (previewGoods.get()?.units.len() ?? 0) > 1
     ? @() {
         watch = sortedBranchUnits
@@ -562,16 +565,19 @@ let previewWnd = @() {
             text = loc("offer/airBranch/descBuy", {count =(previewGoods.get()?.units.len() ?? 0)})
           }.__update(fontSmall)
           : { watch = previewGoods}
-        @() {
-          watch = needScroll
+        {
           size = flex()
           children = [
-            {
-              size = [unitPlateSizeSingle[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
+            @() {
+              watch = needScroll
+              size = !needScroll.get()
+                ? flex()
+                : [unitPlateSizeSingle[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
               children = [
                 !needScroll.get() ? leftBlock
                   : pannableArea(leftBlock, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
-                scrollArrowsBlock
+                !needScroll.get() ? null
+                  : scrollArrowsBlock
               ]
             }
             rightBlock

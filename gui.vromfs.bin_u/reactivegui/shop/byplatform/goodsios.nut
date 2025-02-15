@@ -247,9 +247,15 @@ let platformSubs = Computed(function() {
 })
 
 let platformOffer = Computed(function() {
-  let priceExt = availablePrices.value?[getProductId(activeOffers.value)]
-  return priceExt == null || activeOffers.value == null ? null
-    : activeOffers.value.__merge({ priceExt })
+  let offer = activeOffers.get()
+  let priceExt = availablePrices.value?[getProductId(offer)]
+  if (priceExt == null || offer == null)
+    return null
+  let platformDiscount = getIosDiscount(offer)
+  return offer.__merge({
+    priceExt
+    discountInPercent = platformDiscount != 0 ? platformDiscount : (offer?.discountInPercent ?? 0)
+  })
 })
 
 function buyPlatformGoods(goodsOrId) {

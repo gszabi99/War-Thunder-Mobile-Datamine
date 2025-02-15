@@ -14,10 +14,11 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToTimeSimpleString, TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
 let { mkCurrencyComp, mkPriceExtText, CS_BIG, CS_COMMON } = require("%rGui/components/currencyComp.nut")
-let { shopGoodsToRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { REWARD_STYLE_MEDIUM, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts
+let { shopGoodsToRewardsViewInfo, sortRewardsViewInfo, isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+let { REWARD_STYLE_MEDIUM, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts, mkRewardReceivedMark
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
@@ -440,8 +441,9 @@ let mkItemBlink = @(start) {
 function mkItemImpl(r, rStyle, start) {
   let itemId = r.id
   let stateFlags = Watched(0)
+  let isRewardReceived = Computed(@() isRewardEmpty([{ gType = r.rType }.__merge(r)], servProfile.get()))
   return @() {
-    watch = stateFlags
+    watch = [stateFlags, isRewardReceived]
     behavior = Behaviors.Button
     clickableInfo = loc("options/info")
     onClick = @() null
@@ -460,6 +462,7 @@ function mkItemImpl(r, rStyle, start) {
       })
       mkRewardPlateImage(r, rStyle)
       mkRewardPlateTexts(r, rStyle)
+      isRewardReceived.get() ? mkRewardReceivedMark(rStyle) : null
     ]
     animations = opacityAnims(aTimeInfoItem, start + aTimeInfoLight)
   }

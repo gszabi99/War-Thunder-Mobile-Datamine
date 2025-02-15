@@ -332,10 +332,8 @@
       "explosionDamageMult": 0.05,
       "fireParamsPreset": "ship_aux_fire",
       "fire_director_01_dm": {},
-      "fire_director_02_dm": [
-        {},
-        {}
-      ]
+      "fire_director_02_dm": {},
+      "fire_director_03_dm": {}
     },
     "engine_rooms": {
       "armorClass": "ship_structural_steel",
@@ -747,7 +745,22 @@
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
           "barrel": "gun_barrel_01",
-          "gunnerDm": "main_caliber_turret_01_dm"
+          "gunnerDm": "main_caliber_turret_01_dm",
+          "linkedAnimPart": {
+            "horNode": [
+              "fire_director_01",
+              "fire_director_02",
+              "fire_director_03"
+            ],
+            "horLimits": [
+              -180.0,
+              180.0
+            ],
+            "horOriginLimits": [
+              -180.0,
+              180.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -1465,7 +1478,22 @@
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
                 "barrel": "gun_barrel_01",
-                "gunnerDm": "main_caliber_turret_01_dm"
+                "gunnerDm": "main_caliber_turret_01_dm",
+                "linkedAnimPart": {
+                  "horNode": [
+                    "fire_director_01",
+                    "fire_director_02",
+                    "fire_director_03"
+                  ],
+                  "horLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "horOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -2167,7 +2195,22 @@
                 "head": "main_caliber_turret_01",
                 "gun": "main_caliber_gun_01",
                 "barrel": "gun_barrel_01",
-                "gunnerDm": "main_caliber_turret_01_dm"
+                "gunnerDm": "main_caliber_turret_01_dm",
+                "linkedAnimPart": {
+                  "horNode": [
+                    "fire_director_01",
+                    "fire_director_02",
+                    "fire_director_03"
+                  ],
+                  "horLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "horOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [

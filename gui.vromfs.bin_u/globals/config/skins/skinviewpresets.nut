@@ -140,6 +140,7 @@ let skinsByTag = {
     "ger_camo_modern_desert_threecolor"
     "usa_modern_red_desert"
     "uk_khalid"
+    "uk_camo_light_stone_light_grey_slate_grey"
   ],
 
   [WINTER] = [
@@ -177,6 +178,7 @@ let skinsByTag = {
     "ussr_camo_arctic"
     "camo_ny_24"
     "camo_lunar_ny_25"
+    "it_camo_winter_white"
   ],
 
   [NAVAL] = [
@@ -282,6 +284,7 @@ let skinsByTag = {
     "camo_redblack_spots"
     "camo_redwhite_stripes"
     "it_camo_blackgreen_deforming"
+    "camo_atlanticocean"
     "camo_destroyer_gearing_lny"
   ],
 

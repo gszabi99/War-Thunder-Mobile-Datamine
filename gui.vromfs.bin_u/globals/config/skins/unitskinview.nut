@@ -457,6 +457,10 @@ return {
       "": "fr_camo_vert_olive_arme",
       "forest": "fr_camo_green_brown_lines"
     },
+    "fr_amx_50_foch": {
+      "": "fr_camo_vert_olive_arme",
+      "forest": "fr_camo_desert_brown"
+    },
     "fr_amx_50_surbaisse": {
       "": "fr_camo_vert_olive_arme",
       "desert": "fr_camo_green_sand_brown",
@@ -466,6 +470,10 @@ return {
     "fr_amx_m4": {
       "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_desert_storm"
+    },
+    "fr_amx_m4_reskin": {
+      "": "fr_camo_vert_olive_arme",
+      "forest": "fr_camo_desert_brown"
     },
     "fr_arl_44": {
       "": "fr_camo_vert_olive_arme",
@@ -545,6 +553,10 @@ return {
       "": "fr_camo_vert_olive_arme",
       "upgraded": "fr_camo_green_sand_brown"
     },
+    "fr_panhard_ebr_1963": {
+      "": "fr_camo_vert_olive_arme",
+      "forest": "fr_camo_desert_brown"
+    },
     "fr_sk105_a2": {
       "": "fr_camo_vert_olive_arme",
       "desert": "fr_camo_desert_brown",
@@ -559,6 +571,10 @@ return {
       "desert": "fr_camo_carc_desert",
       "forest": "fr_camo_carc",
       "winter": "fr_camo_winter_green_white"
+    },
+    "fr_tpk_641_vpc_reskin": {
+      "": "fr_camo_vert_olive_arme",
+      "forest": "fr_camo_desert_brown"
     },
     "fr_vcac_mephisto": {
       "": "fr_camo_vert_olive_arme",
@@ -747,6 +763,10 @@ return {
       "": "ger_camo_bronzegruen",
       "desert": "ger_camo_modern_desert_threecolor"
     },
+    "germ_flakpz_I_Gepard_reskin4": {
+      "": "ger_camo_bronzegruen",
+      "upgraded": "ger_camo_carc"
+    },
     "germ_frigate_rckt_brandenburg": {
       "upgraded": "camo_threegray_spots"
     },
@@ -782,6 +802,10 @@ return {
       "forest": "ger_camo_carc",
       "forest2": "ger_camo_bundeswehr_afgan",
       "winter": "ussr_camo_winter"
+    },
+    "germ_leopard_2a4": {
+      "": "ger_camo_bronzegruen",
+      "upgraded": "ger_camo_carc"
     },
     "germ_leopard_2av": {
       "": "ger_camo_bronzegruen",
@@ -1021,6 +1045,10 @@ return {
       "": "ger_camo_bronzegruen",
       "forest": "patria_skin"
     },
+    "germ_thyssen_henschel_tam_2c": {
+      "": "ger_camo_bronzegruen",
+      "upgraded": "ger_camo_carc"
+    },
     "germ_thyssen_henschel_tam_2ip": {
       "": "ger_camo_bronzegruen",
       "forest": "arg_camo_bicolor"
@@ -1040,6 +1068,10 @@ return {
       "desert": "ger_camo_modern_threecolor",
       "forest": "ger_camo_bronzegruen",
       "winter": "ussr_camo_winter"
+    },
+    "germ_wiesel_1_tow": {
+      "": "ger_camo_bronzegruen",
+      "upgraded": "ger_camo_carc"
     },
     "he-111h-16_winter": {
       "": "germ_he_111h_16_a_winter"
@@ -1196,6 +1228,12 @@ return {
       "": "ann_camo",
       "forest": "hu_camo_green"
     },
+    "it_aubl_74_60_70m": {
+      "": "it_camo_green_postwar",
+      "desert": "it_camo_desert_modern",
+      "forest": "it_camo_modern_three_color",
+      "winter": "it_camo_winter_white"
+    },
     "it_b1_centauro_romor": {
       "": "it_camo_green",
       "upgraded": "it_camo_modern_three_color"
@@ -1251,6 +1289,12 @@ return {
       "forest": "it_camo_olive_green",
       "forest2": "it_camo_green_postwar"
     },
+    "it_of_40_mk_1": {
+      "": "isr_camo_green",
+      "desert": "it_camo_desert_modern",
+      "forest": "it_camo_modern_three_color",
+      "winter": "it_camo_winter_white"
+    },
     "it_of_40_mk_2a": {
       "": "it_camo_olive_green",
       "upgraded": "it_camo_threecolor_modern"
@@ -1269,6 +1313,12 @@ return {
       "": "it_camo_green",
       "upgraded": "it_camo_modern_three_color"
     },
+    "it_pzh_2000_hu": {
+      "": "us_camo_modern_green",
+      "desert": "it_camo_desert_modern",
+      "forest": "hu_camo_four_color",
+      "winter": "it_camo_winter_white"
+    },
     "it_sherman_vc_firefly": {
       "": "it_camo_desert_modern",
       "desert": "it_camo_two_color_spots",
@@ -1282,6 +1332,12 @@ return {
     "it_vcc_80_hitfist_60": {
       "": "it_camo_green",
       "upgraded": "it_camo_modern_three_color"
+    },
+    "it_zsu_23_4": {
+      "": "us_camo_modern_green",
+      "desert": "it_camo_desert_modern",
+      "forest": "hu_camo_green_brown_black",
+      "winter": "it_camo_winter_white"
     },
     "itp_m1": {
       "": "ussr_itp_m1"
@@ -1458,7 +1514,8 @@ return {
       "": "germ_me_410a_1"
     },
     "ju-87g_2": {
-      "": "germ_me_410a_1"
+      "": "germ_he_111h_16_a_winter",
+      "standart": "germ_me_410a_1"
     },
     "ju-87r-2": {
       "": "germ_tropic_ju_87r_2"
@@ -1696,6 +1753,10 @@ return {
     "tu-1_prem": {
       "": "ussr_tu_1_prem"
     },
+    "uk_17_pdr_m10_achilles": {
+      "": "uk_camo_light_stone_light_grey_slate_grey",
+      "forest": "uk_camo_very_dark_drab"
+    },
     "uk_a27m_cromwell_5": {
       "": "uk_camo_light_stone_slate_grey",
       "forest": "uk_camo_very_dark_drab"
@@ -1732,8 +1793,16 @@ return {
       "": "uk_camo_very_dark_drab",
       "upgraded": "rsa_camo_modern_three_color"
     },
+    "uk_ac1_sentinel": {
+      "": "uk_camo_light_stone_light_grey_slate_grey",
+      "forest": "uk_camo_very_dark_drab"
+    },
     "uk_armored_car_mk_2_aa": {
       "": "uk_camo_light_stone_slate_grey",
+      "forest": "uk_camo_very_dark_drab"
+    },
+    "uk_armored_car_mk_2_aa_reskin": {
+      "": "uk_camo_light_stone_light_grey_slate_grey",
       "forest": "uk_camo_very_dark_drab"
     },
     "uk_battlecruiser_glorious": {
@@ -1955,6 +2024,10 @@ return {
       "": "rsa_camo_dark_earth",
       "upgraded": "rsa_camo_gray_earth_stone"
     },
+    "uk_valentine_mk_9": {
+      "": "uk_camo_light_stone_light_grey_slate_grey",
+      "forest": "uk_camo_very_dark_drab"
+    },
     "uk_vickers_mk_11": {
       "": "uk_camo_standart_modern_desert_bicolor",
       "forest": "uk_camo_very_dark_drab"
@@ -2019,6 +2092,9 @@ return {
     "us_cruiser_rckt_truxtun": {
       "upgraded": "camo_blackgray_spots"
     },
+    "us_cruiser_rckt_virginia": {
+      "upgraded": "camo_multicolor_cubes"
+    },
     "us_destroyer_fletcher": {
       "upgraded": "camo_measure_geometry"
     },
@@ -2036,7 +2112,7 @@ return {
       "upgraded": "camo_blue_spots"
     },
     "us_destroyer_selfridge": {
-      "": "camo_designpt328"
+      "": "camo_atlanticocean"
     },
     "us_halftrack_m15": {
       "": "hw_camo",
