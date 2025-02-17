@@ -1514,7 +1514,8 @@ return {
       "": "germ_me_410a_1"
     },
     "ju-87g_2": {
-      "": "germ_me_410a_1"
+      "": "germ_he_111h_16_a_winter",
+      "standart": "germ_me_410a_1"
     },
     "ju-87r-2": {
       "": "germ_tropic_ju_87r_2"

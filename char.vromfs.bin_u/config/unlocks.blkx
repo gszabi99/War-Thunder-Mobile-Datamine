@@ -1877,7 +1877,7 @@
           },
           {
             "type": "targetDistance",
-            "distance": 6000.0
+            "distance": 3000.0
           },
           {
             "type": "offenderType",
