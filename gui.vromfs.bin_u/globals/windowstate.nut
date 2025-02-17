@@ -1,12 +1,14 @@
 from "%sqstd/frp.nut" import ComputedImmediate
-
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { eventbus_subscribe } = require("eventbus")
 let logW = require("%globalScripts/logs.nut").log_with_prefix("[WINDOW] ")
+let { get_time_msec } = require("dagor.time")
+let { eventbus_subscribe } = require("eventbus")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { is_mobile } = require("%appGlobals/clientState/platform.nut")
 
 
 let windowInactiveFlags = hardPersistWatched("globals.windowInactiveFlags", {})
+let wndStartInactiveMsec = hardPersistWatched("globals.lastTimeInactive", -1)
+let wndStartActiveMsec = hardPersistWatched("globals.lastTimeActive", 0)
 let windowActive = ComputedImmediate(@() windowInactiveFlags.value.len() == 0)
 local needDebug = false
 
@@ -33,8 +35,13 @@ if (is_mobile)
 eventbus_subscribe("onWindowActivated", @(_) unblockWindow("EventWindowActivated"))
 eventbus_subscribe("onWindowDeactivated", @(_) blockWindow("EventWindowActivated"))
 
+windowActive.subscribe(@(isActive) isActive ? wndStartActiveMsec.set(get_time_msec())
+  : wndStartInactiveMsec.set(get_time_msec()))
+
 return {
   windowActive
+  wndStartActiveMsec
+  wndStartInactiveMsec
   allowDebug = function(value) { needDebug = value }
   blockWindow
   unblockWindow

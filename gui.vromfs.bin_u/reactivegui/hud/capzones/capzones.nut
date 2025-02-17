@@ -6,7 +6,7 @@ let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 
 
 let zoneSizeBase = evenPx(50)
-let bigZoneMul = 2
+let bigZoneMul = 1.5
 let neutralColor = 0xFFFFFFFF
 const MP_TEAM_NEUTRAL = 0
 

@@ -293,7 +293,7 @@
         0.05
       ],
       "colorVariation": 0.01,
-      "probability": 0.001,
+      "probability": 0.0001,
       "fireTimeRange": [
         0.01,
         0.01

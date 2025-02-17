@@ -22,7 +22,8 @@ let btnOpenQuests = @() {
     : translucentButton("ui/gameuiskin#quests.svg",
         "",
         openQuestsWnd,
-        statusMark)
+        statusMark,
+        { key = "quest_wnd_btn" }) //need for tutorial
 }
 
 function mkBtnOpenTabQuests(tabId, ovr = {}) {

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let {eventbus_subscribe} = require("eventbus")
 let { questsBySection, seenQuests, saveSeenQuestsForSection, sectionsCfg, questsCfg,
   inactiveEventUnlocks, hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection,
-  getQuestCurrenciesInTab, curTabParams
+  getQuestCurrenciesInTab, curTabParams, tutorialSectionId, isSameTutorialSectionId, tutorialSectionIdWithReward
 } = require("questsState.nut")
 let { textButtonSecondary, textButtonCommon, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -12,10 +12,11 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, mkTimeUntil,
   allQuestsCompleted, mkAdsBtn, btnSize, headerLineGap } = require("questsPkg.nut")
-let { mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon, progressBarRewardSize, mkRewardsPreviewFull
+let { mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon, progressBarRewardSize, mkRewardsPreviewFull,
+  getRewardsPreviewInfo, getEventCurrencyReward
 } = require("rewardsComps.nut")
 let { mkQuestBar, mkQuestListProgressBar } = require("questBar.nut")
-let { getUnlockRewardsViewInfo, sortRewardsViewInfo, isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { topAreaSize } = require("%rGui/options/mkOptionsScene.nut")
@@ -28,7 +29,6 @@ let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchases
 } = require("%rGui/shop/unseenPurchasesState.nut")
 let { defer } = require("dagor.workcycle")
 let { sendBqQuestsTask } = require("bqQuests.nut")
-let { WARBOND, NYBOND, APRILBOND } = require("%appGlobals/currenciesState.nut")
 let { PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { msgBoxText } = require("%rGui/components/msgBox.nut")
@@ -193,6 +193,7 @@ function mkBtn(item, currencyReward, rewardsPreview, sProfile) {
       btnStyle)
   }
   return {
+    key = $"quest_reward_receive_btn_{name}" //need for tutorial
     size
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -211,10 +212,8 @@ function mkItem(item, textCtor) {
     && item.name not in seenQuests.value
     && item.name not in inactiveEventUnlocks.value)
 
-  let rewardsPreview = Computed(@() getUnlockRewardsViewInfo(item?.stages[0], serverConfigs.value)
-    .sort(sortRewardsViewInfo))
-
-  let eventCurrencyReward = Computed(@() rewardsPreview.value.findvalue(@(r) r.id == WARBOND || r.id == NYBOND || r.id == APRILBOND))
+  let rewardsPreview = Computed(@() getRewardsPreviewInfo(item, serverConfigs.get()))
+  let eventCurrencyReward = Computed(@() getEventCurrencyReward(rewardsPreview.get()))
 
   let headerPadding = Computed(@() item.hasReward ? unseenMarkMargin * 2
     : isUnseen.value ? newMarkSize[0]
@@ -347,7 +346,7 @@ function mkSectionTabs(sections, curSectionId, onSectionChange) {
               text = sectionsCfg.get()?[id]
             }.__update(sectionsFont.value)
           ]
-       })
+       }).__update({ key = $"sectionId_{id}" }) //need for tutorial
     })
   }
 }
@@ -411,7 +410,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
   let curSectionId = Computed(function() {
     let bySection = questsBySection.get()
     let sectionsList = questsCfg.get()?[tabId] ?? []
-    local curId = selSectionId.get()
+    local curId = tutorialSectionId.get() ?? selSectionId.get()
     if (!sectionsList.contains(curId))
       curId = null
     if ((bySection?[curId].len() ?? 0) > 0)
@@ -471,20 +470,29 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
     return {
       watch = [isProgressBySection, sections, isSectionsEmpty, hasProgressUnlock]
       size = [flex(), SIZE_TO_CONTENT]
+      minHeight = progressBarRewardSize
       gap = pageBlocksGap
       flow = FLOW_VERTICAL
       children = isProgressBySection.get() ? [sectionsBlock, progressBlock] : [progressBlock, sectionsBlock]
     }
   }
+
+  let tutorSectionSubscription = @(v) isSameTutorialSectionId.set(v == curSectionId.get())
+  let curSectionSubscription = @(v) isSameTutorialSectionId.set(v == tutorialSectionIdWithReward.get())
+
   return @() {
     watch = tabCurrencies
     key = sections
     size = flex()
     function onAttach() {
+      tutorialSectionIdWithReward.subscribe(tutorSectionSubscription)
+      curSectionId.subscribe(curSectionSubscription)
       curTabParams.set({ tabId, currencies = tabCurrencies.get() })
       addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
     }
     function onDetach() {
+      tutorialSectionIdWithReward.unsubscribe(tutorSectionSubscription)
+      curSectionId.unsubscribe(curSectionSubscription)
       curTabParams.set({})
       removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
     }

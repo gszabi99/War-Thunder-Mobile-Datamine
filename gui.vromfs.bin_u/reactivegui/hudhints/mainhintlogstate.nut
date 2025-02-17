@@ -14,7 +14,7 @@ let { startMissionHintSeria, captureHintSeria } = require("missionNewbiesHints.n
 let { unitType } = require("%rGui/hudState.nut")
 let { TANK, AIR } = require("%appGlobals/unitConst.nut")
 let { teamRedColor } = require("%rGui/style/teamColors.nut")
-let { EventZoneDamageMessage = 0 } = require_optional("dasevents")
+let { EventZoneDamageMessage } = require("dasevents")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 const TIME_TO_RESET_SCORE = 1.0
@@ -147,10 +147,9 @@ function showScore(score, isAirfield) {
   }
 }
 
-if (EventZoneDamageMessage != 0)
-  register_es("on_zone_damage_message",
-    { [EventZoneDamageMessage] = @(evt, _eid, _comp) showScore(evt.score, evt.isAirfield) },
-    { comps_rq = [["server_player__userId", TYPE_UINT64]] })
+register_es("on_zone_damage_message",
+  { [EventZoneDamageMessage] = @(evt, _eid, _comp) showScore(evt.score, evt.isAirfield) },
+  { comps_rq = [["server_player__userId", TYPE_UINT64]] })
 
 
 const MISSSION_RESULT = "mission_result"
@@ -181,12 +180,12 @@ eventbus_subscribe("MissionContinue", @(_) removeEvent({ id = MISSSION_RESULT })
 let expEventType = {
   [EXP_EVENT_CRITICAL_HIT]  = "exp_reasons/critical_hit",
   [EXP_EVENT_SEVERE_DAMAGE] = "exp_reasons/severe_damage",
-  // [EXP_EVENT_ASSIST]        = "exp_reasons/assist",
+  [EXP_EVENT_ASSIST]        = "exp_reasons/assist",
 }
 
 eventbus_subscribe("ExpEvent", function(evt) {
   let msg = expEventType?[evt.messageCode];
-  if (unitType.value == AIR && msg) {
+  if ((unitType.value == AIR || evt.messageCode == EXP_EVENT_ASSIST) && msg) {
     modifyOrAddEvent({
       id = EXP_HINT
       zOrder = Layers.Upper

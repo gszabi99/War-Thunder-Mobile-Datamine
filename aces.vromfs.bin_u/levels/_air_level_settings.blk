@@ -10,3 +10,6 @@ clipmap_tex_mips:i=6
 volumeCloudsActive:b = yes
 
 z_far:r = 50000
+addLandToSky:b = yes
+
+harmonicsType:t = "green"

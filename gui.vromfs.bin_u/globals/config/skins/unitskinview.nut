@@ -110,7 +110,7 @@ return {
       "": "usa_f4u_4b"
     },
     "bv-155b-1": {
-      "": "germ_do335a_1"
+      "": "germ_fw_200c_1"
     },
     "cn_cm11": {
       "": "us_camo_modern_green",
@@ -1514,8 +1514,7 @@ return {
       "": "germ_me_410a_1"
     },
     "ju-87g_2": {
-      "": "germ_he_111h_16_a_winter",
-      "standart": "germ_me_410a_1"
+      "": "germ_me_410a_1"
     },
     "ju-87r-2": {
       "": "germ_tropic_ju_87r_2"

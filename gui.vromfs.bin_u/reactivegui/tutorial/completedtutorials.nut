@@ -5,6 +5,8 @@ let { register_command } = require("console")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
+let { TUTORIAL_BATTLE_PASS_ID, TUTORIAL_ARSENAL_ID, TUTORIAL_SLOT_ATTRIBUTES_ID,
+  TUTORIAL_UNITS_RESEARCH_ID } = require("tutorialConst.nut")
 
 
 const SAVE_ID = "tutorials"
@@ -39,6 +41,10 @@ loadCompletedTutorials()
 isOnlineSettingsAvailable.subscribe(@(_) loadCompletedTutorials())
 
 let mkIsTutorialCompleted = @(id) Computed(@() completedTutorials.get()?[id] ?? false)
+let isFinishedBattlePass = mkIsTutorialCompleted(TUTORIAL_BATTLE_PASS_ID)
+let isFinishedSlotAttributes = mkIsTutorialCompleted(TUTORIAL_SLOT_ATTRIBUTES_ID)
+let isFinishedArsenal = mkIsTutorialCompleted(TUTORIAL_ARSENAL_ID)
+let isFinishedUnitsResearch = mkIsTutorialCompleted(TUTORIAL_UNITS_RESEARCH_ID)
 
 function resetAllTutorials() {
   if (completedTutorials.get().len() == 0)
@@ -57,4 +63,9 @@ return {
   completedTutorials
   markTutorialCompleted
   mkIsTutorialCompleted
+
+  isFinishedBattlePass
+  isFinishedSlotAttributes
+  isFinishedArsenal
+  isFinishedUnitsResearch
 }

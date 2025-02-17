@@ -725,6 +725,9 @@
     "SendUnlocksToUserstat": {
       "condition": ""
     },
+    "HangarHitcamera": {
+      "condition": ""
+    },
     "nonPayingUser": {
       "condition": "!customerAccount"
     },

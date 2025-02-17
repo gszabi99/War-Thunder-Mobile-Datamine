@@ -24,6 +24,7 @@ let optionsBlockBg = {
   borderColor = 0xFF808080
   borderWidth = hdpxi(4)
   flow = FLOW_VERTICAL
+  gap = hdpx(20)
 }
 
 function modifyOptions(modify, changeUid = "", changeStackTime = 0) {

@@ -11,7 +11,8 @@ let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
 let { isAuthorized, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
-let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
+let { startSeveralCheckPurchases, severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut")
+let { blockWindow, unblockWindow } = require("%appGlobals/windowState.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { object_to_json_string } = require("json")
@@ -20,12 +21,18 @@ let getDebugPrice = @(id) 0.01 * (id.hash() % 100000)
 
 let {
   YU2_OK = 0,
-  registerApplePurchase = @(_, __, eventId) setTimeout(0.1,
-    @() eventbus_send(eventId, { status = 0, transaction_id = "id" }))
+  registerApplePurchase = @(transaction_id, __, eventId) setTimeout(0.1,
+    @() eventbus_send(eventId, { status = 0, transaction_id }))
 } = require("auth_wt")
 
 let billingModule = require("ios.billing.appstore")
 let { AS_OK = 0, AS_CANCELED = -1, AS_NOT_INITED = -12 } = billingModule
+let dbgPurchAnswers = [
+  { status = AS_OK, data = "transaction_data", transactions = ["dbg_1", "dbg_2", "dbg_3"] }
+  { status = AS_OK, data = "receipt_or_error" }
+  { status = AS_OK, data = "transaction_data", transaction_id = "dbg_1" }
+]
+local dbgCounter = 0
 let { //defaults only to allow test this module on PC
   initAndRequestData = function(list) {
     let result = {
@@ -41,8 +48,13 @@ let { //defaults only to allow test this module on PC
     }
     setTimeout(0.1, @() eventbus_send("ios.billing.onInitAndDataRequested", result))
   },
-  startPurchaseAsync = @(_) setTimeout(1.0,
-    @() eventbus_send("ios.billing.onPurchaseCallback", { status = AS_OK, data = "receipt_or_error" })),
+  startPurchaseAsync = @(id) setTimeout(1.0,
+    @() eventbus_send("ios.billing.onPurchaseCallback",
+      dbgPurchAnswers[dbgCounter++ % dbgPurchAnswers.len()].__merge({ id }))),
+  manageSubscription = function(_) {
+    blockWindow("debug")
+    setTimeout(0.1, @() unblockWindow("debug"))
+  }
   confirmPurchase = @(_) setTimeout(1.0, @() eventbus_send("ios.billing.onConfirmPurchaseCallback",{status = true})),
   setSuspend = @(_) null
 } = !is_pc ? require("ios.billing.appstore") : {}
@@ -50,6 +62,8 @@ let { //defaults only to allow test this module on PC
 const REPEAT_ON_ERROR_MSEC = 60000
 let lastInitStatus = hardPersistWatched("goodsIos.lastInitStatus", AS_NOT_INITED)
 let products = hardPersistWatched("goodsIos.products", {})
+let pendingTransactions = hardPersistWatched("goodsIos.pendingTransactions", [])
+let isRegisterInProgress = hardPersistWatched("goodsIos.isRegisterInProgress", false)
 let purchaseInProgress = mkWatched(persist, "purchaseInProgress", null)
 let availablePrices = Computed(function() {
   let res = {}
@@ -87,19 +101,6 @@ eventbus_subscribe("ios.billing.onConfirmPurchaseCallback", function(result) {
   openFMsgBox({ text = loc("msg/onApplePurchaseConfirmError") })
 })
 
-eventbus_subscribe("ios.billing.onAuthPurchaseCallback", function(result) {
-  let {status, purchase_transaction_id = null } = result
-
-  if (status == YU2_OK && purchase_transaction_id) {
-    logG($"register_apple_purchase success")
-    confirmPurchase(purchase_transaction_id)
-    return
-  }
-  purchaseInProgress(null)
-  logG($"register_apple_purchase error={status}")
-  openFMsgBox({ text = loc("msg/onApplePurchaseAuthError" {error = status}) })
-})
-
 isLoggedIn.subscribe(function(v) {
   if (!v)
     setSuspend(true)
@@ -117,12 +118,41 @@ function sendLogPurchaseData(product_id,transaction_id) {
   logEvent("af_purchase", object_to_json_string(af, true))
 }
 
+function registerNextTransaction() {
+  if (isRegisterInProgress.get() || pendingTransactions.get().len() == 0)
+    return
+  isRegisterInProgress.set(true)
+  let { id, transaction_id, data } = pendingTransactions.get()[0]
+  pendingTransactions.set(pendingTransactions.get().slice(1))
+  logG("registerApplePurchase ", transaction_id)
+  registerApplePurchase(transaction_id, data, "ios.billing.onAuthPurchaseCallback")
+  sendLogPurchaseData(id, transaction_id)
+}
+
+eventbus_subscribe("ios.billing.onAuthPurchaseCallback", function(result) {
+  isRegisterInProgress.set(false)
+  let {status, purchase_transaction_id = null } = result
+  if (status == YU2_OK && purchase_transaction_id) {
+    logG($"register_apple_purchase success")
+    confirmPurchase(purchase_transaction_id)
+  }
+  else {
+    purchaseInProgress(null)
+    logG($"register_apple_purchase error={status}")
+    openFMsgBox({ text = loc("msg/onApplePurchaseAuthError" {error = status}) })
+  }
+  registerNextTransaction()
+})
+
 eventbus_subscribe("ios.billing.onPurchaseCallback", function(result) {
-  let { status, id = null, data = null, transaction_id = null } = result
-  logG("onPurchaseCallback status = ", status)
-  if (status == AS_OK && id && data && transaction_id) {
-    registerApplePurchase(transaction_id, data, "ios.billing.onAuthPurchaseCallback")
-    sendLogPurchaseData(id,transaction_id)
+  let { status, id = null, data = null, transaction_id = null, transactions = null } = result
+
+  logG("onPurchaseCallback status = ", status, transactions ?? transaction_id)
+  if (status == AS_OK && id && data && (transactions ?? transaction_id) != null) {
+    let list = (transactions ?? [transaction_id])
+      .map(@(tId) { id, transaction_id = tId, data })
+    pendingTransactions.mutate(@(v) v.extend(list))
+    registerNextTransaction()
   } else {
     purchaseInProgress(null)
     if (status != AS_CANCELED) {
@@ -263,8 +293,18 @@ function buyPlatformGoods(goodsOrId) {
     ?? getProductId(platformGoods.value?[goodsOrId] ?? goodsOrId)
   if (productId == null)
     return
+  logG($"Buy {productId}")
   startPurchaseAsync(productId)
   purchaseInProgress(productId)
+}
+
+function changeSubscription(subsOrId, _) {
+  let productId = getPlanId(platformSubs.get()?[subsOrId] ?? subsOrId)
+  if (productId == null)
+    return
+  logG($"Buy {productId}")
+  severalCheckPurchasesOnActivate()
+  manageSubscription(productId)
 }
 
 let platformPurchaseInProgress = Computed(@() purchaseInProgress.get() == null ? null
@@ -278,5 +318,6 @@ return {
   platformSubs
   buyPlatformGoods
   activatePlatfromSubscription = buyPlatformGoods
+  changeSubscription
   platformPurchaseInProgress
 }

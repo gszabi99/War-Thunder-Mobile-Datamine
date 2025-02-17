@@ -8,6 +8,7 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
+let { balance } = require("%appGlobals/currenciesState.nut")
 let { mkWeaponPreset, getWeaponPreset, mkChosenBelts, getChosenBelts, mkSeenMods
 } = require("%rGui/unit/unitSettings.nut")
 let { mkUnitAllModsCost, getModCurrency, getModCost, hasEnoughCurrencies } = require("unitModsState.nut")
@@ -457,7 +458,7 @@ function mkListUnseenMods(slotUnit) {
         || data.reqLevel > level
         || modName in mods
         || (modName in seenSlotModsByUnit.get() && seenSlotModsByUnit.get()[modName] == WS_SEEN_AVAILABLE)
-        || !hasEnoughCurrencies(data, slotUnitAllModsCost.get()))
+        || !hasEnoughCurrencies(data, slotUnitAllModsCost.get(), balance.get()))
         continue
       else
         res[modName] <- true
@@ -489,7 +490,7 @@ function setAllSeenMods() {
   let seenMods = {}
   foreach (modName, data in unitModPreset)
     if (data?.reqLevel && level && data.reqLevel <= level && modName not in mods)
-      seenMods[modName] <- hasEnoughCurrencies(data, curUnitAllModsCost.get())
+      seenMods[modName] <- hasEnoughCurrencies(data, curUnitAllModsCost.get(), balance.get())
 
   setSeenUnitMods(seenMods)
 }

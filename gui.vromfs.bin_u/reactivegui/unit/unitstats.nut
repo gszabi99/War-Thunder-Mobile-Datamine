@@ -373,6 +373,7 @@ let weaponsCfgTank = {
     }, TANK)
     mkStat("reloadTime", {
       valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
+      getProgress = mkGetProgressInv(TANK, "reloadTime")
       isAvailable = @(_) true
     }, TANK)
     mkStat("gunnerTurretRotationSpeed", {

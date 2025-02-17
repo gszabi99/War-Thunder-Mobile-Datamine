@@ -45,7 +45,7 @@ let rightBottomBlock = mkPriceWithTimeBlockNoOldPrice(aTimePriceStart)
 function goldInfo() {
   let { discountInPercent = 0 } = previewGoods.value
   let gold = previewGoods.get()?.currencies.gold ?? 0
-  let oldGold = gold * (1.0 - (discountInPercent / 100.0))
+  let oldGold = (gold * (1.0 - (discountInPercent / 100.0))).tointeger()
   return doubleSideGradient.__merge({
     watch = previewGoods
     pos = [-doubleSideGradientPaddingX, 0]

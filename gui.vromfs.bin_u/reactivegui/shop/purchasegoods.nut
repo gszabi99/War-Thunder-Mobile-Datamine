@@ -113,7 +113,7 @@ function startRemoveTimer(goods) {
     resetTimeout(timeLeft, closePurchaseAndBalanceBoxes)
 }
 
-function purchaseGoods(goodsId) {
+function purchaseGoods(goodsId, description = "") {
   logShop($"User tries to purchase: {goodsId}")
   if (shopPurchaseInProgress.value != null)
     return logShop($"ERROR: shopPurchaseInProgress: {shopPurchaseInProgress.value}")
@@ -143,10 +143,14 @@ function purchaseGoods(goodsId) {
       logShop($"ERROR: {errString}")
   }
 
+  let textItem = colorize(userlogTextColor, getGoodsLocName(goods).replace(" ", nbsp))
+
   openMsgBoxPurchase({
     text = goods.gtype == SGT_EVT_CURRENCY
-      ? currencyWithIconComp(goods)
-      : loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, getGoodsLocName(goods).replace(" ", nbsp)) }),
+        ? currencyWithIconComp(goods)
+      : description != ""
+        ? loc("shop/needMoneyQuestion/desc", { item = textItem, description })
+      : loc("shop/needMoneyQuestion", { item = textItem }),
     price = { price, currencyId },
     purchase,
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goods.gtype), $"pack {goods.id}")
@@ -154,7 +158,7 @@ function purchaseGoods(goodsId) {
   playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money" )
 }
 
-function purchaseGoodsSeq(goodsList, name) {
+function purchaseGoodsSeq(goodsList, name, description = "") {
   logShop($"User tries to purchase: ", goodsList.map(@(v) v.id))
   if (shopPurchaseInProgress.value != null || goodsList.len() == 0)
     return logShop($"ERROR: shopPurchaseInProgress: {shopPurchaseInProgress.value}")
@@ -187,8 +191,12 @@ function purchaseGoodsSeq(goodsList, name) {
       logShop($"ERROR: {errString}")
   }
 
+  let textItem = colorize(userlogTextColor, name)
+
   openMsgBoxPurchase({
-    text = loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, name) }),
+    text = description != ""
+      ? loc("shop/needMoneyQuestion/desc", { item = textItem, description })
+      : loc("shop/needMoneyQuestion", { item = textItem }),
     price = { price = sum, currencyId = currency },
     purchase,
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goodsList[0].gtype), $"pack {",".join(goodsList.map(@(v) v.id))}")

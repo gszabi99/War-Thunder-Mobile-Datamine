@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { get_mplayers_list, GET_MPLAYERS_LIST = -1, get_mp_local_team, get_current_mission_name } = require("mission")
+let { get_mplayers_list, GET_MPLAYERS_LIST, get_mp_local_team, get_current_mission_name } = require("mission")
 let { GO_WIN, GO_FAIL } = require("guiMission")
 let { gameOverReason } = require("%rGui/missionState.nut")
 let { allMainUnitsByPlatoon, getPlatoonUnitCfg } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
@@ -31,9 +31,10 @@ let playersByTeam = Computed(function() {
         let { id, userId, name, isBot, aircraftName, ownedUnitName = "" } = p
         let unitName = ownedUnitName != "" ? ownedUnitName : aircraftName
         let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[id]
-        let { level = 1, starLevel = 0, hasPremium = false, decorators = null, units = {} } = !isBot
-          ? playersCommonStats.value?[userId.tointeger()]
-          : genBotCommonStats(name, unitName, getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get()) ?? {}, playerLevelInfo.get().level)
+        let { level = 1, starLevel = 0, hasPremium = false, decorators = null, units = {},
+          hasVip = false } = !isBot
+            ? playersCommonStats.value?[userId.tointeger()]
+            : genBotCommonStats(name, unitName, getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get()) ?? {}, playerLevelInfo.get().level)
         let unit = units?[unitName]
         let { unitClass = "", mRank = null } = unit
         let isUnitCollectible = unit?.isCollectible ?? false
@@ -46,6 +47,7 @@ let playersByTeam = Computed(function() {
           level
           starLevel
           hasPremium
+          hasVip
           decorators
           unitName
           unitClass

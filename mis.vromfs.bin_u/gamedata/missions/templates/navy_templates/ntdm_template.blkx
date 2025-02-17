@@ -193,7 +193,7 @@
           "action": "show",
           "shouldFadeOut": false,
           "isOverFade": false,
-          "time": 0.9,
+          "time": 1.1,
           "priority": 0,
           "target_marking": 0,
           "object_var_name": "",

@@ -11,8 +11,8 @@ let HINT_TYPE = "returnToMapMessage"
 let alert = Color(221, 17, 17)
 
 registerHintCreator(HINT_TYPE, @(hint, _) {
-  vplace = ALIGN_CENTER
   rendObj = ROBJ_TEXT
+  minHeight = hdpx(40)
   color = alert
   behavior = Behaviors.RtPropUpdate
   update = @() {

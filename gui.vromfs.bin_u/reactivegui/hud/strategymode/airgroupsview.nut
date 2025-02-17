@@ -5,7 +5,7 @@ let { borderWidth, btnBgColor, borderColor, borderNoAmmoColor, imageColor
 let { mkShipDebuffs, mkCrewHealth} = require("%rGui/hud/shipStateModule.nut")
 let { actionBarItems, startActionBarUpdate, stopActionBarUpdate } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3 } = require("%rGui/hud/actionBar/actionType.nut")
-let { strategyDataRest, curAirGroupIndex, optDebugDraw } = require("%rGui/hud/strategyMode/strategyState.nut")
+let { strategyDataRest, strategyDataShip, curGroupIndex, optDebugDraw } = require("%rGui/hud/strategyMode/strategyState.nut")
 let { getNodeStyle, airGroupIcons, airGroupButtonWidth, airGroupButtonHeight,
       iconShip, debugTextColor
     } = require("%rGui/hud/strategyMode/style.nut")
@@ -126,6 +126,38 @@ function mkPlaneDebugInfo(airGroupIndex) {
   }
 }
 
+function mkShipDebugInfo() {
+  return @() {
+    size = [hdpx(450), 0]
+    watch = strategyDataShip
+    halign = ALIGN_RIGHT
+    flow = FLOW_VERTICAL
+    padding = hdpx(10)
+    children = [
+      {
+        rendObj = ROBJ_TEXT
+        color = debugTextColor
+        text = $"Speed={strategyDataShip.value?.speed}"
+      }
+      {
+        rendObj = ROBJ_TEXT
+        color = debugTextColor
+        text = $"Throttle={strategyDataShip.value?.throttle}"
+      }
+      {
+        rendObj = ROBJ_TEXT
+        color = debugTextColor
+        text = $"Steering={strategyDataShip.value?.steering}"
+      }
+      {
+        rendObj = ROBJ_TEXT
+        color = debugTextColor
+        text = $"IsDrivingBackward={strategyDataShip.value?.isDrivingBackward}"
+      }
+    ]
+  }
+}
+
 let shipUi = {
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
@@ -137,11 +169,12 @@ let shipUi = {
 
 function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, trigger) {
   let stateFlags = Watched(0)
-  let isSelected = Computed(@() curAirGroupIndex.value == selectableIndex)
+  let isSelected = Computed(@() curGroupIndex.value == selectableIndex)
+  let canClick = Computed(@() selectableIndex == -1 ? true : strategyDataRest.value?[selectableIndex].groupNotDead)
   let buttonSize = airGroupButtonHeight
   let iconSize = (buttonSize * 0.65).tointeger()
   return @() {
-    watch = [isSelected, stateFlags, actionItem]
+    watch = [isSelected, canClick, stateFlags, actionItem]
     size = [airGroupButtonWidth, SIZE_TO_CONTENT]
     rendObj = ROBJ_BOX
     hplace = ALIGN_RIGHT
@@ -150,7 +183,7 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
     fillColor = isSelected.value ? 0x20072224 : btnBgColor.empty
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags(sf)
-    onClick = @() (selectableIndex >= 0) ? curAirGroupIndex(selectableIndex) : null // TODO: remove if when ships strategy commands will be supported
+    onClick = @() canClick.get() ? curGroupIndex(selectableIndex) : null
     transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = OutQuad }]
     children = [
@@ -226,6 +259,18 @@ function mkPlaneSelectable(airGroupIndex, actionItem) {
   }
 }
 
+function mkShipSelectable() {
+  return @() {
+    watch = optDebugDraw
+    flow = FLOW_HORIZONTAL
+    children = [
+      !optDebugDraw.value ? null
+        : mkShipDebugInfo()
+        mkUnitSelectable(-1, iconShip, borderWidth, shipUi, null, null)
+    ]
+  }
+}
+
 strategyDataRest.subscribe(function(data) {
   foreach(idx, v in data) {
     if ((idx in prevAirGroupHealth) && v.isLaunched && v.groupHealth < prevAirGroupHealth[idx])
@@ -241,7 +286,7 @@ let airGroupsUi = {
     mkPlaneSelectable(0, Computed(@() actionBarItems.value?[AB_SUPPORT_PLANE]))
     mkPlaneSelectable(1, Computed(@() actionBarItems.value?[AB_SUPPORT_PLANE_2]))
     mkPlaneSelectable(2, Computed(@() actionBarItems.value?[AB_SUPPORT_PLANE_3]))
-    mkUnitSelectable(-1, iconShip, 0, shipUi, null, null)
+    mkShipSelectable()
   ]
   function onAttach() {
     startActionBarUpdate("strategyModeHud")

@@ -47,20 +47,20 @@ let hints = [
   }
   {
     key = "J:D.Up"
-    lines = mkLines([161, 202, 0, 80, 0, 80, left, 80])
-    pos = mkSizeByParent([left, 80  - borderOffs])
+    lines = mkLines([161, 202, 0, 130, left, 130])
+    pos = mkSizeByParent([left, 130  - borderOffs])
     blockOvr = { hplace = ALIGN_RIGHT }
   }
   {
     key = "J:D.Left"
-    lines = mkLines([130, 240, leftBk, 300, left, 300])
-    pos = mkSizeByParent([left, 300  - borderOffs])
+    lines = mkLines([130, 240, leftBk, 330, left, 330])
+    pos = mkSizeByParent([left, 330  - borderOffs])
     blockOvr = { hplace = ALIGN_RIGHT }
   }
   {
     key = "J:D.Right"
-    lines = mkLines([200, 236, leftBk, 190, left, 190])
-    pos = mkSizeByParent([left, 190  - borderOffs])
+    lines = mkLines([200, 236, leftBk, 220, left, 220])
+    pos = mkSizeByParent([left, 220  - borderOffs])
     blockOvr = { hplace = ALIGN_RIGHT }
   }
   {

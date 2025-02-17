@@ -30,6 +30,8 @@
   ],
   "rendinstPreloadDistance": 8500.0,
   "clipmap_tex_mips": 5,
+  "addLandToSky": true,
+  "harmonicsType": "yellow",
   "mapCoord0": [
     -32768.0,
     -32768.0

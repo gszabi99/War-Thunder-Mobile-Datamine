@@ -117,6 +117,45 @@
           {
             "type": "targetIsPlayer",
             "includeBots": true
+          },
+          {
+            "type": "missionType",
+            "missionType": [
+              0,
+              3
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "trophy_near_punisher_ship",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 500,
+      "isAfterFlight": true,
+      "userstat_stat_id": "top_uprank_killer",
+      "mode": {
+        "type": "killedPlayersBest",
+        "maxVal": 1,
+        "bestId": "trophy_near_punisher_ship",
+        "includeBots": true,
+        "useBestScoreWTM": true,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "higherBR",
+            "diffBR": 1.0
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
+          },
+          {
+            "type": "missionType",
+            "missionType": 6
           }
         ]
       }
@@ -278,6 +317,44 @@
           {
             "type": "targetIsPlayer",
             "includeBots": true
+          },
+          {
+            "type": "missionType",
+            "missionType": [
+              0,
+              3
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "heroic_punisher_ship",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 1250,
+      "isAfterFlight": true,
+      "userstat_stat_id": "top_uprank_killer_hero",
+      "mode": {
+        "type": "killedPlayersBest",
+        "minVal": 2,
+        "bestId": "heroic_punisher_ship",
+        "includeBots": true,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "higherBR",
+            "diffBR": 1.0
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
+          },
+          {
+            "type": "missionType",
+            "missionType": 6
           }
         ]
       }
@@ -1504,7 +1581,7 @@
       }
     },
     {
-      "id": "marks_killed_plane_10_ranks_higher",
+      "id": "uprank_kill_grade_1",
       "type": "streak",
       "amount_exp": 0,
       "amount_warpoints": 250,
@@ -1585,32 +1662,42 @@
       }
     },
     {
-      "id": "ship_anti_main_caliber",
+      "id": "ship_anti_artillery",
       "type": "streak",
       "amount_warpoints": 250,
       "isMultiStage": true,
       "isAfterFlight": false,
-      "userstat_stat_id": "ship_anti_main_caliber",
+      "userstat_stat_id": "ship_anti_artillery",
       "stage": [
+        {
+          "param": 5,
+          "amount_exp": 0,
+          "amount_warpoints": 250
+        },
+        {
+          "param": 10,
+          "amount_exp": 0,
+          "amount_warpoints": 250
+        },
+        {
+          "param": 15,
+          "amount_exp": 0,
+          "amount_warpoints": 250
+        },
         {
           "param": 20,
           "amount_exp": 0,
           "amount_warpoints": 250
         },
         {
-          "param": 40,
+          "param": 25,
           "amount_exp": 0,
-          "amount_warpoints": 500
-        },
-        {
-          "param": 60,
-          "amount_exp": 0,
-          "amount_warpoints": 1000
+          "amount_warpoints": 250
         }
       ],
       "mode": {
         "type": "criticalHitByType",
-        "num": 60,
+        "num": 25,
         "critType": "gun",
         "condition": [
           {
@@ -1638,27 +1725,35 @@
       "isMultiStage": true,
       "isAfterFlight": false,
       "userstat_stat_id": "ship_anti_steering",
-      "stage": [
-        {
-          "param": 15,
-          "amount_exp": 0,
-          "amount_warpoints": 250
-        },
-        {
-          "param": 30,
-          "amount_exp": 0,
-          "amount_warpoints": 500
-        },
-        {
-          "param": 45,
-          "amount_exp": 0,
-          "amount_warpoints": 1000
-        }
+      "wpA": [
+        250.0,
+        250.0,
+        250.0
       ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stage": {
+        "param": 2,
+        "amount_exp": 0,
+        "amount_warpoints": 250
+      },
       "mode": {
         "type": "criticalHitByType",
-        "num": 45,
-        "critType": "engine",
+        "num": 5,
+        "critType": "control",
         "condition": [
           {
             "type": "online"
@@ -1782,19 +1877,19 @@
           },
           {
             "type": "targetDistance",
-            "distance": 8000.0
+            "distance": 6000.0
           },
           {
             "type": "offenderType",
             "unitType": "ship"
           },
           {
-            "type": "targetIsPlayer",
-            "includeBots": true
-          },
-          {
             "type": "targetType",
             "unitType": "ship"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
           }
         ]
       }
@@ -1808,7 +1903,7 @@
       "userstat_stat_id": "ship_artillery_master",
       "mode": {
         "type": "damageUnits",
-        "maxVal": 300,
+        "maxVal": 250,
         "condition": [
           {
             "type": "online"
@@ -1837,7 +1932,7 @@
       "userstat_stat_id": "ship_torpedo_master",
       "mode": {
         "type": "damageUnits",
-        "maxVal": 300,
+        "maxVal": 250,
         "condition": [
           {
             "type": "online"
@@ -2026,7 +2121,7 @@
         "mulRealistic": 2,
         "mulHardcore": 3,
         "minVal": 18,
-        "bestId": "heroic_water",
+        "bestId": "heroic_bomber_navy",
         "includeBots": true,
         "isShip": true,
         "condition": [
@@ -2106,7 +2201,7 @@
         "mulRealistic": 2,
         "mulHardcore": 3,
         "maxVal": 17,
-        "bestId": "trophy_near_water",
+        "bestId": "trophy_near_bomber_navy",
         "includeBots": true,
         "isShip": true,
         "condition": [

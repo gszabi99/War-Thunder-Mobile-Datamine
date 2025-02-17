@@ -14,6 +14,7 @@
   "relativePartHealthForVisibleDamage": 0.7,
   "relativePartHealthForCockpitHoles": 0.7,
   "relativePartHealthForCockpitOil": 0.7,
+  "fieldRepairValue": 0.5,
   "instructorSpeedRestrictionBelowBuoyancy": 0.7,
   "loaderWoundPenalty": 1.25,
   "loaderMaxPenalty": 2.0,
@@ -258,6 +259,7 @@
   "aircraftRelSpeedToWingWaveAmplitude": 0.0,
   "maxTankInactiveTime": 10.0,
   "uniformSpawn": true,
+  "syncGunRocketLaunch": true,
   "cockpit_target_brightness_mul": 0.9,
   "cockpit_adaptation_max_mul": 0.9,
   "helicopter_target_brightness_mul": 0.8,
@@ -288,8 +290,8 @@
   "timeStayOnInGameForDisconnected": 300.0,
   "useFullSectionsOnShips": false,
   "tankEngineHeatingSpd": [
-    5.0,
-    -1.0
+    50.0,
+    -10.0
   ],
   "tankSteeringTau": 0.01,
   "batteryDischargeInactivityTime": 60.0,
@@ -332,6 +334,7 @@
   "cameraShakeKoeffOnWEP": 0.0,
   "enableBotTorpedoShooting": true,
   "torpedoShootByBotMaxDistance": 4000.0,
+  "shipBotMaxDistToPointToDriveBackward": 2500.0,
   "tankTouchSensMult": 1.0,
   "tankTouchAimSensMult": 1.0,
   "shipTouchSensMult": 0.2,
@@ -364,6 +367,8 @@
   "maxTimeWaitFirstSpawn": 60.0,
   "debugRiTexture": "detail_concrete_tex_d",
   "debugRiTextureSize": 8,
+  "supportPlaneIgnoreCollisionDamageAfterSpawnTime": 2.5,
+  "offsetBetweenSupportWingsmens": 50.0,
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [
@@ -393,6 +398,8 @@
     "tailFadeInDistance": 10.0,
     "tailNoisePeriodMeters": 20.0,
     "tailDirectionalScale": 0.4,
+    "tailAngleLod0": 1.0,
+    "tailAngleLod1": 2.0,
     "numHeadMeshes": 3,
     "hdrMultiplier": 3.0,
     "headMinimumOpacity": 0.7,
@@ -13339,6 +13346,7 @@
     "minCropElementSize": 0.25,
     "cropIconFade": 0.25,
     "cropIconFarFade": 15.0,
+    "MTL_useArgb4": true,
     "shipArmorClassForViewer": "RHA_tank, concrete, armored_glass, ship_STS, ship_Wsh, ship_RHA, ship_RGA, CHA_tank, ships_coal_bunker"
   },
   "repairTanks": {
@@ -15636,30 +15644,6 @@
         {
           "name": "wheel_l_02_",
           "modelNames": "vcac_mephisto"
-        },
-        {
-          "name": "wheel_r_01_",
-          "modelNames": "vickers_mk_11"
-        },
-        {
-          "name": "wheel_l_01_",
-          "modelNames": "vickers_mk_11"
-        },
-        {
-          "name": "wheel_r_02_",
-          "modelNames": "vickers_mk_11"
-        },
-        {
-          "name": "wheel_l_02_",
-          "modelNames": "vickers_mk_11"
-        },
-        {
-          "name": "wheel_r_03_",
-          "modelNames": "vickers_mk_11"
-        },
-        {
-          "name": "wheel_l_03_",
-          "modelNames": "vickers_mk_11"
         }
       ]
     },
@@ -18206,7 +18190,7 @@
     "default": {
       "minSpeedLimit": 0.65,
       "maxSpeedLimit": 0.85,
-      "speedFactor": 0.4,
+      "speedFactor": 0.0,
       "timeFactor": 1.0,
       "screenLimit": 0.125,
       "interpolationFactor": 1.0

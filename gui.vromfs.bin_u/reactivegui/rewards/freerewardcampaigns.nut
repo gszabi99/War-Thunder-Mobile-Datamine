@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { deferOnce } = require("dagor.workcycle")
-
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { isProfileReceived, curCampaign,
   isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
@@ -22,8 +22,8 @@ let UNITS_STATUS = {
   UNITS_UNAVAILABLE = false
 }
 
-let unitToShowAsReceived = Watched(null)
-let needShowTutorialAfterReward = Watched(false)
+let unitToShowAsReceived = hardPersistWatched("freeRewardCampaigns.unitToShowAsReceived")
+let needShowTutorialAfterReward = hardPersistWatched("freeRewardCampaigns.needShowTutorialAfterReward", false)
 let prevState = Watched(null)
 let unitsStatus = keepref(Computed(function() {
   if (!isProfileReceived.get() || !isCampaignWithUnitsResearch.get())

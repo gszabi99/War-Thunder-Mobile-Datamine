@@ -229,7 +229,7 @@
       "ri_extra__name": "tree_christmas_a",
       "ri_extra__destructable": true,
       "toGround": false,
-      "0.3transform": [
+      "transform": [
         [
           0.3,
           1.0,
@@ -1125,7 +1125,7 @@
       "ri_extra__name": "tree_christmas_a",
       "ri_extra__destructable": true,
       "toGround": false,
-      "0.3transform": [
+      "transform": [
         [
           0.66,
           0.0,

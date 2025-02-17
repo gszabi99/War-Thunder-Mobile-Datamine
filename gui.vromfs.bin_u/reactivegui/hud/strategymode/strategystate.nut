@@ -21,8 +21,9 @@ let optMoveCameraByDrag = Watched(false)
 
 let strategyDataCur = Watched(null)
 let strategyDataRest = Watched(null)
+let strategyDataShip = Watched(null)
 
-let curAirGroupIndex = Watched(0)
+let curGroupIndex = Watched(0)
 let curAirGroupType = Computed(@() getAirGroupType(strategyDataCur.value?.behaviour ?? "unknown"))
 let curAirGroupCanAttackAir = Computed(@() strategyDataCur.value?.canAttackAir ?? false)
 let curAirGroupCanAttackGround = Computed(@() strategyDataCur.value?.canAttackGround ?? false)
@@ -34,8 +35,20 @@ let curAirGroupIsReturning = Computed(@() strategyDataCur.value &&
   strategyDataCur.value.nodes.len() == 2 && strategyDataCur.value.nodes[1].type == NODE_ORDER_RETURN)
 
 function updateStrategyDataCur() {
-  let data = getStrategyState(curAirGroupIndex.value);
-  strategyDataCur(data)
+  let data = getStrategyState(curGroupIndex.get())
+  if (data?.groupNotDead) {
+    strategyDataCur(data)
+  }
+  else {
+    curGroupIndex.set(-1)
+    let shipData = getStrategyState(-1)
+    strategyDataCur(shipData)
+  }
+}
+
+function updateStrategyDataShip() {
+  let data = getStrategyState(-1)
+  strategyDataShip(data)
 }
 
 function udpateStrategyDataRest() {
@@ -50,20 +63,23 @@ function udpateStrategyDataRest() {
 function strategyStateUpdateStart() {
   updateStrategyDataCur()
   udpateStrategyDataRest()
+  updateStrategyDataShip()
   setInterval(0.1, updateStrategyDataCur)
   setInterval(1.0, udpateStrategyDataRest)
+  setInterval(1.0, updateStrategyDataShip)
 }
 
 function strategyStateUpdateStop() {
   clearTimer(updateStrategyDataCur)
   clearTimer(udpateStrategyDataRest)
+  clearTimer(updateStrategyDataShip)
 }
 
 register_command(@(v) optDebugDraw(v), "strategymode.debugDraw")
 register_command(@(v) optMoveCameraByDrag(v), "strategymode.moveCameraByDrag")
 
 return {
-  curAirGroupIndex
+  curGroupIndex
   curAirGroupType
   curAirGroupCanAttackAir
   curAirGroupCanAttackGround
@@ -75,6 +91,7 @@ return {
 
   strategyDataCur
   strategyDataRest
+  strategyDataShip
 
   strategyStateUpdateStart
   strategyStateUpdateStop

@@ -6,7 +6,6 @@
   "playerTemplate": "wtm_player",
   "version": "",
   "version-specific": "",
-  "compatibilityHangarBlk": "config/hangar_airfield.blk",
   "nvidia_app_id": 10839111,
   "hudBlk": "config/hud.blk",
   "nvidia_project_id": "e85be7eb-9e9a-4331-a0fb-521c060847fe",
@@ -24,14 +23,11 @@
   "addAllAddonsToBasePath": false,
   "clientBitType": "auto",
   "releaseChannel": "",
-  "renderer3": "auto",
   "rdseed": 16807,
   "graphicsQuality": "custom",
   "language": "English",
-  "doShowDriversOutdated": true,
   "use_eac": false,
   "forcedLauncher": 0,
-  "use_release_candidate": false,
   "unknownProximityMeansPanorama": true,
   "fastReturnToPanorama": true,
   "rendinstOcclusionByUnitType": true,
@@ -655,7 +651,13 @@
         "mRank": 1
       }
     },
-    "pkg_it_battleship_francesco_caracciolo": {
+    "pkg_germ_battlecruiser_derfflinger": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_uk_battlecruiser_renown": {
       "conditions": {
         "campaign": "ships",
         "mRank": 4
@@ -667,16 +669,10 @@
         "mRank": 6
       }
     },
-    "pkg_uk_battlecruiser_renown": {
+    "pkg_it_battleship_francesco_caracciolo": {
       "conditions": {
         "campaign": "ships",
         "mRank": 4
-      }
-    },
-    "pkg_germ_battlecruiser_derfflinger": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 3
       }
     },
     "pkg_ussr_kv_122": {
@@ -1096,8 +1092,6 @@
     "safeArea": false,
     "drawDebug": false,
     "maxTexCount": 65535,
-    "enableHmdSupport": true,
-    "allowDx10Fallback": false,
     "adaptive_vsync": false,
     "compatibilityMode": true,
     "postfx_antialiasing": "fxaa",
@@ -1110,8 +1104,7 @@
     "latency": 0,
     "vrStreamerMode": false,
     "vreye": "left",
-    "fpsLimitOnUpdater": 10,
-    "forceForward": false
+    "fpsLimitOnUpdater": 10
   },
   "graphics": {
     "useHdr": true,
@@ -1119,12 +1112,8 @@
     "gamma": 1.0,
     "useConditionalRendering": false,
     "impostorScreenMul": 6.2,
-    "waterCutMask": false,
     "clipmapScaleFor4K": 6,
     "fontRasterQuotaPerFrameUs": 250000,
-    "backgroundAptiveSharpen": false,
-    "backgroundAptiveSharpenAdaptiveness": 16.0,
-    "backgroundAptiveSharpenQuality": 12.0,
     "fadeInDelayFrames": 3,
     "fadeInSeconds": 2.0,
     "fadeInPreloadTimelimitSeconds": 1.0,
@@ -1146,10 +1135,10 @@
     "oneShoreForAllUnits": true,
     "lenseFlares": true,
     "anisotropy": 8,
+    "forceAlphatestAnisotropy": 1,
     "compatibilityAnisotropy": 8,
     "lastClipSize": 512,
     "recreateLastClipOnSettingsChanged": false,
-    "dirtSubDiv": 1,
     "displacementQuality": 0,
     "landquality": 1,
     "skipUnderwaterFeedback": true,
@@ -1171,11 +1160,8 @@
     "usePostfxGlow": true,
     "riColorPadding": false,
     "simplifiedRi": false,
-    "riCrossDissolve": true,
     "performGPUOcclusionReadback": false,
     "grassDisolve": false,
-    "multislicedImpostors": true,
-    "grassMaliWorkaround": true,
     "shader_reload_allowed": true,
     "useTreeLod0Offset": false,
     "grassInAircraftMode": false,
@@ -1187,7 +1173,6 @@
     "mobile_ssao_active": 1,
     "renderImmDecals": false,
     "renderImpostorsToDraftDepth": false,
-    "renderGrassToDraftDepth": false,
     "enableClipmapDecals": false,
     "underwaterFogUseShadows": 1,
     "sky_panorama_patch": false,
@@ -1214,6 +1199,7 @@
     "xrayOutlinesScale": 1.0,
     "hasLowresDecals": false,
     "blendedAirplanesSkies": true,
+    "lmeshAsyncCulling": false,
     "riexCanIncreaseRenderBuffer": false,
     "riMaxModelsPerLevel": 1024,
     "riAllowGenJobsQueueReorder": true,
@@ -1231,14 +1217,16 @@
     "frameBoundaryBufferInitialSize": 4096,
     "fxApproximateBoundaryComputation": true,
     "allowSortingOfTransparentObjects": false,
-    "anchorStaticShadowsToUnitInHangar": true,
     "useTacView": false,
     "useRocketWires": false,
+    "useTelescopeSkies": false,
     "useUIBlur": false,
     "useFarAwayRenderer": false,
     "useCurvedDecals": false,
     "useMFD": false,
+    "anchorStaticShadowsToUnitInHangar": true,
     "allowAnimatedDay": false,
+    "usePrecalculatedHarmonics": false,
     "raytraced_shadows": {
       "maxBlasBuildsPerFrame": 30,
       "additionalElementsCheck": false,
@@ -1248,32 +1236,17 @@
       "min_allocation_size": 8388608
     }
   },
-  "skies": {
-    "common": {
-      "geom_table_part": 0.8,
-      "cloudsOffsetFrom": 25000.0,
-      "cloudsOffsetTo": 40000.0,
-      "cloudsOffset": 1800.0,
-      "cloudGridSize": 128,
-      "cloudGridHeight": 16
-    }
-  },
   "stub3d": {
     "autoBufferReallocate": true,
     "bufferSize": 0
   },
   "sound": {
-    "voice_country": "GB",
-    "sound_reverb": true,
     "androidUseOpenSLFallback": true
   },
   "gameplay": {
-    "stalls_n_spins": false,
-    "torque_n_gyro_effects": false,
     "coordinated_turn": false,
     "ai_skill": "2 - veteran",
     "immortalHero": false,
-    "test_fight": false,
     "difficulty": "realistic",
     "enableVR": false
   },
@@ -1298,27 +1271,13 @@
     "mpBulletDiagnostics": false,
     "trackEnvChanges": false,
     "gamepadInBackground": true,
-    "useDpadDiagonals": false,
-    "helicopterGame": true,
-    "sharpenTextures": false,
     "centerWeight": 1.8,
-    "orthogonalWeight": -0.1,
-    "diagonalWeight": -0.1,
-    "debugConsole": false,
     "disableMenu": false,
-    "max_giant_smokes": 1,
-    "max_giant_fires": 1,
-    "max_just_fires": 1,
     "flyTurbo": 500.0,
-    "forcedFrameTimeSec": -1.0,
     "smoothDt": true,
     "warningOnFrameTimeSec": 0.066,
     "checkModels": false,
-    "shouldCheckDm": true,
     "consoleLines": 20,
-    "fatalOnCheckSanityFail": false,
-    "x360EnableFatal": true,
-    "maxScriptMsec": 1000,
     "lodDistanceScale": 1.0,
     "shouldUnlockAllMissions": false,
     "shouldUnlockAllContent": false,
@@ -1326,26 +1285,17 @@
     "autoRespawn": false,
     "usePip": true,
     "hugeScreenshotMultiplier": 3,
-    "minimalGUI": false,
-    "disableMultithreadWaitBox": false,
     "isMultiplayerDebug": false,
-    "hostMigration": false,
     "replay": true,
-    "goLobbyAfterStatistics": true,
-    "isTextProfile": false,
-    "lowQualityEnemies": true,
     "guiStrPoolSize": 524288,
     "disableNetwork": false,
     "offlineConfigs": false,
     "drawTimestamp": true,
-    "disableOverlay": true,
     "skipMovies": false,
-    "disableBackgroundMovie": false,
     "noGuiFade": false,
     "disableHangar": false,
     "disableChat": false,
     "workThreadsStackSize": 393216,
-    "enableMouseHints": true,
     "replayDofFar": [
       100.0,
       400.0,
@@ -1359,10 +1309,10 @@
     "mobileStyleFpsString": true,
     "maxWorkThreads": 2,
     "sendFullLogOnFatalIntervalHours": 4,
-    "useANRWatcherThreadProbability": 0.1,
     "logSignificantChangesAsWarnings": true,
     "dumpSettings": true,
     "clearDiscardedImagesInAtlas": false,
+    "verifyDynrendContexts": true,
     "unsupportedVfxShaders": {
       "shader": [
         "dafx_modfx_volshape_render",
@@ -1373,7 +1323,6 @@
   "directx": {
     "debug": false,
     "disableNvapi": false,
-    "nvVbBugWorkaround": false,
     "useGpuDt": false,
     "flushOnPresent": true,
     "enableHdr": false,
@@ -1422,7 +1371,7 @@
       1024,
       1024
     ],
-    "hwfeedback": false,
+    "hwfeedback": true,
     "swFeedbackInnerMipTiles": 3,
     "swFeedbackOuterMipTiles": 6,
     "texTileSize": 128,
@@ -1432,7 +1381,8 @@
     "cachesCount": 2,
     "buffersCount": 2,
     "growTexSizeWithRenderingResolution": true,
-    "shaderlodMode": "always_high"
+    "shaderlodMode": "always_high",
+    "updateFeedbackSameThread": true
   },
   "clipmapImpostor": {
     "enabled": false,
@@ -1617,10 +1567,22 @@
       "--verbose"
     ],
     "android": {
-      "flag": "--notime"
+      "flag": "--notime",
+      "addons": {
+        "flag": "--noversion"
+      },
+      "background_addons": {
+        "flag": "--noversion"
+      }
     },
     "iOS": {
-      "flag": "--notime"
+      "flag": "--notime",
+      "addons": {
+        "flag": "--noversion"
+      },
+      "background_addons": {
+        "flag": "--noversion"
+      }
     },
     "resources_patch": {
       "flag": [
@@ -1653,7 +1615,6 @@
       "flag": [
         "--clear",
         "--onlypacks",
-        "--noversion",
         "--enable_tag",
         "min_core"
       ]
@@ -1667,8 +1628,7 @@
       "stopMetric": "background_addons_update_stop",
       "flag": [
         "--clear",
-        "--onlypacks",
-        "--noversion"
+        "--onlypacks"
       ]
     },
     "optional_game_resources": {
@@ -1683,7 +1643,6 @@
   },
   "shadows": {
     "zExpansion": 100.0,
-    "depthBlend": 10000.0,
     "depthBias": 0.25,
     "depthSlopeBias": 0.7,
     "depthConstBias": 0.000021,
@@ -2031,6 +1990,7 @@
     "android": true,
     "win64": true,
     "linux64": true,
+    "Vulkan": true,
     "graphics": {
       "dafx_modfx_bboard_render": true,
       "sparks_ps": true,
@@ -2086,15 +2046,6 @@
     }
   },
   "overrides": {
-    "mali_g720_xiaomi_k70_ultra_device_lost_check": {
-      "codename": [
-        "2407FRK8EC",
-        "2407FPN8EG"
-      ],
-      "vulkan": {
-        "preRotation": false
-      }
-    },
     "xiaomi_11t": {
       "codename": "21081111RG",
       "vulkan": {
@@ -2246,9 +2197,6 @@
         "renderImmDecals": true,
         "renderImpostorsToDraftDepth": true,
         "grassQuality": "low",
-        "grassAlphaToCoverage": false,
-        "treeAlphaToCoverage": false,
-        "impostorAlphaToCoverage": false,
         "shaderlod": "high",
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
@@ -2318,7 +2266,7 @@
         "limitNonPlayerShipUnitsLod": 1,
         "hangarTankLod": 1,
         "hangarShipLod": 0,
-        "hangarAirplaneLod": 1,
+        "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": true,
         "compatibilityShadowQuality": "low",
         "hangarShadowQuality": "low",
@@ -2337,11 +2285,7 @@
         "mobile_ssao_active": 0,
         "renderImmDecals": false,
         "renderImpostorsToDraftDepth": false,
-        "renderGrassToDraftDepth": false,
         "grassQuality": "low",
-        "grassAlphaToCoverage": false,
-        "treeAlphaToCoverage": false,
-        "impostorAlphaToCoverage": false,
         "shaderlod": "low",
         "underwaterFogUseShadows": 0,
         "underwaterFogUseSimple": true,
@@ -2420,11 +2364,7 @@
         "mobile_ssao_active": 1,
         "renderImmDecals": false,
         "renderImpostorsToDraftDepth": true,
-        "renderGrassToDraftDepth": false,
         "grassQuality": "high",
-        "grassAlphaToCoverage": false,
-        "treeAlphaToCoverage": false,
-        "impostorAlphaToCoverage": false,
         "shaderlod": "high",
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": true,
@@ -2475,7 +2415,7 @@
     "high": {
       "graphics": {
         "sceneResolutionPreset": "high",
-        "defaultPresetAA": "high_fxaa",
+        "defaultPresetAA": "mobile_taa",
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
         "limitPlayerShipUnitsLod": -1,
@@ -2498,16 +2438,12 @@
         "compatibilityAnisotropy": 4,
         "xrayUpdateFrames": 1,
         "force8bitRT": false,
-        "usePostfxGlow": true,
+        "usePostfxGlow": false,
         "lenseFlares": true,
         "mobile_ssao_active": 1,
         "renderImmDecals": true,
         "renderImpostorsToDraftDepth": true,
-        "renderGrassToDraftDepth": false,
         "grassQuality": "low",
-        "grassAlphaToCoverage": false,
-        "treeAlphaToCoverage": false,
-        "impostorAlphaToCoverage": false,
         "shaderlod": "high",
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
@@ -2586,11 +2522,7 @@
         "mobile_ssao_active": 1,
         "renderImmDecals": true,
         "renderImpostorsToDraftDepth": true,
-        "renderGrassToDraftDepth": false,
         "grassQuality": "high",
-        "grassAlphaToCoverage": false,
-        "treeAlphaToCoverage": false,
-        "impostorAlphaToCoverage": false,
         "shaderlod": "high",
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
@@ -2669,11 +2601,7 @@
         "mobile_ssao_active": 1,
         "renderImmDecals": true,
         "renderImpostorsToDraftDepth": true,
-        "renderGrassToDraftDepth": true,
         "grassQuality": "high",
-        "grassAlphaToCoverage": true,
-        "treeAlphaToCoverage": true,
-        "impostorAlphaToCoverage": true,
         "shaderlod": "high",
         "underwaterFogUseShadows": 1,
         "underwaterFogUseSimple": false,
@@ -2738,7 +2666,7 @@
         "limitNonPlayerShipUnitsLod": 1,
         "hangarTankLod": 1,
         "hangarShipLod": 0,
-        "hangarAirplaneLod": 1,
+        "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": true,
         "force8bitRT": true,
         "usePostfxGlow": false,
@@ -2750,9 +2678,6 @@
         "grassQuality": "low",
         "grassRadiusMul": 0.8,
         "grassDensityMul": 0.87,
-        "grassAlphaToCoverage": false,
-        "treeAlphaToCoverage": false,
-        "impostorAlphaToCoverage": false,
         "rendinstDistMul": 0.5,
         "compatibilityRendinstDistMul": 0.5,
         "enableGrassTrackMask": false,
@@ -2786,10 +2711,9 @@
         "swFeedbackMipTiles2": 4,
         "swFeedbackInnerMipTiles": 2,
         "swFeedbackOuterMipTiles": 4,
-        "virtualTextureAnisotropy": 2,
+        "virtualTextureAnisotropy": 1,
         "texelSizeMul": 3.0,
         "max_clipmap_tex_mips": 5,
-        "hwfeedback": false,
         "cachesCount": 1,
         "buffersCount": 1,
         "shaderlodMode": "always_low",
@@ -2814,7 +2738,7 @@
         "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": false,
         "force8bitRT": false,
-        "usePostfxGlow": true,
+        "usePostfxGlow": false,
         "lenseFlares": true,
         "mobile_ssao_active": 1,
         "allowETC2": true,
@@ -2823,9 +2747,6 @@
         "grassQuality": "low",
         "grassRadiusMul": 0.8,
         "grassDensityMul": 0.87,
-        "grassAlphaToCoverage": false,
-        "treeAlphaToCoverage": true,
-        "impostorAlphaToCoverage": true,
         "rendinstDistMul": 0.8,
         "compatibilityRendinstDistMul": 0.8,
         "enableGrassTrackMask": false,
@@ -2862,7 +2783,6 @@
         "max_clipmap_tex_mips": 10,
         "virtualTextureAnisotropy": 4,
         "texTileSize": 256,
-        "hwfeedback": true,
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "auto",
@@ -2887,7 +2807,7 @@
         "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": false,
         "force8bitRT": false,
-        "usePostfxGlow": true,
+        "usePostfxGlow": false,
         "lenseFlares": true,
         "mobile_ssao_active": 1,
         "allowETC2": true,
@@ -2896,9 +2816,6 @@
         "grassQuality": "high",
         "grassRadiusMul": 1.0,
         "grassDensityMul": 1.0,
-        "grassAlphaToCoverage": true,
-        "treeAlphaToCoverage": true,
-        "impostorAlphaToCoverage": true,
         "rendinstDistMul": 1.0,
         "compatibilityRendinstDistMul": 1.0,
         "enableGrassTrackMask": true,
@@ -2935,7 +2852,6 @@
         "max_clipmap_tex_mips": 10,
         "virtualTextureAnisotropy": 4,
         "texTileSize": 256,
-        "hwfeedback": true,
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "always_high",
@@ -2969,9 +2885,6 @@
         "grassQuality": "high",
         "grassRadiusMul": 1.0,
         "grassDensityMul": 1.0,
-        "grassAlphaToCoverage": true,
-        "treeAlphaToCoverage": true,
-        "impostorAlphaToCoverage": true,
         "rendinstDistMul": 1.0,
         "compatibilityRendinstDistMul": 1.0,
         "enableGrassTrackMask": true,
@@ -3008,7 +2921,6 @@
         "max_clipmap_tex_mips": 10,
         "virtualTextureAnisotropy": 4,
         "texTileSize": 256,
-        "hwfeedback": true,
         "cachesCount": 2,
         "buffersCount": 2,
         "shaderlodMode": "always_high",
@@ -3127,6 +3039,16 @@
                 "data": {
                   "affected": true
                 }
+              },
+              {
+                "gpu": "G52",
+                "driverMinVer0": 25,
+                "driverMinVer1": 1,
+                "driverMaxVer0": 25,
+                "driverMaxVer1": 1,
+                "data": {
+                  "affected": true
+                }
               }
             ]
           },
@@ -3209,9 +3131,7 @@
             "affected": true
           },
           "latencyWait": {
-            "waitWorker": false,
-            "waitApp": false,
-            "deltaUs": 300
+            "waitWorker": false
           }
         }
       }

@@ -6,7 +6,7 @@ let { mkRewardPlate, mkRewardPlateVip, getRewardPlateSize, mkRewardReceivedMark
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { textButtonBattle, textButtonPricePurchaseLow } = require("%rGui/components/textButton.nut")
 let { receiveBpRewards, isBpRewardsInProgress, selectedStage, bpLevelPrice,
-  isBPLevelPurchaseInProgress
+  isBPLevelPurchaseInProgress, tutorialFreeMarkIdx
 } = require("battlePassState.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
@@ -132,7 +132,7 @@ let hoverCard = @(stateFlags) @() {
     : null
 }
 
-function mkCard(stageInfo) {
+function mkCard(stageInfo, idx) {
   let stateFlags = Watched(0)
   let { canReceive, viewInfo, progress, canBuyLevel } = stageInfo
   function onClick(){
@@ -149,6 +149,7 @@ function mkCard(stageInfo) {
     vplace = ALIGN_TOP
     children = [
       {
+        key = $"battle_pass_reward_{idx}" //need for tutorial
         size = [cardWidth, bpCardHeight]
         rendObj = ROBJ_IMAGE
         image = bgCard
@@ -183,10 +184,18 @@ function mkCard(stageInfo) {
 }
 
 let battlePassRewardsList = @(rewardsStages) {
+  key = rewardsStages
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = bpCardMargin
+  function onAttach() {
+    let idx = rewardsStages.findindex(@(r) !r.canReceive && !r?.isVip && !r.isPaid)
+    if (idx == null)
+      return
+    tutorialFreeMarkIdx.set(idx)
+  }
+  onDetach = @() tutorialFreeMarkIdx.set(null)
   children = rewardsStages.map(mkCard)
 }
 

@@ -13,7 +13,7 @@ let { delayedPurchaseUnitData, needSaveUnitDataForTutorial } = require("%rGui/un
 let { isUnitsTreeAttached, openUnitsTreeAtUnit, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { needDelayAnimation, isBuyUnitWndOpened, animExpPart,
   animUnitAfterResearch } = require("%rGui/unitsTree/animState.nut")
-let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
+let { markTutorialCompleted, isFinishedUnitsResearch } = require("completedTutorials.nut")
 let { nodes, unitsResearchStatus, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { hasModalWindows, moveModalToTop } = require("%rGui/components/modalWindows.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, WND_UID, goToStep,
@@ -34,7 +34,6 @@ let STEP_SELECT_NEXT_RESEARCH_DESCRIPTION = "s6_select_next_research_description
 let STEP_PARTING_WORDS = "s9_tutorial_parting_words_research_unit"
 
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
-let isFinished = mkIsTutorialCompleted(TUTORIAL_UNITS_RESEARCH_ID)
 
 let curResearchingUnitId = Computed(@() servProfile.get()?.levelInfo[curCampaign.get()].lastResearchedUnit ?? "")
 let isFirstPredifinedReward = Computed(@()
@@ -49,7 +48,7 @@ let canBuyCurResearchUnit = Computed(function() {
 })
 
 let needShowTutorial = Computed(@() !isInSquad.get()
-  && !isFinished.get()
+  && !isFinishedUnitsResearch.get()
   && isCampaignWithUnitsResearch.get()
   && isFirstPredifinedReward.get()
   && curResearchUnitStatus.get()
@@ -145,6 +144,7 @@ function startTutorial() {
             }
             return true
           }
+          hotkeys = ["^J:A"]
         }]
       }
       {
@@ -198,6 +198,7 @@ function startTutorial() {
           keys = "startResearchButton"
           needArrow = true
           onClick = @() setResearchUnit(curSelectedUnit.get())
+          hotkeys = ["^J:X"]
         }]
       }
       {

@@ -4,6 +4,7 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { G_UNIT, G_UNIT_UPGRADE, G_ITEM } = require("%appGlobals/rewardType.nut")
 let { getShopCategory } = require("shopCommon.nut")
 let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
+let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { schRewardInProgress, apply_scheduled_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isAdsAvailable, showAdsForReward } = require("%rGui/ads/adsState.nut")
@@ -11,7 +12,6 @@ let adBudget = require("%rGui/ads/adBudget.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { playSound } = require("sound_wt")
 let rewardsToShopGoods = require("rewardsToShopGoods.nut")
-
 
 let rewardsToGoodsFormat = @(schReward, id)
   schReward.__merge({ id, isFreeReward = true }, rewardsToShopGoods(schReward?.rewards ?? []))
@@ -131,8 +131,9 @@ let applyScheduledReward = @(rewardId)
 function onSchRewardReceive(schReward) {
   if (schReward.id in schRewardInProgress.get())
     return
-  if (!schReward.isReady) {
-    openMsgBox({ text = loc("msg/scheduledRewardNotReadyYet") })
+  if (!schRewardsStatus.get()?[schReward.id].isReady) {
+    if (!schReward.isReady) //player see this reward as not ready
+      openMsgBox({ text = loc("msg/scheduledRewardNotReadyYet") })
     return
   }
 
@@ -142,7 +143,7 @@ function onSchRewardReceive(schReward) {
     return
   }
 
-  if (!schReward.needAdvert)
+  if (!schReward.needAdvert || hasVip.get())
     applyScheduledReward(schReward.id)
   else {
     playSound("meta_ad_button")

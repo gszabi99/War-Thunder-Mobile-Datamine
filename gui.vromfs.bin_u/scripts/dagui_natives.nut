@@ -50,7 +50,6 @@ return freeze({
   hud_is_in_cutscene = r["hud_is_in_cutscene"]
   set_hud_width_limit = r["set_hud_width_limit"]
   set_option_hud_screen_safe_area = r["set_option_hud_screen_safe_area"]
-  set_protection_checker_params = r["set_protection_checker_params"]
   allowCuttingInHangar = r["allowCuttingInHangar"]
   allowDamageSimulationInHangar = r["allowDamageSimulationInHangar"]
   repairUnit = r["repairUnit"]

@@ -4086,6 +4086,9 @@
         "show_auto_for_unit": "ship"
       },
       "toolkit_activate": {
+        "shortcutIdx": 39
+      },
+      "toolkit_with_medical_activate": {
         "shortcutIdx": 10
       },
       "repair_breaches": {

@@ -16,6 +16,7 @@ let battlePassSeason = doubleSideGradient.__merge({
       text = loc(seasonName.value)
     }.__update(fontMedium)
     @(){
+      key = "battle_pass_time" //need for tutorial
       watch = [seasonEndTime, serverTime]
       rendObj = ROBJ_TEXT
       text = loc("battlepass/endsin", { time = secondsToHoursLoc(seasonEndTime.value - serverTime.value)})

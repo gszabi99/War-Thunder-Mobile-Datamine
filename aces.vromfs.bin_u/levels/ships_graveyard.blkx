@@ -16,6 +16,7 @@
   "wind_scale": 1.2,
   "max_wind_strength": 6.5,
   "water_level": 0.0,
+  "harmonicsType": "blue",
   "mapCoord0": [
     -4096.0,
     -4096.0

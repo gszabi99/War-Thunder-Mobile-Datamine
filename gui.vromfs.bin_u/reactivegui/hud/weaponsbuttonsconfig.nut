@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
-  AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY,
+  AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY, AB_TOOLKIT_WITH_MEDICAL,
   AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_ELECTRONIC_WARFARE
 } = require("actionBar/actionType.nut")
 let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("hudHaptic.nut")
@@ -36,6 +36,14 @@ let actionBarItemsConfig = {
     haptPatternId = HAPT_REPAIR
     getAnimationKey = @(unitType) unitType == TANK ? "tank_tool_kit_expendable" : "ship_tool_kit"
   },
+  EII_TOOLKIT_WITH_MEDICAL = {
+    getShortcut = getActionBarShortcut
+    getImage = @(_) "ui/gameuiskin#hud_consumable_repair.svg"
+    actionType = AB_TOOLKIT_WITH_MEDICAL
+    mkButtonFunction = "mkRepairActionItem"
+    haptPatternId = HAPT_REPAIR
+    getAnimationKey = @(unitType) unitType == TANK ? "tank_tool_kit_expendable" : "ship_tool_kit"
+  },
   EII_EXTINGUISHER = {
     getShortcut = getActionBarShortcut
     getImage = @(_) "ui/gameuiskin#fire_indicator.svg"
@@ -64,6 +72,7 @@ let actionBarItemsConfig = {
     actionType = AB_IRCM
     mkButtonFunction = "mkCountermeasureItem"
     haptPatternId = HAPT_IRCM
+    getAnimationKey = @(_) "ircm_kit"
   }
   EII_ELECTRONIC_WARFARE = {
     getShortcut = @(_, __) "ID_ELECTRONIC_WARFARE"

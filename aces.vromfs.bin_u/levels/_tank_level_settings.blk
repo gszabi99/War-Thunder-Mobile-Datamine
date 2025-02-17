@@ -40,3 +40,7 @@ earth {
   earthWorldMin:p2 = -32768, -32768
   earthWorldMax:p2 = 32768, 32768
 }
+
+addLandToSky:b = yes
+
+harmonicsType:t = "green"

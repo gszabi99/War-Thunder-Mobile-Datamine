@@ -100,4 +100,5 @@ return {
   separateEventModes
   forceNewbieModeIdx
   maxSquadSize
+  isGameModesReceived = Computed(@() allGameModes.get().len() != 0)
 }

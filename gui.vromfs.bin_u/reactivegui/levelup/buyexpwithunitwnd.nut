@@ -32,6 +32,7 @@ let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let { wpOfferCard, premOfferCard, gapCards, battleRewardsTitle } = require("chooseUpgradePkg.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { boughtUnit } = require("%rGui/unit/selectNewUnitWnd.nut")
+let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 
 let fonticonPreview = "⌡"
 
@@ -137,6 +138,24 @@ let mkUnitPlate = @(unit) {
     mkUnitImage(unit)
     mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
     mkUnitInfo(unit)
+    {
+      vplace = ALIGN_BOTTOM
+      margin = hdpx(10)
+      size = [hdpx(45), hdpx(45)]
+      children = mkLevelBg({
+        childOvr = {
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          borderColor = unit?.isUpgraded ? 0xFFFFB70B : 0xFF7EE2FF
+          children = {
+            transform = { rotate = -45 }
+            children = {
+              rendObj = ROBJ_TEXT,
+              text = !unit?.isUpgraded ? 0 : unit?.levels.len()
+            }.__update(fontTiny)}
+        }
+      })
+    }
   ]
 }
 

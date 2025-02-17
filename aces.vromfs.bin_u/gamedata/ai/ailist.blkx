@@ -1435,7 +1435,7 @@
             },
             "parallel": {
               "shipSail": {},
-              "UseCountermeasures": {
+              "useCountermeasures": {
                 "delay": 2.0,
                 "radius": 400.0
               }
@@ -1625,6 +1625,34 @@
         ]
       },
       "stopShipEngine": {}
+    },
+    {
+      "name": "aircraftCarrierStrategyMode",
+      "selectStrategy": "ordered",
+      "sequencer": {
+        "isShipLaunched": {},
+        "ifThenElse": {
+          "isShipOrderActive": {
+            "type": "point"
+          },
+          "sequencer": [
+            {
+              "parallel": {
+                "shipSail": {},
+                "useCountermeasures": {
+                  "delay": 2.0,
+                  "radius": 400.0
+                }
+              },
+              "removeCurrentPlayerOrder": {}
+            },
+            {
+              "stopShip": {},
+              "stopShipEngine": {}
+            }
+          ]
+        }
+      }
     },
     {
       "name": "HLBCapture",
@@ -5476,39 +5504,45 @@
         {
           "selectStrategy": "ordered",
           "selectOnSuccess": true,
-          "reaction": [
-            {
-              "event": "groundAhead",
-              "parallel": {
-                "turnToEvasiveDir": {},
-                "stayAtSpeed": {
-                  "speedMode": "boostOn"
+          "ifThenElse": {
+            "isInvulnerableToCollisionDamage": {},
+            "stayAtCurrentAlt": {},
+            "or": {
+              "reaction": [
+                {
+                  "event": "groundAhead",
+                  "parallel": {
+                    "turnToEvasiveDir": {},
+                    "stayAtSpeed": {
+                      "speedMode": "boostOn"
+                    }
+                  }
+                },
+                {
+                  "event": "collisionAhead",
+                  "parallel": {
+                    "turnToEvasiveDir": {},
+                    "stayAtSpeed": {
+                      "speedMode": "boostOn"
+                    }
+                  }
+                },
+                {
+                  "event": "outsideBattleField",
+                  "flyToPos": {
+                    "speed": 550.0,
+                    "dist": -1.0,
+                    "minAlt": 100.0,
+                    "destType": "battleField"
+                  }
                 }
-              }
-            },
-            {
-              "event": "collisionAhead",
-              "parallel": {
-                "turnToEvasiveDir": {},
-                "stayAtSpeed": {
-                  "speedMode": "boostOn"
-                }
-              }
-            },
-            {
-              "event": "outsideBattleField",
-              "flyToPos": {
-                "speed": 550.0,
-                "dist": -1.0,
-                "minAlt": 100.0,
-                "destType": "battleField"
-              }
-            },
-            {
-              "event": "regularCheck",
-              "recalculateTree": {}
+              ]
             }
-          ],
+          },
+          "reaction": {
+            "event": "regularCheck",
+            "recalculateTree": {}
+          },
           "sequencer": [
             {
               "not": {
@@ -5811,39 +5845,45 @@
         {
           "selectStrategy": "ordered",
           "selectOnSuccess": true,
-          "reaction": [
-            {
-              "event": "groundAhead",
-              "parallel": {
-                "turnToEvasiveDir": {},
-                "stayAtSpeed": {
-                  "speedMode": "boostOn"
+          "ifThenElse": {
+            "isInvulnerableToCollisionDamage": {},
+            "stayAtCurrentAlt": {},
+            "or": {
+              "reaction": [
+                {
+                  "event": "groundAhead",
+                  "parallel": {
+                    "turnToEvasiveDir": {},
+                    "stayAtSpeed": {
+                      "speedMode": "boostOn"
+                    }
+                  }
+                },
+                {
+                  "event": "collisionAhead",
+                  "parallel": {
+                    "turnToEvasiveDir": {},
+                    "stayAtSpeed": {
+                      "speedMode": "boostOn"
+                    }
+                  }
+                },
+                {
+                  "event": "outsideBattleField",
+                  "flyToPos": {
+                    "speed": 550.0,
+                    "dist": -1.0,
+                    "minAlt": 100.0,
+                    "destType": "battleField"
+                  }
                 }
-              }
-            },
-            {
-              "event": "collisionAhead",
-              "parallel": {
-                "turnToEvasiveDir": {},
-                "stayAtSpeed": {
-                  "speedMode": "boostOn"
-                }
-              }
-            },
-            {
-              "event": "outsideBattleField",
-              "flyToPos": {
-                "speed": 550.0,
-                "dist": -1.0,
-                "minAlt": 100.0,
-                "destType": "battleField"
-              }
-            },
-            {
-              "event": "regularCheck",
-              "recalculateTree": {}
+              ]
             }
-          ],
+          },
+          "reaction": {
+            "event": "regularCheck",
+            "recalculateTree": {}
+          },
           "sequencer": [
             {
               "not": {
@@ -6243,39 +6283,45 @@
         {
           "selectStrategy": "ordered",
           "selectOnSuccess": true,
-          "reaction": [
-            {
-              "event": "groundAhead",
-              "parallel": {
-                "turnToEvasiveDir": {},
-                "stayAtSpeed": {
-                  "speedMode": "boostOn"
+          "ifThenElse": {
+            "isInvulnerableToCollisionDamage": {},
+            "stayAtCurrentAlt": {},
+            "or": {
+              "reaction": [
+                {
+                  "event": "groundAhead",
+                  "parallel": {
+                    "turnToEvasiveDir": {},
+                    "stayAtSpeed": {
+                      "speedMode": "boostOn"
+                    }
+                  }
+                },
+                {
+                  "event": "collisionAhead",
+                  "parallel": {
+                    "turnToEvasiveDir": {},
+                    "stayAtSpeed": {
+                      "speedMode": "boostOn"
+                    }
+                  }
+                },
+                {
+                  "event": "outsideBattleField",
+                  "flyToPos": {
+                    "speed": 550.0,
+                    "dist": -1.0,
+                    "minAlt": 100.0,
+                    "destType": "battleField"
+                  }
                 }
-              }
-            },
-            {
-              "event": "collisionAhead",
-              "parallel": {
-                "turnToEvasiveDir": {},
-                "stayAtSpeed": {
-                  "speedMode": "boostOn"
-                }
-              }
-            },
-            {
-              "event": "outsideBattleField",
-              "flyToPos": {
-                "speed": 550.0,
-                "dist": -1.0,
-                "minAlt": 100.0,
-                "destType": "battleField"
-              }
-            },
-            {
-              "event": "regularCheck",
-              "recalculateTree": {}
+              ]
             }
-          ],
+          },
+          "reaction": {
+            "event": "regularCheck",
+            "recalculateTree": {}
+          },
           "sequencer": [
             {
               "not": {
@@ -6708,7 +6754,7 @@
           },
           "parallel": {
             "shipSail": {},
-            "UseCountermeasures": {
+            "useCountermeasures": {
               "delay": 2.0,
               "radius": 400.0
             }

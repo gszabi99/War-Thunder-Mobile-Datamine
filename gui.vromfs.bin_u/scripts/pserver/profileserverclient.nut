@@ -4,15 +4,16 @@ let { object_to_json_string } = require("json")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let profile = require("profile_server")
 let { frnd } = require("dagor.random")
+let { defer, deferOnce, setTimeout, resetTimeout } = require("dagor.workcycle")
 let { isAuthAndUpdated } = require("%appGlobals/loginState.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let serverTimeUpdate = require("%appGlobals/userstats/serverTimeUpdate.nut")
 let { get_time_msec } = require("dagor.time")
-let { defer, setTimeout, resetTimeout } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { APP_ID } = require("%appGlobals/gameIdentifiers.nut")
 let { offlineActions } = require("offlineMenuProfile.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { startRelogin } = require("%scripts/login/loginStart.nut")
 
 const MAX_REQUESTS_HISTORY = 20
 const PROGRESS_TIMEOUT_SEC = 30
@@ -31,7 +32,14 @@ let noNeedLogerrOnErrors = {
   RETRY_LIMIT_EXCEED = true,
   unknownDeeplinkReward = true,
   notAllowedDeeplinkReward = true,
+  NO_TOKEN = true
 }
+
+let retryErrId = "PS_RECIEVE_RESPONSE: 503 RETRY"
+let MAX_RETRIES = 2
+local debugError = null
+
+let retryActionsCounter = {}
 
 function startProgress(id, value) {
   if (id == null)
@@ -78,11 +86,12 @@ function collectLastRequest(id, action, params) {
   })
 }
 
-function checkAndLogError(id, action, cb, data) {
-  local err = data?.error
+local doRequest = null //forward declaration
+function checkAndLogError(id, action, params, cb, data) {
+  local err = debugError ?? data?.error
+  debugError = null
   if (err == null && !(data?.response?.success ?? true))
     err = data?.response?.error ?? "unknown error"
-
   let reqTime = collectLastRequestResult(id, data)
 
   if (err == null) {
@@ -91,6 +100,7 @@ function checkAndLogError(id, action, cb, data) {
     let { timeMs = 0 } = data?.result
     if (reqTime > 0 && timeMs > 0)
       serverTimeUpdate(timeMs, reqTime)
+    retryActionsCounter.$rawdelete(action)
 
     cb?(data)
     return
@@ -106,9 +116,23 @@ function checkAndLogError(id, action, cb, data) {
     let dumpStr = object_to_json_string(data)
     logErr = " ".concat("(full answer dump)", dumpStr)
   }
+
+  if (errId == retryErrId) {
+    let count = retryActionsCounter?[action] ?? 0
+    if (count < MAX_RETRIES) {
+      retryActionsCounter[action] <- count + 1
+      doRequest(action, params, id, cb)
+      return
+    }
+  }
+
+  retryActionsCounter.$rawdelete(action)
   if (errId not in noNeedLogerrOnErrors)
     logerr($"[profileServerClient] {action} returned error: {logErr}")
   cb?({ error = err })
+
+  if (errId == "NO_TOKEN")
+    deferOnce(startRelogin)
 }
 
 function doRequestOnline(action, params, id, cb) {
@@ -138,20 +162,20 @@ function doRequestOnline(action, params, id, cb) {
   }
 
   logPSC($"Sending request {id}, method: {action}")
-  profile.request(requestData, @(r) checkAndLogError(id, action, cb, r))
+  profile.request(requestData, @(r) checkAndLogError(id, action, params, cb, r))
 }
 
 function doRequestOffline(action, params, id, cb) {
   logPSC($"Offline request {id}, method: {action}")
   defer(function() {
     let actionHandler = offlineActions?[action]
-    checkAndLogError(id, action, cb,
+    checkAndLogError(id, action, params, cb,
       actionHandler == null ? { error = "Method does not supported offline" }
-       : { result = actionHandler(params) })
+        : { result = actionHandler(params) })
   })
 }
 
-let doRequest = isOfflineMenu ? doRequestOffline : doRequestOnline
+doRequest = isOfflineMenu ? doRequestOffline : doRequestOnline
 
 function sendResult(data, id, progressId, method) {
   stopProgress(progressId)
@@ -200,3 +224,4 @@ eventbus_subscribe("profile_srv.debugLastRequests", debugLastRequests)
 //console commands&
 register_command(@(delay) debugDelay(delay), "pserver.delay_requests")
 register_command(debugLastRequests, "pserver.debug_last_requests")
+register_command(function(errId) { debugError = errId }, "pserver.debug_next_request_error")

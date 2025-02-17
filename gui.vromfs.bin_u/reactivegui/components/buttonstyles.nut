@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let defButtonHeight = hdpx(109)
-let defButtonMinWidth = hdpx(368)
+let defButtonHeight = hdpxi(109)
+let defButtonMinWidth = hdpxi(368)
 
 return freeze({
   defButtonHeight

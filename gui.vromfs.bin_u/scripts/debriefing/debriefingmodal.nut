@@ -8,7 +8,7 @@ let { register_command } = require("console")
 let { file_exists } = require("dagor.fs")
 let { resetTimeout } = require("dagor.workcycle")
 let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
-let { needLogoutAfterSession, startLogout } = require("%scripts/login/logout.nut")
+let { needLogoutAfterSession, startLogout } = require("%scripts/login/loginStart.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { battleResult, debugBattleResult } = require("battleResult.nut")
@@ -16,7 +16,6 @@ let loadRootScreen = require("%scripts/loadRootScreen.nut")
 let { is_benchmark_game_mode, get_game_mode } = require("mission")
 let { stat_get_benchmark } = require("guiMission")
 let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
-let { hangar_enable_controls } = require("hangar")
 
 eventbus_subscribe("gui_start_debriefing", function gui_start_debriefing(...) {
   if (needLogoutAfterSession.value) {
@@ -40,7 +39,6 @@ eventbus_subscribe("gui_start_debriefing", function gui_start_debriefing(...) {
   }
 
   set_presence_to_player("menu")
-  hangar_enable_controls(true)
   isInDebriefing(true)
 })
 

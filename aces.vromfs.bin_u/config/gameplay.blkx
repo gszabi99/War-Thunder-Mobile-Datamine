@@ -2438,8 +2438,8 @@
     "torpedoReloadCooldownTime": 60.0
   },
   "common_3": {
-    "gunReloadCooldownTime": 20.0,
-    "cannonReloadCooldownTime": 30.0,
+    "gunReloadCooldownTime": 30.0,
+    "cannonReloadCooldownTime": 60.0,
     "rocketReloadCooldownTime": 120.0,
     "bombReloadCooldownTime": 120.0,
     "torpedoReloadCooldownTime": 100.0,

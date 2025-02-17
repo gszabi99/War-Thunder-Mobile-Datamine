@@ -129,6 +129,7 @@ function mkLootboxBlock(lootbox, blockSize) {
   let info = lootboxInfo(lootbox, stateFlags)
 
   return @() {
+    key = $"lootbox_{name}" //need for tutorial
     watch = stateFlags
     onElemState = @(sf) stateFlags(sf)
     size = [blockSize, SIZE_TO_CONTENT]
@@ -291,7 +292,7 @@ let eventGamercard = {
           children = !curEventEndsAt.value || (curEventEndsAt.value - serverTime.value < 0) ? null
             : mkTimeUntil(secondsToHoursLoc(curEventEndsAt.value - serverTime.value),
                 "quests/untilTheEnd",
-                { margin = [hdpx(20), 0, hdpx(60), 0] }.__update(fontTinyAccented))
+                { key = "event_time", margin = [hdpx(20), 0, hdpx(60), 0] }.__update(fontTinyAccented))
         }
       ]
     }

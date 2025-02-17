@@ -1,13 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { fabs, round } = require("math")
 let { get_time_msec } = require("dagor.time")
-let { get_base_game_version_str } = require("app")
 let { clearTimer, resetTimeout, setInterval } = require("dagor.workcycle")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let { check_version } = require("%sqstd/version_compare.nut")
 let { visibleOffer, onOfferSceneAttach, onOfferSceneDetach, offerPurchasingState, reqAddonsToShowOffer
 } = require("offerState.nut")
 let { activeOffersByGoods, mkOfferByGoodsPurchasingState
@@ -33,8 +31,6 @@ let minScrollSpeed = hdpx(1)
 let scrollHandler = ScrollHandler()
 let sliderOfferIdx = Watched(0)
 let realSliderOfferIdx = Computed(@() clamp(sliderOfferIdx.get(), 0, max(0, activeOffersByGoods.get().len() - 1)))
-
-let hasManualSwiper = check_version(">=1.12.0.105", get_base_game_version_str())
 
 
 let getOfferXByIdx = @(idx) idx * offerW
@@ -146,7 +142,7 @@ function mkOfferSwiper(offers) {
             children = {
               key = curPointX
               size = flex()
-              behavior = hasManualSwiper ? [ Behaviors.Pannable, Behaviors.ScrollEvent ] : Behaviors.ScrollEvent
+              behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
               scrollHandler
               function onAttach() {
                 resetTimeout(autoSwipeTime, autoSwipe)

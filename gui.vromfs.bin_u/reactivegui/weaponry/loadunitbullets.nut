@@ -4,6 +4,7 @@ let { getUnitFileName } = require("vehicleModel")
 let { getUnitTagsCfg, getUnitType } = require("%appGlobals/unitTags.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { eachBlock, isDataBlock, blkOptFromPath } = require("%sqstd/datablock.nut")
+let { isReadyToFullLoad, isLoginRequired } = require("%appGlobals/loginState.nut")
 
 let WT_GUNS = "guns"
 let WT_SMOKE = "smoke"
@@ -470,8 +471,11 @@ function loadUnitBulletsFullImpl(unitName) {
 }
 
 function loadUnitBulletsAndSlots(unitName) {
-  if (unitName not in fullCache)
+  if (unitName not in fullCache) {
+    if (isLoginRequired.get() && !isReadyToFullLoad.get())
+      return { presets = {}, slots = [], slotsParams = {}, reqModifications = {} }
     fullCache[unitName] <- freeze(loadUnitBulletsFullImpl(unitName))
+  }
   return fullCache[unitName]
 }
 

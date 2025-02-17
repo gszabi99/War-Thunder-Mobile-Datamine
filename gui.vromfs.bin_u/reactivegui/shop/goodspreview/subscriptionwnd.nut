@@ -5,68 +5,133 @@ let { subscriptions } = require("%appGlobals/pServer/campaign.nut")
 let { PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
 let { getSubsPresentation, getSubsName } = require("%appGlobals/config/subsPresentation.nut")
 let { formatText } = require("%rGui/news/textFormatters.nut")
-let { openedSubsId, closeSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
+let { openedSubsId, closeSubsPreview, openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { allSubs } = require("%rGui/shop/shopState.nut")
-let { activatePlatfromSubscription, platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
+let { activatePlatfromSubscription, changeSubscription, platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
 let { getSubsPeriodString } = require("%rGui/shop/shopCommon.nut")
 
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { textButtonPurchase } = require("%rGui/components/textButton.nut")
-let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+let { textButtonPurchase, mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
+let { defButtonMinWidth, defButtonHeight, PRIMARY } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 
 let WND_UID = "subscription_wnd"
 
-let wndWidth = hdpx(1200)
+let wndWidth = hdpx(1250)
 let descriptionMinHeight = hdpx(500)
-let wndGapY = hdpx(30)
-let wndGapX = hdpx(50)
+let wndGap = hdpx(30)
 let smallGap = hdpx(20)
-let bonusValueWidth = hdpx(60)
+let bonusValueWidth = hdpx(80)
 let descriptionGap = hdpx(10)
 let urlsGap = hdpx(30)
 let urlsButtomPadding = hdpx(100)
 let buttonBlockWidth = defButtonMinWidth
+let groupWidthInc = buttonBlockWidth / 2
 let iconSize = [buttonBlockWidth, (buttonBlockWidth / 1.4).tointeger()]
-let bonusIconSize = hdpx(40)
+let descriptionWidth = wndWidth - buttonBlockWidth - 2 * wndGap
+let bonusIconSize = hdpxi(40)
 let textColor = 0xFFE0E0E0
+let swIconSz = hdpxi(70)
+
+let subsGroups = { prem = ["premium", "vip"] }
+let groupBySubs = subsGroups.reduce(function(res, list, groupId) {
+    foreach (s in list)
+      res[s] <- groupId
+    return res
+  },
+  {})
 
 let subscription = Computed(@() allSubs.get()?[openedSubsId.get()])
 let isSubsActive = Computed(@() subscriptions.get()?[openedSubsId.get()].isActive ?? false)
 let isOpened = keepref(Computed(@() subscription.get() != null))
+
+let subsGroup = Computed(function() {
+  let id = openedSubsId.get()
+  if (id == null)
+    return []
+  return (subsGroups?[groupBySubs?[openedSubsId.get()]] ?? [id])
+    .filter(@(s) s in allSubs.get())
+})
 let premiumBonusesCfg = Computed(@() serverConfigs.get()?.gameProfile.premiumBonuses)
+let vipBonusesCfg = Computed(@() serverConfigs.get()?.gameProfile.vipBonuses)
 
 let bonusMultText = @(v) $"{v}x"
 
-let advantages = [
+let mkBonusCurrencyIcon = @(id) @() mkCurrencyImage(id, bonusIconSize, { vplace = ALIGN_TOP })
+
+let mkBonusIcon = @(icon) {
+  size = [bonusIconSize, bonusIconSize]
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#{icon}:{bonusIconSize}:{bonusIconSize}:P")
+  keepAspect = true
+}
+
+let stopIcon = {
+  size = [bonusIconSize, bonusIconSize]
+  rendObj = ROBJ_VECTOR_CANVAS
+  lineWidth = max(1, (0.1 * bonusIconSize + 0.5).tointeger())
+  color = 0xFFFF6060
+  fillColor = 0
+  commands = [
+    [VECTOR_LINE, 95, 5, 5, 95],
+    [VECTOR_ELLIPSE, 50, 50, 65, 65],
+  ]
+}
+
+let premiumRowsCfg = [
   {
     name = "bonusPlayerExp"
     bonus = @(cfg) bonusMultText(cfg?.expMul || 1.0)
-    icon = mkCurrencyImage("playerExp", bonusIconSize, { vplace = ALIGN_TOP })
+    icon = mkBonusCurrencyIcon("playerExp")
   }
   {
     name = "bonusUnitExp"
     bonus = @(cfg) bonusMultText(cfg?.expMul || 1.0)
-    icon = mkCurrencyImage("unitExp", bonusIconSize, { vplace = ALIGN_TOP })
+    icon = mkBonusCurrencyIcon("unitExp")
   }
   {
     name = "bonusWp"
     bonus = @(cfg) bonusMultText(cfg?.wpMul || 1.0)
-    icon = mkCurrencyImage("wp", bonusIconSize, { vplace = ALIGN_TOP })
+    icon = mkBonusCurrencyIcon("wp")
   }
   {
     name = "bonusGold"
     bonus = @(cfg) bonusMultText(cfg?.goldMul || 1.0)
-    icon = mkCurrencyImage("gold", bonusIconSize, { vplace = ALIGN_TOP })
+    icon = mkBonusCurrencyIcon("gold")
   }
 ]
 
-let mkPremiumAdvString = @(bonus, cfg) {
+let vipRowsCfg = [
+  {
+    name = "noAds"
+    bonus = @(_) ""
+    icon = @() {
+      size = [bonusIconSize, bonusIconSize]
+      children = [
+        mkBonusIcon("watch_ads.svg")
+        stopIcon
+      ]
+    }
+  }
+  {
+    name = "purchasesGold"
+    bonus = @(cfg) $"+{cfg?.extPurchaseGold ?? 0}"
+    icon = mkBonusCurrencyIcon("gold")
+  }
+  {
+    name = "offerSkip"
+    bonus = @(cfg) (cfg?.offerSkips ?? 0).tostring()
+    icon = @() mkBonusIcon("icon_repeatable.svg")
+  }
+]
+
+let mkBonusRow = @(bonus, cfg) {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   gap = smallGap
@@ -76,8 +141,9 @@ let mkPremiumAdvString = @(bonus, cfg) {
       rendObj = ROBJ_TEXT
       color = textColor
       text = bonus.bonus(cfg)
+      halign = ALIGN_RIGHT
     }.__update(fontSmall)
-    bonus.icon
+    bonus.icon()
     {
       size = [ flex(), SIZE_TO_CONTENT]
       rendObj = ROBJ_TEXTAREA
@@ -88,6 +154,68 @@ let mkPremiumAdvString = @(bonus, cfg) {
   ]
 }
 
+let mkBonusRows = @(rowsCfg, cfgWatch) @() {
+  watch = cfgWatch
+  size = [descriptionWidth, SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
+  gap = descriptionGap
+  children = rowsCfg.map(@(a) mkBonusRow(a, cfgWatch.get()))
+}
+
+let bonusInfoCtors = {
+  premium = mkBonusRows(premiumRowsCfg, premiumBonusesCfg)
+  vip = mkBonusRows(vipRowsCfg, vipBonusesCfg)
+}
+
+let bonusInfoBySubs = {
+  vip = ["vip", "premium"]
+}
+
+let getInfoList = @(subs) bonusInfoBySubs?[subs] ?? [subs]
+
+function description() {
+  if (subsGroup.get().len() == 0)
+    return { watch = subsGroup }
+  let heights = {}
+  let positions = {}
+  local maxHeight = 0
+  foreach(s in subsGroup.get()) {
+    local height = 0
+    foreach(ctorId in getInfoList(s)) {
+      if (ctorId not in heights) {
+        heights[ctorId] <- calc_comp_size(bonusInfoCtors[ctorId])[1]
+        positions[ctorId] <- {}
+      }
+      if (height > 0)
+        height += descriptionGap
+      positions[ctorId][s] <- height
+      height += heights[ctorId]
+    }
+    maxHeight = max(maxHeight, height)
+  }
+
+  return {
+    watch = subsGroup
+    size = [descriptionWidth, maxHeight]
+    children = positions
+      .map(@(posBySubs, ctorId) function() {
+        let posY = posBySubs?[openedSubsId.get()]
+        return posY == null ? { watch = openedSubsId }
+          : {
+              watch = openedSubsId
+              children = {
+                key = ctorId
+                children = bonusInfoCtors[ctorId]
+                transform = { translate = [0, posY] }
+                transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+                animations = wndSwitchAnim
+              }
+            }
+      })
+      .values()
+  }
+}
+
 let spinnerBlockOvr = {
   size = [SIZE_TO_CONTENT, defButtonHeight]
   minWidth = defButtonMinWidth
@@ -95,42 +223,78 @@ let spinnerBlockOvr = {
   halign = ALIGN_CENTER
 }
 
-let purchBlock = @(subs, isActive) {
-  size = [flex(), SIZE_TO_CONTENT]
-  flow = FLOW_VERTICAL
-  halign = ALIGN_CENTER
-  children = isActive
-    ? {
-        rendObj = ROBJ_TEXT
-        text = loc("subscription/active")
-      }.__update(fontSmallAccentedShaded)
-    : [
-        {
-          rendObj = ROBJ_TEXT
-          color = textColor
-          text = loc("pricePerTime",
-            { price = subs.priceExt.priceText, time = getSubsPeriodString(subs) })
-        }.__update(fontMedium)
-        {
-          rendObj = ROBJ_TEXT
-          color = textColor
-          text = loc("subscrition/autoRenewal")
-        }.__update(fontTiny)
-        { size = [flex(), smallGap] }
-        mkSpinnerHideBlock(platformPurchaseInProgress,
-          textButtonPurchase(utf8ToUpper(loc("subscription/activate")), @() activatePlatfromSubscription(subs)),
-          spinnerBlockOvr)
-      ]
+function getNextFromList(list, cur) {
+  let idx = (list.indexof(cur) ?? -1) + 1
+  return list?[idx % list.len()]
 }
 
-let description = @() {
-  watch = premiumBonusesCfg
-  size = [flex(), SIZE_TO_CONTENT]
-  flow = FLOW_VERTICAL
-  gap = descriptionGap
-  children = premiumBonusesCfg.get() == null
-    ? null
-    : advantages.map(@(a) mkPremiumAdvString(a, premiumBonusesCfg.get()))
+let toggleSubsBtn = @(subs, subsList) mkCustomButton(
+  {
+    size = [swIconSz, swIconSz]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#decor_change_icon.svg:{swIconSz}:{swIconSz}:P")
+    keepAspect = true
+  },
+  @() openSubsPreview(getNextFromList(subsList, subs.id)),
+  mergeStyles(PRIMARY, { ovr = { minWidth = defButtonHeight } }))
+
+let btnRow = @(children) {
+  size = [flex(), defButtonHeight]
+  halign = ALIGN_CENTER
+  flow = FLOW_HORIZONTAL
+  gap = wndGap
+  children
+}
+
+function mkPurchButton(subs, subsList, subscriptionsV) {
+  let activeIdx = subsList.findindex(@(s) subscriptionsV?[s].isActive ?? false)
+  let curIdx = subsList.indexof(subs.id)
+  let text = activeIdx == null || curIdx == null ? loc("subscription/activate")
+    : activeIdx < curIdx ? loc("subscription/upgrade")
+    : loc("subscription/changePlan")
+  return textButtonPurchase(utf8ToUpper(text), @() activeIdx == null ? activatePlatfromSubscription(subs)
+    : changeSubscription(subs.id, subsList[activeIdx]))
+}
+
+function purchBlock(subs, isActive, subsList) {
+  let toggle = subsList.len() <= 1 ? null : toggleSubsBtn(subs, subsList)
+  return @() {
+    watch = subscriptions
+    size = [flex(), SIZE_TO_CONTENT]
+    flow = FLOW_VERTICAL
+    halign = ALIGN_CENTER
+    children = isActive
+      ? btnRow([
+          toggle
+          {
+            size = [defButtonMinWidth, defButtonHeight]
+            valign = ALIGN_CENTER
+            halign = ALIGN_CENTER
+            rendObj = ROBJ_TEXT
+            text = loc("subscription/active")
+          }.__update(fontSmallAccentedShaded)
+        ])
+      : [
+          {
+            rendObj = ROBJ_TEXT
+            color = textColor
+            text = loc("pricePerTime",
+              { price = subs.priceExt.priceText, time = getSubsPeriodString(subs) })
+          }.__update(fontMedium)
+          {
+            rendObj = ROBJ_TEXT
+            color = textColor
+            text = loc("subscrition/autoRenewal")
+          }.__update(fontTiny)
+          { size = [flex(), smallGap] }
+          btnRow([
+            toggle
+            mkSpinnerHideBlock(platformPurchaseInProgress,
+              mkPurchButton(subs, subsList, subscriptions.get()),
+              spinnerBlockOvr)
+          ])
+        ]
+  }
 }
 
 let urls = @() {
@@ -151,17 +315,42 @@ let urls = @() {
   ]
 }
 
-let subsIcon = @() {
-  watch = openedSubsId
-  size = iconSize
-  rendObj = ROBJ_IMAGE
-  image = Picture($"{getSubsPresentation(openedSubsId.get()).icon}:0:P")
-  keepAspect = KEEP_ASPECT_FIT
+let subsIcons = @(list) function() {
+  let children = []
+  foreach(idx, subs in list) {
+    let isCurrent = subs == openedSubsId.get()
+    let child = {
+      key = subs
+      size = iconSize
+      pos = [idx * iconSize[0] / 2, 0]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"{getSubsPresentation(subs).icon}:0:P")
+      color = isCurrent ? 0xFFFFFFFF : 0x40404040
+      keepAspect = true
+      transform = { scale = isCurrent ? [1.0, 1.0] : [0.9, 0.9] }
+      transitions = [
+        { prop = AnimProp.color, duration = 0.3, easing = InOutQuad }
+        { prop = AnimProp.scale, duration = 0.3, easing = InOutQuad }
+      ]
+    }
+    if (isCurrent)
+      children.append(child)
+    else
+      children.insert(0, child)
+  }
+  return {
+    watch = openedSubsId
+    size = [iconSize[0] * (list.len() + 1) / 2, iconSize[1]]
+    hplace = ALIGN_CENTER
+    behavior = list.len() <= 1 ? null : Behaviors.Button
+    onClick = @() openSubsPreview(getNextFromList(list, openedSubsId.get()))
+    children
+  }
 }
 
 let window = @() modalWndBg.__merge({
-  watch = [subscription, isSubsActive]
-  size = [wndWidth, SIZE_TO_CONTENT]
+  watch = [subscription, isSubsActive, subsGroup]
+  size = [wndWidth + groupWidthInc * (subsGroup.get().len() - 1), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   children = subscription.get() == null ? null
@@ -169,9 +358,9 @@ let window = @() modalWndBg.__merge({
         modalWndHeaderWithClose(getSubsName(subscription.get().id), closeSubsPreview)
         {
           size = [flex(), SIZE_TO_CONTENT]
-          padding = [wndGapY, wndGapX]
+          padding = wndGap
           flow = FLOW_HORIZONTAL
-          gap = wndGapY
+          gap = wndGap
           children = [
             {
               size = [flex(), SIZE_TO_CONTENT]
@@ -186,13 +375,13 @@ let window = @() modalWndBg.__merge({
               ]
             }
             {
-              size = [buttonBlockWidth, flex()]
+              size = [buttonBlockWidth + groupWidthInc * (subsGroup.get().len() - 1), flex()]
               flow = FLOW_VERTICAL
               halign = ALIGN_CENTER
               children = [
-                subsIcon
+                subsIcons(subsGroup.get())
                 {size = flex()}
-                purchBlock(subscription.get(), isSubsActive.get())
+                purchBlock(subscription.get(), isSubsActive.get(), subsGroup.get())
               ]
             }
           ]

@@ -109,6 +109,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
      isLimitedFuel = false
      optionalTakeOff = false
      dedicatedReplay = false
+     allowWebUi = -1
      useKillStreaks = false
      disableAirfields = false
      spawnAiTankOnTankMaps = true

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 // configure scene when hosted in game
 let { DBGLEVEL } = require("dagor.system")
+let { is_pc } = require("%sqstd/platform.nut")
 
 gui_scene.setConfigProps({
   clickRumbleEnabled = false
@@ -16,6 +17,8 @@ gui_scene.setConfigProps({
   gamepadCursorHoverMaxTime = 1.0
 })
 
-require("frp").set_nested_observable_debug(DBGLEVEL > 0)
+set_nested_observable_debug(DBGLEVEL > 0)
+if (is_pc)
+  set_slow_update_threshold_usec(300)
 require("%sqstd/regScriptDebugger.nut")(debugTableData)
 require("console").setObjPrintFunc(debugTableData)

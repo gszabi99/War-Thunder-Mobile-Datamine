@@ -7,6 +7,7 @@ let isHuaweiBuild = getBuildMarket() == "appgallery"
 let { platformGoods, platformOffer, platformSubs, platformGoodsDebugInfo, buyPlatformGoods,
   activatePlatfromSubscription = @(_) null,
   platformPurchaseInProgress = Watched(null)
+  changeSubscription = null //@(subsTo, subsFrom)
 } = is_android && isHuaweiBuild ? require("byPlatform/goodsHuawei.nut")
   : is_android && isDownloadedFromGooglePlay() ? require("byPlatform/goodsAndroid.nut")
   : is_ios ? require("byPlatform/goodsIos.nut")
@@ -75,6 +76,7 @@ function buyPlatformGoodsExt(goodsOrId) {
 }
 
 let isGoodsOnlyInternalPurchase = @(goods) (goods?.purchaseGuids.len() ?? 0) == 0
+let changeSubscriptionExt = changeSubscription ?? @(subsTo, _subsFrom) activatePlatfromSubscription(subsTo)
 
 return {
   platformGoods
@@ -82,6 +84,7 @@ return {
   platformSubs
   platformGoodsDebugInfo
   buyPlatformGoods = buyPlatformGoodsExt
+  changeSubscription = changeSubscriptionExt
   activatePlatfromSubscription
   platformPurchaseInProgress
   isGoodsOnlyInternalPurchase

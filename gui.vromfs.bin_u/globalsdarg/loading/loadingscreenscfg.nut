@@ -114,8 +114,7 @@ let screensList = {
     weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_10.avif")
   }
-  simple_tank_11 = {
-    camp = [ "tanks" ]
+  event_pony = {
     weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_11.avif")
   }
@@ -134,8 +133,7 @@ let screensList = {
     weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_14.avif")
   }
-  simple_tank_15 = {
-    camp = [ "tanks" ]
+  event_anniversary = {
     weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_15.avif")
   }
@@ -144,8 +142,7 @@ let screensList = {
     weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_16.avif")
   }
-  simple_tank_17 = {
-    camp = [ "tanks" ]
+  event_halloween = {
     weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_17.avif")
   }

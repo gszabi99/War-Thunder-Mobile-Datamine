@@ -127,9 +127,9 @@ function mkLinearScoreBar(teamName, scale) {
 let shortcutId = "ID_MPSTATSCREEN"
 let shortcutImg = @(scale) @() {
   watch = isHudAttached
-  hplace = ALIGN_RIGHT
+  hplace = ALIGN_LEFT
   vplace = ALIGN_CENTER
-  pos = [hdpx(60 * scale), 0]
+  pos = [hdpx(-70 * scale), hdpx(10 * scale)]
   children = !isHudAttached.get() ? null : mkGamepadShortcutImage(shortcutId, {}, scale)
 }
 
@@ -147,6 +147,7 @@ let mkScoreBoard = @(scale) function() {
     hotkeys = mkGamepadHotkey(shortcutId)
     sound = { click  = "click" }
     children = [
+      shortcutImg(scale)
       {
         flow = FLOW_HORIZONTAL
         gap = gapToTimer(tSize[0])
@@ -170,7 +171,6 @@ let mkScoreBoard = @(scale) function() {
           barCtor("enemyTeam", scale)
         ]
       }
-      shortcutImg(scale)
     ]
   }
 }

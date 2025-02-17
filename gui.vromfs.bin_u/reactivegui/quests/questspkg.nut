@@ -12,7 +12,7 @@ let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { sendBqQuestsSpeedUp } = require("bqQuests.nut")
 let { mkGlare } = require("%rGui/components/glare.nut")
-
+let { hasVip } = require("%rGui/state/profilePremium.nut")
 
 let SECTION_OPACITY = 0.3
 let bgGradColor = 0x990C1113
@@ -31,6 +31,8 @@ let childOvr = isWidescreen ? {} : fontSmallShaded
 let btnStyle = { ovr = { size = btnSize, minWidth = 0 }, childOvr }
 let btnStyleSound = { ovr = { size = btnSize, minWidth = 0, maxWidth = btnSize[0], sound = { click  = "meta_get_unlock" } }, childOvr }
 let btnGap = hdpx(10)
+let vipIconW = CS_INCREASED_ICON.iconSize
+let vipIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
 
 let newMark = {
   size  = [SIZE_TO_CONTENT, newMarkH]
@@ -115,6 +117,7 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeM
     clipChildren = true
     children = [
       {
+        key = "quest_header_btn" //need for tutorial
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_BOTTOM
@@ -162,17 +165,21 @@ function mkAdsBtn(unlock) {
         gap = btnGap
         children = [
           !hasAdBudget.value ? null : {
-            size = [iconSize, iconSize]
+            size = !hasVip.get() ? [iconSize, iconSize] : [vipIconW, vipIconH]
             rendObj = ROBJ_IMAGE
             keepAspect = KEEP_ASPECT_FILL
-            image = Picture($"ui/gameuiskin#watch_ads.svg:{iconSize}:{iconSize}:P")
+            image = !hasVip.get()
+              ? Picture($"ui/gameuiskin#watch_ads.svg:{iconSize}:{iconSize}:P")
+              : Picture($"ui/gameuiskin#vip_active.svg:{vipIconW}:{vipIconH}:P")
           }
           {
             maxWidth = hasAdBudget.value ? (btnSize[0] - iconSize - btnGap) : btnSize[0]
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             halign = ALIGN_CENTER
-            text = utf8ToUpper(hasAdBudget.get() ? loc("quests/addProgress") : loc("btn/adsLimitReached"))
+            text = utf8ToUpper(hasAdBudget.get()
+              ? loc(!hasVip.get() ? "quests/addProgress" : "quests/addProgress_budget", { num = adBudget.get() })
+              : loc("btn/adsLimitReached"))
           }.__update(fontTinyShaded, adsButtonCounter)
         ]
       },

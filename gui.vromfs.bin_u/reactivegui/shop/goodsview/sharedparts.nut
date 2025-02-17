@@ -6,7 +6,7 @@ let { WP } = require("%appGlobals/currenciesState.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON } = require("%rGui/components/currencyComp.nut")
+let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES, ALL_PURCHASED, IS_ACTIVE
 } = require("%rGui/shop/goodsStates.nut")
 let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
@@ -23,13 +23,15 @@ let { mkGradText, mkGradGlowText, mkGradGlowMultiLine } = require("%rGui/compone
 let { withGlareEffect } = require("%rGui/components/glare.nut")
 let { purchasesCount, todayPurchasesCount, goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
 let { goodsSmallSizeW, goodsH, goodsGap } = require("%rGui/shop/shopWndConst.nut")
-
+let { hasVip } = require("%rGui/state/profilePremium.nut")
 
 let goodsW = hdpxi(555)
 let goodsSmallSize = [goodsSmallSizeW, goodsH]
 let goodsBgH = hdpxi(291)
 let timerSize = hdpxi(80)
 let advertSize = hdpxi(60)
+let vipIconW = CS_INCREASED_ICON.iconSize
+let vipIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
 
 let glareWidth = sh(8)
 let goodsGlareAnimDuration = 0.2
@@ -361,9 +363,11 @@ function mkCommonPricePlate(goods, state, needDiscountTag = true) {
 
 let advertMark = {
   key = {}
-  size = [advertSize, advertSize]
+  size = !hasVip.get() ? [advertSize, advertSize] : [vipIconW, vipIconH]
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#watch_ads.svg:{advertSize}:{advertSize}:P")
+  image = !hasVip.get()
+    ? Picture($"ui/gameuiskin#watch_ads.svg:{advertSize}:{advertSize}:P")
+    : Picture($"ui/gameuiskin#vip_active.svg:{vipIconW}:{vipIconH}:P")
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
 }.__update(adsButtonCounter)
@@ -419,7 +423,7 @@ function mkFreePricePlate(goods, state) {
     children = !needAdvert ? txt({ text = utf8ToUpper(loc("shop/free")) }.__update(fontSmall))
       : [
           advertMark
-          txt({ text = utf8ToUpper(loc("shop/watchAdvert/short")) }.__update(fontSmall))
+          txt({ text = utf8ToUpper(!hasVip.get() ? loc("shop/watchAdvert/short") : loc("shop/vip/get_rewards")) }.__update(fontSmall))
         ]
     transitions = [{ prop = AnimProp.picSaturate, duration = 0.3, easing = InQuad }]
   }

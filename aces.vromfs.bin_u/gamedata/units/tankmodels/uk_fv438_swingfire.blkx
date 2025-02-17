@@ -15,11 +15,8 @@
     0.0,
     1.0
   ],
-  "rearmTimeOnField": 70.0,
-  "canReloadNonGuns": [
-    true,
-    true
-  ],
+  "rearmTimeOnField": 45.0,
+  "canReloadNonGuns": true,
   "exhaustFx": "tank_exhaust",
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
@@ -1907,7 +1904,7 @@
           "ammoLoadedInGun": true,
           "fatalFire": false,
           "fatalExplosion": false,
-          "ammo_turret_02_dm": {
+          "ammo_turret_01_dm": {
             "count": 1
           }
         },
@@ -1918,19 +1915,19 @@
           "ammo_body_01_dm": {
             "count": 1
           },
-          "ammo_body_02_dm": {
-            "count": 1
-          },
           "ammo_body_03_dm": {
-            "count": 1
-          },
-          "ammo_body_04_dm": {
             "count": 1
           },
           "ammo_body_05_dm": {
             "count": 1
           },
-          "ammo_body_06_dm": {
+          "ammo_body_07_dm": {
+            "count": 1
+          },
+          "ammo_body_09_dm": {
+            "count": 1
+          },
+          "ammo_body_11_dm": {
             "count": 1
           }
         }
@@ -1946,7 +1943,7 @@
           "ammoLoadedInGun": true,
           "fatalFire": false,
           "fatalExplosion": false,
-          "ammo_turret_01_dm": {
+          "ammo_turret_02_dm": {
             "count": 1
           }
         },
@@ -1954,19 +1951,19 @@
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
-          "ammo_body_07_dm": {
+          "ammo_body_02_dm": {
+            "count": 1
+          },
+          "ammo_body_04_dm": {
+            "count": 1
+          },
+          "ammo_body_06_dm": {
             "count": 1
           },
           "ammo_body_08_dm": {
             "count": 1
           },
-          "ammo_body_09_dm": {
-            "count": 1
-          },
           "ammo_body_10_dm": {
-            "count": 1
-          },
-          "ammo_body_11_dm": {
             "count": 1
           },
           "ammo_body_12_dm": {

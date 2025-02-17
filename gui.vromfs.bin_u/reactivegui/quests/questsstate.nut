@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockProgress } = require("%rGui/unlocks/unlocks.nut")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
@@ -14,7 +15,6 @@ let { speed_up_unlock_progress } = require("%appGlobals/pServer/pServerApi.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { specialEvents, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
 let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-
 
 let EVENT_PREFIX = "day"
 let SEEN_QUESTS = "seenQuests"
@@ -33,6 +33,9 @@ let rewardsList = Watched(null)
 let isRewardsListOpen = Computed(@() rewardsList.value != null)
 let curTabId = Watched(null)
 let curTabParams = Watched({})
+
+let tutorialSectionId = Watched(null)
+let isSameTutorialSectionId = Watched(false)
 
 let openRewardsList = @(rewards) rewardsList(rewards)
 let closeRewardsList = @() rewardsList(null)
@@ -126,6 +129,9 @@ let progressUnlockBySection = Computed(@() {
   [WEEKLY_SECTION] = campaignActiveUnlocks.get().findvalue(@(unlock) "weekly_progress" in unlock?.meta)
 })
 
+let tutorialSectionIdWithReward = Computed(@() questsCfg.get()?[EVENT_TAB]
+  .findvalue(@(section) null != questsBySection.get()?[section].findvalue(@(r) r.hasReward)))
+
 function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, sConfigs) {
   let res = []
   foreach (idx, s in qCfg?[tabId] ?? []) {
@@ -202,6 +208,11 @@ function onWatchQuestAd(unlock) {
     return false
   }
 
+  if(hasVip.get()) {
+    speed_up_unlock_progress(name)
+    return true
+  }
+
   if (progressCorrectionStep > 0 && !isCompleted) {
     playSound("meta_ad_button")
     showAdsForReward({ speedUpUnlockId = name, bqId = $"unlock_{name}" })
@@ -248,6 +259,10 @@ return {
   progressUnlockByTab
   progressUnlockBySection
   getQuestCurrenciesInTab
+
+  tutorialSectionIdWithReward
+  tutorialSectionId
+  isSameTutorialSectionId
 
   COMMON_TAB
   EVENT_TAB

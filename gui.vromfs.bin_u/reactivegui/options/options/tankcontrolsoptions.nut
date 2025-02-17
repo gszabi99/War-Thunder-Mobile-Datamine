@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { /* OPT_TANK_TARGETING_CONTROL,  */
   OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_SHOW_MOVE_DIRECTION_IN_SIGHT, OPT_ARMOR_PIERCING_FIXED,
-  OPT_AUTO_ZOOM_TANK, OPT_GEAR_DOWN_ON_STOP_BUTTON, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_CAMERA_SENSE,
+  OPT_AUTO_ZOOM_TANK, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_CAMERA_SENSE,
   OPT_CAMERA_SENSE_IN_ZOOM, OPT_CAMERA_SENSE_TANK, OPT_FREE_CAMERA_TANK,
   OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, OPT_SHOW_GRASS_IN_TANK_VISION, mkOptionValue, getOptValue
 } = require("%rGui/options/guiOptions.nut")
@@ -11,11 +11,13 @@ let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle,
 } = require("controlsOptions")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { sharedStats } = require("%appGlobals/pServer/campaign.nut")
+let {cameraSenseSlider} =  require("%rGui/options/options/controlsOptions.nut")
 let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
 } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
+let { gearDownOnStopButtonList, currentGearDownOnStopButtonTouch, showGearDownControl
+} = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
 let { openChooseMovementControls
 } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
-let {cameraSenseSlider} =  require("%rGui/options/options/controlsOptions.nut")
 
 let autoZoomDefaultTrueStart = 1699894800 //13.11.23
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "tanks", v)
@@ -32,17 +34,13 @@ let tankMoveControlType = {
   openInfo = openChooseMovementControls
 }
 
-let gearDownOnStopButtonList = [false, true]
-let showGearDownControl = Computed(@() currentTankMoveCtrlType.value == "arrows")
-let currentGearDownOnStopButtonTouch =
-  mkOptionValue(OPT_GEAR_DOWN_ON_STOP_BUTTON, true, @(v) validate(v, gearDownOnStopButtonList))
 let gearDownOnStopButtonTouch = {
-    locId = "options/gear_down_on_stop_button"
-    ctrlType = OCT_LIST
-    value = currentGearDownOnStopButtonTouch
-    onChangeValue = @(v) sendChange("gear_down_on_stop_button", v)
-    list = Computed(@() showGearDownControl.value ? gearDownOnStopButtonList : [])
-    valToString = @(v) loc(v ? "options/on_touch" : "options/on_hold")
+  locId = "options/gear_down_on_stop_button"
+  ctrlType = OCT_LIST
+  value = currentGearDownOnStopButtonTouch
+  onChangeValue = @(v) sendChange("gear_down_on_stop_button", v)
+  list = Computed(@() showGearDownControl.get() ? gearDownOnStopButtonList : [])
+  valToString = @(v) loc(v ? "options/on_touch" : "options/on_hold")
 }
 
 let showReticleButtonList = [false, true]
@@ -173,7 +171,6 @@ let optHudScoreTank = {
 }
 
 return {
-  currentGearDownOnStopButtonTouch
   currentTargetTrackingType
   currentArmorPiercingFixed
   hudScoreTank

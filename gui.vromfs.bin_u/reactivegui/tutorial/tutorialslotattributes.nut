@@ -8,7 +8,8 @@ let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId, goToStep
 } = require("tutorialWnd/tutorialWndState.nut")
-let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
+let { TUTORIAL_SLOT_ATTRIBUTES_ID } = require("tutorialConst.nut")
+let { markTutorialCompleted, isFinishedSlotAttributes } = require("completedTutorials.nut")
 let { hasSlotAttrPreset, curCategoryId, selAttributes, getMaxAttrLevelData, attrPresets
 } = require("%rGui/attributes/attrState.nut")
 let { isSlotAttrAttached, openSlotAttrWnd, slotAttributes, leftSlotSp,
@@ -21,12 +22,10 @@ let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
 
 let FINISH_STEP = "s6_finish_slot_attributes_tutorial"
 
-const TUTORIAL_ID = "tutorialSlotAttributes"
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
-let isFinished = mkIsTutorialCompleted(TUTORIAL_ID)
 
 let hasSlotForTutor = @(cSlots) cSlots != null && null != cSlots.slots.findindex(@(slot) slot.sp > 0)
-let needShowTutorial = Computed(@() !isFinished.get()
+let needShowTutorial = Computed(@() !isFinishedSlotAttributes.get()
   && hasSlotAttrPreset.get()
   && curCampaignSlots.get() != null
   && selectedSlotIdx.get() != null
@@ -38,7 +37,7 @@ let canStartTutorial = Computed(@() !hasModalWindows.get()
 let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
 
-let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.get() == TUTORIAL_ID
+let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.get() == TUTORIAL_SLOT_ATTRIBUTES_ID
   && (!hasSlotForTutor(curCampaignSlots.get())
     || !(isMainMenuAttached.get() || isSlotAttrAttached.get()))))
 let finishEarly = @() shouldEarlyCloseTutorial.get() ? finishTutorial() : null
@@ -91,11 +90,11 @@ function startTutorial() {
   let wndShowEnough = Watched(false)
 
   setTutorialConfig({
-    id = TUTORIAL_ID
+    id = TUTORIAL_SLOT_ATTRIBUTES_ID
     function onStepStatus(stepId, status) {
       logT($"{stepId}: {status}")
       if (status == "tutorial_finished")
-        markTutorialCompleted(TUTORIAL_ID)
+        markTutorialCompleted(TUTORIAL_SLOT_ATTRIBUTES_ID)
     }
     steps = [
       {
@@ -172,6 +171,7 @@ function startTutorial() {
               backButtonBlink("UnitAttr")
               playSound("characteristics_apply")
             }
+            hotkeys = ["^J:X"]
           }
         ]
       }
@@ -191,7 +191,7 @@ showTutorial.subscribe(@(v) v ? startTutorialDelayed() : null)
 
 register_command(
   function() {
-    if (activeTutorialId.get() == TUTORIAL_ID)
+    if (activeTutorialId.get() == TUTORIAL_SLOT_ATTRIBUTES_ID)
       return finishTutorial()
     if (!hasSlotForTutor(curCampaignSlots.get()))
       console_print("Unable to start tutorial, because of no slots with SP available") //warning disable: -forbidden-function

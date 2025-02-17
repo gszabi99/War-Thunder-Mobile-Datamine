@@ -106,7 +106,7 @@
     "host": "127.0.0.1"
   },
   "test.webVromfs.baseUrls": {
-    "url": "http://webfs-test-gj-msk-01.gaijin.ops:8000/content/warthunder/webfs/"
+    "url": "http://webfs-gj-hu-01.gaijin.ops:8000/content/warthunder/webfs/"
   },
   "wtm-dev": {
     "appPerm": 72,

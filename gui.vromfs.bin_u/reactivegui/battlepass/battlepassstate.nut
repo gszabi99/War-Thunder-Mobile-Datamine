@@ -39,6 +39,7 @@ let getBpPresentation = @(bpType) bpPresentation?[bpType] ?? bpPresentation[BP_N
 let battlePassOpenCounter = mkWatched(persist, "battlePassOpenCounter", 0)
 let isBPPurchaseWndOpened = mkWatched(persist, "isBPPurchaseWndOpened", false)
 let debugBp = mkWatched(persist, "debugBp", null)
+let tutorialFreeMarkIdx = Watched(null)
 let openBattlePassWnd = @() battlePassOpenCounter.set(battlePassOpenCounter.get() + 1)
 let closeBattlePassWnd = @() battlePassOpenCounter.set(0)
 
@@ -301,6 +302,8 @@ return {
   seasonName
   seasonEndTime
   hasBpRewardsToReceive
+
+  tutorialFreeMarkIdx
 
   getBpIcon = @(bpType, season) getBpPresentation(bpType).icon(season)
   getBpName = @(bpType) getBpPresentation(bpType).name()

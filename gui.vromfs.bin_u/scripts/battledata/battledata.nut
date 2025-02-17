@@ -17,7 +17,6 @@ let getDefaultBattleData = require("%appGlobals/data/getDefaultBattleData.nut")
 let { mkCmdSetBattleJwtData, mkCmdGetMyBattleData,
   mkCmdSetDefaultBattleData, CmdSetMyBattleData } = require("%appGlobals/sqevents.nut")
 let { register_command } = require("console")
-let { eventbus_subscribe } = require("eventbus")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
@@ -258,7 +257,6 @@ let onCreateBattleDataForClient = @() is_local_multiplayer() ? createBattleDataF
 
 registerRespondent("create_battle_data_for_local_mp", onCreateBattleDataForClient) //compatibility for exe version 2025.01.13
 registerRespondent("create_battle_data_for_client", onCreateBattleDataForClient)
-eventbus_subscribe("CreateBattleDataForClient", @(_) onCreateBattleDataForClient())
 
 let mpBattleDataForClientEcs = keepref(Computed(@() !isInBattle.value || !is_multiplayer() ? null
   : state.value?.data))

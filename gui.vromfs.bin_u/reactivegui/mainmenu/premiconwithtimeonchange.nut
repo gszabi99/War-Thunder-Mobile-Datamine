@@ -5,7 +5,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { TIME_DAY_IN_SECONDS, TIME_HOUR_IN_SECONDS, TIME_MINUTE_IN_SECONDS } = require("%sqstd/time.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { havePremium, premiumEndsAt, hasPremiumSubs } = require("%rGui/state/profilePremium.nut")
+let { havePremium, premiumEndsAt, hasPremiumSubs, hasVip } = require("%rGui/state/profilePremium.nut")
 let { premiumTextColor, goodTextColor2, badTextColor2 } = require("%rGui/style/stdColors.nut")
 let { isProfileReceived } = require("%appGlobals/pServer/campaign.nut")
 let { mkBalanceDiffAnims, mkBalanceHiglightAnims } = require("balanceAnimations.nut")
@@ -46,8 +46,11 @@ let premImage = {
 }
 
 let premImageMain = @() premImage.__merge({
-  watch = [havePremium, hasPremiumSubs]
-  image = !havePremium.value ? Picture($"ui/gameuiskin#premium_inactive.svg:{premIconW}:{premIconH}:P")
+  watch = [havePremium, hasPremiumSubs, hasVip]
+  image = hasVip.get()
+      ? Picture($"ui/gameuiskin#vip_active.svg:{premIconW}:{premIconH}:P")
+    : !havePremium.value
+      ? Picture($"ui/gameuiskin#premium_inactive.svg:{premIconW}:{premIconH}:P")
     : Picture($"ui/gameuiskin#premium_active.svg:{premIconW}:{premIconH}:P")
   children = hasPremiumSubs.get() ? null
     : {

@@ -36,6 +36,8 @@
   ],
   "rendinstPreloadDistance": 8500.0,
   "clipmap_tex_mips": 5,
+  "addLandToSky": true,
+  "harmonicsType": "green",
   "hmapLodCount": 5,
   "hmapDistanceMul": 7.0,
   "mapCoord0": [

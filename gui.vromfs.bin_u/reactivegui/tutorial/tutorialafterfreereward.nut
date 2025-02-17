@@ -7,7 +7,7 @@ let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
-let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
+let { randomBattleMode, isGameModesReceived } = require("%rGui/gameModes/gameModeState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isInMenuNoModals, isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial,
@@ -68,7 +68,8 @@ function startTutorial() {
                 status = "online_battle",
                 params = randomBattleMode.get()?.name ?? ""
               })
-              eventbus_send("queueToGameMode", { modeId = randomBattleMode.get()?.gameModeId })
+              if (isGameModesReceived.get())
+                eventbus_send("queueToGameMode", { modeId = randomBattleMode.get()?.gameModeId })
             }
           }
           hotkeys = ["^J:X | Enter"]

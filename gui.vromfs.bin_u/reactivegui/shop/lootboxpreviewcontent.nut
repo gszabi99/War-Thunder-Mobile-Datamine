@@ -486,6 +486,7 @@ function mkJackpotProgressBar(stepsFinished, stepsToNext, ovr = {}) {
 }
 
 let mkJackpotProgress = @(stepsToFixed) @() {
+  key = "jackpot_progress" //need for tutorial
   watch = stepsToFixed
   flow = FLOW_VERTICAL
   children = stepsToFixed.value[1] - stepsToFixed.value[0] <= 0 ? null : [

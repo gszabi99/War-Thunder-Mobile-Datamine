@@ -1,30 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
 let { ceil } = require("%sqstd/math.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
 let { format } = require("string")
 let { deep_clone, isEqual } = require("%sqstd/underscore.nut")
-let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let { bgShadedLight } = require("%rGui/style/backgrounds.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { openMsgBox, mkCustomMsgBoxWnd } = require("%rGui/components/msgBox.nut")
+let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { backButtonHeight } = require("%rGui/components/backButton.nut")
+let { openEditTextWnd, closeEditTextWnd } = require("%rGui/components/editTextWnd.nut")
 let { getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
-let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { mkWeaponBelts, isBeltWeapon, getEquippedBelt } = require("%rGui/unitMods/unitModsSlotsState.nut")
 let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
 let { padding, weaponSize, smallGap, commonWeaponIcon, mkBeltImage,
   header, headerText, caliberTitle, defPadding
 } = require("%rGui/respawn/respawnComps.nut")
-let { makeVertScroll, scrollbarWidth } = require("%rGui/components/scrollbar.nut")
-let { selectedLineHorUnits } = require("%rGui/components/selectedLineUnits.nut")
+let { mkBlocksContainer } = require("%rGui/components/verticalBlocks.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
 let { mkWeaponPreset, mkChosenBelts, mkSavedWeaponPresets } = require("%rGui/unit/unitSettings.nut")
-let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { textInput } = require("%rGui/components/textInput.nut")
-let utf8 = require("utf8")
 
-let WND_UID = "PRESET_WND_INPUT"
+
 let MAX_PRESET_NAME_LENGTH = 16
 let MAX_SAVED_PRESET = 5
 let SLOTS_IN_ROW = 5
@@ -38,35 +30,19 @@ let wndSize = @(cells) cellSizeWithGap * cells - cellGap
 let presetBlockHeight = hdpx(180)
 let paddingWnd = hdpx(10)
 let wndSizeWithPadding = @(cells) wndSize(cells) + paddingWnd * 2
+let containerHeight = saSize[1] - backButtonHeight - hdpx(70) - saBordersRv[0] * 2
 let weaponBlockWidth = wndSizeWithPadding(SLOTS_IN_ROW)
 let presetBlockWidth = wndSizeWithPadding(SLOTS_IN_PRESET_ROW)
 let weaponBorderWidth = hdpx(3)
 let contentGap = hdpx(20)
-let editNameWndMaxHeight = hdpx(450)
-let editNameWndMinWidth = hdpx(250)
-let editNameBtnHeight = hdpx(70)
-let editNameInputHeight = hdpx(70)
-
-let presetBlockScrollHandler = ScrollHandler()
 
 let activePresetIdx = Watched(-1)
 let currentPresetName = Watched("")
-let isOpenedEditWnd = Watched(false)
 let curUnit = Watched(null)
 
 let unitName = Computed(@() curUnit.get()?.name)
 let curMods = Computed(@() curUnit.get()?.mods)
 let allWSlots = Computed(@() unitName.get() == null ? [] : loadUnitWeaponSlots(unitName.get()))
-
-let activeCardBgGradient = mkBitmapPictureLazy(
-  gradTexSize,
-  gradTexSize / 4,
-  mkGradientCtorRadial(0xFF50C0FF, 0, 20, 22, 31,-22))()
-
-let notActiveCardBgGradient = mkBitmapPictureLazy(
-  gradTexSize,
-  gradTexSize / 4,
-  mkGradientCtorRadial(0xFF50C0FF, 0, 5, 22, 31,-22))()
 
 let { weaponPreset, setWeaponPreset } = mkWeaponPreset(unitName)
 let { chosenBelts, setChosenBelts } = mkChosenBelts(unitName)
@@ -92,25 +68,9 @@ let isCurrentPreset = Computed(@() presets.get()?[activePresetIdx.get()].isCurre
 let isNotSavedPreset = Computed(@() presets.get().len() != savedWeaponPresets.get().len() && activePresetIdx.get() == 0)
 let isMaxSavedPresetAmountReached = Computed(@() presets.get().len() > MAX_SAVED_PRESET)
 
-function openEditNameWnd(isNew = false) {
-  sendPlayerActivityToServer()
-  if (isNew) {
-    if (!isNotSavedPreset.get())
-      return openMsgBox({text = loc("msgbox/presets/cannot_save/already_saved")})
-    if (isMaxSavedPresetAmountReached.get())
-      return openMsgBox({text = loc("msgbox/presets/cannot_save/max_reached")})
-  } else {
-    if (isNotSavedPreset.get())
-      return openMsgBox({text = loc("msgbox/presets/cannot_edit")})
-  }
-
-  isOpenedEditWnd.set(true)
-  currentPresetName.set(presets.get()?[activePresetIdx.get()].name ?? "")
-}
-
 function closeEditNameWnd() {
   sendPlayerActivityToServer()
-  isOpenedEditWnd.set(false)
+  closeEditTextWnd()
   currentPresetName.set("")
 }
 
@@ -140,6 +100,22 @@ function onSetPresetName() {
   else
     setSavedWeaponPresets(savedPresets.map(@(p, idx) idx != presetIdx ? p : p.__merge({name})))
   closeEditNameWnd()
+}
+
+function openEditNameWnd(isNew = false) {
+  sendPlayerActivityToServer()
+  if (isNew) {
+    if (!isNotSavedPreset.get())
+      return openMsgBox({text = loc("msgbox/presets/cannot_save/already_saved")})
+    if (isMaxSavedPresetAmountReached.get())
+      return openMsgBox({text = loc("msgbox/presets/cannot_save/max_reached")})
+  } else {
+    if (isNotSavedPreset.get())
+      return openMsgBox({text = loc("msgbox/presets/cannot_edit")})
+  }
+
+  openEditTextWnd(currentPresetName, onSetPresetName, MAX_PRESET_NAME_LENGTH)
+  currentPresetName.set(presets.get()?[activePresetIdx.get()].name ?? "")
 }
 
 function onDelete() {
@@ -383,62 +359,22 @@ function mkPresetSlots(preset) {
   }
 }
 
-let mkPresetCardRadialGradient = @(isActive) isActive ? activeCardBgGradient : notActiveCardBgGradient
-
-function presetBlock(preset, idx) {
-  let isSelected = Computed(@() idx == activePresetIdx.get() )
-  return @() {
-    watch = isSelected
-    behavior = Behaviors.Button
-    rendObj = ROBJ_SOLID
-    color = 0xFF383B3E
-    onClick = function() {
-      sendPlayerActivityToServer()
-      activePresetIdx.set(idx)
-    }
-    children = [
-      {
-        size = flex()
-        rendObj = ROBJ_IMAGE
-        image = mkPresetCardRadialGradient(isSelected.get())
-      }
-      {
-        size = [presetBlockWidth, presetBlockHeight]
-        flow = FLOW_VERTICAL
-        padding = paddingWnd
-        gap = cellGap
-        rendObj = ROBJ_BOX
-        borderColor = isSelected.get() ? activeBorderColor : 0x00000000
-        borderWidth = presetBorderWidth
-        children = [
-          {
-            rendObj = ROBJ_TEXT
-            text = $"{preset.name}{!(preset?.isCurrent ?? false) ? "" : $" ({loc("presets/current")})"}"
-          }.__update(fontTinyShaded)
-          @() mkPresetSlots(preset)
-        ]
-      }
-      {
-        size = flex()
-        valign = ALIGN_TOP
-        pos = [0, 0]
-        children = selectedLineHorUnits(isSelected)
-      }
-    ]
-  }
-}
-
-let presetsBlocks = {
-  size = [presetBlockWidth + scrollbarWidth, flex()]
-  halign = ALIGN_CENTER
+let mkBlockContent = @(preset, idx) @(){
+  watch = activePresetIdx
+  size = [presetBlockWidth, presetBlockHeight]
   flow = FLOW_VERTICAL
-  children = makeVertScroll(@(){
-    watch = presets
-    flow = FLOW_VERTICAL
-    gap = contentGap
-    onAttach = @() presetBlockScrollHandler.scrollToY((presetBlockHeight + contentGap) * activePresetIdx.get())
-    children = presets.get().map(@(v, idx) presetBlock(v, idx))
-  }, { scrollAlign = ALIGN_LEFT, scrollHandler = presetBlockScrollHandler })
+  padding = paddingWnd
+  gap = cellGap
+  rendObj = ROBJ_BOX
+  borderColor = activePresetIdx.get() == idx ? activeBorderColor : 0x00000000
+  borderWidth = presetBorderWidth
+  children = [
+    {
+      rendObj = ROBJ_TEXT
+      text = $"{preset.name}{!(preset?.isCurrent ?? false) ? "" : $" ({loc("presets/current")})"}"
+    }.__update(fontTinyShaded)
+    @() mkPresetSlots(preset)
+  ]
 }
 
 let unitWeaponPresetWeaponry = {
@@ -450,82 +386,23 @@ let unitWeaponPresetWeaponry = {
     size = flex()
     onDetach = @() activePresetIdx.set(-1)
     children = [
-      presetsBlocks
+      mkBlocksContainer(
+        presets,
+        activePresetIdx,
+        mkBlockContent,
+        function(idx) {
+          sendPlayerActivityToServer()
+          activePresetIdx.set(idx)
+        },
+        presetBlockWidth,
+        presetBlockHeight,
+        containerHeight,
+        {scrollAlign = ALIGN_LEFT}
+      )
       centralBlock
     ]
   }
 }
-
-function mkInput() {
-  return textInput(currentPresetName, {
-    ovr = {
-      size = [flex(), editNameInputHeight]
-      margin = [hdpx(60), 0]
-      padding = [hdpx(10), hdpx(10)]
-      borderRadius = editNameInputHeight / 2
-      fillColor = 0xffffffff
-    }
-    textStyle = {
-      color = 0xff000000
-      padding = [0, hdpx(20)]
-    }
-    maxChars = MAX_PRESET_NAME_LENGTH
-    isValidChange = @(v) utf8(v).charCount() <= MAX_PRESET_NAME_LENGTH
-  })
-}
-
-let mainContent = bgShadedLight.__merge({
-  stopMouse = false
-  size =  flex()
-  padding = saBordersRv
-  children = {
-    size =  flex()
-    flow = FLOW_VERTICAL
-    valign = ALIGN_CENTER
-    children = mkCustomMsgBoxWnd(
-      loc("presets/edit_wnd/title"),
-      {
-        size = [flex(), SIZE_TO_CONTENT]
-        children = mkInput()
-      },
-      [textButtonPrimary(
-        utf8ToUpper(loc("presets/edit_wnd/accept")),
-        onSetPresetName,
-        {
-          ovr = {
-            size = [SIZE_TO_CONTENT, editNameBtnHeight],
-            minWidth = editNameWndMinWidth
-          },
-          childOvr = fontTinyAccentedShaded
-        }
-      )],
-      {maxHeight = editNameWndMaxHeight})
-  }
-})
-
-function presetWnd(){
-  let res = { watch = isOpenedEditWnd }
-  if (!isOpenedEditWnd.get())
-    return res
-  return res.__update({
-    key = {}
-    size = flex()
-    onDetach = @() isOpenedEditWnd.set(false)
-    children = [ mkCutBg([]), mainContent]
-  })
-}
-
-let openImpl = @() addModalWindow({
-  key = WND_UID
-  size = flex()
-  children = presetWnd
-  onClick = @() isOpenedEditWnd.set(false)
-  stopMouse = true
-})
-
-if (isOpenedEditWnd.get())
-  openImpl()
-isOpenedEditWnd.subscribe(@(v) v ? openImpl() : removeModalWindow(WND_UID))
 
 return {
   unitWeaponPresetWeaponry,

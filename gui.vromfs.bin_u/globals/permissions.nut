@@ -33,7 +33,7 @@ let defaults = {
   has_att_warmingup_scene = false
   allow_apk_update = false
   allow_background_resource_update = DBGLEVEL > 0
-  allow_subscriptions = false
+  allow_subscriptions = DBGLEVEL > 0
 }
 
 let dbgPermissions = sharedWatched("dbgPermissions", @() {})

@@ -4,7 +4,7 @@ let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN,
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
-let { EII_EXTINGUISHER, EII_TOOLKIT, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN,
+let { EII_EXTINGUISHER, EII_TOOLKIT_WITH_MEDICAL, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN,
   EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT
 } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
@@ -37,6 +37,7 @@ let { mkBulletEditView } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkMyPlace, mkMyPlaceUi, mkTankMyScores, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
 let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
 let { missionScoreCtr, missionScoreEditView } = require("%rGui/hud/missionScore.nut")
+let { optTankMoveControlType, gearDownOnStopButtonTouch } = require("cfgOptions.nut")
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.value) && !isGamepad.value)
@@ -116,7 +117,7 @@ return {
 
   abExtinguisher = withActionBarButtonCtor(EII_EXTINGUISHER, TANK,
     { defTransform = actionBarTransform(0) })
-  abToolkit = withActionBarButtonCtor(EII_TOOLKIT, TANK,
+  abToolkit = withActionBarButtonCtor(EII_TOOLKIT_WITH_MEDICAL, TANK,
     { defTransform = actionBarTransform(1) })
   abSmokeGrenade = withAnyActionBarButtonCtor([ EII_SMOKE_GRENADE, EII_SMOKE_SCREEN ], TANK,
     { defTransform = actionBarTransform(2) })
@@ -168,6 +169,7 @@ return {
     isVisibleInEditor = Computed(@() !isViewMoveArrows.value)
     isVisibleInBattle = Computed(@() !isBattleMoveArrows.value)
     priority = Z_ORDER.STICK
+    options = [ optTankMoveControlType, gearDownOnStopButtonTouch ]
   }
 
   moveArrows = {
@@ -180,6 +182,7 @@ return {
     isVisibleInEditor = isViewMoveArrows
     isVisibleInBattle = isBattleMoveArrows
     priority = Z_ORDER.STICK
+    options = [ optTankMoveControlType, gearDownOnStopButtonTouch ]
   }
 
   chatLogAndKillLog = cfgHudCommon.chatLogAndKillLog.__merge({ defTransform = mkLTPos([hdpx(155), hdpx(360)]) })

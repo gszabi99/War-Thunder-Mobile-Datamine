@@ -48,11 +48,13 @@ let mkCellFontIcon = @(icon) {
 
 
 let premIconSize = fontSmall.fontSize
-let premiumMark = {
+let premiumMark = @(player) !player.hasPremium ? null : {
   size = [premIconSize, premIconSize]
   rendObj = ROBJ_IMAGE
   keepAspect = true
-  image = Picture($"ui/gameuiskin#premium_active.svg:{premIconSize}:{premIconSize}:K:P")
+  image = player.hasVip
+    ? Picture($"ui/gameuiskin#vip_active.svg:{premIconSize}:{premIconSize}:P")
+    : Picture($"ui/gameuiskin#premium_active.svg:{premIconSize}:{premIconSize}:K:P")
 }
 
 function getUnitNameText(unitId, unitClass, halign) {
@@ -112,7 +114,7 @@ function mkNameContent(player, teamColor, halign) {
         color = nameColor
         text = player.name
       })
-      player.hasPremium ? premiumMark : null
+      premiumMark(player)
     ]
   }
   let unitCell = {
@@ -198,6 +200,7 @@ let columnsByCampaign = {
     { width = playerPlaceIconSize, contentCtor = mkPlaceContent }
     { width = flex(), halign = ALIGN_LEFT, contentCtor = mkNameContent }
     { width = hdpx(192), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat(p.damage.tointeger()) }
+    { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
     { headerIcon = "ui/gameuiskin#stats_ships_destroyed.svg", getText = @(p) decimalFormat(p.navalKills) }
     { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }
   ]
@@ -206,6 +209,7 @@ let columnsByCampaign = {
     { width = playerPlaceIconSize, contentCtor = mkPlaceContent }
     { width = flex(), halign = ALIGN_LEFT, contentCtor = mkNameContent }
     { width = hdpx(192), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat((100 * p.score).tointeger()) }
+    { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
     { headerIcon = "ui/gameuiskin#tanks_destroyed_icon.svg", getText = @(p) decimalFormat(p.groundKills) }
     { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }
   ]
@@ -214,6 +218,7 @@ let columnsByCampaign = {
     { width = playerPlaceIconSize, contentCtor = mkPlaceContent }
     { width = flex(), halign = ALIGN_LEFT, contentCtor = mkNameContent }
     { width = hdpx(192), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat((100 * p.score).tointeger()) }
+    { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
     { fontIcon = "icon/mpstats/damageZone", getText = @(p) roundToDigits(p.damageZone * KG_TO_TONS, 3),
       isVisible = @(missionName) damageZoneMission.match(missionName) }
     { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }

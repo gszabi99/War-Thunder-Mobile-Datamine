@@ -655,7 +655,7 @@
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
         "conditionsType": "ALL",
-        "enableAfterComplete": false
+        "enableAfterComplete": true
       },
       "events": {
         "periodicEvent": {
@@ -688,6 +688,7 @@
             "t1_ships_squad",
             "t2_ships_squad"
           ],
+          "useForTriggerFiltered": true,
           "speed": 0.0,
           "lockSpeed": true
         },
@@ -10437,37 +10438,6 @@
           "attack_type": "fire_at_will"
         },
         "way": {
-          "t2_boats_03_wp_28": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                4312.9,
-                48.1431,
-                3955.45
-              ]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
           "t2_boats_03_wp_01": {
             "type": "normal",
             "tm": [
@@ -10496,7 +10466,6 @@
               "speed": 30.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -19062,7 +19031,6 @@
               "speed": 60.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },

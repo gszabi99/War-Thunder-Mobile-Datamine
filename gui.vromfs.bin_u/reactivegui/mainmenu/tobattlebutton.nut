@@ -8,10 +8,12 @@ let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { textButtonBattle, textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
+let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { firstBattleTutor, needFirstBattleTutor, startTutor } = require("%rGui/tutorial/tutorialMissions.nut")
-let { randomBattleMode, isRandomBattleNewbieTutorial } = require("%rGui/gameModes/gameModeState.nut")
+let { randomBattleMode, isRandomBattleNewbieTutorial, isGameModesReceived
+} = require("%rGui/gameModes/gameModeState.nut")
 let { startTestFlight, startOfflineBattle } = require("%rGui/gameModes/startOfflineMode.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let setReady = require("%rGui/squad/setReady.nut")
@@ -90,7 +92,8 @@ let readyCheckButtonInactive = textButtonCommon(readyCheckText, initiateReadyChe
 
 let toBattleButtonForRandomBattles = @() {
   watch = [ needReadyCheckButton, isReadyCheckSuspended, isSquadLeader, isInSquad, isReady,
-    needFirstBattleTutor, newbieOfflineMissions, isRandomBattleNewbieTutorial ]
+    needFirstBattleTutor, newbieOfflineMissions, isRandomBattleNewbieTutorial, isGameModesReceived
+  ]
   children = needReadyCheckButton.get() && isReadyCheckSuspended.get() ? readyCheckButtonInactive
     : needReadyCheckButton.get() ? readyCheckButton
     : isSquadLeader.get() ? toSquadBattleButton_RandomBattles
@@ -99,7 +102,8 @@ let toBattleButtonForRandomBattles = @() {
     : isOfflineMenu ? startOfflineBattleButton
     : needFirstBattleTutor.get() ? startTutorButton
     : newbieOfflineMissions.get() != null && !isRandomBattleNewbieTutorial.get() ? startOfflineMissionButton
-    : toBattleButton_RandomBattles
+    : isGameModesReceived.get() ? toBattleButton_RandomBattles
+    : textButtonCommon(toBattleText, @() openMsgBox({ text = loc("msg/noGameModes") }), { hotkeys = hotkeyX })
 }
 
 let function mkToBattleButtonWithSquadManagement(toBattleFunc, toSquadBattleFunc = null) {

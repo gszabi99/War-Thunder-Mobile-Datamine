@@ -8,12 +8,12 @@ let { touchButtonSize, borderWidth, btnBgColor, borderColor, borderNoAmmoColor,
     } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { textButtonBright, textButtonPrimary, textButtonSecondary
     } = require("%rGui/components/textButton.nut")
-let { getSelectionPos2d, nodeAdd, nodeInsert, nodeClear, nodeEdit, launchPlane,
+let { getSelectionPos2d, nodeAdd, nodeInsert, nodeClear, nodeEdit, launchPlane, launchShip
       setSelection, setSelectionRect, NODE_INVALID, NODE_SELF, NODE_ORDER_RETURN,
       NODE_ORDER_POINT, NODE_ORDER_ATTACK, NODE_ORDER_DEFEND, NODE_ORDER_HUNT
     } = require("guiStrategyMode")
 let { showHint } = require("%rGui/tooltip.nut")
-let { strategyDataCur, curAirGroupIndex, curAirGroupIsLaunched, curAirGroupPathLength,
+let { strategyDataCur, curGroupIndex, curAirGroupIsLaunched, curAirGroupPathLength,
       curAirGroupIsReturning, curAirGroupType, curAirGroupCanAttackAir, curAirGroupCanAttackGround,
       curAirGroupCanDefend, curAirGroupCanHunt, updateStrategyDataCur, optDebugDraw
     } = require("%rGui/hud/strategyMode/strategyState.nut")
@@ -124,12 +124,12 @@ function pathRefreshUi() {
 function onNodeEditClick(newNodeType) {
   local nodeId = -1
   if (selectedEdgeId.value != -1) {
-    nodeId = nodeInsert(curAirGroupIndex.value, selectedEdgeId.value, newNodeType, selectedUnitId.value, selectedPos.value)
+    nodeId = nodeInsert(curGroupIndex.value, selectedEdgeId.value, newNodeType, selectedUnitId.value, selectedPos.value)
   } else if(selectedNodeId.value != -1) {
-    nodeId = nodeEdit(curAirGroupIndex.value, selectedNodeId.value, newNodeType, selectedUnitId.value, selectedPos.value)
+    nodeId = nodeEdit(curGroupIndex.value, selectedNodeId.value, newNodeType, selectedUnitId.value, selectedPos.value)
   }
   else {
-    nodeId = nodeAdd(curAirGroupIndex.value, newNodeType, selectedUnitId.value, selectedPos.value)
+    nodeId = nodeAdd(curGroupIndex.value, newNodeType, selectedUnitId.value, selectedPos.value)
   }
   pathSelectNode(newNodeType, nodeId, -1, false)
 }
@@ -145,12 +145,12 @@ function onNodeInsertClick(newNodeType) {
       break
     }
   }
-  let nodeId = nodeInsert(curAirGroupIndex.value, selectedEdgeId.value, newNodeType, selectedUnitId.value, insertPos)
+  let nodeId = nodeInsert(curGroupIndex.value, selectedEdgeId.value, newNodeType, selectedUnitId.value, insertPos)
   pathSelectNode(newNodeType, nodeId, -1, false)
 }
 
 function onNodeClearClick() {
-  nodeClear(curAirGroupIndex.value, selectedNodeId.value, false)
+  nodeClear(curGroupIndex.value, selectedNodeId.value, false)
   pathSelectionReset()
 }
 
@@ -163,23 +163,25 @@ function onNodeClick(nodeType, nodeId, edgeId, pos) {
 function onNodeMove(nodeType, nodeId, newPos) {
   let newNodeType = (nodeType == NODE_ORDER_HUNT) ? NODE_ORDER_HUNT : NODE_ORDER_POINT
   pathSelectPoint(newPos.x, newPos.y)
-  nodeId = nodeEdit(curAirGroupIndex.value, nodeId, newNodeType, selectedUnitId.value, selectedPos.value)
+  nodeId = nodeEdit(curGroupIndex.value, nodeId, newNodeType, selectedUnitId.value, selectedPos.value)
   pathSelectNode(newNodeType, nodeId, -1, true)
 }
 
 function onPathLaunch() {
-  if (curAirGroupIndex.value != -1)
-    launchPlane(curAirGroupIndex.value, curAirGroupIsLaunched.value)
+  if (curGroupIndex.value >= 0)
+    launchPlane(curGroupIndex.value, curAirGroupIsLaunched.value)
+  else
+    launchShip()
 }
 
 function onPathAbort() {
-  nodeClear(curAirGroupIndex.value, -1, true)
+  nodeClear(curGroupIndex.value, -1, true)
   pathSelectionReset()
 }
 
 function mkSelfNode(nodePos) {
   local { size, color, valign, border, rotate, padding, opacity } = getNodeStyle(NODE_SELF)
-  let icon = airGroupIcons?[curAirGroupIndex.value]
+  let icon = airGroupIcons?[curGroupIndex.value]
   let iconSize = (size * 0.85).tointeger()
   return {
     size = [0, 0]
@@ -523,7 +525,7 @@ function mkCommandButton(text, img, isEnabled, isAllowed, onClick) {
   }
 }
 
-function mkCommandsUi() {
+function mkCommandsUi(groupIndex) {
   let isWorldPointSelected = Computed(@() selectedEdgeId.value == -1 && selectedPosIsValid.value)
   let isAttackAllowed = Computed(@() selectedUnitId.value != -1 && selectedUnitIsEnemy.value)
   let isDeffendAllowed = Computed(@() selectedUnitId.value != -1 && !selectedUnitIsEnemy.value)
@@ -538,7 +540,7 @@ function mkCommandsUi() {
     flow = FLOW_VERTICAL
     gap = hdpx(10)
     children = [
-      {
+      groupIndex == -1 ? null : {
         hplace = ALIGN_LEFT
         vplace = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
@@ -595,13 +597,13 @@ function textButtonDisabled(label, hintStr) {
 }
 
 let pathCommandsUi = @() {
-  watch = [curAirGroupIndex, curAirGroupIsLaunched, curAirGroupPathLength]
+  watch = [curGroupIndex, curAirGroupIsLaunched, curAirGroupPathLength]
   hplace = ALIGN_LEFT
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   gap = hdpx(40)
   children = [
-    mkCommandsUi,
+    mkCommandsUi(curGroupIndex.value),
     {
       hplace = ALIGN_LEFT
       vplace = ALIGN_BOTTOM
@@ -613,9 +615,7 @@ let pathCommandsUi = @() {
         : curAirGroupPathLength.value > 1
           ? textButtonPrimary(utf8ToUpper(loc("strategyMode/launch")), onPathLaunch)
         : textButtonDisabled(utf8ToUpper(loc("strategyMode/launch")), loc("strategyMode/empty_path"))
-
-        curAirGroupIndex.value == -1 ? null
-          : textButtonBright(utf8ToUpper(loc("strategyMode/abort_mission")), onPathAbort)
+        textButtonBright(utf8ToUpper(loc("strategyMode/abort_mission")), onPathAbort)
       ]
     }
   ]

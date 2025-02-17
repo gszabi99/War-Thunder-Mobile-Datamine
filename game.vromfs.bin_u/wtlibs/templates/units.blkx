@@ -320,6 +320,7 @@
       "root",
       "replicating",
       "base_unit_ext",
+      "ecs_no_debug",
       "replicate_early"
     ],
     "uid": -1,
@@ -330,8 +331,14 @@
     "unitType": -1,
     "canChangeUnit": false,
     "missionUnitName": "",
-    "_replicated": "uid",
-    "_tracked": "playerNo",
+    "_replicated": [
+      "uid",
+      "unitVersion"
+    ],
+    "_tracked": [
+      "playerNo",
+      "unitVersion"
+    ],
     "unit__ref": {},
     "killerEid:eid": {}
   },
@@ -551,6 +558,7 @@
   "expendable_mod": {
     "_use": [
       "replicating",
+      "ecs_no_debug",
       "replicate_early"
     ],
     "mod__enabled_without_mod": false,

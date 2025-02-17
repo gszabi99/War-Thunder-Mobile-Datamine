@@ -6,7 +6,7 @@ let { get_maximum_frames_per_second, is_broken_grass_flag_set, is_texture_uhq_su
   get_platform_window_resolution, get_default_graphics_preset, is_metalfx_upscale_supported
 } = require("graphicsOptions")
 let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
-let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTION, OPT_DEFERRED, OPT_AA, mkOptionValue
+let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTION, OPT_AA, mkOptionValue
 } = require("%rGui/options/guiOptions.nut")
 let mkOptionDescFromValsList = require("%rGui/options/mkOptionDescFromValsList.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -39,14 +39,13 @@ let resolutionValue = mkOptionValue(OPT_GRAPHICS_SCENE_RESOLUTION,
   getResolutionByQuality(get_default_graphics_preset()),
   validateResolution)
 
-let deferredValues = [false, true]
-let deferredValue = mkOptionValue(OPT_DEFERRED, deferredValues[0])
-let aaList = Computed(@() deferredValue.get() ? ["low_fxaa", "high_fxaa", "mobile_taa"].extend(is_ios && is_metalfx_upscale_supported() ?
-  ["metalfx_fxaa"] : []) : ["high_fxaa"])
-let validateAA = @(a) aaList.get().contains(a) ? a : aaList.get()[0]
+let aaList = ["low_fxaa", "high_fxaa"]
+  .extend((get_settings_blk()?.graphics.forceLowPreset ?? false) ? [] : ["mobile_taa"])
+  .extend(is_ios && is_metalfx_upscale_supported() ? ["metalfx_fxaa"] : [])
+let validateAA = @(a) aaList.contains(a) ? a : aaList[0]
 function getAAByQuality(quality) {
   let graphicsPresets = (is_android || is_pc) ? (get_settings_blk()?.android_presets) : get_settings_blk()?.ios_presets
-  return validateAA(graphicsPresets?[quality].graphics.defaultPresetAA ?? aaList.get()[0])
+  return validateAA(graphicsPresets?[quality].graphics.defaultPresetAA ?? aaList[0])
 }
 let aaValue = mkOptionValue(OPT_AA, getAAByQuality(get_default_graphics_preset()), validateAA)
 
@@ -100,25 +99,13 @@ let optFpsLimit = {
 
 let aaValToDescriptionMap = { low_fxaa = "fxaa", high_fxaa = "fxaa", mobile_taa = "taa", metalfx_fxaa = "metalfx" }
 
-let optDeferred = {
-  locId = "options/deferred"
-  ctrlType = OCT_LIST
-  value = deferredValue
-  list = deferredValues
-  valToString = @(v) loc(v ? "options/on" : "options/off")
-  function setValue(v) {
-    deferredValue.set(v)
-    aaValue.set(getAAByQuality(graphicsQuality.get()))
-  }
-}
-
 let optAntiAliasing = {
   locId = "options/aa_options"
   ctrlType = OCT_LIST
   value = aaValue
-  list = Computed(@() aaList.get().len() > 1 ? aaList.get() : [])
+  list = aaList
   valToString = @(v) loc($"options/aa_{v}")
-  description = @() mkOptionDescFromValsList(aaList.get(), "options/desc/aa_options", aaValToDescriptionMap)
+  description = @() mkOptionDescFromValsList(aaList, "options/desc/aa_options", aaValToDescriptionMap)
 }
 
 let rayTracingValues = [0, 1, 2]
@@ -171,7 +158,6 @@ return {
     optFpsLimit
     inline_raytracing_available() ? optRayTracing : null
     isUhqSupported ? optUhqTextures : null
-    optDeferred
     optAntiAliasing
   ]
   isUhqAllowed = Computed(@() isUhqSupported && has_additional_graphics_content.get())

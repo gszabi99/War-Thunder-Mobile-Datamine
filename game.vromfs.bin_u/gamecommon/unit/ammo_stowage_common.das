@@ -25,7 +25,7 @@ require %game.unit.ammo_stowage_events
 
 
 struct public PartRemap
-  partId : PartId
+  partId : PartId = PartId()
   stowageId : int
   clusterId : int
   slotId : int
@@ -35,8 +35,8 @@ def public get_remap(remap : IPoint4List&; partId : PartId) : PartRemap
   if idx < length(remap) && idx >= 0
     let r = remap[idx]
     if r.x >= 0
-      return [[PartRemap partId=partId, stowageId=r.y, clusterId=r.z, slotId=r.w]]
-  return [[PartRemap partId=PartId(), stowageId=-1, clusterId=-1, slotId=-1]]
+      return [[PartRemap() partId=partId, stowageId=r.y, clusterId=r.z, slotId=r.w]]
+  return [[PartRemap() partId=PartId(), stowageId=-1, clusterId=-1, slotId=-1]]
 
 def public add_remap(var remap : IPoint4List&; part : PartRemap) : bool
   assert(part.partId.valid)

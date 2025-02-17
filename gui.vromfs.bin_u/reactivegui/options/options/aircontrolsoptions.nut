@@ -25,6 +25,7 @@ let {
   OPT_AIRCRAFT_TAP_SELECTION,
   OPT_AIRCRAFT_ADDITIONAL_FLY_CONTROLS,
   OPT_AIRCRAFT_TARGET_FOLLOWER,
+  USEROPT_QUIT_ZOOM_AFTER_KILL,
   mkOptionValue,
   optionValues,
   getOptValue } = require("%rGui/options/guiOptions.nut")
@@ -40,6 +41,7 @@ let {
   set_camera_viscosity_in_zoom,
   set_aircraft_tap_selection,
   set_aircraft_target_follower,
+  set_quit_zoom_after_kill,
   CAM_TYPE_FREE_PLANE,
   CAM_TYPE_NORMAL_PLANE,
   CAM_TYPE_BINOCULAR_PLANE } = require("controlsOptions")
@@ -329,6 +331,20 @@ let currentTargetFollowerType = {
   description = loc("options/desc/target_follower")
 }
 
+let quitZoomAfterKillList = [false, true]
+let currentQuitZoomSelection = mkOptionValue(USEROPT_QUIT_ZOOM_AFTER_KILL, false, @(v) validate(v, quitZoomAfterKillList))
+set_quit_zoom_after_kill(currentQuitZoomSelection.value)
+currentQuitZoomSelection.subscribe(@(v) set_quit_zoom_after_kill(v))
+let currentQuitZoomSelectionType = {
+  locId = "options/quit_zoom_after_kill"
+  ctrlType = OCT_LIST
+  value = currentQuitZoomSelection
+  onChangeValue = @(v) sendChange("quit_zoom_after_kill", v)
+  list = quitZoomAfterKillList
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+  description = loc("options/desc/quit_zoom_after_kill")
+}
+
 let isMouseAim = Computed( @() currentAircraftCtrlType.get() == "mouse_aim")
 let isStick = Computed( @() currentAircraftCtrlType.get() != "mouse_aim")
 
@@ -339,7 +355,7 @@ return {
     currentinvertedYOptionType
     currentAdditionalFlyControlsType
     cameraSenseSlider(CAM_TYPE_NORMAL_PLANE, "options/cursor_sensitivity", OPT_CAMERA_SENSE_PLANE, getOptValue(OPT_CAMERA_SENSE)?? 1.0, 0.33, 5.67, 0.0267)
-    cameraViscositySlider(isMouseAim, false, "options/camera_sensitivity", OPT_CAMERA_VISC_PLANE,
+    cameraViscositySlider(isMouseAim, false, "options/cursor_folowing_camera_sensitivity", OPT_CAMERA_VISC_PLANE,
       getOptValue(OPT_CAMERA_VISC_PLANE) ?? 1.0,
       CAM_VISC_LIMITS[OPT_CAMERA_VISC_PLANE][0],
       0.03,  //step
@@ -372,6 +388,7 @@ return {
     controlByGyroModeElevatorSensitivitySlider
     currentTapSelectionType
     currentTargetFollowerType
+    currentQuitZoomSelectionType
   ].extend(crosshairOptions)
   currentAircraftCtrlType,
   currentThrottleStick,

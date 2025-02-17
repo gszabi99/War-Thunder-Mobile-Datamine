@@ -6,8 +6,6 @@
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "mustHaveCockpit": false,
   "gyroSight": false,
-  "gearSinkRangeLR": 0.155,
-  "gearSinkRangeC": 0.197,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "isCapableOfAttackTurn": false,

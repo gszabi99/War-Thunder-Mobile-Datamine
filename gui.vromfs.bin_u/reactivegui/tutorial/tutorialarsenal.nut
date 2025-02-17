@@ -24,19 +24,17 @@ let { getModCurrency, getModCost } = require("%rGui/unitMods/unitModsState.nut")
 let { openMsgBoxPurchase, PURCHASE_BOX_UID } = require("%rGui/shop/msgBoxPurchase.nut")
 let { closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { markTutorialCompleted, mkIsTutorialCompleted } = require("completedTutorials.nut")
-let { TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID } = require("tutorialConst.nut")
+let { markTutorialCompleted, isFinishedArsenal, isFinishedUnitsResearch } = require("completedTutorials.nut")
+let { TUTORIAL_ARSENAL_ID } = require("tutorialConst.nut")
 
 
 let MIN_BATLES_TO_START = 4
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
-let isFinished = mkIsTutorialCompleted(TUTORIAL_ARSENAL_ID)
-let isFinishedUnitsResearch = mkIsTutorialCompleted(TUTORIAL_UNITS_RESEARCH_ID)
 
 let hasUnitModifications = Computed(@() visibleNewModsSlots.get().len() > 0)
 
 let needShowTutorial = Computed(@() !isInSquad.get()
-  && !isFinished.get()
+  && !isFinishedArsenal.get()
   && (sharedStatsByCampaign.get()?.battles ?? 0) + (sharedStatsByCampaign.get()?.offlineBattles ?? 0)
     >= MIN_BATLES_TO_START
   && isFinishedUnitsResearch.get()
@@ -172,6 +170,7 @@ function startTutorial() {
               bqInfo = null
             })
           }
+          hotkeys = ["^J:Y"]
         }]
       }
       {
@@ -198,6 +197,7 @@ function startTutorial() {
             })
             closeMsgBox(PURCHASE_BOX_UID)
           }
+          hotkeys = ["^J:A"]
         }]
       }
       {

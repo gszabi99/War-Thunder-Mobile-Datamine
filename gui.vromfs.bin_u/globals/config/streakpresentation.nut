@@ -97,6 +97,14 @@ let streaksPresentation = {
     ]
   }
 
+  heroic_punisher_ship = {
+    name = "streaks/heroic_punisher_ship"
+    bgImage = "ui/gameuiskin#streaks_heroic_bg.avif"
+    stackImages = [
+      mkStackImage("top_uprank_killer_hero.avif", [62, 62])
+    ]
+  }
+
   heroic_wingman = {
     name = "streaks/heroic_wingman"
     bgImage = "ui/gameuiskin#streaks_heroic_bg.avif"
@@ -209,8 +217,8 @@ let streaksPresentation = {
     ]
   }
 
-  ship_anti_main_caliber = {
-    name = "streaks/ship_anti_main_caliber"
+  ship_anti_artillery = {
+    name = "streaks/ship_anti_artillery"
     bgImage = "ui/gameuiskin#streaks_event_bg2.avif"
     stackImages = [
       mkStackImage("disarm.avif", [62, 62])
@@ -240,8 +248,17 @@ let streaksPresentation = {
       mkStackImage("top_survivor_hero.avif", [62, 62])
     ]
   }
+
   trophy_near_punisher = {
     name = "streaks/trophy_near_punisher"
+    bgImage = "ui/gameuiskin#streaks_event_bg2.avif"
+    stackImages = [
+      mkStackImage("top_uprank_killer_hero.avif", [62, 62])
+    ]
+  }
+
+  trophy_near_punisher_ship = {
+    name = "streaks/trophy_near_punisher_ship"
     bgImage = "ui/gameuiskin#streaks_event_bg2.avif"
     stackImages = [
       mkStackImage("top_uprank_killer_hero.avif", [62, 62])
@@ -304,8 +321,8 @@ let streaksPresentation = {
     ]
   }
 
-  marks_killed_plane_10_ranks_higher = {
-    name = "streaks/marks_killed_plane_10_ranks_higher"
+  uprank_kill_grade_1 = {
+    name = "streaks/uprank_kill_grade_1"
     bgImage = "ui/gameuiskin#streaks_marks_bg.avif"
     stackImages = [
       mkStackImage("uprank_kill.avif", [62, 62])

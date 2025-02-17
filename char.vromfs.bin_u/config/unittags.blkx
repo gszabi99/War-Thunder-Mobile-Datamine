@@ -70,6 +70,27 @@
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_6"
         }
+      },
+      "gunBrowning50_M2_underwing": {
+        "default": {
+          "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
+        },
+        "50cal_universal": {
+          "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_t_ball_M20/i_ball_M23/i_ball_M23/",
+          "reqModification": "aircraft_mod_15"
+        },
+        "50cal_ground_targets": {
+          "icon": "ap_i_t_ball_M20/i_ball_M23/ap_ball_M2/ap_ball_M2/ap_i_ball_M8/ap_i_ball_M8/",
+          "reqModification": "aircraft_mod_17"
+        },
+        "50cal_tracers": {
+          "icon": "ap_i_t_ball_M20/",
+          "reqModification": "aircraft_mod_14"
+        },
+        "50cal_stealth": {
+          "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/i_ball_M23/",
+          "reqModification": "aircraft_mod_16"
+        }
       }
     },
     "Shop": {
@@ -111,6 +132,12 @@
         },
         "gun_pod": {
           "reqModification": "aircraft_mod_5"
+        },
+        "gunBrowning50_M2_underwing": {
+          "type": "additional gun",
+          "gunsCount": 4,
+          "ammoCount": 1360,
+          "shotFreq": 12.5
         },
         "250lbs_x2": {
           "reqModification": "aircraft_mod_2"
@@ -179,6 +206,23 @@
         "30cal_turret_armor_targets": {
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/i_ball/"
         }
+      },
+      "gunBrowning50_M2_underwing": {
+        "default": {
+          "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
+        },
+        "50cal_universal": {
+          "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_t_ball_M20/i_ball_M23/i_ball_M23/"
+        },
+        "50cal_ground_targets": {
+          "icon": "ap_i_t_ball_M20/i_ball_M23/ap_ball_M2/ap_ball_M2/ap_i_ball_M8/ap_i_ball_M8/"
+        },
+        "50cal_tracers": {
+          "icon": "ap_i_t_ball_M20/"
+        },
+        "50cal_stealth": {
+          "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/i_ball_M23/"
+        }
       }
     },
     "Shop": {
@@ -215,6 +259,12 @@
         "250lbs": {},
         "500lbs": {},
         "gun_pod": {},
+        "gunBrowning50_M2_underwing": {
+          "type": "additional gun",
+          "gunsCount": 4,
+          "ammoCount": 1360,
+          "shotFreq": 12.5
+        },
         "250lbs_x2": {},
         "500lbs_x2": {},
         "1000lbs": {},
@@ -2031,6 +2081,12 @@
         "s24": {},
         "zb500": {},
         "upk": {},
+        "cannonGSh_23L_upk_23_250": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 500,
+          "shotFreq": 56.6
+        },
         "fab100_x12": {},
         "fab250_x8": {},
         "fab500_x4": {},
@@ -2065,6 +2121,20 @@
         },
         "nr23_turret_ltc": {
           "icon": "flr/frag_i_t/ap_i/"
+        }
+      },
+      "cannonGSh_23L_upk_23_250": {
+        "default": {
+          "icon": "he_frag_i_t/ap_i/he_frag_i/"
+        },
+        "ns23_armor_targets": {
+          "icon": "he_frag_i/ap_i/ap_i/ap_i/"
+        },
+        "ns23_air_targets": {
+          "icon": "he_frag_i_t/he_frag_i/he_frag_i_t/he_frag_i/ap_i/"
+        },
+        "ns23_stealth": {
+          "icon": "ap_i/he_frag_i/he_frag_i/"
         }
       }
     }
@@ -2697,86 +2767,6 @@
       }
     }
   },
-  "fw_190a_1_killstreak": {
-    "type": "aircraft",
-    "hangar_place": "aircraft",
-    "testFlight": "testFlight_ruhr",
-    "tags": {
-      "axis": true,
-      "country_germany": true,
-      "type_fighter": true,
-      "fw_190_series": true,
-      "mediterranean": true,
-      "western_front": true,
-      "eastern_front": true,
-      "air": true
-    },
-    "Shop": {
-      "maxAltitude": 13228.0,
-      "maxSpeed": 181.111,
-      "turnTime": 20.2,
-      "airfieldLen": 450.0,
-      "climbTime": 432.0,
-      "maxSpeedAlt": 5500.0,
-      "climbAlt": 5000.0,
-      "climbSpeed": 14.1,
-      "wingLoading": 206.0,
-      "powerToWeightRatio": 0.44,
-      "rollRate": 193.0,
-      "pylonCount": 0,
-      "massPerSec": 2.69233,
-      "crew": 1,
-      "pilotsCount": 1,
-      "gunnersCount": 0,
-      "weapons": {
-        "gunMG17": {
-          "type": "machine gun",
-          "gunsCount": 4,
-          "ammoCount": 3800,
-          "shotFreq": 20.0
-        },
-        "cannonMGFFM": {
-          "type": "cannon",
-          "gunsCount": 2,
-          "ammoCount": 120,
-          "shotFreq": 8.66
-        }
-      }
-    },
-    "bullets": {
-      "gunMG17": {
-        "default": {
-          "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
-        },
-        "mg_universal": {
-          "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/"
-        },
-        "mg_tracers": {
-          "icon": "ap_t_ball/"
-        },
-        "mg_stealth": {
-          "icon": "he_ball/ap_ball/ap_ball/ap_ball/he_ball/"
-        }
-      },
-      "cannonMGFFM": {
-        "default": {
-          "icon": "i_t/he_i_mine/aphe/"
-        },
-        "mgff_universal": {
-          "icon": "i_t/he_i_mine/he_i_mine/aphe/"
-        },
-        "mgff_air_targets": {
-          "icon": "frag_i_t/he_i_mine/he_i_mine/frag_i_t/he_i_mine/he_i_mine/aphe/"
-        },
-        "mgff_tracers": {
-          "icon": "i_t/"
-        },
-        "mgff_stealth": {
-          "icon": "aphe/he_i_mine/he_i_mine/he_i_mine/ap_i/"
-        }
-      }
-    }
-  },
   "fw_190a_1": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -2860,6 +2850,86 @@
         "mgff_stealth": {
           "icon": "aphe/he_i_mine/he_i_mine/he_i_mine/ap_i/",
           "reqModification": "aircraft_mod_6"
+        }
+      }
+    }
+  },
+  "fw_190a_1_killstreak": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_ruhr",
+    "tags": {
+      "axis": true,
+      "country_germany": true,
+      "type_fighter": true,
+      "fw_190_series": true,
+      "mediterranean": true,
+      "western_front": true,
+      "eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 13228.0,
+      "maxSpeed": 181.111,
+      "turnTime": 20.2,
+      "airfieldLen": 450.0,
+      "climbTime": 432.0,
+      "maxSpeedAlt": 5500.0,
+      "climbAlt": 5000.0,
+      "climbSpeed": 14.1,
+      "wingLoading": 206.0,
+      "powerToWeightRatio": 0.44,
+      "rollRate": 193.0,
+      "pylonCount": 0,
+      "massPerSec": 2.69233,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "weapons": {
+        "gunMG17": {
+          "type": "machine gun",
+          "gunsCount": 4,
+          "ammoCount": 3800,
+          "shotFreq": 20.0
+        },
+        "cannonMGFFM": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 120,
+          "shotFreq": 8.66
+        }
+      }
+    },
+    "bullets": {
+      "gunMG17": {
+        "default": {
+          "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
+        },
+        "mg_universal": {
+          "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/"
+        },
+        "mg_tracers": {
+          "icon": "ap_t_ball/"
+        },
+        "mg_stealth": {
+          "icon": "he_ball/ap_ball/ap_ball/ap_ball/he_ball/"
+        }
+      },
+      "cannonMGFFM": {
+        "default": {
+          "icon": "i_t/he_i_mine/aphe/"
+        },
+        "mgff_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/aphe/"
+        },
+        "mgff_air_targets": {
+          "icon": "frag_i_t/he_i_mine/he_i_mine/frag_i_t/he_i_mine/he_i_mine/aphe/"
+        },
+        "mgff_tracers": {
+          "icon": "i_t/"
+        },
+        "mgff_stealth": {
+          "icon": "aphe/he_i_mine/he_i_mine/he_i_mine/ap_i/"
         }
       }
     }
@@ -3286,7 +3356,21 @@
           "reqModification": "aircraft_mod_12"
         },
         "wb81b": {},
-        "wb151": {},
+        "gunMG81_underwing": {
+          "type": "additional gun",
+          "gunsCount": 12,
+          "ammoCount": 3000,
+          "shotFreq": 18.333
+        },
+        "wb151": {
+          "reqModification": "aircraft_mod_19"
+        },
+        "cannonMG15120_underwing": {
+          "type": "additional gun",
+          "gunsCount": 4,
+          "ammoCount": 800,
+          "shotFreq": 11.66
+        },
         "250kg_slot2": {
           "reqModification": "aircraft_mod_4"
         },
@@ -3335,6 +3419,48 @@
         "mg_turret_api_apt": {
           "icon": "ap_i_ball/ap_t_ball/ap_i_ball/ap_t_ball/",
           "reqModification": "aircraft_mod_14"
+        }
+      },
+      "gunMG81_underwing": {
+        "default": {
+          "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
+        },
+        "mg_universal": {
+          "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/",
+          "reqModification": "aircraft_mod_20"
+        },
+        "mg_tracers": {
+          "icon": "ap_t_ball/",
+          "reqModification": "aircraft_mod_21"
+        },
+        "mg_stealth": {
+          "icon": "he_ball/ap_ball/ap_ball/ap_ball/he_ball/",
+          "reqModification": "aircraft_mod_22"
+        }
+      },
+      "cannonMG15120_underwing": {
+        "default": {
+          "icon": "i_t/i_t/aphe/he_i_mine/"
+        },
+        "mg151_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/ap_i/",
+          "reqModification": "aircraft_mod_5"
+        },
+        "mg151_air_targets": {
+          "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/",
+          "reqModification": "aircraft_mod_13"
+        },
+        "mg151_armor_targets": {
+          "icon": "aphe/aphe/aphe/i_t/",
+          "reqModification": "aircraft_mod_17"
+        },
+        "mg151_tracers": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "mg151_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
+          "reqModification": "aircraft_mod_9"
         }
       }
     }
@@ -3387,7 +3513,19 @@
         "250kg": {},
         "500kg": {},
         "wb81b": {},
+        "gunMG81_underwing": {
+          "type": "additional gun",
+          "gunsCount": 12,
+          "ammoCount": 3000,
+          "shotFreq": 18.333
+        },
         "wb151": {},
+        "cannonMG15120_underwing": {
+          "type": "additional gun",
+          "gunsCount": 4,
+          "ammoCount": 800,
+          "shotFreq": 11.66
+        },
         "250kg_slot2": {},
         "500kg_slot2": {},
         "pc500kg_slot2": {}
@@ -3423,6 +3561,40 @@
         },
         "mg_turret_api_apt": {
           "icon": "ap_i_ball/ap_t_ball/ap_i_ball/ap_t_ball/"
+        }
+      },
+      "gunMG81_underwing": {
+        "default": {
+          "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
+        },
+        "mg_universal": {
+          "icon": "ap_t_ball/ap_ball/he_ball/ap_i_ball/"
+        },
+        "mg_tracers": {
+          "icon": "ap_t_ball/"
+        },
+        "mg_stealth": {
+          "icon": "he_ball/ap_ball/ap_ball/ap_ball/he_ball/"
+        }
+      },
+      "cannonMG15120_underwing": {
+        "default": {
+          "icon": "i_t/i_t/aphe/he_i_mine/"
+        },
+        "mg151_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/ap_i/"
+        },
+        "mg151_air_targets": {
+          "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/"
+        },
+        "mg151_armor_targets": {
+          "icon": "aphe/aphe/aphe/i_t/"
+        },
+        "mg151_tracers": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/"
+        },
+        "mg151_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/"
         }
       }
     }
@@ -4148,11 +4320,38 @@
         },
         "gun_pod": {
           "reqModification": "aircraft_mod_5"
+        },
+        "gunBrowning50_M2_underwing": {
+          "type": "additional gun",
+          "gunsCount": 4,
+          "ammoCount": 1360,
+          "shotFreq": 12.5
         }
       }
     },
     "bullets": {
       "gunBrowning50_M2_late": {
+        "default": {
+          "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
+        },
+        "50cal_universal": {
+          "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_t_ball_M20/i_ball_M23/i_ball_M23/",
+          "reqModification": "aircraft_mod_4"
+        },
+        "50cal_ground_targets": {
+          "icon": "ap_i_t_ball_M20/i_ball_M23/ap_ball_M2/ap_ball_M2/ap_i_ball_M8/ap_i_ball_M8/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "50cal_tracers": {
+          "icon": "ap_i_t_ball_M20/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "50cal_stealth": {
+          "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/i_ball_M23/",
+          "reqModification": "aircraft_mod_6"
+        }
+      },
+      "gunBrowning50_M2_underwing": {
         "default": {
           "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
         },
@@ -4218,11 +4417,34 @@
         "tiny": {},
         "500lbs": {},
         "1000lbs": {},
-        "gun_pod": {}
+        "gun_pod": {},
+        "gunBrowning50_M2_underwing": {
+          "type": "additional gun",
+          "gunsCount": 4,
+          "ammoCount": 1360,
+          "shotFreq": 12.5
+        }
       }
     },
     "bullets": {
       "gunBrowning50_M2_late": {
+        "default": {
+          "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
+        },
+        "50cal_universal": {
+          "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_t_ball_M20/i_ball_M23/i_ball_M23/"
+        },
+        "50cal_ground_targets": {
+          "icon": "ap_i_t_ball_M20/i_ball_M23/ap_ball_M2/ap_ball_M2/ap_i_ball_M8/ap_i_ball_M8/"
+        },
+        "50cal_tracers": {
+          "icon": "ap_i_t_ball_M20/"
+        },
+        "50cal_stealth": {
+          "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/i_ball_M23/"
+        }
+      },
+      "gunBrowning50_M2_underwing": {
         "default": {
           "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
         },
@@ -4797,6 +5019,12 @@
           "shotFreq": 10.0
         },
         "cannons": {},
+        "cannonMG15120_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 270,
+          "shotFreq": 11.66
+        },
         "sc500": {}
       }
     },
@@ -4830,6 +5058,26 @@
         },
         "mk_108_fighter_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/i/"
+        }
+      },
+      "cannonMG15120_underwing": {
+        "default": {
+          "icon": "i_t/i_t/aphe/he_i_mine/"
+        },
+        "mg151_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/ap_i/"
+        },
+        "mg151_air_targets": {
+          "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/"
+        },
+        "mg151_armor_targets": {
+          "icon": "aphe/aphe/aphe/i_t/"
+        },
+        "mg151_tracers": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/"
+        },
+        "mg151_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/"
         }
       }
     }
@@ -6378,6 +6626,12 @@
         },
         "cannon": {
           "reqModification": "aircraft_mod_4"
+        },
+        "cannonMG15120_underwing": {
+          "type": "additional gun",
+          "gunsCount": 4,
+          "ammoCount": 500,
+          "shotFreq": 11.66
         }
       }
     },
@@ -6422,6 +6676,31 @@
         "mg151_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
           "reqModification": "aircraft_mod_7"
+        }
+      },
+      "cannonMG15120_underwing": {
+        "default": {
+          "icon": "i_t/i_t/aphe/he_i_mine/"
+        },
+        "mg151_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/ap_i/",
+          "reqModification": "aircraft_mod_11"
+        },
+        "mg151_air_targets": {
+          "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/",
+          "reqModification": "aircraft_mod_14"
+        },
+        "mg151_armor_targets": {
+          "icon": "aphe/aphe/aphe/i_t/",
+          "reqModification": "aircraft_mod_13"
+        },
+        "mg151_tracers": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
+          "reqModification": "aircraft_mod_10"
+        },
+        "mg151_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
+          "reqModification": "aircraft_mod_12"
         }
       }
     }
@@ -6951,7 +7230,7 @@
       "rollRate": 127.0,
       "pilotsCount": 1,
       "gunnersCount": 0,
-      "pylonCount": 0,
+      "pylonCount": 1,
       "massPerSec": 1.75233,
       "weapons": {
         "gunBrowning30_usaaf": {
@@ -7213,11 +7492,34 @@
         "500lbs_x2": {},
         "1000lbs_x2": {},
         "2000lbs_x2": {},
-        "gun_pod": {}
+        "gun_pod": {},
+        "gunBrowning50_M2_underwing": {
+          "type": "additional gun",
+          "gunsCount": 8,
+          "ammoCount": 3200,
+          "shotFreq": 12.5
+        }
       }
     },
     "bullets": {
       "gunBrowning50_M3": {
+        "default": {
+          "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
+        },
+        "50cal_universal": {
+          "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_t_ball_M20/i_ball_M23/i_ball_M23/"
+        },
+        "50cal_ground_targets": {
+          "icon": "ap_i_t_ball_M20/i_ball_M23/ap_ball_M2/ap_ball_M2/ap_i_ball_M8/ap_i_ball_M8/"
+        },
+        "50cal_tracers": {
+          "icon": "ap_i_t_ball_M20/"
+        },
+        "50cal_stealth": {
+          "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/i_ball_M23/"
+        }
+      },
+      "gunBrowning50_M2_underwing": {
         "default": {
           "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
         },
@@ -8903,6 +9205,12 @@
         "gun_pod_slot1": {
           "reqModification": "aircraft_mod_4"
         },
+        "gunBrowning50_M2_underwing": {
+          "type": "additional gun",
+          "gunsCount": 4,
+          "ammoCount": 1360,
+          "shotFreq": 12.5
+        },
         "500lbs": {
           "reqModification": "aircraft_mod_3"
         },
@@ -8952,6 +9260,27 @@
         "30cal_turret_armor_targets": {
           "icon": "t_ball/ap_ball/ap_ball/ap_ball/i_ball/",
           "reqModification": "aircraft_mod_5"
+        }
+      },
+      "gunBrowning50_M2_underwing": {
+        "default": {
+          "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
+        },
+        "50cal_universal": {
+          "icon": "ap_i_ball_M8/ap_i_ball_M8/ap_i_t_ball_M20/i_ball_M23/i_ball_M23/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "50cal_ground_targets": {
+          "icon": "ap_i_t_ball_M20/i_ball_M23/ap_ball_M2/ap_ball_M2/ap_i_ball_M8/ap_i_ball_M8/",
+          "reqModification": "aircraft_mod_10"
+        },
+        "50cal_tracers": {
+          "icon": "ap_i_t_ball_M20/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "50cal_stealth": {
+          "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/i_ball_M23/",
+          "reqModification": "aircraft_mod_6"
         }
       }
     }
@@ -12532,6 +12861,12 @@
         "add": {
           "reqModification": "aircraft_mod_6"
         },
+        "cannonMG15120_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 270,
+          "shotFreq": 11.66
+        },
         "sc50": {
           "reqModification": "aircraft_mod_3"
         },
@@ -12559,6 +12894,31 @@
         }
       },
       "cannonMG15120": {
+        "default": {
+          "icon": "i_t/i_t/aphe/he_i_mine/"
+        },
+        "mg151_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/ap_i/",
+          "reqModification": "aircraft_mod_5"
+        },
+        "mg151_air_targets": {
+          "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/",
+          "reqModification": "aircraft_mod_10"
+        },
+        "mg151_armor_targets": {
+          "icon": "aphe/aphe/aphe/i_t/",
+          "reqModification": "aircraft_mod_11"
+        },
+        "mg151_tracers": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "mg151_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
+          "reqModification": "aircraft_mod_7"
+        }
+      },
+      "cannonMG15120_underwing": {
         "default": {
           "icon": "i_t/i_t/aphe/he_i_mine/"
         },
@@ -12639,6 +12999,12 @@
           "shotFreq": 11.66
         },
         "add": {},
+        "cannonMG15120_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 270,
+          "shotFreq": 11.66
+        },
         "sc50": {},
         "sc250": {}
       }
@@ -12659,6 +13025,26 @@
         }
       },
       "cannonMG15120": {
+        "default": {
+          "icon": "i_t/i_t/aphe/he_i_mine/"
+        },
+        "mg151_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/ap_i/"
+        },
+        "mg151_air_targets": {
+          "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/"
+        },
+        "mg151_armor_targets": {
+          "icon": "aphe/aphe/aphe/i_t/"
+        },
+        "mg151_tracers": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/"
+        },
+        "mg151_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/"
+        }
+      },
+      "cannonMG15120_underwing": {
         "default": {
           "icon": "i_t/i_t/aphe/he_i_mine/"
         },
@@ -12738,11 +13124,23 @@
         "guns_20mm": {
           "reqModification": "aircraft_mod_2"
         },
+        "cannonMG15120_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 270,
+          "shotFreq": 11.66
+        },
         "rockets": {
           "reqModification": "aircraft_mod_7"
         },
         "guns_30mm": {
           "reqModification": "aircraft_mod_14"
+        },
+        "cannonMK108_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 70,
+          "shotFreq": 10.0
         },
         "sc50": {
           "reqModification": "aircraft_mod_5"
@@ -12797,6 +13195,48 @@
         "mg151_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
           "reqModification": "aircraft_mod_8"
+        }
+      },
+      "cannonMG15120_underwing": {
+        "default": {
+          "icon": "i_t/i_t/aphe/he_i_mine/"
+        },
+        "mg151_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/ap_i/",
+          "reqModification": "aircraft_mod_6"
+        },
+        "mg151_air_targets": {
+          "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/",
+          "reqModification": "aircraft_mod_10"
+        },
+        "mg151_armor_targets": {
+          "icon": "aphe/aphe/aphe/i_t/",
+          "reqModification": "aircraft_mod_12"
+        },
+        "mg151_tracers": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
+          "reqModification": "aircraft_mod_4"
+        },
+        "mg151_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
+          "reqModification": "aircraft_mod_8"
+        }
+      },
+      "cannonMK108_underwing": {
+        "default": {
+          "icon": "he_i_t_mine/i/"
+        },
+        "mk_108_fighter_universal": {
+          "icon": "he_i_t_mine/he_i_t_mine/he_i_t_mine/i/",
+          "reqModification": "aircraft_mod_15"
+        },
+        "mk_108_fighter_night": {
+          "icon": "he_i_t_n_mine/he_i_t_n_mine/he_i_t_n_mine/i/",
+          "reqModification": "aircraft_mod_17"
+        },
+        "mk_108_fighter_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/i/",
+          "reqModification": "aircraft_mod_16"
         }
       }
     }
@@ -12881,6 +13321,12 @@
         "gun_pod": {
           "reqModification": "aircraft_mod_8"
         },
+        "cannonMG15120_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 400,
+          "shotFreq": 11.66
+        },
         "rz65": {
           "reqModification": "aircraft_mod_12"
         }
@@ -12936,6 +13382,31 @@
         "mgff_stealth": {
           "icon": "aphe/he_i_mine/he_i_mine/he_i_mine/ap_i/",
           "reqModification": "aircraft_mod_10"
+        }
+      },
+      "cannonMG15120_underwing": {
+        "default": {
+          "icon": "i_t/i_t/aphe/he_i_mine/"
+        },
+        "mg151_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/ap_i/",
+          "reqModification": "aircraft_mod_16"
+        },
+        "mg151_air_targets": {
+          "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/",
+          "reqModification": "aircraft_mod_19"
+        },
+        "mg151_armor_targets": {
+          "icon": "aphe/aphe/aphe/i_t/",
+          "reqModification": "aircraft_mod_18"
+        },
+        "mg151_tracers": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
+          "reqModification": "aircraft_mod_15"
+        },
+        "mg151_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
+          "reqModification": "aircraft_mod_17"
         }
       }
     }
@@ -13035,6 +13506,12 @@
         "bk37": {
           "reqModification": "aircraft_mod_14"
         },
+        "cannonBK37_underwing": {
+          "type": "additional gun",
+          "gunsCount": 1,
+          "ammoCount": 66,
+          "shotFreq": 2.66667
+        },
         "sc50_slot6": {},
         "br20_slot5": {
           "reqModification": "aircraft_mod_5"
@@ -13120,6 +13597,19 @@
         "mg151_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
           "reqModification": "aircraft_mod_8"
+        }
+      },
+      "cannonBK37_underwing": {
+        "default": {
+          "icon": "apcr_t/he_frag_t/"
+        },
+        "bk37_armor_targets": {
+          "icon": "apcr_t/",
+          "reqModification": "aircraft_mod_18"
+        },
+        "bk37_air_targets": {
+          "icon": "he_frag_t/",
+          "reqModification": "aircraft_mod_19"
         }
       }
     }
@@ -13219,6 +13709,12 @@
         "bk37": {
           "reqModification": "aircraft_mod_14"
         },
+        "cannonBK37_underwing": {
+          "type": "additional gun",
+          "gunsCount": 1,
+          "ammoCount": 66,
+          "shotFreq": 2.66667
+        },
         "sc50_slot6": {},
         "br20_slot5": {
           "reqModification": "aircraft_mod_5"
@@ -13304,6 +13800,17 @@
         "mg151_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
           "reqModification": "aircraft_mod_8"
+        }
+      },
+      "cannonBK37_underwing": {
+        "default": {
+          "icon": "apcr_t/he_frag_t/"
+        },
+        "bk37_armor_targets": {
+          "icon": "apcr_t/"
+        },
+        "bk37_air_targets": {
+          "icon": "he_frag_t/"
         }
       }
     }
@@ -14007,6 +14514,91 @@
       }
     }
   },
+  "ju-87g_2": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_ruhr",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "junkers",
+        "model": "jumo_211j",
+        "mass": 585.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "axis": true,
+      "country_germany": true,
+      "type_assault": true,
+      "type_strike_aircraft": true,
+      "mediterranean": true,
+      "western_front": true,
+      "eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 7000.0,
+      "maxSpeed": 105.5,
+      "turnTime": 32.0,
+      "airfieldLen": 513.016,
+      "maxSpeedAlt": 4000.0,
+      "climbSpeed": 9.5,
+      "climbTime": 720.0,
+      "climbAlt": 4000.0,
+      "wingLoading": 169.0,
+      "powerToWeightRatio": 0.23,
+      "rollRate": 63.0,
+      "pylonCount": 0,
+      "massPerSec": 3.10264,
+      "crew": 2,
+      "pilotsCount": 1,
+      "gunnersCount": 1,
+      "weapons": {
+        "cannonBK37": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 24,
+          "shotFreq": 2.66667
+        },
+        "gunMG81_turret": {
+          "type": "gunner0",
+          "gunsCount": 2,
+          "ammoCount": 1700,
+          "shotFreq": 26.6
+        }
+      }
+    },
+    "bullets": {
+      "cannonBK37": {
+        "default": {
+          "icon": "apcr_t/he_frag_t/"
+        },
+        "bk37_antitank": {
+          "icon": "apcr_t/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "bk37_antibomber": {
+          "icon": "he_frag_t/",
+          "reqModification": "aircraft_mod_4"
+        }
+      },
+      "gunMG81_turret": {
+        "default": {
+          "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
+        },
+        "mg_turret_armor_targets": {
+          "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "mg_turret_api_apt": {
+          "icon": "ap_i_ball/ap_t_ball/ap_i_ball/ap_t_ball/",
+          "reqModification": "aircraft_mod_2"
+        }
+      }
+    }
+  },
   "ju-87r-2": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -14098,89 +14690,6 @@
         "mg_turret_api_apt": {
           "icon": "ap_i_ball/ap_t_ball/ap_i_ball/ap_t_ball/",
           "reqModification": "aircraft_mod_7"
-        }
-      }
-    }
-  },
-  "ju-87g_2": {
-    "type": "aircraft",
-    "hangar_place": "aircraft",
-    "testFlight": "testFlight_ruhr",
-    "info": {
-      "engine1_dm": {
-        "manufacturer": "junkers",
-        "model": "jumo_211j",
-        "mass": 585.0
-      },
-      "tanks_params": {
-        "protected": true
-      }
-    },
-    "tags": {
-      "axis": true,
-      "country_germany": true,
-      "type_assault": true,
-      "type_strike_aircraft": true,
-      "mediterranean": true,
-      "western_front": true,
-      "eastern_front": true,
-      "air": true
-    },
-    "Shop": {
-      "maxAltitude": 7000.0,
-      "maxSpeed": 105.5,
-      "turnTime": 32.0,
-      "airfieldLen": 513.016,
-      "maxSpeedAlt": 4000.0,
-      "climbSpeed": 9.5,
-      "climbTime": 720.0,
-      "climbAlt": 4000.0,
-      "wingLoading": 169.0,
-      "powerToWeightRatio": 0.23,
-      "rollRate": 63.0,
-      "pylonCount": 0,
-      "massPerSec": 3.10264,
-      "crew": 2,
-      "pilotsCount": 1,
-      "gunnersCount": 1,
-      "weapons": {
-        "cannonBK37": {
-          "type": "cannon",
-          "gunsCount": 2,
-          "ammoCount": 24,
-          "shotFreq": 2.66667
-        },
-        "gunMG81_turret": {
-          "type": "gunner0",
-          "gunsCount": 2,
-          "ammoCount": 1700,
-          "shotFreq": 26.6
-        }
-      }
-    },
-    "bullets": {
-      "cannonBK37": {
-        "default": {
-          "icon": "apcr_t/he_frag_t/"
-        },
-        "bk37_armor_targets": {
-          "icon": "apcr_t/"
-        },
-        "bk37_air_targets": {
-          "icon": "he_frag_t/"
-        }
-      },
-      "gunMG81_turret": {
-        "default": {
-          "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
-        },
-        "mg_turret_armor_targets": {
-          "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
-          "reqModification": "aircraft_mod_1"
-        },
-        "mg_turret_api_apt": {
-          "icon": "ap_i_ball/ap_t_ball/ap_i_ball/ap_t_ball/",
-          "reqModification": "aircraft_mod_2"
         }
       }
     }
@@ -15740,6 +16249,12 @@
         "r3_left": {
           "reqModification": "aircraft_mod_2"
         },
+        "cannonMK103_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 70,
+          "shotFreq": 6.33333
+        },
         "50kg_x4": {},
         "250kg": {
           "reqModification": "aircraft_mod_6"
@@ -15810,6 +16325,23 @@
         "mg151_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
           "reqModification": "aircraft_mod_13"
+        }
+      },
+      "cannonMK103_underwing": {
+        "default": {
+          "icon": "he_i_t_mine/i/ap_i/"
+        },
+        "mk_103_armor_targets": {
+          "icon": "apcr_t/",
+          "reqModification": "aircraft_mod_18"
+        },
+        "mk_103_air_targets": {
+          "icon": "he_i_t_mine/he_i_mine/he_i_mine/i/",
+          "reqModification": "aircraft_mod_19"
+        },
+        "mk_103_stealth": {
+          "icon": "ap_i/",
+          "reqModification": "aircraft_mod_17"
         }
       }
     }
@@ -16213,8 +16745,20 @@
         "R5": {
           "reqModification": "aircraft_mod_6"
         },
+        "cannonMG15120_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 270,
+          "shotFreq": 11.66
+        },
         "R6": {
           "reqModification": "aircraft_mod_11"
+        },
+        "cannonMK108_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 70,
+          "shotFreq": 10.0
         },
         "sc250": {
           "reqModification": "aircraft_mod_3"
@@ -16266,6 +16810,48 @@
         "mg151_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
           "reqModification": "aircraft_mod_8"
+        }
+      },
+      "cannonMG15120_underwing": {
+        "default": {
+          "icon": "i_t/i_t/aphe/he_i_mine/"
+        },
+        "mg151_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/ap_i/",
+          "reqModification": "aircraft_mod_5"
+        },
+        "mg151_air_targets": {
+          "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/",
+          "reqModification": "aircraft_mod_10"
+        },
+        "mg151_armor_targets": {
+          "icon": "aphe/aphe/aphe/i_t/",
+          "reqModification": "aircraft_mod_12"
+        },
+        "mg151_tracers": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "mg151_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
+          "reqModification": "aircraft_mod_8"
+        }
+      },
+      "cannonMK108_underwing": {
+        "default": {
+          "icon": "he_i_t_mine/i/"
+        },
+        "mk_108_fighter_universal": {
+          "icon": "he_i_t_mine/he_i_t_mine/he_i_t_mine/i/",
+          "reqModification": "aircraft_mod_14"
+        },
+        "mk_108_fighter_night": {
+          "icon": "he_i_t_n_mine/he_i_t_n_mine/he_i_t_n_mine/i/",
+          "reqModification": "aircraft_mod_15"
+        },
+        "mk_108_fighter_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/i/",
+          "reqModification": "aircraft_mod_13"
         }
       }
     }
@@ -16327,8 +16913,20 @@
         "R5": {
           "reqModification": "aircraft_mod_6"
         },
+        "cannonMG15120_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 270,
+          "shotFreq": 11.66
+        },
         "R6": {
           "reqModification": "aircraft_mod_10"
+        },
+        "cannonMK108_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 70,
+          "shotFreq": 10.0
         },
         "sc250": {
           "reqModification": "aircraft_mod_3"
@@ -16380,6 +16978,40 @@
         "mg151_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
           "reqModification": "aircraft_mod_8"
+        }
+      },
+      "cannonMG15120_underwing": {
+        "default": {
+          "icon": "i_t/i_t/aphe/he_i_mine/"
+        },
+        "mg151_universal": {
+          "icon": "i_t/he_i_mine/he_i_mine/ap_i/"
+        },
+        "mg151_air_targets": {
+          "icon": "ap_i/he_i_mine/he_i_mine/he_i_mine/he_i_mine/i_t/"
+        },
+        "mg151_armor_targets": {
+          "icon": "aphe/aphe/aphe/i_t/"
+        },
+        "mg151_tracers": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/i_t/i_t/"
+        },
+        "mg151_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/"
+        }
+      },
+      "cannonMK108_underwing": {
+        "default": {
+          "icon": "he_i_t_mine/i/"
+        },
+        "mk_108_fighter_universal": {
+          "icon": "he_i_t_mine/he_i_t_mine/he_i_t_mine/i/"
+        },
+        "mk_108_fighter_night": {
+          "icon": "he_i_t_n_mine/he_i_t_n_mine/he_i_t_n_mine/i/"
+        },
+        "mk_108_fighter_stealth": {
+          "icon": "he_i_mine/he_i_mine/he_i_mine/i/"
         }
       }
     }
@@ -16518,6 +17150,12 @@
         "R6": {
           "reqModification": "aircraft_mod_6"
         },
+        "cannonMG15115_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 250,
+          "shotFreq": 11.66
+        },
         "sc50": {
           "reqModification": "aircraft_mod_3"
         },
@@ -16567,6 +17205,23 @@
         "mg151_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
           "reqModification": "aircraft_mod_8"
+        }
+      },
+      "cannonMG15115_underwing": {
+        "default": {
+          "icon": "i_t_ball/ap_t_ball/"
+        },
+        "mg15115_universal": {
+          "icon": "i_t_ball/i_t_ball/apcr_i_ball/he_ball/",
+          "reqModification": "aircraft_mod_12"
+        },
+        "mg15115_air_targets": {
+          "icon": "he_ball/he_ball/i_t_ball/ap_t_ball/",
+          "reqModification": "aircraft_mod_14"
+        },
+        "mg15115_armor_targets": {
+          "icon": "apcr_i_ball/apcr_i_ball/apcr_i_ball/ap_t_ball/",
+          "reqModification": "aircraft_mod_13"
         }
       }
     }
@@ -16625,6 +17280,12 @@
           "shotFreq": 11.66
         },
         "R6": {},
+        "cannonMG15115_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 250,
+          "shotFreq": 11.66
+        },
         "sc50": {},
         "sc250": {}
       }
@@ -16662,6 +17323,20 @@
         },
         "mg151_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/"
+        }
+      },
+      "cannonMG15115_underwing": {
+        "default": {
+          "icon": "i_t_ball/ap_t_ball/"
+        },
+        "mg15115_universal": {
+          "icon": "i_t_ball/i_t_ball/apcr_i_ball/he_ball/"
+        },
+        "mg15115_air_targets": {
+          "icon": "he_ball/he_ball/i_t_ball/ap_t_ball/"
+        },
+        "mg15115_armor_targets": {
+          "icon": "apcr_i_ball/apcr_i_ball/apcr_i_ball/ap_t_ball/"
         }
       }
     }
@@ -16721,6 +17396,12 @@
         "R1": {
           "reqModification": "aircraft_mod_6"
         },
+        "cannonMG15115_underwing": {
+          "type": "additional gun",
+          "gunsCount": 2,
+          "ammoCount": 250,
+          "shotFreq": 11.66
+        },
         "sc50": {
           "reqModification": "aircraft_mod_3"
         },
@@ -16770,6 +17451,23 @@
         "mg151_stealth": {
           "icon": "he_i_mine/he_i_mine/he_i_mine/aphe/ap_i/",
           "reqModification": "aircraft_mod_8"
+        }
+      },
+      "cannonMG15115_underwing": {
+        "default": {
+          "icon": "i_t_ball/ap_t_ball/"
+        },
+        "mg15115_universal": {
+          "icon": "i_t_ball/i_t_ball/apcr_i_ball/he_ball/",
+          "reqModification": "aircraft_mod_12"
+        },
+        "mg15115_air_targets": {
+          "icon": "he_ball/he_ball/i_t_ball/ap_t_ball/",
+          "reqModification": "aircraft_mod_14"
+        },
+        "mg15115_armor_targets": {
+          "icon": "apcr_i_ball/apcr_i_ball/apcr_i_ball/ap_t_ball/",
+          "reqModification": "aircraft_mod_13"
         }
       }
     }
@@ -22393,11 +23091,29 @@
           "shotFreq": 12.5
         },
         "20mm": {},
+        "cannonB20M": {
+          "type": "additional gun",
+          "gunsCount": 1,
+          "ammoCount": 115,
+          "shotFreq": 13.3333
+        },
         "23mm": {
           "reqModification": "aircraft_mod_3"
         },
+        "cannonNS23": {
+          "type": "additional gun",
+          "gunsCount": 1,
+          "ammoCount": 75,
+          "shotFreq": 10.0
+        },
         "37mm": {
-          "reqModification": "aircraft_mod_6"
+          "reqModification": "aircraft_mod_10"
+        },
+        "cannonN37": {
+          "type": "additional gun",
+          "gunsCount": 1,
+          "ammoCount": 28,
+          "shotFreq": 6.666
         }
       }
     },
@@ -22412,7 +23128,7 @@
         },
         "shvak_ground_targets": {
           "icon": "he_frag/frag_i_t/ap_i/",
-          "reqModification": "aircraft_mod_5"
+          "reqModification": "aircraft_mod_8"
         },
         "shvak_tracers": {
           "icon": "frag_i_t/frag_i_t/frag_i_t/",
@@ -22420,11 +23136,66 @@
         },
         "shvak_armor_targets": {
           "icon": "ap_i/frag_i_t/ap_i/ap_i/",
-          "reqModification": "aircraft_mod_7"
+          "reqModification": "aircraft_mod_6"
         },
         "shvak_stealth": {
           "icon": "ap_i/he_frag/he_frag/frag_i/",
           "reqModification": "aircraft_mod_4"
+        }
+      },
+      "cannonB20M": {
+        "default": {
+          "icon": "frag_i_t/ap_i/"
+        },
+        "shvak_universal": {
+          "icon": "frag_i_t/he_frag/ap_i/frag_i_t/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "shvak_ground_targets": {
+          "icon": "he_frag/frag_i_t/ap_i/",
+          "reqModification": "aircraft_mod_8"
+        },
+        "shvak_tracers": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "shvak_armor_targets": {
+          "icon": "ap_i/frag_i_t/ap_i/ap_i/",
+          "reqModification": "aircraft_mod_6"
+        },
+        "shvak_stealth": {
+          "icon": "ap_i/he_frag/he_frag/frag_i/",
+          "reqModification": "aircraft_mod_4"
+        }
+      },
+      "cannonNS23": {
+        "default": {
+          "icon": "ap_i/frag_i_t/"
+        },
+        "ns23_armor_targets": {
+          "icon": "frag_i_t/ap_i/ap_i/ap_i/",
+          "reqModification": "aircraft_mod_7"
+        },
+        "ns23_air_targets": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/ap_i/",
+          "reqModification": "aircraft_mod_9"
+        },
+        "ns23_stealth": {
+          "icon": "ap_i/",
+          "reqModification": "aircraft_mod_5"
+        }
+      },
+      "cannonN37": {
+        "default": {
+          "icon": "he_frag_i_t/he_frag_i_t/ap_i_t/"
+        },
+        "ns37_air_targets": {
+          "icon": "he_frag_i_t/he_frag_i/he_frag_i/",
+          "reqModification": "aircraft_mod_12"
+        },
+        "ns37_armor_targets": {
+          "icon": "ap_i_t/",
+          "reqModification": "aircraft_mod_11"
         }
       }
     }
@@ -59508,8 +60279,7 @@
       },
       "115mm_MILAN_2_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     }

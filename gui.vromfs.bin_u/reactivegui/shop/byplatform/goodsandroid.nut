@@ -23,7 +23,7 @@ let isDebugMode = is_pc
 let getDebugPriceMicros = @(sku) (sku.hash() % 1000) * 1000000 + ((sku.hash() / 7) % 1000000)
 let billingModule = require("android.billing.googleplay")
 let { GP_OK, GP_NOT_INITED, GP_USER_CANCELED, GP_SERVICE_UNAVAILABLE, GP_ITEM_UNAVAILABLE,
-  GP_SERVICE_TIMEOUT, GP_DEVELOPER_ERROR
+  GP_SERVICE_TIMEOUT, GP_DEVELOPER_ERROR, SUBS_UPD_WITH_TIME_PRORATION
 } = billingModule
 let dbgStatuses = [GP_OK, GP_USER_CANCELED, GP_SERVICE_UNAVAILABLE, GP_ITEM_UNAVAILABLE, GP_SERVICE_TIMEOUT]
 local dbgStatusIdx = 0
@@ -60,6 +60,11 @@ let { //defaults only to allow test this module on PC
     setTimeout(0.1, @() eventbus_send("android.billing.googleplay.onInitAndDataRequested", result))
   },
   startPurchaseAsync = @(_) setTimeout(1.0,
+    @() eventbus_send("android.billing.googleplay.onGooglePurchaseCallback", {
+      status = dbgStatuses[dbgStatusIdx++ % dbgStatuses.len()],
+      value = "{ \"orderId\" : -1, \"productId\" : \"debug\" }"
+    })),
+  upgradeSubscription = @(_oldSku, _newSku, _proration_mode) setTimeout(1.0,
     @() eventbus_send("android.billing.googleplay.onGooglePurchaseCallback", {
       status = dbgStatuses[dbgStatusIdx++ % dbgStatuses.len()],
       value = "{ \"orderId\" : -1, \"productId\" : \"debug\" }"
@@ -277,6 +282,19 @@ function buyPlatformGoods(goodsOrId) {
   purchaseInProgress.set(skuExt)
 }
 
+function changeSubscription(subsTo, subsFrom) {
+  let skuFrom = getSku(platformSubs.get()?[subsFrom] ?? subsFrom)
+  let goodsTo = platformSubs.get()?[subsTo] ?? subsTo
+  let skuTo = getSku(goodsTo)
+  let planIdTo = getPlanId(goodsTo)
+  if (skuTo == null || skuFrom == null)
+   return
+  let skuToExt = planIdTo == null ? skuTo : $"{skuTo}:{planIdTo}"
+  logG($"Change subscription from {skuFrom} to {skuToExt}")
+  upgradeSubscription(skuFrom, skuToExt, SUBS_UPD_WITH_TIME_PRORATION)
+  purchaseInProgress.set(skuToExt)
+}
+
 let noNeedLogerr = [ GP_SERVICE_TIMEOUT, GP_USER_CANCELED, GP_DEVELOPER_ERROR ]
 
 function sendLogPurchaseData(json_value) {
@@ -364,5 +382,6 @@ return {
   platformSubs
   buyPlatformGoods
   activatePlatfromSubscription = buyPlatformGoods
+  changeSubscription
   platformPurchaseInProgress
 }

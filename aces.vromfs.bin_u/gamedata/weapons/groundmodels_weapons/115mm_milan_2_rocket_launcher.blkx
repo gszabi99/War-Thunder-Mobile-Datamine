@@ -14,7 +14,6 @@
   "helicopterGroup": 2,
   "reloadTime": 10.0,
   "allowHumanReload": true,
-  "allowRearmOnField": true,
   "mesh": "milan_2_rocket_deployed",
   "animChar": "milan_2_rocket_char",
   "reloadAnimParam": "rocket_hide",

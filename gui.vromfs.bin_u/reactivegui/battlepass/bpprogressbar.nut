@@ -2,9 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { bpCardStyle, bpCardPadding, bpCardMargin } = require("bpCardsStyle.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
 let { curStage } = require("battlePassState.nut")
-let { bpCurProgressbar, bpProgressbarEmpty, bpProgressbarFull } = require("battlePassPkg.nut")
+let { bpCurProgressbar, bpProgressbarEmpty, bpProgressbarFull, progressIconSize } = require("battlePassPkg.nut")
 
-let progressIconSize = [evenPx(54), hdpxi(58)]
 let halfWidthProgressIcon = progressIconSize[0] / 2
 
 let bpBorderProgressIcon = {

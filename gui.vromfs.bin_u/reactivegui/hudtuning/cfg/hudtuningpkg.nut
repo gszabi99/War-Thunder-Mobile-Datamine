@@ -5,6 +5,7 @@ let weaponsButtonsConfig = require("%rGui/hud/weaponsButtonsConfig.nut")
 let { visibleWeaponsDynamic } = require("%rGui/hud/currentWeaponsStates.nut")
 let weaponsButtonsView = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkNumberedWeaponEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
+let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
 let { hudMode, HM_COMMON } = require("%rGui/hudState.nut")
 
 enum Z_ORDER {
@@ -30,7 +31,7 @@ function withActionBarButtonCtor(config, unitType, cfg) {
   let { actionType, mkButtonFunction, getImage } = config
   let ctor = weaponsButtonsView[mkButtonFunction]
   return withActionButtonScaleCtor(actionType, @(v, scale) ctor(config, v, scale), {
-    editView = weaponsButtonsView.mkActionItemEditView(getImage(unitType))
+    editView = mkActionItemEditView(getImage(unitType))
     priority = Z_ORDER.BUTTON
   }.__update(cfg))
 }
@@ -48,7 +49,7 @@ function withAnyActionBarButtonCtor(configsList, unitType, cfg) {
           : weaponsButtonsView[configW.value.mkButtonFunction](configW.value, action.value, scale)
       }
     }
-    editView = weaponsButtonsView.mkActionItemEditView(configsList[0].getImage(unitType))
+    editView = mkActionItemEditView(configsList[0].getImage(unitType))
     priority = Z_ORDER.BUTTON
   }.__update(cfg)
 }

@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { pointsCurStage, pointsPerStage } = require("battlePassState.nut")
 let { mkProgressLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 
+let progressIconSize = [evenPx(54), hdpxi(58)]
 let bpLineFillColor = 0xFF191919
 let bpBorderColor = 0xFF7C7C7C
 
@@ -57,4 +58,6 @@ return {
 
   bpProgressbarEmpty = bpProgress(null)
   bpProgressbarFull = bpProgress(fullLineBP)
+
+  progressIconSize
 }

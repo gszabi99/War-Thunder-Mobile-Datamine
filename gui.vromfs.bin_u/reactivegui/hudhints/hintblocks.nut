@@ -112,8 +112,8 @@ function chatLogAndKillLogEditView(options) {
 
 return {
   mainHintsBlock = mkHintsBlock(mainHintLogState.curEvents, { valign = ALIGN_TOP })
-  warningHintsBlock = mkHintsBlock(warningHintLogState.curEvents, {}, { minHeight = hdpx(33) })
-  commonHintsBlock = mkHintsBlock(commonHintLogState.curEvents)
+  warningHintsBlock = mkHintsBlock(warningHintLogState.curEvents, {}, { minHeight = hdpx(40) })
+  commonHintsBlock = mkHintsBlock(commonHintLogState.curEvents, {}, { minHeight = hdpx(33) })
   resultsHintsBlock = mkHintsBlock(resultsHintLogState.curEvents)
   logerrHintsBlock = mkHintsBlock(logerrLogState.curEvents, { halign = ALIGN_LEFT })
   chatLogAndKillLogPlace

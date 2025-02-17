@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let logOP = log_with_prefix("[OPTIONS_COMPATIBILITY] ")
-let { get_base_game_version_str } = require("app")
 let { fabs, round } = require("math")
 let { register_command } = require("console")
 let { eventbus_send } = require("eventbus")
@@ -8,7 +7,6 @@ let { get_game_params_blk, get_local_custom_settings_blk } = require("blkGetters
 let { get_user_system_info } = require("sysinfo")
 let { get_platform_window_resolution } = require("graphicsOptions")
 let { is_ios, is_android } = require("%sqstd/platform.nut")
-let { check_version } = require("%sqstd/version_compare.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { optionValues, OPT_CAMERA_SENSE_TANK, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_CAMERA_SENSE_SHIP, OPT_CAMERA_SENSE_IN_ZOOM_SHIP,
@@ -50,9 +48,8 @@ function convertCameraSenseOptionsToV202410() {
   let isConverted = get_local_custom_settings_blk()?[SAVE_ID_TOUCH_SENSE_OPT_CONVERTED] != null
   if (isConverted)
     return
-  let isNewTouchSenseSupported = check_version(">=1.11.0.0", get_base_game_version_str())
-  let isNewTouchSenseEnabled = get_game_params_blk()?.touchSensMultShip != null
-  if (!isNewTouchSenseSupported || ! isNewTouchSenseEnabled)
+  let isNewTouchSense = get_game_params_blk()?.touchSensMultShip != null
+  if (!isNewTouchSense)
     return
   let scrW = get_user_system_info()?.gameResolution.split(" x ")[0].tointeger() ?? 0
   let wndW = get_platform_window_resolution().width

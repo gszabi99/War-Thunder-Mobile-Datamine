@@ -4,13 +4,14 @@ let { get_mission_time } = require("mission")
 let { defer, resetTimeout } = require("dagor.workcycle")
 let { round } =  require("math")
 let { setDrawWeaponAllowableAngles } = require("hudState")
+let { activateActionBarAction } = require("hudActionBar")
 let { getRomanNumeral, ceil } = require("%sqstd/math.nut")
 let { getScaledFont, scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
 let { touchButtonSize, borderWidth, btnBgColor, imageColor, imageDisabledColor,
-  borderColor, borderColorPushed, borderNoAmmoColor, textColor, zoneRadiusX, zoneRadiusY
+  borderColor, borderColorPushed, zoneRadiusX, zoneRadiusY
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
 } = require("%rGui/hud/currentWeaponsStates.nut")
@@ -34,6 +35,9 @@ let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { mkRhombBtnBg, mkRhombBtnBorder, mkAmmoCount } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
 let { mkBtnZone } = require("%rGui/hud/buttons/hudButtonsPkg.nut")
 let { getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT } = require("%rGui/options/guiOptions.nut")
+let { isAvailableActionItem, mkActionItemProgress, mkActionItemCount, mkActionItemImage,
+  countHeightUnderActionItem, mkActionItemBorder
+} = require("buttons/actionButtonComps.nut")
 
 let defImageSize = (0.75 * touchButtonSize).tointeger()
 let weaponNumberSize = (0.3 * touchButtonSize).tointeger()
@@ -56,7 +60,6 @@ let svgNullable = @(image, size) ((image ?? "") == "") ? null
   : Picture($"{image}:{size}:{size}:P")
 
 let weaponryButtonRotate = 45
-let countHeightUnderActionItem = (0.4 * touchButtonSize).tointeger()
 let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(-50)] }
 let rotatedShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-70)] }
 
@@ -70,64 +73,11 @@ function useShortcutOn(shortcutId) {
   updateActionBarDelayed()
 }
 
-let isAvailableActionItem = @(itemValue) itemValue.count != 0 && (itemValue?.available ?? true)
-
-function mkActionItemProgress(itemValue, isAvailable) {
-  let { cooldownEndTime = 0, cooldownTime = 1, blockedCooldownEndTime = 0, blockedCooldownTime = 1, id = null
-  } = itemValue
-  let isBlocked = blockedCooldownEndTime > 0 && cooldownEndTime == 0
-  let endTime = isBlocked ? blockedCooldownEndTime : cooldownEndTime
-  let time = isBlocked ? blockedCooldownTime : cooldownTime
-  let cooldownDuration = endTime - get_mission_time()
-  let hasCooldown = isAvailable && cooldownDuration > 0
-  let cooldown = hasCooldown ? (1 - (cooldownDuration / max(time, 1))) : 1
-  let trigger = $"action_cd_finish_{id}"
-  return {
-    size = flex()
-    children = {
-      size = flex()
-      rendObj = ROBJ_PROGRESS_CIRCULAR
-      fgColor = !isAvailable ? btnBgColor.noAmmo
-        : (itemValue?.broken ?? false) ? btnBgColor.broken
-        : btnBgColor.ready
-      bgColor = btnBgColor.empty
-      fValue = 1.0
-      key = $"action_bg_{id}_{endTime}_{time}_{isAvailable}"
-      animations = [
-        { prop = AnimProp.fValue, from = cooldown, to = 1.0, duration = cooldownDuration, play = true
-          onFinish = @() isAvailable ? anim_start(trigger) : null
-        }
-      ]
-    }
-
-    transform = {}
-    animations = [{ prop = AnimProp.scale, duration = 0.2,
-      from = [1.0, 1.0], to = [1.2, 1.2], easing = CosineFull, trigger }]
-  }
-}
-
-let mkActionItemCount = @(count, scale = 1) {
-  size = flex()
-  rendObj = ROBJ_TEXT
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  color = textColor
-  text = count < 0 ? "" : count
-}.__update(getScaledFont(fontTinyShaded, scale))
-
-let mkActionItemImage = @(getImage, isAvailable, size) @() {
-  watch = unitType
-  rendObj = ROBJ_IMAGE
-  size = [size, size]
-  image = svgNullable(getImage(unitType.value), size)
-  keepAspect = KEEP_ASPECT_FIT
-  color = !isAvailable ? imageDisabledColor : imageColor
-}
-
 function mkActionItem(buttonConfig, actionItem, scale) {
   if (actionItem == null)
     return null
   let { getShortcut, getImage, haptPatternId = -1, key = null, sound = "", getAnimationKey = null, alternativeImage = null } = buttonConfig
+  let { shortcutIdx = -1 } = actionItem
   let stateFlags = Watched(0)
   let isAvailable = isAvailableActionItem(actionItem)
   let shortcutId = getShortcut(unitType.value, actionItem) //FIXME: Need to calculate shortcutId on the higher level where it really rebuild on change unit
@@ -153,22 +103,14 @@ function mkActionItem(buttonConfig, actionItem, scale) {
             return
           if (actionItem?.available)
             playSound(sound)
-          useShortcut(shortcutId)
+          activateActionBarAction(shortcutIdx)
           playHapticPattern(haptPatternId)
         }
         hotkeys = mkGamepadHotkey(shortcutId)
         onElemState = @(v) stateFlags(v)
         children = [
           mkActionItemProgress(actionItem, isAvailable && !isDisabled.value)
-          @() {
-            watch = stateFlags
-            size = flex()
-            rendObj = ROBJ_BOX
-            borderColor = stateFlags.value & S_ACTIVE ? borderColorPushed
-              : (!isAvailable || isDisabled.value) ? borderNoAmmoColor
-              : borderColor
-            borderWidth = borderW
-          }
+          mkActionItemBorder(borderW, stateFlags, isAvailable ? isDisabled : Watched(true))
           mkActionItemImage(actionItem?.isAlternativeImage ? alternativeImage : getImage,
             isAvailable && !isDisabled.value,
             btnSize)
@@ -262,16 +204,9 @@ function mkCountermeasureItem(buttonConfig, actionItem, scale) {
         children = [
           progressTime.get() ? progressText : null
           mkActionItemProgress(actionItem, isAvailable && !isDisabled.value)
-          @() {
-            watch = [stateFlags]
-            rendObj = ROBJ_BOX
-            size = flex()
-            borderColor = stateFlags.value & S_ACTIVE ? borderColorPushed
-              : progressTime.get() ? borderColorPushed
-              : (!isAvailable || isDisabled.value) ? borderNoAmmoColor
-              : borderColor
-            borderWidth = borderW
-          }
+          mkActionItemBorder(borderW,
+            Computed(@() progressTime.get() ? S_ACTIVE : stateFlags.get()),
+            isAvailable ? isDisabled : Watched(true))
           mkActionItemImage(alternativeImage && actionItem?.isAlternativeImage ? alternativeImage : getImage,
             isAvailable && !isDisabled.value,
             btnSize)
@@ -284,30 +219,6 @@ function mkCountermeasureItem(buttonConfig, actionItem, scale) {
       mkActionItemCount(actionItem.count, scale)
     ]
   }
-}
-
-let mkActionItemEditView = @(image) {
-  size = [touchButtonSize, touchButtonSize + countHeightUnderActionItem]
-  flow = FLOW_VERTICAL
-  children = [
-    {
-      size = [touchButtonSize, touchButtonSize]
-      rendObj = ROBJ_BOX
-      fillColor = btnBgColor.empty
-      borderColor
-      borderWidth
-      valign = ALIGN_CENTER
-      halign = ALIGN_CENTER
-      children = {
-        rendObj = ROBJ_IMAGE
-        size = [touchButtonSize, touchButtonSize]
-        image = Picture($"{image}:{touchButtonSize}:{touchButtonSize}:P")
-        keepAspect = KEEP_ASPECT_FIT
-        color = imageColor
-      }
-    }
-    mkActionItemCount(0)
-  ]
 }
 
 let mkBulletEditView = @(image, bulletNumber) {
@@ -359,6 +270,7 @@ function setNextRepairImage() {
 
 function mkRepairActionItem(buttonConfig, actionItem, scale) {
   let { getShortcut, getImage, haptPatternId = -1, actionKey = "btn_repair", getAnimationKey = null } = buttonConfig
+  let { shortcutIdx = -1 } = actionItem
   let stateFlags = Watched(0)
   let isAvailable = actionItem != null && isAvailableActionItem(actionItem)
   let isInCooldown = (actionItem?.cooldownEndTime ?? 0) > get_mission_time()
@@ -391,22 +303,14 @@ function mkRepairActionItem(buttonConfig, actionItem, scale) {
           if ((actionItem?.cooldownEndTime ?? 0) > get_mission_time() || isDisabled.value || !isAvailable)
             return
           playSound("repair")
-          useShortcut(shortcutId)
+          activateActionBarAction(shortcutIdx)
           playHapticPattern(haptPatternId)
         }
         hotkeys = mkGamepadHotkey(hotkey)
         onElemState = @(v) stateFlags(v)
         children = [
           mkActionItemProgress(actionItem, (isAvailable || isInCooldown) && !isDisabled.value)
-          @() {
-            watch = [stateFlags]
-            rendObj = ROBJ_BOX
-            size = flex()
-            borderColor = stateFlags.value & S_ACTIVE ? borderColorPushed
-              : (!isAvailable || isDisabled.value) ? borderNoAmmoColor
-              : borderColor
-            borderWidth = borderW
-          }
+          mkActionItemBorder(borderW, stateFlags, isAvailable ? isDisabled : Watched(true))
           @() {
             watch = [debuffImages, curRepairImageIdx, unitType]
             size = flex()
@@ -824,7 +728,6 @@ return {
   mkCountermeasureItem
   mkSimpleButton
 
-  mkActionItemEditView
   mkBulletEditView
 
   defImageSize

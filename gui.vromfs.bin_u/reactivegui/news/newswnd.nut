@@ -72,7 +72,7 @@ function pagesStrip() {
   }
 }
 
-let newMarkH = hdpxi(40)
+let newMarkH = hdpxi(28)
 let newMarkTexOffs = [ 0, newMarkH / 2, 0, newMarkH / 10 ]
 let newMark = {
   size  = [ SIZE_TO_CONTENT, newMarkH ]
@@ -91,7 +91,7 @@ let newMark = {
     fontFxColor = 0xFF000000
     text = utf8ToUpper(loc("newsWnd/new_article_mark/short"))
     vplace = ALIGN_CENTER
-  }.__update(fontTiny)
+  }.__update(fontVeryTinyShaded)
 }
 
 let pinIconSize = hdpxi(20)
@@ -135,7 +135,6 @@ function articleTabBase(info, sf, isSelected, isUnseen) {
         color = contentBgColor
       }
       pinned > 0 ? pinIcon : null
-      @() { watch = isUnseen }.__update(isUnseen.value ? newMark : {})
       {
         size = flex()
         rendObj = ROBJ_BOX
@@ -173,6 +172,7 @@ function articleTabBase(info, sf, isSelected, isUnseen) {
           }.__update(fontTiny)
         ]
       }
+      @() { watch = isUnseen }.__update(isUnseen.value ? newMark : {})
     ]
   }
 }

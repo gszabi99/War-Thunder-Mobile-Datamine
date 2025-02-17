@@ -220,7 +220,7 @@ function openImpl() {
         })
         mkSpinnerHideBlock(unitInProgress,
           textButtonBattle(loc("unitsTree/chooseResearch/accept"),
-            @() acceptChooseResearch(startUnit.get()?.name), { childOvr = fontTiny }))
+            @() acceptChooseResearch(startUnit.get()?.name), { childOvr = fontTiny, hotkeys = ["^J:X"] }))
       ]
     })
     animations = wndSwitchAnim

@@ -4,7 +4,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { registerScene, setSceneBg } = require("%rGui/navState.nut")
 let { isBPPurchaseWndOpened, closeBPPurchaseWnd, isBpSeasonActive, curStage, sendBpBqEvent,
   purchasedBp, bpPurchasedUnlock, bpPaidRewardsUnlock, bpFreeRewardsUnlock, battlePassGoods, getBpIcon,
-  BP_NONE, BP_COMMON, BP_VIP, getBpName
+  BP_NONE, BP_COMMON, BP_VIP, getBpName, seasonEndTime
 } = require("battlePassState.nut")
 let { eventSeason } = require("%rGui/event/eventState.nut")
 let { purchaseGoods, purchaseGoodsSeq } = require("%rGui/shop/purchaseGoods.nut")
@@ -24,6 +24,9 @@ let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { PLATINUM } = require("%appGlobals/currenciesState.nut")
+let { userlogTextColor } = require("%rGui/style/stdColors.nut")
+let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
 isBpSeasonActive.subscribe(@(isActive) isActive ? null : closeBPPurchaseWnd())
 
@@ -280,7 +283,7 @@ let buyBlock = @(bpList, selBpInfo) function() {
             {
               size = [swIconSz, swIconSz]
               rendObj = ROBJ_IMAGE
-              image = Picture($"ui/gameuiskin#icon_repeatable.svg:{swIconSz}:{swIconSz}:P")
+              image = Picture($"ui/gameuiskin#decor_change_icon.svg:{swIconSz}:{swIconSz}:P")
               keepAspect = true
             },
             @() playerSelectedBp.set(getNextFromList(bpList.get(), selBpInfo.get())?.bpType),
@@ -295,10 +298,13 @@ let buyBlock = @(bpList, selBpInfo) function() {
               mkCurrencyComp(price.price, price.currencyId)
               function() {
                 sendBpBqEvent("purchase_pass_press")
+                let battlePassRemainder = loc("battlepass/remainder", {
+                  time = colorize(userlogTextColor, secondsToHoursLoc(seasonEndTime.get() - serverTime.get()))
+                })
                 if (purchList == null)
-                  purchaseGoods(goods?.id)
+                  purchaseGoods(goods?.id, battlePassRemainder)
                 else
-                  purchaseGoodsSeq(purchList, getBpName(selBpInfo.get()?.bpType))
+                  purchaseGoodsSeq(purchList, getBpName(selBpInfo.get()?.bpType), battlePassRemainder)
               },
               { ovr = { minWidth = bpIconSize }})
         : {

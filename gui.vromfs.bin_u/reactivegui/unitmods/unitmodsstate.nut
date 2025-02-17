@@ -11,7 +11,7 @@ let { enable_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { roundPrice } = require("%appGlobals/pServer/pServerMath.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { balanceWp, balanceGold } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 
 let SEEN_MODS = "seenMods"
 let seenMods = mkWatched(persist, "SEEN_MODS", {})
@@ -96,11 +96,11 @@ function getModCost(mod, allModsCost) {
   return roundPrice(costWpWeight.tofloat() * allModsCost)
 }
 
-function hasEnoughCurrencies(mod, allModsCost) {
+function hasEnoughCurrencies(mod, allModsCost, allBalance) {
   let { costWpWeight = 0, costGold = 0 } = mod
   if (costWpWeight <= 0)
-    return costGold <= balanceGold.get()
-  return costWpWeight.tofloat() * allModsCost <= balanceWp.get()
+    return costGold <= (allBalance?[GOLD] ?? 0)
+  return costWpWeight.tofloat() * allModsCost <= (allBalance?[WP] ?? 0)
 }
 
 let mkCurUnitModCostComp = @(mod) Computed(@() getModCost(mod, curUnitAllModsCost.value))

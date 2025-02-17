@@ -14,7 +14,7 @@ let { mkBtnOpenTabQuests } = require("%rGui/quests/btnOpenQuests.nut")
 let { textButtonMultiline } = require("%rGui/components/textButton.nut")
 let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let battlePassSeason = require("battlePassSeason.nut")
-let { bpCurProgressbar, bpProgressText } = require("battlePassPkg.nut")
+let { bpCurProgressbar, bpProgressText, progressIconSize } = require("battlePassPkg.nut")
 let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
@@ -206,6 +206,10 @@ let content = @(stagesList, recommendInfo) @() {
       size = [sw(100), SIZE_TO_CONTENT]
       hplace = ALIGN_CENTER
       children = [
+        {
+          key = "battle_pass_progress_bar" //need for tutorial
+          size = [flex(), progressIconSize[1]]
+        }
         rewardPannable(rewardsList(stagesList.get(), recommendInfo),
           { pos = [0, 0], size = [flex(), SIZE_TO_CONTENT], clipChilden = false },
           {

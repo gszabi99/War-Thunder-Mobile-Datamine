@@ -7,6 +7,7 @@ function generateBot(player) {
   let { level, userId, decorators = {} } = player
   let battle_end_ships = (level * level * rnd_float(3.0, 6.0) + 0.5).tointeger()
   let battle_end_tanks = (level * level * rnd_float(3.0, 6.0) + 0.5).tointeger()
+  let battle_end_air = (level * level * rnd_float(3.0, 6.0) + 0.5).tointeger()
   let result = {
     info = {
       playerLevel = level
@@ -31,6 +32,16 @@ function generateBot(player) {
           level
           starLevelHistory = []
         }
+        air = {
+          units = {
+            wp = (rnd_float(1.0, 1.5) * level).tointeger()
+            maxLevel = 0
+            prem = rnd_int(1, 3)
+            rare = rnd_int(1, 3)
+          }
+          level
+          starLevelHistory = []
+        }
       }
       playerStarLevel = 0
       decorators
@@ -45,6 +56,10 @@ function generateBot(player) {
           tanks = {
             battle_end = battle_end_tanks
             win = rnd_int(0.45 * battle_end_tanks, 0.55 * battle_end_tanks)
+          }
+          air = {
+            battle_end = battle_end_air
+            win = rnd_int(0.45 * battle_end_air, 0.55 * battle_end_air)
           }
         }
       }

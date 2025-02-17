@@ -63,6 +63,7 @@ function translucentButton(icon, text, onClick, mkChild = null, ovr = {}) {
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
     children = [
       {
+        key = ovr?.key
         size = ovr?.size ?? [ iconBgWidth, translucentButtonsHeight - lineWidth * 2 ]
         children = [
           btnBg.__merge({ color = stateFlags.value & S_HOVER ? hoverColor : 0xFFA0A0A0 })

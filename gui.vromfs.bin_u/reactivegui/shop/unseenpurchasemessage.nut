@@ -384,27 +384,39 @@ let mkCustomCurrencyIcon = {
 let mkCurrencyIcon = @(startDelay, id) mkCustomCurrencyIcon?[id](id, startDelay)
   ?? mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
 
+let getTextLabelAnim = @(startDelay) [
+  { prop = AnimProp.opacity, from = 0, to = 0,
+    duration = startDelay + aRewardLabelDelay,
+    play = true, trigger = ANIM_SKIP }
+  { prop = AnimProp.opacity, from = 0, to = 1,
+    delay = startDelay + aRewardLabelDelay, duration = aRewardLabelOpacityTime,
+    play = true, trigger = ANIM_SKIP_DELAY }
+]
+
 function mkRewardLabel(startDelay, text) {
   let res = {
     rendObj = ROBJ_TEXT
     color = 0xFFFFFFFF
     text
-
     transform = {}
-    animations = [
-      { prop = AnimProp.opacity, from = 0, to = 0,
-        duration = startDelay + aRewardLabelDelay,
-        play = true, trigger = ANIM_SKIP }
-      { prop = AnimProp.opacity, from = 0, to = 1,
-        delay = startDelay + aRewardLabelDelay, duration = aRewardLabelOpacityTime,
-        play = true, trigger = ANIM_SKIP_DELAY }
-    ]
-  }.__update(fontMediumShaded)
+    animations = getTextLabelAnim(startDelay)
+  }.__update(fontTinyAccented)
   let txtScale = getTextScaleToFitWidth(res, rewTextMaxWidth)
   if (txtScale < 1.0)
     res.__update({ transform = { scale = [txtScale, txtScale] } })
   return res
 }
+
+let mkPrizeTicketLabel = @(startDelay, text) {
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  maxWidth = rewTextMaxWidth
+  halign = ALIGN_CENTER
+  color = 0xFFFFFFFF
+  text
+  transform = {}
+  animations = getTextLabelAnim(startDelay)
+}.__update(fontTinyAccented)
 
 function mkRewardLabelMultiline(startDelay, text) {
   let res = {
@@ -589,7 +601,7 @@ let rewardCtors = {
     function mkText(rewardInfo) {
       let { count } = rewardInfo
       let key = count > 1 ? "events/continueToChooseSome" : "events/continueToChoose"
-      return mkRewardLabel(rewardInfo.startDelay, loc(key, { countPrize = count, count }))
+      return mkPrizeTicketLabel(rewardInfo.startDelay, loc(key, { countPrize = count, count }))
     }
   }
   lootbox = {
@@ -611,7 +623,12 @@ function mkRewardIconComp(rewardInfo) {
     halign = ALIGN_CENTER
     gap = rewIconToTextGap
     children = [
-      mkIcon(rewardInfo)
+      {
+        size = [rewBlockWidth, rewIconSize]
+        halign = ALIGN_CENTER
+        valign = ALIGN_CENTER
+        children = mkIcon(rewardInfo)
+      }
       mkText(rewardInfo)
     ]
   }

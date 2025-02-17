@@ -3136,26 +3136,26 @@
     ]
   },
   "breaches": {
-    "repairSpeed": 50.0,
-    "waterMassVel": -120000.0,
-    "waterMassMult": 15.0,
+    "repairSpeed": 100.0,
+    "waterMassVel": -420000.0,
+    "waterMassMult": 30.0,
     "sizeToRepair": [
       0.01,
       10.0,
       1.0,
       10.0
     ],
-    "additionalWaterDeathThreshold": 6500000.0,
-    "additionalWaterCoverPartsThreshold": 3000000.0,
-    "additionalWaterShouldDiePercent": 0.3,
-    "fatalBreachDrownTime": 20.0,
-    "maxHeelingAngle": 35.0,
-    "maxHeelingTime": 10.0,
-    "criticalHeelingAnglePercent": 0.75,
-    "maxCriticalHeelingTime": 3.0,
-    "heelingDeathHeightOffsetMult": 0.0,
+    "additionalWaterDeathThreshold": 50000000.0,
+    "additionalWaterCoverPartsThreshold": 20000000.0,
+    "additionalWaterShouldDiePercent": 1.0,
+    "fatalBreachDrownTime": 25.0,
+    "maxHeelingAngle": 42.0,
+    "maxHeelingTime": 40.0,
+    "criticalHeelingAnglePercent": 0.85,
+    "maxCriticalHeelingTime": 1.0,
+    "heelingDeathHeightOffsetMult": 3.0,
     "sideCenterOfMassOffsetPercent": 0.2,
-    "additionalWaterInfluenceOnSpeed": 3.0
+    "additionalWaterInfluenceOnSpeed": 2.8
   },
   "shipCover": {
     "cover": [

@@ -1739,7 +1739,7 @@
     "name": "prem",
     "replace_tex": {
       "from": "yak_9m_golovachev_a*",
-      "to": "yak_9t_mashenkin_a*"
+      "to": "yak_9_green_a*"
     }
   },
   "cutting": {

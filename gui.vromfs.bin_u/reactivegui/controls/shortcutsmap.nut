@@ -17,7 +17,7 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_FIRE_GM_SECONDARY_GUN = "J:LT | L.Ctrl"
   ID_FIRE_GM_SPECIAL_GUN = "J:LB | Z"
   ID_FIRE_GM_MACHINE_GUN = "J:RB | X"
-  ID_TOGGLE_TARGET_TRACKING =  "J:LT | B"
+  ID_TOGGLE_TARGET_TRACKING =  "B"
 
   ID_ACTION_BAR_ITEM_7 = "J:B | 1" //fighter
   ID_ACTION_BAR_ITEM_9 = "J:A | 2" //bomber
@@ -55,7 +55,7 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_WTM_LAUNCH_AIRCRAFT = "J:D.Down | Q" //also used for aircraft return to ship
 
 
-  ID_SHIP_ACTION_BAR_ITEM_11 = "J:D.Left | 1" //toolkit
+  ID_SHIP_ACTION_BAR_ITEM_40 = "J:D.Left | 1" //toolkit
   ID_SHIP_ACTION_BAR_ITEM_14 = "J:D.Right | 2" //smoke screen
   ID_SHIP_SMOKE_SCREEN_GENERATOR = "J:D.Right | 2"
   ID_IRCM_SWITCH_SHIP = "J:D.Up | 3"

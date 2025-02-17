@@ -1749,6 +1749,12 @@
       "preset": "default_common"
     }
   },
+  "weapon_presets": {
+    "preset": {
+      "name": "la_9_killstreak_default",
+      "blk": "gameData/FlightModels/weaponPresets/la_9_killstreak_default.blk"
+    }
+  },
   "WeaponSlots": {
     "hideDmParts": {
       "node": "armor4_dm"
@@ -1931,11 +1937,5 @@
       1.38124,
       3.80031e-7
     ]
-  },
-  "weapon_presets": {
-    "preset": {
-      "name": "la_9_default",
-      "blk": "gameData/FlightModels/weaponPresets/la_9_killstreak_default.blk"
-    }
   }
 }

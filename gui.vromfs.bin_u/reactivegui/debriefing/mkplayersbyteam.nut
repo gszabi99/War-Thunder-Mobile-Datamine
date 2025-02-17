@@ -9,7 +9,8 @@ function mkPlayersByTeam(debrData) {
   let mplayersList = players.values().map(function(p) {
     let { userId, name, isLocal = 0, isBot, aircraftName, dmgScoreBonus = 0.0 } = p
     let userIdStr = userId.tostring()
-    let { level = 1, starLevel = 0, hasPremium = false, decorators = {}, mainUnitName = "", units = {}
+    let { level = 1, starLevel = 0, hasPremium = false, decorators = {}, mainUnitName = "",
+      units = {}, hasVip = false
     } = playersCommonStats?[userIdStr]
 
     let frameId = decorators?.nickFrame ?? ""
@@ -47,6 +48,7 @@ function mkPlayersByTeam(debrData) {
       level
       starLevel
       hasPremium
+      hasVip
       unitName
       isUnitCollectible
       isUnitPremium

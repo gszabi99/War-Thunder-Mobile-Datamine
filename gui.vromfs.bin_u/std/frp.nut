@@ -5,7 +5,7 @@ from "frp" import Computed, Watched, FRP_INITIAL, FRP_DONT_CHECK_NESTED, set_nes
 
 function WatchedImmediate(...) {
   let w = Watched.acall([this].extend(vargv))
-  w?.setDeferred(false)
+  w.setDeferred(false)
   return w
 }
 

@@ -29,6 +29,7 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { getGamepadHotkey } = require("%rGui/controlsMenu/dargHotkeys.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { openLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
+let { hasVip } = require("%rGui/state/profilePremium.nut")
 
 let itemBlockSize = [ (itemWidth + itemGap) * 4 + itemBigWidth + backItemOffset, itemBigHeight ]
 let imageSize = hdpxi(210)
@@ -196,7 +197,7 @@ let receiveBtn = textButtonBattle(
 )
 
 let watchAdsBtn = textButtonPrimary(
-  utf8ToUpper(loc("shop/watchAdvert/short")),
+  utf8ToUpper(!hasVip.get() ? loc("shop/watchAdvert/short") : loc("shop/vip/get_rewards")),
   null,
   btnStyle.__merge({ childOvr = adsButtonCounter.__merge(fontVeryTiny) })
 )

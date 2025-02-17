@@ -13,7 +13,7 @@ let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtnOutline, mkMoveVertBtnAnimBg, 
 let { playerUnitName } = require("%rGui/hudState.nut")
 let { isStickActiveByArrows, stickDelta } = require("stickState.nut")
 let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
-let { currentGearDownOnStopButtonTouch } = require("%rGui/options/options/tankControlsOptions.nut")
+let { currentGearDownOnStopButtonTouch } = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
 let { Point2 } = require("dagor.math")
 let { eventbus_send } = require("eventbus")
 

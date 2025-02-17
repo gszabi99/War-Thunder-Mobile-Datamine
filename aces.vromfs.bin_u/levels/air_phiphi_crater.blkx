@@ -4,6 +4,8 @@
   "clipmap_tex_mips": 6,
   "volumeCloudsActive": true,
   "z_far": 30000.0,
+  "addLandToSky": true,
+  "harmonicsType": "green",
   "mapCoord0": [
     -16384.0,
     -16384.0

@@ -9,6 +9,9 @@ let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
 let { is_android, is_ios } = require("%sqstd/platform.nut")
 let { myUserName } = require("%appGlobals/profileStates.nut")
 let { authState } = require("authState.nut")
+let { getFirebaseAppInstanceId = @() null}  = is_android ? require_optional ("android.firebase.analytics")
+                                            : is_ios ? require_optional ("ios.firebase.analytics")
+                                            : {}
 
 let fieldsToClear = ["MAC", "uuid0", "uuid1", "uuid2", "uuid3"]
 let OPT_TANK_MOVEMENT_CONTROL = addUserOption("OPT_TANK_MOVEMENT_CONTROL")
@@ -27,6 +30,8 @@ function getSysInfo() {
   tbl.authorization <- authState.value.loginType
   tbl.location <- getCountryCode() // Overrides location from get_user_system_info()
   tbl.gameLanguage <- getLocalLanguage() // Overrides gameLanguage from get_user_system_info()
+  if (getFirebaseAppInstanceId()!=null)
+    tbl.appInstanceId <- getFirebaseAppInstanceId()
   tbl.installStore <- is_android && isHuaweiBuild ? "huawei"
     : is_android && isDownloadedFromGooglePlay() ? "google"
     : is_ios ? "iOS"

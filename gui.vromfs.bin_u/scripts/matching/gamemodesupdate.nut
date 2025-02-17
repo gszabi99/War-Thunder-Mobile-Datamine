@@ -7,7 +7,7 @@ let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { isMatchingConnected } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { gameModesRaw } = require("%appGlobals/gameModes/gameModes.nut")
-let { startLogout } = require("%scripts/login/logout.nut")
+let { startLogout } = require("%scripts/login/loginStart.nut")
 let showMatchingError = require("showMatchingError.nut")
 let matching = require("%appGlobals/matching_api.nut")
 

@@ -27,7 +27,7 @@ let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { getEventLoc, MAIN_EVENT_ID, eventSeason, specialEvents } = require("%rGui/event/eventState.nut")
-let { discountTagOffer } = require("%rGui/components/discountTag.nut")
+let { discountTagOffer, discountOfferTagH } = require("%rGui/components/discountTag.nut")
 
 
 let activeItemId = Watched(null)
@@ -48,10 +48,12 @@ let aTimeTime = 0.4
 let aTimePriceMove = 0.3
 let aTimePriceBounce = 0.15
 let aTimePriceStrike = 0.15
+let aTimeDiscountTagScale = 0.3
+let aTimeDiscountTagMove = 0.15
 let aTimeFinalPriceShow = 0.2
 let aTimeFinalPriceBounce = 0.3
 let aTimeFinalPriceGlow = 0.1
-let aTimePriceFull = aTimePriceMove + aTimePriceBounce + aTimeFinalPriceShow + aTimeFinalPriceBounce
+let aTimePriceFull = aTimePriceMove + aTimePriceBounce + aTimeFinalPriceShow + aTimeFinalPriceBounce + aTimeDiscountTagScale
 //animation items
 let aTimeInfoItem = 0.3
 let aTimeInfoItemOffset = 0.15
@@ -244,13 +246,13 @@ function getPriceInfo(goods) {
 
 let discountMarginBlock = [hdpx(32), 0, 0, 0]
 let abTestDiscountViewCfg = {
-  group_0 = {
-    discountCtor = @(priceBlock, _) priceBlock
+  old_price = {
+    discountCtor = @(priceBlock, _, _) priceBlock
     gap = purchGap
     priceStyle = CS_BIG
   }
-  group_1 = {
-    discountCtor = @(priceBlock, discountPrice) {
+  old_price_and_discount = {
+    discountCtor = @(priceBlock, discountPrice, ovr) {
       flow = FLOW_HORIZONTAL
       margin = discountMarginBlock
       valign = ALIGN_CENTER
@@ -258,17 +260,17 @@ let abTestDiscountViewCfg = {
       gap = hdpx(32)
       children = [
         priceBlock
-        discountTagOffer(discountPrice)
+        discountTagOffer(discountPrice, ovr)
       ]
     }
     gap = 0
     priceStyle = CS_COMMON
   }
-  group_2 = {
-    discountCtor = @(_, discountPrice) {
+  discount = {
+    discountCtor = @(_, discountPrice, ovr) {
       margin = discountMarginBlock
       hplace = ALIGN_RIGHT
-      children = discountTagOffer(discountPrice)
+      children = discountTagOffer(discountPrice, ovr)
     }
     gap = 0
     priceStyle = CS_COMMON
@@ -287,8 +289,8 @@ let purchaseButtonBlock = @(animStartTime) function() {
     return res
 
   let { gap = purchGap, priceStyle = CS_BIG,
-    discountCtor = @(priceBlock, _) priceBlock
-  } = abTestDiscountViewCfg?[abTests.get()?.offerDiscountView] ?? abTestDiscountViewCfg.group_0
+    discountCtor = @(priceBlock, _, _) priceBlock
+  } = abTestDiscountViewCfg?[abTests.get()?.offerDiscountView] ?? abTestDiscountViewCfg.old_price
   res.gap <- gap
 
   let { priceCtor, basePrice, finalPrice, currencyId, buy, discountInPercent } = info
@@ -296,7 +298,14 @@ let purchaseButtonBlock = @(animStartTime) function() {
     : oldPriceBlock(priceCtor(basePrice, currencyId, priceStyle), animStartTime)
   return res.__update({
     children = [
-      discountCtor(priceBlock, discountInPercent)
+      discountCtor(priceBlock, discountInPercent, { transform = { pivot = [1, 1] },
+        animations = opacityAnims(aTimeFinalPriceShow, animStartTime + aTimePriceMove + aTimePriceStrike)
+          .append(
+            { prop = AnimProp.translate, from=[0, discountOfferTagH], duration = aTimeDiscountTagMove,
+              delay = animStartTime + aTimePriceMove + aTimePriceStrike, play = true, easing = Linear, trigger = ANIM_SKIP }
+            { prop = AnimProp.scale, to = [1.2, 1.2], easing = CosineFull, play = true,
+              duration = aTimeDiscountTagScale, delay = animStartTime + aTimePriceMove + aTimePriceStrike, trigger = ANIM_SKIP }
+          )})
       mkPurchButton(
         priceCtor(finalPrice, currencyId, currencyStyle),
         withBqEvent(goods, buy),

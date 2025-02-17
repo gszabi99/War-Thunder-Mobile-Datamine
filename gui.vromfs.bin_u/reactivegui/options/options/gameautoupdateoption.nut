@@ -6,7 +6,7 @@ let { isDownloadedFromSite } = require("%appGlobals/clientState/clientState.nut"
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 let gameAutoUpdateList = ["not_allow", "allow_only_wifi", "allow_always"]
-let isGameAutoUpdateEnabled = mkOptionValue(OPT_AUTO_UPDATE_ENABLED, "allow_only_wifi", @(v) validate(v, gameAutoUpdateList))
+let isGameAutoUpdateEnabled = mkOptionValue(OPT_AUTO_UPDATE_ENABLED, "not_allow", @(v) validate(v, gameAutoUpdateList))
 
 return {
   isGameAutoUpdateVisible = isDownloadedFromSite && allow_apk_update.get()

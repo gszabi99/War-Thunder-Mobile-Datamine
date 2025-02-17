@@ -98,12 +98,12 @@ let nickFrames = {
   mask = @(n) $"⚌{n}⚌"
   cn_lamp = @(n) $"␆{n}␆"
   salut = @(n) $"␇{n}␈"
+  arrow_heart = @(n) $"⚕{n}⚖"
+  lock_heart = @(n) $"⚗{n}⚘"
   paw_scratch = @(n) $"⚍{n}⚎"
   leopard_head = @(n) $"⚏{n}⚐"
   trap = @(n) $"⚑{n}⚒"
   rocket_apfsds = @(n) $"⚓{n}⚔"
-  arrow_heart = @(n) $"⚕{n}⚖"
-  lock_heart = @(n) $"⚗{n}⚘"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

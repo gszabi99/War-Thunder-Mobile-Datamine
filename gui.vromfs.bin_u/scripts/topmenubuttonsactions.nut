@@ -7,6 +7,7 @@ let { set_game_mode } = require("mission")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
+let { isLoggedIn, isLoginRequired } = require("%appGlobals/loginState.nut")
 let g_mislist_type = require("%scripts/missions/misListType.nut")
 let { actualizeBattleDataIfOwn } = require("%scripts/battleData/menuBattleData.nut")
 let { changeTrainingUnit, requestHudState } = require("%scripts/missions/guiOptions.nut")
@@ -49,6 +50,7 @@ registerHandler("onOfflineMissionUnitActualized", function(res, context) {
     }
   }
 
+  log($"[OFFLINE_MISSION] select_training_mission {missionId}, {unitName} (isLoggedIn = {isLoggedIn.get()}, isLoginRequired = {isLoginRequired.get()})")
   select_training_mission(misBlk)
 })
 

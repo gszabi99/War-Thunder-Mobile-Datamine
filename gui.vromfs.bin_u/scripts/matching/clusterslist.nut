@@ -4,7 +4,7 @@ let { OPERATION_COMPLETE } = require("matching.errors")
 let { getCountryCode } = require("auth_wt")
 let { deferOnce } = require("dagor.workcycle")
 let { getClustersByCountry, getForbiddenClustersByCountry } = require("%appGlobals/defaultClusters.nut")
-let { startLogout } = require("%scripts/login/logout.nut")
+let { startLogout } = require("%scripts/login/loginStart.nut")
 let showMatchingError = require("showMatchingError.nut")
 let { isMatchingOnline } = require("matchingOnline.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -104,7 +104,7 @@ let selClusters = Computed(function() {
   return res.len() ? res : clusters.value
 })
 
-selClusters.subscribe(@(v) logC("Selected clusters:", v))
+selClusters.subscribe(@(v) logC($"Country \"{getCountryCode()}\", selected clusters:", v))
 
 return {
   clusters

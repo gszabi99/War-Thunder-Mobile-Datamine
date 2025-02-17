@@ -11,6 +11,7 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 
+
 let isOpenedPresetWnd = Watched(false)
 let WND_UID = "PRESET_WND"
 let BTN_WIDTH = hdpx(250)
@@ -31,21 +32,27 @@ function closeUnitWeaponPresetWnd() {
   curUnit.set(null)
 }
 
-function mkCustomIconButton(iconPath, onClick, isDisabled, isGamepadConnected, hotkeys = null) {
+function mkCustomIconButton(iconPath, onClick, isDisabled, hotkeys = null) {
   let mkButton = isDisabled ? iconButtonCommon : iconButtonPrimary
-  return mkButton(
-    iconPath,
-    onClick
-    {
-      iconSize = ICON_SIZE,
-      ovr = { size = isGamepadConnected ? [BTN_ICON_SIZE*2, BTN_ICON_SIZE] : [BTN_ICON_SIZE, BTN_ICON_SIZE], minWidth = BTN_ICON_SIZE}
-      hotkeys
-    }
-  )
+  return @() {
+    watch = isGamepad
+    children = mkButton(
+      iconPath,
+      onClick
+      {
+        iconSize = ICON_SIZE,
+        ovr = {
+          size = isGamepad.get() ? [BTN_ICON_SIZE*2, BTN_ICON_SIZE] : [BTN_ICON_SIZE, BTN_ICON_SIZE],
+          minWidth = BTN_ICON_SIZE
+        }
+        hotkeys
+      }
+    )
+  }
 }
 
 let mkButtons = @() {
-  watch = [isCurrentPreset, isNotSavedPreset, isMaxSavedPresetAmountReached, isGamepad]
+  watch = [isCurrentPreset, isNotSavedPreset, isMaxSavedPresetAmountReached]
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   halign = ALIGN_RIGHT
@@ -56,21 +63,18 @@ let mkButtons = @() {
       "ui/gameuiskin#btn_trash.svg",
       onDelete,
       isNotSavedPreset.get(),
-      isGamepad.get(),
       ["^J:LT"]
     ),
     mkCustomIconButton(
       "ui/gameuiskin#menu_edit.svg",
       @() openEditNameWnd(false),
       isNotSavedPreset.get(),
-      isGamepad.get(),
       ["^J:LB"]
     ),
     mkCustomIconButton(
       "ui/gameuiskin#icon_save.svg",
       @() openEditNameWnd(true),
       !isNotSavedPreset.get() || isMaxSavedPresetAmountReached.get(),
-      isGamepad.get(),
       ["^J:Y"]
     ),
     (isCurrentPreset.get() ? textButtonCommon : textButtonPrimary)(

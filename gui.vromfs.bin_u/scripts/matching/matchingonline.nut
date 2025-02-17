@@ -8,9 +8,12 @@ let { dgs_get_settings } = require("dagor.system")
 let { isDownloadedFromGooglePlay, getPackageName } = require("android.platform")
 let { shell_execute } = require("dagor.shell")
 let { BAN_USER_INFINITE_PENALTY } = require("penalty")
+let { get_time_msec } = require("dagor.time")
+let { resetTimeout } = require("dagor.workcycle")
 let { is_ios } = require("%sqstd/platform.nut")
-let { canLogout, startLogout } = require("%scripts/login/logout.nut")
+let { canLogout, startLogout, startRelogin } = require("%scripts/login/loginStart.nut")
 let { isMatchingOnline } = require("%appGlobals/loginState.nut")
+let { wndStartActiveMsec, wndStartInactiveMsec, windowActive } = require("%appGlobals/windowState.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { getErrorMsgParams } = require("%scripts/utils/errorMsgBox.nut")
@@ -20,6 +23,12 @@ let matching = require("%appGlobals/matching_api.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isDownloadedFromSite } = require("%appGlobals/clientState/clientState.nut")
+
+
+let RELOGIN_MIN_INACTIVE_TIME = 120
+let RELOGIN_TIME_AFTER_INACTIVE = 30
+
+local needReloginOnWindowActivate = false
 
 isMatchingOnline(is_online_available())
 
@@ -123,6 +132,31 @@ let customErrorHandlers = {
   }
 }
 
+windowActive.subscribe(function(v) {
+  if (!v || !needReloginOnWindowActivate)
+    return
+  needReloginOnWindowActivate = false
+  logMC("Start relogin on window activate")
+  startRelogin()
+})
+
+function silentReloginInsteadLogout() {
+  if (!windowActive.get()) {
+    logMC("Start logout with pending relogin on disconnect while window not active")
+    startLogout()
+    needReloginOnWindowActivate = true
+    return true
+  }
+  let time = get_time_msec()
+  let needRelogin = (time - wndStartActiveMsec.get() <= 1000 * RELOGIN_TIME_AFTER_INACTIVE
+    && wndStartActiveMsec.get() - wndStartInactiveMsec.get() >= 1000 * RELOGIN_MIN_INACTIVE_TIME)
+  if (needRelogin) {
+    logMC("Start silent relogin because of disconnect after long window inactive")
+    startRelogin()
+  }
+  return needRelogin
+}
+
 function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false) {
   logMC($"{forceExit ? "exit" : "logout"}WithMsgBox: reason = {format("0x%X", reason)}, message = {message}, domain = {reasonDomain}")
   destroyConnectProgressMessages()
@@ -132,8 +166,11 @@ function logoutWithMsgBox(reason, message, reasonDomain, forceExit = false) {
     return
   }
 
-  if (!forceExit && canLogout())
+  if (!forceExit && canLogout()) {
+    if (silentReloginInsteadLogout())
+      return
     startLogout()
+  }
 
   let msg = getErrorMsgParams(reason)
   sendErrorLocIdBqEvent(msg.bqLocId)
@@ -183,6 +220,10 @@ eventbus_subscribe("exit_for_download_apk", @(params) exitForDownloadApkMsgBox(p
 register_command(
   @() logoutWithMsgBox(SERVER_ERROR_INVALID_VERSION, "Test invalid version", null, false),
   "debug.matchingLogoutInvalidVersion")
+
+register_command(
+  @(time) resetTimeout(time, @() logoutWithMsgBox(0x80002008, null, "matching", false)),
+  "debug.matchingPendingDisconnectLogout")
 
 return {
   isMatchingOnline

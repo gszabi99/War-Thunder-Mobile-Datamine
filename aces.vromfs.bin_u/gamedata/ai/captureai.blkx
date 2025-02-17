@@ -1435,7 +1435,7 @@
             },
             "parallel": {
               "shipSail": {},
-              "UseCountermeasures": {
+              "useCountermeasures": {
                 "delay": 2.0,
                 "radius": 400.0
               }
@@ -1625,6 +1625,34 @@
         ]
       },
       "stopShipEngine": {}
+    },
+    {
+      "name": "aircraftCarrierStrategyMode",
+      "selectStrategy": "ordered",
+      "sequencer": {
+        "isShipLaunched": {},
+        "ifThenElse": {
+          "isShipOrderActive": {
+            "type": "point"
+          },
+          "sequencer": [
+            {
+              "parallel": {
+                "shipSail": {},
+                "useCountermeasures": {
+                  "delay": 2.0,
+                  "radius": 400.0
+                }
+              },
+              "removeCurrentPlayerOrder": {}
+            },
+            {
+              "stopShip": {},
+              "stopShipEngine": {}
+            }
+          ]
+        }
+      }
     }
   ],
   "parallel": {
@@ -1655,7 +1683,7 @@
           },
           "parallel": {
             "shipSail": {},
-            "UseCountermeasures": {
+            "useCountermeasures": {
               "delay": 2.0,
               "radius": 400.0
             }

@@ -91,6 +91,11 @@ function getCurStageIdx(unlock) {
   return stages.findindex(@(s) s.progress >= current)
 }
 
+function calcStageCompletion(stages, idx, current) {
+  let prevProgress = stages?[idx - 1].progress ?? 0
+  return clamp((current.tofloat() - prevProgress) / (stages[idx].progress - prevProgress), 0.0, 1.0)
+}
+
 function mkStages(progressUnlock, stageWidth, tabId, curSectionId) {
   let curStageIdx = getCurStageIdx(progressUnlock)
   let { hasReward = false, stage, stages, current = 0, name } = progressUnlock
@@ -102,8 +107,7 @@ function mkStages(progressUnlock, stageWidth, tabId, curSectionId) {
     vplace = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     children = array(stages.len()).map(function(_, idx) {
-      let prevProgress = stages?[idx - 1].progress ?? 0
-      let stageCompletion = clamp((current.tofloat() - prevProgress) / (stages[idx].progress - prevProgress), 0.0, 1.0)
+      let stageCompletion = calcStageCompletion(stages, idx, current)
       let isUnlocked = stageCompletion == 1.0
 
       let rewardPreview = Computed(@()
@@ -170,6 +174,7 @@ function mkStages(progressUnlock, stageWidth, tabId, curSectionId) {
           }
           @() {
             watch = [rewardPreview, isRewardInProgress]
+            key = $"quest_bar_stage_{idx}" //need for tutorial
             children = rewardPreview.value.len() == 0 ? null
               : rewardProgressBarCtor(rewardPreview.value, isUnlocked, claimReward, isRewardInProgress.value)
           }
@@ -235,4 +240,6 @@ return {
   mkQuestListProgressBar
 
   progressBarHeight
+
+  calcStageCompletion
 }

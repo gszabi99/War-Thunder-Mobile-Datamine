@@ -11,6 +11,7 @@ let { completeAnimDelay, moveCardsFullTime, moveCardsHalfTime, FULL_DAYS
 } = require("loginAwardPlaces.nut")
 let { delayUnseedPurchaseShow } = require("%rGui/shop/unseenPurchasesState.nut")
 let { userstatRegisterExecutor } = require("userstat.nut")
+let { hasVip } = require("%rGui/state/profilePremium.nut")
 
 let showUnseenAfterAnimDelay = 0.2
 
@@ -64,7 +65,7 @@ userstatRegisterExecutor("lAward.onReceiveRewardCb", function(result, context) {
 function receiveLoginAward() {
   if (!loginAwardUnlock.value?.hasReward)
     return
-  let stage = loginAwardUnlock.value.lastRewardedStage + 1
+  let stage = loginAwardUnlock.get().lastRewardedStage + 1
   delayUnseedPurchaseShow(completeAnimDelay + showUnseenAfterAnimDelay) //if receive rewards from pServer before userstat cb
   receiveUnlockRewards(LOGIN_UNLOCK_ID, stage, { executeBefore = "lAward.onReceiveRewardCb", stage })
 }
@@ -74,6 +75,13 @@ function showLoginAwardAds() {
     return
 
   let stage = loginAwardUnlockByAds.value.lastRewardedStage + 1
+  if(hasVip.get()) {
+    let { name = null } = loginAwardUnlockByAds.get()
+    let mainUnlockStage = loginAwardUnlock.get().lastRewardedStage
+    delayUnseenAfterAds(mainUnlockStage)
+    receiveUnlockRewards(name, stage, { executeBefore = "lAward.onReceiveAdsRewardCb", mainUnlockStage })
+    return
+  }
   showAdsForReward({
     loginUnlockId = loginAwardUnlockByAds.value.name
     stage

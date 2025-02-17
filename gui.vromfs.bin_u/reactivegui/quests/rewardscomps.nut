@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { WARBOND, NYBOND, APRILBOND } = require("%appGlobals/currenciesState.nut")
 let { opacityAnims, aTimeInfoItem } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
 let { REWARD_STYLE_SMALL, mkRewardPlate, mkRewardReceivedMark } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkIcon } = require("%rGui/unit/components/unitPlateComp.nut")
@@ -6,7 +7,7 @@ let { openRewardsList } = require("questsState.nut")
 let { mkGlare } = require("%rGui/components/glare.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
-let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+let { isSingleViewInfoRewardEmpty, getUnlockRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
@@ -137,6 +138,11 @@ let mkRewardPlateWithAnim = @(r, appearTime, rStyle = rStyleDefault) mkRewardPla
   animations = opacityAnims(aTimeInfoItem, appearTime)
 })
 
+let getRewardsPreviewInfo = @(item, sConfigs)
+  getUnlockRewardsViewInfo(item?.stages[0], sConfigs).sort(sortRewardsViewInfo)
+let getEventCurrencyReward = @(rewardsPreviewInfo)
+  rewardsPreviewInfo.findvalue(@(r) r.id == WARBOND || r.id == NYBOND || r.id == APRILBOND)
+
 let mkRewardsPreviewFull = @(rewards, isQuestFinished) rewards.map(@(r, idx) mkQuestRewardPlate(r, idx, isQuestFinished))
 
 function mkRewardsPreview(rewards, isQuestFinished, maxSlotsCount = REWARDS_PREVIEW_SLOTS, style = rStyleDefault) {
@@ -157,6 +163,8 @@ return {
   mkRewardPlateWithAnim
   rewardProgressBarCtor
   mkRewardsPreviewFull
+  getRewardsPreviewInfo
+  getEventCurrencyReward
 
   questItemsGap
   rewardsBtnSize

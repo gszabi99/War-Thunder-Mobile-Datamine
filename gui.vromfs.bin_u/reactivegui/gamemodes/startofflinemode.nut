@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let logO = log_with_prefix("[OFFLINE_MISSION] ")
 let { eventbus_send } = require("eventbus")
 let { ceil } = require("%sqstd/math.nut")
 let { TANK, AIR, HELICOPTER } = require("%appGlobals/unitConst.nut")
@@ -39,7 +40,7 @@ function getBulletsForTestFlight(unitName) {
     return res
   }
 
-  let { primary = null, secondary = null } = loadUnitBulletsChoice(unitName)?.commonWeapons
+  let { primary = null, secondary = null, special = null } = loadUnitBulletsChoice(unitName)?.commonWeapons
   if (primary == null)
     return [{ name = "", count = 10000 }]
   let { bulletsOrder, total, catridge, guns } = primary
@@ -57,6 +58,9 @@ function getBulletsForTestFlight(unitName) {
 
   if (secondary != null)
     res.append({ name = secondary.bulletsOrder[0], count = secondary.total })
+
+  if (special != null)
+    res.append({ name = special.bulletsOrder[0], count = special.total })
 
   return res
 }
@@ -86,6 +90,7 @@ function startTestFlightImpl(unitName, missionName, skin) {
     weaponPreset = getUnitSlotsPresetNonUpdatable(unitName, campMyUnits.get()?[unitName].mods)
       .reduce(@(res, v, k) res.$rawset(k.tostring(), v), {})
   }
+  logO("donloadUnitPacksAndSend startTestFlight")
   donloadUnitPacksAndSend(unitName, testFlightExtPacks?[getAddonPostfix(unitName)] ?? [],
     "startTestFlight", params)
 }
@@ -103,6 +108,7 @@ function startOfflineBattle(unit, missionName) {
     openMsgBox({ text = loc("No selected unit") })
     return
   }
+  logO("donloadUnitPacksAndSend startTraining")
   donloadUnitPacksAndSend(unit.name, soloNewbieByCampaign?[curCampaign.get()] ?? [], "startTraining",
     {
       unitName = unit.name
@@ -119,6 +125,7 @@ function startLocalMPBattle(unit, missionName) {
     openMsgBox({ text = loc("No selected unit") })
     return
   }
+  logO("donloadUnitPacksAndSend startLocalMP")
   donloadUnitPacksAndSend(unit.name, [], "startLocalMP",
     {
       unitName = unit.name

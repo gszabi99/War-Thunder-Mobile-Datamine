@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 import "%globalScripts/ecs.nut" as ecs
 let { setInterval, clearTimer } = require("dagor.workcycle")
-let { CmdActionInRespawn = null } = require_optional("dasevents")
+let { CmdActionInRespawn } = require("dasevents")
 let { register_command } = require("console")
 let { debounce } = require("%sqstd/timers.nut")
 let { isInRespawn } = require("%appGlobals/clientState/respawnStateBase.nut")
@@ -12,8 +12,8 @@ let local_player_eid = @() find_local_player_respawn_query(@(eid, _) eid) ?? ecs
 
 let sendPlayerActivityToServer = debounce(function() {
   let eid = local_player_eid()
-  if (eid != ecs.INVALID_ENTITY_ID && isInRespawn.get() && CmdActionInRespawn != null)
-    ecs.g_entity_mgr.sendEvent(local_player_eid(), CmdActionInRespawn?({}))
+  if (eid != ecs.INVALID_ENTITY_ID && isInRespawn.get())
+    ecs.g_entity_mgr.sendEvent(local_player_eid(), CmdActionInRespawn({}))
 }, 2)
 
 let isDebugActive = persist("isDebugActive", @() Watched(false))

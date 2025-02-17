@@ -471,7 +471,7 @@ let slotPresetButtons = @() {
           @() curUnit.get() != null ? buyUnitLevelWnd(curUnit.get().name) : null, { hotkeys = ["^J:Y"] })
       : curWeaponIsLocked.get() ? null
       : !curWeaponIsPurchased.get()
-        ? textButtonPurchase(loc("mainmenu/btnBuy"), onPurchaseMod, { ovr = { key = "arsenal_purchase_tutor_btn" }})
+        ? textButtonPurchase(loc("mainmenu/btnBuy"), onPurchaseMod, { ovr = { key = "arsenal_purchase_tutor_btn" }, hotkeys = ["^J:Y"] })
       : curWeapon.get() != null && equippedWeaponId.get() != curWeapon.get().name
         ? textButtonPrimary(loc($"mod/enable{mirrorIdx.get() != -1 ? "/both_wings" : ""}"), equipCurWeaponMsg)
       : curWeapon.get() != null

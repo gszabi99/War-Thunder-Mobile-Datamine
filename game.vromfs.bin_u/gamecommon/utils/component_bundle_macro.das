@@ -64,7 +64,7 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
   var funcArgsTbl : table<string; bool>
   if isValidationRequired
     for fnArg in arguments
-      funcArgsTbl["{fnArg.name}"] = true
+      funcArgsTbl.insert("{fnArg.name}", true)
 
   // find and expand bundle arg
   var i = 0
@@ -87,7 +87,7 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
           macro_error(compiling_program(), argType.at, "function argument '{fieldName}' shadows component with name '{bundleArgName}.{fieldName}'")
         if key_exists(bundleFieldNamesValidationSet, fieldName)
           macro_error(compiling_program(), argType.at, "duplicate component with name '{fieldName}'")
-        bundleFieldNamesValidationSet[fieldName] = true
+        bundleFieldNamesValidationSet.insert(fieldName, true)
       bundleFieldNames |> push(fieldName)
 
       if true

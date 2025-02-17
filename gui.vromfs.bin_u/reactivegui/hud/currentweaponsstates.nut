@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 import "%sqstd/ecs.nut" as ecs
-let { EventOnSupportUnitSpawn = 0 } = require_optional("dasevents")
+let { EventOnSupportUnitSpawn } = require("dasevents")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { actionBarItems } = require("actionBar/actionBarState.nut")
@@ -253,11 +253,10 @@ let currentHoldWeaponName = Computed(function() {
   return loc($"weapons/{weaponName}/short")
 })
 
-if (EventOnSupportUnitSpawn != 0)
-  ecs.register_es("on_support_unit_spawned", {
-    [EventOnSupportUnitSpawn] = @(_evt, _eid, _comp)
-      selectActionByViewCfg(getViewCfg(currentWeaponInfo.value))
-  })
+ecs.register_es("on_support_unit_spawned", {
+  [EventOnSupportUnitSpawn] = @(_evt, _eid, _comp)
+    selectActionByViewCfg(getViewCfg(currentWeaponInfo.value))
+})
 
 let hasCrosshairForWeapon = Computed(@() unitType.value == TANK
   || (getViewCfg(currentWeaponInfo.value)?.hasCrosshair ?? false))

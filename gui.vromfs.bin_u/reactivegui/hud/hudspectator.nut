@@ -11,7 +11,8 @@ let { tacticalMap } = require("components/tacticalMap.nut")
 let { scoreBoard, needScoreBoard } = require("%rGui/hud/scoreBoard.nut")
 let { capZonesList } = require("capZones/capZones.nut")
 let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
-let { mkMyPlaceUi, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
+let { isInSpectatorMode } = require("%rGui/hudState.nut")
+let { mkMyPlaceUi, mkMyScoresUi, isPlaceVisible, isScoreVisible } = require("%rGui/hud/myScores.nut")
 
 
 let bgButtonColor = Color(32, 34, 38, 216)
@@ -27,16 +28,17 @@ let buttonImageSize = (0.9 * buttonHeight).tointeger()
 let gap = hdpx(40)
 
 let isAttached = Watched(false)
-let needShowMsgForScore = Watched(false)
+let needShowTapHint = mkWatched(persist, "needShowTapHint", true)
 
 let watchedHeroId = mkWatched(persist, "watchedHeroId", -1)
 eventbus_subscribe("WatchedHeroChanged", @(_) watchedHeroId(getSpectatorTargetId()))
-eventbus_subscribe("toggleMpstatscreen", @(_) needShowMsgForScore.set(false))
+eventbus_subscribe("toggleMpstatscreen", @(_) isInSpectatorMode.get() ? needShowTapHint.set(false) : null)
 
 let watchedHero = Computed(@() isAttached.get() ? get_mplayer_by_id(watchedHeroId.get()) : null)
 let watchedHeroName = Computed(@() watchedHero.value == null ? "" : watchedHero.value.name)
 let watchedHeroColor = Computed(@() watchedHero.value == null ? 0xFFFFFFFF
   : watchedHero.value.team == localMPlayerTeam.value ? teamBlueColor : teamRedColor)
+let hasTapHint = Computed(@() needShowTapHint.get() && (isPlaceVisible.get() || isScoreVisible.get()))
 
 let switchTargetImage = Picture($"!ui/gameuiskin#spinnerListBox_arrow_up.svg:{buttonImageSize}:{buttonImageSize}")
 
@@ -148,7 +150,7 @@ let hudTopCenter = @() {
 }
 
 let hudRight = @() {
-  watch = needShowMsgForScore
+  watch = hasTapHint
   behavior = Behaviors.Button
   cameraControl = true
   onClick = @() eventbus_send("toggleMpstatscreen", {})
@@ -165,7 +167,7 @@ let hudRight = @() {
         mkMyScoresUi(1)
       ]
     }
-    !needShowMsgForScore.get() ? null
+    !hasTapHint.get() ? null
       : {
           key = {}
           rendObj = ROBJ_TEXTAREA

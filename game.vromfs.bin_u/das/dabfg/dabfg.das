@@ -86,7 +86,7 @@ variant TextureResolution2
 
 
 struct Texture2dCreateInfo
-  resolution : TextureResolution2
+  resolution : TextureResolution2 = TextureResolution2(uninitialized)
   creationFlags : uint
   mipLevels : uint = 1u
 
@@ -342,7 +342,7 @@ def isDasNative(var t : TypeDeclPtr) : bool
   if length(t.dim) > 0
     return true
 
-  // These are interop types by default, see typeInterop.cpp
+  // These are interop types by default, see blobBindings.cpp
   return (
     t.baseType != Type tBool &&
     t.baseType != Type tInt8 &&
@@ -496,13 +496,8 @@ class BlobMacro : AstCallMacro
       return <- qmacro_expr <| ${
           $(var self : VirtualResourceCreationSemiRequest) {
             $(var res : ResourceData&) {
-              static_if $v(hasValue) {
-                let ctor <- @(var self1 : void?){ ($c("ctor_def`{blobTypeHash}")(self1, $e(arg1))); };
-                let nullFunc = [[function<(var arg0 : void?) : void>]];
-                let nullCopyFunc = [[function<(var arg0 : void?; arg1 : void const?) : void>]];
-                res |> setDescription($v(mangledBlobTypeName), $v(blobType.sizeOf), $v(blobType.alignOf), getTypeInfo(type<$t(blobType)>),
-                  ctor, nullFunc, nullCopyFunc);
-              } static_elif $v(useDasCtorDtor(blobType)) {
+
+              if $v(useDasCtorDtor(blobType)) {
                 res |> setDescription($v(mangledBlobTypeName), $v(blobType.sizeOf), $v(blobType.alignOf),
                   getTypeInfo(type<$t(blobType)>), @@$c("ctor`{blobTypeHash}"), @@$c("dtor`{blobTypeHash}"), @@$c("copy`{blobTypeHash}"));
               } else {
@@ -510,6 +505,11 @@ class BlobMacro : AstCallMacro
                 let nullCopyFunc = [[function<(var arg0 : void?; arg1 : void const?) : void>]];
                 res |> setDescription($v(mangledBlobTypeName), $v(blobType.sizeOf), $v(blobType.alignOf),
                   getTypeInfo(type<$t(blobType)>), nullFunc, nullFunc, nullCopyFunc);
+              }
+
+              static_if $v(hasValue) {
+                let ctor <- @(var self1 : void?){ ($c("ctor_def`{blobTypeHash}")(self1, $e(arg1))); };
+                res |> overrideCtor(getTypeInfo(type<$t(blobType)>), ctor);
               }
 
               res.resType = ResourceType Blob;

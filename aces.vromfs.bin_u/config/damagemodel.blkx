@@ -3955,51 +3955,75 @@
     },
     "drive_turret_v_dm": {
       "speed": 1.3,
-      "completely": true
+      "completely": true,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "drive_turret_v_01_dm": {
       "speed": 1.3,
-      "completely": true
+      "completely": true,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "drive_turret_v_02_dm": {
       "speed": 1.3,
-      "completely": true
+      "completely": true,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "drive_turret_v_03_dm": {
       "speed": 1.3,
-      "completely": true
+      "completely": true,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "drive_turret_v_04_dm": {
       "speed": 1.3,
-      "completely": true
+      "completely": true,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "drive_turret_v_05_dm": {
       "speed": 1.3,
-      "completely": true
+      "completely": true,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "drive_turret_h_dm": {
       "speed": 1.3,
-      "completely": true
+      "completely": true,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "drive_turret_h_01_dm": {
       "speed": 1.3,
-      "completely": true
+      "completely": true,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "drive_turret_h_02_dm": {
       "speed": 1.3,
-      "completely": true
+      "completely": true,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "drive_turret_h_03_dm": {
       "speed": 1.3,
-      "completely": true
+      "completely": true,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "drive_turret_h_04_dm": {
       "speed": 1.3,
-      "completely": true
+      "completely": true,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "drive_turret_h_05_dm": {
       "speed": 1.3,
-      "completely": true
+      "completely": true,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "antenna_target_location_dm": {
       "speed": 2.0,

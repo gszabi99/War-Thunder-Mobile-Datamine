@@ -14,7 +14,8 @@ eventbus_subscribe("addIconToUnit", function(params) {
     return
   if (set) {
     let icon = iconType
-    let isMyTeam = get_mplayer_by_id(playerId)?.team == localMPlayerTeam.get()
+    let localTeam = localMPlayerTeam.get()
+    let isMyTeam = get_mplayer_by_id(playerId)?.team == localTeam || localTeam == 0
     let iconColor = isMyTeam ? teamBlueColor : teamRedColor
     addHudIndicator(PLAYER_MISSION_ICON, { playerId, icon, iconColor })
   }

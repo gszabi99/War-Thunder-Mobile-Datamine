@@ -1,6 +1,7 @@
 {
   "import": "%wtlibs/templates/essentials.blk",
   "unit_loader": {
+    "_use": "ecs_no_debug",
     "setting__className": "",
     "setting__playerNo": -1,
     "setting__unitType": "",

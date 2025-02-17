@@ -7,14 +7,61 @@ let { myUserId } = require("%appGlobals/profileStates.nut")
 let { INVALID_USER_ID } = require("matching.errors")
 let { object_to_json_string } = require("json")
 let { get_common_local_settings_blk } = require("blkGetters")
-let { eventbus_send } = require("eventbus")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
+let { getLogin = @() "" } = require("auth_wt")
+let { sha256 = @(_) "" } =  require("hash")
+let regexp2 = require("regexp2")
 let {
   logFirebaseEvent = @(_) null ,
   logFirebaseEventWithJson = @(_,__) null ,
   setFirebaseUID = @(_) null
+  getFirebaseAppInstanceId = @() null
 }  = is_android ? require_optional ("android.firebase.analytics") : is_ios ? require_optional ("ios.firebase.analytics") : {}
+let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 const FIRST_LOGIN_EVENT = "first_login_event"
+
+let firebaseAppInstanceId = mkWatched(persist, "firebaseAppInstanceId", getFirebaseAppInstanceId())
+let storedUserIdForFirebase = hardPersistWatched("storedUserIdForUserId", null)
+let readySendFirebaseBq = keepref(Computed(@() firebaseAppInstanceId.value!=null
+  && myUserId.value != INVALID_USER_ID
+  && storedUserIdForFirebase.value != myUserId.value))
+
+function convertToSha256Email(login) {
+  //validate on valid email
+  //remove dots before @gmail.com or @googlemail.com
+  //comvert to lowercase, remove spaces
+  let emailReg = regexp2(@"((\w+)(\.{1}\w+)*@(\w+)(\.\w+)+)")
+  if (!emailReg.match(login))
+    return ""
+
+  let emailNoDots = regexp2(@"(\.)(?=.*@(gmail\.com||googlemail\.com)$)")
+  login = sha256(emailNoDots.replace("", login).tolower().replace(" ", ""))
+  return login
+}
+
+let function sendFirebaseAppInstanceBq() {
+  if (myUserId.value != storedUserIdForFirebase.value) {
+    storedUserIdForFirebase.set(myUserId.value)
+    sendCustomBqEvent("firebase_info_1", {
+      appInstanceId = firebaseAppInstanceId.value,
+      email = convertToSha256Email(getLogin())
+    })
+  }
+}
+
+if (readySendFirebaseBq.value) {
+  sendFirebaseAppInstanceBq()
+}
+
+readySendFirebaseBq.subscribe(function(v) {
+  if (v)
+    sendFirebaseAppInstanceBq()
+})
+
+eventbus_subscribe(is_ios ? "ios.firebase.analytics.onReceiveAppId" : "android.firebase.analytics.onReceiveAppId",
+  @(params) firebaseAppInstanceId.set(params.firebaseAppInstanceId))
 
 function sendEvent(id) {
   log($"[telemetry] send event {id}")

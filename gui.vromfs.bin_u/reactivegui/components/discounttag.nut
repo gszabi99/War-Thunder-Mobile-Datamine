@@ -81,6 +81,8 @@ function discountTagUnitCtor(discount, height, ovr) {
 }
 
 return {
+  discountOfferTagH
+
   discountTag
   discountTagBig
   discountTagOffer

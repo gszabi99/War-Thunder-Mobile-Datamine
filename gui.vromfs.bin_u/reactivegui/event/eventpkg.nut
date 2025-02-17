@@ -19,7 +19,7 @@ let { openEventQuestsWnd } = require("%rGui/quests/questsState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { schRewards, onSchRewardReceive, adBudget } = require("%rGui/shop/schRewardsState.nut")
 let { getLootboxImage, lootboxFallbackPicture } = require("%appGlobals/config/lootboxPresentation.nut")
-
+let { hasVip } = require("%rGui/state/profilePremium.nut")
 
 let REWARDS = 3
 let fillColor = 0x70000000
@@ -28,6 +28,8 @@ let iconStyle = CS_INCREASED_ICON
 let iconSize = iconStyle.iconSize
 let lootboxHeight = hdpxi(320)
 let rewardGap = REWARD_STYLE_TINY.boxGap
+let vipIconW = CS_INCREASED_ICON.iconSize
+let vipIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
 
 let rewardsSize = REWARD_STYLE_TINY.boxSize
 let lootboxInfoSize = [rewardsSize * REWARDS + rewardGap * (REWARDS + 1),
@@ -161,10 +163,12 @@ let mkBtnContent = @(img, text, ovr = {}) {
   gap = hdpx(20)
   children = [
     !img ? null : {
-      size = [iconSize, iconSize]
+      size = !hasVip.get() ? [iconSize, iconSize] : [vipIconW, vipIconH]
       rendObj = ROBJ_IMAGE
       keepAspect = KEEP_ASPECT_FILL
-      image = Picture($"{img}:{iconSize}:{iconSize}:P")
+      image = !hasVip.get()
+        ? Picture($"{img}:{iconSize}:{iconSize}:P")
+        : Picture($"{img}:{vipIconW}:{vipIconH}:P")
     }
     {
       maxWidth = hdpx(250)
@@ -182,7 +186,9 @@ function mkAdsBtn(reqPlayerLevel, adReward) {
     watch = [bestCampLevel, adBudget]
     children = mkCustomButton(
       cost >= adBudget.get() ? mkBtnContent(null, loc("btn/adsLimitReached"))
-        : mkBtnContent("ui/gameuiskin#watch_ads.svg", loc("shop/watchAdvert/short"), adsButtonCounter),
+        : !hasVip.get()
+          ? mkBtnContent("ui/gameuiskin#watch_ads.svg", loc("shop/watchAdvert/short"), adsButtonCounter)
+        : mkBtnContent("ui/gameuiskin#vip_active.svg", loc("shop/vip/budget_rewards", { num = adBudget.get() }), adsButtonCounter),
       @() bestCampLevel.value >= reqPlayerLevel
           ? onSchRewardReceive(adReward)
         : openMsgBox({ text = loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) }) }),

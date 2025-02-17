@@ -12,11 +12,11 @@ log($"teamRedColor corrected by TARGET_HUE_ENEMY from 0x{format("%X", teamRedCol
 
 return {
   teamBlueColor
-  teamBlueLightColor    = correctColorLightness(teamBlueColor, 80)
+  teamBlueLightColor    = correctColorLightness(teamBlueColor, 0.69)
 
   teamRedColor
-  teamRedLightColor     = correctColorLightness(teamRedColor, 80)
+  teamRedLightColor     = correctColorLightness(teamRedColor, 0.69)
 
   mySquadColor
-  mySquadLightColor     = correctColorLightness(mySquadColor, 80)
+  mySquadLightColor     = correctColorLightness(mySquadColor, 0.69)
 }

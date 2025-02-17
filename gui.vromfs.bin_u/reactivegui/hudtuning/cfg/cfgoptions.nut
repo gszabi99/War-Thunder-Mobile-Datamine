@@ -1,6 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 
+let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
+} = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
+let { openChooseMovementControls
+} = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
+let { gearDownOnStopButtonList, currentGearDownOnStopButtonTouch, showGearDownControl
+} = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
+
 
 let mkSetValue = @(key) function setValue(options, id, value) {
   if (key not in options)
@@ -74,6 +82,25 @@ let optFontSize = {
   valToString = @(v) loc($"options/font/{v}")
 }
 
+let optTankMoveControlType = {
+  locId = "options/tank_movement_control"
+  ctrlType = OCT_LIST
+  value = currentTankMoveCtrlType
+  onChangeValue = @(v) sendSettingChangeBqEvent("tank_movement_control", "tanks", v)
+  list = tankMoveCtrlTypesList
+  valToString = ctrlTypeToString
+  openInfo = openChooseMovementControls
+}
+
+let gearDownOnStopButtonTouch = {
+  locId = "options/gear_down_on_stop_button"
+  ctrlType = OCT_LIST
+  value = currentGearDownOnStopButtonTouch
+  onChangeValue = @(v) sendSettingChangeBqEvent("gear_down_on_stop_button", "tanks", v)
+  list = Computed(@() showGearDownControl.get() ? gearDownOnStopButtonList : [])
+  valToString = @(v) loc(v ? "options/on_touch" : "options/on_hold")
+}
+
 let allElemOptionsList = [ optScale ]
 let hasAnyOfAllElemOptions = Watched(false)
 
@@ -91,6 +118,8 @@ return {
   optScale
   optTextWidth
   optFontSize
+  optTankMoveControlType
+  gearDownOnStopButtonTouch
 
   getElemFont
   getTextWidth

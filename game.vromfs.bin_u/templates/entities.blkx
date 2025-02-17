@@ -9,7 +9,8 @@
     "%wtlibs/templates/mission.blk",
     "%wtlibs/templates/units.blk",
     "%wtlibs/templates/fx.blk",
-    "%wtlibs/templates/damage_model.blk"
+    "%wtlibs/templates/damage_model.blk",
+    "%wtlibs/templates/microdetail.blk"
   ],
   "import_optional": "#game_pkg_dev/templates/*.blk",
   "backmodel_spawn_point": {

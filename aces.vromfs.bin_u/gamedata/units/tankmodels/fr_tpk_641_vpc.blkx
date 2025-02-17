@@ -2348,14 +2348,14 @@
         "steeringNeutralSpd": 2.3
       },
       "wheelsDamageWeight": {
-        "wheel_l_01": 0.125,
-        "wheel_r_01": 0.125,
-        "wheel_l_02": 0.125,
-        "wheel_r_02": 0.125,
-        "wheel_l_03": 0.125,
-        "wheel_r_03": 0.125,
-        "wheel_l_04": 0.125,
-        "wheel_r_04": 0.125,
+        "wheel_l_01": 0.05,
+        "wheel_r_01": 0.05,
+        "wheel_l_02": 0.05,
+        "wheel_r_02": 0.05,
+        "wheel_l_03": 0.05,
+        "wheel_r_03": 0.05,
+        "wheel_l_04": 0.05,
+        "wheel_r_04": 0.05,
         "wheel_r_drive": 0.25,
         "wheel_l_drive": 0.25
       },
