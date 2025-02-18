@@ -2300,8 +2300,7 @@
               "bullets": 1
             }
           ],
-          "WeaponContainers": {
-            "blk": "gameData/Weapons/rocketGuns/de_br20.blk",
+          "ShowNodes": {
             "node": [
               "210mm_tube_l",
               "210mm_tube_r"
@@ -2336,8 +2335,7 @@
               "bullets": 1
             }
           ],
-          "WeaponContainers": {
-            "blk": "gameData/Weapons/rocketGuns/de_br20.blk",
+          "ShowNodes": {
             "node": [
               "210mm_tube_l",
               "210mm_tube_r"
