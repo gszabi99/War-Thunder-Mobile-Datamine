@@ -4,6 +4,7 @@ let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDownloadedFromGooglePlay } = require("android.platform")
 let { get_base_game_version_str, get_game_version_str } = require("app")
+let { resetTimeout } = require("dagor.workcycle")
 let { is_ios, is_android, is_nswitch } = require("%sqstd/platform.nut")
 let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -12,9 +13,9 @@ let { allow_review_cue } = require("%appGlobals/permissions.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { lastBattles } = require("%appGlobals/pServer/campaign.nut")
 let { isOnlineSettingsAvailable, isLoggedIn } = require("%appGlobals/loginState.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { debriefingData, isNoExtraScenesAfterDebriefing } = require("%rGui/debriefing/debriefingState.nut")
+let { myUserIdStr } = require("%appGlobals/profileStates.nut")
+let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
+let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { getScoreKeyRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
 
 local appStoreProdVersion = mkWatched(persist, "appStoreProdVersion", "")
@@ -45,7 +46,6 @@ let SAVE_ID_STORE = $"{SAVE_ID_BLK}/rated_{storeId}"
 let SAVE_ID_SEEN = $"{SAVE_ID_BLK}/seen"
 let SAVE_ID_BATTLES = $"{SAVE_ID_BLK}/battles"
 
-let SHOULD_USE_REVIEW_CUE = true // true = use reviewCueWnd, false = use feedbackWnd.
 let REVIEW_IS_AVAILABLE = !is_nswitch // if false then dont show any review
 
 let userFeedbackTube = "user_feedback"
@@ -58,6 +58,7 @@ let isRatedOnStore = Watched(false)
 let savedRating = Watched(0)
 let lastSeenDate = Watched(0)
 let lastSeenBattles = Watched(0)
+let canRateGameByCurTime = Watched(false)
 
 if (is_ios && appStoreProdVersion.get() == "") {
   appStoreProdVersion.subscribe(@(v) log($"appStoreProdVersion: {v}"))
@@ -66,6 +67,20 @@ if (is_ios && appStoreProdVersion.get() == "") {
       : logerr($"Wrong event ios.platform.onGetAppStoreProdVersion result type = {type(v.value)}: {v.value}"))
   require("ios.platform").getAppStoreProdVersion()
 }
+
+function updateCanRateByTime() {
+  if (!isServerTimeValid.get()) {
+    canRateGameByCurTime.set(false)
+    return
+  }
+  let timeLeft = lastSeenDate.get() + (SKIP_HOURS_WHEN_REJECTED * 3600) - serverTime.get()
+  canRateGameByCurTime.set(timeLeft <= 0)
+  if (timeLeft > 0)
+    resetTimeout(timeLeft, updateCanRateByTime)
+}
+updateCanRateByTime()
+isServerTimeValid.subscribe(@(_) updateCanRateByTime())
+lastSeenDate.subscribe(@(_) updateCanRateByTime())
 
 function initSavedData() {
   if (!isOnlineSettingsAvailable.value)
@@ -83,38 +98,29 @@ let showAfterBattlesCount = Computed(@() lastSeenDate.value == 0 ? 0
   : (lastSeenBattles.value + SKIP_BATTLES_WHEN_REJECTED)
 )
 
-let isOldFeedbackCompleted = Watched(false)
-
 let isGameUnrated = Computed(@()
-  ((IS_PLATFORM_STORE_AVAILABLE && !isRatedOnStore.value) || savedRating.value == 0) //warning disable: -const-in-bool-expr
-  && (SHOULD_USE_REVIEW_CUE || !isOldFeedbackCompleted.value) //warning disable: -const-in-bool-expr
-)
+  ((IS_PLATFORM_STORE_AVAILABLE && !isRatedOnStore.value) || savedRating.value == 0)) //warning disable: -const-in-bool-expr
 
 function needRateGameByDebriefing(dData) {
   let { sessionId = -1, isFinished = false, isTutorial = false, campaign = "", players = {} } = dData
   if (!isFinished || isTutorial)
     return false
-  let isMultiplayer = sessionId != -1
-  let myUserIdStr = myUserId.get().tostring()
-  let player = players?[myUserIdStr]
+  if (sessionId == -1) //not multiplayer
+    return true
+  let player = players?[myUserIdStr.get()]
   if (player == null)
     return false
   let { team = null } = player
-  if (!isMultiplayer)
-    return true
   let score = player?[getScoreKeyRaw(campaign)] ?? 0
   return team != null && score > 0
 }
-
-let canRateGameByCurTime = @() lastSeenDate.value + (SKIP_HOURS_WHEN_REJECTED * 3600) <= serverTime.value
 
 let needRateGame = Computed(@() allow_review_cue.get()
   && REVIEW_IS_AVAILABLE //warning disable: -const-in-bool-expr
   && isGameUnrated.get()
   && !isRateGameSeen.get()
   && lastBattles.get().len() >= showAfterBattlesCount.get()
-  && canRateGameByCurTime()
-  && isNoExtraScenesAfterDebriefing.get()
+  && canRateGameByCurTime.get()
   && needRateGameByDebriefing(debriefingData.get())
 )
 
@@ -175,10 +181,8 @@ register_command(function() {
 }, "ui.debug.review_cue.reset")
 
 return {
-  SHOULD_USE_REVIEW_CUE
   needRateGame
   sendGameRating
   platformAppReview
   isRateGameSeen
-  isOldFeedbackCompleted
 }

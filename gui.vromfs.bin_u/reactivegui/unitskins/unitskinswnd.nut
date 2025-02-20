@@ -47,8 +47,10 @@ let { bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, openBattlePas
 } = require("%rGui/battlePass/battlePassState.nut")
 let changeSkinTagWnd = require("changeSkinTagWnd.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+let { sendAppsFlyerSavedEvent } = require("%rGui/notifications/logEvents.nut")
 
 
+let appsFlyerSaveId = "DefaultSkinWasReplaced"
 let SKINS_IN_ROW = 4
 let SKINS_IN_ROW_TAGS = 3
 let skinSize = hdpxi(110)
@@ -72,6 +74,8 @@ let function applyToPlatoon(unit, skinName) {
   foreach (pu in unit.platoonUnits)
     if ((unit?.currentSkins[pu.name] ?? "") != skinName)
       enable_unit_skin(unit.name, pu.name, skinName)
+  if (skinName != "")
+    sendAppsFlyerSavedEvent("skin_equiped_1", appsFlyerSaveId)
 }
 
 let skinsPannable = horizontalPannableAreaCtor(skinsRowWidth + skinSize + saBorders[0], [skinSize, saBorders[0]])
@@ -250,7 +254,11 @@ let function selectBtns(unit, vehicleName, skinName, cSkin) {
       cSkin == skinName ? mkGradText(loc("skins/applied"))
         : textButtonPrimary(
             utf8ToUpper(loc("mainmenu/btnApply")),
-            @() enable_unit_skin(unit.name, vehicleName, skinName),
+            function() {
+              enable_unit_skin(unit.name, vehicleName, skinName)
+              if (skinName != "")
+                sendAppsFlyerSavedEvent("skin_equiped_1", appsFlyerSaveId)
+            },
             { hplace = ALIGN_CENTER })
     ]
   }

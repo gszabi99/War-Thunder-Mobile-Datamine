@@ -19,7 +19,7 @@ let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { shopGoods, openShopWnd } = require("%rGui/shop/shopState.nut")
 let { defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-
+let { progressBarRewardSize } = require("rewardsComps.nut")
 
 let iconSize = hdpxi(100)
 let iconColor = 0xFFFFFFFF
@@ -37,6 +37,7 @@ let mkUnseen = @(tabId) Computed(function() {
 })
 
 let linkToEventBtnCtor = @() {
+  minHeight = progressBarRewardSize
   watch = imageSizeMul
   children = mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
     iconSeason,
@@ -44,6 +45,7 @@ let linkToEventBtnCtor = @() {
 }
 
 let linkToBattlePassBtnCtor = @() {
+  minHeight = progressBarRewardSize
   watch = imageSizeMul
   children = mkQuestsHeaderBtn(loc("mainmenu/rewardsList"),
     iconSeason,
@@ -67,6 +69,7 @@ function linkToStoreBtnCtor(idx) {
     && shopGoods.get().findindex(@(item) item?.meta.eventId == eventName.get()) != null)
 
   return @() {
+    minHeight = progressBarRewardSize
     watch = [hasGoods, lootboxInfo]
     children = hasGoods.get()
         ? mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openShopWnd(defaultShopCategory))

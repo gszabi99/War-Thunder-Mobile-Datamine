@@ -1,8 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
-let { SHOULD_USE_REVIEW_CUE, needRateGame } = require("%rGui/feedback/rateGameState.nut")
+let { needRateGame } = require("%rGui/feedback/rateGameState.nut")
 let openReviewCueWnd = require("%rGui/feedback/reviewCueWnd.nut")
-let openFeedbackWnd = require("%rGui/feedback/feedbackWnd.nut")
 
 local onCloseCb = null
 
@@ -10,10 +9,7 @@ function tryShowRateGame() {
   if (!needRateGame.value)
     return
 
-  if (SHOULD_USE_REVIEW_CUE)
-    openReviewCueWnd(onCloseCb)
-  else
-    openFeedbackWnd() // TODO: This wnd is deprecated, need to remove it from scripts.
+  openReviewCueWnd(onCloseCb)
 }
 
 let requestShowRateGame = function(cb = null) {

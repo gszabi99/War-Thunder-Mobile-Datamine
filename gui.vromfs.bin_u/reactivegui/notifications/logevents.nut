@@ -1,13 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+let { register_command } = require("console")
 let { is_ios, is_android } = require("%appGlobals/clientState/platform.nut")
 let { logEvent, setAppsFlyerCUID } = require("appsFlyer")
 let { logEventFB } = require("android.account.fb")
 let { setBillingUUID = @(_) null } = is_ios ? require("ios.billing.appstore") : {}
-let { myUserId } = require("%appGlobals/profileStates.nut")
 let { INVALID_USER_ID } = require("matching.errors")
 let { object_to_json_string } = require("json")
-let { get_common_local_settings_blk } = require("blkGetters")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { get_common_local_settings_blk, get_local_custom_settings_blk } = require("blkGetters")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { getLogin = @() "" } = require("auth_wt")
 let { sha256 = @(_) "" } =  require("hash")
@@ -18,9 +17,13 @@ let {
   setFirebaseUID = @(_) null
   getFirebaseAppInstanceId = @() null
 }  = is_android ? require_optional ("android.firebase.analytics") : is_ios ? require_optional ("ios.firebase.analytics") : {}
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { myUserId } = require("%appGlobals/profileStates.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 
 const FIRST_LOGIN_EVENT = "first_login_event"
+const STATS_SENT = "statsSent"
 
 let firebaseAppInstanceId = mkWatched(persist, "firebaseAppInstanceId", getFirebaseAppInstanceId())
 let storedUserIdForFirebase = hardPersistWatched("storedUserIdForUserId", null)
@@ -90,7 +93,25 @@ myUserId.subscribe(function(v) {
   }
 })
 
+function sendAppsFlyerSavedEvent(eventId, saveId) {
+  let blk = get_local_custom_settings_blk().addBlock(STATS_SENT)
+  if (!blk?[saveId]) {
+    blk[saveId] = true
+    eventbus_send("saveProfile", {})
+    sendEvent(eventId)
+  }
+}
+
+function resetStatsSentEvents() {
+  get_local_custom_settings_blk().removeBlock(STATS_SENT)
+  eventbus_send("saveProfile", {})
+}
+
+subscribeResetProfile(resetStatsSentEvents)
+register_command(resetStatsSentEvents, "debug.reset_stats_sent_events")
+
 return {
   sendAppsFlyerEvent = sendEvent
+  sendAppsFlyerSavedEvent
   logFirebaseEventWithJson
 }

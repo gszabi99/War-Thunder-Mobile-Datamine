@@ -470,7 +470,6 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
     return {
       watch = [isProgressBySection, sections, isSectionsEmpty, hasProgressUnlock]
       size = [flex(), SIZE_TO_CONTENT]
-      minHeight = progressBarRewardSize
       gap = pageBlocksGap
       flow = FLOW_VERTICAL
       children = isProgressBySection.get() ? [sectionsBlock, progressBlock] : [progressBlock, sectionsBlock]

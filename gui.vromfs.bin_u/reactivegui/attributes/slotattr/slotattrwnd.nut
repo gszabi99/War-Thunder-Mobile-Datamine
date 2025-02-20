@@ -188,9 +188,8 @@ let pageBlock = {
 }
 
 let applyAction = function() {
-  if(!hasUpgradedAttrUnitNotUpdatable()) {
-    sendAppsFlyerEvent("add_unit_attributes")
-  }
+  if (!hasUpgradedAttrUnitNotUpdatable() && slots.get().findindex(@(slot) slot.attrLevels.len() > 0 ) == null)
+    sendAppsFlyerEvent("slot_upgrade_crew_1")
   applyAttributes()
   backButtonBlink("UnitAttr")
 }
