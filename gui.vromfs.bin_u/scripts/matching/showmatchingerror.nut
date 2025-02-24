@@ -7,10 +7,11 @@ let { SERVER_ERROR_INVALID_VERSION, OPERATION_COMPLETE,
 SERVER_ERROR_PROTOCOL_MISMATCH, CLIENT_ERROR_OFFLINE, SERVER_ERROR_REQUEST_TIMEOUT } = require("matching.errors")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { replace } = require("%sqstd/string.nut")
-let { isDownloadedFromGooglePlay } = require("android.platform")
+let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
 let { sendErrorBqEvent, sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { is_ios } = require("%sqstd/platform.nut")
 let matching = require("%appGlobals/matching_api.nut")
+let isHuaweiBuild = getBuildMarket() == "appgallery"
 
 function errorHandlerRetryMessage(code) {
   let errorId = matching.error_string(code)
@@ -30,9 +31,10 @@ function showIncompatibleVersionMsg() {
   sendErrorBqEvent("Download new version (required)")
   openFMsgBox({
     uid = "errorMessageBox"
-    text = loc(isDownloadedFromGooglePlay() ? "updater/newVersion/desc/android"
-      : is_ios ? "updater/newVersion/desc/iOS"
-      : "updater/newVersion/desc")
+    text = (isDownloadedFromGooglePlay() || isHuaweiBuild)
+      ? loc("updater/newVersion/desc/android", {market = isHuaweiBuild ? "AppGallery" : "Google Play"})
+      : is_ios ? loc("updater/newVersion/desc/iOS")
+      : loc("updater/newVersion/desc")
     buttons = [
       { text = loc("updater/btnUpdate"), eventId = "exitGameForUpdate",
         styleId = "PRIMARY", isDefault = true }
@@ -59,9 +61,10 @@ let customErrorHandlers = {
     sendErrorBqEvent("Download new version (optional)")
     openFMsgBox({
       uid = "errorMessageBox"
-      text = loc(isDownloadedFromGooglePlay() ? "updater/newVersion/desc/android"
-        : is_ios ? "updater/newVersion/desc/iOS"
-        : "updater/newVersion/desc")
+      text = (isDownloadedFromGooglePlay() || isHuaweiBuild)
+        ? loc("updater/newVersion/desc/android", {market = isHuaweiBuild ? "AppGallery" : "Google Play"})
+        : is_ios ? loc("updater/newVersion/desc/iOS")
+        : loc("updater/newVersion/desc")
       buttons = [
         { id = "cancel", isCancel = true }
         { text = loc("updater/btnUpdate"), eventId = "exitGameForUpdate",

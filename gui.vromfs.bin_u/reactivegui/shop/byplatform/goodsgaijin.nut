@@ -1,16 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
+let { DBGLEVEL } = require("dagor.system")
+let { resetTimeout } = require("dagor.workcycle")
 let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut")
 let { addGoodsInfoGuids, addGoodsInfoGuid, goodsInfo } = require("gaijinGoodsInfo.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
+let { showRestorePurchasesDoneMsg } = require("platformGoodsCommon.nut")
 
 
 let successPaymentUrl = "https://store.gaijin.net/success_payment.php" //webview should close on success payment url
 
 let getGaijinGuid = @(goods) goods?.purchaseGuids.gaijin.guid ?? ""
 let getGaijinDiscount = @(goods) goods?.purchaseGuids.gaijin.discountInPercent ?? 0
+let platformPurchaseInProgress = Watched(null) //only for debug restore purchases
 
 let goodsIdByGuid = Computed(function() {
   let res = {}
@@ -116,12 +120,25 @@ function activatePlatfromSubscription(subsOrId) {
   severalCheckPurchasesOnActivate()
 }
 
+let restorePurchases = DBGLEVEL <= 0 ? null
+  : function() {
+      if (platformPurchaseInProgress.get() != null)
+        return
+      platformPurchaseInProgress.set("")
+      resetTimeout(1.0, function() {
+        platformPurchaseInProgress.set(null)
+        showRestorePurchasesDoneMsg()
+      })
+    }
+
 return {
   platformGoodsDebugInfo = goodsInfo
   platformGoods
   platformGoodsFromRussia = platformGoods
   platformOffer
   platformSubs
+  platformPurchaseInProgress
   buyPlatformGoods
   activatePlatfromSubscription
+  restorePurchases
 }

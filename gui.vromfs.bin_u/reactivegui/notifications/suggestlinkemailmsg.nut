@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { curLoginType, LT_FACEBOOK, LT_GOOGLE, LT_APPLE, authTags } = require("%appGlobals/loginState.nut")
+let { curLoginType, LT_FACEBOOK, authTags } = require("%appGlobals/loginState.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { resetTimeout } = require("dagor.workcycle")
 let { register_command } = require("console")
@@ -10,16 +10,16 @@ let { LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { accountLink } = require("%rGui/contacts/contactLists.nut")
 let { isContactsReceived } = require("%rGui/contacts/contactsState.nut")
+let { isGuestLogin } = require("%rGui/account/emailRegistrationState.nut")
 
 
 const SUGGEST_LINK_ACC = "suggest_link_acc"
 let { isTimerPassed, setLastTime } = require("%rGui/globals/mkStoredAlarm.nut")(SUGGEST_LINK_ACC, 604800/*s in one week*/)
 
-let loginVariants = [LT_GOOGLE, LT_APPLE, LT_FACEBOOK]
 let needLinkToGaijinAccount = Computed(@() isContactsReceived.get()
   && accountLink.get() == null
   && !authTags.get().contains("email_verified")
-  && loginVariants.contains(curLoginType.get()))
+  && (curLoginType.get() == LT_FACEBOOK || isGuestLogin.get()))
 let isSuggested = hardPersistWatched("suggestLinkFacebook.isSuggested", false)
 let needShowMessage = keepref(Computed(@() needLinkToGaijinAccount.get()
                                            && !isSuggested.get()

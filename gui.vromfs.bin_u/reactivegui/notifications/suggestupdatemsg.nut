@@ -1,7 +1,8 @@
 ﻿from "%globalsDarg/darg_library.nut" import *
 let { get_base_game_version_str } = require("app")
 let { eventbus_send } = require("eventbus")
-let { isDownloadedFromGooglePlay } = require("android.platform")
+let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
+let isHuaweiBuild = getBuildMarket() == "appgallery"
 let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
@@ -9,7 +10,8 @@ let { can_view_update_suggestion, allow_apk_update } = require("%appGlobals/perm
 let { check_version } = require("%sqstd/version_compare.nut")
 let { isOutOfBattleAndResults, isInMenu } = require("%appGlobals/clientState/clientState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { needSuggestToUpdate } = isDownloadedFromGooglePlay() ? require("needUpdate/needUpdateGooglePlay.nut")
+let { needSuggestToUpdate } = isHuaweiBuild ? require("needUpdate/needUpdateAppGallery.nut")
+  : isDownloadedFromGooglePlay() ? require("needUpdate/needUpdateGooglePlay.nut")
   : is_ios ? require("needUpdate/needUpdateAppStore.nut")
   : require("needUpdate/needUpdateAndroidSite.nut")
 let { updateBySite, isDownloadInProgress, canUpdateByConnectionStatus } = require("updateClientBySite.nut")
@@ -32,7 +34,7 @@ let needProcessUpdate = keepref(Computed(@() needSuggestToUpdate.get()
   && !needExitToUpdate.get()
   && isOutOfBattleAndResults.get()))
 
-let isProcessByBgUpdate = is_android && !isDownloadedFromGooglePlay()
+let isProcessByBgUpdate = is_android && !isDownloadedFromGooglePlay() && !isHuaweiBuild
   ? allow_apk_update
   : Watched(false)
 

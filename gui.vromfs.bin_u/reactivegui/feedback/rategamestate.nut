@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
-let { isDownloadedFromGooglePlay } = require("android.platform")
+let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
 let { get_base_game_version_str, get_game_version_str } = require("app")
 let { resetTimeout } = require("dagor.workcycle")
 let { is_ios, is_android, is_nswitch } = require("%sqstd/platform.nut")
@@ -17,6 +17,7 @@ let { myUserIdStr } = require("%appGlobals/profileStates.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { getScoreKeyRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
+let isHuaweiBuild = getBuildMarket() == "appgallery"
 
 local appStoreProdVersion = mkWatched(persist, "appStoreProdVersion", "")
 let {
@@ -30,8 +31,8 @@ let {
           || appStoreProdVersion.get() == ""
           || check_version($">{appStoreProdVersion.get()}", get_base_game_version_str())
       }
-  : is_android && isDownloadedFromGooglePlay()
-    ? { storeId = "google"
+  : is_android && (isDownloadedFromGooglePlay() || isHuaweiBuild)
+    ? { storeId = isHuaweiBuild ? "appgallery" : "google"
         showAppReview = require("android.platform").showAppReview
       }
   : null

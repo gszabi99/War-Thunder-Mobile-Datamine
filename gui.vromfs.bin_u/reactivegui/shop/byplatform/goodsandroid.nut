@@ -10,21 +10,24 @@ let { is_pc } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { round_by_value } = require("%sqstd/math.nut")
 let { parse_duration } = require("%sqstd/iso8601.nut")
+let { getYu2CodeName, yu2BadConnectionCodes } = require("%appGlobals/yu2ErrCodes.nut")
 let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
-let { isAuthorized } = require("%appGlobals/loginState.nut")
+let { isAuthorized, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { logEvent } = require("appsFlyer")
+let { showRestorePurchasesDoneMsg } = require("platformGoodsCommon.nut")
 
 let isDebugMode = is_pc
 let getDebugPriceMicros = @(sku) (sku.hash() % 1000) * 1000000 + ((sku.hash() / 7) % 1000000)
 let billingModule = require("android.billing.googleplay")
 let { GP_OK, GP_NOT_INITED, GP_USER_CANCELED, GP_SERVICE_UNAVAILABLE, GP_ITEM_UNAVAILABLE,
-  GP_SERVICE_TIMEOUT, GP_DEVELOPER_ERROR, SUBS_UPD_WITH_TIME_PRORATION
+  GP_SERVICE_TIMEOUT, GP_DEVELOPER_ERROR, SUBS_UPD_WITH_TIME_PRORATION, GP_ITEM_ALREADY_OWNED
 } = billingModule
+let compatibilityRestorePurchases = billingModule?.checkPurchases ?? billingModule?.restorePurchases
 let dbgStatuses = [GP_OK, GP_USER_CANCELED, GP_SERVICE_UNAVAILABLE, GP_ITEM_UNAVAILABLE, GP_SERVICE_TIMEOUT]
 local dbgStatusIdx = 0
 let dbgSubsPlans = {}
@@ -70,16 +73,33 @@ let { //defaults only to allow test this module on PC
       value = "{ \"orderId\" : -1, \"productId\" : \"debug\" }"
     })),
   confirmPurchase = @(_) setTimeout(1.0, @() eventbus_send("android.billing.googleplay.onConfirmPurchaseCallback", { status = 0, value = "{}" })),
+  restorePurchases = compatibilityRestorePurchases ?? @() setTimeout(1.0,
+    @() eventbus_send("android.billing.googleplay.onRestorePurchases", {
+      status = GP_OK,
+      transactions = [
+        { status = GP_OK, value = "{ \"orderId\" : -1, \"productId\" : \"debug1\" }" },
+        { status = GP_OK, value = "{ \"orderId\" : -2, \"productId\" : \"debug2\" }" }
+      ]
+    })),
 } = !isDebugMode ? billingModule : {}
 let register_googleplay_purchase = !is_pc ? registerGoogleplayPurchase
-  : @(_, __, eventId) setTimeout(0.1, @() eventbus_send(eventId, { status = 0, item_id = "id", purch_token = "token" })) //for debug on pc
+  : @(_, __, eventId) setTimeout(0.1, @() eventbus_send(eventId, { status = YU2_OK, item_id = "id", purch_token = "token" })) //for debug on pc
 
 
 const REPEAT_ON_ERROR_MSEC = 60000
+const RESTORE_NOT_STARTED = 0
+const RESTORE_STARTED = 1
+const RESTORE_STARTED_SILENT = 2
+const RESTORE_REQUIRE = 3
+
 let lastInitStatus = hardPersistWatched("goodsAndroid.lastInitStatus", GP_NOT_INITED)
 let skusInfo = hardPersistWatched("goodsAndroid.skusInfo", {})
 let purchaseInProgress = mkWatched(persist, "purchaseInProgress", null)
+let restoreStatus = mkWatched(persist, "restoreStatus", RESTORE_NOT_STARTED)
 let nextRefreshTime = Watched(-1)
+let pendingTransactions = hardPersistWatched("goodsAndroid.pendingTransactions", [])
+let isRegisterInProgress = hardPersistWatched("goodsAndroid.isRegisterInProgress", false)
+let lastYu2TimeoutErrorTime = hardPersistWatched("goodsAndroid.lastYu2TimeoutErrorTime", 0)
 
 function getPriceInfo(info) {
   let { priceCurrencyCode = null, priceAmountMicros = null, billingPeriod = "" } = info
@@ -311,21 +331,96 @@ function sendLogPurchaseData(json_value) {
   logEvent("af_purchase", object_to_json_string(af, true))
 }
 
-eventbus_subscribe("android.billing.googleplay.onGooglePurchaseCallback", function(result) {
-  let { status, value = "" } = result
-  let statusName = getStatusName(status)
-  logG("onGooglePurchaseCallback status = ", statusName)
-  if (status == GP_OK) {
-    register_googleplay_purchase(value, false, "auth.onRegisterGooglePurchase")
-    sendLogPurchaseData(value)
+function onFinishRestore() {
+  if (restoreStatus.get() == RESTORE_STARTED)
+    showRestorePurchasesDoneMsg()
+  restoreStatus.set(RESTORE_NOT_STARTED)
+  purchaseInProgress.set(null)
+}
+
+function restorePurchasesExt(isSilent = true) {
+  if (compatibilityRestorePurchases == null)
+    return
+  logG($"restorePurchases (isSilent = {isSilent})")
+  lastYu2TimeoutErrorTime.set(0)
+  purchaseInProgress.set("")
+  restoreStatus.set(isSilent ? RESTORE_STARTED_SILENT : RESTORE_STARTED)
+  restorePurchases()
+}
+
+let needAutoRestore = keepref(Computed(@() isLoggedIn.get() && lastInitStatus.get() == GP_OK))
+needAutoRestore.subscribe(@(v) v ? restorePurchasesExt() : null)
+
+let startSilentRestorePurchases = @() restorePurchasesExt()
+function startRestorePurchasesTimer() {
+  if (isInBattle.get() || lastYu2TimeoutErrorTime.get() <= 0)
+    clearTimer(startSilentRestorePurchases)
+  else
+    resetTimeout(max(0.1, 0.001 * (lastYu2TimeoutErrorTime.get() + REPEAT_ON_ERROR_MSEC - get_time_msec())),
+      startSilentRestorePurchases)
+}
+startRestorePurchasesTimer()
+lastYu2TimeoutErrorTime.subscribe(@(_) startRestorePurchasesTimer())
+isInBattle.subscribe(@(_) startRestorePurchasesTimer())
+
+function registerNextTransaction() {
+  if (isRegisterInProgress.get())
+    return
+  if (pendingTransactions.get().len() == 0) {
+    if (restoreStatus.get() == RESTORE_REQUIRE) {
+      restorePurchasesExt()
+      return
+    }
+    if (restoreStatus.get() != RESTORE_NOT_STARTED)
+      onFinishRestore()
     return
   }
-  purchaseInProgress.set(null)
-  if (!noNeedLogerr.contains(status))
-    logerr($"onGooglePurchaseCallback fail: status = {statusName}")
-  let msgLocId = $"error/googleplay/{statusName}"
-  if (doesLocTextExist(msgLocId))
-    openFMsgBox({ text = loc(msgLocId) })
+  let { status, value } = pendingTransactions.get()[0]
+  pendingTransactions.set(pendingTransactions.get().slice(1))
+  if (status == GP_OK) {
+    logG("registerGooglePurchase ", value)
+    isRegisterInProgress.set(true)
+    register_googleplay_purchase(value, false, "auth.onRegisterGooglePurchase")
+    sendLogPurchaseData(value)
+  } else {
+    purchaseInProgress.set(null)
+    let statusName = getStatusName(status)
+    local needLogerr = !noNeedLogerr.contains(status)
+    if (status == GP_ITEM_ALREADY_OWNED
+        && (restoreStatus.get() == RESTORE_NOT_STARTED || restoreStatus.get() == RESTORE_REQUIRE)) {
+      needLogerr = false
+      restoreStatus.set(RESTORE_REQUIRE)
+    }
+    if (needLogerr)
+      logerr($"onGooglePurchaseCallback fail: status = {statusName}")
+    let msgLocId = $"error/googleplay/{statusName}"
+    if (doesLocTextExist(msgLocId))
+      openFMsgBox({ text = loc(msgLocId) })
+
+    registerNextTransaction()
+  }
+}
+
+eventbus_subscribe("android.billing.googleplay.onGooglePurchaseCallback", function(result) {
+  let { status, value = "" } = result
+  logG($"onGooglePurchaseCallback status = {getStatusName(status)}")
+  let list =  [{ status, value }]
+  pendingTransactions.mutate(@(v) v.extend(list))
+  registerNextTransaction()
+})
+
+eventbus_subscribe("android.billing.googleplay.onRestorePurchases", function(result) {
+  let { status, transactions = [] } = result
+  logG($"onRestorePurchases status = {getStatusName(status)}")
+  if (transactions.len() == 0) {
+    onFinishRestore()
+    return
+  }
+
+  if (restoreStatus.get() == RESTORE_NOT_STARTED)
+    restoreStatus.set(RESTORE_STARTED_SILENT)
+  pendingTransactions.mutate(@(v) v.extend(transactions))
+  registerNextTransaction()
 })
 
 eventbus_subscribe("android.billing.googleplay.onConfirmPurchaseCallback", function(result) {
@@ -338,9 +433,14 @@ eventbus_subscribe("android.billing.googleplay.onConfirmPurchaseCallback", funct
     logG($"onConfirmPurchaseCallback fail: status = {getStatusName(status)}")
     openFMsgBox({ text = loc("msg/errorAuthGoodsCheck") })
   }
+  registerNextTransaction()
 })
 
+let showErrorMsg = @(text, wndOvr = {}) restoreStatus.get() == RESTORE_STARTED_SILENT ? null
+  : openFMsgBox({ text, wndOvr })
+
 eventbus_subscribe("auth.onRegisterGooglePurchase", function(result) {
+  isRegisterInProgress.set(false)
   let {status, item_id = null, purch_token = null } = result
 
   if (status == YU2_OK && item_id && purch_token) {
@@ -354,13 +454,18 @@ eventbus_subscribe("auth.onRegisterGooglePurchase", function(result) {
     return
   }
   purchaseInProgress.set(null)
-  if (status == YU2_WRONG_PAYMENT) {
-    logG($"register_googleplay_purchase delayed payment")
-    openFMsgBox({ text = loc("msg/errorPaymentDelayed") })
-  } else {
-    logG($"register_googleplay_purchase error={status}")
-    openFMsgBox({ text = loc("msg/errorWhileRegisteringPurchase") })
+  logG($"register_googleplay_purchase error={getYu2CodeName(status)}")
+  if (status == YU2_WRONG_PAYMENT)
+    showErrorMsg(loc("msg/errorPaymentDelayed"))
+  else if (status in yu2BadConnectionCodes) {
+    lastYu2TimeoutErrorTime.set(get_time_msec())
+    showErrorMsg(loc("msg/errorRegisterPaymentTimeout"), { size = [hdpx(1300), hdpx(700)] })
+    if (restoreStatus.get() == RESTORE_STARTED || restoreStatus.get() == RESTORE_REQUIRE)
+      restoreStatus.set(RESTORE_STARTED_SILENT)
   }
+  else
+    showErrorMsg(loc("msg/errorWhileRegisteringPurchase"))
+  registerNextTransaction()
 })
 
 function getSubsId(subsIdBySkuV, skuExt) {
@@ -372,6 +477,7 @@ function getSubsId(subsIdBySkuV, skuExt) {
 }
 
 let platformPurchaseInProgress = Computed(@() purchaseInProgress.get() == null ? null
+  : purchaseInProgress.get() == "" ? ""
   : offerSku.get() == purchaseInProgress.get() ? activeOffers.get()?.id
   : (goodsIdBySku.get()?[purchaseInProgress.get()] ?? getSubsId(subsIdBySku.get(), purchaseInProgress.get())))
 
@@ -384,4 +490,5 @@ return {
   activatePlatfromSubscription = buyPlatformGoods
   changeSubscription
   platformPurchaseInProgress
+  restorePurchases = compatibilityRestorePurchases == null ? null : @() restorePurchasesExt(false)
 }

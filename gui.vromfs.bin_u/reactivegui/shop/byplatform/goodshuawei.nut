@@ -10,8 +10,9 @@ let { is_pc } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { round_by_value } = require("%sqstd/math.nut")
 let { parse_duration } = require("%sqstd/iso8601.nut")
+let { getYu2CodeName, yu2BadConnectionCodes } = require("%appGlobals/yu2ErrCodes.nut")
 let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
-let { isAuthorized } = require("%appGlobals/loginState.nut")
+let { isAuthorized, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases, severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut")
@@ -19,13 +20,15 @@ let { blockWindow, unblockWindow } = require("%appGlobals/windowState.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { logEvent } = require("appsFlyer")
+let { showRestorePurchasesDoneMsg } = require("platformGoodsCommon.nut")
 
 let isDebugMode = is_pc
 let getDebugPriceMicros = @(sku) (sku.hash() % 1000) * 1000000 + ((sku.hash() / 7) % 1000000)
 let billingModule = require("android.billing.huawei")
 let { HMS_ORDER_STATE_SUCCESS, HMS_ORDER_STATE_FAILED, HMS_ORDER_STATE_DEFAULT_CODE, HMS_ORDER_STATE_CANCEL,
-  HMS_ORDER_STATE_CALLS_FREQUENT, HMS_ORDER_STATE_NET_ERROR
-  } = billingModule
+  HMS_ORDER_STATE_CALLS_FREQUENT, HMS_ORDER_STATE_NET_ERROR, HMS_ORDER_PRODUCT_OWNED
+} = billingModule
+let compatibilityRestorePurchases = billingModule?.checkPurchases ?? billingModule?.restorePurchases
 let dbgStatuses = [HMS_ORDER_STATE_SUCCESS, HMS_ORDER_STATE_CANCEL, HMS_ORDER_STATE_FAILED, HMS_ORDER_STATE_NET_ERROR]
 local dbgStatusIdx = 0
 let { //defaults only to allow test this module on PC
@@ -62,15 +65,32 @@ let { //defaults only to allow test this module on PC
     setTimeout(0.1, @() unblockWindow("debug"))
   }
   confirmPurchase = @(_) setTimeout(1.0, @() eventbus_send("android.billing.huawei.onConfirmPurchaseCallback", { status = 0, value = "{}" })),
+  restorePurchases = compatibilityRestorePurchases ?? @() setTimeout(1.0,
+    @() eventbus_send("android.billing.huawei.onRestorePurchases", {
+      status = HMS_ORDER_STATE_SUCCESS,
+      transactions = [
+        { status = HMS_ORDER_STATE_SUCCESS, value = "{ \"orderId\" : -1, \"productId\" : \"debug1\" }" },
+        { status = HMS_ORDER_STATE_SUCCESS, value = "{ \"orderId\" : -2, \"productId\" : \"debug2\" }" }
+      ]
+    })),
 } = !isDebugMode ? billingModule : {}
 let register_huawei_purchase = !is_pc ? registerHuaweiPurchase
-  : @(_, __, eventId) setTimeout(0.1, @() eventbus_send(eventId, { status = 0, item_id = "id", purch_token = "token" })) //for debug on pc
+  : @(_, __, eventId) setTimeout(0.1, @() eventbus_send(eventId, { status = YU2_OK, item_id = "id", purch_token = "token" })) //for debug on pc
 
 
 const REPEAT_ON_ERROR_MSEC = 60000
+const RESTORE_NOT_STARTED = 0
+const RESTORE_STARTED = 1
+const RESTORE_STARTED_SILENT = 2
+const RESTORE_REQUIRE = 3
+
 let lastInitStatus = hardPersistWatched("goodsHuawei.lastInitStatus", HMS_ORDER_STATE_DEFAULT_CODE)
 let skusInfo = hardPersistWatched("goodsHuawei.skusInfo", {})
 let purchaseInProgress = mkWatched(persist, "purchaseInProgress", null)
+let restoreStatus = mkWatched(persist, "restoreStatus", RESTORE_NOT_STARTED)
+let pendingTransactions = hardPersistWatched("goodsHuawei.pendingTransactions", [])
+let isRegisterInProgress = hardPersistWatched("goodsHuawei.isRegisterInProgress", false)
+let lastYu2TimeoutErrorTime = hardPersistWatched("goodsHuawei.lastYu2TimeoutErrorTime", 0)
 let nextRefreshTime = Watched(-1)
 
 let availableSkusPrices = Computed(function() {
@@ -274,20 +294,96 @@ function sendLogPurchaseData(json_value) {
   logEvent("af_purchase", object_to_json_string(af, true))
 }
 
-eventbus_subscribe("android.billing.huawei.onHuaweiPurchaseCallback", function(result) {
-  let { status, value = "" } = result
-  let statusName = getStatusName(status)
-  if (status == HMS_ORDER_STATE_SUCCESS) {
-    register_huawei_purchase(value, false, "auth.onRegisterHuaweiPurchase")
-    sendLogPurchaseData(value)
+function onFinishRestore() {
+  if (restoreStatus.get() == RESTORE_STARTED)
+    showRestorePurchasesDoneMsg()
+  restoreStatus.set(RESTORE_NOT_STARTED)
+  purchaseInProgress.set(null)
+}
+
+function restorePurchasesExt(isSilent = true) {
+  if (compatibilityRestorePurchases == null)
+    return
+  logG($"restorePurchases (isSilent = {isSilent})")
+  lastYu2TimeoutErrorTime.set(0)
+  purchaseInProgress.set("")
+  restoreStatus.set(isSilent ? RESTORE_STARTED_SILENT : RESTORE_STARTED)
+  restorePurchases()
+}
+
+let needAutoRestore = keepref(Computed(@() isLoggedIn.get() && lastInitStatus.get() == HMS_ORDER_STATE_SUCCESS))
+needAutoRestore.subscribe(@(v) v ? restorePurchasesExt() : null)
+
+let startSilentRestorePurchases = @() restorePurchasesExt()
+function startRestorePurchasesTimer() {
+  if (isInBattle.get() || lastYu2TimeoutErrorTime.get() <= 0)
+    clearTimer(startSilentRestorePurchases)
+  else
+    resetTimeout(max(0.1, 0.001 * (lastYu2TimeoutErrorTime.get() + REPEAT_ON_ERROR_MSEC - get_time_msec())),
+      startSilentRestorePurchases)
+}
+startRestorePurchasesTimer()
+lastYu2TimeoutErrorTime.subscribe(@(_) startRestorePurchasesTimer())
+isInBattle.subscribe(@(_) startRestorePurchasesTimer())
+
+function registerNextTransaction() {
+  if (isRegisterInProgress.get())
+    return
+  if (pendingTransactions.get().len() == 0) {
+    if (restoreStatus.get() == RESTORE_REQUIRE) {
+      restorePurchasesExt()
+      return
+    }
+    if (restoreStatus.get() != RESTORE_NOT_STARTED)
+      onFinishRestore()
     return
   }
-  purchaseInProgress.set(null)
-  if (!noNeedLogerr.contains(status))
-    logerr($"onHuaweiPurchaseCallback fail: status = {statusName}")
-  let msgLocId = $"error/appgallery/{statusName}"
-  if (doesLocTextExist(msgLocId))
-    openFMsgBox({ text = loc(msgLocId) })
+  let { status, value } = pendingTransactions.get()[0]
+  pendingTransactions.set(pendingTransactions.get().slice(1))
+  if (status == HMS_ORDER_STATE_SUCCESS) {
+    logG("registerHuaweiPurchase ", value)
+    isRegisterInProgress.set(true)
+    register_huawei_purchase(value, false, "auth.onRegisterHuaweiPurchase")
+    sendLogPurchaseData(value)
+  } else {
+    let statusName = getStatusName(status)
+    purchaseInProgress.set(null)
+    local needLogerr = !noNeedLogerr.contains(status)
+    if (status == HMS_ORDER_PRODUCT_OWNED
+        && (restoreStatus.get() == RESTORE_NOT_STARTED || restoreStatus.get() == RESTORE_REQUIRE)) {
+      needLogerr = false
+      restoreStatus.set(RESTORE_REQUIRE)
+    }
+    if (needLogerr)
+      logerr($"onHuaweiPurchaseCallback fail: status = {statusName}")
+    let msgLocId = $"error/appgallery/{statusName}"
+    if (doesLocTextExist(msgLocId))
+      openFMsgBox({ text = loc(msgLocId) })
+
+    registerNextTransaction()
+  }
+}
+
+eventbus_subscribe("android.billing.huawei.onHuaweiPurchaseCallback", function(result) {
+  let { status, value = "" } = result
+  logG("onHuaweiPurchaseCallback status = ", getStatusName(status))
+  let list =  [{ status, value }]
+  pendingTransactions.mutate(@(v) v.extend(list))
+  registerNextTransaction()
+})
+
+eventbus_subscribe("android.billing.huawei.onRestorePurchases", function(result) {
+  let { status, transactions = [] } = result
+  logG($"onRestorePurchases status = {getStatusName(status)}")
+  if (transactions.len() == 0) {
+    onFinishRestore()
+    return
+  }
+
+  if (restoreStatus.get() == RESTORE_NOT_STARTED)
+    restoreStatus.set(RESTORE_STARTED_SILENT)
+  pendingTransactions.mutate(@(v) v.extend(transactions))
+  registerNextTransaction()
 })
 
 eventbus_subscribe("android.billing.huawei.onConfirmPurchaseCallback", function(result) {
@@ -300,9 +396,14 @@ eventbus_subscribe("android.billing.huawei.onConfirmPurchaseCallback", function(
     logG($"onConfirmPurchaseCallback fail: status = {getStatusName(status)}")
     openFMsgBox({ text = loc("msg/errorAuthGoodsCheck") })
   }
+  registerNextTransaction()
 })
 
+let showErrorMsg = @(text, wndOvr = {}) restoreStatus.get() == RESTORE_STARTED_SILENT ? null
+  : openFMsgBox({ text, wndOvr })
+
 eventbus_subscribe("auth.onRegisterHuaweiPurchase", function(result) {
+  isRegisterInProgress.set(false)
   let {status, item_id = null, purch_token = null } = result
   if (status == YU2_OK && item_id && purch_token) {
     logG($"register_huawei_purchase success")
@@ -315,17 +416,22 @@ eventbus_subscribe("auth.onRegisterHuaweiPurchase", function(result) {
     return
   }
   purchaseInProgress.set(null)
-  if (status == YU2_WRONG_PAYMENT) {
-    logG($"register_huawei_purchase delayed payment")
-    openFMsgBox({ text = loc("msg/errorPaymentDelayed") })
-  } else {
-    logG($"register_huawei_purchase error={status}")
-    openFMsgBox({ text = loc("msg/errorWhileRegisteringPurchase") })
+  logG($"register_huawei_purchase error={getYu2CodeName(status)}")
+  if (status == YU2_WRONG_PAYMENT)
+    showErrorMsg(loc("msg/errorPaymentDelayed"))
+  else if (status in yu2BadConnectionCodes) {
+    lastYu2TimeoutErrorTime.set(get_time_msec())
+    showErrorMsg(loc("msg/errorRegisterPaymentTimeout"), { size = [hdpx(1300), hdpx(700)] })
+    if (restoreStatus.get() == RESTORE_STARTED || restoreStatus.get() == RESTORE_REQUIRE)
+      restoreStatus.set(RESTORE_STARTED_SILENT)
   }
+  else
+    showErrorMsg(loc("msg/errorWhileRegisteringPurchase"))
+  registerNextTransaction()
 })
 
-
 let platformPurchaseInProgress = Computed(@() purchaseInProgress.get() == null ? null
+  : purchaseInProgress.get() == "" ? ""
   : offerSku.get() == purchaseInProgress.get() ? activeOffers.get()?.id
   : (goodsIdBySku.get()?[purchaseInProgress.get()] ?? subsIdByPlanId.get()?[purchaseInProgress.get()]))
 
@@ -338,4 +444,5 @@ return {
   activatePlatfromSubscription = buyPlatformGoods
   changeSubscription
   platformPurchaseInProgress
+  restorePurchases = compatibilityRestorePurchases == null ? null : @() restorePurchasesExt(false)
 }

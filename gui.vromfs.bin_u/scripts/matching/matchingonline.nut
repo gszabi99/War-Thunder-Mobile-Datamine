@@ -5,7 +5,7 @@ let { format } = require("string")
 let { register_command } = require("console")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { dgs_get_settings } = require("dagor.system")
-let { isDownloadedFromGooglePlay, getPackageName } = require("android.platform")
+let { isDownloadedFromGooglePlay, getPackageName, getBuildMarket } = require("android.platform")
 let { shell_execute } = require("dagor.shell")
 let { BAN_USER_INFINITE_PENALTY } = require("penalty")
 let { get_time_msec } = require("dagor.time")
@@ -23,7 +23,7 @@ let matching = require("%appGlobals/matching_api.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isDownloadedFromSite } = require("%appGlobals/clientState/clientState.nut")
-
+let isHuaweiBuild = getBuildMarket() == "appgallery"
 
 let RELOGIN_MIN_INACTIVE_TIME = 120
 let RELOGIN_TIME_AFTER_INACTIVE = 30
@@ -51,6 +51,8 @@ subscribeFMsgBtns({
       shell_execute({ cmd = "open", file = "itms-apps://itunes.apple.com/app/apple-store/id1577525428?mt=8" })
     else if (isDownloadedFromGooglePlay())
       shell_execute({ cmd = "action", file = $"market://details?id={getPackageName()}" })
+    else if (isHuaweiBuild)
+      shell_execute({ cmd = "action", file = "https://appgallery.huawei.com/app/C113458691" })
     else if (isDownloadedFromSite)
       eventbus_send("fMsgBox.onClick.tryToDownloadApkFromSite", null)
     else
@@ -118,8 +120,9 @@ let customErrorHandlers = {
     sendErrorBqEvent("Downoad new version (required)")
     openFMsgBox({
       uid = "errorMessageBox"
-      text = loc(isDownloadedFromGooglePlay() ? "updater/newVersion/desc/android"
-        : "updater/newVersion/desc")
+      text = (isDownloadedFromGooglePlay() || isHuaweiBuild)
+              ? loc("updater/newVersion/desc/android", {market = isHuaweiBuild ? "AppGallery" : "Google Play"})
+              : loc("updater/newVersion/desc")
       buttons = [
         { text = loc("updater/btnUpdate"), eventId = "exitGameForUpdate",
           styleId = "PRIMARY", isDefault = true }

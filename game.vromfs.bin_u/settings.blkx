@@ -1191,6 +1191,7 @@
     "csmReflectionSampleBias": -0.0075,
     "dynDecalsInitialAtlasSizeIndex": 1,
     "enableWaterReflections": true,
+    "shouldRenderStaticSceneToReflection": false,
     "refractionDistMulForTanks": 0.01,
     "refractionDistMulForShips": 0.1,
     "forceLowPreset": false,

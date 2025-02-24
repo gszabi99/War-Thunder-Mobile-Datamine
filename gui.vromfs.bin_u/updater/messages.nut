@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let {
   isDownloadedFromGooglePlay = @() false,
   getPackageName = @() ""
+  getBuildMarket = @() "googleplay"
 } = require_optional("android.platform")
 let { is_ios } = require("%sqstd/platform.nut")
 let { register_command  = @(_, __) null } = require_optional("console") //only in debug mode
@@ -12,7 +13,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, totalSizeBytes, closeDownloadWarning } = require("updaterState.nut")
 let { totalSizeText } = require("%globalsDarg/updaterUtils.nut")
 let { mkColoredGradientY, gradTranspDoubleSideX, gradDoubleTexOffset } = require("gradients.nut")
-
+let isHuaweiBuild = getBuildMarket() == "appgallery"
 
 let wndWidth = hdpx(1100)
 let wndHeight = hdpx(550)
@@ -133,6 +134,8 @@ function openUpdateUrl() {
 
   if (isDownloadedFromGooglePlay())
     shell_execute({ cmd = "action", file = $"market://details?id={getPackageName()}" })
+  else if (isHuaweiBuild)
+    shell_execute({ cmd = "action", file = "https://appgallery.huawei.com/app/C113458691" })
   else {
     let url = dgs_get_settings()?.storeUrl
     if (url != null)
@@ -141,10 +144,10 @@ function openUpdateUrl() {
   exit(0)
 }
 
-local updateLocId = isDownloadedFromGooglePlay() ? "updater/newVersion/desc/android"
+local updateLocId = isDownloadedFromGooglePlay() || isHuaweiBuild ? "updater/newVersion/desc/android"
   : "updater/newVersion/desc"
 let updateMsg = mkMsgBox(loc("updater/newVersion/header"),
-  loc(updateLocId),
+  loc(updateLocId, { market = isHuaweiBuild ? "AppGallery" : "Google Play" }),
   mkButton(utf8ToUpper(loc("updater/btnUpdate")), openUpdateUrl))
 let restartMsg = mkMsgBox(loc("updater/newVersion/header"),
   loc("updater/restartForUpdate/desc"),

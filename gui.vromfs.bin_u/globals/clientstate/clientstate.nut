@@ -4,8 +4,9 @@ let { eventbus_subscribe } = require("eventbus")
 let { get_mp_session_id_int, is_local_multiplayer } = require("multiplayer")
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { isDownloadedFromGooglePlay } = require("android.platform")
+let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
 let { is_android, is_pc } = require("%sqstd/platform.nut")
+let isHuaweiBuild = getBuildMarket() == "appgallery"
 
 let isInBattle = sharedWatched("isInBattle", @() false)
 let isOnline = sharedWatched("isOnline", @() false)
@@ -27,7 +28,7 @@ let isInMpSession = Watched(get_mp_session_id_int() != -1)
 let isLocalMultiplayer = Watched(is_local_multiplayer())
 let isInMpBattle = Computed(@() isInBattle.value && isInMpSession.value)
 let canBattleWithoutAddons = sharedWatched("canBattleWithoutAddons", @() false)
-let isDownloadedFromSite = (is_android || is_pc) && !isDownloadedFromGooglePlay()
+let isDownloadedFromSite = (is_android || is_pc) && !isDownloadedFromGooglePlay() && !isHuaweiBuild
 
 eventbus_subscribe("onJoinMatch", function(_) {
   let sessionId = get_mp_session_id_int()

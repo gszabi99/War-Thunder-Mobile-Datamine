@@ -25,6 +25,9 @@ let defaultRequestState = {
 }
 let requestState = Watched(clone defaultRequestState)
 
+let mkErrText = @(txtReason, txtAdvice = "")
+  "\n".join([ $"{loc("msgbox/appearError")}{colon}", txtReason, txtAdvice ], true)
+
 let mkZendeskHttpRequestCb = @(onSuccess, onFailure) function(response) {
   let { status = -1, http_code = -1, body = null } = response
   if (status != HTTP_SUCCESS || body == null) {
@@ -32,10 +35,11 @@ let mkZendeskHttpRequestCb = @(onSuccess, onFailure) function(response) {
       : status == HTTP_ABORTED ? "ABORTED"
       : "UNKNOWN"
     let logResponse = response?.body == null ? response : response.__merge({ body = response.body.as_string() })
-    logZ($"Request failed: {reason}", logResponse)
+    logZ($"Request network connection error: {reason}", logResponse)
     onFailure({
-      errId = $"Request failed: {reason}"
-      errText = loc($"http/request/status/{reason}")
+      errId = $"Request network connection error: {reason}"
+      errText = mkErrText(loc($"network_connection/error/{reason}"), loc("network_connection/advice"))
+      needSendBQ = false
     })
     return
   }
@@ -47,7 +51,8 @@ let mkZendeskHttpRequestCb = @(onSuccess, onFailure) function(response) {
     logZ($"Response parsing failed: {e}", response)
     onFailure({
       errId = $"Response parsing failed: {e}"
-      errText = loc("http/response/error/parsing_failed")
+      errText = mkErrText(loc("http/response/error/parsing_failed"))
+      needSendBQ = true
     })
   }
   if (http_code < 200 || 300 <= http_code || answer?.error != null) {
@@ -56,7 +61,8 @@ let mkZendeskHttpRequestCb = @(onSuccess, onFailure) function(response) {
     logZ($"Response is error: {reason}", logResponse)
     onFailure({
       errId = $"Response is error: {reason}"
-      errText = reason
+      errText = mkErrText(reason)
+      needSendBQ = true
     })
   }
   else {

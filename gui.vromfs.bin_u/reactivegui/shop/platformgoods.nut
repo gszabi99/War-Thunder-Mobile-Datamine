@@ -8,6 +8,7 @@ let { platformGoods, platformOffer, platformSubs, platformGoodsDebugInfo, buyPla
   activatePlatfromSubscription = @(_) null,
   platformPurchaseInProgress = Watched(null)
   changeSubscription = null //@(subsTo, subsFrom)
+  restorePurchases = null
 } = is_android && isHuaweiBuild ? require("byPlatform/goodsHuawei.nut")
   : is_android && isDownloadedFromGooglePlay() ? require("byPlatform/goodsAndroid.nut")
   : is_ios ? require("byPlatform/goodsIos.nut")
@@ -88,4 +89,6 @@ return {
   activatePlatfromSubscription
   platformPurchaseInProgress
   isGoodsOnlyInternalPurchase
+  hasRestorePurchases = restorePurchases != null
+  restorePurchases = restorePurchases ?? @() null
 }

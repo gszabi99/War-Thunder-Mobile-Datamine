@@ -675,6 +675,97 @@ Bu eşyayı satın almak için bir füze gemisi açın.";"DLS Rounds can only be
 "msg/errorWhileRegisteringPurchase";"Error while registering your purchase. The money will be refunded";"Erreur lors de l'enregistrement de votre achat. L'argent sera remboursé";"Errore durante la registrazione del tuo acquisto. I soldi verranno rimborsati";"Fehler bei der Registrierung Ihres Kaufs. Das Geld wird zurückerstattet.";"Error al registrar tu compra. El dinero será devuelto";"Ошибка при регистрации покупки. Деньги будут возвращены";"Помилка під час реєстрації покупки. Гроші буде повернуто";"W trakcie przetwarzania twojego zakupu wystąpił błąd. Otrzymasz zwrot środków";"Ocorreu um erro ao registar a sua compra. O dinheiro será reembolsado";"Satın alma işlemi yapılırken bir hata oluştu. Para iade edilecek";"Chyba při evidenci nákupu. Peníze budou vráceny";"Σφάλμα κατά την καταχώριση της αγοράς σας. Τα χρήματα θα επιστραφούν";"Terjadi kesalahan saat mendaftarkan pembelianmu. Uang akan dikembalikan.";"เกิดข้อผิดพลาดขณะลงทะเบียนการซื้อของคุณ ระบบจะคืนเงินให้";"구매 도중 오류가 발생했습니다. 사용한 금액은 환불됩니다.";"处\t理\t购\t买\t请\t求\t时\t发\t生\t错\t误。\t该\t笔\t购\t买\t花\t费\t将\t全\t额\t退\t还。";"購入の\t登録中に\tエラーが\t発生しました。\tお\t金は\t返金されます";"處\t理\t購\t買\t請\t求\t時\t發\t生\t錯\t誤。\t該\t筆\t購\t買\t花\t費\t將\t全\t額\t退\t還。";;
 "msg/errorAuthGoodsCheck";"Error with adding this purchase to your account. Please contact the game support.";"Erreur lors de l'ajout de cet achat à votre compte. Veuillez contacter le support du jeu.";"Errore nell'aggiungere questo acquisto al tuo account. Si prega di contattare il supporto di gioco.";"Ein Fehler ist bei der Gutschreibung des Kaufs auf Dein Konto aufgetreten. Bitte kontaktiere den Spielsupport.";"Se ha producido un error al añadir esta compra a tu cuenta. Ponte en contacto con el soporte del juego.";"Ошибка при добавлении товара на аккаунт. Пожалуйста, свяжитесь с тех поддержкой.";"Помилка додавання цієї покупки до вашого облікового запису. Зверніться до служби підтримки гри.";"Błąd podczas dodawania tego zakupu do konta. Prosimy o kontakt ze pomocą techniczną gry.";"Erro na adição da compra em sua conta. Por favor entre em contacto com o apoio ao cliente.";"Bu satın alma işlemi, hesabına eklenirken hata oluştu. Lütfen oyun desteğiyle iletişime geç.";"Chyba při přidávání tohoto nákupu na tvůj účet. Kontaktuj prosím herní podporu.";"Σφάλμα κατά την προσθήκη αυτής της αγοράς στον λογαριασμό σας. Επικοινωνήστε με την υποστήριξη του παιχνιδιού.";"Terjadi kesalahan saat menambahkan pembelian ini ke akunmu. Hubungi dukungan game.";"เกิดข้อผิดพลาดขณะเพิ่มการซื้อนี้ไปยังบัญชีของคุณ กรุณาติดต่อฝ่ายสนับสนุนของเกม";"구매한 아이템을 계정에 추가하던 중 오류가 발생했습니다. 고객 지원 팀에 문의해주시기 바랍니다.";"将\t本\t次\t购\t买\t项\t目\t添\t加\t至\t账\t号\t时\t出\t现\t错\t误，\t请\t联\t系\t客\t服\t解\t决\t此\t问\t题。";"この\t購入品をあなたの\tアカウントに\t追加する\t際に\tエラーが\t発生しました。\tゲームサポートにご\t連絡ください。";"將\t本\t次\t購\t買\t項\t目\t添\t加\t至\t帳\t號\t時\t出\t現\t錯\t誤，\t請\t聯\t繫\t客\t服\t解\t決\t此\t問\t題。";;
 "msg/errorPaymentDelayed";"Your payment is not confirmed yet. The purchase will be added later or money will be refunded.";"Votre paiement n'est pas encore confirmé. L'achat sera ajouté plus tard ou l'argent sera remboursé.";"Il tuo pagamento non è ancora stato confermato. L'acquisto verrà aggiunto più tardi o i soldi verranno rimborsati.";"Deine Zahlung ist noch nicht bestätigt. Der Kauf wird später verbucht oder das Geld wird zurückerstattet.";"Tu pago aún no está confirmado. La compra se añadirá más tarde o se reembolsará el dinero.";"Платёж ещё не подтверждён. Покупка будет добавлена позже или средства будут возвращены.";"Платіж ще не підтверджено. Купівля буде додана пізніше або кошти буде повернено.";"Twoja płatność nie jest jeszcze potwierdzona. Zakup zostanie dodany później lub pieniądze zostaną zwrócone.";"O pagamento não foi confirmado ainda. A compra será adicionada mais tarde ou o dinheiro será devolvido.";"Ödemen henüz onaylanmadı. Satın alma daha sonra eklenecek veya para iadesi yapılacak.";"Tvoje platba ještě není potvrzena. Nákup bude dokončen později nebo ti budou vráceny peníze.";"Η πληρωμή σας δεν έχει επιβεβαιωθεί ακόμα. Η αγορά θα προστεθεί αργότερα ή τα χρήματα θα επιστραφούν.";"Pembayaranmu belum dikonfirmasi. Pembelian akan ditambahkan nanti atau uang akan dikembalikan.";"การชำระเงินของคุณยังไม่ได้รับการยืนยัน จะได้รับของจากการซื้อครั้งนี้ในภายหลังหรือระบบจะคืนเงินให้";"결제가 확인되지 않았습니다. 잠시 후에 구매 내역이 반영되거나 결제한 금액이 환불될 예정입니다.";"支\t付\t尚\t未\t得\t到\t确\t认。\t购\t买\t物\t品\t将\t在\t稍\t后\t添\t加\t至\t账\t户，\t若\t交\t易\t失\t败\t将\t进\t行\t退\t款。";"お\t支払いはまだ\t確定していません。\t購入が\t後ほど\t追加されなければ、\t返金となります。";"支\t付\t尚\t未\t得\t到\t確\t認。\t購\t買\t物\t品\t將\t在\t稍\t後\t添\t加\t至\t帳\t戶，\t若\t交\t易\t失\t敗\t將\t進\t行\t退\t款。";;
+"msg/errorRegisterPaymentTimeout";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"Нет связи с сервером для регистрации покупки в игре.
+Проверьте ваше интернет соединение.
+Игра автоматически попробует зарегистрировать покупку позже.
+
+Кроме того, после восстановления соединения вы можете перейти в игровой профиль и воспользоваться функцией ""восстановить покупки"",
+либо повторно выбрать данный товар без дополнительной оплаты.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";"No connection to the server to register a purchase in the game.
+Check your internet connection.
+The game will automatically try to register the purchase later.
+
+Alternatively, once your connection is restored, you can go to your game profile and use the ""restore purchases"" function,
+or re-select the item at no additional cost.";;
 "msg/onApplePurchaseConfirmError";"Error while confirming your purchase. The money will be refunded.";"Erreur lors de la confirmation de votre achat. L'argent sera remboursé.";"Errore durante la conferma del tuo acquisto. L'importo verrà rimborsato.";"Fehler bei der Bestätigung Deines Kaufs. Das Geld wird zurückerstattet.";"Error al confirmar tu compra. Se te devolverá el dinero.";"Ошибка при подтверждении покупки. Средства будут возвращены.";"Помилка підтвердження покупки. Кошти буде повернено.";"W trakcie potwierdzania twojego zakupu wystąpił błąd. Otrzymasz zwrot środków.";"Erro ao confirmar confirmar compra. O dinheiro será devolvido.";"Satın alma işleminiz onaylanırken bir hata oluştu. Para iade edilecek.";"Chyba při potvrzování nákupu. Peníze budou vráceny.";"Σφάλμα κατά την επιβεβαίωση της αγοράς σας. Τα χρήματα θα επιστραφούν.";"Terjadi kesalahan saat mengonfirmasi pembelianmu. Uang akan dikembalikan.";"เกิดข้อผิดพลาดขณะยืนยันการซื้อของคุณ ระบบจะคืนเงินให้";"구매 절차 도중 오류가 발생했습니다. 사용한 금액은 환불됩니다.";"处\t理\t购\t买\t请\t求\t时\t发\t生\t错\t误。\t该\t笔\t购\t买\t花\t费\t将\t全\t额\t退\t还。";"購入の\t確認中に\tエラーが\t発生しました。\t代金は\t返金されます。";"處\t理\t購\t買\t請\t求\t時\t發\t生\t錯\t誤。\t該\t筆\t購\t買\t花\t費\t將\t全\t額\t退\t還。";;
 "msg/onApplePurchaseAuthError";"An error occurred while adding an item to your account. Error: {error}";"Une erreur s'est produite lors de l'ajout d'un article à votre compte. Erreur: {error}";"Errore accorso durante l'aggiunta dell'oggetto al tuo account. Errore: {error}";"Beim Hinzufügen eines Gegenstands zu Deinem Konto ist ein Fehler aufgetreten. Fehler: {error}";"Se ha producido un error al añadir un artículo a tu cuenta. Error: {error}";"Ошибка при добавление покупки на ваш аккаунт. Ошибка: {error}";"Помилка при додаванні покупки на ваш обліковий запис. Помилка: {error}";"Wystąpił błąd podczas dodawania przedmiotu do Twojego konta. Błąd: {error}";"Ocorreu um erro ao adicionar um item em sua conta. Erro {error}";"Hesabınıza eşya eklenirken bir hata oluştu. Hata: {error}";"Během přidávání předmětu na tvůj účet došlo k chybě. Chyba: {error}";"Προέκυψε σφάλμα κατά την προσθήκη ενός αντικειμένου στον λογαριασμό σας. Σφάλμα: {error}";"Terjadi kesalahan saat menambahkan item ke akunmu. Kesalahan: {error}";"เกิดข้อผิดพลาดขณะเพิ่มไอเทมไปยังบัญชีของคุณ ข้อผิดพลาด: {error}";"아이템을 계정 내에 추가하던 중 오류가 발생했습니다. 에러:{error}";"将\t物\t品\t添\t加\t至\t账\t号\t时\t发\t生\t错\t误。\t错\t误\t类\t型：\t{error}";"アイテムをあなたの\tアカウントに\t追加中に\tエラーが\t発生しました。\tエラー：\t{error}";"將\t物\t品\t添\t加\t至\t帳\t號\t時\t發\t生\t錯\t誤。\t錯\t誤\t類\t型：\t{error}";;
 "msg/onApplePurchaseError/fail";"An unknown error occured while purchasing in AppStore. Check connection and try to restart the game";"Une erreur inattendue s'est produite lors de l'achat dans l'App Store. Vérifiez la connexion et essayez de redémarrer le jeu";"Errore sonosciuto durante l'acquisto nell'AppStore. Controlla la connessione e prova a riavviare il gioco";"Beim Kauf im AppStore ist ein unbekannter Fehler aufgetreten. Bitte überprüfe die Verbindung und versuche das Spiel neu zu starten";"Se ha producido un error desconocido al comprar en el AppStore. Comprueba la conexión e intenta reiniciar el juego";"Произошла неизвестная ошибка во время покупки в AppStore. Проверьте интернет соединение и перезапустите игру.";"Сталася невідома помилка під час покупки в AppStore. Перевірте підключення до Інтернету та перезапустіть гру";"Podczas zakupu w AppStore wystąpił nieznany błąd. Sprawdź połączenie i spróbuj ponownie uruchomić grę";"Ocorreu um erro desconhecido ao comprar na AppStore. Por favor verifique a conexão e tente reiniciar o jogo";"App Store'da satın alırken bilinmeyen bir hata oluştu. Bağlantıyı kontrol edip oyunu yeniden başlatmayı deneyin";"Při nákupu v AppStore došlo k neznámé chybě. Zkontroluj připojení a zkus hru restartovat";"Εμφανίστηκε ένα άγνωστο σφάλμα κατά τη διάρκεια των αγορών σας στο AppStore. Ελέγξτε τη σύνδεση και προσπαθήστε να επανεκκινήσετε το παιχνίδι";"Terjadi kesalahan yang tidak diketahui saat membeli di AppStore. Periksa koneksi dan coba mulai ulang game.";"เกิดข้อผิดพลาดที่ไม่รู้จักขณะทำการซื้อบน AppStore ตรวจสอบการเชื่อมต่อแล้วลองรีสตาร์ทเกมอีกครั้ง";"앱스토어에서 구매하던 도중 알 수 없는 오류가 발생했습니다. 네트워크 연결을 확인하고 나중에 다시 시도하세요.";"通\t过 AppStore 支\t付\t时\t出\t现\t了\t未\t知\t问\t题。\t请\t检\t查\t网\t络\t连\t接\t并\t尝\t试\t重\t启\t游\t戏。";"AppStoreでの\t購入中に\t不明な\tエラーが\t発生しました。\t接続を\t確認し、\tゲームを\t再起動してください";"通\t過 AppStore 支\t付\t時\t出\t現\t了\t未\t知\t問\t題。\t請\t檢\t查\t網\t路\t連\t接\t並\t嘗\t試\t重\t啟\t遊\t戲。";;
@@ -763,8 +854,8 @@ Bu eşyayı satın almak için bir füze gemisi açın.";"DLS Rounds can only be
 "item/lock_heart/desc";"Event nick frame";"Cadre de pseudonyme événementiel";"Cornice nome evento";"Event-Nick-Rahmen";"Marco de apodo de evento";"Декоратор имени события";"Рамка для імені з події";"Ramka nicku z wydarzenia";"Moldura de alcunha do evento";"Etkinlik kullanıcı adı çerçevesi";"Eventový rámeček přezdívky";"Nick Frame για το event";"Bingkai nick event";"กรอบชื่ออีเวนต์";"이벤트 닉네임 장식";"活\t动\t昵\t称\t边\t框";"イベントニックフレーム";"活\t動\t暱\t稱\t邊\t框";;
 "item/favorite";"Title";"Titre";"Titolo";"Titel";"Título";"Титул";"Титул";"Tytuł";"Título";"Ünvan";"Titul";"Τίτλος";"Gelar";"ฉายา";"칭호";"头\t衔";"称号";"頭\t銜";;
 "item/favorite/desc";"Event title";"Titre événementiel";"Titolo Evento";"Event Titel";"Título de evento";"Титул события";"Титул із події";"Tytuł z wydarzenia";"Título do evento";"Etkinlik Ünvanı";"Eventový titul";"Τίτλος event";"Gelar event";"ฉายาอีเวนต์";"이벤트 칭호";"活\t动\t头\t衔";"イベント\t名";"活\t動\t頭\t銜";;
-"item/cardicon_wtm_ger_pilot_02";"Avatar";"Avatar";"Avatar";"Avatar";"Avatar";"Аватар";"Avatar";"Avatar";"Avatar";"Avatar";"Avatar";"Avatar";"Avatar";"Avatar";"Avatar";"Avatar";"Avatar";"Avatar";;
-"item/cardicon_wtm_ger_pilot_02/desc";"Event avatar";"Event avatar";"Event avatar";"Event avatar";"Event avatar";"Аватар события";"Event avatar";"Event avatar";"Event avatar";"Event avatar";"Event avatar";"Event avatar";"Event avatar";"Event avatar";"Event avatar";"Event avatar";"Event avatar";"Event avatar";;
+"item/cardicon_wtm_ger_pilot_02";"Avatar";"Avatar";"Avatar";"Avatar";"Avatar";"Аватар";"Аватар";"Awatar";"Avatar";"Avatar";"Avatar";"Avatar";"Avatar";"รูปแทนตัว";"아바타";"头\t像";"アバター";"個\t人\t檔\t案\t圖\t標";;
+"item/cardicon_wtm_ger_pilot_02/desc";"Event avatar";"Avatar événementiel";"Avatar evento";"Event Avatar";"Avatar de evento";"Аватар события";"Аватар із події";"Awatar z wydarzenia";"Avatar do evento";"Event avatar";"Event avatar";"Avatar για το event";"Avatar event";"รูปแทนตัวอีเวนต์";"이벤트 아바타";"活\t动\t头\t像";"イベントアバター";"活\t動\t檔\t案\t圖\t標";;
 "msg/needRegistrationBeforePurchase";"To keep your purchases safe, you need to link your email to your account.";"Afin de conserver vos achats en toute sécurité, vous devez lier un e-mail à votre compte.";"Per mantenere i tuoi acquisti al sicuro, devi collegare la tua e-mail al tuo account.";"Damit Deine Einkäufe sicher sind, musst Du Deine E-Mail-Adresse mit Deinem Konto verknüpfen.";"Para mantener seguras tus compras, tienes que vincular tu correo electrónico a tu cuenta.";"Для сохранности ваших покупок нужно привязать почту к аккаунту.";"Для збереження ваших покупок необхідно прив'язати пошту до облікового запису.";"Aby Twoje zakupy były bezpieczne, musisz powiązać swój e-mail z kontem.";"Para manter as suas compras seguras é necessário associar seu email à sua conta.";"Satın alımlarınızı güvende tutmak için e-postanızı hesabınıza bağlamanız gerekir.";"Aby byly tvoje nákupy v bezpečí, musíš svůj e-mail propojit s účtem.";"Για να διατηρήσετε ασφαλείς τις αγορές σας, πρέπει να συνδέσετε το email σας με τον λογαριασμό σας.";"Kamu harus menautkan email ke akunmu untuk mengamankan pembelian.";"คุณจะต้องผูกอีเมลเข้ากับบัญชีเพื่อให้การซื้อของคุณปลอดภัย";"안전하게 구매하기 위해선 계정을 이메일과 연동해야 합니다";"为\t了\t保\t障\t支\t付\t安\t全，\t请\t为\t账\t户\t绑\t定\t邮\t箱\t地\t址。";"購入品を\t安全に\t保管するには、\tお\t使いの\tメールアドレスを\tアカウントと\t紐づける\t必要があります。";"為\t了\t保\t障\t支\t付\t安\t全，\t請\t為\t帳\t戶\t綁\t定\t電\t郵\t地\t址。";;
 "msg/needRegistrationForProgress";"To keep your progress, you need to link your email to your account.";"Afin de conserver votre progression, vous devez lier un e-mail à votre compte.";"Per mantenere i tuoi progressi, devi collegare la tua e-mail al tuo account.";"Um Deinen Fortschritt zu behalten, musst Du Deine E-Mail mit Deinem Konto verknüpfen.";"Para mantener tu progreso, necesitas vincular tu correo electrónico a tu cuenta.";"Для сохранности вашего прогресса нужно привязать почту к аккаунту.";"Для збереження вашого прогресу необхідно прив'язати пошту до облікового запису.";"Aby zachować swoje postępy, musisz powiązać swój e-mail z kontem.";"Para manter o seu progresso necessita de associar o seu email à sua conta.";"İlerlemenizi kaybetmemek için e-postanızı hesabınıza bağlamanız gerekir.";"Chceš-li zachovat svůj dosažený pokrok, musíš svůj e-mail propojit s účtem.";"Για να διατηρήσετε την πρόοδό σας, πρέπει να συνδέσετε το email σας με τον λογαριασμό σας.";"Kamu harus menautkan email ke akunmu untuk menyimpan progres.";"คุณจะต้องผูกอีเมลเข้ากับบัญชีเพื่อเก็บรักษาความคืบหน้าของคุณไว้";"진행 상황을 저장하려면, 계정과 이메일을 연동해야 합니다.";"为\t了\t保\t存\t游\t戏\t进\t度，\t请\t为\t账\t户\t绑\t定\t邮\t箱\t地\t址。";"進捗状況を\t安全に\t保管するには、\tお\t使いの\tメールアドレスを\tアカウントと\t紐づける\t必要があります。";"為\t了\t保\t存\t遊\t戲\t進\t度，\t請\t為\t帳\t戶\t綁\t定\t電\t郵\t地\t址。";;
 "msg/needToLoginByYourLinkedMail";"After linking your email, you need to log in with it.";"Après avoir lié votre e-mail, vous devez vous connecter avec.";"Dopo aver collegato la tua e-mail, devi effettuare l'accesso con essa.";"Nachdem Du Deine E-Mail verknüpft hast, musst Du Dich mit dieser anmelden.";"Después de vincular tu email, tienes que iniciar sesión con él.";"После привязки почты вам нужно залогиниться с ее помощью.";"Після прив'язки пошти вам потрібно авторизуватися за її допомогою.";"Po powiązaniu swojego maila, należy się nim zalogować.";"Após vincular o email, deve iniciar sessão com ele.";"E-postanızı bağladıktan sonra e-postanızla giriş yapmanız gerekir.";"Po propojení s tvým e-mailem se pomocí něj musíš přihlásit.";"Αφού συνδέσετε το email σας, πρέπει να συνδεθείτε με αυτό.";"Kamu harus login menggunakan email setelah menautkannya.";"หลังจากผูกอีเมลแล้วคุณจะต้องเข้าสู่ระบบด้วยอีเมลดังกล่าว";"이메일 연동 후에는 그 이메일 주소로 로그인하셔야 합니다.";"为\t账\t户\t绑\t定\t邮\t箱\t后，\t该\t邮\t箱\t地\t址\t将\t成\t为\t您\t的\t登\t录\t凭\t证。";"メールアドレスを\tリンクした\t後は、\tログインする\t必要があります。";"為\t帳\t戶\t綁\t定\t電\t郵\t後，\t該\t電\t郵\t地\t址\t將\t成\t為\t您\t的\t登\t入\t憑\t證。";;

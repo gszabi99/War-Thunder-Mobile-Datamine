@@ -217,12 +217,10 @@ requestState.subscribe(function(v) {
   if (v.id != null) // Success
     resetForm()
   else if (v.errInfo != null) {
-    let { errId, errText } = v.errInfo
-    sendErrorBqEvent($"Zendesk: {errId}")
-    openMsgBox({ text = "\n".concat(
-      "".concat(loc("msgbox/appearError"), colon),
-      errText)
-    })
+    let { errId, errText, needSendBQ } = v.errInfo
+    if (needSendBQ)
+      sendErrorBqEvent($"Zendesk: {errId}")
+    openMsgBox({ text = errText })
   }
 })
 

@@ -3,23 +3,30 @@ let { TouchAreaOutButton } = require("wt.behaviors")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { btnBgColor, touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
+let { isInZoom } = require("%rGui/hudState.nut")
 
 let borderWidth = hdpxi(1)
 let colorActive = 0xFFDADADA
 let colorInactive = 0x806D6D6D
 let imgSizeBase = (touchButtonSize * 0.8  + 0.5).tointeger()
 
-let isActive = @(sf) (sf & S_ACTIVE) != 0
+let isActive = @(sf) !isInZoom.value && (sf & S_ACTIVE) != 0
 
 let mkCameraButton = @(shortcutId, image) function(scale) {
   let stateFlags = Watched(0)
   let bgSize = scaleEven(touchButtonSize, scale)
   let imgSize = scaleEven(imgSizeBase, scale)
   let picture = Picture($"{image}:{imgSize}:{imgSize}")
-  let onTouchBegin = @() setShortcutOn(shortcutId)
-  let onTouchEnd = @() setShortcutOff(shortcutId)
+  let onTouchBegin = @() !isInZoom.value && setShortcutOn(shortcutId)
+  let onTouchEnd = @() !isInZoom.value && setShortcutOff(shortcutId)
+
+  isInZoom.subscribe(function(_) {
+    setShortcutOff(shortcutId)
+    stateFlags(0)
+  })
+
   return @() mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags).__update({
-    watch = stateFlags
+    watch = [stateFlags, isInZoom]
     size = [bgSize, bgSize]
     rendObj = ROBJ_BOX
     borderColor = isActive(stateFlags.value) ? null : colorInactive
@@ -36,7 +43,7 @@ let mkCameraButton = @(shortcutId, image) function(scale) {
         size = [imgSize, imgSize]
         image = picture
         keepAspect = KEEP_ASPECT_FIT
-        color = stateFlags.value ? colorActive : colorInactive
+        color = isActive(stateFlags.value) ? colorActive : colorInactive
       }
       mkGamepadShortcutImage(shortcutId,
         { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(50)] },

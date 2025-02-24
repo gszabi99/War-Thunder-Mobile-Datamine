@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
+let { arrayByRows } = require("%sqstd/underscore.nut")
 let { ACTIVATE_PROMO_CODE_URL, LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
 let { curLoginType, LT_GOOGLE, LT_APPLE, LT_FACEBOOK, LT_HUAWEI } = require("%appGlobals/loginState.nut")
 let { can_link_to_gaijin_account } = require("%appGlobals/permissions.nut")
@@ -8,6 +9,8 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin } = require("%rGui/account/linkEmailForGaijinLogin.nut")
 let { contentWidth } = require("optionsStyle.nut")
 let { textButtonCommon, textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
+let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
@@ -25,6 +28,7 @@ let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut"
 let { copyToClipboard } = require("%rGui/components/clipboard.nut")
 let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
 let { isGuestLogin, openGuestEmailRegistration } = require("%rGui/account/emailRegistrationState.nut")
+let { hasRestorePurchases, restorePurchases, platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
 
 let urlColor = 0xFF17C0FC
 let urlHoverColor = 0xFF84E0FA
@@ -246,21 +250,16 @@ let mkLinksBlock = @(children) !children.findvalue(@(v) v != null) ? null
       children
     }
 
-let buttons = @() {
-  watch = [canLinkToGaijinAccount, canLinkEmailForGaijinLogin, canChangeAccount, canLinkToGaijinAccountForGuest]
-  flow = FLOW_VERTICAL
-  gap = buttonsHGap
-  children = [
-    mkButtonRow([
+function buttons() {
+  let rows = arrayByRows(
+    [
       !canChangeAccount.get() ? null
         : textButtonCommon(loc("mainmenu/btnChangePlayer"), logoutMsgBox, buttonsWidthStyle)
       textButtonPrimary(loc("mainmenu/support"), openSupportTicketWndOrUrl, buttonsWidthStyle)
-    ])
-    mkButtonRow([
       canLinkToGaijinAccount.get()
-          ? textButtonPrimary(loc("msgbox/btn_linkEmail"),
-              @() eventbus_send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL }),
-              buttonsWidthStyle)
+        ? textButtonPrimary(loc("msgbox/btn_linkEmail"),
+            @() eventbus_send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL }),
+            buttonsWidthStyle)
         : canLinkToGaijinAccountForGuest.get()
           ? textButtonPrimary(loc("msgbox/btn_linkEmail"),
               openGuestEmailRegistration,
@@ -270,12 +269,27 @@ let buttons = @() {
         : textButtonPrimary(loc("mainmenu/btnActivateCode"),
             @() eventbus_send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL }),
             buttonsWidthStyle)
-    ])
-    mkLinksBlock([
-      !canLinkEmailForGaijinLogin.get() ? null
-        : mkLinkBtn(loc("link_email_for_alt_auth"), openLinkEmailForGaijinLogin)
-    ])
-  ]
+      !hasRestorePurchases ? null
+        : mkSpinnerHideBlock(Computed(@() platformPurchaseInProgress.get() != null),
+            textButtonPrimary(loc("restorePurchases"), restorePurchases, buttonsWidthStyle),
+            {
+              size = [ buttonsWidthStyle.ovr.minWidth, defButtonHeight ]
+              halign = ALIGN_CENTER
+              valign = ALIGN_CENTER
+            })
+    ].filter(@(v) v != null),
+    2)
+
+  return {
+    watch = [canLinkToGaijinAccount, canLinkEmailForGaijinLogin, canChangeAccount, canLinkToGaijinAccountForGuest]
+    flow = FLOW_VERTICAL
+    gap = buttonsHGap
+    children = rows.map(mkButtonRow)
+      .append(mkLinksBlock([
+        !canLinkEmailForGaijinLogin.get() ? null
+          : mkLinkBtn(loc("link_email_for_alt_auth"), openLinkEmailForGaijinLogin)
+      ]))
+  }
 }
 
 return {
