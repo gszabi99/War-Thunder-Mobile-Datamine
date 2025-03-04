@@ -14575,13 +14575,11 @@
         "default": {
           "icon": "apcr_t/he_frag_t/"
         },
-        "bk37_antitank": {
-          "icon": "apcr_t/",
-          "reqModification": "aircraft_mod_3"
+        "bk37_armor_targets": {
+          "icon": "apcr_t/"
         },
-        "bk37_antibomber": {
-          "icon": "he_frag_t/",
-          "reqModification": "aircraft_mod_4"
+        "bk37_air_targets": {
+          "icon": "he_frag_t/"
         }
       },
       "gunMG81_turret": {
@@ -14589,12 +14587,10 @@
           "icon": "ap_t_ball/ball/ball/ap_i_ball/he_ball/"
         },
         "mg_turret_armor_targets": {
-          "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/",
-          "reqModification": "aircraft_mod_1"
+          "icon": "ap_ball/ap_ball/ap_ball/ap_t_ball/"
         },
         "mg_turret_api_apt": {
-          "icon": "ap_i_ball/ap_t_ball/ap_i_ball/ap_t_ball/",
-          "reqModification": "aircraft_mod_2"
+          "icon": "ap_i_ball/ap_t_ball/ap_i_ball/ap_t_ball/"
         }
       }
     }

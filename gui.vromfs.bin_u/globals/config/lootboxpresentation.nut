@@ -50,6 +50,8 @@ let customLootboxImages = {
   past_events_box_tanks_seasons_1_to_12 = "past_events_box_seasons_1_to_12.avif"
   past_events_box_ships_seasons_1_to_13 = "past_events_box_seasons_1_to_13.avif"
   past_events_box_tanks_seasons_1_to_13 = "past_events_box_seasons_1_to_13.avif"
+  past_events_box_ships_seasons_1_to_14 = "past_events_box_seasons_1_to_14.avif"
+  past_events_box_tanks_seasons_1_to_14 = "past_events_box_seasons_1_to_14.avif"
 }
 
 let customRouletteImages = {

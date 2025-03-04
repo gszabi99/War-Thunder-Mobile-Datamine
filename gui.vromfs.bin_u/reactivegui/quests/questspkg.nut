@@ -180,7 +180,7 @@ function mkAdsBtn(unlock) {
             text = utf8ToUpper(hasAdBudget.get()
               ? loc(!hasVip.get() ? "quests/addProgress" : "quests/addProgress_budget", { num = adBudget.get() })
               : loc("btn/adsLimitReached"))
-          }.__update(fontTinyShaded, adsButtonCounter)
+          }.__update(fontVeryTinyAccentedShaded, adsButtonCounter)
         ]
       },
       onClick,

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { resetTimeout } = require("dagor.workcycle")
 let { get_local_custom_settings_blk } = require("blkGetters")
-let { isGuestLogin, renewGuestRegistrationTags, needVerifyEmail, openVerifyEmail
+let { isGuestLogin, openGuestEmailRegistration, renewGuestRegistrationTags, needVerifyEmail, openVerifyEmail
 } = require("emailRegistrationState.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
@@ -12,7 +12,6 @@ let { register_command } = require("console")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
 
 let GUEST_MSG_UID = "guestEmailRegistration"
 let VERIFY_MSG_UID = "verifyEmail"
@@ -59,13 +58,13 @@ function openGuestMsg() {
   renewGuestRegistrationTags()
   openMsgBox({
     uid = GUEST_MSG_UID
-    text = "".concat(loc("msg/needRegistrationForProgress"), "\n", loc("mainmenu/desc/link_to_gaijin_account"))
+    text = loc("msg/needRegistrationForProgress")
     buttons = [
       { id = "later", isCancel = true, cb = @() isGuestMsgShowed(true) }
       { id = "linkEmail", styleId = "PRIMARY", isDefault = true,
         function cb() {
           isGuestMsgShowed(true)
-          eventbus_send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL })
+          openGuestEmailRegistration()
         }
       }
     ]

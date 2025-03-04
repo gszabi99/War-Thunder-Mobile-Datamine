@@ -2811,6 +2811,26 @@
       "to": "jp_camo_sdf_green*"
     }
   },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "jp_camo_post_sand_gray_green*"
+      }
+    },
+    "forest2": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "jp_camo_post_biege_gray_green*"
+      }
+    },
+    "forest3": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "jp_camo_post_biege_gray_green_fuji*"
+      }
+    }
+  },
   "defaultDecals": {
     "default": {
       "skin_condition": 100.0,
@@ -2821,14 +2841,16 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
-    }
-  },
-  "vehicleSkins": {
-    "forest": {
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "jp_camo_post_sand_gray_green*"
-      }
+    },
+    "forest2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "forest3": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   }
 }

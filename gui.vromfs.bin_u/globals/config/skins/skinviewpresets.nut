@@ -88,6 +88,7 @@ let skinsByTag = {
     "cn_camo_sand_ltgreen_dkgreen_deform"
     "hu_camo_four_color"
     "hu_camo_green_brown_black"
+    "jp_camo_post_biege_gray_green"
   ],
 
   [DESERT] = [

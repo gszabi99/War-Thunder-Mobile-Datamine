@@ -3128,6 +3128,26 @@
       "collisionNode": "cls_turret"
     }
   },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_sand_gray_green*"
+      }
+    },
+    "forest2": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_biege_gray_green*"
+      }
+    },
+    "forest3": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_biege_gray_green_fuji*"
+      }
+    }
+  },
   "defaultDecals": {
     "default": {
       "skin_condition": 100.0,
@@ -3185,14 +3205,63 @@
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.277485,
       "decal0Tex": "jp_71st_tank_reg"
-    }
-  },
-  "vehicleSkins": {
-    "forest": {
-      "replace_tex": {
-        "from": "jp_camo_sdf_green*",
-        "to": "jp_camo_post_sand_gray_green*"
-      }
+    },
+    "forest2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -1.8765,
+        -7.83614e-8,
+        1.84184,
+        1.67836
+      ],
+      "decal0Line1": [
+        0.544044,
+        -2.51205,
+        0.554281,
+        4.97517
+      ],
+      "decal0Line2": [
+        1.8765,
+        -9.79518e-8,
+        1.84184,
+        -0.420505
+      ],
+      "decal0Line3": [
+        0.544044,
+        -2.51205,
+        -0.554281,
+        4.89757
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.66923,
+        0.295381,
+        0.681822,
+        -1.69079
+      ],
+      "decal0CPNormDepth1": [
+        0.66923,
+        0.295381,
+        -0.681822,
+        -1.78624
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.380319
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.278569,
+      "decal0Tex": "jp_71st_tank_reg_alt"
+    },
+    "forest3": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "battleHideNodes": {

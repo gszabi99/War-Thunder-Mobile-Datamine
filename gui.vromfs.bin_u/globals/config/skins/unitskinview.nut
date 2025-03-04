@@ -1419,7 +1419,9 @@ return {
     },
     "jp_m47_patton_II": {
       "": "jp_camo_sdf_green",
-      "forest": "jp_camo_post_sand_gray_green"
+      "forest": "jp_camo_post_sand_gray_green",
+      "forest2": "jp_camo_post_biege_gray_green",
+      "forest3": "jp_camo_post_biege_gray_green_fuji"
     },
     "jp_st_a1": {
       "": "jp_camo_post_green",
@@ -1443,7 +1445,9 @@ return {
     },
     "jp_type_5_ho_ri_production": {
       "": "jp_camo_sdf_green",
-      "forest": "jp_camo_post_sand_gray_green"
+      "forest": "jp_camo_post_sand_gray_green",
+      "forest2": "jp_camo_post_biege_gray_green",
+      "forest3": "jp_camo_post_biege_gray_green_fuji"
     },
     "jp_type_5_ho_ri_prototype": {
       "": "jp_camo_post_multicolor",
@@ -1455,7 +1459,9 @@ return {
     },
     "jp_type_60_atm": {
       "": "jp_camo_sdf_green",
-      "forest": "jp_camo_post_sand_gray_green"
+      "forest": "jp_camo_post_sand_gray_green",
+      "forest2": "jp_camo_post_biege_gray_green",
+      "forest3": "jp_camo_post_biege_gray_green_fuji"
     },
     "jp_type_60_sprg": {
       "": "jp_camo_post_multicolor",
@@ -1487,7 +1493,9 @@ return {
     },
     "jp_type_87_rcv_prot": {
       "": "jp_camo_sdf_green",
-      "forest": "jp_camo_post_sand_gray_green"
+      "forest": "jp_camo_post_sand_gray_green",
+      "forest2": "jp_camo_post_biege_gray_green",
+      "forest3": "jp_camo_post_biege_gray_green_fuji"
     },
     "jp_type_87_reskin": {
       "": "jp_camo_sdf_green",
@@ -3055,6 +3063,7 @@ return {
       "arctic_spots": "camo_arctic_spots",
       "asiatic_forest_prem": "camo_asiatic_forest",
       "black_longdiag": "camo_black_longdiag",
+      "blackgray_net_prem": "camo_blackgray_net",
       "blackgray_spots_prem": "camo_blackgray_spots",
       "blackgray_stripes": "camo_blackgray_stripes",
       "blue_stains": "camo_blue_stains",

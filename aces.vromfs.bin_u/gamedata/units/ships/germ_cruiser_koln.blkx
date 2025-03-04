@@ -7560,6 +7560,38 @@
           "to": "camo_bottom_green*"
         }
       ]
+    },
+    "greencoast": {
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "camo_greencoast*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_bottom_green*"
+        },
+        {
+          "from": "camo_deepdark_wood*",
+          "to": "camo_bottom_green*"
+        }
+      ]
+    },
+    "blackgray_net_prem": {
+      "replace_tex": [
+        {
+          "from": "camo_hellgrau_50*",
+          "to": "camo_blackgray_net*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_dark_wood*"
+        },
+        {
+          "from": "camo_deepdark_wood*",
+          "to": "camo_dark_wood*"
+        }
+      ]
     }
   },
   "defaultDecals": {

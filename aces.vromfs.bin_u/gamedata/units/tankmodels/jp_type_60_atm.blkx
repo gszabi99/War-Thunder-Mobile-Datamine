@@ -1871,6 +1871,26 @@
     "tank_smoke_screen_low_cooldown": {},
     "tank_smoke_screen_long_duration": {}
   },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_sand_gray_green*"
+      }
+    },
+    "forest2": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_biege_gray_green*"
+      }
+    },
+    "forest3": {
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_biege_gray_green_fuji*"
+      }
+    }
+  },
   "defaultDecals": {
     "default": {
       "skin_condition": 100.0,
@@ -1975,14 +1995,110 @@
       "decal1OppositeMirrored": false,
       "decal1WidthBox": 0.200002,
       "decal1Tex": "flag_japan"
-    }
-  },
-  "vehicleSkins": {
-    "forest": {
-      "replace_tex": {
-        "from": "jp_camo_sdf_green*",
-        "to": "jp_camo_post_sand_gray_green*"
-      }
+    },
+    "forest2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.6408,
+        -1.15433e-7,
+        0.00000168299,
+        1.28615
+      ],
+      "decal0Line1": [
+        -1.15432e-7,
+        -2.6408,
+        -0.00000177377,
+        4.0609
+      ],
+      "decal0Line2": [
+        -2.6408,
+        -1.15433e-7,
+        0.00000168299,
+        -0.286145
+      ],
+      "decal0Line3": [
+        1.15434e-7,
+        -2.6408,
+        0.00000177377,
+        4.0609
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        6.37303e-7,
+        6.71677e-7,
+        -1.0,
+        -1.20119
+      ],
+      "decal0CPNormDepth1": [
+        6.37303e-7,
+        6.71677e-7,
+        1.0,
+        -1.20119
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.378673
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.2,
+      "decal0Tex": "flag_japan"
+    },
+    "forest3": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        2.6408,
+        -1.15433e-7,
+        0.00000168299,
+        1.28615
+      ],
+      "decal0Line1": [
+        -1.15432e-7,
+        -2.6408,
+        -0.00000177377,
+        4.0609
+      ],
+      "decal0Line2": [
+        -2.6408,
+        -1.15433e-7,
+        0.00000168299,
+        -0.286145
+      ],
+      "decal0Line3": [
+        1.15434e-7,
+        -2.6408,
+        0.00000177377,
+        4.0609
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        6.37303e-7,
+        6.71677e-7,
+        -1.0,
+        -1.20119
+      ],
+      "decal0CPNormDepth1": [
+        6.37303e-7,
+        6.71677e-7,
+        1.0,
+        -1.20119
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.378673
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.2,
+      "decal0Tex": "flag_japan"
     }
   },
   "battleHideNodes": {

@@ -175,7 +175,7 @@ function mkStages(progressUnlock, stageWidth, tabId, curSectionId) {
           @() {
             watch = [rewardPreview, isRewardInProgress]
             key = $"quest_bar_stage_{idx}" //need for tutorial
-            children = rewardPreview.value.len() == 0 ? null
+            children = (rewardPreview.value?.len() ?? 0 )== 0 ? null
               : rewardProgressBarCtor(rewardPreview.value, isUnlocked, claimReward, isRewardInProgress.value)
           }
         ]
