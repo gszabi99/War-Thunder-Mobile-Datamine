@@ -16,7 +16,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { startRelogin } = require("%scripts/login/loginStart.nut")
 
 const MAX_REQUESTS_HISTORY = 20
-const PROGRESS_TIMEOUT_SEC = 30
+const PROGRESS_TIMEOUT_SEC = 90 //native char module already has 45sec timeout, so this is just insurance
 let debugDelay = hardPersistWatched("pserver.debugDelay", 0.0)
 let lastRequests = hardPersistWatched("pserver.lastRequests", [])
 let progressTimeouts = hardPersistWatched("pserver.inProgress", {}) //progressId = { value, timeout }

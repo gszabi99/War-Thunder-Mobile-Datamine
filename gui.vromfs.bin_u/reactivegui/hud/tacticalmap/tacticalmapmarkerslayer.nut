@@ -162,9 +162,11 @@ function updateMarkerPositions() {
 }
 
 let isNeedPosUpdateTimer = keepref(Computed(@() mapMarkers.get().len() != 0))
-isNeedPosUpdateTimer.subscribe(@(v) v
-  ? setInterval(POS_UPDATE_INTERVAL, updateMarkerPositions)
-  : clearTimer(updateMarkerPositions))
+isNeedPosUpdateTimer.subscribe(function(v) {
+  clearTimer(updateMarkerPositions)
+  if (v)
+    setInterval(POS_UPDATE_INTERVAL, updateMarkerPositions)
+})
 
 let tacticalMapMarkersLayer = @() {
   watch = mapMarkers

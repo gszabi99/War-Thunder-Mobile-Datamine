@@ -76,12 +76,11 @@ curLbData.subscribe(function(v) {
 })
 
 function updateRefreshTimer() {
+  clearTimer(refreshLbData)
   if (isRefreshLbEnabled.value) {
     refreshLbData()
     setInterval(REFRESH_PERIOD, refreshLbData)
   }
-  else
-    clearTimer(refreshLbData)
 }
 updateRefreshTimer()
 isRefreshLbEnabled.subscribe(@(_) updateRefreshTimer())

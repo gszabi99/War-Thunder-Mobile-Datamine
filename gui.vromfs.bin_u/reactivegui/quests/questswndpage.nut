@@ -11,7 +11,8 @@ let { receiveUnlockRewards, unlockInProgress, unlockTables, unlockProgress,
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, mkTimeUntil,
-  allQuestsCompleted, mkAdsBtn, btnSize, headerLineGap } = require("questsPkg.nut")
+  allQuestsCompleted, mkAdsBtn, btnSize, headerLineGap, linkToEventWidth
+} = require("questsPkg.nut")
 let { mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon, progressBarRewardSize, mkRewardsPreviewFull,
   getRewardsPreviewInfo, getEventCurrencyReward
 } = require("rewardsComps.nut")
@@ -405,7 +406,7 @@ let headerLine = @(headerChildCtor, child) {
   ]
 }
 
-function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
+function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, headerChildWidth = null) {
   let selSectionId = mkWatched(persist, $"selSectionId_{tabId}", null)
   let curSectionId = Computed(function() {
     let bySection = questsBySection.get()
@@ -455,9 +456,10 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null) {
   curSectionId.subscribe(@(_) scrollHandler.scrollToY(0))
 
   let isSectionsEmpty = Computed(@() sections.get().findindex(@(s) questsBySection.get()[s].len() > 0) == null)
+  headerChildWidth = headerChildWidth ?? Watched(headerChildCtor == null ? 0 : linkToEventWidth)
   function header() {
     let progressBlock = !hasProgressUnlock.get() ? null
-      : headerLine(headerChildCtor, mkQuestListProgressBar(progressUnlock, tabId, curSectionId))
+      : headerLine(headerChildCtor, mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChildWidth))
 
     let sectionsComp = isSectionsEmpty.get() ? allQuestsCompleted
       : sections.value.len() > 1 ? mkSectionTabs(sections.value, curSectionId, onSectionChange)

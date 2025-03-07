@@ -363,9 +363,8 @@ let throttleAxisUpdate = @()
     : sliderValue.get() - throttlePerTick * throttleAxisVal.get())
 
 isThrottleAxisActive.subscribe(function(isActive) {
-  if (!isActive)
-    clearTimer(throttleAxisUpdate)
-  else {
+  clearTimer(throttleAxisUpdate)
+  if (isActive) {
     setInterval(throttleAxisUpdateTick, throttleAxisUpdate)
     throttleAxisUpdate()
   }

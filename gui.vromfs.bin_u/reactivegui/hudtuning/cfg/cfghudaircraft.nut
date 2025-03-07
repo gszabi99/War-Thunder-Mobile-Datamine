@@ -138,6 +138,7 @@ return cfgHudCommon.__merge({
     defTransform = mkRTPos([0, 0])
     editView = hitCameraCommonEditView
     hideForDelayed = false
+    priority = Z_ORDER.SUPERIOR
   }
 
   radar = {
@@ -315,7 +316,7 @@ return cfgHudCommon.__merge({
 
   radarHud = {
     ctor = radarHudCtor
-    defTransform = mkRBPos([hdpx(-180), hdpx(-20)])
+    defTransform = mkRTPos([-hdpx(20), 0])
     editView = radarHudEditView
     priority = Z_ORDER.BUTTON
   }

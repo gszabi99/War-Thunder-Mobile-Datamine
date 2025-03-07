@@ -28,6 +28,7 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { getEventLoc, MAIN_EVENT_ID, eventSeason, specialEvents } = require("%rGui/event/eventState.nut")
 let { discountTagOffer, discountOfferTagH } = require("%rGui/components/discountTag.nut")
+let { G_ITEM } = require("%appGlobals/rewardType.nut")
 
 
 let activeItemId = Watched(null)
@@ -458,6 +459,8 @@ function mkItemImpl(r, rStyle, start) {
     onClick = @() null
     function onElemState(sf) {
       stateFlags(sf)
+      if (r.rType != G_ITEM)
+        return
       let isActive = (sf & S_ACTIVE) != 0
       if (isActive != (activeItemId.value == itemId))
         activeItemId(isActive ? itemId : null)

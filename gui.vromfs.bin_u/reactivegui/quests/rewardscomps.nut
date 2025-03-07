@@ -74,11 +74,11 @@ let currencyProgressBarRewardCtor = @(r, isUnlocked = false, canClaimReward = fa
     : mkGlare(rewardsBtnSize, { repeatDelay = 2.5, duration = 0.6 })
 ]
 
-function mkProgressBarReward(children, onClick) {
+function mkProgressBarReward(slots, children, onClick) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
-    size = [progressBarRewardSize, progressBarRewardSize]
+    size = [progressBarRewardSize * slots + questItemsGap * (slots - 1), progressBarRewardSize]
     clipChildren = true
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/images/offer_item_slot_bg.avif:{progressBarRewardSize}:{progressBarRewardSize}:P")
@@ -95,7 +95,7 @@ function mkProgressBarReward(children, onClick) {
 
 let rewardProgressBarCtor = @(r, isUnlocked, claimReward, isRewardInProgress) {
   children = [
-    mkProgressBarReward(currencyProgressBarRewardCtor(r, isUnlocked, claimReward != null),
+    mkProgressBarReward(r?.slots ?? 1, currencyProgressBarRewardCtor(r, isUnlocked, claimReward != null),
       isRewardInProgress ? null
         : !isUnlocked ? @() anim_start("eventProgressStats")
         : claimReward)

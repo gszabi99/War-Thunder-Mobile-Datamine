@@ -21,10 +21,9 @@ let updateCapZones = @() capZones(
   prevIfEqualList(getCaptureZones().filter(@(c) (c.flags & CZ_IS_HIDDEN) == 0), capZones.value))
 
 function checkRestartZoneUpdater(inBattle) {
-  if (!inBattle) {
-    clearTimer(updateCapZones)
+  clearTimer(updateCapZones)
+  if (!inBattle)
     return
-  }
   updateCapZones()
   setInterval(1.0, updateCapZones)
 }

@@ -123,9 +123,11 @@ function updateTrackedPlayersInfo() {
 
 hudIndicatorsByPlayer.subscribe(@(_) updateTrackedPlayersInfo())
 let needPlayerInfoUpdateTimer = keepref(Computed(@() isHudIndicatorsAttached.get() && hudIndicatorsByPlayer.get().len() != 0))
-needPlayerInfoUpdateTimer.subscribe(@(v) v
-  ? setInterval(TRACKED_PLAYERS_INFO_UPDATE_INTERVAL_SEC, updateTrackedPlayersInfo)
-  : clearTimer(updateTrackedPlayersInfo))
+needPlayerInfoUpdateTimer.subscribe(function(v) {
+  clearTimer(updateTrackedPlayersInfo)
+  if (v)
+    setInterval(TRACKED_PLAYERS_INFO_UPDATE_INTERVAL_SEC, updateTrackedPlayersInfo)
+})
 updateTrackedPlayersInfo()
 
 return {

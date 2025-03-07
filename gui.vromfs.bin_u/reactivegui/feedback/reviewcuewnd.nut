@@ -7,7 +7,8 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { textButtonBattle, textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
-let { isRateGameSeen, sendGameRating, platformAppReview } = require("%rGui/feedback/rateGameState.nut")
+let { isRateGameSeen, sendGameRating, platformAppReview, sendRateWndEvent
+} = require("%rGui/feedback/rateGameState.nut")
 
 
 const RATE_STARS_TOTAL = 5
@@ -49,12 +50,15 @@ function onBtnApply(isApply = true) {
     if (hasSelectedRating.value && !hasAppliedRating.value)
       return hasAppliedRating(true)
   }
-  if (!isApply && !hasAppliedRating.value) // Close btn pressed
+  if (!isApply && !hasAppliedRating.value) { // Close btn pressed
+    sendRateWndEvent("close_no_choice")
     return close()
+  }
 
   // It doesn't matter which btn pressed (Apply/Close), now sending the result.
   sendGameRating(fieldRating.value, fieldComment.value)
   platformAppReview(isRatedExcellent.value)
+  sendRateWndEvent("close_after_choice")
   close()
 }
 
@@ -182,6 +186,8 @@ let girlImage = @() {
 let reviewCueWnd = bgShaded.__merge({
   key = {}
   size = flex()
+  onAttach = @() sendRateWndEvent("attached")
+  onDetach = @() sendRateWndEvent("detached")
   children = [
     imagesPreloadComp
     modalWndBg.__merge({
@@ -203,6 +209,7 @@ let reviewCueWnd = bgShaded.__merge({
 })
 
 register_command(function() {
+  sendRateWndEvent(isOpened.get() ? "close" : "open")
   isRateGameSeen(false)
   isOpened(!isOpened.value)
 }, "ui.debug.review_cue.show")
@@ -210,6 +217,7 @@ register_command(function() {
 registerScene("reviewCueWnd", reviewCueWnd, close, isOpened)
 
 function openReviewCueWnd(cb) {
+  sendRateWndEvent("open")
   onCloseCb = cb
   isOpened(true)
 }

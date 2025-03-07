@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/gamercardStyle.nut" import *
+let { deferOnce } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { starLevelTiny } = require("%rGui/components/starLevel.nut")
@@ -373,7 +374,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
   })
 }
 
-let close = @() selectedPlayerForInfo(null)
+let close = @() selectedPlayerForInfo.set(null)
 let key = "playerInfo"
 selectedPlayerForInfo.subscribe(function(v) {
   removeModalWindow(key)
@@ -381,7 +382,13 @@ selectedPlayerForInfo.subscribe(function(v) {
     return
 
   let { player, isInvitesAllowed = true } = v
-  let position = calcPosition(gui_scene.getCompAABBbyKey(player.userId), FLOW_VERTICAL, hdpx(20), ALIGN_CENTER, ALIGN_CENTER)
+  let aabb = gui_scene.getCompAABBbyKey(player.userId)
+  if (aabb == null) {
+    deferOnce(close)
+    return
+  }
+
+  let position = calcPosition(aabb, FLOW_VERTICAL, hdpx(20), ALIGN_CENTER, ALIGN_CENTER)
   let selCampaign = v.campaign
   let globalStats = Computed(function() {
     let { allUnits = {} } = serverConfigs.get()

@@ -30,7 +30,7 @@
         60.0
       ],
       "rollStabLimit": 60.0,
-      "period": 1.2,
+      "period": 0.41,
       "width": 60.0,
       "barHeight": 2.5,
       "barsCount": 24,
@@ -64,9 +64,9 @@
   },
   "signals": {
     "search": {
-      "groundClutter": true,
+      "groundClutter": false,
       "aircraftAsTarget": true,
-      "groundVehiclesAsTarget": true,
+      "groundVehiclesAsTarget": false,
       "friendFoeId": true,
       "distance": {
         "presents": true,
@@ -77,9 +77,9 @@
       }
     },
     "track": {
-      "groundClutter": true,
+      "groundClutter": false,
       "aircraftAsTarget": true,
-      "groundVehiclesAsTarget": true,
+      "groundVehiclesAsTarget": false,
       "angularAccuracy": 0.15,
       "distanceAccuracy": 22.0,
       "track": true,

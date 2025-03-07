@@ -234,7 +234,7 @@ function chooseAutoSkin(unitName, skins, defSkin) {
 }
 
 function respawn(slot, bullets) {
-  if (isRespawnStarted.value)
+  if (isRespawnStarted.get() || slot == null)
     return
   let { id, name, weapon, skin, mods } = slot
   spawnUnitName(name)

@@ -26,6 +26,7 @@ eventbus_subscribe("startSingleMission", function(msg) {
     changeTrainingUnit(unitName)
   }
 
+  log($"[OFFLINE_MISSION] startSingleMission {id} (unitName = {unitName})")
   select_mission(missionCopy, true)
   do_start_flight()
 })

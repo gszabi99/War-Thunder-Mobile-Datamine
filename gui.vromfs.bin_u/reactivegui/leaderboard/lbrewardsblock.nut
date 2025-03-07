@@ -61,7 +61,7 @@ function mkRewardRow(rewardInfo, idx) {
   let { rType, progress, rewards } = rewardInfo
   local rewardsViewInfo = []
   foreach (id, count in rewards) {
-    let reward = serverConfigs.get().userstatRewards?[id]
+    let reward = serverConfigs.get()?.userstatRewards[id]
     rewardsViewInfo.extend(getRewardsViewInfo(reward, count))
   }
   rewardsViewInfo = rewardsViewInfo.filter(@(r) r.rType != "medal")

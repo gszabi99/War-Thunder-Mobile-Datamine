@@ -13,9 +13,10 @@ let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nu
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { playerLevelInfo, campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { platoonPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
-let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkProgressBar,
+let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkTreeRankProgressBar,
   progressBarHeight, bgLight, noUnitsMsg, btnSize, platesGap,
-  blockSize, flagTreeOffset, gamercardOverlap, infoPanelWidth
+  blockSize, flagTreeOffset, gamercardOverlap, infoPanelWidth,
+  RGAP_HAS_GAP, RGAP_HAS_NEXT_LEVEL, RGAP_RECEIVED_NEXT_LEVEL
 } = require("unitsTreeComps.nut")
 let { animBuyRequirementsUnitId, animResearchRequirementsUnitId } = require("animState.nut")
 let { unitInfoPanel, mkUnitTitle, statsWidth, scrollHandlerInfoPanel } = require("%rGui/unit/components/unitInfoPanel.nut")
@@ -225,13 +226,34 @@ let mkUnitsBlock = @(columnsCfgV, listByCountry, rowIdx) function() {
 
 let mkLevelProgress = @(columnsCfgV, idx) function() {
   let slots = (columnsCfgV?[idx + 2] ?? 0) - (columnsCfgV?[idx + 1] ?? 0)
-  if (slots <= 0)
-    return null
+  if (slots <= 0) {
+    let pos = columnsCfgV?[idx + 1] ?? -1
+    let prevPos = columnsCfgV?[idx] ?? -1
+    if (pos >= columnsCfgV.total || pos < 0 || pos == prevPos)
+      return null
+
+    let { level } = playerLevelInfo.get()
+    return {
+      watch = [playerLevelInfo, unitsMaxRank, unitsMaxStarRank]
+      pos = [blockSize[0] * (pos + 0.5) - levelMarkSize * 0.5, 0]
+      children = levelMark(
+          idx + 1,
+          max(0, idx + 1 - unitsMaxRank.get() + unitsMaxStarRank.get()),
+          level >= idx + 1)
+    }
+  }
 
   let { level, exp, nextLevelExp } = playerLevelInfo.value
-  let hasLevelGap = (columnsCfgV?[idx + 3] ?? 0) == columnsCfgV[idx + 2]
-  let hasNextLevel = level >=
-    (columnsCfgV.findindex(@(v, key) type(key) == "integer" && v > columnsCfgV[idx + 1] && columnsCfgV?[key + 1] != v) ?? 0)
+
+  local rGap = (columnsCfgV?[idx + 3] ?? 0) == columnsCfgV[idx + 2] ? RGAP_HAS_GAP : 0
+  if (rGap == RGAP_HAS_GAP) {
+    if (columnsCfgV?[idx + 3] != columnsCfgV.total)
+      rGap = rGap | RGAP_HAS_NEXT_LEVEL
+    if (level >=
+        (columnsCfgV.findindex(@(v, key) type(key) == "integer" && v > columnsCfgV[idx + 1] && columnsCfgV?[key + 1] != v) ?? 0))
+      rGap = rGap | RGAP_RECEIVED_NEXT_LEVEL
+  }
+
   let barWidth = slots * blockSize[0] - levelMarkSize + progressBarHeight + levelBorder
   let levelCompleted = level >= idx + 2
   let current = levelCompleted ? 1
@@ -249,7 +271,7 @@ let mkLevelProgress = @(columnsCfgV, idx) function() {
         size = [SIZE_TO_CONTENT, levelMarkSize]
         valign = ALIGN_CENTER
         children = unitsMaxRank.value == idx + 1 ? null
-          : mkProgressBar(levelCompletion, barWidth, slots, hasLevelGap, hasNextLevel,
+          : mkTreeRankProgressBar(levelCompletion, barWidth, slots, rGap,
               { pos = [levelMarkSize - progressBarHeight * 0.5, hdpx(1)] })
       }
       levelMark(
@@ -289,7 +311,7 @@ function unitsTree(unitsByGroup, columnsCfg) {
     }
     children = [unselectBtn.__merge({ size = flex(), pos = [0, levelMarkSize]})]
       .extend(
-        array(unitsMaxRank.value).map(@(_, idx) mkLevelProgress(columnsCfg.get(), idx)),
+        array(unitsMaxRank.get() + 1).map(@(_, idx) mkLevelProgress(columnsCfg.get(), idx)),
         unitsByGroup.get().len() == 0 ? [noUnitsMsg]
           : unitsByGroup.get()
               .map(@(list, group) { group, list })

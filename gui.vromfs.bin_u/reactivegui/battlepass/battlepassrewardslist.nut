@@ -93,13 +93,13 @@ function cardContent(stageInfo, stateFlags) {
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         children = [
-          canReceive ? markAvailableReward(viewInfo.slots) : null
+          canReceive ? markAvailableReward(viewInfo?.slots ?? 1) : null
           viewInfo == null ? emptySlot
             : isVip ? mkRewardPlateVip(viewInfo, bpCardStyle)
             : mkRewardPlate(viewInfo, bpCardStyle)
-          isReceived
-            ? mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
-            : canReceive ? null : lockedMark
+          isReceived ? mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
+            : canReceive ? null
+            : lockedMark
         ]
       }
       canReceive ? canReceiveMark

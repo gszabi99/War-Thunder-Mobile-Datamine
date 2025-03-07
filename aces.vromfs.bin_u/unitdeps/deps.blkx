@@ -1,9 +1,9 @@
 {
   "version": "0.0.0.0",
-  "grpHash": "34f1439f98deba115533ba52fe1b5d15",
+  "grpHash": "46583351b55f9488aacd4217a37f28a7",
   "dxpHash": "",
   "dynDescHash": "",
-  "blkHash": "aa8194f4516382976da88cdc797a0814",
+  "blkHash": "32b434f821420512b3eca42387d74b09",
   "genHash": "cfb62754ffa65bd022f81cd1ac191e2e",
   "a-20g": {
     "dep": [
@@ -1524,6 +1524,38 @@
       "us_250lb_anm57",
       "us_500lb_anm64a1",
       "us_5in_hvar_2",
+      "usa_paratrooper_char"
+    ]
+  },
+  "f6f-3": {
+    "dep": [
+      "f6f_5",
+      "f6f_5_anim",
+      "f6f_5_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "uk_hvar",
+      "us_1000lb_anm65a1",
+      "us_1600lb_ap_an_mk1_45",
+      "us_2000lbs_an66",
+      "us_500lb_anm64a1",
+      "us_mk13_torpedo",
+      "us_tiny_tim_navy2",
+      "usa_paratrooper_char"
+    ]
+  },
+  "f6f-5n": {
+    "dep": [
+      "f6f_5n",
+      "f6f_5n_anim",
+      "f6f_5n_skeleton",
+      "pilot_us_500",
+      "pilot_us_char",
+      "uk_hvar",
+      "us_1000lb_anm65a1",
+      "us_500lb_anm64a1",
+      "us_mk13_torpedo",
+      "us_tiny_tim_navy2",
       "usa_paratrooper_char"
     ]
   },
@@ -4980,6 +5012,21 @@
       "magach_6b_xray_skeleton"
     ]
   },
+  "il_magach_6m": {
+    "dep": [
+      "grenade_us_66mm",
+      "magach_6m",
+      "magach_6m_char",
+      "magach_6m_collision",
+      "magach_6m_dm_skeleton",
+      "magach_6m_dmg",
+      "magach_6m_dmg_skeleton",
+      "magach_6m_fastphys",
+      "magach_6m_skeleton",
+      "magach_6m_xray",
+      "magach_6m_xray_skeleton"
+    ]
+  },
   "il_magach_6r": {
     "dep": [
       "grenade_l8",
@@ -5009,7 +5056,51 @@
       "merkava_mk_1_xray_skeleton"
     ]
   },
+  "il_merkava_mk_2b_early": {
+    "dep": [
+      "grenade_l8",
+      "grenade_us_66mm",
+      "merkava_mk_2b_early",
+      "merkava_mk_2b_early_char",
+      "merkava_mk_2b_early_collision",
+      "merkava_mk_2b_early_dm_skeleton",
+      "merkava_mk_2b_early_dmg",
+      "merkava_mk_2b_early_dmg_skeleton",
+      "merkava_mk_2b_early_fastphys",
+      "merkava_mk_2b_early_skeleton",
+      "merkava_mk_2b_early_xray",
+      "merkava_mk_2b_early_xray_skeleton"
+    ]
+  },
+  "il_tiran_6": {
+    "dep": [
+      "tiran_6",
+      "tiran_6_char",
+      "tiran_6_collision",
+      "tiran_6_dm_skeleton",
+      "tiran_6_dmg",
+      "tiran_6_dmg_skeleton",
+      "tiran_6_fastphys",
+      "tiran_6_skeleton",
+      "tiran_6_xray",
+      "tiran_6_xray_skeleton"
+    ]
+  },
   "il_zsu_23_4": {
+    "dep": [
+      "zsu_23_4",
+      "zsu_23_4_char",
+      "zsu_23_4_collision",
+      "zsu_23_4_dm_skeleton",
+      "zsu_23_4_dmg",
+      "zsu_23_4_dmg_skeleton",
+      "zsu_23_4_fastphys",
+      "zsu_23_4_skeleton",
+      "zsu_23_4_xray",
+      "zsu_23_4_xray_skeleton"
+    ]
+  },
+  "il_zsu_23_4_reskin": {
     "dep": [
       "zsu_23_4",
       "zsu_23_4_char",
@@ -6599,6 +6690,16 @@
       "p_38k_skeleton",
       "pilot_us_500",
       "pilot_us_char",
+      "usa_paratrooper_char"
+    ]
+  },
+  "p-39n_su": {
+    "dep": [
+      "p_39n_0_su",
+      "p_39n_0_su_anim",
+      "p_39n_0_su_skeleton",
+      "pilot_su_500",
+      "pilot_su_char",
       "usa_paratrooper_char"
     ]
   },
@@ -10665,6 +10766,22 @@
       "battlecruiser_stalingrad_skeleton",
       "battlecruiser_stalingrad_xray",
       "battlecruiser_stalingrad_xray_skeleton",
+      "depth_charge_mk6",
+      "mine_emc"
+    ]
+  },
+  "ussr_battleship_arhangelsk": {
+    "dep": [
+      "battleship_arhangelsk",
+      "battleship_arhangelsk_char",
+      "battleship_arhangelsk_collision",
+      "battleship_arhangelsk_dm_skeleton",
+      "battleship_arhangelsk_fastphys",
+      "battleship_arhangelsk_sections",
+      "battleship_arhangelsk_sections_remote",
+      "battleship_arhangelsk_skeleton",
+      "battleship_arhangelsk_xray",
+      "battleship_arhangelsk_xray_skeleton",
       "depth_charge_mk6",
       "mine_emc"
     ]

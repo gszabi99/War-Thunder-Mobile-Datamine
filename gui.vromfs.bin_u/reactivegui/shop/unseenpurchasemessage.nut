@@ -368,7 +368,7 @@ function mkDecoratorRewardIcon(startDelay, decoratorId) {
     valign = ALIGN_CENTER
     children = [
       mkHighlight(startDelay, aRewardIconFlareScale)
-      decoratorCompByType[decoratorType.value](decoratorId)
+      decoratorCompByType?[decoratorType.value](decoratorId)
         .__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
     ]
   }

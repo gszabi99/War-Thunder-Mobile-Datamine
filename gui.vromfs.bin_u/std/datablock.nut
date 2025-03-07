@@ -97,7 +97,7 @@ function blk2SquirrelObj(blk){
     let blockName = block.getBlockName()
     if (blockName not in res)
       res[blockName] <- []
-   res[blockName].append(blk2SquirrelObj(block))
+    res[blockName].append(blk2SquirrelObj(block))
   }
   for (local i=0; i<blk.paramCount(); i++){
     let paramName = blk.getParamName(i)

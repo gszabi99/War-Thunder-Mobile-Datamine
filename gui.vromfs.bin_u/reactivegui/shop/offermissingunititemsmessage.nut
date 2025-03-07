@@ -130,6 +130,8 @@ let mkMissingItemsComp = @(unit, timeWndShowing) Computed(function() {
     let hasUsing = ceil(hasItems/(perUse == 0 ? 1 : perUse))
     let goods = getCheapestGoods(shopGoods.get(),
       @(g) (g?.items[name] ?? 0) > 0 && g?.gtype == SGT_CONSUMABLES && (g?.items.len() ?? 0) > 0)
+    if (goods == null)
+      continue
     let neededCountOfGoods = ceil((reqItems - hasItems).tofloat() / goods.items[name])
     let { price = 0, currencyId = ""} = goods?.price
     let priceForGoods = price * neededCountOfGoods
@@ -364,8 +366,9 @@ function itemsPurchaseMessage(missItems, toBattle, unit, onClose) {
   }
   addModalWindow(bgShaded.__merge({
     key = WND_UID
-    function onClick(){
-      saveTimeShowingWnd(itemToShow.value.itemId)
+    function onClick() {
+      if (itemToShow.get() != null)
+        saveTimeShowingWnd(itemToShow.value.itemId)
       onClose()
       close()
     }

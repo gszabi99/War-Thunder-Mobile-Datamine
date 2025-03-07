@@ -14,6 +14,7 @@ enum Z_ORDER {
   BUTTON_PRIMARY
   SLIDER
   STICK
+  SUPERIOR
 }
 
 let withActionButtonScaleCtor = @(aType, actionCtor, cfg) {

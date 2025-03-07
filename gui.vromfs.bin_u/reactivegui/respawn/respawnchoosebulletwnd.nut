@@ -282,7 +282,9 @@ function curBulletInfo() {
 }
 
 function applyBullet() {
-  setOrSwapUnitBullet(openParams.get()?.slotIdx, curSlotName.get())
+  let { slotIdx = null } = openParams.get()
+  if (slotIdx != null)
+    setOrSwapUnitBullet(slotIdx, curSlotName.get())
   close()
 }
 

@@ -142,7 +142,8 @@ let targetSelectionProgress = @() {
   valign = ALIGN_CENTER
   children = [
     showTargetName.value ? targetName(targetUnitName.value) : null
-    mkTargetSelectionData(cooldownEndTime.value, cooldownTime.value, calc_str_box(targetUnitName.value, fontTiny))
+    targetUnitName.get() == null ? null
+      : mkTargetSelectionData(cooldownEndTime.value, cooldownTime.value, calc_str_box(targetUnitName.get(), fontTiny))
   ]
 }
 

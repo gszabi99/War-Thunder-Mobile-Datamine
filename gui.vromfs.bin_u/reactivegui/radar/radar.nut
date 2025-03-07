@@ -21,7 +21,7 @@ let radarHudCtor = @(scale) {
 let radarHudEditView = {
   size = radarSize
   flow = FLOW_VERTICAL
-  padding = [hdpx(115), 0, 0, hdpx(45)]
+  padding = [0, 0, hdpx(115), hdpx(45)]
   children = [
     {
       rendObj = ROBJ_TEXT

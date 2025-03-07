@@ -16,7 +16,11 @@ let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 
 
-let flagSize = hdpxi(70)
+let RGAP_HAS_GAP             = 0x01
+let RGAP_HAS_NEXT_LEVEL      = 0x02
+let RGAP_RECEIVED_NEXT_LEVEL = 0x04
+
+let flagSize = evenPx(70)
 let flagGap = hdpx(5)
 let flagsWidth = flagSize * 2 + flagGap
 let levelMarkSize = hdpx(60)
@@ -155,13 +159,13 @@ let levelUpBtn = @(onClick) textButtonSecondary(
   onClick,
   btnStyle)
 
-let mkProgressBar = @(levelCompletion, width, slots, hasLevelGap, hasNextLevel, ovr = {}) {
+let mkTreeRankProgressBar = @(levelCompletion, width, slots, gapState, ovr = {}) {
   flow = FLOW_HORIZONTAL
   gap = platesGap[0]
   children = [
     {
       size = [
-        !hasLevelGap ? width : ((width - platesGap[0]) * (slots * 2 - 1) / (slots * 2)),
+        !(gapState & RGAP_HAS_GAP) ? width : ((width - platesGap[0]) * (slots * 2 - 1) / (slots * 2)),
         progressBarHeight]
       rendObj = ROBJ_SOLID
       color = levelBgColor
@@ -178,11 +182,12 @@ let mkProgressBar = @(levelCompletion, width, slots, hasLevelGap, hasNextLevel, 
         }
       ]
     }
-    !hasLevelGap ? null : {
-      size = [((width - platesGap[0]) / (slots * 2)), progressBarHeight]
-      rendObj = ROBJ_SOLID
-      color = hasNextLevel ? playerExpColor : levelBgColor
-    }
+    !(gapState & RGAP_HAS_NEXT_LEVEL) ? null
+      : {
+          size = [((width - platesGap[0]) / (slots * 2)), progressBarHeight]
+          rendObj = ROBJ_SOLID
+          color = gapState & RGAP_RECEIVED_NEXT_LEVEL ? playerExpColor : levelBgColor
+        }
   ]
 }.__update(ovr)
 
@@ -200,6 +205,10 @@ let noUnitsMsg = {
 }.__update(fontSmall)
 
 return {
+  RGAP_HAS_GAP
+  RGAP_HAS_NEXT_LEVEL
+  RGAP_RECEIVED_NEXT_LEVEL
+
   mkFlags
   mkTreeNodesFlag
   mkFlagImage
@@ -210,7 +219,7 @@ return {
   speedUpBtn
   levelUpBtn
   btnSize
-  mkProgressBar
+  mkTreeRankProgressBar
   progressBarHeight
   bgLight
   noUnitsMsg

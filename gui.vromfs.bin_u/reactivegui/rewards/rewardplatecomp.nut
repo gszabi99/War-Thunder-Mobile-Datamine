@@ -230,9 +230,9 @@ function mkUnitNameText(unitNameLoc, size, rStyle) {
   let textStyle = rStyle.textStyle
   let maxTextWidth = size[0] - 2 * textPadding[1] - rStyle.markSize
   local nameText = mkPlateText(unitNameLoc, textStyle)
-    if (calc_comp_size(nameText)[0] > maxTextWidth)
-      nameText = mkPlateText(unitNameLoc, fontVeryTiny)
-        .__update({ behavior = Behaviors.Marquee, maxWidth = maxTextWidth, speed = hdpx(30), delay = defMarqueeDelay })
+  if (calc_comp_size(nameText)[0] > maxTextWidth)
+    nameText = mkPlateText(unitNameLoc, fontVeryTiny)
+      .__update({ behavior = Behaviors.Marquee, maxWidth = maxTextWidth, speed = hdpx(30), delay = defMarqueeDelay })
   return nameText
 }
 

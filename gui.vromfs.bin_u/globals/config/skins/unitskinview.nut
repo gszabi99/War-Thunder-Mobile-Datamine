@@ -322,6 +322,9 @@ return {
     "f4u_4": {
       "": "usa_f4u_4b"
     },
+    "f6f-5n": {
+      "": "usa_f8f1b_bearcat"
+    },
     "f6f_3": {
       "": "usa_f4u_4b"
     },
@@ -1204,6 +1207,10 @@ return {
       "": "us_camo_olive",
       "upgraded": "isr_camo_sandgray"
     },
+    "il_magach_6m": {
+      "": "isr_camo_threecolor",
+      "desert": "isr_camo_sandgray"
+    },
     "il_magach_6r": {
       "": "us_camo_olive",
       "upgraded": "isr_camo_sandgray"
@@ -1214,11 +1221,23 @@ return {
       "desert2": "camo_f_blue_orng",
       "forest": "isr_camo_green"
     },
+    "il_merkava_mk_2b_early": {
+      "": "isr_camo_threecolor",
+      "desert": "isr_camo_sandgray"
+    },
+    "il_tiran_6": {
+      "": "isr_camo_threecolor",
+      "desert": "isr_camo_sandgray"
+    },
     "il_zsu_23_4": {
       "": "isr_camo_sandgray",
       "desert": "isr_camo_threecolor",
       "desert2": "camo_f_blue_orng",
       "forest": "isr_camo_green"
+    },
+    "il_zsu_23_4_reskin": {
+      "": "isr_camo_threecolor",
+      "desert": "isr_camo_sandgray"
     },
     "it_43m_turan_3": {
       "": "ann_camo",
@@ -1589,7 +1608,7 @@ return {
       "": "usa_p38k_usaaf"
     },
     "p-39n_su": {
-      "": "usa_p-47n-15"
+      "": "ussr_p_39n_su"
     },
     "p-39q_5": {
       "": "usa_p-47n-15"
@@ -2510,6 +2529,9 @@ return {
     },
     "ussr_battlecruiser_stalingrad": {
       "upgraded": "camo_northern_fleet_contrast"
+    },
+    "ussr_battleship_arhangelsk": {
+      "": "camo_arctic_minesweeper_block"
     },
     "ussr_battleship_imperatritsa_mariya": {
       "upgraded": "camo_bluegray_longspot"

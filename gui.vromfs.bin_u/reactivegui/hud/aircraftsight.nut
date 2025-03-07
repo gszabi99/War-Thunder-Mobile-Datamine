@@ -36,11 +36,12 @@ let airTarget = @() {
   behavior = Indicator
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  children = !hasTarget.value ? null : [
-    targetName(targetUnitName.value)
-    mkTargetSelectionData(startCrosshairAnimationTime.value + TargetLockTime.value,
-      TargetLockTime.value, calc_str_box(targetUnitName.value, fontTiny))
-  ]
+  children = !hasTarget.value ? null
+    : [
+        targetName(targetUnitName.get() ?? "")
+        mkTargetSelectionData(startCrosshairAnimationTime.value + TargetLockTime.value,
+          TargetLockTime.value, calc_str_box(targetUnitName.get() ?? "", fontTiny))
+      ]
 }
 
 let mkUpdatePosColor = @(posP2, color) @() {

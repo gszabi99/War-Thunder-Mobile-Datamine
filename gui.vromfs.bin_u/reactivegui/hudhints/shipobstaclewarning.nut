@@ -22,8 +22,8 @@ let textToShow = Computed(@() showCollideWarning.value ? loc("hud_ship_collide_w
 
 let updateDebugDistance = @() debugDistance.set((((debugDistance.get() ?? 0) + 2) % 10) - 1)
 function updateDebugDistanceTimer(isDebug) {
+  clearTimer(updateDebugDistance)
   if (!isDebug) {
-    clearTimer(updateDebugDistance)
     debugDistance.set(null)
     return
   }

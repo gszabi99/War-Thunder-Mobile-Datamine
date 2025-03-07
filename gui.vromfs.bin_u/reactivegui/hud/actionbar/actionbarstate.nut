@@ -58,12 +58,11 @@ let stopActionBarUpdate = @(id) id not in actionBarUpdaters.value ? null
   : actionBarUpdaters.mutate(@(v) v.$rawdelete(id))
 
 needUpdate.subscribe(function(v) {
+  clearTimer(updateActionBar)
   if (v) {
     updateActionBar()
     setInterval(0.3, updateActionBar)
   }
-  else
-    clearTimer(updateActionBar)
 })
 
 return {

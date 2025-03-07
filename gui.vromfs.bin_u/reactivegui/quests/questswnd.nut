@@ -13,7 +13,7 @@ let { openBattlePassWnd, hasBpRewardsToReceive, isBpSeasonActive
 } = require("%rGui/battlePass/battlePassState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { mkQuestsHeaderBtn } = require("questsPkg.nut")
+let { mkQuestsHeaderBtn, linkToEventWidth } = require("questsPkg.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { shopGoods, openShopWnd } = require("%rGui/shop/shopState.nut")
@@ -58,7 +58,7 @@ let linkToBattlePassBtnCtor = @() {
     imageSizeMul.get())
 }
 
-function linkToStoreBtnCtor(idx) {
+function mkLinkToStoreBtnInfo(idx) {
   let lootboxInfo = Computed(@() specialEventsLootboxesState.get().withLootboxes.findvalue(@(v) v.idx == idx))
   let id = getSpecialEventName(idx + 1)
   let eventName = Computed(@() questsCfg.get()?[id][0] ?? "")
@@ -68,15 +68,18 @@ function linkToStoreBtnCtor(idx) {
   let hasGoods = Computed(@() eventName.get() != ""
     && shopGoods.get().findindex(@(item) item?.meta.eventId == eventName.get()) != null)
 
-  return @() {
-    minHeight = progressBarRewardSize
-    watch = [hasGoods, lootboxInfo]
-    children = hasGoods.get()
-        ? mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openShopWnd(defaultShopCategory))
-      : lootboxInfo.get()
-        ? mkQuestsHeaderBtn(loc("mainmenu/rewardsList"), eventIcon, @() openEventWnd(lootboxInfo.get().eventId))
-      : null
-    }
+  return {
+    width = Computed(@() hasGoods.get() || lootboxInfo.get() ? linkToEventWidth : 0)
+    comp = @() {
+      minHeight = progressBarRewardSize
+      watch = [hasGoods, lootboxInfo]
+      children = hasGoods.get()
+          ? mkQuestsHeaderBtn(loc("mainmenu/btnShop"), eventIcon, @() openShopWnd(defaultShopCategory))
+        : lootboxInfo.get()
+          ? mkQuestsHeaderBtn(loc("mainmenu/rewardsList"), eventIcon, @() openEventWnd(lootboxInfo.get().eventId))
+        : null
+      }
+  }
 }
 
 function eventTabContent(){
@@ -158,11 +161,12 @@ function mkSpecialEventTabContent(idx) {
 
 function mkSpecialQuestsTab(idx) {
   let id = getSpecialEventName(idx + 1)
+  let { comp, width } = mkLinkToStoreBtnInfo(idx)
   return {
     id
     tabContent = mkSpecialEventTabContent(idx)
     isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value?[id] ?? []), mkQuest, id, linkToStoreBtnCtor(idx))
+    content = questsWndPage(Computed(@() questsCfg.value?[id] ?? []), mkQuest, id, comp, width)
     isVisible = Computed(@() questsCfg.value?[id].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
 }

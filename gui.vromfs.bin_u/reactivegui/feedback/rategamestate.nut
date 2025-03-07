@@ -145,6 +145,13 @@ function sendGameRating(rating, comment) {
   }
 }
 
+let sendRateWndEvent = @(eventId) sendCustomBqEvent(userFeedbackTube, {
+  poll = pollId
+  question = "window"
+  answer = eventId
+  gameVersion = get_game_version_str()
+})
+
 function platformAppReview(isRatedExcellent) {
   if (!IS_PLATFORM_STORE_AVAILABLE)
     return
@@ -184,6 +191,7 @@ register_command(function() {
 return {
   needRateGame
   sendGameRating
+  sendRateWndEvent
   platformAppReview
   isRateGameSeen
 }

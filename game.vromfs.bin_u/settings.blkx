@@ -675,6 +675,12 @@
         "mRank": 4
       }
     },
+    "pkg_ussr_battleship_arhangelsk": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -1063,6 +1069,12 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 1
+      }
+    },
+    "pkg_il_merkava_mk_2b_early": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
       }
     },
     "pkg_environment_uhq": {

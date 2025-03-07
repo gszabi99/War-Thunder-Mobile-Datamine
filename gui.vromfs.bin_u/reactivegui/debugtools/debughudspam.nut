@@ -116,6 +116,7 @@ function act() {
 }
 
 function spamStart() {
+  clearTimer(act)
   setInterval(1.0 / frequency.value, act)
   defer(act)
 }

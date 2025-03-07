@@ -242,7 +242,7 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
         toggleShortcut(shortcutId)
       }
       function onElemState(v) {
-        if (v & S_ACTIVE)
+        if ((v & S_ACTIVE) && actionItem.get() != null)
           markWeapKeyHold(actionType, loc(getUnitLocId(actionItem.get().weaponName)), true)
         else
           unmarkWeapKeyHold(actionType)

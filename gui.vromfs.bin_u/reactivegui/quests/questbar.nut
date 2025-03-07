@@ -1,13 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
 let { tagRedColor } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { progressBarRewardSize, rewardProgressBarCtor, statsAnimation } = require("rewardsComps.nut")
+let { progressBarRewardSize, questItemsGap, rewardProgressBarCtor, statsAnimation
+} = require("rewardsComps.nut")
 let { getUnlockRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { receiveUnlockRewards, unlockInProgress } = require("%rGui/unlocks/unlocks.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { minContentOffset, tabW } = require("%rGui/options/optionsStyle.nut")
-let { linkToEventWidth, headerLineGap } = require("questsPkg.nut")
+let { mkBalanceDiffAnims } = require("%rGui/mainMenu/balanceAnimations.nut")
+let { headerLineGap } = require("questsPkg.nut")
 let { sendBqQuestsStage } = require("bqQuests.nut")
 
 
@@ -27,8 +29,15 @@ let BAR_COLOR_SHOW = 0.4
 let BAR_COLOR_BLINK = 1.0
 
 let fadeWidth = hdpx(10)
-let minStageWidth = progressBarRewardSize + hdpx(100)
-let progressBarWidth = sw(100) - saBorders[0] * 2 - tabW - minContentOffset - headerLineGap - linkToEventWidth - starIconOffset
+let minStageProgressWidth = hdpx(100)
+let progressBarWidthFull = sw(100) - saBorders[0] * 2 - tabW - minContentOffset
+let firstProgressWider = starIconOffset
+
+let animHighlightTrigger = "quest_progress_bar_trigger"
+let animHighlight = [
+  { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.2, 1.2],
+    duration = 0.6, easing = CosineFull, trigger = animHighlightTrigger }
+]
 
 let bgGradient = {
   size = flex()
@@ -84,7 +93,7 @@ function mkQuestBar(quest) {
 }
 
 let scrollHandler = ScrollHandler()
-let pannableArea = horizontalPannableAreaCtor(progressBarWidth, [fadeWidth, fadeWidth])
+let pannableArea = horizontalPannableAreaCtor(progressBarWidthFull, [fadeWidth, fadeWidth])
 
 function getCurStageIdx(unlock) {
   let { stages = [], current = 0 } = unlock
@@ -96,7 +105,49 @@ function calcStageCompletion(stages, idx, current) {
   return clamp((current.tofloat() - prevProgress) / (stages[idx].progress - prevProgress), 0.0, 1.0)
 }
 
-function mkStages(progressUnlock, stageWidth, tabId, curSectionId) {
+let questBarProgressValue = @(current, required, prevCurrent) {
+  rendObj = ROBJ_TEXT
+  vplace = ALIGN_CENTER
+  hplace = ALIGN_CENTER
+  text = $"{current}/{required}"
+  children = @() {
+    watch = prevCurrent
+    size = [0, 0] //to not affect parent size
+    hplace = ALIGN_RIGHT
+    vplace = ALIGN_BOTTOM
+    children = current == prevCurrent.get() ? null
+      : {
+          zOrder = Layers.Upper
+          hplace = ALIGN_RIGHT
+          vplace = ALIGN_CENTER
+          children = {
+            flow = FLOW_HORIZONTAL
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            children = [
+              {
+                size = [starIconSize, starIconSize]
+                rendObj = ROBJ_IMAGE
+                image = Picture("ui/gameuiskin#quest_experience_icon.avif:0:P")
+              }
+              {
+                rendObj = ROBJ_TEXT
+                text = $"+{current - prevCurrent.get()}"
+              }.__update(fontVeryTinyShaded)
+            ]
+          }
+          transform = {}
+          animations = mkBalanceDiffAnims(function() {
+            anim_start(animHighlightTrigger)
+            prevCurrent.set(current)
+          })
+        }
+  }
+  transform = {}
+  animations = animHighlight
+}.__update(fontVeryTinyShaded, isWidescreen ? {} : { fontSize = fontVeryTinyShaded.fontSize * 0.85 })
+
+function mkStages(progressUnlock, progressWidth, tabId, curSectionId, prevCurrent) {
   let curStageIdx = getCurStageIdx(progressUnlock)
   let { hasReward = false, stage, stages, current = 0, name } = progressUnlock
   let required = stages?[curStageIdx].progress
@@ -123,11 +174,11 @@ function mkStages(progressUnlock, stageWidth, tabId, curSectionId) {
         : null
 
       return {
-        size = [stageWidth, flex()]
+        size = [SIZE_TO_CONTENT, flex()]
         flow = FLOW_HORIZONTAL
         children = [
           {
-            size = flex()
+            size = [progressWidth + (idx == 0 ? firstProgressWider : 0), flex()]
             valign = ALIGN_CENTER
             children = [
               {
@@ -163,13 +214,7 @@ function mkStages(progressUnlock, stageWidth, tabId, curSectionId) {
                   }
                 ]
               }
-              idx != curStageIdx ? null
-                : {
-                    rendObj = ROBJ_TEXT
-                    vplace = ALIGN_CENTER
-                    hplace = ALIGN_CENTER
-                    text = $"{current}/{required}"
-                  }.__update(fontVeryTinyShaded, isWidescreen ? {} : { fontSize = fontVeryTinyShaded.fontSize * 0.85 })
+              idx != curStageIdx ? null : questBarProgressValue(current, required, prevCurrent)
             ]
           }
           @() {
@@ -184,29 +229,46 @@ function mkStages(progressUnlock, stageWidth, tabId, curSectionId) {
   }
 }
 
-function mkQuestListProgressBar(progressUnlock, tabId, curSectionId) {
-  let hasScroll = Computed(@() (progressUnlock.get()?.stages.len() ?? 0) * minStageWidth > progressBarWidth)
+function rewardWidth(r) {
+  let { slots = 1 } = r
+  return progressBarRewardSize * slots + questItemsGap * (slots - 1)
+}
+
+function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChildWidth) {
+  let progressBarWidth = Computed(@() progressBarWidthFull - starIconOffset
+    - (headerChildWidth.get() == 0 ? 0 : headerChildWidth.get() + headerLineGap))
+  let stageRewards = Computed(@() (progressUnlock.get()?.stages ?? [])
+    .map(@(s) getUnlockRewardsViewInfo(s, serverConfigs.get()).sort(sortRewardsViewInfo)?[0]))
+  let rewardsFullWidth = Computed(@() stageRewards.get().reduce(@(res, r) res + rewardWidth(r), 0))
+  let minWidth = Computed(@() rewardsFullWidth.get() + stageRewards.get().len() * minStageProgressWidth + firstProgressWider)
+  let hasScroll = Computed(@() progressBarWidth.get() < minWidth.get())
+  let prevCurrent = Watched(progressUnlock.get()?.current ?? 0)
   return @() progressUnlock.get() == null ? { watch = progressUnlock }
     : {
-        watch = [progressUnlock, hasScroll]
+        watch = [progressUnlock, hasScroll, headerChildWidth, progressBarWidth, minWidth, rewardsFullWidth]
         size = [flex(), progressBarHeight]
         padding = [0, 0, 0, starIconOffset]
         children = [
           !hasScroll.get()
-            ? mkStages(progressUnlock.get(), progressBarWidth / (progressUnlock.get()?.stages.len() || 1),
-                tabId, curSectionId)
+            ? mkStages(progressUnlock.get(),
+                (progressBarWidth.get() - rewardsFullWidth.get() - firstProgressWider) / (progressUnlock.get()?.stages.len() || 1),
+                tabId, curSectionId, prevCurrent)
             : {
                 key = hasScroll
-                size = [progressBarWidth + fadeWidth * 2, progressBarHeight]
+                size = [progressBarWidth.get() + fadeWidth * 2, progressBarHeight]
                 hplace = ALIGN_CENTER
                 vplace = ALIGN_CENTER
                 function onAttach() {
                   let curStageIdx = getCurStageIdx(progressUnlock.get())
-                  if (curStageIdx != null)
-                    scrollHandler.scrollToX(max(0, curStageIdx * minStageWidth - progressBarRewardSize / 4))
+                  if (curStageIdx == null)
+                    return
+                  local x = 0
+                  for (local i = 0; i < curStageIdx; i++)
+                    x += minStageProgressWidth + rewardWidth(stageRewards.get()?[i])
+                  scrollHandler.scrollToX(max(0, x - progressBarRewardSize / 4))
                 }
                 children = [
-                  pannableArea(mkStages(progressUnlock.get(), minStageWidth, tabId, curSectionId),
+                  pannableArea(mkStages(progressUnlock.get(), minStageProgressWidth, tabId, curSectionId, prevCurrent),
                     { pos = [0, 0], size = [flex(), SIZE_TO_CONTENT], vplace = ALIGN_CENTER, clipChildren = false },
                     {
                       size = [flex(), SIZE_TO_CONTENT]
@@ -214,7 +276,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId) {
                       scrollHandler
                     })
                   {
-                    size = [progressBarWidth + minStageWidth, SIZE_TO_CONTENT]
+                    size = [minWidth.get(), SIZE_TO_CONTENT]
                     hplace = ALIGN_CENTER
                     vplace = ALIGN_CENTER
                     children = mkScrollArrow(scrollHandler, MR_R, scrollArrowImageSmall)
@@ -229,7 +291,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId) {
             rendObj = ROBJ_IMAGE
             image = Picture("ui/gameuiskin#quest_experience_icon.avif:0:P")
             transform = {}
-            animations = [statsAnimation]
+            animations = animHighlight.append(statsAnimation)
           }
         ]
       }

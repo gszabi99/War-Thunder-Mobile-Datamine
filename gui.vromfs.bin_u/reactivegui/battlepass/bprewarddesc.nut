@@ -120,7 +120,7 @@ let bpRewardDesc = @(reward) function() {
   if (viewInfo == null && "rewards" in reward) {
     let rewInfo = []
     foreach(key, count in reward.rewards) {
-      let rew = serverConfigs.value.userstatRewards?[key]
+      let rew = serverConfigs.get()?.userstatRewards[key]
       rewInfo.extend(getRewardsViewInfo(rew, count))
     }
     viewInfo = rewInfo.sort(sortRewardsViewInfo)?[0]
