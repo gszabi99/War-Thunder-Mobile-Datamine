@@ -87,11 +87,11 @@ let msgContent = @(text, priceComp) {
   ]
 }
 
-function openMsgBoxPurchase(text, price, purchase, bqInfo, title = null, onCancel = null, purchaseLocId = "msgbox/btn_purchase") {
+function openMsgBoxPurchase(text, price, purchase, bqInfo, title = null, onCancel = null, purchaseLocId = "msgbox/btn_purchase", onGoToShop = null) {
   let priceComp = []
   let priceList = type(price) == "array" ? price : [price]
   foreach(p in priceList) {
-    if (showNoBalanceMsgIfNeed(p.price, p.currencyId, bqInfo, null, onCancel))
+    if (showNoBalanceMsgIfNeed(p.price, p.currencyId, bqInfo, onGoToShop, onCancel))
       return
 
     priceComp.append(

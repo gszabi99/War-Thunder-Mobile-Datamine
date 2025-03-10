@@ -13,7 +13,6 @@ let { crosshairScreenPosition, crosshairDestinationScreenPosition, crosshairSeco
 let { shootReadyness, primaryRocketGun, hasSecondaryGun, allowShoot } = require("%rGui/hud/tankState.nut")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
-let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 let { DM_TEST_NOT_PENETRATE, DM_TEST_RICOCHET } = require("crosshair")
 let { currentArmorPiercingFixed } = require("%rGui/options/options/tankControlsOptions.nut")
 let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
@@ -226,7 +225,6 @@ return {
     hudTopMainLog
     hudBottomCenter
     hudTuningElems
-    menuButton
     gunReadyIndicator
     tankSight
     arcadeCrosshairAim

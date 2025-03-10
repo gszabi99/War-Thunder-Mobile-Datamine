@@ -6,6 +6,7 @@ let { shopPurchaseInProgress, buy_goods, buy_offer, registerHandler } = require(
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
+let { tryResetToMainScene } = require("%rGui/navState.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
 let { activeOffer } = require("offerState.nut")
 let { openMsgBoxPurchase, closePurchaseAndBalanceBoxes } = require("%rGui/shop/msgBoxPurchase.nut")
@@ -141,6 +142,8 @@ function purchaseGoods(goodsId, description = "") {
       : purchaseGoodsImpl(goodsId, currencyId, price)
     if (errString != "")
       logShop($"ERROR: {errString}")
+    if (isOffer)
+      tryResetToMainScene()
   }
 
   let textItem = colorize(userlogTextColor, getGoodsLocName(goods).replace(" ", nbsp))

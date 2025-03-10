@@ -3,7 +3,7 @@ let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce, setInterval, clearTimer } = require("dagor.workcycle")
 let { LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FIREBASE, LT_GUEST, LT_FACEBOOK, LT_NSWITCH, SST_MAIL, SST_UNKNOWN, availableLoginTypes, isLoginByGajin
 } = require("%appGlobals/loginState.nut")
-let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL } = require("%appGlobals/legal.nut")
+let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, FORGOT_PASSWORD_URL, REGISTER_URL } = require("%appGlobals/legal.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { defButtonHeight, BRIGHT, HUAWEI } = require("%rGui/components/buttonStyles.nut")
 let { mkCustomButton, textButtonBright, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
@@ -183,8 +183,8 @@ let mkPasswordInputField = @() {
   ]
 }
 
-let sighUp = urlText(loc("mainmenu/signUp"), loc("url/signUp"), { ovr = { hplace = ALIGN_RIGHT } }, !is_ios)
-let recoveryPassword = urlText(loc("msgbox/btn_recovery"), loc("url/recovery"), {}, !is_ios)
+let sighUp = urlText(loc("mainmenu/signUp"), REGISTER_URL, { ovr = { hplace = ALIGN_RIGHT } }, !is_ios)
+let recoveryPassword = urlText(loc("msgbox/btn_recovery"), FORGOT_PASSWORD_URL, {}, !is_ios)
 
 let resendTimer = Watched(resendTimeout)
 local timerMult = 1;

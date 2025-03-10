@@ -10,14 +10,9 @@ let pannableBase = {
   size = flex()
   behavior = Behaviors.Pannable
   skipDirPadNav = true
-  xmbNode = {
-    canFocus = @() false
-    scrollSpeed = 5.0
-    isViewport = true
-    scrollToEdge = true
-    screenSpaceNav = true
-  }
+  xmbNode = XmbContainer({ scrollToEdge = true })
 }
+
 function mkBitmapPictureLazyCached(w, h, errId, fillCb) {
   if (!isScriptsLoading.value && !__static_analysis__) {
     logerr($"Try to create {errId} mask not on scripts load")

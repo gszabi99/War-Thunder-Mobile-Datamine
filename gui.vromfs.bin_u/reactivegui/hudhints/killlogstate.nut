@@ -16,7 +16,7 @@ let state = require("%sqstd/mkEventLogState.nut")({
   defTtl = 10
   isEventsEqual = @(a, b) a?.text == b?.text
 })
-let { addEvent, clearEvents } = state
+let { addEvent, removeEvent, clearEvents } = state
 
 isInBattle.subscribe(@(_) clearEvents())
 
@@ -50,6 +50,18 @@ function getTargetName(player, unitNameLoc, team) {
   return color == null ? text : colorize(color, text)
 }
 
+function addEventOrMergeWithSimilar(text, events) {
+  foreach(ev in events) {
+    if (text == ev?.originalText) {
+      local count = ev.count + 1
+      text = " ".concat(ev.originalText, "x", count)
+      removeEvent(ev.uid)
+      addEvent({ hType = "chatLogTextTiny", text, originalText = ev.originalText, count = count })
+    }
+  }
+  addEvent({ hType = "chatLogTextTiny", text, originalText = text, count = 1 })
+}
+
 function getActionTextIconic(msg) {
   let { action } = msg
   local iconId = action == "kill"
@@ -71,8 +83,7 @@ eventbus_subscribe("HudMessage", function(data) {
   let text = action == "crash" || action == "exit"
     ? " ".concat(whom, what)
     : " ".concat(getTargetName(killer, unitNameLoc, team), what, whom)
-
-  addEvent({ hType = "chatLogTextTiny", text })
+  addEventOrMergeWithSimilar(text, state.curEvents.get())
 })
 
 return state.__merge({ maxKillLogEvents })

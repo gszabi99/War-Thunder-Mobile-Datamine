@@ -1002,6 +1002,27 @@ let jackpotProgressInfo = @(startIdx, openIdx) @() {
   ]
 }
 
+let afterJackpotReceivedInfo = @(openedLootboxForJackpot) {
+  size = [progressbarWidth, SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
+  children = [
+    {
+      size = [flex(), openCountIconSize]
+      halign = ALIGN_CENTER
+      valign = ALIGN_BOTTOM
+      children = {
+        rendObj = ROBJ_TEXT
+        text = loc("jackpot/jackpotReceived", {openedLootboxForJackpot})
+        transform = {}
+        animations = [
+          { prop = AnimProp.scale, to = [1.1, 1.1],
+            duration = 2.0, easing = CosineFull, play = true, loop = true, globalTimer = true }
+        ]
+      }.__update(fontSmallAccented)
+    }
+  ]
+}
+
 let fixedRewardIcon = @(viewInfo) {
   children = [
     @() {
@@ -1022,13 +1043,14 @@ let fixedRewardIcon = @(viewInfo) {
 
 let nextFixedViewInfo = Computed(@() nextFixedReward.value?.viewInfo)
 let fixedRewardInfo = @() {
-  watch = [curJackpotInfo, nextFixedViewInfo]
+  watch = [curJackpotInfo, nextFixedViewInfo, lastJackpotIdx]
   size = [SIZE_TO_CONTENT, rewardBoxSize]
   valign = ALIGN_CENTER
   hplace = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = slotsGap
   children = curJackpotInfo.value != null ? jackpotProgressInfo(curJackpotInfo.value.startIdx, curJackpotInfo.value.openIdx)
+    : lastJackpotIdx.get() ? afterJackpotReceivedInfo(lastJackpotIdx.get())
     : nextFixedViewInfo.value != null
       ? [
           fixedProgressInfo

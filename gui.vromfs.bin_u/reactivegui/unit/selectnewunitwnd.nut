@@ -2,7 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
+let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { openMsgBox, msgBoxText, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
@@ -26,13 +27,16 @@ function close() {
 
 function onSubmit() {
   setCurrentUnit(boughtUnit.get())
+  let unitForPurchEffect = campMyUnits.get()?[boughtUnit.get()]
+  if (unitForPurchEffect != null)
+    requestOpenUnitPurchEffect(unitForPurchEffect)
   close()
 }
 
 let openImpl = @() openMsgBox({
   uid = WND_UID
   text = msgBoxText(loc("shop/chooseUnit",
-  { item = colorize(userlogTextColor, loc(getUnitPresentation(boughtUnit.get()).locId)) })),
+  { unit = colorize(userlogTextColor, loc(getUnitPresentation(boughtUnit.get()).locId)) })),
   buttons = [
     { id = "cancel", cb = close, isCancel = true }
     { text = loc("msgbox/btn_choose"), cb = onSubmit , styleId = "PRIMARY", isDefault = true }

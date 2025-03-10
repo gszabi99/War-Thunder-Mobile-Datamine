@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-
 let { eventbus_subscribe } = require("eventbus")
-let { isShowDebugInterface, is_app_loaded, get_base_game_version_str } = require("app")
+let { isShowDebugInterface, is_dev_version, is_app_loaded, get_base_game_version_str } = require("app")
+let { dgs_get_settings } = require("dagor.system")
 let { format } = require("string")
-let { toUpper } = require("%sqstd/string.nut")
+let { capitalize } = require("%sqstd/string.nut")
 let { isInBattle, isInMenu, battleSessionId, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 
@@ -22,6 +22,8 @@ let gameVersion = Watched("")
 let hasDebugInterfaceInMpSession = Watched(false)
 
 function initSubscription() {
+  if (is_dev_version() && !(dgs_get_settings()?.debug.drawDebugInfo ?? true))
+    return
   eventbus_subscribe("updateStatusString", @(s) state(state.value.__merge(s)))
   gameVersion.set(get_base_game_version_str())
   hasDebugInterfaceInMpSession.set(isShowDebugInterface())
@@ -38,7 +40,7 @@ foreach (key in [ "gpu", "preset", "sessionId", "latency", "latencyA", "latencyR
 let { gpu, preset, sessionId, latency, latencyA, latencyR } = comps
 
 let graphicsText = Computed(@() !(hasAddons.value?.pkg_secondary_hq ?? true)  ? "Low Quality Textures"
-  : preset.value != "" ? $"Graphics: {toUpper(preset.value, 1)}"
+  : preset.value != "" ? $"Graphics: {capitalize(preset.value)}"
   : "")
 
 let latencyText = Computed(@() latency.value < 0 ? ""

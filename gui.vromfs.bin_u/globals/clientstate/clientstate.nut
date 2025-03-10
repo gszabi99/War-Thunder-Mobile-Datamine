@@ -29,6 +29,7 @@ let isLocalMultiplayer = Watched(is_local_multiplayer())
 let isInMpBattle = Computed(@() isInBattle.value && isInMpSession.value)
 let canBattleWithoutAddons = sharedWatched("canBattleWithoutAddons", @() false)
 let isDownloadedFromSite = (is_android || is_pc) && !isDownloadedFromGooglePlay() && !isHuaweiBuild
+let isSingleMissionOverrided = sharedWatched("isSingleMissionOverrided", @() false)
 
 eventbus_subscribe("onJoinMatch", function(_) {
   let sessionId = get_mp_session_id_int()
@@ -65,4 +66,5 @@ return {
   isHudVisible
   canBattleWithoutAddons
   isDownloadedFromSite
+  isSingleMissionOverrided
 }

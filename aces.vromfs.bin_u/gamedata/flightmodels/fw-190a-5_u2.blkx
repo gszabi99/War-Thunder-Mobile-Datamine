@@ -1809,18 +1809,10 @@
           "iconType": "rocket_40kg",
           "name": "R6",
           "reqModification": "Fw-190A-5_R6",
-          "ShowNodes": [
-            {
-              "part": "210mm_tube_l",
-              "node": "210mm_1"
-            },
-            {
-              "node": [
-                "210mm_tube_l",
-                "210mm_tube_r"
-              ]
-            }
-          ],
+          "ShowNodes": {
+            "part": "210mm_tube_l",
+            "node": "210mm_1"
+          },
           "Weapon": {
             "trigger": "rockets",
             "separate": true,
@@ -1828,6 +1820,13 @@
             "blk": "gameData/Weapons/rocketGuns/de_br20.blk",
             "emitter": "210_mm_1",
             "bullets": 1
+          },
+          "WeaponContainers": {
+            "blk": "gameData/Weapons/rocketGuns/de_br20.blk",
+            "node": [
+              "210mm_tube_l",
+              "210mm_tube_r"
+            ]
           }
         }
       },
@@ -1921,18 +1920,10 @@
           "iconType": "rocket_40kg",
           "name": "R6",
           "reqModification": "Fw-190A-5_R6",
-          "ShowNodes": [
-            {
-              "part": "210mm_tube_r",
-              "node": "210mm_2"
-            },
-            {
-              "node": [
-                "210mm_tube_l",
-                "210mm_tube_r"
-              ]
-            }
-          ],
+          "ShowNodes": {
+            "part": "210mm_tube_r",
+            "node": "210mm_2"
+          },
           "Weapon": {
             "trigger": "rockets",
             "separate": true,
@@ -1940,6 +1931,13 @@
             "blk": "gameData/Weapons/rocketGuns/de_br20.blk",
             "emitter": "210_mm_2",
             "bullets": 1
+          },
+          "WeaponContainers": {
+            "blk": "gameData/Weapons/rocketGuns/de_br20.blk",
+            "node": [
+              "210mm_tube_l",
+              "210mm_tube_r"
+            ]
           }
         }
       }

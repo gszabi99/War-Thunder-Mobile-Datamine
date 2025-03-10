@@ -4,7 +4,7 @@ let { arrayByRows } = require("%sqstd/underscore.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { SGT_UNIT, SGT_BLUEPRINTS, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
-let { curCategoryId, goodsByCategory, sortGoods, openShopWnd, goodsLinks, subsByCategory
+let { curCategoryId, goodsByCategory, sortGoods, openShopWnd, goodsLinks, subsByCategory, subsGroups
 } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory, onSchRewardReceive } = require("schRewardsState.nut")
 let { personalGoodsByShopCategory } = require("personalGoodsState.nut")
@@ -12,7 +12,7 @@ let { purchasePersonalGoods } = require("personalGoodsPurchase.nut")
 let { purchasesCount, curCampaign, subscriptions } = require("%appGlobals/pServer/campaign.nut")
 let { shopPurchaseInProgress, schRewardInProgress, personalGoodsInProgress
 } = require("%appGlobals/pServer/pServerApi.nut")
-let { PURCHASING, DELAYED, HAS_PURCHASES, IS_ACTIVE } = require("goodsStates.nut")
+let { PURCHASING, DELAYED, HAS_PURCHASES, IS_ACTIVE, HAS_UPGRADE } = require("goodsStates.nut")
 let { purchaseGoods } = require("purchaseGoods.nut")
 let { buyPlatformGoods, platformPurchaseInProgress, isGoodsOnlyInternalPurchase
 } = require("platformGoods.nut")
@@ -33,7 +33,6 @@ let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { categoryGap, titleGap, goodsPerRow, titleH } = require("shopWndConst.nut")
 let rewardsToShopGoods = require("rewardsToShopGoods.nut")
-
 
 let goodsGlareRepeatDelay = 3
 let glareRowOffsetMul    = 0.18 * goodsGlareAnimDuration
@@ -278,8 +277,23 @@ function mkPersonalGoodsCard(pGoods, animParams) {
 let mkSubscriptionCardExt = @(subs, animParams) mkSubscriptionCard(
   subs,
   @() openSubsPreview(subs.id),
-  Computed(@() subscriptions.get()?[subs.id].isActive ? IS_ACTIVE : 0),
-  animParams)
+  Computed(function() {
+    local res = subscriptions.get()?[subs.id].isActive ? IS_ACTIVE : 0
+    let group = subsGroups.findvalue(@(g) g.contains(subs.id))
+    if (group == null)
+      return res
+    for (local i = group.len() - 1; i >= 0; i--) {
+      local subId = group[i]
+      if (subscriptions.get()?[subId].isActive ?? false){
+        if (subId == group.top())
+          return IS_ACTIVE
+        else
+          return IS_ACTIVE | HAS_UPGRADE
+      }
+    }
+    return res
+  }), animParams
+)
 
 function mkShopCategoryGoods(categoryCfg, distances) {
   let { id = "", title = "", getTitle = null } = categoryCfg

@@ -1,0 +1,32 @@
+{
+  "z_far": 35000.0,
+  "numBorderCellsXPos": 0,
+  "numBorderCellsXNeg": 0,
+  "numBorderCellsZPos": 0,
+  "numBorderCellsZNeg": 0,
+  "gridSteps": [
+    2000.0,
+    2000.0
+  ],
+  "vsmAngleThreshold": 0.0,
+  "shore_waves_dist": [
+    50.0,
+    200.0
+  ],
+  "wind_scale": 1.2,
+  "max_wind_strength": 6.5,
+  "water_level": 0.0,
+  "harmonicsType": "blue",
+  "shader_vars": {
+    "max_river_width": 1500.0,
+    "ocean_density": 0.4,
+    "river_density": 2.0,
+    "water_color_noise_size": 1737.0,
+    "shore_depth_scale": 0.07
+  },
+  "render": {
+    "lmesh": true,
+    "onlyUnderwaterLmesh": true,
+    "riExtraMinSizeForReflection": 100.0
+  }
+}

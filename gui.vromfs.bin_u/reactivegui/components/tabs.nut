@@ -45,6 +45,7 @@ function mkTab(id, content, curTabId, tabOverride, onClick = null) {
   return {
     size = [ flex(), SIZE_TO_CONTENT ]
     behavior = Behaviors.Button
+    xmbNode = {}
     onElemState = @(v) stateFlags(v)
     clickableInfo = loc("mainmenu/btnSelect")
     onClick = onClick ?? @() curTabId(id)

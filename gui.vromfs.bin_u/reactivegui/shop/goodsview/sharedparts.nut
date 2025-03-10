@@ -7,12 +7,12 @@ let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
-let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES, ALL_PURCHASED, IS_ACTIVE
-} = require("%rGui/shop/goodsStates.nut")
+let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES, ALL_PURCHASED, HAS_UPGRADE, IS_ACTIVE } = require("%rGui/shop/goodsStates.nut")
+let { getAdjustedPriceInfo } = require("%rGui/shop/goodsUtils.nut")
 let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
 let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { serverTimeDay, getDay, untilNextDaySec } = require("%appGlobals/userstats/serverTimeDay.nut")
+let { serverTimeDay, getDay, dayOffset, untilNextDaySec } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { TIME_DAY_IN_SECONDS_F } = require("%sqstd/time.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { getFontSizeToFitWidth } = require("%rGui/globals/fontUtils.nut")
@@ -336,12 +336,12 @@ let mkFirstPurchBonusMark = @(goods, state) (goods?.firstPurchaseBonus?.len() ??
       })
     }
 
-function mkCommonPricePlate(goods, state, needDiscountTag = true) {
+function mkCommonPricePlate(goods, state, needDiscountTag, todayPurchCount) {
   let { discountInPercent, priceExt = null } = goods
-  let { price, currencyId } = goods.price
+  let { price, currencyId } = getAdjustedPriceInfo(goods, todayPurchCount)
   let isRealCurrency = "priceText" in priceExt
   let basePrice = discountInPercent <= 0 ? price : round(price / (1.0 - (discountInPercent / 100.0)))
-  let background = isRealCurrency ? priceBgGradPremium : currencyToPlateBg?[goods?.price.currencyId] ?? priceBgGradDefault
+  let background = isRealCurrency ? priceBgGradPremium : currencyToPlateBg?[currencyId] ?? priceBgGradDefault
 
   return @() {
     watch = state
@@ -408,6 +408,18 @@ let subsActivePlate = {
   }.__update(fontSmallAccentedShaded)
 }
 
+let subsUpgradePlate = {
+  size = flex()
+  rendObj = ROBJ_IMAGE
+  image = priceBgGradPremium
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc("subscription/upgrade")
+  }.__update(fontSmallAccentedShaded)
+}
+
 function mkFreePricePlate(goods, state) {
   let { isReady = false, needAdvert = false } = goods
   return @() {
@@ -429,9 +441,9 @@ function mkFreePricePlate(goods, state) {
   }
 }
 
-function mkPricePlate(goods, state, animParams = null, needDiscountTag = true) {
+function mkPricePlate(goods, state, animParams = null, needDiscountTag = true, todayPurchCount = 0) {
   let { isFreeReward = false, isReady = true } = goods
-  let pricePlateComp = isFreeReward ? mkFreePricePlate(goods, state) : mkCommonPricePlate(goods, state, needDiscountTag)
+  let pricePlateComp = isFreeReward ? mkFreePricePlate(goods, state) : mkCommonPricePlate(goods, state, needDiscountTag, todayPurchCount)
   return @() {
     watch = state
     size = flex()
@@ -473,7 +485,8 @@ function mkSubsPricePlate(subs, state, animParams = null) {
   return @() {
     watch = state
     size = flex()
-    children = (state.get() & IS_ACTIVE) != 0 ? subsActivePlate
+    children = (state.get() & HAS_UPGRADE) ? subsUpgradePlate
+      : (state.get() & IS_ACTIVE) ? subsActivePlate
       : animParams == null ? pricePlateComp
       : withGlareEffect(
           pricePlateComp,
@@ -489,7 +502,7 @@ let mkCanPurchase = @(id, limit, dailyLimit, isPurchaseFull = Watched(true)) Com
   if (!isPurchaseFull.get())
     return false
   let { time = 0, count = 0 } = goodsLimitReset.get()?[id]
-  let limitInc = getDay(time) == serverTimeDay.get() ? count : 0
+  let limitInc = getDay(time, dayOffset.get()) == serverTimeDay.get() ? count : 0
   return (limit <= 0 || (purchasesCount.get()?[id].count ?? 0) < limit + limitInc)
     && (dailyLimit <= 0 || (todayPurchasesCount.get()?[id].count ?? 0) < dailyLimit + limitInc)
 })
@@ -498,7 +511,7 @@ let mkCanShowTimeProgress = @(goods) Computed(function() {
   if (!goods?.dailyLimit || goods.dailyLimit <= 0)
     return false
   let { time = 0, count = 0 } = goodsLimitReset.get()?[goods.id]
-  let limitInc = getDay(time) == serverTimeDay.get() ? count : 0
+  let limitInc = getDay(time, dayOffset.get()) == serverTimeDay.get() ? count : 0
   return (todayPurchasesCount.get()?[goods.id].count ?? 0) >= (goods.dailyLimit + limitInc)
 })
 
@@ -605,7 +618,7 @@ let mkGoodsTimeProgress = @(fValue, text) {
 }
 
 function mkCalcDailyLimitGoodsTimeProgress() {
-  let sec = Computed(@() untilNextDaySec(serverTime.get()))
+  let sec = Computed(@() untilNextDaySec(serverTime.get(), dayOffset.get()))
   let fValue = Computed(@() clamp(1.0 - sec.get() / TIME_DAY_IN_SECONDS_F, 0, 1))
   let timeText = Computed(@() secondsToHoursLoc(sec.get()))
   return mkGoodsTimeProgress(fValue, timeText)
@@ -739,7 +752,7 @@ function mkGoodsLimitText(goods, fontGrad) {
     return null
   let limitExt = Computed(function() {
     let { time = 0, count = 0 } = goodsLimitReset.get()?[goods.id]
-    let limitInc = getDay(time) == serverTimeDay.get() ? count : 0
+    let limitInc = getDay(time, dayOffset.get()) == serverTimeDay.get() ? count : 0
     let limitLeft = limit > 0 ? max(0, limit + limitInc - (purchasesCount.get()?[id].count ?? 0)) : -1
     let dailyLimitLeft = dailyLimit > 0 ? max(0, dailyLimit + limitInc - (todayPurchasesCount.get()?[id].count ?? 0)) : -1
     return limitLeft < 0 || dailyLimitLeft < 0

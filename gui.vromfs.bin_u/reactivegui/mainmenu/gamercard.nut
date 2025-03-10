@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/gamercardStyle.nut" import *
-let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
-let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD, PLATINUM, sortByCurrencyId } = require("%appGlobals/currenciesState.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
+let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
+let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { SC_GOLD, SC_WP, SC_PLATINUM, defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
 let { openShopWnd, hasUnseenGoodsByCategory } = require("%rGui/shop/shopState.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
@@ -301,7 +302,7 @@ let gamercardUnitLevelLine = @(unit, keyHintText){
             behavior = Behaviors.TextArea
             maxWidth = hdpx(700)
             text = (unit?.level ?? -1) == unit?.levels.len() || unit?.isUpgraded || unit?.isPremium
-              ? loc($"gamercard/levelCamp/maxLevel/{curCampaign.value}")
+              ? loc(getCampaignPresentation(curCampaign.get()).unitLevelMaxLocId)
               : loc(keyHintText)
           }.__update(fontVeryTiny)
         })

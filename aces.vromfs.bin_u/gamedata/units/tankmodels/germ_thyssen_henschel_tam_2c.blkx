@@ -3142,7 +3142,7 @@
   "upgraded_skin": {
     "replace_tex": {
       "from": "ger_camo_bronzegruen*",
-      "to": "ger_camo_carc*"
+      "to": "ger_camo_argentinian_bicolor*"
     }
   },
   "upgradedDecals": {

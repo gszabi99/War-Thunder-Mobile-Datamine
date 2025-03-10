@@ -9,7 +9,6 @@ let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
 let { threatRocketsBlock } = require("%rGui/hud/hudThreatRocketsBlock.nut")
 let { isInStrategyMode } = require("%rGui/hudState.nut")
 let strategyHud = require("%rGui/hud/strategyMode/strategyHud.nut")
-let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 
 return @() {
   watch = isInStrategyMode
@@ -27,7 +26,6 @@ return @() {
         hudBottomCenter
         hudTopMainLog
         hudTuningElems
-        menuButton
         threatRocketsBlock
         hudTimersBlock
         shipSight

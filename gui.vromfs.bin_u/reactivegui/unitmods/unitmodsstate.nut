@@ -12,6 +12,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { roundPrice } = require("%appGlobals/pServer/pServerMath.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
+let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 
 let SEEN_MODS = "seenMods"
 let seenMods = mkWatched(persist, "SEEN_MODS", {})
@@ -131,6 +132,8 @@ function setCurUnitSeenMods(ids) {
 
 
 function loadSeenMods() {
+  if (!isSettingsAvailable.get())
+    return seenMods.set({})
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[SEEN_MODS]
   if (!isDataBlock(htBlk)) {
@@ -149,6 +152,8 @@ function loadSeenMods() {
 
 if (seenMods.value.len() == 0)
   loadSeenMods()
+
+isSettingsAvailable.subscribe(@(_) loadSeenMods())
 
 let setCurUnitSeenModsCurrent = @() curCategoryId.value not in unseenModsByCategory.value ? null
   : setCurUnitSeenMods(unseenModsByCategory.value?[curCategoryId.value].keys())

@@ -19,7 +19,7 @@ let bpBorderProgressIcon = {
   ]
 }
 
-let bpProgressIcon = @(progress) @() {
+let bpProgressIcon = @(progress, loopMultiply) @() {
   watch = curStage
   children = [
     {
@@ -32,7 +32,7 @@ let bpProgressIcon = @(progress) @() {
       halign = ALIGN_CENTER
       children = {
         rendObj = ROBJ_TEXT
-        text = progress
+        text = loopMultiply > 0 ? loc("icon/infinity") : progress
         color = curStage.value >= progress
           ? 0xFF000000
           : 0xFFFFFFFF
@@ -74,7 +74,7 @@ function bpProgressBar(rewardsStages) {
   let children = []
   foreach(idx, stage in rewardsStages)
     children.append(
-      stage?.isVip ? vipMark : bpProgressIcon(max(0, stage.progress))
+      stage?.isVip ? vipMark : bpProgressIcon(max(0, stage.progress), stage?.loopMultiply ?? 0)
       lastIdx == idx ? null : bpLineBetweenLevelIcons(stage))
   return {
     pos = [ posFirstElem, 0]

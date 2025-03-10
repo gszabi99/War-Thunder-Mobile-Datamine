@@ -22,10 +22,11 @@ let {
   OPT_AIRCRAFT_GYRO_CONTROL_PARAM_SENSITIVITY,
   OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_DEAD_ZONE,
   OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_SENSITIVITY,
-  OPT_AIRCRAFT_TAP_SELECTION,
+  OPT_TARGET_SELECTION_TYPE,
   OPT_AIRCRAFT_ADDITIONAL_FLY_CONTROLS,
   OPT_AIRCRAFT_TARGET_FOLLOWER,
   USEROPT_QUIT_ZOOM_AFTER_KILL,
+  OPT_AIRCRAFT_FREE_CAMERA_BY_TOUCH,
   mkOptionValue,
   optionValues,
   getOptValue } = require("%rGui/options/guiOptions.nut")
@@ -39,7 +40,7 @@ let {
   set_should_invert_camera,
   set_camera_viscosity,
   set_camera_viscosity_in_zoom,
-  set_aircraft_tap_selection,
+  set_target_selection_type,
   set_aircraft_target_follower,
   set_quit_zoom_after_kill,
   CAM_TYPE_FREE_PLANE,
@@ -121,6 +122,17 @@ let aircraftControlType = {
   onChangeValue = @(v) sendChange("aircraft_movement_control", v)
   list = aircraftCtrlTypesList
   valToString = airCtrlTypeToString
+}
+
+let freeCamByTouchList = [false, true]
+let curFreeCamByTouchOption = mkOptionValue(OPT_AIRCRAFT_FREE_CAMERA_BY_TOUCH, false, @(v) validate(v, freeCamByTouchList))
+let curFreeCamByTouchOptionType = {
+  locId = "options/free_cam_by_touch"
+  ctrlType = OCT_LIST
+  value = curFreeCamByTouchOption
+  onChangeValue = @(v) sendChange("free_cam_by_touch", v)
+  list = Computed(@() (currentAircraftCtrlType.get() == "stick" || currentAircraftCtrlType.get() == "stick_static") ? freeCamByTouchList : [])
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
 
 let continuousTurnModeList = [false, true]
@@ -301,18 +313,18 @@ currentAircraftCtrlType.subscribe( function(v) {
     set_camera_viscosity_in_zoom(max(limitsZoom[1] - optValueZoom.get(), limitsZoom[0]))
 })
 
-let tapSelectionList = [false, true]
-let currentTapSelection = mkOptionValue(OPT_AIRCRAFT_TAP_SELECTION, false, @(v) validate(v, tapSelectionList))
-set_aircraft_tap_selection(currentTapSelection.value)
-currentTapSelection.subscribe(@(v) set_aircraft_tap_selection(v))
-let currentTapSelectionType = {
-  locId = "options/tap_selection"
+let targetSelectionList = ["manual_selection", "tap_selection", "auto_selection"]
+let currentTargetSelection = mkOptionValue(OPT_TARGET_SELECTION_TYPE, null,
+  @(v) targetSelectionList.contains(v) ? v : targetSelectionList[0])
+set_target_selection_type(targetSelectionList.findindex(@(v) v == currentTargetSelection.value) ?? 0)
+currentTargetSelection.subscribe(@(val) set_target_selection_type(targetSelectionList.findindex(@(v) v == val) ?? 0))
+let currentTargetSelectionType = {
+  locId = "options/target_selection_type"
   ctrlType = OCT_LIST
-  value = currentTapSelection
-  onChangeValue = @(v) sendChange("tap_selection", v)
-  list = tapSelectionList
-  valToString = @(v) loc(v ? "options/enable" : "options/disable")
-  description = loc("options/desc/tap_selection")
+  value = currentTargetSelection
+  onChangeValue = @(v) sendChange("target_selection_type", v)
+  list = targetSelectionList
+  valToString = airCtrlTypeToString
 }
 
 let targetFollowerList = [false, true]
@@ -386,9 +398,10 @@ return {
     controlByGyroModeAileronsSensitivitySlider
     controlByGyroModeElevatorDeadZoneSlider
     controlByGyroModeElevatorSensitivitySlider
-    currentTapSelectionType
+    currentTargetSelectionType
     currentTargetFollowerType
     currentQuitZoomSelectionType
+    curFreeCamByTouchOptionType
   ].extend(crosshairOptions)
   currentAircraftCtrlType,
   currentThrottleStick,
@@ -400,5 +413,7 @@ return {
   currentControlByGyroModeAileronsSensitivity,
   currentControlByGyroModeElevatorDeadZone,
   currentControlByGyroModeElevatorSensitivity,
-  currentAdditionalFlyControls
+  currentAdditionalFlyControls,
+  curFreeCamByTouchOption,
+  currentFixedAimCursor
 }

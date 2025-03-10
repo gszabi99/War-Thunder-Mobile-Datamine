@@ -4,11 +4,19 @@ let { OPT_AUTO_UPDATE_ENABLED, mkOptionValue } = require("%rGui/options/guiOptio
 let { allow_apk_update } = require("%appGlobals/permissions.nut")
 let { isDownloadedFromSite } = require("%appGlobals/clientState/clientState.nut")
 
+let AU_NOT_ALLOW = "not_allow"
+let AU_ALLOW_ONLY_WIFI = "allow_only_wifi"
+let AU_ALLOW_ALWAYS = "allow_always"
+
 let validate = @(val, list) list.contains(val) ? val : list[0]
-let gameAutoUpdateList = ["not_allow", "allow_only_wifi", "allow_always"]
-let isGameAutoUpdateEnabled = mkOptionValue(OPT_AUTO_UPDATE_ENABLED, "not_allow", @(v) validate(v, gameAutoUpdateList))
+let gameAutoUpdateList = [AU_NOT_ALLOW, AU_ALLOW_ONLY_WIFI, AU_ALLOW_ALWAYS]
+let isGameAutoUpdateEnabled = mkOptionValue(OPT_AUTO_UPDATE_ENABLED, AU_NOT_ALLOW, @(v) validate(v, gameAutoUpdateList))
 
 return {
+  AU_NOT_ALLOW
+  AU_ALLOW_ONLY_WIFI
+  AU_ALLOW_ALWAYS
+
   isGameAutoUpdateVisible = isDownloadedFromSite && allow_apk_update.get()
   gameAutoUpdateList
   isGameAutoUpdateEnabled

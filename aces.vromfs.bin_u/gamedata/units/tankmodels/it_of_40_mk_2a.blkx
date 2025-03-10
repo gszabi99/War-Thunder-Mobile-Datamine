@@ -45,19 +45,19 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": 1.36,
+  "minRelativeTankCameraThreshold": 1.33,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "dm_for_shop": {
     "armorThicknessFront": [
-      0.45,
-      0.05,
-      0.5
+      0.5,
+      0.1,
+      0.4
     ],
     "armorThicknessSide": [
+      0.05,
       0.0,
-      0.0,
-      1.0
+      0.95
     ]
   },
   "DamageParts": {

@@ -97,12 +97,16 @@ function onDetach() {
 
 let wndTitle = @() {
   watch = missionName
-  size = [flex(), SIZE_TO_CONTENT]
+  size = [hdpx(480), SIZE_TO_CONTENT]
+  maxHeight = hdpx(44)
   rendObj = ROBJ_TEXTAREA
-  behavior = Behaviors.TextArea
+  behavior = [Behaviors.TextArea, Behaviors.Marquee]
+  orientation = O_VERTICAL
+  speed = hdpx(30)
+  delay = defMarqueeDelayVert
   color = Color(255, 255, 255)
   text = missionName.value
-}.__update(fontMedium)
+}.__update(fontSmallShaded)
 
 let cornerBackBtn = backButton(onQuit)
 

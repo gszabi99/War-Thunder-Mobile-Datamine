@@ -3,6 +3,8 @@ let { addUserOption, addLocalUserOption, get_gui_option, set_gui_option } = requ
 let { eventbus_send } = require("eventbus")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 
+let optionsVersion = Watched(0)
+
 //options should have full list on get profile for correct load
 let optListNative = [
   "OPT_TANK_MOVEMENT_CONTROL"
@@ -43,6 +45,7 @@ let optListScriptOnly = [
   "OPT_GEAR_DOWN_ON_STOP_BUTTON"
   "OPT_CAMERA_ROTATION_ASSIST"
   "OPT_HUD_TANK_SHOW_SCORE"
+  "OPT_HUD_SHOW_UNIT_MODEL_NAME_ONLINE"
   "OPT_AIRCRAFT_FIXED_AIM_CURSOR"
   "OPT_STRATEGY_CAMERA_BY_DRAG"
   "OPT_AIRCRAFT_CONTINUOUS_TURN_MODE"
@@ -60,10 +63,12 @@ let optListScriptOnly = [
   "OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK"
   "OPT_AIRCRAFT_INVERTED_Y"
   "OPT_AIRCRAFT_MOVEMENT_CONTROL"
-  "OPT_AIRCRAFT_TAP_SELECTION"
+  "OPT_TARGET_SELECTION_TYPE"
   "OPT_AIRCRAFT_ADDITIONAL_FLY_CONTROLS"
   "OPT_AIRCRAFT_TARGET_FOLLOWER"
   "USEROPT_QUIT_ZOOM_AFTER_KILL"
+  "OPT_AIRCRAFT_FREE_CAMERA_BY_TOUCH"
+  "USEROPT_ALLOW_JIP"
 ]
 
 let optListLocalScriptOnly = [
@@ -101,6 +106,12 @@ function mkOptionValueNative(id, defValue, validate) {
     value(getSaved())
     updateSaved()
   })
+
+  optionsVersion.subscribe(function(_) {
+    value(validate(defValue))
+    updateSaved()
+  })
+
   value.subscribe(@(_) updateSaved())
   return value
 }
@@ -116,6 +127,15 @@ function mkOptionValueScriptOnly(id, defValue, validate) {
     isInit = true
     value(v)
   })
+
+  optionsVersion.subscribe(function(_) {
+    let v = validate(defValue)
+    if (value.value == v)
+      return
+    isInit = true
+    value(v)
+  })
+
   value.subscribe(function(v) {
     if (isInit) {
       isInit = false
@@ -144,4 +164,5 @@ return export.__update({
   mkOptionValue
   getOptValue
   optionValues
+  optionsVersion
 })

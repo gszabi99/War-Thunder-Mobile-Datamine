@@ -96,7 +96,7 @@ function mkContent() {
         maxWidth = hdpx(700)
         color = 0xFFD8D8D8
         halign = ALIGN_CENTER
-        text = loc("header/unitResearchComplete", { unitName = loc(getUnitLocId(unitName.get())) })
+        text = loc("header/unitResearchComplete", { unitName = loc(getUnitLocId(unitName.get() ?? "")) })
       }.__update(fontTinyAccented)
       @() {
         watch = unit

@@ -14,6 +14,7 @@ let { mkSparks } = require("%rGui/effects/sparks.nut")
 let { playSound } = require("sound_wt")
 let { mkCurrencyComp, CS_BIG } = require("%rGui/components/currencyComp.nut")
 let { mkLensFlare, aTimeFlareMiddle } = require("%rGui/effects/mkLensFlare.nut")
+let skipOfferBtn = require("skipOfferBtn.nut")
 
 let openCount = Computed(@() previewType.value == GPT_CURRENCY ? openPreviewCount.get() : 0)
 let imageHeight = hdpx(450)
@@ -40,7 +41,7 @@ let currencyStyle = CS_BIG.__merge({
 let currencyOldStyle = currencyStyle.__merge({ iconSize = hdpxi(60), fontStyle = fontBig })
 
 let header = mkPreviewHeader(Watched(loc("offer/gold")), closeGoodsPreview, aTimeHeaderStart)
-let rightBottomBlock = mkPriceWithTimeBlockNoOldPrice(aTimePriceStart)
+let rightBottomBlock = mkPriceWithTimeBlockNoOldPrice(aTimePriceStart, skipOfferBtn)
 
 function goldInfo() {
   let { discountInPercent = 0 } = previewGoods.value

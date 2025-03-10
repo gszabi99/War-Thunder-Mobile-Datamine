@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { levelMark, hlColor, iconSize, mkText, levelHolderSize } = require("%rGui/mpStatistics/playerInfo.nut")
 let { getMedalPresentation } = require("%rGui/mpStatistics/medalsPresentation.nut")
@@ -71,7 +72,8 @@ let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   children = [
-    modalWndHeader(loc($"campaign/{campaign}"), { size = [flex(), SIZE_TO_CONTENT], padding = hdpx(5) })
+    modalWndHeader(loc(getCampaignPresentation(campaign).headerLocId),
+      { size = [flex(), SIZE_TO_CONTENT], padding = hdpx(5) })
     {
       size = [flex(), SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL

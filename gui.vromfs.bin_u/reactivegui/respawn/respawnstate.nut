@@ -17,6 +17,7 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { SPARE } = require("%appGlobals/itemsState.nut")
+let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, eachParam, eachBlock } = require("%sqstd/datablock.nut")
 let { register_command } = require("console")
@@ -125,6 +126,8 @@ function saveSeenShells(unitName, ids) {
 }
 
 function loadSeenShells() {
+  if (!isSettingsAvailable.get())
+    return seenShells.set({})
   let blk = get_local_custom_settings_blk()
   let shellsBlk = blk?[SEEN_SHELLS]
   if (!isDataBlock(shellsBlk)) {
@@ -142,6 +145,8 @@ function loadSeenShells() {
 
 if (seenShells.value.len() == 0)
   loadSeenShells()
+
+isSettingsAvailable.subscribe(@(_) loadSeenShells())
 
 let hasAvailableSlot = Computed(@() respawnsLeft.get() != 0 && respawnSlots.get().findvalue(@(s) s.canSpawn) != null)
 let needAutospawn = keepref(Computed(@() isInRespawn.get() && isRespawnAttached.get()

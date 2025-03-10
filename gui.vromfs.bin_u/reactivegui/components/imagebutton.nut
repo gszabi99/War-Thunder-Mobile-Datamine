@@ -67,14 +67,15 @@ function imageBtn(image, onClick, ovr = {}, addChild = null) {
     halign = ALIGN_CENTER
     children = [
       stateFlags.value & S_HOVER ? hoverBg : null
-      {
-        size = flex()
-        rendObj = ROBJ_IMAGE
-        image = Picture($"{image}:{size[0]}:{size[1]}:P")
-        keepAspect = true
-        transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-        transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
-      }
+      typeof(image) != "string" ? image
+        : {
+          size = flex()
+          rendObj = ROBJ_IMAGE
+          image = Picture($"{image}:{size[0]}:{size[1]}:P")
+          keepAspect = true
+          transform = { scale = stateFlags.value & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+          transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
+        }
       addChild
     ]
   }.__update(ovr)

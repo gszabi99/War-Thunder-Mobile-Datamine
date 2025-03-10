@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hoverColor } = require("%rGui/style/stdColors.nut")
+let { hoverColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 
 let patternSize = hdpxi(110)
@@ -21,6 +21,7 @@ let gradientCommon = {
   color = 0xFF848484
 }
 
+let gradientPremium = gradientCommon.__merge({ color = premiumTextColor })
 let gradientPrimary = gradientCommon.__merge({ color = 0xFF16B2E9 })
 
 let iText = {
@@ -88,6 +89,7 @@ let mkInfoEllipseButtonCtor = @(borderColor, fillColor) function(onClick, ovr = 
   }.__update(ovr)
 }
 
+let infoGoldButton = mkInfoButtonCtor(0xFFAA7305, gradientPremium)
 let infoBlueButton = mkInfoButtonCtor(0xFF0593AD, gradientPrimary)
 let infoCommonButton = mkInfoButtonCtor(0xFF646464, gradientCommon)
 let infoEllipseButton = mkInfoEllipseButtonCtor( 0x80AAAAAA, 0x80000000)
@@ -170,6 +172,7 @@ function infoTooltipButton(contentCtor, tooltipOvr = {}, ovr = {}) {
 }
 
 return {
+  infoGoldButton
   infoBlueButton
   infoGreyButton
   infoCommonButton

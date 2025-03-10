@@ -9,18 +9,17 @@ let { GPT_SLOTS, previewType, previewGoods, closeGoodsPreview, openPreviewCount,
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
-let { serverTimeDay, getDay, untilNextDaySec } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
+let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { registerHandler, shopPurchaseInProgress, shopGenSlotInProgress,
-  gen_goods_slots, buy_goods_slot, increase_goods_limit, reset_reward_slots
+  gen_goods_slots, buy_goods_slot, reset_reward_slots
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let { openMsgBoxPurchase, showNoBalanceMsgIfNeed, PURCHASE_BOX_UID } = require("%rGui/shop/msgBoxPurchase.nut")
-let { PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, PURCH_TYPE_GOODS_LIMIT, PURCH_TYPE_GOODS_REROLL_SLOTS,
+let { openMsgBoxPurchase, PURCHASE_BOX_UID } = require("%rGui/shop/msgBoxPurchase.nut")
+let { PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, PURCH_TYPE_GOODS_REROLL_SLOTS,
   mkBqPurchaseInfo
 } = require("%rGui/shop/bqPurchaseInfo.nut")
+let { getAdjustedPriceInfo } = require("%rGui/shop/goodsUtils.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
@@ -31,7 +30,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
-let { mkCurrencyComp, mkFreeText } = require("%rGui/components/currencyComp.nut")
+let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { textButtonPricePurchase, buttonsHGap, buttonStyles } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, PRIMARY } = buttonStyles
 let { getSlotsPreviewBg, getSlotsTexts } = require("%appGlobals/config/goodsPresentation.nut")
@@ -39,11 +38,11 @@ let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
 let { REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, getRewardPlateSize, progressBarHeight
 } = require("%rGui/rewards/rewardStyles.nut")
 let { mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts, mkRewardSearchPlate,
-  mkRewardDisabledBkg, mkRewardReceivedMark, mkRewardUnitFlag
+  mkRewardUnitFlag
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
-let { withTooltip, tooltipDetach, mkTooltipText } = require("%rGui/tooltip.nut")
+let { mkTooltipText } = require("%rGui/tooltip.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
@@ -73,9 +72,18 @@ let isAttached = Watched(false)
 let openCount = Computed(@() previewType.get() == GPT_SLOTS ? openPreviewCount.get() : 0)
 let goodsRewardSlots = Computed(@() serverConfigs.get()?.goodsRewardSlots[previewGoods.get()?.slotsPreset])
 let rerollCost = Computed(@() goodsRewardSlots.get()?.rerollCost)
-let freeRerolls = Computed(@() goodsRewardSlots.get()?.freeRerolls ?? 0)
 let rewardSlots = Computed(@() servProfile.get()?.rewardSlots[previewGoods.get()?.id])
 let selIndex = Watched(-1)
+let previewGoodsWithUpdatedPrice = Computed(function() {
+  let goods = previewGoods.get()
+  if (goods == null)
+    return null
+  let { count = 0, lastTime = 0 } = todayPurchasesCount.get()?[goods.id]
+  return goods.__merge({
+    price = getAdjustedPriceInfo(goods,
+      serverTimeDay.get() == getDay(lastTime, dayOffset.get()) ? count : 0)
+  })
+})
 
 let AUTO_REQUEST_AFTER_ERROR_TIME = 10
 let freeRefreshErrorSoon = Watched(null)
@@ -86,7 +94,8 @@ let needFreeRefreshSlots = keepref(Computed(function() {
       || shopGenSlotInProgress.get() == previewGoods.get()?.id
       || rerollCost.get() == null) //this mean that slots config is exists
     return false
-  return getDay(rewardSlots.get()?.time ?? 0) != serverTimeDay.get()
+  return getDay(rewardSlots.get()?.time ?? 0, dayOffset.get()) != serverTimeDay.get()
+    || rewardSlots.get()?.isPurchased
 }))
 
 selIndex.subscribe(function(_) {
@@ -120,15 +129,14 @@ let txt = @(text, ovr = {}) { rendObj = ROBJ_TEXT, text }.__update(fontSmallAcce
 function balanceButtons() {
   let currencies = []
   let list = [
-    previewGoods.get()?.price.currencyId
-    previewGoods.get()?.limitResetPrice.currencyId
+    previewGoodsWithUpdatedPrice.get()?.price.currencyId
     rerollCost.get()?.currencyId
   ]
   foreach(c in list)
     if ((c ?? "") != "" && !currencies.contains(c))
       currencies.append(c)
   return {
-    watch = [previewGoods, rerollCost]
+    watch = [previewGoodsWithUpdatedPrice, rerollCost]
     children = mkCurrenciesBtns(currencies)
   }
 }
@@ -217,33 +225,6 @@ let mkHightlightPlate = @(isSelected, rStyle) {
   ]
 }
 
-function mkTimeLeftInfo(ovr = {}) {
-  let text = Computed(@() secondsToHoursLoc(untilNextDaySec(serverTime.get())))
-  return @() {
-    watch = openedGoodsId
-    halign = ALIGN_RIGHT
-    flow = FLOW_VERTICAL
-    children = [
-      txt(loc(getSlotsTexts(openedGoodsId.get()).updateIn))
-      @() txt(text.get(), { watch = text })
-    ]
-  }.__update(ovr)
-}
-
-function mkDisableBkgWithTooltip(isPurchased, rStyle) {
-  let stateFlags = Watched(0)
-  let key = {}
-
-  return {
-    key
-    size = flex()
-    behavior = Behaviors.Button
-    onDetach = tooltipDetach(stateFlags)
-    onElemState = withTooltip(stateFlags, key, @() { content = mkTimeLeftInfo({ halign = ALIGN_CENTER }) })
-    children = isPurchased ? mkRewardReceivedMark(rStyle) : mkRewardDisabledBkg
-  }
-}
-
 function mkSlot(slotIdx, reward, rStyle) {
   let size = getRewardPlateSize(reward.slots, rStyle)
   let stateFlags = Watched(0)
@@ -270,8 +251,6 @@ function mkSlot(slotIdx, reward, rStyle) {
         : mkHightlightPlate(isSelected.get(), rStyle)
       mkRewardPlateTexts(reward, rStyle)
       reward.rType == GPT_BLUEPRINT && unit.get() != null ? mkRewardUnitFlag(unit.get(), rStyle) : null
-      !rewardSlots.get()?.isPurchased ? null
-        : mkDisableBkgWithTooltip(rewardSlots.get()?.purchasedIdx == slotIdx, rStyle)
     ]
     transform = { scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.14 }]
@@ -310,11 +289,6 @@ function purchaseSelectedSlot(id, price, currencyId) {
   playPurchaseSound(currencyId)
 }
 
-function increaseLimit(id, price, currencyId) {
-  increase_goods_limit(id, currencyId, price)
-  playPurchaseSound(currencyId)
-}
-
 function rerollSlots(id, price, currencyId) {
   gen_goods_slots(id, currencyId, price)
   playPurchaseSound(currencyId)
@@ -350,59 +324,36 @@ function purchaseSlotBtn(id, priceCfg) {
     @() tryOpenPurchSlotMsgBox(id, price, currencyId))
 }
 
-function rerollBtn(id, priceCfg, isFree, styleOvr) {
+function rerollBtn(id, priceCfg, styleOvr) {
   let { price = 0, currencyId = "" } = priceCfg
   if (price <= 0 || currencyId == "")
     return null
 
   return textButtonPricePurchase(utf8ToUpper(loc("btn/rerollItems")),
-    isFree ? mkFreeText() : mkCurrencyComp(price, currencyId),
-    @() previewGoods.get()?.id == null || (!isFree
-          && showNoBalanceMsgIfNeed(price, currencyId, mkBqPurchaseInfo(PURCH_SRC_SHOP, PURCH_TYPE_GOODS_REROLL_SLOTS, id)))
-        ? null
-      : rerollSlots(previewGoods.get()?.id, price, currencyId),
+    mkCurrencyComp(price, currencyId),
+    @() openSelGoodsMsgBoxPurch(loc("shop/needMoneyQuestion_reroll"),
+      price, currencyId, rerollSlots,
+      mkBqPurchaseInfo(PURCH_SRC_SHOP, PURCH_TYPE_GOODS_REROLL_SLOTS, id)),
     styleOvr)
-}
-
-function skipWaitBtn(id, priceCfg, purchCount) {
-  let { price = 0, currencyId = "", priceInc = 0 } = priceCfg
-  if (price <= 0 || currencyId == "")
-    return null
-
-  let priceFinal = price + priceInc * purchCount
-  return textButtonPricePurchase(utf8ToUpper(loc("btn/skipWait")),
-    mkCurrencyComp(priceFinal, currencyId),
-    @() openSelGoodsMsgBoxPurch(loc("shop/needMoneyQuestion_wait"), priceFinal, currencyId, increaseLimit,
-      mkBqPurchaseInfo(PURCH_SRC_SHOP, PURCH_TYPE_GOODS_LIMIT, id)))
 }
 
 let buttons = @(hasRerollAnim) function() {
   let res = {
-    watch = [shopGenSlotInProgress, shopPurchaseInProgress, previewGoods, rewardSlots, rerollCost,
-      goodsLimitReset, serverTimeDay, freeRerolls
-    ]
+    watch = [shopGenSlotInProgress, shopPurchaseInProgress, previewGoodsWithUpdatedPrice, rerollCost, serverTimeDay]
     size = [SIZE_TO_CONTENT, defButtonHeight]
   }
-  if (previewGoods.get() == null)
+  if (previewGoodsWithUpdatedPrice.get() == null)
     return res
 
-  let { id, price, limitResetPrice } = previewGoods.get()
-  let { isPurchased = false, usedFree = 0 } = rewardSlots.get()
-  let isFree = usedFree < freeRerolls.get()
+  let { id, price } = previewGoodsWithUpdatedPrice.get()
   return res.__update({
     flow = FLOW_HORIZONTAL
     gap = buttonsHGap
     valign = ALIGN_CENTER
     children = shopGenSlotInProgress.get() == id ? null
       : shopPurchaseInProgress.get() ? spinner
-      : isPurchased
-        ? [
-            mkTimeLeftInfo()
-            skipWaitBtn(id, limitResetPrice,
-              serverTimeDay.get() != getDay(goodsLimitReset.get()?[id].time ?? 0) ? 0 : goodsLimitReset.get()?[id].count)
-          ]
       : [
-          rerollBtn(id, rerollCost.get(), isFree, hasRerollAnim ? rerollButtonStyle : PRIMARY)
+          rerollBtn(id, rerollCost.get(), hasRerollAnim ? rerollButtonStyle : PRIMARY)
           purchaseSlotBtn(id, price)
         ]
   })
@@ -410,7 +361,7 @@ let buttons = @(hasRerollAnim) function() {
 
 function content() {
   let isActual = Computed(@() shopGenSlotInProgress.get() != previewGoods.get()?.id
-    && getDay(rewardSlots.get()?.time ?? 0) == serverTimeDay.get())
+    && getDay(rewardSlots.get()?.time ?? 0, dayOffset.get()) == serverTimeDay.get())
   return function() {
     let { goods = [], isPurchased = false } = rewardSlots.get()
     let style = goods.len() > MAX_BIG_SLOTS ? REWARD_STYLE_SMALL : REWARD_STYLE_MEDIUM

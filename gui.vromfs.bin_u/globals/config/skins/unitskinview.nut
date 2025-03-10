@@ -110,7 +110,7 @@ return {
       "": "usa_f4u_4b"
     },
     "bv-155b-1": {
-      "": "germ_fw_200c_1"
+      "": "germ_do335a_1"
     },
     "cn_cm11": {
       "": "us_camo_modern_green",
@@ -1038,6 +1038,9 @@ return {
     "germ_sub_type_21": {
       "upgraded": "camo_sboat_splotch"
     },
+    "germ_sub_type_212": {
+      "upgraded": "camo_threegray_spots"
+    },
     "germ_sub_type_7": {
       "upgraded": "camo_greyblack_geometry"
     },
@@ -1207,10 +1210,6 @@ return {
       "": "us_camo_olive",
       "upgraded": "isr_camo_sandgray"
     },
-    "il_magach_6m": {
-      "": "isr_camo_threecolor",
-      "desert": "isr_camo_sandgray"
-    },
     "il_magach_6r": {
       "": "us_camo_olive",
       "upgraded": "isr_camo_sandgray"
@@ -1221,23 +1220,11 @@ return {
       "desert2": "camo_f_blue_orng",
       "forest": "isr_camo_green"
     },
-    "il_merkava_mk_2b_early": {
-      "": "isr_camo_threecolor",
-      "desert": "isr_camo_sandgray"
-    },
-    "il_tiran_6": {
-      "": "isr_camo_threecolor",
-      "desert": "isr_camo_sandgray"
-    },
     "il_zsu_23_4": {
       "": "isr_camo_sandgray",
       "desert": "isr_camo_threecolor",
       "desert2": "camo_f_blue_orng",
       "forest": "isr_camo_green"
-    },
-    "il_zsu_23_4_reskin": {
-      "": "isr_camo_threecolor",
-      "desert": "isr_camo_sandgray"
     },
     "it_43m_turan_3": {
       "": "ann_camo",
@@ -1375,6 +1362,9 @@ return {
     },
     "jp_battleship_hyuga": {
       "upgraded": "camo_bluewaves"
+    },
+    "jp_battleship_ise": {
+      "upgraded": "camo_asiatic_forest"
     },
     "jp_battleship_mutsu": {
       "darkbrown_spots_prem": "camo_darkbrown_spots"
@@ -1779,6 +1769,13 @@ return {
     },
     "tu-1_prem": {
       "": "ussr_tu_1_prem"
+    },
+    "tu-2_postwar_late": {
+      "": "ussr_tandem_mai",
+      "gray": "ussr_la_7"
+    },
+    "tu-2_postwar_late_prem": {
+      "": "ussr_il_2m"
     },
     "uk_17_pdr_m10_achilles": {
       "": "uk_camo_light_stone_light_grey_slate_grey",
@@ -3115,12 +3112,14 @@ return {
       "": "camo_navygrey_5",
       "blackgray_stripes": "camo_blackgray_stripes",
       "blue_stains": "camo_blue_stains",
+      "bluegray_spots_prem": "camo_bluegray_spots",
       "bluewater_geometry": "camo_bluewater_geometry",
       "disruptive_gray": "camo_disruptive_gray",
       "factory": "camo_navygrey_5",
+      "grayriver": "camo_grayriver",
       "greencoast": "camo_greencoast",
-      "threegreenspots": "camo_threegreenspots",
-      "measure_geometry": "camo_measure_geometry"
+      "measure_geometry": "camo_measure_geometry",
+      "threegreenspots": "camo_threegreenspots"
     },
     "tank": {
       "": "us_camo_olive",

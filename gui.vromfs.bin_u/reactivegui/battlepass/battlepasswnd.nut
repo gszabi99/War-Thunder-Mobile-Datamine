@@ -5,7 +5,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { battlePassOpenCounter, openBattlePassWnd, closeBattlePassWnd, isBpSeasonActive, isBpActive,
-  mkBpStagesList, openBPPurchaseWnd, selectedStage, curStage, maxStage, getBpIcon,
+  mkBpStagesList, openBPPurchaseWnd, selectedStage, curStage, getBpIcon,
   BP_VIP, BP_COMMON, BP_NONE, purchasedBp, battlePassGoods
 } = require("battlePassState.nut")
 let { eventSeason } = require("%rGui/event/eventState.nut")
@@ -100,23 +100,22 @@ let taskDesc = {
 let bpLevelLabel = @(text) { rendObj = ROBJ_TEXT, text }.__update(fontSmall)
 
 let levelBlock = @() {
-  watch = [curStage, maxStage]
+  watch = curStage
   vplace = ALIGN_TOP
   flow = FLOW_VERTICAL
   gap = hdpx(15)
-  children = curStage.get() >= maxStage.get() ? bpLevelLabel(loc("battlepass/maxLevel"))
-    : [
-        bpLevelLabel($"{loc("mainmenu/rank")} {curStage.get()}")
-        {
-          size = [hdpx(300), SIZE_TO_CONTENT]
-          halign = ALIGN_CENTER
-          valign = ALIGN_CENTER
-          children = [
-            bpCurProgressbar
-            bpProgressText
-          ]
-        }
+  children = [
+    bpLevelLabel($"{loc("mainmenu/rank")} {curStage.get()}")
+    {
+      size = [hdpx(300), SIZE_TO_CONTENT]
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      children = [
+        bpCurProgressbar
+        bpProgressText
       ]
+    }
+  ]
 }
 
 let leftMiddle = {

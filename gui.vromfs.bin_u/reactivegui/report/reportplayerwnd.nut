@@ -6,9 +6,9 @@ let { bgShaded, bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { dropDownMenu } = require("%rGui/components/dropDownMenu.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { SUCCESS_WND_UID, REPORT_WND_UID, categoryCfg, fieldCategory, fieldMessage,
-  cancel, successedClose, getFormValidationError, selectedPlayerForReport, requestSelfRow,
-  isReportStatusSuccessed, MAX_MESSAGE_CHARS, isRequestInProgress } = require("reportPlayerState.nut")
+let { REJECT_WND_UID, SUCCESS_WND_UID, REPORT_WND_UID, categoryCfg, fieldCategory, fieldMessage,
+  getFormValidationError, selectedPlayerForReport, requestSelfRow, close,
+  isReportStatusSuccessed, isReportStatusRejected, MAX_MESSAGE_CHARS, isRequestInProgress } = require("reportPlayerState.nut")
 let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
@@ -35,7 +35,7 @@ let mkTapToContinueText = @(startDelay) {
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   behavior = Behaviors.Button
-  onClick = successedClose
+  onClick = close
   transform = {}
   animations = [
     { prop = AnimProp.opacity, from = 0, to = 0,
@@ -47,7 +47,7 @@ let mkTapToContinueText = @(startDelay) {
   ]
 }.__update(fontMedium)
 
-let messageWnd = {
+let mkMessageWnd = @(title, description) {
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   children = [
@@ -57,7 +57,7 @@ let messageWnd = {
       valign = ALIGN_TOP
       stopMouse = true
       children = [
-        modalWndHeader(loc("support/form/report/success"))
+        modalWndHeader(title)
         {
           size = SIZE_TO_CONTENT
           halign = ALIGN_CENTER
@@ -68,7 +68,7 @@ let messageWnd = {
             behavior = Behaviors.TextArea
             maxWidth = hdpx(800)
             halign = ALIGN_CENTER
-            text = loc("support/form/report/successDescription")
+            text = description
           }.__update(fontMedium)
         }
         mkTapToContinueText(0.5)
@@ -172,7 +172,7 @@ let mkButtons = {
   gap = componentWidth - defButtonMinWidth * 2
   flow = FLOW_HORIZONTAL
   children = [
-    textButtonCommon(loc("msgbox/btn_cancel"), cancel, { size = [defButtonMinWidth, SIZE_TO_CONTENT] })
+    textButtonCommon(loc("msgbox/btn_cancel"), close, { size = [defButtonMinWidth, SIZE_TO_CONTENT] })
     mkSpinnerHideBlock(isRequestInProgress, textButtonCommon(loc("contacts/report/short"), onSubmit), {
       size = [defButtonMinWidth, SIZE_TO_CONTENT]
       halign = ALIGN_CENTER
@@ -202,15 +202,22 @@ let content = @()
     ]
   })
 
+let mkMsgModal = @(key, title, description) addModalWindow(bgShadedDark.__merge({
+  key
+  size = flex()
+  onClick = close
+  children = mkMessageWnd(title, description)
+  animations = wndSwitchAnim
+}))
+
 isReportStatusSuccessed.subscribe(function(v) {
   if (v && selectedPlayerForReport.get())
-    addModalWindow(bgShadedDark.__merge({
-      key = SUCCESS_WND_UID
-      size = flex()
-      onClick = successedClose
-      children = messageWnd
-      animations = wndSwitchAnim
-    }))
+    mkMsgModal(SUCCESS_WND_UID, loc("support/form/report/success"), loc("support/form/report/successDescription"))
+})
+
+isReportStatusRejected.subscribe(function(v) {
+  if (v && selectedPlayerForReport.get())
+    mkMsgModal(REJECT_WND_UID, loc("support/form/report/reject"), loc("support/form/report/rejectDescription"))
 })
 
 selectedPlayerForReport.subscribe(function(v) {
@@ -225,9 +232,10 @@ selectedPlayerForReport.subscribe(function(v) {
       text = loc("msgbox/leaveWindow")
       buttons = [
         { id = "cancel", isCancel = true }
-        { id = "ok", styleId = "PRIMARY", cb = cancel }
+        { id = "ok", styleId = "PRIMARY", cb = close }
       ]
     })
+    onDetach = @() selectedPlayerForReport.set(null)
     sound = { click = "click" }
     size = [sw(100), sh(100)]
     halign = ALIGN_CENTER

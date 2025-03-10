@@ -38,7 +38,7 @@ let { rankBlockOffset } = require("unitsTreeConsts.nut")
 let { mkUnitPlate, framesGapMul } = require("mkUnitPlate.nut")
 let { scrollHandler, startAnimScroll, interruptAnimScroll, scrollPos, unseenArrowsBlockCtor
 } = require("unitsTreeScroll.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, isCampaignWithSlots } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { slotBarTreeHeight } = require("%rGui/slotBar/slotBarConsts.nut")
@@ -349,13 +349,7 @@ function mkUnitsTreeContent() {
             {
               behavior = [Behaviors.Pannable, Behaviors.ScrollEvent],
               scrollHandler
-              xmbNode = {
-                canFocus = false
-                scrollSpeed = 2.5
-                isViewport = true
-                scrollToEdge = false
-                screenSpaceNav = true
-              }
+              xmbNode = XmbContainer()
             })
           @() unseenArrowsBlockCtor(needShowArrowL, needShowArrowR)
         ]
@@ -443,69 +437,68 @@ function infoPanel() {
   let needShowBlueprintDescr = Computed(@() hangarUnit.get()?.name in serverConfigs.get()?.allBlueprints
     && hangarUnit.get()?.name not in campMyUnits.get())
   return {
-    watch = [hasSelectedUnit, isTreeNodes]
+    watch = [hasSelectedUnit, isTreeNodes, isCampaignWithSlots]
     key = {}
     size = flex()
-    children = !hasSelectedUnit.get() && !isTreeNodes.get() ? null
-      : [
-          !hasSelectedUnit.get()
-            ? @() {
-                watch = selectedSlotIdx
-                rendObj = ROBJ_SOLID
-                size = [infoPanelWidth, slotBarTreeHeight + saBorders[1]]
-                padding = [0, saBorders[0]]
-                color = 0x40000000
-                hplace = ALIGN_RIGHT
-                vplace = ALIGN_BOTTOM
-                children = selectedSlotIdx.get() == null ? null
-                  : {
-                      hplace = ALIGN_RIGHT
-                      halign = ALIGN_RIGHT
-                      valign = ALIGN_CENTER
-                      size = [statsWidth, slotBarTreeHeight]
-                      rendObj = ROBJ_TEXTAREA
-                      behavior = Behaviors.TextArea
-                      text = loc("unitsTree/selectUnitHint")
-                    }.__update(fontMedium)
+    children = hasSelectedUnit.get()
+        ? panelBg.__merge({
+            size = [infoPanelWidth, infoPanelHeight]
+            padding = [infoPannelPadding, saBorders[0], saBorders[1], infoPannelPadding]
+            hplace = ALIGN_RIGHT
+            vplace = ALIGN_BOTTOM
+            valign = ALIGN_BOTTOM
+            clipChildren = isTreeNodes.get()
+            flow = FLOW_VERTICAL
+            children = [
+              unitInfoPanel(
+                {
+                  size = [flex(), SIZE_TO_CONTENT]
+                  halign = ALIGN_RIGHT
+                  hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
+                  animations = wndSwitchAnim
+                },
+                mkUnitTitle, hangarUnit, {})
+              {
+                size = flex()
               }
-            : panelBg.__merge({
-                size = [infoPanelWidth, infoPanelHeight]
-                padding = [infoPannelPadding, saBorders[0], saBorders[1], infoPannelPadding]
-                hplace = ALIGN_RIGHT
-                vplace = ALIGN_BOTTOM
-                valign = ALIGN_BOTTOM
-                clipChildren = isTreeNodes.get()
+              @() {
+                watch = hangarUnit
                 flow = FLOW_VERTICAL
+                gap = infoPanelFooterGap
+                hplace = ALIGN_RIGHT
+                halign = ALIGN_RIGHT
                 children = [
-                  unitInfoPanel(
-                    {
-                      size = [flex(), SIZE_TO_CONTENT]
-                      halign = ALIGN_RIGHT
-                      hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
-                      animations = wndSwitchAnim
-                    }, mkUnitTitle, hangarUnit)
-                  {
-                    size = flex()
-                  }
+                  !needShowBlueprintDescr.get() ? null
+                    : mkBlueprintBarText(loc("blueprints/fullDescription"))
+                  researchBlock(hangarUnit.get())
                   @() {
-                    watch = hangarUnit
-                    flow = FLOW_VERTICAL
-                    gap = infoPanelFooterGap
-                    hplace = ALIGN_RIGHT
-                    halign = ALIGN_RIGHT
-                    children = [
-                      !needShowBlueprintDescr.get() ? null
-                        : mkBlueprintBarText(loc("blueprints/fullDescription"))
-                      researchBlock(hangarUnit.get())
-                      @() {
-                        watch = hasUnitActions
-                        children = hasUnitActions.get() ? mkBottomInfoPanel : null
-                      }
-                    ]
+                    watch = hasUnitActions
+                    children = hasUnitActions.get() ? mkBottomInfoPanel : null
                   }
                 ]
-              })
-        ]
+              }
+            ]
+          })
+      : !isCampaignWithSlots.get() ? null
+      : @() {
+          watch = selectedSlotIdx
+          rendObj = ROBJ_SOLID
+          size = [infoPanelWidth, slotBarTreeHeight + saBorders[1]]
+          padding = [0, saBorders[0]]
+          color = 0x40000000
+          hplace = ALIGN_RIGHT
+          vplace = ALIGN_BOTTOM
+          children = selectedSlotIdx.get() == null ? null
+            : {
+                hplace = ALIGN_RIGHT
+                halign = ALIGN_RIGHT
+                valign = ALIGN_CENTER
+                size = [statsWidth, slotBarTreeHeight]
+                rendObj = ROBJ_TEXTAREA
+                behavior = Behaviors.TextArea
+                text = loc("unitsTree/selectUnitHint")
+              }.__update(fontMedium)
+        }
   }
 }
 

@@ -21,12 +21,13 @@ let { sendErrorBqEvent, sendLoadingStageBqEvent } = require("%appGlobals/pServer
 let { getLocTextForLang } = require("dagor.localize")
 let { login_nswitch} = require("subStageAuthNSwitch.nut")
 let {parse_json} = require("json")
+let { FORGOT_PASSWORD_URL } = require("%appGlobals/legal.nut")
 
 let { logStage, onlyActiveStageCb, export, finalizeStage, interruptStage} = require("mkStageBase.nut")("auth", LOGIN_STATE.LOGIN_STARTED, LOGIN_STATE.AUTHORIZED)
 
 subscribeFMsgBtns({
   loginExitGame = @(_) exitGame()
-  loginRecovery = @(_) openUrl(loc("url/recovery"), false, "login_wnd")
+  loginRecovery = @(_) openUrl(FORGOT_PASSWORD_URL, false, "login_wnd")
 })
 
 let mkInterruptWithRecoveryMsg = @(errCode) function(_loginType) {

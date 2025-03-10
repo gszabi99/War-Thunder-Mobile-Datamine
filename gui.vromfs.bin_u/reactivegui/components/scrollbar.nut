@@ -24,6 +24,17 @@ let defStyle = {
 
 let calcBarSize = @(scrollbarWidth, isVertical) isVertical ? [scrollbarWidth, flex()] : [flex(), scrollbarWidth]
 
+let outsideBarParams = {
+  [true] = {
+    [ALIGN_LEFT] = @(width, offset) { pos = [- width - offset, 0] },
+    [ALIGN_RIGHT] = @(_, offset) { pos = [offset, 0], hplace = ALIGN_RIGHT },
+  },
+  [false] = {
+    [ALIGN_TOP] = @(width, offset) { pos = [0, - width - offset] },
+    [ALIGN_BOTTOM] = @(_, offset) { pos = [0, offset], vplace = ALIGN_BOTTOM },
+  },
+}
+
 function scrollbar(scroll_handler, options = {}) {
   let stateFlags = Watched(0)
   let {
@@ -72,36 +83,38 @@ function scrollbar(scroll_handler, options = {}) {
     }
   }
 
+  function scrollComp() {
+    if (isElemFit.get())
+      return barStyleCtor(false).__merge({
+        watch = isElemFit
+        size = needReservePlace ? calcBarSize(scrollbarWidth, isVertical) : null
+        key = scroll_handler
+        behavior = Behaviors.Slider
+      })
+    return barStyleCtor(true).__merge({
+      watch = [isElemFit, maxV, elemSize]
+      key = scroll_handler
+      size = calcBarSize(scrollbarWidth, isVertical)
+
+      behavior = Behaviors.Slider
+      orientation
+      fValue = fValue.get()
+      knob
+      min = 0
+      max = maxV.get()
+      unit = 1
+      pageScroll = (isVertical ? 1 : -1) * maxV.get() / 100.0 // TODO probably needed sync with container wheelStep option
+      onChange = @(val) isVertical ? scroll_handler.scrollToY(val)
+        : scroll_handler.scrollToX(val)
+      onElemState = @(sf) stateFlags.set(sf)
+
+      children = view
+    })
+  }
+
   return {
     isElemFit
-    function scrollComp() {
-      if (isElemFit.get())
-        return barStyleCtor(false).__merge({
-          watch = isElemFit
-          size = needReservePlace ? calcBarSize(scrollbarWidth, isVertical) : null
-          key = scroll_handler
-          behavior = Behaviors.Slider
-        })
-      return barStyleCtor(true).__merge({
-        watch = [isElemFit, maxV, elemSize]
-        key = scroll_handler
-        size = calcBarSize(scrollbarWidth, isVertical)
-
-        behavior = Behaviors.Slider
-        orientation
-        fValue = fValue.get()
-        knob
-        min = 0
-        max = maxV.get()
-        unit = 1
-        pageScroll = (isVertical ? 1 : -1) * maxV.get() / 100.0 // TODO probably needed sync with container wheelStep option
-        onChange = @(val) isVertical ? scroll_handler.scrollToY(val)
-          : scroll_handler.scrollToX(val)
-        onElemState = @(sf) stateFlags.set(sf)
-
-        children = view
-      })
-    }
+    scrollComp
   }
 }
 
@@ -112,6 +125,8 @@ let DEF_SIDE_SCROLL_OPTIONS = defStyle.__merge({ //const
   maxWidth = null
   maxHeight = null
   needReservePlace = true //need reserve place for scrollbar when it not visible
+  isBarOutside = false //place bar outside of main comp
+  outsideOffset = defStyle.scrollbarWidth //offset when place bar outside of main comp
   clipChildren  = true
   joystickScroll = true
 })
@@ -120,9 +135,10 @@ function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
   options = DEF_SIDE_SCROLL_OPTIONS.__merge(options)
 
   let scrollHandler = options?.scrollHandler ?? ScrollHandler()
-  let { rootBase, size, orientation, joystickScroll, maxHeight, maxWidth, clipChildren
+  let { rootBase, size, orientation, joystickScroll, maxHeight, maxWidth, clipChildren,
+    isBarOutside, outsideOffset, scrollbarWidth, scrollAlign
   } = options
-  let scrollAlign = options.scrollAlign
+  let isVertical = orientation == O_VERTICAL
 
   let rootBhv = [Behaviors.WheelScroll, Behaviors.ScrollEvent]
   if (type(rootBase?.behavior) == "array")
@@ -143,19 +159,38 @@ function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
 
   let { isElemFit, scrollComp } = scrollbar(scrollHandler, options)
 
-  let childrenContent = scrollAlign == ALIGN_LEFT || scrollAlign == ALIGN_TOP
-    ? [scrollComp, contentRoot]
+  let childrenContent = isBarOutside ? contentRoot
+    : scrollAlign == ALIGN_LEFT || scrollAlign == ALIGN_TOP ? [scrollComp, contentRoot]
     : [contentRoot, scrollComp]
 
-  return @() {
+  let mainBlock = @() {
     watch = isElemFit
     size
     maxHeight
     maxWidth
-    flow = orientation == O_VERTICAL ? FLOW_HORIZONTAL : FLOW_VERTICAL
+    flow = isVertical ? FLOW_HORIZONTAL : FLOW_VERTICAL
     clipChildren
 
     children = childrenContent
+  }
+
+  if (!isBarOutside)
+    return mainBlock
+
+  return {
+    size
+    maxHeight
+    maxWidth
+    children = [
+      mainBlock
+      {
+        size = calcBarSize(0, orientation == O_VERTICAL)
+        children = scrollComp
+      }.__update(
+        scrollAlign in outsideBarParams?[isVertical]  //only because of strange bug in quirrel 2025.03.04 //warning disable: -bool-as-index
+          ? outsideBarParams[isVertical][scrollAlign](scrollbarWidth, outsideOffset) //warning disable: -bool-as-index
+          : {})
+    ]
   }
 }
 

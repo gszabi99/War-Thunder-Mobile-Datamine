@@ -1,0 +1,1074 @@
+{
+  "showNamesForBots": true,
+  "numBotsNamesCount": 542,
+  "maxWaitTimeForRespawn": 1.0,
+  "addWaitBetweenBotRespawns": 9,
+  "numBotRespawnsInMultiSlot": 1,
+  "numTankBotRespawnsInMultiSlot": 3,
+  "numBotRespawnsInVersus": 1,
+  "numTankBotRespawnsInVersus": 3,
+  "allowedAircrafts": {
+    "rankRange": [
+      {
+        "range": [
+          0,
+          1
+        ],
+        "aircraft": [
+          {
+            "name": "f3f-2",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "he51c1",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "i-15_1934",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
+      },
+      {
+        "range": [
+          2,
+          2
+        ],
+        "aircraft": [
+          {
+            "name": "f2a-1",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "bf-109c_1",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "i-153_m62",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
+      },
+      {
+        "range": [
+          3,
+          3
+        ],
+        "aircraft": [
+          {
+            "name": "f4f-3",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "he_112b_0",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "yak-1_early",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
+      },
+      {
+        "range": [
+          4,
+          4
+        ],
+        "aircraft": [
+          {
+            "name": "f4u-1d",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "bf-109f-2",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "yak-7b",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
+      },
+      {
+        "range": [
+          5,
+          5
+        ],
+        "aircraft": [
+          {
+            "name": "p-63a-10",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "fw-190a-4",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "la-5fn",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
+      },
+      {
+        "range": [
+          6,
+          6
+        ],
+        "aircraft": [
+          {
+            "name": "p-51d-20-na",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "bf-109f-4_trop",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "yak-3",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
+      },
+      {
+        "range": [
+          7,
+          50
+        ],
+        "aircraft": [
+          {
+            "name": "f4u-4b",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "fw-190a-5_cannons",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "la-7b-20",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
+      }
+    ]
+  },
+  "allowedTanks": {
+    "tank": [
+      {
+        "name": "us_m4a1_1942_sherman",
+        "weight": 1.0,
+        "country": "usa"
+      },
+      {
+        "name": "germ_pzkpfw_IV_ausf_F2",
+        "weight": 1.0,
+        "country": "germany"
+      },
+      {
+        "name": "ussr_t_34_1941",
+        "weight": 1.0,
+        "country": "ussr"
+      }
+    ],
+    "rankRange": [
+      {
+        "range": [
+          0,
+          1
+        ],
+        "tank": [
+          {
+            "name": "us_m4a1_1942_sherman",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m24_chaffee",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m10",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "germ_pzkpfw_III_ausf_L",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_pzkpfw_IV_ausf_F2",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_pzkpfw_IV_ausf_F",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "ussr_t_34_1941_l_11",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_t_34_1941",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_t_28E",
+            "weight": 1.0,
+            "country": "ussr"
+          }
+        ]
+      },
+      {
+        "range": [
+          2,
+          2
+        ],
+        "tank": [
+          {
+            "name": "germ_pzkpfw_IV_ausf_G",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_pzkpfw_IV_ausf_H",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_stug_III_ausf_G",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "jp_type_3_chi_nu_75cm_type_5",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "jp_type_4_chi_to",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "jp_type_5_na_to",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "us_m4a2_sherman",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_t14",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "fr_m4a4_sherman_reskin",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "ussr_t_34_1942",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_t_34E_STZ",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_kv_1_zis_5",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "uk_a30_sp_avenger",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "uk_concept3_ngac",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "uk_churchill_na75",
+            "weight": 1.0,
+            "country": "britain"
+          }
+        ]
+      },
+      {
+        "range": [
+          3,
+          3
+        ],
+        "tank": [
+          {
+            "name": "fr_panhard_ebr_1951",
+            "weight": 1.0,
+            "country": "france"
+          },
+          {
+            "name": "fr_arl_44",
+            "weight": 1.0,
+            "country": "france"
+          },
+          {
+            "name": "fr_m4a1_sherman_fl_10",
+            "weight": 1.0,
+            "country": "france"
+          },
+          {
+            "name": "us_m4a1_76w_sherman",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m6a1",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m18_hellcat",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "uk_a_34_comet",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "uk_a30_challenger",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "uk_a_22f_mk_7_churchill_1944",
+            "weight": 1.0,
+            "country": "britain"
+          }
+        ]
+      },
+      {
+        "range": [
+          4,
+          4
+        ],
+        "tank": [
+          {
+            "name": "ussr_t_34_85_d_5t",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_su_152",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_is_1",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "germ_pzkpfw_VI_ausf_h1_tiger",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_jgdpz_38t",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_vk_3002m",
+            "weight": 1.0,
+            "country": "germany"
+          }
+        ]
+      },
+      {
+        "range": [
+          5,
+          5
+        ],
+        "tank": [
+          {
+            "name": "us_m4a3e8_76w_sherman",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m41_walker_bulldog",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_t26e5",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "jp_st_a1",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "jp_m41_walker_bulldog",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "jp_m36b2_jgsdf",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "germ_pzkpfw_V_ausf_d_panther",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_pz_IV_L70",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_pzkpfw_VI_ausf_b_tiger_IIp",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "ussr_t_34_85_zis_53",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_su_100_1945",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_is_2_1943",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "uk_a_43_black_prince",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "uk_centurion_mk_1",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "uk_ratel_90",
+            "weight": 1.0,
+            "country": "britain"
+          }
+        ]
+      },
+      {
+        "range": [
+          6,
+          6
+        ],
+        "tank": [
+          {
+            "name": "germ_pzkpfw_V_ausf_f_panther",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_pzkpfw_VI_ausf_b_tiger_IIh",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_panzerjager_tiger",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "fr_bat_chat_25t",
+            "weight": 1.0,
+            "country": "france"
+          },
+          {
+            "name": "fr_amx_m4",
+            "weight": 1.0,
+            "country": "france"
+          },
+          {
+            "name": "fr_amx_13_75",
+            "weight": 1.0,
+            "country": "france"
+          },
+          {
+            "name": "us_m26e1_pershing",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_t34",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_t95",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "ussr_t_44",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_is_2_1944",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_t_44_100",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "uk_fv4202",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "uk_fv4005",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "uk_a39_tortoise",
+            "weight": 1.0,
+            "country": "britain"
+          }
+        ]
+      },
+      {
+        "range": [
+          7,
+          7
+        ],
+        "tank": [
+          {
+            "name": "ussr_t_54_1949",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_t_10a",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_object_906",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "germ_leopard_I",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_mkpz_m48a2c",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_mkpz_m47",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "us_m47_patton_II",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m103",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_t114",
+            "weight": 1.0,
+            "country": "usa"
+          }
+        ]
+      },
+      {
+        "range": [
+          8,
+          50
+        ],
+        "tank": [
+          {
+            "name": "ussr_t_55a",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_t_62",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_it_1",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "us_m60a1",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m60a2",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "germ_leopard_I_a1",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_mkpz_m48a2ga2",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "jp_st_b1",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "jp_type_74_c",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "jp_type_87_rcv",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "fr_amx_30_b2_brenus",
+            "weight": 1.0,
+            "country": "france"
+          },
+          {
+            "name": "fr_amx_32_105",
+            "weight": 1.0,
+            "country": "france"
+          },
+          {
+            "name": "fr_mars_15",
+            "weight": 1.0,
+            "country": "france"
+          },
+          {
+            "name": "it_of_40_mk_2a",
+            "weight": 1.0,
+            "country": "italy"
+          },
+          {
+            "name": "it_leopard_1a5",
+            "weight": 1.0,
+            "country": "italy"
+          },
+          {
+            "name": "cn_ztz_88a",
+            "weight": 1.0,
+            "country": "china"
+          },
+          {
+            "name": "cn_type_59d",
+            "weight": 1.0,
+            "country": "china"
+          },
+          {
+            "name": "sw_strv_103c",
+            "weight": 1.0,
+            "country": "sweden"
+          },
+          {
+            "name": "sw_strv_104",
+            "weight": 1.0,
+            "country": "sweden"
+          },
+          {
+            "name": "il_magach_6r",
+            "weight": 1.0,
+            "country": "israel"
+          },
+          {
+            "name": "il_magach_6b",
+            "weight": 1.0,
+            "country": "israel"
+          },
+          {
+            "name": "il_centurion_shot_kal_gimel",
+            "weight": 1.0,
+            "country": "israel"
+          }
+        ]
+      },
+      {
+        "range": [
+          9,
+          50
+        ],
+        "tank": [
+          {
+            "name": "ussr_t_72a",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_t_64a_1971",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "us_mbt_70",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m60a3_tts",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "germ_leopard_2k",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_kpz_70",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "uk_chieftain_mk_10",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "uk_olifant_mk_2",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "cn_ztz_96",
+            "weight": 1.0,
+            "country": "china"
+          },
+          {
+            "name": "cn_cm11",
+            "weight": 1.0,
+            "country": "china"
+          },
+          {
+            "name": "sw_cv_90105_tml",
+            "weight": 1.0,
+            "country": "sweden"
+          },
+          {
+            "name": "sw_strv_105",
+            "weight": 1.0,
+            "country": "sweden"
+          }
+        ]
+      }
+    ]
+  },
+  "allowedShips": {
+    "ship": [
+      {
+        "name": "uk_destroyer_hunt_4series",
+        "weight": 1.0,
+        "country": "germany"
+      },
+      {
+        "name": "us_destroyer_fletcher",
+        "weight": 0.25,
+        "country": "germany"
+      },
+      {
+        "name": "germ_destroyer_class1934a_1940",
+        "weight": 0.25,
+        "country": "germany"
+      }
+    ],
+    "rankRange": [
+      {
+        "range": [
+          0,
+          1
+        ],
+        "ship": [
+          {
+            "name": "uk_destroyer_hunt_4series",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "us_destroyer_fletcher",
+            "weight": 0.5,
+            "country": "germany"
+          },
+          {
+            "name": "germ_destroyer_class1934a_1940",
+            "weight": 0.5,
+            "country": "germany"
+          }
+        ]
+      },
+      {
+        "range": [
+          2,
+          2
+        ],
+        "ship": [
+          {
+            "name": "germ_cruiser_nurnberg",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "us_cruiser_new_orleans_class",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "ussr_cruiser_sverdlov",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "jp_cruiser_furutaka",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "uk_cruiser_kent",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "us_cruiser_cleveland_class_cleveland",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_cruiser_admiral_hipper",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "uk_cruiser_southampton",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "ussr_cruiser_kirov",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "jp_cruiser_tone",
+            "weight": 1.0,
+            "country": "germany"
+          }
+        ]
+      },
+      {
+        "range": [
+          3,
+          3
+        ],
+        "ship": [
+          {
+            "name": "germ_battleship_helgoland",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "uk_battleship_dreadnought",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "us_battleship_north_dakota",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "ussr_battleship_imperatritsa_mariya",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "jp_battleship_settsu",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_battleship_kaiser",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "us_battleship_wyoming_class",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "ussr_battleship_parizhskaya_kommuna",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "uk_battleship_warspite",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "jp_battleship_hyuga",
+            "weight": 1.0,
+            "country": "germany"
+          }
+        ]
+      },
+      {
+        "range": [
+          4,
+          4
+        ],
+        "ship": [
+          {
+            "name": "us_battlecruiser_alaska_class",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "ussr_battlecruiser_stalingrad",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "jp_battleship_fuso",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "uk_battleship_king_george_1945",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_battleship_tirpitz_1944",
+            "weight": 1.0,
+            "country": "germany"
+          }
+        ]
+      },
+      {
+        "range": [
+          5,
+          6
+        ],
+        "ship": [
+          {
+            "name": "us_battleship_iowa",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_battleship_bismarck",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "uk_battleship_vanguard",
+            "weight": 1.0,
+            "country": "germany"
+          }
+        ]
+      },
+      {
+        "range": [
+          6,
+          60
+        ],
+        "ship": [
+          {
+            "name": "germ_destroyer_rckt_hamburg",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "us_cruiser_rckt_belknap",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "jp_destroyer_rckt_takatsuki",
+            "weight": 1.0,
+            "country": "germany"
+          }
+        ]
+      }
+    ]
+  },
+  "testBots": {
+    "enabled": false,
+    "timeBetweenChangeAircrafts": 10.0
+  },
+  "necessaryMods": {
+    "mod": "manual_extinguisher"
+  }
+}

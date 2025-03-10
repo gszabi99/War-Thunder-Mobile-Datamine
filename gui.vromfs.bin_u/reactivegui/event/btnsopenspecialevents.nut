@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { translucentButton } = require("%rGui/components/translucentButton.nut")
+let { translucentButton, translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
 let { openEventWnd, specialEventsLootboxesState, unseenLootboxes, unseenLootboxesShowOnce } = require("%rGui/event/eventState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
@@ -50,7 +50,7 @@ function btnsOpenSpecialEvents() {
   return {
     watch = specialEventsLootboxesState
     flow = FLOW_HORIZONTAL
-    gap = hdpx(30)
+    gap = translucentButtonsVGap
     children
   }
 }

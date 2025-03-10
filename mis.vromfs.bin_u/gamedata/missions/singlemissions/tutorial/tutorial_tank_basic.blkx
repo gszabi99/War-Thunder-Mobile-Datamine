@@ -747,9 +747,15 @@
           "scale": 0.0,
           "target": "waypoint04_underground"
         },
-        "playerEmulateShortcut": {
-          "control": "ID_TRANS_GEAR_NEUTRAL"
-        },
+        "playerEmulateShortcut": [
+          {
+            "control": "ID_TRANS_GEAR_NEUTRAL"
+          },
+          {
+            "control": "ID_SHORT_BRAKE",
+            "holdTime": -1.0
+          }
+        ],
         "triggerEnable": [
           {
             "target": "controls_disable"

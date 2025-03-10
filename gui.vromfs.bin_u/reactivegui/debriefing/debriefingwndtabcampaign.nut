@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { sortUnits } = require("%rGui/unit/unitUtils.nut")
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
@@ -42,7 +43,7 @@ function mkDebriefingWndTabCampaign(debrData, params) {
     return null
   let { playerExp = {} } = reward
   let { levelProgressLineComp, levelProgressLineAnimTime } = mkLevelProgressLine(player, playerExp,
-    loc($"gamercard/levelCamp/header/{campaign}"), loc("gamercard/levelCamp/desc"),
+    loc(getCampaignPresentation(campaign).headerFullLocId), loc("gamercard/levelCamp/desc"),
     levelProgressAnimStartTime, playerExpColor)
   let { levelUnlocksComps, levelUnlocksAnimTime } = mkPlayerLevelUnlockPlates(debrData, levelUnlocksAnimStartTime)
 

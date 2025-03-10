@@ -17,11 +17,11 @@ let getDefaultBattleData = require("%appGlobals/data/getDefaultBattleData.nut")
 let { mkCmdSetBattleJwtData, mkCmdGetMyBattleData,
   mkCmdSetDefaultBattleData, CmdSetMyBattleData } = require("%appGlobals/sqevents.nut")
 let { register_command } = require("console")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isInBattle, battleSessionId, isSingleMissionOverrided } = require("%appGlobals/clientState/clientState.nut")
 let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { battleCampaign, battleUnitClasses, mainBattleUnitName } = require("%appGlobals/clientState/missionState.nut")
-let { curUnit } = require("%appGlobals/pServer/profile.nut")
+let { curUnitName } = require("%appGlobals/pServer/profile.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let { registerRespondent } = require("scriptRespondent")
 
@@ -36,7 +36,6 @@ enum ACTION {
   REQUEST = "request"
 }
 
-let curUnitName = mkWatched(persist, "battleDataUnit", null)
 let state = mkWatched(persist, "state", null) //eid, sessionId, slots, isSlots, data, isBattleDataReceived, isUnitsOverrided, ovrUnitUpgradesPreset
 let isBattleDataApplied = mkWatched(persist, "isBattleDataApplied", false)
 let wasBattleDataApplied = mkWatched(persist, "wasBattleDataApplied", false)
@@ -193,7 +192,9 @@ curAction.subscribe(@(actionId) defer(function() { //action can change curAction
     applyAction(actionId)
 }))
 
-let realBattleData = Computed(@() state.value?.data ?? battleData.value?.payload)
+let realBattleData = Computed(@() battleSessionId.get() != -1 ? state.get()?.data
+  : isSingleMissionOverrided.get() ? battleDataOvrMission.get()?.payload
+  : battleData.get()?.payload)
 
 let battleDataQuery = ecs.SqQuery("battleDataQuery",
   {
@@ -236,16 +237,23 @@ function setBattleDataToClientEcs(bd) {
 }
 
 function createBattleDataForLocalMP() {
-  let unitName = curUnit.value?.name ?? curUnitName.value
+  if (isSingleMissionOverrided.get()) {
+    if (isBattleDataOvrMissionActual.get())
+      setBattleDataToClientEcs(battleDataOvrMission.get().payload)
+    else
+      logBD("Ignore set override battle data to localMP because of not actual")
+    return
+  }
+
+  let unitName = curUnitName.get()
   let slots = curCampaignSlotUnits.get()
   logBD("createBattleDataForLocalMP ", unitName, slots, isBattleDataActual.get())
   if (slots != null)
     actualizeBattleData(slots)
   else if (unitName != null)
     actualizeBattleData(unitName)
-
-  if (isBattleDataActual.value)
-    setBattleDataToClientEcs(battleData.value?.payload)
+  if (isBattleDataActual.get())
+    setBattleDataToClientEcs(battleData.get()?.payload)
   else
     logBD("Ignore set battle data to localMP because of not actual")
 }
@@ -255,7 +263,6 @@ let onCreateBattleDataForClient = @() is_local_multiplayer() ? createBattleDataF
   : isBattleDataActual.value ? setBattleDataToClientEcs(battleData.value?.payload)
   : logBD("Ignore set battle data to client because of not actual")
 
-registerRespondent("create_battle_data_for_local_mp", onCreateBattleDataForClient) //compatibility for exe version 2025.01.13
 registerRespondent("create_battle_data_for_client", onCreateBattleDataForClient)
 
 let mpBattleDataForClientEcs = keepref(Computed(@() !isInBattle.value || !is_multiplayer() ? null
@@ -269,7 +276,14 @@ realBattleData.subscribe(function(v) {
     .totable())
 })
 
-isInBattle.subscribe(@(v) v ? wasBattleDataApplied(isBattleDataApplied.value) : isBattleDataApplied(false))
+isInBattle.subscribe(function(v) {
+  if (v)
+    wasBattleDataApplied(isBattleDataApplied.get())
+  else {
+    isBattleDataApplied(false)
+    isSingleMissionOverrided.set(false)
+  }
+})
 isBattleDataApplied.subscribe(@(v) v ? wasBattleDataApplied(v) : null)
 
 let battleUnitName = keepref(Computed(@() !isInBattle.value ? null : state.value?.slots[0]))

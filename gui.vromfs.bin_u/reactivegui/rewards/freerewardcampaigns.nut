@@ -2,12 +2,11 @@ from "%globalsDarg/darg_library.nut" import *
 let { deferOnce } = require("dagor.workcycle")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { isProfileReceived, curCampaign,
-  isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { isProfileReceived, curCampaign, isCampaignWithUnitsResearch, sharedStatsByCampaign
+} = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
 
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
@@ -38,7 +37,7 @@ let needShow = keepref(Computed(@() isInMenuNoModals.get()
   && unitToShowAsReceived.get() != null
   && isLoggedIn.get()))
 let needShowTutorialAfterLeaveGame = keepref(Computed(function() {
-  let { battles = 0, offlineBattles = 0 } = servProfile.get()?.sharedStatsByCampaign[curCampaign.get()]
+  let { battles = 0, offlineBattles = 0 } = sharedStatsByCampaign.get()
   return unitsStatus.get() == UNITS_STATUS.UNITS_AVAILABLE
     && !needShowTutorialAfterReward.get()
     && !needShow.get()

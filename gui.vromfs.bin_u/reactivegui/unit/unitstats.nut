@@ -101,7 +101,6 @@ function mkStat(id, cfg, unitType) {
   return {
     id
     secondaryId = null
-    position = null
     isAvailable = @(s) id in s
     isAfterWeapons = false
     getHeader = @(_, __) loc($"stats/{id}")
@@ -109,7 +108,8 @@ function mkStat(id, cfg, unitType) {
     getProgress = mkGetProgress(unitType, id)
     getProgressColor = @(_, __) null
     getListTitle = @() null
-    getRowListHeader = @(_) null
+    hasSeveralValueRows = false
+    getRowListHeader = @(v) v
     getRowListValue = @(_) null
     valueToText = @(v, _) v?.tostring()
     valueToTextAttr = @(v, _) v?.tostring()
@@ -225,6 +225,7 @@ let statsTank = {
 let statsAir = {
   pylonCount = {
     valueToText = @(v, _) v.tostring()
+    isAfterWeapons = true
   }
   crew = {
     getHeader = @(__, _) loc("attrib_section/plane_crew")
@@ -238,7 +239,6 @@ let statsAir = {
   }
   maxSpeed = {
     valueToText = @(v, _) getSpeedText(v)
-    isAfterWeapons = true
   }
   maxSpeedAlt = {
     valueToText = @(v, _) "".concat(round(v), loc("measureUnits/meters_alt"))
@@ -428,27 +428,28 @@ let mkAirMainWeapon = @(id) mkStat(id, {
   id = "mainWeapon"
   secondaryId = id
   getHeader = @(s, u) getAirGunName(s, u, false)
+  hasSeveralValueRows = true
   getRowListValue = @(v) v
   getRowListHeader = @(_) loc("weapons_types/enum/frontal")
   isAvailable = @(_) true
-  position = 0
 }, AIR)
 
 let mkAirTurretWeapon = @(id) mkStat(id, {
   id = "turretWeapon"
   secondaryId = id
   getHeader = @(s, u) getAirGunName(s, u, false)
+  hasSeveralValueRows = true
   getRowListValue = @(v) v
   getRowListHeader = @(_) loc("weapons_types/enum/turrets")
   isAvailable = @(_) true
-  position = 2
 }, AIR)
 
 let mkAirSecondaryWeapon = @(id) mkStat(id, {
   id = "secondaryWeapon"
+  posOffset = 1 //to move after pilons info
   secondaryId = id
   getHeader = @(_, __) getWeaponTypeName(id)
-  getRowListHeader = @(v) v ?? true
+  hasSeveralValueRows = true
   isAvailable = @(_) true
 }, AIR)
 
@@ -459,7 +460,6 @@ let mkAirFullGunWeapon = @(id) mkStat(id, {
   getHeader = @(s, u) $"{getAirGunName(s, u)}: {s.ammoCount}, {round_by_value(s.shotFreq, 0.1)}"
   getListTitle = @() loc("weapons_types/enum/weapons")
   isAvailable = @(_) true
-  position = 1 // position 0 for list title
 }, AIR)
 
 let weaponsCfgAir = {
@@ -476,10 +476,6 @@ let weaponsCfgAir = {
     mkAirMainWeapon("cannon")
     mkAirMainWeapon("machine gun")
     mkAirTurretWeapon("gunner")
-    mkAirSecondaryWeapon("bombs")
-    mkAirSecondaryWeapon("rockets")
-    mkAirSecondaryWeapon("torpedoes")
-    mkAirSecondaryWeapon("additional gun")
   ]
 }
 
@@ -525,15 +521,41 @@ function mkUnitStat(unit, stat, shopCfg, uid, statsWithAttr = {}) {
   }
 }
 
-function mutateUnitStats(unitStats, weaponsIdx, unitStat, position) {
-  if (weaponsIdx != null || position != null)
-    unitStats.insert(position ?? weaponsIdx, unitStat)
+function mutateUnitStats(unitStats, weaponsIdx, unitStat) {
+  if (weaponsIdx != null)
+    unitStats.insert(weaponsIdx, unitStat)
   else
     unitStats.append(unitStat)
 }
 
 let sortedUnitTypesByWeapDmg = [TANK, AIR].reduce(@(res, t) res.$rawset(t, true), {})
 let isWeaponById = @(stat, weaponKey) weaponKey.contains(stat?.secondaryId, 0) || weaponKey.contains(stat.id, 0)
+
+let getWeapByTypeFromSlots = @(slots) slots
+  .reduce(function(res, slot) {
+      foreach(preset in slot.wPresets)
+        foreach(weapon in preset.weapons) {
+          let { trigger, weaponId, guns, totalBullets, shotFreq } = weapon
+          if (trigger not in res)
+            res[trigger] <- []
+          let idx = res[trigger].findindex(@(w) w.wId == weaponId)
+          if (idx != null) {
+            let cfg = res[trigger][idx]
+            cfg.gunsCount += guns
+            cfg.ammoCount += totalBullets
+          }
+          else
+            res[trigger].append({
+              type = trigger
+              wId = weaponId
+              ammoCount = totalBullets
+              gunsCount = guns
+              shotFreq
+            })
+        }
+      return res
+    },
+    {})
 
 // ToDo: Extract the air logic in another funtion to not complicate it.
 // ToDo: Get the whole air card info from the weapon slots, but not from unit tags.
@@ -543,18 +565,21 @@ function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
   if (statsWithAttr == null)
     return []
   let unitStats = statsList.map(@(stat) mkUnitStat(unit, stat, shopCfg, stat.id, statsWithAttr))
-  let weapByType = (shopCfg?.weapons ?? {}).reduce(function(res, wCfg, wId) {
-    let wtype = wCfg?.wtype ?? wCfg?.type ?? "null"
-    res[wtype] <- (res?[wtype] ?? []).append(wCfg.__update({ wId }))
-    return res
-  }, {})
+
+  let weaponSlots = loadUnitWeaponSlots(unit.name)
+  let weapByType = weaponSlots.len() == 0
+    ? (shopCfg?.weapons ?? {}).reduce(function(res, wCfg, wId) {
+        let wtype = wCfg?.wtype ?? wCfg?.type ?? "null"
+        res[wtype] <- (res?[wtype] ?? []).append(wCfg.__update({ wId }))
+        return res
+      }, {})
+    : getWeapByTypeFromSlots(weaponSlots)
 
   local weaponsIdx = statsList.findindex(@(stat) stat.isAfterWeapons)
   let existingListStats = {}
   let existingRowLists = {}
   foreach (stat in weapStatsList) {
-    let rowListHeader = stat.getRowListHeader(null)
-    if (rowListHeader && !existingRowLists?[stat.id]) {
+    if (stat.hasSeveralValueRows && !existingRowLists?[stat.id]) {
       existingRowLists[stat.id] <- true
       let aggregatedStats = weapStatsList.filter(@(v) v.id == stat.id)
       let headers = {}
@@ -565,16 +590,22 @@ function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
 
         foreach (weap in list)
           foreach (wCfg in weap) {
-            let unitStat = mkUnitStat(unit, aggregateStat, wCfg, aggregateStat.id)
-            if (unitStat != null)
-              headers[unitStat.header] <- true
+            if (!aggregateStat.isAvailable(wCfg))
+              return null
+            let header = aggregateStat.getHeader(wCfg, unit)
+            if (header != null)
+              headers[header] <- true
           }
       }
 
       if (headers.len() > 0) {
         let title = ", ".join(headers.keys())
-        mutateUnitStats(unitStats, weaponsIdx ? weaponsIdx++ : null,
-          mkTitle(stat.id, stat.getRowListHeader(title), stat.getRowListValue(title)), stat.position)
+        let { posOffset = null } = stat
+        let pos = weaponsIdx == null ? null
+          : posOffset != null ? weaponsIdx + posOffset
+          : weaponsIdx++
+        mutateUnitStats(unitStats, pos,
+          mkTitle(stat.id, stat.getRowListHeader(title), stat.getRowListValue(title)))
       }
       continue
     }
@@ -588,16 +619,16 @@ function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
     let listTitle = stat.getListTitle()
     if (listTitle && !existingListStats?[stat.id]) {
       existingListStats[stat.id] <- true
-      mutateUnitStats(unitStats, weaponsIdx ? weaponsIdx++ : null,
-        mkTitle(mkTitleId(stat.id), listTitle), stat.position == null ? null : stat.position - 1)
+      mutateUnitStats(unitStats, weaponsIdx != null ? weaponsIdx++ : null,
+        mkTitle(mkTitleId(stat.id), listTitle))
     }
 
     foreach (weapListIdx, weap in list) {
       if (!sortedUnitTypesByWeapDmg?[unit.unitType])
         weap.sort(@(a, b) a.damage < b.damage)
       foreach (i, wCfg in weap)
-        mutateUnitStats(unitStats, weaponsIdx ? weaponsIdx++ : null,
-          mkUnitStat(unit, stat, wCfg, $"{stat.id}{list.len() == 1 ? i : $"{weapListIdx}{i}"}"), stat.position)
+        mutateUnitStats(unitStats, weaponsIdx != null ? weaponsIdx++ : null,
+          mkUnitStat(unit, stat, wCfg, $"{stat.id}{list.len() == 1 ? i : $"{weapListIdx}{i}"}"))
     }
   }
   return unitStats.filter(@(v) v != null)

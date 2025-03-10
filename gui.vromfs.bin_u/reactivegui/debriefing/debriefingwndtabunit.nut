@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getPlatoonName, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { sortUnits } = require("%rGui/unit/unitUtils.nut")
 let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
@@ -82,7 +83,7 @@ function mkDebriefingWndTabUnit(debrData, params) {
 
   let unitExp = getUnitRewards(unit?.name, debrData)?.exp
   let { levelProgressLineComp, levelProgressLineAnimTime } = mkLevelProgressLine(unit, unitExp,
-    unitNameLoc, loc($"gamercard/debriefing/desc/{campaign}"),
+    unitNameLoc, loc(getCampaignPresentation(campaign).debrUnitLevelDescLocId),
     levelProgressAnimStartTime,  unitExpColor)
   let { levelUnlocksComps, levelUnlocksAnimTime } = mkUnitLevelUnlockPlates(unit, debrData, levelUnlocksAnimStartTime)
 

@@ -1,12 +1,14 @@
 let { loc, doesLocTextExist } = require("dagor.localize")
 let { get_settings_blk } = require("blkGetters")
-let { logerr } = require("dagor.debug")
+let { logerr, debug } = require("dagor.debug")
+let { DBGLEVEL } = require("dagor.system")
 let { eachBlock } = require("%sqstd/datablock.nut")
-let { get_addons_size } = require("contentUpdater")
+let { get_addons_size, get_addons_size_async = null } = require("contentUpdater")
 let { startswith, endswith } = require("string")
 let { unique } = require("%sqstd/underscore.nut")
 let { toIntegerSafe } = require("%sqstd/string.nut")
 let { getRomanNumeral } = require("%sqstd/math.nut")
+let { eventbus_subscribe } = require("eventbus")
 
 let PKG_NAVAL  = "pkg_naval"
 let PKG_NAVAL_HQ = "pkg_naval_hq"
@@ -70,7 +72,37 @@ let extAddonsByRank = {}
 let soloNewbieByCampaign = {}
 let setBlk = get_settings_blk()
 let addonsBlk = setBlk?.addons
-if (addonsBlk != null)
+
+let GET_ALL_ADDONS_SIZES_EVENT_ID = "getAllAddonsSizesEvent"
+
+local addonsSizes = {}
+eventbus_subscribe(GET_ALL_ADDONS_SIZES_EVENT_ID, function(evt) {
+  addonsSizes = clone evt
+
+  if (DBGLEVEL > 0) {
+    local message = "Addons sizes:"
+    let addons = addonsSizes.keys().sort()
+    let addonsCount = addons.len()
+    for (local from = 0; from < addonsCount; from += 5) {
+      let chunk = addons.slice(from, from + 5)
+      let chunkStr = "    ".join(chunk.map(function(addon) {
+        let size = addonsSizes[addon]
+        let mb = (size + (MB / 2)) / MB
+        return $"{addon}: {mb}MB ({size})"
+      }))
+      message = "\n".concat(message, $"  {chunkStr}")
+    }
+    debug(message)
+  }
+})
+
+function requestAddonsSizes() {
+  let allAddons = knownAddons.keys()
+  if (allAddons.len() > 0)
+    get_addons_size_async?(GET_ALL_ADDONS_SIZES_EVENT_ID, allAddons)
+}
+
+if (addonsBlk != null) {
   eachBlock(addonsBlk, function(b) {
     let addon = b.getBlockName()
     let addonHq = $"{addon}_hq"
@@ -130,6 +162,8 @@ if (addonsBlk != null)
     }
   })
 
+  requestAddonsSizes()
+}
 
 function calcCommonAddonName(addon) {
   if (addon in addonLocIdWithMRank) {
@@ -196,8 +230,12 @@ function localizeAddonsLimited(list, maxNumber) {
   })
 }
 
+let getAddonsSize = @(addons)
+  get_addons_size_async != null ? unique(addons).reduce(@(total, addon) total + (addonsSizes?[addon] ?? 0), 0)
+                                : get_addons_size(unique(addons))
+
 function getAddonsSizeStr(addons) {
-  let bytes = get_addons_size(unique(addons))
+  let bytes = getAddonsSize(addons)
   let mb = (bytes + (MB / 2)) / MB
   return "".concat(mb > 0 ? mb : "???", loc("measureUnits/MB"))
 }
@@ -212,6 +250,7 @@ return freeze({
   latestDownloadAddonsByCamp
   extAddonsByRank
   knownAddons
+  getAddonsSize
   ovrHangarAddon
   soloNewbieByCampaign
 

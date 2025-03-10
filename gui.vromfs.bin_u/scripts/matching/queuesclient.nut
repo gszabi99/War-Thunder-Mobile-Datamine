@@ -24,8 +24,10 @@ let { isInSquad, squadMembers, isSquadLeader, squadLeaderCampaign, queueDataChec
 let { decodeJwtAndHandleErrors } = require("%appGlobals/pServer/pServerJwt.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let matching = require("%appGlobals/matching_api.nut")
+let { get_gui_option, addUserOption } = require("guiOptions")
 
 let isSquadActualizeSend = mkWatched(persist, "isSquadActualizeSend", false)
+let USEROPT_ALLOW_JIP = addUserOption("USEROPT_ALLOW_JIP")
 
 isInQueue.subscribe(@(_) isSquadActualizeSend(false))
 curQueueState.subscribe(@(v) logQ($"Queue state changed to: {queueStates.findindex(@(s) s == v)}"))
@@ -185,7 +187,7 @@ function joinQueue(params) {
   let paramsExt = {
     clusters = getOptimalClustersForSquad(squadMembers.value) ?? selClusters.value
     team = TEAM_ANY
-    jip = true
+    jip = get_gui_option(USEROPT_ALLOW_JIP) ?? true
   }.__update(params)
   logQ("Request join queue: ", paramsExt)
   curQueue({ state = QS_ACTUALIZE, params = paramsExt })

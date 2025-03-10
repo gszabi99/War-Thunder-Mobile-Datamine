@@ -5,7 +5,7 @@ let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { getUnitPresentation, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
 let { AIR, TANK, SHIP } = require("%appGlobals/unitConst.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { serverTimeDay, getDay } = require("%appGlobals/userstats/serverTimeDay.nut")
+let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { mkLevelBg, unitExpColor, playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { mkColoredGradientY, mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { shakeAnimation, fadeAnimation, revealAnimation, scaleAnimation, colorAnimation, unlockAnimation,
@@ -374,7 +374,7 @@ function mkUnitLock(unit, isLocked, justUnlockedDelay = null){
   }
 }
 
-let function mkFlagImage(countryId, width) {
+let function mkFlagImage(countryId, width, ovr = {}) {
   let w = round(width).tointeger()
   let h = round(w * (66.0 / 84)).tointeger()
   return {
@@ -383,7 +383,7 @@ let function mkFlagImage(countryId, width) {
     image = Picture($"ui/gameuiskin#{countryId}.avif:{w}:{h}")
     fallbackImage = Picture($"ui/gameuiskin#menu_lang.svg:{w}:{h}:P")
     keepAspect = true
-  }
+  }.__update(ovr)
 }
 
 let function mkUnitFlag(unit, isLocked = false) {
@@ -666,7 +666,7 @@ function mkProfileUnitDailyBonus(unit) {
     && unit.name in campMyUnits.get()
     && isDailyBonusActive.get()
     && unit?.dailyBonusTime != null
-    && serverTimeDay.get() != getDay(unit.dailyBonusTime))
+    && serverTimeDay.get() != getDay(unit.dailyBonusTime, dayOffset.get()))
   let wpMul = Computed(@() campConfigs.get()?.gameProfile.dailyUnitBonus.wpMul ?? 1)
   let expMul = Computed(@() campConfigs.get()?.gameProfile.dailyUnitBonus.expMul ?? 1)
   return mkUnitDailyBonus(canActivateDailyBonus, wpMul, expMul)

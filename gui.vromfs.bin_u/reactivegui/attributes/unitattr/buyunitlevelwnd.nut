@@ -65,7 +65,9 @@ let openImpl = @() addModalWindow(bgShaded.__merge({
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     children = [
-      modalWndHeaderWithClose(loc("header/unitLevelBoost", { unitName = loc(getUnitLocId(unitName.get())) }),
+      modalWndHeaderWithClose(
+        loc("header/unitLevelBoost",
+          { unitName = unitName.get() == null ? "" : loc(getUnitLocId(unitName.get())) }),
         close,
         {
           minWidth = SIZE_TO_CONTENT,

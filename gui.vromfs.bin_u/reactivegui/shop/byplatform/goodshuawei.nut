@@ -28,7 +28,6 @@ let billingModule = require("android.billing.huawei")
 let { HMS_ORDER_STATE_SUCCESS, HMS_ORDER_STATE_FAILED, HMS_ORDER_STATE_DEFAULT_CODE, HMS_ORDER_STATE_CANCEL,
   HMS_ORDER_STATE_CALLS_FREQUENT, HMS_ORDER_STATE_NET_ERROR, HMS_ORDER_PRODUCT_OWNED
 } = billingModule
-let compatibilityRestorePurchases = billingModule?.checkPurchases ?? billingModule?.restorePurchases
 let dbgStatuses = [HMS_ORDER_STATE_SUCCESS, HMS_ORDER_STATE_CANCEL, HMS_ORDER_STATE_FAILED, HMS_ORDER_STATE_NET_ERROR]
 local dbgStatusIdx = 0
 let { //defaults only to allow test this module on PC
@@ -65,7 +64,7 @@ let { //defaults only to allow test this module on PC
     setTimeout(0.1, @() unblockWindow("debug"))
   }
   confirmPurchase = @(_) setTimeout(1.0, @() eventbus_send("android.billing.huawei.onConfirmPurchaseCallback", { status = 0, value = "{}" })),
-  restorePurchases = compatibilityRestorePurchases ?? @() setTimeout(1.0,
+  restorePurchases = @() setTimeout(1.0,
     @() eventbus_send("android.billing.huawei.onRestorePurchases", {
       status = HMS_ORDER_STATE_SUCCESS,
       transactions = [
@@ -295,6 +294,7 @@ function sendLogPurchaseData(json_value) {
 }
 
 function onFinishRestore() {
+  logG("Restore finished")
   if (restoreStatus.get() == RESTORE_STARTED)
     showRestorePurchasesDoneMsg()
   restoreStatus.set(RESTORE_NOT_STARTED)
@@ -302,8 +302,6 @@ function onFinishRestore() {
 }
 
 function restorePurchasesExt(isSilent = true) {
-  if (compatibilityRestorePurchases == null)
-    return
   logG($"restorePurchases (isSilent = {isSilent})")
   lastYu2TimeoutErrorTime.set(0)
   purchaseInProgress.set("")
@@ -352,6 +350,7 @@ function registerNextTransaction() {
     if (status == HMS_ORDER_PRODUCT_OWNED
         && (restoreStatus.get() == RESTORE_NOT_STARTED || restoreStatus.get() == RESTORE_REQUIRE)) {
       needLogerr = false
+      logG("Set require restore on HMS_ORDER_PRODUCT_OWNED")
       restoreStatus.set(RESTORE_REQUIRE)
     }
     if (needLogerr)
@@ -380,8 +379,10 @@ eventbus_subscribe("android.billing.huawei.onRestorePurchases", function(result)
     return
   }
 
-  if (restoreStatus.get() == RESTORE_NOT_STARTED)
+  if (restoreStatus.get() == RESTORE_NOT_STARTED) {
+    logG("Change restore to silent on event onRestorePurchases")
     restoreStatus.set(RESTORE_STARTED_SILENT)
+  }
   pendingTransactions.mutate(@(v) v.extend(transactions))
   registerNextTransaction()
 })
@@ -422,8 +423,10 @@ eventbus_subscribe("auth.onRegisterHuaweiPurchase", function(result) {
   else if (status in yu2BadConnectionCodes) {
     lastYu2TimeoutErrorTime.set(get_time_msec())
     showErrorMsg(loc("msg/errorRegisterPaymentTimeout"), { size = [hdpx(1300), hdpx(700)] })
-    if (restoreStatus.get() == RESTORE_STARTED || restoreStatus.get() == RESTORE_REQUIRE)
+    if (restoreStatus.get() == RESTORE_STARTED || restoreStatus.get() == RESTORE_REQUIRE) {
+      logG("Change restore to silent after auth error")
       restoreStatus.set(RESTORE_STARTED_SILENT)
+    }
   }
   else
     showErrorMsg(loc("msg/errorWhileRegisteringPurchase"))
@@ -444,5 +447,5 @@ return {
   activatePlatfromSubscription = buyPlatformGoods
   changeSubscription
   platformPurchaseInProgress
-  restorePurchases = compatibilityRestorePurchases == null ? null : @() restorePurchasesExt(false)
+  restorePurchases = @() restorePurchasesExt(false)
 }

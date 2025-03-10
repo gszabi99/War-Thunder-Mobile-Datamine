@@ -108,20 +108,42 @@ let curStage = Computed(@() bpProgressUnlock.value?.stage ?? 0)
 let maxStage = Computed(@() max(bpFreeRewardsUnlock.get()?.stages.top().progress ?? 0,
   bpPaidRewardsUnlock.get()?.stages.top().progress ?? 0))
 
-function gatherUnlockStageInfo(unlock, isPaid, isActive, curStageV) {
-  let { name = "", stages = [], lastRewardedStage = -1, hasReward = false } = unlock
+function gatherUnlockStageInfo(unlock, isPaid, isActive, curStageV, maxStageV) {
+  let { name = "", stages = [], lastRewardedStage = -1,
+    hasReward = false, startStageLoop = 1, periodic = false,
+  } = unlock
   return stages.map(function(stage, idx) {
-    let { progress = 0 } = stage
-    let isReceived = idx < lastRewardedStage
-    let canBuyLevel = (curStageV + 1) == progress
+    let { progress = 0, rewards = {} } = stage
+    local viewProgress = progress
+    local loopMultiply = 0
+    local isReceived = idx < lastRewardedStage
+    let isLoop = periodic && idx >= startStageLoop - 1
+    if (isLoop) {
+      let loopIterationSize = max(1, stages.len() - startStageLoop + 1)
+
+      let startStageLoopProgress = maxStageV - loopIterationSize + 1
+
+      let loopIndexByCurStage = max(0, (curStageV - startStageLoopProgress) / loopIterationSize)
+      let progressByCurStage = progress + loopIterationSize * loopIndexByCurStage
+      let prevProgressByCurStage = max(progress, progressByCurStage - loopIterationSize)
+
+      let lastLoopRewardedStage = max(0, lastRewardedStage - startStageLoop + 1)
+
+      viewProgress = (prevProgressByCurStage - startStageLoopProgress > lastLoopRewardedStage) && (curStageV < progressByCurStage)
+        ? prevProgressByCurStage
+        : progressByCurStage
+      loopMultiply = 1 + (viewProgress - startStageLoopProgress - lastLoopRewardedStage) / loopIterationSize
+      isReceived = viewProgress - startStageLoopProgress < lastLoopRewardedStage
+    }
     return {
-      progress
-      rewards = stage?.rewards ?? {}
+      loopMultiply
+      progress = viewProgress
+      rewards
       unlockName = name
       isPaid
       isReceived
-      canBuyLevel
-      canReceive = !isReceived && isActive && hasReward && curStageV > progress - 1
+      canBuyLevel = !isLoop && (curStageV + 1) == viewProgress
+      canReceive = !isReceived && isActive && hasReward && curStageV >= viewProgress
     }
   })
 }
@@ -132,7 +154,7 @@ function fillViewInfo(res, servConfigs) {
       let rewInfo = []
       foreach(key, count in s.rewards) {
         let reward = servConfigs?.userstatRewards[key]
-        rewInfo.extend(getRewardsViewInfo(reward, count))
+        rewInfo.extend(getRewardsViewInfo(reward, (count ?? 1) * max(1, s?.loopMultiply ?? 0)))
       }
       s.viewInfo <- rewInfo.sort(sortRewardsViewInfo)?[0]
     }
@@ -143,11 +165,11 @@ function fillViewInfo(res, servConfigs) {
 }
 
 let mkBpStagesList = @() Computed(function() {
-  let listPaidStages = gatherUnlockStageInfo(bpPaidRewardsUnlock.value, true, isBpActive.value, curStage.value)
-  let listFreeStages = gatherUnlockStageInfo(bpFreeRewardsUnlock.value, false, true, curStage.value)
+  let listPaidStages = gatherUnlockStageInfo(bpPaidRewardsUnlock.get(), true, isBpActive.get(), curStage.get(), maxStage.get())
+  let listFreeStages = gatherUnlockStageInfo(bpFreeRewardsUnlock.get(), false, true, curStage.get(), maxStage.get())
 
   let res = listPaidStages.extend(listFreeStages)
-  let purchaseStages = gatherUnlockStageInfo(bpPurchasedUnlock.value, true, true, curStage.value)
+  let purchaseStages = gatherUnlockStageInfo(bpPurchasedUnlock.get(), true, true, curStage.get(), maxStage.get())
   if (purchaseStages.len() > 0) {
     let { isReceived, canReceive } = purchaseStages[0]
     res.insert(0, purchaseStages[0].__merge({
@@ -175,7 +197,9 @@ let mkBpStagesList = @() Computed(function() {
       })
   }
 
-  res.sort(@(a,b) (a?.progress ?? 0) <=> (b?.progress ?? 0))
+  res.sort(@(a, b) ((a?.loopMultiply ?? 0) == 0 || (b?.loopMultiply ?? 0) == 0)
+    ? ((a?.progress ?? 0) <=> (b?.progress ?? 0))
+    : (((b?.loopMultiply ?? 0) <=> (a?.loopMultiply ?? 0)) || ((a?.progress ?? 0) <=> (b?.progress ?? 0))))
   fillViewInfo(res, serverConfigs.get())
   return res
 })

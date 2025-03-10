@@ -5,6 +5,7 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isInSquad, isSquadLeader, squadLeaderMRankCheckTime, squadMembers,
   squadLeaderCampaign, squadLeaderState, getMemberMaxMRank
 } = require("%appGlobals/squadState.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let setReady = require("setReady.nut")
 let { isInDebriefing, isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
@@ -55,7 +56,7 @@ function showMRankCheck() {
   }
 
   setReady(false)
-  let rankText = " ".concat(loc($"campaign/{squadLeaderCampaign.value}"), getRomanNumeral(leaderMRank))
+  let rankText = " ".concat(loc(getCampaignPresentation(squadLeaderCampaign.get()).headerLocId), getRomanNumeral(leaderMRank))
   openMsgBox({
     uid = MSG_UID
     text = loc("msg/bigRankDiff/askChange",

@@ -6,7 +6,7 @@ let { isInFlight } = require("%rGui/globalState.nut")
 let { unitType } = require("%rGui/hudState.nut")
 let shipHudTouch = require("%rGui/hud/shipHudTouch.nut")
 let tankHudTouch = require("%rGui/hud/tankHudTouch.nut")
-let { aircraftHud, aircraftHudElemsOverShade } = require("%rGui/hud/aircraftHudTouch.nut")
+let { aircraftHud, aircraftHudElemsOverShade, aircraftOnTouchBegin, aircraftOnTouchEnd } = require("%rGui/hud/aircraftHudTouch.nut")
 let submarineHudTouch = require("%rGui/hud/submarineHudTouch.nut")
 let cutsceneHud = require("%rGui/hud/cutsceneHud.nut")
 let freeCamHud = require("%rGui/hud/freeCamHud.nut")
@@ -19,7 +19,7 @@ let hudTutorElems = require("%rGui/tutorial/hudTutorElems.nut")
 let hudReplayControls = require("%rGui/replay/hudReplayControls.nut")
 let { viewHudType, HT_HUD, HT_FREECAM, HT_CUTSCENE, HT_BENCHMARK, isHudAttached
 } = require("%appGlobals/clientState/hudState.nut")
-let menuButton = require("%rGui/hud/mkMenuButton.nut")()
+let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 let battleResultsShort = require("%rGui/hud/battleResultsShort.ui.nut")
 let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
 
@@ -30,13 +30,21 @@ let hudByUnitType = {
   [TANK] = tankHudTouch,
 }
 
+let onTouchBeginByUnitType = {
+  [AIR] = aircraftOnTouchBegin
+}
+
+let onTouchEndByUnitType = {
+  [AIR] = aircraftOnTouchEnd
+}
+
 let hudOverShade = {
   [AIR] = aircraftHudElemsOverShade,
 }
 
 let emptySceneWithMenuButton = {
   padding = saBordersRv
-  children = menuButton
+  children = mkMenuButton()
 }
 
 let hudByType = {
@@ -63,10 +71,17 @@ let hudBase = {
   onAttach = @() isHudAttached(true)
   onDetach = @() isHudAttached(false)
   children = [
-    {
+    @() {
+      watch = unitType
       size = flex()
-      behavior = TouchCameraControl
-      touchMarginPriority = TOUCH_BACKGROUND
+      children = {
+        key = unitType.get()
+        size = flex()
+        behavior = TouchCameraControl
+        touchMarginPriority = TOUCH_BACKGROUND
+        onTouchBegin = onTouchBeginByUnitType?[unitType.get()]
+        onTouchEnd = onTouchEndByUnitType?[unitType.get()]
+      }
     }
     @() {
       watch = [isInFlight, viewHudType, unitType]

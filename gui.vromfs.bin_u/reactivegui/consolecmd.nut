@@ -1,5 +1,4 @@
 // warning disable: -file:forbidden-function
-
 from "%globalsDarg/darg_library.nut" import *
 let { startSound, playSound, stopSound } = require("sound_wt")
 let { inspectorToggle } = require("%darg/helpers/inspector.nut")
@@ -10,6 +9,8 @@ let { hexStringToInt } = require("%sqstd/string.nut")
 let { allPermissions, dbgPermissions } = require("%appGlobals/permissions.nut")
 let { localizeAddons } = require("%appGlobals/updater/addons.nut")
 let { debugDirtyWordsFilter } = require("%appGlobals/dirtyWordsFilter.nut")
+let { balance } = require("%appGlobals/currenciesState.nut")
+let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
 
 
 register_command(@() inspectorToggle(), "ui.inspector")
@@ -42,3 +43,14 @@ register_command(@(name) stopSound(name), "debug.guiSound.stop")
 
 register_command(@(text) debugDirtyWordsFilter(text, false, console_print), "debug.dirty_words_filter.phrase")
 register_command(@(text) debugDirtyWordsFilter(text, true,  console_print), "debug.dirty_words_filter.name")
+
+let printSorted = @(tbl) console_print(
+  "\n".join(
+    tbl.map(@(v, k) { v, k })
+      .values()
+      .sort(@(a, b) a.k <=> b.k)
+      .map(@(v) $"{v.k} = {v.v}")))
+
+register_command(@() printSorted(balance.get()), "debug.balance_full")
+register_command(@() printSorted(balance.get().filter(@(v) v != 0)), "debug.balance_not_empty")
+register_command(@() printSorted(curSeasons.get().map(@(s) s.idx)), "debug.current_seasons")

@@ -5,6 +5,7 @@ let { isInSquad, isSquadLeader, isReady, squadLeaderCampaign } = require("%appGl
 let { curCampaign, campaignsList, setCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { rewardTutorialMission } = require("%rGui/tutorial/tutorialMissions.nut")
 let { squadAddons } = require("squadAddons.nut")
 let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
@@ -34,7 +35,7 @@ function showChangeCampaignMsg() {
 
   openFMsgBox({
     text = loc("squad/cant_ready/need_change_campaign",
-      { campaign = colorize("@mark", loc($"campaign/{squadLeaderCampaign.value}")) })
+      { campaign = colorize("@mark", loc(getCampaignPresentation(squadLeaderCampaign.get()).headerLocId)) })
     buttons = [
       { id = "cancel", isCancel = true }
       { id = "continue", isDefault = true, styleId = "PRIMARY", eventId = "squadChangeCampaignByLeader" }

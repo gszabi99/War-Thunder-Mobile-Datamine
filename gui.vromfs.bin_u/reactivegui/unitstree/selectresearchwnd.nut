@@ -1,17 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
+let { isEqual } = require("%sqstd/underscore.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
+let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { buttonsHGap, textButtonBattle } = require("%rGui/components/textButton.nut")
+let { selectedLineHor } = require("%rGui/components/selectedLine.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { unitsResearchStatus, currentResearch, selectedCountry, nodes, mkCountries
+let { unitsResearchStatus, currentResearch, selectedCountry, nodes, countryPriority
 } = require("unitsTreeNodesState.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitInfo
+let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitInfo, mkFlagImage
 } = require("%rGui/unit/components/unitPlateComp.nut")
-let { mkTreeNodesFlag } = require("unitsTreeComps.nut")
 let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { set_research_unit, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
@@ -28,6 +31,13 @@ let defaultMargin = hdpx(10)
 let smallVertLineHeight = hdpx(20)
 let bigVertLineHeight = hdpx(50)
 let maxAmountOfUnitsOnScreen = (saSize[0] / (unitPlateTiny[0] + buttonsHGap)).tointeger()
+let flagSize = evenPx(70)
+let flagBtnWidth = evenPx(120)
+let flagGap = hdpx(20)
+
+
+let flagBgColor = 0xFF000000
+let flagBgColorSelected = 0x80296272
 
 let needSelectResearch = keepref(Computed(@() isCampaignWithUnitsResearch.get()
   && currentResearch.get() == null
@@ -38,6 +48,21 @@ function closeSelectResearch() {
   sendUiBqEvent("first_country_choice", { id = "finish_select_research" })
   removeModalWindow(WND_UID)
 }
+
+let gradient = mkBitmapPictureLazy(gradTexSize / 4, gradTexSize,
+  mkGradientCtorRadial(0xFFFFFFFF, 0, gradTexSize / 2, gradTexSize / 2, 0, 0))
+
+let mkResearchableCountries = @(nodeList) Computed(function(prev) {
+  let resTbl = {}
+  let status = unitsResearchStatus.get()
+  foreach (node in nodeList.get())
+    if (status?[node.name].canResearch ?? false)
+      resTbl[node.country] <- true
+  let res = resTbl.keys()
+    .sort(@(a, b) (countryPriority?[b] ?? -1) <=> (countryPriority?[a] ?? -1)
+      || a <=> b)
+  return isEqual(res, prev) ? prev : res
+})
 
 let mkSmallText = @(text, ovr = {}) {
   rendObj = ROBJ_TEXT
@@ -162,6 +187,32 @@ let function unitsBlock(startUnit) {
   }
 }
 
+let flagBg = @(isSelected) @() {
+  watch = isSelected
+  key = {}
+  size = flex()
+  rendObj = ROBJ_IMAGE
+  image = gradient()
+  color = isSelected.get() ? flagBgColorSelected : flagBgColor
+  transform = {}
+  transitions = [{ prop = AnimProp.color, duration = 0.3, easing = InOutQuad }]
+}
+
+let function mkFlag(country, curCountry) {
+  let isSelected = Computed(@() curCountry.get() == country)
+  return {
+    size = [flagBtnWidth, flagBtnWidth]
+    behavior = Behaviors.Button
+    onClick = @() selectedCountry.set(country)
+    sound = { click = "choose" }
+    children = [
+      flagBg(isSelected)
+      selectedLineHor(isSelected)
+      mkFlagImage(country, flagSize, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER })
+    ]
+  }
+}
+
 let wndContent = @(startUnit, allCountries, curCountry) {
   padding = [0, buttonsHGap]
   flow = FLOW_VERTICAL
@@ -170,14 +221,9 @@ let wndContent = @(startUnit, allCountries, curCountry) {
     @() {
       watch = allCountries
       flow = FLOW_HORIZONTAL
+      gap = flagGap
       children = allCountries.get()
-        .map(@(country) mkTreeNodesFlag(
-          country,
-          curCountry,
-          @() selectedCountry.set(country),
-          Watched(false),
-          { transform = { rotate = 90 } }
-        ))
+        .map(@(country) mkFlag(country, curCountry))
     }
     mkSmallText(loc("unitsTree/startUnit"), { color = 0xFF5CBEF7 })
     unitsBlock(startUnit)
@@ -192,7 +238,7 @@ function acceptChooseResearch(unitId) {
 function openImpl() {
   sendUiBqEvent("first_country_choice", { id = "start_select_research" })
 
-  let allCountries = mkCountries(nodes)
+  let allCountries = mkResearchableCountries(nodes)
   let curCountry = Computed(@() allCountries.get().contains(selectedCountry.get())
     ? selectedCountry.get()
     : allCountries.get()?[0])

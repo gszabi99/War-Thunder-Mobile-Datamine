@@ -21,7 +21,6 @@
   "dustFx": "",
   "canReloadNonGuns": true,
   "rearmSmokeTimeOnField": 60.0,
-  "rearmTimeOnField": 45.0,
   "useSimpleDeathConditionsAndEffects": false,
   "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",

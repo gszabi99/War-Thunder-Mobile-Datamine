@@ -31,6 +31,15 @@ let Layers = freeze({
   Inspector = 3
 })
 
+let XmbContainer = @(ovr = {}) {
+  canFocus = false
+  scrollSpeed = 2
+  isViewport = true
+  scrollToEdge = false
+  screenSpaceNav = true
+  wrap = false
+}.__update(ovr)
+
 return dargBaseLib.__merge(
   log
   screenUnits
@@ -48,6 +57,7 @@ return dargBaseLib.__merge(
   appearAnim
   Layers
   defMarqueeDelay = [5, 1]
+  defMarqueeDelayVert = [1, 2]
 
   //safeArea
   safeArea
@@ -66,4 +76,6 @@ return dargBaseLib.__merge(
 
   TOUCH_BACKGROUND = -10
   TOUCH_MINOR = -1
+
+  XmbContainer
 })

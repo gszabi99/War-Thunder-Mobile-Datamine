@@ -1,0 +1,36 @@
+{
+  "benchmark": {
+    "benchmark": {
+      "m": [
+        "benchmark_pacific",
+        "benchmark_tank",
+        "benchmark_tank_corpses",
+        "benchmark_tank_paused",
+        "benchmark_tank_paused_24h",
+        "benchmark_planes_battle",
+        "benchmark_planes_battle_paused",
+        "location_bencrmark_air_alps",
+        "location_bencrmark_air_norway_green",
+        "location_bencrmark_air_phiphi_crater",
+        "location_bencrmark_air_stalingrad_w",
+        "location_bencrmark_air_zhengzhou"
+      ]
+    }
+  },
+  "skirmish": {
+    "air": {
+      "m": "testdrive_players_plane"
+    },
+    "tank": {
+      "m": "testdrive_players_tank"
+    },
+    "ship": {
+      "m": "testdrive_players_ship"
+    }
+  },
+  "test": {
+    "test_single": {
+      "m": "small_mission"
+    }
+  }
+}

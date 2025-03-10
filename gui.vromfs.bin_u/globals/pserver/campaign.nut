@@ -8,6 +8,10 @@ let { setTimeout } = require("dagor.workcycle")
 
 let defaultCampaign = "tanks"
 
+let campaignStatsRemap = {
+  ships_new = "ships"
+}
+
 let selectedCampaign = sharedWatched("selectedCampaign", @() null) //selectedByPlayer
 let campaignsLevelInfo = Computed(@()(servProfile.get()?.levelInfo ?? {}))
 let savedCampaign = Computed(@() campaignsLevelInfo.get().findindex(@(i) i?.isCurrent ?? false)) //saved on pServer
@@ -95,6 +99,8 @@ function chooseOneByCampaignTbl(res, prev, key, campaign) {
   res[key] = newV == prevV ? prevV : newV
 }
 
+let getCampaignStatsId = @(campaign) campaignStatsRemap?[campaign] ?? campaign
+
 let campProfile = Computed(function(prev) {
   let res = clone (servProfile.get() ?? {})
   let campaign = curCampaign.get()
@@ -103,7 +109,7 @@ let campProfile = Computed(function(prev) {
   filterByListTbl(res, prev, "items", allItems)
   chooseListByCampaignTbl(res, prev, "receivedLvlRewards", campaign)
   chooseListByCampaignTbl(res, prev, "levelInfo", campaign)
-  chooseListByCampaignTbl(res, prev, "sharedStatsByCampaign", campaign)
+  chooseListByCampaignTbl(res, prev, "sharedStatsByCampaign", getCampaignStatsId(campaign))
   chooseListByCampaignTbl(res, prev, "unitTreeNodes", campaign)
   chooseOneByCampaignTbl(res, prev, "activeOffers", campaign)
   chooseOneByCampaignTbl(res, prev, "campaignSlots", campaign)
@@ -134,8 +140,8 @@ let exportProfile = {
   lootboxes = {}
 }.map(@(value, key) Computed(@() campProfile.value?[key] ?? value))
 
-let curCampaignSlots = Computed(@() (campConfigs.get()?.campaignCfg.totalSlots ?? 0) <= 0 ? null
-  : campProfile.get()?.campaignSlots)
+let isCampaignWithSlots = Computed(@() (campConfigs.get()?.campaignCfg.totalSlots ?? 0) > 0)
+let curCampaignSlots = Computed(@() isCampaignWithSlots.get() ? campProfile.get()?.campaignSlots : null)
 let curCampaignSlotUnits = Computed(function(prev) {
   let res = curCampaignSlots.get()?.slots
     .map(@(s) s.name)
@@ -156,4 +162,6 @@ return exportProfile.__update({
   curCampaignSlots
   curCampaignSlotUnits
   isCampaignWithUnitsResearch = Computed(@() curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
+  isCampaignWithSlots
+  getCampaignStatsId
 })

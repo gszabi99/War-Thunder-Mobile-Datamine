@@ -1015,7 +1015,6 @@
             "ID_SHIP_WEAPON_PRIMARY",
             "ID_SHIP_WEAPON_SECONDARY",
             "ID_SHIP_WEAPON_MACHINEGUN",
-            "ID_SHIP_WEAPON_TORPEDOES",
             "ID_SHIP_WEAPON_DEPTH_CHARGE",
             "ID_SHIP_WEAPON_ROCKETS",
             "ID_SHIP_WEAPON_MINE"
@@ -1417,7 +1416,6 @@
             "ID_SHIP_WEAPON_PRIMARY",
             "ID_SHIP_WEAPON_SECONDARY",
             "ID_SHIP_WEAPON_MACHINEGUN",
-            "ID_SHIP_WEAPON_TORPEDOES",
             "ID_SHIP_WEAPON_DEPTH_CHARGE",
             "ID_SHIP_WEAPON_ROCKETS",
             "ID_SHIP_WEAPON_MINE"
@@ -1924,7 +1922,6 @@
               "ID_SHIP_WEAPON_PRIMARY",
               "ID_SHIP_WEAPON_SECONDARY",
               "ID_SHIP_WEAPON_MACHINEGUN",
-              "ID_SHIP_WEAPON_TORPEDOES",
               "ID_SHIP_WEAPON_DEPTH_CHARGE",
               "ID_SHIP_WEAPON_ROCKETS",
               "ID_SHIP_WEAPON_MINE"
@@ -2189,7 +2186,6 @@
               "ID_SHIP_WEAPON_PRIMARY",
               "ID_SHIP_WEAPON_SECONDARY",
               "ID_SHIP_WEAPON_MACHINEGUN",
-              "ID_SHIP_WEAPON_TORPEDOES",
               "ID_SHIP_WEAPON_DEPTH_CHARGE",
               "ID_SHIP_WEAPON_ROCKETS",
               "ID_SHIP_WEAPON_MINE"
@@ -2550,7 +2546,6 @@
               "ID_SHIP_WEAPON_PRIMARY",
               "ID_SHIP_WEAPON_SECONDARY",
               "ID_SHIP_WEAPON_MACHINEGUN",
-              "ID_SHIP_WEAPON_TORPEDOES",
               "ID_SHIP_WEAPON_DEPTH_CHARGE",
               "ID_SHIP_WEAPON_ROCKETS",
               "ID_SHIP_WEAPON_MINE"
@@ -2872,7 +2867,6 @@
               "ID_SHIP_WEAPON_PRIMARY",
               "ID_SHIP_WEAPON_SECONDARY",
               "ID_SHIP_WEAPON_MACHINEGUN",
-              "ID_SHIP_WEAPON_TORPEDOES",
               "ID_SHIP_WEAPON_DEPTH_CHARGE",
               "ID_SHIP_WEAPON_ROCKETS",
               "ID_SHIP_WEAPON_MINE"
@@ -3340,7 +3334,6 @@
               "ID_SHIP_WEAPON_PRIMARY",
               "ID_SHIP_WEAPON_SECONDARY",
               "ID_SHIP_WEAPON_MACHINEGUN",
-              "ID_SHIP_WEAPON_TORPEDOES",
               "ID_SHIP_WEAPON_DEPTH_CHARGE",
               "ID_SHIP_WEAPON_ROCKETS",
               "ID_SHIP_WEAPON_MINE"

@@ -12,7 +12,8 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, debug_apply_unit_daily_bonus_in_battle,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
   add_battle_mod, set_research_unit, add_slot_exp, update_branch_offer, apply_unit_level_rewards,
-  shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward
+  shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward,
+  check_purchases_debug, reset_daily_counter
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -50,6 +51,29 @@ registerHandler("onDebugLootboxChances",
     let text = object_to_json_string(data)
     openMsgBox({
       uid = "debug_lootbox_chances"
+      text = makeSideScroll(msgBoxText(text, infoTextOvr))
+      wndOvr = { size = [hdpx(1100), hdpx(1000)] }
+      buttons = [
+        { text = "COPY", cb = @() set_clipboard_text(text) }   //warning disable: -forbidden-function
+        { id = "ok", styleId = "PRIMARY", isDefault = true }   //warning disable: -forbidden-function
+      ]
+    })
+  })
+
+registerHandler("onDebugCheckPurchases",
+  function(res) {
+    let data = res?.custom_info ?? {}
+    local text = data.len() == 0 ? "No purchases"
+      : "\n".join(
+          data
+            .map(@(v, k) { k, v })
+            .values()
+            .sort(@(a, b) !a.v <=> !b.v
+              || a.k <=> b.k)
+            .map(@(r) $"{r.k} = {r.v}"))
+
+    openMsgBox({
+      uid = "debug_check_purchases"
       text = makeSideScroll(msgBoxText(text, infoTextOvr))
       wndOvr = { size = [hdpx(1100), hdpx(1000)] }
       buttons = [
@@ -172,6 +196,8 @@ foreach (cmd in ["get_all_configs", "reset_profile",
   register_command(@() action("consolePrintResult"), $"meta.{cmd}")
 }
 
+register_command(@() check_purchases_debug("onDebugCheckPurchases"), $"meta.check_purchases_debug")
+
 register_command(function() {
   reset_profile_with_stats("consolePrintResult")
   resetUserstatAppData()
@@ -206,3 +232,7 @@ register_command(@(goodsId) halt_personal_goods_purchase(goodsId, "consolePrintR
 
 register_command(@(id) authorize_deeplink_reward(id, "consolePrintError"), "meta.authorize_deeplink_reward")
 register_command(@(id) apply_deeplink_reward(id, curCampaign.get(), "consolePrintError"), "meta.apply_deeplink_reward")
+
+let counters = ["offer_skip", "daily_prem_gold"]
+counters.each(@(id)
+  register_command(@() reset_daily_counter(id, "consolePrintError"), $"meta.reset_daily_counter.{id}"))

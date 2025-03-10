@@ -1,13 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-
 let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
 let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
 let { makeVertScroll, scrollbarWidth } = require("%rGui/components/scrollbar.nut")
 let { selectedLineHorUnits } = require("%rGui/components/selectedLineUnits.nut")
 
-let CONTENT_GAP = hdpx(20)
+let contentGap = hdpx(20)
 
-let presetBlockScrollHandler = ScrollHandler()
+let contentBlockScrollHandler = ScrollHandler()
 
 let activeBlockBgGradient = mkBitmapPicture(
   gradTexSize,
@@ -21,11 +20,12 @@ let notActiveBlockBgGradient = mkBitmapPicture(
 
 let mkBlockRadialGradient = @(isActive) isActive ? activeBlockBgGradient : notActiveBlockBgGradient
 
-function mkBlock(preset, idx, activePresetIdx, mkBlockContent, onClick) {
-  let isSelected = Computed(@() idx == activePresetIdx.get() )
+function mkBlock(content, idx, activeBlockIdx, mkBlockContent, onClick) {
+  let isSelected = Computed(@() idx == activeBlockIdx.get() )
   return @() {
     watch = isSelected
     behavior = Behaviors.Button
+    sound = { click = "choose" }
     rendObj = ROBJ_SOLID
     color = 0xFF383B3E
     onClick = @() onClick(idx)
@@ -35,7 +35,7 @@ function mkBlock(preset, idx, activePresetIdx, mkBlockContent, onClick) {
         rendObj = ROBJ_IMAGE
         image = mkBlockRadialGradient(isSelected.get())
       }
-      mkBlockContent(preset, idx)
+      mkBlockContent(content, idx)
       {
         size = flex()
         valign = ALIGN_TOP
@@ -53,10 +53,10 @@ let mkBlocksContainer = @(contentList, activeIdx, mkBlockContent, onClick, block
   children = makeVertScroll(@(){
     watch = contentList
     flow = FLOW_VERTICAL
-    gap = CONTENT_GAP
-    onAttach = @() presetBlockScrollHandler.scrollToY((blockHeight + CONTENT_GAP) * activeIdx.get())
+    gap = contentGap
+    onAttach = @() contentBlockScrollHandler.scrollToY((blockHeight + contentGap) * activeIdx.get())
     children = contentList.get().map(@(v, idx) mkBlock(v, idx, activeIdx, mkBlockContent, onClick))
-  }, { scrollHandler = presetBlockScrollHandler }.__merge(scrollOvr))
+  }, { scrollHandler = contentBlockScrollHandler }.__merge(scrollOvr))
 }
 
 return {

@@ -9,7 +9,7 @@
       "useAdaptation": false,
       "minExposure": 2.0,
       "maxExposure": 2.0,
-      "initialExposure": 0.8
+      "initialExposure": 2.0
     },
     "DemonPostFx": {
       "use": true,

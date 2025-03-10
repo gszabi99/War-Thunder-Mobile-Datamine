@@ -400,7 +400,7 @@ function mkRewardLabel(startDelay, text) {
     text
     transform = {}
     animations = getTextLabelAnim(startDelay)
-  }.__update(fontTinyAccented)
+  }.__update(fontSmallShaded)
   let txtScale = getTextScaleToFitWidth(res, rewTextMaxWidth)
   if (txtScale < 1.0)
     res.__update({ transform = { scale = [txtScale, txtScale] } })
@@ -518,7 +518,8 @@ function mkBlueprintRewardIcon(rewardInfo, rStyle) {
   let size = getRewardPlateSize(reward.slots, rStyle)
   let unit = Computed(@() serverConfigs.get()?.allUnits?[rewardInfo.id])
 
-  return {
+  return @() {
+    watch = unit
     size
     children = [
       {
@@ -529,7 +530,7 @@ function mkBlueprintRewardIcon(rewardInfo, rStyle) {
       mkRewardPlateBg(reward, rStyle)
       mkRewardPlateImage(reward, rStyle)
       mkBlueprintPlateTexts(reward, rStyle)
-      mkRewardUnitFlag(unit.get(), rStyle)
+      unit.get() == null ? null : mkRewardUnitFlag(unit.get(), rStyle)
     ]
   }
 }
@@ -1032,11 +1033,15 @@ function onCloseRequest() {
     skipAnims()
     return
   }
-  let unitId = stackData.value?.unitPlates.findvalue(@(_) true)?.id
+  let unitId = stackData.get()?.unitPlates
+    .filter(@(v) v?.id && (campMyUnits.get()?[v.id].isCurrent || slots.get().findvalue(@(slot) slot.name == v.id)))
+    .findvalue(@(_) true)?.id
   let unit = campMyUnits.get()?[unitId]
   if (unit != null && canResetToMainScene()) {
     tryResetToMainScene()
     setHangarUnit(unitId)
+    if (curCampaignSlots.get() != null)
+      setCurrentUnit(unitId)
     requestOpenUnitPurchEffect(unit)
   }
   // Marking purchases as seen

@@ -14,6 +14,7 @@ let { unlockTables, activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { closeLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 
 
 let SEEN_LOOTBOXES = "seenLootboxes"
@@ -155,6 +156,8 @@ function saveSeenLootboxes(ids, eventName) {
 }
 
 function loadSeenLootboxes() {
+  if (!isSettingsAvailable.get())
+    return seenLootboxes.set({})
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[SEEN_LOOTBOXES]
   if (!isDataBlock(htBlk)) {
@@ -172,6 +175,8 @@ function loadSeenLootboxes() {
 }
 
 function loadLootboxesAvailability() {
+  if (!isSettingsAvailable.get())
+    return lootboxesAvailability.set({})
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[LOOTBOXES_AVAILABILITY]
   if (!isDataBlock(htBlk)) {
@@ -212,6 +217,11 @@ if (seenLootboxes.value.len() == 0)
   loadSeenLootboxes()
 if (lootboxesAvailability.value.len() == 0)
   loadLootboxesAvailability()
+
+isSettingsAvailable.subscribe(function(_) {
+  loadSeenLootboxes()
+  loadLootboxesAvailability()
+})
 
 balance.subscribe(function(v) {
   let showOnce = {}

@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import is_freecam_enabled, set_option_hud_screen_safe_area, is_hud_visible, set_hud_width_limit, hud_is_in_cutscene
+from "%scripts/dagui_natives.nut" import is_freecam_enabled, set_option_hud_screen_safe_area, set_hud_width_limit
 from "%scripts/dagui_library.nut" import *
+from "hudState" import hud_is_in_cutscene, is_hud_visible
 
 let { eventbus_subscribe } = require("eventbus")
 let { safeArea } = require("%appGlobals/safeArea.nut")

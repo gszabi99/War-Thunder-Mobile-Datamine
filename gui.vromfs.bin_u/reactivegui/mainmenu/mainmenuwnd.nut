@@ -4,7 +4,7 @@ let { HangarCameraControl } = require("wt.behaviors")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
-let { translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
+let { translucentButtonsVGap, translucentButton } = require("%rGui/components/translucentButton.nut")
 let { gamercardGap, CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
 let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
@@ -13,7 +13,7 @@ let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut"
 let { btnOpenUnitAttr } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
 let { isMainMenuAttached } = require("mainMenuState.nut")
 let { totalPlayers } = require("%appGlobals/gameModes/gameModes.nut")
-let { curCampaign, campaignsList, campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campaignsList, campConfigs, curCampaignSlots } = require("%appGlobals/pServer/campaign.nut")
 let { chooseCampaignWnd } = require("chooseCampaignWnd.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -21,10 +21,11 @@ let { hoverColor } = require("%rGui/style/stdColors.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { newbieOfflineMissions } = require("%rGui/gameModes/newbieOfflineMissions.nut")
-let { allow_players_online_info } = require("%appGlobals/permissions.nut")
+let { allow_players_online_info, allow_subscriptions } = require("%appGlobals/permissions.nut")
 let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { mkMRankRange } = require("%rGui/state/matchingRank.nut")
+let { canReceivePremDailyBonus } = require("%rGui/state/profilePremium.nut")
 let squadPanel = require("%rGui/squad/squadPanel.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
@@ -34,6 +35,7 @@ let btnsOpenSpecialEvents = require("%rGui/event/btnsOpenSpecialEvents.nut")
 let bpBanner = require("%rGui/battlePass/bpBanner.nut")
 let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
+let premDailyBonusWnd = require("%rGui/shop/premDailyBonusWnd.nut")
 let btnOpenUnitsTree = require("%rGui/unitsTree/btnOpenUnitsTree.nut")
 let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
 let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
@@ -49,6 +51,7 @@ let { slotBarMainMenu, slotBarSize } = require("%rGui/slotBar/slotBar.nut")
 let { slots } = require("%rGui/slotBar/slotBarState.nut")
 let { unseenCampaigns } = require("unseenCampaigns.nut")
 let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
+let { openSlotPresetWnd } = require("%rGui/slotBar/slotPresetsState.nut")
 
 let unitNameStateFlags = Watched(0)
 
@@ -129,6 +132,18 @@ let onlineInfo = @() {
 
 let dropMenuBtn = mkDropMenuBtn(getTopMenuButtons, topMenuButtonsGenId)
 
+let btnPremDailyBonus = @() {
+  watch = allow_subscriptions
+  children = !allow_subscriptions.get() ? null
+    : translucentButton("ui/gameuiskin#prem_daily_bonus.svg", "", premDailyBonusWnd,
+        @(_) @() {
+          watch = canReceivePremDailyBonus
+          hplace = ALIGN_RIGHT
+          pos = [hdpx(4), hdpx(-4)]
+          children = canReceivePremDailyBonus.get() ? priorityUnseenMark : null
+        })
+}
+
 let btnHorRow = @(children) {
   flow = FLOW_HORIZONTAL
   gap = translucentButtonsVGap
@@ -189,6 +204,7 @@ let leftTopButtons = {
           bpBanner
           btnHorRow([
             btnOpenQuests
+            btnPremDailyBonus
             btnsOpenSpecialEvents
           ])
         ])
@@ -199,7 +215,15 @@ let leftTopButtons = {
             watch = slots
             children = slots.get().len() == 0 ? btnOpenUnitAttr : null
           }
-          btnOpenUnitsTree
+          btnHorRow([
+            btnOpenUnitsTree
+            @() {
+              watch = curCampaignSlots
+              children = !curCampaignSlots.get()
+                ? null
+                : translucentButton("ui/gameuiskin#icon_slot_preset.svg", "", openSlotPresetWnd)
+            }
+          ])
         ])
       ])
     ])

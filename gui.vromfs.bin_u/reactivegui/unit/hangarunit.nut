@@ -15,9 +15,11 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { mkWeaponPreset } = require("unitSettings.nut")
 let { getEqippedWithoutOverload, getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
 let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
+let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 
 let isHangarUnitLoaded = mkWatched(persist, "isHangarUnitLoaded", false)
 let loadedInfo = Watched({
@@ -141,7 +143,7 @@ function setHangarUnitWeaponPreset(unitName, preset) {
     weaponBlk.preset = weaponId
     weaponBlk.slot = slot
   }
-  set_weapon_visual_custom_blk(unitName, blk)
+  set_weapon_visual_custom_blk(getTagsUnitName(unitName), blk)
 }
 
 function loadModel(unitName, skin, weapPreset) {
@@ -152,12 +154,12 @@ function loadModel(unitName, skin, weapPreset) {
   if ((unitName ?? "") == "")
     return
 
-  if (hasNotDownloadedPkg.get()) {
-    hangar_move_cam_to_unit_place(unitName)
+  if (hasNotDownloadedPkg.get() && !isOfflineMenu) {
+    hangar_move_cam_to_unit_place(getTagsUnitName(unitName))
     return
   }
 
-  hangar_load_model_with_skin(unitName, skin)
+  hangar_load_model_with_skin(getTagsUnitName(unitName), skin)
   if (weapPreset != null)
     setHangarUnitWeaponPreset(unitName, weapPreset)
 }
@@ -267,7 +269,7 @@ eventbus_subscribe("onHangarModelLoaded", function(_) {
 
   if (!isEqual(loadedInfo.value, lInfo))
     loadedInfo(lInfo)
-  if (lInfo.name != hangarUnitName.get() || lInfo.skin != hangarUnitSkin.get()) {
+  if (lInfo.name != getTagsUnitName(hangarUnitName.get()) || lInfo.skin != hangarUnitSkin.get()) {
     log("Reload hangar unit because of wrong skin")
     loadCurrentHangarUnitModel()
   }

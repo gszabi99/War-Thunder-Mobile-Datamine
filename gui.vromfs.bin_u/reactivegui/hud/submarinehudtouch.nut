@@ -6,7 +6,6 @@ let { shipSight } = require("%rGui/hud/sight.nut")
 let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
 let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
-let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 
 return {
   size = saSize
@@ -20,7 +19,6 @@ return {
     hudBottomCenter
     hudTopMainLog
     hudTuningElems
-    menuButton
     shipSight
     currentWeaponNameText
   ]

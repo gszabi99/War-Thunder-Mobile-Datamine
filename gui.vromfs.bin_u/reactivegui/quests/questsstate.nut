@@ -12,6 +12,7 @@ let { showAdsForReward } = require("%rGui/ads/adsState.nut")
 let { playSound } = require("sound_wt")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { speed_up_unlock_progress } = require("%appGlobals/pServer/pServerApi.nut")
+let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { specialEvents, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
 let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
@@ -167,6 +168,8 @@ function saveSeenQuests(ids) {
 }
 
 function loadSeenQuests() {
+  if (!isSettingsAvailable.get())
+    return seenQuests.set({})
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[SEEN_QUESTS]
   if (!isDataBlock(htBlk)) {
@@ -180,6 +183,8 @@ function loadSeenQuests() {
 
 if (seenQuests.value.len() == 0)
   loadSeenQuests()
+
+isSettingsAvailable.subscribe(@(_) loadSeenQuests())
 
 let hasUnseenQuestsBySection = Computed(@() questsBySection.value.map(@(quests)
   null != quests.findindex(@(v, id) id not in inactiveEventUnlocks.get() && (id not in seenQuests.get() || v.hasReward))))

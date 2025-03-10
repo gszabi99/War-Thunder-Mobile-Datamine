@@ -12,6 +12,7 @@ let { bulletsInfo, currentBulletName } = require("%rGui/hud/bullets/hudUnitBulle
 let { hasMGun0, hasCanon0, Cannon0, MGun0 } = require("%rGui/hud/airState.nut")
 let { addHudElementPointer, removeHudElementPointer } = require("%rGui/tutorial/hudElementPointers.nut")
 let { resetTimeout } = require("dagor.workcycle")
+let { HudTextId } = require("hudTexts")
 
 let state = require("%sqstd/mkEventLogState.nut")({
   persistId = "commonHintLogState"
@@ -332,8 +333,12 @@ eventbus_subscribe("hint:ticket_loose", function(p) {
   }
 })
 
+let blockedMessages = [
+  HudTextId.TXT_TIME_TO_TANK_REPAIR
+]
+
 const MSG_EVENT_HINT = "MSG_EVENT_HINT"
-eventbus_subscribe("HudMessage", @(data) data.type != HUD_MSG_EVENT ? null
+eventbus_subscribe("HudMessage", @(data) data.type != HUD_MSG_EVENT || blockedMessages.contains(data.id) ? null
   : modifyOrAddEvent(data.__merge({
         id = MSG_EVENT_HINT
         hType = "simpleTextTiny"

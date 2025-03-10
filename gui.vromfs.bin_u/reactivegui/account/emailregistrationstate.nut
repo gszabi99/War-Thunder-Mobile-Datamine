@@ -12,6 +12,7 @@ let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.
 let { windowActive } = require("%appGlobals/windowState.nut")
 let { accountLink } = require("%rGui/contacts/contactLists.nut")
 let { isContactsReceived } = require("%rGui/contacts/contactsState.nut")
+let { LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
 
 
 let isGuestLoginBase = Computed(@() authTags.value.contains("guestlogin")
@@ -49,6 +50,11 @@ function openGuestEmailRegistration() {
   getPlayerSsoShortTokenAsync("onGetStokenForGuestEmail")
 }
 
+function linkEmailWithLogout() {
+  eventbus_send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL })
+  defer(@() eventbus_send("logOutManually", {}))
+}
+
 function openVerifyEmail() {
   logGuest("Open verify message")
   let url = $"https://store.gaijin.net/user.php?skin_lang={loc("current_lang")}"
@@ -57,6 +63,7 @@ function openVerifyEmail() {
 
 subscribeFMsgBtns({
   openGuestEmailRegistration = @(_) openGuestEmailRegistration()
+  linkEmailWithLogout = @(_) linkEmailWithLogout()
 })
 
 windowActive.subscribe(function(v) {

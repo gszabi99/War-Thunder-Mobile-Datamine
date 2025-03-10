@@ -2,8 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let logU = log_with_prefix("[userstat] ")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { ndbTryRead } = require("nestdb")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { rnd_float } = require("dagor.random")
+let { register_command } = require("console")
+let { resetTimeout, clearTimer, setTimeout } = require("dagor.workcycle")
+let { rnd_float, frnd } = require("dagor.random")
 let { isEqual } = require("%sqstd/underscore.nut")
 let charClientEventExt = require("%rGui/charClientEventExt.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
@@ -66,9 +67,15 @@ registerHandler("ClnChangeStats", function(result, context) {
   logerr($"Failed to change stat {mode}/{stat}")
 })
 
+let debugDelay = keepref(hardPersistWatched("userstat.debugDelay", 0.0))
+
+local requestExt = request
+let updateDebugDelay = @() requestExt = (debugDelay.get() <= 0) ? request
+  : @(a, p, c) setTimeout(max(0.2, frnd()) * debugDelay.get(), @() request(a, p, c))
+
 function userstatSetStat(mode, stat, value, context = {}) {
   statsInProgress.mutate(@(v) v[stat] <- true)
-  request("ClnChangeStats",
+  requestExt("ClnChangeStats",
     {
       data = {
         [stat] = { ["$set"] = value },
@@ -176,6 +183,10 @@ function updateTableActivityTimer() {
 updateTableActivityTimer()
 isServerTimeValid.subscribe(@(_) updateTableActivityTimer())
 userstatStats.subscribe(@(_) updateTableActivityTimer())
+updateDebugDelay()
+debugDelay.subscribe(@(_) updateDebugDelay())
+
+register_command(@(delay) debugDelay.set(delay), "userstat.delay_requests")
 
 return {
   isUserstatMissingData
@@ -191,7 +202,7 @@ return {
   forceRefreshStats = @() eventbus_send($"userstat.stats.forceRefresh", {})
   forceRefreshInfoTables = @() eventbus_send($"userstat.infoTables.forceRefresh", {})
 
-  userstatRequest = request
+  userstatRequest = requestExt
   userstatRegisterHandler = registerHandler //main handler for actions
   userstatRegisterExecutor = registerExecutor //custom handler for actions
 

@@ -3,7 +3,7 @@ let { HangarCameraControl } = require("wt.behaviors")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let Rand = require("%sqstd/rand.nut")
-let { closeLvlUpWnd, upgradeUnitName, skipLevelUpUnitPurchase } = require("levelUpState.nut")
+let { closeLvlUpWnd, skipLevelUpUnitPurchase } = require("levelUpState.nut")
 let { unitInfoPanel } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { textButtonPrimary, textButtonPurchase, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
@@ -23,6 +23,7 @@ let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
+let { buyLevelUpUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
 
 let contentAppearTime = 0.3
 let buttonsAppearDelay = contentAppearTime + 0.5
@@ -65,7 +66,7 @@ function onBuyUnit() {
     return
   sendNewbieBqEvent("chooseUnitInLevelUpWnd", { status = curSelectedUnit.value })
   if ((unit?.upgradeCostGold ?? 0) > 0)
-    upgradeUnitName(curSelectedUnit.value)
+    buyLevelUpUnitName.set(curSelectedUnit.value)
   else {
     let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_LEVELUP, PURCH_TYPE_UNIT, curSelectedUnit.value)
     purchaseUnit(curSelectedUnit.value, bqPurchaseInfo)

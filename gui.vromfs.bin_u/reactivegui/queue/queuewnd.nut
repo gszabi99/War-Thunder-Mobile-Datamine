@@ -247,11 +247,14 @@ let aimingHint = {
 }
 
 let tanksScreensOrder = [ helpTankControls, helpTankParts, helpTankControls, helpTankCaptureZone ]
+let tanksBg = @() tanksScreensOrder[(sharedStatsByCampaign.value?.battles ?? 0) % tanksScreensOrder.len()]()
 //no need to subscribe on sharedStatsByCampaign because we do not want to switch loading screen during loading
 let mkBgImagesByCampaign = {
   air   = @() helpAirAiming
   ships = @() helpShipParts
-  tanks = @() tanksScreensOrder[(sharedStatsByCampaign.value?.battles ?? 0) % tanksScreensOrder.len()]()
+  ships_new = @() helpShipParts
+  tanks = tanksBg
+  tanks_new = tanksBg
 }
 
 let mkBgImageByGameMode = {

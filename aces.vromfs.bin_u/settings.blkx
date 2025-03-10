@@ -1,0 +1,3227 @@
+{
+  "dasMain": "%appGame/main.das",
+  "dasMainDedicated": "%dedScripts/main.das",
+  "sqMain": "%scripts/main.nut",
+  "sqMainDedicated": "%dedScripts/main_ds.nut",
+  "playerTemplate": "wtm_player",
+  "version": "",
+  "version-specific": "",
+  "nvidia_app_id": 10839111,
+  "hudBlk": "config/hud.blk",
+  "nvidia_project_id": "e85be7eb-9e9a-4331-a0fb-521c060847fe",
+  "gameId": "wtm",
+  "enableEmbeddedBrowser": false,
+  "pc_app_id": 1180,
+  "iOS_app_id": 1180,
+  "android_app_id": 1180,
+  "nswitch_app_id": 1280,
+  "entitiesBlk": "%gameBase/templates/entities_wtm.blk",
+  "game_das_script_init": "%appGame/wtm_init.das",
+  "game_das_loading_threads": 2,
+  "localizationVrom": "lang.vromfs.bin",
+  "localizationRegionalVrom": "",
+  "addAllAddonsToBasePath": false,
+  "clientBitType": "auto",
+  "releaseChannel": "",
+  "rdseed": 16807,
+  "graphicsQuality": "custom",
+  "language": "English",
+  "use_eac": false,
+  "forcedLauncher": 0,
+  "unknownProximityMeansPanorama": true,
+  "fastReturnToPanorama": true,
+  "rendinstOcclusionByUnitType": true,
+  "__allowedConfigOverrides": {},
+  "_gameres": {
+    "basePkgDir": "content/base/res",
+    "patchRoot": "patch"
+  },
+  "androidAllowToDelayCmd": {
+    "APP_CMD_GAINED_FOCUS": true,
+    "APP_CMD_LOST_FOCUS": true
+  },
+  "mountPoints": {
+    "%darg": {
+      "forSource": "..\\..\\prog\\scripts\\sq\\daRg",
+      "forVromfs": "daRg"
+    },
+    "%sqstd": {
+      "forSource": "..\\..\\prog\\scripts\\sq\\std",
+      "forVromfs": "std"
+    },
+    "%daeditor": {
+      "forSource": "..\\..\\prog\\scripts\\sq\\daeditor",
+      "forVromfs": "daeditor"
+    },
+    "%sonyLib": {
+      "forSource": "..\\..\\prog\\scripts\\sonyLib",
+      "forVromfs": "sonyLib"
+    },
+    "%rGui": {
+      "forSource": "../../skyquake/prog/scripts/wtm/reactiveGui",
+      "forVromfs": "reactivegui"
+    },
+    "%game": {
+      "forSource": "../../skyquake/prog/scripts/game",
+      "forVromfs": "gameCommon"
+    },
+    "%scripts": {
+      "forSource": "../../skyquake/prog/scripts/wtm/scripts",
+      "forVromfs": "scripts"
+    },
+    "%dedScripts": {
+      "forSource": "../../skyquake/prog/scripts/wtm/dedicatedScripts",
+      "forVromfs": "dedicatedScripts"
+    },
+    "%appGame": {
+      "forSource": "../../skyquake/prog/scripts/wtm/game",
+      "forVromfs": "game"
+    },
+    "%appGlobals": {
+      "forSource": "../../skyquake/prog/scripts/wtm/globals",
+      "forVromfs": "globals"
+    },
+    "%globalsDarg": {
+      "forSource": "../../skyquake/prog/scripts/wtm/globalsDarg",
+      "forVromfs": "globalsDarg"
+    },
+    "%globalScripts": {
+      "forSource": "../../skyquake/prog/scripts/globalScripts",
+      "forVromfs": "globalScripts"
+    },
+    "%sqStdLibs": {
+      "forSource": "../../skyquake/prog/scripts/sqStdLibs",
+      "forVromfs": "sqStdLibs"
+    },
+    "%daslib": {
+      "forSource": "../../prog/1stPartyLibs/daScript/daslib",
+      "forVromfs": "daslib"
+    },
+    "%dasGameLibs": {
+      "forSource": "../../prog/gameLibs/das",
+      "forVromfs": "das"
+    },
+    "%lang": {
+      "forSource": "../../skyquake/prog/gamebase_wtm/lang_src/lang",
+      "forVromfs": "lang"
+    },
+    "%gui": {
+      "forSource": "../../skyquake/prog/scripts/wtm/gui",
+      "forVromfs": "gui"
+    },
+    "%guiConfig": {
+      "forSource": "../../skyquake/prog/gamebase_wtm/gamebase/config",
+      "forVromfs": "config"
+    },
+    "%danetlibs": {
+      "forSource": "../../prog/daNetGameLibs",
+      "forVromfs": "danetlibs"
+    },
+    "%updater": {
+      "forSource": "../../skyquake/prog/scripts/wtm/updater",
+      "forVromfs": "updater"
+    },
+    "%gameBase": {
+      "forSource": "../../skyquake/prog/gamebase_wtm/gamebase",
+      "forVromfs": ""
+    },
+    "%wtlibs": {
+      "forSource": "../../skyquake/prog/wtlibs",
+      "forVromfs": "wtlibs"
+    }
+  },
+  "addonBasePath": {
+    "addon": [
+      {
+        "vrom": "aces.vromfs.bin",
+        "tag": [
+          "configs",
+          "game-scripts"
+        ],
+        "src": [
+          "../../skyquake/prog/gamebase_wtm/gamebase",
+          "../../skyquake/prog/gamebase_wtm/pkg_dev",
+          "../../skyquake/prog/gamebase_wtm/lang_src",
+          "../../skyquake/prog/scripts/wtm",
+          "../../skyquake/prog/scripts"
+        ]
+      },
+      {
+        "vrom": "mis.vromfs.bin",
+        "tag": "missions",
+        "notImportantForSession": true,
+        "src": "../../skyquake/prog/gamebase_wtm/mis_vrom"
+      },
+      {
+        "vrom": "regional.vromfs.bin",
+        "vromOptional": true,
+        "cacheOnly": true
+      },
+      {
+        "vrom": "wwdata.vromfs.bin",
+        "vromOptional": true
+      },
+      {
+        "vrom": "game-dev.vromfs.bin",
+        "vromOptional": true
+      },
+      {
+        "vrom": "dscripts.vromfs.bin",
+        "vromIgnoreForClient": true
+      },
+      {
+        "vrom": "gui.vromfs.bin",
+        "src": "../../skyquake/prog/scripts/wtm",
+        "tag": "gui-scripts",
+        "vromIgnoreForServer": true
+      },
+      {
+        "vrom": "ui/fonts.vromfs.bin",
+        "mount": "ui/",
+        "vromIgnoreForServer": true,
+        "vromOptional": true,
+        "mountAsPack": true,
+        "webFs": true
+      },
+      {
+        "vrom": "ui/fontsMin.vromfs.bin",
+        "mount": "ui/",
+        "vromIgnoreForServer": true,
+        "vromOptional": true,
+        "mountAsPack": true,
+        "webFs": true
+      },
+      {
+        "vrom": "ui/atlases.vromfs.bin",
+        "mount": "ui/",
+        "vromIgnoreForServer": true,
+        "mountAsPack": true,
+        "webFs": true
+      },
+      {
+        "vrom": "ui/tex.vromfs.bin",
+        "mount": "ui/",
+        "vromIgnoreForServer": true,
+        "mountAsPack": true,
+        "webFs": true
+      },
+      {
+        "vrom": "ui/images.vromfs.bin",
+        "mount": "ui/",
+        "vromIgnoreForServer": true,
+        "mountAsPack": true,
+        "webFs": true
+      },
+      {
+        "vrom": "ui/slides.vromfs.bin",
+        "mount": "ui/slides/",
+        "vromIgnoreForServer": true,
+        "vromOptional": true,
+        "mountAsPack": true,
+        "webFs": true
+      }
+    ]
+  },
+  "addons": {
+    "modelsPatchFolder": "content/pkg_models",
+    "pkg_models_min": {
+      "contentForAllPackages": true,
+      "hq": false,
+      "modelsPatch": false
+    },
+    "hq_tex": {
+      "folder": "content.hq/hq_tex",
+      "disableReload": true,
+      "hq": false,
+      "modelsPatch": false
+    },
+    "pkg_video": {
+      "hq": false,
+      "modelsPatch": false
+    },
+    "pkg_secondary": {
+      "base": true,
+      "hq": false
+    },
+    "pkg_secondary_hq": {
+      "folder": "content.hq/pkg_secondary_hq",
+      "hq": false,
+      "modelsPatch": false
+    },
+    "pkg_dev": {},
+    "pkg_common": {},
+    "pkg_ground": {},
+    "pkg_naval": {},
+    "pkg_tier_1_naval": {},
+    "pkg_tier_2_naval": {},
+    "pkg_tier_3_naval": {},
+    "pkg_tier_4_naval": {},
+    "pkg_tier_5_naval": {},
+    "pkg_tier_1_ground": {},
+    "pkg_tier_2_ground": {},
+    "pkg_tier_3_ground": {},
+    "pkg_tier_4_ground": {},
+    "pkg_tier_5_ground": {},
+    "pkg_tier_6_ground": {},
+    "pkg_tier_7_ground": {},
+    "pkg_tier_1_aircraft": {},
+    "pkg_tier_2_aircraft": {},
+    "pkg_tier_3_aircraft": {},
+    "pkg_tier_4_aircraft": {},
+    "pkg_tier_5_aircraft": {},
+    "pkg_tier_6_aircraft": {},
+    "pkg_tier_7_aircraft": {},
+    "pkg_tier_8_aircraft": {},
+    "pkg_common_2_aircraft": {},
+    "pkg_common_3_aircraft": {},
+    "pkg_common_4_aircraft": {},
+    "pkg_common_5_aircraft": {},
+    "pkg_lvl_vietnam_hills": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
+    },
+    "pkg_lvl_rheinland": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
+    },
+    "pkg_lvl_normandy": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
+    },
+    "pkg_lvl_white_rocks": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_lvl_greece": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_lvl_air_locations": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 1
+      }
+    },
+    "pkg_lvl_air_hurtgen_africa": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 1
+      }
+    },
+    "pkg_germ_battlecruiser_von_der_tann": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_jp_battleship_yamato": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 5
+      }
+    },
+    "pkg_germ_battleship_bismarck": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 5
+      }
+    },
+    "pkg_us_battleship_arkansas": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_germ_battleship_westfalen": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_germ_destroyer_rckt_hamburg": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_ussr_cruiser_chapayev": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_us_cruiser_rckt_belknap": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_us_battleship_texas": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_jp_destroyer_rckt_takatsuki": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_ussr_battleship_marat": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_jp_battlecruiser_kongo": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_jp_battleship_mutsu": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_uk_sub_valiant": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_us_cruiser_pensacola_class": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_us_battleship_mississippi": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_ussr_desroyer_rckt_pr57bis": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_uk_battleship_colossus": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_ussr_sub_l3": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_uk_destroyer_rckt_type23": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_ussr_battleship_novorossiysk": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_jp_cruiser_mogami": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_fr_cruiser_emile_bertin": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_uk_cruiser_dido": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_jp_battleship_yamashiro": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_us_cruiser_baltimore_class": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_us_cruiser_rckt_truxtun": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_uk_battlecruiser_glorious": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_fr_destroyer_aigle_class_aigle": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 1
+      }
+    },
+    "pkg_us_cruiser_brooklyn_class_helena": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_germ_battleship_bayern": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_germ_frigate_rckt_bremen": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_ussr_cruiser_maxim_gorky": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_ussr_cruiser_rckt_pr58": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_fr_battleship_courbet_class_courbet": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_uk_battleship_marlborough": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_uk_destroyer_rckt_devonshire": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_jp_cruiser_agano": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_uk_battleship_orion": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_germ_destroyer_class1936c_z47": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 1
+      }
+    },
+    "pkg_germ_frigate_rckt_brandenburg": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_jp_battlecruiser_amagi": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 5
+      }
+    },
+    "pkg_germ_cruiser_koln": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_us_battleship_nevada": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_ussr_destroyer_rckt_pr1155": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_jp_cruiser_myoko": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_uk_sub_m1": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_fr_cruiser_suffren_class_dupleix": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_uk_battleship_centurion": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_us_battleship_tennessee": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_jp_destroyer_rckt_hatsuyuki": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_jp_cruiser_sendai": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_it_cruiser_zara_class": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_us_destroyer_gearing": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 1
+      }
+    },
+    "pkg_germ_battlecruiser_derfflinger": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_uk_battlecruiser_renown": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_us_cruiser_rckt_virginia": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_it_battleship_francesco_caracciolo": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_uk_battleship_q_elizabet_class_barham": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_jp_sub_asashio": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 5
+      }
+    },
+    "pkg_germ_sub_type_212": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_ussr_battleship_arhangelsk": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_ussr_kv_122": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 4
+      }
+    },
+    "pkg_us_t29": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_cn_ztz_88a": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_jp_st_b1": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_uk_centurion_action_x": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_ussr_object_120": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_ussr_t_34_1941_57": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
+    },
+    "pkg_fr_amx_30_b2_brenus": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_us_m46_patton_73_armor_bat": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_it_oto_r3_t20_fa": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 4
+      }
+    },
+    "pkg_it_of_40_mk_2a": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_germ_ru251": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_cn_t_34_85_d_5t": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 4
+      }
+    },
+    "pkg_uk_chieftain_mk_3": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_ussr_btr_80a": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_il_magach_6r": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_germ_kv_1_kwk_40": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
+    },
+    "pkg_it_vcc_80_hitfist_60": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_fr_amx_13_hot": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_germ_panzerbefelhswagen_p": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 4
+      }
+    },
+    "pkg_uk_chieftain_mk_10": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_ussr_is_6": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_us_m56_scorpion": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 5
+      }
+    },
+    "pkg_ussr_bmp_1": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_sw_strv_105": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_cn_type_69_2a": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_fr_amx_10rc": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_ussr_object_248": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 5
+      }
+    },
+    "pkg_cn_ztz_96": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_ussr_t_55_amd_1": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_germ_pzkpfw_v_ersatz_m10": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 5
+      }
+    },
+    "pkg_us_t95e1": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_it_zrinyi_1": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 2
+      }
+    },
+    "pkg_fr_lorraine_40t": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_jp_type_74g_kai": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_germ_leopard_a1a1_120": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_us_mbt_70": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_ussr_t_72a": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_il_merkava_mk_1": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_germ_panzerbefelhswagen_jagdpanther": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 5
+      }
+    },
+    "pkg_cn_object_122tm": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_germ_leopard_2k": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_us_t54e2": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_uk_g6_spg": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 5
+      }
+    },
+    "pkg_sw_k9_vidar": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_uk_challenger_1": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 10
+      }
+    },
+    "pkg_fr_amx_32": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_jp_type_5_ho_ri_production": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_us_m60a3_slep": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_germ_sturmpanzer_iv_brummbar": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 2
+      }
+    },
+    "pkg_ussr_t_72b_1989": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 10
+      }
+    },
+    "pkg_us_xm1_chrysler": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_it_fiat_6614_106sr": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 5
+      }
+    },
+    "pkg_germ_leopard_2av": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_ussr_kv_1s": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 2
+      }
+    },
+    "pkg_uk_centurion_mk_5_avre_era": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_fr_amx_40": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_cn_ztz_96a": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 10
+      }
+    },
+    "pkg_ussr_object_775": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_cn_type_64": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
+    },
+    "pkg_germ_leopard_2a4": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 10
+      }
+    },
+    "pkg_it_pzh_2000_hu": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_fr_amx_50_foch": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_uk_khalid": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_uk_valentine_mk_9": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 1
+      }
+    },
+    "pkg_us_m1_abrams": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 10
+      }
+    },
+    "pkg_ussr_object_140": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_cn_type_62": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_il_merkava_mk_2b_early": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_environment_uhq": {
+      "base": false,
+      "hq": false,
+      "uhq": true,
+      "modelsPatch": false
+    },
+    "pkg_ground_uhq": {
+      "base": false,
+      "hq": false,
+      "uhq": true,
+      "modelsPatch": false
+    },
+    "pkg_naval_uhq": {
+      "base": false,
+      "hq": false,
+      "uhq": true,
+      "modelsPatch": false
+    }
+  },
+  "addonToXboxChunk": {
+    "content.hq/hq_tex": 1002,
+    "content.hq/pkg_cockpits": 1002
+  },
+  "video": {
+    "safeArea": false,
+    "drawDebug": false,
+    "maxTexCount": 65535,
+    "adaptive_vsync": false,
+    "compatibilityMode": true,
+    "postfx_antialiasing": "fxaa",
+    "alpha_to_coverage": false,
+    "instancing": "auto",
+    "fonts": "medium",
+    "perfMetrics": 1,
+    "dlssQuality": -1,
+    "temporalResolutionScale": 1.0,
+    "latency": 0,
+    "vrStreamerMode": false,
+    "vreye": "left",
+    "fpsLimitOnUpdater": 10
+  },
+  "graphics": {
+    "useHdr": true,
+    "quality": "high",
+    "gamma": 1.0,
+    "useConditionalRendering": false,
+    "impostorScreenMul": 6.2,
+    "clipmapScaleFor4K": 6,
+    "fontRasterQuotaPerFrameUs": 250000,
+    "fadeInDelayFrames": 3,
+    "fadeInSeconds": 2.0,
+    "fadeInPreloadTimelimitSeconds": 1.0,
+    "hangarD3dPipelineCompileTimeBudgetSeconds": 0.5,
+    "gameplayD3dPipelineCompileTimeBudgetSeconds": 0.0,
+    "sharpen": 0.2,
+    "enableSuspensionAnimation": false,
+    "cloudsQuality": 2,
+    "nonVolumeCloudsQuality": 2,
+    "volumeCloudsQuality": 1,
+    "applyCloudsShadow": false,
+    "contactShadowsQuality": 0,
+    "tireTracksQuality": 2,
+    "texquality": "high",
+    "grassRadiusMul": 1.0,
+    "rendinstDistMul": 1.0,
+    "compatibilityRendinstDistMul": 1.0,
+    "advancedShore": true,
+    "oneShoreForAllUnits": true,
+    "lenseFlares": true,
+    "anisotropy": 8,
+    "forceAlphatestAnisotropy": 1,
+    "compatibilityAnisotropy": 8,
+    "lastClipSize": 512,
+    "recreateLastClipOnSettingsChanged": false,
+    "displacementQuality": 0,
+    "landquality": 1,
+    "skipUnderwaterFeedback": true,
+    "panoramaResolution": 2048,
+    "ssaa": 1.0,
+    "waterQuality": "high",
+    "waterGeomQuality": 1,
+    "clipmapScale": 1.0,
+    "physicsQuality": 5,
+    "giQuality": "low",
+    "skyQuality": 1,
+    "forceSky11bitRT": true,
+    "riGpuObjects": false,
+    "heightmapDimBits": 4,
+    "mirrorQuality": 0,
+    "forceUnitsLodForWater": 2,
+    "impostorMaxTexSize": 128,
+    "waterPerlin": true,
+    "usePostfxGlow": true,
+    "riColorPadding": false,
+    "simplifiedRi": false,
+    "performGPUOcclusionReadback": false,
+    "grassDisolve": false,
+    "shader_reload_allowed": true,
+    "useTreeLod0Offset": false,
+    "grassInAircraftMode": false,
+    "sortCables": false,
+    "useFarAwayIndicator": false,
+    "dynamicHoles": false,
+    "useGuiTarget": false,
+    "csmDrawOnlyPlayerUnitUnderwater": true,
+    "mobile_ssao_active": 1,
+    "renderImmDecals": false,
+    "renderImpostorsToDraftDepth": false,
+    "enableClipmapDecals": false,
+    "underwaterFogUseShadows": 1,
+    "sky_panorama_patch": false,
+    "allowHmap": false,
+    "beforeRenderFrameFrameBoundary": true,
+    "dynrendInitialMainRingBufferSize": 65536,
+    "dynrendInitialRingBufferSize": 65536,
+    "enableZoomVignette": true,
+    "resetManagedTexturesOnSettingsChanged": true,
+    "allow_uhq_textures": false,
+    "uhqForceDisabled": true,
+    "shoreHeightmapRange": 200.0,
+    "wfxHeightLimit": 1.0,
+    "waterVisibilityOffDelaySeconds": 4.0,
+    "allowHighresFxDepthReprojection": true,
+    "csmReflectionSampleBias": -0.0075,
+    "dynDecalsInitialAtlasSizeIndex": 1,
+    "enableWaterReflections": true,
+    "shouldRenderStaticSceneToReflection": false,
+    "refractionDistMulForTanks": 0.01,
+    "refractionDistMulForShips": 0.1,
+    "forceLowPreset": false,
+    "sceneResolutionPreset": "medium",
+    "defaultPresetAA": "low_fxaa",
+    "xrayOutlinesScale": 1.0,
+    "hasLowresDecals": false,
+    "blendedAirplanesSkies": true,
+    "lmeshAsyncCulling": false,
+    "riexCanIncreaseRenderBuffer": false,
+    "riMaxModelsPerLevel": 1024,
+    "riAllowGenJobsQueueReorder": true,
+    "taaSigmaScaleMin": 1.5,
+    "taaSigmaScaleMax": 2.5,
+    "taaSigmaScaleMaxHangar": 7.5,
+    "taaMotionScale": 2500.0,
+    "volumetricAfterBurner": false,
+    "backbufferHolderReadable": false,
+    "useUnderwaterFogPrepassPlane": true,
+    "csmAllowDynrendPrepareJobsInThreads": false,
+    "maxPrepareDynmodelsJobCount": 1,
+    "sky_panorama_async_pipelines": true,
+    "forceImpostorsOutsideShadows": false,
+    "frameBoundaryBufferInitialSize": 4096,
+    "fxApproximateBoundaryComputation": true,
+    "allowSortingOfTransparentObjects": false,
+    "useTacView": false,
+    "useRocketWires": false,
+    "useTelescopeSkies": false,
+    "useUIBlur": false,
+    "useFarAwayRenderer": false,
+    "useCurvedDecals": false,
+    "useMFD": false,
+    "anchorStaticShadowsToUnitInHangar": true,
+    "allowAnimatedDay": false,
+    "usePrecalculatedHarmonics": false,
+    "harmonicsSimilarityEps": 0.05,
+    "listAllAaOptions": true,
+    "mobile_demonpostfx": true,
+    "raytraced_shadows": {
+      "maxBlasBuildsPerFrame": 30,
+      "additionalElementsCheck": false,
+      "geometryLimit": 1024,
+      "shoulRebuildSkinnedElems": false
+    },
+    "cellsVBcfg": {
+      "min_allocation_size": 8388608
+    }
+  },
+  "stub3d": {
+    "autoBufferReallocate": true,
+    "bufferSize": 0
+  },
+  "sound": {
+    "androidUseOpenSLFallback": true
+  },
+  "gameplay": {
+    "coordinated_turn": false,
+    "ai_skill": "2 - veteran",
+    "immortalHero": false,
+    "difficulty": "realistic",
+    "enableVR": false
+  },
+  "input": {
+    "gyroscopeEnabled": false,
+    "moveCalculationsSinceLastEventRejectCount": 5
+  },
+  "mouse": {
+    "touchScreen": true
+  },
+  "calc_deaths_matrix": {
+    "enabled": false,
+    "numIterations": 5,
+    "dt": 0.03,
+    "time": 10.0
+  },
+  "debug": {
+    "enableApex": true,
+    "disableAnsel": false,
+    "apexLowMemMode": true,
+    "disableFmSyncDumps": true,
+    "mpBulletDiagnostics": false,
+    "trackEnvChanges": false,
+    "gamepadInBackground": true,
+    "centerWeight": 1.8,
+    "disableMenu": false,
+    "flyTurbo": 500.0,
+    "smoothDt": true,
+    "warningOnFrameTimeSec": 0.066,
+    "checkModels": false,
+    "consoleLines": 20,
+    "lodDistanceScale": 1.0,
+    "shouldUnlockAllMissions": false,
+    "shouldUnlockAllContent": false,
+    "dontUseCpuInBackground": false,
+    "autoRespawn": false,
+    "usePip": true,
+    "hugeScreenshotMultiplier": 3,
+    "isMultiplayerDebug": false,
+    "replay": true,
+    "guiStrPoolSize": 524288,
+    "disableNetwork": false,
+    "offlineConfigs": false,
+    "drawTimestamp": true,
+    "skipMovies": false,
+    "noGuiFade": false,
+    "disableHangar": false,
+    "disableChat": false,
+    "workThreadsStackSize": 393216,
+    "replayDofFar": [
+      100.0,
+      400.0,
+      0.5
+    ],
+    "skipIntegratedGpuWarning": true,
+    "netLogerr": true,
+    "dynamicImpostorsPerFrame": 1,
+    "enableNvHighlights": "auto",
+    "logerrOnSecLayer": true,
+    "mobileStyleFpsString": true,
+    "maxWorkThreads": 2,
+    "doSmallJobsInMainThread": true,
+    "sendFullLogOnFatalIntervalHours": 4,
+    "logSignificantChangesAsWarnings": true,
+    "dumpSettings": true,
+    "clearDiscardedImagesInAtlas": false,
+    "verifyDynrendContexts": true,
+    "unsupportedVfxShaders": {
+      "shader": [
+        "dafx_modfx_volshape_render",
+        "dafx_modfx_volshape_wboit_render"
+      ]
+    }
+  },
+  "directx": {
+    "debug": false,
+    "disableNvapi": false,
+    "useGpuDt": false,
+    "flushOnPresent": true,
+    "enableHdr": false,
+    "maxaa": 0,
+    "minimumFeatureLevel": "10_0"
+  },
+  "render": {
+    "heightmap": true,
+    "environment": true,
+    "rendinst": true,
+    "clouds": true,
+    "scene": true,
+    "dynmodels": true,
+    "fx": true,
+    "tracers": true,
+    "rainX7": true,
+    "fog": true,
+    "gui": true,
+    "water3d": true,
+    "clipmap": true,
+    "fxReflection": true,
+    "wakeFoamWithoutAA": true,
+    "ssrQuality": 0,
+    "haze": false,
+    "ssaoQuality": 0,
+    "rendinstGlobalShadows": true,
+    "grassInCompatibility": true,
+    "grassInCompatibilityHangar": true,
+    "forcePreloadGrassMask": true,
+    "softFx": true,
+    "shadows": true,
+    "selfReflection": false,
+    "rendinstClipmapShadows": false,
+    "landmesh_lod_radius": 1024,
+    "secLayer": false,
+    "downsampleMotionVectors": false
+  },
+  "clipmap": {
+    "sideSize": 768,
+    "texelSize": 0.015,
+    "stackCount": 8,
+    "step": 1.7,
+    "finalSize": 0.0,
+    "tankTexelSize": 1.0,
+    "texSize": [
+      1024,
+      1024
+    ],
+    "hwfeedback": true,
+    "swFeedbackInnerMipTiles": 3,
+    "swFeedbackOuterMipTiles": 6,
+    "texTileSize": 128,
+    "fallbackMetersInTexelGround": 4.0,
+    "virtualTextureMipCnt": 2,
+    "virtualTextureAnisotropy": 1,
+    "cachesCount": 2,
+    "buffersCount": 2,
+    "growTexSizeWithRenderingResolution": true,
+    "shaderlodMode": "always_high",
+    "updateFeedbackSameThread": true
+  },
+  "clipmapImpostor": {
+    "enabled": false,
+    "distance": 1300.0
+  },
+  "aviWriter": {
+    "quality": 100,
+    "folder": "d:\\video\\bos_video",
+    "fileLimit": 2100000000
+  },
+  "network": {
+    "stubServerIp": "127.0.0.1",
+    "stubServerPort": 14042,
+    "stubOnlineName": "Server",
+    "stubOnlineId": 1,
+    "stubServerOnlineName": "Server",
+    "stubServerOnlineId": 1,
+    "psnAuthRequestTimeout": 30,
+    "publicConfigsUrl": "http://public-configs.warthunder.com/",
+    "httpClientPollInThread": true,
+    "publicConfigsUrls": {
+      "url": "http://public-configs.warthunder.com/"
+    }
+  },
+  "general": {
+    "environment": "day",
+    "weather": "clear"
+  },
+  "texStreaming": {
+    "enableStreaming": true,
+    "alwaysRelease": true,
+    "alwaysReleaseThresholdTexSizeKB": 32,
+    "texLoadOnDemand": true,
+    "lqIsSplitBQforDiffTex": false,
+    "hqTexPrio": 1,
+    "lqTexMaxSizeKB": 2048,
+    "defStubTexColor": [
+      80,
+      80,
+      80,
+      0
+    ],
+    "verboseLogs": false,
+    "enableCurQLMismatchAssert": false,
+    "lqIsSplitBQ": false,
+    "lqMipBiasHQ": 2,
+    "lqMipBiasMQ": 3,
+    "lqMipBiasLQ": 3,
+    "stubTex": [
+      {
+        "tag": "diffuse",
+        "idx": 1,
+        "color": [
+          80,
+          82,
+          80,
+          255
+        ]
+      },
+      {
+        "tag": "nx_ny_nz_0",
+        "idx": 2,
+        "color": [
+          255,
+          128,
+          128,
+          0
+        ],
+        "gamma1": true
+      },
+      {
+        "tag": "smooth0_nx_metal0_ny",
+        "idx": 3,
+        "color": [
+          0,
+          128,
+          0,
+          128
+        ],
+        "gamma1": true
+      },
+      {
+        "tag": "ao",
+        "idx": 4,
+        "color": [
+          200,
+          200,
+          200,
+          255
+        ]
+      },
+      {
+        "tag": "black",
+        "idx": 5,
+        "color": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "tag": "nx_ny_0_0.5",
+        "idx": 6,
+        "color": [
+          0,
+          128,
+          128,
+          128
+        ],
+        "gamma1": true
+      },
+      {
+        "tag": "mod2x",
+        "idx": 7,
+        "color": [
+          128,
+          128,
+          128,
+          128
+        ]
+      },
+      {
+        "tag": "nx_ny_0_0",
+        "idx": 8,
+        "color": [
+          0,
+          128,
+          128,
+          0
+        ],
+        "gamma1": true
+      }
+    ],
+    "biasGroup": [
+      {
+        "pack_re": "aircrafts",
+        "lqMipBiasHQ": 2,
+        "lqMipBiasMQ": 1,
+        "lqMipBiasLQ": 2
+      },
+      {
+        "pack_re": "tanks",
+        "lqMipBiasHQ": 1,
+        "lqMipBiasMQ": 1,
+        "lqMipBiasLQ": 2
+      }
+    ]
+  },
+  "dlData": {
+    "timeoutSec": 500
+  },
+  "ugc": {
+    "enabled": true
+  },
+  "unitedVdata.dynModel": {
+    "use": true,
+    "canRebuild": false,
+    "common": {
+      "exactSize": true,
+      "IB": 16384,
+      "VB1": 16384,
+      "VB2": 16384,
+      "VB3": 16384,
+      "VB4": 16384,
+      "VB5": 65536,
+      "VB6": 0
+    }
+  },
+  "unitedVdata.rendInst": {
+    "common": {
+      "exactSize": true,
+      "IB": 8192,
+      "VB1": 16384,
+      "VB2": 8192,
+      "VB3": 0
+    }
+  },
+  "contentUpdater": {
+    "flag": [
+      "--norespatch",
+      "--noupdate",
+      "--verbose"
+    ],
+    "android": {
+      "flag": "--notime",
+      "addons": {
+        "flag": "--noversion"
+      },
+      "background_addons": {
+        "flag": "--noversion"
+      }
+    },
+    "iOS": {
+      "flag": "--notime",
+      "addons": {
+        "flag": "--noversion"
+      },
+      "background_addons": {
+        "flag": "--noversion"
+      }
+    },
+    "resources_patch": {
+      "flag": [
+        "--clear",
+        "--onlypacks",
+        "--onlychanged"
+      ],
+      "package": [
+        "levels",
+        "patch"
+      ]
+    },
+    "binarycache": {
+      "shouldPatchVromsWithRemoteVersion": true,
+      "shouldSaveGameVersionToCache": true,
+      "flag": [
+        "--clear",
+        "--onlypacks",
+        "--force_current",
+        "--enable_tag",
+        "update_vroms"
+      ]
+    },
+    "addons": {
+      "disableFastVersionCheck": true,
+      "shouldSaveGameVersionToCache": true,
+      "shouldReportIncompatibleVersion": true,
+      "startMetric": "addons_update_start",
+      "stopMetric": "addons_update_stop",
+      "flag": [
+        "--clear",
+        "--onlypacks",
+        "--enable_tag",
+        "min_core"
+      ]
+    },
+    "background_addons": {
+      "disableFastVersionCheck": true,
+      "shouldSaveGameVersionToCache": true,
+      "shouldReportIncompatibleVersion": true,
+      "requireSameGameVersion": false,
+      "startMetric": "background_addons_update_start",
+      "stopMetric": "background_addons_update_stop",
+      "flag": [
+        "--clear",
+        "--onlypacks"
+      ]
+    },
+    "optional_game_resources": {
+      "strictVersionCheck": false,
+      "disableFastVersionCheck": true,
+      "flag": [
+        "--verbose",
+        "--onlypacks",
+        "--seed"
+      ]
+    }
+  },
+  "shadows": {
+    "zExpansion": 100.0,
+    "depthBias": 0.25,
+    "depthSlopeBias": 0.7,
+    "depthConstBias": 0.000021,
+    "bigShipForShadowsFrom": 0.0,
+    "occlusionSunDirThreshold": 0.5,
+    "shadowsDistMulInZoom": 3.0,
+    "enableStaticInTps": true,
+    "hangarUseFixedShadowCascade": true,
+    "hangarShipsUseFixedShadowCascade": true,
+    "tpsUseFixedShadowCascade": true,
+    "underwaterUseFixedShadowCascade": true,
+    "staticMaxUpdatePart": 0.005,
+    "low": {
+      "cascadeWidth": 512,
+      "enableSparseUpdate": false,
+      "underwaterCascadeWidth": 512,
+      "splitsW": 2,
+      "splitsH": 1,
+      "cascadeDepth24bit": false,
+      "tpsShadowDist": 1000.0,
+      "tpsPowWeight": 0.98,
+      "bigShipsShadowDist": 700.0,
+      "bigShipsPowWeight": 0.45,
+      "hangarShadowDist": 150.0,
+      "hangarPowWeight": 0.9,
+      "hangarZNearForCascadeDistribution": 0.5,
+      "hangarShipsShadowDist": 150.0,
+      "hangarShipsPowWeight": 0.5,
+      "tanksShadowDist": 200.0,
+      "tanksPowWeight": 0.7,
+      "underwaterShadowDist": 500.0,
+      "underwaterPowWeight": 0.5,
+      "underwaterShadowStart": 0.01,
+      "fadeOut": 30.0,
+      "rotationMargin": 0.1,
+      "vsmSize": 2048,
+      "renderHeightmap": false,
+      "useOcclusion": false,
+      "staticCascadeCount": 2,
+      "staticCascadeTexWidth": 1024,
+      "staticCascadeMaxDist": 4000.0,
+      "staticCascade0Dist": 800.0,
+      "staticCascadeStarting": 0,
+      "staticCascadeUseRiSecLayer": false,
+      "staticCascadeMinHeight": -20.0,
+      "staticCascadeMaxHeight": 100.0,
+      "staticMaxHeightRange": 150.0,
+      "staticCascadeTransition": false,
+      "optimizeBigQuadRenderForSmallCascade": true,
+      "staticCascadeDualPass": false,
+      "staticCascadeDepthBias": 0.05,
+      "staticCascadeRiExLod0InCascade0": true,
+      "staticCascadeDepthBiasForCascade0": 0.002,
+      "staticCascadeMinSizeForRiextraCascade1": 10.0,
+      "tank": {
+        "staticCascadeCount": 2,
+        "staticCascadeTexWidth": 1024,
+        "staticCascadeMaxDist": 2000.0,
+        "staticCascade0Dist": 100.0,
+        "staticCascadeStarting": 0,
+        "staticCascadeUseRiSecLayer": false,
+        "staticCascadeMinHeight": -20.0,
+        "staticCascadeMaxHeight": 100.0,
+        "staticMaxHeightRange": 150.0,
+        "staticCascadeTransition": false,
+        "optimizeBigQuadRenderForSmallCascade": true,
+        "staticCascadeDualPass": false,
+        "staticCascadeDepthBias": 0.005,
+        "staticCascadeRiExLod0InCascade0": true,
+        "staticCascadeDepthBiasForCascade0": 0.0005,
+        "staticCascadeMinSizeForRiextraCascade1": 10.0
+      },
+      "airplane": {
+        "staticCascadeCount": 2,
+        "staticCascadeTexWidth": 1024,
+        "staticCascadeMaxDist": 2000.0,
+        "staticCascade0Dist": 100.0,
+        "staticCascadeStarting": 0,
+        "staticCascadeUseRiSecLayer": false,
+        "staticCascadeMinHeight": -20.0,
+        "staticCascadeMaxHeight": 4500.0,
+        "staticMaxHeightRange": 4550.0,
+        "staticCascadeTransition": false,
+        "optimizeBigQuadRenderForSmallCascade": true,
+        "staticCascadeDualPass": false,
+        "staticCascadeDepthBias": 0.00025,
+        "staticCascadeRiExLod0InCascade0": true,
+        "staticCascadeDepthBiasForCascade0": 0.000025,
+        "staticCascadeMinSizeForRiextraCascade1": 10.0
+      }
+    },
+    "high": {
+      "cascadeWidth": 1024,
+      "enableSparseUpdate": false,
+      "underwaterCascadeWidth": 512,
+      "splitsW": 2,
+      "splitsH": 1,
+      "cascadeDepth24bit": false,
+      "tpsShadowDist": 1000.0,
+      "tpsPowWeight": 0.98,
+      "bigShipsShadowDist": 1000.0,
+      "bigShipsPowWeight": 0.6,
+      "hangarShadowDist": 150.0,
+      "hangarPowWeight": 0.9,
+      "hangarZNearForCascadeDistribution": 0.5,
+      "hangarShipsShadowDist": 250.0,
+      "hangarShipsPowWeight": 0.7,
+      "tanksShadowDist": 500.0,
+      "tanksPowWeight": 0.9,
+      "underwaterShadowDist": 500.0,
+      "underwaterPowWeight": 0.5,
+      "underwaterShadowStart": 0.01,
+      "fadeOut": 30.0,
+      "rotationMargin": 0.1,
+      "vsmSize": 2048,
+      "renderHeightmap": false,
+      "useOcclusion": false,
+      "staticCascadeCount": 2,
+      "staticCascadeTexWidth": 2048,
+      "staticCascadeMaxDist": 4000.0,
+      "staticCascade0Dist": 800.0,
+      "staticCascadeStarting": 0,
+      "staticCascadeUseRiSecLayer": false,
+      "staticCascadeMinHeight": -20.0,
+      "staticCascadeMaxHeight": 100.0,
+      "staticMaxHeightRange": 150.0,
+      "staticCascadeTransition": false,
+      "optimizeBigQuadRenderForSmallCascade": true,
+      "staticCascadeDualPass": false,
+      "staticCascadeDepthBias": 0.05,
+      "staticCascadeRiExLod0InCascade0": true,
+      "staticCascadeDepthBiasForCascade0": 0.002,
+      "staticCascadeMinSizeForRiextraCascade1": 10.0,
+      "tank": {
+        "staticCascadeCount": 2,
+        "staticCascadeTexWidth": 2048,
+        "staticCascadeMaxDist": 2000.0,
+        "staticCascade0Dist": 100.0,
+        "staticCascadeStarting": 0,
+        "staticCascadeUseRiSecLayer": false,
+        "staticCascadeMinHeight": -20.0,
+        "staticCascadeMaxHeight": 100.0,
+        "staticMaxHeightRange": 150.0,
+        "staticCascadeTransition": false,
+        "optimizeBigQuadRenderForSmallCascade": true,
+        "staticCascadeDualPass": false,
+        "staticCascadeDepthBias": 0.005,
+        "staticCascadeRiExLod0InCascade0": true,
+        "staticCascadeDepthBiasForCascade0": 0.0005,
+        "staticCascadeMinSizeForRiextraCascade1": 10.0
+      },
+      "airplane": {
+        "staticCascadeCount": 2,
+        "staticCascadeTexWidth": 2048,
+        "staticCascadeMaxDist": 2000.0,
+        "staticCascade0Dist": 100.0,
+        "staticCascadeStarting": 0,
+        "staticCascadeUseRiSecLayer": false,
+        "staticCascadeMinHeight": -20.0,
+        "staticCascadeMaxHeight": 4500.0,
+        "staticMaxHeightRange": 4550.0,
+        "staticCascadeTransition": false,
+        "optimizeBigQuadRenderForSmallCascade": true,
+        "staticCascadeDualPass": false,
+        "staticCascadeDepthBias": 0.00025,
+        "staticCascadeRiExLod0InCascade0": true,
+        "staticCascadeDepthBiasForCascade0": 0.000025,
+        "staticCascadeMinSizeForRiextraCascade1": 10.0
+      }
+    },
+    "max": {
+      "cascadeWidth": 1536,
+      "enableSparseUpdate": false,
+      "underwaterCascadeWidth": 1024,
+      "splitsW": 2,
+      "splitsH": 1,
+      "cascadeDepth24bit": false,
+      "tpsShadowDist": 1000.0,
+      "tpsPowWeight": 0.98,
+      "bigShipsShadowDist": 1000.0,
+      "bigShipsPowWeight": 0.6,
+      "hangarShadowDist": 150.0,
+      "hangarPowWeight": 0.9,
+      "hangarZNearForCascadeDistribution": 0.5,
+      "hangarShipsShadowDist": 250.0,
+      "hangarShipsPowWeight": 0.7,
+      "tanksShadowDist": 500.0,
+      "tanksPowWeight": 0.9,
+      "underwaterShadowDist": 500.0,
+      "underwaterPowWeight": 0.5,
+      "underwaterShadowStart": 0.01,
+      "fadeOut": 30.0,
+      "rotationMargin": 0.1,
+      "vsmSize": 2048,
+      "renderHeightmap": false,
+      "useOcclusion": false,
+      "staticCascadeCount": 2,
+      "staticCascadeTexWidth": 2048,
+      "staticCascadeMaxDist": 4000.0,
+      "staticCascade0Dist": 800.0,
+      "staticCascadeStarting": 0,
+      "staticCascadeUseRiSecLayer": false,
+      "staticCascadeMinHeight": -20.0,
+      "staticCascadeMaxHeight": 100.0,
+      "staticMaxHeightRange": 150.0,
+      "staticCascadeTransition": false,
+      "optimizeBigQuadRenderForSmallCascade": true,
+      "staticCascadeDualPass": false,
+      "staticCascadeDepthBias": 0.05,
+      "staticCascadeRiExLod0InCascade0": true,
+      "staticCascadeDepthBiasForCascade0": 0.002,
+      "staticCascadeMinSizeForRiextraCascade1": 10.0,
+      "tank": {
+        "staticCascadeCount": 2,
+        "staticCascadeTexWidth": 2048,
+        "staticCascadeMaxDist": 2000.0,
+        "staticCascade0Dist": 100.0,
+        "staticCascadeStarting": 0,
+        "staticCascadeUseRiSecLayer": false,
+        "staticCascadeMinHeight": -20.0,
+        "staticCascadeMaxHeight": 100.0,
+        "staticMaxHeightRange": 150.0,
+        "staticCascadeTransition": false,
+        "optimizeBigQuadRenderForSmallCascade": true,
+        "staticCascadeDualPass": false,
+        "staticCascadeDepthBias": 0.005,
+        "staticCascadeRiExLod0InCascade0": true,
+        "staticCascadeDepthBiasForCascade0": 0.0005,
+        "staticCascadeMinSizeForRiextraCascade1": 10.0
+      },
+      "airplane": {
+        "staticCascadeCount": 2,
+        "staticCascadeTexWidth": 2048,
+        "staticCascadeMaxDist": 2000.0,
+        "staticCascade0Dist": 100.0,
+        "staticCascadeStarting": 0,
+        "staticCascadeUseRiSecLayer": false,
+        "staticCascadeMinHeight": -20.0,
+        "staticCascadeMaxHeight": 4500.0,
+        "staticMaxHeightRange": 4550.0,
+        "staticCascadeTransition": false,
+        "optimizeBigQuadRenderForSmallCascade": true,
+        "staticCascadeDualPass": false,
+        "staticCascadeDepthBias": 0.00025,
+        "staticCascadeRiExLod0InCascade0": true,
+        "staticCascadeDepthBiasForCascade0": 0.000025,
+        "staticCascadeMinSizeForRiextraCascade1": 10.0
+      }
+    },
+    "movie": {
+      "cascadeWidth": 4096,
+      "enableSparseUpdate": false,
+      "underwaterCascadeWidth": 1024,
+      "splitsW": 2,
+      "splitsH": 1,
+      "cascadeDepth24bit": false,
+      "tpsShadowDist": 1000.0,
+      "tpsPowWeight": 0.9,
+      "bigShipsShadowDist": 1000.0,
+      "bigShipsPowWeight": 0.6,
+      "hangarShadowDist": 150.0,
+      "hangarPowWeight": 0.9,
+      "hangarZNearForCascadeDistribution": 0.5,
+      "hangarShipsShadowDist": 250.0,
+      "hangarShipsPowWeight": 0.7,
+      "tanksShadowDist": 500.0,
+      "tanksPowWeight": 0.9,
+      "underwaterShadowDist": 500.0,
+      "underwaterPowWeight": 0.5,
+      "underwaterShadowStart": 0.01,
+      "fadeOut": 30.0,
+      "rotationMargin": 0.1,
+      "vsmSize": 2048,
+      "renderHeightmap": false,
+      "useOcclusion": false,
+      "staticCascadeCount": 2,
+      "staticCascadeTexWidth": 8192,
+      "staticCascadeMaxDist": 4000.0,
+      "staticCascade0Dist": 800.0,
+      "staticCascadeStarting": 0,
+      "staticCascadeUseRiSecLayer": false,
+      "staticCascadeMinHeight": -20.0,
+      "staticCascadeMaxHeight": 100.0,
+      "staticMaxHeightRange": 150.0,
+      "staticCascadeTransition": false,
+      "optimizeBigQuadRenderForSmallCascade": true,
+      "staticCascadeDualPass": false,
+      "staticCascadeDepthBias": 0.05,
+      "staticCascadeRiExLod0InCascade0": true,
+      "staticCascadeDepthBiasForCascade0": 0.002,
+      "staticCascadeMinSizeForRiextraCascade1": -1.0,
+      "tank": {
+        "staticCascadeCount": 2,
+        "staticCascadeTexWidth": 8192,
+        "staticCascadeMaxDist": 2000.0,
+        "staticCascade0Dist": 100.0,
+        "staticCascadeStarting": 0,
+        "staticCascadeUseRiSecLayer": false,
+        "staticCascadeMinHeight": -20.0,
+        "staticCascadeMaxHeight": 100.0,
+        "staticMaxHeightRange": 150.0,
+        "staticCascadeTransition": false,
+        "optimizeBigQuadRenderForSmallCascade": true,
+        "staticCascadeDualPass": false,
+        "staticCascadeDepthBias": 0.005,
+        "staticCascadeRiExLod0InCascade0": true,
+        "staticCascadeDepthBiasForCascade0": 0.0005,
+        "staticCascadeMinSizeForRiextraCascade1": -1.0
+      },
+      "airplane": {
+        "staticCascadeCount": 2,
+        "staticCascadeTexWidth": 8192,
+        "staticCascadeMaxDist": 2000.0,
+        "staticCascade0Dist": 100.0,
+        "staticCascadeStarting": 0,
+        "staticCascadeUseRiSecLayer": false,
+        "staticCascadeMinHeight": -20.0,
+        "staticCascadeMaxHeight": 4500.0,
+        "staticMaxHeightRange": 4550.0,
+        "staticCascadeTransition": false,
+        "optimizeBigQuadRenderForSmallCascade": true,
+        "staticCascadeDualPass": false,
+        "staticCascadeDepthBias": 0.00025,
+        "staticCascadeRiExLod0InCascade0": true,
+        "staticCascadeDepthBiasForCascade0": 0.000025,
+        "staticCascadeMinSizeForRiextraCascade1": -1.0
+      }
+    }
+  },
+  "ProximityDependency": {
+    "rendinstVerticalBillboard": [
+      50.0,
+      50.0
+    ],
+    "rendinstDistMul": [
+      7.0,
+      100.0,
+      1.0,
+      0.5
+    ]
+  },
+  "shadersWarmup": {
+    "hangarWarmup": true,
+    "hangarWarmupTimeLimit": 1.0,
+    "android": true,
+    "win64": true,
+    "linux64": true,
+    "Vulkan": true,
+    "graphics": {
+      "dafx_modfx_bboard_render": true,
+      "sparks_ps": true,
+      "gen_weather": true,
+      "render_full_tonemap": true,
+      "skies_render_screen": true,
+      "skyPanorama": true,
+      "strata_clouds": true,
+      "tileConstantFiller": true,
+      "copy": true,
+      "specular_cube": true,
+      "gen_clouds_types_lut": true,
+      "gen_clouds_erosion_lut": true,
+      "impostor_shadow_atlas": true,
+      "water_normals": true,
+      "random_grass_filter": true,
+      "clouds2_direct": true,
+      "dynamic_masked_tank": true
+    },
+    "compute": {
+      "skies_generate_transmittance_cs": true,
+      "skies_approximate_ms_lut_cs": true,
+      "indirect_irradiance_ms_cs": true,
+      "gen_curl_clouds_2d": true,
+      "gen_cloud_field_cmpr": true,
+      "trace_clouds_cs": true,
+      "skies_view_lut_tex_prepare_cs": true,
+      "clouds2_temporal_cs": true,
+      "skies_integrate_froxel_scattering_cs": true,
+      "compute_full_tonemap": true,
+      "skies_prepare_transmittance_for_altitude_cs": true,
+      "water_foam_blur_cs": true,
+      "water_gradient_foam_combine_cs": true,
+      "query_rainmap_cs": true
+    },
+    "000backgroundWarmup": {
+      "graphics": {
+        "rendinst_baked_impostor": true,
+        "rendinst_simple": true,
+        "rendinst_tree_colored": true,
+        "rendinst_perlin_layered": true,
+        "dynamic_masked_chrome_bump": true,
+        "dynamic_perlin_layered": true
+      }
+    }
+  },
+  "level": {
+    "disableIntegrityCheck": {
+      "check": [
+        "eVER",
+        "lmap"
+      ]
+    }
+  },
+  "overrides": {
+    "xiaomi_11t": {
+      "codename": "21081111RG",
+      "vulkan": {
+        "preRotation": false
+      },
+      "android": {
+        "highPerfCores": 240,
+        "antiThrottlingSleepMs": 5,
+        "antiThrottlingFpsLimit": 50
+      }
+    },
+    "xiaomi_11tpro": {
+      "codename": "2107113SG",
+      "android": {
+        "highPerfCores": 240,
+        "antiThrottlingSleepMs": 5,
+        "antiThrottlingFpsLimit": 50
+      }
+    },
+    "fps_limiter": {
+      "codename": [
+        "iPad Pro 3 11 inch",
+        "iPad Pro 3 12.9 inch",
+        "iPad Pro 4 11 inch",
+        "iPad Pro 4 12.9 inch",
+        "iPad Pro 5 11 inch",
+        "iPad Pro 5 12.9 inch",
+        "iPad Pro 6 11 inch",
+        "iPad Pro 6 12.9 inch",
+        "iPad Pro 7 11 inch",
+        "iPad Pro 7 12.9 inch",
+        "iPad15,",
+        "iPad16,",
+        "iPad17,",
+        "iPad18,",
+        "iPhone 15 Pro",
+        "iPhone 15 Pro Max",
+        "iPhone16,",
+        "iPhone17,",
+        "iPhone18,",
+        "iPhone19,"
+      ],
+      "video": {
+        "fpsLimit": 60
+      }
+    },
+    "texture_uhq": {
+      "codename": [
+        "iPhone 15 Pro",
+        "iPhone 15 Pro Max",
+        "iPhone16,",
+        "iPhone17,",
+        "iPhone18,",
+        "iPhone19,",
+        "iPad Pro 6 11 inch",
+        "iPad Pro 6 12.9 inch",
+        "iPad Pro 7 11 inch",
+        "iPad Pro 7 12.9 inch",
+        "iPad15,",
+        "iPad16,",
+        "iPad17,",
+        "iPad18,"
+      ],
+      "graphics": {
+        "allow_uhq_textures": false
+      }
+    },
+    "tex_quality_limit": {
+      "codename": [
+        "iPod 7th Gen",
+        "iPhone 6S",
+        "iPhone 6S Plus",
+        "iPhone 7",
+        "iPhone 7 Plus",
+        "iPhone 8",
+        "iPhone 8 Plus",
+        "iPhone SE 1st Gen",
+        "iPhone SE 2nd Gen",
+        "iPhone X",
+        "iPad 5",
+        "iPad 6",
+        "iPad 7",
+        "iPad 8",
+        "iPad 9",
+        "iPad Air 2",
+        "iPad Air 3",
+        "iPad Mini 4",
+        "iPad Mini 5",
+        "iPad Pro 9.7 inch"
+      ],
+      "graphics": {
+        "texQualityMemoryLimitMb": 3072,
+        "maxTexQuality": "medium"
+      }
+    },
+    "apple_a8": {
+      "codename": [
+        "iPad Mini 4",
+        "iPad Air 2"
+      ],
+      "graphics": {
+        "shaderlod": "low",
+        "underwaterFogUseSimple": true,
+        "enableWaterReflections": false,
+        "forceLowPreset": true
+      },
+      "clipmap": {
+        "hwfeedback": false,
+        "texTileSize": 128
+      }
+    }
+  },
+  "gamepad_layout": {
+    "nintendo": {
+      "config": [
+        {
+          "vendor": 3695,
+          "product": 390,
+          "name": "Lic Pro Controller"
+        },
+        {
+          "vendor": 1406,
+          "name": "Switch Pro Controller"
+        }
+      ]
+    },
+    "sony": {
+      "config": {
+        "vendor": 1356
+      }
+    },
+    "xbox": {
+      "config": {
+        "vendor": 1118
+      }
+    }
+  },
+  "nswitch_presets": {
+    "high": {
+      "graphics": {
+        "backgroundScale": 1.0,
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": -1,
+        "limitNonPlayerTankUnitsLod": -1,
+        "limitNonPlayerShipUnitsLod": -1,
+        "hangarTankLod": 0,
+        "hangarShipLod": 0,
+        "compatibilityShadowQuality": "high",
+        "hangarShadowQuality": "high",
+        "grassRadiusMul": 0.8,
+        "grassDensityMul": 0.87,
+        "fxDensityMul": 0.8,
+        "rendinstDistMul": 0.8,
+        "compatibilityRendinstDistMul": 0.8,
+        "tireTracksQuality": 1,
+        "anisotropy": 4,
+        "compatibilityAnisotropy": 4,
+        "xrayUpdateFrames": 1,
+        "force8bitRT": false,
+        "usePostfxGlow": false,
+        "lenseFlares": false,
+        "mobile_ssao_active": 1,
+        "renderImmDecals": true,
+        "renderImpostorsToDraftDepth": true,
+        "grassQuality": "low",
+        "shaderlod": "high",
+        "underwaterFogUseShadows": 1,
+        "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": false,
+        "texquality": "high",
+        "fxTarget": "high",
+        "fftWaterRenderResolution": 8,
+        "allowNonSkyReflections": true,
+        "enableWakeDisplacement": true,
+        "enableWaterProjFx": true,
+        "enableGrassTrackMask": false,
+        "allowRefractionForTankLevels": true,
+        "refractionMinScale": 0.25,
+        "refractionShadows": true
+      },
+      "render": {
+        "grassInCompatibility": true
+      },
+      "clipmap": {
+        "texSize": [
+          2048,
+          2048
+        ],
+        "texTileSize": 128,
+        "swFeedbackMipTiles0": 10,
+        "swFeedbackMipTiles1": 8,
+        "swFeedbackMipTiles2": 4,
+        "swFeedbackInnerMipTiles": 4,
+        "swFeedbackOuterMipTiles": 4,
+        "virtualTextureAnisotropy": 4,
+        "texelSizeMul": 1.0,
+        "hwfeedback": false
+      },
+      "debug": {
+        "lodDistanceScale": 1.0
+      }
+    }
+  },
+  "pc_background_scales": {
+    "low": 0.5,
+    "medium": 0.75,
+    "high": 1.0,
+    "movie": 1.0
+  },
+  "ios_background_scales": {
+    "low": 0.5,
+    "medium": 0.633,
+    "high": 0.75,
+    "movie": 1.0
+  },
+  "android_scene_resolutions": {
+    "low": 450,
+    "medium": 516,
+    "high": 688,
+    "movie": 1080
+  },
+  "android_presets": {
+    "low": {
+      "graphics": {
+        "sceneResolutionPreset": "medium",
+        "defaultPresetAA": "low_fxaa",
+        "limitPlayerAirplaneUnitsLod": 1,
+        "limitPlayerTankUnitsLod": 2,
+        "limitPlayerShipUnitsLod": 1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 2,
+        "limitNonPlayerShipUnitsLod": 1,
+        "hangarTankLod": 1,
+        "hangarShipLod": 0,
+        "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": true,
+        "compatibilityShadowQuality": "low",
+        "hangarShadowQuality": "low",
+        "grassRadiusMul": 0.5,
+        "grassDensityMul": 0.5,
+        "fxDensityMul": 0.2,
+        "rendinstDistMul": 0.5,
+        "compatibilityRendinstDistMul": 0.5,
+        "tireTracksQuality": 0,
+        "anisotropy": 1,
+        "compatibilityAnisotropy": 1,
+        "xrayUpdateFrames": 2,
+        "force8bitRT": true,
+        "usePostfxGlow": false,
+        "lenseFlares": false,
+        "mobile_ssao_active": 0,
+        "renderImmDecals": false,
+        "renderImpostorsToDraftDepth": false,
+        "grassQuality": "low",
+        "shaderlod": "low",
+        "underwaterFogUseShadows": 0,
+        "underwaterFogUseSimple": true,
+        "underwaterFogUseTAA": false,
+        "texquality": "low",
+        "fxTarget": "high",
+        "fftWaterRenderResolution": 7,
+        "allowNonSkyReflections": false,
+        "enableWakeDisplacement": false,
+        "enableWaterProjFx": false,
+        "enableGrassTrackMask": false,
+        "allowRefractionForTankLevels": false,
+        "refractionMinScale": 0.25,
+        "refractionShadows": false,
+        "infiniteSkiesInAirplane": false,
+        "nonVolumeCloudsQuality": 2,
+        "volumeCloudsQuality": 4,
+        "applyCloudsShadow": false,
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": false
+      },
+      "render": {
+        "grassInCompatibility": false
+      },
+      "clipmap": {
+        "texSize": [
+          1024,
+          1024
+        ],
+        "texTileSize": 64,
+        "swFeedbackMipTiles0": 2,
+        "swFeedbackMipTiles1": 2,
+        "swFeedbackMipTiles2": 2,
+        "swFeedbackInnerMipTiles": 2,
+        "swFeedbackOuterMipTiles": 4,
+        "virtualTextureAnisotropy": 1,
+        "texelSizeMul": 2.0,
+        "hwfeedback": false,
+        "cachesCount": 1,
+        "buffersCount": 1,
+        "shaderlodMode": "always_low",
+        "updateCountHigh": 4
+      },
+      "debug": {
+        "lodDistanceScale": 1.0
+      }
+    },
+    "medium": {
+      "graphics": {
+        "sceneResolutionPreset": "medium",
+        "defaultPresetAA": "low_fxaa",
+        "limitPlayerAirplaneUnitsLod": 1,
+        "limitPlayerTankUnitsLod": 1,
+        "limitPlayerShipUnitsLod": 1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 1,
+        "limitNonPlayerShipUnitsLod": 1,
+        "hangarTankLod": 1,
+        "hangarShipLod": 0,
+        "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
+        "compatibilityShadowQuality": "low",
+        "hangarShadowQuality": "low",
+        "grassRadiusMul": 0.45,
+        "grassDensityMul": 0.15,
+        "fxDensityMul": 0.5,
+        "rendinstDistMul": 0.5,
+        "compatibilityRendinstDistMul": 0.5,
+        "tireTracksQuality": 0,
+        "anisotropy": 1,
+        "compatibilityAnisotropy": 1,
+        "xrayUpdateFrames": 2,
+        "force8bitRT": true,
+        "usePostfxGlow": false,
+        "lenseFlares": false,
+        "mobile_ssao_active": 1,
+        "renderImmDecals": false,
+        "renderImpostorsToDraftDepth": true,
+        "grassQuality": "high",
+        "shaderlod": "high",
+        "underwaterFogUseShadows": 1,
+        "underwaterFogUseSimple": true,
+        "underwaterFogUseTAA": false,
+        "texquality": "high",
+        "fxTarget": "high",
+        "fftWaterRenderResolution": 7,
+        "allowNonSkyReflections": true,
+        "enableWakeDisplacement": true,
+        "enableWaterProjFx": true,
+        "enableGrassTrackMask": false,
+        "allowRefractionForTankLevels": false,
+        "refractionMinScale": 0.25,
+        "refractionShadows": false,
+        "infiniteSkiesInAirplane": false,
+        "nonVolumeCloudsQuality": 2,
+        "volumeCloudsQuality": 3,
+        "applyCloudsShadow": true,
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": false
+      },
+      "render": {
+        "grassInCompatibility": true
+      },
+      "clipmap": {
+        "texSize": [
+          3072,
+          3072
+        ],
+        "texTileSize": 256,
+        "swFeedbackMipTiles0": 6,
+        "swFeedbackMipTiles1": 6,
+        "swFeedbackMipTiles2": 4,
+        "swFeedbackInnerMipTiles": 2,
+        "swFeedbackOuterMipTiles": 4,
+        "virtualTextureAnisotropy": 2,
+        "texelSizeMul": 1.0,
+        "hwfeedback": true,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "auto",
+        "updateCountHigh": 4
+      },
+      "debug": {
+        "lodDistanceScale": 1.0
+      }
+    },
+    "high": {
+      "graphics": {
+        "sceneResolutionPreset": "high",
+        "defaultPresetAA": "mobile_taa",
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 1,
+        "limitNonPlayerShipUnitsLod": 1,
+        "hangarTankLod": 0,
+        "hangarShipLod": 0,
+        "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
+        "compatibilityShadowQuality": "high",
+        "hangarShadowQuality": "high",
+        "grassRadiusMul": 0.8,
+        "grassDensityMul": 0.87,
+        "fxDensityMul": 0.8,
+        "rendinstDistMul": 0.8,
+        "compatibilityRendinstDistMul": 0.8,
+        "tireTracksQuality": 1,
+        "anisotropy": 4,
+        "compatibilityAnisotropy": 4,
+        "xrayUpdateFrames": 1,
+        "force8bitRT": false,
+        "usePostfxGlow": false,
+        "lenseFlares": false,
+        "mobile_ssao_active": 1,
+        "renderImmDecals": true,
+        "renderImpostorsToDraftDepth": true,
+        "grassQuality": "low",
+        "shaderlod": "high",
+        "underwaterFogUseShadows": 1,
+        "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": false,
+        "texquality": "high",
+        "fxTarget": "high",
+        "fftWaterRenderResolution": 8,
+        "allowNonSkyReflections": true,
+        "enableWakeDisplacement": true,
+        "enableWaterProjFx": true,
+        "enableGrassTrackMask": false,
+        "allowRefractionForTankLevels": true,
+        "refractionMinScale": 0.25,
+        "refractionShadows": true,
+        "infiniteSkiesInAirplane": false,
+        "nonVolumeCloudsQuality": 2,
+        "volumeCloudsQuality": 1,
+        "applyCloudsShadow": true,
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": true
+      },
+      "render": {
+        "grassInCompatibility": true
+      },
+      "clipmap": {
+        "texSize": [
+          3072,
+          4096
+        ],
+        "texTileSize": 256,
+        "swFeedbackMipTiles0": 10,
+        "swFeedbackMipTiles1": 8,
+        "swFeedbackMipTiles2": 4,
+        "swFeedbackInnerMipTiles": 4,
+        "swFeedbackOuterMipTiles": 4,
+        "virtualTextureAnisotropy": 4,
+        "texelSizeMul": 1.0,
+        "hwfeedback": true,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "auto",
+        "updateCountHigh": 8
+      },
+      "debug": {
+        "lodDistanceScale": 1.0
+      }
+    },
+    "max": {
+      "graphics": {
+        "sceneResolutionPreset": "high",
+        "defaultPresetAA": "mobile_taa",
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 1,
+        "limitNonPlayerShipUnitsLod": 1,
+        "hangarTankLod": 0,
+        "hangarShipLod": 0,
+        "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
+        "compatibilityShadowQuality": "max",
+        "hangarShadowQuality": "max",
+        "grassRadiusMul": 1.0,
+        "grassDensityMul": 1.0,
+        "fxDensityMul": 1.0,
+        "rendinstDistMul": 1.0,
+        "compatibilityRendinstDistMul": 1.0,
+        "tireTracksQuality": 2,
+        "anisotropy": 8,
+        "compatibilityAnisotropy": 8,
+        "xrayUpdateFrames": 1,
+        "force8bitRT": false,
+        "usePostfxGlow": false,
+        "lenseFlares": false,
+        "mobile_ssao_active": 1,
+        "renderImmDecals": true,
+        "renderImpostorsToDraftDepth": true,
+        "grassQuality": "high",
+        "shaderlod": "high",
+        "underwaterFogUseShadows": 1,
+        "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": true,
+        "texquality": "high",
+        "fxTarget": "ultrahigh",
+        "fftWaterRenderResolution": 8,
+        "allowNonSkyReflections": true,
+        "enableWakeDisplacement": true,
+        "enableWaterProjFx": true,
+        "enableGrassTrackMask": true,
+        "allowRefractionForTankLevels": true,
+        "refractionMinScale": 0.5,
+        "refractionShadows": true,
+        "infiniteSkiesInAirplane": false,
+        "nonVolumeCloudsQuality": 2,
+        "volumeCloudsQuality": 1,
+        "applyCloudsShadow": true,
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": true
+      },
+      "render": {
+        "grassInCompatibility": true
+      },
+      "clipmap": {
+        "texSize": [
+          4096,
+          4096
+        ],
+        "texTileSize": 256,
+        "swFeedbackMipTiles0": 12,
+        "swFeedbackMipTiles1": 10,
+        "swFeedbackMipTiles2": 6,
+        "swFeedbackInnerMipTiles": 4,
+        "swFeedbackOuterMipTiles": 6,
+        "virtualTextureAnisotropy": 4,
+        "texelSizeMul": 1.0,
+        "hwfeedback": true,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "always_high",
+        "updateCountHigh": 8
+      },
+      "debug": {
+        "lodDistanceScale": 1.0
+      }
+    },
+    "movie": {
+      "graphics": {
+        "sceneResolutionPreset": "high",
+        "defaultPresetAA": "mobile_taa",
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": -1,
+        "limitNonPlayerTankUnitsLod": -1,
+        "limitNonPlayerShipUnitsLod": -1,
+        "hangarTankLod": 0,
+        "hangarShipLod": 0,
+        "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
+        "compatibilityShadowQuality": "movie",
+        "hangarShadowQuality": "movie",
+        "grassRadiusMul": 2.0,
+        "grassDensityMul": 2.0,
+        "fxDensityMul": 1.0,
+        "rendinstDistMul": 2.0,
+        "compatibilityRendinstDistMul": 2.0,
+        "tireTracksQuality": 2,
+        "anisotropy": 8,
+        "compatibilityAnisotropy": 8,
+        "xrayUpdateFrames": 1,
+        "force8bitRT": false,
+        "usePostfxGlow": true,
+        "lenseFlares": true,
+        "mobile_ssao_active": 1,
+        "renderImmDecals": true,
+        "renderImpostorsToDraftDepth": true,
+        "grassQuality": "high",
+        "shaderlod": "high",
+        "underwaterFogUseShadows": 1,
+        "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": true,
+        "texquality": "high",
+        "fxTarget": "ultrahigh",
+        "fftWaterRenderResolution": 8,
+        "allowNonSkyReflections": true,
+        "enableWakeDisplacement": true,
+        "enableWaterProjFx": true,
+        "enableGrassTrackMask": true,
+        "allowRefractionForTankLevels": true,
+        "refractionMinScale": 1.0,
+        "refractionShadows": true,
+        "infiniteSkiesInAirplane": false,
+        "nonVolumeCloudsQuality": 1,
+        "volumeCloudsQuality": 1,
+        "applyCloudsShadow": true,
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": true
+      },
+      "render": {
+        "grassInCompatibility": true
+      },
+      "clipmap": {
+        "texSize": [
+          8192,
+          8192
+        ],
+        "texTileSize": 512,
+        "swFeedbackMipTiles0": 12,
+        "swFeedbackMipTiles1": 10,
+        "swFeedbackMipTiles2": 6,
+        "swFeedbackInnerMipTiles": 4,
+        "swFeedbackOuterMipTiles": 6,
+        "virtualTextureAnisotropy": -1,
+        "texelSizeMul": 0.5,
+        "hwfeedback": true,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "always_high",
+        "updateCountHigh": 8
+      },
+      "debug": {
+        "lodDistanceScale": 0.5
+      }
+    }
+  },
+  "ios_presets": {
+    "low": {
+      "graphics": {
+        "sceneResolutionPreset": "low",
+        "defaultPresetAA": "low_fxaa",
+        "fxDensityMul": 0.2,
+        "compatibilityShadowQuality": "low",
+        "hangarShadowQuality": "low",
+        "limitPlayerAirplaneUnitsLod": 1,
+        "limitPlayerTankUnitsLod": 2,
+        "limitPlayerShipUnitsLod": 1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 2,
+        "limitNonPlayerShipUnitsLod": 1,
+        "hangarTankLod": 1,
+        "hangarShipLod": 0,
+        "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": true,
+        "force8bitRT": true,
+        "usePostfxGlow": false,
+        "lenseFlares": false,
+        "mobile_ssao_active": 0,
+        "allowETC2": false,
+        "anisotropy": 1,
+        "compatibilityAnisotropy": 1,
+        "grassQuality": "low",
+        "grassRadiusMul": 0.8,
+        "grassDensityMul": 0.87,
+        "rendinstDistMul": 0.5,
+        "compatibilityRendinstDistMul": 0.5,
+        "enableGrassTrackMask": false,
+        "allowNonSkyReflections": false,
+        "allowRefractionForTankLevels": false,
+        "refractionMinScale": 0.25,
+        "refractionShadows": false,
+        "xrayUpdateFrames": 2,
+        "tireTracksQuality": 0,
+        "shaderlod": "low",
+        "underwaterFogUseShadows": 0,
+        "underwaterFogUseSimple": true,
+        "underwaterFogUseTAA": false,
+        "texquality": "low",
+        "fftWaterRenderResolution": 7,
+        "infiniteSkiesInAirplane": false,
+        "nonVolumeCloudsQuality": 2,
+        "volumeCloudsQuality": 3,
+        "applyCloudsShadow": false,
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": false
+      },
+      "clipmap": {
+        "texSize": [
+          3072,
+          2048
+        ],
+        "texTileSize": 256,
+        "swFeedbackMipTiles0": 4,
+        "swFeedbackMipTiles1": 4,
+        "swFeedbackMipTiles2": 4,
+        "swFeedbackInnerMipTiles": 2,
+        "swFeedbackOuterMipTiles": 4,
+        "virtualTextureAnisotropy": 1,
+        "texelSizeMul": 3.0,
+        "max_clipmap_tex_mips": 5,
+        "cachesCount": 1,
+        "buffersCount": 1,
+        "shaderlodMode": "always_low",
+        "updateCountHigh": 4
+      }
+    },
+    "medium": {
+      "graphics": {
+        "sceneResolutionPreset": "low",
+        "defaultPresetAA": "low_fxaa",
+        "fxDensityMul": 0.8,
+        "compatibilityShadowQuality": "high",
+        "hangarShadowQuality": "high",
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 1,
+        "limitNonPlayerShipUnitsLod": 1,
+        "hangarTankLod": 0,
+        "hangarShipLod": 0,
+        "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
+        "force8bitRT": false,
+        "usePostfxGlow": false,
+        "lenseFlares": false,
+        "mobile_ssao_active": 1,
+        "allowETC2": true,
+        "anisotropy": 8,
+        "compatibilityAnisotropy": 8,
+        "grassQuality": "low",
+        "grassRadiusMul": 0.8,
+        "grassDensityMul": 0.87,
+        "rendinstDistMul": 0.8,
+        "compatibilityRendinstDistMul": 0.8,
+        "enableGrassTrackMask": false,
+        "allowNonSkyReflections": true,
+        "allowRefractionForTankLevels": false,
+        "refractionMinScale": 0.25,
+        "refractionShadows": false,
+        "xrayUpdateFrames": 1,
+        "tireTracksQuality": 1,
+        "shaderlod": "high",
+        "underwaterFogUseShadows": 1,
+        "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": false,
+        "texquality": "high",
+        "fftWaterRenderResolution": 7,
+        "infiniteSkiesInAirplane": false,
+        "nonVolumeCloudsQuality": 2,
+        "volumeCloudsQuality": 1,
+        "applyCloudsShadow": true,
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": false
+      },
+      "clipmap": {
+        "texSize": [
+          4096,
+          4096
+        ],
+        "swFeedbackMipTiles0": 12,
+        "swFeedbackMipTiles1": 10,
+        "swFeedbackMipTiles2": 6,
+        "swFeedbackInnerMipTiles": 4,
+        "swFeedbackOuterMipTiles": 6,
+        "texelSizeMul": 1.0,
+        "max_clipmap_tex_mips": 10,
+        "virtualTextureAnisotropy": 4,
+        "texTileSize": 256,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "auto",
+        "updateCountHigh": 8
+      }
+    },
+    "high": {
+      "graphics": {
+        "sceneResolutionPreset": "medium",
+        "defaultPresetAA": "high_fxaa",
+        "fxDensityMul": 1.0,
+        "compatibilityShadowQuality": "high",
+        "hangarShadowQuality": "high",
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 1,
+        "limitNonPlayerShipUnitsLod": 1,
+        "hangarTankLod": 0,
+        "hangarShipLod": 0,
+        "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
+        "force8bitRT": false,
+        "usePostfxGlow": false,
+        "lenseFlares": false,
+        "mobile_ssao_active": 1,
+        "allowETC2": true,
+        "anisotropy": 8,
+        "compatibilityAnisotropy": 8,
+        "grassQuality": "high",
+        "grassRadiusMul": 1.0,
+        "grassDensityMul": 1.0,
+        "rendinstDistMul": 1.0,
+        "compatibilityRendinstDistMul": 1.0,
+        "enableGrassTrackMask": true,
+        "allowNonSkyReflections": true,
+        "allowRefractionForTankLevels": true,
+        "refractionMinScale": 0.25,
+        "refractionShadows": true,
+        "xrayUpdateFrames": 1,
+        "tireTracksQuality": 2,
+        "shaderlod": "high",
+        "underwaterFogUseShadows": 1,
+        "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": true,
+        "texquality": "high",
+        "fftWaterRenderResolution": 8,
+        "infiniteSkiesInAirplane": false,
+        "nonVolumeCloudsQuality": 2,
+        "volumeCloudsQuality": 1,
+        "applyCloudsShadow": true,
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": true
+      },
+      "clipmap": {
+        "texSize": [
+          4096,
+          4096
+        ],
+        "swFeedbackMipTiles0": 12,
+        "swFeedbackMipTiles1": 10,
+        "swFeedbackMipTiles2": 6,
+        "swFeedbackInnerMipTiles": 4,
+        "swFeedbackOuterMipTiles": 6,
+        "texelSizeMul": 1.0,
+        "max_clipmap_tex_mips": 10,
+        "virtualTextureAnisotropy": 4,
+        "texTileSize": 256,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "always_high",
+        "updateCountHigh": 8
+      }
+    },
+    "max": {
+      "graphics": {
+        "sceneResolutionPreset": "high",
+        "defaultPresetAA": "mobile_taa",
+        "fxDensityMul": 1.0,
+        "compatibilityShadowQuality": "max",
+        "hangarShadowQuality": "max",
+        "limitPlayerAirplaneUnitsLod": -1,
+        "limitPlayerTankUnitsLod": -1,
+        "limitPlayerShipUnitsLod": -1,
+        "limitNonPlayerAirplaneUnitsLod": 1,
+        "limitNonPlayerTankUnitsLod": 1,
+        "limitNonPlayerShipUnitsLod": 1,
+        "hangarTankLod": 0,
+        "hangarShipLod": 0,
+        "hangarAirplaneLod": 0,
+        "battleHideNodesInHangar": false,
+        "force8bitRT": false,
+        "usePostfxGlow": false,
+        "lenseFlares": false,
+        "mobile_ssao_active": 1,
+        "allowETC2": true,
+        "anisotropy": 8,
+        "compatibilityAnisotropy": 8,
+        "grassQuality": "high",
+        "grassRadiusMul": 1.0,
+        "grassDensityMul": 1.0,
+        "rendinstDistMul": 1.0,
+        "compatibilityRendinstDistMul": 1.0,
+        "enableGrassTrackMask": true,
+        "allowNonSkyReflections": true,
+        "allowRefractionForTankLevels": true,
+        "refractionMinScale": 0.5,
+        "refractionShadows": true,
+        "xrayUpdateFrames": 1,
+        "tireTracksQuality": 2,
+        "shaderlod": "high",
+        "underwaterFogUseShadows": 1,
+        "underwaterFogUseSimple": false,
+        "underwaterFogUseTAA": true,
+        "texquality": "high",
+        "fftWaterRenderResolution": 8,
+        "infiniteSkiesInAirplane": false,
+        "nonVolumeCloudsQuality": 2,
+        "volumeCloudsQuality": 1,
+        "applyCloudsShadow": true,
+        "xrayOutlinesScale": 1.0,
+        "underwaterCausticsEnabled": true
+      },
+      "clipmap": {
+        "texSize": [
+          4096,
+          4096
+        ],
+        "swFeedbackMipTiles0": 12,
+        "swFeedbackMipTiles1": 10,
+        "swFeedbackMipTiles2": 6,
+        "swFeedbackInnerMipTiles": 4,
+        "swFeedbackOuterMipTiles": 6,
+        "texelSizeMul": 1.0,
+        "max_clipmap_tex_mips": 10,
+        "virtualTextureAnisotropy": 4,
+        "texTileSize": 256,
+        "cachesCount": 2,
+        "buffersCount": 2,
+        "shaderlodMode": "always_high",
+        "updateCountHigh": 8
+      }
+    }
+  },
+  "vulkan": {
+    "texUploadLimitMb": 32,
+    "debugImageGarbadgeReads": true,
+    "vendor": {
+      "Qualcomm": {
+        "driverProps": {
+          "adrenoClearStoreRace": {
+            "entry": [
+              {
+                "driverMinVer0": 512,
+                "driverMinVer1": 530,
+                "data": {
+                  "affected": true
+                }
+              },
+              {
+                "gpu": [
+                  "640",
+                  "650",
+                  "660"
+                ],
+                "driverMinVer0": 512,
+                "driverMinVer1": 445,
+                "data": {
+                  "affected": true
+                }
+              }
+            ]
+          },
+          "msaaAndInstancingHang": {
+            "entry": {
+              "gpu": [
+                "615",
+                "616",
+                "618",
+                "619"
+              ],
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "brokenMsaaInputAttachment": {
+            "entry": {
+              "gpu": [
+                "640",
+                "642",
+                "642L"
+              ],
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "brokenShadersAfterAppSwitch": {
+            "entry": {
+              "gpu": [
+                "610",
+                "612",
+                "613",
+                "615",
+                "616",
+                "618",
+                "619",
+                "620",
+                "630"
+              ],
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "pipelineCompiler": {
+            "entry": [
+              {
+                "driverMaxVer0": 512,
+                "driverMaxVer1": 444,
+                "data": {
+                  "maxSecondaryThreads": 0,
+                  "usePipelineCacheMutex": true
+                }
+              },
+              {
+                "driverMinVer0": 512,
+                "driverMinVer1": 499,
+                "driverMaxVer0": 512,
+                "driverMaxVer1": 502,
+                "data": {
+                  "maxSecondaryThreads": 0,
+                  "usePipelineCacheMutex": true
+                }
+              }
+            ]
+          },
+          "brokenSubpasses": {
+            "entry": {
+              "driverMaxVer0": 512,
+              "driverMaxVer1": 420,
+              "data": {
+                "affected": true
+              }
+            }
+          }
+        }
+      },
+      "ARM": {
+        "driverProps": {
+          "brokenSubpasses": {
+            "entry": [
+              {
+                "gpu": "G610",
+                "data": {
+                  "affected": true
+                }
+              },
+              {
+                "gpu": "G710",
+                "driverMinVer0": 38,
+                "driverMinVer1": 1,
+                "driverMaxVer0": 38,
+                "driverMaxVer1": 1,
+                "data": {
+                  "affected": true
+                }
+              }
+            ]
+          },
+          "brokenInstanceID": {
+            "entry": {
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "extensions": {
+            "entry": {
+              "gpu": [
+                "G57",
+                "G52"
+              ],
+              "data": {
+                "VK_KHR_buffer_device_address": false
+              }
+            }
+          },
+          "ignoreDeviceLost": {
+            "entry": {
+              "gpu": "G51",
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "pollFences": {
+            "entry": {
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "brokenShadersAfterAppSwitch": {
+            "entry": {
+              "gpu": "G76",
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "brokenMTRecreateImage": {
+            "entry": {
+              "gpu": [
+                "G52",
+                "G57",
+                "G68",
+                "G76",
+                "G77",
+                "G610",
+                "G710"
+              ],
+              "data": {
+                "affected": true
+              }
+            }
+          }
+        }
+      },
+      "AMD": {
+        "driverProps": {
+          "clearColorBug": {
+            "entry": {
+              "data": {
+                "affected": true
+              }
+            }
+          }
+        }
+      },
+      "default": {
+        "driverProps": {
+          "hasTileBasedArchitecture": {
+            "affected": true
+          },
+          "disableMultiDrawIndirect": {
+            "affected": true
+          },
+          "latencyWait": {
+            "waitWorker": false
+          }
+        }
+      }
+    }
+  },
+  "android": {
+    "fastShutdown": true,
+    "graphics": {
+      "compress_panorama": false,
+      "allowETC2": false,
+      "allowClipmapDXT": false
+    },
+    "texStreaming": {
+      "minMemQuotaKB": 1000000
+    }
+  },
+  "iOS": {
+    "fastShutdown": true,
+    "graphics": {
+      "allowETC2": true,
+      "asyncPSO": true,
+      "asyncLoadPSOCache": true
+    },
+    "debug": {
+      "showFreeMemThresholdMb": 0
+    }
+  }
+}

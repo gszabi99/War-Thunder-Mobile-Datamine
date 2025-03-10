@@ -4,7 +4,7 @@ let mkOption = require("mkOption.nut")
 let { tabW } = require("optionsStyle.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkHorizontalTabs } = require("%rGui/components/horizontalTabs.nut")
-let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
+let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 let contentWidth = saSize[0] - tabW - saBorders[0]
@@ -28,8 +28,8 @@ let scrollArrowsBlock = {
   padding = [0, 0, gradientHeightBottom, 0]
   hplace = ALIGN_CENTER
   children = [
-    mkScrollArrow(scrollHandler, MR_T)
-    mkScrollArrow(scrollHandler, MR_B)
+    mkScrollArrow(scrollHandler, MR_T, scrollArrowImageSmall)
+    mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall)
   ]
 }
 

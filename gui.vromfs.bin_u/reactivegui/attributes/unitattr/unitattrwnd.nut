@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
+let { utf8ToUpper } = require("%sqstd/string.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkGamercardUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
@@ -254,7 +255,7 @@ let unitAttrWnd = {
   children = [
     @(){
       watch = curCampaign
-      children = mkGamercardUnitCampaign(onClose, $"gamercard/levelUnitAttr/desc/{curCampaign.value}")
+      children = mkGamercardUnitCampaign(onClose, getCampaignPresentation(curCampaign.get()).levelUnitAttrLocId)
     }
     {
       size = flex()

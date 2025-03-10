@@ -29,6 +29,7 @@ let searchedNick = mkWatched(persist, "searchedNick", null)
 let searchContactsResultRaw = mkWatched(persist, "searchContactsResultRaw", null)
 let isSearchInProgress = Watched(false)
 let contactsInProgress = Watched({})
+let botRequests = Watched({})
 let needFetchContactsInBattle = Watched(false)
 let canFetchContacts = Computed(@() isContactsLoggedIn.get()
   && isMatchingConnected.get()
@@ -37,6 +38,7 @@ let canRequestToContacts = Computed(@() isContactsLoggedIn.value && isMatchingCo
 let isFetchDelayed = hardPersistWatched("contacts.isFetchDelayed", false)
 let isContactsReceived = hardPersistWatched("contacts.isContactsReceived", false)
 
+isInBattle.subscribe(@(isBattle) isBattle && botRequests.mutate(@(v) v.clear()))
 isContactsLoggedIn.subscribe(@(v) v ? null : isContactsReceived.set(false))
 
 let searchContactsResult = Computed(function() {
@@ -177,6 +179,11 @@ let errorHundlers = {
   DEFAULT = @(locId) openFMsgBox({ text = loc(locId) })
 }
 
+let botActions = {
+  ["cln_request_for_contact"] = @(userId) botRequests.mutate(@(v) v[$"{userId}"] <- true),
+  ["cln_cancel_request_for_contact"] = @(userId) botRequests.mutate(@(v) v.$rawdelete(userId))
+}
+
 function mkSimpleContactAction(actionId, mkData, onSucces = null) {
   contactsRegisterHandler(actionId, function(answer, context) {
     let { userId = null } = context
@@ -210,8 +217,10 @@ function mkSimpleContactAction(actionId, mkData, onSucces = null) {
 
   return function(userId) {
     //skip requests to bots userId is negative
-    if (userId.tointeger() <= 0)
+    if (userId.tointeger() <= 0) {
+      botActions[actionId](userId)
       return
+    }
     if (userId in contactsInProgress.value)
       return
     let data = mkData(userId)
@@ -310,6 +319,7 @@ return {
   needFetchContactsInBattle
 
   contactsInProgress
+  botRequests
   isContactsReceived
   addToFriendList
   removeFromFriendList

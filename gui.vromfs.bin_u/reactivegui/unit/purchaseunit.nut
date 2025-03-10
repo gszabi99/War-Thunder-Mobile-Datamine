@@ -1,12 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { curUnit, playerLevelInfo, campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { curUnit, playerLevelInfo, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { unitInProgress, buy_unit, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { buyUnitsData, setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { requestOpenUnitPurchEffect } = require("unitPurchaseEffectScene.nut")
 let { playSound } = require("sound_wt")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { unitDiscounts } = require("unitsDiscountState.nut")
@@ -18,6 +17,7 @@ let { boughtUnit } = require("%rGui/unit/selectNewUnitWnd.nut")
 
 registerHandler("onUnitPurchaseResult",
   function onUnitPurchaseResult(res, context) {
+    isBuyUnitWndOpened.set(false)
     if (res?.error != null)
       return
     let { unitId } = context
@@ -35,10 +35,7 @@ registerHandler("onUnitPurchaseResult",
     }
     if(isCampaignWithUnitsResearch.get())
       addNewPurchasedUnit(unitId)
-    else
-      requestOpenUnitPurchEffect(campMyUnits.get()?[unitId])
     if (slots.get().len() > 0) {
-      isBuyUnitWndOpened.set(false)
       animUnitWithLink.set(unitId)
       openSelectUnitToSlotWnd(unitId, $"treeNodeUnitPlate:{unitId}")
       playSound("meta_build_unit")

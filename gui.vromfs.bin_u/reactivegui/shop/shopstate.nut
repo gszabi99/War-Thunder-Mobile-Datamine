@@ -5,6 +5,7 @@ let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
+let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { campConfigs, curCampaign, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
@@ -123,7 +124,7 @@ let allowWithSubs = @(goods) goods.premiumDays == 0
 
 let shopGoodsInternal = Computed(@() (campConfigs.get()?.allGoods ?? {})
   .filter(@(g) (can_debug_shop.get() || !g.isShowDebugOnly)
-    && (g?.price.price ?? 0) > 0)
+    && ((g?.price.price ?? 0) > 0 || null != g?.dailyPriceInc.findvalue(@(cfg) cfg.price > 0)))
   .map(@(g) g.__merge({ gtype = getGoodsType(g) }))
 )
 
@@ -161,8 +162,32 @@ let goodsByCategory = Computed(function() {
   return res
 })
 
-let subsByCategory = Computed(@() allSubs.get().len() == 0 ? {}
-  : { [SC_PREMIUM] = allSubs.get().values() })
+let subsGroups = {
+  prem = ["premium", "vip"]
+}
+
+let subsByCategory = Computed(function() {
+  local allSubsData = allSubs.get()
+  if (allSubsData.len() == 0)
+    return {}
+  local subNotInGroups = []
+  local result = []
+  local allGroupKeys = {}
+  foreach (group in subsGroups)
+    foreach (key in group)
+      allGroupKeys[key] <- true
+  foreach(key, value in allSubsData)
+    if (!(key in allGroupKeys))
+      subNotInGroups.append(value)
+  result.extend(subNotInGroups)
+  foreach(groupList in subsGroups)
+    for (local i = groupList.len() - 1; i >= 0; i--)
+      if (groupList[i] in allSubsData) {
+        result.append(allSubsData[groupList[i]])
+        break
+      }
+  return { [SC_PREMIUM] = result }
+})
 
 let goodsIdsByCategory = Computed(function() {
   let goods = {}
@@ -259,7 +284,14 @@ function saveSeenGoods(ids) {
   eventbus_send("saveProfile", {})
 }
 
+function resetSeenGoods() {
+  shopSeenGoods.set({})
+  unmarkSeenCounters.set({})
+}
+
 function loadSeenGoods() {
+  if (!isSettingsAvailable.get())
+    return resetSeenGoods()
   let blk = get_local_custom_settings_blk()
   let seenBlk = blk?[SEEN_GOODS]
   let seen = {}
@@ -276,6 +308,8 @@ function loadSeenGoods() {
 
 if (shopSeenGoods.value.len() == 0)
   loadSeenGoods()
+
+isSettingsAvailable.subscribe(@(_) loadSeenGoods())
 
 let shopUnseenGoods = Computed(function() {
   let res = {}
@@ -307,6 +341,7 @@ function onTabChange(id) {
 let hasGoodsCategoryNonUpdatable = @(catId) catId in goodsByCategory.get()
   || catId in personalGoodsByShopCategory.get()
   || catId in actualSchRewardByCategory.get()
+  || catId in subsByCategory.get()
 
 function openShopWnd(catId = null, bqPurchaseInfo = null) {
   if (isOfflineMenu) {
@@ -349,6 +384,7 @@ return {
   inactiveGoodsByTime
   finishedGoodsByTime
   allSubs
+  subsGroups
   subsByCategory
 
   hasUnseenGoodsByCategory

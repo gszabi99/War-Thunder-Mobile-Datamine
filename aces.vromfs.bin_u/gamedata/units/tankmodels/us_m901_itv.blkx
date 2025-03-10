@@ -1489,6 +1489,7 @@
         "battlePositionSpeed": 20.0,
         "lagStopForFireTime": 1.0,
         "reloadAnimVar": "m901_reload_var",
+        "aimingFromBoneGun": true,
         "staticElevation": 1.725,
         "createGunEffects": true,
         "parkForReload": true,
@@ -2244,6 +2245,7 @@
       3.8,
       0.0
     ],
+    "bone_turret": "bone_camera_gunner",
     "detectionHeight": 3.4
   },
   "modifications": {
@@ -2285,6 +2287,7 @@
               "battlePositionSpeed": 20.0,
               "lagStopForFireTime": 1.0,
               "reloadAnimVar": "m901_reload_var",
+              "aimingFromBoneGun": true,
               "staticElevation": 1.725,
               "createGunEffects": true,
               "parkForReload": true,

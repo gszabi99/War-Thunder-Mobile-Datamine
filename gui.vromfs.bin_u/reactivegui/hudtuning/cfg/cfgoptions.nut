@@ -16,6 +16,19 @@ let mkSetValue = @(key) function setValue(options, id, value) {
   options[key][id] <- value
 }
 
+let hasDoublePrimaryGuns = @(options, _ = null) options?.doublePrimaryGuns ?? true
+let optDoublePrimaryGuns = {
+  locId = "options/courseGun"
+  ctrlType = OCT_LIST
+  has = hasDoublePrimaryGuns
+  list = [false, true]
+  getValue = hasDoublePrimaryGuns
+  function setValue(options, _, value) {
+    options.doublePrimaryGuns <- value
+  }
+  valToString = @(v) loc("options/buttonCount", { count = v ? 2 : 1 })
+}
+
 let hasDoubleCourseGuns = @(options, _ = null) !!options?.doubleCourseGuns
 let optDoubleCourseGuns = {
   locId = "options/courseGun"
@@ -126,4 +139,5 @@ return {
 
   allElemOptionsList
   hasAnyOfAllElemOptions
+  optDoublePrimaryGuns
 }

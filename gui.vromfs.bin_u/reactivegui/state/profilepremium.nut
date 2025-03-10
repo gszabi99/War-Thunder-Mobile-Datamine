@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { premium, subscriptions } = require("%appGlobals/pServer/campaign.nut")
+let dailyCounter = require("%appGlobals/pServer/dailyCounter.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 
 let havePremiumDeprecated = Watched(false)
@@ -9,6 +10,8 @@ let hasPremiumSubs = Computed(@() (subscriptions.get()?.premium.isActive ?? fals
   || (subscriptions.get()?.vip.isActive ?? false))
 let hasVip = Computed(@() subscriptions.get()?.vip.isActive ?? false )
 let havePremium = Computed(@() havePremiumDeprecated.get() || hasPremiumSubs.get())
+let hasPremDailyBonus = Computed(@() (dailyCounter.get()?.daily_prem_gold ?? 0) == 0)
+let canReceivePremDailyBonus = Computed(@() hasPremDailyBonus.get() && hasPremiumSubs.get())
 
 let nextUpdate = Watched({ time = 0 }) // Even when value changed to the same, it is better to restart the timer.
 
@@ -37,4 +40,6 @@ return {
   premiumEndsAt
   hasPremiumSubs
   hasVip
+  hasPremDailyBonus
+  canReceivePremDailyBonus
 }

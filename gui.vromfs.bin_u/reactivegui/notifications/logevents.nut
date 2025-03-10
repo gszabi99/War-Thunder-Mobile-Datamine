@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
 let { is_ios, is_android } = require("%appGlobals/clientState/platform.nut")
-let { logEvent, setAppsFlyerCUID } = require("appsFlyer")
+let { logEvent, setAppsFlyerCUID, setUserEmail = @(_) null } = require("appsFlyer")
 let { logEventFB } = require("android.account.fb")
 let { setBillingUUID = @(_) null } = is_ios ? require("ios.billing.appstore") : {}
 let { INVALID_USER_ID } = require("matching.errors")
@@ -81,6 +81,7 @@ myUserId.subscribe(function(v) {
     setAppsFlyerCUID(uid)
     setBillingUUID(uid)
     setFirebaseUID(uid)
+    setUserEmail(getLogin()) //email validation is inside appsflyer lib
     let blk = get_common_local_settings_blk()
     let wasLoginedBefore = blk?[FIRST_LOGIN_EVENT] ?? false
     if (!wasLoginedBefore) {

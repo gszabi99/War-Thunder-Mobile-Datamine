@@ -775,103 +775,203 @@
   "smoke_ship_screen": {
     "fx": "smoke_ship_screen_cmps_fx"
   },
-  "track_dirt_dust": {
-    "fx": "dust_tank_track_dust_dirt_cmps_fx",
+  "tank_track_dirt_frontdust": {
+    "fx": "tank_track_dirt_frontdust_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_dirt_back": {
-    "fx": "dust_tank_track_back_dirt_cmps_fx",
+  "tank_track_dirt_front": {
+    "fx": "tank_track_dirt_front_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_dirt_front": {
-    "fx": "dust_tank_track_front_dirt_cmps_fx",
+  "tank_track_dirt_back": {
+    "fx": "tank_track_dirt_back_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_dirt_top": {
-    "fx": "dust_tank_track_top_dirt_cmps_fx",
+  "tank_track_dirt_friction": {
+    "fx": "tank_track_dirt_friction_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_move_dirt": {
-    "fx": "dust_tank_track_move_dirt_cmps_fx",
+  "tank_track_dirt_little_wheels": {
+    "fx": "tank_track_dirt_little_wheels_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_snow_dust": {
-    "fx": "dust_tank_track_dust_snow_cmps_fx",
+  "tank_track_dirt_top": {
+    "fx": "tank_track_dirt_top_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_snow_back": {
-    "fx": "dust_tank_track_back_snow_cmps_fx",
+  "tank_track_dirt_trail": {
+    "fx": "tank_track_dirt_trail_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_snow_front": {
-    "fx": "dust_tank_track_front_snow_cmps_fx",
+  "tank_track_dirt_wheels_dust": {
+    "fx": "tank_track_dirt_wheels_dust_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_snow_top": {
-    "fx": "dust_tank_track_top_snow_cmps_fx",
+  "tank_track_soil_frontdust": {
+    "fx": "tank_track_soil_frontdust_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_move_snow": {
-    "fx": "dust_tank_track_move_snow_cmps_fx",
+  "tank_track_soil_front": {
+    "fx": "tank_track_soil_front_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_sand_dust": {
-    "fx": "dust_tank_track_dust_sand_cmps_fx",
+  "tank_track_soil_back": {
+    "fx": "tank_track_soil_back_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_sand_back": {
-    "fx": "dust_tank_track_back_sand_cmps_fx",
+  "tank_track_soil_friction": {
+    "fx": "tank_track_soil_friction_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_sand_front": {
-    "fx": "dust_tank_track_front_sand_cmps_fx",
+  "tank_track_soil_little_wheels": {
+    "fx": "tank_track_soil_little_wheels_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_sand_top": {
-    "fx": "dust_tank_track_top_sand_cmps_fx",
+  "tank_track_soil_top": {
+    "fx": "tank_track_soil_top_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_move_sand": {
-    "fx": "dust_tank_track_move_sand_cmps_fx",
+  "tank_track_soil_trail": {
+    "fx": "tank_track_soil_trail_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_ground_dust": {
-    "fx": "dust_tank_track_dust_ground_cmps_fx",
+  "tank_track_soil_wheels_dust": {
+    "fx": "tank_track_soil_wheels_dust_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_ground_back": {
-    "fx": "dust_tank_track_back_ground_cmps_fx",
+  "tank_track_snow_frontdust": {
+    "fx": "tank_track_snow_frontdust_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_ground_front": {
-    "fx": "dust_tank_track_front_ground_cmps_fx",
+  "tank_track_snow_front": {
+    "fx": "tank_track_snow_front_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_ground_top": {
-    "fx": "dust_tank_track_top_ground_cmps_fx",
+  "tank_track_snow_back": {
+    "fx": "tank_track_snow_back_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
-  "track_move_ground": {
-    "fx": "dust_tank_track_move_ground_cmps_fx",
+  "tank_track_snow_friction": {
+    "fx": "tank_track_snow_friction_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_snow_little_wheels": {
+    "fx": "tank_track_snow_little_wheels_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_snow_top": {
+    "fx": "tank_track_snow_top_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_snow_trail": {
+    "fx": "tank_track_snow_trail_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_snow_wheels_dust": {
+    "fx": "tank_track_snow_wheels_dust_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_sand_frontdust": {
+    "fx": "tank_track_sand_frontdust_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_sand_front": {
+    "fx": "tank_track_sand_front_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_sand_back": {
+    "fx": "tank_track_sand_back_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_sand_friction": {
+    "fx": "tank_track_sand_friction_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_sand_little_wheels": {
+    "fx": "tank_track_sand_little_wheels_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_sand_top": {
+    "fx": "tank_track_sand_top_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_sand_trail": {
+    "fx": "tank_track_sand_trail_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_sand_wheels_dust": {
+    "fx": "tank_track_sand_wheels_dust_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_ground_frontdust": {
+    "fx": "tank_track_ground_frontdust_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_ground_front": {
+    "fx": "tank_track_ground_front_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_ground_back": {
+    "fx": "tank_track_ground_back_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_ground_friction": {
+    "fx": "tank_track_ground_friction_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_ground_little_wheels": {
+    "fx": "tank_track_ground_little_wheels_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_ground_top": {
+    "fx": "tank_track_ground_top_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_ground_trail": {
+    "fx": "tank_track_ground_trail_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_track_ground_wheels_dust": {
+    "fx": "tank_track_ground_wheels_dust_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },

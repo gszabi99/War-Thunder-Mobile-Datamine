@@ -2,12 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { resetTimeout } = require("dagor.workcycle")
 let { get_local_custom_settings_blk } = require("blkGetters")
-let { isGuestLogin, openGuestEmailRegistration, renewGuestRegistrationTags, needVerifyEmail, openVerifyEmail
+let { isGuestLogin, renewGuestRegistrationTags, needVerifyEmail, openVerifyEmail
 } = require("emailRegistrationState.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 let { register_command } = require("console")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -22,8 +23,15 @@ let isGuestMsgShowed = hardPersistWatched("isGuestMsgShowed", false)
 let hasEnoughOnlineBattles = Computed(@()
   servProfile.value?.sharedStatsByCampaign.findindex(@(s) (s?.battles ?? 0) > ONLINE_BATTLES_TO_VERIFY) != null)
 let battlesTotal = Computed(@()
-  servProfile.value?.sharedStatsByCampaign?.reduce(
-    @(acc, campaign) acc + (campaign?.battles ?? 0) + (campaign?.offlineBattles ?? 0), 0))
+  servProfile.get()?.sharedStatsByCampaign
+    .reduce(
+      function(res, campaign) {
+        let statsId = getCampaignStatsId(campaign)
+        res[statsId] <- max(res?[statsId] ?? 0, (campaign?.battles ?? 0) + (campaign?.offlineBattles ?? 0))
+        return res
+      },
+      {})
+    .reduce(@(a, b) a + b))
 
 let needShowGuestMsg = keepref(Computed(@() !isGuestMsgShowed.value
   && isInMenuNoModals.value
@@ -58,15 +66,10 @@ function openGuestMsg() {
   renewGuestRegistrationTags()
   openMsgBox({
     uid = GUEST_MSG_UID
-    text = loc("msg/needRegistrationForProgress")
+    text = "".concat(loc("msg/needRegistrationForProgress"), "\n", loc("mainmenu/desc/link_to_gaijin_account"))
     buttons = [
       { id = "later", isCancel = true, cb = @() isGuestMsgShowed(true) }
-      { id = "linkEmail", styleId = "PRIMARY", isDefault = true,
-        function cb() {
-          isGuestMsgShowed(true)
-          openGuestEmailRegistration()
-        }
-      }
+      { id = "linkEmail", styleId = "PRIMARY", isDefault = true, cb = @() eventbus_send("fMsgBox.onClick.linkEmailWithLogout", {}) }
     ]
   })
 }

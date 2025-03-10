@@ -9823,6 +9823,86 @@
       "immortal": true
     },
     {
+      "name": "vietnam_mountain_base_a",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_mountain_base_b",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_mountain_large_straight_a",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_mountain_large_straight_b",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_sheer_cliff_a",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_sheer_cliff_b",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_sheer_cliff_c",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_sheer_cliff_d",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_sheer_cliff_small_a",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_sheer_cliff_small_b",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_sheer_cliff_small_c",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_sheer_cliff_small_d",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_soil_erosion_cliff_a",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_soil_erosion_cliff_b",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_soil_erosion_cliff_a_grass",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_soil_erosion_cliff_b_grass",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_rock_big_a",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_rock_big_b",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_rock_big_c",
+      "immortal": true
+    },
+    {
+      "name": "vietnam_rock_burned_a",
+      "immortal": true
+    },
+    {
       "name": "tree_tilia_large_detail_a",
       "destructionImpulse": 60000.0,
       "canopyTriangle": false,
@@ -10421,6 +10501,51 @@
       "fxScale": 1.0,
       "dmPreset": "trees_medium",
       "material": "wood"
+    },
+    {
+      "name": "desert_dry_tree_a",
+      "destroyedModelName": "desert_dry_tree_a_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.9,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "desert_dry_tree_b",
+      "destroyedModelName": "desert_dry_tree_b_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.9,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "desert_dry_tree_c",
+      "destroyedModelName": "desert_dry_tree_c_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 0.9,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "desert_dry_tree_d",
+      "destroyedModelName": "desert_dry_tree_d_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "desert_dry_tree_e",
+      "destroyedModelName": "desert_dry_tree_e_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
     }
   ],
   "default_building": {

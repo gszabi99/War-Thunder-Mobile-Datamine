@@ -1,0 +1,245 @@
+{
+  "modifications": {
+    "ship_tool_kit": {
+      "image": "#ui/gameuiskin#ship_tool_kit",
+      "tier": 1,
+      "modClass": "unsinkability",
+      "invertEnableLogic": false,
+      "isReserve": true,
+      "effects": {
+        "toolkitActivationCount": 10,
+        "repairAvailable": true
+      }
+    },
+    "ship_smoke_screen_system_mod": {
+      "image": "#ui/gameuiskin#engine_smoke_screen_system",
+      "tier": 2,
+      "modClass": "unsinkability",
+      "isReserve": true,
+      "effects": {
+        "smokeScreenCount": 1000,
+        "smokeScreenTime": 30.0,
+        "smokeScreenCooldown": 60.0
+      }
+    },
+    "tank_tool_kit_expendable": {
+      "image": "#ui/gameuiskin#tank_tool_kit",
+      "effects": {
+        "toolkitActivationCount": 30,
+        "repairAvailable": true
+      }
+    },
+    "weapons_torpedo_damage_mode": {
+      "image": "#ui/gameuiskin#weapons_torpedo_damage_mode"
+    },
+    "weapons_torpedo_movement_mode": {
+      "image": "#ui/gameuiskin#weapons_torpedo_movement_mode"
+    },
+    "weapons_contact_mines": {
+      "image": "#ui/gameuiskin#weapons_contact_mines"
+    },
+    "weapons_depth_charges": {
+      "image": "#ui/gameuiskin#weapons_depth_charges"
+    },
+    "protection_new_fireProtection": {
+      "image": "#ui/gameuiskin#protection_new_fireProtection"
+    },
+    "protection_ammo_wetting": {
+      "image": "#ui/gameuiskin#protection_ammo_wetting"
+    },
+    "protection_new_sonar": {
+      "image": "#ui/gameuiskin#protection_new_sonar",
+      "effects": {
+        "sonarDetectionRadius": 750.0,
+        "sonarDetectionDepth": 50.0,
+        "sonarTimeStep": 5.0
+      }
+    },
+    "maintanance_powered_toolkit": {
+      "image": "#ui/gameuiskin#maintanance_powered_toolkit",
+      "effects": {
+        "durationMul": 1.0,
+        "repairSpeedMul": 1.15,
+        "maxHpMul": 1.0
+      }
+    },
+    "maintanance_new_propellers": {
+      "image": "#ui/gameuiskin#maintanance_new_propellers",
+      "effects": {
+        "mulTimeToMaxSpeed": 0.85,
+        "mulTimeToMaxReverseSpeed": 0.85
+      }
+    },
+    "maintanance_new_engines": {
+      "image": "#ui/gameuiskin#maintanance_new_engines",
+      "invertEnableLogic": true,
+      "effects": {
+        "mulMaxSpeed": 0.8,
+        "mulMaxReverseSpeed": 0.8
+      }
+    },
+    "203mm_ger_skc34_sprgr_kz_navy_he": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "203mm_HE",
+      "effects": {
+        "additiveBulletMod": "203mm_ger_skc34_sprgr_kz_navy_he"
+      }
+    },
+    "105mm_germany_skc32_navy_he": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "105mm_HE",
+      "effects": {
+        "additiveBulletMod": "105mm_germany_skc32_navy_he"
+      }
+    },
+    "tank_engine_smoke_screen_system": {
+      "effects": {
+        "smokeScreenCount": 3,
+        "smokeScreenTime": 25.0,
+        "smokeScreenCooldown": 100.0
+      }
+    },
+    "tank_smoke_screen_system_mod": {
+      "requiresModelReload": true,
+      "group": "smoke_mod"
+    },
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {
+      "effects": {
+        "smokeScreenCooldownMul": 0.4,
+        "rearmSmokeTimeOnFieldMul": 0.4
+      }
+    },
+    "tank_smoke_screen_long_duration": {
+      "effects": {
+        "smokeTimeMul": 1.4,
+        "smokeScreenTimeMul": 1.4
+      }
+    },
+    "art_support": {
+      "effects": {
+        "supportUnitClass": "structures/ussr_122mm_m30",
+        "supportUnitTag": "artillery"
+      }
+    },
+    "art_support_mortars": {
+      "effects": {
+        "supportUnitClass": "structures/ussr_82mm_bm36",
+        "supportUnitTag": "artillery"
+      }
+    },
+    "art_support_highcaliber": {
+      "effects": {
+        "supportUnitClass": "structures/ussr_152mm_d1",
+        "supportUnitTag": "artillery"
+      }
+    },
+    "art_support_smoke": {
+      "effects": {
+        "supportUnitClass": "structures/ussr_122mm_m30_smoke",
+        "supportUnitTag": "artillery"
+      }
+    },
+    "tank_extinguisher": {
+      "effects": {
+        "extinguisherAutomatic": false,
+        "extinguisherMinTime": 2.0,
+        "extinguisherMaxTime": 4.0,
+        "rcostAddParam": 0.99,
+        "extinguisherCrewBusyTime": 5.0,
+        "extinguisherCooldown": 15.0
+      }
+    },
+    "upgraded": {
+      "effects": {
+        "upgradedVisual": true
+      }
+    },
+    "tank_additional_armor": {
+      "turn_it_off": true,
+      "invertEnableLogic": true
+    },
+    "machinegun_belt_tracer": {
+      "effects": {
+        "bulletMod": "machinegun_belt_tracer"
+      }
+    },
+    "machinegun_belt_ap": {
+      "effects": {
+        "bulletMod": "machinegun_belt_ap"
+      }
+    },
+    "machinegun_belt_stealth": {
+      "effects": {
+        "bulletMod": "machinegun_belt_stealth"
+      }
+    },
+    "ostketten_tank_tracks": {
+      "requiresModelReload": true,
+      "invertEnableLogic": false,
+      "turn_it_off": false,
+      "effects": {
+        "mulFrontalStaticFriction": 1.02,
+        "mulFrontalSlidingFriction": 1.05,
+        "mulSideRotMinSpd": 1.05,
+        "mulSideRotMaxSpd": 1.05,
+        "mulSideRotMinFric": 0.95,
+        "mulSideRotMaxFric": 0.95,
+        "hideNodes": {
+          "node": [
+            "track_l",
+            "track_r"
+          ]
+        },
+        "tracks": {
+          "width": 0.56,
+          "nonSymmetricMesh": true
+        },
+        "damagePartsOverride": {
+          "tracks": {
+            "hpMult": 1.2,
+            "track_l_01_dm": {},
+            "track_r_01_dm": {}
+          }
+        }
+      }
+    },
+    "winterketten_tank_tracks": {
+      "requiresModelReload": true,
+      "invertEnableLogic": false,
+      "turn_it_off": false,
+      "effects": {
+        "mulFrontalStaticFriction": 1.02,
+        "mulFrontalSlidingFriction": 1.05,
+        "mulSideRotMinSpd": 1.05,
+        "mulSideRotMaxSpd": 1.05,
+        "mulSideRotMinFric": 0.95,
+        "mulSideRotMaxFric": 0.95,
+        "tracks": {
+          "width": 0.56,
+          "nonSymmetricMesh": true
+        },
+        "hideNodes": {
+          "node": [
+            "track_l",
+            "track_r"
+          ]
+        },
+        "damagePartsOverride": {
+          "tracks": {
+            "hpMult": 1.2,
+            "track_l_01_dm": {},
+            "track_r_01_dm": {}
+          }
+        }
+      }
+    },
+    "horsepower": {
+      "effects": {
+        "gForceTolerationMult": 2.9
+      }
+    }
+  }
+}

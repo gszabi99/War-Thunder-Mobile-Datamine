@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let touchButtonSize = shHud(10)
+let touchSizeForRhombButton = touchButtonSize * 0.9
 
 let btnBgColor = {
   empty     = 0x26000000
@@ -15,6 +16,7 @@ let btnBgColorShaded = btnBgColor.map(@(c) (mul_color(c, 0.65) & 0xFFFFFF) | (c 
 
 let style = {
   touchButtonSize
+  touchSizeForRhombButton
   touchButtonMargin      = shHud(4)
   touchMenuButtonSize    = shHud(6)
   borderWidth            = hdpx(3)
@@ -37,6 +39,8 @@ let style = {
   borderColorPushed      = Color(0, 0, 0, 0)
   borderNoAmmoColor      = Color(77, 77, 77, 77)
   borderCurWeaponColor   = Color(255, 255, 255)
+
+  countHeightUnderActionItem = (0.4 * touchButtonSize).tointeger()
 }
 
 return style

@@ -9,11 +9,10 @@ let { mkFlagImage, mkPlayerLevel, unitPlateSmall } = require("%rGui/unit/compone
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { selectedLineVert, opacityTransition } = require("%rGui/components/selectedLine.nut")
+let { selectedLineVert } = require("%rGui/components/selectedLine.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
 
 
 let RGAP_HAS_GAP             = 0x01
@@ -37,7 +36,8 @@ let infoPanelWidth = hdpx(650)
 
 let aTimeBarFill = 0.8
 
-let gradColor = 0xFF52C4E4
+let flagBgColor = 0xFF000000
+let flagBgColorSelected = 0xFF296272
 
 let gradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(0xFFFFFFFF, 0, gradTexSize / 2, gradTexSize / 2, 0, 0))
@@ -57,65 +57,47 @@ let mkFlags = @(countries) {
   })
 }
 
-let selectedFlagBg = @(isSelected) @() {
+let flagBg = @(isSelected) @() {
   watch = isSelected
   key = {}
   size = flex()
-  opacity = isSelected.get() ? 0.5 : 0
   rendObj = ROBJ_IMAGE
   image = gradient()
-  color = gradColor
-  transitions = opacityTransition
+  color = isSelected.get() ? flagBgColorSelected : flagBgColor
+  transform = {}
+  transitions = [{ prop = AnimProp.color, duration = 0.3, easing = InOutQuad }]
 }
 
-let function mkTreeNodesFlag(country, curCountry, onClick, showUnseenMark, selectOvr = {}, resCountry = "") {
+let function mkTreeNodesFlag(height, country, curCountry, onClick, showUnseenMark, resCountry = "") {
   let isSelected = Computed(@() curCountry.get() == country)
-  let trigger = $"{country}_anim"
-  let startCountryAnim = @() anim_start(trigger)
-  return @(){
-    watch = curCountry
-    size = [flagsWidth, blockSize[1]]
-    padding = [hdpx(20), 0]
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
+  let needBlink = Computed(@() resCountry == country && !isSelected.get())
+  return @() {
+    watch = needBlink
+    size = [flagsWidth, height]
     behavior = Behaviors.Button
     onClick
     sound = { click = "choose" }
     children = [
-      {
-        size = flex()
-        rendObj = ROBJ_IMAGE
-        image = gradient()
-        color = 0xFF000000
-        children = [
-          selectedFlagBg(isSelected)
-          {
+      flagBg(isSelected)
+      selectedLineVert(isSelected)
+      !needBlink.get() ? null
+        : {
+            key = {}
             size = flex()
-            hplace = ALIGN_LEFT
-            children = selectedLineVert(isSelected)
+            rendObj = ROBJ_IMAGE
+            vplace = ALIGN_TOP
+            image = gradient()
+            color = 0x40FFFFFF
+            opacity = 0
+            transform = {}
+            animations = [
+              {
+                prop = AnimProp.opacity, from = 0.0, to = 0.3, duration = 1,
+                easing = CosineFull, play = true, loop = true, loopPause = 1
+              }
+            ]
           }
-        ]
-      }.__update(selectOvr)
-      resCountry == country && curCountry.get() != resCountry
-      ? {
-          key = {}
-          size = flex()
-          rendObj = ROBJ_IMAGE
-          vplace = ALIGN_TOP
-          image = gradient()
-          color = 0x40FFFFFF
-          opacity = 0
-          transform = {}
-          onDetach = @() clearTimer(startCountryAnim)
-          animations = [
-            {
-              prop = AnimProp.opacity, from = 0.0, to = 0.3, trigger, duration = 1, play = true,
-              easing = CosineFull, onFinish = @() resetTimeout(1, startCountryAnim)
-            }
-          ]
-      }
-      : null
-      mkFlagImage(country, flagSize)
+      mkFlagImage(country, flagSize, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER })
       mkPriorityUnseenMarkWatch(showUnseenMark, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT })
     ]
   }

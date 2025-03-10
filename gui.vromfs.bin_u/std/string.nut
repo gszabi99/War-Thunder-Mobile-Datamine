@@ -1,6 +1,6 @@
 from "iostream" import blob
-let { regexp, format, startswith, endswith, strip }=require("string")
-let math=require("math")
+let { regexp, format } = require("string")
+let { clamp, log10, min } = require("math")
 let regexp2 = require_optional("regexp2")
 let utf8 = require_optional("utf8")
 
@@ -441,7 +441,7 @@ function substring(str, start = 0, length = null) {
     local total = str.len()
     if (start < 0)
       start += total
-    start = math.clamp(start, 0, total)
+    start = clamp(start, 0, total)
     end = start + length
   }
   return slice(str, start, end)
@@ -457,7 +457,7 @@ function substring(str, start = 0, length = null) {
 function startsWith(str, value) {
   str = str ?? ""
   value = value ?? ""
-  return startswith(str, value)
+  return str.startswith(value)
 }
 
 /**
@@ -470,7 +470,7 @@ function startsWith(str, value) {
 function endsWith(str, value) {
   str = str ?? ""
   value = value ?? ""
-  return endswith(str, value)
+  return str.endswith(value)
 }
 
 /**
@@ -561,25 +561,8 @@ function countSubstrings(str, substr) {
   return res
 }
 
-//Next two methods change case to upper / lower for set up number of symbols
-function toUpper(str, symbolsNum = 0) {
-  if (symbolsNum <= 0) {
-    symbolsNum = str.len()
-  }
-  if (symbolsNum >= str.len()) {
-    return str.toupper()
-  }
-  return "".concat(slice(str, 0, symbolsNum).toupper(),slice(str, symbolsNum))
-}
-
-function toLower(str, symbolsNum = 0) {
-  if (symbolsNum <= 0) {
-    symbolsNum = str.len()
-  }
-  if (symbolsNum >= str.len()) {
-    return str.tolower()
-  }
-  return "".concat(slice(str, 0, symbolsNum).tolower(), slice(str, symbolsNum))
+function capitalize(str) {
+  return "".concat(str.slice(0, 1).toupper(), str.slice(1))
 }
 
 function replace(str, from, to) {
@@ -594,7 +577,7 @@ function replace(str, from, to) {
  */
 function trim(str) {
   str = str ?? ""
-  return trimRegExp ? trimRegExp.replace("", str) : str
+  return trimRegExp ? trimRegExp.replace("", str) : str // TODO: Compare with str.strip()
 }
 
 /*
@@ -616,10 +599,11 @@ function trim(str) {
 function floatToStringRounded(value, presize) {
   if (presize >= 1) {
     local res = (value / presize + (value < 0 ? -0.5 : 0.5)).tointeger()
-    return res == 0 ? "0" : "".join([res].extend(array(math.log10(presize).tointeger(), "0")))
+    return res == 0 ? "0" : "".join([res].extend(array(log10(presize).tointeger(), "0")))
   }
-  return format("%.{0}f".subst(-math.log10(presize).tointeger()), value)
+  return format("%.{0}f".subst(-log10(presize).tointeger()), value)
 }
+
 function isStringInteger(str) {
   if (type(str) == "integer")
     return true
@@ -628,8 +612,8 @@ function isStringInteger(str) {
   if (intRegExp != null)
     return intRegExp.match(str)
 
-  if (startsWith(str,"-"))
-    str=str.slice(1)
+  if (str.startswith("-"))
+    str = str.slice(1)
   if (str == "")
     return false
   for (local i = 0; i < str.len(); i++)
@@ -646,7 +630,7 @@ function isStringFloat(str, separator=".") {
   if (floatRegExp != null && separator == ".")
     return floatRegExp.match(str)
 
-  if (startsWith(str,"-"))
+  if (str.startswith("-"))
     str = str.slice(1)
   local numList = split(str, separator)
   local numListLen = numList.len()
@@ -664,7 +648,7 @@ function isStringFloat(str, separator=".") {
       return false
     if (numListLen == 2 && eList.len() == 2 && eList[0] == "")
       eList[0] = "0"
-    if (startsWith(eList[1],"-") || startsWith(eList[1],"+"))
+    if (eList[1].startswith("-") || eList[1].startswith("+"))
       eList[1] = eList[1].slice(1)
     local expDigits = eList[1].len()
     if (expDigits < 1 || expDigits > 3)
@@ -684,7 +668,7 @@ function isStringFloat(str, separator=".") {
 
 function toIntegerSafe(str, defValue = 0, needAssert = true) {
   if (type(str) == "string")
-    str = strip(str)
+    str = str.strip()
   if (isStringInteger(str))
     return str.tointeger()
   if (needAssert)
@@ -692,32 +676,29 @@ function toIntegerSafe(str, defValue = 0, needAssert = true) {
   return defValue
 }
 
-
-
-
 local utf8ToUpper
 local utf8ToLower
+local utf8Capitalize
 
 if (utf8 != null) {
-  utf8ToUpper = function utf8ToUpperImpl(str, symbolsNum = 0) {
-    if(str.len() < 1)
-      return str
-    local utf8Str = utf8(str)
-    local strLength = utf8Str.charCount()
-    if (symbolsNum <= 0 || symbolsNum >= strLength) // warning disable: -range-check
-      return utf8Str.strtr(CASE_PAIR_LOWER, CASE_PAIR_UPPER)
-    return "".concat(utf8(utf8Str.slice(0, symbolsNum)).strtr(CASE_PAIR_LOWER, CASE_PAIR_UPPER),
-      utf8Str.slice(symbolsNum, strLength))
+  utf8ToUpper = function utf8ToUpperImpl(str) {
+    return utf8(str).strtr(CASE_PAIR_LOWER, CASE_PAIR_UPPER)
   }
 
   utf8ToLower = function utf8ToLowerImpl(str) {
     return utf8(str).strtr(CASE_PAIR_UPPER, CASE_PAIR_LOWER)
+  }
+
+  utf8Capitalize = function utf8CapitalizeImpl(str) {
+    local utf8Str = utf8(str)
+    return "".concat(utf8(utf8Str.slice(0, 1)).strtr(CASE_PAIR_LOWER, CASE_PAIR_UPPER), utf8Str.slice(1))
   }
 }
 else {
   function noUtf8Module(...) { assert("No 'utf8' module") }
   utf8ToUpper = noUtf8Module
   utf8ToLower = noUtf8Module
+  utf8Capitalize = noUtf8Module
 }
 
 function intToUtf8Char(c) {
@@ -931,7 +912,7 @@ function splitStringBySize(str, maxSize) {
   local start = 0
   let l = str.len()
   while (start < l) {
-    let pieceSize = math.min(l - start, maxSize)
+    let pieceSize = min(l - start, maxSize)
     result.append(str.slice(start, start + pieceSize))
     start += pieceSize
   }
@@ -980,8 +961,8 @@ return {
   isStringLatin = @(str) regexp(@"[a-z,A-Z]*").match(str)
   intToUtf8Char
   utf8CharToInt
-  toUpper
-  toLower
+  capitalize
+  utf8Capitalize
   utf8ToUpper
   utf8ToLower
   hexStringToInt

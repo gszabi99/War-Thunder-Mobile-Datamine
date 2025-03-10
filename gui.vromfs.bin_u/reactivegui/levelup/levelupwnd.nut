@@ -10,7 +10,6 @@ let { CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
 let { levelUpFlag, flagAnimFullTime, flagHeight } = require("levelUpFlag.nut")
 let { mkLinearGradientImg } = require("%darg/helpers/mkGradientImg.nut")
 let levelUpChooseUnits = require("levelUpChooseUnits.nut")
-let levelUpChooseUpgrade = require("levelUpChooseUpgrade.ui.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
@@ -152,8 +151,7 @@ function levelUpWnd() {
     flow = FLOW_VERTICAL
     children = [
       headerPanel(hasLvlUpPkgs)
-      upgradeUnitName.get() != null ? levelUpChooseUpgrade
-        : hasLvlUpPkgs ? levelUpChooseUnits
+      hasLvlUpPkgs ? levelUpChooseUnits
         : levelUpRequirePkgDownload(lvlUpUnitsPkgs)
     ]
   }.__update(upgradeUnitName.value != null ? bgShaded : {})

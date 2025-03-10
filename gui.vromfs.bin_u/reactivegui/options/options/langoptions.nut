@@ -43,7 +43,10 @@ applyListToOptions()
 eventbus_subscribe("onAcesInitComplete", @(_) language.set(getLocalLanguage()))
 eventbus_subscribe("localizationInfoUpdate", @(_) applyListToOptions())
 language.subscribe(@(value) eventbus_send("language.setWithReloadScene", { value }))
-languageVoice.subscribe(@(value) setSpeechLanguage(value))
+languageVoice.subscribe(function(value) {
+  setSpeechLanguage(value)
+  eventbus_send("saveProfile", {})}
+)
 
 return {
   optLang

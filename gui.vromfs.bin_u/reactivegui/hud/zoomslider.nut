@@ -1,6 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { setZoomMult } = require("controls")
 let { isInZoom, zoomMult } = require("%rGui/hudState.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
+let { allShortcutsUp } = require("%rGui/controls/shortcutsMap.nut")
+let { defShortcutOvr} = require("%rGui/hud/buttons/hudButtonsPkg.nut")
+let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 
 
 let stepZoom = 0.01
@@ -41,11 +45,35 @@ let mkZoomScale = @(scaleWidth, lineWidth) {
   ]
 }
 
+let zoomShortcutId = "ID_CHANGE_ZOOM"
 let zoomBgrImage = Picture("!ui/gameuiskin#hud_plane_slider.avif")
 
 function changeZoomValue(val) {
   val = clamp(val, 0, 1.0)
   setZoomMult(1.0 - val)
+}
+
+function mkGamepadZoomHotkeyButton(scale) {
+  let imageComp = mkGamepadShortcutImage(zoomShortcutId, defShortcutOvr, scale)
+  let sf = Watched(0)
+  let isActive = Computed(@() (sf.get() & S_ACTIVE) != 0)
+  let btn = {
+    key = zoomShortcutId
+    behavior = Behaviors.Button
+    onElemState = @(v) sf.set(v)
+    onClick = @() setZoomMult(zoomMult.get() == 1 ? 0 : 1)
+    hotkeys = [allShortcutsUp[zoomShortcutId]]
+  }
+
+  return @() {
+    watch = [isGamepad, isActive]
+    key = imageComp
+    hplace = ALIGN_RIGHT
+    pos = [pw(90), 0]
+    children = [isGamepad.get() ? imageComp : null, btn]
+    transform = { scale = isActive.get() ? [0.8, 0.8] : [1.0, 1.0] }
+    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+  }
 }
 
 function mkZoomSliderImpl(scale) {
@@ -94,6 +122,7 @@ function mkZoomSliderImpl(scale) {
         ]
       }
       knob.__merge({ pos = [0, ((1.0 - zoomMult.value) * zoomScaleHeight).tointeger() - knobPadding] })
+      mkGamepadZoomHotkeyButton(scale)
     ]
     onChange = changeZoomValue
   }

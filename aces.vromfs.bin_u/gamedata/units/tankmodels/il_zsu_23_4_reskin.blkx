@@ -2710,9 +2710,30 @@
     "tank_smoke_screen_long_duration": {}
   },
   "default_skin": {
+    "name": "default",
     "replace_tex": {
       "from": "ussr_camo_green*",
-      "to": "isr_camo_threecolor*"
+      "to": "isr_camo_sandgray*"
+    }
+  },
+  "vehicleSkins": {
+    "forest": {
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "isr_camo_green*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "isr_camo_threecolor*"
+      }
+    },
+    "desert2": {
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "camo_f_blue_orng*"
+      }
     }
   },
   "defaultDecals": {
@@ -2720,19 +2741,21 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
-    }
-  },
-  "vehicleSkins": {
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
     "desert": {
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "isr_camo_sandgray*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
-      }
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "desert2": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   }
 }

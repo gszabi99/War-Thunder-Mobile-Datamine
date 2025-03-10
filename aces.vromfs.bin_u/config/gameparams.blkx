@@ -8777,7 +8777,10 @@
     ]
   },
   "commonScenes": {
-    "scene": "gameData/scenes/common_scene.blk"
+    "scene": [
+      "gameData/scenes/common_scene.blk",
+      "gameData/scenes/loose_grid_scene.blk"
+    ]
   },
   "commonClientScenes": {
     "scene": "gameData/scenes/common_client_scene.blk"
@@ -9147,6 +9150,7 @@
     "targetingNearDistK": 0.1,
     "targetingDistancePower": 2.0,
     "targetTrackingTimeOut": 1.1,
+    "autoTargetTrackingTimeOut": 3.0,
     "pointsInactive": 100.0,
     "pointsObjecive": 0.0,
     "pointsAlive": 25.0,
@@ -15644,6 +15648,30 @@
         {
           "name": "wheel_l_02_",
           "modelNames": "vcac_mephisto"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "vickers_mk_11"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "vickers_mk_11"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "vickers_mk_11"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "vickers_mk_11"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "vickers_mk_11"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "vickers_mk_11"
         }
       ]
     },
@@ -17129,105 +17157,611 @@
     "woodMat": "wood"
   },
   "trackEffectsPresets": {
-    "legacyControl": true,
+    "legacyControl": false,
     "default": {
-      "effect": {
-        "fx": "track_dirt_back"
+      "fxDust": {
+        "fx": "",
+        "speedToSpawnRate": [
+          0.0,
+          14.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.0
+        ]
       },
-      "effectFront": {
-        "fx": "track_dirt_front"
+      "fxDustOnFront": {
+        "fx": "tank_track_ground_frontdust",
+        "speedToSpawnRate": [
+          30.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          0.5,
+          1.5
+        ]
       },
-      "effectTop": {
-        "fx": ""
+      "fxTopFront": {
+        "fx": "tank_track_ground_front",
+        "speedToSpawnRate": [
+          8.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          2.5
+        ]
       },
-      "effectDust": {
-        "fx": "track_move_dirt"
+      "fxDustOnBack": {
+        "fx": "tank_track_ground_back",
+        "speedToSpawnRate": [
+          5.0,
+          25.0
+        ],
+        "emitVelocityScale": [
+          3.0,
+          5.0
+        ]
       },
-      "effectBack": {
-        "fx": "track_dirt_dust"
+      "fxFriction": {
+        "fx": "tank_track_ground_friction",
+        "speedToSpawnRate": [
+          -0.4,
+          -3.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          4.0
+        ]
       },
-      "effectCenter": {
-        "fx": ""
+      "fxTop": {
+        "fx": "tank_track_ground_top",
+        "speedToSpawnRate": [
+          2.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.5
+        ]
+      },
+      "fxCenterOfWheel": {
+        "fx": "tank_track_ground_little_wheels",
+        "speedToSpawnRate": [
+          10.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      },
+      "fxCenterOfTank": {
+        "fx": "",
+        "speedToSpawnRate": [
+          20.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      },
+      "fxDustOnWheels": {
+        "fx": "tank_track_ground_wheels_dust",
+        "speedToSpawnRate": [
+          10.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          0.5,
+          2.0
+        ]
       }
     },
-    "sand": {
-      "effect": {
-        "fx": "track_sand_back"
+    "dirt": {
+      "fxDust": {
+        "fx": "",
+        "speedToSpawnRate": [
+          0.0,
+          14.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.0
+        ]
       },
-      "effectFront": {
-        "fx": "track_sand_front"
+      "fxDustOnFront": {
+        "fx": "tank_track_dirt_frontdust",
+        "speedToSpawnRate": [
+          30.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          0.5,
+          1.5
+        ]
       },
-      "effectTop": {
-        "fx": "track_sand_top"
+      "fxTopFront": {
+        "fx": "tank_track_dirt_front",
+        "speedToSpawnRate": [
+          8.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          2.5
+        ]
       },
-      "effectDust": {
-        "fx": "track_move_sand"
+      "fxDustOnBack": {
+        "fx": "tank_track_dirt_back",
+        "speedToSpawnRate": [
+          5.0,
+          25.0
+        ],
+        "emitVelocityScale": [
+          3.0,
+          5.0
+        ]
       },
-      "effectBack": {
-        "fx": "track_sand_dust"
+      "fxFriction": {
+        "fx": "tank_track_dirt_friction",
+        "speedToSpawnRate": [
+          -0.4,
+          -3.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          4.0
+        ]
       },
-      "effectCenter": {
-        "fx": ""
-      }
-    },
-    "snow": {
-      "effect": {
-        "fx": "track_snow_back"
+      "fxTop": {
+        "fx": "tank_track_dirt_top",
+        "speedToSpawnRate": [
+          2.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.5
+        ]
       },
-      "effectFront": {
-        "fx": "track_snow_front"
+      "fxCenterOfWheel": {
+        "fx": "tank_track_dirt_little_wheels",
+        "speedToSpawnRate": [
+          10.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
       },
-      "effectTop": {
-        "fx": "track_snow_top"
+      "fxCenterOfTank": {
+        "fx": "tank_track_dirt_trail",
+        "speedToSpawnRate": [
+          20.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
       },
-      "effectDust": {
-        "fx": "track_move_snow"
-      },
-      "effectBack": {
-        "fx": "track_snow_dust"
-      },
-      "effectCenter": {
-        "fx": ""
+      "fxDustOnWheels": {
+        "fx": "tank_track_dirt_wheels_dust",
+        "speedToSpawnRate": [
+          10.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          0.5,
+          2.0
+        ]
       }
     },
     "soil": {
-      "effect": {
-        "fx": "track_dirt_back"
+      "fxDust": {
+        "fx": "",
+        "speedToSpawnRate": [
+          0.0,
+          14.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.0
+        ]
       },
-      "effectFront": {
-        "fx": "track_dirt_front"
+      "fxDustOnFront": {
+        "fx": "tank_track_soil_frontdust",
+        "speedToSpawnRate": [
+          25.0,
+          35.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          2.5
+        ]
       },
-      "effectTop": {
-        "fx": "track_dirt_top"
+      "fxTopFront": {
+        "fx": "tank_track_soil_front",
+        "speedToSpawnRate": [
+          8.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          2.5
+        ]
       },
-      "effectDust": {
-        "fx": "track_move_dirt"
+      "fxDustOnBack": {
+        "fx": "tank_track_soil_back",
+        "speedToSpawnRate": [
+          5.0,
+          25.0
+        ],
+        "emitVelocityScale": [
+          3.0,
+          6.5
+        ]
       },
-      "effectBack": {
-        "fx": ""
+      "fxFriction": {
+        "fx": "tank_track_soil_friction",
+        "speedToSpawnRate": [
+          -0.4,
+          -3.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          4.0
+        ]
       },
-      "effectCenter": {
-        "fx": ""
+      "fxTop": {
+        "fx": "tank_track_soil_top",
+        "speedToSpawnRate": [
+          2.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.5
+        ]
+      },
+      "fxCenterOfWheel": {
+        "fx": "tank_track_soil_little_wheels",
+        "speedToSpawnRate": [
+          10.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      },
+      "fxCenterOfTank": {
+        "fx": "tank_track_soil_trail",
+        "speedToSpawnRate": [
+          30.0,
+          45.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      },
+      "fxDustOnWheels": {
+        "fx": "tank_track_soil_wheels_dust",
+        "speedToSpawnRate": [
+          10.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          0.5,
+          2.0
+        ]
       }
     },
     "ground": {
-      "effect": {
-        "fx": "track_ground_back"
+      "fxDust": {
+        "fx": "",
+        "speedToSpawnRate": [
+          0.0,
+          14.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.0
+        ]
       },
-      "effectFront": {
-        "fx": "track_ground_front"
+      "fxDustOnFront": {
+        "fx": "tank_track_ground_frontdust",
+        "speedToSpawnRate": [
+          30.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          3.0
+        ]
       },
-      "effectTop": {
-        "fx": "track_ground_top"
+      "fxTopFront": {
+        "fx": "tank_track_ground_front",
+        "speedToSpawnRate": [
+          5.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          5.0
+        ]
       },
-      "effectDust": {
-        "fx": "track_move_ground"
+      "fxDustOnBack": {
+        "fx": "tank_track_ground_back",
+        "speedToSpawnRate": [
+          15.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          1.5,
+          3.0
+        ]
       },
-      "effectBack": {
-        "fx": "track_ground_dust"
+      "fxFriction": {
+        "fx": "tank_track_ground_friction",
+        "speedToSpawnRate": [
+          -0.1,
+          -5.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          10.0
+        ]
       },
-      "effectCenter": {
-        "fx": ""
+      "fxTop": {
+        "fx": "tank_track_ground_top",
+        "speedToSpawnRate": [
+          5.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.5
+        ]
+      },
+      "fxCenterOfWheel": {
+        "fx": "tank_track_ground_little_wheels",
+        "speedToSpawnRate": [
+          15.0,
+          50.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          8.0
+        ]
+      },
+      "fxCenterOfTank": {
+        "fx": "tank_track_ground_trail",
+        "speedToSpawnRate": [
+          20.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      },
+      "fxDustOnWheels": {
+        "fx": "tank_track_ground_wheels_dust",
+        "speedToSpawnRate": [
+          10.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          0.5,
+          2.0
+        ]
+      }
+    },
+    "snow": {
+      "fxDust": {
+        "fx": "",
+        "speedToSpawnRate": [
+          0.0,
+          14.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.0
+        ]
+      },
+      "fxDustOnFront": {
+        "fx": "tank_track_snow_frontdust",
+        "speedToSpawnRate": [
+          10.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          2.0
+        ]
+      },
+      "fxTopFront": {
+        "fx": "tank_track_snow_front",
+        "speedToSpawnRate": [
+          5.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          5.0
+        ]
+      },
+      "fxDustOnBack": {
+        "fx": "tank_track_snow_back",
+        "speedToSpawnRate": [
+          10.0,
+          25.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          4.0
+        ]
+      },
+      "fxFriction": {
+        "fx": "tank_track_snow_friction",
+        "speedToSpawnRate": [
+          -0.1,
+          -5.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          10.0
+        ]
+      },
+      "fxTop": {
+        "fx": "tank_track_snow_top",
+        "speedToSpawnRate": [
+          3.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          0.5
+        ]
+      },
+      "fxCenterOfWheel": {
+        "fx": "tank_track_snow_little_wheels",
+        "speedToSpawnRate": [
+          7.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          3.0
+        ]
+      },
+      "fxCenterOfTank": {
+        "fx": "tank_track_snow_trail",
+        "speedToSpawnRate": [
+          20.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      },
+      "fxDustOnWheels": {
+        "fx": "tank_track_snow_wheels_dust",
+        "speedToSpawnRate": [
+          10.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          0.5,
+          2.0
+        ]
+      }
+    },
+    "sand": {
+      "fxDust": {
+        "fx": "",
+        "speedToSpawnRate": [
+          0.0,
+          14.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.0
+        ]
+      },
+      "fxDustOnFront": {
+        "fx": "tank_track_sand_frontdust",
+        "speedToSpawnRate": [
+          5.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          2.0
+        ]
+      },
+      "fxTopFront": {
+        "fx": "tank_track_sand_front",
+        "speedToSpawnRate": [
+          5.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          1.5,
+          3.5
+        ]
+      },
+      "fxDustOnBack": {
+        "fx": "tank_track_sand_back",
+        "speedToSpawnRate": [
+          8.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          3.5,
+          6.5
+        ]
+      },
+      "fxFriction": {
+        "fx": "tank_track_sand_friction",
+        "speedToSpawnRate": [
+          -0.1,
+          -5.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          10.0
+        ]
+      },
+      "fxTop": {
+        "fx": "tank_track_sand_top",
+        "speedToSpawnRate": [
+          3.0,
+          25.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          0.5
+        ]
+      },
+      "fxCenterOfWheel": {
+        "fx": "tank_track_sand_little_wheels",
+        "speedToSpawnRate": [
+          7.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          3.0
+        ]
+      },
+      "fxCenterOfTank": {
+        "fx": "tank_track_sand_trail",
+        "speedToSpawnRate": [
+          15.0,
+          35.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      },
+      "fxDustOnWheels": {
+        "fx": "tank_track_sand_wheels_dust",
+        "speedToSpawnRate": [
+          10.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          0.5,
+          2.0
+        ]
       }
     }
   },

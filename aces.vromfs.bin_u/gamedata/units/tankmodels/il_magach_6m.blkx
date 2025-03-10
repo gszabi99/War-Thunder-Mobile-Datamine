@@ -50,18 +50,6 @@
   "minRelativeTankCameraThreshold": 1.32,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "dm_for_shop": {
-    "armorThicknessFront": [
-      0.55,
-      0.1,
-      0.35
-    ],
-    "armorThicknessSide": [
-      0.1,
-      0.0,
-      0.9
-    ]
-  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -2151,17 +2139,7 @@
           ]
         }
       }
-    ],
-    "hideNodes": {
-      "node": [
-        "ex_era_hull_15",
-        "ex_era_hull_16",
-        "ex_era_hull_17",
-        "ex_era_hull_18",
-        "ex_era_hull_19",
-        "ex_era_hull_20"
-      ]
-    }
+    ]
   },
   "weapon_presets": {
     "preset": {
@@ -2894,6 +2872,45 @@
     "tank_smoke_screen_smoke_shell": {},
     "tank_smoke_screen_low_cooldown": {},
     "tank_smoke_screen_long_duration": {},
+    "tank_bulldozer_blade": {
+      "modClass": "firepower",
+      "tier": 2,
+      "requiresModelReload": true,
+      "turn_it_off": false,
+      "effects": {
+        "rcostAddParam": 0.99,
+        "diggingAvailable": true,
+        "diggingActivateTime": 3.0,
+        "diggingLevel": 0.35,
+        "digMaxSpeed": 15.0,
+        "digMaxRevSpeed": -12.0,
+        "hideNodes": {
+          "node": [
+            "ex_era_hull_15",
+            "ex_era_hull_16",
+            "ex_era_hull_17",
+            "ex_era_hull_18",
+            "ex_era_hull_19",
+            "ex_era_hull_20"
+          ]
+        }
+      },
+      "disableModEffects": {
+        "hideNodes": {
+          "node": [
+            "ex_armor_01",
+            "ex_decor_02",
+            "body_01",
+            "roll_01",
+            "roll_02",
+            "roll_03",
+            "roll_04",
+            "turret_02_front",
+            "turret_02_side"
+          ]
+        }
+      }
+    },
     "tank_smoke_screen_system_mod": {
       "effects": {
         "commonWeapons": {
@@ -3259,143 +3276,13 @@
                 ]
               }
             }
-          ],
-          "hideNodes": {
-            "node": [
-              "ex_era_hull_15",
-              "ex_era_hull_16",
-              "ex_era_hull_17",
-              "ex_era_hull_18",
-              "ex_era_hull_19",
-              "ex_era_hull_20"
-            ]
-          }
+          ]
         }
       }
     }
   },
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
-  },
-  "default_skin": {
-    "replace_tex": {
-      "from": "us_camo_olive*",
-      "to": "isr_camo_threecolor*"
-    }
-  },
-  "defaultDecals": {
-    "default": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal0Line0": [
-        -1.92875,
-        0.311847,
-        0.406127,
-        0.613531
-      ],
-      "decal0Line1": [
-        -0.11073,
-        -1.79935,
-        0.855769,
-        3.25097
-      ],
-      "decal0Line2": [
-        1.85352,
-        0.311847,
-        0.67042,
-        -0.532654
-      ],
-      "decal0Line3": [
-        0.544779,
-        -1.79935,
-        -0.669192,
-        3.05233
-      ],
-      "decal0HaveCP": true,
-      "decal0CPNormDepth": [
-        0.25052,
-        0.403187,
-        0.880159,
-        -2.11994
-      ],
-      "decal0CPNormDepth1": [
-        0.25052,
-        0.403187,
-        -0.880159,
-        -2.11994
-      ],
-      "decal0RotScale": [
-        1.39919,
-        0.501113
-      ],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0OppositeMirrored": false,
-      "decal0WidthBox": 0.206551,
-      "decal0Tex": "il_second_company",
-      "decal1Line0": [
-        1.92308,
-        -1.05113e-7,
-        0.603102,
-        -0.0351822
-      ],
-      "decal1Line1": [
-        0.163076,
-        -1.94036,
-        -0.519994,
-        3.75902
-      ],
-      "decal1Line2": [
-        -1.92308,
-        -7.50807e-8,
-        0.603102,
-        1.03518
-      ],
-      "decal1Line3": [
-        0.163077,
-        -1.94036,
-        0.519994,
-        3.75902
-      ],
-      "decal1HaveCP": true,
-      "decal1CPNormDepth": [
-        0.288095,
-        0.270396,
-        -0.918633,
-        -1.95624
-      ],
-      "decal1CPNormDepth1": [
-        0.288095,
-        0.270396,
-        0.918633,
-        -1.95624
-      ],
-      "decal1RotScale": [
-        1.5708,
-        0.496172
-      ],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1OppositeMirrored": false,
-      "decal1WidthBox": 0.209381,
-      "decal1Tex": "il_fourth_company"
-    }
-  },
-  "vehicleSkins": {
-    "desert": {
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "isr_camo_sandgray*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
-      }
-    }
   },
   "battleHideNodes": {
     "n": [

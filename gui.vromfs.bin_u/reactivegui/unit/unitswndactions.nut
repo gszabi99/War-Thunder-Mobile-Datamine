@@ -8,13 +8,12 @@ let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { defButtonHeight, PURCHASE, COMMON } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let openBuyExpWithUnitWnd = require("%rGui/levelUp/buyExpWithUnitWnd.nut")
 let { textButtonPrimary, textButtonPricePurchase, textButtonMultiline, mergeStyles
 } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { unitInProgress, curUnitInProgress, set_research_unit
 } = require("%appGlobals/pServer/pServerApi.nut")
-let { mkDiscountPriceComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
+let { mkDiscountPriceComp, CS_INCREASED_ICON, mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { textButtonPlayerLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
@@ -45,11 +44,15 @@ let { animBuyRequirementsUnitId, animResearchRequirementsUnitId } = require("%rG
 let { withGlareEffect } = require("%rGui/components/glare.nut")
 let { G_BLUEPRINT } = require("%appGlobals/rewardType.nut")
 let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
+let { upgradeCommonUnitName, buyExpUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
+let { GOLD } = require("%appGlobals/currenciesState.nut")
 
+let fontIconPreview = "⌡"
 
 let premiumDays = 30
-let fontIconPreview = "⌡"
+
 let msgGap = hdpx(24)
+let gapBtns = hdpx(18)
 
 function getBlueprintGoodsId(config, shopCfg, uName) {
   let preset = config?.goodsRewardSlots
@@ -199,6 +202,30 @@ function setResearchUnit(unitName) {
   })
 }
 
+
+function unitUpgradeBtn(unit) {
+  let { isUpgraded = false, isUpgradeable = false, isPremium = false} = unit
+  return !(!isUpgraded && isUpgradeable && !isPremium) ? null
+    : textButtonPricePurchase(utf8ToUpper(loc("msgbox/unit_upgrade")),
+      mkCurrencyComp(unit.upgradeCostGold, GOLD),
+      @() upgradeCommonUnitName.set(unit.name))
+}
+
+function separateByRows(bigBtnsList, smallBtnsList) {
+  let total = max(bigBtnsList.len(), smallBtnsList.len())
+  return {
+    flow = FLOW_VERTICAL
+    gap = gapBtns
+    children = array(total)
+      .map(@(_, i) {
+        valign = ALIGN_CENTER
+        flow = FLOW_HORIZONTAL
+        gap = gapBtns
+        children = [bigBtnsList?[total - i - 1], smallBtnsList?[total - i - 1]]
+      })
+  }
+}
+
 function unitActionButtons() {
   let unitName = curSelectedUnit.get()
   let isUnitInSlot = curCampaignSlotUnits.get()?.findvalue(@(v) v == unitName) != null
@@ -209,35 +236,39 @@ function unitActionButtons() {
   let withBlueprint = unitName in serverConfigs.get()?.allBlueprints && !isOwned
   let unitFromCanBuyUnits = canBuyUnits.get()?[unitName]
   let canBuyUnit = unitFromCanBuyUnits != null
-  let children = []
+  //Full-sized textButtons, such as "Order" or "Upgrade," should be added to 'bigBtnsList'.
+  //Smaller buttons, like a unit's infoBtn that opens a unit details window,
+  //should be added to 'smallBtnsList'.
+  local bigBtnsList = []
+  local smallBtnsList = []
 
   if ((curCampaignSlotUnits.get()?.len() ?? 0) > 1 && isUnitInSlot)
-    children.append(textButtonPrimary(utf8ToUpper(loc("slotbar/clearSlot")),
+    bigBtnsList.append(textButtonPrimary(utf8ToUpper(loc("slotbar/clearSlot")),
       @() clearUnitSlot(unitName),
       { hotkeys = ["^J:X"] }))
   else if (slots.get().len() != 0 && !isUnitInSlot && isOwned)
-    children.append(textButtonPrimary(utf8ToUpper(loc("mod/enable")),
+    bigBtnsList.append(textButtonPrimary(utf8ToUpper(loc("mod/enable")),
       @() openSelectUnitToSlotWnd(unitName, treeNodeUnitPlateKey(unitName)),
       { hotkeys = ["^J:X"] }))
   else if (canEquipSelectedUnit.get())
-    children.append(textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")), onSetCurrentUnit, { hotkeys = ["^J:X"] }))
+    bigBtnsList.append(textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")), onSetCurrentUnit, { hotkeys = ["^J:X"] }))
   else if (canBuyUnit || (isResearched && !canBuy)) {
     let unit = unitFromCanBuyUnits ?? campUnitsCfg.get()[unitName]
     let isForLevelUp = levelInfo.isReadyForLevelUp && (unit?.name in buyUnitsData.get().canBuyOnLvlUp)
     let price = getUnitAnyPrice(unit, isForLevelUp, unitDiscounts.get())
     if (price != null) {
       let priceComp = mkDiscountPriceComp(price.fullPrice, price.price, price.currencyId, CS_INCREASED_ICON)
-      children.append(textButtonPricePurchase(utf8ToUpper(loc(!isCampaignWithUnitsResearch.get() ? "msgbox/btn_order" : "msgbox/btn_build")), priceComp,
+      bigBtnsList.append(textButtonPricePurchase(utf8ToUpper(loc(!isCampaignWithUnitsResearch.get() ? "msgbox/btn_order" : "msgbox/btn_build")), priceComp,
         canBuyUnit ? onBuyUnit : @() animBuyRequirementsUnitId.set(unitName),
         { hotkeys = ["^J:X"] }.__update(canBuyUnit ? {} : COMMON)))
     }
   }
   else if (isCurrent)
-    children.append(textButtonMultiline(utf8ToUpper(loc("unitsTree/speedUpProgress")),
+    bigBtnsList.append(textButtonMultiline(utf8ToUpper(loc("unitsTree/speedUpProgress")),
       @() openBuyUnitResearchWnd(unitName),
       mergeStyles(PURCHASE, { hotkeys = ["^J:X"] })))
   else if (!isOwned && (canResearch || (serverConfigs.get()?.unitResearchExp[unitName] ?? 0) > 0))
-    children.append(withGlareEffect(
+    bigBtnsList.append(withGlareEffect(
       textButtonMultiline(utf8ToUpper(loc("unitsTree/startResearch")),
         @() canResearch ? setResearchUnit(unitName) : animResearchRequirementsUnitId.set(unitName),
         mergeStyles(canResearch ? PURCHASE : COMMON, { hotkeys = ["^J:X"], ovr = { key = "startResearchButton" } })),
@@ -248,7 +279,7 @@ function unitActionButtons() {
     let { rank = 0, starRank = 0 } = campUnitsCfg.get().findvalue(@(u) u.name == unitName)
     let deltaLevels = rank - levelInfo.level
     if (deltaLevels >= 2)
-      children.append(bgTextMessage.__merge({
+      bigBtnsList.append(bgTextMessage.__merge({
         children = @(){
           size = SIZE_TO_CONTENT
           rendObj = ROBJ_TEXT
@@ -257,8 +288,8 @@ function unitActionButtons() {
       }))
     else if (deltaLevels == 1 && canBuyStatus != US_NOT_FOR_SALE) {
       let premId = findGoodsPrem(shopGoods.get())?.id
-      children.append(textButtonPlayerLevelUp(utf8ToUpper(loc("units/btn_speed_explore")), rank, starRank,
-        @() havePremium.get() || premId == null ? openBuyExpWithUnitWnd(unitName) : openGoodsPreview(premId)
+      bigBtnsList.append(textButtonPlayerLevelUp(utf8ToUpper(loc("units/btn_speed_explore")), rank, starRank,
+        @() havePremium.get() || premId == null ? buyExpUnitName(unitName) : openGoodsPreview(premId)
         { hotkeys = ["^J:Y"] , childOvr = { padding = [0, hdpx(6)] gap = 0 }})
       )
     }
@@ -267,7 +298,7 @@ function unitActionButtons() {
     let blueprintsGoodsId = getBlueprintGoodsId(serverConfigs.get(), shopGoods.get(), unitName)
 
     if(blueprintsGoodsId)
-      children.append(withGlareEffect(
+      bigBtnsList.append(withGlareEffect(
         textButtonMultiline(utf8ToUpper(loc("mainmenu/get_blueprints")),
           function() {
             openGoodsPreview(blueprintsGoodsId)
@@ -278,7 +309,9 @@ function unitActionButtons() {
         { delay = 3, repeatDelay = 3 }
       ))
   }
-  children.append(withUnseenMark(unitName, infoBtn))
+  bigBtnsList.append(unitUpgradeBtn(campMyUnits.get()?[unitName]))
+  smallBtnsList.append(withUnseenMark(unitName, infoBtn))
+
   return {
     watch = [
       curSelectedUnit, campMyUnits, curSelectedUnitPrice, campUnitsCfg,
@@ -290,8 +323,8 @@ function unitActionButtons() {
     size = SIZE_TO_CONTENT
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
-    gap = hdpx(18)
-    children
+    gap = gapBtns
+    children = separateByRows(bigBtnsList, smallBtnsList)
   }
 }
 
@@ -319,11 +352,12 @@ function discountBlock() {
 let unitActions = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null || curUnitInProgress.value != null),
   unitActionButtons,
   {
-    size = [SIZE_TO_CONTENT, defButtonHeight]
+    minHeight = defButtonHeight
     halign = ALIGN_RIGHT
     valign = ALIGN_CENTER
     animations = wndSwitchAnim
   })
+
 
 return {
   setResearchUnit

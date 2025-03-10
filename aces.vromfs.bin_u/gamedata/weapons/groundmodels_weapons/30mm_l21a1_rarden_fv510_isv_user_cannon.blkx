@@ -21,7 +21,7 @@
   "bullets": 222,
   "bulletsCluster": 1,
   "reloadTime": 1.0,
-  "bulletsCartridge": 3,
+  "bulletsCartridge": 6,
   "fxType": "muzzle_ground_30mm",
   "fxMultipleSpawn": true,
   "shouldCollideWithRendinsts": true,

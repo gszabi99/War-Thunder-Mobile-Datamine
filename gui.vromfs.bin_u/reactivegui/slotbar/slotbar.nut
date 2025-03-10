@@ -215,7 +215,7 @@ function mkSlotHeader(slot, idx, unit, isSelected) {
     size = [unitPlateSize[0], unitPlateHeader]
     flow = FLOW_HORIZONTAL
     rendObj = ROBJ_BOX
-    fillColor = isSelected.get() ? 0xFFFFFFFF : 0xFF383B3E
+    fillColor = isSelected.get() ? 0xFFFFFFFF : 0xFF212121
     children = [
       {
         padding = [0, hdpx(10)]
@@ -476,4 +476,6 @@ return {
   slotBarUnitsTree
   slotBarTreeHeight
   slotBarSelectWnd
+  emptySlotText
+  mkSlotHeader
 }

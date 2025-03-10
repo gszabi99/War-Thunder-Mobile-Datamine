@@ -6,15 +6,17 @@ let { startCrosshairAnimationTime, pointCrosshairScreenPosition, crosshairDestin
 } = require("%rGui/hud/commonState.nut")
 let { TargetLockTime } = require("%rGui/hud/airState.nut")
 let { targetName, mkTargetSelectionData } = require("%rGui/hud/targetSelectionProgress.nut")
-let { currentAircraftCtrlType } = require("%rGui/options/options/airControlsOptions.nut")
+let { currentAircraftCtrlType, currentFixedAimCursor } = require("%rGui/options/options/airControlsOptions.nut")
 let { currentCrosshairIconCfg } = require("%rGui/options/options/crosshairOptions.nut")
 let { elementBlinks } = require("%rGui/tutorial/hudElementBlink.nut")
 
 
 let airGunDirectionSize = oddPx(58)
+let fixedAirGunDirectionSize = oddPx(11)
 let isSightAttached = Watched(false)
 let needSightBlink = keepref(Computed(@() isSightAttached.get() && (elementBlinks.get()?.crosshair ?? false)))
 let needDestinationBlink = keepref(Computed(@() isSightAttached.get() && (elementBlinks.get()?.mouseAim ?? false)))
+let airDestinationOpacity = 0.45
 
 let sightTrigger = {}
 let sightAnimatons = [{
@@ -44,9 +46,13 @@ let airTarget = @() {
       ]
 }
 
-let mkUpdatePosColor = @(posP2, color) @() {
-  color = color.get()
-  transform = { translate = [ posP2.get().x, posP2.get().y ] }
+let mkUpdatePosColor = @(posP2, color, opacity = 1.0) function() {
+  let isValid =  posP2.get().x >= 0 && posP2.get().y >= 0
+  return {
+    color = isValid ? color.get() : 0
+    opacity = isValid ? opacity : 0
+    transform = { translate = [ posP2.get().x, posP2.get().y ] }
+  }
 }
 
 function airCrosshair() {
@@ -70,31 +76,38 @@ function airCrosshair() {
   }
 }
 
-let airDestination = {
-  key = "airCrosshairDirection"
-  behavior = Behaviors.RtPropUpdate
-  size = [airGunDirectionSize, airGunDirectionSize]
-  pos = [- airGunDirectionSize / 2, - airGunDirectionSize / 2]
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#mouse_pointer_air.svg:{airGunDirectionSize}:{airGunDirectionSize}:P")
-  color = 0
-  opacity = 0.45
-  hplace = ALIGN_LEFT
-  vplace = ALIGN_TOP
-  update = mkUpdatePosColor(crosshairDestinationScreenPosition, aircraftCrosshairColor)
-  transform = {}
-  animations = destAnimatons
+function mkCrosshairIcon(icon, size) {
+  return {
+    key = "airCrosshairDirection"
+    behavior = Behaviors.RtPropUpdate
+    size = [size, size]
+    pos = [- size / 2, - size / 2]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#{icon}:{size}:{size}:P")
+    color = 0
+    opacity = airDestinationOpacity
+    hplace = ALIGN_LEFT
+    vplace = ALIGN_TOP
+    update = mkUpdatePosColor(crosshairDestinationScreenPosition, aircraftCrosshairColor, airDestinationOpacity)
+    transform = {}
+    animations = destAnimatons
+  }
 }
 
+let airDestination = mkCrosshairIcon("mouse_pointer_air.svg", airGunDirectionSize)
+let fixedAirDestination = mkCrosshairIcon("point_center_air.svg", fixedAirGunDirectionSize)
+
 let aircraftSight = @() {
-  watch = [areSightHidden, currentAircraftCtrlType]
+  watch = [areSightHidden, currentAircraftCtrlType, currentFixedAimCursor]
   size = flex()
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = areSightHidden.get() ? null
     : [
         airCrosshair
-        currentAircraftCtrlType.value == "mouse_aim" ? airDestination : null
+        currentAircraftCtrlType.value != "mouse_aim" ? null
+          : currentFixedAimCursor.value ? fixedAirDestination
+          : airDestination
         airTarget
       ]
 }

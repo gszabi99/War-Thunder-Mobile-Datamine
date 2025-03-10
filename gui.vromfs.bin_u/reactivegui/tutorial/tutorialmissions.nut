@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { receivedMissionRewards, curCampaign, isProfileReceived, isAnyCampaignSelected, abTests,
-  isCampaignWithUnitsResearch
+  isCampaignWithUnitsResearch, sharedStatsByCampaign, getCampaignStatsId
 } = require("%appGlobals/pServer/campaign.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -16,12 +16,14 @@ let { mkResearchingUnitForBattleData } = require("%appGlobals/data/battleDataExt
 let { currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
-let getFirstBattleTutor = @(campaign) $"tutorial_{campaign}_1"
+let getFirstBattleTutor = @(campaign) !campaign.endswith("_new") ? $"tutorial_{campaign}_1"
+  : $"tutorial_{campaign.slice(0, -4)}_1_nc"
 let firstBattleTutor = Computed(@() getFirstBattleTutor(curCampaign.value))
 
 let forceTutorTankMissionV2 = mkWatched(persist, "forceTutorTankMissionV2", null)
 let tutorialMissions = Computed(@() {
   tutorial_ships_1 = "tutorial_ship_basic"
+  tutorial_ships_1_nc = "tutorial_ship_basic"
   tutorial_tanks_1 = (forceTutorTankMissionV2.value ?? abTests.value?.tutorialTankMissionV2) == "true" ? "tutorial_tank_basic_v2" : "tutorial_tank_basic"
   tutorial_air_1   = "tutorial_plane_basic"
 })
@@ -39,8 +41,7 @@ let needFirstBattleTutorByStats = @(stats) (stats?.battles ?? 0) == 0
 let needFirstBattleTutor = Computed(@()
   (firstBattleTutor.value in missionsWithRewards.value
     && isProfileReceived.value
-    && (campMyUnits.get().len() == 0
-      || needFirstBattleTutorByStats(servProfile.value?.sharedStatsByCampaign?[curCampaign.value]))
+    && (campMyUnits.get().len() == 0 || needFirstBattleTutorByStats(sharedStatsByCampaign.get()))
     && (!isCampaignWithUnitsResearch.get() || currentResearch.get() != null)
   )
   != isDebugMode.value)
@@ -52,7 +53,7 @@ function needFirstBattleTutorForCampaign(campaign) {
     return false
   let sUnits = serverConfigs.value?.allUnits ?? {}
   let ownCampUnit = (servProfile.value?.units ?? {}).findvalue(@(_, name) sUnits?[name].campaign == campaign)
-  return ownCampUnit == null || needFirstBattleTutorByStats(servProfile.value?.sharedStatsByCampaign?[campaign])
+  return ownCampUnit == null || needFirstBattleTutorByStats(servProfile.value?.sharedStatsByCampaign[getCampaignStatsId(campaign)])
 }
 
 function mkRewardBattleData(rewards) {

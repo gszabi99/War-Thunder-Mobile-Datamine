@@ -4,6 +4,7 @@ let { getUnitFileName } = require("vehicleModel")
 let { getUnitTagsCfg, getUnitType } = require("%appGlobals/unitTags.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { eachBlock, isDataBlock, blkOptFromPath } = require("%sqstd/datablock.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { isReadyToFullLoad, isLoginRequired } = require("%appGlobals/loginState.nut")
 
 let WT_GUNS = "guns"
@@ -233,7 +234,7 @@ function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
 function loadAllBullets(weaponBlkName) {
   let weaponBlk = blkOptFromPath(weaponBlkName)
   let { bullets = 0, bulletsCartridge = 1, useSingleIconForBullet = false, mass = 0.0,
-    container = false, blk = ""
+    container = false, blk = "", shotFreq = 0
   } = weaponBlk
   let isBulletBelt = !useSingleIconForBullet
     && ((weaponBlk?.isBulletBelt ?? true) || bulletsCartridge > 1)
@@ -244,6 +245,7 @@ function loadAllBullets(weaponBlkName) {
     gunMass = mass
     bulletSets = {}
     blk = container ? blk : weaponBlkName
+    shotFreq
   }
   let defBullets = container
     ? loadBullets(blkOptFromPath(blk), "", blk, isBulletBelt)
@@ -470,7 +472,8 @@ function loadUnitBulletsFullImpl(unitName) {
   return res
 }
 
-function loadUnitBulletsAndSlots(unitName) {
+function loadUnitBulletsAndSlots(realUnitName) {
+  let unitName = getTagsUnitName(realUnitName)
   if (unitName not in fullCache) {
     if (isLoginRequired.get() && !isReadyToFullLoad.get())
       return { presets = {}, slots = [], slotsParams = {}, reqModifications = {} }

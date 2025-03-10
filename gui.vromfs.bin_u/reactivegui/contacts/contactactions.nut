@@ -2,18 +2,17 @@ from "%globalsDarg/darg_library.nut" import *
 let { myUserIdStr } = require("%appGlobals/profileStates.nut")
 let { friendsUids, myRequestsUids, requestsToMeUids, rejectedByMeUids, myBlacklistUids
 } = require("contactLists.nut")
-let { contactsInProgress, addToFriendList, cancelMyFriendRequest, approveFriendRequest,
+let { contactsInProgress, botRequests, addToFriendList, cancelMyFriendRequest, approveFriendRequest,
   rejectFriendRequest, removeFromFriendList, addToBlackList, removeFromBlackList
 } = require("contactsState.nut")
-let { inviteToSquad, dismissSquadMember, transferSquad, revokeSquadInvite,
+let { inviteToSquad, dismissSquadMember, transferSquad, revokeSquadInvite, userInProgress,
   leaveSquadMessage, isInSquad, isSquadLeader, squadMembers, isInvitedToSquad, canInviteToSquad
 } = require("%rGui/squad/squadManager.nut")
 let { maxSquadSize } = require("%rGui/gameModes/gameModeState.nut")
 let { viewProfile } = require("%rGui/mpStatistics/viewProfile.nut")
 let { viewReport } = require("%rGui/report/reportPlayerState.nut")
 
-
-let mkCommonInProgress = @(userId) Computed(@() userId in contactsInProgress.value)
+let mkCommonInProgress = @(userId) Computed(@() userId in contactsInProgress.get() || userId.tointeger() in userInProgress.get())
 let isInMySquad = @(userId, members) members?[userId.tointeger()] != null
 
 let actions = {
@@ -23,6 +22,7 @@ let actions = {
       && userId not in friendsUids.value
       && userId not in myBlacklistUids.value
       && userId not in myRequestsUids.value
+      && userId not in botRequests.get()
       && userId not in rejectedByMeUids.value
       && userId not in requestsToMeUids.value
     )
@@ -32,7 +32,8 @@ let actions = {
 
   CANCEL_INVITE = {
     locId = "contacts/cancel_invitation"
-    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value && userId in myRequestsUids.value)
+    mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value
+      && (userId in myRequestsUids.value || userId in botRequests.get()))
     action = cancelMyFriendRequest
     mkIsInProgress = mkCommonInProgress
   }
@@ -65,7 +66,8 @@ let actions = {
     mkIsVisible = @(userId) Computed(@() userId != myUserIdStr.value
       && userId not in myBlacklistUids.value
       && userId not in friendsUids.value
-      && userId not in myRequestsUids.value)
+      && userId not in myRequestsUids.value
+      && !(isInvitedToSquad.get()?[userId.tointeger()] ?? false))
     action = addToBlackList
     mkIsInProgress = mkCommonInProgress
   }
@@ -87,6 +89,7 @@ let actions = {
       && userId not in myBlacklistUids.value
     )
     action = @(userId) inviteToSquad(userId.tointeger())
+    mkIsInProgress = mkCommonInProgress
   }
 
   REVOKE_INVITE = {

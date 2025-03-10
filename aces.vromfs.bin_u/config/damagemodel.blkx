@@ -1,6 +1,5 @@
 {
   "pierceDispersion": 0.05,
-  "explodeChanceOnDeadPart": 0.5,
   "cumulativeThicknessThreshold": 5.0,
   "cumulativePierceThreshold": 1000.0,
   "armorFragmentsThicknessThreshold": 3.3,
@@ -492,6 +491,21 @@
         0.0
       ]
     }
+  },
+  "kineticDamage": {
+    "damageType": "generic"
+  },
+  "cumulativeDamage": {
+    "damageType": "cumulative"
+  },
+  "splashDamage": {
+    "damageType": "explosion"
+  },
+  "shatterDamage": {
+    "damageType": "shatter"
+  },
+  "secondaryShatterDamage": {
+    "damageType": "secondaryShatter"
   },
   "ricochetPresets": {
     "default": {

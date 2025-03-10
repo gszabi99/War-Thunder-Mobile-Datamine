@@ -5,6 +5,7 @@ let { getUnitLocId, getUnitClassFontIcon, getPlatoonName } = require("%appGlobal
 let { mkUnitLevelBlock, levelHolderSize } = require("%rGui/unit/components/unitLevelComp.nut")
 let { mkCurrencyImage, mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
+let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { mkUnitStatsCompShort, mkUnitStatsCompFull, armorProtectionPercentageColors,
   avgShellPenetrationMmByRank, addedFromSlot } = require("%rGui/unit/unitStats.nut")
 let { attrPresets, hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
@@ -20,8 +21,6 @@ let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
-let { mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize } = require("%rGui/components/scrollArrows.nut")
-let { isUnitsTreeAttached } = require("%rGui/unitsTree/unitsTreeState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
 
@@ -369,7 +368,6 @@ function unitMRankBlock(mRank) {
 
   return {
     size = [statsWidth, SIZE_TO_CONTENT]
-    margin = [hdpx(15), 0, 0, 0]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     children = [
@@ -436,13 +434,6 @@ let unitHeaderBlock = @(unit, unitTitleCtor) @(){
 
 local lastUnitStats = null
 
-let scrollArrowsBlock = {
-  pos = [-scrollArrowImageSmallSize, 0]
-  size = [SIZE_TO_CONTENT, -scrollArrowImageSmallSize]
-  hplace = ALIGN_CENTER
-  children = mkScrollArrow(scrollHandlerInfoPanel, MR_B, scrollArrowImageSmall)
-}
-
 let getAttrLevels = @(unit) campConfigs.get()?.campaignCfg?.slotAttrPreset != ""
     ? curCampaignSlots.get()?.slots.findvalue(@(slot) slot.name == unit?.name)?.attrLevels ?? {}
     : unit?.attrLevels ?? {}
@@ -451,7 +442,17 @@ let getAttrPreset = @(unit) hasSlotAttrPreset.get()
   ? attrPresets.value?[campConfigs.get()?.campaignCfg?.slotAttrPreset]
   : attrPresets.value?[unit?.attrPreset]
 
-let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit, childOvr = {}, mkScroll = null)
+let isNumeric = @(v) type(v) == "integer" || type(v) == "float"
+let notNumericToZero = @(v) isNumeric(v) ? v : 0
+
+function calcPadding(c) {
+  let { padding = 0 } = c
+  return isNumeric(padding) ? padding * 2
+    : type(padding) == "array" ? notNumericToZero(padding?[1]) + notNumericToZero(padding?[3] ?? padding?[1])
+    : 0
+}
+
+let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangarUnit, bg = panelBg)
   function() {
     if (unit.value == null)
       return { watch = unit }
@@ -466,6 +467,7 @@ let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangar
       halign = ALIGN_RIGHT
       children = [
         unitHeaderBlock(unit.value, headerCtor)
+        { size = [0, hdpx(15)] }
         unitMRankBlock(unit.value?.mRank)
         unitRewardsBlock(unit.value, loc("attrib_section/battleRewards"))
         unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
@@ -479,23 +481,31 @@ let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangar
         unitArmorBlock(unit.value, false)
         unitPriceBlock(unit.get())
       ]
-    }.__update(childOvr)
+    }
 
-    let content = {
-      watch = [unit, attrPresets, isUnitsTreeAttached]
-      clipChildren = true
-      stopMouse = true
-      children = !mkScroll ? children
-        : [
-            mkScroll(children)
-            scrollArrowsBlock
-          ]
-    }.__merge(ovr)
+    let res = bg.__merge(
+      {
+        watch = [unit, attrPresets]
+        stopMouse = true
+        children = children
+      },
+      ovr)
 
-    return isUnitsTreeAttached.get() ? content : panelBg.__merge(content)
+    let maxHeight = ovr?.maxHeight ?? bg?.maxHeight
+    if (isNumeric(maxHeight)) {
+      let height = calc_comp_size(res.__merge({ maxHeight = null }))[1]
+      if (height > maxHeight)
+        res.children = makeVertScroll(children,
+          {
+            size = [SIZE_TO_CONTENT, maxHeight - calcPadding(res)],
+            isBarOutside = true
+          })
+    }
+
+    return res
   }
 
-let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
+let unitInfoPanelFull = @(unit = hangarUnit, ovr = {}) function() {
   if (unit.value == null)
     return { watch = unit }
 
@@ -504,24 +514,30 @@ let unitInfoPanelFull = @(override = {}, unit = hangarUnit) function() {
     getAttrPreset(unit.get()), unit.get()?.mods)
   lastUnitStats = unitStats
 
-  return panelBg.__merge({
+  return {
     watch = [ unit, itemsCfgByCampaignOrdered, attrPresets ]
+    size = [SIZE_TO_CONTENT, flex()]
     children = unit.value == null ? null
-      : [
-          unitMRankBlock(unit.value?.mRank)
-          unitRewardsBlock(unit.value, loc("attrib_section/battleRewards"))
-          unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
-            ? null
-            : unitRewardsBlock(unit.value.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
-              { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
-          unit.get()?.isUpgraded || unit.get()?.isPremium
-            ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"), servProfile.get()?.unitsGold)
-            : null
-          unitStatsBlock(unitStats, prevStats)
-          unitArmorBlock(unit.value, false)
-          unitConsumablesBlock(unit.get(), itemsCfgByCampaignOrdered.get()?[unit.get()?.campaign] ?? [])
-        ]
-  }, override)
+      : makeVertScroll(
+          {
+            flow = FLOW_VERTICAL
+            children = [
+              unitMRankBlock(unit.value?.mRank)
+              unitRewardsBlock(unit.value, loc("attrib_section/battleRewards"))
+              unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
+                ? null
+                : unitRewardsBlock(unit.value.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
+                  { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
+              unit.get()?.isUpgraded || unit.get()?.isPremium
+                ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"), servProfile.get()?.unitsGold)
+                : null
+              unitStatsBlock(unitStats, prevStats)
+              unitArmorBlock(unit.value, false)
+              unitConsumablesBlock(unit.get(), itemsCfgByCampaignOrdered.get()?[unit.get()?.campaign] ?? [])
+            ]
+          },
+          { size = [SIZE_TO_CONTENT, flex()], isBarOutside = true })
+  }.__update(ovr)
 }
 
 return {

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { ALIGN_RB, ALIGN_LB, ALIGN_RT, ALIGN_LT, ALIGN_CT, ALIGN_CB } = require("%rGui/hudTuning/hudTuningConsts.nut")
-let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
+let { actionBarItems, emptyActionItem } = require("%rGui/hud/actionBar/actionBarState.nut")
 let weaponsButtonsConfig = require("%rGui/hud/weaponsButtonsConfig.nut")
 let { visibleWeaponsDynamic } = require("%rGui/hud/currentWeaponsStates.nut")
 let weaponsButtonsView = require("%rGui/hud/weaponsButtonsView.nut")
@@ -19,7 +19,8 @@ enum Z_ORDER {
 
 let withActionButtonScaleCtor = @(aType, actionCtor, cfg) {
   function ctor(scale) {
-    let action = Computed(@() actionBarItems.value?[aType])
+    let action = Computed(@() actionBarItems.get()?[aType]
+      ?? (cfg?.shouldShowDisabled ? emptyActionItem : null))
     return @() {
       watch = action
       children = action.get() == null ? null : actionCtor(action.get(), scale)

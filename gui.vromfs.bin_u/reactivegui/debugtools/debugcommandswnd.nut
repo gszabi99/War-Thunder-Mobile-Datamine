@@ -7,16 +7,18 @@ let { defer } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { reset_profile, reset_profile_with_stats, unlock_all_units, add_currency_no_popup,
   add_premium, reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler,
-  royal_beta_units_unlock, add_all_skins_for_unit, shift_all_personal_goods_time
+  royal_beta_units_unlock, add_all_skins_for_unit, shift_all_personal_goods_time,
+  check_purchases_debug
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
 let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
+let { makeVertScroll, makeSideScroll } = require("%rGui/components/scrollbar.nut")
 let { closeButton } = require("%rGui/components/debugWnd.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { textInput } = require("%rGui/components/textInput.nut")
+let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { isTutorialMissionsDebug } = require("%rGui/tutorial/tutorialMissions.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
@@ -29,7 +31,7 @@ let debugUnlocks = require("debugUnlocks.nut")
 let { mainHangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { startDebugNewbieMission, startLocalMultiplayerMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
-let { currencyOrder, getDbgCurrencyCount } = require("%appGlobals/currenciesState.nut")
+let { currencyOrder, getDbgCurrencyCount, balance } = require("%appGlobals/currenciesState.nut")
 let { canBattleWithoutAddons } = require("%appGlobals/clientState/clientState.nut")
 let debugPermissionsWnd = require("debugPermissionsWnd.nut")
 
@@ -50,6 +52,29 @@ let withClose = @(action) function() {
 function resetProfileWithStats() {
   reset_profile_with_stats()
   resetUserstatAppData(true)
+}
+
+let infoTextOvr = {
+  size = [flex(), SIZE_TO_CONTENT]
+  halign = ALIGN_LEFT,
+  preformatted = FMT_KEEP_SPACES | FMT_NO_WRAP
+}.__update(fontTiny)
+
+function showSortedTable(tbl) {
+  let text = "\n".join(
+    tbl.map(@(v, k) { v, k })
+      .values()
+      .sort(@(a, b) a.k <=> b.k)
+      .map(@(v) $"{v.k} = {v.v}"))
+  return openMsgBox({
+    uid = "debug_show_table"
+    text = makeSideScroll(msgBoxText(text, infoTextOvr))
+    wndOvr = { size = [hdpx(1100), hdpx(1000)] }
+    buttons = [
+      { text = "COPY", cb = @() set_clipboard_text(text) }   //warning disable: -forbidden-function
+      { id = "ok", styleId = "PRIMARY", isDefault = true }   //warning disable: -forbidden-function
+    ]
+  })
 }
 
 let commandsList = [].extend(
@@ -119,6 +144,9 @@ let commandsList = [].extend(
       })
     }
     { label = "permissions", func = withClose(debugPermissionsWnd) }
+    { label = "check_purchases_debug", func = withClose(@() check_purchases_debug("onDebugCheckPurchases")) }
+    { label = "balance_full", func = @() showSortedTable(balance.get()) }
+    { label = "balance_not_empty", func = @() showSortedTable(balance.get().filter(@(v) v != 0)) }
   ])
 
 function mkCommandsList() {

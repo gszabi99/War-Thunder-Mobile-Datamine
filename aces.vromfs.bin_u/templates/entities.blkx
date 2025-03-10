@@ -1,0 +1,532 @@
+{
+  "import": [
+    "%danetlibs/route_prober/templates/route_prober.blk",
+    "%danetlibs/assets_import/templates/assets_import.blk",
+    "%wtlibs/templates/essentials.blk",
+    "%wtlibs/templates/net.blk",
+    "%wtlibs/templates/rendinst.blk",
+    "%wtlibs/templates/animchar.blk",
+    "%wtlibs/templates/mission.blk",
+    "%wtlibs/templates/units.blk",
+    "%wtlibs/templates/grid.blk",
+    "%wtlibs/templates/fx.blk",
+    "%wtlibs/templates/damage_model.blk",
+    "%wtlibs/templates/microdetail.blk"
+  ],
+  "backmodel_spawn_point": {
+    "_use": "spawn_point",
+    "forPremiumVehicle": false
+  },
+  "delayed_action": {
+    "delayed_action__doAtTime": -1.0,
+    "delayed_action__timer": 0.0
+  },
+  "delayed_unit_shot": {
+    "_use": "delayed_action",
+    "delayed_unit_shot__unitName": "",
+    "delayed_unit_shot__triggerGroup": 0
+  },
+  "action_by_date": {
+    "action_by_date__yearFrom": 1900,
+    "action_by_date__monthFrom": 1,
+    "action_by_date__dayFrom": 1,
+    "action_by_date__hourFrom": 0,
+    "action_by_date__minFrom": 0,
+    "action_by_date__secFrom": 0,
+    "action_by_date__yearTo": 1901,
+    "action_by_date__monthTo": 1,
+    "action_by_date__dayTo": 1,
+    "action_by_date__hourTo": 0,
+    "action_by_date__minTo": 0,
+    "action_by_date__secTo": 0,
+    "action_by_date__timeFrom": 0,
+    "action_by_date__timeTo": 0,
+    "action_by_date__delayFromCreate": 30.0,
+    "action_by_date__doAtTime": -1.0,
+    "action_by_date__onlyFirstEnter": false
+  },
+  "unit_shot_by_date": {
+    "_use": "action_by_date",
+    "unit_shot_by_date__unitName": "",
+    "unit_shot_by_date__triggerGroup": 0
+  },
+  "ri_gpu_object": {
+    "_use": "replicating",
+    "_group": {
+      "_track": true,
+      "ri_gpu_object__name": "ammunition_box_n",
+      "ri_gpu_object__grid_tiling": 4,
+      "ri_gpu_object__grid_size": 16,
+      "ri_gpu_object__cell_size": 8.0,
+      "ri_gpu_object__seed": 0,
+      "ri_gpu_object__up_vector": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "ri_gpu_object__scale_range": [
+        1.0,
+        1.0
+      ],
+      "ri_gpu_object__biom_indexes": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "ri_gpu_object__is_using_normal": false,
+      "ri_gpu_object__incline_delta": 0.0,
+      "ri_gpu_object__rotate_range": [
+        0.0,
+        0.0
+      ],
+      "ri_gpu_object__map": "",
+      "ri_gpu_object__map_size": [
+        512.0,
+        512.0
+      ],
+      "ri_gpu_object__map_offset": [
+        0.0,
+        0.0
+      ],
+      "ri_gpu_object__color_from": [
+        127,
+        127,
+        127,
+        127
+      ],
+      "ri_gpu_object__color_to": [
+        127,
+        127,
+        127,
+        127
+      ],
+      "ri_gpu_object__slope_factor": [
+        1.0,
+        0.0
+      ],
+      "ri_gpu_object__hardness": 1.0,
+      "ri_gpu_object__sparse_weight": 0.0,
+      "ri_gpu_object__decal": false,
+      "ri_gpu_object__transparent": false,
+      "ri_gpu_object__distorsion": false,
+      "ri_gpu_object__place_on_water": false,
+      "ri_gpu_object__enable_displacement": true,
+      "ri_gpu_object__render_into_shadows": false,
+      "ri_gpu_object__coast_range": [
+        -1.0,
+        -1.0
+      ],
+      "ri_gpu_object__face_coast": false,
+      "ri_gpu_object__biome_params:array": {},
+      "ri_gpu_object__multiple_objects:array": {}
+    },
+    "ri_preload:GpuObjectRiResourcePreload": {
+      "_tags": "render"
+    }
+  },
+  "floating_rendinst_system": {
+    "_singleton": true,
+    "floatingRiSystem__randomWavesAmplitude": 0.0,
+    "floatingRiSystem__randomWavesLength": 0.5,
+    "floatingRiSystem__randomWavesPeriod": 1.0,
+    "floatingRiSystem__randomWavesVelocity": [
+      0.6,
+      0.6
+    ],
+    "floatingRiSystem__volumePresets:object": {
+      "default_1:array": {
+        "volPos": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "default_4:array": {
+        "volPos": [
+          [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            -1.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            -1.0
+          ],
+          [
+            1.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      "default_12:array": {
+        "volPos": [
+          [
+            -1.0,
+            0.5,
+            0.0
+          ],
+          [
+            1.0,
+            0.5,
+            0.0
+          ],
+          [
+            -0.8,
+            0.0,
+            -1.0
+          ],
+          [
+            -0.4,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.4,
+            0.0,
+            -1.0
+          ],
+          [
+            0.8,
+            0.0,
+            -1.0
+          ],
+          [
+            -0.8,
+            0.0,
+            1.0
+          ],
+          [
+            -0.4,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.4,
+            0.0,
+            1.0
+          ],
+          [
+            0.8,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    },
+    "floatingRiSystem__userVolumePresets:object": {}
+  },
+  "floating_rendinst_res_group": {
+    "floatingRiGroup__wreckageFloatDuration": 15.0,
+    "floatingRiGroup__updateDistSq": 1000000.0,
+    "floatingRiGroup__interactionType": 0,
+    "floatingRiGroup__interactionDistSq": 0.0,
+    "floatingRiGroup__elasticity": 0.1,
+    "floatingRiGroup__physUpdateDt": 0.041667,
+    "floatingRiGroup__maxShiftDist": 1000.0,
+    "floatingRiGroup__viscosity": 0.57,
+    "floatingRiGroup__minDistToGround": -1000000.0,
+    "_group": {
+      "_track": true,
+      "floatingRiGroup__resName": "",
+      "floatingRiGroup__inertiaMult": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "floatingRiGroup__volumesCount": -1,
+      "floatingRiGroup__volumePresetName": "",
+      "floatingRiGroup__density": 500.0,
+      "floatingRiGroup__densityRandRange": 0.0,
+      "floatingRiGroup__useBoxInertia": false
+    },
+    "floatingRiGroup__riPhysFloatingModel": {}
+  },
+  "toolkit_ecs": {
+    "_use": "expendable_mod",
+    "mod__name": "tank_tool_kit_expendable",
+    "mod__type_name": "toolkit"
+  },
+  "ship_toolkit_ecs": {
+    "_use": "expendable_mod",
+    "mod__name": "ship_tool_kit",
+    "mod__type_name": "toolkit",
+    "mod__send_economic_spend": false
+  },
+  "extinguisher_ecs": {
+    "_use": "expendable_mod",
+    "mod__name": "manual_extinguisher_expendable",
+    "mod__type_name": "extinguisher",
+    "mod__enabled_without_mod": true,
+    "mod__count_effects_mod": true
+  },
+  "ship_extinguisher_ecs": {
+    "_use": "extinguisher_ecs",
+    "mod__enabled_without_mod": false
+  },
+  "medicalkit_ecs": {
+    "_use": "expendable_mod",
+    "mod__name": "tank_medical_kit_expendable",
+    "mod__type_name": "medicalkit",
+    "mod__count_effects_mod": true
+  },
+  "smokescreen_ecs": {
+    "_use": "expendable_mod",
+    "mod__type_name": "smokeScreen",
+    "mod__send_economic_spend": false
+  },
+  "tank_smokescreen_ecs": {
+    "_use": "smokescreen_ecs",
+    "mod__name": "tank_engine_smoke_screen_system"
+  },
+  "ship_smokescreen_ecs": {
+    "_use": "smokescreen_ecs",
+    "mod__name": "ship_smoke_screen_system_mod"
+  },
+  "disabled_update": {
+    "disabled:tag": {}
+  },
+  "in_flight": {
+    "inFlight:tag": {}
+  },
+  "render_debug": {
+    "renderDebug:tag": {}
+  },
+  "weapon": {
+    "_use": "root"
+  },
+  "gun": {
+    "_use": "weapon"
+  },
+  "bomb_gun": {
+    "_use": "weapon"
+  },
+  "rocket_gun": {
+    "_use": "weapon"
+  },
+  "torpedo_gun": {
+    "_use": "weapon"
+  },
+  "background_model": {
+    "background_model__model": "",
+    "background_model__skin": "",
+    "background_model__unitName": "",
+    "background_model__weapon": "",
+    "background_model__isPlane": false,
+    "background_model__tm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "background_model__canOutline": false,
+    "background_model_res": {
+      "_tags": "gameClient"
+    },
+    "background_model__bullets:list<t>": {},
+    "background_model__spawnEid:eid": {}
+  },
+  "destructed_model": {
+    "_use": "replicating",
+    "destructed_model__fx": "fire_tank_destructed",
+    "_group": {
+      "_replicate": true,
+      "destructed_model__model_ind": -1,
+      "destructed_model__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    "destructed_model__names:list<t>": {
+      "model": "tank_bottom"
+    },
+    "destructed_model_res": {
+      "_tags": "render"
+    }
+  },
+  "level": {
+    "isLocal": true,
+    "level__blk": "",
+    "level__bin": "",
+    "level__environment": "Day",
+    "level__loaded": false,
+    "level__weather": "hazy"
+  },
+  "render_view_cam": {
+    "camera__active": false,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_singleton": true,
+    "camera_view:tag": {}
+  },
+  "static_cam": {
+    "camera__active": false,
+    "fov": 90.0,
+    "znear": 0.01,
+    "zfar": 10000.0,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "static_camera_view:tag": {}
+  },
+  "game_objects": {
+    "_singleton": true,
+    "nonCreatableObj": true,
+    "game_objects": {},
+    "game_objects__createChance:object": {
+      "stationary_mg42": 0.4,
+      "chimney_exhaust": 0.15
+    }
+  },
+  "asset_manager": {
+    "_tags": "render",
+    "_use": "base_asset_manager",
+    "asset__applicationBlkPath": "assetsImport/application_wt.blk"
+  },
+  "unit_showcase": {
+    "unit_showcase_mission_name": "",
+    "unit_showcase_eid:eid": {}
+  },
+  "camera_rain_light_effect": {
+    "_use": "camera_bound_rain_effect_template",
+    "_group": {
+      "_tags": "render",
+      "camera_effect__offset": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "camera_effect__distance": 3.0,
+      "effect__name": "camera_rain_light_cmps_fx"
+    }
+  },
+  "camera_rain_heavy_effect": {
+    "_use": "camera_bound_rain_effect_template",
+    "_group": {
+      "_tags": "render",
+      "camera_effect__offset": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "camera_effect__distance": 3.0,
+      "effect__name": "camera_rain_heavy_cmps_fx"
+    }
+  },
+  "camera_rain_drop_splashes_effect": {
+    "_use": "camera_bound_rain_effect_template",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "camera_rain_drops_cmps_fx",
+      "is_ground_effect": true
+    }
+  },
+  "unit_init_params_ext": {},
+  "base_unit_ext": {
+    "base_unit__kill_score_mult": 1.0
+  },
+  "aircraft_ext": {},
+  "barrage_ballon_ext": {},
+  "ground_unit_ext": {},
+  "ship_ext": {},
+  "tank_ext": {},
+  "walker_ext": {},
+  "simple_ground_unit_ext": {},
+  "simple_ship_ext": {},
+  "simple_tank_ext": {},
+  "trailer_ext": {},
+  "human_ext": {},
+  "light_vehicle_ext": {},
+  "fortification_ext": {},
+  "infantry_troop_ext": {}
+}

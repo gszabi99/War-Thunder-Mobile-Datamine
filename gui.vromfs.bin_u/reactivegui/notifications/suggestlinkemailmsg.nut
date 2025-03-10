@@ -10,7 +10,7 @@ let { LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { accountLink } = require("%rGui/contacts/contactLists.nut")
 let { isContactsReceived } = require("%rGui/contacts/contactsState.nut")
-let { isGuestLogin } = require("%rGui/account/emailRegistrationState.nut")
+let { activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 
 
 const SUGGEST_LINK_ACC = "suggest_link_acc"
@@ -19,12 +19,13 @@ let { isTimerPassed, setLastTime } = require("%rGui/globals/mkStoredAlarm.nut")(
 let needLinkToGaijinAccount = Computed(@() isContactsReceived.get()
   && accountLink.get() == null
   && !authTags.get().contains("email_verified")
-  && (curLoginType.get() == LT_FACEBOOK || isGuestLogin.get()))
+  && curLoginType.get() == LT_FACEBOOK)
 let isSuggested = hardPersistWatched("suggestLinkFacebook.isSuggested", false)
 let needShowMessage = keepref(Computed(@() needLinkToGaijinAccount.get()
                                            && !isSuggested.get()
                                            && isOutOfBattleAndResults.get()
-                                           && isTimerPassed.get()))
+                                           && isTimerPassed.get()
+                                           && activeTutorialId.get() == null))
 function openMsg() {
   if (!needShowMessage.get())
     return

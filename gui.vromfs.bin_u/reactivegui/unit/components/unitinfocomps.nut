@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { round_by_value } = require("%sqstd/math.nut")
-let { serverTimeDay, getDay } = require("%appGlobals/userstats/serverTimeDay.nut")
+let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
 
 let bonusTinySize = hdpxi(28)
 
@@ -63,11 +63,11 @@ function mkUnitDailyLimit(unit, unitsGold, override = {}, bonusDailyCtor = mkDai
   let { name = "", dailyGoldLimit = 0 } = unit
   let { lastDay = 0, time = 0 } = unitsGold?[name]
   return @(){
-    watch = serverTimeDay
+    watch = [serverTimeDay, dayOffset]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     gap = hdpx(20)
-    children = bonusDailyCtor(dailyGoldLimit, serverTimeDay.get() == getDay(time) ? lastDay : 0, "gold")
+    children = bonusDailyCtor(dailyGoldLimit, serverTimeDay.get() == getDay(time, dayOffset.get()) ? lastDay : 0, "gold")
   }.__update(override)
 }
 

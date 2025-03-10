@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
 let { deferOnce } = require("dagor.workcycle")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { modsInProgress, buy_unit_mod, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
@@ -145,7 +146,6 @@ function scrollToSlot() {
   }
 
   let ident = isFirstAfterHeader ? vertIndentThroughHeader : vertIndent
-
   if (top - ident < elem.getScrollOffsY())
     slotsScrollHandler.scrollToY(top - ident)
   else if (top + weaponH + ident > elem.getScrollOffsY() + elem.getHeight())
@@ -172,11 +172,7 @@ let mkVerticalPannableArea = @(content) {
     flow = FLOW_VERTICAL
     gap = tabsGap
     children = content
-    xmbNode = {
-      canFocus = false
-      scrollSpeed = 5.0
-      isViewport = true
-    }
+    xmbNode = XmbContainer()
   }
 }
 
@@ -194,12 +190,7 @@ let mkHorizontalPannableArea = @(content) {
       behavior = Behaviors.Pannable
       scrollHandler = weaponsScrollHandler
       children = content
-      xmbNode = {
-        canFocus = false
-        scrollSpeed = 2.0
-        isViewport = true
-        scrollToEdge = false
-      }
+      xmbNode = XmbContainer({ scrollSpeed = 2.0 })
     }
   ]
 }
@@ -494,7 +485,9 @@ let unitModsWnd = {
   children = [
     @(){
       watch = curCampaign
-      children = mkGamercardUnitCampaign(@() actionWithOverloadWarning(closeUnitModsSlotsWnd), $"gamercard/levelUnitMod/desc/{curCampaign.value}", curUnit)
+      children = mkGamercardUnitCampaign(@() actionWithOverloadWarning(closeUnitModsSlotsWnd),
+        getCampaignPresentation(curCampaign.get()).levelUnitModLocId,
+        curUnit)
     }
     {
       size = [saSize[0] + saBorders[0], flex()]

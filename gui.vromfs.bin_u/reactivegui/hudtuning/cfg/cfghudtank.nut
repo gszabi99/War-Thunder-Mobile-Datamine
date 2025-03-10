@@ -4,8 +4,8 @@ let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN,
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
-let { EII_EXTINGUISHER, EII_TOOLKIT_WITH_MEDICAL, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN,
-  EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT
+let { EII_EXTINGUISHER, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET,
+  EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT, EII_TOOLKIT_WITH_MEDICAL
 } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let { mkCircleTankPrimaryGun, mkCircleTankSecondaryGun, mkCircleTankMachineGun, mkCircleZoomCtor,
@@ -37,7 +37,10 @@ let { mkBulletEditView } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkMyPlace, mkMyPlaceUi, mkTankMyScores, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
 let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
 let { missionScoreCtr, missionScoreEditView } = require("%rGui/hud/missionScore.nut")
-let { optTankMoveControlType, gearDownOnStopButtonTouch } = require("cfgOptions.nut")
+let { optTankMoveControlType, gearDownOnStopButtonTouch, optDoublePrimaryGuns } = require("cfgOptions.nut")
+//let { tankRrepairButtonCtor } =
+require("%rGui/hud/buttons/repairButton.nut") //only to disable warning
+//let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.value) && !isGamepad.value)
@@ -48,19 +51,22 @@ let actionBarTransform = @(idx, isBullet = false)
   mkRBPos([hdpx(-actionBarInterval * idx), isBullet ? 0 : hdpx(43)])
 
 return {
-  primaryGunRight = withActionButtonScaleCtor(AB_PRIMARY_WEAPON, mkCircleTankPrimaryGun,
-    {
-      defTransform = mkRBPos([hdpx(-250), hdpx(-303)])
-      editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
-      priority = Z_ORDER.BUTTON_PRIMARY
-    })
-
-  primaryGunLeft = withActionButtonScaleCtor(AB_PRIMARY_WEAPON,
+  primaryGun = withActionButtonScaleCtor(AB_PRIMARY_WEAPON,
     @(a, scale) mkCircleTankPrimaryGun(a, scale, "btn_weapon_primary_alt", mkCountTextRight),
     {
       defTransform = mkLBPos([0, hdpx(-420)])
       editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
       priority = Z_ORDER.BUTTON_PRIMARY
+      options = [ optDoublePrimaryGuns ]
+    })
+
+  primaryExtraGun = withActionButtonScaleCtor(AB_PRIMARY_WEAPON, mkCircleTankPrimaryGun,
+    {
+      defTransform = mkRBPos([hdpx(-250), hdpx(-303)])
+      editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
+      priority = Z_ORDER.BUTTON_PRIMARY
+      isVisible = @(options) optDoublePrimaryGuns.has(options)
+      options = [ optDoublePrimaryGuns ]
     })
 
   secondaryGun = withActionButtonScaleCtor(AB_SECONDARY_WEAPON,
@@ -116,7 +122,17 @@ return {
   }
 
   abExtinguisher = withActionBarButtonCtor(EII_EXTINGUISHER, TANK,
-    { defTransform = actionBarTransform(0) })
+    {
+      defTransform = actionBarTransform(0),
+      shouldShowDisabled = true
+    })
+
+/*  abToolkit = {
+    ctor = tankRrepairButtonCtor
+    defTransform = actionBarTransform(1)
+    editView = mkActionItemEditView("ui/gameuiskin#hud_consumable_repair.svg")
+    priority = Z_ORDER.STICK
+  }*/
   abToolkit = withActionBarButtonCtor(EII_TOOLKIT_WITH_MEDICAL, TANK,
     { defTransform = actionBarTransform(1) })
   abSmokeGrenade = withAnyActionBarButtonCtor([ EII_SMOKE_GRENADE, EII_SMOKE_SCREEN ], TANK,

@@ -101,20 +101,20 @@ function mkSquadLabel(player, color){
 }
 
 function mkNameContent(player, teamColor, halign) {
-  let { unitName } = player
+  let { unitName, name } = player
   let nameColor = player.isLocal ? cellTextColor : teamColor
   let nameCell = {
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = hdpx(5)
     children = [
+      premiumMark(player)
       cellTextProps.__merge({
         maxWidth = pw(100)
         halign
         color = nameColor
-        text = player.name
+        text = name
       })
-      premiumMark(player)
     ]
   }
   let unitCell = {
@@ -197,29 +197,29 @@ let KG_TO_TONS = 0.001
 let damageZoneMission = regexp2(@"_GS(_|$)")
 let columnsByCampaign = {
   ships = [
-    { width = playerPlaceIconSize, contentCtor = mkPlaceContent }
-    { width = flex(), halign = ALIGN_LEFT, contentCtor = mkNameContent }
-    { width = hdpx(192), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat(p.damage.tointeger()) }
+    { width = playerPlaceIconSize, valign = ALIGN_CENTER, contentCtor = mkPlaceContent }
+    { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkNameContent }
+    { width = hdpx(120), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat(p.damage.tointeger()) }
     { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
     { headerIcon = "ui/gameuiskin#stats_ships_destroyed.svg", getText = @(p) decimalFormat(p.navalKills) }
     { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }
   ]
 
   tanks = [
-    { width = playerPlaceIconSize, contentCtor = mkPlaceContent }
-    { width = flex(), halign = ALIGN_LEFT, contentCtor = mkNameContent }
-    { width = hdpx(192), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat((100 * p.score).tointeger()) }
+    { width = playerPlaceIconSize, valign = ALIGN_CENTER, contentCtor = mkPlaceContent }
+    { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkNameContent }
+    { width = hdpx(120), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat((100 * p.score).tointeger()) }
     { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
     { headerIcon = "ui/gameuiskin#tanks_destroyed_icon.svg", getText = @(p) decimalFormat(p.groundKills) }
     { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }
   ]
 
   air = [
-    { width = playerPlaceIconSize, contentCtor = mkPlaceContent }
-    { width = flex(), halign = ALIGN_LEFT, contentCtor = mkNameContent }
-    { width = hdpx(192), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat((100 * p.score).tointeger()) }
+    { width = playerPlaceIconSize, valign = ALIGN_CENTER, contentCtor = mkPlaceContent }
+    { width = flex(), halign = ALIGN_LEFT, valign = ALIGN_CENTER, contentCtor = mkNameContent }
+    { width = hdpx(120), headerIcon = "ui/gameuiskin#score_icon.svg", getText = @(p) decimalFormat((100 * p.score).tointeger()) }
     { headerIcon = "ui/gameuiskin#stats_assist.svg", getText = @(p) p?.assists ?? 0 }
-    { fontIcon = "icon/mpstats/damageZone", getText = @(p) roundToDigits(p.damageZone * KG_TO_TONS, 3),
+    { width = hdpx(100), fontIcon = "icon/mpstats/damageZone", getText = @(p) roundToDigits(p.damageZone * KG_TO_TONS, 2),
       isVisible = @(missionName) damageZoneMission.match(missionName) }
     { headerIcon = "ui/gameuiskin#stats_airplanes_destroyed.svg", getText = @(p) decimalFormat(p.kills) }
     { headerIcon = "ui/gameuiskin#air_defence_destroyed_icon.svg", getText = @(p) decimalFormat(p.aiGroundKills + p.aiNavalKills) }
@@ -251,11 +251,12 @@ function mkPlayerRow(columnCfg, player, teamColor, idx) {
       : rowBgEvenColor
     flow = FLOW_HORIZONTAL
     children = player == null ? null : columns.map(function(c) {
-      let { width, halign, contentCtor = null, getText = null } = c
+      let { width, halign, valign = null, contentCtor = null, getText = null } = c
       return {
         size = [width, rowHeight]
         halign = halign
-        valign = ALIGN_CENTER
+        valign = valign ?? ALIGN_BOTTOM
+        padding = [hdpx(5), 0]
         children = contentCtor != null ? contentCtor(player, playerColor, halign)
           : cellTextProps.__merge({ text = getText?(player) })
       }

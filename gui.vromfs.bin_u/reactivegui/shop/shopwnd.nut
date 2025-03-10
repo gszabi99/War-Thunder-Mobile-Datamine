@@ -37,12 +37,7 @@ let pannable = @(ovr) {
   size = flex()
   behavior = Behaviors.Pannable
   scrollHandler = ScrollHandler()
-  xmbNode = XmbContainer({
-    canFocus = false
-    scrollSpeed = 5.0
-    isViewport = true
-    scrollToEdge = true
-  })
+  xmbNode = XmbContainer({ scrollToEdge = true })
 }.__update(ovr)
 
 let isPurchNoNeedResultWindow = @(purch) (purch?.source == "purchaseInternal" || purch?.source == "scheduledReward")

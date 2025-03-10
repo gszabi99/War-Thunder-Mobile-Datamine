@@ -120,7 +120,7 @@ function startOfflineBattle(unit, missionName) {
     })
 }
 
-function startLocalMPBattle(unit, missionName) {
+function startLocalMPBattle(unit, missionName, presetOvrMis = null) {
   if (unit == null) {
     openMsgBox({ text = loc("No selected unit") })
     return
@@ -132,6 +132,7 @@ function startLocalMPBattle(unit, missionName) {
       skin = getUnitSkin(unit)
       missionName
       bullets = getBulletsForTestFlight(unit.name)
+      presetOvrMis
     })
 }
 

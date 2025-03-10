@@ -8,7 +8,7 @@ let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { PURCH_SRC_SLOTBAR, PURCH_TYPE_SLOT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { canPlayAnimUnitWithLink, animUnitWithLink, animNewUnitsAfterResearchTrigger } = require("%rGui/unitsTree/animState.nut")
+let { canPlayAnimUnitWithLink, animUnitWithLink } = require("%rGui/unitsTree/animState.nut")
 
 
 let animTimeout = 5.0 //in case we not receive event from anim
@@ -41,7 +41,7 @@ let selectedUnitAABBKey = Computed(@() slotBarOpenParams.get()?.aabb)
 let canOpenSelectUnitWithModal = Watched(false)
 let slotBarSelectWndAttached = Watched(false)
 
-let getSlotAnimTrigger = @(idx, name) $"slot_{idx}_{name}"
+let getSlotAnimTrigger = @(idx, name, prefix = -1) $"slot_{prefix}_{idx}_{name}"
 let mkCurSlotsInfo = @() { prevCampaign = isLoggedIn.get() ? curCampaign.get() : null, prevSlots = slots.get().map(@(s) s?.name ?? "") }
 let prevSlotsInfo = persist("prevSlotsInfo", mkCurSlotsInfo)
 
@@ -75,10 +75,8 @@ let onFinishSlotAnim = @(idx) idx not in slotsNeedAddAnim.get() ? null
   : slotsNeedAddAnim.mutate(@(v) v.$rawdelete(idx))
 
 function closeSelectUnitToSlotWnd() {
-  if (animUnitWithLink.get() != null && !canPlayAnimUnitWithLink.get()) {
+  if (animUnitWithLink.get() != null && !canPlayAnimUnitWithLink.get())
     canPlayAnimUnitWithLink.set(true)
-    anim_start(animNewUnitsAfterResearchTrigger)
-  }
   slotBarOpenParams.set(null)
 }
 

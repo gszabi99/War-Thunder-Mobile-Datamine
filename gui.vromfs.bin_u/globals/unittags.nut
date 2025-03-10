@@ -3,6 +3,7 @@ from "%globalScripts/logs.nut" import *
 let { get_unittags_blk } = require("blkGetters")
 let { blk2SquirrelObjNoArrays, isDataBlock, eachBlock } = require("%sqstd/datablock.nut")
 let { isReadyToFullLoad, isLoginRequired, isLoginStarted } = require("%appGlobals/loginState.nut")
+let getTagsUnitName = require("getTagsUnitName.nut")
 
 let unitTagsCfg = {}
 
@@ -44,7 +45,8 @@ function gatherUnitTagsCfg(unitName) {
   return res
 }
 
-function getUnitTagsCfg(unitName) {
+function getUnitTagsCfg(realUnitName) {
+  let unitName = getTagsUnitName(realUnitName)
   if (unitName not in unitTagsCfg)
     unitTagsCfg[unitName] <- gatherUnitTagsCfg(unitName)
   return unitTagsCfg[unitName]

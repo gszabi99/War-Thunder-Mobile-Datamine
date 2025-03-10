@@ -1,9 +1,9 @@
 from "math" import max
-
 let { TANK, AIR, HELICOPTER } = require("%appGlobals/unitConst.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { commonAddonsByPostfix, extAddonsByRank, knownAddons, campaignPostfix
 } = require("%appGlobals/updater/addons.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 
 let aircraftCbtPkgs = ["pkg_cbt_aircraft", "pkg_cbt_aircraft_hq"].filter(@(a) a in knownAddons)
 let airStarterPkgs = ["pkg_tier_1_aircraft"].filter(@(a) a in knownAddons)
@@ -76,7 +76,8 @@ function appendSideAddons(addons, mRank) {
   return addons
 }
 
-function getUnitPkgs(unitName, mRank) {
+function getUnitPkgs(realUnitName, mRank) {
+  let unitName = getTagsUnitName(realUnitName)
   if (unitName in customUnitPkg)
     return customUnitPkg[unitName] ?? []
   let postfix = getAddonPostfix(unitName)

@@ -20,7 +20,7 @@ let { getUnitPresentation, getPlatoonName, getUnitClassFontIcon, getUnitLocId
 } = require("%appGlobals/unitPresentation.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { collectibleTextColor, premiumTextColor, markTextColor } = require("%rGui/style/stdColors.nut")
-let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
+let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 let { textButtonCommon, textButtonBattle, iconButtonPrimary } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { scoreBoard, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
@@ -83,7 +83,7 @@ let topPanel = @() {
   children = [
     { size = [SIZE_TO_CONTENT, flex()], children = logerrHintsBlock }
     scoreBoard
-    mkMenuButton({ onClick = @() eventbus_send("openFlightMenuInRespawn", {}) })
+    mkMenuButton(1.0, { onClick = @() eventbus_send("openFlightMenuInRespawn", {}) })
     respawnUnitItems.value?.spare ? balanceBlock : null
   ]
 }
@@ -398,13 +398,7 @@ let skinsList = @() {
           size = flex()
           behavior = Behaviors.Pannable
           skipDirPadNav = true
-          xmbNode = {
-            canFocus = @() false
-            scrollSpeed = 5.0
-            isViewport = true
-            scrollToEdge = true
-            screenSpaceNav = true
-          }
+          xmbNode = XmbContainer()
           children = respawnSkins
         }
       }

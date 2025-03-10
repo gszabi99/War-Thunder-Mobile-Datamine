@@ -11,7 +11,7 @@
     "antiShipBomb": true
   },
   "torpedo": {
-    "armDistance": 50.0,
+    "armDistance": 10.0,
     "dropSpeedRange": [
       -10.0,
       78.0
@@ -25,8 +25,8 @@
       90.0
     ],
     "bulletType": "torpedo",
-    "distToLive": 2500.0,
-    "maxSpeedInWater": 12.34,
+    "distToLive": 6000.0,
+    "maxSpeedInWater": 20.34,
     "diveDepth": 1.0,
     "detonationRadius": 0.1,
     "detonationDepth": 4.0,
@@ -56,6 +56,12 @@
       300.0,
       1000.0
     ],
+    "splash": {
+      "innerRadius": 9.0,
+      "penetration": 125.0,
+      "damage": 4500.0,
+      "damageType": "explosionTorpedo"
+    },
     "arcadeProp": {
       "dropSpeedRange": [
         -10.0,

@@ -402,8 +402,7 @@ let mkTimeBlock = @(animStartTime, child) doubleSideGradient.__merge({
   pos = [doubleSideGradientPaddingX, 0]
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_RIGHT
-  valign = ALIGN_CENTER
-  halign = ALIGN_RIGHT
+  valign = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   gap = horGap
   children = [
@@ -413,8 +412,31 @@ let mkTimeBlock = @(animStartTime, child) doubleSideGradient.__merge({
   animations = opacityAnims(aTimeTime, animStartTime, "price")
 })
 
-let mkPriceWithTimeBlock = @(animStartTime) mkTimeBlock(animStartTime, purchaseButtonBlock(animStartTime + aTimeTime))
-let mkPriceWithTimeBlockNoOldPrice = @(animStartTime) mkTimeBlock(animStartTime, purchaseButtonNoOldPrice)
+let mkPriceWithTimeBlock = @(animStartTime, addChild  = null) mkTimeBlock(animStartTime,
+  addChild
+    ? {
+        flow = FLOW_HORIZONTAL
+        gap = hdpx(10)
+        children = [
+          addChild
+          purchaseButtonBlock(animStartTime + aTimeTime)
+        ]
+    }
+    : purchaseButtonBlock(animStartTime + aTimeTime)
+  )
+
+let mkPriceWithTimeBlockNoOldPrice = @(animStartTime, addChild  = null) mkTimeBlock(animStartTime,
+  addChild
+  ? {
+      flow = FLOW_HORIZONTAL
+      valign = ALIGN_BOTTOM
+      gap = hdpx(10)
+      children = [
+        addChild
+        purchaseButtonNoOldPrice
+      ]
+  }
+  : purchaseButtonNoOldPrice)
 
 let mkTimeBlockCentered = @(animStartTime) doubleSideGradient.__merge({
   padding = [doubleSideGradientPaddingY, hdpx(25)]

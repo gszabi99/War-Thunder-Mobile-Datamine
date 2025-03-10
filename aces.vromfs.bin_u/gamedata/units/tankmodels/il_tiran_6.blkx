@@ -50,18 +50,6 @@
   "destroysTrees": true,
   "type": "typeMediumTank",
   "minRelativeTankCameraThreshold": 1.47,
-  "dm_for_shop": {
-    "armorThicknessFront": [
-      0.25,
-      0.35,
-      0.4
-    ],
-    "armorThicknessSide": [
-      0.1,
-      0.0,
-      0.9
-    ]
-  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1819,12 +1807,12 @@
           ],
           "lim3": [
             -45.0,
-            -41.0,
-            -4.5,
+            -22.0,
+            -3.0,
             16.0
           ],
           "lim4": [
-            -41.0,
+            -22.0,
             4.0,
             -6.0,
             16.0
@@ -3306,32 +3294,6 @@
           }
         }
       ]
-    }
-  },
-  "default_skin": {
-    "replace_tex": {
-      "from": "us_camo_olive*",
-      "to": "isr_camo_threecolor*"
-    }
-  },
-  "defaultDecals": {
-    "default": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0
-    }
-  },
-  "vehicleSkins": {
-    "desert": {
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "isr_camo_sandgray*"
-      },
-      "decal": {
-        "skin_condition": 100.0,
-        "camo_scale": 0.0,
-        "camo_rotation": 0.0
-      }
     }
   },
   "battleHideNodes": {

@@ -11,6 +11,7 @@ let svgNullable = @(image, size) ((image ?? "") == "") ? null
   : Picture($"{image}:{size}:{size}:P")
 
 let countHeightUnderActionItem = (0.4 * touchButtonSize).tointeger()
+let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(-50)] }
 
 let isAvailableActionItem = @(actionItem) actionItem.count != 0 && (actionItem?.available ?? true)
 
@@ -47,6 +48,11 @@ function mkActionItemProgress(actionItem, isAvailable) {
       from = [1.0, 1.0], to = [1.2, 1.2], easing = CosineFull, trigger }]
   }
 }
+
+let mkActionItemProgressByWatches = @(actionItem, isAvailable) @()
+  actionItem.get() == null ? { watch = actionItem }
+    : mkActionItemProgress(actionItem.get(), isAvailable.get())
+        .__update({ watch = [actionItem, isAvailable] })
 
 let mkActionItemCount = @(count, scale = 1) {
   size = flex()
@@ -102,9 +108,11 @@ let mkActionItemEditView = @(image) {
 
 return {
   countHeightUnderActionItem
+  abShortcutImageOvr
 
   isAvailableActionItem
   mkActionItemProgress
+  mkActionItemProgressByWatches
   mkActionItemCount
   mkActionItemImage
   mkActionItemBorder

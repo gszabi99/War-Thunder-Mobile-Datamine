@@ -4,14 +4,13 @@ let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
+let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 
 let { registerScene } = require("%rGui/navState.nut")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let mkOption = require("mkOption.nut")
 let mkOptionsTabs = require("mkOptionsTabs.nut")
 let mkChildrenOptions = require("mkChildrenOptions.nut")
-
 
 let backButtonHeight = hdpx(60)
 let gapBackButton = hdpx(50)
@@ -30,8 +29,8 @@ let scrollArrowsBlock = {
   hplace = ALIGN_CENTER
   pos = [0, -topAreaSize + saBorders[1] / 2]
   children = [
-    mkScrollArrow(scrollHandler, MR_T)
-    mkScrollArrow(scrollHandler, MR_B)
+    mkScrollArrow(scrollHandler, MR_T, scrollArrowImageSmall)
+    mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall)
   ]
 }
 

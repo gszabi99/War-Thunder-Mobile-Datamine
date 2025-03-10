@@ -1,9 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkSimpleCircleTouchBtn } = require("buttons/circleTouchHudButtons.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let menuButton = require("%rGui/hud/mkMenuButton.nut")({
-  onClick = @() toggleShortcut("ID_FREECAM_TOGGLE")
-})
+let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 
 let gap = hdpx(40)
 
@@ -44,7 +42,7 @@ return {
   vplace = ALIGN_CENTER
   key = "free-cam-hud"
   children = [
-    menuButton
+    mkMenuButton(1.0, { onClick = @() toggleShortcut("ID_FREECAM_TOGGLE") })
     {
       flow = FLOW_VERTICAL
       gap

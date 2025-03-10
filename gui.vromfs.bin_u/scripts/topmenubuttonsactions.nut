@@ -6,10 +6,10 @@ let { get_meta_mission_info_by_name, do_start_flight, select_mission, select_tra
 let { set_game_mode } = require("mission")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
+let { isInLoadingScreen, isSingleMissionOverrided } = require("%appGlobals/clientState/clientState.nut")
 let { isLoggedIn, isLoginRequired } = require("%appGlobals/loginState.nut")
 let g_mislist_type = require("%scripts/missions/misListType.nut")
-let { actualizeBattleDataIfOwn } = require("%scripts/battleData/menuBattleData.nut")
+let { actualizeBattleDataIfOwn, actualizeBattleDataOvrMission } = require("%scripts/battleData/menuBattleData.nut")
 let { changeTrainingUnit, requestHudState } = require("%scripts/missions/guiOptions.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 
@@ -54,7 +54,7 @@ registerHandler("onOfflineMissionUnitActualized", function(res, context) {
   select_training_mission(misBlk)
 })
 
-function startOfflineMission(unitName, skin, missionId, bullets, weaponPreset, localMP = false, gameMode = GM_TEST_FLIGHT
+function startOfflineMission(unitName, skin, missionId, bullets, weaponPreset, presetOvrMis = null, localMP = false, gameMode = GM_TEST_FLIGHT
 ) {
   if (isInLoadingScreen.get()) {
     log("Ignore startOfflineMission while in loading")
@@ -66,10 +66,15 @@ function startOfflineMission(unitName, skin, missionId, bullets, weaponPreset, l
     return
   }
   let actUnitOrSlots = (localMP ? curCampaignSlotUnits.get() : null) ?? unitName
-  log($"[BATTLE_DATA] request actualize battle data for {localMP ? "localMp" : "offline"} mission {missionId}: ", actUnitOrSlots)
+  log($"[BATTLE_DATA] request actualize battle data for {localMP ? "localMp" : "offline"} mission {missionId}: ", actUnitOrSlots, presetOvrMis)
   isInLoadingScreen.set(true)
-  actualizeBattleDataIfOwn(actUnitOrSlots,
-    { id = "onOfflineMissionUnitActualized", unitName, skin, missionId, bullets, weaponPreset, localMP, gameMode })
+  let handlerContext = { id = "onOfflineMissionUnitActualized", unitName, skin, missionId, bullets, weaponPreset, localMP, gameMode }
+
+  isSingleMissionOverrided.set(presetOvrMis != null)
+  if (presetOvrMis != null)
+    actualizeBattleDataOvrMission(presetOvrMis, [unitName], handlerContext)
+  else
+    actualizeBattleDataIfOwn(actUnitOrSlots, handlerContext)
 }
 
 function openBenchmarkWnd(id) {
@@ -96,8 +101,8 @@ function sendBenchmarksList(_) {
 eventbus_subscribe("startTestFlight", @(p)
   startOfflineMission(p.unitName, p.skin, p?.missionName ?? TESTFLIGHT_MISSION, p?.bullets, p?.weaponPreset))
 eventbus_subscribe("startTraining", @(p)
-  startOfflineMission(p.unitName, p.skin, p.missionName, p?.bullets, p?.weaponPreset, false, GM_TRAINING))
+  startOfflineMission(p.unitName, p.skin, p.missionName, p?.bullets, p?.weaponPreset, p?.presetOvrMis, false, GM_TRAINING))
 eventbus_subscribe("startLocalMP", @(p)
-  startOfflineMission(p.unitName, p.skin, p.missionName, p?.bullets, p?.weaponPreset, true, GM_DOMINATION))
+  startOfflineMission(p.unitName, p.skin, p.missionName, p?.bullets, p?.weaponPreset, p?.presetOvrMis, true, GM_DOMINATION))
 eventbus_subscribe("startBenchmark", @(v) openBenchmarkWnd(v.id))
 eventbus_subscribe("getBenchmarksList", sendBenchmarksList)

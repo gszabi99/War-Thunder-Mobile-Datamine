@@ -34,6 +34,7 @@ const SHOW_ERROR = "squad.showError"
 const SHOW_MSG = "squad.showMessage"
 
 let delayedInvites = mkWatched(persist, "delayedInvites", {})
+let userInProgress = Watched({})
 let isSquadDataInited = hardPersistWatched("isSquadDataInited", false)
 let squadJoinTime = mkWatched(persist, "squadJoinTime", 0)
 
@@ -155,6 +156,7 @@ function setSelfRemoteData(member_data) {
 function reset() {
   squadId(null)
   isInvitedToSquad({})
+  userInProgress.set({})
 
   foreach (userId, _ in squadMembers.value)
     setOnlineBySquad(userId, null)
@@ -506,6 +508,7 @@ function inviteToSquad(userId) {
       createSquad()
     } else
       logS($"Invite: member {userId}: saved to delayed. Postpone")
+    userInProgress.mutate(@(v) v[userId] <- true)
     return
   }
 
@@ -526,6 +529,9 @@ function inviteToSquad(userId) {
 
   inviteToSquadImpl(userId)
 }
+
+isInvitedToSquad.subscribe(@(invited) invited.each(
+  @(_, userId) userInProgress.mutate(@(v) v.$rawdelete(userId))))
 
 function recalcSquadOrder(_) {
   let prev = squadMembersOrder.value
@@ -630,4 +636,6 @@ return squadState.__merge({
 
   removeInvitedSquadmate
   revokeSquadInvite
+
+  userInProgress
 })

@@ -3,6 +3,7 @@ require("%rGui/onlyAfterLogin.nut")
 let { campUnitsCfg, campMyUnits, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { ovrHangarAddon } = require("%appGlobals/updater/addons.nut")
 let { curCampaign, blueprints } = require("%appGlobals/pServer/campaign.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
@@ -69,7 +70,7 @@ function getColumnsCfg(unitsByGroup, maxRank) {
 
 let unitsTreeBg = Computed(function() {
   let addonHangar = ovrHangarAddon?.hangarPath
-  return bgByHangar?[curCampaign.get()][addonHangar] ?? $"{curCampaign.get()}_blur_bg.avif"
+  return bgByHangar?[curCampaign.get()][addonHangar] ?? getCampaignPresentation(curCampaign.get()).treeBg
 })
 
 let closeUnitsTreeWnd = @() isUnitsTreeOpen.set(false)

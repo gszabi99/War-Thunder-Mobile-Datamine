@@ -8,7 +8,7 @@ let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { add_slot_attributes } = require("%appGlobals/pServer/pServerApi.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-
+let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { slots, selectedSlotIdx, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
 let { selAttributes, curCategoryId, attrPresets,
   calcStatus, sumCost, MAX_AVAIL_STATUS
@@ -160,6 +160,8 @@ function markSlotAttributesSeen(slotIdx) {
 }
 
 function loadSeenSlotAttributes() {
+  if (!isSettingsAvailable.get())
+    return seenSlotAttributes.set({})
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[SEEN_SLOT_ATTRIBUTES]
   if (!isDataBlock(htBlk))
@@ -187,6 +189,8 @@ function hasUpgradedAttrUnitNotUpdatable() {
 
 if (seenSlotAttributes.get().len() == 0)
   loadSeenSlotAttributes()
+
+isSettingsAvailable.subscribe(@(_) loadSeenSlotAttributes())
 
 register_command(function() {
   seenSlotAttributes.set({})

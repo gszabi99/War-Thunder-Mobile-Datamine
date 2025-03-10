@@ -19,7 +19,6 @@ let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateSmall, mkUnitInfo, mkUnitSele
   mkPlayerLevel
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let openBuyExpWithUnitWnd = require("%rGui/levelUp/buyExpWithUnitWnd.nut")
 let { isExperienceWndOpen } = require("expWndState.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
@@ -29,6 +28,7 @@ let { playerExpColor } = require("%rGui/components/levelBlockPkg.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { PURCH_SRC_HANGAR, PURCH_TYPE_PLAYER_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
+let { buyExpUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
 
 let expStarIconSize = hdpx(35)
 
@@ -119,7 +119,7 @@ let chooseUnitBlock = @() {
           gap = hdpx(40)
           flow = FLOW_HORIZONTAL
           children = availableUnitsList.get().map(@(u) mkUnitPlate(u, function(){
-            openBuyExpWithUnitWnd(u.name)
+            buyExpUnitName(u.name)
             setHangarUnit(u.name)
             closeExperienceWnd()
           }))

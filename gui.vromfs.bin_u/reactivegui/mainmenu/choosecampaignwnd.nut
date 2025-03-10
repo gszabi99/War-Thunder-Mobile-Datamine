@@ -1,20 +1,30 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
+let { object_to_json_string } = require("json")
 let { can_use_debug_console } = require("%appGlobals/permissions.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { reset_campaigns, campaignInProgress, registerHandler, copy_campaign_progress
+} = require("%appGlobals/pServer/pServerApi.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { campaignsList, setCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { needFirstBattleTutorForCampaign, rewardTutorialMission, setSkippedTutor } = require("%rGui/tutorial/tutorialMissions.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
+let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
+let { modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isInSquad, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
 let { unseenCampaigns, markAllCampaignsSeen } = require("unseenCampaigns.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+let { imageBtn } = require("%rGui/components/imageButton.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
+
+let iconSize = evenPx(40)
+let RESET_MSG_UID = "resetCampaignMsg"
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let close = @() isOpened(false)
@@ -34,6 +44,7 @@ let campImageSize = [campBtnSize[0] - (campImageFrameWidth * 2), campBtnSize[1] 
 
 let campagnImages = {
   ships = { img = $"ui/bkg/login_bkg_s_2.avif", srcSize = [2700, 1080] }
+  ships_new = { img = $"ui/bkg/login_bkg_s_2.avif", srcSize = [2700, 1080] }
   tanks = { img = $"ui/bkg/login_bkg_t_2.avif", srcSize = [2700, 1080] }
   air   = { img = $"ui/bkg/login_bkg_a_2.avif", srcSize = [800, 600] }
 }
@@ -121,6 +132,53 @@ function onCampaignChange(campaign, onChangeCamp = null) {
   })
 }
 
+registerHandler("onResetCampaign",
+  function onLvlPurchase(res, context) {
+    if ("error" in res) {
+      openMsgBox({ text = object_to_json_string(res.error?.message ?? res.error, true) })
+      return
+    }
+    let { campaign } = context
+    close()
+    setCampaign(campaign)
+  })
+
+function onResetCampaign(campaign) {
+  if (campaignInProgress.get() != null)
+    return
+
+  let { campaignCfg = {} } = serverConfigs.get()
+  let { convertFrom = "" } = campaignCfg?[campaign]
+  let campGroup = [convertFrom]
+  foreach(c, cfg in campaignCfg)
+    if (cfg?.convertFrom == campaign)
+      campGroup.append(c)
+  let otherCamps = campGroup.filter(@(c) c != campaign && campaignsList.get().contains(c))
+
+  let otherNames = comma.join(otherCamps)
+  let buttons = [
+    { text = $"Reset {campaign}", styleId = "PRIMARY", isDefault = true,
+      cb = @() reset_campaigns([campaign], { id = "onResetCampaign", campaign })
+    }
+  ]
+  if (campaignsList.get().contains(convertFrom))
+    buttons.append({ text = $"Fill by {convertFrom}",
+      styleId = "PRIMARY",
+      cb = @() copy_campaign_progress(campaign, convertFrom, { id = "onResetCampaign", campaign }),
+    })
+  if (otherCamps.len() > 0)
+    buttons.append({ text = "Reset with linked",
+      cb = @() reset_campaigns([campaign].extend(otherCamps), { id = "onResetCampaign", campaign })
+    })
+  openMsgBox({
+    uid = RESET_MSG_UID
+    title = modalWndHeaderWithClose($"Reset campaign {campaign} progress", @() closeMsgBox(RESET_MSG_UID))
+    text = otherCamps.len() == 0 ? $"Reset campaign {campaign}?"
+      : $"Campaign {campaign} has linked campaigns:\n{otherNames}\nYou can reset them all at once."
+    buttons
+  })
+}
+
 function mkCampaignSkipTutorButton(){
   let listCampTutors = {}
   campaignsList.get().map(@(c) listCampTutors.__update({
@@ -164,12 +222,37 @@ function mkCampaignSkipTutorButton(){
     }
 }
 
+let bgResetCampaignSize = iconSize * 1.5
+
+let underConstructionBg = {
+  size = [bgResetCampaignSize, bgResetCampaignSize]
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#under_construction_line.avif:{bgResetCampaignSize}:{bgResetCampaignSize}:P")
+  color = 0xFFFFFFFF
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = {
+    size = [iconSize, iconSize]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#btn_trash.svg:{iconSize}:{iconSize}:P")
+    keepAspect = true
+  }
+}
+
+
+let mkResetCampaignBtn = @(campaign) imageBtn(underConstructionBg,
+  @() onResetCampaign(campaign),
+  {
+    size = [bgResetCampaignSize, bgResetCampaignSize]
+    touchMarginPriority = 1
+    hplace = ALIGN_RIGHT
+  })
 
 function mkCampaignButton(campaign) {
   let stateFlags = Watched(0)
   let campaignImage = mkCampaignImage(campaign)
   return @() {
-    watch = [stateFlags, unseenCampaigns]
+    watch = [stateFlags, unseenCampaigns, can_use_debug_console]
     rendObj = ROBJ_SOLID
     size = campBtnSize
     padding = campImageFrameWidth
@@ -183,9 +266,11 @@ function mkCampaignButton(campaign) {
 
     children = [
       campaignImage
-      mkCampaignName(utf8ToUpper(loc($"campaign/{campaign}")), stateFlags.value)
+      mkCampaignName(utf8ToUpper(loc(getCampaignPresentation(campaign).headerLocId)), stateFlags.value)
       campaign not in unseenCampaigns.get() ? null
         : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(-20), hdpx(20)] })
+      !can_use_debug_console.get() ? null
+        : mkResetCampaignBtn(campaign)
     ]
   }
 }

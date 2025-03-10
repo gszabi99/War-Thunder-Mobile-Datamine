@@ -10,7 +10,7 @@ let { getScaledFont, scaleFontWithTransform } = require("%globalsDarg/fontScale.
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
-let { touchButtonSize, borderWidth, btnBgColor, imageColor, imageDisabledColor,
+let { touchButtonSize, touchSizeForRhombButton, borderWidth, btnBgColor, imageColor, imageDisabledColor,
   borderColor, borderColorPushed, zoneRadiusX, zoneRadiusY
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
@@ -36,7 +36,7 @@ let { mkRhombBtnBg, mkRhombBtnBorder, mkAmmoCount } = require("%rGui/hud/buttons
 let { mkBtnZone } = require("%rGui/hud/buttons/hudButtonsPkg.nut")
 let { getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT } = require("%rGui/options/guiOptions.nut")
 let { isAvailableActionItem, mkActionItemProgress, mkActionItemCount, mkActionItemImage,
-  countHeightUnderActionItem, mkActionItemBorder
+  countHeightUnderActionItem, mkActionItemBorder, abShortcutImageOvr
 } = require("buttons/actionButtonComps.nut")
 
 let defImageSize = (0.75 * touchButtonSize).tointeger()
@@ -60,7 +60,6 @@ let svgNullable = @(image, size) ((image ?? "") == "") ? null
   : Picture($"{image}:{size}:{size}:P")
 
 let weaponryButtonRotate = 45
-let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(-50)] }
 let rotatedShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-70)] }
 
 function useShortcut(shortcutId) {
@@ -551,27 +550,16 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
     onButtonReleaseWhileActiveZone()
   }
 
-  let res = mkContinuousButtonParams(onStatePush, onStateRelease, hotkeyShortcut, stateFlags,
-    isBulletBelt && (!isAvailable || isBlocked.value || (actionItem?.cooldownEndTime ?? 0) > get_mission_time()),  onStopTouch)
-
   let behavior = [TouchAreaOutButton]
-  if (mainShortcut == "ID_BOMBS")
-    res.cameraControl = false
 
   let btnSize = scaleEven(touchButtonSize, scale)
+  let btnTouchSize = scaleEven(touchSizeForRhombButton, scale)
   let imgSize = scaleEven(relImageSize * defImageSize, scale)
   let zRadiusX = scaleEven(zoneRadiusX, scale)
   let zRadiusY = scaleEven(zoneRadiusY, scale)
-  return @() res.__update({
+  return @() {
     watch = isDisabled
     size = [btnSize, btnSize]
-    behavior
-    zoneRadiusX = zRadiusX
-    zoneRadiusY = zRadiusY
-    onTouchInsideChange = @(isInside) userHoldWeapInside.mutate(@(v) v[key] <- isInside)
-    onTouchInterrupt = onStopTouch
-    onTouchBegin
-    onTouchEnd = onButtonReleaseWhileActiveZone
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
@@ -597,8 +585,20 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
         : mkGamepadShortcutImage(hotkeyShortcut, rotatedShortcutImageOvr, scale)
       addChild
       number != -1 ? weaponNumber(number, scale) : null
+      mkContinuousButtonParams(onStatePush, onStateRelease, hotkeyShortcut, stateFlags,
+        isBulletBelt && (!isAvailable || isBlocked.value || (actionItem?.cooldownEndTime ?? 0) > get_mission_time()),  onStopTouch).__update({
+        size = [btnTouchSize, btnTouchSize]
+        behavior
+        cameraControl = mainShortcut != "ID_BOMBS"
+        zoneRadiusX = zRadiusX
+        zoneRadiusY = zRadiusY
+        onTouchInsideChange = @(isInside) userHoldWeapInside.mutate(@(v) v[key] <- isInside)
+        onTouchInterrupt = onStopTouch
+        onTouchBegin
+        onTouchEnd = onButtonReleaseWhileActiveZone
+      })
     ]
-  })
+  }
 }
 
 function weaponRightBlockPrimary(number, curBulletIdxW, scale) {

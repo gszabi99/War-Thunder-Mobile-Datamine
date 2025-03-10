@@ -44,15 +44,15 @@ function buyPlatformGoodsExt(goodsOrId) {
   if (isGuestLogin.value) {
     renewGuestRegistrationTags()
     openFMsgBox({
-      text = loc("msg/needRegistrationBeforePurchase")
+      text = "".concat(loc("msg/needRegistrationBeforePurchase"), "\n", loc("mainmenu/desc/link_to_gaijin_account"))
       buttons = is_ios ? [
           { id = "cancel", isCancel = true }
           { id = "purchaseAsGuest", eventId = "buyPlatformGoods", styleId = "PURCHASE" context = { goodsOrId } }
-          { id = "linkEmail", eventId = "openGuestEmailRegistration", styleId = "PRIMARY", isDefault = true }
+          { id = "linkEmail", eventId = "linkEmailWithLogout", styleId = "PRIMARY", isDefault = true }
         ]
         : [
           { id = "cancel", isCancel = true }
-          { id = "linkEmail", eventId = "openGuestEmailRegistration", styleId = "PRIMARY", isDefault = true }
+          { id = "linkEmail", eventId = "linkEmailWithLogout", styleId = "PRIMARY", isDefault = true }
         ]
     })
     return

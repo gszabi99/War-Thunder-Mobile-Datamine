@@ -2,6 +2,7 @@
   "cameraHeightOnGround": 3.5,
   "targetChangePeriodMultiplierInZoom": 5.0,
   "minRelativeTankCameraThreshold": 1.5,
+  "transitionTimeForSupportPlaneChange": 1.0,
   "globalCameraShakeLimit": 0.2,
   "weaponAimCameraHideTimeOut": 0.5,
   "tps": {

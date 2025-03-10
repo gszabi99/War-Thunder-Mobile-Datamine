@@ -22,6 +22,7 @@ let { request, registerHandler } = charClientEvent("contacts", contacts)
 
 let customErrorMsg = {
   ["Game is under maintenance"] = @(_) openFMsgBox({ text = loc("matching/SERVER_ERROR_MAINTENANCE") }),
+  ["ACCESS_DENIED_DUE_NO_ROLE"] = @(_) openFMsgBox({ text = loc("matching/ACCESS_DENIED_DUE_NO_ROLE", {uid = get_user_info()?.userId.tostring() ?? "n/a"}) }),
 
   function BANNED(res) {
     let { message = "", duration = 0, start = 0 } = res?.details

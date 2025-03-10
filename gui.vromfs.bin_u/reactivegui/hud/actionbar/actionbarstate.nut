@@ -8,6 +8,8 @@ let actionBar = Watched([])
 let actionBarUpdaters = Watched({})
 let needUpdate = keepref(Computed(@() actionBarUpdaters.value.len() > 0))
 
+let emptyActionItem = {count = 0, available = false, shortcutIdx = -1, weaponName = "", countEx = 0}
+
 function actionIsEqual(a, b) {
   if (type(a) != type(b))
     return false
@@ -73,4 +75,5 @@ return {
   curActionBarTypes
   primaryAction
   secondaryAction
+  emptyActionItem
 }

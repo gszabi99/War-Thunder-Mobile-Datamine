@@ -42,12 +42,12 @@ let { schRewards } = require("%rGui/shop/schRewardsState.nut")
 let { activeOffer } = require("%rGui/shop/offerState.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
+let { mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize } = require("%rGui/components/scrollArrows.nut")
 let { backButtonHeight } = require("%rGui/components/backButton.nut")
 let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let mkGiftSchRewardBtn = require("mkGiftSchRewardBtn.nut")
 let { doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
-
+let skipOfferBtn = require("skipOfferBtn.nut")
 
 let TIME_TO_SHOW_UI = 5.0 //timer need to show UI even with bug with cutscene
 let TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
@@ -56,6 +56,7 @@ let unitPlateSize = unitPlateSmall
 let unitPlateSizeMain = unitPlateSize.map(@(v) v * 1.16)
 let unitPlateSizeSingle = unitPlateSize.map(@(v) v * 1.3)
 let verticalGap = hdpx(20)
+let maxInfoPanelHeight = hdpx(535)
 
 let isWindowAttached = Watched(false)
 let needShowUi = Watched(false)
@@ -420,9 +421,10 @@ let rightBlock = {
   gap = verticalGap
   children = [
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = [flex(), maxInfoPanelHeight]
       children = unitInfoPanel({
-        maxHeight = hdpx(610)
+        maxHeight = maxInfoPanelHeight
+        padding = [hdpx(30), hdpx(30), hdpx(20), hdpx(30)]
         hplace = ALIGN_RIGHT
         behavior = [ Behaviors.Button, HangarCameraControl ]
         touchMarginPriority = TOUCH_BACKGROUND
@@ -435,7 +437,9 @@ let rightBlock = {
       size = [SIZE_TO_CONTENT, flex()]
       hplace = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM
-      children = mkPriceWithTimeBlock(aTimePriceStart)
+      flow = FLOW_HORIZONTAL
+      valign = ALIGN_BOTTOM
+      children = mkPriceWithTimeBlock(aTimePriceStart, skipOfferBtn)
     }
   ]
 }
@@ -464,27 +468,27 @@ let sortedBranchUnits = Computed(function(){
   if (units)
     return units
       .filter(@(u) u not in campMyUnits.get())
-      .sort(@(a,b) campUnitsCfg.get()[b].mRank <=> campUnitsCfg.get()[a].mRank)
+      .sort(@(a,b) (campUnitsCfg.get()?[b].mRank ?? 0) <=> (campUnitsCfg.get()?[a].mRank ?? 0))
 })
 
-let pannableArea = verticalPannableAreaCtor(sh(100) - saBorders[1] - backButtonHeight - 2*hdpx(20), [saBorders[1],saBorders[1]])
+let pannableArea = verticalPannableAreaCtor(sh(100) - saBorders[1] * 2 - backButtonHeight - 2*verticalGap, [verticalGap, saBorders[1]*3])
 let scrollHandler = ScrollHandler()
 
+let gapForBranch = hdpx(20)
+
 let scrollArrowsBlock = {
-  size = [SIZE_TO_CONTENT, saSize[1] - backButtonHeight - verticalGap]
-  hplace = ALIGN_CENTER
+  size = [SIZE_TO_CONTENT, saSize[1] - backButtonHeight - verticalGap - hdpx(100)]
+  pos = [unitPlateSize[0] - (scrollArrowImageSmallSize / 2).tointeger(), 0]
   children = [
     mkScrollArrow(scrollHandler, MR_T, scrollArrowImageSmall)
     mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall)
   ]
 }
 
-let gapForBranch = hdpx(20)
-
 let leftBlock = @(){
   watch = [previewGoodsUnit, schRewards, previewGoods]
   size = (previewGoods.get()?.units.len() ?? 0) > 1
-    ? [unitPlateSize[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
+    ? [unitPlateSize[0] * 2 + gapForBranch, SIZE_TO_CONTENT]
     : flex()
   halign = ALIGN_LEFT
   children = (previewGoods.get()?.units.len() ?? 0) > 1

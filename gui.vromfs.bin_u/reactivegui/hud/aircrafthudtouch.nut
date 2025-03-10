@@ -11,8 +11,9 @@ let cameraPieMenu = require("%rGui/hud/cameraPieMenu/cameraPieMenu.nut")
 let { TargetSelector } = require("wt.behaviors")
 let { cannonsOverheat, mgunsOverheat, hasMGun0, hasCanon0, Cannon0, MGun0 } = require("%rGui/hud/airState.nut")
 let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
-let menuButton = require("%rGui/hud/mkMenuButton.nut")()
 let { eventbus_subscribe } = require("eventbus")
+let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
+let { currentAircraftCtrlType, curFreeCamByTouchOption } = require("%rGui/options/options/airControlsOptions.nut")
 
 let circularIndSize = hdpx(74).tointeger()
 let progressImageRight = Picture($"ui/gameuiskin#air_reload_indicator_right.svg:{circularIndSize}:{circularIndSize}")
@@ -186,11 +187,20 @@ let aircraftHud = {
   children = [
     targetSelectorLayer
     hudTuningElems
-    menuButton
     hudTopMainLog
     hudBottomCenter
     currentWeaponNameText
   ]
+}
+
+function aircraftOnTouchBegin() {
+  if (curFreeCamByTouchOption.get() && (currentAircraftCtrlType.get() == "stick" || currentAircraftCtrlType.get() == "stick_static"))
+    setShortcutOn("ID_CAMERA_NEUTRAL")
+}
+
+function aircraftOnTouchEnd() {
+  if (curFreeCamByTouchOption.get() && (currentAircraftCtrlType.get() == "stick" || currentAircraftCtrlType.get() == "stick_static"))
+    setShortcutOff("ID_CAMERA_NEUTRAL")
 }
 
 return {
@@ -202,4 +212,6 @@ return {
     ctrlPieMenu
     cameraPieMenu
   ]
+  aircraftOnTouchBegin
+  aircraftOnTouchEnd
 }

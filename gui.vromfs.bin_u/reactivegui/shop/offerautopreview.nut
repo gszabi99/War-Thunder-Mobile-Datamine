@@ -42,6 +42,7 @@ function openOfferPreview() {
 
 needShow.subscribe(@(need) need ? resetTimeout(0.3, openOfferPreview) : null)
 
+visibleOffer.subscribe(@(offer) offer ? showedTime.mutate(@(val) val.$rawdelete(offer.campaign)) : null)
 isVisiblePreviewOpened.subscribe(function(v) {
   if (!v)
     return

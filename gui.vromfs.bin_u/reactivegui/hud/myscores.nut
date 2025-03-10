@@ -9,7 +9,6 @@ let { playerTeamDamageStats, localPlayerDamageStats } = require("%rGui/mpStatist
 let { getScoreKey } = require("%rGui/mpStatistics/playersSortFunc.nut")
 let { hudScoreTank } = require("%rGui/options/options/tankControlsOptions.nut")
 let { playerUnitName } = require("%rGui/hudState.nut")
-let { eventbus_send } = require("eventbus")
 
 let delayForUpdatePlace = 0.1
 let countImageSize = evenPx(60)
@@ -122,10 +121,6 @@ function mkMyPlaceUi(scale) {
   let font = scaleFontWithTransform(fontTiny, scale, [0.5, 0.5])
   return @() {
     watch = [isPlaceVisible, myPlaceDelayed]
-    behavior = Behaviors.Button
-    cameraControl = true
-    onClick = @() eventbus_send("toggleMpstatscreen", {})
-    sound = { click  = "click" }
     children = !isPlaceVisible.get() ? null
       : mkPlaceIcon(myPlaceDelayed.get(), size, font)
           .__update({
@@ -162,9 +157,6 @@ let mkMyScoresUi = @(scale) function() {
           updateLocalMPlayerForScore()
           setInterval(1.0, updateLocalMPlayerForScore)
         }
-        behavior = Behaviors.Button
-        cameraControl = true
-        onClick = @() eventbus_send("toggleMpstatscreen", {})
         onDetach = @() clearTimer(updateLocalMPlayerForScore)
         transform = {}
         animations = [{

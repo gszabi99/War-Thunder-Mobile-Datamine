@@ -11,9 +11,9 @@
     },
     "mission": {
       "level": "levels/avg_abandoned_factory.bin",
-      "type": "domination",
-      "environment": "12",
-      "weather": "clear",
+      "type": "skirmish",
+      "environment": "Day",
+      "weather": "good",
       "locName": "missions/testDrive",
       "openDiffLevels": true,
       "allowEmptyTeams": true,
@@ -44,14 +44,20 @@
       },
       "conditions": {},
       "actions": {
-        "varSetString": {
-          "value": "target_tanks_squad",
-          "var": "target_tanks_squad"
-        },
+        "varSetString": [
+          {
+            "value": "target_tanks_squad",
+            "var": "target_tanks_squad"
+          },
+          {
+            "value": "target_planes_squad",
+            "var": "target_planes_squad"
+          }
+        ],
         "unitPutToSleep": {
           "target": [
             "@target_tanks_squad",
-            "flight_target01"
+            "@target_planes_squad"
           ]
         },
         "missionMarkAsRespawnPoint": [
@@ -110,6 +116,16 @@
         ],
         "missionSetProperties": {
           "artilleryCooldown": 1.0
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "t1_player01",
+          "target": "spawn01"
         }
       },
       "else_actions": {}
@@ -190,6 +206,26 @@
       },
       "else_actions": {}
     },
+    "clean_rendinst": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionDestroyArea": {
+          "target_type": "rendinsts",
+          "area": "clean_zone_squad"
+        }
+      },
+      "else_actions": {}
+    },
     "player_respawn": {
       "is_enabled": true,
       "comments": "",
@@ -226,7 +262,7 @@
       },
       "else_actions": {}
     },
-    "check_player_Mrank": {
+    "check_player_mrank": {
       "is_enabled": true,
       "comments": "",
       "props": {
@@ -240,64 +276,11 @@
       "conditions": {},
       "actions": {
         "missionGetMrank": {
-          "target": "t1_player01"
+          "target": "t1_player01",
+          "mrank": "mrank"
         },
         "triggerEnable": {
-          "target": "bots_Mrank1"
-        }
-      },
-      "else_actions": {}
-    },
-    "bots_Mrank1": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "mrank",
-          "value": 1,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "missionGetMrank": {
-          "target": "t1_player01"
-        },
-        "changeUnit": {
-          "unit_class": "ussr_su_152",
-          "weaponPreset": "",
-          "isIndividual": false,
-          "hangarMission": false,
-          "object": "@target_tanks_squad"
-        }
-      },
-      "else_actions": {}
-    },
-    "clean_rendinst": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {},
-      "actions": {
-        "missionDestroyArea": {
-          "target_type": "rendinsts",
-          "area": "clean_zone_squad"
+          "target": "set_tanks_mrank1"
         }
       },
       "else_actions": {}
@@ -308,7 +291,1461 @@
       "tanks": {
         "isCategory": true,
         "is_enabled": true,
-        "name_assemble": {
+        "change_tanks": {
+          "isCategory": true,
+          "is_enabled": true,
+          "set_tanks_mrank1": {
+            "is_enabled": false,
+            "comments": "",
+            "props": {
+              "actionsType": "PERFORM_ONE_BY_ONE",
+              "conditionsType": "ALL",
+              "enableAfterComplete": false
+            },
+            "events": {
+              "periodicEvent": {
+                "time": 0.01
+              }
+            },
+            "conditions": {
+              "varCompareInt": {
+                "var_value": "mrank",
+                "value": 1,
+                "comparasion_func": "equal"
+              }
+            },
+            "actions": {
+              "changeUnit": [
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank01"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank02"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank03"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank04"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank05"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank06"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank07"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank08"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank09"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank10"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank11"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank12"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank13"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank14"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank15"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank16"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank17"
+                }
+              ]
+            },
+            "else_actions": {}
+          },
+          "set_tanks_mrank2": {
+            "is_enabled": false,
+            "comments": "",
+            "props": {
+              "actionsType": "PERFORM_ONE_BY_ONE",
+              "conditionsType": "ALL",
+              "enableAfterComplete": false
+            },
+            "events": {
+              "periodicEvent": {
+                "time": 0.01
+              }
+            },
+            "conditions": {
+              "varCompareInt": {
+                "var_value": "mrank",
+                "value": 2,
+                "comparasion_func": "equal"
+              }
+            },
+            "actions": {
+              "changeUnit": [
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank01"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank02"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank03"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank04"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank05"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank06"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank07"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank08"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank09"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank10"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank11"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank12"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank13"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank14"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank15"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank16"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank17"
+                }
+              ]
+            },
+            "else_actions": {}
+          },
+          "set_tanks_mrank3": {
+            "is_enabled": false,
+            "comments": "",
+            "props": {
+              "actionsType": "PERFORM_ONE_BY_ONE",
+              "conditionsType": "ALL",
+              "enableAfterComplete": false
+            },
+            "events": {
+              "periodicEvent": {
+                "time": 0.01
+              }
+            },
+            "conditions": {
+              "varCompareInt": {
+                "var_value": "mrank",
+                "value": 3,
+                "comparasion_func": "equal"
+              }
+            },
+            "actions": {
+              "changeUnit": [
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank01"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank02"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank03"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank04"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank05"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank06"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank07"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank08"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank09"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank10"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank11"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank12"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank13"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank14"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank15"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank16"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank17"
+                }
+              ]
+            },
+            "else_actions": {}
+          },
+          "set_tanks_mrank4": {
+            "is_enabled": false,
+            "comments": "",
+            "props": {
+              "actionsType": "PERFORM_ONE_BY_ONE",
+              "conditionsType": "ALL",
+              "enableAfterComplete": false
+            },
+            "events": {
+              "periodicEvent": {
+                "time": 0.01
+              }
+            },
+            "conditions": {
+              "varCompareInt": {
+                "var_value": "mrank",
+                "value": 4,
+                "comparasion_func": "equal"
+              }
+            },
+            "actions": {
+              "changeUnit": [
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank01"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank02"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank03"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank04"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank05"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank06"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank07"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank08"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank09"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank10"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank11"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank12"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank13"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank14"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank15"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank16"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank17"
+                }
+              ]
+            },
+            "else_actions": {}
+          },
+          "set_tanks_mrank5": {
+            "is_enabled": false,
+            "comments": "",
+            "props": {
+              "actionsType": "PERFORM_ONE_BY_ONE",
+              "conditionsType": "ALL",
+              "enableAfterComplete": false
+            },
+            "events": {
+              "periodicEvent": {
+                "time": 0.01
+              }
+            },
+            "conditions": {
+              "varCompareInt": {
+                "var_value": "mrank",
+                "value": 5,
+                "comparasion_func": "equal"
+              }
+            },
+            "actions": {
+              "changeUnit": [
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank01"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank02"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank03"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank04"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank05"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank06"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank07"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank08"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank09"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank10"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank11"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank12"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank13"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank14"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank15"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank16"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank17"
+                }
+              ]
+            },
+            "else_actions": {}
+          },
+          "set_tanks_mrank6": {
+            "is_enabled": false,
+            "comments": "",
+            "props": {
+              "actionsType": "PERFORM_ONE_BY_ONE",
+              "conditionsType": "ALL",
+              "enableAfterComplete": false
+            },
+            "events": {
+              "periodicEvent": {
+                "time": 0.01
+              }
+            },
+            "conditions": {
+              "varCompareInt": {
+                "var_value": "mrank",
+                "value": 6,
+                "comparasion_func": "equal"
+              }
+            },
+            "actions": {
+              "changeUnit": [
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank01"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank02"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank03"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank04"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank05"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank06"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank07"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank08"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank09"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank10"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank11"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank12"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank13"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank14"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank15"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank16"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank17"
+                }
+              ]
+            },
+            "else_actions": {}
+          },
+          "set_tanks_mrank7": {
+            "is_enabled": false,
+            "comments": "",
+            "props": {
+              "actionsType": "PERFORM_ONE_BY_ONE",
+              "conditionsType": "ALL",
+              "enableAfterComplete": false
+            },
+            "events": {
+              "periodicEvent": {
+                "time": 0.01
+              }
+            },
+            "conditions": {
+              "varCompareInt": {
+                "var_value": "mrank",
+                "value": 7,
+                "comparasion_func": "equal"
+              }
+            },
+            "actions": {
+              "changeUnit": [
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank01"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank02"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank03"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank04"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank05"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank06"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank07"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank08"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank09"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank10"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank11"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank12"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank13"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank14"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank15"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank16"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank17"
+                }
+              ]
+            },
+            "else_actions": {}
+          },
+          "set_tanks_mrank8": {
+            "is_enabled": false,
+            "comments": "",
+            "props": {
+              "actionsType": "PERFORM_ONE_BY_ONE",
+              "conditionsType": "ALL",
+              "enableAfterComplete": false
+            },
+            "events": {
+              "periodicEvent": {
+                "time": 0.01
+              }
+            },
+            "conditions": {
+              "varCompareInt": {
+                "var_value": "mrank",
+                "value": 8,
+                "comparasion_func": "equal"
+              }
+            },
+            "actions": {
+              "changeUnit": [
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank01"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank02"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank03"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank04"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank05"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank06"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank07"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank08"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank09"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank10"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank11"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank12"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank13"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank14"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank15"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank16"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank17"
+                }
+              ]
+            },
+            "else_actions": {}
+          },
+          "set_tanks_mrank9": {
+            "is_enabled": false,
+            "comments": "",
+            "props": {
+              "actionsType": "PERFORM_ONE_BY_ONE",
+              "conditionsType": "ALL",
+              "enableAfterComplete": false
+            },
+            "events": {
+              "periodicEvent": {
+                "time": 0.01
+              }
+            },
+            "conditions": {
+              "varCompareInt": {
+                "var_value": "mrank",
+                "value": 9,
+                "comparasion_func": "equal"
+              }
+            },
+            "actions": {
+              "changeUnit": [
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank01"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank02"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank03"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank04"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank05"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank06"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank07"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank08"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank09"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank10"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank11"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank12"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank13"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank14"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank15"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank16"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank17"
+                }
+              ]
+            },
+            "else_actions": {}
+          },
+          "set_tanks_mrank10": {
+            "is_enabled": false,
+            "comments": "",
+            "props": {
+              "actionsType": "PERFORM_ONE_BY_ONE",
+              "conditionsType": "ALL",
+              "enableAfterComplete": false
+            },
+            "events": {
+              "periodicEvent": {
+                "time": 0.01
+              }
+            },
+            "conditions": {
+              "varCompareInt": {
+                "var_value": "mrank",
+                "value": 10,
+                "comparasion_func": "equal"
+              }
+            },
+            "actions": {
+              "changeUnit": [
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank01"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank02"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank03"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank04"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank05"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank06"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank07"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank08"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank09"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank10"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank11"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank12"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank13"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank14"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank15"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank16"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank17"
+                }
+              ]
+            },
+            "else_actions": {}
+          }
+        },
+        "tank_name_assemble": {
           "is_enabled": true,
           "comments": "",
           "props": {
@@ -348,12 +1785,12 @@
               }
             ],
             "triggerEnable": {
-              "target": "check_exist"
+              "target": "tank_check_exist"
             }
           },
           "else_actions": {}
         },
-        "check_exist": {
+        "tank_check_exist": {
           "is_enabled": false,
           "comments": "",
           "props": {
@@ -411,7 +1848,7 @@
               "var": "tank_num"
             },
             "triggerEnable": {
-              "target": "name_assemble"
+              "target": "tank_name_assemble"
             }
           },
           "else_actions": {
@@ -469,11 +1906,11 @@
               "var": "tanks_total"
             },
             "triggerEnable": {
-              "target": "tick_killed"
+              "target": "tank_tick_killed"
             }
           }
         },
-        "tick_killed": {
+        "tank_tick_killed": {
           "is_enabled": false,
           "comments": "",
           "props": {
@@ -509,12 +1946,12 @@
               "useForTriggerFiltered": true
             },
             "triggerEnable": {
-              "target": "respawn_target"
+              "target": "respawn_target_tank"
             }
           },
           "else_actions": {}
         },
-        "respawn_target": {
+        "respawn_target_tank": {
           "is_enabled": false,
           "comments": "",
           "props": {
@@ -582,13 +2019,13 @@
                 ]
               },
               {
-                "target": "tick_killed"
+                "target": "tank_tick_killed"
               }
             ]
           },
           "else_actions": {
             "triggerEnable": {
-              "target": "tick_killed"
+              "target": "tank_tick_killed"
             }
           }
         },
@@ -698,7 +2135,72 @@
       "planes": {
         "isCategory": true,
         "is_enabled": true,
-        "spawn_plane": {
+        "change_planes": {
+          "isCategory": true,
+          "is_enabled": true,
+          "set_planes_mrank1": {
+            "is_enabled": false,
+            "comments": "",
+            "props": {
+              "actionsType": "PERFORM_ONE_BY_ONE",
+              "conditionsType": "ALL",
+              "enableAfterComplete": false
+            },
+            "events": {
+              "periodicEvent": {
+                "time": 0.01
+              }
+            },
+            "conditions": {
+              "varCompareInt": {
+                "var_value": "mrank",
+                "value": 1,
+                "comparasion_func": "equal"
+              }
+            },
+            "actions": {
+              "changeUnit": [
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank01"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank02"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank03"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank04"
+                },
+                {
+                  "unit_class": "ussr_su_152",
+                  "weaponPreset": "",
+                  "isIndividual": false,
+                  "hangarMission": false,
+                  "object": "target_tank05"
+                }
+              ]
+            },
+            "else_actions": {}
+          }
+        },
+        "plane_name_assemble": {
           "is_enabled": true,
           "comments": "",
           "props": {
@@ -708,30 +2210,76 @@
           },
           "events": {
             "periodicEvent": {
-              "time": 1.0
+              "time": 0.01
+            }
+          },
+          "conditions": {},
+          "actions": {
+            "varSetString": [
+              {
+                "value": "target_plane",
+                "var": "target_plane"
+              },
+              {
+                "value": "plane_spawn_area",
+                "var": "plane_spawn_area"
+              },
+              {
+                "value": "plane_flight_point",
+                "var": "plane_flight_point"
+              }
+            ],
+            "varAddString": [
+              {
+                "value": "",
+                "digits": 2,
+                "var": "target_plane",
+                "input_var": "plane_num"
+              },
+              {
+                "value": "",
+                "digits": 2,
+                "var": "plane_spawn_area",
+                "input_var": "plane_num"
+              },
+              {
+                "value": "",
+                "digits": 2,
+                "var": "plane_flight_point",
+                "input_var": "plane_num"
+              }
+            ],
+            "triggerEnable": {
+              "target": "plane_check_exist"
+            }
+          },
+          "else_actions": {}
+        },
+        "plane_check_exist": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.01
             }
           },
           "conditions": {
-            "objectExists": [
-              {
-                "target": "flight_target01",
-                "type": "unit"
-              },
-              {
-                "target": "spawn_area",
-                "type": "area"
-              },
-              {
-                "target": "flight_point",
-                "type": "area"
-              }
-            ]
+            "varCompareInt": {
+              "var_value": "plane_num",
+              "value": 6,
+              "comparasion_func": "less"
+            },
+            "objectExists": {
+              "target": "@target_plane",
+              "type": "unit"
+            }
           },
           "actions": {
-            "unitLoadBehTree": {
-              "name": "missionKamikaze",
-              "objects": "flight_target01"
-            },
             "unitRespawn": {
               "delay": 1.0,
               "offset": [
@@ -739,12 +2287,38 @@
                 0.0,
                 0.0
               ],
-              "object": "flight_target01",
-              "target": "spawn_area"
+              "object": "@target_plane",
+              "target": "@plane_spawn_area"
+            },
+            "unitSetVar": [
+              {
+                "object_var_name": "killed",
+                "object": "@target_plane",
+                "object_var_value": 0
+              },
+              {
+                "object_var_name": "self_name",
+                "object": "@target_plane",
+                "object_var_string": "@target_plane"
+              },
+              {
+                "object_var_name": "self_spawn_area",
+                "object": "@target_plane",
+                "object_var_string": "@plane_spawn_area"
+              },
+              {
+                "object_var_name": "self_flight_point",
+                "object": "@target_plane",
+                "object_var_string": "@plane_flight_point"
+              }
+            ],
+            "unitLoadBehTree": {
+              "name": "missionKamikaze",
+              "objects": "@target_plane"
             },
             "unitMoveTo": {
               "object_marking": 0,
-              "target": "flight_point",
+              "target": "@plane_flight_point",
               "target_marking": 0,
               "waypointReachedDist": 10.0,
               "recalculatePathDist": -1.0,
@@ -762,16 +2336,50 @@
               "target_var_name": "",
               "target_var_comp_op": "equal",
               "target_var_value": 0,
-              "object": "flight_target01"
+              "object": "@target_plane"
+            },
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "plane_num"
             },
             "triggerEnable": {
-              "target": "respawn_plane"
+              "target": "plane_name_assemble"
             }
           },
-          "else_actions": {}
+          "else_actions": {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@target_planes_squad",
+              "forceVisibleOnMap": true,
+              "attack_type": "dont_aim"
+            },
+            "varSetInt": [
+              {
+                "value": 0,
+                "var": "planes_total",
+                "input_var": "plane_num"
+              },
+              {
+                "value": 0,
+                "var": "plane_num"
+              }
+            ],
+            "varModify": {
+              "operator": "add",
+              "value": -1.0,
+              "var": "planes_total"
+            },
+            "triggerEnable": {
+              "target": "plane_tick_killed"
+            }
+          }
         },
-        "spawn_plane2": {
-          "is_enabled": true,
+        "plane_tick_killed": {
+          "is_enabled": false,
           "comments": "",
           "props": {
             "actionsType": "PERFORM_ONE_BY_ONE",
@@ -784,149 +2392,100 @@
             }
           },
           "conditions": {
-            "objectExists": [
-              {
-                "target": "flight_target02",
-                "type": "unit"
-              },
-              {
-                "target": "spawn_area02",
-                "type": "area"
-              },
-              {
-                "target": "flight_point02",
-                "type": "area"
-              }
-            ]
-          },
-          "actions": {
-            "unitLoadBehTree": {
-              "name": "missionKamikaze",
-              "objects": "flight_target02"
-            },
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [
-                0.0,
-                0.0,
-                0.0
-              ],
-              "object": "flight_target02",
-              "target": "spawn_area02"
-            },
-            "unitMoveTo": {
+            "unitWhenStatus": {
+              "object_type": "isInactive",
+              "check_objects": "any",
               "object_marking": 0,
-              "target": "flight_point02",
-              "target_marking": 0,
-              "waypointReachedDist": 10.0,
-              "recalculatePathDist": -1.0,
-              "follow_target": false,
-              "teleportHeightType": "absolute",
-              "useUnitHeightForTele": false,
-              "shouldKeepFormation": false,
-              "teleportHeightValue": 1000.0,
-              "horizontalDirectionForTeleport": true,
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0,
-              "fastClimb": false,
-              "destTimeMode": false,
-              "target_var_name": "",
-              "target_var_comp_op": "equal",
-              "target_var_value": 0,
-              "object": "flight_target02"
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": "@target_planes_squad",
+              "force_check_delayed": true
+            }
+          },
+          "actions": {
+            "unitModifyVar": {
+              "object_var_name": "killed",
+              "operator": "add",
+              "value": 1,
+              "object": "@target_planes_squad",
+              "useForTriggerFiltered": true
             },
             "triggerEnable": {
-              "target": "respawn_plane2"
+              "target": "respawn_target_plane"
             }
           },
           "else_actions": {}
         },
-        "respawn_plane": {
+        "respawn_target_plane": {
           "is_enabled": false,
           "comments": "",
           "props": {
             "actionsType": "PERFORM_ONE_BY_ONE",
             "conditionsType": "ALL",
-            "enableAfterComplete": true
+            "enableAfterComplete": false
           },
           "events": {
             "periodicEvent": {
-              "time": 1.0
+              "time": 0.01
             }
           },
           "conditions": {
             "unitWhenStatus": {
-              "object_type": "isInactive",
+              "object_type": "isUnitVar",
               "check_objects": "any",
               "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
+              "object_var_name": "killed",
+              "object_var_comp_op": "more",
               "object_var_value": 0,
               "target_type": "isAlive",
               "check_period": 1.0,
-              "object": "flight_target01"
+              "object": "@target_planes_squad",
+              "input_var": "target_respawn_time"
             }
           },
           "actions": {
-            "wait": {
-              "time": 10.0
+            "unitGetVar": [
+              {
+                "object_marking": 0,
+                "object": "@target_planes_squad",
+                "object_var_name": "self_name",
+                "useForTriggerFiltered": true,
+                "out_var_string": "target_plane"
+              },
+              {
+                "object_marking": 0,
+                "object": "@target_plane",
+                "object_var_name": "self_spawn_area",
+                "out_var_string": "plane_spawn_area"
+              }
+            ],
+            "unitSetVar": {
+              "object_var_name": "killed",
+              "object": "@target_plane",
+              "object_var_value": 0
             },
             "unitRespawn": {
-              "delay": 1.0,
+              "delay": 0.0,
               "offset": [
                 0.0,
                 0.0,
                 0.0
               ],
-              "object": "flight_target01",
-              "target": "spawn_area"
-            }
-          },
-          "else_actions": {}
-        },
-        "respawn_plane2": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": true
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": {
-            "unitWhenStatus": {
-              "object_type": "isInactive",
-              "check_objects": "any",
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "target_type": "isAlive",
-              "check_period": 1.0,
-              "object": "flight_target02"
-            }
-          },
-          "actions": {
-            "wait": {
-              "time": 10.0
+              "object": "@target_plane",
+              "target": "@plane_spawn_area"
             },
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [
-                0.0,
-                0.0,
-                0.0
-              ],
-              "object": "flight_target02",
-              "target": "spawn_area02"
+            "triggerEnable": {
+              "target": "plane_tick_killed"
             }
           },
-          "else_actions": {}
+          "else_actions": {
+            "triggerEnable": {
+              "target": "plane_tick_killed"
+            }
+          }
         }
       }
     }
@@ -940,11 +2499,17 @@
     "tank_num": 1,
     "tank_spawn_area": "",
     "tanks_total": 0,
+    "target_plane": "",
+    "plane_num": 1,
+    "plane_spawn_area": "",
+    "planes_total": 0,
     "unit_var": 0,
     "target_tanks_squad": "",
+    "target_planes_squad": "",
     "target_respawn_time": 5,
     "PLAYER_SPAWN": "spawn01",
-    "mrank": 0
+    "mrank": 0,
+    "plane_flight_point": ""
   },
   "dialogs": {},
   "airfields": {},
@@ -1995,76 +3560,113 @@
         "way": {}
       }
     ],
-    "squad": {
-      "name": "target_tanks_squad",
-      "tm": [
-        [
-          0.766044,
-          0.0,
-          0.642788
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -0.642788,
-          0.0,
-          0.766044
-        ],
-        [
-          1970.35,
-          46.2001,
-          2428.1
-        ]
-      ],
-      "props": {
-        "squad_members": [
-          "target_tank01",
-          "target_tank02",
-          "target_tank03",
-          "target_tank04",
-          "target_tank05",
-          "target_tank06",
-          "target_tank07",
-          "target_tank08",
-          "target_tank09",
-          "target_tank10",
-          "target_tank11",
-          "target_tank12",
-          "target_tank13",
-          "target_tank14",
-          "target_tank15",
-          "target_tank16",
-          "target_tank17"
-        ],
-        "object_marking": 0
-      }
-    },
-    "armada": [
+    "squad": [
       {
-        "name": "flight_target01",
+        "name": "target_tanks_squad",
         "tm": [
           [
-            -0.94474,
+            0.766044,
+            0.0,
+            0.642788
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.642788,
+            0.0,
+            0.766044
+          ],
+          [
+            1970.35,
+            46.2001,
+            2428.1
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "target_tank01",
+            "target_tank02",
+            "target_tank03",
+            "target_tank04",
+            "target_tank05",
+            "target_tank06",
+            "target_tank07",
+            "target_tank08",
+            "target_tank09",
+            "target_tank10",
+            "target_tank11",
+            "target_tank12",
+            "target_tank13",
+            "target_tank14",
+            "target_tank15",
+            "target_tank16",
+            "target_tank17"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "target_planes_squad",
+        "tm": [
+          [
+            0.766044,
+            0.0,
+            0.642788
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.642788,
+            0.0,
+            0.766044
+          ],
+          [
+            3700.9,
+            300.0,
+            1858.95
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "target_plane01",
+            "target_plane02",
+            "target_plane03",
+            "target_plane04",
+            "target_plane05"
+          ],
+          "object_marking": 0
+        }
+      }
+    ],
+    "armada": [
+      {
+        "name": "target_plane01",
+        "tm": [
+          [
+            -0.972945,
             0.23104,
-            0.232569
+            1.78814e-7
           ],
           [
-            0.255445,
+            0.228788,
             0.963463,
-            0.0805416
+            0.139267
           ],
           [
-            -0.205463,
+            0.0321764,
             0.1355,
-            -0.96924
+            -0.990255
           ],
           [
-            3066.3,
-            195.05,
-            1602.61
+            3414.05,
+            200.0,
+            1719.0
           ]
         ],
         "unit_class": "fw_190a_1",
@@ -2109,7 +3711,72 @@
         "way": {}
       },
       {
-        "name": "flight_target02",
+        "name": "target_plane02",
+        "tm": [
+          [
+            -0.972945,
+            0.23104,
+            1.78814e-7
+          ],
+          [
+            0.228788,
+            0.963463,
+            0.139267
+          ],
+          [
+            0.0321764,
+            0.1355,
+            -0.990255
+          ],
+          [
+            3414.05,
+            200.0,
+            1911.55
+          ]
+        ],
+        "unit_class": "fw_190a_1",
+        "objLayer": 1,
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "dontOverrideHeight": true,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "isDelayed": true,
+          "aiEnabled": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "target_plane03",
         "tm": [
           [
             -0.73239,
@@ -2127,9 +3794,137 @@
             -0.724239
           ],
           [
-            3606.75,
+            3520.15,
             395.05,
-            3869.03
+            2038.35
+          ]
+        ],
+        "unit_class": "il_2m_1943",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "isDelayed": true,
+          "aiEnabled": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "target_plane04",
+        "tm": [
+          [
+            -0.73239,
+            0.23104,
+            -0.64049
+          ],
+          [
+            0.0805416,
+            0.963463,
+            0.255445
+          ],
+          [
+            0.676106,
+            0.1355,
+            -0.724239
+          ],
+          [
+            3520.15,
+            395.05,
+            2153.8
+          ]
+        ],
+        "unit_class": "il_2m_1943",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "isDelayed": true,
+          "aiEnabled": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "target_plane05",
+        "tm": [
+          [
+            -0.73239,
+            0.23104,
+            -0.64049
+          ],
+          [
+            0.0805416,
+            0.963463,
+            0.255445
+          ],
+          [
+            0.676106,
+            0.1355,
+            -0.724239
+          ],
+          [
+            3520.15,
+            395.05,
+            2295.35
           ]
         ],
         "unit_class": "il_2m_1943",
@@ -2315,7 +4110,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "flight_point": {
+    "plane_flight_point01": {
       "type": "Point",
       "tm": [
         [
@@ -2334,21 +4129,21 @@
           -0.267107
         ],
         [
-          326.184,
-          533.706,
-          2104.5
+          1307.35,
+          200.0,
+          1587.65
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "spawn_area": {
+    "plane_spawn_area01": {
       "type": "Sphere",
       "tm": [
         [
-          -58.2959,
+          -60.9,
           0.0,
-          17.618
+          0.00000596046
         ],
         [
           0.0,
@@ -2356,14 +4151,122 @@
           0.0
         ],
         [
-          -17.618,
+          -0.00000596046,
           0.0,
-          -58.2959
+          -60.9
         ],
         [
-          3059.71,
-          195.05,
-          1585.05
+          3413.7,
+          200.0,
+          1721.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "plane_spawn_area02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -60.9,
+          0.0,
+          0.00000596046
+        ],
+        [
+          0.0,
+          60.9,
+          0.0
+        ],
+        [
+          -0.00000596046,
+          0.0,
+          -60.9
+        ],
+        [
+          3413.7,
+          200.0,
+          1911.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "plane_spawn_area03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -47.8689,
+          0.0,
+          -37.6479
+        ],
+        [
+          0.0,
+          60.9,
+          0.0
+        ],
+        [
+          37.6479,
+          0.0,
+          -47.8689
+        ],
+        [
+          3532.27,
+          395.05,
+          2037.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "plane_spawn_area04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -47.8689,
+          0.0,
+          -37.6479
+        ],
+        [
+          0.0,
+          60.9,
+          0.0
+        ],
+        [
+          37.6479,
+          0.0,
+          -47.8689
+        ],
+        [
+          3532.27,
+          395.05,
+          2162.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "plane_spawn_area05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -47.8689,
+          0.0,
+          -37.6479
+        ],
+        [
+          0.0,
+          60.9,
+          0.0
+        ],
+        [
+          37.6479,
+          0.0,
+          -47.8689
+        ],
+        [
+          3532.27,
+          395.05,
+          2299.55
         ]
       ],
       "objLayer": 0,
@@ -2855,7 +4758,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "flight_point02": {
+    "plane_flight_point02": {
       "type": "Point",
       "tm": [
         [
@@ -2874,36 +4777,9 @@
           1.0
         ],
         [
-          2656.69,
-          442.18,
-          620.239
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "spawn_area02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -47.8689,
-          0.0,
-          -37.6479
-        ],
-        [
-          0.0,
-          60.9,
-          0.0
-        ],
-        [
-          37.6479,
-          0.0,
-          -47.8689
-        ],
-        [
-          3618.87,
-          395.05,
-          3867.38
+          1310.45,
+          200.0,
+          1934.85
         ]
       ],
       "objLayer": 0,
@@ -3042,6 +4918,87 @@
         ]
       ],
       "objLayer": 3,
+      "props": {}
+    },
+    "plane_flight_point03": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1351.3,
+          400.0,
+          2296.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "plane_flight_point04": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1350.45,
+          400.0,
+          2559.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "plane_flight_point05": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1341.35,
+          400.0,
+          2839.0
+        ]
+      ],
+      "objLayer": 0,
       "props": {}
     }
   },

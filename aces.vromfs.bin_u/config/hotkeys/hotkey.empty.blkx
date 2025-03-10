@@ -1,0 +1,19 @@
+{
+  "controls": {
+    "version": 5,
+    "params": {
+      "mouseSens": 0.24,
+      "useX360": false,
+      "isHatViewMouse": true,
+      "trackIrZoom": true,
+      "cameraSmooth": 0.0,
+      "cameraSpeed": 4.0,
+      "cameraMouseSpeed": 4.0,
+      "isMouseLookHold": true,
+      "isFlightStick": false,
+      "holdThrottleForWEP": true,
+      "mouseJoystick": false,
+      "useMouseAim": true
+    }
+  }
+}

@@ -1,0 +1,451 @@
+{
+  "Simulator": {
+    "codename": [
+      "i386",
+      "x86_64",
+      "arm64"
+    ]
+  },
+  "iPhone": {
+    "codename": "iPhone1,1"
+  },
+  "iPhone 3G": {
+    "codename": "iPhone1,2"
+  },
+  "iPhone 3GS": {
+    "codename": "iPhone2,1"
+  },
+  "iPhone 4": {
+    "codename": [
+      "iPhone3,1",
+      "iPhone3,2",
+      "iPhone3,3"
+    ]
+  },
+  "iPhone 4S": {
+    "codename": "iPhone4,1"
+  },
+  "iPhone 5": {
+    "codename": [
+      "iPhone5,1",
+      "iPhone5,2"
+    ]
+  },
+  "iPhone 5C": {
+    "codename": [
+      "iPhone5,3",
+      "iPhone5,4"
+    ]
+  },
+  "iPhone 5S": {
+    "codename": [
+      "iPhone6,1",
+      "iPhone6,2"
+    ]
+  },
+  "iPhone 6 Plus": {
+    "codename": "iPhone7,1"
+  },
+  "iPhone 6": {
+    "codename": "iPhone7,2"
+  },
+  "iPhone 6S": {
+    "codename": "iPhone8,1"
+  },
+  "iPhone 6S Plus": {
+    "codename": "iPhone8,2"
+  },
+  "iPhone SE 1st Gen": {
+    "codename": "iPhone8,4"
+  },
+  "iPhone SE 2nd Gen": {
+    "codename": "iPhone12,8"
+  },
+  "iPhone SE 3rd Gen": {
+    "codename": "iPhone14,6"
+  },
+  "iPhone 7": {
+    "codename": [
+      "iPhone9,1",
+      "iPhone9,3"
+    ]
+  },
+  "iPhone 7 Plus": {
+    "codename": [
+      "iPhone9,2",
+      "iPhone9,4"
+    ]
+  },
+  "iPhone 8": {
+    "codename": [
+      "iPhone10,1",
+      "iPhone10,4"
+    ]
+  },
+  "iPhone 8 Plus": {
+    "codename": [
+      "iPhone10,2",
+      "iPhone10,5"
+    ]
+  },
+  "iPhone X": {
+    "codename": [
+      "iPhone10,3",
+      "iPhone10,6"
+    ]
+  },
+  "iPhone XS": {
+    "codename": "iPhone11,2"
+  },
+  "iPhone XS Max": {
+    "codename": [
+      "iPhone11,4",
+      "iPhone11,6"
+    ]
+  },
+  "iPhone XR": {
+    "codename": "iPhone11,8"
+  },
+  "iPhone 11": {
+    "codename": "iPhone12,1"
+  },
+  "iPhone 11 Pro": {
+    "codename": "iPhone12,3"
+  },
+  "iPhone 11 Pro Max": {
+    "codename": "iPhone12,5"
+  },
+  "iPhone 12 Mini": {
+    "codename": "iPhone13,1"
+  },
+  "iPhone 12": {
+    "codename": "iPhone13,2"
+  },
+  "iPhone 12 Pro": {
+    "codename": "iPhone13,3"
+  },
+  "iPhone 12 Pro Max": {
+    "codename": "iPhone13,4"
+  },
+  "iPhone 13 Pro": {
+    "codename": "iPhone14,2"
+  },
+  "iPhone 13 Pro Max": {
+    "codename": "iPhone14,3"
+  },
+  "iPhone 13 Mini": {
+    "codename": "iPhone14,4"
+  },
+  "iPhone 13": {
+    "codename": "iPhone14,5"
+  },
+  "iPhone 14": {
+    "codename": "iPhone14,7"
+  },
+  "iPhone 14 Plus": {
+    "codename": "iPhone14,8"
+  },
+  "iPhone 14 Pro": {
+    "codename": "iPhone15,2"
+  },
+  "iPhone 14 Pro Max": {
+    "codename": "iPhone15,3"
+  },
+  "iPhone 15": {
+    "codename": "iPhone15,4"
+  },
+  "iPhone 15 Plus": {
+    "codename": "iPhone15,5"
+  },
+  "iPhone 15 Pro": {
+    "codename": "iPhone16,1"
+  },
+  "iPhone 15 Pro Max": {
+    "codename": "iPhone16,2"
+  },
+  "iPhone 16 Pro": {
+    "codename": "iPhone17,1"
+  },
+  "iPhone 16 Pro Max": {
+    "codename": "iPhone17,2"
+  },
+  "iPhone 16": {
+    "codename": "iPhone17,3"
+  },
+  "iPhone 16 Plus": {
+    "codename": "iPhone17,4"
+  },
+  "iPod 1st Gen": {
+    "codename": "iPod1,1"
+  },
+  "iPod 2nd Gen": {
+    "codename": "iPod2,1"
+  },
+  "iPod 3rd Gen": {
+    "codename": "iPod3,1"
+  },
+  "iPod 4th Gen": {
+    "codename": "iPod4,1"
+  },
+  "iPod 5th Gen": {
+    "codename": "iPod5,1"
+  },
+  "iPod 6th Gen": {
+    "codename": "iPod7,1"
+  },
+  "iPod 7th Gen": {
+    "codename": "iPod9,1"
+  },
+  "iPad 1": {
+    "codename": "iPad1,1"
+  },
+  "iPad 3G": {
+    "codename": "iPad1,2"
+  },
+  "iPad 2": {
+    "codename": [
+      "iPad2,1",
+      "iPad2,2",
+      "iPad2,3",
+      "iPad2,4"
+    ]
+  },
+  "iPad 3": {
+    "codename": [
+      "iPad3,1",
+      "iPad3,2",
+      "iPad3,3"
+    ]
+  },
+  "iPad Mini": {
+    "codename": [
+      "iPad2,5",
+      "iPad2,6",
+      "iPad2,7"
+    ]
+  },
+  "iPad Mini Retina": {
+    "codename": [
+      "iPad4,4",
+      "iPad4,5",
+      "iPad4,6"
+    ]
+  },
+  "iPad 4": {
+    "codename": [
+      "iPad3,4",
+      "iPad3,5",
+      "iPad3,6"
+    ]
+  },
+  "iPad Air": {
+    "codename": [
+      "iPad4,1",
+      "iPad4,2",
+      "iPad4,3"
+    ]
+  },
+  "iPad Mini 3": {
+    "codename": [
+      "iPad4,7",
+      "iPad4,8",
+      "iPad4,9"
+    ]
+  },
+  "iPad Mini 4": {
+    "codename": [
+      "iPad5,1",
+      "iPad5,2"
+    ]
+  },
+  "iPad Air 2": {
+    "codename": [
+      "iPad5,3",
+      "iPad5,4"
+    ]
+  },
+  "iPad Pro 9.7 inch": {
+    "codename": [
+      "iPad6,3",
+      "iPad6,4"
+    ]
+  },
+  "iPad Pro 12.9 inch": {
+    "codename": [
+      "iPad6,7",
+      "iPad6,8"
+    ]
+  },
+  "iPad 5": {
+    "codename": [
+      "iPad6,11",
+      "iPad6,12"
+    ]
+  },
+  "iPad Pro 2": {
+    "codename": [
+      "iPad7,1",
+      "iPad7,2"
+    ]
+  },
+  "iPad Pro 2 10.5 inch": {
+    "codename": [
+      "iPad7,3",
+      "iPad7,4"
+    ]
+  },
+  "iPad 6": {
+    "codename": [
+      "iPad7,5",
+      "iPad7,6"
+    ]
+  },
+  "iPad 7": {
+    "codename": [
+      "iPad7,11",
+      "iPad7,12"
+    ]
+  },
+  "iPad Pro 3 11 inch": {
+    "codename": [
+      "iPad8,1",
+      "iPad8,2",
+      "iPad8,3",
+      "iPad8,4"
+    ]
+  },
+  "iPad Pro 3 12.9 inch": {
+    "codename": [
+      "iPad8,5",
+      "iPad8,6",
+      "iPad8,7",
+      "iPad8,8"
+    ]
+  },
+  "iPad Pro 4 11 inch": {
+    "codename": [
+      "iPad8,9",
+      "iPad8,10"
+    ]
+  },
+  "iPad Pro 4 12.9 inch": {
+    "codename": [
+      "iPad8,11",
+      "iPad8,12"
+    ]
+  },
+  "iPad Mini 5": {
+    "codename": [
+      "iPad11,1",
+      "iPad11,2"
+    ]
+  },
+  "iPad Air 3": {
+    "codename": [
+      "iPad11,3",
+      "iPad11,4"
+    ]
+  },
+  "iPad 8": {
+    "codename": [
+      "iPad11,6",
+      "iPad11,7"
+    ]
+  },
+  "iPad 9": {
+    "codename": [
+      "iPad12,1",
+      "iPad12,2"
+    ]
+  },
+  "iPad Mini 6": {
+    "codename": [
+      "iPad14,1",
+      "iPad14,2"
+    ]
+  },
+  "iPad Air 4": {
+    "codename": [
+      "iPad13,1",
+      "iPad13,2"
+    ]
+  },
+  "iPad Pro 5 11 inch": {
+    "codename": [
+      "iPad13,4",
+      "iPad13,5",
+      "iPad13,6",
+      "iPad13,7"
+    ]
+  },
+  "iPad Pro 5 12.9 inch": {
+    "codename": [
+      "iPad13,8",
+      "iPad13,9",
+      "iPad13,10",
+      "iPad13,11"
+    ]
+  },
+  "iPad Air 5": {
+    "codename": [
+      "iPad13,16",
+      "iPad13,17"
+    ]
+  },
+  "iPad 10": {
+    "codename": [
+      "iPad13,18",
+      "iPad13,19"
+    ]
+  },
+  "iPad Pro 6 11 inch": {
+    "codename": [
+      "iPad14,3",
+      "iPad14,4"
+    ]
+  },
+  "iPad Pro 6 12.9 inch": {
+    "codename": [
+      "iPad14,5",
+      "iPad14,6"
+    ]
+  },
+  "iPad Air 6": {
+    "codename": [
+      "iPad14,8",
+      "iPad14,9"
+    ]
+  },
+  "iPad Pro 7 11 inch": {
+    "codename": [
+      "iPad16,3",
+      "iPad16,3-A",
+      "iPad16,3-B",
+      "iPad16,4",
+      "iPad16,4-A",
+      "iPad16,4-B"
+    ]
+  },
+  "iPad Pro 7 12.9 inch": {
+    "codename": [
+      "iPad16,5",
+      "iPad16,5-A",
+      "iPad16,5-B",
+      "iPad16,6",
+      "iPad16,6-A",
+      "iPad16,6-B"
+    ]
+  },
+  "iPad Air 7": {
+    "codename": [
+      "iPad14,10",
+      "iPad14,11"
+    ]
+  },
+  "iPad Mini 7": {
+    "codename": [
+      "iPad16,1",
+      "iPad16,2"
+    ]
+  }
+}

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 
-let menuButton = require("%rGui/hud/mkMenuButton.nut")()
+let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 let killerInfo = require("%rGui/hudHints/killerInfo.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { eventbus_subscribe } = require("eventbus")
@@ -49,7 +49,7 @@ return {
   }
   hotkeys = mkGamepadHotkey("ID_CONTINUE", @() toggleShortcut("ID_CONTINUE"))
   children = [
-    menuButton
+    mkMenuButton()
     killerInfo
     hintForSkip
   ]

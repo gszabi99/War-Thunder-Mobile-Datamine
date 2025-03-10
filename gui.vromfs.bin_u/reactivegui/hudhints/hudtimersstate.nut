@@ -1,11 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
+let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { crewState, crewDriverState, crewGunnerState, crewLoaderState } = require("%rGui/hud/crewState.nut")
 let { mkCountdownTimerSec } = require("%globalScripts/timers.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { modifyOrAddEvent } = require("%rGui/hudHints/commonHintLogState.nut")
+let { unitType } = require("%rGui/hudState.nut")
+let { SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
 
 let REPAIR_SHOW_TIME_THRESHOLD = 0.5
 let winkFast = 1.5
@@ -65,6 +69,22 @@ let onRepair = @(data) activeTimers.mutate(function onRepairImpl(actTimers) {
 })
 eventbus_subscribe("TankDebuffs:Repair", onRepair)
 eventbus_subscribe("ShipDebuffs:Repair", onRepair)
+
+let function repairMessage(val) {
+  if (unitType.value == SHIP || unitType.value == BOAT || unitType.value == SUBMARINE)
+    return
+
+  let msgId = "MSG_EVENT_HINT"
+  modifyOrAddEvent({
+    id = msgId
+    hType = "simpleTextTiny"
+    ttl = 1.0
+    text = val > 0 ? " ".concat(loc("NUD_TIME_TO_TANK_REPAIR"), secondsToTimeSimpleString(val)) : ""
+  },
+  @(ev) ev?.id == msgId)
+}
+getTimerCountdownSec("repair_auto_status").subscribe(repairMessage)
+getTimerCountdownSec("repair_status").subscribe(repairMessage)
 
 eventbus_subscribe("ShipDebuffs:Extinguish", @(data) activeTimers.mutate(function onExtinguish(actTimers) {
   let { state, time = 0 } = data

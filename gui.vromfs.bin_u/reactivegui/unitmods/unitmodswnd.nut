@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { modsInProgress, buy_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
@@ -55,11 +56,7 @@ let mkVerticalPannableArea = @(content) {
     behavior = Behaviors.Pannable
     scrollHandler = catsScrollHandler
     children = content
-    xmbNode = {
-      canFocus = false
-      scrollSpeed = 5.0
-      isViewport = true
-    }
+    xmbNode = XmbContainer()
   }
 }
 
@@ -77,12 +74,7 @@ let mkHorizontalPannableArea = @(content) {
       behavior = Behaviors.Pannable
       scrollHandler = modsScrollHandler
       children = content
-      xmbNode = {
-        canFocus = false
-        scrollSpeed = 2.0
-        isViewport = true
-        scrollToEdge = false
-      }
+      xmbNode = XmbContainer({ scrollSpeed = 2.0 })
     }
   ]
 
@@ -197,7 +189,7 @@ let unitModsWnd = {
   children = [
     @(){
       watch = curCampaign
-      children = mkGamercardUnitCampaign(onClose, $"gamercard/levelUnitMod/desc/{curCampaign.value}")
+      children = mkGamercardUnitCampaign(onClose, getCampaignPresentation(curCampaign.get()).levelUnitModLocId)
     }
     {
       size = [saSize[0] + saBorders[0], flex()]

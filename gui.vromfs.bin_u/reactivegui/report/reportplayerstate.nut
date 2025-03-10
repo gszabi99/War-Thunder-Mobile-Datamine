@@ -20,8 +20,11 @@ let langCfg = {
 }
 
 let MAX_ACTIVE_REPORTS = 5
+let MAX_REPORTS_IN_SESSION = 15
 let TIME_TO_NEXT_BATTLE_REPORT = 30 * 60
 let TIME_TO_NEXT_MENU_REPORT = 12 * 3600
+let TIME_TO_NEXT_REPORT_BAN = 48 * 3600
+let SHADOW_REPORT_BAN_TIME = "shadowReportBanTime"
 let BATTLE_REPORT = "battleReport"
 let MENU_REPORT = "menuReport"
 
@@ -29,28 +32,37 @@ let MAX_MESSAGE_CHARS = 256
 
 let SUCCESS_WND_UID = "successReportWindow"
 let REPORT_WND_UID = "playerReportWindow"
+let REJECT_WND_UID = "rejectReportWindow"
 
 let categoryCfg = ["OTHER", "CHEAT", "TEAMKILL"]
 
 let selectedPlayerForReport = Watched(null)
 let isReportStatusSuccessed = Watched(false)
+let isReportStatusRejected = Watched(false)
 let isRequestInProgress = Watched(false)
 let fieldCategory = hardPersistWatched("fieldReportCategory", "")
 let fieldMessage = hardPersistWatched("fieldReportMessage", "")
+let countReportsPerSession = hardPersistWatched("countReportsPerSession", 0)
 
-function close() {
-  selectedPlayerForReport(null)
+let hasShadowBan = Computed(@()
+  (TIME_TO_NEXT_REPORT_BAN - (serverTime.get() - (get_local_custom_settings_blk()?[SHADOW_REPORT_BAN_TIME] ?? 0))) > 0)
+
+selectedPlayerForReport.subscribe(function(_) {
   isRequestInProgress.set(false)
-}
+  isReportStatusSuccessed.set(false)
+  isReportStatusRejected.set(false)
+  removeModalWindow(SUCCESS_WND_UID)
+  removeModalWindow(REJECT_WND_UID)
+})
 
 function resetForm() {
   foreach (field in [ fieldCategory, fieldMessage ])
     field("")
 }
 
-function cancel() {
+function close() {
+  selectedPlayerForReport.set(null)
   resetForm()
-  close()
 }
 
 function getFormValidationError() {
@@ -62,13 +74,6 @@ function getFormValidationError() {
   if (utf8(fieldMessage.get()).charCount() > MAX_MESSAGE_CHARS)
     err.append(loc("support/form/hint/support/form/hint/max_number_of_characters"))
   return "\n".join(err)
-}
-
-function successedClose() {
-  isReportStatusSuccessed.set(false)
-  removeModalWindow(SUCCESS_WND_UID)
-  resetForm()
-  close()
 }
 
 function getMaxActiveReportTime(userIdStr) {
@@ -117,6 +122,17 @@ function saveComplaint(request) {
   eventbus_send("saveProfile", {})
 }
 
+function applyShadowBan() {
+  let blk = get_local_custom_settings_blk()
+  blk[SHADOW_REPORT_BAN_TIME] = serverTime.get()
+
+  saveComplaint({
+    offender_userid = selectedPlayerForReport.get()?.offender_userid ?? ""
+    date = serverTime.get()
+  })
+  isReportStatusSuccessed.set(true)
+}
+
 function mkRequest(requestData) {
   if (requestData == null)
     return null
@@ -134,6 +150,24 @@ function requestSelfRow() {
   let requestData = selectedPlayerForReport.get()
   if (!requestData)
     return
+
+  if (hasShadowBan.get()) {
+    saveComplaint({
+      offender_userid = requestData.offender_userid
+      date = serverTime.get()
+    })
+    isReportStatusSuccessed.set(true)
+    return
+  }
+
+  if (countReportsPerSession.get() >= MAX_REPORTS_IN_SESSION)
+    return applyShadowBan()
+
+  let timeToNextReport = mkTimeToNextReport(requestData.offender_userid).get()
+  if (!(timeToNextReport <= 0))
+    return isReportStatusRejected.set(true)
+
+  countReportsPerSession.set(countReportsPerSession.get() + 1)
 
   let request = mkRequest(requestData)
   isRequestInProgress.set(true)
@@ -153,17 +187,18 @@ contactsRegisterHandler("cln_complaint", function(result, request) {
 
 return {
   SUCCESS_WND_UID
+  REJECT_WND_UID
   REPORT_WND_UID
   MAX_MESSAGE_CHARS
   categoryCfg
   fieldCategory
   fieldMessage
-  cancel
-  successedClose
+  close
   getFormValidationError
   selectedPlayerForReport
   requestSelfRow
   isReportStatusSuccessed
+  isReportStatusRejected
   isRequestInProgress
   mkTimeToNextReport
   viewReport = @(userIdStr) selectedPlayerForReport.set({

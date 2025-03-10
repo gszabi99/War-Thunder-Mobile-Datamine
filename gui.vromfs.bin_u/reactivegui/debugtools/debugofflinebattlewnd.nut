@@ -86,14 +86,14 @@ let mkSelector = @(curValue, allValues, setValue, mkLoc, mkValues, title = "") @
 }
 
 function mkOfflineBattleMenuWnd() {
-  let cfg = mkCfg
+  let cfg = mkCfg()
   let allUnitTypes = cfg.get().unitTypes.keys().sort()
   let curUnitType = Computed(@() allUnitTypes.contains(savedUnitType.get()) ? savedUnitType.get() : allUnitTypes?[0])
   let unitsByType = Computed(@() cfg.get()?.allUnits[curUnitType.get()] ?? {})
   let allMissions = Computed(@() cfg.get()?.missions[curUnitType.get()] ?? {})
 
   let curData = Computed(function() {
-    local name = savedUnitName.get()
+    local name = savedUnitName.get() ?? hangarUnitName.get()
     local mission = savedMissionName.get()
     local units = unitsByType.get()
     name = name in units ? name : units.findindex(@(_) true)
@@ -140,7 +140,7 @@ function mkOfflineBattleMenuWnd() {
         mkSelector(curUnitName,
           Computed(@() curData.get().units),
           @(value) savedUnitName.set(value),
-          @(name) loc(getUnitLocId(name)),
+          @(name) loc(getUnitLocId(name ?? "")),
           @(allValues, mkLoc) allValues.keys().sort().filter(@(v) v != "dummy_plane").map(@(value) { text = mkLoc(value), value }),
           loc("slotbar/selectUnit"))
       ])

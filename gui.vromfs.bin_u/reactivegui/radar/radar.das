@@ -225,7 +225,7 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.cueLowHeiColor = props |> getColor("cueLowHeiColor", storage.color)
   storage.cueUndergroundColor = props |> getColor("cueUndergroundColor", storage.color)
 
-[export]
+[export, unused_argument(rstate)]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if data.enableByMfd ? !get_radar_hud_mfd_radar_enabled() : !get_radar_hud_visible()
     return

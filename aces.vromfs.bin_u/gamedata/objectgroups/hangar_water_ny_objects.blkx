@@ -27,7 +27,7 @@
       "forcePos": true
     },
     {
-      "name": "%major_banner_buoy_a",
+      "name": "%major_banner_buoy_b",
       "tm": [
         [
           -0.991678,
@@ -53,7 +53,7 @@
       "forcePos": true
     },
     {
-      "name": "%major_banner_buoy_a",
+      "name": "%major_banner_buoy_b",
       "tm": [
         [
           1.0,

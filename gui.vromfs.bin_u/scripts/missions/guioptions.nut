@@ -1,6 +1,7 @@
-from "%scripts/dagui_natives.nut" import hud_request_hud_ship_debuffs_state, hud_request_hud_tank_debuffs_state, hud_request_hud_crew_state
-
+from "hudState" import hud_request_hud_tank_debuffs_state, hud_request_hud_ship_debuffs_state,
+  hud_request_hud_crew_state
 let { addOptionMode, setGuiOptionsMode, addUserOption, set_gui_option } = require("guiOptions")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 
 let optModeTraining = addOptionMode("OPTIONS_MODE_TRAINING") //hardcoded in the native code
 let optModeGameplay = addOptionMode("OPTIONS_MODE_GAMEPLAY") //hardcoded in the native code
@@ -12,7 +13,8 @@ let USEROPT_AIRCRAFT = addUserOption("USEROPT_AIRCRAFT")
 let USEROPT_WEAPONS = addUserOption("USEROPT_WEAPONS")
 let USEROPT_SKIN = addUserOption("USEROPT_SKIN")
 
-function changeTrainingUnit(unitName, skin = "", bullets = null) {
+function changeTrainingUnit(realUnitName, skin = "", bullets = null) {
+  let unitName = getTagsUnitName(realUnitName)
   setGuiOptionsMode(optModeTraining)
   set_gui_option(USEROPT_AIRCRAFT, unitName)
   set_gui_option(USEROPT_WEAPONS, $"{unitName}_default")

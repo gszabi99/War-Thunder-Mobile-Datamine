@@ -7,7 +7,8 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_FLIGHTMENU = "J:Start | Esc" //can't be changed. Need here for correct show in the controls help.
   ID_CONTINUE = "J:RT | Space"
   ID_MPSTATSCREEN =  "J:Back | Tab"
-  ID_ZOOM_TOGGLE = "J:RS | L.Shift"
+  ID_ZOOM_TOGGLE = "J:RS | L.Shift" // Toggle zoom mode
+  ID_CHANGE_ZOOM =  "J:LS | N" // Toggle zoom size
   ID_SHOW_HERO_MODULES = "J:X | 6"
 
   ID_CAMERA_NEUTRAL =  "J:LS | N" // Tank and Air
@@ -70,7 +71,7 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_SUBMARINE_WEAPON_ROCKETS = "J:Y | V"
   ID_DIVING_LOCK = "J:LS | B"
 
-  ID_SUBMARINE_ACTION_BAR_ITEM_11 = "J:D.Left | 1" //toolkit
+  ID_SUBMARINE_ACTION_BAR_ITEM_40 = "J:D.Left | 1" //toolkit
   ID_SUBMARINE_ACOUSTIC_COUNTERMEASURES = "J:D.Right | 2"
 
 

@@ -1,11 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { isVoiceMsgMapSceneOpened } = require("%rGui/hud/voiceMsg/hudVoiceMsgMapScene.nut")
 
 let mapSize = hdpx(300)
 
 let airMap = @(scale) {
   size = array(2, scaleEven(mapSize, scale))
   rendObj = ROBJ_RADAR
+  behavior = Behaviors.Button
+  onClick = @() isVoiceMsgMapSceneOpened.set(true)
 }
 
 let airMapEditView = {

@@ -140,7 +140,7 @@ let optionCtors = {
       return null
     }
     return textButtonCommon(loc(locId), onClick,
-      { ovr = { hplace = ALIGN_LEFT, margin = [0, 0, hdpx(30), 0] } })
+      { ovr = { hplace = ALIGN_LEFT, margin = [hdpx(30), 0] } })
   }
 }
 

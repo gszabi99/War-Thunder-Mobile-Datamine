@@ -4,7 +4,7 @@ let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { get_free_disk_space = @() -1,
   download_addons_in_background, stop_updater, is_updater_running, get_addon_version,
-  get_incomplete_addons, is_addon_exists_in_game_folder, get_addons_size,
+  get_incomplete_addons, is_addon_exists_in_game_folder,
   UPDATER_RESULT_SUCCESS, UPDATER_ERROR, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
   UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING, UPDATER_EVENT_INCOMPATIBLE_VERSION
 } = require("contentUpdater")
@@ -15,7 +15,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInLoadingScreen, isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
 let { localizeAddonsLimited, initialAddons, latestDownloadAddonsByCamp, latestDownloadAddons,
-  commonUhqAddons, soloNewbieByCampaign
+  commonUhqAddons, soloNewbieByCampaign, getAddonsSize
 } = require("%appGlobals/updater/addons.nut")
 let hasAddons = require("%appGlobals/updater/hasAddons.nut")
 let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
@@ -178,7 +178,7 @@ function updateStartDownload() {
   }
 
   let addons = needStartDownloadAddons.value.keys()
-  let totalSize = get_addons_size(addons)
+  let totalSize = getAddonsSize(addons)
   let freeSpace = get_free_disk_space()
   logA($"total size to download: {totalSize}, free space: {freeSpace}")
   if (freeSpace > 0 && totalSize > freeSpace){

@@ -1,5 +1,5 @@
-
 from "%appGlobals/unitConst.nut" import *
+let getTagsUnitName = require("getTagsUnitName.nut")
 
 let unitClassFontIcons = {
   boat          = "\u2409"
@@ -78,6 +78,22 @@ let overrides = {
   ["bf_109k_4_killstreak"] = { image = "!ui/unitskin#bf_109k_4.avif" },
   ["la_9_killstreak"] = { image = "!ui/unitskin#la_9.avif" },
   ["fw-190d-9_killstreak"] = { image = "!ui/unitskin#fw-190d-9.avif" },
+  ["us_m1_abrams"] = inProgress,
+  ["us_m3a3_bradley_reskin2"] = inProgress,
+  ["us_m1128_mgs"] = inProgress,
+  ["us_m247_reskin5"] = inProgress,
+  ["ussr_object_140"] = inProgress,
+  ["ussr_pt_76_57"] = inProgress,
+  ["ussr_t_10a_reskin"] = inProgress,
+  ["ussr_zsu_23_4_reskin3"] = inProgress,
+  ["cn_type_62"] = inProgress,
+  ["cn_is_2_1944"] = inProgress,
+  ["cn_plz_83"] = inProgress,
+  ["cn_zsl_92"] = inProgress,
+  ["il_merkava_mk_2b_early"] = inProgress,
+  ["il_magach_6m"] = inProgress,
+  ["il_tiran_6"] = inProgress,
+  ["il_zsu_23_4_reskin"] = inProgress
 // PUBLIC OVERRIDES END
 //
 
@@ -98,8 +114,9 @@ let genParams = {
   blueprintImage = @(name) $"ui/unitskin#blueprint_{name}.avif"
 }
 
-function mkUnitPresentation(unitName) {
-  let res = defaults.__merge(overrides?[unitName] ?? {}, { name = unitName })
+function mkUnitPresentation(realUnitName) {
+  let unitName = getTagsUnitName(realUnitName)
+  let res = defaults.__merge(overrides?[unitName] ?? {}, { name = unitName, realUnitName })
   foreach (id, gen in genParams)
     if (res[id] == defaults[id])
       res[id] = gen(unitName)

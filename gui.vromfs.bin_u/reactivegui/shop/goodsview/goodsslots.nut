@@ -1,10 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { getLocNameDefault } = require("goodsDefault.nut")
 let { txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsLimitAndEndTime,
   goodsH, goodsSmallSize, goodsBgH, mkBgImg, mkBgParticles, borderBg,
   mkSquareIconBtn, skipPurchasedPlate, purchasedPlate, mkCanPurchase, goodsW, mkCanShowTimeProgress
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { getGoodsIcon } = require("%appGlobals/config/goodsPresentation.nut")
+let { todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -58,6 +60,18 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
   }).__update(ovr)
 }
 
+function mkPricePlateWrap(goods, state, animParams) {
+  let purchasesCount = Computed(function() {
+    let { lastTime = 0, count = 0 } = todayPurchasesCount.get()?[goods?.id]
+    return getDay(lastTime, dayOffset.get()) == serverTimeDay.get() ? count : 0
+  })
+  return @() {
+    watch = purchasesCount
+    size = flex()
+    children = mkPricePlate(goods, state, animParams, true, purchasesCount.get())
+  }
+}
+
 function mkGoodsSlots(goods, _, state, animParams, addChildren) {
   let bg = mkBgImg("ui/gameuiskin/shop_bg_blue.avif")
   let bgParticles = mkBgParticles(bgSize)
@@ -86,7 +100,7 @@ function mkGoodsSlots(goods, _, state, animParams, addChildren) {
       mkSquareIconBtn(fontIconPreview, onClick, { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
       canPurchase ? mkGoodsLimitAndEndTime(goods) : null
     ].extend(mkGoodsCommonParts(goods, state), addChildren),
-    mkPricePlate(goods, state, animParams)
+    mkPricePlateWrap(goods, state, animParams)
     { size = [goodsSmallSize[0], goodsH], onClick })
 }
 

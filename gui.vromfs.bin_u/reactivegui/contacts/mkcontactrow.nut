@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { Contact } = require("contact.nut")
 let { mkPublicInfo, refreshPublicInfo } = require("contactPublicInfo.nut")
 let { mkContactOnlineStatus, presences } = require("contactPresence.nut")
@@ -12,7 +13,8 @@ let { onlineColor, offlineColor, leaderColor, memberNotReadyColor, memberReadyCo
 function onlineBlock(uid, onlineStatus, battleUnit) {
   let onlineText = Computed(@() onlineStatus.value == null ? ""
     : !onlineStatus.value ? colorize(offlineColor, loc("contacts/offline"))
-    : battleUnit.value != null ? "\n".concat(loc("status/in_battle"), loc($"campaign/{battleUnit.value?.campaign ?? ""}"))
+    : battleUnit.value != null
+      ? "\n".concat(loc("status/in_battle"), loc(getCampaignPresentation(battleUnit.value?.campaign).headerLocId))
     : colorize(onlineColor, loc("contacts/online")))
   let squadText = Computed(@() !isInSquad.value ? ""
     : squadId.value == uid ? colorize(leaderColor, loc("status/squad_leader"))

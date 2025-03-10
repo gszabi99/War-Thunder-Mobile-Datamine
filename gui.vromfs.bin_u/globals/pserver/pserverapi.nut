@@ -23,6 +23,8 @@ const PROGRESS_SKINS = "SkinsInProgress"
 const PROGRESS_BOOSTER = "BoosterInProgress"
 const PROGRESS_SLOT = "SlotInProgress"
 const PROGRESS_PERSONAL_GOODS = "PersonalGoodsInProgress"
+const PROGRESS_CAMPAIGN = "CampaignInProgress"
+const PROGRESS_PREM_BONUS = "PremBonusInProgress"
 
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
@@ -88,7 +90,7 @@ function handleMessages(msg) {
       let newProfile = clone servProfile.value
       let updatedKeys = {}
       foreach (k, v in result)
-        if (type(v) != "table" || k == "configs" || k == "removed")
+        if (type(v) != "table" || k == "configs" || k == "removed" || k == "custom_info")
           continue
         else {
           if (k == "receivedLvlRewards") {
@@ -179,7 +181,8 @@ function mkProgressImpl(id, update, defValue = null) {
   return progressList[id]
 }
 
-let mkProgress = @(id) mkProgressImpl(id, @(watch, isInProgress, value) watch.set(isInProgress ? value : null))
+let mkProgress = @(id, defValue = null)
+  mkProgressImpl(id, @(watch, isInProgress, value) watch.set(isInProgress ? value : defValue), defValue)
 
 let mkMultiProgress = @(id) mkProgressImpl(id,
   function(watch, isInProgress, value) {
@@ -244,6 +247,8 @@ return {
   boosterInProgress = mkProgress(PROGRESS_BOOSTER)
   slotInProgress = mkProgress(PROGRESS_SLOT)
   personalGoodsInProgress = mkProgress(PROGRESS_PERSONAL_GOODS)
+  campaignInProgress = mkProgress(PROGRESS_CAMPAIGN)
+  isPremBonusInProgress = mkProgress(PROGRESS_PREM_BONUS, false)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -251,6 +256,7 @@ return {
   }, cb)
   get_all_configs = @(cb = null) request({ method = "get_all_configs" }, cb)
   check_purchases = @(cb = null) request({ method = "check_purchases" }, cb)
+  check_purchases_debug = @(cb = null) request({ method = "check_purchases_debug" }, cb)
   reset_profile = @(cb = null) request({ method = "reset_profile" }, cb)
   reset_profile_with_stats = @(cb = null) request({ method = "reset_profile_with_stats" }, cb)
   get_default_battle_data = @(cb = null) request({ method = "get_default_battle_data" }, cb)
@@ -259,6 +265,20 @@ return {
   unlock_all_units = @(cb = null) request({ method = "unlock_all_units" }, cb)
   royal_beta_units_unlock = @(cb = null) request({ method = "royal_beta_units_unlock" }, cb)
   generate_full_offline_profile = @(cb = null) request({ method = "generate_full_offline_profile" }, cb)
+
+  reset_campaigns = @(campaigns, cb = null) request({
+    method = "reset_campaigns"
+    params = { campaigns }
+    progressId = PROGRESS_CAMPAIGN
+    progressValue = campaigns[0]
+  }, cb)
+
+  copy_campaign_progress = @(campaignTo, campaignFrom, cb = null) request({
+    method = "copy_campaign_progress"
+    params = { campaignTo, campaignFrom }
+    progressId = PROGRESS_CAMPAIGN
+    progressValue = campaignTo
+  }, cb)
 
   add_player_exp = @(campaign, playerExp, cb = null) request({
     method = "add_player_exp"
@@ -359,6 +379,13 @@ return {
     progressValue = unitName
   }, cb)
 
+  buy_upgrade_unit = @(unitName, price, cb = null) request({
+    method = "buy_upgrade_unit"
+    params = { unitName, price }
+    progressId = PROGRESS_UNIT
+    progressValue = unitName
+  }, cb)
+
   levelup_without_unit = @(campaign, cb = null) request({
     method = "levelup_without_unit"
     progressId = PROGRESS_LEVEL
@@ -451,16 +478,6 @@ return {
     params = { unitName, modName, enable }
     progressId = PROGRESS_MODS
     progressValue = modName
-  }, cb)
-
-  buy_unit_weapon = @(unitName, weaponName, price, cb = null) request({
-    method = "buy_unit_weapon"
-    params = { unitName, weaponName, price }
-  }, cb)
-
-  set_current_unit_weapon = @(unitName, weaponName, cb = null) request({
-    method = "set_current_unit_weapon"
-    params = { unitName, weaponName }
   }, cb)
 
   add_premium = @(duration, cb = null) request({
@@ -585,6 +602,11 @@ return {
 
   check_empty_offer = @(campaign, cb = null) request({
     method = "check_empty_offer"
+    params = { campaign }
+  }, cb)
+
+  skip_offer = @(campaign, cb = null) request({
+    method = "skip_offer"
     params = { campaign }
   }, cb)
 
@@ -772,6 +794,11 @@ return {
     params = { campaign, slotId }
   }, cb)
 
+  apply_slot_preset = @(preset, campaign, cb = null) request({
+    method = "apply_slot_preset"
+    params = { preset, campaign }
+  }, cb)
+
   buy_unit_slot = @(campaign, slotId, costGold, cb = null) request({
     method = "buy_unit_slot"
     params = { campaign, slotId, costGold }
@@ -840,5 +867,16 @@ return {
   authorize_deeplink_reward = @(id, cb = null) request({
     method = "authorize_deeplink_reward"
     params = { id }
+  }, cb)
+
+  reset_daily_counter = @(counterId, cb = null) request({
+    method = "reset_daily_counter"
+    params = { counterId }
+  }, cb)
+
+  get_premium_daily_bonus = @(cb = null) request({
+    method = "get_premium_daily_bonus"
+    progressId = PROGRESS_PREM_BONUS
+    progressValue = true
   }, cb)
 }

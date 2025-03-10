@@ -5,7 +5,7 @@ let { TouchCameraControl } = require("wt.behaviors")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
-let mkMenuButton = require("%rGui/hud/mkMenuButton.nut")
+let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 let { switchSpectatorTarget, getSpectatorTargetId } = require("guiSpectator")
 let { tacticalMap } = require("components/tacticalMap.nut")
 let { scoreBoard, needScoreBoard } = require("%rGui/hud/scoreBoard.nut")
@@ -13,6 +13,7 @@ let { capZonesList } = require("capZones/capZones.nut")
 let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
 let { isInSpectatorMode } = require("%rGui/hudState.nut")
 let { mkMyPlaceUi, mkMyScoresUi, isPlaceVisible, isScoreVisible } = require("%rGui/hud/myScores.nut")
+let { playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
 
 
 let bgButtonColor = Color(32, 34, 38, 216)
@@ -42,7 +43,7 @@ let hasTapHint = Computed(@() needShowTapHint.get() && (isPlaceVisible.get() || 
 
 let switchTargetImage = Picture($"!ui/gameuiskin#spinnerListBox_arrow_up.svg:{buttonImageSize}:{buttonImageSize}")
 
-let menuButton = mkMenuButton({ onClick = @() eventbus_send("openFlightMenuInRespawn", {}) })
+let menuButton = mkMenuButton(1.0, { onClick = @() eventbus_send("openFlightMenuInRespawn", {}) })
 
 let topLeft = {
   flow = FLOW_HORIZONTAL
@@ -139,32 +140,24 @@ let spectatorControlsBlock = {
 }
 
 let hudTopCenter = @() {
-  watch = needScoreBoard
+  watch = [needScoreBoard, hasTapHint]
   hplace = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  flow = FLOW_VERTICAL
-  children = [
-    needScoreBoard.get() ? scoreBoard : null
-    capZonesList(1)
-  ]
-}
-
-let hudRight = @() {
-  watch = hasTapHint
-  behavior = Behaviors.Button
-  cameraControl = true
-  onClick = @() eventbus_send("toggleMpstatscreen", {})
-  sound = { click  = "click" }
-  hplace = ALIGN_RIGHT
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   gap = hdpx(10)
   children = [
     {
-      flow = FLOW_HORIZONTAL
       children = [
-        mkMyPlaceUi(1)
-        mkMyScoresUi(1)
+        needScoreBoard.get() ? scoreBoard : null
+        {
+          pos = [playerPlaceIconSize * 2, 0]
+          hplace = ALIGN_RIGHT
+          flow = FLOW_HORIZONTAL
+          children = [
+            mkMyPlaceUi(1)
+            mkMyScoresUi(1)
+          ]
+        }
       ]
     }
     !hasTapHint.get() ? null
@@ -181,6 +174,7 @@ let hudRight = @() {
             duration = 2, play = true, loop = true
           }]
         }
+    capZonesList(1)
   ]
 }
 
@@ -199,7 +193,6 @@ return {
     }
     topLeft
     hudTopCenter
-    hudRight
     hudTopMainLog
     spectatorControlsBlock
   ]

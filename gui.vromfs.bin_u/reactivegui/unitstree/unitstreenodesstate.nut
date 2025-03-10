@@ -10,6 +10,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { filters, filterGenId } = require("%rGui/unit/unitsFilterPkg.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
 let { releasedUnits } = require("%rGui/unit/unitState.nut")
@@ -231,6 +232,8 @@ function setResearchedUnitsSeen(units) {
 }
 
 function loadSeenResearchedUnits() {
+  if (!isSettingsAvailable.get())
+    return seenResearchedUnits.set({})
   let blk = get_local_custom_settings_blk()
   let htBlk = blk?[SEEN_RESEARCHED_UNITS]
   if (!isDataBlock(htBlk))
@@ -243,6 +246,8 @@ function loadSeenResearchedUnits() {
 
 if (seenResearchedUnits.get().len() == 0)
   loadSeenResearchedUnits()
+
+isSettingsAvailable.subscribe(@(_) loadSeenResearchedUnits())
 
 register_command(function() {
   seenResearchedUnits.set({})
@@ -266,4 +271,6 @@ return {
   blueprintUnitsStatus
   unseenResearchedUnits
   setResearchedUnitsSeen
+
+  countryPriority
 }
