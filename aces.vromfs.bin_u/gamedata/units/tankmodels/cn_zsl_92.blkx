@@ -360,6 +360,18 @@
       }
     ]
   },
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "armorThicknessSide": [
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHAHH_tank",

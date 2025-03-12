@@ -20,18 +20,11 @@ let mkCameraButton = @(shortcutId, image) function(scale) {
   let bgSize = scaleEven(touchButtonSize, scale)
   let imgSize = scaleEven(imgSizeBase, scale)
   let picture = Picture($"{image}:{imgSize}:{imgSize}")
-  let onTouchBegin = @() isFreeCameraAvailable.value && setShortcutOn(shortcutId)
-  let onTouchEnd = @() isFreeCameraAvailable.value && setShortcutOff(shortcutId)
-
-  isFreeCameraAvailable.subscribe(function(val) {
-    if (!val) {
-      setShortcutOff(shortcutId)
-      stateFlags(0)
-    }
-  })
+  let onTouchBegin = @() setShortcutOn(shortcutId)
+  let onTouchEnd = @() setShortcutOff(shortcutId)
 
   return @() mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags).__update({
-    watch = [stateFlags, isFreeCameraAvailable]
+    watch = stateFlags
     size = [bgSize, bgSize]
     rendObj = ROBJ_BOX
     borderColor = isActive(stateFlags.value) ? null : colorInactive

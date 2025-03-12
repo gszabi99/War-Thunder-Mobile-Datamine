@@ -60,6 +60,18 @@
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_medium",
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.8,
+      0.0,
+      0.2
+    ],
+    "armorThicknessSide": [
+      0.1,
+      0.05,
+      0.85
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank_modern",
@@ -2083,10 +2095,6 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
-        "stabilizerDmPart": [
-          "fire_control_system_dm",
-          "power_system_dm"
-        ],
         "speedYaw": 40.0,
         "speedPitch": 24.0,
         "fireConeAngle": 1.0,
@@ -2990,10 +2998,6 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
-              "stabilizerDmPart": [
-                "fire_control_system_dm",
-                "power_system_dm"
-              ],
               "speedYaw": 40.0,
               "speedPitch": 24.0,
               "fireConeAngle": 1.0,

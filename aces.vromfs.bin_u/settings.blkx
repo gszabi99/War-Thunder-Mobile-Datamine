@@ -294,6 +294,12 @@
         "mRank": 3
       }
     },
+    "pkg_lvl_africa_desert": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
+    },
     "pkg_lvl_white_rocks": {
       "conditions": {
         "campaign": "ships",

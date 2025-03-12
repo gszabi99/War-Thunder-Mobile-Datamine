@@ -45,6 +45,18 @@
   "destroysTrees": true,
   "type": "typeTankDestroyer",
   "minRelativeTankCameraThreshold": 1.29,
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.05,
+      0.0,
+      0.95
+    ],
+    "armorThicknessSide": [
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",

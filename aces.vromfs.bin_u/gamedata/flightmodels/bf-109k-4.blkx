@@ -2015,5 +2015,13 @@
         "reqModification": "Bf-109_R4"
       }
     ]
+  },
+  "vehicleSkins": {
+    "1945": {
+      "replace_tex": {
+        "from": "bf_109k_4_a*",
+        "to": "bf_109k_4_spring45_a*"
+      }
+    }
   }
 }

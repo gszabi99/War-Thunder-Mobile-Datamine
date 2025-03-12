@@ -164,6 +164,18 @@
       }
     ]
   },
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "armorThicknessSide": [
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -2261,6 +2273,56 @@
         "bone_roll_19_01",
         "bone_roll_19_02"
       ]
+    },
+    "hideNodes": {
+      "node": [
+        "body_02",
+        "ex_armor_r_02",
+        "ex_armor_r_03",
+        "ex_armor_r_04",
+        "ex_armor_r_05",
+        "ex_armor_r_06",
+        "ex_armor_r_07",
+        "ex_armor_r_08",
+        "ex_armor_r_09",
+        "ex_armor_r_10",
+        "ex_armor_01",
+        "ex_armor_02",
+        "ex_armor_03",
+        "ex_armor_04",
+        "ex_armor_05",
+        "ex_armor_06",
+        "ex_armor_07",
+        "ex_armor_08",
+        "ex_armor_09",
+        "ex_armor_10",
+        "ex_armor_11",
+        "ex_armor_l_02",
+        "ex_armor_l_03",
+        "ex_armor_l_04",
+        "ex_armor_l_05",
+        "ex_armor_l_06",
+        "ex_armor_l_07",
+        "ex_armor_l_08",
+        "ex_armor_l_09",
+        "ex_armor_l_10",
+        "ex_armor_l_11",
+        "composite_armor_hull_01",
+        "composite_armor_hull_02",
+        "composite_armor_hull_03",
+        "composite_armor_hull_04",
+        "composite_armor_hull_05",
+        "composite_armor_hull_06",
+        "composite_armor_hull_07",
+        "composite_armor_hull_08",
+        "composite_armor_hull_09",
+        "composite_armor_hull_10",
+        "composite_armor_hull_11",
+        "composite_armor_hull_12",
+        "composite_armor_hull_13",
+        "composite_armor_hull_14",
+        "composite_armor_hull_15"
+      ]
     }
   },
   "weapon_presets": {
@@ -2455,19 +2517,6 @@
             ],
             "name": "bone_suspension_$1_$2_01"
           },
-          "suspension_01_03": {
-            "limitMin": [
-              -1.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              1.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_$1_$2_03"
-          },
           "wheel": {
             "searchChildren": {
               "occurence": 1,
@@ -2490,18 +2539,14 @@
           "edge": [
             {
               "to": "wheel",
-              "from": "lever"
+              "from": "lever",
+              "moveNodes": false
             },
             {
               "moveNodes": false,
               "moveSecond": false,
               "to": "wheel",
               "from": "suspension_01_01"
-            },
-            {
-              "moveNodes": false,
-              "to": "wheel",
-              "from": "suspension_01_03"
             }
           ]
         }
@@ -3461,66 +3506,6 @@
     "tank_smoke_screen_smoke_shell": {},
     "tank_smoke_screen_low_cooldown": {},
     "tank_smoke_screen_long_duration": {},
-    "m1128_protection_improvement": {
-      "invertEnableLogic": false,
-      "turn_it_off": false,
-      "effects": {
-        "rcostAddParam": 0.9,
-        "changeMass": 4700.0
-      },
-      "disableModEffects": {
-        "hideNodes": {
-          "node": [
-            "body_02",
-            "ex_armor_r_02",
-            "ex_armor_r_03",
-            "ex_armor_r_04",
-            "ex_armor_r_05",
-            "ex_armor_r_06",
-            "ex_armor_r_07",
-            "ex_armor_r_08",
-            "ex_armor_r_09",
-            "ex_armor_r_10",
-            "ex_armor_01",
-            "ex_armor_02",
-            "ex_armor_03",
-            "ex_armor_04",
-            "ex_armor_05",
-            "ex_armor_06",
-            "ex_armor_07",
-            "ex_armor_08",
-            "ex_armor_09",
-            "ex_armor_10",
-            "ex_armor_11",
-            "ex_armor_l_02",
-            "ex_armor_l_03",
-            "ex_armor_l_04",
-            "ex_armor_l_05",
-            "ex_armor_l_06",
-            "ex_armor_l_07",
-            "ex_armor_l_08",
-            "ex_armor_l_09",
-            "ex_armor_l_10",
-            "ex_armor_l_11",
-            "composite_armor_hull_01",
-            "composite_armor_hull_02",
-            "composite_armor_hull_03",
-            "composite_armor_hull_04",
-            "composite_armor_hull_05",
-            "composite_armor_hull_06",
-            "composite_armor_hull_07",
-            "composite_armor_hull_08",
-            "composite_armor_hull_09",
-            "composite_armor_hull_10",
-            "composite_armor_hull_11",
-            "composite_armor_hull_12",
-            "composite_armor_hull_13",
-            "composite_armor_hull_14",
-            "composite_armor_hull_15"
-          ]
-        }
-      }
-    },
     "tank_smoke_screen_system_mod": {
       "effects": {
         "commonWeapons": {
@@ -3904,6 +3889,56 @@
             "node": [
               "bone_roll_19_01",
               "bone_roll_19_02"
+            ]
+          },
+          "hideNodes": {
+            "node": [
+              "body_02",
+              "ex_armor_r_02",
+              "ex_armor_r_03",
+              "ex_armor_r_04",
+              "ex_armor_r_05",
+              "ex_armor_r_06",
+              "ex_armor_r_07",
+              "ex_armor_r_08",
+              "ex_armor_r_09",
+              "ex_armor_r_10",
+              "ex_armor_01",
+              "ex_armor_02",
+              "ex_armor_03",
+              "ex_armor_04",
+              "ex_armor_05",
+              "ex_armor_06",
+              "ex_armor_07",
+              "ex_armor_08",
+              "ex_armor_09",
+              "ex_armor_10",
+              "ex_armor_11",
+              "ex_armor_l_02",
+              "ex_armor_l_03",
+              "ex_armor_l_04",
+              "ex_armor_l_05",
+              "ex_armor_l_06",
+              "ex_armor_l_07",
+              "ex_armor_l_08",
+              "ex_armor_l_09",
+              "ex_armor_l_10",
+              "ex_armor_l_11",
+              "composite_armor_hull_01",
+              "composite_armor_hull_02",
+              "composite_armor_hull_03",
+              "composite_armor_hull_04",
+              "composite_armor_hull_05",
+              "composite_armor_hull_06",
+              "composite_armor_hull_07",
+              "composite_armor_hull_08",
+              "composite_armor_hull_09",
+              "composite_armor_hull_10",
+              "composite_armor_hull_11",
+              "composite_armor_hull_12",
+              "composite_armor_hull_13",
+              "composite_armor_hull_14",
+              "composite_armor_hull_15"
             ]
           }
         }

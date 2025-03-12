@@ -2419,6 +2419,380 @@
       "dmPreset": "unshootable_objects"
     },
     {
+      "name": "africa_ruin_j",
+      "destroyedModelName": "africa_ruin_j_destr_phobj",
+      "destructionImpulse": 30000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "stopsBullets": false
+    },
+    {
+      "name": "african_awning_a",
+      "destroyedModelName": "african_awning_a_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_big",
+      "stopsBullets": false
+    },
+    {
+      "name": "african_awning_b",
+      "destroyedModelName": "african_awning_b_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "african_awning_c_dp_01",
+      "destroyedModelName": "african_awning_c_dp_01_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_big",
+      "stopsBullets": false
+    },
+    {
+      "name": "african_awning_c_dp_02",
+      "destroyedModelName": "african_awning_c_dp_02_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_big",
+      "stopsBullets": false
+    },
+    {
+      "name": "african_awning_d",
+      "destroyedModelName": "african_awning_d_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_big",
+      "stopsBullets": false
+    },
+    {
+      "name": "african_awning_e",
+      "destroyedModelName": "african_awning_e_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_big",
+      "stopsBullets": false
+    },
+    {
+      "name": "african_awning_f",
+      "destroyedModelName": "african_awning_f_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_big",
+      "stopsBullets": false
+    },
+    {
+      "name": "village_barn_a",
+      "destroyedModelName": "village_barn_a_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_wood_big"
+    },
+    {
+      "name": "village_barn_b_dp_01",
+      "destroyedModelName": "village_barn_b_dp_01_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_wood_big"
+    },
+    {
+      "name": "village_barn_b_dp_02",
+      "destroyedModelName": "village_barn_b_dp_02_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_wood_big"
+    },
+    {
+      "name": "wood_market_stall_a",
+      "destroyedModelName": "wood_market_stall_a_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_wood_small",
+      "stopsBullets": false
+    },
+    {
+      "name": "wood_market_stall_b",
+      "destroyedModelName": "wood_market_stall_b_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_wood_small",
+      "material": "transparentBeton",
+      "stopsBullets": false
+    },
+    {
+      "name": "wood_market_stall_c",
+      "destroyedModelName": "wood_market_stall_c_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_wood_small",
+      "material": "wood",
+      "stopsBullets": false,
+      "isParent": true
+    },
+    {
+      "name": "wood_market_stall_c_flowerpot_a",
+      "destroyedModelName": "wood_market_stall_c_flowerpot_a_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "material": "wood",
+      "stopsBullets": false,
+      "isParent": true
+    },
+    {
+      "name": "wood_market_stall_c_flowerpot_b",
+      "destroyedModelName": "wood_market_stall_c_flowerpot_b_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "material": "wood",
+      "stopsBullets": false,
+      "isParent": true
+    },
+    {
+      "name": "wood_market_stall_c_flowerpot_c",
+      "destroyedModelName": "wood_market_stall_c_flowerpot_c_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "material": "wood",
+      "stopsBullets": false,
+      "isParent": true
+    },
+    {
+      "name": "african_jug_a",
+      "destroyedModelName": "african_jug_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "african_jug_b",
+      "destroyedModelName": "african_jug_b_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "african_jug_c",
+      "destroyedModelName": "african_jug_c_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "african_jug_d",
+      "destroyedModelName": "african_jug_d_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "african_jug_e",
+      "destroyedModelName": "african_jug_e_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "european_barrel_d",
+      "destroyedModelName": "european_barrel_d_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "stopsBullets": false
+    },
+    {
+      "name": "european_barrel_e",
+      "destroyedModelName": "european_barrel_e_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "material": "transparentBeton",
+      "stopsBullets": false
+    },
+    {
+      "name": "european_barrel_pile_a",
+      "destroyedModelName": "european_barrel_pile_a_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_barrel_pile_b",
+      "destroyedModelName": "european_barrel_pile_b_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_barrel_pile_c",
+      "destroyedModelName": "european_barrel_pile_c_destr_phobj",
+      "destructionImpulse": 30000.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal"
+    },
+    {
+      "name": "european_barrel_small_b",
+      "destroyedModelName": "european_barrel_small_b_destr_phobj",
+      "destructionImpulse": 3000.0,
+      "fx": "ad_wood_small",
+      "material": "transparentBeton",
+      "stopsBullets": false
+    },
+    {
+      "name": "european_market_box_small_e",
+      "destroyedModelName": "european_market_box_a_destr_phobj",
+      "destructionImpulse": 100.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "canopy_a",
+      "destroyedModelName": "canopy_a_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "canopy_b",
+      "destroyedModelName": "canopy_b_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "canopy_c",
+      "destroyedModelName": "canopy_c_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "canopy_d",
+      "destroyedModelName": "canopy_d_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "canopy_e",
+      "destroyedModelName": "canopy_e_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "canopy_f",
+      "destroyedModelName": "canopy_f_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "canopy_g",
+      "destroyedModelName": "canopy_g_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "canopy_h",
+      "destroyedModelName": "canopy_h_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "european_wooden_cart_a",
+      "destroyedModelName": "european_wooden_cart_a_destr_phobj",
+      "destructionImpulse": 3000.0,
+      "fx": "ad_wood_small",
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "trough_a",
+      "destroyedModelName": "trough_a_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_wood_small"
+    },
+    {
+      "name": "wood_bench_a",
+      "destroyedModelName": "wood_bench_a_destr_phobj",
+      "destructionImpulse": 3000.0,
+      "fx": "ad_wood_small",
+      "material": "transparentBeton",
+      "stopsBullets": false
+    },
+    {
+      "name": "wood_debris_a",
+      "destroyedModelName": "wood_debris_a_destr_phobj",
+      "destructionImpulse": 30000.0,
+      "fx": "ad_wood_small",
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    {
+      "name": "wood_debris_d",
+      "destroyedModelName": "wood_debris_d_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_wood_small",
+      "material": "wood"
+    },
+    {
+      "name": "wood_debris_e",
+      "destroyedModelName": "wood_debris_e_destr_phobj",
+      "destructionImpulse": 30000.0,
+      "fx": "ad_wood_small",
+      "material": "wood"
+    },
+    {
+      "name": "wood_debris_f",
+      "destroyedModelName": "wood_debris_f_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_wood_small",
+      "material": "wood"
+    },
+    {
+      "name": "wood_ladder_c",
+      "destroyedModelName": "wood_ladder_c_destr_phobj",
+      "destructionImpulse": 3000.0,
+      "fx": "ad_wood_small",
+      "material": "transparentBeton",
+      "stopsBullets": false
+    },
+    {
+      "name": "desert_well_a_rocker_dp_01",
+      "destroyedModelName": "desert_well_a_rocker_dp_01_destr_phobj",
+      "destructionImpulse": 100.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "stopsBullets": false
+    },
+    {
+      "name": "wood_hedgehog_a",
+      "destroyedModelName": "wood_hedgehog_a_destr_phobj",
+      "destructionImpulse": 30000.0,
+      "fx": "ad_wood_small",
+      "material": "wood"
+    },
+    {
+      "name": "wood_hedgehog_b",
+      "destroyedModelName": "wood_hedgehog_b_destr_phobj",
+      "destructionImpulse": 40000.0,
+      "fx": "ad_wood_small",
+      "material": "wood"
+    },
+    {
       "name": "iceberg_chunk_1a",
       "destroyedModelName": "iceberg_chunk_1a_destr_phobj",
       "updateDist": 1000.0,
@@ -9734,6 +10108,26 @@
     },
     {
       "name": "papers_debris_c",
+      "immortal": true
+    },
+    {
+      "name": "debris_snow_trash_large",
+      "immortal": true
+    },
+    {
+      "name": "debris_snow_trash_large_b",
+      "immortal": true
+    },
+    {
+      "name": "debris_snow_trash_large_c",
+      "immortal": true
+    },
+    {
+      "name": "debris_snow_trash_medium",
+      "immortal": true
+    },
+    {
+      "name": "debris_snow_trash_small",
       "immortal": true
     },
     {
@@ -19064,6 +19458,13 @@
       "impulseThreshold": 10.0,
       "fx": "ad_wood_snow_big",
       "fxScale": 2.0,
+      "material": "wood"
+    },
+    "desert_water_tower_b": {
+      "physRes": "desert_water_tower_b_destr_phobj",
+      "hp": 20.0,
+      "impulseThreshold": 10.0,
+      "fx": "ad_dust_stucco",
       "material": "wood"
     },
     "tool_brezent_a": {

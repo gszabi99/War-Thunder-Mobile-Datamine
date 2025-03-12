@@ -54,6 +54,9 @@
   "hideNodesInDmg": {
     "node": "flag"
   },
+  "aimNodesNames": {
+    "node": "funnel_01_dm"
+  },
   "default_skin_tomoe": {
     "replace_tex": [
       {

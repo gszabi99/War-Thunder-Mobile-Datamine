@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let utf8 = require("utf8")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { bgShaded, bgShadedDark } = require("%rGui/style/backgrounds.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { dropDownMenu } = require("%rGui/components/dropDownMenu.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
@@ -14,68 +14,8 @@ let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { btnBUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
-let aTitleScaleDelayTime = 0.05
-let aTitleScaleUpTime = 0.15
-let aTitleScaleDownTime = 0.15
 let defColor = 0xFFFFFFFF
 let componentWidth = hdpx(780)
-
-let bgGradient = modalWndBg.__merge({ size = flex() })
-let bgGradientComp = bgGradient.__merge({
-  animations = [ { prop = AnimProp.scale, from = [1, 0], to = [1, 1],
-    duration = 0.2,
-    play = true, trigger = {} } ]
-})
-
-let mkTapToContinueText = @(startDelay) {
-  rendObj = ROBJ_TEXT
-  color = 0xFFE0E0E0
-  text = loc("TapAnyToContinue")
-  padding = hdpx(30)
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  behavior = Behaviors.Button
-  onClick = close
-  transform = {}
-  animations = [
-    { prop = AnimProp.opacity, from = 0, to = 0,
-      duration = startDelay + aTitleScaleDelayTime + aTitleScaleUpTime,
-      play = true, trigger = {} }
-    { prop = AnimProp.opacity, from = 0, to = 1,
-      delay = startDelay + aTitleScaleDelayTime + aTitleScaleUpTime, duration = aTitleScaleDownTime,
-      play = true, trigger = {} }
-  ]
-}.__update(fontMedium)
-
-let mkMessageWnd = @(title, description) {
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  children = [
-    bgGradientComp
-    {
-      flow = FLOW_VERTICAL
-      valign = ALIGN_TOP
-      stopMouse = true
-      children = [
-        modalWndHeader(title)
-        {
-          size = SIZE_TO_CONTENT
-          halign = ALIGN_CENTER
-          valign = ALIGN_CENTER
-          padding = hdpx(100)
-          children = {
-            rendObj = ROBJ_TEXTAREA
-            behavior = Behaviors.TextArea
-            maxWidth = hdpx(800)
-            halign = ALIGN_CENTER
-            text = description
-          }.__update(fontMedium)
-        }
-        mkTapToContinueText(0.5)
-      ]
-    }
-  ]
-}
 
 function submitImpl() {
   removeModalWindow(SUCCESS_WND_UID)
@@ -202,22 +142,23 @@ let content = @()
     ]
   })
 
-let mkMsgModal = @(key, title, description) addModalWindow(bgShadedDark.__merge({
-  key
-  size = flex()
-  onClick = close
-  children = mkMessageWnd(title, description)
-  animations = wndSwitchAnim
-}))
-
 isReportStatusSuccessed.subscribe(function(v) {
   if (v && selectedPlayerForReport.get())
-    mkMsgModal(SUCCESS_WND_UID, loc("support/form/report/success"), loc("support/form/report/successDescription"))
+    openMsgBox({
+      uid = SUCCESS_WND_UID
+      title = loc("support/form/report/success")
+      text = loc("support/form/report/successDescription")
+    })
+
 })
 
 isReportStatusRejected.subscribe(function(v) {
   if (v && selectedPlayerForReport.get())
-    mkMsgModal(REJECT_WND_UID, loc("support/form/report/reject"), loc("support/form/report/rejectDescription"))
+    openMsgBox({
+      uid = REJECT_WND_UID
+      title = loc("support/form/report/reject")
+      text = loc("support/form/report/rejectDescription")
+    })
 })
 
 selectedPlayerForReport.subscribe(function(v) {

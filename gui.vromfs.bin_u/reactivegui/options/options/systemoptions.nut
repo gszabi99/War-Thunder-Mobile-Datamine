@@ -7,6 +7,7 @@ let { isGameAutoUpdateVisible, isGameAutoUpdateEnabled, gameAutoUpdateList } = r
 let { isBackgroundUpdateVisible, isBackgroundUpdateEnabled, backgroundUpdateList } = require("backgroundUpdateOption.nut")
 let { allow_background_resource_update, allow_apk_update } = require("%appGlobals/permissions.nut")
 let { reset_gui_options } = require("controlsOptions")
+let { reset_volumes } = require("soundOptions")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 let autoUpdateSetting = {
@@ -45,6 +46,7 @@ let resetButton = @() openMsgBox({
     { id = "cancel", isCancel = true }
     { id = "ok", styleId = "PRIMARY",cb = function() {
       reset_gui_options()
+      reset_volumes()
       optionsVersion(optionsVersion.get() + 1)
     } }
   ]

@@ -104,6 +104,10 @@ let nickFrames = {
   leopard_head = @(n) $"⚏{n}⚐"
   trap = @(n) $"⚑{n}⚒"
   rocket_apfsds = @(n) $"⚓{n}⚔"
+  buffalo_head = @(n) $"⚙{n}⚙"
+  arabic_sword = @(n) $"⚚{n}⚛"
+  genie_lamp = @(n) $"⚜{n}⚝"
+  turban = @(n) $"⚞{n}⚞"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

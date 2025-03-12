@@ -142,6 +142,7 @@ let skinsByTag = {
     "usa_modern_red_desert"
     "uk_khalid"
     "uk_camo_light_stone_light_grey_slate_grey"
+    "cn_camo_sand_ltgreen_dkgreen_spots"
   ],
 
   [WINTER] = [
@@ -303,6 +304,9 @@ let skinsByTag = {
     "germ_bf_109g_2"
     "germ_bf_109g_14"
     "germ_bf_109z"
+    "germ_bf_109k_4_a"
+    "germ_bf_109k_4_le_c"
+    "germ_bf_109k_4_spring45_a"
     "germ_bf_110c_6_c"
     "germ_bf_110f_2"
     "germ_bf_110g_2"

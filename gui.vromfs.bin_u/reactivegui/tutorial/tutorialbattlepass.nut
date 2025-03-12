@@ -9,7 +9,8 @@ let { receiveUnlockRewards, unlockInProgress } = require("%rGui/unlocks/unlocks.
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
-let { openBattlePassWnd, battlePassOpenCounter, tutorialFreeMarkIdx } = require("%rGui/battlePass/battlePassState.nut")
+let { openBattlePassWnd, battlePassOpenCounter, tutorialFreeMarkIdx, isBpSeasonActive
+} = require("%rGui/battlePass/battlePassState.nut")
 let { sendBqQuestsTask, sendBqQuestsStage } = require("%rGui/quests/bqQuests.nut")
 let { calcStageCompletion } = require("%rGui/quests/questBar.nut")
 let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, questsCfg, questsBySection,
@@ -63,6 +64,7 @@ let isFullProgressBar = Computed(function() {
 let needShowTutorial = Computed(@() almostReadyToShowTutorial.get() && !isFullProgressBar.get())
 let canStartTutorial = Computed(@() !hasModalWindows.get()
   && isMainMenuTopScene.get()
+  && isBpSeasonActive.get()
   && !isTutorialActive.get())
 let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
@@ -254,6 +256,8 @@ register_command(
       return finishTutorial()
     else if (!hasRewardsToReceive.get())
       console_print("Unable to start tutorial, because of no avaiable rewards to get") //warning disable: -forbidden-function
+    else if (!isBpSeasonActive.get())
+      console_print("Unable to start tutorial, because of no active battle pass season") //warning disable: -forbidden-function
     else
       isDebugMode.set(true)
   }

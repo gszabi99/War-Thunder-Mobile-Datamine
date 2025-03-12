@@ -52,18 +52,6 @@
   "minRelativeTankCameraThreshold": 1.1,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "dm_for_shop": {
-    "armorThicknessFront": [
-      0.2,
-      0.05,
-      0.75
-    ],
-    "armorThicknessSide": [
-      0.1,
-      0.0,
-      0.9
-    ]
-  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -2423,6 +2411,18 @@
   },
   "battleHideNodes": {
     "n": "details"
+  },
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "armorThicknessSide": [
+      0.0,
+      0.0,
+      1.0
+    ]
   },
   "commonWeapons": {
     "Weapon": [

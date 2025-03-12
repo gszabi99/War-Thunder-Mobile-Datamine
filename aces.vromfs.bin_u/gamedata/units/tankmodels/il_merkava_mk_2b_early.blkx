@@ -59,6 +59,18 @@
     0.0,
     -4.0
   ],
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.5,
+      0.05,
+      0.45
+    ],
+    "armorThicknessSide": [
+      0.25,
+      0.0,
+      0.75
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -3653,6 +3665,173 @@
   },
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "us_camo_olive*",
+      "to": "isr_camo_threecolor*"
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        1.59733,
+        -6.98216e-8,
+        -2.26995e-14,
+        -2.6872
+      ],
+      "decal0Line1": [
+        -6.98216e-8,
+        -1.59733,
+        -1.97354e-7,
+        2.08221
+      ],
+      "decal0Line2": [
+        -1.59733,
+        -6.98216e-8,
+        2.26995e-14,
+        3.6872
+      ],
+      "decal0Line3": [
+        6.98216e-8,
+        -1.59733,
+        1.97354e-7,
+        2.08221
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.0,
+        1.23552e-7,
+        -1.0,
+        -1.94918
+      ],
+      "decal0CPNormDepth1": [
+        0.0,
+        1.23552e-7,
+        1.0,
+        -1.94918
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.626044
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.2,
+      "decal0Tex": "il_first_company",
+      "decal1Line0": [
+        2.65841,
+        -1.16205e-7,
+        0.0239814,
+        4.90786
+      ],
+      "decal1Line1": [
+        -0.0000841766,
+        -2.6585,
+        0.00931835,
+        6.36182
+      ],
+      "decal1Line2": [
+        -2.65841,
+        -1.16205e-7,
+        0.0239814,
+        -3.90786
+      ],
+      "decal1Line3": [
+        -0.0000839442,
+        -2.6585,
+        -0.00931836,
+        6.36182
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        0.00902052,
+        -0.00350524,
+        -0.999953,
+        -1.20222
+      ],
+      "decal1CPNormDepth1": [
+        0.00902052,
+        -0.00350524,
+        0.999953,
+        -1.20222
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.376149
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.285365,
+      "decal1Tex": "il_alef_decal",
+      "decal2Line0": [
+        2.65211,
+        -1.15926e-7,
+        0.000464001,
+        4.23411
+      ],
+      "decal2Line1": [
+        -0.00000513399,
+        -2.65196,
+        0.0286823,
+        6.37598
+      ],
+      "decal2Line2": [
+        -2.65211,
+        -1.15924e-7,
+        0.000463993,
+        -3.23411
+      ],
+      "decal2Line3": [
+        -0.00000490214,
+        -2.65196,
+        -0.0286823,
+        6.37598
+      ],
+      "decal2HaveCP": true,
+      "decal2CPNormDepth": [
+        0.000174943,
+        -0.0108149,
+        -0.999942,
+        -1.20009
+      ],
+      "decal2CPNormDepth1": [
+        0.000174943,
+        -0.0108149,
+        0.999942,
+        -1.20009
+      ],
+      "decal2RotScale": [
+        1.5708,
+        0.377058
+      ],
+      "decal2Mirrored": false,
+      "decal2Wrap": false,
+      "decal2Abs": false,
+      "decal2OppositeMirrored": false,
+      "decal2WidthBox": 0.291131,
+      "decal2Tex": "israel_numbers_1"
+    }
+  },
+  "vehicleSkins": {
+    "desert": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "isr_camo_sandgray*"
+      },
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
+      }
+    }
   },
   "smokeScreenExhaustEmitters": {
     "emitter": [

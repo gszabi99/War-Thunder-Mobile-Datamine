@@ -2003,5 +2003,18 @@
       "name": "bf-109k-4_prem_default",
       "blk": "gameData/flightModels/weaponPresets/Bf-109K-4_default.blk"
     }
+  },
+  "default_skin": {
+    "name": "prem",
+    "replace_tex": [
+      {
+        "from": "bf_109k_4_a*",
+        "to": "bf_109k_4_le_c*"
+      },
+      {
+        "from": "bf_109k_4_n*",
+        "to": "bf_109k_4_le_n*"
+      }
+    ]
   }
 }

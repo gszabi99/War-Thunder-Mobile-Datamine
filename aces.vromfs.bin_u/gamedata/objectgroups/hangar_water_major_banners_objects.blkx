@@ -6,7 +6,7 @@
   ],
   "node": [
     {
-      "name": "%major_banner_buoy_b",
+      "name": "%major_banner_buoy_a",
       "tm": [
         [
           -0.991678,
@@ -32,7 +32,7 @@
       "forcePos": true
     },
     {
-      "name": "%major_banner_buoy_b",
+      "name": "%major_banner_buoy_a",
       "tm": [
         [
           1.0,

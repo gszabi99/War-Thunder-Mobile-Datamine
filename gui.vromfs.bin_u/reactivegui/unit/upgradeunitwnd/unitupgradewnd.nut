@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkUnitBonuses, mkBonusTiny } = require("%rGui/unit/components/unitInfoComps.nut")
 let { campConfigs, curCampaign} = require("%appGlobals/pServer/campaign.nut")
-let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { premiumTextColor, userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { unitPlateHeight, unitPlateWidth, mkUnitBg, mkUnitImage, mkUnitTexts,
   mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
@@ -77,9 +77,12 @@ let mkLevelMark = @(unit) {
       borderColor = unit?.isUpgraded ? 0xFFFFB70B : 0xFF7EE2FF
       children = {
         transform = { rotate = -45 }
-        children = {
-          rendObj = ROBJ_TEXT,
-          text = !unit?.isUpgraded ? 0 : unit?.levels.len()
+        children = @() {
+          watch = campMyUnits
+          rendObj = ROBJ_TEXT
+          text = !unit?.isUpgraded
+            ? campMyUnits.get()?[unit.name].level ?? 0
+            : unit?.levels.len()
         }.__update(fontTiny)}
     }
   })
@@ -153,10 +156,10 @@ let mkCardContent = @(unit) {
 function offerCards() {
   let watch = [campUnitsCfg, campConfigs, upgradeCommonUnitName, buyExpUnitName, buyLevelUpUnitName]
   let unit = campUnitsCfg.get()?[upgradeCommonUnitName.get() ?? buyExpUnitName.get() ?? buyLevelUpUnitName.get()]
-  let upgradedUnit = unit?.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
-    { isUpgraded = true })
   if (unit == null)
     return { watch }
+  let upgradedUnit = unit?.__merge(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {}
+    { isUpgraded = true })
   return modalWndBg.__merge({
     flow = FLOW_VERTICAL
     onClick = close

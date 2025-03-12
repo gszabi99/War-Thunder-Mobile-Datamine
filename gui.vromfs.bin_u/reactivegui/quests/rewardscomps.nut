@@ -93,21 +93,18 @@ function mkProgressBarReward(slots, children, onClick) {
   }
 }
 
-let rewardProgressBarCtor = @(r, isUnlocked, claimReward, isRewardInProgress) {
+let rewardProgressBarCtor = @(r, isUnlocked, onClick, canReceiveReward, isRewardInProgress) {
   children = [
-    mkProgressBarReward(r?.slots ?? 1, currencyProgressBarRewardCtor(r, isUnlocked, claimReward != null),
-      isRewardInProgress ? null
-        : !isUnlocked ? @() anim_start("eventProgressStats")
-        : claimReward)
+    mkProgressBarReward(r?.slots ?? 1, currencyProgressBarRewardCtor(r, isUnlocked, canReceiveReward), onClick)
     {
       hplace = ALIGN_RIGHT
       margin = hdpx(7)
-      children = !isRewardInProgress && claimReward != null ? priorityUnseenMark : null
+      children = !isRewardInProgress && canReceiveReward ? priorityUnseenMark : null
     }
     {
       size = flex()
       halign = ALIGN_RIGHT
-      children = isRewardInProgress && claimReward != null ? spinner : null
+      children = isRewardInProgress && canReceiveReward ? spinner : null
     }
   ]
 }
