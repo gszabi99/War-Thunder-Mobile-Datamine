@@ -2760,8 +2760,8 @@
   "dm_for_shop": {
     "armorThicknessFront": [
       0.0,
-      0.0,
-      1.0
+      0.05,
+      0.95
     ],
     "armorThicknessSide": [
       0.0,
@@ -3566,15 +3566,7 @@
   "default_skin": {
     "replace_tex": {
       "from": "us_camo_olive*",
-      "to": "us_camo_modern_green*"
-    }
-  },
-  "vehicleSkins": {
-    "winter": {
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "us_camo_modern_winter_tan*"
-      }
+      "to": "us_camo_modern_desert_tan*"
     }
   },
   "defaultDecals": {
@@ -3582,11 +3574,66 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
-    },
-    "winter": {
+    }
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "us_camo_olive*",
+      "to": "usa_modern_summer_verdant*"
+    }
+  },
+  "upgradedDecals": {
+    "upgraded": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
-      "camo_rotation": 0.0
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -0.036353,
+        -1.98161,
+        -3.02766e-7,
+        3.51341
+      ],
+      "decal0Line1": [
+        -1.98161,
+        0.036353,
+        5.55427e-9,
+        2.57519
+      ],
+      "decal0Line2": [
+        0.036353,
+        -1.98161,
+        3.02766e-7,
+        3.43527
+      ],
+      "decal0Line3": [
+        1.98161,
+        0.036353,
+        -5.55427e-9,
+        -1.68432
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.0,
+        1.52787e-7,
+        -1.0,
+        -1.53543
+      ],
+      "decal0CPNormDepth1": [
+        0.0,
+        1.52787e-7,
+        1.0,
+        -1.53543
+      ],
+      "decal0RotScale": [
+        3.15994,
+        0.504554
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.287457,
+      "decal0Tex": "usa_commander_a_co"
     }
   }
 }

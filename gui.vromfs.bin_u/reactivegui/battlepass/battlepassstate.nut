@@ -112,6 +112,7 @@ function gatherUnlockStageInfo(unlock, isPaid, isActive, curStageV, maxStageV) {
   let { name = "", stages = [], lastRewardedStage = -1,
     hasReward = false, startStageLoop = 1, periodic = false,
   } = unlock
+  let loopIterationSize = periodic ? max(1, stages.len() - startStageLoop + 1) : 0
   return stages.map(function(stage, idx) {
     let { progress = 0, rewards = {} } = stage
     local viewProgress = progress
@@ -119,18 +120,19 @@ function gatherUnlockStageInfo(unlock, isPaid, isActive, curStageV, maxStageV) {
     local isReceived = idx < lastRewardedStage
     let isLoop = periodic && idx >= startStageLoop - 1
     if (isLoop) {
-      let loopIterationSize = max(1, stages.len() - startStageLoop + 1)
-
       let startStageLoopProgress = maxStageV - loopIterationSize + 1
 
       let loopIndexByCurStage = max(0, (curStageV - startStageLoopProgress) / loopIterationSize)
-      let progressByCurStage = progress + loopIterationSize * loopIndexByCurStage
+      let addProgressByCurStage = loopIterationSize * loopIndexByCurStage
+      let progressByCurStage = progress + addProgressByCurStage
       let prevProgressByCurStage = max(progress, progressByCurStage - loopIterationSize)
 
       let lastLoopRewardedStage = max(0, lastRewardedStage - startStageLoop + 1)
 
-      viewProgress = (prevProgressByCurStage - startStageLoopProgress > lastLoopRewardedStage) && (curStageV < progressByCurStage)
-        ? prevProgressByCurStage
+      let canReceiveOnlyFromPrevIterations = (prevProgressByCurStage - startStageLoopProgress > lastLoopRewardedStage)
+        && (curStageV < progressByCurStage)
+      viewProgress = canReceiveOnlyFromPrevIterations ? prevProgressByCurStage
+        : (lastLoopRewardedStage  - addProgressByCurStage == 1) ? progressByCurStage + loopIterationSize
         : progressByCurStage
       loopMultiply = 1 + (viewProgress - startStageLoopProgress - lastLoopRewardedStage) / loopIterationSize
       isReceived = viewProgress - startStageLoopProgress < lastLoopRewardedStage
@@ -142,7 +144,7 @@ function gatherUnlockStageInfo(unlock, isPaid, isActive, curStageV, maxStageV) {
       unlockName = name
       isPaid
       isReceived
-      canBuyLevel = !isLoop && (curStageV + 1) == viewProgress
+      canBuyLevel = ((curStageV + 1) == viewProgress) || (isLoop && curStageV >= maxStageV && loopIterationSize == 1)
       canReceive = !isReceived && isActive && hasReward && curStageV >= viewProgress
     }
   })
@@ -207,7 +209,7 @@ let mkBpStagesList = @() Computed(function() {
 let selectedStage = mkWatched(persist, "bpSelectedStage", 0)
 
 function getNotReceivedInfo(unlock, maxProgress) {
-  let { stages = [], name = "", lastRewardedStage = 0 } = unlock
+  let { stages = [], name = "", lastRewardedStage = 0, periodic = false, startStageLoop = 1 } = unlock
   local stage = null
   local finalStage = null
   for (local s = max(lastRewardedStage, 0); s < stages.len(); s++) {
@@ -217,9 +219,17 @@ function getNotReceivedInfo(unlock, maxProgress) {
     finalStage = s + 1
     stage = stage ?? (s + 1)
   }
-  if (stage == null)
-    return null
-  return { unlockName = name, stage, finalStage }
+  if (periodic) {
+    let { progress = null } = stages.findvalue(@(_, s) s + 1 == startStageLoop)
+    if (progress != null) {
+      let diff = maxProgress - progress
+      for (local s = max(finalStage ?? 0, lastRewardedStage); s < stages.len() + diff; s++) {
+        finalStage = s + 1
+        stage = stage ?? (s + 1)
+      }
+    }
+  }
+  return stage == null ? null : { unlockName = name, stage, finalStage }
 }
 
 function receiveBpRewardsImpl(toReceive) {

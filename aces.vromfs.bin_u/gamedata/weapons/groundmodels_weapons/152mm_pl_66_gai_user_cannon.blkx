@@ -20,12 +20,7 @@
   "bullets": -1,
   "bulletsCluster": 1,
   "fxType": "muzzle_ground_150mm_brake",
-  "fxGroundDust": "",
-  "fxSandDust": "",
-  "fxSnowDust": "",
-  "fxConcreteDust": "",
   "fxWaterShockWave": "dust_waterwave_big",
-  "fxTypeEjector": "smoke_gunpowder_ejector",
   "ejectionFxSpeedRange": [
     25.0,
     45.0

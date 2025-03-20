@@ -41,6 +41,7 @@ let { optTankMoveControlType, gearDownOnStopButtonTouch, optDoublePrimaryGuns } 
 //let { tankRrepairButtonCtor } =
 require("%rGui/hud/buttons/repairButton.nut") //only to disable warning
 //let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
+let { isUnitAlive } = require("%rGui/hudState.nut")
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.value) && !isGamepad.value)
@@ -125,6 +126,7 @@ return {
     {
       defTransform = actionBarTransform(0),
       shouldShowDisabled = true
+      isVisibleInBattle = isUnitAlive
     })
 
 /*  abToolkit = {
@@ -134,7 +136,10 @@ return {
     priority = Z_ORDER.STICK
   }*/
   abToolkit = withActionBarButtonCtor(EII_TOOLKIT_WITH_MEDICAL, TANK,
-    { defTransform = actionBarTransform(1) })
+    {
+      defTransform = actionBarTransform(1)
+      isVisibleInBattle = isUnitAlive
+    })
   abSmokeGrenade = withAnyActionBarButtonCtor([ EII_SMOKE_GRENADE, EII_SMOKE_SCREEN ], TANK,
     { defTransform = actionBarTransform(2) })
   abArtilleryTarget = withActionBarButtonCtor(EII_ARTILLERY_TARGET, TANK,

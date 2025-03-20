@@ -113,8 +113,11 @@ function selectSlot(selectedIdx) {
     let index = v.findindex(@(idx) idx == selectedIdx)
     if (index != null)
       v.remove(index)
-    else if (v.len() < currentTicketCounts.get().availableVariants)
+    else {
       v.append(selectedIdx)
+      if (v.len() > currentTicketCounts.get().availableVariants)
+        v.remove(0)
+    }
   })
 }
 

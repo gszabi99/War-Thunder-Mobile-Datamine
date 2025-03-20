@@ -1719,160 +1719,6 @@
       "preset": "default_common"
     }
   },
-  "WeaponSlots": {
-    "HideNodes": {
-      "node": [
-        "pylon_cannon_l",
-        "pylon_cannon_r",
-        "flare4",
-        "flare5",
-        "pylon_bomb1",
-        "pylon_bomb2",
-        "pylon_cannon_r6_l",
-        "pylon_cannon_r6_r",
-        "flare6",
-        "flare7"
-      ]
-    },
-    "HideDmParts": {
-      "node": [
-        "cannon3_dm",
-        "cannon4_dm",
-        "cover5_dm",
-        "cover6_dm"
-      ]
-    },
-    "WeaponSlot": [
-      {
-        "index": 0,
-        "WeaponPreset": {
-          "name": "default_common",
-          "Weapon": [
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunMG131.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "dm": "mgun1_dm",
-              "bullets": 300,
-              "spread": 1.0,
-              "counterIndex": 1
-            },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/gunMG131.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "dm": "mgun2_dm",
-              "bullets": 300,
-              "spread": 1.0,
-              "traceOffset": 1,
-              "counterIndex": 2
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonMK108.blk",
-              "emitter": "flare3",
-              "flash": "flare3",
-              "dm": "cannon2_dm",
-              "bullets": 65,
-              "spread": 1.0
-            }
-          ],
-          "hideDmParts": {
-            "node": "cannon1_dm"
-          }
-        }
-      },
-      {
-        "index": 1,
-        "tier": 7,
-        "order": 1,
-        "WeaponPreset": {
-          "iconType": "gun_20mm",
-          "name": "cannons",
-          "reqModification": "Bf-109_R4",
-          "HideNodes": {
-            "node": [
-              "pylon_cannon_empty_l",
-              "pylon_cannon_empty_r"
-            ]
-          },
-          "Weapon": {
-            "cmOffset": [
-              -1.2,
-              0.0,
-              0.0
-            ],
-            "trigger": "additional gun",
-            "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
-            "emitter": "flare6",
-            "flash": "flare6",
-            "shell": "emtr_shellrejection3",
-            "dm": "cannon3_dm",
-            "bullets": 135,
-            "spread": 1.5,
-            "traceOffset": 1,
-            "external": true
-          }
-        }
-      },
-      {
-        "index": 2,
-        "tier": 6,
-        "order": 3,
-        "WeaponPreset": {
-          "iconType": "bomb_500kg_group",
-          "name": "sc500",
-          "reqModification": "Bf-110C-4_SC500",
-          "ShowNodes": {
-            "node": "pylon_bomb1"
-          },
-          "Weapon": {
-            "trigger": "bombs",
-            "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
-            "emitter": "bomb1",
-            "bullets": 1,
-            "external": true,
-            "separate": true
-          }
-        }
-      },
-      {
-        "index": 3,
-        "tier": 5,
-        "order": 2,
-        "WeaponPreset": {
-          "iconType": "gun_20mm",
-          "name": "cannons",
-          "reqModification": "Bf-109_R4",
-          "HideNodes": {
-            "node": [
-              "pylon_cannon_empty_l",
-              "pylon_cannon_empty_r"
-            ]
-          },
-          "Weapon": {
-            "cmOffset": [
-              -1.2,
-              0.0,
-              0.0
-            ],
-            "trigger": "additional gun",
-            "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
-            "emitter": "flare7",
-            "flash": "flare7",
-            "shell": "emtr_shellrejection4",
-            "dm": "cannon4_dm",
-            "bullets": 135,
-            "spread": 1.5,
-            "traceOffset": 2,
-            "external": true
-          }
-        }
-      }
-    ]
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -2013,6 +1859,193 @@
         "name": "Bf_109K4_cannon",
         "blk": "weaponPresets/bf-109k-4_cannons.blk",
         "reqModification": "Bf-109_R4"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "HideNodes": {
+      "node": [
+        "pylon_cannon_l",
+        "pylon_cannon_r",
+        "flare4",
+        "flare5",
+        "pylon_bomb1",
+        "pylon_bomb2",
+        "pylon_cannon_r6_l",
+        "pylon_cannon_r6_r",
+        "flare6",
+        "flare7"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "cannon3_dm",
+        "cannon4_dm",
+        "cover5_dm",
+        "cover6_dm"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunMG131.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "mgun1_dm",
+              "bullets": 300,
+              "spread": 1.0,
+              "counterIndex": 1
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunMG131.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "mgun2_dm",
+              "bullets": 300,
+              "spread": 1.0,
+              "traceOffset": 1,
+              "counterIndex": 2
+            }
+          ],
+          "hideDmParts": {
+            "node": "cannon1_dm"
+          }
+        }
+      },
+      {
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "gun_12mm",
+          "name": "cannons",
+          "reqModification": "Bf-109_R4",
+          "HideNodes": {
+            "node": [
+              "pylon_cannon_empty_l",
+              "pylon_cannon_empty_r"
+            ]
+          },
+          "ShowNodes": {
+            "node": "pylon_cannon_r6_l"
+          },
+          "Weapon": {
+            "cmOffset": [
+              -1.2,
+              0.0,
+              0.0
+            ],
+            "trigger": "machine gun",
+            "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
+            "emitter": "flare6",
+            "flash": "flare6",
+            "shell": "emtr_shellrejection3",
+            "dm": "cannon3_dm",
+            "bullets": 135,
+            "spread": 1.5,
+            "traceOffset": 1,
+            "external": true
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 6,
+        "order": 3,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "bomb_500kg",
+          "name": "sc500",
+          "reqModification": "Bf-110C-4_SC500",
+          "ShowNodes": {
+            "node": "pylon_bomb1"
+          },
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+            "emitter": "bomb1",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          }
+        }
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 4,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "gun_20mm",
+            "name": "mg131",
+            "isDefault": true,
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonMG15120.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon1_dm",
+              "bullets": 200,
+              "spread": 1.0
+            }
+          },
+          {
+            "iconType": "gun_30mm",
+            "name": "mk108",
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonMK108.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon2_dm",
+              "bullets": 65,
+              "spread": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 4,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "gun_12mm",
+          "name": "cannons",
+          "reqModification": "Bf-109_R4",
+          "HideNodes": {
+            "node": [
+              "pylon_cannon_empty_l",
+              "pylon_cannon_empty_r"
+            ]
+          },
+          "ShowNodes": {
+            "node": "pylon_cannon_r6_r"
+          },
+          "Weapon": {
+            "cmOffset": [
+              -1.2,
+              0.0,
+              0.0
+            ],
+            "trigger": "machine gun",
+            "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
+            "emitter": "flare7",
+            "flash": "flare7",
+            "shell": "emtr_shellrejection4",
+            "dm": "cannon4_dm",
+            "bullets": 135,
+            "spread": 1.5,
+            "traceOffset": 2,
+            "external": true
+          }
+        }
       }
     ]
   },

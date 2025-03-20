@@ -27,6 +27,7 @@ let { clusterStats } = require("%scripts/matching/optimalClusters.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { get_game_version_str, get_base_game_version_str } = require("app")
 let { isInSquad } = require("%appGlobals/squadState.nut")
+let { wasBattleDataApplied } = require("%scripts/battleData/battleData.nut")
 
 let OPT_GRAPHICS_QUALITY = addLocalUserOption("OPT_GRAPHICS_QUALITY")
 let OPT_FPS = addLocalUserOption("OPT_FPS")
@@ -129,7 +130,10 @@ function onFrameTimes(evt, _eid, _comp) {
     cluster = lastCluster.value
     clusters_rtt = ",".join(clusterStats.value.map(@(c)
       ":".join([ c.clusterId, c.hostsRTT == null ? null : round(c.hostsRTT).tointeger()], true)))
-    campaign = battleCampaign.get() != "" ? battleCampaign.get() : (battleResult.get()?.campaign ?? "")
+    campaign = !wasBattleDataApplied.get() ? ""
+      : battleCampaign.get() != "" ? battleCampaign.get()
+      : (battleResult.get()?.campaign ?? "")
+    wasBattleDataApplied = wasBattleDataApplied.get()
     mission = get_current_mission_name()
     fpsLimit = get_gui_option(OPT_FPS)
     videoSetting = get_gui_option(OPT_GRAPHICS_QUALITY)

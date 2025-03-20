@@ -38,7 +38,7 @@ isBackgroundUpdateEnabled.subscribe(@(v) isAsked.get() ? doAction(v)
             updater_worker_stop()
           }
         }
-        { id = "download", styleId = "PRIMARY", isDefault = true,
+        { id = "allow", styleId = "PRIMARY", isDefault = true,
           function cb() {
             isAsked.set(true)
             updater_worker_restart_with_time()

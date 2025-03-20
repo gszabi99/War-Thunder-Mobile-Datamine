@@ -3390,29 +3390,124 @@
   "enabled_modifications": {
     "tank_smoke_screen_system_mod": true
   },
-  "nightVision": {
-    "driverIr": {
-      "resolution": [
-        800,
-        600
-      ],
-      "lightMult": 5.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.2
-    }
-  },
-  "user_skin": {
-    "name": "m1_abrams",
-    "replace_tex": {
-      "from": "us_camo_olive*",
-      "to": "us_camo_modern_green*"
-    }
-  },
   "default_skin": {
-    "name": "default",
     "replace_tex": {
       "from": "us_camo_olive*",
-      "to": "us_camo_modern_green*"
+      "to": "us_camo_modern_desert_tan*"
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "us_camo_olive*",
+      "to": "usa_modern_summer_verdant*"
+    }
+  },
+  "upgradedDecals": {
+    "upgraded": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        1.32801,
+        -5.80493e-8,
+        -2.84535e-7,
+        -0.61176
+      ],
+      "decal0Line1": [
+        -5.80497e-8,
+        -1.32801,
+        -0.00000147468,
+        1.91071
+      ],
+      "decal0Line2": [
+        -1.32801,
+        -5.80493e-8,
+        -2.84535e-7,
+        1.61176
+      ],
+      "decal0Line3": [
+        5.8049e-8,
+        -1.32801,
+        0.00000147468,
+        1.91071
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -2.14256e-7,
+        0.00000111044,
+        -1.0,
+        -1.82917
+      ],
+      "decal0CPNormDepth1": [
+        -2.14256e-7,
+        0.00000111044,
+        1.0,
+        -1.82917
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.753004
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.200001,
+      "decal0Tex": "usa_3rd_plt_a_co",
+      "decal1Line0": [
+        -1.32823,
+        -5.80589e-8,
+        7.55013e-14,
+        1.87302
+      ],
+      "decal1Line1": [
+        5.80589e-8,
+        -1.32823,
+        -1.03642e-7,
+        1.90534
+      ],
+      "decal1Line2": [
+        1.32823,
+        -5.80589e-8,
+        9.43766e-14,
+        -0.873022
+      ],
+      "decal1Line3": [
+        -5.80589e-8,
+        -1.32823,
+        1.03642e-7,
+        1.90534
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        6.19991e-14,
+        -7.80297e-8,
+        1.0,
+        -1.829
+      ],
+      "decal1CPNormDepth1": [
+        6.19991e-14,
+        -7.80297e-8,
+        -1.0,
+        -1.829
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.75288
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.200001,
+      "decal1Tex": "usa_3rd_plt_a_co"
     }
   },
   "smokeScreenExhaustEmitters": {

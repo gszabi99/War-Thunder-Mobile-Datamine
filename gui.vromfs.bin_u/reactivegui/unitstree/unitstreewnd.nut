@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { defer } = require("dagor.workcycle")
 let { abs } = require("math")
+let { buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { isUnitsTreeOpen, closeUnitsTreeWnd, mkAllTreeUnits, countriesCfg, countriesRows,
   unitsMaxRank, unitsMaxStarRank, unitsTreeBg, unitsTreeOpenRank, isUnitsTreeAttached,
@@ -13,6 +14,7 @@ let { gamercardHeight, mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nu
 let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
 let { playerLevelInfo, campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { platoonPlatesGap } = require("%rGui/unit/components/unitPlateComp.nut")
+let { releasedUnits } = require("%rGui/unit/unitState.nut")
 let { mkFlags, flagsWidth, levelMarkSize, levelMark, speedUpBtn, levelUpBtn, mkTreeRankProgressBar,
   progressBarHeight, bgLight, noUnitsMsg, btnSize, platesGap,
   blockSize, flagTreeOffset, gamercardOverlap, infoPanelWidth,
@@ -26,7 +28,7 @@ let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
 let { unseenUnits } = require("%rGui/unit/unseenUnits.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
+let { openExpWnd, canPurchaseLevelUp } = require("%rGui/mainMenu/expWndState.nut")
 let { levelBorder } = require("%rGui/components/levelBlockPkg.nut")
 let { spinner } = require("%rGui/components/spinner.nut")
 let { lvlUpCost, openLvlUpWndIfCan, isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
@@ -384,12 +386,12 @@ let unitsTreeGamercard = {
     }.__update(isWidescreen ? fontMedium : fontSmall)
 
     @() {
-      watch = [playerLevelInfo, lvlUpCost, isLvlUpAnimated, isTreeNodes, levelInProgress]
+      watch = [playerLevelInfo, lvlUpCost, isLvlUpAnimated, isTreeNodes, levelInProgress, releasedUnits, buyUnitsData]
       children = isTreeNodes.get() ? null
         : levelInProgress.get() ? spinner
         : playerLevelInfo.get().isReadyForLevelUp
           ? levelUpBtn(isLvlUpAnimated.get() ? null : openLvlUpWndIfCan)
-        : playerLevelInfo.get()?.nextLevelExp != 0 && !playerLevelInfo.get()?.isMaxLevel
+        : canPurchaseLevelUp(playerLevelInfo.get(), buyUnitsData.get(), releasedUnits.get())
           ? speedUpBtn(isLvlUpAnimated.get() ? null : openExpWnd,
               lvlUpCost.get(),
               playerLevelInfo.get().level,

@@ -1768,15 +1768,6 @@
               "spread": 1.0,
               "traceOffset": 1,
               "counterIndex": 2
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonMK108.blk",
-              "emitter": "flare3",
-              "flash": "flare3",
-              "dm": "cannon2_dm",
-              "bullets": 65,
-              "spread": 1.0
             }
           ],
           "hideDmParts": {
@@ -1789,7 +1780,7 @@
         "tier": 7,
         "order": 1,
         "WeaponPreset": {
-          "iconType": "gun_20mm",
+          "iconType": "gun_12mm",
           "name": "cannons",
           "reqModification": "Bf-109_R4",
           "HideNodes": {
@@ -1798,13 +1789,16 @@
               "pylon_cannon_empty_r"
             ]
           },
+          "ShowNodes": {
+            "node": "pylon_cannon_r6_l"
+          },
           "Weapon": {
             "cmOffset": [
               -1.2,
               0.0,
               0.0
             ],
-            "trigger": "additional gun",
+            "trigger": "machine gun",
             "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
             "emitter": "flare6",
             "flash": "flare6",
@@ -1821,8 +1815,9 @@
         "index": 2,
         "tier": 6,
         "order": 3,
+        "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
-          "iconType": "bomb_500kg_group",
+          "iconType": "bomb_500kg",
           "name": "sc500",
           "reqModification": "Bf-110C-4_SC500",
           "ShowNodes": {
@@ -1841,9 +1836,44 @@
       {
         "index": 3,
         "tier": 5,
+        "order": 4,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "gun_20mm",
+            "name": "mg131",
+            "isDefault": true,
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonMG15120.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon1_dm",
+              "bullets": 200,
+              "spread": 1.0
+            }
+          },
+          {
+            "iconType": "gun_30mm",
+            "name": "mk108",
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonMK108.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "dm": "cannon2_dm",
+              "bullets": 65,
+              "spread": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 4,
         "order": 2,
         "WeaponPreset": {
-          "iconType": "gun_20mm",
+          "iconType": "gun_12mm",
           "name": "cannons",
           "reqModification": "Bf-109_R4",
           "HideNodes": {
@@ -1852,13 +1882,16 @@
               "pylon_cannon_empty_r"
             ]
           },
+          "ShowNodes": {
+            "node": "pylon_cannon_r6_r"
+          },
           "Weapon": {
             "cmOffset": [
               -1.2,
               0.0,
               0.0
             ],
-            "trigger": "additional gun",
+            "trigger": "machine gun",
             "blk": "gameData/Weapons/cannonMG15120_underwing.blk",
             "emitter": "flare7",
             "flash": "flare7",
@@ -2014,6 +2047,10 @@
       {
         "from": "bf_109k_4_n*",
         "to": "bf_109k_4_le_n*"
+      },
+      {
+        "from": "bf_109_pylon_cannon_a*",
+        "to": "bf_109_pylon_cannon_spring_a*"
       }
     ]
   }

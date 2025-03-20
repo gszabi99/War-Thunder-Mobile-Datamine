@@ -126,6 +126,38 @@
       "underwaterExtinguishAdditionalWater": 0.5,
       "checkAdditionalWater": true
     },
+    "turret_bustle": {
+      "damage": 1.0,
+      "damageType": "fire",
+      "isDamageRelative": false,
+      "radiusScales": [
+        1.4,
+        1.7
+      ],
+      "maxFireTime": [
+        20.0,
+        20.0
+      ],
+      "extinguisherEffective": false,
+      "extinguishChance": 0.99,
+      "penetration": 15.0
+    },
+    "hull_bustle": {
+      "damage": 1.0,
+      "damageType": "fire",
+      "isDamageRelative": false,
+      "radiusScales": [
+        1.0,
+        1.5
+      ],
+      "maxFireTime": [
+        10.0,
+        15.0
+      ],
+      "extinguisherEffective": false,
+      "extinguishChance": 0.99,
+      "penetration": 15.0
+    },
     "100kph": {
       "damage": 0.05,
       "damageType": "fire",

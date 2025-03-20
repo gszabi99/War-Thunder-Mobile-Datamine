@@ -39,7 +39,7 @@ let mkRespBase = @(rb) @() {
     }
   }
   children = [
-    (curRespBase.value != rb.id && curRespBase.value > 0) || (rb.team != localTeam.value) || !is_respawnbase_selectable(rb.id) ? null
+    (curRespBase.value != rb.id && curRespBase.value >= 0) || (rb.team != localTeam.value) || !is_respawnbase_selectable(rb.id) ? null
       : {
           size = [circleSize, circleSize]
           rendObj = ROBJ_IMAGE

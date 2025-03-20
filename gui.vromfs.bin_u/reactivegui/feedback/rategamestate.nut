@@ -11,7 +11,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { check_version } = require("%sqstd/version_compare.nut")
 let { allow_review_cue } = require("%appGlobals/permissions.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { lastBattles, sharedStats } = require("%appGlobals/pServer/campaign.nut")
+let { lastBattles } = require("%appGlobals/pServer/campaign.nut")
 let { isOnlineSettingsAvailable, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { myUserIdStr } = require("%appGlobals/profileStates.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
@@ -46,6 +46,7 @@ let SAVE_ID_RATED = $"{SAVE_ID_BLK}/rated"
 let SAVE_ID_STORE = $"{SAVE_ID_BLK}/rated_{storeId}"
 let SAVE_ID_SEEN = $"{SAVE_ID_BLK}/seen"
 let SAVE_ID_BATTLES = $"{SAVE_ID_BLK}/battles"
+let SAVE_ID_LOGIN_COUNT = $"{SAVE_ID_BLK}/loginCount"
 
 let REVIEW_IS_AVAILABLE = !is_nswitch // if false then dont show any review
 
@@ -53,13 +54,27 @@ let userFeedbackTube = "user_feedback"
 let pollId = "review_que"
 
 let isRateGameSeen = hardPersistWatched("rateGameState.isRateGameSeen", false)
-isLoggedIn.subscribe(@(_) isRateGameSeen(false))
 
 let isRatedOnStore = Watched(false)
 let savedRating = Watched(0)
 let lastSeenDate = Watched(0)
 let lastSeenBattles = Watched(0)
 let canRateGameByCurTime = Watched(false)
+let loginCount = Watched(0)
+
+function setLoginCount() {
+  let blk = get_local_custom_settings_blk()
+  let loginCountNewVal = loginCount.get() + 1
+  setBlkValueByPath(blk, SAVE_ID_LOGIN_COUNT, loginCountNewVal)
+  loginCount.set(loginCountNewVal)
+  eventbus_send("saveProfile", {})
+}
+
+isLoggedIn.subscribe(function(v) {
+  if (v)
+    setLoginCount()
+  isRateGameSeen(false)
+})
 
 if (is_ios && appStoreProdVersion.get() == "") {
   appStoreProdVersion.subscribe(@(v) log($"appStoreProdVersion: {v}"))
@@ -91,6 +106,7 @@ function initSavedData() {
   savedRating(getBlkValueByPath(blk, SAVE_ID_RATED, 0))
   lastSeenDate(getBlkValueByPath(blk, SAVE_ID_SEEN, 0))
   lastSeenBattles(getBlkValueByPath(blk, SAVE_ID_BATTLES, 0))
+  loginCount.set(getBlkValueByPath(blk, SAVE_ID_LOGIN_COUNT, 0))
 }
 isOnlineSettingsAvailable.subscribe(@(_) initSavedData())
 initSavedData()
@@ -123,7 +139,7 @@ let needRateGame = Computed(@() allow_review_cue.get()
   && lastBattles.get().len() >= showAfterBattlesCount.get()
   && canRateGameByCurTime.get()
   && needRateGameByDebriefing(debriefingData.get())
-  && (!isHuaweiBuild || (sharedStats.get()?.loginDaysCount ?? 0) > 10)
+  && (!isHuaweiBuild || loginCount.get() > 10)
 )
 
 function sendGameRating(rating, comment) {

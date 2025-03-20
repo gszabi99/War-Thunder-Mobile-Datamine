@@ -3,6 +3,7 @@ from "%rGui/style/gamercardStyle.nut" import *
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { WP, GOLD, PLATINUM, sortByCurrencyId } = require("%appGlobals/currenciesState.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
+let { buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { SC_GOLD, SC_WP, SC_PLATINUM, defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
@@ -16,7 +17,7 @@ let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
 let { textColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
 let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
 let premIconWithTimeOnChange = require("premIconWithTimeOnChange.nut")
-let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
+let { openExpWnd, canPurchaseLevelUp } = require("%rGui/mainMenu/expWndState.nut")
 let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { priorityUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
@@ -24,6 +25,7 @@ let { openBuyEventCurrenciesWnd } = require("%rGui/event/buyEventCurrenciesState
 let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
 let { mkUnitLevelBlock } = require("%rGui/unit/components/unitLevelComp.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { releasedUnits } = require("%rGui/unit/unitState.nut")
 let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { getPlatoonOrUnitName } = require("%appGlobals/unitPresentation.nut")
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
@@ -90,12 +92,14 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
   } = playerLevelInfo.value
   let progresOffset = levelHolderSize * rotateCompensate
   let onLevelClick = isReadyForLevelUp ? openLvlUpWndIfCan
-    : !isMaxLevel && !isCampaignWithUnitsResearch.get() ? openExpWnd
+    : !isMaxLevel && !isCampaignWithUnitsResearch.get()
+        && canPurchaseLevelUp(playerLevelInfo.get(), buyUnitsData.get(), releasedUnits.get())
+      ? openExpWnd
     : null
   let showStarLevel = max(starLevel, historyStarLevel)
   let nextStarLevel = isStarProgress ? starLevel + 1 : 0
   return {
-    watch = [playerLevelInfo, isCampaignWithUnitsResearch]
+    watch = [playerLevelInfo, isCampaignWithUnitsResearch, buyUnitsData, releasedUnits]
     valign = ALIGN_CENTER
     pos = [levelHolderPlace, levelHolderPlace]
     padding = [0, progresOffset]

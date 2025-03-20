@@ -205,6 +205,14 @@ let questBarProgressValue = @(name, required, visProgress, nextChange) @() {
   animations = animHighlight(name)
 }.__update(fontVeryTinyShaded, isWidescreen ? {} : { fontSize = fontVeryTinyShaded.fontSize * 0.85 })
 
+let multiRewardProgressBarCtor = @(rewards, isUnlocked, onRewardClick, canClaimReward, isRewardInProgress) {
+  flow = FLOW_HORIZONTAL
+  gap = questItemsGap
+  children = rewards.map(@(reward) {
+    children = rewardProgressBarCtor(reward, isUnlocked, onRewardClick, canClaimReward, isRewardInProgress)
+  })
+}
+
 function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
   let curStageIdx = getCurStageIdx(progressUnlock)
   let { hasReward = false, stage, stages, name } = progressUnlock
@@ -226,7 +234,7 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
 
       let rewardPreview = Computed(@()
         getUnlockRewardsViewInfo(stages[idx], serverConfigs.get())
-          .sort(sortRewardsViewInfo)?[0])
+          .sort(sortRewardsViewInfo))
 
       function onRewardClick() {
         if (isRewardInProgress.get())
@@ -234,7 +242,7 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
         if (canClaimReward.get()) {
           receiveUnlockRewards(name, stage, { stage, finalStage = idx + 1 })
           sendBqQuestsStage(progressUnlock.__merge({ tabId, sectionId = curSectionId.get() }),
-            rewardPreview.value?.count ?? 0, rewardPreview.value?.id)
+            rewardPreview.get()[0]?.count, rewardPreview.get()[0]?.id)
           return
         }
         if (stageCompletion.get() < 1.0)
@@ -290,7 +298,7 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
             watch = [rewardPreview, isRewardInProgress, isUnlocked, canClaimReward]
             key = $"quest_bar_stage_{idx}" //need for tutorial
             children = (rewardPreview.get()?.len() ?? 0) == 0 ? null
-              : rewardProgressBarCtor(rewardPreview.get(), isUnlocked.get(), onRewardClick,
+              : multiRewardProgressBarCtor(rewardPreview.get(), isUnlocked.get(), onRewardClick,
                   canClaimReward.get(), isRewardInProgress.get())
           }
         ]
@@ -304,12 +312,16 @@ function rewardWidth(r) {
   return progressBarRewardSize * slots + questItemsGap * (slots - 1)
 }
 
+function stageRewardsWidth(rewardsArray) {
+  return rewardsArray.reduce(@(total, r) total + rewardWidth(r), 0) + (rewardsArray.len() > 0 ? (rewardsArray.len() - 1) * questItemsGap : 0)
+}
+
 function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChildWidth) {
   let progressBarWidth = Computed(@() progressBarWidthFull - starIconOffset
     - (headerChildWidth.get() == 0 ? 0 : headerChildWidth.get() + headerLineGap))
   let stageRewards = Computed(@() (progressUnlock.get()?.stages ?? [])
-    .map(@(s) getUnlockRewardsViewInfo(s, serverConfigs.get()).sort(sortRewardsViewInfo)?[0]))
-  let rewardsFullWidth = Computed(@() stageRewards.get().reduce(@(res, r) res + rewardWidth(r), 0))
+    .map(@(s) getUnlockRewardsViewInfo(s, serverConfigs.get()).sort(sortRewardsViewInfo)))
+  let rewardsFullWidth = Computed(@() stageRewards.get().reduce(@(res, r) res + stageRewardsWidth(r), 0))
   let minWidth = Computed(@() rewardsFullWidth.get() + stageRewards.get().len() * minStageProgressWidth + firstProgressWider)
   let hasScroll = Computed(@() progressBarWidth.get() < minWidth.get())
   return @() progressUnlock.get() == null ? { watch = progressUnlock }
@@ -333,7 +345,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChild
                     return
                   local x = 0
                   for (local i = 0; i < curStageIdx; i++)
-                    x += minStageProgressWidth + rewardWidth(stageRewards.get()?[i])
+                    x += minStageProgressWidth + stageRewardsWidth(stageRewards.get()[i])
                   scrollHandler.scrollToX(max(0, x - progressBarRewardSize / 4))
                 }
                 children = [
@@ -341,12 +353,12 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChild
                     { pos = [0, 0], size = [flex(), SIZE_TO_CONTENT], vplace = ALIGN_CENTER, clipChildren = false },
                     {
                       size = [flex(), SIZE_TO_CONTENT]
-                      behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
+                      behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
                       scrollHandler
                     })
                   {
-                    size = [minWidth.get(), SIZE_TO_CONTENT]
-                    hplace = ALIGN_CENTER
+                    size = [progressBarWidth.get() + hdpx(80), SIZE_TO_CONTENT]
+                    hplace = ALIGN_LEFT
                     vplace = ALIGN_CENTER
                     children = mkScrollArrow(scrollHandler, MR_R, scrollArrowImageSmall)
                   }

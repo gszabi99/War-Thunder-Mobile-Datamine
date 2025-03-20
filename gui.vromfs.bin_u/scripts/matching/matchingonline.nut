@@ -50,7 +50,7 @@ subscribeFMsgBtns({
     if (is_ios)
       shell_execute({ cmd = "open", file = "itms-apps://itunes.apple.com/app/apple-store/id1577525428?mt=8" })
     else if (isDownloadedFromGooglePlay())
-      shell_execute({ cmd = "action", file = $"market://details?id={getPackageName()}" })
+      shell_execute({ cmd = "action", file = $"https://play.google.com/store/apps/details?id={getPackageName()}" })
     else if (isHuaweiBuild)
       shell_execute({ cmd = "action", file = "https://appgallery.huawei.com/app/C113458691" })
     else if (isDownloadedFromSite)

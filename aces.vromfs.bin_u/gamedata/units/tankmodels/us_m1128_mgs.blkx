@@ -2404,12 +2404,12 @@
       ],
       "defaultGearRadius": 0.566,
       "defaultDampeningForce": [
-        25000.0,
-        25000.0
+        150000.0,
+        150000.0
       ],
       "hasSuspensionOnDriveGear": true,
-      "dampeningRelaxationRatio": 0.15,
-      "dampeningCompressionRatio": 0.05,
+      "dampeningRelaxationRatio": 0.4,
+      "dampeningCompressionRatio": 0.15,
       "brokenWheelSteeringDeflection": -15.0,
       "steeringNodes": {
         "wheel_r_01": "bone_wheel_r_01",
@@ -2433,14 +2433,14 @@
         "wheel_r_04": 0.39
       },
       "wheelsDamageWeight": {
-        "wheel_l_01": 0.05,
-        "wheel_r_01": 0.05,
-        "wheel_l_02": 0.05,
-        "wheel_r_02": 0.05,
-        "wheel_l_03": 0.05,
-        "wheel_r_03": 0.05,
-        "wheel_l_04": 0.05,
-        "wheel_r_04": 0.05,
+        "wheel_l_01": 0.09,
+        "wheel_r_01": 0.09,
+        "wheel_l_02": 0.09,
+        "wheel_r_02": 0.09,
+        "wheel_l_03": 0.09,
+        "wheel_r_03": 0.09,
+        "wheel_l_04": 0.09,
+        "wheel_r_04": 0.09,
         "wheel_r_drive": 0.25,
         "wheel_l_drive": 0.25
       },
@@ -3951,7 +3951,121 @@
   "default_skin": {
     "replace_tex": {
       "from": "us_camo_olive*",
-      "to": "us_camo_modern_green*"
+      "to": "us_camo_modern_desert_tan*"
+    }
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "upgraded_skin": {
+    "replace_tex": {
+      "from": "us_camo_olive*",
+      "to": "usa_modern_summer_verdant*"
+    }
+  },
+  "upgradedDecals": {
+    "upgraded": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        1.985,
+        -8.37519e-8,
+        0.00000208851,
+        0.51652
+      ],
+      "decal0Line1": [
+        3.17566e-7,
+        -1.94853,
+        -0.378752,
+        3.56243
+      ],
+      "decal0Line2": [
+        -1.985,
+        -8.63267e-8,
+        0.00000214767,
+        0.48348
+      ],
+      "decal0Line3": [
+        4.911e-7,
+        -1.94853,
+        0.378752,
+        3.56243
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.00000104793,
+        0.190807,
+        -0.981628,
+        -1.59392
+      ],
+      "decal0CPNormDepth1": [
+        0.00000104793,
+        0.190807,
+        0.981628,
+        -1.59392
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.503777
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.2,
+      "decal0Tex": "usa_2nd_plt_a_co",
+      "decal1Line0": [
+        -1.99257,
+        -9.18139e-8,
+        -4.63599e-7,
+        3.58991
+      ],
+      "decal1Line1": [
+        -8.4155e-9,
+        -1.95596,
+        0.380202,
+        3.54446
+      ],
+      "decal1Line2": [
+        1.99257,
+        -8.63357e-8,
+        -5.52674e-7,
+        -2.58991
+      ],
+      "decal1Line3": [
+        -1.82611e-7,
+        -1.95596,
+        -0.380202,
+        3.54446
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        -2.46602e-7,
+        0.19081,
+        0.981627,
+        -1.59392
+      ],
+      "decal1CPNormDepth1": [
+        -2.46602e-7,
+        0.19081,
+        -0.981627,
+        -1.59392
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.501864
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.278029,
+      "decal1Tex": "usa_2nd_plt_a_co"
     }
   },
   "ammo": {

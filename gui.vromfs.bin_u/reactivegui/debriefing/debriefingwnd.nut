@@ -8,6 +8,7 @@ let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { curUnit, playerLevelInfo, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { releasedUnits } = require("%rGui/unit/unitState.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { textButtonPrimary, textButtonBattle, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
@@ -32,7 +33,7 @@ let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { lvlUpCost } = require("%rGui/levelUp/levelUpState.nut")
-let { openExpWnd } = require("%rGui/mainMenu/expWndState.nut")
+let { openExpWnd, canPurchaseLevelUp } = require("%rGui/mainMenu/expWndState.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let { isPlayerReceiveLevel, getResearchedUnit, getBestUnitName, isUnitReceiveLevel, getNewPlatoonUnit, getSlotOrUnitLevelUnlockRewards
 } = require("debrUtils.nut")
@@ -44,7 +45,7 @@ let { openEventWnd, specialEvents } = require("%rGui/event/eventState.nut")
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
 let { openUnitsTreeAtUnit } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { slots, selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
-let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
+let { setCurrentUnit, buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { runOfflineBattle } = require("%rGui/debugTools/debugOfflineBattleState.nut")
 let { TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID } = require("%rGui/tutorial/tutorialConst.nut")
@@ -147,11 +148,12 @@ let mkBtnNewUnitResearched = @(needShow, researchedUnit) mkBtnAppearAnim(true, n
 
 let mkBtnBuyNextPlayerLevel = @(needShow, curPlayerLevel, campaign) function() {
   let res = {
-    watch = [playerLevelInfo, lvlUpCost, serverConfigs]
+    watch = [playerLevelInfo, lvlUpCost, serverConfigs, buyUnitsData, releasedUnits]
   }
   let { level, starLevel, isMaxLevel, isReadyForLevelUp } = playerLevelInfo.get()
   if (level > curPlayerLevel || isMaxLevel || isReadyForLevelUp
-      || campaign in serverConfigs.get()?.unitTreeNodes)
+      || campaign in serverConfigs.get()?.unitTreeNodes
+      || !canPurchaseLevelUp(playerLevelInfo.get(), buyUnitsData.get(), releasedUnits.get()))
     return res
 
   let cost = { price = lvlUpCost.get(), currencyId = GOLD }

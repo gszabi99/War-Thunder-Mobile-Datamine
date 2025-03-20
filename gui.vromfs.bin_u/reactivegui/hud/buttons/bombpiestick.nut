@@ -5,7 +5,7 @@ let { playHapticPattern } = require("hapticVibration")
 let { lowerAircraftCamera } = require("camera_control")
 let { TouchScreenStick } = require("wt.behaviors")
 let { radToDeg } = require("%sqstd/math_ex.nut")
-let { atan2 } = require("math")
+let { atan2, abs } = require("math")
 let { Point2 } = require("dagor.math")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { BombsState, hasBombs } = require("%rGui/hud/airState.nut")
@@ -25,6 +25,11 @@ let { emptyWithBackground, ready, noAmmo, background } = btnBgColor
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 
+let BOMB_STICK_HOLDING = 0x01
+let BOMB_STICK_ACTIVE = 0x02
+
+let touchMargin = sh(2.5).tointeger()
+let squareLimitCalcError = hdpx(1)
 let buttonSize = hdpxi(120)
 let buttonSizeRadius = buttonSize / 2
 let buttonImgSize = (0.65 * buttonSize + 0.5).tointeger()
@@ -61,7 +66,7 @@ function useShortcutOff(shortcutId) {
   updateActionBarDelayed()
 }
 
-function mkCircleProgressHolding(size, id, stickDelta, holding, seriesAngle, minSeriesDistanceValue, maxSeriesDistanceValue) {
+function mkCircleProgressHolding(size, id, isSeriesBtnHolding, isOnSeries) {
   let tryStartSalvo = @() anim_start(endAnimTrigger)
   let animations = [
     {
@@ -69,7 +74,7 @@ function mkCircleProgressHolding(size, id, stickDelta, holding, seriesAngle, min
       from = [1.0, 1.0], to = [1.2, 1.2], easing = CosineFull,
       trigger = endAnimTrigger, function onStart() {
         useShortcutOn(id)
-        holding.set(true)
+        isSeriesBtnHolding.set(true)
       }
     }
     {
@@ -77,37 +82,45 @@ function mkCircleProgressHolding(size, id, stickDelta, holding, seriesAngle, min
       from = 0.0, to = 1.0, onStart = @() resetTimeout(HOLDING_ANIM_DURATION, tryStartSalvo)
     }
   ]
-
-  let leftSeriesAngle = seriesAngle - borderAddAndle
-  let rightSeriesAngle = seriesAngle + borderAddAndle
-  let isOnSeries = Computed(function() {
-    let delta = stickDelta.get()
-    let dist = delta.length()
-    if (dist < minSeriesDistanceValue || dist > maxSeriesDistanceValue)
-      return false
-    let { x, y } = delta
-    let angle = getAngle(-x, y)
-    return angle >= leftSeriesAngle && angle <= rightSeriesAngle
-  })
-  isOnSeries.subscribe(function(v) {
+  function subscription(v) {
     if (v)
       anim_start(startAnimTrigger)
     else {
       useShortcutOff(id)
       clearTimer(tryStartSalvo)
-      holding.set(false)
+      isSeriesBtnHolding.set(false)
     }
-  })
+  }
   return @() mkCircleBg(size).__update({
     watch = isOnSeries
     key = $"action_bg_{id}"
     fgColor = isOnSeries.get() ? emptyWithBackground : ready
     bgColor = ready
+    onAttach = @() isOnSeries.subscribe(subscription)
+    onDetach = @() isOnSeries.unsubscribe(subscription)
     animations
   })
 }
 
-let lowerCamera = @() lowerAircraftCamera(true)
+let mkCircleProgressOneBomb = @(isAvailable, isOnOneBomb, isSeriesBtnHolding, hasAmmo, bombStickState, scaledButtonSize)
+  function() {
+    let isBombStickHolding = bombStickState.get() & BOMB_STICK_HOLDING
+    let isReady = isAvailable.get() && (isOnOneBomb.get() || isSeriesBtnHolding.get() || !isBombStickHolding)
+    return {
+      watch = [BombsState, isAvailable, isOnOneBomb, isSeriesBtnHolding, hasAmmo, bombStickState]
+      size = flex()
+      children = mkCircleProgressBgWeapon(scaledButtonSize, oneBombShortcutId, BombsState.get(),
+        isReady,
+        @() playSound("weapon_primary_ready"),
+        {
+          bgColor = hasAmmo.get() ? emptyWithBackground : noAmmo
+          fgColor = isReady ? ready
+            : hasAmmo.get() ? emptyWithBackground
+            : noAmmo
+        })
+    }
+  }
+
 let isActiveState = @(sf) (sf & S_ACTIVE) != 0
 
 function stickControl(scale) {
@@ -120,46 +133,73 @@ function stickControl(scale) {
   let distanceBetweenButtons = Point2(scaledSeriesButtonX, scaledSeriesButtonY).length()
   let maxDistanceBetweenButtons = distanceBetweenButtons + scaledButtonSizeRadius
   let limitDistance = maxDistanceBetweenButtons * distanceBetweenButtonsMultiplier
+  let oneBombSquareLimit = scaledButtonSizeRadius + touchMargin + backgroundPadding + squareLimitCalcError
+
   let minSeriesDistanceValue = (distanceBetweenButtons - scaledButtonSizeRadius) / limitDistance
   let maxSeriesDistanceValue = maxDistanceBetweenButtons / limitDistance
   let maxOneBombDistanceValue = scaledButtonSizeRadius / limitDistance
 
   let seriesAngle = getAngle(scaledSeriesButtonX, scaledSeriesButtonY)
+  let leftSeriesAngle = seriesAngle - borderAddAndle
+  let rightSeriesAngle = seriesAngle + borderAddAndle
 
   local isTouchPushed = false
   local isHotkeyPushed = false
-  let isBombPieStickActive = Watched(false)
+  let bombStickState = Watched(0)
   let bombPieStickDelta = Watched(Point2(0, 0))
   let stateFlags = Watched(0)
-  let holding = Watched(false)
+  let isSeriesBtnHolding = Watched(false)
   let isDisabled = mkIsControlDisabled(oneBombShortcutId)
   let hasAmmo = Computed(@() (BombsState.get()?.count ?? 0) != 0)
   let isAvailableByTime = Computed(@() (BombsState.get().endTime ?? 0) > get_mission_time())
   let isAvailable = Computed(@() (hasAmmo.get() || isAvailableByTime.get()) && !isDisabled.get())
-  let isOnOneBomb = Computed(@() bombPieStickDelta.get().length() <= maxOneBombDistanceValue)
+  let isOnSeries = Computed(function() {
+    if (!(bombStickState.get() & BOMB_STICK_ACTIVE))
+      return false
+    let delta = bombPieStickDelta.get()
+    let dist = delta.length()
+    if (dist < minSeriesDistanceValue || dist > maxSeriesDistanceValue)
+      return false
+    let { x, y } = delta
+    let angle = getAngle(-x, y)
+    return angle >= leftSeriesAngle && angle <= rightSeriesAngle
+  })
+  let isOnOneBomb = Computed(function() {
+    if (isOnSeries.get())
+      return false
+    let delta = bombPieStickDelta.get()
+    if (bombStickState.get() & BOMB_STICK_ACTIVE)
+      return delta.length() <= maxOneBombDistanceValue
+    let { x, y } = delta
+    return abs(x * limitDistance) <= oneBombSquareLimit && abs(y * limitDistance) <= oneBombSquareLimit
+  })
 
   let mkBombCounter = @() { watch = [BombsState, isAvailable] }.__update(BombsState.get().count < 0 ? {}
     : mkCountTextLeft(BombsState.get().count, isAvailable.get() ? 0xFFFFFFFF : disabledColor, scale))
 
+  function onAppearBombPieStick() {
+    bombStickState.set(bombStickState.get() | BOMB_STICK_ACTIVE)
+    lowerAircraftCamera(true)
+  }
   function onButtonPush() {
-    isBombPieStickActive.set(true)
+    bombStickState.set(bombStickState.get() | BOMB_STICK_HOLDING)
     isTouchPushed = true
-    resetTimeout(0.3, lowerCamera)
+    resetTimeout(0.3, onAppearBombPieStick)
     let vibrationMult = getOptValue(OPT_HAPTIC_INTENSITY_ON_SHOOT)
     playHapticPattern(HAPT_SHOOT_ITEM, vibrationMult)
   }
   function onTouchStop() {
-    isBombPieStickActive.set(false)
+    bombStickState.set(0)
     isTouchPushed = false
-    clearTimer(lowerCamera)
+    clearTimer(onAppearBombPieStick)
     lowerAircraftCamera(false)
   }
   function onButtonReleaseWhileActiveZone() {
-    if (isOnOneBomb.get() && !holding.get())
+    if (isOnOneBomb.get() && !isSeriesBtnHolding.get())
       useShortcut(oneBombShortcutId)
     else
       useShortcutOff(seriesBombShortcutId)
-    holding.set(false)
+    isSeriesBtnHolding.set(false)
     stateFlags.set(0)
     onTouchStop()
   }
@@ -176,12 +216,10 @@ function stickControl(scale) {
     onButtonReleaseWhileActiveZone()
   }
 
-  isBombPieStickActive.subscribe(@(isActive) isActive ? null : bombPieStickDelta.set(Point2(0, 0)))
-
   return @() !hasBombs.get() ? { watch = BombsState, key = oneBombShortcutId }
     : {
         key = oneBombShortcutId
-        watch = [isAvailable, hasAmmo, isBombPieStickActive]
+        watch = [isAvailable, hasAmmo, bombStickState]
         behavior = TouchScreenStick
         size = [scaledButtonSize, scaledButtonSize]
 
@@ -192,7 +230,7 @@ function stickControl(scale) {
         onTouchBegin = onButtonPush
         onTouchEnd = onButtonReleaseWhileActiveZone
         function onElemState(sf) {
-          if (holding.get()) {
+          if (isSeriesBtnHolding.get()) {
             stateFlags.set(0)
             return
           }
@@ -206,9 +244,9 @@ function stickControl(scale) {
           else
             onStateRelease()
         }
-        onAttach = @() isBombPieStickActive.set(false)
+        onAttach = @() bombStickState.set(0)
         function onDetach() {
-          isBombPieStickActive.set(false)
+          bombStickState.set(0)
           if (!isActiveState(stateFlags.get()))
             return
           stateFlags.set(0)
@@ -217,7 +255,7 @@ function stickControl(scale) {
         hotkeys = [allShortcutsUp[oneBombShortcutId]]
 
         children = [
-          !isBombPieStickActive.get() || !hasAmmo.get() ? null : {
+          !(bombStickState.get() & BOMB_STICK_ACTIVE) || !hasAmmo.get() ? null : {
             key = {}
             size = flex()
             halign = ALIGN_CENTER
@@ -239,8 +277,7 @@ function stickControl(scale) {
                 size = [scaledButtonSize, scaledButtonSize]
                 children = [
                   mkBombCounter
-                  mkCircleProgressHolding(scaledButtonSize, seriesBombShortcutId, bombPieStickDelta,
-                    holding, seriesAngle, minSeriesDistanceValue, maxSeriesDistanceValue)
+                  mkCircleProgressHolding(scaledButtonSize, seriesBombShortcutId, isSeriesBtnHolding, isOnSeries)
                   mkBtnImage(scaledButtonImgSize, seriesBombImg)
                   mkCircleGlare(scaledButtonSize, seriesBombShortcutId)
                 ]
@@ -254,19 +291,7 @@ function stickControl(scale) {
             vplace = ALIGN_CENTER
             color = 0xFFFFFFFF
             children = [
-              @() {
-                watch = [BombsState, isAvailable, isOnOneBomb, holding, hasAmmo]
-                size = flex()
-                children = mkCircleProgressBgWeapon(scaledButtonSize, oneBombShortcutId, BombsState.get(),
-                  isAvailable.get() && (isOnOneBomb.get() || holding.get()),
-                  @() playSound("weapon_primary_ready"),
-                  {
-                    bgColor = hasAmmo.get() ? emptyWithBackground : noAmmo
-                    fgColor = isAvailable.get() && (isOnOneBomb.get() || holding.get()) ? ready
-                      : hasAmmo.get() ? emptyWithBackground
-                      : noAmmo
-                  })
-              }
+              mkCircleProgressOneBomb(isAvailable, isOnOneBomb, isSeriesBtnHolding, hasAmmo, bombStickState, scaledButtonSize)
               mkBorderPlane(scaledButtonSize, isAvailable.get(), stateFlags, scale)
               mkBtnImage(scaledButtonImgSize, oneBombImg)
               mkBombCounter

@@ -6002,63 +6002,99 @@
       "immortal": true
     },
     {
-      "name": "normandy_village_annex_a",
+      "name": "normandy_village_annex_a_var_a",
       "immortal": true
     },
     {
-      "name": "normandy_village_annex_b",
+      "name": "normandy_village_annex_b_var_a",
       "immortal": true
     },
     {
-      "name": "normandy_village_annex_c",
+      "name": "normandy_village_annex_c_var_a",
       "immortal": true
     },
     {
-      "name": "normandy_village_annex_e",
+      "name": "normandy_village_annex_d_var_a",
       "immortal": true
     },
     {
-      "name": "normandy_village_garage_a",
+      "name": "normandy_village_annex_e_var_a",
       "immortal": true
     },
     {
-      "name": "normandy_village_house_2_floor_a",
+      "name": "normandy_village_garage_a_var_a",
       "immortal": true
     },
     {
-      "name": "normandy_village_house_2_floor_b",
+      "name": "normandy_village_garage_b_var_a",
       "immortal": true
     },
     {
-      "name": "normandy_village_house_2_floor_c",
+      "name": "normandy_village_house_2_floor_a_var_a",
       "immortal": true
     },
     {
-      "name": "normandy_village_house_2_floor_d",
+      "name": "normandy_village_house_2_floor_a_var_b",
       "immortal": true
     },
     {
-      "name": "normandy_village_house_2_floor_e",
+      "name": "normandy_village_house_2_floor_b_var_a",
       "immortal": true
     },
     {
-      "name": "normandy_village_house_2_floor_f",
+      "name": "normandy_village_house_2_floor_b_var_b",
       "immortal": true
     },
     {
-      "name": "normandy_village_shed_a",
+      "name": "normandy_village_house_2_floor_c_var_a",
       "immortal": true
     },
     {
-      "name": "normandy_village_shed_b",
+      "name": "normandy_village_house_2_floor_c_var_b",
       "immortal": true
     },
     {
-      "name": "normandy_village_shed_c",
+      "name": "normandy_village_house_2_floor_d_var_a",
       "immortal": true
     },
     {
-      "name": "normandy_village_shed_c_dp_01",
+      "name": "normandy_village_house_2_floor_d_var_b",
+      "immortal": true
+    },
+    {
+      "name": "normandy_village_house_2_floor_e_var_a",
+      "immortal": true
+    },
+    {
+      "name": "normandy_village_house_2_floor_e_var_b",
+      "immortal": true
+    },
+    {
+      "name": "normandy_village_house_2_floor_f_var_a",
+      "immortal": true
+    },
+    {
+      "name": "normandy_village_house_2_floor_f_var_b",
+      "immortal": true
+    },
+    {
+      "name": "normandy_village_shed_a_var_a",
+      "immortal": true
+    },
+    {
+      "name": "normandy_village_shed_a_var_b",
+      "immortal": true
+    },
+    {
+      "name": "normandy_village_shed_b_var_a",
+      "immortal": true
+    },
+    {
+      "name": "normandy_village_shed_b_var_b",
+      "immortal": true
+    },
+    {
+      "name": "normandy_village_shed_c_var_a",
       "immortal": true
     },
     {
@@ -6255,23 +6291,7 @@
       "material": "metal"
     },
     {
-      "name": "normandy_church_a",
-      "immortal": true
-    },
-    {
-      "name": "normandy_church_b",
-      "immortal": true
-    },
-    {
-      "name": "normandy_church_c",
-      "immortal": true
-    },
-    {
-      "name": "normandy_church_c_dp_01",
-      "immortal": true
-    },
-    {
-      "name": "normandy_church_c_dp_02",
+      "name": "normandy_church_c_var_a",
       "immortal": true
     },
     {
@@ -19463,7 +19483,7 @@
     "desert_water_tower_b": {
       "physRes": "desert_water_tower_b_destr_phobj",
       "hp": 20.0,
-      "impulseThreshold": 10.0,
+      "impulseThreshold": 20.0,
       "fx": "ad_dust_stucco",
       "material": "wood"
     },

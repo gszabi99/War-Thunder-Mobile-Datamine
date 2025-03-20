@@ -65,6 +65,7 @@ let locByTypesReward = {
   skin = @(id) loc("reward/skin_for",
     { unitName = colorize(markTextColor, loc(getUnitLocId(id))) })
   blueprint = @(_) loc("blueprints")
+  lootbox = @(id) loc($"lootbox/{id}")
 }
 
 let mkDecoratorHeader = @(viewInfo) @() {

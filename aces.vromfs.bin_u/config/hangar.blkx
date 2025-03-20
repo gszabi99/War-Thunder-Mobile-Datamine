@@ -107,6 +107,7 @@
   "verticalCameraShiftShip": 0.1,
   "verticalCameraShiftTank": 0.3,
   "countDecalsAtUnitInHangar": 4,
+  "forceMusic": "music_st_patrick",
   "hangarMission": "gameData/scenes/hangar_field_mission_wtm.blk",
   "hangarSoundEngineMult": 0.4,
   "hangarSoundMult": 0.15,

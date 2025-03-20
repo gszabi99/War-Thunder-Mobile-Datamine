@@ -35,7 +35,7 @@ let noNeedLogerrOnErrors = {
   NO_TOKEN = true
 }
 
-let retryErrId = "PS_RECIEVE_RESPONSE: 503 RETRY"
+let retryErrId = " RETRY"
 let MAX_RETRIES = 2
 local debugError = null
 
@@ -117,7 +117,7 @@ function checkAndLogError(id, action, params, cb, data) {
     logErr = " ".concat("(full answer dump)", dumpStr)
   }
 
-  if (errId == retryErrId) {
+  if (type(errId) == "string" && errId.endswith(retryErrId)) {
     let count = retryActionsCounter?[action] ?? 0
     if (count < MAX_RETRIES) {
       retryActionsCounter[action] <- count + 1

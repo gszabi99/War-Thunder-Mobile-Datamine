@@ -8477,13 +8477,13 @@
     "cooldown_calm": 300.0,
     "cooldown_battle": 180.0,
     "use_hangar_music_for_type": true,
-    "eventWin": "win_battle_music",
-    "eventLoose": "loose_battle_music",
+    "eventWin": "win_battle_music_st_patrick",
+    "eventLoose": "loose_battle_music_st_patrick",
     "eventTanksSuspense": "tanks_suspense_01",
     "eventSuspense": "air_suspense_01",
     "menu": {
       "path": "naval/music",
-      "event": "menu"
+      "event": "music_st_patrick"
     }
   },
   "internetRadio": {

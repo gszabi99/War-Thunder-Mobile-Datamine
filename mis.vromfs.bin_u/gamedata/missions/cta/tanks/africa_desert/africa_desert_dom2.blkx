@@ -175,11 +175,6 @@
             },
             {
               "icontype": "tank",
-              "side": "ally",
-              "target": "briefing_t1_tank_spawn_03"
-            },
-            {
-              "icontype": "tank",
               "side": "enemy",
               "target": "briefing_t2_tank_spawn_01"
             },
@@ -187,11 +182,6 @@
               "icontype": "tank",
               "side": "enemy",
               "target": "briefing_t2_tank_spawn_02"
-            },
-            {
-              "icontype": "tank",
-              "side": "enemy",
-              "target": "briefing_t2_tank_spawn_03"
             }
           ],
           "battleArea": {
@@ -480,84 +470,6 @@
             "t2_tankSpawn02_zone_10"
           ]
         }
-      },
-      {
-        "name": "dom_t1_tank_spawn_03",
-        "tm": [
-          [
-            -0.939693,
-            0.0,
-            -0.34202
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.34202,
-            0.0,
-            -0.939693
-          ],
-          [
-            2796.15,
-            222.8,
-            1847.56
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t1_tankSpawn03_zone_01",
-            "t1_tankSpawn03_zone_02",
-            "t1_tankSpawn03_zone_03",
-            "t1_tankSpawn03_zone_04",
-            "t1_tankSpawn03_zone_05",
-            "t1_tankSpawn03_zone_06",
-            "t1_tankSpawn03_zone_07",
-            "t1_tankSpawn03_zone_08",
-            "t1_tankSpawn03_zone_09",
-            "t1_tankSpawn03_zone_10"
-          ]
-        }
-      },
-      {
-        "name": "dom_t2_tank_spawn_03",
-        "tm": [
-          [
-            -0.707107,
-            0.0,
-            -0.707107
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.707107,
-            0.0,
-            -0.707107
-          ],
-          [
-            2042.82,
-            224.15,
-            2912.52
-          ]
-        ],
-        "props": {
-          "squad_members": [
-            "t2_tankSpawn03_zone_01",
-            "t2_tankSpawn03_zone_02",
-            "t2_tankSpawn03_zone_03",
-            "t2_tankSpawn03_zone_04",
-            "t2_tankSpawn03_zone_05",
-            "t2_tankSpawn03_zone_06",
-            "t2_tankSpawn03_zone_07",
-            "t2_tankSpawn03_zone_08",
-            "t2_tankSpawn03_zone_09",
-            "t2_tankSpawn03_zone_10"
-          ]
-        }
       }
     ]
   },
@@ -662,9 +574,9 @@
           0.707107
         ],
         [
-          2250.35,
-          65.8596,
-          2877.82
+          1751.9,
+          72.6107,
+          2541.9
         ]
       ],
       "objLayer": 0,
@@ -689,36 +601,9 @@
           0.707107
         ],
         [
-          2027.44,
-          65.8351,
-          2662.04
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_t1_tank_spawn_03": {
-      "type": "Point",
-      "tm": [
-        [
-          0.707107,
-          0.0,
-          0.707107
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -0.707107,
-          0.0,
-          0.707107
-        ],
-        [
-          1791.23,
-          65.7888,
-          2429.6
+          2064.75,
+          69.9069,
+          2849.15
         ]
       ],
       "objLayer": 0,
@@ -743,9 +628,9 @@
           0.707107
         ],
         [
-          2521.25,
-          65.9496,
-          1784.4
+          2558.55,
+          72.4,
+          1786.65
         ]
       ],
       "objLayer": 0,
@@ -770,36 +655,9 @@
           0.707107
         ],
         [
-          2836.2,
-          65.834,
-          2070.7
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "briefing_t2_tank_spawn_03": {
-      "type": "Point",
-      "tm": [
-        [
-          0.707107,
-          0.0,
-          0.707107
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          -0.707107,
-          0.0,
-          0.707107
-        ],
-        [
-          2821.25,
-          65.2264,
-          1801.75
+          2847.7,
+          57.3138,
+          2071.6
         ]
       ],
       "objLayer": 0,
@@ -824,9 +682,9 @@
           0.707107
         ],
         [
-          2558.52,
-          65.7864,
-          2553.97
+          2569.0,
+          85.378,
+          2624.44
         ]
       ],
       "objLayer": 0,
@@ -851,9 +709,9 @@
           0.707107
         ],
         [
-          2293.99,
-          65.7389,
-          2293.73
+          2316.0,
+          74.6729,
+          2347.6
         ]
       ],
       "objLayer": 0,
@@ -878,9 +736,9 @@
           0.707107
         ],
         [
-          2068.91,
-          65.7388,
-          2072.4
+          2046.35,
+          96.3,
+          2046.9
         ]
       ],
       "objLayer": 0,

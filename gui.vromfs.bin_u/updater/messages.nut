@@ -133,7 +133,7 @@ function openUpdateUrl() {
   send_counter("sq.app.stage", 1, { stage = "open_update_from_store_url" })
 
   if (isDownloadedFromGooglePlay())
-    shell_execute({ cmd = "action", file = $"market://details?id={getPackageName()}" })
+    shell_execute({ cmd = "action", file = $"https://play.google.com/store/apps/details?id={getPackageName()}" })
   else if (isHuaweiBuild)
     shell_execute({ cmd = "action", file = "https://appgallery.huawei.com/app/C113458691" })
   else {

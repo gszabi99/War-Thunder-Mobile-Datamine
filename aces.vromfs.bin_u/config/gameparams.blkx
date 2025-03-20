@@ -15672,6 +15672,30 @@
         {
           "name": "wheel_l_03_",
           "modelNames": "vickers_mk_11"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "zsl_92"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "zsl_92"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "zsl_92"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "zsl_92"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "zsl_92"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "zsl_92"
         }
       ]
     },

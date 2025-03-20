@@ -20,7 +20,7 @@
   "bEnablePause": false,
   "bullets": -1,
   "bulletsCluster": 1,
-  "fxTypeEjector": "smoke_gunpowder_gun_early",
+  "isContinousShot": true,
   "ejectionFxSpeedRange": [
     15.0,
     40.0

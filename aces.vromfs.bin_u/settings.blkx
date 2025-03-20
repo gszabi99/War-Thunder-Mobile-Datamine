@@ -1300,6 +1300,10 @@
     "difficulty": "realistic",
     "enableVR": false
   },
+  "phys": {
+    "fixedTimeStepHz": 30,
+    "maxSubSteps": 1
+  },
   "input": {
     "gyroscopeEnabled": false,
     "moveCalculationsSinceLastEventRejectCount": 5
