@@ -118,5 +118,8 @@
   },
   "technicsSkins": {
     "groundSkin": "sand"
+  },
+  "render": {
+    "staticScene": true
   }
 }

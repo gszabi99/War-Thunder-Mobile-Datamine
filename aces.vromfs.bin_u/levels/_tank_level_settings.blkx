@@ -20,6 +20,7 @@
   "clipmap_tex_mips": 5,
   "addLandToSky": true,
   "harmonicsType": "green",
+  "max_wind_strength": 2.0,
   "render": {
     "lmesh": true,
     "onlyUnderwaterLmesh": false,

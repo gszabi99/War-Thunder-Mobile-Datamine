@@ -79,7 +79,7 @@ local addonsSizes = {}
 eventbus_subscribe(GET_ALL_ADDONS_SIZES_EVENT_ID, function(evt) {
   addonsSizes = clone evt
 
-  if (DBGLEVEL > 0) {
+  if (DBGLEVEL > 0 && addonsSizes) {
     local message = "Addons sizes:"
     let addons = addonsSizes.keys().sort()
     let addonsCount = addons.len()
