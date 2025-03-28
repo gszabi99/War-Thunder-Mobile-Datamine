@@ -20,7 +20,7 @@
   "clipmap_tex_mips": 5,
   "addLandToSky": true,
   "harmonicsType": "green",
-  "max_wind_strength": 2.0,
+  "max_wind_strength": 3.0,
   "mapCoord0": [
     -32768.0,
     -32768.0
@@ -145,12 +145,13 @@
     "day": 6
   },
   "shader_vars": {
-    "shore_waves_dist": [
-      70.0,
-      200.0,
-      -30.0,
-      20.0
+    "shore__waves_dist": [
+      0.0,
+      500.0,
+      0.0,
+      2.0
     ],
+    "shore__waves_depth_min": 0.5,
     "land_bump_scale": -4.0,
     "land_smoothness_detect_color": [
       0.4,

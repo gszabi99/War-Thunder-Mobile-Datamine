@@ -10863,6 +10863,34 @@
           "to": "camo_bottom_green*"
         }
       ]
+    },
+    "threegreenspots": {
+      "replace_tex": [
+        {
+          "from": "camo_warshipdeepgray*",
+          "to": "camo_threegreenspots*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_bottom_green*"
+        },
+        {
+          "from": "camo_deepdark_wood*",
+          "to": "camo_fadedgreen*"
+        }
+      ]
+    },
+    "redgreen_spots_prem": {
+      "replace_tex": [
+        {
+          "from": "camo_warshipdeepgray*",
+          "to": "camo_redgreen_spots*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_syntheticblackpaint*"
+        }
+      ]
     }
   }
 }

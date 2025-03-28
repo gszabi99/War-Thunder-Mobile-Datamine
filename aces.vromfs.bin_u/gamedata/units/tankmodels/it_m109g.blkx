@@ -2693,6 +2693,204 @@
       "decal1OppositeMirrored": false,
       "decal1WidthBox": 0.230633,
       "decal1Tex": "uk_tank_weight_15"
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -0.459967,
+        -1.68461e-7,
+        3.86268,
+        -0.659945
+      ],
+      "decal0Line1": [
+        -0.308685,
+        -3.87752,
+        -0.0367584,
+        5.42885
+      ],
+      "decal0Line2": [
+        -0.459967,
+        -1.68461e-7,
+        3.86268,
+        -0.659945
+      ],
+      "decal0Line3": [
+        -0.308685,
+        -3.87752,
+        -0.0367584,
+        5.42885
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.989809,
+        -0.0799149,
+        0.117866,
+        -2.75257
+      ],
+      "decal0CPNormDepth1": [
+        0.989809,
+        -0.0799149,
+        0.117866,
+        -2.75257
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.257072
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.260377,
+      "decal0Tex": "flag_italy",
+      "decal1Line0": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1Line1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1Line2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1Line3": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1HaveCP": false,
+      "decal1CPNormDepth": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1CPNormDepth1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1RotScale": [
+        1.5708,
+        1.0
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.0,
+      "decal1Tex": ""
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -0.459967,
+        -1.68461e-7,
+        3.86268,
+        -0.659945
+      ],
+      "decal0Line1": [
+        -0.308685,
+        -3.87752,
+        -0.0367584,
+        5.42885
+      ],
+      "decal0Line2": [
+        -0.459967,
+        -1.68461e-7,
+        3.86268,
+        -0.659945
+      ],
+      "decal0Line3": [
+        -0.308685,
+        -3.87752,
+        -0.0367584,
+        5.42885
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.989809,
+        -0.0799149,
+        0.117866,
+        -2.75257
+      ],
+      "decal0CPNormDepth1": [
+        0.989809,
+        -0.0799149,
+        0.117866,
+        -2.75257
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.257072
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.260377,
+      "decal0Tex": "flag_italy",
+      "decal1Line0": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1Line1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1Line2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1Line3": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1HaveCP": false,
+      "decal1CPNormDepth": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1CPNormDepth1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal1RotScale": [
+        1.5708,
+        1.0
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.0,
+      "decal1Tex": ""
     }
   },
   "vehicleSkins": {
@@ -2700,6 +2898,18 @@
       "replace_tex": {
         "from": "it_camo_olive_green*",
         "to": "it_camo_modern_three_color*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "it_camo_olive_green*",
+        "to": "it_camo_desert_light_yellow*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "it_camo_olive_green*",
+        "to": "it_camo_winter_white*"
       }
     }
   },

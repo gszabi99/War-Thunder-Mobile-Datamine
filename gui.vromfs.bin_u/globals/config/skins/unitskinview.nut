@@ -1293,7 +1293,9 @@ return {
     },
     "it_fiat_6614_106sr": {
       "": "it_camo_olive_green",
-      "forest": "it_camo_modern_three_color"
+      "desert": "it_camo_desert_light_yellow",
+      "forest": "it_camo_modern_three_color",
+      "winter": "it_camo_winter_white"
     },
     "it_leopard_1a5": {
       "": "it_camo_olive_green",
@@ -1301,11 +1303,15 @@ return {
     },
     "it_leopard_bofors": {
       "": "it_camo_olive_green",
-      "forest": "it_camo_modern_three_color"
+      "desert": "it_camo_desert_light_yellow",
+      "forest": "it_camo_modern_three_color",
+      "winter": "it_camo_winter_white"
     },
     "it_m109g": {
       "": "it_camo_olive_green",
-      "forest": "it_camo_modern_three_color"
+      "desert": "it_camo_desert_light_yellow",
+      "forest": "it_camo_modern_three_color",
+      "winter": "it_camo_winter_white"
     },
     "it_m113a1_tow": {
       "": "it_camo_olive_green",
@@ -1323,7 +1329,9 @@ return {
     },
     "it_m26a1_pershing": {
       "": "it_camo_olive_green",
-      "forest": "it_camo_threecolor_modern"
+      "desert": "it_camo_desert_light_yellow",
+      "forest": "it_camo_threecolor_modern",
+      "winter": "it_camo_winter_white"
     },
     "it_m36b1": {
       "": "it_camo_desert_modern",
@@ -3181,6 +3189,7 @@ return {
       "nato_blue_geometry_prem": "camo_nato_blue_geometry",
       "olive_spots": "camo_olive_spots",
       "polish_bluegeometry_prem": "camo_polish_bluegeometry",
+      "redgreen_spots_prem": "camo_redgreen_spots",
       "threegreenspots": "camo_threegreenspots",
       "upgraded": "camo_navygrey_5"
     },

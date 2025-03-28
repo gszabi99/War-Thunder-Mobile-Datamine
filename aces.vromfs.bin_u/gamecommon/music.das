@@ -281,7 +281,10 @@ def music_es(info : ParallelUpdateFrameDelayed;
              music__operatorCountryId : int;
              var music__curUnitType : int&)
   let curMusicState = get_music_state()
-  let gameState = get_game_state(music__forced)
+  let winOrLoosePlaying = ((curMusicState == int(GameMusicState MUSIC_STATE_WIN) ||
+                            curMusicState == int(GameMusicState MUSIC_STATE_LOOSE)) &&
+                            is_track_playing())
+  let gameState = get_game_state(music__forced && !winOrLoosePlaying)
   var musicState = GameMusicState MUSIC_STATE_CALM
   var hangarCountryId = -1
   var hangarTypeChanged = false
@@ -322,9 +325,6 @@ def music_es(info : ParallelUpdateFrameDelayed;
 
   let lockedHangar = music__lockedHangar && is_track_playing()
   let hangarCountryChanged = hangarCountryId >= 0 && music__curHangarCountry_id != hangarCountryId
-  let winOrLoosePlaying = ((curMusicState == int(GameMusicState MUSIC_STATE_WIN) ||
-                            curMusicState == int(GameMusicState MUSIC_STATE_LOOSE)) &&
-                            is_track_playing())
   let hangarTrackEnded = curMusicState == int(GameMusicState MUSIC_STATE_HANGAR) && !is_track_playing()
 
   if musicState == GameMusicState MUSIC_STATE_HANGAR

@@ -2994,6 +2994,16 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -3001,6 +3011,18 @@
       "replace_tex": {
         "from": "it_camo_olive_green*",
         "to": "it_camo_modern_three_color*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "it_camo_olive_green*",
+        "to": "it_camo_desert_light_yellow*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "it_camo_olive_green*",
+        "to": "it_camo_winter_white*"
       }
     }
   },

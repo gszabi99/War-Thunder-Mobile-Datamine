@@ -2891,6 +2891,110 @@
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.239807,
       "decal0Tex": "flag_italy"
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        0.0,
+        -1.70626e-7,
+        -3.90347,
+        2.81898
+      ],
+      "decal0Line1": [
+        -0.0,
+        -3.90347,
+        1.70626e-7,
+        4.72264
+      ],
+      "decal0Line2": [
+        0.0,
+        -1.70626e-7,
+        3.90347,
+        -1.81898
+      ],
+      "decal0Line3": [
+        0.0,
+        -3.90347,
+        -1.70626e-7,
+        4.72264
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -1.0,
+        0.0,
+        0.0,
+        -3.12306
+      ],
+      "decal0CPNormDepth1": [
+        1.0,
+        -0.0,
+        -0.0,
+        3.09624
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.256182
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.251283,
+      "decal0Tex": "flag_italy"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        0.0,
+        -1.70626e-7,
+        -3.90347,
+        2.81898
+      ],
+      "decal0Line1": [
+        -0.0,
+        -3.90347,
+        1.70626e-7,
+        4.72264
+      ],
+      "decal0Line2": [
+        0.0,
+        -1.70626e-7,
+        3.90347,
+        -1.81898
+      ],
+      "decal0Line3": [
+        0.0,
+        -3.90347,
+        -1.70626e-7,
+        4.72264
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -1.0,
+        0.0,
+        0.0,
+        -3.12306
+      ],
+      "decal0CPNormDepth1": [
+        1.0,
+        -0.0,
+        -0.0,
+        3.09624
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.256182
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.251283,
+      "decal0Tex": "flag_italy"
     }
   },
   "vehicleSkins": {
@@ -2898,6 +3002,18 @@
       "replace_tex": {
         "from": "it_camo_olive_green*",
         "to": "it_camo_modern_three_color*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "it_camo_olive_green*",
+        "to": "it_camo_desert_light_yellow*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "it_camo_olive_green*",
+        "to": "it_camo_winter_white*"
       }
     }
   },

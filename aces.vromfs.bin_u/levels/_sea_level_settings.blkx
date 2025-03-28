@@ -9,15 +9,17 @@
     2000.0
   ],
   "vsmAngleThreshold": 0.0,
-  "shore_waves_dist": [
-    50.0,
-    200.0
-  ],
   "wind_scale": 1.2,
   "max_wind_strength": 6.5,
   "water_level": 0.0,
   "harmonicsType": "blue",
   "shader_vars": {
+    "shore__waves_dist": [
+      0.0,
+      200.0,
+      0.0,
+      50.0
+    ],
     "max_river_width": 1500.0,
     "ocean_density": 0.4,
     "river_density": 2.0,

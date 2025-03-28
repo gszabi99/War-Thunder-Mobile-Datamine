@@ -369,6 +369,8 @@
   "debugRiTextureSize": 8,
   "supportPlaneIgnoreCollisionDamageAfterSpawnTime": 2.5,
   "offsetBetweenSupportWingsmens": 50.0,
+  "isAdaptiveCamAngle": true,
+  "adaptiveCamAngleMult": 1.0,
   "tracers": {
     "headFadeTime": 4.0,
     "headSpeedScale": [
