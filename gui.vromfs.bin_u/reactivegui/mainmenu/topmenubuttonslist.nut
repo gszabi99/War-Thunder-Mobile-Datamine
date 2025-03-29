@@ -6,6 +6,7 @@ let { openDebugProfileWnd } = require("%rGui/debugTools/debugProfileWnd.nut")
 let { openDebugConfigWnd } = require("%rGui/debugTools/debugConfigsWnd.nut")
 let debugShopWnd = require("%rGui/debugTools/debugShopWnd.nut")
 let openDebugCommandsWnd = require("%rGui/debugTools/debugCommandsWnd.nut")
+let debugQuirrelConsoleWnd = require("%rGui/debugTools/debugQuirrelConsoleWnd.nut")
 let optionsScene = require("%rGui/options/optionsScene.nut")
 let debugGameModes = require("%rGui/gameModes/debugGameModes.nut")
 let chooseBenchmarkWnd = require("chooseBenchmarkWnd.nut")
@@ -100,6 +101,10 @@ let DEBUG_COMMANDS = {
   name = "Debug Commands"
   cb = openDebugCommandsWnd
 }
+let DEBUG_QCONSOLE = {
+  name = "Quirrel Console"
+  cb = debugQuirrelConsoleWnd
+}
 let DEBUG_SHOP = {
   name = "Debug Shop"
   cb = debugShopWnd
@@ -168,7 +173,7 @@ function getDevButtons() {
   if (can_debug_configs.value)
     res.append(DEBUG_CONFIGS, DEBUG_PROFILE, DEBUG_SHOP)
   if (can_use_debug_console.value)
-    res.append(DEBUG_COMMANDS)
+    res.append(DEBUG_COMMANDS, DEBUG_QCONSOLE)
   return res
 }
 

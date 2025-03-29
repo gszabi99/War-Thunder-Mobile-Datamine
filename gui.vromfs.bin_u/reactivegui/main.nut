@@ -29,6 +29,7 @@ require("updater/connectionStatus/initConnectionStatus.nut")
 require("activeControls.nut")
 require("login/consentGoogleState.nut")
 require("login/previewIDFAWnd.nut")
+require("login/reloginAuto.nut")
 
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
 let { modalWindowsComponent, closeAllModalWindows, hasModalWindows } = require("%rGui/components/modalWindows.nut")
