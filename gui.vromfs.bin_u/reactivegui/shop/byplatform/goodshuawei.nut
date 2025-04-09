@@ -16,7 +16,6 @@ let { isAuthorized, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases, severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut")
-let { blockWindow, unblockWindow } = require("%appGlobals/windowState.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { logEvent } = require("appsFlyer")
@@ -59,10 +58,6 @@ let { //defaults only to allow test this module on PC
       status = dbgStatuses[dbgStatusIdx++ % dbgStatuses.len()],
       value = "{ \"orderId\" : -1, \"productId\" : \"debug\" }"
     })),
-  manageSubscription = function(_) {
-    blockWindow("debug")
-    setTimeout(0.1, @() unblockWindow("debug"))
-  }
   confirmPurchase = @(_) setTimeout(1.0, @() eventbus_send("android.billing.huawei.onConfirmPurchaseCallback", { status = 0, value = "{}" })),
   restorePurchases = @() setTimeout(1.0,
     @() eventbus_send("android.billing.huawei.onRestorePurchases", {
@@ -272,9 +267,9 @@ function changeSubscription(subsOrId, _) {
   let productId = getPlanId(platformSubs.get()?[subsOrId] ?? subsOrId)
   if (productId == null)
     return
-  logG($"Buy {productId}")
+  logG($"Buy subs {productId}")
   severalCheckPurchasesOnActivate()
-  manageSubscription(productId)
+  startPurchaseAsync(productId)
 }
 
 let noNeedLogerr = [ HMS_ORDER_STATE_CANCEL, HMS_ORDER_STATE_NET_ERROR, HMS_ORDER_STATE_CALLS_FREQUENT, HMS_ORDER_STATE_DEFAULT_CODE ]
@@ -365,7 +360,7 @@ function registerNextTransaction() {
 
 eventbus_subscribe("android.billing.huawei.onHuaweiPurchaseCallback", function(result) {
   let { status, value = "" } = result
-  logG("onHuaweiPurchaseCallback status = ", getStatusName(status))
+  logG("onHuaweiPurchaseCallback status = ", getStatusName(status), value)
   let list =  [{ status, value }]
   pendingTransactions.mutate(@(v) v.extend(list))
   registerNextTransaction()

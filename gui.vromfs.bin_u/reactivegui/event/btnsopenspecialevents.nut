@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { translucentButton, translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
 let { openEventWnd, specialEventsLootboxesState, unseenLootboxes, unseenLootboxesShowOnce } = require("%rGui/event/eventState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { gmEventsList, openGmEventWnd } = require("%rGui/event/gmEventState.nut")
+let { gmEventsList, openGmEventWnd, hasFinishedFirstBattle, canOpenGmEventWnd } = require("%rGui/event/gmEventState.nut")
 let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { openQuestsWndOnTab, questsCfg, progressUnlockByTab, progressUnlockBySection,
@@ -42,13 +42,15 @@ function btnsOpenSpecialEvents() {
       @() openQuestsWndOnTab(evt.eventId)
       @(_) statusMark(evt.eventId)
     )))
-  gmEventsList.get().each(@(id)
-    children.append(translucentButton(gmEventPresentation(id).image,
+  gmEventsList.get().each(function(id) {
+    if (canOpenGmEventWnd(id, hasFinishedFirstBattle.get()))
+      children.append(translucentButton(gmEventPresentation(id).image,
       "",
-      @() openGmEventWnd(id))))
+      @() openGmEventWnd(id)))
+  })
 
   return {
-    watch = specialEventsLootboxesState
+    watch = [specialEventsLootboxesState, gmEventsList, hasFinishedFirstBattle]
     flow = FLOW_HORIZONTAL
     gap = translucentButtonsVGap
     children

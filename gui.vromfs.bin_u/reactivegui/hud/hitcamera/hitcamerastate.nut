@@ -4,11 +4,14 @@ let { HIT_CAMERA_FINISH, HIT_CAMERA_START, HIT_CAMERA_FADE_IN, DM_HIT_RESULT_NON
 } = require("hitCamera")
 let { eventbus_subscribe } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
+let { doesLocTextExist } = require("dagor.localize")
 let { setTimeout, clearTimer, resetTimeout } = require("dagor.workcycle")
 let cameraEventUnitType = require("cameraEventUnitType.nut")
 let { hitResultCfg, defPartPriority, partsPriority } = require("hitCameraConfig.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { register_command } = require("console")
+let { hudUnitType } = require("%rGui/hudState.nut")
+
 
 const MIN_SHOW_IMPORTANT_MSEC = 3000
 const MAX_SHOW_HIT_MSEC = 6000
@@ -162,9 +165,12 @@ function getImportantEventInfo(event) {
     if (partPriority <= priority)
       continue
     priority = partPriority
+    let locId = hudUnitType.get() == SAILBOAT && doesLocTextExist($"part_destroyed/{partName}/sailboat")
+      ? $"part_destroyed/{partName}/sailboat"
+      : $"part_destroyed/{partName}"
     result = {
       styleId = "kill",
-      locId = $"part_destroyed/{partName}"
+      locId
     }
   }
 

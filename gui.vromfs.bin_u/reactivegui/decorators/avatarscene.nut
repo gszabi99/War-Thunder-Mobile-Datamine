@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { arrayByRows } = require("%sqstd/underscore.nut")
+let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { chosenAvatar, allAvatars, availAvatars, unseenDecorators,
   markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
@@ -133,11 +134,12 @@ function avatarBtn(item) {
 
 function footer() {
   let { price = null } = allAvatars.value?[selectedAvatar.value]
+  let currencyFullId = currencyToFullId.get()?[price?.currencyId] ?? price?.currencyId
   let canBuy = (price?.price ?? 0) > 0
   let canEquip = selectedAvatar.value in availAvatars.value || selectedAvatar.value == null
   let isCurrent = selectedAvatar.value == chosenAvatar.value?.name
   return {
-    watch = [selectedAvatar, chosenAvatar, availAvatars, allAvatars]
+    watch = [selectedAvatar, chosenAvatar, availAvatars, allAvatars, currencyToFullId]
     size = [flex(), defButtonHeight]
     flow = FLOW_HORIZONTAL
     gap = hdpx(50)
@@ -147,7 +149,7 @@ function footer() {
           { hotkeys = ["^J:X | Enter"] })
       : canBuy
         ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
-            mkCurrencyComp(price.price, price.currencyId, CS_INCREASED_ICON),
+            mkCurrencyComp(price.price, currencyFullId, CS_INCREASED_ICON),
             buySelectedAvatar)
       : mkDecoratorUnlockProgress(selectedAvatar.get())
   }

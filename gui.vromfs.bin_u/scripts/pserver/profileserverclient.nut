@@ -17,6 +17,7 @@ let { startRelogin } = require("%scripts/login/loginStart.nut")
 
 const MAX_REQUESTS_HISTORY = 20
 const PROGRESS_TIMEOUT_SEC = 90 //native char module already has 45sec timeout, so this is just insurance
+const RESULT_ID = "pserver.requestResult"
 let debugDelay = hardPersistWatched("pserver.debugDelay", 0.0)
 let lastRequests = hardPersistWatched("pserver.lastRequests", [])
 let progressTimeouts = hardPersistWatched("pserver.inProgress", {}) //progressId = { value, timeout }
@@ -59,6 +60,11 @@ function stopProgress(id) {
   sendProgress(id, value, false)
 }
 
+function sendResult(resData, id, progressId, method) {
+  stopProgress(progressId)
+  eventbus_send("profile_srv.response", { data = resData, id, method })
+}
+
 function collectLastRequestResult(id, data) {
   local reqTime = 0
   lastRequests.mutate(function(v) {
@@ -87,22 +93,37 @@ function collectLastRequest(id, action, params) {
 }
 
 local doRequest = null //forward declaration
-function checkAndLogError(id, action, params, cb, data) {
-  local err = debugError ?? data?.error
+
+eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
+  local result = clone msg
+  let actionFull  = result?.$rawdelete("$action")
+  let context = result?.$rawdelete("$context")
+  if (actionFull == null) {
+    logerr($"PServer request result process: No '$action' in result")
+    return
+  }
+  if (context == null) {
+    logerr($"PServer request result process: Empty '$context' in result")
+    return
+  }
+
+  let { id, params, progressId, action } = context
+
+  local err = debugError ?? result?.error
   debugError = null
-  if (err == null && !(data?.response?.success ?? true))
-    err = data?.response?.error ?? "unknown error"
-  let reqTime = collectLastRequestResult(id, data)
+  if (err == null && !(result?.response?.success ?? true))
+    err = result?.response?.error ?? "unknown error"
+  let reqTime = collectLastRequestResult(id, result)
 
   if (err == null) {
     logPSC($"request {id}: {action} completed without error")
 
-    let { timeMs = 0 } = data?.result
+    let { timeMs = 0 } = result?.result
     if (reqTime > 0 && timeMs > 0)
       serverTimeUpdate(timeMs, reqTime)
     retryActionsCounter.$rawdelete(action)
 
-    cb?(data)
+    sendResult(result, id, progressId, action)
     return
   }
 
@@ -113,7 +134,7 @@ function checkAndLogError(id, action, params, cb, data) {
     logErr = " ".concat(err.message, "code" in err ? $"(code: {err.code})" : "")
   }
   else if (type(err) != "string") {
-    let dumpStr = object_to_json_string(data)
+    let dumpStr = object_to_json_string(result)
     logErr = " ".concat("(full answer dump)", dumpStr)
   }
 
@@ -121,7 +142,7 @@ function checkAndLogError(id, action, params, cb, data) {
     let count = retryActionsCounter?[action] ?? 0
     if (count < MAX_RETRIES) {
       retryActionsCounter[action] <- count + 1
-      doRequest(action, params, id, cb)
+      doRequest(action, params, id, progressId)
       return
     }
   }
@@ -129,17 +150,16 @@ function checkAndLogError(id, action, params, cb, data) {
   retryActionsCounter.$rawdelete(action)
   if (errId not in noNeedLogerrOnErrors)
     logerr($"[profileServerClient] {action} returned error: {logErr}")
-  cb?({ error = err })
+  sendResult({ error = err }, id, progressId, action)
 
   if (errId == "NO_TOKEN")
     deferOnce(startRelogin)
-}
+})
 
-function doRequestOnline(action, params, id, cb) {
+function doRequestOnline(action, params, id, progressId) {
   if (!isAuthAndUpdated.value) {
     logPSC($"Skip action {action}, no token")
-    if (cb)
-      cb({ error = "Not authorized" })
+    sendResult({ error = "Not authorized" }, id, progressId, action)
     return
   }
 
@@ -162,31 +182,30 @@ function doRequestOnline(action, params, id, cb) {
   }
 
   logPSC($"Sending request {id}, method: {action}")
-  profile.request(requestData, @(r) checkAndLogError(id, action, params, cb, r))
+  profile.requestEventBus(requestData, RESULT_ID, { id, params, progressId, action })
 }
 
-function doRequestOffline(action, params, id, cb) {
+function doRequestOffline(action, params, id, progressId) {
   logPSC($"Offline request {id}, method: {action}")
   defer(function() {
     let actionHandler = offlineActions?[action]
-    checkAndLogError(id, action, params, cb,
-      actionHandler == null ? { error = "Method does not supported offline" }
-        : { result = actionHandler(params) })
+    eventbus_send(RESULT_ID,
+      {
+        ["$action"] = $"das.{action}",
+        ["$context"] = { id, params, progressId, action },
+        error = actionHandler == null ? "Method does not supported offline" : null,
+        result = actionHandler?(params),
+      })
   })
 }
 
 doRequest = isOfflineMenu ? doRequestOffline : doRequestOnline
 
-function sendResult(data, id, progressId, method) {
-  stopProgress(progressId)
-  eventbus_send("profile_srv.response", { data, id, method })
-}
-
 function requestImpl(msg) {
   let { id, data } = msg
   let { progressId = null, progressValue = null } = data
   startProgress(progressId, progressValue)
-  doRequest(data.method, data?.params, id, @(resData) sendResult(resData, id, progressId, data.method))
+  doRequest(data.method, data?.params, id, progressId)
 }
 
 local request = requestImpl

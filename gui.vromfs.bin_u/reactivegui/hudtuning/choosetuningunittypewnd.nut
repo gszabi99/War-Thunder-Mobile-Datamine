@@ -8,6 +8,8 @@ let { unitTypeOrder } = require("%appGlobals/unitConst.nut")
 let { tuningUnitType, isCurPresetChanged, saveCurrentTransform } = require("hudTuningState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { unitTypesByEvent } = require("%rGui/event/eventState.nut")
+
 
 let wndUid = "chooseTuningUnitType"
 let close = @() removeModalWindow(wndUid)
@@ -42,12 +44,12 @@ function changeUnitType(unitType) {
 }
 
 let content = @() {
-  watch = tuningUnitType
+  watch = [tuningUnitType, unitTypesByEvent]
   size = [flex(), SIZE_TO_CONTENT]
   padding = gap
   flow = FLOW_VERTICAL
   gap
-  children = unitTypes.map(@(ut)
+  children = [].extend(unitTypes, unitTypesByEvent.get()).map(@(ut)
     (ut == tuningUnitType.value ? textButtonCommon : textButtonBright)(
       loc($"mainmenu/type_{ut}"),
       @() changeUnitType(ut),

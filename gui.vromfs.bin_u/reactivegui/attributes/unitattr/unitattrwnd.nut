@@ -64,6 +64,7 @@ let mkVerticalPannableArea = @(content, override = {}) {
   children = {
     size = flex()
     behavior = Behaviors.Pannable
+    touchMarginPriority = TOUCH_BACKGROUND
     skipDirPadNav = true
     children = content
   }

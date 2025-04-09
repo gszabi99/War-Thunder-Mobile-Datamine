@@ -71,6 +71,7 @@ foreach (fn in [
   // Independent Modules (before login)
 require("%scripts/login/updateRights.nut")
 require("%scripts/debugTools/dbgDedicLogerrs.nut")
+require("%scripts/debugTools/dbgQConsole.nut")
 require("%scripts/matching/gameModesUpdate.nut")
 require("utils/restartGame.nut")
 require("%sqstd/regScriptProfiler.nut")("dagui", dlog) // warning disable: -forbidden-function

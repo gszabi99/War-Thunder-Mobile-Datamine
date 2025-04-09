@@ -757,6 +757,7 @@ let function mkUnitsTreeNodesContent() {
           },
           {
             behavior = [Behaviors.Pannable, Behaviors.ScrollEvent]
+            touchMarginPriority = TOUCH_BACKGROUND
             scrollHandler
             kineticAxisLockAngle = 30
             xmbNode = XmbContainer()

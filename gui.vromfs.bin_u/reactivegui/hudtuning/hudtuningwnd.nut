@@ -66,7 +66,9 @@ function mkHudTuningElem(cfg) {
         watch = [isSelected, tuningOptions]
         key = editViewKey
         children = [
-          editView(tuningOptions.get())
+          editView.getfuncinfos().parameters.len() == 2
+            ? editView(tuningOptions.get())
+            : editView(tuningOptions.get(), id)
           isSelected.get() ? selectBorder : null
         ]
       }

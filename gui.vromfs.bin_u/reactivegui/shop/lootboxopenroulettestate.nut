@@ -197,6 +197,11 @@ function multiplyRewardsCycle(weights, rewardsCfg) {
     return res
 
   let cycleMul = ceil(MIN_REWARDS_CYCLE / total).tointeger()
+  if (counts.len() <= 3) {
+    foreach(id, count in counts)
+      res.resize(res.len() + round(count - minCount).tointeger(), id)
+    return res
+  }
   foreach(id, count in counts)
     res.resize(res.len() + round((count - minCount) * cycleMul).tointeger(), id)
   return Rand.shuffle(res)

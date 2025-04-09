@@ -3,6 +3,7 @@ let defCfg = {
   image = "ui/gameuiskin#icon_primary_attention.svg"
   bgImage = "ui/images/event_bg.avif"
   accessStat = ""
+  hasConsumablePlate = false
 }
 
 let allPresentations = {
@@ -14,6 +15,12 @@ let allPresentations = {
 
   event_ny_ctf = {
     image = "ui/gameuiskin#icon_event_christmas.svg"
+  }
+
+  event_april_2025 = {
+    image = "ui/gameuiskin#icon_event_april_2025.svg"
+    bgImage = "ui/images/pirates/map_border_table.avif"
+    bgMapImage = "ui/images/pirates/map_border_2.avif"
   }
 }
   .map(@(cfg, id) defCfg.__merge(cfg, { id }))

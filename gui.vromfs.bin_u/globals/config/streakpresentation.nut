@@ -632,6 +632,33 @@ let streaksPresentation = {
     numberCtor = mkNumberCtor([12, 18], [5, 20])
   }
 
+  pirate_ship_anti_artillery = {
+    name = "streaks/pirate_ship_anti_artillery"
+    bgImage = "ui/gameuiskin#streaks_pirate_bg.avif"
+    stackImages = [
+      mkStackImage("pirate_ship_anti_cannon.avif", [62, 62])
+    ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
+  }
+
+  pirate_ship_anti_steering = {
+    name = "streaks/pirate_ship_anti_steering"
+    bgImage = "ui/gameuiskin#streaks_pirate_bg.avif"
+    stackImages = [
+      mkStackImage("pirate_torn_sails.avif", [62, 62])
+    ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
+  }
+
+  pirate_ship_artillery_master = {
+    name = "streaks/pirate_ship_artillery_master"
+    bgImage = "ui/gameuiskin#streaks_pirate_bg.avif"
+    stackImages = [
+      mkStackImage("pirate_ship_cannon_master.avif", [62, 62])
+    ]
+    numberCtor = mkNumberCtor([12, 18], [5, 20])
+  }
+
 }
 function streakPresentation(unlockId) {
   return streaksPresentation?[unlockId] ?? streaksPresentation.unknown

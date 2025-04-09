@@ -6,7 +6,7 @@ let { premiumTextColor, userlogTextColor } = require("%rGui/style/stdColors.nut"
 let { unitPlateHeight, unitPlateWidth, mkUnitBg, mkUnitImage, mkUnitTexts,
   mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { unitInProgress} = require("%appGlobals/pServer/pServerApi.nut")
+let { unitInProgress, levelInProgress} = require("%appGlobals/pServer/pServerApi.nut")
 let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
@@ -148,7 +148,7 @@ let mkCardContent = @(unit) {
     }
     unit?.isUpgraded ? upgradeDesc : null
     {size = flex()}
-    mkSpinnerHideBlock(Computed(@() unitInProgress.get() != null),
+    mkSpinnerHideBlock(Computed(@() unitInProgress.get() != null || levelInProgress.get() != null),
       @() buyBtn(unit))
   ]
 }

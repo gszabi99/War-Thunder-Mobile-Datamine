@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/gamercardStyle.nut" import *
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { WP, GOLD, PLATINUM, sortByCurrencyId } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
+let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
@@ -230,6 +231,7 @@ let gamercardProfile = @() {
   onElemState = @(sf) profileStateFlags.set(sf)
   onClick = @() accountOptionsScene()
   sound = { click  = "meta_profile_button" }
+  touchMarginPriority = TOUCH_MINOR
   children = [
     {
       size = [levelProgressBarWidth + avatarSize, flex()]

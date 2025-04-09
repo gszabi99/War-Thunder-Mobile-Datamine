@@ -102,6 +102,7 @@ let mkGroup = @(locId, children, ovr = {}, headerOvr = {}) {
       children = {
         size = [flex(), SIZE_TO_CONTENT]
         behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
+        touchMarginPriority = TOUCH_BACKGROUND
         scrollHandler = ScrollHandler()
         flow = FLOW_HORIZONTAL
         gap = smallGap

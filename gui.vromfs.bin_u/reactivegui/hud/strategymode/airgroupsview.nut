@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { borderWidth, btnBgColor, borderColor, borderNoAmmoColor, imageColor
-    } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { mkShipDebuffs, mkCrewHealth} = require("%rGui/hud/shipStateModule.nut")
+} = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { mkShipDebuffs, mkCrewHealthCtor, defHealthSize } = require("%rGui/hud/shipStateModule.nut")
 let { actionBarItems, startActionBarUpdate, stopActionBarUpdate } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3 } = require("%rGui/hud/actionBar/actionType.nut")
 let { strategyDataRest, strategyDataShip, curGroupIndex, optDebugDraw } = require("%rGui/hud/strategyMode/strategyState.nut")
 let { getNodeStyle, airGroupIcons, airGroupButtonWidth, airGroupButtonHeight,
-      iconShip, debugTextColor
-    } = require("%rGui/hud/strategyMode/style.nut")
+  iconShip, debugTextColor
+} = require("%rGui/hud/strategyMode/style.nut")
 let { NODE_SELF } = require("guiStrategyMode")
 let { mkSquareButtonBg } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
 let { mkActionGlare } = require("%rGui/hud/weaponsButtonsAnimations.nut")
@@ -163,7 +163,7 @@ let shipUi = {
   flow = FLOW_VERTICAL
   children = [
     mkShipDebuffs(1)
-    mkCrewHealth(1)
+    mkCrewHealthCtor(defHealthSize)(1)
   ]
 }
 

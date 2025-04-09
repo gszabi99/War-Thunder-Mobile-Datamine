@@ -39,7 +39,7 @@ registerHandler("onSkipOffer", function(res) {
 
 let onClickGenNewOffer = @() leftSkipOfferCount.get() < 1
   ? openMsgBox({
-      text = loc("offer/skip/noOffersPerDay")
+      text = loc("offer/skip/noOffersPerDay", { count = serverConfigs.get()?.gameProfile.vipBonuses.offerSkips ?? 0})
       buttons = [
         {
           id = "ok"

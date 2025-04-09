@@ -1,7 +1,14 @@
 {
+  "cascadeArea": 128.0,
+  "cascadeAreaMul": 2.5,
+  "quadHeight": 20.0,
+  "fadeInTime": 0.5,
+  "fadeOutTime": 20.0,
+  "tailFadeInLength": 10.0,
   "widthThreshold": 0.3,
-  "enableGenMuls": false,
+  "forwardExpand": 5.0,
   "underwaterFoamWidth": 3.0,
   "underwaterFoamAlphaMult": 0.7,
-  "forwardExpand": 5.0
+  "useTrail": true,
+  "enableGenMuls": false
 }

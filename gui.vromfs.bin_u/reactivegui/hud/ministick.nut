@@ -1,13 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%rGui/controls/shortcutConsts.nut" import *
 let { get_mission_time } = require("mission")
 let { TouchScreenStick } = require("wt.behaviors")
 let { Point2 } = require("dagor.math")
 let { rnd_int } = require("dagor.random")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
+let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
+let axisListener = require("%rGui/controls/axisListener.nut")
+let { STICK } = require("stickState.nut")
 
 
 let stickHeadSize = evenPx(120)
 let stickTouchAreaSize = stickHeadSize
 let stickDragAreaSize = 2 * (stickHeadSize * 0.82 + 0.5).tointeger()
+
+let defaultGamepadParams = {
+  shortcutId = null,
+  activeStick = STICK.LEFT
+}
 
 function stickDragAreaBg(scale) {
   let size = scaleEven(stickDragAreaSize, scale)
@@ -45,6 +55,7 @@ function stickHeadBg(scale, ovr) {
  * @param {Watched(float)} [stickCooldownTimeSec] - Optional watched total cooldown time in seconds. Should be > 0, can be constant.
  * @param {Watched(bool)} [isStickEnabled] - Optional watched flag, if stick is enabled, by cooldown and/or other states.
  *                                           If you are using cooldown, you should set this flag to false when in cooldown.
+ * @param {table} [gamepadParams] - Which movement stick of joystick should be controlled. And shortcutId for activating stick. See defaultGamepadParams
  * @return {table} - Table with "stickControl" (stick component for HUD) and "stickView" (stick component for HudEditor).
  */
 let mkMiniStick = kwarg(function mkMiniStick(
@@ -53,12 +64,14 @@ let mkMiniStick = kwarg(function mkMiniStick(
   stickHeadChild = null,
   stickCooldownEndTime = Watched(-1),
   stickCooldownTimeSec = Watched(-1),
-  isStickEnabled = Watched(true)
+  isStickEnabled = Watched(true),
+  gamepadParams = defaultGamepadParams
 ) {
   let animUID = rnd_int(0, 0xFFFF)
 
   let stickHeadBase = @(scale, ovr = {}) stickHeadBg(scale, { children = stickHeadChild?(scale, true) }.__update(ovr))
   let stickHeadControl = @(scale) stickHeadBase(scale, { transform = {} })
+  let { shortcutId, activeStick } = gamepadParams
 
   let stickDragAreaControl = @(scale) @() {
     watch = isStickActive
@@ -67,9 +80,32 @@ let mkMiniStick = kwarg(function mkMiniStick(
     children = isStickActive.get() ? stickDragAreaBg(scale) : null
   }
 
+  let gamepadAxisListener = axisListener({
+    [activeStick == STICK.LEFT ? JOY_XBOX_REAL_AXIS_L_THUMB_H : JOY_XBOX_REAL_AXIS_R_THUMB_H] = function(v) {
+      stickDelta(Point2(-v, stickDelta.value.y))
+    },
+    [activeStick == STICK.LEFT ? JOY_XBOX_REAL_AXIS_L_THUMB_V : JOY_XBOX_REAL_AXIS_R_THUMB_V] = function(v) {
+      stickDelta(Point2(stickDelta.value.x, v))
+    },
+  })
+
+  let btn = @() {
+    watch = isStickActive
+    children = [
+      mkContinuousButtonParams(
+        @() isStickActive.set(true),
+        @() isStickActive.set(false),
+        shortcutId),
+      mkGamepadShortcutImage(shortcutId, {pos = [pw(70), ph(-50)]})
+    ]
+    transform = { scale = isStickActive.get() ? [0.8, 0.8] : [1.0, 1.0] }
+    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+  }
+
   let stickControlEnabled = @(size, scale) {
     behavior = TouchScreenStick
     size = [size, size]
+    watch = [isGamepad, isStickActive]
 
     useCenteringOnTouchBegin = true
     maxValueRadius = scaleEven(stickDragAreaSize, 0.5 * scale)
@@ -84,6 +120,8 @@ let mkMiniStick = kwarg(function mkMiniStick(
     children = [
       stickDragAreaControl(scale)
       stickHeadControl(scale)
+      !isGamepad.get() ? null : btn
+      isGamepad.get() && isStickActive.get() ? gamepadAxisListener : null
     ]
   }
 

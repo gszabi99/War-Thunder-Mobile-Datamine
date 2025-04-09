@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { myUserName } = require("%appGlobals/profileStates.nut")
+let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { chosenNickFrame, allFrames, availNickFrames,
   unseenDecorators, markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
@@ -35,40 +36,33 @@ let CS_DECORATORS = CS_SMALL.__merge({
 let maxDecInRow = 9
 let columns = min((contentWidthFull / (gap + squareSize[0])).tointeger(), maxDecInRow)
 
-let selectedDecorator = Watched(chosenNickFrame.value?.name)
+let chosenFrameName = Computed(@() chosenNickFrame.get()?.name ?? "")
+let selectedFrameName = Watched(chosenFrameName.get())
 
-chosenNickFrame.subscribe(function(v){
-  if (v && v.name)
-    markDecoratorSeen(v.name)
-})
+chosenFrameName.subscribe(@(v) markDecoratorSeen(v))
 
 let buySelectedDecorator = @()
-  purchaseDecorator(selectedDecorator.value, frameNick("", selectedDecorator.value),
-    mkBqPurchaseInfo(PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, selectedDecorator.value))
+  purchaseDecorator(selectedFrameName.get(), frameNick("", selectedFrameName.get()),
+    mkBqPurchaseInfo(PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, selectedFrameName.get()))
 
 function applySelectedDecorator() {
-  if (selectedDecorator.value == "") {
+  let selFrame = selectedFrameName.get()
+  if (selFrame == "")
     unset_current_decorator("nickFrame")
-    return
-  }
-  if (selectedDecorator.value in availNickFrames.value) {
-    set_current_decorator(selectedDecorator.value)
-    return
-  }
-  if ((allFrames.value?[selectedDecorator.value]?.price.price ?? 0) > 0) {
+  else if (selFrame in availNickFrames.get())
+    set_current_decorator(selFrame)
+  else if ((allFrames.get()?[selFrame]?.price.price ?? 0) > 0)
     buySelectedDecorator()
-    return
-  }
 }
 
 let header = {
   flow = FLOW_VERTICAL
   children = [
     @() {
-      watch = [myUserName, selectedDecorator]
+      watch = [myUserName, selectedFrameName]
       valign = ALIGN_CENTER
       rendObj = ROBJ_TEXT
-      text = frameNick(myUserName.value, selectedDecorator.value)
+      text = frameNick(myUserName.get(), selectedFrameName.get())
     }.__update(fontMedium)
     {
       rendObj = ROBJ_TEXT
@@ -79,12 +73,10 @@ let header = {
 }
 
 function tagBtn(item) {
-  let name = item[0]
-  let price = item[1].price
+  let { name, price } = item
   let stateFlags = Watched(0)
-  let isChoosen = Computed(@() chosenNickFrame.value?.name == name ||
-    (chosenNickFrame.value == null && name == ""))
-  let isSelected = Computed(@() selectedDecorator.value == name)
+  let isChoosen = Computed(@() chosenFrameName.get() == name)
+  let isSelected = Computed(@() selectedFrameName.get() == name)
   let isAvailable = Computed(@() name in availNickFrames.value || name == "")
   let isUnseen = Computed(@() name in unseenDecorators.value)
   return @() {
@@ -98,9 +90,9 @@ function tagBtn(item) {
     function onClick() {
       markDecoratorSeen(name)
       if (!isSelected.value)
-        selectedDecorator(name)
+        selectedFrameName.set(name)
       else if (isSelected.value && !isChoosen.value
-          && decoratorInProgress.value != (name ?? "nickFrame"))
+          && decoratorInProgress.get() != (name != "" ? name : "nickFrame"))
         applySelectedDecorator()
     }
     onHover = hoverHoldAction("markDecoratorsSeen", name, markDecoratorSeen)
@@ -157,13 +149,14 @@ function tagBtn(item) {
 }
 
 function footer() {
-  let { price = null } = allFrames.value?[selectedDecorator.value]
+  let { price = null } = allFrames.get()?[selectedFrameName.get()]
+  let currencyFullId = currencyToFullId.get()?[price?.currencyId] ?? price?.currencyId
   let canBuy = (price?.price ?? 0) > 0
-  let canEquip = selectedDecorator.value in availNickFrames.value || selectedDecorator.value == ""
-  let isCurrent = selectedDecorator.value == chosenNickFrame.value?.name
+  let canEquip = selectedFrameName.get() in availNickFrames.get() || selectedFrameName.get() == ""
+  let isCurrent = selectedFrameName.get() == chosenFrameName.get()
 
   return {
-    watch = [selectedDecorator, chosenNickFrame, allFrames, availNickFrames]
+    watch = [selectedFrameName, chosenFrameName, allFrames, availNickFrames, currencyToFullId]
     size = [flex(), defButtonHeight]
     vplace = ALIGN_BOTTOM
     flow = FLOW_HORIZONTAL
@@ -175,10 +168,10 @@ function footer() {
             { hotkeys = ["^J:X | Enter"] })
         : canBuy
           ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
-              mkCurrencyComp(price.price, price.currencyId),
+              mkCurrencyComp(price.price, currencyFullId),
               buySelectedDecorator)
         : null
-      canEquip || canBuy || isCurrent ? null : mkDecoratorUnlockProgress(selectedDecorator.get())
+      canEquip || canBuy || isCurrent ? null : mkDecoratorUnlockProgress(selectedFrameName.get())
     ]
   }
 }
@@ -189,18 +182,16 @@ let framesList = @() {
   flow = FLOW_VERTICAL
   gap
   children = arrayByRows(
-    allFrames.value.filter(@(frame, key) isShowAllDecorators.value || !frame.isHidden || (key in (availNickFrames.value)))
-      .topairs()
-      .sort(@(a,b) (b[0] in availNickFrames.value)<=>(a[0] in availNickFrames.value))
-      .insert(0, [ "",
-        {
-          price = {
-            price = 0
-            currencyId = ""
-          }
-        }
-      ])
-      .map(@(item) tagBtn(item)),
+    allFrames.get()
+      .filter(@(v, name) isShowAllDecorators.get() || !v.isHidden || (name in (availNickFrames.get())))
+      .map(@(v, name) v.__merge({ name }))
+      .values()
+      .sort(@(a, b) (b.name in availNickFrames.get()) <=> (a.name in availNickFrames.get()))
+      .insert(0, {
+          name = ""
+          price = { price = 0, currencyId = "" }
+        })
+      .map(tagBtn),
     columns
   ).map(@(item) {
     flow = FLOW_HORIZONTAL
@@ -214,6 +205,7 @@ let decorationNameWnd = {
   size = flex()
   flow = FLOW_VERTICAL
   gap
+  onAttach = @() selectedFrameName.set(chosenFrameName.get())
   onDetach = @() markDecoratorsSeen(unseenDecorators.value.filter(@(_, id) id in availNickFrames.value).keys())
   children = [
     header

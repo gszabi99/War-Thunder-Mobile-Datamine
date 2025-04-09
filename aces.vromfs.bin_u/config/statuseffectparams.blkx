@@ -29,6 +29,12 @@
     "actionTime": 30.0,
     "isStopOnRepair": true
   },
+  "throttleBlock2": {
+    "gearBlockValue": 0.4,
+    "actionTime": 20.0,
+    "isRepairOnStop": true,
+    "isStopOnRepair": true
+  },
   "maxSpeedMultTank": {
     "maxSpeedMult": 0.5,
     "isStopOnRepair": true

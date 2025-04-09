@@ -10,6 +10,7 @@
   ],
   "model": "barrels_loot",
   "subclass": "warShip",
+  "overrideIndicatorIcon": "iconNYPresent",
   "timeToFire": 20.0,
   "timeToSmoke": 23.0,
   "hasExpl": false,

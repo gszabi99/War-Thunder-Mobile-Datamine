@@ -14,6 +14,7 @@ let DELAY_FRAME = DURATION / 2 - 0.1
 let LOOP_DURATION = 3.0
 
 let unseenSize = [hdpx(22), hdpx(22)]
+let unseenSizeBig = [hdpx(32), hdpx(32)]
 
 let opacityAnim = [{
   prop = AnimProp.opacity, from = minOpacity, to = maxOpacity, easing = CosineFull,
@@ -74,6 +75,16 @@ let priorityUnseenMark = {
   ]
 }
 
+let priorityUnseenMarkLight = {
+  key = {}
+  size = unseenSizeBig
+  transform = { rotate = 45 }
+  children = [
+    coreUnseenBox.__merge({ fillColor = 0, borderColor = 0 })
+    animatedFrame
+  ]
+}
+
 let unseenMark = coreUnseenBox.__merge({
   key = {}
   size = unseenSize
@@ -110,4 +121,6 @@ return {
   lowPriorityUnseenMark
   mkUnseenMark
   mkPriorityUnseenMarkWatch
+
+  priorityUnseenMarkLight
 }

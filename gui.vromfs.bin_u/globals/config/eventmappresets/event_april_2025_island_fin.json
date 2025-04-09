@@ -1,0 +1,164 @@
+{
+  "bg": "ui/images/pirates/isl_fin_map_island_screen_gui.avif",
+  "bgElements": [],
+  "gridSize": 73,
+  "lines": [
+    {
+      "from": "event_april_2025_quest_island_fin_9_wins",
+      "midpoints": [
+        [206, 287]
+      ],
+      "to": "event_april_2025_quest_island_fin_10_battles"
+    },
+    {
+      "from": "event_april_2025_quest_island_fin_10_battles",
+      "midpoints": [
+        [284, 235]
+      ],
+      "to": "event_april_2025_quest_island_fin_11_kills"
+    },
+    {
+      "from": "event_april_2025_quest_island_fin_11_kills",
+      "midpoints": [
+        [393, 232]
+      ],
+      "to": "event_april_2025_quest_island_fin_12_wins"
+    },
+    {
+      "from": "event_april_2025_quest_island_fin_1_battles",
+      "midpoints": [
+        [111, 456]
+      ],
+      "to": "event_april_2025_quest_island_fin_2_kills"
+    },
+    {
+      "from": "event_april_2025_quest_island_fin_2_kills",
+      "midpoints": [
+        [170, 388]
+      ],
+      "to": "event_april_2025_quest_island_fin_3_wins"
+    },
+    {
+      "from": "event_april_2025_quest_island_fin_3_wins",
+      "midpoints": [
+        [266, 406]
+      ],
+      "to": "event_april_2025_quest_island_fin_4_battles"
+    },
+    {
+      "from": "event_april_2025_quest_island_fin_4_battles",
+      "to": "event_april_2025_quest_island_fin_5_kills"
+    },
+    {
+      "from": "event_april_2025_quest_island_fin_5_kills",
+      "midpoints": [
+        [508, 403]
+      ],
+      "to": "event_april_2025_quest_island_fin_6_wins"
+    },
+    {
+      "from": "event_april_2025_quest_island_fin_6_wins",
+      "midpoints": [
+        [492, 311]
+      ],
+      "to": "event_april_2025_quest_island_fin_7_battles"
+    },
+    {
+      "from": "event_april_2025_quest_island_fin_7_battles",
+      "midpoints": [
+        [393, 319]
+      ],
+      "to": "event_april_2025_quest_island_fin_8_kills"
+    },
+    {
+      "from": "event_april_2025_quest_island_fin_8_kills",
+      "midpoints": [],
+      "to": "event_april_2025_quest_island_fin_9_wins"
+    },
+    {
+      "from": "event_april_2025_quest_island_fin_12_wins",
+      "midpoints": [
+        [372, 165]
+      ],
+      "to": "event_april_2025_treasure_island_fin_a"
+    },
+    {
+      "from": "event_april_2025_quest_island_fin_12_wins",
+      "midpoints": [
+        [462, 133]
+      ],
+      "to": "event_april_2025_treasure_island_fin_b"
+    },
+    {
+      "from": "event_april_2025_quest_island_fin_12_wins",
+      "midpoints": [
+        [479, 192]
+      ],
+      "to": "event_april_2025_treasure_island_fin_c"
+    }
+  ],
+  "mapSize": [732, 555],
+  "pointSize": 50,
+  "points": {
+    "event_april_2025_quest_island_fin_10_battles": {
+      "pos": [223, 240],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_fin_11_kills": {
+      "pos": [336, 244],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_fin_12_wins": {
+      "pos": [418, 192],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_fin_1_battles": {
+      "pos": [141, 494],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_fin_2_kills": {
+      "pos": [120, 411],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_fin_3_wins": {
+      "pos": [216, 383],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_fin_4_battles": {
+      "pos": [332, 416],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_fin_5_kills": {
+      "pos": [449, 425],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_fin_6_wins": {
+      "pos": [538, 340],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_fin_7_battles": {
+      "pos": [452, 314],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_fin_8_kills": {
+      "pos": [336, 312],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_fin_9_wins": {
+      "pos": [251, 299],
+      "view": "mapMark"
+    },
+    "event_april_2025_treasure_island_fin_a": {
+      "pos": [402, 127],
+      "view": "mapMarkFinal"
+    },
+    "event_april_2025_treasure_island_fin_b": {
+      "pos": [493, 111],
+      "view": "mapMarkFinal"
+    },
+    "event_april_2025_treasure_island_fin_c": {
+      "pos": [542, 155],
+      "view": "mapMarkFinal"
+    }
+  }
+}

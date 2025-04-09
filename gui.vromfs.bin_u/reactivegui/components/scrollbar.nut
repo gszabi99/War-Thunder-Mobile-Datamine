@@ -19,6 +19,7 @@ let defStyle = {
   rootBase = {
     size = flex()
     behavior = Behaviors.Pannable
+    touchMarginPriority = TOUCH_BACKGROUND
   }
 }
 

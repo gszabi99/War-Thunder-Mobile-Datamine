@@ -54,6 +54,7 @@ let mkVerticalPannableArea = @(content) {
   children = {
     size = flex()
     behavior = Behaviors.Pannable
+    touchMarginPriority = TOUCH_BACKGROUND
     scrollHandler = catsScrollHandler
     children = content
     xmbNode = XmbContainer()
@@ -72,6 +73,7 @@ let mkHorizontalPannableArea = @(content) {
       size = flex()
       padding = [0, saBorders[0], 0, 0]
       behavior = Behaviors.Pannable
+      touchMarginPriority = TOUCH_BACKGROUND
       scrollHandler = modsScrollHandler
       children = content
       xmbNode = XmbContainer({ scrollSpeed = 2.0 })

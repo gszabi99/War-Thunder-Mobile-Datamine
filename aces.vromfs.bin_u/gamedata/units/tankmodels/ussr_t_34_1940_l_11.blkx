@@ -1330,157 +1330,6 @@
   "battleHideNodes": {
     "n": "details"
   },
-  "dm_for_shop": {
-    "armorThicknessFront": [
-      0.8,
-      0.15,
-      0.05
-    ],
-    "armorThicknessSide": [
-      0.15,
-      0.7,
-      0.15
-    ]
-  },
-  "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/76mm_L11_user_cannon.blk",
-        "emitter": "bone_gun_barrel",
-        "flash": "emtr_gun_flame",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "barrelDP": "gun_barrel_dm",
-        "breechDP": "cannon_breech_dm",
-        "speedYaw": 25.0,
-        "speedPitch": 6.0,
-        "fireConeAngle": 1.0,
-        "bullets": 77,
-        "salvoAmount": 100.0,
-        "ChainfireTime": 0.0,
-        "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 1000.0,
-        "AttackMaxRadius": 1000.0,
-        "AttackMaxHeight": 1000.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 1.5,
-        "errMeasureVel": 0.0,
-        "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 0.0,
-        "errMeasureVelDir": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "turret": {
-          "head": "bone_turret",
-          "gun": "bone_gun",
-          "barrel": "bone_gun_barrel"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -5.0,
-            25.0
-          ]
-        },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -173.0,
-            3.0,
-            25.0
-          ],
-          "lim2": [
-            -173.0,
-            -135.0,
-            -2.0,
-            25.0
-          ],
-          "lim3": [
-            -135.0,
-            135.0,
-            -5.0,
-            25.0
-          ],
-          "lim4": [
-            135.0,
-            173.0,
-            -2.0,
-            25.0
-          ],
-          "lim5": [
-            173.0,
-            180.0,
-            3.0,
-            25.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner1",
-        "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
-        "emitter": "bone_mg_gun_twin",
-        "flash": "emtr_mg_flame_01",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "useAnimFlashNode": true,
-        "barrelDP": "gun_barrel_01_dm",
-        "breechDP": "cannon_breech_01_dm",
-        "speedYaw": 5.5,
-        "speedPitch": 4.0,
-        "fireConeAngle": [
-          1.0,
-          15.0
-        ],
-        "bullets": 1890,
-        "ChainfireTime": 3.0,
-        "DelayAfterShoot": 3.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 0.0,
-        "errMeasureVel": 0.0,
-        "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 0.0,
-        "errMeasureVelDir": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "turret": {
-          "head": "bone_mg_gun_twin",
-          "gun": "bone_mg_gun_twin",
-          "gunnerDm": "gunner_dm"
-        },
-        "limits": {
-          "yaw": [
-            -0.0,
-            0.0
-          ],
-          "pitch": [
-            -0.0,
-            0.0
-          ]
-        }
-      }
-    ],
-    "hideNodes": {
-      "node": [
-        "ex_armor_turret_l_01",
-        "ex_armor_turret_l_02",
-        "ex_armor_turret_r_01",
-        "ex_armor_turret_r_02"
-      ]
-    }
-  },
-  "weapon_presets": {
-    "preset": {
-      "name": "ussr_t_34_1941_l_11_default",
-      "blk": "gameData/units/tankModels/weaponPresets/ussr_t_34_1941_l_11_default.blk"
-    }
-  },
   "cockpit": {
     "zoomOutFov": 40.0,
     "zoomInFov": 21.0,
@@ -1502,21 +1351,6 @@
       0.0
     ],
     "detectionHeight": 2.4
-  },
-  "modifications": {
-    "upgraded": {},
-    "art_support": {},
-    "tank_extinguisher": {},
-    "tank_tool_kit_expendable": {},
-    "machinegun_belt_ap": {},
-    "machinegun_belt_tracer": {},
-    "machinegun_belt_stealth": {},
-    "art_support_smoke": {},
-    "art_support_mortars": {},
-    "art_support_highcaliber": {},
-    "tank_smoke_screen_smoke_shell": {},
-    "tank_smoke_screen_low_cooldown": {},
-    "tank_smoke_screen_long_duration": {}
   },
   "upgraded_skin": {
     "replace_tex": {
@@ -1838,6 +1672,149 @@
       "ammo_body_39_dm": {
         "count": 2
       }
+    }
+  },
+  "dm_for_shop": {
+    "armorThicknessFront": [
+      0.8,
+      0.15,
+      0.05
+    ],
+    "armorThicknessSide": [
+      0.15,
+      0.7,
+      0.15
+    ]
+  },
+  "commonWeapons": {
+    "Weapon": [
+      {
+        "trigger": "gunner0",
+        "blk": "gameData/Weapons/groundModels_weapons/76mm_L11_user_cannon.blk",
+        "emitter": "bone_gun_barrel",
+        "flash": "emtr_gun_flame",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_dm",
+        "breechDP": "cannon_breech_dm",
+        "speedYaw": 25.0,
+        "speedPitch": 6.0,
+        "fireConeAngle": 1.0,
+        "bullets": 77,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 5.0,
+        "AttackMaxDistance": 1000.0,
+        "AttackMaxRadius": 1000.0,
+        "AttackMaxHeight": 1000.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 1.5,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_gun",
+          "barrel": "bone_gun_barrel"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -5.0,
+            25.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -173.0,
+            3.0,
+            25.0
+          ],
+          "lim2": [
+            -173.0,
+            -135.0,
+            -2.0,
+            25.0
+          ],
+          "lim3": [
+            -135.0,
+            135.0,
+            -5.0,
+            25.0
+          ],
+          "lim4": [
+            135.0,
+            173.0,
+            -2.0,
+            25.0
+          ],
+          "lim5": [
+            173.0,
+            180.0,
+            3.0,
+            25.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner1",
+        "triggerGroup": "coaxial",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
+        "emitter": "bone_mg_gun_twin",
+        "flash": "emtr_mg_flame_01",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "useAnimFlashNode": true,
+        "barrelDP": "gun_barrel_01_dm",
+        "breechDP": "cannon_breech_01_dm",
+        "speedYaw": 5.5,
+        "speedPitch": 4.0,
+        "fireConeAngle": [
+          1.0,
+          15.0
+        ],
+        "bullets": 1890,
+        "ChainfireTime": 3.0,
+        "DelayAfterShoot": 3.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_mg_gun_twin",
+          "gun": "bone_mg_gun_twin",
+          "gunnerDm": "gunner_dm"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
+        }
+      }
+    ]
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "ussr_t_34_1940_l_11_default",
+      "blk": "gameData/units/tankModels/weaponPresets/ussr_t_34_1940_l_11_default.blk"
     }
   },
   "DamageEffects": {
@@ -2672,69 +2649,77 @@
       "dampeningCompressionRatio": 0.15
     }
   },
+  "modifications": {
+    "tank_additional_armor": {},
+    "art_support": {},
+    "tank_extinguisher": {},
+    "tank_tool_kit_expendable": {},
+    "machinegun_belt_ap": {},
+    "machinegun_belt_tracer": {},
+    "machinegun_belt_stealth": {},
+    "art_support_smoke": {},
+    "art_support_mortars": {},
+    "art_support_highcaliber": {},
+    "tank_smoke_screen_smoke_shell": {},
+    "tank_smoke_screen_low_cooldown": {},
+    "tank_smoke_screen_long_duration": {}
+  },
   "default_skin": {
-    "name": "default",
-    "replace_tex": {
-      "from": "ussr_camo_green_new-paint*",
-      "to": "ussr_camo_green*"
+    "set_tex": [
+      {
+        "from": "t_34_1941_l_11_gun_c*",
+        "to": "t_34_1941_l_11_skin_gun_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "t_34_1939_l_11_turret_c*",
+        "to": "t_34_1939_l_11_skin_turret_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "t_34_1939_body_c*",
+        "to": "t_34_1939_skin_body_c*",
+        "param": "camo_skin_tex"
+      }
+    ]
+  },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
-  "skin": [
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
+  "vehicleSkins": {
+    "forest": {
       "replace_tex": {
         "from": "ussr_camo_green_new-paint*",
-        "to": "ussr_camo_winter*"
-      }
-    },
-    {
-      "name": "forest",
-      "nameLocId": "skin/ussr_camo_forest_01",
-      "descLocId": "skin/ussr_camo_forest_01/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green_new-paint*",
-        "to": "ussr_camo_forest_01*"
-      }
-    },
-    {
-      "name": "ussr_camo_czechoslovak_yellow_green",
-      "nameLocId": "skin/ussr_camo_czechoslovak_yellow_green",
-      "descLocId": "skin/ussr_camo_czechoslovak_yellow_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green_new-paint*",
-        "to": "ussr_camo_czechoslovak_yellow_green*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_syrian_green_brown_yellow",
-      "nameLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow",
-      "descLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green_new-paint*",
-        "to": "ussr_camo_desert_syrian_green_brown_yellow*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_yellow_brown",
-      "nameLocId": "skin/ussr_camo_desert_yellow_brown",
-      "descLocId": "skin/ussr_camo_desert_yellow_brown/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green_new-paint*",
-        "to": "ussr_camo_desert_yellow_brown*"
-      }
-    },
-    {
-      "name": "ussr_camo_winter_lines",
-      "nameLocId": "skin/ussr_camo_winter_lines",
-      "descLocId": "skin/ussr_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green_new-paint*",
-        "to": "ussr_camo_winter_lines*"
+        "to": "ussr_camo_green_new-paint*"
+      },
+      "set_tex": [
+        {
+          "from": "t_34_1941_l_11_gun_c*",
+          "to": "t_34_1941_l_11_noskin_gun_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_34_1939_l_11_turret_c*",
+          "to": "t_34_1939_l_11_noskin_turret_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t_34_1939_body_c*",
+          "to": "t_34_1939_noskin_body_c*",
+          "param": "camo_skin_tex"
+        }
+      ],
+      "decal": {
+        "skin_condition": 100.0,
+        "camo_scale": 0.0,
+        "camo_rotation": 0.0
       }
     }
-  ],
+  },
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,

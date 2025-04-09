@@ -36,6 +36,7 @@ isPurchEffectVisible.subscribe(@(v) v && isShopOpened.get() ? close() : null)
 let pannable = @(ovr) {
   size = flex()
   behavior = Behaviors.Pannable
+  touchMarginPriority = TOUCH_BACKGROUND
   scrollHandler = ScrollHandler()
   xmbNode = XmbContainer({ scrollToEdge = true })
 }.__update(ovr)

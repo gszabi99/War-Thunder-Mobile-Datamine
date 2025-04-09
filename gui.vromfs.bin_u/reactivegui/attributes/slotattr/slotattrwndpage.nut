@@ -25,10 +25,8 @@ function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, ma
   if (!applyAttrRowChange(catId, attr.id, tryValue, selLevel, minLevel, maxLevel)) {
     let currTime = get_time_msec()
     if (lastClickTime + boost_cooldown < currTime) { //cooldown check
-      let nextIncCost = tryValue < selLevel.get() // in case when tryValue less than current value
-        ? 0
-        : attr.levelCost?[selLevel.get()] ?? 0 //for max level reach condition
-      if (nextIncCost > 0)
+      let nextIncCost = attr.levelCost?[selLevel.get()] ?? 0 //for max level reach condition
+      if (nextIncCost > 0 && tryValue > selLevel.get())
         buySlotLevelWnd(selectedSlotIdx.get())
     }
   }

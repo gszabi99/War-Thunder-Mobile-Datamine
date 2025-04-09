@@ -6,7 +6,8 @@ let config = {
   [TANK] = require("cfg/cfgHudTank.nut"),
   [AIR] = require("cfg/cfgHudAircraft.nut"),
   [SHIP] = require("cfg/cfgHudShip.nut"),
-  [SUBMARINE] = require("cfg/cfgHudSubmarine.nut")
+  [SUBMARINE] = require("cfg/cfgHudSubmarine.nut"),
+  [SAILBOAT] = require("cfg/cfgHudSailboat.nut"),
 }
 
 let reqFields = ["ctor", "defTransform", "editView"]
@@ -23,8 +24,10 @@ foreach (unitType, tbl in config) {
     cfg.id <- cfgId
     cfg.editViewKey <- $"elem_{cfgId}"
 
-    let hasScale = cfg.ctor.getfuncinfos().parameters.len() == 2
+    let paramCount= cfg.ctor.getfuncinfos().parameters.len()
+    let hasScale = paramCount >= 2
     cfg.hasScale <- hasScale
+    cfg.needId <- paramCount == 3
     if (hasScale) {
       let { options = [] } = cfg
       if (!options.contains(optScale))

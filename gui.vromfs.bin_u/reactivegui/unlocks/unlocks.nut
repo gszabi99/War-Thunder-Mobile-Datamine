@@ -69,18 +69,36 @@ function calcUnlockProgress(progressData, unlockDesc) {
   return res
 }
 
-let unlockProgress = Computed(function() {
+let unlockProgress = Computed(function(prev) {
   let progressList = userstatUnlocks.value?.unlocks ?? {}
   let unlockDataList = allUnlocksDesc.value
-  let allKeys = progressList.__merge(unlockDataList) //use only keys from it
-  return allKeys.map(@(_, name) calcUnlockProgress(progressList?[name], unlockDataList?[name]))
+  let res = {}
+  local hasChanges = type(prev) != "table"
+  foreach (name, _ in progressList.__merge(unlockDataList)) {
+    let pNow = calcUnlockProgress(progressList?[name], unlockDataList?[name])
+    let pWas = prev?[name]
+    if (isEqual(pNow, pWas))
+      res[name] <- pWas
+    else {
+      res[name] <- pNow
+      hasChanges = true
+    }
+  }
+
+  return hasChanges ? res : prev
 })
 
-let activeUnlocks = Computed(@() allUnlocksDesc.value
+let activeUnlocks = Computed(@(prev) allUnlocksDesc.value
   .filter(@(u) (unlockTables.value?[u?.table] ?? false) || u?.type == "INDEPENDENT")
-  .map(@(u, id) u.__merge(unlockProgress.value?[id] ?? {})))
+  .map(function(u, id) {
+    let p = unlockProgress.get()?[id]
+    let prevRes = prev?[id]
+    if (prevRes?["$desc"] == u && prevRes?["$prog"] == p)
+      return prevRes
+    return u.__merge(p, { ["$desc"] = u, ["$prog"] = p })
+  }))
 
-let campaignActiveUnlocks = Computed(function(){
+let campaignActiveUnlocks = Computed(function() {
   let curC = curCampaign.get()
   return activeUnlocks.get().filter(@(u) (u?.meta?.campaign == null || curC == u?.meta?.campaign) )
 })

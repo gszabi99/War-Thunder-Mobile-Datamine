@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { decoratorInProgress, set_current_decorator, buy_decorator, registerHandler
 } = require("%appGlobals/pServer/pServerApi.nut")
+let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { allDecorators, myDecorators } = require("decoratorState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
@@ -30,12 +31,13 @@ function purchaseDecorator(decId, localizedName, bqInfo) {
     logerr("Try to purchase decorator without price")
     return
   }
+  let currencyFullId = currencyToFullId.get()?[currencyId] ?? currencyId
 
   openMsgBoxPurchase({
     text = loc("shop/needMoneyQuestion",
       { item = colorize(userlogTextColor, localizedName) }),
-    price = decor.price,
-    purchase = @() buy_decorator(decId, currencyId, price, { id = "onDecoratorPurchaseResult", decId }),
+    price = { price, currencyId = currencyFullId },
+    purchase = @() buy_decorator(decId, currencyFullId, price, { id = "onDecoratorPurchaseResult", decId }),
     bqInfo
   })
 }

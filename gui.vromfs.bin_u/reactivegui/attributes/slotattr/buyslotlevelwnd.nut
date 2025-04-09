@@ -8,12 +8,13 @@ let { PURCH_SRC_SLOT_UPGRADES, PURCH_TYPE_SLOT_LEVEL, mkBqPurchaseInfo } = requi
 let { generateDataDiscount, mkLevelBlock } = require("%rGui/attributes/buyLevelComp.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
+let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
+let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { slots, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
 let { buttonsHGap } = require("%rGui/components/textButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
+let { hasSlotAttrPreset, getSpCostText } = require("%rGui/attributes/attrState.nut")
 
 
 let WND_UID = "buySlotLevelWnd"
@@ -27,12 +28,17 @@ let close = @() slotIndex(null)
 
 registerHandler("closeBuySlotLevelWnd", @(_) close())
 
-function onClickPurchase(curLevel, tgtLevel, nextLevelExp, costGold) {
+function onClickPurchase(curLevel, tgtLevel, nextLevelExp, costGold, sp) {
   if (slotInProgress.get() != null)
     return
-  let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_SLOT_UPGRADES, PURCH_TYPE_SLOT_LEVEL, $"{loc("gamercard/slot/title", { idx = slotIndex.get() + 1 })} {curLevel} +{tgtLevel - curLevel}")
-  if (!showNoBalanceMsgIfNeed(costGold, GOLD, bqPurchaseInfo, close))
-    buy_slot_level(curCampaign.get(), slotIndex.get(), curLevel, tgtLevel, nextLevelExp, costGold, "closeBuySlotLevelWnd")
+  openMsgBoxPurchase({
+    text = loc("shop/needMoneyQuestion", {item = colorize(userlogTextColor, getSpCostText(sp))}),
+    price = { price = costGold, currencyId = GOLD },
+    purchase = @() buy_slot_level(curCampaign.get(), slotIndex.get(), curLevel, tgtLevel, nextLevelExp, costGold, "closeBuySlotLevelWnd"),
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_SLOT_UPGRADES,
+      PURCH_TYPE_SLOT_LEVEL,
+      $"{loc("gamercard/slot/title", { idx = slotIndex.get() + 1 })} {curLevel} +{tgtLevel - curLevel}")
+  })
 }
 
 function wndContent() {

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
+let { mkCurrencyFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { REWARD_STYLE_TINY, mkRewardPlate, mkRewardFixedIcon
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkCustomButton, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
@@ -224,6 +225,7 @@ let mkCurrencyComp = @(value, currencyId) {
 
 function mkPurchaseBtns(lootbox, onPurchase) {
   let { name, price, currencyId, hasBulkPurchase = false, timeRange = null, reqPlayerLevel = 0 } = lootbox
+  let currencyFullId = mkCurrencyFullId(currencyId)
   let { start = 0, end = 0 } = timeRange
   let isActive = Computed(@() bestCampLevel.value >= reqPlayerLevel
     && start < serverTime.value
@@ -232,7 +234,7 @@ function mkPurchaseBtns(lootbox, onPurchase) {
     @(r) (null != r.rewards.findvalue(@(g) g.id == name && g.gType == G_LOOTBOX))))
 
   return @() {
-    watch = [isActive, balance, adReward]
+    watch = [isActive, balance, adReward, currencyFullId]
     key = name
     flow = FLOW_HORIZONTAL
     gap = hdpx(40)
@@ -240,15 +242,15 @@ function mkPurchaseBtns(lootbox, onPurchase) {
     children = [
       adReward.value != null ? mkAdsBtn(reqPlayerLevel, adReward.value) : null
       textButtonPricePurchase(hasBulkPurchase ? utf8ToUpper(loc("events/oneReward")) : null,
-        mkCurrencyComp(price, currencyId),
-        @() onPurchase(lootbox, price, currencyId),
-        (!isActive.value || (balance.value?[currencyId] ?? 0) < price ? buttonStyles.COMMON : {})
+        mkCurrencyComp(price, currencyFullId.get()),
+        @() onPurchase(lootbox, price, currencyFullId.get()),
+        (!isActive.value || (balance.value?[currencyFullId.get()] ?? 0) < price ? buttonStyles.COMMON : {})
           .__merge({ hotkeys = ["^J:X"] }))
       !hasBulkPurchase ? null
         : textButtonPricePurchase(utf8ToUpper(loc("events/tenRewards")),
-            mkCurrencyComp(price * 10, currencyId),
-            @() onPurchase(lootbox, price * 10, currencyId, 10),
-            (!isActive.value || (balance.value?[currencyId] ?? 0) < price * 10 ? buttonStyles.COMMON : {})
+            mkCurrencyComp(price * 10, currencyFullId.get()),
+            @() onPurchase(lootbox, price * 10, currencyFullId.get(), 10),
+            (!isActive.value || (balance.value?[currencyFullId.get()] ?? 0) < price * 10 ? buttonStyles.COMMON : {})
               .__merge({ hotkeys = ["^J:Y"] }))
     ]
   }

@@ -20,9 +20,12 @@ let { getOptValue, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT } = require("%rGui/opti
 let iconSize = shHud(3.5)
 let crewIconSize = shHud(4.0)
 let gap = hdpx(10)
-let healthImageWidth = shHud(40)
-let healthImageHeight = (36.0 / 200.0 * healthImageWidth).tointeger()
-let crewHealthWidth = (healthImageWidth * 0.7).tointeger()
+
+let defHealthImageWidth = shHud(40)
+let defHealthImageHeight = (36.0 / 200.0 * defHealthImageWidth).tointeger()
+let defHealthSize = [defHealthImageWidth, defHealthImageHeight]
+
+let calcCrewHealthWidth = @(width) (width * 0.7).tointeger()
 let crewHealthGap = hdpxi(17)
 
 let remainingHpPercent = Computed(@() maxHealth.value == 0 ? 1 : curRelativeHealth.value)
@@ -35,6 +38,12 @@ let debuffsCfg = [
   { has = hasDebuffMoveControl,  icon = "ui/gameuiskin#hud_debuff_control.svg" }
   { has = hasDebuffTorpedoes,    icon = "ui/gameuiskin#hud_debuff_torpedo_tubes.svg" }
 ]
+let sailboatIconRemap = {
+  [hasDebuffEngines] = "ui/gameuiskin#hud_debuff_sail_control.svg",
+  [hasDebuffGuns] = "ui/gameuiskin#hud_debuff_sail_weapon.svg"
+}
+let debuffsCfgSailboat = debuffsCfg.map(@(c) c.has not in sailboatIconRemap ? c
+  : c.__merge({ icon = sailboatIconRemap[c.has]}))
 
 local prevHpPercent = 1.0
 let colorConfig = [
@@ -93,8 +102,8 @@ let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [
 let shortcutId = "ID_SHOW_HERO_MODULES"
 let stateFlags = Watched(0)
 let isActive = @(sf) (sf & S_ACTIVE) != 0
-function mkDoll(scale) {
-  let size = scaleArr([healthImageWidth, healthImageHeight], scale)
+let mkDollCtor = @(rawSize) function(scale) {
+  let size = scaleArr(rawSize, scale)
   let stateFlagsExt = Computed(@() isInZoom.get() ? 0 : stateFlags.get())
   return {
     key = "ship_state_button"
@@ -123,8 +132,8 @@ function mkDoll(scale) {
   }
 }
 
-let dollEditView = {
-  size = [healthImageWidth, healthImageHeight]
+let mkDollEditView = @(size) {
+  size
   rendObj = ROBJ_BOX
   borderWidth = hdpx(3)
   borderColor
@@ -145,20 +154,23 @@ function mkDebuff(watch, imageId, size) {
   }
 }
 
-function mkShipDebuffs(scale) {
-  let size = scaleEven(iconSize, scale)
-  return {
-    flow = FLOW_HORIZONTAL
-    gap = round(gap * scale)
-    children = debuffsCfg.map(@(c) mkDebuff(c.has, c.icon, size))
-  }
+let mkDebuffsCtor = @(cfg) @(scale) {
+  flow = FLOW_HORIZONTAL
+  gap = round(gap * scale)
+  children = cfg.map(@(c) mkDebuff(c.has, c.icon, scaleEven(iconSize, scale)))
 }
 
-let shipDebuffsEditView = {
+let mkShipDebuffs = mkDebuffsCtor(debuffsCfg)
+let mkSailboatDebuffs = mkDebuffsCtor(debuffsCfgSailboat)
+
+let mkDebuffsEditView = @(cfg) {
   flow = FLOW_HORIZONTAL
   gap
-  children = debuffsCfg.map(@(c) mkDebuffIconEditView(c.icon, iconSize))
+  children = cfg.map(@(c) mkDebuffIconEditView(c.icon, iconSize))
 }
+
+let shipDebuffsEditView = mkDebuffsEditView(debuffsCfg)
+let sailboatDebuffsEditView = mkDebuffsEditView(debuffsCfgSailboat)
 
 let mkCrewIcon = @(icon, size = crewIconSize) {
   size = [size, size]
@@ -167,11 +179,11 @@ let mkCrewIcon = @(icon, size = crewIconSize) {
   keepAspect = true
 }
 
-function mkCrewHealth(scale) {
+let mkCrewHealthCtor = @(size, hasCrewWounded = true) function(scale) {
   let iSize = round(crewIconSize * scale).tointeger()
   let font = prettyScaleForSmallNumberCharVariants(fontSmallShaded, scale)
   return {
-    size = [round(crewHealthWidth * scale), iSize]
+    size = [round(calcCrewHealthWidth(size[0]) * scale), iSize]
     halign = ALIGN_RIGHT
     flow = FLOW_HORIZONTAL
     gap = crewHealthGap
@@ -190,29 +202,30 @@ function mkCrewHealth(scale) {
           }.__update(font)
         ]
       }
-      @() {
-        watch = isVisibleHpToRepair
-        flow = FLOW_HORIZONTAL
-        valign = ALIGN_CENTER
-        gap = shHud(0.4)
-        key = "crew_injured"
-        children = !isVisibleHpToRepair.value ? null
-          : [
-              mkCrewIcon("hud_crew_wounded.svg", iSize)
-              @() {
-                watch = hpToRepairPercent
-                rendObj = ROBJ_TEXT
-                color = hpToRepairColor
-                text =  $"{hpToRepairPercent.value} %"
-              }.__update(font)
-            ]
-      }
+      !hasCrewWounded ? null
+        : @() {
+            watch = isVisibleHpToRepair
+            flow = FLOW_HORIZONTAL
+            valign = ALIGN_CENTER
+            gap = shHud(0.4)
+            key = "crew_injured"
+            children = !isVisibleHpToRepair.get() ? null
+              : [
+                  mkCrewIcon("hud_crew_wounded.svg", iSize)
+                  @() {
+                    watch = hpToRepairPercent
+                    rendObj = ROBJ_TEXT
+                    color = hpToRepairColor
+                    text =  $"{hpToRepairPercent.value} %"
+                  }.__update(font)
+                ]
+          }
     ]
   }
 }
 
-let crewHealthEditView = {
-  size = [crewHealthWidth, crewIconSize]
+let mkCrewHealthEditView = @(size, hasCrewWounded = true) {
+  size = [calcCrewHealthWidth(size[0]), crewIconSize]
   halign = ALIGN_RIGHT
   flow = FLOW_HORIZONTAL
   gap = crewHealthGap
@@ -228,26 +241,30 @@ let crewHealthEditView = {
         }.__update(fontSmallShaded)
       ]
     }
-    {
-      flow = FLOW_HORIZONTAL
-      valign = ALIGN_CENTER
-      gap = shHud(0.4)
-      children = [
-        mkCrewIcon("hud_crew_wounded.svg")
-        {
-          rendObj = ROBJ_TEXT
-          text =  $"xx %"
-        }.__update(fontSmallShaded)
-      ]
-    }
+    !hasCrewWounded ? null
+      : {
+          flow = FLOW_HORIZONTAL
+          valign = ALIGN_CENTER
+          gap = shHud(0.4)
+          children = [
+            mkCrewIcon("hud_crew_wounded.svg")
+            {
+              rendObj = ROBJ_TEXT
+              text =  $"xx %"
+            }.__update(fontSmallShaded)
+          ]
+        }
   ]
 }
 
 return {
-  mkDoll
-  dollEditView
+  mkDollCtor
+  mkDollEditView
   mkShipDebuffs
+  mkSailboatDebuffs
   shipDebuffsEditView
-  mkCrewHealth
-  crewHealthEditView
+  sailboatDebuffsEditView
+  mkCrewHealthCtor
+  mkCrewHealthEditView
+  defHealthSize
 }

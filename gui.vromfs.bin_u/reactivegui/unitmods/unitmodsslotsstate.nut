@@ -277,9 +277,9 @@ function equipWeaponListWithMirrors(wList, unitName) {
   let mirrors = {}
   let slots = loadUnitWeaponSlots(unitName)
   foreach(idx, val in wList) {
-    let { mirror = -1 } = slots[idx]
+    let { mirror = -1, wPresets } = slots[idx]
     if (mirror != -1)
-      mirrors[mirror] <- val
+      mirrors[mirror] <- wPresets?[val].mirrorId ?? val
   }
   wList.__update(mirrors)
   equipWeaponList(wList)

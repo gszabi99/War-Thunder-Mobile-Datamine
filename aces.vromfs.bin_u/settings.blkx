@@ -252,6 +252,7 @@
     "pkg_common": {},
     "pkg_ground": {},
     "pkg_naval": {},
+    "pkg_april_fools_event_2025": {},
     "pkg_tier_1_naval": {},
     "pkg_tier_2_naval": {},
     "pkg_tier_3_naval": {},
@@ -696,6 +697,18 @@
         "mRank": 4
       }
     },
+    "pkg_ussr_1124_rct": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 1
+      }
+    },
+    "pkg_germ_battlecruiser_ersatz_yorck": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -1105,6 +1118,18 @@
       }
     },
     "pkg_il_merkava_mk_2b_early": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_ussr_rbt_5": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 1
+      }
+    },
+    "pkg_us_xm1_gm": {
       "conditions": {
         "campaign": "tanks",
         "mRank": 8
@@ -3225,6 +3250,7 @@
   },
   "iOS": {
     "fastShutdown": true,
+    "loginKeyChain": "wtm_loginData",
     "graphics": {
       "allowETC2": true,
       "asyncPSO": true,

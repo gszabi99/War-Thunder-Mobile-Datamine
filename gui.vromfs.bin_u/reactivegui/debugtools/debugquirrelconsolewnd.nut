@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { command, setObjPrintFunc } = require("console")
+let { eventbus_send_foreign, eventbus_subscribe } = require("eventbus")
 let { register_logerr_monitor, unregister_logerr_interceptor } = require("dagor.debug")
 let { defer } = require("dagor.workcycle")
 let { set_clipboard_text } = require("dagor.clipboard")
@@ -13,6 +14,8 @@ let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { closeButton } = require("%rGui/components/debugWnd.nut")
 
 let MAX_CONSOLE_TEXTS = 100
+let CMD_VM_DARG  = "darg.exec"
+let CMD_VM_DAGUI = "dagui.exec"
 
 let defaultObjPrintFunc = debugTableData
 
@@ -43,19 +46,37 @@ function printCmdResultToConsole(result, params) {
   defaultObjPrintFunc(result, params)
 }
 
-let wrapCommand = @(cmd) $"darg.exec {cmd}"
+function toggleConsoleCmdResultHandler(isDaRG, isEnable) {
+  if (isDaRG) {
+    setObjPrintFunc(isEnable ? printCmdResultToConsole : defaultObjPrintFunc)
+    if (isEnable)
+      register_logerr_monitor([""], printErrorToConsole)
+    else
+      unregister_logerr_interceptor(printErrorToConsole)
+  }
+  else
+    eventbus_send_foreign("toggleConsoleCmdResultHandler", { isEnable })
+}
+
+eventbus_subscribe("daguiConsoleCmdResult", @(p) consolePrint(p.isError ? badTextColor : textColor, p.txt))
+
+let wrapCommand = @(cmd) [ CMD_VM_DARG, CMD_VM_DAGUI ].findindex(@(v) cmd.startswith(v)) != null
+    ? cmd
+  : cmd.contains("require(\"%scripts/")
+    ? $"{CMD_VM_DAGUI} {cmd}"
+  : $"{CMD_VM_DARG} {cmd}"
 
 function consoleExecute() {
-  let cmd = consoleInputText.get().strip()
-  if (cmd == "")
+  let rawCmd = consoleInputText.get().strip()
+  if (rawCmd == "")
     return
+  let cmd = wrapCommand(rawCmd)
+  let isDaRG = cmd.startswith(CMD_VM_DARG)
   consolePrint(commandColor, $"> {cmd}")
-  setObjPrintFunc(printCmdResultToConsole)
-  register_logerr_monitor([""], printErrorToConsole)
+  toggleConsoleCmdResultHandler(isDaRG, true)
   defer(function() {
-    command(wrapCommand(cmd))
-    setObjPrintFunc(defaultObjPrintFunc)
-    unregister_logerr_interceptor(printErrorToConsole)
+    command(cmd)
+    toggleConsoleCmdResultHandler(isDaRG, false)
   })
 }
 

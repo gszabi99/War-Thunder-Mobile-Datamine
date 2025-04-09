@@ -31,12 +31,15 @@ require("login/consentGoogleState.nut")
 require("login/previewIDFAWnd.nut")
 require("login/reloginAuto.nut")
 
+let { get_platform_string_id } = require("platform")
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
+let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { modalWindowsComponent, closeAllModalWindows, hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { dbgOverlayComponent } = require("%rGui/components/debugOverlay.nut")
 let { isInLoadingScreen, isInBattle, isHudVisible } = require("%appGlobals/clientState/clientState.nut")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
-let { isLoggedIn, isLoginRequired, isReadyToFullLoad } = require("%appGlobals/loginState.nut")
+let { isLoggedIn, isLoginRequired, isReadyToFullLoad, isLoginStarted
+} = require("%appGlobals/loginState.nut")
 let { loadingScreen } = require("%rGui/loading/loadingScreen.nut")
 let sceneBeforeLogin = require("%rGui/login/sceneBeforeLogin.nut")
 let { register_command } = require("console")
@@ -83,6 +86,13 @@ function loadAfterLoginImpl() {
   log($"DaRg scripts load after login {get_time_msec() - t} msec")
   setIsScriptsLoading(false)
   //profiler.stop_and_save_to_file("../../profiler.csv")
+  sendUiBqEvent("load_darg_main_scripts", {
+    params = get_platform_string_id()
+    paramInt1 = get_time_msec() - t
+    status = isLoggedIn.get() ? "after login"
+      : isLoginStarted.get() ? "on login"
+      : "before login"
+  })
 }
 
 if (isReadyToFullLoad.value || !isLoginRequired.value)

@@ -9,6 +9,7 @@ let isMoveByKeys = Computed(@() isGamepad.value || isKeyboard.value)
 let pannableBase = {
   size = flex()
   behavior = Behaviors.Pannable
+  touchMarginPriority = TOUCH_BACKGROUND
   skipDirPadNav = true
   xmbNode = XmbContainer({ scrollToEdge = true })
 }

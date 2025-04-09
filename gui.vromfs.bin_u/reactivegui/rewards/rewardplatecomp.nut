@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
 let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
+let { mkCurrencyFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
 let { REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
   getRewardPlateSize, progressBarHeight, rewardTicketDefaultSlots
@@ -18,7 +19,6 @@ let { mkLoootboxImage } = require("%appGlobals/config/lootboxPresentation.nut")
 let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { getStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
-let { eventSeason } = require("%rGui/event/eventState.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
@@ -39,7 +39,7 @@ let iconBase = {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
-  keepAspect = KEEP_ASPECT_FIT
+  keepAspect = true
 }
 
 let mkCommonLabelText = @(text, rStyle) {
@@ -248,50 +248,39 @@ function mkGoldOrWpIcon(size, iconShiftY, icon) {
   }.__update(iconBase)
 }
 
-function mkOtherCurrencyIcon(size, iconShiftY, imgName, scale, aspectRatio = 1.0) {
-  let w = round(size[1] * scale).tointeger()
-  let h = round(w * 1.0 / aspectRatio).tointeger()
-  return {
-    size = [w, h]
-    pos = [0, iconShiftY]
-    image = Picture($"{imgName}:{w}:{h}:P")
-  }.__update(iconBase)
-}
-
-function mkDynamicCurrencyIcon(curId, size, iconShiftY, scale, aspectRatio = 1.0) {
-  let w = round(size[1] * scale).tointeger()
-  let h = round(w * 1.0 / aspectRatio).tointeger()
-  let cfg = Computed(@() getCurrencyGoodsPresentation(curId, eventSeason.get())?[0])
+function mkCommonCurrencyIcon(curId, amount, pSize, iconShiftY, scale) {
+  let size = round(pSize[1] * scale).tointeger()
+  let fullId = mkCurrencyFullId(curId)
+  let cfg = Computed(@() getCurrencyGoodsPresentation(fullId.get(), amount))
   return @() {
     watch = cfg
-    size = [w, h]
+    size = [size, size]
     pos = [0, iconShiftY]
-    image = Picture($"ui/gameuiskin#{cfg.get()?.img}:{w}:{h}:P")
-    fallbackImage = cfg.get()?.fallbackImg ? Picture($"ui/gameuiskin#{cfg.get()?.fallbackImg}:{w}:{h}:P") : null
+    image = Picture($"ui/gameuiskin#{cfg.get().img}:{size}:{size}:P")
+    fallbackImage = cfg.get()?.fallbackImg ? Picture($"ui/gameuiskin#{cfg.get().fallbackImg}:{size}:{size}:P") : null
   }.__update(iconBase)
 }
 
-let defCurrencyImgCtor = @(id, size, iconShiftY) mkOtherCurrencyIcon(size, iconShiftY, getCurrencyBigIcon(id), 0.85)
+let defCurrencyImgCtor = @(id, amount, size, iconShiftY) mkCommonCurrencyIcon(id, amount, size, iconShiftY, 0.85)
 let currencyImgCtors = {
-  gold = @(id, size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, getCurrencyBigIcon(id))
-  wp = @(id, size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, getCurrencyBigIcon(id))
-  warbond = @(id, size, iconShiftY) mkDynamicCurrencyIcon(id, size, iconShiftY, 0.85)
-  eventKey = @(id, size, iconShiftY) mkDynamicCurrencyIcon(id, size, iconShiftY, 0.65)
+  gold = @(id, _, size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, getCurrencyBigIcon(id)) //todo: image by amount
+  wp = @(id, _, size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, getCurrencyBigIcon(id)) //todo: image by amount
+  eventKey = @(id, amount, size, iconShiftY) mkCommonCurrencyIcon(id, amount, size, iconShiftY, 0.65)
 }
 
 function mkRewardPlateCurrencyImage(r, rStyle) {
   let { iconShiftY } = rStyle
-  let { id } = r
+  let { id, count } = r
   let size = getRewardPlateSize(r.slots, rStyle)
   return {
     size
     clipChildren = true
-    children = currencyImgCtors?[id](id, size, iconShiftY)
-      ?? defCurrencyImgCtor(id, size, iconShiftY)
+    children = currencyImgCtors?[id](id, count, size, iconShiftY)
+      ?? defCurrencyImgCtor(id, count, size, iconShiftY)
   }
 }
 
-let mkRewardCurrencyImage = @(id, size) currencyImgCtors?[id](id, size, 0)
+let mkRewardCurrencyImage = @(id, amount, size) currencyImgCtors?[id](id, amount, size, 0)
 
 function mkRewardPlateCurrencyTexts(r, rStyle) {
   let { labelCurrencyNeedCompact } = rStyle

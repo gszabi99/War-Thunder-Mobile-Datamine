@@ -1,0 +1,710 @@
+{
+  "bg": "",
+  "bgElements": [
+    {
+      "bgType": "island",
+      "id": "event_april_2025_island_1",
+      "img": "ui/images/pirates/isl_1_map_island_small.avif",
+      "pos": [852, 1933],
+      "rotate": 0,
+      "size": [418, 318]
+    },
+    {
+      "bgType": "island",
+      "id": "event_april_2025_island_2a",
+      "img": "ui/images/pirates/isl_2a_map_island_small.avif",
+      "pos": [468, 1340],
+      "rotate": 0,
+      "size": [479, 391]
+    },
+    {
+      "bgType": "island",
+      "id": "event_april_2025_island_2b",
+      "img": "ui/images/pirates/isl_2b_map_island_small.avif",
+      "pos": [2033, 1448],
+      "rotate": 0,
+      "size": [444, 386]
+    },
+    {
+      "bgType": "island",
+      "id": "event_april_2025_island_3a",
+      "img": "ui/images/pirates/isl_3a_map_island_small.avif",
+      "pos": [1259, 474],
+      "rotate": 0,
+      "size": [583, 408]
+    },
+    {
+      "bgType": "island",
+      "id": "event_april_2025_island_3b",
+      "img": "ui/images/pirates/isl_3b_map_island_small.avif",
+      "pos": [3199, 1349],
+      "rotate": 0,
+      "size": [615, 450]
+    },
+    {
+      "bgType": "island",
+      "id": "event_april_2025_island_fin",
+      "img": "ui/images/pirates/isl_fin_map_island_small.avif",
+      "pos": [3003, 239],
+      "rotate": 0,
+      "size": [713, 540]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/isl_1_map_island_name.avif",
+      "isOnTop": true,
+      "pos": [812, 1843],
+      "required": "event_april_2025_island_1",
+      "rotate": 0,
+      "size": [521, 123]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/isl_2a_map_island_name.avif",
+      "isOnTop": true,
+      "pos": [376, 1250],
+      "required": "event_april_2025_island_2a",
+      "rotate": 0,
+      "size": [534, 157]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/isl_2b_map_island_name.avif",
+      "isOnTop": true,
+      "pos": [1994, 1383],
+      "required": "event_april_2025_island_2b",
+      "rotate": 0,
+      "size": [477, 117]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/isl_3a_map_island_name.avif",
+      "isOnTop": true,
+      "pos": [1149, 410],
+      "required": "event_april_2025_island_3a",
+      "rotate": 0,
+      "size": [585, 123]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/isl_fin_map_island_name.avif",
+      "isOnTop": true,
+      "pos": [3098, 134],
+      "required": "event_april_2025_island_fin",
+      "rotate": 0,
+      "size": [594, 155]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/isl_3b_map_island_name.avif",
+      "isOnTop": true,
+      "pos": [3385, 1277],
+      "required": "event_april_2025_island_3b",
+      "rotate": 0,
+      "size": [433, 110]
+    },
+    {
+      "bgType": "status",
+      "id": "",
+      "img": "ui/images/pirates/island_status_bg.avif",
+      "isOnTop": true,
+      "pos": [850, 2263],
+      "required": "event_april_2025_island_1",
+      "rotate": 0,
+      "size": [300, 100]
+    },
+    {
+      "bgType": "status",
+      "id": "",
+      "img": "ui/images/pirates/island_status_bg.avif",
+      "isOnTop": true,
+      "pos": [406, 1688],
+      "required": "event_april_2025_island_2a",
+      "rotate": 0,
+      "size": [300, 100]
+    },
+    {
+      "bgType": "status",
+      "id": "",
+      "img": "ui/images/pirates/island_status_bg.avif",
+      "isOnTop": true,
+      "pos": [2198, 1804],
+      "required": "event_april_2025_island_2b",
+      "rotate": 0,
+      "size": [300, 100]
+    },
+    {
+      "bgType": "status",
+      "id": "",
+      "img": "ui/images/pirates/island_status_bg.avif",
+      "isOnTop": true,
+      "pos": [1308, 908],
+      "required": "event_april_2025_island_3a",
+      "rotate": 0,
+      "size": [300, 100]
+    },
+    {
+      "bgType": "status",
+      "id": "",
+      "img": "ui/images/pirates/island_status_bg.avif",
+      "isOnTop": true,
+      "pos": [3320, 1827],
+      "required": "event_april_2025_island_3b",
+      "rotate": 0,
+      "size": [300, 100]
+    },
+    {
+      "bgType": "status",
+      "id": "",
+      "img": "ui/images/pirates/island_status_bg.avif",
+      "isOnTop": true,
+      "pos": [3541, 680],
+      "required": "event_april_2025_island_fin",
+      "rotate": 0,
+      "size": [300, 100]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_07.avif",
+      "pos": [651, 2122],
+      "rotate": 0,
+      "size": [151, 141]
+    },
+    {
+      "id": "compass_rose",
+      "img": "ui/images/pirates/sea_decor_05.avif",
+      "pos": [151, 2172],
+      "rotate": 0,
+      "size": [146, 136]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [440, 2106],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [107, 1964],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_02.avif",
+      "pos": [771, 2242],
+      "rotate": 0,
+      "size": [104, 107]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_02.avif",
+      "pos": [721, 1886],
+      "rotate": 0,
+      "size": [104, 107]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [783, 1777],
+      "rotate": 0,
+      "size": [99, 112]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_01.avif",
+      "pos": [108, 1772],
+      "rotate": 0,
+      "size": [149, 164]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_01.avif",
+      "pos": [490, 1725],
+      "rotate": 0,
+      "size": [149, 164]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_01.avif",
+      "pos": [1121, 2311],
+      "rotate": 0,
+      "size": [149, 164]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [1302, 2143],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [1272, 2005],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [1308, 1891],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [1662, 2027],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_01.avif",
+      "pos": [1856, 2121],
+      "rotate": 0,
+      "size": [149, 164]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_03.avif",
+      "pos": [2496, 599],
+      "rotate": 0,
+      "size": [70, 52]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_04.avif",
+      "pos": [1303, 2135],
+      "rotate": 0,
+      "size": [70, 68]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_09.avif",
+      "pos": [1421, 1977],
+      "rotate": 0,
+      "size": [115, 89]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_01.avif",
+      "pos": [1277, 1436],
+      "rotate": 0,
+      "size": [198, 185]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [1413, 1209],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_02.avif",
+      "pos": [1595, 1346],
+      "rotate": 0,
+      "size": [104, 107]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_01.avif",
+      "pos": [744, 1137],
+      "rotate": 0,
+      "size": [149, 164]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [215, 929],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_02.avif",
+      "pos": [393, 1068],
+      "rotate": 0,
+      "size": [104, 107]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_03.avif",
+      "pos": [609, 1188],
+      "rotate": 0,
+      "size": [70, 52]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_13.avif",
+      "pos": [334, 863],
+      "rotate": 0,
+      "size": [264, 285]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_09.avif",
+      "pos": [1074, 711],
+      "rotate": 0,
+      "size": [141, 170]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_08.avif",
+      "pos": [1586, 929],
+      "rotate": 0,
+      "size": [180, 188]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_02.avif",
+      "pos": [1919, 572],
+      "rotate": 0,
+      "size": [107, 154]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [1869, 621],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [2013, 760],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_04.avif",
+      "pos": [2019, 756],
+      "rotate": 0,
+      "size": [70, 68]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_02.avif",
+      "pos": [2344, 552],
+      "rotate": 0,
+      "size": [104, 107]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [2444, 722],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [2545, 991],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_03.avif",
+      "pos": [987, 2367],
+      "rotate": 0,
+      "size": [70, 52]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_01.avif",
+      "pos": [2622, 548],
+      "rotate": 0,
+      "size": [149, 164]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_04.avif",
+      "pos": [2695, 331],
+      "rotate": 0,
+      "size": [138, 157]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_15.avif",
+      "pos": [3206, 814],
+      "rotate": 0,
+      "size": [264, 256]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [4031, 1394],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_01.avif",
+      "pos": [2160, 1203],
+      "rotate": 0,
+      "size": [149, 164]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_03.avif",
+      "pos": [2028, 1258],
+      "rotate": 0,
+      "size": [70, 52]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_02.avif",
+      "pos": [2586, 1728],
+      "rotate": 0,
+      "size": [104, 107]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [2505, 1979],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_01.avif",
+      "pos": [2769, 1817],
+      "rotate": 0,
+      "size": [149, 164]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_02.avif",
+      "pos": [2435, 1607],
+      "rotate": 0,
+      "size": [107, 154]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_11.avif",
+      "pos": [2334, 1796],
+      "rotate": 0,
+      "size": [164, 308]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_02.avif",
+      "pos": [2905, 2216],
+      "rotate": 0,
+      "size": [104, 107]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_03.avif",
+      "pos": [3052, 2242],
+      "rotate": 0,
+      "size": [70, 52]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_01.avif",
+      "pos": [3570, 1776],
+      "rotate": 0,
+      "size": [149, 164]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_10.avif",
+      "pos": [3050, 1543],
+      "rotate": 0,
+      "size": [115, 232]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_10.avif",
+      "pos": [2453, 1202],
+      "rotate": 0,
+      "size": [120, 191]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_06.avif",
+      "pos": [2529, 1146],
+      "rotate": 0,
+      "size": [159, 185]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/sea_decor_14.avif",
+      "pos": [3025, 1274],
+      "rotate": 0,
+      "size": [222, 248]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [4058, 1532],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [3795, 1569],
+      "rotate": 0,
+      "size": [104, 172]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_01.avif",
+      "pos": [3870, 1698],
+      "rotate": 0,
+      "size": [149, 164]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_04.avif",
+      "pos": [4058, 1522],
+      "rotate": 0,
+      "size": [70, 68]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_04.avif",
+      "pos": [3818, 1699],
+      "rotate": 0,
+      "size": [70, 68]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_03.avif",
+      "pos": [3748, 1728],
+      "rotate": 0,
+      "size": [63, 102]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_04.avif",
+      "pos": [3859, 1766],
+      "rotate": 0,
+      "size": [70, 68]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_02.avif",
+      "pos": [2876, 1102],
+      "rotate": 0,
+      "size": [104, 107]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_03.avif",
+      "pos": [3039, 1128],
+      "rotate": 0,
+      "size": [63, 102]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_01.avif",
+      "pos": [3793, 1162],
+      "rotate": 0,
+      "size": [149, 164]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_01.avif",
+      "pos": [3159, 1099],
+      "rotate": 0,
+      "size": [149, 164]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_03.avif",
+      "pos": [3668, 1193],
+      "rotate": 0,
+      "size": [63, 102]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_02.avif",
+      "pos": [3450, 1094],
+      "rotate": 0,
+      "size": [104, 107]
+    },
+    {
+      "id": "",
+      "img": "ui/images/pirates/waves_05.avif",
+      "pos": [2959, 1276],
+      "rotate": 0,
+      "size": [104, 172]
+    }
+  ],
+  "gridSize": 224,
+  "lines": [
+    {
+      "from": "event_april_2025_island_1",
+      "midpoints": [
+        [861, 2109],
+        [701, 1970],
+        [824, 1684]
+      ],
+      "to": "event_april_2025_island_2a"
+    },
+    {
+      "from": "event_april_2025_island_1",
+      "midpoints": [
+        [1214, 2212],
+        [1469, 2318],
+        [1941, 2023],
+        [2101, 1809]
+      ],
+      "to": "event_april_2025_island_2b"
+    },
+    {
+      "from": "event_april_2025_island_2b",
+      "midpoints": [
+        [2439, 1574],
+        [2802, 1587],
+        [3132, 1849],
+        [3346, 1765]
+      ],
+      "to": "event_april_2025_island_3b"
+    },
+    {
+      "from": "event_april_2025_island_3b",
+      "midpoints": [
+        [3406, 1438],
+        [3325, 1314],
+        [3365, 1159],
+        [3569, 979],
+        [3408, 731]
+      ],
+      "to": "event_april_2025_island_fin"
+    },
+    {
+      "from": "event_april_2025_island_3a",
+      "midpoints": [
+        [3081, 745],
+        [2849, 851],
+        [2475, 727],
+        [2037, 540],
+        [1759, 607]
+      ],
+      "to": "event_april_2025_island_fin"
+    },
+    {
+      "from": "event_april_2025_island_2a",
+      "midpoints": [
+        [1347, 833],
+        [1203, 1000],
+        [1156, 1291],
+        [892, 1517]
+      ],
+      "to": "event_april_2025_island_3a"
+    }
+  ],
+  "mapSize": [4220, 2451],
+  "pointSize": 50,
+  "points": {}
+}

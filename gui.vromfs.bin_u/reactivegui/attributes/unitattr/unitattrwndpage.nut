@@ -21,7 +21,7 @@ function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, ma
     let currTime = get_time_msec()
     if (lastClickTime + boost_cooldown < currTime) { //cooldown check
       let nextIncCost = attr.levelCost?[selLevel.get()] ?? 0 //for max level reach condition
-      if (nextIncCost > 0)
+      if (nextIncCost > 0 && tryValue > selLevel.get())
         buyUnitLevelWnd(attrUnitName.get())
     }
   }

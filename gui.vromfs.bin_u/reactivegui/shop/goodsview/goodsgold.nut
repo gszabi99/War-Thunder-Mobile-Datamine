@@ -17,11 +17,8 @@ let bgHiglight = {
   color = 0x01261E10
 }
 
-function getImgByAmount(amount) {
-  let imgCfg = getCurrencyGoodsPresentation(GOLD)
-  let idxByAmount = imgCfg.findindex(@(v) v.amountAtLeast > amount) ?? imgCfg.len()
-  return mkGoodsImg(imgCfg?[max(0, idxByAmount - 1)].img, null, { keepAspect = KEEP_ASPECT_FILL })
-}
+let getImgByAmount = @(amount)
+  mkGoodsImg(getCurrencyGoodsPresentation(GOLD, amount).img, null, { keepAspect = KEEP_ASPECT_FILL })
 
 function getLocNameGold(goods) {
   let amount = goods?.currencies.gold ?? 0

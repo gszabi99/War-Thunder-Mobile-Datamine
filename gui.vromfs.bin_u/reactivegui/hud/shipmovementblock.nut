@@ -23,6 +23,7 @@ let { gamepadAxes } = require("%rGui/controls/shortcutsMap.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { eventbus_send } = require("eventbus")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
+let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
 
 let HAPT_FORWARD = registerHapticPattern("Forward", { time = 0.0, intensity = 0.5, sharpness = 0.9, duration = 0.0, attack = 0.0, release = 0.0 })
 let HAPT_BACKWARD = registerHapticPattern("Backward", { time = 0.0, intensity = 0.5, sharpness = 0.8, duration = 0.0, attack = 0.0, release = 0.0 })
@@ -49,7 +50,7 @@ let maxSpeedBySteps = Computed(function() {
   return getHeroShipMaxSpeedBySteps()
 })
 
-let isControlsBlocked = Computed(@() hasDebuffMoveControl.value || currentMaxThrottle.value == 0.0)
+let isControlsBlocked = Computed(@() hasDebuffMoveControl.get() || currentMaxThrottle.get() == 0.0)
 
 let outlineColor = Computed(@()
   isControlsBlocked.value ? fillMoveColorBlocked
@@ -83,11 +84,11 @@ function calcBackSpeedPart() {
 }
 let mkBackwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
   function onTouchBegin() {
-    if (!isControlsBlocked.value) {
-      setShortcutOn(id)
-      playHapticPattern(HAPT_BACKWARD)
-      showCtrlHint()
-    }
+    if (isControlsBlocked.get() || (isGamepad.get() && isPieMenuActive.get()))
+      return
+    setShortcutOn(id)
+    playHapticPattern(HAPT_BACKWARD)
+    showCtrlHint()
   },
   @() setShortcutOff(id),
   id,
@@ -127,11 +128,11 @@ function calcForwSpeedPart2() {
 let fwdDirections = { forward = true, forward2 = true }
 let mkForwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
   function onTouchBegin() {
-    if (!isControlsBlocked.value) {
-      setShortcutOn(id)
-      playHapticPattern(HAPT_FORWARD)
-      showCtrlHint()
-    }
+    if (isControlsBlocked.get() || (isGamepad.get() && isPieMenuActive.get()))
+      return
+    setShortcutOn(id)
+    playHapticPattern(HAPT_FORWARD)
+    showCtrlHint()
   },
   @() setShortcutOff(id),
   id,
@@ -231,7 +232,7 @@ function movementBlock(unitType, scale) {
   ]
 
   return @() {
-    watch = [isUnitDelayed, isGamepad]
+    watch = [isUnitDelayed, isGamepad, isPieMenuActive]
     flow = FLOW_HORIZONTAL
     children = isUnitDelayed.value ? null
       : [
@@ -248,7 +249,7 @@ function movementBlock(unitType, scale) {
               speedComp(scale)
             ]
           }
-          isGamepad.value ? gamepadShipAxisListener : null
+          isGamepad.get() && !isPieMenuActive.get() ? gamepadShipAxisListener : null
         ]
     transform = {}
     animations = dfAnimBottomLeft

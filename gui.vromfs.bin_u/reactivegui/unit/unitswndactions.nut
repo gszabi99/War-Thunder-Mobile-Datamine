@@ -226,7 +226,7 @@ function separateByRows(bigBtnsList, smallBtnsList) {
   }
 }
 
-function unitActionButtons() {
+let unitActionButtons = @(allowSeveralRows) function() {
   let unitName = curSelectedUnit.get()
   let isUnitInSlot = curCampaignSlotUnits.get()?.findvalue(@(v) v == unitName) != null
   let { isResearched = false, canBuy = false, isCurrent = false, canResearch = false } = unitsResearchStatus.get()?[unitName]
@@ -324,7 +324,9 @@ function unitActionButtons() {
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = gapBtns
-    children = separateByRows(bigBtnsList, smallBtnsList)
+    children = allowSeveralRows
+      ? bigBtnsList.extend(smallBtnsList)
+      : separateByRows(bigBtnsList, smallBtnsList)
   }
 }
 
@@ -349,8 +351,9 @@ function discountBlock() {
 
 }
 
-let unitActions = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null || curUnitInProgress.value != null),
-  unitActionButtons,
+let unitActions = @(allowSeveralRows) mkSpinnerHideBlock(
+  Computed(@() unitInProgress.value != null || curUnitInProgress.value != null),
+  unitActionButtons(allowSeveralRows),
   {
     minHeight = defButtonHeight
     halign = ALIGN_RIGHT
@@ -361,7 +364,9 @@ let unitActions = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null |
 
 return {
   setResearchUnit
-  unitActions
+  unitActions = unitActions(false)
   discountBlock
   findGoodsPrem
+
+  unitActionsOneRow = unitActions(true)
 }

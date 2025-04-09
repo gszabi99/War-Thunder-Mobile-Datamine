@@ -44,13 +44,16 @@ function mkCapZone(idx, zoneSize) {
     if (zone.value == null)
       return res
     let { iconIdx, watchedHeroInZone } = zone.value
+    let isProgressMarker = watchedHeroInZone && zone.value.hasProgressMarker
+    if (!(zone.value.hasGeneralMarkers || isProgressMarker))
+      return res
     res.__update(
       capZoneCtr(zone.value).__update({
         size = [zoneSize, zoneSize]
         image = getZoneIcon(iconIdx, zoneSize * bigZoneMul)
         transform = {
           pivot = [0.5, 0],
-          scale = watchedHeroInZone ? [bigZoneMul, bigZoneMul] : [1.0, 1.0]
+          scale = isProgressMarker ? [bigZoneMul, bigZoneMul] : [1.0, 1.0]
         }
       }))
     return res

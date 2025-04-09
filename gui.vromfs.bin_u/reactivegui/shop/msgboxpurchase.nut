@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { balance, WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
+let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
 let { mkCurrencyComp, CS_NO_BALANCE, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { openMsgBox, msgBoxText, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let mkTextRow = require("%darg/helpers/mkTextRow.nut")
@@ -52,10 +53,11 @@ function showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel = null
       { id = "cancel", isCancel = true, cb = onCancel }
       { id = "replenish", styleId = "PRIMARY", isDefault = true,
         function cb() {
-          if (currencyId in openBuyWnd)
-            openBuyWnd[currencyId](bqInfo)
+          let cId = getBaseCurrency(currencyId)
+          if (cId in openBuyWnd)
+            openBuyWnd[cId](bqInfo)
           else
-            openBuyEventCurrenciesWnd(currencyId)
+            openBuyEventCurrenciesWnd(cId)
           onGoToShop?()
         }
       }

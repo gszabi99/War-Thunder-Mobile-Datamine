@@ -126,7 +126,7 @@
           "preload": false
         }
       },
-      "pkg_lvl_lunar_ny": {
+      "pkg_april_fools_event_2025": {
         "mobile_event.assets": {
           "async": true,
           "preload": false
@@ -2041,6 +2041,20 @@
     },
     "outside": {
       "path": "naval/engines/ai_submarine",
+      "eventBack": "engine",
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine_ship_wood_ai": {
+    "effects": {
+      "path": "event/engines/ai_ship"
+    },
+    "outside": {
+      "path": "event/engines/ai_ship",
       "eventBack": "engine",
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
@@ -7979,6 +7993,35 @@
       "distScaleOnNotHero": 1.0
     }
   },
+  "engine_ship_wood": {
+    "effects": {
+      "path": "event/engines/ship"
+    },
+    "outside": {
+      "path": "event/engines/ship",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
   "reloads": {
     "fmw_gun_reload": {
       "path": "naval/gui",
@@ -8055,6 +8098,11 @@
     "naval_gun_reload": {
       "path": "naval/effects",
       "event": "reload_gun",
+      "time": 2.5
+    },
+    "naval_cannon_reload_muzzle": {
+      "path": "event/effects",
+      "event": "reload_cannon_muzzle",
       "time": 2.5
     }
   },

@@ -13,11 +13,12 @@ let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
-let hudUnitType = require("%rGui/hudState.nut").unitType
+let { hudUnitType } = require("%rGui/hudState.nut")
+
 
 const SAVE_ID = "hudTuning"
 const MAX_HISTORY_LEN = 200
-let allTuningUnitTypes = [TANK, AIR, SHIP, SUBMARINE]
+let allTuningUnitTypes = [TANK, AIR, SHIP, SUBMARINE, SAILBOAT]
   .reduce(@(res, v) res.__update({ [v] = true }), {})
 
 let tuningUnitType = mkWatched(persist, "tuningUnitType", null)

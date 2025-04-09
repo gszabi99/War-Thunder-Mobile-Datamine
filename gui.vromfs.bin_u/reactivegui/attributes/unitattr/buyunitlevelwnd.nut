@@ -10,9 +10,11 @@ let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { buttonsHGap } = require("%rGui/components/textButton.nut")
-let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
+let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
+let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { generateDataDiscount, mkLevelBlock } = require("%rGui/attributes/buyLevelComp.nut")
+let { getSpCostText } = require("%rGui/attributes/attrState.nut")
 
 
 let WND_UID = "buyUnitLevelWnd" //we no need several such messages at all.
@@ -26,12 +28,18 @@ let close = @() unitName(null)
 
 registerHandler("closeBuyUnitLevelWnd", @(_) close())
 
-function onClickPurchase(curLevel, tgtLevel, nextLevelExp, costGold) {
+function onClickPurchase(curLevel, tgtLevel, nextLevelExp, costGold, sp) {
   if (unitInProgress.get() != null)
     return
-  let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT_LEVEL, $"{unitName.get()} {curLevel} +{tgtLevel - curLevel}")
-  if (!showNoBalanceMsgIfNeed(costGold, GOLD, bqPurchaseInfo, close))
-    buy_unit_level(unitName.get(), curLevel, tgtLevel, nextLevelExp, costGold, "closeBuyUnitLevelWnd")
+
+  openMsgBoxPurchase({
+    text = sp != 0
+      ? loc("shop/needMoneyQuestion", {item = colorize(userlogTextColor, getSpCostText(sp))})
+      : loc("shop/needUnitUpgrade"),
+    price = { price = costGold, currencyId = GOLD },
+    purchase = @() buy_unit_level(unitName.get(), curLevel, tgtLevel, nextLevelExp, costGold, "closeBuyUnitLevelWnd"),
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT_LEVEL, $"{unitName.get()} {curLevel} +{tgtLevel - curLevel}")
+  })
 }
 
 function wndContent() {

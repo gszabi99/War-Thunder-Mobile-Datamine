@@ -6,32 +6,24 @@ let { getIconSize, currencyIconsColor, getCurrencyImage, getCurrencyFallback
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let currencyStyles = require("currencyStyles.nut")
 let { CS_COMMON, CS_GAMERCARD } = currencyStyles
-let { eventSeasonIdx } = require("%rGui/event/eventState.nut")
 
 
-function mkCurrencyImage (id, size, ovr = {}){
+function mkCurrencyImage (id, size, ovr = {}) {
   let iconSize = getIconSize(id, size)
-  return @() {
-    watch = eventSeasonIdx
+  return {
     rendObj = ROBJ_IMAGE
     size = [iconSize, iconSize]
     vplace = ALIGN_CENTER
     color = currencyIconsColor?[id] ?? 0xFFFFFFFF
     keepAspect = KEEP_ASPECT_FIT
-    image = Picture($"{getCurrencyImage(id, eventSeasonIdx.get())}:{iconSize}:{iconSize}:P")
-    fallbackImage = Picture($"{getCurrencyFallback(id, eventSeasonIdx.get())}:{iconSize}:{iconSize}:P")
+    image = Picture($"{getCurrencyImage(id)}:{iconSize}:{iconSize}:P")
+    fallbackImage = Picture($"{getCurrencyFallback(id)}:{iconSize}:{iconSize}:P")
   }.__update(ovr)
- }
-
-let function currencyFormat(v){
-  if(type(v) == "integer"){
-    if(v > 100000000)
-      return shortTextFromNum(v)
-    else
-      return decimalFormat(v)
-  }
-  return v
 }
+
+let currencyFormat = @(v) type(v) != "integer" ? v
+  : v > 100000000 ? shortTextFromNum(v)
+  : decimalFormat(v)
 
 let mkCurrencyText = @(value, style) {
   rendObj = ROBJ_TEXT

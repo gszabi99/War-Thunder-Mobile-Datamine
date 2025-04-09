@@ -26,7 +26,7 @@ let { doubleSideGradient, doubleSideGradientPaddingX, doubleSideGradientPaddingY
 } = require("%rGui/components/gradientDefComps.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gradCircularSqCorners, gradCircCornerOffset, gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
-let { getEventLoc, MAIN_EVENT_ID, eventSeason, specialEvents } = require("%rGui/event/eventState.nut")
+let { getEventLoc, MAIN_EVENT_ID, eventSeason, allSpecialEvents } = require("%rGui/event/eventState.nut")
 let { discountTagOffer, discountOfferTagH } = require("%rGui/components/discountTag.nut")
 let { G_ITEM } = require("%appGlobals/rewardType.nut")
 
@@ -549,7 +549,7 @@ let mkInfoText = @(text, appearDelay) {
 
 let activeItemHint = @() activeItemId.value == null ? { watch = activeItemId }
   : {
-      watch = [activeItemId, eventSeason, specialEvents]
+      watch = [activeItemId, eventSeason, allSpecialEvents]
       rendObj = ROBJ_IMAGE
       image = gradTranspDoubleSideX
       color = 0xFF000000
@@ -560,7 +560,7 @@ let activeItemHint = @() activeItemId.value == null ? { watch = activeItemId }
         behavior = Behaviors.TextArea
         text = "\n".concat(
           colorize(0xFFFFFFFF, loc($"item/{activeItemId.value}",
-            { name = getEventLoc(MAIN_EVENT_ID, eventSeason.get(), specialEvents.get()) })),
+            { name = getEventLoc(MAIN_EVENT_ID, eventSeason.get(), allSpecialEvents.get()) })),
           loc($"item/{activeItemId.value}/desc")
         )
         color = 0xFFD0D0D0

@@ -11,6 +11,8 @@ let axisListener = require("%rGui/controls/axisListener.nut")
 let { gm_mouse_aim_x, gm_mouse_aim_y, gm_throttle, gm_steering } = require("%rGui/controls/shortcutsMap.nut").gamepadAxes
 let { setMoveControlByArrows } = require("hudState")
 let { enabledControls, isAllControlsEnabled, isControlEnabled } = require("%rGui/controls/disabledControls.nut")
+let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
 
 let stickZoneSize = evenPx(380)
 let bgRadius = evenPx(160)
@@ -214,8 +216,9 @@ let gamepadAxisListener = axisListener({
 
 let updateStickActive = @(delta) isStickActiveByStick(delta.lengthSq() > 0.04)
 
-let tankGamepadStick = @(scale) {
+let tankGamepadStick = @(scale) @(){
   key = {}
+  watch = [isGamepad, isPieMenuActive]
   size = array(2, scaleEven(imgBgSize, scale))
   function onAttach() {
     stickDelta.subscribe(updateStickActive)
@@ -232,7 +235,7 @@ let tankGamepadStick = @(scale) {
       children = fullImgBg(scale)
     }
     gamepadStick(scale)
-    gamepadAxisListener
+    isGamepad.get() && !isPieMenuActive.get() ? gamepadAxisListener : null
   ]
 }
 

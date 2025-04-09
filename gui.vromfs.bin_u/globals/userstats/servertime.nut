@@ -8,8 +8,10 @@ let lastReceivedServerTime = sharedWatched("lastReceivedServerTime", @() 0)
 
 let serverTime = Watched(0)
 
-let getServerTime = @() gameStartServerTimeMsec.get() <= 0 ? 0
-  : (gameStartServerTimeMsec.get() + get_time_msec()) / 1000
+let getServerTimeAt = @(msec) gameStartServerTimeMsec.get() <= 0 ? 0
+  : (gameStartServerTimeMsec.get() + msec) / 1000
+
+let getServerTime = @() getServerTimeAt(get_time_msec())
 
 let updateTime = @() serverTime(getServerTime())
 
@@ -20,6 +22,7 @@ setInterval(1.0, updateTime)
 return {
   serverTime
   getServerTime
+  getServerTimeAt
   gameStartServerTimeMsec
   lastReceivedServerTime
   isServerTimeValid = Computed(@() gameStartServerTimeMsec.get() > 0)

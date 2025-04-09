@@ -2,6 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { get_mplayer_by_id } = require("mission")
 let { TouchCameraControl } = require("wt.behaviors")
+let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
+let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
@@ -164,9 +166,11 @@ let hudTopCenter = @() {
       : {
           key = {}
           rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
+          behavior = [Behaviors.TextArea, Behaviors.Button]
           maxWidth = hdpx(200)
           halign = ALIGN_CENTER
+          onClick = @() isHudAttached.get() ? toggleShortcut("ID_MPSTATSCREEN") : eventbus_send("toggleMpstatscreen", {})
+          sound = { click  = "click" }
           text = loc("hints/tap_for_stats")
           transform = {}
           animations = [{

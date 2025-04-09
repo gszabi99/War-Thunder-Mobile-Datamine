@@ -16,6 +16,15 @@ function getActionBarShortcut(unitType, itemConfig) {
     : $"ID_SHIP_ACTION_BAR_ITEM_{shortcutIdx + 1}"
 }
 
+let mkToolkitCfg = @(image, ovr = {}) {
+  getShortcut = getActionBarShortcut
+  getImage = @(_) image
+  actionType = AB_TOOLKIT
+  mkButtonFunction = "mkRepairActionItem"
+  haptPatternId = HAPT_REPAIR
+  getAnimationKey = @(unitType) unitType == TANK ? "tank_tool_kit_expendable" : "ship_tool_kit"
+}.__update(ovr)
+
 let actionBarItemsConfig = {
   EII_TORPEDO = {
     getShortcut = @(unitType, __) unitType == SUBMARINE ? "ID_SUBMARINE_WEAPON_TORPEDOES" : "ID_SHIP_WEAPON_TORPEDOES"
@@ -28,14 +37,7 @@ let actionBarItemsConfig = {
     hasAim = true
     haptPatternId = HAPT_SHOOT_TORPEDO
   },
-  EII_TOOLKIT = {
-    getShortcut = getActionBarShortcut
-    getImage = @(_) "ui/gameuiskin#hud_consumable_repair.svg"
-    actionType = AB_TOOLKIT
-    mkButtonFunction = "mkRepairActionItem"
-    haptPatternId = HAPT_REPAIR
-    getAnimationKey = @(unitType) unitType == TANK ? "tank_tool_kit_expendable" : "ship_tool_kit"
-  },
+  EII_TOOLKIT = mkToolkitCfg("ui/gameuiskin#hud_consumable_repair.svg"),
   EII_TOOLKIT_WITH_MEDICAL = {
     getShortcut = getActionBarShortcut
     getImage = @(_) "ui/gameuiskin#hud_consumable_repair.svg"
@@ -126,6 +128,7 @@ let actionBarItemsConfig = {
     getShortcut = @(unitType, __) unitType == SUBMARINE ? "ID_SUBMARINE_WEAPON_ROCKETS" : "ID_SHIP_WEAPON_ROCKETS"
     getImage = @(_) "ui/gameuiskin#hud_missile_anti_ship.svg"
     actionType = AB_ROCKET
+    alternativeImage = "ui/gameuiskin#icon_rocket_in_progress.svg"
     mkButtonFunction = "mkSubmarineWeaponryItem"
     hasAim = true
     needCheckRocket = true

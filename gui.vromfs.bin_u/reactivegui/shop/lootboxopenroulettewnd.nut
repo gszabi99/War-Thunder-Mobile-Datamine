@@ -7,6 +7,7 @@ let { rnd_int } = require("dagor.random")
 let { playSound, startSound, stopSound } = require("sound_wt")
 let { lerpClamped, cos, sin, PI, pow } = require("%sqstd/math.nut")
 let ln = require("math").log
+let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
 let { registerScene, scenesOrder, setSceneBg } = require("%rGui/navState.nut")
 let { rouletteOpenId, rouletteOpenType, rouletteOpenResult, nextOpenCount, curJackpotInfo,
   rouletteRewardsList, receivedRewardsCur, receivedRewardsAll, rouletteOpenIdx, nextFixedReward,
@@ -82,8 +83,9 @@ let isRewardSameDefault = @(received, info) info.id == received.id && info.count
   && (info.rType in ignoreSubIdRTypes || info.subId == received.subId)
 
 let isSameByType = {
-  blueprint = @(received, info) info.id == received.id
-    && info.count == received.count + (received.subId == "" ? 0 : received.subId.tointeger())
+  [G_BLUEPRINT] = @(received, info) info.id == received.id
+    && info.count == received.count + (received.subId == "" ? 0 : received.subId.tointeger()),
+  [G_CURRENCY] = @(received, info) info.id == getBaseCurrency(received.id) && info.count == received.count,
 }
 
 function isReceivedSame(received, rewardInfo) {

@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
 let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { SHIP, BOAT, TANK } = require("%appGlobals/unitConst.nut")
+let { SHIP, BOAT, TANK, SAILBOAT } = require("%appGlobals/unitConst.nut")
 let { hcUnitType, hcDamageStatus, hcDmgPartsInfo, isHcUnitKilled, hcRelativeHealth
 } = require("hitCameraState.nut")
+let { hudUnitType } = require("%rGui/hudState.nut")
 let { isTargetRepair, targetHp } = require("%rGui/hud/shipState.nut")
 
 let iconBgSizeBase = evenPx(44)
@@ -184,6 +185,28 @@ function mkDmgPart(icon, iconSize, iconBgSize, status) {
   }
 }
 
+function sailboatDmgPanelChildrenCtor(scale) {
+  let iconSize = scaleEven(iconSizeBase, scale)
+  let iconBgSize = scaleEven(iconBgSizeBase, scale)
+  return [
+    mkDmgPart("ui/gameuiskin#hud_debuff_sail_weapon.svg", iconSize, iconBgSize,
+      Computed(@() getStatusByHealth(hcDamageStatus.value?.artilleryHealth)))
+    mkDmgPart("ui/gameuiskin#dmg_ship_fire.svg", iconSize, iconBgSize,
+      Computed(@() (hcDamageStatus.value?.hasFire ?? false) ? CRITICAL : NONE))
+    mkDmgPart("ui/gameuiskin#hud_debuff_sail_control.svg", iconSize, iconBgSize,
+      Computed(@() getStatusByHealth(hcDamageStatus.value?.engineHealth)))
+    mkDmgPart("ui/gameuiskin#dmg_ship_rudders.svg", iconSize, iconBgSize,
+      Computed(@() getStatusByHealth(hcDamageStatus.value?.ruddersHealth)))
+    mkDmgPart("ui/gameuiskin#dmg_ship_breach.svg", iconSize, iconBgSize,
+      Computed(@() (hcDamageStatus.value?.hasBreach ?? false) ? CRITICAL : NONE))
+    mkTextPart("ui/gameuiskin#ship_crew.svg","ui/gameuiskin#hud_crew_wounded.svg", scale,
+      Computed(@() $"{(100 * currentTargetHp.value + 0.5).tointeger()}%"),
+      Computed(@() currentTargetHp.value > 0.505 ? 0xFFFFFFFF
+        : currentTargetHp.value > 0.005 ? 0xFFFFC000
+        : 0XFFFF4040), isTargetRepair)
+  ]
+}
+
 function shipDmgPanelChildrenCtor(scale) {
   let iconSize = scaleEven(iconSizeBase, scale)
   let iconBgSize = scaleEven(iconBgSizeBase, scale)
@@ -245,15 +268,16 @@ let panelChildrenCtorByType = {
   [SHIP] = shipDmgPanelChildrenCtor,
   [BOAT] = shipDmgPanelChildrenCtor,
   [TANK] = tankDmgPanelChildrenCtor,
+  [SAILBOAT] = sailboatDmgPanelChildrenCtor,
 }
 
 let hitCameraDmgPanel = @(scale) @() {
-  watch = hcUnitType
+  watch = [hcUnitType, hudUnitType]
   size = [flex(), SIZE_TO_CONTENT]
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   padding = [round(hdpx(6) * scale), 0]
-  children = panelChildrenCtorByType?[hcUnitType.value](scale)
+  children = panelChildrenCtorByType?[hudUnitType.get() == SAILBOAT ? SAILBOAT : hcUnitType.get()](scale)
 }
 
 return hitCameraDmgPanel

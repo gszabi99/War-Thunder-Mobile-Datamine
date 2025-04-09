@@ -13,13 +13,15 @@ let presentations = {
   season_15 = { color = 0xFF5C67FB, imageSizeMul = 2}
   season_16 = { color = 0xFF85C523 }
   season_17 = { color = 0xB3E50606 }
-  season_18 = { color = 0xFFFFBB10  }
+  season_18 = { color = 0xFFFFBB10 }
+  season_19 = { color = 0xFF9CB3Df }
   blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
   event_new_year               = { icon = "ui/gameuiskin#icon_event_christmas.svg", bg = "ui/images/event_bg_christmas_2024.avif" }
   event_lunar_ny_season        = { icon = "ui/gameuiskin#icon_event_event_lunar_ny_season.svg", bg = "ui/images/event_bg_lunar.avif" }
   event_patrick_day            = { icon = "ui/gameuiskin#icon_event_patrick_day2.svg" }
   event_patrick_daily          = { icon = "ui/gameuiskin#icon_event_patrick_day.svg" }
+  event_april_2025             = { icon = "ui/gameuiskin#icon_event_april_2025.svg", bg = "ui/images/event_bg_event_april_2025.avif" }
 }
 
 let genParams = {

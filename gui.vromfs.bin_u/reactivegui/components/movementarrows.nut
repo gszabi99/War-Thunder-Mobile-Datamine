@@ -4,6 +4,8 @@ let { TouchScreenButton } = require("wt.behaviors")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { mkContinuousButtonParams, mkGamepadShortcutImage
 } = require("%rGui/controls/shortcutSimpleComps.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
+let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
 
 let toInt = @(list) list.map(@(v) v.tointeger())
 
@@ -24,6 +26,7 @@ let fillMoveColorBlocked = 0xFFFF4338
 
 let outlineColorDef = Watched(0xFFFFFFFF)
 let fillColorDef = Watched(fillMoveColorDef)
+let isActiveWithPieMenu = Computed(@() !isGamepad.get() || !isPieMenuActive.get())
 
 let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = null,
   ovr = {}, outlineColor = outlineColorDef, isDisabled = Watched(false), scale = 1
@@ -46,22 +49,22 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
     cameraControl = false
     children = [
       @() {
-        watch = stateFlags
+        watch = [stateFlags, isActiveWithPieMenu]
         rendObj = ROBJ_IMAGE
         size
         image = Picture($"ui/gameuiskin#hud_movement_arrow_left_bg.svg:{size[0]}:{size[1]}")
-        color = (stateFlags.value & S_ACTIVE) != 0 ? bgColorPushed : bgColor
+        color = (stateFlags.value & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? bgColorPushed : bgColor
         flipX
       }
     ].extend(isDisabled.value ? []
       : [
           @() {
-            watch = stateFlags
+            watch = [stateFlags, isActiveWithPieMenu]
             size = horAnimSize
             rendObj = ROBJ_IMAGE
             image = Picture($"ui/gameuiskin#hud_movement_left_animated_marker.svg:{horAnimSize[0]}:{horAnimSize[1]}")
             vplace = ALIGN_CENTER
-            opacity = (stateFlags.value & S_ACTIVE) != 0 ? 100 : 0
+            opacity = (stateFlags.value & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? 100 : 0
             transform = {
               translate = (stateFlags.value & S_ACTIVE) != 0
                 ? [flipX ? 0.6 * size[0] : 0.4 * size[0] - horAnimSize[0], 0]
@@ -185,11 +188,11 @@ function mkMoveVertBtn(onTouchBegin, onTouchEnd, shortcutId, ovr = {}) {
   let { size = verSize } = ovr
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
   return @() res.__merge({
-    watch = stateFlags
+    watch = [stateFlags, isActiveWithPieMenu]
     size
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_bg.svg:{size[0]}:{size[1]}")
-    color = (stateFlags.value & S_ACTIVE) != 0 ? bgColorPushed : bgColor
+    color = (stateFlags.value & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? bgColorPushed : bgColor
     cameraControl = false
   }, ovr)
 }

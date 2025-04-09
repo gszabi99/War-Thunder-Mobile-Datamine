@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { balance, WP, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
+let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { SPARE } = require("%appGlobals/itemsState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { isProfileReceived } = require("%appGlobals/pServer/campaign.nut")
@@ -139,14 +140,17 @@ let plus = {
   text = "+"
 }.__update(fontBigShaded)
 
-function mkBalance(id, style, onClick, onAttach) {
-  let visCount = Computed(@() visibleBalance.value?[id])
-  let nextChange = Computed(@() isAdsVisible.value ? null : changeOrders.value?[id][0])
+function mkBalance(baseId, style, onClick, initBalance) {
+  let id = Computed(@() currencyToFullId.get()?[baseId] ?? baseId)
+  id.subscribe(@(v) initBalance(v))
+
+  let visCount = Computed(@() visibleBalance.value?[id.get()])
+  let nextChange = Computed(@() isAdsVisible.value ? null : changeOrders.value?[id.get()][0])
   let stateFlags = Watched(0)
   let currencyOvr = {
-    watch = [visCount, stateFlags]
+    watch = [visCount, stateFlags, id]
     transform = {}
-    animations = mkBalanceHiglightAnims($"balance_{id}")
+    animations = mkBalanceHiglightAnims($"balance_{id.get()}")
   }
   local imgChild = null
   if (onClick != null) {
@@ -159,8 +163,8 @@ function mkBalance(id, style, onClick, onAttach) {
     imgChild = plus
   }
   return {
-    key = id
-    onAttach
+    key = baseId
+    onAttach = @() initBalance(id.get())
     children = [
       @() {
         watch = stateFlags
@@ -169,7 +173,7 @@ function mkBalance(id, style, onClick, onAttach) {
       }
       {
         children = [
-          @() mkCurrencyComp(visCount.value ?? loc("leaderboards/notAvailable"), id, style, imgChild)
+          @() mkCurrencyComp(visCount.value ?? loc("leaderboards/notAvailable"), id.get(), style, imgChild)
             .__update(currencyOvr,
               {
                 transform = {
@@ -177,12 +181,12 @@ function mkBalance(id, style, onClick, onAttach) {
                 }
               })
           @() {
-            watch = nextChange
+            watch = [nextChange, id]
             size = [0, 0] //to not affect parent size
             hplace = ALIGN_RIGHT
             vplace = ALIGN_BOTTOM
             children = nextChange.value == null ? null
-              : mkChangeView(id, nextChange.value)
+              : mkChangeView(id.get(), nextChange.value)
           }
         ]
       }
@@ -191,11 +195,11 @@ function mkBalance(id, style, onClick, onAttach) {
 }
 
 function mkCurrencyBalance(currencyId, onClick = null, style = CS_GAMERCARD) {
-  return mkBalance(currencyId, style, onClick, @() initCurrencyBalance(currencyId))
+  return mkBalance(currencyId, style, onClick, initCurrencyBalance)
 }
 
 function mkItemsBalance(itemId, onClick = null, style = CS_GAMERCARD) {
-  return mkBalance(itemId, style, onClick, @() initItemBalance(itemId))
+  return mkBalance(itemId, style, onClick, initItemBalance)
 }
 
 return {

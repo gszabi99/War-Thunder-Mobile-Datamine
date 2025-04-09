@@ -34,6 +34,7 @@ let { eventbus_subscribe, send } = require("eventbus")
 let { MechState, get_gears_current_state} = require("hudAircraftStates")
 let { ON } = MechState
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
 
 let maxThrottle = 100
 let stepThrottle = 5
@@ -667,11 +668,11 @@ let aircraftMovement = @(scale) {
   children = [
     throttleSlider(getSizes(scale))
     @() {
-      watch = [ isGamepad, currentAircraftCtrlType, currentControlByGyroModeAileronsAssist, currentControlByGyroAimMode, currentControlByGyroDirectControl,
-        currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity]
+      watch = [ currentAircraftCtrlType, currentControlByGyroModeAileronsAssist, currentControlByGyroAimMode, currentControlByGyroDirectControl,
+        currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity, isGamepad, isPieMenuActive]
       children = [
         getImuAxesListener(currentAircraftCtrlType.value, currentControlByGyroAimMode.value, currentControlByGyroModeAileronsAssist.value, currentControlByGyroDirectControl.value),
-        isGamepad.value ? mkGamepadAxisListener() : null
+        isGamepad.get() && !isPieMenuActive.get() ? mkGamepadAxisListener() : null
       ]
     }
   ]

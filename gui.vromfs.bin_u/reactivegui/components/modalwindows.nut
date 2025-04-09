@@ -2,6 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let logM = log_with_prefix("[ModalWnd] ")
 let { register_command } = require("console")
 let { EMPTY_ACTION, btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 
 let MWP_COMMON = 0
 let MWP_ALWAYS_TOP = 1000
@@ -79,6 +82,26 @@ function addModalWindow(wnd = {}) {
   modalWindowsGeneration.set(modalWindowsGeneration.get() + 1)
 }
 
+let addModalWindowWithHeader = @(key, title, content) addModalWindow(bgShaded.__merge({
+  key = key
+  size = flex()
+  children = modalWndBg.__merge({
+    flow = FLOW_VERTICAL
+    halign = ALIGN_CENTER
+    children = [
+      modalWndHeaderWithClose(
+        title,
+        @() removeModalWindow(key),
+        {
+          minWidth = SIZE_TO_CONTENT,
+          padding = [0, hdpx(10)]
+        })
+      content
+    ]
+  })
+  animations = wndSwitchAnim
+}))
+
 function closeAllModalWindows() {
   if (modalWindows.len() == 0)
     return
@@ -120,6 +143,7 @@ register_command(@(key) removeModalWindow(key), "debug.close_modal_window")
 
 return {
   addModalWindow
+  addModalWindowWithHeader
   removeModalWindow
   closeAllModalWindows
   modalWindowsComponent

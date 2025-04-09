@@ -195,6 +195,7 @@ let mkVerticalPannableArea = @(content, override = {}) {
   children = {
     size = flex()
     behavior = Behaviors.Pannable
+    touchMarginPriority = TOUCH_BACKGROUND
     children = content
   }
 }.__update(override)

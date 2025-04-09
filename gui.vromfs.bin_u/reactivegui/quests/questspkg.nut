@@ -54,6 +54,7 @@ let mkSectionBtn = @(onClick, isSelected, hasUnseen, content) {
   maxWidth = sectionBtnMaxWidth
   behavior = Behaviors.Button
   onClick
+  sound = { click = "choose" }
   clickableInfo = loc("mainmenu/btnSelect")
   children = [
     {

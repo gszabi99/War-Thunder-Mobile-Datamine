@@ -140,7 +140,7 @@ local visibleWeaponsList = Computed(function(prev) {
       counts[actionItem.explosiveMass] <- (counts?[actionItem.explosiveMass] ?? -1) + 1
       let viewCfg = {
         selShortcut = shipRocketShortcuts?[weapon]
-        number = explosiveMass[actionItem.explosiveMass] == 0 ? -1 : counts[actionItem.explosiveMass]
+        number = explosiveMass[actionItem.explosiveMass] <= 1 ? -1 : counts[actionItem.explosiveMass]
       }.__merge(config)
       if(counts[actionItem.explosiveMass] > 0)
         viewCfg.getImage <- weaponsButtonsConfig["EII_ROCKET"].getImage

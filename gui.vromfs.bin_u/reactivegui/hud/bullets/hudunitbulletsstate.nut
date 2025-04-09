@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getBulletNameByType, getBulletCountByType, getNextBulletType, getCurrentBulletType,
   changeBulletType
 } = require("vehicleModel")
-let { setTimeout } = require("dagor.workcycle")
+let { setTimeout, deferOnce } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { playerUnitName, isUnitDelayed } = require("%rGui/hudState.nut")
@@ -12,59 +12,64 @@ let { eventbus_subscribe } = require("eventbus")
 let nextBulletIdx = Watched(getNextBulletType(TRIGGER_GROUP_PRIMARY))
 let currentBulletIdxPrim = Watched(getCurrentBulletType(TRIGGER_GROUP_PRIMARY))
 let currentBulletIdxSec = Watched(getCurrentBulletType(TRIGGER_GROUP_SECONDARY))
+let bulletsCountPrim = Watched(array(3, 0))
+let mainBulletCount = Computed(@() bulletsCountPrim.get()[0])
+let extraBulletCount = Computed(@() bulletsCountPrim.get()[1])
 
 let bulletsInfo = Computed(function() {
-  if ((playerUnitName.value ?? "") == "")
+  if ((playerUnitName.get() ?? "") == "")
     return null
-  return loadUnitBulletsChoice(playerUnitName.value)?.commonWeapons.primary  //todo: load preset by weapon here if not empty (choice?[weaponName])
+  return loadUnitBulletsChoice(playerUnitName.get())?.commonWeapons.primary
+})
+let bulletsInfoSec = Computed(function() {
+  if ((playerUnitName.get() ?? "") == "")
+    return null
+  return loadUnitBulletsChoice(playerUnitName.get())?.commonWeapons.secondary
 })
 let isSecondaryBulletsSame = Computed(function() {
-  if ((playerUnitName.value ?? "") == "" || bulletsInfo.value == null)
+  if ((playerUnitName.get() ?? "") == "" || bulletsInfo.get() == null || bulletsInfoSec.get() == null)
     return false
   let secondaryOrder = loadUnitBulletsChoice(playerUnitName.value)?.commonWeapons.secondary.bulletsOrder
   return secondaryOrder != null && isEqual(bulletsInfo.value.bulletsOrder, secondaryOrder)
 })
 
-let nextBulletName = Computed(function() {
+let bulletsNamePrim = Computed(function() {
   let name = playerUnitName.value //warning disable: -declared-never-used
   let upd = isUnitDelayed.value //warning disable: -declared-never-used
-  return getBulletNameByType(TRIGGER_GROUP_PRIMARY, nextBulletIdx.value)
-})
-let currentBulletName = Computed(function() {
-  let name = playerUnitName.value //warning disable: -declared-never-used
-  let upd = isUnitDelayed.value //warning disable: -declared-never-used
-  return getBulletNameByType(TRIGGER_GROUP_PRIMARY, currentBulletIdxPrim.value)
+  return array(3, TRIGGER_GROUP_PRIMARY).map(getBulletNameByType)
 })
 
-let mainBulletInfo = Computed(function() {
+let bulletsNameSec = Computed(function() {
   let name = playerUnitName.value //warning disable: -declared-never-used
   let upd = isUnitDelayed.value //warning disable: -declared-never-used
-  return bulletsInfo.value?.bulletSets[getBulletNameByType(TRIGGER_GROUP_PRIMARY, 0)]
-})
-let extraBulletInfo = Computed(function() {
-  let name = playerUnitName.value //warning disable: -declared-never-used
-  let upd = isUnitDelayed.value //warning disable: -declared-never-used
-  return bulletsInfo.value?.bulletSets[getBulletNameByType(TRIGGER_GROUP_PRIMARY, 1)]
+  return array(3, TRIGGER_GROUP_SECONDARY).map(getBulletNameByType)
 })
 
-let mainBulletCount = Watched(getBulletCountByType(TRIGGER_GROUP_PRIMARY, 0))
-let extraBulletCount = Watched(getBulletCountByType(TRIGGER_GROUP_PRIMARY, 1))
+let nextBulletName = Computed(@() bulletsNamePrim.get()?[nextBulletIdx.get()] ?? "")
+let currentBulletName = Computed(@() bulletsNamePrim.get()?[currentBulletIdxPrim.get()] ?? "")
+let mainBulletInfo = Computed(@() bulletsInfo.value?.bulletSets[bulletsNamePrim.get()[0]])
+let extraBulletInfo = Computed(@() bulletsInfo.value?.bulletSets[bulletsNamePrim.get()[1]])
 
-function updateBulletsCount() {
-  mainBulletCount(getBulletCountByType(TRIGGER_GROUP_PRIMARY, 0))
-  extraBulletCount(getBulletCountByType(TRIGGER_GROUP_PRIMARY, 1))
+let mkUpdateBulletsCount = @(trigger, watch) function updateBulletsCount() {
+  let newVal = array(3, trigger).map(getBulletCountByType)
+  if (!isEqual(newVal, watch.get()))
+    watch.set(newVal)
 }
-playerUnitName.subscribe(@(_) updateBulletsCount())
-isUnitDelayed.subscribe(@(_) updateBulletsCount())
 
-eventbus_subscribe("onBulletsAmountChanged", function(_) {
-  updateBulletsCount()
-})
+let updateBulletsCountPrim = mkUpdateBulletsCount(TRIGGER_GROUP_PRIMARY, bulletsCountPrim)
+updateBulletsCountPrim()
+
+let updateAllBulletsCount = @() deferOnce(updateBulletsCountPrim)
+
+playerUnitName.subscribe(@(_) updateAllBulletsCount())
+isUnitDelayed.subscribe(@(_) updateAllBulletsCount())
+
+eventbus_subscribe("onBulletsAmountChanged", @(_) updateAllBulletsCount())
 
 primaryAction.subscribe(function(_) {
   currentBulletIdxPrim(getCurrentBulletType(TRIGGER_GROUP_PRIMARY))
   nextBulletIdx(getNextBulletType(TRIGGER_GROUP_PRIMARY))
-  updateBulletsCount()
+  deferOnce(updateBulletsCountPrim)
 })
 secondaryAction.subscribe(@(_) currentBulletIdxSec(getCurrentBulletType(TRIGGER_GROUP_SECONDARY)))
 
@@ -90,6 +95,7 @@ return {
   nextBulletName
   currentBulletName
   bulletsInfo
+  bulletsInfoSec
   toggleNextBullet
   isSecondaryBulletsSame
 
@@ -97,4 +103,6 @@ return {
   extraBulletInfo
   mainBulletCount
   extraBulletCount
+  bulletsNamePrim
+  bulletsNameSec
 }

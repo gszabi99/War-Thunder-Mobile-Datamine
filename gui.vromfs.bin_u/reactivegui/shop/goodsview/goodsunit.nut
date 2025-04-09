@@ -196,18 +196,18 @@ function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
   )
 }
 
-let mkCurrencyIcon = @(currencyId) {
+let mkCurrencyIcon = @(currencyId, amount) {
   margin = offerPad
   hplace = ALIGN_RIGHT
   vplace = ALIGN_CENTER
-  children = mkRewardCurrencyImage(currencyId, [currencyIconSize, currencyIconSize])
+  children = mkRewardCurrencyImage(currencyId, amount, [currencyIconSize, currencyIconSize])
   keepAspect = true
 }
 
 function mkOfferUnit(goods, onClick, state) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
   let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
-    currencies = null, offerClass = null
+    currencies = {}, offerClass = null
   } = goods
   let p = getUnitPresentation(unit)
   let bgImg = offerClass == "seasonal" ? "ui/gameuiskin#offer_bg_green.avif"
@@ -223,7 +223,7 @@ function mkOfferUnit(goods, onClick, state) {
       mkBgImg(bgImg)
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
-      currencyId == null ? null : mkCurrencyIcon(currencyId)
+      currencyId == null ? null : mkCurrencyIcon(currencyId, currencies[currencyId])
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
       mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : loc(getUnitLocId(unit)),
         endTime ?? timeRange?.end)
@@ -260,7 +260,7 @@ function mkOfferBlueprint(goods, onClick, state){
 function mkOfferBranchUnit(goods, onClick, state) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
   let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
-    currencies = null, offerClass = null
+    currencies = {}, offerClass = null
   } = goods
   let p = getUnitPresentation(unit)
   let bgImg = offerClass == "seasonal" ? "ui/gameuiskin#offer_bg_green.avif"
@@ -276,7 +276,7 @@ function mkOfferBranchUnit(goods, onClick, state) {
       mkBgImg(bgImg)
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
-      currencyId == null ? null : mkCurrencyIcon(currencyId)
+      currencyId == null ? null : mkCurrencyIcon(currencyId, currencies[currencyId])
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
       mkAirBranchOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
         utf8ToUpper(loc("offer/airBranch")), endTime ?? timeRange?.end)

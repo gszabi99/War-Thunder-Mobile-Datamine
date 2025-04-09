@@ -5,6 +5,7 @@ let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { shopPurchaseInProgress, buy_goods, buy_offer, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
 let { tryResetToMainScene } = require("%rGui/navState.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
@@ -88,21 +89,17 @@ function purchaseOfferImpl(offer, currencyId, price) {
   return ""
 }
 
-function currencyWithIconComp(item){
-  let curId = item.currencies.findindex(@(_) true) ?? ""
-  let value = item.currencies?[curId] ?? 0
-  return {
-    flow = FLOW_VERTICAL
-    size = [flex(), SIZE_TO_CONTENT]
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    gap = hdpx(30)
-    children = [
-      msgBoxText(loc("shop/orderQuestion"), { size = SIZE_TO_CONTENT })
-      mkCurrencyComp(value, curId, CS_INCREASED_ICON)
-      msgBoxText(loc("shop/cost"), { size = SIZE_TO_CONTENT })
-    ]
-  }
+let mkCurrencyWithIcon = @(id, count) {
+  flow = FLOW_VERTICAL
+  size = [flex(), SIZE_TO_CONTENT]
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  gap = hdpx(30)
+  children = [
+    msgBoxText(loc("shop/orderQuestion"), { size = SIZE_TO_CONTENT })
+    mkCurrencyComp(count, id, CS_INCREASED_ICON)
+    msgBoxText(loc("shop/cost"), { size = SIZE_TO_CONTENT })
+  ]
 }
 
 function startRemoveTimer(goods) {
@@ -137,9 +134,10 @@ function purchaseGoods(goodsId, description = "") {
 
   startRemoveTimer(goods)
 
+  let currencyFullId = currencyToFullId.get()?[currencyId] ?? currencyId
   function purchase() {
-    let errString = isOffer ? purchaseOfferImpl(goods, currencyId, price)
-      : purchaseGoodsImpl(goodsId, currencyId, price)
+    let errString = isOffer ? purchaseOfferImpl(goods, currencyFullId, price)
+      : purchaseGoodsImpl(goodsId, currencyFullId, price)
     if (errString != "")
       logShop($"ERROR: {errString}")
     if (isOffer)
@@ -148,13 +146,17 @@ function purchaseGoods(goodsId, description = "") {
 
   let textItem = colorize(userlogTextColor, getGoodsLocName(goods).replace(" ", nbsp))
 
+  let goodsCurId = goods.currencies.findindex(@(_) true) ?? ""
+  let goodsCurrencyFullId = currencyToFullId.get()?[goodsCurId] ?? goodsCurId
+  let goodsCount = goods.currencies?[goodsCurId] ?? 0
+
   openMsgBoxPurchase({
     text = goods.gtype == SGT_EVT_CURRENCY
-        ? currencyWithIconComp(goods)
+        ? mkCurrencyWithIcon(goodsCurrencyFullId, goodsCount)
       : description != ""
         ? loc("shop/needMoneyQuestion/desc", { item = textItem, description })
       : loc("shop/needMoneyQuestion", { item = textItem }),
-    price = { price, currencyId },
+    price = { price, currencyId = currencyFullId },
     purchase,
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_SHOP, getPurchaseTypeByGoodsType(goods.gtype), $"pack {goods.id}")
   })
@@ -169,9 +171,10 @@ function purchaseGoodsSeq(goodsList, name, description = "") {
   local currency = ""
   foreach (goods in goodsList) {
     let { price, currencyId } = goods.price
+    let currencyFullId = currencyToFullId.get()?[currencyId] ?? currencyId
     if (currency == "")
-      currency = currencyId
-    let isPriceValid = price > 0 && currencyId != "" && currencyId == currency
+      currency = currencyFullId
+    let isPriceValid = price > 0 && currencyFullId != "" && currencyFullId == currency
     if (!isPriceValid) {
       logerr("Try to buy goods with invalid price")
       return

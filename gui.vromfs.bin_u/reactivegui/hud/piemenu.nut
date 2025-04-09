@@ -1,14 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
 let { sqrt, pow, fabs, sin, cos, atan2, PI } = require("math")
+let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
+let { isGamepad } = require("%appGlobals/activeControls.nut")
+let { STICK } = require("stickState.nut")
 
 let RAD_TO_DEG = 180.0 / PI
 let DEG_TO_RAD = PI / 180.0
 let textureHoleWidth = 0.54
 
+let isPieMenuActive = Watched(false)
+
 let defaultPieMenuParams = freeze({
   pieRadius = shHud(28)
   piePosOffset = [0, shHud(-6)]
   pieIconSizeMul = 0.24
+  pieActiveStick = STICK.LEFT
 })
 
 /**
@@ -66,7 +72,7 @@ let mkPieMenuItemText = @(c) {
  * @return {table} - Pie menu component for HUD.
  */
 function mkPieMenu(menuCfg, selIdx, params = defaultPieMenuParams) {
-  let { pieRadius, piePosOffset, pieIconSizeMul } = params
+  let { pieRadius, piePosOffset, pieIconSizeMul, pieActiveStick = STICK.LEFT } = params
   let pieSize = [pieRadius * 2, pieRadius * 2]
   let degPerItem = Computed(@() 360.0 / (menuCfg.get().len() || 1))
 
@@ -75,6 +81,8 @@ function mkPieMenu(menuCfg, selIdx, params = defaultPieMenuParams) {
     rendObj = ROBJ_MASK
     image = Picture($"ui/gameuiskin/pie_menu_bg.svg:{pieSize[0]}:{pieSize[1]}:P")
     color = 0xFF000000
+    onAttach = @() isPieMenuActive.set(true)
+    onDetach = @() isPieMenuActive.set(false)
     children = [
       {
         size = pieSize
@@ -119,6 +127,15 @@ function mkPieMenu(menuCfg, selIdx, params = defaultPieMenuParams) {
         children = mkPieMenuItemText(menuCfg.get()?[selIdx.get()])
       }
 
+  let mkShortcutImg = @() {
+    watch = [selIdx, isGamepad]
+    size = flex()
+    children = !isGamepad.get() ? null : mkBtnImageComp(
+      pieActiveStick == STICK.LEFT ? "J:L.Thumb.hv" : "J:R.Thumb.hv", hdpxi(50)
+    ).__update({vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(0), ph(14)]})
+    transform = { scale = selIdx.get() > -1 ? [0.8, 0.8] : [1.0, 1.0] }
+    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+  }
   return {
     size = pieSize
     hplace = ALIGN_CENTER
@@ -130,6 +147,7 @@ function mkPieMenu(menuCfg, selIdx, params = defaultPieMenuParams) {
       pieBg
       iconsComp
       selectedItemLabel
+      mkShortcutImg
     ]
   }
 }
@@ -141,4 +159,6 @@ return {
   defaultPieMenuParams
   mkPieMenuItemIcon
   mkPieMenuItemText
+
+  isPieMenuActive
 }

@@ -41,7 +41,7 @@ let mkDebrTabsInfo = require("mkDebrTabsInfo.nut")
 let debriefingTabBar = require("debriefingTabBar.nut")
 let mkDebriefingEmpty = require("mkDebriefingEmpty.nut")
 let { boostersListActive } = require("%rGui/boosters/boostersListActive.nut")
-let { openEventWnd, specialEvents } = require("%rGui/event/eventState.nut")
+let { openEventWnd, allSpecialEvents, specialEventsWithTree } = require("%rGui/event/eventState.nut")
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
 let { openUnitsTreeAtUnit } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { slots, selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
@@ -49,6 +49,7 @@ let { setCurrentUnit, buyUnitsData } = require("%appGlobals/unitsState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { runOfflineBattle } = require("%rGui/debugTools/debugOfflineBattleState.nut")
 let { TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID } = require("%rGui/tutorial/tutorialConst.nut")
+let { openTreeEventWnd } = require("%rGui/event/treeEvent/treeEventState.nut")
 
 local isAttached = false
 
@@ -56,9 +57,13 @@ let closeDebriefing = @() eventbus_send("Debriefing_CloseInDagui", {})
 let startBattle = @(modeId) eventbus_send("queueToGameMode", { modeId })
 let function openSpecialEvent() {
   let eventName = allGameModes.get().findvalue(@(m) m.name == debriefingData.get()?.roomInfo.game_mode_name)?.eventId
-  let eventId = specialEvents.get().findindex(@(e) e.eventName == eventName)
-  if (eventId)
-    openEventWnd(eventId)
+  let eventId = allSpecialEvents.get().findindex(@(e) e.eventName == eventName)
+  if (eventId) {
+    if (specialEventsWithTree.get().findindex(@(event) event.eventName == eventId) != null)
+      openTreeEventWnd(eventId)
+    else
+      openEventWnd(eventId)
+  }
 }
 
 const SAVE_ID_UPGRADE_BUTTON_PUSHED = "debriefingUpgradeButtonPushed"
@@ -242,16 +247,20 @@ let mkBtnToBattlePlace = @(needShow, nextGMInfo, debrData) mkBtnAppearAnim(false
   function() {
     let { isCustomOfflineBattle = false, unit = null, mission = null } = debrData
     let { gmId, isCommonBattle } = nextGMInfo.get()
+    let { name = null, isFake = false } = unit
+    let children = []
+    if (!isFake)
+      children.append(boostersListActive)
     return {
       watch = [newbieOfflineMissions, isInSquad, isSquadLeader, nextGMInfo]
       flow = FLOW_HORIZONTAL
       gap = hdpx(20)
-      children = !isInSquad.get() && isCustomOfflineBattle && unit?.name != null && mission != null
-          ? [ boostersListActive, mkStartCustomOfflineBattleButton(unit.name, mission) ]
+      children = !isInSquad.get() && isCustomOfflineBattle && name != null && mission != null
+          ? children.append(mkStartCustomOfflineBattleButton(name, mission))
         : !isInSquad.get() && isCommonBattle && newbieOfflineMissions.get() != null
-          ? [ boostersListActive, startOfflineMissionButton ]
+          ? children.append(startOfflineMissionButton)
         : gmId != null && (!isInSquad.get() || isSquadLeader.get())
-          ? [ boostersListActive, toBattleButton(gmId) ]
+          ? children.append(toBattleButton(gmId))
         : null
     }
   })

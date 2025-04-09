@@ -78,6 +78,8 @@ let eventSections = Computed(function() {
   return res
 })
 
+let sectionMetaMarks = [DAILY_SECTION, WEEKLY_SECTION, "promo_quest", "achievement"]
+
 let questsCfg = Computed(@() {
   [COMMON_TAB] = [DAILY_SECTION, WEEKLY_SECTION],
   [PROMO_TAB] = ["promo_quest"],
@@ -103,7 +105,16 @@ let questsBySection = Computed(function() {
   let res = {}
   foreach (sections in questsCfg.get())
     foreach (section in sections)
-      res[section] <- campaignActiveUnlocks.value.filter(@(u) section in u?.meta || u?.meta.event_id == section) ?? {}
+      res[section] <- {}
+
+  foreach (name, u in campaignActiveUnlocks.get())
+    if (u?.meta.event_id in res)
+      res[u.meta.event_id][name] <- u
+    else
+      foreach (section in sectionMetaMarks)
+        if (section in u?.meta)
+          res[section][name] <- u
+
   foreach (eventName, unlocks in eventUnlocksByDays.get())
     res.__update(unlocks.reduce(function(acc, v, key) {
       acc[mkEventSectionName(key, eventName)] <- v
@@ -255,6 +266,7 @@ return {
   questsBySection
 
   seenQuests
+  saveSeenQuests
   hasUnseenQuestsBySection
   saveSeenQuestsForSection
 

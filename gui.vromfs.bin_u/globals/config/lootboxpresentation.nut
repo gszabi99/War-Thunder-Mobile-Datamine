@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let regexp2 = require("regexp2")
 let { round } = require("math")
+let { getRomanNumeral } = require("%sqstd/math.nut")
 
 let lootboxFallbackPicture = Picture("ui/gameuiskin#daily_box_small.avif:0:P")
 
@@ -29,6 +30,10 @@ let customLootboxImages = {
   event_special_tanks_lunar_ny_2025         = "event_special_lunar_ny.avif"
   event_special_ships_lunar_ny_2025         = "event_special_lunar_ny.avif"
   event_special_air_lunar_ny_2025           = "event_special_lunar_ny.avif"
+
+  event_special_tanks_april_fools_2025      = "event_special_ships_april_2025.avif"
+  event_special_ships_april_fools_2025      = "event_special_ships_april_2025.avif"
+  event_special_air_april_fools_2025        = "event_special_ships_april_2025.avif"
 
   past_events_box_tanks_seasons_1_to_3 = "past_events_box_ships_seasons_1_to_3.avif"
   past_events_box_ships_seasons_1_to_4 = "past_events_box_ships_seasons_1_to_3.avif"
@@ -64,6 +69,10 @@ let customRouletteImages = {
   event_special_gift_tanks_new_year_2025 = "ui/images/event_bg_roulette_christmas_2024.avif"
   event_special_gift_ships_new_year_2025 = "ui/images/event_bg_roulette_christmas_2024.avif"
   event_special_gift_air_new_year_2025   = "ui/images/event_bg_roulette_christmas_2024.avif"
+
+  event_special_tanks_april_fools_2025 = "ui/images/event_bg_roulette_event_april_2025.avif"
+  event_special_ships_april_fools_2025 = "ui/images/event_bg_roulette_event_april_2025.avif"
+  event_special_air_april_fools_2025   = "ui/images/event_bg_roulette_event_april_2025.avif"
 }
 
 let imgIdBySeason = {
@@ -150,7 +159,22 @@ function mkLoootboxImage(id, size, scale = 1, ovr = {}) {
   }.__update(ovr)
 }
 
-let getLootboxName = @(id, slot = "") loc(lootboxLocIdBySlot?[slot] ?? $"lootbox/{id}")
+let isNum = regexp2(@"^\d+$")
+
+let lootboxPrefixes = ["past_events_box"]
+
+let getLootboxNameById = memoize(function parseString(id) {
+  foreach (prefix in lootboxPrefixes) {
+    if (id.startswith(prefix)) {
+      local parts = id.slice(prefix.len() + 1).split("_")
+      if (parts.len() != 0 && isNum.match(parts[0]))
+        return loc($"lootbox/{prefix}", {num = getRomanNumeral(parts[0].tointeger())})
+    }
+  }
+  return loc($"lootbox/{id}")
+})
+
+let getLootboxName = @(id, slot = "") slot in lootboxLocIdBySlot ? loc(lootboxLocIdBySlot[slot]) : getLootboxNameById(id)
 
 return {
   getLootboxImage

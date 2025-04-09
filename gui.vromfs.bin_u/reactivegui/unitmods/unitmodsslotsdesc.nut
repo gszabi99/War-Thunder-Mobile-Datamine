@@ -51,10 +51,18 @@ let weaponDescRowsCfg = [
     @(v) v.massLbs <= 0 ? getMassText(v.mass)
       : $"{getMassLbsText(v.massLbs)} ({getMassText(v.mass)})")
   mkRowCfg("weapons/drop_speed_range",
-    @(w) getSingleBulletParam(w, "dropSpeedRange"),
+    function(w) {
+      let singleBulletParam = getSingleBulletParam(w, "dropSpeedRange")
+      return singleBulletParam == null ? null
+        : [max(0, singleBulletParam[0]), singleBulletParam[1]]
+    },
     @(v) getSpeedRangeText(v[0], v[1]))
   mkRowCfg("weapons/drop_height_range",
-    @(w) getSingleBulletParam(w, "dropHeightRange"),
+    function(w) {
+      let singleBulletParam = getSingleBulletParam(w, "dropHeightRange")
+      return singleBulletParam == null ? null
+        : [max(0, singleBulletParam[0]), singleBulletParam[1]]
+    },
     @(v) getHeightRangeText(v[0], v[1]))
   mkRowCfg("bullet_properties/explosiveType",
     @(w) getSingleBulletParam(w, "explosiveType")

@@ -265,6 +265,7 @@ return {
   unlock_all_units = @(cb = null) request({ method = "unlock_all_units" }, cb)
   royal_beta_units_unlock = @(cb = null) request({ method = "royal_beta_units_unlock" }, cb)
   generate_full_offline_profile = @(cb = null) request({ method = "generate_full_offline_profile" }, cb)
+  process_currency_write_off = @(cb = null) request({ method = "process_currency_write_off" }, cb)
 
   reset_campaigns = @(campaigns, cb = null) request({
     method = "reset_campaigns"

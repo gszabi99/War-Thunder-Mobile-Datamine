@@ -116,6 +116,7 @@ let shipState = {
   isAsmCaptureAllowed = Watched(true)
 
   leftTurretRotationTime = Watched(0)
+  isHrosshairVisibile = Watched(false)
 }
 
 

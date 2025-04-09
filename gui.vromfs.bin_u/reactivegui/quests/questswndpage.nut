@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let {eventbus_subscribe} = require("eventbus")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { questsBySection, seenQuests, saveSeenQuestsForSection, sectionsCfg, questsCfg,
   inactiveEventUnlocks, hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection,
   getQuestCurrenciesInTab, curTabParams, tutorialSectionId, isSameTutorialSectionId, tutorialSectionIdWithReward
@@ -50,6 +51,8 @@ let contentWidth = saSize[0] - tabW - minContentOffset
 let isPurchNoNeedResultWindow = @(purch) purch?.source == "userstatReward"
   && null == purch.goods.findvalue(@(g) g.id != "warbond" || (g.id == "warbond" && g.count >= 100))
 let markPurchasesSeenDelayed = @(purchList) defer(@() markPurchasesSeen(purchList.keys()))
+
+let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
 
 let mkVerticalPannableAreaNoBlocks = verticalPannableAreaCtor(
   sh(100) - topAreaSize + pageBlocksGap,
@@ -114,36 +117,54 @@ function mkAchievementText(item) {
   }
 }
 
-let purchaseContent = @(rewardsPreview, item){
+let purchaseContentCtor = @(textLoc, costLoc) @(rewardsPreview, item) {
   flow = FLOW_VERTICAL
   size = [flex(), SIZE_TO_CONTENT]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   gap = hdpx(30)
   children = [
-    msgBoxText(loc("shop/orderQuestion"), { size = SIZE_TO_CONTENT })
-    {
-      flow = FLOW_HORIZONTAL
-      gap = hdpx(10)
-      children = mkRewardsPreviewFull(rewardsPreview, item?.isFinished)
-    }
-    msgBoxText(loc("shop/cost"), { size = SIZE_TO_CONTENT })
+    msgBoxText(textLoc, { size = SIZE_TO_CONTENT })
+    rewardsPreview.len() != 0
+      ? {
+          flow = FLOW_HORIZONTAL
+          gap = hdpx(10)
+          children = mkRewardsPreviewFull(rewardsPreview, item?.isFinished)
+        }
+      : msgBoxText(
+          colorize(0xFFE4CB88, loc(item?.meta.lang_id ?? $"treeEvent/subPreset/order/desc/{item?.meta.event_id}")),
+          { size = SIZE_TO_CONTENT })
+    msgBoxText(costLoc, { size = SIZE_TO_CONTENT })
   ]
 }
+
+let buyPurchaseContent = purchaseContentCtor(loc("shop/orderQuestion"), loc("shop/cost"))
+let explorePurchaseContent = purchaseContentCtor(loc("shop/orderQuestion/explore"), loc("shop/cost/explore"))
 
 eventbus_subscribe("quests.buyUnlock", function(data) {
   receiveReward(data.item, data.currencyReward)
 })
 
-let buyRewardMsgBox = @(item, rewardsPreview, price, currencyId, currencyReward) openMsgBoxPurchase({
-  text = purchaseContent(rewardsPreview, item),
-  price = { price, currencyId },
-  purchase = @() buyUnlock(item.name, 1, currencyId, price,
-      { onSuccessCb = { id = "quests.buyUnlock", item, currencyReward }})
-  bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, item.name)
-})
+let buyRewardMsgBox = @(item, rewardsPreview, price, currencyId, currencyReward)
+  openMsgBoxPurchase({
+    text = buyPurchaseContent(rewardsPreview, item),
+    price = { price, currencyId },
+    purchase = @() buyUnlock(item.name, 1, currencyId, price,
+        { onSuccessCb = { id = "quests.buyUnlock", item, currencyReward }})
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, item.name)
+  })
 
-function mkBtn(item, currencyReward, rewardsPreview, sProfile) {
+let exploreRewardMsgBox = @(item, rewardsPreview, price, currencyId, currencyReward)
+  openMsgBoxPurchase({
+    text = explorePurchaseContent(rewardsPreview, item),
+    price = { price, currencyId },
+    purchase = @() buyUnlock(item.name, 1, currencyId, price,
+        { onSuccessCb = { id = "quests.buyUnlock", item, currencyReward }})
+    bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, item.name)
+    purchaseLocId = "msgbox/btn_explore"
+  })
+
+function mkQuestBtn(item, currencyReward, rewardsPreview, sProfile) {
   let { name, progressCorrectionStep = 0 } = item
   let isRewardInProgress = Computed(@() name in unlockInProgress.value)
   let price = getUnlockPrice(item)
@@ -276,7 +297,7 @@ function mkItem(item, textCtor) {
 
           @() {
             watch = [eventCurrencyReward, rewardsPreview, servProfile]
-            children = isCompletedPrevQuest.get() ? mkBtn(item, eventCurrencyReward.get(), rewardsPreview.get(), servProfile.get())
+            children = isCompletedPrevQuest.get() ? mkQuestBtn(item, eventCurrencyReward.get(), rewardsPreview.get(), servProfile.get())
               : {
                 size = btnSize
                 halign = ALIGN_CENTER
@@ -376,23 +397,24 @@ let questsSort = @(a, b) b.hasReward <=> a.hasReward
   || a.chainPos <=> b.chainPos
   || a.name <=> b.name
 
-function createTablePosQuestsChain(eventsData, eventCategories) {
-  local eventTable = {}
-  foreach(specialEvent, categories in eventCategories) {
-    if (!specialEvent.startswith("special_event")) continue
-    foreach(category in categories) {
-      local questsInCategory = eventsData.rawget(category)
-      if (questsInCategory == null) continue
-      eventTable[category] <- {}
-      local currentQuest = questsInCategory.findvalue(@(v) v?.requirement == "")
-      local chainPosition = 0
-      while (currentQuest != null) {
-        eventTable[category][currentQuest.name] <- chainPosition++
-        currentQuest = questsInCategory.findvalue(@(v) v?.requirement == currentQuest.name)
+function calcQuestChainPositions(quests) {
+  let res = {}
+  local hasChanges = true
+  while (hasChanges) {
+    hasChanges = false
+    foreach (name, q in quests)
+      if (name in res)
+        continue
+      else if ((q?.requirement ?? "") == "") {
+        res[name] <- 0
+        hasChanges = true
       }
-    }
+      else if (q.requirement in res) {
+        res[name] <- res[q.requirement] + 1
+        hasChanges = true
+      }
   }
-  return eventTable
+  return res
 }
 
 let headerLine = @(headerChildCtor, child) {
@@ -420,11 +442,29 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
     foreach(sectionId in sectionsList)
       if ((bySection?[sectionId].len() ?? 0) > 0)
         return sectionId
-    return curId ?? sectionsList?[0]
+    return curId ?? sectionsList?[0] ?? sections.get()?[0]
   })
 
-  let quests = Computed(@() questsBySection.value?[curSectionId.value ?? sections.value?[0]])
-  let tableQuestsChainPos = Computed(@() createTablePosQuestsChain(questsBySection.get(), questsCfg.get()))
+  let tabProgressUnlock = Computed(@() progressUnlockByTab.get()?[tabId])
+  let progressUnlock = Computed(@() tabProgressUnlock.get() ?? progressUnlockBySection.get()?[curSectionId.get()])
+  let progressUnlockName = Computed(@() progressUnlock.get()?.name)
+
+  let questsSorted = Computed(function() {
+    let sectionId = curSectionId.get()
+    let list = clone (questsBySection.get()?[sectionId] ?? {})
+    if (progressUnlockName.get() in list)
+      list.$rawdelete(progressUnlockName.get())
+
+    let chainPos = calcQuestChainPositions(list)
+    return list
+      .map(@(q, name) q.__merge({
+        tabId, sectionId,
+        chainPos = chainPos?[name] ?? 0
+      }))
+      .values()
+      .sort(questsSort)
+  })
+  let questsCount = Computed(@() questsSorted.get().len())
 
   let isCurSectionActive = Computed(@()
     isSectionActive(curSectionId.get(), questsBySection.get(), unlockTables.get()))
@@ -434,9 +474,6 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
     selSectionId(id)
   }
 
-  let tabProgressUnlock = Computed(@() progressUnlockByTab.get()?[tabId])
-  let progressUnlock = Computed(@() tabProgressUnlock.get() ?? progressUnlockBySection.get()?[curSectionId.get()])
-  let progressUnlockName = Computed(@() progressUnlock.get()?.name)
   let hasProgressUnlock = Computed(@() progressUnlock.get() != null)
   let isProgressBySection = Computed(@() tabProgressUnlock.get() == null)
 
@@ -453,7 +490,6 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
     progressUnlockBySection.value, progressUnlockByTab.value, serverConfigs.value))
 
   let scrollHandler = ScrollHandler()
-  curSectionId.subscribe(@(_) scrollHandler.scrollToY(0))
 
   let isSectionsEmpty = Computed(@() sections.get().findindex(@(s) questsBySection.get()[s].len() > 0) == null)
   headerChildWidth = headerChildWidth ?? Watched(headerChildCtor == null ? 0 : linkToEventWidth)
@@ -479,7 +515,10 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
   }
 
   let tutorSectionSubscription = @(v) isSameTutorialSectionId.set(v == curSectionId.get())
-  let curSectionSubscription = @(v) isSameTutorialSectionId.set(v == tutorialSectionIdWithReward.get())
+  function curSectionSubscription(v) {
+    isSameTutorialSectionId.set(v == tutorialSectionIdWithReward.get())
+    scrollHandler.scrollToY(0)
+  }
 
   return @() {
     watch = tabCurrencies
@@ -499,7 +538,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
     }
     children = [
       @() {
-        watch = [ isCurSectionActive, quests, tableQuestsChainPos]
+        watch = isCurSectionActive
         size = flex()
         flow = FLOW_VERTICAL
         gap = pageBlocksGap
@@ -515,20 +554,19 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
                   : [
                       pannableCtors[blocksOnTop.value](
                         @() {
-                          watch = [curSectionId, seenQuests, unlockProgress, quests, progressUnlockName]
+                          watch = questsCount
                           size = [flex(), SIZE_TO_CONTENT]
                           flow = FLOW_VERTICAL
                           gap = hdpx(20)
-                          children = quests.get()
-                            .filter(@(u) u.name != progressUnlockName.get())
-                            .values()
-                            .map(@(item) item.__merge({
-                                tabId,
-                                sectionId = curSectionId.get(),
-                                chainPos = tableQuestsChainPos.get()?[curSectionId.get()][item.name] ?? 0
-                            }))
-                            .sort(questsSort)
-                            .map(@(item) itemCtor(item))
+                          children = array(questsCount.get())
+                            .map(function(_, i) {
+                              let q = Computed(@(prev) prevIfEqual(prev, questsSorted.get()?[i]))
+                              return @() {
+                                watch = q
+                                size = [flex(), SIZE_TO_CONTENT]
+                                children = q.get() == null ? null : itemCtor(q.get())
+                              }
+                            })
                           onDetach = @() saveSeenQuestsForSection(curSectionId.value)
                         },
                         {},
@@ -545,6 +583,8 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
 return {
   questsWndPage
   mkQuest = @(item) mkItem(item, mkQuestText)
+  mkQuestBtn
+  exploreRewardMsgBox
   mkAchievement = @(item) mkItem(item, mkAchievementText)
 
   unseenMarkMargin

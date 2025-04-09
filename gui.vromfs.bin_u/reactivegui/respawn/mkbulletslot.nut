@@ -45,12 +45,14 @@ let imageBullet = @(imageBulletName) {
 function mkBulletSlot(isSecBullet, bulletInfo, bInfoFromUnitTags, ovrBulletImage = {}, ovrBulletIcon = {}, ovr = {}) {
   if (bulletInfo == null)
     return null
-  local { icon = null } = bInfoFromUnitTags
+  local { icon = null, image = null } = bInfoFromUnitTags
   if (icon != null)
     icon = $"{icon}.svg"
   else
     icon = (bulletInfo?.isBulletBelt ?? false) ? "hud_ammo_bullet_ap.svg" : "hud_ammo_ap1_he0.svg"
-  let imageBulletName = getBulletImage(bulletInfo.bullets)
+  let imageBulletName = image != null
+    ? $"ui/gameuiskin#{image}.avif"
+    : getBulletImage(bulletInfo.bullets)
   let nameText = getAmmoTypeShortText(bulletInfo.bullets?[0] ?? "" )
   return {
     flow = FLOW_HORIZONTAL

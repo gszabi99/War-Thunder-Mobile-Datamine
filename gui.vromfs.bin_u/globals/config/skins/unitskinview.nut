@@ -328,7 +328,8 @@ return {
       "": "ussr_la_11_standard"
     },
     "f4u-1a": {
-      "": "usa_sb2u_3"
+      "": "usa_f4u_1a_decals",
+      "prem": "usa_sb2u_3"
     },
     "f4u-1c": {
       "": "usa_f4u_4b"
@@ -660,6 +661,9 @@ return {
     "germ_artilleriefahrprahm_typ_d3": {
       "": "camo_blackgray_net",
       "special": "camo_sboat_fleet"
+    },
+    "germ_battlecruiser_ersatz_yorck": {
+      "": "camo_sboat_fleet"
     },
     "germ_battlecruiser_von_der_tann": {
       "": "camo_blackyellow_spots"
@@ -1122,6 +1126,9 @@ return {
     },
     "he_112v_5": {
       "": "usa_p_40c_metal"
+    },
+    "he_219a_7": {
+      "": "germ_he51c1"
     },
     "hs-123a-1": {
       "": "germ_hs_123a1_late"
@@ -2271,6 +2278,10 @@ return {
       "forest": "usa_modern_winter_verdant",
       "winter": "usa_modern_snow_temperate_ot"
     },
+    "us_m247_reskin4": {
+      "": "usa_modern_seventh_army",
+      "forest": "us_camo_modern_green"
+    },
     "us_m247_reskin5": {
       "": "us_camo_modern_desert_tan",
       "upgraded": "usa_modern_summer_verdant"
@@ -2302,6 +2313,10 @@ return {
       "desert": "usa_modern_red_desert",
       "forest": "usa_modern_winter_verdant",
       "winter": "usa_modern_snow_temperate_ot"
+    },
+    "us_m3_bradley_reskin2": {
+      "": "usa_modern_seventh_army",
+      "forest": "us_camo_modern_green"
     },
     "us_m3a3_bradley": {
       "": "us_camo_modern_green",
@@ -2567,13 +2582,28 @@ return {
       "forest": "usa_modern_winter_verdant",
       "winter": "usa_modern_snow_temperate_ot"
     },
+    "us_xm1_gm": {
+      "": "usa_modern_seventh_army",
+      "forest": "us_camo_modern_green"
+    },
     "us_xm_8": {
       "": "us_camo_modern_green",
       "winter": "us_camo_modern_winter_tan"
     },
+    "us_xm_803": {
+      "": "usa_modern_seventh_army",
+      "forest": "us_camo_modern_green"
+    },
+    "ussr_1124_rct": {
+      "": "ussr_1114_rct"
+    },
     "ussr_9p149": {
       "": "ussr_camo_green",
       "upgraded": "ussr_modern_def_gray"
+    },
+    "ussr_a_12_mk_2_matilda_2A_F96": {
+      "": "ussr_rbt_5",
+      "forest": "ussr_camo_green"
     },
     "ussr_asu_57": {
       "": "hw_camo",
@@ -2625,6 +2655,10 @@ return {
     },
     "ussr_btr_152a": {
       "": "ussr_camo_winter_net",
+      "forest": "ussr_camo_green"
+    },
+    "ussr_btr_152a_reskin": {
+      "": "ussr_rbt_5",
       "forest": "ussr_camo_green"
     },
     "ussr_btr_152d": {
@@ -2817,6 +2851,10 @@ return {
       "forest": "ussr_camo_green",
       "winter": "ussr_camo_winter"
     },
+    "ussr_rbt_5": {
+      "": "ussr_rbt_5",
+      "forest": "ussr_camo_green"
+    },
     "ussr_su_100Y": {
       "": "ussr_camo_forest_01",
       "forest": "ussr_camo_green",
@@ -2902,6 +2940,10 @@ return {
     "ussr_t_34_100": {
       "": "ussr_camo_desert_yellow_brown",
       "forest": "ussr_camo_green"
+    },
+    "ussr_t_34_1940_l_11": {
+      "": "ussr_rbt_5",
+      "forest": "ussr_camo_green_new-painty"
     },
     "ussr_t_34_1941": {
       "": "ussr_camo_green",

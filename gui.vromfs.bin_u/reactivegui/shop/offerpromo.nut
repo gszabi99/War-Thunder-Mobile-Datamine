@@ -143,6 +143,7 @@ function mkOfferSwiper(offers) {
               key = curPointX
               size = flex()
               behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
+              touchMarginPriority = TOUCH_BACKGROUND
               scrollHandler
               function onAttach() {
                 resetTimeout(autoSwipeTime, autoSwipe)

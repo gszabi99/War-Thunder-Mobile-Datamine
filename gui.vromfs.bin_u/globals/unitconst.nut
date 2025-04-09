@@ -6,9 +6,10 @@ let unitTypes = {
   HELICOPTER = "helicopter"
   BOAT = "boat"
   SUBMARINE = "submarine"
+  SAILBOAT = "sailboat"
 }
 
-let bitsOrder = ["AIR", "TANK", "SHIP", "HELICOPTER", "BOAT", "SUBMARINE"]
+let bitsOrder = ["AIR", "TANK", "SHIP", "HELICOPTER", "BOAT", "SUBMARINE", "SAILBOAT"]
 let bits = {}
 let unitTypeToBitTbl = {}
 let bitToUnitTypeTbl = {}
@@ -25,6 +26,8 @@ function calcUnitTypeFromTags(tagsCfg) {
   let { tags = null } = tagsCfg
   if ("submarine" in tags)
     return unitTypes.SUBMARINE
+  if ("sailboat" in tags)
+    return unitTypes.SAILBOAT
   if ("boat" in tags)
     return unitTypes.BOAT
   if ("ship" in tags)

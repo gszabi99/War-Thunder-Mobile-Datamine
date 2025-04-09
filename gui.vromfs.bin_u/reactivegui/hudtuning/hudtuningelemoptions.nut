@@ -77,8 +77,10 @@ function optionsPosBlock(id, options, editView, transform) {
   let children = isForAllElems ? optionsBlockAllElems(options) : optionsBlock(id, options)
   let curOptionsV = tuningOptions.get() //no need to subcribe, need set position only on open
   let scale = optScale.getValue(curOptionsV, id)
-  let viewSize = calc_comp_size(type(editView) == "function" ? editView(curOptionsV) : editView)
-    .map(@(v) (v * scale).tointeger())
+  let view = type(editView) != "function" ? editView
+    : editView.getfuncinfos().parameters.len() == 2 ? editView(curOptionsV)
+    : editView(curOptionsV, id)
+  let viewSize = calc_comp_size(view).map(@(v) (v * scale).tointeger())
   let viewPos = calcPos(viewSize, transform)
   let optionsSize = calc_comp_size(children)
 

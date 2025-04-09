@@ -1,6 +1,7 @@
 from "%globalScripts/logs.nut" import *
 let { eventbus_send } = require("eventbus")
 let { getLocTextForLang } = require("dagor.localize")
+let { get_time_msec } = require("dagor.time")
 let { send_to_bq_offer } = require("pServerApi.nut")
 let { getServerTime } = require("%appGlobals/userstats/serverTime.nut")
 let { sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -10,7 +11,7 @@ let { get_game_version_str = @() "-" } = require_optional("app") //updater does 
 
 function addEventTime(data, key = "eventTime") {
   let time = getServerTime()
-  return time > 0 ? data.__merge({ [key] = time }) : data
+  return time > 0 ? data.__merge({ [key] = time }) : data.__merge({ ["$fillServerTime"] = { key, timeMsec = get_time_msec() }})
 }
 
 function addSystemInfo(data) {

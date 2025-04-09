@@ -12,6 +12,7 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_SHOW_HERO_MODULES = "J:X | 6"
 
   ID_CAMERA_NEUTRAL =  "J:LS | N" // Tank and Air
+  ID_WTM_LAUNCH_AIRCRAFT = "J:D.Down | Q" // Ship and Air (Return to ship)
 
   //TANK shortcuts:
   ID_FIRE_GM = "J:RT | Space"
@@ -53,14 +54,11 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_SHIP_WEAPON_MORTAR = "J:B | C"
   ID_SHIP_WEAPON_ROCKETS = "J:Y | V"
   ID_SHIP_WEAPON_ROCKETS_SECONDARY = "J:LS | B"
-  ID_WTM_LAUNCH_AIRCRAFT = "J:D.Down | Q" //also used for aircraft return to ship
-
 
   ID_SHIP_ACTION_BAR_ITEM_40 = "J:D.Left | 1" //toolkit
   ID_SHIP_ACTION_BAR_ITEM_14 = "J:D.Right | 2" //smoke screen
   ID_SHIP_SMOKE_SCREEN_GENERATOR = "J:D.Right | 2"
   ID_IRCM_SWITCH_SHIP = "J:D.Up | 3"
-
 
   //SUBMARINE shortcuts:
   submarine_main_engine_rangeMax = "J:LS.Up | W | Up"
@@ -74,9 +72,10 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_SUBMARINE_ACTION_BAR_ITEM_40 = "J:D.Left | 1" //toolkit
   ID_SUBMARINE_ACOUSTIC_COUNTERMEASURES = "J:D.Right | 2"
 
-
   //AIRCRAFT shortcuts:
   ID_CAMERA_VIEW_BACK = "J:D.Left | B"
+  ID_CAMERA_VIEW_STICK = "J:D.Right | M"
+  ID_CTRL_PIE_STICK = "J:D.Up | K"
   ID_BOMBS = "J:B | Z"
   ID_FIRE_COURSE_GUNS = "J:RT | Space"
   ID_FIRE_CANNONS = "J:RT | Space"

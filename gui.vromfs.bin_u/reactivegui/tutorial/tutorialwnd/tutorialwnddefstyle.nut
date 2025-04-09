@@ -20,6 +20,7 @@ let characters = {
   mary_salutes = "review_cue_3.avif"
   mary_points_sad = "review_cue_4.avif"
   mary_like = "review_cue_5.avif"
+  mary_pirate = "pirates/review_cue_1_pirate.avif"
 }
   .map(@(v) $"!ui/images/{v}")
 let defaultCharacter = characters.mary_with_notebook

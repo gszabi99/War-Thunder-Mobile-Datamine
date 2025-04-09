@@ -164,6 +164,11 @@ let screensList = {
     weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_21.avif")
   }
+  event_april_fools = {
+    camp = [ "ships" ]
+    weight = 0.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_s_8.avif")
+  }
   simple_tank_20 = {
     camp = [ "tanks" ]
     weight = 1.0

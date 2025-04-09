@@ -1,0 +1,48 @@
+{
+  "bg": "ui/images/pirates/isl_1_map_island_screen_gui.avif",
+  "bgElements": [],
+  "gridSize": 59,
+  "lines": [
+    {
+      "from": "event_april_2025_quest_island_1_1_battles",
+      "midpoints": [
+        [188, 304]
+      ],
+      "to": "event_april_2025_quest_island_1_2_kills"
+    },
+    {
+      "from": "event_april_2025_quest_island_1_3_wins",
+      "midpoints": [
+        [332, 158]
+      ],
+      "to": "event_april_2025_treasure_island_1"
+    },
+    {
+      "from": "event_april_2025_quest_island_1_2_kills",
+      "midpoints": [
+        [317, 271]
+      ],
+      "to": "event_april_2025_quest_island_1_3_wins"
+    }
+  ],
+  "mapSize": [594, 451],
+  "pointSize": 50,
+  "points": {
+    "event_april_2025_quest_island_1_1_battles": {
+      "pos": [146, 352],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_1_2_kills": {
+      "pos": [249, 298],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_1_3_wins": {
+      "pos": [336, 219],
+      "view": "mapMark"
+    },
+    "event_april_2025_treasure_island_1": {
+      "pos": [368, 102],
+      "view": "mapMarkFinal"
+    }
+  }
+}

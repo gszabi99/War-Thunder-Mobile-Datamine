@@ -117,7 +117,7 @@ let mkLevelInfo = @(levels, sp, sf) {
               fontBig
               textGradient
             )
-            mkSpText(sp)
+            sp != 0 ? mkSpText(sp) : null
           ]
         }
       ]
@@ -174,7 +174,7 @@ function mkLevelBlock(value, costMul, levelParams, isInProgress, handleClick) {
   }
   let costGold = (costMul * fullCostGold + 0.5).tointeger()
   let stateFlags = Watched(0)
-  let onClick = @() handleClick(value.level, value.level + levels, expTotal - exp, costGold)
+  let onClick = @() handleClick(value.level, value.level + levels, expTotal - exp, costGold, sp)
   return @() {
     watch = stateFlags
     size = [blockSize[0], SIZE_TO_CONTENT]

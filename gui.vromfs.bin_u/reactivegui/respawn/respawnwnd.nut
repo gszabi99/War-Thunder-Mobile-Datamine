@@ -397,6 +397,7 @@ let skinsList = @() {
         children = {
           size = flex()
           behavior = Behaviors.Pannable
+          touchMarginPriority = TOUCH_BACKGROUND
           skipDirPadNav = true
           xmbNode = XmbContainer()
           children = respawnSkins

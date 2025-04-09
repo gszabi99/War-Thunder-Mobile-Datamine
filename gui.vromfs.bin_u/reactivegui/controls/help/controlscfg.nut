@@ -44,6 +44,9 @@ let shortcutsByUnitTypes = {
       "ID_BOMBS", "ID_ROCKETS", "ID_FIRE_COURSE_GUNS", "ID_FIRE_CANNONS", "ID_FIRE_MGUNS",
       "ID_LOCK_TARGET", "ID_CAMERA_VIEW_BACK", "ID_SHOW_HERO_MODULES",
       cLoc("hotkeys/ID_SHIP_WEAPON_TORPEDOES", "ID_WTM_AIRCRAFT_TORPEDOES"),
+      cLoc("hotkeys/ID_WTM_LAUNCH_AIRCRAFT/aircraft", "ID_WTM_LAUNCH_AIRCRAFT"),
+      cLoc("hotkeys/ID_TOGGLE_VIEW", "ID_CAMERA_VIEW_STICK"),
+      "ID_CTRL_PIE_STICK",
     ]
     axes = [cLoc("controls/walker_throttle", "throttle_axis"), "ailerons", "elevator", "rudder"]
       .extend(sameLoc("controls/help/movement_direction_control", ["mouse_aim_x", "mouse_aim_y"]),

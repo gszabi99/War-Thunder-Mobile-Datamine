@@ -6,6 +6,7 @@ let { doesLocTextExist } = require("dagor.localize")
 let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
 let { ComputedImmediate } = require("%sqstd/frp.nut")
 let { rewardTypeByValue } = require("%appGlobals/rewardType.nut")
+let { mkCurrencyFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
@@ -40,7 +41,6 @@ let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { tryResetToMainScene, canResetToMainScene } = require("%rGui/navState.nut")
 let { lbCfgOrdered } = require("%rGui/leaderboard/lbConfig.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
-let { eventSeason } = require("%rGui/event/eventState.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
 let { mkBattleModEventUnitText } = require("%rGui/rewards/battleModComp.nut")
@@ -306,10 +306,10 @@ function mkRewardIcon(startDelay, imgPath, aspectRatio = 1.0, sizeMul = 1.0, shi
   }
 }
 
-function mkDynamicRewardIcon(startDelay, curId, aspectRatio = 1.0, sizeMul = 1.0, shiftX = 0.0, shiftY = 0.0) {
-  let imgW = round(rewIconSize * sizeMul).tointeger()
-  let imgH = round(imgW / aspectRatio).tointeger()
-  let cfg = Computed(@() getCurrencyGoodsPresentation(curId, eventSeason.get())?[0])
+function mkCommonCurrencyIcon(startDelay, curId, amount, scale = 1.0) {
+  let size = round(rewIconSize * scale).tointeger()
+  let fullId = mkCurrencyFullId(curId)
+  let cfg = Computed(@() getCurrencyGoodsPresentation(fullId.get(), amount))
   return @() {
     watch = cfg
     size = [rewIconSize, rewIconSize]
@@ -318,12 +318,11 @@ function mkDynamicRewardIcon(startDelay, curId, aspectRatio = 1.0, sizeMul = 1.0
     children = [
       mkHighlight(startDelay, aRewardIconFlareScale)
       {
-        size = [imgW, imgH]
-        pos = [shiftX * imgW, shiftY * imgH]
+        size = [size, size]
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#{cfg.get()?.img}:{imgW}:{imgH}:K:P")
+        image = Picture($"ui/gameuiskin#{cfg.get()?.img}:{size}:{size}:K:P")
         fallbackImage = cfg.get()?.fallbackImg
-            ? Picture($"ui/gameuiskin#{cfg.get()?.fallbackImg}:{imgW}:{imgH}:K:P")
+            ? Picture($"ui/gameuiskin#{cfg.get().fallbackImg}:{size}:{size}:K:P")
           : null
         keepAspect = true
         color = 0xFFFFFFFF
@@ -375,14 +374,13 @@ function mkDecoratorRewardIcon(startDelay, decoratorId) {
 }
 
 let mkCustomCurrencyIcon = {
-  gold = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.61, 1.8, 0.12, -0.05)
-  wp = @(id, startDelay) mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.61, 1.8, 0.12, -0.05)
-  warbond = @(id, startDelay) mkDynamicRewardIcon(startDelay, id, 1.0, 1.2)
-  eventKey = @(id, startDelay) mkDynamicRewardIcon(startDelay, id, 1.0, 1.0)
+  gold = @(delay, id, _) mkRewardIcon(delay, getCurrencyBigIcon(id), 1.61, 1.8, 0.12, -0.05) //todo: image by amount
+  wp = @(delay, id, _) mkRewardIcon(delay, getCurrencyBigIcon(id), 1.61, 1.8, 0.12, -0.05)
+  eventKey = @(delay, id, amount) mkCommonCurrencyIcon(delay, id, amount, 1.0)
 }
 
-let mkCurrencyIcon = @(startDelay, id) mkCustomCurrencyIcon?[id](id, startDelay)
-  ?? mkRewardIcon(startDelay, getCurrencyBigIcon(id), 1.0, 1.6)
+let mkCurrencyIcon = @(delay, id, amount) mkCustomCurrencyIcon?[id](delay, id, amount)
+  ?? mkCommonCurrencyIcon(delay, id, amount, 1.2)
 
 let getTextLabelAnim = @(startDelay) [
   { prop = AnimProp.opacity, from = 0, to = 0,
@@ -567,7 +565,7 @@ let mkLootboxIcon = @(startDelay, id) mkCustomCurrencyIcon?[id](id, startDelay) 
 
 let rewardCtors = {
   currency = {
-    mkIcon = @(rewardInfo) mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id)
+    mkIcon = @(rewardInfo) mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.count)
     mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
   }
   premium = {
@@ -576,7 +574,7 @@ let rewardCtors = {
       "".concat(rewardInfo.count, loc("measureUnits/days")))
   }
   item = {
-    mkIcon = @(rewardInfo) mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id)
+    mkIcon = @(rewardInfo) mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.count)
     mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
   }
   decorator = {

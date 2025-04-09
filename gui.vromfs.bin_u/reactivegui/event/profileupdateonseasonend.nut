@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { frnd } = require("dagor.random")
-let { specialEvents, eventEndsAt } = require("eventState.nut")
+let { allSpecialEvents, eventEndsAt } = require("eventState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { get_profile } = require("%appGlobals/pServer/pServerApi.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
@@ -23,7 +23,7 @@ function updateTime() {
   if (eventEndsAt.get() > sTime)
     time = min(time ?? eventEndsAt.get(), eventEndsAt.get())
 
-  foreach(evt in specialEvents.get())
+  foreach(evt in allSpecialEvents.get())
     if (evt.endsAt > sTime)
       time = min(time ?? evt.endsAt, evt.endsAt)
 
@@ -35,7 +35,7 @@ function updateTime() {
 }
 
 updateTime()
-foreach(w in [eventEndsAt, specialEvents, campConfigs, isInBattle])
+foreach(w in [eventEndsAt, allSpecialEvents, campConfigs, isInBattle])
   w.subscribe(@(_) updateTime())
 
 function onTimer() {

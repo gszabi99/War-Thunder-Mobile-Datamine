@@ -166,7 +166,7 @@ function mkSpecialQuestsTab(idx) {
     id
     tabContent = mkSpecialEventTabContent(idx)
     isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value?[id] ?? []), mkQuest, id, comp, width)
+    contentCtor = @() questsWndPage(Computed(@() questsCfg.value?[id] ?? []), mkQuest, id, comp, width)
     isVisible = Computed(@() questsCfg.value?[id].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
 }
@@ -178,7 +178,7 @@ let tabs = [
     image = iconSeason
     imageSizeMul = imageSizeMul
     isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value[COMMON_TAB]), mkQuest, COMMON_TAB, linkToBattlePassBtnCtor)
+    contentCtor = @() questsWndPage(Computed(@() questsCfg.value[COMMON_TAB]), mkQuest, COMMON_TAB, linkToBattlePassBtnCtor)
     isVisible = Computed(@() questsCfg.value[COMMON_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null
       && isBpSeasonActive.get())
   }
@@ -187,7 +187,7 @@ let tabs = [
     image = iconSeason
     imageSizeMul = imageSizeMul
     isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value[EVENT_TAB]), mkQuest, EVENT_TAB, linkToEventBtnCtor)
+    contentCtor = @() questsWndPage(Computed(@() questsCfg.value[EVENT_TAB]), mkQuest, EVENT_TAB, linkToEventBtnCtor)
     tabContent = eventTabContent()
     isVisible = Computed(@() isEventActive.value
       && questsCfg.value[EVENT_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
@@ -202,7 +202,7 @@ let tabs = [
     image = "ui/gameuiskin#prizes_icon.svg"
     imageSizeMul = 0.8
     isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value[ACHIEVEMENTS_TAB]), mkAchievement, ACHIEVEMENTS_TAB)
+    contentCtor = @() questsWndPage(Computed(@() questsCfg.value[ACHIEVEMENTS_TAB]), mkAchievement, ACHIEVEMENTS_TAB)
     isVisible = Computed(@() questsCfg.value[ACHIEVEMENTS_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
   {
@@ -211,7 +211,7 @@ let tabs = [
     image = "ui/gameuiskin#quest_promo_icon.svg"
     imageSizeMul = 0.9
     isFullWidth = true
-    content = questsWndPage(Computed(@() questsCfg.value[PROMO_TAB]), mkQuest, PROMO_TAB)
+    contentCtor = @() questsWndPage(Computed(@() questsCfg.value[PROMO_TAB]), mkQuest, PROMO_TAB)
     isVisible = Computed(@() questsCfg.value[PROMO_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
   }
 ]

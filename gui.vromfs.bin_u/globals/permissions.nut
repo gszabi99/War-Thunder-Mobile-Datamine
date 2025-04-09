@@ -1,11 +1,13 @@
-
 from "%globalScripts/logs.nut" import *
+let { get_cur_circuit_name } = require("app")
 let { Computed } = require("frp")
 let { DBGLEVEL } = require("dagor.system")
 let { trim } = require("%sqstd/string.nut")
 let { rights } = require("permissions/userRights.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
+
+let isCircuitDev = get_cur_circuit_name().contains("dev")
 
 let defaults = {
   can_debug_configs = DBGLEVEL > 0
@@ -34,7 +36,7 @@ let defaults = {
   allow_apk_update = false
   allow_background_resource_update = DBGLEVEL > 0
   allow_subscriptions = DBGLEVEL > 0
-  allow_dm_viewer = DBGLEVEL > 0
+  allow_dm_viewer = DBGLEVEL > 0 && isCircuitDev
   can_view_jip_setting = DBGLEVEL > 0
 }
 

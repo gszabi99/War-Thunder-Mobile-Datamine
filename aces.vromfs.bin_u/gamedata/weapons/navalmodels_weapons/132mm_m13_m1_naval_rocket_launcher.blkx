@@ -1,15 +1,15 @@
 {
   "rocketGun": true,
   "preset_cost": 10,
-  "bullets": 1,
-  "shotFreq": 2.0,
+  "bullets": 4,
+  "shotFreq": 1.0,
   "sound_pathStudio": "naval/weapon/rockets",
   "sound": "rgb_60",
   "isBulletBelt": false,
   "helicopterGroup": 2,
   "reloadTime": 8.0,
   "allowHumanReload": true,
-  "mesh": "m_13uk_rocket",
+  "mesh": "rocket_m13",
   "tags": {
     "antiTankRocket": true,
     "antiShipRocket": true
@@ -37,7 +37,7 @@
     "caliber": 0.132,
     "mass": 42.36,
     "explosiveType": "tnt",
-    "explosiveMass": 4.9,
+    "explosiveMass": 36.0,
     "massEnd": 35.9,
     "maxDeltaAngle": 1.0,
     "dragCx": 0.018,

@@ -1,4 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
+let { mkCurrencyFullId, currencyToFullId, sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
+let { getCurrencyDescription } = require("%appGlobals/config/currencyPresentation.nut")
 let { eventCurrenciesGoods, closeBuyEventCurrenciesWnd, currencyId, parentEventId, parentEventLoc,
   buyCurrencyWndGamercardCurrencies
 } = require("%rGui/event/buyEventCurrenciesState.nut")
@@ -14,13 +16,11 @@ let { openEventQuestsWnd, getQuestCurrenciesInTab, questsCfg, questsBySection, p
   progressUnlockByTab } = require("%rGui/quests/questsState.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { eventSeason } = require("%rGui/event/eventState.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { sortByCurrencyId } = require("%appGlobals/currenciesState.nut")
-let { getCurrencyDescription } = require("%appGlobals/config/currencyPresentation.nut")
+
 
 let tasksBgGrad = mkColoredGradientY(0xFF09C6F9, 0xFF00808E, 12)
 let titleFontGrad = mkFontGradient(0xFFDADADA, 0xFF848484, 11, 6, 2)
@@ -43,10 +43,8 @@ let imgStyle = {
   margin = [hdpx(50), hdpx(25), 0, hdpx(25)]
 }
 
-function getImgByAmount(amount, curId, season) {
-  let imgCfg = getCurrencyGoodsPresentation(curId, season)
-  let idxByAmount = imgCfg.findindex(@(v) v.amountAtLeast > amount) ?? imgCfg.len()
-  let cfg = imgCfg?[max(0, idxByAmount - 1)]
+function getImgByAmount(curId, amount) {
+  let cfg = getCurrencyGoodsPresentation(curId, amount)
   return mkGoodsImg(cfg?.img, cfg?.fallbackImg, imgStyle)
 }
 
@@ -65,9 +63,8 @@ let questsLinkPlate = {
   children = txt({ text = utf8ToUpper(loc("mainmenu/btnQuests")) }.__update(fontSmall))
 }
 
-function mkQuestsLink(curId, eventId, season) {
-  let imgCfg = getCurrencyGoodsPresentation(curId, season)
-  let cfg = imgCfg?[imgCfg.len() - 1]
+function mkQuestsLink(curId, eventId) {
+  let cfg = getCurrencyGoodsPresentation(curId, 1000000)
   let bgParticles = mkBgParticles(goodsBgSize)
 
   return mkGoodsWrap(
@@ -80,7 +77,7 @@ function mkQuestsLink(curId, eventId, season) {
       mkSlotBgImg()
       bgParticles
       sf & S_HOVER ? bgHiglight : null
-      mkGoodsImg(cfg?.img, cfg?.fallbackImg, imgStyle)
+      mkGoodsImg(cfg.img, cfg?.fallbackImg, imgStyle)
     ],
     questsLinkPlate,
     { size = goodsSize, clickableInfo = loc("item/open") },
@@ -100,8 +97,9 @@ function mkGoods(goods, onClick, state, animParams) {
     : end > 0 && end < serverTime.get() ? loc("events/buyCurrency/noLongerAvailable")
     : null)
   let isAvailable = Computed(@() timeText.get() == null)
+  let fullId = mkCurrencyFullId(cId)
   return @() {
-    watch = [isAvailable, eventSeason]
+    watch = [isAvailable, fullId]
     children = [
       mkGoodsWrap(
         goods,
@@ -110,7 +108,7 @@ function mkGoods(goods, onClick, state, animParams) {
           mkSlotBgImg()
           bgParticles
           sf & S_HOVER ? bgHiglight : null
-          getImgByAmount(amount, cId, eventSeason.get())
+          getImgByAmount(fullId.get(), amount)
           mkCurrencyAmountTitle(amount, goods?.viewBaseValue ?? 0, titleFontGrad)
           mkGoodsLimitAndEndTime(goods)
         ].extend(mkGoodsCommonParts(goods, state)),
@@ -158,8 +156,8 @@ let mkCurrenciesList = @(cId, goodsList, showQuestsLink, needUseScroll, ovr = {}
   gap
   children = [
     @() {
-      watch = [showQuestsLink, eventSeason, parentEventId]
-      children = showQuestsLink.get() ? mkQuestsLink(cId, parentEventId.get(), eventSeason.get()) : null
+      watch = [showQuestsLink, parentEventId]
+      children = showQuestsLink.get() ? mkQuestsLink(cId, parentEventId.get()) : null
     }
   ].extend(mkGoodsListWithBaseValue(goodsList)
       .sort(sortByCurrencyAndAmount)
@@ -173,7 +171,7 @@ let mkCurrenciesList = @(cId, goodsList, showQuestsLink, needUseScroll, ovr = {}
 }.__update(ovr)
 
 function mkEventCurrenciesGoods() {
-  let cId = currencyId.get()
+  let cId = currencyToFullId.get()?[currencyId.get()] ?? currencyId.get()
   let showQuestsLink = Computed(@()
     getQuestCurrenciesInTab(parentEventId.get(), questsCfg.get(), questsBySection.get(),
       progressUnlockBySection.get(), progressUnlockByTab.get(), serverConfigs.get())
@@ -181,7 +179,7 @@ function mkEventCurrenciesGoods() {
   let needUseScroll = Computed(@() (eventCurrenciesGoods.get().len()) + (showQuestsLink.get() ? 1 : 0) > maxColumns)
 
   return {
-    watch = [eventCurrenciesGoods, currencyId, eventSeason, needUseScroll]
+    watch = [eventCurrenciesGoods, currencyId, currencyToFullId, needUseScroll]
     padding = [hdpx(45), 0, 0, 0]
     size = flex()
     halign = ALIGN_CENTER

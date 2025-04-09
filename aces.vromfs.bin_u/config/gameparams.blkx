@@ -6692,6 +6692,99 @@
         "destroyedFxTtl": 3.5,
         "ricochetedFxTtl": 4.5
       }
+    },
+    "128mmCannonball_orange": {
+      "halfSize": 3.0,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.0,
+      "radius": 0.23,
+      "hdrK": 10.0,
+      "minPixelSize": 5.0,
+      "color1": [
+        0,
+        36,
+        255,
+        250
+      ],
+      "color2": [
+        0,
+        27,
+        204,
+        240
+      ],
+      "fx": {
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.13,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.15,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
+      }
+    },
+    "128mmCannonball_red": {
+      "halfSize": 3.0,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.0,
+      "radius": 0.23,
+      "hdrK": 10.0,
+      "minPixelSize": 5.0,
+      "color1": [
+        15,
+        15,
+        255,
+        255
+      ],
+      "color2": [
+        0,
+        0,
+        230,
+        255
+      ],
+      "fx": {
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.13,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.15,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
+      }
+    },
+    "128mmCannonball_green": {
+      "halfSize": 3.0,
+      "distScaleStart": 100.0,
+      "distScaleEnd": 500.0,
+      "distScale": 1.0,
+      "radius": 0.23,
+      "hdrK": 10.0,
+      "minPixelSize": 5.0,
+      "color1": [
+        102,
+        255,
+        102,
+        220
+      ],
+      "color2": [
+        0,
+        255,
+        0,
+        220
+      ],
+      "fx": {
+        "destroyedFxType": "tracer_destr_med",
+        "destroyedFxChance": 0.13,
+        "ricochetedFxType": "tracer_ricocheted_med",
+        "ricochetedFxChance": 0.15,
+        "destroyedFxVelocity": 13.0,
+        "ricochetedFxVelocity": 30.0,
+        "destroyedFxTtl": 5.0,
+        "ricochetedFxTtl": 6.0
+      }
     }
   },
   "tracerTrails": {

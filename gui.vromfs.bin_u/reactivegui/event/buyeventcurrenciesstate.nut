@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { sortByCurrencyId } = require("%appGlobals/currenciesState.nut")
+let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { allShopGoods, finishedGoodsByTime } = require("%rGui/shop/shopState.nut")
-let { getEventPresentationId, getEventLoc, eventSeason, specialEvents, MAIN_EVENT_ID, isEventActive
+let { getEventPresentationId, getEventLoc, eventSeason, allSpecialEvents, MAIN_EVENT_ID, isEventActive
 } = require("%rGui/event/eventState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -45,7 +45,7 @@ let parentEventId = Computed(function() {
   let name = parentEventName.get()
   return name == null ? null
     : name == MAIN_EVENT_ID ? MAIN_EVENT_ID
-    : specialEvents.get().findindex(@(e) e.eventName == name)
+    : allSpecialEvents.get().findindex(@(e) e.eventName == name)
 })
 let isParentEventActive = Computed(@() parentEventId.get() == MAIN_EVENT_ID ? isEventActive.get()
   : parentEventId.get() != null)
@@ -80,9 +80,9 @@ let buyCurrencyWndGamercardCurrencies = Computed(function() {
 
 let bgImage = Computed(@()
   getEventPresentation(
-    getEventPresentationId(parentEventId.get(), eventSeason.get(), specialEvents.get()) ?? currencyId.get()
+    getEventPresentationId(parentEventId.get(), eventSeason.get(), allSpecialEvents.get()) ?? currencyId.get()
   ).bg)
-let parentEventLoc = Computed(@() getEventLoc(parentEventId.get(), eventSeason.get(), specialEvents.get()))
+let parentEventLoc = Computed(@() getEventLoc(parentEventId.get(), eventSeason.get(), allSpecialEvents.get()))
 
 function openBuyEventCurrenciesWnd(id) {
   if (isOfflineMenu)

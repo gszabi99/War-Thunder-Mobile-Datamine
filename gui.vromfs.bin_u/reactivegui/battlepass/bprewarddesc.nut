@@ -16,6 +16,7 @@ let { textButtonBattle } = require("%rGui/components/textButton.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 let { markTextColor } = require("%rGui/style/stdColors.nut")
+let { openLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
 
 
 let unitPlateWidth = hdpx(480)
@@ -142,6 +143,8 @@ let bpRewardDesc = @(reward) function() {
             size = flex()
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
+            behavior = Behaviors.Button
+            onClick = @() viewInfo.rType == "lootbox" ? openLootboxPreview(viewInfo.id) : null
             children = viewInfo == null ? null
               : (infoImageCtors?[viewInfo.rType] ?? defImageCtor)(viewInfo)
           }

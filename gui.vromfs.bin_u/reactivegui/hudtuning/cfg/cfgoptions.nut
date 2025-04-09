@@ -114,6 +114,16 @@ let gearDownOnStopButtonTouch = {
   valToString = @(v) loc(v ? "options/on_touch" : "options/on_hold")
 }
 
+let isBulletsRight = @(options, elemId) !!options?.bulletsRight[elemId]
+let optBulletsRight = {
+  locId = "options/bulletsAlign"
+  ctrlType = OCT_LIST
+  list = [false, true]
+  getValue = isBulletsRight
+  setValue = mkSetValue("bulletsRight")
+  valToString = @(v) loc(v ? "side/right" : "side/left")
+}
+
 let allElemOptionsList = [ optScale ]
 let hasAnyOfAllElemOptions = Watched(false)
 
@@ -140,4 +150,7 @@ return {
   allElemOptionsList
   hasAnyOfAllElemOptions
   optDoublePrimaryGuns
+
+  optBulletsRight
+  isBulletsRight
 }

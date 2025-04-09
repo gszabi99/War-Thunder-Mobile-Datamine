@@ -16,9 +16,8 @@ let progressBarFillNewColor = 0xFFBAEBD5
 let progressBarBorderColor = 0xFF606060
 
 function mkQuestTitle(quest) {
-  let isAchievement = quest.meta?.achievement ?? false
-  let locId = quest.meta?.lang_id ?? quest.name
-  let text = loc(isAchievement ? $"{locId}/desc" : locId)
+  let { achievement = false, tree_quest = false, lang_id = quest.name } = quest?.meta
+  let text = loc(achievement || tree_quest ? $"{lang_id}/desc" : lang_id)
   return {
     size = [flex(), SIZE_TO_CONTENT]
     rendObj = ROBJ_TEXT

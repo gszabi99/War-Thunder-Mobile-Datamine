@@ -1714,6 +1714,79 @@
           {
             "type": "targetType",
             "unitType": "ship"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_new_players_battle_single",
+              "ship_new_players_battle_coop",
+              "ship_event_in_random_battles_arcade"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "pirate_ship_anti_artillery",
+      "type": "streak",
+      "amount_warpoints": 250,
+      "isMultiStage": true,
+      "isAfterFlight": false,
+      "userstat_stat_id": "ship_anti_artillery",
+      "stage": [
+        {
+          "param": 5,
+          "amount_exp": 0,
+          "amount_warpoints": 250
+        },
+        {
+          "param": 10,
+          "amount_exp": 0,
+          "amount_warpoints": 250
+        },
+        {
+          "param": 15,
+          "amount_exp": 0,
+          "amount_warpoints": 250
+        },
+        {
+          "param": 20,
+          "amount_exp": 0,
+          "amount_warpoints": 250
+        },
+        {
+          "param": 25,
+          "amount_exp": 0,
+          "amount_warpoints": 250
+        }
+      ],
+      "mode": {
+        "type": "criticalHitByType",
+        "num": 25,
+        "critType": "gun",
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "ship"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
+          },
+          {
+            "type": "targetType",
+            "unitType": "ship"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": "event_1_april_pirates"
           }
         ]
       }
@@ -1769,6 +1842,77 @@
           {
             "type": "targetType",
             "unitType": "ship"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_new_players_battle_single",
+              "ship_new_players_battle_coop",
+              "ship_event_in_random_battles_arcade"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "pirate_ship_anti_steering",
+      "type": "streak",
+      "amount_warpoints": 250,
+      "isMultiStage": true,
+      "isAfterFlight": false,
+      "userstat_stat_id": "ship_anti_steering",
+      "wpA": [
+        250.0,
+        250.0,
+        250.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 250
+      },
+      "mode": {
+        "type": "criticalHitByType",
+        "num": 1005000,
+        "critType": "engine",
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "ship"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
+          },
+          {
+            "type": "targetType",
+            "unitType": "ship"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": "event_1_april_pirates"
           }
         ]
       }
@@ -1818,9 +1962,21 @@
         ],
         "critType": "explosion",
         "isShip": true,
-        "condition": {
-          "type": "online"
-        }
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_new_players_battle_single",
+              "ship_new_players_battle_coop",
+              "ship_event_in_random_battles_arcade"
+            ]
+          }
+        ]
       }
     },
     {
@@ -1941,6 +2097,47 @@
           {
             "type": "weaponType",
             "weapon": "generic"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_new_players_battle_single",
+              "ship_new_players_battle_coop",
+              "ship_event_in_random_battles_arcade"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "pirate_ship_artillery_master",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 300,
+      "isAfterFlight": false,
+      "userstat_stat_id": "ship_artillery_master",
+      "mode": {
+        "type": "damageUnits",
+        "maxVal": 150,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
+          },
+          {
+            "type": "offenderType",
+            "unitType": "ship"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": "event_1_april_pirates"
           }
         ]
       }

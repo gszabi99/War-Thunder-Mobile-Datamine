@@ -84,6 +84,7 @@ function mkContent() { //no point to create it n scripts load
       flow = FLOW_VERTICAL
       gap = hdpx(30)
       behavior = Behaviors.Pannable
+      touchMarginPriority = TOUCH_BACKGROUND
       scrollHandler = ScrollHandler()
       children
     }

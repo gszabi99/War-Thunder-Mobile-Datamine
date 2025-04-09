@@ -1,0 +1,155 @@
+{
+  "bg": "ui/images/pirates/isl_3a_map_island_screen_gui.avif",
+  "bgElements": [],
+  "gridSize": 75,
+  "lines": [
+    {
+      "from": "event_april_2025_quest_island_3a_1_wins",
+      "midpoints": [
+        [535, 386]
+      ],
+      "to": "event_april_2025_quest_island_3a_2b_wins"
+    },
+    {
+      "from": "event_april_2025_quest_island_3a_2b_wins",
+      "midpoints": [
+        [373, 334]
+      ],
+      "to": "event_april_2025_quest_island_3a_3b_wins"
+    },
+    {
+      "from": "event_april_2025_quest_island_3a_3b_wins",
+      "midpoints": [],
+      "to": "event_april_2025_quest_island_3a_4b_wins"
+    },
+    {
+      "from": "event_april_2025_quest_island_3a_4b_wins",
+      "midpoints": [
+        [267, 174]
+      ],
+      "to": "event_april_2025_treasure_island_3a"
+    },
+    {
+      "from": "event_april_2025_quest_island_3a_1_wins",
+      "midpoints": [
+        [586, 371]
+      ],
+      "to": "event_april_2025_quest_island_3a_2a_battles"
+    },
+    {
+      "from": "event_april_2025_quest_island_3a_2a_battles",
+      "midpoints": [
+        [565, 238],
+        [545, 204]
+      ],
+      "to": "event_april_2025_quest_island_3a_3a_battles"
+    },
+    {
+      "from": "event_april_2025_quest_island_3a_3a_battles",
+      "midpoints": [
+        [498, 189]
+      ],
+      "to": "event_april_2025_quest_island_3a_4a_battles"
+    },
+    {
+      "from": "event_april_2025_quest_island_3a_4a_battles",
+      "midpoints": [
+        [396, 146]
+      ],
+      "to": "event_april_2025_quest_island_3a_5a_battles"
+    },
+    {
+      "from": "event_april_2025_quest_island_3a_5a_battles",
+      "to": "event_april_2025_treasure_island_3a"
+    },
+    {
+      "from": "event_april_2025_quest_island_3a_1_wins",
+      "midpoints": [
+        [477, 438]
+      ],
+      "to": "event_april_2025_quest_island_3a_2c_kills"
+    },
+    {
+      "from": "event_april_2025_quest_island_3a_2c_kills",
+      "midpoints": [
+        [327, 437]
+      ],
+      "to": "event_april_2025_quest_island_3a_3c_kills"
+    },
+    {
+      "from": "event_april_2025_quest_island_3a_3c_kills",
+      "midpoints": [
+        [193, 366],
+        [194, 340]
+      ],
+      "to": "event_april_2025_quest_island_3a_4c_kills"
+    },
+    {
+      "from": "event_april_2025_quest_island_3a_4c_kills",
+      "midpoints": [
+        [153, 253]
+      ],
+      "to": "event_april_2025_quest_island_3a_5c_kills"
+    },
+    {
+      "from": "event_april_2025_quest_island_3a_5c_kills",
+      "to": "event_april_2025_treasure_island_3a"
+    }
+  ],
+  "mapSize": [757, 530],
+  "pointSize": 50,
+  "points": {
+    "event_april_2025_quest_island_3a_1_wins": {
+      "pos": [582, 434],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_3a_2a_battles": {
+      "pos": [564, 295],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_3a_2b_wins": {
+      "pos": [440, 362],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_3a_2c_kills": {
+      "pos": [396, 429],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_3a_3a_battles": {
+      "pos": [560, 188],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_3a_3b_wins": {
+      "pos": [343, 284],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_3a_3c_kills": {
+      "pos": [214, 400],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_3a_4a_battles": {
+      "pos": [439, 170],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_3a_4b_wins": {
+      "pos": [298, 208],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_3a_4c_kills": {
+      "pos": [195, 286],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_3a_5a_battles": {
+      "pos": [350, 144],
+      "view": "mapMark"
+    },
+    "event_april_2025_quest_island_3a_5c_kills": {
+      "pos": [150, 201],
+      "view": "mapMark"
+    },
+    "event_april_2025_treasure_island_3a": {
+      "pos": [253, 141],
+      "view": "mapMarkFinal"
+    }
+  }
+}

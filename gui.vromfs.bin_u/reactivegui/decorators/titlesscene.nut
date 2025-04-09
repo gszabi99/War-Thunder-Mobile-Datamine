@@ -3,6 +3,7 @@ let { arrayByRows } = require("%sqstd/underscore.nut")
 let { ceil } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { myUserName } = require("%appGlobals/profileStates.nut")
+let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { chosenTitle, allTitles, chosenNickFrame, availTitles,
   unseenDecorators, markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
@@ -32,18 +33,17 @@ let columns = 2
 
 let bgColor = @(rowIdx) rowIdx % 2 == 0 ? 0x00000000 : 0x80323232
 
-let selectedTitle = Watched(chosenTitle.value?.name)
+let chosenTitleName = Computed(@() chosenTitle.get()?.name ?? "")
+let selectedTitleName = Watched(chosenTitleName.get())
 let visibleTitles = Computed(@() allTitles.value.filter(@(dec, id) !dec.isHidden || isShowAllDecorators.value || (id in availTitles.value)))
 let hasVisibleTitles = Computed(@() visibleTitles.value.len() > 0)
 
-function applySelectedTitle(){
-  if (selectedTitle.value == "") {
+function applySelectedTitle() {
+  let selTitle = selectedTitleName.get()
+  if (selTitle == "")
     unset_current_decorator("title")
-    return
-  }
-  if (selectedTitle.value not in availTitles.value)
-    return
-  set_current_decorator(selectedTitle.value)
+  else if (selTitle in availTitles.get())
+    set_current_decorator(selTitle)
 }
 
 let header = {
@@ -61,9 +61,8 @@ let header = {
 
 function titleRow(name, locName, rowIdx) {
   let stateFlags = Watched(0)
-  let isChoosen = Computed(@() chosenTitle.value?.name == name ||
-    (chosenTitle.value == null && name == ""))
-  let isSelected = Computed(@() selectedTitle.value == name)
+  let isChoosen = Computed(@() chosenTitleName.get() == name)
+  let isSelected = Computed(@() selectedTitleName.get() == name)
   let isUnseen = Computed(@() name in unseenDecorators.value)
   return {
     rendObj = ROBJ_SOLID
@@ -76,9 +75,9 @@ function titleRow(name, locName, rowIdx) {
     function onClick() {
       markDecoratorSeen(name)
       if (!isSelected.value)
-        selectedTitle(name)
+        selectedTitleName.set(name)
       else if (isSelected.value && !isChoosen.value
-          && decoratorInProgress.value != (name ?? "title"))
+          && decoratorInProgress.get() != (name != "" ? name : "title"))
         applySelectedTitle()
     }
     onHover = hoverHoldAction("markDecoratorSeen", name, markDecoratorSeen)
@@ -135,26 +134,27 @@ let emptyRow = @(rowIdx) {
 }
 
 let buySelectedDecorator = @()
-  purchaseDecorator(selectedTitle.get(), loc($"title/{selectedTitle.get()}"),
-    mkBqPurchaseInfo(PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, selectedTitle.get()))
+  purchaseDecorator(selectedTitleName.get(), loc($"title/{selectedTitleName.get()}"),
+    mkBqPurchaseInfo(PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, selectedTitleName.get()))
 
-function footer(){
-  let { price = null } = allTitles.get()?[selectedTitle.get()]
+function footer() {
+  let { price = null } = allTitles.get()?[selectedTitleName.get()]
+  let currencyFullId = currencyToFullId.get()?[price?.currencyId] ?? price?.currencyId
   return {
-    watch = [selectedTitle, chosenTitle, availTitles, allTitles]
+    watch = [selectedTitleName, chosenTitleName, availTitles, allTitles, currencyToFullId]
     size = [flex(), defButtonHeight]
     flow = FLOW_HORIZONTAL
     gap = hdpx(50)
-    children = selectedTitle.value == chosenTitle.value?.name
+    children = selectedTitleName.get() == chosenTitleName.get()
         ? null
-      : selectedTitle.value in availTitles.value || selectedTitle.value == ""
+      : selectedTitleName.get() in availTitles.get() || selectedTitleName.get() == ""
         ? textButtonPrimary(loc("mainmenu/btnEquip"), applySelectedTitle,
           { hotkeys = ["^J:X | Enter"] })
       : (price?.price ?? 0) > 0
         ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
-            mkCurrencyComp(price.price, price.currencyId),
+            mkCurrencyComp(price.price, currencyFullId),
             buySelectedDecorator, { hotkeys = ["^J:X | Enter"]  })
-      : mkDecoratorUnlockProgress(selectedTitle.get())
+      : mkDecoratorUnlockProgress(selectedTitleName.get())
   }
 }
 

@@ -70,7 +70,7 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
   function curOptionsContent() {
     let tab = tabs?[curTabIdx.value]
     let { isFullWidth = false } = tab
-    return tab?.content
+    return (tab?.content ?? tab?.contentCtor)
       ? {
           watch = curTabIdx
           size = [isFullWidth ? contentWidthFull : contentWidth, flex()]
@@ -79,7 +79,7 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
             key = tab
             size = flex()
             flow = FLOW_VERTICAL
-            children = tab?.content
+            children = tab?.content ?? tab?.contentCtor()
             animations = wndSwitchAnim
           }
         }

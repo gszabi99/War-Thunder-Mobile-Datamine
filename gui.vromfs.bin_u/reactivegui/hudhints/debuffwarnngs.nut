@@ -3,12 +3,17 @@ let { addEvent, removeEvent } = require("%rGui/hudHints/warningHintLogState.nut"
 let { hasDebuffFire, hasDebuffFlooding, hasDebuffGuns, hasDebuffEngines, hasDebuffMoveControl, hasDebuffTorpedoes
 } = require("%rGui/hud/shipState.nut")
 let tankState = require("%rGui/hud/tankState.nut")
-let { isUnitDelayed } = require("%rGui/hudState.nut")
+let { isUnitDelayed, hudUnitType } = require("%rGui/hudState.nut")
+let { SAILBOAT } = require("%appGlobals/unitConst.nut")
+
+let excludedForSailBoat = [
+  "hud_debuff_engine"
+]
 
 function subscribeDebuffWarning(watch, iconId, text) {
   let icon = $"ui/gameuiskin#{iconId}.svg"
   watch.subscribe(@(v) !v ? removeEvent({ id = iconId })
-    : isUnitDelayed.value ? null
+    : isUnitDelayed.value || ((hudUnitType.get() == SAILBOAT) && excludedForSailBoat.contains(iconId)) ? null
     : addEvent({
         id = iconId,
         hType = "warningWithIcon"

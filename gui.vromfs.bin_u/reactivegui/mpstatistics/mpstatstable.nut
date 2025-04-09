@@ -234,33 +234,36 @@ function mkPlayerRow(columnCfg, player, teamColor, idx) {
 
   let playerColor = player?.isInHeroSquad ? mySquadLightColor : teamColor
   return {
-    key = player?.userId
-    behavior = Behaviors.Button
-    onClick = function() {
-      if (selectedPlayerForInfo.value == player)
-        selectedPlayerForInfo(null)
-      else
-        selectedPlayerForInfo({player, campaign = curCampaign.get()})
-    }
-    sound = { click  = "click" }
     size = [ flex(), rowHeight ]
     rendObj = ROBJ_SOLID
     color = player == selectedPlayerForInfo.value ? 0xA0000000
       : (player?.isLocal ?? false) ? rowBgLocalPlayerColor
       : idx % 2 != 0 ? rowBgOddColor
       : rowBgEvenColor
-    flow = FLOW_HORIZONTAL
-    children = player == null ? null : columns.map(function(c) {
-      let { width, halign, valign = null, contentCtor = null, getText = null } = c
-      return {
-        size = [width, rowHeight]
-        halign = halign
-        valign = valign ?? ALIGN_BOTTOM
-        padding = [hdpx(5), 0]
-        children = contentCtor != null ? contentCtor(player, playerColor, halign)
-          : cellTextProps.__merge({ text = getText?(player) })
+    children = {
+      key = player?.userId
+      behavior = Behaviors.Button
+      onClick = function() {
+        if (selectedPlayerForInfo.value == player)
+          selectedPlayerForInfo(null)
+        else
+          selectedPlayerForInfo({player, campaign = curCampaign.get()})
       }
-    })
+      sound = { click = "click" }
+      size = [ flex(), rowHeight ]
+      flow = FLOW_HORIZONTAL
+      children = player == null ? null : columns.map(function(c) {
+        let { width, halign, valign = null, contentCtor = null, getText = null } = c
+        return {
+          size = [width, rowHeight]
+          halign = halign
+          valign = valign ?? ALIGN_BOTTOM
+          padding = [hdpx(5), 0]
+          children = contentCtor != null ? contentCtor(player, playerColor, halign)
+            : cellTextProps.__merge({ text = getText?(player) })
+        }
+      })
+    }
   }.__update(rowOvr)
 }
 

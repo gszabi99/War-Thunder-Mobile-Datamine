@@ -22,6 +22,7 @@ let helpTankCaptureZone = require("%rGui/loading/complexScreens/helpTankCaptureZ
 let helpTankParts = require("%rGui/loading/complexScreens/helpTankParts.nut")
 let helpAirAiming = require("%rGui/loading/complexScreens/helpAirAiming.nut")
 let helpEventChristmas = require("%rGui/loading/complexScreens/helpEventChristmas.nut")
+let helpEventPirates = require("%rGui/loading/complexScreens/helpEventPirates.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { curUnit, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
@@ -54,6 +55,8 @@ curQueue.subscribe(@(v) (v?.params.mode ?? "") == "" ? null : lastQueueMode.set(
 
 let campaignByMode = Computed(@() allGameModes.get().findvalue(@(gm) gm?.name == lastQueueMode.get())?.campaign)
 
+let eventsWithoutAimingHint = ["event_1_april_pirates"]
+let hasAimingHint = Computed(@() !eventsWithoutAimingHint.contains(lastQueueMode.get()))
 let airEventPrefixes = [ "air_event", "event_plane", "plane_" ]
 let missionCampaign = Computed(@() airEventPrefixes.findindex(@(v) lastQueueMode.get().startswith(v)) != null
   ? "air"
@@ -259,6 +262,7 @@ let mkBgImagesByCampaign = {
 
 let mkBgImageByGameMode = {
   tank_event_ny_ctf_mode = @() helpEventChristmas
+  event_1_april_pirates = @() helpEventPirates
 }
 
 let bgImage = @() {
@@ -269,9 +273,9 @@ let bgImage = @() {
 
 let key = {}
 let queueWindow = @() {
-  watch = [isInJoiningGame, isOnlyOverrideUnits]
+  watch = [isInJoiningGame, isOnlyOverrideUnits, hasAimingHint]
   key
-  onAttach = function() {
+  function onAttach() {
     sendNewbieBqEvent("openQueueWindow")
     addFpsLimit(key)
   }
@@ -283,14 +287,14 @@ let queueWindow = @() {
       size = saSize
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
-      children = isInJoiningGame.value
+      children = isInJoiningGame.get()
         ? [
-            aimingHint
+            hasAimingHint.get() ? aimingHint : null
             joiningHeader
             cancelJoiningButton
           ]
         : [
-            aimingHint
+            hasAimingHint.get() ? aimingHint : null
             playersCount
             waitingBlock
             cancelQueueButton(isOnlyOverrideUnits.get())

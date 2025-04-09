@@ -22,7 +22,7 @@ let mkLines = @(hints) {
 }
 
 function mkHintBlock(hint) {
-  let { lines = null, color = defLineColor, content = null, blockOvr = {} } = hint
+  let { lines = null, color = defLineColor, bgColor = blockBgColor, content = null, blockOvr = {} } = hint
   if (content == null)
     return null
   local pos = hint?.pos
@@ -37,7 +37,7 @@ function mkHintBlock(hint) {
       rendObj = ROBJ_BOX
       borderWidth
       borderColor = color
-      fillColor = blockBgColor
+      fillColor = bgColor
       padding = blockPadding
       children = content
     }.__update(blockOvr)

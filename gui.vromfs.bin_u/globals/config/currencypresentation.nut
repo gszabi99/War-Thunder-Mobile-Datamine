@@ -1,5 +1,7 @@
 let { max } = require("math")
 let { loc } = require("dagor.localize")
+let { memoize } = require("%sqstd/functools.nut")
+let { isStringInteger } = require("%sqstd/string.nut")
 
 let iconsScale = {
   ship_tool_kit = 1.6
@@ -20,8 +22,6 @@ let iconsScale = {
 }
 let maxIconsScale = iconsScale.reduce(@(a, b) max(a, b))
 
-let getIconSize = @(currencyId, size) (size * (iconsScale?[currencyId] ?? 1) + 0.5).tointeger()
-
 let icons = {
   // Currencies
   wp   = "ui/gameuiskin#currency_lions.svg"
@@ -35,6 +35,8 @@ let icons = {
   nybond = "ui/gameuiskin#warbond_christmas_icon.avif"
   lunarbond = "ui/gameuiskin#warbond_icon_lunar_ny.avif"
   aprilbond = "ui/gameuiskin#warbond_icon_april.avif"
+  aprilMapPiece = "ui/gameuiskin#warbond_icon_aprilmappiece.svg"
+  aprilDoublon = "ui/gameuiskin#warbond_icon_aprildoublon.svg"
   anniversarybond = "ui/gameuiskin#warbond_icon_anniversarybond.avif"
   halloweenbond = "ui/gameuiskin#warbond_icon_halloween_2024.avif"
   blackfridaybond = "ui/gameuiskin#warbond_icon_black_friday_2024.avif"
@@ -54,6 +56,8 @@ let bigIcons = {
   nybond = "ui/gameuiskin#warbond_goods_christmas_01.avif"
   lunarbond = "ui/gameuiskin#lunarbond_goods_01.avif"
   aprilbond = "ui/gameuiskin#warbond_april_01.avif"
+  aprilMapPiece = "ui/gameuiskin#aprilmappiece_goods_01.avif"
+  aprilDoublon = "ui/gameuiskin#aprildoublon_goods_01.avif"
   halloweenbond = "ui/gameuiskin#halloweenbond_goods_01.avif"
   blackfridaybond = "ui/gameuiskin#blackfridaybond_goods_01.avif"
 }
@@ -74,18 +78,39 @@ let currencyIconsColor = {
 let currencyEventDescriptions = {
   blackfridaybond = "events/buyCurrency/desc/blackfridaybond"
   lunarbond = "events/buyCurrency/desc/lunarbond"
+  aprilMapPiece = "events/buyCurrency/desc/aprilMapPiece"
+  aprilDoublon = "events/buyCurrency/desc/aprilDoublon"
 }
 
-let getCommonIcon = @(id) icons?[id] ?? placeholder
-let getCurrencyImage = @(id, season = 0) season <= 0 || id not in seasonIcons
-  ? getCommonIcon(id)
-  : seasonIcons?[id](season)
-let getCurrencyFallback = @(id, season = 0) season <= 0 || id not in seasonIcons
-  ? placeholder
-  : getCommonIcon(id)
-let getCurrencyBigIcon = @(id) id in bigIcons
-  ? bigIcons[id]
-  : getCommonIcon(id)
+let getBaseCurrency = memoize(function getBaseCurrencyImpl(fullId) {
+  let list = fullId.split("_")
+  if (list.len() < 2)
+    return fullId
+  return !isStringInteger(list.top()) ? fullId
+    : "-".join(list.slice(0, list.len() - 1))
+})
+
+let getSeasonStr = memoize(function getSeasonStrImpl(fullId) {
+  let list = fullId.split("_")
+  if (list.len() < 2)
+    return ""
+  return list.top()
+})
+
+let getIconSize = @(currencyId, size) (size * (iconsScale?[getBaseCurrency(currencyId)] ?? 1) + 0.5).tointeger()
+
+function getCurrencyImage(id) {
+  if (id in icons)
+    return icons[id]
+  let baseId = getBaseCurrency(id)
+  return baseId in seasonIcons ? seasonIcons[baseId](getSeasonStr(id))
+    : (icons?[baseId] ?? placeholder)
+}
+let getCurrencyFallback = @(id) icons?[getBaseCurrency(id)] ?? placeholder
+
+let getCurrencyBigIcon = @(id) id in bigIcons ? bigIcons[id]
+  : getBaseCurrency(id) in bigIcons ? bigIcons[getBaseCurrency(id)]
+  : getCurrencyImage(id)
 let getCurrencyDescription = @(id) loc(currencyEventDescriptions?[id] ?? "events/buyCurrency/desc")
 
 return {
@@ -96,4 +121,6 @@ return {
   getCurrencyBigIcon
   maxIconsScale
   getCurrencyDescription
+  getBaseCurrency
+  getSeasonStr
 }

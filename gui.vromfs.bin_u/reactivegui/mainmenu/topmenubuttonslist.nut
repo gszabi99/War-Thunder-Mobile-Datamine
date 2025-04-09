@@ -173,7 +173,7 @@ function getDevButtons() {
   if (can_debug_configs.value)
     res.append(DEBUG_CONFIGS, DEBUG_PROFILE, DEBUG_SHOP)
   if (can_use_debug_console.value)
-    res.append(DEBUG_COMMANDS, DEBUG_QCONSOLE)
+    res.append(DEBUG_QCONSOLE, DEBUG_COMMANDS)
   return res
 }
 

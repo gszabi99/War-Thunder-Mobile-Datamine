@@ -268,7 +268,9 @@ function setNextRepairImage() {
 }
 
 function mkRepairActionItem(buttonConfig, actionItem, scale) {
-  let { getShortcut, getImage, haptPatternId = -1, actionKey = "btn_repair", getAnimationKey = null } = buttonConfig
+  let { getShortcut, getImage, haptPatternId = -1, actionKey = "btn_repair", getAnimationKey = null,
+    relImageSize = 1.0
+  } = buttonConfig
   let { shortcutIdx = -1 } = actionItem
   let stateFlags = Watched(0)
   let isAvailable = actionItem != null && isAvailableActionItem(actionItem)
@@ -279,6 +281,7 @@ function mkRepairActionItem(buttonConfig, actionItem, scale) {
   let animationKey = getAnimationKey ? getAnimationKey(unitType.value) : null
   let hotkey = (unitType.value != TANK || isAvailable) ? shortcutId : null
   let btnSize = scaleEven(touchButtonSize, scale)
+  let imgSize = scaleEven(relImageSize * touchButtonSize, scale)
   let debuffSize = scaleEven(debuffImgSize, scale)
   let footerHeight = round(countHeightUnderActionItem * scale).tointeger()
   let borderW = round(borderWidth * scale).tointeger()
@@ -345,9 +348,9 @@ function mkRepairActionItem(buttonConfig, actionItem, scale) {
                     color = !isAvailable ? imageDisabledColor : imageColor
                   }
                 : {
-                    size = [btnSize, btnSize]
+                    size = [imgSize, imgSize]
                     rendObj = ROBJ_IMAGE
-                    image = svgNullable(getImage(unitType.value), btnSize)
+                    image = svgNullable(getImage(unitType.value), imgSize)
                     keepAspect = KEEP_ASPECT_FIT
                     color = !isAvailable ? imageDisabledColor : imageColor
                   }
@@ -477,7 +480,7 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
     onStopTouch()
     if(isBulletBelt)
       return
-    if (needCheckRocket) {
+    if (needCheckRocket && !actionItem?.isAlternativeImage) {
       if (!isAsmCaptureAllowed.value) {
         addCommonHint(loc("hints/submarine_deeper_periscope"))
         return

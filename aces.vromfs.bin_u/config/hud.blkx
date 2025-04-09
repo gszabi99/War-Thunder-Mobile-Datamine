@@ -79,6 +79,7 @@
   ],
   "aircraftShowMachAboveValue": 0.75,
   "useSmoothScaleForUHD": true,
+  "showShipWinchIcon": false,
   "isCompassVisible": false,
   "isShipSpeedUnboosted": true,
   "distanceViewMultiplier": 2.0,
@@ -486,7 +487,7 @@
     "helicopter": "objective_helicopter.svg:36:36:K",
     "helicopter_outline": "objective_helicopter_outline.svg:36:36:K",
     "april_event_unit": "icon_hud_base_new_year.svg:48:48:K",
-    "exoskeleton": "icon_hud_gift.svg:48:48:K",
+    "exoskeleton": "objective_galleon.svg:48:48:K",
     "truck": "objective_truck",
     "mark": "objective_mark.svg:21:21:K",
     "sunk_carrier": "objective_sunk_carrier",
@@ -3207,6 +3208,23 @@
     "bombsight": "bomb_sight_ocular_alpha",
     "line": "thin_line"
   },
+  "cannonsight": {
+    "line": "thin_line",
+    "showAngle": 10.0,
+    "color": [
+      240,
+      240,
+      240,
+      180
+    ],
+    "width": 10.0,
+    "offset": [
+      5.0,
+      1.0,
+      0.0
+    ],
+    "length": 300.0
+  },
   "avia_hor": {
     "targetOffset": [
       1000.0,
@@ -4424,10 +4442,12 @@
       "mask": "bomb_sight_ocular_alpha",
       "glass": "white@@vs",
       "orient": "lookDirection",
+      "coordsMode": "2d",
       "size": [
-        0.22,
-        0.22
-      ]
+        1.2,
+        1.2
+      ],
+      "useSizeByHeight": true
     },
     "driver_optics": {
       "mask": "driver_mask",
@@ -4787,6 +4807,8 @@
     "ricochetIcon": "dmg_ricochet.svg:34:34:K",
     "nopenetrationIcon": "dmg_not_penetrated.svg:34:34:K",
     "pointerFontName": "small_accented_text",
+    "sailWeaponIcon": "hud_debuff_sail_weapon.svg:34:34:K",
+    "sailControlIcon": "hud_debuff_sail_control.svg:34:34:K",
     "textOffset": [
       0.0,
       30.0

@@ -6824,6 +6824,16 @@
     "football_kick": {
       "modelName": "tank_bullet_apdc",
       "gbufferModelName": "tank_shell_apds"
+    },
+    "barshot_ship": {
+      "modelName": "tank_bullet_barshot",
+      "gbufferModelName": "tank_shell_barshot",
+      "afterHitModelName": "tank_shell_barshot_destr"
+    },
+    "roundshot": {
+      "modelName": "tank_bullet_roundshot",
+      "gbufferModelName": "tank_shell_roundshot",
+      "afterHitModelName": "tank_shell_roundshot_destr"
     }
   },
   "explosiveMassToSplashDamageForBombingZone": {

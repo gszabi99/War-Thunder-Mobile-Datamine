@@ -350,6 +350,7 @@ function mkUnitsTreeContent() {
             {},
             {
               behavior = [Behaviors.Pannable, Behaviors.ScrollEvent],
+              touchMarginPriority = TOUCH_BACKGROUND
               scrollHandler
               xmbNode = XmbContainer()
             })

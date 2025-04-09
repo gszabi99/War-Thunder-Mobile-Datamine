@@ -4,7 +4,7 @@ let { eventWndOpenCounter, closeEventWnd, curEventEndsAt,
   unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
   bestCampLevel, curEventLootboxes, curEventLoc,
   curEvent, MAIN_EVENT_ID, curEventSeason, isCurEventActive,
-  curEventBg, curEventName
+  curEventBg, curEventName, specialEventsWithTree
 } = require("eventState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkTimeUntil } = require("%rGui/quests/questsPkg.nut")
@@ -44,6 +44,7 @@ let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardPlateComp.nut")
 let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
 let { customEventLootboxScale } = require("%appGlobals/config/lootboxPresentation.nut")
 let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
+let gmEventPresentation = require("%appGlobals/config/gmEventPresentation.nut")
 let { itemsCfgByCampaignOrdered, orderByItems, SPARE } = require("%appGlobals/itemsState.nut")
 let { specialEventGamercardItems } = require("%rGui/event/eventState.nut")
 let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
@@ -231,7 +232,7 @@ let consumablesPlate = @(battleCampaign, itemsByGameMode) @(){
         }, CS_GAMERCARD)))
 }
 
-let toBattleHint = @(battleCampaign, itemsByGameMode) battleCampaign == null ? null : {
+let toBattleHint = @(battleCampaign, itemsByGameMode, eventName) battleCampaign == null ? null : {
   hplace = ALIGN_RIGHT
   pos = [saBorders[0] * 0.5, 0]
   flow = FLOW_VERTICAL
@@ -249,7 +250,7 @@ let toBattleHint = @(battleCampaign, itemsByGameMode) battleCampaign == null ? n
       behavior = Behaviors.TextArea
       text = loc("events/toBattle")
     }.__update(fontTinyAccented)
-    consumablesPlate(battleCampaign, itemsByGameMode)
+    gmEventPresentation(eventName).hasConsumablePlate ? consumablesPlate(battleCampaign, itemsByGameMode) : null
   ]
 }
 
@@ -399,12 +400,14 @@ function eventWndContent() {
                   vplace = ALIGN_BOTTOM
                   children = [
                     // Left
-                    {
+                    @() {
+                      watch = [specialEventsWithTree, curEventName]
                       vplace = ALIGN_BOTTOM
                       flow = FLOW_HORIZONTAL
                       gap = buttonsHGap
                       children = [
-                        questsBtn
+                        curEventName.get() in specialEventsWithTree.get() ? null
+                          : questsBtn
                         @() {
                           watch = [has_leaderboard, curEvent]
                           size = [SIZE_TO_CONTENT, defButtonHeight]
@@ -430,7 +433,7 @@ function eventWndContent() {
                       flow = FLOW_VERTICAL
                       gap = hdpx(10)
                       children = [
-                        toBattleHint(battleCampaign.get(), itemsByGameMode.get())
+                        toBattleHint(battleCampaign.get(), itemsByGameMode.get(), curEventName.get())
                         mkToBattleButton(modeId.get(), curEventName.get())
                       ]
                     }

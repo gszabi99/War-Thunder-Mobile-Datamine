@@ -6,7 +6,7 @@ let { setSelectedUnitInfo, getAvailableRespawnBases, getFullRespawnBasesList,
   getWasReadySlotsMask, getSpareSlotsMask, getDisabledSlotsMask, selectRespawnBase
 } = require("guiRespawn")
 let { onSpectatorMode } = require("guiSpectator")
-let { is_bit_set, ceil } = require("%sqstd/math.nut")
+let { is_bit_set } = require("%sqstd/math.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft, respawnUnitItems,
   hasRespawnSeparateSlots, curUnitsAvgCostWp, respawnUnitSkins
@@ -15,6 +15,7 @@ let { getUnitTags, getUnitType, getUnitTagsCfg } = require("%appGlobals/unitTags
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
+let { getDefaultBulletsForSpawn } = require("%rGui/weaponry/bulletsCalc.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { SPARE } = require("%appGlobals/itemsState.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
@@ -205,28 +206,8 @@ isInBattle.subscribe( function (v) {
     playerSelectedSlotIdx.set(-1)
   }
 })
+
 let emptyBullets = { bullets0 = "", bulletCount0 = 10000 }
-let MAX_SLOTS = 6
-function getDefaultBulletDataToSpawn(unitName, level, weaponName) {
-  let choice = loadUnitBulletsChoice(unitName)
-  let primary = choice?[weaponName].primary ?? choice?.commonWeapons.primary
-  if (primary == null)
-    return []
-  let { fromUnitTags, bulletsOrder, total, catridge, guns } = primary
-  let allowed = []
-  foreach (bullet in bulletsOrder)
-    if ((fromUnitTags?[bullet].reqLevel ?? 0) <= level)
-      allowed.append(bullet)
-  if (allowed.len() > MAX_SLOTS)
-    allowed.resize(MAX_SLOTS)
-  let stepSize = guns
-  local leftSteps = ceil(total.tofloat() / stepSize / catridge) //need send catriges count for spawn instead of bullets count
-  return allowed.map(function(name, idx) {
-    let steps = ceil(leftSteps / (allowed.len() - idx)).tointeger()
-    leftSteps -= steps
-    return { name, count = steps * stepSize }
-  })
-}
 
 function chooseAutoSkin(unitName, skins, defSkin) {
   if ((skins?.len() ?? 0) == 0)
@@ -289,9 +270,9 @@ function tryAutospawn() {
     return
   }
 
-  let { name, weapon } = slot
+  let { name, mods } = slot
   let { level = 0 } = respawnUnitInfo.value
-  respawn(slot, getDefaultBulletDataToSpawn(name, level, weapon))
+  respawn(slot, getDefaultBulletsForSpawn(name, level, mods))
 }
 
 function updateAutospawnTimer(v) {

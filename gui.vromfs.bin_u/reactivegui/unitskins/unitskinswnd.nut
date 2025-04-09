@@ -41,7 +41,7 @@ let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
 let { findLootboxWithReward } = require("%rGui/rewards/lootboxesRewards.nut")
 let { openEmbeddedLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
-let { openEventWnd, MAIN_EVENT_ID, getEventLoc, eventSeason, specialEvents } = require("%rGui/event/eventState.nut")
+let { openEventWnd, MAIN_EVENT_ID, getEventLoc, eventSeason, allSpecialEvents } = require("%rGui/event/eventState.nut")
 let { findUnlockWithReward } = require("%rGui/rewards/unlockRewards.nut")
 let { bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, openBattlePassWnd, battlePassGoods
 } = require("%rGui/battlePass/battlePassState.nut")
@@ -204,8 +204,8 @@ let receiveSkinInfo = @(unitName, skinName) function() {
       children = [
         @() mkInfoTextarea(
           loc("canReceive/inEvent",
-            { eventName = colorize(markTextColor, getEventLoc(event_id, eventSeason.get(), specialEvents.get())) }),
-          { watch = [ eventSeason, specialEvents ] })
+            { eventName = colorize(markTextColor, getEventLoc(event_id, eventSeason.get(), allSpecialEvents.get())) }),
+          { watch = [ eventSeason, allSpecialEvents ] })
         textButtonPrimary(
           utf8ToUpper(loc("msgbox/btn_browse")),
           @() openLootboxForEvent(lootbox),

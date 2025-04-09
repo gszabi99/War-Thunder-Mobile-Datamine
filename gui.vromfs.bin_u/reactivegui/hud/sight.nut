@@ -10,6 +10,7 @@ let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { crosshairColor, scopeSize } = require("%rGui/hud/commonSight.nut")
 let { targetSelectionProgress, asmCaptureProgress } = require("%rGui/hud/targetSelectionProgress.nut")
 let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
+let { isHrosshairVisibile } = require("shipState.nut")
 
 let crosshairColorFire = Color(70, 70, 70)
 let reloadColorPrimary = 0xCC23CACC
@@ -201,7 +202,8 @@ let shipSight = @() {
   children = [
     targetSelectionProgress
     asmCaptureProgress
-    isCurHoldWeaponInCancelZone.value ? cancelShootMark
+    !isHrosshairVisibile.value ? null
+      : isCurHoldWeaponInCancelZone.value ? cancelShootMark
       : !hasCrosshairForWeapon.value ? sightFrame
       : circleCrosshair
     ]

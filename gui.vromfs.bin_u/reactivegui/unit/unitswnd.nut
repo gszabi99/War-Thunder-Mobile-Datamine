@@ -24,10 +24,9 @@ let { curFilters } = require("%rGui/unit/unitsFilterState.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let mkUnitPkgDownloadInfo = require("mkUnitPkgDownloadInfo.nut")
 let { isPurchEffectVisible } = require("unitPurchaseEffectScene.nut")
-let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { justUnlockedUnits, justBoughtUnits, deleteJustBoughtUnit, UNLOCK_DELAY } = require("%rGui/unit/justUnlockedUnits.nut")
-let { scaleAnimation, revealAnimation, raisePlatesAnimation, RAISE_PLATE_TOTAL
+let { justUnlockedUnits, justBoughtUnits, deleteJustBoughtUnit } = require("%rGui/unit/justUnlockedUnits.nut")
+let { scaleAnimation, revealAnimation, raisePlatesAnimation
 } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -44,7 +43,7 @@ let { levelProgressBarHeight } = require("%rGui/components/levelBlockPkg.nut")
 let { unitDiscounts } = require("unitsDiscountState.nut")
 let { discountTagUnitBig } = require("%rGui/components/discountTag.nut")
 let { curSelectedUnit, availableUnitsList, sizePlatoon, curUnitName } = require("%rGui/unit/unitsWndState.nut")
-let { unitActions } = require("%rGui/unit/unitsWndActions.nut")
+let { unitActionsOneRow } = require("%rGui/unit/unitsWndActions.nut")
 let { isFiltersVisible, filterStateFlags, activeFilters, getFiltersText, openFilters, filters
 } = require("%rGui/unit/unitsFilterPkg.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -452,13 +451,13 @@ let mkGamercardUnitWnd = @(backCb = null) {
 }
 
 let unitButtons = @() {
-  watch = [isShowedUnitOwned, isFiltersVisible]
+  watch = [isShowedUnitOwned, isFiltersVisible, campMyUnits, curSelectedUnit]
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   children = [
     isShowedUnitOwned.get() && !isFiltersVisible.get() ? btnOpenUnitAttr : null
     { size = flex() }
-    unitActions
+    unitActionsOneRow
   ]
 }
 
@@ -478,35 +477,6 @@ let gamercardPlace = {
     }, mkUnitTitle )
     unitButtons
   ]
-}
-
-function platoonsHeader() {
-  let revealDelay = Computed(@() !justBoughtUnits.value ? null
-    : !justUnlockedUnits.value ? RAISE_PLATE_TOTAL + 1.0
-    : UNLOCK_DELAY + RAISE_PLATE_TOTAL + 1.0)
-
-  return curCampaign.value != "tanks" ? { watch = [curCampaign] } : {
-    watch = [curCampaign]
-    size = [hdpx(500), hdpx(80)]
-    hplace = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    rendObj = ROBJ_IMAGE
-    image = gradTranspDoubleSideX
-    color = 0xA0000000
-    margin = [0 , 0, hdpx(5), 0]
-    animations = revealAnimation(revealDelay.value)
-    children = [
-      {
-        text = loc("header/platoons")
-        rendObj = ROBJ_TEXT
-        color = 0xFFFFFFFF
-        fontFx = FFT_GLOW
-        fontFxFactor = max(64, hdpx(64))
-        fontFxColor = 0xFF000000
-      }.__update(fontMedium)
-    ]
-  }
 }
 
 let unitsWnd = {
@@ -549,12 +519,7 @@ let unitsWnd = {
         {
           vplace = ALIGN_BOTTOM
           hplace = ALIGN_CENTER
-          flow = FLOW_VERTICAL
-          gap = hdpx(20)
-          children = [
-            mkUnitPkgDownloadInfo(Computed(@() campUnitsCfg.get()?[curSelectedUnit.value]))
-            platoonsHeader
-          ]
+          children = mkUnitPkgDownloadInfo(Computed(@() campUnitsCfg.get()?[curSelectedUnit.value]))
         }
 
       ]

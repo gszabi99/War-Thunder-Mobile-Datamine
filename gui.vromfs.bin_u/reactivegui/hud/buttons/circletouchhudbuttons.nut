@@ -207,19 +207,19 @@ let mkBtnImage = @(size, image, color = 0xFFFFFFFF) {
   size = [size, size]
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
-  image = Picture($"{image}:{size}:{size}")
+  image = Picture($"{image}:{size}:{size}:P")
   keepAspect = KEEP_ASPECT_FIT
   color
 }
 
-let circleBtnEditViewCtor = @(size, imgSize) @(image) {
+let circleBtnEditViewCtor = @(size, imgSize) @(image, imgOvr = {}) {
   size = [size, size]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#hud_bg_round_border.svg:{size}:{size}:P")
   color = borderColor
   children = [
     mkBtnBg(size, btnBgColor.empty)
-    mkBtnImage(imgSize, image)
+    mkBtnImage(imgSize, image).__update(imgOvr)
   ]
 }
 
@@ -254,14 +254,14 @@ let mkCountTextRight = @(text, color, scale = 1) {
   text
 }.__update(getScaledFont(countTextFont, scale))
 
-let mkCountTextLeft = @(text, color, scale = 1) {
+let mkCountTextLeft = @(text, color, scale = 1, ovr = {}) {
   rendObj = ROBJ_TEXT
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_RIGHT
   pos = [pw(-80), ph(-90)]
   color
   text
-}.__update(getScaledFont(countTextFont, scale))
+}.__update(getScaledFont(countTextFont, scale), ovr)
 
 function mkCountTextLeftUpperlist(btnSize, scale, count) {
   let font = getScaledFont(countTextFont, scale)
@@ -915,7 +915,6 @@ return {
   mkCircleZoomCtor
   mkCircleLockBtn
   mkSimpleCircleTouchBtn
-  mkCountTextRight
   mkCircleTargetTrackingBtn
   mkCircleFireworkBtn
   mkCirclePlaneCourseGuns
@@ -932,9 +931,12 @@ return {
   mkBorderPlane
   mkBtnImage
   mkCountTextLeft
+  mkCountTextRight
   mkCircleProgressBgWeapon
   mkCircleGlare
   mkCircleBg
+  mkCircleProgressBg
+  mkBtnBorder
 
   circleBtnPlaneEditViewCtor
 

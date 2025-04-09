@@ -4,6 +4,7 @@ let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
+let { SAILBOAT } = require("%appGlobals/unitConst.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { eventLootboxesRaw, orderLootboxesBySlot } = require("eventLootboxes.nut")
@@ -55,30 +56,46 @@ let unseenLootboxesShowOnce = mkWatched(persist, "unseenLootboxesShowOnce", {})
 
 let bestCampLevel = Computed(@() servProfile.value?.levelInfo.reduce(@(res, li) max(res, li?.level ?? 0), 0) ?? 1)
 
-let specialEventsOrdered = Computed(function() {
-  let list = {}
-  foreach (unlock in activeUnlocks.value) {
-    let { event_id = null } = unlock?.meta
-    if (event_id == null || event_id == MAIN_EVENT_ID || event_id in list)
+let eventsLists = Computed(function() {
+  let events = {}
+  let eventsWithTree = {}
+  foreach (unlock in activeUnlocks.get()) {
+    let { event_id = null, tree_travel = false, tree_gift = false, tree_quest = false, quest_cluster = false } = unlock?.meta
+    let isTreeEvent = tree_travel || tree_gift || tree_quest || quest_cluster
+    if (event_id == null || event_id == MAIN_EVENT_ID || event_id in events || event_id in eventsWithTree)
       continue
     let tableId = unlock.table
-    if (!unlockTables.get()?[tableId])
+    if (!isTreeEvent && !unlockTables.get()?[tableId])
       continue
     let endsAt = userstatStats.get()?.stats[tableId]["$endsAt"] ?? 0
     let season = userstatStats.get()?.stats[tableId]["$index"] ?? 1
-    list[event_id] <- {
+
+    let eventData = {
       eventName = event_id
       endsAt
       season
     }
+    if (isTreeEvent)
+      eventsWithTree[event_id] <- eventData
+    else
+      events[event_id] <- eventData
   }
 
-  let res = list.values().sort(@(a, b) a.endsAt <=> b.endsAt)
-  res.each(@(v, idx) v.__update({ idx, eventId = getSpecialEventName(idx + 1) }))
-  return res
+  return { events, eventsWithTree }
 })
 
+let events = Computed(@() eventsLists.get().events)
+
+function orderEvents(data) {
+  let res = data.values().sort(@(a, b) a.endsAt <=> b.endsAt)
+  res.each(@(v, idx) v.__update({ idx, eventId = getSpecialEventName(idx + 1) }))
+  return res
+}
+
+let specialEventsOrdered = Computed(@() orderEvents(events.get()))
 let specialEvents = Computed(@() specialEventsOrdered.get().reduce(@(res, v) res.$rawset(v.eventId, v), {}))
+let specialEventsWithTree = Computed(@() eventsLists.get().eventsWithTree)
+let allSpecialEvents = Computed(@() {}.__merge(specialEvents.get(), specialEventsWithTree.get()))
 
 let specialEventsLootboxesState = Computed(function() {
   let lootboxesEventIds = {}
@@ -100,7 +117,7 @@ let specialEventsLootboxesState = Computed(function() {
 })
 
 let getEventPresentationId = @(eventId, eSeason, sEvents) eventId == MAIN_EVENT_ID ? eSeason : sEvents?[eventId].eventName
-let curEventBg = Computed(@() getEventPresentation(getEventPresentationId(curEvent.get(), eventSeason.get(), specialEvents.get())).bg)
+let curEventBg = Computed(@() getEventPresentation(getEventPresentationId(curEvent.get(), eventSeason.get(), allSpecialEvents.get())).bg)
 
 function getEventLoc(eventId, eSeason, sEvents) {
   local locId = eventId == MAIN_EVENT_ID
@@ -110,7 +127,7 @@ function getEventLoc(eventId, eSeason, sEvents) {
     locId = "events/name/default"
   return loc(locId)
 }
-let curEventLoc = Computed(@() getEventLoc(curEvent.get(), eventSeason.get(), specialEvents.get()))
+let curEventLoc = Computed(@() getEventLoc(curEvent.get(), eventSeason.get(), allSpecialEvents.get()))
 
 let curEventSeason = Computed(@() curEvent.value == MAIN_EVENT_ID
     ? (userstatStats.value?.stats.season["$index"] ?? 0)
@@ -120,9 +137,9 @@ let curEventEndsAt = Computed(@() curEvent.value == MAIN_EVENT_ID
     ? eventEndsAt.value
   : (specialEvents.value?[curEvent.value].endsAt ?? 0))
 
-let curEventName = Computed(@() curEvent.value == MAIN_EVENT_ID
-    ? curEvent.value
-  : specialEvents.value?[curEvent.value].eventName)
+let curEventName = Computed(@() curEvent.get() == MAIN_EVENT_ID
+    ? curEvent.get()
+  : specialEvents.get()?[curEvent.get()].eventName ?? curEvent.get())
 
 let isCurEventActive = Computed(@() curEvent.get() == MAIN_EVENT_ID ? isEventActive.get()
   : curEvent.get() in specialEvents.get())
@@ -269,6 +286,12 @@ let specialEventGamercardItems = Computed(function() {
       res.extend(items.map(@(itemId) { itemId, eventName }))
   return res
 })
+let unitTypesByEvent = Computed(function() {
+  let res = []
+  if (allSpecialEvents.get().findindex(@(e) e.eventName == "april_event_2025") != -1)
+    res.append(SAILBOAT)
+  return res
+})
 
 register_command(function() {
   seenLootboxes({})
@@ -301,6 +324,7 @@ return {
   eventSeasonIdx
   eventSeason
   isEventActive
+  unitTypesByEvent
 
   unseenLootboxes
   unseenLootboxesShowOnce
@@ -309,6 +333,8 @@ return {
 
   MAIN_EVENT_ID
   specialEvents
+  specialEventsWithTree
+  allSpecialEvents
   specialEventsOrdered
   specialEventsLootboxesState
   getSpecialEventName

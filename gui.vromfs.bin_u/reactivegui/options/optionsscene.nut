@@ -1,3 +1,5 @@
+from "%globalsDarg/darg_library.nut" import *
+let { get_game_version_str, get_base_game_version_str } = require("app")
 let { soundOptions } = require("options/soundOptions.nut")
 let { graphicOptions } = require("options/graphicOptions.nut")
 let { langOptions } = require("options/langOptions.nut")
@@ -64,4 +66,16 @@ let tabs = [ // id, locId, image, options, content
   }
 ]
 
-return mkOptionsScene("optionsScene", tabs)
+let header = {
+  size = flex()
+  halign = ALIGN_RIGHT
+  flow = FLOW_VERTICAL
+  children = [get_base_game_version_str(), get_game_version_str()]
+    .map(@(text) {
+      rendObj = ROBJ_TEXT
+      text
+      color = 0xFFC0C0C0
+    }.__update(fontVeryVeryTinyShaded))
+}
+
+return mkOptionsScene("optionsScene", tabs, null, null, header)

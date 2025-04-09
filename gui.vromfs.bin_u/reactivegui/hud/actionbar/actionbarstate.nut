@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { getActionBarItems } = require("hudActionBar")
-let { clearTimer, setInterval } = require("dagor.workcycle")
+let { clearTimer, setInterval, resetTimeout } = require("dagor.workcycle")
+let { get_mission_time } = require("mission")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { getActionType, AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON } = require("actionType.nut")
 
@@ -9,6 +10,7 @@ let actionBarUpdaters = Watched({})
 let needUpdate = keepref(Computed(@() actionBarUpdaters.value.len() > 0))
 
 let emptyActionItem = {count = 0, available = false, shortcutIdx = -1, weaponName = "", countEx = 0}
+let actionItemsInCd = Watched({})
 
 function actionIsEqual(a, b) {
   if (type(a) != type(b))
@@ -67,11 +69,32 @@ needUpdate.subscribe(function(v) {
   }
 })
 
+function updateActionsCd() {
+  let cdActions = {}
+  let t = get_mission_time()
+  local nextCd = null
+  foreach (aType, action in actionBarItems.get()) {
+    let { cooldownEndTime = 0 } = action
+    if (cooldownEndTime <= t)
+      continue
+    cdActions[aType] <- true
+    nextCd = min(cooldownEndTime, nextCd ?? cooldownEndTime)
+  }
+  if (!isEqual(actionItemsInCd.get(), cdActions))
+    actionItemsInCd.set(cdActions)
+  let timeLeft = (nextCd ?? 0) - t
+  if (timeLeft > 0)
+    resetTimeout(timeLeft, updateActionsCd)
+}
+actionItemsInCd.whiteListMutatorClosure(updateActionsCd)
+actionBarItems.subscribe(@(_) updateActionsCd())
+
 return {
   updateActionBarDelayed
   startActionBarUpdate
   stopActionBarUpdate
   actionBarItems
+  actionItemsInCd
   curActionBarTypes
   primaryAction
   secondaryAction

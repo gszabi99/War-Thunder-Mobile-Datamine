@@ -388,7 +388,7 @@ selectedPlayerForInfo.subscribe(function(v) {
     return
   }
 
-  let position = calcPosition(aabb, FLOW_VERTICAL, hdpx(20), ALIGN_CENTER, ALIGN_CENTER)
+  let position = calcPosition(aabb, FLOW_HORIZONTAL, hdpx(20), ALIGN_CENTER, ALIGN_CENTER)
   let selCampaign = v.campaign
   let globalStats = Computed(function() {
     let { allUnits = {} } = serverConfigs.get()

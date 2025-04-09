@@ -89,6 +89,9 @@ let skinsByTag = {
     "hu_camo_four_color"
     "hu_camo_green_brown_black"
     "jp_camo_post_biege_gray_green"
+    "se_camo_modern_m90"
+    "au_camo_green_sand"
+    "ussr_rbt_5"
   ],
 
   [DESERT] = [
@@ -289,6 +292,7 @@ let skinsByTag = {
     "it_camo_blackgreen_deforming"
     "camo_atlanticocean"
     "camo_destroyer_gearing_lny"
+    "ussr_1114_rct"
   ],
 
   [AIR] = [
@@ -349,6 +353,7 @@ let skinsByTag = {
     "usa_f4f_4_gray"
     "usa_f4u_1c"
     "usa_f4u_4b"
+    "usa_f4u_1a_decals"
     "usa_f_82e"
     "usa_f8f1b_bearcat"
     "usa_p_40c_metal"

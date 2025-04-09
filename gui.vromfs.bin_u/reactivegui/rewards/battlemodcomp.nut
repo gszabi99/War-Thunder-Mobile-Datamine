@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { specialEvents } = require("%rGui/event/eventState.nut")
+let { allSpecialEvents } = require("%rGui/event/eventState.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let {
   mkPlateText,
@@ -45,7 +45,7 @@ let mkBattleModCommonImage = @(battleMod, styles, slots = 1) {
 }
 
 function mkBattleModEventUnitText(battleMod, styles = REWARD_STYLE_TINY, slots = 1) {
-  let eventEndsAt = Computed(@() specialEvents.value.findvalue(@(event) event.eventName == battleMod.eventId)?.endsAt ?? -1)
+  let eventEndsAt = Computed(@() allSpecialEvents.value.findvalue(@(event) event.eventName == battleMod.eventId)?.endsAt ?? -1)
   let unit = battleMod.unitCtor()
 
   return @() {

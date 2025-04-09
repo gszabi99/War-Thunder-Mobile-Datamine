@@ -3,7 +3,7 @@ from "%appGlobals/unitConst.nut" import *
 let { TouchCameraControl } = require("wt.behaviors")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isInFlight } = require("%rGui/globalState.nut")
-let { unitType } = require("%rGui/hudState.nut")
+let { hudUnitType } = require("%rGui/hudState.nut")
 let shipHudTouch = require("%rGui/hud/shipHudTouch.nut")
 let tankHudTouch = require("%rGui/hud/tankHudTouch.nut")
 let { aircraftHud, aircraftHudElemsOverShade, aircraftOnTouchBegin, aircraftOnTouchEnd } = require("%rGui/hud/aircraftHudTouch.nut")
@@ -23,11 +23,13 @@ let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
 let battleResultsShort = require("%rGui/hud/battleResultsShort.ui.nut")
 let voiceMsgPie = require("%rGui/hud/voiceMsg/voiceMsgPie.nut")
 
+
 let hudByUnitType = {
   [AIR] = aircraftHud,
   [SHIP] = shipHudTouch,
   [SUBMARINE] = submarineHudTouch,
   [TANK] = tankHudTouch,
+  [SAILBOAT] = shipHudTouch,
 }
 
 let onTouchBeginByUnitType = {
@@ -72,25 +74,25 @@ let hudBase = {
   onDetach = @() isHudAttached(false)
   children = [
     @() {
-      watch = unitType
+      watch = hudUnitType
       size = flex()
       children = {
-        key = unitType.get()
+        key = hudUnitType.get()
         size = flex()
         behavior = TouchCameraControl
         touchMarginPriority = TOUCH_BACKGROUND
-        onTouchBegin = onTouchBeginByUnitType?[unitType.get()]
-        onTouchEnd = onTouchEndByUnitType?[unitType.get()]
+        onTouchBegin = onTouchBeginByUnitType?[hudUnitType.get()]
+        onTouchEnd = onTouchEndByUnitType?[hudUnitType.get()]
       }
     }
     @() {
-      watch = [isInFlight, viewHudType, unitType]
+      watch = [isInFlight, viewHudType, hudUnitType]
       size = flex()
       children = !isInFlight.value ? null
         : {
             key = viewHudType.value
             size = flex()
-            children = hudByType?[viewHudType.value](unitType.value)
+            children = hudByType?[viewHudType.value](hudUnitType.value)
             animations = wndSwitchAnim
           }
     }

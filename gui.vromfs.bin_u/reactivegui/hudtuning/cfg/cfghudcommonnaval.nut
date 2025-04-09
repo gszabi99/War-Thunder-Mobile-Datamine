@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { NEED_SHOW_POSE_INDICATOR, mkMoveIndicator, moveIndicatorShipEditView
 } = require("%rGui/hud/components/moveIndicator.nut")
-let { mkDoll, dollEditView, mkShipDebuffs, shipDebuffsEditView, mkCrewHealth, crewHealthEditView
+let { mkDollCtor, mkDollEditView, mkShipDebuffs, shipDebuffsEditView, mkCrewHealthCtor, mkCrewHealthEditView,
+  defHealthSize
 } = require("%rGui/hud/shipStateModule.nut")
 let { mkTacticalMapForHud, tacticalMapEditView } = require("%rGui/hud/components/tacticalMap.nut")
 let { mkLBPos, mkLTPos, mkRTPos, mkCBPos, mkCTPos } = require("hudTuningPkg.nut")
@@ -50,9 +51,9 @@ return {
     : null
 
   doll = {
-    ctor = mkDoll
+    ctor = mkDollCtor(defHealthSize)
     defTransform = mkLBPos([dollPosX, hdpx(-38)])
-    editView = dollEditView
+    editView = mkDollEditView(defHealthSize)
     hideForDelayed = false
   }
 
@@ -64,9 +65,9 @@ return {
   }
 
   crewHealth = {
-    ctor = mkCrewHealth
+    ctor = mkCrewHealthCtor(defHealthSize)
     defTransform = mkLBPos([dollPosX + hdpx(130), hdpx(-115)])
-    editView = crewHealthEditView
+    editView = mkCrewHealthEditView(defHealthSize)
     hideForDelayed = false
   }
 

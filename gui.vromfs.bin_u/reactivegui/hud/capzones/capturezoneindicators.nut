@@ -10,7 +10,7 @@ function mkCapZoneIndicator(idx) {
   let zone = Computed(@() capZones.value?[idx])
   return function() {
     local res = { watch = zone }
-    if (zone.value == null)
+    if (zone.value == null || !zone.value.hasWorldMarkers)
       return res
     let { id, iconIdx, distance } = zone.value
     res.__update({
