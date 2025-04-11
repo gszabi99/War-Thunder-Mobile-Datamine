@@ -579,7 +579,7 @@
       }
     }
   ],
-  "ns45_air_target": {
+  "ns45_air_targets": {
     "bullet": {
       "mass": 1.065,
       "caliber": 0.045,
@@ -773,7 +773,7 @@
       }
     }
   },
-  "ns45_armor_target": {
+  "ns45_armor_targets": {
     "bullet": {
       "mass": 0.859,
       "caliber": 0.045,

@@ -6,6 +6,8 @@ let { btnBEscUp, EMPTY_ACTION, btnB } = require("%rGui/controlsMenu/gpActBtn.nut
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { textButtonBright, textButtonPrimary, textButtonCommon, textButtonMultiline, buttonsVGap, mergeStyles
@@ -34,6 +36,7 @@ let buttonsPadding = hdpx(40)
 let menuBtnWidth = flightMenuWidth - 2 * buttonsPadding
 let backButtonSize = [backButtonWidth / 2, backButtonWidth / 2]
 
+let deserterLockStart = Watched(0)
 let spawnInfo = Watched(null)
 let canDeserter = Computed(function() {
   let { isAlive = false, hasSpawns = false } = spawnInfo.get()
@@ -42,12 +45,22 @@ let canDeserter = Computed(function() {
     || (hasSpawns && (null != respawnSlots.get().findvalue(@(s) s.canSpawn && !s.isSpawnBySpare)))
 })
 register_es("on_change_lastBailoutTime", {
-    [["onInit", "onChange"]] = @(_, comp) comp.server_player__userId != myUserId.get() ? null
-      : isBailoutDeserter.set(comp.lastBailoutTime > 0.0)
-    onDestroy = @() isBailoutDeserter.set(false)
+    [["onInit", "onChange"]] = function(_, comp) {
+      if (comp.server_player__userId != myUserId.get())
+        return
+      deserterLockStart.set(comp.deserterLockStart)
+      isBailoutDeserter.set(comp.lastBailoutTime > 0.0)
+    }
+    function onDestroy() {
+      deserterLockStart.set(0)
+      isBailoutDeserter.set(false)
+    }
   },
   {
-    comps_track = [["lastBailoutTime", TYPE_FLOAT]],
+    comps_track = [
+      ["lastBailoutTime", TYPE_FLOAT],
+      ["deserterLockStart", TYPE_INT64]
+    ],
     comps_ro = [["server_player__userId", TYPE_UINT64]]
   })
 eventbus_subscribe("localPlayerSpawnInfo", @(s) spawnInfo(s))
@@ -68,7 +81,10 @@ let backBtn = backButton(battleResume,
   })
 
 let menuContent = @(isGivingUp, campaign) mkCustomMsgBoxWnd(loc("msgbox/leaveBattle/title"),
-  loc(isGivingUp ? "msgbox/leaveBattle/giveUp" : "msgbox/leaveBattle/toPort"),
+  !isGivingUp ? loc("msgbox/leaveBattle/toPort")
+    : (deserterLockStart.get() + (campConfigs.get()?.campaignCfg.deserterPenalty.timeLimit ?? 0)) > serverTime.get()
+      ? " ".concat(loc("msgbox/leaveBattle/giveUp"), loc("msgbox/leaveBattle/deserterPenalty"))
+    : loc("msgbox/leaveBattle/giveUp"),
   [
     isGivingUp ? textButtonCommon(utf8ToUpper(loc("btn/giveUp")), quitMission, { hotkeys = ["^J:LB"] })
       : textButtonBright(utf8ToUpper(loc(campaign == "ships" ? "return_to_port/short"

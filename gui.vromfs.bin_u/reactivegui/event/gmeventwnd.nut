@@ -26,6 +26,8 @@ let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
 let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
 let { sendAppsFlyerEvent } = require("%rGui/notifications/logEvents.nut")
+let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
+
 
 let headerGap = hdpx(30)
 
@@ -239,7 +241,10 @@ let footer = @() {
                   if (curGmList.get().len() == 0)
                     return
                   sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = openedGmEventId.get() })
-                  eventbus_send("queueToGameMode", { modeId = curGmList.get()[0].gameModeId })
+                  let modeId = curGmList.get()[0].gameModeId
+                  if (tryOpenQueuePenaltyWnd(curGmList.get()[0].campaign, { id = "queueToGameMode", modeId }))
+                    return
+                  eventbus_send("queueToGameMode", { modeId })
                 })
               ]
             : [

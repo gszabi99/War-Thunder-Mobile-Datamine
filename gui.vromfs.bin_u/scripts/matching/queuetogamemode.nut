@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { setTimeout } = require("dagor.workcycle")
+let { setTimeout, resetTimeout } = require("dagor.workcycle")
 let { get_addon_version } = require("contentUpdater")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -23,6 +23,7 @@ let { isOnline, isDisconnected, canBattleWithoutAddons } = require("%appGlobals/
 let { checkReconnect } = require("%scripts/matchingRooms/sessionReconnect.nut")
 let { activeBattleMods } = require("%appGlobals/pServer/battleMods.nut")
 let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 
 
 let startBattleDelayed = persist("startBattleDelayed", @() { modeId = null })
@@ -195,8 +196,13 @@ function queueToGameModeImpl(mode) {
     log("[ADDONS] Queue game mode while missing addons: ", addonsToDownload)
 
   let { campaign = null, only_override_units = false } = mode
-  if (campaign != null && campaign != curCampaign.value && !only_override_units)
+  if (campaign != null
+      && !only_override_units
+      && (campaign != curCampaign.get() && campaign != getCampaignPresentation(curCampaign.get()).campaign)) {
     setCampaign(campaign)
+    resetTimeout(0.1, @() eventbus_send("queueToGameMode", { modeId = mode.gameModeId }))
+    return
+  }
 
   //can check units here, but no unit rquirements in the current event yet.
   //so better to do it only when become need.

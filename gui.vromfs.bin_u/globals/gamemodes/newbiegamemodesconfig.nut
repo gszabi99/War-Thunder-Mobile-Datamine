@@ -1,3 +1,5 @@
+let { campaignPresentations } = require("%appGlobals/config/campaignPresentation.nut")
+
 let newbieGameModesConfig = {
   tanks = [
     {
@@ -48,6 +50,10 @@ let newbieGameModesConfig = {
     }
   ]
 }
+
+foreach (c, p in campaignPresentations)
+  if ((c not in newbieGameModesConfig) && (p.campaign in newbieGameModesConfig))
+    newbieGameModesConfig[c] <- newbieGameModesConfig[p.campaign]
 
 let newbieModes = {}
 foreach(c in newbieGameModesConfig)

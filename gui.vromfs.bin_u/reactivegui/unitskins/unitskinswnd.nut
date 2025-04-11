@@ -189,7 +189,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
     return res.__update({
       children = [
         @() mkInfoTextarea(loc("canReceive/inShopLootbox",
-          { name = colorize(markTextColor, getLootboxName(lootboxTbl.name, lootboxTbl?.meta.event)) }))
+          { name = colorize(markTextColor, getLootboxName(lootboxTbl.name)) }))
         textButtonPrimary(
           utf8ToUpper(loc("msgbox/btn_browse")),
           @() openGoodsPreview(goods.id),

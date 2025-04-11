@@ -102,7 +102,12 @@ let optFpsLimit = {
   }
 }
 
-let aaValToDescriptionMap = { low_fxaa = "fxaa", high_fxaa = "fxaa", mobile_taa = "taa", sgsr2 = "sgsr", metalfx_fxaa = "metalfx" }
+let aaValToDescriptionMap = {
+  low_fxaa = "fxaa", high_fxaa = "fxaa",
+  mobile_taa = "taa", mobile_taa_low = "taa",
+  sgsr2 = "sgsr",
+  metalfx_fxaa = "metalfx",
+}
 
 let optAntiAliasing = {
   locId = "options/aa_options"

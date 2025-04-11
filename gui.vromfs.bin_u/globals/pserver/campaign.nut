@@ -111,6 +111,7 @@ let campProfile = Computed(function(prev) {
   chooseListByCampaignTbl(res, prev, "levelInfo", campaign)
   chooseListByCampaignTbl(res, prev, "sharedStatsByCampaign", getCampaignStatsId(campaign))
   chooseListByCampaignTbl(res, prev, "unitTreeNodes", campaign)
+  chooseListByCampaignTbl(res, prev, "penalties", campaign)
   chooseOneByCampaignTbl(res, prev, "activeOffers", campaign)
   chooseOneByCampaignTbl(res, prev, "campaignSlots", campaign)
   return res

@@ -771,22 +771,22 @@
     "template": "ex_armor_l_#20#"
   },
   "ex_armor_body_NN": {
-    "template": "ex_armor_body_#25#"
+    "template": "ex_armor_body_#70#"
   },
   "ex_armor_body_r_NN": {
-    "template": "ex_armor_body_r_#25#"
+    "template": "ex_armor_body_r_#30#"
   },
   "ex_armor_body_l_NN": {
-    "template": "ex_armor_body_l_#25#"
+    "template": "ex_armor_body_l_#30#"
   },
   "ex_armor_turret_NN": {
     "template": "ex_armor_turret_#70#"
   },
   "ex_armor_turret_r_NN": {
-    "template": "ex_armor_turret_r_#15#"
+    "template": "ex_armor_turret_r_#30#"
   },
   "ex_armor_turret_l_NN": {
-    "template": "ex_armor_turret_l_#15#"
+    "template": "ex_armor_turret_l_#30#"
   },
   "ex_decor_turret_NN": {
     "template": "ex_decor_turret_#15#"
@@ -800,16 +800,19 @@
     "externalArmor": true
   },
   "ex_decor_r_NN": {
-    "template": "ex_decor_r_#25#",
+    "template": "ex_decor_r_#50#",
     "externalArmor": true
   },
   "ex_decor_l_NN": {
-    "template": "ex_decor_l_#25#",
+    "template": "ex_decor_l_#50#",
     "externalArmor": true
   },
   "ex_decor_NN": {
-    "template": "ex_decor_#20#",
+    "template": "ex_decor_#40#",
     "externalArmor": true
+  },
+  "spall_liner_NN": {
+    "template": "spall_liner_#80#"
   },
   "firewall_armor_NN": {
     "template": "firewall_armor_#80#"

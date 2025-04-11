@@ -4,7 +4,7 @@ let logFB = log_with_prefix("[TUTOR_UNITS_RESEARCH] ")
 let { register_command } = require("console")
 
 let { buy_unit, add_player_exp, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { isCampaignWithUnitsResearch, curCampaign, campProfile } = require("%appGlobals/pServer/campaign.nut")
+let { isCampaignWithUnitsResearch, isCampaignWithSlots, curCampaign, campProfile } = require("%appGlobals/pServer/campaign.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
@@ -132,7 +132,8 @@ function startTutorial() {
         }
         text = loc("tutorial_purchase_researched_unit")
         charId = "mary_points"
-        nextStepAfter = Computed(@() !isBuyUnitWndOpened.get() && selectedUnitToSlot.get() != null)
+        nextStepAfter = Computed(@() !isBuyUnitWndOpened.get()
+          && (selectedUnitToSlot.get() != null || !isCampaignWithSlots.get()))
         objects = [{
           keys = "purchase_tutor_btn"
           needArrow = true
@@ -149,6 +150,7 @@ function startTutorial() {
       }
       {
         id = "s4_units_wnd_animation"
+        isOnlyWithSlots = true
         nextStepAfter = slotBarSelectWndAttached
         function beforeStart() {
           canOpenSelectUnitWithModal.set(true)
@@ -160,6 +162,7 @@ function startTutorial() {
       }
       {
         id = "s5_set_purchased_unit_to_slot"
+        isOnlyWithSlots = true
         function beforeStart() {
           if(availableSlotsForSelection.len() == 0 || !slotBarSelectWndAttached.get())
             deferOnce(@() goToStep(STEP_SELECT_NEXT_RESEARCH_DESCRIPTION))
@@ -173,6 +176,7 @@ function startTutorial() {
         function beforeStart() {
           canOpenSelectUnitWithModal.set(false)
           curSelectedUnit.set(null)
+          closeMsgBox(PURCHASE_BOX_UID)
         }
         text = loc("tutorial_select_next_research_description")
         nextKeyDelay = -1
@@ -224,7 +228,7 @@ function startTutorial() {
         charId = "mary_like"
         text = loc("tutorial_finish_research_unit")
       }
-    ]
+    ].filter(@(v) !v?.isOnlyWithSlots || isCampaignWithSlots.get())
   })
 }
 

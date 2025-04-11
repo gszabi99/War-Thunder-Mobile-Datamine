@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { eventbus_send } = require("eventbus")
 let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.nut")
 let { eventWndOpenCounter, closeEventWnd, curEventEndsAt,
   unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
@@ -32,7 +33,6 @@ let { isEmbeddedLootboxPreviewOpen, openEmbeddedLootboxPreview, closeLootboxPrev
   getStepsToNextFixed
 } = require("%rGui/shop/lootboxPreviewState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { eventbus_send } = require("eventbus")
 let { buttonsHGap } = require("%rGui/components/textButton.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
@@ -54,6 +54,8 @@ let { gamercardGap, CS_GAMERCARD } = require("%rGui/components/currencyStyles.nu
 let { onCampaignChange } = require("%rGui/mainMenu/chooseCampaignWnd.nut")
 let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { needFirstBattleTutorForCampaign } = require("%rGui/tutorial/tutorialMissions.nut")
+let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
+
 
 let campToBack = mkWatched(persist, "campToBack", null)
 
@@ -254,8 +256,10 @@ let toBattleHint = @(battleCampaign, itemsByGameMode, eventName) battleCampaign 
   ]
 }
 
-let mkToBattleButton = @(modeId, modeName) mkToBattleButtonWithSquadManagement(function() {
+let mkToBattleButton = @(modeId, modeName, campaign) mkToBattleButtonWithSquadManagement(function() {
   sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = modeName })
+  if (tryOpenQueuePenaltyWnd(campaign, { id = "queueToGameMode", modeId }))
+    return
   eventbus_send("queueToGameMode", { modeId })
 })
 
@@ -434,7 +438,7 @@ function eventWndContent() {
                       gap = hdpx(10)
                       children = [
                         toBattleHint(battleCampaign.get(), itemsByGameMode.get(), curEventName.get())
-                        mkToBattleButton(modeId.get(), curEventName.get())
+                        mkToBattleButton(modeId.get(), curEventName.get(), battleCampaign.get())
                       ]
                     }
                   ]

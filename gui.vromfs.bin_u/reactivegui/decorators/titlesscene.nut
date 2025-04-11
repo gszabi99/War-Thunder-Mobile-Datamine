@@ -158,27 +158,36 @@ function footer() {
   }
 }
 
+let scrollHandler = ScrollHandler()
+let listKey = {}
+
 function titlesList() {
   local total = max(visibleTitles.value.len() + 1, columns * minRows)
   let rows = ceil(total.tofloat() / columns).tointeger()
   total = rows * columns
 
-  let titleComps = visibleTitles.value
+  let titles = visibleTitles.get()
     .keys()
     .map(@(name) { name, locName = loc($"title/{name}") })
     .sort(@(a,b) (b.name in availTitles.value) <=> (a.name in availTitles.value)
       || a.locName <=> b.locName)
     .insert(0, { name = "", locName = loc("title/empty") })
-    .map(@(v, idx) titleRow(v.name, v.locName, idx % rows))
+  let titleComps = titles.map(@(v, idx) titleRow(v.name, v.locName, idx % rows))
 
   for(local i = titleComps.len(); i < total; i++)
     titleComps.append(emptyRow(i % rows))
 
+  let chosenIdx = (titles.findindex(@(v) v.name == chosenTitleName.get()) ?? 0) % rows
+  let showRowsAbove = (minRows / 2) - 0.5
+  let onAttach = @() scrollHandler.scrollToY(rowHeight * (chosenIdx - showRowsAbove))
+
   return {
+    key = listKey
     watch = [availTitles, allTitles]
+    size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL
     gap
-    size = [flex(), SIZE_TO_CONTENT]
+    onAttach
     children = arrayByRows(titleComps, rows).map(@(children) {
       size = [flex(), SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
@@ -198,7 +207,7 @@ let titleContent = {
       text = loc("decorator/title/choose")
       padding = [hdpx(40), 0,hdpx(40),0]
     }.__update(fontMedium)
-    makeVertScroll(titlesList)
+    makeVertScroll(titlesList, { scrollHandler })
     footer
   ]
   animations = wndSwitchAnim
@@ -209,6 +218,7 @@ let titlesScene = @() {
   key = hasVisibleTitles
   size = flex()
   maxWidth = hdpx(1800)
+  onAttach = @() selectedTitleName.set(chosenTitleName.get())
   onDetach = @() markDecoratorsSeen(unseenDecorators.value.filter(@(_, id) id in availTitles.value).keys())
   children = hasVisibleTitles.value ? titleContent
     : {

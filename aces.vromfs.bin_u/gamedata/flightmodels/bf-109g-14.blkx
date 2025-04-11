@@ -1795,6 +1795,8 @@
     "HideNodes": {
       "node": [
         "pylon_bomb1",
+        "pylon_bomb2",
+        "pylon_bomb3",
         "pylon_cannon_l",
         "pylon_cannon_r",
         "pylon_cannon_r6_l",
@@ -1937,6 +1939,9 @@
           "iconType": "bomb_250kg",
           "name": "sc250",
           "reqModification": "Bf-109G-14_SC250",
+          "ShowNodes": {
+            "node": "pylon_bomb1"
+          },
           "Weapon": {
             "trigger": "bombs",
             "blk": "gameData/Weapons/BombGuns/de_sc250.blk",

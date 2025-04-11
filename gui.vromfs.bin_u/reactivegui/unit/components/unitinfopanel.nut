@@ -310,8 +310,11 @@ function unitArmorBlock(unit, needLabels) {
 }
 
 function unitPriceBlock(unit) {
-  if (unit?.campaign not in serverConfigs.get()?.unitTreeNodes
-      || unit.name in campMyUnits.get())
+  let { isUpgraded = false, isPremium = false, campaign = null, name = null } = unit
+  if (campaign not in serverConfigs.get()?.unitTreeNodes
+      || name in campMyUnits.get()
+      || isUpgraded
+      || isPremium)
     return null
   let price = Computed(@() getUnitAnyPrice(unit, false, unitDiscounts.get()))
   return @() price.get()?.price

@@ -11,6 +11,7 @@ let mkPresentation = @(cfg, campaign) {
   levelUnitModLocId = $"gamercard/levelUnitMod/desc/{campaign}"
   unitLevelMaxLocId = $"gamercard/levelCamp/maxLevel/{campaign}"
   debrUnitLevelDescLocId = $"gamercard/debriefing/desc/{campaign}"
+  playerLevelDescLocId = "hints/campaignLvlByResearchesInfo"
 }.__update(cfg)
 
 let ships = mkPresentation(
@@ -28,6 +29,7 @@ let presentations = {
   air = {
     icon = "ui/gameuiskin#unit_air.svg",
     unitsLocId = "options/chooseUnitsType/aircraft"
+    playerLevelDescLocId = "hints/aviationExlLvlInfo"
   }
 }
   .map(mkPresentation)

@@ -48,11 +48,11 @@ function buyPlatformGoodsExt(goodsOrId) {
       buttons = is_ios ? [
           { id = "cancel", isCancel = true }
           { id = "purchaseAsGuest", eventId = "buyPlatformGoods", styleId = "PURCHASE" context = { goodsOrId } }
-          { id = "linkEmail", eventId = "linkEmailWithLogout", styleId = "PRIMARY", isDefault = true }
+          { id = "linkEmail", eventId = "openGuestEmailRegistration", styleId = "PRIMARY", isDefault = true }
         ]
         : [
           { id = "cancel", isCancel = true }
-          { id = "linkEmail", eventId = "linkEmailWithLogout", styleId = "PRIMARY", isDefault = true }
+          { id = "linkEmail", eventId = "openGuestEmailRegistration", styleId = "PRIMARY", isDefault = true }
         ]
     })
     return

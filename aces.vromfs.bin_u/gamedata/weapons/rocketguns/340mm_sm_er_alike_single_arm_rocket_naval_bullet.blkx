@@ -1,0 +1,338 @@
+{
+  "rocketGun": true,
+  "preset_cost": 1,
+  "isBulletBelt": false,
+  "shotFreq": 0.1,
+  "helicopterGroup": 2,
+  "allowHumanReload": true,
+  "fxType": "",
+  "mesh": "rocket_rim24_tartar",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
+  "rocket": {
+    "bulletName": "rim67",
+    "sound_pathStudio": "naval/weapon/rockets",
+    "sound": "rgb_60",
+    "mass": [
+      735.0,
+      735.0
+    ],
+    "normalizationPreset": "heat",
+    "ricochetPreset": "atgm",
+    "groundRicochetPreset": "he",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "rocket_tank",
+    "slopeEffectPreset": "ap",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "explodeOnRendinst": true,
+    "useEffectiveArmorThicknessForShatter": true,
+    "shellAnimation": "video/shells_animations/rocket_he.ivf",
+    "statType": "hydra",
+    "caliber": 0.34,
+    "length": 4.6,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 1.5,
+    "wingAreaMult": 11.0,
+    "finsAoaHor": 0.15,
+    "finsAoaVer": 0.15,
+    "distFromCmToStab": 0.075,
+    "massEnd": 625.0,
+    "massEnd1": 475.0,
+    "timeFire": 2.0,
+    "timeFire1": 120.0,
+    "force": 120000.0,
+    "force1": 2900.0,
+    "timeLife": 75.0,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "machMax": 0.95,
+    "endSpeed": 420.0,
+    "maxDistance": 10000.0,
+    "minDistance": 2000.0,
+    "rangeMax": 10000.0,
+    "loadFactorMax": 2.5,
+    "guidanceType": "radar",
+    "guidanceSfx": "alarm_spin_scan",
+    "shellCollision": false,
+    "armDistance": 500.0,
+    "distanceFuse": false,
+    "explosiveType": "comp_b",
+    "explosiveMass": 150.0,
+    "maxDeltaAngle": 0.02,
+    "dragCx": 0.02,
+    "spawnExplosionWreckage": false,
+    "spawnExplosionFx": false,
+    "smokeEffect": "rocket_fire_light_huge",
+    "explosionEffect": "hit_291_390mm_metal_he",
+    "groundCollisionEffect": "hit_291_390mm_dirt_he",
+    "ricochetEffect": "hit_291_390mm_metal_he",
+    "waterFxScale": [
+      0.8,
+      1.0
+    ],
+    "explosionPatchRadius": 5.5,
+    "explodeTreshold": 0.5,
+    "fuseDelayDist": 10.0,
+    "price": 3000.0,
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "arcadeProp": {
+      "finsAoaHor": 0.18,
+      "finsAoaVer": 0.18
+    },
+    "guidance": {
+      "permanentlyActivated": true,
+      "inertialNavigation": true,
+      "warmUpTime": 1.0,
+      "workTime": 180.0,
+      "uncageBeforeLaunch": true,
+      "lockAfterLaunch": true,
+      "lockTimeOut": 1.0,
+      "breakLockMaxTime": 75.0,
+      "inertialGuidance": {
+        "inertialNavigationDriftSpeed": 0.0
+      },
+      "radarSeeker": {
+        "band": 9,
+        "active": true,
+        "groundVehiclesAsTarget": true,
+        "aircraftAsTarget": false,
+        "targetRadiusMin": 30.0,
+        "groundClutter": false,
+        "sideLobesAttenuation": -80.0,
+        "lockAngleMax": 45.0,
+        "angleMax": 45.0,
+        "rateMax": 60.0,
+        "prolongationTimeMax": 1.0,
+        "designationSourceTypeMask": 2,
+        "transmitter": {
+          "power": 2000.0,
+          "antenna": {
+            "angleHalfSens": 3.0,
+            "sideLobesSensitivity": -60.0
+          }
+        },
+        "receiver": {
+          "rcs": 2.0,
+          "range": 16000.0,
+          "rangeMax": 20000.0,
+          "antenna": {
+            "angleHalfSens": 3.5,
+            "sideLobesSensitivity": -60.0
+          }
+        },
+        "distance": {
+          "presents": true,
+          "minValue": 100.0,
+          "maxValue": 15000.0,
+          "width": 100.0,
+          "signalWidthMin": 30.0
+        },
+        "distGate": {
+          "filterAlpha": 0.8,
+          "filterBetta": 0.05,
+          "distGateSearchRange": 300.0
+        }
+      },
+      "guidanceAutopilot": {
+        "loftEnabled": true,
+        "loftElevation": 5.0,
+        "loftTargetElevation": -5.0,
+        "loftAngleToAccelMult": 2.0,
+        "loftTargetOmegaMax": 5.0,
+        "altitudeHoldEnabled": false,
+        "timeToHitToAltitude0": [
+          20.0,
+          2.5
+        ],
+        "timeToHitToAltitude1": [
+          30.0,
+          15.0
+        ],
+        "altitudeDiffToClimb": 0.1,
+        "altitudeRateRateToClimb": 0.08,
+        "climbDiffToAccelMult": 0.05,
+        "propNavMult": 5.0,
+        "reqAccelMax": 15.0,
+        "baseIndSpeed": 1800.0,
+        "accelControlProp": 0.0295,
+        "accelControlIntg": 0.0225,
+        "accelControlDiff": 0.0058,
+        "accelControlIntgLim": 1.0
+      }
+    },
+    "armorpower": {
+      "ArmorPower0m": [
+        500.0,
+        10.0
+      ],
+      "ArmorPower1000m": [
+        500.0,
+        1000.0
+      ],
+      "ArmorPower10000m": [
+        500.0,
+        10000.0
+      ]
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 35.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
+      }
+    },
+    "collisions": {
+      "default": {
+        "fx": "hit_291_390mm_dirt_he"
+      },
+      "horLandMesh": {
+        "fx": "hit_291_390mm_dirt_he"
+      },
+      "soil": {
+        "fx": "hit_291_390mm_dirt_he"
+      },
+      "dirt": {
+        "fx": "hit_291_390mm_dirt_he"
+      },
+      "road": {
+        "fx": "hit_291_390mm_dirt_he"
+      },
+      "roadSoil": {
+        "fx": "hit_291_390mm_dirt_he"
+      },
+      "bricks_red": {
+        "fx": "hit_291_390mm_stone_he"
+      },
+      "sand": {
+        "fx": "hit_291_390mm_sand_he"
+      },
+      "duneSand": {
+        "fx": "hit_291_390mm_sand_he"
+      },
+      "roadSand": {
+        "fx": "hit_291_390mm_sand_he"
+      },
+      "quickSand": {
+        "fx": "hit_291_390mm_sand_he"
+      },
+      "snow": {
+        "fx": "hit_291_390mm_snow_he"
+      },
+      "ice": {
+        "fx": "hit_291_390mm_snow_he"
+      },
+      "roadSnow": {
+        "fx": "hit_291_390mm_snow_he"
+      },
+      "snowLower": {
+        "fx": "hit_291_390mm_snow_he"
+      },
+      "glass": {
+        "fx": "hit_291_390mm_metal_he"
+      },
+      "wood": {
+        "fx": "hit_291_390mm_wood_he"
+      },
+      "steel": {
+        "fx": "hit_291_390mm_metal_he"
+      },
+      "metal": {
+        "fx": "hit_291_390mm_metal_he"
+      },
+      "buildings": {
+        "fx": "hit_291_390mm_stone_he"
+      },
+      "verLandMesh": {
+        "fx": "hit_291_390mm_stone_he"
+      },
+      "concrete": {
+        "fx": "hit_291_390mm_stone_he"
+      },
+      "rocks": {
+        "fx": "hit_291_390mm_stone_he"
+      },
+      "rocksSlippery": {
+        "fx": "hit_291_390mm_stone_he"
+      },
+      "fabric": {
+        "fx": "hit_291_390mm_stone_he"
+      },
+      "stone_snow": {
+        "fx": "hit_291_390mm_snow_he"
+      }
+    },
+    "damage": {
+      "kinetic": {
+        "damageType": "generic"
+      },
+      "shatter": {
+        "useRealShatters": true,
+        "countPortion": 0.0,
+        "segment": [
+          {
+            "radiusScale": 0.5,
+            "penetrationScale": 1.0,
+            "damageScale": 2.0,
+            "angles": [
+              0.0,
+              100.0
+            ],
+            "countPortion": 0.3
+          },
+          {
+            "radiusScale": 0.5,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              101.0,
+              259.0
+            ],
+            "countPortion": 0.4
+          },
+          {
+            "radiusScale": 0.5,
+            "penetrationScale": 1.0,
+            "damageScale": 2.0,
+            "angles": [
+              260.0,
+              359.0
+            ],
+            "countPortion": 0.3
+          }
+        ]
+      }
+    }
+  }
+}

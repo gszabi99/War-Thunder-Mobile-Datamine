@@ -4,6 +4,7 @@ let { resetTimeout } = require("dagor.workcycle")
 let { unitsResearchStatus, blueprintUnitsStatus, setUnitToScroll } = require("unitsTreeNodesState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { needSelectResearch } = require("selectResearchWnd.nut")
 let { isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -122,7 +123,12 @@ function mkAnimRequirements(unitId, allNodes, canAdd = @(_) true) {
 }
 
 let allNodes = Computed(@() serverConfigs.get()?.unitTreeNodes[curCampaign.get()])
-let animBuyRequirements = Computed(@() mkAnimRequirements(animBuyRequirementsUnitId.get(), allNodes.get()).res)
+let animBuyRequirementsInfo = Computed(function() {
+  let my = campMyUnits.get()
+  return mkAnimRequirements(animBuyRequirementsUnitId.get(), allNodes.get(), @(name) name not in my)
+})
+let animBuyRequirements = Computed(@() animBuyRequirementsInfo.get().res)
+
 let animResearchRequirementsInfo = Computed(function() {
   let status = unitsResearchStatus.get()
   return mkAnimRequirements(
@@ -156,6 +162,7 @@ return {
   animExpPart
   animBuyRequirementsUnitId
   animBuyRequirements
+  animBuyRequirementsInfo
   animResearchRequirementsUnitId
   animResearchRequirements
   animResearchRequirementsAncestors

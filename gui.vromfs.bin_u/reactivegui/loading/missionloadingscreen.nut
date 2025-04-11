@@ -9,6 +9,11 @@ let teamColors = require("%rGui/style/teamColors.nut")
 let mapSize = hdpxi(680)
 let borderSize = hdpxi(200)
 
+let mapBgByCamp = {
+  ships = "ui/images/loading/briefing_water_map.avif"
+  ships_new = "ui/images/loading/briefing_water_map.avif"
+}
+
 let textParams = {
   rendObj = ROBJ_TEXT
   fontFx = FFT_GLOW
@@ -92,12 +97,13 @@ return @() {
           children = [
             mkImage("ui/images/loading/map_back.avif", [mapSize, mapSize], {
                 children = [
-                  {
-                    size = flex()
-                    margin = [hdpx(20), hdpx(40), hdpx(20), hdpx(42)]
-                    rendObj = ROBJ_IMAGE
-                    image = curCampaign.value == "ships" ?  Picture("ui/images/loading/briefing_water_map.avif") : null
-                  }
+                  curCampaign.get() not in mapBgByCamp ? null
+                    : {
+                        size = flex()
+                        margin = [hdpx(20), hdpx(40), hdpx(20), hdpx(42)]
+                        rendObj = ROBJ_IMAGE
+                        image = Picture(mapBgByCamp[curCampaign.get()])
+                      }
                   {
                     margin = [hdpx(20), hdpx(40), hdpx(20), hdpx(42)]
                     size = flex()

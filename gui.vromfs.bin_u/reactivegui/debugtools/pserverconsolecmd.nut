@@ -3,6 +3,7 @@ let { set_clipboard_text } = require("dagor.clipboard")
 let { object_to_json_string } = require("json")
 let { roundToDigits, round_by_value } = require("%sqstd/math.nut")
 let pServerApi = require("%appGlobals/pServer/pServerApi.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, set_purch_player_type,
   check_new_offer, debug_offer_generation_stats, shift_all_offers_time, generate_fixed_type_offer,
   userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler,
@@ -13,7 +14,7 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
   add_battle_mod, set_research_unit, add_slot_exp, update_branch_offer, apply_unit_level_rewards,
   shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward,
-  check_purchases_debug, reset_daily_counter
+  check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time
 } = pServerApi
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -180,7 +181,11 @@ register_command(@() shift_all_offers_time(86400, "onCheatShiftTime"),
   "meta.gen_next_day_offer")
 register_command(@() debug_offer_generation_stats(curCampaign.value, "consolePrint"),
   "meta.debug_offer_generation_stats")
-foreach (ot in ["start", "gold", "collection", "sidegrade", "upgrade", "premAir", "branchAir", "whale", "blueprint"]) {
+
+let offerTypes = ["start", "gold", "collection", "sidegrade", "upgrade", "premUnit", "branch",
+  "whale", "blueprint", "blueprintUpgraded"
+]
+foreach (ot in offerTypes) {
   let offerType = ot
   register_command(@() generate_fixed_type_offer(curCampaign.value, offerType, "consolePrintResult"),
     $"meta.generate_offer_{offerType}")
@@ -236,3 +241,14 @@ register_command(@(id) apply_deeplink_reward(id, curCampaign.get(), "consolePrin
 let counters = ["offer_skip", "daily_prem_gold"]
 counters.each(@(id)
   register_command(@() reset_daily_counter(id, "consolePrintError"), $"meta.reset_daily_counter.{id}"))
+
+register_command(@() debug_apply_deserter_lock_time(1, curCampaign.get(), serverTime.get()),
+  "meta.debug_apply_deserter_lock_time")
+
+register_command(
+  function() {
+    if (mainHangarUnitName.get() != null)
+      set_clipboard_text(mainHangarUnitName.get())
+    console_print(mainHangarUnitName.get()) //warning disable: -forbidden-function
+  },
+  "meta.copy_hangar_unit_name_to_clipboard")

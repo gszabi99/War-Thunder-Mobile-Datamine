@@ -1,14 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let listButton = require("%rGui/components/listButton.nut")
 let { eventbus_send } = require("eventbus")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { debugModes } = require("gameModeState.nut")
+let listButton = require("%rGui/components/listButton.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { closeButton } = require("%rGui/components/debugWnd.nut")
 let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 
 let wndUid = "debugGameModes"
 let close = @() removeModalWindow(wndUid)
@@ -38,8 +39,11 @@ function gameModesList() {
     .sort(@(a, b) (a?.name ?? "") <=> (b?.name ?? ""))
     .map(@(m) textButtonCommon(m?.name ?? m?.gameModeId ?? "!!!ERROR!!!",
       function() {
-        eventbus_send("queueToGameMode", { modeId = m?.gameModeId })
         close()
+        let modeId = m?.gameModeId
+        if (tryOpenQueuePenaltyWnd(m?.campaign ?? selectedCampaign.get(), { id = "queueToGameMode", modeId }))
+          return
+        eventbus_send("queueToGameMode", { modeId })
       },
       { ovr = { size = [flex(), hdpx(100)] } }))
 

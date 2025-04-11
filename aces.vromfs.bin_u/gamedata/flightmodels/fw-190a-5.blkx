@@ -1912,5 +1912,13 @@
       1.20414,
       0.00358869
     ]
+  },
+  "vehicleSkins": {
+    "black": {
+      "replace_tex": {
+        "from": "fw_190a_5_a*",
+        "to": "fw_190a_5_white_6_a*"
+      }
+    }
   }
 }

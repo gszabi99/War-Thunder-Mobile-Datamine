@@ -25,6 +25,7 @@ const PROGRESS_SLOT = "SlotInProgress"
 const PROGRESS_PERSONAL_GOODS = "PersonalGoodsInProgress"
 const PROGRESS_CAMPAIGN = "CampaignInProgress"
 const PROGRESS_PREM_BONUS = "PremBonusInProgress"
+const PROGRESS_QUEUE_PENALTY = "QueuePenaltyInProgress"
 
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
@@ -249,6 +250,7 @@ return {
   personalGoodsInProgress = mkProgress(PROGRESS_PERSONAL_GOODS)
   campaignInProgress = mkProgress(PROGRESS_CAMPAIGN)
   isPremBonusInProgress = mkProgress(PROGRESS_PREM_BONUS, false)
+  isQueuePenaltyInProgress = mkProgress(PROGRESS_QUEUE_PENALTY, false)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -879,5 +881,17 @@ return {
     method = "get_premium_daily_bonus"
     progressId = PROGRESS_PREM_BONUS
     progressValue = true
+  }, cb)
+
+  reset_queue_penalty = @(campaign, price, currencyId, cb = null) request({
+    method = "reset_queue_penalty"
+    params = { campaign, price, currencyId }
+    progressId = PROGRESS_QUEUE_PENALTY
+    progressValue = true
+  }, cb)
+
+  debug_apply_deserter_lock_time = @(sessionId, campaign, timestamp, cb = null) request({
+    method = "debug_apply_deserter_lock_time"
+    params = { sessionId, campaign, timestamp }
   }, cb)
 }

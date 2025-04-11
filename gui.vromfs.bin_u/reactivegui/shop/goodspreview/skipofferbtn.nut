@@ -11,7 +11,7 @@ let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { PRIMARY,COMMON, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 
-let iconSize = (defButtonHeight * 0.7).tointeger()
+let iconSize = 2 * (defButtonHeight * 0.3).tointeger()
 
 let vipIconW = hdpxi(50)
 let vipIconH = hdpxi(30)
@@ -98,6 +98,7 @@ let skipsEnded = {
 let contentVip = @(leftCount) leftCount < 1 ? skipsEnded : {
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
+  gap = hdpx(-4)
   children = [
     {
       size = [iconSize, iconSize]
@@ -110,7 +111,7 @@ let contentVip = @(leftCount) leftCount < 1 ? skipsEnded : {
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       text = "/".concat(leftCount, serverConfigs.get()?.gameProfile.vipBonuses.offerSkips ?? 0)
-    }.__update(fontSmall)
+    }.__update(fontSmallShaded)
   ]
 }
 

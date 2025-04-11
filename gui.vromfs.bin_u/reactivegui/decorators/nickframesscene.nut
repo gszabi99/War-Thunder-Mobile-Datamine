@@ -28,6 +28,7 @@ let { mkDecoratorUnlockProgress } = require("mkDecoratorUnlockProgress.nut")
 
 let gap = hdpx(15)
 let squareSize = [hdpx(163), hdpx(151)]
+let listPaddingVert = hdpx(30)
 let CS_DECORATORS = CS_SMALL.__merge({
   iconSize = hdpxi(30)
   fontStyle = fontTiny
@@ -176,28 +177,41 @@ function footer() {
   }
 }
 
-let framesList = @() {
-  watch = [availNickFrames, allFrames, isShowAllDecorators]
-  padding = [hdpx(30), 0, hdpx(30), 0]
-  flow = FLOW_VERTICAL
-  gap
-  children = arrayByRows(
-    allFrames.get()
-      .filter(@(v, name) isShowAllDecorators.get() || !v.isHidden || (name in (availNickFrames.get())))
-      .map(@(v, name) v.__merge({ name }))
-      .values()
-      .sort(@(a, b) (b.name in availNickFrames.get()) <=> (a.name in availNickFrames.get()))
-      .insert(0, {
-          name = ""
-          price = { price = 0, currencyId = "" }
-        })
-      .map(tagBtn),
-    columns
-  ).map(@(item) {
-    flow = FLOW_HORIZONTAL
+let scrollHandler = ScrollHandler()
+let listKey = {}
+
+function framesList() {
+  let nickFrames = allFrames.get()
+    .filter(@(v, name) isShowAllDecorators.get() || !v.isHidden || (name in availNickFrames.get()))
+    .map(@(v, name) v.__merge({ name }))
+    .values()
+    .sort(@(a, b) (b.name in availNickFrames.get()) <=> (a.name in availNickFrames.get()))
+    .insert(0, {
+        name = ""
+        price = { price = 0, currencyId = "" }
+      })
+
+  let chosenRow = (nickFrames.findindex(@(v) v.name == chosenFrameName.get()) ?? 0) / columns
+  let showRowsAbove = 1.5
+  let onAttach = @()
+    scrollHandler.scrollToY(listPaddingVert + ((squareSize[1] + gap) * (chosenRow - showRowsAbove)))
+
+  return {
+    key = listKey
+    watch = [availNickFrames, allFrames, isShowAllDecorators]
+    padding = [listPaddingVert, 0]
+    flow = FLOW_VERTICAL
     gap
-    children = item
-  })
+    onAttach
+    children = arrayByRows(
+      nickFrames.map(tagBtn),
+      columns
+    ).map(@(item) {
+      flow = FLOW_HORIZONTAL
+      gap
+      children = item
+    })
+  }
 }
 
 let decorationNameWnd = {
@@ -209,7 +223,7 @@ let decorationNameWnd = {
   onDetach = @() markDecoratorsSeen(unseenDecorators.value.filter(@(_, id) id in availNickFrames.value).keys())
   children = [
     header
-    makeVertScroll(framesList)
+    makeVertScroll(framesList, { scrollHandler })
     footer
   ]
   animations = wndSwitchAnim

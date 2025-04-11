@@ -7,7 +7,7 @@ let { SERVER_ERROR_REQUEST_REJECTED, SERVER_ERROR_NOT_IN_QUEUE } = require("matc
 let { isEqual } = require("%sqstd/underscore.nut")
 let queueState = require("%appGlobals/queueState.nut")
 let { curQueue, isInQueue, curQueueState, queueStates,
-  QS_ACTUALIZE, QS_ACTUALIZE_SQUAD, QS_JOINING, QS_IN_QUEUE, QS_LEAVING
+  QS_ACTUALIZE, QS_ACTUALIZE_SQUAD, QS_JOINING, QS_IN_QUEUE, QS_LEAVING, QS_CHECK_PENALTY
 } = queueState
 let { TEAM_ANY } = require("%appGlobals/teams.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -22,9 +22,12 @@ let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInSquad, squadMembers, isSquadLeader, squadLeaderCampaign, queueDataCheckTime
 } = require("%appGlobals/squadState.nut")
 let { decodeJwtAndHandleErrors } = require("%appGlobals/pServer/pServerJwt.nut")
+let { campProfile } = require("%appGlobals/pServer/campaign.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let matching = require("%appGlobals/matching_api.nut")
+let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { get_gui_option, addUserOption } = require("guiOptions")
+
 
 let isSquadActualizeSend = mkWatched(persist, "isSquadActualizeSend", false)
 let USEROPT_ALLOW_JIP = addUserOption("USEROPT_ALLOW_JIP")
@@ -46,6 +49,8 @@ let writeJwtData = @() curQueue.mutate(function(q) {
   q.unitInfo <- queueData.value?.unitInfo
   logQ($"Queue ", q.unitInfo, " params by token: ", payload)
 })
+
+let hasPenaltyNonUpdatable = @() (campProfile.get()?.penalties.penaltyEndTime ?? 0) > serverTime.get()
 
 function actualizeSquadQueueOnce() {
   if (isSquadActualizeSend.value)
@@ -82,6 +87,12 @@ function tryWriteMembersData() {
       actualizeSquadQueueOnce()
       return
     }
+
+    if ((payload?.penaltyEndTime ?? 0) > serverTime.get()) {
+      openFMsgBox({ text = loc("multiplayer/queuePenaltySquad") })
+      curQueue.set(null)
+      return
+    }
     playersUpd[uid.tostring()] <- { profileJwt = queueToken }
   }
 
@@ -100,10 +111,17 @@ registerHandler("onActiveQueueActualizeData",
 
 let queueSteps = {
   [QS_ACTUALIZE] = function() {
-    if (isQueueDataActual.value)
-      writeJwtData()
+    if (isQueueDataActual.get())
+      setQueueState(QS_CHECK_PENALTY)
     else
       actualizeQueueData("onActiveQueueActualizeData")
+  },
+
+  [QS_CHECK_PENALTY] = function() {
+    if (hasPenaltyNonUpdatable())
+      curQueue.set(null)
+    else
+      writeJwtData()
   },
 
   [QS_ACTUALIZE_SQUAD] = function() {
@@ -149,7 +167,11 @@ curQueueState.subscribe(@(_) doStepActionDelayed())
 let leaveQueue = @() isInQueue.value ? setQueueState(QS_LEAVING) : null
 
 isQueueDataActual.subscribe(function(v) {
-  if (v && curQueueState.value == QS_ACTUALIZE)
+  if (!v)
+    return
+  if (curQueueState.get() == QS_ACTUALIZE)
+    setQueueState(QS_CHECK_PENALTY)
+  else if (curQueueState.get() == QS_CHECK_PENALTY)
     writeJwtData()
 })
 

@@ -204,6 +204,8 @@ function setResearchUnit(unitName) {
 
 
 function unitUpgradeBtn(unit) {
+  if (!unit?.upgradeCostGold)
+    return
   let { isUpgraded = false, isUpgradeable = false, isPremium = false} = unit
   return !(!isUpgraded && isUpgradeable && !isPremium) ? null
     : textButtonPricePurchase(utf8ToUpper(loc("msgbox/unit_upgrade")),

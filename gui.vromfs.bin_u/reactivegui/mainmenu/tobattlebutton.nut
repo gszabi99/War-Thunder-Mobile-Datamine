@@ -2,9 +2,11 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { isInSquad, isSquadLeader, isReady } = require("%appGlobals/squadState.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { textButtonBattle, textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
@@ -20,25 +22,61 @@ let setReady = require("%rGui/squad/setReady.nut")
 let { needReadyCheckButton, initiateReadyCheck, isReadyCheckSuspended } = require("%rGui/squad/readyCheck.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
+let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
+let { hasPenaltyStatus } = require("%rGui/mainMenu/penaltyState.nut")
+
 
 let queueCurRandomBattleMode = @() eventbus_send("queueToGameMode", { modeId = randomBattleMode.get()?.gameModeId })
 
+let battleBtnCampaign = Computed(@() randomBattleMode.get()?.campaign ?? curCampaign.get())
+
+let timerSize = hdpxi(40)
+function penaltyTimerIcon() {
+  let res = { watch = [hasPenaltyStatus, battleBtnCampaign] }
+  let hasPenalty = hasPenaltyStatus.get()?[battleBtnCampaign.get()] ?? false
+  return !hasPenalty ? res
+    : res.__update({
+        size = [timerSize, timerSize]
+        margin = [hdpx(8), hdpx(16)]
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/gameuiskin#timer_icon.svg:{timerSize}:{timerSize}:P")
+        vplace = ALIGN_TOP
+        hplace = ALIGN_RIGHT
+        keepAspect = KEEP_ASPECT_FIT
+      })
+}
+
 let hotkeyX = ["^J:X | Enter"]
+let commonOvr = {
+  key = "toBattleButton"
+  animations = [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.2, 1.2], duration = 0.4, easing = CosineFull, play = true, delay = 2 }]
+}
 let battleBtnOvr = {
-  ovr = {
-    key = "toBattleButton"
-    animations = [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.2, 1.2], duration = 0.4, easing = CosineFull, play = true, delay = 2 }]
-  }
+  ovr = commonOvr
+  hotkeys = hotkeyX
+}
+let battleBtnPenaltyOvr = {
+  ovr = commonOvr.__merge({ children = penaltyTimerIcon })
   hotkeys = hotkeyX
 }
 let toBattleText = utf8ToUpper(loc("mainmenu/toBattle/short"))
-let mkToBattleButton = @(toBattleFunc) textButtonBattle(toBattleText, toBattleFunc, battleBtnOvr)
-let toBattleButton_RandomBattles = mkToBattleButton(function() {
-  sendNewbieBqEvent("pressToBattleButton", { status = "online_battle", params = randomBattleMode.get()?.name ?? "" })
+let mkToBattleButton = @(toBattleFunc) textButtonBattle(toBattleText, toBattleFunc, battleBtnPenaltyOvr)
+
+function toRandomBattle() {
   if (curUnit.get() != null)
     showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), queueCurRandomBattleMode))
   else if (!openLvlUpWndIfCan())
     logerr($"Unable to start battle because no units (unit in hangar = {hangarUnit.get()?.name})")
+}
+
+let cbId = "onResetPenaltyToRandomBattle"
+registerHandler(cbId, @(res) res?.error == null ? toRandomBattle() : null)
+
+let toBattleButton_RandomBattles = mkToBattleButton(function() {
+  sendNewbieBqEvent("pressToBattleButton", { status = "online_battle", params = randomBattleMode.get()?.name ?? "" })
+  if (tryOpenQueuePenaltyWnd(battleBtnCampaign.get(), cbId))
+    return
+  toRandomBattle()
 })
 let toSquadBattleButton_RandomBattles = toBattleButton_RandomBattles
 

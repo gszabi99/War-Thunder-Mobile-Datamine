@@ -286,10 +286,15 @@ let specialEventGamercardItems = Computed(function() {
       res.extend(items.map(@(itemId) { itemId, eventName }))
   return res
 })
+
+let eventUnitTypes = {
+  event_april_2025 = SAILBOAT
+}
 let unitTypesByEvent = Computed(function() {
   let res = []
-  if (allSpecialEvents.get().findindex(@(e) e.eventName == "april_event_2025") != -1)
-    res.append(SAILBOAT)
+  foreach (eventName, unitType in eventUnitTypes)
+    if (allSpecialEvents.get().findvalue(@(e) e.eventName == eventName) != null)
+      res.append(unitType)
   return res
 })
 

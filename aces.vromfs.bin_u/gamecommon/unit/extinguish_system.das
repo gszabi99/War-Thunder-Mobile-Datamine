@@ -354,7 +354,7 @@ def extinguish_system_activate_extinguisher_handle_es(evt : EventExtinguishSyste
     return
 
   let unit = unit__ref.unit
-  if unit.isDelayed
+  if unit.isDelayed || !unit.isAlive
     return
   let gm = unit |> as_gm()
 
@@ -459,7 +459,7 @@ def extinguish_system_spend_extinguisher_es(evt : EventExtinguishSystemSpendExti
                                             extinguish_system_extinguisher_count_max : int;
                                             var extinguish_system_require_net_sync : bool&)
   let unit = unit__ref.unit
-  if extinguish_system_extinguisher_count_max > 0 && !unit.isDelayed && unit.isAuthority
+  if extinguish_system_extinguisher_count_max > 0 && !unit.isDelayed && unit.isAuthority && unit.isAlive
     if extinguish_system_extinguisher_count > 0
       --extinguish_system_extinguisher_count
     let gm = unit |> as_gm()

@@ -39,7 +39,7 @@ function getSingleMissionResult(rewardData) {
 
   let unitName = battleUnitName.value
   let baseBattleData = wasBattleDataApplied.value ? (lastClientBattleData.value ?? {}) : {}
-  let campaign = getCampaignByUnitName(unitName, curCampaign.get())
+  let campaign = rewardData?.battleData.campaign ?? getCampaignByUnitName(unitName, curCampaign.get())
   let isSeparateSlots = (serverConfigs.get()?.campaignCfg[campaign].totalSlots ?? 0) > 0
   log($"Result info: baseBattleData.unit = {baseBattleData?.unit.name}")
   log($"rewardData?.battleData.unit = {rewardData?.battleData.reward.unitName}")

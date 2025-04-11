@@ -6,6 +6,7 @@ let { curLoginType, LT_GOOGLE, LT_APPLE, LT_FACEBOOK, LT_HUAWEI } = require("%ap
 let { can_link_to_gaijin_account } = require("%appGlobals/permissions.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin } = require("%rGui/account/linkEmailForGaijinLogin.nut")
 let { contentWidth } = require("optionsStyle.nut")
 let { textButtonCommon, textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
@@ -24,7 +25,7 @@ let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
 let { myNameWithFrame, openDecoratorsScene, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
-let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { isCampaignWithUnitsResearch, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { copyToClipboard } = require("%rGui/components/clipboard.nut")
 let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
 let { isGuestLogin, openGuestEmailRegistration } = require("%rGui/account/emailRegistrationState.nut")
@@ -50,13 +51,14 @@ let borderWidth = hdpx(1)
 let gap = hdpx(20)
 let lvlInfoWidth = sw(45)
 
-let unitsResearchInfo = {
+let unitsResearchInfo = @() {
+  watch = curCampaign
   size = [lvlInfoWidth, SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   hplace = ALIGN_LEFT
   pos = [levelBlockSize + gap, 0]
-  text = loc("hints/aviationExlLvlInfo")
+  text = loc(getCampaignPresentation(curCampaign.get()).playerLevelDescLocId)
 }.__update(fontVeryTiny)
 
 let starLevelOvr = { pos = [0, ph(40)] }

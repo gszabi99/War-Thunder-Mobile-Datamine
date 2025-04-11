@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { PI, sin } = require("math")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { flagsWidth, bgLight, mkTreeNodesFlag, flagTreeOffset, gamercardOverlap
+let { flagsWidth, bgLight, mkTreeNodesFlag, flagTreeOffset, gamercardOverlap, infoPanelWidth
 } = require("unitsTreeComps.nut")
 let { unitsTreeOpenRank, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
@@ -33,7 +33,7 @@ let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 let { animUnitWithLink, animNewUnitsAfterResearch, isBuyUnitWndOpened,
   animUnitAfterResearch, canPlayAnimUnitWithLink, hasAnimDarkScreen, resetAnim,
   animBuyRequirementsUnitId, animBuyRequirements, animResearchRequirementsUnitId, animResearchRequirements
-  animResearchRequirementsAncestors, animNewUnitsAfterResearchTrigger
+  animResearchRequirementsAncestors, animNewUnitsAfterResearchTrigger, animBuyRequirementsInfo
 } = require("animState.nut")
 let { attractColor } = require("treeAnimConsts.nut")
 
@@ -213,11 +213,11 @@ function scrollToRank(rank, ranksCfg) {
 let mkLinks = @(linksCfg) function() {
   let { linesFrom, linesTo } = linksCfg
   let own = campMyUnits.get()
-  let status = unitsResearchStatus.get()
   let animUnlockUnit = animUnitWithLink.get()
   let animLockUnit = animBuyRequirementsUnitId.get() ?? animResearchRequirementsUnitId.get()
-  let animLockReq = animBuyRequirements.get().len() > 0 ? animBuyRequirements.get() : animResearchRequirements.get()
-  let animLockAncs = animResearchRequirementsAncestors.get()
+  let isAnimBuy = animBuyRequirementsInfo.get().res.len() > 0
+  let animLockReq = isAnimBuy ? animBuyRequirementsInfo.get().res : animResearchRequirements.get()
+  let animLockAncs = isAnimBuy ? animBuyRequirementsInfo.get().ancestors : animResearchRequirementsAncestors.get()
   let canPlayAnim = canPlayAnimUnitWithLink.get()
   let commands = []
   let animUnlockCommands = []
@@ -245,8 +245,7 @@ let mkLinks = @(linksCfg) function() {
   foreach(cfg in linesTo) {
     let { name, reqUnits, cmd } = cfg
     let isList = type(name) == "array"
-    let hasAccess = (status?[name].canBuy ?? !isList)
-      || (null == reqUnits.findvalue(@(n) n not in own))
+    let hasAccess = null == reqUnits.findvalue(@(n) n not in own)
 
     if (hasAccess && reqUnits.contains(animUnlockUnit)) {
       if (canPlayAnim)
@@ -267,7 +266,7 @@ let mkLinks = @(linksCfg) function() {
 
   return {
     watch = [unitsResearchStatus, campMyUnits, animUnitWithLink, canPlayAnimUnitWithLink,
-      animBuyRequirementsUnitId, animBuyRequirements, animResearchRequirements, animResearchRequirementsUnitId,
+      animBuyRequirementsUnitId, animBuyRequirementsInfo, animResearchRequirements, animResearchRequirementsUnitId,
       animResearchRequirementsAncestors
     ]
     size = flex()
@@ -363,7 +362,8 @@ function genLinks(nodes, positions, size) {
     let { reqUnits } = node
     if (reqUnits.len() == 0)
       continue
-    let uid = ";".join(reqUnits.sort())
+    let isVertical = reqUnits.len() == 1 && node.x == (nodes?[reqUnits[0]].x ?? -1)
+    let uid = ";".concat(";".join(reqUnits.sort()), isVertical)
     if (uid not in groups)
       groups[uid] <- { reqUnits, tgtNodes = [] }
     groups[uid].tgtNodes.append(node)
@@ -700,6 +700,7 @@ let function mkUnitsTreeNodesContent() {
   let unseenNodesIndex = mkUnseenNodesIndex(ranksCfg)
   let hasDarkScreen = mkHasDarkScreen()
   let areaSize = Computed(@() calcAreaSize(isCampaignWithSlots.get()))
+  let hasSelectedUnit = Computed(@() curSelectedUnit.get() != null)
 
   function onUnitToScrollChange(v) {
     if (v == null)
@@ -773,21 +774,23 @@ let function mkUnitsTreeNodesContent() {
       watch = [hasDarkScreen, isCampaignWithSlots]
       children = hasDarkScreen.get()
           ? @() {
-              watch = areaSize
+              watch = [areaSize, hasSelectedUnit]
               size = [sw(100), sh(100)]
               children = [
                 mkCutBg([getLightBox(areaSize.get())])
                 {
-                  key = "chooseNextUnit"
-                  size = [flex(), slotBarTreeHeight]
-                  padding = saBordersRv
+                  size = [hasSelectedUnit.get() ? sw(100) - infoPanelWidth : sw(100), slotBarTreeHeight]
+                  padding = [0, saBorders[0], 0, saBorders[0] + (hasSelectedUnit.get() ? (flagsWidth + flagTreeOffset) : 0)]
                   vplace = ALIGN_BOTTOM
                   color = 0x40000000
                   rendObj = ROBJ_SOLID
                   valign = ALIGN_CENTER
                   children = {
-                    pos = [flagsWidth + flagTreeOffset, 0]
-                    rendObj = ROBJ_TEXT
+                    size = flex()
+                    rendObj = ROBJ_TEXTAREA
+                    behavior = Behaviors.TextArea
+                    halign = ALIGN_CENTER
+                    valign = ALIGN_CENTER
                     text = utf8ToUpper(loc("unitsTree/chooseNextUnit"))
                   }.__update(fontSmall)
                 }

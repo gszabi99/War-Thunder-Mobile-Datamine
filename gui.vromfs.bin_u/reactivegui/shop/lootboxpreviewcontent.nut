@@ -415,8 +415,8 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
     children = blockWithHeaderArray(loc("lootbox/eachOpenReward"), openRewards.get(), width, style.get())
       .append(lootBoxWithSameJackpot.get() == null ? null
         : mkTextArea(loc("jackpot/sameJackpotHint", {
-            current = getLootboxName(lootbox.name, lootbox?.meta.event)
-            same = getLootboxName(lootBoxWithSameJackpot.get().name, lootBoxWithSameJackpot.get()?.meta.event)
+            current = getLootboxName(lootbox.name)
+            same = getLootboxName(lootBoxWithSameJackpot.get().name)
           }), width))
       .extend(
         blockWithHeaderArray(loc("jackpot/rewardsHeader"), jackpotRewards.get(), width, style.get(), lootbox)
@@ -448,7 +448,7 @@ function lootboxPreviewContent(lootbox, ovr = {}) {
   }.__update(ovr)
 }
 
-let lootboxHeader = @(lootbox) mkText(getLootboxName(lootbox.name, lootbox?.meta.event))
+let lootboxHeader = @(lootbox) mkText(getLootboxName(lootbox.name))
 
 let mkRow = @(children) {
   flow = FLOW_HORIZONTAL

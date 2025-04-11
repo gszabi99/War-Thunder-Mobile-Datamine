@@ -33,8 +33,7 @@ let bgImage = keepref(Computed(@() lootboxPreviewBg?[lootbox.get()?.name]))
 
 
 let header = mkPreviewHeader(
-  Computed(@() lootbox.get() == null ? ""
-    : getLootboxName(lootbox.get().name, lootbox.get()?.meta.event)),
+  Computed(@() lootbox.get() == null ? "" : getLootboxName(lootbox.get().name)),
   closeGoodsPreview,
   aTimeHeaderStart)
 

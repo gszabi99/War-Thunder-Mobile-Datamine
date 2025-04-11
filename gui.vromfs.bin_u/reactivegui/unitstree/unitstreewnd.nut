@@ -52,6 +52,7 @@ let infoPannelPadding = hdpx(30)
 let infoPanelFooterGap = hdpx(20)
 let filterIconSize = hdpxi(36)
 let clearIconSize = hdpxi(45)
+let maxInfoPanelHeight = saSize[1] - hdpx(427)
 
 let isTreeAttached = Watched(false)
 let isTreeNodes = Computed(@() curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
@@ -439,8 +440,9 @@ function infoPanel() {
   let hasUnitActions = mkHasUnitActions(isTreeNodes.get())
   let needShowBlueprintDescr = Computed(@() hangarUnit.get()?.name in serverConfigs.get()?.allBlueprints
     && hangarUnit.get()?.name not in campMyUnits.get())
+  let hasDarkScreen = mkHasDarkScreen()
   return {
-    watch = [hasSelectedUnit, isTreeNodes, isCampaignWithSlots]
+    watch = [hasSelectedUnit, isTreeNodes, isCampaignWithSlots, hasDarkScreen]
     key = {}
     size = flex()
     children = hasSelectedUnit.get()
@@ -450,12 +452,12 @@ function infoPanel() {
             hplace = ALIGN_RIGHT
             vplace = ALIGN_BOTTOM
             valign = ALIGN_BOTTOM
-            clipChildren = isTreeNodes.get()
             flow = FLOW_VERTICAL
             children = [
               unitInfoPanel(
                 {
                   size = [flex(), SIZE_TO_CONTENT]
+                  maxHeight = maxInfoPanelHeight
                   halign = ALIGN_RIGHT
                   hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
                   animations = wndSwitchAnim
@@ -482,7 +484,7 @@ function infoPanel() {
               }
             ]
           })
-      : !isCampaignWithSlots.get() ? null
+      : !isCampaignWithSlots.get() || hasDarkScreen.get() ? null
       : @() {
           watch = selectedSlotIdx
           rendObj = ROBJ_SOLID

@@ -127,9 +127,11 @@ let hangarUnitSkin = Computed(@() hangarUnitData.get()?.skin
   ?? hangarUnit.get()?.currentSkins[hangarUnit.get()?.name]
   ?? (hangarUnit.get()?.isUpgraded ? "upgraded" : ""))
 
-let hasNotDownloadedPkg = Computed(@() !isReadyToFullLoad.get() ||
-  getUnitPkgs(hangarUnitName.get(), hangarUnit.get()?.mRank).findvalue(@(a) !hasAddons.value?[a]) != null)
-let canReloadModel = keepref(Computed(@() !hasNotDownloadedPkg.get() && !isInBattle.get() && !isInLoadingScreen.get()))
+let hangarUnitReqPkg  = Computed(@() hangarUnitName.get() == null || !isReadyToFullLoad.get() ? []
+  : getUnitPkgs(hangarUnitName.get(), hangarUnit.get()?.mRank).filter(@(a) !hasAddons.value?[a]))
+
+let hasNotDownloadedPkgForHangarUnit = Computed(@() hangarUnitReqPkg .get().findvalue(@(a) !hasAddons.value?[a]) != null)
+let canReloadModel = keepref(Computed(@() !hasNotDownloadedPkgForHangarUnit.get() && !isInBattle.get() && !isInLoadingScreen.get()))
 
 function setHangarUnitWeaponPreset(unitName, preset) {
   if (unitName == null)
@@ -154,7 +156,7 @@ function loadModel(unitName, skin, weapPreset) {
   if ((unitName ?? "") == "")
     return
 
-  if (hasNotDownloadedPkg.get() && !isOfflineMenu) {
+  if (hasNotDownloadedPkgForHangarUnit.get() && !isOfflineMenu) {
     hangar_move_cam_to_unit_place(getTagsUnitName(unitName))
     return
   }
@@ -181,7 +183,7 @@ isInMpSession.subscribe(function(v) {
 })
 
 function reloadAllBgModels() {
-  if (!hasNotDownloadedPkg.get())
+  if (!hasNotDownloadedPkgForHangarUnit.get())
     change_background_models_list_with_skin(hangarUnitName.get(), hangarBgUnits.get())
 }
 
@@ -290,4 +292,7 @@ return {
 
   mainHangarUnit
   mainHangarUnitName
+
+  hangarUnitReqPkg
+  hasNotDownloadedPkgForHangarUnit
 }

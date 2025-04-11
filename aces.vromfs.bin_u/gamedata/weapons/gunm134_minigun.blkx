@@ -135,7 +135,9 @@
         "range_percent_of_ammo": [
           100.0,
           0.0
-        ]
+        ],
+        "tracer": "noColor",
+        "trail": "smallTrail"
       },
       "collisions": {
         "default": {
@@ -326,7 +328,9 @@
         "range_percent_of_ammo": [
           100.0,
           0.0
-        ]
+        ],
+        "tracer": "noColor",
+        "trail": "smallTrail"
       },
       "collisions": {
         "default": {
@@ -517,7 +521,9 @@
         "range_percent_of_ammo": [
           100.0,
           0.0
-        ]
+        ],
+        "tracer": "noColor",
+        "trail": "smallTrail"
       },
       "collisions": {
         "default": {
@@ -708,7 +714,9 @@
         "range_percent_of_ammo": [
           100.0,
           0.0
-        ]
+        ],
+        "tracer": "noColor",
+        "trail": "smallTrail"
       },
       "collisions": {
         "default": {
@@ -899,7 +907,9 @@
         "range_percent_of_ammo": [
           100.0,
           0.0
-        ]
+        ],
+        "tracer": "noColor",
+        "trail": "smallTrail"
       },
       "collisions": {
         "default": {
@@ -1090,7 +1100,9 @@
         "range_percent_of_ammo": [
           100.0,
           0.0
-        ]
+        ],
+        "tracer": "noColor",
+        "trail": "smallTrail"
       },
       "collisions": {
         "default": {
@@ -1382,12 +1394,16 @@
   "overheat": {
     "overheat": [
       [
-        40.0,
+        4.0,
         0.0
       ],
       [
-        60.0,
+        6.0,
         0.05
+      ],
+      [
+        8.0,
+        0.1
       ]
     ]
   },

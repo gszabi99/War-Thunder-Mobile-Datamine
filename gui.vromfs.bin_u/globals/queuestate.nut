@@ -9,6 +9,7 @@ let queueStates = {
   QS_JOINING = 3
   QS_IN_QUEUE = 4
   QS_LEAVING = 5
+  QS_CHECK_PENALTY = 6
 }
 let { QS_NOT_IN_QUEUE } = queueStates
 

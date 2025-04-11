@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let regexp2 = require("regexp2")
 let { roundToDigits } = require("%sqstd/math.nut")
 let { getUnitLocId, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
 let { premiumTextColor, collectibleTextColor } = require("%rGui/style/stdColors.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
@@ -227,7 +228,8 @@ let columnsByCampaign = {
 }
 
 let getColumnsByCampaign = @(campaign, missionName)
-  mkColumnsCfg((columnsByCampaign?[campaign] ?? columnsByCampaign.air).filter(@(c) c?.isVisible(missionName) ?? true))
+  mkColumnsCfg((columnsByCampaign?[campaign] ?? columnsByCampaign?[getCampaignPresentation(campaign).campaign] ?? columnsByCampaign.air)
+    .filter(@(c) c?.isVisible(missionName) ?? true))
 
 function mkPlayerRow(columnCfg, player, teamColor, idx) {
   let { columns, rowOvr = {} } = columnCfg

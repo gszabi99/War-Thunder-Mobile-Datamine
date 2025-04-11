@@ -21,7 +21,7 @@
   "bullets": -1,
   "bulletsCluster": 1,
   "useSingleIconForBullet": true,
-  "fxType": "muzzle_ground_100mm_recoilless_noflash",
+  "fxType": "muzzle_ground_100mm_recoilless_cmps_fx.fx",
   "fxGroundDust": "",
   "fxSandDust": "",
   "fxSnowDust": "",
@@ -62,7 +62,7 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/atgm.ivf",
-    "bulletName": "127mm_tow",
+    "bulletName": "127mm_atgm_tow",
     "mass": 37.0,
     "caliber": 0.127,
     "sound_path": "tanks/weapon_tanks/atgm",
@@ -331,7 +331,7 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/atgm.ivf",
-      "bulletName": "127mm_tow",
+      "bulletName": "127mm_atgm_tow",
       "mass": 37.0,
       "caliber": 0.127,
       "sound_path": "tanks/weapon_tanks/atgm",

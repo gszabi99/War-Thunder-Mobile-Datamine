@@ -50,6 +50,7 @@ let PURCH_TYPE_GOODS_REROLL_SLOTS = "goods_reroll_slots"
 let PURCH_TYPE_SLOT_LEVEL = "slot_level"
 let PURCH_TYPE_BLUEPRINTS = "blueprints"
 let PURCH_TYPE_BRANCH = "branch"
+let PURCH_TYPE_QUEUE_PENALTY = "queue_penalty"
 
 let goodsTypeToPurchTypeMap = {
   [SGT_UNKNOWN] = "unknown",
@@ -125,6 +126,7 @@ return {
   PURCH_TYPE_GOODS_REROLL_SLOTS
   PURCH_TYPE_SLOT_LEVEL
   PURCH_TYPE_BLUEPRINTS
+  PURCH_TYPE_QUEUE_PENALTY
 
   getPurchaseTypeByGoodsType
   mkBqPurchaseInfo

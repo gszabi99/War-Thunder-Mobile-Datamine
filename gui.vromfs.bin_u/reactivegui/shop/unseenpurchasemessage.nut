@@ -1052,16 +1052,17 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
   let title = titleCtors?[style](outroDelay, purchGroup) ?? modalWndHeader(loc("mainmenu/you_received"))
   let size = [
     max(
-      unitPlates.len() * unitPlateWidth,
-      battleMod.len() * unitPlateWidth,
+      min(unitPlates.len(), rewIconsPerRow) * unitPlateWidth,
+      min(battleMod.len(), rewIconsPerRow) * unitPlateWidth,
       min(rewardIcons.len(), rewIconsPerRow) * rewBlockWidth
-    ) + hdpx(300),
+    ),
     SIZE_TO_CONTENT
   ]
+
   let content = {
     onAttach = @() canOpenSelectUnitWithModal.set(true)
     onDetach = @() canOpenSelectUnitWithModal.set(false)
-    minWidth = hdpx(900)
+    minWidth = hdpx(1100)
     padding = [0, 0, hdpx(38), 0]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -1150,7 +1151,7 @@ let showMessage = @() addModalWindow(bgShadedDark.__merge({
     skipAnims()
   }
   onClick
-  children = @() messageWnd(onClick)
+  children = messageWnd(onClick)
   animations = wndSwitchAnim
   sound = { detach  = "meta_reward_window_close" }
 }))

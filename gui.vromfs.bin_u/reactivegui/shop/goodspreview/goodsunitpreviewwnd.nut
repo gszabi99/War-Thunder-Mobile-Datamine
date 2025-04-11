@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
 let { eventbus_subscribe } = require("eventbus")
 let { defer, resetTimeout } = require("dagor.workcycle")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
 let { GPT_UNIT, GPT_BLUEPRINT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount,
@@ -56,7 +57,7 @@ let unitPlateSize = unitPlateSmall
 let unitPlateSizeMain = unitPlateSize.map(@(v) v * 1.16)
 let unitPlateSizeSingle = unitPlateSize.map(@(v) v * 1.3)
 let verticalGap = hdpx(20)
-let maxInfoPanelHeight = hdpx(535)
+let maxInfoPanelHeight = saSize[1] - hdpx(380)
 
 let isWindowAttached = Watched(false)
 let needShowUi = Watched(false)
@@ -140,7 +141,7 @@ eventbus_subscribe("onHangarModelStartLoad", @(_) readyToShowCutScene(false))
 eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" : "onHangarModelLoaded", @(_) readyToShowCutScene(true))
 
 let needShowCutscene = keepref(Computed(@() unitForShow.value != null
-  && loadedHangarUnitName.value == unitForShow.value?.name
+  && loadedHangarUnitName.value == getTagsUnitName(unitForShow.value?.name ?? "")
   && readyToShowCutScene.value ))
 
 function showCutscene(v) {
@@ -485,7 +486,7 @@ let scrollArrowsBlock = {
   ]
 }
 
-let leftBlock = @(){
+let leftBlockUnits = @() {
   watch = [previewGoodsUnit, schRewards, previewGoods]
   size = (previewGoods.get()?.units.len() ?? 0) > 1
     ? [unitPlateSize[0] * 2 + gapForBranch, SIZE_TO_CONTENT]
@@ -506,6 +507,32 @@ let leftBlock = @(){
       }
     : previewGoodsUnit.get()?.platoonUnits.len() == 0 ? leftBlockSingleUnit
     : leftBlockPlatoon
+}
+
+let leftBlock = {
+  size = flex()
+  flow = FLOW_VERTICAL
+  gap = verticalGap
+  children = [
+    @() (previewGoods.get()?.units.len() ?? 0) <= 1 ? { watch = previewGoods }
+      : {
+          watch = previewGoods
+          rendObj = ROBJ_TEXT
+          text = loc("offer/airBranch/descBuy", {count =(previewGoods.get()?.units.len() ?? 0)})
+        }.__update(fontSmall)
+    @() {
+      watch = needScroll
+      size = !needScroll.get()
+        ? flex()
+        : [unitPlateSizeSingle[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
+      children = [
+        !needScroll.get() ? leftBlockUnits
+          : pannableArea(leftBlockUnits, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+        !needScroll.get() ? null
+          : scrollArrowsBlock
+      ]
+    }
+  ]
 }
 
 let previewWnd = @() {
@@ -562,28 +589,10 @@ let previewWnd = @() {
             balanceBlock
           ]
         }
-        @()(previewGoods.get()?.units.len() ?? 0) > 1
-          ? {
-            watch = previewGoods
-            rendObj = ROBJ_TEXT
-            text = loc("offer/airBranch/descBuy", {count =(previewGoods.get()?.units.len() ?? 0)})
-          }.__update(fontSmall)
-          : { watch = previewGoods}
         {
           size = flex()
           children = [
-            @() {
-              watch = needScroll
-              size = !needScroll.get()
-                ? flex()
-                : [unitPlateSizeSingle[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
-              children = [
-                !needScroll.get() ? leftBlock
-                  : pannableArea(leftBlock, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
-                !needScroll.get() ? null
-                  : scrollArrowsBlock
-              ]
-            }
+            leftBlock
             rightBlock
           ]
         }

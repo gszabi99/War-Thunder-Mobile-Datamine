@@ -1,10 +1,13 @@
-let sortByCampaign = {
-  ships = @(a, b)
+let shipsSort = @(a, b)
        b.damage <=> a.damage
     || b.navalKills <=> a.navalKills
     || b.kills <=> a.kills
     || (a.isDead && !a.isTemporary) <=> (b.isDead && !b.isTemporary)
     || a.id <=> b.id
+
+let sortByCampaign = {
+  ships = shipsSort
+  ships_new = shipsSort
 
   tanks = @(a, b)
        b.score <=> a.score
@@ -22,12 +25,14 @@ let sortByCampaign = {
 
 let scoreKey = {
   ships = "damage"
+  ships_new = "damage"
   tanks = "score"
   air   = "score"
 }
 
 let scoreKeyRaw = {
   ships = "damage"
+  ships_new = "damage"
   tanks = "dmgScoreBonus"
   air   = "dmgScoreBonus"
 }

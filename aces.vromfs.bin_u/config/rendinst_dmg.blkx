@@ -13037,8 +13037,7 @@
       "nextRes": "af_conveyor_front_dmg",
       "physRes": "af_conveyor_front_destr_phobj",
       "hp": 50.0,
-      "dmPreset": "frame_metal_house",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 20.0,
       "fx": "ad_metal_buildings_destructions_part",
       "fxScale": 3.0,
       "material": "metal"
@@ -13047,8 +13046,7 @@
       "nextRes": "af_conveyor_front_b_dmg",
       "physRes": "af_conveyor_front_b_destr_phobj",
       "hp": 50.0,
-      "dmPreset": "frame_metal_house",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 20.0,
       "fx": "ad_metal_buildings_destructions_part",
       "fxScale": 3.0,
       "material": "metal"
@@ -13057,8 +13055,7 @@
       "nextRes": "af_conveyor_front_c_dmg",
       "physRes": "af_conveyor_front_c_destr_phobj",
       "hp": 50.0,
-      "dmPreset": "frame_metal_house",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 20.0,
       "fx": "ad_metal_buildings_destructions_part",
       "fxScale": 3.0,
       "material": "metal"
@@ -13067,8 +13064,7 @@
       "nextRes": "af_conveyor_middle_dmg",
       "physRes": "af_conveyor_middle_destr_phobj",
       "hp": 60.0,
-      "dmPreset": "frame_metal_house",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 20.0,
       "fx": "ad_metal_buildings_destructions_part",
       "fxScale": 3.0,
       "material": "metal"
@@ -13077,8 +13073,7 @@
       "nextRes": "af_conveyor_part_dmg",
       "physRes": "af_conveyor_part_destr_phobj",
       "hp": 50.0,
-      "dmPreset": "frame_metal_house",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 20.0,
       "fx": "ad_metal_buildings_destructions_part",
       "fxScale": 3.0,
       "material": "metal"
@@ -13087,8 +13082,7 @@
       "nextRes": "af_front_building_dmg",
       "physRes": "af_front_building_destr_phobj",
       "hp": 60.0,
-      "dmPreset": "frame_metal_house",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 20.0,
       "fx": "ad_metal_buildings_destructions_part",
       "fxScale": 4.0,
       "material": "metal"

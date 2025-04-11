@@ -68,6 +68,7 @@ let profileKeysAffectData = {
   sharedStats = true
   sharedStatsByCampaign = true
   sharedStatsByUnits = true
+  penalties = true
 }
 lastProfileKeysUpdated.subscribe(function(list) {
   if (list.findvalue(@(_, k) profileKeysAffectData?[k]) != null)

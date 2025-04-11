@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { format } = require("string")
 let { register_command, command } = require("console")
 let { object_to_json_string } = require("json")
 let { get_unittags_blk } = require("blkGetters")
@@ -8,38 +9,42 @@ let { mkpath } = require("dagor.fs")
 let { get_time_msec } = require("dagor.time")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { eachBlock } = require("%sqstd/datablock.nut")
+let { getPartType } = require("%globalScripts/modeXrayLib.nut")
 let { dmViewerMode, isDebugBatchExportProcess } = require("dmViewerState.nut")
 let { mkUnitDataForXray, mkPartTooltipInfo } = require("modeXray.nut")
-
-function collectItemInfo(unitName) {
-  let unitData = mkUnitDataForXray(unitName, null)
-  if (unitData.unit == null)
-    return null
-  let partNames = []
-  let damagePartsBlk = unitData.unitBlk?.DamageParts
-  if (damagePartsBlk)
-    for (local b = 0; b < damagePartsBlk.blockCount(); b++) {
-      let partsBlk = damagePartsBlk.getBlock(b)
-      for (local p = 0; p < partsBlk.blockCount(); p++) {
-        let partName = partsBlk.getBlock(p).getBlockName()
-        if (!partNames.contains(partName))
-          partNames.append(partName)
-      }
-    }
-  partNames.sort()
-
-  let res = {}
-  foreach (partName in partNames) {
-    let info = mkPartTooltipInfo(partName, unitData)
-    if (info.title.len())
-      res[partName] <- "\n".join([ info.title, info.desc ], true)
-  }
-  return res.len() ? res : null
-}
 
 let progressId = "unitsXray"
 local loadAllItemsProgress = null
 let onFinishActions = []
+
+let msToTimeStr = @(ms) format("%02dm%02ds", ms / 60000, (ms % 60000) / 1000)
+
+function collectItemInfo(unitName, partsWhitelist) {
+  let unitData = mkUnitDataForXray(unitName, null)
+  if (unitData.unit == null)
+    return null
+  let damagePartsBlk = unitData.unitBlk?.DamageParts
+  let partNames = []
+  eachBlock(damagePartsBlk, function(partsBlk) {
+    eachBlock(partsBlk, function(pBlk) {
+      let partName = pBlk.getBlockName()
+      if (partsWhitelist != null && partsWhitelist.findindex(@(v) partName.startswith(v)) == null)
+        return
+      if (!partNames.contains(partName))
+        partNames.append(partName)
+    })
+  })
+  partNames.sort()
+
+  let res = {}
+  foreach (name in partNames) {
+    let partType = getPartType(name, unitData.xrayRemap)
+    let { title, desc } = mkPartTooltipInfo(name, unitData)
+    if (title != partType || desc != "")
+      res[name] <- "\n".join([ title, desc ], true)
+  }
+  return res.len() ? res : null
+}
 
 function onFinishLoad() {
   let actions = clone onFinishActions
@@ -52,42 +57,65 @@ function onFinishLoad() {
     action(res)
 }
 
-function loadNextItem() {
+function loadNextItems() {
   if (loadAllItemsProgress == null) {
-    clearTimer(loadNextItem)
+    clearTimer(loadNextItems)
     onFinishLoad()
     return
   }
-  let time = get_time_msec()
-  let { res, todo } = loadAllItemsProgress
+  let frameStartTimeMs = get_time_msec()
+  let { res, todo, params } = loadAllItemsProgress
+  let { partsWhitelist, exportStartTimeMs } = params
+  let total = res.len() + todo.len()
   while(todo.len() > 0) {
-    let name = todo.pop()
-    command($"console.progress_indicator {progressId} {res.len()}/{res.len() + todo.len()}")
-    let info = collectItemInfo(name)
+    let i = res.len()
+    let prc = (100.0 * i / total).tointeger()
+    let passedMs = get_time_msec() - exportStartTimeMs
+    let eta = msToTimeStr(max(0, (1.0 * passedMs / (i || 1) * total).tointeger() - passedMs))
+    command($"console.progress_indicator {progressId} {i}/{total}{nbsp}({prc}%),{nbsp}ETA:{nbsp}{eta}")
+
+    let unitName = todo.pop()
+    let info = collectItemInfo(unitName, partsWhitelist)
     if (info != null)
-      res[name] <- info
-    if (get_time_msec() - time >= 10)
+      res[unitName] <- info
+    if (get_time_msec() - frameStartTimeMs >= 10)
       return
   }
+  let totalTimeMs = get_time_msec() - exportStartTimeMs
+  command($"console.progress_indicator {progressId} Finished{nbsp}{total}{nbsp}items{nbsp}in{nbsp}{msToTimeStr(totalTimeMs)}")
   command($"console.progress_indicator {progressId}")
-  clearTimer(loadNextItem)
+  clearTimer(loadNextItems)
   onFinishLoad()
 }
 
-function loadAllItemsAndDo(action) {
-  onFinishActions.append(action)
+function loadAllItemsAndDo(params, onFinishCb) {
+  onFinishActions.append(onFinishCb)
   if (loadAllItemsProgress != null)
     return
-  loadAllItemsProgress = { res = {}, todo = [] }
-  eachBlock(get_unittags_blk(), @(blk) loadAllItemsProgress.todo.append(blk.getBlockName()))
-  setInterval(0.001, loadNextItem)
+  loadAllItemsProgress = { res = {}, todo = [], params }
+  let { unitsWhitelist, unitsBlacklist } = params
+  eachBlock(get_unittags_blk(), function(blk) {
+    let unitName = blk.getBlockName()
+    if (unitsWhitelist != null && !unitsWhitelist.contains(unitName))
+      return
+    if (unitsBlacklist?.contains(unitName) ?? false)
+      return
+    loadAllItemsProgress.todo.append(unitName)
+  })
+  setInterval(0.001, loadNextItems)
 }
 
-function exportXrayPartsDescs() {
+function exportXrayPartsDescs(nullOrPartIdWhitelist = null, nullOrUnitIdWhitelist = null, nullOrUnitIdBlacklist = null) {
   isDebugBatchExportProcess.set(true)
   dmViewerMode.set(DM_VIEWER_XRAY)
+  let params = {
+    partsWhitelist = nullOrPartIdWhitelist
+    unitsWhitelist = nullOrUnitIdWhitelist
+    unitsBlacklist = nullOrUnitIdBlacklist
+    exportStartTimeMs = get_time_msec()
+  }
 
-  loadAllItemsAndDo(function(res) {
+  loadAllItemsAndDo(params, function(res) {
     isDebugBatchExportProcess.set(false)
     dmViewerMode.set(DM_VIEWER_NONE)
 

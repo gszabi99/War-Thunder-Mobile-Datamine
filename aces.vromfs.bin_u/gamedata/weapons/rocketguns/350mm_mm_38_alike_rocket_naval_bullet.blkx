@@ -79,6 +79,11 @@
       "spawnExplosionWreckage": false,
       "spawnExplosionFx": false,
       "smokeEffect": "rocket_fire_light_huge",
+      "effectOffset": [
+        -2.8,
+        0.0,
+        0.0
+      ],
       "explosionEffect": "hit_291_390mm_metal_he",
       "groundCollisionEffect": "hit_291_390mm_dirt_he",
       "ricochetEffect": "hit_291_390mm_metal_he",

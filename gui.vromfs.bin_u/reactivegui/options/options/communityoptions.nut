@@ -4,12 +4,15 @@ let { getCurrentLanguage } = require("dagor.localize")
 let { getCountryCode } = require("auth_wt")
 let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
 let { is_nswitch } = require("%sqstd/platform.nut")
+let { arrayByRows } = require("%sqstd/underscore.nut")
 
 let iconSize = hdpxi(120)
 let itemSize = [hdpx(200), hdpx(200)]
 
 let userCountryRU = getCountryCode() == "RU"
 let canShowSocialNetworks = !is_nswitch
+let maxItemsInRow = 3
+let socialsGap = hdpx(35)
 
 let socNetList = [
   userCountryRU ? null
@@ -23,11 +26,12 @@ let socNetList = [
     image = "ui/gameuiskin#icon_social_telegram.svg"
     url = loc("url/community/telegram")
   }
-  {
-    text = loc("community/discord")
-    image = "ui/gameuiskin#icon_social_discord.svg"
-    url = loc("url/community/discord")
-  }
+  userCountryRU ? null
+    : {
+      text = loc("community/discord")
+      image = "ui/gameuiskin#icon_social_discord.svg"
+      url = loc("url/community/discord")
+    }
   getCurrentLanguage() != "Russian" ? null
     : {
       text = loc("community/vk")
@@ -39,6 +43,12 @@ let socNetList = [
       text = loc("community/instagram")
       image = "ui/gameuiskin#icon_social_instagram.svg"
       url =  loc("url/community/instagram")
+    }
+  userCountryRU ? null
+    : {
+      text = loc("community/x")
+      image = "ui/gameuiskin#x_logo.svg"
+      url =  loc("url/community/x")
     }
 ].filter(@(s) s != null)
 
@@ -118,9 +128,15 @@ function mkFeedBackButtons(item){
 }
 
 let socNetworks = {
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(35)
-  children = socNetList.map(@(item) mkNetworkItem(item))
+  flow = FLOW_VERTICAL
+  gap = socialsGap
+  children = arrayByRows(socNetList.map(@(item) mkNetworkItem(item)), maxItemsInRow)
+    .map(@(children) {
+      flow = FLOW_HORIZONTAL
+      hplace = ALIGN_CENTER
+      gap = socialsGap
+      children
+    })
 }
 
 let feedBack = {
@@ -136,7 +152,7 @@ return @() {
   size = flex()
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
-  gap = hdpx(170)
+  gap = { size = flex() }
   children = [
     canShowSocialNetworks ? header : null
     canShowSocialNetworks ? socNetworks : null

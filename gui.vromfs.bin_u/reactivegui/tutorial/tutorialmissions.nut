@@ -60,6 +60,7 @@ function mkRewardBattleData(rewards) {
   let { level, exp, nextLevelExp } = playerLevelInfo.value
   let { playerExp = 0 } = rewards
   return {
+    campaign = curCampaign.get()
     player = { exp, level, nextLevelExp }
     reward = { playerExp = { baseExp = playerExp, totalExp = playerExp }}
     researchingUnit = mkResearchingUnitForBattleData()

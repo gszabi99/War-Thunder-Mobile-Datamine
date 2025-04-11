@@ -45,6 +45,8 @@
   "destroysTrees": true,
   "type": "typeMediumTank",
   "minRelativeTankCameraThreshold": 1.45,
+  "rearmSmokeTimeOnField": 60.0,
+  "canReloadNonGuns": true,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,

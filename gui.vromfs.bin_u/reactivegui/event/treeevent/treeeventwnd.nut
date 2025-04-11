@@ -25,6 +25,7 @@ let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
 let mapNet = require("mapNet.nut")
 let { mkTimeUntil } = require("%rGui/quests/questsPkg.nut")
+let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 let { mkLineCmds, mkLineCmdsOutline, mkLinePresetColor, mkPoint, mkBgElement, mkQuestInfoWnd
 } = require("treeEventComps.nut")
 let { mkCustomButton } = require("%rGui/components/textButton.nut")
@@ -285,7 +286,10 @@ let footer = {
           if (curGmList.get().len() == 0)
             return
           sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = openedTreeEventId.get() })
-          eventbus_send("queueToGameMode", { modeId = curGmList.get()[0].gameModeId })
+          let modeId = curGmList.get()[0].gameModeId
+          if (tryOpenQueuePenaltyWnd(curGmList.get()[0].campaign, { id = "queueToGameMode", modeId }))
+            return
+          eventbus_send("queueToGameMode", { modeId })
         })
       ]
     }

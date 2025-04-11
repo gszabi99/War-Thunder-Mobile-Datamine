@@ -692,11 +692,11 @@
         "defaultPitch": 0.0,
         "speedYaw": [
           45.0,
-          8.0
+          80.0
         ],
         "speedPitch": [
           55.0,
-          8.0
+          80.0
         ],
         "shotFreq": 0.5,
         "bullets": 250,
@@ -758,11 +758,11 @@
         "defaultPitch": 0.0,
         "speedYaw": [
           45.0,
-          8.0
+          80.0
         ],
         "speedPitch": [
           55.0,
-          8.0
+          80.0
         ],
         "shotFreq": 0.5,
         "bullets": 250,
@@ -824,11 +824,11 @@
         "defaultPitch": 0.0,
         "speedYaw": [
           45.0,
-          8.0
+          80.0
         ],
         "speedPitch": [
           55.0,
-          8.0
+          80.0
         ],
         "shotFreq": 0.5,
         "bullets": 250,
@@ -1069,11 +1069,11 @@
               "defaultPitch": 0.0,
               "speedYaw": [
                 45.0,
-                8.0
+                80.0
               ],
               "speedPitch": [
                 55.0,
-                8.0
+                80.0
               ],
               "shotFreq": 0.5,
               "bullets": 250,
@@ -1135,11 +1135,11 @@
               "defaultPitch": 0.0,
               "speedYaw": [
                 45.0,
-                8.0
+                80.0
               ],
               "speedPitch": [
                 55.0,
-                8.0
+                80.0
               ],
               "shotFreq": 0.5,
               "bullets": 250,
@@ -1201,11 +1201,11 @@
               "defaultPitch": 0.0,
               "speedYaw": [
                 45.0,
-                8.0
+                80.0
               ],
               "speedPitch": [
                 55.0,
-                8.0
+                80.0
               ],
               "shotFreq": 0.5,
               "bullets": 250,
@@ -1448,11 +1448,11 @@
               "defaultPitch": 0.0,
               "speedYaw": [
                 45.0,
-                8.0
+                80.0
               ],
               "speedPitch": [
                 55.0,
-                8.0
+                80.0
               ],
               "shotFreq": 0.5,
               "bullets": 250,
@@ -1514,11 +1514,11 @@
               "defaultPitch": 0.0,
               "speedYaw": [
                 45.0,
-                8.0
+                80.0
               ],
               "speedPitch": [
                 55.0,
-                8.0
+                80.0
               ],
               "shotFreq": 0.5,
               "bullets": 250,
@@ -1580,11 +1580,11 @@
               "defaultPitch": 0.0,
               "speedYaw": [
                 45.0,
-                8.0
+                80.0
               ],
               "speedPitch": [
                 55.0,
-                8.0
+                80.0
               ],
               "shotFreq": 0.5,
               "bullets": 250,

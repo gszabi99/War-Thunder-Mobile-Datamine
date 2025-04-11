@@ -11,7 +11,7 @@ let { unitType } = require("%rGui/hudState.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
+let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { tacticalMapMarkersLayer } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
 let mkTacticalMapPointingInputProcessor = require("%rGui/hud/tacticalMap/tacticalMapPointingProcessor.nut")
@@ -24,7 +24,8 @@ enum MAP_OBJ_TYPE {
   CAPTURE_ZONE
 }
 
-let mapSizePx = min(saSize[1], sh(50))
+let headerGap = hdpx(40)
+let mapSizePx = min(saSize[1] - backButtonHeight - headerGap, saSize[0] - hdpx(700))
 let objectSnapRadiusSq = pow(hdpx(20) / mapSizePx, 2)
 let pointerObjectPickerSizePx = evenPx(70)
 let pointerCoordsPickerSizePx = evenPx(58)
@@ -197,37 +198,40 @@ let tacticalMap = {
   ]
 }
 
+let content = {
+  size = flex()
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(100)
+  children = [
+    tacticalMap
+    {
+      size = flex()
+      valign = ALIGN_CENTER
+      flow = FLOW_VERTICAL
+      gap = hdpx(56)
+      children = [
+        wndTitle
+        usageInfoText
+        @() {
+          watch = selectedObject
+          flow = FLOW_VERTICAL
+          gap = hdpx(56)
+          children = actionBtnsCtors?[selectedObject.get()?.mapObjType ?? MAP_OBJ_TYPE.NONE](selectedObject.get(), mapCoords)
+        }
+      ]
+    }
+  ]
+}
+
 let voiceMsgMapScene = bgShaded.__merge({
   key = {}
   size = flex()
   padding = saBordersRv
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(100)
+  flow = FLOW_VERTICAL
+  gap = headerGap
   children = [
     backButton(close)
-    tacticalMap
-    {
-      size = [ flex(), mapSizePx ]
-      vplace = ALIGN_CENTER
-      flow = FLOW_VERTICAL
-      children = [
-        {
-          size = flex()
-          flow = FLOW_VERTICAL
-          gap = hdpx(56)
-          children = [
-            wndTitle
-            usageInfoText
-            @() {
-              watch = selectedObject
-              flow = FLOW_VERTICAL
-              gap = hdpx(56)
-              children = actionBtnsCtors?[selectedObject.get()?.mapObjType ?? MAP_OBJ_TYPE.NONE](selectedObject.get(), mapCoords)
-            }
-          ]
-        }
-      ]
-    }
+    content
   ]
   animations = wndSwitchAnim
 })

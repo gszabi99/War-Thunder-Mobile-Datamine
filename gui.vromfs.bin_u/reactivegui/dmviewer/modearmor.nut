@@ -5,8 +5,7 @@ let { dmViewerMode, dmViewerUnitReady } = require("dmViewerState.nut")
 let { toggleSubscription, mkDmViewerHint, mkHintTitle, mkHintDescText, accentColor, mkUnitStatusText
 } = require("dmViewerPkg.nut")
 let { collectArmorClassToSteelMuls } = require("modeArmorUtils.nut")
-let { loadedHangarUnitName } = require("%rGui/unit/hangarUnit.nut")
-let { addonsToDownload } = require("%rGui/updater/updaterState.nut")
+let { hasNotDownloadedPkgForHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
 let absoluteArmorThreshold = 500
 let relativeArmorThreshold = 5.0
@@ -123,12 +122,11 @@ function hintComp() {
 }
 
 let unitStatusComp = @() !isModeActive.get() ? { watch = isModeActive } : {
-  watch = [isModeActive, dmViewerUnitReady, loadedHangarUnitName, addonsToDownload]
-  size= flex()
-  children = loadedHangarUnitName.get() in addonsToDownload.get()
-      ? null
-    : isModeActive.get() && dmViewerUnitReady.get() && hangar_get_dm_viewer_parts_count() == 0
-      ? mkUnitStatusText(loc("armor_class/no_armoring/common"))
+  watch = [isModeActive, dmViewerUnitReady, hasNotDownloadedPkgForHangarUnit]
+  size = flex()
+  children = !hasNotDownloadedPkgForHangarUnit.get() && isModeActive.get() &&
+      dmViewerUnitReady.get() && hangar_get_dm_viewer_parts_count() == 0
+    ? mkUnitStatusText(loc("armor_class/no_armoring/common"))
     : null
 }
 

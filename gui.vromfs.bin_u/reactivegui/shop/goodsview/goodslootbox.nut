@@ -24,7 +24,7 @@ let bgHiglight = {
 
 function getGoodsLootboxName(goods, serverConfigsV) {
   let lootbox = serverConfigsV?.lootboxesCfg[goods?.lootboxes.findindex(@(_) true)]
-  return lootbox == null ? goods.id : getLootboxName(lootbox.name, lootbox?.meta.event)
+  return lootbox == null ? goods.id : getLootboxName(lootbox.name)
 }
 
 let mkLootboxNameComp = @(goods) Computed(@() getGoodsLootboxName(goods, serverConfigs.get()))

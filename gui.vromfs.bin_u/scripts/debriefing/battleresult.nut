@@ -49,6 +49,10 @@ let battleResult = Computed(function() {
     return singleMissionResult.get()
   else {
     res = baseBattleResult.get()?.__merge({ roomInfo = roomInfo.get() })
+    if ("realName" in res?.unit) {
+      res.unit.name = res.unit.realName
+      res.unit.$rawdelete("realName")
+    }
     if (res?.sessionId != battleSessionId.get())
       return connectFailedData.get()?.sessionId != battleSessionId.get() ? null
         : connectFailedData.get().__merge({ isDisconnected = true }, { roomInfo = roomInfo.get() })
@@ -100,10 +104,10 @@ battleResult.subscribe(function(v) {
   let { unit = null, isSeparateSlots = false } = v
   if (unit == null)
     return
-  let { name = "", platoonUnits = [] } = unit
+  let { realName = null, name = "", platoonUnits = [] } = unit
   let units = isSeparateSlots
-    ? [ name ].extend(platoonUnits.map(@(pu) pu.name))
-    : [ name ]
+    ? [ realName ?? name ].extend(platoonUnits.map(@(pu) pu.name))
+    : [ realName ?? name ]
   let params = { units }
   if (isEqual(isUnitWeaponryRequested.get(), params))
     return

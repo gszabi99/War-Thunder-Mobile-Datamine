@@ -16,7 +16,7 @@ function getUnitAnyPrice(unit, isForLevelUp, unitDiscounts) {
 }
 
 let function getShortPrice(price) {
-  if(price > 1000000)
+  if(price > 100000)
     return shortTextFromNum(price)
   return decimalFormat(price)
 }

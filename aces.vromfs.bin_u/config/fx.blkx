@@ -670,7 +670,8 @@
   "tank_smoke_small": {
     "fx": "smoke_tank_small_cmps_fx",
     "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "aircraft/effects",
+    "sortDistanceOffset": 10.0
   },
   "tank_smoke_big": {
     "fx": "smoke_tank_big_cmps_fx",

@@ -11,6 +11,7 @@ let { isEqual, deep_clone } = require("%sqstd/underscore.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
 let { specialEventsWithTree } = require("%rGui/event/eventState.nut")
+let { updatePresetByUnlocks, loadPresetOnce } = require("%rGui/event/treeEvent/treeEventUtils.nut")
 
 const SAVE_PATH = "../../skyquake/prog/scripts/wtm/globals/config/eventMapPresets"
 const SAVE_EXT = ".json"
@@ -136,12 +137,12 @@ function changeCurPresetField(key, value) {
 
 let clearPointsState = @() setMapElementsState(mkEmptyPreset())
 
-function loadPreset(id) {
-  if (currentPresetId.get() == id)
-    return
-  currentPresetId.set(id)
+function loadPreset(id, useCurrentId = false) {
+  if (!useCurrentId)
+    currentPresetId.set(id)
+
   historyMapElements.set([])
-  setMapElementsState(mkEmptyPreset().__merge(savedPresets.get()?[id] ?? {}))
+  setMapElementsState(mkEmptyPreset().__merge(savedPresets.get()?[currentPresetId.get()] ?? {}))
 }
 currentPresetId.whiteListMutatorClosure(loadPreset)
 
@@ -190,8 +191,8 @@ function getPresetsDataFromFiles(files) {
 }
 
 function selectAndLoadFirstPreset() {
-  let firstPreset = savedPresets.get().findvalue(@(_) true) ?? {}
-  loadPreset(firstPreset?.id)
+  let firstPreset = savedPresets.get().findindex(@(_) true)
+  loadPreset(firstPreset, true)
 }
 
 let bgFieldErrors = {
@@ -447,7 +448,6 @@ function makePresetFilesByUnlocks(presets) {
   }
 }
 
-let mkDefaultPoint = @(pos) { pos, view = "mapMark" }
 let mkDefaultLine = @(from, to) { from, to }
 
 let findLineIdx = @(point1, point2, lines)
@@ -486,68 +486,15 @@ function changeLine(idx, line) {
 }
 
 function createPresetsByUnlocks() {
-  let events = specialEventsWithTree.get().reduce(@(res, v) res.$rawset(v.eventName, true), {})
-  let unlocksByPresets = {}
-  foreach (name, u in activeUnlocks.get()) {
-    if (u?.meta.event_id not in events)
-      continue
-    let presetId = u?.meta.quest_cluster_id
-    if (presetId == null)
-      continue
-    if (presetId not in unlocksByPresets)
-      unlocksByPresets[presetId] <- {}
-    unlocksByPresets[presetId][name] <- u
-  }
+  let treeEventPresets = activeUnlocks.get().filter(@(unlock) unlock?.meta.quest_cluster)
 
   let presets = {}
-  let indexes = {}
-  local newPresets = 0
-  local newPoints = 0
-  local newLines = 0
-
-  function initPreset(presetId) {
-    if (presetId not in presets) {
-      if (presetId not in savedPresets.get())
-        newPresets++
-      presets[presetId] <- mkEmptyPreset().__merge(savedPresets.get()?[presetId] ?? {})
-      presets[presetId].points = clone presets[presetId].points
-      presets[presetId].lines = clone presets[presetId].lines
-    }
-    return presets[presetId]
-  }
-
-  let columns = 5
-  foreach (presetId, unlocks in unlocksByPresets) {
-    let ordered = unlocks.keys().sort()
-    foreach (key in ordered) {
-      //gen point
-      if (key not in savedPresets.get()?[presetId].points) {
-        let curPreset = initPreset(presetId)
-        let pointIdx = indexes?[presetId] ?? 0
-        let { mapSize, gridSize } = curPreset
-        let x = clamp((mapSize[0] / 2) + (pointIdx % columns - 2) * gridSize, 0, mapSize[0])
-        let y = clamp((mapSize[1] / 2) + (pointIdx / columns - 2) * gridSize, 0, mapSize[1])
-
-        curPreset.points[key] <- mkDefaultPoint([x, y])
-        indexes[presetId] <- pointIdx + 1
-        newPoints++
-      }
-
-      let { requirement = "" } = unlocks[key]
-      //gen line
-      if (requirement in unlocks
-          && null == findLineIdx(key, requirement, savedPresets.get()?[presetId].lines ?? [])) {
-        let curPreset = initPreset(presetId)
-        curPreset.lines.append(mkDefaultLine(requirement, key))
-        newLines++
-      }
-    }
-  }
+  foreach (presetId, _ in treeEventPresets)
+    presets[presetId] <- updatePresetByUnlocks(presetId, loadPresetOnce(presetId) ?? {})
 
   savedPresets.set(savedPresets.get().__merge(presets))
   selectAndLoadFirstPreset()
   makePresetFilesByUnlocks(presets)
-  openFMsgBox({ text = $"From {events.len()} events with generated:\n\nNew presets = {newPresets}\nNew points = {newPoints}\nNew lines = {newLines}" })
 }
 
 register_command(@() isEventMapEditorOpened.set(true), "ui.debug.event_map_editor")

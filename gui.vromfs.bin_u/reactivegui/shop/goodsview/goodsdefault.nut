@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
+let { getGoodsNameById } = require("%appGlobals/config/goodsPresentation.nut")
 let { mkGoodsWrap, txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsLimitAndEndTime
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 
-let getLocNameDefault = @(goods) loc($"shop/{goods.id}")
+let getLocNameDefault = @(goods) getGoodsNameById(goods.id)
 
 let mkGoodsDefault = @(goods, onClick, state, animParams, addChildren) mkGoodsWrap(
   goods,

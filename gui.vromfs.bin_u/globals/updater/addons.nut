@@ -3,7 +3,7 @@ let { get_settings_blk } = require("blkGetters")
 let { logerr, debug } = require("dagor.debug")
 let { DBGLEVEL } = require("dagor.system")
 let { eachBlock } = require("%sqstd/datablock.nut")
-let { get_addons_size, get_addons_size_async = null } = require("contentUpdater")
+let { get_addons_size_async } = require("contentUpdater")
 let { startswith, endswith } = require("string")
 let { unique } = require("%sqstd/underscore.nut")
 let { toIntegerSafe } = require("%sqstd/string.nut")
@@ -231,8 +231,7 @@ function localizeAddonsLimited(list, maxNumber) {
 }
 
 let getAddonsSize = @(addons)
-  get_addons_size_async != null ? unique(addons).reduce(@(total, addon) total + (addonsSizes?[addon] ?? 0), 0)
-                                : get_addons_size(unique(addons))
+  unique(addons).reduce(@(total, addon) total + (addonsSizes?[addon] ?? 0), 0)
 
 function getAddonsSizeStr(addons) {
   let bytes = getAddonsSize(addons)

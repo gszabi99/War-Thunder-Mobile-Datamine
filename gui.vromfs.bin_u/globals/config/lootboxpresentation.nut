@@ -101,10 +101,13 @@ let customGoodsLootboxScale = {
   event_special_gift_air_new_year_2025   = 0.7
 }
 
-let lootboxLocIdBySlot = {
-  ["0"] = "lootbox/every_day_award_small_pack",
-  ["1"] = "lootbox/every_day_award_medium_pack",
-  ["2"] = "lootbox/every_day_award_big_pack_1",
+let customLocId = {
+  event_small = "lootbox/every_day_award_small_pack"
+}
+
+let lootboxLocIdByNamePart = {
+  ["_medium_season_"] = "lootbox/every_day_award_medium_pack",
+  ["_big_season_"] = "lootbox/every_day_award_big_pack_1",
 }
 
 let defaultImgFilenameCache = {}
@@ -163,7 +166,10 @@ let isNum = regexp2(@"^\d+$")
 
 let lootboxPrefixes = ["past_events_box"]
 
-let getLootboxNameById = memoize(function parseString(id) {
+let getLootboxName = memoize(function parseString(id) {
+  if (id in customLocId)
+    return loc(customLocId[id])
+
   foreach (prefix in lootboxPrefixes) {
     if (id.startswith(prefix)) {
       local parts = id.slice(prefix.len() + 1).split("_")
@@ -171,10 +177,13 @@ let getLootboxNameById = memoize(function parseString(id) {
         return loc($"lootbox/{prefix}", {num = getRomanNumeral(parts[0].tointeger())})
     }
   }
+
+  foreach (part, locId in lootboxLocIdByNamePart)
+    if (id.indexof(part) != null)
+      return loc(locId)
+
   return loc($"lootbox/{id}")
 })
-
-let getLootboxName = @(id, slot = "") slot in lootboxLocIdBySlot ? loc(lootboxLocIdBySlot[slot]) : getLootboxNameById(id)
 
 return {
   getLootboxImage

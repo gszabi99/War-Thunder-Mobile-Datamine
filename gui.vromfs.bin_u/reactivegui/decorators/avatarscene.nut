@@ -25,28 +25,26 @@ let { mkDecoratorUnlockProgress } = require("mkDecoratorUnlockProgress.nut")
 
 let gap = hdpx(15)
 let avatarSize = hdpxi(200)
+let listPaddingVert = hdpx(30)
 
 let maxDecInRow = 9
 let columns = min((contentWidthFull / (gap + avatarSize)).tointeger(), maxDecInRow)
-let selectedAvatar = Watched(chosenAvatar.value?.name)
+
+let chosenAvatarName = Computed(@() chosenAvatar.get()?.name ?? "")
+let selectedAvatarName = Watched(chosenAvatarName.get())
 
 let buySelectedAvatar = @()
-  purchaseDecorator(selectedAvatar.value, loc("decorator/avatar"),
-    mkBqPurchaseInfo(PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, selectedAvatar.value))
+  purchaseDecorator(selectedAvatarName.get(), loc("decorator/avatar"),
+    mkBqPurchaseInfo(PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, selectedAvatarName.get()))
 
 function applySelectedAvatar() {
-  if (selectedAvatar.value == null) {
+  let selAvatar = selectedAvatarName.get()
+  if (selAvatar == "")
     unset_current_decorator("avatar")
-    return
-  }
-  if (selectedAvatar.value in availAvatars.value) {
-    set_current_decorator(selectedAvatar.value)
-    return
-  }
-  if ((allAvatars.value?[selectedAvatar.value]?.price.price ?? 0) > 0) {
+  else if (selAvatar in availAvatars.get())
+    set_current_decorator(selAvatar)
+  else if ((allAvatars.get()?[selAvatar]?.price.price ?? 0) > 0)
     buySelectedAvatar()
-    return
-  }
 }
 
 let header = {
@@ -55,15 +53,11 @@ let header = {
 }.__update(fontMedium)
 
 function avatarBtn(item) {
-  let name = item[0]
-  let price = item?[1].price ?? {
-    price = 0
-    currencyId = ""
-  }
+  let { name, price } = item
   let stateFlags = Watched(0)
-  let isChoosen = Computed(@() chosenAvatar.value?.name == name)
-  let isSelected = Computed(@() selectedAvatar.value == name)
-  let isAvailable = Computed(@() name in availAvatars.value || name == null)
+  let isChoosen = Computed(@() chosenAvatarName.get() == name)
+  let isSelected = Computed(@() selectedAvatarName.get() == name)
+  let isAvailable = Computed(@() name in availAvatars.get() || name == "")
   let isUnseen = Computed(@() name in unseenDecorators.value)
   return {
     rendObj = ROBJ_SOLID
@@ -75,12 +69,12 @@ function avatarBtn(item) {
     function onClick() {
       markDecoratorSeen(name)
       if (!isSelected.value)
-        selectedAvatar(name)
+        selectedAvatarName.set(name)
       else if (isSelected.value && !isChoosen.value
-          && decoratorInProgress.value != (name ?? "avatar"))
+          && decoratorInProgress.get() != (name != "" ? name : "avatar"))
         applySelectedAvatar()
     }
-    onHover = name == null ? null : hoverHoldAction("markDecoratorsSeen", name, markDecoratorSeen)
+    onHover = name == "" ? null : hoverHoldAction("markDecoratorsSeen", name, markDecoratorSeen)
     transform = {
       scale = stateFlags.value & S_ACTIVE ? [0.95, 0.95] : [1, 1]
     }
@@ -133,13 +127,13 @@ function avatarBtn(item) {
 }
 
 function footer() {
-  let { price = null } = allAvatars.value?[selectedAvatar.value]
+  let { price = null } = allAvatars.get()?[selectedAvatarName.get()]
   let currencyFullId = currencyToFullId.get()?[price?.currencyId] ?? price?.currencyId
   let canBuy = (price?.price ?? 0) > 0
-  let canEquip = selectedAvatar.value in availAvatars.value || selectedAvatar.value == null
-  let isCurrent = selectedAvatar.value == chosenAvatar.value?.name
+  let canEquip = selectedAvatarName.get() in availAvatars.get() || selectedAvatarName.get() == ""
+  let isCurrent = selectedAvatarName.get() == chosenAvatarName.get()
   return {
-    watch = [selectedAvatar, chosenAvatar, availAvatars, allAvatars, currencyToFullId]
+    watch = [selectedAvatarName, chosenAvatarName, availAvatars, allAvatars, currencyToFullId]
     size = [flex(), defButtonHeight]
     flow = FLOW_HORIZONTAL
     gap = hdpx(50)
@@ -151,28 +145,45 @@ function footer() {
         ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
             mkCurrencyComp(price.price, currencyFullId, CS_INCREASED_ICON),
             buySelectedAvatar)
-      : mkDecoratorUnlockProgress(selectedAvatar.get())
+      : mkDecoratorUnlockProgress(selectedAvatarName.get())
   }
 }
 
+let scrollHandler = ScrollHandler()
+let listKey = {}
 
-let avatarsList = @() {
-  watch = [availAvatars, allAvatars, isShowAllDecorators]
-  padding = [hdpx(30), 0, hdpx(30), 0]
-  flow = FLOW_VERTICAL
-  gap
-  children = arrayByRows(
-    allAvatars.value.filter(@(frame, key) isShowAllDecorators.value || !frame.isHidden || (key in (availAvatars.value)))
-      .topairs()
-      .sort(@(a,b) (b[0] in availAvatars.value)<=>(a[0] in availAvatars.value))
-      .insert(0, [null])
-      .map(@(item) avatarBtn(item)),
-    columns
-  ).map(@(item) {
-    flow = FLOW_HORIZONTAL
+function avatarsList() {
+  let avatars = allAvatars.get()
+    .filter(@(v, name) isShowAllDecorators.get() || !v.isHidden || (name in availAvatars.get()))
+    .map(@(v, name) v.__merge({ name }))
+    .values()
+    .sort(@(a, b) (b.name in availAvatars.get()) <=> (a.name in availAvatars.get()))
+    .insert(0, {
+        name = ""
+        price = { price = 0, currencyId = "" }
+      })
+
+  let chosenRow = (avatars.findindex(@(v) v.name == chosenAvatarName.get()) ?? 0) / columns
+  let showRowsAbove = 1.5
+  let onAttach = @()
+    scrollHandler.scrollToY(listPaddingVert + ((avatarSize + gap) * (chosenRow - showRowsAbove)))
+
+  return {
+    key = listKey
+    watch = [availAvatars, allAvatars, isShowAllDecorators]
+    padding = [listPaddingVert, 0]
+    flow = FLOW_VERTICAL
     gap
-    children = item
-  })
+    onAttach
+    children = arrayByRows(
+      avatars.map(avatarBtn),
+      columns
+    ).map(@(item) {
+      flow = FLOW_HORIZONTAL
+      gap
+      children = item
+    })
+  }
 }
 
 let decorationNameWnd = {
@@ -180,10 +191,11 @@ let decorationNameWnd = {
   size = flex()
   flow = FLOW_VERTICAL
   gap
+  onAttach = @() selectedAvatarName.set(chosenAvatarName.get())
   onDetach = @() markDecoratorsSeen(unseenDecorators.value.filter(@(_, id) id in availAvatars.value).keys())
   children = [
     header
-    makeVertScroll(avatarsList)
+    makeVertScroll(avatarsList, { scrollHandler })
     footer
   ]
   animations = wndSwitchAnim

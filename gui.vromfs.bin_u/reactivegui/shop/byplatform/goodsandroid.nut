@@ -26,7 +26,7 @@ let getDebugPriceMicros = @(sku) (sku.hash() % 1000) * 1000000 + ((sku.hash() / 
 let billingModule = require("android.billing.googleplay")
 let { GP_OK, GP_NOT_INITED, GP_USER_CANCELED, GP_SERVICE_UNAVAILABLE, GP_ITEM_UNAVAILABLE,
   GP_SERVICE_TIMEOUT, GP_DEVELOPER_ERROR, SUBS_UPD_WITH_TIME_PRORATION, GP_ITEM_ALREADY_OWNED,
-  GP_PURCHSTATE_PENDING
+  GP_PURCHSTATE_PENDING, GP_BILLING_UNAVAILABLE
 } = billingModule
 let dbgStatuses = [GP_OK, GP_USER_CANCELED, GP_SERVICE_UNAVAILABLE, GP_ITEM_UNAVAILABLE, GP_SERVICE_TIMEOUT]
 local dbgStatusIdx = 0
@@ -315,7 +315,7 @@ function changeSubscription(subsTo, subsFrom) {
   purchaseInProgress.set(skuToExt)
 }
 
-let noNeedLogerr = [ GP_SERVICE_TIMEOUT, GP_USER_CANCELED, GP_DEVELOPER_ERROR ]
+let noNeedLogerr = [ GP_SERVICE_TIMEOUT, GP_USER_CANCELED, GP_DEVELOPER_ERROR, GP_BILLING_UNAVAILABLE ]
 
 function sendLogPurchaseData(json_value) {
   //see more here: https://support.appsflyer.com/hc/en-us/articles/4410481112081

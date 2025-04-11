@@ -49,6 +49,7 @@
   "destroysTrees": true,
   "type": "typeLightTank",
   "minRelativeTankCameraThreshold": 1.45,
+  "isSequentialPrimaryShot": true,
   "rearmTimeOnField": [
     45.0,
     30.0
@@ -1372,7 +1373,6 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "triggerGroup": "primary",
         "blk": "gameData/Weapons/groundModels_weapons/81mm_Oerlikon_Typ_3Z_8Dla_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
@@ -1452,7 +1452,6 @@
       },
       {
         "trigger": "gunner1",
-        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/groundModels_weapons/81mm_Oerlikon_Typ_3Z_8Dla_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",

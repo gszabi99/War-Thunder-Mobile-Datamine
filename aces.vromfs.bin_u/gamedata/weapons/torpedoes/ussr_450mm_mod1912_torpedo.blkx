@@ -11,7 +11,7 @@
     "antiShipBomb": true
   },
   "torpedo": {
-    "armDistance": 50.0,
+    "armDistance": 10.0,
     "dropSpeedRange": [
       -10.0,
       69.0
@@ -54,6 +54,12 @@
       1000.0
     ],
     "explodeTreshold": 0.00001,
+    "splash": {
+      "innerRadius": 9.0,
+      "penetration": 125.0,
+      "damage": 4500.0,
+      "damageType": "explosionTorpedo"
+    },
     "arcadeProp": {
       "dropSpeedRange": [
         -10.0,

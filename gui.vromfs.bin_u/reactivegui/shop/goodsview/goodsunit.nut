@@ -215,7 +215,7 @@ function mkOfferUnit(goods, onClick, state) {
     : "ui/gameuiskin#offer_bg_blue.avif"
   let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
   let image = mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image,
-    unitOfferImageOvrByType?[unit?.unitType] ?? {})
+    unitOfferImageOvrByType?[unit?.unitType] ?? {}).__update({ fallbackImage = Picture(p.image) })
   let imageOffset = currencyId == null || unit?.unitType == TANK? 0
     : hdpx(40)
   return mkOfferWrap(onClick,

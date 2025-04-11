@@ -6,6 +6,7 @@ let { subscriptions } = require("%appGlobals/pServer/campaign.nut")
 let { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } = require("%appGlobals/legal.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { getSubsPresentation, getSubsName } = require("%appGlobals/config/subsPresentation.nut")
+let { can_upgrade_subscription } = require("%appGlobals/permissions.nut")
 let { formatText } = require("%rGui/news/textFormatters.nut")
 let { openedSubsId, closeSubsPreview, openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { allSubs, subsGroups } = require("%rGui/shop/shopState.nut")
@@ -276,12 +277,13 @@ function mkPurchButton(subs, subsList, subscriptionsV) {
 
 function purchBlock(subs, isActive, subsList) {
   let toggle = subsList.len() <= 1 ? null : toggleSubsBtn(subs, subsList)
+  let isGroupActive = Computed(@() subsList.findindex(@(s) subscriptions.get()?[s].isActive ?? false))
   return @() {
-    watch = subscriptions
+    watch = [subscriptions, can_upgrade_subscription, isGroupActive]
     size = [flex(), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
-    children = isActive
+    children = isActive || (isGroupActive.get() && !can_upgrade_subscription.get())
       ? btnRow([
           toggle
           {
@@ -289,7 +291,7 @@ function purchBlock(subs, isActive, subsList) {
             valign = ALIGN_CENTER
             halign = ALIGN_CENTER
             rendObj = ROBJ_TEXT
-            text = loc("subscription/active")
+            text = loc(isActive ? "subscription/active" : "options/unavailable")
           }.__update(fontSmallAccentedShaded)
         ])
       : [

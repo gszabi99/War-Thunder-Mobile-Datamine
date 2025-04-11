@@ -1,39 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let { file_exists, read_text_from_file } = require("dagor.fs")
-let { parse_json } = require("json")
 let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
 let { activeUnlocks, unlockProgress, getUnlockPrice } = require("%rGui/unlocks/unlocks.nut")
 let { specialEventsWithTree } = require("%rGui/event/eventState.nut")
 let { separateEventModes } = require("%rGui/gameModes/gameModeState.nut")
 let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { seenQuests, inactiveEventUnlocks } = require("%rGui/quests/questsState.nut")
+let { loadPresetOnce, updatePresetByUnlocks } = require("treeEventUtils.nut")
 
-
-const SAVED_PRESETS_PATH = "%appGlobals/config/eventMapPresets"
-const FILE_EXT = ".json"
-
-function getPresetDataFromFile(path) {
-  if (!path)
-    return null
-  local res = null
-  try {
-    let fileContent = read_text_from_file(path)
-    res = parse_json(fileContent)
-  }
-  catch(e)
-    logerr($"Failed to parse preset from file: {e}")
-
-  return res
-}
-
-let loadPresetOnce = memoize(function(presetId) {
-  let path = $"{SAVED_PRESETS_PATH}/{presetId}{FILE_EXT}"
-  if (file_exists(path))
-    return getPresetDataFromFile(path)
-  logerr($"No file found for preset {presetId}!")
-  return null
-})
 
 let defaultMapSize = [2000, 1000]
 let defaultPointSize = 50
@@ -44,11 +18,18 @@ let openedSubPresetId = mkWatched(persist, "openedSubPresetId")
 let selectedElemId = mkWatched(persist, "selectedElemId", null)
 let selectedPointId = mkWatched(persist, "selectedPointId", null)
 
-let currentPresetState = Computed(@() openedTreeEventId.get() == null ? null
-  : loadPresetOnce(openedTreeEventId.get()))
-let currentSubPresetState = Computed(@() openedSubPresetId.get() == null ? null
-  : loadPresetOnce(openedSubPresetId.get()))
-
+let currentPresetState = Computed(function() {
+  let eventId = openedTreeEventId.get()
+  if (eventId == null)
+    return null
+  return updatePresetByUnlocks(eventId, loadPresetOnce(eventId) ?? {})
+})
+let currentSubPresetState = Computed(function() {
+  let eventId = openedSubPresetId.get()
+  if (eventId == null)
+    return null
+  return updatePresetByUnlocks(eventId, loadPresetOnce(eventId) ?? {})
+})
 let presetPoints = Computed(@() currentPresetState.get()?.points ?? {})
 let presetBgElems = Computed(@() currentPresetState.get()?.bgElements ?? [])
 let presetBackground = Computed(@() currentPresetState.get()?.bg ?? "")

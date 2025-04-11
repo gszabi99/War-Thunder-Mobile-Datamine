@@ -5,6 +5,7 @@ let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
+let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { curUnit, playerLevelInfo, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
@@ -50,6 +51,8 @@ let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { runOfflineBattle } = require("%rGui/debugTools/debugOfflineBattleState.nut")
 let { TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID } = require("%rGui/tutorial/tutorialConst.nut")
 let { openTreeEventWnd } = require("%rGui/event/treeEvent/treeEventState.nut")
+let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
+
 
 local isAttached = false
 
@@ -167,17 +170,23 @@ let mkBtnBuyNextPlayerLevel = @(needShow, curPlayerLevel, campaign) function() {
   return res.__update({ children = btnComp })
 }
 
-let toBattleButton = @(gmId) textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
+function toBattle(gmId) {
+  showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), @() startBattle(gmId)))
+  closeDebriefing()
+}
+
+let cbId = "onResetPenaltyToBattleInDebriefing"
+registerHandler(cbId, @(res, context) res?.error == null ? toBattle(context.gmId) : null)
+
+let toBattleButton = @(gmId, campaign) textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
   function() {
     sendNewbieBqEvent("pressToBattleButtonDebriefing", { status = "online_battle" })
     isNoExtraScenesAfterDebriefing.set(true)
-    let nextAction = @() showNoPremMessageIfNeed(
-      @() offerMissingUnitItemsMessage(curUnit.get(), @() startBattle(gmId)))
+    let nextAction = @() tryOpenQueuePenaltyWnd(campaign, { id = cbId, gmId }) ? null : toBattle(gmId)
     if (needRateGame.get())
       requestShowRateGame(nextAction)
     else
       nextAction()
-    closeDebriefing()
   },
   { hotkeys = ["^J:X | Enter"] })
 
@@ -235,18 +244,20 @@ let mkBtnUpgradeUnit = @(needShow, campaign) mkBtnAppearAnim(true, needShow, tex
   }
 ))
 
-let mkNextGameModeInfo = @(roomInfo) Computed(function() {
-  let rgmId = randomBattleMode.get()?.gameModeId
+let mkNextGameModeInfo = @(roomInfo, prevCamp) Computed(function() {
+  let rBattleMode = randomBattleMode.get()
+  let rgmId = rBattleMode?.gameModeId
+  let rCampaign = rBattleMode?.campaign
   let { game_mode_id = rgmId, game_mode_name = null } = roomInfo
   return game_mode_id not in allGameModes.get() || game_mode_id == rgmId || isNewbieMode(game_mode_name)
-    ? { gmId = rgmId, isCommonBattle = true }
-    : { gmId = game_mode_id, isCommonBattle = false }
+    ? { gmId = rgmId, isCommonBattle = true, campaign = rCampaign ?? prevCamp }
+    : { gmId = game_mode_id, isCommonBattle = false, campaign = prevCamp ?? rCampaign }
 })
 
 let mkBtnToBattlePlace = @(needShow, nextGMInfo, debrData) mkBtnAppearAnim(false, needShow,
   function() {
     let { isCustomOfflineBattle = false, unit = null, mission = null } = debrData
-    let { gmId, isCommonBattle } = nextGMInfo.get()
+    let { gmId, isCommonBattle, campaign } = nextGMInfo.get()
     let { name = null, isFake = false } = unit
     let children = []
     if (!isFake)
@@ -259,8 +270,8 @@ let mkBtnToBattlePlace = @(needShow, nextGMInfo, debrData) mkBtnAppearAnim(false
           ? children.append(mkStartCustomOfflineBattleButton(name, mission))
         : !isInSquad.get() && isCommonBattle && newbieOfflineMissions.get() != null
           ? children.append(startOfflineMissionButton)
-        : gmId != null && (!isInSquad.get() || isSquadLeader.get())
-          ? children.append(toBattleButton(gmId))
+        : gmId != null && campaign != null && (!isInSquad.get() || isSquadLeader.get())
+          ? children.append(toBattleButton(gmId, campaign))
         : null
     }
   })
@@ -416,7 +427,7 @@ function debriefingWnd() {
                     : [
                         mkBtnBuyNextPlayerLevel(Computed(@() curDebrTabId.get() == DEBR_TAB_CAMPAIGN),
                           debrData?.player.level ?? -1, campaign)
-                        mkBtnToBattlePlace(needShowBtns_Final, mkNextGameModeInfo(roomInfo), debrData)
+                        mkBtnToBattlePlace(needShowBtns_Final, mkNextGameModeInfo(roomInfo, campaign), debrData)
                       ]
                   ).append(btnSkip)  //warning disable: -unwanted-modification
                 }

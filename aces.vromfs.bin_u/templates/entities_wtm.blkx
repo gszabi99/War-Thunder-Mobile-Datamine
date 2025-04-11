@@ -191,6 +191,7 @@
     "isOfflineUser": false,
     "_group": {
       "_replicate": true,
+      "deserterLockStart": 0,
       "isBattleDataReceived": false,
       "isUnitsOverrided": false,
       "ovrUnitUpgradesPreset": "",

@@ -709,6 +709,24 @@
         "mRank": 4
       }
     },
+    "pkg_germ_cruiser_emden_1944": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_jp_destroyer_rckt_hatakaze": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_uk_destroyer_rckt_type42": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -1129,6 +1147,24 @@
         "mRank": 1
       }
     },
+    "pkg_sw_strv_121": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 10
+      }
+    },
+    "pkg_germ_spz_oerlikon_raketenautomat": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_uk_centurion_mk_5_raac": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
     "pkg_us_xm1_gm": {
       "conditions": {
         "campaign": "tanks",
@@ -1275,6 +1311,7 @@
     "riMaxModelsPerLevel": 1024,
     "riAllowGenJobsQueueReorder": true,
     "taaSigmaScaleMin": 1.5,
+    "taaSigmaScaleMinShip": 0.5,
     "taaSigmaScaleMax": 2.5,
     "taaSigmaScaleMaxHangar": 7.5,
     "taaMotionScale": 2500.0,

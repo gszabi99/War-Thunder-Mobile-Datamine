@@ -33,7 +33,9 @@ let { COMMON } = require("%rGui/components/buttonStyles.nut")
 let { copyToClipboard } = require("%rGui/components/clipboard.nut")
 let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
 let { releasedUnits } = require("%rGui/unit/unitState.nut")
+let { arrayByRows } = require("%sqstd/underscore.nut")
 
+let maxMedalInRow = 7
 let defColor = 0xFFFFFFFF
 let hlColor = 0xFF5FC5FF
 let grayColor = 0x80808080
@@ -227,18 +229,22 @@ function mkButtons(userId, isInvitesAllowed) {
   }
 }
 
-let tabs = @() {
-  watch = selectedPlayerForInfo
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(40)
-  children = campaignsList.get().map(function(camp) {
-    let cfg = campaignPresentations?[camp]
-    return mkTab(
-      { icon = cfg?.icon, locId = cfg?.unitsLocId }
-      selectedPlayerForInfo.get()?.campaign == camp,
-      @() selectedPlayerForInfo.get() == null ? null
-        : selectedPlayerForInfo.mutate(@(v) v.campaign = camp))
-    })
+function mkTabsCampaignName() {
+  let uniqueCamps = {}
+  return {
+    watch = selectedPlayerForInfo
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(40)
+    children = campaignsList.get()
+      .map(@(camp) campaignPresentations?[camp])
+      .filter(@(cfg) cfg?.campaign != null && !uniqueCamps?[cfg.campaign] && (uniqueCamps[cfg.campaign] <- true))
+      .map(@(cfg) mkTab(
+         { icon = cfg?.icon, locId = cfg?.unitsLocId },
+         selectedPlayerForInfo.get()?.campaign == cfg.campaign,
+         @() selectedPlayerForInfo.get() == null ? null
+           : selectedPlayerForInfo.mutate(@(v) v.campaign = cfg.campaign)
+      ))
+  }
 }
 
 let mkMedals = @(info, selCampaign) function() {
@@ -265,9 +271,14 @@ let mkMedals = @(info, selCampaign) function() {
           mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
           {
             valign = ALIGN_CENTER
-            flow = FLOW_HORIZONTAL
-            gap = hdpx(30)
-            children
+            flow = FLOW_VERTICAL
+            gap = hdpx(5)
+            children = arrayByRows(children, maxMedalInRow)
+              .map(@(ch) {
+                flow = FLOW_HORIZONTAL
+                gap = hdpx(30)
+                ch
+              })
           }
         ]
       : mkText(loc("mainmenu/noMedal"))
@@ -306,7 +317,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
             ? mkBotNameContent(player, info)
             : mkContactInfo(contact, info)
           mkPlayerUidInfo(player, contact)
-          tabs
+          mkTabsCampaignName
           mkMedals(info, campaign)
           {
             flow = FLOW_HORIZONTAL

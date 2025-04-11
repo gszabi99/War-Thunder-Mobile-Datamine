@@ -272,8 +272,6 @@ let statsCfgShip = {
   short = [
     statsShip.shipCrewAll
     statsShip.maxSpeed
-    statsShip.turningTime
-    statsShip.asmCaptureDuration
     statsShip.allCannons
     statsShip.special
   ]
@@ -651,7 +649,7 @@ function mkUnitStatsCompFull(unit, attrLevels, attrPreset, mods) {
 }
 
 function mkUnitStatsCompShort(unit, attrLevels, attrPreset, mods) {
-  attrLevels = !attrLevels && (unit?.isPremium || unit?.isUpgraded) ? setMaxAttrs(unit.attrPreset) : attrLevels
+  attrLevels = (unit?.isPremium || unit?.isUpgraded) ? setMaxAttrs(unit.attrPreset) : attrLevels
   let unitType = unit.unitType
   let stats = applyAttrLevels(unitType, getUnitTagsShop(unit.name), attrLevels, attrPreset, mods)
   return getUnitStats(unit, stats, getUnitTagsShop(unit.name), statsCfg?[unitType].short ?? [], weaponsCfg?[unitType].short ?? [])

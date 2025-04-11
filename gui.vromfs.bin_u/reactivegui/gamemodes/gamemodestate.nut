@@ -1,12 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
+let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { newbieGameModesConfig, isNewbieMode, isNewbieModeSingle
 } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { curCampaign, abTests } = require("%appGlobals/pServer/campaign.nut")
-let newbieModeStats = require("newbieModeStats.nut")
 let { battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
+let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
+let newbieModeStats = require("newbieModeStats.nut")
 
 
 function findFitGameMode(list, gameModes, stats, maxMRank) {
@@ -53,7 +56,9 @@ let randomBattleMode = Computed(function() {
   if (modes.len() == 0) //in case of disappear all random_battles modes
     modes = allGameModes.value
   let campaign = curCampaign.value
+  let campaign2 = getCampaignPresentation(campaign).campaign
   return modes.findvalue(@(m) m?.campaign == campaign)
+    ?? modes.findvalue(@(m) m?.campaign == campaign2)
     ?? modes.findvalue(@(_) true)
 })
 
@@ -88,6 +93,9 @@ let separateEventModes = Computed(function() {
   }
   return res
 })
+
+registerHandler("queueToGameMode",
+  @(res, context) res?.error == null ? eventbus_send("queueToGameMode", { modeId = context.modeId }) : null)
 
 return {
   allGameModes

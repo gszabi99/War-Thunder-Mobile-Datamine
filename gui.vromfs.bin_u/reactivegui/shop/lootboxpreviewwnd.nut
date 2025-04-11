@@ -20,7 +20,7 @@ let wndHeader = {
       size = [flex(), SIZE_TO_CONTENT]
       halign = ALIGN_CENTER
       color = 0xFFFFFFFF
-      text = getLootboxName(previewLootbox.value?.name, previewLootbox.value?.meta.event)
+      text = getLootboxName(previewLootbox.value?.name)
       margin = [0, 0, 0, hdpx(15)]
     }.__update(fontBig)
   ]

@@ -3,7 +3,7 @@ let logM = log_with_prefix("[MSGBOX] ")
 let { register_command } = require("console")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { addModalWindow, removeModalWindow, MWP_COMMON } = require("modalWindows.nut")
-let { textButtonMultiline, buttonsHGap, mergeStyles, textButton } = require("%rGui/components/textButton.nut")
+let { textButtonMultiline, buttonsHGap, mergeStyles, textButton, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { btnAUp, btnBEscUp, EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
@@ -18,28 +18,31 @@ let { defButtonHeight } = buttonStyles
 
 function mkBtn(b, wndUid) {
   let { id = "", text = null, cb = null, hotkeys = null, isCancel = false, isDefault = false,
-    styleId = "COMMON", key = null, multiLine = false } = b
+    styleId = "COMMON", key = null, multiLine = false, priceComp = null } = b
   let style = buttonStyles?[styleId]
   if (!style)
     logerr($"StyleId {styleId} doesn't exist in buttonStyles")
 
-  return (multiLine ? textButtonMultiline : textButton)(utf8ToUpper(text ?? loc($"msgbox/btn_{id}")),
-    function onClick() {
-      removeModalWindow(wndUid)
-      cb?()
-    },
-    mergeStyles(style ?? buttonStyles.COMMON, {
-      hotkeys = hotkeys
-        ?? (isDefault ? [btnAUp]
-          : isCancel ? [btnBEscUp]
-          : null)
-      ovr = !multiLine ? { key } : { key, size = [wndWidthDefault/2-buttonsHGap*1.5, defButtonHeight] }
-      childOvr = !multiLine ? {}
-        : {
-          size = [wndWidthDefault / 2 - buttonsHGap * 2, defButtonHeight * 0.9]
-          valign = ALIGN_CENTER
-        }
-    }))
+  let locText = utf8ToUpper(text ?? loc($"msgbox/btn_{id}"))
+  let styleOvr = mergeStyles(style ?? buttonStyles.COMMON, {
+    hotkeys = hotkeys
+      ?? (isDefault ? [btnAUp]
+        : isCancel ? [btnBEscUp]
+        : null)
+    ovr = !multiLine ? { key } : { key, size = [wndWidthDefault/2-buttonsHGap*1.5, defButtonHeight] }
+    childOvr = !multiLine ? {}
+      : {
+        size = [wndWidthDefault / 2 - buttonsHGap * 2, defButtonHeight * 0.9]
+        valign = ALIGN_CENTER
+      }
+  })
+  function onClick() {
+    removeModalWindow(wndUid)
+    cb?()
+  }
+
+  return priceComp != null ? textButtonPricePurchase(locText, priceComp, onClick, styleOvr)
+    : (multiLine ? textButtonMultiline : textButton)(locText, onClick, styleOvr)
 }
 
 let mkMsgBoxBtnsSet = @(wndUid, btnsCfg) btnsCfg.map(@(b) mkBtn(b, wndUid))

@@ -36,6 +36,7 @@ let defaults = {
   allow_apk_update = false
   allow_background_resource_update = DBGLEVEL > 0
   allow_subscriptions = DBGLEVEL > 0
+  can_upgrade_subscription = DBGLEVEL > 0
   allow_dm_viewer = DBGLEVEL > 0 && isCircuitDev
   can_view_jip_setting = DBGLEVEL > 0
 }

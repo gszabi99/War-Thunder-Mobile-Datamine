@@ -125,7 +125,9 @@ let commandsList = [
   }
 ]
 
-let offersList = ["start", "gold", "collection", "sidegrade", "upgrade", "whale", "blueprint", "branchAir", "premAir"]
+let offersList = ["start", "gold", "collection", "sidegrade", "upgrade", "whale", "blueprint",
+  "branch", "premUnit", "blueprintUpgraded"
+]
 
 foreach (ot in offersList) {
   let offerType = ot
