@@ -1882,7 +1882,7 @@
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
-      "preset": "an_m3_common"
+      "preset": "default_common"
     }
   },
   "WeaponSlots": {
@@ -1961,7 +1961,7 @@
         "index": 0,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
-          "name": "an_m3_common",
+          "name": "default_common",
           "ShowNodes": {
             "node": "fuse3"
           },
@@ -2009,24 +2009,6 @@
               "bullets": 198,
               "light": false,
               "spread": 1.4
-            },
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 30,
-              "bulletsCartridge": 1,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 30,
-              "bulletsCartridge": 1,
-              "external": true,
-              "separate": false
             }
           ]
         }
@@ -2035,6 +2017,7 @@
         "index": 1,
         "tier": 14,
         "order": 1,
+        "hasMirrored": false,
         "WeaponPreset": [
           {
             "iconType": "rocket_7kg",
@@ -4220,6 +4203,7 @@
         "index": 15,
         "tier": 0,
         "order": 2,
+        "hasMirrored": false,
         "WeaponPreset": [
           {
             "iconType": "rocket_7kg",
@@ -4304,7 +4288,6 @@
           {
             "iconType": "unitaz",
             "name": "special_ammunition",
-            "hasMirrored": false,
             "ShowNodes": {
               "node": "pylon15"
             },

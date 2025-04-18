@@ -353,6 +353,7 @@ let skinsByTag = {
     "usa_b_17g_8af_yellow"
     "usa_douglas_a_1h_firebird"
     "usa_f2g_1_race_57"
+    "usa_f2a1_thach"
     "usa_f4f_4_gray"
     "usa_f4u_1c"
     "usa_f4u_4b"

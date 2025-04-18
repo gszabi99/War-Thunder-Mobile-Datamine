@@ -65,7 +65,7 @@ let eventsLists = Computed(function() {
     if (event_id == null || event_id == MAIN_EVENT_ID || event_id in events || event_id in eventsWithTree)
       continue
     let tableId = unlock.table
-    if (!isTreeEvent && !unlockTables.get()?[tableId])
+    if (!unlockTables.get()?[tableId])
       continue
     let endsAt = userstatStats.get()?.stats[tableId]["$endsAt"] ?? 0
     let season = userstatStats.get()?.stats[tableId]["$index"] ?? 1

@@ -40,6 +40,7 @@ let defColor = 0xFFFFFFFF
 let hlColor = 0xFF5FC5FF
 let grayColor = 0x80808080
 let iconSize = [hdpx(40), hdpx(20)]
+let rowMedalHeight = hdpx(70)
 
 let mkText = @(text, color = defColor) {
   rendObj = ROBJ_TEXT
@@ -264,7 +265,7 @@ let mkMedals = @(info, selCampaign) function() {
   return {
     watch = info
     valign = ALIGN_CENTER
-    flow = FLOW_HORIZONTAL
+    flow = FLOW_VERTICAL
     gap = hdpx(30)
     children = children.len() > 0
       ? [
@@ -275,9 +276,11 @@ let mkMedals = @(info, selCampaign) function() {
             gap = hdpx(5)
             children = arrayByRows(children, maxMedalInRow)
               .map(@(ch) {
+                size = [SIZE_TO_CONTENT, rowMedalHeight]
+                valign = ALIGN_CENTER
                 flow = FLOW_HORIZONTAL
                 gap = hdpx(30)
-                ch
+                children = ch
               })
           }
         ]

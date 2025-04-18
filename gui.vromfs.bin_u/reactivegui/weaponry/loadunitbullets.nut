@@ -290,7 +290,8 @@ function getBanPresets(presetBlk) {
   return res
 }
 
-function fillBanAndMirrors(slots, notUseForDisbalance) {
+function fillBanAndMirrors(slots, slotParams) {
+  let {hasMirrored, notUseForDisbalance} = slotParams
   foreach(slotIdx, s in slots) {
     foreach(presetId, preset in s.wPresets)
       foreach(banIdx, banList in preset.banPresets)
@@ -303,7 +304,7 @@ function fillBanAndMirrors(slots, notUseForDisbalance) {
           tgtBanList[slotIdx][presetId] <- true
         }
 
-    if (slotIdx == 0 || !!notUseForDisbalance?[slotIdx])
+    if (slotIdx == 0 || !!notUseForDisbalance?[slotIdx] || hasMirrored?[slotIdx] == false)
       continue
     let mirror = slots.len() - slotIdx
     if (mirror == slotIdx)
@@ -329,12 +330,15 @@ function loadUnitBulletsFullImpl(unitName) {
   let slotsParams = {}
   if (isDataBlock(WeaponSlots)) {
     slotsParams.notUseForDisbalance <- {}
+    slotsParams.hasMirrored <- {}
     foreach(wsBlk in WeaponSlots % "WeaponSlot") {
-      let { index = null, notUseforDisbalanceCalculation = false } = wsBlk
+      let { index = null, notUseforDisbalanceCalculation = false, hasMirrored = null } = wsBlk
       if (index == null)
         continue
       if (notUseforDisbalanceCalculation)
         slotsParams.notUseForDisbalance[index] <- true
+      if (hasMirrored != null)
+        slotsParams.hasMirrored[index] <- hasMirrored
       weaponSlots[index] <- {}
       weaponSlotsOrder[index] <- []
       foreach(presetBlk in wsBlk % "WeaponPreset") {
@@ -467,7 +471,7 @@ function loadUnitBulletsFullImpl(unitName) {
   if("" in reqModifications)
     reqModifications.$rawdelete("")
 
-  fillBanAndMirrors(slots, slotsParams?.notUseForDisbalance)
+  fillBanAndMirrors(slots, slotsParams)
 
   return res
 }

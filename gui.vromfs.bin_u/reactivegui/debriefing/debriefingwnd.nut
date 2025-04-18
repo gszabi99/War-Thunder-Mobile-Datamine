@@ -52,7 +52,7 @@ let { runOfflineBattle } = require("%rGui/debugTools/debugOfflineBattleState.nut
 let { TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID } = require("%rGui/tutorial/tutorialConst.nut")
 let { openTreeEventWnd } = require("%rGui/event/treeEvent/treeEventState.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
-
+let { mkToBattleButton } = require("%rGui/mainMenu/toBattleButton.nut")
 
 local isAttached = false
 
@@ -178,8 +178,8 @@ function toBattle(gmId) {
 let cbId = "onResetPenaltyToBattleInDebriefing"
 registerHandler(cbId, @(res, context) res?.error == null ? toBattle(context.gmId) : null)
 
-let toBattleButton = @(gmId, campaign) textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
-  function() {
+let toBattleButton = @(gmId, campaign)
+  mkToBattleButton(function() {
     sendNewbieBqEvent("pressToBattleButtonDebriefing", { status = "online_battle" })
     isNoExtraScenesAfterDebriefing.set(true)
     let nextAction = @() tryOpenQueuePenaltyWnd(campaign, { id = cbId, gmId }) ? null : toBattle(gmId)
@@ -188,6 +188,7 @@ let toBattleButton = @(gmId, campaign) textButtonBattle(utf8ToUpper(loc("mainmen
     else
       nextAction()
   },
+  campaign,
   { hotkeys = ["^J:X | Enter"] })
 
 let startOfflineMissionButton = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),

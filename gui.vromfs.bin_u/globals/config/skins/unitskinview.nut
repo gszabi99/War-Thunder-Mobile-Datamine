@@ -313,6 +313,9 @@ return {
     "f2a-1": {
       "": "usa_tbd_1_1938"
     },
+    "f2a-1_thach": {
+      "": "usa_f2a1_thach"
+    },
     "f2a-3": {
       "": "usa_sb2u_3"
     },

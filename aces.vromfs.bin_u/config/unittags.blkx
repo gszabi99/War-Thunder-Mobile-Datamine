@@ -8276,6 +8276,104 @@
       }
     }
   },
+  "f2a-1_thach": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_midway_usa",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "wright",
+        "model": "r-1820-34",
+        "mass": 533.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "type_fighter": true,
+      "visibleBaseTag": true,
+      "type_naval_aircraft": true,
+      "country_usa": true,
+      "midway": true,
+      "pacific": true,
+      "carrier_take_off": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 8000.0,
+      "maxSpeed": 139.92,
+      "turnTime": 18.2,
+      "airfieldLen": 250.0,
+      "climbTime": 343.0,
+      "maxSpeedAlt": 4600.0,
+      "climbAlt": 4572.0,
+      "climbSpeed": 10.88,
+      "wingLoading": 115.0,
+      "powerToWeightRatio": 0.42,
+      "rollRate": 112.0,
+      "pylonCount": 0,
+      "massPerSec": 1.81308,
+      "crew": 1,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "weapons": {
+        "gunBrowning50_early": {
+          "type": "cannon",
+          "gunsCount": 3,
+          "ammoCount": 1050,
+          "shotFreq": 12.5
+        },
+        "gunBrowning30_usaaf": {
+          "type": "machine gun",
+          "gunsCount": 1,
+          "ammoCount": 450,
+          "shotFreq": 16.6667
+        }
+      }
+    },
+    "bullets": {
+      "gunBrowning50_early": {
+        "default": {
+          "icon": "t_ball_M1/ball_M2/i_ball_M1/ap_ball_M2/"
+        },
+        "50cal_universal": {
+          "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/i_ball_M1/",
+          "reqModification": "aircraft_mod_3"
+        },
+        "50cal_ground_targets": {
+          "icon": "t_ball_M1/ap_ball_M2/ap_ball_M2/ap_ball_M2/",
+          "reqModification": "aircraft_mod_7"
+        },
+        "50cal_tracers": {
+          "icon": "t_ball_M1/t_ball_M1/t_ball_M1/ap_ball_M2/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "50cal_stealth": {
+          "icon": "ap_ball_M2/i_ball_M1/ap_ball_M2/",
+          "reqModification": "aircraft_mod_5"
+        }
+      },
+      "gunBrowning30_usaaf": {
+        "default": {
+          "icon": "t_ball/ball/ball/ball/ap_ball/i_ball/"
+        },
+        "30cal_universal": {
+          "icon": "t_ball/ap_ball/i_ball/",
+          "reqModification": "aircraft_mod_4"
+        },
+        "30cal_tracers": {
+          "icon": "ap_ball/t_ball/t_ball/t_ball/t_ball/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "30cal_stealth": {
+          "icon": "ap_ball/ap_ball/ap_ball/i_ball/i_ball/",
+          "reqModification": "aircraft_mod_6"
+        }
+      }
+    }
+  },
   "f2g-1": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -9655,7 +9753,7 @@
       "powerToWeightRatio": 0.4,
       "rollRate": 56.0,
       "pylonCount": 15,
-      "massPerSec": 25.1,
+      "massPerSec": 7.1,
       "crew": 1,
       "pilotsCount": 1,
       "gunnersCount": 0,
@@ -9804,7 +9902,7 @@
       "powerToWeightRatio": 0.4,
       "rollRate": 56.0,
       "pylonCount": 15,
-      "massPerSec": 25.1,
+      "massPerSec": 7.1,
       "crew": 1,
       "pilotsCount": 1,
       "gunnersCount": 0,

@@ -327,14 +327,14 @@ register_command(
       let { slots = [], slotsParams = {} } = b
       if (slots.len() == 0)
         continue
-      let { notUseForDisbalance = {} } = slotsParams
+      let { notUseForDisbalance = {}, hasMirrored = {} } = slotsParams
       let centerIdx = slots.len() / 2
       let unitConflicts = []
       for (local idx1 = 1; idx1 < slots.len(); idx1++) {
         let slot1 = slots[idx1]
         let idx2 = slot1?.mirror
         if (idx2 == null) {
-          if (!notUseForDisbalance?[idx1] && idx1 != centerIdx)
+          if (!notUseForDisbalance?[idx1] && idx1 != centerIdx && hasMirrored?[idx1] != false)
             unitConflicts.append({
               slotIdx = $"{idx1}&{idx2}"
               errText = "used for disbalance, but does not have mirror"
@@ -345,6 +345,13 @@ register_command(
           unitConflicts.append({
             slotIdx = $"{idx1}&{idx2}"
             errText = "has different notUseForDisbalance value"
+          })
+          continue
+        }
+        if (hasMirrored?[idx1] != false && hasMirrored?[idx2] == false) {
+          unitConflicts.append({
+            slotIdx = $"{idx1}&{idx2}"
+            errText = "slot marked as 'hasMirrored == false', but have mirror"
           })
           continue
         }

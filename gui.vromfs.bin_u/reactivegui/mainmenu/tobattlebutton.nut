@@ -31,9 +31,9 @@ let queueCurRandomBattleMode = @() eventbus_send("queueToGameMode", { modeId = r
 let battleBtnCampaign = Computed(@() randomBattleMode.get()?.campaign ?? curCampaign.get())
 
 let timerSize = hdpxi(40)
-function penaltyTimerIcon() {
+let penaltyTimerIcon = @(campaign) function() {
   let res = { watch = [hasPenaltyStatus, battleBtnCampaign] }
-  let hasPenalty = hasPenaltyStatus.get()?[battleBtnCampaign.get()] ?? false
+  let hasPenalty = hasPenaltyStatus.get()?[campaign ?? battleBtnCampaign.get()] ?? false
   return !hasPenalty ? res
     : res.__update({
         size = [timerSize, timerSize]
@@ -55,12 +55,13 @@ let battleBtnOvr = {
   ovr = commonOvr
   hotkeys = hotkeyX
 }
-let battleBtnPenaltyOvr = {
-  ovr = commonOvr.__merge({ children = penaltyTimerIcon })
+let battleBtnPenaltyOvr = @(campaign, ovr) {
+  ovr = commonOvr.__merge({ children = penaltyTimerIcon(campaign) })
   hotkeys = hotkeyX
-}
+}.__update(ovr)
 let toBattleText = utf8ToUpper(loc("mainmenu/toBattle/short"))
-let mkToBattleButton = @(toBattleFunc) textButtonBattle(toBattleText, toBattleFunc, battleBtnPenaltyOvr)
+let mkToBattleButton = @(toBattleFunc, campaign = null, ovr = {})
+  textButtonBattle(toBattleText, toBattleFunc, battleBtnPenaltyOvr(campaign, ovr))
 
 function toRandomBattle() {
   if (curUnit.get() != null)
@@ -159,6 +160,7 @@ let function mkToBattleButtonWithSquadManagement(toBattleFunc, toSquadBattleFunc
 }
 
 return {
+  mkToBattleButton
   toBattleButtonForRandomBattles
   mkToBattleButtonWithSquadManagement
 }
