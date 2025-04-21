@@ -15,12 +15,12 @@
       "gt_training": false,
       "environment": "Day",
       "weather": "cloudy",
-      "locName": "missions/tutorial_ship_basic",
-      "locDesc": "missions/tutorial_ship_basic/desc",
       "forceSimulInitialRandomSeed": true,
       "simulInitialRandomSeed": 12,
       "reqFeature": "ShipsFirstChoice",
       "missionProgressType": "split",
+      "locName": "missions/tutorial_ship_basic",
+      "locDesc": "missions/tutorial_ship_basic/desc",
       "gt_mp_tickets": true,
       "gt_mp_capture": true,
       "isLimitedFuel": false,
@@ -90,14 +90,14 @@
         },
         "unitSetProperties": [
           {
-            "object": [
-              "look_at_01",
-              "look_at_02"
-            ],
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "object": [
+              "look_at_01",
+              "look_at_02"
+            ],
             "targetableByAi": false,
             "isImmortal": true,
             "stealthRadius": 0.0,
@@ -105,11 +105,11 @@
           },
           {
             "aiOrBotCanUseRepair": false,
-            "object": "ai",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "object": "ai",
             "stealthRadius": 0.0,
             "calmDetection": true,
             "forceVisibleOnMap": false,
@@ -174,8 +174,8 @@
         "gameMPChangeScore": {
           "value": -80,
           "valueSystem": "percentage",
-          "team": "Both",
-          "ignoreSingleMissions": false
+          "ignoreSingleMissions": false,
+          "team": "Both"
         }
       },
       "else_actions": {}
@@ -197,7 +197,8 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "init: camera hint prompted"
+          "event": "init: camera hint prompted",
+          "name": ""
         },
         "__playerControls": {
           "setStatus": "enable",
@@ -272,7 +273,8 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 1/10: camera swiped"
+          "event": "task 1/10: camera swiped",
+          "name": ""
         },
         "hudElementShow": {
           "element": "img_swipe_to_rotate_cam",
@@ -388,10 +390,12 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 2/10: moved forward"
+          "event": "task 2/10: moved forward",
+          "name": ""
         },
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "wait": {
           "time": 1.0
@@ -537,7 +541,8 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 3/10: turned left"
+          "event": "task 3/10: turned left",
+          "name": ""
         },
         "__playHint": {
           "hintType": "standard",
@@ -553,7 +558,8 @@
           "object_var_value": 0
         },
         "__hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "triggerEnable": {
           "target": "stop_hint"
@@ -614,7 +620,8 @@
       },
       "actions": {
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "triggerEnable": {
           "target": "turn_highlight_enable"
@@ -655,7 +662,8 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 4/10: waypoint reached"
+          "event": "task 4/10: waypoint reached",
+          "name": ""
         },
         "playHint": {
           "hintType": "standard",
@@ -719,7 +727,8 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 5/10: slowed down"
+          "event": "task 5/10: slowed down",
+          "name": ""
         },
         "__playHint": {
           "hintType": "standard",
@@ -738,7 +747,8 @@
           "target": "lock_target_hint"
         },
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "wait": {
           "time": 0.05
@@ -824,11 +834,11 @@
           "time": 4.0
         },
         "unitSetProperties": {
-          "object": "ai",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "object": "ai",
           "stealthRadius": 9999.0,
           "calmDetection": false,
           "attack_type": "dont_aim"
@@ -876,7 +886,8 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 6/10: targtet locked"
+          "event": "task 6/10: targtet locked",
+          "name": ""
         },
         "__playHint": {
           "hintType": "standard",
@@ -966,7 +977,8 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 7/10: zoomed in"
+          "event": "task 7/10: zoomed in",
+          "name": ""
         },
         "__playHint": {
           "hintType": "standard",
@@ -982,7 +994,8 @@
           "object_var_value": 0
         },
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "wait": {
           "time": 1.0
@@ -1073,7 +1086,8 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 8/10: shots fired"
+          "event": "task 8/10: shots fired",
+          "name": ""
         },
         "__playHint": {
           "hintType": "standard",
@@ -1102,14 +1116,15 @@
           "object_var_value": 0
         },
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "unitSetProperties": {
-          "object": "ai",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "object": "ai",
           "attack_type": "fire_at_will",
           "accuracy": 10.0,
           "maxDeviationAngle": 5.0,
@@ -1197,27 +1212,27 @@
         ],
         "unitSetProperties": [
           {
-            "object": "ai",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "object": "ai",
             "attack_type": "dont_aim"
           },
           {
-            "object": "player",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "object": "player",
             "isImmortal": true
           },
           {
-            "object": "ai",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "object": "ai",
             "attack_type": "fire_at_will"
           }
         ],
@@ -1364,14 +1379,15 @@
           "target": "repair_done"
         },
         "__hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "__unitSetProperties": {
-          "object": "ai",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "object": "ai",
           "accuracy": 0.0
         }
       },
@@ -1423,28 +1439,29 @@
         },
         "unitSetProperties": [
           {
-            "object": "ai",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "object": "ai",
             "attack_type": "fire_at_will",
             "accuracy": 0.2,
             "maxDeviationAngle": 30.0,
             "effShootingRate": 0.2
           },
           {
-            "object": "player",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "object": "player",
             "isImmortal": false
           }
         ],
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 9/10: ship repaired"
+          "event": "task 9/10: ship repaired",
+          "name": ""
         },
         "playHint": {
           "hintType": "standard",
@@ -1460,7 +1477,8 @@
           "object_var_value": 0
         },
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         }
       },
       "else_actions": {}
@@ -1494,13 +1512,14 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "task 10/10: target destroyed"
+          "event": "task 10/10: target destroyed",
+          "name": ""
         },
         "gameMPChangeScore": {
           "value": -20,
           "valueSystem": "percentage",
-          "team": "B",
-          "ignoreSingleMissions": false
+          "ignoreSingleMissions": false,
+          "team": "B"
         },
         "wait": {
           "time": 1.0
@@ -1541,7 +1560,8 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "event: player killed"
+          "event": "event: player killed",
+          "name": ""
         },
         "wait": {
           "time": 1.0
@@ -1594,7 +1614,8 @@
       "actions": {
         "bigQueryAddRecord": {
           "params": "",
-          "event": "event: player is out of battle area"
+          "event": "event: player is out of battle area",
+          "name": ""
         },
         "missionSetFade": [
           {
@@ -1681,7 +1702,8 @@
         "actions": {
           "hudElementSelectionShade": {
             "element": "",
-            "object": "ai"
+            "object": "ai",
+            "drawFromGui": false
           },
           "playerControls": {
             "setStatus": "disable",
@@ -1905,8 +1927,6 @@
         },
         "conditions": {
           "playerScreenTouched": {
-            "time": 1.0,
-            "compTime": "less",
             "ignoreTime": true,
             "continuousCheck": false
           }
@@ -2169,8 +2189,6 @@
         },
         "conditions": {
           "playerScreenTouched": {
-            "time": 1.0,
-            "compTime": "less",
             "ignoreTime": true,
             "continuousCheck": false
           }
@@ -2529,8 +2547,6 @@
         },
         "conditions": {
           "playerScreenTouched": {
-            "time": 1.0,
-            "compTime": "less",
             "ignoreTime": true,
             "continuousCheck": false
           }
@@ -2850,8 +2866,6 @@
         },
         "conditions": {
           "playerScreenTouched": {
-            "time": 1.0,
-            "compTime": "less",
             "ignoreTime": true,
             "continuousCheck": false
           }
@@ -3289,8 +3303,6 @@
         },
         "conditions": {
           "playerScreenTouched": {
-            "time": 1.0,
-            "compTime": "less",
             "ignoreTime": true,
             "continuousCheck": false
           }
@@ -3451,59 +3463,11 @@
             "object": "ai"
           },
           "triggerEnable": {
-            "target": "xray_check_ammunition"
-          },
-          "__triggerEnable": {
             "target": [
-              "xray_check_bridge",
-              "xray_check_engine",
-              "xray_check_ammunition",
-              "xray_check_turret_01",
-              "xray_check_turret_02",
-              "xray_check_turret_03"
+              "xray_check_ammunition_01",
+              "xray_check_ammunition_02"
             ]
           },
-          "__wait": {
-            "time": 0.1
-          },
-          "__triggerActivate": [
-            {
-              "target": "xray_check_bridge",
-              "activate_type": "checkConidtions",
-              "check_trigger_status": false,
-              "after_activation": "disable"
-            },
-            {
-              "target": "xray_check_engine",
-              "activate_type": "checkConidtions",
-              "check_trigger_status": false,
-              "after_activation": "disable"
-            },
-            {
-              "target": "xray_check_ammunition",
-              "activate_type": "checkConidtions",
-              "check_trigger_status": false,
-              "after_activation": "disable"
-            },
-            {
-              "target": "xray_check_turret_01",
-              "activate_type": "checkConidtions",
-              "check_trigger_status": false,
-              "after_activation": "disable"
-            },
-            {
-              "target": "xray_check_turret_02",
-              "activate_type": "checkConidtions",
-              "check_trigger_status": false,
-              "after_activation": "disable"
-            },
-            {
-              "target": "xray_check_turret_03",
-              "activate_type": "checkConidtions",
-              "check_trigger_status": false,
-              "after_activation": "disable"
-            }
-          ],
           "wait": {
             "time": 1.0
           }
@@ -3596,7 +3560,7 @@
           }
         }
       },
-      "xray_check_ammunition": {
+      "xray_check_ammunition_01": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -3610,28 +3574,17 @@
           }
         },
         "conditions": {
-          "unitWhenPartHp": [
-            {
-              "func": "more",
-              "check_objects": "any",
-              "check_parts": "any",
-              "value": 0.5,
-              "object": "ai",
-              "planePart": "ammunition_storage_01_dm",
-              "tankPart": ""
-            },
-            {
-              "func": "more",
-              "check_objects": "any",
-              "check_parts": "any",
-              "value": 0.5,
-              "object": "ai",
-              "planePart": "ammunition_storage_02_dm",
-              "tankPart": ""
-            }
-          ],
+          "unitWhenPartHp": {
+            "func": "more",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.5,
+            "object": "ai",
+            "planePart": "ammunition_storage_01_dm",
+            "tankPart": ""
+          },
           "varCompareBool": {
-            "var_value": "hit_ammunition",
+            "var_value": "hit_ammunition_01",
             "value": false,
             "comparasion_func": "equal"
           }
@@ -3640,16 +3593,56 @@
           "unitShowXray": {
             "show": true,
             "object": "ai",
-            "part": [
-              "ammunition_storage_01_dm",
-              "ammunition_storage_02_dm"
-            ]
+            "part": "ammunition_storage_01_dm"
           }
         },
         "else_actions": {
           "varSetBool": {
             "value": true,
-            "var": "hit_ammunition"
+            "var": "hit_ammunition_01"
+          }
+        }
+      },
+      "xray_check_ammunition_02": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenPartHp": {
+            "func": "more",
+            "check_objects": "any",
+            "check_parts": "any",
+            "value": 0.5,
+            "object": "ai",
+            "planePart": "ammunition_storage_02_dm",
+            "tankPart": ""
+          },
+          "varCompareBool": {
+            "var_value": "hit_ammunition_02",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "unitShowXray": {
+            "show": true,
+            "object": "ai",
+            "part": "ammunition_storage_02_dm"
+          }
+        },
+        "else_actions": {
+          "varSetBool": {
+            "value": true,
+            "var": "hit_ammunition_02"
           }
         }
       },
@@ -3793,7 +3786,8 @@
     "is_xray_blink": false,
     "hit_bridge": false,
     "hit_engine": false,
-    "hit_ammunition": false,
+    "hit_ammunition_01": false,
+    "hit_ammunition_02": false,
     "hit_turret_01": false,
     "hit_turret_02": false,
     "hit_turret_03": false

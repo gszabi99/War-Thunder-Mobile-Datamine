@@ -2262,6 +2262,9 @@
       }
     }
   },
+  "battleHideNodes": {
+    "n": "details"
+  },
   "dm_for_shop": {
     "armorThicknessFront": [
       0.0,
@@ -2675,6 +2678,110 @@
       "decal1OppositeMirrored": false,
       "decal1WidthBox": 0.207918,
       "decal1Tex": "flag_great_britain"
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        0.0,
+        -1.95643e-7,
+        -4.47578,
+        3.1931
+      ],
+      "decal0Line1": [
+        -0.0,
+        -4.47578,
+        1.95643e-7,
+        6.36463
+      ],
+      "decal0Line2": [
+        0.0,
+        -1.95643e-7,
+        4.47578,
+        -2.1931
+      ],
+      "decal0Line3": [
+        0.0,
+        -4.47578,
+        -1.95643e-7,
+        6.36463
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -1.0,
+        0.0,
+        0.0,
+        -2.28968
+      ],
+      "decal0CPNormDepth1": [
+        1.0,
+        -0.0,
+        -0.0,
+        2.28256
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.223425
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.2,
+      "decal0Tex": "flag_great_britain",
+      "decal1Line0": [
+        2.17699e-7,
+        -2.17699e-7,
+        7.30475,
+        -6.57801
+      ],
+      "decal1Line1": [
+        5.16524,
+        -5.16524,
+        -3.19301e-7,
+        -7.70908
+      ],
+      "decal1Line2": [
+        2.17699e-7,
+        -2.17699e-7,
+        -7.30475,
+        7.57801
+      ],
+      "decal1Line3": [
+        5.16524,
+        -5.16524,
+        3.19301e-7,
+        -7.70908
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        0.707107,
+        0.707107,
+        0.0,
+        -2.44313
+      ],
+      "decal1CPNormDepth1": [
+        -0.707107,
+        -0.707107,
+        -0.0,
+        2.44009
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.136897
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.207918,
+      "decal1Tex": "flag_great_britain"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -2683,14 +2790,18 @@
         "from": "uk_camo_very_dark_drab*",
         "to": "uk_camo_middle_deep_bronze_greens*"
       }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "uk_camo_standart_modern_light_stone*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "fr_camo_winter_green_white*"
+      }
     }
-  },
-  "battleHideNodes": {
-    "n": [
-      "details",
-      "details_01",
-      "details_02",
-      "details_03"
-    ]
   }
 }

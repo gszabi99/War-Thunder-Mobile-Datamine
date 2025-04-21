@@ -4337,6 +4337,18 @@
           "to": "camo_bottom_green*"
         }
       ]
+    },
+    "dark_spots": {
+      "replace_tex": {
+        "from": "camo_warshipdeepgray*",
+        "to": "camo_dark_spots*"
+      }
+    },
+    "darkbrown_spots_prem": {
+      "replace_tex": {
+        "from": "camo_warshipdeepgray*",
+        "to": "camo_darkbrown_spots*"
+      }
     }
   }
 }

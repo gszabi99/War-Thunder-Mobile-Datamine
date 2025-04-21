@@ -147,6 +147,7 @@ let skinsByTag = {
     "uk_camo_light_stone_light_grey_slate_grey"
     "cn_camo_sand_ltgreen_dkgreen_spots"
     "it_camo_desert_light_yellow"
+    "uk_camo_standart_modern_light_stone"
   ],
 
   [WINTER] = [

@@ -3312,6 +3312,204 @@
       "decal2OppositeMirrored": false,
       "decal2WidthBox": 0.200001,
       "decal2Tex": "usa_commander_a_co"
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal0Line1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal0Line2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal0Line3": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal0HaveCP": false,
+      "decal0CPNormDepth": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal0CPNormDepth1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal0RotScale": [
+        1.5708,
+        1.0
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": false,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.0,
+      "decal0Tex": "",
+      "decal1Line0": [
+        2.01695,
+        -8.81635e-8,
+        1.1465e-13,
+        -4.43286
+      ],
+      "decal1Line1": [
+        -8.81635e-8,
+        -2.01695,
+        0.00000134679,
+        2.81199
+      ],
+      "decal1Line2": [
+        -2.01695,
+        -8.81635e-8,
+        -1.1465e-13,
+        5.43286
+      ],
+      "decal1Line3": [
+        8.81635e-8,
+        -2.01695,
+        -0.00000134679,
+        2.81199
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        -2.84217e-14,
+        -6.67737e-7,
+        -1.0,
+        -1.79561
+      ],
+      "decal1CPNormDepth1": [
+        -2.84217e-14,
+        -6.67737e-7,
+        1.0,
+        -1.79561
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.495799
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": true,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.2,
+      "decal1Tex": "uk_79_armoured_division",
+      "decal2Line0": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal2Line1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal2Line2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal2Line3": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal2HaveCP": false,
+      "decal2CPNormDepth": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal2CPNormDepth1": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "decal2RotScale": [
+        1.5708,
+        1.0
+      ],
+      "decal2Mirrored": false,
+      "decal2Wrap": false,
+      "decal2Abs": false,
+      "decal2OppositeMirrored": false,
+      "decal2WidthBox": 0.0,
+      "decal2Tex": "",
+      "decal3Line0": [
+        1.0,
+        -4.37114e-8,
+        -2.27374e-13,
+        1.06567
+      ],
+      "decal3Line1": [
+        -4.37114e-8,
+        -1.0,
+        -0.00000240661,
+        1.47187
+      ],
+      "decal3Line2": [
+        -1.0,
+        -4.37114e-8,
+        2.27374e-13,
+        -0.0656674
+      ],
+      "decal3Line3": [
+        4.37114e-8,
+        -1.0,
+        0.00000240661,
+        1.47187
+      ],
+      "decal3HaveCP": true,
+      "decal3CPNormDepth": [
+        -2.84218e-14,
+        0.00000240661,
+        -1.0,
+        -1.75104
+      ],
+      "decal3CPNormDepth1": [
+        -2.84218e-14,
+        0.00000240661,
+        1.0,
+        -1.75104
+      ],
+      "decal3RotScale": [
+        1.5708,
+        1.0
+      ],
+      "decal3Mirrored": false,
+      "decal3Wrap": false,
+      "decal3Abs": true,
+      "decal3OppositeMirrored": false,
+      "decal3WidthBox": 0.200001,
+      "decal3Tex": "usa_commander_a_co"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -3319,6 +3517,18 @@
       "replace_tex": {
         "from": "uk_camo_very_dark_drab*",
         "to": "uk_camo_middle_deep_bronze_greens*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "uk_camo_standart_modern_light_stone*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "fr_camo_winter_green_white*"
       }
     }
   },

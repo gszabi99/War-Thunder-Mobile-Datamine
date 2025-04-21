@@ -3177,6 +3177,16 @@
       "decal1OppositeMirrored": false,
       "decal1WidthBox": 0.22003,
       "decal1Tex": "uk_numbers_1"
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -3184,6 +3194,18 @@
       "replace_tex": {
         "from": "uk_camo_very_dark_drab*",
         "to": "uk_camo_middle_deep_bronze_greens*"
+      }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "uk_camo_standart_modern_light_stone*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "fr_camo_winter_green_white*"
       }
     }
   },

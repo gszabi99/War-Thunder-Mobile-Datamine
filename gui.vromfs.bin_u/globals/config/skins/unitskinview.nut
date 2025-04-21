@@ -1978,7 +1978,9 @@ return {
     },
     "uk_centurion_mk_5_avre_era": {
       "": "uk_camo_very_dark_drab",
-      "forest": "uk_camo_middle_deep_bronze_greens"
+      "desert": "uk_camo_standart_modern_light_stone",
+      "forest": "uk_camo_middle_deep_bronze_greens",
+      "winter": "fr_camo_winter_green_white"
     },
     "uk_centurion_mk_5_raac": {
       "": "uk_camo_very_dark_drab",
@@ -2060,7 +2062,9 @@ return {
     },
     "uk_falcon_reskin": {
       "": "uk_camo_very_dark_drab",
-      "forest": "uk_camo_middle_deep_bronze_greens"
+      "desert": "uk_camo_standart_modern_light_stone",
+      "forest": "uk_camo_middle_deep_bronze_greens",
+      "winter": "fr_camo_winter_green_white"
     },
     "uk_falcon_reskin2": {
       "": "uk_camo_standart_modern_desert_bicolor",
@@ -2076,7 +2080,9 @@ return {
     },
     "uk_fv221_caernarvon": {
       "": "uk_camo_very_dark_drab",
-      "forest": "uk_camo_middle_deep_bronze_greens"
+      "desert": "uk_camo_standart_modern_light_stone",
+      "forest": "uk_camo_middle_deep_bronze_greens",
+      "winter": "fr_camo_winter_green_white"
     },
     "uk_fv4004_conway": {
       "": "uk_camo_middle_deep_bronze_greens",
@@ -2092,7 +2098,9 @@ return {
     },
     "uk_fv438_swingfire": {
       "": "uk_camo_very_dark_drab",
-      "forest": "uk_camo_middle_deep_bronze_greens"
+      "desert": "uk_camo_standart_modern_light_stone",
+      "forest": "uk_camo_middle_deep_bronze_greens",
+      "winter": "fr_camo_winter_green_white"
     },
     "uk_fv510_isv": {
       "": "uk_camo_standart_modern_desert_bicolor",
@@ -3291,6 +3299,7 @@ return {
       "bluegray_geometry_prem": "camo_bluegray_geometry",
       "bluegreen_splotch": "camo_bluegreen_splotch",
       "bluewater_geometry": "camo_bluewater_geometry",
+      "dark_spots": "camo_dark_spots",
       "darkbrown_spots_prem": "camo_darkbrown_spots",
       "darkgray_blotch": "camo_darkgray_blotch",
       "disruptive_gray": "camo_disruptive_gray",
