@@ -62,7 +62,7 @@ function debug_unit_slots_purchase_effects() {
   if (needShow.get())
     showPurchases()
   else
-    console_print("Need to wait for the main menu to be attached!") //warning disable: -forbidden-function
+    console_print("Need to wait for the main menu to be attached!") 
 }
 
 register_command(debug_unit_slots_purchase_effects, "debug.unit_slots_purchase_effects")

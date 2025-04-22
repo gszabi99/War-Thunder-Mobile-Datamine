@@ -113,7 +113,7 @@ function mkAnimRequirements(unitId, allNodes, canAdd = @(_) true) {
       if (u not in res && canAdd(u)) {
         last = false
         res[u] <- true
-        list.append(u) // warning disable: -modified-container
+        list.append(u) 
       } else if (u in res)
         last = false
     if (last)

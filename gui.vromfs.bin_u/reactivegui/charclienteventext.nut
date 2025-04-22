@@ -14,8 +14,8 @@ let mkRegister = @(list, listName) function(id, action) {
 
 function charClientEventExt(name) {
   let event = $"charclient.{name}"
-  let handlers = {} //main action callback
-  let executors = {} //external callback
+  let handlers = {} 
+  let executors = {} 
 
   function call(table, key, result, context, label, msg) {
     let callback = table?[key]
@@ -38,13 +38,13 @@ function charClientEventExt(name) {
     let handler = ("$handlerId" in context) ? context.$rawdelete("$handlerId") : action
     let label   = $"{name}.{handler}"
 
-    // check any error answer from server
+    
     let response = result?.response
     let success  = response?.success ?? true
 
     if (!success || "error" in result) {
       if (!success && "error" in response) {
-        result = response  // {success = false, error = ..., ...}
+        result = response  
       }
       else {
         local err = "unknown error"

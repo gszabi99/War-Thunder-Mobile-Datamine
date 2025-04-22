@@ -16,6 +16,7 @@ let { actionBarItems, updateActionBarDelayed, primaryAction, secondaryAction, ac
 } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { mkCircleProgressBg, mkBtnBorder, mkBtnImage, mkCircleGlare } = require("circleTouchHudButtons.nut")
 let { defShortcutOvr }  = require("hudButtonsPkg.nut")
+let { isAvailableActionItem } = require("actionButtonComps.nut")
 let { borderColorPushed, borderNoAmmoColor, borderColor, btnBgColor
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { currentBulletIdxPrim, currentBulletIdxSec, bulletsInfo, bulletsInfoSec, bulletsNamePrim, bulletsNameSec
@@ -39,7 +40,7 @@ let disabledColor = 0x4D4D4D4D
 
 let bulletsAngles = [-1.2 * PI, -0.95 * PI, -0.71 * PI]
 
-//only for sailboats. If we need such in other cases, better to do it in the native code
+
 let cdPrim = mkWatched(persist, "cdPrim", array(3, 0))
 let cdEndPrim = mkWatched(persist, "cdEndPrim", array(3, 0))
 let cdSec = mkWatched(persist, "cdSec", array(3, 0))
@@ -67,8 +68,8 @@ function subscribeCdUpdate(action, cdList, cdEnd, trigger) {
         if (cd <= 0)
           continue
         let t = get_mission_time()
-        cdList.mutate(@(v) v[i] = cd) //--iterator-in-lambda
-        cdEnd.mutate(@(v) v[i] = t + cd) //--iterator-in-lambda
+        cdList.mutate(@(v) v[i] = cd) 
+        cdEnd.mutate(@(v) v[i] = t + cd) 
         foreach(idx, end in cdEnd.get())
           if (end < t) {
             changeBulletType(trigger, idx)
@@ -116,9 +117,6 @@ subscribeCdUpdate(primaryAction, cdPrim, cdEndPrim, TRIGGER_GROUP_PRIMARY)
 subscribeCdUpdate(secondaryAction, cdSec, cdEndSec, TRIGGER_GROUP_SECONDARY)
 
 let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
-
-let isActionAvailable = @(actionItem) (actionItem?.available ?? true)
-  && ((actionItem?.count ?? 0) != 0 || actionItem?.control)
 
 function onChangeBullet(trigger, idx, cdEndTime) {
   if (getNextBulletType(trigger) == idx || cdEndTime > get_mission_time())
@@ -242,10 +240,10 @@ let mkBroadsideButtonCtor = @(aType, shortcutId, isRight) function(scale, elemId
   let isOnCd = Computed(@() actionItemsInCd.get()?[aType] ?? false)
 
   function onClick() {
-    if (isOnCd.get() || !isActionAvailable(actionItem.get()))
+    if (isOnCd.get() || !isAvailableActionItem(actionItem.get()))
       return
-    toggleShortcut(shortcutId) //switch
-    toggleShortcut("ID_SHIP_WEAPON_ALL") //shot
+    toggleShortcut(shortcutId) 
+    toggleShortcut("ID_SHIP_WEAPON_ALL") 
     updateActionBarDelayed()
   }
 
@@ -253,7 +251,7 @@ let mkBroadsideButtonCtor = @(aType, shortcutId, isRight) function(scale, elemId
     if (actionItem.get() == null)
       return { watch = actionItem }
 
-    let isAvailable = !isOnCd.get() && isActionAvailable(actionItem.get())
+    let isAvailable = !isOnCd.get() && isAvailableActionItem(actionItem.get())
     let { aimReady } = actionItem.get()
     let color = !isAvailable || !aimReady ? disabledColor : 0xFFFFFFFF
     return {

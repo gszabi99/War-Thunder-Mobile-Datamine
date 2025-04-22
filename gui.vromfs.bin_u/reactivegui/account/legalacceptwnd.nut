@@ -38,7 +38,7 @@ let mkTextarea = @(text) {
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   preformatted = FMT_KEEP_SPACES
-  text = replaceExtremeSpacesToNbsp(text) // FIXME: nbsp is workaround because 'preformatted = FMT_KEEP_SPACES' does not keep extreme spaces
+  text = replaceExtremeSpacesToNbsp(text) 
   maxWidth = wndWidthDefault - buttonsHGap
 }.__update(fontSmall)
 
@@ -50,10 +50,10 @@ let legalList = {
         loc("legals/byClickingBtnYouAcceptAllLegals")
         mkTextarea
         {
-          ["{btnText}"] = mkTextarea(utf8ToUpper(loc("terms_wnd/accept/noNewLine"))), //warning disable: -forgot-subst
-          ["{termsOfServiceUrl}"] = legalInfoUrl(legalToApprove["termsofservice"]), //warning disable: -forgot-subst
-          ["{gameRulesUrl}"] = legalInfoUrl(legalToApprove["gamerules"]), //warning disable: -forgot-subst
-          ["{privacyPolicyUrl}"] = legalInfoUrl(legalToApprove["privacypolicy"]) //warning disable: -forgot-subst
+          ["{btnText}"] = mkTextarea(utf8ToUpper(loc("terms_wnd/accept/noNewLine"))), 
+          ["{termsOfServiceUrl}"] = legalInfoUrl(legalToApprove["termsofservice"]), 
+          ["{gameRulesUrl}"] = legalInfoUrl(legalToApprove["gamerules"]), 
+          ["{privacyPolicyUrl}"] = legalInfoUrl(legalToApprove["privacypolicy"]) 
         }
       ),
       {

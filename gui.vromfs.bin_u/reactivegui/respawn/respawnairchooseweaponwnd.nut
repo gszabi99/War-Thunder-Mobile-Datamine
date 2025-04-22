@@ -285,7 +285,7 @@ function overloadInfoBlock() {
   }.__update(fontTiny)
 }
 
-let calcRowsByElems = @(elems, elemsInRow) ceil(1.0 * elems.len() / elemsInRow)
+let calcRowsByElems = @(elems, elemsInRow) ceil(1.0 * elems.len() / elemsInRow).tointeger()
 let arrayToRows = @(elems, elemsInRow, ovr = {}) array(calcRowsByElems(elems, elemsInRow))
   .map(@(_, idx) mkRowGroup(elems.slice(idx * elemsInRow, (idx + 1) * elemsInRow)).__update(ovr))
 
@@ -328,7 +328,7 @@ function mkChooseSecondarySlotWnd() {
     return { watch = watchList }
 
   let weaponSlots = equippedWeaponsBySlots.get()
-    .slice(1) //0 slot is not secondary weapons
+    .slice(1) 
     .map(@(w, idx) w == null ? mkEmptyWeaponSlot(idx + 1, idx + 1 == selectedIdx)
       : mkWeaponSlot(w, idx + 1, idx + 1 == selectedIdx))
 

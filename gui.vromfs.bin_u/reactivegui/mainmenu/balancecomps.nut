@@ -182,7 +182,7 @@ function mkBalance(baseId, style, onClick, initBalance) {
               })
           @() {
             watch = [nextChange, id]
-            size = [0, 0] //to not affect parent size
+            size = [0, 0] 
             hplace = ALIGN_RIGHT
             vplace = ALIGN_BOTTOM
             children = nextChange.value == null ? null

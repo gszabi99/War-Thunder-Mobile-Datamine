@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
+let { campaignsList, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { levelMark, hlColor, iconSize, mkText, levelHolderSize } = require("%rGui/mpStatistics/playerInfo.nut")
@@ -106,7 +106,8 @@ let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
           }
         }
         function() {
-          let stats = playerStats.get()?[campaign] ?? {}
+          let camp = getCampaignStatsId(campaign)
+          let stats = playerStats.get()?[camp] ?? {}
           return {
             watch = playerStats
             size = [flex(), SIZE_TO_CONTENT]
@@ -114,7 +115,7 @@ let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
             flow = FLOW_VERTICAL
             gap = hdpx(5)
             children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
-              .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign, mkMarqueeRow)))
+              .extend(viewStats.map(@(conf) mkStatRow(stats, conf, camp, mkMarqueeRow)))
           }
         }
       ]

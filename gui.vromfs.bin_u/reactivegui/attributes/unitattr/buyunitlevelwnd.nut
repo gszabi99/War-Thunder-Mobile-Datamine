@@ -17,7 +17,7 @@ let { generateDataDiscount, mkLevelBlock } = require("%rGui/attributes/buyLevelC
 let { getSpCostText } = require("%rGui/attributes/attrState.nut")
 
 
-let WND_UID = "buyUnitLevelWnd" //we no need several such messages at all.
+let WND_UID = "buyUnitLevelWnd" 
 
 let unitName = mkWatched(persist, "unitName", null)
 let unit = Computed(@() campMyUnits.get()?[unitName.get()])

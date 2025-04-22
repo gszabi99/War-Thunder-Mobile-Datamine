@@ -11,13 +11,13 @@ let { onlyActiveStageCb, export, finalizeStage, interruptStage
 
 registerHandler("onLoginGetConfigs", onlyActiveStageCb(function(res, _) {
   if (res?.error != null) {
-    defer(@() interruptStage(res)) //sign_out has big sync time, so better to not do it on the same frame with pServer logerr
+    defer(@() interruptStage(res)) 
     let { bqLocId, text } = localizePServerError(res.error)
     sendErrorLocIdBqEvent(bqLocId)
     openFMsgBox({ text })
   }
   else
-    defer(finalizeStage) //need sync configs to other VM before finalize stage
+    defer(finalizeStage) 
 }))
 
 let start = @() get_all_configs("onLoginGetConfigs")

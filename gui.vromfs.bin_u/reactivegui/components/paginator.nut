@@ -92,7 +92,7 @@ let prevBtn = @(onClick) arrowBtn(onClick, -90)
 let nextBtn = @(onClick) arrowBtn(onClick, 90)
 
 
-//first page is 0
+
 let mkPaginator = @(curPage, lastPage, myPage = Watched(-1), ovr = {}) function() {
   let res = { watch = [curPage, lastPage, myPage] }.__update(ovr)
   if (lastPage.value >= 0 && lastPage.value < 1)
@@ -109,10 +109,10 @@ let mkPaginator = @(curPage, lastPage, myPage = Watched(-1), ovr = {}) function(
     let onClick = @() curPage(page)
     if (i == cur)
       children.append(mkCurPage(i + 1))
-    else if ((cur - 1 <= i && i <= cur + 1)       //around current page
-             || (i == my)                         //equal my page
-             || (i < 3)                           //always show first 2 entrys
-             || i == last)                        //show last entry
+    else if ((cur - 1 <= i && i <= cur + 1)       
+             || (i == my)                         
+             || (i < 3)                           
+             || i == last)                        
       children.append(mkPage(i + 1, onClick, my == i ? localPlayerColor : defPageColor))
     else {
       children.append(dots)

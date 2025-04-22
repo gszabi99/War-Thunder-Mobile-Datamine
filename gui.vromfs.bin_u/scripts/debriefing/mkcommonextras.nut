@@ -6,7 +6,7 @@ function mkCommonExtras(battleResult, serverConfigsV) {
     let { unitResearchExp = null, unitTreeNodes = null, allUnits = {} } = serverConfigsV
     let { campaign = null } = battleResult
     let isCampaignWithResearch = campaign in unitTreeNodes
-    // For campaigns with campaign level progress unit rewards
+    
     if (!isCampaignWithResearch) {
       let nextLevel = (battleResult?.player.level ?? 0) + 1
       let nextLevelUnits = allUnits.filter(@(u)

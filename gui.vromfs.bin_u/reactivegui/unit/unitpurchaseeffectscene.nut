@@ -65,7 +65,7 @@ needOpen.subscribe(@(v) v ? null : isOpened.set(false))
 shouldOpen.subscribe(@(v) v ? isOpened.set(true) : null)
 
 let unitEffectScene = @() {
-  //needed to pass validation tests
+  
   rendObj = ROBJ_SOLID
   color = 0
   key = {}

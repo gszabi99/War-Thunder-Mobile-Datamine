@@ -29,6 +29,7 @@ let elements = {
   tactical_map = ["tactical_map"]
   hit_camera = ["hit_camera"]
   btn_extinguisher = ["btn_extinguisher"]
+  btn_repair_with_medical = ["btn_repair_with_medical"]
   btn_special_unit = ["EII_SPECIAL_UNIT"]
   btn_special_unit2 = ["EII_SPECIAL_UNIT_2"]
   crew_active = ["crew_active"]

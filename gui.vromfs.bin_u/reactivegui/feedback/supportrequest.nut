@@ -7,12 +7,12 @@ let { httpRequest, HTTP_SUCCESS, HTTP_FAILED, HTTP_ABORTED } = require("dagor.ht
 let { zendeskApiUploadsUrl, zendeskApiRequestsUrl } = require("supportState.nut")
 let { getLogFileData } = require("logFileAttachment.nut")
 
-/*
- * This script is a replacement for this Gaijin Support request form:
- * https://support.gaijin.net/hc/en-us/requests/new?locked=1&ticket_form_id=5532303880849
- * It uses Zendesk API. More info here:
- * https://developer.zendesk.com/api-reference/ticketing/tickets/ticket-requests/
- */
+
+
+
+
+
+
 
 let isDebug = mkWatched(persist, "isDebug", false)
 
@@ -185,8 +185,8 @@ let onRequestResultSeen = @() requestState.value.isProcessing
 register_command(function() {
   isDebug.set(!isDebug.get())
   let res = $"ui.debug.zendesk {isDebug.get()}"
-  screenlog(res) // warning disable: -forbidden-function
-  console_print(res) // warning disable: -forbidden-function
+  screenlog(res) 
+  console_print(res) 
 }, "ui.debug.zendesk")
 
 return {

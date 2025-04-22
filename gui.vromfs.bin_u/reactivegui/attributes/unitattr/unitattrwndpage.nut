@@ -19,8 +19,8 @@ let { attrUnitName, attrUnitType, curCategory, unitAttributes, totalUnitSp,
 function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, maxLevel) {
   if (!applyAttrRowChange(catId, attr.id, tryValue, selLevel, minLevel, maxLevel)) {
     let currTime = get_time_msec()
-    if (lastClickTime + boost_cooldown < currTime) { //cooldown check
-      let nextIncCost = attr.levelCost?[selLevel.get()] ?? 0 //for max level reach condition
+    if (lastClickTime + boost_cooldown < currTime) { 
+      let nextIncCost = attr.levelCost?[selLevel.get()] ?? 0 
       if (nextIncCost > 0 && tryValue > selLevel.get())
         buyUnitLevelWnd(attrUnitName.get())
     }
@@ -30,10 +30,10 @@ function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, ma
 function mkAttrRow(attr) {
   let shopCfg = getUnitTagsShop(attrUnitName.get())
   let catId = curCategoryId.get()
-  let minLevel = Computed(@() unitAttributes.get()?[catId][attr.id] ?? 0) // Current applied level
-  let selLevel = Computed(@() max(selAttributes.get()?[catId][attr.id] ?? minLevel.get(), minLevel.get())) // User selected new level
-  let maxLevel = Computed(@() getMaxAttrLevelData(attr, selLevel.get(), leftUnitSp.get()).maxLevel) // Can buy max level
-  let totalLevels = attr.levelCost.len() // Total level progress steps
+  let minLevel = Computed(@() unitAttributes.get()?[catId][attr.id] ?? 0) 
+  let selLevel = Computed(@() max(selAttributes.get()?[catId][attr.id] ?? minLevel.get(), minLevel.get())) 
+  let maxLevel = Computed(@() getMaxAttrLevelData(attr, selLevel.get(), leftUnitSp.get()).maxLevel) 
+  let totalLevels = attr.levelCost.len() 
   let nextIncCost = Computed(@() attr.levelCost?[selLevel.get()] ?? 0)
   let canDec = Computed(@() selLevel.get() > minLevel.get())
   let canInc = Computed(@() selLevel.get() < maxLevel.get())

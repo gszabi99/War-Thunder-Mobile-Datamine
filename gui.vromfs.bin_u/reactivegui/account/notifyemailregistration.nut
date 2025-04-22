@@ -17,7 +17,7 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let GUEST_MSG_UID = "guestEmailRegistration"
 let VERIFY_MSG_UID = "verifyEmail"
 let ONLINE_BATTLES_TO_VERIFY = 10
-let NOTIFY_PERIOD = 604800 //s in one week
+let NOTIFY_PERIOD = 604800 
 
 let isGuestMsgShowed = hardPersistWatched("isGuestMsgShowed", false)
 let hasEnoughOnlineBattles = Computed(@()

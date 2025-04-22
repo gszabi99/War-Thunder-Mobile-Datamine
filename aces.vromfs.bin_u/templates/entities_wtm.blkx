@@ -101,9 +101,10 @@
     "_use": "medicalkit_ecs",
     "mod__enabled_without_mod": true,
     "mod__count_for_bots": 1,
-    "mod__count_for_players": 1,
-    "mod__send_economic_spend": false,
-    "mod__economic_spend_name": "tank_tool_kit_expendable"
+    "mod__count_for_players": 0,
+    "mod__send_economic_spend": true,
+    "mod__economic_spend_name": "tank_medical_kit",
+    "mod__count_effects_mod": false
   },
   "tank_wtm": {
     "_use": "tank",

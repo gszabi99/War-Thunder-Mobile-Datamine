@@ -61,7 +61,7 @@ let requestedUids = {}
 eventbus_subscribe(NAME_CB_ID, function(msg) {
   let { result, context } = msg
   let { uids, onFinish } = context
-  let changeList = {} //uid = name
+  let changeList = {} 
   foreach (uid in uids) {
     let userId = uid.tostring()
     let name = result?.result[userId]
@@ -75,7 +75,7 @@ eventbus_subscribe(NAME_CB_ID, function(msg) {
   callCb(onFinish, result)
 })
 
-//contactsContainer - array or table of contacts
+
 function validateNickNames(allUids, onFinish = null) {
   let uids = []
   foreach(u in allUids) {

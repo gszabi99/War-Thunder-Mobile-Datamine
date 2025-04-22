@@ -87,7 +87,7 @@ isRefreshLbEnabled.subscribe(@(_) updateRefreshTimer())
 
 let ratingBattlesCount = Computed(@()
   userstatStats.value?.stats[curLbCfg.value?.lbTable].ratingSessions ?? -1)
-let minRatingBattles = Watched(5) //todo: get it from leaderboard params from "$" as total.
+let minRatingBattles = Watched(5) 
 let bestBattles = Computed(@()
   userstatStats.value?.stats[curLbCfg.value?.lbTable]["$sessions"])
 let bestBattlesCount = Computed(@() bestBattles.value?.len() ?? 0)

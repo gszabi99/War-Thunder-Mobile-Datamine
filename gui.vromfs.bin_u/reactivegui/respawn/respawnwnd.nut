@@ -89,7 +89,7 @@ let topPanel = @() {
 }
 
 function onSlotClick(slot) {
-  //todo: validate spawn here
+  
   sendPlayerActivityToServer()
   if (slot.canSpawn) {
     playerSelectedSlotIdx(slot.id)
@@ -301,7 +301,7 @@ function toBattleButton(onClick, styleOvr) {
 }
 
 function toBattle() {
-  if (chosenBullets.value.len() == 0) //no need to validate bullets count when no bullets choice at all
+  if (chosenBullets.value.len() == 0) 
     respawn(selSlot.value, bulletsToSpawn.value)
   else if (hasZeroBullets.value)
     openMsgBox({ text = loc("respawn/zero_ammo") })

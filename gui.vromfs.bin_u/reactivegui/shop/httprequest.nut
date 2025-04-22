@@ -24,7 +24,7 @@ function requestData(url, params, onSuccess, onFailure = null) {
 
       try {
         let str = response.body.as_string()
-        if (str.startswith("<html>")) { //error 404 and other html pages
+        if (str.startswith("<html>")) { 
           logByUrlOnce(url, $"ShopState: Request result is html page instead of data {url}\n{str}")
           onFailure?({ errText = "Request result is html page instead of data" })
           return

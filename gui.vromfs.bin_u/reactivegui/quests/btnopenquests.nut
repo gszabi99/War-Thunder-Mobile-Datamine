@@ -23,7 +23,7 @@ let btnOpenQuests = @() {
         "",
         openQuestsWnd,
         statusMark,
-        { key = "quest_wnd_btn" }) //need for tutorial
+        { key = "quest_wnd_btn" }) 
 }
 
 function mkBtnOpenTabQuests(tabId, ovr = {}) {

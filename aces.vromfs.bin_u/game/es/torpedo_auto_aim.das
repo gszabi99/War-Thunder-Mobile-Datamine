@@ -23,7 +23,7 @@ def torpedo_auto_aim_impl(var weapon; target; unit : Unit?; is_unit_submarine : 
   weapon.startShootingDir = normalize(weapon.startShootingDir)
   weapon.isStartShootingValid = true
   var shipTarget = target |> as_ship()
-  let maxDiveDepth = shipTarget != null && target.isSubmarine ? shipTarget.periscopeDepth : weapon.prop.diveDepth;
+  let maxDiveDepth = shipTarget != null && target.isSubmarine ? shipTarget.periscopeDepth : weapon.prop.diveDepth
   weapon.aimDepth = target.isSubmarine || is_unit_submarine ? clamp(-targetPos.y, weapon.prop.diveDepth, maxDiveDepth) : -1.
 
 [es(tag=server, REQUIRE=enableTorpedoAutoAim)]

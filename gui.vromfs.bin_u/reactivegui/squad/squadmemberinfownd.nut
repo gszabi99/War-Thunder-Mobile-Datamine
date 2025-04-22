@@ -43,7 +43,7 @@ isInvitedToSquad.subscribe(function(v) {
   if (uid != null && uid not in squadMembers.value && uid not in v)
     close()
 })
-isSquadLeader.subscribe(@(_) close()) //bad view on change leadership, so better to close window or rebuild animated lines
+isSquadLeader.subscribe(@(_) close()) 
 
 let statusView = {
   leader = {
@@ -216,7 +216,7 @@ let animLines = @(rect) function() {
   let wMidX = (w.r + w.l) / 2
 
   let lines = [
-    //member button
+    
     [
       [midX, b, l, b],
       [midX, b, r, b],
@@ -229,9 +229,9 @@ let animLines = @(rect) function() {
       [l, t, midX, t],
       [r, t, midX, t],
     ],
-    //middle line
+    
     [[midX, t, midX, w.b]],
-    //window
+    
     [
       [midX, w.b, w.l, w.b],
       [midX, w.b, w.r, w.b],

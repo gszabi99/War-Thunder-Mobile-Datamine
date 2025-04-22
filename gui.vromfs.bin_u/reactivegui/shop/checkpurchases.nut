@@ -16,7 +16,7 @@ isLoggedIn.subscribe(function(v) {
   loginTime = v ? get_time_msec() : 0
 })
 eventbus_subscribe("onMatchingOnlineAvailable", function(_) {
-  if (isLoggedIn.get() && loginTime + 1000 < get_time_msec()) //purchases already checked on login
+  if (isLoggedIn.get() && loginTime + 1000 < get_time_msec()) 
     check_purchases()
 })
 

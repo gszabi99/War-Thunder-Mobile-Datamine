@@ -14,9 +14,9 @@ function mkPlayersByTeam(debrData) {
     } = playersCommonStats?[userIdStr]
 
     let frameId = decorators?.nickFrame ?? ""
-    let namePrepared = isBot ? loc(name) // For bots, p.name is a localization key.
-      : isLocal ? localUserName // debrData.userName is a local player's myUserName value.
-      : getPlayerName(name) // For players, p.name is a realName (with platform suffix).
+    let namePrepared = isBot ? loc(name) 
+      : isLocal ? localUserName 
+      : getPlayerName(name) 
     let visualName = frameNick(namePrepared, frameId)
 
     local botDecorators = null

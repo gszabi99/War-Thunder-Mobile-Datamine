@@ -1,4 +1,4 @@
-//pseudo-module for native code
+
 
 let r = getroottable()
 

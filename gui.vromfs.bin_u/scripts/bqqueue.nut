@@ -18,8 +18,8 @@ let { hasConnection } = require("%appGlobals/clientState/connectionStatus.nut")
 let { getServerTimeAt, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 
 
-const MIN_TIME_BETWEEN_MSEC = 5000 //not send events more often than once per 5 sec
-const RETRY_MSEC = 300000 //retry send on error
+const MIN_TIME_BETWEEN_MSEC = 5000 
+const RETRY_MSEC = 300000 
 const RETRY_ON_URL_ERROR_MSEC = 3000
 const LOGERR_MIN_ERROR_LOOPS = 3
 const MAX_COUNT_MSG_IN_ONE_SEND = 150

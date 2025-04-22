@@ -37,7 +37,7 @@ function updateAnim() {
 function startAnim() {
   isOpeningFinished.set(false)
   animEndMsec = get_time_msec() + (1000 * (OPEN_TIME - 0.01)).tointeger()
-  updateAnim() //watches will update on the next frame
+  updateAnim() 
 }
 
 function wndHeader() {
@@ -92,7 +92,7 @@ function subPresetContent() {
         opacity = 0.8
       }
       {
-        key = "subPresetContainer" // need for tutor
+        key = "subPresetContainer" 
         size = get9RectSize(contentSize, scrollScreenOffs)
         padding = scrollScreenOffs
         rendObj = ROBJ_9RECT

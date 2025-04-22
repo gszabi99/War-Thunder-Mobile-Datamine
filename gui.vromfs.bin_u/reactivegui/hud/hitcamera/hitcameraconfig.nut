@@ -2,30 +2,30 @@ from "%globalsDarg/darg_library.nut" import *
 from "hitCamera" import *
 
 let hitResultCfg = {
-  [DM_HIT_RESULT_RICOSHET]    = { locId = "hitcamera/result/ricochet",  styleId = "miss" }, // 1
-  [DM_HIT_RESULT_BOUNCE]      = { locId = "hitcamera/result/bounce",    styleId = "miss" }, // 2
-  [DM_HIT_RESULT_HIT]         = { locId = "hitcamera/result/hit",       styleId = "hit"  }, // 3
-  [DM_HIT_RESULT_BURN]        = { locId = "hitcamera/result/burn",      styleId = "crit" }, // 4
-  [DM_HIT_RESULT_CRITICAL]    = { locId = "hitcamera/result/critical",  styleId = "crit" }, // 5
-  [DM_HIT_RESULT_KILL]        = { locId = "hitcamera/result/kill",      styleId = "kill" }, // 6
-  [DM_HIT_RESULT_METAPART]    = { locId = "hitcamera/result/hull",      styleId = "kill" }, // 7
-  [DM_HIT_RESULT_AMMO]        = { locId = "hitcamera/result/ammo",      styleId = "kill" }, // 8
-  [DM_HIT_RESULT_FUEL]        = { locId = "hitcamera/result/fuel",      styleId = "kill" }, // 9
-  [DM_HIT_RESULT_CREW]        = { locId = "hitcamera/result/crew",      styleId = "kill" }, // 10
-  [DM_HIT_RESULT_TORPEDO]     = { locId = "hitcamera/result/torpedo",   styleId = "kill" }, // 11
-  [DM_HIT_RESULT_DESTRUCTION] = { locId = "hitcamera/result/kill",      styleId = "kill" }, // 12
-  [DM_HIT_RESULT_BREAKING]    = { locId = "hitcamera/result/breaking",  styleId = "hit"  }, // 13
-  [DM_HIT_RESULT_INVULNERABLE] = { locId = "hitcamera/result/invulnerable", styleId = "miss" },//14
+  [DM_HIT_RESULT_RICOSHET]    = { locId = "hitcamera/result/ricochet",  styleId = "miss" }, 
+  [DM_HIT_RESULT_BOUNCE]      = { locId = "hitcamera/result/bounce",    styleId = "miss" }, 
+  [DM_HIT_RESULT_HIT]         = { locId = "hitcamera/result/hit",       styleId = "hit"  }, 
+  [DM_HIT_RESULT_BURN]        = { locId = "hitcamera/result/burn",      styleId = "crit" }, 
+  [DM_HIT_RESULT_CRITICAL]    = { locId = "hitcamera/result/critical",  styleId = "crit" }, 
+  [DM_HIT_RESULT_KILL]        = { locId = "hitcamera/result/kill",      styleId = "kill" }, 
+  [DM_HIT_RESULT_METAPART]    = { locId = "hitcamera/result/hull",      styleId = "kill" }, 
+  [DM_HIT_RESULT_AMMO]        = { locId = "hitcamera/result/ammo",      styleId = "kill" }, 
+  [DM_HIT_RESULT_FUEL]        = { locId = "hitcamera/result/fuel",      styleId = "kill" }, 
+  [DM_HIT_RESULT_CREW]        = { locId = "hitcamera/result/crew",      styleId = "kill" }, 
+  [DM_HIT_RESULT_TORPEDO]     = { locId = "hitcamera/result/torpedo",   styleId = "kill" }, 
+  [DM_HIT_RESULT_DESTRUCTION] = { locId = "hitcamera/result/kill",      styleId = "kill" }, 
+  [DM_HIT_RESULT_BREAKING]    = { locId = "hitcamera/result/breaking",  styleId = "hit"  }, 
+  [DM_HIT_RESULT_INVULNERABLE] = { locId = "hitcamera/result/invulnerable", styleId = "miss" },
 }
 
 let defPartPriority = 1
 
 let partsPriority = {
-  //ammo
+  
   ammunition_storage = 101
   torpedo = 100
 
-  //weaponry
+  
   ship_main_caliber_gun = 55
   ship_main_caliber_turret = 55
   ship_auxiliary_caliber_gun = 54
@@ -34,7 +34,7 @@ let partsPriority = {
   ship_aa_turret = 52
   ship_torpedo_tube = 51
 
-  //movement
+  
   ship_engine_room = 39
   ship_steering_gear = 38
   ship_bridge = 37
@@ -42,7 +42,7 @@ let partsPriority = {
   ship_fuel_tank = 33
   ship_funnel = 31
 
-  //armor
+  
   ship_armor_belt_r = 25
   ship_armor_belt_l = 25
   ship_armor_cit_r = 23

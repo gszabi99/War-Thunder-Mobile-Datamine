@@ -36,7 +36,7 @@ enum ACTION {
   REQUEST = "request"
 }
 
-let state = mkWatched(persist, "state", null) //eid, sessionId, slots, isSlots, data, isBattleDataReceived, isUnitsOverrided, ovrUnitUpgradesPreset
+let state = mkWatched(persist, "state", null) 
 let isBattleDataApplied = mkWatched(persist, "isBattleDataApplied", false)
 let wasBattleDataApplied = mkWatched(persist, "wasBattleDataApplied", false)
 let lastClientBattleData = mkWatched(persist, "lastAppliedClientBattleData", null)
@@ -63,14 +63,14 @@ let curAction = keepref(Computed(function() {
     let isActual = isBattleDataOvrMissionActual.get()
       && (bdOvrMissionParams.get()?.preset ?? "") == ovrUnitUpgradesPreset
       && (ovrUnitUpgradesPreset == "" || isEqual(bdOvrMissionParams.get()?.unitList, slots))
-    if ((shouldDisableMenu || isOfflineMenu) && !isActual) //actual battle data has info from jwt token
+    if ((shouldDisableMenu || isOfflineMenu) && !isActual) 
       return ACTION.SET_AND_SEND_DEFAULT
     if (data == null && !isActual)
       return ACTION.ACTUALIZE_OVR_MISSION
     return ACTION.SEND_OVR_MISSION
   }
 
-  if ((shouldDisableMenu || isOfflineMenu) && !isBattleDataActual.value) //actual battle data has info from jwt token
+  if ((shouldDisableMenu || isOfflineMenu) && !isBattleDataActual.value) 
     return ACTION.SET_AND_SEND_DEFAULT
 
   if (data == null
@@ -101,7 +101,7 @@ let actions = {
     ecs.client_request_unicast_net_sqevent(state.value.eid, mkCmdSetBattleJwtData({ jwtList = splitStringBySize(jwt, 4096) }))
   },
   [ACTION.REQUEST] = @()
-    ecs.client_request_unicast_net_sqevent(state.value.eid, mkCmdGetMyBattleData({ a = "" })),  // Non empty event payload table as otherwise 'fromconnid' won't be added
+    ecs.client_request_unicast_net_sqevent(state.value.eid, mkCmdGetMyBattleData({ a = "" })),  
 }
 
 function onChangeSlots(eid, comp) {
@@ -187,7 +187,7 @@ function applyAction(actionId) {
   actions[actionId]()
 }
 applyAction(curAction.value)
-curAction.subscribe(@(actionId) defer(function() { //action can change curAction.value
+curAction.subscribe(@(actionId) defer(function() { 
   if (actionId == curAction.value)
     applyAction(actionId)
 }))

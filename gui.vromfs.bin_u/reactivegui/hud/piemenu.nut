@@ -17,12 +17,12 @@ let defaultPieMenuParams = freeze({
   pieActiveStick = STICK.LEFT
 })
 
-/**
- * Calculates the selected menu item index, by stick delta value from miniTouchStick.
- * @param {integer} menuItemsCount - Menu items count.
- * @param {Point2} stickDeltaV - Value of stickDelta watched.
- * @return {integer} - Selected menu item index, or -1 if nothing is selected.
- */
+
+
+
+
+
+
 function getPieMenuSelectedIdx(menuItemsCount, stickDeltaV) {
   if (menuItemsCount == 0)
     return -1
@@ -62,15 +62,15 @@ let mkPieMenuItemText = @(c) {
   text = c.label
 }.__update(fontSmall)
 
-/**
- * Creates a pie menu component, which should be controlled with miniTouchStick.
- * @param {Watched(array)} menuCfg - Watched menu items config. Items count is unlimited, but recommended from 1 to 8 items.
- *                                   Item format example: { icon = "foo.svg", iconScale = 1.0, label = "Text", action = @() null }
- *                                   Only "icon" param is required, all other params are optional.
- * @param {Watched(integer)} selIdx - Watched selected item index to be highlighted (see getPieMenuSelectedIdx func).
- * @param {table} [params] - Optional custom params, see defaultPieMenuParams.
- * @return {table} - Pie menu component for HUD.
- */
+
+
+
+
+
+
+
+
+
 function mkPieMenu(menuCfg, selIdx, params = defaultPieMenuParams) {
   let { pieRadius, piePosOffset, pieIconSizeMul, pieActiveStick = STICK.LEFT } = params
   let pieSize = [pieRadius * 2, pieRadius * 2]

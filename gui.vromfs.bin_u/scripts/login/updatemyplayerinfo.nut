@@ -13,13 +13,13 @@ isAuthorized.subscribe(@(v) myInfo.mutate(@(p) p.__update({
 })))
 
 isAuthAndUpdated.subscribe(function(v) {
-  let info = v ? get_cur_rank_info() : null //why so hard way to get userId?
+  let info = v ? get_cur_rank_info() : null 
   let realName = info?.name ?? ""
-  let nickOrig = getNickOrig() // User's custom nickname (currently only Gaijin accounts have it)
+  let nickOrig = getNickOrig() 
   let name = removePlatformPostfix(nickOrig != "" ? nickOrig : realName)
   myInfo.mutate(@(p) p.__update({
-    name // Name for displaying in UI
-    realName // Unique name as ID. For non-Gaijin accounts it contains a platform suffix like "name@googleplay"
+    name 
+    realName 
   }))
 })
 

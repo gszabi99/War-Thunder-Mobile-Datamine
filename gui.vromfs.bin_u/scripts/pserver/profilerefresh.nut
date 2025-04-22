@@ -11,8 +11,8 @@ let { get_profile, get_all_configs, registerHandler } = require("%appGlobals/pSe
 let logPR = log_with_prefix("[profileRefresh] ")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
-const MAX_CONFIGS_UPDATE_DELAY = 120 //to prevent all users update configs at once.
-  //but after the battle user will update configs if needed with profile even before timer.
+const MAX_CONFIGS_UPDATE_DELAY = 120 
+  
 const RETRY_UPDATE_PROFILE_TIME = 60
 const SEND_BQ_NOT_RECEIVED_TIME = 180
 
@@ -26,7 +26,7 @@ let hasLastBattleReward = Computed(@() (battleResult.value?.reward.playerExp.tot
   || (battleResult.value?.reward.playerWp.totalWp ?? 0) != 0
   || (battleResult.value?.reward.units ?? []).findvalue(@(v) (v?.exp.totalExp ?? 0) != 0) != null
   || (battleResult.value?.reward.units ?? []).findvalue(@(v) (v?.gold.totalGold ?? 0) != 0) != null
-  || (battleResult.value?.reward.unitExp.totalExp ?? 0) != 0 // Compatibility with dedicated pre-1.8.0
+  || (battleResult.value?.reward.unitExp.totalExp ?? 0) != 0 
 )
 let isWaitProfile = keepref(Computed(@()
   !isInBattle.value && hasLastBattleReward.value && !isProfileReceivedAfterBattle.value))
@@ -72,7 +72,7 @@ registerHandler("onConfigsResfresh",
     if (lastConfigsError.value == null)
       return
     logPR("Mark configs changed by error")
-    isConfigsChanged(true) //will refrsh again in random time between 0 and MAX_CONFIGS_UPDATE_DELAY
+    isConfigsChanged(true) 
   })
 
 isInBattle.subscribe(function(v) {
@@ -97,7 +97,7 @@ function sendBqNotReceivedProfile() {
   if (!isWaitProfile.value)
     return
   if (isInDebriefing.value) {
-    //restart timer because long stay in the debriefing
+    
     resetTimeout(SEND_BQ_NOT_RECEIVED_TIME, sendBqNotReceivedProfile)
     return
   }

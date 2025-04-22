@@ -19,12 +19,12 @@ let MainMask         = Watched(0)
 let Trt0             = Watched(0)
 let TrtMode0         = Watched(0)
 let Cannon0          = Watched({ count = 0, time = -1, endTime = -1 })
-let MGun0            = Watched({ count = 0, time = -1, endTime = -1 }) // -duplicate-assigned-expr
-let AddGun           = Watched({ count = 0, time = -1, endTime = -1 }) // -duplicate-assigned-expr
+let MGun0            = Watched({ count = 0, time = -1, endTime = -1 }) 
+let AddGun           = Watched({ count = 0, time = -1, endTime = -1 }) 
 
-let BombsState       = Watched({ count = 0, time = -1, endTime = 1 }) // -duplicate-assigned-expr
-let RocketsState     = Watched({ count = 0, time = -1, endTime = 1 }) // -duplicate-assigned-expr
-let TorpedoesState   = Watched({ count = 0, time = -1, endTime = 1 }) // -duplicate-assigned-expr
+let BombsState       = Watched({ count = 0, time = -1, endTime = 1 }) 
+let RocketsState     = Watched({ count = 0, time = -1, endTime = 1 }) 
+let TorpedoesState   = Watched({ count = 0, time = -1, endTime = 1 }) 
 let cannonsOverheat  = Watched(0)
 let mgunsOverheat  = Watched(0)
 let TurretsVisible = Watched(array(NUM_TURRETS_MAX, false))

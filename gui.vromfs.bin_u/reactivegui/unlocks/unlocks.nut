@@ -13,7 +13,7 @@ let emptyProgress = {
   required = 1
   isCompleted = false
   hasReward = false
-  isFinished = false //isCompleted && !hasReward
+  isFinished = false 
 }
 
 let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
@@ -29,7 +29,7 @@ let unlockTables = Computed(function(prev) {
     res[name] <- false
   res.__update(tablesActivityOvr.get())
   foreach (name in battlePassTables)
-    res[name] <- true //FIXME: why we need this hack?
+    res[name] <- true 
   return prevIfEqual(prev, res)
 })
 
@@ -112,7 +112,7 @@ function getStagePrice(stage) {
 let getUnlockPrice = @(unlock)
   getStagePrice(unlock) ?? getStagePrice(unlock?.stages[unlock?.stage]) ?? mkPrice()
 
-//return stages info relative to cureent period. for not preiodic unlock return usual unlock params
+
 function getRelativeStageData(unlock) {
   let { stages = [], lastRewardedStage = 0, stage = 0, periodic = false, startStageLoop = 1 } = unlock
   if (!periodic || stages.len() == 0 || lastRewardedStage < stages.len())
@@ -188,7 +188,7 @@ userstatRegisterHandler("GrantRewards", function(result, context) {
 
 userstatRegisterHandler("ResetAppData", function(result, context) {
   let logFunc = (context?.needScreenLog ?? false) ? dlog : console_print
-  if ("error" in result && result.error != "WRONG_JSON")  //WRONG_JSON is incorrect result in the native client, because this request does not have json answer
+  if ("error" in result && result.error != "WRONG_JSON")  
     logFunc("Reset unlocks progress failed: ", result)
   else
     logFunc("Reset unlocks progress success.")

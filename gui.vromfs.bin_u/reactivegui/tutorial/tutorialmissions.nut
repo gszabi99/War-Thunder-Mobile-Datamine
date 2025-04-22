@@ -119,7 +119,7 @@ register_command(function() {
     ? null
     : (abTests.value?.tutorialTankMissionV2 == "true" ? "false" : "true")
   )
-  dlog("tutorialMissions", tutorialMissions.value) // warning disable: -forbidden-function
+  dlog("tutorialMissions", tutorialMissions.value) 
 }, "debug.abTests.tutorialTankMission")
 
 return {

@@ -11,7 +11,7 @@ let { PURCH_SRC_SLOTBAR, PURCH_TYPE_SLOT, mkBqPurchaseInfo } = require("%rGui/sh
 let { canPlayAnimUnitWithLink, animUnitWithLink } = require("%rGui/unitsTree/animState.nut")
 
 
-let animTimeout = 5.0 //in case we not receive event from anim
+let animTimeout = 5.0 
 let getCurrentSlotIdx = @(slots) slots.findindex(@(s) s?.name == hangarUnitName.get())
 
 let visibleNewModsSlots = Watched({})

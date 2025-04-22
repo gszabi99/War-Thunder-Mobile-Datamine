@@ -51,7 +51,7 @@ let mkGradientCtorDoubleSideY = @(color1, color2, middle = 0.4) function(params,
   }
 }
 
-//p1, p2 : array(2)
+
 let mkGradientCtorInclined = function(color1, color2, p1, p2) {
   let x1 = p1[0]
   let x2 = p2[0]
@@ -235,12 +235,12 @@ function mkRingGradientLazy(radius, outherWidth, innerWidth) {
 }
 
 return {
-  //const
+  
   gradTexSize
   gradDoubleTexOffset = (0.5 * gradTexSize).tointeger() - 2
   gradCircCornerOffset = gradCircCornerSize + 1
 
-  //std gradietns
+  
   gradTranspDoubleSideX
   gradCircularSqCorners
   gradCircularSmallHorCorners
@@ -251,7 +251,7 @@ return {
   simpleVerGradInv
   simpleHorGradInv
 
-  //ctors
+  
   mkGradientCtorDoubleSideX
   mkGradientCtorDoubleSideY
   mkGradientCtorInclined

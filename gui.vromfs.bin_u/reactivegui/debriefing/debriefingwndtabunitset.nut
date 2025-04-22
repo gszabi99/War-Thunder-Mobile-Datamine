@@ -49,7 +49,7 @@ function mkSlotLevelUnlockLines(unit, debrData, delay) {
   let list = []
   for (local l = startLevel; l <= endLevel; l++) {
     let isUnlocked = l <= unlockedLevel
-    // Points
+    
     let sp = spLevels?[l - 1] ?? 0
     if (sp > 0) {
       let data = { sp, reqLevel = l, name = $"sp{l}" }
@@ -99,7 +99,7 @@ function mkUnitLevelUnlockLines(unit, debrData, delay) {
   let list = []
   for (local l = startLevel; l <= endLevel; l++) {
     let isUnlocked = l <= unlockedLevel
-    // Mods
+    
     if (!isModsWeapons) {
       let modsList = modsMap
         .filter(@(mod) mod?.reqLevel == l)
@@ -107,12 +107,12 @@ function mkUnitLevelUnlockLines(unit, debrData, delay) {
       modsList.sort(sortUnitMods)
       list.extend(modsList.map(@(v) { isUnlocked, data = v, ctor = mkDebrLineMod }))
     }
-    // Weapons
+    
     let weaponsList = weaponsPresetsMap
       .filter(@(w) w?.reqLevel == l)
       .values()
     list.extend(weaponsList.map(@(v) { isUnlocked, data = v, ctor = mkDebrLineWeapon }))
-    // Ammo
+    
     let ammoList = ammoForWeaponsMap
       .filter(@(w) w?.reqLevel == l)
       .values()

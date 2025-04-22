@@ -99,7 +99,7 @@ let filterCtors = {
       fillColor = 0xFF606060
     }
     setValue = filter.setValue
-    onAttach = @() set_kb_focus(filter.value) //hack for keyboard, and work only because single
+    onAttach = @() set_kb_focus(filter.value) 
   }),
 
   [OCT_MULTISELECT] = @(filter, width) wrap(

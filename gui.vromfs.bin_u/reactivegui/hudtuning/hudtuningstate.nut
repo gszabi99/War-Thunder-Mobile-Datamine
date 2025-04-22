@@ -35,7 +35,7 @@ let hudTuningStateByUnitType = Computed(@() presetsSaved.value.map(
       options
     }
   }))
-let tuningStateWithLastChange = mkWatched(persist, "tuningStateWithLastChange", null) //ts, changeUid, timeEnd
+let tuningStateWithLastChange = mkWatched(persist, "tuningStateWithLastChange", null) 
 let tuningState = Computed(@() tuningStateWithLastChange.get()?.ts)
 let tuningTransform = Computed(@() tuningState.get()?.transforms)
 let tuningOptions = Computed(@() tuningState.get()?.options)
@@ -154,7 +154,7 @@ function openTuningRecommended() {
   tuningUnitType(uType in allTuningUnitTypes ? uType : allTuningUnitTypes.findindex(@(_) true))
 }
 
-let logSelElem = @(id) dlog("Hud tuning selectedId: ", id)  // warning disable: -forbidden-function
+let logSelElem = @(id) dlog("Hud tuning selectedId: ", id)  
 local isLogSelOn = false
 register_command(function() {
   isLogSelOn = !isLogSelOn

@@ -214,7 +214,7 @@ register_command(
     if (activeTutorialId.get() == TUTORIAL_ID)
       return finishTutorial()
     if (tutorialSectionIdWithReward.get() == null)
-      console_print("Unable to start tutorial, because of no avaiable rewards to get") //warning disable: -forbidden-function
+      console_print("Unable to start tutorial, because of no avaiable rewards to get") 
     else
       isDebugMode.set(true)
   }

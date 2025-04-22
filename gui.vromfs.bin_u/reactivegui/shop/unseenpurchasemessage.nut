@@ -134,7 +134,7 @@ let stackData = Computed(function() {
         continue
       }
 
-      if (!isUnseenGoodsVisible(data, purch.source, lboxes))
+      if (!isUnseenGoodsVisible(data, purch.source, serverConfigs.get(), lboxes))
         continue
 
       if (gType not in stackRaw)
@@ -374,7 +374,7 @@ function mkDecoratorRewardIcon(startDelay, decoratorId) {
 }
 
 let mkCustomCurrencyIcon = {
-  gold = @(delay, id, _) mkRewardIcon(delay, getCurrencyBigIcon(id), 1.61, 1.8, 0.12, -0.05) //todo: image by amount
+  gold = @(delay, id, _) mkRewardIcon(delay, getCurrencyBigIcon(id), 1.61, 1.8, 0.12, -0.05) 
   wp = @(delay, id, _) mkRewardIcon(delay, getCurrencyBigIcon(id), 1.61, 1.8, 0.12, -0.05)
   eventKey = @(delay, id, amount) mkCommonCurrencyIcon(delay, id, amount, 1.0)
 }
@@ -1042,7 +1042,7 @@ function onCloseRequest() {
       setCurrentUnit(unitId)
     requestOpenUnitPurchEffect(unit)
   }
-  // Marking purchases as seen
+  
   markPurchasesSeen(activeUnseenPurchasesGroup.value.list.keys())
 }
 

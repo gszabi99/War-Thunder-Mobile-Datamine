@@ -1,22 +1,24 @@
 from "math" import max
 let { TANK, AIR, HELICOPTER } = require("%appGlobals/unitConst.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { commonAddonsByPostfix, extAddonsByRank, knownAddons, campaignPostfix
+let { commonCampaignAddons, campaignAddonsByRank, knownAddons, campaignPostfix
 } = require("%appGlobals/updater/addons.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 
 let aircraftCbtPkgs = ["pkg_cbt_aircraft", "pkg_cbt_aircraft_hq"].filter(@(a) a in knownAddons)
 let airStarterPkgs = ["pkg_tier_1_aircraft"].filter(@(a) a in knownAddons)
 let customUnitPkg = {
-  //ships
+  
   germ_destroyer_class1934a_1940 = null
   uk_destroyer_hunt_4series = null
   us_destroyer_fletcher = null
-  //tanks
+  jp_destroyer_akizuki  = null
+  ussr_destroyer_pr56_spokoinyy = null
+  
   us_m4a1_1942_sherman = null
   ussr_t_34_1941_l_11 = null
   germ_pzkpfw_IV_ausf_F2 = null,
-  //aircrafts
+  
   ["i-15_1934"] = null,
   he51c1 = null,
   ["f3f-2"] = null,
@@ -40,39 +42,23 @@ let customUnitPkg = {
   ["yak-9_prem"]       = airStarterPkgs,
 }
 
-let defAddonPostfix = "naval"
-let addonPostfixByType = {
-  [TANK] = "ground",
-  [AIR] = "aircraft",
-  [HELICOPTER] = "aircraft",
+let defAddonCampaign = "ships"
+let addonCampaignByType = {
+  [TANK] = "tanks",
+  [AIR] = "air",
+  [HELICOPTER] = "air",
 }
-let getAddonPostfix = @(unitName) addonPostfixByType?[getUnitType(unitName)] ?? defAddonPostfix
-let getCampaignByPostfix = @(postfix) campaignPostfix.findindex(@(v) v == postfix)
+let getCampaignByUnitName = @(unitName) addonCampaignByType?[getUnitType(unitName)] ?? defAddonCampaign
 
-function appendRankAddon(addons, postfix, mRank) {
-  let addon = $"pkg_tier_{mRank}_{postfix}"
-  if (addon in knownAddons)
-    addons.append(addon)
-  let addonHq = $"{addon}_hq"
-  if (addonHq in knownAddons)
-    addons.append(addonHq)
-  return addons
+let originalCampaigns = {
+  ships_new = "ships"
 }
+let getCampaignOrig = @(c) originalCampaigns?[c] ?? c
 
-function appendCampaignExtAddons(addons, campaign, mRank) {
-  let ext = extAddonsByRank?[campaign][mRank]
+function appendCampaignRankAddons(addons, campaign, mRank) {
+  let ext = campaignAddonsByRank?[campaign][mRank]
   if (ext != null)
     addons.extend(ext)
-  return addons
-}
-
-function appendSideAddons(addons, mRank) {
-  let addon = $"pkg_common_{mRank}_aircraft"
-  if (addon in knownAddons)
-    addons.append(addon)
-  let addonHq = $"{addon}_hq"
-  if (addonHq in knownAddons)
-    addons.append(addonHq)
   return addons
 }
 
@@ -80,42 +66,30 @@ function getUnitPkgs(realUnitName, mRank) {
   let unitName = getTagsUnitName(realUnitName)
   if (unitName in customUnitPkg)
     return customUnitPkg[unitName] ?? []
-  let postfix = getAddonPostfix(unitName)
-  let campaign = getCampaignByPostfix(postfix)
-  let res = clone (commonAddonsByPostfix?[postfix] ?? [])
-  for (local i = mRank; i >= 1; i--) {
-    appendRankAddon(res, postfix, i)
-    appendCampaignExtAddons(res, campaign, i)
-    appendSideAddons(res, i)
-  }
+  let campaign = getCampaignByUnitName(unitName)
+  let res = clone (commonCampaignAddons?[campaign] ?? [])
+  for (local i = mRank; i >= 1; i--)
+    appendCampaignRankAddons(res, campaign, i)
   return res
 }
 
-let getCampaignAddonPostfix = @(campaign) campaignPostfix?[campaign] ?? "naval"
-
-function getCampaignPkgsForOnlineBattle(campaign, mRank) {
-  let postfix = getCampaignAddonPostfix(campaign)
-  let res = clone (commonAddonsByPostfix?[postfix] ?? [])
-  for (local i = mRank + 1; i >= 1 ; i--) {
-    appendRankAddon(res, postfix, i)
-    appendCampaignExtAddons(res, campaign, i)
-    appendSideAddons(res, i)
-  }
+function getCampaignPkgsForOnlineBattle(campaignExt, mRank) {
+  let campaign = getCampaignOrig(campaignExt)
+  let res = clone (commonCampaignAddons?[campaign] ?? [])
+  for (local i = mRank + 1; i >= 1 ; i--)
+    appendCampaignRankAddons(res, campaign, i)
   return res
 }
 
-function getCampaignPkgsForNewbieBattle(campaign, mRank, isSingle) {
-  let postfix = getCampaignAddonPostfix(campaign)
-  let res = clone (commonAddonsByPostfix?[postfix] ?? [])
-  //we don't want to bots have higher rank than player in the single battle,
-  //but mRank == 1 is tested regulary when test novice experience, but rare case about novice purchase high level tank not good tested.
-  //so beeter player to download +1 pack as in the online mode in such case to ensure crash safe
+function getCampaignPkgsForNewbieBattle(campaignExt, mRank, isSingle) {
+  let campaign = getCampaignOrig(campaignExt)
+  let res = clone (commonCampaignAddons?[campaign] ?? [])
+  
+  
+  
   let maxRank = max(mRank > 1 ? mRank + 1 : mRank, isSingle ? 0 : 1)
-  for (local i = maxRank; i >= 1 ; i--) {
-    appendRankAddon(res, postfix, i)
-    appendCampaignExtAddons(res, campaign, i)
-    appendSideAddons(res, i)
-  }
+  for (local i = maxRank; i >= 1 ; i--)
+    appendCampaignRankAddons(res, campaign, i)
   return res
 }
 
@@ -138,5 +112,5 @@ return {
   getCampaignPkgsForOnlineBattle
   getCampaignPkgsForNewbieBattle
   getAddonCampaign
-  getAddonPostfix
+  getCampaignOrig
 }

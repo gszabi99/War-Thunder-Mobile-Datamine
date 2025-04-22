@@ -56,7 +56,7 @@ function removeBehindScene(componentOrId) {
 }
 
 function clearScenes() {
-  let prev = clone scenesList //in case of open new scene by onClearScenes
+  let prev = clone scenesList 
   scenesList.clear()
   sceneListGeneration(sceneListGeneration.value + 1)
   foreach (scene in prev)

@@ -67,7 +67,7 @@ let sortRewardsWithOrder = @(a, b) b.rewardOrder <=> a.rewardOrder
   || a.chance <=> b.chance
   || sortRewardsViewInfo(a, b)
 
-// No need to subscribe to serverConfigs.get().allDecorators because it is loaded on game start
+
 let mkViewInfo = @(id, rType, count = 0, subId = "")
   { id, subId, rType, count, slots = slotsByType?[rType] ?? slotsByDType?[serverConfigs.get()?.allDecorators[id].dType] ?? 1 }
 
@@ -206,8 +206,8 @@ function groupRewards(rewards) {
         dropLimitRaw = NO_DROP_LIMIT
         id = group[0].id
         subId = group[0].subId
-        source = group[0].source //can be different, but no need to differentiate them unless they have no drop limit
-        rewardCfg = group[0].rewardCfg //can be different, but no need to differentiate them unless they have no drop limit
+        source = group[0].source 
+        rewardCfg = group[0].rewardCfg 
         rType = group[0].rType
         slots = group[0].slots
         count = group[0].count

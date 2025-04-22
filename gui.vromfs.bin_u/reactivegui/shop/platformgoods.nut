@@ -7,7 +7,7 @@ let isHuaweiBuild = getBuildMarket() == "appgallery"
 let { platformGoods, platformOffer, platformSubs, platformGoodsDebugInfo, buyPlatformGoods,
   activatePlatfromSubscription = @(_) null,
   platformPurchaseInProgress = Watched(null)
-  changeSubscription = null //@(subsTo, subsFrom)
+  changeSubscription = null 
   restorePurchases = null
 } = is_android && isHuaweiBuild ? require("byPlatform/goodsHuawei.nut")
   : is_android && isDownloadedFromGooglePlay() ? require("byPlatform/goodsAndroid.nut")

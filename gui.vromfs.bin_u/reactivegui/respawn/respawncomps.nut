@@ -136,7 +136,7 @@ let bulletsLegendBlock = @(text, bulletIcon, width, height) {
 }
 
 let bulletsLegend = {
-  key = "bulletsLegend" //for UI tutorial
+  key = "bulletsLegend" 
   rendObj = ROBJ_BOX
   size = [ bulletsLegendWidth, hdpx(300) + unitPlatesGap ]
   pos = [ 0, headerHeight + unitPlatesGap ]

@@ -14,7 +14,7 @@ let { isInMenu, isInMpSession, isInLoadingScreen, isInBattle } = require("%appGl
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { mkWeaponPreset } = require("unitSettings.nut")
 let { getEqippedWithoutOverload, getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
@@ -92,7 +92,7 @@ let hangarBgUnits = Computed(function(prevC) {
 
   let prev = type(prevC) == "array" ? prevC : get_current_background_models_list()
   if (prev.len() + 1 == allNames.len() && prev.findvalue(@(p) p.name not in allNames) == null) {
-    //previous bh units are from the same squad
+    
     let leftNames = clone allNames
     leftNames.$rawdelete(fgName)
     return prev
@@ -113,7 +113,7 @@ let hangarBgUnits = Computed(function(prevC) {
      })
   }
 
-  //previuos bg units are from othe squad
+  
   let res = platoonUnits.map(@(p) nameAndSkin(p.name, skin, currentSkins, defSkin))
   if (mainName != fgName) {
     let idx = res.findindex(@(p) p.name == fgName)
@@ -150,7 +150,7 @@ function setHangarUnitWeaponPreset(unitName, preset) {
 
 function loadModel(unitName, skin, weapPreset) {
   if ((unitName ?? "") == "" && hangar_get_current_unit_name() == "")
-    //fallback to any unit from config units
+    
     unitName = (campMyUnits.get().findvalue(@(_) true) ?? campUnitsCfg.get().findvalue(@(_) true))?.name
 
   if ((unitName ?? "") == "")
@@ -193,7 +193,7 @@ function loadBGModels() {
     return
   let { name, skin } = loadedInfo.get()
   if (name == null || name != hangarUnitName.get() || skin != hangarUnitSkin.get())
-    return //wait for load finalization
+    return 
 
   if (!wasLoadBgModelsAfterLoading) {
     reloadAllBgModels()
@@ -278,16 +278,16 @@ eventbus_subscribe("onHangarModelLoaded", function(_) {
 })
 
 return {
-  loadedHangarUnitName //already loaded hangar unit name
-  hangarUnitName //wanted hangar unit name
-  hangarUnit //wanted hangar unit
+  loadedHangarUnitName 
+  hangarUnitName 
+  hangarUnit 
   hangarUnitSkin
   hangarUnitDataBackup
 
-  setHangarUnit  //unit will be used from own units or from campUnitsCfg
+  setHangarUnit  
   setHangarUnitWithSkin
-  setCustomHangarUnit  //will be forced cutsom unit params
-  resetCustomHangarUnit //restore previous unit after custom one
+  setCustomHangarUnit  
+  resetCustomHangarUnit 
   isHangarUnitLoaded
 
   mainHangarUnit

@@ -31,10 +31,10 @@ let { currencyOrder, getDbgCurrencyCount } = require("%appGlobals/currenciesStat
 
 
 registerHandler("consolePrintResult",
-  @(res) console_print(res?.error == null ? "SUCCESS" : "FAILED")) //warning disable: -forbidden-function
-registerHandler("consolePrint", console_print) //warning disable: -forbidden-function
+  @(res) console_print(res?.error == null ? "SUCCESS" : "FAILED")) 
+registerHandler("consolePrint", console_print) 
 registerHandler("consolePrintError",
-  @(res) console_print(res?.error == null ? "SUCCESS" : console_print(res))) //warning disable: -forbidden-function
+  @(res) console_print(res?.error == null ? "SUCCESS" : console_print(res))) 
 
 let infoTextOvr = {
   size = [flex(), SIZE_TO_CONTENT]
@@ -55,8 +55,8 @@ registerHandler("onDebugLootboxChances",
       text = makeSideScroll(msgBoxText(text, infoTextOvr))
       wndOvr = { size = [hdpx(1100), hdpx(1000)] }
       buttons = [
-        { text = "COPY", cb = @() set_clipboard_text(text) }   //warning disable: -forbidden-function
-        { id = "ok", styleId = "PRIMARY", isDefault = true }   //warning disable: -forbidden-function
+        { text = "COPY", cb = @() set_clipboard_text(text) }   
+        { id = "ok", styleId = "PRIMARY", isDefault = true }   
       ]
     })
   })
@@ -78,17 +78,17 @@ registerHandler("onDebugCheckPurchases",
       text = makeSideScroll(msgBoxText(text, infoTextOvr))
       wndOvr = { size = [hdpx(1100), hdpx(1000)] }
       buttons = [
-        { text = "COPY", cb = @() set_clipboard_text(text) }   //warning disable: -forbidden-function
-        { id = "ok", styleId = "PRIMARY", isDefault = true }   //warning disable: -forbidden-function
+        { text = "COPY", cb = @() set_clipboard_text(text) }   
+        { id = "ok", styleId = "PRIMARY", isDefault = true }   
       ]
     })
   })
 
 registerHandler("upgradeUnit",
-  @(res, context) res?.error != null ? console_print("FAILED") //warning disable: -forbidden-function
+  @(res, context) res?.error != null ? console_print("FAILED") 
     : upgrade_unit(context.name, "consolePrintResult"))
 registerHandler("downgradeUnit",
-  @(res, context) res?.error != null ? console_print("FAILED") //warning disable: -forbidden-function
+  @(res, context) res?.error != null ? console_print("FAILED") 
     : downgrade_unit(context.name, "consolePrintResult"))
 
 register_command(function(exp) {
@@ -249,6 +249,6 @@ register_command(
   function() {
     if (mainHangarUnitName.get() != null)
       set_clipboard_text(mainHangarUnitName.get())
-    console_print(mainHangarUnitName.get()) //warning disable: -forbidden-function
+    console_print(mainHangarUnitName.get()) 
   },
   "meta.copy_hangar_unit_name_to_clipboard")

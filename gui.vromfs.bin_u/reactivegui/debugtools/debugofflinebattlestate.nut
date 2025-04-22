@@ -1,12 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
-let { getMissionLocName } = require("%rGui/globals/missionUtils.nut")
+
 let { get_meta_missions_info_by_chapters } = require("guiMission")
 let { get_unittags_blk } = require("blkGetters")
-let { startLocalMPBattle } = require("%rGui/gameModes/startOfflineMode.nut")
-let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { releasedUnits } = require("%rGui/unit/unitState.nut")
+let { getUnitTagsCfg, getUnitType } = require("%appGlobals/unitTags.nut")
+let { curUnitName } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { can_debug_configs, can_debug_missions } = require("%appGlobals/permissions.nut")
+let { getMissionLocName } = require("%rGui/globals/missionUtils.nut")
+let { startLocalMPBattleWithoutGamemode } = require("%rGui/gameModes/startOfflineMode.nut")
+let { releasedUnits } = require("%rGui/unit/unitState.nut")
+
 
 let GM_DOMINATION = 12
 
@@ -16,6 +20,12 @@ let savedUnitName = mkWatched(persist, "savedUnitName", null)
 let savedMissionName = mkWatched(persist, "savedMissionName", null)
 
 let offlineMissionsList = mkWatched(persist, "offlineMissionsList", {})
+
+let savedOBDebugUnitName = mkWatched(persist, "savedOBDebugUnitName", null)
+let savedOBDebugUnitType = mkWatched(persist, "savedOBDebugUnitType", null)
+let savedOBDebugMissionName = mkWatched(persist, "savedOBDebugMissionName", null)
+let isOfflineBattleDModeActive = mkWatched(persist, "isOfflineBattleDModeActive", false)
+let canUseOfflineBattleDMode = Computed(@() can_debug_configs.get() && can_debug_missions.get())
 
 function refreshOfflineMissionsList() {
   let chapters = get_meta_missions_info_by_chapters(GM_DOMINATION).filter(@(m) m.len() > 0)
@@ -35,8 +45,8 @@ function refreshOfflineMissionsList() {
 }
 
 function runOfflineBattle(unitName = null, missionName = null) {
-  unitName = unitName ?? savedUnitName.get()
-  missionName = missionName ?? savedMissionName.get()
+  unitName = unitName ?? savedOBDebugUnitName.get() ?? savedUnitName.get()
+  missionName = missionName ?? savedOBDebugMissionName.get() ?? savedMissionName.get()
 
   if(unitName not in get_unittags_blk())
     return
@@ -49,7 +59,7 @@ function runOfflineBattle(unitName = null, missionName = null) {
     unit
   }
   eventbus_send("lastSingleMissionRewardData", { battleData })
-  startLocalMPBattle(unit, missionName, "max")
+  startLocalMPBattleWithoutGamemode(unit, missionName, "max")
 }
 
 let openOfflineBattleMenu = @() isOpened.set(true)
@@ -80,14 +90,40 @@ let mkCfg = @() Computed(function() {
   return { allUnits, unitTypes, missions }
 })
 
+let debugOfflineBattleCfg = @() Computed(function() {
+  if (!canUseOfflineBattleDMode.get() || !isOfflineBattleDModeActive.get())
+    return null
+
+  return offlineMissionsList.get().reduce(function(acc, list, key) {
+    if (key.startswith("debug_"))
+      acc[key.split("_").slice(-1)[0]] <- list
+    return acc
+  }, {})
+})
+
+isOfflineBattleDModeActive.subscribe(function(v) {
+  if (v)
+    savedOBDebugUnitType.set(getUnitType(curUnitName.get()))
+  else {
+    savedOBDebugUnitName.set(null)
+    savedOBDebugUnitType.set(null)
+  }
+})
+
 return {
   mkCfg,
+  debugOfflineBattleCfg,
   isOpened,
+  isOfflineBattleDModeActive,
+  canUseOfflineBattleDMode,
+  savedOBDebugUnitType,
+  savedOBDebugMissionName,
+  savedOBDebugUnitName,
   savedUnitType,
   savedUnitName,
   savedMissionName,
   runOfflineBattle,
   offlineMissionsList,
   openOfflineBattleMenu,
-  refreshOfflineMissionsList,
+  refreshOfflineMissionsList
 }

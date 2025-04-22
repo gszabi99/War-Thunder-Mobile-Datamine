@@ -21,11 +21,11 @@ require("%scripts/clientState/errorHandling.nut")
 
 let { is_pc } = require("%sqstd/platform.nut")
 
-//------- vvv enums vvv ----------
+
 
 set_rnd_seed(ref_time_ticks())
 
-//------- vvv files before login vvv ----------
+
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 subscriptions.setDefaultPriority(g_listener_priority.DEFAULT)
@@ -39,7 +39,7 @@ foreach (fn in [
 require("%scripts/options/optionsExtNames.nut")
 require("login/initLoginWTM.nut")
 require("%scripts/pServer/profileServerClient.nut")
-require("%appGlobals/pServer/pServerApi.nut") //need to start update profile and configs in this VM even before login
+require("%appGlobals/pServer/pServerApi.nut") 
 require("%scripts/currencies.nut")
 require("%scripts/matching/onlineInfo.nut")
 require("%scripts/matching/rpcCall.nut")
@@ -58,7 +58,7 @@ foreach (fn in [
 
   "%scripts/clientState/keyboardState.nut"
 
-  //used in loading screen
+  
   "%scripts/loading.nut"
 
   "%scripts/webRPC.nut"
@@ -68,15 +68,15 @@ foreach (fn in [
   loadOnce(fn)
 }
 
-  // Independent Modules (before login)
+  
 require("%scripts/login/updateRights.nut")
 require("%scripts/debugTools/dbgDedicLogerrs.nut")
 require("%scripts/debugTools/dbgQConsole.nut")
 require("%scripts/matching/gameModesUpdate.nut")
 require("utils/restartGame.nut")
-require("%sqstd/regScriptProfiler.nut")("dagui", dlog) // warning disable: -forbidden-function
+require("%sqstd/regScriptProfiler.nut")("dagui", dlog) 
 require("bqQueue.nut")
-  // end of Independent Modules
+  
 
 let { sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
@@ -88,10 +88,10 @@ if (!isInReloading()) {
   run_reactive_gui()
 }
 
-//------- ^^^ files before login ^^^ ----------
 
 
-//------- vvv files after login vvv ----------
+
+
 
 local isFullScriptsLoaded = false
 
@@ -113,7 +113,7 @@ function loadScriptsAfterLoginOnce() {
   end_es_loading()
 }
 
-//------- ^^^ files after login ^^^ ----------
+
 
 
 if (is_pc && get_cur_circuit_name().indexof("production") == null

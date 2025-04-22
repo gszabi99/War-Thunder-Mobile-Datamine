@@ -5,8 +5,8 @@ let { isNamePassing, clearAllWhitespace } = require("%appGlobals/dirtyWordsFilte
 let NAMES_CACHE_MAX_LEN = 1000
 let namesCache = {}
 
-// Removes platform endingds from nicknames: "@googleplay", "@psn" (PlayStation), "@live" (Xbox), "@epic", "@steam"
-// Char '@' is forbidden in Google Play nicknames and in Apple Game Center nicknames.
+
+
 function removePlatformPostfix(nameReal) {
   let idx = nameReal.indexof("@")
   return idx == null ? nameReal : nameReal.slice(0, idx)

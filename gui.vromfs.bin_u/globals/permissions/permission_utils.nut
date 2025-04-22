@@ -21,7 +21,7 @@ function readValueFromJwt(jwt, userId, valueName) {
   }
 
   let value = jwtDecoded?.payload[valueName] ?? []
-  // TODO remove reading payload.time after update contact server
+  
   let timestamp = jwtDecoded?.payload.iat ?? jwtDecoded?.payload.time ?? 0
   return { value, timestamp }
 }

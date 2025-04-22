@@ -2,15 +2,19 @@ from "%scripts/dagui_natives.nut" import toggle_freecam, in_flight_menu, is_free
 from "app" import is_dev_version, is_offline_version
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+from "%globalScripts/ecs.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
+let { EventSpendItems } = require("dasevents")
 let { deferOnce } = require("dagor.workcycle")
 let { is_mplayer_host } = require("multiplayer")
+let { getSpareSlotsMask, getDisabledSlotsMask } = require("guiRespawn")
 let { requestEarlyExitRewards } = require("%scripts/debriefing/battleResult.nut")
+let { curBattleUnit, curBattleItems } = require("%scripts/battleData/battleData.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { command } = require("console")
 let { is_multiplayer } = require("%scripts/util.nut")
 let { isInFlightMenu, isInBattle, canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
-let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
+let { is_benchmark_game_mode, get_game_mode, get_game_type, get_local_mplayer } = require("mission")
 let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer, get_respawns_left,
   quit_mission_after_complete, restart_mission, get_mission_restore_type, get_mission_status
 } = require("guiMission")
@@ -36,7 +40,7 @@ let isMissionFailed = @() get_mission_status() == MISSION_STATUS_FAIL
 function closeFlightMenu() {
   if (isMissionFailed())
     return
-  in_flight_menu(false) //in_flight_menu will call closeScene which call stat chat
+  in_flight_menu(false) 
   if (is_game_paused())
     pause_game(false)
   isInFlightMenu(false)
@@ -49,7 +53,7 @@ function quitToDebriefing() {
 }
 
 function sendDisconnectMessage() {
-  requestEarlyExitRewards() //todo: Wait data received before interrupt  multiplayer or quit to debriefing
+  requestEarlyExitRewards() 
   if (is_multiplayer()) {
     leave_mp_session()
     closeFlightMenu()
@@ -121,6 +125,19 @@ function quitMission() {
   }
 }
 
+let slots = Computed(@() !curBattleUnit.get()?.platoonUnits ? []
+  : [curBattleUnit.get().name].extend(curBattleUnit.get().platoonUnits.map(@(u) u.name)))
+
+let spendSpares = Watched(0)
+
+register_es("spend_spares_es",
+  {
+    [EventSpendItems] = @(evt, _eid, _comp) evt.itemId == "spare" ? spendSpares.set(spendSpares.get() + evt.count) : null
+  },
+  {
+    comps_rq = [["server_player__userId", TYPE_UINT64]]
+  })
+
 function bailout() {
   if (!canBailout()) {
     closeFlightMenu()
@@ -128,8 +145,26 @@ function bailout() {
   }
 
   local msg = loc("flightmenu/questionLeaveTheTank")
-  if (get_respawns_left() >= 0 && get_respawns_left() <= 1) //on unit death respawnsLeft will decrease
+  let allSlotsMask = (1 << slots.get().len()) - 1
+  local spareSlotsMask = allSlotsMask & getSpareSlotsMask()
+  local disabledSlotsMask = allSlotsMask & getDisabledSlotsMask()
+  let currentUnitName = get_local_mplayer()?.aircraftName
+  let currentSlotIdx = slots.get().findindex(@(v) v == currentUnitName)
+  let currentSlotMask = currentSlotIdx != null ? 1 << currentSlotIdx : 0
+  let leftSpares = (curBattleItems.get()?.spare ?? 0) - spendSpares.get()
+  if ((currentSlotMask & spareSlotsMask) == 0 && leftSpares != 0)
+    spareSlotsMask = (spareSlotsMask | currentSlotMask)
+  else
+    disabledSlotsMask = disabledSlotsMask | currentSlotMask
+
+  let isSlotsAvailable = (allSlotsMask & ~disabledSlotsMask) != 0
+  let isFreeSlotsAvailable = (allSlotsMask & ~spareSlotsMask) != 0
+
+  if (get_respawns_left() == 0 || !isSlotsAvailable)
     msg = "\n\n".concat(msg, loc("flightmenu/thisWillCountAsDeserter"))
+  if (get_respawns_left() != 0 && isSlotsAvailable && !isFreeSlotsAvailable)
+    msg = "\n\n".concat(msg, loc("flightmenu/thisWillCountAsDeserterIfNotUseSpare"))
+
   openConfirmMsg(msg, loc("flightmenu/btnLeaveTheTank"), "fMenuBailout")
 }
 
@@ -139,6 +174,7 @@ function startFreecam() {
 }
 
 isInBattle.subscribe(function(_) {
+  spendSpares.set(0)
   if (is_freecam_enabled())
     toggle_freecam?()
 })
@@ -196,11 +232,11 @@ function gui_start_flight_menu(...) {
 }
 eventbus_subscribe("gui_start_flight_menu", gui_start_flight_menu)
 
-eventbus_subscribe("gui_start_flight_menu_failed", gui_start_flight_menu) //it checks MISSION_STATUS_FAIL status itself
-eventbus_subscribe("gui_start_flight_menu_psn", function gui_start_flight_menu_psn(...) {}) //unused atm, but still have a case in code
+eventbus_subscribe("gui_start_flight_menu_failed", gui_start_flight_menu) 
+eventbus_subscribe("gui_start_flight_menu_psn", function gui_start_flight_menu_psn(...) {}) 
 
 eventbus_subscribe("gui_start_flight_menu_help", function gui_start_flight_menu_help() {
-  //!!!FIX ME Need remove this function. This function call from native code and paused game before call.
+  
   deferOnce(function() {
     close_ingame_gui()
     if (is_game_paused())

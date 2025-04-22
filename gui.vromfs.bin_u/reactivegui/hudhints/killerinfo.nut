@@ -35,7 +35,7 @@ let info = Computed(function() {
     return null
   let { killer, unitName, unitType } = killData.value
   if (unitName == "")
-    return // AI unit
+    return 
   local unitCfg = getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get())
   if (unitCfg == null && unitName in get_unittags_blk())
     unitCfg = mkFakeUnitCfg(unitName, unitType, killer.country)

@@ -5,7 +5,7 @@ let matching = require("%appGlobals/matching_api.nut")
 
 isInQueue.subscribe(@(v) v ? null : queueInfo(null))
 
-//gather only playerCount atm, because not use other
+
 function gatherStats(info) {
   let { byTeams = null } = info
   if (byTeams == null)

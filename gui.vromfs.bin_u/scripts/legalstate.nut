@@ -42,7 +42,7 @@ function loadAcceptedVersions() {
 }
 
 function saveAcceptedVersions() {
-  if (acceptedVersions.value == null) //not inited
+  if (acceptedVersions.value == null) 
     return
   let blk = get_local_custom_settings_blk()
   let versionsBlk = DataBlock()

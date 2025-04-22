@@ -248,9 +248,9 @@ register_command(function() {
     let researchingUnitId = unitsResearch?.findindex(@(v) v?.isCurrent) ?? ""
 
     if (isUnitsTreeAttached.get())
-      return dlog("Can't start tutorial after first battle: need to get out of the units tree")  // warning disable: -forbidden-function
+      return dlog("Can't start tutorial after first battle: need to get out of the units tree")  
     if (researchingUnitId == "")
-      return dlog("Can't start tutorial after first battle: need researchingUnitId")  // warning disable: -forbidden-function
+      return dlog("Can't start tutorial after first battle: need researchingUnitId")  
 
     let { reqExp = 0, exp = 0 } = unitsResearchStatus.get()?[researchingUnitId] ?? {}
     add_player_exp(curCampaign.get(), reqExp - exp, "consolePrintResult")

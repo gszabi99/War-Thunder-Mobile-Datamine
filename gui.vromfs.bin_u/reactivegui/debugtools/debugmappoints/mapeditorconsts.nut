@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let INC_AREA = sh(2)
 let START_MOVE_TIME_MSEC = 300
-let MOVE_MIN_THRESHOLD = sh(1) //ignore threshold after START_MOVE_TIME
+let MOVE_MIN_THRESHOLD = sh(1) 
 
 let optionBtnSize = evenPx(70)
 let defaultBgElemSize = evenPx(100)

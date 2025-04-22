@@ -9,6 +9,8 @@ let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentati
 let { rewardTutorialMission } = require("%rGui/tutorial/tutorialMissions.nut")
 let { squadAddons } = require("squadAddons.nut")
 let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
+let { addonsSizes } = require("%appGlobals/updater/addonsState.nut")
+
 
 subscribeFMsgBtns({
   function squadChangeCampaignByLeader(_) {
@@ -63,7 +65,7 @@ function setReady(ready) {
       text = loc("msg/needAddonToPlayBySquad",
         { count = locs.len(),
           addon = ", ".join(locs.map(@(t) colorize("@mark", t)))
-          size = getAddonsSizeStr(addonsArr)
+          size = getAddonsSizeStr(addonsArr, addonsSizes.get())
         })
       buttons = [
         { id = "cancel", isCancel = true }

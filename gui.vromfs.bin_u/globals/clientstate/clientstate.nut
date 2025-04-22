@@ -11,8 +11,8 @@ let isHuaweiBuild = getBuildMarket() == "appgallery"
 let isInBattle = sharedWatched("isInBattle", @() false)
 let isOnline = sharedWatched("isOnline", @() false)
 let isDisconnected = sharedWatched("isDisconnected", @() false)
-let battleSessionId = sharedWatched("battleSessionId", @() -1) //resets to -1 only when start new battle. To allow to get sessionId after session destroy.
-let battleUnitName = sharedWatched("battleUnitName", @() null) //To allow to get unit for single mission debriefing.
+let battleSessionId = sharedWatched("battleSessionId", @() -1) 
+let battleUnitName = sharedWatched("battleUnitName", @() null) 
 let localMPlayerId = sharedWatched("localMPlayerId", @() 0)
 let localMPlayerTeam = sharedWatched("localMPlayerTeam", @() 0)
 let isInLoadingScreen = sharedWatched("isInLoadingScreen", @() true)

@@ -9,7 +9,7 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { myClustersRTT, queueDataCheckTime } = require("%appGlobals/squadState.nut")
 let { readyCheckTime } = require("readyCheck.nut")
 let { mRankCheckTime } = require("mRankCheck.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 let { activeBattleMods } = require("%appGlobals/pServer/battleMods.nut")
 let { chosenDecoratorsHash } = require("%rGui/decorators/decoratorState.nut")
 

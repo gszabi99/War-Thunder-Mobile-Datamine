@@ -7,7 +7,7 @@ let { eventbus_send } = require("eventbus")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { optionsVersion } = require("%rGui/options/guiOptions.nut")
 
-const SOUND_MAX = 100 //in the native code they are fixed, and get_volume_limits return always the same values
+const SOUND_MAX = 100 
 
 let getVolumeInt = @(sndType) is_sound_inited() ? (get_sound_volume(sndType) * 100.0 + 0.5).tointeger()
   : 100
@@ -50,7 +50,7 @@ function mkSoundSlider(sndTypes, locId) {
     ctrlOverride = {
       min = 0
       max = 100
-      unit = 1 //step
+      unit = 1 
     }
   }
 }

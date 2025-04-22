@@ -4,7 +4,7 @@ let { mkScreenHints } = require("%rGui/components/screenHintsLib.nut")
 let bgImage = "!ui/images/controller/controller_dualshock4.avif"
 let bgSize = [840, 452]
 let bgFinalHeight = hdpx(500)
-let borderOffs = 25 //base picture px
+let borderOffs = 25 
 let right = 850
 let rightBk = right - borderOffs
 let left = -15
@@ -22,7 +22,7 @@ let mkTextarea = @(text, maxWidth) {
 }.__update(fontTiny)
 
 let hints = [
-  //LEFT SIDE
+  
   {
     key = "J:Back"
     lines = mkLines([255, 153, 255, -20])
@@ -70,7 +70,7 @@ let hints = [
     blockOvr = { hplace = ALIGN_RIGHT }
   }
 
-  //RIGHT SIDE
+  
   {
     key = "J:Start"
     lines = mkLines([585, 153, 585, -20])

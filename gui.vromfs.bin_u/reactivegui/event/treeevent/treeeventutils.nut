@@ -92,7 +92,7 @@ function updatePresetByUnlocks(presetId, savedPreset = {}) {
   let unlocks = unlocksByPresets?[presetId] ?? {}
   let orderedUnlock = unlocks.keys().sort()
   foreach (key in orderedUnlock) {
-    //gen point
+    
     if (key not in savedPreset?.points) {
       let curPreset = initPreset()
       let { mapSize, gridSize } = curPreset
@@ -105,7 +105,7 @@ function updatePresetByUnlocks(presetId, savedPreset = {}) {
 
     let unlock = unlocks?[key] ?? {}
     let { requirement = "" } = unlock
-    //gen line
+    
     if (requirement in unlocks
         && null == findLineIdx(key, requirement, savedPreset?.lines ?? [])) {
       let curPreset = initPreset()

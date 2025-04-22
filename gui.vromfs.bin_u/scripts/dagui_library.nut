@@ -29,12 +29,12 @@ return log.__merge({
   getTblValue
   isInArray
   utf8
-  //frp
+  
   Watched
   Computed
   mkWatched
   WatchedRo
 
-  //function tools
+  
   kwarg
 })

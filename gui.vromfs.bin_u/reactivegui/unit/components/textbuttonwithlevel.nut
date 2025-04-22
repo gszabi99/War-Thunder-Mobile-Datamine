@@ -47,7 +47,7 @@ let mkVehicleLevelUpTextComp = @(text, level) {
 
 return {
   textButtonPlayerLevelUp = @(text, level, starLevel, onClick, styleOvr = null, cost = null)
-    mkCustomButton(mkPlayerLevelUpTextComp(text, level, starLevel, cost), onClick, mergeStyles(PURCHASE, styleOvr)) // Gold with player level square
+    mkCustomButton(mkPlayerLevelUpTextComp(text, level, starLevel, cost), onClick, mergeStyles(PURCHASE, styleOvr)) 
   textButtonVehicleLevelUp = @(text, level, onClick, styleOvr = null)
-    mkCustomButton(mkVehicleLevelUpTextComp(text, level), onClick, mergeStyles(PURCHASE, styleOvr)) // Gold with unit level square
+    mkCustomButton(mkVehicleLevelUpTextComp(text, level), onClick, mergeStyles(PURCHASE, styleOvr)) 
 }

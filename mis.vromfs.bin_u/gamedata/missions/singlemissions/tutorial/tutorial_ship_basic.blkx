@@ -88,6 +88,10 @@
         "__unitPutToSleep": {
           "target": "ai"
         },
+        "missionSetWeatherParams": {
+          "waterWindStrengtMin": 4.0,
+          "waterWindStrengtMax": 4.0
+        },
         "unitSetProperties": [
           {
             "object_marking": 0,

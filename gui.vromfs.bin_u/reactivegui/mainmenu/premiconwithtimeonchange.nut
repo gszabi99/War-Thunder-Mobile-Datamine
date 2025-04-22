@@ -65,7 +65,7 @@ let premImageMain = @() premImage.__merge({
 
 function premiumTime(style = CS_GAMERCARD) {
   local timeLeft = max(0, visibleEndsAt.value - serverTime.value)
-  if (timeLeft >= 3 * TIME_DAY_IN_SECONDS)  //we do not show hours in such case
+  if (timeLeft >= 3 * TIME_DAY_IN_SECONDS)  
     timeLeft = round_by_value(timeLeft, TIME_HOUR_IN_SECONDS).tointeger()
 
   if (timeLeft == 0)
@@ -171,7 +171,7 @@ function premIconWithTimeOnChange() {
       @() {
         watch = nextChange
         key = nextChange
-        size = [0, 0] //to not affect parent size
+        size = [0, 0] 
         vplace = ALIGN_BOTTOM
         hplace = ALIGN_CENTER
         children = nextChange.value == null ? null

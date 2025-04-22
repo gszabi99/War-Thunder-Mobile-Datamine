@@ -11,7 +11,7 @@
     },
     "mission": {
       "level": "levels/avg_abandoned_factory.bin",
-      "type": "skirmish",
+      "type": "training",
       "environment": "Day",
       "weather": "good",
       "locName": "missions/testDrive",

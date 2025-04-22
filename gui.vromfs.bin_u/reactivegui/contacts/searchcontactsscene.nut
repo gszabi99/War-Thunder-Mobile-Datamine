@@ -18,7 +18,7 @@ let { topAreaSize, gradientHeightBottom } = require("%rGui/options/mkOptionsScen
 let searchIconSize = hdpxi(60)
 let gap = hdpx(24)
 
-let onChangeDelay = 0.8 //before request
+let onChangeDelay = 0.8 
 let searchName = Watched("")
 let playerSelectedUserId = mkWatched(persist, "playerSelectedUserId", null)
 let selectedUserId = Computed(@() playerSelectedUserId.value in searchContactsResult.value

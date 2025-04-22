@@ -17,9 +17,9 @@ subscribeDedicLogerr(function(text) {
 ecs.register_es("debug_dedic_logerrs_es",
   {
     [["onInit", "onChange"]] = function(_eid, comp) {
-      if (can_receive_dedic_logerr.value && is_multiplayer() //this global function is only one reason to this module be in dagui VM
+      if (can_receive_dedic_logerr.value && is_multiplayer() 
           && myUserId.value == comp.server_player__userId)
-        resetTimeout(1.0, @() enableDedicLogerr(true)) //without timeout this event can reach dedicated before it create m_player entity
+        resetTimeout(1.0, @() enableDedicLogerr(true)) 
     },
   },
   {

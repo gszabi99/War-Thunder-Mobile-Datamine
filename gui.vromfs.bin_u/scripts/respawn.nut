@@ -96,7 +96,7 @@ function applyRespawnData() {
   let wBlk = DataBlock()
   foreach(slotId, presetId in weaponPreset) {
     let blk = DataBlock()
-    blk.slot = slotId.tointeger() //slotId changed it type after eventbus
+    blk.slot = slotId.tointeger() 
     blk.preset = presetId
     wBlk.Weapon <- blk
   }
@@ -134,7 +134,7 @@ function onCountdownTimer() {
 }
 
 function updateRespawnStep() {
-  if (!isRespawnStarted.value || isRespawnInProgress.value) //respawnInProgress can't be interrupted
+  if (!isRespawnStarted.value || isRespawnInProgress.value) 
     return
 
   if (get_mission_status() > MISSION_STATUS_RUNNING)
@@ -146,10 +146,10 @@ function updateRespawnStep() {
     if (canRequestAircraftNow()) {
       applyRespawnData()
       if (isLocalMultiplayer.value)
-        setInterval(2.0, onCountdownTimer) // hack!!! direct call onSpawn
+        setInterval(2.0, onCountdownTimer) 
     }
     else
-      resetTimeout(1.0,  updateRespawnStep) //try again in 1 sec. Need for correct auto spawn after jip
+      resetTimeout(1.0,  updateRespawnStep) 
     return
   }
 
@@ -184,5 +184,5 @@ eventbus_subscribe("gui_start_respawn", function gui_start_respawn(...) {
   respawnsLeft(get_respawns_left())
   isBatleDataRequired((get_game_type() & (GT_VERSUS | GT_COOPERATIVE)) != 0
     && get_game_mode() != GM_SINGLE_MISSION)
-  isInRespawn(is_respawn_screen()) //is it possible to call gui_start_respawn without is_respawn_screen ?
+  isInRespawn(is_respawn_screen()) 
 })

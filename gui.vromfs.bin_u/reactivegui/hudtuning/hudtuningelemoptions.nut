@@ -75,7 +75,7 @@ function calcPos(size, transform) {
 function optionsPosBlock(id, options, editView, transform) {
   let isForAllElems = id == null
   let children = isForAllElems ? optionsBlockAllElems(options) : optionsBlock(id, options)
-  let curOptionsV = tuningOptions.get() //no need to subcribe, need set position only on open
+  let curOptionsV = tuningOptions.get() 
   let scale = optScale.getValue(curOptionsV, id)
   let view = type(editView) != "function" ? editView
     : editView.getfuncinfos().parameters.len() == 2 ? editView(curOptionsV)
@@ -131,7 +131,7 @@ function hudTuningElemOptions() {
     watch
     size = flex()
     children = isElemHold.get() || availOptions.len() == 0 ? null
-      : optionsPosBlock(id, options, editView, tuningTransform.get()?[id] ?? defTransform) //no need to subscribe on tuningTransform because it important only on opening
+      : optionsPosBlock(id, options, editView, tuningTransform.get()?[id] ?? defTransform) 
   }
 }
 

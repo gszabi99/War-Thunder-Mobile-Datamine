@@ -20,7 +20,7 @@ let { addEvent, removeEvent, clearEvents } = state
 
 isInBattle.subscribe(@(_) clearEvents())
 
-//todo: export from native code to darg
+
 const MP_TEAM_NEUTRAL = 0
 
 let localPlayerColor = 0xFFDDA339
@@ -45,8 +45,8 @@ function getTargetName(player, unitNameLoc, team) {
   let color = (player?.isLocal ?? false) ? localPlayerColor
     : player?.isInHeroSquad ? mySquadLightColor
     : getTeamColor(team)
-  let text = player == null ? unitNameLoc // AI
-    : player.name //real player or bot
+  let text = player == null ? unitNameLoc 
+    : player.name 
   return color == null ? text : colorize(color, text)
 }
 

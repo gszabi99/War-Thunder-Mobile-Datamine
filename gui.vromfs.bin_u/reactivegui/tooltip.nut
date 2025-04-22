@@ -9,8 +9,8 @@ local curContent = null
 local delayedTooltip = null
 
 let TOOLTIP_PARAMS = {
-  flow = FLOW_VERTICAL //how popup need to flow against target point
-  flowOffset = hdpx(20) //popup offset from coords in popup flow direction
+  flow = FLOW_VERTICAL 
+  flowOffset = hdpx(20) 
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   content = null
@@ -40,10 +40,10 @@ function calcPosition(rectOrPos, flow, flowOffset, halign, valign) {
   let res = {
     pos = isArray ? rectOrPos : [rectOrPos.l, rectOrPos.t]
     halign = halign == ALIGN_CENTER ? ALIGN_CENTER
-      : halign == ALIGN_LEFT ? ALIGN_RIGHT //when we set popup halign = left, we want it to link to the left object side, but it mean ALIGN_RIGHT
+      : halign == ALIGN_LEFT ? ALIGN_RIGHT 
       : ALIGN_LEFT
     valign = valign == ALIGN_CENTER ? ALIGN_CENTER
-      : valign == ALIGN_TOP ? ALIGN_BOTTOM //when we set popup halign = top, we want it to link to the top object side, but it mean ALIGN_BOTTOM
+      : valign == ALIGN_TOP ? ALIGN_BOTTOM 
       : ALIGN_TOP
   }
 

@@ -25,7 +25,7 @@
   "fxWaterShockWave": "",
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/atgm",
-  "sound_pathStudio": "ground/weapon/atgm/roland",
+  "sound_pathStudio": "ground/weapon/atgm",
   "sound": "atgm_LPC",
   "sound_inside": "atgm_LPC_interior",
   "sfxReloadBullet": "grd_roland_reload",

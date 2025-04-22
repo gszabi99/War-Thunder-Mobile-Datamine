@@ -234,7 +234,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
 }
 
 let function selectBtns(unit, vehicleName, skinName, cSkin) {
-  if ("currentSkins" not in unit) //not own unit
+  if ("currentSkins" not in unit) 
     return null
 
   let showApplyToPlatoon = unit.platoonUnits.len() > 0
@@ -513,7 +513,7 @@ let unitSkinsWnd = {
         @() {
           watch = [hasTagsChoice, unitToShow]
           hplace = ALIGN_RIGHT
-          pos = [doubleSideGradientPaddingX, 0] //all content is in gradient blocks
+          pos = [doubleSideGradientPaddingX, 0] 
           flow = FLOW_VERTICAL
           gap = hdpx(50)
           children = !unitToShow.get() ? null

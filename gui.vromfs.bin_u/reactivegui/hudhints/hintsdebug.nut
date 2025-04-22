@@ -14,11 +14,11 @@ let { myUserId } = require("%appGlobals/profileStates.nut")
 let hudMessagesUnitTypesMap = require("hudMessagesUnitTypesMap.nut")
 let { get_unlocks_blk} = require("blkGetters")
 
-//mission hints
+
 let hintsForTest = [
-  "hints/enemy_base_destroyed_no_respawn" //multiline
-  "avn_ntdm_objective_02" //with blue team color
-  "avg_Bttl_objective_01" //with red team color
+  "hints/enemy_base_destroyed_no_respawn" 
+  "avn_ntdm_objective_02" 
+  "avg_Bttl_objective_01" 
 ]
 register_command(
   @() eventbus_send("hint:missionHint:set", { locId = chooseRandom(hintsForTest), time = 5.0 }),
@@ -34,7 +34,7 @@ register_command(
   "hud.debug.missionBottomHintRemove")
 
 
-//mission objectives
+
 register_command(
   @() eventbus_send("HudMessage",
     {
@@ -146,6 +146,6 @@ register_command(
 register_command(
   function() {
     areHintsHidden.set(!areHintsHidden.get())
-    console_print($"Current state - {areHintsHidden.get()}") //warning disable: -forbidden-function
+    console_print($"Current state - {areHintsHidden.get()}") 
   },
   "hud.debug.hideHints")

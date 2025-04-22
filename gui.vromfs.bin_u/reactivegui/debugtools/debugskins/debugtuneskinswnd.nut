@@ -35,7 +35,7 @@ let savedUnitSkin = mkWatched(persist, "savedUnitSkin", "")
 let isUnitNameFirst = mkWatched(persist, "isUnitNameFirst", true)
 let selTag = Watched(null)
 let selPreset = Watched(null)
-let hasViewChanges = Watched(false) //it become not actual after script reload
+let hasViewChanges = Watched(false) 
 
 let wndHeaderHeight = hdpx(60)
 let presetColumns = 5
@@ -69,7 +69,7 @@ function saveSkinView(view) {
   file.writestring("return ")
   file.writestring(object_to_json_string(saveTbl, true))
   file.close()
-  dlog("Saved to: wtm/globals/config/skins/unitSkinView.nut") //warning disable: -forbidden-function
+  dlog("Saved to: wtm/globals/config/skins/unitSkinView.nut") 
 }
 
 function setPresetForAllUnits(skinsView, preset, curUnitName, curUnitSkin) {

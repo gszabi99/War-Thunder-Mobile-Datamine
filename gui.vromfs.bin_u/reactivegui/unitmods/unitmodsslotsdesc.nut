@@ -99,7 +99,7 @@ function getDescRowsCfg(slotWeapon, conflictSlots) {
   if (weapons.len() == 0)
     return resArr
 
-  let wId = weapons[0].weaponId //we deceided to not have more that 2 weapon types in the same slot
+  let wId = weapons[0].weaponId 
   local totalCount = 0
   local totalBulletsCount = 0
   local totalTurrets = 0

@@ -216,7 +216,7 @@ function mkSimpleContactAction(actionId, mkData, onSucces = null) {
   })
 
   return function(userId) {
-    //skip requests to bots userId is negative
+    
     if (userId.tointeger() <= 0) {
       botActions[actionId](userId)
       return
@@ -259,7 +259,7 @@ function openContacts(tabId = null) {
   isContactsOpened(true)
 }
 
-//----------- Debug Block -----------------
+
 if (is_pc) {
   let { get_time_msec } = require("dagor.time")
   let { chooseRandom } = require("%sqstd/rand.nut")

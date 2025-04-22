@@ -89,8 +89,8 @@ let levelUpText = @() {
           text
         }.__update(fontSmall),
         {
-          ["{minLevel}"] = mkUnitLevel(rewardUnitLevelInfo.get().minLevel), //warning disable: -forgot-subst
-          ["{maxLevel}"] = mkUnitLevel(rewardUnitLevelInfo.get().maxLevel) //warning disable: -forgot-subst
+          ["{minLevel}"] = mkUnitLevel(rewardUnitLevelInfo.get().minLevel), 
+          ["{maxLevel}"] = mkUnitLevel(rewardUnitLevelInfo.get().maxLevel) 
         }
       )
     }

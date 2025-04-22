@@ -70,7 +70,7 @@ function setupAnalytics() {
 function autoSkipConsent() {
   if (isConsentAcceptedOnce.get())
     return
-  savedPoints(defaultPointsTable.map(@(_) false))// dont need to save to online storage so that the window can open again at the next login
+  savedPoints(defaultPointsTable.map(@(_) false))
   logC("consent skipped by denied IDFA")
   sendUiBqEvent("ads_consent_firebase", { id = "consent_skip_by_denied_idfa" })
   setupAnalytics()
@@ -104,7 +104,7 @@ let function loadPoints(){
   if (isDataBlock(blk))
     eachParam(blk, @(v, id) res[id] <- v)
   savedPoints(res)
-  setupAnalytics() //run analytics when user already accepted in previous session
+  setupAnalytics() 
 }
 
 isConsentAcceptedOnce.subscribe(@(v) v ? isConsentAllowLogin.set(true) : null)

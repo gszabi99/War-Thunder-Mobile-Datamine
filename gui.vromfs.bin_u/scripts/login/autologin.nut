@@ -12,7 +12,7 @@ const AUTOLOGIN_TYPE_SAVE_ID = "autologinType"
 
 let isAutologinUsed = hardPersistWatched("login.isAutologinUsed", false)
 
-let availableBase = { [LT_GAIJIN] = false } //loginType = isAutoLoginDefault
+let availableBase = { [LT_GAIJIN] = false } 
 if (is_ios) {
   availableBase[LT_APPLE] <- true
   availableBase[LT_FACEBOOK] <- true

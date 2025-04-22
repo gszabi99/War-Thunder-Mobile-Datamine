@@ -4,7 +4,7 @@ let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlock
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { get_common_local_settings_blk } = require("blkGetters")
 
-//save/load setting to local profile, not depend on account, so can be usable before login.
+
 function save_local_shared_settings(path, value) {
   let blk = get_common_local_settings_blk()
   if (setBlkValueByPath(blk, path, value))

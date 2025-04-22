@@ -87,7 +87,7 @@ function mkMessage(text, charId, customCtor, boxes, style) {
 
   let ctor = customCtor ?? style.messageCtor
   let character = style.characterCtor(charId, false)
-  //calc size with next message
+  
   let charSize = calc_comp_size(character)
   let msgSize = calc_comp_size(ctor(text, Watched(false), nextStepByDefaultHotkey))
 
@@ -109,14 +109,14 @@ function mkMessage(text, charId, customCtor, boxes, style) {
   ]
   local msgPos = bestMsgPos
   if (hasInteractions(sizePosToBox(msgSize, msgPos), boxes)) {
-    msgPos = findGoodPosX(msgSize, msgPos, boxes) //try to move message horizontally
+    msgPos = findGoodPosX(msgSize, msgPos, boxes) 
     if (hasInteractions(sizePosToBox(msgSize, msgPos), boxes)) {
       let boxesWithChar = (clone boxes).append(sizePosToBox(charSize, charPos))
       msgPos = findGoodPos(msgSize,
         [ charPos[0] < sw(50) ? charPos[0] + charSize[0] : charPos[0] - msgSize[0], bestMsgPos[1] ],
         boxesWithChar)
       if (hasInteractions(sizePosToBox(msgSize, msgPos), boxesWithChar))
-        msgPos = bestMsgPos //no way to no intersect, so put over character as was planned before
+        msgPos = bestMsgPos 
     }
   }
 
@@ -248,7 +248,7 @@ function tutorialWnd() {
       messageComp
       skipBtn
       mkArrows(boxes, obstacles, style)
-      hasValidBoxes || !shouldBeBoxes ? null //recalc objects if back scene not loaded yet
+      hasValidBoxes || !shouldBeBoxes ? null 
         : {
             size = SIZE_TO_CONTENT
             key = checkValidBoxes

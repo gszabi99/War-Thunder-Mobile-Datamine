@@ -3,8 +3,8 @@ from "hudState" import hud_request_hud_tank_debuffs_state, hud_request_hud_ship_
 let { addOptionMode, setGuiOptionsMode, addUserOption, set_gui_option } = require("guiOptions")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 
-let optModeTraining = addOptionMode("OPTIONS_MODE_TRAINING") //hardcoded in the native code
-let optModeGameplay = addOptionMode("OPTIONS_MODE_GAMEPLAY") //hardcoded in the native code
+let optModeTraining = addOptionMode("OPTIONS_MODE_TRAINING") 
+let optModeGameplay = addOptionMode("OPTIONS_MODE_GAMEPLAY") 
 let bulletOptions = array(BULLETS_SETS_QUANTITY).map(@(_, idx) {
   bulletOption = addUserOption($"USEROPT_BULLETS{idx}")
   bulletCountOption = addUserOption($"USEROPT_BULLET_COUNT{idx}")
@@ -24,7 +24,7 @@ function changeTrainingUnit(realUnitName, skin = "", bullets = null) {
     set_gui_option(opts.bulletCountOption, bullets?[idx].count ?? 0)
   }
   setGuiOptionsMode(optModeGameplay)
-  foreach (idx, opts in bulletOptions) { //FIXME: we receive error from ative code when bad bullets in the OPTIONS_MODE_TRAINING, but bullets not apply when they not in current options mode
+  foreach (idx, opts in bulletOptions) { 
     set_gui_option(opts.bulletOption, bullets?[idx].name ?? "")
     set_gui_option(opts.bulletCountOption, bullets?[idx].count ?? 0)
   }

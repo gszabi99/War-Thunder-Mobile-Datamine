@@ -84,8 +84,8 @@ function buyLevelNoUnitBtn(lvlInfo, cost, campaign) {
         loc("unitsTree/getLevel"),
         @(text) { rendObj = ROBJ_TEXT, text = utf8ToUpper(text) }.__update(isWidescreen ? fontTinyAccented : fontTiny),
         {
-          ["{level}"] = mkPlayerLevel(level + 1, (isStarProgress ? starLevel + 1 : 0)), //warning disable: -forgot-subst
-          ["{cost}"] = mkCurrencyComp(cost, GOLD) //warning disable: -forgot-subst
+          ["{level}"] = mkPlayerLevel(level + 1, (isStarProgress ? starLevel + 1 : 0)), 
+          ["{cost}"] = mkCurrencyComp(cost, GOLD) 
         }
       )
     },

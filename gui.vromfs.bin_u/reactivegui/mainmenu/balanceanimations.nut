@@ -13,7 +13,7 @@ let topScale = [0.5, 0.5]
 let bottomScale = [1.0, 1.0]
 
 let mkBalanceDiffAnims = @(onFinish) [
-  //opacity
+  
   { prop = AnimProp.opacity, from = 0.2, to = 1, duration = APPEAR,
     play = true, easing = InOutCubic }
   { prop = AnimProp.opacity, from = 1, to = 1, duration = SHOW,
@@ -21,7 +21,7 @@ let mkBalanceDiffAnims = @(onFinish) [
   { prop = AnimProp.opacity, from = 1, to = 0.2, duration = HIDE,
     playFadeOut = true, easing = InOutCubic }
 
-  //translate
+  
   { prop = AnimProp.translate, to = downOffset, play = true, easing = OutQuad,
     duration = MOVE_DOWN }
   { prop = AnimProp.translate, from = downOffset, to = downOffset, play = true,
@@ -29,7 +29,7 @@ let mkBalanceDiffAnims = @(onFinish) [
   { prop = AnimProp.translate, from = downOffset, play = true, easing = InQuad,
     duration = MOVE_UP, delay = MOVE_DOWN + STAY_DOWN }
 
-  //scale
+  
   { prop = AnimProp.scale, from = topScale, to = bottomScale, play = true, easing = OutQuad,
     duration = MOVE_DOWN }
   { prop = AnimProp.scale, from = bottomScale, to = bottomScale, play = true,

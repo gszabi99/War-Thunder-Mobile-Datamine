@@ -56,8 +56,8 @@ function clearAll() {
 }
 
 let NOTIFICATION_PARAMS = {
-  id = null //string
-  time = 0 //fill automatically
+  id = null 
+  time = 0 
   text = ""
   playerUid = null
   actionsGroup = ""

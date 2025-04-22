@@ -34,7 +34,7 @@ let { boxSize, boxGap } = bpCardStyle
 let rewardsListGap = 1.5 * boxGap
 let bpIconSize = hdpxi(400)
 let blocksGap = isWidescreen ? 3 * boxGap : boxGap
-//allow rewards a bit go out of safeArea
+
 let rightBlockWidth = 1.5 * bpIconSize
 let rewardSlotsInRow = (saSize[0] - rightBlockWidth - blocksGap + boxGap) / (boxSize + boxGap)
 let swIconSz = hdpx(70)

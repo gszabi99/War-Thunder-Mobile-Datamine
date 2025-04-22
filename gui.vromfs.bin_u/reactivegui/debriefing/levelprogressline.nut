@@ -328,7 +328,7 @@ function mkLevelProgressLine(curLevelConfig, reward, title, desc, animStartTime,
     curStarLevel = starLevel
     isStarProgress
     isLevelUpCurStep = isLevelUp
-    isLastLevelCurStep = "starLevel" not in curLevelConfig && isLastLevel //no need to show star for player level. But still has star for unit level
+    isLastLevelCurStep = "starLevel" not in curLevelConfig && isLastLevel 
     curExpWidth = lerpClamped(0, nextLevelExp, 0, levelProgressBarFillWidth, exp)
     receivedExpWidth = lerpClamped(0, nextLevelExp, 0, levelProgressBarFillWidth, exp + totalExp)
   }]

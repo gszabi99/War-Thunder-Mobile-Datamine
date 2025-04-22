@@ -47,12 +47,12 @@ let mkColoredGradientY = @(colorTop, colorBottom, height = 12)
     })
 
 return {
-  //const
+  
   gradTexSize
   gradDoubleTexOffset = (0.5 * gradTexSize).tointeger() - 2
-  //std gradietns
+  
   gradTranspDoubleSideX
-  //ctors
+  
   mkGradientCtorDoubleSideX
   mkColoredGradientY
 }

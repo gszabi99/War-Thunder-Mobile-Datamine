@@ -10,9 +10,9 @@ let MWP_COMMON = 0
 let MWP_ALWAYS_TOP = 1000
 
 let WND_PARAMS = {
-  key = null //generate automatically when not set
+  key = null 
   children = null
-  onClick = null //remove current modal window when not set
+  onClick = null 
   priority = MWP_COMMON
 
   size = flex()
@@ -132,9 +132,9 @@ let modalWindowsComponent = @() {
 
 function printOpenedModalWindows(mws = null) {
   if (mws == null || mws.len() == 0)
-    return console_print("Empty") //warning disable: -forbidden-function
+    return console_print("Empty") 
   foreach (mw in mws.map(@(v) v.key))
-    console_print(mw) //warning disable: -forbidden-function
+    console_print(mw) 
 }
 
 register_command(@() printOpenedModalWindows(modalWindows), "debug.print_opened_modal_windows")

@@ -14,11 +14,11 @@ let g_url_type = {
   types = []
 
   template = {
-    typeName = "" //filled automatically by typeName
+    typeName = "" 
     sortOrder = URL_CHECK_ORDER.BY_URL_REGEXP
     isOnlineShop = false
-    urlRegexpList = null //array
-    supportedLangs = ["ru", "en", "fr", "de", "es", "pl", "ja", "cs", "pt", "ko", "tr", "zh"] //array of short lang
+    urlRegexpList = null 
+    supportedLangs = ["ru", "en", "fr", "de", "es", "pl", "ja", "cs", "pt", "ko", "tr", "zh"] 
     langParamName = "skin_lang"
 
     isCorrespondsToUrl = function(url) {
@@ -83,7 +83,7 @@ enums.addTypes(g_url_type, {
   }
 
   WARTHUNDER_COM = {
-    supportedLangs = ["ru", "en", "pl", "de", "cz", "fr", "es", "tr", "pt"] //ru - forward to warthunder.ru
+    supportedLangs = ["ru", "en", "pl", "de", "cz", "fr", "es", "tr", "pt"] 
     urlRegexpList = [
       regexp("".concat(@"^https?:\/\/warthunder\.com", URL_ANY_ENDING)),
     ]

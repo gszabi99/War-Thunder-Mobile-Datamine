@@ -42,10 +42,10 @@ let progressbarHeight = hdpx(14)
 let openCountIconSize = hdpxi(30)
 
 let RS_IDLE_ROLL = "RS_IDLE_ROLL"
-let RS_ROLL = "RS_ROLL" //roll to start slowdown
+let RS_ROLL = "RS_ROLL" 
 let RS_SLOWDOWN = "RS_SLOWDOWN"
 let RS_SLOW = "RS_SLOW"
-let RS_PRECISE_REVERSE = "RS_PRECISE_REVERSE" //only for move back for presize
+let RS_PRECISE_REVERSE = "RS_PRECISE_REVERSE" 
 let RS_PRECISE = "RS_PRECISE"
 let RS_STOP = "RS_STOP"
 let RS_REWARD_NO_ROLL = "RS_REWARD_NO_ROLL"
@@ -95,7 +95,7 @@ function isReceivedSame(received, rewardInfo) {
   let { rType } = rec
   foreach(info in rewardInfo)
     if (info.rType == rType && (isSameByType?[rType] ?? isRewardSameDefault)(rec, info))
-      return true //support only single reward drop from lootboxes atm.
+      return true 
   return false
 }
 
@@ -164,7 +164,7 @@ isAllJackpotsReceived.subscribe(@(_) deferOnce(onChangeIndexes))
 rouletteOpenResult.subscribe(function(v) {
   if (v == null)
     return
-  resetTimeout(openConfig.value.BACKUP_CLOSE_TIME * max(1, receivedRewardsAll.value.len()), closeRoulette)  // in case of broken animation events
+  resetTimeout(openConfig.value.BACKUP_CLOSE_TIME * max(1, receivedRewardsAll.value.len()), closeRoulette)  
   skipUnseenMessageAnimOnce(true)
 })
 
@@ -191,7 +191,7 @@ function fillSlowdownPoints(state, allowedIndexes) {
   let isMoveBack = !rnd_int(0, 1).tointeger()
   let slowestCount = rnd_int(SLOWEST_COUNT_MIN, SLOWEST_COUNT_MAX).tointeger()
 
-  //search slowStartIndex for slowdown target
+  
   let minOffset = slowStartOffset % fullSize
   let circles = ((slowStartOffset - minOffset) / fullSize).tointeger()
   local offsetSum = 0.0
@@ -431,7 +431,7 @@ let updAnimByStatus = {
     let { time, precizeStartOffset, finalOffset, precizeStartTime, precizeTime, slotPrecisePeriod,
       rewardAnimTime, nextRewardTime, openIdx
     } = state
-    updateCurIndex(state) //need for correct arrow update
+    updateCurIndex(state) 
     let timeSec = 0.001 * (time - precizeStartTime)
     let timeMul = timeSec > precizeTime ? 0.0 : 1.0 - timeSec / precizeTime
     let amplitude = timeMul * timeMul * (precizeStartOffset - finalOffset)
@@ -731,7 +731,7 @@ function rouletteRewardsBlock() {
   let openCount = rouletteOpenResult.value ? receivedRewardsAll.value.len() : nextOpenCount.value
   local state = openConfig.value.__merge(
     openCount <= 1 ? {} : (openConfig.value?.multiOpenOvr ?? {}),
-    { //no need to subscribe on openConfig due to itnot should be change on the full roulette anim
+    { 
       fullSize
       halfViewSize
       offset = sizes[0] / 2
@@ -739,7 +739,7 @@ function rouletteRewardsBlock() {
       sizes
     })
 
-  if (compsTbl.len() == 1) //only single reward
+  if (compsTbl.len() == 1) 
     state.__update({
       status = RS_REWARD_NO_ROLL
       rewardNoRollTime = get_time_msec() + (1000 * state.MIN_WAIT_NO_ROOL_REWARD).tointeger()
@@ -1056,7 +1056,7 @@ let fixedRewardInfo = @() {
     : nextFixedViewInfo.value != null
       ? [
           fixedProgressInfo
-          nextFixedViewInfo.value[0].rType == "lootbox" ? null //jackpot, no need icon
+          nextFixedViewInfo.value[0].rType == "lootbox" ? null 
             : fixedRewardIcon(nextFixedViewInfo.value[0])
         ]
     : null
@@ -1078,7 +1078,7 @@ let rouletteWnd = @() {
   size = flex()
 
   function onAttach() {
-    resetTimeout(openConfig.value.BACKUP_CLOSE_TIME * max(1, receivedRewardsAll.value.len()), closeRoulette) // in case of broken animation events
+    resetTimeout(openConfig.value.BACKUP_CLOSE_TIME * max(1, receivedRewardsAll.value.len()), closeRoulette) 
     requestOpenCurLootbox()
     delayUnseedPurchaseShow(100)
   }

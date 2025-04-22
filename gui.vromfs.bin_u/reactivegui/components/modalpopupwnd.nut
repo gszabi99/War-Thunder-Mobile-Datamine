@@ -3,9 +3,9 @@ let { addModalWindow, removeModalWindow } = require("modalWindows.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let POPUP_PARAMS = {
-  uid = null //when not set, will be generated
-  popupFlow = FLOW_VERTICAL //how popup need to flow against target point
-  popupOffset = 0 //popup offset from coords in popup flow direction
+  uid = null 
+  popupFlow = FLOW_VERTICAL 
+  popupOffset = 0 
   popupHalign = ALIGN_CENTER
   popupValign = ALIGN_CENTER
   children = null

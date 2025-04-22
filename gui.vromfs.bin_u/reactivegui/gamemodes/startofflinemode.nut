@@ -5,9 +5,9 @@ let { TANK, AIR, HELICOPTER } = require("%appGlobals/unitConst.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { getDefaultBulletsForSpawn } = require("%rGui/weaponry/bulletsCalc.nut")
-let { getUnitPkgs, getAddonPostfix, getCampaignPkgsForOnlineBattle } = require("%appGlobals/updater/campaignAddons.nut")
+let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let { soloNewbieByCampaign } = require("%appGlobals/updater/addons.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
@@ -15,11 +15,6 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitSlotsPresetNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
 
-
-let testFlightExtPacks = { //for bots
-  ground = getCampaignPkgsForOnlineBattle("tanks", 1) //t_34_1942
-  naval = getCampaignPkgsForOnlineBattle("ships", 1) //cruiser_admiral_hipper
-}
 
 let defTestFlight = "testFlight_destroyer_usa_tfs"
 let testFlightByUnitType = {
@@ -56,8 +51,7 @@ function startTestFlightImpl(unitName, missionName, skin) {
       .reduce(@(res, v, k) res.$rawset(k.tostring(), v), {})
   }
   logO("donloadUnitPacksAndSend startTestFlight")
-  donloadUnitPacksAndSend(unitName, testFlightExtPacks?[getAddonPostfix(unitName)] ?? [],
-    "startTestFlight", params)
+  donloadUnitPacksAndSend(unitName, [], "startTestFlight", params)
 }
 
 let getUnitSkin = @(unit) unit?.currentSkins[unit.name] ?? ""
@@ -85,20 +79,30 @@ function startOfflineBattle(unit, missionName) {
     })
 }
 
+let mkLocalMPParams = @(unit, missionName, presetOvrMis) {
+  unitName = unit.name
+  skin = getUnitSkin(unit)
+  missionName
+  bullets = getBulletsForTestFlight(unit.name)
+  presetOvrMis
+}
+
 function startLocalMPBattle(unit, missionName, presetOvrMis = null) {
   if (unit == null) {
     openMsgBox({ text = loc("No selected unit") })
     return
   }
   logO("donloadUnitPacksAndSend startLocalMP")
-  donloadUnitPacksAndSend(unit.name, [], "startLocalMP",
-    {
-      unitName = unit.name
-      skin = getUnitSkin(unit)
-      missionName
-      bullets = getBulletsForTestFlight(unit.name)
-      presetOvrMis
-    })
+  donloadUnitPacksAndSend(unit.name, [], "startLocalMP", mkLocalMPParams(unit, missionName, presetOvrMis))
+}
+
+function startLocalMPBattleWithoutGamemode(unit, missionName, presetOvrMis = null) {
+  if (unit == null) {
+    openMsgBox({ text = loc("No selected unit") })
+    return
+  }
+  logO("donloadUnitPacksAndSend startLocalMPWithoutGM")
+  donloadUnitPacksAndSend(unit.name, [], "startLocalMPWithoutGM", mkLocalMPParams(unit, missionName, presetOvrMis))
 }
 
 return {
@@ -106,4 +110,5 @@ return {
   startTestFlightByName
   startOfflineBattle
   startLocalMPBattle
+  startLocalMPBattleWithoutGamemode
 }

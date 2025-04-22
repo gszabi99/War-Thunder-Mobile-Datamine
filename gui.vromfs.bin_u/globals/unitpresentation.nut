@@ -27,11 +27,11 @@ let unitTypeFontIcons = {
 }
 
 let unitTypeColors = {
-  [AIR]         = 0xFFECBC51, // orange
-  [TANK]        = 0xFF99D752, // green
-  [SHIP]        = 0xFF00D5E2, // blue
-  [HELICOPTER]  = 0xFFECBC51, // orange
-  [BOAT]        = 0xFF00D5E2, // blue
+  [AIR]         = 0xFFECBC51, 
+  [TANK]        = 0xFF99D752, 
+  [SHIP]        = 0xFF00D5E2, 
+  [HELICOPTER]  = 0xFFECBC51, 
+  [BOAT]        = 0xFF00D5E2, 
 }
 
 let defaults = {
@@ -43,9 +43,9 @@ let defaults = {
 }
 
 
-let inProgress = { image = "!ui/unitskin#image_in_progress.avif" } // warning disable: -declared-never-used
+let inProgress = { image = "!ui/unitskin#image_in_progress.avif" } 
 let overrides = {
-// PUBLIC OVERRIDES START
+
   ["sb2c_1c_killstreak"] = { image = "!ui/unitskin#sb2c_1c.avif" },
   ["il_2m_1943_killstreak"] = { image = "!ui/unitskin#il_2_1941.avif" },
   ["ju_87d_5_killstreak"] = { image = "!ui/unitskin#ju_87d_5.avif" },
@@ -77,9 +77,55 @@ let overrides = {
   ["f8f1_killstreak"] = { image = "!ui/unitskin#f8f1.avif" },
   ["bf_109k_4_killstreak"] = { image = "!ui/unitskin#bf_109k_4.avif" },
   ["la_9_killstreak"] = { image = "!ui/unitskin#la_9.avif" },
-  ["fw-190d-9_killstreak"] = { image = "!ui/unitskin#fw-190d-9.avif" }
-// PUBLIC OVERRIDES END
-//
+  ["fw-190d-9_killstreak"] = { image = "!ui/unitskin#fw-190d-9.avif" },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -87,7 +133,7 @@ let overrides = {
 
 
 let platoonNames = {
-  //here overiides for platoon names
+  
   uk_sherman_ic_firefly = "uk_sherman_ic_firefly_platoon"
 }
 

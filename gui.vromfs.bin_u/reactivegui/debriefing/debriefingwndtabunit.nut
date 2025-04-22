@@ -35,19 +35,19 @@ function mkUnitLevelUnlockPlates(unit, debrData, delay) {
   let list = []
   for (local l = startLevel; l <= endLevel; l++) {
     let isUnlocked = l <= unlockedLevel
-    // Units
+    
     let units = lockedUnits.filter(@(v) v.reqLevel == l)
       .map(@(v) unit.__merge(v, { platoonUnits = [], lockedUnits = [] }))
     units.sort(sortUnits)
     list.extend(units.map(@(v) { isUnlocked, data = v, ctor = mkDebrPlateUnit }))
-    // Mods
+    
     let modsList = modPresetCfg
       .map(@(mod, name) mod.__merge({ name }))
       .values()
       .filter(@(mod) mod?.reqLevel == l && !mod?.isHidden && (mod.name not in items))
     modsList.sort(sortUnitMods)
     list.extend(modsList.map(@(v) { isUnlocked, data = v, ctor = mkDebrPlateMod }))
-    // Points
+    
     let sp = spLevels?[l - 1] ?? 0
     if (sp > 0) {
       let data = { sp, reqLevel = l, name = $"sp{l}" }

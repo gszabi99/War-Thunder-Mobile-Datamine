@@ -15,8 +15,8 @@ let { setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { resetAddonNamesCache } = require("%appGlobals/updater/addons.nut")
 
-// Please use lang codes from ISO 639-1 standard for chatId
-// See https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+
+
 let allLangs = [
   { id = "English",     chatId = "en", hasUnitSpeech = true }
   { id = "Russian",     chatId = "ru", hasUnitSpeech = true }
@@ -121,7 +121,7 @@ function checkInitList() {
   foreach (lang in langsList)
     langsById[lang.id] <- lang
 
-//
+
 
 
 
@@ -146,7 +146,7 @@ function getGameLocalizationInfo() {
 }
 
 
-// called from native playerProfile on language change, so at this point we can use get_language
+
 eventbus_subscribe("on_language_changed", function on_language_changed(...) {
   saveLanguage(get_language())
 })

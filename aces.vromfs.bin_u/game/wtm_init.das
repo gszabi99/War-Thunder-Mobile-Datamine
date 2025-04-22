@@ -1,4 +1,4 @@
-options no_aot = true//since this is merely loader
+options no_aot = true
 require %game.events
 require %appGame.wtm_events
 require ecs
@@ -12,7 +12,7 @@ def is_pc()
 [init]
 def load
   var ok = true
-  if app::get_game_name() == "aot" || (get_DAGOR_DBGLEVEL() > 0 && is_pc() && find_index(get_command_line_arguments(), "--das-no-linter") == -1)
+  if is_in_aot() || (get_DAGOR_DBGLEVEL() > 0 && is_pc() && find_index(get_command_line_arguments(), "--das-no-linter") == -1)
     ok = load_das_linter("%game/linter/linter.das") && ok
-  if app::get_game_name() == "aot"
+  if is_in_aot()
     assert(ok)

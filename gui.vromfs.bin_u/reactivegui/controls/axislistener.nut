@@ -5,7 +5,7 @@ function axisListener(updateByAxis) {
     .filter(@(w) w != null)
   return {
     key = {}
-    size = [0, 0] //need only to avoid "invalid component description" error
+    size = [0, 0] 
     function onAttach() {
       foreach (a, w in watches) {
         let action = updateByAxis[a]

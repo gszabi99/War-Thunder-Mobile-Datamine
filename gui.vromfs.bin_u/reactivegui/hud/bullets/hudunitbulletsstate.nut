@@ -34,14 +34,14 @@ let isSecondaryBulletsSame = Computed(function() {
 })
 
 let bulletsNamePrim = Computed(function() {
-  let name = playerUnitName.value //warning disable: -declared-never-used
-  let upd = isUnitDelayed.value //warning disable: -declared-never-used
+  let name = playerUnitName.value 
+  let upd = isUnitDelayed.value 
   return array(3, TRIGGER_GROUP_PRIMARY).map(getBulletNameByType)
 })
 
 let bulletsNameSec = Computed(function() {
-  let name = playerUnitName.value //warning disable: -declared-never-used
-  let upd = isUnitDelayed.value //warning disable: -declared-never-used
+  let name = playerUnitName.value 
+  let upd = isUnitDelayed.value 
   return array(3, TRIGGER_GROUP_SECONDARY).map(getBulletNameByType)
 })
 
@@ -81,7 +81,7 @@ function toggleNextBullet() {
       continue
     changeBulletType(TRIGGER_GROUP_PRIMARY, idx)
     if (isSecondaryBulletsSame.value)
-      setTimeout(0.1, @() changeBulletType(TRIGGER_GROUP_SECONDARY, idx)) //cant set next 2 bullets at single frame
+      setTimeout(0.1, @() changeBulletType(TRIGGER_GROUP_SECONDARY, idx)) 
     nextBulletIdx(idx)
     return true
   }

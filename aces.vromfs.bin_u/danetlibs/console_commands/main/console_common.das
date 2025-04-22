@@ -51,14 +51,14 @@ def find_console_hint_entities(str : string;
     if camera__active
       let camPos = camera_transform[3]
 
-      // Complete match eid entity
+      
       let completeMatchEid = isEid ? EntityId(to_uint(str)) : INVALID_ENTITY_ID
       query(completeMatchEid) <| $ [es] (transform : float3x4 const?)
         let pos = transform != null ? (*transform)[3] : float3(VERY_BIG_NUMBER)
         let camDistanceSq = distance_sq(camPos, pos)
-        entities |> emplace([[FindConsoleHintEntityResult eid=completeMatchEid, camDistanceSq=camDistanceSq, pos=pos]])
+        entities |> emplace(FindConsoleHintEntityResult(eid = completeMatchEid, camDistanceSq = camDistanceSq, pos = pos))
 
-      // Closest to camera entities
+      
       query() <| $ [es] (eid : EntityId;
                          transform : float3x4)
         if eid == completeMatchEid
@@ -69,11 +69,11 @@ def find_console_hint_entities(str : string;
           if ((str == "") ||
               (isEid && find("{eid}", str) != -1) ||
               (isName && find(getEntityTemplateName(eid), str) != -1))
-            entities |> emplace([[FindConsoleHintEntityResult eid=eid, camDistanceSq=camDistanceSq, pos=pos]])
+            entities |> emplace(FindConsoleHintEntityResult(eid = eid, camDistanceSq = camDistanceSq, pos = pos))
       entities |> sort() <| $(left : FindConsoleHintEntityResult; right : FindConsoleHintEntityResult)
         return left.camDistanceSq < right.camDistanceSq
 
-      // Other entities
+      
       find_query() <| $ [es] (eid : EntityId;
                               transform : float3x4 const?)
         if length(entities) >= hints_count
@@ -87,9 +87,9 @@ def find_console_hint_entities(str : string;
             let pos = (*transform)[3]
             let camDistanceSq = distance_sq(camPos, pos)
             if camDistanceSq > threshold_cam_distance_sq
-              entities |> emplace([[FindConsoleHintEntityResult eid=eid, camDistanceSq=camDistanceSq, pos=pos]])
+              entities |> emplace(FindConsoleHintEntityResult(eid = eid, camDistanceSq = camDistanceSq, pos = pos))
           else
-            entities |> emplace([[FindConsoleHintEntityResult eid=eid, pos=float3(VERY_BIG_NUMBER)]])
+            entities |> emplace(FindConsoleHintEntityResult(eid = eid, pos = float3(VERY_BIG_NUMBER)))
         return false
 
       return true
@@ -98,15 +98,8 @@ def find_console_hint_entities(str : string;
 
 
 def build_entity_hint_desc(entity : FindConsoleHintEntityResult)
-  var desc = build_string() <| $(var str)
-    let templateName = getEntityTemplateName(entity.eid)
-    str |> write(templateName)
-    if entity.pos != float3(VERY_BIG_NUMBER)
-      format(str, " [pos=%.2f,", entity.pos.x)
-      format(str, " %.2f,", entity.pos.y)
-      format(str, " %.2f]", entity.pos.z)
-      format(str, " [dist=%.2fm]", sqrt(entity.camDistanceSq))
-  return <- desc
+  let templateName = getEntityTemplateName(entity.eid)
+  return "{templateName} [pos={entity.pos.x:.2f}, {entity.pos.y:.2f}, {entity.pos.z:.2f}] [dist={sqrt(entity.camDistanceSq):.2f}m]"
 
 
 def build_command_up_to_argument(inputs : array<string>;
@@ -239,16 +232,16 @@ def add_hints(arg_descs : auto;
   if inputs[0] == cmd
     for i in iter_range(arg_descs)
       let argDesc = arg_descs[i]
-      if argDesc.hintType == CommandArgHintType Default
+      if argDesc.hintType == CommandArgHintType.Default
         add_hints_for_argument_default(inputs, i, hints_count, minArgs, maxArgs,
                                       argsDescription, hints)
-      elif argDesc.hintType == CommandArgHintType EntityId
+      elif argDesc.hintType == CommandArgHintType.EntityId
         add_hints_for_argument_eid(inputs, i, hints_count, minArgs, maxArgs,
                                   argsDescription, threshold_cam_distance_sq, hints)
-      elif argDesc.hintType == CommandArgHintType TemplateName
+      elif argDesc.hintType == CommandArgHintType.TemplateName
         add_hints_for_argument_template_name(inputs, i, hints_count, minArgs, maxArgs,
                                             argsDescription, hints)
-      elif argDesc.hintType == CommandArgHintType SystemName
+      elif argDesc.hintType == CommandArgHintType.SystemName
         add_hints_for_argument_system_name(inputs, i, hints_count, minArgs, maxArgs,
                                             argsDescription, hints)
       else
@@ -256,3 +249,4 @@ def add_hints(arg_descs : auto;
 
   if length(hints) == 0 && (inputs[0] == cmd || length(inputs) == 1)
     hints |> add_hint(cmd, minArgs, maxArgs, argsDescription)
+

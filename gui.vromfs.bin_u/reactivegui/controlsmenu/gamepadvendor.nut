@@ -20,12 +20,12 @@ let presetId = Computed(@() vendorIdToGamepadPresetId?[curVendorId.value] ?? def
 
 if (lastVendorId.value == null) {
   lastVendorId(getJoystickVendor())
-  log("[GAMEPAD] presetId = ", presetId.value) //to not spam this log on each script reload
+  log("[GAMEPAD] presetId = ", presetId.value) 
 }
 presetId.subscribe(@(v) log("[GAMEPAD] presetId = ", v))
 
-let vendorIdToShow = lastVendorId.value //we will hot reload darg scripts on change gamepad vendor
-let presetIdToShow = presetId.value //we will hot reload darg scripts on change gamepad vendor
+let vendorIdToShow = lastVendorId.value 
+let presetIdToShow = presetId.value 
 
 function updateVendor(_) {
   let id = getJoystickVendor()
@@ -43,7 +43,7 @@ presetId.subscribe(@(_) resetTimeout(0.1, reloadVmIfNeed))
 
 function setDbgVendor(id) {
   debugVendorId(id == UNKNOWN ? null : id)
-  console_print("gamepad preset id = ", presetId.value) //warning disable: -forbidden-function
+  console_print("gamepad preset id = ", presetId.value) 
 }
 
 VendorId.each(@(id, name) register_command(

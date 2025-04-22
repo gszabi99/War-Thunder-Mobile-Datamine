@@ -50,4 +50,4 @@ def regen_meta_parts_hp_es(info : UpdateStageInfoAct;
     for partId in props.parts
       unitDm.dmData.parts[int(partId.id)].relHpFixed = uint16(max(int(unitDm.dmData.parts[int(partId.id)].relHpFixed), int(metaPart.hp)))
 
-  sendEvent(eid, [[CmdUpdateRelativeUnitHealth]])
+  sendEvent(eid, CmdUpdateRelativeUnitHealth())

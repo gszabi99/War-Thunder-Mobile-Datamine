@@ -62,7 +62,7 @@ isUnitsWndAttached.subscribe(function(v) {
 })
 loadedHangarUnitName.subscribe(@(_) isUnitsWndAttached.value ? set_camera_shift_upper() : null)
 
-let holdInfo = {} //unitName = { press = int, release = int }
+let holdInfo = {} 
 
 let scrollHandler = ScrollHandler()
 let scrollPos = Computed(@() (scrollHandler.elem?.getScrollOffsX() ?? 0))

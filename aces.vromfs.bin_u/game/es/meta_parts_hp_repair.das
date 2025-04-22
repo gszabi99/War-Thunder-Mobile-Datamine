@@ -55,7 +55,7 @@ def start_meta_parts_repair_es(evt : Event;
   let hpWillBeRepaired = int(100. * min((meta_parts_hp_repair__maxHp - unit.relativeHealth), meta_parts_hp_repair__duration * meta_parts_hp_repair__speed))
   let player = unit.myPlayer
   if player != null
-    broadcastEvent([[EventOnPlayerRepair userId = player.id, hpRepaired = hpWillBeRepaired]])
+    broadcastEvent(EventOnPlayerRepair(userId = player.id, hpRepaired = hpWillBeRepaired))
 
 def repair_meta_parts(var unit_dm : DamageableVisualModel?;
                       repair_speed : float;
@@ -129,10 +129,10 @@ def repair_meta_parts_hp_es(info : UpdateStageInfoAct;
         *unit.moduleEffectBuffer |> onRepair()
         var gm = unit |> as_gm()
         if gm != null && gm.autoExtinguisherWithToolkit
-          sendEvent(eid, [[CmdStopBurn]])
+          sendEvent(eid, CmdStopBurn())
   if reparing
     *unit |> cacheUnitRelativeHealth()
-    sendEvent(eid, [[CmdUpdateRelativeUnitHealth]])
+    sendEvent(eid, CmdUpdateRelativeUnitHealth())
 
 [es(tag=netClient, REQUIRE=(controlledHero), no_order)]
 def repair_meta_parts_hp_client_es(info : UpdateStageInfoAct;

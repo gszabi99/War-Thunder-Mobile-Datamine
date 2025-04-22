@@ -14,7 +14,7 @@ let magnifiedTextureIconSize = 375
 
 def edit_value(text : string; var value : das_string&)
   let buf <- ImGuiInputTextBuffer("{value}", 256)
-  if InputText(text, buf, ImGuiInputTextFlags AutoSelectAll)
+  if InputText(text, buf, ImGuiInputTextFlags.AutoSelectAll)
     value := buf |> to_string()
     return true
   return false
@@ -26,19 +26,19 @@ def imgui_click_to_copy(val : string)
     imgui::TextUnformatted("right click to copy {val}")
     imgui::PopTextWrapPos()
     imgui::EndTooltip()
-    if imgui::IsMouseClicked(ImGuiMouseButton Right)
+    if imgui::IsMouseClicked(ImGuiMouseButton.Right)
       SetClipboardText("{val}")
 
 
 def get_asset_status_color(status : AssetLoadingStatus)
 
-  if status == AssetLoadingStatus LoadedWithErrors
+  if status == AssetLoadingStatus.LoadedWithErrors
     return float4(1f, 0f, 0f, 1f)
-  elif status == AssetLoadingStatus Loading
+  elif status == AssetLoadingStatus.Loading
     return float4(0f, 0f, 1f, 1f)
-  elif status == AssetLoadingStatus Loaded
+  elif status == AssetLoadingStatus.Loaded
     return float4(0f, 1f, 0f, 1f)
-  else //status == AssetLoadingStatus NotLoaded
+  else 
     return float4(1f, 1f, 1f, 1f)
 
 def dag_tex_id_to_imgui(tex_id : D3DRESID&)
@@ -46,18 +46,18 @@ def dag_tex_id_to_imgui(tex_id : D3DRESID&)
     return reinterpret<void?> tex_id
 
 def open_file(path : string)
-  //this shell call will open file with default application
+  
   os_shell_execute("open", path, "", "")
 
 def open_folder(path : string)
-  //this replace need for windows explorer
+  
   let windowsPath = path |> replace("/", "\\")
-  //this shell call will open folder with this file and select file
+  
   os_shell_execute("open", "explorer.exe", "/select,{windowsPath}", "")
 
 def asset_dependencies_tree(var asset : DagorAsset?; asset__manager : DagorAssetMgr; is_root = true)
 
-  let nodeOpened = imgui::TreeNodeEx("{asset.name}:{asset.typeName}##{asset}", is_root ? ImGuiTreeNodeFlags DefaultOpen : ImGuiTreeNodeFlags None)
+  let nodeOpened = imgui::TreeNodeEx("{asset.name}:{asset.typeName}##{asset}", is_root ? ImGuiTreeNodeFlags.DefaultOpen : ImGuiTreeNodeFlags.None)
   imgui_click_to_copy(*asset |> getSrcFilePath())
   let status = get_asset_status(*asset, false)
   imgui::SameLine()
@@ -65,19 +65,19 @@ def asset_dependencies_tree(var asset : DagorAsset?; asset__manager : DagorAsset
 
   if asset.typeName == "tex"
 
-    let texId = status == AssetLoadingStatus Loaded ? get_managed_texture_id("{asset.name}*") : BAD_TEXTUREID
+    let texId = status == AssetLoadingStatus.Loaded ? get_managed_texture_id("{asset.name}*") : BAD_TEXTUREID
     if texId != BAD_TEXTUREID
       imgui::SameLine()
       let imguiTexId = dag_tex_id_to_imgui(texId)
-      imgui::PushStyleVar(ImGuiStyleVar FramePadding, float2(0));
+      imgui::PushStyleVar(ImGuiStyleVar.FramePadding, float2(0))
       imgui::ImageButton("{asset}_image", imguiTexId, float2(textureIconSize), float2(0), float2(1), float4(1), float4(1))
-      imgui::PopStyleVar();
+      imgui::PopStyleVar()
 
       if imgui::IsItemHovered()
         imgui::BeginTooltip()
-        imgui::PushStyleVar(ImGuiStyleVar FramePadding, float2(0));
+        imgui::PushStyleVar(ImGuiStyleVar.FramePadding, float2(0))
         imgui::ImageButton("{asset}_image_magnified", imguiTexId, float2(magnifiedTextureIconSize), float2(0), float2(1), float4(1), float4(1))
-        imgui::PopStyleVar();
+        imgui::PopStyleVar()
         imgui::EndTooltip()
 
   if nodeOpened

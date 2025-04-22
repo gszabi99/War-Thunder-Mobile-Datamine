@@ -1,4 +1,5 @@
 module ecs_inspector_common shared
+options stack = 65536
 require ecs
 require ecs.common
 require imgui
@@ -163,7 +164,7 @@ def to_TMatrix(str : string)
     value[3] = length(rows) > 3 ? to_float3(rows[3]) : float3()
   return value
 
-// [[ 138.485, 99.9427, -648.716, 1; 142.237, 103.802, -645.125, 1]]
+
 def to_bbox3f(str : string)
   var value : bbox3f
   let packedStr = str |> replace(" ", "")
@@ -225,7 +226,7 @@ def use_this(blk : block<(val : bool#) : void>) { blk |> invoke(false); }
 def use_this(blk : block<(val : E3DCOLOR#) : void>) { blk |> invoke(E3DCOLOR(0x0)); }
 def use_this(blk : block<(val : int64#) : void>) { blk |> invoke(0l); }
 
-// TODO: move this to ecs_inspector annotation
+
 def is_cont_type(user_type : uint) : bool
   let typeName = getComponentTypes() |> component_types_findTypeName(user_type)
   return is_cont_type(typeName)
@@ -364,41 +365,41 @@ def open_inspector(idx : int; eid : EntityId; filter_str : string)
   imgui_window_set_visible("Editor", "Inspector {idx+1}", true)
 
 def das_type_to_ecs_type_str(typ : rtti::Type)
-  if typ == Type tBool
+  if typ == Type.tBool
     return "bool"
-  if typ == Type tInt8
+  if typ == Type.tInt8
     return "int8_t"
-  if typ == Type tUInt8
+  if typ == Type.tUInt8
     return "uint8_t"
-  if typ == Type tInt16
+  if typ == Type.tInt16
     return "int16_t"
-  if typ == Type tUInt16
+  if typ == Type.tUInt16
     return "uint16"
-  if typ == Type tInt64
+  if typ == Type.tInt64
     return "int64_t"
-  if typ == Type tUInt64
+  if typ == Type.tUInt64
     return "uint64_t"
-  if typ == Type tInt
+  if typ == Type.tInt
     return "int"
-  if typ == Type tInt2
+  if typ == Type.tInt2
     return "IPoint2"
-  if typ == Type tInt3
+  if typ == Type.tInt3
     return "IPoint3"
-  if typ == Type tInt4
+  if typ == Type.tInt4
     return "IPoint4"
-  if typ == Type tUInt
+  if typ == Type.tUInt
     return "uint32_t"
-  if typ == Type tFloat
+  if typ == Type.tFloat
     return "float"
-  if typ == Type tFloat2
+  if typ == Type.tFloat2
     return "Point2"
-  if typ == Type tFloat3
+  if typ == Type.tFloat3
     return "Point3"
-  if typ == Type tFloat4
+  if typ == Type.tFloat4
     return "Point4"
-  if typ == Type tDouble
+  if typ == Type.tDouble
     return "double"
-  if typ == Type tString
+  if typ == Type.tString
     return "ecs::string"
   return "UnknownBindedStructureFieldType"
 
@@ -409,24 +410,24 @@ def collect_struct_components(prefix : string; data : uint8?; type_name : string
 
   *ann |> basic_struct_for_each_field <| $ [unused_argument(cppName)] (field_name, cppName, tinfo, offset)
     unsafe
-      let field_data = tinfo.basicType == Type tPointer && tinfo.firstType != null ? *reinterpret<uint8 ??>(data + offset) : data + offset
-      let ti & = tinfo.basicType == Type tPointer && tinfo.firstType != null ? *tinfo.firstType : tinfo
+      let field_data = tinfo.basicType == Type.tPointer && tinfo.firstType != null ? *reinterpret<uint8 ??>(data + offset) : data + offset
+      let ti & = tinfo.basicType == Type.tPointer && tinfo.firstType != null ? *tinfo.firstType : tinfo
       if field_data == null
-        comps |> emplace([[auto "{prefix}.{field_name}", ComponentRenderInfo(rawData=null, roVal="null pointer", dasTypeName="{tinfo.basicType}", typeName="UnknownBindedStructureFieldType", idx=0u, componentId=uint16(0))]])
+        comps |> emplace(("{prefix}.{field_name}", ComponentRenderInfo(rawData = null, roVal = "null pointer", dasTypeName = "{tinfo.basicType}", typeName = "UnknownBindedStructureFieldType", idx = 0u, componentId = uint16(0))))
         return
 
-      if ti.basicType == Type tHandle && ti.annotation != null
+      if ti.basicType == Type.tHandle && ti.annotation != null
         let compTypeName = get_annotation_name(*ti.annotation)
-        if has_inspector(compTypeName) // If an inspector for some type is present, it is probably better than showing individual fields.
-          comps |> emplace([[auto "{prefix}.{field_name}", ComponentRenderInfo(rawData=field_data, roVal="", dasTypeName="", typeName=compTypeName, idx=0u, componentId=uint16(0))]])
+        if has_inspector(compTypeName) 
+          comps |> emplace(("{prefix}.{field_name}", ComponentRenderInfo(rawData = field_data, roVal = "", dasTypeName = "", typeName = compTypeName, idx = 0u, componentId = uint16(0))))
         else
           collect_struct_components("{prefix}.{field_name}", field_data, compTypeName, comps, annotations)
       elif ti.isPod || ti.isConst
         let typ = das_type_to_ecs_type_str(ti.basicType)
         var roVal = ""
         if typ == "UnknownBindedStructureFieldType"
-          roVal = "{sprint_data(field_data, addr(ti), [[print_flags]])}"
-        comps |> emplace([[auto "{prefix}.{field_name}", ComponentRenderInfo(rawData=field_data, roVal=roVal, dasTypeName="{ti.basicType}", typeName=typ, idx=0u, componentId=uint16(0))]])
+          roVal = "{sprint_data(field_data, addr(ti), default<print_flags>)}"
+        comps |> emplace(("{prefix}.{field_name}", ComponentRenderInfo(rawData = field_data, roVal = roVal, dasTypeName = "{ti.basicType}", typeName = typ, idx = 0u, componentId = uint16(0))))
       elif ti.isRefType && ti.annotation != null
         collect_struct_components("{prefix}.{field_name}", field_data, get_annotation_name(*ti.annotation), comps, annotations)
 
@@ -529,16 +530,16 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
     imgui::TextUnformatted("{eid}: {templateName}")
     imgui_hint(templateName)
   else
-    if BeginCombo("##selectEid", "{eid}: {templateName}", ImGuiComboFlags None) //  NoArrowButton
+    if BeginCombo("##selectEid", "{eid}: {templateName}", ImGuiComboFlags.None) 
       for idx, e in iter_range(eids), eids
         var selected = idx == selectedItem
         var selectedAddr = safe_addr(selected)
         if imgui::Selectable("{e}: {getEntityTemplateName(e)}", selectedAddr)
-          selectedItem = idx // selected eid will be changed in next frame
+          selectedItem = idx 
       EndCombo()
 
   imgui::Separator()
-  call_editor(/*prefix*/true, eids)
+  call_editor(true, eids)
 
   DasHelpMarker("Filter (\"incl,-excl\")\nt:typeName (t:EntityId, t:EidList)")
   imgui::SameLine()
@@ -560,12 +561,12 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
 
   imgui::BeginChild("sub", float2(0, 0))
   let tmp = getTemplateByName(templateName)
-  if BeginTable("split", 3, ImGuiTableFlags Resizable | ImGuiTableFlags BordersOuter | ImGuiTableFlags RowBg)
-    TableSetupColumn("name", ImGuiTableColumnFlags WidthStretch)
-    TableSetupColumn("value", ImGuiTableColumnFlags WidthStretch)
-    TableSetupColumn("menu", ImGuiTableColumnFlags WidthFixed, TEXT_BASE_WIDTH * 2f)
+  if BeginTable("split", 3, ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersOuter | ImGuiTableFlags.RowBg)
+    TableSetupColumn("name", ImGuiTableColumnFlags.WidthStretch)
+    TableSetupColumn("value", ImGuiTableColumnFlags.WidthStretch)
+    TableSetupColumn("menu", ImGuiTableColumnFlags.WidthFixed, TEXT_BASE_WIDTH * 2f)
 
-    // TODO: We can collect theese once per hot reload and store in a global variable to avoid extra work.
+    
     var basicStructAnnotations : table<string; rtti::BasicStructureAnnotation?>
     program_for_each_registered_module() <| $(mod)
       mod |> module_for_each_annotation <| $(ann)
@@ -589,16 +590,16 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
       if basicStructAnnotations |> key_exists(compTypeName) && !has_inspector(compTypeName)
         annotationFound = true
         let t = compTypes |> component_types_getTypeInfo(compRef.typeId)
-        let data = (uint(t.flags) & uint(ComponentTypeFlags COMPONENT_TYPE_BOXED)) != 0u ? *unsafe(reinterpret<uint8 ??> compRef.rawData) : unsafe(reinterpret<uint8?> compRef.rawData)
+        let data = (uint(t.flags) & uint(ComponentTypeFlags.COMPONENT_TYPE_BOXED)) != 0u ? *unsafe(reinterpret<uint8 ??> compRef.rawData) : unsafe(reinterpret<uint8?> compRef.rawData)
         collect_struct_components(name, data, compTypeName, comps, basicStructAnnotations)
 
-      comps |> emplace([[auto name, ComponentRenderInfo(
-        rawData=compRef.rawData,
-        roVal=annotationFound ? "(Binded, {length(comps) - compsSizeBefore} fields)" : "(No das bind found)", // Correct term should be "annotation" but it is mainly used internally in das and most people refer to fields as binds.
-        dasTypeName="",
-        typeName=compTypeName,
-        idx=idx,
-        componentId=compRef.componentId)]])
+      comps |> emplace((name, ComponentRenderInfo(
+        rawData = compRef.rawData,
+        roVal = annotationFound ? "(Binded, {length(comps) - compsSizeBefore} fields)" : "(No das bind found)",
+        dasTypeName = "",
+        typeName = compTypeName,
+        idx = idx,
+        componentId = compRef.componentId)))
 
     comps |> sort() <| $(left; right)
       return left.name < right.name
@@ -634,15 +635,15 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
       let name = c.name
       let lowerName = name |> to_lower()
       if (length(filters) > 0 && !match(filters, lowerName)) || (length(excludeFilters) > 0 && match(excludeFilters, lowerName))
-        // if skipItems > 0
-        //   skipItems -= 1
+        
+        
         continue
 
       let typeName = c.cri.typeName
       let lowerTypeName = typeName |> to_lower()
       if (length(typeFilters) > 0 && !match(typeFilters, lowerTypeName)) || (length(excludeTypeFilters) > 0 && match(excludeTypeFilters, lowerTypeName))
-        // if skipItems > 0
-        //   skipItems -= 1
+        
+        
         continue
 
       if skipItems > 0
@@ -663,19 +664,19 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
         TableNextColumn()
 
       var changed = false
-      let refs <- [{auto[] clone(c.cri) }]
+      let refs <- [ clone(c.cri) ]
       render_item(eids, flags, name, typeName, unsafe(reinterpret<array<ComponentRenderInfo#>#> refs), 0, safe_addr(changed)) <| $ [unused_argument(_)] (_) => true
       if changed
         entity_obj_editor_saveComponent(eid, name)
         invalidate_item(eid, unsafe(reinterpret<array<ComponentRenderInfo#>#> refs))
 
       let rowsNum = TableGetRowIndex() - idxBefore
-      inflateListNum += rowsNum > 1 ? rowsNum + 5 : 0 // + 5 works, maybe + 10 works too
+      inflateListNum += rowsNum > 1 ? rowsNum + 5 : 0 
       showItems -= rowsNum
 
     EndTable()
 
-  call_editor(/*prefix*/false, eids)
+  call_editor(false, eids)
   imgui::EndChild()
 
   PopID()
@@ -683,7 +684,7 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
 def get_annotation_name(ann : rtti::Annotation | rtti::TypeAnnotation)
   var name = ""
 
-  // same logic as get_underlying_ecs_type
+  
   peek(ann.cppName) <| $(cppName)
     if length(cppName) > 0
       var startAt = 0

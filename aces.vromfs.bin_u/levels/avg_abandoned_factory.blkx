@@ -16,7 +16,6 @@
   "mirrorShrinkZNeg": 256.0,
   "lastClip": true,
   "lastclip_horizon": true,
-  "rendinstPreloadDistance": 8500.0,
   "clipmap_tex_mips": 5,
   "addLandToSky": true,
   "harmonicsType": "green",

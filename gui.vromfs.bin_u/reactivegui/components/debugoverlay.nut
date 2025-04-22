@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let logO = log_with_prefix("[DbgOverlay] ")
 
 let WND_PARAMS = {
-  key = null //generate automatically when not set
+  key = null 
   size = flex()
   stopMouse = true
   stopHotkeys = true

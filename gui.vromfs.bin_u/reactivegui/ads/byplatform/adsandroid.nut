@@ -59,7 +59,7 @@ function initProviders() {
 
   foreach (id, _ in initedProviders)
     if (id not in providers)
-      setPriorityForProvider(id, -1) //switch of provider missing in config
+      setPriorityForProvider(id, -1) 
 
   foreach (id, p in providers)
     if (id in initedProviders)
@@ -135,7 +135,7 @@ eventbus_subscribe("android.ads.onLoad", function (params) {
   if (needAdsLoad.get() && !isRetryQueued) {
     isRetryQueued = true
     resetTimeout(RETRY_LOAD_TIMEOUT + failInARow.get() * RETRY_INC_TIMEOUT, retryLoad)
-    failInARow(failInARow.get() + 1) //we can have several fail events on single adsLoad request
+    failInARow(failInARow.get() + 1) 
   }
   if (isAllProvidersFailed(providerPriorities.get().providers, providersStatuses))
     hasAdsPreloadError.set(true)
@@ -162,7 +162,7 @@ eventbus_subscribe("android.ads.onRevenue", function (params) {
   }, false))
 })
 
-eventbus_subscribe("android.ads.onShow", function (params) { //we got this event on start ads show, and on finish
+eventbus_subscribe("android.ads.onShow", function (params) { 
   let { status, provider = "unknown" } = params
   logA($"onShow {getStatusName(status)}:", rewardInfo.value?.bqId, rewardInfo.value?.bqParams)
   if (status == ADS_STATUS_SHOWN) {

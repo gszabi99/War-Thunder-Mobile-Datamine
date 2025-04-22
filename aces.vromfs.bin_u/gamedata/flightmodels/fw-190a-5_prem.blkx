@@ -1901,6 +1901,14 @@
       0.00358869
     ]
   },
+  "vehicleSkins": {
+    "black": {
+      "replace_tex": {
+        "from": "fw_190a_5_a*",
+        "to": "fw_190a_5_white_6_a*"
+      }
+    }
+  },
   "weapon_presets": {
     "preset": {
       "name": "fw-190a-5_prem_default",

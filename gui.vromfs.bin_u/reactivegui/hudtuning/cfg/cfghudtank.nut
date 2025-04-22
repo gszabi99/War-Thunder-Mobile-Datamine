@@ -5,7 +5,7 @@ let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN,
 let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { EII_EXTINGUISHER, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET,
-  EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT, EII_TOOLKIT_WITH_MEDICAL
+  EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT
 } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let { mkCircleTankPrimaryGun, mkCircleTankSecondaryGun, mkCircleTankMachineGun, mkCircleZoomCtor,
@@ -38,9 +38,8 @@ let { mkMyPlace, mkMyPlaceUi, mkTankMyScores, mkMyScoresUi } = require("%rGui/hu
 let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
 let { missionScoreCtr, missionScoreEditView } = require("%rGui/hud/missionScore.nut")
 let { optTankMoveControlType, gearDownOnStopButtonTouch, optDoublePrimaryGuns } = require("cfgOptions.nut")
-//let { tankRrepairButtonCtor } =
-require("%rGui/hud/buttons/repairButton.nut") //only to disable warning
-//let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
+let { tankRrepairButtonCtor } = require("%rGui/hud/buttons/repairButton.nut")
+let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
 let { isUnitAlive } = require("%rGui/hudState.nut")
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
@@ -53,7 +52,7 @@ let actionBarTransform = @(idx, isBullet = false)
 
 return {
   primaryGun = withActionButtonScaleCtor(AB_PRIMARY_WEAPON,
-    @(a, scale) mkCircleTankPrimaryGun(a, scale, "btn_weapon_primary_alt", mkCountTextRight),
+    @(a, scale) mkCircleTankPrimaryGun(AB_PRIMARY_WEAPON)(a, scale, "btn_weapon_primary_alt", mkCountTextRight),
     {
       defTransform = mkLBPos([0, hdpx(-420)])
       editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
@@ -61,7 +60,7 @@ return {
       options = [ optDoublePrimaryGuns ]
     })
 
-  primaryExtraGun = withActionButtonScaleCtor(AB_PRIMARY_WEAPON, mkCircleTankPrimaryGun,
+  primaryExtraGun = withActionButtonScaleCtor(AB_PRIMARY_WEAPON, mkCircleTankPrimaryGun(AB_PRIMARY_WEAPON),
     {
       defTransform = mkRBPos([hdpx(-250), hdpx(-303)])
       editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
@@ -71,14 +70,14 @@ return {
     })
 
   secondaryGun = withActionButtonScaleCtor(AB_SECONDARY_WEAPON,
-    mkCircleTankSecondaryGun("ID_FIRE_GM_SECONDARY_GUN", "ui/gameuiskin#hud_main_weapon_fire.svg"),
+    mkCircleTankSecondaryGun("ID_FIRE_GM_SECONDARY_GUN", AB_SECONDARY_WEAPON, "ui/gameuiskin#hud_main_weapon_fire.svg"),
     {
       defTransform = mkRBPos([hdpx(-81), hdpx(-425)])
       editView = mkCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
     })
 
   specialGun = withActionButtonScaleCtor(AB_SPECIAL_WEAPON,
-    mkCircleTankSecondaryGun("ID_FIRE_GM_SPECIAL_GUN", "ui/gameuiskin#icon_rocket_in_progress.svg"),
+    mkCircleTankSecondaryGun("ID_FIRE_GM_SPECIAL_GUN", AB_SPECIAL_WEAPON, "ui/gameuiskin#icon_rocket_in_progress.svg"),
     {
       defTransform = mkRBPos([hdpx(-28), hdpx(-265)])
       editView = mkCircleBtnEditView("ui/gameuiskin#icon_rocket_in_progress.svg")
@@ -86,7 +85,7 @@ return {
     })
 
   machineGun = {
-    ctor = @(scale) mkCircleTankMachineGun(Computed(@() actionBarItems.get()?[AB_MACHINE_GUN]), scale)
+    ctor = @(scale) mkCircleTankMachineGun(Computed(@() actionBarItems.get()?[AB_MACHINE_GUN]), AB_MACHINE_GUN, scale)
     priority = Z_ORDER.BUTTON
     defTransform = mkRBPos([hdpx(-155), hdpx(-155)])
     editView = mkCircleBtnEditView("ui/gameuiskin#hud_aircraft_machine_gun.svg")
@@ -129,17 +128,13 @@ return {
       isVisibleInBattle = isUnitAlive
     })
 
-/*  abToolkit = {
+  abToolkit = {
     ctor = tankRrepairButtonCtor
     defTransform = actionBarTransform(1)
     editView = mkActionItemEditView("ui/gameuiskin#hud_consumable_repair.svg")
     priority = Z_ORDER.STICK
-  }*/
-  abToolkit = withActionBarButtonCtor(EII_TOOLKIT_WITH_MEDICAL, TANK,
-    {
-      defTransform = actionBarTransform(1)
-      isVisibleInBattle = isUnitAlive
-    })
+    isVisibleInBattle = isUnitAlive
+  }
   abSmokeGrenade = withAnyActionBarButtonCtor([ EII_SMOKE_GRENADE, EII_SMOKE_SCREEN ], TANK,
     { defTransform = actionBarTransform(2) })
   abArtilleryTarget = withActionBarButtonCtor(EII_ARTILLERY_TARGET, TANK,
@@ -149,7 +144,7 @@ return {
   abSpecialUnit = withActionBarButtonCtor(EII_SPECIAL_UNIT, TANK,
     { defTransform = actionBarTransform(5) })
 
-  firework = withActionButtonScaleCtor(AB_FIREWORK, mkCircleFireworkBtn,
+  firework = withActionButtonScaleCtor(AB_FIREWORK, mkCircleFireworkBtn(AB_FIREWORK),
     {
       defTransform = mkRBPos([hdpx(-240), hdpx(-490)])
       editView = mkCircleBtnEditView("ui/gameuiskin#hud_ammo_fireworks.svg")

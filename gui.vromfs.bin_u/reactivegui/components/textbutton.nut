@@ -261,21 +261,21 @@ return {
   textButtonUnseenMargin
 
   textButtonPrimary = @(text, onClick, styleOvr = null)
-    textButton(text, onClick, mergeStyles(buttonStyles.PRIMARY, styleOvr)) // Blue
+    textButton(text, onClick, mergeStyles(buttonStyles.PRIMARY, styleOvr)) 
   textButtonPurchase = @(text, onClick, styleOvr = null)
-    textButton(text, onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) // Golden
+    textButton(text, onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) 
   textButtonBattle = @(text, onClick, styleOvr = null)
-    textButton(text, onClick, mergeStyles(buttonStyles.BATTLE, styleOvr)) // Red
+    textButton(text, onClick, mergeStyles(buttonStyles.BATTLE, styleOvr)) 
   textButtonBright = @(text, onClick, styleOvr = null)
-    textButton(text, onClick, mergeStyles(buttonStyles.BRIGHT, styleOvr)) // White
+    textButton(text, onClick, mergeStyles(buttonStyles.BRIGHT, styleOvr)) 
   textButtonCommon = @(text, onClick, styleOvr = null)
-    textButton(text, onClick, mergeStyles(buttonStyles.COMMON, styleOvr)) // Gray
+    textButton(text, onClick, mergeStyles(buttonStyles.COMMON, styleOvr)) 
   textButtonSecondary = @(text, onClick, styleOvr = null)
-    textButton(text, onClick, mergeStyles(buttonStyles.SECONDARY, styleOvr)) // Green
+    textButton(text, onClick, mergeStyles(buttonStyles.SECONDARY, styleOvr)) 
   textButtonPricePurchase = @(text, priceComp, onClick, styleOvr = null)
-    mkCustomButton(mkPriceTextsComp(text, priceComp), onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) // Golden + Price
+    mkCustomButton(mkPriceTextsComp(text, priceComp), onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) 
   textButtonPricePurchaseLow = @(text, priceComp, onClick, styleOvr = null)
-    mkCustomButton(mkPriceTextsComp(text, priceComp, FLOW_HORIZONTAL), onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) // Golden + Price + narrow
+    mkCustomButton(mkPriceTextsComp(text, priceComp, FLOW_HORIZONTAL), onClick, mergeStyles(buttonStyles.PURCHASE, styleOvr)) 
 
   iconButtonPrimary = @(iconPath, onClick, styleOvr = null)
     mkCustomButton(mkIcon(iconPath, styleOvr?.iconSize), onClick, mergeStyles(buttonStyles.PRIMARY, styleOvr))

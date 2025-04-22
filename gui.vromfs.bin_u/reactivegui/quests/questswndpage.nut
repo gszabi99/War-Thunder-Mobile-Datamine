@@ -187,7 +187,7 @@ function mkQuestBtn(item, currencyReward, rewardsPreview, sProfile) {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       text = utf8ToUpper(loc("ui/received"))
-      behavior = Behaviors.Button //for gamepad navigation only
+      behavior = Behaviors.Button 
     }.__update(fontSmallAccentedShaded)
   else if (progressCorrectionStep > 0)
     children = mkAdsBtn(item)
@@ -215,7 +215,7 @@ function mkQuestBtn(item, currencyReward, rewardsPreview, sProfile) {
       btnStyle)
   }
   return {
-    key = $"quest_reward_receive_btn_{name}" //need for tutorial
+    key = $"quest_reward_receive_btn_{name}" 
     size
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -368,7 +368,7 @@ function mkSectionTabs(sections, curSectionId, onSectionChange) {
               text = sectionsCfg.get()?[id]
             }.__update(sectionsFont.value)
           ]
-       }).__update({ key = $"sectionId_{id}" }) //need for tutorial
+       }).__update({ key = $"sectionId_{id}" }) 
     })
   }
 }

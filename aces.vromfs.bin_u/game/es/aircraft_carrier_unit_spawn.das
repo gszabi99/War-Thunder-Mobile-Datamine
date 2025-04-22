@@ -5,7 +5,7 @@ require %appGame.wtm_events
 
 [es(tag=server)]
 def aircarft_carrier_unit_spawn_es(evt : CmdRequestSwitchOnSupportPlane; var unit__ref : UnitRef)
-  *unit__ref.unit |> switchOnSupportPlane(evt.turnOn, evt.switchOn, evt.idx, -1 /* catapult_idx */, false)
+  *unit__ref.unit |> switchOnSupportPlane(evt.turnOn, evt.switchOn, evt.idx, -1 , false)
 
 [es(tag=server)]
 def aircarft_carrier_unit_change_es(evt : CmdRequestSupportPlaneChange; var unit__ref : UnitRef)

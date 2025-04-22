@@ -47,6 +47,7 @@ let { slotBarTreeHeight } = require("%rGui/slotBar/slotBarConsts.nut")
 let { selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
 let { researchBlock, mkBlueprintBarText } = require("%rGui/unitsTree/components/researchBars.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
+let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 
 let infoPannelPadding = hdpx(30)
 let infoPanelFooterGap = hdpx(20)
@@ -98,8 +99,9 @@ function mkNeedArrows(columnsCfg) {
     if (!isUnitsTreeOpen.get() || (unseenUnits.get().len() == 0 && unseenSkins.get().len() == 0))
       return res
     foreach(unit in availableUnitsList.get()) {
-      if ((unit.name in unseenUnits.get() || unit.name in unseenSkins.get()) && unit.rank in columnsCfg)
-        res[unit.name] <- columnsCfg[unit.rank]
+      if ((unit.name in unseenUnitLvlRewardsList.get() || unit.name in unseenUnits.get() || unit.name in unseenSkins.get())
+        && unit.rank in columnsCfg.get())
+          res[unit.name] <- columnsCfg.get()[unit.rank]
     }
     return res
   })
@@ -109,8 +111,8 @@ function mkNeedArrows(columnsCfg) {
       return null != unseenUnitsIndex.get().findvalue(@(index) offsetIdx > index)
     })
     needShowArrowR = Computed(function() {
-      let offsetIdx = (scrollPos.get() + sw(100) - 2 * saBorders[0] - flagsWidth - flagTreeOffset).tofloat() / blockSize[0]
-        - 1
+      let offsetIdx = (scrollPos.get() + sw(100) - 2 * saBorders[0] - flagsWidth - flagTreeOffset).tofloat()
+        / blockSize[0] - 1
       return null != unseenUnitsIndex.get().findvalue(@(index) offsetIdx < index)
     })
   }

@@ -43,7 +43,7 @@ function setStage(stage) {
 let get_total_download_mb = @() state.total.tofloat() / (1 << 20)
 let get_progress_percent = @() min(100, 100.0 * state.current / state.total)
 let get_eta = @() state.speed <= 0 ? -1
-  : max(0, (state.total - state.current).tofloat() / state.speed) * 30 //show bigger time, to test minutes also, not only seconds
+  : max(0, (state.total - state.current).tofloat() / state.speed) * 30 
 let get_download_speed = @() state.speed
 
 let updateByStage = {

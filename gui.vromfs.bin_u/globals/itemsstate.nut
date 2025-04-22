@@ -6,17 +6,18 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let SPARE = "spare"
 
 let itemsOrderFull = [
-  //ships
+  
   "ship_tool_kit"
   "ship_smoke_screen_system_mod"
   "ircm_kit"
 
-  //tanks
-  "tank_tool_kit_expendable"
+  
   "tank_extinguisher"
+  "tank_medical_kit"
+  "tank_tool_kit_expendable"
   SPARE
 
-  //event
+  
   "firework_kit"
 ]
 

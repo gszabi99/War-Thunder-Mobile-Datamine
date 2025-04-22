@@ -14,8 +14,8 @@ let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 
 let maxResultTextWidth = hdpx(330)
 let needShow = Watched(shouldShowHc.value)
-//delay need to correct play animation on show by transition
-//transition need to correct count opacity when hide before appear is finished
+
+
 shouldShowHc.subscribe(@(v) v ? defer(@() needShow(shouldShowHc.value)) : needShow(v))
 
 let needShowImage = Computed(@() hcUnitType.value != "tank" || isHcUnitHit.value)
@@ -129,7 +129,7 @@ function hitCameraBlock(scale) {
       ]
     }
 
-    //no need to subscribe on hcFadeTime, to not made this logic more complex - appear and fade animations always have same time
+    
     transitions = [{ prop = AnimProp.opacity, duration = hcFadeTime.value }]
   }
 }

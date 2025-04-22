@@ -174,7 +174,7 @@ let availRespBases = Computed(function() {
   let { name = null } = selSlot.value
   if (name == null)
     return {}
-  setSelectedUnitInfo(name, 0) //need to get respawnBase
+  setSelectedUnitInfo(name, 0) 
   let visible = respawnBases.value
   let ret = getAvailableRespawnBases(getUnitTags(name).keys())
     .reduce(@(res, id) res.__update({ [id] = visible.findvalue(@(b) b.id == id) }), {})

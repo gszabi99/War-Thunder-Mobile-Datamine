@@ -24,8 +24,8 @@ let buySlotLevelWnd = require("buySlotLevelWnd.nut")
 function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, maxLevel) {
   if (!applyAttrRowChange(catId, attr.id, tryValue, selLevel, minLevel, maxLevel)) {
     let currTime = get_time_msec()
-    if (lastClickTime + boost_cooldown < currTime) { //cooldown check
-      let nextIncCost = attr.levelCost?[selLevel.get()] ?? 0 //for max level reach condition
+    if (lastClickTime + boost_cooldown < currTime) { 
+      let nextIncCost = attr.levelCost?[selLevel.get()] ?? 0 
       if (nextIncCost > 0 && tryValue > selLevel.get())
         buySlotLevelWnd(selectedSlotIdx.get())
     }
@@ -35,10 +35,10 @@ function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, ma
 function mkAttrRow(attr, idx) {
   let shopCfg = getUnitTagsShop(slotUnitName.get())
   let catId = curCategoryId.get()
-  let minLevel = Computed(@() slotAttributes.get()?[catId][attr.id] ?? 0) // Current applied level
-  let selLevel = Computed(@() max(selAttributes.get()?[catId][attr.id] ?? minLevel.get(), minLevel.get())) // User selected new level
-  let maxLevel = Computed(@() getMaxAttrLevelData(attr, selLevel.get(), leftSlotSp.get()).maxLevel) // Can buy max level
-  let totalLevels = attr.levelCost.len() // Total level progress steps
+  let minLevel = Computed(@() slotAttributes.get()?[catId][attr.id] ?? 0) 
+  let selLevel = Computed(@() max(selAttributes.get()?[catId][attr.id] ?? minLevel.get(), minLevel.get())) 
+  let maxLevel = Computed(@() getMaxAttrLevelData(attr, selLevel.get(), leftSlotSp.get()).maxLevel) 
+  let totalLevels = attr.levelCost.len() 
   let nextIncCost = Computed(@() attr.levelCost?[selLevel.get()] ?? 0)
   let canDec = Computed(@() selLevel.get() > minLevel.get())
   let canInc = Computed(@() selLevel.get() < maxLevel.get())
@@ -76,7 +76,7 @@ function mkAttrRow(attr, idx) {
         ]
       }
       {
-        key = $"slotAttrProgressBtn_{idx}" //need for tutorial
+        key = $"slotAttrProgressBtn_{idx}" 
         children = mkProgressBtn(mkProgressBtnContentInc(canInc), mkBtnOnClick(1))
       }
       hasSp.get() ? mkNextIncCost(nextIncCost, canInc, totalSlotSp) : null
@@ -85,7 +85,7 @@ function mkAttrRow(attr, idx) {
 }
 
 let slotAttrPage = @() {
-  key = "slotAttributesList" //need for tutorial
+  key = "slotAttributesList" 
   watch = curCategory
   size = [flex(), SIZE_TO_CONTENT]
   onAttach = @() setInterval(incBtnAnimRepeat, startIncBtnGlare)

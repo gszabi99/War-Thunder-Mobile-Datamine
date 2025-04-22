@@ -92,8 +92,8 @@ function getAttrRangesCfgTank() {
         ? { begin = range.x, end = range.y }
         : { begin = 1.0, end = 1.0 }
     })
-    // Should get accuracy as mulMaxDeltaAngle from modifications.blk,
-    // but in-game modifications.blk is currently truncated.
+    
+    
     .__update({ accuracy = { begin = 0.75, end = 1.0 } })
 }
 
@@ -301,7 +301,7 @@ let tankAttrs = {
   battleRepairItems = {
     function getValDataByServConfigs(attr, step, servConfigs) {
       let { allItems = {}, itemsByAttributes = [] } = servConfigs
-      let cfg = itemsByAttributes.filter(@(c) c.attribute == attr.id) //we ignore category but it not important atm
+      let cfg = itemsByAttributes.filter(@(c) c.attribute == attr.id) 
       if (cfg.len() == 0)
         return []
       let res = []
@@ -363,7 +363,7 @@ let getAttrMul = @(cfg, attrId, step, stepsTotal) stepsTotal != 0
 
 function getAttrValData(unitType, attr, step, shopCfg, servConfigs, mods) {
   let attrId = attr.id
-  let stepsTotal = attr.levelCost.len() // Total level progress steps
+  let stepsTotal = attr.levelCost.len() 
   let cfg = attrValCfg?[unitType][attrId] ?? attrValCfgDefault
   local submarineMul = 1
   if ("periscopeSpeed" in shopCfg && attrId == "attrib_ship_max_speed") {

@@ -22,16 +22,16 @@ let defCfg = {
 let cfgByStatus = [
   {}
   {
-    bgColor = 0xBF08A7BF  //0bdfff 0.75 opacity
+    bgColor = 0xBF08A7BF  
   }
   {
-    bgColor = 0xBF08A7BF  //0xFF0BDFFF 0.75 opacity
-    bgAnim = mkBgAnim(3.0, 0xFF0BDFFF, 0xA50790A5) //to 0.65
+    bgColor = 0xBF08A7BF  
+    bgAnim = mkBgAnim(3.0, 0xFF0BDFFF, 0xA50790A5) 
     iconAnim = mkIconAnim(3.0)
   }
   {
-    bgColor = 0xBFBF8908  //0xFFFFB70B 0.75 opacity
-    bgAnim = mkBgAnim(1.0, 0xFFFFB70B, 0xA5A57607) //to 0.65
+    bgColor = 0xBFBF8908  
+    bgAnim = mkBgAnim(1.0, 0xFFFFB70B, 0xA5A57607) 
     iconAnim = mkIconAnim(1.0)
   }
 ].map(@(v) defCfg.__merge(v))
@@ -45,7 +45,7 @@ function mkAvailAttrMark(status, size = hdpx(60), sf = 0) {
   let icoSize = (0.4 * size).tointeger()
   let bgSize = 0.71 * size
   return {
-    size  = [size, size] //to be correct size with requested
+    size  = [size, size] 
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
 

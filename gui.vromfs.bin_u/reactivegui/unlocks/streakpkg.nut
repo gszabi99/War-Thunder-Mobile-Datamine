@@ -87,7 +87,7 @@ let prepareStreaksArray = @(streaks) streaks.reduce(function(res, val, id) {
       local stage = stages.reduce(@(result, _value, stageStr) max(result, stageStr.tointeger()), 0)
       res.append(val.__merge({ id, stage }))
     }
-    else if (!hasStages && isMulti) //compatibiliy with 1.3.0.X
+    else if (!hasStages && isMulti) 
       res.append({ id = getMultiStageUnlockId(id, completed + 1), stage = completed + 1, wp })
     else
       res.append(val.__merge({ id }))

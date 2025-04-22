@@ -1,27 +1,27 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isEqual } = require("%sqstd/underscore.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
+let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { set_research_unit, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { buttonsHGap, textButtonBattle } = require("%rGui/components/textButton.nut")
 let { selectedLineHor } = require("%rGui/components/selectedLine.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { unitsResearchStatus, currentResearch, selectedCountry, nodes, countryPriority
+let { unitsResearchStatus, currentResearch, selectedCountry, nodes, countryPriority, blockedCountries
 } = require("unitsTreeNodesState.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitInfo, mkFlagImage
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { set_research_unit, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 
 let WND_UID = "chooseResearch"
@@ -56,7 +56,7 @@ let mkResearchableCountries = @(nodeList) Computed(function(prev) {
   let resTbl = {}
   let status = unitsResearchStatus.get()
   foreach (node in nodeList.get())
-    if (status?[node.name].canResearch ?? false)
+    if ((status?[node.name].canResearch ?? false) && node.country not in blockedCountries.get())
       resTbl[node.country] <- true
   let res = resTbl.keys()
     .sort(@(a, b) (countryPriority?[b] ?? -1) <=> (countryPriority?[a] ?? -1)
@@ -132,7 +132,7 @@ let function unitsBlock(startUnit) {
         foreach(c in childs)
           if (c not in added) {
             added[c] <- true
-            list.append(c) // warning disable: -modified-container
+            list.append(c) 
           }
     }
 

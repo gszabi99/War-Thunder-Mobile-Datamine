@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-// configure scene when hosted in game
+
 let { DBGLEVEL } = require("dagor.system")
 let { is_pc } = require("%sqstd/platform.nut")
 

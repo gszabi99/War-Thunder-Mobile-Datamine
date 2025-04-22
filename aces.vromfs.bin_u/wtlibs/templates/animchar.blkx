@@ -71,9 +71,5 @@
     "_use": "animchar",
     "animchar__turnDir": true,
     "animchar": {}
-  },
-  "skeleton_draw_debug": {
-    "drawGizmos": false,
-    "skeletonDrawDebug:tag": {}
   }
 }

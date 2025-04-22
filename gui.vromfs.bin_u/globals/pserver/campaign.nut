@@ -12,9 +12,9 @@ let campaignStatsRemap = {
   ships_new = "ships"
 }
 
-let selectedCampaign = sharedWatched("selectedCampaign", @() null) //selectedByPlayer
+let selectedCampaign = sharedWatched("selectedCampaign", @() null) 
 let campaignsLevelInfo = Computed(@()(servProfile.get()?.levelInfo ?? {}))
-let savedCampaign = Computed(@() campaignsLevelInfo.get().findindex(@(i) i?.isCurrent ?? false)) //saved on pServer
+let savedCampaign = Computed(@() campaignsLevelInfo.get().findindex(@(i) i?.isCurrent ?? false)) 
 let isAnyCampaignSelected = Computed(@() (selectedCampaign.value ?? savedCampaign.value) != null)
 
 let campaignsList = Computed(@() serverConfigs.value?.circuit.campaigns.available ?? [ defaultCampaign ])

@@ -9,7 +9,7 @@ let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 
 let MAX_UPDATE_DELAY = 60.0
-let nextTime = Watched({ time = 0 }) //to update subscription even when time not change
+let nextTime = Watched({ time = 0 }) 
 
 function updateTime() {
   if (isInBattle.get()) {

@@ -2,7 +2,7 @@ let { loc } = require("dagor.localize")
 
 let defCfg = {
   icon = "ui/gameuiskin/premium_active_big.avif"
-  //locId - optional
+  
 }
 
 let allPresentations = {

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { CatmullRomSplineBuilder2D = null } = require("dagor.math")
+let { CatmullRomSplineBuilder2D } = require("dagor.math")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
@@ -43,7 +43,7 @@ let lineToUnlockedColor = 0xFF9E0606
 let lineToLockedColor = 0xFF411D04
 
 let defOutlineColor = 0x80000000
-let lineOutLineColors = { //baseLineColor = outline color
+let lineOutLineColors = { 
   [editorSelLineColor] = 0xFF000000,
   [lineToUnlockedColor] = 0x40181810,
   [lineToLockedColor] = 0x40181810,
@@ -292,7 +292,7 @@ function mkLineColor(id, unlocksCompletion) {
 function mkLineCmds(line, points, size) {
   let all = mkLineSplinePoints(line, points)
   let res = []
-  if (all.len() < 2 || CatmullRomSplineBuilder2D == null)
+  if (all.len() < 2)
     return res
 
   local spline = CatmullRomSplineBuilder2D()

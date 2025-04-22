@@ -195,7 +195,7 @@ let questBarProgressValue = @(name, required, visProgress, nextChange) @() {
   text = $"{visProgress.get()}/{required}"
   children = @() {
     watch = nextChange
-    size = [0, 0] //to not affect parent size
+    size = [0, 0] 
     hplace = ALIGN_RIGHT
     vplace = ALIGN_BOTTOM
     children = nextChange.get() == null ? null
@@ -296,7 +296,7 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
           }
           @() {
             watch = [rewardPreview, isRewardInProgress, isUnlocked, canClaimReward]
-            key = $"quest_bar_stage_{idx}" //need for tutorial
+            key = $"quest_bar_stage_{idx}" 
             children = (rewardPreview.get()?.len() ?? 0) == 0 ? null
               : multiRewardProgressBarCtor(rewardPreview.get(), isUnlocked.get(), onRewardClick,
                   canClaimReward.get(), isRewardInProgress.get())

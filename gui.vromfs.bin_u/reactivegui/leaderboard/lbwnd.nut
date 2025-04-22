@@ -234,7 +234,7 @@ let myRequirementsRow = @(emptyColor) function() {
   if (count <= 0)
     return res
   return res.__update({
-    color = 0x805B1D1D //0x60441616
+    color = 0x805B1D1D 
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     children = [

@@ -154,6 +154,12 @@
       0.0,
       0.0
     ],
+    "foliage_translucent_color_mul": [
+      1.0,
+      1.0,
+      1.0,
+      0.0
+    ],
     "postfx": {
       "postfx_vignette_width": 1.0,
       "postfx_vignette_height": 0.7,

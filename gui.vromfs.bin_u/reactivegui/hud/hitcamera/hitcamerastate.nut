@@ -60,7 +60,7 @@ hcUnitId.subscribe(@(_) hcDamageStatus({}))
 let mkDefaultUnitInfo = @(unitVersion) {
   unitVersion
   parts = {}
-  isKilled = false //by dmg parts event
+  isKilled = false 
 }
 let emptyUnitInfo = mkDefaultUnitInfo(-1)
 
@@ -156,7 +156,7 @@ function getImportantEventInfo(event) {
   local priority = -1
   local result = null
   let { unitId, unitVersion, partEvent } = event
-  let parts = type(partEvent) == "array" ? partEvent : [partEvent] //base event data is datablock, so type of this field is not fixed
+  let parts = type(partEvent) == "array" ? partEvent : [partEvent] 
   foreach (part in parts) {
     let { partName = null } = part
     if (partName == null)

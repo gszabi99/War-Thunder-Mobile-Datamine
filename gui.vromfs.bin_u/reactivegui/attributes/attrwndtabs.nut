@@ -34,7 +34,7 @@ function tabData(tab) {
             }
         {
           hplace = ALIGN_RIGHT
-          margin = [contentMargin - hdpx(10), contentMargin] //text block is bigger than visual
+          margin = [contentMargin - hdpx(10), contentMargin] 
           rendObj = ROBJ_TEXT
           color = textColor
           text = loc(locId)

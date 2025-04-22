@@ -16,7 +16,7 @@ let HINT_TYPE = "killStreak"
 let iconSize = hdpxi(50)
 let unknownSize = hdpxi(30)
 local dbgTimeLeft = 0
-//todo: export from native code to darg
+
 const MP_TEAM_NEUTRAL = 0
 
 let getPlayerColor = @(player) player.isLocal ? localPlayerColor
@@ -67,7 +67,7 @@ let participantsRow = @(participants, slotsCount) function() {
   let list = { [true] = [], [false] = [] }
   foreach (p in participants)
     if (p.participant != null)
-      list[p.participant.team == firstTeam].append(p) //warning disable: -bool-as-index //error must be only for arrays, not for table
+      list[p.participant.team == firstTeam].append(p) 
   foreach (key, l in list)
     list[key] = l.map(mkParticipantIcon).resize(slotsCount, unknownIcon)
   return {
@@ -122,7 +122,7 @@ registerHintCreator(HINT_TYPE, function(data, _) {
 eventbus_subscribe("hint:event_start_time:show", function(data) {
   let { playerId = null, participant = [] }  = data
   let player = playerId != null ? get_mplayer_by_id(playerId) : null
-  let participants = (type(participant) == "array" ? participant : [participant]) //event data convert from blk, so when single participants it will be not array
+  let participants = (type(participant) == "array" ? participant : [participant]) 
     .map(@(v) v.__merge({ participant = get_mplayer_by_id(v.participantId) }))
   if (dbgTimeLeft > 0)
     participants.each(@(v, i) v.participant = v.participant ??

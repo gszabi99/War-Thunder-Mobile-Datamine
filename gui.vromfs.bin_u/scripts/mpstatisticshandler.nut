@@ -13,8 +13,8 @@ isMpStatisticsActive.subscribe(function(val) {
 })
 
 let cbOpenMpStatistics = @(_) isMpStatisticsActive.set(true)
-eventbus_subscribe("gui_start_mpstatscreen_from_game", cbOpenMpStatistics) // called from client
-eventbus_subscribe("gui_start_flight_menu_stat", cbOpenMpStatistics) // called from client
+eventbus_subscribe("gui_start_mpstatscreen_from_game", cbOpenMpStatistics) 
+eventbus_subscribe("gui_start_flight_menu_stat", cbOpenMpStatistics) 
 
 eventbus_subscribe("toggleMpstatscreen", @(_) isMpStatisticsActive.set(!isMpStatisticsActive.get()))
 

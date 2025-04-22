@@ -42,7 +42,7 @@ let debugAnimState = mkWatched(persist, "debugAnimState", null)
 
 local lastPeriodStartStage = null
 local lastShowedReceivedStage = null
-local lastPeriodStages = -1 //need for correct animation switch on change period especiall when you have several rewards from WT
+local lastPeriodStages = -1 
 
 isAuthorized.subscribe(@(_) {
   lastPeriodStartStage = null
@@ -206,7 +206,7 @@ let activePlateButtonBlock = function() {
   let targetButtonComponent = @() {
     watch = [loginAwardUnlock, hasLoginAwardByAds, isShowUnseenDelayed]
     size = flex()
-    children = isShowUnseenDelayed.value ? null //delay unseen for animation, so no need button at that time also.
+    children = isShowUnseenDelayed.value ? null 
       : loginAwardUnlock.value?.hasReward ? receiveBtn
       : !hasLoginAwardByAds.value ? null
       : watchAdsBtn
@@ -413,14 +413,14 @@ function itemsBlock() {
     logerr($"Everyday login unlock stages count should be multiple of 14, but current stages count is {stages.len()}")
 
   let stageOffset = loginAwardUnlock.value.stage - stage + stageOffsetByAds
-  local currentFull = max(loginAwardUnlock.value.current, loginAwardUnlock.value?.stage ?? 0) //for this unlock progress is equal real allowed stage
+  local currentFull = max(loginAwardUnlock.value.current, loginAwardUnlock.value?.stage ?? 0) 
   let startStage = ((lastRewardedStage - stageOffset + stageOffsetByAds) / FULL_DAYS).tointeger() * FULL_DAYS
   let startStageFull = startStage + stageOffset
   let lastRewardedStageInPeriod = lastRewardedStage - startStageFull
 
   let curPeriodStages = stages.slice(startStage, startStage + FULL_DAYS)
 
-  if (lastRewardedStageInPeriod > 2 || lastPeriodStartStage == null) { //no more need to store previous stages
+  if (lastRewardedStageInPeriod > 2 || lastPeriodStartStage == null) { 
     lastPeriodStartStage = startStageFull
     lastPeriodStages = curPeriodStages
   }

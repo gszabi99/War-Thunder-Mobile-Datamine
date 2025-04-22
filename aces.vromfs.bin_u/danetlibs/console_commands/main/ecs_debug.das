@@ -17,7 +17,7 @@ def check_ecs_has_tag(tag_name : string)
   if ecs_has_tag("render")
     console_print(msg)
   else
-    logerr(msg) // to see message from servers
+    logerr(msg) 
 
 
 def create(eid : uint; template_name : string; count = 1)
@@ -55,9 +55,9 @@ def create_entity(args : array<string>;
   let cmd = "ecs.create_entity"
   if collect
     let inputs <- args[0] |> split(" ")
-    add_hints([[auto[] [[CommandArgDesc name="template_name", hintType=CommandArgHintType TemplateName]];
-                       [[CommandArgDesc name="eid", hintType=CommandArgHintType EntityId, defaultValue="0"]] ]],
-              cmd, inputs, /*hints_count*/ 20, /*threshold_cam_distance_sq*/ square(50.0), hints)
+    add_hints(fixed_array(CommandArgDesc(name = "template_name", hintType = CommandArgHintType.TemplateName),
+                       CommandArgDesc(name = "eid", hintType = CommandArgHintType.EntityId, defaultValue = "0")),
+              cmd, inputs,  20,  square(50.0), hints)
   elif args[0] == cmd
     let argc = args |> length()
     let templateName = argc >= 2 ? args[1] : "#invalid_template_name"
@@ -75,10 +75,10 @@ def create_entities(args : array<string>;
   let cmd = "ecs.create_entities"
   if collect
     let inputs <- args[0] |> split(" ")
-    add_hints([[auto[] [[CommandArgDesc name="template_name", hintType=CommandArgHintType TemplateName]];
-                       [[CommandArgDesc name="count", hintType=CommandArgHintType Default]];
-                       [[CommandArgDesc name="eid", hintType=CommandArgHintType EntityId, defaultValue="0"]] ]],
-              cmd, inputs, /*hints_count*/ 20, /*threshold_cam_distance_sq*/ square(50.0), hints)
+    add_hints(fixed_array(CommandArgDesc(name = "template_name", hintType = CommandArgHintType.TemplateName),
+                       CommandArgDesc(name = "count", hintType = CommandArgHintType.Default),
+                       CommandArgDesc(name = "eid", hintType = CommandArgHintType.EntityId, defaultValue = "0")),
+              cmd, inputs,  20,  square(50.0), hints)
   elif args[0] == cmd
     let argc = args |> length()
     let templateName = argc >= 2 ? args[1] : "#invalid_template_name"
@@ -105,9 +105,9 @@ def destroy_entity_processor(args : array<string>;
   let cmd = "ecs.destroy_entity"
   if collect
     let inputs <- args[0] |> split(" ")
-    add_hints([[auto[] [[CommandArgDesc name="eid", hintType=CommandArgHintType EntityId]];
-                       [[CommandArgDesc name="last_eid", hintType=CommandArgHintType EntityId, defaultValue="0"]] ]],
-              cmd, inputs, /*hints_count*/ 20, /*threshold_cam_distance_sq*/ square(50.0), hints)
+    add_hints(fixed_array(CommandArgDesc(name = "eid", hintType = CommandArgHintType.EntityId),
+                       CommandArgDesc(name = "last_eid", hintType = CommandArgHintType.EntityId, defaultValue = "0")),
+              cmd, inputs,  20,  square(50.0), hints)
     return false
   elif args[0] == cmd
     let argc = args |> length()
@@ -119,8 +119,8 @@ def destroy_entity_processor(args : array<string>;
       for i in urange(eid, lastEid)
         console_destroy_entity(EntityId(i))
 
-    // Replace history command with initial input if the first arg is a template name
-    // (It is more useful than a command with deleted eid in this case)
+    
+    
     let editTextBeforeModify = console_get_edit_text_before_modify()
     if editTextBeforeModify != ""
       let editTextBeforeModifyArgs <- editTextBeforeModify |> split(" ")
@@ -140,9 +140,9 @@ def sub_template_hints(cmd : string;
                        input : string;
                        var hints : ConsoleProcessorHints)
   let inputs <- input |> split(" ")
-  add_hints([[auto[] [[CommandArgDesc name="eid", hintType=CommandArgHintType EntityId]];
-                     [[CommandArgDesc name="template_name", hintType=CommandArgHintType TemplateName]] ]],
-            cmd, inputs, /*hints_count*/ 20, /*threshold_cam_distance_sq*/ square(50.0), hints)
+  add_hints(fixed_array(CommandArgDesc(name = "eid", hintType = CommandArgHintType.EntityId),
+                     CommandArgDesc(name = "template_name", hintType = CommandArgHintType.TemplateName)),
+            cmd, inputs,  20,  square(50.0), hints)
 
 
 [console_processor]
@@ -185,9 +185,9 @@ def sub_template_all_hints(cmd : string;
                            input : string;
                            var hints : ConsoleProcessorHints)
   let inputs <- input |> split(" ")
-  add_hints([[auto[] [[CommandArgDesc name="entities_template_name", hintType=CommandArgHintType TemplateName]];
-                     [[CommandArgDesc name="template_name", hintType=CommandArgHintType TemplateName]] ]],
-            cmd, inputs, /*hints_count*/ 20, /*threshold_cam_distance_sq*/ square(50.0), hints)
+  add_hints(fixed_array(CommandArgDesc(name = "entities_template_name", hintType = CommandArgHintType.TemplateName),
+                     CommandArgDesc(name = "template_name", hintType = CommandArgHintType.TemplateName)),
+            cmd, inputs,  20,  square(50.0), hints)
 
 
 [console_processor]
@@ -361,10 +361,10 @@ def does_system_process_template_cproc(args : array<string>;
   let cmd = "ecs.does_system_process_template"
   if collect
     let inputs <- args[0] |> split(" ")
-    add_hints([[auto[] [[CommandArgDesc name="system_name", hintType=CommandArgHintType SystemName]];
-                       [[CommandArgDesc name="template_name", hintType=CommandArgHintType TemplateName]] ]],
-              cmd, inputs, /*hints_count*/ 20, /*threshold_cam_distance_sq*/ square(0.0), hints)
-  //else actuall processing of this command happens in c++
+    add_hints(fixed_array(CommandArgDesc(name = "system_name", hintType = CommandArgHintType.SystemName),
+                       CommandArgDesc(name = "template_name", hintType = CommandArgHintType.TemplateName)),
+              cmd, inputs,  20,  square(0.0), hints)
+  
 
   return false
 
@@ -375,10 +375,10 @@ def does_system_process_entity_cproc(args : array<string>;
   let cmd = "ecs.does_system_process_entity"
   if collect
     let inputs <- args[0] |> split(" ")
-    add_hints([[auto[] [[CommandArgDesc name="system_name", hintType=CommandArgHintType SystemName]];
-                       [[CommandArgDesc name="eid", hintType=CommandArgHintType EntityId]] ]],
-              cmd, inputs, /*hints_count*/ 20, /*threshold_cam_distance_sq*/ square(0.0), hints)
-  //else actuall processing of this command happens in c++
+    add_hints(fixed_array(CommandArgDesc(name = "system_name", hintType = CommandArgHintType.SystemName),
+                       CommandArgDesc(name = "eid", hintType = CommandArgHintType.EntityId)),
+              cmd, inputs,  20,  square(0.0), hints)
+  
 
   return false
 
@@ -390,9 +390,9 @@ def does_system_process_selected_entity_cproc(args : array<string>;
   let cmd = "ecs.does_system_process_selected_entity"
   if collect
     let inputs <- args[0] |> split(" ")
-    add_hints([[auto[] [[CommandArgDesc name="system_name", hintType=CommandArgHintType SystemName]]]],
-              cmd, inputs, /*hints_count*/ 20, /*threshold_cam_distance_sq*/ square(0.0), hints)
-  //else actuall processing of this command happens in c++
+    add_hints(fixed_array(CommandArgDesc(name = "system_name", hintType = CommandArgHintType.SystemName)),
+              cmd, inputs,  20,  square(0.0), hints)
+  
 
   return false
 
@@ -403,10 +403,10 @@ def diff_templates_cproc(args : array<string>;
   let cmd = "ecs.diff_templates"
   if collect
     let inputs <- args[0] |> split(" ")
-    add_hints([[auto[] [[CommandArgDesc name="template_name", hintType=CommandArgHintType TemplateName]];
-                       [[CommandArgDesc name="template_name", hintType=CommandArgHintType TemplateName]] ]],
-              cmd, inputs, /*hints_count*/ 20, /*threshold_cam_distance_sq*/ square(0.0), hints)
-  //else actuall processing of this command happens in c++
+    add_hints(fixed_array(CommandArgDesc(name = "template_name", hintType = CommandArgHintType.TemplateName),
+                       CommandArgDesc(name = "template_name", hintType = CommandArgHintType.TemplateName)),
+              cmd, inputs,  20,  square(0.0), hints)
+  
 
   return false
 
@@ -418,10 +418,10 @@ def diff_entities_cproc(args : array<string>;
   let cmd = "ecs.diff_entities"
   if collect
     let inputs <- args[0] |> split(" ")
-    add_hints([[auto[] [[CommandArgDesc name="eid", hintType=CommandArgHintType EntityId]];
-                       [[CommandArgDesc name="eid", hintType=CommandArgHintType EntityId]] ]],
-              cmd, inputs, /*hints_count*/ 20, /*threshold_cam_distance_sq*/ square(0.0), hints)
-  //else actuall processing of this command happens in c++
+    add_hints(fixed_array(CommandArgDesc(name = "eid", hintType = CommandArgHintType.EntityId),
+                       CommandArgDesc(name = "eid", hintType = CommandArgHintType.EntityId)),
+              cmd, inputs,  20,  square(0.0), hints)
+  
 
   return false
 
@@ -433,10 +433,10 @@ def who_can_change_component_of_template_cproc(args : array<string>;
   let cmd = "ecs.who_can_change_component_of_template"
   if collect
     let inputs <- args[0] |> split(" ")
-    add_hints([[auto[] [[CommandArgDesc name="component", hintType=CommandArgHintType Default]];
-                       [[CommandArgDesc name="template", hintType=CommandArgHintType TemplateName]] ]],
-              cmd, inputs, /*hints_count*/ 20, /*threshold_cam_distance_sq*/ square(0.0), hints)
-  //else actuall processing of this command happens in c++
+    add_hints(fixed_array(CommandArgDesc(name = "component", hintType = CommandArgHintType.Default),
+                       CommandArgDesc(name = "template", hintType = CommandArgHintType.TemplateName)),
+              cmd, inputs,  20,  square(0.0), hints)
+  
 
   return false
 
@@ -447,10 +447,10 @@ def who_can_access_component_of_template_cproc(args : array<string>;
   let cmd = "ecs.who_can_access_component_of_template"
   if collect
     let inputs <- args[0] |> split(" ")
-    add_hints([[auto[] [[CommandArgDesc name="component", hintType=CommandArgHintType Default]];
-                       [[CommandArgDesc name="template", hintType=CommandArgHintType TemplateName]] ]],
-              cmd, inputs, /*hints_count*/ 20, /*threshold_cam_distance_sq*/ square(0.0), hints)
-  //else actuall processing of this command happens in c++
+    add_hints(fixed_array(CommandArgDesc(name = "component", hintType = CommandArgHintType.Default),
+                       CommandArgDesc(name = "template", hintType = CommandArgHintType.TemplateName)),
+              cmd, inputs,  20,  square(0.0), hints)
+  
 
   return false
 

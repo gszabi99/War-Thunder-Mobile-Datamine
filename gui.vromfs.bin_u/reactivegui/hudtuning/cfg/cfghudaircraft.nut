@@ -99,7 +99,7 @@ return cfgHudCommon.__merge({
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_binoculars.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
   }
-//
+
 
 
 

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 
-let OVERLAY_CLOSE_TIMEOUT = 0.6 // Some timeout to not have overlay just quickly popping.
+let OVERLAY_CLOSE_TIMEOUT = 0.6 
 let OVERLAY_UID = "blackOverlay"
 
 let isOverlayOpened = mkWatched(persist, "isOverlayOpened", false)

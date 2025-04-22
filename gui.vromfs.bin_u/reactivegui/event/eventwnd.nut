@@ -132,7 +132,7 @@ function mkLootboxBlock(lootbox, blockSize) {
   let info = lootboxInfo(lootbox, stateFlags)
 
   return @() {
-    key = $"lootbox_{name}" //need for tutorial
+    key = $"lootbox_{name}" 
     watch = stateFlags
     onElemState = @(sf) stateFlags(sf)
     size = [blockSize, SIZE_TO_CONTENT]
@@ -403,7 +403,7 @@ function eventWndContent() {
                   size = [flex(), SIZE_TO_CONTENT]
                   vplace = ALIGN_BOTTOM
                   children = [
-                    // Left
+                    
                     @() {
                       watch = [specialEventsWithTree, curEventName]
                       vplace = ALIGN_BOTTOM
@@ -419,7 +419,7 @@ function eventWndContent() {
                         }
                       ]
                     }
-                    // Center
+                    
                     !modeId.get() ? null : {
                       hplace = ALIGN_CENTER
                       vplace = ALIGN_BOTTOM
@@ -427,7 +427,7 @@ function eventWndContent() {
                       valign = ALIGN_BOTTOM
                       children = squadPanel
                     }
-                    // Right
+                    
                     !modeId.get() ? null : @() {
                       watch = curEventName
                       hplace = ALIGN_RIGHT

@@ -4,7 +4,7 @@ let { SHIP } = require("%appGlobals/unitConst.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { EII_SMOKE_SCREEN, EII_TOOLKIT, EII_ELECTRONIC_WARFARE, EII_IRCM } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let { AB_FIREWORK, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3,
-//
+
 
 
 } = require("%rGui/hud/actionBar/actionType.nut")
@@ -36,7 +36,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     defTransform = mkRBPos([0, hdpx(-220)])
     editView = mkNumberedWeaponEditView(supportPlaneConfig[0].image, 1, false)
   }
-//
+
 
 
 
@@ -93,7 +93,7 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
       priority = Z_ORDER.BUTTON_PRIMARY
     })
 
-//
+
 
 
 

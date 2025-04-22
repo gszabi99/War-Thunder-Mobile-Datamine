@@ -27,4 +27,4 @@ let allMods = eventUnitMods.__merge(
   commonMods
 )
 
-return { getBattleModPresentation = @(id) allMods?[id] ?? mkCommonMod(id, id) } //-param-pos
+return { getBattleModPresentation = @(id) allMods?[id] ?? mkCommonMod(id, id) } 

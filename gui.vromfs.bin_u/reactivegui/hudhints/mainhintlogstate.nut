@@ -118,7 +118,7 @@ eventbus_subscribe("zoneCapturingEvent", function(data) {
       key = "mission_hint"
       id
       hType = isMyTeam ? "mission" : "fail"
-      ttl = isHeroAction && eventId == MISSION_CAPTURING_ZONE ? 1.5 : 3.0 //capturing event repeat each sec
+      ttl = isHeroAction && eventId == MISSION_CAPTURING_ZONE ? 1.5 : 3.0 
       text
       eventId
     },

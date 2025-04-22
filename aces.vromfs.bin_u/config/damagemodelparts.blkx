@@ -260,6 +260,11 @@
       "fire": true
     }
   },
+  "air_balloon": {
+    "airBalloonN": {
+      "template": "air_balloon#1:4#"
+    }
+  },
   "aircraft_gunner": {
     "gunnerN": {
       "template": "gunner#1:16#"

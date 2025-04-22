@@ -18,17 +18,17 @@ const SAVE_ID = "bullets"
 let BULLETS_LOW_AMOUNT = 5
 let BULLETS_LOW_PERCENT = 25.0
 
-let ammoReductionFactorDef = 0.6 // for only one primary slot
-let ammoReductionSecFactorDef = 1 // for only one secondary slot
+let ammoReductionFactorDef = 0.6 
+let ammoReductionSecFactorDef = 1 
 let ammoReductionFactorsByIdx = {
-  [0] = 0.45, // for first slot
-  [1] = 0.15 // for second slot
+  [0] = 0.45, 
+  [1] = 0.15 
 }
 
 let unitName = Computed(@() selSlot.value?.name)
 let unitLevel = Computed(@() selSlot.value?.level ?? 0)
 let bulletsInfo = Computed(@() unitName.value == null ? null
-  : loadUnitBulletsChoice(unitName.value)?.commonWeapons.primary) //not support weapon presets yet beacause they are all empty.
+  : loadUnitBulletsChoice(unitName.value)?.commonWeapons.primary) 
 let bulletsSecInfo = Computed(function() {
   if (unitName.get() == null)
     return null
@@ -55,7 +55,7 @@ let applySavedBullets = @(name) savedBullets(loadSavedBullets(name))
 applySavedBullets(unitName.value)
 unitName.subscribe(applySavedBullets)
 
-isOnlineSettingsAvailable.subscribe(@(_) savedBullets(null)) //at this point local_custom_settings_blk can change, so clear link on its part.
+isOnlineSettingsAvailable.subscribe(@(_) savedBullets(null)) 
 
 let calcBulletStep = @(bInfo) max((bInfo?.catridge ?? 1) * (bInfo?.guns ?? 1), 1)
 let bulletStep = Computed(@() calcBulletStep(bulletsInfo.get()))
@@ -122,7 +122,7 @@ function calcChosenBullets(bInfo, level, stepSize, visible, maxBullets,
           || (res.len() == 0 && isExternalAmmo))
         return
       local steps = min(ceil(count.tofloat() / stepSize), leftSteps, maxCount)
-      if (bTotalSteps == 1) //special case when user have saved 0 (and disabled choose slider)
+      if (bTotalSteps == 1) 
         steps = 1
       leftSteps -= steps
       let countBullets = steps * stepSize
@@ -186,11 +186,11 @@ let chosenBulletsSec = Computed(@() calcChosenBullets(bulletsSecInfo.get(), unit
 
 let bulletFormat = @(b, c) { name = b.name, count = ceil(b.count / c).tointeger() }
 let bulletsToSpawn = Computed(function() {
-  let res = chosenBullets.get().map(@(b) bulletFormat(b, bulletsInfo.get()?.catridge ?? 1)) //need send catriges count for spawn instead of bullets count
+  let res = chosenBullets.get().map(@(b) bulletFormat(b, bulletsInfo.get()?.catridge ?? 1)) 
   if (bulletsSecInfo.get() == null)
     return res
   if (res.len() < BULLETS_PRIM_SLOTS)
-    res.resize(BULLETS_PRIM_SLOTS, { name = "", count = 0 }) //native code count first 2 slots as for primary gun
+    res.resize(BULLETS_PRIM_SLOTS, { name = "", count = 0 }) 
   let { catridge = 1, bulletsOrder = [""], total = 0} = bulletsSecInfo.get()
   let secBulletsToSpawn = chosenBulletsSec.get().len() > 0
     ? chosenBulletsSec.get().map(@(b) bulletFormat(b, catridge))
@@ -211,7 +211,7 @@ let hasZeroMainBullets = Computed(@() hasExtraBullets.get()
 function saveBullets(name, blk) {
   hasChangedCurSlotBullets(true)
   let sBlk = get_local_custom_settings_blk()
-  setBlkValueByPath(sBlk, $"{SAVE_ID}/{name}", blk)//-param-pos
+  setBlkValueByPath(sBlk, $"{SAVE_ID}/{name}", blk)
   eventbus_send("saveProfile", {})
 }
 
@@ -232,7 +232,7 @@ function setCurUnitBullets(slotIdx, bName, bCount) {
   foreach (idx, slot in chosenBulletsSec.get())
     blk.bullet <- collectChangedBlkBullet(slot, idx + BULLETS_PRIM_SLOTS == slotIdx, bName, bCount)
   savedBullets(blk)
-  cancelRespawn() //to respawn on chosen bullets after
+  cancelRespawn() 
   saveBullets(unitName.value, blk)
 }
 
@@ -269,7 +269,7 @@ function setOrSwapUnitBullet(slotIdx, bName) {
     blk.bullet <- collectBlkBullet(slot, maxBulletsSecCountForExtraAmmo.get()?[idx],
       hasExtraBulletsSec.get(), newNames?[idx + BULLETS_PRIM_SLOTS])
   savedBullets(blk)
-  cancelRespawn() //to respawn on chosen bullets after
+  cancelRespawn() 
   saveBullets(unitName.get(), blk)
 }
 

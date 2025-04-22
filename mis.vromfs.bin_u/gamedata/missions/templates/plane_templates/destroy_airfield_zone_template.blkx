@@ -468,6 +468,8 @@
           "army": 1,
           "target": "t1_airfield_bombing_zone",
           "hp": 30000.0,
+          "hpFireMult": 0.005,
+          "fireSpeed": 0.03,
           "use_variable": true,
           "var_value": "dazt_airfield_max_hp",
           "airfield": "t1_airfield"
@@ -509,6 +511,8 @@
           "army": 2,
           "target": "t2_airfield_bombing_zone",
           "hp": 30000.0,
+          "hpFireMult": 0.005,
+          "fireSpeed": 0.03,
           "use_variable": true,
           "var_value": "dazt_airfield_max_hp",
           "airfield": "t2_airfield"

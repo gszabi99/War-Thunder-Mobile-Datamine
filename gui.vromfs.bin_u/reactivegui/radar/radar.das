@@ -11,109 +11,108 @@ require FlightModelWrap
 require HeroManager
 require Unit
 
-let modeNames = [[string
-  "hud/standby";
-  "hud/search";
-  "hud/acquisition";
-  "hud/ACM";
-  "hud/HMD";
-  "hud/BST";
-  "hud/VSL";
-  "hud/track";
+let modeNames = fixed_array<string>(
+  "hud/standby",
+  "hud/search",
+  "hud/acquisition",
+  "hud/ACM",
+  "hud/HMD",
+  "hud/BST",
+  "hud/VSL",
+  "hud/track",
 
-  "hud/PD VS standby";
-  "hud/PD VS search";
-  "hud/PD VS acquisition";
-  "hud/PD VS ACM";
-  "hud/PD VS BST";
-  "hud/PD VS VSL";
+  "hud/PD VS standby",
+  "hud/PD VS search",
+  "hud/PD VS acquisition",
+  "hud/PD VS ACM",
+  "hud/PD VS BST",
+  "hud/PD VS VSL",
 
-  "hud/PD HDN VS standby";
-  "hud/PD HDN VS search";
-  "hud/PD HDN VS acquisition";
-  "hud/PD HDN VS ACM";
-  "hud/PD HDN VS BST";
-  "hud/PD HDN VS VSL";
+  "hud/PD HDN VS standby",
+  "hud/PD HDN VS search",
+  "hud/PD HDN VS acquisition",
+  "hud/PD HDN VS ACM",
+  "hud/PD HDN VS BST",
+  "hud/PD HDN VS VSL",
 
-  "hud/PD standby";
-  "hud/PD search";
-  "hud/PD acquisition";
-  "hud/PD ACM";
-  "hud/PD HMD";
-  "hud/PD BST";
-  "hud/PD VSL";
-  "hud/PD track";
-  "hud/PD RAM";
+  "hud/PD standby",
+  "hud/PD search",
+  "hud/PD acquisition",
+  "hud/PD ACM",
+  "hud/PD HMD",
+  "hud/PD BST",
+  "hud/PD VSL",
+  "hud/PD track",
+  "hud/PD RAM",
 
-  "hud/PD HDN standby";
-  "hud/PD HDN search";
-  "hud/PD HDN acquisition";
-  "hud/PD HDN ACM";
-  "hud/PD HDN HMD";
-  "hud/PD HDN BST";
-  "hud/PD HDN VSL";
-  "hud/PD HDN track";
+  "hud/PD HDN standby",
+  "hud/PD HDN search",
+  "hud/PD HDN acquisition",
+  "hud/PD HDN ACM",
+  "hud/PD HDN HMD",
+  "hud/PD HDN BST",
+  "hud/PD HDN VSL",
+  "hud/PD HDN track",
 
-  "hud/GTM standby";
-  "hud/GTM search";
-  "hud/GTM acquisition";
-  "hud/GTM ACM";
-  "hud/GTM BST";
-  "hud/GTM VSL";
-  "hud/GTM track";
+  "hud/GTM standby",
+  "hud/GTM search",
+  "hud/GTM acquisition",
+  "hud/GTM ACM",
+  "hud/GTM BST",
+  "hud/GTM VSL",
+  "hud/GTM track",
 
 
-  "hud/LD standby";
-  "hud/LD search";
-  "hud/LD acquisition";
-  "hud/LD ACM";
-  "hud/LD track";
+  "hud/LD standby",
+  "hud/LD search",
+  "hud/LD acquisition",
+  "hud/LD ACM",
+  "hud/LD track",
 
-  "hud/MTI standby";
-  "hud/MTI search";
-  "hud/MTI acquisition";
-  "hud/MTI ACM";
-  "hud/MTI track";
+  "hud/MTI standby",
+  "hud/MTI search",
+  "hud/MTI acquisition",
+  "hud/MTI ACM",
+  "hud/MTI track",
 
-  "hud/TWS standby";
-  "hud/TWS search";
-  "hud/TWS acquisition";
-  "hud/TWS ACM";
-  "hud/TWS BST";
-  "hud/TWS VSL";
-  "hud/TWS track";
+  "hud/TWS standby",
+  "hud/TWS search",
+  "hud/TWS acquisition",
+  "hud/TWS ACM",
+  "hud/TWS BST",
+  "hud/TWS VSL",
+  "hud/TWS track",
 
-  "hud/TWS HDN standby";
-  "hud/TWS HDN search";
-  "hud/TWS HDN acquisition";
-  "hud/TWS HDN ACM";
-  "hud/TWS HDN BST";
-  "hud/TWS HDN VSL";
-  "hud/TWS HDN track";
+  "hud/TWS HDN standby",
+  "hud/TWS HDN search",
+  "hud/TWS HDN acquisition",
+  "hud/TWS HDN ACM",
+  "hud/TWS HDN BST",
+  "hud/TWS HDN VSL",
+  "hud/TWS HDN track",
 
-  "hud/TWS GTM standby";
-  "hud/TWS GTM search";
-  "hud/TWS GTM acquisition";
-  "hud/TWS GTM ACM";
-  "hud/TWS GTM BST";
-  "hud/TWS GTM VSL";
-  "hud/TWS GTM track";
+  "hud/TWS GTM standby",
+  "hud/TWS GTM search",
+  "hud/TWS GTM acquisition",
+  "hud/TWS GTM ACM",
+  "hud/TWS GTM BST",
+  "hud/TWS GTM VSL",
+  "hud/TWS GTM track",
 
-  "hud/IRST standby";
-  "hud/IRST search";
-  "hud/IRST acquisition";
-  "hud/IRST ACM";
-  "hud/IRST HMD";
-  "hud/IRST track";
+  "hud/IRST standby",
+  "hud/IRST search",
+  "hud/IRST acquisition",
+  "hud/IRST ACM",
+  "hud/IRST HMD",
+  "hud/IRST track",
 
-  "hud/air_search";
-  "hud/ground_search";
+  "hud/air_search",
+  "hud/ground_search",
 
-  "hud/auto acquisition";
-  "hud/auto ACM";
-  "hud/auto HMD";
-  "hud/track memory";
-]]
+  "hud/auto acquisition",
+  "hud/auto ACM",
+  "hud/auto HMD",
+  "hud/track memory")
 
 let areaBackgroundColor = E3DCOLOR(Color4(float4(0., 0., 0., 0.5)))
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
@@ -242,12 +241,12 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
     if data.enableByMfd
       pos += get_radar_hud_mfd_radar_offset()
     let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
-    if mode == int(RadarViewMode B_SCOPE_ROUND)
+    if mode == int(RadarViewMode.B_SCOPE_ROUND)
       if azimuthRange > PI + 0.035
         b_scope(ctx, rdata, data)
       else
         b_scope_half(ctx, rdata, data, pos)
-    elif mode == int(RadarViewMode B_SCOPE_SQUARE)
+    elif mode == int(RadarViewMode.B_SCOPE_SQUARE)
       if azimuthRange > PI + 0.035
         b_scope(ctx, rdata, data)
       else
@@ -268,10 +267,10 @@ def mfd_radar_background(var ctx : GuiContext&; rdata : ElemRenderData& const; d
   ctx |> render_box(pos.x, pos.y, pos.x + size.x, pos.y + size.y)
 
 def b_scope_half(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; pos : float2)
-  let bottomOffset = b_scope_half_circle_markers(ctx, data, pos, rdata.size, data.fontSize/*hudFontHgt*/)
+  let bottomOffset = b_scope_half_circle_markers(ctx, data, pos, rdata.size, data.fontSize)
   let gridPos = pos - float2(0., bottomOffset)
 
-  b_scope_half_top_markers(ctx, data, gridPos, rdata.size, data.fontSize/*hudFontHgt*/)
+  b_scope_half_top_markers(ctx, data, gridPos, rdata.size, data.fontSize)
   if !data.hideBack
     b_scope_half_background(ctx, data, gridPos, rdata.size)
 
@@ -317,9 +316,9 @@ def b_scope_half_background(var ctx : GuiContext&; data : CanvasParams&; pos : f
   let color = is_color_or_white(data.lineColor)
 
   ctx |> render_sector_aa(origin, radius, anglesExternal, data.lineWidth, data.lineColor, areaBackgroundColor)
-  let lcoord <- to_array_move([[float2[2] origin; origin + float2(cos(anglesExternal.x), sin(anglesExternal.x)) * radius]])
+  let lcoord <- to_array_move(fixed_array<float2>(origin, origin + float2(cos(anglesExternal.x), sin(anglesExternal.x)) * radius))
   ctx |> render_line_aa(lcoord, false, data.lineWidth, float2(0, 0), data.lineColor)
-  let rcoord <- to_array_move([[float2[2] origin; origin + float2(cos(anglesExternal.y), sin(anglesExternal.y)) * radius]])
+  let rcoord <- to_array_move(fixed_array<float2>(origin, origin + float2(cos(anglesExternal.y), sin(anglesExternal.y)) * radius))
   ctx |> render_line_aa(rcoord, false, data.lineWidth, float2(0, 0), data.lineColor)
 
   let anglesInternalGrid = anglesInternal.y > anglesInternal.x ? anglesInternal : anglesExternal
@@ -336,20 +335,20 @@ def b_scope_half_background(var ctx : GuiContext&; data : CanvasParams&; pos : f
   let angleStep = PI * 15.0 / 180.0
   for i in range(int(anglesInternalGrid.x / angleStep), int(anglesInternalGrid.y / angleStep))
     let angle = float(i) * angleStep
-    let coord <- to_array_move([[float2[2] origin + float2(cos(angle) * size.x, sin(angle) * size.y) * 0.5 * distMinRel;
-     origin + float2(cos(angle) * size.x, sin(angle) * size.y) * 0.5]])
+    let coord <- to_array_move(fixed_array<float2>(origin + float2(cos(angle) * size.x, sin(angle) * size.y) * 0.5 * distMinRel,
+     origin + float2(cos(angle) * size.x, sin(angle) * size.y) * 0.5))
     ctx |> render_line_aa(coord, false, 1.2 * data.lineWidth, float2(0, 0), color)
 
-  let rscoord <- to_array_move([[float2[2] origin; origin + float2(cos(anglesInternal.y) * size.x, sin(anglesInternal.y) * size.y) * 0.5]])
+  let rscoord <- to_array_move(fixed_array<float2>(origin, origin + float2(cos(anglesInternal.y) * size.x, sin(anglesInternal.y) * size.y) * 0.5))
   ctx |> render_line_aa(rscoord, false, 2.4 * data.lineWidth, float2(0, 0), color)
-  let lscoord <- to_array_move([[float2[2] origin; origin + float2(cos(anglesInternal.x) * size.x, sin(anglesInternal.x) * size.y) * 0.5]])
+  let lscoord <- to_array_move(fixed_array<float2>(origin, origin + float2(cos(anglesInternal.x) * size.x, sin(anglesInternal.x) * size.y) * 0.5))
   ctx |> render_line_aa(lscoord, false, 2.4 * data.lineWidth, float2(0, 0), color)
 
 def b_scope_sector(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; half_width : float; value : float)
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let angle = get_radar_hud_azimuth_min() + azimuthRange * value - PI * 0.5
 
-  var color = float4(Color4(data.color))//isColorOrWhite(color) ??
+  var color = float4(Color4(data.color))
   color *= 0.2
   ctx |> render_sector_aa(pos, size * 0.5 * get_radar_hud_target_distance(), float2(angle - half_width, angle + half_width), 1.2,
    E3DCOLOR(Color4(color)), E3DCOLOR(Color4(color)))
@@ -366,7 +365,7 @@ def b_scope_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
     ctx |> render_sector_aa(pos, radius, float2(angle - half_width, angle + half_width), 1., E3DCOLOR(Color4(color)), E3DCOLOR(Color4(color)))
   else
     let len = min(dist >= 0. ? dist : 1., 1.)
-    let coord <- to_array_move([[float2[2] pos; pos + float2(cos(angle), sin(angle)) * size.x * 0.5 * len]])
+    let coord <- to_array_move(fixed_array<float2>(pos, pos + float2(cos(angle), sin(angle)) * size.x * 0.5 * len))
     let color = is_color_or_white(data.targetColor)
     if dist >= 0.
       ctx |> render_line_dashed(pos, coord[1], ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(line_width), color)
@@ -389,9 +388,9 @@ def b_scope_half_top_markers(var ctx : GuiContext&; data : CanvasParams&; pos : 
   let strBox = get_str_bbox(modeName, modeName |> length(), fctx)
   ctx |> goto_xy(center.x - strBox.width.x, center.y - 5.)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(font_size);
+  ctx |> set_font_ht(font_size)
   ctx |> set_color(data.modeColor)
-  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, textGlowColor, get_font_fx_factor(data.modeColor, ctx))
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, textGlowColor, get_font_fx_factor(data.modeColor, ctx))
   ctx |> draw_str_scaled(1.0, modeName, modeName |> length())
 
   let name2Id = get_radar_hud_mode_name2_id()
@@ -490,7 +489,7 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
     color *= (1. - target.ageRel) * signalRel
     let e3dColor = E3DCOLOR(Color4(color))
 
-    if target.targetType == int(RadarTargetType TYPE_TARGET)
+    if target.targetType == int(RadarTargetType.TYPE_TARGET)
       let fullCircle = azimuthRange > PI + 0.035
       let angleLeft = fullCircle ? (angle - 0.5 * angularWidth) : max(angle - 0.5 * angularWidth, get_radar_hud_azimuth_min() - PI * 0.5)
       let angleRight = fullCircle ? (angle + 0.5 * angularWidth) : min(angle + 0.5 * angularWidth, get_radar_hud_azimuth_max() - PI * 0.5)
@@ -519,29 +518,29 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
         let distanceGateHalfWidthRel = 0.5 * max(get_radar_hud_distance_gate_width_rel(), distanceGateWidthRelMin) * distanceGateWidthMult
         let radiusInner = distanceRel - distanceGateHalfWidthRel
         let radiusOuter = distanceRel + distanceGateHalfWidthRel
-        let lcoord <- to_array_move([[float2[2] origin + float2(cos(angleGateLeft) * radiusInner * radius.x, sin(angleGateLeft) * radiusInner * radius.y);
-          origin + float2(cos(angleGateLeft) * radiusOuter * radius.x, sin(angleGateLeft) * radiusOuter * radius.y)]])
+        let lcoord <- to_array_move(fixed_array<float2>(origin + float2(cos(angleGateLeft) * radiusInner * radius.x, sin(angleGateLeft) * radiusInner * radius.y),
+          origin + float2(cos(angleGateLeft) * radiusOuter * radius.x, sin(angleGateLeft) * radiusOuter * radius.y)))
         ctx |> render_line_aa(lcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
-        let rcoord <- to_array_move([[float2[2] origin + float2(cos(angleGateRight) * radiusInner * radius.x, sin(angleGateRight) * radiusInner * radius.y);
-          origin + float2(cos(angleGateRight) * radiusOuter * radius.x, sin(angleGateRight) * radiusOuter * radius.y)]])
+        let rcoord <- to_array_move(fixed_array<float2>(origin + float2(cos(angleGateRight) * radiusInner * radius.x, sin(angleGateRight) * radiusInner * radius.y),
+          origin + float2(cos(angleGateRight) * radiusOuter * radius.x, sin(angleGateRight) * radiusOuter * radius.y)))
         ctx |> render_line_aa(rcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
 
       if !target.isEnemy
         let iffDistReal = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
         ctx |> render_sector_aa(origin, radius * iffDistReal, float2(angleLeft, angleRight), ctx |> hdpx(3. * data.lineWidth), e3dColor, transparentColor)
-        //animation targetSelectedAnim ???
+        
 
       if target.isAttacked
         let attackMarkDistRel = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + attackDistRelMult) * radialWidthRel
-        let coord <- to_array_move([[float2[2] origin + radius * attackMarkDistRel * float2(cos(angle), sin(angle));
-         origin + (radius * (attackMarkDistRel + attackHeightRel)) * float2(cos(angle), sin(angle))]])
+        let coord <- to_array_move(fixed_array<float2>(origin + radius * attackMarkDistRel * float2(cos(angle), sin(angle)),
+         origin + (radius * (attackMarkDistRel + attackHeightRel)) * float2(cos(angle), sin(angle))))
         ctx |> render_line_aa(coord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
 
-    elif target.targetType == int(RadarTargetType TYPE_OWN_WEAPON) && !data.hideWeaponIndication
+    elif target.targetType == int(RadarTargetType.TYPE_OWN_WEAPON) && !data.hideWeaponIndication
       if get_radar_hud_has_azimuth_scale()
         ctx |> render_ellipse_aa(pos, radius * 0.01, ctx |> hdpx(2.), e3dColor, transparentColor)
 
-    elif target.targetType == int(RadarTargetType TYPE_OWN_WEAPON_TARGET) && !data.hideWeaponIndication
+    elif target.targetType == int(RadarTargetType.TYPE_OWN_WEAPON_TARGET) && !data.hideWeaponIndication
       if get_radar_hud_has_azimuth_scale() && !target.isAttacked
         ctx |> render_ellipse_aa(pos, radius * 0.06, ctx |> hdpx(2.), e3dColor, transparentColor)
 
@@ -585,7 +584,7 @@ def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos
 
   if get_radar_hud_has_azimuth_scale() && get_radar_hud_scan_azimuth_max() > get_radar_hud_scan_azimuth_min() && !data.hideHorAngle
     ctx |> set_color(data.horAngleColor)
-    ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.horAngleColor), get_font_fx_factor(data.horAngleColor, ctx))
+    ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.horAngleColor), get_font_fx_factor(data.horAngleColor, ctx))
     let azText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
     let elText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
     let deg = loc("measureUnits/deg")
@@ -597,9 +596,9 @@ def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos
 
   if get_radar_hud_has_distance_scale() && !data.hideScale
     ctx |> set_color(data.scaleColor)
-    ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, textGlowColor, get_font_fx_factor(data.scaleColor, ctx))
-    let valText = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
-     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
+    ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, textGlowColor, get_font_fx_factor(data.scaleColor, ctx))
+    let valText = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
+     get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
     let text = valText + (get_radar_hud_distance_scale_max() > 1 ? "*" : " ")
     let strBox = get_str_bbox(text, text |> length(), fctx)
     ctx |> goto_xy(rb.x - strBox.width.x, rb.y - offset + strBox.width.y)
@@ -607,7 +606,7 @@ def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos
 
   if get_radar_hud_has_azimuth_scale() && !data.hideVerAngle
     ctx |> set_color(data.verAngleColor)
-    ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, textGlowColor, get_font_fx_factor(data.scaleColor, ctx))
+    ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, textGlowColor, get_font_fx_factor(data.scaleColor, ctx))
     let textMin = fmt(":.0f", rad_to_deg(get_radar_hud_elevation_min())) + loc("measureUnits/deg")
     let strBoxMin = get_str_bbox(textMin, textMin |> length(), fctx)
     let azimuthMin = get_radar_hud_azimuth_min()
@@ -653,7 +652,7 @@ def noise_signal(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size
     let p = pos + float2(0., float(i) * size.y * 0.25)
     let rb = p + quadSize
     let tc = float2(0., 0.)
-    var color = float4(Color4(data.color))//isColorOrWhite(color) ??
+    var color = float4(Color4(data.color))
     color *= val > float(3 - i) ? 1. : 0.21
     let e3dColor = E3DCOLOR(Color4(color))
     ctx |> set_color(e3dColor)
@@ -665,28 +664,26 @@ def noise_signal(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size
 
   let aSz = float2(size.x * 0.25, size.y * 0.75)
   let aPl1 = pos - float2(size.x * 0.55, 0.)
-  let arrowLines1 <- to_array_move([[float2[]
-    aPl1 + float2(0.5 * aSz.x, 0.);
-    aPl1 + float2(0., 0.5 * aSz.y);
-    aPl1 + float2(0.35 * aSz.x, 0.5 * aSz.y);
-    aPl1 + float2(0.35 * aSz.x, aSz.y);
-    aPl1 + float2(0.65 * aSz.x, aSz.y);
-    aPl1 + float2(0.65 * aSz.x, 0.5 * aSz.y);
-    aPl1 + float2(aSz.x, 0.5 * aSz.y);
-  ]])
+  let arrowLines1 <- to_array_move(fixed_array(
+    aPl1 + float2(0.5 * aSz.x, 0.),
+    aPl1 + float2(0., 0.5 * aSz.y),
+    aPl1 + float2(0.35 * aSz.x, 0.5 * aSz.y),
+    aPl1 + float2(0.35 * aSz.x, aSz.y),
+    aPl1 + float2(0.65 * aSz.x, aSz.y),
+    aPl1 + float2(0.65 * aSz.x, 0.5 * aSz.y),
+    aPl1 + float2(aSz.x, 0.5 * aSz.y)))
   ctx |> render_poly(arrowLines1, data.color)
   ctx |> render_line_aa(arrowLines1, true, ctx |> hdpx(1.2), float2(0., 0.), data.color)
 
   let aPl2 = pos - float2(size.x * 1.05, 0.)
-  let arrowLines2 <- to_array_move([[float2[]
-    aPl2 + float2(0.5 * aSz.x, aSz.y);
-    aPl2 + float2(0., 0.5 * aSz.y);
-    aPl2 + float2(0.35 * aSz.x, 0.5 * aSz.y);
-    aPl2 + float2(0.35 * aSz.x, 0.);
-    aPl2 + float2(0.65 * aSz.x, 0.);
-    aPl2 + float2(0.65 * aSz.x, 0.5 * aSz.y);
-    aPl2 + float2(aSz.x, 0.5 * aSz.y);
-  ]])
+  let arrowLines2 <- to_array_move(fixed_array(
+    aPl2 + float2(0.5 * aSz.x, aSz.y),
+    aPl2 + float2(0., 0.5 * aSz.y),
+    aPl2 + float2(0.35 * aSz.x, 0.5 * aSz.y),
+    aPl2 + float2(0.35 * aSz.x, 0.),
+    aPl2 + float2(0.65 * aSz.x, 0.),
+    aPl2 + float2(0.65 * aSz.x, 0.5 * aSz.y),
+    aPl2 + float2(aSz.x, 0.5 * aSz.y)))
   ctx |> render_poly(arrowLines2, data.color)
   ctx |> render_line_aa(arrowLines2, true, ctx |> hdpx(1.2), float2(0., 0.), data.color)
 
@@ -706,12 +703,12 @@ def b_scope_half_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
   let radiusMin = (distRel - halfDistGateWidthRel) * 0.5
   let radiusMax = (distRel + halfDistGateWidthRel) * 0.5
 
-  let color = is_color_or_white(data.lineColor) //remove color_is_white if use is_color on scope_sector
-  let lcoord <- to_array_move([[float2[2] origin + float2(radiusMin * sin(cueAzimuthMin) * size.x, -radiusMin * cos(cueAzimuthMin) * size.y);
-   origin + float2(radiusMax * sin(cueAzimuthMin) * size.x, -radiusMax * cos(cueAzimuthMin) * size.y);]])
+  let color = is_color_or_white(data.lineColor) 
+  let lcoord <- to_array_move(fixed_array<float2>(origin + float2(radiusMin * sin(cueAzimuthMin) * size.x, -radiusMin * cos(cueAzimuthMin) * size.y),
+   origin + float2(radiusMax * sin(cueAzimuthMin) * size.x, -radiusMax * cos(cueAzimuthMin) * size.y)))
   ctx |> render_line_aa(lcoord, false, 2. * data.lineWidth, float2(0, 0), color)
-  let rcoord <- to_array_move([[float2[2] origin + float2(radiusMin * sin(cueAzimuthMax) * size.x, -radiusMin * cos(cueAzimuthMax) * size.y);
-   origin + float2(radiusMax * sin(cueAzimuthMax) * size.x, -radiusMax * cos(cueAzimuthMax) * size.y);]])
+  let rcoord <- to_array_move(fixed_array<float2>(origin + float2(radiusMin * sin(cueAzimuthMax) * size.x, -radiusMin * cos(cueAzimuthMax) * size.y),
+   origin + float2(radiusMax * sin(cueAzimuthMax) * size.x, -radiusMax * cos(cueAzimuthMax) * size.y)))
   ctx |> render_line_aa(rcoord, false, 2. * data.lineWidth, float2(0, 0), color)
 
 def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; position : float2)
@@ -762,7 +759,7 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(font_size)
   ctx |> set_color(data.modeColor)
-  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.modeColor), get_font_fx_factor(data.modeColor, ctx))
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.modeColor), get_font_fx_factor(data.modeColor, ctx))
 
   let nameId = get_radar_hud_mode_name_id()
   let defaultStr = get_radar_hud_is_visible() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
@@ -791,7 +788,7 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
   if get_radar_hud_has_azimuth_scale()
     if get_radar_hud_scan_azimuth_max() > get_radar_hud_scan_azimuth_min()
       ctx |> set_color(data.horAngleColor)
-      ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.horAngleColor), get_font_fx_factor(data.horAngleColor, ctx))
+      ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.horAngleColor), get_font_fx_factor(data.horAngleColor, ctx))
       let azText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
       let elText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
       let deg = loc("measureUnits/deg")
@@ -806,17 +803,17 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
 
   if get_radar_hud_has_distance_scale() && !data.hideScale
     ctx |> set_color(data.scaleColor)
-    ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.scaleColor), get_font_fx_factor(data.scaleColor, ctx))
+    ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.scaleColor), get_font_fx_factor(data.scaleColor, ctx))
 
-    let textMin = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_min(), true, 1.) :
-     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_min() * 1000., true, 1.))
+    let textMin = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, get_radar_hud_distance_min(), true, 1.) :
+     get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, get_radar_hud_distance_min() * 1000., true, 1.))
     let strBoxMin = get_str_bbox(textMin, textMin |> length(), fctx)
     bottomOffset = strBoxMin.width.y
     ctx |> goto_xy(pos.x + size.x - strBoxMin.width.x, pos.y + size.y)
     ctx |> draw_str_scaled(1.0, textMin, textMin |> length())
 
-    let textMax = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
-     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
+    let textMax = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
+     get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
     let text = textMax + (get_radar_hud_distance_scale_max() > 1 ? "*" : " ")
     let strBox = get_str_bbox(text, text |> length(), fctx)
     if vertOffset2 == 0.
@@ -834,13 +831,13 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
   if get_radar_hud_has_azimuth_scale()
     if !data.hideHorAngle
       ctx |> set_color(data.horAngleColor)
-      ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.horAngleColor), get_font_fx_factor(data.horAngleColor, ctx))
+      ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.horAngleColor), get_font_fx_factor(data.horAngleColor, ctx))
       ctx |> goto_xy(pos.x, pos.y + strBoxAz.width.y + vertOffset + ctx |> hdpx(4.))
       ctx |> draw_str_scaled(1.0, azRanText, azRanText |> length())
 
     if !data.hideVerAngle
       ctx |> set_color(data.verAngleColor)
-      ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.verAngleColor), get_font_fx_factor(data.verAngleColor, ctx))
+      ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.verAngleColor), get_font_fx_factor(data.verAngleColor, ctx))
 
       let elvMaxText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_elevation_max()) + 0.5)) + loc("measureUnits/deg")
       let strBoxElMax = get_str_bbox(elvMaxText, elvMaxText |> length(), fctx)
@@ -867,7 +864,7 @@ def b_scope_square_inner_labels(var ctx : GuiContext&; data : CanvasParams&; pos
   ctx |> set_font_ht(font_size)
   let color = is_color_or_white(data.horAngleColor)
   ctx |> set_color(color)
-  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(color), get_font_fx_factor(color, ctx))
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(color), get_font_fx_factor(color, ctx))
 
   let azMinText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
   let strBoxAzMin = get_str_bbox(azMinText, azMinText |> length(), fctx)
@@ -888,7 +885,7 @@ def b_scope_square_bkg(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   let rb = pos + size
   let tc = float2(0., 0.)
   ctx |> render_rect(pos.x, pos.y, rb.x, rb.y, tc, tc, tc)
-  //not repeat component 'frame' from darg, i am cant see him in game (useless)
+  
 
   var color = float4(Color4(is_color_or_white(data.lineColor)))
   color *= 0.7
@@ -934,7 +931,7 @@ def b_scope_square_target_sector(var ctx : GuiContext&; data : CanvasParams&; po
   else
     let halfAzimuthWidth = min(azimuthRange > 0. ? get_radar_hud_target_azimuth_width() / azimuthRange : 0., 0.5)
     let tc = float2(0., 0.)
-    var color = float4(Color4(data.color))//isColorOrWhite ???
+    var color = float4(Color4(data.color))
     color *= 0.2
     let e3dColor = E3DCOLOR(Color4(color))
     ctx |> set_color(e3dColor)
@@ -983,21 +980,21 @@ def b_scope_square_elevation(var ctx : GuiContext&; data : CanvasParams&; pos : 
   color *= 0.42
   let e3dColor = E3DCOLOR(Color4(color))
 
-  let minCoord <- to_array_move([[float2[2] float2(pos.x, pos.y + elevationMin * size.y); float2(pos.x + markLen * size.x, pos.y + elevationMin * size.y)]])
+  let minCoord <- to_array_move(fixed_array<float2>(float2(pos.x, pos.y + elevationMin * size.y), float2(pos.x + markLen * size.x, pos.y + elevationMin * size.y)))
   ctx |> render_line_aa(minCoord, false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
-  let zeroCoord <- to_array_move([[float2[2] float2(pos.x, pos.y + 0.5 * size.y); float2(pos.x + markLenShort * size.x, pos.y + 0.5 * size.y)]])
+  let zeroCoord <- to_array_move(fixed_array<float2>(float2(pos.x, pos.y + 0.5 * size.y), float2(pos.x + markLenShort * size.x, pos.y + 0.5 * size.y)))
   ctx |> render_line_aa(zeroCoord, false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
-  let maxCoord <- to_array_move([[float2[2] float2(pos.x, pos.y + elevationMax * size.y); float2(pos.x + markLen * size.x, pos.y + elevationMax * size.y)]])
+  let maxCoord <- to_array_move(fixed_array<float2>(float2(pos.x, pos.y + elevationMax * size.y), float2(pos.x + markLen * size.x, pos.y + elevationMax * size.y)))
   ctx |> render_line_aa(maxCoord, false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
-  let elevCoord <- to_array_move([[float2[2] float2(pos.x, pos.y + elevation * size.y); float2(pos.x + markLenShort * size.x, pos.y + elevation * size.y)]])
+  let elevCoord <- to_array_move(fixed_array<float2>(float2(pos.x, pos.y + elevation * size.y), float2(pos.x + markLenShort * size.x, pos.y + elevation * size.y)))
   ctx |> render_line_aa(elevCoord, false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
 
   if elev_scan_max > elev_scan_min
     let elevationScanMin = -elev_scan_min * elevMaxInv * elevMaxScreenRelSize + 0.5
     let elevationScanMax = -elev_scan_max * elevMaxInv * elevMaxScreenRelSize + 0.5
 
-    let scanCoord <- to_array_move([[float2[4] float2(pos.x, pos.y + elevationScanMin * size.y); float2(pos.x + markLen * size.x, pos.y + elevationScanMin * size.y);
-     float2(pos.x + markLen * size.x, pos.y + elevationScanMax * size.y); float2(pos.x, pos.y + elevationScanMax * size.y)]])
+    let scanCoord <- to_array_move(fixed_array<float2>(float2(pos.x, pos.y + elevationScanMin * size.y), float2(pos.x + markLen * size.x, pos.y + elevationScanMin * size.y),
+     float2(pos.x + markLen * size.x, pos.y + elevationScanMax * size.y), float2(pos.x, pos.y + elevationScanMax * size.y)))
     ctx |> render_line_aa(scanCoord, false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
 
 def b_scope_square_launch_range(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
@@ -1056,7 +1053,7 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
     color *= (1. - target.ageRel) * signalRel
     let e3dColor = E3DCOLOR(Color4(color))
 
-    if target.targetType == int(RadarTargetType TYPE_TARGET)
+    if target.targetType == int(RadarTargetType.TYPE_TARGET)
       let azimuthHalfWidth = get_radar_hud_is_visible2() ? get_radar_hud_azimuth_half_width2() : get_radar_hud_azimuth_half_width()
       let angularGateHalfWidthRel = angularGateWidthMultSquare * azimuthHalfWidth / azimuthRange
       let angleGateLeftRel = angleRel - angularGateHalfWidthRel
@@ -1067,23 +1064,23 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
       let distanceOuter = distanceRel + distanceGateHalfWidthRel
 
       if target.isDetected
-        let lcoord <- to_array_move([[float2[2] float2(pos.x + angleGateLeftRel * size.x, pos.y + (1. - distanceInner) * size.y);
-         float2(pos.x + angleGateLeftRel * size.x, pos.y + (1. - distanceOuter) * size.y)]])
+        let lcoord <- to_array_move(fixed_array<float2>(float2(pos.x + angleGateLeftRel * size.x, pos.y + (1. - distanceInner) * size.y),
+         float2(pos.x + angleGateLeftRel * size.x, pos.y + (1. - distanceOuter) * size.y)))
         ctx |> render_line_aa(lcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
-        let rcoord <- to_array_move([[float2[2] float2(pos.x + angleGateRightRel * size.x, pos.y + (1. - distanceInner) * size.y);
-         float2(pos.x + angleGateRightRel * size.x, pos.y + (1. - distanceOuter) * size.y)]])
+        let rcoord <- to_array_move(fixed_array<float2>(float2(pos.x + angleGateRightRel * size.x, pos.y + (1. - distanceInner) * size.y),
+         float2(pos.x + angleGateRightRel * size.x, pos.y + (1. - distanceOuter) * size.y)))
         ctx |> render_line_aa(rcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
       if !target.isEnemy
         let iffMarkDistRel = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
-        let coord <- to_array_move([[float2[2] float2(pos.x + angleLeft * size.x, pos.y + (1. - iffMarkDistRel) * size.y);
-         float2(pos.x + angleRight * size.x, pos.y + (1. - iffMarkDistRel) * size.y)]])
+        let coord <- to_array_move(fixed_array<float2>(float2(pos.x + angleLeft * size.x, pos.y + (1. - iffMarkDistRel) * size.y),
+         float2(pos.x + angleRight * size.x, pos.y + (1. - iffMarkDistRel) * size.y)))
         ctx |> render_line_aa(coord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
       if target.isAttacked
         let attackMarkDistRel = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + attackDistRelMult) * radialWidthRel
-        let coord <- to_array_move([[float2[2] float2(pos.x + angleRel * size.x, pos.y + (1. - attackMarkDistRel) * size.y);
-         float2(pos.x + angleRel * size.x, pos.y + (1. - attackMarkDistRel + attackHeightRel) * size.y)]])
+        let coord <- to_array_move(fixed_array<float2>(float2(pos.x + angleRel * size.x, pos.y + (1. - attackMarkDistRel) * size.y),
+         float2(pos.x + angleRel * size.x, pos.y + (1. - attackMarkDistRel + attackHeightRel) * size.y)))
         ctx |> render_line_aa(coord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
-      //animation
+      
 
       if target.isSelected && hasAzimuthScale
         if data.targetFormType == 0
@@ -1091,26 +1088,26 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
         elif data.targetFormType == 1 || data.targetFormType == 2
           ctx |> render_ellipse_aa(p, size * 0.03, ctx |> hdpx(2.), e3dColor, transparentColor)
           let sign = data.targetFormType == 1 ? 1. : -1.
-          let coord <- to_array_move([[float2[3]
-          float2(p.x - size.x * 0.02, p.y + size.y * 0.015 * sign);
-          float2(p.x, p.y - size.y * 0.03 * sign);
-          float2(p.x + size.x * 0.02, p.y + size.y * 0.015 * sign)]])
+          let coord <- to_array_move(fixed_array<float2>(
+          float2(p.x - size.x * 0.02, p.y + size.y * 0.015 * sign),
+          float2(p.x, p.y - size.y * 0.03 * sign),
+          float2(p.x + size.x * 0.02, p.y + size.y * 0.015 * sign)))
           ctx |> render_line_aa(coord, true, 1., float2(0, 0), e3dColor)
         if target.losSpeed < 3000.
-          let coord <- to_array_move([[float2[2] float2(pos.x + angleRel * size.x, pos.y + (1. - distanceRel) * size.y);
-           float2(pos.x + (angleRel - target.losHorSpeed * 0.0002) * size.x, pos.y + (1. - (distanceRel + target.losSpeed * 0.0002)) * size.y)]])
+          let coord <- to_array_move(fixed_array<float2>(float2(pos.x + angleRel * size.x, pos.y + (1. - distanceRel) * size.y),
+           float2(pos.x + (angleRel - target.losHorSpeed * 0.0002) * size.x, pos.y + (1. - (distanceRel + target.losSpeed * 0.0002)) * size.y)))
           ctx |> render_line_aa(coord, false, ctx |> hdpx(2. * data.lineWidth), float2(0, 0), e3dColor)
       else
         let angleCenter = (angleRight + angleLeft) * 0.5
         if data.targetFormType == 0
-          let coord <- to_array_move([[float2[2] float2(pos.x + angleLeft * size.x, pos.y + (1. - distanceRel) * size.y);
-           float2(pos.x + angleRight * size.x, pos.y + (1. - distanceRel) * size.y)]])
+          let coord <- to_array_move(fixed_array<float2>(float2(pos.x + angleLeft * size.x, pos.y + (1. - distanceRel) * size.y),
+           float2(pos.x + angleRight * size.x, pos.y + (1. - distanceRel) * size.y)))
           ctx |> render_line_aa(coord, false, ctx |> hdpx(100. * radialWidthRel), float2(0, 0), e3dColor)
         elif data.targetFormType == 1
-          let coord <- to_array_move([[float2[3]
-           float2(pos.x + angleLeft * size.x, pos.y + (1. - distanceRel + 0.02) * size.y);
-           float2(pos.x + angleCenter * size.x, pos.y + (1. - distanceRel - 0.02) * size.y);
-           float2(pos.x + angleRight * size.x, pos.y + (1. - distanceRel + 0.02) * size.y)]])
+          let coord <- to_array_move(fixed_array<float2>(
+           float2(pos.x + angleLeft * size.x, pos.y + (1. - distanceRel + 0.02) * size.y),
+           float2(pos.x + angleCenter * size.x, pos.y + (1. - distanceRel - 0.02) * size.y),
+           float2(pos.x + angleRight * size.x, pos.y + (1. - distanceRel + 0.02) * size.y)))
           ctx |> render_line_aa(coord, true, ctx |> hdpx(100. * radialWidthRel), float2(0, 0), e3dColor)
         elif data.targetFormType == 2
           let tc = float2(0., 0.)
@@ -1118,11 +1115,11 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
           ctx |> render_rect(pos.x + angleCenter * size.x - boxSize, pos.y + (1. - distanceRel) * size.y - boxSize,
            pos.x + angleCenter * size.x + boxSize, pos.y + (1. - distanceRel) * size.y + boxSize, tc, tc, tc)
 
-    elif (target.targetType == int(RadarTargetType TYPE_OWN_WEAPON) && !data.hideWeaponIndication)
+    elif (target.targetType == int(RadarTargetType.TYPE_OWN_WEAPON) && !data.hideWeaponIndication)
       if hasAzimuthScale
         ctx |> render_ellipse_aa(p, size * 0.005, ctx |> hdpx(2.), e3dColor, e3dColor)
 
-    elif (target.targetType == int(RadarTargetType TYPE_OWN_WEAPON_TARGET) && !data.hideWeaponIndication)
+    elif (target.targetType == int(RadarTargetType.TYPE_OWN_WEAPON_TARGET) && !data.hideWeaponIndication)
       if hasAzimuthScale && !target.isAttacked
         ctx |> render_ellipse_aa(p, size * 0.04, ctx |> hdpx(2.), e3dColor, transparentColor)
 
@@ -1136,28 +1133,28 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
         if ownWeaponLink.lockDistanceToDistance < 1.0
           let direction = float2(ownWeaponTargetPos[0] - ownWeaponPos[0], ownWeaponTargetPos[1] - ownWeaponPos[1])
           let lockPos = float2(ownWeaponPos[0] + direction[0] * ownWeaponLink.lockDistanceToDistance, ownWeaponPos[1] + direction[1] * ownWeaponLink.lockDistanceToDistance)
-          let coord <- to_array_move([[float2[2] ownWeaponPos; lockPos]])
+          let coord <- to_array_move(fixed_array<float2>(ownWeaponPos, lockPos))
           ctx |> render_line_aa(coord, false, ctx |> hdpx(2.), float2(0, 0), e3dColor)
           ctx |> render_line_dashed(lockPos, ownWeaponTargetPos, ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(2.), e3dColor)
         else
-          let coord <- to_array_move([[float2[2] ownWeaponPos; ownWeaponTargetPos]])
+          let coord <- to_array_move(fixed_array<float2>(ownWeaponPos, ownWeaponTargetPos))
           ctx |> render_line_aa(coord, false, ctx |> hdpx(2.), float2(0, 0), e3dColor)
 
 def b_scope_square_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   if !get_radar_hud_cue_visible()
     return
 
-  let color = is_color_or_white(data.lineColor)//remove is_color_or_white if use is_color on target sector
+  let color = is_color_or_white(data.lineColor)
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let cueAzimuthHwr = get_radar_hud_cue_azimuth_half_width_rel()
   let cueDistWidthRel =  get_radar_hud_cue_dist_width_rel()
   let cuePos = pos + float2((get_radar_hud_cue_azimuth() * (get_radar_hud_target_azimuth_width() / azimuthRange - cueAzimuthHwr) + 0.5) * size.x,
           (1. - (0.5 * cueDistWidthRel + get_radar_hud_cue_distance() * get_radar_hud_target_distance() * (1. - cueDistWidthRel))) * size.y)
-  let lcoord <- to_array_move([[float2[2] float2(cuePos.x - cueAzimuthHwr * size.x, cuePos.y - cueDistWidthRel * size.y * 0.5);
-   float2(cuePos.x - cueAzimuthHwr * size.x, cuePos.y + cueDistWidthRel * size.y * 0.5)]])
+  let lcoord <- to_array_move(fixed_array<float2>(float2(cuePos.x - cueAzimuthHwr * size.x, cuePos.y - cueDistWidthRel * size.y * 0.5),
+   float2(cuePos.x - cueAzimuthHwr * size.x, cuePos.y + cueDistWidthRel * size.y * 0.5)))
   ctx |> render_line_aa(lcoord, false, ctx |> hdpx(2. * data.lineWidth), float2(0, 0), color)
-  let rcoord <- to_array_move([[float2[2] float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y - cueDistWidthRel * size.y * 0.5);
-   float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y + cueDistWidthRel * size.y * 0.5)]])
+  let rcoord <- to_array_move(fixed_array<float2>(float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y - cueDistWidthRel * size.y * 0.5),
+   float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y + cueDistWidthRel * size.y * 0.5)))
   ctx |> render_line_aa(rcoord, false, ctx |> hdpx(2. * data.lineWidth), float2(0, 0), color)
 
   if data.cueHeights
@@ -1211,15 +1208,15 @@ def b_scope(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasP
 
 def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
   var fctx : StdGuiFontContext
-  get_font_context(fctx, data.fontId, 0, 0, data.fontSize/*hudFontHgt*/)
+  get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   var topOffset = 0.
   var leftOffset = 0.
   var rightOffset = 0.
   var bottomOffset = 0.
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
   ctx |> set_color(data.color)
-  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
 
   let hideMeasures = !get_radar_hud_has_azimuth_scale() || get_radar_hud_scan_azimuth_max() <= get_radar_hud_scan_azimuth_min()
   let deg = loc("measureUnits/deg")
@@ -1237,8 +1234,8 @@ def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
 
   let text90 = "90{deg}"
   let strBox90 = get_str_bbox(text90, text90 |> length(), fctx)
-  let textDist = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
-     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
+  let textDist = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
+     get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
   let textVel = get_radar_hud_has_distance_scale() ? textDist + (get_radar_hud_distance_scale_max() > 1 ? "*" : "") : ""
   let strBoxVel = get_str_bbox(textVel, textVel |> length(), fctx)
   rightOffset = max(strBoxVel.width.x, strBox90.width.x)
@@ -1310,7 +1307,7 @@ def b_scope_background(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   let angle = PI / 6.
   for i in range(0, 12)
     let edge = center + float2(size.x * 0.5 * cos(float(i) * angle), size.x * 0.5 * sin(float(i) * angle))
-    let coord <- to_array_move([[float2[2] center; edge]])
+    let coord <- to_array_move(fixed_array<float2>(center, edge))
     ctx |> render_line_aa(coord, false, ctx |> hdpx(1.2), float2(0, 0), color)
 
 def b_scope_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
@@ -1327,11 +1324,11 @@ def b_scope_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size 
   let cueAzimuthMin = turretAzimuth + cueAzimuth - cueAzimuthHalfWidthRel * azimuthRange
   let cueAzimuthMax = turretAzimuth + cueAzimuth + cueAzimuthHalfWidthRel * azimuthRange
 
-  let lcoord <- to_array_move([[float2[2] pos + float2(radiusMin * sin(cueAzimuthMin) * size.x, -radiusMin * cos(cueAzimuthMin) * size.y);
-   pos + float2(radiusMax * sin(cueAzimuthMin) * size.x, -radiusMax * cos(cueAzimuthMin) * size.y)]])
+  let lcoord <- to_array_move(fixed_array<float2>(pos + float2(radiusMin * sin(cueAzimuthMin) * size.x, -radiusMin * cos(cueAzimuthMin) * size.y),
+   pos + float2(radiusMax * sin(cueAzimuthMin) * size.x, -radiusMax * cos(cueAzimuthMin) * size.y)))
   ctx |> render_line_aa(lcoord, false, ctx |> hdpx(2.), float2(0, 0), data.color)
-  let rcoord <- to_array_move([[float2[2] pos + float2(radiusMin * sin(cueAzimuthMax) * size.x, -radiusMin * cos(cueAzimuthMax) * size.y);
-   pos + float2(radiusMax * sin(cueAzimuthMax) * size.x, -radiusMax * cos(cueAzimuthMax) * size.y)]])
+  let rcoord <- to_array_move(fixed_array<float2>(pos + float2(radiusMin * sin(cueAzimuthMax) * size.x, -radiusMin * cos(cueAzimuthMax) * size.y),
+   pos + float2(radiusMax * sin(cueAzimuthMax) * size.x, -radiusMax * cos(cueAzimuthMax) * size.y)))
   ctx |> render_line_aa(rcoord, false, ctx |> hdpx(2.), float2(0, 0), data.color)
 
 def c_scope(var ctx : GuiContext&; data : CanvasParams&; position : float2; total_size : float2)
@@ -1349,12 +1346,12 @@ def c_scope(var ctx : GuiContext&; data : CanvasParams&; position : float2; tota
 
 def c_scope_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   var fctx : StdGuiFontContext
-  get_font_context(fctx, data.fontId, 0, 0, data.fontSize/*hudFontHgt*/)
+  get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   var topOffset = 0.
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
   ctx |> set_color(data.color)
-  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
   let deg = loc("measureUnits/deg")
 
   let textElevMax = fmt(":.0f", floor(rad_to_deg(get_radar_hud_elevation_max()) + 0.5)) + deg
@@ -1376,8 +1373,8 @@ def c_scope_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
       topOffset = strBoxScan.width.y
 
     if get_radar_hud_has_distance_scale()
-      let distText = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
-       get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
+      let distText = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
+       get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
       textVel = distText + (get_radar_hud_distance_scale_max() > 1 ? "*" : "")
       let strBoxVel = get_str_bbox(textVel, textVel |> length(), fctx)
       topOffset = max(topOffset, strBoxVel.width.y)
@@ -1489,12 +1486,11 @@ def c_scope_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
   let e3dColor = E3DCOLOR(Color4(color))
   ctx |> set_color(e3dColor)
   let startPos = pos + float2(azimuth * size.x, (1. - elevation) * size.y)
-  let azimuthMark <- to_array_move([[float2[]
-    startPos + float2(-halfAzimuthWidth, -halfElevationWidth);
-    startPos + float2(halfAzimuthWidth, -halfElevationWidth);
-    startPos + float2(halfAzimuthWidth, halfElevationWidth);
-    startPos + float2(-halfAzimuthWidth, halfElevationWidth);
-  ]])
+  let azimuthMark <- to_array_move(fixed_array(
+    startPos + float2(-halfAzimuthWidth, -halfElevationWidth),
+    startPos + float2(halfAzimuthWidth, -halfElevationWidth),
+    startPos + float2(halfAzimuthWidth, halfElevationWidth),
+    startPos + float2(-halfAzimuthWidth, halfElevationWidth)))
   ctx |> render_poly(azimuthMark, e3dColor)
   ctx |> render_line_aa(azimuthMark, true, ctx |> hdpx(1.2), float2(0., 0.), data.color)
 
@@ -1542,18 +1538,18 @@ def c_scope_targets(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
     let elevationGateLower = (1. - target.elevationRel + 0.5 * elevationGateWidthRel) * size.y
     let elevationGateUpper = (1. - target.elevationRel - 0.5 * elevationGateWidthRel) * size.y
     if target.isDetected || target.isSelected
-      let lcoord <- to_array_move([[float2[2] pos + float2(azimuthGateLeft, elevationGateLower);
-        pos + float2(azimuthGateLeft, elevationGateUpper)]])
+      let lcoord <- to_array_move(fixed_array<float2>(pos + float2(azimuthGateLeft, elevationGateLower),
+        pos + float2(azimuthGateLeft, elevationGateUpper)))
       ctx |> render_line_aa(lcoord, false, ctx |> hdpx(3.), float2(0, 0), e3dColor)
-      let rcoord <- to_array_move([[float2[2] pos + float2(azimuthGateRight, elevationGateLower);
-        pos + float2(azimuthGateRight, elevationGateUpper)]])
+      let rcoord <- to_array_move(fixed_array<float2>(pos + float2(azimuthGateRight, elevationGateLower),
+        pos + float2(azimuthGateRight, elevationGateUpper)))
       ctx |> render_line_aa(rcoord, false, ctx |> hdpx(3.), float2(0, 0), e3dColor)
-    if target.isSelected //animation ?
-      let bcoord <- to_array_move([[float2[2] pos + float2(azimuthGateLeft, elevationGateLower);
-        pos + float2(azimuthGateRight, elevationGateLower)]])
+    if target.isSelected 
+      let bcoord <- to_array_move(fixed_array<float2>(pos + float2(azimuthGateLeft, elevationGateLower),
+        pos + float2(azimuthGateRight, elevationGateLower)))
       ctx |> render_line_aa(bcoord, false, ctx |> hdpx(3.), float2(0, 0), e3dColor)
-      let tcoord <- to_array_move([[float2[2] pos + float2(azimuthGateLeft, elevationGateUpper);
-        pos + float2(azimuthGateRight, elevationGateUpper)]])
+      let tcoord <- to_array_move(fixed_array<float2>(pos + float2(azimuthGateLeft, elevationGateUpper),
+        pos + float2(azimuthGateRight, elevationGateUpper)))
       ctx |> render_line_aa(tcoord, false, ctx |> hdpx(3.), float2(0, 0), e3dColor)
 
 def c_scope_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
@@ -1568,11 +1564,11 @@ def c_scope_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size 
 
 def c_scope_inner_labels(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   var fctx : StdGuiFontContext
-  get_font_context(fctx, data.fontId, 0, 0, data.fontSize/*hudFontHgt*/)
+  get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
   ctx |> set_color(data.color)
-  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
 
   let azMinText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
   let strBoxAzMin = get_str_bbox(azMinText, azMinText |> length(), fctx)
@@ -1594,17 +1590,15 @@ def b_scope_square_aviahorizont(var ctx : GuiContext&; data : CanvasParams&; pos
 
   ctx |> setRotViewTm(pos.x + size.x * 0.5, pos.y + size.y * 0.5, deg_to_rad(fmw.roll), 0., false)
 
-  let linePtsLeft <- to_array_move([[float2[]
-    float2(pos.x + size.x * 0.2, pos.y + size.y * 0.52);
-    float2(pos.x + size.x * 0.2, pos.y + size.y * 0.5);
-    float2(pos.x + size.x * 0.45, pos.y + size.y * 0.5);
-  ]])
+  let linePtsLeft <- to_array_move(fixed_array(
+    float2(pos.x + size.x * 0.2, pos.y + size.y * 0.52),
+    float2(pos.x + size.x * 0.2, pos.y + size.y * 0.5),
+    float2(pos.x + size.x * 0.45, pos.y + size.y * 0.5)))
 
-  let linePtsRight <- to_array_move([[float2[]
-    float2(pos.x + size.x * 0.8, pos.y + size.y * 0.52);
-    float2(pos.x + size.x * 0.8, pos.y + size.y * 0.5);
-    float2(pos.x + size.x * 0.55, pos.y + size.y * 0.5);
-  ]])
+  let linePtsRight <- to_array_move(fixed_array(
+    float2(pos.x + size.x * 0.8, pos.y + size.y * 0.52),
+    float2(pos.x + size.x * 0.8, pos.y + size.y * 0.5),
+    float2(pos.x + size.x * 0.55, pos.y + size.y * 0.5)))
 
   ctx |> render_line_aa(linePtsLeft, false, 2.0 * data.lineWidth, float2(0., 0.), data.lineColor)
   ctx |> render_line_aa(linePtsRight, false, 2.0 * data.lineWidth, float2(0., 0.), data.lineColor)

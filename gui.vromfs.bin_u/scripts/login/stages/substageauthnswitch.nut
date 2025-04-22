@@ -16,7 +16,7 @@ function login_nso_cb(result) {
   else if (status == nswitchAccount.COMMUNICATION_ERROR)
     nsa_error = "nswitch/login/nso_communication_error"
   else if ([nswitchAccount.NSO_SUBSRIPTION_FAILED, nswitchAccount.TOKEN_CACHE_UNAVAILABLE].contains(status))
-    //possible player has no NSO/NSA, it's not an error, but mp session will be disabled
+    
     logN("nswitch: active user have no nso permissions")
   else if (status == nswitchAccount.TIMEOUT)
     nsa_error = "nswitch/login/nso_timeout_error"
@@ -31,7 +31,7 @@ function login_nso_cb(result) {
 
   logN($"AppMakingConnectionId {nswitchAccount.getAppMakingConnectionId()}")
 
-  // all ok, prepare login to auth
+  
   let token = nswitchAccount.getNsaToken()
   let player_id = nswitchAccount.getNickname()
 
@@ -42,11 +42,11 @@ function login_nswitch() {
   let user_id = nswitchAccount.getUserId()
   logN($"login NSO for user {user_id}")
 
-  //nswitchAccount.createProfileImageTex("nx_profile_image")
-  //update & load shader cache while user logging in
-  //shaderCacheUpdateFromNetwork()
+  
+  
+  
 
-  // application blocked while NSA applet display, we cant drive game here
+  
   local nsa_error = nswitchAccount.loadNsaToken()
   local login_nintnendo_state = null
 
@@ -70,14 +70,14 @@ function login_nswitch() {
   }
 
   logN("login_nintnendo_state:{0}".subst(login_nintnendo_state?login_nintnendo_state:"no_error"))
-  if (nsa_error == nswitchAccount.OK) {// all ok, no errors
+  if (nsa_error == nswitchAccount.OK) {
 
     subscribe_onehit("nswitch.account.onNsoStatus", function(result) {
       local status = result.status
       logN($"Received answer for remote authorize status: {status}")
       if (status == nswitchAccount.OK) {
         login_nso_cb({ status })
-      } else { //possible player have not network, rule 0134 need to notify player about it
+      } else { 
         logN($"login_nswitch_online - network issue: {status}")
         login_send_callback({errorStr = "nswitch/login/network_error"})
       }

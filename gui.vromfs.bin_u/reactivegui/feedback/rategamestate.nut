@@ -48,7 +48,7 @@ let SAVE_ID_SEEN = $"{SAVE_ID_BLK}/seen"
 let SAVE_ID_BATTLES = $"{SAVE_ID_BLK}/battles"
 let SAVE_ID_LOGIN_COUNT = $"{SAVE_ID_BLK}/loginCount"
 
-let REVIEW_IS_AVAILABLE = !is_nswitch // if false then dont show any review
+let REVIEW_IS_AVAILABLE = !is_nswitch 
 
 let userFeedbackTube = "user_feedback"
 let pollId = "review_que"
@@ -116,13 +116,13 @@ let showAfterBattlesCount = Computed(@() lastSeenDate.value == 0 ? 0
 )
 
 let isGameUnrated = Computed(@()
-  ((IS_PLATFORM_STORE_AVAILABLE && !isRatedOnStore.value) || savedRating.value == 0)) //warning disable: -const-in-bool-expr
+  ((IS_PLATFORM_STORE_AVAILABLE && !isRatedOnStore.value) || savedRating.value == 0)) 
 
 function needRateGameByDebriefing(dData) {
   let { sessionId = -1, isFinished = false, isTutorial = false, campaign = "", players = {} } = dData
   if (!isFinished || isTutorial)
     return false
-  if (sessionId == -1) //not multiplayer
+  if (sessionId == -1) 
     return true
   let player = players?[myUserIdStr.get()]
   if (player == null)
@@ -133,7 +133,7 @@ function needRateGameByDebriefing(dData) {
 }
 
 let needRateGame = Computed(@() allow_review_cue.get()
-  && REVIEW_IS_AVAILABLE //warning disable: -const-in-bool-expr
+  && REVIEW_IS_AVAILABLE 
   && isGameUnrated.get()
   && !isRateGameSeen.get()
   && lastBattles.get().len() >= showAfterBattlesCount.get()

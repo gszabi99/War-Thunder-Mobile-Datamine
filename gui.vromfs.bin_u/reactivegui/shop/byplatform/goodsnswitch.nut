@@ -111,7 +111,7 @@ isAuthorized.subscribe(function(v) {
   products({})
 })
 
-//currently checking only EU, but need to add other regions
+
 let getProductId = @(goods) goods?.purchaseGuids?.switch_EU.extId
 
 let goodsIdByProductId = Computed(function() {
@@ -135,7 +135,7 @@ let platformGoods = Computed(function() {
     let goodsId = productToGoodsId?[productId]
     let goods = allGoods?[goodsId]
     if (goods != null)
-      res[goodsId] <- goods.__merge({ priceExt }) //warning disable: -potentially-nulled-index
+      res[goodsId] <- goods.__merge({ priceExt }) 
   }
   return res
 })
@@ -216,7 +216,7 @@ eventbus_subscribe("nswitch.eshop.onItemsRequested", function(val) {
   }
 })
 
-//on initialize it will request items list and send it to nswitch.eshop.onItemsRequested
+
 initialize()
 
 return {

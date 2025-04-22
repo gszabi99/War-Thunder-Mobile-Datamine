@@ -32,9 +32,9 @@ let readySendFirebaseBq = keepref(Computed(@() firebaseAppInstanceId.value!=null
   && storedUserIdForFirebase.value != myUserId.value))
 
 function convertToSha256Email(login) {
-  //validate on valid email
-  //remove dots before @gmail.com or @googlemail.com
-  //comvert to lowercase, remove spaces
+  
+  
+  
   let emailReg = regexp2(@"((\w+)(\.{1}\w+)*@(\w+)(\.\w+)+)")
   if (!emailReg.match(login))
     return ""
@@ -70,8 +70,8 @@ function sendEvent(id) {
   log($"[telemetry] send event {id}")
   logEvent($"af_{id}", "")
   logEventFB($"fb_{id}")
-  //do not use event names from this list https://firebase.google.com/docs/reference/ios/firebaseanalytics/api/reference/Classes/FIRAnalytics#/c:objc(cs)FIRAnalytics(cm)logEventWithName:parameters:
-  //standart event names can use optinal parameters https://firebase.google.com/docs/reference/ios/firebaseanalytics/api/reference/Constants#/c:FIREventNames.h
+  
+  
   logFirebaseEvent(id)
 }
 
@@ -81,7 +81,7 @@ myUserId.subscribe(function(v) {
     setAppsFlyerCUID(uid)
     setBillingUUID(uid)
     setFirebaseUID(uid)
-    setUserEmail(getLogin()) //email validation is inside appsflyer lib
+    setUserEmail(getLogin()) 
     let blk = get_common_local_settings_blk()
     let wasLoginedBefore = blk?[FIRST_LOGIN_EVENT] ?? false
     if (!wasLoginedBefore) {

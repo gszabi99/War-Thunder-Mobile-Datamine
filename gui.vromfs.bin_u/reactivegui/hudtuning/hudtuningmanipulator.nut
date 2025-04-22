@@ -9,7 +9,7 @@ let { tuningUnitType, transformInProgress, isElemHold, applyTransformProgress, s
 
 let INC_AREA = sh(2)
 let START_MOVE_TIME_MSEC = 300
-let MOVE_MIN_THRESHOLD = sh(1) //ignore threshold after START_MOVE_TIME
+let MOVE_MIN_THRESHOLD = sh(1) 
 let pointer = Watched(null)
 
 let isHit = @(aabb, x, y) aabb.l <= x && aabb.r >= x && aabb.t <= y && aabb.b >= y

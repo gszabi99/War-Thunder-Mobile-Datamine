@@ -105,7 +105,7 @@ if (isInBattle.value) {
 
 let connectionTypeMap = {
   [-1] = "Unknown",
-  [0]  = "No connection" ,// Should be impossible (how do we send data then?)
+  [0]  = "No connection" ,
   [1] =  "Cellular",
   [2] =  "Wi-Fi",
 }

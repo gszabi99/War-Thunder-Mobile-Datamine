@@ -2,11 +2,11 @@
 let platform = require("%sqstd/platform.nut")
 
 return platform.__merge({
-  // TODO: Remove those deprecated aliases
+  
   targetPlatform = platform.platformId
   isPlatformPC = platform.is_pc
 
-  // TODO: Remove all not supported platforms
+  
   isPlatformXboxOne = false
   isPlatformPS4 = false
   isPlatformPS5 = false

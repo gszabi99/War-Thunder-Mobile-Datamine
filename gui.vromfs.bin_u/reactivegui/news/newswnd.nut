@@ -165,7 +165,7 @@ function articleTabBase(info, sf, isSelected, isUnseen) {
             color = isActive ? activeTextColor : textColor
             text = shortTitle ?? title
 
-            // For marquee:
+            
             orientation = O_VERTICAL
             speed = hdpx(30)
             delay = defMarqueeDelay
@@ -229,7 +229,7 @@ let seeMoreUrl = {
   margin = [hdpx(50), 0, 0, 0]
 }
 
-function scrollArticle() {  //FIX ME: Remove this code, when native scroll will have opportunity to scroll by hotkeys.
+function scrollArticle() {  
   let element = scrollHandler.elem
   if (element != null)
     scrollHandler.scrollToY(element.getScrollOffsY() + scrollWatch.value * scrollStep)

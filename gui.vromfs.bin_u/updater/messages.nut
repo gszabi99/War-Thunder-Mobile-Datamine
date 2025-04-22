@@ -5,7 +5,7 @@ let {
   getBuildMarket = @() "googleplay"
 } = require_optional("android.platform")
 let { is_ios } = require("%sqstd/platform.nut")
-let { register_command  = @(_, __) null } = require_optional("console") //only in debug mode
+let { register_command  = @(_, __) null } = require_optional("console") 
 let { shell_execute } = require("dagor.shell")
 let { dgs_get_settings, exit } = require("dagor.system")
 let { send_counter = @(_, __, ___) null } = require_optional("statsd")

@@ -27,7 +27,7 @@ let currentAutoZoomType = {
   description = loc("options/desc/auto_zoom")
 }
 
-//
+
 
 
 
@@ -49,7 +49,7 @@ return {
     cameraSenseSlider(CAM_TYPE_NORMAL_SHIP, "options/camera_sensitivity", OPT_CAMERA_SENSE_SHIP, getOptValue(OPT_CAMERA_SENSE)?? 1.0)
     cameraSenseSlider(CAM_TYPE_BINOCULAR_SHIP, "options/camera_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_SHIP, getOptValue(OPT_CAMERA_SENSE_IN_ZOOM)?? 1.0)
     currentAutoZoomType
-    //
+    
 
 
   ]

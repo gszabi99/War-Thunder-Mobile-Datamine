@@ -28,7 +28,7 @@ let nextDebrTabId = Computed(function() {
 
 let stopDebriefingAnimation = @() isDebriefingAnimFinished.set(true)
 
-let maxDebrAnimTime = 20 // For emergency cases
+let maxDebrAnimTime = 20 
 
 let getBtnsDelayForTab = @(tabId, isAnimFinished, curTabId, tabsShowTime) isAnimFinished || tabId < curTabId ? 0
   : tabId == curTabId ? max(0, (tabsShowTime.findvalue(@(v) v.id == tabId)?.timeShow ?? 0) - buttonsShowTime)
@@ -44,7 +44,7 @@ let delayToDebrAnimFinish = keepref(Computed(function() {
     return 0
   local res = 0
   let tabsShowTime = debrTabsShowTime.get()
-  for (local i = idx; i < tabsShowTime.len(); i++) // -w200
+  for (local i = idx; i < tabsShowTime.len(); i++) 
     res += tabsShowTime[i].timeShow
   return res
 }))

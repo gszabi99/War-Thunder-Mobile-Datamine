@@ -42,7 +42,7 @@ return @() [
     moveX = sh(-5.3)
     children = mkBgImageByPx("ui/bkg/login_layer_testloading_9?x1ac", [292, 224], [1851, 462])
   }
-  { //static circle shade
+  { 
     children = mkBgImageByPx("ui/bkg/login_layer_4", [pw(1.3), ph(1.8)], [pw(-0.15), ph(-0.4)])
   }
 ]

@@ -7,10 +7,10 @@ let itemBigHeight = 2 * itemHeight + itemGap
 let itemBigWidth = 2 * itemWidth + itemGap
 let backItemOffset = hdpx(10)
 
-let BEFORE_APPEAR = -1 //used only for animated show after switch full period
+let BEFORE_APPEAR = -1 
 let BEFORE_7_DAY = 0
 let AFTER_7_DAY = 1
-let AFTER_14_DAY = 2 //previos blocks
+let AFTER_14_DAY = 2 
 
 let SLOT_COMMON = ""
 let SLOT_BIG = "big"
@@ -34,7 +34,7 @@ let rewardsPlaces = [
   { transformByState = { [BEFORE_7_DAY] = { translate = [0, itemHeight + itemGap] } } }
   { transformByState = { [BEFORE_7_DAY] = { translate = [itemWidth + itemGap, itemHeight + itemGap] } } }
   { transformByState = { [BEFORE_7_DAY] = { translate = [2 * (itemWidth + itemGap), itemHeight + itemGap] } } }
-  //day 7 big reward
+  
   {
     slotType = SLOT_BIG
     size = [itemWidth, itemBigHeight]
@@ -91,7 +91,7 @@ let rewardsPlaces = [
       },
     }
   }
-  //day 14 biggest reward
+  
   {
     slotType = SLOT_HUGE
     size = [itemBigWidth, itemBigHeight]

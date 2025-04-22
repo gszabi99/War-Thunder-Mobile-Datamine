@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { fabs, round } = require("math")
 let { get_time_msec } = require("dagor.time")
 let { clearTimer, resetTimeout, setInterval } = require("dagor.workcycle")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
@@ -42,7 +42,7 @@ function previewOffer() {
 
   if (reqAddonsToShowOffer.get().len() == 0) {
     openGoodsPreview(visibleOffer.get().id)
-    if (previewType.get() == null) { //no preview for such goods yet
+    if (previewType.get() == null) { 
       buyPlatformGoods(visibleOffer.get())
       sendOfferBqEvent("gotoPurchaseFromBanner", visibleOffer.get().campaign)
     }
@@ -73,7 +73,7 @@ function previewOfferByGoods(id) {
   }
 
   openGoodsPreview(id)
-  if (previewType.get() == null) //no preview for such goods yet
+  if (previewType.get() == null) 
     buyPlatformGoods(offer)
 }
 

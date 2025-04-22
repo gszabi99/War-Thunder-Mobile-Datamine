@@ -11,7 +11,7 @@ let { systemOptions } = require("options/systemOptions.nut")
 let { gameOptions } = require("options/gameOptions.nut")
 let { mkOptionsScene } = require("mkOptionsScene.nut")
 
-let tabs = [ // id, locId, image, options, content
+let tabs = [ 
   {
     id = "graphic"
     locId = "options/graphicsParameters"

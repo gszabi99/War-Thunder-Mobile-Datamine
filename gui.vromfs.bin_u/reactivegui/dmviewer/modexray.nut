@@ -78,8 +78,8 @@ function mkPartTooltipInfo(name, unitData) {
 
   let { xrayRemap, xrayOverride, simUnitType } = unitData
   let partType = getPartType(name, xrayRemap)
-  let description = "" // TODO
-  let partLocId = null // TODO
+  let description = "" 
+  let partLocId = null 
   let { overrideTitle = "", hideDescription = false } = xrayOverride?[name]
   let titleLocId = overrideTitle != "" ? overrideTitle : (partLocId ?? partType)
   res.__update({

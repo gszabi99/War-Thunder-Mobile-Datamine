@@ -1,18 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
+let { register_command } = require("console")
 let { eventbus_send } = require("eventbus")
 let { getCountryCode } = require("auth_wt")
 let { isDownloadedFromGooglePlay } = require("android.platform")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { is_ios, is_android } = require("%sqstd/platform.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { abTests } = require("%appGlobals/pServer/campaign.nut")
 let { isConsentWasAutoSkipped, needOpenConsentWnd } = require("%rGui/notifications/consent/consentState.nut")
 let { set_mute_sound } = require("soundOptions")
 
 
 let RETRY_LOAD_TIMEOUT = 120
-let RETRY_INC_TIMEOUT = 60 //increase time with each fail, but reset on success. Also retry after battle without timeout
+let RETRY_INC_TIMEOUT = 60 
+
+let isDebugMode = hardPersistWatched("adsMediationNetworks.isDebugMode", false)
 
 let hasAdsPreloadError = Watched(false)
 let adsPreloadParams = Watched(null)
@@ -44,8 +48,21 @@ let providersId = is_ios ? "iOS"
   : isDownloadedFromGooglePlay() ? "android_gp"
   : "android_apk"
 let fbProvidersId = is_android ? "android" : providersId
-let allProviders = keepref(Computed(@() !isLoggedIn.get() ? {}
-  : (serverConfigs.get()?.adsCfg[providersId] ?? serverConfigs.get()?.adsCfg[fbProvidersId] ?? {})))
+let allProviders = keepref(Computed(function() {
+  if (!isLoggedIn.get())
+    return {}
+  let { adsCfg  = null } = serverConfigs.get()
+
+  local abPostfix = abTests.get()?.adsMediationNetworks ?? ""
+  if (isDebugMode.get())
+    abPostfix = abPostfix == "" ? "_with_app_lovin" : ""
+
+  return adsCfg?[$"{providersId}{abPostfix}]"]
+    ?? adsCfg?[providersId]
+    ?? adsCfg?[$"{fbProvidersId}{abPostfix}]"]
+    ?? adsCfg?[fbProvidersId]
+    ?? {}
+}))
 let providerShows = hardPersistWatched("ads.providerShows", {})
 
 let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
@@ -95,6 +112,8 @@ function openAdsPreloader(rInfo) {
     needOpenConsentWnd.set(true)
   adsPreloadParams.set(rInfo)
 }
+
+register_command(@() isDebugMode.set(!isDebugMode.get()), "debug.toggleAbTest.adsMediationNetworks")
 
 return {
   RETRY_LOAD_TIMEOUT

@@ -94,7 +94,7 @@ let needFreeRefreshSlots = keepref(Computed(function() {
       || freeRefreshErrorSoon.get() == previewGoods.get()?.id
       || shopPurchaseInProgress.get() == previewGoods.get()?.id
       || shopGenSlotInProgress.get() == previewGoods.get()?.id
-      || rerollCost.get() == null) //this mean that slots config is exists
+      || rerollCost.get() == null) 
     return false
   return getDay(rewardSlots.get()?.time ?? 0, dayOffset.get()) != serverTimeDay.get()
     || rewardSlots.get()?.isPurchased
@@ -299,7 +299,7 @@ let playPurchaseSound = @(currencyId)
   playSound(currencyId == GOLD ? "meta_products_for_gold" : "meta_products_for_money")
 
 function purchaseSelectedSlot(id, price, currencyId) {
-  if (selIndex.get() < 0) //blueprints list was refreashed behind confirm message
+  if (selIndex.get() < 0) 
     return
   buy_goods_slot(id, selIndex.get(), currencyId, price)
   playPurchaseSound(currencyId)

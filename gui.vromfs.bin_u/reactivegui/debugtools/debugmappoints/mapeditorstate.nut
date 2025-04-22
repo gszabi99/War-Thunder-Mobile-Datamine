@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { removefile = @(_) null, file } = require("io")
+let { removefile, file } = require("io")
 let { scan_folder, read_text_from_file } = require("dagor.fs")
 let { register_command } = require("console")
 let { object_to_json_string, parse_json } = require("json")
@@ -45,7 +45,7 @@ let historyMapElements = mkWatched(persist, "historyMapElements", [])
 let selectedElem = mkWatched(persist, "selectedElem", null)
 let currentPresetId = mkWatched(persist, "currentPresetId", null)
 
-let hasViewChanges = Watched(false) //it become not actual after script reload
+let hasViewChanges = Watched(false) 
 let transformInProgress = Watched(null)
 let isShiftPressed = Watched(false)
 
@@ -150,14 +150,14 @@ function writePresetToFile(id, preset) {
   let presetfile = file($"{SAVE_PATH}/{id}{SAVE_EXT}", "wt+")
   presetfile.writestring(object_to_json_string(preset, true))
   presetfile.close()
-  dlog($"Saved to: wtm/globals/config/eventMapPresets/{id}") //warning disable: -forbidden-function
+  dlog($"Saved to: wtm/globals/config/eventMapPresets/{id}") 
 }
 
 function deleteFileByPresetId(id) {
   let path = $"{SAVE_PATH}/{id}{SAVE_EXT}"
   let status = removefile(path)
   if (status)
-    dlog($"The file {id} has been deleted") //warning disable: -forbidden-function
+    dlog($"The file {id} has been deleted") 
   else
     logerr($"Error while trying to delete file: {path}")
 }
@@ -355,7 +355,7 @@ function deleteElement(id, eType, subId) {
     midpoints.remove(id)
     lines[subId] = lines[subId].__merge({ midpoints })
     changeCurPresetField("lines", lines)
-    selectElem(subId, ELEM_LINE) //--param-pos
+    selectElem(subId, ELEM_LINE) 
     return
   }
 }
@@ -432,9 +432,9 @@ function applyTransformProgress() {
     if (id not in presetLines.get()?[subId].midpoints)
       return
     let lines = clone loadedPreset.get().lines
-    let midpoints = clone lines[subId].midpoints //--potentially-nulled-index
+    let midpoints = clone lines[subId].midpoints 
     midpoints[id] = posExt
-    lines[subId] = lines[subId].__merge({ midpoints }) //--potentially-nulled-index
+    lines[subId] = lines[subId].__merge({ midpoints }) 
     changeCurPresetField("lines", lines)
     return
   }

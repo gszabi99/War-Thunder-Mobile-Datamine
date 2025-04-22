@@ -52,13 +52,13 @@ function errorCodeToString(error_code) {
     return "80130182"
   else if ([YU2_WRONG_LOGIN,YU2_WRONG_PARAMETER].contains(error_code))
     return "80130183"
-  else if (error_code == YU2_FROZEN) // account is frozen
+  else if (error_code == YU2_FROZEN) 
     return "8111000E"
   else if (error_code == YU2_FROZEN_BRUTEFORCE)
-    return "8111000F" // ERRCODE_AUTH_ACCOUNT_FROZEN_BRUTEFORCE
+    return "8111000F" 
 
   else if (error_code == YU2_SSL_CACERT)
-    return "80130184" // special error for this
+    return "80130184" 
 
   else if (error_code == YU2_WRONG_2STEP_CODE) {
     let { secStepType } = authState.value

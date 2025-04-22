@@ -1,4 +1,4 @@
-// warning disable: -file:forbidden-function
+
 from "%globalsDarg/darg_library.nut" import *
 let { startSound, playSound, stopSound } = require("sound_wt")
 let { inspectorToggle } = require("%darg/helpers/inspector.nut")

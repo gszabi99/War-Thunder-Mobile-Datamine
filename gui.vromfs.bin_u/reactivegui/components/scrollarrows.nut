@@ -18,6 +18,7 @@ let scrollArrowImageSmallSize = evenPx(50)
 
 let scrollArrowImageBig = mkArrowImageComp(evenPx(88))
 let scrollArrowImageSmall = mkArrowImageComp(scrollArrowImageSmallSize)
+let scrollArrowImageVerySmall = mkArrowImageComp(evenPx(30))
 
 let mkIsShow = {
   [MR_T] = @(scrollHandler) Computed(@() (scrollHandler.elem?.getScrollOffsY() ?? 0) > 0),
@@ -50,7 +51,7 @@ let posParams = {
   },
 }
 
-// IMPORTANT: Pannable MUST have Behaviors.ScrollEvent behavior, and scrollHandler attached.
+
 function mkScrollArrow(scrollHandler, align, arrowImageComp = scrollArrowImageBig, ovr = {}) {
   let isShow = mkIsShow[align](scrollHandler)
   return @() arrowImageComp.__merge(posParams[align],
@@ -66,4 +67,5 @@ return {
   mkScrollArrow
   scrollArrowImageSmall
   scrollArrowImageSmallSize
+  scrollArrowImageVerySmall
 }

@@ -7,7 +7,7 @@ let { getServerTime } = require("%appGlobals/userstats/serverTime.nut")
 let { sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { get_user_system_info = @() null } = require_optional("sysinfo")
 let servProfile = require("servProfile.nut")
-let { get_game_version_str = @() "-" } = require_optional("app") //updater does not have module app
+let { get_game_version_str = @() "-" } = require_optional("app") 
 
 function addEventTime(data, key = "eventTime") {
   let time = getServerTime()

@@ -91,7 +91,7 @@ registerHandler("onDebugOfferUnits",
     foreach(campaign, cUnits in unitsByCamp)
       textsByCamp.append({
         campaign
-        units = cUnits.sort(unitsSort)  // warning disable: -unwanted-modification
+        units = cUnits.sort(unitsSort)  
           .map(@(u) $"{u.rank} {getRomanNumeral(u.mRank)} {u.name}")
       })
     textsByCamp.sort(@(a, b) a.campaign <=> b.campaign)

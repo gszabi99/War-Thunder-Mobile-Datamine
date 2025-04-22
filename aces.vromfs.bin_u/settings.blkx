@@ -18,6 +18,8 @@
   "entitiesBlk": "%gameBase/templates/entities_wtm.blk",
   "game_das_script_init": "%appGame/wtm_init.das",
   "game_das_loading_threads": 2,
+  "game_das_enable_serialization": true,
+  "game_das_serialization_remove_cache": false,
   "localizationVrom": "lang.vromfs.bin",
   "localizationRegionalVrom": "",
   "addAllAddonsToBasePath": false,
@@ -32,6 +34,17 @@
   "fastReturnToPanorama": true,
   "rendinstOcclusionByUnitType": true,
   "__allowedConfigOverrides": {},
+  "game_das_serialization_scan_paths": {
+    "it": [
+      "%danetlibs",
+      "%game",
+      "%appGame",
+      "%daslib",
+      "%dasImgui",
+      "%dasGameLibs",
+      "%dedScripts"
+    ]
+  },
   "_gameres": {
     "basePkgDir": "content/base/res",
     "patchRoot": "patch"
@@ -128,6 +141,14 @@
     "%wtlibs": {
       "forSource": "../../skyquake/prog/wtlibs",
       "forVromfs": "wtlibs"
+    },
+    "%dasImgui": {
+      "forSource": "../../prog/1stPartyLibs/daScript/modules/dasImgui/daslib",
+      "forVromfs": "daslib"
+    },
+    "%imgui": {
+      "forSource": "../../skyquake/prog/scripts/das/imgui",
+      "forVromfs": "das/imgui"
     }
   },
   "addonBasePath": {
@@ -167,7 +188,8 @@
       },
       {
         "vrom": "dscripts.vromfs.bin",
-        "vromIgnoreForClient": true
+        "vromIgnoreForClient": true,
+        "src": "../../skyquake/prog/scripts/wtm"
       },
       {
         "vrom": "gui.vromfs.bin",
@@ -227,7 +249,10 @@
     "pkg_models_min": {
       "contentForAllPackages": true,
       "hq": false,
-      "modelsPatch": false
+      "modelsPatch": false,
+      "conditions": {
+        "isDownloadFirst": true
+      }
     },
     "hq_tex": {
       "folder": "content.hq/hq_tex",
@@ -237,46 +262,236 @@
     },
     "pkg_video": {
       "hq": false,
-      "modelsPatch": false
+      "modelsPatch": false,
+      "conditions": {
+        "campaign": "tanks",
+        "isDownloadLast": true
+      }
     },
     "pkg_secondary": {
       "base": true,
-      "hq": false
+      "hq": false,
+      "conditions": {
+        "isDownloadFirst": true
+      }
     },
     "pkg_secondary_hq": {
       "folder": "content.hq/pkg_secondary_hq",
       "hq": false,
-      "modelsPatch": false
+      "modelsPatch": false,
+      "conditions": {
+        "isDownloadFirst": true
+      }
     },
     "pkg_dev": {},
-    "pkg_common": {},
-    "pkg_ground": {},
-    "pkg_naval": {},
+    "pkg_common": {
+      "conditions": [
+        {
+          "campaign": "air"
+        },
+        {
+          "campaign": "ships"
+        },
+        {
+          "campaign": "tanks"
+        }
+      ]
+    },
+    "pkg_ground": {
+      "conditions": {
+        "campaign": "tanks"
+      }
+    },
+    "pkg_naval": {
+      "conditions": {
+        "campaign": "ships"
+      }
+    },
     "pkg_april_fools_event_2025": {},
-    "pkg_tier_1_naval": {},
-    "pkg_tier_2_naval": {},
-    "pkg_tier_3_naval": {},
-    "pkg_tier_4_naval": {},
-    "pkg_tier_5_naval": {},
-    "pkg_tier_1_ground": {},
-    "pkg_tier_2_ground": {},
-    "pkg_tier_3_ground": {},
-    "pkg_tier_4_ground": {},
-    "pkg_tier_5_ground": {},
-    "pkg_tier_6_ground": {},
-    "pkg_tier_7_ground": {},
-    "pkg_tier_1_aircraft": {},
-    "pkg_tier_2_aircraft": {},
-    "pkg_tier_3_aircraft": {},
-    "pkg_tier_4_aircraft": {},
-    "pkg_tier_5_aircraft": {},
-    "pkg_tier_6_aircraft": {},
-    "pkg_tier_7_aircraft": {},
-    "pkg_tier_8_aircraft": {},
-    "pkg_common_2_aircraft": {},
-    "pkg_common_3_aircraft": {},
-    "pkg_common_4_aircraft": {},
-    "pkg_common_5_aircraft": {},
+    "pkg_tier_1_naval": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 1
+      }
+    },
+    "pkg_tier_2_naval": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
+    "pkg_tier_3_naval": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 3
+      }
+    },
+    "pkg_tier_4_naval": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_tier_5_naval": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 5
+      }
+    },
+    "pkg_tier_1_ground": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 1
+      }
+    },
+    "pkg_tier_2_ground": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 2
+      }
+    },
+    "pkg_tier_3_ground": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
+    },
+    "pkg_tier_4_ground": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 4
+      }
+    },
+    "pkg_tier_5_ground": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 5
+      }
+    },
+    "pkg_tier_6_ground": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
+    "pkg_tier_7_ground": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_tier_1_aircraft": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 1
+      }
+    },
+    "pkg_tier_2_aircraft": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 2
+      }
+    },
+    "pkg_tier_3_aircraft": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 3
+      }
+    },
+    "pkg_tier_4_aircraft": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 4
+      }
+    },
+    "pkg_tier_5_aircraft": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 5
+      }
+    },
+    "pkg_tier_6_aircraft": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 6
+      }
+    },
+    "pkg_tier_7_aircraft": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 7
+      }
+    },
+    "pkg_tier_8_aircraft": {
+      "conditions": {
+        "campaign": "air",
+        "mRank": 8
+      }
+    },
+    "pkg_common_2_aircraft": {
+      "conditions": [
+        {
+          "campaign": "air",
+          "mRank": 2
+        },
+        {
+          "campaign": "ships",
+          "mRank": 2
+        },
+        {
+          "campaign": "tanks",
+          "mRank": 2
+        }
+      ]
+    },
+    "pkg_common_3_aircraft": {
+      "conditions": [
+        {
+          "campaign": "air",
+          "mRank": 3
+        },
+        {
+          "campaign": "ships",
+          "mRank": 3
+        },
+        {
+          "campaign": "tanks",
+          "mRank": 3
+        }
+      ]
+    },
+    "pkg_common_4_aircraft": {
+      "conditions": [
+        {
+          "campaign": "air",
+          "mRank": 4
+        },
+        {
+          "campaign": "ships",
+          "mRank": 4
+        },
+        {
+          "campaign": "tanks",
+          "mRank": 4
+        }
+      ]
+    },
+    "pkg_common_5_aircraft": {
+      "conditions": [
+        {
+          "campaign": "air",
+          "mRank": 5
+        },
+        {
+          "campaign": "ships",
+          "mRank": 5
+        },
+        {
+          "campaign": "tanks",
+          "mRank": 5
+        }
+      ]
+    },
     "pkg_lvl_vietnam_hills": {
       "conditions": {
         "campaign": "tanks",
@@ -691,6 +906,12 @@
         "mRank": 6
       }
     },
+    "pkg_germ_cruiser_emden_1944": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 2
+      }
+    },
     "pkg_ussr_battleship_arhangelsk": {
       "conditions": {
         "campaign": "ships",
@@ -703,22 +924,16 @@
         "mRank": 1
       }
     },
-    "pkg_germ_battlecruiser_ersatz_yorck": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 4
-      }
-    },
-    "pkg_germ_cruiser_emden_1944": {
-      "conditions": {
-        "campaign": "ships",
-        "mRank": 2
-      }
-    },
     "pkg_jp_destroyer_rckt_hatakaze": {
       "conditions": {
         "campaign": "ships",
         "mRank": 6
+      }
+    },
+    "pkg_germ_battlecruiser_ersatz_yorck": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
       }
     },
     "pkg_uk_destroyer_rckt_type42": {
@@ -1332,9 +1547,12 @@
     "useFarAwayRenderer": false,
     "useCurvedDecals": false,
     "useMFD": false,
+    "useHeatSources": false,
+    "useNightVision": false,
+    "useGlowLights": false,
     "anchorStaticShadowsToUnitInHangar": true,
     "allowAnimatedDay": false,
-    "usePrecalculatedHarmonics": false,
+    "usePrecalculatedHarmonics": true,
     "harmonicsSimilarityEps": 0.05,
     "listAllAaOptions": true,
     "mobile_demonpostfx": true,
@@ -1425,6 +1643,7 @@
     "mobileStyleFpsString": true,
     "maxWorkThreads": 2,
     "doSmallJobsInMainThread": true,
+    "updateInThreads": false,
     "sendFullLogOnFatalIntervalHours": 4,
     "logSignificantChangesAsWarnings": true,
     "dumpSettings": true,
@@ -1461,6 +1680,7 @@
     "water3d": true,
     "clipmap": true,
     "fxReflection": true,
+    "waterEffectsTAA": false,
     "wakeFoamWithoutAA": true,
     "ssrQuality": 0,
     "haze": false,
@@ -1499,7 +1719,10 @@
     "buffersCount": 2,
     "growTexSizeWithRenderingResolution": true,
     "shaderlodMode": "always_high",
-    "updateFeedbackSameThread": true
+    "updateFeedbackSameThread": true,
+    "dynamicDDScaleTarget": 0.75,
+    "dynamicDDProportionalTerm": 0.1,
+    "useFeedbackTexFilter": true
   },
   "clipmapImpostor": {
     "enabled": false,
@@ -2255,7 +2478,7 @@
         "iPad Pro 9.7 inch"
       ],
       "graphics": {
-        "texQualityMemoryLimitMb": 3072,
+        "memoryToLimitTexQuality": 3072,
         "maxTexQuality": "medium"
       }
     },
@@ -3269,13 +3492,22 @@
           },
           "latencyWait": {
             "waitWorker": false
+          },
+          "memsetOnRub": {
+            "affected": false
           }
         }
       }
     }
   },
+  "win64": {
+    "debug": {
+      "emuTouchScreen": true
+    }
+  },
   "android": {
     "fastShutdown": true,
+    "disableThreadsAffinity": false,
     "graphics": {
       "compress_panorama": false,
       "allowETC2": false,

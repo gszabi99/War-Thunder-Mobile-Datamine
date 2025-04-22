@@ -31,6 +31,15 @@ availableUnitsList.subscribe(@(_) loadUnseenUnits())
 isLoggedIn.subscribe(@(_) loadUnseenUnits())
 loadUnseenUnits()
 
+function markUnitsUnseen(list) {
+  let res = {}
+  foreach(unit in list)
+    res[unit] <- true
+  unseenUnits.set(
+      unseenUnits.get().__merge(res)
+    )
+}
+
 function markUnitSeen(unit){
   if (unit.name not in unseenUnits.value)
     return
@@ -53,4 +62,5 @@ register_command(function() {
 return {
   unseenUnits
   markUnitSeen
+  markUnitsUnseen
 }

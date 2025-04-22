@@ -126,7 +126,7 @@
           "preload": false
         }
       },
-      "pkg_april_fools_event_2025": {
+      "pkg_dev": {
         "mobile_event.assets": {
           "async": true,
           "preload": false

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons, addonsSizes } = require("%appGlobals/updater/addonsState.nut")
 let { localizeAddonsLimited, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
 let { openDownloadAddonsWnd, addonsToDownload } = require("%rGui/updater/updaterState.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
@@ -30,7 +30,7 @@ function mkUnitPkgDownloadInfo(unitW, needProgress = true, ovr = {}) {
   let isCurrentUnit = Computed(@() curUnit.value?.name == unitW.value?.name)
   let { halign = ALIGN_CENTER } = ovr
   return @() {
-    watch = [reqPkgList, addonsToDownload]
+    watch = [reqPkgList, addonsToDownload, addonsSizes]
     vplace = ALIGN_BOTTOM
     hplace = ALIGN_CENTER
     halign
@@ -46,8 +46,8 @@ function mkUnitPkgDownloadInfo(unitW, needProgress = true, ovr = {}) {
       : [
           textArea(
             loc("msg/needDownloadPackToUseUnit", {
-              pkg = localizeAddonsLimited(reqPkgList.value, 3)
-              size = getAddonsSizeStr(reqPkgList.value)
+              pkg = localizeAddonsLimited(reqPkgList.get(), 3)
+              size = getAddonsSizeStr(reqPkgList.get(), addonsSizes.get())
             }),
             { halign })
           textButtonCommon(utf8ToUpper(loc("msgbox/btn_download")), @() openDownloadAddonsWnd(reqPkgList.value))

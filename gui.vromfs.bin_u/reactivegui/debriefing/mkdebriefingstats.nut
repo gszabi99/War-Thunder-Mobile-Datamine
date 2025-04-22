@@ -30,7 +30,7 @@ function playerPlaceCtor(_uid, place, _printVal, startTime) {
     size = [flex(), playerPlaceIconSize]
     halign = ALIGN_RIGHT
     children = {
-      size = [hdpx(20), flex()] //width of single number in the score for correct align
+      size = [hdpx(20), flex()] 
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [

@@ -9,7 +9,7 @@ function mkWhite(partF) {
   return part + (part << 8) + (part << 16) + (part << 24)
 }
 
-//cutRadius > 0 - cutFrom inner side.  cutRadius < 0 - cutFrom outher side
+
 function mkLensFlareCutRadiusLeft(radius, outherWidth, innerWidth, cutRadius, cutWidth, cutOffset) {
   let center = radius + outherWidth + 1
   let cutCenter = cutRadius > 0 ? cutRadius + cutWidth : center + cutRadius

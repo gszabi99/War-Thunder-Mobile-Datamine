@@ -118,7 +118,7 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeM
     clipChildren = true
     children = [
       {
-        key = "quest_header_btn" //need for tutorial
+        key = "quest_header_btn" 
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_BOTTOM

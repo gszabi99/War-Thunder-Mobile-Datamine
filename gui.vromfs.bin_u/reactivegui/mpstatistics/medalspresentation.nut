@@ -33,7 +33,7 @@ let mkLbMedalTop10 = @(icon) function(medal) {
         children = [mkText(loc($"lb/{medal.name}/desc"))].extend(
           medal.list.map(function(v){
             let d = date(v.time)
-            let time = format("%04d-%02d-%02d", d.year, d.month + 1, d.day) //ISO 8601
+            let time = format("%04d-%02d-%02d", d.year, d.month + 1, d.day) 
             let desc = loc($"events/name/{v.details.replace(":", "_")}")
             return mkText($"{desc} {time}")
           }))

@@ -10,11 +10,11 @@ let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { showRestorePurchasesDoneMsg } = require("platformGoodsCommon.nut")
 
 
-let successPaymentUrl = "https://store.gaijin.net/success_payment.php" //webview should close on success payment url
+let successPaymentUrl = "https://store.gaijin.net/success_payment.php" 
 
 let getGaijinGuid = @(goods) goods?.purchaseGuids.gaijin.guid ?? ""
 let getGaijinDiscount = @(goods) goods?.purchaseGuids.gaijin.discountInPercent ?? 0
-let platformPurchaseInProgress = Watched(null) //only for debug restore purchases
+let platformPurchaseInProgress = Watched(null) 
 
 let goodsIdByGuid = Computed(function() {
   let res = {}
@@ -80,11 +80,11 @@ let platformGoods = Computed(function() {
   let { allGoods = {} } = campConfigs.value
   let guidToGoodsId = goodsIdByGuid.value
   let res = {}
-  foreach (guid, data in goodsInfo.value) { //todo: need to divide price and currency here to 2 fields
+  foreach (guid, data in goodsInfo.value) { 
     let goodsId = guidToGoodsId?[guid]
     let goods = mkGoods(allGoods?[goodsId], data)
     if (goods != null)
-      res[goodsId] <- goods //warning disable: -potentially-nulled-index
+      res[goodsId] <- goods 
   }
   return res
 })

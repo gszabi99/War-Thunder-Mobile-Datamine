@@ -44,7 +44,7 @@ function updateCurBoxes() {
   foreach (key, configs in curElements.value)
     foreach (cfg in configs) {
       let { sizeInc = sizeIncDef, objs = null } = cfg
-      local box = getBox(objs ?? cfg) //when not table, cfg is objs
+      local box = getBox(objs ?? cfg) 
       if (box == null)
         continue
       let isValid = box.r - box.l > 0 && box.b - box.t > 0

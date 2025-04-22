@@ -225,7 +225,7 @@ let navBar = mkSpinnerHideBlock(Computed(@() unitInProgress.value != null),
   })
 
 function onClose() {
-  if (selAttrSpCost.value == 0 || unitInProgress.value != null) //no need this message when apply unit stats is already in progress
+  if (selAttrSpCost.value == 0 || unitInProgress.value != null) 
     isUnitAttrOpened(false)
   else
     openMsgBox({

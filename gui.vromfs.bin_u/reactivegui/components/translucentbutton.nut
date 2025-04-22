@@ -18,7 +18,7 @@ let isActive = @(sf) (sf & S_ACTIVE) != 0
 
 let textColor = 0xFFFFFFFF
 
-let COMMADN_STATE = { //bit mask
+let COMMADN_STATE = { 
   LEFT = 0x0b0001
   RIGHT = 0x0b0010
 }

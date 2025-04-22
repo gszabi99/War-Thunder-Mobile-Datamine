@@ -92,7 +92,7 @@ function updateCurBoxes() {
       foreach(cfg in cfgList)
         foreach(elemCfg in cfg) {
           let { sizeInc = sizeIncDef, objs = null } = elemCfg
-          local box = getBox(objs ?? elemCfg) //when not table, cfg is objs
+          local box = getBox(objs ?? elemCfg) 
           if (box == null || box.r - box.l <= 0 || box.b - box.t <= 0)
             continue
           box = incBoxSize(box, sizeInc)
@@ -144,19 +144,19 @@ let hudElementBlink = {
 
 function debugHudBlinkArrow(id, time) {
   if (id not in hudElements) {
-    console_print($"{id} - unknown element") // warning disable: -forbidden-function
+    console_print($"{id} - unknown element") 
     return
   }
   let enabled = time > 0 || id not in activeBlinkElems.get()
 
   onHudElementBlink({ time, enabled, highLightType = arrowHlType, elements = [id] })
-  console_print($"enabled = {enabled}") // warning disable: -forbidden-function
+  console_print($"enabled = {enabled}") 
 }
 
 function debugHudBlink(id, time) {
   let blink = time > 0 || id not in activeBlinkElems.get()
   onHudElementBlink({ time, blink, elements = [id] })
-  console_print($"blink = {blink}") // warning disable: -forbidden-function
+  console_print($"blink = {blink}") 
 }
 
 register_command(debugHudBlinkArrow, "debug.hudBlinkArrow")

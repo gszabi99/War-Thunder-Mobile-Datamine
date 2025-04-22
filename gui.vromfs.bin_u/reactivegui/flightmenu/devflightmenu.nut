@@ -20,7 +20,7 @@ eventbus_subscribe("FlightMenu_UpdateButtonsList", @(res) buttonsList(res.button
 
 let switchShowDevMenu = @() isShowDevMenu(!isShowDevMenu.value)
 
-let flightMenuButtonsAction = { //for buttons action in darg
+let flightMenuButtonsAction = { 
   Options = optionsScene
 }
 

@@ -1,5 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-let { get_addon_version, is_addon_exists_in_game_folder } = require("contentUpdater")
 let { check_version } = require("%sqstd/version_compare.nut")
 let { tostring_r } = require("%sqstd/string.nut")
 let { isNewbieMode, isNewbieModeSingle } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
@@ -7,8 +6,10 @@ let { getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
 } = require("%appGlobals/updater/campaignAddons.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
-let { gameModeAddonToAddonSetMap, ADDON_VERSION_EMPTY, knownAddons } = require("%appGlobals/updater/addons.nut")
+let { hasAddons, addonsExistInGameFolder, addonsVersions, ADDON_VERSION_EMPTY
+} = require("%appGlobals/updater/addonsState.nut")
+let { gameModeAddonToAddonSetMap, knownAddons
+} = require("%appGlobals/updater/addons.nut")
 
 
 let getModeAddonsDbgString = @(mode)
@@ -16,17 +17,17 @@ let getModeAddonsDbgString = @(mode)
 
 function getModeAddonsInfo(mode, unitNames) {
   let { reqPkg = {}, campaign = curCampaign.value, name = "", only_override_units = false } = mode
-  local addons = {}  //addon = needDownload
+  local addons = {}  
   local allReqAddons = {}
   local updateDiff = 0
 
   let processAddon = function (addon, reqVersion) {
     allReqAddons[addon] <- true
-    if (is_addon_exists_in_game_folder(addon)) {
+    if (addonsExistInGameFolder.get()?[addon]) {
       addons[addon] <- false
       return
     }
-    let version = get_addon_version(addon)
+    let version = addonsVersions.get()?[addon] ?? ADDON_VERSION_EMPTY
     if (version != ADDON_VERSION_EMPTY && check_version(reqVersion, version)) {
       addons[addon] <- false
       return

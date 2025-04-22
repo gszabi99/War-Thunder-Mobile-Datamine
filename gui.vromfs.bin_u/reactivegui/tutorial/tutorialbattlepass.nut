@@ -255,9 +255,9 @@ register_command(
     if (activeTutorialId.get() == TUTORIAL_BATTLE_PASS_ID)
       return finishTutorial()
     else if (!hasRewardsToReceive.get())
-      console_print("Unable to start tutorial, because of no avaiable rewards to get") //warning disable: -forbidden-function
+      console_print("Unable to start tutorial, because of no avaiable rewards to get") 
     else if (!isBpSeasonActive.get())
-      console_print("Unable to start tutorial, because of no active battle pass season") //warning disable: -forbidden-function
+      console_print("Unable to start tutorial, because of no active battle pass season") 
     else
       isDebugMode.set(true)
   }

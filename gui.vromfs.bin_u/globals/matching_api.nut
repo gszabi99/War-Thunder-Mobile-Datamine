@@ -10,10 +10,10 @@ function matching_subscribe(evtName, handler) {
   assert(handler == null || handlertype == "function")
   let is_rpc_call = handlertype == "function" && handler.getfuncinfos().parameters.len() > 2
   if (is_rpc_call) {
-    //log("RPC:", evtName)
+    
     matching_listen_rpc(evtName)
     eventbus_subscribe(evtName, function(evt) {
-      //log("LISTEN RPC:", evtName, evt, handler.getfuncinfos().parameters)
+      
       let sendResp = function(resp_obj) {
         matching_send_response(evt, resp_obj)
       }
@@ -23,7 +23,7 @@ function matching_subscribe(evtName, handler) {
   else {
     matching_listen_notify(evtName)
     eventbus_subscribe(evtName, function(evt) {
-      //log("LISTEN NOTIFY: ", evtName, evt)
+      
       handler(evt)
     })
   }
@@ -45,7 +45,7 @@ function matching_rpc_call(cmd, params = null, cb = null) {
   assert(params == null || type(params)=="table")
   assert(cb == null || type(cb) == "function")
   let res = matching_call(cmd, params)
-  //log("RPC CALL:", cmd, params)
+  
   if (cb == null)
     return
   if (res?.reqId != null)
@@ -60,7 +60,7 @@ return {
   matching_subscribe
   is_matching_error
   matching_error_string
-  //deprecated api for easier merge
+  
   rpc_call = matching_rpc_call
   notify = matching_notify
   subscribe = matching_subscribe

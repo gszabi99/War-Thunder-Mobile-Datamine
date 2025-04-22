@@ -13,7 +13,8 @@ let svgNullable = @(image, size) ((image ?? "") == "") ? null
 let countHeightUnderActionItem = (0.4 * touchButtonSize).tointeger()
 let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(-50)] }
 
-let isAvailableActionItem = @(actionItem) actionItem.count != 0 && (actionItem?.available ?? true)
+let isAvailableActionItem = @(actionItem) (actionItem?.available ?? true)
+  && ((actionItem?.count ?? 0) != 0 || actionItem?.control)
 
 function mkActionItemProgress(actionItem, isAvailable) {
   let { cooldownEndTime = 0, cooldownTime = 1, blockedCooldownEndTime = 0, blockedCooldownTime = 1, id = null

@@ -3,6 +3,7 @@ let { fabs } = require("math")
 let { capZones, capZonesCount } = require("capZonesState.nut")
 let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
+let { ECT_CAPTURE_INDIVIDUAL } = require("guiMission")
 
 
 let zoneSizeBase = evenPx(50)
@@ -19,17 +20,18 @@ let zoneColor = @(team, localTeam) team == MP_TEAM_NEUTRAL ? neutralColor
 
 function capZoneCtr(zone) {
   let res = {}
-  let { mpTimeX100 } = zone
-  let progress = fabs(0.01 * mpTimeX100)
-  let team = mpTimeX100 == 0 ? MP_TEAM_NEUTRAL : mpTimeX100 > 0 ? 2 : 1
-  let teamColor = zoneColor(team, localMPlayerTeam.value)
-  let isClockwise = team == localMPlayerTeam.value || team == MP_TEAM_NEUTRAL
+  let { progress, captureType } = zone
+  let progressVal = fabs(0.01 * progress)
+  let team = progress == 0 ? MP_TEAM_NEUTRAL : progress > 0 ? 2 : 1
+  let isIndividual = captureType == ECT_CAPTURE_INDIVIDUAL
+  let teamColor = isIndividual ? teamBlueColor : zoneColor(team, localMPlayerTeam.value)
+  let isClockwise = isIndividual || team == localMPlayerTeam.value || team == MP_TEAM_NEUTRAL
   return res.__update({
     rendObj = ROBJ_PROGRESS_CIRCULAR
     keepAspect = true
     fgColor = isClockwise ? teamColor : neutralColor
     bgColor = isClockwise ? neutralColor : teamColor
-    fValue = isClockwise ? progress : (1.0 - progress)
+    fValue = isClockwise ? progressVal : (1.0 - progressVal)
     transitions = [
       { prop = AnimProp.scale, duration = 0.5, easing = InOutQuad }
       { prop = AnimProp.opacity, duration = 0.5, easing = InOutQuad }

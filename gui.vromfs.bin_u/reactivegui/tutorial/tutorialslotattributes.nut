@@ -194,7 +194,7 @@ register_command(
     if (activeTutorialId.get() == TUTORIAL_SLOT_ATTRIBUTES_ID)
       return finishTutorial()
     if (!hasSlotForTutor(curCampaignSlots.get()))
-      console_print("Unable to start tutorial, because of no slots with SP available") //warning disable: -forbidden-function
+      console_print("Unable to start tutorial, because of no slots with SP available") 
     else
       isDebugMode.set(true)
   },

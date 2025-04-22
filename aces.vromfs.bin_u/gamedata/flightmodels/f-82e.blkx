@@ -1967,7 +1967,7 @@
     "preset": [
       {
         "name": "f_82e_default",
-        "blk": "gameData/FlightModels/weaponPresets/f_82e_default.blk"
+        "blk": "gameData/FlightModels/weaponPresets/empty.blk"
       },
       {
         "name": "f_82e_5in_rockets",

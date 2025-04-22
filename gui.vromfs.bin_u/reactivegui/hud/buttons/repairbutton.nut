@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 let { playSound } = require("sound_wt")
-let { get_mission_time } = require("mission")
 let { playHapticPattern } = require("hapticVibration")
 let { TouchScreenButton } = require("wt.behaviors")
 let { activateActionBarAction } = require("hudActionBar")
@@ -15,7 +14,7 @@ let { mkActionGlare, mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnim
 let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
 let { HAPT_REPAIR } = require("%rGui/hud/hudHaptic.nut")
-let { updateActionBarDelayed, actionBarItems, curActionBarTypes, emptyActionItem
+let { updateActionBarDelayed, actionBarItems, emptyActionItem, actionItemsInCd
 } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { AB_TOOLKIT_WITH_MEDICAL, AB_TOOLKIT, AB_MEDICALKIT } = require("%rGui/hud/actionBar/actionType.nut")
 let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
@@ -33,7 +32,7 @@ function calcSizes(scale) {
   let borderW = round(borderWidth * scale)
   let btnSize = scaleEven(touchButtonSize, scale)
   let smallBtnSize = scaleEven(touchButtonSize, scale * 0.75)
-  let smallBtnHitSize = scaleEven(touchButtonSize, scale * 1.5) //make hit zone much bigger to make more easy to hit choice on small screen.
+  let smallBtnHitSize = scaleEven(touchButtonSize, scale * 1.5) 
   let btnGap = 2 * borderW
   let mainBox = { l = 0, t = 0, r = btnSize, b = btnSize }
 
@@ -116,8 +115,12 @@ function tankRrepairButtonCtor(scale) {
   let isAvailable = Computed(@() actionItem.get() != null && !isDisabled.get() && isAvailableActionItem(actionItem.get()))
   let point = Watched(null)
   let isHold = Watched(false)
-  let hasMedical = Computed(@() AB_MEDICALKIT in curActionBarTypes.get())
-  let hasSmallButtons = Computed(@() isHold.get() && hasMedical.get())
+  let hasMedical = Computed(@() (actionBarItems.get()?[AB_MEDICALKIT].count ?? 0) > 0)
+  let hasToolkit = Computed(@() (actionBarItems.get()?[AB_TOOLKIT].count ?? 0) > 0)
+  let hasSmallButtons = Computed(@() isHold.get() && hasMedical.get() && hasToolkit.get())
+  let btnImage = Computed(@() hasMedical.get() && !hasToolkit.get() ? iconByAType[AB_MEDICALKIT]
+    : !hasMedical.get() && hasToolkit.get() ? iconByAType[AB_TOOLKIT]
+    : "hud_consumable_repair.svg")
   let blackBg = mkBlackBg(mainBox, borderW)
 
   let smallButtons = [
@@ -152,8 +155,7 @@ function tankRrepairButtonCtor(scale) {
       addCommonHint(loc("hint/noItemsForRepair"))
       return
     }
-    if ((action?.cooldownEndTime ?? 0) > get_mission_time() || !isAvailable.get()
-        || !isAvailableActionItem(action))
+    if ((actionItemsInCd.get()?[actionType] ?? false) || !isAvailable.get() || !isAvailableActionItem(action))
       return
     playSound("repair")
     activateActionBarAction(action.shortcutIdx)
@@ -163,7 +165,7 @@ function tankRrepairButtonCtor(scale) {
 
   return @() {
         watch = [actionItem, shortcutId]
-        key = actionItem
+        key = "btn_repair_with_medical"
         size = [btnSize, btnSize + footerHeight]
         halign = ALIGN_CENTER
         behavior = TouchScreenButton
@@ -191,16 +193,17 @@ function tankRrepairButtonCtor(scale) {
               mkActionItemProgressByWatches(actionItem, isAvailable)
               mkActionItemBorder(borderW, stateFlagsMain, Computed(@() !isAvailable.get()))
               @() {
-                watch = [isAvailable, hasMedical]
+                watch = [isAvailable, btnImage]
                 rendObj = ROBJ_IMAGE
                 size = [btnSize, btnSize]
-                image = Picture($"ui/gameuiskin#{hasMedical.get() ? "hud_consumable_repair.svg" : "hud_consumable_toolkit.svg"}:{btnSize}:{btnSize}:P")
+                image = Picture($"ui/gameuiskin#{btnImage.get()}:{btnSize}:{btnSize}:P")
                 keepAspect = true
                 color = !isAvailable.get() ? imageDisabledColor : imageColor
               }
               mkActionGlare(actionItem.get())
               isDisabled.value ? null : mkGamepadShortcutImage(shortcutId.get(), abShortcutImageOvr, scale)
               mkConsumableSpend("tank_tool_kit_expendable")
+              mkConsumableSpend("tank_medical_kit")
             ]
           }
           mkActionItemCount(actionItem.get()?.count ?? 0, scale)

@@ -11,7 +11,7 @@ function getAmmoNameForLoc(bSet) {
   return bSet?.bulletNames[0] ?? ""
 }
 
-// Returns the full name for a shell or machinegun belt
+
 function getAmmoNameText(bSet) {
   let { isBulletBelt = false, weaponBlkName = "" } = bSet
   let name = getAmmoNameForLoc(bSet)
@@ -23,7 +23,7 @@ function getAmmoNameText(bSet) {
   return name == "" ? "" : loc(isBulletBelt ? $"{name}/name" : name)
 }
 
-// Returns the short name for a shell or machinegun belt
+
 function getAmmoNameShortText(bSet) {
   let { isBulletBelt = false } = bSet
   let name = getAmmoNameForLoc(bSet)
@@ -37,7 +37,7 @@ function getAmmoNameShortText(bSet) {
 
 let getBulletTypeForLoc = @(bTypeFull) bTypeFull.split("@")[0]
 
-// Returns bullet type(s) desc string for a shell or machinegun belt
+
 function getAmmoTypeText(bSet) {
   let { isBulletBelt = false, bullets = [] } = bSet
   if (isBulletBelt) {
@@ -56,7 +56,7 @@ function getAmmoTypeShortText(name) {
   return (name == null) ? "" : loc(doesLocTextExist(locId) ? locId : name)
 }
 
-// Returns usage advice for a shell or machinegun belt
+
 function getAmmoAdviceText(bSet) {
   let { isBulletBelt = false, bullets = [] } = bSet
   let id = isBulletBelt
@@ -69,7 +69,7 @@ function getAmmoAdviceText(bSet) {
 let isCaliberCannon = @(caliberMm) caliberMm > 15
 
 let withCount = @(text, count) count <= 1 ? text
-  : "".concat(text, format(loc("weapons/counter"), count)) //todo: separate lang instead of WT one
+  : "".concat(text, format(loc("weapons/counter"), count)) 
 
 function getWeaponNameImpl(weapon, bSet, isShort) {
   let { total, weaponId = "" } = weapon
@@ -161,7 +161,7 @@ let weaponTypesLoc = {
 
 let getBulletBeltDesc = @(id) id == "" ? null : loc($"modification/air/machinegun_belt_{getLocIdPrefixByCaliber(id)}/desc")
 
-let getWeaponTypeName = @(id) $"{loc($"weapon/{weaponTypesLoc[id][1]}")} {loc($"weapons_types/{weaponTypesLoc[id][0]}")}"
+let getWeaponTypeName = @(id) $"{loc($"weapon/{weaponTypesLoc[id][1]}")}"
 
 let getBulletBeltShortName = @(id) id == "" ? loc("default/name")
   : loc($"{getLocIdPrefixByCaliber(id)}/name/short")

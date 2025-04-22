@@ -4,6 +4,10 @@ let { deferOnce } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
+let { TANK, AIR, SHIP, HELICOPTER, BOAT, SUBMARINE, SAILBOAT } = require("%appGlobals/unitConst.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curUnit } = require("%appGlobals/pServer/profile.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { hangarUnitName, setHangarUnitWithSkin } = require("%rGui/unit/hangarUnit.nut")
@@ -12,9 +16,23 @@ let { textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let chooseByNameWnd = require("debugSkins/chooseByNameWnd.nut")
-let { mkCfg, openOfflineBattleMenu, isOpened, savedUnitType, savedUnitName,
-  savedMissionName, runOfflineBattle, refreshOfflineMissionsList } = require("debugOfflineBattleState.nut")
+let { mkCfg, debugOfflineBattleCfg, openOfflineBattleMenu, isOpened, savedUnitType, savedUnitName,
+  isOfflineBattleDModeActive, canUseOfflineBattleDMode, savedMissionName, runOfflineBattle,
+  refreshOfflineMissionsList, savedOBDebugUnitType, savedOBDebugMissionName, savedOBDebugUnitName
+} = require("debugOfflineBattleState.nut")
 let { registerScene } = require("%rGui/navState.nut")
+let { toggleWithLabel } = require("%rGui/components/toggle.nut")
+
+
+let campaignByUnitType = {
+  [SUBMARINE] = "ships",
+  [SAILBOAT] = "ships",
+  [SHIP] = "ships",
+  [BOAT] = "ships",
+  [HELICOPTER] = "air",
+  [AIR] = "air",
+  [TANK] = "tanks"
+}
 
 let close = @() isOpened.set(false)
 
@@ -71,7 +89,16 @@ let wndFooter = {
   gap = hdpx(10)
   children = [
     toBattleHint(loc("mainmenu/btnSingleLocalMission"))
-    mkToBattleButtonWithSquadManagement(@() runOfflineBattle())
+    @() {
+      watch = canUseOfflineBattleDMode
+      flow = FLOW_HORIZONTAL
+      valign = ALIGN_CENTER
+      gap = hdpx(30)
+      children = [
+        canUseOfflineBattleDMode.get() ? toggleWithLabel(isOfflineBattleDModeActive, loc("mainmenu/debugOfflineBattles")) : null
+        mkToBattleButtonWithSquadManagement(@() runOfflineBattle())
+      ]
+    }
   ]
 }
 
@@ -83,6 +110,51 @@ let mkSelector = @(curValue, allValues, setValue, mkLoc, mkValues, title = "") @
       mkValues(allValues?.get() ?? allValues, mkLoc),
       curValue.get(),
       setValue))
+}
+
+function mkDebugContent() {
+  let cfg = debugOfflineBattleCfg()
+  let allDebugUnitTypes = cfg.get()?.keys().sort()
+  let curDebugUnitType = Computed(@() allDebugUnitTypes?.contains(savedUnitType.get())
+    ? savedOBDebugUnitType.get()
+    : allDebugUnitTypes?[0])
+  let allDebugMissions = Computed(@() cfg.get()?[curDebugUnitType.get()] ?? {})
+  let curDebugMissionName = Computed(@() savedOBDebugMissionName.get() in allDebugMissions.get()
+    ? savedOBDebugMissionName.get()
+    : allDebugMissions.get().findindex(@(_) true))
+
+  function onUnitChange() {
+    if (curCampaign.get() != campaignByUnitType?[savedOBDebugUnitType.get()])
+      savedOBDebugUnitName.set(serverConfigs.get()?.allUnits.findindex(@(unit) unit.unitType == savedOBDebugUnitType.get()))
+    else
+      savedOBDebugUnitName.set(curUnit.get()?.name)
+  }
+
+  savedOBDebugUnitType.subscribe(function(v) {
+    if (v != null)
+      onUnitChange()
+    setHangarUnitWithSkin(savedOBDebugUnitName.get() ?? savedUnitName.get() ?? curUnit.get()?.name, "")
+    savedOBDebugMissionName.set(curDebugMissionName.get())
+  })
+
+  return [
+    wndHeader([
+      mkSelector(curDebugUnitType,
+        allDebugUnitTypes,
+        @(value) savedOBDebugUnitType.set(value),
+        @(name) loc($"mainmenu/type_{name}"),
+        @(allValues, mkLoc) allValues.map(@(value) { text = mkLoc(value), value }),
+        loc("hudTuning/chooseUnitType"))
+    ])
+    wndContent([
+      mkSelector(curDebugMissionName,
+        allDebugMissions,
+        @(value) savedOBDebugMissionName.set(value),
+        @(id) cfg.get()?[curDebugUnitType.get()][id] || id,
+        @(allValues, mkLoc) allValues.keys().sort().map(@(value) { text = mkLoc(value), value }),
+        loc("options/mislist"))
+    ])
+  ]
 }
 
 function mkOfflineBattleMenuWnd() {
@@ -106,7 +178,7 @@ function mkOfflineBattleMenuWnd() {
     savedMissionName.set(curMissionName.get())
 
   function onUnitChange() {
-    if (curUnitName.get() != null)
+    if (curUnitName.get() != null && !isOfflineBattleDModeActive.get())
       setHangarUnitWithSkin(curUnitName.get(), "")
   }
   curUnitName.subscribe(@(_) deferOnce(onUnitChange))
@@ -116,7 +188,7 @@ function mkOfflineBattleMenuWnd() {
   })
 
   return {
-    watch = cfg
+    watch = [cfg, isOfflineBattleDModeActive]
     key = isOpened
     size = flex()
     padding = saBordersRv
@@ -129,35 +201,42 @@ function mkOfflineBattleMenuWnd() {
       initUnitWnd()
       onUnitChange()
     }
+    animations = wndSwitchAnim
     children = [
-      wndHeader([
-        mkSelector(curUnitType,
-          allUnitTypes,
-          @(value) savedUnitType.set(value),
-          @(name) loc($"mainmenu/type_{name}"),
-          @(allValues, mkLoc) allValues.map(@(value) { text = mkLoc(value), value }),
-          loc("hudTuning/chooseUnitType"))
-        mkSelector(curUnitName,
-          Computed(@() curData.get().units),
-          @(value) savedUnitName.set(value),
-          @(name) loc(getUnitLocId(name ?? "")),
-          @(allValues, mkLoc) allValues.keys().sort().filter(@(v) v != "dummy_plane").map(@(value) { text = mkLoc(value), value }),
-          loc("slotbar/selectUnit"))
-      ])
-      wndContent([
-        mkSelector(curMissionName,
-          allMissions,
-          @(value) savedMissionName.set(value),
-          @(id) cfg.get()?.missions[curUnitType.get()][id] || id,
-          @(allValues, mkLoc) allValues.keys().sort().map(@(value) { text = mkLoc(value), value }),
-          loc("options/mislist"))
-      ])
       {
         size = flex()
+        flow = FLOW_VERTICAL
+        gap = hdpx(30)
+        children = isOfflineBattleDModeActive.get()
+          ? mkDebugContent()
+          : [
+              wndHeader([
+                mkSelector(curUnitType,
+                  allUnitTypes,
+                  @(value) savedUnitType.set(value),
+                  @(name) loc($"mainmenu/type_{name}"),
+                  @(allValues, mkLoc) allValues.map(@(value) { text = mkLoc(value), value }),
+                  loc("hudTuning/chooseUnitType"))
+                mkSelector(curUnitName,
+                  Computed(@() curData.get().units),
+                  @(value) savedUnitName.set(value),
+                  @(name) loc(getUnitLocId(name ?? "")),
+                  @(allValues, mkLoc) allValues.keys().sort().filter(@(v) v != "dummy_plane").map(@(value) { text = mkLoc(value), value }),
+                  loc("slotbar/selectUnit"))
+              ])
+              wndContent([
+                mkSelector(curMissionName,
+                  allMissions,
+                  @(value) savedMissionName.set(value),
+                  @(id) cfg.get()?.missions[curUnitType.get()][id] || id,
+                  @(allValues, mkLoc) allValues.keys().sort().map(@(value) { text = mkLoc(value), value }),
+                  loc("options/mislist"))
+              ])
+            ]
       }
+      { size = flex() }
       wndFooter
     ]
-    animations = wndSwitchAnim
   }
 }
 

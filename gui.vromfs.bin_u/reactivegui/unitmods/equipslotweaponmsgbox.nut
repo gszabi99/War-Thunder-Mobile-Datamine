@@ -124,8 +124,8 @@ function mkConflictsMsgContent(weapon, conflicts) {
         loc("msg/installWeaponWithConflict", { weapon = curWeaponName }),
         mkText,
         {
-          ["{weaponWithImage}"] = curWeaponWithIcon,  //warning disable: -forgot-subst
-          ["{conflictList}"] = conflictsComp,  //warning disable: -forgot-subst
+          ["{weaponWithImage}"] = curWeaponWithIcon,  
+          ["{conflictList}"] = conflictsComp,  
         }
       )
         .insert(0, { size = flex() })

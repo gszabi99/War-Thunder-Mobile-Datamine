@@ -10,12 +10,12 @@ function getLevelProgress(curLevelConfig, reward) {
   if (nextLevelExp == 0)
     return res
   let { totalExp = 0 } = reward
-  // For campaign level and tutorial mission unit level
+  
   let addExp = clamp(totalExp, 0, max(0, nextLevelExp - exp))
   let isLevelUp = addExp > 0 && nextLevelExp <= (exp + totalExp)
   if (isLevelUp)
     res.unlockedLevel++
-  // For multiplayer mission unit levels
+  
   if (isLevelUp && levelsExp.len() > 0) {
     local leftReceivedExp = totalExp - addExp
     foreach (idx, levelExp in levelsExp) {
@@ -35,11 +35,11 @@ let isDebrWithUnitsResearch = @(debrData) debrData?.isResearchCampaign ?? false
 
 function isPlayerReceiveLevel(debrData) {
   if (isDebrWithUnitsResearch(debrData))
-    return false // No rewards for campaign levels in campaigns with researches
+    return false 
   let { exp = 0, nextLevelExp = 0 } = debrData?.player
   let { totalExp = 0 } = debrData?.reward.playerExp
   return nextLevelExp != 0
-    && nextLevelExp != exp // Checks player had no levelup available before this mission
+    && nextLevelExp != exp 
     && exp + totalExp >= nextLevelExp
 }
 
@@ -61,7 +61,7 @@ function getUnitsSet(debrData) {
     return []
   if (!debrData?.isSeparateSlots)
     return [ unit ]
-  // In campaigns with separate slots, slotbar units set imitates a single unit with "platoonUnits" set.
+  
   return [ unit.__merge({ platoonUnits = [] }) ].extend(unit?.platoonUnits ?? [])
 }
 
@@ -71,7 +71,7 @@ function getUnit(unitName, debrData) {
     return null
   if (!debrData?.isSeparateSlots)
     return unit?.name == unitName ? unit : null
-  // In campaigns with separate slots, slotbar units set imitates a single unit with "platoonUnits" set.
+  
   let unitsList = [ unit ].extend(unit?.platoonUnits ?? [])
   return unitsList.findvalue(@(u) u?.name == unitName)?.__merge({ platoonUnits = [] })
 }
@@ -80,14 +80,14 @@ function getUnitRewards(unitName, debrData) {
   if (unitName == null)
     return {}
   if (debrData?.reward.unitExp != null && unitName == getBestUnitName(debrData))
-    return { name = unitName, exp = debrData.reward.unitExp } // Compatibility with dedicated pre-1.8.0
+    return { name = unitName, exp = debrData.reward.unitExp } 
   return (debrData?.reward.units ?? []).findvalue(@(v) v?.name == unitName) ?? {}
 }
 
 function getSlotExpByUnit(unitName, debrData) {
   let { exp = {}, addSlotExp = 0, slotExp = {} } = getUnitRewards(unitName, debrData)
   return slotExp.len() > 0 ? slotExp
-    : addSlotExp <= 0 ? exp // Compatibility with dedicated 2024.10.17
+    : addSlotExp <= 0 ? exp 
     : exp.__merge({
         baseExp = (exp?.baseExp ?? 0) + addSlotExp
         totalExp = (exp?.totalExp ?? 0) + addSlotExp
@@ -155,7 +155,7 @@ function getSlotOrUnitLevelUnlockRewards(debrData) {
 
 function getNewPlatoonUnit(unitName, debrData) {
   if (debrData?.isSeparateSlots ?? false)
-    return null // No platoons in campaigns with separate slots.
+    return null 
   let unit = getUnit(unitName, debrData)
   if (unit == null)
     return null

@@ -206,7 +206,7 @@ let content = @(stagesList, recommendInfo) @() {
       hplace = ALIGN_CENTER
       children = [
         {
-          key = "battle_pass_progress_bar" //need for tutorial
+          key = "battle_pass_progress_bar" 
           size = [flex(), progressIconSize[1]]
         }
         rewardPannable(rewardsList(stagesList.get(), recommendInfo),

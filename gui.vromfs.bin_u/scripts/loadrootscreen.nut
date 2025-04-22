@@ -9,7 +9,7 @@ const ROOT_BLK = "%gui/emptyScene.blk"
 function loadRootScreen(...) {
   let guiScene = get_cur_gui_scene()
   guiScene.loadScene(ROOT_BLK, null)
-  guiScene.showCursor(false) //show cursor by darg only
+  guiScene.showCursor(false) 
   updateClientStates()
 }
 

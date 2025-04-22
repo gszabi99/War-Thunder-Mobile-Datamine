@@ -25,9 +25,9 @@ let { getScreenPPI = @() DEFAULT_PPI } = is_ios ? require("ios.platform")
   : is_android ? require("android.platform")
   : null
 
-// Need to convert options AFTER "isSettingsAvailable" and "isProfileReceived", because
-// on "isSettingsAvailable" every option reads its value from profile settings,
-// and also it needs "isProfileReceived" to check which campaignes user has played.
+
+
+
 let isReadyToConvert = isLoggedIn
 
 let hasPlayedTank = @() (servProfile.get()?.levelInfo.tanks.level ?? 0) > 0
@@ -106,12 +106,12 @@ tryConvertOptions()
 
 register_command(function() {
     let isConverted = get_local_custom_settings_blk()?[SAVE_ID_TOUCH_SENSE_OPT_CONVERTED] != null
-    console_print($"Applied conversion: {isConverted}") // warning disable: -forbidden-function
+    console_print($"Applied conversion: {isConverted}") 
     foreach (v in cameraSenseOptionsCfg) {
       let { id } = v
       let val = optionValues?[id].get()
       let isDefault = val == DEF_VAL
-      console_print($"    {id} = {val}{isDefault ? " (default)" : ""}") // warning disable: -forbidden-function
+      console_print($"    {id} = {val}{isDefault ? " (default)" : ""}") 
     }
   }, "ui.debug.camera_sense_options.print")
 
@@ -123,5 +123,5 @@ register_command(function() {
     }
     get_local_custom_settings_blk()[SAVE_ID_TOUCH_SENSE_OPT_CONVERTED] = null
     eventbus_send("saveProfile", {})
-    console_print($"Camera Sense options reset to defaults") // warning disable: -forbidden-function
+    console_print($"Camera Sense options reset to defaults") 
   }, "ui.debug.camera_sense_options.reset_to_defaults")

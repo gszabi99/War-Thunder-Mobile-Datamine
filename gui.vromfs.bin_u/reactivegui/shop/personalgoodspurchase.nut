@@ -10,7 +10,7 @@ let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
 let { PURCH_SRC_SHOP, getPurchaseTypeByGoodsType, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 
 
-function purchasePersonalGoods(pGoods, shopGoods) { //shopGoods need only to allow simple use some shop methods, which use other format
+function purchasePersonalGoods(pGoods, shopGoods) { 
   logShop($"User tries to purchase: {pGoods.id}")
   if (personalGoodsInProgress.get() != null)
     return logShop($"ERROR: personalGoodsInProgress: {personalGoodsInProgress.get()}")

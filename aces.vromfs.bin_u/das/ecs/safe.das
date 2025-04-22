@@ -77,7 +77,7 @@ def operator ?[] (t : Array const? const; idx : int) : ChildComponent const? con
 
 [generic, constant_expression(name=false), unused_argument(name)]
 def operator .(t : Object const ==const; name : string) : ChildComponent const? const
-  static_if typeinfo(is_argument name)
+  static_if typeinfo is_argument(name)
     return t[name]
   else
     return get_child(t, name, ecs_hash(name))
@@ -85,7 +85,7 @@ def operator .(t : Object const ==const; name : string) : ChildComponent const? 
 
 [generic, constant_expression(name=false), unused_argument(name)]
 def operator .(var t : Object ==const; name : string) : ChildComponent?
-  static_if typeinfo(is_argument name)
+  static_if typeinfo is_argument(name)
     return t[name]
   else
     return getRW_child(t, name, ecs_hash(name))
@@ -94,41 +94,41 @@ def operator .(var t : Object ==const; name : string) : ChildComponent?
 [generic, constant_expression(name=false), unused_argument(name)]
 def operator ?.(t : Object const? const ==const; name : string) : ChildComponent const? const
   if t != null
-    static_if typeinfo(is_argument name)
+    static_if typeinfo is_argument(name)
       return (*t)[name]
     else
       return get_child(*t, name, ecs_hash(name))
-  return [[ChildComponent const? const]]
+  return default<ChildComponent const? const>
 
 
 [generic, constant_expression(name=false), unused_argument(name)]
 def operator ?.(var t : Object? ==const; name : string) : ChildComponent?
   if t != null
-    static_if typeinfo(is_argument name)
+    static_if typeinfo is_argument(name)
       return (*t)[name]
     else
       return getRW_child(*t, name, ecs_hash(name))
-  return [[ChildComponent?]]
+  return default<ChildComponent?>
 
 
 [generic, constant_expression(name=false), unused_argument(name)]
 def operator ?[] (t : Object const? const; name : string) : ChildComponent const? const
   if t != null
-    static_if typeinfo(is_argument name)
+    static_if typeinfo is_argument(name)
       return (*t)[name]
     else
       return get_child(*t, name, ecs_hash(name))
-  return [[ChildComponent const? const]]
+  return default<ChildComponent const? const>
 
 
 [generic, constant_expression(name=false), unused_argument(name)]
 def operator ?[] (var t : Object?; name : string) : ChildComponent?
   if t != null
-    static_if typeinfo(is_argument name)
+    static_if typeinfo is_argument(name)
       return (*t)[name]
     else
       return getRW_child(*t, name, ecs_hash(name))
-  return [[ChildComponent?]]
+  return default<ChildComponent?>
 
 
 def operator ??(a : ChildComponent const? const; default_value)
@@ -316,7 +316,7 @@ def operator ??(a : ChildComponent const#; default_value)
 
 [generic, constant_expression(name), unused_argument(child, name)]
 def operator ?as(child : ChildComponent const? const ==const; name : string)
-  static_if !typeinfo(is_argument name)
+  static_if !typeinfo is_argument(name)
     static_if name == "Object"
       return get_ecs_object(child)
     static_elif name == "Array"
@@ -371,7 +371,7 @@ def operator ?as(child : ChildComponent const? const ==const; name : string)
 
 [generic, constant_expression(name), unused_argument(child, name)]
 def operator ?as(child : ChildComponent const? const# ==const; name : string)
-  static_if !typeinfo(is_argument name)
+  static_if !typeinfo is_argument(name)
     static_if name == "Object"
       return get_ecs_object(child)
     static_elif name == "Array"
@@ -426,7 +426,7 @@ def operator ?as(child : ChildComponent const? const# ==const; name : string)
 
 [generic, constant_expression(name), unused_argument(child, name)]
 def operator as(child : ChildComponent const ==const; name : string)
-  static_if !typeinfo(is_argument name)
+  static_if !typeinfo is_argument(name)
     static_if name == "Object"
       return get_ecs_object(child)
     static_elif name == "Array"
@@ -481,7 +481,7 @@ def operator as(child : ChildComponent const ==const; name : string)
 
 [generic, constant_expression(name), unused_argument(child, name)]
 def operator as(child : ChildComponent const# ==const; name : string)
-  static_if !typeinfo(is_argument name)
+  static_if !typeinfo is_argument(name)
     static_if name == "Object"
       return get_ecs_object(child)
     static_elif name == "Array"
@@ -536,7 +536,7 @@ def operator as(child : ChildComponent const# ==const; name : string)
 
 [generic, constant_expression(name), unused_argument(child, name)]
 def operator ?as(var child : ChildComponent? ==const; name : string)
-  static_if !typeinfo(is_argument name)
+  static_if !typeinfo is_argument(name)
     static_if name == "Object"
       return getRW_ecs_object(child)
     static_elif name == "Array"
@@ -591,7 +591,7 @@ def operator ?as(var child : ChildComponent? ==const; name : string)
 
 [generic, constant_expression(name), unused_argument(child, name)]
 def operator ?as(var child : ChildComponent?# ==const; name : string)
-  static_if !typeinfo(is_argument name)
+  static_if !typeinfo is_argument(name)
     static_if name == "Object"
       return getRW_ecs_object(child)
     static_elif name == "Array"
@@ -646,7 +646,7 @@ def operator ?as(var child : ChildComponent?# ==const; name : string)
 
 [generic, constant_expression(name), unused_argument(child, name)]
 def operator as(var child : ChildComponent ==const; name : string)
-  static_if !typeinfo(is_argument name)
+  static_if !typeinfo is_argument(name)
     static_if name == "Object"
       return getRW_ecs_object(child)
     static_elif name == "Array"
@@ -701,7 +701,7 @@ def operator as(var child : ChildComponent ==const; name : string)
 
 [generic, constant_expression(name), unused_argument(child, name)]
 def operator as(var child : ChildComponent# ==const; name : string)
-  static_if !typeinfo(is_argument name)
+  static_if !typeinfo is_argument(name)
     static_if name == "Object"
       return getRW_ecs_object(child)
     static_elif name == "Array"
@@ -753,222 +753,222 @@ def operator as(var child : ChildComponent# ==const; name : string)
     else
       concept_assert(false, "Unsupported type for as operator")
 
-/*
-[init]
-def gen()
-  let typesWithoutString <- {{ "bool" => "bool";
-    "float" => "float";
-    "float2" => "Point2"; "float3" => "Point3"; "float4" => "Point4";
-    "uint8" => "uint8"; "uint16" => "uint16"; "uint" => "uint"; "uint64" => "uint64";
-    "int8" => "int8"; "int16" => "int16"; "int" => "int"; "int64" => "int64";
-    "int2" => "IPoint2"; "int3" => "IPoint3"; "int4" => "IPoint4";
-    "math::float3x4" => "TMatrix"; "ecs::EntityId" => "Eid";
-    "DagorMath::E3DCOLOR" => "E3DCOLOR" }}
-
-  var allTypes := typesWithoutString
-  allTypes["string"] = "ecs_string"
 
 
-  print("def operator ??(a : ChildComponent const? const; default_value)
-  static_if default_value is type<string>
-    let res = get_ecs_string(a)
-    return res != null ? string(*res) : default_value")
-  for dasType, cType in keys(typesWithoutString), values(typesWithoutString)
-    print("  static_elif default_value is type<{dasType}>
-    return get_{cType}(a) ?? default_value")
-  print("  else
-    concept_assert(false, \"Unsupported type for ?? operator\")")
 
-  print("\n")
-  print("def operator ??(a : ChildComponent const? const#; default_value)
-  static_if default_value is type<string>
-    let res = get_ecs_string(a)
-    return res != null ? string(*res) : default_value")
-  for dasType, cType in keys(typesWithoutString), values(typesWithoutString)
-    print("  static_elif default_value is type<{dasType}>
-    return get_{cType}(a) ?? default_value")
-  print("  else
-    concept_assert(false, \"Unsupported type for ?? operator\")")
 
-  print("\n")
-  print("def operator ??(a : ChildComponent const; default_value)
-  static_if default_value is type<string>
-    let res = get_ecs_string(a)
-    return res != null ? string(*res) : default_value")
-  for dasType, cType in keys(typesWithoutString), values(typesWithoutString)
-    print("  static_elif default_value is type<{dasType}>
-    return get_{cType}(a) ?? default_value")
-  print("  else
-    concept_assert(false, \"Unsupported type for ?? operator\")")
 
-  print("\n")
-  print("def operator ??(a : ChildComponent const#; default_value)
-  static_if default_value is type<string>
-    let res = get_ecs_string(a)
-    return res != null ? string(*res) : default_value")
-  for dasType, cType in keys(typesWithoutString), values(typesWithoutString)
-    print("  static_elif default_value is type<{dasType}>
-    return get_{cType}(a) ?? default_value")
-  print("  else
-    concept_assert(false, \"Unsupported type for ?? operator\")")
 
-  print("\n")
-  print("[generic, constant_expression(name), unused_argument(child, name)]
-def operator ?as(child : ChildComponent const? const ==const; name : string)
-  static_if !typeinfo(is_argument name)
-    static_if name == \"Object\"
-      return get_ecs_object(child)
-    static_elif name == \"Array\"
-      return get_ecs_array(child)
-    static_elif name == \"IntList\"
-      return get_ecs_IntList(child)
-    static_elif name == \"FloatList\"
-      return get_ecs_FloatList(child)")
 
-  for dasType, cType in keys(allTypes), values(allTypes)
-    print("    static_elif name == \"{dasType}\"
-      return get_{cType}(child)")
 
-  print("    else
-      concept_assert(false, \"Unsupported type for ?as operator\")")
 
-  print("\n")
-  print("[generic, constant_expression(name), unused_argument(child, name)]
-def operator ?as(child : ChildComponent const? const# ==const; name : string)
-  static_if !typeinfo(is_argument name)
-    static_if name == \"Object\"
-      return get_ecs_object(child)
-    static_elif name == \"Array\"
-      return get_ecs_array(child)
-    static_elif name == \"IntList\"
-      return get_ecs_IntList(child)
-    static_elif name == \"FloatList\"
-      return get_ecs_FloatList(child)")
 
-  for dasType, cType in keys(allTypes), values(allTypes)
-    print("    static_elif name == \"{dasType}\"
-      return get_{cType}(child)")
 
-  print("    else
-      concept_assert(false, \"Unsupported type for ?as operator\")")
 
-  print("\n")
-  print("[generic, constant_expression(name), unused_argument(child, name)]
-def operator as(child : ChildComponent const ==const; name : string)
-  static_if !typeinfo(is_argument name)
-    static_if name == \"Object\"
-      return get_ecs_object(child)
-    static_elif name == \"Array\"
-      return get_ecs_array(child)
-    static_elif name == \"IntList\"
-      return get_ecs_IntList(child)
-    static_elif name == \"FloatList\"
-      return get_ecs_FloatList(child)")
 
-  for dasType, cType in keys(allTypes), values(allTypes)
-    print("    static_elif name == \"{dasType}\"
-      return get_{cType}(child)")
 
-  print("    else
-      concept_assert(false, \"Unsupported type for as operator\")")
 
-  print("\n")
-  print("[generic, constant_expression(name), unused_argument(child, name)]
-def operator as(child : ChildComponent const# ==const; name : string)
-  static_if !typeinfo(is_argument name)
-    static_if name == \"Object\"
-      return get_ecs_object(child)
-    static_elif name == \"Array\"
-      return get_ecs_array(child)
-    static_elif name == \"IntList\"
-      return get_ecs_IntList(child)
-    static_elif name == \"FloatList\"
-      return get_ecs_FloatList(child)")
 
-  for dasType, cType in keys(allTypes), values(allTypes)
-    print("    static_elif name == \"{dasType}\"
-      return get_{cType}(child)")
 
-  print("    else
-      concept_assert(false, \"Unsupported type for as operator\")")
 
-  print("\n")
-  print("[generic, constant_expression(name), unused_argument(child, name)]
-def operator ?as(var child : ChildComponent? ==const; name : string)
-  static_if !typeinfo(is_argument name)
-    static_if name == \"Object\"
-      return getRW_ecs_object(child)
-    static_elif name == \"Array\"
-      return getRW_ecs_array(child)
-    static_elif name == \"IntList\"
-      return getRW_ecs_IntList(child)
-    static_elif name == \"FloatList\"
-      return getRW_ecs_FloatList(child)")
 
-  for dasType, cType in keys(allTypes), values(allTypes)
-    print("    static_elif name == \"{dasType}\"
-      return getRW_{cType}(child)")
 
-  print("    else
-      concept_assert(false, \"Unsupported type for ?as operator\")")
 
-  print("\n")
-  print("[generic, constant_expression(name), unused_argument(child, name)]
-def operator ?as(var child : ChildComponent?# ==const; name : string)
-  static_if !typeinfo(is_argument name)
-    static_if name == \"Object\"
-      return getRW_ecs_object(child)
-    static_elif name == \"Array\"
-      return getRW_ecs_array(child)
-    static_elif name == \"IntList\"
-      return getRW_ecs_IntList(child)
-    static_elif name == \"FloatList\"
-      return getRW_ecs_FloatList(child)")
 
-  for dasType, cType in keys(allTypes), values(allTypes)
-    print("    static_elif name == \"{dasType}\"
-      return getRW_{cType}(child)")
 
-  print("    else
-      concept_assert(false, \"Unsupported type for ?as operator\")")
 
-  print("\n")
-  print("[generic, constant_expression(name), unused_argument(child, name)]
-def operator as(var child : ChildComponent ==const; name : string)
-  static_if !typeinfo(is_argument name)
-    static_if name == \"Object\"
-      return getRW_ecs_object(child)
-    static_elif name == \"Array\"
-      return getRW_ecs_array(child)
-    static_elif name == \"IntList\"
-      return getRW_ecs_IntList(child)
-    static_elif name == \"FloatList\"
-      return getRW_ecs_FloatList(child)")
 
-  for dasType, cType in keys(allTypes), values(allTypes)
-    print("    static_elif name == \"{dasType}\"
-      return getRW_{cType}(child)")
 
-  print("    else
-      concept_assert(false, \"Unsupported type for as operator\")")
 
-  print("\n")
-  print("[generic, constant_expression(name), unused_argument(child, name)]
-def operator as(var child : ChildComponent# ==const; name : string)
-  static_if !typeinfo(is_argument name)
-    static_if name == \"Object\"
-      return getRW_ecs_object(child)
-    static_elif name == \"Array\"
-      return getRW_ecs_array(child)
-    static_elif name == \"IntList\"
-      return getRW_ecs_IntList(child)
-    static_elif name == \"FloatList\"
-      return getRW_ecs_FloatList(child)")
 
-  for dasType, cType in keys(allTypes), values(allTypes)
-    print("    static_elif name == \"{dasType}\"
-      return getRW_{cType}(child)")
 
-  print("    else
-      concept_assert(false, \"Unsupported type for as operator\")")
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

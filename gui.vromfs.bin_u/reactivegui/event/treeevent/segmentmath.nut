@@ -10,11 +10,11 @@ function getDistToSegment(x1, y1, x2, y2, px, py) {
   let dx = x2 - x1
   let dy = y2 - y1
 
-  //projection of the point vector onto the segment vector
+  
   local t = ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy)
   t = clamp(t, 0.0, 1.0)
 
-  //closest point
+  
   let cx = x1 + t * dx
   let cy = y1 + t * dy
   return sqrt(sqr(px - cx) + sqr(py - cy))

@@ -636,7 +636,7 @@ return {
       "": "germ_fw-190d-9"
     },
     "fw-190a-5_prem": {
-      "": "germ_fw_190a_5_holland"
+      "": "germ_me_410a_1_grey"
     },
     "fw-190a-5_u2": {
       "": "germ_fw-190d-9"
@@ -1101,6 +1101,9 @@ return {
       "forest": "ger_camo_dunkelgelb"
     },
     "germ_sub_type_21": {
+      "upgraded": "camo_sboat_splotch"
+    },
+    "germ_sub_type_21_nc": {
       "upgraded": "camo_sboat_splotch"
     },
     "germ_sub_type_212": {

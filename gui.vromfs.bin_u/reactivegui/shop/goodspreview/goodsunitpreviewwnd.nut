@@ -50,7 +50,7 @@ let mkGiftSchRewardBtn = require("mkGiftSchRewardBtn.nut")
 let { doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 let skipOfferBtn = require("skipOfferBtn.nut")
 
-let TIME_TO_SHOW_UI = 5.0 //timer need to show UI even with bug with cutscene
+let TIME_TO_SHOW_UI = 5.0 
 let TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
 
 let unitPlateSize = unitPlateSmall
@@ -65,7 +65,7 @@ let skipAnimsOnce = Watched(false)
 let openCount = Computed(@() previewType.value == GPT_UNIT || previewType.value == GPT_BLUEPRINT ? openPreviewCount.get() : 0)
 let needScroll = Computed(@() (previewGoods.get()?.units.len() ?? 0) + (previewGoods.get()?.unitUpgrades.len() ?? 0) > 8)
 
-//anim pack info
+
 let aTimeHeaderStart = 0
 let aTimePackInfoStart = aTimePackNameFull
 let aTimePackInfoHeader = 0.3
@@ -74,7 +74,7 @@ let aTimePackUnitPlates = 0.3
 let aTimePackUnitPlatesOffset = 0.05
 let aTimeFirstItemOfset = 0.1
 let aTimeInfoHeaderFull = aTimeInfoLight + 0.3 * aTimeInfoItem + aTimeFirstItemOfset + 3 * aTimeInfoItemOffset
-//anim price and time
+
 let aTimePriceStart = aTimePackInfoStart + aTimeInfoHeaderFull
 let aTimeShowModals = aTimePriceStart + aTimePriceFull
 
@@ -86,15 +86,18 @@ function showUi() {
 isWindowAttached.subscribe(function(v) {
   if (!v) {
     unhideModals(HIDE_PREVIEW_MODALS_ID)
+    if (openCount.get() != 0 && needShowUi.get())
+      skipAnimsOnce.set(true)
     return
   }
-  needShowUi(skipAnimsOnce.value)
+
+  needShowUi.set(skipAnimsOnce.value)
   if (!skipAnimsOnce.value) {
     resetTimeout(TIME_TO_SHOW_UI, showUi)
     hideModals(HIDE_PREVIEW_MODALS_ID)
   }
   else {
-    skipAnimsOnce(false)
+    skipAnimsOnce.set(false)
     defer(function() {
       anim_skip(ANIM_SKIP)
       anim_skip_delay(ANIM_SKIP_DELAY)
@@ -177,7 +180,6 @@ function openDetailsWnd() {
     isUpgraded = previewGoodsUnit.value?.isUpgraded ?? false
     canShowOwnUnit = false
   })
-  skipAnimsOnce(true)
 }
 
 function mkBlueprintUnitPlate(unit){
@@ -547,7 +549,7 @@ let previewWnd = @() {
   stopMouse = true
   stopHotkeys = true
 
-  onAttach = function() {
+  function onAttach() {
     addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
     isWindowAttached(true)
     if (transitionThroughBlackScreen) {
@@ -559,7 +561,7 @@ let previewWnd = @() {
     }
   }
 
-  onDetach = function() {
+  function onDetach() {
     removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
     isWindowAttached(false)
   }

@@ -20,7 +20,7 @@ let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 
 const SILENT_ACTUALIZE_DELAY = 60
 
-let battleUnitsInfo = mkWatched(persist, "battleUnitsInfo", null) //{ isSlots, unit<for not slots>, unitList<for slots> }
+let battleUnitsInfo = mkWatched(persist, "battleUnitsInfo", null) 
 let needRefresh = mkWatched(persist, "needRefresh", false)
 let lastResult = mkWatched(persist, "lastResult", null)
 let needRefreshOvrMission = mkWatched(persist, "needRefreshOvrMission", false)
@@ -57,7 +57,7 @@ let profileKeysAffectData = {
   units = true
   skins = true
   campaignSlots = true
-  unitsResearch = true //next research
+  unitsResearch = true 
   items = true
   boosters = true
   decorators = true

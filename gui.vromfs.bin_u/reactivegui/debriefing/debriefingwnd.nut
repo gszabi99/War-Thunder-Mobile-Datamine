@@ -387,7 +387,7 @@ function debriefingWnd() {
             halign = ALIGN_CENTER
             children = debrTabComps?[curDebrTabId.get()] ?? mkDebriefingEmpty(debrData)
           }
-          // Footer
+          
           @() {
             watch = countUpgradeButtonPushed
             size = [flex(), defButtonHeight]
@@ -408,7 +408,7 @@ function debriefingWnd() {
                 children = {
                   flow = FLOW_HORIZONTAL
                   gap = buttonsHGap
-                  children = (needForceQuitToHangar ? [ //warning disable: -unwanted-modification
+                  children = (needForceQuitToHangar ? [ 
                         mkBtnToHangar(needShowBtns_Final, debrData, true, unlockedReward)
                       ]
                     : hasPlayerLevelUp ? [
@@ -430,7 +430,7 @@ function debriefingWnd() {
                           debrData?.player.level ?? -1, campaign)
                         mkBtnToBattlePlace(needShowBtns_Final, mkNextGameModeInfo(roomInfo, campaign), debrData)
                       ]
-                  ).append(btnSkip)  //warning disable: -unwanted-modification
+                  ).append(btnSkip)  
                 }
               }
             ]

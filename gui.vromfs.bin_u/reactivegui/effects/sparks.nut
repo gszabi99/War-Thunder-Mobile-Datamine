@@ -44,13 +44,13 @@ let mkRoundZoneSpark = @(state, effectHalfSize) {
   transform = {}
   function update() {
     let time = get_time_msec()
-    if ("startTime" not in state) {  //not inited
+    if ("startTime" not in state) {  
       let { initDelay = 0.0 } = state
       state.startTime <- time + (1000 * initDelay).tointeger()
       state.startPos <- roundZoneInitPos(effectHalfSize)
       fillRoundZoneSparkState(state, effectHalfSize, initDelay == 0 ? 100 : 1000)
     }
-    if (state.endTime <= time) { //gen new spark
+    if (state.endTime <= time) { 
       state.startTime <- time
       state.startPos <- roundZoneStartPos(effectHalfSize)
       fillRoundZoneSparkState(state, effectHalfSize)

@@ -17,7 +17,7 @@ let replayName = Watched("")
 let isNameValid = Computed(function() {
   if (replayName.value == "")
     return false
-  foreach (c in "\\|/<>:?*\"")  //same check with WT
+  foreach (c in "\\|/<>:?*\"")  
     if (replayName.value.indexof(c.tochar()) != null)
       return false
   return true

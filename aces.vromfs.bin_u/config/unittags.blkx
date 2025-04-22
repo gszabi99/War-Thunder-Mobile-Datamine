@@ -30,7 +30,7 @@
     "tags": {
       "ally": true,
       "country_usa": true,
-      "type_bomber": true,
+      "type_assault": true,
       "type_dive_bomber": true,
       "type_naval_aircraft": true,
       "type_torpedo": true,
@@ -3397,7 +3397,7 @@
     "tags": {
       "axis": true,
       "country_germany": true,
-      "type_bomber": true,
+      "type_assault": true,
       "type_dive_bomber": true,
       "mediterranean": true,
       "western_front": true,
@@ -6281,7 +6281,7 @@
     "tags": {
       "axis": true,
       "country_germany": true,
-      "type_assault": true,
+      "type_fighter": true,
       "type_strike_aircraft": true,
       "stalingrad": true,
       "stalingrad_w": true,
@@ -6497,7 +6497,7 @@
     "tags": {
       "axis": true,
       "country_germany": true,
-      "type_bomber": true,
+      "type_assault": true,
       "type_dive_bomber": true,
       "mediterranean": true,
       "western_front": true,
@@ -10031,7 +10031,7 @@
     "tags": {
       "ally": true,
       "country_usa": true,
-      "type_fighter": true,
+      "type_assault": true,
       "western_front": true,
       "pacific": true,
       "air": true
@@ -10116,7 +10116,7 @@
     "tags": {
       "ally": true,
       "country_usa": true,
-      "type_fighter": true,
+      "type_assault": true,
       "western_front": true,
       "pacific": true,
       "air": true
@@ -10198,7 +10198,7 @@
     "tags": {
       "ally": true,
       "country_usa": true,
-      "type_bomber": true,
+      "type_assault": true,
       "type_dive_bomber": true,
       "type_naval_aircraft": true,
       "guadalcanal": true,
@@ -11173,7 +11173,7 @@
     "tags": {
       "ally": true,
       "country_usa": true,
-      "type_bomber": true,
+      "type_assault": true,
       "type_dive_bomber": true,
       "type_naval_aircraft": true,
       "guadalcanal": true,
@@ -11281,7 +11281,7 @@
     "tags": {
       "ally": true,
       "country_usa": true,
-      "type_bomber": true,
+      "type_assault": true,
       "type_dive_bomber": true,
       "type_naval_aircraft": true,
       "guadalcanal": true,
@@ -11393,7 +11393,7 @@
     "tags": {
       "ally": true,
       "country_usa": true,
-      "type_bomber": true,
+      "type_assault": true,
       "type_dive_bomber": true,
       "type_naval_aircraft": true,
       "guadalcanal": true,
@@ -14873,7 +14873,7 @@
     "tags": {
       "axis": true,
       "country_germany": true,
-      "type_assault": true,
+      "type_fighter": true,
       "type_strike_aircraft": true,
       "mediterranean": true,
       "western_front": true,
@@ -15237,7 +15237,7 @@
     "tags": {
       "axis": true,
       "country_germany": true,
-      "type_fighter": true,
+      "type_assault": true,
       "type_interceptor": true,
       "mediterranean": true,
       "western_front": true,
@@ -15354,7 +15354,7 @@
     "tags": {
       "axis": true,
       "country_germany": true,
-      "type_bomber": true,
+      "type_assault": true,
       "type_dive_bomber": true,
       "mediterranean": true,
       "western_front": true,
@@ -15453,7 +15453,7 @@
     "tags": {
       "axis": true,
       "country_germany": true,
-      "type_bomber": true,
+      "type_assault": true,
       "type_dive_bomber": true,
       "mediterranean": true,
       "western_front": true,
@@ -15650,7 +15650,7 @@
     "tags": {
       "axis": true,
       "country_germany": true,
-      "type_bomber": true,
+      "type_assault": true,
       "type_dive_bomber": true,
       "mediterranean": true,
       "western_front": true,
@@ -17624,7 +17624,7 @@
     "tags": {
       "axis": true,
       "country_germany": true,
-      "type_bomber": true,
+      "type_fighter": true,
       "type_frontline_bomber": true,
       "bomberview": true,
       "korsun": true,
@@ -22116,7 +22116,7 @@
     "tags": {
       "ally": true,
       "country_ussr": true,
-      "type_assault": true,
+      "type_fighter": true,
       "type_strike_aircraft": true,
       "bomberview": true,
       "berlin": true,
@@ -26856,8 +26856,8 @@
     },
     "Shop": {
       "shipCrewMax": 1190,
-      "shipCrewMin": 360,
-      "shipCrewRating": 1.24606,
+      "shipCrewMin": 300,
+      "shipCrewRating": 1.49788,
       "maxSpeed": 16.82,
       "turningTime": 23,
       "supportPlane": "soc_1",
@@ -26911,8 +26911,8 @@
     },
     "Shop": {
       "shipCrewMax": 1390,
-      "shipCrewMin": 310,
-      "shipCrewRating": 2.09727,
+      "shipCrewMin": 280,
+      "shipCrewRating": 2.29333,
       "maxSpeed": 11.03,
       "turningTime": 34,
       "mainWeaponCaliber": 305.0,
@@ -27109,7 +27109,7 @@
     "Shop": {
       "shipCrewMax": 1910,
       "shipCrewMin": 360,
-      "shipCrewRating": 3.07333,
+      "shipCrewRating": 3.12818,
       "maxSpeed": 16.3,
       "turningTime": 26,
       "supportPlane": "arado_196a_3",
@@ -27120,7 +27120,7 @@
         "283mm_54_5_skc_34_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 1200.0,
-          "shotFreq": 0.1,
+          "shotFreq": 0.111,
           "gunsCount": 9,
           "caliber": 283.0,
           "ammoCount": 1350,
@@ -27150,11 +27150,11 @@
         "de_533mm_g7a_torpedo": {
           "wtype": "torpedo",
           "damage": 6300.0,
-          "shotFreq": 0.053,
+          "shotFreq": 0.067,
           "distToLive": 3500.0,
           "gunsCount": 2,
           "caliber": 533.0,
-          "ammoCount": 8,
+          "ammoCount": 12,
           "isBeltAmmo": false
         }
       }
@@ -28921,8 +28921,8 @@
       "weapons": {
         "100mm_55_mle_1953_naval_user_cannon": {
           "wtype": "mainCannon",
-          "damage": 350.0,
-          "shotFreq": 0.263,
+          "damage": 400.0,
+          "shotFreq": 1.0,
           "gunsCount": 3,
           "caliber": 100.0,
           "ammoCount": 1500,
@@ -32863,6 +32863,86 @@
     },
     "bullets": {}
   },
+  "jp_destroyer_rckt_hatakaze": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 100,
+    "tierGroup": 4,
+    "tags": {
+      "country_germany": true,
+      "type_destroyer": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 260,
+      "shipCrewMin": 30,
+      "shipCrewRating": 3.22697,
+      "maxSpeed": 15.7,
+      "turningTime": 20,
+      "addTorpedoesCountPack": 3,
+      "asmCaptureDuration": 5.0,
+      "ecmType": "captureBlocker",
+      "ecmDuration": 15.0,
+      "mainWeaponCaliber": 127.0,
+      "weapons": {
+        "127mm_54_mk18_turret_mk42_single_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 600.0,
+          "shotFreq": 0.667,
+          "gunsCount": 2,
+          "caliber": 127.0,
+          "ammoCount": 700,
+          "isBeltAmmo": false
+        },
+        "jp_324mm_mark_46_torpedo": {
+          "wtype": "torpedo",
+          "damage": 2303.0,
+          "shotFreq": 0.1,
+          "distToLive": 2500.0,
+          "gunsCount": 2,
+          "caliber": 324.0,
+          "ammoCount": 18,
+          "isBeltAmmo": false
+        },
+        "340mm_rgm_84_alike_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 9500.0,
+          "shotFreq": 4.2,
+          "reloadTime": 15.0,
+          "rocketsSalvo": 4,
+          "distToLive": 10000.0,
+          "gunsCount": 1,
+          "caliber": 340.0,
+          "ammoCount": 400,
+          "isBeltAmmo": false
+        },
+        "340mm_sm_er_alike_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 4750.0,
+          "shotFreq": 0.067,
+          "reloadTime": 12.0,
+          "rocketsSalvo": 1,
+          "distToLive": 10000.0,
+          "gunsCount": 1,
+          "caliber": 340.0,
+          "ammoCount": 100,
+          "isBeltAmmo": false
+        },
+        "countermeasure_launcher_ship": {
+          "wtype": "ircm",
+          "damage": 15.0,
+          "shotFreq": 0.066,
+          "cmLiveTime": 4.0,
+          "gunsCount": 6,
+          "caliber": 130.0,
+          "ammoCount": 600,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
   "ussr_1124_rct": {
     "type": "ship",
     "hangar_place": "ship",
@@ -32979,86 +33059,6 @@
     },
     "bullets": {}
   },
-  "jp_destroyer_rckt_hatakaze": {
-    "type": "ship",
-    "hangar_place": "ship",
-    "testFlight": "testFlight_destroyer_usa_tfs",
-    "crewTotalCount": 100,
-    "tierGroup": 4,
-    "tags": {
-      "country_germany": true,
-      "type_destroyer": true,
-      "ship": true
-    },
-    "Shop": {
-      "shipCrewMax": 260,
-      "shipCrewMin": 30,
-      "shipCrewRating": 3.22697,
-      "maxSpeed": 15.7,
-      "turningTime": 20,
-      "addTorpedoesCountPack": 3,
-      "asmCaptureDuration": 5.0,
-      "ecmType": "captureBlocker",
-      "ecmDuration": 15.0,
-      "mainWeaponCaliber": 127.0,
-      "weapons": {
-        "127mm_54_mk18_turret_mk42_single_naval_user_cannon": {
-          "wtype": "mainCannon",
-          "damage": 600.0,
-          "shotFreq": 0.667,
-          "gunsCount": 2,
-          "caliber": 127.0,
-          "ammoCount": 700,
-          "isBeltAmmo": false
-        },
-        "jp_324mm_mark_46_torpedo": {
-          "wtype": "torpedo",
-          "damage": 2303.0,
-          "shotFreq": 0.1,
-          "distToLive": 2500.0,
-          "gunsCount": 2,
-          "caliber": 324.0,
-          "ammoCount": 18,
-          "isBeltAmmo": false
-        },
-        "340mm_rgm_84_alike_rocket_naval_bullet": {
-          "wtype": "rockets",
-          "damage": 9500.0,
-          "shotFreq": 4.2,
-          "reloadTime": 15.0,
-          "rocketsSalvo": 4,
-          "distToLive": 10000.0,
-          "gunsCount": 1,
-          "caliber": 340.0,
-          "ammoCount": 400,
-          "isBeltAmmo": false
-        },
-        "340mm_sm_er_alike_rocket_naval_bullet": {
-          "wtype": "rockets",
-          "damage": 4750.0,
-          "shotFreq": 0.067,
-          "reloadTime": 12.0,
-          "rocketsSalvo": 1,
-          "distToLive": 10000.0,
-          "gunsCount": 1,
-          "caliber": 340.0,
-          "ammoCount": 100,
-          "isBeltAmmo": false
-        },
-        "countermeasure_launcher_ship": {
-          "wtype": "ircm",
-          "damage": 15.0,
-          "shotFreq": 0.066,
-          "cmLiveTime": 4.0,
-          "gunsCount": 6,
-          "caliber": 130.0,
-          "ammoCount": 600,
-          "isBeltAmmo": false
-        }
-      }
-    },
-    "bullets": {}
-  },
   "ar_destroyer_rckt_type42": {
     "type": "ship",
     "hangar_place": "ship",
@@ -33074,7 +33074,7 @@
     "Shop": {
       "shipCrewMax": 270,
       "shipCrewMin": 30,
-      "shipCrewRating": 3.26545,
+      "shipCrewRating": 3.38061,
       "maxSpeed": 14.4,
       "turningTime": 22,
       "addTorpedoesCountPack": 3,
@@ -58314,7 +58314,7 @@
           "isBeltAmmo": true
         },
         "12_7mm_M2_HB_user_machinegun_for_M15": {
-          "wtype": "machinegun",
+          "wtype": "auxCannon",
           "caliber": 12.7,
           "armorPower": 23.3753,
           "reloadTime": 0.104167,
@@ -58332,6 +58332,11 @@
           "icon": "hud_ammo_bullet_he"
         },
         "37mm_usa_m59a1_AP": {
+          "icon": "hud_ammo_bullet_ap"
+        }
+      },
+      "12_7mm_M2_HB_user_machinegun_for_M15": {
+        "default": {
           "icon": "hud_ammo_bullet_ap"
         }
       }

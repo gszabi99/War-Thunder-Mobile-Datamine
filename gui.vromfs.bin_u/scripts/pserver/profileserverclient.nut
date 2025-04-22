@@ -16,11 +16,11 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { startRelogin } = require("%scripts/login/loginStart.nut")
 
 const MAX_REQUESTS_HISTORY = 20
-const PROGRESS_TIMEOUT_SEC = 90 //native char module already has 45sec timeout, so this is just insurance
+const PROGRESS_TIMEOUT_SEC = 90 
 const RESULT_ID = "pserver.requestResult"
 let debugDelay = hardPersistWatched("pserver.debugDelay", 0.0)
 let lastRequests = hardPersistWatched("pserver.lastRequests", [])
-let progressTimeouts = hardPersistWatched("pserver.inProgress", {}) //progressId = { value, timeout }
+let progressTimeouts = hardPersistWatched("pserver.inProgress", {}) 
 let nextTimeout = keepref(Computed(@() progressTimeouts.value
   .reduce(@(res, v) res <= 0 ? v.timeout : min(res, v.timeout), 0)))
 
@@ -76,7 +76,7 @@ function collectLastRequestResult(id, data) {
       v.append(req)
     }
     if (data?.result)
-      req.resultKeys <- data.result?.keys()  //store only keys, because of data can be really big
+      req.resultKeys <- data.result?.keys()  
     else
       req.error <- data?.error
     reqTime = req?.reqTime ?? 0
@@ -92,7 +92,7 @@ function collectLastRequest(id, action, params) {
   })
 }
 
-local doRequest = null //forward declaration
+local doRequest = null 
 
 eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
   local result = clone msg
@@ -240,7 +240,7 @@ nextTimeout.subscribe(startNextTimer)
 eventbus_subscribe("profile_srv.request", @(msg) request(msg))
 eventbus_subscribe("profile_srv.debugLastRequests", debugLastRequests)
 
-//console commands&
+
 register_command(@(delay) debugDelay(delay), "pserver.delay_requests")
 register_command(debugLastRequests, "pserver.debug_last_requests")
 register_command(function(errId) { debugError = errId }, "pserver.debug_next_request_error")

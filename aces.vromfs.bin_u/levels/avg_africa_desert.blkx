@@ -166,7 +166,13 @@
       0.1,
       3.0
     ],
-    "min_land_height": 0.05
+    "min_land_height": 0.05,
+    "foliage_translucent_color_mul": [
+      2.5,
+      2.0,
+      1.0,
+      0.0
+    ]
   },
   "waterStub": {
     "enable": true

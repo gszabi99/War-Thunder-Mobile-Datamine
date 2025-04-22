@@ -12,7 +12,7 @@ let { mkLinearGradientImg } = require("%darg/helpers/mkGradientImg.nut")
 let levelUpChooseUnits = require("levelUpChooseUnits.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons, addonsSizes } = require("%appGlobals/updater/addonsState.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
 let { textButtonBattle } = require("%rGui/components/textButton.nut")
@@ -109,7 +109,8 @@ let levelUpRequirePkgDownload = @(lvlUpUnitsPkgs) {
   flow = FLOW_VERTICAL
   gap = hdpx(40)
   children = [
-    {
+    @() {
+      watch = addonsSizes
       size = [hdpx(600), SIZE_TO_CONTENT]
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
@@ -117,7 +118,7 @@ let levelUpRequirePkgDownload = @(lvlUpUnitsPkgs) {
       color = 0xFFFFFFFF
       text = loc("msg/needDownloadPackForLevelUp", {
         pkg = localizeAddons(lvlUpUnitsPkgs)?[0] ?? "???"
-        size = getAddonsSizeStr(lvlUpUnitsPkgs)
+        size = getAddonsSizeStr(lvlUpUnitsPkgs, addonsSizes.get())
       })
       fontFxColor = Color(0, 0, 0, 255)
       fontFxFactor = 50

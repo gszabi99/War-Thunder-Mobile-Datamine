@@ -453,7 +453,7 @@ let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}) {
   gap = gamercardGap
   children = !currencies ? null
     : [].extend(currencies)
-        .sort(@(a, b) sortByCurrencyId(b, a)) //-param-pos
+        .sort(@(a, b) sortByCurrencyId(b, a)) 
         .map(@(c) mkCurrencyBalance(c, noActionCurrencies?[c] ? null : openBuyCurrencyWnd(c)))
 }
 

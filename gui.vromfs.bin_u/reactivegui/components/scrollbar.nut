@@ -104,7 +104,7 @@ function scrollbar(scroll_handler, options = {}) {
       min = 0
       max = maxV.get()
       unit = 1
-      pageScroll = (isVertical ? 1 : -1) * maxV.get() / 100.0 // TODO probably needed sync with container wheelStep option
+      pageScroll = (isVertical ? 1 : -1) * maxV.get() / 100.0 
       onChange = @(val) isVertical ? scroll_handler.scrollToY(val)
         : scroll_handler.scrollToX(val)
       onElemState = @(sf) stateFlags.set(sf)
@@ -119,15 +119,15 @@ function scrollbar(scroll_handler, options = {}) {
   }
 }
 
-let DEF_SIDE_SCROLL_OPTIONS = defStyle.__merge({ //const
+let DEF_SIDE_SCROLL_OPTIONS = defStyle.__merge({ 
   scrollAlign = ALIGN_RIGHT
   orientation = O_VERTICAL
   size = flex()
   maxWidth = null
   maxHeight = null
-  needReservePlace = true //need reserve place for scrollbar when it not visible
-  isBarOutside = false //place bar outside of main comp
-  outsideOffset = defStyle.scrollbarWidth //offset when place bar outside of main comp
+  needReservePlace = true 
+  isBarOutside = false 
+  outsideOffset = defStyle.scrollbarWidth 
   clipChildren  = true
   joystickScroll = true
 })
@@ -188,8 +188,8 @@ function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
         size = calcBarSize(0, orientation == O_VERTICAL)
         children = scrollComp
       }.__update(
-        scrollAlign in outsideBarParams?[isVertical]  //only because of strange bug in quirrel 2025.03.04 //warning disable: -bool-as-index
-          ? outsideBarParams[isVertical][scrollAlign](scrollbarWidth, outsideOffset) //warning disable: -bool-as-index
+        scrollAlign in outsideBarParams?[isVertical]  
+          ? outsideBarParams[isVertical][scrollAlign](scrollbarWidth, outsideOffset) 
           : {})
     ]
   }

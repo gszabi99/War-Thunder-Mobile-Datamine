@@ -71,8 +71,8 @@ function showSortedTable(tbl) {
     text = makeSideScroll(msgBoxText(text, infoTextOvr))
     wndOvr = { size = [hdpx(1100), hdpx(1000)] }
     buttons = [
-      { text = "COPY", cb = @() set_clipboard_text(text) }   //warning disable: -forbidden-function
-      { id = "ok", styleId = "PRIMARY", isDefault = true }   //warning disable: -forbidden-function
+      { text = "COPY", cb = @() set_clipboard_text(text) }   
+      { id = "ok", styleId = "PRIMARY", isDefault = true }   
     ]
   })
 }
@@ -107,9 +107,9 @@ let commandsList = [].extend(
       function func() {
         close()
         if (debriefingData.value == null)
-          return dlog("Debriefing data is empty") //warning disable: -forbidden-function
+          return dlog("Debriefing data is empty") 
         set_clipboard_text(object_to_json_string(debriefingData.value, true))
-        return dlog("Debriefing data copied to clipboard") //warning disable: -forbidden-function
+        return dlog("Debriefing data copied to clipboard") 
       }
     }
     { label = "debug_game_modes", func = withClose(debugGameModesWnd) }
@@ -128,11 +128,11 @@ let commandsList = [].extend(
           children = mkBtn($"Toggle newbie mode ({curMode})",
             function() {
               if (list == null) {
-                dlog("Newbie modes not allowed for campaign: ", curCampaign.value) //warning disable: -forbidden-function
+                dlog("Newbie modes not allowed for campaign: ", curCampaign.value) 
                 return
               }
               forceNewbieModeIdx((forceNewbieModeIdx.value + 2) % (list.len() + 2) - 1)
-              dlog("Mode name by main battle button: ", randomBattleMode.value?.name) //warning disable: -forbidden-function
+              dlog("Mode name by main battle button: ", randomBattleMode.value?.name) 
             })
         }
       }
@@ -140,7 +140,7 @@ let commandsList = [].extend(
     { label = "allow_battle_no_addons",
       func = withClose(function() {
         canBattleWithoutAddons.set(!canBattleWithoutAddons.get())
-        dlog(canBattleWithoutAddons.get() ? "Allowed" : "Disable") //warning disable: -forbidden-function
+        dlog(canBattleWithoutAddons.get() ? "Allowed" : "Disable") 
       })
     }
     { label = "permissions", func = withClose(debugPermissionsWnd) }

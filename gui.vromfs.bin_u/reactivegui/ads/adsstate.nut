@@ -9,10 +9,10 @@ let {
   isLoaded = Watched(false),
   showAdsForReward = @(_) null
 } = is_ios || debugAs == "ios" ? require("byPlatform/adsIOS.nut")
-  : is_android || is_pc ? require("byPlatform/adsAndroid.nut") //for pc it in the debug mode
+  : is_android || is_pc ? require("byPlatform/adsAndroid.nut") 
   : null
 
-isInMenu.subscribe(@(_) isAdsVisible(false)) //in case of some bug by ads update
+isInMenu.subscribe(@(_) isAdsVisible(false)) 
 
 let changeAttachedAdsButtons = @(v) attachedAdsButtons.set(attachedAdsButtons.get() + v)
 

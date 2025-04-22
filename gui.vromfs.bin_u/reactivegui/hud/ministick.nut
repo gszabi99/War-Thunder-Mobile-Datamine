@@ -43,21 +43,21 @@ function stickHeadBg(scale, ovr) {
   }.__update(ovr)
 }
 
-/**
- * Creates a mini touch stick control component, for example for navigating in a pieMenuComp. Or for any other purposes.
- * @param {Watched(bool)} isStickActive - Watched flag, if user is touching the stick with a finger right now.
- *                                        Just pass Watched(false) here, stick will control this state itself.
- * @param {Watched(Point2)} stickDelta - Watched X/Y coordinates of current stick position (get it from miniStick).
- *                                       Just pass Watched(Point2(0, 0)) here, stick will control this state itself.
- * @param {function(scale, isEnabled)} [stickHeadChild] - Optional component to be placed on stick head (for example icon).
- * @param {Watched(float)} [stickCooldownEndTime] - Optional watched mission time when cooldown should finish.
- *                                                  When no cooldown, pass any time less than current mission time (like -1).
- * @param {Watched(float)} [stickCooldownTimeSec] - Optional watched total cooldown time in seconds. Should be > 0, can be constant.
- * @param {Watched(bool)} [isStickEnabled] - Optional watched flag, if stick is enabled, by cooldown and/or other states.
- *                                           If you are using cooldown, you should set this flag to false when in cooldown.
- * @param {table} [gamepadParams] - Which movement stick of joystick should be controlled. And shortcutId for activating stick. See defaultGamepadParams
- * @return {table} - Table with "stickControl" (stick component for HUD) and "stickView" (stick component for HudEditor).
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let mkMiniStick = kwarg(function mkMiniStick(
   isStickActive,
   stickDelta,

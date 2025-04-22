@@ -6,11 +6,11 @@ let { windowActive } = require("%appGlobals/windowState.nut")
 let { isLoggedIn } = require("loginState.nut")
 let { isInBattle } = require("clientState/clientState.nut")
 
-//call refresh function after each windowActivate
-//function will be called only when logged in and not in battle
+
+
 function menuAutoRefreshTimer(
-  refresh, //function to call
-  refreshDelaySec = 30 //minimum timeout after refresh to ignore window activate
+  refresh, 
+  refreshDelaySec = 30 
 ) {
   local readyRefreshTime = 0
   local timeLeftToUpdate = 0
@@ -52,12 +52,12 @@ function menuAutoRefreshTimer(
   windowActive.subscribe(windowStateHandler)
 
   return {
-    function refreshOnWindowActivate(repeatAmount = 1, refreshPeriodSec = 10.0) { //repeat several calls by timeout after window activate
+    function refreshOnWindowActivate(repeatAmount = 1, refreshPeriodSec = 10.0) { 
       readyRefreshTime = 0
       timeLeftToUpdate = repeatAmount
       refreshPeriod = refreshPeriodSec
     }
-    function refreshIfWindowActive(repeatAmount = 1, refreshPeriodSec = 10.0) { //repeat several calls by timeout without wait if window active
+    function refreshIfWindowActive(repeatAmount = 1, refreshPeriodSec = 10.0) { 
       readyRefreshTime = 0
       timeLeftToUpdate = repeatAmount
       refreshPeriod = refreshPeriodSec

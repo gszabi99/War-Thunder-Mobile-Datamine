@@ -24,7 +24,7 @@
   "useSimpleDeathConditionsAndEffects": false,
   "hitCamOnSimpleUnitSubsystems": true,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 107760.0,
+  "multHpFromMetaparts": 111560.0,
   "type": "typeDestroyer",
   "expClass": "exp_destroyer",
   "timeToFire": 40.0,
@@ -272,7 +272,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 107760.0,
+      "hp": 111560.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "compartment_01_dm": {
@@ -298,7 +298,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 107760.0,
+      "hp": 111560.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "fireParamsPreset": "common_ship_fire",
@@ -308,7 +308,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 107760.0,
+      "hp": 111560.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
       "main_caliber_turret_01_dm": {}
@@ -317,7 +317,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 107760.0,
+      "hp": 111560.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "auxiliary_caliber_turret_01_dm": {},
@@ -364,7 +364,7 @@
     "torpedo_tubes": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 107760.0,
+      "hp": 111560.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "tt_01_dm": {},
@@ -442,38 +442,6 @@
             "fxEventName": "fire_after_hit_med"
           }
         }
-      },
-      {
-        "name": [
-          "tt_01_dm",
-          "tt_02_dm"
-        ],
-        "onHit": [
-          {
-            "damage": 300.0,
-            "damageType": "generic",
-            "isSingleAction": false,
-            "moduleStatusEffect": {
-              "name": "shotFreqMult",
-              "prob": 1.0
-            },
-            "action": {
-              "type": "forcedExplosion",
-              "probability": 0.5,
-              "damage": 2000.0,
-              "damageType": "explosion",
-              "fxEvent": "ammo_expl",
-              "parts": {
-                "part": "compartment_05_dm"
-              }
-            }
-          },
-          {
-            "damageType": "explosion",
-            "damage": 300.0,
-            "fire": 0.05
-          }
-        ]
       },
       {
         "name": "bridge_dm",
@@ -571,7 +539,7 @@
   },
   "MetaParts": {
     "hull": {
-      "hp": 107760.0,
+      "hp": 111560.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",
@@ -926,6 +894,7 @@
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
         "accuracyGnd": 0.0,
+        "shootingErrorAir": 4.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
         "errMeasureVelFast": 1.0,
@@ -984,6 +953,7 @@
         "accuracyBotMultAir": 0.4,
         "accuracyAir": 0.4,
         "accuracyGnd": 0.0,
+        "shootingErrorAir": 4.0,
         "errMeasureVel": 1.0,
         "errTargettingOn100kmph": 0.0,
         "errMeasureVelFast": 1.0,
@@ -1553,6 +1523,7 @@
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
               "accuracyGnd": 0.0,
+              "shootingErrorAir": 4.0,
               "errMeasureVel": 1.0,
               "errTargettingOn100kmph": 0.0,
               "errMeasureVelFast": 1.0,
@@ -1611,6 +1582,7 @@
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
               "accuracyGnd": 0.0,
+              "shootingErrorAir": 4.0,
               "errMeasureVel": 1.0,
               "errTargettingOn100kmph": 0.0,
               "errMeasureVelFast": 1.0,
@@ -2161,6 +2133,7 @@
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
               "accuracyGnd": 0.0,
+              "shootingErrorAir": 4.0,
               "errMeasureVel": 1.0,
               "errTargettingOn100kmph": 0.0,
               "errMeasureVelFast": 1.0,
@@ -2219,6 +2192,7 @@
               "accuracyBotMultAir": 0.4,
               "accuracyAir": 0.4,
               "accuracyGnd": 0.0,
+              "shootingErrorAir": 4.0,
               "errMeasureVel": 1.0,
               "errTargettingOn100kmph": 0.0,
               "errMeasureVelFast": 1.0,

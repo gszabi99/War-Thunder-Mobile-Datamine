@@ -8,9 +8,9 @@ let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
 let { isHMSAvailable = @() false } = require("android.account.huawei")
 let { getBuildMarket = @() "googleplay" } = require("android.platform")
 
-let LOGIN_STATE = { //bit mask
-  //before full load
-  AUTHORIZED                  = 0x00001 //succesfully connected to auth
+let LOGIN_STATE = { 
+  
+  AUTHORIZED                  = 0x00001 
   GAME_UPDATED                = 0x00002
   ONLINE_BINARIES_INITED      = 0x00004
 
@@ -27,19 +27,19 @@ let LOGIN_STATE = { //bit mask
   IOS_IDFA                    = 0x02000
 
 
-  //not required for login
+  
   HANGAR_LOADED               = 0x10000
   LOGIN_STARTED               = 0x20000
   PURCHASES_RECEIVED          = 0x40000
 
-  //masks
+  
   NOT_LOGGED_IN               = 0x00000
   AUTH_AND_UPDATED            = 0x00003
   READY_TO_FULL_LOAD          = 0x00107
   READY_FOR_GOOGLE_CONSENT    = 0x00700
   READY_FOR_OUR_CONSENT       = 0x00F00
   READY_FOR_IDFA              = 0x01F00
-  LOGGED_IN                   = 0x03FF7 // logged in to all hosts and all configs are loaded
+  LOGGED_IN                   = 0x03FF7 
 }
 
 let LOGIN_UPDATER_EVENT_ID = "loginUpdaterEvent"
@@ -132,6 +132,7 @@ return loginTypes.__merge(secondStepTypes, {
   isProfileReceived = Computed(@() (loginState.value & LOGIN_STATE.PROFILE_RECEIVED) != 0)
   isContactsLoggedIn = Computed(@() (loginState.value & LOGIN_STATE.CONTACTS_LOGGED_IN) != 0)
   isOpenedLegalWnd = Computed(@() legalListForApprove.value.findvalue(@(v) v) != null)
+  isGameUpdatedOnLogin = Computed(@() (loginState.value & LOGIN_STATE.GAME_UPDATED) != 0)
 
   isLoggedIn = Computed(@() (loginState.value & LOGIN_STATE.LOGGED_IN) == LOGIN_STATE.LOGGED_IN)
   isAuthAndUpdated = Computed(@() (loginState.value & LOGIN_STATE.AUTH_AND_UPDATED) == LOGIN_STATE.AUTH_AND_UPDATED)

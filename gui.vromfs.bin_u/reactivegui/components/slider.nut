@@ -177,7 +177,7 @@ function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
     clearTimer(onHoldTimer)
   }
 
-  let bg = btnBg.__merge({ key = {} }) //need to detach to resetTimer on recreate
+  let bg = btnBg.__merge({ key = {} }) 
   return @() bg.__merge(bgOvrW.value, {
     watch = [stateFlags, bgOvrW]
     behavior = Behaviors.Button

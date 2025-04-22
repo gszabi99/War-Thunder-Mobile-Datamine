@@ -13,7 +13,7 @@ let gap = hdpx(5)
 let defaultColor = 0xFFA0A0A0
 let defFilterText = mkWatched(persist, "filterText", "")
 
-let closeButtonHeight = calc_str_box("A", fontVeryTiny)[1] + 2 * hdpx(5) //text padding
+let closeButtonHeight = calc_str_box("A", fontVeryTiny)[1] + 2 * hdpx(5) 
 let closeButton = function(close) {
   let stateFlags = Watched(0)
   return @() {
@@ -72,7 +72,7 @@ let textArea = @(text) {
   color = defaultColor
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  preformatted = FMT_AS_IS //FMT_KEEP_SPACES
+  preformatted = FMT_AS_IS 
   text
 }.__update(fontVeryTiny)
 

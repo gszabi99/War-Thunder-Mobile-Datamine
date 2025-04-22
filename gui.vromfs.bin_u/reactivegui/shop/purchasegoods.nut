@@ -18,6 +18,7 @@ let { playSound } = require("sound_wt")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { mkCurrencyComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { SGT_EVT_CURRENCY } = require("%rGui/shop/shopConst.nut")
+let { markUnitsUnseen } = require("%rGui/unit/unseenUnits.nut")
 
 function getCantPurchaseReason(goods) {
   let hasUnits = goods.units.filter(@(unitId) campMyUnits.get()?[unitId] != null)
@@ -86,6 +87,8 @@ function purchaseOfferImpl(offer, currencyId, price) {
   if (shopPurchaseInProgress.get() != null)
     return "shopPurchaseInProgress"
   buy_offer(offer.campaign, offer.id, currencyId, price, "onShopGoodsPurchase")
+  let unitUpgrades = clone offer.unitUpgrades
+  markUnitsUnseen(unitUpgrades.extend(offer.units))
   return ""
 }
 

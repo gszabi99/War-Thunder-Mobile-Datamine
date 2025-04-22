@@ -627,7 +627,10 @@
           },
           {
             "type": "enemyOffender",
-            "oflag": "typeBomber"
+            "oflag": [
+              "typeBomber",
+              "typeStormovik"
+            ]
           }
         ]
       }
@@ -1891,7 +1894,7 @@
       "mode": {
         "type": "criticalHitByType",
         "num": 1005000,
-        "critType": "engine",
+        "critType": "speed",
         "condition": [
           {
             "type": "online"
@@ -2120,7 +2123,7 @@
       "userstat_stat_id": "ship_artillery_master",
       "mode": {
         "type": "damageUnits",
-        "maxVal": 150,
+        "maxVal": 200,
         "condition": [
           {
             "type": "online"

@@ -1,4 +1,4 @@
-//pseudo-module for native code
+
 #allow-root-table
 let { on_module_unload } = require("modules")
 

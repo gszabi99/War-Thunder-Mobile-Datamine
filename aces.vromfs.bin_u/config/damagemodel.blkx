@@ -5236,6 +5236,16 @@
       "partRepairHp": 1.0,
       "completely": true
     },
+    "engine_room_05_dm": {
+      "speed": 25.0,
+      "partRepairHp": 1.0,
+      "completely": true
+    },
+    "engine_room_06_dm": {
+      "speed": 25.0,
+      "partRepairHp": 1.0,
+      "completely": true
+    },
     "funnel_01_dm": {
       "speed": 15.0,
       "completely": true
@@ -6829,11 +6839,6 @@
       "modelName": "tank_bullet_barshot",
       "gbufferModelName": "tank_shell_barshot",
       "afterHitModelName": "tank_shell_barshot_destr"
-    },
-    "roundshot": {
-      "modelName": "tank_bullet_roundshot",
-      "gbufferModelName": "tank_shell_roundshot",
-      "afterHitModelName": "tank_shell_roundshot_destr"
     }
   },
   "explosiveMassToSplashDamageForBombingZone": {

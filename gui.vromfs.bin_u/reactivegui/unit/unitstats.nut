@@ -34,9 +34,9 @@ let avgShellPenetrationMmByRank = [
 
 let valueRangeShip = {
   shipCrewRating = [0.0, 10.0]
-  maxSpeed = [4, 23] // m/s
-  surfaceSpeed = [4, 23] // m/s
-  periscopeSpeed = [4, 23] // m/s
+  maxSpeed = [4, 23] 
+  surfaceSpeed = [4, 23] 
+  periscopeSpeed = [4, 23] 
   turningTime = [10, 60]
   asmCaptureDuration = [2.2, 10]
   mainCannonDps = [0, 5000]
@@ -54,13 +54,13 @@ let valueRangeTank = {
   armorPower = [30, 800]
   reloadTime = [0, 45]
   gunnerTurretRotationSpeed = [2, 75]
-  maxSpeedForward = [0, 31] // m/s
-  maxSpeedBackward = [0, 31] // m/s
+  maxSpeedForward = [0, 31] 
+  maxSpeedBackward = [0, 31] 
   powerToWeightRatio = [0, 50]
 }
 
 let valueRangeAir = {
-  maxSpeed = [66, 706] // m/s
+  maxSpeed = [66, 706] 
 }
 
 let valueRange = {
@@ -75,7 +75,7 @@ let allCannons = {
   auxCannon = true
 }
 
-let roundCaliber = @(caliber) caliber > 15 ? caliber.tointeger() : caliber //round cannon caliber, but not minigun
+let roundCaliber = @(caliber) caliber > 15 ? caliber.tointeger() : caliber 
 let dpsText = @(dps) $"{(dps + 0.5).tointeger()}{loc("measureUnits/damagePerSecond")}"
 
 function mkGetProgress(unitType, id) {
@@ -236,6 +236,7 @@ let statsAir = {
   }
   massPerSec = {
     valueToText = @(v, _) "".concat(round_by_value(v, 0.1), loc("measureUnits/kgPerSec"))
+    isAfterWeapons = true
   }
   maxSpeed = {
     valueToText = @(v, _) getSpeedText(v)
@@ -444,10 +445,12 @@ let mkAirTurretWeapon = @(id) mkStat(id, {
 
 let mkAirSecondaryWeapon = @(id) mkStat(id, {
   id = "secondaryWeapon"
-  posOffset = 1 //to move after pilons info
+  posOffset = 1 
   secondaryId = id
   getHeader = @(_, __) getWeaponTypeName(id)
   hasSeveralValueRows = true
+  getRowListHeader = @(_) loc("weapons_types/enum/secondary")
+  getRowListValue = @(v) v
   isAvailable = @(_) true
 }, AIR)
 
@@ -474,6 +477,10 @@ let weaponsCfgAir = {
     mkAirMainWeapon("cannon")
     mkAirMainWeapon("machine gun")
     mkAirTurretWeapon("gunner")
+    mkAirSecondaryWeapon("bombs")
+    mkAirSecondaryWeapon("rockets")
+    mkAirSecondaryWeapon("torpedoes")
+    mkAirSecondaryWeapon("additional gun")
   ]
 }
 
@@ -509,7 +516,7 @@ function mkUnitStat(unit, stat, shopCfg, uid, statsWithAttr = {}) {
   local value = stat.getValue(shopCfg)
   local valueWithAttr = stat.getValue(statsWithAttr)
   return {
-    uid //for compare
+    uid 
     header
     value = stat.valueToText(value, shopCfg)
     valueAttr = stat.valueToTextAttr(value, valueWithAttr)
@@ -555,8 +562,8 @@ let getWeapByTypeFromSlots = @(slots) slots
     },
     {})
 
-// ToDo: Extract the air logic in another funtion to not complicate it.
-// ToDo: Get the whole air card info from the weapon slots, but not from unit tags.
+
+
 function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
   if (shopCfg == null)
     return []
@@ -597,7 +604,7 @@ function getUnitStats(unit, shopCfg, statsWithAttr, statsList, weapStatsList) {
       }
 
       if (headers.len() > 0) {
-        let title = ", ".join(headers.keys())
+        let title = " ".join(headers.keys())
         let { posOffset = null } = stat
         let pos = weaponsIdx == null ? null
           : posOffset != null ? weaponsIdx + posOffset

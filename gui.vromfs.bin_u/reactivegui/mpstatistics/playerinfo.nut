@@ -157,7 +157,7 @@ let actions = [
     icon = { name = "ui/gameuiskin#icon_contacts.svg" color = 0xFFFFFFFF }
     isInviteAction = true
   }
-    //same hotkey is correct, only 1 from 4 buttons, displayed at once
+    
   {
     action = CANCEL_INVITE
     hotkeys = ["^J:RB"]

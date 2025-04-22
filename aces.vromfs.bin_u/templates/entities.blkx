@@ -283,7 +283,7 @@
   },
   "medicalkit_ecs": {
     "_use": "expendable_mod",
-    "mod__name": "tank_medical_kit_expendable",
+    "mod__name": "tank_medical_kit",
     "mod__type_name": "medicalkit",
     "mod__count_effects_mod": true
   },

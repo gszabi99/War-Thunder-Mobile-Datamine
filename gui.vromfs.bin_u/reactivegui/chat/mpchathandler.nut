@@ -24,7 +24,7 @@ function onIncomingMessage(sender, msg, _enemy, mode, isAutomatic) {
   if (isCmdMessage) {
     foreach (handlerFunc in chatCmdHandlers)
       text = handlerFunc(sender, msg) ?? text
-    if (text == null) // Command not precessed, or chat message not required.
+    if (text == null) 
       return false
   }
 

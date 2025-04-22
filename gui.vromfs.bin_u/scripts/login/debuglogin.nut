@@ -29,10 +29,10 @@ function logChanges(state, prev) {
 }
 
 let logComputed = keepref(ComputedImmediate(function(prev) {
-  //use computed here only for side effect that it calculate before any subscribers on loginState will be called
+  
   let state = loginState.value
   if (prev != FRP_INITIAL)
     logChanges(state, prev)
   return state
 }))
-logComputed.subscribe(@(_) null) //need log before all suscriptions
+logComputed.subscribe(@(_) null) 

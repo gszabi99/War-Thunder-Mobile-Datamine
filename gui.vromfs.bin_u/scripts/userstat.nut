@@ -15,11 +15,11 @@ let charClientEvent = require("charClientEvent.nut")
 let { mnGenericSubscribe } = require("%appGlobals/matching_api.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
-const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
+const STATS_UPDATE_INTERVAL = 60000 
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
-const MAX_CONFIGS_UPDATE_DELAY = 10 //to prevent all users update configs at once.
+const MAX_CONFIGS_UPDATE_DELAY = 10 
 
-//profile increase days for daily rewards, and matching need to receive notifications
+
 let isReadyToConnect = Computed(@() isProfileReceived.value && isMatchingConnected.value)
 let needConfigsUpdate = mkWatched(persist, "needConfigsUpdate", false)
 

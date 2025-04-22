@@ -19,8 +19,8 @@ let changedModes = persist("changedModes", @() [])
 local isFetching = false
 local failedFetches = 0
 
-//this logic will not suvive scripts reload while request in progress,
-//just used from WT with rewrite to simple module
+
+
 function loadGameModesFromList(gm_list) {
   matching.rpc_call("match.fetch_game_modes_info",
     { byId = gm_list, timeout = 60 },
@@ -89,9 +89,9 @@ function updateChangedModesImpl(added_list, removed_list, changed_list) {
           continue
         }
 
-        needToFetchGmList.append(gameModeId) //need refresh full mode-info because may updated mode params
+        needToFetchGmList.append(gameModeId) 
 
-        //instant hide when need
+        
         if ((disabled || !visible) && (gameModeId in modes))
           modes[gameModeId] = modes[gameModeId].__merge({ disabled, visible })
       }
@@ -109,7 +109,7 @@ function updateChangedModes() {
     return
   }
 
-  if (isInBattle.value) { // do not handle while session is active
+  if (isInBattle.value) { 
     logGM("wait battle finish to update game modes")
     return
   }

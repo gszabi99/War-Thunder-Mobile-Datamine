@@ -24,7 +24,7 @@ let isAvailableByMissionSettings = @(misBlk, unitType) (misBlk?[missionAvailabil
   && ((unitType not in isUsedInKillStreaks) || !(misBlk?.useKillStreaks ?? false))
 
 
-function isMissionComplete(chapterName, missionName) { //different by mp_modes
+function isMissionComplete(chapterName, missionName) { 
   let progress = get_mission_progress($"{chapterName}/{missionName}")
   return progress >= 0 && progress < 3
 }
@@ -38,10 +38,10 @@ function getLocIdsArray(config, key = "locId") {
   let result = []
   foreach (idx, namePart in parsedString) {
     if (namePart == ",")
-      result.remove(result.len() - 1) //remove previouse space
+      result.remove(result.len() - 1) 
 
     result.append(namePart)
-    //Because of complexe string in result, better to manually add required spaces
+    
     if (idx != (parsedString.len() - 1))
       result.append(" ")
   }
@@ -71,7 +71,7 @@ function getCombineLocNameMission(missionInfo) {
     }
   }
 
-  //we dont have lang and postfix
+  
   if (locName == "")
     locName = $"missions/{misInfoName}"
   return locName

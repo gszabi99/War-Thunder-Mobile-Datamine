@@ -9,12 +9,12 @@ function clearLog() {
 }
 
 let dmgTypeIcons = [
-  "⋗" //second_caliber
-  "⋖" //main_caliber
-  "▢" // bomb
-  "▣" //rocket
-  "⌋" //torpedo
-  "⋄" //mine
+  "⋗" 
+  "⋖" 
+  "▢" 
+  "▣" 
+  "⌋" 
+  "⋄" 
 ]
 
 let delayAnimTime = 0.2
@@ -27,7 +27,7 @@ let fullAnimTime = visibleAnimTime + opacityAnimTime
 registerInteropFunc("hudDmgInfoUpdate", function(dmg, dmgType) {
   gui_scene.resetTimeout(fullAnimTime, clearLog)
   let dmgLog = dmgType in visibleLog.value ? clone visibleLog.value[dmgType] : []
-  if (dmgLog.len() > 0 && dmgLog.top() == dmg)  // !!!FIX ME need remove this when will the duplicate damage stop received from native code.
+  if (dmgLog.len() > 0 && dmgLog.top() == dmg)  
     return
   dmgLog.append(dmg)
   visibleLog.mutate(@(v) v[dmgType] <- dmgLog)

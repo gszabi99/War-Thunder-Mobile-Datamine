@@ -6,7 +6,7 @@ let { DM_HIT_RESULT_NONE } = require("hitCamera")
 let { Callback } = require("%sqStdLibs/helpers/callback.nut")
 
 local subscribers = {}
-local eventsStack = [] //for debug top event
+local eventsStack = [] 
 
 let g_hud_event_manager = {
   subscribers
@@ -38,7 +38,7 @@ let g_hud_event_manager = {
   }
 
   function onHudEvent(event_name, event_data = {}) {
-    let data = this.handleData(event_data) //todo: better to send direct event from native code to eventbus instead of this conversion
+    let data = this.handleData(event_data) 
     eventbus_send_foreign(event_name, data)
     if (!(event_name in subscribers))
       return

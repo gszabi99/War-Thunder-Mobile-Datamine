@@ -183,7 +183,7 @@ let getTopMenuButtons = @() [
 ]
 
 let topMenuButtonsGenId = Computed(function(prev) {
-  let vals = [   //warning disable: -declared-never-used
+  let vals = [   
     can_debug_missions, can_debug_configs, can_use_debug_console, isGamepad,
     isFeedReceived, firstBattleTutor, canShowLoginAwards, isUserstatMissingData,
     can_view_replays, can_write_replays, hasUnsavedReplay, has_offline_battle_access

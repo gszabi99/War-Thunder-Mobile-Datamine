@@ -1,5 +1,5 @@
 
-// warning disable: -file:forbidden-function
+
 
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
@@ -52,10 +52,10 @@ let needToShowHiddenUnitsDebug = mkWatched(persist, "needToShowHiddenUnitsDebug"
 register_command(@() needToShowHiddenUnitsDebug.set(!needToShowHiddenUnitsDebug.get()), "ui.showHiddenUnits")
 register_command(debugUnitStats, "debug.unitStats")
 register_command(
-  @(unitName) console_print($"Tags of '{unitName}': ", getUnitTags(unitName)), // warning disable: -forbidden-function
+  @(unitName) console_print($"Tags of '{unitName}': ", getUnitTags(unitName)), 
   "debug.get_unit_tags")
 register_command(
-  @(unitName) console_print($"Tags of '{unitName}': ", getUnitTagsCfg(unitName)), // warning disable: -forbidden-function
+  @(unitName) console_print($"Tags of '{unitName}': ", getUnitTagsCfg(unitName)), 
   "debug.get_unit_tags_full")
 register_command(debug_show_unit, "ui.debug.show_unit")
 register_command(debug_start_testflight, "ui.debug.testflight")

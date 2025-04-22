@@ -175,7 +175,7 @@ isQueueDataActual.subscribe(function(v) {
     writeJwtData()
 })
 
-curUnitInfo.subscribe(function(_) {  //leave queue if unit change
+curUnitInfo.subscribe(function(_) {  
   if (!isInQueue.value)
     return
   logQ("Leave queue by curUnitInfo change")
@@ -195,7 +195,7 @@ squadMembers.subscribe(function(v) {
 
   if (curQueueState.value != QS_ACTUALIZE_SQUAD)
     return
-  if (v.len() <= 1) //leave squad, or alone in the squad
+  if (v.len() <= 1) 
     leaveQueue()
   else
     tryWriteMembersData()
@@ -234,7 +234,7 @@ matching.subscribe("match.notify_queue_leave", function(params) {
   if (!isInQueue.get() || curQueue.get() == null)
     return
   let cluster = params?.cluster
-  if (cluster == null) { //leave all
+  if (cluster == null) { 
     destroyQueue()
     return
   }
@@ -250,7 +250,7 @@ matching.subscribe("match.notify_queue_leave", function(params) {
   if (cluster not in joinedClusters)
     return
   if (joinedClusters.len() == 1)
-    destroyQueue() //last cluster leave
+    destroyQueue() 
   else
     curQueue.mutate(function(v) {
       let newClusters = clone joinedClusters

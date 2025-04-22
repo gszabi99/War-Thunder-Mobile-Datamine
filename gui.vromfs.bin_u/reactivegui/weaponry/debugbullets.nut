@@ -199,10 +199,10 @@ register_command(
                 resByCount.resize(count + 1, null)
               let icons = set.bullets.map(getBulletBeltImageId)
               let iconsStr = ";".join(icons)
-              resByCount[count] = (resByCount[count] ?? {}).__update({ [iconsStr] = true }) //warning disable: -unwanted-modification
+              resByCount[count] = (resByCount[count] ?? {}).__update({ [iconsStr] = true }) 
               if (count < 6)
                 continue
-              bigBeltsUnits[name] <- (bigBeltsUnits?[name] ?? {}).__update({ [iconsStr] = true }) //warning disable: -unwanted-modification
+              bigBeltsUnits[name] <- (bigBeltsUnits?[name] ?? {}).__update({ [iconsStr] = true }) 
             }
     }
 
@@ -223,7 +223,7 @@ register_command(
     }
     let text = "\n".join(texts)
     log(text)
-    console_print(text) //warning disable: -forbidden-function
+    console_print(text) 
   }),
   "debug.print_all_bullet_sets_icons_for_slots")
 
@@ -249,7 +249,7 @@ register_command(
     }
 
     log(resUnits)
-    console_print(resUnits) //warning disable: -forbidden-function
+    console_print(resUnits) 
   }),
   "debug.find_double_weapon_secondary_slots")
 
@@ -275,18 +275,18 @@ register_command(
       let count = biggestBan.len()
       if (count >= conflicts.len())
         conflicts.resize(count + 1)
-      conflicts[count] = (conflicts[count] ?? []) //warning disable: -unwanted-modification
+      conflicts[count] = (conflicts[count] ?? []) 
         .append({ name, slots = biggestBan.keys().append(slotIdx).sort() })
     }
 
     log($"Most conflicts = {conflicts.len()}:\n", conflicts.top())
-    console_print($"Most conflicts = {conflicts.len()}:\n", conflicts.top()) //warning disable: -forbidden-function
+    console_print($"Most conflicts = {conflicts.len()}:\n", conflicts.top()) 
 
     for (local nextIdx = conflicts.len() - 2; nextIdx >= 0; nextIdx--) {
       if (conflicts[nextIdx] == null)
         continue
       log($"Next conflicts = {nextIdx + 1}:\n", conflicts?[nextIdx])
-      console_print($"Most conflicts = {nextIdx + 1}:\n", conflicts?[nextIdx]) //warning disable: -forbidden-function
+      console_print($"Most conflicts = {nextIdx + 1}:\n", conflicts?[nextIdx]) 
       break
     }
   }),
@@ -394,6 +394,6 @@ register_command(
     }
 
     log($"correct = {correct}, incorrect = {incorrect}", conflicts)
-    console_print($"correct = {correct}, incorrect = {incorrect}", conflicts) //warning disable: -forbidden-function
+    console_print($"correct = {correct}, incorrect = {incorrect}", conflicts) 
   }),
   "debug.find_not_mirror_wings_weapon_slots")

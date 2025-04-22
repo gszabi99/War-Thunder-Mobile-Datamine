@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { /* OPT_TANK_TARGETING_CONTROL,  */
+let { 
   OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_SHOW_MOVE_DIRECTION_IN_SIGHT, OPT_ARMOR_PIERCING_FIXED,
   OPT_AUTO_ZOOM_TANK, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_CAMERA_SENSE,
   OPT_CAMERA_SENSE_IN_ZOOM, OPT_CAMERA_SENSE_TANK, OPT_FREE_CAMERA_TANK,
-  OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, OPT_SHOW_GRASS_IN_TANK_VISION, mkOptionValue, getOptValue
+  OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, OPT_SHOW_GRASS_IN_TANK_VISION, USEROPT_ENABLE_AUTO_HEALING, mkOptionValue, getOptValue
 } = require("%rGui/options/guiOptions.nut")
-let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle,
+let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle, set_enable_auto_healing, get_enable_auto_healing,
   set_auto_zoom, CAM_TYPE_NORMAL_TANK, CAM_TYPE_BINOCULAR_TANK, CAM_TYPE_FREE_TANK
 } = require("controlsOptions")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -19,7 +19,7 @@ let { gearDownOnStopButtonList, currentGearDownOnStopButtonTouch, showGearDownCo
 let { openChooseMovementControls
 } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
 
-let autoZoomDefaultTrueStart = 1699894800 //13.11.23
+let autoZoomDefaultTrueStart = 1699894800 
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "tanks", v)
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
@@ -57,14 +57,14 @@ let showReticleButtonTouch = {
     valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
 
-// let tankTargetControlTypesList = ["autoAim", "directAim"]
-// let tankTargetControlType = {
-//   locId = "options/tank_targeting_control"
-//   ctrlType = OCT_LIST
-//   value = mkOptionValue(OPT_TANK_TARGETING_CONTROL, null, @(v) validate(v, tankTargetControlTypesList))
-//   list = tankTargetControlTypesList
-//   valToString = @(v) loc($"options/{v}")
-// }
+
+
+
+
+
+
+
+
 
 let targetTrackingList = [false, true]
 let currentTargetTrackingType = mkOptionValue(OPT_TARGET_TRACKING, true, @(v) validate(v, targetTrackingList))
@@ -170,6 +170,20 @@ let optHudScoreTank = {
   valToString = @(v) loc($"multiplayer/{v}")
 }
 
+let enableCrewAutoHealingList = [false, true]
+let currentEnableCrewAutoHealing = mkOptionValue(USEROPT_ENABLE_AUTO_HEALING, get_enable_auto_healing(), @(v) validate(v, enableCrewAutoHealingList))
+set_enable_auto_healing(currentEnableCrewAutoHealing.get())
+currentEnableCrewAutoHealing.subscribe(@(v) set_enable_auto_healing(v))
+let enableCrewAutoHealingType = {
+  locId = "options/enable_auto_healing"
+  ctrlType = OCT_LIST
+  value = currentEnableCrewAutoHealing
+  onChangeValue = @(v) sendChange("enable_auto_healing", v)
+  list = enableCrewAutoHealingList
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+}
+
+
 return {
   currentTargetTrackingType
   currentArmorPiercingFixed
@@ -181,7 +195,7 @@ return {
     cameraSenseSlider(CAM_TYPE_BINOCULAR_TANK, "options/camera_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_TANK, getOptValue(OPT_CAMERA_SENSE_IN_ZOOM)?? 1.0)
     gearDownOnStopButtonTouch
     targetTrackingType
-    // tankTargetControlType
+    
     showMoveDirection
     showModeDirectionInSight
     showGrassInTankVision
@@ -189,5 +203,6 @@ return {
     showReticleButtonTouch
     currentAutoZoomType
     optHudScoreTank
+    enableCrewAutoHealingType
   ]
 }

@@ -11,7 +11,7 @@ let mkCurrencyImage = @(amount, size, currencyId) {
 }
 
 function mkRewardImage(reward, size) {
-  //todo: use icons from the other rewards
+  
   foreach(g in reward)
     if (g.gType == G_LOOTBOX)
       return mkLoootboxImage(g.id, size)

@@ -34,7 +34,7 @@ function mkBtnGlare(trigger, btnSize = touchButtonSize) {
       }]
     }
 
-    transform = { scale = [0.0, 0.0] } //zero size mask will not render. So just optimization
+    transform = { scale = [0.0, 0.0] } 
     animations = [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.0, 1.0], duration = 0.5, trigger }]
   }
 }
@@ -63,7 +63,7 @@ function mkActionGlare(actionItem, buttonSize = touchButtonSize) {
       }]
     }
 
-    transform = { scale = [0.0, 0.0] } //zero size mask will not render. So just optimization
+    transform = { scale = [0.0, 0.0] } 
     animations = [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.0, 1.0], duration = 0.5, trigger }]
   }
 }

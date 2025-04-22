@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { campaignsLevelInfo } = require("%appGlobals/pServer/campaign.nut")
 let { sendAppsFlyerEvent, sendAppsFlyerSavedEvent } = require("%rGui/notifications/logEvents.nut")
 
-// Server supports only those events: "levelUp_5_1", "levelUp_4_1", "levelUp_3_2", "levelUp_2_2".
+
 let sendEventsOn = {
   [5] = 1,
   [4] = 1,

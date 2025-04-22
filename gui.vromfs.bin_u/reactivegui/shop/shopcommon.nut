@@ -124,7 +124,7 @@ function getSubsPeriodString(subs) {
   if (billingPeriod.len() == 1)
     foreach (period, n in billingPeriod) {
       let locId = n == 1 ? $"measureUnits/single/{period}" : $"measureUnits/full/{period}"
-      return loc(locId, { n }) //--unconditional-terminated-loop
+      return loc(locId, { n }) 
     }
 
   let list = []

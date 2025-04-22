@@ -39,7 +39,7 @@ let schRewardsByCategory = Computed(function() {
   let hiddenList = []
   let hasAds = isAdsAvailable.get()
   foreach (goods in schRewardsBase.get()) {
-    if (goods?.isHidden || (goods.needAdvert && !hasAds)) { // Hidden for shop
+    if (goods?.isHidden || (goods.needAdvert && !hasAds)) { 
       hiddenList.append(goods)
       continue
     }
@@ -61,7 +61,7 @@ let actualSchRewards = Computed(function() {
   return res
 })
 
-let nextUpdate = Watched({ time = 0 }) //even when value changed to the same, better to restart timer.
+let nextUpdate = Watched({ time = 0 }) 
 
 let READY_ADVERT      = 10000000000
 let READY_NOT_ADVERT  = 20000000000
@@ -132,7 +132,7 @@ function onSchRewardReceive(schReward) {
   if (schReward.id in schRewardInProgress.get())
     return
   if (!schRewardsStatus.get()?[schReward.id].isReady) {
-    if (!schReward.isReady) //player see this reward as not ready
+    if (!schReward.isReady) 
       openMsgBox({ text = loc("msg/scheduledRewardNotReadyYet") })
     return
   }

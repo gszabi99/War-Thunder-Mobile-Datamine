@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 let { mkGradientBlock } = require("%rGui/hudHints/hintCtors.nut")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 

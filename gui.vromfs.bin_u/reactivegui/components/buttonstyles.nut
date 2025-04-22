@@ -7,7 +7,7 @@ return freeze({
   defButtonHeight
   defButtonMinWidth
 
-  PRIMARY = { // Blue
+  PRIMARY = { 
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
@@ -18,7 +18,7 @@ return freeze({
       color = Color(22, 178, 233)
     }
   }
-  PURCHASE = { // Golden
+  PURCHASE = { 
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
@@ -29,7 +29,7 @@ return freeze({
       color = Color(233, 184, 22)
     }
   }
-  BATTLE = { // Red
+  BATTLE = { 
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
@@ -40,7 +40,7 @@ return freeze({
       color = Color(220, 18, 8)
     }
   }
-  BRIGHT = { // White
+  BRIGHT = { 
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
@@ -52,7 +52,7 @@ return freeze({
       fontFxFactor = 0
     }
   }
-  HUAWEI = { // Huawei
+  HUAWEI = { 
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = hdpx(566)
@@ -65,7 +65,7 @@ return freeze({
     }
     hasPattern = false
   }
-  COMMON = { // Gray
+  COMMON = { 
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
@@ -76,7 +76,7 @@ return freeze({
       color = Color(132, 132, 132)
     }
   }
-  SECONDARY = { // Green
+  SECONDARY = { 
     ovr = {
       size = [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth

@@ -11,7 +11,7 @@ let { onlyActiveStageCb, export, finalizeStage, logStage
 registerHandler("onLoginCheckPurchases", onlyActiveStageCb(function(res, _) {
   if (res?.error != null)
     logStage($"Failed: {res.error?.message ?? res.error}")
-  finalizeStage() //we finalize login even with error in such stage.
+  finalizeStage() 
 }))
 
 let start = @() check_purchases("onLoginCheckPurchases")

@@ -33,7 +33,7 @@ isInBattle.subscribe(function(_) {
   isThrottleHintAvailable(false)
 })
 
-//todo: export from native code to darg
+
 const MP_TEAM_NEUTRAL = 0
 
 let getTeamColor = @(team) team == MP_TEAM_NEUTRAL ? null
@@ -292,6 +292,17 @@ eventbus_subscribe("hint:this_is_score_board", function(p) {
     addCommonHintWithTtl(loc("hints/mission_goals_for_newbies/this_is_score_board"), p.duration)
     addHudElementPointer(p.elementId, p.duration)
   }
+})
+
+const HEALING_HINT_ID = "healing_hint"
+eventbus_subscribe("hint:healing_hint:show", function(_) {
+  addCommonHintWithTtl(loc("hints/show_healing_hint"), 10, HEALING_HINT_ID)
+  addHudElementPointer("btn_repair_with_medical", 10)
+})
+
+eventbus_subscribe("hint:healing_hint:hide", function(_) {
+  removeEvent({ id = HEALING_HINT_ID })
+  removeHudElementPointer("btn_repair_with_medical")
 })
 
 let bailoutTimer = mkWatched(persist,"bailoutTimer", 0)

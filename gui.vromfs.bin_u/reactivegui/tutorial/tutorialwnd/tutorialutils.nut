@@ -5,7 +5,7 @@ let isIntersect = @(b1, b2) !(b1.l >= b2.r || b2.l >= b1.r || b1.t >= b2.b || b2
 let isInScreen = @(pos, size) pos[0] >= 0 && pos[1] >= 0 && pos[0] + size[0] <= sw(100) && pos[1] + size[1] <= sh(100)
 let isIntersectAny = @(b1, list) list.findvalue(@(b2) isIntersect(b1, b2)) != null
 
-//increase box size in all 4 directions, but clamp by screen size
+
 let incBoxSize = @(box, inc) inc == 0 ? box
   : {
       l = max(0, box.l - inc)
@@ -92,7 +92,7 @@ function findDiapason(allowedBox, allowedRange, obstacles) {
     if (!isIntersect(obst, allowedBox))
       continue
     if (start < allowedRange[0] && end > allowedRange[1])
-      continue //ignore such big boxes
+      continue 
 
     local found = false
     for (local d = diapason.len() - 1; d >= 0; d--) {
@@ -121,7 +121,7 @@ let findDiapasonY = @(box, obstacles)
 let findDiapasonX = @(box, obstacles)
   findDiapason(box, [box.l, box.r], obstacles.map(@(o) { obst = o, start = o.l, end = o.r }))
 
-function getBestPos(diapason, range) { //return null -> not found
+function getBestPos(diapason, range) { 
   let size = range[1] - range[0]
   local found = false
   local pos = 0
@@ -139,14 +139,14 @@ function getBestPos(diapason, range) { //return null -> not found
   return found ? pos : null
 }
 
-//return null -> not found
+
 let getBestPosByY = @(diapasonY, box) getBestPos(diapasonY, [box.t, box.b])
 let getBestPosByX = @(diapasonX, box) getBestPos(diapasonX, [box.l, box.r])
 
 let sizePosToBox = @(size, pos) { l = pos[0], r = pos[0] + size[0], t = pos[1], b = pos[1] + size[1] }
 let hasInteractions = @(box, boxes) null != boxes.findvalue(@(b) isIntersect(b, box))
 
-function findGoodPos(size, pos, boxes) { //move only by single axis. For tutorial it must be enough.
+function findGoodPos(size, pos, boxes) { 
   let box = sizePosToBox(size, pos)
   if (!hasInteractions(box, boxes))
     return pos
@@ -227,13 +227,13 @@ let mkSimplePosInScreen = @(posCtor, orderCalc) {
 }
 
 let arrowPosCalcList = [
-  //middleBottom
+  
   mkSimplePosNotIntersect(bottomArrowPos, @(b) (b.t + b.b) > sh(120) ? 3 : 1)
   mkSimplePosNotIntersect(topArrowPos, @(_) 2)
   mkSimplePosNotIntersect(leftArrowPos, @(b) (b.l + b.r) < sh(80) ? 6 : 4)
   mkSimplePosNotIntersect(rightArrowPos, @(_) 5)
 
-  //here can be more perfect arrow positioning when no other place, but no need for the current tutorials
+  
 
   mkSimplePosInScreen(bottomArrowPos, @(b) (b.t + b.b) > sh(120) ? 103 : 101)
   mkSimplePosInScreen(topArrowPos, @(_) 102)

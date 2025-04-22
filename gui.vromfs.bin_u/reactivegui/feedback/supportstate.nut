@@ -6,8 +6,8 @@ let { get_network_block } = require("blkGetters")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
-// Zendesk.com website, Zendesk API (used in in-game support request form)
-// and Zendesk SSO (used to login to support.gaijin.net website) are blocked in Russia by Roskomnadzor.
+
+
 
 let ZENDESK_API_UPLOADS_URL_CFG_KEY = "zendeskApiUploadsURL"
 let DEFAULT_ZENDESK_API_UPLOADS_URL  = "https://gaijin.zendesk.com/api/v2/uploads.json?filename={0}"

@@ -9,7 +9,7 @@ let { contactsRequest, contactsRegisterHandler } = require("%rGui/contacts/conta
 
 const LEADERBOARD_NO_START_LIST_INDEX = 0x7FFFFFFF
 const LB_REQUEST_TIMEOUT = 45000
-const LB_UPDATE_INTERVAL = 10000 //same lb update time
+const LB_UPDATE_INTERVAL = 10000 
 
 let curLbData = hardPersistWatched("lb.curLbData", null)
 let curLbSelfRow = hardPersistWatched("lb.curLbSelfRow", null)
@@ -42,7 +42,7 @@ function setLbRequestData(requestData) {
 
   if (!isEqual(mkSelfRequest(requestData), mkSelfRequest(curLbRequestData.value)))
     curLbSelfRow(null)
-  curLbData(null) //should to nullify it before curLbRequestData subscribers receive event
+  curLbData(null) 
   curLbErrName(null)
   curLbRequestData(requestData)
 }

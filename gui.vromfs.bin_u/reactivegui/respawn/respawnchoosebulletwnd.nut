@@ -13,7 +13,7 @@ let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButt
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let getBulletStats = require("bulletStats.nut")
 let { getAmmoNameText, getAmmoTypeText, getAmmoAdviceText } = require("%rGui/weaponry/weaponsVisual.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
 let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
 let { mkGradientCtorDoubleSideY, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
@@ -86,10 +86,10 @@ function mkBulletButton(isSecondary, name, bSet, fromUnitTags, id) {
             rendObj = isCurrent.value ? ROBJ_IMAGE : ROBJ_SOLID
             image = isCurrent.value ? slotBGImage() : null
           }, {
-            key = $"{name}_icon" //for UI tutorial
+            key = $"{name}_icon" 
           }, {
             watch = [ isCurrent, isLockedSlot ]
-            key = name //for UI tutorial
+            key = name 
           })
         @() {
           watch = isCurrent
@@ -160,7 +160,7 @@ function bulletsList() {
     mkBulletButton(isBulletSec.get(), name, bulletSets[name], fromUnitTags?[name], id)), columns)
   return {
     watch = [bulletsInfo, bulletsSecInfo, openedSlot, isBulletSec, visibleBullets, visibleBulletsSec]
-    key = "bulletsList" //for UI tutorial
+    key = "bulletsList" 
     size = [bulletsListWidth(columns), bulletHeight * rows]
     flow = FLOW_VERTICAL
     gap = slotsGap
@@ -272,7 +272,7 @@ function curBulletInfo() {
 
   return {
     watch = [bulletsInfo, bulletsSecInfo, isBulletSec, curSlotName]
-    key = "curBulletInfo" //for UI tutorial
+    key = "curBulletInfo" 
     size = [flex(), SIZE_TO_CONTENT]
     minHeight = hdpx(500)
     padding = hdpx(15)
@@ -296,14 +296,14 @@ function applyButton() {
   let children = savedSlotName.value == curSlotName.value
       ? textButtonCommon(utf8ToUpper(loc("mainmenu/btnClose")),
         close,
-        { ovr = { key = "closeButton" }}) // key for UI tutorial
+        { ovr = { key = "closeButton" }}) 
     : !isEnoughLevel
       ? textButtonCommon(applyText,
         @() openMsgBox({ text = loc("msg/reqPlatoonLevelToUse", { reqLevel }) }),
-        { ovr = { key = "errorButton" }}) // key for UI tutorial
+        { ovr = { key = "errorButton" }}) 
     : textButtonPrimary(applyText,
       applyBullet,
-      { ovr = { key = "applyButton" }}) // key for UI tutorial
+      { ovr = { key = "applyButton" }}) 
   return {
     watch = [savedSlotName, curSlotName, bulletsInfo, bulletsSecInfo, isBulletSec, selSlot]
     valign = ALIGN_CENTER
@@ -315,7 +315,7 @@ function applyButton() {
 
 let window = {
   onAttach = @() defer(@() wndAABB(gui_scene.getCompAABBbyKey(wndKey)))
-  key = "bulletsInfo" //for UI tutorial
+  key = "bulletsInfo" 
   stopMouse = true
   vplace = ALIGN_CENTER
   hplace = ALIGN_RIGHT

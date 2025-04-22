@@ -3,19 +3,19 @@ let dedicLogerrSqEvents = require("%globalScripts/debugTools/dedicLogerrSqEvents
 
 let broadcastEvents = {}
 foreach (name, payload in {
-    EventResultMPlayers = {} //broadcast server to client
+    EventResultMPlayers = {} 
   })
   broadcastEvents.__update(registerBroadcastEvent(payload, name))
 
 let unicastEvents = {}
 foreach (name, payload in {
-    CmdSetBattleJwtData = { jwtList = [] } //set from client
-    CmdGetMyBattleData = {} //request from client
-    CmdSetMyBattleData = {} //set from dedicated
-    CmdSetDefaultBattleData = { dataId = "" } //set from client
+    CmdSetBattleJwtData = { jwtList = [] } 
+    CmdGetMyBattleData = {} 
+    CmdSetMyBattleData = {} 
+    CmdSetDefaultBattleData = { dataId = "" } 
 
-    EventBattleResult = {} //server to client
-    EventPlayerStats = {} //server to client
+    EventBattleResult = {} 
+    EventPlayerStats = {} 
   })
   unicastEvents.__update(registerUnicastEvent(payload, name))
 

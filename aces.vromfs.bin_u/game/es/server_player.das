@@ -19,8 +19,8 @@ def init_server_player(evt : Event;
                        server_player__connId : int;
                        server_player__userId : uint64;
                        var replication : NetObject)
-  // It's okay to have here server_player__connId == -1.
-  // This means that player has been disconnected and the entity isn't controlling replication anymore.
+  
+  
   print("[ServerPlayer]: Player with id {server_player__playerId} ({server_player__userId}) controls replication for {server_player__connId} connection.")
   replication |> net_object_setControlledBy(server_player__connId)
 
@@ -89,7 +89,7 @@ def init_server_player_on_client_es(evt : Event;
 
       let localPlayer = getLocalPlayer()
       if localPlayer != null && localPlayer.userId == m_player.userId
-        // In order to send net event with routing ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER
+        
         let SERVER_CONN_ID = 0
         replication |> net_object_setControlledBy(SERVER_CONN_ID)
 

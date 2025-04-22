@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 
 let selAttributes = mkWatched(persist, "selAttributes", {})
@@ -12,7 +12,7 @@ const MAX_AVAIL_STATUS = 3
 let hasSlotAttrPreset = Computed(@() campConfigs.get()?.campaignCfg.slotAttrPreset != "")
 
 let attrPresets = Computed(function() {
-  let { unitAttrPresets = [], unitAttrCostTables = null } = campConfigs.get()
+  let { unitAttrPresets = [], unitAttrCostTables = null } = serverConfigs.get()
   return unitAttrPresets.map(@(preset)
     preset.map(@(category)
       category.__merge({
@@ -34,11 +34,11 @@ function sumCost(costTbl, curLvl, finalLvl) {
 function calcStatus(avail) {
   let minCount = AVAIL_PART_FOR_GROUP * avail[0]
   if (minCount == 0 || avail[1] == 0)
-    return -1 //nothing
+    return -1 
   for (local i = avail.len() - 1; i > 0; i--)
     if (avail[i] >= minCount)
       return i + 1
-  return 0 //something to upgrade
+  return 0 
 }
 
 function getMaxAttrLevelData(attr, fromLevel, availSp) {

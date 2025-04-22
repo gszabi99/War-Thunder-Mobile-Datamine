@@ -53,7 +53,7 @@ let mkRespBase = @(rb) @() {
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER
       keepAspect = KEEP_ASPECT_FIT
-      // Texture size is enlarged twice to avoid blurring then rotation is applied.
+      
       image = Picture($"{rb.iconType < 0 ? rb.mapIcon : zoneIcons[rb.iconType]}:{baseSize * 2}:{baseSize * 2}:P")
       color = rb.team == localTeam.value ? teamBlueColor : teamRedColor
     }.__update(rb.team != localTeam.value ? {}

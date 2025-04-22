@@ -14,8 +14,8 @@ function getIndexOrRandom(msg, size) {
   return (msg?.index ?? rnd()) % size
 }
 
-// Sometimes we can get stuck in a queue for indefinite time
-// To handle this, we quit the queue, if we remain in it for too long
+
+
 function leaveQueueOnTimeout() {
   if (isInQueue.value) {
     log("autotests: queue timeout reached, leaving queue")

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { activate_downloadable_hangar } = require("hangar")
 let { ovrHangarAddon } = require("%appGlobals/updater/addons.nut")
 let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 
 function activateAddonIfNeed(_) {
   if ((ovrHangarAddon?.hangarPath ?? "") == "" || !isAppLoaded.value || (ovrHangarAddon?.addons.len() ?? 0)==0)

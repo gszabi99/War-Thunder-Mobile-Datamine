@@ -8,7 +8,7 @@ let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { isRandomBattleNewbie, randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
 let { openMsgBox, wndHeight } = require("%rGui/components/msgBox.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons, addonsSizes } = require("%appGlobals/updater/addonsState.nut")
 let { commonUhqAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
 let { addonsToDownload } = require("%rGui/updater/updaterState.nut")
 
@@ -55,7 +55,7 @@ function openMsg() {
     uid = MSG_UID
     wndOvr = { size = [hdpx(1300), wndHeight] }
     text = loc("msg/suggestUhqTextures",
-      { size = colorize("@mark", getAddonsSizeStr(uhqAddons.value.keys())) })
+      { size = colorize("@mark", getAddonsSizeStr(uhqAddons.value.keys(), addonsSizes.get())) })
     buttons = [
       { text = loc("btnHighQuality"), isCancel = true,
         cb = @() setSuggested(true)

@@ -78,37 +78,37 @@ def foreach_weapon_by_trigger_group(weapon_triggers : auto implicit ==const; gro
 
 [generic]
 def foreach_torpedo_gun(var weapon_triggers : auto implicit ==const; blk : block<(var weapon : Weapon?#) : void>)
-  get_weapons_by_trigger_group_for_edit(weapon_triggers, WeaponTriggerGroups TRIGGER_GROUP_TORPEDOES) <| $(var weapons : array<Weapon?>#)
+  get_weapons_by_trigger_group_for_edit(weapon_triggers, WeaponTriggerGroups.TRIGGER_GROUP_TORPEDOES) <| $(var weapons : array<Weapon?>#)
     for w in weapons
       invoke(blk, w)
 
 [generic]
 def foreach_torpedo_gun(weapon_triggers : auto implicit ==const; blk : block<(weapon : Weapon const? const#) : void>)
-  get_weapons_by_trigger_group(weapon_triggers, WeaponTriggerGroups TRIGGER_GROUP_TORPEDOES) <| $(weapons : array<Weapon const? const> const#)
+  get_weapons_by_trigger_group(weapon_triggers, WeaponTriggerGroups.TRIGGER_GROUP_TORPEDOES) <| $(weapons : array<Weapon const? const> const#)
     for w in weapons
       invoke(blk, w)
 
 [generic]
 def foreach_rocket_gun(var weapon_triggers : auto implicit ==const; blk : block<(var weapon : Weapon?#) : void>)
-  get_weapons_by_trigger_group_for_edit(weapon_triggers, WeaponTriggerGroups TRIGGER_GROUP_ROCKETS) <| $(var weapons : array<Weapon?>#)
+  get_weapons_by_trigger_group_for_edit(weapon_triggers, WeaponTriggerGroups.TRIGGER_GROUP_ROCKETS) <| $(var weapons : array<Weapon?>#)
     for w in weapons
       invoke(blk, w)
 
 [generic]
 def foreach_rocket_gun(weapon_triggers : auto implicit ==const; blk : block<(weapon : Weapon const? const#) : void>)
-  get_weapons_by_trigger_group(weapon_triggers, WeaponTriggerGroups TRIGGER_GROUP_ROCKETS) <| $(weapons : array<Weapon const? const> const#)
+  get_weapons_by_trigger_group(weapon_triggers, WeaponTriggerGroups.TRIGGER_GROUP_ROCKETS) <| $(weapons : array<Weapon const? const> const#)
     for w in weapons
       invoke(blk, w)
 
 [generic]
 def foreach_primary_gun(var weapon_triggers : auto implicit ==const; blk : block<(var weapon : Weapon?#) : void>)
-  get_weapons_by_trigger_group_for_edit(weapon_triggers, WeaponTriggerGroups TRIGGER_GROUP_PRIMARY) <| $(var weapons : array<Weapon?>#)
+  get_weapons_by_trigger_group_for_edit(weapon_triggers, WeaponTriggerGroups.TRIGGER_GROUP_PRIMARY) <| $(var weapons : array<Weapon?>#)
     for w in weapons
       invoke(blk, w)
 
 [generic]
 def foreach_primary_gun(weapon_triggers : auto implicit ==const; blk : block<(weapon : Weapon const? const#) : void>)
-  get_weapons_by_trigger_group(weapon_triggers, WeaponTriggerGroups TRIGGER_GROUP_PRIMARY) <| $(weapons : array<Weapon const? const> const#)
+  get_weapons_by_trigger_group(weapon_triggers, WeaponTriggerGroups.TRIGGER_GROUP_PRIMARY) <| $(weapons : array<Weapon const? const> const#)
     for w in weapons
       invoke(blk, w)
 

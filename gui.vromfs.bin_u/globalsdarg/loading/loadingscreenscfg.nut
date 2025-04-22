@@ -2,12 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 let { mkBgImageByPx } = require("%globalsDarg/components/mkAnimBg.nut")
 let mkLayersComplexShip1 = require("complex_ship_1.nut")
 
-/*
-For fallbackLoadingImage please use only image from screen ID, which is listed in "screensList" below,
-AND listed in "loadingScreensWhitelist" (skyquake/prog/scripts/wtm/updater/updaterScene.nut),
-because Android Updated uses this loadingScreensCfg.nut module too, but in its VROMs there are ONLY
-those few images, which are listed in its "loadingScreensWhitelist".
-*/
+
+
+
+
+
+
 let fallbackLoadingImage = "ui/bkg/login_bkg_t_7.avif"
 
 let mkSingleImageLayers = @(image) [{
@@ -15,13 +15,13 @@ let mkSingleImageLayers = @(image) [{
   children = mkBgImageByPx(image)
 }]
 
-/*
-Here, layers are described as functions (not daRG elems) so that Picture elems in it (loading screen image
-takes 11 MB in memory) do not take up memory when they are not used. Because global Picture objects exported
-from the module prevent textures from storing texture references and prevent them from being deallocated.
-You can use a console command "app.tex" and then filter its output by "ui/" to see all UI textures currently
-loaded in memory, and how much memory each one takes up.
-*/
+
+
+
+
+
+
+
 
 let screensList = {
   simple_ship_1 = {
@@ -176,7 +176,7 @@ let screensList = {
   }
   simple_tank_21 = {
     camp = [ "tanks" ]
-    weight = 1.0
+    weight = 2.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_24.avif")
   }
   simple_tank_22 = {

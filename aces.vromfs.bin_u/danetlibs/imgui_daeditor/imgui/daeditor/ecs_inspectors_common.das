@@ -82,13 +82,13 @@ struct EditorDesc
   fn : ContextEditorFn?
 
 struct ComponentRenderInfo
-  rawData : void? // Pointer to raw data to handle randering with custom renderes
+  rawData : void? 
   typeName : string
-  // When no ecs type can be inferred contains das generated read only display string
-  // If not empty idx and componentId are invalid.
+  
+  
   roVal : string
-  // In case described above stores das type string to display as additional info in inspector, can be useful.
-  // typeName will contain a placeholder value so inspectors know to display it a specific way
+  
+  
   dasTypeName : string
   idx : uint
   componentId : uint16
@@ -101,11 +101,11 @@ typedef
 
 
 let AGENT_NAME = "ecs_inspectors"
-// TODO: rewrite using invoke_debug_agent_function
-var private [[ignore_heap_usage]] inspectors : table<string; array<InspectorDesc>>
-var private [[ignore_heap_usage]] editors : array<EditorDesc>
-var private [[ignore_heap_usage]] unselectedInspectors : array<ContextUnselectedInspectorFn?>
-var private [[ignore_heap_usage]] nameDescriptor : ContextEntityNameDescFn?
+
+var private @ignore_heap_usage inspectors : table<string; array<InspectorDesc>>
+var private @ignore_heap_usage editors : array<EditorDesc>
+var private @ignore_heap_usage unselectedInspectors : array<ContextUnselectedInspectorFn?>
+var private @ignore_heap_usage nameDescriptor : ContextEntityNameDescFn?
 
 
 def not_in_ecs_inspectors_context()
@@ -173,7 +173,7 @@ def add_inspector(typ_name, field_name, tag : string implicit; var fn : Inspecto
   let type_name = clone_string(typ_name)
   let tag_hash = !empty(tag) ? ecs_hash(tag) : 0u
   if !key_exists(inspectors, type_name)
-    inspectors[type_name] <- [[array<InspectorDesc>]]
+    inspectors[type_name] <- array<InspectorDesc>()
   inspectors |> get(type_name) <| $(list)
     for it in list
       if it.field_name == field_name && it.tag == tag_hash
@@ -181,7 +181,7 @@ def add_inspector(typ_name, field_name, tag : string implicit; var fn : Inspecto
         it.fn = new ContextInspectorFn(fn, ctx)
         return
 
-    list |> emplace <| [[InspectorDesc field_name=clone_string(field_name), tag=tag_hash, fn=new ContextInspectorFn(fn, ctx)]]
+    list |> emplace <| InspectorDesc(field_name = clone_string(field_name), tag = tag_hash, fn = new ContextInspectorFn(fn, ctx))
   return true
 
 
@@ -199,39 +199,39 @@ def call_inspector(type_name : string implicit; eid : array<EntityId> implicit; 
       (list)[0].fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
       return
 
-    // field_name and tag
+    
     for it in list
       if it.field_name == field_name && it.tag != 0u && has(eid[0], "", it.tag)
         it.fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
         return
 
-    // tag
+    
     for it in list
       if it.tag != 0u && has(eid[0], "", it.tag)
         it.fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
         return
 
-    // field_name
+    
     for it in list
       if it.field_name == field_name
         it.fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
         return
 
-    // default renderer
+    
     for it in list
       if empty(it.field_name) && it.tag == 0u
         it.fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
         return
 
-    // no valid renderers
+    
     res = false
   return res
 
 
 [apply_in_context(ecs_inspectors)]
 def add_editor(prefix : bool; tags : array<string> implicit; var fn : EditorFn; var ctx : Context implicit) : bool
-  var tagHashes <- [{ for tag in tags; !empty(tag) ? ecs_hash(tag) : 0u }]
-  editors |> emplace <| [[EditorDesc prefix=prefix, tags <- tagHashes, fn=new ContextEditorFn(fn, ctx)]]
+  var tagHashes <- [ for tag in tags; !empty(tag) ? ecs_hash(tag) : 0u ]
+  editors |> emplace <| EditorDesc(prefix = prefix, tags <- tagHashes, fn = new ContextEditorFn(fn, ctx))
   return true
 
 

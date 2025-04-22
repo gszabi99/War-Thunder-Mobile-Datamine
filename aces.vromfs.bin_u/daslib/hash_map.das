@@ -1,3 +1,4 @@
+options gen2
 options indenting = 4
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
@@ -9,7 +10,7 @@ require daslib/spoof public
 require daslib/random public
 require strings public
 
-//! FlatHashMap is a hash map that uses open addressing with linear probing.
+
 let public TFlatHashMap = %spoof_template~(FlatHashMap,KeyType,ValueType,HashFunction=hash)
 [skip_field_lock_check]
 struct %FlatHashMap
@@ -119,11 +120,11 @@ def key_index ( self:%FlatHashMap explicit; key : %KeyType )
         while true
             let h = hashes[index]
             if h == hash
-                if keys[index] == key   // otherwise skip matching hash collision
+                if keys[index] == key   
                     return index
-            elif h==0ul                 // empty, key not found
+            elif h==0ul                 
                 break
-            // skip hash collision or tombstone(1)
+            
             index = (index + 1) & mask
         return -1
 
@@ -158,7 +159,7 @@ def erase ( var self:%FlatHashMap explicit; key : %KeyType ) : bool
     with self
         let index = self |> key_index(key)
         if index != -1
-            hashes[index] = 1ul   // tombstone
+            hashes[index] = 1ul   
             tombstones ++
             length --
             return true
@@ -215,7 +216,7 @@ def values ( self:%FlatHashMap ==const explicit )
 [hint(unsafe_range_check,noalias=self)]
 def operator [] ( var self:%FlatHashMap ==const explicit; key : %KeyType ) : %ValueType&
     with self
-        if length > (capacity>>1) // ((mask+1)*2/3)
+        if length > (capacity>>1) 
             self |> grow()
         elif ((capacity - length)>>1) < tombstones
             self |> rehash()
@@ -225,7 +226,7 @@ def operator [] ( var self:%FlatHashMap ==const explicit; key : %KeyType ) : %Va
         while true
             let h = hashes[index]
             if h == hash
-                if keys[index] == key   // otherwise skip matching hash collision
+                if keys[index] == key   
                     unsafe
                         return values[index]
             elif h == 1ul
@@ -243,7 +244,7 @@ def operator [] ( var self:%FlatHashMap ==const explicit; key : %KeyType ) : %Va
             index = (index + 1) & mask
         panic("unreachable")
         unsafe
-            return values[0] // we never get here due to panic
+            return values[0] 
 
 [hint(unsafe_range_check,noalias=self)]
 def operator [] ( self:%FlatHashMap ==const explicit; key : %KeyType ) : %ValueType const&
@@ -254,7 +255,7 @@ def operator [] ( self:%FlatHashMap ==const explicit; key : %KeyType ) : %ValueT
                 return values[index]
         panic("key not found")
         unsafe
-            return values[0] // we never get here due to panic
+            return values[0] 
 
 [hint(unsafe_range_check,noalias=self)]
 def operator ?[] ( var self:%FlatHashMap ==const explicit; key : %KeyType ) : %ValueType?
@@ -276,23 +277,26 @@ def operator ?[] ( self:%FlatHashMap ==const explicit; key : %KeyType ) : %Value
 %%
 
 [hint(alwaysinline)]
-def public hash0 ( k )
-    //! this hash function converts and workhorse key to a 64 bit hash
+def public hash0(k) {
+    
     let k64 = uint64(k)
     return k64 <= 2ul ? 0x9e3779b97f4a7c15ul : k64
+}
 
 [hint(alwaysinline)]
-def public hash0 ( s : string ) : uint64
-    //! adler32 extended to 64 bits
+def public hash0(s : string) : uint64 {
+    
     let MOD_ADLER = 0xFFFFFFFFFFFFFFC5ul
     var a = 1ul
     var b = 0ul
-    for c in s
+    for (c in s) {
         a = (a + uint64(c)) % MOD_ADLER
         b = (b + a) % MOD_ADLER
+    }
     return (uint64(b) << 32ul) | uint64(a)
+}
 
-//! CompactHashMap is a hash map that uses 2 hash functions and double lookup.
+
 let public TCuckooHashMap = %spoof_template~(CuckooHashMap,KeyType,ValueType,FirstHashFunction=hash0,SecondHashFunction=hash)
 
 struct KHV_%CuckooHashMap
@@ -473,7 +477,7 @@ def values ( self:%CuckooHashMap ==const explicit )
 
 [hint(unsafe_range_check,noalias=self)]
 def insert ( var self:%CuckooHashMap explicit; _key : %KeyType; _value : %ValueType )
-    //! insert a key value pair into the hash map
+    
     with self
         var key := _key
         var value := _value
@@ -521,9 +525,9 @@ def describe ( var self:%CuckooHashMap ==const explicit )
 [hint(unsafe_range_check,noalias=self)]
 def operator [] ( var self:%CuckooHashMap ==const explicit; key : %KeyType ) : %ValueType&
     with self
-        if length > ((mask+1)>>1) // ((mask+1)*2/3)
+        if length > ((mask+1)>>1) 
             self |> grow()
-        // if its already there
+        
         var firstHash = %FirstHashFunction(key)
         var firstIndex = int(firstHash) & mask
         if khv[firstIndex].hash == firstHash && khv[firstIndex].key == key
@@ -534,7 +538,7 @@ def operator [] ( var self:%CuckooHashMap ==const explicit; key : %KeyType ) : %
         if khv[secondIndex].hash == secondHash && khv[secondIndex].key == key
             unsafe
                 return khv[secondIndex].value
-        // now, if there is a room to insert
+        
         if khv[firstIndex].hash == 0ul
             khv[firstIndex].hash = firstHash
             khv[firstIndex].key := key
@@ -547,7 +551,7 @@ def operator [] ( var self:%CuckooHashMap ==const explicit; key : %KeyType ) : %
             length ++
             unsafe
                 return khv[secondIndex].value
-        // now we have to kick out one of the existing keys
+        
         self |> insert(key, [[%ValueType]])
         let index = self |> key_index(key)
         unsafe
@@ -562,7 +566,7 @@ def operator [] ( self:%CuckooHashMap ==const explicit; key : %KeyType ) : %Valu
                 return khv[index].value
         panic("key not found")
         unsafe
-            return khv[0].value // we never get here due to panic
+            return khv[0].value 
 
 [hint(unsafe_range_check,noalias=self)]
 def operator ?[] ( var self:%CuckooHashMap ==const explicit; key : %KeyType ) : %ValueType?

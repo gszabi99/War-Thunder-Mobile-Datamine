@@ -150,7 +150,7 @@ let timerIcon = @(timerCfg, timer) function() {
 }
 
 let timerTextStyle = {
-  size = [hdpx(100), SIZE_TO_CONTENT] //fixed width to correct halign on text change by rtPropUpdate
+  size = [hdpx(100), SIZE_TO_CONTENT] 
   halign = ALIGN_CENTER
   rendObj = ROBJ_TEXT
   color = 0xFFFFFFFF

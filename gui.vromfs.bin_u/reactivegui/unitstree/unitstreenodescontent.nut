@@ -97,7 +97,7 @@ let mkRanksCfg = @(countryNodesCfg) Computed(function() {
   let res = {}
   foreach (node in countryNodesCfg.get().nodes) {
     let { x, name } = node
-    let rank = campUnitsCfg.get()[name]?.rank ?? 0
+    let rank = campUnitsCfg.get()?[name].rank ?? 0
     if (rank not in res)
       res[rank] <- { from = x, to = x }
     else {
@@ -387,7 +387,7 @@ function genLinks(nodes, positions, size) {
     let { reqUnits, tgtNodes } = group
     let reqWithPos = reqUnits.filter(@(u) u in positions)
 
-    //******************** No reqUnits with known position ********************//
+    
     if (reqWithPos.len() == 0) {
       foreach(node in tgtNodes) {
         let pos = positions[node.name]
@@ -397,7 +397,7 @@ function genLinks(nodes, positions, size) {
       continue
     }
 
-    if (reqWithPos.len() == 1) { //******************** only 1 reqUnits with known position ********************//
+    if (reqWithPos.len() == 1) { 
       let reqName = reqWithPos[0]
       let reqPos = positions[reqName]
 
@@ -417,10 +417,10 @@ function genLinks(nodes, positions, size) {
           let y2 = pos[1] + halfSizeY
           let x1 = reqPos[0] + nodePlatesSize[0]
           let xMid = isSameY ? (x1 + pos[0]) / 2 : pos[0] - gapLineX2
-          addLineFrom(reqName, x1, y1, xMid, y1) //--param-pos
+          addLineFrom(reqName, x1, y1, xMid, y1) 
           if (!isSameY)
             addLineFrom(reqName, xMid, y1, xMid, y2)
-          addLineTo(name, reqUnits, xMid, y2, pos[0], y2) //--param-pos
+          addLineTo(name, reqUnits, xMid, y2, pos[0], y2) 
         }
         continue
       }
@@ -439,7 +439,7 @@ function genLinks(nodes, positions, size) {
       continue
     }
 
-    //******************** several reqUnits with known position ********************//
+    
     let isSingleTgt = tgtNodes.len() == 1
     let xMid1 = isSingleTgt ? getReqMaxX(reqWithPos, positions) + nodePlatesSize[0] + gapLineX2
       : getNodesMinX(tgtNodes, positions) - 2 * gapLineX3
@@ -653,7 +653,7 @@ let onAnimChange = @(unitId, nodes, areaSize) @(v) scrollAnimToUnitGroup(
 let mkFlagButtons = @(allCountries, curCountry, areaSize, unseenNodesIndex) function() {
   let { flagBtnHeight, flagBtnGap } = getFlagBtnSizes(areaSize.get()[1], allCountries.get().len())
   return {
-    watch = [allCountries, researchCountry, areaSize]
+    watch = [allCountries, areaSize]
     pos = [saBorders[0], gamercardHeight + saBorders[1] - gamercardOverlap + flagBtnGap]
     flow = FLOW_VERTICAL
     gap = flagBtnGap
@@ -667,7 +667,9 @@ let mkFlagButtons = @(allCountries, curCountry, areaSize, unseenNodesIndex) func
           selectedCountry.set(country)
         },
         Computed(@() (unseenResearchedUnits.get()?[country].len() ?? 0) > 0 || country in unseenNodesIndex.get()),
-        researchCountry.get()
+        Computed(@() researchCountry.get() == country
+          || (researchCountry.get() == null
+            && null != unitsResearchStatus.get().findvalue(@(u) u.canResearch && u.country == country)))
       ))
   }
 }

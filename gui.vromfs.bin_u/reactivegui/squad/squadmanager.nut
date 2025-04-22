@@ -112,7 +112,7 @@ function setOnlineBySquad(uid, online) {
 
 let updateMyData = debounce(function updateMyDataImpl() {
   if (squadMyState.value == null)
-    return //no need to try refresh when no self member
+    return 
 
   let needSend = myDataLocal.value.findindex(@(value, key) !isEqualWithFloat(myDataRemote.value?[key], value)) != null
   if (needSend) {
@@ -142,7 +142,7 @@ function bindSquadRWVar(name, var) {
   linkVarToMsquad(name, var)
 }
 
-//always set vars
+
 bindSquadROVar("name", myUserRealName)
 bindSquadRWVar("ready", isReady)
 
@@ -256,7 +256,7 @@ function updateSquadInfo(squad_info) {
 
   foreach (uid in members) {
     if (uid not in squadMembers.value) {
-      squadMembers.mutate(@(m) m[uid] <- {})  //warning disable: -iterator-in-lambda
+      squadMembers.mutate(@(m) m[uid] <- {})  
       removeInvitedSquadmate(uid)
     }
     requestMemberData(uid)
@@ -269,7 +269,7 @@ function updateSquadInfo(squad_info) {
 }
 
 function addInvite(inviterUid) {
-  if (inviterUid == myUserId.value) // skip self invite
+  if (inviterUid == myUserId.value) 
     return
 
   if (inviterUid.tostring() in myBlacklistUids.value) {
@@ -278,7 +278,7 @@ function addInvite(inviterUid) {
     return
   }
 
-  // we are already in that squad. do nothing
+  
   if (isInSquad.value && squadId.value == inviterUid)
     return
 
@@ -512,7 +512,7 @@ function inviteToSquad(userId) {
     return
   }
 
-  if (userId in squadMembers.value) {// user already in squad
+  if (userId in squadMembers.value) {
     logS($"Invite: member {userId}: already in squad")
     return
   }
@@ -624,7 +624,7 @@ canFetchSquad.subscribe(function(v) {
 })
 
 return squadState.__merge({
-  // functions
+  
   bindSquadROVar
   inviteToSquad
   dismissAllOfflineSquadmates

@@ -1,6 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
+let mkTextRow = require("%darg/helpers/mkTextRow.nut")
+let { ceil } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
+let { TIME_DAY_IN_SECONDS_F } = require("%sqstd/time.nut")
+let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { subscriptions } = require("%appGlobals/pServer/campaign.nut")
 let { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } = require("%appGlobals/legal.nut")
@@ -10,22 +13,26 @@ let { can_upgrade_subscription } = require("%appGlobals/permissions.nut")
 let { formatText } = require("%rGui/news/textFormatters.nut")
 let { openedSubsId, closeSubsPreview, openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { allSubs, subsGroups } = require("%rGui/shop/shopState.nut")
-let { activatePlatfromSubscription, changeSubscription, platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
+let { activatePlatfromSubscription, changeSubscription, platformPurchaseInProgress, platformSubs
+} = require("%rGui/shop/platformGoods.nut")
 let { getSubsPeriodString } = require("%rGui/shop/shopCommon.nut")
 
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { textButtonPurchase, mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let { defButtonMinWidth, defButtonHeight, PRIMARY } = require("%rGui/components/buttonStyles.nut")
 let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
+let { mkCurrencyImage, mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
+let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { premiumEndsAt } = require("%rGui/state/profilePremium.nut")
 
 
 let WND_UID = "subscription_wnd"
+let OLD_SUBSCRIPTION_WND_UID = "old_subscription_wnd"
 
 let wndWidth = hdpx(1250)
 let descriptionMinHeight = hdpx(500)
@@ -265,17 +272,63 @@ let btnRow = @(children) {
   children
 }
 
-function mkPurchButton(subs, subsList, subscriptionsV) {
+function mkPurchButton(subs, subsList, totalConvertAmount, currencyId, leftTimeLoc, subscriptionsV) {
   let activeIdx = subsList.findindex(@(s) subscriptionsV?[s].isActive ?? false)
   let curIdx = subsList.indexof(subs.id)
   let text = activeIdx == null || curIdx == null ? loc("subscription/activate")
     : activeIdx < curIdx ? loc("subscription/upgrade")
     : loc("subscription/changePlan")
-  return textButtonPurchase(utf8ToUpper(text), @() activeIdx == null ? activatePlatfromSubscription(subs)
-    : changeSubscription(subs.id, subsList[activeIdx]))
+  let activateAction = @() activeIdx == null ? activatePlatfromSubscription(subs)
+    : changeSubscription(subs.id, subsList[activeIdx])
+  let attachSubscription = @(count) (count?.price ?? 0) <= 0 ? removeModalWindow(OLD_SUBSCRIPTION_WND_UID) : null
+  return textButtonPurchase(utf8ToUpper(text), @() totalConvertAmount.get() <= 0 ? activateAction()
+    : openMsgBox({
+        uid = OLD_SUBSCRIPTION_WND_UID
+        text = @() {
+          key = totalConvertAmount
+          watch = [totalConvertAmount, currencyId, leftTimeLoc]
+          size = flex()
+          flow = FLOW_VERTICAL
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          gap = hdpx(16)
+          onAttach = @() totalConvertAmount.subscribe(attachSubscription)
+          onDetach = @() totalConvertAmount.unsubscribe(attachSubscription)
+          children = [
+            {
+              behavior = Behaviors.TextArea
+              size = [flex(), SIZE_TO_CONTENT]
+              rendObj = ROBJ_TEXTAREA
+              color = textColor
+              text = loc("subscription/convertPremiumInfoTime", { time = colorize(userlogTextColor, leftTimeLoc.get()) })
+              halign = ALIGN_CENTER
+              valign = ALIGN_CENTER
+            }.__update(fontSmall)
+            {
+              flow = FLOW_HORIZONTAL
+              halign = ALIGN_CENTER
+              valign = ALIGN_CENTER
+              gap = hdpx(8)
+              children = mkTextRow(
+                loc("subscription/get"),
+                @(v) {
+                  rendObj = ROBJ_TEXT
+                  color = textColor
+                  text = v
+                }.__update(fontSmall),
+                { ["{amount}"] = mkCurrencyComp(totalConvertAmount.get(), currencyId.get()) } 
+              )
+            }
+          ]
+        }
+        buttons = [
+          { id = "cancel", isCancel = true }
+          { id = "activate", styleId = "PURCHASE", isDefault = true, text, cb = activateAction }
+        ]
+    }))
 }
 
-function purchBlock(subs, isActive, subsList) {
+function purchBlock(subs, isActive, subsList, totalConvertAmount, currencyId, leftTimeLoc) {
   let toggle = subsList.len() <= 1 ? null : toggleSubsBtn(subs, subsList)
   let isGroupActive = Computed(@() subsList.findindex(@(s) subscriptions.get()?[s].isActive ?? false))
   return @() {
@@ -310,7 +363,7 @@ function purchBlock(subs, isActive, subsList) {
           btnRow([
             toggle
             mkSpinnerHideBlock(platformPurchaseInProgress,
-              mkPurchButton(subs, subsList, subscriptions.get()),
+              mkPurchButton(subs, subsList, totalConvertAmount, currencyId, leftTimeLoc, subscriptions.get()),
               spinnerBlockOvr)
           ])
         ]
@@ -329,7 +382,7 @@ let urls = {
     })
     formatText({
       t = "url"
-      url = PRIVACY_POLICY_URL // TODO: change for EULA url
+      url = PRIVACY_POLICY_URL 
       v = loc("subscription/EULA")
     })
   ]
@@ -368,69 +421,71 @@ let subsIcons = @(list) function() {
   }
 }
 
-function infoBlock() {
-  let hasConvertPremiumInfo = Computed(@() premiumEndsAt.get() - serverTime.get() >= TIME_DAY_IN_SECONDS)
-  return @() {
-    watch = hasConvertPremiumInfo
-    size = [flex(), SIZE_TO_CONTENT]
-    minHeight = descriptionMinHeight
-    flow = FLOW_VERTICAL
-    gap = infoGap
-    children = [
-      description
-      !hasConvertPremiumInfo.get() ? null
-        : {
-            size = [flex(), SIZE_TO_CONTENT]
-            rendObj = ROBJ_TEXTAREA
-            behavior = Behaviors.TextArea
-            color = textColor
-            text = loc("subscription/convertPremiumInfo")
-          }.__update(fontTinyAccented)
-      urls
-    ]
-  }
+let infoBlock = @(hasConvertPremiumInfo) {
+  size = [flex(), SIZE_TO_CONTENT]
+  minHeight = descriptionMinHeight
+  flow = FLOW_VERTICAL
+  gap = infoGap
+  children = [
+    description
+    !hasConvertPremiumInfo ? null
+      : {
+          size = [flex(), SIZE_TO_CONTENT]
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          color = textColor
+          text = loc("subscription/convertPremiumInfo")
+        }.__update(fontTinyAccented)
+    urls
+  ]
 }
 
-let window = @() modalWndBg.__merge({
-  watch = [subscription, subsGroup, isSubsActive]
-  size = [wndWidth + groupWidthInc * (subsGroup.get().len() - 1), SIZE_TO_CONTENT]
-  flow = FLOW_VERTICAL
-  halign = ALIGN_CENTER
-  children = subscription.get() == null ? null
-    : [
-        modalWndHeaderWithClose(getSubsName(subscription.get().id), closeSubsPreview)
-        {
-          size = [flex(), SIZE_TO_CONTENT]
-          padding = wndGap
-          flow = FLOW_HORIZONTAL
-          gap = wndGap
-          children = [
-            infoBlock()
-            {
-              size = [buttonBlockWidth + groupWidthInc * (subsGroup.get().len() - 1), flex()]
-              flow = FLOW_VERTICAL
-              halign = ALIGN_CENTER
-              children = [
-                subsIcons(subsGroup.get())
-                {size = flex()}
-                purchBlock(subscription.get(), isSubsActive.get(), subsGroup.get())
-              ]
-            }
-          ]
-        }
-      ]
-})
+function mkWindow() {
+  let leftTime = Computed(@() premiumEndsAt.get() - serverTime.get())
+  let leftTimeLoc = Computed(@() secondsToHoursLoc((leftTime.get() / 60) * 60))
+  let currencyId = Computed(@() platformSubs.get()?[subscription.get()?.id].premiumDayConvert.currencyId)
+  let totalConvertAmount = Computed(@() (ceil(leftTime.get() / TIME_DAY_IN_SECONDS_F)
+    * (platformSubs.get()?[subscription.get()?.id].premiumDayConvert.price ?? 0)).tointeger())
+  return @() modalWndBg.__merge({
+    watch = [subscription, subsGroup, isSubsActive, totalConvertAmount]
+    size = [wndWidth + groupWidthInc * (subsGroup.get().len() - 1), SIZE_TO_CONTENT]
+    flow = FLOW_VERTICAL
+    halign = ALIGN_CENTER
+    children = subscription.get() == null ? null
+      : [
+          modalWndHeaderWithClose(getSubsName(subscription.get().id), closeSubsPreview)
+          {
+            size = [flex(), SIZE_TO_CONTENT]
+            padding = wndGap
+            flow = FLOW_HORIZONTAL
+            gap = wndGap
+            children = [
+              infoBlock(totalConvertAmount.get() > 0)
+              {
+                size = [buttonBlockWidth + groupWidthInc * (subsGroup.get().len() - 1), flex()]
+                flow = FLOW_VERTICAL
+                halign = ALIGN_CENTER
+                children = [
+                  subsIcons(subsGroup.get())
+                  {size = flex()}
+                  purchBlock(subscription.get(), isSubsActive.get(), subsGroup.get(), totalConvertAmount, currencyId, leftTimeLoc)
+                ]
+              }
+            ]
+          }
+        ]})
+}
 
-let subscriptionWnd = bgShaded.__merge({
+let mkSubscriptionWnd = @() bgShaded.__merge({
   key = WND_UID
   size = flex()
   padding = saBordersRv
   behavior = Behaviors.Button
   hotkeys = [[btnBEscUp, { action = closeSubsPreview }]]
   onClick = closeSubsPreview
-  children = window
+  children = mkWindow()
 })
-let openImpl = @() addModalWindow(subscriptionWnd)
+let openImpl = @() addModalWindow(mkSubscriptionWnd())
 
 if(isOpened.get())
   openImpl()

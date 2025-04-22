@@ -50,10 +50,10 @@ let smallChestIconSize = hdpxi(40)
 let spinner = mkSpinner(hdpx(100))
 
 let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
-let columnsCount = (saSize[0] + saBorders[0] + boxGap) / (boxSize + boxGap) //allow items a bit go out of safearea to fit more items
+let columnsCount = (saSize[0] + saBorders[0] + boxGap) / (boxSize + boxGap) 
 let itemsBlockWidth = isWidescreen ? saSize[0] : columnsCount * (boxSize + boxGap)
 let headerTextHeight = calc_str_box("A", fontSmallShaded)[1]
-let maxNoScrollHeight = saSize[1] - hdpx(110) //sa - <common header height>
+let maxNoScrollHeight = saSize[1] - hdpx(110) 
 
 let chanceStyle = CS_COMMON
 
@@ -181,7 +181,7 @@ function mkJackpotChanceText(id, chances, mainChances, stepsCount) {
   return "\n".concat($"{loc("item/chance")}{colon}{mainChance}%", chanceForGuaranteed)
 }
 
-function mkJackpotChanceContent(reward, stepsCount, mainPercents, mainChanceInProgress) { //-return-different-types
+function mkJackpotChanceContent(reward, stepsCount, mainPercents, mainChanceInProgress) { 
   let { rewardId = null, parentSource = "", isLastReward = false } = reward
 
   if (stepsCount < 0)
@@ -209,7 +209,7 @@ function mkJackpotChanceContent(reward, stepsCount, mainPercents, mainChanceInPr
     }
 }
 
-function mkChanceContent(reward, rewardStatus, stepsCount) { //-return-different-types
+function mkChanceContent(reward, rewardStatus, stepsCount) { 
   let { rewardId = null, agregatedRewards = null, source = "", isLastReward = false } = reward
   let { isAvailable, isAllReceived, isJackpot = false } = rewardStatus
 
@@ -486,7 +486,7 @@ function mkJackpotProgressBar(stepsFinished, stepsToNext, ovr = {}) {
 }
 
 let mkJackpotProgress = @(stepsToFixed) @() {
-  key = "jackpot_progress" //need for tutorial
+  key = "jackpot_progress" 
   watch = stepsToFixed
   flow = FLOW_VERTICAL
   children = stepsToFixed.value[1] - stepsToFixed.value[0] <= 0 ? null : [

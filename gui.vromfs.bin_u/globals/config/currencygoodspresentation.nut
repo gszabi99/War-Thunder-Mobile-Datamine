@@ -114,7 +114,7 @@ let ctors = {
 
 let defaultCtor = @(curId) [
   {
-    img = getCurrencyBigIcon(curId).slice(14), //slice ui/gameuiskin#
+    img = getCurrencyBigIcon(curId).slice(14), 
     amountAtLeast = 0
   }
 ]

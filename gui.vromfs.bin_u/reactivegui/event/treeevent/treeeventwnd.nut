@@ -221,7 +221,7 @@ let lootboxBtn = mkCustomButton({
       size = [lootboxIconSize, lootboxIconSize]
       rendObj = ROBJ_IMAGE
       keepAspect = true
-      image = Picture($"ui/gameuiskin#events_chest_icon.svg:{lootboxIconSize}:{lootboxIconSize}:P") // todo: icon should be changed when it'll be added
+      image = Picture($"ui/gameuiskin#events_chest_icon.svg:{lootboxIconSize}:{lootboxIconSize}:P") 
     }
     {
       maxWidth = hdpx(250)

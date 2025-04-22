@@ -153,7 +153,7 @@ let allSubs = Computed(@() allow_subscriptions.get() ? platformSubs.get() : {})
 let goodsByCategory = Computed(function() {
   let res = {}
   foreach (goods in shopGoods.get()) {
-    if (goods.isHidden) // Hidden for shop
+    if (goods.isHidden) 
       continue
     let cat = getShopCategory(goods.gtype, goods.meta)
     if (cat not in res)
@@ -312,12 +312,14 @@ if (shopSeenGoods.value.len() == 0)
 
 isSettingsAvailable.subscribe(@(_) loadSeenGoods())
 
+let isUnseenGoods = @(id, seenGoods, actSchRewards) (id not in seenGoods
+  && (id not in actSchRewards || actSchRewards?[id]?.isReady == true))
+
 let shopUnseenGoods = Computed(function() {
   let res = {}
-  foreach (ids in goodsIdsByCategory.value)
+  foreach (ids in goodsIdsByCategory.get())
     foreach (id in ids)
-      if (id not in shopSeenGoods.value
-          && (id not in actualSchRewards.value || actualSchRewards.value?[id]?.isReady == true))
+      if (isUnseenGoods(id, shopSeenGoods.get(), actualSchRewards.get()))
         res[id] <- true
   return res
 })
@@ -391,6 +393,7 @@ return {
   hasUnseenGoodsByCategory
   shopSeenGoods
   shopUnseenGoods
+  isUnseenGoods
   saveSeenGoods
   saveSeenGoodsCurrent
   onTabChange

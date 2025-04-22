@@ -146,7 +146,7 @@ let navBarPlace = {
     flow = FLOW_HORIZONTAL
     gap = buttonsHGap
     children = [
-      campMyUnits.get().len() > 0 ? btnLater : null //do not allow to later when player does not have units at all
+      campMyUnits.get().len() > 0 ? btnLater : null 
       unitActions
     ]
   }

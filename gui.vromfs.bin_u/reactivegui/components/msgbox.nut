@@ -11,8 +11,8 @@ let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 
-let wndWidthDefault = hdpx(1106) // 1-2 buttons
-let wndWidthWide = hdpx(1500) // 3 buttons
+let wndWidthDefault = hdpx(1106) 
+let wndWidthWide = hdpx(1500) 
 let wndHeight = hdpx(652)
 let { defButtonHeight } = buttonStyles
 
@@ -106,8 +106,8 @@ function openMsgBox(text, uid = null, title = null, buttons = defaultBtnsCfg, wn
 
 register_command(@() openMsgBox("Some test message box\nwith two buttons", null, "msgbox title",
     [
-      { id = "cancel", isCancel = true, cb = @() dlog("Cancel!") }   //warning disable: -forbidden-function
-      { id = "ok", styleId = "PRIMARY", isDefault = true, cb = @() dlog("Ok!") }   //warning disable: -forbidden-function
+      { id = "cancel", isCancel = true, cb = @() dlog("Cancel!") }   
+      { id = "ok", styleId = "PRIMARY", isDefault = true, cb = @() dlog("Ok!") }   
     ]
   ),
   "debug.showMessageBox")

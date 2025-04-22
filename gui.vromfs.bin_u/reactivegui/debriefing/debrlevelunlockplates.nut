@@ -20,7 +20,7 @@ let plateBlinkScale = 1.25
 let getLevelUnlockPlateAnimTime = @(count) count == 0 ? 0
   : min(levelUnlockPlateTime, levelUnlockPlatesTotalTimeMax / count)
 
-// CONTAINER ///////////////////////////////////////////////////////////////////
+
 
 let platoonFramesGapMul = 0.7
 let platoonPlatesCustomGap = round(platoonPlatesGap * platoonFramesGapMul)
@@ -42,7 +42,7 @@ let mkLevelUnlockPlatesContainer = @(children) {
   })
 }
 
-// PLATES SHARED ///////////////////////////////////////////////////////////////
+
 
 let plateBg = {
   size = flex()
@@ -83,7 +83,7 @@ let mkPlateBlinkAnimProps = @(isUnlocked, delay) !isUnlocked ? {} : {
   ]
 }
 
-// UNIT PLATE //////////////////////////////////////////////////////////////////
+
 
 function mkDebrPlateUnit(unit, isUnlocked, unlockDelay, isPlayerProgress = false) {
   let p = getUnitPresentation(unit)
@@ -106,7 +106,7 @@ function mkDebrPlateUnit(unit, isUnlocked, unlockDelay, isPlayerProgress = false
   }.__update(mkPlateBlinkAnimProps(isUnlocked, unlockDelay))
 }
 
-// MOD PLATE ///////////////////////////////////////////////////////////////////
+
 
 let mkDebrPlateMod = @(mod, isUnlocked, unlockDelay) {
   size = [ plateW, plateH ]
@@ -119,7 +119,7 @@ let mkDebrPlateMod = @(mod, isUnlocked, unlockDelay) {
   ]
 }.__update(mkPlateBlinkAnimProps(isUnlocked, unlockDelay))
 
-// POINTS PLATE ////////////////////////////////////////////////////////////////
+
 
 let upgradePointsIcon = {
   size = [hdpx(110), hdpx(85)]

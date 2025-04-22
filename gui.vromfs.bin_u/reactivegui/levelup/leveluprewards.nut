@@ -112,7 +112,7 @@ let levelUpText = @() {
     loc("levelUp/newLevel"),
     @(text) { rendObj = ROBJ_TEXT, text }.__update(fontMedium),
     {
-      ["{level}"] = mkPlayerLevel(maxRewardLevelInfo.value.level, maxRewardLevelInfo.value.starLevel), //warning disable: -forgot-subst
+      ["{level}"] = mkPlayerLevel(maxRewardLevelInfo.value.level, maxRewardLevelInfo.value.starLevel), 
     }
   )
 }

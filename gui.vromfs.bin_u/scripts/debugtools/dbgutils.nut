@@ -1,4 +1,4 @@
-// warning disable: -file:forbidden-function
+
 
 from "%scripts/dagui_natives.nut" import get_cur_gui_scene, update_objects_under_windows_state, reload_main_script_module
 from "%scripts/dagui_library.nut" import *

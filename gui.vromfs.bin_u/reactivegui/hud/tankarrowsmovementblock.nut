@@ -65,7 +65,7 @@ function updateStickDelta(_) {
   let deltaY = cruiseControl.value == CRUISE_CONTROL_N ? 0
              : cruiseControl.value == CRUISE_CONTROL_R ? -1
              : 1
-  isStickActiveByArrows(deltaY != 0 || steerWatch.value != 0) //warning disable: -named-like-should-return
+  isStickActiveByArrows(deltaY != 0 || steerWatch.value != 0) 
   let multX = deltaY == 0 ? 1 : 0.5
   stickDelta(Point2(steerWatch.value * multX, deltaY))
 }

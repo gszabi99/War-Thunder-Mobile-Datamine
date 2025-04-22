@@ -11,6 +11,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
+let { activeBattleMods, blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nut")
 let { filters, filterGenId } = require("%rGui/unit/unitsFilterPkg.nut")
 let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
 let { releasedUnits } = require("%rGui/unit/unitState.nut")
@@ -28,11 +29,59 @@ let selectedCountry = mkWatched(persist, "selectedCountry", null)
 let seenResearchedUnits = mkWatched(persist, SEEN_RESEARCHED_UNITS, {})
 let unitInfoToScroll = Watched(null)
 let unitToScroll = Computed(@() unitInfoToScroll.get()?.name)
+let blockedCountries = Computed(@() blockedResearchByBattleMods.get()?[curCampaign.get()]
+  .filter(@(battleMod) battleMod not in activeBattleMods.get()) ?? {})
+
+let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
+
+let unitsResearchStatus = Computed(function(prev) {
+  let list = {}
+  if (!isCampaignWithUnitsResearch.get())
+    return list
+
+  local hasChanges = false
+  let { unitResearchExp = {} } = serverConfigs.get()
+  let { unitsResearch = {} } = servProfile.get()
+  foreach (unitName, reqExp in unitResearchExp) {
+    if (unitName in campMyUnits.get() || unitName not in campUnitsCfg.get())
+      continue
+    let { reqUnits = [] , country = "" } = nodes.get()?[unitName]
+    let { exp = 0, isCurrent = false, isResearched = false, canBuy = false, canResearch = false } = unitsResearch?[unitName]
+    let res = {
+      name = unitName
+      exp
+      reqExp
+      reqUnits
+      isCurrent
+      isResearched
+      canBuy
+      canResearch
+      country
+    }
+    let value = prevIfEqual(prev?[unitName], res)
+    list[unitName] <- value
+    hasChanges = hasChanges || value != prev?[unitName]
+  }
+
+  return hasChanges || type(prev) != "table" || prev.len() != list.len() ? list : prev
+})
+
+let currentResearch = Computed(@() unitsResearchStatus.get().findvalue(@(r) r.isCurrent))
+let researchCountry = Computed(@() currentResearch.get()?.country)
+
+let isAllAvailableUnitsResearched = Computed(@()
+  unitsResearchStatus.get().findvalue(@(r) (r.canResearch || r.canBuy) && r.country not in blockedCountries.get()) == null)
 
 let mkCountries = @(nodeList) Computed(function(prev) {
   let resTbl = {}
-  foreach (node in nodeList.get())
+  foreach (node in nodeList.get()) {
+    if (node.country in blockedCountries.get()
+      && node.name not in campMyUnits.get()
+      && currentResearch.get() == null
+      && !isAllAvailableUnitsResearched.get())
+      continue
     resTbl[node.country] <- true
+  }
   let res = resTbl.keys()
     .sort(@(a, b) (countryPriority?[b] ?? -1) <=> (countryPriority?[a] ?? -1)
       || a <=> b)
@@ -48,9 +97,11 @@ let mkFilteredNodes = @(nodeList) Computed(@()
   filterGenId.get() == 0 ? nodeList.get()
     : nodeList.get()
       .filter(function(node) {
+        if(!campUnitsCfg.get()?[node.name])
+          return false
         foreach (f in filters) {
           let value = f.value.get()
-          if (value != null && !f.isFit(campUnitsCfg.get()?[node.name], value))
+          if (value != null && !f.isFit(campUnitsCfg.get()[node.name], value))
             return false
         }
         return true
@@ -90,23 +141,6 @@ let mkCountryNodesCfg = @(allNodes, curCountry) Computed(function(prev) {
   return isEqual(res, prev) ? prev : res
 })
 
-function computeChanges(prev, list) {
-  if (type(prev) != "table" || prev.len() != list.len())
-    return list
-
-  let res = {}
-  local hasChanges = false
-  foreach (unitName, r in list)
-    if (isEqual(r, prev?[unitName]))
-      res[unitName] <- prev[unitName]
-    else {
-      res[unitName] <- r
-      hasChanges = true
-    }
-
-  return hasChanges ? res : prev
-}
-
 let allBlueprints = Computed(@() serverConfigs.get()?.allBlueprints ?? {})
 let blueprintCounts = Computed(@() servProfile.get()?.blueprints ?? {})
 
@@ -117,12 +151,13 @@ let blueprintUnitsStatus = Computed(function(prev) {
   let list = {}
   if (!isCampaignWithUnitsResearch.get())
     return list
+
+  local hasChanges = false
   foreach (unitName, data in availableBlueprints.get()) {
     let { targetCount = 1 } = data
     let curCount = blueprintCounts.get()?[unitName] ?? 0
     let country = nodes.get()?[unitName] ?? ""
-
-    list[unitName] <- {
+    let res = {
       name = unitName
       exp = curCount
       reqExp = targetCount
@@ -130,36 +165,12 @@ let blueprintUnitsStatus = Computed(function(prev) {
       canBuy = curCount >= targetCount
       country
     }
+    let value = prevIfEqual(prev?[unitName], res)
+    list[unitName] <- value
+    hasChanges = hasChanges || value != prev?[unitName]
   }
 
-  return computeChanges(prev, list)
-})
-
-let unitsResearchStatus = Computed(function(prev) {
-  let list = {}
-  if (!isCampaignWithUnitsResearch.get())
-    return list
-  let { unitResearchExp = {} } = serverConfigs.get()
-  let { unitsResearch = {} } = servProfile.get()
-  foreach (unitName, reqExp in unitResearchExp) {
-    if (unitName in campMyUnits.get() || unitName not in campUnitsCfg.get())
-      continue
-    let { reqUnits = [] , country = "" } = nodes.get()?[unitName]
-    let { exp = 0, isCurrent = false, isResearched = false, canBuy = false, canResearch = false } = unitsResearch?[unitName]
-    list[unitName] <- {
-      name = unitName
-      exp
-      reqExp
-      reqUnits
-      isCurrent
-      isResearched
-      canBuy
-      canResearch
-      country
-    }
-  }
-
-  return computeChanges(prev, list)
+  return hasChanges || type(prev) != "table" || prev.len() != list.len() ? list : prev
 })
 
 let unseenResearchedUnits = Computed(function() {
@@ -204,10 +215,6 @@ let unseenResearchedUnits = Computed(function() {
 
   return res
 })
-
-let currentResearch = Computed(@() unitsResearchStatus.get().findvalue(@(r) r.isCurrent))
-
-let researchCountry = Computed(@() currentResearch.get()?.country)
 
 unitToScroll.subscribe(function(v) {
   let { country = null } = nodes.get()?[v]
@@ -273,4 +280,5 @@ return {
   setResearchedUnitsSeen
 
   countryPriority
+  blockedCountries
 }

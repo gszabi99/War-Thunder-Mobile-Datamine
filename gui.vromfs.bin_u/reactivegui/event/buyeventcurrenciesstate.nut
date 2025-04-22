@@ -24,13 +24,13 @@ let parentEventName = Computed(function() {
     .filter(@(list) null != list.findvalue(@(g) g.id == cId && g.gType == G_CURRENCY))
   let isFit = @(rId) rId in rewards
   let activeUnlocksV = activeUnlocks.get()
-  //search active events
+  
   foreach(u in activeUnlocksV) {
     let { event_id = null } = u?.meta
     if (event_id != null && hasUnlockReward(u, isFit))
       return event_id
   }
-  //search inactive events
+  
   foreach(name, u in allUnlocksDesc.get()) {
     if (name in activeUnlocksV)
       continue
@@ -74,7 +74,7 @@ let buyCurrencyWndGamercardCurrencies = Computed(function() {
   let priceCurrencies = eventCurrenciesGoods.get()
     .reduce(@(res, v) res.$rawset(v.price.currencyId, true), {})
     .keys()
-  priceCurrencies.sort(@(a, b) sortByCurrencyId(b, a)) //-param-pos
+  priceCurrencies.sort(@(a, b) sortByCurrencyId(b, a)) 
   return [ currencyId.get() ].extend(priceCurrencies)
 })
 

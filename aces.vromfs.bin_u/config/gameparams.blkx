@@ -125,6 +125,7 @@
     5.0
   ],
   "timeBeforeEngineNoticeFire": 0.5,
+  "noAnimationForTankMisfire": true,
   "enableImpostorPreshadowCompression": false,
   "forceDisableRadarsOnSpawnGm": true,
   "defaultTankAimPointOffset": [
@@ -18848,5 +18849,11 @@
       "screenLimit": 0.125,
       "interpolationFactor": 1.0
     }
+  },
+  "planeCriticalSpeed": {
+    "minAltitude": 50.0,
+    "minFlapsForSpeedReduction": 0.11,
+    "flapsSpeedReduction": 15.0,
+    "minDirVelAngleDegrees": 6.0
   }
 }

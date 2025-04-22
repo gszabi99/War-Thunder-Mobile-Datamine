@@ -25,18 +25,18 @@ let unitTypeRemap = {
   [AIR] = "aircraft"
 }
 
-//for global tips unitType = null
+
 function getKeyFormat(unitType, isNewbie) {
   let path = ["loading"]
   if (unitType != null)
     path.append(unitTypeRemap?[unitType] ?? unitType)
   if (isNewbie)
     path.append("newbie")
-  path.append("tip{idx}") //warning disable: -forgot-subst
+  path.append("tip{idx}") 
   return "/".join(path)
 }
 
-//for global tips unitType = null
+
 function loadTipsKeysByUnitType(unitType) {
   let res = []
 
@@ -45,7 +45,7 @@ function loadTipsKeysByUnitType(unitType) {
     configs.append({ isNewbieTip, keyFormat   = getKeyFormat(unitType, isNewbieTip) })
 
   local notExistInARow = 0
-  for (local idx = 0; notExistInARow <= MISSING_TIPS_IN_A_ROW_ALLOWED; idx++) { // warning disable: -mismatch-loop-variable
+  for (local idx = 0; notExistInARow <= MISSING_TIPS_IN_A_ROW_ALLOWED; idx++) { 
     local locId = ""
     local isFound = false
     foreach (cfg in configs) {
@@ -94,7 +94,7 @@ function genNewTip(unitTypeWeights, prevTipInfo) {
   if (unitTypeWeights.len() == 0)
     return res
 
-  //choose new tip
+  
   let unitTypeBit = random_pick(unitTypeWeights)
   let tipsList = tipsLocId[unitTypeBit]
   let totalTips = tipsList.len()

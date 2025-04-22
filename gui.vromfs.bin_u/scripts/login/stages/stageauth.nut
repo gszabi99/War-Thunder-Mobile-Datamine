@@ -49,7 +49,7 @@ let proceedAuthByResult = {
     finalizeStage()
   },
 
-  [YU2_2STEP_AUTH] = function(_loginType) { //error, received if user not logged, because he have 2step authorization activated
+  [YU2_2STEP_AUTH] = function(_loginType) { 
     let isExt2StepAllowed = isExternalApp2StepAllowed()
     let value = !isExt2StepAllowed && isHasEmail2StepTypeSync() ? SST_MAIL
       : isExt2StepAllowed && isHasWTAssistant2StepTypeSync() ? SST_GA
@@ -225,23 +225,23 @@ eventbus_subscribe("nswitch.account.login",
 let loginByType = {
   [LT_GOOGLE] = function(_as) {
     googlePlayAccount.signOut(false)
-    googlePlayAccount.startSignIn() //will be event android.account.googleplay.onSignInCallback as result
+    googlePlayAccount.startSignIn() 
   },
 
   [LT_HUAWEI] = function(_as) {
-    hmsAccount.silentSignIn() //will be event android.account.huawei.onSignInCallback as result
+    hmsAccount.silentSignIn() 
   },
 
   [LT_FACEBOOK] = function(_as) {
     if (is_android)
       googlePlayAccount.signOut(false)
-    fbAccount.startFBSignIn() //will be event android.account.fb.onSignInCallback as result
+    fbAccount.startFBSignIn() 
   },
 
   [LT_FIREBASE] = function(_as) {
     googlePlayAccount.signOut(false)
     if (guestFirebaseAccount)
-      guestFirebaseAccount.loadGuestFID() //will be event android.account.onGuestFIDReciveCallback
+      guestFirebaseAccount.loadGuestFID() 
   },
 
   [LT_GUEST] = function(_as) {
@@ -259,7 +259,7 @@ let loginByType = {
   [LT_GAIJIN] = function(as) {
     check_login_pass_async("CheckLoginPassDone.Gaijin", as.loginName,
       as.loginPas,
-      "", //We not use stoken in WTM
+      "", 
       as.check2StepAuthCode ? as.twoStepAuthCode : "",
       true,
       false)

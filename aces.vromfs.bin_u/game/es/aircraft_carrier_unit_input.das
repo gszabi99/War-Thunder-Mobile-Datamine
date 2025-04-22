@@ -14,7 +14,7 @@ def aircarft_carrier_input_spawn_requiest(evt : EventOnKeyUp;
                                           var unit__ref : UnitRef;
                                           aircraft_carrier__aircraftSpawnRequestInterval : float;
                                           var aircraft_carrier__lastAircraftSpawnRequestAtTime : FloatList)
-  let aircraftIndex = evt.eventId - int(ShortcutEventId ID_WTM_LAUNCH_AIRCRAFT)
+  let aircraftIndex = evt.eventId - int(ShortcutEventId.ID_WTM_LAUNCH_AIRCRAFT)
   if aircraftIndex < 0 || aircraftIndex >= SUPPORT_PLANES_MAX
     return
 
@@ -32,13 +32,13 @@ def aircarft_carrier_input_spawn_requiest(evt : EventOnKeyUp;
   aircraft_carrier__lastAircraftSpawnRequestAtTime[aircraftIndex] = curTime
 
   let aimAngles = get_turret_aim_angles()
-  sendEvent(eid, [[CmdRequestSwitchOnSupportPlane turnOn=true, idx=aircraftIndex, startAngles=float2(aimAngles.x, 0.f), switchOn=true]])
+  sendEvent(eid, CmdRequestSwitchOnSupportPlane(turnOn = true, idx = aircraftIndex, startAngles = float2(aimAngles.x, 0.f), switchOn = true))
 
 
 [es(tag=input, REQUIRE=(controlledHero))]
 def aircarft_carrier_return_from_plane_requiest(evt : EventOnKeyUp;
                                                 var unit__ref : UnitRef)
-  let aircraftIndex = evt.eventId - int(ShortcutEventId ID_WTM_LAUNCH_AIRCRAFT)
+  let aircraftIndex = evt.eventId - int(ShortcutEventId.ID_WTM_LAUNCH_AIRCRAFT)
   if aircraftIndex < 0 || aircraftIndex >= SUPPORT_PLANES_MAX
     return
 
@@ -51,13 +51,13 @@ def aircarft_carrier_return_from_plane_requiest(evt : EventOnKeyUp;
     return
 
   let aimAngles = get_turret_aim_angles()
-  sendEvent(ownedUnit.eid, [[CmdRequestSwitchOnSupportPlane turnOn=false, idx=aircraftIndex, startAngles=float2(aimAngles.x, 0.f), switchOn=true]])
+  sendEvent(ownedUnit.eid, CmdRequestSwitchOnSupportPlane(turnOn = false, idx = aircraftIndex, startAngles = float2(aimAngles.x, 0.f), switchOn = true))
 
 
 [es(tag=input, REQUIRE=(controlledHero))]
 def aircarft_carrier_plane_change_request(evt : EventOnKeyUp;
                                           var unit__ref : UnitRef)
-  if evt.eventId != int(ShortcutEventId ID_WTM_AIRCRAFT_CHANGE)
+  if evt.eventId != int(ShortcutEventId.ID_WTM_AIRCRAFT_CHANGE)
     return
 
   let unit = unit__ref.unit
@@ -69,12 +69,12 @@ def aircarft_carrier_plane_change_request(evt : EventOnKeyUp;
     return
 
   let supportPlaneIdx = find_support_plane_index(ownedUnit, unit)
-  sendEvent(ownedUnit.eid, [[CmdRequestSupportPlaneChange idx=supportPlaneIdx]])
+  sendEvent(ownedUnit.eid, CmdRequestSupportPlaneChange(idx = supportPlaneIdx))
 
 [es(tag=input, REQUIRE=(controlledHero))]
 def aircarft_carrier_plane_group_attack(evt : EventOnKeyUp;
                                         var unit__ref : UnitRef)
-  if evt.eventId != int(ShortcutEventId ID_WTM_AIRCRAFT_GROUP_ATTACK)
+  if evt.eventId != int(ShortcutEventId.ID_WTM_AIRCRAFT_GROUP_ATTACK)
     return
 
   set_player_command(1)
@@ -88,12 +88,12 @@ def aircarft_carrier_plane_group_attack(evt : EventOnKeyUp;
     return
 
   let supportPlaneIdx = find_support_plane_index(ownedUnit, unit)
-  sendEvent(ownedUnit.eid, [[CmdRequestSupportPlaneGroupAttack idx=supportPlaneIdx, targetId=get_player_target_id(), attack=false]])
+  sendEvent(ownedUnit.eid, CmdRequestSupportPlaneGroupAttack(idx = supportPlaneIdx, targetId = get_player_target_id(), attack = false))
 
 [es(tag=input, REQUIRE=(controlledHero))]
 def aircarft_carrier_plane_return(evt : EventOnKeyUp;
                                   var unit__ref : UnitRef)
-  if evt.eventId != int(ShortcutEventId ID_WTM_AIRCRAFT_RETURN)
+  if evt.eventId != int(ShortcutEventId.ID_WTM_AIRCRAFT_RETURN)
     return
 
   clear_player_commands()
@@ -107,7 +107,7 @@ def aircarft_carrier_plane_return(evt : EventOnKeyUp;
     return
 
   let supportPlaneIdx = find_support_plane_index(ownedUnit, unit)
-  sendEvent(ownedUnit.eid, [[CmdReturnAircraftToShip idx=supportPlaneIdx, rtb=true]])
+  sendEvent(ownedUnit.eid, CmdReturnAircraftToShip(idx = supportPlaneIdx, rtb = true))
 
   let aimAngles = get_turret_aim_angles()
-  sendEvent(ownedUnit.eid, [[CmdRequestSwitchOnSupportPlane turnOn=false, idx=supportPlaneIdx, startAngles=float2(aimAngles.x, 0.f), switchOn=true]])
+  sendEvent(ownedUnit.eid, CmdRequestSwitchOnSupportPlane(turnOn = false, idx = supportPlaneIdx, startAngles = float2(aimAngles.x, 0.f), switchOn = true))

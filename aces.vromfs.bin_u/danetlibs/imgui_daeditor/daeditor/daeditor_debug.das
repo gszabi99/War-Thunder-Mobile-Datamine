@@ -34,7 +34,7 @@ def daeditor_select_processor(args : array<string>;
   let hintsCount = 20
 
   if length(inputs) >= 2 && inputs[0] == cmd
-    let entities <- find_console_hint_entities(inputs[1], /*threshold_cam_distance_sq*/ square(50.0), hintsCount)
+    let entities <- find_console_hint_entities(inputs[1],  square(50.0), hintsCount)
 
     for i in range(min(length(entities), hintsCount))
       hints |> add_hint("{cmd} {entities[i].eid}", 0, 1, "[auto_zoom]", build_entity_hint_desc(entities[i]))
@@ -50,10 +50,10 @@ def init_ecs_inspector_shortcut()
 [console_cmd(name="time.increase_speed")]
 def time_increase_scale()
   set_timespeed(get_timespeed() * 2.)
-  visual_log("time speed: {format("%.3f", get_timespeed())}")
+  visual_log("time speed: {get_timespeed():.3f}")
 
 
 [console_cmd(name="time.decrease_speed")]
 def time_decrease_scale()
   set_timespeed(max(0.0, get_timespeed() * 0.5))
-  visual_log("time speed: {format("%.3f", get_timespeed())}")
+  visual_log("time speed: {get_timespeed():.3f}")

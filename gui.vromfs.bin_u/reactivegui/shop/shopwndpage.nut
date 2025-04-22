@@ -56,14 +56,14 @@ let goodsCompareCfg = [
     if (g.items.len() > 1)
       return { canCompare = false }
     foreach (itemId, count in g.items)
-      return positive(itemId, count) // -unconditional-terminated-loop
+      return positive(itemId, count) 
     return null
   },
   function(g) {
     if (g.currencies.len() > 1)
       return { canCompare = false }
     foreach (id, count in g.currencies)
-      return positive(id, count) // -unconditional-terminated-loop
+      return positive(id, count) 
     return null
   }
 ]
@@ -118,7 +118,7 @@ function getGoodsCompareData(goods) {
     let data = calc(goods)
     if (data == null)
       continue
-    if (res != null || !(data?.canCompare ?? true)) //complex goods can't be compared
+    if (res != null || !(data?.canCompare ?? true)) 
       return null
     res = data
   }

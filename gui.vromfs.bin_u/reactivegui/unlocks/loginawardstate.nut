@@ -32,7 +32,7 @@ let loginAwardUnlockByAds = Computed(function() {
     return null
   let baseUnlock = loginAwardUnlock.value
   if (baseUnlock == null || baseUnlock.hasReward)
-    return null //no ads reward till we got final reward
+    return null 
   let lastReward = getStageReward(baseUnlock)
   return activeUnlocks.value.findvalue(@(u) (u?.meta.loginAwardByAds ?? false)
     && u.hasReward
@@ -66,7 +66,7 @@ function receiveLoginAward() {
   if (!loginAwardUnlock.value?.hasReward)
     return
   let stage = loginAwardUnlock.get().lastRewardedStage + 1
-  delayUnseedPurchaseShow(completeAnimDelay + showUnseenAfterAnimDelay) //if receive rewards from pServer before userstat cb
+  delayUnseedPurchaseShow(completeAnimDelay + showUnseenAfterAnimDelay) 
   receiveUnlockRewards(LOGIN_UNLOCK_ID, stage, { executeBefore = "lAward.onReceiveRewardCb", stage })
 }
 
@@ -106,7 +106,7 @@ eventbus_subscribe("adsRewardApply", function(data) {
     return
   let stage = loginAwardUnlockByAds.value.lastRewardedStage + 1
   let mainUnlockStage = loginAwardUnlock.value.lastRewardedStage
-  delayUnseenAfterAds(mainUnlockStage) //if receive rewards from pServer before userstat cb
+  delayUnseenAfterAds(mainUnlockStage) 
   receiveUnlockRewards(name, stage, { executeBefore = "lAward.onReceiveAdsRewardCb", mainUnlockStage })
 })
 

@@ -1234,7 +1234,7 @@
                   "obstacleAvoidDistMin": 10.0,
                   "obstacleAvoidDistMax": 20.0,
                   "deflectPath": true,
-                  "deflectionRadius": 1000.0,
+                  "deflectionRadius": 100.0,
                   "suspendIfTargetChanged": true
                 }
               },
@@ -1258,7 +1258,7 @@
                         "obstacleAvoidDistMin": 10.0,
                         "obstacleAvoidDistMax": 30.0,
                         "deflectPath": false,
-                        "deflectionRadius": 1000.0,
+                        "deflectionRadius": 100.0,
                         "suspendIfTargetChanged": false
                       }
                     },
@@ -1296,7 +1296,7 @@
                             "obstacleAvoidDistMin": 10.0,
                             "obstacleAvoidDistMax": 30.0,
                             "deflectPath": false,
-                            "deflectionRadius": 1000.0,
+                            "deflectionRadius": 100.0,
                             "suspendIfTargetChanged": false
                           }
                         },
@@ -1337,7 +1337,7 @@
                                     "obstacleAvoidDistMin": 10.0,
                                     "obstacleAvoidDistMax": 30.0,
                                     "deflectPath": false,
-                                    "deflectionRadius": 1000.0,
+                                    "deflectionRadius": 100.0,
                                     "suspendIfTargetChanged": false
                                   }
                                 }
@@ -1397,7 +1397,7 @@
                         "obstacleAvoidDistMin": 5.0,
                         "obstacleAvoidDistMax": 30.0,
                         "deflectPath": true,
-                        "deflectionRadius": 1000.0,
+                        "deflectionRadius": 100.0,
                         "suspendIfTargetChanged": true
                       }
                     }

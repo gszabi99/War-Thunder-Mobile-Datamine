@@ -1,4 +1,4 @@
-options no_aot = true//currently, as of 08.10.2021 there is a bug in AOT codegen for E3DCOLOR
+options no_aot = true
 module ecs_template shared private
 require ecs
 require DagorMath
@@ -20,16 +20,16 @@ bitfield TemplateComponentFlags
 def private template_flags(annotations : AnnotationArgumentList)
   var ret : TemplateComponentFlags
   for a in annotations
-    if a.basicType != Type tBool
+    if a.basicType != Type.tBool
       continue
     if a.name == "t"
-      ret |= TemplateComponentFlags TRACKED
+      ret |= TemplateComponentFlags.TRACKED
     elif a.name == "tr" || a.name == "rt"
-      ret |= (TemplateComponentFlags TRACKED) | (TemplateComponentFlags REPLICATED)
+      ret |= (TemplateComponentFlags.TRACKED) | (TemplateComponentFlags.REPLICATED)
     elif a.name == "r"
-      ret |= (TemplateComponentFlags REPLICATED)
+      ret |= (TemplateComponentFlags.REPLICATED)
     elif a.name == "i"
-      ret |= (TemplateComponentFlags IGNORED)
+      ret |= (TemplateComponentFlags.IGNORED)
   return ret
 
 def private is_undef(arg)
@@ -60,7 +60,7 @@ def get_eval_any(econst : ExpressionPtr; var errors : das_string; var any_errors
         if !ok
           errors := "{errors}\nexpression failed to evaluate {describe(econst)}"
           any_errors = true
-        static_if typeinfo(can_move res.id)
+        static_if typeinfo can_move(res.id)
           output = res.id
         else
           output := res.id
@@ -97,12 +97,12 @@ class CreateTemplateAnnotation : AstStructureAnnotation
       let arg = field.annotation |> find_arg("undef")
       if is_undef(arg)
         let typeName = describe(field._type)
-        let undefType = field._type.baseType == Type tVoid || field._type.baseType == Type autoinfer
+        let undefType = field._type.baseType == Type.tVoid || field._type.baseType == Type.autoinfer
         field._type := null
         if undefType && !(arg is tString)
-          field._type |> move_new() <| new [[TypeDecl() baseType = Type tInt]]
+          field._type |> move_new() <| new TypeDecl(baseType = Type.tInt)
         else
-          field._type |> move_new() <| new [[TypeDecl() baseType = Type tInt, alias := (arg ?as tString) ?? typeName]]
+          field._type |> move_new() <| new TypeDecl(baseType = Type.tInt, alias := (arg ?as tString) ?? typeName)
         field.init := null
       field.annotation.add_annotation_argument("safe_when_uninitialized", true)
     return true
@@ -110,7 +110,7 @@ class CreateTemplateAnnotation : AstStructureAnnotation
   def override finish(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool
     if !is_entity_mgr_exists() || (show_completion && is_in_completion())
       return true
-    if is_in_aot() //|| find_index_if(each(args), $(a:AnnotationArgument) {return a.basicType == Type tString && a.name == "tag" && filter_pass_component_tag(group, a.sValue);}) != -1
+    if is_in_aot() 
       st.fields |> clear()
       return true
     var inscope parents : array<string>
@@ -118,13 +118,13 @@ class CreateTemplateAnnotation : AstStructureAnnotation
     var hadErrors = false
     for a in args
       if a.name == "extends"
-        if a.basicType != Type tString
+        if a.basicType != Type.tString
           errors := "{errors}\nextends argument {a} has to be of string type"
           hadErrors = true
         else
           parents |> push(string(a.sValue))
       elif a.name == "tag"
-        if a.basicType != Type tString
+        if a.basicType != Type.tString
           errors := "{errors}\tag argument {a} has to be of string type"
           hadErrors = true
         else
@@ -136,47 +136,47 @@ class CreateTemplateAnnotation : AstStructureAnnotation
         let fieldName = string(field.name)
         for a in field.annotation
           if a.name == "tag"
-            if a.basicType != Type tString
+            if a.basicType != Type.tString
               errors := "{errors}\tag argument {a} has to be of string type"
               hadErrors = true
             else
               cmp |> creating_template_addCompTag(ecs_hash(fieldName), ecs_hash(string(a.sValue)))
-        //filter out
-        //if field.annotation |> each |> map ( @(a) : bool => a.basicType == Type tString && a.name == "tag" && filter_pass_component_tag(cmp, a.sValue)) |> any//map-reduce is a bit slower
-        // if find_index_if(each(field.annotation), $(a:AnnotationArgument) {return a.basicType == Type tString && a.name == "tag" && filter_pass_component_tag_templ(cmp, a.sValue);}) != -1
-        //   continue
+        
+        
+        
+        
         let f = template_flags(field.annotation)
         let undefType = is_undef(field.annotation)
         if undefType
           set_undef(cmp, f, fieldName, string(field._type.alias))
         else
-          var inscope econst <- [[ExpressionPtr]]
+          var inscope econst <- default<ExpressionPtr>
           field.init |> get_const_expr(econst)
-          if field._type.baseType == Type tBool
+          if field._type.baseType == Type.tBool
             set(cmp, f, fieldName, (econst ?as ExprConstBool)?.value ?? false)
-          elif field._type.baseType == Type tInt
+          elif field._type.baseType == Type.tInt
             set(cmp, f, fieldName, (econst ?as ExprConstInt)?.value ?? 0)
-          elif field._type.baseType == Type tUInt
+          elif field._type.baseType == Type.tUInt
             set(cmp, f, fieldName, (econst ?as ExprConstUInt)?.value ?? 0u)
-          elif field._type.baseType == Type tUInt64
+          elif field._type.baseType == Type.tUInt64
             set(cmp, f, fieldName, (econst ?as ExprConstUInt64)?.value ?? uint64(0))
-          elif field._type.baseType == Type tInt2
+          elif field._type.baseType == Type.tInt2
             set(cmp, f, fieldName, (econst ?as ExprConstInt2)?.value ?? int2(0))
-          elif field._type.baseType == Type tInt3
+          elif field._type.baseType == Type.tInt3
             set(cmp, f, fieldName, (econst ?as ExprConstInt3)?.value ?? int3(0))
-          elif field._type.baseType == Type tFloat
+          elif field._type.baseType == Type.tFloat
             set(cmp, f, fieldName, (econst ?as ExprConstFloat)?.value ?? 0.)
-          elif field._type.baseType == Type tFloat2
+          elif field._type.baseType == Type.tFloat2
             set(cmp, f, fieldName, (econst ?as ExprConstFloat2)?.value ?? float2(0.))
-          elif field._type.baseType == Type tFloat3
+          elif field._type.baseType == Type.tFloat3
             set(cmp, f, fieldName, (econst ?as ExprConstFloat3)?.value ?? float3(0.))
-          elif field._type.baseType == Type tFloat4
+          elif field._type.baseType == Type.tFloat4
             set(cmp, f, fieldName, (econst ?as ExprConstFloat4)?.value ?? float4(0.))
-          elif field._type.baseType == Type tFloat4
+          elif field._type.baseType == Type.tFloat4
             set(cmp, f, fieldName, (econst ?as ExprConstFloat4)?.value ?? float4(0.))
-          elif field._type.baseType == Type tString
+          elif field._type.baseType == Type.tString
             set(cmp, f, fieldName, def_string((econst ?as ExprConstString)?.value))
-          elif field._type.baseType == Type tHandle
+          elif field._type.baseType == Type.tHandle
             if field._type.annotation.name == "EntityId"
               set(cmp, f, fieldName, INVALID_ENTITY_ID)
             elif field._type.annotation.name == "E3DCOLOR"

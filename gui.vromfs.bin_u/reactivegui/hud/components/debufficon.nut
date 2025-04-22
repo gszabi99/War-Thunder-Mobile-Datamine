@@ -3,7 +3,7 @@ let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
 
 let debufBlinkTime = 0.7
 let debuffColor = 0xFFFF0802
-let debuffBlinkColor = 0xFFE28010 //0xFFD27010
+let debuffBlinkColor = 0xFFE28010 
 
 let debuffAnims = [
   { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.3, easing = OutQuad, play = true }

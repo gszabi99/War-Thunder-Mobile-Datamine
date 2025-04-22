@@ -13,7 +13,7 @@ let { addWaitbox, removeWaitbox, waitboxes } = require("%rGui/notifications/wait
 let INGAME_PURCHASES_IN_RUSSIA_URL
   = "auto_login https://wtmobile.com/premium-webmagazin?skin_lang=ru"
 let INGAME_PURCHASES_IN_RUSSIA_URL_GOODS_ID
-  = "auto_login https://wtmobile.com/premium-webmagazin?id={id}&skin_lang=ru" // warning disable: -forgot-subst
+  = "auto_login https://wtmobile.com/premium-webmagazin?id={id}&skin_lang=ru" 
 
 let paymentDisabledInRussiaCurrencies = [ "rub", "byn" ].reduce(@(res, v) res.rawset(v, true), {})
 let isDebugDisabledCurrency = mkWatched(persist, "isDebugDisabledCurrency", false)
@@ -114,7 +114,7 @@ function openMsgBoxInAppPurchasesFromRussia(goods) {
 
 register_command(function() {
   isDebugDisabledCurrency(!isDebugDisabledCurrency.value)
-  console_print("isDebugDisabledCurrency = ", isDebugDisabledCurrency.value) //warning disable: -forbidden-function
+  console_print("isDebugDisabledCurrency = ", isDebugDisabledCurrency.value) 
 }, "ui.debug.shopDisabledCurrency")
 
 return {

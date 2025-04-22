@@ -41,7 +41,7 @@ let relHitInfo = {
   }
 }
 
-let getMapRelCoords = @(mapAabb, mapSize, x, y) [ //x, y, incSize
+let getMapRelCoords = @(mapAabb, mapSize, x, y) [ 
   (x - mapAabb.l).tofloat() / (mapAabb.r - mapAabb.l) * mapSize[0],
   (y - mapAabb.t).tofloat() / (mapAabb.b - mapAabb.t) * mapSize[1],
   INC_AREA.tofloat() / (mapAabb.r - mapAabb.l) * mapSize[0]

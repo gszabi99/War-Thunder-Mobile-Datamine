@@ -4,8 +4,9 @@ let { get_mission_time } = require("mission")
 let { playSound } = require("sound_wt")
 let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
+let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
-let { updateActionBarDelayed, actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
+let { updateActionBarDelayed, actionBarItems, actionItemsInCd } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { touchButtonSize, touchSizeForRhombButton, imageColor, imageDisabledColor, borderWidth, btnBgColor,
   borderColorPushed, borderColor, borderNoAmmoColor, textColor, textDisabledColor,
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
@@ -15,7 +16,7 @@ let { hasAimingModeForWeapon, markWeapKeyHold, unmarkWeapKeyHold } = require("%r
 let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { mkActionBtnGlare } = require("%rGui/hud/weaponsButtonsAnimations.nut")
-let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { isAvailableActionItem } = require("actionButtonComps.nut")
 
 
 let cooldownImgSize = (1.42 * touchButtonSize).tointeger()
@@ -26,10 +27,6 @@ function useShortcut(shortcutId) {
   toggleShortcut(shortcutId)
   updateActionBarDelayed()
 }
-
-let isActionAvailable = @(actionItem) (actionItem?.available ?? true)
-  && (actionItem.count != 0 || actionItem?.control
-    || (actionItem?.cooldownEndTime ?? 0) > get_mission_time())
 
 let mkAmmoCount = @(count, scale, isAvailable = true) count < 0 ? null
   : {
@@ -223,6 +220,7 @@ let groupsInAirByIdx = [groupIsInAir, group2IsInAir, group3IsInAir, group4IsInAi
 
 function mkSupportPlaneBtn(actionType, supportCfg, scale) {
   let actionItem = Computed(@() actionBarItems.get()?[actionType])
+  let isOnCd = Computed(@() actionItemsInCd.get()?[actionType] ?? false)
   let { image, imageSwitch, groupIdx, shortcutId } = supportCfg
   let stateFlags = Watched(0)
   let isGroupInAir = groupsInAirByIdx?[groupIdx] ?? Watched(false)
@@ -233,18 +231,18 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
   let groupImgSize = scaleEven(defImageSize * 1.15, scale)
 
   return function() {
-    let watch = [actionItem, isGroupInAir]
+    let watch = [actionItem, isGroupInAir, isOnCd]
     if (actionItem.get() == null)
       return { watch }
-    let isAvailable = isActionAvailable(actionItem.get())
+    let isAvailable = isAvailableActionItem(actionItem.get())
     return {
       watch
       size = [btnSize, btnSize]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [
-        mkRhombBtnBg(isAvailable, actionItem.get(), scale, @() playSound("weapon_secondary_ready"))
-        mkRhombBtnBorder(stateFlags, isAvailable, scale)
+        mkRhombBtnBg(!isOnCd.get() && isAvailable, actionItem.get(), scale, @() playSound("weapon_secondary_ready"))
+        mkRhombBtnBorder(stateFlags, !isOnCd.get() && isAvailable, scale)
         isGroupInAir.get()
           ? {
               rendObj = ROBJ_IMAGE
@@ -252,7 +250,7 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
               pos = [hdpx(3 * scale), 0]
               image = Picture($"{imageSwitch}:{groupImgSize}:{groupImgSize}:P")
               keepAspect = KEEP_ASPECT_FIT
-              color = !isAvailable ? imageDisabledColor : imageColor
+              color = isOnCd.get() || !isAvailable ? imageDisabledColor : imageColor
             }
           : {
               rendObj = ROBJ_IMAGE
@@ -260,7 +258,7 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
               pos = [0, -hdpx(5 * scale)]
               image = Picture($"{image}:{imgSize}:{imgSize}:P")
               keepAspect = KEEP_ASPECT_FIT
-              color = !isAvailable ? imageDisabledColor : imageColor
+              color = isOnCd.get() || !isAvailable ? imageDisabledColor : imageColor
             }
         isGroupInAir.get() ? null : mkAmmoCount(actionItem.get().count, scale)
         mkActionBtnGlare(actionItem.get(), btnSize)
@@ -270,11 +268,7 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
           behavior = Behaviors.Button
           cameraControl = true
           hotkeys = mkGamepadHotkey(shortcutId)
-          function onClick() {
-            if ((actionItem.get()?.cooldownEndTime ?? 0) > get_mission_time())
-              return
-            toggleShortcut(shortcutId)
-          }
+          onClick = @() !isOnCd.get() ? toggleShortcut(shortcutId) : null
           function onElemState(v) {
             if ((v & S_ACTIVE) && actionItem.get() != null)
               markWeapKeyHold(actionType, loc(getUnitLocId(actionItem.get().weaponName)), true)

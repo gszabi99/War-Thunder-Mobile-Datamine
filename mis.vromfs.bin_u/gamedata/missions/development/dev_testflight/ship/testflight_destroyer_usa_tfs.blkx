@@ -47,7 +47,7 @@
     "mission": {
       "level": "levels/pacific_islands.bin",
       "type": "domination",
-      "environment": "6.73",
+      "environment": "8.73",
       "weather": "thin_clouds",
       "windDirection": [
         1.0,

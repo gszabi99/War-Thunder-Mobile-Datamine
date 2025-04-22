@@ -4,13 +4,13 @@ let { eventbus_subscribe } = require("eventbus")
 let { defer } = require("dagor.workcycle")
 let { activeOffer } = require("offerState.nut")
 let { activeOffersByGoods } = require("offerByGoodsState.nut")
-let { shopGoodsAllCampaigns } = require("shopState.nut")
+let { shopGoodsAllCampaigns, saveSeenGoods } = require("shopState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { shopPurchaseInProgress, check_empty_offer, update_branch_offer } = require("%appGlobals/pServer/pServerApi.nut")
 let { platformPurchaseInProgress } = require("platformGoods.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
@@ -67,6 +67,7 @@ function openGoodsPreview(id) {
 
   openedGoodsId(id)
   openPreviewCount(openPreviewCount.value + 1)
+  saveSeenGoods([id])
 }
 
 function openGoodsPreviewInMenuOnly(id) {
@@ -74,14 +75,16 @@ function openGoodsPreviewInMenuOnly(id) {
   let addons = getAddonsToShowGoods(goods, serverConfigs.get()?.allUnits, hasAddons.get())
   if (addons.len() != 0) {
     openDownloadAddonsWnd(addons, "openGoodsPreviewInMenuNoModals", { id })
-    return
+    return false
   }
 
   if (!isInMenuNoModals.get())
-    return
+    return false
 
   openedGoodsId(id)
   openPreviewCount(openPreviewCount.value + 1)
+  saveSeenGoods([id])
+  return true
 }
 
 let previewGoods = Computed(@() getPreviewGoods(openedGoodsId.get(), activeOffer.get(),
@@ -162,6 +165,7 @@ return {
   previewType
   isPreviewGoodsPurchasing
   openGoodsPreviewInMenuOnly
+  getAddonsToShowGoods
 
   openSubsPreview = @(id) openedSubsId.set(id)
   closeSubsPreview = @() openedSubsId.set(null)

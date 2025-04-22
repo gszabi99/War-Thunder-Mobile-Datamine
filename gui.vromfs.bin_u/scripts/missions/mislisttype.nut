@@ -50,7 +50,7 @@ let g_mislist_type = {
   function _getMissionsList(callback) {
     let gm = get_game_mode()
     let res = []
-    //collect campaigns chapters list
+    
     let campaigns = [{ chapters = get_meta_missions_info_by_chapters(gm) }]
 
     foreach (camp in campaigns) {
@@ -101,7 +101,7 @@ let g_mislist_type = {
 }
 
 g_mislist_type.template <- {
-  id = "" //filled automatically by typeName
+  id = "" 
   tabsOrder = mislistTabsOrder.UNKNOWN
 
   getMissionConfig = g_mislist_type._getMissionConfig

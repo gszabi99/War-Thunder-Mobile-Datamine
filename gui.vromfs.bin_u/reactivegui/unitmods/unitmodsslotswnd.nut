@@ -91,7 +91,7 @@ function actionWithOverloadWarning(actionFn) {
 
 registerHandler("onPurchasedMod", function equipOnPurchase(_, context) {
   let { belt, weapon, unitName } = context
-  if (unitName != curUnit.get()?.name) //no need to try equip when player leave this window
+  if (unitName != curUnit.get()?.name) 
     return
   if (belt)
     equipBelt(belt.weaponId, belt.id)
@@ -231,7 +231,7 @@ let slotsList = @(slots) {
   size = [flex(), SIZE_TO_CONTENT]
   onAttach = scrollToSlot
   children = mkTabs(
-    slots.slice(1) //0 slot has only guns, and unable to change anything
+    slots.slice(1) 
       .map(@(_, idx) { id = idx + 1, content = mkSlotContent(idx + 1) }),
     curSlotIdx, {}, setCurSlotIdx)
 }
@@ -300,7 +300,7 @@ function slotsBlock() {
   let children = [
     mkBlock(loc("weaponry/courseGunBelts"), beltsList(beltWeapons.get(), @(w) w.turrets == 0))
     mkBlock(loc("weaponry/turretGunBelts"), beltsList(beltWeapons.get(), @(w) w.turrets != 0))
-    weaponSlots.get().len() <= 1 ? null //0 slot is common weapons
+    weaponSlots.get().len() <= 1 ? null 
       : mkBlock(loc("weaponry/secondaryWeapons"), slotsList(weaponSlots.get()))
   ]
     .filter(@(v) v != null)

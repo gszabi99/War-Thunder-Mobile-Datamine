@@ -5,17 +5,17 @@ let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { hasStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
 
-/*
-UI BQ event "event_progress" format:
-  action [string] ("complete_task", "compete_stage", "progress_by_ads")
-  eventType [string] - tabId
-  stage [string] - day_N for quests, stage_N for event_progress bar
-  taskId [string] - quest id (null for event_progress bar)
-  starsDelta [int] - reward stats change
-  starsTotal [int] - players's amount of progress stat (reward stats)
-  warbondDelta [int] - warbonds change
-  warbondTotal [int] - warbonds total
-*/
+
+
+
+
+
+
+
+
+
+
+
 
 let getCommonData = @(unlock) {
   eventType = unlock?.tabId

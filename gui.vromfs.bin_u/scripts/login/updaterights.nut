@@ -8,7 +8,7 @@ let { getPlayerToken } = require("auth_wt")
 let { APP_ID } = require("%appGlobals/gameIdentifiers.nut")
 let { applyRights } = require("%scripts/login/applyRights.nut")
 
-const UPDATE_TIMEOUT = 300 //5min
+const UPDATE_TIMEOUT = 300 
 
 function updateRightsImpl() {
   if (!isContactsLoggedIn.value)

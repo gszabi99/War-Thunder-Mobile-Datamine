@@ -1,15 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-
+let logA = log_with_prefix("[ADDONS] ")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { get_free_disk_space = @() -1,
-  download_addons_in_background, stop_updater, is_updater_running, get_addon_version,
-  get_incomplete_addons, is_addon_exists_in_game_folder,
+  download_addons_in_background, stop_updater, is_updater_running,
+  get_incomplete_addons,
   UPDATER_RESULT_SUCCESS, UPDATER_ERROR, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
   UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING, UPDATER_EVENT_INCOMPATIBLE_VERSION
 } = require("contentUpdater")
 let { get_local_custom_settings_blk, get_settings_blk } = require("blkGetters")
-let logA = log_with_prefix("[ADDONS] ")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -17,8 +16,10 @@ let { isInLoadingScreen, isInMpBattle } = require("%appGlobals/clientState/clien
 let { localizeAddonsLimited, initialAddons, latestDownloadAddonsByCamp, latestDownloadAddons,
   commonUhqAddons, soloNewbieByCampaign, getAddonsSize
 } = require("%appGlobals/updater/addons.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
-let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
+let { hasAddons, addonsSizes, addonsExistInGameFolder, addonsVersions,
+  isAddonsInfoActual, isAddonsExistInGameFolderActual, isAddonsVersionsActual
+} = require("%appGlobals/updater/addonsState.nut")
+let { getAddonCampaign, getCampaignOrig, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
 } = require("%appGlobals/updater/campaignAddons.nut")
 let { isAnyCampaignSelected, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits, battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
@@ -26,9 +27,10 @@ let { isConnectionLimited, hasConnection } = require("%appGlobals/clientState/co
 let { isRandomBattleNewbie, isRandomBattleNewbieSingle } = require("%rGui/gameModes/gameModeState.nut")
 let { squadAddons } = require("%rGui/squad/squadAddons.nut")
 let { needUhqTextures } = require("%rGui/options/options/graphicOptions.nut")
-let { reqAddonsToShowOffer } = require("%rGui/shop/offerState.nut")
 let msgBoxError = require("%rGui/components/msgBoxError.nut")
 let { totalSizeText } = require("%globalsDarg/updaterUtils.nut")
+let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
+
 
 let DOWNLOAD_ADDONS_EVENT_ID = "downloadAddonsEvent"
 let ALLOW_LIMITED_DOWNLOAD_SAVE_ID = "allowLimitedConnectionDownload"
@@ -36,7 +38,7 @@ let SIZE_INCREASE_MULTIPLIER = 1.2
 
 let addonsToDownload = hardPersistWatched("updater.addonsToDownload",
   get_incomplete_addons().reduce(function(res, v) {
-    if (!v.endswith("_uhq")) //no need to finalize uhq addons by default.
+    if (!v.endswith("_uhq")) 
       res[v] <- true
     return res
   }, {}))
@@ -48,7 +50,9 @@ let totalSizeBytes = hardPersistWatched("updater.totalSizeBytes", 0)
 let toDownloadSizeBytes = hardPersistWatched("updater.toDownloadSizeBytes", 0)
 let downloadState = hardPersistWatched("updater.downloadState", null)
 let updaterError = hardPersistWatched("updater.updaterError", null)
+let awaitingAddonsInfoUpd = hardPersistWatched("updater.awaitingAddonsInfoUpd", null)
 let isIncompatibleVersion = Watched(false)
+let extAutoDownloadAddons = Watched([])
 
 let firstPriorityAddons = mkWatched(persist, "firstPriorityAddons", {})
 let downloadWndParams = mkWatched(persist, "downloadWndParams", null)
@@ -73,7 +77,31 @@ let initialAddonsToDownload = Computed(@(prev) mkAddonsToDownload(initialAddons,
 let latestAddonsToDownload = Computed(@(prev) mkAddonsToDownload(
   (clone latestDownloadAddons).extend(latestDownloadAddonsByCamp?[curCampaign.value] ?? []),
   hasAddons.value, prev))
-let offerAddonsToDownload = Computed(@(prev) mkAddonsToDownload(reqAddonsToShowOffer.get(), hasAddons.value, prev))
+let extAddonsToAutoDownload = Computed(@(prev) mkAddonsToDownload(extAutoDownloadAddons.get(), hasAddons.value, prev))
+
+let extAutoDownloadWatches = []
+
+function recalcExtAutoAddons() {
+  let addons = []
+  foreach(list in extAutoDownloadWatches)
+    addons.extend(list.get())
+  extAutoDownloadAddons.set(addons)
+}
+let deferRecalcExtAutoAddons = @() deferOnce(recalcExtAutoAddons)
+
+function registerAutoDownloadAddons(addonsW) {
+  if (!isScriptsLoading.get() && !__static_analysis__) {
+    logerr("registerAutoDownloadAddons call not on scripts load")
+    return
+  }
+  if (extAutoDownloadWatches.contains(addonsW)) {
+    logerr("duplicate registerAutoDownloadAddons")
+    return
+  }
+  extAutoDownloadWatches.append(addonsW)
+  addonsW.subscribe(@(_) deferRecalcExtAutoAddons())
+  deferRecalcExtAutoAddons()
+}
 
 let uhqAddonsToDownload = Computed(function(prev) {
   if (!needUhqTextures.value || (get_settings_blk()?.graphics.uhqForceDisabled ?? true))
@@ -96,7 +124,7 @@ let wantStartDownloadAddons = Computed(function(prev) {
       || (addonsToDownload.value.len() + uhqAddonsToDownload.value.len()) == 0)
     return prevIfEqual(prev, {})
 
-  let addons = firstPriorityAddons.value.__merge(initialAddonsToDownload.value, squadAddons.value) //first priority on addons requested by download addons window
+  let addons = firstPriorityAddons.value.__merge(initialAddonsToDownload.value, squadAddons.value) 
   local res = addonsToDownload.value.filter(@(_, a) a in addons)
   if (res.len() != 0)
     return prevIfEqual(prev, res)
@@ -120,7 +148,8 @@ let wantStartDownloadAddons = Computed(function(prev) {
   if (res.len() != 0)
     return prevIfEqual(prev, res)
 
-  res = addonsToDownload.value.filter(@(_, a) (getAddonCampaign(a) ?? campaign) == campaign)
+  let campaignOrig = getCampaignOrig(campaign)
+  res = addonsToDownload.value.filter(@(_, a) (getAddonCampaign(a) ?? campaignOrig) == campaignOrig)
   if (res.len() != 0)
     return prevIfEqual(prev, res)
 
@@ -132,7 +161,7 @@ let wantStartDownloadAddons = Computed(function(prev) {
     return prevIfEqual(prev, addonsToDownload.value)
   if (uhqAddonsToDownload.get().len() != 0)
     return prevIfEqual(prev, uhqAddonsToDownload.get())
-  return prevIfEqual(prev, offerAddonsToDownload.get())
+  return prevIfEqual(prev, extAddonsToAutoDownload.get())
 })
 
 let needStartDownloadAddons = keepref(Computed(@()
@@ -170,7 +199,7 @@ function updateStartDownload() {
     return
   }
 
-  if (is_updater_running()) { //will restart by event from updater
+  if (is_updater_running()) { 
     logA("stop download to change addons list")
     stop_updater()
     downloadInProgress({})
@@ -178,7 +207,7 @@ function updateStartDownload() {
   }
 
   let addons = needStartDownloadAddons.value.keys()
-  let totalSize = getAddonsSize(addons)
+  let totalSize = getAddonsSize(addons, addonsSizes.get())
   let freeSpace = get_free_disk_space()
   logA($"total size to download: {totalSize}, free space: {freeSpace}")
   if (freeSpace > 0 && totalSize > freeSpace){
@@ -189,10 +218,10 @@ function updateStartDownload() {
   }
   let isStarted = download_addons_in_background(DOWNLOAD_ADDONS_EVENT_ID, addons)
   logA(isStarted ? "start download " : "ignore download ",
-    ", ".join(addons.map(@(a) $"{a}: {is_addon_exists_in_game_folder(a) ? "exists in game folder" : get_addon_version(a)}")))
+    ", ".join(addons.map(@(a) $"{a}: {addonsExistInGameFolder.get()?[a] ? "exists in game folder" : (addonsVersions.get()?[a] ?? "-")}")))
 
   if (!isStarted) {
-    cleanAddonsToDownload() //we will not download them anyway
+    cleanAddonsToDownload() 
     downloadInProgress({})
   } else
     downloadInProgress(needStartDownloadAddons.value)
@@ -240,25 +269,37 @@ eventbus_subscribe(DOWNLOAD_ADDONS_EVENT_ID, function(evt) {
   else if (eventType == UPDATER_EVENT_FINISH) {
     let isSuccess = evt?.result == UPDATER_RESULT_SUCCESS
     logA($"download finish. isSuccess = {isSuccess}, isStopped = {evt?.isStopped}")
-    downloadInProgress({})
-    eventbus_send("downloadAddonsFinished", {})
-    if (!isSuccess) {
-      updateStartDownload()
-      return
-    }
-
-    let { successEventId = null, context = {} } = downloadWndParams.value
-    cleanAddonsToDownload()
-    closeDownloadAddonsWnd()
-    if (successEventId != null)
-      eventbus_send(successEventId, context)
-    downloadState(null)
+    awaitingAddonsInfoUpd.set({ isDownloadFinishedSuccessfully = isSuccess })
+    isAddonsExistInGameFolderActual.set(false)
+    isAddonsVersionsActual.set(false)
   }
+})
+
+isAddonsInfoActual.subscribe(function(v) {
+  if (!v || awaitingAddonsInfoUpd.get() == null)
+    return
+
+  logA("addons info updated after download finish")
+  let { isDownloadFinishedSuccessfully } = awaitingAddonsInfoUpd.get()
+  awaitingAddonsInfoUpd.set(null)
+
+  downloadInProgress({})
+  if (!isDownloadFinishedSuccessfully) {
+    updateStartDownload()
+    return
+  }
+
+  let { successEventId = null, context = {} } = downloadWndParams.get()
+  cleanAddonsToDownload()
+  closeDownloadAddonsWnd()
+  if (successEventId != null)
+    eventbus_send(successEventId, context)
+  downloadState(null)
 })
 
 function getAddonPriority(addon) {
   let campaign = getAddonCampaign(addon)
-  return campaign == curCampaign.value ? 2
+  return campaign == getCampaignOrig(curCampaign.get()) ? 2
     : campaign == null ? 1
     : 0
 }
@@ -284,7 +325,7 @@ let addonsToAutoDownload = keepref(Computed(function() {
   if (!isAnyCampaignSelected.value)
     return initialAddonsToDownload.value?.keys()
   let list = initialAddonsToDownload.value.__merge(latestAddonsToDownload.get(), squadAddons.get(),
-    offerAddonsToDownload.get())
+    extAddonsToAutoDownload.get())
   foreach(a in getCampaignPkgsForOnlineBattle(curCampaign.value, maxCurCampaignMRank.value))
     list[a] <- true
   foreach(a in soloNewbieByCampaign?[curCampaign.get()] ?? [])
@@ -313,7 +354,7 @@ allowLimitedDownload.subscribe(function(allow) {
 
 function openDownloadAddonsWnd(addons = [], successEventId = null, context = {}) {
   let rqAddons = addons.filter(@(a) !hasAddons.value?[a])
-  if (addons.len() != 0 && rqAddons.len() == 0) {  //already all downloaded
+  if (addons.len() != 0 && rqAddons.len() == 0) {  
     if (successEventId != null)
       eventbus_send(successEventId, context)
     return
@@ -340,7 +381,7 @@ eventbus_subscribe("openDownloadAddonsWnd", function(msg) {
 })
 
 return {
-  startDownloadAddons  //background download, does not open window
+  startDownloadAddons  
   openDownloadAddonsWnd
   closeDownloadAddonsWnd
   downloadWndParams
@@ -349,6 +390,7 @@ return {
     && ((isConnectionLimited.value && !allowLimitedDownload.value)
       || !hasConnection.value))
   isDownloadInProgress = Computed(@() downloadInProgress.value.len() > 0)
+  registerAutoDownloadAddons
 
   addonsToDownload = Computed(@() addonsToDownload.value)
   wantStartDownloadAddons

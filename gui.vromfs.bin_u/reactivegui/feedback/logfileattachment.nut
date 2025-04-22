@@ -67,7 +67,7 @@ function getLogFileData() {
     logL($"Failed to read log file: {e}")
     return null
   }
-  if (DBGLEVEL <= 0) // Log is encrypted
+  if (DBGLEVEL <= 0) 
     applyXorMask(content)
   return {
     filename = "debug.txt"

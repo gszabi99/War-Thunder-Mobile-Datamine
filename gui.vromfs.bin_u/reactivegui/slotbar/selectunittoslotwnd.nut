@@ -23,7 +23,7 @@ let shouldOpen = Computed(@() needOpen.get() && canOpen.get())
 function mkBgText(rect) {
   let text = loc("slotbar/chooseSlot", { unit = loc(getUnitLocId(selectedUnitToSlot.get())) })
   let textSize = calc_str_box(text, fontSmall)
-  // align text relative to the selected unit
+  
   let posX = rect.l - ((textSize[0] - (rect.r - rect.l)) / 2)
   return {
     size = flex()

@@ -35,7 +35,7 @@ let dbgPurchAnswers = [
 ]
 
 local dbgCounter = 0
-let { //defaults only to allow test this module on PC
+let { 
   initAndRequestData = function(list) {
     let result = {
       status = AS_OK
@@ -119,7 +119,7 @@ isLoggedIn.subscribe(function(v) {
 })
 
 function sendLogPurchaseData(product_id,transaction_id) {
-  //see more here: https://support.appsflyer.com/hc/en-us/articles/4410481112081
+  
   local af = {
     af_order_id = transaction_id
     af_content_id = product_id
@@ -317,7 +317,7 @@ function refreshAvailableProducts() {
   if (productsForRequest.value.len() == 0)
     return
   if (lastInitStatus.value != AS_OK)
-    lastInitStatus(AS_NOT_INITED) //remove error status by request
+    lastInitStatus(AS_NOT_INITED) 
   logG("initAndRequestData: ", productsForRequest.value)
   initAndRequestData(productsForRequest.value)
 }
@@ -351,7 +351,7 @@ let platformGoods = Computed(function() {
     if (goods != null) {
       let platformDiscount = getIosDiscount(goods)
       let discountInPercent = platformDiscount != 0 ? platformDiscount : (goods?.discountInPercent ?? 0)
-      res[goodsId] <- goods.__merge({ priceExt, discountInPercent }) //warning disable: -potentially-nulled-index
+      res[goodsId] <- goods.__merge({ priceExt, discountInPercent }) 
     }
   }
   return res

@@ -7,6 +7,7 @@ let iconsScale = {
   ship_tool_kit = 1.6
   ship_smoke_screen_system_mod = 1.5
   tank_tool_kit_expendable = 1.5
+  tank_medical_kit = 1.5
   tank_extinguisher = 1.6
   spare = 1.8
   firework_kit = 1.4
@@ -23,7 +24,7 @@ let iconsScale = {
 let maxIconsScale = iconsScale.reduce(@(a, b) max(a, b))
 
 let icons = {
-  // Currencies
+  
   wp   = "ui/gameuiskin#currency_lions.svg"
   gold = "ui/gameuiskin#currency_eagles.svg"
   platinum = "ui/gameuiskin#currency_wolves.svg"
@@ -40,10 +41,11 @@ let icons = {
   anniversarybond = "ui/gameuiskin#warbond_icon_anniversarybond.avif"
   halloweenbond = "ui/gameuiskin#warbond_icon_halloween_2024.avif"
   blackfridaybond = "ui/gameuiskin#warbond_icon_black_friday_2024.avif"
-  // Consumables
+  
   ship_tool_kit = "ui/gameuiskin#shop_consumables_repair_gamercard.avif"
   ship_smoke_screen_system_mod = "ui/gameuiskin#shop_consumables_smoke_gamercard.avif"
   tank_tool_kit_expendable = "ui/gameuiskin#shop_consumables_tank_repair_gamercard.avif"
+  tank_medical_kit = "ui/gameuiskin#shop_consumables_tank_medical_kit_gamercard.avif"
   tank_extinguisher = "ui/gameuiskin#shop_consumables_tank_extinguisher_gamercard.avif"
   spare = "ui/gameuiskin#shop_consumables_tank_cards_gamercard.avif"
   firework_kit = "ui/gameuiskin#icon_fireworks.avif"

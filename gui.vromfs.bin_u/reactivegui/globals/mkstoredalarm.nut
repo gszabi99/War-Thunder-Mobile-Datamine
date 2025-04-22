@@ -5,7 +5,7 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 
-return function mkStoredAlarm(persistId, period = 604800 /*s in one week*/) {
+return function mkStoredAlarm(persistId, period = 604800 ) {
   let isTimerPassed = Watched(false)
   let lastTime = Watched(-1)
   let setTimerPassed = @() isTimerPassed(true)

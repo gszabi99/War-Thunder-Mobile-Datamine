@@ -43,7 +43,7 @@ let resolutionValue = mkOptionValue(OPT_GRAPHICS_SCENE_RESOLUTION,
 let aaList = ["low_fxaa"]
   .extend(is_fxaa_high_broken() ? [] : ["high_fxaa"])
   .extend(supports_deferred_msaa() ? ["mobile_msaa"] : [])
-  .extend((get_settings_blk()?.graphics.forceLowPreset ?? false) ? [] : ["mobile_taa"])
+  .extend((get_settings_blk()?.graphics.forceLowPreset ?? false) ? [] : ["mobile_taa", "mobile_taa_low"])
   .extend(is_ios && is_metalfx_upscale_supported() ? ["metalfx_fxaa"] : [])
   .extend((is_android || is_pc) && (get_settings_blk()?.graphics.listAllAaOptions ?? false) ? ["sgsr", "sgsr2"] : [])
 
@@ -83,7 +83,7 @@ let optResolution = {
   valToString = @(v) loc($"options/resolution_{v}")
 }
 
-let allFpsValues = [30, 60, 120]
+let allFpsValues = (is_android || is_pc) ? [30, 45, 60, 120] : [30, 60, 120]
 let fpsValue = mkOptionValue(OPT_FPS, allFpsValues[0])
 let maxFps = get_maximum_frames_per_second()
 let optFpsLimit = {
@@ -130,7 +130,7 @@ let optRayTracing = {
 }
 let isUhqSupported = is_texture_uhq_supported()
 let needUhqTexturesRaw = Watched(isUhqSupported
-  && !!get_common_local_settings_blk()?.uhqTextures) //machine storage
+  && !!get_common_local_settings_blk()?.uhqTextures) 
 
 let needShowRestartNotify = Watched(should_notify_about_restart())
 eventbus_subscribe("presets.restartNotifyChanged", @(params) needShowRestartNotify.set(params?.status ?? false))

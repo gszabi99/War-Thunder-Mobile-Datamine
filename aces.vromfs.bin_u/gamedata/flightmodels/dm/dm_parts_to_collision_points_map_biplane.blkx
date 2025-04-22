@@ -1089,7 +1089,8 @@
       "impulseVelLimits": [
         3.0,
         1000000.0
-      ]
+      ],
+      "cutObject": 1
     },
     {
       "fm": "tail",
@@ -1394,7 +1395,11 @@
       "fm": "propeller1",
       "elementType": "propeller",
       "elementIndex": 0,
-      "dm": "_Clip_prop_1_%02d",
+      "dm": [
+        "prop02_1_dm",
+        "_Clip_prop_1_%02d"
+      ],
+      "dmCut": "prop02_1_dm",
       "impulseVelLimits": [
         1.0,
         3.0
@@ -1404,7 +1409,11 @@
       "fm": "propeller2",
       "elementType": "propeller",
       "elementIndex": 1,
-      "dm": "_Clip_prop_2_%02d",
+      "dm": [
+        "prop02_2_dm",
+        "_Clip_prop_2_%02d"
+      ],
+      "dmCut": "prop02_2_dm",
       "impulseVelLimits": [
         1.0,
         3.0
@@ -1414,7 +1423,11 @@
       "fm": "propeller3",
       "elementType": "propeller",
       "elementIndex": 2,
-      "dm": "_Clip_prop_3_%02d",
+      "dm": [
+        "prop02_3_dm",
+        "_Clip_prop_3_%02d"
+      ],
+      "dmCut": "prop02_3_dm",
       "impulseVelLimits": [
         1.0,
         3.0
@@ -1424,7 +1437,11 @@
       "fm": "propeller4",
       "elementType": "propeller",
       "elementIndex": 3,
-      "dm": "_Clip_prop_4_%02d",
+      "dm": [
+        "prop02_4_dm",
+        "_Clip_prop_4_%02d"
+      ],
+      "dmCut": "prop02_4_dm",
       "impulseVelLimits": [
         1.0,
         3.0
@@ -1434,7 +1451,11 @@
       "fm": "propeller5",
       "elementType": "propeller",
       "elementIndex": 4,
-      "dm": "_Clip_prop_5_%02d",
+      "dm": [
+        "prop02_5_dm",
+        "_Clip_prop_5_%02d"
+      ],
+      "dmCut": "prop02_5_dm",
       "impulseVelLimits": [
         1.0,
         3.0
@@ -1444,7 +1465,11 @@
       "fm": "propeller6",
       "elementType": "propeller",
       "elementIndex": 5,
-      "dm": "_Clip_prop_6_%02d",
+      "dm": [
+        "prop02_6_dm",
+        "_Clip_prop_6_%02d"
+      ],
+      "dmCut": "prop02_6_dm",
       "impulseVelLimits": [
         1.0,
         3.0

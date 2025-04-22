@@ -31,7 +31,7 @@ let { GP_OK, GP_NOT_INITED, GP_USER_CANCELED, GP_SERVICE_UNAVAILABLE, GP_ITEM_UN
 let dbgStatuses = [GP_OK, GP_USER_CANCELED, GP_SERVICE_UNAVAILABLE, GP_ITEM_UNAVAILABLE, GP_SERVICE_TIMEOUT]
 local dbgStatusIdx = 0
 let dbgSubsPlans = {}
-let { //defaults only to allow test this module on PC
+let { 
   initAndRequestData = function(listStr) {
     let list = parse_json(listStr)
     let result = {
@@ -83,7 +83,7 @@ let { //defaults only to allow test this module on PC
     })),
 } = !isDebugMode ? billingModule : {}
 let register_googleplay_purchase = !is_pc ? registerGoogleplayPurchase
-  : @(_, __, eventId) setTimeout(0.1, @() eventbus_send(eventId, { status = YU2_OK, item_id = "id", purch_token = "token" })) //for debug on pc
+  : @(_, __, eventId) setTimeout(0.1, @() eventbus_send(eventId, { status = YU2_OK, item_id = "id", purch_token = "token" })) 
 
 
 const REPEAT_ON_ERROR_MSEC = 60000
@@ -126,7 +126,7 @@ let availableSkusPrices = Computed(function() {
       priceInfo.subsPlans <- {}
       foreach(detail in subscriptionOfferDetails) {
         let { basePlanId = null, pricingPhases = [] } = detail
-        let planPriceInfo = getPriceInfo(pricingPhases?[0]) //support only single phase atm
+        let planPriceInfo = getPriceInfo(pricingPhases?[0]) 
         if (basePlanId != null && planPriceInfo != null)
           priceInfo.subsPlans[basePlanId] <- planPriceInfo
       }
@@ -224,7 +224,7 @@ function refreshAvailableSkus() {
   if (skusForRequest.value.len() == 0)
     return
   if (lastInitStatus.value != GP_OK)
-    lastInitStatus(GP_NOT_INITED) //remove error status by request
+    lastInitStatus(GP_NOT_INITED) 
   logG("initAndRequestData: ", skusForRequest.value)
   initAndRequestData(skusForRequest.value)
 }
@@ -258,7 +258,7 @@ let platformGoods = Computed(function() {
     if (goods != null) {
       let platformDiscount = getAndroidDiscount(goods)
       let discountInPercent = platformDiscount != 0 ? platformDiscount : (goods?.discountInPercent ?? 0)
-      res[goodsId] <- goods.__merge({ priceExt, discountInPercent }) //warning disable: -potentially-nulled-index
+      res[goodsId] <- goods.__merge({ priceExt, discountInPercent }) 
     }
   }
   return res
@@ -318,7 +318,7 @@ function changeSubscription(subsTo, subsFrom) {
 let noNeedLogerr = [ GP_SERVICE_TIMEOUT, GP_USER_CANCELED, GP_DEVELOPER_ERROR, GP_BILLING_UNAVAILABLE ]
 
 function sendLogPurchaseData(json_value) {
-  //see more here: https://support.appsflyer.com/hc/en-us/articles/4410481112081
+  
   local googleResp = parse_json(json_value)
   let { orderId = null, productId = null } = googleResp
   local af = {
@@ -326,7 +326,7 @@ function sendLogPurchaseData(json_value) {
     af_content_id = productId
     af_revenue = availableSkusPrices.value?[productId].price ?? -1
     af_price = availableSkusPrices.value?[productId].price ?? -1
-    af_currency = availableSkusPrices.value?[productId].currencyId ?? "USD" //or af_purchase_currency?
+    af_currency = availableSkusPrices.value?[productId].currencyId ?? "USD" 
   }
   logEvent("af_purchase", object_to_json_string(af, true))
 }

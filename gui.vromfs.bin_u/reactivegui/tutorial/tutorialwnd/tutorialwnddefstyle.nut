@@ -7,7 +7,7 @@ let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 
 let borderWidth = hdpx(1)
-let defMsgPadding = [hdpx(20), hdpx(40)] //to not be too close to highlighted objects.
+let defMsgPadding = [hdpx(20), hdpx(40)] 
 let characterSize = [hdpxi(644), hdpxi(914)]
 let shadeColor = 0xC0020B19
 let msgBgColor = 0xCC000000
@@ -90,7 +90,7 @@ let messageCtor = @(text, nextKeyAllowed, onNext, textOverride = {}) {
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   children = [
-    { //include only because padding not correct count by calc_comp_size while in textarea.
+    { 
       maxWidth = characterSize[0]
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
@@ -203,7 +203,7 @@ function characterCtor(charId, isRight = false) {
 }
 
 return freeze({
-  //required styles
+  
   lightCtor
   darkCtor
   messageCtor
@@ -214,7 +214,7 @@ return freeze({
   mkCutBg
   characterCtor
 
-  //components to reuse from outside
+  
   mkSizeTable
   nextKeyHintCtor
   defMsgPadding

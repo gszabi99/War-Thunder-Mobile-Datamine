@@ -17,7 +17,7 @@ let { openUnitsTreeAtCurRank, isUnitsTreeOpen } = require("%rGui/unitsTree/units
 
 let LVL_UP_ANIM = 2.2
 
-let isSeen = hardPersistWatched("isLevelUpSeen", false) // To show it after login once.
+let isSeen = hardPersistWatched("isLevelUpSeen", false) 
 let isLvlUpOpened = mkWatched(persist, "isOpened", false)
 let isRewardsModalOpen = mkWatched(persist, "isRewardsModalOpen", false)
 let failedRewardsLevelStr = mkWatched(persist, "failedRewardsLevelStr", {})
@@ -30,7 +30,7 @@ isLvlUpOpened.subscribe(@(v) v ? isSeen(true) : null)
 isInDebriefing.subscribe(function(v) {
   if (!v)
     return
-  failedRewardsLevelStr({}) //try to receive faile rewards again. Maybe there was a connection error or something like that
+  failedRewardsLevelStr({}) 
 
   local hasBalanceForLevelUpUnit = false
   foreach(unit in buyUnitsData.value.canBuyOnLvlUp) {

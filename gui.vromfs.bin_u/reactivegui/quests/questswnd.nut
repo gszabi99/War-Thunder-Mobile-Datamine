@@ -191,7 +191,7 @@ let tabs = [
     tabContent = eventTabContent()
     isVisible = Computed(@() isEventActive.value
       && questsCfg.value[EVENT_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
-    ovr = { key = "main_event_tab" } //need for tutorial
+    ovr = { key = "main_event_tab" } 
   }
   mkSpecialQuestsTab(0)
   mkSpecialQuestsTab(1)

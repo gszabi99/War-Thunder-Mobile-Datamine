@@ -3,7 +3,7 @@ let { isInSquad, squadMembers, squadLeaderCampaign, getMemberMaxMRank
 } = require("%appGlobals/squadState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getCampaignPkgsForOnlineBattle } = require("%appGlobals/updater/campaignAddons.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 
 let maxSquadMRank = Computed(function() {
   if (!isInSquad.value)

@@ -63,7 +63,7 @@ eventbus_subscribe("onAuthenticatedUrlResult", function(msg) {
   local logPrefix = "request open authenticated"
   if (status == YU2_OK) {
     if (shouldEncode)
-      urlToOpen = $"{url}&ret_enc=1" //This parameter is needed for coded complex links.
+      urlToOpen = $"{url}&ret_enc=1" 
   }
   else {
     urlToOpen = notAuthUrl
@@ -74,7 +74,7 @@ eventbus_subscribe("onAuthenticatedUrlResult", function(msg) {
       return
   }
 
-  defer(function() { //open url action is still sync, and can be too long. So lauch it on the next frame
+  defer(function() { 
     if (useExternalBrowser) {
       logUrl($"{logPrefix} in external browser {urlToOpen} (base url = {notAuthUrl})")
       openUrlExternalImpl(urlToOpen)
@@ -178,7 +178,7 @@ eventbus_subscribe("openUrl", kwarg(openUrl))
 
 register_command(function() {
   isDebugSsoLogin(!isDebugSsoLogin.value)
-  dlog("isDebug mode ? ", isDebugSsoLogin.value) //warning disable: -forbidden-function
+  dlog("isDebug mode ? ", isDebugSsoLogin.value) 
 }, "url.login-sso-test")
 
 return {

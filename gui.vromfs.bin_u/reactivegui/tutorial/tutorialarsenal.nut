@@ -225,7 +225,7 @@ register_command(
     if (activeTutorialId.get() == TUTORIAL_ARSENAL_ID)
       return finishTutorial()
     if (!hasUnitModifications.get())
-      console_print("Unable to start tutorial, because of no avaiable mods to buy") //warning disable: -forbidden-function
+      console_print("Unable to start tutorial, because of no avaiable mods to buy") 
     else
       isDebugMode.set(true)
   }

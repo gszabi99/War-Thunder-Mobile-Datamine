@@ -14,18 +14,19 @@ require("%appGlobals/sqevents.nut")
 require("initVM.nut")
 require("%appGlobals/pServer/pServerApi.nut")
 require("consoleCmd.nut")
-require("%sqstd/regScriptProfiler.nut")("darg", dlog) // warning disable: -forbidden-function
+require("%sqstd/regScriptProfiler.nut")("darg", dlog) 
 require("%rGui/notifications/foreignMsgBox.nut")
 require("%rGui/notifications/logEvents.nut")
-require("%rGui/options/guiOptions.nut") //need to register options before load profile
+require("%rGui/options/guiOptions.nut") 
 require("%appGlobals/clientState/initWindowState.nut")
 require("account/legalAcceptWnd.nut")
 require("%globalScripts/windowStateEs.nut")
 require("%appGlobals/windowState.nut").allowDebug(true)
-require("contacts/contactsState.nut") //need to catch notifications before login finish
-require("squad/squadManager.nut") //need to catch notifications before login finish
+require("contacts/contactsState.nut") 
+require("squad/squadManager.nut") 
 require("initHangar.nut")
 require("updater/connectionStatus/initConnectionStatus.nut")
+require("updater/initAddonsState.nut")
 require("activeControls.nut")
 require("login/consentGoogleState.nut")
 require("login/previewIDFAWnd.nut")
@@ -76,8 +77,8 @@ enableClickButtons(!isHudAttached.get())
 function loadAfterLoginImpl() {
   if (sceneAfterLogin != null)
     return
-  //let profiler = require("dagor.profiler")
-  //profiler.start()
+  
+  
   setIsScriptsLoading(true)
   let t = get_time_msec()
   log("LOAD RGUI SCRIPTS AFTER LOGIN")
@@ -85,7 +86,7 @@ function loadAfterLoginImpl() {
   isAllScriptsLoaded(true)
   log($"DaRg scripts load after login {get_time_msec() - t} msec")
   setIsScriptsLoading(false)
-  //profiler.stop_and_save_to_file("../../profiler.csv")
+  
   sendUiBqEvent("load_darg_main_scripts", {
     params = get_platform_string_id()
     paramInt1 = get_time_msec() - t
@@ -96,7 +97,7 @@ function loadAfterLoginImpl() {
 }
 
 if (isReadyToFullLoad.value || !isLoginRequired.value)
-  loadAfterLoginImpl() //when load from native code start_es_loading is already called
+  loadAfterLoginImpl() 
 function loadAfterLogin() {
   if (sceneAfterLogin != null)
     return

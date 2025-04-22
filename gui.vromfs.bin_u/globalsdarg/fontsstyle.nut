@@ -7,8 +7,8 @@ let language = getLocalLanguage() == "" ? getCurrentLanguage() : getLocalLanguag
 let isJp = language == "Japanese"
 let muller_regular = isJp ? Fonts.muller_regular_jp : Fonts.muller_regular
 let muller_medium = isJp ? Fonts.muller_medium_jp : Fonts.muller_medium
-let muller_mono_regular = Fonts.muller_mono_regular // Only chars "0123456789.,:-+% "
-let muller_mono_medium = Fonts.muller_mono_medium // Only chars "0123456789.,:-+% "
+let muller_mono_regular = Fonts.muller_mono_regular 
+let muller_mono_medium = Fonts.muller_mono_medium 
 let wtfont = Fonts.wtfont
 
 let shadeTiny = {

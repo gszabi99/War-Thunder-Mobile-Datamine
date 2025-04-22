@@ -71,7 +71,7 @@ function clearOrFillFields(id = "", view = defaultPointView) {
   pointViewField.set(view)
 }
 
-let selectPointViewContent = @() modalBg.__merge({ //to not generate views on script load
+let selectPointViewContent = @() modalBg.__merge({ 
   size = [hdpx(600), hdpx(900)]
   children = makeVertScroll({
     size = [flex(), SIZE_TO_CONTENT]

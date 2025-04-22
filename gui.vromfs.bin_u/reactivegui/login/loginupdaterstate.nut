@@ -41,7 +41,7 @@ eventbus_subscribe(LOGIN_UPDATER_EVENT_ID,
   })
 
 let rndStages = [
-  UPDATER_CHECKING, UPDATER_PURIFYING //other stages look same
+  UPDATER_CHECKING, UPDATER_PURIFYING 
 ]
 function debugUpdate() {
   let { stage = null, toDownload = null, percent = 0.0, dspeed = 0.0, etaSec = 0.0 } = updaterState.value

@@ -73,7 +73,7 @@ let shipState = {
   maxHpToRepair
   nominalHpToRepair
 
-  //DM:
+  
   enginesCount = Watched(0)
   brokenEnginesCount = Watched(0)
   damagedEnginesCount

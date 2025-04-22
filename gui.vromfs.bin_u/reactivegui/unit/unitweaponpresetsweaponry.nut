@@ -265,7 +265,7 @@ function getEquippedWeaponByGroup(weapons, belts, uName, allSlots, mods) {
 
   let courseSlots = courseBeltWeapons.map(@(w) mkBeltSlot(w))
   let turretSlots = turretBeltWeapons.map(@(w) mkBeltSlot(w))
-  let weaponSlots = stackSecondaryWeapons(secondaryWeapons.slice(1)) //0 slot is not secondary weapons
+  let weaponSlots = stackSecondaryWeapons(secondaryWeapons.slice(1)) 
     .map(@(w) mkWeaponSlot(w))
 
   return {weaponSlots, courseSlots, turretSlots}

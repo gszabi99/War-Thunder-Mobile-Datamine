@@ -56,12 +56,12 @@ function startTutorial() {
         markTutorialCompleted(TUTORIAL_ID)
     }
     steps = [
-      //units window
+      
       {
         id = "s1_units_wnd_animation"
         function beforeStart() {
           animationStartTime = get_time_msec()
-          resetTimeout(3.0, @() unitsListShowEnough(true)) //to avoid hang when justBought units never become empty.
+          resetTimeout(3.0, @() unitsListShowEnough(true)) 
         }
         nextStepAfter = Computed(@() unitsListShowEnough.value || !hasJustUnlockedUnitsAnimation.value)
         objects = [{
@@ -80,7 +80,7 @@ function startTutorial() {
           hotkeys = [btnBEsc]
         }]
       }
-      //main menu
+      
       {
         id = "s3_press_battle_button"
         text = loc("tutorial/pressToBattleButton")
@@ -107,7 +107,7 @@ function startTutorial() {
 }
 
 
-//wait for switch scene animation
+
 let startTutorialDelayed = @() deferOnce(function() {
   if (!showTutorial.value)
     return

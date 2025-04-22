@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { register_command } = require("console")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { newbieGameModesConfig, isNewbieMode, isNewbieModeSingle
 } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
@@ -22,8 +23,10 @@ function findFitGameMode(list, gameModes, stats, maxMRank) {
   return null
 }
 
+let isDebugABTest = hardPersistWatched("tutorialTankOnline.isDebugMode", false)
 let curABTestOnlineTutorialMode = Computed(function() {
-  if ((abTests.get()?.tutorialTankOnline ?? "false") == "false")
+  let abTestStatus = abTests.get()?.tutorialTankOnline ?? "false"
+  if (!((abTestStatus == "true") != isDebugABTest.get()))
     return null
   let { gameMode = null, cfg = null } = findFitGameMode(newbieGameModesConfig?[curCampaign.get()], allGameModes.get(),
     newbieModeStats.get(), battleUnitsMaxMRank.get())
@@ -53,7 +56,7 @@ let randomBattleMode = Computed(function() {
     return null
 
   local modes = allGameModes.value.filter(@(m) m?.displayType == "random_battle")
-  if (modes.len() == 0) //in case of disappear all random_battles modes
+  if (modes.len() == 0) 
     modes = allGameModes.value
   let campaign = curCampaign.value
   let campaign2 = getCampaignPresentation(campaign).campaign
@@ -80,6 +83,7 @@ register_command(
     log("curRandomBattleModeName = ", randomBattleMode.value?.name)
   }
   "debug.forceNewbieModeIdx")
+register_command(@() isDebugABTest.set(!isDebugABTest.get()), "debug.toggleAbTest.tutorialTankOnline")
 
 let separateEventModes = Computed(function() {
   let res = {}

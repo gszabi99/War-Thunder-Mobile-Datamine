@@ -107,10 +107,7 @@
             "target": "t1_assaults_spawn_near",
             "team": "A",
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -135,10 +132,7 @@
             "target": "t2_assaults_spawn_near",
             "team": "B",
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -163,14 +157,7 @@
             "target": "t1_fighters_spawn_near",
             "team": "A",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           },
           {
@@ -195,14 +182,7 @@
             "target": "t2_fighters_spawn_near",
             "team": "B",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           }
         ],
@@ -292,10 +272,7 @@
             "target": "t1_assaults_spawn_near_middle",
             "team": "A",
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -320,10 +297,7 @@
             "target": "t2_assaults_spawn_near_middle",
             "team": "B",
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -348,14 +322,7 @@
             "target": "t1_fighters_spawn_near_middle",
             "team": "A",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           },
           {
@@ -380,14 +347,7 @@
             "target": "t2_fighters_spawn_near_middle",
             "team": "B",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           }
         ],
@@ -477,10 +437,7 @@
             "target": "t1_assaults_spawn_middle",
             "team": "A",
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -512,10 +469,7 @@
               0.0
             ],
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -540,14 +494,7 @@
             "target": "t1_fighters_spawn_middle",
             "team": "A",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           },
           {
@@ -572,14 +519,7 @@
             "target": "t2_fighters_spawn_middle",
             "team": "B",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           }
         ],
@@ -674,10 +614,7 @@
             "target": "t1_assaults_spawn_middle_far",
             "team": "A",
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -709,10 +646,7 @@
               0.0
             ],
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -737,14 +671,7 @@
             "target": "t1_fighters_spawn_middle_far",
             "team": "A",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           },
           {
@@ -769,14 +696,7 @@
             "target": "t2_fighters_spawn_middle_far",
             "team": "B",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           }
         ],
@@ -878,10 +798,7 @@
               0.0
             ],
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -913,10 +830,7 @@
               0.0
             ],
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -941,14 +855,7 @@
             "target": "t1_fighters_spawn_far",
             "team": "A",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           },
           {
@@ -973,14 +880,7 @@
             "target": "t2_fighters_spawn_far",
             "team": "B",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           }
         ],
@@ -1082,10 +982,7 @@
               0.0
             ],
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -1117,10 +1014,7 @@
               0.0
             ],
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -1145,14 +1039,7 @@
             "target": "t1_fighters_spawn_far_huge",
             "team": "A",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           },
           {
@@ -1177,14 +1064,7 @@
             "target": "t2_fighters_spawn_far_huge",
             "team": "B",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           }
         ],
@@ -1279,10 +1159,7 @@
               0.0
             ],
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -1314,10 +1191,7 @@
               0.0
             ],
             "tags": {
-              "type_assault": true,
-              "tank": false,
-              "artillery": false,
-              "aaa": false
+              "type_assault": true
             }
           },
           {
@@ -1342,14 +1216,7 @@
             "target": "t1_fighters_spawn_huge",
             "team": "A",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           },
           {
@@ -1374,14 +1241,7 @@
             "target": "t2_fighters_spawn_huge",
             "team": "B",
             "tags": {
-              "type_bomber": false,
-              "type_attack_helicopter": false,
-              "type_utility_helicopter": false,
-              "tank": false,
-              "artillery": false,
-              "aaa": false,
-              "ship": false,
-              "boat": false
+              "type_fighter": true
             }
           }
         ],

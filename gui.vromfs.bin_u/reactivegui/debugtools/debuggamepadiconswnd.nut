@@ -23,8 +23,8 @@ let viewOrder = [
 ]
 let presetsOrder = ["xone", "sony", "nintendo"]
 let sizes = [
-  fontTiny.fontSize.tointeger() //hotkey panel
-  evenPx(50)  //main buttons
+  fontTiny.fontSize.tointeger() 
+  evenPx(50)  
   evenPx(70)
 ]
 
@@ -63,7 +63,7 @@ function mkRow(size, presetId, preset) {
   }
 }
 
-function mkContent() { //no point to create it n scripts load
+function mkContent() { 
   let children = []
   foreach(size in sizes)
     foreach(presetId in presetsOrder)

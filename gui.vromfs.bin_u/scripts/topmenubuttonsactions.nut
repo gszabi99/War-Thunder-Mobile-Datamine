@@ -17,7 +17,7 @@ let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let TESTFLIGHT_MISSION = "testFlight_destroyer_usa_tfs"
 
 registerHandler("onOfflineMissionUnitActualized", function(res, context) {
-  isInLoadingScreen.set(false) //remove flag in case mission will not start loading
+  isInLoadingScreen.set(false) 
 
   let { unitName, skin, missionId, bullets, weaponPreset, localMP, gameMode } = context
   if (res?.error != null)
@@ -104,5 +104,7 @@ eventbus_subscribe("startTraining", @(p)
   startOfflineMission(p.unitName, p.skin, p.missionName, p?.bullets, p?.weaponPreset, p?.presetOvrMis, false, GM_TRAINING))
 eventbus_subscribe("startLocalMP", @(p)
   startOfflineMission(p.unitName, p.skin, p.missionName, p?.bullets, p?.weaponPreset, p?.presetOvrMis, true, GM_DOMINATION))
+eventbus_subscribe("startLocalMPWithoutGM", @(p)
+  startOfflineMission(p.unitName, p.skin, p.missionName, p?.bullets, p?.weaponPreset, p?.presetOvrMis, true, null))
 eventbus_subscribe("startBenchmark", @(v) openBenchmarkWnd(v.id))
 eventbus_subscribe("getBenchmarksList", sendBenchmarksList)

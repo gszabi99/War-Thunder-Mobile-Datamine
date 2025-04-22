@@ -69,7 +69,7 @@ let playerLevelInfo = Computed(function() {
     if (res.starLevel == 0)
       foreach(h in res?.starLevelHistory ?? [])
         if (h.baseLevel == res.level)
-          res.historyStarLevel = h.starLevel + 1 //player have reseted exp in such case, so show one more star for him
+          res.historyStarLevel = h.starLevel + 1 
   }
   return res
 })

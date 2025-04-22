@@ -1,7 +1,7 @@
 from "%globalScripts/logs.nut" import *
 let { getPlatoonUnitCfgNonUpdatable } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 
-// Compatibility with Dedicated before 2024-07-29
+
 function compatibilityConvertCommonStats(data) {
   if (("units" in data) || ("unit" not in data))
     return data

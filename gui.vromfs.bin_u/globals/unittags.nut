@@ -32,7 +32,7 @@ function gatherUnitTagsCfg(unitName) {
       local ordered = []
       if (id in bulletsBlk)
         eachBlock(bulletsBlk[id], @(b) ordered.append(remapBulletName(b.getBlockName())))
-      else {  //we got strange logerr from production here, so this is just more logs about it.
+      else {  
         log($"bulletsBlk {unitName} = ", bulletsBlk)
         log($"res.bullets {unitName} = ", res.bullets)
         logerr("Failed to get bullets order from unittags")

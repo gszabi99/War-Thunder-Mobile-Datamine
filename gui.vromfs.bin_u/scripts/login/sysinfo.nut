@@ -28,8 +28,8 @@ function getSysInfo() {
   tbl.isCharging <- is_charging()
   tbl.thermalState <- get_thermal_state()
   tbl.authorization <- authState.value.loginType
-  tbl.location <- getCountryCode() // Overrides location from get_user_system_info()
-  tbl.gameLanguage <- getLocalLanguage() // Overrides gameLanguage from get_user_system_info()
+  tbl.location <- getCountryCode() 
+  tbl.gameLanguage <- getLocalLanguage() 
   if (getFirebaseAppInstanceId()!=null)
     tbl.appInstanceId <- getFirebaseAppInstanceId()
   tbl.installStore <- is_android && isHuaweiBuild ? "huawei"

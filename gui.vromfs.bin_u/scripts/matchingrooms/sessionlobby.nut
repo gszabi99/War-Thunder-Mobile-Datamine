@@ -43,34 +43,34 @@ function is_my_userid(user_id) {
   return user_id == myUserId.value
 }
 
-/*
-SessionLobby API
 
-  all:
-    isInRoom
-    joinRoom
-    leaveRoom
-    setReady(bool)
 
-  room owner:
-    destroyRoom
-    startSession
 
-*/
 
-const NET_SERVER_LOST = 0x82220002  //for hostCb
+
+
+
+
+
+
+
+
+
+
+
+const NET_SERVER_LOST = 0x82220002  
 const NET_SERVER_QUIT_FROM_GAME = 0x82220003
 
 local last_round = true
 local SessionLobby
 let isGameModeCoop = @(gm) gm == -1 || gm == GM_SINGLE_MISSION || gm == GM_BUILDER
 
-let allowed_mission_settings = { //only this settings are allowed in room
-                              //default params used only to check type atm
+let allowed_mission_settings = { 
+                              
   name = null
   missionURL = null
   players = 12
-  hidden = false  //can be found by search rooms
+  hidden = false  
 
   creator = ""
   hasPassword = false
@@ -154,7 +154,7 @@ let lastRoom = mkWatched(persist, "lastRoom")
 let lastRoomId = Computed(@() lastRoom.get()?.roomId ?? INVALID_ROOM_ID)
 let roomInfo = mkWatched(persist, "roomInfo")
 let MRoomsHandlersState  = persist("MRoomsHandlersState", @() {
-  hostId = null  //user host id
+  hostId = null  
   roomId = INVALID_ROOM_ID
   roomMembers = []
   isConnectAllowed = false
@@ -165,10 +165,10 @@ let MRoomsHandlersState  = persist("MRoomsHandlersState", @() {
 })
 
 
-// rooms notifications
+
 function notify_room_invite(params) {
   log("notify_room_invite")
-  //debugTableData(params)
+  
 
   if (!isInMenu.value && isLoggedIn.value) {
     log("Invite rejected: player is already in flight or in loading level or in unloading level");
@@ -177,21 +177,21 @@ function notify_room_invite(params) {
 
   let senderId = ("senderId" in params) ? params.senderId : null
   let password = getTblValue("password", params, null)
-  if (!senderId) //querry room
+  if (!senderId) 
     SessionLobby.joinRoom(params.roomId, senderId, password)
   return true
 }
 
 function notify_room_destroyed(params) {
   log("notify_room_destroyed")
-  //debugTableData(params)
+  
 
   SessionLobby.afterLeaveRoom(params)
 }
 
 function notify_room_member_joined(params) {
   log("notify_room_member_joined")
-  //debugTableData(params)
+  
   SessionLobby.onMemberJoin(params)
 }
 
@@ -212,7 +212,7 @@ function notify_room_member_attribs_changed(params) {
 
 function notify_room_attribs_changed(params) {
   log("notify_room_attribs_changed")
-  //debugTableData(params)
+  
 
   SessionLobby.onSettingsChanged(params)
 }
@@ -262,7 +262,7 @@ function setRoomAttributes(params, cb) {
 
 local delayedJoinRoomFunc = null
 
-let getMaxEconomicRank = @() 30 //it used only for create room. So better to remove this code at all, but not in this commit.
+let getMaxEconomicRank = @() 30 
 
 SessionLobby = {
 
@@ -308,7 +308,7 @@ SessionLobby = {
       local value = this.findParam(key, missionSettings, mission)
       if (type(v) == "array" && type(value) != "array")
         value = [value]
-      _settings[key] <- value //value == null will clear param on server
+      _settings[key] <- value 
     }
 
     _settings.mission <- {}
@@ -380,10 +380,10 @@ SessionLobby = {
     if (checkEqual && isEqual(SessionLobbyState.settings, v_settings))
       return
 
-    //v_settings can be public date of room, and it does not need to be updated settings somewhere else
+    
     SessionLobbyState.settings.clear()
     SessionLobbyState.__merge(v_settings)
-    //not mission room settings
+    
     SessionLobbyState.settings.connect_on_join <- true
 
     SessionLobbyState.roomUpdated = notify || !SessionLobbyState.isRoomOwner || !this.isInRoom()
@@ -403,17 +403,17 @@ SessionLobby = {
 
     if (!v_settings) {
       if (!SessionLobbyState.settings || !SessionLobbyState.settings.len())
-        return //owner have joined back to the room, and not receive settings yet
+        return 
       v_settings = SessionLobbyState.settings
     }
     else
-      silent = true //no need to update when custom settings checked
+      silent = true 
 
     local changed = false
     let wasHidden = getTblValue("hidden", v_settings, false)
     v_settings.hidden <- getTblValue("coop", v_settings, false)
                         || (SessionLobbyState.isRoomInSession && !getTblValue("allowJIP", v_settings, true))
-    changed = changed || (wasHidden != v_settings.hidden) // warning disable: -const-in-bool-expr
+    changed = changed || (wasHidden != v_settings.hidden) 
 
     let wasPassword = getTblValue("hasPassword", v_settings, false)
     v_settings.hasPassword <- SessionLobbyState.password != ""
@@ -498,7 +498,7 @@ SessionLobby = {
       return
 
     let wasStatus = SessionLobbyState.status
-    SessionLobbyState.status = v_status  //for easy notify other handlers about change status
+    SessionLobbyState.status = v_status  
     sessionLobbyStatus(v_status)
 
     if (SessionLobbyState.status == lobbyStates.NOT_IN_ROOM || SessionLobbyState.status == lobbyStates.IN_DEBRIEFING)
@@ -516,7 +516,7 @@ SessionLobby = {
 
   function resetParams() {
     SessionLobbyState.settings.clear()
-    this.changePassword("") //reset password after leave room
+    this.changePassword("") 
     this.updateMemberHostParams(null)
     SessionLobbyState.isRoomByQueue = false
     SessionLobbyState.myState = PLAYER_IN_LOBBY_NOT_READY
@@ -570,12 +570,12 @@ SessionLobby = {
     let missionBlk = DataBlock()
     if (missionInfo)
       missionBlk.load(missionInfo.mis_file)
-    //dlog("GP: upload mission!")
-    //debugTableData(missionBlk)
+    
+    
 
     let blkData = base64.encodeBlk(missionBlk)
-    //dlog("GP: data = ", blkData)
-    //debugTableData(blkData)
+    
+    
     if (!blkData || !("result" in blkData) || !blkData.result.len()) {
       openFMsgBox({ text = loc("msg/cant_load_user_mission") })
       return
@@ -607,7 +607,7 @@ SessionLobby = {
     return tblBase
   }
 
-  function updateMemberHostParams(member = null) { //null = host leave
+  function updateMemberHostParams(member = null) { 
     SessionLobbyState.memberHostId = member ? member.memberId : -1
   }
 
@@ -666,7 +666,7 @@ SessionLobby = {
     return SessionLobbyState.myState
   }
 
-  function setReady(ready, _silent = false, forceRequest = false) { //return is my info changed
+  function setReady(ready, _silent = false, forceRequest = false) { 
     if (!forceRequest && SessionLobbyState.isReady == ready)
       return false
 
@@ -686,7 +686,7 @@ SessionLobby = {
         let wasReady = SessionLobbyState.isReady
         SessionLobbyState.isReady = ready
 
-        //if we receive error on set ready, result is ready == false always.
+        
         if (showMatchingError(p))
           SessionLobbyState.isReady = false
 
@@ -748,7 +748,7 @@ SessionLobby = {
 
   function sendJoinRoomRequest(join_params, _cb = function(...) {}) {
     if (this.isInRoom())
-      this.leaveRoom() //leave old room before join the new one
+      this.leaveRoom() 
 
     leave_mp_session()
 
@@ -775,7 +775,7 @@ SessionLobby = {
   }
 
   function joinRoom(v_roomId, senderId = "", v_password = null,
-                                  cb = function(...) {}) { //by default not a queue, but no id too
+                                  cb = function(...) {}) { 
     if (SessionLobbyState.roomId == v_roomId && this.isInRoom())
       return
 
@@ -815,7 +815,7 @@ SessionLobby = {
 
   function afterRoomJoining(params) {
     if (params.error == SERVER_ERROR_ROOM_PASSWORD_MISMATCH) {
-      let joinRoomId = params.roomId //not_in_room status will clear room Id
+      let joinRoomId = params.roomId 
       let oldPass = params.password
       this.switchStatus(lobbyStates.NOT_IN_ROOM)
       this.joinRoomWithPassword(joinRoomId, oldPass, oldPass != "")
@@ -1231,7 +1231,7 @@ let MRoomsHandlers = class {
   }
 
   function __isNotifyForCurrentRoom(notify) {
-    // ignore all room notifcations after leave has been called
+    
     return !MRoomsHandlersState.isLeaving && MRoomsHandlersState.roomId != INVALID_ROOM_ID && MRoomsHandlersState.roomId == notify.roomId
   }
 
@@ -1256,11 +1256,11 @@ let MRoomsHandlers = class {
     let roomPub = roomInfo.get().public
 
     if (!("room_key" in roomPub)) {
-      let mePub = tostring_r(me?.public, 3)          // warning disable: -declared-never-used
-      let mePrivate = tostring_r(me?.private, 3)     // warning disable: -declared-never-used
-      let meStr = tostring_r(me, 3)                  // warning disable: -declared-never-used
-      let roomStr = tostring_r(roomPub, 3)           // warning disable: -declared-never-used
-      let roomMission = tostring_r(roomPub?.mission) // warning disable: -declared-never-used
+      let mePub = tostring_r(me?.public, 3)          
+      let mePrivate = tostring_r(me?.private, 3)     
+      let meStr = tostring_r(me, 3)                  
+      let roomStr = tostring_r(roomPub, 3)           
+      let roomMission = tostring_r(roomPub?.mission) 
       script_net_assert("missing room_key in room")
 
       send_error_log("missing room_key in room", false, "log")
@@ -1281,7 +1281,7 @@ let MRoomsHandlers = class {
                       getTblValue("sessionId", roomPub, MRoomsHandlersState.roomId))
   }
 
-  // notifications
+  
   function onRoomInvite(notify, send_resp) {
     local inviteData = notify.invite_data
     if (!(type(inviteData) == "table"))

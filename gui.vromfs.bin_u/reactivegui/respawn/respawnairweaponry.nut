@@ -207,7 +207,7 @@ function respawnAirWeaponry(selSlot) {
           addedBelts[weaponId] <- beltW
         }
       }
-      if (idx != 0) //idx == 0 is commonWeapons
+      if (idx != 0) 
         secondaryWeapons.append(weapon.__merge({ slotIdx = idx }))
     }
 

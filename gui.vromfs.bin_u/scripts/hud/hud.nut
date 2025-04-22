@@ -60,7 +60,7 @@ function startHud(...) {
 }
 
 eventbus_subscribe("gui_start_hud", startHud)
-eventbus_subscribe("gui_start_hud_no_chat", startHud) //this function is left just for back compotibility with cpp code
+eventbus_subscribe("gui_start_hud_no_chat", startHud) 
 eventbus_subscribe("preload_ingame_scenes", startHud)
 
 eventbus_subscribe("on_show_hud", function on_show_hud(payload) {

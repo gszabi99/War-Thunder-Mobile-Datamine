@@ -19,7 +19,7 @@ let skipOfferBtn = require("skipOfferBtn.nut")
 let openCount = Computed(@() previewType.value == GPT_CURRENCY ? openPreviewCount.get() : 0)
 let imageHeight = hdpx(450)
 
-//animation timers
+
 let aTimeImageAppear = 0.27
 let aTimeImageBounce = 0.4
 let aTimeImageAppearStart = aTimeFlareMiddle - 0.5 * aTimeImageAppear

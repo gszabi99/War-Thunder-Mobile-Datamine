@@ -55,7 +55,7 @@ let lbRewards = Computed(function() {
   }
   foreach(modeRewards in res)
     modeRewards.sort(@(a, b) (lbRewardsTypes?[a.rType] ?? 1000) <=> (lbRewardsTypes?[b.rType] ?? 1000)
-      || a.progress < 0 <=> b.progress < 0  //progress == -1 is any place
+      || a.progress < 0 <=> b.progress < 0  
       || a.progress <=> b.progress)
   return res
 })

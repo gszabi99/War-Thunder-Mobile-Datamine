@@ -58,7 +58,7 @@ function resetAllTutorials() {
 
 subscribeResetProfile(resetAllTutorials)
 register_command(resetAllTutorials, "debug.reset_all_tutorials")
-register_command(@() console_print(completedTutorials.get()), "debug.show_completed_tutorials") // warning disable: -forbidden-function
+register_command(@() console_print(completedTutorials.get()), "debug.show_completed_tutorials") 
 
 return {
   completedTutorials

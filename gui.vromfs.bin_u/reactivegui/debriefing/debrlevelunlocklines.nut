@@ -24,7 +24,7 @@ let itemBlinkScale = 1.2
 let getLevelUnlockLineAnimTime = @(count) count == 0 ? 0
   : min(levelUnlockLineTime, levelUnlockLinesTotalTimeMax / count)
 
-// CONTAINER ///////////////////////////////////////////////////////////////////
+
 
 let scrollBoxMargin = [ 0, ceil(itemW * (itemBlinkScale - 1) / 2) + hdpx(2) ]
 
@@ -92,7 +92,7 @@ let mkLabel = @(text, isUnlocked) {
   speed = hdpx(50)
 }.__update(fontTinyShaded)
 
-// SHARED //////////////////////////////////////////////////////////////////////
+
 
 let mkIcon = @(path) {
   size = [iconSize, iconSize]
@@ -127,19 +127,19 @@ let mkLevelUnlockLine = @(isUnlocked, unlockDelay, iconComp, labelText) {
   ]
 }
 
-// MOD LINE ////////////////////////////////////////////////////////////////////
+
 
 let icoMod = mkIcon("ui/gameuiskin#modify.svg")
 
 let mkDebrLineMod = @(mod, isUnlocked, unlockDelay)
   mkLevelUnlockLine(isUnlocked, unlockDelay, icoMod, loc($"modification/{mod.name}"))
 
-// WEAPON LINE /////////////////////////////////////////////////////////////////
+
 
 let mkDebrLineWeapon = @(wPreset, isUnlocked, unlockDelay)
   mkLevelUnlockLine(isUnlocked, unlockDelay, icoMod, comma.join(getWeaponShortNamesList(wPreset?.weapons ?? [])))
 
-// AMMO LINE ///////////////////////////////////////////////////////////////////
+
 
 let icoAmmo = mkIcon("ui/gameuiskin#hud_main_weapon_fire.svg")
 
@@ -151,7 +151,7 @@ function mkDebrLineAmmo(weaponInfo, isUnlocked, unlockDelay) {
   return mkLevelUnlockLine(isUnlocked, unlockDelay, isModsWeapons ? icoMod : icoAmmo, text)
 }
 
-// POINTS LINE /////////////////////////////////////////////////////////////////
+
 
 let icoPoints = mkFontIcon("⋥")
 

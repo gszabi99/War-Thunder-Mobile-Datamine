@@ -64,6 +64,7 @@ let battleItemsIcons = {
   ship_tool_kit = $"ui/gameuiskin#hud_consumable_repair.svg"
   ship_smoke_screen_system_mod = $"ui/gameuiskin#hud_consumable_smoke.svg"
   tank_tool_kit_expendable = $"ui/gameuiskin#hud_consumable_repair.svg"
+  tank_medical_kit = $"ui/gameuiskin#hud_consumable_medicalkit.svg"
   tank_extinguisher = $"ui/gameuiskin#fire_indicator.svg"
   ircm_kit = "ui/gameuiskin#icon_ircm.avif"
 }
@@ -71,6 +72,7 @@ let battleItemsIcons = {
 let purchaseDesc = {
   ship_tool_kit = "msg/purchaseDesc/toolKit"
   tank_tool_kit_expendable = "msg/purchaseDesc/toolKit"
+  tank_medical_kit = "msg/purchaseDesc/medicalKit"
   tank_extinguisher = "msg/purchaseDesc/extinguisher"
   ship_smoke_screen_system_mod = "msg/purchaseDesc/smoke"
   spare = "item/spare/desc"

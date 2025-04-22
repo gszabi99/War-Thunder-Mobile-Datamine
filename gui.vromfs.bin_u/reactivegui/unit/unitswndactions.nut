@@ -157,8 +157,8 @@ let mkUnitChangeInfo = @(prevUnit, newUnit) {
     loc("changeResearchInfo"),
     @(text) msgBoxText(text, { size = SIZE_TO_CONTENT }),
     {
-      ["{prevUnit}"] = mkTreeNodesUnitPlate(prevUnit, {}), //warning disable: -forgot-subst
-      ["{newUnit}"] = mkTreeNodesUnitPlate(newUnit, {}), //warning disable: -forgot-subst
+      ["{prevUnit}"] = mkTreeNodesUnitPlate(prevUnit, {}), 
+      ["{newUnit}"] = mkTreeNodesUnitPlate(newUnit, {}), 
     })
 }
 
@@ -238,9 +238,9 @@ let unitActionButtons = @(allowSeveralRows) function() {
   let withBlueprint = unitName in serverConfigs.get()?.allBlueprints && !isOwned
   let unitFromCanBuyUnits = canBuyUnits.get()?[unitName]
   let canBuyUnit = unitFromCanBuyUnits != null
-  //Full-sized textButtons, such as "Order" or "Upgrade," should be added to 'bigBtnsList'.
-  //Smaller buttons, like a unit's infoBtn that opens a unit details window,
-  //should be added to 'smallBtnsList'.
+  
+  
+  
   local bigBtnsList = []
   local smallBtnsList = []
 

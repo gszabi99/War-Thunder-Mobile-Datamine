@@ -4,13 +4,13 @@ let { SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_EVT_CURRE
   SGT_LOOTBOX, SGT_GOLD, SGT_PLATINUM, SGT_BOOSTERS, SGT_SLOTS, SGT_BLUEPRINTS, SGT_BRANCH
 } = require("%rGui/shop/shopConst.nut")
 
-/*
-UI BQ event "open_currency_shop" format:
-  id - currency id ("gold", "wp")
-  from - source window (see PURCH_SRC_*)
-  status - purchase type (see PURCH_TYPE_*)
-  params - purchase details as string (unit name, level, etc)
-*/
+
+
+
+
+
+
+
 
 let PURCH_SRC_HANGAR = "hangar"
 let PURCH_SRC_UNITS = "units_list"

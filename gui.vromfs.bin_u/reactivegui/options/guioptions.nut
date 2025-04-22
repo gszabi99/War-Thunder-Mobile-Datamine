@@ -5,7 +5,7 @@ let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 
 let optionsVersion = Watched(0)
 
-//options should have full list on get profile for correct load
+
 let optListNative = [
   "OPT_TANK_MOVEMENT_CONTROL"
   "OPT_CAMERA_SENSE"
@@ -16,6 +16,7 @@ let optListNative = [
   "OPT_SHOW_GRASS_IN_TANK_VISION"
   "OPT_TARGET_TRACKING"
   "OPT_SHOW_RETICLE"
+  "USEROPT_ENABLE_AUTO_HEALING"
 ]
 
 let optListLocalNative = [
@@ -27,7 +28,7 @@ let optListLocalNative = [
 ]
 
 let optListScriptOnly = [
-  // "OPT_TANK_TARGETING_CONTROL"
+  
   "OPT_CAMERA_SENSE_TANK"
   "OPT_CAMERA_SENSE_SHIP"
   "OPT_CAMERA_SENSE_PLANE"

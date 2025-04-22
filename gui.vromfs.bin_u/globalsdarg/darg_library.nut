@@ -1,7 +1,7 @@
 from "daRg" import *
 from "math" import max, min, clamp
 
-if (require_optional("json") != null) //no json module in the updater, and no need globalState in it.
+if (require_optional("json") != null) 
   require("%sqstd/globalState.nut").setUniqueNestKey("darg")
 let log = require("%globalScripts/logs.nut")
 let { loc } = require("dagor.localize")
@@ -52,27 +52,27 @@ return dargBaseLib.__merge(
   min
   clamp
   loc
-  //darg helpers
+  
   colorArr
   appearAnim
   Layers
   defMarqueeDelay = [5, 1]
   defMarqueeDelayVert = [1, 2]
 
-  //safeArea
+  
   safeArea
   saSize
   saBorders
-  saBordersRv //for paddings and margin
+  saBordersRv 
   saRatio = saSize[0].tofloat() / saSize[1]
   isWidescreen = (saSize[0].tofloat() / saSize[1]) >= 1.92
 
-  //text helper
+  
   colon = loc("ui/colon")
   comma = loc("ui/comma")
   ndash = loc("ui/ndash")
   colorize = @(color, text) text == "" || color == null ? text : $"<color={color}>{text}</color>"
-  nbsp = "\u00A0" // Non-breaking space char
+  nbsp = "\u00A0" 
 
   TOUCH_BACKGROUND = -10
   TOUCH_MINOR = -1

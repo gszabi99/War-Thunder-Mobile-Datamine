@@ -119,8 +119,8 @@ let sony = {
   BTN_RS_HOR               = "ps_r_stick_to_left_n_right"
   BTN_RS_VER               = "ps_r_stick_to_up_n_down"
 
-  //"ps_touchpad"
-  //"ps_touchpad_pressed"
+  
+  
 
   defHeightMul
   heightMuls = commonHeightMuls.__merge({
@@ -187,14 +187,14 @@ let nintendo = {
   BTN_RS_HOR               = "ns_rstick_x"
   BTN_RS_VER               = "ns_rstick_y"
 
-  //"ns_share"
-  //"ns_share_pressed"
-  //"ns_home"
-  //"ns_home_pressed"
-  //"ns_minus"
-  //"ns_minus_pressed"
-  //"ns_plus"
-  //"ns_plus_pressed"
+  
+  
+  
+  
+  
+  
+  
+  
 
   defHeightMul
   heightMuls = commonHeightMuls.__merge({

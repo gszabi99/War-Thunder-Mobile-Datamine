@@ -1,7 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { setTimeout, resetTimeout } = require("dagor.workcycle")
-let { get_addon_version } = require("contentUpdater")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isMatchingOnline, showMatchingConnectProgress } = require("matchingOnline.nut")
@@ -10,6 +9,7 @@ let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { campMyUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { isInQueue, joinQueue } = require("queuesClient.nut")
 let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
+let { addonsSizes, addonsVersions } = require("%appGlobals/updater/addonsState.nut")
 let { curCampaign, setCampaign, curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { getModeAddonsInfo, getModeAddonsDbgString } = require("gameModeAddons.nut")
@@ -172,12 +172,12 @@ function queueToGameModeImpl(mode) {
   if (addonsToDownload.len() > 0 && !canBattleWithoutAddons.get()) {
     let isUpdate = updateDiff >= 0
     let locs = localizeAddons(addonsToDownload)
-    addonsToDownload.each(@(a) log($"[ADDONS] Ask update addon {a} on try to join queue (cur version = '{get_addon_version(a)}')"))
+    addonsToDownload.each(@(a) log($"[ADDONS] Ask update addon {a} on try to join queue (cur version = '{addonsVersions.get()?[a] ?? "-"}')"))
     openFMsgBox({
       text = loc(isUpdate ? "msg/needUpdateAddonToPlayGameMode" : "msg/needAddonToPlayGameMode",
         { count = locs.len(),
           addon = ", ".join(locs.map(@(t) colorize(0xFFFFB70B, t)))
-          size = getAddonsSizeStr(addonsToDownload)
+          size = getAddonsSizeStr(addonsToDownload, addonsSizes.get())
         })
       buttons = [
         { id = "cancel", isCancel = true }
@@ -204,8 +204,8 @@ function queueToGameModeImpl(mode) {
     return
   }
 
-  //can check units here, but no unit rquirements in the current event yet.
-  //so better to do it only when become need.
+  
+  
   joinQueue({ mode = mode.name })
 }
 
@@ -229,7 +229,7 @@ function queueModeOnRandomUnit(mode) {
   if (errString != "")
     logerr($"On choose unit {unitName}: {errString}")
 
-  setTimeout(1.0, @() queueToGameModeImpl(mode)) //FIXME: why timer here instead of cb or subscribe?
+  setTimeout(1.0, @() queueToGameModeImpl(mode)) 
 }
 
 function tryQueueToGameMode(modeId) {
@@ -262,7 +262,7 @@ function queueToGameMode(modeId) {
 function queueToGameModeAfterAddons(modeId) {
   let mode = allGameModes.value?[modeId]
   if (mode == null)
-    return //mode missing while downloading, no need error here
+    return 
   let { addonsToDownload } = getModeAddonsInfo(mode, getAllBattleUnits())
   if (addonsToDownload.len() == 0)
     queueToGameMode(modeId)

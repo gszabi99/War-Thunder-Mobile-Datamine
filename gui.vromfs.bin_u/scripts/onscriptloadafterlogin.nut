@@ -23,7 +23,7 @@ foreach (fn in [
 
 require("%scripts/clientState/updateClientStates.nut")
 require("%scripts/matching/webRpcMessages.nut")
-require("%scripts/battleData/battleData.nut") //required to send battleData to the dedicated
+require("%scripts/battleData/battleData.nut") 
 require("%scripts/battleData/genDefaultBattleData.nut")
 require("%scripts/pServer/profileRefresh.nut")
 require("%scripts/mpStatisticsHandler.nut")

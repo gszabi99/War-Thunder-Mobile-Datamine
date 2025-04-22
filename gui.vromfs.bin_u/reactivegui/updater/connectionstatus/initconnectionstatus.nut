@@ -5,7 +5,7 @@ let { connectionStatus } = require("%appGlobals/clientState/connectionStatus.nut
 if (is_ios)
   require("connectionStatusIos.nut")
 else
-  require("connectionStatusAndroid.nut") //for not android there will be dbg_mode
+  require("connectionStatusAndroid.nut") 
 
 if (isFirstLoad)
   log($"Connection status on init: {connectionStatus.get()}")

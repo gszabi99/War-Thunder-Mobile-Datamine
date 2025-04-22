@@ -11,8 +11,8 @@ let WT_GUNS = "guns"
 let WT_SMOKE = "smoke"
 let WT_COUNTERMEASURES = "countermeasures"
 let WT_FLARES = "flares"
-let WT_AAM = "aam" // Air-to-Air Missiles
-let WT_AGM = "agm" // Air-to-Ground Missile, Anti-Tank Guided Missiles
+let WT_AAM = "aam" 
+let WT_AGM = "agm" 
 let WT_ROCKETS = "rockets"
 let WT_BOMBS = "bombs"
 let WT_TORPEDO = "torpedoes"
@@ -50,7 +50,7 @@ let blkToWeaponId = {}
 function getWeaponIdImpl(blkPath) {
   local start = 0
   local searchFrom = 0
-  while (searchFrom != null) { // -expr-cannot-be-null
+  while (searchFrom != null) { 
     searchFrom = blkPath.indexof("/", searchFrom + 1) ?? blkPath.indexof("\\", searchFrom + 1)
     if (searchFrom != null)
       start = searchFrom + 1
@@ -219,7 +219,7 @@ function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
     return res
 
   if (res.bullets.len() == 1)
-    res.bulletDataByType.clear() //no need copy when only single bullet.
+    res.bulletDataByType.clear() 
 
   res.mass <- bulletsList.reduce(@(r, b) r + (b?.mass ?? 0.0), 0.0) / bulletsList.len()
   let massLbsSum = bulletsList.reduce(@(r, b) r + (b?.mass_lbs ?? 0.0), 0.0)
@@ -273,7 +273,7 @@ function calcMass(weapon) {
 }
 
 function calcMassLbs(weapon) {
-  let { bulletSets, totalBullets } = weapon //massLbs does not used with guns. so no need to count gun mass in lbs
+  let { bulletSets, totalBullets } = weapon 
   return totalBullets * (bulletSets.findvalue(@(v) "mass_lbs" in v)?.mass_lbs ?? 0.0)
 }
 
@@ -356,7 +356,7 @@ function loadUnitBulletsFullImpl(unitName) {
   if (isDataBlock(weapon_presets))
     eachBlock(weapon_presets, function(b) {
       let { name = "", blk = null } = b
-      if (name != $"{unitName}_default") //we not use not default preset
+      if (name != $"{unitName}_default") 
         return
       let fullPresetBlk = blkOptFromPath(blk)
       triggersData[name] <- gatherWeaponsFromBlk(fullPresetBlk, hasTriggerGroups)
@@ -369,7 +369,7 @@ function loadUnitBulletsFullImpl(unitName) {
         if (presetBlk == null)
           continue
         triggersData[name] = gatherWeaponsFromBlk(presetBlk, hasTriggerGroups, triggersData[name])
-        usedSlots[slot] <- true //-potentially-nulled-index
+        usedSlots[slot] <- true 
       }
       foreach(slot, slotPresets in weaponSlots) {
         if (usedSlots?[slot])
@@ -524,8 +524,8 @@ function loadUnitBulletsChoice(unitName) {
 }
 
 return {
-  loadUnitBulletsFull //include all bullets described in the unit blk
-  loadUnitBulletsChoice //include only bullets described in the unittags
+  loadUnitBulletsFull 
+  loadUnitBulletsChoice 
   loadUnitWeaponSlots
   loadUnitSlotsParams
   loadUnitBulletsAndSlots

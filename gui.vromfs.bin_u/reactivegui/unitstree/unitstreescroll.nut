@@ -5,7 +5,7 @@ let { resetTimeout, defer, setInterval, clearTimer } = require("dagor.workcycle"
 let { flagTreeOffset } = require("unitsTreeComps.nut")
 let { isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
+let { mkScrollArrow, scrollArrowImageVerySmall } = require("%rGui/components/scrollArrows.nut")
 
 
 let SCROLL_DELAY = 1.5
@@ -67,7 +67,7 @@ isLvlUpAnimated.subscribe(@(v) v ? scrollForward() : null)
 
 let unseenArrowsBlockCtor = @(needShowL, needShowR, ovr = {}) {
   size = [flex(), SIZE_TO_CONTENT]
-  pos = [0, hdpx(25)]
+  pos = [0, hdpx(17)]
   children = [
     @() {
       watch = needShowL
@@ -79,7 +79,7 @@ let unseenArrowsBlockCtor = @(needShowL, needShowR, ovr = {}) {
           pos = [0, -hdpx(20)]
           children = priorityUnseenMark
         }
-        mkScrollArrow(scrollHandler, MR_L, scrollArrowImageSmall)
+        mkScrollArrow(scrollHandler, MR_L, scrollArrowImageVerySmall)
       ]
     }
     @() {
@@ -92,7 +92,7 @@ let unseenArrowsBlockCtor = @(needShowL, needShowR, ovr = {}) {
           pos = [0, -hdpx(20)]
           children = priorityUnseenMark
         }
-        mkScrollArrow(scrollHandler, MR_R, scrollArrowImageSmall)
+        mkScrollArrow(scrollHandler, MR_R, scrollArrowImageVerySmall)
       ]
     }
   ]

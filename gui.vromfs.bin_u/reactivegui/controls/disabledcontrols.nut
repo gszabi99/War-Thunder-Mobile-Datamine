@@ -37,15 +37,15 @@ register_command(function(id) {
     enabledControls.mutate(function(v) {
       let newValue = !(v?[id] ?? true)
       v[id] <- newValue
-      console_print($"{id} is {newValue ? "enabled" : "disabled"}") //warning disable: -forbidden-function
+      console_print($"{id} is {newValue ? "enabled" : "disabled"}") 
     })
   },
   "controls.toggle_enable_control")
 
 register_command(function() {
     let all = isAllControlsEnabled.get()
-    console_print("Is all controls enabled?", all) //warning disable: -forbidden-function
-    console_print(enabledControls.get().filter(@(v) v != all)) //warning disable: -forbidden-function
+    console_print("Is all controls enabled?", all) 
+    console_print(enabledControls.get().filter(@(v) v != all)) 
   },
   "controls.debug_enabled")
 

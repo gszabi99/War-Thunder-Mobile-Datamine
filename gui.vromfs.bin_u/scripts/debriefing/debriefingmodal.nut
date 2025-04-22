@@ -20,7 +20,7 @@ let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
 eventbus_subscribe("gui_start_debriefing", function gui_start_debriefing(...) {
   if (needLogoutAfterSession.value) {
     destroy_session("on needLogoutAfterSession from gui_start_debriefing")
-    //need delay after destroy session before is_multiplayer become false
+    
     resetTimeout(0.3, startLogout)
     return
   }
@@ -69,7 +69,7 @@ function loadDebriefing(fileName) {
     return console_print($"Can not load file {fileName}")
 
   debugBattleResult(data)
-  //need delay here because sendBattleResult is delayed by 0.1 sec
+  
   resetTimeout(0.2, @() isInDebriefing(true))
   return true
 }

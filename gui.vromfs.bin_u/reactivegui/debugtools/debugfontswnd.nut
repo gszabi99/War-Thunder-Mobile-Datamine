@@ -29,7 +29,7 @@ let inputBlock = textInput(curText, {
     size = [hdpx(400), hdpx(60)]
     padding = [hdpx(10), hdpx(20)]
   }
-  onAttach = @() set_kb_focus(curText) //hack for keyboard, and work only because single
+  onAttach = @() set_kb_focus(curText) 
   onEscape = @() curText.value == "" ? close() : curText("")
   placeholder = "Input text here..."
 })

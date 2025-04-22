@@ -51,7 +51,7 @@ function mkHangarBattleData() {
       ? mods.filter(@(has, id) has && id in cfgMods)
           .map(@(_) 1)
     : isPremium || isUpgraded
-      ? cfgMods.map(@(_) 1) //just all modifications, but later maybe filter them by groups
+      ? cfgMods.map(@(_) 1) 
     : {}
 
   return {
@@ -63,8 +63,8 @@ function mkHangarBattleData() {
       unitType
       isUpgraded
       isPremium = isPremium || isUpgraded
-      weapons = {} //olnly default weapon atm
-      attributes = {} //no need in the hangar
+      weapons = {} 
+      attributes = {} 
     }
   }
 }

@@ -20,7 +20,7 @@ let { apply_first_battles_reward, registerHandler } = require("%appGlobals/pServ
 
 let ERROR_REPEAT_TIME_MSEC = 60000
 
-let delayedRewards = hardPersistWatched("newbieOfflineMissions.delayedRewards", {}) //userId -> campaign -> { rewardId, unitName }
+let delayedRewards = hardPersistWatched("newbieOfflineMissions.delayedRewards", {}) 
 let lastErrorTime = hardPersistWatched("newbieOfflineMissions.lastErrorTime", -1)
 let isRewardRequested = mkWatched(persist, "isRewardRequested", false)
 let curDelayedRewardId = Computed(function() {
@@ -48,7 +48,7 @@ let newbieOfflineMissions = Computed(function() {
   if (list == null)
     return null
 
-  //offline missions does not have units choice, so go to online newbie mode in the such case
+  
   if (curCampaignSlotUnits.get() != null) {
     if (curCampaignSlotUnits.get().len() > 1)
       return null
@@ -133,7 +133,7 @@ myUserId.subscribe(function(_) {
 
 debriefingData.subscribe(function(data) {
   let { userId = null, campaign = null, predefinedId = null } = data
-  //check userId to ignore debug debriefing
+  
   if (userId != myUserId.value || campaign == null || campaign != curCampaign.value || predefinedId != firstBattlesRewardId.value)
     return
   let unitName = data?.reward.unitName

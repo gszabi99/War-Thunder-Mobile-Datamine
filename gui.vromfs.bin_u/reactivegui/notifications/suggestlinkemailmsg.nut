@@ -14,7 +14,7 @@ let { activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.
 
 
 const SUGGEST_LINK_ACC = "suggest_link_acc"
-let { isTimerPassed, setLastTime } = require("%rGui/globals/mkStoredAlarm.nut")(SUGGEST_LINK_ACC, 604800/*s in one week*/)
+let { isTimerPassed, setLastTime } = require("%rGui/globals/mkStoredAlarm.nut")(SUGGEST_LINK_ACC, 604800)
 
 let needLinkToGaijinAccount = Computed(@() isContactsReceived.get()
   && accountLink.get() == null

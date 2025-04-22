@@ -25,8 +25,8 @@ function rankRangeFill() {
   let maxRank = curUnitMRankRange.value.maxMRank
   let mkText = @(text) { rendObj = ROBJ_TEXT, text}.__update(fontTinyAccented)
   local replaceTable = {
-    ["{range1}"] = [mkGradRank(minRank), mkText("-"), mkGradRank(minRank + 1)],//warning disable: -forgot-subst
-    ["{range2}"] = [mkGradRank(maxRank - 1), mkText("-"), mkGradRank(maxRank)] //warning disable: -forgot-subst
+    ["{range1}"] = [mkGradRank(minRank), mkText("-"), mkGradRank(minRank + 1)],
+    ["{range2}"] = [mkGradRank(maxRank - 1), mkText("-"), mkGradRank(maxRank)] 
   }
   return mkTextRow( maxRank - minRank > 1 ? loc("mainmenu/battleRanks") : loc("mainmenu/battleRank"), mkText, replaceTable)
 }

@@ -5,7 +5,7 @@ let { dgs_get_settings } = require("dagor.system")
 let { format } = require("string")
 let { capitalize } = require("%sqstd/string.nut")
 let { isInBattle, isInMenu, battleSessionId, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 
 let DEBUG_INTERFACE_SHIFT_PX = -hdpx(16)
 

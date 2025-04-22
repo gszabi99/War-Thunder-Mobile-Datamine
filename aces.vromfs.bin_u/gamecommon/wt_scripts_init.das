@@ -1,4 +1,4 @@
-options no_aot = true//since this is merely loader
+options no_aot = true
 require %dasGameLibs.ecs.fs
 require ECSGlobalTags
 require app
@@ -7,7 +7,7 @@ require DagorSystem
 [export]
 def load_client(path : string) : bool
   var ok = true
-  if ecs_has_tag("gameClient") || app::get_game_name() == "aot"
+  if ecs_has_tag("gameClient") || is_in_aot()
     ok = load_optional_folder(path)
   return ok
 

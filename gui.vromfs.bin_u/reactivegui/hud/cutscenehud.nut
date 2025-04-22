@@ -32,7 +32,7 @@ let hintForSkip = function() {
       pos = [0, -sh(10)]
       hintIcon
       flow = FLOW_HORIZONTAL
-      children =  mkTextRow(hintText, mkText, { ["{shortcut}"] = hintIcon }) //warning disable: -forgot-subst
+      children =  mkTextRow(hintText, mkText, { ["{shortcut}"] = hintIcon }) 
     }
   }
 }

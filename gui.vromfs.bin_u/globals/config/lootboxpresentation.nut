@@ -87,7 +87,7 @@ let defaultSeasonImages = [
   { re = regexp2(@"^event_air_(medium|big)_season_\d+$"),   mkImg = @(id) id.replace("air", "ships") },
 ]
 
-let lootboxPreviewBg = { //todo: should merge all presentations to the single table
+let lootboxPreviewBg = { 
   event_special_gift_tanks_new_year_2025         = "ui/images/event_bg_christmas_2024.avif"
   event_special_gift_ships_new_year_2025         = "ui/images/event_bg_christmas_2024.avif"
   event_special_gift_air_new_year_2025           = "ui/images/event_bg_christmas_2024.avif"

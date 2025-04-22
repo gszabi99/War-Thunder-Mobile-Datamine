@@ -38,7 +38,7 @@ let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
 
 let maxThrottle = 100
 let stepThrottle = 5
-let wepAxisValue = 1.1 //same with native code
+let wepAxisValue = 1.1 
 let sliderWepValue = -3 * stepThrottle
 let sliderValue = Watched(maxThrottle)
 let throttleAxisUpdateTick = 0.05
@@ -84,7 +84,7 @@ let knobColor = Color(230, 230, 230, 230)
 let sliderToThrottleAxisValue = @(sliderV) sliderV >= stepThrottle ? (maxThrottle - sliderV).tofloat() / maxThrottle
   : sliderV > sliderWepValue ? 1.0
   : wepAxisValue
-let throttleToSlider = @(trt) trt > maxThrottle ? sliderWepValue //wep
+let throttleToSlider = @(trt) trt > maxThrottle ? sliderWepValue 
   : maxThrottle - trt
 
 let throttleScale = @(scaleWidth, throttleScaleHeight, knobSize, lineWidth) {

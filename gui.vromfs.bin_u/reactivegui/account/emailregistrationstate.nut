@@ -79,7 +79,7 @@ function onGuestTagsUpdate() {
     return
   isLoginByGajin.update(true)
   openFMsgBox({ text = loc("msg/needToLoginByYourLinkedMail"), isPersist = true })
-  defer(@() eventbus_send("logOutManually", {})) //to avoid call ecs destroy direct from ecs event about window active
+  defer(@() eventbus_send("logOutManually", {})) 
 }
 
 eventbus_subscribe("onRenewAuthToken", function(_) {
@@ -104,12 +104,12 @@ function renewGuestRegistrationTags() {
 
 register_command(function() {
     isDebugGuestLogin(!isDebugGuestLogin.value)
-    console_print("isGuestLogin = ", isGuestLogin.value) //warning disable: -forbidden-function
+    console_print("isGuestLogin = ", isGuestLogin.value) 
   }, "ui.debug.guestLogin")
 
 register_command(function() {
     isDebugVerifyEmail(!isDebugVerifyEmail.value)
-    console_print("needVerifyEmail = ", needVerifyEmail.value) //warning disable: -forbidden-function
+    console_print("needVerifyEmail = ", needVerifyEmail.value) 
   }, "ui.debug.verifyEmail")
 
 return {

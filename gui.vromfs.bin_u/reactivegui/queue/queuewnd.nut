@@ -67,7 +67,7 @@ let playersCountInQueue = Computed(function() {
     return null
   let unitInfo = curQueue.value?.unitInfo
   let unitName = type(unitInfo) == "array" ? unitInfo?[0] : unitInfo
-  let { rank = null } = campUnitsCfg.get()?[unitName] ?? curUnit.get() //why rank here instead of matching rank?
+  let { rank = null } = campUnitsCfg.get()?[unitName] ?? curUnit.get() 
   if (rank == null)
     return null
   let rankStr = rank.tostring()
@@ -75,7 +75,7 @@ let playersCountInQueue = Computed(function() {
   foreach (clusterStats in queueInfo.value)
     foreach (qStats in clusterStats)
       res += qStats?[rankStr] ?? 0
-  return max(1, res) //never show zero, because im in queue
+  return max(1, res) 
 })
 
 let isOnlyOverrideUnits = Computed(@() allGameModes.get().findvalue(@(mode) mode.name == curQueue.get()?.params.mode)?.only_override_units ?? false)
@@ -234,7 +234,7 @@ let aimingHint = {
   children = [{
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
-      children = mkTextRow(loc("hints/wtm_ship_mission_aiming"), mkText, { ["{button}"] = hintIcon }) //warning disable: -forgot-subst
+      children = mkTextRow(loc("hints/wtm_ship_mission_aiming"), mkText, { ["{button}"] = hintIcon }) 
     }
     @() textParams.__merge({
       watch = missionCampaign
@@ -251,7 +251,7 @@ let aimingHint = {
 
 let tanksScreensOrder = [ helpTankControls, helpTankParts, helpTankControls, helpTankCaptureZone ]
 let tanksBg = @() tanksScreensOrder[(sharedStatsByCampaign.value?.battles ?? 0) % tanksScreensOrder.len()]()
-//no need to subscribe on sharedStatsByCampaign because we do not want to switch loading screen during loading
+
 let mkBgImagesByCampaign = {
   air   = @() helpAirAiming
   ships = @() helpShipParts

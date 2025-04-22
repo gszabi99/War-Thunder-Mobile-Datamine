@@ -16,6 +16,7 @@ let { isInZoom } = require("%rGui/hudState.nut")
 let { updateActionBarDelayed } = require("actionBar/actionBarState.nut")
 let damagePanelBacklight = require("components/damagePanelBacklight.nut")
 let { getOptValue, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT } = require("%rGui/options/guiOptions.nut")
+let { tryPlaySound } = require("sound_wt")
 
 let iconSize = shHud(3.5)
 let crewIconSize = shHud(4.0)
@@ -144,6 +145,9 @@ let mkDollEditView = @(size) {
     text = loc("xray/model")
   }.__update(fontSmall)
 }
+
+hasDebuffEngines.subscribe(@(v) v ? tryPlaySound("message_debuff_loosing_speed") : null) 
+hasDebuffGuns.subscribe(@(v) v ? tryPlaySound("message_debuff_cant_shoot") : null) 
 
 function mkDebuff(watch, imageId, size) {
   let icon = mkDebuffIcon(imageId, size)

@@ -212,7 +212,7 @@ function requestEarlyExitRewards() {
   logBD("Request early exit rewards")
   sendNetEvent(find_local_player_eid(), CmdApplyMyBattleResultOnExit())
   if (isOnline.get())
-    eventbus_send("matchingApiNotify", { name = "match.remove_from_session" }) //no need reconnect
+    eventbus_send("matchingApiNotify", { name = "match.remove_from_session" }) 
 }
 
 eventbus_subscribe("onBattleConnectionFailed", @(p) connectFailedData(p.__merge({ sessionId = battleSessionId.value })))

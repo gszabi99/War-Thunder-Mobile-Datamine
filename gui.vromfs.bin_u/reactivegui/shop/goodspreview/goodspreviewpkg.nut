@@ -40,11 +40,11 @@ let horGap = hdpx(60)
 let oldPriceTranslate = [0,
   purchGap + 0.5 * defButtonHeight + 0.5 * calc_str_box("2", currencyStyle.fontStyle)[1]]
 
-//animation preview header
+
 let aTimePackNameFull = 0.5
 let aTimePackNameBack = 0.3
 let aTimeBackBtn = aTimePackNameFull - aTimePackNameBack
-//animation prices & time
+
 let aTimeTime = 0.4
 let aTimePriceMove = 0.3
 let aTimePriceBounce = 0.15
@@ -55,7 +55,7 @@ let aTimeFinalPriceShow = 0.2
 let aTimeFinalPriceBounce = 0.3
 let aTimeFinalPriceGlow = 0.1
 let aTimePriceFull = aTimePriceMove + aTimePriceBounce + aTimeFinalPriceShow + aTimeFinalPriceBounce + aTimeDiscountTagScale
-//animation items
+
 let aTimeInfoItem = 0.3
 let aTimeInfoItemOffset = 0.15
 let aTimeInfoLight = 0.2
@@ -86,7 +86,7 @@ function colorAnims(duration, delay, skipTrigger = ANIM_SKIP_DELAY) {
 }
 
 let withBqEvent = @(goods, action) function() {
-  if ((goods?.endTime ?? 0) > 0) //offer
+  if ((goods?.endTime ?? 0) > 0) 
     sendOfferBqEvent("gotoPurchaseFromInfo", goods.campaign)
   stop_prem_cutscene()
   action()

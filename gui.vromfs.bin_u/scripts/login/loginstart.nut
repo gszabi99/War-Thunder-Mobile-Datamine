@@ -20,7 +20,7 @@ let { logoutFB = @() null } = is_ios ? require("ios.account.facebook")
       : {}
 let { authState } = require("authState.nut")
 
-// Here "return_enc" is Base64 encoded string: "/profile.php?profileSettings=profile-settings_delete&view=settings"
+
 let DELETE_ACCOUNT_URL = "auto_local auto_login https://store.gaijin.net/login.php?return_enc=L3Byb2ZpbGUucGhwP3Byb2ZpbGVTZXR0aW5ncz1wcm9maWxlLXNldHRpbmdzX2RlbGV0ZSZ2aWV3PXNldHRpbmdz"
 
 let needLogoutAfterSession = mkWatched(persist, "needLogoutAfterSession", false)
@@ -35,7 +35,7 @@ function startLogout() {
   if (!canLogout())
     return exit_game()
 
-  if (is_multiplayer()) { //we cant logout from session instantly, so need to return "to debriefing"
+  if (is_multiplayer()) { 
     if (isInFlight()) {
       needLogoutAfterSession(true)
       eventbus_send("quitMission", null)
@@ -46,7 +46,7 @@ function startLogout() {
   }
 
   if (shouldDisableMenu || isOnlineSettingsAvailable.value)
-    broadcastEvent("BeforeProfileInvalidation") // Here save any data into profile.
+    broadcastEvent("BeforeProfileInvalidation") 
 
   log("Start Logout")
   needLogoutAfterSession(false)
@@ -80,7 +80,7 @@ function startRelogin() {
 
 eventbus_subscribe("doLogin", function(authOvr) {
   if (isLoginStarted.value || isOfflineMenu)
-    return //just ignore duplicate start
+    return 
 
   authState.mutate(@(s) s.__update(authOvr))
   loginState(loginState.value | LOGIN_STATE.LOGIN_STARTED)

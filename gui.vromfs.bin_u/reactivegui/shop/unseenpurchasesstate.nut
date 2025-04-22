@@ -4,20 +4,22 @@ let { resetTimeout } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { unseenPurchases, lootboxes } = require("%appGlobals/pServer/campaign.nut")
 let { clear_unseen_purchases } = require("%appGlobals/pServer/pServerApi.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let unseenPurchasesDebug = require("unseenPurchasesDebug.nut")
 
-let invisibleGoodsTypes = ["stat", "medal"] //temporary medals no need to be shown
+let invisibleGoodsTypes = ["stat", "medal"] 
   .reduce(@(res, v) res.$rawset(v, true), {})
 
-let ignoreUnseen = Watched({}) //no need to persist them if has errors with pServer, better to show window again after reload scripts.
+let ignoreUnseen = Watched({}) 
 let isShowDelayed = Watched(false)
 let skipUnseenMessageAnimOnce = Watched(false)
-let isUnseenGoodsVisible = @(goods, source, lboxes) (goods.gType not in invisibleGoodsTypes)
-  && (goods.gType != "lootbox" || (source == "lootbox" && (lboxes?[goods.id] ?? 0) > 0))  //show not opened lootboxes
+let isUnseenGoodsVisible = @(goods, source, srvCfg, lboxes) (goods.gType not in invisibleGoodsTypes)
+  && (goods.gType != "lootbox"
+    || (source == "lootbox" && (lboxes?[goods.id] ?? 0) > 0 && (srvCfg?.lootboxesCfg[goods.id].openType != "jackpot_only")))  
 let seenPurchasesNoNeedToShow = Computed(function() {
   let lboxes = lootboxes.get()
   return unseenPurchases.value
-    .filter(@(data) data.goods.findvalue(@(g) isUnseenGoodsVisible(g, data.source, lboxes)) == null)
+    .filter(@(data) data.goods.findvalue(@(g) isUnseenGoodsVisible(g, data.source, serverConfigs.get(), lboxes)) == null)
 })
 let unseenPurchasesExt = Computed(@() unseenPurchasesDebug.value
   ?? (isShowDelayed.value ? {}
@@ -76,7 +78,7 @@ let customUnseenPurchVersion = Watched(0)
 let incCustomVersion = @() customUnseenPurchVersion(customUnseenPurchVersion.value + 1)
 
 let customUnseenData = Computed(function() {
-  let ver = customUnseenPurchVersion.value //warning disable: -declared-never-used
+  let ver = customUnseenPurchVersion.value 
   foreach (idx, cfg in customUnseenPurchHandlers) {
     let list = unseenPurchasesExt.value.filter(cfg.isFit)
     if (list.len() > 0)
@@ -124,9 +126,9 @@ function delayShow(time) {
   }
 }
 
-register_command(@() console_print("unseenPurchasesExt = ", unseenPurchasesExt.value) , "debug.currentUnseenPurchases") //warning disable: -forbidden-function
-register_command(@() console_print("activeUnseenPurchasesGroup = ", activeUnseenPurchasesGroup.value) , "debug.activeUnseenPurchasesGroup") //warning disable: -forbidden-function
-register_command(@() console_print("activeUnseenPurchasesGroup.list = ", activeUnseenPurchasesGroup.value.list) , "debug.activeUnseenPurchasesGroup.list") //warning disable: -forbidden-function
+register_command(@() console_print("unseenPurchasesExt = ", unseenPurchasesExt.value) , "debug.currentUnseenPurchases") 
+register_command(@() console_print("activeUnseenPurchasesGroup = ", activeUnseenPurchasesGroup.value) , "debug.activeUnseenPurchasesGroup") 
+register_command(@() console_print("activeUnseenPurchasesGroup.list = ", activeUnseenPurchasesGroup.value.list) , "debug.activeUnseenPurchasesGroup.list") 
 
 return {
   unseenPurchasesExt

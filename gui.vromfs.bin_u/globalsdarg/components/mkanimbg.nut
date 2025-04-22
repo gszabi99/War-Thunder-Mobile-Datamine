@@ -39,14 +39,14 @@ let mkAnimBg = @(layersCfg, fbImage = null, animTime = defAnimTime) {
   color = 0xFF000000
   halign = ALIGN_CENTER
 
-  children = { //middle content block
+  children = { 
     size = [sh(250), sh(100)]
     children = [
       {
         size = flex()
         rendObj = ROBJ_IMAGE
         image = Picture(fbImage)
-        animations = appearAnim(0.25, 0.3) //to not show if images above loaded fast enough
+        animations = appearAnim(0.25, 0.3) 
       }
       {
         size = flex()

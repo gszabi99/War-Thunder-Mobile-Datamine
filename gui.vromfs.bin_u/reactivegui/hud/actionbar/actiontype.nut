@@ -20,7 +20,7 @@ foreach (a in actions) {
   eiiToAb[eii] <- ab
 }
 
-let correlation = { //only custom types
+let correlation = { 
   AB_PRIMARY_WEAPON = @(a) a?.triggerGroupNo == TRIGGER_GROUP_PRIMARY,
   AB_SECONDARY_WEAPON = @(a) a?.triggerGroupNo == TRIGGER_GROUP_SECONDARY,
   AB_SPECIAL_WEAPON = @(a) a?.triggerGroupNo == TRIGGER_GROUP_SPECIAL_GUN,

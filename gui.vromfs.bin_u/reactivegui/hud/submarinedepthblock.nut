@@ -238,7 +238,7 @@ function mkDepthSliderEditView() {
           }
         ]
       }
-      { size = [hdpx(25), 0] } //marks here
+      { size = [hdpx(25), 0] } 
       {
         size = periscopSize
         pos = [0, -hdpx(33)]

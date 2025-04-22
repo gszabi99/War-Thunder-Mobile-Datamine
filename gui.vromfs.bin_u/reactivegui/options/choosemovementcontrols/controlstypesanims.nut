@@ -276,13 +276,13 @@ function mkArrowsAnim() {
   ])
   return animCompBase.__merge({
     children = [
-      arrowsWidgetComp // arrowsWidgetParts comps are inside
+      arrowsWidgetComp 
       arrowsComps.finger
     ]
   })
 }
 
-return { // keys are control type IDs
+return { 
   stick = mkDynamicStickAnim
   stick_static = mkStaticStickAnim
   arrows = mkArrowsAnim

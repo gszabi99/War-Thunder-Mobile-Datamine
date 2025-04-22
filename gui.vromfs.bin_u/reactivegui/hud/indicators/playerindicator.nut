@@ -28,7 +28,7 @@ function initOnce() {
 function getTitleShowDist(hudUnitType, ut) {
   if (!isInited)
     initOnce()
-  // See in hudIndicators.cpp, const IndicatorsInfo &info
+  
   let isHudTank = hudUnitType == TANK
   let cfgType = isHudTank && ut == TANK ? TANK
     : isHudTank && [SHIP, BOAT, SUBMARINE].contains(ut) ? SHIP

@@ -7,13 +7,13 @@ let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 
-let scenes = {} //id = { scene, onClearScenes, alwaysOnTop }
+let scenes = {} 
 let scenesVersion = Watched(0)
 let scenesOrderSaved = hardPersistWatched("navState.scenesOrder", [])
 let sceneBgList = Watched({})
 let sceneBgListFallback = Watched({})
 let scenesOrder = ComputedImmediate(function(prev) {
-  let ver = scenesVersion //warning disable: -declared-never-used
+  let ver = scenesVersion 
   let top = []
   let res = []
   foreach(s in scenesOrderSaved.value) {
@@ -102,7 +102,7 @@ function registerScene(id, scene, onClearScenes = null, openedCounterWatch = nul
 }
 
 function clearScenes() {
-  let prev = clone scenesOrder.value //in case of open new scene by onClearScenes
+  let prev = clone scenesOrder.value 
   scenesOrderSaved([])
   foreach (id in prev)
     scenes?[id].onClearScenes()

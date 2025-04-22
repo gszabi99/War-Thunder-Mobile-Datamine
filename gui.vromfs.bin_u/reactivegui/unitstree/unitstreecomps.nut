@@ -68,11 +68,10 @@ let flagBg = @(isSelected) @() {
   transitions = [{ prop = AnimProp.color, duration = 0.3, easing = InOutQuad }]
 }
 
-let function mkTreeNodesFlag(height, country, curCountry, onClick, showUnseenMark, resCountry = "") {
+let function mkTreeNodesFlag(height, country, curCountry, onClick, showUnseenMark, needBlink) {
   let isSelected = Computed(@() curCountry.get() == country)
-  let needBlink = Computed(@() resCountry == country && !isSelected.get())
   return @() {
-    watch = needBlink
+    watch = [needBlink, isSelected]
     size = [flagsWidth, height]
     behavior = Behaviors.Button
     onClick
@@ -80,7 +79,7 @@ let function mkTreeNodesFlag(height, country, curCountry, onClick, showUnseenMar
     children = [
       flagBg(isSelected)
       selectedLineVert(isSelected)
-      !needBlink.get() ? null
+      !needBlink.get() || isSelected.get() ? null
         : {
             key = {}
             size = flex()
@@ -93,7 +92,7 @@ let function mkTreeNodesFlag(height, country, curCountry, onClick, showUnseenMar
             animations = [
               {
                 prop = AnimProp.opacity, from = 0.0, to = 0.3, duration = 1,
-                easing = CosineFull, play = true, loop = true, loopPause = 1
+                easing = CosineFull, play = true, loop = true, globalTimer = true, loopPause = 1
               }
             ]
           }
@@ -128,8 +127,8 @@ let speedUpBtn = @(onClick, cost, level, starLevel, isStarProgress) mkCustomButt
       loc("unitsTree/getLevel"),
       @(text) { rendObj = ROBJ_TEXT, text = utf8ToUpper(text) }.__update(isWidescreen ? fontTinyAccented : fontTiny),
       {
-        ["{level}"] = mkPlayerLevel(level + 1, (isStarProgress ? starLevel + 1 : 0)), //warning disable: -forgot-subst
-        ["{cost}"] = mkCurrencyComp(cost, "gold") //warning disable: -forgot-subst
+        ["{level}"] = mkPlayerLevel(level + 1, (isStarProgress ? starLevel + 1 : 0)), 
+        ["{cost}"] = mkCurrencyComp(cost, "gold") 
       }
     )
   },

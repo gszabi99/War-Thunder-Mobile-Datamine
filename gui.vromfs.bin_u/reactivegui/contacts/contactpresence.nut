@@ -10,15 +10,15 @@ let onlineStatusBase = Watched(presences.value.map(calcStatus))
 let onlineStatus = Computed(@() onlineStatusBase.value.__merge(squadStatus.value))
 
 let mkUpdatePresences = @(watch) function(newPresences) {
-  if (newPresences.len() > 10) { //faster way when many presences received
-    //merge and filter are much faster when receive a lot of friends then foreach with delete
+  if (newPresences.len() > 10) { 
+    
     watch(watch.value.__merge(newPresences).filter(@(p) p != null))
     return
   }
 
   watch.mutate(function(v) {
     v.__update(newPresences)
-    //it much faster than filter when update few presences of 2000 friends
+    
     foreach (userId, presence in newPresences)
       if (presence == null)
         v.$rawdelete(userId)

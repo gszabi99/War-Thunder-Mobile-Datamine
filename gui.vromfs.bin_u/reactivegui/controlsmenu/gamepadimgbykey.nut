@@ -80,7 +80,7 @@ local dargJKeysToImageId = {
   "J:R.Thumb.hv"    : BTN_RS_ANY,
   "J:L.Thumb.hv"    : BTN_LS_ANY,
 
-  //custom aliases
+  
   "dirpad"          : BTN_DIRPAD
 }
 
@@ -89,7 +89,7 @@ let axisNum = ["L.Thumb.h", "L.Thumb.v", "R.Thumb.h", "R.Thumb.v", "L.Trigger", 
 
 function keyAndImg(table, list, prefix, offs) {
   foreach (i, k in list) {
-    let key = prefix + (i + offs) //for unknow reasons all indexes are incremented
+    let key = prefix + (i + offs) 
     let img = dargJKeysToImageId?[$"J:{k}"]
     if (img)
       table[key] <- img

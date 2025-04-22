@@ -27,7 +27,7 @@ let playersByTeam = Computed(function() {
   let res = playersByTeamBase.value
     .map(@(list) sortAndFillPlayerPlaces(battleCampaign.value,
       list.map(function(p) {
-        // Important: Mplayer "name" value is already prepared by getPlayerName() and frameNick(), see registerMplayerCallbacks.
+        
         let { id, userId, name, isBot, aircraftName, ownedUnitName = "" } = p
         let unitName = ownedUnitName != "" ? ownedUnitName : aircraftName
         let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[id]

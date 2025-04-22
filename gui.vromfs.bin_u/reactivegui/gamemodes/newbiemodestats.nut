@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getCampaignPkgsForOnlineBattle } = require("%appGlobals/updater/campaignAddons.nut")
 let { prepareStatsForNewbieConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let { curCampaign, sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 
 let hasCurCampaignNewbiePkg = Computed(function() {
   let addons = getCampaignPkgsForOnlineBattle(curCampaign.value, 1)

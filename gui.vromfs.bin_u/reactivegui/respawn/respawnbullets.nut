@@ -74,7 +74,7 @@ function bulletHeader(bSlot, bSet, bInfo) {
         ]
       }
       @() {
-        key = $"respBulletsBtn{idx}" //for UI tutorial
+        key = $"respBulletsBtn{idx}" 
         size = flex()
         watch = openedSlot
         rendObj = ROBJ_SOLID

@@ -50,12 +50,12 @@ function onBtnApply(isApply = true) {
     if (hasSelectedRating.value && !hasAppliedRating.value)
       return hasAppliedRating(true)
   }
-  if (!isApply && !hasAppliedRating.value) { // Close btn pressed
+  if (!isApply && !hasAppliedRating.value) { 
     sendRateWndEvent("close_no_choice")
     return close()
   }
 
-  // It doesn't matter which btn pressed (Apply/Close), now sending the result.
+  
   sendGameRating(fieldRating.value, fieldComment.value)
   platformAppReview(isRatedExcellent.value)
   sendRateWndEvent("close_after_choice")

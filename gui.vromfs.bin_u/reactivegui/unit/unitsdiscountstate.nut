@@ -11,7 +11,7 @@ function isTimeInRange(timeRange, time) {
   return (start <= time && (end <= 0 || end >= time))
 }
 
-let nextUpdate = Watched({ time = 0 }) //even when value changed to the same, better to restart timer.
+let nextUpdate = Watched({ time = 0 }) 
 let maxTime = 0x7FFFFFFFFFFFFFFF
 
 function updateActualDiscounts() {

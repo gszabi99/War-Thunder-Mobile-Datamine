@@ -166,12 +166,12 @@ let pageBlock = {
         flow = FLOW_HORIZONTAL
         children = [
           txt({
-            key = "upgradePoints" //need for tutorial
+            key = "upgradePoints" 
             text = "".concat(loc("unit/upgradePoints"), loc("ui/colon"))
           })
           @() txt({
             watch = leftSlotSp
-            key = "upgradePointsValue" //need for tutorial
+            key = "upgradePointsValue" 
             text = getSpCostText(leftSlotSp.get())
             color = leftSlotSp.get() > 0 ? textColor : badTextColor
           })
@@ -211,7 +211,7 @@ let actionButtons = @() {
       : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction, {
           ovr = {
             sound = { click  = "characteristics_apply" }
-            key = "slotAttrApplyBtn" //need for tutorial
+            key = "slotAttrApplyBtn" 
           }.__update(isWidescreen ? {} : { minWidth = hdpx(250) })
           hotkeys = ["^J:X"]
         })
@@ -226,7 +226,7 @@ let navBar = mkSpinnerHideBlock(Computed(@() slotInProgress.get() != null),
   })
 
 function onClose() {
-  if (selAttrSpCost.get() == 0 || slotInProgress.get() != null) //no need this message when apply unit stats is already in progress
+  if (selAttrSpCost.get() == 0 || slotInProgress.get() != null) 
     isSlotAttrOpened.set(false)
   else
     openMsgBox({

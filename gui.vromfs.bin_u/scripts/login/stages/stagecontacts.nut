@@ -56,7 +56,7 @@ let customErrorMsg = {
 }
 
 function onLoginResult(result) {
-  // On success, it is in "result", on error it is in "result.result"
+  
   if ("result" in result)
     result = result.result
 

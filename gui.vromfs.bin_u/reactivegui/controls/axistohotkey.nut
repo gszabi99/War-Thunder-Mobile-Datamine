@@ -27,7 +27,7 @@ let axisHotkeyMax = {
 }
 
 return {
-  //this module need only to get hotkey for generate axis image by std functions
+  
   axisToHotkey = @(a) axisHotkey?[a]
   axisMinToHotkey = @(a) axisHotkeyMin?[a] ?? axisHotkey?[a]
   axisMaxToHotkey = @(a) axisHotkeyMax?[a] ?? axisHotkey?[a]

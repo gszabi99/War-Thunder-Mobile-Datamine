@@ -3,6 +3,7 @@ let { deferOnce } = require("dagor.workcycle")
 let { log10, round, ceil } = require("math")
 let { register_command } = require("console")
 let Rand = require("%sqstd/rand.nut")
+let { G_CURRENCY, G_ITEM } = require("%appGlobals/rewardType.nut")
 let { lootboxes, canOpenWithWindow, wasErrorSoon } = require("autoOpenLootboxes.nut")
 let { sortRewardsViewInfo, getRewardsViewInfo, isRewardEmpty, isViewInfoRewardEmpty, receivedGoodsToViewInfo,
   getLootboxOpenRewardViewInfo
@@ -53,7 +54,7 @@ let nextOpenId = Computed(@() lootboxes.value.roulette.findindex(@(_) true))
 let nextOpenCount = Computed(function() {
   let count = lootboxes.value.roulette?[nextOpenId.value] ?? 0
   if (count > MAX_ROULETTE_OPEN)
-    return count //open all at once without roulette
+    return count 
   return min(count, MAX_MULTIREWARD_OPEN)
 })
 let needOpen = Computed(@() !rouletteOpenId.value
@@ -174,10 +175,21 @@ function calcJackpotOpens(id, openCount, profile, configs) {
   return res
 }
 
-function collectRewards(weights, rewardsCfg, profile, lastReward) {
+function hasExclude(rewards, dropExclude) {
+  if (dropExclude.len() == 0)
+    return false
+  foreach(r in rewards)
+    if (r.id in dropExclude && (r.gType == G_CURRENCY || r.gType == G_ITEM))
+      return true
+  return false
+}
+
+function collectRewards(weights, rewardsCfg, profile, lastReward, dropExclude = {}) {
   let rewards = {}
   foreach(id, _ in weights)
-    if (id in rewardsCfg && !isRewardEmpty(rewardsCfg[id], profile))
+    if (id in rewardsCfg
+        && !isRewardEmpty(rewardsCfg[id], profile)
+        && !hasExclude(rewardsCfg[id], dropExclude))
       rewards[id] <- getRewardsViewInfo(rewardsCfg[id])
   if (rewards.len() == 0 && lastReward in rewardsCfg)
     rewards[lastReward] <- getRewardsViewInfo(rewardsCfg[lastReward])
@@ -189,9 +201,9 @@ function multiplyRewardsCycle(weights, rewardsCfg) {
   if (weights.len() == 0 || rewardsCfg.len() == 0)
     return res
   local counts = weights.filter(@(_, id) id in rewardsCfg).map(log10)
-  if (counts.len() == 0 && rewardsCfg.len() != 0) //last reward out of weights
+  if (counts.len() == 0 && rewardsCfg.len() != 0) 
     counts = rewardsCfg.map(@(_) 1)
-  let minCount = counts.reduce(@(a, b) min(a, b)) - 1 //start from 1
+  let minCount = counts.reduce(@(a, b) min(a, b)) - 1 
   let total = counts.reduce(@(r, b) r + b - minCount, 0.0)
   if (total == 0)
     return res
@@ -236,13 +248,16 @@ function calcOpenType(openType, weights, rewardsCfg) {
 
 function calcOpenInfo(id, profile, configs) {
   let res = { rewardsList = [], openType = "", lastReward = null }
-  let { lootboxesCfg = null, rewardsCfg = null } = configs
+  let { lootboxesCfg = null, rewardsCfg = null, currencySeasons = null } = configs
   let lastReward = lootboxesCfg?[id].lastReward
   res.lastReward = lastReward in rewardsCfg ? getRewardsViewInfo(rewardsCfg[lastReward]) : null
   let weights = lootboxesCfg?[id].rewards ?? {}
-  let rewards = collectRewards(weights, rewardsCfg, profile, lastReward)
+  let dropExclude = (profile?.lootboxStats[id].writeOffLeft ?? 0) <= 0 ? {}
+    : (currencySeasons?[lootboxesCfg?[id].currencyId].dropExclude ?? [])
+        .reduce(@(r, v) r.$rawset(v, true), {})
+  let rewards = collectRewards(weights, rewardsCfg, profile, lastReward, dropExclude)
   if (rewards.len() < 1)
-    return res //no need roulette
+    return res 
 
   res.openType = calcOpenType(lootboxesCfg?[id].openType, weights, rewards)
   res.rewardsList = multiplyRewardsFull(weights, rewards).map(@(i) rewards[i])
@@ -255,7 +270,7 @@ let openDelayed = @() deferOnce(function() {
 
   let id = nextOpenId.value
   let { openType, rewardsList, lastReward } = calcOpenInfo(id, servProfile.value, serverConfigs.value)
-  if (rewardsList.len() == 0 || rewardsList.findvalue(@(v) v != rewardsList[0]) == null) { //no rewards, or last reward
+  if (rewardsList.len() == 0 || rewardsList.findvalue(@(v) v != rewardsList[0]) == null) { 
     open_lootbox_several(id, nextOpenCount.value)
     return
   }
@@ -315,8 +330,8 @@ registerHandler("onRouletteOpenLootbox", function(res, context) {
     openResFull.main <- res
   else {
     if ((res?.unseenPurchases ?? {}).len() < (jackpots?[jackpotIdx].count ?? 0)) {
-      let jackpotId = jackpots?[jackpotIdx].jackpotId //warning disable: -declared-never-used
-      let reqCount = jackpots?[jackpotIdx].count //warning disable: -declared-never-used
+      let jackpotId = jackpots?[jackpotIdx].jackpotId 
+      let reqCount = jackpots?[jackpotIdx].count 
       log("Received Purchases = ", res?.unseenPurchases)
       logerr($"Not all rewards from jackpots received.")
       closeRoulette()
@@ -358,7 +373,7 @@ register_command(
     let { lootboxesCfg = null, rewardsCfg = {} } = serverConfigs.value
     let weights = lootboxesCfg?[name].rewards
     if (weights == null) {
-      console_print($"lootbox {name} does not exists") //warning disable: -forbidden-function
+      console_print($"lootbox {name} does not exists") 
       return
     }
 
@@ -366,22 +381,22 @@ register_command(
     let openType = lootboxesCfg?[name].openType
     let resOpenType = calcOpenType(openType, weights, rewards)
     if (openType == resOpenType)
-      console_print($"openType = {openType}") //warning disable: -forbidden-function
+      console_print($"openType = {openType}") 
     else
-      console_print($"openType = {openType} -> {resOpenType}") //warning disable: -forbidden-function
+      console_print($"openType = {openType} -> {resOpenType}") 
 
     let rewardsCycle = multiplyRewardsCycle(weights, rewards)
     let counts = {}
     foreach(id in rewardsCycle)
       counts[id] <- (counts?[id] ?? 0) + 1
-    console_print("total rewards in roll = ", rewardsCycle.len()) //warning disable: -forbidden-function
-    console_print("reward view counts = ", counts) //warning disable: -forbidden-function
+    console_print("total rewards in roll = ", rewardsCycle.len()) 
+    console_print("reward view counts = ", counts) 
   },
   "debug.lootboxRouletteCounts")
 
 register_command(function() {
   isRouletteDebugMode.set(!isRouletteDebugMode.get())
-  dlog("Roulette debug mode is switched ", isRouletteDebugMode.get() ? "on" : "off")   //warning disable: -forbidden-function
+  dlog("Roulette debug mode is switched ", isRouletteDebugMode.get() ? "on" : "off")   
 }, "debug.lootboxRoulettDebugMode")
 
 return {

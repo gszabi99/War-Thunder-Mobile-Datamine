@@ -315,7 +315,7 @@ let function actionBtns(unit, idx) {
         openSlotAttrWnd,
         statusAttrMark(idx),
         {
-          key = "slot_crew_btn" //need for tutorial
+          key = "slot_crew_btn" 
           commands = getBorderCommand(COMMADN_STATE.RIGHT)
         })
     ]
@@ -344,7 +344,7 @@ let function mkSlotWithButtons(slot, idx) {
     children = [
       actionBtns(unit, idx)
       {
-        key = slotBarSlotKey(idx) //for tutorial
+        key = slotBarSlotKey(idx) 
         flow = FLOW_VERTICAL
         children = [
           mkSlotHeader(slot, idx, unit, isSelected)
@@ -425,7 +425,7 @@ function mkSlotSelect(slot, idx) {
   let unit = Computed(@() campMyUnits.get()?[slot?.name] ?? campUnitsCfg.get()?[slot?.name])
   return @() {
     watch = unit
-    key = $"select_slot_{idx}" // need for tutorial
+    key = $"select_slot_{idx}" 
     valign = ALIGN_BOTTOM
     flow = FLOW_VERTICAL
     children = [

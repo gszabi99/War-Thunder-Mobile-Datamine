@@ -15,7 +15,7 @@ function collectBulletsCount(bulletsCfg, level, maxSlots) {
   if (allowed.len() > maxSlots)
     allowed.resize(maxSlots)
   let stepSize = guns
-  local leftSteps = ceil(total.tofloat() / stepSize / catridge) //need send catriges count for spawn instead of bullets count
+  local leftSteps = ceil(total.tofloat() / stepSize / catridge) 
   return allowed.map(function(name, idx) {
     let steps = ceil(leftSteps / (allowed.len() - idx)).tointeger()
     leftSteps -= steps

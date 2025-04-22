@@ -27,8 +27,8 @@ const MSEC_BETWEEN_REQUESTS = 600000
 const MIN_SESSIONS_TO_FORCE_SHOW = 5
 const EMPTY_PAGE_ID = -1
 
-// Please use lang codes from ISO 639-1 standard for current_lang
-// See https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+
+
 let shortLang = loc("current_lang")
 let newsPlatform = platformId == "android" ? "android" : "ios"
 let cfgId = get_cur_circuit_name().indexof("production") != null || get_cur_circuit_name().indexof("stable") != null
@@ -65,7 +65,7 @@ if (receivedNewsFeedLang.value != shortLang) {
 let unseenArticleId = Computed(function() {
   if (lastSeenId.value == -1)
     return null
-  // Searching for the newest unseen Pinned article on the first page.
+  
   let lastId = lastSeenId.value
   foreach (idx, info in newsfeed.value) {
     if (idx >= articlesPerPage.value)
@@ -73,7 +73,7 @@ let unseenArticleId = Computed(function() {
     if (info.pinned > 0 && info.id > lastId)
       return info.id
   }
-  // Searching for the oldest unseen ordinary article on the first page.
+  
   local res = null
   foreach (idx, info in newsfeed.value) {
     if (idx >= articlesPerPage.value)
@@ -156,7 +156,7 @@ function mkInfo(v) {
 eventbus_subscribe(NEWSFEED_RECEIVED, function processNewsFeedList(response) {
   let { status = -1, http_code = -1, context = "" } = response
   if (context != shortLang)
-    return // Ingnore request result for wrong lang
+    return 
 
   if (status != HTTP_SUCCESS || http_code < 200 || 300 <= http_code) {
     logN($"Error getting feed response (http_code = {response?.http_code}, status = {status})")
@@ -199,15 +199,15 @@ isMainMenuAttached.subscribe(@(v) v ? requestNewsFeed() : null)
 
 let ERROR_PAGE = {
   id = EMPTY_PAGE_ID
-  title = loc("browser/error_load_url") // Error loading page
-  content = [ { v = loc("yn1/error/80022B30") } ] // Please try again later
+  title = loc("browser/error_load_url") 
+  content = [ { v = loc("yn1/error/80022B30") } ] 
 }
 
 eventbus_subscribe(ARTICLE_RECEIVED, function onArticleReceived(response) {
   let { status = -1, http_code = -1, context = null } = response
   let { id = null, lang = null } = context
   if (lang != shortLang)
-    return // Ingnore request result for wrong lang
+    return 
 
   if (status != HTTP_SUCCESS || http_code < 200 || 300 <= http_code || id == null) {
     logN($"Error getting article #{id} response (http_code = {response?.http_code}, status = {status})")

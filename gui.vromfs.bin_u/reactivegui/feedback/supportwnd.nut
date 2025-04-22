@@ -215,7 +215,7 @@ isOpened.subscribe(@(v) !v && requestState.value.id != null
   : null)
 
 requestState.subscribe(function(v) {
-  if (v.id != null) // Success
+  if (v.id != null) 
     resetForm()
   else if (v.errInfo != null) {
     let { errId, errText, needSendBQ } = v.errInfo

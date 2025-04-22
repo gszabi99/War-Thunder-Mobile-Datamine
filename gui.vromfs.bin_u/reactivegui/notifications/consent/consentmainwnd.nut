@@ -72,7 +72,7 @@ let content = modalWndBg.__merge({
         can_skip_consent.get()
           ? closeWndBtn(function(){
             if (!isConsentAcceptedOnce.get()) {
-              savedPoints(defaultPointsTable.map(@(_) false))// dont need to save to online storage so that the window opens again at the next login
+              savedPoints(defaultPointsTable.map(@(_) false))
               logC("consent skipped")
               sendUiBqEvent("ads_consent_firebase", { id = "consent_skip" })
               setupAnalytics()

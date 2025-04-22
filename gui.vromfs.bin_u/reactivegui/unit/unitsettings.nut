@@ -43,7 +43,7 @@ function resetUnitSettings(unitName) {
   loadedSettings.mutate(@(v) v.$rawset(unitName, {}))
 }
 
-let OLD_SAVE_ID = "skinTuning" //24.05.2024
+let OLD_SAVE_ID = "skinTuning" 
 function applyCompatibility() {
   let blk = get_local_custom_settings_blk()
   if (OLD_SAVE_ID not in blk)
@@ -66,7 +66,7 @@ isOnlineSettingsAvailable.subscribe(function(s) {
 function mkUnitSettingsWatch(unitNameW) {
   let unitSettings = Computed(@() loadedSettings.get()?[unitNameW.get()] ?? {})
   loadSettingsOnce(unitNameW.get())
-  unitSettings.subscribe(@(v) v.len() != 0 ? null : loadSettingsOnce(unitNameW.get())) //subscribe not on unitNameW only to allow unitSettings correct remove from memore when unused
+  unitSettings.subscribe(@(v) v.len() != 0 ? null : loadSettingsOnce(unitNameW.get())) 
   function updateUnitSettings(ovr) {
     let unitName = unitNameW.get()
     let newValue = unitSettings.get().__merge(ovr)

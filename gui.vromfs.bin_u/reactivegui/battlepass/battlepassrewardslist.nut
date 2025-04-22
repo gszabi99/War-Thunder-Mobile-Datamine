@@ -149,7 +149,7 @@ function mkCard(stageInfo, idx) {
     vplace = ALIGN_TOP
     children = [
       {
-        key = $"battle_pass_reward_{idx}" //need for tutorial
+        key = $"battle_pass_reward_{idx}" 
         size = [cardWidth, bpCardHeight]
         rendObj = ROBJ_IMAGE
         image = bgCard

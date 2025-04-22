@@ -26,7 +26,7 @@ let openFilters = @(event, isTreeNodes, ovr = {})
     popupValign = ALIGN_BOTTOM
     popupHalign = ALIGN_LEFT
     children = mkUnitsFilter(isTreeNodes ? filtersTreeNodes : filters, availableUnitsList, closeFilters, clearFilters)
-    // OFFSET
+    
     popupOffset = hdpx(20)
     hotkeys = [[btnBEscUp, closeFilters]]
     onAttach = @() isFiltersVisible(true)
@@ -67,9 +67,9 @@ function mkFilteredUnits(units) {
   foreach (f in filters) {
     let { allValues = null, valueWatch = null } = f
     if (allValues != null)
-      res._noComputeErrorFor(allValues) //recalc by filterGenId
+      res._noComputeErrorFor(allValues) 
     if (valueWatch != null)
-      res._noComputeErrorFor(valueWatch) //recalc by filterGenId
+      res._noComputeErrorFor(valueWatch) 
   }
   return res
 }

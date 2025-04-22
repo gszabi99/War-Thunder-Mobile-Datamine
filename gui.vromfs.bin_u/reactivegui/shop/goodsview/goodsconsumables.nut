@@ -11,6 +11,7 @@ let icons = {
   ship_tool_kit = "ui/gameuiskin/shop_consumables_repair.avif"
   ship_smoke_screen_system_mod = "ui/gameuiskin/shop_consumables_smoke.avif"
   tank_tool_kit_expendable = "ui/gameuiskin/shop_consumables_tank_repair.avif"
+  tank_medical_kit = "ui/gameuiskin/shop_consumables_tank_medical_kit.avif"
   tank_extinguisher = "ui/gameuiskin/shop_consumables_tank_extinguisher.avif"
   spare = "ui/gameuiskin/shop_consumables_tank_cards.avif"
   ircm_kit = "ui/gameuiskin/shop_consumables_ircm.avif"
@@ -36,19 +37,20 @@ let bgHiglight = {
 let itemImageOptionsStack = [
   [{ size = [imgSize, imgSize], pos = [0, -hdpx(91)] }],
   [
-    { size = [hdpx(400), hdpx(400)], pos = [hdpx(100), -hdpx(35)] }
-    { size = [hdpx(400), hdpx(400)], pos = [0, -hdpx(15)] }
+    { size = [hdpx(400), hdpx(400)], pos = [0, -hdpx(15)] sortOrder = 2}
+    { size = [hdpx(400), hdpx(400)], pos = [hdpx(100), -hdpx(35)] sortOrder = 1}
   ],
   [
-    { size = [hdpx(350), hdpx(350)], pos = [hdpx(250), hdpx(10)] }
-    { size = [hdpx(350), hdpx(350)], pos = [hdpx(0), hdpx(10)] }
-    { size = [hdpx(350), hdpx(350)], pos = [hdpx(100), -hdpx(35)] }
+    { size = [hdpx(350), hdpx(350)], pos = [hdpx(0), hdpx(10)] sortOrder = 2}
+    { size = [hdpx(350), hdpx(350)], pos = [hdpx(100), -hdpx(35)] sortOrder = 1}
+    { size = [hdpx(350), hdpx(350)], pos = [hdpx(250), hdpx(10)] sortOrder = 3}
   ]
 ]
 
-let mkImg = @(id, size, pos) id not in icons ? null : {
+let mkImg = @(id, size, pos, sortOrder = null) id not in icons ? null : {
   size
   pos
+  sortOrder
   rendObj = ROBJ_IMAGE
   image = Picture($"{icons[id]}:{size[0]}:{size[1]}:P")
   keepAspect = true
@@ -56,7 +58,8 @@ let mkImg = @(id, size, pos) id not in icons ? null : {
 
 let mkImgs = @(ids, imageOptions) {
   size = flex()
-  children = imageOptions.map(@(cfg, idx) idx not in ids ? null : mkImg(ids[idx], cfg.size, cfg.pos))
+  sortChildren = true
+  children = imageOptions.map(@(cfg, idx) idx not in ids ? null : mkImg(ids[idx], cfg.size, cfg.pos, cfg?.sortOrder))
 }
 
 function getConsumablesInfo(goods) {

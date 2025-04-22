@@ -1,14 +1,12 @@
+from "%globalScripts/logs.nut" import *
 let { loc, doesLocTextExist } = require("dagor.localize")
 let { get_settings_blk } = require("blkGetters")
-let { logerr, debug } = require("dagor.debug")
-let { DBGLEVEL } = require("dagor.system")
 let { eachBlock } = require("%sqstd/datablock.nut")
-let { get_addons_size_async } = require("contentUpdater")
 let { startswith, endswith } = require("string")
 let { unique } = require("%sqstd/underscore.nut")
 let { toIntegerSafe } = require("%sqstd/string.nut")
 let { getRomanNumeral } = require("%sqstd/math.nut")
-let { eventbus_subscribe } = require("eventbus")
+
 
 let PKG_NAVAL  = "pkg_naval"
 let PKG_NAVAL_HQ = "pkg_naval_hq"
@@ -19,31 +17,15 @@ let PKG_COMMON = "pkg_common"
 let PKG_COMMON_HQ = "pkg_common_hq"
 let PKG_DEV = "pkg_dev"
 
-let ADDON_VERSION_EMPTY = ""
-
 let MB = 1 << 20
-let nbsp = "\u00A0" // Non-breaking space char
+let nbsp = "\u00A0" 
 let comma = loc("ui/comma")
 
-let commonAddonsByPostfix = {
-  naval     = [ PKG_COMMON, PKG_NAVAL, PKG_COMMON_HQ, PKG_NAVAL_HQ ],
-  ground    = [ PKG_COMMON, PKG_GROUND, PKG_COMMON_HQ, PKG_GROUND_HQ ],
-  aircraft  = [ PKG_COMMON, PKG_COMMON_HQ ],
-}
-let dev       = [ PKG_DEV ]
-let initialAddons = [ "pkg_secondary_hq", "pkg_secondary", "pkg_models_min" ]
-let latestDownloadAddonsByCamp = { //addons to download after other required campaign addons is already downloaded
-  tanks = ["pkg_video"]
-}
+let initialAddons = []
+let latestDownloadAddonsByCamp = {} 
 let latestDownloadAddons = []
 let commonUhqAddons = ["pkg_environment_uhq"]
-let ovrHangarAddon = {addons = [], hangarPath=""}//{ addons : array<string>, hangarPath : string }
-
-let gameModeAddonToAddonSetMap = {
-  [PKG_NAVAL] = commonAddonsByPostfix.naval,
-  [PKG_GROUND] = commonAddonsByPostfix.ground,
-  [PKG_LVL_AIR_LOCATIONS] = commonAddonsByPostfix.aircraft,
-}
+let ovrHangarAddon = {addons = [], hangarPath=""}
 
 let campaignPostfix = {
   tanks = "ground"
@@ -68,39 +50,11 @@ let addonLocId = toIdsMap([ PKG_COMMON, PKG_COMMON_HQ, PKG_NAVAL_HQ, PKG_GROUND_
 let addonLocIdWithMRank = {}
 
 let knownAddons = {}
-let extAddonsByRank = {}
+let campaignAddonsByRank = {}
+let commonCampaignAddons = {}
 let soloNewbieByCampaign = {}
 let setBlk = get_settings_blk()
 let addonsBlk = setBlk?.addons
-
-let GET_ALL_ADDONS_SIZES_EVENT_ID = "getAllAddonsSizesEvent"
-
-local addonsSizes = {}
-eventbus_subscribe(GET_ALL_ADDONS_SIZES_EVENT_ID, function(evt) {
-  addonsSizes = clone evt
-
-  if (DBGLEVEL > 0 && addonsSizes) {
-    local message = "Addons sizes:"
-    let addons = addonsSizes.keys().sort()
-    let addonsCount = addons.len()
-    for (local from = 0; from < addonsCount; from += 5) {
-      let chunk = addons.slice(from, from + 5)
-      let chunkStr = "    ".join(chunk.map(function(addon) {
-        let size = addonsSizes[addon]
-        let mb = (size + (MB / 2)) / MB
-        return $"{addon}: {mb}MB ({size})"
-      }))
-      message = "\n".concat(message, $"  {chunkStr}")
-    }
-    debug(message)
-  }
-})
-
-function requestAddonsSizes() {
-  let allAddons = knownAddons.keys()
-  if (allAddons.len() > 0)
-    get_addons_size_async?(GET_ALL_ADDONS_SIZES_EVENT_ID, allAddons)
-}
 
 if (addonsBlk != null) {
   eachBlock(addonsBlk, function(b) {
@@ -127,32 +81,45 @@ if (addonsBlk != null) {
       }
     }
 
-    let conditions = b.getBlockByName("conditions")
-    if (conditions != null) {
-      local isProcessed = false
-      foreach(camp in conditions % "soloNewbie") {
-        isProcessed = true
-        if (camp not in soloNewbieByCampaign)
-          soloNewbieByCampaign[camp] <- []
-        soloNewbieByCampaign[camp].append(addon)
-        if (hq)
-          soloNewbieByCampaign[camp].append(addonHq)
-      }
-
-      let { campaign = null, mRank = null } = conditions
-      if (type(campaign) != "string" || type(mRank) != "integer") {
-        if (!isProcessed)
-          logerr($"Invalid type of required field in addon/conditions for '{addon}': campaign = {campaign}, mRank = {mRank}")
-        return
-      }
-      if (campaign not in extAddonsByRank)
-        extAddonsByRank[campaign] <- {}
-      if (mRank not in extAddonsByRank[campaign])
-        extAddonsByRank[campaign][mRank] <- []
-      extAddonsByRank[campaign][mRank].append(addon)
-
+    function appendAddonByKey(list, key) {
+      if (key not in list)
+        list[key] <- []
+      list[key].append(addon)
       if (hq)
-        extAddonsByRank[campaign][mRank].append(addonHq)
+        list[key].append(addonHq)
+    }
+
+    let allConditions = b % "conditions"
+    foreach (conditions in allConditions) {
+      let { campaign = null, mRank = null, isSoloNewbie = false, isDownloadLast = false,
+        isDownloadFirst = false
+      } = conditions
+      if (isDownloadFirst) {
+        initialAddons.append(addon)
+        if (hq)
+          initialAddons.append(addonHq)
+        continue
+      }
+
+      if (type(campaign) != "string") {
+        logerr($"Invalid type of required field in addon/conditions for '{addon}': campaign = {campaign}")
+        continue
+      }
+
+      if (isSoloNewbie)
+        appendAddonByKey(soloNewbieByCampaign, campaign)
+
+      if (type(mRank) != "integer") {
+        if (isDownloadLast)
+          appendAddonByKey(latestDownloadAddonsByCamp, campaign)
+        else if (!isSoloNewbie)
+          appendAddonByKey(commonCampaignAddons, campaign)
+        continue
+      }
+
+      if (campaign not in campaignAddonsByRank)
+        campaignAddonsByRank[campaign] <- {}
+      appendAddonByKey(campaignAddonsByRank[campaign], mRank)
 
       if (campaign in campaignPostfix && !doesLocTextExist($"addon/{addon}")) {
         let cfg = { locId = $"addon/{campaignPostfix[campaign]}_tier", mRank }
@@ -161,8 +128,6 @@ if (addonsBlk != null) {
       }
     }
   })
-
-  requestAddonsSizes()
 }
 
 function calcCommonAddonName(addon) {
@@ -230,26 +195,30 @@ function localizeAddonsLimited(list, maxNumber) {
   })
 }
 
-let getAddonsSize = @(addons)
-  unique(addons).reduce(@(total, addon) total + (addonsSizes?[addon] ?? 0), 0)
+let getAddonsSize = @(addons, addonSizesV)
+  unique(addons).reduce(@(total, addon) total + (addonSizesV?[addon] ?? 0), 0)
 
-function getAddonsSizeStr(addons) {
-  let bytes = getAddonsSize(addons)
+function getAddonsSizeStr(addons, addonSizesV) {
+  let bytes = getAddonsSize(addons, addonSizesV)
   let mb = (bytes + (MB / 2)) / MB
   return "".concat(mb > 0 ? mb : "???", loc("measureUnits/MB"))
 }
 
+let gameModeAddonToAddonSetMap = {
+  [PKG_NAVAL] = commonCampaignAddons?.ships ?? [],
+  [PKG_GROUND] = commonCampaignAddons?.tanks ?? [],
+  [PKG_LVL_AIR_LOCATIONS] = commonCampaignAddons?.air ?? [],
+}
+
 return freeze({
   campaignPostfix
-  commonAddonsByPostfix
-  dev
+  commonCampaignAddons
   initialAddons
   commonUhqAddons
   latestDownloadAddons
   latestDownloadAddonsByCamp
-  extAddonsByRank
+  campaignAddonsByRank
   knownAddons
-  getAddonsSize
   ovrHangarAddon
   soloNewbieByCampaign
 
@@ -258,7 +227,6 @@ return freeze({
   localizeAddons
   localizeAddonsLimited
   getAddonsSizeStr
+  getAddonsSize
   resetAddonNamesCache = @() addonNames.clear()
-
-  ADDON_VERSION_EMPTY
 })

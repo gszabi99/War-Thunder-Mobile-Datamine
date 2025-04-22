@@ -236,7 +236,7 @@ function mkUnitNameText(unitNameLoc, size, rStyle) {
   return nameText
 }
 
-// CURRENCY ///////////////////////////////////////////////////////////////////
+
 
 function mkGoldOrWpIcon(size, iconShiftY, icon) {
   let w = round(size[1] * 1.1).tointeger()
@@ -263,8 +263,8 @@ function mkCommonCurrencyIcon(curId, amount, pSize, iconShiftY, scale) {
 
 let defCurrencyImgCtor = @(id, amount, size, iconShiftY) mkCommonCurrencyIcon(id, amount, size, iconShiftY, 0.85)
 let currencyImgCtors = {
-  gold = @(id, _, size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, getCurrencyBigIcon(id)) //todo: image by amount
-  wp = @(id, _, size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, getCurrencyBigIcon(id)) //todo: image by amount
+  gold = @(id, _, size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, getCurrencyBigIcon(id)) 
+  wp = @(id, _, size, iconShiftY) mkGoldOrWpIcon(size, iconShiftY, getCurrencyBigIcon(id)) 
   eventKey = @(id, amount, size, iconShiftY) mkCommonCurrencyIcon(id, amount, size, iconShiftY, 0.65)
 }
 
@@ -292,7 +292,7 @@ function mkRewardPlateCurrencyTexts(r, rStyle) {
   return mkRewardLabel(mkCommonLabelText(countText, rStyle), rStyle)
 }
 
-// PREMIUM ////////////////////////////////////////////////////////////////////
+
 
 function mkRewardPlatePremiumImage(r, rStyle) {
   let { iconShiftY } = rStyle
@@ -316,7 +316,7 @@ function mkRewardPlatePremiumTexts(r, rStyle) {
   return mkRewardTextLabel("".concat(days, loc("measureUnits/days")), rStyle)
 }
 
-// DECORATOR //////////////////////////////////////////////////////////////////
+
 
 let mkDecoratorIconAvatar = @(decoratorId, _rStyle, size) {
   size
@@ -376,7 +376,7 @@ function mkRewardPlateDecoratorTexts(r, rStyle) {
         mkRewardLabel(mkCommonLabelTextMarquee(loc($"decorator/{allDecorators.value?[id].dType}"), rStyle), rStyle))
 }
 
-// ITEM ///////////////////////////////////////////////////////////////////////
+
 
 function mkRewardPlateItemImage(r, rStyle) {
   let { iconShiftY } = rStyle
@@ -389,7 +389,7 @@ function mkRewardPlateItemImage(r, rStyle) {
   }
 }
 
-// LOOTBOX ////////////////////////////////////////////////////////////////////
+
 
 function mkRewardPlateLootboxImage(r, rStyle) {
   let { iconShiftY } = rStyle
@@ -401,7 +401,7 @@ function mkRewardPlateLootboxImage(r, rStyle) {
   }
 }
 
-// BOOSTER ////////////////////////////////////////////////////////////////////
+
 
 function mkRewardPlateBoosterImage(r, rStyle) {
   let { iconShiftY } = rStyle
@@ -417,7 +417,7 @@ function mkRewardPlateBoosterImage(r, rStyle) {
   }
 }
 
-// UNIT ///////////////////////////////////////////////////////////////////////
+
 
 function mkRewardPlateUnitImageImpl(r, rStyle, isUpgraded) {
   let unit = Computed(@() serverConfigs.value?.allUnits?[r.id].__merge({ isUpgraded }))
@@ -431,7 +431,7 @@ function mkRewardPlateUnitImageImpl(r, rStyle, isUpgraded) {
   })
 }
 
-// STAT ///////////////////////////////////////////////////////////////////////
+
 
 function mkRewardPlateStatImage(r, rStyle) {
   let { iconShiftY } = rStyle
@@ -448,7 +448,7 @@ function mkRewardPlateStatImage(r, rStyle) {
   }
 }
 
-// SKIN ///////////////////////////////////////////////////////////////////////
+
 
 function mkRewardPlateSkinImage(r, rStyle) {
   let { id, subId = "" } = r
@@ -476,7 +476,7 @@ function mkRewardPlateSkinImage(r, rStyle) {
 let mkRewardPlateSkinTexts = @(r, rStyle)
   mkRewardLabel(mkCommonLabelTextMarquee(loc(getUnitLocId(r.id)), rStyle), rStyle)
 
-//  UNIT ///////////////////////////////////////////////////////////////////////
+
 
 let mkRewardPlateUnitImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, false)
 let mkRewardPlateUnitUpgradeImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, true)
@@ -517,7 +517,7 @@ function mkUnitTextsImpl(r, rStyle, isUpgraded) {
 let mkRewardPlateUnitTexts = @(r, rStyle) mkUnitTextsImpl(r, rStyle, false)
 let mkRewardPlateUnitUpgradeTexts = @(r, rStyle) mkUnitTextsImpl(r, rStyle, true)
 
-//  BLUEPRINTS ////////////////////////////////////////////////////////////////
+
 
 function mkRewardPlateBlueprintImage(r, rStyle) {
   let { id } = r
@@ -584,7 +584,7 @@ function mkRewardPlateBlueprintTexts(r, rStyle) {
   }
 }
 
-// PRIZE TICKET ///////////////////////////////////////////////////////////////
+
 
 function mkRewardPlatePrizeTicketImage(r, rStyle, rewardCtors) {
   let { prizeTicketsCfg = {} } = serverConfigs.get()
@@ -604,7 +604,7 @@ function mkRewardPlatePrizeTicketImage(r, rStyle, rewardCtors) {
     : openRewardPrizeView(rewards, rewardCtors), rStyle)
 }
 
-// UNKNOWN ////////////////////////////////////////////////////////////////////
+
 
 function mkRewardPlateUnknownImage(r, rStyle) {
   let { iconShiftY } = rStyle
@@ -620,7 +620,7 @@ function mkRewardPlateUnknownImage(r, rStyle) {
   }
 }
 
-// LAYER CONSTRUCTORS /////////////////////////////////////////////////////////
+
 
 function mkRewardPlateBg(r, rStyle) {
   let size = getRewardPlateSize(r.slots, rStyle)

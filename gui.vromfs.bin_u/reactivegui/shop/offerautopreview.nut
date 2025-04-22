@@ -9,6 +9,8 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { hasSavedDeepLink } = require("%rGui/notifications/appsFlierDeepLink.nut")
+let { registerAutoDownloadAddons } = require("%rGui/updater/updaterState.nut")
+
 
 let showedTime = hardPersistWatched("offerAutoPreview.showedTime", {})
 let enteredMenuTime = hardPersistWatched("offerAutoPreview.enteredMenuTime", {})
@@ -56,3 +58,5 @@ isLoggedIn.subscribe(function(v) {
   showedTime({})
   enteredMenuTime({})
 })
+
+registerAutoDownloadAddons(reqAddonsToShowOffer)

@@ -9,7 +9,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let debugStatus = hardPersistWatched("connectionStatus.debugStatus", 0)
 let { get_connection_status, CONN_LIMITED, CONN_OK, CONN_NO_CONNECTION, CONN_UNKNOWN
 } = is_android ? require("android.updater")
-  : { //debug_mode
+  : { 
       get_connection_status = @() debugStatus.value
       CONN_LIMITED = 1
       CONN_OK = 0
@@ -37,5 +37,5 @@ register_command(function() {
     status = CONN_NO_CONNECTION
   debugStatus(status)
   eventbus_send("android.network.onConnectionStatusChange", { status })
-  console_print($"Connection status changed to {connectionStatusMap[status]}") //warning disable: -forbidden-function
+  console_print($"Connection status changed to {connectionStatusMap[status]}") 
 }, "debug.ui.connectionStatusToggle")

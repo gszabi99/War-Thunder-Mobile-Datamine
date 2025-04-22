@@ -30,13 +30,13 @@ registerRespondent("handle_web_rpc", function handle_web_rpc(call) {
   }
 })
 
-/*
- this is just example
-function rpc_add(params) {
-  return (params.a + params.b).tostring()
-}
 
-web_rpc.register_handler("plus", rpc_add)
-*/
+
+
+
+
+
+
+
 
 return {web_rpc}

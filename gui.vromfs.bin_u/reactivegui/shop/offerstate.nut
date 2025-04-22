@@ -8,7 +8,7 @@ let { activeOffers, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { PURCHASING, DELAYED } = require("goodsStates.nut")
 let { getGoodsType } = require("shopCommon.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let hasAddons = require("%appGlobals/updater/hasAddons.nut")
+let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 
@@ -49,7 +49,7 @@ function updateRequestTimer(info) {
   if (timeLeft > 0)
     resetTimeout(timeLeft, checkNewOffer)
   else
-    clearTimer(checkNewOffer) //no need to request new offer when window not attached. To allow last chance offer purchase from full screen window.
+    clearTimer(checkNewOffer) 
 }
 updateRequestTimer(nextOfferRequestInfo.value)
 nextOfferRequestInfo.subscribe(updateRequestTimer)
@@ -82,8 +82,8 @@ let reqAddonsToShowOffer = Computed(function() {
 })
 
 return {
-  activeOffer //otdated offer can be here. Need to not leave preview on time left
-  visibleOffer //only active by timer offer here. banner hides for outdated offer
+  activeOffer 
+  visibleOffer 
   offerPurchasingState
   reqAddonsToShowOffer
 

@@ -29,7 +29,7 @@ let { HMS_ORDER_STATE_SUCCESS, HMS_ORDER_STATE_FAILED, HMS_ORDER_STATE_DEFAULT_C
 } = billingModule
 let dbgStatuses = [HMS_ORDER_STATE_SUCCESS, HMS_ORDER_STATE_CANCEL, HMS_ORDER_STATE_FAILED, HMS_ORDER_STATE_NET_ERROR]
 local dbgStatusIdx = 0
-let { //defaults only to allow test this module on PC
+let { 
   initAndRequestData = function(listStr) {
     let list = parse_json(listStr)
     let result = {
@@ -69,7 +69,7 @@ let { //defaults only to allow test this module on PC
     })),
 } = !isDebugMode ? billingModule : {}
 let register_huawei_purchase = !is_pc ? registerHuaweiPurchase
-  : @(_, __, eventId) setTimeout(0.1, @() eventbus_send(eventId, { status = YU2_OK, item_id = "id", purch_token = "token" })) //for debug on pc
+  : @(_, __, eventId) setTimeout(0.1, @() eventbus_send(eventId, { status = YU2_OK, item_id = "id", purch_token = "token" })) 
 
 
 const REPEAT_ON_ERROR_MSEC = 60000
@@ -188,7 +188,7 @@ function refreshAvailableSkus() {
   if (skusForRequest.value.len() == 0)
     return
   if (lastInitStatus.value != HMS_ORDER_STATE_SUCCESS)
-    lastInitStatus(HMS_ORDER_STATE_DEFAULT_CODE) //remove error status by request
+    lastInitStatus(HMS_ORDER_STATE_DEFAULT_CODE) 
   logG("initAndRequestData: ", skusForRequest.value)
   initAndRequestData(skusForRequest.value)
 }
@@ -223,7 +223,7 @@ let platformGoods = Computed(function() {
       continue
     let platformDiscount = getHuaweiDiscount(goods)
     let discountInPercent = platformDiscount != 0 ? platformDiscount : (goods?.discountInPercent ?? 0)
-    res[goodsId] <- goods.__merge({ priceExt, discountInPercent }) //warning disable: -potentially-nulled-index
+    res[goodsId] <- goods.__merge({ priceExt, discountInPercent }) 
   }
   return res
 })
@@ -275,7 +275,7 @@ function changeSubscription(subsOrId, _) {
 let noNeedLogerr = [ HMS_ORDER_STATE_CANCEL, HMS_ORDER_STATE_NET_ERROR, HMS_ORDER_STATE_CALLS_FREQUENT, HMS_ORDER_STATE_DEFAULT_CODE ]
 
 function sendLogPurchaseData(json_value) {
-  //see more here: https://support.appsflyer.com/hc/en-us/articles/4410481112081
+  
   local resp = parse_json(json_value)
   let { orderId = null, productId = null } = resp
   local af = {
@@ -283,7 +283,7 @@ function sendLogPurchaseData(json_value) {
     af_content_id = productId
     af_revenue = availableSkusPrices.value?[productId].price ?? -1
     af_price = availableSkusPrices.value?[productId].price ?? -1
-    af_currency = availableSkusPrices.value?[productId].currencyId ?? "USD" //or af_purchase_currency?
+    af_currency = availableSkusPrices.value?[productId].currencyId ?? "USD" 
   }
   logEvent("af_purchase", object_to_json_string(af, true))
 }

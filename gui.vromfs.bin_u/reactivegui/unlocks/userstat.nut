@@ -14,11 +14,11 @@ let { parseUnixTimeCached } = require("%appGlobals/timeToText.nut")
 let { request, registerHandler, registerExecutor } = charClientEventExt("userStats")
 
 let STATS_ACTUAL_TIMEOUT = 900
-const MAX_TABLES_UPDATE_DELAY = 10 //to prevent all users update tables at once.
+const MAX_TABLES_UPDATE_DELAY = 10 
 
 function mkUserstatWatch(id, defValue = {}) {
   let key = $"userstat.{id}"
-  let data = Watched(ndbTryRead(key) ?? defValue) //no need to write to ndb, it will be saved by daguiVm
+  let data = Watched(ndbTryRead(key) ?? defValue) 
   eventbus_subscribe($"userstat.update.{id}", @(_) data(ndbTryRead(key) ?? defValue))
   return data
 }
@@ -28,7 +28,7 @@ let userstatUnlocks = mkUserstatWatch("unlocks")
 let userstatStats = mkUserstatWatch("stats")
 let userstatInfoTables = mkUserstatWatch("infoTables")
 let statsInProgress = mkWatched(persist, "statsInProgress", {})
-let tablesActivityOvr = Watched({}) //tables activity override while wait for server update
+let tablesActivityOvr = Watched({}) 
 
 let getStatsActualTimeLeft = @() (userstatStats.value?.timestamp ?? 0) + STATS_ACTUAL_TIMEOUT - serverTime.value
 let isStatsActualByTime = Watched(getStatsActualTimeLeft() > 0)
@@ -203,8 +203,8 @@ return {
   forceRefreshInfoTables = @() eventbus_send($"userstat.infoTables.forceRefresh", {})
 
   userstatRequest = requestExt
-  userstatRegisterHandler = registerHandler //main handler for actions
-  userstatRegisterExecutor = registerExecutor //custom handler for actions
+  userstatRegisterHandler = registerHandler 
+  userstatRegisterExecutor = registerExecutor 
 
   userstatSetStat
   statsInProgress

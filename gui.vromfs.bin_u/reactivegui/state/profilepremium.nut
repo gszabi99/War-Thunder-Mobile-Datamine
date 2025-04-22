@@ -13,7 +13,7 @@ let havePremium = Computed(@() havePremiumDeprecated.get() || hasPremiumSubs.get
 let hasPremDailyBonus = Computed(@() (dailyCounter.get()?.daily_prem_gold ?? 0) == 0)
 let canReceivePremDailyBonus = Computed(@() hasPremDailyBonus.get() && hasPremiumSubs.get())
 
-let nextUpdate = Watched({ time = 0 }) // Even when value changed to the same, it is better to restart the timer.
+let nextUpdate = Watched({ time = 0 }) 
 
 function updateState() {
   let now = serverTime.value

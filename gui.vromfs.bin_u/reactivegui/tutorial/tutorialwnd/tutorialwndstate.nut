@@ -1,46 +1,46 @@
 from "%globalsDarg/darg_library.nut" import *
 
-/*
-Tutoral config:
-{
-  id : string //for big query
-  stepSkipDelay : float //3sec by default
-  nextStepDelay : float = 0.5 //delay before you can do next step by click light block. Work only when block dont have onClick action
-  state : table //tutorial state, can be modified by tutoral actions.
-  style : table //custom style
-  onStepStatus : function(stepId, status) //called on each step status change
 
-  steps : array -> [
-    {
-      id : string //for big query, and unordered move to step
-      text : string //or Watched(string)
-      textCtor : function(text) //custom creator for text
-      nextKeyDelay : float  //when not set can't next by any key. When < 0 will be calculated by text length.
-      skipKeyDelay : float //when not set = nextKeyDelay + 1 sec. If nextKeyDelay also not set, will be SKIP_DELAY.
-      beforeStart : function(state) //action before start
-      onFinish : function(state) //action on step finish, after object action.
-      onNextKey : function(state) //when function not set, will be used function from the first object
-      onSkip : function(state) //called only when step skipped. if null, will be called onNextKey instead
-      nextStepAfter : Watched(bool) //next step will start automatically when watch become true.
-                            //if watch already true on the step start, step will be skipped
-      arrowLinks : [[from1, to1], [from2, to2], ...] //from* and to* are indexes in objects
-      objects : array -> [
-        {
-          keys : anytype //all types except of listed below - is object key to highlight
-                         //array of keys to higlight group. Will combine them all to single box.
-                         //function which return key or array of keys to highlight
-                         //Observable which value is key or array of keys to highlight
-          onClick : function(state) //action onClick. If return true, next step will be not called
-          hotkeys : string //custom hotkey to activate this onClickAction
-          sizeIncAdd : int //higlight size increase. Default value = 0
-          ctor : function(box) //custom creator for this box
-          needArrow : bool //show pointer arrow to this object if it not zero size.
-        }
-      ]
-    }
-  ]
-}
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let utf8 = require("utf8")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
@@ -54,7 +54,7 @@ const SKIP_DELAY_AFTER_NEXT_KEY = 2.0
 local tutorialConfig = null
 
 let state = Watched({
-  version = 0 //to subscribe on config changes
+  version = 0 
   step = 0
 })
 let tutorialConfigVersion = Computed(@() state.value.version)
@@ -108,7 +108,7 @@ function setTutorialConfig(config) {
     step = 0
   })
 
-  if (tryCall(tutorialConfig?.steps[0].beforeStart, "beforeStart")) //only for debug purpose, when start from the middle of the tutorial.
+  if (tryCall(tutorialConfig?.steps[0].beforeStart, "beforeStart")) 
     onStepStatus("tutorial_started")
 }
 
@@ -123,7 +123,7 @@ function goToStep(idxOrId) {
   if (!tryCall(steps?[stepIdx.value].onFinish, "onFinish"))
     return
 
-  if (idx in steps) { // waring disable: -in-instead-contains
+  if (idx in steps) { 
     if (!tryCall(steps?[idx].beforeStart, "beforeStart"))
       return
     state.mutate(@(s) s.step <- idx)

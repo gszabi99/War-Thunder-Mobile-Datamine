@@ -9,6 +9,7 @@ let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
 let { threatRocketsBlock } = require("%rGui/hud/hudThreatRocketsBlock.nut")
 let { isInStrategyMode } = require("%rGui/hudState.nut")
 let strategyHud = require("%rGui/hud/strategyMode/strategyHud.nut")
+let { hitIndicator } = require("%rGui/hud/shipHitIndicator.nut")
 
 return @() {
   watch = isInStrategyMode
@@ -29,6 +30,7 @@ return @() {
         threatRocketsBlock
         hudTimersBlock
         shipSight
+        hitIndicator
         currentWeaponNameText
       ]
     }

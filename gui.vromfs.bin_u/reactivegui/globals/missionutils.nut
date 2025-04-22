@@ -13,10 +13,10 @@ function getLocIdsArray(config, key = "locId") {
   let result = []
   foreach (idx, namePart in parsedString) {
     if (namePart == ",")
-      result.remove(result.len() - 1) //remove previouse space
+      result.remove(result.len() - 1) 
 
     result.append(namePart)
-    //Because of complexe string in result, better to manually add required spaces
+    
     if (idx != (parsedString.len() - 1))
       result.append(" ")
   }

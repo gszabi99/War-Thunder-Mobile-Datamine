@@ -28,7 +28,7 @@ let mkSlotsCommonInfo = @(campaign) {
 }
 
 function getSingleMissionResult(rewardData) {
-  if (battleSessionId.value != -1) //we can leave battle whe session is already destroyed
+  if (battleSessionId.value != -1) 
     return null
 
   let reason = get_game_over_reason()
