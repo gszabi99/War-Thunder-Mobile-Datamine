@@ -38,6 +38,7 @@ let defaults = {
   allow_subscriptions = DBGLEVEL > 0
   can_upgrade_subscription = DBGLEVEL > 0
   allow_dm_viewer = DBGLEVEL > 0 && isCircuitDev
+  allow_dm_viewer_ships_armor = DBGLEVEL > 0 && isCircuitDev
   can_view_jip_setting = DBGLEVEL > 0
 }
 

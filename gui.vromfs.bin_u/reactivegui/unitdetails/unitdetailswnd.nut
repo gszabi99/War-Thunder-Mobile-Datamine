@@ -35,6 +35,7 @@ let { openUnitRewardsModal, unseenUnitLvlRewardsList } = require("%rGui/levelUp/
 let { PRIMARY, defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { clearDmViewerUnitDataCache } = require("%rGui/dmViewer/dmViewerState.nut")
+let dmViewerBgComps = require("%rGui/dmViewer/dmViewerBgComps.nut")
 let dmViewerHintComps = require("%rGui/dmViewer/dmViewerHintComps.nut")
 let mkDmViewerSwitchComp = require("%rGui/dmViewer/mkDmViewerSwitchComp.nut")
 
@@ -230,6 +231,32 @@ function buttonsBlock() {
   }
 }
 
+let sceneContent = {
+  size = flex()
+  padding = saBordersRv
+  flow = FLOW_HORIZONTAL
+  children = [
+    {
+      size = flex()
+      children = [
+        sceneHeader
+        {
+          size = flex()
+          flow = FLOW_HORIZONTAL
+          gap = buttonsGap
+          vplace = ALIGN_BOTTOM
+          valign = ALIGN_BOTTOM
+          children = [
+            platoonUnitsBlock
+            buttonsBlock
+          ]
+        }
+      ]
+    }
+    unitInfoPanelPlace
+  ]
+}
+
 let sceneRoot = {
   key = openCount
   size = [ sw(100), sh(100) ]
@@ -247,33 +274,7 @@ let sceneRoot = {
   }
   children = {
     size = flex()
-    children = [
-      {
-        size = flex()
-        padding = saBordersRv
-        flow = FLOW_HORIZONTAL
-        children = [
-          {
-            size = flex()
-            children = [
-              sceneHeader
-              {
-                size = flex()
-                flow = FLOW_HORIZONTAL
-                gap = buttonsGap
-                vplace = ALIGN_BOTTOM
-                valign = ALIGN_BOTTOM
-                children = [
-                  platoonUnitsBlock
-                  buttonsBlock
-                ]
-              }
-            ]
-          }
-          unitInfoPanelPlace
-        ]
-      }
-    ].extend(dmViewerHintComps)
+    children = [].extend(dmViewerBgComps, [ sceneContent ], dmViewerHintComps)
   }
 }
 

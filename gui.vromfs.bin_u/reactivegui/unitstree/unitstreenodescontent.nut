@@ -225,7 +225,7 @@ let mkLinks = @(linksCfg) function() {
 
   foreach(reqNames, cmds in linesFrom) {
     let isStr = type(reqNames) == "string"
-    let hasAccess = isStr ? reqNames in own : null == reqNames.findvalue(@(name) name not in own)
+    let hasAccess = isStr ? reqNames in own : null != reqNames.findvalue(@(name) name in own)
     if (hasAccess && (isStr ? animUnlockUnit == reqNames : reqNames.contains(animUnlockUnit))) {
       if (canPlayAnim)
         animUnlockCommands.extend(cmds)
@@ -245,7 +245,7 @@ let mkLinks = @(linksCfg) function() {
   foreach(cfg in linesTo) {
     let { name, reqUnits, cmd } = cfg
     let isList = type(name) == "array"
-    let hasAccess = null == reqUnits.findvalue(@(n) n not in own)
+    let hasAccess = null != reqUnits.findvalue(@(n) n in own)
 
     if (hasAccess && reqUnits.contains(animUnlockUnit)) {
       if (canPlayAnim)

@@ -70,7 +70,7 @@ function getConsumablesInfo(goods) {
     data.append({ id, amount = count })
   }
 
-  return data.sort(@(a, b) orderByItems[a.id] <=> orderByItems[b.id])
+  return data.sort(@(a, b) (orderByItems?[a.id] ?? 0) <=> (orderByItems?[b.id] ?? 0))
 }
 
 function getLocNameConsumables(goods) {

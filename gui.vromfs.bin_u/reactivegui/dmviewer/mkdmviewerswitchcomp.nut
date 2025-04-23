@@ -1,13 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
 let { DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY } = require("hangar")
-let { allow_dm_viewer } = require("%appGlobals/permissions.nut")
+let { allow_dm_viewer, allow_dm_viewer_ships_armor } = require("%appGlobals/permissions.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { dmViewerMode } = require("dmViewerState.nut")
+let { SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
+
+let forAnyUnit = @(_unitW) Watched(true)
+let noArmorForShips = @(unitW) Computed(
+  @() allow_dm_viewer_ships_armor.get() || ![ SHIP, BOAT, SUBMARINE ].contains(unitW.get()?.unitType))
 
 let btnsCfg = [
-  { mode = DM_VIEWER_NONE,  text = loc("dm_viewer/mode/none")  }
-  { mode = DM_VIEWER_ARMOR, text = loc("dm_viewer/mode/armor") }
-  { mode = DM_VIEWER_XRAY,  text = loc("dm_viewer/mode/xray")  }
+  { mode = DM_VIEWER_NONE,  text = loc("dm_viewer/mode/none"),  mkIsVisible = forAnyUnit }
+  { mode = DM_VIEWER_ARMOR, text = loc("dm_viewer/mode/armor"), mkIsVisible = noArmorForShips }
+  { mode = DM_VIEWER_XRAY,  text = loc("dm_viewer/mode/xray"),  mkIsVisible = forAnyUnit }
 ]
 
 let plateH = hdpx(70)
@@ -29,12 +34,13 @@ let btnBgHovered = {
   color = hoverColor
 }
 
-function mkModeBtn(btnCfg) {
-  let { mode, text } = btnCfg
+function mkModeBtn(btnCfg, unitW) {
+  let { mode, text, mkIsVisible } = btnCfg
   let stateFlags = Watched(0)
   let isSelected = Computed(@() dmViewerMode.get() == mode)
-  return @() {
-    watch = [stateFlags, isSelected]
+  let isVisible = mkIsVisible(unitW)
+  return @() !isVisible.get() ? { watch = isVisible } : {
+    watch = [stateFlags, isSelected, isVisible]
     size = [flex(), btnH]
 
     behavior = Behaviors.Button
@@ -61,18 +67,18 @@ function mkModeBtn(btnCfg) {
   }
 }
 
-let dmViewerSwitchBase = {
+let mkModeBtnsSet = @(unitW) {
   size = [flex(), plateH]
   padding = platePad
   onDetach = @() dmViewerMode.set(DM_VIEWER_NONE)
   rendObj = ROBJ_SOLID
   color = darkColor
   flow = FLOW_HORIZONTAL
-  children = btnsCfg.map(mkModeBtn)
+  children = btnsCfg.map(@(cfg) mkModeBtn(cfg, unitW))
 }
 
 let mkDmViewerSwitchComp = @(unitW) @() {
     watch = [allow_dm_viewer, unitW]
-  }.__update(allow_dm_viewer.get() && unitW.get() != null ? dmViewerSwitchBase : {})
+  }.__update(!allow_dm_viewer.get() || unitW.get() == null ? {} : mkModeBtnsSet(unitW))
 
 return mkDmViewerSwitchComp

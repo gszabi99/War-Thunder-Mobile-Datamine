@@ -98,7 +98,7 @@ function updateUnitsResearchProgress(v) {
 unitsResearchStatus.subscribe(updateUnitsResearchProgress)
 blueprintUnitsStatus.subscribe(updateUnitsResearchProgress)
 
-function mkAnimRequirements(unitId, allNodes, canAdd = @(_) true) {
+function mkAnimRequirements(unitId, allNodes, isUnlock = @(_) true) {
   let res = {}
   let ancestors = {}
   if (unitId == null)
@@ -108,16 +108,15 @@ function mkAnimRequirements(unitId, allNodes, canAdd = @(_) true) {
     let node = allNodes?[name]
     if (!node)
       continue
-    local last = true
-    foreach(u in node.reqUnits)
-      if (u not in res && canAdd(u)) {
-        last = false
-        res[u] <- true
-        list.append(u) 
-      } else if (u in res)
-        last = false
+    local last = node.reqUnits.len() == 0
+      || null != node.reqUnits.findvalue(isUnlock)
     if (last)
       ancestors[name] <- true
+    else {
+      list.extend(node.reqUnits) 
+      foreach(n in node.reqUnits)
+        res[n] <- true
+    }
   }
   return { res, ancestors }
 }
@@ -125,21 +124,17 @@ function mkAnimRequirements(unitId, allNodes, canAdd = @(_) true) {
 let allNodes = Computed(@() serverConfigs.get()?.unitTreeNodes[curCampaign.get()])
 let animBuyRequirementsInfo = Computed(function() {
   let my = campMyUnits.get()
-  return mkAnimRequirements(animBuyRequirementsUnitId.get(), allNodes.get(), @(name) name not in my)
+  return mkAnimRequirements(animBuyRequirementsUnitId.get(), allNodes.get(), @(name) name in my)
 })
 let animBuyRequirements = Computed(@() animBuyRequirementsInfo.get().res)
 
 let animResearchRequirementsInfo = Computed(function() {
   let status = unitsResearchStatus.get()
+  let my = campMyUnits.get()
   return mkAnimRequirements(
     animResearchRequirementsUnitId.get(),
     allNodes.get(),
-    function(u) {
-      let researchStatus = status?[u]
-      if (researchStatus == null)
-        return false
-      return !researchStatus.isResearched || researchStatus.canResearch
-    })
+    @(name) (name in my) || (status?[name].isResearched ?? false))
 })
 let animResearchRequirements = Computed(@() animResearchRequirementsInfo.get().res)
 let animResearchRequirementsAncestors = Computed(@() animResearchRequirementsInfo.get().ancestors)

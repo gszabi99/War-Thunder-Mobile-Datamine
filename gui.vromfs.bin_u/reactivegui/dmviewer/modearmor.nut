@@ -1,7 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { DM_VIEWER_ARMOR, hangar_get_dm_viewer_parts_count } = require("hangar")
-let { dmViewerMode, dmViewerUnitReady } = require("dmViewerState.nut")
+let { deferOnce } = require("dagor.workcycle")
+let { dmViewerMode, dmViewerUnitReady, needDmViewerPointerControl, pointerScreenX, pointerScreenY
+} = require("dmViewerState.nut")
 let { toggleSubscription, mkDmViewerHint, mkHintTitle, mkHintDescText, accentColor, mkUnitStatusText
 } = require("dmViewerPkg.nut")
 let { collectArmorClassToSteelMuls } = require("modeArmorUtils.nut")
@@ -35,8 +37,15 @@ let isSolidW = Watched(false)
 let isVariableThicknessW = Watched(false)
 let nameW = Watched("")
 
+let hintScrPosX = Watched(0)
+let hintScrPosY = Watched(0)
+scrPosX.subscribe(@(v) !needDmViewerPointerControl.get() ? hintScrPosX.set(v) : null)
+scrPosY.subscribe(@(v) !needDmViewerPointerControl.get() ? hintScrPosY.set(v) : null)
+pointerScreenX.subscribe(@(v) needDmViewerPointerControl.get() ? deferOnce(@() hintScrPosX.set(v)) : null)
+pointerScreenY.subscribe(@(v) needDmViewerPointerControl.get() ? deferOnce(@() hintScrPosY.set(v)) : null)
+
 function onUpdateHintArmor(p) {
-  let { posX, posY, angle, normal_angle, thickness, effective_thickness, solid,
+  let { posX, posY, angle = 0, normal_angle = 0, thickness = 0, effective_thickness = 0, solid = false,
     variable_thickness = false, name = ""
   } = p
   scrPosX.set(posX)
@@ -68,7 +77,7 @@ function hintComp() {
     return { watch = isModeActive }
 
   let isHintVisible = Computed(@() isModeActive.get() && dmViewerUnitReady.get()
-    && (scrPosX.get() != 0 || scrPosY.get() != 0 || thicknessW.get() != 0 || nameW.get() != ""))
+    && (thicknessW.get() != 0 || nameW.get() != ""))
 
   let hintTitleW = Computed(@() loc($"armor_class/{nameW.get()}"))
   let effectiveThicknessW = Computed(@() round(effectiveThicknessRawW.get()))
@@ -117,7 +126,7 @@ function hintComp() {
   return {
     watch = isModeActive
     size= flex()
-    children = mkDmViewerHint(isHintVisible, scrPosX, scrPosY, hintContent)
+    children = mkDmViewerHint(isHintVisible, hintScrPosX, hintScrPosY, hintContent)
   }
 }
 

@@ -83,7 +83,12 @@ register_command(
     log("curRandomBattleModeName = ", randomBattleMode.value?.name)
   }
   "debug.forceNewbieModeIdx")
-register_command(@() isDebugABTest.set(!isDebugABTest.get()), "debug.toggleAbTest.tutorialTankOnline")
+register_command(
+  function() {
+    isDebugABTest.set(!isDebugABTest.get())
+    console_print("nextNewbieSingle = ", curABTestOnlineTutorialMode.get()?.name ?? "offline") 
+  },
+  "debug.toggleAbTest.tutorialTankOnline")
 
 let separateEventModes = Computed(function() {
   let res = {}

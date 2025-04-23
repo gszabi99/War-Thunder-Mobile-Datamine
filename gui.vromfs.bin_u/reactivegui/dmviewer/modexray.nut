@@ -2,11 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 let DataBlock = require("DataBlock")
 let { DM_VIEWER_XRAY } = require("hangar")
 let { getUnitFileName } = require("vehicleModel")
+let { deferOnce } = require("dagor.workcycle")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { getPartType, getPartNameLocText } = require("%globalScripts/modeXrayLib.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { loadedHangarUnitName } = require("%rGui/unit/hangarUnit.nut")
-let { dmViewerMode, dmViewerUnitReady, getDmViewerUnitData, isDebugMode, isDebugBatchExportProcess
+let { dmViewerMode, dmViewerUnitReady, getDmViewerUnitData, isDebugMode, isDebugBatchExportProcess,
+  needDmViewerPointerControl, pointerScreenX, pointerScreenY
 } = require("dmViewerState.nut")
 let { getSimpleUnitType } = require("modeXrayUtils.nut")
 let { toggleSubscription, mkDmViewerHint, mkHintTitle, mkHintDescText
@@ -17,6 +19,13 @@ let isModeActive = Computed(@() dmViewerMode.get() == DM_VIEWER_XRAY)
 let scrPosX = Watched(0)
 let scrPosY = Watched(0)
 let nameW = Watched("")
+
+let hintScrPosX = Watched(0)
+let hintScrPosY = Watched(0)
+scrPosX.subscribe(@(v) !needDmViewerPointerControl.get() ? hintScrPosX.set(v) : null)
+scrPosY.subscribe(@(v) !needDmViewerPointerControl.get() ? hintScrPosY.set(v) : null)
+pointerScreenX.subscribe(@(v) needDmViewerPointerControl.get() ? deferOnce(@() hintScrPosX.set(v)) : null)
+pointerScreenY.subscribe(@(v) needDmViewerPointerControl.get() ? deferOnce(@() hintScrPosY.set(v)) : null)
 
 function onUpdateHintXray(p) {
   let { posX, posY, name = "" } = p
@@ -111,7 +120,7 @@ function hintComp() {
     getPartTooltipInfoCached(nameW.get()).partType, nameW.get()))
 
   let isHintVisible = Computed(@() isModeActive.get() && dmViewerUnitReady.get()
-    && (scrPosX.get() != 0 || scrPosY.get() != 0 || hintTitleW.get() != ""))
+    && hintTitleW.get() != "")
 
   let hintContent = {
     flow = FLOW_VERTICAL
@@ -125,7 +134,7 @@ function hintComp() {
   return {
     watch = isModeActive
     size= flex()
-    children = mkDmViewerHint(isHintVisible, scrPosX, scrPosY, hintContent)
+    children = mkDmViewerHint(isHintVisible, hintScrPosX, hintScrPosY, hintContent)
   }
 }
 

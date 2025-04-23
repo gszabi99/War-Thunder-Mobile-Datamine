@@ -218,7 +218,7 @@ let consumablesPlate = @(battleCampaign, itemsByGameMode) @(){
     .extend(itemsCfgByCampaignOrdered.get()[battleCampaign].filter(@(v) itemsByGameMode?[v.name] ?? true)
       .reduce(@(res, l) res.$rawset(l.name, true), {})
       .keys()
-      .sort(@(a, b) orderByItems[a] <=> orderByItems[b])
+      .sort(@(a, b) (orderByItems?[a] ?? 0) <=> (orderByItems?[b] ?? 0))
         .map(@(id) mkItemsBalance(id, function(){
           if(curCampaign.get() != battleCampaign){
             if(needFirstBattleTutorForCampaign(battleCampaign))

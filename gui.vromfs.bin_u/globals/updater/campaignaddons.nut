@@ -1,7 +1,7 @@
 from "math" import max
 let { TANK, AIR, HELICOPTER } = require("%appGlobals/unitConst.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { commonCampaignAddons, campaignAddonsByRank, knownAddons, campaignPostfix
+let { commonCampaignAddons, campaignAddonsByRank, knownAddons, campaignPostfix, soloNewbieByCampaign
 } = require("%appGlobals/updater/addons.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 
@@ -84,10 +84,15 @@ function getCampaignPkgsForOnlineBattle(campaignExt, mRank) {
 function getCampaignPkgsForNewbieBattle(campaignExt, mRank, isSingle) {
   let campaign = getCampaignOrig(campaignExt)
   let res = clone (commonCampaignAddons?[campaign] ?? [])
+  if (isSingle) {
+    res.extend(soloNewbieByCampaign?[campaign] ?? [])
+    return res
+  }
+
   
   
   
-  let maxRank = max(mRank > 1 ? mRank + 1 : mRank, isSingle ? 0 : 1)
+  let maxRank = max(mRank > 1 ? mRank + 1 : mRank, 1)
   for (local i = maxRank; i >= 1 ; i--)
     appendCampaignRankAddons(res, campaign, i)
   return res
