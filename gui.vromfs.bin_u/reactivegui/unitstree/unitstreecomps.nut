@@ -12,7 +12,8 @@ let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { selectedLineVert } = require("%rGui/components/selectedLine.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
+let { mkPriorityUnseenMarkWatch, priorityUnseenMarkFeature } = require("%rGui/components/unseenMark.nut")
+let { curCampaignUnseenBranches } = require("%rGui/unitsTree/unseenBranches.nut")
 
 
 let RGAP_HAS_GAP             = 0x01
@@ -71,7 +72,7 @@ let flagBg = @(isSelected) @() {
 let function mkTreeNodesFlag(height, country, curCountry, onClick, showUnseenMark, needBlink) {
   let isSelected = Computed(@() curCountry.get() == country)
   return @() {
-    watch = [needBlink, isSelected]
+    watch = [needBlink, isSelected, curCampaignUnseenBranches]
     size = [flagsWidth, height]
     behavior = Behaviors.Button
     onClick
@@ -97,7 +98,8 @@ let function mkTreeNodesFlag(height, country, curCountry, onClick, showUnseenMar
             ]
           }
       mkFlagImage(country, flagSize, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER })
-      mkPriorityUnseenMarkWatch(showUnseenMark, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT })
+      curCampaignUnseenBranches.get()?[country] ? priorityUnseenMarkFeature.__update({ vplace = ALIGN_TOP, hplace = ALIGN_RIGHT })
+        : mkPriorityUnseenMarkWatch(showUnseenMark, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT })
     ]
   }
 }

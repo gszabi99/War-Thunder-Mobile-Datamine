@@ -2310,6 +2310,13 @@
       "to": "ussr_camo_winter_net*"
     }
   },
+  "defaultDecals": {
+    "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
   "upgradedDecals": {
     "upgraded": {
       "skin_condition": 100.0,

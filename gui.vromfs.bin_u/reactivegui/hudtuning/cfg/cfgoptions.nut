@@ -42,6 +42,19 @@ let optDoubleCourseGuns = {
   valToString = @(v) loc("options/buttonCount", { count = v ? 2 : 1 })
 }
 
+let hasDoubleRepair = @(options, _ = null) !!options?.hasDoubleRepair
+let optDoubleRepairBtn = {
+  locId = "options/courseGun"
+  ctrlType = OCT_LIST
+  has = hasDoubleRepair
+  list = [false, true]
+  getValue = hasDoubleRepair
+  function setValue(options, _, value) {
+    options.hasDoubleRepair <- value
+  }
+  valToString = @(v) loc("options/buttonCount", { count = v ? 2 : 1 })
+}
+
 let optScale = {
   locId = "options/scale"
   ctrlType = OCT_SLIDER
@@ -143,6 +156,7 @@ return {
   optFontSize
   optTankMoveControlType
   gearDownOnStopButtonTouch
+  optDoubleRepairBtn
 
   getElemFont
   getTextWidth

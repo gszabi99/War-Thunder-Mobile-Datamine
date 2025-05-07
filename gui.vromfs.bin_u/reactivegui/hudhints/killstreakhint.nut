@@ -45,12 +45,13 @@ let unknownIcon = {
 
 function mkParticipantIcon(info, idx) {
   let { image, participant } = info
+  let imageFinal = image == null ? "icon_primary_attention.svg" : $"{image}.avif"
   return participant == null ? unknownIcon
     : {
         key = $"{participant.team}{idx}"
         size = [iconSize, iconSize]
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#{image}.avif:{iconSize}:{iconSize}")
+        image = Picture($"ui/gameuiskin#{imageFinal}:{iconSize}:{iconSize}")
         color = getPlayerColor(participant)
         transform = {}
         animations = [

@@ -171,7 +171,7 @@ function mkAdsBtn(unlock) {
             keepAspect = KEEP_ASPECT_FILL
             image = !hasVip.get()
               ? Picture($"ui/gameuiskin#watch_ads.svg:{iconSize}:{iconSize}:P")
-              : Picture($"ui/gameuiskin#vip_active.svg:{vipIconW}:{vipIconH}:P")
+              : Picture($"ui/gameuiskin#gamercard_subs_vip.svg:{vipIconW}:{vipIconH}:P")
           }
           {
             maxWidth = hasAdBudget.value ? (btnSize[0] - iconSize - btnGap) : btnSize[0]

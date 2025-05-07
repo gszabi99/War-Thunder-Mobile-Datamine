@@ -4,6 +4,7 @@ let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
 let { reset_queue_penalty, isQueuePenaltyInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { msgBoxText, openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -17,7 +18,9 @@ let { penalties } = require("%rGui/mainMenu/penaltyState.nut")
 let QUEUE_PENALTY_UID = "queue_penalty_box"
 
 function tryOpenQueuePenaltyWnd(campaign, resetPenaltyCb) {
-  let leftTime = Computed(@() (penalties.get()?[campaign].penaltyEndTime ?? 0) - serverTime.get())
+  let leftTime = Computed(@()
+    max((penalties.get()?[campaign].penaltyEndTime ?? 0), (penalties.get()?[curCampaign.get()].penaltyEndTime ?? 0))
+    - serverTime.get())
   if (leftTime.get() <= 0)
     return false
 
@@ -58,8 +61,11 @@ function tryOpenQueuePenaltyWnd(campaign, resetPenaltyCb) {
       { id = "cancel", isCancel = true }
       { text = loc("msgbox/btn_pay"), styleId = "PURCHASE", isDefault = true, priceComp,
         function cb() {
-          if (!isQueuePenaltyInProgress.get() && !showNoBalanceMsgIfNeed(price, currencyId, bqInfo))
-            reset_queue_penalty(campaign, price, currencyId, resetPenaltyCb)
+          if (!isQueuePenaltyInProgress.get() && !showNoBalanceMsgIfNeed(price, currencyId, bqInfo)) {
+            let camp = (penalties.get()?[campaign].penaltyEndTime ?? 0) > (penalties.get()?[curCampaign.get()].penaltyEndTime ?? 0)
+              ? campaign : curCampaign.get()
+            reset_queue_penalty(camp, price, currencyId, resetPenaltyCb)
+          }
         }
       }
     ]

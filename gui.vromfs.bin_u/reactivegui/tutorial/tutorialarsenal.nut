@@ -5,13 +5,14 @@ let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { buy_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
-let { isCampaignWithUnitsResearch, curCampaignSlots, sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { isCampaignWithUnitsResearch, sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaignSlots } = require("%appGlobals/pServer/slots.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { hasModalWindows, moveModalToTop } = require("%rGui/components/modalWindows.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial,
   activeTutorialId, WND_UID } = require("tutorialWnd/tutorialWndState.nut")
-let { selectedSlotIdx, slotBarArsenalKey, slotBarSlotKey, visibleNewModsSlots } = require("%rGui/slotBar/slotBarState.nut")
+let { selectedTreeSlotIdx, slotBarArsenalKey, slotBarSlotKey, visibleNewModsSlots } = require("%rGui/slotBar/slotBarState.nut")
 let { curWeaponIdx, curBeltIdx, setCurSlotIdx, setCurBeltsWeaponIdx, isUnitModSlotsAttached, openUnitModsSlotsWndByName,
   slotWeaponKey, slotBeltKey, groupedCurUnseenMods, curWeaponBeltsOrdered, curWeaponsOrdered, weaponsScrollHandler,
   curWeapon, curWeaponModName, curUnitAllModsCost, curBelt, equippedWeaponId, equippedBeltId, curWeaponMod, curSlotIdx,
@@ -53,8 +54,8 @@ let finishEarly = @() shouldEarlyCloseTutorial.get() ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
 function selectUnit(unitIdx) {
-  selectedSlotIdx.set(unitIdx)
-  let unitName = curCampaignSlots.get()?.slots[selectedSlotIdx.get()].name
+  selectedTreeSlotIdx.set(unitIdx)
+  let unitName = curCampaignSlots.get()?.slots[selectedTreeSlotIdx.get()].name
   if (unitName != curUnit.get()?.name)
     setCurrentUnit(unitName)
   curSelectedUnit.set(unitName)
@@ -76,7 +77,7 @@ function findModsToBuyNonUpdatable() {
 }
 
 function startTutorial() {
-  let isCurrentSlot = Computed(@() visibleNewModsSlots.get()?[selectedSlotIdx.get()] != null)
+  let isCurrentSlot = Computed(@() visibleNewModsSlots.get()?[selectedTreeSlotIdx.get()] != null)
   let wasCurrentSlotAtStart = isCurrentSlot.get()
   let wndShowEnough = Watched(false)
   let slotsForLastStep = []
@@ -111,7 +112,7 @@ function startTutorial() {
         objects = [{
           keys = slotBarArsenalKey
           needArrow = true
-          onClick = @() openUnitModsSlotsWndByName(curCampaignSlots.get()?.slots[selectedSlotIdx.get()].name)
+          onClick = @() openUnitModsSlotsWndByName(curCampaignSlots.get()?.slots[selectedTreeSlotIdx.get()].name)
         }]
       }
       {
@@ -182,7 +183,7 @@ function startTutorial() {
           keys = ["purchase_tutor_btn"]
           needArrow = true
           function onClick() {
-            let unitName = curCampaignSlots.get()?.slots[selectedSlotIdx.get()].name
+            let unitName = curCampaignSlots.get()?.slots[selectedTreeSlotIdx.get()].name
             let mod = curWeaponMod.get()
             let modName = curWeaponModName.get()
             let price = getModCost(mod, curUnitAllModsCost.get())

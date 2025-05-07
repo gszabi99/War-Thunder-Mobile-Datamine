@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
+let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { addModalWindow, removeModalWindow, hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg } = require("%rGui/components/modalWnd.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { slotBarSelectWnd } = require("slotBar.nut")
-let { selectedUnitToSlot, slots, closeSelectUnitToSlotWnd, canOpenSelectUnitWithModal, selectedUnitAABBKey } = require("slotBarState.nut")
+let { selectedUnitToSlot, closeSelectUnitToSlotWnd, canOpenSelectUnitWithModal, selectedUnitAABBKey } = require("slotBarState.nut")
 let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { setUnitToScroll } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
@@ -15,7 +16,7 @@ let WND_UID = "selectUnitToSlot"
 let needOpen = Computed(@() selectedUnitToSlot.get() != null
   && !isPurchEffectVisible.get()
   && !isInBattle.get()
-  && slots.get().len() > 0
+  && curSlots.get().len() > 0
 )
 let canOpen = Computed(@() !hasModalWindows.get() || canOpenSelectUnitWithModal.get())
 let shouldOpen = Computed(@() needOpen.get() && canOpen.get())

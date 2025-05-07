@@ -14,7 +14,7 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { firstBattleTutor, needFirstBattleTutor, startTutor } = require("%rGui/tutorial/tutorialMissions.nut")
-let { randomBattleMode, isRandomBattleNewbieTutorial, isGameModesReceived
+let { randomBattleMode, shouldStartNewbieSingleOnline, isGameModesReceived
 } = require("%rGui/gameModes/gameModeState.nut")
 let { startTestFlight, startOfflineBattle } = require("%rGui/gameModes/startOfflineMode.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
@@ -25,7 +25,6 @@ let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMess
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
 let { hasPenaltyStatus } = require("%rGui/mainMenu/penaltyState.nut")
 
-
 let queueCurRandomBattleMode = @() eventbus_send("queueToGameMode", { modeId = randomBattleMode.get()?.gameModeId })
 
 let battleBtnCampaign = Computed(@() randomBattleMode.get()?.campaign ?? curCampaign.get())
@@ -33,7 +32,8 @@ let battleBtnCampaign = Computed(@() randomBattleMode.get()?.campaign ?? curCamp
 let timerSize = hdpxi(40)
 let penaltyTimerIcon = @(campaign) function() {
   let res = { watch = [hasPenaltyStatus, battleBtnCampaign] }
-  let hasPenalty = hasPenaltyStatus.get()?[campaign ?? battleBtnCampaign.get()] ?? false
+  let hasPenalty = (hasPenaltyStatus.get()?[campaign ?? battleBtnCampaign.get()] ?? false)
+    || (hasPenaltyStatus.get()?[curCampaign.get()] ?? false)
   return !hasPenalty ? res
     : res.__update({
         size = [timerSize, timerSize]
@@ -131,7 +131,7 @@ let readyCheckButtonInactive = textButtonCommon(readyCheckText, initiateReadyChe
 
 let toBattleButtonForRandomBattles = @() {
   watch = [ needReadyCheckButton, isReadyCheckSuspended, isSquadLeader, isInSquad, isReady,
-    needFirstBattleTutor, newbieOfflineMissions, isRandomBattleNewbieTutorial, isGameModesReceived
+    needFirstBattleTutor, newbieOfflineMissions, shouldStartNewbieSingleOnline, isGameModesReceived
   ]
   children = needReadyCheckButton.get() && isReadyCheckSuspended.get() ? readyCheckButtonInactive
     : needReadyCheckButton.get() ? readyCheckButton
@@ -140,7 +140,7 @@ let toBattleButtonForRandomBattles = @() {
     : isInSquad.get() && isReady.get() ? notReadyButton
     : isOfflineMenu ? startOfflineBattleButton
     : needFirstBattleTutor.get() ? startTutorButton
-    : newbieOfflineMissions.get() != null && !isRandomBattleNewbieTutorial.get() ? startOfflineMissionButton
+    : newbieOfflineMissions.get() != null && !shouldStartNewbieSingleOnline.get() ? startOfflineMissionButton
     : isGameModesReceived.get() ? toBattleButton_RandomBattles
     : textButtonCommon(toBattleText, @() openMsgBox({ text = loc("msg/noGameModes") }), { hotkeys = hotkeyX })
 }

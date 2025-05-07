@@ -1509,7 +1509,7 @@
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
-      "preset": "vya_common"
+      "preset": "default_common"
     }
   },
   "weapon_presets": {
@@ -1584,7 +1584,7 @@
         "index": 0,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
-          "name": "vya_common",
+          "name": "default_common",
           "Weapon": [
             {
               "trigger": "machine gun",

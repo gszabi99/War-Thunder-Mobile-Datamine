@@ -4,14 +4,15 @@ let logC = log_with_prefix("[CURRENCY] ")
 let { isAuthorized } = require("%appGlobals/loginState.nut")
 let { mnGenericSubscribe } = require("%appGlobals/matching_api.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { balance } = require("%appGlobals/currenciesState.nut")
+let { balance, isBalanceReceived } = require("%appGlobals/currenciesState.nut")
 
 let lastBalanceUpdate = mkWatched(persist, "lastBalanceUpdate", 0)
 
 isAuthorized.subscribe(function(v) {
   if (v)
     return
-  balance({})
+  balance.set({})
+  isBalanceReceived.set(false)
 })
 
 let notifications = {
@@ -34,6 +35,7 @@ let notifications = {
       newBalance[k] <- v?.value
     if (!isEqual(newBalance, balance.value))
       balance(newBalance)
+    isBalanceReceived.set(true)
   }
 }
 

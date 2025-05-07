@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 let { buy_slot_level, slotInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 
 let { PURCH_SRC_SLOT_UPGRADES, PURCH_TYPE_SLOT_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
@@ -10,7 +11,7 @@ let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindo
 let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { slots, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
+let { maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
 let { buttonsHGap } = require("%rGui/components/textButton.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
@@ -20,7 +21,7 @@ let { hasSlotAttrPreset, getSpCostText } = require("%rGui/attributes/attrState.n
 let WND_UID = "buySlotLevelWnd"
 
 let slotIndex = mkWatched(persist, "slotIndex", null)
-let slot = Computed(@() slots.get()?[slotIndex.get()])
+let slot = Computed(@() curSlots.get()?[slotIndex.get()])
 let levelsToMax = Computed(@() (maxSlotLevels.get()?.len() ?? 0) - (slot.get()?.level ?? 0))
 let needShowWnd = keepref(Computed(@() levelsToMax.get() > 0 && slotIndex.get() != null))
 

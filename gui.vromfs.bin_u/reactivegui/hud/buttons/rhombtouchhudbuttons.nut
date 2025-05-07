@@ -234,15 +234,15 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
     let watch = [actionItem, isGroupInAir, isOnCd]
     if (actionItem.get() == null)
       return { watch }
-    let isAvailable = isAvailableActionItem(actionItem.get())
+    let isAvailable = isAvailableActionItem(actionItem.get(), isOnCd.get())
     return {
       watch
       size = [btnSize, btnSize]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [
-        mkRhombBtnBg(!isOnCd.get() && isAvailable, actionItem.get(), scale, @() playSound("weapon_secondary_ready"))
-        mkRhombBtnBorder(stateFlags, !isOnCd.get() && isAvailable, scale)
+        mkRhombBtnBg(isAvailable, actionItem.get(), scale, @() playSound("weapon_secondary_ready"))
+        mkRhombBtnBorder(stateFlags, isAvailable, scale)
         isGroupInAir.get()
           ? {
               rendObj = ROBJ_IMAGE
@@ -250,7 +250,7 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
               pos = [hdpx(3 * scale), 0]
               image = Picture($"{imageSwitch}:{groupImgSize}:{groupImgSize}:P")
               keepAspect = KEEP_ASPECT_FIT
-              color = isOnCd.get() || !isAvailable ? imageDisabledColor : imageColor
+              color = !isAvailable ? imageDisabledColor : imageColor
             }
           : {
               rendObj = ROBJ_IMAGE
@@ -258,7 +258,7 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
               pos = [0, -hdpx(5 * scale)]
               image = Picture($"{image}:{imgSize}:{imgSize}:P")
               keepAspect = KEEP_ASPECT_FIT
-              color = isOnCd.get() || !isAvailable ? imageDisabledColor : imageColor
+              color = !isAvailable ? imageDisabledColor : imageColor
             }
         isGroupInAir.get() ? null : mkAmmoCount(actionItem.get().count, scale)
         mkActionBtnGlare(actionItem.get(), btnSize)

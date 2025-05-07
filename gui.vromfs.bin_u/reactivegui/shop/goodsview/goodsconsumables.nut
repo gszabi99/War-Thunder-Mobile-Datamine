@@ -96,9 +96,9 @@ function mkGoodsConsumables(goods, onClick, state, animParams, addChildren) {
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
       bgParticles
-      border
       sf & S_HOVER ? bgHiglight : null
       mkImgs(data.map(@(item) item.id), itemImageOptionsStack?[data.len() - 1] ?? itemImageOptionsStack.top())
+      border
       slotNameBG.__merge({
         size = [hdpx(270), viewBaseValue > 0 ? hdpx(175) : hdpx(135)]
         padding = [hdpx(20), 0]

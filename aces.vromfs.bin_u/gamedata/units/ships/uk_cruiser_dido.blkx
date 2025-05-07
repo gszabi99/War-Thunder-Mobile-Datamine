@@ -6732,6 +6732,13 @@
       "details"
     ]
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "camo_navygrey_5*",
+      "to": "camo_greygreen_curves*"
+    }
+  },
   "vehicleSkins": {
     "darkgray_blotch": {
       "replace_tex": {

@@ -196,7 +196,11 @@ let mkShopGamercard = @(onClose) function(){
     if(goods.price.currencyId != "")
       currencies[goods.price.currencyId] <- true
     currencies.__update(goods.currencies)
-    items.__update(goods.items)
+    if (goods.units.len() == 0
+      && goods.unitUpgrades.len() == 0
+      && goods.blueprints.len() == 0
+      && goods.lootboxes.len() == 0)
+        items.__update(goods.items)
     premiumDays += goods.premiumDays
   }
   let orderItems = items.keys().sort(@(a,b)

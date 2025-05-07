@@ -11,6 +11,10 @@ let { curQueue, isInQueue, curQueueState, queueStates,
 } = queueState
 let { TEAM_ANY } = require("%appGlobals/teams.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { selClusters } = require("clustersList.nut")
 let { getOptimalClustersForSquad } = require("optimalClusters.nut")
 let { queueData, isQueueDataActual, actualizeQueueData, curUnitInfo
@@ -22,7 +26,6 @@ let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInSquad, squadMembers, isSquadLeader, squadLeaderCampaign, queueDataCheckTime
 } = require("%appGlobals/squadState.nut")
 let { decodeJwtAndHandleErrors } = require("%appGlobals/pServer/pServerJwt.nut")
-let { campProfile } = require("%appGlobals/pServer/campaign.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let matching = require("%appGlobals/matching_api.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
@@ -50,7 +53,17 @@ let writeJwtData = @() curQueue.mutate(function(q) {
   logQ($"Queue ", q.unitInfo, " params by token: ", payload)
 })
 
-let hasPenaltyNonUpdatable = @() (campProfile.get()?.penalties.penaltyEndTime ?? 0) > serverTime.get()
+function getCurQueueCampaignNotUpdatable() {
+  let gmName = curQueue.get()?.params.mode
+  return allGameModes.get()?.findvalue(@(m) m.name == gmName).campaign
+    ?? curCampaign.get()
+}
+
+function hasPenaltyNonUpdatable() {
+  let campaign = getCurQueueCampaignNotUpdatable()
+  return (servProfile.get()?.penalties[campaign].penaltyEndTime ?? 0) > serverTime.get()
+    || (servProfile.get()?.penalties[curCampaign.get()].penaltyEndTime ?? 0) > serverTime.get()
+}
 
 function actualizeSquadQueueOnce() {
   if (isSquadActualizeSend.value)
@@ -118,10 +131,15 @@ let queueSteps = {
   },
 
   [QS_CHECK_PENALTY] = function() {
-    if (hasPenaltyNonUpdatable())
-      curQueue.set(null)
-    else
+    if (!hasPenaltyNonUpdatable()) {
       writeJwtData()
+      return
+    }
+    curQueue.set(null)
+    openFMsgBox({
+      text = loc("multiplayer/queuePenalty",
+        { campaign = loc(getCampaignPresentation(getCurQueueCampaignNotUpdatable()).headerLocId) })
+    })
   },
 
   [QS_ACTUALIZE_SQUAD] = function() {

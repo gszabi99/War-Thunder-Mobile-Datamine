@@ -3,6 +3,8 @@ let { HangarCameraControl } = require("wt.behaviors")
 let { eventbus_subscribe } = require("eventbus")
 let { defer, resetTimeout } = require("dagor.workcycle")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+let { getBattleModPresentationForOffer } = require("%appGlobals/config/battleModPresentation.nut")
+let { blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
 let { GPT_UNIT, GPT_BLUEPRINT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount,
@@ -64,6 +66,13 @@ let needShowUi = Watched(false)
 let skipAnimsOnce = Watched(false)
 let openCount = Computed(@() previewType.value == GPT_UNIT || previewType.value == GPT_BLUEPRINT ? openPreviewCount.get() : 0)
 let needScroll = Computed(@() (previewGoods.get()?.units.len() ?? 0) + (previewGoods.get()?.unitUpgrades.len() ?? 0) > 8)
+let goodsBattleMode = Computed(function() {
+  let { campaign = "", country = "" } = previewGoodsUnit.get()
+  let battleMode = blockedResearchByBattleMods.get()?[campaign][country] ?? ""
+  if (battleMode in previewGoods.get()?.battleMods)
+    return battleMode
+  return null
+})
 
 
 let aTimeHeaderStart = 0
@@ -335,7 +344,8 @@ function branchUnitsBlock(unitName) {
 }
 
 let mkHeader = @() mkPreviewHeader(
-  Computed(@() previewGoods.get()?.offerClass == "seasonal" ? loc("seasonalOffer")
+  Computed(@() goodsBattleMode.get() != null ? loc("offer/earlyAccess")
+    : previewGoods.get()?.offerClass == "seasonal" ? loc("seasonalOffer")
     : (previewGoods.get()?.id ?? "") == "branch_offer" ? " ".concat(getPlatoonOrUnitName(previewGoodsUnit.get(), loc), loc("offer/airBranch"))
     : previewGoodsUnit.get() ? getPlatoonOrUnitName(previewGoodsUnit.get(), loc)
     : ""),
@@ -353,7 +363,7 @@ let packInfo = @(hintOffsetMulY = 1, ovr = {}) {
     @() {
       watch = previewGoods
       flow = FLOW_HORIZONTAL
-      children = mkPreviewItems(previewGoods.value, aTimePackInfoStart + aTimeFirstItemOfset)
+      children = mkPreviewItems(previewGoods.get().__merge({ battleMods = {} }), aTimePackInfoStart + aTimeFirstItemOfset)
       animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
     }
   ]
@@ -385,16 +395,39 @@ let balanceBlock = @() {
   animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)
 }
 
+let itemsDescText = {
+  padding = hdpx(20)
+  rendObj = ROBJ_TEXT
+  valign = ALIGN_CENTER
+  text = loc("offer/itemsDesc")
+  animations = opacityAnims(aTimePackInfoHeader, aTimePackInfoStart)
+}.__update(fontSmall)
+
 let itemsDesc = @() previewGoods.get().items.len() < 1 && previewGoods.get().decorators.len() < 1
   ? { watch = previewGoods }
+  : itemsDescText.__update({ watch = previewGoods })
+
+let earlyAccessImageBlock = @(img) img == null ? null
   : {
-    watch = previewGoods
-    padding = [hdpx(20), hdpx(20)]
-    rendObj = ROBJ_TEXT
-    valign = ALIGN_CENTER
-    text = loc("offer/itemsDesc")
-    animations = opacityAnims(aTimePackInfoHeader, aTimePackInfoStart)
-  }.__update(fontSmall)
+      pos = [-saBorders[0], 0]
+      size = [sw(50), sh(50)]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"{img}:0:P")
+    }
+
+let earlyAccessDescriptionBlock = @(locId, unitName = null) {
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
+  gap = hdpx(10)
+  children = [
+    @() itemsDescText.__update({ watch = previewGoods, padding = [hdpx(20), 0] })
+    {
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      text = unitName != null ? loc(locId, { unitName }) : loc(locId)
+    }.__update(fontSmall)
+  ]
+}
 
 let leftBlockPlatoon = {
   size = flex()
@@ -416,6 +449,24 @@ let leftBlockSingleUnit = {
     itemsDesc
     packInfo
   ]
+}
+
+function leftBlockEarlyAccess() {
+  let presentation = getBattleModPresentationForOffer(goodsBattleMode.get())
+  let locId = presentation.locId
+  let backgroundImg = presentation.image
+  return {
+    watch = [goodsBattleMode, previewGoodsUnit]
+    size = flex()
+    flow = FLOW_VERTICAL
+    gap = verticalGap
+    children = [
+      earlyAccessDescriptionBlock(locId, getPlatoonOrUnitName(previewGoodsUnit.get(), loc))
+      singleUnitBlock
+      earlyAccessImageBlock(backgroundImg)
+      packInfo
+    ]
+  }
 }
 
 let rightBlock = {
@@ -489,7 +540,7 @@ let scrollArrowsBlock = {
 }
 
 let leftBlockUnits = @() {
-  watch = [previewGoodsUnit, schRewards, previewGoods]
+  watch = [previewGoodsUnit, schRewards, previewGoods, goodsBattleMode]
   size = (previewGoods.get()?.units.len() ?? 0) > 1
     ? [unitPlateSize[0] * 2 + gapForBranch, SIZE_TO_CONTENT]
     : flex()
@@ -507,6 +558,7 @@ let leftBlockUnits = @() {
               children = u
             })
       }
+    : getBattleModPresentationForOffer(goodsBattleMode.get()) != null ? leftBlockEarlyAccess
     : previewGoodsUnit.get()?.platoonUnits.len() == 0 ? leftBlockSingleUnit
     : leftBlockPlatoon
 }

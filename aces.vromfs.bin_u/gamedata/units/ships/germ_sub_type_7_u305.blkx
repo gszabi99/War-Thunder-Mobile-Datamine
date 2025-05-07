@@ -1140,6 +1140,7 @@
   },
   "modifications": {
     "ship_tool_kit": {},
+    "upgraded": {},
     "weapons_contact_mines": {
       "effects": {
         "commonWeapons": {
@@ -2338,6 +2339,19 @@
   },
   "battleHideNodes": {
     "n": "details"
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "camo_hazegray*",
+        "to": "camo_3gray_colors_geometry*"
+      },
+      {
+        "from": "camo_deckbasaltgrau*",
+        "to": "camo_3gray_colors_geometry*"
+      }
+    ]
   },
   "vehicleSkins": {
     "camo_olive_spots": {

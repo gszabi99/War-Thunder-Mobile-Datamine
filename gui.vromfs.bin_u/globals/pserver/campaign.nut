@@ -1,5 +1,4 @@
 let { Computed } = require("frp")
-let { isEqual } = require("%sqstd/underscore.nut")
 let { serverConfigs } = require("servConfigs.nut")
 let servProfile = require("servProfile.nut")
 let { set_current_campaign } = require("pServerApi.nut")
@@ -141,15 +140,6 @@ let exportProfile = {
   lootboxes = {}
 }.map(@(value, key) Computed(@() campProfile.value?[key] ?? value))
 
-let isCampaignWithSlots = Computed(@() (campConfigs.get()?.campaignCfg.totalSlots ?? 0) > 0)
-let curCampaignSlots = Computed(@() isCampaignWithSlots.get() ? campProfile.get()?.campaignSlots : null)
-let curCampaignSlotUnits = Computed(function(prev) {
-  let res = curCampaignSlots.get()?.slots
-    .map(@(s) s.name)
-    .filter(@(v) v != "")
-  return isEqual(res, prev) ? prev : res
-})
-
 return exportProfile.__update({
   isProfileReceived = Computed(@() servProfile.get().len() > 0)
   campaignsLevelInfo
@@ -160,9 +150,6 @@ return exportProfile.__update({
   isAnyCampaignSelected
   campConfigs
   campProfile
-  curCampaignSlots
-  curCampaignSlotUnits
   isCampaignWithUnitsResearch = Computed(@() curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
-  isCampaignWithSlots
   getCampaignStatsId
 })

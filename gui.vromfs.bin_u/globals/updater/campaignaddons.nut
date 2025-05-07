@@ -83,11 +83,10 @@ function getCampaignPkgsForOnlineBattle(campaignExt, mRank) {
 
 function getCampaignPkgsForNewbieBattle(campaignExt, mRank, isSingle) {
   let campaign = getCampaignOrig(campaignExt)
+  if (isSingle && mRank <= 1)
+    return soloNewbieByCampaign?[campaign] ?? []
+
   let res = clone (commonCampaignAddons?[campaign] ?? [])
-  if (isSingle) {
-    res.extend(soloNewbieByCampaign?[campaign] ?? [])
-    return res
-  }
 
   
   

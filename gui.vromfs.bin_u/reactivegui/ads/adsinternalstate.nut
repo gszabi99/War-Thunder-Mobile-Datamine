@@ -57,9 +57,9 @@ let allProviders = keepref(Computed(function() {
   if (isDebugMode.get())
     abPostfix = abPostfix == "" ? "_with_app_lovin" : ""
 
-  return adsCfg?[$"{providersId}{abPostfix}]"]
+  return adsCfg?[$"{providersId}{abPostfix}"]
     ?? adsCfg?[providersId]
-    ?? adsCfg?[$"{fbProvidersId}{abPostfix}]"]
+    ?? adsCfg?[$"{fbProvidersId}{abPostfix}"]
     ?? adsCfg?[fbProvidersId]
     ?? {}
 }))

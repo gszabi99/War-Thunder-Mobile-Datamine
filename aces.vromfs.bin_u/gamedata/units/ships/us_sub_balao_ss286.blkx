@@ -2508,6 +2508,19 @@
   "battleHideNodes": {
     "n": "details"
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "camo_deckgrey*",
+        "to": "camo_modern_nordgeometry*"
+      },
+      {
+        "from": "camo_inside_white*",
+        "to": "camo_modern_nordgeometry*"
+      }
+    ]
+  },
   "vehicleSkins": {
     "blackgray_stripes": {
       "replace_tex": [

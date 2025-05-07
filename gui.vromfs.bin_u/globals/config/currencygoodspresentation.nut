@@ -1,6 +1,6 @@
 let { max } = require("math")
 let { getBaseCurrency, getSeasonStr, getCurrencyBigIcon } = require("currencyPresentation.nut")
-let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILBOND, APRILMAPPIECE, APRILDOUBLON, BLACK_FRIDAY_BOND } = require("%appGlobals/currenciesState.nut")
+let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILBOND, APRILMAPPIECE, APRILDOUBLON, BLACK_FRIDAY_BOND, HOTMAYBOND } = require("%appGlobals/currenciesState.nut")
 
 let presentations = {
   [WP] = [
@@ -60,6 +60,11 @@ let presentations = {
     { img = "blackfridaybond_goods_01.avif", amountAtLeast = 0 }
     { img = "blackfridaybond_goods_02.avif", amountAtLeast = 500 }
     { img = "blackfridaybond_goods_03.avif", amountAtLeast = 1000 }
+  ],
+  [HOTMAYBOND] = [
+    { img = "hotmaybond_goods_01.avif", amountAtLeast = 0 }
+    { img = "hotmaybond_goods_01.avif", amountAtLeast = 500 }
+    { img = "hotmaybond_goods_01.avif", amountAtLeast = 1000 }
   ],
 }
 

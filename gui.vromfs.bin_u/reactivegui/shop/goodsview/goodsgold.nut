@@ -38,9 +38,9 @@ function mkGoodsGold(goods, onClick, state, animParams, addChildren) {
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
       bgParticles
-      border
       sf & S_HOVER ? bgHiglight : null
       getImgByAmount(gold)
+      border
       mkCurrencyAmountTitle(gold, viewBaseValue, titleFontGrad)
       mkGoodsLimitAndEndTime(goods)
     ].extend(mkGoodsCommonParts(goods, state), addChildren),

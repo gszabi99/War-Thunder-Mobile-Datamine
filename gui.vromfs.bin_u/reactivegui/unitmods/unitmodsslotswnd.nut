@@ -14,7 +14,7 @@ let { unitModSlotsOpenCount, closeUnitModsSlotsWnd, curUnit, weaponSlots, curSlo
   chosenBelts, mkWeaponBelts, equippedWeaponIdCount, curBeltWeapon, overloadInfo, fixCurPresetOverload,
   isUnitModSlotsAttached, equipBelt, equipWeaponList, equipWeaponListWithMirrors, mirrorIdx, weaponsScrollHandler
 } = require("unitModsSlotsState.nut")
-let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
+let { loadUnitWeaponSlots, mustSlotHaveDefault } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { equipCurWeaponMsg, customEquipCurWeaponMsg } = require("equipSlotWeaponMsgBox.nut")
 let { getModCurrency, getModCost } = require("unitModsState.nut")
 let { getWeaponShortNameWithCount, getBulletBeltShortName, getWeaponShortNamesList
@@ -430,7 +430,7 @@ let hasUnseenRewards = Computed(@() curUnit.get()?.name in unseenUnitLvlRewardsL
 
 let slotPresetButtons = @() {
   watch = [isNotAvailableForUse, curWeapon, curBelt, modsInProgress, curWeaponIsLocked, curWeaponReqLevel,
-    equippedWeaponId, curWeapons, equippedBeltId, curUnit, isGamepad, hasUnseenRewards]
+    equippedWeaponId, curWeapons, equippedBeltId, curUnit, isGamepad, hasUnseenRewards, curSlotIdx]
   size = [flex(), SIZE_TO_CONTENT]
   halign = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
@@ -467,7 +467,7 @@ let slotPresetButtons = @() {
         ? textButtonPurchase(loc("mainmenu/btnBuy"), onPurchaseMod, { ovr = { key = "arsenal_purchase_tutor_btn" }, hotkeys = ["^J:Y"] })
       : curWeapon.get() != null && equippedWeaponId.get() != curWeapon.get().name
         ? textButtonPrimary(loc($"mod/enable{mirrorIdx.get() != -1 ? "/both_wings" : ""}"), equipCurWeaponMsg)
-      : curWeapon.get() != null
+      : curWeapon.get() != null && !mustSlotHaveDefault(curUnit.get()?.name, curSlotIdx.get())
         ? textButtonPrimary(loc($"mod/disable{mirrorIdx.get() != -1 ? "/both_wings" : ""}"), mirrorIdx.get() != -1 ? unequipCurWeaponFromWings : unequipCurWeapon)
       : curBelt.get() != null && equippedBeltId.get() != curBelt.get().id
         ? textButtonPrimary(loc("mod/enable"), equipCurBelt)

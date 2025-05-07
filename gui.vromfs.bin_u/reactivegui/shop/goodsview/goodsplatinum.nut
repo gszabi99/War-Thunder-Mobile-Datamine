@@ -37,9 +37,9 @@ function mkGoodsPlatinum(goods, onClick, state, animParams, addChildren) {
       mkSlotBgImg()
       isShowDebugOnly ? underConstructionBg : null
       bgParticles
-      border
       sf & S_HOVER ? bgHiglight : null
       getImgByAmount(platinum)
+      border
       mkCurrencyAmountTitle(platinum, viewBaseValue, titleFontGrad)
       mkGoodsLimitAndEndTime(goods)
     ].extend(mkGoodsCommonParts(goods, state), addChildren),

@@ -1,22 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { AIR, TANK } = require("%appGlobals/unitConst.nut")
-let { premiumTextColor } = require("%rGui/style/stdColors.nut")
+let { getBattleModPresentationForOffer } = require("%appGlobals/config/battleModPresentation.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getUnitPresentation, getUnitClassFontIcon, getPlatoonOrUnitName, getUnitLocId } = require("%appGlobals/unitPresentation.nut")
-let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
+let { SPARE } = require("%appGlobals/itemsState.nut")
 let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
 let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareIconBtn,
   mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, mkAirBranchOfferTexts, underConstructionBg, goodsH, goodsSmallSize, offerPad,
   offerW, offerH, borderBg, mkBorderByCurrency, mkEndTime, goodsBgH
 } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { premiumTextColor } = require("%rGui/style/stdColors.nut")
+let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { discountTagBig, discountTag } = require("%rGui/components/discountTag.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { saveSeenGoods } = require("%rGui/shop/shopState.nut")
 let { mkGradRank } = require("%rGui/components/gradTexts.nut")
 let { mkRewardCurrencyImage } = require("%rGui/rewards/rewardPlateComp.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
 let { mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
 let { ALL_PURCHASED } = require("%rGui/shop/goodsStates.nut")
@@ -27,6 +29,7 @@ let consumableSize = hdpx(120)
 let eliteMarkSize = [hdpxi(70), hdpxi(45)]
 let currencyIconSize = hdpxi(170)
 
+let consumablesOnGoodsPlate = [ SPARE ]
 let currenciesOnOfferBanner = [ PLATINUM, EVENT_KEY, GOLD, WARBOND ]
 
 let bgHiglight = {
@@ -186,7 +189,8 @@ function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
       mkUnitTexts(goods, unit)
       mkSquareIconBtn(fonticonPreview, @() isPurchased ? unitDetailsWnd(unit) : openGoodsPreview(goods.id),
         { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
-      mkConsumableIcons(goods?.items.topairs())
+      mkConsumableIcons(consumablesOnGoodsPlate
+        .map(@(id) [ id, goods?.items[id] ?? 0 ]).filter(@(v) v[1] > 0))
       mkMRank(unit?.mRank)
       mkEndTime(goods, { pos = [hdpx(-50), 0] })
       border
@@ -283,6 +287,28 @@ function mkOfferBranchUnit(goods, onClick, state) {
       discountTagUnit(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))
 }
+
+function mkOfferBattleMode(goods, onClick, state) {
+  let unit = getBestUnitByGoods(goods, serverConfigs.get())
+  let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
+    currencies = {}, battleMods = {}
+  } = goods
+  let bgImg = getBattleModPresentationForOffer(battleMods.findindex(@(_) true))?.bannerImg ?? "ui/gameuiskin#offer_bg_green.avif"
+  let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
+  let image = mkFitCenterImg(getUnitPresentation(unit)?.image, branchOfferImageOvr)
+  return mkOfferWrap(onClick,
+    unit == null ? null : @(sf) [
+      mkBgImg(bgImg)
+      isShowDebugOnly ? underConstructionBg : null
+      sf & S_HOVER ? bgHiglight : null
+      currencyId == null ? null : mkCurrencyIcon(currencyId, currencies[currencyId])
+      image
+      mkOfferTexts(loc("offer/earlyAccess"), endTime ?? timeRange?.end)
+      mkUnitInfo(unit).__update({ margin = offerPad, padding = null })
+      discountTagUnit(discountInPercent)
+    ].extend(mkOfferCommonParts(goods, state)))
+}
+
 return {
   getLocNameUnit
   getLocBranchUnits
@@ -291,4 +317,5 @@ return {
   mkOfferUnit
   mkOfferBlueprint
   mkOfferBranchUnit
+  mkOfferBattleMode
 }

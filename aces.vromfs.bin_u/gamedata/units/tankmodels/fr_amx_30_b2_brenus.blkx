@@ -3277,5 +3277,28 @@
       "camo_scale": 0.0,
       "camo_rotation": 0.0
     }
+  },
+  "counterMeasures": {
+    "counterMeasure": {
+      "turretIndex": 0,
+      "blk": "gameData/counterMeasures/eirel.blk",
+      "dmPart": "countermeasure_01_dm",
+      "ircmProjector": {
+        "node": "ex_decor_03",
+        "beamRadius": [
+          500.0,
+          50.0
+        ],
+        "power": [
+          0.02,
+          0.04
+        ],
+        "glowOffset": [
+          0.15,
+          0.0,
+          0.0
+        ]
+      }
+    }
   }
 }

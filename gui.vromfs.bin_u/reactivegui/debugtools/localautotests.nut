@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_send, send } = require("eventbus")
 let { debugModes } = require("%rGui/gameModes/gameModeState.nut")
-let { curCampaign, curCampaignSlots, campaignsList, setCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campaignsList, setCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaignSlots } = require("%appGlobals/pServer/slots.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { set_unit_to_slot } = require("%appGlobals/pServer/pServerApi.nut")

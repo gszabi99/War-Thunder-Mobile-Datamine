@@ -17,7 +17,8 @@ let { activeUnseenPurchasesGroup, markPurchasesSeen, hasActiveCustomUnseenView,
 } = require("unseenPurchasesState.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { lootboxes, curCampaign, curCampaignSlots } = require("%appGlobals/pServer/campaign.nut")
+let { lootboxes, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaignSlots, curSlots } = require("%appGlobals/pServer/slots.nut")
 let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
@@ -55,7 +56,7 @@ let { mkMsgConvert } = require("unseenPurchaseAddMessage.nut")
 let { showPrizeSelectDelayed, ticketToShow } = require("%rGui/rewards/rewardPrizeSelect.nut")
 let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
 let { mkLoootboxImage } = require("%appGlobals/config/lootboxPresentation.nut")
-let { slots, openSelectUnitToSlotWnd, canOpenSelectUnitWithModal } = require("%rGui/slotBar/slotBarState.nut")
+let { openSelectUnitToSlotWnd, canOpenSelectUnitWithModal } = require("%rGui/slotBar/slotBarState.nut")
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
@@ -64,6 +65,7 @@ let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 
 
 let wndWidth = saSize[0]
+let contentPaddingX = hdpx(20)
 let maxWndHeight = saSize[1]
 let rewBlockWidth = hdpx(340)
 let rewBlocksVGap = hdpx(60)
@@ -782,7 +784,7 @@ let mkBattleModeRewards = @(rewards) rewards.len() == 0 ? null : @() {
 }
 
 let mkUnitRewards = @(unitsData) unitsData.len() == 0 ? null : @() {
-  watch = [serverConfigs, slots, campMyUnits, curUnitInProgress, curCampaignSlots, curCampaign]
+  watch = [serverConfigs, curSlots, campMyUnits, curUnitInProgress, curCampaignSlots, curCampaign]
   flow = FLOW_VERTICAL
   gap = unitPlatesGap
   children =
@@ -799,7 +801,7 @@ let mkUnitRewards = @(unitsData) unitsData.len() == 0 ? null : @() {
         children = [
           mkUnitPlate(u),
           u?.unit.campaign == curCampaign.get()
-            ? mkUnitButton(u, campMyUnits.get(), curUnitInProgress.get(), slots.get(), curCampaignSlots.get())
+            ? mkUnitButton(u, campMyUnits.get(), curUnitInProgress.get(), curSlots.get(), curCampaignSlots.get())
             : null
         ]
       })
@@ -1032,7 +1034,7 @@ function onCloseRequest() {
     return
   }
   let unitId = stackData.get()?.unitPlates
-    .filter(@(v) v?.id && (campMyUnits.get()?[v.id].isCurrent || slots.get().findvalue(@(slot) slot.name == v.id)))
+    .filter(@(v) v?.id && (campMyUnits.get()?[v.id].isCurrent || curSlots.get().findvalue(@(slot) slot.name == v.id)))
     .findvalue(@(_) true)?.id
   let unit = campMyUnits.get()?[unitId]
   if (unit != null && canResetToMainScene()) {
@@ -1063,7 +1065,7 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
     onAttach = @() canOpenSelectUnitWithModal.set(true)
     onDetach = @() canOpenSelectUnitWithModal.set(false)
     minWidth = hdpx(1100)
-    padding = [0, 0, hdpx(38), 0]
+    padding = [0, contentPaddingX, hdpx(38), contentPaddingX]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     behavior = Behaviors.Button

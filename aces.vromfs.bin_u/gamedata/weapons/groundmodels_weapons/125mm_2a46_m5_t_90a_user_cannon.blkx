@@ -616,12 +616,12 @@
   },
   "125mm_ussr_3BM42_APDS_FS": {
     "bullet": {
-      "mass": 4.85,
+      "mass": 5.12,
       "caliber": 0.125,
-      "damageCaliber": 0.025,
-      "ballisticCaliber": 0.031,
-      "Cx": 0.35,
-      "speed": 1700.0,
+      "damageCaliber": 0.022,
+      "ballisticCaliber": 0.022,
+      "Cx": 0.843,
+      "speed": 1660.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
@@ -641,7 +641,7 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
-      "bulletName": "125mm_3bm46",
+      "bulletName": "125mm_3bm60",
       "onHitChanceMultExplFuel": 0.1,
       "relativeVelHitShift": [
         300.0,
@@ -697,43 +697,12 @@
           10000.0
         ]
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          532.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          531.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          526.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          520.0,
-          1000.0
-        ],
-        "ArmorPower1500m": [
-          513.0,
-          1500.0
-        ],
-        "ArmorPower2000m": [
-          507.0,
-          2000.0
-        ],
-        "ArmorPower3000m": [
-          494.0,
-          3000.0
-        ],
-        "ArmorPower10000m": [
-          5.0,
-          10000.0
-        ],
-        "ArmorPower20000m": [
-          0.0,
-          20000.0
-        ]
+      "damage": {
+        "kinetic": {
+          "lanzOdermattMaterial": "tungsten",
+          "lanzOdermattWorkingLength": 640.0,
+          "lanzOdermattDensity": 17500.0
+        }
       },
       "visual": {
         "range_percent_of_ammo": [

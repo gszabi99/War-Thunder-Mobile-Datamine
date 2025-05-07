@@ -38,6 +38,7 @@ let actionBarItemsConfig = {
     haptPatternId = HAPT_SHOOT_TORPEDO
   },
   EII_TOOLKIT = mkToolkitCfg("ui/gameuiskin#hud_consumable_repair.svg"),
+  EII_TOOLKIT_SPLIT = mkToolkitCfg("ui/gameuiskin#hud_consumable_toolkit.svg"),
   EII_TOOLKIT_WITH_MEDICAL = {
     getShortcut = getActionBarShortcut
     getImage = @(_) "ui/gameuiskin#hud_consumable_repair.svg"
@@ -95,7 +96,7 @@ let actionBarItemsConfig = {
   }
   EII_MEDICALKIT = {
     getShortcut = getActionBarShortcut
-    getImage = @(_) "ui/gameuiskin#hud_consumable_repair.svg"
+    getImage = @(_) "ui/gameuiskin#hud_consumable_medicalkit.svg"
     actionType = AB_MEDICALKIT
     mkButtonFunction = "mkRepairActionItem"
   },

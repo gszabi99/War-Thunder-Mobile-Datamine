@@ -22,7 +22,7 @@ let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/init
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { battleCampaign, battleUnitClasses, mainBattleUnitName } = require("%appGlobals/clientState/missionState.nut")
 let { curUnitName } = require("%appGlobals/pServer/profile.nut")
-let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
 let { registerRespondent } = require("scriptRespondent")
 
 

@@ -32,7 +32,7 @@ let playersByTeam = Computed(function() {
         let unitName = ownedUnitName != "" ? ownedUnitName : aircraftName
         let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[id]
         let { level = 1, starLevel = 0, hasPremium = false, decorators = null, units = {},
-          hasVip = false } = !isBot
+          hasVip = false, hasPrem = false } = !isBot
             ? playersCommonStats.value?[userId.tointeger()]
             : genBotCommonStats(name, unitName, getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get()) ?? {}, playerLevelInfo.get().level)
         let unit = units?[unitName]
@@ -48,6 +48,7 @@ let playersByTeam = Computed(function() {
           starLevel
           hasPremium
           hasVip
+          hasPrem
           decorators
           unitName
           unitClass

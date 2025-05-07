@@ -1,35 +1,34 @@
 from "%globalsDarg/darg_library.nut" import *
 require("%rGui/onlyAfterLogin.nut")
 let { resetTimeout } = require("dagor.workcycle")
-let { curCampaignSlots, campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaignSlots, curSlots } = require("%appGlobals/pServer/slots.nut")
 let { set_unit_to_slot, buy_unit_slot, clear_unit_slot } = require("%appGlobals/pServer/pServerApi.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
+let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
+let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { PURCH_SRC_SLOTBAR, PURCH_TYPE_SLOT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { canPlayAnimUnitWithLink, animUnitWithLink } = require("%rGui/unitsTree/animState.nut")
 
 
 let animTimeout = 5.0 
-let getCurrentSlotIdx = @(slots) slots.findindex(@(s) s?.name == hangarUnitName.get())
 
 let visibleNewModsSlots = Watched({})
 let selectedSlotIdx = mkWatched(persist, "selectedSlotIdx", null)
+let selectedTreeSlotIdx = mkWatched(persist, "selectedTreeSlotIdx", null)
 let maxSlotLevels = Computed(@() campConfigs.get()?.unitLevels[$"{curCampaign.get()}_slots"])
+let slotIdxByHangarUnit = Computed(@() curSlots.get().findindex(@(s) s?.name == hangarUnit.get()?.name))
 
 let slotBarArsenalKey = "slot_bar_arsenal"
 let slotBarSlotKey = @(idx) $"slotbar_slot_{idx}"
 
-let slots = Computed(function() {
-  let res = clone curCampaignSlots.get()?.slots ?? []
-  res.resize(curCampaignSlots.get()?.totalSlots ?? 0)
-  return res
-})
+let selectSlotByHangarUnit = @() selectedSlotIdx.set(slotIdxByHangarUnit.get())
+let selectTreeSlotByUnitName = @(unitName) selectedTreeSlotIdx.set(curSlots.get().findindex(@(s) s?.name == unitName))
 
-if(hangarUnitName.get())
-  selectedSlotIdx.set(getCurrentSlotIdx(slots.get()))
-hangarUnitName.subscribe(@(_) selectedSlotIdx.set(getCurrentSlotIdx(slots.get())))
+if (hangarUnit.get())
+  selectSlotByHangarUnit()
+hangarUnit.subscribe(@(_) selectSlotByHangarUnit())
 
 let slotsNeedAddAnim = mkWatched(persist, "slotsNeedAddAnim", {})
 let isAnimChangedSoon = mkWatched(persist, "isAnimChangedSoon", false)
@@ -42,10 +41,10 @@ let canOpenSelectUnitWithModal = Watched(false)
 let slotBarSelectWndAttached = Watched(false)
 
 let getSlotAnimTrigger = @(idx, name, prefix = -1) $"slot_{prefix}_{idx}_{name}"
-let mkCurSlotsInfo = @() { prevCampaign = isLoggedIn.get() ? curCampaign.get() : null, prevSlots = slots.get().map(@(s) s?.name ?? "") }
+let mkCurSlotsInfo = @() { prevCampaign = isLoggedIn.get() ? curCampaign.get() : null, prevSlots = curSlots.get().map(@(s) s?.name ?? "") }
 let prevSlotsInfo = persist("prevSlotsInfo", mkCurSlotsInfo)
 
-slots.subscribe(function(curSlots) {
+curSlots.subscribe(function(slots) {
   let { prevSlots, prevCampaign } = prevSlotsInfo
   prevSlotsInfo.__update(mkCurSlotsInfo())
   if (!isLoggedIn.get() || curCampaign.get() != prevCampaign) {
@@ -54,7 +53,7 @@ slots.subscribe(function(curSlots) {
     return
   }
   let animUpdate = {}
-  foreach(idx, s in curSlots) {
+  foreach(idx, s in slots) {
     let { name = "" } = s
     if (name != "" && prevSlots?[idx] != name)
       animUpdate[idx] <- name
@@ -100,12 +99,11 @@ let function buyUnitSlot() {
 }
 
 let function clearUnitSlot(unitName) {
-  let slotId = slots.get().findindex(@(v) v?.name == unitName)
+  let slotId = curSlots.get().findindex(@(v) v?.name == unitName)
   clear_unit_slot(curCampaign.get(), slotId)
 }
 
 return {
-  slots
   newSlotPriceGold
   selectedUnitToSlot
   setUnitToSlot
@@ -123,6 +121,9 @@ return {
   isSlotsAnimActive
 
   selectedSlotIdx
+  selectedTreeSlotIdx
+  slotIdxByHangarUnit
+  selectTreeSlotByUnitName
   maxSlotLevels
 
   slotBarArsenalKey

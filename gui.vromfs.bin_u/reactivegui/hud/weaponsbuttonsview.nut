@@ -450,8 +450,8 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
   let hasReachableTarget = Computed(@() !needCheckTargetReachable || targetState.value == 0)
   let canShoot = Computed(@() (canShootWithoutTarget || hasTarget.value) && hasReachableTarget.value)
 
-  let isAvailable = isAvailableActionItem(actionItem)
   let isOnCd = Computed(@() actionItemsInCd.get()?[actionType] ?? false)
+  let isAvailable = isAvailableActionItem(actionItem, isOnCd.get())
   let isBlocked = Computed(@() unitType.value == SUBMARINE && isNotOnTheSurface.value
     && (key == TRIGGER_GROUP_PRIMARY || key == TRIGGER_GROUP_SECONDARY))
   let isWaitForAim = hasAim && !(actionItem?.aimReady ?? true)
@@ -551,9 +551,9 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
-      mkRhombBtnBg(!isOnCd.get() && isAvailable && !isDisabled.get(), actionItem, scale,
+      mkRhombBtnBg(isAvailable && !isDisabled.get(), actionItem, scale,
         @() playSound(key == TRIGGER_GROUP_PRIMARY ? "weapon_primary_ready" : "weapon_secondary_ready"))
-      mkRhombBtnBorder(stateFlags, !isOnCd.get() && isAvailable && !isDisabled.get(), scale)
+      mkRhombBtnBorder(stateFlags, isAvailable && !isDisabled.get(), scale)
       mkBtnZone(key, zRadiusX, zRadiusY)
       @() {
         watch = [canShoot, unitType, isBlocked]
@@ -562,7 +562,7 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
         pos = [0, -hdpx(5)] 
         image = svgNullable(alternativeImage && actionItem?.isAlternativeImage ? alternativeImage : getImage(unitType.value), imgSize)
         keepAspect = KEEP_ASPECT_FIT
-        color = isOnCd.get() || !isAvailable || isDisabled.get() || (hasAim && !(actionItem?.aimReady ?? true)) || !canShoot.get() || isBlocked.get()
+        color = !isAvailable || isDisabled.get() || (hasAim && !(actionItem?.aimReady ?? true)) || !canShoot.get() || isBlocked.get()
           ? imageDisabledColor
           : imageColor
       }
@@ -574,7 +574,7 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
       addChild
       number != -1 ? weaponNumber(number, scale) : null
       mkContinuousButtonParams(onTouchBegin, onButtonReleaseWhileActiveZone, hotkeyShortcut, stateFlags,
-        isBulletBelt && (isOnCd.get() || !isAvailable || isBlocked.get()), onStopTouch).__update({
+        isBulletBelt && (!isAvailable || isBlocked.get()), onStopTouch).__update({
         size = [btnTouchSize, btnTouchSize]
         behavior
         cameraControl = mainShortcut != "ID_BOMBS"

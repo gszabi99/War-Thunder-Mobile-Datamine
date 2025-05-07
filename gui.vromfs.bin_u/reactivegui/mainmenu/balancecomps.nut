@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { balance, WP, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
+let { balance, WP, GOLD, WARBOND, isBalanceReceived } = require("%appGlobals/currenciesState.nut")
 let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { SPARE } = require("%appGlobals/itemsState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -144,14 +144,11 @@ function mkBalance(baseId, style, onClick, initBalance) {
   let id = Computed(@() currencyToFullId.get()?[baseId] ?? baseId)
   id.subscribe(@(v) initBalance(v))
 
-  let visCount = Computed(@() visibleBalance.value?[id.get()])
+  let visCount = Computed(@() visibleBalance.value?[id.get()]
+    ?? (isBalanceReceived.get() ? 0 : loc("leaderboards/notAvailable")))
   let nextChange = Computed(@() isAdsVisible.value ? null : changeOrders.value?[id.get()][0])
   let stateFlags = Watched(0)
-  let currencyOvr = {
-    watch = [visCount, stateFlags, id]
-    transform = {}
-    animations = mkBalanceHiglightAnims($"balance_{id.get()}")
-  }
+  let currencyOvr = {}
   local imgChild = null
   if (onClick != null) {
     currencyOvr.__update({
@@ -173,12 +170,14 @@ function mkBalance(baseId, style, onClick, initBalance) {
       }
       {
         children = [
-          @() mkCurrencyComp(visCount.value ?? loc("leaderboards/notAvailable"), id.get(), style, imgChild)
+          @() mkCurrencyComp(visCount.get(), id.get(), style, imgChild)
             .__update(currencyOvr,
               {
+                watch = [visCount, stateFlags, id]
                 transform = {
                   scale = (stateFlags.value & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1]
                 }
+                animations = mkBalanceHiglightAnims($"balance_{id.get()}")
               })
           @() {
             watch = [nextChange, id]

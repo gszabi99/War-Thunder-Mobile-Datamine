@@ -1,3 +1,4 @@
+from "%globalScripts/logs.nut" import *
 let { max } = require("math")
 let { loc } = require("dagor.localize")
 let { memoize } = require("%sqstd/functools.nut")
@@ -19,6 +20,7 @@ let iconsScale = {
   anniversarybond = 1.4
   halloweenbond = 1.4
   blackfridaybond = 1.4
+  hotmaybond = 1.4
   ircm_kit = 1.4
 }
 let maxIconsScale = iconsScale.reduce(@(a, b) max(a, b))
@@ -41,6 +43,7 @@ let icons = {
   anniversarybond = "ui/gameuiskin#warbond_icon_anniversarybond.avif"
   halloweenbond = "ui/gameuiskin#warbond_icon_halloween_2024.avif"
   blackfridaybond = "ui/gameuiskin#warbond_icon_black_friday_2024.avif"
+  hotmaybond = "ui/gameuiskin#warbond_icon_hotmaybond.avif"
   
   ship_tool_kit = "ui/gameuiskin#shop_consumables_repair_gamercard.avif"
   ship_smoke_screen_system_mod = "ui/gameuiskin#shop_consumables_smoke_gamercard.avif"
@@ -62,6 +65,7 @@ let bigIcons = {
   aprilDoublon = "ui/gameuiskin#aprildoublon_goods_01.avif"
   halloweenbond = "ui/gameuiskin#halloweenbond_goods_01.avif"
   blackfridaybond = "ui/gameuiskin#blackfridaybond_goods_01.avif"
+  hotmaybond = "ui/gameuiskin#hotmaybond_goods_01.avif"
 }
 
 let placeholder = "ui/gameuiskin#icon_primary_attention.svg"
@@ -82,6 +86,7 @@ let currencyEventDescriptions = {
   lunarbond = "events/buyCurrency/desc/lunarbond"
   aprilMapPiece = "events/buyCurrency/desc/aprilMapPiece"
   aprilDoublon = "events/buyCurrency/desc/aprilDoublon"
+  hotmaybond = "events/buyCurrency/desc/hotmaybond"
 }
 
 let getBaseCurrency = memoize(function getBaseCurrencyImpl(fullId) {

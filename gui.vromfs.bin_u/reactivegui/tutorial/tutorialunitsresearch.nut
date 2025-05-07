@@ -4,7 +4,8 @@ let logFB = log_with_prefix("[TUTOR_UNITS_RESEARCH] ")
 let { register_command } = require("console")
 
 let { buy_unit, add_player_exp, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { isCampaignWithUnitsResearch, isCampaignWithSlots, curCampaign, campProfile } = require("%appGlobals/pServer/campaign.nut")
+let { isCampaignWithUnitsResearch, curCampaign, campProfile } = require("%appGlobals/pServer/campaign.nut")
+let { curSlots, isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
@@ -20,7 +21,7 @@ let { setTutorialConfig, isTutorialActive, finishTutorial, WND_UID, goToStep,
   activeTutorialId } = require("tutorialWnd/tutorialWndState.nut")
 let { setResearchUnit } = require("%rGui/unit/unitsWndActions.nut")
 let { PURCHASE_BOX_UID } = require("%rGui/shop/msgBoxPurchase.nut")
-let { slots, setUnitToSlot, canOpenSelectUnitWithModal, slotBarSelectWndAttached
+let { setUnitToSlot, canOpenSelectUnitWithModal, slotBarSelectWndAttached
   selectedUnitToSlot, closeSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { triggerAnim } = require("%rGui/unitsTree/mkUnitPlate.nut")
@@ -67,7 +68,7 @@ let finishEarly = @() shouldEarlyCloseTutorial.get() ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
 function getObjectsForTutorial() {
-  let availableSlotsForSelection = slots.get()
+  let availableSlotsForSelection = curSlots.get()
     .map(@(_, idx) {
       keys = $"select_slot_{idx}"
       onClick = @() setUnitToSlot(idx)

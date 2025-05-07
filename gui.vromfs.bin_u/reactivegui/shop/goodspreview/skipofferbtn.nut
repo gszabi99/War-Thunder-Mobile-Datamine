@@ -122,7 +122,7 @@ let contentCommon = @() {
       pos = [hdpx(5), hdpx(5)]
       size = [vipIconW, vipIconH]
       rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#vip_active.svg:{vipIconW}:{vipIconH}:P")
+      image = Picture($"ui/gameuiskin#gamercard_subs_vip.svg:{vipIconW}:{vipIconH}:P")
       keepAspect = KEEP_ASPECT_FIT
     }
     {

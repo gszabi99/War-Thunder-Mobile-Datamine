@@ -14,6 +14,10 @@ let { releasedUnits } = require("%rGui/unit/unitState.nut")
 
 let GM_DOMINATION = 12
 
+let NUMBER_OF_PLAYERS = 1
+let defMaxBotsCount = 20
+let defMaxBotsRank = 5
+
 let isOpened = mkWatched(persist, "isOpened", false)
 let savedUnitType = mkWatched(persist, "savedUnitType", null)
 let savedUnitName = mkWatched(persist, "savedUnitName", null)
@@ -25,6 +29,8 @@ let savedOBDebugUnitName = mkWatched(persist, "savedOBDebugUnitName", null)
 let savedOBDebugUnitType = mkWatched(persist, "savedOBDebugUnitType", null)
 let savedOBDebugMissionName = mkWatched(persist, "savedOBDebugMissionName", null)
 let isOfflineBattleDModeActive = mkWatched(persist, "isOfflineBattleDModeActive", false)
+let savedBotsCount = mkWatched(persist, "savedBotsCount", defMaxBotsCount - NUMBER_OF_PLAYERS)
+let savedBotsRank = mkWatched(persist, "savedBotsRank", defMaxBotsRank)
 let canUseOfflineBattleDMode = Computed(@() can_debug_configs.get() && can_debug_missions.get())
 
 function refreshOfflineMissionsList() {
@@ -58,8 +64,14 @@ function runOfflineBattle(unitName = null, missionName = null) {
     reward = { unitName }
     unit
   }
+  let misBlkParams = !isOfflineBattleDModeActive.get()
+    ? {
+        maxBots = savedBotsCount.get().tointeger() + NUMBER_OF_PLAYERS
+        minRank = savedBotsRank.get().tointeger()
+      }
+    : {}
   eventbus_send("lastSingleMissionRewardData", { battleData })
-  startLocalMPBattleWithoutGamemode(unit, missionName, "max")
+  startLocalMPBattleWithoutGamemode(unit, missionName, "max", misBlkParams)
 }
 
 let openOfflineBattleMenu = @() isOpened.set(true)
@@ -125,5 +137,10 @@ return {
   runOfflineBattle,
   offlineMissionsList,
   openOfflineBattleMenu,
-  refreshOfflineMissionsList
+  refreshOfflineMissionsList,
+  savedBotsCount,
+  savedBotsRank,
+  defMaxBotsCount,
+  defMaxBotsRank,
+  NUMBER_OF_PLAYERS
 }

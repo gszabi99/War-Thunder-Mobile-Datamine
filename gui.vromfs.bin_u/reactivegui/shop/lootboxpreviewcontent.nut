@@ -2,6 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
 let { roundToDigits, ceil } = require("%sqstd/math.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
+let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
 let { getLootboxImage, getLootboxName, lootboxFallbackPicture } = require("%appGlobals/config/lootboxPresentation.nut")
 let { getAllLootboxRewardsViewInfo, getLootboxRewardsViewInfo, fillRewardsCounts, NO_DROP_LIMIT,
@@ -149,8 +151,8 @@ let mkChanceRow = @(count, chance, icon) {
   ]
 }
 
-let mkTextForChanceCurrency = @(sr, chances, combinedReward)
-  mkChanceRow(sr.count, chances.percents[sr.id], mkCurrencyImage(combinedReward.id, chanceStyle.iconSize))
+let mkTextForChanceCurrency = @(sr, chances, rId)
+  mkChanceRow(sr.count, chances.percents[sr.id], mkCurrencyImage(rId, chanceStyle.iconSize))
 
 let chancePartCtors = {
   blueprint = @(sr, chances, _)
@@ -161,10 +163,17 @@ let chancePartCtors = {
         image = Picture($"ui/unitskin#blueprint_default_small.avif:{blueprintSize}:{blueprintSize}:P")
         transform = { rotate = -10 }
       })
+  booster = @(sr, chances, rId)
+    mkChanceRow(sr.count, chances.percents[sr.id],
+      {
+        size = [chanceStyle.iconSize, chanceStyle.iconSize]
+        rendObj = ROBJ_IMAGE
+        image = Picture($"{getBoosterIcon(rId)}:{chanceStyle.iconSize}:{chanceStyle.iconSize}:P")
+      })
 }
 
-let mkTextForChancePart = @(singleReward, chances, combinedReward)
-  (chancePartCtors?[combinedReward.rType] ?? mkTextForChanceCurrency)(singleReward, chances, combinedReward)
+let mkTextForChancePart = @(singleReward, chances, rType, rId)
+  (chancePartCtors?[rType] ?? mkTextForChanceCurrency)(singleReward, chances, rId)
 
 function mkJackpotChanceText(id, chances, mainChances, stepsCount) {
   if(chances == null || mainChances == null)
@@ -226,15 +235,16 @@ function mkChanceContent(reward, rewardStatus, stepsCount) {
   if (isJackpot)
     return mkJackpotChanceContent(reward, stepsCount, mainChances, isInProgress)
 
+  let rId = Computed(@() currencyToFullId.get()?[reward.id] ?? reward.id)
   return @() {
-    watch = [isInProgress, mainChances]
+    watch = [isInProgress, mainChances, rId]
     flow = FLOW_VERTICAL
     sound = { attach = "click" }
     gap = hdpx(5)
     halign = ALIGN_LEFT
     children = isInProgress.get() ? spinner
       : mainChances.get() == null ? mkText(loc("item/chance/error"))
-      : agregatedRewards != null ? agregatedRewards.map(@(r) mkTextForChancePart(r, mainChances.get(), reward))
+      : agregatedRewards != null ? agregatedRewards.map(@(r) mkTextForChancePart(r, mainChances.get(), reward.rType, rId.get()))
       : rewardId != null
         ? mkText("".concat(loc("item/chance"), colon, roundToDigits(mainChances.get().percents[rewardId], 2), "%"))
       : null

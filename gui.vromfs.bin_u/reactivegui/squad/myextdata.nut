@@ -5,6 +5,7 @@ let { myQueueToken } = require("%appGlobals/queueState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { myClustersRTT, queueDataCheckTime } = require("%appGlobals/squadState.nut")
 let { readyCheckTime } = require("readyCheck.nut")
@@ -15,7 +16,7 @@ let { chosenDecoratorsHash } = require("%rGui/decorators/decoratorState.nut")
 
 let curUnits = keepref(Computed(function() {
   let { allUnits = null, campaignCfg = {} } = serverConfigs.value
-  let { units = null, campaignSlots = null } = servProfile.value
+  let { units = null } = servProfile.value
   if (units == null || allUnits == null)
     return null
   let res = {}
@@ -28,7 +29,7 @@ let curUnits = keepref(Computed(function() {
   }
   foreach(campaign, cfg in campaignCfg)
     if (cfg.totalSlots > 0)
-      res[campaign] <- campaignSlots?[campaign].slots
+      res[campaign] <- curSlots.get()
         .filter(@(s) s.name != "")
         .map(@(s) s.name)
         ?? []

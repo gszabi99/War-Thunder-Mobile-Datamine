@@ -242,11 +242,11 @@
     {
       "hangarPlace": "ship",
       "modelPos": [
-        1675.2,
+        2932.2,
         7.0,
-        -2355.9
+        -2266.4
       ],
-      "modelRotation": -152.0,
+      "modelRotation": -125.0,
       "unitOffset": [
         0.0,
         0.0,
@@ -1819,14 +1819,14 @@
           "id": "v1",
           "musicName": "naval/music/cutscene_offer",
           "from": [
-            2367.0,
+            2733.8,
             7.0,
-            -5135.0
+            -1977.1
           ],
           "to": [
-            2506.0,
+            1808.7,
             7.0,
-            -6207.0
+            -4052.2
           ],
           "timeToStop": 100.0,
           "cameraRelativeSpeed": 0.3,
@@ -1882,14 +1882,14 @@
           "id": "v3",
           "musicName": "naval/music/cutscene_offer",
           "from": [
-            2367.0,
+            2733.8,
             7.0,
-            -5135.0
+            -1977.1
           ],
           "to": [
-            2506.0,
+            1808.7,
             7.0,
-            -6207.0
+            -4052.2
           ],
           "timeToStop": 100.0,
           "cameraRelativeSpeed": 0.9,
@@ -1945,14 +1945,14 @@
           "id": "v4",
           "musicName": "naval/music/cutscene_offer",
           "from": [
-            2367.0,
+            2733.8,
             7.0,
-            -5135.0
+            -1977.1
           ],
           "to": [
-            2506.0,
+            1808.7,
             7.0,
-            -6207.0
+            -4052.2
           ],
           "timeToStop": 100.0,
           "cameraRelativeSpeed": 0.5,

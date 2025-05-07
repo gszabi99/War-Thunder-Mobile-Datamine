@@ -1,7 +1,8 @@
 let { deferOnce } = require("dagor.workcycle")
 let { Computed, Watched } = require("frp")
 let { min, max } = require("math")
-let { units, levelInfo, campConfigs, curCampaignSlotUnits } = require("campaign.nut")
+let { units, levelInfo, campConfigs } = require("campaign.nut")
+let { curCampaignSlotUnits } = require("slots.nut")
 let { curUnitInProgress } = require("pServerApi.nut")
 
 let defaultProfileLevelInfo = {

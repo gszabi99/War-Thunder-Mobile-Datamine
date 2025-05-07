@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
 let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
+let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
 let { starLevelSmall } = require("%rGui/components/starLevel.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
@@ -20,7 +21,8 @@ let premIconSize = hdpxi(50)
 
 function contactNameBlock(contact, info, addChildren = [], styles = {}) {
   let { realnick } = contact
-  let { nickFrame = null, title = null } = info?.decorators
+  let { decorators = {}, hasPremium = false, hasPrem = false, hasVip = false } = info
+  let { nickFrame = null, title = null } = decorators
   let { nameStyle = fontTiny, titleStyle = fontTiny } = styles
   return {
     size = [SIZE_TO_CONTENT, flex()]
@@ -39,14 +41,12 @@ function contactNameBlock(contact, info, addChildren = [], styles = {}) {
             color = nameColor
             text = frameNick(getPlayerName(realnick, myUserRealName.get(), myUserName.get()), nickFrame)
           }.__update(nameStyle)
-          info?.hasPremium ? {
-            rendObj = ROBJ_IMAGE
-            size = [premIconSize, premIconSize]
-            image = info?.hasVip
-              ? Picture($"ui/gameuiskin#vip_active.svg:{premIconSize}:{premIconSize}:P")
-              : Picture($"ui/gameuiskin#premium_active.svg:{premIconSize}:{premIconSize}:P")
-            keepAspect = KEEP_ASPECT_FIT
-          } : null
+          !hasPremium ? null
+            : mkSubsIcon(
+              hasVip ? "vip"
+                : hasPrem ? "prem"
+                : "prem_deprecated",
+              premIconSize)
         ]
       }
       {

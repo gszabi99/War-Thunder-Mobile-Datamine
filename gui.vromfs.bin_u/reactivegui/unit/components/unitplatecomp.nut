@@ -391,6 +391,8 @@ let function mkUnitFlag(unit, isLocked = false) {
   if (operatorCountry == "")
     return null
   let countryId = operatorCountry ?? unit.country
+  if (countryId == null)
+    return null
   return mkFlagImage(countryId, flagIconSize).__update({
     margin = plateTextsSmallPad
     brightness = isLocked ? 0.4 : 1.0

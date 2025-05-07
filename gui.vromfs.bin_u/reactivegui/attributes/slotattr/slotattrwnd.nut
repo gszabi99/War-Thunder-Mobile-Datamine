@@ -5,12 +5,13 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { slotInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
+let { curSlots } = require("%appGlobals/pServer/slots.nut")
 
 let { lastModifiedAttr, curCategoryId, getSpCostText } = require("%rGui/attributes/attrState.nut")
 let { gamercardWithoutLevelBlock, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { selectedSlotIdx, slots, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
+let { selectedSlotIdx, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
 let { defCategoryImage, categoryImages } = require("%rGui/attributes/attrValues.nut")
 let { textButtonPrimary, buttonsHGap } = require("%rGui/components/textButton.nut")
 let { slotAttrPage } = require("%rGui/attributes/slotAttr/slotAttrWndPage.nut")
@@ -189,7 +190,7 @@ let pageBlock = {
 }
 
 let applyAction = function() {
-  if (!hasUpgradedAttrUnitNotUpdatable() && slots.get().findindex(@(slot) slot.attrLevels.len() > 0 ) == null)
+  if (!hasUpgradedAttrUnitNotUpdatable() && curSlots.get().findindex(@(slot) slot.attrLevels.len() > 0 ) == null)
     sendAppsFlyerEvent("slot_upgrade_crew_1")
   applyAttributes()
   backButtonBlink("UnitAttr")
@@ -300,7 +301,7 @@ let gamercardSlotLevelLine = @(slot, keyHintText, idx, slotNameBlock){
 }
 
 let mkLeftBlockSlotCampaign = @(backCb, keyHintText, slotNameBlock) @() {
-  watch = [selectedSlotIdx, slots]
+  watch = [selectedSlotIdx, curSlots]
   size = [SIZE_TO_CONTENT, gamercardHeight]
   flow = FLOW_HORIZONTAL
   hplace = ALIGN_LEFT
@@ -308,7 +309,7 @@ let mkLeftBlockSlotCampaign = @(backCb, keyHintText, slotNameBlock) @() {
   gap = gamercardGap
   children = [
     backCb != null ? backButton(backCb, { vplace = ALIGN_CENTER }) : null
-    gamercardSlotLevelLine(slots.get()[selectedSlotIdx.get()],
+    gamercardSlotLevelLine(curSlots.get()[selectedSlotIdx.get()],
       keyHintText,
       selectedSlotIdx.get(),
       slotNameBlock)

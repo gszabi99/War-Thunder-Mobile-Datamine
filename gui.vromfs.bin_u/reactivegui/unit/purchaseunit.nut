@@ -9,8 +9,9 @@ let { userlogTextColor } = require("%rGui/style/stdColors.nut")
 let { playSound } = require("sound_wt")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { unitDiscounts } = require("unitsDiscountState.nut")
-let { slots, openSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
+let { openSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
 let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { addNewPurchasedUnit, delayedPurchaseUnitData, needSaveUnitDataForTutorial } = require("delayedPurchaseUnit.nut")
 let { animUnitWithLink, isBuyUnitWndOpened } = require("%rGui/unitsTree/animState.nut")
 let { boughtUnit } = require("%rGui/unit/selectNewUnitWnd.nut")
@@ -35,7 +36,7 @@ registerHandler("onUnitPurchaseResult",
     }
     if(isCampaignWithUnitsResearch.get())
       addNewPurchasedUnit(unitId)
-    if (slots.get().len() > 0) {
+    if (curSlots.get().len() > 0) {
       animUnitWithLink.set(unitId)
       openSelectUnitToSlotWnd(unitId, $"treeNodeUnitPlate:{unitId}")
       playSound("meta_build_unit")

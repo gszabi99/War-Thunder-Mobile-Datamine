@@ -3,6 +3,7 @@ let regexp2 = require("regexp2")
 let { roundToDigits } = require("%sqstd/math.nut")
 let { getUnitLocId, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
+let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
 let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
 let { premiumTextColor, collectibleTextColor } = require("%rGui/style/stdColors.nut")
 let { decimalFormat } = require("%rGui/textFormatByLang.nut")
@@ -49,14 +50,13 @@ let mkCellFontIcon = @(icon) {
 
 
 let premIconSize = fontSmall.fontSize
-let premiumMark = @(player) !player.hasPremium ? null : {
-  size = [premIconSize, premIconSize]
-  rendObj = ROBJ_IMAGE
-  keepAspect = true
-  image = player.hasVip
-    ? Picture($"ui/gameuiskin#vip_active.svg:{premIconSize}:{premIconSize}:P")
-    : Picture($"ui/gameuiskin#premium_active.svg:{premIconSize}:{premIconSize}:K:P")
-}
+let premiumMark = @(player) !player.hasPremium ? null
+  : mkSubsIcon(
+    player.hasVip ? "vip"
+      : player.hasPrem ? "prem"
+      : "prem_deprecated",
+    premIconSize,
+  )
 
 function getUnitNameText(unitId, unitClass, halign) {
   let name = loc(getUnitLocId(unitId), unitId)

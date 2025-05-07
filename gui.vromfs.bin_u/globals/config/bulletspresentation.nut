@@ -117,7 +117,7 @@ let bulletsLocIdByCaliber = [
 function getBulletImage(bullets){
   if(bullets.len() > 1)
     return "ui/gameuiskin#shell_bullet_belt_tank.avif"
-  return bulletsImages?[bullets[0]] ? $"ui/gameuiskin#{bulletsImages?[bullets[0]]}.avif"
+  return bulletsImages?[bullets[0]] ? $"ui/gameuiskin#{bulletsImages[bullets[0]]}.avif"
    : "ui/unitskin#image_in_progress.avif"
 }
 

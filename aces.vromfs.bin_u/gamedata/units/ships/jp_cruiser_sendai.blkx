@@ -4334,6 +4334,13 @@
       "details"
     ]
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "camo_warshipdeepgray*",
+      "to": "camo_bluegray_spots*"
+    }
+  },
   "vehicleSkins": {
     "grayriver": {
       "replace_tex": [

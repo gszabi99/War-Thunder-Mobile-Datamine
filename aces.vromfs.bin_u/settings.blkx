@@ -23,6 +23,7 @@
   "localizationVrom": "lang.vromfs.bin",
   "localizationRegionalVrom": "",
   "addAllAddonsToBasePath": false,
+  "maxNumberOfGameResPacks": 4000,
   "clientBitType": "auto",
   "releaseChannel": "",
   "rdseed": 16807,
@@ -906,6 +907,12 @@
         "mRank": 6
       }
     },
+    "pkg_jp_battleship_ise": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
     "pkg_germ_cruiser_emden_1944": {
       "conditions": {
         "campaign": "ships",
@@ -913,6 +920,18 @@
       }
     },
     "pkg_ussr_battleship_arhangelsk": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_ussr_battlecruiser_izmail": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
+    "pkg_uk_battlecruiser_hood": {
       "conditions": {
         "campaign": "ships",
         "mRank": 4
@@ -937,6 +956,24 @@
       }
     },
     "pkg_uk_destroyer_rckt_type42": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_uk_battleship_rodney": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 5
+      }
+    },
+    "pkg_ussr_destroyer_rckt_pr956": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_us_cruiser_rckt_albany": {
       "conditions": {
         "campaign": "ships",
         "mRank": 6
@@ -1386,6 +1423,30 @@
         "mRank": 8
       }
     },
+    "pkg_ussr_t_80u": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 11
+      }
+    },
+    "pkg_jp_type_16_mod": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
+    "pkg_sw_bkan_1c": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_cn_type_69_2g": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 8
+      }
+    },
     "pkg_environment_uhq": {
       "base": false,
       "hq": false,
@@ -1404,10 +1465,6 @@
       "uhq": true,
       "modelsPatch": false
     }
-  },
-  "addonToXboxChunk": {
-    "content.hq/hq_tex": 1002,
-    "content.hq/pkg_cockpits": 1002
   },
   "video": {
     "safeArea": false,

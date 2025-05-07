@@ -4,6 +4,7 @@ let { playSound } = require("sound_wt")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
@@ -20,7 +21,7 @@ let { debriefingData, curDebrTabId, nextDebrTabId, isDebriefingAnimFinished, isN
   DEBR_TAB_SCORES, DEBR_TAB_CAMPAIGN, debrTabsShowTime, stopDebriefingAnimation,
   needShowBtns_Campaign, needShowBtns_Unit, needShowBtns_Final,
 } = require("debriefingState.nut")
-let { randomBattleMode, allGameModes } = require("%rGui/gameModes/gameModeState.nut")
+let { randomBattleMode, allGameModes, shouldStartNewbieSingleOnline } = require("%rGui/gameModes/gameModeState.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { isNewbieMode } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
@@ -45,8 +46,8 @@ let { boostersListActive } = require("%rGui/boosters/boostersListActive.nut")
 let { openEventWnd, allSpecialEvents, specialEventsWithTree } = require("%rGui/event/eventState.nut")
 let { getUnitTags } = require("%appGlobals/unitTags.nut")
 let { openUnitsTreeAtUnit } = require("%rGui/unitsTree/unitsTreeState.nut")
-let { slots, selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
 let { setCurrentUnit, buyUnitsData } = require("%appGlobals/unitsState.nut")
+let { selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 let { runOfflineBattle } = require("%rGui/debugTools/debugOfflineBattleState.nut")
 let { TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID } = require("%rGui/tutorial/tutorialConst.nut")
@@ -264,12 +265,12 @@ let mkBtnToBattlePlace = @(needShow, nextGMInfo, debrData) mkBtnAppearAnim(false
     if (!isFake)
       children.append(boostersListActive)
     return {
-      watch = [newbieOfflineMissions, isInSquad, isSquadLeader, nextGMInfo]
+      watch = [newbieOfflineMissions, isInSquad, isSquadLeader, nextGMInfo, shouldStartNewbieSingleOnline]
       flow = FLOW_HORIZONTAL
       gap = hdpx(20)
       children = !isInSquad.get() && isCustomOfflineBattle && name != null && mission != null
           ? children.append(mkStartCustomOfflineBattleButton(name, mission))
-        : !isInSquad.get() && isCommonBattle && newbieOfflineMissions.get() != null
+        : !isInSquad.get() && isCommonBattle && newbieOfflineMissions.get() != null && !shouldStartNewbieSingleOnline.get()
           ? children.append(startOfflineMissionButton)
         : gmId != null && campaign != null && (!isInSquad.get() || isSquadLeader.get())
           ? children.append(toBattleButton(gmId, campaign))
@@ -322,7 +323,7 @@ function debriefingWnd() {
   let isFirstLvlUpForSlot = hasAnyLevelUnlockRewards
     && unlockedReward.type == "crew"
     && unlockedReward.levelBeforeBattle == 0
-    && slots.get().filter(@(slot) slot.level != 0).len() == 1
+    && curSlots.get().filter(@(slot) slot.level != 0).len() == 1
   let canStartArsenalTutorial = hasAnyLevelUnlockRewards
     && unlockedReward.type == "arsenal"
     && debrData.completedTutorials?[TUTORIAL_UNITS_RESEARCH_ID]

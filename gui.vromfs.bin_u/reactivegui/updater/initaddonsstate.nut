@@ -38,10 +38,16 @@ isAddonsExistInGameFolderActual.subscribe(@(v) v ? null : requestAddonsExistInGa
 
 
 function onGetAddonsVersions(evt) {
-  if (!isEqual(addonsVersions.get(), evt)) {
+  let was = addonsVersions.get()
+  let added = evt.filter(@(v, k) v != was?[k])
+  let removed = was.filter(@(_, k) k not in evt)
+
+  if (added.len() + removed.len() != 0) {
     addonsVersions.set(clone evt)
-    logA("Get addons versions: ",
-      ", ".join(addonsVersions.get().keys().sort().map(@(a) $"{a} {addonsVersions.get()[a]}")))
+    logA($"Get addons versions: \nadded ({added.len()}): ",
+      ", ".join(added.keys().sort().map(@(a) $"{a} '{added[a]}'")),
+      $"\nremoved ({removed.len()}): ",
+      ", ".join(removed.keys().sort().map(@(a) $"{a} '{removed[a]}'")))
   }
   else
     logA("Get addons versions: unchanged")

@@ -28,7 +28,7 @@ curCampaign.subscribe(function(_) {
 })
 
 curUnitName.subscribe(function(v) {
-  if (v != null && curSelectedUnit.value != null)
+  if (v != null && curSelectedUnit.get() == null)
     curSelectedUnit.set(v)
 })
 

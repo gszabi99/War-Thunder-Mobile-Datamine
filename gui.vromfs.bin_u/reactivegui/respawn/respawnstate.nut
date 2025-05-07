@@ -12,7 +12,7 @@ let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft, respawnUnitI
   hasRespawnSeparateSlots, curUnitsAvgCostWp, respawnUnitSkins
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { getUnitTags, getUnitType, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { AIR } = require("%appGlobals/unitConst.nut")
+let { AIR, TANK } = require("%appGlobals/unitConst.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { getDefaultBulletsForSpawn } = require("%rGui/weaponry/bulletsCalc.nut")
@@ -46,6 +46,9 @@ const SEEN_SHELLS = "SeenShells"
 let seenShells = mkWatched(persist, SEEN_SHELLS, {})
 
 let selectedSkins = Watched({})
+
+let unitTypesRequireWeaponryChoice = [AIR, TANK]
+  .reduce(@(res, v) res.$rawset(v, true), {})
 
 let getWeapon = @(weapons) weapons.findindex(@(v) v) ?? weapons.findindex(@(_) true)
 let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
@@ -150,8 +153,10 @@ if (seenShells.value.len() == 0)
 isSettingsAvailable.subscribe(@(_) loadSeenShells())
 
 let hasAvailableSlot = Computed(@() respawnsLeft.get() != 0 && respawnSlots.get().findvalue(@(s) s.canSpawn) != null)
+let needRespawnSlotsAndWeaponry = Computed(@() respawnSlots.get().len() > 1
+  || (respawnSlots.get().len() == 1 && (unitTypesRequireWeaponryChoice?[getUnitType(respawnSlots.get()[0].name)] ?? false)))
 let needAutospawn = keepref(Computed(@() isInRespawn.get() && isRespawnAttached.get()
-  && hasAvailableSlot.get() && !hasRespawnSeparateSlots.get() && respawnSlots.get().len() == 1))
+  && hasAvailableSlot.get() && !needRespawnSlotsAndWeaponry.get()))
 let needSpectatorMode = keepref(Computed(@() isInRespawn.get() && !hasAvailableSlot.get()))
 needSpectatorMode.subscribe(onSpectatorMode)
 
@@ -338,6 +343,7 @@ return {
   selSlotContentGenId
   isBailoutDeserter
   hasSkins
+  needRespawnSlotsAndWeaponry
 
   respawn
   cancelRespawn

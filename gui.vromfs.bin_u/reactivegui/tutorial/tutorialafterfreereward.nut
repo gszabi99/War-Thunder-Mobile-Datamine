@@ -7,7 +7,7 @@ let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
-let { randomBattleMode, isGameModesReceived } = require("%rGui/gameModes/gameModeState.nut")
+let { randomBattleMode, isGameModesReceived, shouldStartNewbieSingleOnline } = require("%rGui/gameModes/gameModeState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { isInMenuNoModals, isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
 let { setTutorialConfig, isTutorialActive, finishTutorial,
@@ -56,7 +56,7 @@ function startTutorial() {
         objects = [{
           keys = "toBattleButton"
           function onClick() {
-            if (newbieOfflineMissions.get() != null) {
+            if (newbieOfflineMissions.get() != null && !shouldStartNewbieSingleOnline.get()) {
               sendNewbieBqEvent("pressToBattleFromUITutor", {
                 status = "offline_battle",
                 params = ", ".join(newbieOfflineMissions.get())

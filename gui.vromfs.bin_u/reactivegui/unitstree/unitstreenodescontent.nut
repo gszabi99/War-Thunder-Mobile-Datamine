@@ -7,7 +7,7 @@ let { flagsWidth, bgLight, mkTreeNodesFlag, flagTreeOffset, gamercardOverlap, in
 let { unitsTreeOpenRank, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { curSelectedUnit, curUnitName, availableUnitsList } = require("%rGui/unit/unitsWndState.nut")
-let { isSlotsAnimActive, selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
+let { isSlotsAnimActive, selectedTreeSlotIdx, slotIdxByHangarUnit, selectTreeSlotByUnitName } = require("%rGui/slotBar/slotBarState.nut")
 let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { doubleSidePannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -20,13 +20,15 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { unseenUnits, markUnitSeen } = require("%rGui/unit/unseenUnits.nut")
+let { markBranchSeen } = require("%rGui/unitsTree/unseenBranches.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { selectedCountry, mkVisibleNodes, mkFilteredNodes, mkCountryNodesCfg, mkCountries,
   setResearchedUnitsSeen, currentResearch, researchCountry, unitsResearchStatus, unseenResearchedUnits,
-  setUnitToScroll, unitToScroll, unitInfoToScroll
+  setUnitToScroll, unitToScroll, unitInfoToScroll, blockedCountries
 } = require("unitsTreeNodesState.nut")
 let { slotBarUnitsTree, slotBarTreeHeight } = require("%rGui/slotBar/slotBar.nut")
-let { curCampaign, isCampaignWithSlots } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { isCampaignWithSlots, curSlots } = require("%appGlobals/pServer/slots.nut")
 let { rankBlockOffset } = require("unitsTreeConsts.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
@@ -199,9 +201,20 @@ function scrollToUnitGroupBottom(names, nodeList, areaSize) {
   scrollHandler.scrollToY(min(minY, maxY))
 }
 
-curSelectedUnit.subscribe(function(v) {
-  if (isTreeNodesAttached.get() && v)
-    setUnitToScroll(v, true)
+curSelectedUnit.subscribe(function(unitName) {
+  if (isTreeNodesAttached.get() && unitName != null) {
+    setUnitToScroll(unitName, true)
+    selectTreeSlotByUnitName(unitName)
+  }
+})
+
+curSlots.subscribe(function(v) {
+  if (isTreeNodesAttached.get() && v != null) {
+    if (v?[selectedTreeSlotIdx.get()].name == "")
+      selectedTreeSlotIdx.set(null)
+    else
+      selectTreeSlotByUnitName(curSelectedUnit.get())
+  }
 })
 
 function scrollToRank(rank, ranksCfg) {
@@ -496,7 +509,7 @@ function genLinks(nodes, positions, size) {
 let function mkUnitsNode(name, pos, hasDarkScreenV) {
   let xmbNode = XmbNode()
   let unit = Computed(@() campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name])
-  let watch = unit
+  let watch = [unit, curCampaign]
   return function() {
     let curUnit = unit.get()
     return curUnit == null ? { watch }
@@ -512,6 +525,7 @@ let function mkUnitsNode(name, pos, hasDarkScreenV) {
                   return
                 curSelectedUnit.set(name)
                 markUnitSeen(curUnit)
+                markBranchSeen(curCampaign.get(), curUnit.country)
                 if(name in unseenResearchedUnits.get()?[selectedCountry.get()])
                   setResearchedUnitsSeen({ [name] = true })
               }
@@ -537,7 +551,7 @@ function mkHasDarkScreen() {
     || animUnitAfterResearch.get() != null
     || isBuyUnitWndOpened.get())
   return Computed(@() !currentResearch.get() && !isSlotsAnimActive.get() && !isPlayingAnyAnim.get()
-    && unitsResearchStatus.get().filter(@(val) val.canResearch == true).len() > 0)
+    && unitsResearchStatus.get().filter(@(val) val.canResearch == true && val.country not in blockedCountries.get()).len() > 0)
 }
 
 let mkDarkScreen = @(size, positions) function() {
@@ -584,7 +598,7 @@ let mkUnitsTreeFull = @(countryNodesCfg, hasDarkScreenV, areaSizeV) {
   function onClick() {
     if (!isLvlUpAnimated.get()) {
       curSelectedUnit.set(null)
-      selectedSlotIdx.set(null)
+      selectedTreeSlotIdx.set(null)
     }
   }
   children = [
@@ -736,9 +750,12 @@ let function mkUnitsTreeNodesContent() {
           : unitsTreeOpenRank.get() != null ? scrollToRank(unitsTreeOpenRank.get(), ranksCfg.get())
           : onUnitNodesAppear(selectedCountry.get(), countryNodesCfg.get().nodes, areaSize))
         isTreeNodesAttached.set(true)
+        curSelectedUnit.set(curSlots.get()?[slotIdxByHangarUnit.get()].name)
+        selectedTreeSlotIdx.set(slotIdxByHangarUnit.get())
       }
       function onDetach() {
         isTreeNodesAttached.set(false)
+        selectedTreeSlotIdx.set(null)
         unitToScroll.unsubscribe(onUnitToScrollChange)
         animBuyRequirements.unsubscribe(onAnimBuyChange)
         animResearchRequirements.unsubscribe(onAnimResearchChange)

@@ -6,10 +6,11 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { add_slot_attributes } = require("%appGlobals/pServer/pServerApi.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { slots, selectedSlotIdx, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
+let { selectedSlotIdx, maxSlotLevels } = require("%rGui/slotBar/slotBarState.nut")
 let { selAttributes, curCategoryId, attrPresets,
   calcStatus, sumCost, MAX_AVAIL_STATUS
 } = require("%rGui/attributes/attrState.nut")
@@ -22,7 +23,7 @@ let SEEN_SLOT_ATTRIBUTES = "seenSlotAttributes"
 let seenSlotAttributes = mkWatched(persist, SEEN_SLOT_ATTRIBUTES, {})
 
 let attrSlotData = Computed(function() {
-  let slot = slots.get()?[selectedSlotIdx.get()]
+  let slot = curSlots.get()?[selectedSlotIdx.get()]
   return {
     slot
     preset = attrPresets.get()?[campConfigs.get()?.campaignCfg.slotAttrPreset] ?? []
@@ -66,7 +67,7 @@ let isSlotMaxSkills = Computed(function() {
 
 function mkUnseenSlotAttrByIdx(idx) {
   let attrDataByIdx = Computed(function() {
-    let slot = slots.get()?[idx]
+    let slot = curSlots.get()?[idx]
     return {
       slot
       preset = attrPresets.get()?[campConfigs.get()?.campaignCfg.slotAttrPreset] ?? []
@@ -145,7 +146,7 @@ function applyAttributes() {
 }
 
 function markSlotAttributesSeen(slotIdx) {
-  let curSlotLevel = slots.get()?[slotIdx]?.level
+  let curSlotLevel = curSlots.get()?[slotIdx]?.level
 
   seenSlotAttributes.mutate(function(v) {
     if(curCampaign.get() not in v)

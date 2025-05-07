@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
 let { getGoodsLocName, mkGoods } = require("goods.nut")
 let { mkOfferGold } = require("%rGui/shop/goodsView/goodsGold.nut")
-let { mkOfferUnit, mkOfferBlueprint, mkOfferBranchUnit } = require("%rGui/shop/goodsView/goodsUnit.nut")
+let { mkOfferUnit, mkOfferBlueprint, mkOfferBranchUnit, mkOfferBattleMode } = require("%rGui/shop/goodsView/goodsUnit.nut")
 
 let constructors = {
   [SGT_GOLD] = mkOfferGold,
@@ -14,6 +14,6 @@ let constructors = {
 return {
   getOfferLocName = getGoodsLocName
   mkOffer = @(offer, onClick, state)
-    constructors?[offer.gtype](offer, onClick, state)
-    ?? mkGoods(offer, onClick, state, null)
+    ((offer?.battleMods.len() ?? 0) != 0) ? mkOfferBattleMode(offer, onClick, state)
+      : (constructors?[offer.gtype](offer, onClick, state) ?? mkGoods(offer, onClick, state, null))
 }

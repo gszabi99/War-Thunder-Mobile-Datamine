@@ -367,7 +367,7 @@ let advertMark = {
   rendObj = ROBJ_IMAGE
   image = !hasVip.get()
     ? Picture($"ui/gameuiskin#watch_ads.svg:{advertSize}:{advertSize}:P")
-    : Picture($"ui/gameuiskin#vip_active.svg:{vipIconW}:{vipIconH}:P")
+    : Picture($"ui/gameuiskin#gamercard_subs_vip.svg:{vipIconW}:{vipIconH}:P")
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
 }.__update(adsButtonCounter)

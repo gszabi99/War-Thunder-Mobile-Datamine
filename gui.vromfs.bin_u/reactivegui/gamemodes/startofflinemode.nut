@@ -79,30 +79,31 @@ function startOfflineBattle(unit, missionName) {
     })
 }
 
-let mkLocalMPParams = @(unit, missionName, presetOvrMis) {
+let mkLocalMPParams = @(unit, missionName, presetOvrMis, misBlkParams) {
   unitName = unit.name
   skin = getUnitSkin(unit)
   missionName
   bullets = getBulletsForTestFlight(unit.name)
   presetOvrMis
+  misBlkParams
 }
 
-function startLocalMPBattle(unit, missionName, presetOvrMis = null) {
+function startLocalMPBattle(unit, missionName, presetOvrMis = null, misBlkParams = {}) {
   if (unit == null) {
     openMsgBox({ text = loc("No selected unit") })
     return
   }
   logO("donloadUnitPacksAndSend startLocalMP")
-  donloadUnitPacksAndSend(unit.name, [], "startLocalMP", mkLocalMPParams(unit, missionName, presetOvrMis))
+  donloadUnitPacksAndSend(unit.name, [], "startLocalMP", mkLocalMPParams(unit, missionName, presetOvrMis, misBlkParams))
 }
 
-function startLocalMPBattleWithoutGamemode(unit, missionName, presetOvrMis = null) {
+function startLocalMPBattleWithoutGamemode(unit, missionName, presetOvrMis = null, misBlkParams = {}) {
   if (unit == null) {
     openMsgBox({ text = loc("No selected unit") })
     return
   }
   logO("donloadUnitPacksAndSend startLocalMPWithoutGM")
-  donloadUnitPacksAndSend(unit.name, [], "startLocalMPWithoutGM", mkLocalMPParams(unit, missionName, presetOvrMis))
+  donloadUnitPacksAndSend(unit.name, [], "startLocalMPWithoutGM", mkLocalMPParams(unit, missionName, presetOvrMis, misBlkParams))
 }
 
 return {

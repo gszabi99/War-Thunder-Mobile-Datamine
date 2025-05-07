@@ -8,6 +8,23 @@
   "numBotRespawnsInVersus": 1,
   "numTankBotRespawnsInVersus": 3,
   "allowedAircrafts": {
+    "aircraft": [
+      {
+        "name": "f3f-2",
+        "weight": 1.0,
+        "country": "usa"
+      },
+      {
+        "name": "he51c1",
+        "weight": 1.0,
+        "country": "germany"
+      },
+      {
+        "name": "i-15_1934",
+        "weight": 1.0,
+        "country": "ussr"
+      }
+    ],
     "rankRange": [
       {
         "range": [
@@ -203,42 +220,12 @@
             "country": "usa"
           },
           {
-            "name": "us_m24_chaffee",
-            "weight": 1.0,
-            "country": "usa"
-          },
-          {
-            "name": "us_m10",
-            "weight": 1.0,
-            "country": "usa"
-          },
-          {
-            "name": "germ_pzkpfw_III_ausf_L",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
             "name": "germ_pzkpfw_IV_ausf_F2",
             "weight": 1.0,
             "country": "germany"
           },
           {
-            "name": "germ_pzkpfw_IV_ausf_F",
-            "weight": 1.0,
-            "country": "germany"
-          },
-          {
-            "name": "ussr_t_34_1941_l_11",
-            "weight": 1.0,
-            "country": "ussr"
-          },
-          {
             "name": "ussr_t_34_1941",
-            "weight": 1.0,
-            "country": "ussr"
-          },
-          {
-            "name": "ussr_t_28E",
             "weight": 1.0,
             "country": "ussr"
           }
@@ -640,7 +627,7 @@
       {
         "range": [
           8,
-          50
+          8
         ],
         "tank": [
           {
@@ -758,7 +745,7 @@
       {
         "range": [
           9,
-          50
+          9
         ],
         "tank": [
           {
@@ -820,6 +807,84 @@
             "name": "sw_strv_105",
             "weight": 1.0,
             "country": "sweden"
+          }
+        ]
+      },
+      {
+        "range": [
+          10,
+          50
+        ],
+        "tank": [
+          {
+            "name": "ussr_t_72b_1989",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_t_64_b_1984",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_bmp_2m",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "cn_ztz_96a",
+            "weight": 1.0,
+            "country": "china"
+          },
+          {
+            "name": "cn_ztl_11",
+            "weight": 1.0,
+            "country": "china"
+          },
+          {
+            "name": "cn_zbd_04a",
+            "weight": 1.0,
+            "country": "china"
+          },
+          {
+            "name": "uk_challenger_1",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "uk_ttd",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "uk_desert_warrior",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "germ_leopard_2a4",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_thyssen_henschel_tam_2c",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "us_m1_abrams",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m1128_mgs",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m3a3_bradley_reskin2",
+            "weight": 1.0,
+            "country": "usa"
           }
         ]
       }

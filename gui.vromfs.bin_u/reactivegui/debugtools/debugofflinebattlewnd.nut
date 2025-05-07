@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
-let { deferOnce } = require("dagor.workcycle")
 let { register_command } = require("console")
+let { mkGameModeByCampaign } = require("%appGlobals/gameModes/gameModes.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
 let { TANK, AIR, SHIP, HELICOPTER, BOAT, SUBMARINE, SAILBOAT } = require("%appGlobals/unitConst.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
@@ -18,12 +18,16 @@ let { backButton } = require("%rGui/components/backButton.nut")
 let chooseByNameWnd = require("debugSkins/chooseByNameWnd.nut")
 let { mkCfg, debugOfflineBattleCfg, openOfflineBattleMenu, isOpened, savedUnitType, savedUnitName,
   isOfflineBattleDModeActive, canUseOfflineBattleDMode, savedMissionName, runOfflineBattle,
-  refreshOfflineMissionsList, savedOBDebugUnitType, savedOBDebugMissionName, savedOBDebugUnitName
+  refreshOfflineMissionsList, savedOBDebugUnitType, savedOBDebugMissionName, savedOBDebugUnitName,
+  savedBotsCount, savedBotsRank, defMaxBotsCount, defMaxBotsRank, NUMBER_OF_PLAYERS
 } = require("debugOfflineBattleState.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { toggleWithLabel } = require("%rGui/components/toggle.nut")
+let { addModalWindowWithHeader, removeModalWindow } = require("%rGui/components/modalWindows.nut")
+let { sliderWithButtons } = require("%rGui/components/slider.nut")
 
 
+let SET_MIS_BLK_PARAMS_WND = "setMisBlkParamsWnd"
 let campaignByUnitType = {
   [SUBMARINE] = "ships",
   [SAILBOAT] = "ships",
@@ -34,12 +38,92 @@ let campaignByUnitType = {
   [TANK] = "tanks"
 }
 
+let needShowBattleSettingsWnd = mkWatched(persist, "needShowBattleSettingsWnd", false)
+
 let close = @() isOpened.set(false)
 
 function initUnitWnd() {
   savedUnitType(getUnitType(hangarUnitName.get()))
   savedUnitName(hangarUnitName.get())
 }
+
+function mkSliderOpt(opt) {
+  let { value = null, ctrlOverride = {}, locId = "" } = opt
+  if (value == null) {
+    logerr($"Options: Missing value for option {opt?.locId}")
+    return null
+  }
+  return sliderWithButtons(value, loc(locId), ctrlOverride)
+}
+
+let mkBotOpt = @(value, locId, maxCount)
+  {
+    locId
+    value
+    ctrlOverride = {
+      min = 1
+      max = maxCount.get()
+      unit = 1
+    }
+  }
+
+function setMisBlkParamsContent(campaign) {
+  let allUnits = Computed(@() serverConfigs.get()?.allUnits ?? {})
+  let gmCfg = mkGameModeByCampaign(getCampaignStatsId(campaign))
+
+  let maxBotsCount = Computed(function() {
+    let maxBotsByCfg = gmCfg.get()?.mission_decl.maxBots
+    let maxBotSlots = maxBotsByCfg != null ? maxBotsByCfg : defMaxBotsCount
+    return maxBotSlots - NUMBER_OF_PLAYERS
+  })
+
+  let maxBotsRank = Computed(function() {
+    local res = 1
+    foreach (unit in allUnits.get())
+      if (unit.campaign == campaign)
+        res = max(unit.mRank, res)
+    return res
+  })
+
+  let optMaxBotsCount = mkBotOpt(savedBotsCount, "mainmenu/offlineBattles/settings/botsCount", maxBotsCount)
+  let optMaxBotsRank = mkBotOpt(savedBotsRank, "mainmenu/offlineBattles/settings/botsRank", maxBotsRank)
+
+  return {
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    flow = FLOW_VERTICAL
+    padding = hdpx(40)
+    gap = hdpx(40)
+    function onAttach() {
+      let selectedUnit = allUnits.get()?[savedUnitName.get()] ?? {}
+      savedBotsCount.set(maxBotsCount.get())
+      savedBotsRank.set(selectedUnit?.mRank ?? defMaxBotsRank)
+    }
+    onDetach = @() needShowBattleSettingsWnd.set(false)
+    children = [
+      mkSliderOpt(optMaxBotsCount)
+      mkSliderOpt(optMaxBotsRank)
+      mkToBattleButtonWithSquadManagement(function() {
+        needShowBattleSettingsWnd.set(false)
+        runOfflineBattle()
+      })
+    ]
+  }
+}
+
+let openBattleSettingsModal = @() addModalWindowWithHeader(SET_MIS_BLK_PARAMS_WND,
+  loc("mainmenu/offlineBattles/settings/modalTitle"),
+  setMisBlkParamsContent(campaignByUnitType[savedUnitType.get()]))
+
+needShowBattleSettingsWnd.subscribe(@(v) v
+  ? openBattleSettingsModal()
+  : removeModalWindow(SET_MIS_BLK_PARAMS_WND))
+if (needShowBattleSettingsWnd.get())
+  openBattleSettingsModal()
+
+let setParamsAndRunBattle = @() isOfflineBattleDModeActive.get()
+  ? runOfflineBattle()
+  : needShowBattleSettingsWnd.set(true)
 
 let toBattleHint = @(text) {
   hplace = ALIGN_RIGHT
@@ -96,7 +180,7 @@ let wndFooter = {
       gap = hdpx(30)
       children = [
         canUseOfflineBattleDMode.get() ? toggleWithLabel(isOfflineBattleDModeActive, loc("mainmenu/debugOfflineBattles")) : null
-        mkToBattleButtonWithSquadManagement(@() runOfflineBattle())
+        mkToBattleButtonWithSquadManagement(setParamsAndRunBattle)
       ]
     }
   ]
@@ -174,14 +258,13 @@ function mkOfflineBattleMenuWnd() {
   })
   let curUnitName = Computed(@() curData.get().name)
   let curMissionName = Computed(@() curData.get().mission)
-  if (savedMissionName.get() == null)
-    savedMissionName.set(curMissionName.get())
 
   function onUnitChange() {
     if (curUnitName.get() != null && !isOfflineBattleDModeActive.get())
       setHangarUnitWithSkin(curUnitName.get(), "")
   }
-  curUnitName.subscribe(@(_) deferOnce(onUnitChange))
+  onUnitChange()
+  curUnitName.subscribe(@(_) onUnitChange())
   savedUnitType.subscribe(function(_) {
     savedUnitName.set(curUnitName.get())
     savedMissionName.set(curMissionName.get())
@@ -199,7 +282,10 @@ function mkOfflineBattleMenuWnd() {
     function onAttach() {
       refreshOfflineMissionsList()
       initUnitWnd()
-      onUnitChange()
+      if (savedMissionName.get() == null)
+        savedMissionName.set(curMissionName.get())
+      if (savedUnitName.get() == null)
+        savedUnitName.set(curUnitName.get())
     }
     animations = wndSwitchAnim
     children = [

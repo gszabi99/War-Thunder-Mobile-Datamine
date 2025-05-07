@@ -119,6 +119,13 @@ let nickFrames = {
   horn = @(n) $"⚱{n}⚲"
   viking_ax = @(n) $"⚳{n}⚴"
   cosmo_space = @(n) $"┱{n}┲"
+  sword_shield = @(n) $"⚹{n}⚺"
+  globe = @(n) $"⚻{n}⚻"
+  handshake = @(n) $"⚼{n}⚼"
+  pigeon = @(n) $"⚽{n}⚾"
+  flower = @(n) $"⚸{n}⚸"
+  bonfire = @(n) $"⚷{n}⚷"
+  butterfly_airplane = @(n) $"⚵{n}⚶"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

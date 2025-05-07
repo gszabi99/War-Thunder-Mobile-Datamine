@@ -13,6 +13,7 @@ let icons = {
 let defaultSlotsPreviewBg = "ui/images/air_beta_access_bg.avif"
 let slotsPreviewBg = {
   air_blueprints_slots = "ui/images/air_beta_access_bg.avif"
+  ships_blueprints_slots = "ui/images/ship_blueprint_bg.avif"
 }
 
 let slotTexts = {

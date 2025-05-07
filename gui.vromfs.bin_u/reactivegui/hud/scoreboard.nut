@@ -3,7 +3,6 @@ let { eventbus_send } = require("eventbus")
 let { ceil, round } = require("%sqstd/math.nut")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit, gameType
 } = require("%rGui/missionState.nut")
 let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
@@ -11,6 +10,7 @@ let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { missionProgressType } = require("%appGlobals/clientState/missionState.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 
 let secondsPerHour = 3600
@@ -139,15 +139,15 @@ let mkScoreBoard = @(scale) function() {
   let font = prettyScaleForSmallNumberCharVariants(fontTiny, scale)
   return {
     key = "score_board"
-    watch = missionProgressType
+    watch = [missionProgressType, isInMpBattle]
     hplace = ALIGN_CENTER
-    behavior = Behaviors.Button
+    behavior = isInMpBattle.get() ? Behaviors.Button : null
     cameraControl = true
-    onClick = @() isHudAttached.get() ? toggleShortcut(shortcutId) : eventbus_send("toggleMpstatscreen", {})
+    onClick = isInMpBattle.get() ? @() eventbus_send("toggleMpstatscreen", {}) : null
     hotkeys = mkGamepadHotkey(shortcutId)
-    sound = { click  = "click" }
+    sound = { click = "click" }
     children = [
-      shortcutImg(scale)
+      isInMpBattle.get() ? shortcutImg(scale) : null
       {
         flow = FLOW_HORIZONTAL
         gap = gapToTimer(tSize[0])

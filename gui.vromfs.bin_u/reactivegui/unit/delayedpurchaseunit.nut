@@ -5,13 +5,13 @@ let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { campMyUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
+let { curSlots } = require("%appGlobals/pServer/slots.nut")
 
 let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { slots } = require("%rGui/slotBar/slotBarState.nut")
 
 let TIME_TO_DELAY = 3.5
 let delayedPurchaseList = persist("delayedPurchaseList", @() [])
@@ -29,7 +29,7 @@ let needShow = keepref(Computed(@() !hasModalWindows.get()
 function showPurchases() {
   if (!needShow.get() && delayedPurchaseList.len() == 0)
     return
-  let listForRequest = delayedPurchaseList.filter(@(v) slots.get().findindex(@(slot) slot?.name == v) != null)
+  let listForRequest = delayedPurchaseList.filter(@(v) curSlots.get().findindex(@(slot) slot?.name == v) != null)
 
   if(listForRequest.len() == 0)
     return delayedPurchaseList.clear()
@@ -58,7 +58,7 @@ function addNewPurchasedUnit(unitId) {
 }
 
 function debug_unit_slots_purchase_effects() {
-  delayedPurchaseList.replace(slots.get().map(@(v) v?.name).filter(@(v) v != ""))
+  delayedPurchaseList.replace(curSlots.get().map(@(v) v?.name).filter(@(v) v != ""))
   if (needShow.get())
     showPurchases()
   else

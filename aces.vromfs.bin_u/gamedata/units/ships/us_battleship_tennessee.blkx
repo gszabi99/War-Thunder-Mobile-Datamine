@@ -5224,6 +5224,7 @@
   "modifications": {
     "ship_tool_kit": {},
     "ship_smoke_screen_system_mod": {},
+    "upgraded": {},
     "weapons_contact_mines": {
       "effects": {
         "commonWeapons": {
@@ -14479,6 +14480,13 @@
       "portholes",
       "details"
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "camo_navygrey_5*",
+      "to": "camo_blackgray_spots*"
+    }
   },
   "vehicleSkins": {
     "nato_blue_geometry_prem": {

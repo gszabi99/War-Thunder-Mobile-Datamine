@@ -6,7 +6,7 @@ let io = require("io")
 let { get_time_msec } = require("dagor.time")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
-let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { get_battle_data_jwt, get_battle_data_slots_jwt, registerHandler, callHandler,

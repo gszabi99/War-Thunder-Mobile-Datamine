@@ -20,8 +20,8 @@ let rTypesPriority = {
 
 let customPriority = {
   decorator = {
-    nickFrame     = 1010
-    avatar        = 1009
+    avatar        = 1010
+    nickFrame     = 1009
     title         = 1008
   }
   currency = {
@@ -52,8 +52,12 @@ let dropLimitByType = [G_UNIT, G_UNIT_UPGRADE, G_DECORATOR, G_SKIN]
 
 let ignoreSubIdRTypes = [G_CURRENCY, G_LOOTBOX, G_BLUEPRINT].reduce(@(res, t) res.$rawset(t, true), {})
 
+
+let getDecoratorType = memoize(@(id) serverConfigs.get()?.allDecorators[id].dType)
+
 let getPriorirty = @(info)
-  customPriority?[info.rType]?[info.id] ?? rTypesPriority?[info.rType] ?? 0
+  info.rType == "decorator" ? customPriority.decorator?[getDecoratorType(info.id)]
+    : (customPriority?[info.rType]?[info.id] ?? rTypesPriority?[info.rType] ?? 0)
 
 let sortRewardsViewInfo = @(a, b) getPriorirty(b) <=> getPriorirty(a)
   || b.count <=> a.count
@@ -67,9 +71,8 @@ let sortRewardsWithOrder = @(a, b) b.rewardOrder <=> a.rewardOrder
   || a.chance <=> b.chance
   || sortRewardsViewInfo(a, b)
 
-
 let mkViewInfo = @(id, rType, count = 0, subId = "")
-  { id, subId, rType, count, slots = slotsByType?[rType] ?? slotsByDType?[serverConfigs.get()?.allDecorators[id].dType] ?? 1 }
+  { id, subId, rType, count, slots = slotsByType?[rType] ?? slotsByDType?[getDecoratorType(id)] ?? 1 }
 
 let getRewardsViewInfo = @(data, multiply = 1)
   (data ?? []).map(@(g) mkViewInfo(g.id, g.gType, g.count * multiply, g.subId))

@@ -27,6 +27,13 @@ function updateSeasons() {
 
     let last = s.rangeList.top()
     if (time > last.end) {
+      if (s.repeat <= 0) {
+        cur[id] <- mkSeason(s.rangeList.len() - 1 + s.idxOffset,
+          false,
+          last.start,
+          last.end)
+        continue
+      }
       let loops = (time - last.end) / s.repeat + 1
       let start = last.start + s.repeat * loops
       cur[id] <- mkSeason(s.rangeList.len() - 1 + loops + s.idxOffset,

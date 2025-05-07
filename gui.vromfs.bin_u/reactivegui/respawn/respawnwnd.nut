@@ -8,7 +8,8 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { AIR } = require("%appGlobals/unitConst.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlotContentGenId,
-  selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler, hasSkins
+  selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler, hasSkins,
+  needRespawnSlotsAndWeaponry
 } = require("respawnState.nut")
 let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets, hasZeroMainBullets
 } = require("bulletsChoiceState.nut")
@@ -408,11 +409,11 @@ let skinsList = @() {
 }
 
 let content = @() {
-  watch = [respawnSlots, hasRespawnSeparateSlots]
+  watch = needRespawnSlotsAndWeaponry
   key = "respawnWndContent"
   size = flex()
   flow = FLOW_HORIZONTAL
-  children = !hasRespawnSeparateSlots.get() && respawnSlots.get().len() <= 1 ? null
+  children = !needRespawnSlotsAndWeaponry.get() ? null
     : [
         slotsBlock
         {

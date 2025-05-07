@@ -189,7 +189,7 @@ function mkAdsBtn(reqPlayerLevel, adReward) {
       cost >= adBudget.get() ? mkBtnContent(null, loc("btn/adsLimitReached"))
         : !hasVip.get()
           ? mkBtnContent("ui/gameuiskin#watch_ads.svg", loc("shop/watchAdvert/short"), adsButtonCounter)
-        : mkBtnContent("ui/gameuiskin#vip_active.svg", loc("shop/vip/budget_rewards", { num = adBudget.get() }), adsButtonCounter),
+        : mkBtnContent("ui/gameuiskin#gamercard_subs_vip.svg", loc("shop/vip/budget_rewards", { num = adBudget.get() }), adsButtonCounter),
       @() bestCampLevel.value >= reqPlayerLevel
           ? onSchRewardReceive(adReward)
         : openMsgBox({ text = loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) }) }),

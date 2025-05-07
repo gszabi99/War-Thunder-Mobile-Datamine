@@ -5423,6 +5423,19 @@
       }
     ]
   },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "camo_rot_5*",
+        "to": "camo_bottom_green*"
+      },
+      {
+        "from": "camo_hellgrau_50*",
+        "to": "camo_sboat_splotch*"
+      }
+    ]
+  },
   "vehicleSkins": {
     "factory": {
       "replace_tex": [

@@ -13,7 +13,8 @@ let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut"
 let { btnOpenUnitAttr } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
 let { isMainMenuAttached } = require("mainMenuState.nut")
 let { totalPlayers } = require("%appGlobals/gameModes/gameModes.nut")
-let { curCampaign, campaignsList, campConfigs, curCampaignSlots } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campaignsList, campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaignSlots, curSlots } = require("%appGlobals/pServer/slots.nut")
 let { chooseCampaignWnd } = require("chooseCampaignWnd.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -48,7 +49,6 @@ let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { DBGLEVEL } = require("dagor.system")
 let { slotBarMainMenu, slotBarSize } = require("%rGui/slotBar/slotBar.nut")
-let { slots } = require("%rGui/slotBar/slotBarState.nut")
 let { unseenCampaigns } = require("unseenCampaigns.nut")
 let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
 let { openSlotPresetWnd } = require("%rGui/slotBar/slotPresetsState.nut")
@@ -141,7 +141,7 @@ let btnPremDailyBonus = @() {
           hplace = ALIGN_RIGHT
           pos = [hdpx(4), hdpx(-4)]
           children = canReceivePremDailyBonus.get() ? priorityUnseenMark : null
-        })
+        }, { iconSize = evenPx(84) })
 }
 
 let btnHorRow = @(children) {
@@ -160,9 +160,9 @@ let btnVerRow = @(children) {
 let leftBottomButtons = {
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
-  children = @() slots.get().len() == 0 ? { watch = slots }
+  children = @() curSlots.get().len() == 0 ? { watch = curSlots }
     : {
-        watch = slots
+        watch = curSlots
         size = slotBarSize
         children = slotBarMainMenu
       }
@@ -212,8 +212,8 @@ let leftTopButtons = {
       btnHorRow([
         btnVerRow([
           @() {
-            watch = slots
-            children = slots.get().len() == 0 ? btnOpenUnitAttr : null
+            watch = curSlots
+            children = curSlots.get().len() == 0 ? btnOpenUnitAttr : null
           }
           btnHorRow([
             btnOpenUnitsTree

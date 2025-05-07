@@ -43,10 +43,9 @@ let info = Computed(function() {
     return null
   let cStats = killer.isBot ? genBotCommonStats(killer.name, unitName, unitCfg, 0)
     : playersCommonStats.value?[killer.userId.tointeger()]
-  let { hasPremium = false, decorators = null, units = null, hasVip = false } = cStats
+  let { hasPremium = false, decorators = null, units = null, hasVip = false, hasPrem = false } = cStats
   return killData.value.__merge({
-    killerHasVip = hasVip
-    killerHasPremium = hasPremium
+    killerHasPremium = hasPremium || hasPrem || hasVip
     killerAvatar = decorators?.avatar
     killerUnit = unitCfg.__merge(units?[unitName] ?? {})
   })

@@ -331,12 +331,15 @@ function loadUnitBulletsFullImpl(unitName) {
   if (isDataBlock(WeaponSlots)) {
     slotsParams.notUseForDisbalance <- {}
     slotsParams.hasMirrored <- {}
+    slotsParams.mustHaveDefault <- {}
     foreach(wsBlk in WeaponSlots % "WeaponSlot") {
-      let { index = null, notUseforDisbalanceCalculation = false, hasMirrored = null } = wsBlk
+      let { index = null, notUseforDisbalanceCalculation = false, hasMirrored = null, mustHaveDefault = false } = wsBlk
       if (index == null)
         continue
       if (notUseforDisbalanceCalculation)
         slotsParams.notUseForDisbalance[index] <- true
+      if (mustHaveDefault)
+        slotsParams.mustHaveDefault[index] <- true
       if (hasMirrored != null)
         slotsParams.hasMirrored[index] <- hasMirrored
       weaponSlots[index] <- {}
@@ -523,6 +526,8 @@ function loadUnitBulletsChoice(unitName) {
   return choiceCache[unitName]
 }
 
+let mustSlotHaveDefault = @(uName, slotIdx) loadUnitSlotsParams(uName)?.mustHaveDefault[slotIdx] ?? false
+
 return {
   loadUnitBulletsFull 
   loadUnitBulletsChoice 
@@ -531,4 +536,5 @@ return {
   loadUnitBulletsAndSlots
   getWeaponId
   loadUnitReqModifications
+  mustSlotHaveDefault
 }

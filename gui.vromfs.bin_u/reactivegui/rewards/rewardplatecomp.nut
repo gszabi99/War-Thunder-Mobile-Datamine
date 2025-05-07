@@ -9,7 +9,7 @@ let { REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
 } = require("rewardStyles.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getUnitLocId, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
+let { getUnitLocId, getUnitClassFontIcon, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { mkUnitBg, mkUnitImage, mkPlateText } = require("%rGui/unit/components/unitPlateComp.nut")
 let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
@@ -337,7 +337,8 @@ let mkDecoratorIconTitle = @(decoratorId, rStyle, size) decoratorFontIconBase.__
     pos = [0, rStyle.iconShiftY]
     valign = ALIGN_CENTER
     rendObj = ROBJ_TEXTAREA
-    behavior = Behaviors.TextArea
+    behavior = [Behaviors.TextArea, Behaviors.Marquee]
+    delay = defMarqueeDelay
     text = loc($"title/{decoratorId}")
   },
   getFontToFitWidth({ rendObj = ROBJ_TEXT, text = loc($"title/{decoratorId}") }.__update(fontLabelBig),
@@ -525,11 +526,13 @@ function mkRewardPlateBlueprintImage(r, rStyle) {
   let imageW = size[0]
   let imageH = size[1] - progressBarHeight
   let unitNameLoc = loc(getUnitLocId(id))
+  let image = getUnitPresentation(id).blueprintImage
+
   return {
     size = [imageW,imageH]
     rendObj = ROBJ_IMAGE
     fallbackImage = Picture($"ui/unitskin#blueprint_default.avif:{imageW}:{imageH}:P")
-    image = Picture($"ui/unitskin#blueprint_{id}.avif:{imageW}:{imageH}:P")
+    image = Picture($"{image}:{imageW}:{imageH}:P")
     halign = ALIGN_RIGHT
     valign = ALIGN_TOP
     children = mkUnitNameText(unitNameLoc, size, rStyle).__update({ padding = textPadding })
@@ -764,13 +767,15 @@ let function mkRewardUnitFlag(unit, rStyle) {
   if (operatorCountry == "")
     return null
   let countryId = operatorCountry ?? unit.country
+  if (countryId == null)
+    return null
   let w = rStyle.markSize
   let h = round(w * (66.0 / 84)).tointeger()
   return {
     size = [w, h]
     margin = cornerIconMargin
     rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#{countryId}.avif:{w}:{h}")
+    image = Picture($"ui/gameuiskin#{countryId}.avif:{w}:{h}:P")
     fallbackImage = Picture($"ui/gameuiskin#menu_lang.svg:{w}:{h}:P")
     keepAspect = true
   }

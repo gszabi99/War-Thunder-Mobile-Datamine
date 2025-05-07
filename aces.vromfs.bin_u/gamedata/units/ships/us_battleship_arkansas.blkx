@@ -3345,6 +3345,7 @@
   "modifications": {
     "ship_tool_kit": {},
     "ship_smoke_screen_system_mod": {},
+    "upgraded": {},
     "weapons_contact_mines": {
       "effects": {
         "commonWeapons": {
@@ -8862,6 +8863,19 @@
       {
         "from": "camo_navygrey_5*",
         "to": "camo_nato_blue_geometry*"
+      },
+      {
+        "from": "camo_rot_5*",
+        "to": "camo_syntheticblackpaint*"
+      }
+    ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "camo_navygrey_5*",
+        "to": "camo_designpt328*"
       },
       {
         "from": "camo_rot_5*",

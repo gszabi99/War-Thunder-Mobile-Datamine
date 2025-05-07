@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { allShopGoods, finishedGoodsByTime } = require("%rGui/shop/shopState.nut")
+let { allShopGoods, finishedGoodsByTime, inactiveGoodsByTime } = require("%rGui/shop/shopState.nut")
 let { getEventPresentationId, getEventLoc, eventSeason, allSpecialEvents, MAIN_EVENT_ID, isEventActive
 } = require("%rGui/event/eventState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
@@ -67,7 +67,9 @@ let eventCurrenciesGoods = Computed(function() {
     return {}
   let cId = currencyId.get()
   let exclude = finishedGoodsByTime.get()
-  return allShopGoods.get().filter(@(g, id) isGoodsFit(g, cId) && id not in exclude)
+  let notStarted = inactiveGoodsByTime.get()
+  return allShopGoods.get().filter(@(g, id) isGoodsFit(g, cId) && id not in exclude
+    && (!!g.meta?.isNeedPrew || g.id not in notStarted))
 })
 
 let buyCurrencyWndGamercardCurrencies = Computed(function() {

@@ -1,0 +1,2116 @@
+{
+  "ecsTemplate": "ship_wtm",
+  "hasQualityModels": true,
+  "useTouchTargeting": true,
+  "isSubmarine": true,
+  "maxCameraDistanceForVisibility": 8000.0,
+  "alwaysAnimDistance": 300.0,
+  "model": "sub_l3",
+  "subclass": "warShip",
+  "dustFx": "water_units_dust",
+  "useBotForAi": true,
+  "harmonizationSuffix": "_tomoe",
+  "moveType": "ship",
+  "maxFwdSpeed": 80.0,
+  "maxRevSpeed": 5.0,
+  "maxAngSpeed": 15.0,
+  "maxAccel": 20.0,
+  "maxDecel": 5.0,
+  "maxAngAccel": 15.0,
+  "maxAngAccel0": 2.0,
+  "maxAngAccelV": 15.0,
+  "groundNormSmoothViscosity": 0.1,
+  "customUpdateDiv": 5,
+  "SoundMove": "models.Ship",
+  "tailStartOffset": 10.0,
+  "drawHpProgressBarByMetaparts": true,
+  "multHpFromMetaparts": 22450.0,
+  "type": "typeDestroyer",
+  "expClass": "exp_destroyer",
+  "timeToFire": 40.0,
+  "timeToSmoke": 300.0,
+  "hasExpl": false,
+  "exhaustFx": [
+    "underwater_bubbles_dust",
+    "underwater_bubbles_dust"
+  ],
+  "underwaterExhaust": [
+    true,
+    true
+  ],
+  "propSplashEffects": [
+    "propSplashEffects_underwater",
+    "propSplashEffects_underwater"
+  ],
+  "collisionUnitFx": [
+    "underwater_ship_collision_steel",
+    "underwater_ship_collision_steel"
+  ],
+  "collisionUnitScrapeFx": [
+    "underwater_ship_collision_steel",
+    "underwater_ship_collision_steel"
+  ],
+  "collisionGroundScrapeFx": [
+    "underwater_ship_collision_ground",
+    "underwater_ship_collision_ground"
+  ],
+  "periscopeDepth": 4.0,
+  "safeUnderwaterTime": -1.0,
+  "isDeeperThanPeriscopeVarName": "periscope_drive",
+  "addTorpedoesCountPack": 14,
+  "explosionFx": [
+    "explosion_ship_small",
+    "underwater_explosion"
+  ],
+  "canReloadNonGuns": true,
+  "perfectRangefinder": true,
+  "depthTraceWarningDepth": 5.0,
+  "depthTraceCriticalDepth": 2.0,
+  "haveAnchor": true,
+  "anchorPos": [
+    54.66,
+    4.9,
+    -1.65
+  ],
+  "hideNodesInDmg": {
+    "node": "flag"
+  },
+  "aimNodesNames": {
+    "node": "main_caliber_turret_01_dm"
+  },
+  "default_skin_tomoe": {
+    "replace_tex": [
+      {
+        "from": "flag_ussr_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
+      },
+      {
+        "from": "flag_ussr_03_c*",
+        "to": "flag_ussr_01_c_tomoe*"
+      },
+      {
+        "from": "flag_usa_01_c*",
+        "to": "flag_usa_01_c_tomoe*"
+      },
+      {
+        "from": "flag_usa_02_c*",
+        "to": "flag_usa_01_c_tomoe*"
+      },
+      {
+        "from": "flag_uk_01_c*",
+        "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_poland_01_c*",
+        "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_japan_01_c*",
+        "to": "flag_japan_01_c_tomoe*"
+      },
+      {
+        "from": "flag_japan_02_c*",
+        "to": "flag_japan_01_c_tomoe*"
+      },
+      {
+        "from": "flag_italy_01_c*",
+        "to": "flag_italy_01_c_tomoe*"
+      },
+      {
+        "from": "flag_italy_02_c*",
+        "to": "flag_italy_01_c_tomoe*"
+      },
+      {
+        "from": "flag_italy_03_c*",
+        "to": "flag_italy_01_c_tomoe*"
+      },
+      {
+        "from": "flag_germany_01_c*",
+        "to": "flag_germany_01_c_tomoe*"
+      },
+      {
+        "from": "flag_germany_02_c*",
+        "to": "flag_germany_01_c_tomoe*"
+      },
+      {
+        "from": "flag_germany_03_c*",
+        "to": "flag_germany_01_c_tomoe*"
+      },
+      {
+        "from": "flag_germany_04_c*",
+        "to": "flag_germany_01_c_tomoe*"
+      },
+      {
+        "from": "flag_germany_05_c*",
+        "to": "flag_germany_01_c_tomoe*"
+      },
+      {
+        "from": "flag_ireland_01_c*",
+        "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "airplane_ger_ar196_c*",
+        "to": "airplane_ger_ar196_c_tomoe*"
+      },
+      {
+        "from": "airplane_japan_e7k2_c*",
+        "to": "airplane_japan_e7k2_c_tomoe*"
+      },
+      {
+        "from": "airplane_japan_e13a1_c*",
+        "to": "airplane_japan_e13a1_c_tomoe*"
+      },
+      {
+        "from": "airplane_usa_curtiss_sc_seahawk_c*",
+        "to": "airplane_usa_curtiss_sc_seahawk_c_tomoe*"
+      },
+      {
+        "from": "airplane_uk_vought_os2u_kingfisher_usa_c*",
+        "to": "airplane_uk_vought_os2u_kingfisher_usa_c_tomoe*"
+      }
+    ]
+  },
+  "controlDevices": {
+    "device": [
+      {
+        "type": "turretTurnH",
+        "turnSpeed": 0.6,
+        "node": "bone_roll_turret_h",
+        "node_handle": "bone_roll_turret_h_handle"
+      },
+      {
+        "type": "turretTurnV",
+        "turnSpeed": -1.0,
+        "node": "bone_roll_turret_v",
+        "node_handle": "bone_roll_turret_v_handle"
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -3.0,
+        "node": "bone_roll_driver",
+        "absoluteValue": true
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_01"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_02"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_03"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
+        "type": "waterJetShutter",
+        "turnSpeed": 1.5,
+        "maxValue": -1.7,
+        "node": "body_shutter_l",
+        "absoluteValue": true,
+        "progressive": true
+      },
+      {
+        "type": "waterJetShutter",
+        "turnSpeed": 1.5,
+        "maxValue": 1.7,
+        "node": "body_shutter_r",
+        "absoluteValue": true,
+        "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
+        "absoluteValue": true
+      }
+    ]
+  },
+  "DamageParts": {
+    "formatVersion": 2,
+    "createSecondaryShatters": false,
+    "hull": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 15.0,
+      "hp": 22450.0,
+      "genericDamageMult": 1.0,
+      "compartment_02_dm": {
+        "pressureDamageMult": 30.0
+      },
+      "compartment_03_dm": {
+        "pressureDamageMult": 30.0
+      },
+      "compartment_04_dm": {
+        "pressureDamageMult": 30.0
+      },
+      "compartment_01_dm": {}
+    },
+    "bridge": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 15.0,
+      "hp": 22450.0,
+      "fireParamsPreset": "common_ship_fire",
+      "genericDamageMult": 1.0,
+      "pressureDamageMult": 30.0,
+      "bridge_dm": {}
+    },
+    "main_turrets": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 15.0,
+      "hp": 22450.0,
+      "fireParamsPreset": "ship_turrets",
+      "genericDamageMult": 1.0,
+      "main_caliber_turret_01_dm": {}
+    },
+    "engine_rooms": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 15.0,
+      "hp": 22450.0,
+      "fireParamsPreset": "common_ship_fire",
+      "genericDamageMult": 1.0,
+      "engine_room_01_dm": {}
+    },
+    "rudder": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 15.0,
+      "hp": 22450.0,
+      "fireDamageMult": 0.001,
+      "genericDamageMult": 1.0,
+      "steering_gear_01_dm": {}
+    },
+    "magazines": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 15.0,
+      "hp": 500.0,
+      "explosionDamageMult": 0.0001,
+      "genericDamageMult": 1.0,
+      "ammunition_storage_01_dm": {},
+      "ammunition_storage_02_dm": {}
+    }
+  },
+  "tank_crew": {
+    "immortal": true,
+    "minCrewMemberAliveCount": 1,
+    "sailor1": {
+      "dmPart": "compartment_01_dm",
+      "role": "sailor",
+      "crew": 9
+    },
+    "sailor2": {
+      "dmPart": "compartment_02_dm",
+      "role": "sailor",
+      "crew": 9
+    },
+    "sailor3": {
+      "dmPart": "compartment_03_dm",
+      "role": "sailor",
+      "crew": 9
+    },
+    "sailor4": {
+      "dmPart": "compartment_04_dm",
+      "role": "sailor",
+      "crew": 9
+    }
+  },
+  "DamageEffects": {
+    "part": [
+      {
+        "name": "main_caliber_turret_01_dm",
+        "onHit": {
+          "damageType": "generic",
+          "damage": 150.0,
+          "fire": 0.05,
+          "action": {
+            "type": "fxEvent",
+            "probability": 0.6,
+            "fxEventName": "fire_after_hit_med"
+          },
+          "moduleStatusEffect": {
+            "name": "shotFreqMult",
+            "prob": 1.0
+          }
+        }
+      },
+      {
+        "name": "engine_room_01_01_dm",
+        "onHit": {
+          "damageType": "generic",
+          "damage": 100.0,
+          "fire": 1.0,
+          "moduleStatusEffect": {
+            "name": "throttleBlock",
+            "prob": 1.0
+          }
+        }
+      },
+      {
+        "name": [
+          "ammunition_storage_01_dm",
+          "ammunition_storage_02_dm"
+        ],
+        "onHit": {
+          "damage": 100.0,
+          "damageType": "generic",
+          "isSingleAction": false,
+          "action": {
+            "type": "forcedExplosion",
+            "probability": 1.0,
+            "relativeDamage": 0.2,
+            "damageType": "explosion",
+            "fxEvent": "ammo_expl",
+            "parts": {
+              "part": "compartment_01_dm"
+            }
+          }
+        }
+      },
+      {
+        "name": "steering_gear_01_dm",
+        "onHit": [
+          {
+            "damageType": "explosionTorpedo",
+            "damage": 100.0,
+            "moduleStatusEffect": {
+              "name": "moveControl",
+              "prob": 1.0
+            }
+          },
+          {
+            "damageType": "explosionTorpedo",
+            "damage": 300.0,
+            "moduleStatusEffect": {
+              "name": "moveControl",
+              "prob": 1.0
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "MetaParts": {
+    "upper_hull": {
+      "hp": 22450.0,
+      "maxDamageMode": true,
+      "part": [
+        "compartment_02_dm",
+        "compartment_03_dm",
+        "compartment_04_dm",
+        "bridge_dm",
+        "steering_gear_01_dm"
+      ],
+      "effect": [
+        {
+          "conditionDead": true,
+          "kill": true,
+          "killEffect": "destruction"
+        },
+        {
+          "pressureOpen": true
+        }
+      ]
+    },
+    "lower_and_inner_hull": {
+      "hp": 22450.0,
+      "maxDamageMode": true,
+      "part": [
+        "compartment_01_dm",
+        "engine_room_01_dm",
+        "main_caliber_turret_01_dm",
+        "ammunition_storage_01_dm",
+        "ammunition_storage_02_dm"
+      ],
+      "effect": {
+        "conditionDead": true,
+        "kill": true,
+        "killEffect": "destruction"
+      }
+    }
+  },
+  "ShopParams": {
+    "turning90degTimeSec": 30
+  },
+  "divingLockCooldown": {
+    "submerging": 8.0,
+    "surfacing": 10.0
+  },
+  "torpedoShootCooldown": {
+    "submerging": 7.0,
+    "surfacing": 11.0,
+    "surfacingToPeriscope": 8.0
+  },
+  "ShipPhys": {
+    "floodControl": 0.005,
+    "minBuoyancyMult": 0.21,
+    "helmLimit": 1.0,
+    "helmVerticalLimit": 0.0,
+    "maxPitch": 0.0,
+    "maxRoll": 15.0,
+    "trimAutoCorrectionPower": 0.01,
+    "surfacingAreaMult": 0.8,
+    "maxVerticalSpeed": 5.0,
+    "mass": {
+      "Empty": 1000000.0,
+      "momentOfInertia": [
+        28.0,
+        230.0,
+        120.0
+      ],
+      "CenterOfGravity": [
+        0.0,
+        -2.0,
+        0.0
+      ]
+    },
+    "engines": {
+      "maxSpeed": 5.39,
+      "maxReverseSpeed": 3.0,
+      "periscopeSpeedMult": 1.31,
+      "surfaceSlowMult": 1.97,
+      "speedToTime": {
+        "row": [
+          5.39,
+          19.0
+        ]
+      },
+      "reverseSpeedToTime": {
+        "row": [
+          3.0,
+          5.5
+        ]
+      },
+      "engine": [
+        {
+          "pos": [
+            -44.0,
+            -3.1,
+            1.3
+          ],
+          "outputParam": "propeller_rotate_01:CRS",
+          "engineDmPart": "engine_room_01_dm",
+          "transmissionDmPart": "engine_room_01_dm",
+          "propeller": "propeller_01"
+        },
+        {
+          "pos": [
+            -44.0,
+            -3.1,
+            -1.3
+          ],
+          "outputParam": "propeller_rotate_02:CRS",
+          "engineDmPart": "engine_room_01_dm",
+          "transmissionDmPart": "engine_room_01_dm",
+          "propeller": "propeller_02"
+        }
+      ]
+    },
+    "collisionProps": {
+      "cls_body_01": "convex_hull",
+      "cls_body_02": "convex_hull"
+    },
+    "hydrodynamics": {
+      "bodyArea": 0.0,
+      "mulReaction": 1.3,
+      "rudder": {
+        "pos": [
+          -46.0,
+          -1.7,
+          0.0
+        ],
+        "area": 12.0,
+        "deflection": 33.0
+      }
+    }
+  },
+  "oxygenSystem": {
+    "totalAmount": 2400.0,
+    "spendingRate": 30.0,
+    "replenishmentDepth": 20.0,
+    "replenishmentRate": 20.0,
+    "periscopeReplenishmentRate": 10.0,
+    "minDivingLevel": 0.1
+  },
+  "SoundEmission": {
+    "passiveDetectionRangeBySpeed1": [
+      0.0,
+      100.0
+    ],
+    "passiveDetectionRangeBySpeed2": [
+      5.0,
+      500.0
+    ],
+    "passiveDetectionRangeBySpeed3": [
+      10.0,
+      1000.0
+    ],
+    "passiveDetectionRangeBySpeed4": [
+      14.0,
+      1400.0
+    ],
+    "passiveDetectionRangeBySpeed5": [
+      18.0,
+      1800.0
+    ],
+    "passiveDetectionRangeBySpeed6": [
+      22.0,
+      2200.0
+    ],
+    "passiveDetectionRangeTorpedoLaunch": 2000.0,
+    "activeDetectionRangeFront": 3500.0,
+    "activeDetectionRangeSide": 3500.0
+  },
+  "sound": {
+    "EngineName": "engine_submarine",
+    "EngineNameAi": "engine_submarine_ai",
+    "TrackSoundPath": "ships/engines_ships",
+    "TrackSoundPathStudio": "naval/engines",
+    "TrackSoundName": "tracks_submarine",
+    "TrackSoundNameAi": "tracks_ai_submarine"
+  },
+  "optics": {
+    "binoculars": "navy_binoculars"
+  },
+  "cockpit": {
+    "headPos": [
+      0.0,
+      10.0,
+      -35.0
+    ],
+    "headPosOnShooting": [
+      0.0,
+      10.0,
+      0.0
+    ],
+    "headPosOnSides": [
+      0.0,
+      15.0,
+      -60.0
+    ],
+    "detectionHeight": 7.5,
+    "cameraAhead": true
+  },
+  "torpedoSeries": {
+    "delay": 1.0,
+    "count": 6
+  },
+  "modifications": {
+    "ship_tool_kit": {},
+    "upgraded": {},
+    "weapons_contact_mines": {
+      "effects": {
+        "commonWeapons": {
+          "Weapon": [
+            {
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/navalModels_weapons/100mm_56_b34_1940_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_01",
+              "flash": "emtr_gun_flame_01",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 0.5,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 300,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "turretLongSalvo": true,
+              "salvoRndK": 0.15,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 14000.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.0,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 1.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "main_caliber_turret_01",
+                "gun": "main_caliber_gun_01",
+                "barrel": "gun_barrel_01",
+                "gunnerDm": "main_caliber_turret_01_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -150.0,
+                  150.0
+                ],
+                "pitch": [
+                  -20.0,
+                  87.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/navalModels_weapons/45mm_46_21k_naval_user_cannon.blk",
+              "emitter": "emtr_gun_flame_02",
+              "flash": "emtr_gun_flame_02",
+              "useEmitter": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "shotFreq": 1.0,
+              "speedYaw": 80.0,
+              "speedPitch": 80.0,
+              "bullets": 500,
+              "useGunnerTargetingQuality": true,
+              "fireConeAngle": 1.0,
+              "allowableDelta": 1.0,
+              "ChainfireTime": 2.0,
+              "DelayAfterShoot": 0.0,
+              "aimMinDist": 10.0,
+              "aimMaxDist": 3500.0,
+              "randomAngle": 0.0,
+              "accuracyBotMultAir": 0.4,
+              "accuracyAir": 0.4,
+              "accuracyGnd": 0.0,
+              "shootingErrorAir": 4.0,
+              "errMeasureVel": 1.0,
+              "errTargettingOn100kmph": 0.0,
+              "errMeasureVelFast": 1.0,
+              "errMeasureVelFwdShift": 0.01,
+              "errMeasureVelDir": 0.1,
+              "errTargetting": 0.1,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "auxiliary_caliber_turret_01",
+                "gun": "auxiliary_caliber_gun_01",
+                "barrel": "gun_barrel_02",
+                "gunnerDm": "auxiliary_caliber_turret_01_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -140.0,
+                  140.0
+                ],
+                "pitch": [
+                  -20.0,
+                  80.0
+                ]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": true,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 100.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 100.0,
+                "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_38_torpedo.blk",
+              "emitter": "bone_torpedo_01",
+              "useEmitter": true,
+              "bullets": 42,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.067,
+              "turret": {
+                "head": "bone_torpedo_01",
+                "gun": "bone_torpedo_01"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner3",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_38_torpedo.blk",
+              "emitter": "bone_torpedo_02",
+              "useEmitter": true,
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.067,
+              "turret": {
+                "head": "bone_torpedo_02",
+                "gun": "bone_torpedo_02"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner4",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_38_torpedo.blk",
+              "emitter": "bone_torpedo_03",
+              "useEmitter": true,
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.067,
+              "turret": {
+                "head": "bone_torpedo_03",
+                "gun": "bone_torpedo_03"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner5",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_38_torpedo.blk",
+              "emitter": "bone_torpedo_04",
+              "useEmitter": true,
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.067,
+              "turret": {
+                "head": "bone_torpedo_04",
+                "gun": "bone_torpedo_04"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner6",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_38_torpedo.blk",
+              "emitter": "bone_torpedo_05",
+              "useEmitter": true,
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.067,
+              "turret": {
+                "head": "bone_torpedo_05",
+                "gun": "bone_torpedo_05"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner9",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_38_torpedo.blk",
+              "emitter": "bone_torpedo_06",
+              "useEmitter": true,
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "startFx": "underwater_start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 360.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.067,
+              "turret": {
+                "head": "bone_torpedo_06",
+                "gun": "bone_torpedo_06"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "mines",
+              "triggerGroup": "mine",
+              "blk": "gameData/weapons/mines/germ_mine_emc.blk",
+              "emitter": "bone_mine_01",
+              "bullets": 20,
+              "dropSpeed": 5.0,
+              "external": true
+            }
+          ]
+        }
+      }
+    },
+    "weapons_torpedo_movement_mode": {
+      "effects": {
+        "splashDamageMul": 0.7,
+        "maxSpeedInWater": 6.867
+      }
+    },
+    "weapons_torpedo_damage_mode": {
+      "effects": {
+        "splashDamageMul": 1.3,
+        "maxSpeedInWater": -6.867
+      }
+    },
+    "protection_ammo_wetting": {
+      "effects": {
+        "forcedExplosion": {
+          "relativeDamage": 0.25
+        }
+      }
+    },
+    "protection_new_sonar": {},
+    "protection_new_fireProtection": {
+      "effects": {
+        "damagePartsOverride": {
+          "crew_sections": {
+            "fireDamageMult": 0.5,
+            "compartment_01_dm": {},
+            "compartment_02_dm": {},
+            "compartment_03_dm": {},
+            "compartment_04_dm": {},
+            "bridge_dm": {},
+            "engine_room_01_dm": {},
+            "main_caliber_turret_01_dm": {}
+          }
+        }
+      }
+    },
+    "maintanance_new_propellers": {},
+    "maintanance_new_engines": {},
+    "maintanance_powered_toolkit": {}
+  },
+  "Effects": {
+    "waterSplashFx": "water_splash_medium",
+    "sideSplashSpeedMult": 0.2,
+    "sideSplashUpDirMult": 0.5,
+    "sideSplashSpawnRate": 2.0,
+    "sideSplashNormalMult": 1.2,
+    "sideSplashEmissionCurve": [
+      1.5,
+      0.0,
+      -0.2
+    ],
+    "waterSplashFxBow": "water_splash_medium_bow",
+    "bowSplashSpeedMult": 8.0,
+    "bowSplashUpDirMult": 0.9,
+    "bowSplashSpawnRate": 0.6,
+    "bowSplashNormalMult": 10.0,
+    "divingFxParams": {
+      "name": "water_splash_medium_proj",
+      "emissionCurve": [
+        0.5,
+        0.7,
+        -0.2
+      ],
+      "speedMult": 1.0,
+      "normalMult": 0.5,
+      "upDirMult": 0.5,
+      "emissionParams": [
+        0.0,
+        1.0
+      ]
+    }
+  },
+  "relativeHpFx": {
+    "thresholdHpToevent": [
+      {
+        "thresholdHp": 0.15,
+        "eventName": "total_fire"
+      },
+      {
+        "thresholdHp": 0.4,
+        "eventName": "light_fire"
+      },
+      {
+        "thresholdHp": 0.7,
+        "eventName": "light_smoke"
+      },
+      {
+        "thresholdHp": 0.9
+      }
+    ]
+  },
+  "unitFx": {
+    "event": [
+      {
+        "name": "engine_fire",
+        "fx": [
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_engine_01"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_engine_02"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_engine_03"
+          },
+          {
+            "name": "underwater_ship_engine_fire",
+            "emitter": "emtr_fire_engine_01"
+          },
+          {
+            "name": "underwater_ship_engine_fire",
+            "emitter": "emtr_fire_engine_02"
+          },
+          {
+            "name": "underwater_ship_engine_fire",
+            "emitter": "emtr_fire_engine_03"
+          }
+        ]
+      },
+      {
+        "name": "ammo_fire",
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_01"
+          },
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_02"
+          },
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_03"
+          },
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_04"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_01"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_02"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_03"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_04"
+          }
+        ]
+      },
+      {
+        "name": "light_smoke",
+        "fx": [
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_fire_ammo_01"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_fire_ammo_02"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_fire_ammo_03"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_fire_ammo_04"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_ammo_01"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_ammo_02"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_ammo_03"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_ammo_04"
+          }
+        ]
+      },
+      {
+        "name": "total_fire",
+        "fx": [
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_dmg_01"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_dmg_02"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_01"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_02"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_03"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_04"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_05"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_06"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_07"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_08"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_09"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_10"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_11"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_12"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_13"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_14"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_15"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_16"
+          },
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_dmg_01"
+          },
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_dmg_02"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_01"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_02"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_03"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_04"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_05"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_06"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_07"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_08"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_09"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_10"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_11"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_12"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_13"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_14"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_15"
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_small_dmg_16"
+          },
+          {
+            "name": "underwater_ship_engine_fire",
+            "emitter": "emtr_smoke_dmg_01"
+          },
+          {
+            "name": "underwater_bubbles_dust",
+            "emitter": "emtr_smoke_dmg_02"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_01"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_02"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_03"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_04"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_05"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_06"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_07"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_08"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_09"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_10"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_11"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_12"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_13"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_14"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_15"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_16"
+          },
+          {
+            "name": "underwater_ship_engine_fire",
+            "emitter": "emtr_fire_dmg_01"
+          },
+          {
+            "name": "underwater_bubbles_dust",
+            "emitter": "emtr_fire_dmg_02"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_01"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_02"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_03"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_04"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_05"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_06"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_07"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_08"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_09"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_10"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_11"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_12"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_13"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_14"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_15"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_fire_small_dmg_16"
+          }
+        ]
+      },
+      {
+        "name": "big_bang",
+        "fx": [
+          {
+            "name": "explosion_ship_large",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "water_explosion_big",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "explosion_ship_large_second",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "explosion_ship_large_second",
+            "emitter": "emtr_explosion_center_03"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_explosion_center_03"
+          }
+        ]
+      },
+      {
+        "name": "ammo_fire_1",
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_01"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_01"
+          }
+        ]
+      },
+      {
+        "name": "ammo_fire_2",
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_02"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_01"
+          }
+        ]
+      },
+      {
+        "name": "ammo_fire_3",
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_03"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_01"
+          }
+        ]
+      },
+      {
+        "name": "ammo_fire_4",
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_04"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_01"
+          }
+        ]
+      },
+      {
+        "name": "ammo_explosion_1",
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_01"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_01"
+          }
+        ]
+      },
+      {
+        "name": "ammo_explosion_2",
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_02"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_01"
+          }
+        ]
+      },
+      {
+        "name": "ammo_explosion_3",
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_03"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_01"
+          }
+        ]
+      },
+      {
+        "name": "ammo_explosion_4",
+        "fx": [
+          {
+            "name": "explosion_ship_ammo",
+            "emitter": "emtr_fire_ammo_04"
+          },
+          {
+            "name": "underwater_ship_ammo_fire",
+            "emitter": "emtr_fire_ammo_01"
+          }
+        ]
+      },
+      {
+        "name": "fire_after_hit_huge",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_huge",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_huge",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_huge",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "fire_after_hit_small",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "smoke_after_hit_small",
+          "setOrientation": true
+        }
+      }
+    ],
+    "procedural": {
+      "name": "default",
+      "fx": [
+        {
+          "name": "ship_fire_huge"
+        },
+        {
+          "name": "underwater_bubbles"
+        }
+      ]
+    }
+  },
+  "breaches": {
+    "additionalWaterDeathThreshold": 4800000.0,
+    "additionalWaterCoverPartsThreshold": 180000.0,
+    "repairSpeed": 80.0,
+    "waterMassVel": -37000.0,
+    "waterMassMult": 50.0,
+    "sizeToRepair": [
+      0.01,
+      10.0,
+      1.0,
+      10.0
+    ]
+  },
+  "shipCover": {
+    "cover": {
+      "part": "compartment_02_dm",
+      "weight": 1.0,
+      "maxWaterAlive": 1.0
+    }
+  },
+  "difficulty": {
+    "arcade": {
+      "shipRudderAreaMult": 1.0,
+      "tankRearmOnCaptureZone": true
+    }
+  },
+  "battleHideNodes": {
+    "n": "details"
+  },
+  "defaultDecals": {
+    "bluewater_geometry": {
+      "skin_condition": 100.0,
+      "camo_scale": -70.0,
+      "camo_rotation": 0.0
+    },
+    "greencoast": {
+      "skin_condition": 100.0,
+      "camo_scale": -80.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "commonWeapons": {
+    "Weapon": [
+      {
+        "trigger": "gunner0",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/navalModels_weapons/100mm_56_b34_1940_naval_user_cannon.blk",
+        "emitter": "emtr_gun_flame_01",
+        "flash": "emtr_gun_flame_01",
+        "useEmitter": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "shotFreq": 0.5,
+        "speedYaw": 80.0,
+        "speedPitch": 80.0,
+        "bullets": 300,
+        "useGunnerTargetingQuality": true,
+        "fireConeAngle": 1.0,
+        "turretLongSalvo": true,
+        "salvoRndK": 0.15,
+        "allowableDelta": 1.0,
+        "ChainfireTime": 2.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 10.0,
+        "aimMaxDist": 14000.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.0,
+        "accuracyAir": 0.4,
+        "accuracyGnd": 1.0,
+        "errMeasureVel": 1.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 1.0,
+        "errMeasureVelFwdShift": 0.01,
+        "errMeasureVelDir": 0.1,
+        "errTargetting": 0.1,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "main_caliber_turret_01",
+          "gun": "main_caliber_gun_01",
+          "barrel": "gun_barrel_01",
+          "gunnerDm": "main_caliber_turret_01_dm"
+        },
+        "limits": {
+          "yaw": [
+            -150.0,
+            150.0
+          ],
+          "pitch": [
+            -20.0,
+            87.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 100.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 100.0,
+          "speedFromVehicleVerticalMult": -1.0
+        }
+      },
+      {
+        "trigger": "gunner1",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/45mm_46_21k_naval_user_cannon.blk",
+        "emitter": "emtr_gun_flame_02",
+        "flash": "emtr_gun_flame_02",
+        "useEmitter": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "shotFreq": 1.0,
+        "speedYaw": 80.0,
+        "speedPitch": 80.0,
+        "bullets": 500,
+        "useGunnerTargetingQuality": true,
+        "fireConeAngle": 1.0,
+        "allowableDelta": 1.0,
+        "ChainfireTime": 2.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 10.0,
+        "aimMaxDist": 3500.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.4,
+        "accuracyAir": 0.4,
+        "accuracyGnd": 0.0,
+        "shootingErrorAir": 4.0,
+        "errMeasureVel": 1.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 1.0,
+        "errMeasureVelFwdShift": 0.01,
+        "errMeasureVelDir": 0.1,
+        "errTargetting": 0.1,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "auxiliary_caliber_turret_01",
+          "gun": "auxiliary_caliber_gun_01",
+          "barrel": "gun_barrel_02",
+          "gunnerDm": "auxiliary_caliber_turret_01_dm"
+        },
+        "limits": {
+          "yaw": [
+            -140.0,
+            140.0
+          ],
+          "pitch": [
+            -20.0,
+            80.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 100.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 100.0,
+          "speedFromVehicleVerticalMult": -1.0
+        }
+      },
+      {
+        "trigger": "gunner2",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_38_torpedo.blk",
+        "emitter": "bone_torpedo_01",
+        "useEmitter": true,
+        "bullets": 42,
+        "startFx": "underwater_start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 20.0,
+        "useStartSpeed": true,
+        "allowableDelta": 360.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.067,
+        "turret": {
+          "head": "bone_torpedo_01",
+          "gun": "bone_torpedo_01"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner3",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_38_torpedo.blk",
+        "emitter": "bone_torpedo_02",
+        "useEmitter": true,
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "startFx": "underwater_start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 20.0,
+        "useStartSpeed": true,
+        "allowableDelta": 360.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.067,
+        "turret": {
+          "head": "bone_torpedo_02",
+          "gun": "bone_torpedo_02"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner4",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_38_torpedo.blk",
+        "emitter": "bone_torpedo_03",
+        "useEmitter": true,
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "startFx": "underwater_start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 20.0,
+        "useStartSpeed": true,
+        "allowableDelta": 360.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.067,
+        "turret": {
+          "head": "bone_torpedo_03",
+          "gun": "bone_torpedo_03"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner5",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_38_torpedo.blk",
+        "emitter": "bone_torpedo_04",
+        "useEmitter": true,
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "startFx": "underwater_start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 20.0,
+        "useStartSpeed": true,
+        "allowableDelta": 360.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.067,
+        "turret": {
+          "head": "bone_torpedo_04",
+          "gun": "bone_torpedo_04"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner6",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_38_torpedo.blk",
+        "emitter": "bone_torpedo_05",
+        "useEmitter": true,
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "startFx": "underwater_start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 20.0,
+        "useStartSpeed": true,
+        "allowableDelta": 360.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.067,
+        "turret": {
+          "head": "bone_torpedo_05",
+          "gun": "bone_torpedo_05"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner9",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/ussr_533mm_53_38_torpedo.blk",
+        "emitter": "bone_torpedo_06",
+        "useEmitter": true,
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "startFx": "underwater_start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 20.0,
+        "useStartSpeed": true,
+        "allowableDelta": 360.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.067,
+        "turret": {
+          "head": "bone_torpedo_06",
+          "gun": "bone_torpedo_06"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    ]
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "ussr_sub_type_l4_default",
+      "blk": "gameData/units/ships/weaponPresets/ussr_sub_type_l4_default.blk"
+    }
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "camo_hazegray*",
+      "to": "camo_violetgray_geometry*"
+    }
+  }
+}

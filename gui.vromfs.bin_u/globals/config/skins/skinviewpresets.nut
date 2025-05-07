@@ -92,6 +92,10 @@ let skinsByTag = {
     "se_camo_modern_m90"
     "au_camo_green_sand"
     "ussr_rbt_5"
+    "bd_camo_forest_fourcolor"
+    "cn_camo_summer_green"
+    "jp_camo_post_green_olive"
+    "jp_camo_modern_green"
   ],
 
   [DESERT] = [
@@ -148,6 +152,7 @@ let skinsByTag = {
     "cn_camo_sand_ltgreen_dkgreen_spots"
     "it_camo_desert_light_yellow"
     "uk_camo_standart_modern_light_stone"
+    "ussr_camo_desert_sand_green_brown"
   ],
 
   [WINTER] = [

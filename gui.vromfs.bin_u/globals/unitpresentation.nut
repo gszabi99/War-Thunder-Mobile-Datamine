@@ -58,11 +58,11 @@ let overrides = {
   ["il_4_killstreak"] = { image = "!ui/unitskin#il_4.avif" },
   ["firefly_mk5_killstreak"] = { image = "!ui/unitskin#firefly_mk5.avif" },
   ["b_25j_20_killstreak"] = { image = "!ui/unitskin#b_25j_20.avif" },
-  ["f4u_4_killstreak"] = { image = "!ui/unitskin#f4u_4_killstreak.avif" },
+  ["f4u_4_killstreak"] = { image = "!ui/unitskin#f4u_4.avif" },
   ["seafire_mk3_killstreak"] = { image = "!ui/unitskin#seafire_mk3.avif" },
   ["a6m5_zero_killstreak"] = { image = "!ui/unitskin#a6m5_zero.avif" },
   ["bf-109f-4_killstreak"] = { image = "!ui/unitskin#bf-109f-4.avif" },
-  ["sb2c_4_killstreak"] = { image = "!ui/unitskin#sb2c_4_killstreak.avif" },
+  ["sb2c_4_killstreak"] = { image = "!ui/unitskin#sb2c_4.avif" },
   ["er-2_m105_mv3_killstreak"] = { image = "!ui/unitskin#er-2_m105_mv3.avif" },
   ["he-111h-16_winter_killstreak"] = { image = "!ui/unitskin#he-111h-16_winter.avif" },
   ["b_26b_c_killstreak"] = { image = "!ui/unitskin#b_26b_c.avif" },
@@ -78,22 +78,6 @@ let overrides = {
   ["bf_109k_4_killstreak"] = { image = "!ui/unitskin#bf_109k_4.avif" },
   ["la_9_killstreak"] = { image = "!ui/unitskin#la_9.avif" },
   ["fw-190d-9_killstreak"] = { image = "!ui/unitskin#fw-190d-9.avif" },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

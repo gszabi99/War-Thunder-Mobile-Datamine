@@ -133,6 +133,7 @@ register_command(
       dbgCommonStats.mutate(@(v) v[myUserId.value] <- {
         hasPremium = true
         hasVip = true
+        hasPrem = true
         level = unit?.rank ?? 1
         mainUnitName = unit?.name ?? ""
         units = {

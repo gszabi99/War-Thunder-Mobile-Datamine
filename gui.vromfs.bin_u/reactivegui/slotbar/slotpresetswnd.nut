@@ -3,6 +3,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { deep_clone, isEqual } = require("%sqstd/underscore.nut")
 let { apply_slot_preset } = require("%appGlobals/pServer/pServerApi.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { iconButtonPrimary, iconButtonCommon, textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
@@ -19,7 +20,7 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 let { mkSlotHeader, emptySlotText } = require("%rGui/slotBar/slotBar.nut")
-let { slots, getSlotAnimTrigger } = require("%rGui/slotBar/slotBarState.nut")
+let { getSlotAnimTrigger } = require("%rGui/slotBar/slotBarState.nut")
 let { playerSelectedPresetIdx, playerSelectedSlotIdx, currentPresetName, savedSlotPresets,
   isOpenedPresetWnd, closeSlotPresetWnd,
   currentPresetUnits, setSavedSlotPresets, loadSlotPresets
@@ -256,10 +257,10 @@ function mkPresetSlot(slot, slotIdx, presetIdx, isSelected, onClick) {
 }
 
 let mkPresetSlots = @(preset, presetIdx, aPresetIdx, aSlotIdx) @() {
-  watch = [slots, aPresetIdx, aSlotIdx]
+  watch = [curSlots, aPresetIdx, aSlotIdx]
   flow = FLOW_HORIZONTAL
   gap = hdpx(4)
-  children = slots.get()
+  children = curSlots.get()
     .map(function(slot, i) {
       let pSlot = slot.__merge({name = preset.presetUnits[i]})
       return mkPresetSlot(

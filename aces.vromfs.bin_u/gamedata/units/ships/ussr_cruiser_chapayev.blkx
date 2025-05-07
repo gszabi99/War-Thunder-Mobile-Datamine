@@ -5040,6 +5040,7 @@
   "modifications": {
     "ship_tool_kit": {},
     "ship_smoke_screen_system_mod": {},
+    "upgraded": {},
     "weapons_contact_mines": {
       "effects": {
         "commonWeapons": {
@@ -14132,6 +14133,23 @@
       {
         "from": "camo_hazegray*",
         "to": "camo_bluegray_longspot*"
+      },
+      {
+        "from": "camo_rot_5*",
+        "to": "camo_syntheticblackpaint*"
+      },
+      {
+        "from": "camo_deepdark_wood*",
+        "to": "camo_syntheticblackpaint*"
+      }
+    ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": [
+      {
+        "from": "camo_hazegray*",
+        "to": "camo_violetgray_geometry*"
       },
       {
         "from": "camo_rot_5*",

@@ -6,6 +6,11 @@ let fillColor = 0xFFFFB70B
 let lowPriorityFillColor = 0xFF808080
 let borderColor = 0xFF000000
 let frameColor = 0xFFFFE9B5
+
+let fillColorFeature = 0xFF38FF92
+let borderColorFeature = 0xFF206E56
+let frameColorFeature = 0xFF9EF7CD
+
 let minOpacity = 0.4
 let maxOpacity = 1.0
 let DURATION = 1.2
@@ -75,6 +80,16 @@ let priorityUnseenMark = {
   ]
 }
 
+let priorityUnseenMarkFeature = {
+  key = {}
+  size = unseenSize
+  transform = { rotate = 45 }
+  children = [
+    coreUnseenBox.__merge({ fillColor = fillColorFeature, borderColor = borderColorFeature })
+    animatedFrame.__merge({color = frameColorFeature})
+  ]
+}
+
 let priorityUnseenMarkLight = {
   key = {}
   size = unseenSizeBig
@@ -121,6 +136,6 @@ return {
   lowPriorityUnseenMark
   mkUnseenMark
   mkPriorityUnseenMarkWatch
-
+  priorityUnseenMarkFeature
   priorityUnseenMarkLight
 }

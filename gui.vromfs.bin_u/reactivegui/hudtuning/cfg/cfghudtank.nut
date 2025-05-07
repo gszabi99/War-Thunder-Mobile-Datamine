@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { TANK } = require("%appGlobals/unitConst.nut")
-let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK
+let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK, AB_TOOLKIT
 } = require("%rGui/hud/actionBar/actionType.nut")
 let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
 let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
 let { EII_EXTINGUISHER, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET,
-  EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT
+  EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT, EII_TOOLKIT_SPLIT, EII_MEDICALKIT
 } = require("%rGui/hud/weaponsButtonsConfig.nut")
 let cfgHudCommon = require("cfgHudCommon.nut")
 let { mkCircleTankPrimaryGun, mkCircleTankSecondaryGun, mkCircleTankMachineGun, mkCircleZoomCtor,
@@ -33,14 +33,17 @@ let { NEED_SHOW_POSE_INDICATOR, mkMoveIndicator, moveIndicatorTankEditView
 let { mkFreeCameraButton } = require("%rGui/hud/buttons/cameraButtons.nut")
 let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
 let { bulletMainButton, bulletExtraButton } = require("%rGui/hud/bullets/bulletButton.nut")
-let { mkBulletEditView } = require("%rGui/hud/weaponsButtonsView.nut")
+let { mkBulletEditView, mkRepairActionItem } = require("%rGui/hud/weaponsButtonsView.nut")
 let { mkMyPlace, mkMyPlaceUi, mkTankMyScores, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
 let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
 let { missionScoreCtr, missionScoreEditView } = require("%rGui/hud/missionScore.nut")
-let { optTankMoveControlType, gearDownOnStopButtonTouch, optDoublePrimaryGuns } = require("cfgOptions.nut")
+let { optTankMoveControlType, gearDownOnStopButtonTouch, optDoublePrimaryGuns,
+  optDoubleRepairBtn
+} = require("cfgOptions.nut")
 let { tankRrepairButtonCtor } = require("%rGui/hud/buttons/repairButton.nut")
 let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
 let { isUnitAlive } = require("%rGui/hudState.nut")
+let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.value) && !isGamepad.value)
@@ -129,12 +132,39 @@ return {
     })
 
   abToolkit = {
-    ctor = tankRrepairButtonCtor
+    ctor = @(scale) function() {
+      let needSplitRepairBtn = Computed(@() optDoubleRepairBtn.has(curUnitHudTuningOptions.get()))
+      let actionItem = Computed(@() actionBarItems.get()?[AB_TOOLKIT])
+      return {
+        watch = needSplitRepairBtn
+        children = needSplitRepairBtn.get()
+          ? @() {
+            watch = actionItem
+            children = mkRepairActionItem(EII_TOOLKIT_SPLIT, actionItem.get(), scale)
+          }
+          : tankRrepairButtonCtor(scale)
+      }
+    }
     defTransform = actionBarTransform(1)
-    editView = mkActionItemEditView("ui/gameuiskin#hud_consumable_repair.svg")
+    editView = @(opt) function() {
+      let image = optDoubleRepairBtn.has(opt)
+        ? "ui/gameuiskin#hud_consumable_toolkit.svg"
+        : "ui/gameuiskin#hud_consumable_repair.svg"
+      return mkActionItemEditView(image)
+    }
     priority = Z_ORDER.STICK
     isVisibleInBattle = isUnitAlive
+    options = [ optDoubleRepairBtn ]
   }
+
+  medical = withActionBarButtonCtor(EII_MEDICALKIT, TANK, {
+    defTransform = mkRBPos([hdpx(-300), hdpx(-130)])
+    priority = Z_ORDER.STICK
+    isVisible = @(options) optDoubleRepairBtn.has(options)
+    isVisibleInBattle = isUnitAlive
+    options = [ optDoubleRepairBtn ]
+  })
+
   abSmokeGrenade = withAnyActionBarButtonCtor([ EII_SMOKE_GRENADE, EII_SMOKE_SCREEN ], TANK,
     { defTransform = actionBarTransform(2) })
   abArtilleryTarget = withActionBarButtonCtor(EII_ARTILLERY_TARGET, TANK,

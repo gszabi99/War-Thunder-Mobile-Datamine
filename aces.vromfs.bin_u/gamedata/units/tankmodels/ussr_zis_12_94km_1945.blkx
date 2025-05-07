@@ -2692,8 +2692,15 @@
       "to": "ussr_camo_winter_net*"
     }
   },
-  "upgradedDecals": {
+  "defaultDecals": {
     "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "upgradedDecals": {
+    "upgraded": {
       "camo_scale": 0.0,
       "camo_rotation": 0.0,
       "skin_condition": 100.0,
@@ -2841,7 +2848,7 @@
     }
   },
   "upgradedAttachables": {
-    "default": {
+    "upgraded": {
       "attachable": [
         {
           "node": "body_back_dm",

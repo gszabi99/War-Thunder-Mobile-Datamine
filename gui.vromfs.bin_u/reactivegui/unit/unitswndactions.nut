@@ -18,7 +18,8 @@ let { shopGoods } = require("%rGui/shop/shopState.nut")
 let { textButtonPlayerLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { havePremium } = require("%rGui/state/profilePremium.nut")
 let { openGoodsPreview, openedUnitFromTree } = require("%rGui/shop/goodsPreviewState.nut")
-let { curCampaign, curCampaignSlotUnits, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaignSlotUnits, curSlots } = require("%appGlobals/pServer/slots.nut")
 let { campUnitsCfg, curUnit, playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { setCurrentUnit, canBuyUnits, buyUnitsData, canBuyUnitsStatus, US_TOO_LOW_LEVEL, US_NOT_FOR_SALE
@@ -32,9 +33,9 @@ let { curSelectedUnit, availableUnitsList } = require("%rGui/unit/unitsWndState.
 let { tryResetToMainScene } = require("%rGui/navState.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { unitsResearchStatus, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { unitsResearchStatus, currentResearch, blockedCountries } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let openBuyUnitResearchWnd = require("%rGui/unitsTree/buyUnitResearchWnd.nut")
-let { slots, clearUnitSlot, openSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
+let { clearUnitSlot, openSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { secondsToTimeSimpleString, TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
@@ -46,6 +47,7 @@ let { G_BLUEPRINT } = require("%appGlobals/rewardType.nut")
 let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { upgradeCommonUnitName, buyExpUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
+let { blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nut")
 
 let fontIconPreview = "⌡"
 
@@ -79,6 +81,14 @@ function onBuyUnit() {
     return
   let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, curSelectedUnit.value)
   purchaseUnit(curSelectedUnit.value, bqPurchaseInfo)
+}
+
+function tryBuyUnit(isBlocked, canBuyUnit, unitName) {
+  if (isBlocked)
+    return openMsgBox({ text = loc("msg/needUnlockBranchToResearch") })
+  if (canBuyUnit)
+    return onBuyUnit()
+  return animBuyRequirementsUnitId.set(unitName)
 }
 
 function findGoodsPrem(shopGoodsList) {
@@ -235,6 +245,8 @@ let unitActionButtons = @(allowSeveralRows) function() {
   let levelInfo = playerLevelInfo.get()
   let canBuyStatus = canBuyUnitsStatus.get()?[unitName]
   let isOwned = unitName in campMyUnits.get()
+  let unitCountry = serverConfigs.get()?.allUnits[unitName].country ?? ""
+  let isBlocked = unitCountry in blockedCountries.get()
   let withBlueprint = unitName in serverConfigs.get()?.allBlueprints && !isOwned
   let unitFromCanBuyUnits = canBuyUnits.get()?[unitName]
   let canBuyUnit = unitFromCanBuyUnits != null
@@ -248,12 +260,23 @@ let unitActionButtons = @(allowSeveralRows) function() {
     bigBtnsList.append(textButtonPrimary(utf8ToUpper(loc("slotbar/clearSlot")),
       @() clearUnitSlot(unitName),
       { hotkeys = ["^J:X"] }))
-  else if (slots.get().len() != 0 && !isUnitInSlot && isOwned)
+  else if (curSlots.get().len() != 0 && !isUnitInSlot && isOwned)
     bigBtnsList.append(textButtonPrimary(utf8ToUpper(loc("mod/enable")),
       @() openSelectUnitToSlotWnd(unitName, treeNodeUnitPlateKey(unitName)),
       { hotkeys = ["^J:X"] }))
   else if (canEquipSelectedUnit.get())
     bigBtnsList.append(textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")), onSetCurrentUnit, { hotkeys = ["^J:X"] }))
+  else if (isBlocked) {
+    let requiredBattleModeForUnlock = blockedResearchByBattleMods.get()?[curCampaign.get()][unitCountry]
+    let offerId = shopGoods.get().findindex(@(offer) requiredBattleModeForUnlock in offer?.battleMods)
+    bigBtnsList.append(withGlareEffect(
+      textButtonMultiline(utf8ToUpper(loc("unitsTree/getEarlyAccess")),
+        @() offerId != null ? openGoodsPreview(offerId) : openMsgBox({ text = loc("msg/needUnlockBranchToResearch") }),
+        mergeStyles(PURCHASE, { hotkeys = ["^J:X"], ovr = { key = "startResearchButton" } })),
+      PURCHASE.ovr.minWidth,
+      { delay = 3, repeatDelay = 3 }
+    ))
+  }
   else if (canBuyUnit || (isResearched && !canBuy)) {
     let unit = unitFromCanBuyUnits ?? campUnitsCfg.get()[unitName]
     let isForLevelUp = levelInfo.isReadyForLevelUp && (unit?.name in buyUnitsData.get().canBuyOnLvlUp)
@@ -261,7 +284,7 @@ let unitActionButtons = @(allowSeveralRows) function() {
     if (price != null) {
       let priceComp = mkDiscountPriceComp(price.fullPrice, price.price, price.currencyId, CS_INCREASED_ICON)
       bigBtnsList.append(textButtonPricePurchase(utf8ToUpper(loc(!isCampaignWithUnitsResearch.get() ? "msgbox/btn_order" : "msgbox/btn_build")), priceComp,
-        canBuyUnit ? onBuyUnit : @() animBuyRequirementsUnitId.set(unitName),
+      @() tryBuyUnit(isBlocked, canBuyUnit, unitName),
         { hotkeys = ["^J:X"] }.__update(canBuyUnit ? {} : COMMON)))
     }
   }
@@ -272,8 +295,10 @@ let unitActionButtons = @(allowSeveralRows) function() {
   else if (!isOwned && (canResearch || (serverConfigs.get()?.unitResearchExp[unitName] ?? 0) > 0))
     bigBtnsList.append(withGlareEffect(
       textButtonMultiline(utf8ToUpper(loc("unitsTree/startResearch")),
-        @() canResearch ? setResearchUnit(unitName) : animResearchRequirementsUnitId.set(unitName),
-        mergeStyles(canResearch ? PURCHASE : COMMON, { hotkeys = ["^J:X"], ovr = { key = "startResearchButton" } })),
+        @() canResearch ? setResearchUnit(unitName)
+          : animResearchRequirementsUnitId.set(unitName),
+        mergeStyles(canResearch ? PURCHASE : COMMON,
+          { hotkeys = ["^J:X"], ovr = { key = "startResearchButton" } })),
       PURCHASE.ovr.minWidth,
       { delay = 3, repeatDelay = 3 }
     ))
@@ -316,11 +341,10 @@ let unitActionButtons = @(allowSeveralRows) function() {
 
   return {
     watch = [
-      curSelectedUnit, campMyUnits, curSelectedUnitPrice, campUnitsCfg,
-      canBuyUnits, canEquipSelectedUnit, havePremium,
-      canBuyUnitsStatus, playerLevelInfo, curCampaignSlotUnits,
-      shopGoods, buyUnitsData, availableUnitsList, unitDiscounts,
-      unitsResearchStatus, serverConfigs
+      curSelectedUnit, campMyUnits, curSelectedUnitPrice, campUnitsCfg, curCampaign,
+      canBuyUnits, canEquipSelectedUnit, havePremium, canBuyUnitsStatus, playerLevelInfo,
+      curCampaignSlotUnits, shopGoods, buyUnitsData, availableUnitsList, unitDiscounts,
+      unitsResearchStatus, serverConfigs, blockedCountries, blockedResearchByBattleMods
     ]
     size = SIZE_TO_CONTENT
     valign = ALIGN_CENTER

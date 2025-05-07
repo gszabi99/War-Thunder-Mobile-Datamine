@@ -5,6 +5,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { TIME_DAY_IN_SECONDS, TIME_HOUR_IN_SECONDS, TIME_MINUTE_IN_SECONDS } = require("%sqstd/time.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
 let { havePremium, premiumEndsAt, hasPremiumSubs, hasVip } = require("%rGui/state/profilePremium.nut")
 let { premiumTextColor, goodTextColor2, badTextColor2 } = require("%rGui/style/stdColors.nut")
 let { isProfileReceived } = require("%appGlobals/pServer/campaign.nut")
@@ -14,7 +15,6 @@ let { openShopWnd } = require("%rGui/shop/shopState.nut")
 let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
 let { CS_GAMERCARD, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 
-let premIconW = CS_INCREASED_ICON.iconSize
 let premIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
 let highlightTrigger = {}
 
@@ -36,22 +36,14 @@ premiumEndsAt.subscribe(function(endsAt) {
   changeOrders.mutate(@(v) v.append({ cur = endsAt, diff }))
 })
 
-
-let premImage = {
-  key = {}
-  size = [premIconW, premIconH]
-  rendObj = ROBJ_IMAGE
-  keepAspect = true
-  image = Picture($"ui/gameuiskin#premium_active.svg:{premIconW}:{premIconH}:P")
-}
-
-let premImageMain = @() premImage.__merge({
+let premImageMain = @() mkSubsIcon(
+  !havePremium.get() ? "prem_inactive"
+    : !hasPremiumSubs.get() ? "prem_deprecated"
+    : hasVip.get() ? "vip"
+    : "prem",
+  premIconH
+).__merge({
   watch = [havePremium, hasPremiumSubs, hasVip]
-  image = hasVip.get()
-      ? Picture($"ui/gameuiskin#vip_active.svg:{premIconW}:{premIconH}:P")
-    : !havePremium.value
-      ? Picture($"ui/gameuiskin#premium_inactive.svg:{premIconW}:{premIconH}:P")
-    : Picture($"ui/gameuiskin#premium_active.svg:{premIconW}:{premIconH}:P")
   children = hasPremiumSubs.get() ? null
     : {
         vplace = ALIGN_CENTER
@@ -112,7 +104,7 @@ function mkChangeView(change) {
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
     children = [
-      premImage
+      mkSubsIcon("prem_deprecated", premIconH)
       {
         rendObj = ROBJ_TEXT
         text = "".concat(diff < 0 ? "-" : "+", secondsToHoursLoc(abs(diff)))

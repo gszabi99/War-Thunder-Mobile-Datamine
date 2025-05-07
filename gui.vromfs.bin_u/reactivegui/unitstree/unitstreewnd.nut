@@ -36,16 +36,18 @@ let { isFiltersVisible, filterStateFlags, openFilters, activeFilters, mkFiltered
 } = require("%rGui/unit/unitsFilterPkg.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkUnitsTreeNodesContent, mkHasDarkScreen } = require("unitsTreeNodesContent.nut")
+let { blockedCountries } = require("unitsTreeNodesState.nut")
 let { rankBlockOffset } = require("unitsTreeConsts.nut")
 let { mkUnitPlate, framesGapMul } = require("mkUnitPlate.nut")
 let { scrollHandler, startAnimScroll, interruptAnimScroll, scrollPos, unseenArrowsBlockCtor
 } = require("unitsTreeScroll.nut")
-let { curCampaign, isCampaignWithSlots } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { slotBarTreeHeight } = require("%rGui/slotBar/slotBarConsts.nut")
-let { selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
-let { researchBlock, mkBlueprintBarText } = require("%rGui/unitsTree/components/researchBars.nut")
+let { selectedTreeSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
+let { researchBlock, mkBarText } = require("%rGui/unitsTree/components/researchBars.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 
@@ -421,9 +423,9 @@ let infoPanelHeight = saSize[1] - gamercardHeight + gamercardOverlap + saBorders
 
 function mkHasUnitActions(withTreeNodes) {
   if (!withTreeNodes)
-    return Computed(@() curSelectedUnit.get() != null || selectedSlotIdx.get() == null)
+    return Computed(@() curSelectedUnit.get() != null || selectedTreeSlotIdx.get() == null)
   let hasDarkScreen = mkHasDarkScreen()
-  return Computed(@() curSelectedUnit.get() != null || selectedSlotIdx.get() == null || hasDarkScreen.get())
+  return Computed(@() curSelectedUnit.get() != null || selectedTreeSlotIdx.get() == null || hasDarkScreen.get())
 }
 
 let mkBottomInfoPanel = {
@@ -440,11 +442,13 @@ let mkBottomInfoPanel = {
 
 function infoPanel() {
   let hasUnitActions = mkHasUnitActions(isTreeNodes.get())
+  let isBlockedUnit = Computed(@() hangarUnit.get()?.country in blockedCountries.get())
   let needShowBlueprintDescr = Computed(@() hangarUnit.get()?.name in serverConfigs.get()?.allBlueprints
-    && hangarUnit.get()?.name not in campMyUnits.get())
+    && hangarUnit.get()?.name not in campMyUnits.get()
+    && !isBlockedUnit.get())
   let hasDarkScreen = mkHasDarkScreen()
   return {
-    watch = [hasSelectedUnit, isTreeNodes, isCampaignWithSlots, hasDarkScreen]
+    watch = [hasSelectedUnit, isTreeNodes, isCampaignWithSlots, hasDarkScreen, isBlockedUnit]
     key = {}
     size = flex()
     children = hasSelectedUnit.get()
@@ -475,8 +479,8 @@ function infoPanel() {
                 hplace = ALIGN_RIGHT
                 halign = ALIGN_RIGHT
                 children = [
-                  !needShowBlueprintDescr.get() ? null
-                    : mkBlueprintBarText(loc("blueprints/fullDescription"))
+                  needShowBlueprintDescr.get() ? mkBarText(loc("blueprints/fullDescription")) : null
+                  isBlockedUnit.get() ? mkBarText(loc("unitsTree/needAccessHint")) : null
                   researchBlock(hangarUnit.get())
                   @() {
                     watch = hasUnitActions
@@ -488,14 +492,14 @@ function infoPanel() {
           })
       : !isCampaignWithSlots.get() || hasDarkScreen.get() ? null
       : @() {
-          watch = selectedSlotIdx
+          watch = selectedTreeSlotIdx
           rendObj = ROBJ_SOLID
           size = [infoPanelWidth, slotBarTreeHeight + saBorders[1]]
           padding = [0, saBorders[0]]
           color = 0x40000000
           hplace = ALIGN_RIGHT
           vplace = ALIGN_BOTTOM
-          children = selectedSlotIdx.get() == null ? null
+          children = selectedTreeSlotIdx.get() == null ? null
             : {
                 hplace = ALIGN_RIGHT
                 halign = ALIGN_RIGHT

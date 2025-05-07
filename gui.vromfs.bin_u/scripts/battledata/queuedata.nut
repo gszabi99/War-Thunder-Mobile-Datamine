@@ -3,7 +3,7 @@ let { resetTimeout } = require("dagor.workcycle")
 let { isEqual, isArray } = require("%sqstd/underscore.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { curCampaignSlotUnits } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
 let { get_queue_data_jwt, get_queue_data_slots_jwt, registerHandler, callHandler, lastProfileKeysUpdated
 } = require("%appGlobals/pServer/pServerApi.nut")
 let { decodeJwtAndHandleErrors, saveJwtResultToJson } = require("%appGlobals/pServer/pServerJwt.nut")

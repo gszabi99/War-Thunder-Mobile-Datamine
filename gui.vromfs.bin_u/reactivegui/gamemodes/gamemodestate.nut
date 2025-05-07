@@ -109,7 +109,7 @@ registerHandler("queueToGameMode",
 return {
   allGameModes
   randomBattleMode
-  isRandomBattleNewbieTutorial = Computed(@() curABTestOnlineTutorialMode.get() != null)
+  shouldStartNewbieSingleOnline = Computed(@() curABTestOnlineTutorialMode.get() != null)
   isRandomBattleNewbie = Computed(@() isNewbieMode(randomBattleMode.get()?.name))
   isRandomBattleNewbieSingle = Computed(@() isNewbieModeSingle(randomBattleMode.get()?.name))
   debugModes

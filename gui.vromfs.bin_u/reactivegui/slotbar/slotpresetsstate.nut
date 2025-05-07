@@ -5,7 +5,7 @@ let { object_to_json_string, parse_json } = require("json")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { slots } = require("%rGui/slotBar/slotBarState.nut")
+let { curSlots } = require("%appGlobals/pServer/slots.nut")
 
 let SAVE_ID = "slotSavedPresets"
 let loadedSlotPresets = Watched({})
@@ -48,7 +48,7 @@ let savedSlotPresets = Computed(@() loadedSlotPresets.get()?[curCampaign.get()] 
 let setSavedSlotPresets = @(presets, campaign) isEqual(presets, loadedSlotPresets.get()?[campaign] ?? []) ? null
   : saveSlotPresets(presets, campaign)
 
-let currentPresetUnits = Computed(@() slots.get().map(@(s) s.name))
+let currentPresetUnits = Computed(@() curSlots.get().map(@(s) s.name))
 
 let currentPresetName = Watched("")
 

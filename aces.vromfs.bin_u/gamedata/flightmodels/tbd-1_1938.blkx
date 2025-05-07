@@ -2012,7 +2012,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1000lb_gp_mk9.blk",
-              "emitter": "bomb16",
+              "emitter": "torpedo",
               "bullets": 1,
               "separate": true,
               "external": true

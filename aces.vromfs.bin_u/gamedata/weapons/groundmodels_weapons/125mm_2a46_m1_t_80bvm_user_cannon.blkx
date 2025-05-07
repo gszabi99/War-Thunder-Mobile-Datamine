@@ -692,43 +692,12 @@
           10000.0
         ]
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          580.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          576.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          567.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          555.0,
-          1000.0
-        ],
-        "ArmorPower1500m": [
-          543.0,
-          1500.0
-        ],
-        "ArmorPower2000m": [
-          532.0,
-          2000.0
-        ],
-        "ArmorPower3000m": [
-          519.0,
-          3000.0
-        ],
-        "ArmorPower10000m": [
-          5.0,
-          10000.0
-        ],
-        "ArmorPower20000m": [
-          0.0,
-          20000.0
-        ]
+      "damage": {
+        "kinetic": {
+          "lanzOdermattMaterial": "tungsten",
+          "lanzOdermattWorkingLength": 640.0,
+          "lanzOdermattDensity": 17500.0
+        }
       },
       "visual": {
         "range_percent_of_ammo": [
