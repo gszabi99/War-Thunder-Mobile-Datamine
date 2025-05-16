@@ -15,7 +15,7 @@ let { discountTagUnitSmall } = require("%rGui/components/discountTag.nut")
 let { curSelectedUnit, curUnitName } = require("%rGui/unit/unitsWndState.nut")
 let { unseenUnits, markUnitSeen } = require("%rGui/unit/unseenUnits.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
-let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
+let { mkPriorityUnseenMarkWatch, priorityUnseenMarkFeature, priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { hasDataForLevelWnd, isSeen, isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
 let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -39,7 +39,9 @@ let unitBuyWnd = require("%rGui/unitsTree/components/unitBuyWnd.nut")
 let { aDelayPrice, aTimePriceScale, aTimePriceShake } = require("%rGui/unitsTree/treeAnimConsts.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
+let { curCampaignUnseenBranches } = require("%rGui/unitsTree/unseenBranches.nut")
 
+let frameBorderWidth = hdpxi(2)
 let framesGapMul = 0.7
 let scrollBlocks = ceil((saSize[0] - saBorders[0] - flagsWidth) / blockSize[0] / 2)
 
@@ -403,6 +405,8 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
     || unit.name in unseenSkins.get()
     || unit.name in unseenResearchedUnits.get()?[selectedCountry.get()]
     || hasUnseenRewards.get())
+  let needShowUnseenBranchMark = Computed(@() curCampaignUnseenBranches.get()?[unit.country]
+    && unitsResearchStatus.get()?[unit.name].canResearch)
   let needShowBlueprintBar = Computed(@() unit.name in serverConfigs.get()?.allBlueprints
     && unit.name not in campMyUnits.get()
     && (servProfile.get()?.blueprints[unit.name] ?? 0) < (serverConfigs.get()?.allBlueprints[unit.name].targetCount ?? 0))
@@ -509,16 +513,21 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
           pos = [0, -selLineSize]
           children = selectedLineHorUnits(isSelected, isPremium, isCollectible)
         }
-        mkPriorityUnseenMarkWatch(needShowUnseenMark)
+        @() {
+          watch = [needShowUnseenBranchMark, needShowUnseenMark]
+          children = needShowUnseenBranchMark.get() ? priorityUnseenMarkFeature
+            : needShowUnseenMark.get() ? priorityUnseenMark
+            : null
+        }
         @() researchStatus.get()?.isCurrent
           ? {
               watch = researchStatus
-              size = [unitPlateTiny[0] + hdpxi(8), unitPlateTiny[1]]
+              size = [unitPlateTiny[0] + frameBorderWidth * 2, unitPlateTiny[1]]
               rendObj = ROBJ_BOX
               hplace = ALIGN_CENTER
               fillColor = 0
               borderColor = 0xFFFFFFFF
-              borderWidth = hdpxi(2)
+              borderWidth = frameBorderWidth
           }
           : {watch = researchStatus}
         mkProfileUnitDailyBonus(unit)

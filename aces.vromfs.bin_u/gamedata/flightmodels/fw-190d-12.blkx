@@ -2,11 +2,6 @@
   "model": "fw_190d_11",
   "fmFile": "fm/fw-190d-12.blk",
   "useTouchTargeting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,

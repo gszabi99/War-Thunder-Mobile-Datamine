@@ -8,7 +8,7 @@ let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { mkPriorityUnseenMarkWatch, priorityUnseenMarkFeature } = require("%rGui/components/unseenMark.nut")
 let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { discountTagUnit } = require("%rGui/components/discountTag.nut")
-let { unseenResearchedUnits } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
+let { unseenResearchedUnits, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 
 let hasUnseen = Computed(@() unseenUnits.get().len() > 0
@@ -20,7 +20,7 @@ let discount = Computed(@() unitDiscounts.value.reduce(@(res, val) max(val.disco
 let unseenMarkOvr = { pos = [hdpx(4), -hdpx(4)], hplace = ALIGN_RIGHT }
 
 return @(){
-  watch = [hasUnseen, discount, curCampaignUnseenBranches]
+  watch = [hasUnseen, discount, curCampaignUnseenBranches, currentResearch]
   children = [
     translucentButton("ui/gameuiskin#icon_tree.svg",
       "",
@@ -31,7 +31,7 @@ return @(){
     )
     discount.value > 0.0
         ? discountTagUnit(discount.value)
-      : curCampaignUnseenBranches.get().len() > 0 ? priorityUnseenMarkFeature.__update(unseenMarkOvr)
+      : curCampaignUnseenBranches.get().len() > 0 && currentResearch.get() != null ? priorityUnseenMarkFeature.__update(unseenMarkOvr)
       : mkPriorityUnseenMarkWatch(hasUnseen, unseenMarkOvr)
   ]
 }

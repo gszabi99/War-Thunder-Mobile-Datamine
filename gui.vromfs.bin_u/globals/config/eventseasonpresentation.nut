@@ -34,6 +34,7 @@ let genParams = {
   color = @(_) 0xA5FF2B00
   imageOffset = @(_) [0, 0]
   imageSizeMul = @(_) 1.2
+  imageTabOffset = @(_) [0, 0]
   bg = @(name) (name ?? "") == "" ? eventBgFallback : $"ui/images/event_bg_{name}.avif"
 }
 

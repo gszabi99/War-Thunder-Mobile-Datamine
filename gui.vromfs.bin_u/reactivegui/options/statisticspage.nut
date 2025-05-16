@@ -34,10 +34,10 @@ let mkMedals = @(selCampaign) function() {
     children.append(levelMark(v.baseLevel, v.starLevel + 1))
   if ((curr?.starLevel ?? 0) > 0)
     children.append(levelMark(curr.level - curr.starLevel, curr.starLevel))
-
+  let campaignExt = getCampaignPresentation(selCampaign).campaign
   foreach(medal in servProfile.get()?.medals ?? {}) {
-    let { campaign = selCampaign, ctor } = getMedalPresentation(medal)
-    if (campaign == selCampaign)
+    let { campaign = campaignExt, ctor } = getMedalPresentation(medal)
+    if (campaign == campaignExt)
       children.append(ctor(medal))
   }
   return {
@@ -172,6 +172,7 @@ return function() {
     padding = [0, 0, hdpx(40), 0]
     flow = FLOW_VERTICAL
     gap = hdpx(20)
-    children = campaignsList.value.map(@(v) mkInfo(v, unitsStats))
+    children = campaignsList.value
+      .map(@(v) mkInfo(v, unitsStats))
   }
 }

@@ -2727,7 +2727,7 @@
       }
     ]
   },
-  "type99mk1_all_tracers": {
+  "type99mk1_tracers": {
     "bullet": {
       "mass": 0.127,
       "caliber": 0.02,

@@ -2000,7 +2000,7 @@
       }
     ]
   },
-  "7_7_all_tracers": {
+  "7_7_tracers": {
     "bullet": [
       {
         "mass": 0.0104,

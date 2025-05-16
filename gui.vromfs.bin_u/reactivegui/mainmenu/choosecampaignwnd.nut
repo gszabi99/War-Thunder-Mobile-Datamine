@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { object_to_json_string } = require("json")
+let { arrayByRows } = require("%sqstd/underscore.nut")
 let { can_use_debug_console } = require("%appGlobals/permissions.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { registerScene } = require("%rGui/navState.nut")
@@ -21,7 +22,7 @@ let { isInSquad, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
 let { unseenCampaigns, markAllCampaignsSeen } = require("unseenCampaigns.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { imageBtn } = require("%rGui/components/imageButton.nut")
-let { arrayByRows } = require("%sqstd/underscore.nut")
+let { unseenUnits, markUnitsSeen } = require("%rGui/unit/unseenUnits.nut")
 
 let iconSize = evenPx(40)
 let RESET_MSG_UID = "resetCampaignMsg"
@@ -93,6 +94,8 @@ function onCampaignChange(campaign, onChangeCamp = null) {
     onChangeCamp?()
     close()
     setCampaign(campaign)
+    if (needFirstBattleTutorForCampaign(campaign))
+      markUnitsSeen(unseenUnits.get())
   }
 
   if(skipTutor.get()) {

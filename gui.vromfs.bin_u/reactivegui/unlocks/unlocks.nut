@@ -4,7 +4,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { userstatDescList, userstatUnlocks, userstatStats, userstatRequest, userstatRegisterHandler,
   forceRefreshUnlocks, forceRefreshStats, tablesActivityOvr
 } = require("userstat.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 
 let emptyProgress = {
   stage = 0
@@ -99,7 +99,7 @@ let activeUnlocks = Computed(@(prev) allUnlocksDesc.value
   }))
 
 let campaignActiveUnlocks = Computed(function() {
-  let curC = curCampaign.get()
+  let curC = getCampaignStatsId(curCampaign.get())
   return activeUnlocks.get().filter(@(u) (u?.meta?.campaign == null || curC == u?.meta?.campaign) )
 })
 

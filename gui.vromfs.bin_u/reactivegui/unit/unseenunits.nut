@@ -19,8 +19,8 @@ function loadUnseenUnits() {
     return
   let res = {}
   let seenBlk = get_local_custom_settings_blk()?[SEEN_UNIT]
-  foreach(unit in availableUnitsList.value){
-    if(serverTime.value - unit.releaseDate <= maxTimeShowingUnseenMark &&
+  foreach(unit in availableUnitsList.get()) {
+    if (serverTime.get() - unit.releaseDate <= maxTimeShowingUnseenMark &&
         (unit.name not in seenBlk))
       res[unit.name] <- true
   }
@@ -40,16 +40,30 @@ function markUnitsUnseen(list) {
     )
 }
 
-function markUnitSeen(unit){
-  if (unit.name not in unseenUnits.value)
+function markUnitSeen(unit) {
+  if (unit.name not in unseenUnits.get())
     return
 
-  if(serverTime.value - unit.releaseDate <= maxTimeShowingUnseenMark){
+  if (serverTime.get() - unit.releaseDate <= maxTimeShowingUnseenMark) {
     let sBlk = get_local_custom_settings_blk()
     let blk = sBlk.addBlock(SEEN_UNIT)
     blk[unit.name] = true
     eventbus_send("saveProfile", {})
   }
+  loadUnseenUnits()
+}
+
+function markUnitsSeen(unitsList) {
+  if (!unitsList || unitsList.len() == 0)
+    return
+
+  let sBlk = get_local_custom_settings_blk()
+  let blk = sBlk.addBlock(SEEN_UNIT)
+
+  foreach(unitName, _ in unitsList)
+    blk[unitName] = true
+
+  eventbus_send("saveProfile", {})
   loadUnseenUnits()
 }
 
@@ -62,5 +76,6 @@ register_command(function() {
 return {
   unseenUnits
   markUnitSeen
+  markUnitsSeen
   markUnitsUnseen
 }

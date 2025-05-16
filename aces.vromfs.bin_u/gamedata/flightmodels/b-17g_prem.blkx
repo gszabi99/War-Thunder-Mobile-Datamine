@@ -7,11 +7,6 @@
     3.0,
     0.0
   ],
-  "tpsCameraTargetOffsetAtZoom": [
-    -100.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/4x_engine_bomber_metaparts.blk",
   "gearSinkRangeLR": 0.066,
   "gearSinkRangeC": 0.355,

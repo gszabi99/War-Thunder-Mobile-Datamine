@@ -1775,7 +1775,7 @@
       }
     ]
   },
-  "mg_turret": {
+  "mg_armor_targets": {
     "bullet": [
       {
         "mass": 0.01015,
@@ -2534,7 +2534,7 @@
       }
     ]
   },
-  "mg_all_tracers": {
+  "mg_tracers": {
     "bullet": {
       "mass": 0.01,
       "caliber": 0.00792,

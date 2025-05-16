@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { get_mplayer_by_id } = require("mission")
 let { TouchCameraControl } = require("wt.behaviors")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
@@ -105,7 +106,7 @@ let returnToHangarButton = @() {
   children = @() {
     watch = battleCampaign
     rendObj = ROBJ_TEXT
-    text = loc(battleCampaign.value == "ships" ? "return_to_port" : "return_to_hangar")
+    text = loc(getCampaignPresentation(battleCampaign.get()).returnToHangarLocId)
     color = isActive(returnBtnSf.value) ? textColorPushed
       : textColor
   }.__update(fontTiny)

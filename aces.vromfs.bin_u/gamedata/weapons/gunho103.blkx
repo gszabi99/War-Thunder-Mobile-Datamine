@@ -2653,7 +2653,7 @@
       }
     ]
   },
-  "breda12_7_all_tracers": {
+  "breda12_7_tracers": {
     "bullet": [
       {
         "mass": 0.03607,

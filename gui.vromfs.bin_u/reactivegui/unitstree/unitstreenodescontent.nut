@@ -19,7 +19,7 @@ let { mkTreeNodesUnitPlate } = require("mkUnitPlate.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { unseenUnits, markUnitSeen } = require("%rGui/unit/unseenUnits.nut")
+let { unseenUnits, markUnitSeen, markUnitsSeen } = require("%rGui/unit/unseenUnits.nut")
 let { markBranchSeen } = require("%rGui/unitsTree/unseenBranches.nut")
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { selectedCountry, mkVisibleNodes, mkFilteredNodes, mkCountryNodesCfg, mkCountries,
@@ -750,8 +750,8 @@ let function mkUnitsTreeNodesContent() {
           : unitsTreeOpenRank.get() != null ? scrollToRank(unitsTreeOpenRank.get(), ranksCfg.get())
           : onUnitNodesAppear(selectedCountry.get(), countryNodesCfg.get().nodes, areaSize))
         isTreeNodesAttached.set(true)
-        curSelectedUnit.set(curSlots.get()?[slotIdxByHangarUnit.get()].name)
-        selectedTreeSlotIdx.set(slotIdxByHangarUnit.get())
+        if (hasSelectedUnit.get())
+          selectedTreeSlotIdx.set(slotIdxByHangarUnit.get())
       }
       function onDetach() {
         isTreeNodesAttached.set(false)
@@ -766,6 +766,7 @@ let function mkUnitsTreeNodesContent() {
             res[unit] <- true
           return res
         }, {}))
+        markUnitsSeen(unseenUnits.get())
       }
       children = [
         @() (isCampaignWithSlots.get() ? pannableAreaWithSlobar : pannableArea)(

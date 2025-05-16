@@ -2,11 +2,6 @@
   "fmFile": "fm/ju-288c.blk",
   "model": "ju_288c",
   "useTouchTargeting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "tpsCameraOffset": [
     -5.0,
     2.0,

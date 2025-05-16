@@ -24,7 +24,7 @@ let { contactNameBlock, contactAvatar, contactLevelBlock } = require("%rGui/cont
 let { INVITE_TO_FRIENDS, CANCEL_INVITE, REVOKE_INVITE, INVITE_TO_SQUAD, REPORT } = require("%rGui/contacts/contactActions.nut")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { selectedPlayerForInfo } = require("%rGui/mpStatistics/viewProfile.nut")
-let { campaignPresentations } = require("%appGlobals/config/campaignPresentation.nut")
+let { campaignPresentations, getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { needFetchContactsInBattle } = require("%rGui/contacts/contactsState.nut")
 let { textButtonCommon, mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let { mkTimeToNextReport } = require("%rGui/report/reportPlayerState.nut")
@@ -257,9 +257,10 @@ let mkMedals = @(info, selCampaign) function() {
   if ((curr?.starLevel ?? 0) > 0)
     children.append(levelMark(curr.level - curr.starLevel, curr.starLevel - 1))
 
+  let campaignExt = getCampaignPresentation(selCampaign).campaign
   foreach(medal in info.get()?.medals ?? {}) {
-    let { campaign = selCampaign, ctor } = getMedalPresentation(medal)
-    if (campaign == selCampaign)
+    let { campaign = campaignExt, ctor } = getMedalPresentation(medal)
+    if (campaign == campaignExt)
       children.append(ctor(medal))
   }
   return {

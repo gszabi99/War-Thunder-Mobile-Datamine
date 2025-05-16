@@ -56,7 +56,9 @@ let sortGoods = @(a, b)
   || a.id <=> b.id
 
 let goodsWithTimers = Computed(@() (campConfigs.value?.allGoods ?? {})
-  .filter(@(g) (g?.timeRange.start ?? 0) > 0 || (g?.timeRange.end ?? 0) > 0))
+  .filter(@(g) "timeRange" in g ? g.timeRange.start > 0 || g.timeRange.end > 0 
+    : g.timeRanges.len() > 0
+  ))
 let inactiveGoodsByTime = Watched({})
 let finishedGoodsByTime = Watched({})
 let nextUpdateTime = Watched({ time = 0 })
@@ -75,7 +77,7 @@ let startNextDayTime = @() TIME_DAY_IN_SECONDS - (serverTime.get() % TIME_DAY_IN
 function updateGoodsTimers() {
   let inactive = {}
   let finished = {}
-  local nextTime = 0
+  local nextTime = null
   let curTime = serverTime.get()
   let isValid = isServerTimeValid.get()
   foreach(id, goods in goodsWithTimers.get()) {
@@ -84,29 +86,62 @@ function updateGoodsTimers() {
       continue
     }
 
-    let { timeRange, dailyLimit = 0 } = goods
-    let { start, end } = timeRange
-    if (start > curTime) {
-      inactive[id] <- true
-      nextTime = nextTime == 0 ? start : min(start, nextTime)
-    }
-    else if (end <= 0)
+    let { timeRange = null, timeRanges = [], dailyLimit = 0 } = goods
+    if (timeRange != null) { 
+      let { start, end } = timeRange
+      if (start > curTime) {
+        inactive[id] <- true
+        nextTime = min(nextTime ?? start, start)
+      }
+      else if (end <= 0)
+        continue
+      else if (end <= curTime) {
+        inactive[id] <- true
+        finished[id] <- true
+      }
+      else if (end <= startNextDayTime() && dailyLimit > 0 && todayPurchasesCount.get()?[id].count == dailyLimit)
+        inactive[id] <- true
+      else
+        nextTime = min(nextTime ?? end, end)
       continue
-    else if (end <= curTime) {
-      inactive[id] <- true
-      finished[id] <- true
     }
-    else if (end <= startNextDayTime() && dailyLimit > 0 && todayPurchasesCount.get()?[id].count == dailyLimit)
+
+    if (timeRanges.len() == 0)
+      continue
+    local isActive = false
+    local hasNext = false
+    foreach (tr in timeRanges) {
+      let { start, end } = tr
+      if (start > curTime) {
+        nextTime = min(nextTime ?? start, start)
+        hasNext = true
+      }
+      else if (end <= 0) {
+        isActive = true
+        break
+      }
+      else if (end > curTime) {
+        isActive = end > startNextDayTime() || dailyLimit == 0 || (todayPurchasesCount.get()?[id].count ?? 0) < dailyLimit
+        if (isActive) {
+          nextTime = min(nextTime ?? end, end)
+          break
+        }
+        else
+          hasNext = end < startNextDayTime()
+      }
+    }
+    if (!isActive) {
       inactive[id] <- true
-    else
-      nextTime = nextTime == 0 ? end : min(end, nextTime)
+      if (!hasNext)
+        finished[id] <- true
+    }
   }
 
   if (!isEqual(inactive, inactiveGoodsByTime.get()))
     inactiveGoodsByTime.set(inactive)
   if (!isEqual(finished, finishedGoodsByTime.get()))
     finishedGoodsByTime.set(finished)
-  nextUpdateTime({ time = nextTime })
+  nextUpdateTime({ time = nextTime ?? 0 })
 }
 
 nextUpdateTime.subscribe(function(v) {
@@ -120,6 +155,7 @@ nextUpdateTime.subscribe(function(v) {
 updateGoodsTimers()
 goodsWithTimers.subscribe(@(_) updateGoodsTimers())
 isServerTimeValid.subscribe(@(_) updateGoodsTimers())
+todayPurchasesCount.subscribe(@(_ ) updateGoodsTimers())
 
 let allowWithSubs = @(goods) goods.premiumDays == 0
 

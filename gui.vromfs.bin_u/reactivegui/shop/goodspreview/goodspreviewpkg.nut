@@ -333,45 +333,66 @@ let purchaseButtonNoOldPrice = function() {
   })
 }
 
-let mkTimeLeftText = @(endTime) function() {
-  let res = { watch = serverTime, rendObj = ROBJ_TEXT }
-  let timeLeft = endTime - serverTime.value
-  if (timeLeft < 0)
+let mkTimeLeftText = @(timeLeft) function() {
+  let res = { watch = timeLeft, rendObj = ROBJ_TEXT }
+  let time = timeLeft.get()
+  if (time == null)
+    return res
+  if (time < 0)
     return res.__update({
       text = utf8ToUpper(loc("lastChance"))
       color = 0xFFFFA406
     }, fontSmall)
-  if (timeLeft >= TIME_DAY_IN_SECONDS)
-    return res.__update({ text = $"▩{secondsToHoursLoc(timeLeft)}" }, fontMedium)
+  if (time >= TIME_DAY_IN_SECONDS)
+    return res.__update({ text = $"▩{secondsToHoursLoc(time)}" }, fontMedium)
   return res.__update({
-    text = secondsToTimeSimpleString(timeLeft)
+    text = secondsToTimeSimpleString(time)
     monoWidth = hdpx(38)
   }, fontBig)
 }
 
-let previewGoodsTimeLeft = @(halign, width = hdpx(350)) function() {
-  let endTime = previewGoods.get()?.endTime ?? previewGoods.get()?.timeRange.end ?? 0
-  if (endTime <= 0)
-    return { watch = previewGoods }
+function previewGoodsTimeLeft(halign, width = hdpx(350)) {
+  let timeLeft = Computed(function() {
+    if (previewGoods.get() == null)
+      return null
+    let curTime = serverTime.get()
+    let endTime = previewGoods.get()?.endTime
+    if (endTime != null) { 
+      if (endTime <= 0)
+        return null
+      return endTime - curTime
+    }
+    let { timeRange = null, timeRanges = [] } = previewGoods.get()
+    if (timeRange != null) {
+      let left = timeRange.end - curTime
+      return left < 0 ? null : left
+    }
+    foreach (tr in timeRanges)
+      if (tr.start <= curTime && tr.end >= curTime)
+        return tr.end - curTime
+    return null
+  })
+  let hasTimeLeft = Computed(@() timeLeft.get() != null)
   let text = utf8ToUpper(loc("limitedTimeOffer"))
-  return {
-    watch = previewGoods
-    flow = FLOW_VERTICAL
-    halign
-    children = [
-      {
-        size = [width, SIZE_TO_CONTENT]
-        rendObj = ROBJ_TEXTAREA
-        behavior = Behaviors.TextArea
-        text
-        color = 0xFFFFFFFF
+  return @() !hasTimeLeft.get() ? { watch = hasTimeLeft }
+    : {
+        watch = hasTimeLeft
+        flow = FLOW_VERTICAL
         halign
-      }.__update(
-        getFontToFitWidth({ rendObj = ROBJ_TEXT, text }.__update(fontTiny),
-          width, [fontVeryTiny, fontTiny]))
-      mkTimeLeftText(endTime)
-    ]
-  }
+        children = [
+          {
+            size = [width, SIZE_TO_CONTENT]
+            rendObj = ROBJ_TEXTAREA
+            behavior = Behaviors.TextArea
+            text
+            color = 0xFFFFFFFF
+            halign
+          }.__update(
+            getFontToFitWidth({ rendObj = ROBJ_TEXT, text }.__update(fontTiny),
+              width, [fontVeryTiny, fontTiny]))
+          mkTimeLeftText(timeLeft)
+        ]
+      }
 }
 
 let mkPreviewHeader = @(textW, onBack, animStartTime) doubleSideGradient.__merge({

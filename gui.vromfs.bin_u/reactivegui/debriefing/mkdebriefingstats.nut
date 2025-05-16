@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
 let { doesLocTextExist } = require("dagor.localize")
 let { roundToDigits } = require("%sqstd/math.nut")
-let { campaignPresentations } = require("%appGlobals/config/campaignPresentation.nut")
+let { campaignPresentations, getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { orderByItems } = require("%appGlobals/itemsState.nut")
 let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { getScoreKeyRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
@@ -201,7 +201,8 @@ function getPlayerPlace(campaign, player, allPlayers) {
 
 function mkDebriefingStats(debrData, startAnimTime) {
   let { isSingleMission = false, players = {}, userId = -1, campaign = "", itemsUsed = {} } = debrData
-  let stats = (isSingleMission ? statsByCampSingle : statsByCamp)?[campaign] ?? []
+  let stats = campaign.len() == 0 ? []
+    : (isSingleMission ? statsByCampSingle : statsByCamp)?[getCampaignPresentation(campaign).campaign] ?? []
   local player = players?[userId.tostring()]
 
   if (!isSingleMission && player != null) {

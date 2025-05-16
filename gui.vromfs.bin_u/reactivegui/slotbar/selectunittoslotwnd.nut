@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
+let { resetTimeout, setInterval, clearTimer } = require("dagor.workcycle")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { addModalWindow, removeModalWindow, hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { modalWndBg } = require("%rGui/components/modalWnd.nut")
@@ -34,33 +35,54 @@ function mkBgText(rect) {
   }.__update(fontSmall)
 }
 
-let openImpl = @(rect) addModalWindow({
-  key = WND_UID
-  onClick = closeSelectUnitToSlotWnd
-  children = [
-    mkCutBg([rect])
-    {
-      margin = [rect.b + hdpx(50), 0, saBorders[1], 0]
-      vplace = ALIGN_BOTTOM
-      hplace = ALIGN_LEFT
-      children = modalWndBg.__merge({ children = slotBarSelectWnd })
-    }
-    mkBgText(rect)
-  ]
-  animations = [
-    { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.2, easing = OutQuad, play = true }
-    { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.1, easing = OutQuad, playFadeOut = true }
-  ]
-})
+function openImpl() {
+  let rect = Watched(null)
+  function updateRect() {
+    let new = gui_scene.getCompAABBbyKey(selectedUnitAABBKey.get())
+    if (new != null && !isEqual(new, rect.get()))
+      rect.set(new)
+  }
+  updateRect()
+  if (rect.get() == null)
+    return false
+
+  addModalWindow({
+    key = WND_UID
+    onClick = closeSelectUnitToSlotWnd
+    children = [
+      @() {
+        watch = rect
+        key = rect
+        size = flex()
+        onAttach = @() setInterval(0.05, updateRect)
+        onDetach = @() clearTimer(updateRect)
+        children = [
+          mkCutBg([rect.get()])
+          mkBgText(rect.get())
+        ]
+      }
+      {
+        margin = [0, 0, saBorders[1], 0]
+        vplace = ALIGN_BOTTOM
+        hplace = ALIGN_LEFT
+        children = modalWndBg.__merge({ children = slotBarSelectWnd })
+      }
+    ]
+    animations = [
+      { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.2, easing = OutQuad, play = true }
+      { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.1, easing = OutQuad, playFadeOut = true }
+    ]
+  })
+  return true
+}
 
 function open() {
   setUnitToScroll(selectedUnitToSlot.get())
   resetTimeout(0.1, function() {
     if (!shouldOpen.get())
       return
-    let rect = gui_scene.getCompAABBbyKey(selectedUnitAABBKey.get())
-    if (rect)
-      openImpl(rect)
+    if (!openImpl())
+      closeSelectUnitToSlotWnd()
   })
 }
 

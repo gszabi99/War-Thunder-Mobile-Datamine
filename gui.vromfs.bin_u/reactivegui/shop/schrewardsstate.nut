@@ -6,7 +6,7 @@ let { getShopCategory } = require("shopCommon.nut")
 let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { schRewardInProgress, apply_scheduled_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { isAdsAvailable, showAdsForReward } = require("%rGui/ads/adsState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -71,6 +71,8 @@ let getRewardPriority = @(rew) - rew.readyTime
     : READY_NOT_ADVERT)
 
 function updateActualSchRewards() {
+  if (!isServerTimeValid.get())
+    return
   let received = receivedSchRewards.value
   let curTime = serverTime.value
   local nextTime = 0
@@ -106,6 +108,7 @@ function updateActualSchRewards() {
 updateActualSchRewards()
 schRewardsByCategory.subscribe(@(_) updateActualSchRewards())
 receivedSchRewards.subscribe(@(_) updateActualSchRewards())
+isServerTimeValid.subscribe(@(v) v ? updateActualSchRewards() : null)
 
 function resetUpdateTimer() {
   let { time } = nextUpdate.value

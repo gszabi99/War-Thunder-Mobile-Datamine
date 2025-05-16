@@ -606,7 +606,7 @@
       }
     }
   ],
-  "type99mk1_turret_ap": {
+  "type99mk1_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.127,
@@ -1521,7 +1521,7 @@
       }
     ]
   },
-  "type99mk1_turret_he": {
+  "type99mk1_turret_air_targets": {
     "bullet": [
       {
         "mass": 0.127,

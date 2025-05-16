@@ -1781,7 +1781,7 @@
       }
     ]
   },
-  "ho5_all_tracers": {
+  "ho5_tracers": {
     "bullet": {
       "mass": 0.119,
       "caliber": 0.02,

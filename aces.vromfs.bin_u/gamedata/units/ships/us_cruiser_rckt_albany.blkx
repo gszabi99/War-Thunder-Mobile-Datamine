@@ -756,8 +756,8 @@
   "cockpit": {
     "headPos": [
       0.0,
-      40.0,
-      -70.0
+      60.0,
+      -90.0
     ],
     "headPosOnShooting": [
       0.0,
@@ -766,8 +766,8 @@
     ],
     "headPosOnSides": [
       0.0,
-      40.0,
-      -140.0
+      50.0,
+      -150.0
     ],
     "detectionHeight": 43.0,
     "cameraAhead": true

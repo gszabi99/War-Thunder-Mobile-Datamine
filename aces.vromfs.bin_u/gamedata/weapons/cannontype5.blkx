@@ -2642,7 +2642,7 @@
       }
     ]
   },
-  "type5_all_tracers": {
+  "type5_tracers": {
     "bullet": {
       "mass": 0.33,
       "caliber": 0.03,

@@ -3315,7 +3315,7 @@
       }
     ]
   },
-  "ub_all_tracers": {
+  "ub_tracers": {
     "bullet": {
       "mass": 0.044,
       "recoilMultiplier": 0.2,

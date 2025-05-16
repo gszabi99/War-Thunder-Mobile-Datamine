@@ -25,9 +25,14 @@ let { ALL_PURCHASED } = require("%rGui/shop/goodsStates.nut")
 
 
 let fonticonPreview = "⌡"
-let consumableSize = hdpx(120)
+let consumableSize = hdpx(80)
 let eliteMarkSize = [hdpxi(70), hdpxi(45)]
 let currencyIconSize = hdpxi(170)
+
+let unitImgScaleDefault = 1
+let unitImgScaleWithConsumableByType = {
+  [AIR] = 0.8
+}
 
 let consumablesOnGoodsPlate = [ SPARE ]
 let currenciesOnOfferBanner = [ PLATINUM, EVENT_KEY, GOLD, WARBOND ]
@@ -87,6 +92,8 @@ let mkUnitImg = @(img, size) {
   keepAspect = KEEP_ASPECT_FIT
   imageHalign = ALIGN_LEFT
   imageValign = ALIGN_BOTTOM
+  hplace = ALIGN_LEFT
+  vplace = ALIGN_BOTTOM
 }
 
 let eliteMark = {
@@ -145,12 +152,13 @@ let mkConsumableIcons = @(items) {
   children = items?.map(@(item)
     mkCurrencyImage(item[0], consumableSize, {
       children = {
-        pos = [-consumableSize * 0.05, -consumableSize * 0.1]
+        pos = [-consumableSize * 0.9, -consumableSize * 0.1]
         vplace = ALIGN_CENTER
+        hplace = ALIGN_CENTER
         rendObj = ROBJ_TEXT
         text = "".concat("+", item[1])
         color = premiumTextColor
-      }.__update(fontMediumShaded)
+      }.__update(fontSmallAccentedShaded)
     }))
 }
 
@@ -177,6 +185,9 @@ function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
   }
 
   let ovrState = Computed(@() state.get() | (isPurchased ? ALL_PURCHASED : 0))
+  let consumableItems = consumablesOnGoodsPlate.map(@(id) [ id, goods?.items[id] ?? 0 ]).filter(@(v) v[1] > 0)
+  let unitImgScale = consumableItems.len() == 0 ? unitImgScaleDefault
+    : (unitImgScaleWithConsumableByType?[unit?.unitType] ?? unitImgScaleDefault)
   return mkGoodsWrap(
     goods,
     onUnitClick,
@@ -185,12 +196,11 @@ function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
       mkBgImg($"!ui/unitskin#bg_ground_{unit.unitType}.avif")
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
-      mkUnitImg(p.image, [goodsSmallSize[0], goodsBgH])
+      mkUnitImg(p.image, [(goodsSmallSize[0] * unitImgScale).tointeger(), (goodsBgH * unitImgScale).tointeger()])
       mkUnitTexts(goods, unit)
       mkSquareIconBtn(fonticonPreview, @() isPurchased ? unitDetailsWnd(unit) : openGoodsPreview(goods.id),
         { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
-      mkConsumableIcons(consumablesOnGoodsPlate
-        .map(@(id) [ id, goods?.items[id] ?? 0 ]).filter(@(v) v[1] > 0))
+      mkConsumableIcons(consumableItems)
       mkMRank(unit?.mRank)
       mkEndTime(goods, { pos = [hdpx(-50), 0] })
       border
@@ -210,9 +220,7 @@ let mkCurrencyIcon = @(currencyId, amount) {
 
 function mkOfferUnit(goods, onClick, state) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
-    currencies = {}, offerClass = null
-  } = goods
+  let { discountInPercent = 0, isShowDebugOnly = false, currencies = {}, offerClass = null } = goods
   let p = getUnitPresentation(unit)
   let bgImg = offerClass == "seasonal" ? "ui/gameuiskin#offer_bg_green.avif"
     : unit?.unitType == TANK || unit?.unitType == AIR ? "ui/gameuiskin#offer_bg_yellow.avif"
@@ -229,8 +237,7 @@ function mkOfferUnit(goods, onClick, state) {
       sf & S_HOVER ? bgHiglight : null
       currencyId == null ? null : mkCurrencyIcon(currencyId, currencies[currencyId])
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
-      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : loc(getUnitLocId(unit)),
-        endTime ?? timeRange?.end)
+      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : loc(getUnitLocId(unit)), goods)
       mkUnitInfo(unit).__update({ margin = offerPad, padding = null })
       discountTagUnit(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))
@@ -238,8 +245,7 @@ function mkOfferUnit(goods, onClick, state) {
 
 function mkOfferBlueprint(goods, onClick, state){
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
-    offerClass = null } = goods
+  let { discountInPercent = 0, isShowDebugOnly = false, offerClass = null } = goods
   let bgImg = "ui/gameuiskin#offer_bg_blue.avif"
   let image = {
     size = [ offerW,  offerH ]
@@ -254,8 +260,7 @@ function mkOfferBlueprint(goods, onClick, state){
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
       image
-      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
-        endTime ?? timeRange?.end)
+      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc), goods)
       discountTagBig(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))
 
@@ -263,9 +268,7 @@ function mkOfferBlueprint(goods, onClick, state){
 
 function mkOfferBranchUnit(goods, onClick, state) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
-    currencies = {}, offerClass = null
-  } = goods
+  let { discountInPercent = 0, isShowDebugOnly = false, currencies = {}, offerClass = null } = goods
   let p = getUnitPresentation(unit)
   let bgImg = offerClass == "seasonal" ? "ui/gameuiskin#offer_bg_green.avif"
     : unit?.unitType == TANK ? "ui/gameuiskin#offer_bg_yellow.avif"
@@ -283,16 +286,14 @@ function mkOfferBranchUnit(goods, onClick, state) {
       currencyId == null ? null : mkCurrencyIcon(currencyId, currencies[currencyId])
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
       mkAirBranchOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getPlatoonOrUnitName(unit, loc),
-        utf8ToUpper(loc("offer/airBranch")), endTime ?? timeRange?.end)
+        utf8ToUpper(loc("offer/airBranch")), goods)
       discountTagUnit(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))
 }
 
 function mkOfferBattleMode(goods, onClick, state) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
-  let { endTime = null, discountInPercent = 0, isShowDebugOnly = false, timeRange = null,
-    currencies = {}, battleMods = {}
-  } = goods
+  let { discountInPercent = 0, isShowDebugOnly = false, currencies = {}, battleMods = {} } = goods
   let bgImg = getBattleModPresentationForOffer(battleMods.findindex(@(_) true))?.bannerImg ?? "ui/gameuiskin#offer_bg_green.avif"
   let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
   let image = mkFitCenterImg(getUnitPresentation(unit)?.image, branchOfferImageOvr)
@@ -303,7 +304,7 @@ function mkOfferBattleMode(goods, onClick, state) {
       sf & S_HOVER ? bgHiglight : null
       currencyId == null ? null : mkCurrencyIcon(currencyId, currencies[currencyId])
       image
-      mkOfferTexts(loc("offer/earlyAccess"), endTime ?? timeRange?.end)
+      mkOfferTexts(loc("offer/earlyAccess"), goods)
       mkUnitInfo(unit).__update({ margin = offerPad, padding = null })
       discountTagUnit(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))

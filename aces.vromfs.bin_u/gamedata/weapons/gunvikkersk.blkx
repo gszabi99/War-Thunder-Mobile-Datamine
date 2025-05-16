@@ -1996,7 +1996,7 @@
       }
     ]
   },
-  "303_all_tracers": {
+  "303_tracers": {
     "bullet": {
       "mass": 0.00907,
       "caliber": 0.0077,

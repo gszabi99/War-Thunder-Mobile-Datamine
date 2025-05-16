@@ -3,6 +3,8 @@ let mkPresentation = @(cfg, campaign) {
   icon = "ui/gameuiskin#unit_ship.svg"
   treeBg = $"{campaign}_blur_bg.avif"
 
+  returnToHangarLocId = campaign == "ships" ? "return_to_port" : "return_to_hangar"
+  returnToHangarShortLocId = campaign == "ships" ? "return_to_port/short" : "return_to_hangar/short"
   unitsLocId = "options/chooseUnitsType/ship"
   headerLocId = $"campaign/{campaign}"
   headerFullLocId = $"gamercard/levelCamp/header/{campaign}"

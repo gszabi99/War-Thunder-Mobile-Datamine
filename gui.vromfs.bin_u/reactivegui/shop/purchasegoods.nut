@@ -106,9 +106,17 @@ let mkCurrencyWithIcon = @(id, count) {
 }
 
 function startRemoveTimer(goods) {
-  let { end = 0 } = goods?.timeRange
-  let timeLeft = end - serverTime.get()
-  if (timeLeft <= 0)
+  let { timeRanges = null } = goods
+  let time = serverTime.get()
+  local timeLeft = null
+  if (timeRanges == null) 
+    timeLeft = goods.timeRange.end - time
+  else
+    foreach (tr in timeRanges)
+      if (tr.end > time)
+        timeLeft = min(timeLeft ?? tr.end, tr.end)
+
+  if ((timeLeft ?? 0) <= 0)
     clearTimer(closePurchaseAndBalanceBoxes)
   else
     resetTimeout(timeLeft, closePurchaseAndBalanceBoxes)

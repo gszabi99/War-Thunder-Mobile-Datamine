@@ -2472,7 +2472,7 @@
       }
     ]
   },
-  "breda12_7_all_tracers": {
+  "breda12_7_tracers": {
     "bullet": {
       "mass": 0.03635,
       "caliber": 0.0127,

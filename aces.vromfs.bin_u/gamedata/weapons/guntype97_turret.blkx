@@ -1208,7 +1208,7 @@
       }
     }
   ],
-  "7_7mm_turret_ap": {
+  "7_7mm_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.0104,
@@ -1991,7 +1991,7 @@
       }
     ]
   },
-  "7_7mm_turret_ap_t": {
+  "7_7mm_turret_api_apt": {
     "bullet": [
       {
         "mass": 0.0104,

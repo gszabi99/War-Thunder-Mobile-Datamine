@@ -19,12 +19,15 @@ let chooseByNameWnd = require("debugSkins/chooseByNameWnd.nut")
 let { mkCfg, debugOfflineBattleCfg, openOfflineBattleMenu, isOpened, savedUnitType, savedUnitName,
   isOfflineBattleDModeActive, canUseOfflineBattleDMode, savedMissionName, runOfflineBattle,
   refreshOfflineMissionsList, savedOBDebugUnitType, savedOBDebugMissionName, savedOBDebugUnitName,
-  savedBotsCount, savedBotsRank, defMaxBotsCount, defMaxBotsRank, NUMBER_OF_PLAYERS
+  savedBotsCount, savedBotsRank, defMaxBotsCount, defMaxBotsRank, NUMBER_OF_PLAYERS, savedUnitPresetLevel,
+  unitPresetsLevelList
 } = require("debugOfflineBattleState.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { toggleWithLabel } = require("%rGui/components/toggle.nut")
 let { addModalWindowWithHeader, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { sliderWithButtons } = require("%rGui/components/slider.nut")
+let { OCT_LIST } = require("%rGui/options/optCtrlType.nut")
+let mkOption = require("%rGui/options/mkOption.nut")
 
 
 let SET_MIS_BLK_PARAMS_WND = "setMisBlkParamsWnd"
@@ -42,11 +45,6 @@ let needShowBattleSettingsWnd = mkWatched(persist, "needShowBattleSettingsWnd", 
 
 let close = @() isOpened.set(false)
 
-function initUnitWnd() {
-  savedUnitType(getUnitType(hangarUnitName.get()))
-  savedUnitName(hangarUnitName.get())
-}
-
 function mkSliderOpt(opt) {
   let { value = null, ctrlOverride = {}, locId = "" } = opt
   if (value == null) {
@@ -56,16 +54,15 @@ function mkSliderOpt(opt) {
   return sliderWithButtons(value, loc(locId), ctrlOverride)
 }
 
-let mkBotOpt = @(value, locId, maxCount)
-  {
-    locId
-    value
-    ctrlOverride = {
-      min = 1
-      max = maxCount.get()
-      unit = 1
-    }
+let mkBotOpt = @(value, locId, maxValue) {
+  locId
+  value
+  ctrlOverride = {
+    min = 1
+    max = maxValue
+    unit = 1
   }
+}
 
 function setMisBlkParamsContent(campaign) {
   let allUnits = Computed(@() serverConfigs.get()?.allUnits ?? {})
@@ -85,8 +82,15 @@ function setMisBlkParamsContent(campaign) {
     return res
   })
 
-  let optMaxBotsCount = mkBotOpt(savedBotsCount, "mainmenu/offlineBattles/settings/botsCount", maxBotsCount)
-  let optMaxBotsRank = mkBotOpt(savedBotsRank, "mainmenu/offlineBattles/settings/botsRank", maxBotsRank)
+  let optMaxBotsCount = mkBotOpt(savedBotsCount, "mainmenu/offlineBattles/settings/botsCount", maxBotsCount.get())
+  let optMaxBotsRank = mkBotOpt(savedBotsRank, "mainmenu/offlineBattles/settings/botsRank", maxBotsRank.get())
+  let optUnitPresetLevel = {
+    locId = "mainmenu/offlineBattles/settings/unitLevel"
+    ctrlType = OCT_LIST
+    value = savedUnitPresetLevel
+    list = unitPresetsLevelList
+    valToString = @(v) loc($"mainmenu/offlineBattles/unitPreset/{v}")
+  }
 
   return {
     valign = ALIGN_CENTER
@@ -103,6 +107,7 @@ function setMisBlkParamsContent(campaign) {
     children = [
       mkSliderOpt(optMaxBotsCount)
       mkSliderOpt(optMaxBotsRank)
+      mkOption(optUnitPresetLevel)
       mkToBattleButtonWithSquadManagement(function() {
         needShowBattleSettingsWnd.set(false)
         runOfflineBattle()
@@ -259,16 +264,22 @@ function mkOfflineBattleMenuWnd() {
   let curUnitName = Computed(@() curData.get().name)
   let curMissionName = Computed(@() curData.get().mission)
 
-  function onUnitChange() {
-    if (curUnitName.get() != null && !isOfflineBattleDModeActive.get())
-      setHangarUnitWithSkin(curUnitName.get(), "")
+  let onUnitChange = @() (curUnitName.get() != null && !isOfflineBattleDModeActive.get())
+    ? setHangarUnitWithSkin(curUnitName.get(), "")
+    : null
+
+  let initMissionName = @() (curMissionName.get() != null && !isOfflineBattleDModeActive.get())
+    ? savedMissionName.set(curMissionName.get())
+    : null
+
+  function onUnitTypeChange() {
+    savedUnitName.set(curUnitName.get() ?? hangarUnitName.get())
+    savedMissionName.set(curMissionName.get() ?? allMissions.get().findindex(@(_) true))
   }
   onUnitChange()
+  initMissionName()
   curUnitName.subscribe(@(_) onUnitChange())
-  savedUnitType.subscribe(function(_) {
-    savedUnitName.set(curUnitName.get())
-    savedMissionName.set(curMissionName.get())
-  })
+  savedUnitType.subscribe(@(_) onUnitTypeChange())
 
   return {
     watch = [cfg, isOfflineBattleDModeActive]
@@ -281,11 +292,8 @@ function mkOfflineBattleMenuWnd() {
     gap = hdpx(30)
     function onAttach() {
       refreshOfflineMissionsList()
-      initUnitWnd()
-      if (savedMissionName.get() == null)
-        savedMissionName.set(curMissionName.get())
-      if (savedUnitName.get() == null)
-        savedUnitName.set(curUnitName.get())
+      savedUnitType.set(getUnitType(hangarUnitName.get()))
+      onUnitTypeChange()
     }
     animations = wndSwitchAnim
     children = [

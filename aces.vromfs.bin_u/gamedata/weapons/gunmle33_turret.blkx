@@ -1771,7 +1771,7 @@
       }
     ]
   },
-  "7_5mm_turret_ap_t": {
+  "7_5mm_turret_api_apt": {
     "bullet": [
       {
         "mass": 0.0095,

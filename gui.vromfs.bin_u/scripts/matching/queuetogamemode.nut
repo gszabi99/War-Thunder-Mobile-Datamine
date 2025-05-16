@@ -267,8 +267,10 @@ function queueToGameModeAfterAddons(modeId) {
   let { addonsToDownload } = getModeAddonsInfo(mode, getAllBattleUnits())
   if (addonsToDownload.len() == 0)
     queueToGameMode(modeId)
-  else
+  else {
+    log("[ADDONS] failed to load addons at queueToGameMode (", getAllBattleUnits(), "): ", addonsToDownload)
     openFMsgBox({ text = loc("msg/unableToUpadateAddons") })
+  }
 }
 
 function requeueToDelayedMode() {

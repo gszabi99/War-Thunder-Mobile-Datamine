@@ -26,6 +26,7 @@ let iconColor = 0xFFFFFFFF
 
 let iconSeason = Computed(@() $"ui/gameuiskin#banner_event_{eventSeason.get()}.avif")
 let imageSizeMul = Computed(@() getEventPresentation(eventSeason.get()).imageSizeMul)
+let imageTabOffset = Computed(@() getEventPresentation(eventSeason.get()).imageTabOffset)
 
 let mkUnseen = @(tabId) Computed(function() {
   if (progressUnlockByTab.get()?[tabId].hasReward)
@@ -177,6 +178,7 @@ let tabs = [
     locId = "quests/common"
     image = iconSeason
     imageSizeMul = imageSizeMul
+    imageTabOffset = imageTabOffset
     isFullWidth = true
     contentCtor = @() questsWndPage(Computed(@() questsCfg.value[COMMON_TAB]), mkQuest, COMMON_TAB, linkToBattlePassBtnCtor)
     isVisible = Computed(@() questsCfg.value[COMMON_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null
@@ -186,6 +188,7 @@ let tabs = [
     id = EVENT_TAB
     image = iconSeason
     imageSizeMul = imageSizeMul
+    imageTabOffset = imageTabOffset
     isFullWidth = true
     contentCtor = @() questsWndPage(Computed(@() questsCfg.value[EVENT_TAB]), mkQuest, EVENT_TAB, linkToEventBtnCtor)
     tabContent = eventTabContent()

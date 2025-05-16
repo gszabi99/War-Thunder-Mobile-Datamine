@@ -250,6 +250,7 @@ function mkPersonalGoodsCard(pGoods, animParams) {
   let goods = rewardsToShopGoods(pGoods.goods).__update(
     pGoods,
     {
+      endTime = 0  
       isPopular = true
       popularText = loc($"shop/{pGoods.id}")
       meta = {}

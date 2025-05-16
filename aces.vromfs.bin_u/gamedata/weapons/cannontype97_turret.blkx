@@ -1025,7 +1025,7 @@
       }
     }
   },
-  "ho1_turret_he": {
+  "ho1_turret_air_targets": {
     "bullet": [
       {
         "mass": 0.127,

@@ -4,6 +4,8 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { object_to_json_string, parse_json } = require("json")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+
 
 const SAVE_ID = "unitSettings"
 
@@ -28,16 +30,18 @@ function loadUnitSettings(unitName) {
 function saveUnitSettings(unitName, settings) {
   let blk = get_local_custom_settings_blk()
   let allBlk = blk.addBlock(SAVE_ID)
-  allBlk[unitName] = settings.len() == 0 ? "" : object_to_json_string(settings)
+  allBlk[getTagsUnitName(unitName)] = settings.len() == 0 ? "" : object_to_json_string(settings)
   eventbus_send("saveProfile", {})
 }
 
-function loadSettingsOnce(unitName) {
-  if (loadedSettings.get()?[unitName] == null && (unitName ?? "") != "")
+function loadSettingsOnce(unitNameExt) {
+  let unitName = getTagsUnitName(unitNameExt ?? "")
+  if (loadedSettings.get()?[unitName] == null && unitName != "")
     loadedSettings.mutate(@(v) v.$rawset(unitName, loadUnitSettings(unitName)))
 }
 
-function resetUnitSettings(unitName) {
+function resetUnitSettings(unitNameExt) {
+  let unitName = getTagsUnitName(unitNameExt)
   if (isOnlineSettingsAvailable.get())
     saveUnitSettings(unitName, {})
   loadedSettings.mutate(@(v) v.$rawset(unitName, {}))
@@ -64,11 +68,11 @@ isOnlineSettingsAvailable.subscribe(function(s) {
 })
 
 function mkUnitSettingsWatch(unitNameW) {
-  let unitSettings = Computed(@() loadedSettings.get()?[unitNameW.get()] ?? {})
+  let unitSettings = Computed(@() loadedSettings.get()?[getTagsUnitName(unitNameW.get() ?? "")] ?? {})
   loadSettingsOnce(unitNameW.get())
   unitSettings.subscribe(@(v) v.len() != 0 ? null : loadSettingsOnce(unitNameW.get())) 
   function updateUnitSettings(ovr) {
-    let unitName = unitNameW.get()
+    let unitName = getTagsUnitName(unitNameW.get() ?? "")
     let newValue = unitSettings.get().__merge(ovr)
     if (isOnlineSettingsAvailable.get())
       saveUnitSettings(unitName, newValue)
@@ -87,7 +91,7 @@ function mkIsAutoSkin(unitNameW) {
 
 function isAutoSkin(unitName) {
   loadSettingsOnce(unitName)
-  return loadedSettings.get()?[unitName].isAuto ?? false
+  return loadedSettings.get()?[getTagsUnitName(unitName ?? "")].isAuto ?? false
 }
 
 function mkSkinCustomTags(unitNameW) {
@@ -100,7 +104,7 @@ function mkSkinCustomTags(unitNameW) {
 
 function getSkinCustomTags(unitName) {
   loadSettingsOnce(unitName)
-  return loadedSettings.get()?[unitName].tags ?? {}
+  return loadedSettings.get()?[getTagsUnitName(unitName ?? "")].tags ?? {}
 }
 
 function mkWeaponPreset(unitNameW) {
@@ -113,7 +117,7 @@ function mkWeaponPreset(unitNameW) {
 
 function getWeaponPreset(unitName) {
   loadSettingsOnce(unitName)
-  return loadedSettings.get()?[unitName].weaponPreset ?? []
+  return loadedSettings.get()?[getTagsUnitName(unitName ?? "")].weaponPreset ?? []
 }
 
 function mkChosenBelts(unitNameW) {
@@ -126,7 +130,7 @@ function mkChosenBelts(unitNameW) {
 
 function getChosenBelts(unitName) {
   loadSettingsOnce(unitName)
-  return loadedSettings.get()?[unitName].belts ?? {}
+  return loadedSettings.get()?[getTagsUnitName(unitName ?? "")].belts ?? {}
 }
 
 function mkSavedWeaponPresets(unitNameW) {

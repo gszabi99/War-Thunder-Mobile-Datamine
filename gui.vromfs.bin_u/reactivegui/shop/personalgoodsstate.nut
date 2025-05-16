@@ -61,10 +61,11 @@ let personalGoodsRewards = Computed(function(prev) {
     if (groupCfg == null)
       continue
     let { price, discountInPercent, variants, lifeTime } = groupCfg
-    let { goods = null } = variants?[varId]
+    let { goods = null, discountInPercentOvr = null } = variants?[varId]
     if (goods == null)
       continue
-    res[goodsId] <- cur.__merge({ id = goodsId, goods, price, discountInPercent, lifeTime })
+    let discount = discountInPercentOvr ? discountInPercentOvr : discountInPercent
+    res[goodsId] <- cur.__merge({ id = goodsId, goods, price, discountInPercent = discount, lifeTime })
   }
 
   return prevIfEqual(prev, res)

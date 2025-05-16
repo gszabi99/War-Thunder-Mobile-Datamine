@@ -507,8 +507,8 @@ return {
     progressValue = unitName
   }, cb)
 
-  cheat_get_goods = @(shopId, cb = null) request({
-    method = "cheat_get_goods"
+  add_shop_goods = @(shopId, cb = null) request({
+    method = "add_shop_goods"
     params = { shopId }
   }, cb)
 
@@ -564,6 +564,11 @@ return {
 
   add_currency_no_popup = @(currency, count, cb = null) request({
     method = "add_currency_no_popup"
+    params = { currency, count }
+  }, cb)
+
+  add_currency_no_popup_by_full_id = @(currency, count, cb = null) request({
+    method = "add_currency_no_popup_by_full_id"
     params = { currency, count }
   }, cb)
 

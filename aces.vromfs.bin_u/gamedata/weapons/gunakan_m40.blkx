@@ -2468,7 +2468,7 @@
       }
     ]
   },
-  "akan_m40_all_tracers": {
+  "akan_m40_tracers": {
     "bullet": [
       {
         "mass": 0.03607,

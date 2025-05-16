@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { debugModes } = require("gameModeState.nut")
 let listButton = require("%rGui/components/listButton.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
@@ -67,6 +68,14 @@ function gameModesList() {
   })
 }
 
+function getDefaultCampaign(campaigns) {
+  local camp = curCampaign.get()
+  if (campaigns.contains(camp))
+    return camp
+  camp = getCampaignPresentation(camp).campaign
+  return campaigns.contains(camp) ? camp : campaigns[0]
+}
+
 function gameModesTabs() {
   let campaigns = debugModes.get()
     .reduce(@(res, m) res.$rawset(m?.campaign ?? "", true), {})
@@ -77,7 +86,7 @@ function gameModesTabs() {
     : res.__update({
       flow = FLOW_HORIZONTAL
       gap = hdpx(20)
-      onAttach = @() selectedCampaign.set(campaigns.contains(curCampaign.get()) ? curCampaign.get() : campaigns[0])
+      onAttach = @() selectedCampaign.set(getDefaultCampaign(campaigns))
       children = campaigns.map(@(c) listButton(c, Computed(@() selectedCampaign.get() == c), @() selectedCampaign.set(c), { size = [hdpx(200), SIZE_TO_CONTENT] }))
     })
 }

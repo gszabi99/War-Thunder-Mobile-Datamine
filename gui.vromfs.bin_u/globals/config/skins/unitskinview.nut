@@ -13,14 +13,26 @@ return {
     "a5m4": {
       "": "usa_p_40c_metal"
     },
+    "a6m2_mod11": {
+      "": "jap_a6m2"
+    },
+    "a6m2_zero": {
+      "": "jap_a6m2"
+    },
+    "a6m3_mod22_zero": {
+      "": "jap_ki_43_3_otsu"
+    },
     "a6m3_mod22ko_zero": {
-      "": "ussr_il_10"
+      "": "jap_ki_43_3_otsu"
     },
     "a6m3_zero": {
       "": "usa_p_40c_metal"
     },
     "a6m5_zero": {
-      "": "ussr_il_10"
+      "": "jap_ki_43_3_otsu"
+    },
+    "a7m2": {
+      "": "jap_a7m2"
     },
     "am_1_mauler": {
       "": "usa_am_1_mauler"
@@ -51,6 +63,9 @@ return {
     },
     "b6n2": {
       "": "germ_bf_109c_1"
+    },
+    "b7a2": {
+      "": "jap_a7m2"
     },
     "b_10b": {
       "": "usa_tbd_1_1938"
@@ -302,6 +317,12 @@ return {
     },
     "d3a1": {
       "": "germ_bf_109a"
+    },
+    "d4y2": {
+      "": "jap_yokosuka_d4y2_mod12"
+    },
+    "d4y3": {
+      "": "jap_yokosuka_d4y2_mod12"
     },
     "db_3b": {
       "": "ussr_db_3b"
@@ -698,7 +719,7 @@ return {
       "": "germ_fw-190d-9"
     },
     "fw-190a-5_prem": {
-      "": "germ_me_410a_1_grey"
+      "": "germ_fw_190a_5_holland"
     },
     "fw-190a-5_u2": {
       "": "germ_fw-190d-9"
@@ -736,6 +757,9 @@ return {
     },
     "g4m1": {
       "": "ussr_tandem_mai"
+    },
+    "g5n1": {
+      "": "jap_g5n1"
     },
     "germ_artilleriefahrprahm_typ_d3": {
       "": "camo_blackgray_net",
@@ -1602,6 +1626,9 @@ return {
     "itp_m1": {
       "": "ussr_itp_m1"
     },
+    "j5n1": {
+      "": "jap_yokosuka_d4y2_mod12"
+    },
     "jp_armoredcruiser_ikoma": {
       "": "camo_darkgrey_big_spots"
     },
@@ -1894,17 +1921,47 @@ return {
     "ju_87d_5": {
       "": "germ_me_410a_1"
     },
+    "ki-27_otsu": {
+      "": "jap_ki_27_otsu_gray"
+    },
+    "ki-45_hei": {
+      "": "jap_ki_45_hei_brown"
+    },
+    "ki-49_2b": {
+      "": "jap_ki_61_hei"
+    },
     "ki_100_early": {
       "": "ussr_il_10"
     },
+    "ki_10_2": {
+      "": "jap_ki_10_2_light_grey_green"
+    },
+    "ki_21_1ko": {
+      "": "jap_ki_10_2_light_grey_green"
+    },
+    "ki_32": {
+      "": "jap_ki_10_2_light_grey_green"
+    },
     "ki_43_1": {
       "": "ussr_il_10"
+    },
+    "ki_43_3_otsu": {
+      "": "jap_ki_43_3_otsu"
     },
     "ki_44_1": {
       "": "ussr_il_10"
     },
     "ki_44_2_hei": {
       "": "ussr_il_10"
+    },
+    "ki_61_1a_hei": {
+      "": "jap_ki_61_hei"
+    },
+    "ki_61_1a_ko": {
+      "": "jap_ki_61_hei"
+    },
+    "ki_61_1a_tei": {
+      "": "jap_ki_61_hei"
     },
     "ki_61_2_early": {
       "": "ussr_il_10"
@@ -1914,6 +1971,9 @@ return {
     },
     "ki_67_1_otsu": {
       "": "ussr_il_10"
+    },
+    "ki_84_ko": {
+      "": "jap_ki_43_3_otsu"
     },
     "la-11": {
       "": "ussr_la_11_standard"

@@ -84,18 +84,34 @@ function mkQuestsLink(curId, eventId) {
     { size = goodsBgSize })
 }
 
+function mkTimeTextComputed(goods) {
+  local { timeRange = null, timeRanges = [] } = goods
+  if (timeRange != null && (timeRange.start != 0 || timeRange.end != 0)) 
+    timeRanges = [timeRange]
+  if (timeRanges.len() == 0)
+    return Watched(null)
+
+  return Computed(function() {
+    let time = serverTime.get()
+    local nextStart = null
+    foreach (tr in timeRanges) {
+      let { start = 0, end = 0 } = tr
+      if (start > time)
+        nextStart = min(nextStart ?? start, start)
+      else if (end >= time)
+        return null 
+    }
+    return nextStart == null ? loc("events/buyCurrency/noLongerAvailable")
+      : loc("events/buyCurrency/availableAfter", { time = secondsToHoursLoc(nextStart - time) })
+  })
+}
 
 function mkGoods(goods, onClick, state, animParams) {
   local cId = goods.currencies.findindex(@(v) v > 0) ?? ""
   local amount = goods.currencies?[cId] ?? 0
   let bgParticles = mkBgParticles(goodsBgSize)
-  let { timeRange } = goods
-  let { start = 0, end = 0 } = timeRange
+  let timeText = mkTimeTextComputed(goods)
 
-  let timeText = Computed(@() start > serverTime.get()
-      ? loc("events/buyCurrency/availableAfter", { time = secondsToHoursLoc(start - serverTime.get()) })
-    : end > 0 && end < serverTime.get() ? loc("events/buyCurrency/noLongerAvailable")
-    : null)
   let isAvailable = Computed(@() timeText.get() == null)
   let fullId = mkCurrencyFullId(cId)
   return @() {

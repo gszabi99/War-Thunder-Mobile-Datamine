@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 
 let { get_meta_missions_info_by_chapters } = require("guiMission")
-let { get_unittags_blk } = require("blkGetters")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { getUnitTagsCfg, getUnitType } = require("%appGlobals/unitTags.nut")
 let { curUnitName } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -17,6 +17,7 @@ let GM_DOMINATION = 12
 let NUMBER_OF_PLAYERS = 1
 let defMaxBotsCount = 20
 let defMaxBotsRank = 5
+let unitPresetsLevelList = ["min", "max"]
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let savedUnitType = mkWatched(persist, "savedUnitType", null)
@@ -31,6 +32,7 @@ let savedOBDebugMissionName = mkWatched(persist, "savedOBDebugMissionName", null
 let isOfflineBattleDModeActive = mkWatched(persist, "isOfflineBattleDModeActive", false)
 let savedBotsCount = mkWatched(persist, "savedBotsCount", defMaxBotsCount - NUMBER_OF_PLAYERS)
 let savedBotsRank = mkWatched(persist, "savedBotsRank", defMaxBotsRank)
+let savedUnitPresetLevel = mkWatched(persist, "savedUnitPresetLevel", unitPresetsLevelList[1])
 let canUseOfflineBattleDMode = Computed(@() can_debug_configs.get() && can_debug_missions.get())
 
 function refreshOfflineMissionsList() {
@@ -53,8 +55,7 @@ function refreshOfflineMissionsList() {
 function runOfflineBattle(unitName = null, missionName = null) {
   unitName = unitName ?? savedOBDebugUnitName.get() ?? savedUnitName.get()
   missionName = missionName ?? savedOBDebugMissionName.get() ?? savedMissionName.get()
-
-  if(unitName not in get_unittags_blk())
+  if(unitName not in (serverConfigs.get()?.allUnits ?? {}))
     return
 
   log($"OflineStartBattle: start mission {missionName} for {unitName}")
@@ -70,8 +71,9 @@ function runOfflineBattle(unitName = null, missionName = null) {
         minRank = savedBotsRank.get().tointeger()
       }
     : {}
+  let unitPresetLevel = isOfflineBattleDModeActive.get() ? unitPresetsLevelList[1] : savedUnitPresetLevel.get()
   eventbus_send("lastSingleMissionRewardData", { battleData })
-  startLocalMPBattleWithoutGamemode(unit, missionName, "max", misBlkParams)
+  startLocalMPBattleWithoutGamemode(unit, missionName, unitPresetLevel, misBlkParams)
 }
 
 let openOfflineBattleMenu = @() isOpened.set(true)
@@ -85,10 +87,10 @@ let mkCfg = @() Computed(function() {
   let allUnits = {}
   let unitTypes = {}
 
-  foreach(unitName, _ in get_unittags_blk()) {
-    let { unitType, tags } = getUnitTagsCfg(unitName)
-    let unit = serverConfigs.get()?.allUnits[unitName] ?? {}
-    let { isHidden = false } = unit
+  foreach(realUnitName, unit in (serverConfigs.get()?.allUnits ?? {})) {
+    let unitName = getTagsUnitName(realUnitName)
+    let { tags = {} } = getUnitTagsCfg(unitName)
+    let { isHidden = false, unitType = "" } = unit
     let isReleased = unitName in releasedUnits.get()
 
     if (unitType not in missions || "hide_in_offline_test" in tags || !isReleased || isHidden)
@@ -97,7 +99,8 @@ let mkCfg = @() Computed(function() {
       allUnits[unitType] <- {}
       unitTypes[unitType] <- false
     }
-    allUnits[unitType][unitName] <- true
+    if (unitName not in allUnits[unitType])
+      allUnits[unitType][unitName] <- true
   }
   return { allUnits, unitTypes, missions }
 })
@@ -140,6 +143,8 @@ return {
   refreshOfflineMissionsList,
   savedBotsCount,
   savedBotsRank,
+  savedUnitPresetLevel,
+  unitPresetsLevelList,
   defMaxBotsCount,
   defMaxBotsRank,
   NUMBER_OF_PLAYERS

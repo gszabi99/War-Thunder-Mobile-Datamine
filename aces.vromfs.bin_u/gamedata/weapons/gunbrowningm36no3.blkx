@@ -1991,7 +1991,7 @@
       }
     ]
   },
-  "303_all_tracers": {
+  "303_tracers": {
     "bullet": [
       {
         "mass": 0.00907,

@@ -1,0 +1,16 @@
+{
+  "Weapon": [
+    {
+      "slot": 1,
+      "preset": "type94mod5"
+    },
+    {
+      "slot": 2,
+      "preset": "type94mod5_mid"
+    },
+    {
+      "slot": 3,
+      "preset": "type94mod5"
+    }
+  ]
+}

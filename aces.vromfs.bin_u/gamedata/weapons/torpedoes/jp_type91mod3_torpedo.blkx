@@ -4,10 +4,7 @@
   "bullets": 1,
   "shotFreq": 1.5,
   "external": true,
-  "mesh": [
-    "jp_type91mod3_torpedo",
-    "torpedo_g7a"
-  ],
+  "mesh": "jp_type91mod3_torpedo",
   "tags": {
     "antiShipBomb": true
   },
@@ -46,18 +43,6 @@
     "aaSpeedPrediction": 0.0,
     "aaAccelPrediction": 0.0,
     "aaAngleCorrection": 0.0,
-    "nearArmorPower": [
-      10.0,
-      50.0
-    ],
-    "midArmorPower": [
-      7.0,
-      400.0
-    ],
-    "farArmorPower": [
-      0.2,
-      700.0
-    ],
     "relativeVelHitShift": [
       300.0,
       1000.0
@@ -66,7 +51,6 @@
       200.0,
       1000.0
     ],
-    "explodeTreshold": 0.00001,
     "arcadeProp": {
       "dropSpeedRange": [
         0.0,

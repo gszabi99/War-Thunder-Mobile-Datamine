@@ -2,11 +2,6 @@
   "model": "hs_129b_3",
   "fmFile": "fm/hs-129b-3.blk",
   "useTouchTargeting": true,
-  "tpsCameraTargetOffsetAtZoom": [
-    40.0,
-    10.0,
-    0.0
-  ],
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_attacker_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,

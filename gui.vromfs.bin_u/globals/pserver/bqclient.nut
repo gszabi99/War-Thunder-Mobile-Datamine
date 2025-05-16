@@ -8,6 +8,8 @@ let { sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { get_user_system_info = @() null } = require_optional("sysinfo")
 let servProfile = require("servProfile.nut")
 let { get_game_version_str = @() "-" } = require_optional("app") 
+let { curCampaign } = require("campaign.nut")
+
 
 function addEventTime(data, key = "eventTime") {
   let time = getServerTime()
@@ -20,7 +22,13 @@ function addSystemInfo(data) {
 }
 
 let sendUiBqEvent = @(event, data = {}) eventbus_send("sendBqEvent",
-  { tableId = "gui_events", data = addEventTime(data.__merge({ event, gameVersion = get_game_version_str() })) })
+  { tableId = "gui_events",
+    data = addEventTime(data.__merge({
+      event,
+      gameVersion = get_game_version_str(),
+      campaign = curCampaign.get() ?? "",
+    }))
+  })
 
 function sendSettingChangeBqEvent(event, category, value){
   let data = addEventTime({ event, category })

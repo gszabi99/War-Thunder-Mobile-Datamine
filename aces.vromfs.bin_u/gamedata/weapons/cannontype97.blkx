@@ -2239,7 +2239,7 @@
       }
     ]
   },
-  "ho1_all_tracers": {
+  "ho1_tracers": {
     "bullet": [
       {
         "mass": 0.162,

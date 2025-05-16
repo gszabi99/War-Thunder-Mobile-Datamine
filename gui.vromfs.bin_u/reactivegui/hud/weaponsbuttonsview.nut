@@ -23,7 +23,7 @@ let { playSound } = require("sound_wt")
 let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
 let { nextBulletIdx, currentBulletIdxPrim, currentBulletIdxSec
 } = require("bullets/hudUnitBulletsState.nut")
-let { AB_TORPEDO } = require("actionBar/actionType.nut")
+let { AB_TORPEDO, getActionType } = require("actionBar/actionType.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { mkActionGlare, mkConsumableSpend, mkActionBtnGlare
@@ -76,7 +76,7 @@ function mkActionItem(buttonConfig, actionItem, scale) {
   if (actionItem == null)
     return null
   let { getShortcut, getImage, haptPatternId = -1, key = null, sound = "", getAnimationKey = null,
-    alternativeImage = null, actionType = null
+    alternativeImage = null, actionType = getActionType(actionItem)
   } = buttonConfig
   let { shortcutIdx = -1 } = actionItem
   let stateFlags = Watched(0)
@@ -130,7 +130,7 @@ function mkCountermeasureItem(buttonConfig, actionItem, scale) {
   if (actionItem == null)
     return null
   let { getShortcut, getImage, alternativeImage = null, haptPatternId = -1, key = null, sound = "",
-    getAnimationKey = null, actionType = null
+    getAnimationKey = null, actionType = getActionType(actionItem)
   } = buttonConfig
   let stateFlags = Watched(0)
   let isAvailable = isAvailableActionItem(actionItem)
@@ -445,7 +445,7 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
   let { key, getShortcut, getImage, alternativeImage = null, selShortcut = null,
     hasAim = false, fireAnimKey = "fire", canShootWithoutTarget = true,
     needCheckTargetReachable = false, haptPatternId = -1, relImageSize = 1.0 , canShipLowerCamera = false,
-    addChild = null, needCheckRocket = false, number = -1, actionType = null  } = buttonConfig
+    addChild = null, needCheckRocket = false, number = -1, actionType = getActionType(actionItem) } = buttonConfig
   let stateFlags = getWeapStateFlags(key)
   let hasReachableTarget = Computed(@() !needCheckTargetReachable || targetState.value == 0)
   let canShoot = Computed(@() (canShootWithoutTarget || hasTarget.value) && hasReachableTarget.value)

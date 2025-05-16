@@ -22,6 +22,7 @@ let customUnitPkg = {
   ["i-15_1934"] = null,
   he51c1 = null,
   ["f3f-2"] = null,
+  ["ki_10_2"] = null,
   fw_190a_1 = null,
   il_2m_1943 = null,
   ["p-38k"] = aircraftCbtPkgs,

@@ -8,7 +8,7 @@ let iconSizeDef = hdpxi(80)
 
 let textColor = 0xFFFFFFFF
 
-function mkTabImage(image, imageSizeMul) {
+function mkTabImage(image, imageSizeMul, imageTabOffset) {
   let size = (iconSizeDef * imageSizeMul + 0.5).tointeger()
   let blockSize = max(iconSizeDef, size)
   return {
@@ -16,6 +16,7 @@ function mkTabImage(image, imageSizeMul) {
     vplace = ALIGN_CENTER
     children = {
       size = [size, size]
+      pos = [size * imageTabOffset[0], size * imageTabOffset[1]]
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
       rendObj = ROBJ_IMAGE
@@ -26,26 +27,29 @@ function mkTabImage(image, imageSizeMul) {
   }
 }
 
-let mkImage = @(image, imageSizeMul) function() {
+let mkImage = @(image, imageSizeMul, imageTabOffset) function() {
   let imageTab = image instanceof Watched ? image.get() : image
   let imageTabSizeMul = imageSizeMul instanceof Watched ? imageSizeMul.get() : imageSizeMul ?? 1
+  let imageTabOffsetVal = imageTabOffset instanceof Watched ? imageTabOffset.get() : imageTabOffset ?? [0, 0]
 
   local watchesList = []
   if(image instanceof Watched)
     watchesList.append(image)
   if(imageSizeMul instanceof Watched)
     watchesList.append(imageSizeMul)
+  if(imageTabOffset instanceof Watched)
+    watchesList.append(imageTabOffset)
 
   return {
     watch = watchesList
     vplace = ALIGN_CENTER
-    children = imageTab == null ? null : mkTabImage(imageTab, imageTabSizeMul)
+    children = imageTab == null ? null : mkTabImage(imageTab, imageTabSizeMul, imageTabOffsetVal)
   }
 }
 
 function tabData(tab, idx, curTabIdx) {
   let { locId  = "", image = null, imageSizeMul = null, isVisible = null, unseen = null,
-    tabContent = null, tabHeight = tabH, ovr = {} } = tab
+    tabContent = null, tabHeight = tabH, ovr = {}, imageTabOffset = null } = tab
   let padding = [hdpx(10), hdpx(20)]
   let unseenMarkPos = [padding[1] + unseenSize[1] / 5, -padding[0] - unseenSize[1] / 5]
   local unseenMark = null
@@ -66,7 +70,7 @@ function tabData(tab, idx, curTabIdx) {
           flow = FLOW_HORIZONTAL
           gap = hdpx(10)
           children = [
-            mkImage(image, imageSizeMul)
+            mkImage(image, imageSizeMul, imageTabOffset)
             tabContent ?? {
               size = flex()
               rendObj = ROBJ_TEXTAREA

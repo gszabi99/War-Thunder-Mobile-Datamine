@@ -660,10 +660,29 @@ let mkOfferCommonParts = @(goods, state) [
   mkDailyLimitGoodsTimeProgress(goods)
 ]
 
-function mkTimeLeft(endTime, ovr = {}) {
+function getGoodsTimeLeft(goods, curTime) {
+  if (goods == null)
+    return null
+  let endTime = goods?.endTime
+  if (endTime != null) { 
+    let left = endTime - curTime
+    return left < 0 ? null : left
+  }
+  let { timeRange = null, timeRanges = [] } = goods
+  if (timeRange != null) {
+    let left = timeRange.end - curTime
+    return left < 0 ? null : left
+  }
+  foreach (tr in timeRanges)
+    if (tr.start <= curTime && tr.end >= curTime)
+      return tr.end - curTime
+  return null
+}
+
+function mkGoodsTimeLeftText(goods, ovr = {}) {
   let countdownText = Computed(function() {
-    let leftTime = endTime - serverTime.get()
-    return leftTime > 0 ? secondsToHoursLoc(leftTime) : ""
+    let timeLeft = getGoodsTimeLeft(goods, serverTime.get()) ?? 0
+    return timeLeft > 0 ? secondsToHoursLoc(timeLeft) : ""
   })
   return @() textArea({
     watch = countdownText
@@ -672,7 +691,7 @@ function mkTimeLeft(endTime, ovr = {}) {
   }.__update(fontTinyAccented, ovr))
 }
 
-function mkOfferTexts(title, endTime) {
+function mkOfferTexts(title, goods) {
   let titleComp = textArea({
     halign = ALIGN_LEFT
     vplace = ALIGN_BOTTOM
@@ -683,23 +702,23 @@ function mkOfferTexts(title, endTime) {
     size = flex()
     margin = [offerPad[0], offerPad[1], offerPad[2] + hdpx(5), offerPad[3]]
     children = [
-      mkTimeLeft(endTime)
+      mkGoodsTimeLeftText(goods)
       titleComp
     ]
   }
 }
 
-function mkAirBranchOfferTexts(title, unitName, endTime) {
+function mkAirBranchOfferTexts(title, unitName, goods) {
   let titleComp = textArea({
     halign = ALIGN_RIGHT
     vplace = ALIGN_BOTTOM
-    text = "\n".concat(utf8ToUpper(title),utf8ToUpper(unitName))
+    text = "\n".concat(utf8ToUpper(title), utf8ToUpper(unitName))
   }.__update(fontVeryTinyAccented))
   return {
     size = flex()
     margin = offerPad
     children = [
-      mkTimeLeft(endTime)
+      mkGoodsTimeLeftText(goods)
       titleComp
     ]
   }
@@ -767,11 +786,8 @@ function mkGoodsLimitText(goods, fontGrad) {
 }
 
 function mkEndTimeImpl(goods, ovr = {}) {
-  let { end = 0 } = goods?.timeRange
-  if (end <= 0)
-    return null
   let countdownText = Computed(function() {
-    let leftTime = end - serverTime.get()
+    let leftTime = getGoodsTimeLeft(goods, serverTime.get()) ?? 0
     return leftTime <= 0 ? "" : $"▩{secondsToHoursLoc(leftTime)}"
   })
   return @() {
@@ -848,7 +864,7 @@ return {
   mkFreeAdsGoodsTimeProgress
   underConstructionBg
   mkSquareIconBtn
-  mkTimeLeft
+  mkGoodsTimeLeftText
   mkGoodsLimitText
   mkEndTime
   mkGoodsLimitAndEndTime

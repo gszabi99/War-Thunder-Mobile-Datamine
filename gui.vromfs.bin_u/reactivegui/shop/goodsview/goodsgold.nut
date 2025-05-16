@@ -48,14 +48,14 @@ function mkGoodsGold(goods, onClick, state, animParams, addChildren) {
 }
 
 function mkOfferGold(goods, onClick, state) {
-  let { endTime = 0, discountInPercent = 0, isShowDebugOnly = false, timeRange = null } = goods
+  let { discountInPercent = 0, isShowDebugOnly = false } = goods
   return mkOfferWrap(onClick,
     @(sf) [
       mkBgImg("ui/gameuiskin#offer_bg_blue.avif")
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
       mkFitCenterImg("!ui/images/offer_art_gold.avif")
-      mkOfferTexts(loc("offer/gold"), endTime ?? timeRange?.end)
+      mkOfferTexts(loc("offer/gold"), goods)
       discountTagBig(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))
 }

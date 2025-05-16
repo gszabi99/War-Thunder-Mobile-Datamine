@@ -597,7 +597,7 @@
       }
     }
   ],
-  "ho5_turret_ap": {
+  "ho5_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.119,
@@ -1177,7 +1177,7 @@
       }
     ]
   },
-  "ho5_turret_ap_he": {
+  "ho5_turret_universal": {
     "bullet": [
       {
         "mass": 0.078,

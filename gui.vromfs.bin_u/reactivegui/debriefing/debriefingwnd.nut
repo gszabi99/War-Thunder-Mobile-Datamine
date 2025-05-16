@@ -4,6 +4,7 @@ let { playSound } = require("sound_wt")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
@@ -115,7 +116,7 @@ let mkBtnAppearAnim = @(needBlink, needShowW, children) @() !needShowW.get() ? {
 let mkBtnToHangar = @(needShow, debrData, isMainBtn, unlockedReward) mkBtnAppearAnim(false, needShow,
   (isMainBtn ? textButtonBattle : textButtonPrimary)(
     utf8ToUpper(loc(unlockedReward.has && debrData?.isSeparateSlots ? $"return_to_hangar/lvlUnlocks/{unlockedReward.type}"
-      : debrData?.campaign == "ships" ? "return_to_port/short"
+      : debrData?.campaign != null ? getCampaignPresentation(debrData?.campaign).returnToHangarShortLocId
       : "return_to_hangar/short"
     )),
     function() {

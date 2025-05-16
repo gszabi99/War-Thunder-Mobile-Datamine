@@ -4,6 +4,7 @@ let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { btnBEscUp, EMPTY_ACTION, btnB } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
+let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
@@ -87,8 +88,7 @@ let menuContent = @(isGivingUp, campaign) mkCustomMsgBoxWnd(loc("msgbox/leaveBat
     : loc("msgbox/leaveBattle/giveUp"),
   [
     isGivingUp ? textButtonCommon(utf8ToUpper(loc("btn/giveUp")), quitMission, { hotkeys = ["^J:LB"] })
-      : textButtonBright(utf8ToUpper(loc(campaign == "ships" ? "return_to_port/short"
-          : "return_to_hangar/short")), quitMission, { hotkeys = ["^J:LB"] })
+      : textButtonBright(utf8ToUpper(loc(getCampaignPresentation(campaign).returnToHangarShortLocId)), quitMission, { hotkeys = ["^J:LB"] })
     textButtonPrimary(utf8ToUpper(loc("btn/continueBattle")), battleResume,
       { hotkeys = [btnBEscUp] })
   ])

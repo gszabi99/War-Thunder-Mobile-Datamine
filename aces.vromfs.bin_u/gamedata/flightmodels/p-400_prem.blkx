@@ -1636,7 +1636,7 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "p-400_default",
+        "name": "p-400_prem_default",
         "blk": "gameData/FlightModels/weaponPresets/p_39_n_default.blk"
       },
       {

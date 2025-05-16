@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize, mkSquareIconBtn,
-   mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkTimeLeft,
+let { mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize, mkSquareIconBtn, mkGoodsTimeLeftText,
+   mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg,
    mkGoodsLimitText, mkBorderByCurrency, mkCurrencyAmountTitle
 } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { getLootboxName, mkLoootboxImage, customGoodsLootboxScale } = require("%appGlobals/config/lootboxPresentation.nut")
@@ -50,7 +50,7 @@ let function mkLootboxTitle(goods, ovr = {}) {
 }
 
 function mkGoodsLootbox(goods, _, state, animParams, addChildren) {
-  let { lootboxes, isShowDebugOnly = false, timeRange = null, isFreeReward = false, price = {} } = goods
+  let { lootboxes, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
   let lootboxId = lootboxes.findindex(@(_) true)
   let onClick = @() openGoodsPreview(goods.id)
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
@@ -71,10 +71,9 @@ function mkGoodsLootbox(goods, _, state, animParams, addChildren) {
       amount <= 1
         ? null
         : mkCurrencyAmountTitle(lootboxes?[lootboxId], 0, titleFontGrad).__update({ margin = [hdpx(32), 0] })
-      mkLootboxTitle(goods, timeRange == null ? { size = flex() } : {})
+      mkLootboxTitle(goods)
       !canPurchase ? null : mkSquareIconBtn(fonticonPreview, onClick, { vplace = ALIGN_BOTTOM, margin = contentMargin })
-      timeRange == null ? null
-        : mkTimeLeft(timeRange.end, { vplace = ALIGN_BOTTOM, margin = textMargin })
+      mkGoodsTimeLeftText(goods, { vplace = ALIGN_BOTTOM, margin = textMargin })
     ].extend(mkGoodsCommonParts(goods, state), addChildren),
     mkPricePlate(goods, state, animParams), { size = goodsSmallSize })
 }

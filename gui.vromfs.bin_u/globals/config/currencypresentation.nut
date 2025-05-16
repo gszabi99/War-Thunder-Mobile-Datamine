@@ -81,12 +81,15 @@ let currencyIconsColor = {
   slotExp = 0xFF009900
 }
 
+let convertsToTrophies  = "events/buyCurrency/desc/convertsToTrophies"
+let convertsToGold      = "events/buyCurrency/desc/convertsToGold"
+
 let currencyEventDescriptions = {
-  blackfridaybond = "events/buyCurrency/desc/blackfridaybond"
-  lunarbond = "events/buyCurrency/desc/lunarbond"
-  aprilMapPiece = "events/buyCurrency/desc/aprilMapPiece"
-  aprilDoublon = "events/buyCurrency/desc/aprilDoublon"
-  hotmaybond = "events/buyCurrency/desc/hotmaybond"
+  default         = convertsToTrophies
+  blackfridaybond = convertsToGold
+  nybond          = convertsToGold
+  aprilMapPiece   = convertsToGold
+  hotmaybond      = convertsToGold
 }
 
 let getBaseCurrency = memoize(function getBaseCurrencyImpl(fullId) {
@@ -118,7 +121,7 @@ let getCurrencyFallback = @(id) icons?[getBaseCurrency(id)] ?? placeholder
 let getCurrencyBigIcon = @(id) id in bigIcons ? bigIcons[id]
   : getBaseCurrency(id) in bigIcons ? bigIcons[getBaseCurrency(id)]
   : getCurrencyImage(id)
-let getCurrencyDescription = @(id) loc(currencyEventDescriptions?[id] ?? "events/buyCurrency/desc")
+let getCurrencyDescription = @(id) loc(currencyEventDescriptions?[id] ?? currencyEventDescriptions.default)
 
 return {
   getIconSize

@@ -30,8 +30,11 @@ function sendEventByValue(eventId, watch, valueToSend, notInitedValue = null) {
   })
 }
 
-let lastBattlesTotal = keepref(Computed(@() lastBattles.value.len()))
+let lastBattlesTotal = keepref(Computed(@() lastBattles.get().len()))
 sendEventByValue("played_battles_5", lastBattlesTotal, 5, 0)
+
+let battlesListCountToSend = [1000, 1100, 1200, 1300, 1400, 1500, 1800, 2000]
+lastBattlesTotal.subscribe(@(v) battlesListCountToSend.contains(v) ? sendAppsFlyerEvent($"{v}_battles_1") : null)
 
 let level = keepref(Computed(@() playerLevelInfo.value.level))
 sendEventByValue("level_3", level, 3, 1)

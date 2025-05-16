@@ -1208,7 +1208,7 @@
       }
     }
   ],
-  "type92_turret_ap": {
+  "type92_turret_armor_targets": {
     "bullet": [
       {
         "mass": 0.0104,
@@ -2194,7 +2194,7 @@
       }
     ]
   },
-  "type92_turret_ap_t": {
+  "type92_turret_api_apt": {
     "bullet": [
       {
         "mass": 0.0105,
