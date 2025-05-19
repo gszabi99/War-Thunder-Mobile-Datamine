@@ -216,7 +216,7 @@
         "tank": [
           {
             "name": "us_m4a1_1942_sherman",
-            "weight": 1.0,
+            "weight": 0.5,
             "country": "usa"
           },
           {
@@ -226,6 +226,36 @@
           },
           {
             "name": "ussr_t_34_1941",
+            "weight": 0.5,
+            "country": "ussr"
+          },
+          {
+            "name": "us_m24_chaffee",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "us_m10",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "germ_pzkpfw_III_ausf_L",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "germ_pzkpfw_IV_ausf_F",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "ussr_t_34_1941_l_11",
+            "weight": 0.5,
+            "country": "ussr"
+          },
+          {
+            "name": "ussr_t_28E",
             "weight": 1.0,
             "country": "ussr"
           }

@@ -909,14 +909,14 @@
         "actions": {
           "changeUnit": [
             {
-              "unit_class": "us_m4a1_1942_sherman",
+              "unit_class": "ussr_t_34_1941_l_11",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
               "object": "@t1_bot02_name"
             },
             {
-              "unit_class": "ussr_t_34_1941",
+              "unit_class": "us_m4a1_1942_sherman",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -930,14 +930,14 @@
               "object": "@t1_bot04_name"
             },
             {
-              "unit_class": "us_m4a1_1942_sherman",
+              "unit_class": "ussr_t_34_1941",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
               "object": "@t1_bot05_name"
             },
             {
-              "unit_class": "us_m4a1_1942_sherman",
+              "unit_class": "us_m10",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -951,21 +951,21 @@
               "object": "@t2_bot02_name"
             },
             {
-              "unit_class": "ussr_t_34_1941",
+              "unit_class": "us_m4a1_1942_sherman",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
               "object": "@t2_bot03_name"
             },
             {
-              "unit_class": "germ_pzkpfw_IV_ausf_F2",
+              "unit_class": "us_m24_chaffee",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
               "object": "@t2_bot04_name"
             },
             {
-              "unit_class": "germ_pzkpfw_IV_ausf_F2",
+              "unit_class": "ussr_t_28E",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
@@ -974,70 +974,70 @@
           ],
           "__changeUnit": [
             {
-              "unit_class": "us_m4a1_1942_sherman",
+              "unit_class": "us_m10",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
               "object": "@t1_bot06_name"
             },
             {
-              "unit_class": "ussr_t_34_1941",
+              "unit_class": "ussr_t_28E",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
               "object": "@t1_bot07_name"
             },
             {
-              "unit_class": "ussr_t_34_1941",
+              "unit_class": "ussr_t_28E",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
               "object": "@t1_bot08_name"
             },
             {
-              "unit_class": "ussr_t_34_1941",
+              "unit_class": "us_m24_chaffee",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
               "object": "@t1_bot09_name"
             },
             {
-              "unit_class": "ussr_t_34_1941",
+              "unit_class": "germ_pzkpfw_III_ausf_L",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
               "object": "@t1_bot10_name"
             },
             {
-              "unit_class": "ussr_t_34_1941",
+              "unit_class": "germ_pzkpfw_IV_ausf_F2",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
               "object": "@t2_bot06_name"
             },
             {
-              "unit_class": "ussr_t_34_1941",
+              "unit_class": "germ_pzkpfw_III_ausf_L",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
               "object": "@t2_bot07_name"
             },
             {
-              "unit_class": "ussr_t_34_1941",
+              "unit_class": "germ_pzkpfw_IV_ausf_F",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
               "object": "@t2_bot08_name"
             },
             {
-              "unit_class": "ussr_t_34_1941",
+              "unit_class": "us_m10",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
               "object": "@t2_bot09_name"
             },
             {
-              "unit_class": "ussr_t_34_1941",
+              "unit_class": "ussr_t_34_1941_l_11",
               "weaponPreset": "",
               "isIndividual": false,
               "hangarMission": false,
