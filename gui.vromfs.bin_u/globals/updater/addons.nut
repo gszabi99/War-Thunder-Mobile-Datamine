@@ -53,6 +53,7 @@ let knownAddons = {}
 let campaignAddonsByRank = {}
 let commonCampaignAddons = {}
 let soloNewbieByCampaign = {}
+let coopNewbieByCampaign = {}
 let setBlk = get_settings_blk()
 let addonsBlk = setBlk?.addons
 
@@ -91,7 +92,7 @@ if (addonsBlk != null) {
 
     let allConditions = b % "conditions"
     foreach (conditions in allConditions) {
-      let { campaign = null, mRank = null, isSoloNewbie = false, isDownloadLast = false,
+      let { campaign = null, mRank = null, isSoloNewbie = false, isCoopNewbie = false, isDownloadLast = false,
         isDownloadFirst = false
       } = conditions
       if (isDownloadFirst) {
@@ -100,14 +101,24 @@ if (addonsBlk != null) {
           initialAddons.append(addonHq)
         continue
       }
+      if (isDownloadLast && campaign == null) {
+        latestDownloadAddons.append(addon)
+        if (hq)
+          latestDownloadAddons.append(addonHq)
+        continue
+      }
 
       if (type(campaign) != "string") {
         logerr($"Invalid type of required field in addon/conditions for '{addon}': campaign = {campaign}")
         continue
       }
 
-      if (isSoloNewbie)
+      if (isSoloNewbie) {
         appendAddonByKey(soloNewbieByCampaign, campaign)
+        appendAddonByKey(coopNewbieByCampaign, campaign)
+      }
+      if (isCoopNewbie)
+        appendAddonByKey(coopNewbieByCampaign, campaign)
 
       if (type(mRank) != "integer") {
         if (isDownloadLast)
@@ -198,10 +209,12 @@ function localizeAddonsLimited(list, maxNumber) {
 let getAddonsSize = @(addons, addonSizesV)
   unique(addons).reduce(@(total, addon) total + (addonSizesV?[addon] ?? 0), 0)
 
+let mbToString = @(mb) "".concat(mb > 0 ? mb : "???", loc("measureUnits/MB"))
+
 function getAddonsSizeStr(addons, addonSizesV) {
   let bytes = getAddonsSize(addons, addonSizesV)
   let mb = (bytes + (MB / 2)) / MB
-  return "".concat(mb > 0 ? mb : "???", loc("measureUnits/MB"))
+  return mbToString(mb)
 }
 
 let gameModeAddonToAddonSetMap = {
@@ -221,11 +234,15 @@ return freeze({
   knownAddons
   ovrHangarAddon
   soloNewbieByCampaign
+  coopNewbieByCampaign
 
   gameModeAddonToAddonSetMap
 
   localizeAddons
   localizeAddonsLimited
+
+  MB
+  mbToString
   getAddonsSizeStr
   getAddonsSize
   resetAddonNamesCache = @() addonNames.clear()

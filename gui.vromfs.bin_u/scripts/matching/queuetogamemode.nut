@@ -2,17 +2,19 @@ from "%scripts/dagui_library.nut" import *
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { setTimeout, resetTimeout } = require("dagor.workcycle")
 let { chooseRandom } = require("%sqstd/rand.nut")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { isMatchingOnline, showMatchingConnectProgress } = require("matchingOnline.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
 let { campMyUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
+let { sendUiBqEvent, sendLoadingAddonsBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { downloadInProgress, getDownloadLeftMbNotUpdatable } = require("%appGlobals/clientState/downloadState.nut")
 let { isInQueue, joinQueue } = require("queuesClient.nut")
-let { localizeAddons, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
+let { localizeAddons, getAddonsSize, mbToString, MB } = require("%appGlobals/updater/addons.nut")
 let { addonsSizes, addonsVersions } = require("%appGlobals/updater/addonsState.nut")
 let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { getModeAddonsInfo, getModeAddonsDbgString } = require("gameModeAddons.nut")
 let { balanceGold } = require("%appGlobals/currenciesState.nut")
 let { isInSquad, isSquadLeader, squadMembers, squadId, isInvitedToSquad, squadOnline,
@@ -174,17 +176,26 @@ function queueToGameModeImpl(mode) {
     let isUpdate = updateDiff >= 0
     let locs = localizeAddons(addonsToDownload)
     addonsToDownload.each(@(a) log($"[ADDONS] Ask update addon {a} on try to join queue (cur version = '{addonsVersions.get()?[a] ?? "-"}')"))
+
+    let isAlreadyInProgress = isEqual(downloadInProgress.get(), addonsToDownload.reduce(@(res, v) res.$rawset(v, true), {}))
+    local sizeMb = isAlreadyInProgress ? getDownloadLeftMbNotUpdatable() : 0
+    if (sizeMb <= 0)
+      sizeMb = (getAddonsSize(addonsToDownload, addonsSizes.get()) + (MB / 2)) / MB
+
+    sendLoadingAddonsBqEvent(isUpdate ? "msg_update_addons_for_queue" : "msg_download_addons_for_queue", addonsToDownload,
+      { sizeMb, source = mode.name, unit = ";".join(allBattlenits) })
+
     openFMsgBox({
       text = loc(isUpdate ? "msg/needUpdateAddonToPlayGameMode" : "msg/needAddonToPlayGameMode",
         { count = locs.len(),
           addon = ", ".join(locs.map(@(t) colorize(0xFFFFB70B, t)))
-          size = getAddonsSizeStr(addonsToDownload, addonsSizes.get())
+          size = mbToString((sizeMb + 0.5).tointeger())
         })
       buttons = [
         { id = "cancel", isCancel = true }
         { text = loc(isUpdate ? "ugm/btnUpdate" : "msgbox/btn_download")
           eventId = "downloadAddonsForQueue"
-          context = { addons = addonsToDownload, modeId = mode.gameModeId }
+          context = { addons = addonsToDownload, modeId = mode.gameModeId, modeName = mode.name }
           styleId = "PRIMARY"
           isDefault = true
         }
@@ -299,7 +310,9 @@ subscribeFMsgBtns({
   function downloadAddonsForQueue(p) {
     sendBqIfNeed(p)
     eventbus_send("openDownloadAddonsWnd",
-      { addons = p.addons, successEventId = "queueToGameModeAfterAddons", context = { modeId = p.modeId } })
+      { addons = p.addons, successEventId = "queueToGameModeAfterAddons", context = { modeId = p.modeId },
+        bqSource = "applyDownloadAddonsForQueue", bqParams = { paramStr1 = p.modeName }
+      })
   }
   function queueToGameModeRetry(p) {
     sendBqIfNeed(p)

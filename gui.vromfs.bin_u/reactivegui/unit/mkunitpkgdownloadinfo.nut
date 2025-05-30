@@ -50,7 +50,8 @@ function mkUnitPkgDownloadInfo(unitW, needProgress = true, ovr = {}) {
               size = getAddonsSizeStr(reqPkgList.get(), addonsSizes.get())
             }),
             { halign })
-          textButtonCommon(utf8ToUpper(loc("msgbox/btn_download")), @() openDownloadAddonsWnd(reqPkgList.value))
+          textButtonCommon(utf8ToUpper(loc("msgbox/btn_download")),
+            @() openDownloadAddonsWnd(reqPkgList.value, "unitDownloadInfoBlock"))
         ]
   }.__update(ovr)
 }

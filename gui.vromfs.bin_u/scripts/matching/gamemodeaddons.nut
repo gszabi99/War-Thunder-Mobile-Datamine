@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { check_version } = require("%sqstd/version_compare.nut")
 let { tostring_r } = require("%sqstd/string.nut")
 let { isNewbieMode, isNewbieModeSingle } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
-let { getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
+let { getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieCoop, getCampaignPkgsForNewbieSingle
 } = require("%appGlobals/updater/campaignAddons.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -48,8 +48,10 @@ function getModeAddonsInfo(mode, unitNames) {
     local mRank = 1
     foreach(uName in unitNames)
       mRank = max(mRank, serverConfigs.value?.allUnits[uName].mRank ?? 1)
-    let campAddons = isNewbieMode(name)
-      ? getCampaignPkgsForNewbieBattle(campaign, mRank, isNewbieModeSingle(name))
+    let campAddons = isNewbieModeSingle(name)
+        ? getCampaignPkgsForNewbieSingle(campaign, mRank, unitNames)
+      : isNewbieMode(name)
+        ? getCampaignPkgsForNewbieCoop(campaign, mRank)
       : getCampaignPkgsForOnlineBattle(campaign, mRank)
     foreach (addon in campAddons) {
       allReqAddons[addon] <- true

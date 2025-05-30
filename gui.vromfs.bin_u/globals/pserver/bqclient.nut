@@ -2,13 +2,17 @@ from "%globalScripts/logs.nut" import *
 let { eventbus_send } = require("eventbus")
 let { getLocTextForLang } = require("dagor.localize")
 let { get_time_msec } = require("dagor.time")
+let { get_platform_string_id } = require("platform")
 let { send_to_bq_offer } = require("pServerApi.nut")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { getServerTime } = require("%appGlobals/userstats/serverTime.nut")
-let { sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { sharedStatsByCampaign, campProfile, receivedMissionRewards } = require("%appGlobals/pServer/campaign.nut")
 let { get_user_system_info = @() null } = require_optional("sysinfo")
 let servProfile = require("servProfile.nut")
 let { get_game_version_str = @() "-" } = require_optional("app") 
 let { curCampaign } = require("campaign.nut")
+let { connectionStatus } = require("%appGlobals/clientState/connectionStatus.nut")
+let { downloadInProgress, allowLimitedDownload } = require("%appGlobals/clientState/downloadState.nut")
 
 
 function addEventTime(data, key = "eventTime") {
@@ -94,6 +98,50 @@ function sendNewbieBqEvent(actionId, data = {}) {
     })
 }
 
+let getFirstBattleTutor = @(campaign) !campaign.endswith("_new") ? $"tutorial_{campaign}_1"
+  : $"tutorial_{campaign.slice(0, -4)}_1_nc"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function sendLoadingAddonsBqEvent(action, addons = null, data = {}) {
+  let campaign = curCampaign.get()
+  let { lastReceivedFirstBattlesRewardIds = {} } = campProfile.get()
+  local firstBattleRewards = lastReceivedFirstBattlesRewardIds?[campaign]
+  if (firstBattleRewards == null)
+    firstBattleRewards = (receivedMissionRewards.get()?[getFirstBattleTutor(campaign)] ?? 0) == 0 ? -1 : 0
+  else
+    firstBattleRewards++
+
+  local hasOtherCampaignProgress = null != lastReceivedFirstBattlesRewardIds.findvalue(@(v, c) c != campaign && v >= 0)
+
+  let params = data.__merge({ action, campaign, firstBattleRewards, hasOtherCampaignProgress,
+    platform = get_platform_string_id(),
+    connectionStatus = connectionStatus.get(),
+    allowLimitedConnectionDownload = allowLimitedDownload.get(),
+    addonsInProgress = ";".join(downloadInProgress.get().keys().sort())
+  })
+  if (addons != null) {
+    params.addons <- ";".join((clone addons).sort())
+    params.isSameAddonsDownloading <- isEqual(downloadInProgress.get(), addons.reduce(@(res, v) res.$rawset(v, true), {}))
+  }
+  eventbus_send("sendBqEvent", { tableId = "loading_addons_1", data = addEventTime(params) })
+}
+
 return {
   sendUiBqEvent
   sendErrorBqEvent
@@ -103,4 +151,5 @@ return {
   sendNewbieBqEvent
   sendLoadingStageBqEvent
   sendSettingChangeBqEvent
+  sendLoadingAddonsBqEvent
 }

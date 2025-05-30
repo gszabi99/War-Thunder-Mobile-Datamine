@@ -309,6 +309,7 @@ def extinguish_system_activate_handle_es(evt : EventExtinguishSystemSetActive;
   let ship = unit |> as_ship()
   if ship == null || !ship.isVeryFewCrew
     if evt.active
+      print("sendEventImmediate EventExtinguishSystemActivateExtinguisher to eid:{eid}")
       sendEventImmediate(eid, EventExtinguishSystemActivateExtinguisher(assisteeId = INVALID_ENTITY_ID))
     else
       if !unit.isDelayed && unit.isAuthority && is_extinguisher_active(fire_damage__isBurn, extinguish_system_is_assisting, extinguish_system_extinguish_time_end)
@@ -382,6 +383,7 @@ def extinguish_system_activate_extinguisher_handle_es(evt : EventExtinguishSyste
       extinguish_system_require_net_sync = true
       sendEvent(eid, EventExtinguishSystemNotifyCrewBusy(busy = true))
 
+    print("sendEvent EventExtinguishSystemOnExtinguisherActivate true to eid:{eid}")
     sendEvent(eid, EventExtinguishSystemOnExtinguisherActivate(active = true))
 
 
@@ -446,6 +448,7 @@ def extinguish_system_stop_burn_with_extinguisher_handle_es(evt : EventExtinguis
     sendEvent(eid, EventExtinguishSystemTurnOffExtinguisher())
     sendEvent(evt.targetEid, EventExtinguishSystemNotifyExtinghuished())
   else
+    print("sendEvent EventExtinguishSystemActivateExtinguisher to eid:{eid}")
     sendEvent(eid, EventExtinguishSystemActivateExtinguisher(assisteeId = evt.targetEid))
 
   if all_extinguished
@@ -507,6 +510,7 @@ def extinguish_system_extinguish_by_ally_handle_es(evt : EventExtinguishSystemEx
         extinguish_system_extinguish_time_start_host = extinguish_system_extinguish_time_start
         extinguish_system_extinguish_time_end_host = extinguish_system_extinguish_time_end
     sendEvent(eid, EventExtinguishSystemNotifyCrewBusy(busy = true))
+    print("sendEvent EventExtinguishSystemOnExtinguisherActivate true to eid:{eid}")
     sendEvent(eid, EventExtinguishSystemOnExtinguisherActivate(active = true))
     extinguish_system_require_net_sync = true
 
@@ -526,6 +530,7 @@ def extinguish_system_turn_off_extinguisher_handle_es(evt : EventExtinguishSyste
     extinguish_system_is_assisting = false
     extinguish_system_require_net_sync = true
     sendEvent(eid, EventExtinguishSystemNotifyCrewBusy(busy = false))
+    print("sendEvent EventExtinguishSystemOnExtinguisherActivate false to eid:{eid}")
     sendEvent(eid, EventExtinguishSystemOnExtinguisherActivate(active = false))
 
 
@@ -556,6 +561,9 @@ def extinguish_system_net_sync_update_es(act : UpdateStageInfoAct;
     return
   extinguish_system_require_net_sync = false
   let total_time = float(get_app().usefulTotalTime)
+  print("send_net_event EventExtinguishSystemNetSync eid:{eid},
+    burn:{fire_damage__isBurn}, time:{total_time}, extinguisher count:{extinguish_system_extinguisher_count},
+    extinguish time end:{extinguish_system_extinguish_time_end}, next extinguisher time:{extinguish_system_next_extinguisher_time}")
   send_net_event(eid, EventExtinguishSystemNetSync(
     extinguisherCount = extinguish_system_extinguisher_count,
     crewBusyRemainingTime = is_crew_busy(fire_damage__isBurn, extinguish_system_is_assisting, extinguish_system_crew_busy_time_end) ? extinguish_system_crew_busy_time_end - total_time : -1.0f,
@@ -585,4 +593,5 @@ def extinguish_system_net_sync_handle_es(evt : EventExtinguishSystemNetSync;
 
   sendEventImmediate(eid, EventExtinguishSystemNotifyCrewBusy(busy = is_crew_busy(fire_damage__isBurn, extinguish_system_is_assisting, extinguish_system_crew_busy_time_end)))
   if !was_extinguisher_active && evt.extinguisherRemainingTime > 0.0f
+    print("sendEvent EventExtinguishSystemOnExtinguisherActivate true to eid:{eid}")
     sendEvent(eid, EventExtinguishSystemOnExtinguisherActivate(active = true))

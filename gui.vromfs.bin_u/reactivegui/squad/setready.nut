@@ -85,7 +85,7 @@ function setReady(ready) {
 
 subscribeFMsgBtns({
   downloadAddonsForSquadReady = @(addons)
-    eventbus_send("openDownloadAddonsWnd", { addons, successEventId = "squadSetReady" })
+    eventbus_send("openDownloadAddonsWnd", { addons, successEventId = "squadSetReady", bqSource = "squadSetReady" })
 })
 
 eventbus_subscribe("squadSetReady", @(_) setReady(true))

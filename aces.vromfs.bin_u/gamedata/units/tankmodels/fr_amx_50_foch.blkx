@@ -2692,6 +2692,63 @@
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.200001,
       "decal0Tex": "back_27"
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -2.87826,
+        -1.39501e-7,
+        -0.00000249126,
+        0.950364
+      ],
+      "decal0Line1": [
+        -5.51211e-7,
+        -2.78018,
+        0.74497,
+        4.23572
+      ],
+      "decal0Line2": [
+        2.87826,
+        -1.60726e-7,
+        -0.00000266282,
+        0.0496361
+      ],
+      "decal0Line3": [
+        -8.02837e-7,
+        -2.78018,
+        -0.74497,
+        4.23572
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -8.77826e-7,
+        0.258826,
+        0.965924,
+        -1.90483
+      ],
+      "decal0CPNormDepth1": [
+        -8.77826e-7,
+        0.258826,
+        -0.965924,
+        -1.90483
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.347432
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.200001,
+      "decal0Tex": "back_27"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -2699,6 +2756,18 @@
       "replace_tex": {
         "from": "fr_camo_vert_olive_arme*",
         "to": "fr_camo_desert_brown*"
+      }
+    },
+    "forest": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_green_sand_gray*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_winter_green_white*"
       }
     }
   },

@@ -51,7 +51,8 @@ function previewOffer() {
     return
   }
 
-  openDownloadAddonsWnd(reqAddonsToShowOffer.get(), "openGoodsPreview", { id = visibleOffer.get().id })
+  openDownloadAddonsWnd(reqAddonsToShowOffer.get(), "previewOfferByClick", { paramStr1 = visibleOffer.get().id },
+    "openGoodsPreview", { id = visibleOffer.get().id })
   sendOfferBqEvent("openInfoFromBanner", visibleOffer.get().campaign)
 }
 
@@ -66,7 +67,8 @@ function previewOfferByGoods(id) {
     if (unit != null) {
       let reqAddons = getUnitPkgs(unit.name, unit.mRank).filter(@(a) !hasAddons.get()?[a])
       if (reqAddons.len() != 0) {
-        openDownloadAddonsWnd(reqAddons, "openGoodsPreview", { id })
+        openDownloadAddonsWnd(reqAddons, "previewGoodsOfferByClick", { paramStr1 = id },
+          "openGoodsPreview", { id })
         return
       }
     }

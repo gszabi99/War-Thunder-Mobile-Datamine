@@ -3606,6 +3606,63 @@
       "decal1OppositeMirrored": false,
       "decal1WidthBox": 0.20472,
       "decal1Tex": "yugoslavia_1st_tank_battalion"
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -3.18348,
+        0.0,
+        -2.21041,
+        0.505237
+      ],
+      "decal0Line1": [
+        -1.21162,
+        -3.24151,
+        1.745,
+        3.84763
+      ],
+      "decal0Line2": [
+        3.18348,
+        -4.33134e-8,
+        -2.21041,
+        0.494761
+      ],
+      "decal0Line3": [
+        -1.21162,
+        -3.24151,
+        -1.745,
+        3.84763
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        -0.477021,
+        0.548142,
+        0.687016,
+        -1.62377
+      ],
+      "decal0CPNormDepth1": [
+        -0.477021,
+        0.548142,
+        -0.687016,
+        -1.62377
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.258023
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.215718,
+      "decal0Tex": "fr_1st_bat_3rd_platoon"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -3613,6 +3670,18 @@
       "replace_tex": {
         "from": "fr_camo_vert_olive_arme*",
         "to": "fr_camo_desert_brown*"
+      }
+    },
+    "forest": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_green_sand_gray*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_winter_green_white*"
       }
     }
   },

@@ -12,7 +12,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let ads = is_android ? require("android.ads") : require("adsAndroidDbg.nut")
 let sendAdsBqEvent = is_android ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
+let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK, ADS_STATUS_FAIL_IN_QUEUE_SKIP,
   isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
   isAdsLoaded, loadAds, showAds
 } = ads
@@ -62,10 +62,12 @@ function initProviders() {
       setPriorityForProvider(id, -1) 
 
   foreach (id, p in providers)
-    if (id in initedProviders)
+    if (id in initedProviders) {
       setPriorityForProvider(id, p.priority)
-    else
+    } else {
+      logA($"Add provider {id} with priority {p.priority}")
       addProviderInitWithPriority(id, p.key, p.priority)
+    }
 }
 initProviders()
 providerPriorities.subscribe(@(_) initProviders())
@@ -81,8 +83,10 @@ let getStatusName = @(v) statusNames?[v] ?? v
 
 eventbus_subscribe("android.ads.onInit", function(msg) {
   let { status, provider } = msg
-  if (status != ADS_STATUS_OK)
+  if (status != ADS_STATUS_OK) {
+    logA($"Provider {provider} init failed")
     return
+  }
   logA($"Provider {provider} inited")
   isInited(true)
 })
@@ -116,6 +120,10 @@ local providersStatuses = {}
 eventbus_subscribe("android.ads.onLoad", function (params) {
   let { status, provider = "unknown", adapter = "none" } = params
   logA($"onLoad {getStatusName(status)} {provider}({adapter})")
+  if (status == ADS_STATUS_FAIL_IN_QUEUE_SKIP) {
+    logA("Skipping, waiting for next ads provider")
+    return
+  }
   isLoadStarted = false
   loadedProvider.set(provider)
   isLoaded(status == ADS_STATUS_LOADED && isAdsLoaded())

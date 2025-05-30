@@ -204,7 +204,8 @@ function mkBlueprintUnitPlate(unit){
           {
             size = [unitPlateWidth, unitPlateHeight]
             rendObj = ROBJ_IMAGE
-            image = Picture($"ui/unitskin#blueprint_{unit.name}.avif:{unitPlateWidth}:{unitPlateHeight}:P")
+            fallbackImage = Picture($"ui/unitskin#blueprint_default.avif:{unitPlateWidth}:{unitPlateHeight}:P")
+            image = Picture($"{getUnitPresentation(unit).blueprintImage}:{unitPlateWidth}:{unitPlateHeight}:P")
           }
           mkUnitTexts(unit, loc(getUnitLocId(unit.name)))
           {

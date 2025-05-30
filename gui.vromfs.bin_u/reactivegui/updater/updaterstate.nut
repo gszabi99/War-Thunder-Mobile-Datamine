@@ -13,17 +13,23 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInLoadingScreen, isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
+let { downloadInProgress, downloadState, totalSizeBytes, toDownloadSizeBytes, getDownloadLeftMbNotUpdatable,
+  allowLimitedDownload, ALLOW_LIMITED_DOWNLOAD_SAVE_ID
+} = require("%appGlobals/clientState/downloadState.nut")
 let { localizeAddonsLimited, initialAddons, latestDownloadAddonsByCamp, latestDownloadAddons,
-  commonUhqAddons, soloNewbieByCampaign, getAddonsSize
+  commonUhqAddons, soloNewbieByCampaign, coopNewbieByCampaign, getAddonsSize, MB
 } = require("%appGlobals/updater/addons.nut")
 let { hasAddons, addonsSizes, addonsExistInGameFolder, addonsVersions,
   isAddonsInfoActual, isAddonsExistInGameFolderActual, isAddonsVersionsActual
 } = require("%appGlobals/updater/addonsState.nut")
-let { getAddonCampaign, getCampaignOrig, getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieBattle
+let { getAddonCampaign, getCampaignOrig, getCampaignPkgsForOnlineBattle,
+  getCampaignPkgsForNewbieCoop, getCampaignPkgsForNewbieSingle
 } = require("%appGlobals/updater/campaignAddons.nut")
+let { allMyBattleUnits } = require("%appGlobals/updater/gameModeAddons.nut")
 let { isAnyCampaignSelected, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits, battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
 let { isConnectionLimited, hasConnection } = require("%appGlobals/clientState/connectionStatus.nut")
+let { sendLoadingAddonsBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isRandomBattleNewbie, isRandomBattleNewbieSingle } = require("%rGui/gameModes/gameModeState.nut")
 let { squadAddons } = require("%rGui/squad/squadAddons.nut")
 let { needUhqTextures } = require("%rGui/options/options/graphicOptions.nut")
@@ -33,7 +39,6 @@ let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
 
 
 let DOWNLOAD_ADDONS_EVENT_ID = "downloadAddonsEvent"
-let ALLOW_LIMITED_DOWNLOAD_SAVE_ID = "allowLimitedConnectionDownload"
 let SIZE_INCREASE_MULTIPLIER = 1.2
 
 let addonsToDownload = hardPersistWatched("updater.addonsToDownload",
@@ -43,12 +48,7 @@ let addonsToDownload = hardPersistWatched("updater.addonsToDownload",
     return res
   }, {}))
 let isDownloadPaused = hardPersistWatched("updater.isDownloadPaused", false)
-let allowLimitedDownload = Watched(get_local_custom_settings_blk()?[ALLOW_LIMITED_DOWNLOAD_SAVE_ID] ?? false)
-let downloadInProgress = hardPersistWatched("updater.downloadInProgress", {})
 let currentStage = hardPersistWatched("updater.currentStage", null)
-let totalSizeBytes = hardPersistWatched("updater.totalSizeBytes", 0)
-let toDownloadSizeBytes = hardPersistWatched("updater.toDownloadSizeBytes", 0)
-let downloadState = hardPersistWatched("updater.downloadState", null)
 let updaterError = hardPersistWatched("updater.updaterError", null)
 let awaitingAddonsInfoUpd = hardPersistWatched("updater.awaitingAddonsInfoUpd", null)
 let isIncompatibleVersion = Watched(false)
@@ -133,20 +133,19 @@ let wantStartDownloadAddons = Computed(function(prev) {
     return prevIfEqual(prev, {})
 
   let campaign = curCampaign.get()
-  if (campaign in soloNewbieByCampaign) {
-    foreach (a in soloNewbieByCampaign[campaign])
-      if (a in addonsToDownload.get())
-        res[a] <- true
+  let maxMRank = battleUnitsMaxMRank.get()
+  let listGetters = []
+  if (isRandomBattleNewbieSingle.get())
+    listGetters.append(@() getCampaignPkgsForNewbieSingle(campaign, maxMRank, allMyBattleUnits.get().keys()))
+  if (isRandomBattleNewbie.get())
+    listGetters.append(@() getCampaignPkgsForNewbieCoop(campaign, maxMRank))
+  listGetters.append(@() getCampaignPkgsForOnlineBattle(campaign, maxMRank))
+  foreach (getList in listGetters) {
+    let curUnitAddons = getList()
+    res = addonsToDownload.get().filter(@(_, a) curUnitAddons.contains(a))
     if (res.len() != 0)
       return prevIfEqual(prev, res)
   }
-
-  let curUnitAddons = isRandomBattleNewbie.value
-    ? getCampaignPkgsForNewbieBattle(campaign, battleUnitsMaxMRank.get(), isRandomBattleNewbieSingle.value)
-    : getCampaignPkgsForOnlineBattle(campaign, battleUnitsMaxMRank.get())
-  res = addonsToDownload.value.filter(@(_, a) curUnitAddons.contains(a))
-  if (res.len() != 0)
-    return prevIfEqual(prev, res)
 
   let campaignOrig = getCampaignOrig(campaign)
   res = addonsToDownload.value.filter(@(_, a) (getAddonCampaign(a) ?? campaignOrig) == campaignOrig)
@@ -330,6 +329,8 @@ let addonsToAutoDownload = keepref(Computed(function() {
     list[a] <- true
   foreach(a in soloNewbieByCampaign?[curCampaign.get()] ?? [])
     list[a] <- true
+  foreach(a in coopNewbieByCampaign?[curCampaign.get()] ?? [])
+    list[a] <- true
   return list.keys()
 }))
 
@@ -352,7 +353,7 @@ allowLimitedDownload.subscribe(function(allow) {
   logA("Allow limited connection download cahnged to: ", allow)
 })
 
-function openDownloadAddonsWnd(addons = [], successEventId = null, context = {}) {
+function openDownloadAddonsWnd(addons = [], bqSource = "unknown", bqParams = {}, successEventId = null, context = {}) {
   let rqAddons = addons.filter(@(a) !hasAddons.value?[a])
   if (addons.len() != 0 && rqAddons.len() == 0) {  
     if (successEventId != null)
@@ -368,6 +369,12 @@ function openDownloadAddonsWnd(addons = [], successEventId = null, context = {})
   if (fullAddons.len() != addonsToDownload.value.len())
     addonsToDownload(fullAddons)
 
+  let isAlreadyInProgress = isEqual(downloadInProgress.get(), rqTbl)
+  local sizeMb = isAlreadyInProgress ? getDownloadLeftMbNotUpdatable() : 0
+  if (sizeMb <= 0 && rqAddons.len() > 0)
+    sizeMb = (getAddonsSize(rqAddons, addonsSizes.get()) + (MB / 2)) / MB
+  sendLoadingAddonsBqEvent("open_download_wnd", rqAddons, bqParams.__merge({ sizeMb, source = bqSource }))
+
   firstPriorityAddons(rqTbl)
   downloadWndParams({ addons, successEventId, context })
 
@@ -376,8 +383,8 @@ function openDownloadAddonsWnd(addons = [], successEventId = null, context = {})
 }
 
 eventbus_subscribe("openDownloadAddonsWnd", function(msg) {
-  let { addons = [], successEventId = null, context = {} } = msg
-  openDownloadAddonsWnd(addons, successEventId, context)
+  let { addons = [], successEventId = null, context = {}, bqSource = "unknown_dagui", bqParams = {} } = msg
+  openDownloadAddonsWnd(addons, bqSource, bqParams, successEventId, context)
 })
 
 return {

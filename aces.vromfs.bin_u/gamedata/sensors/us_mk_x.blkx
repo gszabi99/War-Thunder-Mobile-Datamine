@@ -18,67 +18,31 @@
     }
   },
   "scanPatterns": {
-    "searchMinBars": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -90.0,
-        90.0
-      ],
-      "elevationLimits": [
-        -30.0,
-        50.0
-      ],
-      "rollStabLimit": 45.0,
-      "period": 1.0,
-      "width": 75.0,
-      "barHeight": 2.5,
-      "barsCount": 6,
-      "rowMajor": true,
-      "barsOneWay": false
-    },
     "searchMidBars": {
       "type": "pyramide",
       "azimuthLimits": [
-        -90.0,
-        90.0
+        -75.0,
+        75.0
       ],
       "elevationLimits": [
         -30.0,
         50.0
       ],
       "rollStabLimit": 45.0,
-      "period": 2.0,
+      "period": 0.21,
       "width": 75.0,
       "barHeight": 2.5,
       "barsCount": 12,
-      "rowMajor": true,
-      "barsOneWay": false
-    },
-    "searchMaxBars": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -80.0,
-        80.0
-      ],
-      "elevationLimits": [
-        -20.0,
-        40.0
-      ],
-      "rollStabLimit": 45.0,
-      "period": 4.0,
-      "width": 75.0,
-      "barHeight": 2.5,
-      "barsCount": 24,
       "rowMajor": true,
       "barsOneWay": false
     }
   },
   "signals": {
     "search": {
-      "groundClutter": true,
+      "groundClutter": false,
       "aircraftAsTarget": true,
-      "groundVehiclesAsTarget": true,
-      "showCScope": true,
+      "groundVehiclesAsTarget": false,
+      "showCScope": false,
       "distance": {
         "presents": true,
         "minValue": 100.0,
@@ -89,9 +53,7 @@
   },
   "scanPatternSets": {
     "common": {
-      "scanPattern2": "searchMidBars",
-      "scanPattern3": "searchMaxBars",
-      "scanPattern1": "searchMinBars"
+      "scanPattern2": "searchMidBars"
     }
   },
   "scopeRangeSets": {
@@ -246,14 +208,7 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "addTarget": {},
-            "updateActiveDetectedTarget": {}
-          }
-        },
-        "switchSelectedTarget": {
-          "command": "switchTarget",
-          "actions": {
-            "setNextDetectedTargetActive": {}
+            "addTarget": {}
           }
         }
       }

@@ -62,6 +62,9 @@ let customLootboxImages = {
   past_events_box_tanks_seasons_1_to_16 = "past_events_box_seasons_1_to_16.avif"
   past_events_box_ships_seasons_1_to_16 = "past_events_box_seasons_1_to_16.avif"
   past_events_box_air_seasons_1_to_16 = "past_events_box_seasons_1_to_16.avif"
+  past_events_box_tanks_seasons_1_to_17 = "past_events_box_seasons_1_to_17.avif"
+  past_events_box_ships_seasons_1_to_17 = "past_events_box_seasons_1_to_17.avif"
+  past_events_box_air_seasons_1_to_17 = "past_events_box_seasons_1_to_17.avif"
 }
 
 let customRouletteImages = {

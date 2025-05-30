@@ -1983,38 +1983,6 @@
       "preset": "default_common"
     }
   },
-  "WeaponSlots": {
-    "WeaponSlot": {
-      "index": 0,
-      "WeaponPreset": {
-        "name": "default_common",
-        "Weapon": [
-          {
-            "trigger": "machine gun",
-            "blk": "gameData/Weapons/gunType89.blk",
-            "emitter": "flare1",
-            "flash": "flare1",
-            "dm": "mgun1_dm",
-            "bullets": 450,
-            "spread": 1.0,
-            "traceOffset": 3,
-            "breechInCockpit": true
-          },
-          {
-            "trigger": "machine gun",
-            "blk": "gameData/Weapons/gunType89.blk",
-            "emitter": "flare2",
-            "flash": "flare2",
-            "dm": "mgun2_dm",
-            "bullets": 450,
-            "spread": 1.0,
-            "traceOffset": 1,
-            "breechInCockpit": true
-          }
-        ]
-      }
-    }
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -2051,6 +2019,38 @@
     "preset": {
       "name": "ki_10_2_default",
       "blk": "gameData/FlightModels/weaponPresets/ki_10_default.blk"
+    }
+  },
+  "WeaponSlots": {
+    "WeaponSlot": {
+      "index": 0,
+      "WeaponPreset": {
+        "name": "default_common",
+        "Weapon": [
+          {
+            "trigger": "machine gun",
+            "blk": "gameData/Weapons/gunType89.blk",
+            "emitter": "flare1",
+            "flash": "flare1",
+            "dm": "mgun1_dm",
+            "bullets": 450,
+            "spread": 1.0,
+            "traceOffset": 3,
+            "breechInCockpit": true
+          },
+          {
+            "trigger": "machine gun",
+            "blk": "gameData/Weapons/gunType89.blk",
+            "emitter": "flare2",
+            "flash": "flare2",
+            "dm": "mgun2_dm",
+            "bullets": 450,
+            "spread": 1.0,
+            "traceOffset": 1,
+            "breechInCockpit": true
+          }
+        ]
+      }
     }
   },
   "cutting": {

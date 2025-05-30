@@ -3405,6 +3405,16 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -3412,6 +3422,18 @@
       "replace_tex": {
         "from": "fr_camo_vert_olive_arme*",
         "to": "fr_camo_desert_brown*"
+      }
+    },
+    "forest": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_green_sand_gray*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "fr_camo_vert_olive_arme*",
+        "to": "fr_camo_winter_green_white*"
       }
     }
   }

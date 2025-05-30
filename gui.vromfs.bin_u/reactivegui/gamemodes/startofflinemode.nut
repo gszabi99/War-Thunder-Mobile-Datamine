@@ -23,14 +23,16 @@ let testFlightByUnitType = {
   [TANK]            = "testFlight_ussr_tft",
 }
 
-function donloadUnitPacksAndSend(unitName, extAddons, eventId, params) {
-  let pkgs = getUnitPkgs(unitName, serverConfigs.value?.allUnits[unitName].mRank ?? 1)
+function downloadUnitPacksAndSend(unitName, extAddons, eventId, params) {
+  let { mRank = 1 } = serverConfigs.value?.allUnits[unitName]
+  let pkgs = getUnitPkgs(unitName, mRank)
     .extend(extAddons)
     .filter(@(v) !hasAddons.value?[v])
   if (pkgs.len() == 0)
     eventbus_send(eventId, params)
   else
-    openDownloadAddonsWnd(pkgs, eventId, params)
+    openDownloadAddonsWnd(pkgs, eventId, { paramStr1 = unitName, paramInt1 = mRank, unit = unitName },
+      eventId, params)
 }
 
 let getBulletsForTestFlight = @(unitName) getDefaultBulletsForSpawn(unitName, 1000, campMyUnits.get()?[unitName].mods)
@@ -50,8 +52,8 @@ function startTestFlightImpl(unitName, missionName, skin) {
     weaponPreset = getUnitSlotsPresetNonUpdatable(unitName, campMyUnits.get()?[unitName].mods)
       .reduce(@(res, v, k) res.$rawset(k.tostring(), v), {})
   }
-  logO("donloadUnitPacksAndSend startTestFlight")
-  donloadUnitPacksAndSend(unitName, [], "startTestFlight", params)
+  logO("downloadUnitPacksAndSend startTestFlight")
+  downloadUnitPacksAndSend(unitName, [], "startTestFlight", params)
 }
 
 let getUnitSkin = @(unit) unit?.currentSkins[unit.name] ?? ""
@@ -67,8 +69,8 @@ function startOfflineBattle(unit, missionName) {
     openMsgBox({ text = loc("No selected unit") })
     return
   }
-  logO("donloadUnitPacksAndSend startTraining")
-  donloadUnitPacksAndSend(unit.name, soloNewbieByCampaign?[curCampaign.get()] ?? [], "startTraining",
+  logO("downloadUnitPacksAndSend startTraining")
+  downloadUnitPacksAndSend(unit.name, soloNewbieByCampaign?[curCampaign.get()] ?? [], "startTraining",
     {
       unitName = unit.name
       skin = getUnitSkin(unit)
@@ -93,8 +95,8 @@ function startLocalMPBattle(unit, missionName, presetOvrMis = null, misBlkParams
     openMsgBox({ text = loc("No selected unit") })
     return
   }
-  logO("donloadUnitPacksAndSend startLocalMP")
-  donloadUnitPacksAndSend(unit.name, [], "startLocalMP", mkLocalMPParams(unit, missionName, presetOvrMis, misBlkParams))
+  logO("downloadUnitPacksAndSend startLocalMP")
+  downloadUnitPacksAndSend(unit.name, [], "startLocalMP", mkLocalMPParams(unit, missionName, presetOvrMis, misBlkParams))
 }
 
 function startLocalMPBattleWithoutGamemode(unit, missionName, presetOvrMis = null, misBlkParams = {}) {
@@ -102,8 +104,8 @@ function startLocalMPBattleWithoutGamemode(unit, missionName, presetOvrMis = nul
     openMsgBox({ text = loc("No selected unit") })
     return
   }
-  logO("donloadUnitPacksAndSend startLocalMPWithoutGM")
-  donloadUnitPacksAndSend(unit.name, [], "startLocalMPWithoutGM", mkLocalMPParams(unit, missionName, presetOvrMis, misBlkParams))
+  logO("downloadUnitPacksAndSend startLocalMPWithoutGM")
+  downloadUnitPacksAndSend(unit.name, [], "startLocalMPWithoutGM", mkLocalMPParams(unit, missionName, presetOvrMis, misBlkParams))
 }
 
 return {

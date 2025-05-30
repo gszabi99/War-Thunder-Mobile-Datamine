@@ -13,7 +13,7 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let ads = is_ios ? require("ios.ads") : require("adsIosDbg.nut")
 let sendAdsBqEvent = is_ios ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK,
+let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK, ADS_STATUS_FAIL_IN_QUEUE_SKIP,
   setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
   isAdsLoaded, loadAds, showAds
 } = ads
@@ -116,6 +116,10 @@ local providersStatuses = {}
 eventbus_subscribe("ios.ads.onLoad",function (params) {
   let { status, provider = "unknown", adapter = "none" } = params
   logA($"onLoad {getStatusName(status)} {provider}({adapter})")
+  if (status == ADS_STATUS_FAIL_IN_QUEUE_SKIP) {
+    logA("Skipping, waiting for next ads provider")
+    return
+  }
   isLoadStarted = false
   loadedProvider.set(provider)
   isLoaded(status == ADS_STATUS_LOADED && isAdsLoaded())

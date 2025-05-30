@@ -1002,7 +1002,7 @@
 "b6n2";"B6N2 Model 12";"B6N2 Modèle 12";"B6N2 Mod. 12";"B6N2 Model 12";"B6N2 Modelo 12";"B6N2 Model 12";"B6N2 (модель 12)";"B6N2 Model 12";"B6N2 Model 12";"B6N2 Model 12";"B6N2 Model 12";"B6N2 Model 12";"B6N2 Model 12";"B6N2 Model 12";"B6N2 12형";"天\t山\t一\t二\t型";"艦上攻撃機 天山一二型";"天\t山\t一\t二\t型";;
 "d4y2";"D4Y2";"D4Y2";"D4Y2";"D4Y2";"D4Y2";"D4Y2";"D4Y2";"D4Y2";"D4Y2";"D4Y2";"D4Y2";"D4Y2";"D4Y2";"D4Y2";"D4Y2";"彗\t星";"艦上爆撃機 彗星一二型";"彗\t星\t一\t二\t型";;
 "g4m1";"G4M1";"G4M1";"G4M1";"G4M1";"G4M1";"G4M1";"G4M1";"G4M1";"G4M1";"G4M1";"G4M1";"G4M1";"G4M1";"G4M1";"G4M1";"一\t式\t陆\t攻";"一式陸上攻撃機";"一\t式\t陸\t攻";;
-"a6m2_zero";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"零\t战\t一\t一\t型";"零式艦上戦闘機二一型";"零\t戰\t一\t一\t型";;
+"a6m2_zero";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"A6M2";"零\t战\t二\t一\t型";"零式艦上戦闘機二一型";"零\t戰\t一\t一\t型";;
 "ki_44_2_hei";"Ki-44-II hei";"Ki-44-II hei";"Ki-44-II hei";"Ki-44-II hei";"Ki-44-II hei";"Ki-44-II hei";"Ki-44-II hei";"Ki-44-II hei";"Ki-44-II hei";"Ki-44-II hei";"Ki-44-II hei";"Ki-44-II hei";"Ki-44-II hei";"Ki-44-II hei";"Ki-44-II병";"二\t式\t战\t二\t型\t丙";"二式戦二型 丙";"二\t式\t戰\t二\t型\t丙";;
 "d4y3";"D4Y3 Ko";"D4Y3 Ko";"D4Y3 Ko";"D4Y3 Ko";"D4Y3 Ko";"D4Y3 Ko";"D4Y3 Ko";"D4Y3 Ko";"D4Y3 Ko";"D4Y3 Ko";"D4Y3 Ko";"D4Y3 Ko";"D4Y3 Ko";"D4Y3 Ko";"D4Y3 갑";"彗\t星\t三\t三\t型";"艦上爆撃機 彗星三三型 甲";"彗\t星\t三\t三\t型\t甲";;
 "ki-49_2b";"Ki-49-IIb";"Ki-49-IIb";"Ki-49-IIb";"Ki-49-IIb";"Ki-49-IIb";"Ki-49-IIb";"Ki-49-IIb";"Ki-49-IIb";"Ki-49-IIb";"Ki-49-IIb";"Ki-49-IIb";"Ki-49-IIb";"Ki-49-IIb";"Ki-49-IIb";"Ki-49-II을";"百\t式\t重\t爆\t二\t型\t乙";"百式重爆撃機二型 乙";"百\t式\t重\t爆\t二\t型\t乙";;
@@ -1019,4 +1019,10 @@
 "ki_61_1a_hei";"Ki-61-I hei";"Ki-61-I hei";"Ki-61-I hei";"Ki-61-I hei";"Ki-61-I hei";"Ki-61-I hei";"Ki-61-I hei";"Ki-61-I hei";"Ki-61-I hei";"Ki-61-I hei";"Ki-61-I hei";"Ki-61-I hei";"Ki-61-I hei";"Ki-61-I hei";"Ki-61-I병";"三\t式\t战\t一\t型\t丙";"三式戦闘機一型 丙";"三\t式\t戰\t一\t型\t丙";;
 "j5n1";"J5N1";"J5N1";"J5N1";"J5N1";"J5N1";"J5N1";"J5N1";"J5N1";"J5N1";"J5N1";"J5N1";"J5N1";"J5N1";"J5N1";"J5N1";"天\t雷";"十八試局地戦闘機 天雷";"天\t雷";;
 "ki_67_1_otsu";"Ki-67-I otsu";"Ki-67-I otsu";"Ki-67-I otsu";"Ki-67-I otsu";"Ki-67-I otsu";"Ki-67-I otsu";"Ki-67-I otsu";"Ki-67-I otsu";"Ki-67-I otsu";"Ki-67-I otsu";"Ki-67-I ocu";"Ki-67-I otsu";"Ki-67-I otsu";"Ki-67-I otsu";"Ki-67-I을";"四\t式\t重\t爆\t乙\t型";"四式重爆撃機一型 乙";"四\t式\t重\t爆\t一\t型\t乙";;
+"ussr_t_72av_turms";"T-72AV (TURMS-T)";"T-72AV (TURMS-T)";"T-72AV (TURMS-T)";"T-72AV (TURMS-T)";"T-72AV (TURMS-T)";"Т-72АВ (TURMS-T)";"Т-72АВ (TURMS-T)";"T-72AW (TURMS-T)";"T-72AV (TURMS-T)";"T-72AV (TURMS-T)";"T-72AV (TURMS-T)";"T-72AV (TURMS-T)";"T-72AV (TURMS-T)";"T-72AV (TURMS-T)";"T-72AV (TURMS-T)";"T-72AV (TURMS-T)";"T-72AV (TURMS-T)";"T-72AV (TURMS-T)";;
+"ussr_2s25";"2S25";"2S25";"2S25";"2S25";"2S25";"2C25";"2С25";"2S25";"2S25";"2S25";"2S25";"2S25";"2S25";"2S25";"2S25";"2S25";"2S25";"2S25";;
+"ussr_9p149_reskin";"Shturm-S";"Shturm-S";"Shturm-S";"Shturm-S";"Shturm-S";"Штурм-С";"Штурм-С";"Szturm-S";"Shturm-S";"Shturm-S";"Šturm-S";"Shturm-S";"Shturm-S";"Shturm-S";"슈트름-S";"风\t暴\t-S";"シュトゥルム-S";"風\t暴\t-S";;
+"ussr_2s38";"2S38";"2S38";"2S38";"2S38";"2S38";"2С38";"2С38";"2S38";"2S38";"2S38";"2S38";"2S38";"2S38";"2S38";"2S38";"2S38";"2S38";"2S38";;
+"p-61c_1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";"P-61C-1";;
+"fr_battleship_dunkerque";"Dunkerque";"Dunkerque";"Dunkerque";"Dunkerque";"Dunkerque";"Dunkerque";"Dunkerque";"Dunkerque";"Dunkerque";"Dunkerque";"Dunkerque";"Dunkerque";"Dunkerque";"Dunkerque";"됭케르크";"敦\t刻\t尔\t克";"ダンケルク";"敦\t克\t爾\t克";;
 "SHIPS_LANG_KEEP_IT_ALWAYS_FIRST";;;;;;;;;;;;;;;;;;;"";

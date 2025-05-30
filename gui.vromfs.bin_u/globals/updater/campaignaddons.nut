@@ -1,7 +1,8 @@
 from "math" import max
 let { TANK, AIR, HELICOPTER } = require("%appGlobals/unitConst.nut")
 let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { commonCampaignAddons, campaignAddonsByRank, knownAddons, campaignPostfix, soloNewbieByCampaign
+let { commonCampaignAddons, campaignAddonsByRank, knownAddons, campaignPostfix, soloNewbieByCampaign,
+  coopNewbieByCampaign
 } = require("%appGlobals/updater/addons.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 
@@ -68,7 +69,7 @@ function getUnitPkgs(realUnitName, mRank) {
   if (unitName in customUnitPkg)
     return customUnitPkg[unitName] ?? []
   let campaign = getCampaignByUnitName(unitName)
-  let res = clone (commonCampaignAddons?[campaign] ?? [])
+  let res = []
   for (local i = mRank; i >= 1; i--)
     appendCampaignRankAddons(res, campaign, i)
   return res
@@ -82,12 +83,19 @@ function getCampaignPkgsForOnlineBattle(campaignExt, mRank) {
   return res
 }
 
-function getCampaignPkgsForNewbieBattle(campaignExt, mRank, isSingle) {
+function getCampaignPkgsForNewbieSingle(campaignExt, maxMRank, unitList) {
   let campaign = getCampaignOrig(campaignExt)
-  if (isSingle && mRank <= 1)
-    return soloNewbieByCampaign?[campaign] ?? []
+  let res = clone (soloNewbieByCampaign?[campaign] ?? [])
+  foreach (unitName in unitList)
+    foreach (a in getUnitPkgs(unitName, maxMRank))
+      if (!res.contains(a))
+        res.append(a)
+  return res
+}
 
-  let res = clone (commonCampaignAddons?[campaign] ?? [])
+function getCampaignPkgsForNewbieCoop(campaignExt, mRank) {
+  let campaign = getCampaignOrig(campaignExt)
+  let res = clone (coopNewbieByCampaign?[campaign] ?? [])
 
   
   
@@ -115,7 +123,8 @@ function getAddonCampaign(addon) {
 return {
   getUnitPkgs
   getCampaignPkgsForOnlineBattle
-  getCampaignPkgsForNewbieBattle
+  getCampaignPkgsForNewbieCoop
+  getCampaignPkgsForNewbieSingle
   getAddonCampaign
   getCampaignOrig
 }

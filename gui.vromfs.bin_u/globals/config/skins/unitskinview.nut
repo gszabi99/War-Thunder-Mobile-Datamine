@@ -564,7 +564,9 @@ return {
     },
     "fr_amx_50_foch": {
       "": "fr_camo_vert_olive_arme",
-      "forest": "fr_camo_desert_brown"
+      "desert": "fr_camo_desert_brown",
+      "forest": "fr_camo_green_sand_gray",
+      "winter": "fr_camo_winter_green_white"
     },
     "fr_amx_50_surbaisse": {
       "": "fr_camo_vert_olive_arme",
@@ -578,7 +580,9 @@ return {
     },
     "fr_amx_m4_reskin": {
       "": "fr_camo_vert_olive_arme",
-      "forest": "fr_camo_desert_brown"
+      "desert": "fr_camo_desert_brown",
+      "forest": "fr_camo_green_sand_gray",
+      "winter": "fr_camo_winter_green_white"
     },
     "fr_arl_44": {
       "": "fr_camo_vert_olive_arme",
@@ -598,6 +602,9 @@ return {
     },
     "fr_battleship_courbet_class_courbet_nc": {
       "": "camo_bluegreen_splotch"
+    },
+    "fr_battleship_dunkerque": {
+      "": "camo_multicolor_waves"
     },
     "fr_cckw_353_bofors": {
       "": "fr_camo_green_brown",
@@ -669,7 +676,9 @@ return {
     },
     "fr_panhard_ebr_1963": {
       "": "fr_camo_vert_olive_arme",
-      "forest": "fr_camo_desert_brown"
+      "desert": "fr_camo_desert_brown",
+      "forest": "fr_camo_green_sand_gray",
+      "winter": "fr_camo_winter_green_white"
     },
     "fr_sk105_a2": {
       "": "fr_camo_vert_olive_arme",
@@ -691,7 +700,9 @@ return {
     },
     "fr_tpk_641_vpc_reskin": {
       "": "fr_camo_vert_olive_arme",
-      "forest": "fr_camo_desert_brown"
+      "desert": "fr_camo_desert_brown",
+      "forest": "fr_camo_green_sand_gray",
+      "winter": "fr_camo_winter_green_white"
     },
     "fr_vcac_mephisto": {
       "": "fr_camo_vert_olive_arme",
@@ -2096,6 +2107,9 @@ return {
     "p-51h-5_na": {
       "": "usa_p_40c_metal"
     },
+    "p-61c_1": {
+      "": "usa_f_82e"
+    },
     "p-63a-10": {
       "": "usa_tbd_1_1938"
     },
@@ -3228,13 +3242,25 @@ return {
     "ussr_1124_rct_nc": {
       "": "ussr_1114_rct"
     },
+    "ussr_2s25": {
+      "": "ussr_modern_desert",
+      "forest": "ussr_camo_green"
+    },
     "ussr_2s25m": {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_desert_sand_green_brown"
     },
+    "ussr_2s38": {
+      "": "ussr_modern_desert",
+      "forest": "ussr_camo_green"
+    },
     "ussr_9p149": {
       "": "ussr_camo_green",
       "upgraded": "ussr_modern_def_gray"
+    },
+    "ussr_9p149_reskin": {
+      "": "ussr_modern_desert",
+      "forest": "ussr_camo_green"
     },
     "ussr_a_12_mk_2_matilda_2A_F96": {
       "": "ussr_rbt_5",
@@ -3785,6 +3811,10 @@ return {
     "ussr_t_72a": {
       "": "ussr_camo_green",
       "upgraded": "ussr_modern_def_gray"
+    },
+    "ussr_t_72av_turms": {
+      "": "ussr_modern_desert",
+      "forest": "ussr_camo_green"
     },
     "ussr_t_72b_1989": {
       "": "ussr_camo_green",

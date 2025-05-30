@@ -61,7 +61,7 @@ function openGoodsPreview(id) {
   let goods = getPreviewGoods(id, activeOffer.get(), activeOffersByGoods.get(), shopGoodsAllCampaigns.get())
   let addons = getAddonsToShowGoods(goods, serverConfigs.get()?.allUnits, hasAddons.get())
   if (addons.len() != 0) {
-    openDownloadAddonsWnd(addons, "openGoodsPreview", { id })
+    openDownloadAddonsWnd(addons, "openGoodsPreview", { paramStr1 = id }, "openGoodsPreview", { id })
     return
   }
 
@@ -74,7 +74,7 @@ function openGoodsPreviewInMenuOnly(id) {
   let goods = getPreviewGoods(id, activeOffer.get(), activeOffersByGoods.get(), shopGoodsAllCampaigns.get())
   let addons = getAddonsToShowGoods(goods, serverConfigs.get()?.allUnits, hasAddons.get())
   if (addons.len() != 0) {
-    openDownloadAddonsWnd(addons, "openGoodsPreviewInMenuNoModals", { id })
+    openDownloadAddonsWnd(addons, "openGoodsPreview", { paramStr1 = id }, "openGoodsPreviewInMenuNoModals", { id })
     return false
   }
 

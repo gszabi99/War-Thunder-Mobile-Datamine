@@ -252,7 +252,7 @@
       "hq": false,
       "modelsPatch": false,
       "conditions": {
-        "isDownloadFirst": true
+        "isDownloadLast": true
       }
     },
     "hq_tex": {
@@ -281,7 +281,7 @@
       "hq": false,
       "modelsPatch": false,
       "conditions": {
-        "isDownloadFirst": true
+        "isDownloadLast": true
       }
     },
     "pkg_dev": {},
@@ -294,7 +294,8 @@
           "campaign": "ships"
         },
         {
-          "campaign": "tanks"
+          "campaign": "tanks",
+          "mRank": 1
         }
       ]
     },
@@ -531,14 +532,12 @@
     },
     "pkg_lvl_air_locations": {
       "conditions": {
-        "campaign": "air",
-        "mRank": 1
+        "campaign": "air"
       }
     },
     "pkg_lvl_air_hurtgen_africa": {
       "conditions": {
-        "campaign": "air",
-        "mRank": 1
+        "campaign": "air"
       }
     },
     "pkg_germ_battlecruiser_von_der_tann": {
@@ -977,6 +976,12 @@
       "conditions": {
         "campaign": "ships",
         "mRank": 6
+      }
+    },
+    "pkg_fr_battleship_dunkerque": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
       }
     },
     "pkg_ussr_kv_122": {
@@ -1445,6 +1450,12 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 8
+      }
+    },
+    "pkg_ussr_t_72av_turms": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
       }
     },
     "pkg_environment_uhq": {

@@ -124,7 +124,9 @@ let levelUpRequirePkgDownload = @(lvlUpUnitsPkgs) {
       fontFxFactor = 50
       fontFx = FFT_GLOW
     }.__update(fontSmall)
-    textButtonBattle(utf8ToUpper(loc("msgbox/btn_download")), @() openDownloadAddonsWnd(lvlUpUnitsPkgs))
+    textButtonBattle(utf8ToUpper(loc("msgbox/btn_download")),
+      @() openDownloadAddonsWnd(lvlUpUnitsPkgs, "level_up_wnd",
+        { paramInt1 = buyUnitsData.get().canBuyOnLvlUp.findvalue(@(_) true)?.mRank ?? 0 }))
   ]
 }
 

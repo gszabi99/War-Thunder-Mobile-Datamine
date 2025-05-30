@@ -59,7 +59,9 @@ function reconnect(roomId, attribs) {
 
   log("[ADDONS] Required addons for reconnect = ", addonsToDownload)
   eventbus_send("openDownloadAddonsWnd",
-    { addons = addonsToDownload, successEventId = "reconnectAfterAddons", context = { roomId } })
+    { addons = addonsToDownload, successEventId = "reconnectAfterAddons", context = { roomId },
+      bqSource = "sessionReconnect", bqParams = { paramStr1 = getAttribUnitName(attribs) ?? getMaxRankUnitName() }
+    })
 }
 
 subscribeFMsgBtns({

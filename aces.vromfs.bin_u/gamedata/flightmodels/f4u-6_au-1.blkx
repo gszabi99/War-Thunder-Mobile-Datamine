@@ -1985,7 +1985,7 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "f4u-6_default",
+        "name": "f4u-6_au-1_default",
         "blk": "gameData/FlightModels/weaponPresets/f4u-6_default.blk"
       },
       {
