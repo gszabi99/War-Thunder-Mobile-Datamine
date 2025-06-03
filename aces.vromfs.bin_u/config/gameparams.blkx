@@ -339,6 +339,7 @@
   "cameraShakeKoeffOnWEP": 0.0,
   "enableBotTorpedoShooting": true,
   "torpedoShootByBotMaxDistance": 4000.0,
+  "rocketDetonationDepth": 5.0,
   "shipBotMaxDistToPointToDriveBackward": 2500.0,
   "tankTouchSensMult": 1.0,
   "tankTouchAimSensMult": 1.0,

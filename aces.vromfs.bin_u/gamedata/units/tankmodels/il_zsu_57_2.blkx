@@ -2464,9 +2464,6 @@
       }
     }
   },
-  "battleHideNodes": {
-    "n": "details"
-  },
   "ikGunner": [
     {
       "model": "us_gunner_char",
@@ -3055,5 +3052,13 @@
       "camo_scale": 0.0,
       "camo_rotation": 0.0
     }
+  },
+  "battleHideNodes": {
+    "n": [
+      "details",
+      "details_01",
+      "details_02",
+      "details_03"
+    ]
   }
 }

@@ -24,9 +24,8 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { newbieOfflineMissions } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { allow_players_online_info, allow_subscriptions } = require("%appGlobals/permissions.nut")
 let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkMRankRange } = require("%rGui/state/matchingRank.nut")
 let { canReceivePremDailyBonus } = require("%rGui/state/profilePremium.nut")
 let squadPanel = require("%rGui/squad/squadPanel.nut")
@@ -86,18 +85,13 @@ let mkUnitName = @(unit, sf) {
   ]
 }
 
-let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
-  mkGradientCtorRadial(unitNameBgColor, 0, 40, 25, 0, 15))
-
 function unitNameBlock() {
   let res = { watch = hangarUnit }
   if (hangarUnit.get() != null)
     res.__update({
       watch = [hangarUnit, unseenSkins, unitNameStateFlags]
       size = [SIZE_TO_CONTENT, unitNameBlockHeight]
-      rendObj = ROBJ_IMAGE
       flow = FLOW_HORIZONTAL
-      image = bgGradient()
       behavior = Behaviors.Button
       onElemState = @(sf) unitNameStateFlags.set(sf)
       onClick = @() unitDetailsWnd({ name = hangarUnit.get().name })
@@ -305,6 +299,7 @@ let toBattleButtonPlace = {
       halign = ALIGN_RIGHT
       children = [
         onlineInfo
+        unitNameBlock
         gamercardBattleItemsBalanceBtns
         mkMRankRange
       ]
@@ -328,7 +323,6 @@ let centerTopBlock = {
   halign = ALIGN_CENTER
   gap = centerBlockGap
   children = [
-    unitNameBlock
     mkUnitPkgForBattleDownloadInfo()
   ]
 }

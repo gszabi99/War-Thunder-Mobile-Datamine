@@ -7,7 +7,7 @@ let { selectedSlotIdx, slotIdxByHangarUnit } = require("slotBarState.nut")
 
 
 let draggedData = Watched(null)
-slotIdxByHangarUnit.subscribe(@(v) v ? selectedSlotIdx.set(v) : null)
+slotIdxByHangarUnit.subscribe(@(v) v != null ? selectedSlotIdx.set(v) : null)
 
 function dropUnitToSlot(toIdx, data) {
   if (toIdx == null || data == null)
