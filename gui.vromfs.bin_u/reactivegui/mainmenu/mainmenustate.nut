@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_cam_angles = @() null, set_camera_angle = @(_) null, reset_camera_pos_dir } = require("hangar")
+let { get_cam_angles, set_camera_angle, reset_camera_pos_dir } = require("hangar")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { scenesOrder } = require("%rGui/navState.nut")

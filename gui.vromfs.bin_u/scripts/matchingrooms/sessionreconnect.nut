@@ -5,10 +5,11 @@ let logR = log_with_prefix("[SESSION_RECONNECT] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInMenu, isOnline, isDisconnected } = require("%appGlobals/clientState/clientState.nut")
 let { lobbyStates, sessionLobbyStatus } = require("%appGlobals/sessionLobbyState.nut")
+let { hasAddons, addonsExistInGameFolder, addonsVersions } = require("%appGlobals/updater/addonsState.nut")
 let { joinRoom, lastRoomId } = require("sessionLobby.nut")
 let { subscribeFMsgBtns, openFMsgBox, closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { getModeAddonsInfo, getModeAddonsDbgString } = require("%scripts/matching/gameModeAddons.nut")
+let { getModeAddonsInfo, getModeAddonsDbgString } = require("%appGlobals/updater/gameModeAddons.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -47,7 +48,14 @@ function getAddonsToDownload(attribs) {
   let unitName = getAttribUnitName(attribs) ?? getMaxRankUnitName()
   log("[ADDONS] getModeAddonsInfo at sessionReconnect for unit: ", unitName)
   log("modeInfo = ", getModeAddonsDbgString(mode))
-  return getModeAddonsInfo(mode, [unitName]).addonsToDownload
+  return getModeAddonsInfo(
+    mode,
+    [unitName],
+    serverConfigs.get(),
+    hasAddons.get(),
+    addonsExistInGameFolder.get(),
+    addonsVersions.get()
+  ).addonsToDownload
 }
 
 function reconnect(roomId, attribs) {

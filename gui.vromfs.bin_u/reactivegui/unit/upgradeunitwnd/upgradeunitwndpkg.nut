@@ -8,12 +8,11 @@ let buttonStyles = require("%rGui/components/buttonStyles.nut")
 let fontIconPreview = "⌡"
 
 let offerCardWidth = hdpx(550)
+let offerCardHeight = hdpx(630)
 let cardHPadding = hdpx(80)
 let buyBtnMinWidth = hdpx(300)
 
 let gapCards = isWidescreen ? hdpx(240) : hdpx(120)
-
-let offerCardHeight = hdpx(600)
 
 let patternSize = [hdpx(200), hdpx(200)]
 let bgSlotColor = 0xFFe38e15
@@ -132,6 +131,7 @@ let ovrBuyBtn = {
 
 return {
   offerCardWidth
+  offerCardHeight
   cardHPadding
 
   gapCards

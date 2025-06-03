@@ -2626,7 +2626,7 @@
             ]
           },
           {
-            "iconType": "bomb_50kg",
+            "iconType": "bomb_100kg",
             "name": "type94mod10",
             "Weapon": {
               "trigger": "bombs",

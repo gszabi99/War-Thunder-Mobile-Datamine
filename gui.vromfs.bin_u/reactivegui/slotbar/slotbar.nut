@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { playSound } = require("sound_wt")
 let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
+let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { translucentSlotButton, getBorderCommand, lineWidth, slotBtnSize,
   COMMADN_STATE
 } = require("%rGui/components/translucentButton.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { campMyUnits, campUnitsCfg, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, bgUnit, mkUnitSelectedGlow,
-  mkUnitPlateBorder, mkProfileUnitDailyBonus
+  mkUnitPlateBorder, mkProfileUnitDailyBonus, mkUnitSpinner
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
@@ -24,12 +24,15 @@ let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut"
 let { slotBarTreeHeight, unitPlateSize, unitPlateHeader } = require("slotBarConsts.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { openUnitModsSlotsWnd, mkListUnseenMods } = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { mkSlotLevel } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
+let { mkSlotLevel, levelHolderSize } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
+let { levelProgressBorderWidth } = require("%rGui/components/levelBlockPkg.nut")
 let { priorityUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
 let { openSlotAttrWnd, mkUnseenSlotAttrByIdx } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
 let { infoPanelWidth } = require("%rGui/unitsTree/unitsTreeComps.nut")
 let { gradTranspDoubleSideX, mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
+let { draggedData, dropUnitToSlot } = require("dragDropSlotState.nut")
+let { notActualSlotsByUnit } = require("slotBarUpdater.nut")
 
 
 let slotsGap = hdpx(4)
@@ -38,6 +41,8 @@ let buyIconSize = hdpxi(40)
 let actionBtnSize = slotBtnSize
 let actionBtnsBlockSize = [unitPlateSize[0], actionBtnSize[1] + unseenSize[0]]
 let slotBarSize = [saSize[0] - defButtonMinWidth, unitPlateSize[1] + actionBtnsBlockSize[1] + unitPlateHeader + marginVert]
+let mainMenuTopPadding = hdpx(10)
+let slotBarMainMenuSize = [slotBarSize[0], slotBarSize[1] + mainMenuTopPadding]
 let slotBarUnitsTreePadding = hdpx(20)
 let slotBarUnitsTreeWidth = saSize[0] - infoPanelWidth + saBorders[0] * 2
 
@@ -73,23 +78,53 @@ let emptySlotText = {
   text = loc("slotbar/empty")
 }.__update(fontVeryTinyAccented)
 
-let mkEmptySlot = @(idx, isSelected, stateFlags, onClick) {
-  key = $"empty_{idx}"
-  size = unitPlateSize
-  behavior = Behaviors.Button
-  onClick
-  onElemState = @(s) stateFlags(s)
-  clickableInfo = loc("mainmenu/btnSelect")
-  sound = { click = "choose" }
-  rendObj = ROBJ_IMAGE
-  image = bgUnit
-  children = [
-    emptySlotText
-    mkUnitSelectedGlow(null, Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER)))
-    mkUnitPlateBorder(isSelected)
+let dropMarker = {
+  rendObj = ROBJ_SOLID
+  size = flex()
+  color = 0xFF000000
+  animations = [
+    { prop = AnimProp.color, from = 0x1A000000, to = 0x00999960, duration = 0.8, play = true, loop = true, easing = CosineFull }
   ]
-  animations = [{ prop = AnimProp.opacity, to = 0.0, duration = aTimeSlotAddAppear,
-    easing = OutQuad, playFadeOut = true }]
+}
+
+let function mkEmptySlot(idx, isSelected, stateFlags, onClick) {
+  let needTargetMarker = Computed(@() draggedData.get() != null)
+
+  return @() {
+    watch = [needTargetMarker, isSelected, stateFlags]
+    key = $"empty_{idx}"
+    size = unitPlateSize
+    behavior = Behaviors.DragAndDrop
+    onClick
+    onDrop = @(data) dropUnitToSlot(idx, data)
+    onElemState = @(s) stateFlags(s)
+    clickableInfo = loc("mainmenu/btnSelect")
+    sound = { click = "choose" }
+    rendObj = ROBJ_IMAGE
+    image = bgUnit
+    children = [
+      emptySlotText
+      mkUnitSelectedGlow(null, Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER)))
+      mkUnitPlateBorder(isSelected)
+      needTargetMarker.get() ? dropMarker : null
+    ]
+    animations = [{ prop = AnimProp.opacity, to = 0.0, duration = aTimeSlotAddAppear,
+      easing = OutQuad, playFadeOut = true }]
+    }
+}
+
+let function mkDefaultEmptySlot(idx) {
+  let isSelected = Computed(@() selectedSlotIdx.get() == idx)
+
+  return {
+    size = unitPlateSize
+    rendObj = ROBJ_IMAGE
+    image = bgUnit
+    children = [
+      emptySlotText
+      mkUnitPlateBorder(isSelected)
+    ]
+  }
 }
 
 let function emptySelectSlot(idx) {
@@ -228,11 +263,11 @@ function mkSlotHeaderIndicator(unit, idx, isSelected) {
     }
     onDetach = @() mutateSlots(hasUnseenMods.get())
     children = isSelected.get() || (!hasUnseenMods.get() && !unseenAttr.get().isUnseen && !hasUnseenRewards.get()) ? null
-      : mkUnseenIndicator({ pos = [-hdpx(25), 0], key = {} })
+      : mkUnseenIndicator({ pos = [-hdpx(27), hdpx(1)], key = {} })
   }
 }
 
-function mkSlotHeader(slot, idx, unit, isSelected) {
+function mkSlotHeader(slot, idx, isSelected) {
   let { level = 0 } = slot
 
   return @(){
@@ -254,12 +289,11 @@ function mkSlotHeader(slot, idx, unit, isSelected) {
         hplace = ALIGN_RIGHT
         pos = [hdpx(5), hdpx(1)]
         children = [
-          mkSlotHeaderIndicator(unit, idx, isSelected)
           mkSlotLevel(level,
             hdpx(26),
             { size = [hdpx(110), unitPlateHeader] },
             { fillColor = 0xFF383B3E, color = isSelected.get() ? 0xFFFFFFFF : 0xFFA0A0A0})
-          ]
+        ]
       }
     ]
   }
@@ -269,13 +303,18 @@ let function mkUnitSlot(unit, idx, onClick, isSelected) {
   let stateFlags = Watched(0)
   let trigger = getSlotAnimTrigger(idx, unit.name)
   let needPlayOnAttach = slotsNeedAddAnim.get()?[idx] == unit.name
+  let isDraggedSlot = Computed(@() draggedData.get() != null && draggedData.get().fromIdx == idx)
+  let needTargetMarker = Computed(@() draggedData.get() != null && !isDraggedSlot.get())
+  let needShowSpinner = Computed(@() unit.name in notActualSlotsByUnit.get())
   return @() {
-    watch = [isSelected, stateFlags]
+    watch = [isSelected, stateFlags, needTargetMarker]
     key = $"slot_{idx}_{unit.name}"
     size = unitPlateSize
-    behavior = Behaviors.Button
+    behavior = Behaviors.DragAndDrop
     onClick
-    onElemState = @(s) stateFlags(s)
+    dropData = { unitName = unit.name, fromIdx = idx }
+    onDragMode = @(on, data) draggedData.set(on ? data : null)
+    onDrop = @(data) dropUnitToSlot(idx, data)
     clickableInfo = isSelected.get() ? { skipDescription = true } : loc("mainmenu/btnSelect")
     sound = { click  = "choose" }
     children = [
@@ -290,6 +329,8 @@ let function mkUnitSlot(unit, idx, onClick, isSelected) {
         vplace = ALIGN_BOTTOM
         children = mkProfileUnitDailyBonus(unit)
       }
+      needTargetMarker.get() ? dropMarker : null
+      mkUnitSpinner(needShowSpinner)
     ]
     transform = { pivot = [0.5, 0.5] }
     animations = [
@@ -357,9 +398,10 @@ function onUnitSlotClick(unit, idx) {
 
 let function mkSlotWithButtons(slot, idx) {
   let unit = Computed(@() campMyUnits.get()?[slot?.name] ?? campUnitsCfg.get()?[slot?.name])
+  let needHideDraggableUnit = Computed(@() draggedData.get() != null && draggedData.get().fromIdx == idx)
   let isSelected = Computed(@() selectedSlotIdx.get() == idx)
   return @() {
-    watch = [unit, curSlots, isSelected]
+    watch = [unit, curSlots, needHideDraggableUnit]
     flow = FLOW_VERTICAL
     children = [
       actionBtns(unit, idx)
@@ -367,7 +409,17 @@ let function mkSlotWithButtons(slot, idx) {
         key = slotBarSlotKey(idx) 
         flow = FLOW_VERTICAL
         children = [
-          mkSlotHeader(slot, idx, unit, isSelected)
+          {
+            children = [
+              mkSlotHeader(slot, idx, isSelected)
+              {
+                pos = [-levelHolderSize[0] / 2 - levelProgressBorderWidth * 2, 0]
+                hplace = ALIGN_RIGHT
+                children = mkSlotHeaderIndicator(unit, idx, isSelected)
+              }
+            ]
+          }
+          needHideDraggableUnit.get() ? mkDefaultEmptySlot(idx) : null
           unit.get() == null
             ? emptySelectSlot(idx)
             : mkUnitSlot(unit.get(), idx, @() onUnitSlotClick(unit, idx), isSelected)
@@ -385,19 +437,21 @@ let slotBarMainMenu = mainMenuPannable(@() {
   flow = FLOW_HORIZONTAL
   gap = slotsGap
   children = curSlots.get().map(mkSlotWithButtons)
-})
+}, {}, { padding = [mainMenuTopPadding, 0, 0, 0]})
 
 function mkSlotCommon(slot, idx) {
   let { name = "" } = slot
   let unit = Computed(@() campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name])
+  let needHideDraggableUnit = Computed(@() draggedData.get() != null && draggedData.get().fromIdx == idx)
   let isSelected = Computed(@() selectedTreeSlotIdx.get() == idx)
 
   return @() {
-    watch = unit
+    watch = [unit, needHideDraggableUnit]
     flow = FLOW_VERTICAL
     valign = ALIGN_BOTTOM
     children = [
-      mkSlotHeader(slot, idx, unit, Computed(@() selectedTreeSlotIdx.get() == idx))
+      mkSlotHeader(slot, idx, Computed(@() selectedTreeSlotIdx.get() == idx))
+      needHideDraggableUnit.get() ? mkDefaultEmptySlot(idx) : null
       unit.get() == null
         ? emptySlotTree(idx)
         : mkUnitSlot(unit.get(), idx, @() curSelectedUnit.set(name != "" ? name : null), isSelected)
@@ -456,7 +510,7 @@ function mkSlotSelect(slot, idx) {
     valign = ALIGN_BOTTOM
     flow = FLOW_VERTICAL
     children = [
-      mkSlotHeader(slot, idx, unit, Computed(@() selectedTreeSlotIdx.get() == idx))
+      mkSlotHeader(slot, idx, Computed(@() selectedTreeSlotIdx.get() == idx))
       {
         children = [
           unit.get() == null
@@ -502,6 +556,7 @@ let slotBarSelectWnd = @() {
 return {
   slotBarMainMenu
   slotBarSize
+  slotBarMainMenuSize
   slotBarUnitsTree
   slotBarTreeHeight
   slotBarSelectWnd

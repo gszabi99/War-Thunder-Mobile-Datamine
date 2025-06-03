@@ -286,6 +286,8 @@ return {
   PROMO_TAB
   ACHIEVEMENTS_TAB
 
+  DAILY_SECTION
+
   onWatchQuestAd
   SPEED_UP_AD_COST
 }

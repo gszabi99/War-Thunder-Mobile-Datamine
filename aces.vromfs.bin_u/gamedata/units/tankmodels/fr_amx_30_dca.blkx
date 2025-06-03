@@ -2244,15 +2244,6 @@
       "blk": "gameData/units/tankModels/weaponPresets/fr_amx_30_dca_default.blk"
     }
   },
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/fr_dr_vc_1a.blk",
-      "turretIndex": 0,
-      "designationFromBody": true,
-      "designationTurretIndex": 0,
-      "dmPart": "antenna_target_location_dm"
-    }
-  },
   "VehiclePhys": {
     "Mass": {
       "Empty": 35200.0,

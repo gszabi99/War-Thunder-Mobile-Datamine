@@ -13,6 +13,9 @@ let { minContentOffset, tabW } = require("%rGui/options/optionsStyle.nut")
 let { mkBalanceDiffAnims } = require("%rGui/mainMenu/balanceAnimations.nut")
 let { headerLineGap } = require("questsPkg.nut")
 let { sendBqQuestsStage } = require("bqQuests.nut")
+let { allShopGoods } = require("%rGui/shop/shopState.nut")
+let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
+let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
 
 
 let questBarHeight = hdpx(28)
@@ -41,6 +44,17 @@ isLoggedIn.subscribe(function(_) {
   visibleProgress.set({})
   changeOrders.set({})
 })
+
+let onStageRewardClickByType = {
+  function discount(reward) {
+    let goodsIdByPersonalDisc = serverConfigs.get()?.personalDiscounts
+      .findindex(@(list) list.findindex(@(v) v.id == reward.id) != null)
+    let needShowAsOffer = allShopGoods.get()?[goodsIdByPersonalDisc].meta.showAsOffer
+
+    if (needShowAsOffer && goodsIdByPersonalDisc in activeOffersByGoods.get())
+      openGoodsPreview(goodsIdByPersonalDisc)
+  }
+}
 
 let initProgress = @(name) name in visibleProgress.get() ? null
   : visibleProgress.mutate(@(v) v[name] <- unlockProgress.get()?[name].current)
@@ -153,7 +167,9 @@ let pannableArea = horizontalPannableAreaCtor(progressBarWidthFull, [fadeWidth, 
 
 function getCurStageIdx(unlock) {
   let { stages = [], current = 0 } = unlock
-  return stages.findindex(@(s) s.progress >= current)
+  return stages.findindex(@(s) s.progress >= current) ?? stages.reduce(
+    @(res, s, idx) s.progress >= res.progress ? { idx, progress = s.progress } : res,
+    { idx = null, progress = 0 }).idx
 }
 
 function calcStageCompletion(stages, idx, current) {
@@ -246,7 +262,11 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
           return
         }
         if (stageCompletion.get() < 1.0)
-          anim_start("eventProgressStats")
+          return anim_start("eventProgressStats")
+
+        let reward = rewardPreview.get()?[0]
+        if (reward?.rType in onStageRewardClickByType)
+          onStageRewardClickByType[reward.rType](reward)
       }
 
       return {

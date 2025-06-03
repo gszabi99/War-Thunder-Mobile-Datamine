@@ -394,7 +394,7 @@ def ammo_stowage_net_sync_es(evt : EventAmmoStowageNetSync;
     sendEvent(eid, EventBulletsAmountChanged(isRefill = false))
 
 
-[es]
+[es(no_order)]
 def ammo_stowage_gun_net_sync_es(act : UpdateStageInfoAct;
                                  var unit__ref : UnitRef;
                                  var ammo_stowages__state : UInt32List&;

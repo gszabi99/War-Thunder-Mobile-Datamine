@@ -1991,7 +1991,6 @@
     "isFarAwayTanksEnabled": true,
     "minSilhouetteElemSize": 2,
     "maxSilhouetteElemSize": 12,
-    "silhouetteFadeDist": 200.0,
     "silhouetteFadeSize": 2.0
   },
   "predictionVolumeParams": {

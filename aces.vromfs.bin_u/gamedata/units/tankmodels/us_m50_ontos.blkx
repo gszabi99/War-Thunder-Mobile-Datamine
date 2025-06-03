@@ -1722,7 +1722,7 @@
         ],
         "emitterGenFmt": "bone_rocket_%02d",
         "recoilMultiplier": 0.025,
-        "aimingFromBoneGun": true,
+        "aimingFromBoneGun": false,
         "allowableDelta": 20.0,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,

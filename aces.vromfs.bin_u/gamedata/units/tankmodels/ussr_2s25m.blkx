@@ -47,6 +47,7 @@
   "waterBreakerAnimVar": "2s25m_break_water_action",
   "waterBreakerToggleTime": 4.0,
   "type": "typeLightTank",
+  "minRelativeTankCameraThreshold": 1.45,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "smokeScreenActivateTime": 5.0,

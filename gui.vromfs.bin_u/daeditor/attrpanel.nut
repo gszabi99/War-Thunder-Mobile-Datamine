@@ -164,8 +164,8 @@ let mkCompNameText = function(comp_name, comp_name_text, metaInfo, modified, gro
     group = group
     behavior = Behaviors.Marquee
     scrollOnHover = true
-    delay = 1.0
-    speed = 50
+    delay = 0.3
+    speed = hdpx(100)
   }
 }
 

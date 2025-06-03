@@ -1,0 +1,596 @@
+{
+  "entity": [
+    {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          0.775791,
+          0.0,
+          0.63099
+        ],
+        [
+          -0.160464,
+          0.978375,
+          -0.130514
+        ],
+        [
+          -0.617345,
+          -0.20684,
+          0.759014
+        ],
+        [
+          -2650.52,
+          1.21304,
+          373.84
+        ]
+      ],
+      "spawnPointType": "ship",
+      "forPremiumVehicle": true
+    },
+    {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          0.887938,
+          0.0,
+          -0.459962
+        ],
+        [
+          0.0810729,
+          0.995823,
+          -0.0419967
+        ],
+        [
+          -0.458041,
+          0.0913046,
+          0.88423
+        ],
+        [
+          -1921.85,
+          2.95275,
+          158.664
+        ]
+      ],
+      "spawnPointType": "ship",
+      "forPremiumVehicle": false
+    },
+    {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          0.94787,
+          0.0,
+          0.318656
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.318656,
+          0.0,
+          0.94787
+        ],
+        [
+          2616.13,
+          8.04791,
+          2197.11
+        ]
+      ],
+      "spawnPointType": "ship",
+      "forPremiumVehicle": false
+    },
+    {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          0.770958,
+          0.0,
+          -0.636886
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.636886,
+          0.0,
+          0.770958
+        ],
+        [
+          1436.78,
+          9.11842,
+          1493.74
+        ]
+      ],
+      "spawnPointType": "tank",
+      "forPremiumVehicle": false
+    },
+    {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          0.73854,
+          0.0,
+          -0.67421
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.67421,
+          0.0,
+          0.73854
+        ],
+        [
+          1446.68,
+          9.11842,
+          1498.9
+        ]
+      ],
+      "spawnPointType": "tank",
+      "forPremiumVehicle": false
+    },
+    {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          0.676976,
+          0.0,
+          -0.736005
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.736005,
+          0.0,
+          0.676976
+        ],
+        [
+          1455.29,
+          9.11842,
+          1504.15
+        ]
+      ],
+      "spawnPointType": "tank",
+      "forPremiumVehicle": false
+    },
+    {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          -0.0175486,
+          0.0816469,
+          -0.996507
+        ],
+        [
+          -0.0092556,
+          0.996604,
+          0.0818179
+        ],
+        [
+          0.999803,
+          0.0106591,
+          -0.0167333
+        ],
+        [
+          3695.54,
+          25.6002,
+          3650.58
+        ]
+      ],
+      "spawnPointType": "aircraft",
+      "forPremiumVehicle": true
+    },
+    {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          -0.0726417,
+          0.0,
+          -0.997358
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.997358,
+          0.0,
+          -0.0726417
+        ],
+        [
+          3671.73,
+          26.2387,
+          3655.06
+        ]
+      ],
+      "spawnPointType": "aircraft",
+      "forPremiumVehicle": false
+    },
+    {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          0.00635344,
+          0.0,
+          -0.99998
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.99998,
+          0.0,
+          0.00635344
+        ],
+        [
+          3630.33,
+          25.2393,
+          3654.13
+        ]
+      ],
+      "spawnPointType": "aircraft",
+      "forPremiumVehicle": false
+    },
+    {
+      "_template": "backmodel_spawn_point",
+      "transform": [
+        [
+          -0.0149135,
+          0.0,
+          -0.999889
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999889,
+          0.0,
+          -0.0149135
+        ],
+        [
+          3605.65,
+          25.9672,
+          3650.37
+        ]
+      ],
+      "spawnPointType": "aircraft",
+      "forPremiumVehicle": false
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "objectGroups",
+      "setting__playerNo": -1,
+      "setting__unit_class": "hangar_objects",
+      "setting__name": "test_bridge",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 2,
+      "setting__count": 1,
+      "setting__active": true,
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          0.979691,
+          0.0,
+          0.20051
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.20051,
+          0.0,
+          0.979691
+        ],
+        [
+          1462.09,
+          8.38,
+          1483.27
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "objectGroups",
+      "setting__playerNo": -1,
+      "setting__unit_class": "hangar_water_objects",
+      "setting__name": "test_bridge",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 2,
+      "setting__count": 1,
+      "setting__active": true,
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1675.2,
+          7.0,
+          -2355.9
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "objectGroups",
+      "setting__playerNo": -1,
+      "setting__unit_class": "hangar_air_objects",
+      "setting__name": "test_bridge",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 2,
+      "setting__count": 1,
+      "setting__active": true,
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3651.5,
+          46.0,
+          3641.45
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "objectGroups",
+      "setting__playerNo": -1,
+      "setting__unit_class": "hangar_objects_april",
+      "setting__name": "test_bridge",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 2,
+      "setting__count": 1,
+      "setting__active": true,
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3718.8,
+          23.6,
+          3636.9
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "tank",
+      "setting__playerNo": -1,
+      "setting__className": "tankModels/us_halftrack_m16",
+      "setting__unit_class": "us_halftrack_m16",
+      "setting__name": "armada_29",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 1,
+      "setting__count": 1,
+      "setting__attack_type": "dont_aim",
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2197.6,
+          8.13,
+          1887.4
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "tank",
+      "setting__playerNo": -1,
+      "setting__className": "tankModels/us_halftrack_m16",
+      "setting__unit_class": "us_halftrack_m16",
+      "setting__name": "armada_30",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 1,
+      "setting__count": 1,
+      "setting__isDead": true,
+      "setting__attack_type": "dont_aim",
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2217.6,
+          8.13,
+          1887.4
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "aircraft",
+      "setting__playerNo": -1,
+      "setting__className": "fw_190a_1",
+      "setting__unit_class": "fw_190a_1",
+      "setting__name": "armada_31",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 1,
+      "setting__count": 1,
+      "setting__attack_type": "dont_aim",
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2131.7,
+          8.13,
+          1909.8
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "aircraft",
+      "setting__playerNo": -1,
+      "setting__className": "fw_190a_1",
+      "setting__unit_class": "fw_190a_1",
+      "setting__name": "armada_32",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 1,
+      "setting__count": 1,
+      "setting__isDead": true,
+      "setting__attack_type": "dont_aim",
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2157.7,
+          8.13,
+          1909.8
+        ]
+      ]
+    },
+    {
+      "_template": "unit_loader",
+      "setting__unitType": "ship",
+      "setting__playerNo": -1,
+      "setting__className": "ships/us_destroyer_fletcher",
+      "setting__unit_class": "us_destroyer_fletcher",
+      "setting__name": "armada_33",
+      "setting__weapons": "",
+      "setting__skin": "",
+      "setting__army": 1,
+      "setting__count": 1,
+      "setting__attack_type": "dont_aim",
+      "setting__loadSound": false,
+      "setting__tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2908.1,
+          8.13,
+          -2939.6
+        ]
+      ]
+    }
+  ]
+}

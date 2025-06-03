@@ -6,13 +6,13 @@ let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let { visibleOffer, onOfferSceneAttach, onOfferSceneDetach, offerPurchasingState, reqAddonsToShowOffer
+let { visibleOffer, onOfferSceneAttach, onOfferSceneDetach, offerPurchasingState
 } = require("offerState.nut")
 let { activeOffersByGoods, mkOfferByGoodsPurchasingState
 } = require("offerByGoodsState.nut")
 let { mkOffer } = require("%rGui/shop/goodsView/offers.nut")
 let { offerW, offerH } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { openGoodsPreview, previewType } = require("%rGui/shop/goodsPreviewState.nut")
+let { openGoodsPreview, previewType, getAddonsToShowGoods } = require("%rGui/shop/goodsPreviewState.nut")
 let { buyPlatformGoods } = require("platformGoods.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
@@ -40,7 +40,9 @@ function previewOffer() {
   if (visibleOffer.get() == null)
     return
 
-  if (reqAddonsToShowOffer.get().len() == 0) {
+  let reqAddonsToShowOffer = (!isReadyToFullLoad.get() || visibleOffer.get() == null) ? []
+    : getAddonsToShowGoods(visibleOffer.get(), serverConfigs.get()?.allUnits, hasAddons.get())
+  if (reqAddonsToShowOffer.len() == 0) {
     openGoodsPreview(visibleOffer.get().id)
     if (previewType.get() == null) { 
       buyPlatformGoods(visibleOffer.get())
@@ -51,7 +53,7 @@ function previewOffer() {
     return
   }
 
-  openDownloadAddonsWnd(reqAddonsToShowOffer.get(), "previewOfferByClick", { paramStr1 = visibleOffer.get().id },
+  openDownloadAddonsWnd(reqAddonsToShowOffer, "previewOfferByClick", { paramStr1 = visibleOffer.get().id },
     "openGoodsPreview", { id = visibleOffer.get().id })
   sendOfferBqEvent("openInfoFromBanner", visibleOffer.get().campaign)
 }

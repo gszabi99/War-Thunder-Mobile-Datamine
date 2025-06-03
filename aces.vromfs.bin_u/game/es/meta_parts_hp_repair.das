@@ -57,10 +57,11 @@ def start_meta_parts_repair_es(evt : Event;
   if player != null
     broadcastEvent(EventOnPlayerRepair(userId = player.id, hpRepaired = hpWillBeRepaired))
 
-def repair_meta_parts(var unit_dm : DamageableVisualModel?;
+def repair_meta_parts(var unit : Unit?;
                       repair_speed : float;
                       max_hp : float;
                       repair_interval : float) : bool
+  assume unit_dm = unit.visual
   let metaPartsSize = length(unit_dm.metaParts)
   var anyMetapartNeedRepair = false
   for i in range(0, metaPartsSize)
@@ -75,7 +76,8 @@ def repair_meta_parts(var unit_dm : DamageableVisualModel?;
     metaPart |> setHp(rel_hp_float_to_fixed_ceil(relHpAfterRepair))
 
     for partId in props.parts
-      unit_dm.dmData.parts[int(partId.id)].relHpFixed = uint16(max(int(unit_dm.dmData.parts[int(partId.id)].relHpFixed), int(metaPart.hp)))
+      assume part = get_damage_part_props_for_modification(unit.dmData, partId)
+      part.relHpFixed = uint16(max(int(part.relHpFixed), int(metaPart.hp)))
 
   return anyMetapartNeedRepair
 
@@ -112,7 +114,7 @@ def repair_meta_parts_hp_es(info : UpdateStageInfoAct;
     meta_parts_hp_repair__nextAtTime = info.curTime + meta_parts_hp_repair__interval
     meta_parts_hp_repair__prevProgress = ship.metapartsRepairProgress
 
-    let anyMetapartNeedRepair =  repair_meta_parts(unitDm,
+    let anyMetapartNeedRepair =  repair_meta_parts(unit,
                       meta_parts_hp_repair__speed * meta_parts_hp_repair__boost,
                       meta_parts_hp_repair__maxHp,
                       meta_parts_hp_repair__interval)

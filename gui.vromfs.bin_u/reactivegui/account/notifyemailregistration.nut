@@ -68,8 +68,16 @@ function openGuestMsg() {
     uid = GUEST_MSG_UID
     text = "".concat(loc("msg/needRegistrationForProgress"), "\n", loc("mainmenu/desc/link_to_gaijin_account"))
     buttons = [
-      { id = "later", isCancel = true, cb = @() isGuestMsgShowed(true) }
-      { id = "linkEmail", styleId = "PRIMARY", isDefault = true, cb = @() eventbus_send("fMsgBox.onClick.openGuestEmailRegistration", {}) }
+      { id = "later", isCancel = true, cb = @() isGuestMsgShowed.set(true) }
+      {
+        id = "linkEmail"
+        styleId = "PRIMARY"
+        isDefault = true
+        function cb() {
+          isGuestMsgShowed.set(true)
+          eventbus_send("fMsgBox.onClick.openGuestEmailRegistration", {})
+        }
+      }
     ]
   })
 }

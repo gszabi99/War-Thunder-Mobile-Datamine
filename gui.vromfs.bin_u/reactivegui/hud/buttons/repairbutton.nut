@@ -3,6 +3,7 @@ let { playSound } = require("sound_wt")
 let { playHapticPattern } = require("hapticVibration")
 let { TouchScreenButton } = require("wt.behaviors")
 let { activateActionBarAction } = require("hudActionBar")
+let { repairAssistAllow } = require("%rGui/hudState.nut")
 let { round } = require("math")
 let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { isAvailableActionItem, mkActionItemProgressByWatches, mkActionItemCount,
@@ -164,7 +165,7 @@ function tankRrepairButtonCtor(scale) {
   }
 
   return @() {
-        watch = [actionItem, shortcutId]
+        watch = [actionItem, shortcutId, isAvailable]
         key = "btn_repair_with_medical"
         size = [btnSize, btnSize + footerHeight]
         halign = ALIGN_CENTER
@@ -193,10 +194,14 @@ function tankRrepairButtonCtor(scale) {
               mkActionItemProgressByWatches(actionItem, isAvailable)
               mkActionItemBorder(borderW, stateFlagsMain, Computed(@() !isAvailable.get()))
               @() {
-                watch = [isAvailable, btnImage]
+                watch = [isAvailable, btnImage, repairAssistAllow]
                 rendObj = ROBJ_IMAGE
                 size = [btnSize, btnSize]
-                image = Picture($"ui/gameuiskin#{btnImage.get()}:{btnSize}:{btnSize}:P")
+                image = Picture($"ui/gameuiskin#{repairAssistAllow.get() == 1
+                    ? "hud_repair_assist.svg"
+                  : repairAssistAllow.get() > 1
+                    ? "hud_cancel_repair_assist.svg"
+                  : btnImage.get()}:{btnSize}:{btnSize}:P")
                 keepAspect = true
                 color = !isAvailable.get() ? imageDisabledColor : imageColor
               }

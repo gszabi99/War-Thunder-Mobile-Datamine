@@ -278,7 +278,7 @@ let mkRowGroup = @(children) {
   children
 }
 
-let calcRowsByElems = @(elems, elemsInRow) ceil(1.0 * elems.len() / elemsInRow)
+let calcRowsByElems = @(elems, elemsInRow) ceil(1.0 * elems.len() / elemsInRow).tointeger()
 let arrayToRows = @(elems, elemsInRow, ovr = {}) array(calcRowsByElems(elems, elemsInRow))
   .map(@(_, idx) mkRowGroup(elems.slice(idx * elemsInRow, (idx + 1) * elemsInRow)).__update(ovr))
 

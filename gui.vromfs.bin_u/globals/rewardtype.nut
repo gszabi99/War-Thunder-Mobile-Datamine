@@ -17,6 +17,7 @@ let allTypes = {
   G_UNIT_EXP = "unitExp"
   G_PRIZE_TICKET = "prizeTicket"
   G_RESEARCH_EXP = "researchExp"
+  G_DISCOUNT = "discount"
 }
 
 let rewardTypeByValue = allTypes.reduce(@(res, v, k) res.$rawset(v, k), {})

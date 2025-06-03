@@ -6,7 +6,7 @@ let { mkGoodsWrap, mkBgImg, borderBgGold, mkSubsPricePlate,
   mkSlotBgImg, mkSquareIconBtn,
   goodsSmallSize, goodsBgH, mkBgParticles
 } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
+let { mkGradGlowMultiLine } = require("%rGui/components/gradTexts.nut")
 
 
 let fontIconPreview = "⌡"
@@ -26,11 +26,10 @@ let bgHiglight =  {
   color = 0x0134130A
 }
 
-let mkTitle = @(id) mkGradGlowText(utf8ToUpper(getSubsName(id)), fontWtBig, titleFontGrad,
-  {
-    pos = [0, hdpx(10)]
-    hplace = ALIGN_CENTER
-  })
+let mkTitle = @(id) mkGradGlowMultiLine(utf8ToUpper(getSubsName(id)), fontWtMediumAccented, titleFontGrad, goodsSmallSize[0], {
+  pos = [0, hdpx(10)]
+  hplace = ALIGN_CENTER
+})
 
 function mkSubscriptionCard(subs, onClick, state, animParams) {
   let { id } = subs

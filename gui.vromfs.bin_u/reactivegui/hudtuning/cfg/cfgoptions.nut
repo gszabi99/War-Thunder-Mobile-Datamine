@@ -44,7 +44,7 @@ let optDoubleCourseGuns = {
 
 let hasDoubleRepair = @(options, _ = null) !!options?.hasDoubleRepair
 let optDoubleRepairBtn = {
-  locId = "options/courseGun"
+  locId = "options/repair"
   ctrlType = OCT_LIST
   has = hasDoubleRepair
   list = [false, true]

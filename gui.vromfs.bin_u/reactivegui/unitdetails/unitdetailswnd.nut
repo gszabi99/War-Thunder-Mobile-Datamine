@@ -34,7 +34,7 @@ let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { openUnitRewardsModal, unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { PRIMARY, defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { clearDmViewerUnitDataCache } = require("%rGui/dmViewer/dmViewerState.nut")
+let { clearDmViewerUnitDataCollection } = require("%rGui/dmViewer/dmViewerState.nut")
 let dmViewerBgComps = require("%rGui/dmViewer/dmViewerBgComps.nut")
 let dmViewerHintComps = require("%rGui/dmViewer/dmViewerHintComps.nut")
 let mkDmViewerSwitchComp = require("%rGui/dmViewer/mkDmViewerSwitchComp.nut")
@@ -269,7 +269,7 @@ let sceneRoot = {
     sendNewbieBqEvent("openUnitDetails", { status = unitToShow.value?.name ?? "" })
   }
   function onDetach() {
-    clearDmViewerUnitDataCache()
+    clearDmViewerUnitDataCollection()
     isWindowAttached(false)
   }
   children = {

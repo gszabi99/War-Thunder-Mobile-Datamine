@@ -2575,7 +2575,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/bombGuns/us_500lb_anm64a1.blk",
-              "emitter": "bomb4",
+              "emitter": "bomb2",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2587,7 +2587,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
-              "emitter": "bomb7",
+              "emitter": "bomb6",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2618,7 +2618,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
-              "emitter": "bomb8",
+              "emitter": "bomb7",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2637,7 +2637,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/bombGuns/us_500lb_anm64a1.blk",
-              "emitter": "bomb2",
+              "emitter": "bomb4",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2649,7 +2649,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
-              "emitter": "bomb6",
+              "emitter": "bomb8",
               "bullets": 1,
               "external": true,
               "separate": true

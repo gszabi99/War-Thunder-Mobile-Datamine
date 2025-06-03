@@ -93,6 +93,15 @@
             "hp": 30000.0,
             "hpFireMult": 0.1,
             "fireSpeed": 0.03
+          },
+          {
+            "army": 2,
+            "target": "airfield_bombing_zone",
+            "hp": 100000.0,
+            "hpFireMult": 0.005,
+            "fireSpeed": 0.03,
+            "use_variable": false,
+            "airfield": "airfield_02"
           }
         ]
       },
@@ -2009,6 +2018,37 @@
           "army": 2,
           "active": true
         }
+      },
+      {
+        "name": "airfield_02",
+        "tm": [
+          [
+            0.450288,
+            0.0,
+            0.892883
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.892883,
+            0.0,
+            0.450288
+          ],
+          [
+            2112.55,
+            302.15,
+            6540.6
+          ]
+        ],
+        "unit_class": "dynaf_universal_1line_b_nolight",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
       }
     ],
     "tracked_vehicles": [
@@ -3272,6 +3312,33 @@
           4020.7,
           261.6,
           6282.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "airfield_bombing_zone": {
+      "type": "Box",
+      "tm": [
+        [
+          671.402,
+          0.0,
+          -334.245
+        ],
+        [
+          0.0,
+          400.0,
+          0.0
+        ],
+        [
+          1114.15,
+          0.0,
+          2238.01
+        ],
+        [
+          2100.2,
+          100.0,
+          6525.45
         ]
       ],
       "objLayer": 0,

@@ -1,6 +1,7 @@
 from "%sqstd/frp.nut" import *
 from "daRg" import *
 import "daRg.behaviors" as Behaviors
+from "%sqstd/functools.nut" import Set
 
 let {tostring_r} = require("%sqstd/string.nut")
 let {min}  = require("math")
@@ -135,11 +136,11 @@ function dump_observables() {
 }
 
 let colorPart = @(value) min(255, (value + 0.5).tointeger())
-function mul_color(color, mult) {
+function mul_color(color, mult, alpha_mult=1) {
   return Color(  colorPart(((color >> 16) & 0xff) * mult),
                  colorPart(((color >>  8) & 0xff) * mult),
                  colorPart((color & 0xff) * mult),
-                 colorPart(((color >> 24) & 0xff) * mult))
+                 colorPart(((color >> 24) & 0xff) * mult * alpha_mult))
 }
 
 function XmbNode(params={}) {
@@ -174,4 +175,5 @@ return {
   fsh
   Behaviors
   getWatcheds
+  Set
 }

@@ -1549,7 +1549,7 @@
     }
   },
   "WeaponSlots": {
-    "maxloadMass": 1640.0,
+    "maxloadMass": 1750.0,
     "maxloadMassLeftConsoles": 820.0,
     "maxloadMassRightConsoles": 820.0,
     "maxDisbalance": 600.0,

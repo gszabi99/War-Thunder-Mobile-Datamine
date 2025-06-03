@@ -16,7 +16,7 @@ let { can_debug_shop } = require("%appGlobals/permissions.nut")
 let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
 let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { object_to_json_string } = require("json")
+let { object_to_json_string, parse_json } = require("json")
 let { logEvent } = require("appsFlyer")
 let { showRestorePurchasesDoneMsg } = require("platformGoodsCommon.nut")
 
@@ -55,7 +55,7 @@ let {
       dbgPurchAnswers[dbgCounter++ % dbgPurchAnswers.len()])),
   confirmPurchase = @(_) setTimeout(1.0, @() eventbus_send("ios.billing.onConfirmPurchaseCallback",{status = true})),
   setSuspend = @(_) null
-  restorePurchases = @() setTimeout(1.0,
+  restorePurchases = @(_) setTimeout(1.0,
     @() eventbus_send("ios.billing.onRestorePurchases", { status = AS_OK, transactions =
     [
       { status = AS_OK, id = "id3", data = "data3", transaction_id = "trans3"},
@@ -143,7 +143,13 @@ function restorePurchasesExt(isSilent = true) {
   lastYu2TimeoutErrorTime.set(0)
   purchaseInProgress.set("")
   restoreStatus.set(isSilent ? RESTORE_STARTED_SILENT : RESTORE_STARTED)
-  restorePurchases()
+  let count = restorePurchases.getfuncinfos().native
+    ? restorePurchases.getfuncinfos().paramscheck
+    : restorePurchases.getfuncinfos().parameters.len()
+  if (count == 2)
+    restorePurchases(isSilent)
+  else
+    restorePurchases()
 }
 
 let needAutoRestore = keepref(Computed(@() isLoggedIn.get() && lastInitStatus.get() == AS_OK))
@@ -261,11 +267,15 @@ eventbus_subscribe("ios.billing.onInitAndDataRequested", function(result) {
   lastInitStatus(status)
   if (status != AS_OK)
     return
-  if (type(value) != "array") {
-    logerr($"Bad format of ios.billing.onInitAndDataRequested: type of parsed value is {type(value)}")
-    return
+  local items = value
+  if (type(items) != "array") {
+    items = parse_json(value)
+    if (type(items) != "array") {
+      logerr($"Bad format of ios.billing.onInitAndDataRequested: type of parsed value is {type(value)}")
+      return
+    }
   }
-  products.mutate(@(allInfo) value.each(function(v) {
+  products.mutate(@(allInfo) items.each(function(v) {
     let { productId = null } = v
     if (productId != null)
       allInfo[productId] <- v

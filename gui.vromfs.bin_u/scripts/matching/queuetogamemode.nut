@@ -12,10 +12,9 @@ let { sendUiBqEvent, sendLoadingAddonsBqEvent } = require("%appGlobals/pServer/b
 let { downloadInProgress, getDownloadLeftMbNotUpdatable } = require("%appGlobals/clientState/downloadState.nut")
 let { isInQueue, joinQueue } = require("queuesClient.nut")
 let { localizeAddons, getAddonsSize, mbToString, MB } = require("%appGlobals/updater/addons.nut")
-let { addonsSizes, addonsVersions } = require("%appGlobals/updater/addonsState.nut")
+let { addonsSizes, addonsVersions, hasAddons, addonsExistInGameFolder } = require("%appGlobals/updater/addonsState.nut")
 let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
-let { getModeAddonsInfo, getModeAddonsDbgString } = require("gameModeAddons.nut")
+let { getModeAddonsInfo, getModeAddonsDbgString, allBattleUnits } = require("%appGlobals/updater/gameModeAddons.nut")
 let { balanceGold } = require("%appGlobals/currenciesState.nut")
 let { isInSquad, isSquadLeader, squadMembers, squadId, isInvitedToSquad, squadOnline,
   MAX_SQUAD_MRANK_DIFF, squadLeaderCampaign, getMemberMaxMRank
@@ -135,21 +134,6 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
   return true
 }
 
-function getAllBattleUnits() {
-  let res = {}
-  if (curCampaignSlotUnits.get() != null)
-    curCampaignSlotUnits.get().each(@(name) res[name] <- true)
-  else if (curUnit.value != null)
-    res[curUnit.value.name] <- true
-  foreach(m in squadMembers.value) {
-    let list = m?.units[squadLeaderCampaign.get()]
-    if (type(list) == "array")
-      foreach(name in list)
-        res[name] <- true
-  }
-  return res.keys()
-}
-
 function queueToGameModeImpl(mode) {
   if (isInQueue.value)
     return
@@ -165,10 +149,14 @@ function queueToGameModeImpl(mode) {
     return
   }
 
-  let allBattlenits = getAllBattleUnits()
-  log("[ADDONS] getModeAddonsInfo at queueToGameMode for units: ", getAllBattleUnits())
+  log("[ADDONS] getModeAddonsInfo at queueToGameMode for units: ", allBattleUnits.get())
   log("modeInfo = ", getModeAddonsDbgString(mode))
-  let { addonsToDownload, updateDiff, allReqAddons } = getModeAddonsInfo(mode, allBattlenits)
+  let { addonsToDownload, updateDiff, allReqAddons } = getModeAddonsInfo(mode,
+    allBattleUnits.get(),
+    serverConfigs.get(),
+    hasAddons.get(),
+    addonsExistInGameFolder.get(),
+    addonsVersions.get())
   if (!isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods))
     return
 
@@ -183,7 +171,7 @@ function queueToGameModeImpl(mode) {
       sizeMb = (getAddonsSize(addonsToDownload, addonsSizes.get()) + (MB / 2)) / MB
 
     sendLoadingAddonsBqEvent(isUpdate ? "msg_update_addons_for_queue" : "msg_download_addons_for_queue", addonsToDownload,
-      { sizeMb, source = mode.name, unit = ";".join(allBattlenits) })
+      { sizeMb, source = mode.name, unit = ";".join(allBattleUnits.get()) })
 
     openFMsgBox({
       text = loc(isUpdate ? "msg/needUpdateAddonToPlayGameMode" : "msg/needAddonToPlayGameMode",
@@ -275,11 +263,11 @@ function queueToGameModeAfterAddons(modeId) {
   let mode = allGameModes.value?[modeId]
   if (mode == null)
     return 
-  let { addonsToDownload } = getModeAddonsInfo(mode, getAllBattleUnits())
+  let { addonsToDownload } = getModeAddonsInfo(mode, allBattleUnits.get(), serverConfigs.get(), hasAddons.get(), addonsExistInGameFolder.get(), addonsVersions.get())
   if (addonsToDownload.len() == 0)
     queueToGameMode(modeId)
   else {
-    log("[ADDONS] failed to load addons at queueToGameMode (", getAllBattleUnits(), "): ", addonsToDownload)
+    log("[ADDONS] failed to load addons at queueToGameMode (", allBattleUnits.get(), "): ", addonsToDownload)
     openFMsgBox({ text = loc("msg/unableToUpadateAddons") })
   }
 }

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isInBattle, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { questsBySection } = require("%rGui/quests/questsState.nut")
 let { activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
 
@@ -34,7 +34,6 @@ function calcQuestProgressDiffAndSend(questsBySectionV) {
   let prevValues = prevProgress.get()
   if (prevValues == null)
     return
-  resetPrevProgress()
 
   let res = {}
   foreach (section in {}.__merge(questsBySectionV, getTreeEventQuests()))
@@ -47,4 +46,5 @@ function calcQuestProgressDiffAndSend(questsBySectionV) {
 }
 
 isInBattle.subscribe(@(v) v ? savePrevProgress() : null)
+isInDebriefing.subscribe(@(v) v ? null : resetPrevProgress())
 questsBySection.subscribe(@(v) calcQuestProgressDiffAndSend(v))

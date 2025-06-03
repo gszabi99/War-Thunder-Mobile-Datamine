@@ -30,10 +30,10 @@
   "isBulletBelt": false,
   "bullet": {
     "bulletCount": 40,
-    "mass": 4.5,
+    "mass": 4.65,
     "caliber": 0.105,
-    "damageCaliber": 0.044,
-    "ballisticCaliber": 0.057,
+    "damageCaliber": 0.061,
+    "ballisticCaliber": 0.08,
     "speed": 1450.0,
     "maxDistance": 10000.0,
     "normalizationPreset": "apcr",
@@ -54,14 +54,14 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/apds.ivf",
-    "bulletName": "105mm_slpprj_m62",
-    "Cx": 0.155,
+    "bulletName": "105mm_slpprj_m66",
+    "Cx": 0.1,
     "breakingArmorThicknessEffective": true,
     "breakingArmorThickness": [
       30.0,
       150.0
     ],
-    "breakingCriticalSpeed": 1405.0,
+    "breakingCriticalSpeed": 1370.0,
     "breakingDistance": 0.1,
     "relativeVelHitShift": [
       300.0,
@@ -186,7 +186,7 @@
             ],
             "slopeEffect30deg": [
               30.0,
-              1.8
+              1.84
             ],
             "slopeEffect35deg": [
               35.0,
@@ -246,7 +246,7 @@
         0.0
       ],
       "traceFreq": 1,
-      "tracer": "50mmRed",
+      "tracer": "30mmRed",
       "trail": "black"
     },
     "collisions": {

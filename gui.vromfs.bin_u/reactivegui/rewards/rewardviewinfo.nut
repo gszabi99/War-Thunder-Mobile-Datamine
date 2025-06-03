@@ -11,8 +11,10 @@ let rTypesPriority = {
   unitUpgrade     = 20000
   unit            = 10000
   blueprint       = 9000
+  discount        = 8000
   skin            = 5000
   decorator       = 1000
+  booster         = 500
   currency        = 100
   premium         = 50
   item            = 1
@@ -41,6 +43,7 @@ let slotsByType = {
   unit = 2
   blueprint = 2
   prizeTicket = 2
+  discount = 2
 }
 
 let slotsByDType = {
@@ -66,9 +69,7 @@ let sortRewardsViewInfo = @(a, b) getPriorirty(b) <=> getPriorirty(a)
 
 let sortRewardsWithOrder = @(a, b) b.rewardOrder <=> a.rewardOrder
   || b.slots <=> a.slots
-  || a.dropLimit <=> b.dropLimit
   || (a?.isLastReward ?? false) <=> (b?.isLastReward ?? false)
-  || a.chance <=> b.chance
   || sortRewardsViewInfo(a, b)
 
 let mkViewInfo = @(id, rType, count = 0, subId = "")

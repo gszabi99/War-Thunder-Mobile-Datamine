@@ -14,6 +14,7 @@
     "animchar_render": {
       "_tags": "render"
     },
+    "animchar__resRefHolder": {},
     "animchar_node_wtm": {
       "_tags": "render"
     },
@@ -28,23 +29,10 @@
     "animchar_bsph": {
       "_tags": "render"
     },
-    "animchar_bsph_precalculated": {
-      "_tags": "render"
-    },
-    "animchar__usePrecalculatedData:b": {
-      "_tags": "render",
-      "value": false
-    },
     "animchar_bbox": {
       "_tags": "render"
     },
-    "animchar_bbox_precalculated:BBox3": {
-      "_tags": "render"
-    },
     "animchar_shadow_cull_bbox": {
-      "_tags": "render"
-    },
-    "animchar_shadow_cull_bbox_precalculated:BBox3": {
       "_tags": "render"
     },
     "animchar_visbits": {
@@ -71,5 +59,15 @@
     "_use": "animchar",
     "animchar__turnDir": true,
     "animchar": {}
+  },
+  "node_collapser": {
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__rootNode:list<i>": {},
+      "animchar_node_collapser__targetNode:list<i>": {},
+      "animchar_node_collapser__childrenCount:list<i>": {},
+      "animchar_node_collapser__children:list<i>": {},
+      "animchar_node_collapser__nodes:object": {}
+    }
   }
 }

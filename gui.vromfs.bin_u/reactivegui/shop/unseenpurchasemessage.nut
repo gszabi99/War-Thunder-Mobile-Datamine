@@ -161,20 +161,21 @@ let stackData = Computed(function() {
     arr.sort(@(a, b) a.order <=> b.order)
 
   let {
-    currency = [],
-    premium = [],
-    item = [],
-    unitUpgrade = [],
-    unit = [],
-    decorator = [],
-    booster = [],
-    skin = [],
+    currency = []
+    premium = []
+    item = []
+    unitUpgrade = []
+    unit = []
+    decorator = []
+    booster = []
+    skin = []
     battleMod = []
     blueprint = []
     prizeTicket = []
     lootbox = []
+    discount = []
   } = stacksSorted
-  let rewardIcons = [].extend(lootbox, currency, premium, item, decorator, booster, skin, blueprint, prizeTicket)
+  let rewardIcons = [].extend(lootbox, currency, premium, item, decorator, booster, skin, blueprint, prizeTicket, discount)
   let unitPlates = [].extend(unitUpgrade, unit)
 
   local lastIdx = -1
@@ -418,7 +419,7 @@ let mkPrizeTicketLabel = @(startDelay, text) {
   animations = getTextLabelAnim(startDelay)
 }.__update(fontTinyAccented)
 
-function mkRewardLabelMultiline(startDelay, text) {
+function mkRewardLabelMultiline(startDelay, text, ovr = {}) {
   let res = {
     size = [rewTextMaxWidth, SIZE_TO_CONTENT]
     rendObj = ROBJ_TEXTAREA
@@ -435,7 +436,7 @@ function mkRewardLabelMultiline(startDelay, text) {
         play = true, trigger = ANIM_SKIP_DELAY }
     ]
   }.__update(fontMediumShaded)
-  return res.__update(getFontToFitWidth(res, rewTextMaxWidth * 2, [fontVeryTinyShaded, fontTinyShaded, fontMediumShaded]))
+  return res.__update(getFontToFitWidth(res, rewTextMaxWidth * 2, [fontVeryTinyShaded, fontTinyShaded, fontMediumShaded]), ovr)
 }
 
 let mkDecoratorRewardLabel = @(startDelay, decoratorId)
@@ -535,7 +536,7 @@ function mkBlueprintRewardIcon(rewardInfo, rStyle) {
   }
 }
 
-function mkPrizeTicketIcon(rewardInfo, rStyle) {
+function mkCustomIcon(rewardInfo, rStyle, ovr = {}) {
   let reward = getRewardsViewInfo([rewardInfo])?[0]
   let startDelay = rewardInfo.startDelay
 
@@ -550,10 +551,13 @@ function mkPrizeTicketIcon(rewardInfo, rStyle) {
         vplace = ALIGN_CENTER
         children = mkHighlight(startDelay, aRewardIconFlareScale)
       }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
-      mkRewardPlate(reward, { needShowPreview = false }.__merge(rStyle))
+      mkRewardPlate(reward, rStyle.__merge(ovr))
     ]
   }
 }
+
+let mkPrizeTicketIcon = @(rewardInfo, rStyle) mkCustomIcon(rewardInfo, rStyle, { needShowPreview = false })
+let mkDiscountIcon = @(rewardInfo, rStyle) mkCustomIcon(rewardInfo, rStyle)
 
 let mkLootboxIcon = @(startDelay, id) mkCustomCurrencyIcon?[id](id, startDelay) ?? {
   size = [rewIconSize, rewIconSize]
@@ -612,6 +616,10 @@ let rewardCtors = {
       let key = count == 1 ? "events/continueToOpenOne" : "events/continueToOpenSeveral"
       return mkRewardLabel(rewardInfo.startDelay, loc(key, { count }))
     }
+  }
+  discount = {
+    mkIcon = @(rewardInfo) mkDiscountIcon(rewardInfo, REWARD_STYLE_MEDIUM)
+    mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay, loc("discounts/title"), fontSmall)
   }
 }
 

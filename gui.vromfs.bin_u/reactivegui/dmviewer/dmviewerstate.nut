@@ -8,7 +8,8 @@ let { deferOnce } = require("dagor.workcycle")
 let { allow_dm_viewer } = require("%appGlobals/permissions.nut")
 let { needCursorForActiveInputDevice } = require("%appGlobals/activeControls.nut")
 let { isHangarUnitLoaded } = require("%rGui/unit/hangarUnit.nut")
-let { getDmViewerUnitData, clearDmViewerUnitDataCache } = require("unitDataCache.nut")
+let { getDmViewerUnitData, dmViewerUnitDataVer, clearDmViewerUnitDataCollection
+} = require("unitDataCollection.nut")
 
 let dmViewerMode = mkWatched(persist, "dmViewerMode", DM_VIEWER_NONE)
 let dmViewerUnitReady = mkWatched(persist, "dmViewerUnitReady", false)
@@ -79,7 +80,8 @@ return {
   dmViewerMode
   dmViewerUnitReady
   getDmViewerUnitData
-  clearDmViewerUnitDataCache
+  dmViewerUnitDataVer
+  clearDmViewerUnitDataCollection
 
   needDmViewerPointerControl
   needDmViewerCrosshair

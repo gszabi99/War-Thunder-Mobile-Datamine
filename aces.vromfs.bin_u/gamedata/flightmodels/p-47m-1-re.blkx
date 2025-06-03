@@ -2159,7 +2159,6 @@
         "index": 6,
         "tier": 7,
         "order": 11,
-        "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "iconType": "rocket_7kg",
           "name": "hvar",

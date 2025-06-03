@@ -5,10 +5,14 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { isInSquad, isSquadLeader, isReady } = require("%appGlobals/squadState.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
+let { getModeAddonsInfo, allBattleUnits } = require("%appGlobals/updater/gameModeAddons.nut")
+let { hasAddons, addonsExistInGameFolder, addonsVersions } = require("%appGlobals/updater/addonsState.nut")
+let { getCampaignPkgsForNewbieSingle } = require("%appGlobals/updater/campaignAddons.nut")
 let { textButtonBattle, textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
@@ -60,8 +64,25 @@ let battleBtnPenaltyOvr = @(campaign, ovr) {
   hotkeys = hotkeyX
 }.__update(ovr)
 let toBattleText = utf8ToUpper(loc("mainmenu/toBattle/short"))
-let mkToBattleButton = @(toBattleFunc, campaign = null, ovr = {})
-  textButtonBattle(toBattleText, toBattleFunc, battleBtnPenaltyOvr(campaign, ovr))
+
+let isNeedToDownloadAddonsForBattle = Computed(@()
+  getModeAddonsInfo(
+    randomBattleMode.get(),
+    allBattleUnits.get(),
+    serverConfigs.get(),
+    hasAddons.get(),
+    addonsExistInGameFolder.get(),
+    addonsVersions.get()
+  ).addonsToDownload.len() > 0
+)
+let isNeedToDownloadAddonsForOfflineBattle = Computed(@()
+  !curUnit.get()?.name || !curUnit.get()?.mRank ? false
+    : getCampaignPkgsForNewbieSingle(curCampaign.get(), curUnit.get()?.mRank, [curUnit.get()?.name]).filter(@(v) !hasAddons.get()?[v]).len() > 0)
+
+let mkToBattleButton = @(toBattleFunc, campaign = null, ovr = {}) @() {
+  watch = isNeedToDownloadAddonsForBattle
+  children = (isNeedToDownloadAddonsForBattle.get() ? textButtonCommon : textButtonBattle)(toBattleText, toBattleFunc, battleBtnPenaltyOvr(campaign, ovr))
+}
 
 function toRandomBattle() {
   if (curUnit.get() != null)
@@ -109,19 +130,26 @@ let startTutorButton = textButtonBattle(toBattleText,
     startTutor(firstBattleTutor.get())
   },
   battleBtnOvr)
-let startOfflineBattleButton = textButtonBattle(toBattleText,
+let startOfflineBattleButton = @() {
+  watch = isNeedToDownloadAddonsForOfflineBattle
+  children = (isNeedToDownloadAddonsForOfflineBattle.get() ? textButtonCommon : textButtonBattle)(toBattleText,
   startCurUnitOfflineBattle,
-  battleBtnOvr)
-let startOfflineMissionButton = textButtonBattle(toBattleText,
+  battleBtnOvr)}
+let startOfflineMissionButton = @() {
+  watch = isNeedToDownloadAddonsForOfflineBattle
+  children = (isNeedToDownloadAddonsForOfflineBattle.get() ? textButtonCommon : textButtonBattle)(toBattleText,
   function() {
     sendNewbieBqEvent("pressToBattleButton", { status = "offline_battle", params = ", ".join(newbieOfflineMissions.get()) })
     showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), startCurNewbieMission))
   },
-  battleBtnOvr)
+  battleBtnOvr)}
 
-let readyButton = textButtonBattle(utf8ToUpper(loc("mainmenu/btnReady")),
-  @() showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), @() setReady(true))),
-  { hotkeys = hotkeyX })
+let readyButton = @() {
+  watch = isNeedToDownloadAddonsForBattle
+  children = (isNeedToDownloadAddonsForBattle.get() ? textButtonCommon : textButtonBattle)(utf8ToUpper(loc("mainmenu/btnReady")),
+    @() showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), @() setReady(true))),
+    { hotkeys = hotkeyX })
+}
 let notReadyButton = textButtonCommon(utf8ToUpper(loc("multiplayer/state/player_not_ready")),
   @() setReady(false),
   { hotkeys = hotkeyX })

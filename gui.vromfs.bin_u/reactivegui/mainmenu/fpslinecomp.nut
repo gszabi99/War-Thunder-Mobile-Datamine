@@ -22,7 +22,7 @@ let gameVersion = Watched("")
 let hasDebugInterfaceInMpSession = Watched(false)
 
 function initSubscription() {
-  if (is_dev_version() && !(dgs_get_settings()?.debug.drawDebugInfo ?? true))
+  if (is_dev_version() && !(dgs_get_settings()?.debug.showDebugInterface ?? true))
     return
   eventbus_subscribe("updateStatusString", @(s) state(state.value.__merge(s)))
   gameVersion.set(get_base_game_version_str())

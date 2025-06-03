@@ -45,6 +45,7 @@ let hudStateNative = {
   group4IsInAir = false
   threatRockets = []
   hasCountermeasures = false
+  repairAssistAllow = 0
 }.map(@(val, key) mkWatched(persist, key, val))
 
 interopGet({

@@ -1,35 +1,51 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } =  require("math")
+let { utf8ToUpper } = require("%sqstd/string.nut")
+let { AIR, TANK } = require("%appGlobals/unitConst.nut")
+let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
 let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
 let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { mkCurrencyFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
-let { REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
-  getRewardPlateSize, progressBarHeight, rewardTicketDefaultSlots
-} = require("rewardStyles.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitLocId, getUnitClassFontIcon, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let { mkUnitBg, mkUnitImage, mkPlateText } = require("%rGui/unit/components/unitPlateComp.nut")
-let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
 let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let { mkLoootboxImage } = require("%appGlobals/config/lootboxPresentation.nut")
-let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { getStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
 let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
+let { REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
+  getRewardPlateSize, progressBarHeight, rewardTicketDefaultSlots
+} = require("rewardStyles.nut")
+let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
+let { mkUnitBg, mkUnitImage, mkPlateText } = require("%rGui/unit/components/unitPlateComp.nut")
+let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
+let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
+let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
 let { mkBattleModEventUnitText, mkBattleModRewardUnitImage, mkBattleModCommonText,
   mkBattleModCommonImage } = require("%rGui/rewards/battleModComp.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { NO_DROP_LIMIT } = require("%rGui/rewards/rewardViewInfo.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+let { NO_DROP_LIMIT, shopGoodsToRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { mkRewardSlider } = require("%rGui/rewards/components/mkRewardSlider.nut")
 let { openRewardPrizeView } = require("%rGui/rewards/rewardPrizeView.nut")
+let { allShopGoods, calculateNewGoodsDiscount } = require("%rGui/shop/shopState.nut")
+let { discountTag } = require("%rGui/components/discountTag.nut")
+let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
+let { SGT_UNIT } = require("%rGui/shop/shopCommon.nut")
+let { mkBgImg, mkFitCenterImg, offerPad } = require("%rGui/shop/goodsView/sharedParts.nut")
+let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
+let { bgShaded } = require("%rGui/style/backgrounds.nut")
+let { withGlareEffect } = require("%rGui/components/glare.nut")
 
+
+let currenciesOnOfferBanner = [PLATINUM, EVENT_KEY, GOLD, WARBOND]
+let glareWidth = sh(8)
+let commonOfferCurrencyIconSize = hdpxi(160)
+let smallOfferCurrencyIconSize = hdpxi(100)
 let textPadding = [0, hdpx(5)]
 let cornerIconMargin = hdpx(5)
 let fontLabelBig = fontSmall
@@ -608,6 +624,139 @@ function mkRewardPlatePrizeTicketImage(r, rStyle, rewardCtors) {
 }
 
 
+let unitOfferImageOvrByType = {
+  [AIR] = {
+    size = [pw(90), ph(90)]
+    imageHalign = ALIGN_LEFT
+    vplace = ALIGN_CENTER
+  }
+}
+
+let mkOfferCurrencyIcon = @(currencyId, amount, iconSize) {
+  margin = offerPad
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_CENTER
+  children = mkRewardCurrencyImage(currencyId, amount, [iconSize, iconSize])
+  keepAspect = true
+}
+
+let mkDiscountOfferWrap = @(content, size) bgShaded.__merge({
+  size
+  transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
+  children = withGlareEffect(
+    { size = flex(), children = content },
+    size[0],
+    null,
+    { glareWidth }
+  ).__update({ size = flex() })
+})
+
+let mkDiscountOfferTag = @(discount) discountTag(discount, {
+  hplace = ALIGN_LEFT
+  vplace = ALIGN_TOP
+  pos = [0, 0]
+  size = [hdpx(93), hdpx(46)]
+}, { pos = null }.__update(fontTinyAccented))
+
+let mkDiscountOfferRank = @(unit) {
+  padding = hdpx(5)
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_BOTTOM
+  children = mkGradRankSmall(unit.mRank)
+}
+
+let mkDiscountOfferText = @(title, rStyle) {
+  size = [flex(), SIZE_TO_CONTENT]
+  margin = hdpx(5)
+  rendObj = ROBJ_TEXTAREA
+  behavior = [Behaviors.TextArea, Behaviors.Marquee]
+  halign = ALIGN_LEFT
+  vplace = ALIGN_BOTTOM
+  maxWidth = hdpx(200)
+  delay = defMarqueeDelay
+  threshold = hdpx(2)
+  speed = hdpx(30)
+  text = utf8ToUpper(title)
+}.__update(getFontToFitWidth({
+      rendObj = ROBJ_TEXTAREA
+      maxWidth = hdpx(200)
+      text = utf8ToUpper(title)
+    }.__update(rStyle.textStyle),
+  rStyle.boxSize - textPadding[1] * 2, [rStyle.textStyleSmall, rStyle.textStyle]))
+
+function mkDiscountOfferUnit(goods, discount, rStyle) {
+  let unit = getBestUnitByGoods(goods, serverConfigs.get())
+  let { currencies = {}, offerClass = null } = goods
+  let p = getUnitPresentation(unit)
+  let bgImg = offerClass == "seasonal" ? "ui/gameuiskin#offer_bg_green.avif"
+    : unit?.unitType == TANK || unit?.unitType == AIR ? "ui/gameuiskin#offer_bg_yellow.avif"
+    : "ui/gameuiskin#offer_bg_blue.avif"
+  let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
+  let image = mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image,
+    unitOfferImageOvrByType?[unit?.unitType] ?? {}).__update({ fallbackImage = Picture(p.image) })
+  let imageOffset = currencyId == null || unit?.unitType == TANK ? 0
+    : hdpx(20)
+  let size = getRewardPlateSize(2, rStyle)
+  return mkDiscountOfferWrap(unit == null ? null
+    : [
+        mkBgImg(bgImg)
+        currencyId == null ? null : mkOfferCurrencyIcon(currencyId, currencies[currencyId],
+          commonOfferCurrencyIconSize > rStyle.boxSize ? smallOfferCurrencyIconSize : commonOfferCurrencyIconSize)
+        imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
+        mkDiscountOfferText(loc("discountUpgrade"), rStyle)
+        mkDiscountOfferRank(unit)
+        mkDiscountOfferTag(discount)
+      ], size)
+}
+
+let discountOfferCtors = {
+  [SGT_UNIT] = mkDiscountOfferUnit
+}
+
+function mkRewardPlateDiscount(previewReward, discount, rewardCtors, rewardStyle) {
+  let mkPlateImage = @(r, rStyle) (rewardCtors?[r?.rType] ?? rewardCtors.unknown).image(r, rStyle)
+  let mkPlateTexts = @(r, rStyle) (rewardCtors?[r?.rType] ?? rewardCtors.unknown).texts(r, rStyle)
+
+  let size = getRewardPlateSize(previewReward?.slots ?? 1, rewardStyle)
+
+  let mkPlate = @(r, rDiscount, rStyle, rSize) {
+    transform = {}
+    children = [
+      {
+        size = rSize
+        rendObj = ROBJ_IMAGE
+        image = Picture($"ui/images/offer_item_slot_bg.avif:{rSize[0]}:{rSize[1]}:P")
+      }
+      mkPlateImage(r, rStyle)
+      mkPlateTexts(r, rStyle)
+      mkDiscountOfferTag(rDiscount)
+    ]
+  }
+
+  return mkPlate(previewReward, discount, rewardStyle, size)
+}
+
+let mkRewardPlateDiscountImage = @(reward, rStyle, rewardCtors) function() {
+  let goodsId = serverConfigs.get()?.personalDiscounts.findindex(@(list) list.findindex(@(v) v.id == reward.id) != null)
+  let goods = allShopGoods.get()?[goodsId] ?? {}
+  let offer = activeOffersByGoods.get()?[goodsId] ?? goods.__merge({ offerClass = "seasonal" }) 
+  let needShowAsOffer = !!goods?.meta.showAsOffer
+
+  let previewReward = shopGoodsToRewardsViewInfo(goods).sort(sortRewardsViewInfo)[0]
+  let personalFinalPrice = serverConfigs.get()?.personalDiscounts?[goodsId].findvalue(@(v) v.id == reward.id).price ?? 0
+  let newDiscount = calculateNewGoodsDiscount(goods?.price.price ?? 0, goods?.discountInPercent, personalFinalPrice)
+
+  return {
+    watch = [serverConfigs, allShopGoods, activeOffersByGoods]
+    size = flex()
+    children = !goodsId ? null
+      : !needShowAsOffer || goods?.gtype not in discountOfferCtors
+        ? mkRewardPlateDiscount(previewReward, newDiscount, rewardCtors, rStyle)
+      : discountOfferCtors[offer.gtype](offer, newDiscount, rStyle)
+  }
+}
+
+
 
 function mkRewardPlateUnknownImage(r, rStyle) {
   let { iconShiftY } = rStyle
@@ -723,6 +872,10 @@ let complexRewardPlateCtors = {
   prizeTicket = {
     image = @(r, rStyle) mkRewardPlatePrizeTicketImage(r, rStyle, simpleRewardPlateCtors)
     texts = @(_, _) null
+  }
+  discount = {
+    image = @(r, rStyle) mkRewardPlateDiscountImage(r, rStyle, simpleRewardPlateCtors)
+    texts = mkRewardPlateUnitTexts
   }
 }
 

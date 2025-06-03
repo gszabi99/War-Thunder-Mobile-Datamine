@@ -1829,38 +1829,150 @@
     ]
   },
   "WeaponSlots": {
-    "WeaponSlot": {
-      "index": 0,
-      "notUseforDisbalanceCalculation": true,
-      "order": 9,
-      "WeaponPreset": {
-        "name": "default_common",
-        "Weapon": [
+    "HideNodes": {
+      "node": [
+        "bomb_pylon_250kg_l",
+        "bomb_pylon_250kg_r",
+        "bomb_pylon_50kg_l",
+        "bomb_pylon_50kg_r"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunHo103.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "mgun1_dm",
+              "bullets": 250,
+              "spread": 1.0,
+              "breechInCockpit": true
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunHo103.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "mgun2_dm",
+              "bullets": 250,
+              "traceOffset": 1,
+              "spread": 1.0,
+              "breechInCockpit": true
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 5,
+        "order": 1,
+        "WeaponPreset": [
           {
-            "trigger": "machine gun",
-            "blk": "gameData/Weapons/gunHo103.blk",
-            "emitter": "flare1",
-            "flash": "flare1",
-            "shell": "emtr_shellrejection1",
-            "dm": "mgun1_dm",
-            "bullets": 250,
-            "spread": 1.0,
-            "breechInCockpit": true
+            "iconType": "bomb_50kg",
+            "name": "type94mod5",
+            "ShowNodes": {
+              "node": "bomb_pylon_50kg_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/jp_type94mod5.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
           },
           {
-            "trigger": "machine gun",
-            "blk": "gameData/Weapons/gunHo103.blk",
-            "emitter": "flare2",
-            "flash": "flare2",
-            "dm": "mgun2_dm",
-            "bullets": 250,
-            "traceOffset": 1,
-            "spread": 1.0,
-            "breechInCockpit": true
+            "iconType": "bomb_100kg",
+            "name": "type94mod10",
+            "ShowNodes": {
+              "node": "bomb_pylon_250kg_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/jp_type94mod10.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bomb_250kg",
+            "name": "type92mod25",
+            "ShowNodes": {
+              "node": "bomb_pylon_250kg_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/jp_type92mod25.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "bomb_50kg",
+            "name": "type94mod5",
+            "ShowNodes": {
+              "node": "bomb_pylon_50kg_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/jp_type94mod5.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bomb_100kg",
+            "name": "type94mod10",
+            "ShowNodes": {
+              "node": "bomb_pylon_250kg_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/jp_type94mod10.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bomb_250kg",
+            "name": "type92mod25",
+            "ShowNodes": {
+              "node": "bomb_pylon_250kg_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/jp_type92mod25.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
           }
         ]
       }
-    }
+    ]
   },
   "turbulence": {
     "segmentlength": 100.0,

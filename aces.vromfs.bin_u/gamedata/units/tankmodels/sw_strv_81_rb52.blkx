@@ -1170,6 +1170,11 @@
       }
     ]
   },
+  "saclosControl": {
+    "crossDistToCrossVelMult": 1.5,
+    "crossVelRatioMax": 0.75,
+    "requestedAccelMult": 0.5
+  },
   "tank_crew": {
     "changeTimeMult": 1.0,
     "gunner": {

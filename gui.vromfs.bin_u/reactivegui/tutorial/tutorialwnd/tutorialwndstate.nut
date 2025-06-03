@@ -43,6 +43,8 @@ from "%globalsDarg/darg_library.nut" import *
 
 
 let utf8 = require("utf8")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { abTests } = require("%appGlobals/pServer/campaign.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { get_time_msec } = require("dagor.time")
 let { register_command } = require("console")
@@ -57,6 +59,10 @@ let state = Watched({
   version = 0 
   step = 0
 })
+let isDebugMode = hardPersistWatched("tutorialWndState.isDebugMode", false)
+
+let isTutorialSkipClickOnBase = Computed(@() (abTests.get()?.tutorialSkipClick ?? "false") == "true")
+let isTutorialSkipOnClick = Computed(@() isTutorialSkipClickOnBase.get() != isDebugMode.get())
 let tutorialConfigVersion = Computed(@() state.value.version)
 let stepIdx = Computed(@() state.value.step)
 let nextKeyAllowed = Watched(false)
@@ -169,7 +175,7 @@ function updateNextKeyTimer() {
 
   if (nextKeyDelay == null) {
     nextKeyAllowed(false)
-    gui_scene.setTimeout(skipKeyDelay ?? SKIP_DELAY_DEFAULT, allowSkipKey)
+    gui_scene.setTimeout(isTutorialSkipOnClick.get() ? 0.0 : (skipKeyDelay ?? SKIP_DELAY_DEFAULT), allowSkipKey)
     return
   }
 
@@ -178,18 +184,25 @@ function updateNextKeyTimer() {
 
   if (nextKeyDelay == 0) {
     nextKeyAllowed(true)
-    gui_scene.setTimeout(skipKeyDelay ?? SKIP_DELAY_DEFAULT, allowSkipKey)
+    gui_scene.setTimeout(isTutorialSkipOnClick.get() ? 0.0 : (skipKeyDelay ?? SKIP_DELAY_DEFAULT), allowSkipKey)
   }
   else {
     nextKeyAllowed(false)
-    gui_scene.setTimeout(nextKeyDelay, allowNextKey)
-    gui_scene.setTimeout(skipKeyDelay ?? (nextKeyDelay + SKIP_DELAY_AFTER_NEXT_KEY), allowSkipKey)
+    gui_scene.setTimeout(isTutorialSkipOnClick.get() ? 0.0 : nextKeyDelay, allowNextKey)
+    gui_scene.setTimeout(isTutorialSkipOnClick.get() ? 0.0
+      : (skipKeyDelay ?? (nextKeyDelay + SKIP_DELAY_AFTER_NEXT_KEY)), allowSkipKey)
   }
 }
 state.subscribe(@(_) updateNextKeyTimer())
 
 
 register_command(finishTutorial, "tutorial.closeCurrentTutorial")
+register_command(
+  function() {
+    isDebugMode.set(!isDebugMode.get())
+    console_print($"isTutorialSkipOnClick = {isTutorialSkipOnClick.get()}") 
+  },
+  "debug.toggleAbTest.tutorialSkipClick")
 
 return {
   isTutorialActive = Computed(@() tutorialConfigVersion.value > 0 && tutorialConfig != null)
@@ -200,6 +213,7 @@ return {
   stepIdx
   nextKeyAllowed
   skipKeyAllowed
+  isTutorialSkipOnClick
   goToStep = function(idxOrId) {
     onStepStatus("step_success")
     goToStep(idxOrId)

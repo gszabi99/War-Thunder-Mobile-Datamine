@@ -1,27 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { DM_VIEWER_ARMOR, hangar_get_dm_viewer_parts_count } = require("hangar")
-let { deferOnce } = require("dagor.workcycle")
-let { dmViewerMode, dmViewerUnitReady, needDmViewerPointerControl, pointerScreenX, pointerScreenY
-} = require("dmViewerState.nut")
+let { dmViewerMode, dmViewerUnitReady } = require("dmViewerState.nut")
 let { toggleSubscription, mkDmViewerHint, mkHintTitle, mkHintDescText, accentColor, mkUnitStatusText
 } = require("dmViewerPkg.nut")
-let { collectArmorClassToSteelMuls } = require("modeArmorUtils.nut")
+let { collectArmorClassToSteelMuls } = require("modeXrayUtils.nut")
 let { hasNotDownloadedPkgForHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
 let absoluteArmorThreshold = 500
 let relativeArmorThreshold = 5.0
-let showStellEquivForArmorClassesList = [ "ships_coal_bunker" ]
 let armorClassToSteel = {}
 
-let isModeActive = Computed(@() dmViewerMode.get() == DM_VIEWER_ARMOR)
+let isModeActive = keepref(Computed(@() dmViewerMode.get() == DM_VIEWER_ARMOR))
 
 local isInited = false
 function init() {
   if (isInited)
     return
   isInited = true
-  armorClassToSteel.__update(collectArmorClassToSteelMuls(showStellEquivForArmorClassesList))
+  armorClassToSteel.__update(collectArmorClassToSteelMuls())
 }
 isModeActive.subscribe(@(v) v ? init() : null)
 if (isModeActive.get())
@@ -35,14 +32,7 @@ let thicknessW = Watched(0.0)
 let effectiveThicknessRawW = Watched(0.0)
 let isSolidW = Watched(false)
 let isVariableThicknessW = Watched(false)
-let nameW = Watched("")
-
-let hintScrPosX = Watched(0)
-let hintScrPosY = Watched(0)
-scrPosX.subscribe(@(v) !needDmViewerPointerControl.get() ? hintScrPosX.set(v) : null)
-scrPosY.subscribe(@(v) !needDmViewerPointerControl.get() ? hintScrPosY.set(v) : null)
-pointerScreenX.subscribe(@(v) needDmViewerPointerControl.get() ? deferOnce(@() hintScrPosX.set(v)) : null)
-pointerScreenY.subscribe(@(v) needDmViewerPointerControl.get() ? deferOnce(@() hintScrPosY.set(v)) : null)
+let partNameW = Watched("")
 
 function onUpdateHintArmor(p) {
   let { posX, posY, angle = 0, normal_angle = 0, thickness = 0, effective_thickness = 0, solid = false,
@@ -56,7 +46,7 @@ function onUpdateHintArmor(p) {
   effectiveThicknessRawW.set(effective_thickness)
   isSolidW.set(solid)
   isVariableThicknessW.set(variable_thickness)
-  nameW.set(name)
+  partNameW.set(name)
 }
 
 let toggleSub = @(isEnable) toggleSubscription("on_hangar_damage_part_pick", onUpdateHintArmor, isEnable)
@@ -77,11 +67,11 @@ function hintComp() {
     return { watch = isModeActive }
 
   let isHintVisible = Computed(@() isModeActive.get() && dmViewerUnitReady.get()
-    && (thicknessW.get() != 0 || nameW.get() != ""))
+    && (scrPosX.get() != 0 || scrPosY.get() != 0 || thicknessW.get() != 0 || partNameW.get() != ""))
 
-  let hintTitleW = Computed(@() loc($"armor_class/{nameW.get()}"))
+  let hintTitleW = Computed(@() loc($"armor_class/{partNameW.get()}"))
   let effectiveThicknessW = Computed(@() round(effectiveThicknessRawW.get()))
-  let thicknessToSteelMulW = Computed(@() armorClassToSteel?[nameW.get()] ?? 0.0)
+  let thicknessToSteelMulW = Computed(@() armorClassToSteel?[partNameW.get()] ?? 0.0)
   let effectiveThicknessToSteelW = Computed(@() round(effectiveThicknessRawW.get() * thicknessToSteelMulW.get()))
   let effectiveThicknessClampedW = Computed(@() round(min(effectiveThicknessW.get(),
     (relativeArmorThreshold * thicknessW.get()).tointeger(), absoluteArmorThreshold)))
@@ -126,7 +116,7 @@ function hintComp() {
   return {
     watch = isModeActive
     size= flex()
-    children = mkDmViewerHint(isHintVisible, hintScrPosX, hintScrPosY, hintContent)
+    children = mkDmViewerHint(isHintVisible, scrPosX, scrPosY, hintContent)
   }
 }
 

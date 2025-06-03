@@ -88,14 +88,14 @@ function updateActualSchRewards() {
     foreach (r in list) {
       let reward = r.__merge(status?[r.id])
       let pr = getRewardPriority(reward)
+      if (!reward.isReady)
+        nextTime = nextTime == 0 ? reward.readyTime : min(nextTime, reward.readyTime)
       if (schReward != null && priority >= pr)
         continue
       schReward = reward
       priority = pr
     }
     actual[catId] <- schReward
-    if (!schReward.isReady)
-      nextTime = nextTime == 0 ? schReward.readyTime : min(nextTime, schReward.readyTime)
   }
   foreach (r in schRewardsByCategory.value.hidden)
     if (r.id in status && !status[r.id].isReady)

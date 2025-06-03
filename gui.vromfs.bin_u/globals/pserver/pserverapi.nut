@@ -26,6 +26,7 @@ const PROGRESS_PERSONAL_GOODS = "PersonalGoodsInProgress"
 const PROGRESS_CAMPAIGN = "CampaignInProgress"
 const PROGRESS_PREM_BONUS = "PremBonusInProgress"
 const PROGRESS_QUEUE_PENALTY = "QueuePenaltyInProgress"
+const PROGRESS_SLOTS_UNITS = "CampaignSlotsInProgress"
 
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
@@ -251,6 +252,7 @@ return {
   campaignInProgress = mkProgress(PROGRESS_CAMPAIGN)
   isPremBonusInProgress = mkProgress(PROGRESS_PREM_BONUS, false)
   isQueuePenaltyInProgress = mkProgress(PROGRESS_QUEUE_PENALTY, false)
+  campaignSlotsInProgress = mkProgress(PROGRESS_SLOTS_UNITS)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -608,18 +610,13 @@ return {
     params = { playerType }
   }, cb)
 
-  check_empty_offer = @(campaign, cb = null) request({
-    method = "check_empty_offer"
+  validate_active_offer = @(campaign, cb = null) request({
+    method = "validate_active_offer"
     params = { campaign }
   }, cb)
 
   skip_offer = @(campaign, cb = null) request({
     method = "skip_offer"
-    params = { campaign }
-  }, cb)
-
-  update_branch_offer = @(campaign, cb = null) request({
-    method = "update_branch_offer"
     params = { campaign }
   }, cb)
 
@@ -795,16 +792,22 @@ return {
   set_unit_to_slot = @(unitName, slotId, cb = null) request({
     method = "set_unit_to_slot"
     params = { unitName, slotId }
+    progressId = PROGRESS_SLOTS_UNITS
+    progressValue = slotId
   }, cb)
 
   clear_unit_slot = @(campaign, slotId, cb = null) request({
     method = "clear_unit_slot"
     params = { campaign, slotId }
+    progressId = PROGRESS_SLOTS_UNITS
+    progressValue = slotId
   }, cb)
 
   apply_slot_preset = @(preset, campaign, cb = null) request({
     method = "apply_slot_preset"
     params = { preset, campaign }
+    progressId = PROGRESS_SLOTS_UNITS
+    progressValue = campaign
   }, cb)
 
   buy_unit_slot = @(campaign, slotId, costGold, cb = null) request({

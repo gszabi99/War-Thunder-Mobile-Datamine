@@ -3,7 +3,7 @@ let { campaignsList, getCampaignStatsId } = require("%appGlobals/pServer/campaig
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { levelMark, hlColor, iconSize, mkText, levelHolderSize } = require("%rGui/mpStatistics/playerInfo.nut")
-let { getMedalPresentation } = require("%rGui/mpStatistics/medalsPresentation.nut")
+let { getMedalPresentationWithCtor } = require("%rGui/mpStatistics/medalsCtors.nut")
 let { actualizeStats, userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -36,7 +36,7 @@ let mkMedals = @(selCampaign) function() {
     children.append(levelMark(curr.level - curr.starLevel, curr.starLevel))
   let campaignExt = getCampaignPresentation(selCampaign).campaign
   foreach(medal in servProfile.get()?.medals ?? {}) {
-    let { campaign = campaignExt, ctor } = getMedalPresentation(medal)
+    let { campaign = campaignExt, ctor } = getMedalPresentationWithCtor(medal.name)
     if (campaign == campaignExt)
       children.append(ctor(medal))
   }

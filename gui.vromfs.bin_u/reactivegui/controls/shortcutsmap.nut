@@ -8,7 +8,7 @@ let allShortcuts = isReplayShortcuts ? {}
   ID_CONTINUE = "J:RT | Space"
   ID_MPSTATSCREEN =  "J:Back | Tab"
   ID_ZOOM_TOGGLE = "J:RS | L.Shift" 
-  ID_CHANGE_ZOOM =  "J:LS | N" 
+  ID_CHANGE_ZOOM =  "" 
   ID_SHOW_HERO_MODULES = "J:X | 6"
 
   ID_CAMERA_NEUTRAL =  "J:LS | N" 

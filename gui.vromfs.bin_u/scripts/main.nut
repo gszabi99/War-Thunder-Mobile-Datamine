@@ -76,6 +76,7 @@ require("%scripts/matching/gameModesUpdate.nut")
 require("utils/restartGame.nut")
 require("%sqstd/regScriptProfiler.nut")("dagui", dlog) 
 require("bqQueue.nut")
+require("battlePerfstats.nut")
   
 
 let { sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")

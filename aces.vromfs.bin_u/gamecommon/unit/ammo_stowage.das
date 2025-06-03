@@ -410,7 +410,7 @@ def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDel
 
 
 
-[es]
+[es(no_order)]
 def ammo_stowage_sync_num_ammo_fs_es(act : UpdateStageInfoAct;
                                      var ammo_per_type_data__numAmmoFsSync : IntList&;
                                      ammo_per_type_data__numAmmoFs : IntList)

@@ -13,6 +13,9 @@ return {
     "a5m4": {
       "": "usa_p_40c_metal"
     },
+    "a5m4_hagiri": {
+      "": "usa_p_40c_metal"
+    },
     "a6m2_mod11": {
       "": "jap_a6m2"
     },
@@ -30,6 +33,12 @@ return {
     },
     "a6m5_zero": {
       "": "jap_ki_43_3_otsu"
+    },
+    "a7he1": {
+      "": "ussr_i_15_1935_moscow"
+    },
+    "a7m1": {
+      "": "jap_a7m1"
     },
     "a7m2": {
       "": "jap_a7m2"
@@ -50,6 +59,9 @@ return {
       "upgraded": "camo_measure_12mod"
     },
     "b-17e": {
+      "": "usa_p43a_1_usaaf"
+    },
+    "b-17e_japan": {
       "": "usa_p43a_1_usaaf"
     },
     "b-17g": {
@@ -1277,14 +1289,14 @@ return {
     "germ_sub_type_21": {
       "upgraded": "camo_sboat_splotch"
     },
-    "germ_sub_type_21_nc": {
-      "upgraded": "camo_sboat_splotch"
-    },
     "germ_sub_type_212": {
       "upgraded": "camo_threegray_spots"
     },
     "germ_sub_type_212_nc": {
       "upgraded": "camo_threegray_spots"
+    },
+    "germ_sub_type_21_nc": {
+      "upgraded": "camo_sboat_splotch"
     },
     "germ_sub_type_7": {
       "upgraded": "camo_greyblack_geometry"
@@ -1444,6 +1456,14 @@ return {
     "il_4": {
       "": "ussr_il_4"
     },
+    "il_aml_90": {
+      "": "isr_camo_sandgray",
+      "forest": "isr_camo_sandgreen"
+    },
+    "il_amx_13_75": {
+      "": "isr_camo_sandgray",
+      "forest": "isr_camo_sandgreen"
+    },
     "il_centurion_shot_kal_gimel": {
       "": "us_camo_olive",
       "upgraded": "isr_camo_sandgray"
@@ -1486,6 +1506,10 @@ return {
       "": "isr_camo_threecolor",
       "desert": "isr_camo_sandgray"
     },
+    "il_sholef": {
+      "": "isr_camo_sandgray",
+      "forest": "isr_camo_sandgreen"
+    },
     "il_tiran_6": {
       "": "isr_camo_threecolor",
       "desert": "isr_camo_sandgray"
@@ -1499,6 +1523,10 @@ return {
     "il_zsu_23_4_reskin": {
       "": "isr_camo_threecolor",
       "desert": "isr_camo_sandgray"
+    },
+    "il_zsu_57_2": {
+      "": "isr_camo_sandgray",
+      "forest": "isr_camo_sandgreen"
     },
     "it_43m_turan_3": {
       "": "ann_camo",
@@ -1637,8 +1665,21 @@ return {
     "itp_m1": {
       "": "ussr_itp_m1"
     },
+    "j2m2": {
+      "": "jap_ki_43_3_otsu"
+    },
+    "j2m2_prem": {
+      "": "jap_a7m1"
+    },
     "j5n1": {
       "": "jap_yokosuka_d4y2_mod12"
+    },
+    "j6k1": {
+      "": "jap_ki_43_3_otsu",
+      "steel": "usa_p_40c_metal"
+    },
+    "j6k1_prem": {
+      "": "jap_j6k1_orange"
     },
     "jp_armoredcruiser_ikoma": {
       "": "camo_darkgrey_big_spots"
@@ -1756,7 +1797,7 @@ return {
       "upgraded": "camo_redgreen_spots"
     },
     "jp_destroyer_hatsuzuki_nc": {
-      "": "camo_crosspromo"
+      "": "camo_crosspromo",
       "upgraded": "camo_redgreen_spots"
     },
     "jp_destroyer_rckt_hatakaze": {
@@ -1817,6 +1858,9 @@ return {
     "jp_st_b1": {
       "": "jp_camo_sdf_green",
       "upgraded": "jp_camo_post_winter"
+    },
+    "jp_sub_harushio": {
+      "upgraded": "camo_asiatic_forest"
     },
     "jp_type_16_mod": {
       "": "jp_camo_modern_green",
@@ -1941,8 +1985,23 @@ return {
     "ki-49_2b": {
       "": "jap_ki_61_hei"
     },
+    "ki-96": {
+      "": "ussr_la_11_standard"
+    },
     "ki_100_early": {
       "": "ussr_il_10"
+    },
+    "ki_108": {
+      "": "ussr_il_10"
+    },
+    "ki_108_prem": {
+      "": "usa_sb2u_3_gray"
+    },
+    "ki_109": {
+      "": "germ_fw_190a_5_u14_yellow_1"
+    },
+    "ki_109_prem": {
+      "": "jap_ki_61_hei"
     },
     "ki_10_2": {
       "": "jap_ki_10_2_light_grey_green"
@@ -1956,11 +2015,17 @@ return {
     "ki_43_1": {
       "": "ussr_il_10"
     },
+    "ki_43_2": {
+      "": "jap_ki_43_3_otsu"
+    },
     "ki_43_3_otsu": {
       "": "jap_ki_43_3_otsu"
     },
     "ki_44_1": {
       "": "ussr_il_10"
+    },
+    "ki_44_1_ep": {
+      "": "usa_p_40c_metal"
     },
     "ki_44_2_hei": {
       "": "ussr_il_10"
@@ -1971,7 +2036,13 @@ return {
     "ki_61_1a_ko": {
       "": "jap_ki_61_hei"
     },
+    "ki_61_1a_ko_prem": {
+      "": "germ_bf_110g_2_night"
+    },
     "ki_61_1a_tei": {
+      "": "ussr_il_10"
+    },
+    "ki_61_1a_tei_prem": {
       "": "jap_ki_61_hei"
     },
     "ki_61_2_early": {
@@ -2004,6 +2075,9 @@ return {
     "la-7": {
       "": "ussr_yak_3t_gray"
     },
+    "la-7_kozhedub": {
+      "": "ussr_la_7b_20"
+    },
     "la-7b-20": {
       "": "ussr_la_7b_20"
     },
@@ -2030,6 +2104,13 @@ return {
     },
     "me_264": {
       "": "germ_ta152c"
+    },
+    "n1k2_j": {
+      "": "jap_ki_43_3_otsu",
+      "number": "jap_aichi_b7a2_dark_green"
+    },
+    "n1k2_j_prem": {
+      "": "jap_a6m2"
     },
     "p-36a": {
       "": "usa_p_40c_metal"
@@ -2118,6 +2199,12 @@ return {
     },
     "p-63c-5": {
       "": "usa_p38k_usaaf"
+    },
+    "p1y1_mod11": {
+      "": "jap_yokosuka_d4y2_mod12"
+    },
+    "p1y1_mod11_prem": {
+      "": "jap_a7m1"
     },
     "pby-5a": {
       "": "usa_sb2u_3"
@@ -2355,13 +2442,7 @@ return {
     "uk_battleship_king_george_1945_nc": {
       "upgraded": "camo_mtb_spots"
     },
-    "uk_battleship_marlborough": {
-      "bluegray_geometry_prem": "camo_bluegray_geometry"
-    },
     "uk_battleship_rodney": {
-      "": "camo_mtb_spots"
-    },
-    "uk_battleship_rodney_nc": {
       "": "camo_mtb_spots"
     },
     "uk_battleship_thunderer": {
@@ -2405,11 +2486,23 @@ return {
       "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_standart_modern_desert_bicolor"
     },
+    "uk_challenger_2_tes": {
+      "": "uk_camo_very_dark_drab",
+      "upgraded": "uk_camo_standart_modern_bicolor"
+    },
+    "uk_challenger_II": {
+      "": "uk_camo_very_dark_drab",
+      "upgraded": "uk_camo_standart_modern_bicolor"
+    },
     "uk_charioteer_mk_7": {
       "": "uk_camo_very_dark_drab",
       "desert": "rsa_camo_modern_three_color",
       "desert2": "rsa_camo_gray_earth_stone",
       "forest": "us_camo_modern_green"
+    },
+    "uk_chieftain_marksman": {
+      "": "uk_camo_very_dark_drab",
+      "upgraded": "uk_camo_standart_modern_bicolor"
     },
     "uk_chieftain_mk_10": {
       "": "uk_camo_very_dark_drab",
@@ -2472,6 +2565,10 @@ return {
     "uk_desert_warrior": {
       "": "uk_camo_very_dark_drab",
       "upgraded": "uk_camo_standart_modern_desert_bicolor"
+    },
+    "uk_desert_warrior_reskin": {
+      "": "uk_camo_very_dark_drab",
+      "upgraded": "uk_camo_standart_modern_bicolor"
     },
     "uk_destroyer_hunt_4series": {
       "upgraded": "camo_mtb_spots"
@@ -2591,6 +2688,12 @@ return {
       "": "rsa_camo_dark_earth",
       "upgraded": "rsa_camo_gray_earth_stone"
     },
+    "uk_ratel_zt3_reskin": {
+      "": "rsa_camo_dark_earth",
+      "desert": "rsa_camo_modern_three_color",
+      "forest": "rsa_camo_gray_earth_stone",
+      "winter": "fr_camo_winter_green_white"
+    },
     "uk_rooikat_za_35": {
       "": "rsa_camo_dark_earth",
       "upgraded": "rsa_camo_gray_earth_stone"
@@ -2599,6 +2702,12 @@ return {
       "": "rsa_camo_dark_earth",
       "upgraded": "rsa_camo_gray_earth_stone"
     },
+    "uk_rooikat_za_35_reskin2": {
+      "": "rsa_camo_dark_earth",
+      "desert": "rsa_camo_modern_three_color",
+      "forest": "rsa_camo_gray_earth_stone",
+      "winter": "fr_camo_winter_green_white"
+    },
     "uk_sherman_II": {
       "": "uk_camo_light_stone_slate_grey",
       "forest": "uk_camo_very_dark_drab"
@@ -2606,6 +2715,12 @@ return {
     "uk_sherman_ic_firefly": {
       "": "uk_camo_very_dark_drab",
       "forest": "uk_camo_very_dark_drab"
+    },
+    "uk_shir_2": {
+      "": "uk_camo_very_dark_drab",
+      "desert": "uk_camo_standart_modern_desert_bicolor",
+      "forest": "uk_camo_standart_modern_bicolor",
+      "winter": "fr_camo_winter_green_white"
     },
     "uk_skink_aa": {
       "": "uk_camo_middle_deep_bronze_greens",
@@ -2620,6 +2735,9 @@ return {
     },
     "uk_sub_m1_nc": {
       "": "sub_m1_ny_camo"
+    },
+    "uk_sub_swiftsure": {
+      "upgraded": "camo_mtb_spots"
     },
     "uk_sub_type_v": {
       "upgraded": "camo_polish_bluegeometry"
@@ -2640,6 +2758,12 @@ return {
     "uk_valentine_mk_9": {
       "": "uk_camo_light_stone_light_grey_slate_grey",
       "forest": "uk_camo_very_dark_drab"
+    },
+    "uk_vfm_5": {
+      "": "uk_camo_very_dark_drab",
+      "desert": "uk_camo_standart_modern_desert_bicolor",
+      "forest": "uk_camo_standart_modern_bicolor",
+      "winter": "fr_camo_winter_green_white"
     },
     "uk_vickers_mk_11": {
       "": "uk_camo_standart_modern_desert_bicolor",
@@ -3270,18 +3394,21 @@ return {
       "": "hw_camo",
       "forest": "ussr_camo_green"
     },
-    "ussr_battlecruiser_kronshtadt": {
-      "": "camo_geometry_zheleznyakov",
-      "disruptive_gray": "camo_disruptive_gray",
-      "threegreenspots": "camo_threegreenspots"
+    "ussr_battlecruiser_izmail": {
+      "upgraded": "camo_bluegray_longspot"
     },
-    "ussr_battlecruiser_kronshtadt_nc": {
+    "ussr_battlecruiser_kronshtadt": {
       "": "camo_geometry_zheleznyakov",
       "disruptive_gray": "camo_disruptive_gray",
       "threegreenspots": "camo_threegreenspots"
     },
     "ussr_battlecruiser_kronshtadt_380mm": {
       "upgraded": "camo_northern_fleet"
+    },
+    "ussr_battlecruiser_kronshtadt_nc": {
+      "": "camo_geometry_zheleznyakov",
+      "disruptive_gray": "camo_disruptive_gray",
+      "threegreenspots": "camo_threegreenspots"
     },
     "ussr_battlecruiser_pr69": {
       "upgraded": "camo_arctic_minesweeper_block"
@@ -3660,6 +3787,9 @@ return {
     "ussr_sub_pr641_nc": {
       "": "camo_bluegray_longspot"
     },
+    "ussr_sub_pr885": {
+      "upgraded": "camo_northern_fleet"
+    },
     "ussr_sub_type_k": {
       "upgraded": "camo_violetgray_geometry"
     },
@@ -4023,6 +4153,7 @@ return {
     },
     "submarine": {
       "": "camo_navygrey_5",
+      "arctic_spots": "camo_arctic_spots",
       "blackgray_stripes": "camo_blackgray_stripes",
       "blue_stains": "camo_blue_stains",
       "bluegray_spots_prem": "camo_bluegray_spots",

@@ -1,9 +1,10 @@
+import "math" as math
+import "dagor.random" as random
+
 #strict
 
-let random = require("dagor.random")
 let cdate = (require_optional("datetime")?.date ?? @(_date=null,_format=null) {sec=0, min=0, hour=0, day=0, month=0, year=0, wday=0, yday=0})()
 let _default_seed = random.get_rnd_seed() + cdate.sec + cdate.min*60 + cdate.yday*86400
-let math = require("math")
 
 local position = 0
 function new_rnd_seed() {

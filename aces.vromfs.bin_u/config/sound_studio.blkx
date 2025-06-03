@@ -8,7 +8,6 @@
   "rejectFarOneshots": true,
   "androidUseOpenSLFallback": true,
   "blockFailedEvents": true,
-  "useNewEngineSound": true,
   "memoryPc": 100,
   "memoryPS4": 175,
   "memoryPCLowMode": 100,
@@ -126,7 +125,7 @@
           "preload": false
         }
       },
-      "pkg_dev": {
+      "pkg_april_fools_event_2025": {
         "mobile_event.assets": {
           "async": true,
           "preload": false
@@ -8883,13 +8882,14 @@
         "misfire": {
           "event": "04_loading/voice_message_gunner_misfire",
           "playerRole": "tank_gunner",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 10.0
         },
         "reloadCommand": {
           "event": "04_loading/voice_message_commander_reload",
           "playerRole": "commander",
           "player": -1,
-          "minSpeechInterval": 0.0
+          "minSpeechInterval": 10.0
         },
         "missionVictory": {
           "event": "11_battle_end/voice_message_chief_battle_win",
@@ -9806,6 +9806,7 @@
         "apds_l15_tank": "loadBulletAPDS",
         "apds_fs_tank": "loadBulletAPDS",
         "apds_fs_long_tank": "loadBulletAPDS",
+        "apds_fs_ld_30_tank": "loadBulletAPDS",
         "apds_fs_full_body_steel_tank": "loadBulletAPDS",
         "apds_fs_tungsten_small_core_tank": "loadBulletAPDS",
         "apds_fs_tungsten_l10_l15_tank": "loadBulletAPDS",

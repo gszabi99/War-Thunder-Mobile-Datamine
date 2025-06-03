@@ -49,6 +49,7 @@ struct DefaultAmmoCluster
   ammo_clusters__reloadTimeMult : float
   ammo_clusters__splashConstraints : float3
   ammo_clusters__shatterConstraints : float3
+  ammo_clusters__fireSplashConstraints : float3
   ammo_stowage__wreckageIds : array<int>
   ammo_stowage__relatedPartsIds : array<uint>
 
@@ -67,7 +68,8 @@ def make_default_cluster() : DefaultAmmoCluster
     ammo_clusters__damageEffectPresetId = -1,
     ammo_clusters__reloadTimeMult = 1.0f,
     ammo_clusters__splashConstraints = float3(-1.0f, -1.0f, -1.0f),
-    ammo_clusters__shatterConstraints = float3(-1.0f, -1.0f, -1.0f)
+    ammo_clusters__shatterConstraints = float3(-1.0f, -1.0f, -1.0f),
+    ammo_clusters__fireSplashConstraints = float3(-1.0f, -1.0f, -1.0f)
   )
 
 
@@ -82,6 +84,7 @@ def reserve_clusters(cluster_count : int; var v : tuple<
                        ammo_clusters__reloadTimeMult : FloatList;
                        ammo_clusters__splashConstraints : Point3List;
                        ammo_clusters__shatterConstraints : Point3List;
+                       ammo_clusters__fireSplashConstraints : Point3List;
                        ammo_clusters__entityMunition : StringList;
                        ammo_clusters__slotsRange : IPoint2List;
                        ammo_clusters__wreckageRange : IPoint2List;
@@ -96,6 +99,7 @@ def reserve_clusters(cluster_count : int; var v : tuple<
   v.ammo_clusters__reloadTimeMult |> reserve(cluster_count)
   v.ammo_clusters__splashConstraints |> reserve(cluster_count)
   v.ammo_clusters__shatterConstraints |> reserve(cluster_count)
+  v.ammo_clusters__fireSplashConstraints |> reserve(cluster_count)
   v.ammo_clusters__entityMunition |> reserve(cluster_count)
   v.ammo_clusters__slotsRange |> reserve(cluster_count)
   v.ammo_clusters__wreckageRange |> reserve(cluster_count)
@@ -113,6 +117,7 @@ def push_cluster(cluster_type : int; cluster_stage : int; def_cluster : DefaultA
                    ammo_clusters__reloadTimeMult : FloatList;
                    ammo_clusters__splashConstraints : Point3List;
                    ammo_clusters__shatterConstraints : Point3List;
+                   ammo_clusters__fireSplashConstraints : Point3List;
                    ammo_clusters__entityMunition : StringList;
                    ammo_clusters__slotsRange : IPoint2List;
                    ammo_clusters__wreckageRange : IPoint2List;
@@ -131,6 +136,7 @@ def push_cluster(cluster_type : int; cluster_stage : int; def_cluster : DefaultA
   v.ammo_clusters__reloadTimeMult |> push(def_cluster.ammo_clusters__reloadTimeMult)
   v.ammo_clusters__splashConstraints |> push(def_cluster.ammo_clusters__splashConstraints)
   v.ammo_clusters__shatterConstraints |> push(def_cluster.ammo_clusters__shatterConstraints)
+  v.ammo_clusters__fireSplashConstraints |> push(def_cluster.ammo_clusters__fireSplashConstraints)
   v.ammo_clusters__entityMunition |> push("")
   v.ammo_clusters__slotsRange |> push(int2(v.ammo_slots__state |> length()))
   v.ammo_clusters__wreckageRange |> push(int2(v.ammo_stowage__wreckageIds |> length()))
@@ -155,6 +161,7 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
                         var ammo_clusters__reloadTimeMult : float&;
                         var ammo_clusters__splashConstraints : float3&;
                         var ammo_clusters__shatterConstraints : float3&;
+                        var ammo_clusters__fireSplashConstraints : float3&;
                         add_wreckage : block<(id : int) : void>;
                         add_related_part : block<(id : PartId) : void>) : void
   blk |> read_flag(ammo_clusters__state, AmmoClusterState.AUTO_LOAD, "autoLoad")
@@ -170,6 +177,9 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
   ammo_clusters__shatterConstraints.x = blk |> datablock_getReal("shatterRadiusConstraint", ammo_clusters__shatterConstraints.x)
   ammo_clusters__shatterConstraints.y = blk |> datablock_getReal("shatterDamageConstraint", ammo_clusters__shatterConstraints.y)
   ammo_clusters__shatterConstraints.z = blk |> datablock_getReal("shatterPenetrationConstraint", ammo_clusters__shatterConstraints.z)
+  ammo_clusters__fireSplashConstraints.x = blk |> datablock_getReal("fireSplashRadiusConstraint", ammo_clusters__fireSplashConstraints.x)
+  ammo_clusters__fireSplashConstraints.y = blk |> datablock_getReal("fireSplashDamageConstraint", ammo_clusters__fireSplashConstraints.y)
+  ammo_clusters__fireSplashConstraints.z = blk |> datablock_getReal("fireSplashPenetrationConstraint", ammo_clusters__fireSplashConstraints.z)
 
   let fire_params_preset = blk |> datablock_getStr("fireParamsPreset", "")
   if fire_params_preset != ""
@@ -186,7 +196,7 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
     ammo_clusters__explosionEvtId = *get_unit_fx(unit) |> getEventIdByName(explosion_event_name)
   if ammo_clusters__explosionEvtId < 0
     ammo_clusters__explosionEvtId = *get_unit_fx(unit) |> getEventIdByName("ammo_explosion")
-  ammo_clusters__damageEffectPresetId = dm_read_overrided_preset(unit.visual.damageEffects, blk, "damageEffect", -1, unit.visual.dmData)
+  ammo_clusters__damageEffectPresetId = dm_read_overrided_preset(unit.visual.damageEffects, blk, "damageEffect", -1, unit.dmData)
 
   let wreckage_name_id = blk |> datablock_getNameId("wreckedPartId")
   let elevator_name_id = blk |> datablock_getNameId("elevator")
@@ -239,6 +249,7 @@ def load_cluster(blk : DataBlock&; var unit : Unit?;
                    ammo_clusters__reloadTimeMult : FloatList;
                    ammo_clusters__splashConstraints : Point3List;
                    ammo_clusters__shatterConstraints : Point3List;
+                   ammo_clusters__fireSplashConstraints : Point3List;
                    ammo_clusters__slotsRange : IPoint2List;
                    ammo_clusters__wreckageRange : IPoint2List;
                    ammo_clusters__relatedPartsRange : IPoint2List;
@@ -265,6 +276,7 @@ def load_cluster(blk : DataBlock&; var unit : Unit?;
     v.ammo_clusters__reloadTimeMult[cluster_id],
     v.ammo_clusters__splashConstraints[cluster_id],
     v.ammo_clusters__shatterConstraints[cluster_id],
+    v.ammo_clusters__fireSplashConstraints[cluster_id],
     $(wreckage_id : int) { v.ammo_stowage__wreckageIds |> push(wreckage_id); },
     $(rel_part_id : PartId) { v.ammo_stowage__relatedPartsIds |> push(rel_part_id); }
   )
@@ -481,6 +493,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
                            ammo_clusters__reloadTimeMult : FloatList;
                            ammo_clusters__splashConstraints : Point3List;
                            ammo_clusters__shatterConstraints : Point3List;
+                           ammo_clusters__fireSplashConstraints : Point3List;
                            ammo_clusters__entityMunition : StringList;
                            ammo_clusters__slotsRange : IPoint2List;
                            ammo_clusters__wreckageRange : IPoint2List;
@@ -518,6 +531,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
   v.ammo_clusters__reloadTimeMult |> clear()
   v.ammo_clusters__splashConstraints |> clear()
   v.ammo_clusters__shatterConstraints |> clear()
+  v.ammo_clusters__fireSplashConstraints |> clear()
   v.ammo_clusters__entityMunition |> clear()
   v.ammo_clusters__slotsRange |> clear()
   v.ammo_clusters__wreckageRange |> clear()
@@ -650,6 +664,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
         def_cluster.ammo_clusters__reloadTimeMult,
         def_cluster.ammo_clusters__splashConstraints,
         def_cluster.ammo_clusters__shatterConstraints,
+        def_cluster.ammo_clusters__fireSplashConstraints,
         $(wreckage_id) { def_cluster.ammo_stowage__wreckageIds |> push(wreckage_id); },
         $(rel_part_id) { def_cluster.ammo_stowage__relatedPartsIds |> push(rel_part_id.packed); }
       )

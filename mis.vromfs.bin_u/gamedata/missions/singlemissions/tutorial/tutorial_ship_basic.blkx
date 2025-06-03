@@ -89,8 +89,8 @@
           "target": "ai"
         },
         "missionSetWeatherParams": {
-          "waterWindStrengtMin": 4.0,
-          "waterWindStrengtMax": 4.0
+          "waterWindStrengtMin": 3.0,
+          "waterWindStrengtMax": 3.0
         },
         "unitSetProperties": [
           {
@@ -537,7 +537,7 @@
       },
       "conditions": {
         "playerWhenOrientation": {
-          "value": 130.0,
+          "value": 101.0,
           "orientation": "yaw",
           "comparasion_func": "more"
         }
@@ -1483,6 +1483,56 @@
         "hudElementSelectionShade": {
           "element": "",
           "drawFromGui": false
+        },
+        "triggerEnable": {
+          "target": [
+            "check_can_use_torpedoes",
+            "bot_weak_shooting"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "check_can_use_torpedoes": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "varCompareBool": [
+          {
+            "var_value": "hit_ammunition_01",
+            "value": true,
+            "comparasion_func": "equal"
+          },
+          {
+            "var_value": "hit_ammunition_02",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        ]
+      },
+      "actions": {
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "ID_SHIP_WEAPON_ALL",
+            "ID_SHIP_WEAPON_PRIMARY",
+            "ID_SHIP_WEAPON_SECONDARY",
+            "ID_SHIP_WEAPON_MACHINEGUN",
+            "ID_SHIP_WEAPON_DEPTH_CHARGE",
+            "ID_SHIP_WEAPON_ROCKETS",
+            "ID_SHIP_WEAPON_MINE",
+            "ID_SHIP_WEAPON_TORPEDOES"
+          ]
         }
       },
       "else_actions": {}
@@ -1682,6 +1732,96 @@
           ],
           "object": "player",
           "target": "respawn_pt"
+        },
+        "unitRestore": {
+          "target_marking": 0,
+          "ressurectIfDead": true,
+          "fullRestore": true,
+          "target": "player"
+        }
+      },
+      "else_actions": {}
+    },
+    "bot_weak_shooting": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "unitWhenPartHp": {
+          "func": "less",
+          "check_objects": "any",
+          "check_parts": "all",
+          "value": 0.55,
+          "object": "player",
+          "planePart": "compartment_01_dm",
+          "tankPart": ""
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "ai",
+          "attack_type": "fire_at_will",
+          "accuracy": 0.05,
+          "maxDeviationAngle": 50.0,
+          "effShootingRate": 0.05
+        },
+        "triggerEnable": {
+          "target": "bot_start_shooting"
+        }
+      },
+      "else_actions": {}
+    },
+    "bot_start_shooting": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "unitWhenPartHp": {
+          "func": "more",
+          "check_objects": "any",
+          "check_parts": "all",
+          "value": 0.75,
+          "object": "player",
+          "planePart": "compartment_01_dm",
+          "tankPart": ""
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "ai",
+          "attack_type": "fire_at_will",
+          "accuracy": 0.2,
+          "maxDeviationAngle": 30.0,
+          "effShootingRate": 0.2
+        },
+        "triggerEnable": {
+          "target": "bot_weak_shooting"
         }
       },
       "else_actions": {}
@@ -3805,9 +3945,9 @@
         "name": "player",
         "tm": [
           [
-            -0.628675,
+            0.152674,
             0.0,
-            0.777668
+            0.988277
           ],
           [
             0.0,
@@ -3815,14 +3955,14 @@
             0.0
           ],
           [
-            -0.777668,
+            -0.988277,
             0.0,
-            -0.628675
+            0.152674
           ],
           [
-            846.693,
+            748.45,
             0.0,
-            366.518
+            218.035
           ]
         ],
         "unit_class": "uk_destroyer_hunt_4series_tutorial",
@@ -3878,9 +4018,9 @@
             -0.00336716
           ],
           [
-            -292.01,
+            -180.803,
             0.0,
-            529.412
+            529.351
           ]
         ],
         "unit_class": "uk_destroyer_hunt_4series_tutorial_ai",
@@ -3938,9 +4078,9 @@
             1.0
           ],
           [
-            -534.029,
+            -422.822,
             0.0,
-            637.011
+            636.95
           ]
         ],
         "unit_class": "dummy",
@@ -3996,9 +4136,9 @@
             1.0
           ],
           [
-            576.054,
+            687.261,
             0.0,
-            523.874
+            523.813
           ]
         ],
         "unit_class": "dummy",
@@ -4057,9 +4197,9 @@
           -545.329
         ],
         [
-          833.147,
+          944.354,
           -322.651,
-          871.14
+          871.079
         ]
       ],
       "objLayer": 0,
@@ -4084,9 +4224,9 @@
           -314.66
         ],
         [
-          191.228,
+          302.435,
           -322.65,
-          627.628
+          627.567
         ]
       ],
       "objLayer": 0,
@@ -4096,9 +4236,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -20.0,
+          -1.35423,
           0.0,
-          -0.00000429153
+          19.9541
         ],
         [
           0.0,
@@ -4106,14 +4246,14 @@
           0.0
         ],
         [
-          0.00000429153,
+          -19.9541,
           0.0,
-          -20.0
+          -1.35423
         ],
         [
-          809.65,
+          662.35,
           0.0,
-          653.211
+          553.1
         ]
       ],
       "objLayer": 0,
@@ -4138,9 +4278,9 @@
           0.000150996
         ],
         [
-          196.4,
+          307.607,
           -322.65,
-          740.261
+          740.2
         ]
       ],
       "objLayer": 0,
@@ -4165,9 +4305,36 @@
           1.0
         ],
         [
-          575.104,
+          686.312,
           0.0,
-          524.524
+          524.463
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "area_01": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          307.774,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          7.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          307.774
+        ],
+        [
+          686.507,
+          0.0,
+          524.639
         ]
       ],
       "objLayer": 0,
@@ -4215,9 +4382,9 @@
               1.0
             ],
             [
-              -548.757,
+              -437.55,
               0.0,
-              566.046
+              565.985
             ]
           ],
           "props": {
@@ -4246,9 +4413,9 @@
               1.0
             ],
             [
-              -546.449,
+              -435.242,
               0.0,
-              1087.0
+              1086.94
             ]
           ],
           "props": {
@@ -4277,9 +4444,9 @@
               1.0
             ],
             [
-              -253.421,
+              -142.214,
               0.0,
-              1090.15
+              1090.09
             ]
           ],
           "props": {
@@ -4308,9 +4475,9 @@
               1.0
             ],
             [
-              -258.559,
+              -147.352,
               0.0,
-              379.469
+              379.408
             ]
           ],
           "props": {

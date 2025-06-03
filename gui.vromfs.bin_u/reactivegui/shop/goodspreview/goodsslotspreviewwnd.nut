@@ -393,6 +393,7 @@ function content() {
     let style = goods.len() > MAX_BIG_SLOTS ? REWARD_STYLE_SMALL : REWARD_STYLE_MEDIUM
     let { boxSize, boxGap } = style
     let slotsInRow = (maxWndWidth + boxGap) / (boxSize + boxGap)
+    let hasOnlyOneSlot = goods.len() == 1
     let rows = !isActual.get() || shopGenSlotInProgress.get() ? []
       : fillRewardsByRows(goods, slotsInRow, style)
     let curUnit = openedUnitFromTree.get()
@@ -408,15 +409,17 @@ function content() {
       flow = FLOW_VERTICAL
       gap = blockGap
       children = [
-        isPurchased ? null
+        isPurchased || hasOnlyOneSlot ? null
           : txt(hasAnySlot ? utf8ToUpper(loc("shop/pickOneItem"))
             : utf8ToUpper(loc(getSlotsTexts(openedGoodsId.get()).missing)))
         {
+          key = hasOnlyOneSlot
           size = [SIZE_TO_CONTENT, max(2, rows.len()) * (boxSize + boxGap) - boxGap]
           flow = FLOW_VERTICAL
           valign = ALIGN_CENTER
           halign = ALIGN_CENTER
           gap = boxGap
+          onAttach = @() hasOnlyOneSlot ? selIndex.set(0) : null
           children = shopGenSlotInProgress.get() ? spinner
             : rows.map(@(children) {
                 flow = FLOW_HORIZONTAL

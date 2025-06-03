@@ -1,7 +1,7 @@
 let {editorIsActive, editorFreeCam, entitiesListUpdateTrigger, showTemplateSelect,
      showPointAction, callPointActionCallback, resetPointActionMode,
      handleEntityCreated, handleEntityRemoved, handleEntityMoved,
-     de4editMode, de4workMode} = require("state.nut")
+     de4editMode, de4workMode, gizmoBasisType, gizmoBasisTypeEditingDisabled, canChangeGizmoBasisType} = require("state.nut")
 
 let daEditor = require("daEditorEmbedded")
 let entity_editor = require("entity_editor")
@@ -23,6 +23,12 @@ eventbus_subscribe("daEditorEmbedded.onDeSetEditMode", function onDeSetEditMode(
   showPointAction(mode == DE4_MODE_POINT_ACTION)
   if (!showPointAction.value)
     resetPointActionMode()
+
+  gizmoBasisTypeEditingDisabled(!canChangeGizmoBasisType())
+})
+
+eventbus_subscribe("daEditorEmbedded.onDeSetGizmoBasis", function onDeSetGizmoBasis(basis) {
+  gizmoBasisType(basis)
 })
 
 eventbus_subscribe("entity_editor.onEditorActivated", function onEditorActivated(on) {

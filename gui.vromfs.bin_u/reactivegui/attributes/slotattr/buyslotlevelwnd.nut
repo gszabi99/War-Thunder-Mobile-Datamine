@@ -38,7 +38,8 @@ function onClickPurchase(curLevel, tgtLevel, nextLevelExp, costGold, sp) {
     purchase = @() buy_slot_level(curCampaign.get(), slotIndex.get(), curLevel, tgtLevel, nextLevelExp, costGold, "closeBuySlotLevelWnd"),
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_SLOT_UPGRADES,
       PURCH_TYPE_SLOT_LEVEL,
-      $"{loc("gamercard/slot/title", { idx = slotIndex.get() + 1 })} {curLevel} +{tgtLevel - curLevel}")
+      $"{loc("gamercard/slot/title", { idx = slotIndex.get() + 1 })} {curLevel} +{tgtLevel - curLevel}"),
+    onGoToShop = @() close()
   })
 }
 

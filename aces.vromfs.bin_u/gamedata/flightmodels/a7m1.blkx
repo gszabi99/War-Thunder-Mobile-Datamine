@@ -1909,56 +1909,92 @@
     "HideDmParts": {
       "node": "tank5_dm"
     },
-    "WeaponSlot": {
-      "index": 0,
-      "WeaponPreset": {
-        "name": "default_common",
-        "Weapon": [
-          {
-            "trigger": "machine gun",
-            "blk": "gameData/Weapons/gunType3.blk",
-            "emitter": "flare1",
-            "flash": "flare1",
-            "shell": "emtr_shellrejection1",
-            "dm": "mgun1_dm",
-            "bullets": 300,
-            "spread": 1.1
-          },
-          {
-            "trigger": "machine gun",
-            "blk": "gameData/Weapons/gunType3.blk",
-            "emitter": "flare2",
-            "flash": "flare2",
-            "shell": "emtr_shellrejection2",
-            "dm": "mgun2_dm",
-            "bullets": 300,
-            "spread": 1.1,
-            "traceOffset": 1
-          },
-          {
-            "trigger": "cannon",
-            "blk": "gameData/Weapons/cannonType99Mk2.blk",
-            "emitter": "flare3",
-            "flash": "flare3",
-            "shell": "emtr_shellrejection3",
-            "dm": "cannon1_dm",
-            "bullets": 200,
-            "spread": 2.0,
-            "traceOffset": 1
-          },
-          {
-            "trigger": "cannon",
-            "blk": "gameData/Weapons/cannonType99Mk2.blk",
-            "emitter": "flare4",
-            "flash": "flare4",
-            "shell": "emtr_shellrejection4",
-            "dm": "cannon2_dm",
-            "bullets": 200,
-            "spread": 2.0
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunType3.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "mgun1_dm",
+              "bullets": 300,
+              "spread": 1.1
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunType3.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "shell": "emtr_shellrejection2",
+              "dm": "mgun2_dm",
+              "bullets": 300,
+              "spread": 1.1,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonType99Mk2.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "shell": "emtr_shellrejection3",
+              "dm": "cannon1_dm",
+              "bullets": 200,
+              "spread": 2.0,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonType99Mk2.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "shell": "emtr_shellrejection4",
+              "dm": "cannon2_dm",
+              "bullets": 200,
+              "spread": 2.0
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 5,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "bomb_50kg",
+          "name": "type97mod6_60kg",
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/jp_navy_type97mod6_60kg.blk",
+            "emitter": "bomb1",
+            "bullets": 1,
+            "separate": true,
+            "external": true
           }
-        ]
+        }
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "bomb_50kg",
+          "name": "type97mod6_60kg",
+          "Weapon": {
+            "trigger": "bombs",
+            "blk": "gameData/Weapons/BombGuns/jp_navy_type97mod6_60kg.blk",
+            "emitter": "bomb2",
+            "bullets": 1,
+            "separate": true,
+            "external": true
+          }
+        }
       }
-    }
+    ]
   },
   "turbulence": {
     "segmentlength": 100.0,

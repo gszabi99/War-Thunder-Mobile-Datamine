@@ -113,5 +113,5 @@ def foreach_primary_gun(weapon_triggers : auto implicit ==const; blk : block<(we
       invoke(blk, w)
 
 [generic]
-def weapon_calcShootTm(weapon; owner_tm : float3x4; var out_tm : float3x4)
+def weapon_calcShootTm(weapon; owner_tm : float3x4; var out_tm : float3x4&)
   weapon |> weapon_calcShootTm(owner_tm, false, -1, false, out_tm)

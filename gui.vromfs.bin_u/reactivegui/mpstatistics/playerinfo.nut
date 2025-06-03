@@ -16,8 +16,8 @@ let { mkBotStats, mkBotInfo } = require("botsInfoState.nut")
 let { viewStats, mkRow, mkStatRow } = require("%rGui/mpStatistics/statRow.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { mkTab } = require("%rGui/controls/tabs.nut")
-let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
-let { getMedalPresentation } = require("%rGui/mpStatistics/medalsPresentation.nut")
+let { campaignsList, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
+let { getMedalPresentationWithCtor } = require("%rGui/mpStatistics/medalsCtors.nut")
 let { validateNickNames, Contact } = require("%rGui/contacts/contact.nut")
 let { mkExtContactActionBtn } = require("%rGui/contacts/mkContactActionBtn.nut")
 let { contactNameBlock, contactAvatar, contactLevelBlock } = require("%rGui/contacts/contactInfoPkg.nut")
@@ -237,13 +237,16 @@ function mkTabsCampaignName() {
     flow = FLOW_HORIZONTAL
     gap = hdpx(40)
     children = campaignsList.get()
-      .map(@(camp) campaignPresentations?[camp])
-      .filter(@(cfg) cfg?.campaign != null && !uniqueCamps?[cfg.campaign] && (uniqueCamps[cfg.campaign] <- true))
-      .map(@(cfg) mkTab(
-         { icon = cfg?.icon, locId = cfg?.unitsLocId },
-         selectedPlayerForInfo.get()?.campaign == cfg.campaign,
+      .filter(@(camp)
+        campaignPresentations?[camp].campaign != null
+          && !uniqueCamps?[campaignPresentations[camp].campaign]
+          && (uniqueCamps[campaignPresentations[camp].campaign] <- true)
+      )
+      .map(@(camp) mkTab(
+         { icon = campaignPresentations?[camp].icon, locId = campaignPresentations?[camp].unitsLocId },
+         selectedPlayerForInfo.get()?.campaign == camp,
          @() selectedPlayerForInfo.get() == null ? null
-           : selectedPlayerForInfo.mutate(@(v) v.campaign = cfg.campaign)
+           : selectedPlayerForInfo.mutate(@(v) v.campaign = camp)
       ))
   }
 }
@@ -259,7 +262,7 @@ let mkMedals = @(info, selCampaign) function() {
 
   let campaignExt = getCampaignPresentation(selCampaign).campaign
   foreach(medal in info.get()?.medals ?? {}) {
-    let { campaign = campaignExt, ctor } = getMedalPresentation(medal)
+    let { campaign = campaignExt, ctor } = getMedalPresentationWithCtor(medal.name)
     if (campaign == campaignExt)
       children.append(ctor(medal))
   }
@@ -363,7 +366,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
               }
               { size = flex() }
               function() {
-                let stats = publicStats.get()?.stats["global"][campaign]
+                let stats = publicStats.get()?.stats["global"][getCampaignStatsId(campaign)]
                 if (isWaitStats.get())
                   return {
                     watch = [isWaitStats, publicStats]
@@ -377,7 +380,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
                   flow = FLOW_VERTICAL
                   gap = hdpx(5)
                   children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
-                    .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign)))
+                    .extend(viewStats.map(@(conf) mkStatRow(stats, conf, getCampaignStatsId(campaign))))
                 }
               }
             ]

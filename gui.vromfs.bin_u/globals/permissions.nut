@@ -40,6 +40,7 @@ let defaults = {
   allow_dm_viewer = DBGLEVEL > 0 && isCircuitDev
   allow_dm_viewer_ships_armor = DBGLEVEL > 0 && isCircuitDev
   can_view_jip_setting = DBGLEVEL > 0
+  can_use_alternative_payment_ios_usa = DBGLEVEL > 0
 }
 
 let dbgPermissions = sharedWatched("dbgPermissions", @() {})

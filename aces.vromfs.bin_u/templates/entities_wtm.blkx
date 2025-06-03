@@ -445,5 +445,29 @@
     "mrank_min": 0,
     "mrank_max": 0,
     "userstat_modes:list<t>": {}
+  },
+  "battle_perfstat": {
+    "_group": {
+      "_tags": "gameClient",
+      "battle_perfstat__peakMemoryKb": 0,
+      "battle_perfstat__refTime": 0,
+      "battle_perfstat__segment_0_5": 0.0,
+      "battle_perfstat__segment_5_15": 0.0,
+      "battle_perfstat__segment_15_25": 0.0,
+      "battle_perfstat__segment_25_30": 0.0,
+      "battle_perfstat__segment_30_35": 0.0,
+      "battle_perfstat__segment_35_40": 0.0,
+      "battle_perfstat__segment_40_50": 0.0,
+      "battle_perfstat__segment_50_60": 0.0,
+      "battle_perfstat__segment_60_80": 0.0,
+      "battle_perfstat__segment_80_100": 0.0,
+      "battle_perfstat__segment_100_110": 0.0,
+      "battle_perfstat__segment_110_120": 0.0,
+      "battle_perfstat__segment_120_130": 0.0,
+      "battle_perfstat__segment_130_150": 0.0,
+      "battle_perfstat__segment_150_200": 0.0,
+      "battle_perfstat__segment_200_plus": 0.0,
+      "battle_perfstat__normalizationValue": 5.0
+    }
   }
 }

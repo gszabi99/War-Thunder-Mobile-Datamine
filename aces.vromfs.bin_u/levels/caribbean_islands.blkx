@@ -1,0 +1,201 @@
+{
+  "z_far": 35000.0,
+  "numBorderCellsXPos": 0,
+  "numBorderCellsXNeg": 0,
+  "numBorderCellsZPos": 0,
+  "numBorderCellsZNeg": 0,
+  "gridSteps": [
+    2000.0,
+    2000.0
+  ],
+  "vsmAngleThreshold": 0.0,
+  "wind_scale": 0.7,
+  "max_wind_strength": 3.0,
+  "water_level": 0.0,
+  "harmonicsType": "blue",
+  "precisionNotDetectedUnits": 200.0,
+  "notDetectedUnitsSizeMul": 0.9,
+  "soundAmbientPathStudio": "event/ambience",
+  "soundAmbientEvent": "global_amb",
+  "clipmap_tex_mips": 6,
+  "mapCoord0": [
+    -1600.0,
+    -1000.0
+  ],
+  "mapCoord1": [
+    448.0,
+    1048.0
+  ],
+  "minAreaSize": [
+    2048.0,
+    2048.0
+  ],
+  "aiMapCoord0": [
+    -1600.0,
+    -1000.0
+  ],
+  "aiMapCoord1": [
+    448.0,
+    1048.0
+  ],
+  "weatherPreset": "gameData/environments/weather_preset_1.blk",
+  "weatherTypes": "gameData/environments/weather_types.blk",
+  "windDir": [
+    1.0,
+    0.0
+  ],
+  "shader_vars": {
+    "shore__waves_dist": [
+      0.0,
+      200.0,
+      0.0,
+      50.0
+    ],
+    "max_river_width": 1500.0,
+    "ocean_density": 0.4,
+    "river_density": 2.0,
+    "water_color_noise_size": 1737.0,
+    "shore_depth_scale": 0.07
+  },
+  "render": {
+    "lmesh": true,
+    "onlyUnderwaterLmesh": false,
+    "riExtraMinSizeForReflection": 100.0
+  },
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_stone_a_tex_n*",
+      "microdetail_scan_gravel_a_tex_n*",
+      "microdetail_sand_a_tex_n*",
+      "microdetail_soil_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_grass_a_tex_n*",
+      "microdetail_forest_floor_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_wood_a_tex_n*",
+      "microdetail_metal_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*"
+    ],
+    "land_micro_details_uv_scale": 1.11
+  },
+  "technicsSkins": {
+    "groundSkin": [
+      "jungle",
+      "default"
+    ]
+  },
+  "overrideRiLodRange": {
+    "tree_date_palm_large_a": {
+      "lod0": 140.0,
+      "lod1": 8000.0
+    },
+    "tree_date_palm_large_b": {
+      "lod0": 140.0,
+      "lod1": 8000.0
+    },
+    "tree_date_palm_medium_a": {
+      "lod0": 140.0,
+      "lod1": 8000.0
+    },
+    "tree_date_palm_medium_b": {
+      "lod0": 140.0,
+      "lod1": 8000.0
+    },
+    "tree_date_palm_small_a": {
+      "lod0": 140.0,
+      "lod1": 8000.0
+    },
+    "tree_date_palm_small_b": {
+      "lod0": 140.0,
+      "lod1": 8000.0
+    },
+    "tree_date_palm_small_c": {
+      "lod0": 140.0,
+      "lod1": 8000.0
+    }
+  },
+  "overloaded_sounds": {
+    "music": {
+      "eventShipsSuspense": {
+        "name": "ships_suspense_april_2025",
+        "path": "event/music"
+      },
+      "eventWin": {
+        "name": "win_battle_music_april_2025",
+        "path": "event/music"
+      },
+      "eventLoose": {
+        "name": "loose_battle_music_april_2025",
+        "path": "event/music"
+      }
+    },
+    "overload_lang": {
+      "ru": "ca",
+      "en": "ca",
+      "fr": "ca",
+      "de": "ca",
+      "jp": "ca",
+      "it": "ca"
+    },
+    "gui": {
+      "session_start": {
+        "name": "session_start",
+        "path": "event/effects"
+      },
+      "enemy_destr_by_ship": {
+        "name": "enemy_destroyed",
+        "path": "event/effects"
+      },
+      "weapon_primary_ready": {
+        "name": "weapon_primary_ready",
+        "path": "event/effects"
+      },
+      "weapon_secondary_ready": {
+        "name": "weapon_primary_ready",
+        "path": "event/effects"
+      },
+      "message_debuff_cant_shoot": {
+        "name": "message_debuff_cant_shoot",
+        "path": "event/messages"
+      },
+      "message_debuff_loosing_speed": {
+        "name": "message_debuff_loosing_speed",
+        "path": "event/messages"
+      }
+    },
+    "bullet_hits": {
+      "eventBulletHitShipBig": {
+        "name": "hit_cannon",
+        "path": "event/effects",
+        "path_ai": "event/effects/ai"
+      }
+    },
+    "sound_effect_events": {
+      "eventBulletPassBy": {
+        "name": "cannon_passby",
+        "path": "event/effects"
+      }
+    },
+    "gm_sound_effect_events": {
+      "eventTelegraph": {
+        "name": "bell_ring",
+        "path": "event/effects"
+      },
+      "eventShipCollisionUnit": {
+        "name": "collision_ship_wood",
+        "path": "naval/effects"
+      }
+    },
+    "various_effects": {
+      "eventAlarmDepth": {
+        "name": "alarm_depth",
+        "path": "event/effects"
+      },
+      "eventAlarmFire": {
+        "name": "alarm_depth",
+        "path": "event/effects"
+      }
+    }
+  }
+}

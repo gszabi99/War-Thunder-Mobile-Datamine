@@ -99,6 +99,8 @@
       "allowedKillStreaks": true,
       "randomSpawnTeams": false,
       "remapAiTankModels": true,
+      "tankBotsTargetingPosError": 0.01,
+      "tankBotsTargetingPosErrorOnHuman": 4.0,
       "battleAreaColorPreset": "battleArea",
       "showTacticalMapCellSize": true,
       "country_axis": "germany",

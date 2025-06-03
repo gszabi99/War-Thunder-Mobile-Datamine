@@ -1,7 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/clientState/connectionStatus.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { getConnectionStatus, CONN_LIMITED, CONN_WIFI, CONN_NO_CONNECTION, CONN_UNKNOWN } = require("ios.platform")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
+let { register_command } = require("console")
+let iosModule = require("ios.platform")
+let { is_ios } = require("%sqstd/platform.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { CONN_LIMITED, CONN_WIFI, CONN_NO_CONNECTION, CONN_UNKNOWN } = iosModule
+let { getConnectionStatus } = is_ios ? iosModule
+  : { getConnectionStatus = @() CONN_WIFI }
 
 let connectionStatusMap = {
   [CONN_LIMITED] = CON_LIMITED,
@@ -10,9 +16,20 @@ let connectionStatusMap = {
   [CONN_UNKNOWN] = CON_UNKNOWN,
 }
 
-let connectionStatusIos = Watched(getConnectionStatus())
+let debugStatus = hardPersistWatched("connectionStatus.debugStatus", null)
+let connectionStatusIosRaw = Watched(getConnectionStatus())
+let connectionStatusIos = Computed(@() debugStatus.get() ?? connectionStatusIosRaw.get())
 let updateStatus = @() connectionStatus.set(connectionStatusMap?[connectionStatusIos.value] ?? CON_UNKNOWN)
 updateStatus()
 connectionStatusIos.subscribe(@(_) updateStatus())
 
-eventbus_subscribe("ios.network.onConnectionStatusChange", @(msg) connectionStatusIos(msg.status))
+eventbus_subscribe("ios.network.onConnectionStatusChange", @(msg) connectionStatusIosRaw.set(msg.status))
+
+register_command(function() {
+  local status = connectionStatusIos.get() + 1
+  if (status > CONN_WIFI)
+    status = CONN_NO_CONNECTION
+  debugStatus.set(status == connectionStatusIosRaw.get() ? null : status)
+  eventbus_send("ios.network.onConnectionStatusChange", { status })
+  console_print($"Connection status changed to {connectionStatusMap[status]}") 
+}, "debug.ui.connectionStatusToggle")

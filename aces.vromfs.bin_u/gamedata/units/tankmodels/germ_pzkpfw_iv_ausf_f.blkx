@@ -61,6 +61,50 @@
       0.75
     ]
   },
+  "steeringTable": {
+    "point": [
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.2
+      ],
+      [
+        25.0,
+        0.2
+      ],
+      [
+        60.0,
+        0.5
+      ],
+      [
+        74.0,
+        0.9
+      ],
+      [
+        75.0,
+        1.0
+      ],
+      [
+        -15.0,
+        0.0
+      ],
+      [
+        -16.0,
+        0.1
+      ],
+      [
+        -30.0,
+        0.4
+      ],
+      [
+        -75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -2526,8 +2570,15 @@
       "to": "ger_camo_dunkelgelb_africa*"
     }
   },
-  "upgradedDecals": {
+  "defaultDecals": {
     "default": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    }
+  },
+  "upgradedDecals": {
+    "upgraded": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0,

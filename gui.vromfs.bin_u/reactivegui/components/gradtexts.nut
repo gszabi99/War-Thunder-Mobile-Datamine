@@ -6,6 +6,29 @@ let { trim } = require("%sqstd/string.nut")
 
 let rankTextGradient = mkFontGradient(0xFFFFFFFF, 0xFF785443)
 
+function splitText(text, fontStyle, maxWidth) {
+  let wordsBySpace = text.split(" ")
+  let bySpace = wordsBySpace.len() > 1
+  let words = bySpace ? wordsBySpace : text.split("\t")
+  if (words.len() == 1)
+    return [text]
+
+  let strArray = []
+  local lastStr = ""
+  foreach (word in words) {
+    let checkStr = lastStr.len() > 0 ? (bySpace ? " " : "\t").concat(lastStr, word) : word
+    if (calc_str_box(checkStr, fontStyle)[0] > maxWidth) {
+      strArray.append(trim(lastStr))
+      lastStr = word
+    }
+    else
+      lastStr = checkStr
+  }
+  if (lastStr.len() > 0)
+    strArray.append(trim(lastStr))
+  return strArray
+}
+
 let mkGradText = @(text, fontStyle, fontTex, ovr = {}) {
   rendObj = ROBJ_TEXT
   text
@@ -28,27 +51,12 @@ let mkGradGlowText = @(text, fontStyle, fontTex, ovr = {})
     }.__update(fontStyle)
   }).__update(ovr)
 
-function mkGradGlowMultiLine(text, fontStyle, fontTex, maxWidth, ovr = {}){
-  if(calc_str_box(text, fontStyle)[0] < maxWidth)
-    return mkGradGlowText(text, fontStyle, fontTex, {})
-  local strArray = []
-  local lastStr = ""
-  foreach (word in text.split(" ")){
-    local checkStr = lastStr.len() > 0 ? " ".concat(lastStr, word) : word
-    if (calc_str_box(checkStr, fontStyle)[0] > maxWidth) {
-      strArray.append(trim(lastStr))
-      lastStr = word
-    }
-    else
-      lastStr = checkStr
-  }
-  if (lastStr.len() > 0)
-    strArray.append(trim(lastStr))
-  return {
-    flow = FLOW_VERTICAL,
-    children = strArray.map(@(str) mkGradGlowText(str, fontStyle, fontTex, ovr))
-  }.__update(ovr)
-}
+let mkGradGlowMultiLine = @(text, fontStyle, fontTex, maxWidth, ovr = {}) calc_str_box(text, fontStyle)[0] < maxWidth
+  ? mkGradGlowText(text, fontStyle, fontTex, ovr)
+  : {
+      flow = FLOW_VERTICAL,
+      children = splitText(text, fontStyle, maxWidth).map(@(str) mkGradGlowText(str, fontStyle, fontTex, ovr))
+    }.__update(ovr)
 
 let mkGradRank = @(rank, ovr = {})
   mkGradText(getRomanNumeral(rank), fontWtMedium, rankTextGradient, ovr)

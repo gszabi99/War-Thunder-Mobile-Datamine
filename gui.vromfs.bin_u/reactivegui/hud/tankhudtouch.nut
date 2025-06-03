@@ -8,16 +8,14 @@ let { tankSight, crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/
 let { tankCrosshairColor, tankZoomAutoAimMode, tankCrosshairDmTestResult, isFreeCamera
 } = require("%rGui/hudState.nut")
 let { crosshairColor, crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
-let { crosshairScreenPosition, crosshairDestinationScreenPosition, crosshairSecondaryScreenPosition
-} = require("%rGui/hud/commonState.nut")
-let { shootReadyness, primaryRocketGun, hasSecondaryGun, allowShoot } = require("%rGui/hud/tankState.nut")
+let { crosshairScreenPosition, crosshairDestinationScreenPosition } = require("%rGui/hud/commonState.nut")
+let { shootReadyness, primaryRocketGun, allowShoot } = require("%rGui/hud/tankState.nut")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { startActionBarUpdate, stopActionBarUpdate } = require("actionBar/actionBarState.nut")
 let { DM_TEST_NOT_PENETRATE, DM_TEST_RICOCHET } = require("crosshair")
 let { currentArmorPiercingFixed } = require("%rGui/options/options/tankControlsOptions.nut")
 let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
 let { setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-
 
 let crosshairReadyColor = Color(232, 75, 60)
 let crosshairSize = evenPx(38)
@@ -32,9 +30,7 @@ let sizeAimRv = [sizeAim[1], sizeAim[0]]
 let hasNoPenetrationState = Computed(@() tankCrosshairDmTestResult.value == DM_TEST_NOT_PENETRATE ||
                                          tankCrosshairDmTestResult.value == DM_TEST_RICOCHET)
 
-let isCrosshairVisible = Computed(@() crosshairScreenPosition.value.x > 0 && crosshairScreenPosition.value.y > 0)
-let isSecondaryCrosshairVisible = Computed(@() crosshairSecondaryScreenPosition.value.x > 0
-                                               && crosshairSecondaryScreenPosition.value.y > 0)
+let crosshairAmount = Computed(@() crosshairScreenPosition.get().len())
 
 let triggers = [TRIGGER_GROUP_PRIMARY, TRIGGER_GROUP_SECONDARY, TRIGGER_GROUP_COAXIAL_GUN, TRIGGER_GROUP_MACHINE_GUN]
   .reduce(function(res, t) {
@@ -70,21 +66,11 @@ let sightDestinationUpdate = @() {
   }
 }
 
-let screenPositionUpdate = @() {
-    transform = {
-      translate = [
-        crosshairScreenPosition.value.x,
-        crosshairScreenPosition.value.y
-      ]
-    }
-  }
-
-let secondarySightPositionUpdate = @() {
-    transform = {
-      translate = [
-        crosshairSecondaryScreenPosition.value.x,
-        crosshairSecondaryScreenPosition.value.y
-      ]
+function screenPositionUpdate(index = 1) {
+    return @() index >= crosshairAmount.get() ? {} : {
+      transform = {
+        translate = crosshairScreenPosition.get()[index]
+      }
     }
   }
 
@@ -117,7 +103,7 @@ let arcadeCrosshairSight = @() tankZoomAutoAimMode.value  ?
     mkCrosshairLine([0, halfCrosshairLineHeight], [0, hdpx(30)], {size = sizeAim, hplace = ALIGN_CENTER, vplace = ALIGN_BOTTOM })
     mkCrosshairLine([halfCrosshairLineHeight, 0], [hdpx(30), 0], {size = sizeAimRv, hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER })
   ]
-  update = currentArmorPiercingFixed.value ? sightDestinationUpdate : screenPositionUpdate
+  update = currentArmorPiercingFixed.value ? sightDestinationUpdate : screenPositionUpdate()
 }
 
 
@@ -135,7 +121,7 @@ let arcadeCrosshairAim = @() tankZoomAutoAimMode.value ?
       [VECTOR_FILL_COLOR, 0],
       [VECTOR_ELLIPSE, 50, 50, 40, 40],
     ]
-  update = currentArmorPiercingFixed.value ? sightDestinationUpdate : screenPositionUpdate
+  update = currentArmorPiercingFixed.value ? sightDestinationUpdate : screenPositionUpdate()
 }
 :
 { watch = [tankCrosshairColor, tankZoomAutoAimMode] }
@@ -151,14 +137,17 @@ let circle = @(color, width) {
     ]
 }
 
-function mkCircleGunPosition(for_secondary) {
-  let color = for_secondary ? Color(150, 150, 150, 150) : Color(200, 200, 200, 200)
-  return {
+function mkCircleGunPosition(index) {
+  let color = index == 0 ? Color(150, 150, 150, 150) : Color(200, 200, 200, 200)
+  let isVisible = Computed(@() index < crosshairScreenPosition.get().len() &&
+    crosshairScreenPosition.get()[index][0] > 0 && crosshairScreenPosition.get()[index][1] > 0)
+  return @() !isVisible.get() ? { watch = isVisible } : {
+    watch = isVisible
     behavior = Behaviors.RtPropUpdate
     pos = [-saBorders[0] - crosshairHalfSize, -saBorders[1] - crosshairHalfSize]
     size = [crosshairSimpleSize, crosshairSimpleSize]
     children = [circle(color, crosshairLineWidth)]
-    update = for_secondary ? secondarySightPositionUpdate : screenPositionUpdate
+    update = screenPositionUpdate(index)
   }
 }
 
@@ -166,18 +155,14 @@ let arcadeCrosshair = @() {
   watch = [
     currentArmorPiercingFixed,
     primaryRocketGun,
-    hasSecondaryGun,
     isFreeCamera,
     allowShoot,
-    isCrosshairVisible,
-    isSecondaryCrosshairVisible
+    crosshairAmount
   ]
   children = [
     primaryRocketGun.value || isFreeCamera.value ? null : arcadeCrosshairSight
-    currentArmorPiercingFixed.value && !primaryRocketGun.value && allowShoot.value && isCrosshairVisible.value
-      ? mkCircleGunPosition(false) : null
-    hasSecondaryGun.value && allowShoot.value && isSecondaryCrosshairVisible.value ? mkCircleGunPosition(true) : null
-  ]
+  ].extend(currentArmorPiercingFixed.value && !primaryRocketGun.value && allowShoot.value
+      ? array(crosshairAmount.get()).map(@(_, i) mkCircleGunPosition(i)) : [])
 }
 
 let mkReadyPart = @(progress) {

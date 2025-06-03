@@ -889,19 +889,20 @@
         "mass": 2.8,
         "caliber": 0.057,
         "speed": 1000.0,
-        "maxDistance": 10000.0,
+        "Cx": 0.377,
+        "maxDistance": 16000.0,
         "normalizationPreset": "apbc",
         "ricochetPreset": "apbc",
         "groundRicochetPreset": "apbc",
-        "secondaryShattersPreset": "ap_large_caliber",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.3,
         "stabilityReductionAfterPenetration": 0.0,
         "stucking": 0.7,
         "stuckingAngle": 45.0,
-        "bulletType": "ap_t",
-        "slopeEffectPreset": "apbc",
+        "bulletType": "apcbc_tank",
+        "slopeEffectPreset": "apc",
         "fresnel": [
           0.23,
           0.1,
@@ -909,6 +910,7 @@
         ],
         "shellAnimation": "video/shells_animations/ap.ivf",
         "bulletName": "57mm_br_281sp",
+        "guiCustomIcon": "ap",
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -959,7 +961,7 @@
         "damage": {
           "kinetic": {
             "damageType": "generic",
-            "demarrePenetrationK": 0.9,
+            "demarrePenetrationK": 1.0,
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
@@ -1057,29 +1059,31 @@
       },
       {
         "bulletCount": 20,
-        "mass": 3.14,
+        "mass": 2.8,
         "caliber": 0.057,
-        "speed": 990.0,
-        "maxDistance": 10000.0,
+        "speed": 1000.0,
+        "Cx": 0.377,
+        "maxDistance": 16000.0,
         "normalizationPreset": "apbc",
         "ricochetPreset": "apbc",
         "groundRicochetPreset": "apbc",
-        "secondaryShattersPreset": "ap_large_caliber",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.3,
         "stabilityReductionAfterPenetration": 0.0,
         "stucking": 0.7,
         "stuckingAngle": 45.0,
-        "bulletType": "apbc_tank",
-        "slopeEffectPreset": "apbc",
+        "bulletType": "apcbc_tank",
+        "slopeEffectPreset": "apc",
         "fresnel": [
           0.23,
           0.1,
           2.0
         ],
         "shellAnimation": "video/shells_animations/ap.ivf",
-        "bulletName": "57mm_br_271sp",
+        "bulletName": "57mm_br_281sp",
+        "guiCustomIcon": "ap",
         "relativeVelHitShift": [
           300.0,
           1000.0
@@ -1130,7 +1134,7 @@
         "damage": {
           "kinetic": {
             "damageType": "generic",
-            "demarrePenetrationK": 0.9,
+            "demarrePenetrationK": 1.0,
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07

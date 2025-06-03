@@ -54,6 +54,8 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/heat_fs.ivf",
+    "gbufferModelName": "tank_shell_heat_fs_w",
+    "modelName": "tank_shell_heat_fs_w",
     "bulletName": "90mm_occ_90_62",
     "onHitChanceMultExplFuel": 0.3,
     "relativeVelHitShift": [
@@ -240,7 +242,7 @@
       "breachConeAngle": 45.0
     },
     "cumulativeDamage": {
-      "armorPower": 320.0,
+      "armorPower": 350.0,
       "distance": 4.5,
       "damage": 250.0,
       "onHitChanceMultFire": 35.0
@@ -361,6 +363,8 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/heat_fs.ivf",
+      "gbufferModelName": "tank_shell_heat_fs_w",
+      "modelName": "tank_shell_heat_fs_w",
       "bulletName": "90mm_occ_90_62",
       "onHitChanceMultExplFuel": 0.3,
       "relativeVelHitShift": [
@@ -547,7 +551,7 @@
         "breachConeAngle": 45.0
       },
       "cumulativeDamage": {
-        "armorPower": 320.0,
+        "armorPower": 350.0,
         "distance": 4.5,
         "damage": 250.0,
         "onHitChanceMultFire": 35.0

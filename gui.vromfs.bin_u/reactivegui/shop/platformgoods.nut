@@ -16,8 +16,12 @@ let { platformGoods, platformOffer, platformSubs, platformGoodsDebugInfo, buyPla
   : require("byPlatform/goodsGaijin.nut")
 let { platformGoodsFromRussia = Watched(null) } = is_android && isDownloadedFromGooglePlay() ? require("byPlatform/goodsGaijin.nut") : null
 let { isForbiddenPlatformPurchaseFromRussia, openMsgBoxInAppPurchasesFromRussia } = require("inAppPurchasesFromRussia.nut")
-let { has_payments_blocked_web_page } = require("%appGlobals/permissions.nut")
+let { has_payments_blocked_web_page, can_use_alternative_payment_ios_usa } = require("%appGlobals/permissions.nut")
 let { eventbus_send } = require("eventbus")
+let { getCountryCode } = require("auth_wt")
+let goodsToPaySpecialWnd = require("platformGoodsSpecialWnd.nut")
+
+let listSpecialWndCountry = ["USA"]
 
 if (is_android)
   log("isDownloadedFromGooglePlay = ", isDownloadedFromGooglePlay())
@@ -70,6 +74,10 @@ function buyPlatformGoodsExt(goodsOrId) {
       baseUrl = " ".concat("auto_local", "auto_login", baseUrl)
       eventbus_send("openUrl", { baseUrl, onCloseUrl = "https://store.gaijin.net/success_payment.php" })
     }
+    return
+  }
+  if (can_use_alternative_payment_ios_usa.get() && is_ios && listSpecialWndCountry.contains(getCountryCode())) {
+    goodsToPaySpecialWnd.set(goodsOrId)
     return
   }
 

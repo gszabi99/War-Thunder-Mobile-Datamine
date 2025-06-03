@@ -1044,7 +1044,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 10.0,
         "speedYaw": 100.0,
-        "reloadTime": 12.0,
+        "reloadTime": 20.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -1286,7 +1286,7 @@
   },
   "torpedoSeries": {
     "delay": 0.1,
-    "count": 3
+    "count": 4
   },
   "modifications": {
     "ship_tool_kit": {},
@@ -1598,7 +1598,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 100.0,
-              "reloadTime": 12.0,
+              "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -2140,7 +2140,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 100.0,
-              "reloadTime": 12.0,
+              "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,

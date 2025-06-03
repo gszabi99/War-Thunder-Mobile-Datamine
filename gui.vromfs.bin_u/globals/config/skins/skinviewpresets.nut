@@ -96,6 +96,7 @@ let skinsByTag = {
     "cn_camo_summer_green"
     "jp_camo_post_green_olive"
     "jp_camo_modern_green"
+    "isr_camo_sandgreen"
   ],
 
   [DESERT] = [
@@ -356,9 +357,11 @@ let skinsByTag = {
     "germ_tropic_ju_87r_2"
     "jap_a6m2"
     "jap_a6m3_mod22"
+    "jap_a7m1"
     "jap_a7m2"
     "jap_aichi_b7a2_dark_green"
     "jap_g5n1"
+    "jap_j6k1_orange"
     "jap_ki_10_2_light_grey_green"
     "jap_ki_27_otsu_gray"
     "jap_ki_43_3_otsu"

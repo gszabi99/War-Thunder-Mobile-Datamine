@@ -1808,7 +1808,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "special",
-        "blk": "gameData/Weapons/groundModels_weapons/127mm_bgm_71c_itow_rocket_launcher.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/127mm_bgm_71_tow_begleitpanzer_launcher_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",

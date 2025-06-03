@@ -227,9 +227,9 @@
     {
       "hangarPlace": "hydroplane",
       "modelPos": [
-        3712.6,
-        25.9,
-        3549.2
+        2932.2,
+        7.0,
+        -2266.4
       ],
       "modelRotation": 285.0,
       "unitOffset": [
@@ -237,7 +237,13 @@
         0.0,
         0.0
       ],
-      "unitOnWater": true
+      "unitOnWater": true,
+      "cameraEllipsoidWeights": [
+        0.3,
+        0.0,
+        0.0,
+        0.9
+      ]
     },
     {
       "hangarPlace": "ship",
@@ -1819,14 +1825,14 @@
           "id": "v1",
           "musicName": "naval/music/cutscene_offer",
           "from": [
-            2733.8,
+            3001.6,
             7.0,
-            -1977.1
+            -2120.9
           ],
           "to": [
-            1808.7,
+            764.1,
             7.0,
-            -4052.2
+            -5806.5
           ],
           "timeToStop": 100.0,
           "cameraRelativeSpeed": 0.3,
@@ -1882,14 +1888,14 @@
           "id": "v3",
           "musicName": "naval/music/cutscene_offer",
           "from": [
-            2733.8,
+            3001.6,
             7.0,
-            -1977.1
+            -2120.9
           ],
           "to": [
-            1808.7,
+            764.1,
             7.0,
-            -4052.2
+            -5806.5
           ],
           "timeToStop": 100.0,
           "cameraRelativeSpeed": 0.9,
@@ -1945,14 +1951,14 @@
           "id": "v4",
           "musicName": "naval/music/cutscene_offer",
           "from": [
-            2733.8,
+            3001.6,
             7.0,
-            -1977.1
+            -2120.9
           ],
           "to": [
-            1808.7,
+            764.1,
             7.0,
-            -4052.2
+            -5806.5
           ],
           "timeToStop": 100.0,
           "cameraRelativeSpeed": 0.5,

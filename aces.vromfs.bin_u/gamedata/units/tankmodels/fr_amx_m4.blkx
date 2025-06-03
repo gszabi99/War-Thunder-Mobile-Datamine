@@ -2149,18 +2149,21 @@
       "minRPM": 700.0
     },
     "mechanics": {
+      "steerType": "clutch_braking",
       "maxBrakeForce": 220000.0,
       "driveGearRadius": 0.268,
-      "mainGearRatio": 1.99,
-      "sideGearRatio": 2.774,
+      "mainGearRatio": 5.5,
+      "sideGearRatio": 1.0,
+      "neutralGearRatio": 16.0,
       "gearRatios": {
         "ratio": [
-          -8.714,
+          -2.7,
+          -9.7,
           0.0,
-          8.714,
-          3.812,
-          2.259,
-          1.452,
+          9.7,
+          4.4,
+          2.7,
+          1.7,
           1.0
         ]
       }

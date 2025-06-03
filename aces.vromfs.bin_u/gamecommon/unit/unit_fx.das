@@ -9,7 +9,7 @@ require %game.events
 require %game.unit_events
 
 
-[es]
+[es(no_order)]
 def unit_fx_updater_es(info : UpdateStageInfoAct;
                        var unit__ref : UnitRef;
                        active : bool;

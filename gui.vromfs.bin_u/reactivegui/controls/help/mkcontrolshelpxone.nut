@@ -41,7 +41,7 @@ let hints = [
     blockOvr = { hplace = ALIGN_RIGHT }
   }
   {
-    key = ["J:LS", "J:LS.Up", "J:LS.Down", "J:LS.Left", "J:LS.Right"]
+    key = ["J:LS.Up", "J:LS.Down", "J:LS.Left", "J:LS.Right", "J:LS"]
     lines = mkLines([223, 237, leftBk, 80, left, 80])
     pos = mkSizeByParent([left, 80  - borderOffs])
     blockOvr = { hplace = ALIGN_RIGHT }
@@ -108,7 +108,7 @@ let hints = [
     pos = mkSizeByParent([right, 520  - borderOffs])
   }
   {
-    key = ["J:RS", "J:RS.Up", "J:RS.Down", "J:RS.Left", "J:RS.Right"]
+    key = ["J:RS.Up", "J:RS.Down", "J:RS.Left", "J:RS.Right", "J:RS"]
     lines = mkLines([517, 378, 517, 470 - borderOffs])
     blockOvr = { hplace = ALIGN_CENTER }
   }

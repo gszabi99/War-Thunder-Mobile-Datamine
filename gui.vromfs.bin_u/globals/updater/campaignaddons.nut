@@ -10,15 +10,24 @@ let aircraftCbtPkgs = ["pkg_cbt_aircraft", "pkg_cbt_aircraft_hq"].filter(@(a) a 
 let airStarterPkgs = ["pkg_tier_1_aircraft"].filter(@(a) a in knownAddons)
 let customUnitPkg = {
   
-  germ_destroyer_class1934a_1940 = null
-  uk_destroyer_hunt_4series = null
-  us_destroyer_fletcher = null
-  jp_destroyer_akizuki  = null
-  ussr_destroyer_pr56_spokoinyy = null
+  germ_destroyer_class1934a_1940 = null,
+  uk_destroyer_hunt_4series = null,
+  us_destroyer_fletcher = null,
+  jp_destroyer_akizuki  = null,
+  ussr_destroyer_pr56_spokoinyy = null,
   
-  us_m4a1_1942_sherman = null
-  ussr_t_34_1941_l_11 = null
-  germ_pzkpfw_IV_ausf_F2 = null,
+  us_m4a1_1942_sherman = null, 
+  us_m24_chaffee = null,
+  us_m10 = null,
+  us_halftrack_m16 = null,
+  ussr_t_34_1941_l_11 = null, 
+  ussr_t_34_1941 = null,
+  ussr_t_28E = null,
+  ussr_zis_12_94KM_1945 = null,
+  germ_pzkpfw_IV_ausf_F2 = null, 
+  germ_pzkpfw_IV_ausf_F = null,
+  germ_pzkpfw_III_ausf_L = null,
+  germ_sdkfz_251_21 = null,
   
   ["i-15_1934"] = null,
   he51c1 = null,
@@ -120,6 +129,21 @@ function getAddonCampaign(addon) {
   return addonCampaigns[addon]
 }
 
+function getPkgsForCampaign(campaigns) {
+  let include = {}
+  let exclude = {}
+  foreach (campaign, byRank in campaignAddonsByRank) {
+    let tbl = campaigns.contains(campaign) ? include : exclude
+    foreach (addons in byRank)
+      addons.each(@(a) tbl[a] <- a)
+  }
+  foreach (campaign, addons in commonCampaignAddons) {
+    let tbl = campaigns.contains(campaign) ? include : exclude
+    addons.each(@(a) tbl[a] <- a)
+  }
+  return include.filter(@(a) a not in exclude).keys()
+}
+
 return {
   getUnitPkgs
   getCampaignPkgsForOnlineBattle
@@ -127,4 +151,5 @@ return {
   getCampaignPkgsForNewbieSingle
   getAddonCampaign
   getCampaignOrig
+  getPkgsForCampaign
 }

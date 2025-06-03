@@ -1843,7 +1843,7 @@
         "order": 3,
         "WeaponPreset": [
           {
-            "iconType": "rocket_40kg",
+            "iconType": "rocket_7kg",
             "name": "hvar",
             "reqModification": "frc_mk2",
             "ShowNodes": {

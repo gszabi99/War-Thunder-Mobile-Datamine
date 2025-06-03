@@ -11,7 +11,7 @@ let { addFpsLimit, removeFpsLimit } = require("%rGui/guiFpsLimit.nut")
 let { getDownloadInfoText } = require("%globalsDarg/updaterUtils.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { translucentIconButton } = require("%rGui/components/translucentButton.nut")
-let { toggleWithLabel } = require("%rGui/components/toggle.nut")
+let { horizontalToggleWithLabel } = require("%rGui/components/toggle.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 let wndUid = "downloadAddonsWnd"
@@ -42,7 +42,7 @@ let waitSpinner = {
   animations = [{ prop = AnimProp.rotate, from = 0, to = 360, duration = 3.0, play = true, loop = true }]
 }
 
-let limitedDownloadToggle = toggleWithLabel(allowLimitedDownload, loc("btn/allowMobileNetworkDownload"))
+let limitedDownloadToggle = horizontalToggleWithLabel(allowLimitedDownload, loc("btn/allowMobileNetworkDownload"))
 
 let headerRight = @() {
   watch = isDownloadInProgress

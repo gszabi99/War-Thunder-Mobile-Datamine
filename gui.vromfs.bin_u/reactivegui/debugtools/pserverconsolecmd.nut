@@ -12,7 +12,7 @@ let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, se
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, halt_goods_purchase, add_shop_goods,
   halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, debug_apply_unit_daily_bonus_in_battle,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
-  add_battle_mod, set_research_unit, add_slot_exp, update_branch_offer, apply_unit_level_rewards,
+  add_battle_mod, set_research_unit, add_slot_exp, validate_active_offer, apply_unit_level_rewards,
   shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward,
   check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, add_currency_no_popup_by_full_id
 } = pServerApi
@@ -193,8 +193,8 @@ foreach (ot in offerTypes) {
   register_command(@() generate_fixed_type_offer(curCampaign.value, offerType, "consolePrintResult"),
     $"meta.generate_offer_{offerType}")
 }
-register_command(@() update_branch_offer(curCampaign.get()),
-  "meta.update_branch_offer")
+register_command(@() validate_active_offer(curCampaign.get()),
+  "meta.validate_active_offer")
 
 foreach (cmd in ["get_all_configs", "reset_profile",
   "unlock_all_common_units", "unlock_all_premium_units", "unlock_all_units", "check_purchases",

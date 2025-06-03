@@ -5,7 +5,10 @@ let console = require("console")
 let { mkFrameIncrementObservable } = require("%daeditor/ec_to_watched.nut")
 
 let {getEditMode=@() null, isFreeCamMode=@() false, setWorkMode=@(_) null,
-     setEditMode=@(_) null, setPointActionPreview=@(_, __) null, DE4_MODE_POINT_ACTION=null, DE4_MODE_SELECT=null} = require_optional("daEditorEmbedded")
+     setEditMode=@(_) null, setPointActionPreview=@(_, __) null, DE4_MODE_POINT_ACTION=null, DE4_MODE_SELECT=null,
+     DE4_MODE_MOVE=null, DE4_MODE_ROTATE=null, DE4_MODE_SCALE=null, DE4_MODE_MOVE_SURF=null,
+     DE4_BASIS_WORLD=null, DE4_BASIS_LOCAL=null, DE4_BASIS_PARENT=null,
+     getGizmoBasisType=@() null, setGizmoBasisType=@(_) null} = require_optional("daEditorEmbedded")
 let {is_editor_activated=@() false, get_scene_filepath=@() null, set_start_work_mode=@(_) null, get_instance=@() null} = require_optional("entity_editor")
 let selectedEntity = Watched(ecs.INVALID_ENTITY_ID)
 let { selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey } = mkFrameIncrementObservable({}, "selectedEntities")
@@ -39,6 +42,19 @@ let initWorkModes = function(modes, defMode=null) {
   let mode_to_set = modes.contains(last_mode) ? last_mode : good_mode
   de4workMode(mode_to_set)
 }
+
+let canChangeGizmoBasisType = function() {
+  local m = getEditMode()
+  return m == DE4_MODE_MOVE || m == DE4_MODE_MOVE_SURF || m == DE4_MODE_ROTATE || m == DE4_MODE_SCALE
+}
+
+let gizmoBasisTypeNames = [[DE4_BASIS_WORLD, "Basis: world"], [DE4_BASIS_LOCAL, "Basis: local"], [DE4_BASIS_PARENT, "Basis: parent"]]
+let gizmoBasisType = Watched(getGizmoBasisType())
+let gizmoBasisTypeEditingDisabled = Watched(!canChangeGizmoBasisType())
+
+gizmoBasisType.subscribe(function(v) {
+  setGizmoBasisType(v)
+})
 
 let proceedWithSavingUnsavedChanges = function(showMsgbox, callback, unsavedText=null, proceedText=null) {
   if (unsavedText == true) { unsavedText = null; proceedText = true; }
@@ -169,6 +185,10 @@ return {
   de4workMode
   de4workModes
   initWorkModes
+  gizmoBasisType
+  gizmoBasisTypeNames
+  gizmoBasisTypeEditingDisabled
+  canChangeGizmoBasisType
   proceedWithSavingUnsavedChanges
   showDebugButtons = Watched(true)
 

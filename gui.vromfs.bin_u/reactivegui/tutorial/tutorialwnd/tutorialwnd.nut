@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { setInterval, clearTimer, deferOnce } = require("dagor.workcycle")
 let { addModalWindow, removeModalWindow, MWP_ALWAYS_TOP } = require("%rGui/components/modalWindows.nut")
 let tutorialWndDefStyle = require("tutorialWndDefStyle.nut")
-let { isTutorialActive, tutorialConfigVersion, getTutorialConfig, stepIdx, WND_UID,
+let { isTutorialActive, tutorialConfigVersion, getTutorialConfig, stepIdx, WND_UID, isTutorialSkipOnClick
   nextStep, nextStepByDefaultHotkey, skipStep, nextKeyAllowed, skipKeyAllowed, getTimeAfterStepStart
 } = require("tutorialWndState.nut")
 let { getBox, incBoxSize, createHighlight, findGoodPos, findGoodArrowPos, sizePosToBox,
@@ -133,8 +133,10 @@ function mkMessage(text, charId, customCtor, boxes, style) {
   }
 }
 
-function mkSkipButton(stepSkipDelay, boxes, style) {
-  let skipBtn = style.skipBtnCtor(stepSkipDelay, skipStep, $"skipBtn{stepIdx.get()}")
+function mkSkipButton(stepSkipDelay, boxes, style, isClickBtn) {
+  let skipBtnKey = $"skipBtn{stepIdx.get()}"
+  let skipBtn = isClickBtn ? style.skipBtnClickCtor(skipStep, skipBtnKey)
+    : style.skipBtnCtor(stepSkipDelay, skipStep, skipBtnKey)
   let size = calc_comp_size(skipBtn)
   local pos = null
   let rightPos = [sw(95) - size[0], sh(5)]
@@ -195,7 +197,7 @@ function checkValidBoxes() {
 }
 
 function tutorialWnd() {
-  let watch = [tutorialConfigVersion, stepIdx, boxUpdateCountWithStep]
+  let watch = [tutorialConfigVersion, stepIdx, boxUpdateCountWithStep, isTutorialSkipOnClick]
   let config = getTutorialConfig()
   let style = tutorialWndDefStyle.__merge(config?.style ?? {})
 
@@ -230,7 +232,8 @@ function tutorialWnd() {
   let { linkBoxes = null, arrowLinks = null } = mkArrowLinks(stepData, boxes, style)
   let obstacles = (clone boxes).extend(linkBoxes ?? [])
 
-  let { skipBtn, skipBox } = mkSkipButton(config?.stepSkipDelay ?? DEF_SKIP_TIME, obstacles, style)
+  let stepSkipTime = isTutorialSkipOnClick.get() ? 0 : (config?.stepSkipDelay ?? DEF_SKIP_TIME)
+  let { skipBtn, skipBox } = mkSkipButton(stepSkipTime, obstacles, style, isTutorialSkipOnClick.get())
   obstacles.append(skipBox)
   let { characterComp = null, messageComp = null, messageBox = null } = mkMessage(text, charId, textCtor, obstacles, style)
   if (messageBox != null)

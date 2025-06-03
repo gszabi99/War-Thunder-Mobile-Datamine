@@ -24,7 +24,7 @@
   "useSimpleDeathConditionsAndEffects": false,
   "hitCamOnSimpleUnitSubsystems": true,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 107760.0,
+  "multHpFromMetaparts": 101420.0,
   "type": "typeDestroyer",
   "expClass": "exp_destroyer",
   "timeToFire": 40.0,
@@ -272,7 +272,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 107760.0,
+      "hp": 101420.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "compartment_01_dm": {
@@ -298,7 +298,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 107760.0,
+      "hp": 101420.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "fireParamsPreset": "common_ship_fire",
@@ -308,7 +308,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 107760.0,
+      "hp": 101420.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
       "main_caliber_turret_01_dm": {}
@@ -317,7 +317,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 107760.0,
+      "hp": 101420.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "auxiliary_caliber_turret_03_dm": {},
@@ -364,7 +364,7 @@
     "torpedo_tubes": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 107760.0,
+      "hp": 101420.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "tt_01_dm": {},
@@ -571,7 +571,7 @@
   },
   "MetaParts": {
     "hull": {
-      "hp": 107760.0,
+      "hp": 101420.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",
@@ -2612,7 +2612,7 @@
       1.0,
       10.0
     ],
-    "additionalWaterDeathThreshold": 12600000.0,
+    "additionalWaterDeathThreshold": 19600000.0,
     "additionalWaterCoverPartsThreshold": 4000000.0,
     "additionalWaterShouldDiePercent": 0.3,
     "fatalBreachDrownTime": 20.0,

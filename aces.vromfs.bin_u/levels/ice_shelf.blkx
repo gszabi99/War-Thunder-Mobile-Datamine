@@ -71,7 +71,8 @@
       0.28,
       0.24,
       0.0
-    ]
+    ],
+    "reflection_normal_rotation_mul": 0.35
   },
   "render": {
     "lmesh": true,

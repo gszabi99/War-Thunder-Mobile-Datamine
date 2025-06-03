@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { get_common_local_settings_blk, get_settings_blk } = require("blkGetters")
-let { get_maximum_frames_per_second, is_broken_grass_flag_set, is_texture_uhq_supported, should_notify_about_restart,
+let { get_maximum_frames_per_second, is_texture_uhq_supported, should_notify_about_restart,
   get_default_graphics_preset, is_metalfx_upscale_supported,
   is_fxaa_high_broken, supports_deferred_msaa
 } = require("graphicsOptions")
@@ -59,9 +59,6 @@ function setGraphicsQuality(v) {
   graphicsQuality.set(v)
   resolutionValue.set(getResolutionByQuality(v))
   aaValue.set(getAAByQuality(v))
-
-  if (is_broken_grass_flag_set() && (v == "high" || v == "max"))
-    openFMsgBox({ text = loc("msg/qualityNotFullySupported") })
 }
 
 let optQuality = {

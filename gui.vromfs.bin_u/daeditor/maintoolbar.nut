@@ -2,7 +2,8 @@ from "%darg/ui_imports.nut" import *
 from "%darg/laconic.nut" import *
 
 let {showEntitySelect, propPanelVisible, propPanelClosed, showHelp, de4editMode,
-     de4workMode, de4workModes, showUIinEditor, editorTimeStop} = require("state.nut")
+     de4workMode, de4workModes, showUIinEditor, editorTimeStop,
+     gizmoBasisType, gizmoBasisTypeNames, gizmoBasisTypeEditingDisabled} = require("state.nut")
 
 let pictureButton = require("components/pictureButton.nut")
 let combobox = require("%daeditor/components/combobox.nut")
@@ -105,11 +106,14 @@ function mainToolbar() {
       toolbarButton(svg("delete"),     @() get_instance().deleteSelectedObjects(true), "Delete selected (Del)")
       separator
       modeButton(svg("surf"), DE4_MODE_MOVE_SURF, "Surf over ground (Ctrl+Alt+W)")
-      toolbarButton(svg("drop"),        @() get_instance().dropObjects(),      "Drop (Ctrl+Alt+D)")
-      toolbarButton(svg("dropnormal"),  @() get_instance().dropObjectsNorm(),  "Drop on normal (Ctrl+Alt+E)")
-      toolbarButton(svg("resetscale"),  @() get_instance().resetScale(),       "Reset scale (Ctrl+Alt+R)")
-      toolbarButton(svg("resetrotate"), @() get_instance().resetRotate(),      "Reset rotation (Ctrl+Alt+T)")
-      toolbarButton(svg("zoomcenter"),  @() get_instance().zoomAndCenter(),    "Zoom and center (Z)")
+      toolbarButton(svg("drop"),         @() get_instance().dropObjects(),                     "Drop (Ctrl+Alt+D)")
+      toolbarButton(svg("dropnormal"),   @() get_instance().dropObjectsNorm(),                 "Drop on normal (Ctrl+Alt+E)")
+      toolbarButton(svg("resetscale"),   @() get_instance().resetScale(),                      "Reset scale (Ctrl+Alt+R)")
+      toolbarButton(svg("resetrotate"),  @() get_instance().resetRotate(),                     "Reset rotation (Ctrl+Alt+T)")
+      toolbarButton(svg("zoomcenter"),   @() get_instance().zoomAndCenter(),                   "Zoom and center (Z)")
+      toolbarButton(svg("parent_set"),   @() get_instance().setParentForSelection(),           "Set parent (Ctrl+P)")
+      toolbarButton(svg("parent_clear"), @() get_instance().clearParentForSelection(),         "Clear parent (Alt+P)")
+      toolbarButton(svg("parent_free"),  @() get_instance().toggleFreeTransformForSelection(), "Toggle between free and fixed transform")
       separator
       toolbarButton(svg("properties"), togglePropPanel, "Property panel (P)", propPanelVisible.value)
       toolbarButton(svg("hide"), @() get_instance().hideSelectedTemplate(), "Hide")
@@ -127,6 +131,12 @@ function mainToolbar() {
         size = [hdpx(100),fontH(100)]
         children = combobox(de4workMode, de4workModes)
       }
+
+      separator
+      {
+        size = [hdpx(150), fontH(100)]
+        children = combobox({value = gizmoBasisType, disable = gizmoBasisTypeEditingDisabled}, gizmoBasisTypeNames, "Set gizmo basis mode (X)")
+      }
     ]
 
     hotkeys = [
@@ -134,7 +144,9 @@ function mainToolbar() {
       ["Tab", toggleEntitySelect],
       ["!L.Ctrl !L.Alt T", toggleCreateEntityMode],
       ["F1", toggleHelp],
-      ["P", togglePropPanel],
+      ["!L.Ctrl !L.Alt P", togglePropPanel],
+      ["L.Ctrl !L.Alt P", @() get_instance().setParentForSelection()],
+      ["!L.Ctrl L.Alt P", @() get_instance().clearParentForSelection()],
       ["L.Ctrl !L.Alt T", toggleTime],
       ["L.Ctrl !L.Alt S", { action = save, ignoreConsumerCallback = true }], 
       ["L.Ctrl !L.Alt L", toggleLogsWindows],

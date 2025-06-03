@@ -522,6 +522,34 @@
           "detectionArea": false,
           "airMapArea": false,
           "area": "@battle_area_name"
+        },
+        "triggerEnable": {
+          "target": "check_bot_battle_area_exist"
+        }
+      },
+      "else_actions": {}
+    },
+    "check_bot_battle_area_exist": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "bot_battle_area",
+          "type": "area"
+        }
+      },
+      "actions": {
+        "varSetString": {
+          "value": "bot_battle_area",
+          "var": "battle_area_name"
         }
       },
       "else_actions": {}

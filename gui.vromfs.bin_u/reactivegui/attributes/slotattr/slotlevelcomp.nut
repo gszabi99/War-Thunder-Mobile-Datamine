@@ -78,4 +78,5 @@ return {
   mkSlotLevel
   mkSlotLevelBlock
   getSlotLevelIcon
+  levelHolderSize
 }

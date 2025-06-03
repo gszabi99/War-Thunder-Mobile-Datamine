@@ -140,7 +140,7 @@ eventbus_subscribe("android.billing.huawei.onInitAndDataRequested", function(res
 
 let getSku = @(goods) goods?.purchaseGuids.huawei.extId
 let getHuaweiDiscount = @(goods) goods?.purchaseGuids.huawei.discountInPercent ?? 0
-let getPlanId = @(goods) goods?.purchaseGuids.android.planId
+let getPlanId = @(goods) goods?.purchaseGuids.huawei.planId
 
 let goodsIdBySku = Computed(function() {
   let res = {}

@@ -87,7 +87,7 @@ def init_server_player_on_client_es(evt : Event;
       server_player__playerEid = player_eid
       print("[ServerPlayer]: The server player with id {player_id} for user {m_player.userId} has been created on the client")
 
-      let localPlayer = getLocalPlayer()
+      let localPlayer = player_get_local()
       if localPlayer != null && localPlayer.userId == m_player.userId
         
         let SERVER_CONN_ID = 0

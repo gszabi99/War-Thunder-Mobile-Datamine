@@ -2,21 +2,21 @@ from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { HangarCameraControl } = require("wt.behaviors")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
+let { mkGamercard, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
 let { translucentButtonsVGap, translucentButton } = require("%rGui/components/translucentButton.nut")
 let { gamercardGap, CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
 let { hangarUnit, setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { itemsOrder } = require("%appGlobals/itemsState.nut")
 let { curUnit, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
+let { mkPlatoonOrUnitTitle, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { btnOpenUnitAttr } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
 let { isMainMenuAttached } = require("mainMenuState.nut")
 let { totalPlayers } = require("%appGlobals/gameModes/gameModes.nut")
 let { curCampaign, campaignsList, campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { curCampaignSlots, curSlots } = require("%appGlobals/pServer/slots.nut")
 let { chooseCampaignWnd } = require("chooseCampaignWnd.nut")
-let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
+let mkUnitPkgForBattleDownloadInfo = require("%rGui/unit/mkUnitPkgForBattleDownloadInfo.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
@@ -24,7 +24,9 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { newbieOfflineMissions } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { allow_players_online_info, allow_subscriptions } = require("%appGlobals/permissions.nut")
 let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+let { gradTranspDoubleSideX, gradDoubleTexOffset, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
+let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { mkMRankRange } = require("%rGui/state/matchingRank.nut")
 let { canReceivePremDailyBonus } = require("%rGui/state/profilePremium.nut")
 let squadPanel = require("%rGui/squad/squadPanel.nut")
@@ -48,12 +50,20 @@ let { boostersListActive, boostersHeight } = require("%rGui/boosters/boostersLis
 let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { DBGLEVEL } = require("dagor.system")
-let { slotBarMainMenu, slotBarSize } = require("%rGui/slotBar/slotBar.nut")
+let { slotBarMainMenu, slotBarMainMenuSize } = require("%rGui/slotBar/slotBar.nut")
 let { unseenCampaigns } = require("unseenCampaigns.nut")
 let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
 let { openSlotPresetWnd } = require("%rGui/slotBar/slotPresetsState.nut")
 
 let unitNameStateFlags = Watched(0)
+
+let battleInfoBlockMinHeight = hdpx(120)
+let centerBlockGap = hdpx(20)
+let centerBlockWidth = saSize[0] - 2 * statsWidth
+let centerBlockTopMargin = gamercardHeight + translucentButtonsVGap
+let centerBlockBottomMargin = defButtonHeight + battleInfoBlockMinHeight
+let unitNameBlockHeight = hdpx(60)
+let unitNameBgColor = 0x90000000
 
 let mainMenuUnitToShow = keepref(Computed(function() {
   if (!isMainMenuAttached.value)
@@ -64,29 +74,57 @@ let mainMenuUnitToShow = keepref(Computed(function() {
 
 mainMenuUnitToShow.subscribe(@(unitId) unitId == null ? null : setHangarUnit(unitId))
 
-let mkUnitName = @(unit) @() {
-  watch = unitNameStateFlags
-  onElemState = @(sf) unitNameStateFlags(sf)
-  behavior = Behaviors.Button
+let mkUnitName = @(unit, sf) {
+  vplace = ALIGN_CENTER
+  margin = [0, hdpx(20)]
   flow = FLOW_HORIZONTAL
   gap = hdpx(24)
-  onClick = @() unitDetailsWnd({ name = unit.name })
   children = [
     mkPlatoonOrUnitTitle(
-      unit, {}, unitNameStateFlags.value & S_HOVER ? { color = hoverColor } : {})
+      unit, {}, { maxWidth = centerBlockWidth }.__update(sf & S_HOVER ? { color = hoverColor } : {}))
     mkGradRank(unit.mRank)
   ]
 }
 
-let unitNameBlock = @() hangarUnit.get() == null ? { watch = hangarUnit }
-  : {
-      watch = [hangarUnit, unseenSkins]
+let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
+  mkGradientCtorRadial(unitNameBgColor, 0, 40, 25, 0, 15))
+
+function unitNameBlock() {
+  let res = { watch = hangarUnit }
+  if (hangarUnit.get() != null)
+    res.__update({
+      watch = [hangarUnit, unseenSkins, unitNameStateFlags]
+      size = [SIZE_TO_CONTENT, unitNameBlockHeight]
+      rendObj = ROBJ_IMAGE
+      flow = FLOW_HORIZONTAL
+      image = bgGradient()
+      behavior = Behaviors.Button
+      onElemState = @(sf) unitNameStateFlags.set(sf)
+      onClick = @() unitDetailsWnd({ name = hangarUnit.get().name })
       children = [
-        mkUnitName(hangarUnit.get())
-        hangarUnit.get().name not in unseenSkins.get() ? null
-          : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(20), hdpx(-20)] })
+        {
+          size = unitNameBlockHeight
+          rendObj = ROBJ_BOX
+          bgColor = unitNameBgColor
+          borderWidth = hdpx(2)
+          borderColor = 0xFFA0A0A0
+          children = [
+            {
+            rendObj = ROBJ_TEXT
+            vplace = ALIGN_CENTER
+            hplace = ALIGN_CENTER
+            text = "i"
+          }.__update(fontSmallShaded)
+          hangarUnit.get().name not in unseenSkins.get() ? null
+            : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(10), hdpx(-10)] })
+        ]
+        }
+        mkUnitName(hangarUnit.get(), unitNameStateFlags.get())
       ]
-    }
+      transform = { scale = unitNameStateFlags.get() & S_ACTIVE ? [0.98, 0.98] : [1, 1] }
+    })
+  return res
+}
 
 let campaignsBtn = @() {
   watch = [campaignsList, curCampaign, unseenCampaigns]
@@ -163,7 +201,7 @@ let leftBottomButtons = {
   children = @() curSlots.get().len() == 0 ? { watch = curSlots }
     : {
         watch = curSlots
-        size = slotBarSize
+        size = slotBarMainMenuSize
         children = slotBarMainMenu
       }
 }
@@ -183,11 +221,6 @@ let leftTopButtons = {
             flow = FLOW_HORIZONTAL
             children = [
               campaignsBtn
-              {
-                size = [0, 0]
-                pos = [0, -hdpx(10)]
-                children = downloadInfoBlock
-              }
             ]
           }
           {
@@ -261,6 +294,7 @@ let toBattleButtonPlace = {
       ]
     }
     {
+      minHeight = battleInfoBlockMinHeight
       rendObj = ROBJ_9RECT
       image = gradTranspDoubleSideX
       padding = [ 0, 0, 0, saBorders[0] * 0.5]
@@ -271,7 +305,6 @@ let toBattleButtonPlace = {
       halign = ALIGN_RIGHT
       children = [
         onlineInfo
-        unitNameBlock
         gamercardBattleItemsBalanceBtns
         mkMRankRange
       ]
@@ -288,14 +321,31 @@ let exitMsgBox = @() openMsgBox({
   ]
 })
 
-let bottomCenterBlock = {
-  vplace = ALIGN_BOTTOM
-  hplace = ALIGN_CENTER
+let centerTopBlock = {
+  rendObj = ROBJ_BOX
+  size = [centerBlockWidth, SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
-  valign = ALIGN_BOTTOM
+  gap = centerBlockGap
   children = [
-    mkUnitPkgDownloadInfo(curUnit, false,
-      { pos = [0, - slotBarSize[1] - translucentButtonsVGap] })
+    unitNameBlock
+    mkUnitPkgForBattleDownloadInfo()
+  ]
+}
+
+let centerBottomBlock = {
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_BOTTOM
+  children = downloadInfoBlock
+}
+
+let centerBlock = {
+  size = [SIZE_TO_CONTENT, saSize[1] - centerBlockTopMargin - centerBlockBottomMargin]
+  pos = [0, centerBlockTopMargin]
+  hplace = ALIGN_CENTER
+  children = [
+    centerTopBlock
+    centerBottomBlock
   ]
 }
 
@@ -313,7 +363,7 @@ return {
     leftTopButtons
     leftBottomButtons
     toBattleButtonPlace
-    bottomCenterBlock
+    centerBlock
   ]
   animations = wndSwitchAnim
   hotkeys = [

@@ -826,7 +826,7 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
     return
 
   assume dm = *unit.visual
-  let on_kill = int(evt.prevHpFixed) > 0 && evt.damage / get_part_hp_prop_value(dm.dmData, remap.partId) >= rel_hp_fixed_to_float(evt.prevHpFixed)
+  let on_kill = int(evt.prevHpFixed) > 0 && evt.damage / get_part_hp_prop_value(unit.dmData, remap.partId) >= rel_hp_fixed_to_float(evt.prevHpFixed)
   if damage_effect_preset_id > length(dm.damageEffects.presets)
     logerr("invalid damage effect preset id {damage_effect_preset_id}")
     return

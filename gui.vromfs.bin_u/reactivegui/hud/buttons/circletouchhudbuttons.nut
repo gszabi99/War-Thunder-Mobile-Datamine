@@ -303,7 +303,7 @@ let mkCircleTankPrimaryGun = @(aType) function(actionItem, scale, key = "btn_wea
   let bgSize = scaleEven(bigButtonSize, scale)
   let imgSize = scaleEven(bigButtonImgSize, scale)
   return function() {
-    let isAvailable = isAvailableActionItem(actionItem, isOnCd.get()) && !isDisabled.get()
+    let isAvailable = (isOnCd.get() || isAvailableActionItem(actionItem)) && !isDisabled.get()
     let { count, countEx, isBulletBelt = false, isContinuous = false } = actionItem
     let isWaitForAim = !(actionItem?.aimReady ?? true)
     let isWaitToShoot = !allowShoot.value && !primaryRocketGun.value
@@ -361,7 +361,7 @@ function mkCircleTankMachineGun(actionItemW, aType, scale) {
     if (actionItem == null)
       return { watch = actionItemW }
 
-    let isAvailable = isAvailableActionItem(actionItem, isOnCd.get()) && !isDisabled.get()
+    let isAvailable = (isOnCd.get() || isAvailableActionItem(actionItem)) && !isDisabled.get()
     let isWaitForAim = !(actionItem?.aimReady ?? true)
     let isInDeadZone = actionItem?.inDeadzone ?? false
     let color = !isAvailable || (isWaitForAim && isInDeadZone) ? disabledColor : 0xFFFFFFFF
@@ -399,7 +399,7 @@ let mkCircleTankSecondaryGun = @(shortcutId, aType, img = null) function(actionI
   let imgSize = scaleEven(buttonImgSize, scale)
   let { count, countEx, isBulletBelt = false } = actionItem
   return function() {
-    let isAvailable = isAvailableActionItem(actionItem, isOnCd.get())
+    let isAvailable = isOnCd.get() || isAvailableActionItem(actionItem)
     let isWaitForAim = !(actionItem?.aimReady ?? true)
     let isWaitToShoot = !allowShoot.value && !primaryRocketGun.value
     let color = !isAvailable || isWaitToShoot || (primaryRocketGun.value && isWaitForAim) ? disabledColor : 0xFFFFFFFF
@@ -886,7 +886,7 @@ let mkCircleFireworkBtn = @(aType) function(actionItem, scale) {
   let bgSize = scaleEven(buttonSize, scale)
   let imgSize = scaleEven(buttonImgSize, scale)
   return function() {
-    let isAvailable = isAvailableActionItem(actionItem, isOnCd.get()) && !isDisabled.get()
+    let isAvailable = (isOnCd.get() || isAvailableActionItem(actionItem)) && !isDisabled.get()
     let { count } = actionItem
     let color = !isAvailable ? disabledColor : 0xFFFFFFFF
     return {

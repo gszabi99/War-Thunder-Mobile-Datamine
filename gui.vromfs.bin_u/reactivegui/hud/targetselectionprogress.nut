@@ -23,7 +23,8 @@ let targetImage = getSvgImage("target_lock_corner", targetSize)
 let targetOffset = [0, - hdpx(20)]
 
 eventbus_subscribe("on_delayed_target_select:show", function(data) {
-  let { lockTime = 0.0, endTime = 0.0 } = data
+  let { lockTime = 0.0, endTime = 0.0, name = "" } = data
+  targetUnitName.set(name)
   cooldownEndTime.set(endTime)
   cooldownTime.set(lockTime)
   showTargetName.set(true)
@@ -135,14 +136,14 @@ let targetName = @(text) {
 }.__update(fontTiny)
 
 let targetSelectionProgress = @() {
-  watch = [cooldownTime, cooldownEndTime, targetUnitName]
+  watch = [showTargetName, cooldownTime, cooldownEndTime, targetUnitName]
   transform = defTransform
   behavior = Indicator
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
     showTargetName.value ? targetName(targetUnitName.value) : null
-    targetUnitName.get() == null ? null
+    targetUnitName.get() == null || targetUnitName.get() == "" ? null
       : mkTargetSelectionData(cooldownEndTime.value, cooldownTime.value, calc_str_box(targetUnitName.get(), fontTiny))
   ]
 }

@@ -262,7 +262,7 @@
   },
   "air_balloon": {
     "airBalloonN": {
-      "template": "air_balloon#1:4#"
+      "template": "air_balloon#1:16#"
     }
   },
   "aircraft_gunner": {

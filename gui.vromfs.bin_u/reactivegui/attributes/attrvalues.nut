@@ -190,13 +190,14 @@ let shipAttrs = {
     valueToText = @(v) "".concat(round_by_value(v / 1000.0, 0.1), loc("measureUnits/km_dist"))
   }
   attrib_torpedo_count = {
-    function getAttrValText(attrId, step, stepsTotal, shopCfg) {
+    function getAttrVal(attrId, step, stepsTotal, shopCfg) {
       let weapon = getTopWeaponByTypes(shopCfg?.weapons, [ "torpedo" ])
       let { addTorpedoesCountPack = 0 } = shopCfg
       let { ammoCount = 0 } = weapon
       let addAttrByStep = (attrMaxMulsShip?[attrId].addTorpedo ?? 1.0) / stepsTotal
       return ammoCount + addTorpedoesCountPack * addAttrByStep * step
     }
+    valueToText= @(v) v.tostring()
   }
   attrib_ship_endurance = {
     labelLocId = "stats/shipCrewAll"
@@ -361,7 +362,7 @@ let getAttrMul = @(cfg, attrId, step, stepsTotal) stepsTotal != 0
   ? ((cfg.getMulMax(attrId) - cfg.getMulMin(attrId)) / stepsTotal * step) + cfg.getMulMin(attrId)
   : 1.0
 
-function getAttrValData(unitType, attr, step, shopCfg, servConfigs, mods) {
+function getAttrValRaw(unitType, attr, step, shopCfg, mods) {
   let attrId = attr.id
   let stepsTotal = attr.levelCost.len() 
   let cfg = attrValCfg?[unitType][attrId] ?? attrValCfgDefault
@@ -370,14 +371,19 @@ function getAttrValData(unitType, attr, step, shopCfg, servConfigs, mods) {
     submarineMul = get_game_params()?.submarineMaxSpeedMult ?? 1.
   }
 
+  return cfg?.getAttrVal(attrId, step, stepsTotal, shopCfg)
+    ?? (cfg.getBaseVal(shopCfg) * getAttrMul(cfg, attrId, step, stepsTotal) * modsMul(attrId, mods) * submarineMul)
+}
+
+function getAttrValData(unitType, attr, step, shopCfg, servConfigs, mods) {
+  let cfg = attrValCfg?[unitType][attr.id] ?? attrValCfgDefault
+
   let data = cfg?.getValDataByServConfigs(attr, step, servConfigs)
   if (data != null)
     return data
 
-  let textVal = cfg?.getAttrValText(attrId, step, stepsTotal, shopCfg)
-    ?? cfg.valueToText(cfg.getBaseVal(shopCfg) * getAttrMul(cfg, attrId, step, stepsTotal) * modsMul(attrId, mods) * submarineMul)
-    ?? ""
-  return textVal == "" ? [] : [{ ctor = ROBJ_TEXT, value = textVal }]
+  let val = getAttrValRaw(unitType, attr, step, shopCfg, mods)
+  return [{ ctor = ROBJ_TEXT, value = cfg.valueToText(val) }]
 }
 
 function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
@@ -409,5 +415,6 @@ return {
   defCategoryImage
   applyAttrLevels
   getAttrValData
+  getAttrValRaw
   categoryImages
 }

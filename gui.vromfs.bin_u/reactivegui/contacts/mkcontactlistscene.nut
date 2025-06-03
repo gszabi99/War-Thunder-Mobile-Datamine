@@ -55,8 +55,10 @@ let buttons = @(selectedUserId, mkContactActions) @() {
     : mkContactActions(selectedUserId.value)
 }
 
-function mkContactListScene(uidsList, mkContactActions, responseAction = null, selectedId = "selectedUserId") {
-  let playerSelectedUserId = mkWatched(persist, selectedId, null)
+let playerSelectedUserId = mkWatched(persist, "selectedUserId")
+
+
+function mkContactListScene(uidsList, mkContactActions, responseAction = null) {
   let selectedUserId = Computed(@() playerSelectedUserId.value in uidsList.value
     ? playerSelectedUserId.value
     : null)

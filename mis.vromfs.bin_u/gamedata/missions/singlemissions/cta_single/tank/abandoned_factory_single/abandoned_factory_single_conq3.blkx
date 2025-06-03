@@ -100,6 +100,8 @@
       "allowedKillStreaks": true,
       "randomSpawnTeams": false,
       "remapAiTankModels": true,
+      "tankBotsTargetingPosError": 0.01,
+      "tankBotsTargetingPosErrorOnHuman": 4.0,
       "battleAreaColorPreset": "battleArea",
       "country_axis": "germany",
       "country_allies": "ussr",

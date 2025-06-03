@@ -1,16 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 let DataBlock = require("DataBlock")
 let { DM_VIEWER_XRAY } = require("hangar")
+let { get_unittags_blk } = require("blkGetters")
 let { getUnitFileName } = require("vehicleModel")
-let { deferOnce } = require("dagor.workcycle")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { getPartType, getPartNameLocText } = require("%globalScripts/modeXrayLib.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { loadedHangarUnitName } = require("%rGui/unit/hangarUnit.nut")
-let { dmViewerMode, dmViewerUnitReady, getDmViewerUnitData, isDebugMode, isDebugBatchExportProcess,
-  needDmViewerPointerControl, pointerScreenX, pointerScreenY
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
+let { loadedHangarUnitName, hangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { dmViewerMode, dmViewerUnitReady, getDmViewerUnitData, dmViewerUnitDataVer,
+  isDebugMode, isDebugBatchExportProcess
 } = require("dmViewerState.nut")
-let { getSimpleUnitType } = require("modeXrayUtils.nut")
+let { getSimpleUnitType, xrayCommonGetters, getDescriptionInXrayMode, collectArmorClassToSteelMuls
+} = require("modeXrayUtils.nut")
 let { toggleSubscription, mkDmViewerHint, mkHintTitle, mkHintDescText
 } = require("dmViewerPkg.nut")
 
@@ -18,27 +19,35 @@ let isModeActive = Computed(@() dmViewerMode.get() == DM_VIEWER_XRAY)
 
 let scrPosX = Watched(0)
 let scrPosY = Watched(0)
-let nameW = Watched("")
+let partParamsW = Watched({})
 
-let hintScrPosX = Watched(0)
-let hintScrPosY = Watched(0)
-scrPosX.subscribe(@(v) !needDmViewerPointerControl.get() ? hintScrPosX.set(v) : null)
-scrPosY.subscribe(@(v) !needDmViewerPointerControl.get() ? hintScrPosY.set(v) : null)
-pointerScreenX.subscribe(@(v) needDmViewerPointerControl.get() ? deferOnce(@() hintScrPosX.set(v)) : null)
-pointerScreenY.subscribe(@(v) needDmViewerPointerControl.get() ? deferOnce(@() hintScrPosY.set(v)) : null)
+let armorClassToSteel = {}
+
+local isInited = false
+function init() {
+  if (isInited)
+    return
+  isInited = true
+  armorClassToSteel.__update(collectArmorClassToSteelMuls())
+}
+isModeActive.subscribe(@(v) v ? init() : null)
+if (isModeActive.get())
+  init()
 
 function onUpdateHintXray(p) {
-  let { posX, posY, name = "" } = p
+  let { posX, posY, name = "", weapon_trigger = null } = p
   scrPosX.set(posX)
   scrPosY.set(posY)
-  nameW.set(name)
+  if (name != (partParamsW.get()?.name ?? ""))
+    partParamsW.set({ name, weapon_trigger })
 }
 
 let toggleSub = @(isEnable) toggleSubscription("on_hangar_damage_part_pick", onUpdateHintXray, isEnable)
-isModeActive.subscribe(toggleSub)
-toggleSub(isModeActive.get())
+let isNeedSub = keepref(Computed(@() isModeActive.get() && !isDebugBatchExportProcess.get()))
+isNeedSub.subscribe(toggleSub)
+toggleSub(isNeedSub.get())
 
-function mkUnitDataForXray(unitName, unitBlk) {
+function mkUnitDataForXray(unitName, unit, unitBlk) {
   if (unitBlk == null) {
     unitBlk = DataBlock()
     let path = getUnitFileName(unitName)
@@ -49,12 +58,15 @@ function mkUnitDataForXray(unitName, unitBlk) {
   copyParamsToTable(unitBlk?.xray, xrayRemap)
   let xrayOverride = {}
   copyParamsToTable(unitBlk?.xrayOverride, xrayOverride)
-  let unit = serverConfigs.get()?.allUnits[unitName]
+  let unitTags = get_unittags_blk()?[unitName]
   return {
     unitBlk
+    unitTags
     unitName
     unit
+    crewId = -1
     simUnitType = getSimpleUnitType(unit)
+    unitDataCache = {}
     xrayRemap
     xrayOverride
     xrayTipInfo = {}
@@ -62,65 +74,79 @@ function mkUnitDataForXray(unitName, unitBlk) {
   }
 }
 
-function initUnit() {
+let curUnitW = Computed(function() {
   if (!isModeActive.get())
-    return
+    return null
+  if (dmViewerUnitDataVer.get() < 0)
+    return null 
   let unitName = loadedHangarUnitName.get()
-  let unitData = getDmViewerUnitData(unitName)
-  if (unitData?.xrayIsInited)
-    return
-  unitData.__update(mkUnitDataForXray(unitName, unitData?.unitBlk))
-}
-isModeActive.subscribe(@(v) v ? initUnit() : null)
-loadedHangarUnitName.subscribe(@(_) isModeActive.get() ? initUnit() : null)
-if (isModeActive.get())
-  initUnit()
+  let unit = hangarUnit.get()
+  if (unit == null || unitName != getTagsUnitName(unit.name))
+    return null
+  return clone unit
+})
 
-function mkPartTooltipInfo(name, unitData) {
+function mkPartTooltipInfo(partParams, unitData) {
   let res = {
     partType = ""
     title = ""
     desc = ""
   }
-  if (name == "")
+  let partName = partParams?.name ?? ""
+  if (partName == "" || unitData == null)
     return res
 
-  let { xrayRemap, xrayOverride, simUnitType } = unitData
-  let partType = getPartType(name, xrayRemap)
-  let description = "" 
-  let partLocId = null 
-  let { overrideTitle = "", hideDescription = false } = xrayOverride?[name]
-  let titleLocId = overrideTitle != "" ? overrideTitle : (partLocId ?? partType)
+  let { xrayRemap, xrayOverride, unit, unitName, simUnitType, unitBlk, unitDataCache } = unitData
+  let partType = getPartType(partName, xrayRemap)
+
+  let descData = getDescriptionInXrayMode(partType, partParams, {
+    unit
+    unitName
+    simUnitType
+    unitBlk
+    unitDataCache
+    crewId = -1
+    armorClassToSteel
+    isSecondaryModsValid = true
+    isDebugBatchExportProcess = isDebugBatchExportProcess.get()
+  }.__update(xrayCommonGetters))
+  let { overrideTitle = "", hideDescription = false } = xrayOverride?[partName]
+  let titleLocId = overrideTitle != "" ? overrideTitle : descData.partLocId
   res.__update({
     partType
     title = getPartNameLocText(titleLocId, simUnitType)
-    desc = hideDescription ? "" : description
+    desc = hideDescription ? "" : "\n".join(descData.desc.map(@(v) v?.value ?? v), true)
   })
   return res
 }
 
-function getPartTooltipInfoCached(name) {
-  initUnit()
-  let unitData = getDmViewerUnitData(loadedHangarUnitName.get())
-  if (unitData.xrayTipInfo?[name] == null || isDebugMode.get())
-    unitData.xrayTipInfo[name] <- mkPartTooltipInfo(name, unitData)
-  return unitData.xrayTipInfo[name]
+function getPartTooltipInfoCached(partParams, unit) {
+  if (unit == null)
+    return null
+  let partName = partParams?.name ?? ""
+  let unitName = getTagsUnitName(unit.name)
+  let unitData = getDmViewerUnitData(unitName)
+  if (!unitData?.xrayIsInited)
+    unitData.__update(mkUnitDataForXray(unitName, unit, unitData?.unitBlk))
+  if (unitData.xrayTipInfo?[partName] == null || isDebugMode.get())
+    unitData.xrayTipInfo[partName] <- mkPartTooltipInfo(partParams, unitData)
+  return unitData.xrayTipInfo[partName]
 }
 
-let mkDebugInfo = @(isDebug, partType, name) !isDebug ? ""
-  : "".concat("\n", colorize(0xFFFF4B38, name), colorize(0xFF808080, $" // {partType}"))
+let mkDebugInfo = @(isDebug, partType, partName) !isDebug ? ""
+  : "".concat("\n", colorize(0xFFFF4B38, partName), colorize(0xFF808080, $" // {partType}"))
 
 function hintComp() {
   if (!isModeActive.get())
     return { watch = isModeActive }
 
-  let hintTitleW = Computed(@() getPartTooltipInfoCached(nameW.get()).title)
-  let hintDescW = Computed(@() getPartTooltipInfoCached(nameW.get()).desc)
+  let hintTitleW = Computed(@() getPartTooltipInfoCached(partParamsW.get(), curUnitW.get())?.title ?? "")
+  let hintDescW = Computed(@() getPartTooltipInfoCached(partParamsW.get(), curUnitW.get())?.desc ?? "")
   let hintDebugW = Computed(@() mkDebugInfo(isDebugMode.get(),
-    getPartTooltipInfoCached(nameW.get()).partType, nameW.get()))
+    getPartTooltipInfoCached(partParamsW.get(), curUnitW.get())?.partType ?? "", partParamsW.get()?.name ?? ""))
 
   let isHintVisible = Computed(@() isModeActive.get() && dmViewerUnitReady.get()
-    && hintTitleW.get() != "")
+    && (scrPosX.get() != 0 || scrPosY.get() != 0 || hintTitleW.get() != ""))
 
   let hintContent = {
     flow = FLOW_VERTICAL
@@ -134,7 +160,7 @@ function hintComp() {
   return {
     watch = isModeActive
     size= flex()
-    children = mkDmViewerHint(isHintVisible, hintScrPosX, hintScrPosY, hintContent)
+    children = mkDmViewerHint(isHintVisible, scrPosX, scrPosY, hintContent)
   }
 }
 

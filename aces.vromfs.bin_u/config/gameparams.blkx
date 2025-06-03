@@ -36,6 +36,8 @@
   "tankInvulnerabilityTime": 20.0,
   "tankInvulnerabilityRadius": 20.0,
   "shipInvulnerabilityRadius": 200.0,
+  "invulnerableIndicationTime": 4.0,
+  "sendInvulnerabilityEventToHitCam": true,
   "suitInvulnerabilityTime": 10.0,
   "suitInvulnerabilityRadius": 100.0,
   "killDistFromBattleAreaForSuit": 50.0,
@@ -255,6 +257,8 @@
   "autostartTime": 60.0,
   "autostartShowTime": 30.0,
   "autostartShowInColorTime": 10.0,
+  "canAssistRepairWithoutRequest": true,
+  "canEveryoneRepairAnyAlly": true,
   "rendinstExtraMaxCnt": 16384,
   "rendinstExtraSubstFaceThres": 65536,
   "aircraftRelSpeedToWingWaveAmplitude": 0.0,
@@ -9246,7 +9250,10 @@
     "targetingNearDistK": 0.1,
     "targetingDistancePower": 2.0,
     "targetTrackingTimeOut": 1.1,
-    "autoTargetTrackingTimeOut": 3.0,
+    "autoTargetTrackingTimeOut": 1.0,
+    "autoTargetTrackingResetTime": 2.0,
+    "autoTargetTrackingCone": 15.0,
+    "autoTargetTrackingMaxDistance": 3000.0,
     "pointsInactive": 100.0,
     "pointsObjecive": 0.0,
     "pointsAlive": 25.0,
@@ -17948,6 +17955,33 @@
         ]
       }
     }
+  },
+  "effectLodsPresets": {
+    "tank_track_dirt_fx_default": [
+      100.0,
+      200.0,
+      300.0
+    ],
+    "tank_track_dirt_fx_for_optics": [
+      200.0,
+      500.0,
+      700.0
+    ],
+    "tank_track_dirt_fx_for_fm": [
+      100.0,
+      300.0,
+      700.0
+    ],
+    "tank_track_dirt_fx_for_fm_optics": [
+      200.0,
+      300.0,
+      300.0
+    ],
+    "tank_track_dirt_fx_for_video": [
+      2500.0,
+      2500.0,
+      2500.0
+    ]
   },
   "treeDestractible": {
     "heightThreshold": 3.0,

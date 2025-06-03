@@ -48,6 +48,7 @@ def regen_meta_parts_hp_es(info : UpdateStageInfoAct;
     metaPart |> setHp(rel_hp_float_to_fixed_ceil(relHpAfterRegen))
 
     for partId in props.parts
-      unitDm.dmData.parts[int(partId.id)].relHpFixed = uint16(max(int(unitDm.dmData.parts[int(partId.id)].relHpFixed), int(metaPart.hp)))
+      assume part = get_damage_part_props_for_modification(unit.dmData, partId)
+      part.relHpFixed = uint16(max(int(part.relHpFixed), int(metaPart.hp)))
 
   sendEvent(eid, CmdUpdateRelativeUnitHealth())

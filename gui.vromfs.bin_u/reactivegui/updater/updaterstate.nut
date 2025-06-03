@@ -5,6 +5,7 @@ let { deferOnce } = require("dagor.workcycle")
 let { get_free_disk_space = @() -1,
   download_addons_in_background, stop_updater, is_updater_running,
   get_incomplete_addons,
+  remove_addons_resources_async = @(_) null,
   UPDATER_RESULT_SUCCESS, UPDATER_ERROR, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
   UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING, UPDATER_EVENT_INCOMPATIBLE_VERSION
 } = require("contentUpdater")
@@ -22,7 +23,7 @@ let { localizeAddonsLimited, initialAddons, latestDownloadAddonsByCamp, latestDo
 let { hasAddons, addonsSizes, addonsExistInGameFolder, addonsVersions,
   isAddonsInfoActual, isAddonsExistInGameFolderActual, isAddonsVersionsActual
 } = require("%appGlobals/updater/addonsState.nut")
-let { getAddonCampaign, getCampaignOrig, getCampaignPkgsForOnlineBattle,
+let { getAddonCampaign, getCampaignOrig, getCampaignPkgsForOnlineBattle, getPkgsForCampaign,
   getCampaignPkgsForNewbieCoop, getCampaignPkgsForNewbieSingle
 } = require("%appGlobals/updater/campaignAddons.nut")
 let { allMyBattleUnits } = require("%appGlobals/updater/gameModeAddons.nut")
@@ -361,7 +362,8 @@ function openDownloadAddonsWnd(addons = [], bqSource = "unknown", bqParams = {},
     return
   }
 
-  let rqTbl = {}
+  let rqTbl = addons.len() != 0 ? {}
+    : firstPriorityAddons.get().filter(@(_, a) !hasAddons.value?[a])
   foreach (a in rqAddons)
     rqTbl[a] <- true
 
@@ -387,6 +389,10 @@ eventbus_subscribe("openDownloadAddonsWnd", function(msg) {
   openDownloadAddonsWnd(addons, bqSource, bqParams, successEventId, context)
 })
 
+function removeAddonsForCampaign(campaigns) {
+  remove_addons_resources_async(getPkgsForCampaign(campaigns))
+}
+
 return {
   startDownloadAddons  
   openDownloadAddonsWnd
@@ -409,4 +415,5 @@ return {
   updaterError
   progressPercent
   isStageDownloading
+  removeAddonsForCampaign
 }

@@ -1,0 +1,1345 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16"
+      ]
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/caribbean_islands.bin",
+      "environment": "Day",
+      "weather": "hazy",
+      "overrideUnit": "uk_ps_gh",
+      "checkFriendlyFireAlsoFromAircrafts": true,
+      "preventBotsLeavingBattleArea": true,
+      "maxTimeToReturnToMapForTanks": 25.0,
+      "killDistFromBattleAreaForTanks": 20.0,
+      "maxTimeToReturnToMapForShips": 30.0,
+      "killDistFromBattleAreaForShips": 100.0,
+      "locName": "missions/_NTdm_WTM;caribbean/name",
+      "locDesc": "caribbean/desc;missions/_NTdm_WTM/desc",
+      "scoreLimit": 10000,
+      "timeLimit": 10,
+      "deathPenaltyMul": 0.0,
+      "useDeathmatchHUD": true,
+      "showTacticalMapCellSize": true,
+      "country_axis": "usa",
+      "country_allies": "germany",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "customRules": {
+        "customBots": {
+          "allowedShips": {
+            "ship": {
+              "name": "uk_ps_gh",
+              "weight": 1.0,
+              "country": "usa"
+            }
+          }
+        }
+      },
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": false,
+        "isTanksAllowed": false,
+        "isShipsAllowed": true,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "spectator_points": {},
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "exoskeleton",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_01"
+            },
+            {
+              "icontype": "exoskeleton",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_02"
+            },
+            {
+              "icontype": "exoskeleton",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_03"
+            },
+            {
+              "icontype": "exoskeleton",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_04"
+            },
+            {
+              "icontype": "exoskeleton",
+              "side": "ally",
+              "target": "briefing_t1_collective_spawn_05"
+            },
+            {
+              "icontype": "exoskeleton",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_01"
+            },
+            {
+              "icontype": "exoskeleton",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_02"
+            },
+            {
+              "icontype": "exoskeleton",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_03"
+            },
+            {
+              "icontype": "exoskeleton",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_04"
+            },
+            {
+              "icontype": "exoskeleton",
+              "side": "enemy",
+              "target": "briefing_t2_collective_spawn_05"
+            }
+          ],
+          "battleArea": {
+            "target": "ntdm_battle_area"
+          }
+        }
+      }
+    }
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/navy_templates/ntdm_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/navy_templates/ship_base_logic.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/ships/caribbean/mainareas/caribbean_Ntdm_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "init_main": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionSetWeatherParams": {
+          "waterWindStrengtMin": 3.0,
+          "waterWindStrengtMax": 3.0
+        }
+      },
+      "else_actions": {}
+    },
+    "loot_zones": {
+      "isCategory": true,
+      "is_enabled": true,
+      "zone_name_assemble": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "varSetString": {
+            "value": "loot_zone",
+            "var": "cur_zone"
+          },
+          "varAddString": {
+            "value": "",
+            "digits": 2,
+            "var": "cur_zone",
+            "input_var": "zones_count"
+          },
+          "triggerEnable": {
+            "target": "get_zone_onoff_bull"
+          }
+        },
+        "else_actions": {}
+      },
+      "get_zone_onoff_bull": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "zones_count",
+            "value": 11,
+            "comparasion_func": "less"
+          }
+        },
+        "actions": {
+          "varSetRandomInt": {
+            "var": "loot_in_zone01",
+            "from": 0,
+            "to_not_including": 2,
+            "var_from": "@cur_zone"
+          },
+          "missionMarkAsCaptureZone": {
+            "army": 0,
+            "name_for_respawn_base": "",
+            "timeMultiplier": 1.5,
+            "disableZone": false,
+            "hasWorldMarkers": false,
+            "hasGeneralHUDMarkers": true,
+            "hasProgressHUDMarker": true,
+            "target": "@cur_zone",
+            "canCaptureOnGround": true,
+            "playAirfieldSound": false,
+            "canCaptureInAir": false,
+            "canCaptureByGM": true,
+            "zoneType": "capture_individual",
+            "useHUDMarkers": true,
+            "markUnitPreset": "tank_decal",
+            "markUnits": "cz_circle_01",
+            "zoneDefenders": {},
+            "tags": {
+              "air": false,
+              "helicopter": true,
+              "type_attack_helicopter": true,
+              "type_utility_helicopter": true,
+              "tank": true
+            }
+          },
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "zones_count"
+          },
+          "triggerEnable": {
+            "target": "zone_name_assemble"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "loot_num_in_zones_counter"
+          }
+        }
+      },
+      "loot_num_in_zones_counter": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "@cur_zone",
+            "value": 1,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "unitModifyVar": {
+            "object_var_name": "",
+            "operator": "add",
+            "value": 1,
+            "object": "@cur_zone"
+          }
+        },
+        "else_actions": {}
+      },
+      "loot_num_in_zones_equal": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "@cur_zone",
+            "value": 0,
+            "comparasion_func": "equal",
+            "var_value_other": "needed_treasure_count"
+          }
+        },
+        "actions": {
+          "unitModifyVar": {
+            "object_var_name": "",
+            "operator": "mul",
+            "value": 1,
+            "object": "@cur_zone"
+          }
+        },
+        "else_actions": {}
+      }
+    },
+    "players_set_vars": {
+      "isCategory": true,
+      "is_enabled": true,
+      "player_name_assemble_t1": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "varSetString": [
+            {
+              "value": "t1_player",
+              "var": "cur_player_t1"
+            },
+            {
+              "value": "ship_cargo",
+              "var": "cur_cargo"
+            }
+          ],
+          "varAddString": [
+            {
+              "value": "",
+              "digits": 2,
+              "var": "cur_player_t1",
+              "input_var": "players_count_t1"
+            },
+            {
+              "value": "",
+              "digits": 2,
+              "var": "cur_cargo",
+              "input_var": "players_count_t1"
+            }
+          ],
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": ""
+            }
+          ],
+          "triggerEnable": {
+            "target": "player_set_vars_t1"
+          }
+        },
+        "else_actions": {}
+      },
+      "player_set_vars_t1": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "players_count_t1",
+            "value": 33,
+            "comparasion_func": "less"
+          }
+        },
+        "actions": {
+          "unitSetVar": [
+            {
+              "object_var_name": "self_name",
+              "object": "@cur_player_t1",
+              "object_var_string": "@cur_player_t1"
+            },
+            {
+              "object_var_name": "cargo_name",
+              "object": "@cur_player_t1",
+              "object_var_string": "@cur_cargo"
+            },
+            {
+              "object_var_name": "treasure_count",
+              "object": "@cur_player_t1",
+              "object_var_value": 0
+            },
+            {
+              "object_var_name": "killed",
+              "object": "@cur_player_t1",
+              "object_var_value": 0
+            }
+          ],
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "players_count_t1"
+          },
+          "triggerEnable": {
+            "target": "player_name_assemble_t1"
+          }
+        },
+        "else_actions": {
+          "triggerDisable": {
+            "target": [
+              "player_name_assemble_t1",
+              "player_set_vars_t1"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "loot_in_zone01": 0,
+    "loot_in_zone02": 0,
+    "loot_in_zone03": 0,
+    "loot_in_zone04": 0,
+    "loot_in_zone05": 0,
+    "loot_in_zone06": 0,
+    "loot_in_zone07": 0,
+    "loot_in_zone08": 0,
+    "loot_in_zone09": 0,
+    "loot_in_zone10": 0,
+    "cur_zone": "",
+    "zones_count": 1,
+    "needed_treasure_count": 5,
+    "current_treasure_count": 0,
+    "cur_player_t1": "",
+    "cur_player_t2": "",
+    "players_count_t1": 1,
+    "players_count_t2": 1,
+    "cur_cargo": ""
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "ships": {
+      "name": "t1_player01",
+      "tm": [
+        [
+          -2.21533e-7,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0,
+          -2.21533e-7
+        ],
+        [
+          184.75,
+          1.5,
+          -20.9
+        ]
+      ],
+      "unit_class": "uk_ps_gh",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 1,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "uniqueName": "",
+        "attack_type": "fire_at_will"
+      },
+      "way": {}
+    },
+    "area_squad": {
+      "name": "loot_zones_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1501.0,
+          0.0,
+          430.3
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "loot_zone01",
+          "loot_zone02",
+          "loot_zone03",
+          "loot_zone04",
+          "loot_zone05",
+          "loot_zone06",
+          "loot_zone07",
+          "loot_zone08",
+          "loot_zone09",
+          "loot_zone10"
+        ]
+      }
+    }
+  },
+  "areas": {
+    "briefing_t1_collective_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.997901,
+          0.0,
+          -0.0647655
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0647655,
+          0.0,
+          0.997901
+        ],
+        [
+          67.8,
+          0.0,
+          630.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_collective_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.751418,
+          0.0,
+          0.659826
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.659826,
+          0.0,
+          0.751418
+        ],
+        [
+          -463.2,
+          0.0,
+          670.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_collective_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [
+          0.751418,
+          0.0,
+          0.659826
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.659826,
+          0.0,
+          0.751418
+        ],
+        [
+          -531.95,
+          0.0,
+          662.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_collective_spawn_04": {
+      "type": "Point",
+      "tm": [
+        [
+          0.751418,
+          0.0,
+          0.659826
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.659826,
+          0.0,
+          0.751418
+        ],
+        [
+          -1061.4,
+          0.0,
+          549.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_collective_spawn_05": {
+      "type": "Point",
+      "tm": [
+        [
+          0.751418,
+          0.0,
+          0.659826
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.659826,
+          0.0,
+          0.751418
+        ],
+        [
+          -1160.45,
+          0.0,
+          527.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.010006,
+          0.0,
+          -0.99995
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.99995,
+          0.0,
+          0.010006
+        ],
+        [
+          144.35,
+          -0.00109863,
+          -419.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.714147,
+          0.0,
+          -0.699996
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.699996,
+          0.0,
+          0.714147
+        ],
+        [
+          -450.4,
+          0.0,
+          -594.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_03": {
+      "type": "Point",
+      "tm": [
+        [
+          0.714147,
+          0.0,
+          -0.699996
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.699996,
+          0.0,
+          0.714147
+        ],
+        [
+          -531.95,
+          -0.00012207,
+          -597.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_04": {
+      "type": "Point",
+      "tm": [
+        [
+          0.714147,
+          0.0,
+          -0.699996
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.699996,
+          0.0,
+          0.714147
+        ],
+        [
+          -1052.05,
+          -0.00109863,
+          -562.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_collective_spawn_05": {
+      "type": "Point",
+      "tm": [
+        [
+          0.714147,
+          0.0,
+          -0.699996
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.699996,
+          0.0,
+          0.714147
+        ],
+        [
+          -1183.85,
+          0.0,
+          -537.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "loot_zone01": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          -596.8,
+          0.0,
+          330.2
+        ]
+      ],
+      "objLayer": 1,
+      "props": {}
+    },
+    "loot_zone02": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          -643.3,
+          0.0,
+          -368.2
+        ]
+      ],
+      "objLayer": 1,
+      "props": {}
+    },
+    "loot_zone03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          30.85,
+          0.00146484,
+          424.0
+        ]
+      ],
+      "objLayer": 1,
+      "props": {}
+    },
+    "loot_zone04": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          37.4,
+          -0.00195312,
+          -401.25
+        ]
+      ],
+      "objLayer": 1,
+      "props": {}
+    },
+    "loot_zone05": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          673.15,
+          0.000488281,
+          315.8
+        ]
+      ],
+      "objLayer": 1,
+      "props": {}
+    },
+    "loot_zone06": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          501.65,
+          0.000976562,
+          -561.45
+        ]
+      ],
+      "objLayer": 1,
+      "props": {}
+    },
+    "loot_zone07": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          546.3,
+          -0.000976562,
+          1485.15
+        ]
+      ],
+      "objLayer": 1,
+      "props": {}
+    },
+    "loot_zone08": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          718.6,
+          0.00195312,
+          -1554.75
+        ]
+      ],
+      "objLayer": 1,
+      "props": {}
+    },
+    "loot_zone09": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          1352.2,
+          -0.000488281,
+          790.85
+        ]
+      ],
+      "objLayer": 1,
+      "props": {}
+    },
+    "loot_zone10": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          1381.6,
+          0.0,
+          -391.9
+        ]
+      ],
+      "objLayer": 1,
+      "props": {}
+    },
+    "area_ship_size": {
+      "type": "Box",
+      "tm": [
+        [
+          12.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          -1102.9,
+          0.0,
+          397.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "d1000": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          500.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          54.25,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          500.0
+        ],
+        [
+          -850.8,
+          0.0,
+          14.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "d500": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          250.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          34.75,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          250.0
+        ],
+        [
+          -471.6,
+          0.0,
+          -3.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "750": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          375.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          21.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          375.0
+        ],
+        [
+          -786.5,
+          0.0,
+          21.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bot_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          -2499.65,
+          0.0,
+          -41.8121
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          41.8121,
+          0.0,
+          -2499.65
+        ],
+        [
+          -568.35,
+          0.0,
+          26.3
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

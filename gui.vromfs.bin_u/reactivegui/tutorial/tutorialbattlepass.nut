@@ -14,7 +14,7 @@ let { openBattlePassWnd, battlePassOpenCounter, tutorialFreeMarkIdx, isBpSeasonA
 let { sendBqQuestsTask, sendBqQuestsStage } = require("%rGui/quests/bqQuests.nut")
 let { calcStageCompletion } = require("%rGui/quests/questBar.nut")
 let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, questsCfg, questsBySection,
-  progressUnlockByTab, progressUnlockBySection } = require("%rGui/quests/questsState.nut")
+  progressUnlockByTab, progressUnlockBySection, DAILY_SECTION, tutorialSectionId } = require("%rGui/quests/questsState.nut")
 let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
 let { markTutorialCompleted,
   isFinishedArsenal, isFinishedBattlePass, isFinishedSlotAttributes } = require("completedTutorials.nut")
@@ -110,7 +110,10 @@ function startTutorial() {
         text = loc("tutorial/battlePass/openQuestWnd")
         objects = [{
           keys = "quest_wnd_btn"
-          onClick = @() openQuestsWndOnTab(tabId)
+          function onClick() {
+            tutorialSectionId.set(DAILY_SECTION)
+            openQuestsWndOnTab(tabId)
+          }
           needArrow = true
         }]
         charId = "mary_like"
@@ -249,6 +252,8 @@ let startTutorialDelayed = @() deferOnce(function() {
 
 startTutorialDelayed()
 showTutorial.subscribe(@(v) v ? startTutorialDelayed() : null)
+
+activeTutorialId.subscribe(@(tutorialId) tutorialId != TUTORIAL_BATTLE_PASS_ID ? tutorialSectionId.set(null) : null)
 
 register_command(
   function() {

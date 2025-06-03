@@ -6,7 +6,7 @@ let { activeOffer } = require("offerState.nut")
 let { activeOffersByGoods } = require("offerByGoodsState.nut")
 let { shopGoodsAllCampaigns, saveSeenGoods } = require("shopState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { shopPurchaseInProgress, check_empty_offer, update_branch_offer } = require("%appGlobals/pServer/pServerApi.nut")
+let { shopPurchaseInProgress, validate_active_offer } = require("%appGlobals/pServer/pServerApi.nut")
 let { platformPurchaseInProgress } = require("platformGoods.nut")
 let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
@@ -33,21 +33,25 @@ let openPreviewCount = Watched(openedGoodsId.get() == null ? 0 : 1)
 let openedSubsId = mkWatched(persist, "openedSubsId", null)
 
 
-let getPkgsByUnit = @(unit) unit == null ? [] : getUnitPkgs(unit.name, unit.mRank)
+function tryAddPkgs(res, unit) {
+  if (unit != null)
+    foreach (pkg in getUnitPkgs(unit.name, unit.mRank))
+      res[pkg] <- true
+}
 
 function getAddonsToShowGoods(goods, allUnits, excludeAddons) {
   let res = {}
-  foreach (unitName in goods?.unitUpgrades ?? {})
-    foreach (pkg in getPkgsByUnit(allUnits?[unitName]))
-      res[pkg] <- true
+  foreach (unitName in goods?.unitUpgrades ?? [])
+    tryAddPkgs(res, allUnits?[unitName])
 
-  foreach (unitName in goods?.units ?? {})
-    foreach (pkg in getPkgsByUnit(allUnits?[unitName]))
-      res[pkg] <- true
+  foreach (unitName in goods?.units ?? [])
+    tryAddPkgs(res, allUnits?[unitName])
+
+  foreach (unitName, _ in goods?.blueprints ?? {})
+    tryAddPkgs(res, allUnits?[unitName])
 
   if (goods?.meta.previewUnit != null)
-    foreach (pkg in getPkgsByUnit(allUnits?[goods?.meta.previewUnit]))
-      res[pkg] <- true
+    tryAddPkgs(res, allUnits?[goods?.meta.previewUnit])
 
   return res.keys().filter(@(a) !excludeAddons?[a])
 }
@@ -126,22 +130,25 @@ offerUnitName.subscribe(function(v) {
   offerPrevUnitName = v
 })
 
-servProfile.subscribe(function(v){
-  let offersBlueprint = activeOffer.get()?.blueprints.findindex(@(_) true)
-  if(!offersBlueprint)
+servProfile.subscribe(function(servProfileV){
+  if (activeOffer.get() == null)
     return
-  if (offersBlueprint in campMyUnits.get()
-      || v?.blueprints[offersBlueprint] == serverConfigs.get()?.allBlueprints?[offersBlueprint].targetCount)
-    check_empty_offer(curCampaign.get())
-})
 
-campMyUnits.subscribe(function(list){
-  if ((activeOffer.get()?.id ?? "") == "branch_offer")
-    foreach (unitName in activeOffer.get().units)
-      if (unitName in list) {
-        update_branch_offer(curCampaign.get())
-        break
-      }
+  let { blueprints = {}, unitUpgrades = [], units = [] } = activeOffer.get()
+
+  foreach (unitName, count in blueprints)
+    if (unitName in campMyUnits.get()
+      || (servProfileV?.blueprints[unitName] ?? 0) + count > (serverConfigs.get()?.allBlueprints?[unitName].targetCount ?? 0))
+      return validate_active_offer(curCampaign.get())
+
+  foreach (unitName in unitUpgrades)
+    if (campMyUnits.get()?[unitName].isUpgraded)
+      return validate_active_offer(curCampaign.get())
+
+  foreach (unitName in units)
+    if (unitName in campMyUnits.get()) {
+      return validate_active_offer(curCampaign.get())
+    }
 })
 
 return {

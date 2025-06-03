@@ -3,13 +3,14 @@ require("%rGui/onlyAfterLogin.nut")
 let { resetTimeout } = require("dagor.workcycle")
 let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curCampaignSlots, curSlots } = require("%appGlobals/pServer/slots.nut")
-let { set_unit_to_slot, buy_unit_slot, clear_unit_slot } = require("%appGlobals/pServer/pServerApi.nut")
+let { buy_unit_slot } = require("%appGlobals/pServer/pServerApi.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { PURCH_SRC_SLOTBAR, PURCH_TYPE_SLOT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { canPlayAnimUnitWithLink, animUnitWithLink } = require("%rGui/unitsTree/animState.nut")
+let { setSlots } = require("slotBarUpdater.nut")
 
 
 let animTimeout = 5.0 
@@ -82,7 +83,8 @@ function closeSelectUnitToSlotWnd() {
 let function setUnitToSlot(idx) {
   if (selectedUnitToSlot.get() == null)
     return
-  set_unit_to_slot(selectedUnitToSlot.get(), idx)
+  let preset = curSlots.get().map(@(slot, slotIdx) slotIdx == idx ? selectedUnitToSlot.get() : slot.name)
+  setSlots(curCampaign.get(), preset)
   closeSelectUnitToSlotWnd()
 }
 
@@ -99,8 +101,9 @@ let function buyUnitSlot() {
 }
 
 let function clearUnitSlot(unitName) {
-  let slotId = curSlots.get().findindex(@(v) v?.name == unitName)
-  clear_unit_slot(curCampaign.get(), slotId)
+  let idx = curSlots.get().findindex(@(v) v?.name == unitName)
+  let preset = curSlots.get().map(@(slot, slotIdx) slotIdx == idx ? "" : slot.name)
+  setSlots(curCampaign.get(), preset)
 }
 
 return {

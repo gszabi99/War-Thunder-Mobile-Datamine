@@ -4,7 +4,7 @@ require DagorDebug3D
 require DagorConsole
 require DagorRandom
 require GamePhys
-require Level
+require level
 require Mission
 require WTDamageModel
 require WTFx
@@ -80,7 +80,7 @@ def damage_area_destroy_client_es(evt : Event;
     damage_area_destroy_fx(burnFxId)
 
 
-[es]
+[es(no_order)]
 def damage_area_update_es(act : UpdateStageInfoAct;
                           var damage_area__move : bool&;
                           var damage_area__pos2 : float3&;

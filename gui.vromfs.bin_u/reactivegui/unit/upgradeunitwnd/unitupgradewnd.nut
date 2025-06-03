@@ -12,7 +12,7 @@ let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
 let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { upgradeCommonUnitName, buyExpUnitName, buyLevelUpUnitName, isChosenUnitUpgarde } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
 let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
-let { wpOfferCard, premOfferCard, battleRewardsTitle, cardHPadding} = require("upgradeUnitWndPkg.nut")
+let { wpOfferCard, premOfferCard, battleRewardsTitle, cardHPadding, offerCardHeight} = require("upgradeUnitWndPkg.nut")
 let mkBuyUpgardeUnit = require("mkBuyUpgardeUnit.nut")
 let mkBuyExpBtn = require("mkBuyExpBtn.nut")
 let mkBuyLevelupBtn = require("mkBuyLevelupBtn.nut")
@@ -24,8 +24,6 @@ let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 
 let WND_UID = "chooseUpgradeUnitWnd"
-
-let offerCardHeight = hdpx(600)
 
 function close() {
   buyExpUnitName.set(null)
@@ -139,10 +137,9 @@ let mkCardContent = @(unit) {
       size =[flex(), SIZE_TO_CONTENT]
       padding = [hdpx(15), 0,0,0]
       valign = ALIGN_CENTER
-      flow = FLOW_HORIZONTAL
+      flow = FLOW_VERTICAL
       children = [
         battleRewardsTitle(unit, {padding = 0})
-        {size = flex()}
         mkUnitBonuses(unit, {}, mkBonusTiny)
       ]
     }

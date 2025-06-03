@@ -1945,7 +1945,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/groundModels_weapons/100mm_2a70_cn_zbd_04a_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/100mm_2a70_zbd_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -3637,7 +3637,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "secondary",
-              "blk": "gameData/Weapons/groundModels_weapons/100mm_2a70_cn_zbd_04a_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/100mm_2a70_zbd_user_cannon.blk",
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,

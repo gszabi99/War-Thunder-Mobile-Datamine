@@ -4,11 +4,13 @@ let { register_command, command } = require("console")
 let { object_to_json_string } = require("json")
 let { get_unittags_blk } = require("blkGetters")
 let { file } = require("io")
+let { getUnitFileName } = require("vehicleModel")
 let { DM_VIEWER_NONE, DM_VIEWER_XRAY } = require("hangar")
-let { mkpath } = require("dagor.fs")
+let { mkpath, file_exists } = require("dagor.fs")
 let { get_time_msec } = require("dagor.time")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { eachBlock } = require("%sqstd/datablock.nut")
+let { getPlatoonUnitCfg, allMainUnitsByPlatoon } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 let { getPartType } = require("%globalScripts/modeXrayLib.nut")
 let { dmViewerMode, isDebugBatchExportProcess } = require("dmViewerState.nut")
 let { mkUnitDataForXray, mkPartTooltipInfo } = require("modeXray.nut")
@@ -20,9 +22,10 @@ let onFinishActions = []
 let msToTimeStr = @(ms) format("%02dm%02ds", ms / 60000, (ms % 60000) / 1000)
 
 function collectItemInfo(unitName, partsWhitelist) {
-  let unitData = mkUnitDataForXray(unitName, null)
-  if (unitData.unit == null)
+  let unit = getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get())
+  if (unit == null)
     return null
+  let unitData = mkUnitDataForXray(unitName, unit, null)
   let damagePartsBlk = unitData.unitBlk?.DamageParts
   let partNames = []
   eachBlock(damagePartsBlk, function(partsBlk) {
@@ -39,7 +42,7 @@ function collectItemInfo(unitName, partsWhitelist) {
   let res = {}
   foreach (name in partNames) {
     let partType = getPartType(name, unitData.xrayRemap)
-    let { title, desc } = mkPartTooltipInfo(name, unitData)
+    let { title, desc } = mkPartTooltipInfo({ name }, unitData)
     if (title != partType || desc != "")
       res[name] <- "\n".join([ title, desc ], true)
   }
@@ -99,6 +102,8 @@ function loadAllItemsAndDo(params, onFinishCb) {
     if (unitsWhitelist != null && !unitsWhitelist.contains(unitName))
       return
     if (unitsBlacklist?.contains(unitName) ?? false)
+      return
+    if (!file_exists(getUnitFileName(unitName)))
       return
     loadAllItemsProgress.todo.append(unitName)
   })

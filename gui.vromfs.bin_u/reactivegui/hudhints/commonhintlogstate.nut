@@ -13,6 +13,9 @@ let { hasMGun0, hasCanon0, Cannon0, MGun0 } = require("%rGui/hud/airState.nut")
 let { addHudElementPointer, removeHudElementPointer } = require("%rGui/tutorial/hudElementPointers.nut")
 let { resetTimeout } = require("dagor.workcycle")
 let { HudTextId } = require("hudTexts")
+let { unitType } = require("%rGui/hudState.nut")
+let { TANK, AIR } = require("%appGlobals/unitConst.nut")
+
 
 let state = require("%sqstd/mkEventLogState.nut")({
   persistId = "commonHintLogState"
@@ -397,6 +400,35 @@ eventbus_subscribe("hint:enemy_too_far", function(_) {
 eventbus_subscribe("hint:enemy_armored", function(_) {
   addCommonHintWithTtl(loc("hints/enemy_armored"), 3)
 })
+
+eventbus_subscribe("hint:have_potential_assistee", function(_) {
+  addCommonHintWithTtl(loc("hints/have_potential_assistee"), 1)
+})
+
+const REPAIR = "REPAIR"
+eventbus_subscribe("tankRepair:offerRepair", function(data) {
+  local locId = !data?.assist ? ""
+    : unitType.get() == TANK ? "hints/repair_assist_tank_hold"
+    : unitType.get() == AIR ? "hints/repair_assist_plane_hold"
+    : "hints/repair_assist_ship_hold"
+  addCommonHintWithTtl(loc(locId), -1, REPAIR)
+})
+
+eventbus_subscribe("tankRepair:cantRepair", function(_) {
+  removeEvent({ id = REPAIR })
+})
+
+
+const HAVE_REPAIR_ASSISTANT = "HAVE_REPAIR_ASSISTANT"
+eventbus_subscribe("hint:have_repair_assistant:show", function(data) {
+  let assistantNick = data?.assistantNick ?? ""
+  addCommonHintWithTtl(loc("hints/have_repair_assistant", { assistantNick }), -1, HAVE_REPAIR_ASSISTANT)
+})
+
+eventbus_subscribe("hint:have_repair_assistant:hide", function(_) {
+  removeEvent({ id = HAVE_REPAIR_ASSISTANT })
+})
+
 
 eventbus_subscribe("hint:need_lock_target", function(_) {
   if (incHintCounter("need_lock_target", 5)) {

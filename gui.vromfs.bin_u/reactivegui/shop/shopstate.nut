@@ -4,23 +4,26 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
+let { round } =  require("math")
+let { isEqual } = require("%sqstd/underscore.nut")
+let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
+let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { campConfigs, curCampaign, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
 let { can_debug_shop, allow_subscriptions } = require("%appGlobals/permissions.nut")
-let { platformGoods, platformSubs } = require("platformGoods.nut")
 let { WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
 let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
+let { sendBqEventOnOpenCurrencyShop } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewards
 } = require("schRewardsState.nut")
+let { platformGoods, platformSubs } = require("platformGoods.nut")
 let { personalGoodsByShopCategory } = require("personalGoodsState.nut")
-let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-let { sendBqEventOnOpenCurrencyShop } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 
 
 let pageScrollHandler = ScrollHandler()
@@ -159,11 +162,57 @@ todayPurchasesCount.subscribe(@(_ ) updateGoodsTimers())
 
 let allowWithSubs = @(goods) goods.premiumDays == 0
 
-let shopGoodsInternal = Computed(@() (campConfigs.get()?.allGoods ?? {})
-  .filter(@(g) (can_debug_shop.get() || !g.isShowDebugOnly)
-    && ((g?.price.price ?? 0) > 0 || null != g?.dailyPriceInc.findvalue(@(cfg) cfg.price > 0)))
-  .map(@(g) g.__merge({ gtype = getGoodsType(g) }))
-)
+function calculateNewGoodsDiscount(discountedPrice = 0.0, originalPercent = 0.0, newPrice = 0.0) {
+  if (originalPercent >= 100.0)
+    return originalPercent
+
+  let discountFactor = 1.0 - (originalPercent / 100.0)
+  let initialPrice = discountedPrice / discountFactor
+  if (initialPrice == 0.0)
+    return originalPercent
+
+  return round((1.0 - newPrice / initialPrice) * 100.0)
+}
+
+let discountsToApply = Computed(function() {
+  let { personalDiscounts = {} } = serverConfigs.get()
+  let myDiscounts = servProfile.get()?.discounts
+  let res = {}
+
+  if (!myDiscounts)
+    return null
+
+  foreach(list in personalDiscounts)
+    foreach(discount in list) {
+      let { id, goodsId, price } = discount
+      if (id in myDiscounts) {
+        if (goodsId not in res)
+          res[goodsId] <- price
+        else
+          res[goodsId] <- min(res[goodsId], price)
+      }
+    }
+  return res
+})
+
+let shopGoodsInternal = Computed(function() {
+  let discToApply = discountsToApply.get()
+  return (campConfigs.get()?.allGoods ?? {})
+    .filter(@(g) (can_debug_shop.get() || !g.isShowDebugOnly)
+      && ((g?.price.price ?? 0) > 0 || null != g?.dailyPriceInc.findvalue(@(cfg) cfg.price > 0)))
+    .map(function(g) {
+      if (g.id in discToApply) {
+        let personalFinalPrice = discToApply[g.id]
+        let res = g.__merge({
+          gtype = getGoodsType(g)
+          price = { price = personalFinalPrice, currencyId = g?.price.currencyId ?? "" }
+          discountInPercent = calculateNewGoodsDiscount(g?.price.price, g?.discountInPercent, personalFinalPrice)
+        })
+        return res
+      }
+      return g.__merge({ gtype = getGoodsType(g) })
+    })
+})
 
 let allCampaignsShopGoods = Computed(function() {
   let res = shopGoodsInternal.get()
@@ -436,4 +485,5 @@ return {
   hasGoodsCategoryNonUpdatable
 
   pageScrollHandler
+  calculateNewGoodsDiscount
 }

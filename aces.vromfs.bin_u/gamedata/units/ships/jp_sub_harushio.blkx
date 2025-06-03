@@ -513,8 +513,8 @@
     "engines": {
       "maxSpeed": 9.16,
       "maxReverseSpeed": 4.0,
-      "periscopeSpeedMult": 1.5,
-      "surfaceSlowMult": 1.5,
+      "periscopeSpeedMult": 1.1,
+      "surfaceSlowMult": 1.23,
       "speedToTime": {
         "row": [
           9.16,

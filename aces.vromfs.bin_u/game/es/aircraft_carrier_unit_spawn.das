@@ -2,10 +2,11 @@ require ecs
 require Unit
 require %game.utils.utils_common
 require %appGame.wtm_events
+require math.base
 
 [es(tag=server)]
 def aircarft_carrier_unit_spawn_es(evt : CmdRequestSwitchOnSupportPlane; var unit__ref : UnitRef)
-  *unit__ref.unit |> switchOnSupportPlane(evt.turnOn, evt.switchOn, evt.idx, -1 , false)
+  *unit__ref.unit |> switchOnSupportPlane(evt.turnOn, evt.switchOn, evt.idx, -1 , false, IDENT_TM)
 
 [es(tag=server)]
 def aircarft_carrier_unit_change_es(evt : CmdRequestSupportPlaneChange; var unit__ref : UnitRef)

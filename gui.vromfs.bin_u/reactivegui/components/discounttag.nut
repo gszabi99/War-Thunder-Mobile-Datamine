@@ -8,7 +8,7 @@ let discountOfferTagW = hdpxi(150)
 let discountOfferTagH = hdpxi(50)
 let discountOfferTagHTexOffs = [ 0, discountOfferTagH / 10, 0, discountOfferTagH / 2 ]
 
-let discountTag = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc >= 100 ? null : {
+let discountTag = @(discountPrc, ovr = {}, textOvr = {}) discountPrc <= 0 || discountPrc >= 100 ? null : {
   size  = [ discountTagW, discountTagH ]
   pos = [ -discountTagW * 0.25, -discountTagH * 0.6 ]
   hplace = ALIGN_RIGHT
@@ -22,7 +22,7 @@ let discountTag = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc >= 10
     rendObj = ROBJ_TEXT
     text = $"-{discountPrc}%"
     color = 0xFFFFFFFF
-  }.__update(fontTiny)
+  }.__update(fontTiny, textOvr)
 }.__update(ovr)
 
 let discountTagBig = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc >= 100 ? null : {

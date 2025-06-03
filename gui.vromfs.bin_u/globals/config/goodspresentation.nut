@@ -2,18 +2,24 @@ let { loc } = require("dagor.localize")
 
 let customGoodsLocId = {
   ships_blueprints_slots = "shop/air_blueprints_slots"
+  air_top_blueprints_slots = "shop/top_blueprints_slots"
+  ships_top_blueprints_slots = "shop/top_blueprints_slots"
 }
 
 let defaultIcon = "ui/gameuiskin#icon_primary_attention.svg"
 let icons = {
   air_blueprints_slots = "ui/gameuiskin#shop_blueprints_folder.avif"
+  air_top_blueprints_slots = "ui/gameuiskin#shop_blueprints_folder.avif"
   ships_blueprints_slots = "ui/gameuiskin#shop_blueprints_folder_ships.avif"
+  ships_top_blueprints_slots = "ui/gameuiskin#shop_blueprints_folder_ships.avif"
 }
 
 let defaultSlotsPreviewBg = "ui/images/air_beta_access_bg.avif"
 let slotsPreviewBg = {
   air_blueprints_slots = "ui/images/air_beta_access_bg.avif"
+  air_top_blueprints_slots = "ui/images/air_beta_access_bg.avif"
   ships_blueprints_slots = "ui/images/ship_blueprint_bg.avif"
+  ships_top_blueprints_slots = "ui/images/ship_blueprint_bg.avif"
 }
 
 let slotTexts = {

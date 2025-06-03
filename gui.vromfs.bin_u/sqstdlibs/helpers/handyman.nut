@@ -601,7 +601,7 @@ handyman = {
       foreach (partialPath in partials)
         this.updateCache(partialPath)
     local tokens = this.tokensByTemplatePath[templatePath]
-    local template = this.tokensByTemplatePath[templatePath]
+    local template = this.templateByTemplatePath[templatePath]
     local context = (type(view) == "instance" && view instanceof Context) ? view : Context(view)
     return this.defaultWriter.renderTokens(tokens, context, partials, template)
   }

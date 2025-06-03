@@ -18,6 +18,7 @@
   "entitiesBlk": "%gameBase/templates/entities_wtm.blk",
   "game_das_script_init": "%appGame/wtm_init.das",
   "game_das_loading_threads": 2,
+  "game_das_gen_2_make_syntax": true,
   "game_das_enable_serialization": true,
   "game_das_serialization_remove_cache": false,
   "localizationVrom": "lang.vromfs.bin",
@@ -294,8 +295,7 @@
           "campaign": "ships"
         },
         {
-          "campaign": "tanks",
-          "mRank": 1
+          "campaign": "tanks"
         }
       ]
     },
@@ -309,7 +309,6 @@
         "campaign": "ships"
       }
     },
-    "pkg_april_fools_event_2025": {},
     "pkg_tier_1_naval": {
       "conditions": {
         "campaign": "ships",
@@ -429,6 +428,22 @@
         "campaign": "air",
         "mRank": 8
       }
+    },
+    "pkg_common_1_aircraft": {
+      "conditions": [
+        {
+          "campaign": "air",
+          "mRank": 1
+        },
+        {
+          "campaign": "ships",
+          "mRank": 2
+        },
+        {
+          "campaign": "tanks",
+          "mRank": 2
+        }
+      ]
     },
     "pkg_common_2_aircraft": {
       "conditions": [
@@ -984,6 +999,18 @@
         "mRank": 4
       }
     },
+    "pkg_ussr_sub_pr885": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_uk_sub_swiftsure": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -1452,6 +1479,24 @@
         "mRank": 8
       }
     },
+    "pkg_uk_challenger_2_tes": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 11
+      }
+    },
+    "pkg_uk_shir_2": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
+      }
+    },
+    "pkg_il_sholef": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
     "pkg_ussr_t_72av_turms": {
       "conditions": {
         "campaign": "tanks",
@@ -1549,7 +1594,7 @@
     "usePostfxGlow": true,
     "riColorPadding": false,
     "simplifiedRi": false,
-    "performGPUOcclusionReadback": false,
+    "performGPUOcclusionReadback": true,
     "grassDisolve": false,
     "shader_reload_allowed": true,
     "useTreeLod0Offset": false,
@@ -1590,6 +1635,7 @@
     "hasLowresDecals": false,
     "blendedAirplanesSkies": true,
     "lmeshAsyncCulling": false,
+    "allowETC2": true,
     "riexCanIncreaseRenderBuffer": false,
     "riMaxModelsPerLevel": 1024,
     "riAllowGenJobsQueueReorder": true,
@@ -1717,6 +1763,7 @@
     "dumpSettings": true,
     "clearDiscardedImagesInAtlas": false,
     "verifyDynrendContexts": true,
+    "logMissingResources": false,
     "unsupportedVfxShaders": {
       "shader": [
         "dafx_modfx_volshape_render",
@@ -1790,7 +1837,8 @@
     "updateFeedbackSameThread": true,
     "dynamicDDScaleTarget": 0.75,
     "dynamicDDProportionalTerm": 0.1,
-    "useFeedbackTexFilter": true
+    "useFeedbackTexFilter": true,
+    "allowPrebakedLastclip": true
   },
   "clipmapImpostor": {
     "enabled": false,
@@ -1951,7 +1999,7 @@
     "canRebuild": false,
     "common": {
       "exactSize": true,
-      "IB": 16384,
+      "IB": 24576,
       "VB1": 16384,
       "VB2": 16384,
       "VB3": 16384,
@@ -2565,6 +2613,22 @@
         "hwfeedback": false,
         "texTileSize": 128
       }
+    },
+    "unisoc_devices": {
+      "soc": [
+        "T606",
+        "T610",
+        "T612",
+        "T615",
+        "T616",
+        "T618"
+      ],
+      "graphics": {
+        "fallbackFxaaLowToBilinear": true
+      },
+      "vulkan": {
+        "preRotation": false
+      }
     }
   },
   "gamepad_layout": {
@@ -3097,7 +3161,6 @@
         "usePostfxGlow": false,
         "lenseFlares": false,
         "mobile_ssao_active": 0,
-        "allowETC2": false,
         "anisotropy": 1,
         "compatibilityAnisotropy": 1,
         "grassQuality": "low",
@@ -3166,7 +3229,6 @@
         "usePostfxGlow": false,
         "lenseFlares": false,
         "mobile_ssao_active": 1,
-        "allowETC2": true,
         "anisotropy": 8,
         "compatibilityAnisotropy": 8,
         "grassQuality": "low",
@@ -3235,7 +3297,6 @@
         "usePostfxGlow": false,
         "lenseFlares": false,
         "mobile_ssao_active": 1,
-        "allowETC2": true,
         "anisotropy": 8,
         "compatibilityAnisotropy": 8,
         "grassQuality": "high",
@@ -3304,7 +3365,6 @@
         "usePostfxGlow": false,
         "lenseFlares": false,
         "mobile_ssao_active": 1,
-        "allowETC2": true,
         "anisotropy": 8,
         "compatibilityAnisotropy": 8,
         "grassQuality": "high",
@@ -3381,19 +3441,6 @@
                 }
               }
             ]
-          },
-          "msaaAndInstancingHang": {
-            "entry": {
-              "gpu": [
-                "615",
-                "616",
-                "618",
-                "619"
-              ],
-              "data": {
-                "affected": true
-              }
-            }
           },
           "brokenMsaaInputAttachment": {
             "entry": {
@@ -3520,22 +3567,6 @@
                 "affected": true
               }
             }
-          },
-          "brokenMTRecreateImage": {
-            "entry": {
-              "gpu": [
-                "G52",
-                "G57",
-                "G68",
-                "G76",
-                "G77",
-                "G610",
-                "G710"
-              ],
-              "data": {
-                "affected": true
-              }
-            }
           }
         }
       },
@@ -3578,7 +3609,6 @@
     "disableThreadsAffinity": false,
     "graphics": {
       "compress_panorama": false,
-      "allowETC2": false,
       "allowClipmapDXT": false
     },
     "texStreaming": {
@@ -3589,7 +3619,6 @@
     "fastShutdown": true,
     "loginKeyChain": "wtm_loginData",
     "graphics": {
-      "allowETC2": true,
       "asyncPSO": true,
       "asyncLoadPSOCache": true
     },

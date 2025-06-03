@@ -5,7 +5,8 @@ options indenting = 4
 options no_global_variables = false
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
-options persistent_heap = true
+options persistent_heap
+options gc
 options strict_smart_pointers = true
 options stack = 4_194_304
 
@@ -176,7 +177,7 @@ class DAWalker : DapiDataWalker {
 
     varsStack : array<DAVariable?>
     @do_not_delete frame : DAStackFrame?
-    visited : array<tuple<ps : void?; hash : uint64>>
+    visited : array<tuple<ps : void const?; hash : uint64>>
     inlinePreviewLimit : int = 100
 
     def startWalk(var f : DAStackFrame; var v : DAVariable; cb : block<() : void>) {
@@ -2248,7 +2249,7 @@ class private DAServer : Server {
             "text" => empty(text) ? JVNull() : JV(text),
             "threadId" => JV(double(ctx.id)),
             "allThreadsStopped" => JV(false),
-            "hitBreakpointIds" => brId == -1ul ? null : JV([ JV(brId)])
+            "hitBreakpointIds" => brId == -1ul ? JVNull() : JV([ JV(brId)])
         }))
     }
 }

@@ -32,7 +32,6 @@
       0.0
     ],
     "baseWhiteTemp": 6500.0,
-    "contact_shadow_len": 0.05,
     "ssao_on_sun": 0.0,
     "ao_point_lights_effect": [
       0.0,

@@ -109,7 +109,7 @@ registerInteropFunc("updateMachineGunsArray", function(index, count, _seconds, _
     MGun0.set({ count, time, endTime })
 })
 
-registerInteropFunc("updateAdditionalCannons", function(count, _seconds, _mode, _selected, time = 0, endTime = 0) {
+registerInteropFunc("updateAdditionalCannons", function(count, _seconds, _mode, _selected, time, endTime) {
   let guns = AddGun.get()
   if (guns.count != count || guns.time != time || guns.endTime != endTime)
     AddGun.set(AddGun.get().__merge({ count, time, endTime }))

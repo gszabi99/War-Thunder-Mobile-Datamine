@@ -34,6 +34,7 @@ let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
 let { currencyOrder, getDbgCurrencyCount, balance } = require("%appGlobals/currenciesState.nut")
 let { canBattleWithoutAddons } = require("%appGlobals/clientState/clientState.nut")
 let debugPermissionsWnd = require("debugPermissionsWnd.nut")
+let { removeAddonsForCampaign } = require("%rGui/updater/updaterState.nut")
 
 
 let wndWidth = sh(130)
@@ -147,6 +148,7 @@ let commandsList = [].extend(
     { label = "check_purchases_debug", func = withClose(@() check_purchases_debug("onDebugCheckPurchases")) }
     { label = "balance_full", func = @() showSortedTable(balance.get()) }
     { label = "balance_not_empty", func = @() showSortedTable(balance.get().filter(@(v) v != 0)) }
+    { label = "updater.removeAddons", func = @() removeAddonsForCampaign(["tanks","air","ships"]) }
   ])
 
 function mkCommandsList() {

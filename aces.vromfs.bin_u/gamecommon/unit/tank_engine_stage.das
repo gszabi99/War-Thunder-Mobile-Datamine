@@ -10,7 +10,7 @@ require app
 require HeroManager
 require vehicle
 
-[es(REQUIRE=unit_tag__tank)]
+[es(REQUIRE=unit_tag__tank, no_order)]
 def tank_engine_stage_updater_es(act : UpdateStageInfoAct;
                                  eid : EntityId;
                                  var vehicle_net_phys : VehiclePhysActor&;

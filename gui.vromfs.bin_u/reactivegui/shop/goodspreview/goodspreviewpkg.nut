@@ -36,7 +36,7 @@ let activeItemId = Watched(null)
 let currencyStyle = CS_BIG
 let addHintPadding = hdpx(10)
 let purchGap = hdpx(20)
-let horGap = hdpx(60)
+let horGap = hdpx(30)
 let oldPriceTranslate = [0,
   purchGap + 0.5 * defButtonHeight + 0.5 * calc_str_box("2", currencyStyle.fontStyle)[1]]
 

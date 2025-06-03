@@ -79,6 +79,10 @@ let fontWtMedium = {
   font = wtfont
   fontSize = hdpxi(42)
 }
+let fontWtMediumAccented = {
+  font = wtfont
+  fontSize = hdpxi(52)
+}
 let fontWtBig = {
   font = wtfont
   fontSize = hdpxi(58)
@@ -161,6 +165,7 @@ let fontsSets = {
   fontWt = {
     fontWtSmall
     fontWtMedium
+    fontWtMediumAccented
     fontWtBig
     fontWtLarge
     fontWtVeryLarge

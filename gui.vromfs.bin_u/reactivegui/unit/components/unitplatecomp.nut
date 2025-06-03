@@ -27,6 +27,7 @@ let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { dailyBonusTag } = require("%rGui/shop/goodsView/sharedParts.nut")
 let { firstBattlesReward } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { isDailyBonusActive } = require("%rGui/unit/dailyBonusState.nut")
+let { mkSpinner } = require("%rGui/components/spinner.nut")
 
 
 let unitPlateWidth = hdpx(406)
@@ -663,6 +664,14 @@ let mkUnitDailyBonus = @(canActivateDailyBonus, wpMul, expMul) @() {
   hplace = ALIGN_LEFT
 }
 
+let mkUnitSpinner = @(needShowSpinner) @() {
+  watch = needShowSpinner
+  vplace = ALIGN_BOTTOM
+  hplace = ALIGN_LEFT
+  margin = hdpx(5)
+  children = needShowSpinner.get() ? mkSpinner(hdpx(30)) : null
+}
+
 function mkProfileUnitDailyBonus(unit) {
   let canActivateDailyBonus = Computed(@() firstBattlesReward.get() == null
     && unit.name in campMyUnits.get()
@@ -716,6 +725,7 @@ return {
   mkUnitBgPremium
   mkUnitPlateBorder
   mkUnitDailyBonus
+  mkUnitSpinner
   mkProfileUnitDailyBonus
 
   mkPlatoonPlateFrame

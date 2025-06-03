@@ -1,19 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { defer } = require("dagor.workcycle")
+let { defer, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { register_command } = require("console")
 let { getPlayerSsoShortTokenAsync, YU2_OK, renewToken, get_player_tags, get_authenticated_url_sso
 } = require("auth_wt")
 let { object_to_json_string } = require("json")
 let logGuest = log_with_prefix("[GUEST] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { authTags, isLoginByGajin } = require("%appGlobals/loginState.nut")
+let { authTags, isLoginByGajin, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { isInLoadingScreen, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { windowActive } = require("%appGlobals/windowState.nut")
 let { accountLink } = require("%rGui/contacts/contactLists.nut")
 let { isContactsReceived } = require("%rGui/contacts/contactsState.nut")
-let { LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
+let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
+let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 
+
+let AUTH_TAG_REQUEST_TIME = 60
+let MAX_ATTEMPTS_TO_UPDATE_TAGS = 3
 
 let isGuestLoginBase = Computed(@() authTags.value.contains("guestlogin")
   || authTags.value.contains("firebaselogin"))
@@ -27,7 +32,17 @@ let needVerifyEmailBase = Computed(@() !isGuestLogin.value
         || authTags.value.contains("fblogin") || authTags.value.contains("hwlogin")))
 let isDebugVerifyEmail = mkWatched(persist, "isDebugVerifyEmail", false)
 let needVerifyEmail = Computed(@() needVerifyEmailBase.value != isDebugVerifyEmail.value)
-local needCheckRelogin = hardPersistWatched("guest.needCheckRelogin", false)
+let needCheckRelogin = hardPersistWatched("guest.needCheckRelogin", false)
+let attemptsToUpdateTags = hardPersistWatched("guest.attemptsToUpdateTags", 0)
+let isDelayedUpdateTagsActive = hardPersistWatched("guest.isDelayedUpdateTagsActive", false)
+let canShowModalToRelogin = hardPersistWatched("guest.canShowModalToRelogin", false)
+
+let needShowModalToRelogin = keepref(Computed(@() isInMenuNoModals.get()
+  && !isInLoadingScreen.get()
+  && !isTutorialActive.get()
+  && !isInDebriefing.get()
+  && canShowModalToRelogin.get()
+  && isLoggedIn.get()))
 
 let openGuestEmailRegistrationImpl = @(stoken) eventbus_send("openUrl",
   { baseUrl = $"https://login.gaijin.net/{loc("current_lang")}/guest?stoken={stoken}" })
@@ -40,7 +55,7 @@ eventbus_subscribe("onGetStokenForGuestEmail", function(msg) {
   }
   else {
     logGuest("Open guest registration link")
-    needCheckRelogin(true)
+    needCheckRelogin.set(true)
     openGuestEmailRegistrationImpl(stoken)
   }
 })
@@ -50,9 +65,11 @@ function openGuestEmailRegistration() {
   getPlayerSsoShortTokenAsync("onGetStokenForGuestEmail")
 }
 
-function linkEmailWithLogout() {
-  eventbus_send("openUrl", { baseUrl = LINK_TO_GAIJIN_ACCOUNT_URL })
-  defer(@() eventbus_send("logOutManually", {}))
+function reloginToLinkedEmail(needShowMsg = true) {
+  isLoginByGajin.set(true)
+  if (needShowMsg)
+    openFMsgBox({ text = loc("msg/needReloginToLinkedEmail"), isPersist = true })
+  defer(@() eventbus_send("logOutManually", {})) 
 }
 
 function openVerifyEmail() {
@@ -63,30 +80,69 @@ function openVerifyEmail() {
 
 subscribeFMsgBtns({
   openGuestEmailRegistration = @(_) openGuestEmailRegistration()
-  linkEmailWithLogout = @(_) linkEmailWithLogout()
+  reloginToLinkedEmail = @(_) reloginToLinkedEmail(false)
 })
 
 windowActive.subscribe(function(v) {
-  if (!v || !needCheckRelogin.value)
+  if (!v || !needCheckRelogin.get())
     return
-  needCheckRelogin(false)
+  needCheckRelogin.set(false)
   logGuest("Request renew token")
   renewToken("onRenewAuthToken")
+})
+
+function delayedUpdateAuthTags() {
+  if (attemptsToUpdateTags.get() >= MAX_ATTEMPTS_TO_UPDATE_TAGS || !isLoggedIn.get())
+    return clearTimer(delayedUpdateAuthTags)
+  attemptsToUpdateTags.set(attemptsToUpdateTags.get() + 1)
+
+  logGuest("Delayed request for authorization tags has been set. Tags = ", authTags.get())
+  renewToken("onRenewAuthToken")
+  resetTimeout(AUTH_TAG_REQUEST_TIME, delayedUpdateAuthTags)
+}
+
+isLoggedIn.subscribe(function(_) {
+  isDelayedUpdateTagsActive.set(false)
+  canShowModalToRelogin.set(false)
+})
+isDelayedUpdateTagsActive.subscribe(@(v) v
+  ? resetTimeout(AUTH_TAG_REQUEST_TIME, delayedUpdateAuthTags)
+  : clearTimer(delayedUpdateAuthTags))
+
+needShowModalToRelogin.subscribe(function(v) {
+  if (v) {
+    isDelayedUpdateTagsActive.set(false)
+    canShowModalToRelogin.set(false)
+    openFMsgBox({
+      text = loc("msg/needReloginToLinkedEmail")
+      isPersist = true
+      buttons = [
+        { id = "ok", eventId = "reloginToLinkedEmail", isDefault = true, styleId = "PRIMARY" }
+      ]
+    })
+  }
 })
 
 function onGuestTagsUpdate() {
   if (!authTags.get().contains("email_verified"))
     return
-  isLoginByGajin.update(true)
-  openFMsgBox({ text = loc("msg/needToLoginByYourLinkedMail"), isPersist = true })
-  defer(@() eventbus_send("logOutManually", {})) 
+  reloginToLinkedEmail()
+}
+
+function onGuestTagsUpdateWithWaiting() {
+  if (!authTags.get().contains("email_verified"))
+    return isDelayedUpdateTagsActive.set(true)
+  if (!isDelayedUpdateTagsActive.get())
+    reloginToLinkedEmail()
+  else
+    canShowModalToRelogin.set(true)
 }
 
 eventbus_subscribe("onRenewAuthToken", function(_) {
   authTags(get_player_tags())
   isDebugGuestLogin(false)
   logGuest($"onRenewAuthToken. isGuestLogin = {isGuestLogin.value}, Tags = ", authTags.value)
-  onGuestTagsUpdate()
+  onGuestTagsUpdateWithWaiting()
 })
 
 eventbus_subscribe("onRenewGuestAuthTokenInAdvance", function(_) {

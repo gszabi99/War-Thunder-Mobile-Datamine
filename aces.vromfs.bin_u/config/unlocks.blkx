@@ -1894,7 +1894,7 @@
       "mode": {
         "type": "criticalHitByType",
         "num": 1005000,
-        "critType": "speed",
+        "critType": "engine",
         "condition": [
           {
             "type": "online"
@@ -2123,7 +2123,7 @@
       "userstat_stat_id": "ship_artillery_master",
       "mode": {
         "type": "damageUnits",
-        "maxVal": 200,
+        "maxVal": 150,
         "condition": [
           {
             "type": "online"

@@ -60,7 +60,7 @@ function mkGoods(baseGoods, info) {
   if (baseGoods == null || info == null)
     return null
   let { shop_price = 0, shop_price_curr = "", duration = 0 } = info
-  if (shop_price <= 0)
+  if (shop_price == false || shop_price <= 0)
     return null
   let currencyId = shop_price_curr.tolower()
   let platformDiscount = getGaijinDiscount(baseGoods)

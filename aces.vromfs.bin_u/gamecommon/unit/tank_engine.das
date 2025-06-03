@@ -10,7 +10,7 @@ require %game.unit.unit_events
 require %game.dm.dm_events
 
 
-[es(tag=server)]
+[es(tag=server, no_order)]
 def tank_engine_updater_es(act : UpdateStageInfoAct;
                            eid : EntityId;
                            unit__ref : UnitRef;

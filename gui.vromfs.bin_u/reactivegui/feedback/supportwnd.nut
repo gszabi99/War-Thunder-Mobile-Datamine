@@ -14,7 +14,7 @@ let { textButtonPrimary, textButtonCommon, buttonsHGap } = require("%rGui/compon
 let { textInput } = require("%rGui/components/textInput.nut")
 let { mkSpinner } = require("%rGui/components/spinner.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
-let { toggleWithLabel } = require("%rGui/components/toggle.nut")
+let { horizontalToggleWithLabel } = require("%rGui/components/toggle.nut")
 let { canUseZendeskApi, langCfg, getCategoryLocName, fieldCategory } = require("%rGui/feedback/supportState.nut")
 let { hasLogFile } = require("logFileAttachment.nut")
 let { requestState, submitSupportRequest, onRequestResultSeen } = require("supportRequest.nut")
@@ -139,7 +139,7 @@ let formBlock = {
         {
           size = [flex(), SIZE_TO_CONTENT]
           children = hasLogFile()
-            ? toggleWithLabel(tglNeedAttachLogFile, loc("support/form/log_file_attachment/checkbox"))
+            ? horizontalToggleWithLabel(tglNeedAttachLogFile, loc("support/form/log_file_attachment/checkbox"))
             : null
         }
         textButtonPrimary(utf8ToUpper(loc("msgbox/btn_submit")), onSubmit)

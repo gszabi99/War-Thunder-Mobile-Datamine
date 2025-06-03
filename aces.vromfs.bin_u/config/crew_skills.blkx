@@ -1689,8 +1689,8 @@
               2000.0
             ],
             "instantSpottingDistance": [
-              400.0,
-              800.0
+              150.0,
+              150.0
             ],
             "rocketSpottingDistance": [
               5000.0,
@@ -1714,8 +1714,8 @@
             500.0
           ],
           "instantSpottingDistance": [
-            500.0,
-            1000.0
+            150.0,
+            150.0
           ],
           "rocketSpottingTime": [
             3.0,
@@ -1752,8 +1752,8 @@
         1.2
       ],
       "compressor": [
-        1.0,
-        1.2
+        1.2,
+        1.0
       ]
     },
     "pilot": {
@@ -1764,8 +1764,8 @@
             6000.0
           ],
           "instantSpottingDistance": [
-            500.0,
-            1000.0
+            150.0,
+            150.0
           ],
           "rocketSpottingDistance": [
             5000.0,
@@ -1774,12 +1774,12 @@
         },
         "hearing": {
           "spottingDistance": [
-            400.0,
-            800.0
+            800.0,
+            1600.0
           ],
           "instantSpottingDistance": [
-            150.0,
-            300.0
+            500.0,
+            1000.0
           ]
         }
       },

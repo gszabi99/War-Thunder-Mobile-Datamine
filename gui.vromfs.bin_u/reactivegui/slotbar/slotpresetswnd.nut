@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { deep_clone, isEqual } = require("%sqstd/underscore.nut")
-let { apply_slot_preset } = require("%appGlobals/pServer/pServerApi.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
@@ -27,6 +26,7 @@ let { playerSelectedPresetIdx, playerSelectedSlotIdx, currentPresetName, savedSl
 } = require("%rGui/slotBar/slotPresetsState.nut")
 let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBlocksContainer } = require("%rGui/components/verticalBlocks.nut")
+let { setSlots } = require("slotBarUpdater.nut")
 
 
 let WND_UID = "SLOT_PRESET_WND"
@@ -115,7 +115,7 @@ function onApply(presets, presetIdx, campaign, isCurrent) {
   if (isCurrent)
     return openMsgBox({text = loc("msgbox/presets/cannot_apply")})
   let curPreset = presets[presetIdx]
-  apply_slot_preset(curPreset.presetUnits, campaign)
+  setSlots(campaign, curPreset.presetUnits)
   foreach(idx, name in curPreset.presetUnits)
     anim_start(getSlotAnimTrigger(idx, name, presetIdx))
 }
@@ -250,7 +250,7 @@ function mkPresetSlot(slot, slotIdx, presetIdx, isSelected, onClick) {
     flow = FLOW_VERTICAL
     valign = ALIGN_BOTTOM
     children = [
-      mkSlotHeader(slot, slotIdx, unit, isSelected)
+      mkSlotHeader(slot, slotIdx, isSelected)
       mkPresetUnitSlot(unit.get(), slotIdx, presetIdx, onClick, isSelected)
     ]
   }

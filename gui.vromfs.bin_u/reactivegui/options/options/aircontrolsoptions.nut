@@ -1,5 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
+let { eventbus_subscribe } = require("eventbus")
+let { register_command } = require("console")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { abTests } = require("%appGlobals/pServer/campaign.nut")
+let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+let { setVirtualAxesAim, setVirtualAxesDirectControl } = require("%globalScripts/controls/shortcutActions.nut")
 let {
   OPT_AIRCRAFT_FIXED_AIM_CURSOR,
   OPT_CAMERA_SENSE_IN_ZOOM_PLANE,
@@ -48,9 +54,6 @@ let {
   CAM_TYPE_BINOCULAR_PLANE } = require("controlsOptions")
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { crosshairOptions } = require("crosshairOptions.nut")
-let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { setVirtualAxesAim, setVirtualAxesDirectControl } = require("%globalScripts/controls/shortcutActions.nut")
-let { eventbus_subscribe } = require("eventbus")
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "air", v)
@@ -313,15 +316,22 @@ currentAircraftCtrlType.subscribe( function(v) {
     set_camera_viscosity_in_zoom(max(limitsZoom[1] - optValueZoom.get(), limitsZoom[0]))
 })
 
+let isDebugTargetSelection = hardPersistWatched("options.isDebugTargetSelection", false)
 let targetSelectionList = ["manual_selection", "tap_selection", "auto_selection"]
-let currentTargetSelection = mkOptionValue(OPT_TARGET_SELECTION_TYPE, null,
-  @(v) targetSelectionList.contains(v) ? v : targetSelectionList[0])
-set_target_selection_type(targetSelectionList.findindex(@(v) v == currentTargetSelection.value) ?? 0)
+let targetSelectionDefault = Computed(@()
+  (isDebugTargetSelection.get() == ((abTests.get()?.autoAirTargetSelection ?? "false") == "true"))
+    ? targetSelectionList[0]
+    : "auto_selection")
+let currentTargetSelectionRaw = mkOptionValue(OPT_TARGET_SELECTION_TYPE)
+let currentTargetSelection = Computed(@()
+  validate(currentTargetSelectionRaw.get() ?? targetSelectionDefault.get(), targetSelectionList))
+set_target_selection_type(targetSelectionList.findindex(@(v) v == currentTargetSelection.get()) ?? 0)
 currentTargetSelection.subscribe(@(val) set_target_selection_type(targetSelectionList.findindex(@(v) v == val) ?? 0))
 let currentTargetSelectionType = {
   locId = "options/target_selection_type"
   ctrlType = OCT_LIST
   value = currentTargetSelection
+  setValue = @(v) currentTargetSelectionRaw(v)
   onChangeValue = @(v) sendChange("target_selection_type", v)
   list = targetSelectionList
   valToString = airCtrlTypeToString
@@ -359,6 +369,11 @@ let currentQuitZoomSelectionType = {
 
 let isMouseAim = Computed( @() currentAircraftCtrlType.get() == "mouse_aim")
 let isStick = Computed( @() currentAircraftCtrlType.get() != "mouse_aim")
+
+register_command(function() {
+  currentTargetSelectionRaw(null)
+  isDebugTargetSelection.set(!isDebugTargetSelection.get())
+}, "debug.options.airTargetSelectionType")
 
 return {
   airControlsOptions = [

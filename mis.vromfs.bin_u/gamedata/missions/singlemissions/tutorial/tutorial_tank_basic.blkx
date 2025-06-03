@@ -86,7 +86,7 @@
             }
           ],
           "battleArea": {
-            "target": "battle_area"
+            "target": "fake_battle_area"
           }
         }
       }
@@ -151,17 +151,34 @@
             "isImmortal": true
           }
         ],
-        "missionBattleArea": {
-          "air": true,
-          "ground": true,
-          "mapArea": false,
-          "killOutOfBattleArea": true,
-          "airMapArea": false,
-          "killArea": false,
-          "detectionArea": false,
-          "area": "battle_area",
-          "newGridHorizontalCellCount": 0
-        },
+        "missionBattleArea": [
+          {
+            "air": true,
+            "ground": true,
+            "mapArea": false,
+            "killOutOfBattleArea": true,
+            "airMapArea": false,
+            "killArea": false,
+            "detectionArea": false,
+            "area": "fake_battle_area",
+            "newGridHorizontalCellCount": 0
+          },
+          {
+            "air": false,
+            "ground": true,
+            "mapArea": false,
+            "airMapArea": false,
+            "killArea": true,
+            "detectionArea": false,
+            "killOutOfBattleArea": false,
+            "area": [
+              "battle_area_exclude01",
+              "battle_area_exclude02",
+              "battle_area_exclude03"
+            ],
+            "team": "Both"
+          }
+        ],
         "triggerEnable": {
           "target": [
             "camera_hint",
@@ -471,7 +488,8 @@
           }
         ],
         "hudElementSelectionShade": {
-          "element": "tank_move_stick_zone"
+          "element": "tank_move_stick_zone",
+          "drawFromGui": false
         },
         "unitPlayEffect": {
           "effect_type": "specify",
@@ -535,6 +553,10 @@
         }
       },
       "actions": {
+        "varSetString": {
+          "value": "waypoint01",
+          "var": "player_respawn_current"
+        },
         "bigQueryAddRecord": {
           "params": "",
           "event": "task 3/9: first waypoint",
@@ -552,6 +574,26 @@
             ]
           }
         ],
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "",
+          "spawnEffect": false,
+          "isStrictSpawn": false,
+          "resetStrictSpawnIndex": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "forceCreate": false,
+          "useExisting": false,
+          "ignoreTeamsOnReuse": false,
+          "isIndividual": false,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "removeAreas": false,
+          "replaceAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": false,
+          "radius": -1.0,
+          "target": "waypoint01",
+          "team": "A"
+        },
         "playHint": {
           "hintType": "tutorialHint",
           "name": "",
@@ -709,6 +751,28 @@
         }
       },
       "actions": {
+        "triggerEnable": [
+          {
+            "target": "controls_disable"
+          },
+          {
+            "target": "preShooting_about_map"
+          }
+        ],
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ALL"
+        },
+        "varSetString": [
+          {
+            "value": "caponier_spawn_area",
+            "var": "player_respawn_current"
+          },
+          {
+            "value": "controls_look",
+            "var": "controls_current"
+          }
+        ],
         "bigQueryAddRecord": {
           "params": "",
           "event": "task 4/9: reached shooting waypoint",
@@ -745,7 +809,10 @@
           "oriented": false,
           "ignoreDifficulty": false,
           "scale": 0.0,
-          "target": "waypoint04_underground"
+          "target": [
+            "caponier_spawn_area",
+            "waypoint04_underground"
+          ]
         },
         "playerEmulateShortcut": [
           {
@@ -754,14 +821,6 @@
           {
             "control": "ID_SHORT_BRAKE",
             "holdTime": -1.0
-          }
-        ],
-        "triggerEnable": [
-          {
-            "target": "controls_disable"
-          },
-          {
-            "target": "preShooting_about_map"
           }
         ],
         "wait": {
@@ -791,6 +850,9 @@
           },
           {
             "time": 0.2
+          },
+          {
+            "time": 0.5
           },
           {
             "time": 2.0
@@ -823,7 +885,7 @@
           "target": "target_tanks_squad"
         },
         "tacticalMapForceZoom": {
-          "zoom": 12.0
+          "zoom": 1.0
         },
         "hudElementSelectionShade": {
           "drawFromGui": true,
@@ -848,6 +910,19 @@
             "after_activation": "disable"
           }
         ],
+        "missionSetTimeSpeed": [
+          {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        ],
+        "playerSetMouseAim": {
+          "lookat": "look_at_01"
+        },
         "varSetString": {
           "value": "hints/wtm_tutorial_tank/minimap",
           "var": "hint_current"
@@ -922,29 +997,34 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "notNear2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "player",
+          "target": "caponier_spawn_area"
+        }
+      },
       "actions": {
-        "missionSetTimeSpeed": [
-          {
-            "speed": 1.0,
-            "realtimeTriggers": true
-          },
-          {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        ],
-        "unitRespawn": [
-          {
-            "delay": 1.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "object": "player",
-            "target": "caponier_spawn_area"
-          },
+        "__missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "player",
+          "target": "caponier_spawn_area"
+        },
+        "__unitRespawn": [
           {
             "delay": 1.0,
             "offset": [
@@ -981,7 +1061,7 @@
         ],
         "wait": [
           {
-            "time": 0.01
+            "time": 0.2
           },
           {
             "time": 0.5
@@ -989,6 +1069,10 @@
         ],
         "playerSetMouseAim": {
           "lookat": "look_at_01"
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
         }
       },
       "else_actions": {}
@@ -1195,7 +1279,8 @@
         "hudElementBlink": {
           "element": "crosshair",
           "time": 100.0,
-          "blink": true
+          "blink": true,
+          "drawFromGui": false
         },
         "triggerEnable": {
           "target": "turret_rotated"
@@ -1242,7 +1327,8 @@
         "hudElementBlink": {
           "element": "crosshair",
           "time": 100.0,
-          "blink": false
+          "blink": false,
+          "drawFromGui": false
         },
         "playHint": {
           "hintType": "tutorialHint",
@@ -1267,7 +1353,8 @@
           "target": "@target_area"
         },
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "varSetBool": [
           {
@@ -1402,7 +1489,8 @@
           "name": ""
         },
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "wait": {
           "time": 0.5
@@ -1768,7 +1856,8 @@
           "shouldBlink": false
         },
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "varSetBool": {
           "value": false,
@@ -2018,7 +2107,8 @@
           }
         ],
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "__unitSetProperties": {
           "object_marking": 0,
@@ -2150,7 +2240,8 @@
           "target": "area_02"
         },
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "playHint": [
           {
@@ -2643,7 +2734,8 @@
           "realtimeTriggers": true
         },
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "hudElementShow": {
           "element": "hud_tutorial_tank_fire_and_explosion",
@@ -2894,10 +2986,10 @@
             0.0
           ],
           "object": "player",
-          "target": "player_respawn"
+          "target": "@player_respawn_current"
         },
         "unitMoveTo": {
-          "target": "player_respawn",
+          "target": "@player_respawn_current",
           "follow_target": false,
           "teleportHeightType": "target",
           "useUnitHeightForTele": false,
@@ -3973,7 +4065,8 @@
           }
         ],
         "__hudElementSelectionShade": {
-          "element": "alt"
+          "element": "alt",
+          "drawFromGui": false
         },
         "__varSetString": {
           "value": "COMMANDER",
@@ -4066,7 +4159,8 @@
           }
         ],
         "__hudElementSelectionShade": {
-          "element": "alt"
+          "element": "alt",
+          "drawFromGui": false
         },
         "__varSetString": {
           "value": "DRIVER",
@@ -4159,7 +4253,8 @@
           }
         ],
         "__hudElementSelectionShade": {
-          "element": "alt"
+          "element": "alt",
+          "drawFromGui": false
         },
         "__varSetString": {
           "value": "GUNNER",
@@ -4252,7 +4347,8 @@
           }
         ],
         "__hudElementSelectionShade": {
-          "element": "alt"
+          "element": "alt",
+          "drawFromGui": false
         },
         "__varSetString": {
           "value": "LOADER",
@@ -4345,7 +4441,8 @@
           }
         ],
         "__hudElementSelectionShade": {
-          "element": "alt"
+          "element": "alt",
+          "drawFromGui": false
         },
         "__varSetString": {
           "value": "MACHINE GUNNER",
@@ -5875,7 +5972,8 @@
           }
         ],
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "",
+          "drawFromGui": false
         },
         "missionSetTimeSpeed": {
           "speed": 1.0,
@@ -6240,7 +6338,8 @@
     "lookat_current": "",
     "xray_enabled": false,
     "target_01_hint_activated": false,
-    "target_02_hint_activated": false
+    "target_02_hint_activated": false,
+    "player_respawn_current": "player_respawn"
   },
   "dialogs": {},
   "airfields": {},
@@ -6786,19 +6885,19 @@
       "type": "Sphere",
       "tm": [
         [
-          24.0,
+          16.0,
           0.0,
           0.0
         ],
         [
           0.0,
-          24.0,
+          16.0,
           0.0
         ],
         [
           0.0,
           0.0,
-          24.0
+          16.0
         ],
         [
           1829.6,
@@ -7111,6 +7210,114 @@
           1869.08,
           8.13704,
           1800.13
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "fake_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          -300.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          80.05,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -300.0
+        ],
+        [
+          1852.65,
+          8.04999,
+          1896.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battle_area_exclude01": {
+      "type": "Box",
+      "tm": [
+        [
+          -200.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          85.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -200.0
+        ],
+        [
+          1757.55,
+          -4.85,
+          1962.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battle_area_exclude02": {
+      "type": "Box",
+      "tm": [
+        [
+          -150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          96.7,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -350.0
+        ],
+        [
+          1932.6,
+          0.25,
+          1861.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battle_area_exclude03": {
+      "type": "Box",
+      "tm": [
+        [
+          210.65,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          72.3,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          74.65
+        ],
+        [
+          1752.25,
+          -2.45,
+          1735.05
         ]
       ],
       "objLayer": 0,

@@ -150,6 +150,16 @@ let skipBtnCtor = @(stepSkipDelay, skipStep, key) {
   ]
   animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 3, play = true }]
 }
+let skipBtnClickCtor = @(skipStep, key) {
+  key
+  behavior = Behaviors.Button
+  onClick = skipStep
+  rendObj = ROBJ_TEXT
+  text = loc("options/skip")
+  color = 0xA0A0A0A0
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+}.__update(fontSmall)
 
 let pointerSize = hdpx(70).tointeger()
 let pointerAnimTime = 1.0
@@ -208,6 +218,7 @@ return freeze({
   darkCtor
   messageCtor
   skipBtnCtor
+  skipBtnClickCtor
   pointerArrow
   mkPointerArrow
   mkLinkArrow

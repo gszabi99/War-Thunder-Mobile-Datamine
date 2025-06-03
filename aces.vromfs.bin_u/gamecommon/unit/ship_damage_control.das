@@ -70,7 +70,7 @@ def ship_start_damage_control_es(evt : EventShipStartDamageControl;
     sendEvent(eid, EventExtinguishSystemTurnOffExtinguisher())
 
 
-[es]
+[es(before=ship_damage_control_load_priorities_es)]
 def ship_damage_control_init_es(evt : CmdInitComponent;
                                 var ship__modernDamageControl : bool&;
                                 var ship_damage_control__cooldownTime : float&;

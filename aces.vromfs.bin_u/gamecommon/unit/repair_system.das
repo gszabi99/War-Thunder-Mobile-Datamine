@@ -343,7 +343,8 @@ def repair_system_update_es(act : UpdateStageInfoAct;
           
           if repair_system_delay_time_to_repair <= 0.0f
             
-            if ((repair_system_remaining_repair_time <= 0.0f || get_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS)) &&
+            if ((repair_system_remaining_repair_time <= 0.0f || get_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS) ||
+                get_game_params().canAssistRepairWithoutRequest) &&
                 is_repair_needed(unit, repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
                   repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp,
                   true, true, get_flag(repair_system_state, RepairState.NEED_REPAIR_HELP)))

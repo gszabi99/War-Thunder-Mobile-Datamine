@@ -124,6 +124,7 @@
     "type": "FpsFlightCamera",
     "fov": 90.0,
     "zoomFov": 30.0,
+    "sliderFovMult": 2.0,
     "targetOffset": [
       500.0,
       0.0,
@@ -315,6 +316,7 @@
     "type": "VirtualCockpitCamera",
     "fov": 85.0,
     "zoomFov": 30.0,
+    "sliderFovMult": 2.0,
     "targetOffset": [
       500.0,
       0.0,
@@ -361,6 +363,7 @@
     "isAimCamera": false,
     "fov": 85.0,
     "zoomFov": 30.0,
+    "sliderFovMult": 2.0,
     "targetOffset": [
       500.0,
       0.0,
@@ -592,6 +595,7 @@
     "type": "BomberViewCamera",
     "fov": 80.0,
     "zoomFov": 40.0,
+    "sliderFovMult": 2.0,
     "cameraControlSmoothX": 0.05,
     "cameraControlSmoothY": 0.05,
     "cameraControlViewRadius": 14.0,
@@ -611,6 +615,7 @@
     "type": "TpsFlightCamera",
     "fov": 90.0,
     "zoomFov": 30.0,
+    "sliderFovMult": 2.0,
     "targetOffset": [
       500.0,
       0.0,
@@ -710,6 +715,7 @@
     "type": "TpsFlightCamera",
     "fov": 90.0,
     "zoomFov": 30.0,
+    "sliderFovMult": 2.0,
     "targetOffset": [
       500.0,
       0.0,
@@ -1019,6 +1025,7 @@
     "type": "FpsFlightCamera",
     "fov": 85.0,
     "zoomFov": 10.0,
+    "sliderFovMult": 2.0,
     "targetOffset": [
       500.0,
       0.0,

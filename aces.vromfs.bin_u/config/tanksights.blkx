@@ -5198,7 +5198,8 @@
       ],
       "drawDistanceCorrection": true,
       "matchExpClass": {
-        "sw_landsverk_ush_405": true
+        "sw_landsverk_ush_405": true,
+        "germ_spz_oerlikon_raketenautomat": true
       },
       "crosshair_distances": {
         "distance": [
@@ -5376,120 +5377,120 @@
         "line": [
           {
             "line": [
-              -0.7,
-              2.1,
-              0.7,
-              2.1
+              0.8,
+              2.7,
+              -0.8,
+              2.7
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              4.25,
-              1.7,
-              4.25
+              1.6,
+              4.22,
+              -1.6,
+              4.22
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.0,
-              6.7,
-              1.0,
-              6.7
+              0.8,
+              5.27,
+              -0.8,
+              5.27
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              9.4,
-              1.7,
-              9.4
+              1.6,
+              6.08,
+              -1.6,
+              6.08
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.0,
-              12.4,
-              1.0,
-              12.4
+              0.8,
+              7.06,
+              -0.8,
+              7.06
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              15.0,
-              1.7,
-              15.0
+              1.6,
+              8.11,
+              -1.6,
+              8.11
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.0,
-              18.3,
-              1.0,
-              18.3
+              0.8,
+              9.069,
+              -0.8,
+              9.069
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              21.5,
-              1.7,
-              21.5
+              1.6,
+              10.235,
+              -1.6,
+              10.235
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.0,
-              25.2,
-              1.0,
-              25.2
+              0.8,
+              11.383,
+              -0.8,
+              11.383
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              29.3,
-              1.7,
-              29.3
+              1.6,
+              12.751,
+              -1.6,
+              12.751
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.0,
-              33.1,
-              1.0,
-              33.1
+              0.8,
+              13.9,
+              -0.8,
+              13.9
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              37.5,
-              1.7,
-              37.5
+              1.6,
+              15.369,
+              -1.6,
+              15.369
             ],
             "move": true,
             "thousandth": true
@@ -5511,68 +5512,74 @@
           },
           {
             "text": "400",
+            "align": 0,
             "pos": [
               10.0,
-              4.25
+              4.22
             ],
             "move": true,
             "thousandth": true,
-            "size": 0.7,
+            "size": 0.3,
             "highlight": true
           },
           {
             "text": "800",
+            "align": 0,
             "pos": [
               10.0,
-              9.4
+              6.08
             ],
             "move": true,
             "thousandth": true,
-            "size": 0.7,
+            "size": 0.3,
             "highlight": true
           },
           {
             "text": "1200",
+            "align": 0,
             "pos": [
               10.0,
-              15.0
+              8.11
             ],
             "move": true,
             "thousandth": true,
-            "size": 0.7,
+            "size": 0.3,
             "highlight": true
           },
           {
             "text": "1600",
+            "align": 0,
             "pos": [
               10.0,
-              21.5
+              10.235
             ],
             "move": true,
             "thousandth": true,
-            "size": 0.7,
+            "size": 0.3,
             "highlight": true
           },
           {
             "text": "2000",
+            "align": 0,
             "pos": [
               10.0,
-              29.3
+              12.751
             ],
             "move": true,
             "thousandth": true,
-            "size": 0.7,
+            "size": 0.3,
             "highlight": true
           },
           {
             "text": "2400",
+            "align": 0,
             "pos": [
               10.0,
-              37.5
+              15.369
             ],
             "move": true,
             "thousandth": true,
-            "size": 0.7,
+            "size": 0.3,
             "highlight": true
           }
         ]

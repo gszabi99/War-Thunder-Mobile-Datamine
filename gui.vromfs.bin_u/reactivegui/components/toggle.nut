@@ -13,11 +13,11 @@ let knobMoveTime = 0.1
 let activeColorTime = 0.2
 let transEasing = InOutQuad
 
-let toggleLabel = @(text, sf) {
+let toggleLabel = @(text, sf, ovr = {}) {
   rendObj = ROBJ_TEXT
   color = sf & S_HOVER ? hoverColor : textColor
   text
-}.__update(fontSmall)
+}.__update(fontSmall, ovr)
 
 let toggleActiveBg = @(value) {
   size = [toggleW, toggleH]
@@ -61,25 +61,36 @@ let toggle = @(valueW, sf) @() {
   ]
 }
 
-function toggleWithLabel(valueW, label) {
-  let stateFlags = Watched(0)
-  return @() {
-    watch = stateFlags
-    behavior = Behaviors.Button
-    onElemState = @(v) stateFlags(v)
-    sound = { click  = "click" }
-    onClick = @() valueW(!valueW.value)
+let toggleWithLabel = @(stateFlags, valueW, children, ovr = {}) @() {
+  watch = stateFlags
+  behavior = Behaviors.Button
+  onElemState = @(v) stateFlags(v)
+  sound = { click  = "click" }
+  onClick = @() valueW(!valueW.get())
+  valign = ALIGN_CENTER
+  gap = hdpx(30)
+  children
+}.__update(ovr)
 
-    flow = FLOW_HORIZONTAL
-    valign = ALIGN_CENTER
-    gap = hdpx(30)
-    children = [
-      toggle(valueW, stateFlags.value)
-      toggleLabel(label, stateFlags.value)
-    ]
-  }
+function horizontalToggleWithLabel(valueW, label, textOvr = {}) {
+  let stateFlags = Watched(0)
+  let children = [
+    toggle(valueW, stateFlags.get())
+    toggleLabel(label, stateFlags.get(), textOvr)
+  ]
+  return toggleWithLabel(stateFlags, valueW, children, { flow = FLOW_HORIZONTAL })
+}
+
+function verticalToggleWithLabel(valueW, label, textOvr = {}) {
+  let stateFlags = Watched(0)
+  let children = [
+    toggleLabel(label, stateFlags.get(), textOvr)
+    toggle(valueW, stateFlags.get())
+  ]
+  return toggleWithLabel(stateFlags, valueW, children, { flow = FLOW_VERTICAL })
 }
 
 return {
-  toggleWithLabel
+  horizontalToggleWithLabel
+  verticalToggleWithLabel
 }

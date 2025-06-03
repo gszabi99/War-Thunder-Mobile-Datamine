@@ -234,7 +234,7 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
     let watch = [actionItem, isGroupInAir, isOnCd]
     if (actionItem.get() == null)
       return { watch }
-    let isAvailable = isAvailableActionItem(actionItem.get(), isOnCd.get())
+    let isAvailable = isOnCd.get() || isAvailableActionItem(actionItem.get())
     return {
       watch
       size = [btnSize, btnSize]

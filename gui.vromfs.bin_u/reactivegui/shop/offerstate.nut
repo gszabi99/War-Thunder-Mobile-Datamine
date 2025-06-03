@@ -7,10 +7,6 @@ let { check_new_offer, shopPurchaseInProgress } = require("%appGlobals/pServer/p
 let { activeOffers, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { PURCHASING, DELAYED } = require("goodsStates.nut")
 let { getGoodsType } = require("shopCommon.nut")
-let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 
 
 let attachedOfferScenes = Watched({})
@@ -69,23 +65,10 @@ let offerPurchasingState = Computed(function() {
   return res
 })
 
-let reqAddonsToShowOffer = Computed(function() {
-  if (!isReadyToFullLoad.get())
-    return []
-  let unitId = visibleOffer.get()?.unitUpgrades[0]
-    ?? visibleOffer.get()?.units[0]
-    ?? visibleOffer.get()?.blueprints.findindex(@(_) true)
-  let unit = serverConfigs.value?.allUnits[unitId]
-  if (unit == null)
-    return []
-  return getUnitPkgs(unit.name, unit.mRank).filter(@(a) !hasAddons.value?[a])
-})
-
 return {
   activeOffer 
   visibleOffer 
   offerPurchasingState
-  reqAddonsToShowOffer
 
   onOfferSceneAttach = @(key) attachedOfferScenes.mutate(@(v) v.__update({ [key]  = true }))
   onOfferSceneDetach = @(key) key not in attachedOfferScenes.value ? null
