@@ -1819,7 +1819,16 @@
       }
     },
     "secondaryShells": {
+      "ammo_turret_05_dm": {
+        "count": 42
+      },
+      "ammo_turret_04_dm": {
+        "count": 40
+      },
       "ammo_turret_03_dm": {
+        "count": 40
+      },
+      "ammo_turret_02_dm": {
         "count": 40
       },
       "ammo_turret_01_dm": {

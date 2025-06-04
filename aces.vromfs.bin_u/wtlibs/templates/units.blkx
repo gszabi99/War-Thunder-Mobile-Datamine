@@ -524,7 +524,6 @@
       "gm_engine_sound",
       "tank_phys_tracks"
     ],
-    "unit__reCreateOnRespawn": true,
     "unit__shouldKeepDeadUnit": true,
     "_replicated": "reloadedFromAmmoBoxCount",
     "agent_dangers__tag": "vehicle",
@@ -566,7 +565,6 @@
       "ship_damage_control",
       "gm_engine_sound"
     ],
-    "unit__reCreateOnRespawn": true,
     "unit__shouldKeepDeadUnit": true,
     "unit_storage__ship": {},
     "unit_tag__ship:tag": {},
@@ -606,7 +604,6 @@
       "simple_tank_ext",
       "vehicle_grid_obj"
     ],
-    "unit__reCreateOnRespawn": true,
     "unit__shouldKeepDeadUnit": true,
     "unit_storage__tank": {},
     "vehicle_net_phys": {},
@@ -618,7 +615,6 @@
       "simple_ground_unit",
       "simple_ship_ext"
     ],
-    "unit__reCreateOnRespawn": true,
     "unit__shouldKeepDeadUnit": true,
     "unit_storage__ship": {},
     "unit_tag__ship:tag": {},
@@ -630,7 +626,6 @@
       "trailer_ext",
       "vehicle_grid_obj"
     ],
-    "unit__reCreateOnRespawn": true,
     "unit__shouldKeepDeadUnit": true,
     "track_sound": {
       "_tags": "sound"

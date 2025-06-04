@@ -20602,11 +20602,22 @@
     "semitrailer_platform_a": {
       "nextRes": "semitrailer_platform_a_dmg",
       "physRes": "semitrailer_platform_a_destr_phobj",
-      "hp": 40.0,
-      "impulseThreshold": 3.0,
+      "hp": 100.0,
+      "impulseThreshold": 20.0,
       "fx": "ad_dust_bollard",
-      "fxScale": 2.0,
-      "material": "metal"
+      "fxScale": 1.0,
+      "material": "metal",
+      "isParent": true
+    },
+    "semitrailer_platform_b": {
+      "nextRes": "semitrailer_platform_b_dmg",
+      "physRes": "semitrailer_platform_b_destr_phobj",
+      "hp": 100.0,
+      "impulseThreshold": 20.0,
+      "fx": "ad_dust_bollard",
+      "fxScale": 1.0,
+      "material": "metal",
+      "isParent": true
     },
     "forklift_a": {
       "nextRes": "forklift_a_dmg",
@@ -20680,11 +20691,12 @@
     "volvo_f89": {
       "nextRes": "volvo_f89_dmg",
       "physRes": "volvo_f89_destr_phobj",
-      "hp": 40.0,
-      "impulseThreshold": 3.0,
+      "hp": 100.0,
+      "impulseThreshold": 20.0,
       "fx": "ad_dust_bollard",
-      "fxScale": 2.0,
-      "material": "metal"
+      "fxScale": 1.0,
+      "material": "metal",
+      "isParent": true
     },
     "canet_plant_gun_76mm_p12cw_base": {
       "nextRes": "canet_plant_gun_76mm_p12cw_base_dmg",
@@ -22277,105 +22289,69 @@
       "fx": "ad_metal",
       "fxScale": 1.0
     },
-    "conex_box_d": {
-      "physRes": "conex_box_d_destr_phobj",
-      "hp": 30.0,
-      "impulseThreshold": 0.0,
-      "fx": "ad_explosion_big",
-      "fxScale": 0.5,
-      "material": "metal"
-    },
     "conex_box_e_a": {
       "nextRes": "conex_box_e_a_dmg",
-      "hp": 100.0,
+      "hp": 200.0,
       "isParent": false,
-      "dmPreset": "conex_box",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 50.0,
       "fx": "ad_metal",
       "fxScale": 1.0
     },
     "conex_box_e_b": {
       "nextRes": "conex_box_e_b_dmg",
-      "hp": 100.0,
+      "hp": 200.0,
       "isParent": false,
-      "dmPreset": "conex_box",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 50.0,
       "fx": "ad_metal",
       "fxScale": 1.0
     },
     "conex_box_f_a": {
       "nextRes": "conex_box_f_a_dmg",
-      "hp": 100.0,
+      "hp": 200.0,
       "isParent": false,
-      "dmPreset": "conex_box",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 50.0,
       "fx": "ad_metal",
       "fxScale": 1.0
     },
     "conex_box_f_b": {
       "nextRes": "conex_box_f_b_dmg",
-      "hp": 100.0,
+      "hp": 200.0,
       "isParent": false,
-      "dmPreset": "conex_box",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 50.0,
       "fx": "ad_metal",
       "fxScale": 1.0
     },
     "conex_box_g_a": {
       "nextRes": "conex_box_g_a_dmg",
-      "hp": 100.0,
+      "hp": 200.0,
       "isParent": false,
-      "dmPreset": "conex_box",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 50.0,
       "fx": "ad_metal",
       "fxScale": 1.0
     },
     "conex_box_g_b": {
       "nextRes": "conex_box_g_b_dmg",
-      "hp": 100.0,
+      "hp": 200.0,
       "isParent": false,
-      "dmPreset": "conex_box",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 50.0,
       "fx": "ad_metal",
       "fxScale": 1.0
     },
     "conex_box_h_a": {
       "nextRes": "conex_box_h_a_dmg",
-      "hp": 100.0,
+      "hp": 200.0,
       "isParent": false,
-      "dmPreset": "conex_box",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 50.0,
       "fx": "ad_metal",
       "fxScale": 1.0
     },
     "conex_box_h_b": {
       "nextRes": "conex_box_h_b_dmg",
-      "hp": 100.0,
+      "hp": 200.0,
       "isParent": false,
-      "dmPreset": "conex_box",
-      "impulseThreshold": 1.5,
+      "impulseThreshold": 50.0,
       "fx": "ad_metal",
       "fxScale": 1.0
-    },
-    "conex_box_e_c": {
-      "physRes": "conex_box_e_c_destr_phobj",
-      "hp": 100.0,
-      "impulseThreshold": 0.0,
-      "fx": "ad_metal",
-      "material": "metal",
-      "stopsBullets": true,
-      "dmPreset": "metal_props",
-      "destructionImpulse": 50000.0
-    },
-    "conex_box_e_d": {
-      "physRes": "conex_box_e_d_destr_phobj",
-      "hp": 100.0,
-      "impulseThreshold": 0.0,
-      "fx": "ad_metal",
-      "material": "metal",
-      "stopsBullets": true,
-      "dmPreset": "metal_props",
-      "destructionImpulse": 50000.0
     },
     "soviet_signboard_friendship": {
       "physRes": "soviet_signboard_friendship_destr_phobj",

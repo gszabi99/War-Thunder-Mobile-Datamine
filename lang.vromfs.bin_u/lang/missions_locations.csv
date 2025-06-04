@@ -41,4 +41,6 @@
 "greece/desc";;;;;;;;;;;;;;;;;;;;
 "caribbean/name";"Caribbean Sea";"Mer des Caraïbes";"Mare Caraibico";"Karibische See";"Mar del Caribe";"Карибское море";"Карибське море";"Morze Karaibskie";"Mar do Caribe";"Karayip Denizi";"Karibské moře";"Caribbean Sea";"Laut Karibia";"Caribbean Sea";"카리브 해";"加\t勒\t比\t海";"カリブ\t海";"加\t勒\t比\t海";;
 "caribbean/desc";;;;;;;;;;;;;;;;;;;;
+"container_port/name";"Cargo Port";"Cargo Port";"Cargo Port";"Cargo Port";"Cargo Port";"Морской терминал";"Cargo Port";"Cargo Port";"Cargo Port";"Cargo Port";"Cargo Port";"Cargo Port";"Cargo Port";"Cargo Port";"Cargo Port";"Cargo Port";"Cargo Port";"Cargo Port";;
+"container_port/desc";;;;;;;;;;;;;;;;;;;;
 "LOC_NAMES_LANG_KEEP_IT_ALWAYS_FIRST";;;;;;;;;;;;;;;;;;;"";

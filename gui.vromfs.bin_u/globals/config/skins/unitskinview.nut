@@ -2018,6 +2018,9 @@ return {
     "ki_43_2": {
       "": "jap_ki_43_3_otsu"
     },
+    "ki_43_2_prem": {
+      "": "jap_ki_61_hei"
+    },
     "ki_43_3_otsu": {
       "": "jap_ki_43_3_otsu"
     },

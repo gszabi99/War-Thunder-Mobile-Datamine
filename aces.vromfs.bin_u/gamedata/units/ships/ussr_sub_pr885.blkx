@@ -24,7 +24,7 @@
   "SoundMove": "models.Ship",
   "tailStartOffset": 10.0,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 50710.0,
+  "multHpFromMetaparts": 60850.0,
   "type": "typeDestroyer",
   "expClass": "exp_destroyer",
   "timeToFire": 40.0,
@@ -58,7 +58,7 @@
   "safeUnderwaterTime": -1.0,
   "isDeeperThanPeriscopeVarName": "periscope_drive",
   "asmCaptureDuration": 5.0,
-  "addTorpedoesCountPack": 16,
+  "addTorpedoesCountPack": 10,
   "explosionFx": [
     "explosion_ship_small",
     "underwater_explosion"
@@ -293,7 +293,7 @@
     "hull": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 50710.0,
+      "hp": 60850.0,
       "genericDamageMult": 1.0,
       "compartment_02_dm": {
         "pressureDamageMult": 30.0
@@ -309,7 +309,7 @@
     "bridge": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 50710.0,
+      "hp": 60850.0,
       "fireParamsPreset": "common_ship_fire",
       "genericDamageMult": 1.0,
       "pressureDamageMult": 30.0,
@@ -318,7 +318,7 @@
     "engine_rooms": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 50710.0,
+      "hp": 60850.0,
       "fireParamsPreset": "common_ship_fire",
       "genericDamageMult": 1.0,
       "engine_room_01_dm": {}
@@ -326,7 +326,7 @@
     "rudder": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 50710.0,
+      "hp": 60850.0,
       "fireDamageMult": 0.001,
       "genericDamageMult": 1.0,
       "steering_gear_01_dm": {}
@@ -425,7 +425,7 @@
   },
   "MetaParts": {
     "upper_hull": {
-      "hp": 50710.0,
+      "hp": 60850.0,
       "maxDamageMode": true,
       "part": [
         "compartment_02_dm",
@@ -446,7 +446,7 @@
       ]
     },
     "lower_and_inner_hull": {
-      "hp": 50710.0,
+      "hp": 60850.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",
@@ -544,11 +544,11 @@
     }
   },
   "oxygenSystem": {
-    "totalAmount": 4000.0,
+    "totalAmount": 5000.0,
     "spendingRate": 30.0,
     "replenishmentDepth": 20.0,
     "replenishmentRate": 20.0,
-    "periscopeReplenishmentRate": 10.0,
+    "periscopeReplenishmentRate": 15.0,
     "minDivingLevel": 0.1
   },
   "SoundEmission": {
@@ -1545,7 +1545,7 @@
     }
   },
   "breaches": {
-    "additionalWaterDeathThreshold": 500000.0,
+    "additionalWaterDeathThreshold": 10000000.0,
     "additionalWaterCoverPartsThreshold": 100000.0,
     "repairSpeed": 80.0,
     "waterMassVel": -37000.0,

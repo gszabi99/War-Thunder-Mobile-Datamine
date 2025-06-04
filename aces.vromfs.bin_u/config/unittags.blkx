@@ -40614,12 +40614,12 @@
     "Shop": {
       "shipCrewMax": 90,
       "shipCrewMin": 10,
-      "shipCrewRating": 1.53667,
+      "shipCrewRating": 1.84394,
       "maxSpeed": 15.9,
       "periscopeSpeed": 8.109,
       "surfaceSpeed": 8.109,
       "turningTime": 15,
-      "addTorpedoesCountPack": 16,
+      "addTorpedoesCountPack": 10,
       "asmCaptureDuration": 5.0,
       "weapons": {
         "670mm_p800_alike_rocket_naval_bullet": {
@@ -42069,6 +42069,7 @@
         },
         "37mm_usa_m3_APC": {
           "icon": "hud_ammo_ap2_he0",
+          "reqLevel": 11,
           "isHidden": true
         }
       }
@@ -50048,7 +50049,7 @@
           "reqLevel": 18
         }
       },
-      "103mm_MILAN_rocket_launcher": {
+      "103mm_milan_launcher_user_cannon": {
         "default": {
           "icon": "hud_ammo_atgm_ap1_he1",
           "isHidden": true
@@ -50089,7 +50090,7 @@
           "gunnerTurretRotationSpeed": 40.0,
           "isBeltAmmo": true
         },
-        "103mm_MILAN_rocket_launcher": {
+        "103mm_milan_launcher_user_cannon": {
           "wtype": "rockets",
           "caliber": 103.0,
           "armorPower": 530.0,
@@ -51858,6 +51859,8 @@
       },
       "110mm_M8_rocket_launcher": {
         "default": {
+          "image": "rocket_20kg_short",
+          "icon": "hud_he_rocket",
           "isHidden": true
         }
       }
@@ -61616,8 +61619,8 @@
         },
         "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
           "wtype": "auxCannon",
-          "caliber": 127.0,
-          "armorPower": 100.0,
+          "caliber": 152.0,
+          "armorPower": 800.0,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 25.0,
           "isBeltAmmo": false
@@ -62527,6 +62530,8 @@
       },
       "158mm_NB_Wf_41_rocket_launcher": {
         "default": {
+          "image": "rocket_20kg_short",
+          "icon": "hud_he_rocket",
           "isHidden": true
         }
       }
@@ -65526,8 +65531,8 @@
         },
         "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
           "wtype": "auxCannon",
-          "caliber": 127.0,
-          "armorPower": 100.0,
+          "caliber": 152.0,
+          "armorPower": 800.0,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 25.0,
           "isBeltAmmo": false
@@ -69898,7 +69903,8 @@
       },
       "115mm_MILAN_2_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     }
@@ -70318,8 +70324,8 @@
         },
         "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
           "wtype": "auxCannon",
-          "caliber": 127.0,
-          "armorPower": 100.0,
+          "caliber": 152.0,
+          "armorPower": 800.0,
           "reloadTime": 0.5,
           "gunnerTurretRotationSpeed": 25.0,
           "isBeltAmmo": false
@@ -71731,7 +71737,7 @@
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": true
         },
-        "103mm_MILAN_rocket_launcher": {
+        "103mm_milan_launcher_user_cannon": {
           "wtype": "auxCannon",
           "caliber": 103.0,
           "armorPower": 530.0,
@@ -71756,7 +71762,7 @@
           "icon": "hud_ammo_bullet_ap"
         }
       },
-      "103mm_MILAN_rocket_launcher": {
+      "103mm_milan_launcher_user_cannon": {
         "default": {
           "icon": "hud_ammo_atgm_ap1_he1",
           "isHidden": true
@@ -72364,7 +72370,7 @@
       },
       "250kg_TT_rocket_launcher": {
         "default": {
-          "icon": "hud_rb_rocket",
+          "icon": "hud_he_rocket",
           "isHidden": true
         }
       }
@@ -73977,15 +73983,15 @@
     },
     "bullets": {
       "120mm_L11A5_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_apds"
+        "120mm_britain_L23_APDSFS": {
+          "icon": "hud_ammo_apfsds"
         },
         "120mm_britain_L37A7_HESH": {
           "isHE": true,
           "icon": "hud_ammo_he"
         },
-        "120mm_britain_L23_APDSFS": {
-          "icon": "hud_ammo_apfsds"
+        "default": {
+          "icon": "hud_ammo_apds"
         },
         "120mm_britain_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
@@ -74051,18 +74057,18 @@
     },
     "bullets": {
       "105mm_LRF_user_cannon": {
+        "105mm_usa_M735_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
         "default": {
           "icon": "hud_ammo_heat"
-        },
-        "105mm_usa_HESH": {
-          "isHE": true,
-          "icon": "hud_ammo_he"
         },
         "105mm_NATO_APDS_FS": {
           "icon": "hud_ammo_apfsds"
         },
-        "105mm_usa_M735_APDS_FS": {
-          "icon": "hud_ammo_apfsds"
+        "105mm_usa_HESH": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
         }
       }
     }
@@ -74287,15 +74293,15 @@
     },
     "bullets": {
       "75mm_SA_50_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_ap1_he0"
+        "75mm_SA50_APCBC": {
+          "icon": "hud_ammo_ap2_he0"
         },
         "75mm_SA50_HE": {
           "isHE": true,
           "icon": "hud_ammo_he"
         },
-        "75mm_SA50_APCBC": {
-          "icon": "hud_ammo_ap2_he0"
+        "default": {
+          "icon": "hud_ammo_ap1_he0"
         }
       }
     }
@@ -74474,18 +74480,18 @@
     },
     "bullets": {
       "125mm_2A46M_user_cannon": {
+        "125mm_ussr_3BM42_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
         "default": {
           "icon": "hud_ammo_heat"
-        },
-        "125mm_ussr_HE": {
-          "isHE": true,
-          "icon": "hud_ammo_he"
         },
         "125mm_ussr_3BM22_APDS_FS": {
           "icon": "hud_ammo_apfsds"
         },
-        "125mm_ussr_3BM42_APDS_FS": {
-          "icon": "hud_ammo_apfsds"
+        "125mm_ussr_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
         }
       }
     }
@@ -74540,22 +74546,22 @@
     },
     "bullets": {
       "125mm_2A75_user_cannon": {
-        "default": {
-          "icon": "hud_ammo_heat"
-        },
-        "125mm_ussr_HE": {
-          "isHE": true,
-          "icon": "hud_ammo_he"
-        },
-        "125mm_ussr_APDS_FS": {
-          "icon": "hud_ammo_apfsds"
-        },
         "125mm_ussr_3BM42_APDS_FS": {
           "icon": "hud_ammo_apfsds"
         },
         "125mm_ussr_ATGM": {
           "maxCount": 28,
           "icon": "hud_ammo_atgm_ap1_he1"
+        },
+        "125mm_ussr_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "125mm_ussr_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
         }
       }
     }
@@ -74667,18 +74673,18 @@
     },
     "bullets": {
       "57mm_AU_220M_user_cannon": {
+        "57mm_APFSDS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "57mm_HE_VT": {
+          "icon": "hud_ammo_he3_vt"
+        },
         "default": {
           "icon": "hud_ammo_ap1_he1"
         },
         "57mm_ussr_HE": {
           "isHE": true,
           "icon": "hud_ammo_he"
-        },
-        "57mm_APFSDS": {
-          "icon": "hud_ammo_apfsds"
-        },
-        "57mm_HE_VT": {
-          "icon": "hud_ammo_he3_vt"
         }
       }
     }

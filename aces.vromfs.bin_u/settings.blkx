@@ -533,6 +533,12 @@
         "mRank": 3
       }
     },
+    "pkg_lvl_container_port": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 3
+      }
+    },
     "pkg_lvl_white_rocks": {
       "conditions": {
         "campaign": "ships",
@@ -1765,6 +1771,7 @@
     "verifyDynrendContexts": true,
     "logMissingResources": false,
     "verifyDynmodelMaterials": true,
+    "benchFirstFramesToSkip": 100,
     "unsupportedVfxShaders": {
       "shader": [
         "dafx_modfx_volshape_render",

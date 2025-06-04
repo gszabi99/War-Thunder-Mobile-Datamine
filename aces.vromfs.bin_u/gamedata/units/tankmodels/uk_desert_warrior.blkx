@@ -1937,7 +1937,6 @@
         "maxAdditionalPitch": 0.0,
         "barrelDP": "gun_barrel_01_dm",
         "brokenBarrelAllowShoot": false,
-        "isBulletBelt": true,
         "createGunEffects": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
