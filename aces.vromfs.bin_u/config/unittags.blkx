@@ -47657,8 +47657,8 @@
       ],
       "crew": 5,
       "mass": 52000.0,
-      "maxSpeedForward": 14.2351,
-      "maxSpeedBackward": 1.63359,
+      "maxSpeedForward": 14.2876,
+      "maxSpeedBackward": 5.2917,
       "powerToWeightRatio": 19.2308,
       "weapons": {
         "90mm_SA45_user_cannon": {
@@ -69558,8 +69558,8 @@
       ],
       "crew": 5,
       "mass": 52000.0,
-      "maxSpeedForward": 14.2351,
-      "maxSpeedBackward": 1.63359,
+      "maxSpeedForward": 14.2876,
+      "maxSpeedBackward": 5.2917,
       "powerToWeightRatio": 19.2308,
       "weapons": {
         "90mm_SA45_user_cannon": {

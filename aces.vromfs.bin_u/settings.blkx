@@ -1764,6 +1764,7 @@
     "clearDiscardedImagesInAtlas": false,
     "verifyDynrendContexts": true,
     "logMissingResources": false,
+    "verifyDynmodelMaterials": true,
     "unsupportedVfxShaders": {
       "shader": [
         "dafx_modfx_volshape_render",

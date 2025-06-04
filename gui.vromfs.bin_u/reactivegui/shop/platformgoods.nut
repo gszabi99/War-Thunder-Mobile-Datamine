@@ -21,7 +21,7 @@ let { eventbus_send } = require("eventbus")
 let { getCountryCode } = require("auth_wt")
 let goodsToPaySpecialWnd = require("platformGoodsSpecialWnd.nut")
 
-let listSpecialWndCountry = ["USA"]
+let listSpecialWndCountry = ["US"]
 
 if (is_android)
   log("isDownloadedFromGooglePlay = ", isDownloadedFromGooglePlay())
