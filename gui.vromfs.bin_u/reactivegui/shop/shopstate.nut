@@ -4,7 +4,6 @@ let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
-let { round } =  require("math")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
@@ -24,6 +23,7 @@ let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewa
 } = require("schRewardsState.nut")
 let { platformGoods, platformSubs } = require("platformGoods.nut")
 let { personalGoodsByShopCategory } = require("personalGoodsState.nut")
+let { shopGoodsToRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 
 
 let pageScrollHandler = ScrollHandler()
@@ -162,7 +162,7 @@ todayPurchasesCount.subscribe(@(_ ) updateGoodsTimers())
 
 let allowWithSubs = @(goods) goods.premiumDays == 0
 
-function calculateNewGoodsDiscount(discountedPrice = 0.0, originalPercent = 0.0, newPrice = 0.0) {
+function calculateNewGoodsDiscount(discountedPrice = 0, originalPercent = 0, newPrice = 0) {
   if (originalPercent >= 100.0)
     return originalPercent
 
@@ -171,7 +171,7 @@ function calculateNewGoodsDiscount(discountedPrice = 0.0, originalPercent = 0.0,
   if (initialPrice == 0.0)
     return originalPercent
 
-  return round((1.0 - newPrice / initialPrice) * 100.0)
+  return (1.0 - newPrice / initialPrice) * 100.0
 }
 
 let discountsToApply = Computed(function() {
@@ -202,11 +202,11 @@ let shopGoodsInternal = Computed(function() {
       && ((g?.price.price ?? 0) > 0 || null != g?.dailyPriceInc.findvalue(@(cfg) cfg.price > 0)))
     .map(function(g) {
       if (g.id in discToApply) {
-        let personalFinalPrice = discToApply[g.id]
+        let personalFinalPrice = discToApply?[g.id] ?? 0
         let res = g.__merge({
           gtype = getGoodsType(g)
           price = { price = personalFinalPrice, currencyId = g?.price.currencyId ?? "" }
-          discountInPercent = calculateNewGoodsDiscount(g?.price.price, g?.discountInPercent, personalFinalPrice)
+          discountInPercent = calculateNewGoodsDiscount(g?.price.price ?? 0, g?.discountInPercent ?? 0, personalFinalPrice)
         })
         return res
       }
@@ -426,6 +426,17 @@ function onTabChange(id) {
   curCategoryId(id)
 }
 
+function isDisabledGoods(reward) {
+  if (reward?.rType == "discount" || reward?.gType == "discount") {
+    let goodsId = serverConfigs.get()?.personalDiscounts.findindex(@(list) list.findindex(@(v) v.id == reward.id) != null)
+    let goods = allShopGoods.get()?[goodsId] ?? {}
+    let previewReward = shopGoodsToRewardsViewInfo(goods).sort(sortRewardsViewInfo)?[0]
+    if (!goodsId || !previewReward)
+      return true
+  }
+  return false
+}
+
 let hasGoodsCategoryNonUpdatable = @(catId) catId in goodsByCategory.get()
   || catId in personalGoodsByShopCategory.get()
   || catId in actualSchRewardByCategory.get()
@@ -486,4 +497,5 @@ return {
 
   pageScrollHandler
   calculateNewGoodsDiscount
+  isDisabledGoods
 }

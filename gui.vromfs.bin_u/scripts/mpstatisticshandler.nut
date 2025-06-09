@@ -7,9 +7,9 @@ let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
 let { registerRespondent } = require("scriptRespondent")
 
 isMpStatisticsActive.subscribe(function(val) {
-  in_flight_menu(val)
   if (val)
     set_mute_sound_in_flight_menu(false)
+  in_flight_menu(val)
 })
 
 let cbOpenMpStatistics = @(_) isMpStatisticsActive.set(true)

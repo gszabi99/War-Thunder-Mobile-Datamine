@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { round } =  require("math")
 
 let discountTagW = hdpxi(100)
 let discountTagH = hdpxi(50)
@@ -20,7 +21,7 @@ let discountTag = @(discountPrc, ovr = {}, textOvr = {}) discountPrc <= 0 || dis
     pos = [ 0, hdpx(4) ]
     hplace = ALIGN_CENTER
     rendObj = ROBJ_TEXT
-    text = $"-{discountPrc}%"
+    text = $"-{round(discountPrc)}%"
     color = 0xFFFFFFFF
   }.__update(fontTiny, textOvr)
 }.__update(ovr)
@@ -34,7 +35,7 @@ let discountTagBig = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc >=
     pos = [ 0, hdpx(5) ]
     hplace = ALIGN_CENTER
     rendObj = ROBJ_TEXT
-    text = $"-{discountPrc}%"
+    text = $"-{round(discountPrc)}%"
     color = 0xFFFFFFFF
     fontFx = FFT_GLOW
     fontFxFactor = hdpxi(64)
@@ -54,7 +55,7 @@ let discountTagOffer = @(discountPrc, ovr = {}) discountPrc <= 0 || discountPrc 
     pos = [ 0, hdpx(5) ]
     hplace = ALIGN_CENTER
     rendObj = ROBJ_TEXT
-    text = $"-{discountPrc}%"
+    text = $"-{round(discountPrc)}%"
   }.__update(fontTinyAccentedShaded)
 }.__update(ovr)
 
@@ -71,7 +72,7 @@ function discountTagUnitCtor(discount, height, ovr) {
     color = 0xFFD22A19
     children = {
       rendObj = ROBJ_TEXT
-      text = $"-{discountPrc}%"
+      text = $"-{round(discountPrc)}%"
       color = 0xFFFFFFFF
       fontFx = FFT_GLOW
       fontFxFactor = hdpxi(64)

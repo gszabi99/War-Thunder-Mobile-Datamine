@@ -130,6 +130,7 @@ let nickFrames = {
   samurai_helm = @(n) $"⛁{n}⛁"
   katana = @(n) $"⛂{n}⛃"
   shuriken_throw = @(n) $"⚿{n}⛀"
+  overlord_air = @(n) $"⛆{n}⛇"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

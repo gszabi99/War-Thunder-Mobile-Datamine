@@ -5,7 +5,7 @@ let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let buyPlatformGoodsIOS = require("byPlatform/goodsIos.nut").buyPlatformGoods
-let buyPlatformGoodsGaijin = require("byPlatform/goodsGaijin.nut").buyPlatformGoods
+let buyPlatformGoodsGaijin = require("byPlatform/goodsGaijin.nut").buyPlatformGoodsFromOtherPlatform
 
 let goodsToPaySpecialWnd = mkWatched(persist, "iosPaymentWaysWnd", null)
 let WND_UID = "iosPaymentWaysWnd"

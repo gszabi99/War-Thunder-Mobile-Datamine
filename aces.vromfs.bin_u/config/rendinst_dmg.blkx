@@ -9811,39 +9811,39 @@
       "immortal": true
     },
     {
-      "name": "conex_box_e_a_dmg",
+      "name": "conex_box_e_a",
       "immortal": true
     },
     {
-      "name": "conex_box_e_b_dmg",
+      "name": "conex_box_e_b",
       "immortal": true
     },
     {
-      "name": "conex_box_f_a_dmg",
+      "name": "conex_box_f_a",
       "immortal": true
     },
     {
-      "name": "conex_box_f_b_dmg",
+      "name": "conex_box_f_b",
       "immortal": true
     },
     {
-      "name": "conex_box_g_a_dmg",
+      "name": "conex_box_g_a",
       "immortal": true
     },
     {
-      "name": "conex_box_g_b_dmg",
+      "name": "conex_box_g_b",
       "immortal": true
     },
     {
-      "name": "conex_box_h_a_dmg",
+      "name": "conex_box_h_a",
       "immortal": true
     },
     {
-      "name": "conex_box_h_b_dmg",
+      "name": "conex_box_h_b",
       "immortal": true
     },
     {
-      "name": "metal_fence_b_dmg",
+      "name": "metal_fence_b",
       "immortal": true
     },
     {
@@ -19020,14 +19020,6 @@
       "fxScale": 1.0,
       "dmPreset": "wall_2_5_brick"
     },
-    "metal_fence_b": {
-      "nextRes": "metal_fence_b_dmg",
-      "hp": 60.0,
-      "impulseThreshold": 19.0,
-      "fx": "ad_metal",
-      "fxScale": 3.0,
-      "physRes": "metal_fence_b_destr_phobj"
-    },
     "highway_road_sign_a": {
       "nextRes": "highway_road_sign_a_dmg",
       "hp": 60.0,
@@ -22286,70 +22278,6 @@
       "hp": 10.0,
       "isParent": false,
       "impulseThreshold": 1.0,
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "conex_box_e_a": {
-      "nextRes": "conex_box_e_a_dmg",
-      "hp": 200.0,
-      "isParent": false,
-      "impulseThreshold": 50.0,
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "conex_box_e_b": {
-      "nextRes": "conex_box_e_b_dmg",
-      "hp": 200.0,
-      "isParent": false,
-      "impulseThreshold": 50.0,
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "conex_box_f_a": {
-      "nextRes": "conex_box_f_a_dmg",
-      "hp": 200.0,
-      "isParent": false,
-      "impulseThreshold": 50.0,
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "conex_box_f_b": {
-      "nextRes": "conex_box_f_b_dmg",
-      "hp": 200.0,
-      "isParent": false,
-      "impulseThreshold": 50.0,
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "conex_box_g_a": {
-      "nextRes": "conex_box_g_a_dmg",
-      "hp": 200.0,
-      "isParent": false,
-      "impulseThreshold": 50.0,
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "conex_box_g_b": {
-      "nextRes": "conex_box_g_b_dmg",
-      "hp": 200.0,
-      "isParent": false,
-      "impulseThreshold": 50.0,
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "conex_box_h_a": {
-      "nextRes": "conex_box_h_a_dmg",
-      "hp": 200.0,
-      "isParent": false,
-      "impulseThreshold": 50.0,
-      "fx": "ad_metal",
-      "fxScale": 1.0
-    },
-    "conex_box_h_b": {
-      "nextRes": "conex_box_h_b_dmg",
-      "hp": 200.0,
-      "isParent": false,
-      "impulseThreshold": 50.0,
       "fx": "ad_metal",
       "fxScale": 1.0
     },

@@ -742,14 +742,14 @@ let mkRewardPlateDiscountImage = @(reward, rStyle, rewardCtors) function() {
   let offer = activeOffersByGoods.get()?[goodsId] ?? goods.__merge({ offerClass = "seasonal" }) 
   let needShowAsOffer = !!goods?.meta.showAsOffer
 
-  let previewReward = shopGoodsToRewardsViewInfo(goods).sort(sortRewardsViewInfo)[0]
+  let previewReward = shopGoodsToRewardsViewInfo(goods).sort(sortRewardsViewInfo)?[0]
   let personalFinalPrice = serverConfigs.get()?.personalDiscounts?[goodsId].findvalue(@(v) v.id == reward.id).price ?? 0
-  let newDiscount = calculateNewGoodsDiscount(goods?.price.price ?? 0, goods?.discountInPercent, personalFinalPrice)
+  let newDiscount = calculateNewGoodsDiscount(goods?.price.price ?? 0, goods?.discountInPercent ?? 0, personalFinalPrice)
 
   return {
     watch = [serverConfigs, allShopGoods, activeOffersByGoods]
     size = flex()
-    children = !goodsId ? null
+    children = !goodsId || !previewReward ? null
       : !needShowAsOffer || goods?.gtype not in discountOfferCtors
         ? mkRewardPlateDiscount(previewReward, newDiscount, rewardCtors, rStyle)
       : discountOfferCtors[offer.gtype](offer, newDiscount, rStyle)
@@ -875,7 +875,7 @@ let complexRewardPlateCtors = {
   }
   discount = {
     image = @(r, rStyle) mkRewardPlateDiscountImage(r, rStyle, simpleRewardPlateCtors)
-    texts = mkRewardPlateUnitTexts
+    texts = @(_, _) null
   }
 }
 

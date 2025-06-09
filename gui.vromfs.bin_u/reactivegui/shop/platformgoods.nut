@@ -20,6 +20,7 @@ let { has_payments_blocked_web_page, can_use_alternative_payment_ios_usa } = req
 let { eventbus_send } = require("eventbus")
 let { getCountryCode } = require("auth_wt")
 let goodsToPaySpecialWnd = require("platformGoodsSpecialWnd.nut")
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 
 let listSpecialWndCountry = ["US"]
 
@@ -77,8 +78,11 @@ function buyPlatformGoodsExt(goodsOrId) {
     return
   }
   if (can_use_alternative_payment_ios_usa.get() && is_ios && listSpecialWndCountry.contains(getCountryCode())) {
-    goodsToPaySpecialWnd.set(goodsOrId)
-    return
+    let relatedGaijinId = campConfigs.get()?.allGoods[goodsOrId].relatedGaijinId
+    if(relatedGaijinId != ""){
+      goodsToPaySpecialWnd.set(goodsOrId)
+      return
+    }
   }
 
   buyPlatformGoods(goodsOrId)

@@ -3040,6 +3040,11 @@
     }
   },
   "battleHideNodes": {
-    "n": "details"
+    "n": [
+      "details",
+      "details_01",
+      "details_02",
+      "details_03"
+    ]
   }
 }

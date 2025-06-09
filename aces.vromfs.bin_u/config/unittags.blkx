@@ -26100,7 +26100,7 @@
       "pilotsCount": 1,
       "gunnersCount": 0,
       "pylonCount": 1,
-      "massPerSec": 0.0,
+      "massPerSec": 0.32,
       "weapons": {
         "gun_7mm_x2": {},
         "gunType89": {
@@ -40663,7 +40663,7 @@
     "Shop": {
       "shipCrewMax": 120,
       "shipCrewMin": 10,
-      "shipCrewRating": 1.84394,
+      "shipCrewRating": 1.95909,
       "maxSpeed": 14.4,
       "periscopeSpeed": 6.768,
       "surfaceSpeed": 10.2384,

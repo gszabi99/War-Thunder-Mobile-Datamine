@@ -111,6 +111,17 @@ function buyPlatformGoods(goodsOrId) {
   severalCheckPurchasesOnActivate()
 }
 
+function buyPlatformGoodsFromOtherPlatform(otherPlatformGoodsId) {
+  let relatedGaijinId = campConfigs.get()?.allGoods[otherPlatformGoodsId].relatedGaijinId
+  let guid = campConfigs.get()?.allGoods[relatedGaijinId].purchaseGuids.gaijin.guid
+  let url = goodsInfo.get()?[guid].url
+  if (url == null)
+    return
+  let baseUrl = " ".concat("auto_local", "auto_login", url)
+  eventbus_send("openUrl", { baseUrl, onCloseUrl = successPaymentUrl })
+  severalCheckPurchasesOnActivate()
+}
+
 function activatePlatfromSubscription(subsOrId) {
   local baseUrl = subsOrId?.purchaseUrl ?? platformSubs.get()?[subsOrId].purchaseUrl
   if (baseUrl == null)
@@ -139,6 +150,7 @@ return {
   platformSubs
   platformPurchaseInProgress
   buyPlatformGoods
+  buyPlatformGoodsFromOtherPlatform
   activatePlatfromSubscription
   restorePurchases
 }

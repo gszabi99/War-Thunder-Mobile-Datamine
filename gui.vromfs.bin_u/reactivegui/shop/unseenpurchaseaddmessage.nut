@@ -1,15 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { modalWndHeader } = require("%rGui/components/modalWnd.nut")
+
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { G_CURRENCY, G_BLUEPRINT, G_UNIT } = require("%appGlobals/rewardType.nut")
 let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkRewardTextLabel, mkRewardPlateTexts,
-  mkRewardPlate, mkRewardUnitFlag
+  mkRewardPlate, mkRewardUnitFlag, getRewardPlateSize
 } = require("%rGui/rewards/rewardPlateComp.nut")
+let { modalWndHeader } = require("%rGui/components/modalWnd.nut")
 let { REWARD_STYLE_MEDIUM, REWARD_STYLE_SMALL } = require("%rGui/rewards/rewardStyles.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
 let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
 let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { allShopGoods, calculateNewGoodsDiscount } = require("%rGui/shop/shopState.nut")
+let { discountTag } = require("%rGui/components/discountTag.nut")
+
 
 let textColor = 0xFFE0E0E0
 
@@ -181,6 +187,153 @@ function mkMsgConvert(stackDataV, onClick) {
   }
 }
 
+let mkDiscountTag = @(discount, ovr = {}, textOvr = {}) discountTag(discount, {
+  hplace = ALIGN_LEFT
+  vplace = ALIGN_TOP
+  pos = [0, 0]
+  size = [hdpx(93), hdpx(46)]
+  color = 0xFFE00000
+}.__update(ovr), { pos = null }.__update(fontTinyAccented, textOvr))
+
+let mkDiscountRow = @(reward = null, prevDiscount = null, discount = null) @() {
+  watch = serverConfigs
+  size = [flex(), SIZE_TO_CONTENT]
+  flow = FLOW_HORIZONTAL
+  children = !reward
+    ? null
+    : [
+        {
+          size = [flex(), SIZE_TO_CONTENT]
+          halign = ALIGN_CENTER
+          children = [
+            mkRewardPlate(reward, REWARD_STYLE_MEDIUM)
+            {
+              size = getRewardPlateSize(reward.slots, REWARD_STYLE_MEDIUM)
+              children = mkDiscountTag(prevDiscount)
+            }
+          ]
+        }
+        {
+          rendObj = ROBJ_IMAGE
+          size = [hdpx(100), hdpx(70)]
+          vplace = ALIGN_CENTER
+          image = Picture($"ui/gameuiskin#arrow_icon.svg:{hdpx(100)}:{hdpx(70)}:P")
+        }
+        {
+          size = [flex(), SIZE_TO_CONTENT]
+          halign = ALIGN_CENTER
+          children = [
+            mkRewardPlate(reward, REWARD_STYLE_MEDIUM)
+            {
+              size = getRewardPlateSize(reward.slots, REWARD_STYLE_MEDIUM)
+              children = mkDiscountTag(discount, { size = [hdpx(116), hdpx(58)] }, fontSmallAccented)
+            }
+          ]
+        }
+      ]
+}
+
+function mkMsgDiscount(stackDataV, onClick) {
+  let mainRArray = {}
+  let singleRArray = {}
+  foreach(info in stackDataV) {
+    let { personalDiscounts = {} } = serverConfigs.get()
+    let goodsId = personalDiscounts.findindex(@(list) list.findindex(@(v) v.id == info.id) != null)
+
+    if (!goodsId) {
+      singleRArray[info.id] <- getRewardsViewInfo([info])?[0]
+      continue
+    }
+
+    let goods = allShopGoods.get()?[goodsId] ?? {}
+    let serverDiscounts = clone personalDiscounts[goodsId]
+    let sortedDiscountsByPrice = serverDiscounts.sort(@(a, b) b.price <=> a.price)
+    let prevDiscountIdx = (sortedDiscountsByPrice.findindex(@(v) v.id == info.id) ?? -1) - 1
+
+    local prevDiscount = campConfigs.get()?.allGoods.findvalue(@(v) v.id == goodsId).discountInPercent ?? 0
+
+    if (prevDiscountIdx >= 0 && sortedDiscountsByPrice?[prevDiscountIdx].id in servProfile.get()?.discounts)
+      prevDiscount = calculateNewGoodsDiscount(goods?.price.price ?? 0, goods?.discountInPercent ?? 0,
+        sortedDiscountsByPrice?[prevDiscountIdx].price ?? 0)
+
+    if (prevDiscount == 0)
+      singleRArray[info.id] <- getRewardsViewInfo([info])?[0]
+    else
+      mainRArray[info.id] <- {
+        reward = getRewardsViewInfo([info])?[0]
+        discount = goods?.discountInPercent
+        prevDiscount
+      }
+  }
+
+  let mainContent = {
+    size = [flex(), SIZE_TO_CONTENT]
+    flow = FLOW_VERTICAL
+    gap = hdpx(35)
+    children = mainRArray.map(@(data) mkDiscountRow(data.reward, data.prevDiscount, data.discount)).values()
+  }
+
+  let singleContent = {
+    size = [flex(), SIZE_TO_CONTENT]
+    flow = FLOW_VERTICAL
+    halign = ALIGN_CENTER
+    gap = hdpx(35)
+    children = singleRArray.map(@(reward) mkRewardPlate(reward, REWARD_STYLE_MEDIUM)).values()
+  }
+
+  return {
+    minWidth = minWidthWnd
+    padding = [0,0, padding, 0]
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    behavior = Behaviors.Button
+    onClick
+    flow = FLOW_VERTICAL
+    children = [
+      modalWndHeader(loc("mainmenu/discounts"))
+      {
+        flow = FLOW_VERTICAL
+        padding = padding
+        valign = ALIGN_CENTER
+        halign = ALIGN_CENTER
+        children = [
+          {
+            rendObj = ROBJ_TEXTAREA
+            behavior = Behaviors.TextArea
+            halign = ALIGN_CENTER
+            maxWidth = hdpx(600)
+            margin = [0, 0, hdpx(20), 0]
+            text = loc("mainmenu/discount/desc")
+            hplace = ALIGN_CENTER
+          }.__update(fontSmall)
+          {
+            size = [minWidthWnd, SIZE_TO_CONTENT]
+            children = mainRArray.len() + singleRArray.len() > 2 ? [
+              mkVerticalPannableArea(
+                {
+                  size = [flex(), SIZE_TO_CONTENT]
+                  flow = FLOW_VERTICAL
+                  children = [
+                    mainContent
+                    singleContent
+                  ]
+                },
+                {},
+                { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+              scrollArrowsBlock
+            ] : [
+                  mainContent
+                  singleContent
+                ]
+          }
+        ]
+      }
+      mkTapToContinueText()
+    ]
+  }
+}
+
 return {
   mkMsgConvert
+  mkMsgDiscount
 }

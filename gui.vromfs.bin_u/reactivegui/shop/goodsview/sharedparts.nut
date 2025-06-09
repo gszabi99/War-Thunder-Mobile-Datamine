@@ -212,7 +212,7 @@ let mkDiscountCorner = @(discountPrc) discountPrc <= 0 || discountPrc >= 100 ? n
   image = Picture($"ui/gameuiskin#tag_corner_left_top.svg:{pricePlateH}:{pricePlateH}")
   color = tagRedColor
   children = txt({
-    text = $"−{discountPrc}%"
+    text = $"−{round(discountPrc)}%"
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
     pos = [pw(-14), ph(-14)]

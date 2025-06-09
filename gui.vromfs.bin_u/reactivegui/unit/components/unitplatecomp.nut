@@ -155,7 +155,7 @@ let defaultComponents = {
     size = flex()
     rendObj = ROBJ_IMAGE
     keepAspect = KEEP_ASPECT_FILL
-    imageValign = ALIGN_TOP
+    imageValign = ALIGN_CENTER
   }
   equippedIcons = @(unit) [
     mkIcon("ui/gameuiskin#selected_icon_outline.svg", [hdpx(44), hdpx(51)], { color = getFrameColor(unit) })

@@ -13,7 +13,7 @@ let { minContentOffset, tabW } = require("%rGui/options/optionsStyle.nut")
 let { mkBalanceDiffAnims } = require("%rGui/mainMenu/balanceAnimations.nut")
 let { headerLineGap } = require("questsPkg.nut")
 let { sendBqQuestsStage } = require("bqQuests.nut")
-let { allShopGoods } = require("%rGui/shop/shopState.nut")
+let { allShopGoods, isDisabledGoods } = require("%rGui/shop/shopState.nut")
 let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
 let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
 
@@ -224,9 +224,9 @@ let questBarProgressValue = @(name, required, visProgress, nextChange) @() {
 let multiRewardProgressBarCtor = @(rewards, isUnlocked, onRewardClick, canClaimReward, isRewardInProgress) {
   flow = FLOW_HORIZONTAL
   gap = questItemsGap
-  children = rewards.map(@(reward) {
-    children = rewardProgressBarCtor(reward, isUnlocked, onRewardClick, canClaimReward, isRewardInProgress)
-  })
+  children = rewards.map(@(reward) isDisabledGoods(reward)
+    ? null
+    : { children = rewardProgressBarCtor(reward, isUnlocked, onRewardClick, canClaimReward, isRewardInProgress) })
 }
 
 function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
@@ -329,7 +329,7 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
 
 function rewardWidth(r) {
   let { slots = 1 } = r
-  return progressBarRewardSize * slots + questItemsGap * (slots - 1)
+  return isDisabledGoods(r) ? 0 : progressBarRewardSize * slots + questItemsGap * (slots - 1)
 }
 
 function stageRewardsWidth(rewardsArray) {

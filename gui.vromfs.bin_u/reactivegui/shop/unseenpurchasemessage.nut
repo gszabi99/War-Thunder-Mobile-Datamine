@@ -52,7 +52,7 @@ let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkPro
 } = require("%rGui/rewards/rewardPlateComp.nut")
 let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { mkMsgConvert } = require("unseenPurchaseAddMessage.nut")
+let { mkMsgConvert, mkMsgDiscount } = require("unseenPurchaseAddMessage.nut")
 let { showPrizeSelectDelayed, ticketToShow } = require("%rGui/rewards/rewardPrizeSelect.nut")
 let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
 let { mkLoootboxImage } = require("%appGlobals/config/lootboxPresentation.nut")
@@ -62,6 +62,7 @@ let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/uni
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
 let { curUnitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
+let { isDisabledGoods } = require("%rGui/shop/shopState.nut")
 
 
 let wndWidth = saSize[0]
@@ -175,7 +176,7 @@ let stackData = Computed(function() {
     lootbox = []
     discount = []
   } = stacksSorted
-  let rewardIcons = [].extend(lootbox, currency, premium, item, decorator, booster, skin, blueprint, prizeTicket, discount)
+  let rewardIcons = [].extend(lootbox, currency, premium, item, decorator, booster, skin, blueprint, prizeTicket)
   let unitPlates = [].extend(unitUpgrade, unit)
 
   local lastIdx = -1
@@ -199,6 +200,7 @@ let stackData = Computed(function() {
     unitPlates
     battleMod
     convertions
+    discounts = discount.filter(@(r) !isDisabledGoods(r))
   }.filter(@(v) v.len() != 0))
 })
 
@@ -1108,8 +1110,11 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
 let addRewardMessageWnd = @(onClick) modalWndBg.__merge({
   children = @() {
     watch = [stackData, activeUnseenPurchasesGroup]
-    children = stackData.get()?.convertions == null ? null
-      : mkMsgConvert(stackData.get().convertions, onClick)
+    children = stackData.get()?.convertions != null
+        ? mkMsgConvert(stackData.get().convertions, onClick)
+      : stackData.get()?.discounts != null
+        ? mkMsgDiscount(stackData.get().discounts, onClick)
+      : null
   }
   animations = wndAnimations
 })
@@ -1143,7 +1148,7 @@ function onClick(){
   if (ticketToShow.get())
     showPrizeSelectDelayed()
 
-  if ((stackData.get()?.convertions.len() ?? 0) > 0) {
+  if ((stackData.get()?.convertions.len() ?? 0) > 0 || (stackData.get()?.discounts.len() ?? 0) > 0) {
     close()
     showAddRewardMessage()
   }
@@ -1166,14 +1171,15 @@ let showMessage = @() addModalWindow(bgShadedDark.__merge({
   sound = { detach  = "meta_reward_window_close" }
 }))
 
-if((stackData.get()?.convertions.len()?? 0) > 0
-  && (stackData.get()?.rewardIcons.len() ?? 0) == 0){
+if (((stackData.get()?.convertions.len() ?? 0) > 0
+  || (stackData.get()?.discounts.len() ?? 0) > 0)
+    && (stackData.get()?.rewardIcons.len() ?? 0) == 0) {
   showAddRewardMessage()
   isAnimFinished(true)
 }
 
 stackData.subscribe(function(v) {
-  if((v?.convertions.len() ?? 0) > 0 && (stackData.get()?.rewardIcons.len() ?? 0) == 0){
+  if(((v?.convertions.len() ?? 0) > 0 || (v?.discounts.len() ?? 0) > 0) && (stackData.get()?.rewardIcons.len() ?? 0) == 0){
     showAddRewardMessage()
     isAnimFinished(true)
   }
