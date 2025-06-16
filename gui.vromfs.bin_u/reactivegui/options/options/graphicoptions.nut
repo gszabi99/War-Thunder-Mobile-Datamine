@@ -41,7 +41,7 @@ let resolutionValue = mkOptionValue(OPT_GRAPHICS_SCENE_RESOLUTION,
 let aaList = ["low_fxaa"]
   .extend(is_fxaa_high_broken() ? [] : ["high_fxaa"])
   .extend(supports_deferred_msaa() ? ["mobile_msaa"] : [])
-  .extend((get_settings_blk()?.graphics.forceLowPreset ?? false) ? [] : ["mobile_taa", "mobile_taa_low"])
+  .extend((get_settings_blk()?.graphics.forceLowPreset ?? false) ? [] : ["mobile_taa_low", "mobile_taa"])
   .extend(is_ios && is_metalfx_upscale_supported() ? ["metalfx_fxaa"] : [])
   .extend((is_android || is_pc) && (get_settings_blk()?.graphics.listAllAaOptions ?? false) ? ["sgsr", "sgsr2"] : [])
 

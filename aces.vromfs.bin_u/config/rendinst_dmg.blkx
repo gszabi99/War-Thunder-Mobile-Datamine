@@ -557,7 +557,7 @@
       "destructionImpulse": 10000.0,
       "fx": "ad_dust_bollard",
       "fxScale": 1.0,
-      "material": "metal"
+      "material": "transparentCamera"
     },
     {
       "name": "berlin_lamp_a_on",
@@ -565,7 +565,7 @@
       "destructionImpulse": 10000.0,
       "fx": "ad_dust_bollard",
       "fxScale": 1.0,
-      "material": "metal"
+      "material": "transparentCamera"
     },
     {
       "name": "berlin_lamp_b",
@@ -573,7 +573,7 @@
       "destructionImpulse": 10000.0,
       "fx": "ad_dust_bollard",
       "fxScale": 1.0,
-      "material": "metal"
+      "material": "transparentCamera"
     },
     {
       "name": "berlin_power_pole_a",
@@ -10444,11 +10444,13 @@
     },
     {
       "name": "berlin_lamp_c_base",
-      "immortal": true
+      "immortal": true,
+      "material": "transparentCamera"
     },
     {
       "name": "berlin_lamp_c",
-      "immortal": true
+      "immortal": true,
+      "material": "transparentCamera"
     },
     {
       "name": "tree_inclined_palm_a",

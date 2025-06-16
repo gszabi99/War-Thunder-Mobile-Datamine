@@ -2530,6 +2530,17 @@
         "antiThrottlingFpsLimit": 50
       }
     },
+    "force_disable_compression": {
+      "codename": [
+        "CPH2641",
+        "CPH2669",
+        "ALT-LX1",
+        "23124RA7EO"
+      ],
+      "graphics": {
+        "allowETC2": false
+      }
+    },
     "fps_limiter": {
       "codename": [
         "iPad Pro 3 11 inch",
@@ -3462,24 +3473,6 @@
               }
             }
           },
-          "brokenShadersAfterAppSwitch": {
-            "entry": {
-              "gpu": [
-                "610",
-                "612",
-                "613",
-                "615",
-                "616",
-                "618",
-                "619",
-                "620",
-                "630"
-              ],
-              "data": {
-                "affected": true
-              }
-            }
-          },
           "pipelineCompiler": {
             "entry": [
               {
@@ -3563,14 +3556,6 @@
           },
           "pollFences": {
             "entry": {
-              "data": {
-                "affected": true
-              }
-            }
-          },
-          "brokenShadersAfterAppSwitch": {
-            "entry": {
-              "gpu": "G76",
               "data": {
                 "affected": true
               }

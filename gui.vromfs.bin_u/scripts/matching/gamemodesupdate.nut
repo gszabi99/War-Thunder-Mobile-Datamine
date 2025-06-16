@@ -15,43 +15,75 @@ let matching = require("%appGlobals/matching_api.nut")
 const MAX_FETCH_RETRIES = 5
 const MAX_FETCH_DELAY_SEC = 60
 
+local isFetchingDigest = false
+local failedFetchesDigest = 0
+local isFetchingInfo = false
+local failedFetchesInfo = 0
+local fetchingGmIds = []
+
 let changedModes = persist("changedModes", @() [])
-local isFetching = false
-local failedFetches = 0
 
 
 
-function loadGameModesFromList(gm_list) {
+
+function fetchGameModesInfo() {
+  if (isFetchingInfo || fetchingGmIds.len() == 0)
+    return
+
+  isFetchingInfo = true
+  logGM($"fetchGameModesInfo (try {failedFetchesInfo})")
+  let again = callee()
   matching.rpc_call("match.fetch_game_modes_info",
-    { byId = gm_list, timeout = 60 },
+    { byId = fetchingGmIds, timeout = 60 },
     function(result) {
-      let { modes = [] } = result
-      if (showMatchingError(result) || modes.len() == 0)
+      isFetchingInfo = false
+
+      if (result.error == OPERATION_COMPLETE) {
+        failedFetchesInfo = 0
+        fetchingGmIds = []
+        let { modes = [] } = result
+        if (modes.len() == 0) {
+          logGM("fetched 0 modes info")
+          return
+        }
+        modes.each(@(m) logGM($"fetched mode {m.name} = {m.gameModeId}"))
+        gameModesRaw.mutate(@(list) modes.each(@(m) list[m.gameModeId] <- m))
         return
-      modes.each(@(m) logGM($"fetched mode {m.name} = {m.gameModeId}"))
-      gameModesRaw.mutate(@(list) modes.each(@(m) list[m.gameModeId] <- m))
+      }
+
+      if (++failedFetchesInfo <= MAX_FETCH_RETRIES)
+        resetTimeout(0.1, again)
+      else {
+        showMatchingError(result)
+        deferOnce(startLogout)
+      }
     })
 }
 
-function fetchGameModes() {
-  if (isFetching)
+function loadGameModesFromList(gm_list) {
+  fetchingGmIds = gm_list
+  fetchGameModesInfo()
+}
+
+function fetchGameModesDigest() {
+  if (isFetchingDigest)
     return
 
-  isFetching = true
-  logGM($"fetchGameModes (try {failedFetches})")
+  isFetchingDigest = true
+  logGM($"fetchGameModesDigest (try {failedFetchesDigest})")
   let again = callee()
   matching.rpc_call("wtmm_static.fetch_game_modes_digest",
     { timeout = 60 },
     function (result) {
-      isFetching = false
+      isFetchingDigest = false
 
       if (result.error == OPERATION_COMPLETE) {
-        failedFetches = 0
+        failedFetchesDigest = 0
         loadGameModesFromList(result?.modes ?? [])
         return
       }
 
-      if (++failedFetches <= MAX_FETCH_RETRIES)
+      if (++failedFetchesDigest <= MAX_FETCH_RETRIES)
         resetTimeout(0.1, again)
       else {
         showMatchingError(result)
@@ -122,10 +154,13 @@ function updateChangedModes() {
 updateChangedModes()
 
 isMatchingConnected.subscribe(function(v) {
-  isFetching = false
-  failedFetches = 0
+  isFetchingDigest = false
+  failedFetchesDigest = 0
+  isFetchingInfo = false
+  failedFetchesInfo = 0
+  fetchingGmIds = []
   if (v)
-    fetchGameModes()
+    fetchGameModesDigest()
   else
     gameModesRaw({})
 })

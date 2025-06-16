@@ -20,7 +20,7 @@ let hasAutoPreview = Computed(@() hasAutoPreviewBase.get() != isDebugMode.get())
 
 let featureGoodsToShow = Computed(@() !hasAutoPreview.get() ? []
   : goodsByCategory.get()?[SC_FEATURED].filter(
-      @(v) goodsTypes?[v?.gtype] && isUnseenGoods(v.id, shopSeenGoods.get(), actualSchRewards.get())))
+      @(v) goodsTypes?[v?.gtype] && isUnseenGoods(v.id, shopSeenGoods.get(), actualSchRewards.get())) ?? [])
 
 register_command(
   function() {

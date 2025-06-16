@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { resetTimeout, clearTimer } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { platformId, aliases } = require("%sqstd/platform.nut")
 let { toIntegerSafe } = require("%sqstd/string.nut")
@@ -6,6 +7,7 @@ let mkFormatAst = require("%darg/helpers/mkFormatAst.nut")
 let urlAliases = require("urlAliases.nut")
 let wordHyphenation = require("%globalScripts/wordHyphenation.nut")
 let { locColorTable } = require("%rGui/style/stdColors.nut")
+let { expandArrow, defaultExpandAnimationDuration } = require("%rGui/components/expandArrow.nut")
 
 let selectorBtnW = hdpx(465)
 let widthImgMax = saSize[0] - saBordersRv[1]*2 - selectorBtnW
@@ -15,6 +17,7 @@ let headerMargin = 2 * blockInterval
 let urlLineWidth = hdpx(1)
 let borderWidth = hdpx(1)
 
+let spoilerBtnHeight = hdpx(86)
 let contentBackground = 0x66000000
 
 let btnActive = 0xFFCFCFCF
@@ -239,49 +242,73 @@ let image = @(obj, _, style = {}) {
 function spoiler(obj, formatTextFunc, __) {
   let isExpanded = Watched(false)
   let isHover = Watched(false)
+  let contentHeight = Watched(0)
+  let spoilerHeight = Watched(spoilerBtnHeight)
+  let resetSpoilerHeight = @() spoilerHeight.set(spoilerBtnHeight)
   let button = {
-    size = [flex(), hdpx(100)]
+    size = [flex(), spoilerBtnHeight]
     rendObj = ROBJ_BOX
     children = @() {
       watch = [isExpanded, isHover]
       size = flex()
       padding = insideBlockPadding
       rendObj = ROBJ_BOX
+      flow = FLOW_HORIZONTAL
+      gap = { size = flex() }
+      valign = ALIGN_CENTER
       fillColor = isHover.get() && isExpanded.get() ? btnHovActive
         : !isHover.get() && isExpanded.get() ? btnActive
         : !isHover.get() && !isExpanded.get()? btnDef : btnHovDef
       behavior = Behaviors.Button
       onClick = @() isExpanded(!isExpanded.get())
       onHover = @(sf) isHover(sf)
-      children = {
-        vplace = ALIGN_CENTER
-        rendObj = ROBJ_TEXTAREA
-        behavior = Behaviors.TextArea
-        text = !isExpanded.get() ? loc("ui/expand") : loc("ui/collapse")
-        color = isExpanded.get() ? activeTextColor : commonTextColor
-      }.__update(fontSmall)
+      children = [
+        {
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          text = obj.summary
+          color = isExpanded.get() ? activeTextColor : commonTextColor
+        }.__update(fontSmall)
+        expandArrow(isExpanded, defaultExpandAnimationDuration)
+      ]
     }
   }
-  return {
+
+  let content = @() {
+    watch = [isExpanded, contentHeight]
+    pos = [0, spoilerBtnHeight]
     size = [flex(), SIZE_TO_CONTENT]
-    margin = [headerMargin, 0]
-    flow = FLOW_VERTICAL
-    clipChildren = true
+    padding = insideBlockPadding
     rendObj = ROBJ_BOX
     fillColor = contentBackground
-    children = [
-      button,
-      @() {
-        watch = isExpanded
-        size = [flex(), isExpanded.get() ? SIZE_TO_CONTENT : 0]
-        padding = insideBlockPadding
-        clipChildren = true
-        children = {
-          flow = FLOW_VERTICAL
-          children = obj.v.map(@(item) formatList(item, formatTextFunc))
-        }
-      }
+    clipChildren = true
+    children = formatList(obj.v, formatTextFunc)
+    transform = {translate = [0, (!isExpanded.get() ? -contentHeight.get() : 0)]}
+    transitions = [{
+      prop = AnimProp.translate
+      from = [0, -contentHeight.get()], to = [0, 0]
+      duration = defaultExpandAnimationDuration
+    }]
+  }
 
+  contentHeight.set(calc_comp_size(content)[1])
+
+  isExpanded.subscribe(function(v) {
+    if (v) {
+      clearTimer(resetSpoilerHeight)
+      spoilerHeight.set(spoilerBtnHeight + contentHeight.get())
+    } else
+      resetTimeout(defaultExpandAnimationDuration, resetSpoilerHeight)
+  })
+
+  return @() {
+    watch = spoilerHeight
+    size = [flex(), spoilerHeight.get()]
+    margin = [headerMargin, 0]
+    clipChildren = true
+    children = [
+      content
+      button
     ]
   }
 }
