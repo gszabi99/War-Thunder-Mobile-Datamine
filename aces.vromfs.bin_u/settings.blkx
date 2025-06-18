@@ -3438,6 +3438,13 @@
     "vendor": {
       "Qualcomm": {
         "driverProps": {
+          "disallowedFormats": {
+            "entry": {
+              "data": {
+                "list": "RGBUN_BC1, RGBs_BC1, RGBAUN_BC1, RGBAs_BC1, UN_BC2, s_BC2, UN_BC3, s_BC3, UN_BC4, SN_BC4, UN_BC5, SN_BC5, UF_BC6H, SF_BC6H, UN_BC7, s_BC7"
+              }
+            }
+          },
           "adrenoClearStoreRace": {
             "entry": [
               {

@@ -359,7 +359,15 @@ function mkCircleTankMachineGun(actionItemW, aType, scale) {
   return function() {
     let actionItem = actionItemW.get()
     if (actionItem == null)
-      return { watch = actionItemW }
+      return {
+        watch = actionItemW
+        onDetach = function onDetach() {
+          if (stateFlags.get() & S_ACTIVE) {
+            stateFlags(0)
+            setShortcutOff("ID_FIRE_GM_MACHINE_GUN")
+          }
+        }
+      }
 
     let isAvailable = (isOnCd.get() || isAvailableActionItem(actionItem)) && !isDisabled.get()
     let isWaitForAim = !(actionItem?.aimReady ?? true)

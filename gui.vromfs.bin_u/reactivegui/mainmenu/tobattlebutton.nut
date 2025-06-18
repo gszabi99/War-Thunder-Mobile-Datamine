@@ -34,7 +34,7 @@ let queueCurRandomBattleMode = @() eventbus_send("queueToGameMode", { modeId = r
 let battleBtnCampaign = Computed(@() randomBattleMode.get()?.campaign ?? curCampaign.get())
 
 let timerSize = hdpxi(40)
-let penaltyTimerIcon = @(campaign) function() {
+let penaltyTimerIcon = @(campaign = null) function() {
   let res = { watch = [hasPenaltyStatus, battleBtnCampaign] }
   let hasPenalty = (hasPenaltyStatus.get()?[campaign ?? battleBtnCampaign.get()] ?? false)
     || (hasPenaltyStatus.get()?[curCampaign.get()] ?? false)
@@ -81,7 +81,10 @@ let isNeedToDownloadAddonsForOfflineBattle = Computed(@()
 
 let mkToBattleButton = @(toBattleFunc, campaign = null, ovr = {}) @() {
   watch = isNeedToDownloadAddonsForBattle
-  children = (isNeedToDownloadAddonsForBattle.get() ? textButtonCommon : textButtonBattle)(toBattleText, toBattleFunc, battleBtnPenaltyOvr(campaign, ovr))
+  children = (isNeedToDownloadAddonsForBattle.get() ? textButtonCommon : textButtonBattle)(
+    toBattleText,
+    toBattleFunc,
+    battleBtnPenaltyOvr(campaign, ovr))
 }
 
 function toRandomBattle() {
@@ -91,12 +94,16 @@ function toRandomBattle() {
     logerr($"Unable to start battle because no units (unit in hangar = {hangarUnit.get()?.name})")
 }
 
-let cbId = "onResetPenaltyToRandomBattle"
-registerHandler(cbId, @(res) res?.error == null ? toRandomBattle() : null)
+let cbRandomBattleId = "onResetPenaltyToRandomBattle"
+let cbReadyId = "onResetPenaltyReady"
+registerHandler(cbRandomBattleId, @(res) res?.error == null ? toRandomBattle() : null)
+registerHandler(cbReadyId, @(res) res?.error == null
+  ? showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), @() setReady(true)))
+  : null)
 
 let toBattleButton_RandomBattles = mkToBattleButton(function() {
   sendNewbieBqEvent("pressToBattleButton", { status = "online_battle", params = randomBattleMode.get()?.name ?? "" })
-  if (tryOpenQueuePenaltyWnd(battleBtnCampaign.get(), cbId))
+  if (tryOpenQueuePenaltyWnd(battleBtnCampaign.get(), cbRandomBattleId))
     return
   toRandomBattle()
 })
@@ -132,23 +139,30 @@ let startTutorButton = textButtonBattle(toBattleText,
   battleBtnOvr)
 let startOfflineBattleButton = @() {
   watch = isNeedToDownloadAddonsForOfflineBattle
-  children = (isNeedToDownloadAddonsForOfflineBattle.get() ? textButtonCommon : textButtonBattle)(toBattleText,
-  startCurUnitOfflineBattle,
-  battleBtnOvr)}
+  children = (isNeedToDownloadAddonsForOfflineBattle.get() ? textButtonCommon : textButtonBattle)(
+    toBattleText,
+    startCurUnitOfflineBattle,
+    battleBtnOvr)}
 let startOfflineMissionButton = @() {
   watch = isNeedToDownloadAddonsForOfflineBattle
-  children = (isNeedToDownloadAddonsForOfflineBattle.get() ? textButtonCommon : textButtonBattle)(toBattleText,
-  function() {
-    sendNewbieBqEvent("pressToBattleButton", { status = "offline_battle", params = ", ".join(newbieOfflineMissions.get()) })
-    showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), startCurNewbieMission))
-  },
-  battleBtnOvr)}
+  children = (isNeedToDownloadAddonsForOfflineBattle.get() ? textButtonCommon : textButtonBattle)(
+    toBattleText,
+    function() {
+      sendNewbieBqEvent("pressToBattleButton", { status = "offline_battle", params = ", ".join(newbieOfflineMissions.get()) })
+      showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), startCurNewbieMission))
+    },
+    battleBtnOvr)}
 
 let readyButton = @() {
   watch = isNeedToDownloadAddonsForBattle
-  children = (isNeedToDownloadAddonsForBattle.get() ? textButtonCommon : textButtonBattle)(utf8ToUpper(loc("mainmenu/btnReady")),
-    @() showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), @() setReady(true))),
-    { hotkeys = hotkeyX })
+  children = (isNeedToDownloadAddonsForBattle.get() ? textButtonCommon : textButtonBattle)(
+    utf8ToUpper(loc("mainmenu/btnReady")),
+    function() {
+      if (tryOpenQueuePenaltyWnd(battleBtnCampaign.get(), cbReadyId))
+        return
+      showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), @() setReady(true)))
+    },
+    { hotkeys = hotkeyX, ovr = { children = penaltyTimerIcon() } })
 }
 let notReadyButton = textButtonCommon(utf8ToUpper(loc("multiplayer/state/player_not_ready")),
   @() setReady(false),

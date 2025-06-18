@@ -36,7 +36,7 @@ let lastBattlesTotal = keepref(Computed(@() lastBattles.get().len()))
 sendEventByValue("played_battles_5", lastBattlesTotal, 5, 0)
 
 let LAST_SUBMITTED_COUNT_OF_BATTLES = "lastSubmittedCountOfBattles"
-let battlesListCountToSend = [1000, 1100, 1200, 1300, 1400, 1500, 1800, 2000]
+let battlesListCountToSend = [50, 100, 500, 1000, 1100, 1200, 1300, 1400, 1500, 1800, 2000]
 
 function findClosestOrEqualLowerValue(list, target) {
   local res = null

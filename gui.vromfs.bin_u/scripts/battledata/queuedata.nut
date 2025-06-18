@@ -39,6 +39,7 @@ let profileKeysAffectQueue = {
   sharedStats = true
   sharedStatsByCampaign = true
   sharedStatsByUnits = true
+  penalties = true
 }
 lastProfileKeysUpdated.subscribe(function(list) {
   if (list.findvalue(@(_, k) profileKeysAffectQueue?[k]) != null)

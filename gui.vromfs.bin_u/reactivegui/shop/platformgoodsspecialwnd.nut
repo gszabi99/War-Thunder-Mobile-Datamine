@@ -6,6 +6,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let buyPlatformGoodsIOS = require("byPlatform/goodsIos.nut").buyPlatformGoods
 let buyPlatformGoodsGaijin = require("byPlatform/goodsGaijin.nut").buyPlatformGoodsFromOtherPlatform
+let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 
 let goodsToPaySpecialWnd = mkWatched(persist, "iosPaymentWaysWnd", null)
 let WND_UID = "iosPaymentWaysWnd"
@@ -33,6 +34,20 @@ let btnsList = [
   }
 ]
 
+function getBonusDesc(id) {
+  local res = ""
+  let goods = campConfigs.get()?.allGoods[id]
+  if (!goods)
+    return res
+  if (goods.currencies?.gold)
+    res = loc("onlineShop/gaijinBonusGold")
+  if (goods.premiumDays > 0) {
+    let premDaysNoBonus = campConfigs.get()?.allGoods.findvalue(@(v) v.relatedGaijinId == id).premiumDays ?? 0
+    res = loc("onlineShop/gaijinBonusPrem", { amount = goods.premiumDays - premDaysNoBonus })
+  }
+  return res
+}
+
 let close = @() goodsToPaySpecialWnd.set(null)
 
 let header = modalWndHeader(loc("onlineShop/choosePayMethod"))
@@ -42,7 +57,7 @@ function mkBtn(params){
     image = null, textKey, purchase } = params
   let stateFlags = Watched(0)
   return @() {
-    watch = [stateFlags, goodsToPaySpecialWnd]
+    watch = stateFlags
     size = [flex(), btnH]
     rendObj = ROBJ_BOX
     borderRadius
@@ -83,10 +98,11 @@ function mkBtn(params){
             text = loc(textKey)
           }.__update(fontTiny)
           !isPriorityBtn ? null
-            : {
+            : @() {
+                watch = goodsToPaySpecialWnd
                 rendObj = ROBJ_TEXT
                 color = 0xFF65DD3E
-                text = loc("onlineShop/gaijinBonus")
+                text = getBonusDesc(goodsToPaySpecialWnd.get())
               }.__update(fontVeryTinyAccented)
         ]
       }
