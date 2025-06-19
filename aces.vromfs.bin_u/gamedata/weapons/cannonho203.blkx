@@ -19,6 +19,7 @@
   "bullets": 30,
   "bulletsCluster": 1,
   "reloadSpeedK": 1.5,
+  "dragCx": 0.003,
   "soundLoop": false,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
