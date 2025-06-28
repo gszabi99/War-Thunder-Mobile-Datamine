@@ -29,19 +29,19 @@ let statsCfg = [
 ]
 
 let mkStatRow = @(cfg, stats) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   gap = hdpx(50)
   children = [
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       halign = ALIGN_RIGHT
       rendObj = ROBJ_TEXT
       text = loc(cfg.locId)
       color = statColor
     }.__update(fontSmall)
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_TEXT
       text = cfg.getValue(stats)
       color = statColor

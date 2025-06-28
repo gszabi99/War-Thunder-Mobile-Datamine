@@ -14,7 +14,7 @@ let pageText = @(text, color) {
 }.__update(fontSmall)
 
 let underline = @(color) {
-  size = [flex(), hdpx(5)]
+  size = const [flex(), hdpx(5)]
   rendObj = ROBJ_SOLID
   color
 }

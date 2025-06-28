@@ -29,7 +29,7 @@ let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonSty
 let { lootboxImageWithTimer, lootboxContentBlock, lootboxHeader, mkJackpotProgress, mkJackpotProgressBar,
   smallChestIcon
 } = require("%rGui/shop/lootboxPreviewContent.nut")
-let { isEmbeddedLootboxPreviewOpen, openEmbeddedLootboxPreview, closeLootboxPreview, previewLootbox,
+let { isEventWndLootboxOpen, openEventWndLootbox, closeEventWndLootbox, eventWndLootbox,
   getStepsToNextFixed
 } = require("%rGui/shop/lootboxPreviewState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -109,7 +109,7 @@ let mkProgress = @(stepsToFixed) @() {
     : [
         mkRow([
           smallChestIcon
-          { size = [hdpx(10), 0] }
+          { size = const [hdpx(10), 0] }
           {
             rendObj = ROBJ_TEXT
             text = loc("events/jackpot")
@@ -119,7 +119,7 @@ let mkProgress = @(stepsToFixed) @() {
             text = stepsToFixed.value[1] - stepsToFixed.value[0]
           }.__update(fontTinyShaded)
         ])
-        mkJackpotProgressBar(stepsToFixed.value[0], stepsToFixed.value[1], { margin = [hdpx(20), 0, hdpx(10), 0] })
+        mkJackpotProgressBar(stepsToFixed.value[0], stepsToFixed.value[1], { margin = const [hdpx(20), 0, hdpx(10), 0] })
       ]
 }
 
@@ -140,7 +140,7 @@ function mkLootboxBlock(lootbox, blockSize) {
     flow = FLOW_VERTICAL
     behavior = Behaviors.Button
     function onClick() {
-      openEmbeddedLootboxPreview(name)
+      openEventWndLootbox(name)
       markCurLootboxSeen(name)
     }
     sound = { click  = "click" }
@@ -150,7 +150,7 @@ function mkLootboxBlock(lootbox, blockSize) {
 
       @() {
         watch = [unseenLootboxes, unseenLootboxesShowOnce, curEventName]
-        size = [0, 0]
+        size = 0
         transform = { translate = [-0.8 * lootboxHeight * sizeMul, max(0, lootboxHeight * (1.0 - sizeMul) / 2)] }
         hplace = ALIGN_CENTER
         halign = ALIGN_CENTER
@@ -173,8 +173,8 @@ function mkLootboxBlock(lootbox, blockSize) {
 
 function onClose() {
   campToBack.set(null)
-  if (isEmbeddedLootboxPreviewOpen.value)
-    closeLootboxPreview()
+  if (isEventWndLootboxOpen.value)
+    closeEventWndLootbox()
   else {
     unseenLootboxesShowOnce.set(unseenLootboxesShowOnce.get().filter(@(event) event != curEventName.get()))
     closeEventWnd()
@@ -184,19 +184,19 @@ function onClose() {
 isCurEventActive.subscribe(function(isActive) {
   if (isActive)
     return
-  if (isEmbeddedLootboxPreviewOpen.value)
-    closeLootboxPreview()
+  if (isEventWndLootboxOpen.value)
+    closeEventWndLootbox()
   closeEventWnd()
 })
 
 function mkCurrencies() {
-  let currensiesByLootbox = previewLootbox.get()?.currencyId
-    ? [previewLootbox.get().currencyId]
+  let currensiesByLootbox = eventWndLootbox.get()?.currencyId
+    ? [eventWndLootbox.get().currencyId]
     : curEventLootboxes.get()
         .reduce(@(res, l) res.$rawset(l.currencyId, true), {})
         .keys()
   return {
-    watch = [curEventLootboxes, previewLootbox]
+    watch = [curEventLootboxes, eventWndLootbox]
     children = currensiesByLootbox.len() < 1 ? null
       : {
         pos = [saBorders[0] * 0.5, 0]
@@ -297,7 +297,7 @@ let eventGamercard = {
           children = !curEventEndsAt.value || (curEventEndsAt.value - serverTime.value < 0) ? null
             : mkTimeUntil(secondsToHoursLoc(curEventEndsAt.value - serverTime.value),
                 "quests/untilTheEnd",
-                { key = "event_time", margin = [hdpx(20), 0, hdpx(60), 0] }.__update(fontTinyAccented))
+                { key = "event_time", margin = const [hdpx(20), 0, hdpx(60), 0] }.__update(fontTinyAccented))
         }
       ]
     }
@@ -311,49 +311,49 @@ let pannableArea = verticalPannableAreaCtor(sh(100) - wndHeaderHeight - saBorder
 let scrollHandler = ScrollHandler()
 
 let scrollArrowsBlock = {
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   pos = [boxSize*2-boxGap , 0]
   children = mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall)
 }
 
 function mkLootboxPreviewContent() {
   let progressInfo = mkJackpotProgress(
-    Computed(@() getStepsToNextFixed(previewLootbox.value, serverConfigs.value, servProfile.value)))
-  return @() {
-    watch = previewLootbox
+    Computed(@() getStepsToNextFixed(eventWndLootbox.value, serverConfigs.value, servProfile.value)))
+  return {
     size = flex()
-    padding = [hdpx(40), 0, 0, 0]
+    padding = const [hdpx(40), 0, 0, 0]
     flow = FLOW_HORIZONTAL
     gap = contentGap
-    children = previewLootbox.get() == null ? null
-      : [
-          {
-            size = [rewardsBlockWidth, flex()]
-            children = [
-              pannableArea(lootboxContentBlock(previewLootbox.get(), rewardsBlockWidth, { size = [flex(), SIZE_TO_CONTENT]}),
-              {},
-              { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
-              scrollArrowsBlock
-            ]
-          }
-          {
-            size = flex()
-            flow = FLOW_VERTICAL
-            halign = ALIGN_CENTER
-            children = [
-              lootboxHeader(previewLootbox.get())
-              lootboxImageWithTimer(previewLootbox.get())
+    children = [
+      {
+        size = [rewardsBlockWidth, flex()]
+        children = [
+          pannableArea(lootboxContentBlock(eventWndLootbox, rewardsBlockWidth, { size = FLEX_H}),
+          {},
+          { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+          scrollArrowsBlock
+        ]
+      }
+      @() {
+        watch = eventWndLootbox
+        size = flex()
+        flow = FLOW_VERTICAL
+        halign = ALIGN_CENTER
+        children = eventWndLootbox.get() == null ? null
+          : [
+              lootboxHeader(eventWndLootbox.get())
+              lootboxImageWithTimer(eventWndLootbox.get())
               { size = flex() }
               progressInfo
-              { size = [0, hdpx(50)] }
+              { size = const [0, hdpx(50)] }
               @() {
-                watch = [previewLootbox, lootboxInProgress]
+                watch = [eventWndLootbox, lootboxInProgress]
                 size = [SIZE_TO_CONTENT, defButtonHeight]
-                children = lootboxInProgress.get() ? null : mkPurchaseBtns(previewLootbox.get(), onPurchase)
+                children = lootboxInProgress.get() ? null : mkPurchaseBtns(eventWndLootbox.get(), onPurchase)
               }
             ]
-          }
-        ]
+      }
+    ]
     animations = wndSwitchAnim
   }
 }
@@ -367,12 +367,12 @@ function eventWndContent() {
     [SPARE] = battleInfo.get()?.mission_decl.allowSpare ?? true
   })
   return @() {
-    watch = [isEmbeddedLootboxPreviewOpen, modeId, battleCampaign, itemsByGameMode]
+    watch = [isEventWndLootboxOpen, modeId, battleCampaign, itemsByGameMode]
     size = flex()
     padding = saBordersRv
     flow = FLOW_VERTICAL
     children = [eventGamercard]
-      .extend(isEmbeddedLootboxPreviewOpen.value
+      .extend(isEventWndLootboxOpen.value
         ? [ mkLootboxPreviewContent() ]
         : [
             {
@@ -389,7 +389,7 @@ function eventWndContent() {
                   children = @() {
                     watch = [curEventLootboxes, blockSize]
                     size = flex()
-                    margin = [0, 0, hdpx(120), 0]
+                    margin = const [0, 0, hdpx(120), 0]
                     flow = FLOW_HORIZONTAL
                     hplace = ALIGN_CENTER
                     halign = ALIGN_CENTER
@@ -400,7 +400,7 @@ function eventWndContent() {
                 }
                 {
                   key = {}
-                  size = [flex(), SIZE_TO_CONTENT]
+                  size = FLEX_H
                   vplace = ALIGN_BOTTOM
                   children = [
                     

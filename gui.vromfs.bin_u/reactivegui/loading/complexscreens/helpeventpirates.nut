@@ -136,7 +136,7 @@ function mkFireAndWeaponsComp(pos, isRight) {
   let ovr = { fValue = isRight ? 1.0 : 0.6 }
   let icoOvr = isRight ? {} : { flipX = true, color = 0x80808080 }
   return {
-    size = [0, 0]
+    size = 0
     pos
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -218,7 +218,7 @@ let hints = [
 
 function makeScreen() {
   return {
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     rendObj = ROBJ_SOLID
     color = 0xFF000000
     children = {

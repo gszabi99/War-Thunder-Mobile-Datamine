@@ -15,6 +15,7 @@ let goodsTypes = [
   "SGT_WP"
   "SGT_PREMIUM"
   "SGT_UNIT"
+  "SGT_SKIN"
   "SGT_CONSUMABLES"
   "SGT_EVT_CURRENCY"
   "SGT_PLATINUM"

@@ -790,7 +790,7 @@
             20579.0
           ]
         ],
-        "unit_class": "dynaf_universal_1line_c_snow_nolight",
+        "unit_class": "dynaf_universal_1line_b_nolight",
         "objLayer": 2,
         "props": {
           "army": 1,
@@ -821,7 +821,7 @@
             16014.4
           ]
         ],
-        "unit_class": "dynaf_universal_1line_c_snow_nolight",
+        "unit_class": "dynaf_universal_1line_b_nolight",
         "objLayer": 2,
         "props": {
           "army": 2,

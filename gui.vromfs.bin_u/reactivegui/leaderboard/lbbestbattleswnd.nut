@@ -33,7 +33,7 @@ let mkLbName = @(locId) {
 
 let ratedCountHint = @() {
   watch = ratingBattlesCount
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   valign = ALIGN_CENTER
@@ -50,7 +50,7 @@ let header = @() {
   gap = hdpx(40)
   children = [
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       children = backButton(close)
     }
     {
@@ -159,7 +159,7 @@ function content() {
          flow = FLOW_VERTICAL
          children = !hasScroll ? rowsChildren
            : makeVertScroll({
-               size = [flex(), SIZE_TO_CONTENT]
+               size = FLEX_H
                flow = FLOW_VERTICAL
                children = rowsChildren
              })

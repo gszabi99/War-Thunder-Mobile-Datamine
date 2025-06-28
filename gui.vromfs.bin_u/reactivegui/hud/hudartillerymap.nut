@@ -69,7 +69,7 @@ let crosshairCircleRadPx = Computed(@() dispersionRadius.value >= 0
 let cornerBackBtn = backButton(artilleryCancel)
 
 let txtAreaBase = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = textColor

@@ -11,7 +11,7 @@ let { getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty, NO_DROP_L
 } = require("%rGui/rewards/rewardViewInfo.nut")
 let { CS_INCREASED_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
 let { bestCampLevel, eventSeason, curEvent } = require("eventState.nut")
-let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
+let { adsButtonCounter, isProviderInited } = require("%rGui/ads/adsState.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -21,6 +21,8 @@ let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { schRewards, onSchRewardReceive, adBudget } = require("%rGui/shop/schRewardsState.nut")
 let { getLootboxImage, lootboxFallbackPicture } = require("%appGlobals/config/lootboxPresentation.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
+let { getStepsToNextFixed } = require("%rGui/shop/lootboxPreviewState.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
 let REWARDS = 3
 let fillColor = 0x70000000
@@ -146,7 +148,7 @@ function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul
         })
       @() {
         watch = timeText
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         halign = ALIGN_CENTER
@@ -184,7 +186,7 @@ let mkBtnContent = @(img, text, ovr = {}) {
 function mkAdsBtn(reqPlayerLevel, adReward) {
   let { cost = 0 } = adReward
   return @() {
-    watch = [bestCampLevel, adBudget]
+    watch = [bestCampLevel, adBudget, isProviderInited]
     children = mkCustomButton(
       cost >= adBudget.get() ? mkBtnContent(null, loc("btn/adsLimitReached"))
         : !hasVip.get()
@@ -193,11 +195,12 @@ function mkAdsBtn(reqPlayerLevel, adReward) {
       @() bestCampLevel.value >= reqPlayerLevel
           ? onSchRewardReceive(adReward)
         : openMsgBox({ text = loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) }) }),
-      (bestCampLevel.value >= reqPlayerLevel
-        && adReward?.isReady
-        && (cost < adBudget.value)
-            ? buttonStyles.SECONDARY
-          : buttonStyles.COMMON)
+      (!isProviderInited.get()
+        || (bestCampLevel.value >= reqPlayerLevel
+          && adReward?.isReady
+          && (cost < adBudget.value))
+              ? buttonStyles.SECONDARY
+            : buttonStyles.COMMON)
         .__merge({ hotkeys = ["^J:RB"] }))
   }
 }
@@ -232,9 +235,17 @@ function mkPurchaseBtns(lootbox, onPurchase) {
     && (end <= 0 || end > serverTime.value))
   let adReward = Computed(@() schRewards.value.findvalue(
     @(r) (null != r.rewards.findvalue(@(g) g.id == name && g.gType == G_LOOTBOX))))
+  let canOpenX10 = Computed(function(){
+    let stepsToFixed = getStepsToNextFixed(lootbox, serverConfigs.get(), servProfile.get())
+    if(stepsToFixed[1] == 0)
+      return true
+    if(stepsToFixed[1] - stepsToFixed[0] <= 10)
+      return false
+    return true
+  })
 
   return @() {
-    watch = [isActive, balance, adReward, currencyFullId]
+    watch = [isActive, balance, adReward, currencyFullId, canOpenX10]
     key = name
     flow = FLOW_HORIZONTAL
     gap = hdpx(40)
@@ -249,9 +260,11 @@ function mkPurchaseBtns(lootbox, onPurchase) {
       !hasBulkPurchase ? null
         : textButtonPricePurchase(utf8ToUpper(loc("events/tenRewards")),
             mkCurrencyComp(price * 10, currencyFullId.get()),
-            @() onPurchase(lootbox, price * 10, currencyFullId.get(), 10),
-            (!isActive.value || (balance.value?[currencyFullId.get()] ?? 0) < price * 10 ? buttonStyles.COMMON : {})
-              .__merge({ hotkeys = ["^J:Y"] }))
+            @() !canOpenX10.get() ? null : onPurchase(lootbox, price * 10, currencyFullId.get(), 10),
+            (!isActive.value || (balance.value?[currencyFullId.get()] ?? 0) < price * 10
+              || !canOpenX10.get() ? buttonStyles.COMMON : {})
+              .__merge({ hotkeys = ["^J:Y"], tooltipCtor = @() loc("x10Btn/desc"),
+                repayTime = 0 }))
     ]
   }
 }

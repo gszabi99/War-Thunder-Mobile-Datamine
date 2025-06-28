@@ -115,7 +115,7 @@ let animatedTextBlock = @() {
           })
       }.__update(fontVeryLargeShaded)
       : {
-        size = [pw(60), hdpx(50)]
+        size = const [pw(60), hdpx(50)]
         rendObj = ROBJ_9RECT
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -134,9 +134,9 @@ let resultTextBlock = @() {
   watch = textBgColor
   rendObj = ROBJ_BOX
   children = animatedTextBlock
-  size = [flex(), hdpx(180)]
+  size = const [flex(), hdpx(180)]
   borderColor = textBgColor.value == whiteBgColor ? noBgColor : blackBgColor
-  borderWidth = [8, 0]
+  borderWidth = const [8, 0]
   transitions = [{ prop = AnimProp.borderColor, duration = borderColorTransitionDuration}]
 }
 

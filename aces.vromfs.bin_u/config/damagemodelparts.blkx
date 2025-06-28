@@ -376,6 +376,12 @@
       "template": "drive_turret_v_#10#"
     }
   },
+  "gun_trunnion": {
+    "vital": true,
+    "hitTestType": "inner",
+    "genName": "tank_gun_trunnion",
+    "gun_trunnion": {}
+  },
   "chassis": {
     "vital": true,
     "hitTestType": "exclude",

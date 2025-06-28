@@ -572,7 +572,7 @@ squadId.subscribe(recalcSquadOrder)
 let msubscribes = {
   ["msquad.notify_invite"] = onInviteNotify,
   ["msquad.notify_invite_revoked"] = function(p) {
-    if (p?.squad?.id != null && p?.invite?.id != null)
+    if (p?.squad.id != null && p?.invite.id != null)
       onInviteRevoked(p.squad.id, p.invite.id)
   },
   ["msquad.notify_invite_rejected"] = function(p) {

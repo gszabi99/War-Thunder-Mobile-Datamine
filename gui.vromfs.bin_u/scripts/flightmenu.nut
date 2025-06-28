@@ -1,4 +1,6 @@
-from "%scripts/dagui_natives.nut" import toggle_freecam, in_flight_menu, is_freecam_enabled, pause_game, is_game_paused, do_player_bailout, close_ingame_gui, is_player_can_bailout, is_camera_not_flight
+from "%scripts/dagui_natives.nut" import toggle_freecam, in_flight_menu, is_freecam_enabled,
+  do_player_bailout, close_ingame_gui, is_player_can_bailout, is_camera_not_flight
+from "gameplayBinding" import is_game_paused, pause_game
 from "app" import is_dev_version, is_offline_version
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
@@ -16,7 +18,8 @@ let { is_multiplayer } = require("%scripts/util.nut")
 let { isInFlightMenu, isInBattle, canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type, get_local_mplayer } = require("mission")
 let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer, get_respawns_left,
-  quit_mission_after_complete, restart_mission, get_mission_restore_type, get_mission_status
+  quit_mission_after_complete, restart_mission, get_mission_restore_type, get_mission_status,
+  is_ready_to_die
 } = require("guiMission")
 
 function canRestart() {
@@ -162,7 +165,7 @@ function bailout() {
 
   if (get_respawns_left() == 0 || !isSlotsAvailable)
     msg = "\n\n".concat(msg, loc("flightmenu/thisWillCountAsDeserter"))
-  if (get_respawns_left() != 0 && isSlotsAvailable && !isFreeSlotsAvailable)
+  else if (!isFreeSlotsAvailable && !is_ready_to_die())
     msg = "\n\n".concat(msg, loc("flightmenu/thisWillCountAsDeserterIfNotUseSpare"))
 
   openConfirmMsg(msg, loc("flightmenu/btnLeaveTheTank"), "fMenuBailout")

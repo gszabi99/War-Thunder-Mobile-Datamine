@@ -839,6 +839,7 @@
       "armorThickness": 2.0,
       "armorThrough": 12.0,
       "fireProtectionHp": 15.0,
+      "createSecondaryShatters": false,
       "fireParamsPreset": "fuel_exterior",
       "stopChanceOnDeadPart": 0.0,
       "fuel_tank_exterior_r_01_dm": {},
@@ -1942,7 +1943,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/groundModels_weapons/15mm_MG151_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/20mm_MG151_20_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "barrelDP": "gun_barrel_02_dm",

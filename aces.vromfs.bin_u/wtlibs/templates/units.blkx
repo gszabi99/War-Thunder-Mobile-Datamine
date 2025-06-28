@@ -354,13 +354,13 @@
     "unit_params__initUnitVersion": 0,
     "unit_params__fireType": -1,
     "unit_params__cloneCount": 1,
-    "unit_params__armyId": -1,
     "unit_params__behTreeName": ""
   },
   "unit_transferred_data": {
     "_singleton": true,
     "unit_transferred_data__componentsList:list<t>": {
       "name": [
+        "unit__isAlwaysReplicated",
         "killerEid",
         "canChangeUnit",
         "unit_target_list",
@@ -420,17 +420,20 @@
       "uid",
       "unitVersion",
       "ownedByPlr",
-      "supportForPlr"
+      "supportForPlr",
+      "team"
     ],
     "_tracked": [
       "unit__playerId",
       "unitVersion",
       "ownedByPlr",
       "supportForPlr",
-      "unit__isReplicated"
+      "team",
+      "unit__isReplicated",
+      "unit__isAlwaysReplicated"
     ],
     "unit__isReplicated": false,
-    "unit__isAlwaysReplicated": true,
+    "unit__isAlwaysReplicated": false,
     "unit__ref": {},
     "ownedByPlr:eid": {},
     "supportForPlr:eid": {},
@@ -466,6 +469,101 @@
     },
     "shell_start_fx__fxFlags:u32": {}
   },
+  "base_damage_model_ai_points": {
+    "_tags": "server",
+    "dm_ai__pointsYRange": [
+      0.0,
+      0.0
+    ],
+    "dm_ai__points:list<p3>": {},
+    "dm_ai__pointsInfo:list<ip2>": {},
+    "dm_ai__filters:shared:array": {
+      "filter:object": [
+        {
+          "type": "TRACK",
+          "mask": "track_*",
+          "max": 4
+        },
+        {
+          "type": "WHEEL",
+          "mask": "wheel_l_*",
+          "max": 8
+        },
+        {
+          "type": "WHEEL",
+          "mask": "wheel_r_*",
+          "max": 8
+        },
+        {
+          "type": "ENGINE",
+          "mask": "engine_*",
+          "max": 1,
+          "merge": true
+        },
+        {
+          "type": "ENGINE",
+          "mask": "transmission_*",
+          "max": 1,
+          "merge": true
+        },
+        {
+          "type": "TURRET",
+          "mask": "turret_$",
+          "max": 8
+        },
+        {
+          "type": "TURRET",
+          "mask": "aa_turret_#",
+          "max": 8
+        },
+        {
+          "type": "TURRET",
+          "mask": "main_caliber_turret_#",
+          "max": 8
+        },
+        {
+          "type": "BARREL",
+          "mask": "gun_barrel_$",
+          "max": 4
+        },
+        {
+          "type": "BARREL",
+          "mask": "aa_gun_#",
+          "max": 4
+        },
+        {
+          "type": "BARREL",
+          "mask": "main_caliber_gun_#",
+          "max": 4
+        },
+        {
+          "type": "CREW",
+          "mask": "driver_*",
+          "max": 1
+        },
+        {
+          "type": "CREW",
+          "mask": "loader_*",
+          "max": 1
+        },
+        {
+          "type": "CREW",
+          "mask": "gunner_*",
+          "max": 8
+        },
+        {
+          "type": "CREW",
+          "mask": "commander_*",
+          "max": 1
+        },
+        {
+          "type": "CREW",
+          "mask": "machine_gunner_*",
+          "max": 8
+        }
+      ]
+    }
+  },
   "aircraft": {
     "_use": [
       "base_unit",
@@ -482,7 +580,11 @@
     "ai_target": {
       "_tags": "server"
     },
-    "unitAiTargetPos:tag": {}
+    "unitAiTargetPos:tag": {},
+    "aircraft__troubleScore:r": {
+      "value": 0.0,
+      "_tags": "server"
+    }
   },
   "barrage_ballon": {
     "_use": [
@@ -521,13 +623,16 @@
       "ground_unit",
       "tank_ext",
       "vehicle_grid_obj",
+      "base_damage_model_ai_points",
       "gm_engine_sound",
       "tank_phys_tracks"
     ],
+    "unit__reCreateOnRespawn": true,
     "unit__shouldKeepDeadUnit": true,
     "_replicated": "reloadedFromAmmoBoxCount",
     "agent_dangers__tag": "vehicle",
     "ai_target__noiseLevel": 0.0,
+    "unit__forceBailoutTimer": -1.0,
     "unit_storage__tank": {},
     "vehicle_net_phys": {},
     "unit_tag__tank:tag": {},
@@ -553,6 +658,9 @@
       "secondary": false,
       "special": false
     },
+    "reloadFromBoxTriggerGroupMask:u8": {
+      "value": 0
+    },
     "ai_target": {
       "_tags": "server"
     },
@@ -565,6 +673,7 @@
       "ship_damage_control",
       "gm_engine_sound"
     ],
+    "unit__reCreateOnRespawn": true,
     "unit__shouldKeepDeadUnit": true,
     "unit_storage__ship": {},
     "unit_tag__ship:tag": {},
@@ -604,6 +713,7 @@
       "simple_tank_ext",
       "vehicle_grid_obj"
     ],
+    "unit__reCreateOnRespawn": true,
     "unit__shouldKeepDeadUnit": true,
     "unit_storage__tank": {},
     "vehicle_net_phys": {},
@@ -615,6 +725,7 @@
       "simple_ground_unit",
       "simple_ship_ext"
     ],
+    "unit__reCreateOnRespawn": true,
     "unit__shouldKeepDeadUnit": true,
     "unit_storage__ship": {},
     "unit_tag__ship:tag": {},
@@ -626,6 +737,7 @@
       "trailer_ext",
       "vehicle_grid_obj"
     ],
+    "unit__reCreateOnRespawn": true,
     "unit__shouldKeepDeadUnit": true,
     "track_sound": {
       "_tags": "sound"

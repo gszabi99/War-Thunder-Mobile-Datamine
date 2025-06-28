@@ -17,9 +17,9 @@ function mkDebriefingWndTabMpStats(debrData, _params) {
   let { campaign = "", mission = "" } = debrData
   let playersByTeam = mkPlayersByTeam(debrData)
   let comp = {
-    size = [sw(100), flex()]
+    size = const [sw(100), flex()]
     hplace = ALIGN_CENTER
-    margin = [hdpx(20), 0, 0, 0]
+    margin = const [hdpx(20), 0, 0, 0]
     children = mkMpStatsTable(getColumnsByCampaign(campaign, mission), mkPlayersByTeamForMpStats(playersByTeam, campaign))
   }
 

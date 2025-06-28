@@ -124,7 +124,7 @@ isOpened.subscribe(function(v) {
 })
 
 let txtAreaBase = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = 0xFFFFFFFF
@@ -178,7 +178,7 @@ let crosshairPos = Computed(@() relPosToToUiPos(selectedObject.get()?.mapPos)
 
 let crosshair = @() {
   watch = crosshairPos
-  size = [0, 0]
+  size = 0
   pos = crosshairPos.get()
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER

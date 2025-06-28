@@ -49,7 +49,7 @@ let mkMedals = @(selCampaign) function() {
     children = [
       mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
       makeVertScroll({
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         padding = scrollMedalsPadding
         valign = ALIGN_CENTER
         flow = FLOW_VERTICAL
@@ -68,14 +68,14 @@ let mkMedals = @(selCampaign) function() {
 
 let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
   minWidth = SIZE_TO_CONTENT
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   children = [
     modalWndHeader(loc(getCampaignPresentation(campaign).headerLocId),
-      { size = [flex(), SIZE_TO_CONTENT], padding = hdpx(5) })
+      { size = FLEX_H, padding = hdpx(5) })
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       padding = infoBlockPadding
       gap = infoBlockPartsGap
@@ -86,7 +86,7 @@ let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
           let all = unitsStats.get().all[campaign]
           return {
             watch = unitsStats
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             valign = ALIGN_CENTER
             flow = FLOW_VERTICAL
             gap = hdpx(5)
@@ -110,7 +110,7 @@ let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
           let stats = playerStats.get()?[camp] ?? {}
           return {
             watch = playerStats
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             valign = ALIGN_CENTER
             flow = FLOW_VERTICAL
             gap = hdpx(5)
@@ -168,8 +168,8 @@ return function() {
     onAttach = actualizeStats
     watch = campaignsList
     minWidth = SIZE_TO_CONTENT
-    size = [flex(), SIZE_TO_CONTENT]
-    padding = [0, 0, hdpx(40), 0]
+    size = FLEX_H
+    padding = const [0, 0, hdpx(40), 0]
     flow = FLOW_VERTICAL
     gap = hdpx(20)
     children = campaignsList.value

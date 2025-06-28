@@ -45,7 +45,7 @@ let mkNotPurchasedShade = @(isPurchased) @() isPurchased.value ? { watch = isPur
 let mkModImage = @(mod) mod?.name == null ? null : {
   size = flex()
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#{mod.name}.avif:0:P")
+  image = Picture($"ui/gameuiskin/{mod.name}.avif:0:P")
   fallbackImage = Picture(defImage)
   keepAspect = KEEP_ASPECT_FILL
   imageHalign = ALIGN_LEFT

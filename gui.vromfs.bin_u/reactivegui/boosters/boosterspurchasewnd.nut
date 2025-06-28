@@ -41,7 +41,7 @@ let header = {
 }.__update(fontMedium)
 
 let footer = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   hplace = ALIGN_CENTER
@@ -53,7 +53,7 @@ function mkPricePlate(bst) {
   let isDelayed = Computed(@() boosterInProgress.value != null)
   return @() {
     watch = isDelayed
-    size = [flex(), hdpx(90)]
+    size = const [flex(), hdpx(90)]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
@@ -77,13 +77,13 @@ let infoBtn = @(id) infoGreyButton(
   @() boosterDesc(id),
   {
     size = [evenPx(60), evenPx(60)]
-    margin = [hdpx(12), hdpx(16)]
+    margin = const [hdpx(12), hdpx(16)]
     hplace = ALIGN_LEFT
   }
 )
 
 let cardTitle = @(id) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_LEFT
@@ -92,14 +92,14 @@ let cardTitle = @(id) {
 }.__update(fontVeryTinyAccented)
 
 let cardHeader = @(id) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   padding = hdpx(10)
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   children = [
     infoBtn(id)
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       maxHeight = evenPx(60)
       children = cardTitle(id)
     }
@@ -118,7 +118,7 @@ let boosterSlot = @(bst, sf) {
     }
     {
       size = flex()
-      padding = [0, 0, hdpx(20), 0]
+      padding = const [0, 0, hdpx(20), 0]
       flow = FLOW_VERTICAL
       children = [
         cardHeader(bst.id)
@@ -156,7 +156,7 @@ let textBase = @(battlesLeft) {
 
 let animTrigger = @(bstId) $"changeBoosterNumber_${bstId}"
 let battlesLeftTitle = @(bst, sf, battlesLeft, isDisabled) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   flow = FLOW_VERTICAL
@@ -209,9 +209,9 @@ let function boosterCard(bst) {
       @() {
         watch = [cbStateFlags, battlesLeft, isDisabled, hasSpinner]
         behavior = Behaviors.Button
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_HORIZONTAL
-        margin = [hdpx(20), 0, 0, 0]
+        margin = const [hdpx(20), 0, 0, 0]
         transform = {
           scale = battlesLeft.get() > 0 && (cbStateFlags.get() & S_ACTIVE) ? [0.95, 0.95] : [1, 1]
         }

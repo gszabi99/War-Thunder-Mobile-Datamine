@@ -45,7 +45,7 @@ function changeUnitType(unitType) {
 
 let content = @() {
   watch = [tuningUnitType, unitTypesByEvent]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   padding = gap
   flow = FLOW_VERTICAL
   gap
@@ -53,7 +53,7 @@ let content = @() {
     (ut == tuningUnitType.value ? textButtonCommon : textButtonBright)(
       loc($"mainmenu/type_{ut}"),
       @() changeUnitType(ut),
-      { ovr = { size = [flex(), hdpx(100)] } })
+      { ovr = { size = const [flex(), hdpx(100)] } })
   )
 }
 
@@ -63,7 +63,7 @@ return @() addModalWindow(bgShaded.__merge({
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close }]]
   children = {
-    size = [sh(65), SIZE_TO_CONTENT]
+    size = const [sh(65), SIZE_TO_CONTENT]
     stopMouse = true
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
@@ -72,7 +72,7 @@ return @() addModalWindow(bgShaded.__merge({
     flow = FLOW_VERTICAL
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_HORIZONTAL
         valign = ALIGN_CENTER
         padding = gap

@@ -52,8 +52,8 @@ let RewardSearcher = class {
     foreach(id, _ in rewardsInc)
       if (this.isRewardFit(id, recursionLevel))
         return true
-    foreach(id in fixedRewards)
-      if (this.isRewardFit(id, recursionLevel))
+    foreach(fr in fixedRewards)
+      if (this.isRewardFit(fr?.rewardId ?? fr, recursionLevel)) 
         return true
     return false
   }

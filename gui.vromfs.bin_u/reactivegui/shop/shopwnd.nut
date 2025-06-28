@@ -135,7 +135,7 @@ function mkShopContent() {
       pannableArea(mkShopPage(curCategoriesCfg, distances),
         { pos = [0, 0] },
         {
-          size = [SIZE_TO_CONTENT, flex()]
+          size = FLEX_V
           minWidth = shopContentW
           padding = [0, 0, 0, shopGap]
           behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]

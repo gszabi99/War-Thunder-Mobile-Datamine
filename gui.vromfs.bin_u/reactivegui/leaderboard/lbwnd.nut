@@ -338,7 +338,7 @@ let waitLeaderBoard = {
   gap = hdpx(50)
   children = [
     {
-      size = [hdpx(1200), SIZE_TO_CONTENT]
+      size = const [hdpx(1200), SIZE_TO_CONTENT]
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       halign = ALIGN_CENTER
@@ -352,7 +352,7 @@ let waitLeaderBoard = {
 
 let lbErrorMsg = @(text) {
   key = text
-  size = [hdpx(1100), SIZE_TO_CONTENT]
+  size = const [hdpx(1100), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   vplace = ALIGN_CENTER
@@ -395,7 +395,7 @@ let content = @() {
 let needPaginator = Computed(@() (curLbData.value?.len() ?? 0) != 0)
 let paginator = @() {
   watch = needPaginator
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   children = !needPaginator.value ? null
     : mkPaginator(lbPage, lbLastPage, lbMyPage, { key = needPaginator, animations = wndSwitchAnim })
 }

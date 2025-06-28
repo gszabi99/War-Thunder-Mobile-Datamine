@@ -43,7 +43,7 @@ let txtBase = {
 let txt = @(ovr) txtBase.__merge(ovr)
 
 let txtArea = @(ovr) txtBase.__merge({
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
 }, ovr)
@@ -73,7 +73,7 @@ let bgGradientComp = {
 
 let mkBtnContent = @(id, isRecommended) {
   size = [btnW, btnH]
-  padding = [hdpx(10), 0, 0, 0]
+  padding = const [hdpx(10), 0, 0, 0]
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   gap = hdpx(10)
@@ -91,7 +91,7 @@ let mkBtnContent = @(id, isRecommended) {
 }
 
 let mkOptButtonsRow = @() {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   gap = btnGap
   children = reorderList(tankMoveCtrlTypesList, defaultValue).map(@(id) controlsTypesButton(
@@ -121,7 +121,7 @@ let mkChooseMoveControlsScene = @() bgShaded.__merge({
   stopMouse = true
   onAttach
   children = {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
@@ -142,7 +142,7 @@ let mkChooseMoveControlsScene = @() bgShaded.__merge({
           })
           @() {
             watch = selectedValue
-            padding = [hdpx(10), 0]
+            padding = const [hdpx(10), 0]
             children = selectedValue.value == ""
               ? { size = [0, buttonStyles.defButtonHeight] }
               : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), apply, { hotkeys = ["^J:X | Enter"] })

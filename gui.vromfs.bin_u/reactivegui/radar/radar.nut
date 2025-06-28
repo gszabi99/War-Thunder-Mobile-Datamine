@@ -21,7 +21,7 @@ let radarHudCtor = @(scale) {
 let radarHudEditView = {
   size = radarSize
   flow = FLOW_VERTICAL
-  padding = [0, 0, hdpx(115), hdpx(45)]
+  padding = const [0, 0, hdpx(115), hdpx(45)]
   children = [
     {
       rendObj = ROBJ_TEXT
@@ -31,7 +31,7 @@ let radarHudEditView = {
     }.__update(fontTiny)
     {
       size = flex()
-      padding = [0, hdpx(75), 0, hdpx(30)]
+      padding = const [0, hdpx(75), 0, hdpx(30)]
       children = {
         size = flex()
         rendObj = ROBJ_IMAGE
@@ -40,7 +40,7 @@ let radarHudEditView = {
       }
     }
     {
-      size = [0, 0]
+      size = 0
       hplace = ALIGN_RIGHT
       children = {
         pos = [-hdpx(45), 0]

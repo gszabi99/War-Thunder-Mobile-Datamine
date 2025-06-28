@@ -9,8 +9,8 @@ let dbgCampaignSelector = @() {
   flow = FLOW_HORIZONTAL
   gap = hdpx(20)
   children = [
-    listButton($"For campaign {curCampaign.value}", isForCampaign, @() isForCampaign(true), { size = [hdpx(500), SIZE_TO_CONTENT] })
-    listButton("For all", Computed(@() !isForCampaign.value), @() isForCampaign(false), { size = [hdpx(200), SIZE_TO_CONTENT] })
+    listButton($"For campaign {curCampaign.value}", isForCampaign, @() isForCampaign(true), { size = const [hdpx(500), SIZE_TO_CONTENT] })
+    listButton("For all", Computed(@() !isForCampaign.value), @() isForCampaign(false), { size = const [hdpx(200), SIZE_TO_CONTENT] })
   ]
 }
 

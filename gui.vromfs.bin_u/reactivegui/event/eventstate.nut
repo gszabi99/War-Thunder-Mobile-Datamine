@@ -7,13 +7,16 @@ let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { SAILBOAT } = require("%appGlobals/unitConst.nut")
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let servProfile = require("%appGlobals/pServer/servProfile.nut")
+let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { campaignsLevelInfo, campaignsList } = require("%appGlobals/pServer/campaign.nut")
+let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
 let { eventLootboxesRaw, orderLootboxesBySlot } = require("eventLootboxes.nut")
 let { userstatStats } = require("%rGui/unlocks/userstat.nut")
 let { balance } = require("%appGlobals/currenciesState.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { unlockTables, activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { closeLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
+let { closeEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
 let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
 
@@ -30,7 +33,7 @@ let eventWndOpenCounter = Computed(@() openEventInfo.get()?.counter ?? 0)
 
 eventWndOpenCounter.subscribe(function(v) {
   if (v == 0)
-    closeLootboxPreview()
+    closeEventWndLootbox()
 })
 
 let eventEndsAt = Computed(@() userstatStats.value?.stats.season["$endsAt"] ?? 0)
@@ -54,7 +57,7 @@ let unseenLootboxes = Computed(function() {
 })
 let unseenLootboxesShowOnce = mkWatched(persist, "unseenLootboxesShowOnce", {})
 
-let bestCampLevel = Computed(@() servProfile.value?.levelInfo.reduce(@(res, li) max(res, li?.level ?? 0), 0) ?? 1)
+let bestCampLevel = Computed(@() campaignsLevelInfo.get()?.reduce(@(res, li) max(res, li?.level ?? 0), 0) ?? 1)
 
 let eventsLists = Computed(function() {
   let events = {}
@@ -298,6 +301,30 @@ let unitTypesByEvent = Computed(function() {
   return res
 })
 
+let isFitSeasonRewardsRequirements = Computed(function() {
+  let { unlocks = [] } = curSeasons.get()?["season"]
+  if (unlocks.len() == 0)
+    return true
+
+  foreach (r in unlocks) {
+    if (r.campaignLevel == 0 && r.unitMRank == 0)
+      return true
+
+    if (r.campaignLevel > 0)
+      foreach (camp in campaignsList.get())
+        if ((campaignsLevelInfo.get()?[camp].level ?? 0) >= r.campaignLevel)
+          return true
+
+    if (r.unitMRank > 0) {
+      foreach (k, _ in servProfile.get()?.units ?? {})
+        if ((serverConfigs.get()?.allUnits[k]?.mRank ?? 0) >= r.unitMRank)
+          return true
+    }
+
+  }
+  return false
+})
+
 register_command(function() {
   seenLootboxes({})
   get_local_custom_settings_blk().removeBlock(SEEN_LOOTBOXES)
@@ -346,6 +373,7 @@ return {
   curEventLootboxes
   curEventCurrencies
   specialEventGamercardItems
+  isFitSeasonRewardsRequirements
 
   curEventBg
   getEventPresentationId

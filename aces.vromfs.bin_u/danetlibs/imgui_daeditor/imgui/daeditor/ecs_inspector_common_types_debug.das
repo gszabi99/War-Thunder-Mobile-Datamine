@@ -9,7 +9,7 @@ require DagorSystem
 require DagorMath
 require DagorDebug3D
 require imgui/imgui_boost
-require strings_boost
+require daslib.strings_boost
 require daslib/safe_addr
 require daslib/instance_function
 require daslib/defer

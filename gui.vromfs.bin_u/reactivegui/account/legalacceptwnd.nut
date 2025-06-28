@@ -43,7 +43,7 @@ let mkTextarea = @(text) {
 }.__update(fontSmall)
 
 let legalList = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   children = [
     wrap(
       mkTextRow(
@@ -52,7 +52,6 @@ let legalList = {
         {
           ["{btnText}"] = mkTextarea(utf8ToUpper(loc("terms_wnd/accept/noNewLine"))), 
           ["{termsOfServiceUrl}"] = legalInfoUrl(legalToApprove["termsofservice"]), 
-          ["{gameRulesUrl}"] = legalInfoUrl(legalToApprove["gamerules"]), 
           ["{privacyPolicyUrl}"] = legalInfoUrl(legalToApprove["privacypolicy"]) 
         }
       ),

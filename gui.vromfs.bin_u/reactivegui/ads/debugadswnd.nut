@@ -39,7 +39,7 @@ function animPoint(i) {
   let rotateOffset = rotatePeriodMsec * i / totalAnim
   let radOffset = (i % 2) * 2000 + 50 * i
   return {
-    size = [hdpx(50), hdpx(50)]
+    size = hdpx(50)
     behavior = Behaviors.RtPropUpdate
     rendObj = ROBJ_IMAGE
     image

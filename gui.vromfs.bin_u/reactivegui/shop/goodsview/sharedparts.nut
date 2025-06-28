@@ -9,7 +9,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { mkDiscountPriceComp, mkCurrencyImage, CS_COMMON, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { PURCHASING, DELAYED, NOT_READY, HAS_PURCHASES, ALL_PURCHASED, HAS_UPGRADE, IS_ACTIVE } = require("%rGui/shop/goodsStates.nut")
 let { getAdjustedPriceInfo } = require("%rGui/shop/goodsUtils.nut")
-let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
+let { adsButtonCounter, isProviderInited } = require("%rGui/ads/adsState.nut")
 let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { serverTimeDay, getDay, dayOffset, untilNextDaySec } = require("%appGlobals/userstats/serverTimeDay.nut")
@@ -63,7 +63,7 @@ let txt = @(ovr) txtBase.__merge(ovr)
 let textArea = @(ovr) txtBase.__merge({
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  size = [ flex(), SIZE_TO_CONTENT ]
+  size = FLEX_H
 }, ovr)
 
 let mkBgImg = @(img, defImg = "ui/gameuiskin/shop_bg_slot.avif") {
@@ -233,7 +233,7 @@ let popularMark = @(text = null) {
   screenOffs = popularMarkTexOffs
   texOffs = popularMarkTexOffs
   color = tagRedColor
-  padding = [ 0, hdpx(20), 0, hdpx(10) ]
+  padding = const [ 0, hdpx(20), 0, hdpx(10) ]
   children = {
     rendObj = ROBJ_TEXT
     text = text ?? utf8ToUpper(loc("shop/item/popular/short"))
@@ -256,7 +256,7 @@ let dailyBonusTag = @(wpMul, expMul) wpMul <= 1 && expMul <= 1 ? null : {
   flow = FLOW_HORIZONTAL
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  padding = [ 0, hdpx(15), 0, hdpx(10) ]
+  padding = const [ 0, hdpx(15), 0, hdpx(10) ]
   children = [
     wpMul > 1 ? txt(fontVeryTinyAccented.__merge({ text = loc("dailyBonus/multiplier", { mul = wpMul }) })) : null
     wpMul > 1 ? mkCurrencyImage(WP, iconSize) : null
@@ -296,7 +296,7 @@ let firstPurchBonusBg = {
   screenOffs = firstPurchMarkTexOffs
   texOffs = firstPurchMarkTexOffs
   color = tagRedColor
-  padding = [ 0, hdpx(12), 0, hdpx(40) ]
+  padding = const [ 0, hdpx(12), 0, hdpx(40) ]
   flow = FLOW_HORIZONTAL
   gap = hdpx(10)
 }
@@ -309,7 +309,7 @@ let firstPurchTxt = @(ovr) txtBase.__merge({
 let firstPurchLabel = firstPurchTxt({ text = utf8ToUpper(loc("shop/item/first_purchase/short")) })
 firstPurchLabel.fontSize = getFontSizeToFitWidth(firstPurchLabel, firstPurchLabelMaxWidth, fontVeryVeryTiny.fontSize)
 
-let mkFirstPurchBonusMark = @(goods, state) (goods?.firstPurchaseBonus?.len() ?? 0) == 0 || "premiumDays" in goods?.firstPurchaseBonus
+let mkFirstPurchBonusMark = @(goods, state) (goods?.firstPurchaseBonus.len() ?? 0) == 0 || "premiumDays" in goods?.firstPurchaseBonus
   ? null
   : function() {
       let res = { watch = state }
@@ -423,13 +423,13 @@ let subsUpgradePlate = {
 function mkFreePricePlate(goods, state) {
   let { isReady = false, needAdvert = false } = goods
   return @() {
-    watch = state
+    watch = [state, isProviderInited]
     size = flex()
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
     image = freeBgGrad
-    picSaturate = (state.get() & (PURCHASING | NOT_READY)) || !isReady ? 0 : 1.0
+    picSaturate = (state.get() & (PURCHASING | NOT_READY)) || !isReady || (!isProviderInited.get() && needAdvert) ? 0 : 1.0
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
     children = !needAdvert ? txt({ text = utf8ToUpper(loc("shop/free")) }.__update(fontSmall))
@@ -463,7 +463,7 @@ function mkCommonSubsPricePlate(subs) {
   let { priceText = "" } = subs.priceExt
   return {
     size = flex()
-    padding = [0, 0, hdpx(6), 0]
+    padding = const [0, 0, hdpx(6), 0]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
@@ -554,6 +554,10 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
           ? skipPurchasedPlate
         : purchasedPlate
     ]
+    animations = [
+      { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.03, 1.03], easing = DoubleBlink,
+        duration = 0.8, delay = 0.4, trigger = $"attract_goods_{id}" }
+    ]
   }).__update(ovr, { watch })
 }
 
@@ -594,7 +598,7 @@ let mkGoodsTimeProgress = @(fValue, text) {
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   gap = hdpx(20)
-  padding = [hdpx(50), 0, 0, 0]
+  padding = const [hdpx(50), 0, 0, 0]
   children = [
     @() {
       watch = fValue
@@ -617,6 +621,20 @@ let mkGoodsTimeProgress = @(fValue, text) {
   ]
 }
 
+let disabledAdsGoodsPlate = {
+  size = flex()
+  rendObj = ROBJ_SOLID
+  color = 0x80000000
+  animations = fadeAnims
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+  children = textArea({
+    halign = ALIGN_CENTER
+    maxWidth = goodsW - titlePadding * 2
+    text = loc("shop/notAvailableAds")
+  }.__update(fontSmall))
+}
+
 function mkCalcDailyLimitGoodsTimeProgress() {
   let sec = Computed(@() untilNextDaySec(serverTime.get(), dayOffset.get()))
   let fValue = Computed(@() clamp(1.0 - sec.get() / TIME_DAY_IN_SECONDS_F, 0, 1))
@@ -637,9 +655,13 @@ function mkDailyLimitGoodsTimeProgress(goods) {
 }
 
 function mkFreeAdsGoodsTimeProgress(goods) {
-  let { readyTime = 0, interval = 0 } = goods
+  let { readyTime = 0, interval = 0, needAdvert = false } = goods
   if (readyTime <= serverTime.get() || interval <= 0)
-    return null
+    return @() {
+      watch = isProviderInited
+      size = flex()
+      children = !isProviderInited.get() && needAdvert ? disabledAdsGoodsPlate : null
+    }
   let diff = Computed(@() readyTime - serverTime.get())
   let timeText = Computed(@() secondsToHoursLoc(max(0, diff.get())))
   let fValue = Computed(@() max(0, clamp(1.0 - diff.get().tofloat() / interval, 0, 1)))
@@ -725,7 +747,7 @@ function mkAirBranchOfferTexts(title, unitName, goods) {
 }
 
 let underConstructionBg = {
-  size = [flex(), hdpx(92)]
+  size = const [flex(), hdpx(92)]
   vplace = ALIGN_BOTTOM
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin/under_construction_line.avif:0:P")
@@ -738,7 +760,7 @@ function mkSquareIconBtn(text, onClick, ovr) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
-    size = [ hdpx(70), hdpx(70) ]
+    size = hdpx(70)
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     behavior = Behaviors.Button
@@ -801,14 +823,14 @@ function mkEndTimeImpl(goods, ovr = {}) {
 
 let mkEndTime = @(goods, ovr = {}) mkEndTimeImpl(goods,
   {
-    pos = (goods?.firstPurchaseBonus?.len() ?? 0) == 0 ? null : firstPuchaseBottomOffset,
+    pos = (goods?.firstPurchaseBonus.len() ?? 0) == 0 ? null : firstPuchaseBottomOffset,
     margin = bottomPad
   }.__update(ovr))
 
 let mkGoodsLimitAndEndTime = @(goods) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   margin = bottomPad
-  pos = (goods?.firstPurchaseBonus?.len() ?? 0) == 0 ? null : firstPuchaseBottomOffset
+  pos = (goods?.firstPurchaseBonus.len() ?? 0) == 0 ? null : firstPuchaseBottomOffset
   halign = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
@@ -878,4 +900,5 @@ return {
   mkGoodsTimeProgress
 
   dailyBonusTag
+  disabledAdsGoodsPlate
 }

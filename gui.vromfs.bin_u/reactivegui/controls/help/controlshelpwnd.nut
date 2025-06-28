@@ -72,7 +72,7 @@ let togglePage = @(diff)
   curUnitType(pages[clamp((pages.indexof(curUnitType.value) ?? -1) + diff, 0, pages.len() - 1)])
 
 let header = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   valign = ALIGN_CENTER
   children = [
     backBtn

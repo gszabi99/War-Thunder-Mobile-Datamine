@@ -1,13 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%sqstd/frp.nut" import ComputedImmediate
 let { eventbus_send } = require("eventbus")
 let { sendAppsFlyerEvent } = require("logEvents.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
-let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
-let { firstBattleTutor, tutorialMissions } = require("%rGui/tutorial/tutorialMissions.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { lastBattles, sharedStats, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
+let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
+let { firstBattleTutor, tutorialMissions } = require("%rGui/tutorial/tutorialMissions.nut")
+let { isUserstatMissingData, userstatStats } = require("%rGui/unlocks/userstat.nut")
+let { curStage } = require("%rGui/battlePass/battlePassState.nut")
 
 
 let tutorialResultEvent = keepref(Computed(function() {
@@ -81,3 +85,26 @@ loginCount.subscribe(function(count) {
   if (serverTime.value - todayFirstLogin <= 60)
     sendAppsFlyerEvent("login_day_2")
 })
+
+let bpLevelsUserstat = ComputedImmediate(@()
+  userstatStats.get()?.stats["global"].meta_common.battlepass_stage_progress ?? 0)
+let bpNewLevels = hardPersistWatched("logEvents.bpNewLevels", 0)
+
+isUserstatMissingData.subscribe(@(_) bpNewLevels.set(0))
+bpLevelsUserstat.subscribe(@(_) bpNewLevels.set(0))
+
+local lastStage = isUserstatMissingData.get() ? null : curStage.get()
+curStage.subscribe(function(v) {
+  if (isUserstatMissingData.get()) {
+    lastStage = null
+    return
+  }
+  if (lastStage != null && v > lastStage)
+    bpNewLevels.set(bpNewLevels.get() + v - lastStage)
+  lastStage = v
+})
+
+let bpLevels = keepref(Computed(@() isUserstatMissingData.get() ? null
+  : (bpLevelsUserstat.get() + bpNewLevels.get())))
+foreach(l in [4, 5, 7, 11, 23])
+  sendEventByValue($"bplevel_{l}", bpLevels, l)

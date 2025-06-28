@@ -186,7 +186,7 @@ function mkStatusPlate(isAvailable, isBlocked, price, range, hasUnseenMarker, ov
     size = flex()
     halign = ALIGN_CENTER
     valign = ALIGN_TOP
-    padding = [hdpx(5), 0]
+    padding = const [hdpx(5), 0]
     children
   }.__update(ovr)
 }
@@ -351,7 +351,7 @@ function mkQuestTexts(item) {
   let header = loc(locId)
   let text = loc($"{locId}/desc")
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     gap = hdpx(8)
@@ -376,13 +376,13 @@ function mkEventInfoPanelContent(id) {
     color = 0x80000000
     children = {
       size = [infoPanelWidth, SIZE_TO_CONTENT]
-      padding = [hdpx(20), hdpx(10)]
+      padding = const [hdpx(20), hdpx(10)]
       flow = FLOW_VERTICAL
       gap = questItemsGap
       children = [
         {
-          size = [flex(), SIZE_TO_CONTENT]
-          padding = [hdpx(10), hdpx(30), hdpx(15), hdpx(30)]
+          size = FLEX_H
+          padding = const [hdpx(10), hdpx(30), hdpx(15), hdpx(30)]
           flow = FLOW_HORIZONTAL
           gap = questItemsGap
           vplace = ALIGN_CENTER
@@ -390,7 +390,7 @@ function mkEventInfoPanelContent(id) {
           children = [
             @() {
               watch = [unlock, isAvailable]
-              size = [flex(), SIZE_TO_CONTENT]
+              size = FLEX_H
               flow = FLOW_VERTICAL
               gap = hdpx(8)
               halign = ALIGN_CENTER

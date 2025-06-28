@@ -97,7 +97,7 @@ let window = @() modalWndBg.__merge({
     modalWndHeaderWithClose(loc("premDailyBonus/header"), close)
     hasPremiumSubs.get() ? null
       : {
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           margin = [0, wndGap]
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea

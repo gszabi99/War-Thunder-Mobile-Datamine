@@ -13,7 +13,7 @@ let fontIconPreview = "⌡"
 let contentMargin = hdpx(20)
 let mkSubsIcon = @(id) mkBgImg($"{getSubsPresentation(id).icon}:0:P")
   .__update({
-    size = [hdpx(300), hdpx(200)]
+    size = const [hdpx(300), hdpx(200)]
     pos = [0, hdpx(30)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER

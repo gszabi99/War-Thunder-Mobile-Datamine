@@ -74,6 +74,7 @@ def public safe_function_name(name : string) : string
         ("=" , "_eq_"),
         ("*" , "_st_"),
         ("." , "_dot_"),
+        ("?" , "_q_"),
         ("&" , ""),
         ("(" , ""),
         (")" , ""),

@@ -10,7 +10,7 @@ function tabData(tab, campaign) {
   let icon = getImage?(campaign) ?? image
   return {
     id
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     override = { size = [tabW, SIZE_TO_CONTENT] }
     content = {
       size = [flex(), tabH]

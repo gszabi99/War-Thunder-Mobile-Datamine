@@ -112,13 +112,13 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
 }
 
 let sliderHeader = @(text, valueTextWatch, override = {}) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   valign = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   gap = hdpx(20)
   children = [
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       color = textColor

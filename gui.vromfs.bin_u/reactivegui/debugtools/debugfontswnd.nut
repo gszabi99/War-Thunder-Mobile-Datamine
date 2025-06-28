@@ -26,8 +26,8 @@ let viewText = Computed(@() curText.value == "" ? "Text example 1230" : curText.
 
 let inputBlock = textInput(curText, {
   ovr = {
-    size = [hdpx(400), hdpx(60)]
-    padding = [hdpx(10), hdpx(20)]
+    size = const [hdpx(400), hdpx(60)]
+    padding = const [hdpx(10), hdpx(20)]
   }
   onAttach = @() set_kb_focus(curText) 
   onEscape = @() curText.value == "" ? close() : curText("")
@@ -43,7 +43,7 @@ let wndHeader = {
     backButton(close)
     {
       rendObj = ROBJ_TEXT
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       halign = ALIGN_CENTER
       text = "ui.debug.fonts"
     }.__update(fontBig)
@@ -53,7 +53,7 @@ let wndHeader = {
 }
 
 let textResultBlock = @(id, style) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_BOX
   borderWidth = hdpx(1)
   fillColor = 0x800F0F0F
@@ -69,7 +69,7 @@ let textResultBlock = @(id, style) {
     }.__update(style)
      @() {
       watch = viewText
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       text = viewText.value
@@ -84,13 +84,13 @@ function textsList() {
     .sort(@(a, b)  (a.style?.fontSize ?? 0) <=> (b.style?.fontSize ?? 0))
     .map(@(d) textResultBlock(d.id, d.style))
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = vGap
     children = arrayByRows(fontBoxes, colCount)
       .map(@(children) {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_HORIZONTAL
         gap = hGap
         children

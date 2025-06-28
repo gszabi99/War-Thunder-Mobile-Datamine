@@ -28,7 +28,7 @@ function mkHudTuningElem(cfg, transform, options) {
         children = isVisibleInBattle.value ? ctorFinal() : null
       }
   let res = {
-    size = [0, 0]
+    size = 0
     pos
     children
   }.__update(alignToDargPlace(align))

@@ -17,7 +17,7 @@ let { penalties } = require("%rGui/mainMenu/penaltyState.nut")
 
 let QUEUE_PENALTY_UID = "queue_penalty_box"
 
-function tryOpenQueuePenaltyWnd(campaign, resetPenaltyCb) {
+function tryOpenQueuePenaltyWnd(campaign, resetPenaltyCb, cancelCb = null) {
   let leftTime = Computed(@()
     max((penalties.get()?[campaign].penaltyEndTime ?? 0), (penalties.get()?[curCampaign.get()].penaltyEndTime ?? 0))
     - serverTime.get())
@@ -46,7 +46,7 @@ function tryOpenQueuePenaltyWnd(campaign, resetPenaltyCb) {
       children = [
         msgBoxText(loc("multiplayer/queuePenalty", {
           campaign = colorize(userlogTextColor, loc(getCampaignPresentation(campaign).headerLocId))
-        })).__update({ size = [flex(), SIZE_TO_CONTENT] })
+        })).__update({ size = FLEX_H })
         @() {
           watch = leftTime
           rendObj = ROBJ_TEXT
@@ -58,7 +58,7 @@ function tryOpenQueuePenaltyWnd(campaign, resetPenaltyCb) {
       ]
     }
     buttons = [
-      { id = "cancel", isCancel = true }
+      { id = "cancel", isCancel = true, cb = cancelCb }
       { text = loc("msgbox/btn_pay"), styleId = "PURCHASE", isDefault = true, priceComp,
         function cb() {
           if (!isQueuePenaltyInProgress.get() && !showNoBalanceMsgIfNeed(price, currencyId, bqInfo)) {

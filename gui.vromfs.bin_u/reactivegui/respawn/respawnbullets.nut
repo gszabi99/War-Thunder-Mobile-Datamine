@@ -90,7 +90,7 @@ function bulletHeader(bSlot, bSet, bInfo) {
               }
               gradientOvr = { color = 0xFF16B2E9 }
             })
-          mkPriorityUnseenMarkWatch(hasUnseenBullets, { margin = [hdpx(7), hdpx(7)] })
+          mkPriorityUnseenMarkWatch(hasUnseenBullets, { margin = hdpx(7) })
         ]
       }
     ]

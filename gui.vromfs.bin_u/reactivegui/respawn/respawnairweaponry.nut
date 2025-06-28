@@ -20,12 +20,12 @@ let { showAirRespChooseSecWnd, showAirRespChooseBeltWnd } = require("respawnAirC
 
 let mkCardTitle = @(title) title == "" ? null
   : {
-      size = [flex(), SIZE_TO_CONTENT]
-      padding = [hdpx(4), 0, 0, hdpx(8)]
+      size = FLEX_H
+      padding = const [hdpx(4), 0, 0, hdpx(8)]
       rendObj = ROBJ_BOX
       fillColor = 0x44000000
       children = {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         rendObj = ROBJ_TEXT
         color = 0xFFFFFFFF
         text = title
@@ -46,14 +46,14 @@ let mkCard = @(iconComp, title, bottomTitle = "", isSelectedStyle = false) {
   children = [
     iconComp
     mkCardTitle(title).__update({
-      borderWidth = [hdpx(3), hdpx(3), 0, hdpx(3)]
+      borderWidth = const [hdpx(3), hdpx(3), 0, hdpx(3)]
       borderColor = isSelectedStyle ? 0xC07BFFFF : 0xFFFFFFFF
     })
     bottomTitle == "" ? null : mkCardTitle(bottomTitle).__update({
-      borderWidth = [0, hdpx(3), hdpx(3), hdpx(3)]
+      borderWidth = const [0, hdpx(3), hdpx(3), hdpx(3)]
       borderColor = isSelectedStyle ? 0xC07BFFFF : 0xFFFFFFFF
       vplace = ALIGN_BOTTOM
-      padding = [0, hdpx(4), hdpx(4), hdpx(6)]
+      padding = const [0, hdpx(4), hdpx(4), hdpx(6)]
     })
   ]
 }
@@ -96,11 +96,11 @@ let mkGroup = @(locId, children, ovr = {}, headerOvr = {}) {
   children = [
     header(headerText(loc(locId))).__update(headerOvr)
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_SOLID
       color = 0x99000000
       children = {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
         touchMarginPriority = TOUCH_BACKGROUND
         scrollHandler = ScrollHandler()
@@ -246,7 +246,7 @@ function respawnAirWeaponry(selSlot) {
         mkLinks(selSlot, rows.len())
         {
           key = selSlot.name
-          margin = [0, hdpx(20), 0, 0]
+          margin = const [0, hdpx(20), 0, 0]
           flow = FLOW_VERTICAL
           gap = unitPlatesGap
           children = [

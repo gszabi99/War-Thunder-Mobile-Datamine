@@ -25,7 +25,7 @@ let slotNameBG = {
   image = gradCircularSmallHorCorners
   screenOffs = [0, 0, hdpx(200), hdpx(200)]
   texOffs = gradCircCornerOffset
-  margin = [ hdpx(4), hdpx(10)]
+  margin = const [ hdpx(4), hdpx(10)]
 }
 
 let bgHiglight = {
@@ -35,24 +35,25 @@ let bgHiglight = {
 }
 
 let itemImageOptionsStack = [
-  [{ size = [imgSize, imgSize], pos = [0, -hdpx(91)] }],
+  [{ size = imgSize, pos = [0, -hdpx(91)] }],
   [
-    { size = [hdpx(400), hdpx(400)], pos = [0, -hdpx(15)] sortOrder = 2}
-    { size = [hdpx(400), hdpx(400)], pos = [hdpx(100), -hdpx(35)] sortOrder = 1}
+    { size = hdpx(400), pos = [0, -hdpx(15)] sortOrder = 2}
+    { size = hdpx(400), pos = [hdpx(100), -hdpx(35)] sortOrder = 1}
   ],
   [
-    { size = [hdpx(350), hdpx(350)], pos = [hdpx(0), hdpx(10)] sortOrder = 2}
-    { size = [hdpx(350), hdpx(350)], pos = [hdpx(100), -hdpx(35)] sortOrder = 1}
-    { size = [hdpx(350), hdpx(350)], pos = [hdpx(250), hdpx(10)] sortOrder = 3}
+    { size = hdpx(350), pos = [hdpx(0), hdpx(10)] sortOrder = 2}
+    { size = hdpx(350), pos = [hdpx(100), -hdpx(35)] sortOrder = 1}
+    { size = hdpx(350), pos = [hdpx(250), hdpx(10)] sortOrder = 3}
   ]
 ]
 
 let mkImg = @(id, size, pos, sortOrder = null) id not in icons ? null : {
+  key = sortOrder
   size
   pos
   sortOrder
   rendObj = ROBJ_IMAGE
-  image = Picture($"{icons[id]}:{size[0]}:{size[1]}:P")
+  image = Picture($"{icons[id]}:{size}:{size}:P")
   keepAspect = true
 }
 
@@ -101,7 +102,7 @@ function mkGoodsConsumables(goods, onClick, state, animParams, addChildren) {
       border
       slotNameBG.__merge({
         size = [hdpx(270), viewBaseValue > 0 ? hdpx(175) : hdpx(135)]
-        padding = [hdpx(20), 0]
+        padding = const [hdpx(20), 0]
         children = mkCurrencyAmountTitle(data.map(@(item) item.amount), viewBaseValue, titleFontGradConsumables, nameConsumable)
       })
       mkGoodsLimitAndEndTime(goods)

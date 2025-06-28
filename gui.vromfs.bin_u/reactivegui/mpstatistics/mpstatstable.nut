@@ -260,7 +260,7 @@ function mkPlayerRow(columnCfg, player, teamColor, idx) {
           size = [width, rowHeight]
           halign = halign
           valign = valign ?? ALIGN_BOTTOM
-          padding = [hdpx(5), 0]
+          padding = const [hdpx(5), 0]
           children = contentCtor != null ? contentCtor(player, playerColor, halign)
             : cellTextProps.__merge({ text = getText?(player) })
         }
@@ -287,7 +287,7 @@ function mkTeamHeaderRow(columnCfg) {
 }
 
 let mkMpStatsTable = @(columnsCfg, teams) {
-  size = [ flex(), SIZE_TO_CONTENT ]
+  size = FLEX_H
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
@@ -297,7 +297,7 @@ let mkMpStatsTable = @(columnsCfg, teams) {
     let teamColor = teamIdx == 0 ? teamBlueLightColor : teamRedLightColor
     let columnCfg = columnsCfg[teamIdx % columnsCfg.len()]
     return {
-      size = [ flex(), SIZE_TO_CONTENT ]
+      size = FLEX_H
       flow = FLOW_VERTICAL
       children = [mkTeamHeaderRow(columnCfg)]
         .extend(team.map(@(player, idx) @() mkPlayerRow(columnCfg, player, teamColor, idx)))

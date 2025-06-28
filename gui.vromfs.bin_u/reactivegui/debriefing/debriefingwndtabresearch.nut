@@ -64,7 +64,7 @@ function mkDebriefingWndTabResearch(debrData, params) {
         children = [
           mkMissionResultTitle(debrData, false)
           {
-            size = [hdpx(1600), flex()]
+            size = const [hdpx(1600), flex()]
             halign = ALIGN_CENTER
             flow = FLOW_VERTICAL
             children = [

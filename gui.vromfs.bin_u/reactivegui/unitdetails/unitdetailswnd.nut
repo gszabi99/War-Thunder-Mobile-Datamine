@@ -24,7 +24,7 @@ let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let { scaleAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
 let { justUnlockedPlatoonUnits } = require("%rGui/unit/justUnlockedPlatoonUnits.nut")
 let { btnOpenUnitAttrBig } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
-let mkBtnOpenUnitSkins = require("%rGui/unitSkins/mkBtnOpenUnitSkins.nut")
+let mkBtnOpenCustomization = require("%rGui/unitCustom/mkBtnOpenCustomization.nut")
 let { curSelectedUnitId, openUnitOvr, closeUnitDetailsWnd, baseUnit,
   platoonUnitsList, unitToShow, isWindowAttached, openUnitDetailsWnd, unitDetailsOpenCount
 } = require("unitDetailsState.nut")
@@ -142,15 +142,15 @@ function platoonUnitsBlock() {
 }
 
 let dmViewerSwitchComp = mkDmViewerSwitchComp(baseUnit)
-let btnOpenUnitSkins = mkBtnOpenUnitSkins(baseUnit, statsWidth)
+let btnopenUnitCustomization = mkBtnOpenCustomization(baseUnit, statsWidth)
 
 let unitInfoPanelPlace = @() {
   watch = curCampaign
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   pos = [0, infoPanelOffsetY]
   padding = [ getInfoPanelTopPadByCampaign(curCampaign.get()), 0, 0, 0 ]
   children = panelBg.__merge({
-    size = [SIZE_TO_CONTENT, flex()]
+    size = FLEX_V
     gap = hdpx(30)
     children = [
       unitInfoPanelFull(unitToShow,
@@ -159,7 +159,7 @@ let unitInfoPanelPlace = @() {
           touchMarginPriority = TOUCH_BACKGROUND
         })
       dmViewerSwitchComp
-      btnOpenUnitSkins
+      btnopenUnitCustomization
     ]
   })
 }
@@ -211,7 +211,7 @@ function buttonsBlock() {
       testDriveButton
       !(curCampaign.get() == "air" || isOwnUnitPreview) ? null
         : {
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             flow = FLOW_HORIZONTAL
             gap = buttonsGap
             vplace = ALIGN_BOTTOM
@@ -259,7 +259,7 @@ let sceneContent = {
 
 let sceneRoot = {
   key = openCount
-  size = [ sw(100), sh(100) ]
+  size = const [ sw(100), sh(100) ]
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
   animations = wndSwitchAnim

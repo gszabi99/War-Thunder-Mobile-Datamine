@@ -24,8 +24,8 @@ let flagAnimFullTime = flagStartTime + flagTime1 + flagTime2 + flagTimeDiff
 let mkSizeByParent = @(size) [pw(100.0 * size[0] / levelUpSizePx[0]), ph(100.0 * size[1] / levelUpSizePx[1])]
 let mkSizeElemByParent = @(size, parentSize)
   [
-    round(parentSize[0] * size[0] / levelUpSizePx[0]).tointeger(),
-    round(parentSize[1] * size[1] / levelUpSizePx[1]).tointeger()
+    round(parentSize[0] * (size?[0] ?? size) / levelUpSizePx[0]).tointeger(),
+    round(parentSize[1] * (size?[1] ?? size) / levelUpSizePx[1]).tointeger()
   ]
 
 let wingAnims = @(dir) @(delay, _) [
@@ -81,32 +81,32 @@ let flagPresentation = {
 
 let elemsCfg = [
   {
-    size = [135, 210]
+    size = const [135, 210]
     pos = [-140, 0]
     transform = { pivot = [1, 1] }
     animations = wingAnims(1)
   }
   {
-    size = [135, 210]
+    size = const [135, 210]
     pos = [140, 0]
     transform = { pivot = [0, 1] }
     animations = wingAnims(-1)
   }
   {
-    size = [270, 254]
+    size = const [270, 254]
   }
   {
-    size = [270, 254]
+    size = const [270, 254]
     pos = [-70, 0]
     animations = flagAnims(1, flagStartTime)
   }
   {
-    size = [270, 254]
+    size = const [270, 254]
     pos = [65, 0]
     animations = flagAnims(-1, flagStartTime + flagTimeDiff)
   }
   {
-    size = [170, 170]
+    size = 170
     pos = [0, 10]
     animations = @(delay, _) [
       { prop = AnimProp.scale, from = [1, 1], to = [1.2, 1.2], delay = delay + starStartTime, duration = starTime,

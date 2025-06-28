@@ -39,6 +39,7 @@
   "notUseDefaultBulletInGui": true,
   "drawRocketInBullet": true,
   "allowRearmOnField": true,
+  "isGroupRearmOnField": true,
   "mesh": "type_64_mat_rocket_deployed",
   "animChar": "type_64_mat_rocket_char",
   "reloadAnimParam": "rocket_hide",

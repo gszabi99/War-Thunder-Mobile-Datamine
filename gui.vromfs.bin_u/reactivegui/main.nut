@@ -31,6 +31,7 @@ require("activeControls.nut")
 require("login/consentGoogleState.nut")
 require("login/previewIDFAWnd.nut")
 require("login/reloginAuto.nut")
+require("%rGui/debugTools/debugSafeArea.nut")
 
 let { get_platform_string_id } = require("platform")
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")
@@ -148,7 +149,7 @@ let waitbox = @() {
         gap = hdpx(50)
         children = [
           {
-            size = [hdpx(1200), SIZE_TO_CONTENT]
+            size = const [hdpx(1200), SIZE_TO_CONTENT]
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             halign = ALIGN_CENTER

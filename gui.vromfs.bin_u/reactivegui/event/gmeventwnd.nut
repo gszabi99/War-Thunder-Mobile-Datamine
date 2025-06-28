@@ -208,7 +208,7 @@ let header = @() {
     backButton(closeGmEventWnd)
     gmEventTitle(loc($"{openedGmEventId.get()}/title"))
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       halign = ALIGN_RIGHT
       gap = hdpx(70)

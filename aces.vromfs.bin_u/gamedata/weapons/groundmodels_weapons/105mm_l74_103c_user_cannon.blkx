@@ -25,6 +25,7 @@
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
   "sound": "cannon_large",
+  "soundEx": "cannon_105mm_l74",
   "sfxReloadBullet": "grd_cannon_reload_auto",
   "fxMultipleSpawn": true,
   "isBulletBelt": false,

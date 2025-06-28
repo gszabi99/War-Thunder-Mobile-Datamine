@@ -18,7 +18,7 @@ function mkCapZoneIndicator(idx) {
       zoneId = id
       stringToHide = "distance_string"
       transform = {}
-      size = [0, 0]
+      size = 0
       valign = ALIGN_BOTTOM
       halign = ALIGN_CENTER
       flow = FLOW_VERTICAL

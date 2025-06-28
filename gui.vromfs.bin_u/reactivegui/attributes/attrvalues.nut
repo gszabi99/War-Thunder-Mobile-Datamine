@@ -12,20 +12,20 @@ let { TANK, SHIP, AIR } = require("%appGlobals/unitConst.nut")
 let iconDamage = "►"
 let iconCooldown = "▩"
 
-let defCategoryImage = "ui/gameuiskin#upgrades_captain_icon.avif"
+let defCategoryImage = "ui/gameuiskin/upgrades_captain_icon.avif"
 let categoryImages = {
-  ship_commander = "ui/gameuiskin#upgrades_captain_icon.avif"
-  ship_look_out_station = "ui/gameuiskin#upgrades_observation_icon.avif"
-  ship_engine_room = "ui/gameuiskin#upgrades_mechanic_icon.avif"
-  ship_artillery = "ui/gameuiskin#upgrades_artillery_icon.avif"
-  ship_damage_control = "ui/gameuiskin#upgrades_torpedoes_icon.avif"
-  ship_missiles = "ui/gameuiskin#upgrades_ship_rckt_weaponry_icon.avif"
-  tank_fire_power = "ui/gameuiskin#upgrades_tank_firepower_icon.avif"
-  tank_crew = "ui/gameuiskin#upgrades_tank_crew_icon.avif"
-  tank_protection = "ui/gameuiskin#upgrades_tools_icon.avif"
-  plane_flight_performance = "ui/gameuiskin#upgrades_flight_performance.avif"
-  plane_crew = "ui/gameuiskin#upgrades_plane_crew.avif"
-  plane_weapon = "ui/gameuiskin#upgrades_plane_weapon.avif"
+  ship_commander = "ui/gameuiskin/upgrades_captain_icon.avif"
+  ship_look_out_station = "ui/gameuiskin/upgrades_observation_icon.avif"
+  ship_engine_room = "ui/gameuiskin/upgrades_mechanic_icon.avif"
+  ship_artillery = "ui/gameuiskin/upgrades_artillery_icon.avif"
+  ship_damage_control = "ui/gameuiskin/upgrades_torpedoes_icon.avif"
+  ship_missiles = "ui/gameuiskin/upgrades_ship_rckt_weaponry_icon.avif"
+  tank_fire_power = "ui/gameuiskin/upgrades_tank_firepower_icon.avif"
+  tank_crew = "ui/gameuiskin/upgrades_tank_crew_icon.avif"
+  tank_protection = "ui/gameuiskin/upgrades_tools_icon.avif"
+  plane_flight_performance = "ui/gameuiskin/upgrades_flight_performance.avif"
+  plane_crew = "ui/gameuiskin/upgrades_plane_crew.avif"
+  plane_weapon = "ui/gameuiskin/upgrades_plane_weapon.avif"
 }
 
 let tankAttrToTankCrewParamsMap = {

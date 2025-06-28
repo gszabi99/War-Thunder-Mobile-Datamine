@@ -103,13 +103,13 @@ function hintContent(infoV) {
           }
           killerHasPremium ? premiumMark : null
           {
-            size = [hdpxi(150), hdpxi(150)]
+            size = hdpxi(150)
             rendObj = ROBJ_IMAGE
             image = Picture($"{getAvatarImage(killerAvatar)}:{hdpxi(150)}:{hdpxi(150)}:P")
           }
         ]
       }
-      { size = [0, hdpx(20)] }
+      { size = const [0, hdpx(20)] }
       mkSingleUnitPlate(killerUnit)
     ]
   }

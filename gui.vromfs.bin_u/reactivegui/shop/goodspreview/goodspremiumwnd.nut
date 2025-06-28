@@ -61,8 +61,8 @@ let premiumDescriptionHeader = @(){
 
 let pricePlate = @() {
   watch = previewGoods
-  size = [flex(), SIZE_TO_CONTENT]
-  padding = [ hdpx(24), 0 ]
+  size = FLEX_H
+  padding = const [ hdpx(24), 0 ]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = textButtonPurchase(utf8ToUpper(previewGoods.value?.priceExt.priceText ?? ""),
@@ -82,7 +82,7 @@ let premiumDescription = {
         rendObj = ROBJ_9RECT
         image = gradTranspDoubleSideX
         padding = [ insideIndent, 0 ]
-        size = [ flex(), SIZE_TO_CONTENT ]
+        size = FLEX_H
         texOffs = [0 , gradDoubleTexOffset]
         screenOffs = [0, hdpx(250)]
         color = premiumDescriptionWndBg
@@ -93,7 +93,7 @@ let premiumDescription = {
           {
             flow = FLOW_HORIZONTAL
             valign = ALIGN_CENTER
-            size = [ flex(), SIZE_TO_CONTENT ]
+            size = FLEX_H
             gap = insideIndent * 2
             children = [
               {
@@ -107,7 +107,7 @@ let premiumDescription = {
                 watch = infoText
                 rendObj = ROBJ_TEXTAREA
                 behavior = Behaviors.TextArea
-                size = [ hdpx(700), SIZE_TO_CONTENT ]
+                size = const [ hdpx(700), SIZE_TO_CONTENT ]
                 text = infoText.value
                 color = 0xFFC0C0C0
               }.__update(fontSmall)

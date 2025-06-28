@@ -82,7 +82,7 @@ let mkContactInfo = @(contact, info) @() {
   flow = FLOW_HORIZONTAL
   gap = hdpx(30)
   minWidth = SIZE_TO_CONTENT
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   children = [
     contactAvatar(info.value)
     contactNameBlock(contact.value, info.value)
@@ -102,7 +102,7 @@ let mkBotNameContent = @(player, info) function() {
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)
     minWidth = SIZE_TO_CONTENT
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     children = [
       contactAvatar(info.value)
       {
@@ -215,7 +215,7 @@ function mkButtons(userId, isInvitesAllowed) {
   let gap = { minWidth = hdpx(40) size = flex() }
   return {
     minWidth = SIZE_TO_CONTENT
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_HORIZONTAL
     gap
     children = [
@@ -306,7 +306,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
   let publicStats = isBot ? mkBotStats(player) : mkStatsInfo(userId)
   let isWaitStats = mkIsStatsWait(userId)
   return modalWndBg.__merge({
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     valign = ALIGN_TOP
     stopMouse = true
@@ -316,7 +316,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
         hplace = ALIGN_CENTER
         flow = FLOW_VERTICAL
         valign = ALIGN_TOP
-        padding = [hdpx(40), 0]
+        padding = const [hdpx(40), 0]
         gap = hdpx(30)
         minWidth = hdpx(780)
         children = [
@@ -330,7 +330,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
             flow = FLOW_HORIZONTAL
             gap = { minWidth = hdpx(50) size = flex() }
             minWidth = SIZE_TO_CONTENT
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             children = [
               function() {
                 let my = info.get()?.campaigns[campaign].units
@@ -434,13 +434,13 @@ selectedPlayerForInfo.subscribe(function(v) {
     onClick = close
     hotkeys = [[btnBEscUp, { action = close }]]
     sound = { click  = "click" }
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     onAttach = @() needFetchContactsInBattle.set(true)
     onDetach = @() needFetchContactsInBattle.set(false)
     children = position.__merge({
-      size = [0, 0]
+      size = 0
       children = {
-        size = [hdpx(900), SIZE_TO_CONTENT]
+        size = const [hdpx(900), SIZE_TO_CONTENT]
         transform = {}
         safeAreaMargin = saBordersRv
         behavior = Behaviors.BoundToArea

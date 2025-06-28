@@ -9,7 +9,7 @@ function btnBase(content, sf, isSelected) {
   let isActive = isSelected || (sf & S_ACTIVE) != 0
   let isHovered = (sf & S_HOVER) != 0
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     children = [
       {
         size = flex()
@@ -31,7 +31,7 @@ function controlsTypesButton(content, isSelectedW, onClick) {
   let stateFlags = Watched(0)
   return @() {
     watch = [isSelectedW, stateFlags]
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags(sf)
     onClick

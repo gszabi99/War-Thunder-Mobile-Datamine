@@ -61,7 +61,7 @@ function bpLineBetweenLevelIcons(stage) {
     size = [widthLine, hdpx(15)]
     pos = [0, hdpx(16)]
     children = stage?.isVip ? null
-      : stage.progress == curStage.value ? @() bpCurProgressbar({size = [flex(), hdpx(15)]})
+      : stage.progress == curStage.value ? @() bpCurProgressbar({size = const [flex(), hdpx(15)]})
       : stage.progress < curStage.value ? bpProgressbarFull
       : bpProgressbarEmpty
   }

@@ -71,7 +71,7 @@ registerHandler("playerLevelRewards.receiveNext",
 let receiveBtn = mkSpinnerHideBlock(Computed(@() rewardInProgress.value != null),
   textButtonPrimary(utf8ToUpper(loc("btn/receive")), receiveRewards, { hotkeys = [btnAUp] }),
   {
-    margin = [hdpx(20),0,0,0]
+    margin = const [hdpx(20),0,0,0]
     size = [SIZE_TO_CONTENT, defButtonHeight]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -103,7 +103,7 @@ function rewardsList() {
 }
 
 let levelUpText = @() {
-  padding = [0, hdpx(150)]
+  padding = const [0, hdpx(150)]
   watch = maxRewardLevelInfo
   hplace = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
@@ -140,7 +140,7 @@ function mkUnitPlate(){
 }
 
 let content = modalWndBg.__merge({
-  padding = [0,0,hdpx(50), 0]
+  padding = const [0,0,hdpx(50), 0]
   onClick = receiveRewards
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -151,7 +151,7 @@ let content = modalWndBg.__merge({
     valign = ALIGN_CENTER
     children = [
       @() modalWndHeaderBg.__merge({
-        margin = [0, 0, hdpx(20), 0]
+        margin = const [0, 0, hdpx(20), 0]
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         watch = maxRewardLevelInfo

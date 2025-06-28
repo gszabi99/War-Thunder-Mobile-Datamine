@@ -91,7 +91,7 @@ function mkImageWithCount(value, image, scale = 1, key = null) {
       }
       {
         minWidth = scaleEven(hdpx(70), scale)
-        padding = [hdpx(3), hdpx(8), hdpx(4), hdpx(8)]
+        padding = const [hdpx(3), hdpx(8), hdpx(4), hdpx(8)]
         vplace = ALIGN_BOTTOM
 
         rendObj = ROBJ_9RECT

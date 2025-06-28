@@ -5,8 +5,8 @@ let mkLoginWnd = require("loginWnd.nut")
 let { isUpdateInProgress } = require("loginUpdaterState.nut")
 let mkLoginUpdater = require("loginUpdater.nut")
 let { loadingAnimBg } = require("%globalsDarg/loading/loadingAnimBg.nut")
+let loadingBeforeLogin = require("%rGui/loading/loadingBeforeLogin.nut")
 let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
-let { gradientLoadingTip } = require("%rGui/loading/mkLoadingTip.nut")
 
 let key = {}
 return @() {
@@ -16,7 +16,7 @@ return @() {
   children = [
     loadingAnimBg
     isUpdateInProgress.value ? mkLoginUpdater()
-      : isInLoadingScreen.value || isLoginStarted.value ? gradientLoadingTip
+      : isInLoadingScreen.value || isLoginStarted.value ? loadingBeforeLogin
       : mkLoginWnd()
     mkTitleLogo({ margin = saBordersRv })
   ]

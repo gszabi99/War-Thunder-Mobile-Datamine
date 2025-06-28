@@ -19,12 +19,12 @@ function listbox(value, list, columns = null, valToString = @(v) v, setValue = n
   if (rows.len() > 0 && rows.top().len() < colCount)
     rows.top().resize(colCount, { size = flex() })
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
-    margin = [hdpx(20), 0]
+    margin = const [hdpx(20), 0]
     gap = gapV
     children = rows.map(@(children) {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       gap = gapH
       children

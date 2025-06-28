@@ -1,16 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { ceil, round } = require("%sqstd/math.nut")
+let { setInterval, clearTimer } = require("dagor.workcycle")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { ceil, round, floor } = require("%sqstd/math.nut")
+let { isEqual } = require("%sqstd/underscore.nut")
+let { getBombingZones } = require("guiMission")
+let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let { scaleArr } = require("%globalsDarg/screenMath.nut")
 let { prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
-let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit, gameType
-} = require("%rGui/missionState.nut")
-let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
+let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
 let { missionProgressType } = require("%appGlobals/clientState/missionState.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isInMpBattle, isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit, gameType
+} = require("%rGui/missionState.nut")
+let { teamBlueColor, teamRedColor, teamBlueDarkColor, teamRedDarkColor } = require("%rGui/style/teamColors.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 
 let secondsPerHour = 3600
@@ -23,6 +28,7 @@ let scoreBarPadding = (0.15 * scoreBarPlateHeight).tointeger()
 let scoreBarGap = (-0.4 * scoreBarPlateHeight).tointeger()
 let scoreBarWidth = scoreBarGap * (SCORE_PLATES_TEAM_COUNT - 1) + SCORE_PLATES_TEAM_COUNT * scoreBarPlateWidth + 4 * scoreBarPadding
 let scoreBarHeight = scoreBarPlateHeight + 2 * scoreBarPadding
+let baseIconSize = (scoreBarHeight * 1.3).tointeger()
 let timerBgWidth   = (0.65 * scoreBarWidth).tointeger()
 let timerBgHeight  = (57.0 / 131 * timerBgWidth).tointeger()
 let gapToTimer = @(timerBgWidthV) -0.15 * timerBgWidthV
@@ -36,18 +42,37 @@ let enemyTeamTickets = Computed(@() localTeam.value == 2 ? ticketsTeamA.value : 
 let scoresForOneKill = Computed(@() (scoreLimit.get().tofloat() / SCORE_PLATES_TEAM_COUNT).tointeger())
 let needScoreBoard = Computed(@() (gameType.get() & (GT_MP_SCORE | GT_MP_TICKETS)) != 0)
 
+let battleBasesRaw = hardPersistWatched("battleBasesRaw",[])
+
+let localTeamBases = Computed(@() battleBasesRaw.get().filter(@(b) b.team == localTeam.get()) ?? [])
+let enemyTeamBases = Computed(@() battleBasesRaw.get().filter(@(b) b.team != localTeam.get()) ?? [])
+
+let updateBZones = @() battleBasesRaw.set(getBombingZones() ?? [])
+eventbus_subscribe("onBombingZoneDamaged", @(_) updateBZones())
+eventbus_subscribe("onBombingZoneStateChanged", @(_) updateBZones())
+
 let scoreParamsByTeam = {
   localTeam = {
     score = localTeamTickets
+    prevScore = Watched(null)
     fillColor = teamBlueColor
+    fillDisabledColor = teamBlueDarkColor
     halign = ALIGN_RIGHT
     image = "hud_healthbar_left_slot.svg"
+    baseImage = "base_ally"
+    bases = localTeamBases
+    baseCount = Computed(@() localTeamBases.get().len())
   }
   enemyTeam = {
     score = enemyTeamTickets
+    prevScore = Watched(null)
     fillColor = teamRedColor
+    fillDisabledColor = teamRedDarkColor
     halign = ALIGN_LEFT
     image = "hud_healthbar_right_slot.svg"
+    baseImage = "base_enemy"
+    bases = enemyTeamBases
+    baseCount = Computed(@() enemyTeamBases.get().len())
   }
 }
 
@@ -124,6 +149,113 @@ function mkLinearScoreBar(teamName, scale) {
   })
 }
 
+isInBattle.subscribe(function(v) {
+  if (v)
+    return
+  scoreParamsByTeam.each(@(team) team.prevScore.set(null))
+  battleBasesRaw.set([])
+})
+
+function mkBasesIndicators(scoreParams, basesBlockHeight, iconSize) {
+  let { bases, baseCount, baseImage, fillColor, fillDisabledColor, halign } = scoreParams
+  return @() {
+    watch = baseCount
+    rendObj = ROBJ_BOX
+    size = [SIZE_TO_CONTENT, basesBlockHeight]
+    pos = [0, basesBlockHeight]
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(10)
+    halign
+    children = array(baseCount.get()).map(function(_, i) {
+      let b = Computed(@(prev) isEqual(bases.get()?[i], prev) ? prev : bases.get()?[i])
+      return @() {
+        watch = b
+        size = [basesBlockHeight, basesBlockHeight]
+        rendObj = ROBJ_VECTOR_CANVAS
+        fillColor = b.get().zoneIntegrity > 0 ? 0xFF000000 : 0x55000000
+        color = b.get().zoneIntegrity > 0 ? 0xFF000000 : 0x55000000
+        lineWidth = 2
+        valign = ALIGN_CENTER
+        halign = ALIGN_CENTER
+        commands = [
+          [VECTOR_ELLIPSE, 50, 50, 50, 50],
+        ]
+        children = [
+          b.get().zoneIntegrity == 0 ? null : {
+            size = [basesBlockHeight, basesBlockHeight]
+            rendObj = ROBJ_PROGRESS_CIRCULAR
+            keepAspect = true
+            image = Picture($"ui/gameuiskin#circular_progress_1.svg:{basesBlockHeight}:{basesBlockHeight}:P")
+            bgColor = fillColor
+            fgColor = 0xFF000000
+            fValue = 1 - b.get().zoneIntegrity
+          },
+          {
+            size = iconSize
+            rendObj = ROBJ_IMAGE
+            keepAspect = true
+            image = Picture($"ui/gameuiskin#{b.get().isAirfield ? "airport" : baseImage}.svg:{iconSize}:{iconSize}:P")
+            color = b.get().zoneIntegrity > 0 ? fillColor : fillDisabledColor
+          },
+        ]
+      }
+    })
+  }
+}
+
+function mkLinearScoreBarWithScore(teamName, scale) {
+  let { score, fillColor, image, halign, prevScore } = scoreParamsByTeam[teamName]
+  let progress = Computed(@() scoreLimit.get() == 0 ? 0 : clamp(score.get().tofloat() / scoreLimit.get(), 0.0, 1.0))
+  let padding = max(round(scoreBarPadding * scale).tointeger(), 1)
+  let paddingInc = hdpxi(scale)
+  function updateScore() {
+    if (score.get() != prevScore.get() && prevScore.get() != null) {
+      let diff = score.get() - prevScore.get()
+      let shift = (diff > 0 ? ceil : floor)(0.2 * diff)
+      prevScore.set(prevScore.get() + shift)
+    }
+  }
+
+  let progressBarSize = scaleArr([scoreBarWidth, scoreBarHeight], scale)
+  let iconSize = (baseIconSize * scale).tointeger()
+  let basesBlockHeight = progressBarSize[1] * 2
+  return mkScoreBarBg(image, progressBarSize).__update({
+    padding = [padding + paddingInc, 2 * padding + paddingInc]
+    halign
+    children = [
+      @() {
+        watch = progress
+        size = flex()
+        color = fillColor
+        fillColor
+        lineWidth = 2
+        rendObj = ROBJ_VECTOR_CANVAS
+        commands = [
+          halign == ALIGN_RIGHT
+            ? [VECTOR_POLY, 100, 100, full, 0, full - full * progress.get(), 0, 100.0 - full * progress.get(), 100]
+            : [VECTOR_POLY, 0, 100, ofs, 0, ofs + full * progress.get(), 0, full * progress.get(), 100]]
+      }
+      @() {
+        watch = prevScore
+        key = updateScore
+        size = [flex(), SIZE_TO_CONTENT]
+        rendObj = ROBJ_TEXT
+        color = 0xFFFFFFFF
+        halign = ALIGN_CENTER
+        vplace = ALIGN_CENTER
+        text = prevScore.get()
+        function onAttach() {
+          if (prevScore.get() == null)
+            prevScore.set(score.get())
+          setInterval(0.05, updateScore)
+        }
+        onDetach = @() clearTimer(updateScore)
+        }.__update(fontVeryVeryTinyShaded)
+      mkBasesIndicators(scoreParamsByTeam[teamName], basesBlockHeight, iconSize)
+    ]
+  })
+}
+
 let shortcutId = "ID_MPSTATSCREEN"
 let shortcutImg = @(scale) @() {
   watch = isHudAttached
@@ -133,13 +265,18 @@ let shortcutImg = @(scale) @() {
   children = !isHudAttached.get() ? null : mkGamepadShortcutImage(shortcutId, {}, scale)
 }
 
+let barCtors = {
+  split = mkSplitScoreBar,
+  airGS = mkLinearScoreBarWithScore
+}
+
 let mkScoreBoard = @(scale) function() {
-  let barCtor = missionProgressType.value == "split" ? mkSplitScoreBar : mkLinearScoreBar
+  let barCtor = barCtors?[missionProgressType.get()] ?? mkLinearScoreBar
   let tSize = scaleArr([timerBgWidth, timerBgHeight], scale)
   let font = prettyScaleForSmallNumberCharVariants(fontTiny, scale)
   return {
     key = "score_board"
-    watch = [missionProgressType, isInMpBattle]
+    watch = [missionProgressType, isInMpBattle, curCampaign]
     hplace = ALIGN_CENTER
     behavior = isInMpBattle.get() ? Behaviors.Button : null
     cameraControl = true
@@ -150,7 +287,7 @@ let mkScoreBoard = @(scale) function() {
       isInMpBattle.get() ? shortcutImg(scale) : null
       {
         flow = FLOW_HORIZONTAL
-        gap = gapToTimer(tSize[0])
+        gap = missionProgressType.get() == "airGS" ? -hdpx(round(5 * scale).tointeger()) : gapToTimer(tSize[0])
         children = [
           barCtor("localTeam", scale)
           {
@@ -196,6 +333,7 @@ let scoreBoardEditView = {
     mkLinearScoreBar("enemyTeam", 1)
   ]
 }
+
 
 return {
   needScoreBoard

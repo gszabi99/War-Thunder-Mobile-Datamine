@@ -40,7 +40,7 @@ let premiumDescription = {
     modalWndHeader(loc("charServer/entitlement/PremiumAccount"))
     {
       padding = hdpx(48)
-      size = [ flex(), SIZE_TO_CONTENT ]
+      size = FLEX_H
       texOffs = [0 , gradDoubleTexOffset]
       screenOffs = [0, hdpx(250)]
       flow = FLOW_HORIZONTAL
@@ -53,13 +53,13 @@ let premiumDescription = {
           keepAspect = KEEP_ASPECT_FIT
           size = flex()
           minHeight = sh(30)
-          margin = [0, hdpx(32), 0, 0]
+          margin = const [0, hdpx(32), 0, 0]
         }
         @() {
           watch = infoText
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
-          size = [ pw(70), SIZE_TO_CONTENT ]
+          size = const [ pw(70), SIZE_TO_CONTENT ]
           text = infoText.value
           opacity = 0.8
           parSpacing = hdpx(24)

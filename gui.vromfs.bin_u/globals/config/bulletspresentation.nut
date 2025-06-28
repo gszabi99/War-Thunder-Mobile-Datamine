@@ -47,6 +47,7 @@ let bulletsImages = {
   he_frag_dist_fuse                   = "shell_he_tf"
   rocket_tank                         = "rocket_500kg"
   aam                                 = "air_to_air_missile"
+  he_or_tank                          = "shell_heat_fs_tank"
 }
 
 let defaultBeltImage                  = "bullet_gun_default"

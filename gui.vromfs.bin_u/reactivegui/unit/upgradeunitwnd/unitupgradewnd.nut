@@ -32,15 +32,15 @@ function close() {
 }
 
 let upgradeTitle = {
-  size = [flex(), hdpx(70)]
+  size = const [flex(), hdpx(70)]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  margin = [0, 0, hdpx(12), 0]
+  margin = const [0, 0, hdpx(12), 0]
   gap = hdpx(10)
   children = [
     {
-      size = [hdpx(90), hdpx(40)]
+      size = const [hdpx(90), hdpx(40)]
       rendObj = ROBJ_IMAGE
       keepAspect = KEEP_ASPECT_FIT
       image = Picture("ui/gameuiskin#icon_premium.svg")
@@ -56,10 +56,10 @@ let upgradeTitle = {
 let commonTitle = {
   rendObj = ROBJ_TEXT
   text = loc("upgradeType/common")
-  size = [flex(), hdpx(70)]
+  size = const [flex(), hdpx(70)]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  margin = [0, 0, hdpx(12), 0]
+  margin = const [0, 0, hdpx(12), 0]
 }.__update(fontSmallShaded)
 
 let mkCardTitle = @(unit) unit?.isUpgraded ? upgradeTitle : commonTitle
@@ -67,7 +67,7 @@ let mkCardTitle = @(unit) unit?.isUpgraded ? upgradeTitle : commonTitle
 let mkLevelMark = @(unit) {
   vplace = ALIGN_BOTTOM
   margin = hdpx(10)
-  size = [hdpx(45), hdpx(45)]
+  size = hdpx(45)
   children = mkLevelBg({
     childOvr = {
       halign = ALIGN_CENTER
@@ -127,15 +127,15 @@ function buyBtn(unit){
 let mkCardContent = @(unit) {
   size = [unitPlateWidth, offerCardHeight]
   flow = FLOW_VERTICAL
-  padding = [hdpx(32), 0]
+  padding = const [hdpx(32), 0]
   halign = ALIGN_CENTER
   hplace = ALIGN_CENTER
   children = [
     mkCardTitle(unit)
     mkUnitPlate(unit)
     {
-      size =[flex(), SIZE_TO_CONTENT]
-      padding = [hdpx(15), 0,0,0]
+      size =FLEX_H
+      padding = const [hdpx(15), 0,0,0]
       valign = ALIGN_CENTER
       flow = FLOW_VERTICAL
       children = [
@@ -185,12 +185,12 @@ function offerCards() {
           @() !upgradeCommonUnitName.get()
             ? {
               watch = upgradeCommonUnitName
-              size = [hdpx(100), hdpx(70)]
+              size = const [hdpx(100), hdpx(70)]
             }
             : {
               watch = upgradeCommonUnitName
               rendObj = ROBJ_IMAGE
-              size = [hdpx(100), hdpx(70)]
+              size = const [hdpx(100), hdpx(70)]
               vplace = ALIGN_CENTER
               image = Picture($"ui/gameuiskin#arrow_icon.svg:{hdpx(100)}:{hdpx(70)}:P")
             }

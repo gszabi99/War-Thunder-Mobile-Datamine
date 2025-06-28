@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
+let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
 let { eventbus_send } = require("eventbus")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
@@ -455,6 +455,11 @@ function openShopWnd(catId = null, bqPurchaseInfo = null) {
   isShopOpened(true)
 }
 
+function openShopWndByGoods(goods) {
+  openShopWnd(getShopCategory(goods.gtype, goods.meta))
+  deferOnce(@() anim_start($"attract_goods_{goods.id}"))
+}
+
 let openShopWndByCurrencyId = @(currencyId, bqPurchaseInfo)
   openShopWnd(categoryByCurrency?[currencyId], bqPurchaseInfo.__merge({ id = currencyId }))
 
@@ -469,6 +474,7 @@ register_command(function() {
 return {
   openShopWnd
   openShopWndByCurrencyId
+  openShopWndByGoods
   isShopOpened
   shopOpenCount
 
@@ -498,4 +504,5 @@ return {
   pageScrollHandler
   calculateNewGoodsDiscount
   isDisabledGoods
+  discountsToApply
 }

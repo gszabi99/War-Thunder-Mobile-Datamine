@@ -20,7 +20,7 @@ let streakBlinkTime = 0.3
 let streakBlinkDelayTime = streakAnimTime - streakBlinkTime
 
 let mkText = @(text) {
-  size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
+  size = SIZE_TO_CONTENT
   halign = ALIGN_CENTER
   rendObj = ROBJ_TEXT
   text
@@ -94,8 +94,8 @@ function mkInfoButton(val) {
 
 
 let mkAchievementsComp = @(streaksArr, startAnimTime, delayPerItem, offset) streaksArr.len() == 0 ? null : {
-  size = [flex(), SIZE_TO_CONTENT]
-  margin = [0, 0, hdpx(30), 0]
+  size = FLEX_H
+  margin = const [0, 0, hdpx(30), 0]
   children = [
     {
       size = [gradientWidth, flex()]

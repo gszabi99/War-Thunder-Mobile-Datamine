@@ -398,14 +398,14 @@ function debriefingWnd() {
             flow = FLOW_HORIZONTAL
             children = [
               {
-                size = [flex(), SIZE_TO_CONTENT]
+                size = FLEX_H
                 halign = ALIGN_LEFT
                 children = newPlatoonUnit != null || hasPlayerLevelUp || researchedUnit != null || needForceQuitToHangar ? null
                   : hasUnitLevelUp ? mkBtnUpgradeUnit(needShowBtns_Unit, campaign)
                   : mkBtnToHangar(needShowBtns_Final, debrData, false, unlockedReward)
               }
               {
-                size = [flex(), SIZE_TO_CONTENT]
+                size = FLEX_H
                 halign = ALIGN_RIGHT
                 children = {
                   flow = FLOW_HORIZONTAL

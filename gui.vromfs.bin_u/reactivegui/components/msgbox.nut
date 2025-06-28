@@ -18,18 +18,19 @@ let { defButtonHeight } = buttonStyles
 
 function mkBtn(b, wndUid) {
   let { id = "", text = null, cb = null, hotkeys = null, isCancel = false, isDefault = false,
-    styleId = "COMMON", key = null, multiLine = false, priceComp = null } = b
+    styleId = "COMMON", key = null, multiLine = false, priceComp = null, addChild = null } = b
   let style = buttonStyles?[styleId]
   if (!style)
     logerr($"StyleId {styleId} doesn't exist in buttonStyles")
 
+  let ovr = !multiLine ? { key } : { key, size = [wndWidthDefault/2-buttonsHGap*1.5, defButtonHeight] }
   let locText = utf8ToUpper(text ?? loc($"msgbox/btn_{id}"))
   let styleOvr = mergeStyles(style ?? buttonStyles.COMMON, {
     hotkeys = hotkeys
       ?? (isDefault ? [btnAUp]
         : isCancel ? [btnBEscUp]
         : null)
-    ovr = !multiLine ? { key } : { key, size = [wndWidthDefault/2-buttonsHGap*1.5, defButtonHeight] }
+    ovr = addChild == null ? ovr : ovr.__merge({ children = addChild })
     childOvr = !multiLine ? {}
       : {
         size = [wndWidthDefault / 2 - buttonsHGap * 2, defButtonHeight * 0.9]
@@ -71,7 +72,7 @@ let mkCustomMsgBoxWnd = @(title, content, buttonsArray, ovr = {}) modalWndBg.__m
       children = [
         type(content) == "string" ? msgBoxText(content) : content,
         {
-          size = [ flex(), SIZE_TO_CONTENT ]
+          size = FLEX_H
           halign = ALIGN_CENTER
           flow = FLOW_HORIZONTAL
           gap = { size = flex() }

@@ -100,7 +100,7 @@ let activeUnlocks = Computed(@(prev) allUnlocksDesc.value
 
 let campaignActiveUnlocks = Computed(function() {
   let curC = getCampaignStatsId(curCampaign.get())
-  return activeUnlocks.get().filter(@(u) (u?.meta?.campaign == null || curC == getCampaignStatsId(u?.meta?.campaign)) )
+  return activeUnlocks.get().filter(@(u) (u?.meta.campaign == null || curC == getCampaignStatsId(u?.meta.campaign)) )
 })
 
 let mkPrice = @(price = 0, currency = "") { currency, price }

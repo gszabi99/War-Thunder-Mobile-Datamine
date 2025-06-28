@@ -74,7 +74,7 @@ function add(rectOrPos, popup) {
     key = popup.uid
     children = {
       key = $"__place_{popup.uid}"
-      size = [0, 0]
+      size = 0
       pos = offsets.pos
       halign = offsets.halign
       valign = offsets.valign

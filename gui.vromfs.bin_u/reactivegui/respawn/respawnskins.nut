@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
-let { checkIcon } = require("%rGui/unitSkins/unitSkinsComps.nut")
+let { checkIcon } = require("%rGui/unitCustom/unitCustomComps.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { respawnUnitInfo, respawnUnitSkins } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { isAutoSkin } = require("%rGui/unit/unitSettings.nut")
 let { chooseAutoSkin, respawnSlots, selSlot, selectedSkins } = require("%rGui/respawn/respawnState.nut")
-let { curLevelTags } = require("%rGui/unitSkins/levelSkinTags.nut")
+let { curLevelTags } = require("%rGui/unitCustom/unitSkins/levelSkinTags.nut")
 
 
 let skinSize = hdpxi(110)

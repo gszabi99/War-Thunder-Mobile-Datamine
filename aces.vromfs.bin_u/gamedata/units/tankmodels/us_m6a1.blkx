@@ -1778,7 +1778,7 @@
         "speedYaw": 18.0,
         "speedPitch": 4.0,
         "fireConeAngle": 1.0,
-        "bullets": 80,
+        "bullets": 202,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -2126,7 +2126,16 @@
       }
     },
     "secondaryShells": {
+      "ammo_turret_05_dm": {
+        "count": 42
+      },
+      "ammo_turret_04_dm": {
+        "count": 40
+      },
       "ammo_turret_03_dm": {
+        "count": 40
+      },
+      "ammo_turret_02_dm": {
         "count": 40
       },
       "ammo_turret_01_dm": {

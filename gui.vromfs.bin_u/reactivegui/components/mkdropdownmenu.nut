@@ -38,7 +38,7 @@ function textButton(text, onClick) {
     return {
       watch = stateFlags
       rendObj = ROBJ_SOLID
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       halign = ALIGN_CENTER
       minWidth = SIZE_TO_CONTENT
       padding = hdpx(15)

@@ -94,7 +94,7 @@ function purchaseOfferImpl(offer, currencyId, price) {
 
 let mkCurrencyWithIcon = @(id, count) {
   flow = FLOW_VERTICAL
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   gap = hdpx(30)

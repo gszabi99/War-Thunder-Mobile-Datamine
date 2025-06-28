@@ -42,31 +42,21 @@ from "%globalsDarg/darg_library.nut" import *
 
 
 
-let utf8 = require("utf8")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { abTests } = require("%appGlobals/pServer/campaign.nut")
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { get_time_msec } = require("dagor.time")
 let { register_command } = require("console")
 
 
 const WND_UID = "tutorial_wnd"
-const SKIP_DELAY_DEFAULT = 3.0
-const SKIP_DELAY_AFTER_NEXT_KEY = 2.0
 local tutorialConfig = null
 
 let state = Watched({
   version = 0 
   step = 0
 })
-let isDebugMode = hardPersistWatched("tutorialWndState.isDebugMode", false)
 
-let isTutorialSkipClickOnBase = Computed(@() (abTests.get()?.tutorialSkipClick ?? "false") == "true")
-let isTutorialSkipOnClick = Computed(@() isTutorialSkipClickOnBase.get() != isDebugMode.get())
 let tutorialConfigVersion = Computed(@() state.value.version)
 let stepIdx = Computed(@() state.value.step)
-let nextKeyAllowed = Watched(false)
-let skipKeyAllowed = Watched(false)
 
 local stepStartTime = 0
 state.subscribe(function(_) { stepStartTime = get_time_msec() })
@@ -163,46 +153,7 @@ function skipStep() {
     nextStep()
 }
 
-let calcNextDelayByText = @(text) clamp(0.015 * utf8(text).charCount(), 0.5, 5.0)
-
-let allowNextKey = @() nextKeyAllowed(true)
-let allowSkipKey = @() skipKeyAllowed(true)
-function updateNextKeyTimer() {
-  local { nextKeyDelay = null, skipKeyDelay = null, text = "" } = tutorialConfig?.steps[stepIdx.value]
-  gui_scene.clearTimer(allowNextKey)
-  gui_scene.clearTimer(allowSkipKey)
-  skipKeyAllowed(false)
-
-  if (nextKeyDelay == null) {
-    nextKeyAllowed(false)
-    gui_scene.setTimeout(isTutorialSkipOnClick.get() ? 0.0 : (skipKeyDelay ?? SKIP_DELAY_DEFAULT), allowSkipKey)
-    return
-  }
-
-  if (nextKeyDelay < 0)
-    nextKeyDelay = calcNextDelayByText(text instanceof Watched ? text.value : text)
-
-  if (nextKeyDelay == 0) {
-    nextKeyAllowed(true)
-    gui_scene.setTimeout(isTutorialSkipOnClick.get() ? 0.0 : (skipKeyDelay ?? SKIP_DELAY_DEFAULT), allowSkipKey)
-  }
-  else {
-    nextKeyAllowed(false)
-    gui_scene.setTimeout(isTutorialSkipOnClick.get() ? 0.0 : nextKeyDelay, allowNextKey)
-    gui_scene.setTimeout(isTutorialSkipOnClick.get() ? 0.0
-      : (skipKeyDelay ?? (nextKeyDelay + SKIP_DELAY_AFTER_NEXT_KEY)), allowSkipKey)
-  }
-}
-state.subscribe(@(_) updateNextKeyTimer())
-
-
 register_command(finishTutorial, "tutorial.closeCurrentTutorial")
-register_command(
-  function() {
-    isDebugMode.set(!isDebugMode.get())
-    console_print($"isTutorialSkipOnClick = {isTutorialSkipOnClick.get()}") 
-  },
-  "debug.toggleAbTest.tutorialSkipClick")
 
 return {
   isTutorialActive = Computed(@() tutorialConfigVersion.value > 0 && tutorialConfig != null)
@@ -211,9 +162,6 @@ return {
   getTutorialConfig = @() tutorialConfig != null ? freeze(tutorialConfig) : null
   setTutorialConfig
   stepIdx
-  nextKeyAllowed
-  skipKeyAllowed
-  isTutorialSkipOnClick
   goToStep = function(idxOrId) {
     onStepStatus("step_success")
     goToStep(idxOrId)

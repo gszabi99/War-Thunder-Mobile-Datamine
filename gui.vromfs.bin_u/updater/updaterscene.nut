@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { statusText, progressPercent } = require("updaterState.nut")
 let { screensList } = require("%globalsDarg/loading/loadingScreensCfg.nut")
 let { screenWeights, loadingAnimBg } = require("%globalsDarg/loading/loadingAnimBg.nut")
+let { mkProgressStatusText, mkProgressbar, progressbarGap } = require("%globalsDarg/loading/loadingProgressbar.nut")
 let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
 let { gradientLoadingTip } = require("loadingTip.nut")
 
@@ -31,28 +32,14 @@ let waitSpinner = {
 }
 
 let bottomBlock = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   vplace = ALIGN_BOTTOM
   valign = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
-  gap = hdpx(15)
+  gap = progressbarGap
   children = [
-    @() {
-      watch = statusText
-      rendObj = ROBJ_TEXT
-      text = statusText.value
-    }.__update(fontMediumShaded)
-    {
-      size = [flex(), hdpx(15)]
-      rendObj = ROBJ_SOLID
-      color = 0xFF827A7A
-      children = @() {
-        watch = progressPercent
-        size = [pw(progressPercent.value), flex()]
-        rendObj = ROBJ_SOLID
-        color = 0xFF00FDFF
-      }
-    }
+    mkProgressStatusText(statusText)
+    mkProgressbar(progressPercent, 0xFF00FDFF)
   ]
 }
 

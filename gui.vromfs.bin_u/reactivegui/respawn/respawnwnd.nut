@@ -71,7 +71,7 @@ let balanceBlock = @() {
   watch = sparesNum
   hplace = ALIGN_RIGHT
   vplace = ALIGN_CENTER
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   children = [
     mkCurrencyComp(sparesNum.value, SPARE)
     mkConsumableSpend(SPARE, hdpx(20), hdpx(80), @(count) sparesNum.set(sparesNum.get() - count))
@@ -82,7 +82,7 @@ let topPanel = @() {
   size = [flex(), scoreBoardHeight]
   watch = respawnUnitItems
   children = [
-    { size = [SIZE_TO_CONTENT, flex()], children = logerrHintsBlock }
+    { size = FLEX_V, children = logerrHintsBlock }
     scoreBoard
     mkMenuButton(1.0, { onClick = @() eventbus_send("openFlightMenuInRespawn", {}) })
     respawnUnitItems.value?.spare ? balanceBlock : null
@@ -105,7 +105,7 @@ function onSlotClick(slot) {
 let sparePrice = {
   hplace = ALIGN_RIGHT
   halign = ALIGN_TOP
-  padding = [hdpx(20), hdpx(20), 0, 0]
+  padding = const [hdpx(20), hdpx(20), 0, 0]
   children = mkUnitPrice({
     fullPrice = 1,
     price = 1,
@@ -179,7 +179,7 @@ function slotsBlockTitle(unit, isSeparateSlots) {
     : {}
   let textComp = headerText(text).__update(
     textLength > textWidth ? headerMarquee(textWidth - hdpx(20)) : {},
-    { margin = [0, hdpx(20), 0, 0] },
+    { margin = const [0, hdpx(20), 0, 0] },
     textColorOvr
   )
   return header({
@@ -225,7 +225,7 @@ function slotsBlock() {
             children = [
               pannableArea(
                 {
-                  size = [flex(), SIZE_TO_CONTENT]
+                  size = FLEX_H
                   flow = FLOW_VERTICAL
                   gap = unitPlatesGap
                   children = list
@@ -241,7 +241,7 @@ function slotsBlock() {
 }
 
 let map = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   maxHeight = mapMaxSize + headerHeight + gap
   maxWidth = mapMaxSize
   flow = FLOW_VERTICAL
@@ -249,7 +249,7 @@ let map = {
   children = [
     header(headerText(loc("respawn/choose_respawn_point")))
     bg.__merge({
-      size = [flex(), pw(100)]
+      size = const [flex(), pw(100)]
       padding = gap
       children = respawnMap
     })
@@ -288,7 +288,7 @@ function toBattleButton(onClick, styleOvr) {
     children = [
       @() {
         watch = selSlotUnitType
-        size = [SIZE_TO_CONTENT, flex()]
+        size = FLEX_V
         flow = FLOW_VERTICAL
         halign = ALIGN_RIGHT
         children = [
@@ -344,7 +344,7 @@ let buttons = @() {
 let rightBlock = {
   size = flex()
   halign = ALIGN_RIGHT
-  margin = [0, 0, 0, hdpx(50)]
+  margin = const [0, 0, 0, hdpx(50)]
   children = [
     map
     buttons
@@ -370,7 +370,7 @@ function respawnBulletsPlace() {
   let content = selSlotUnitType.get() == null ? null
     : (weaponryBlockByUnitType?[selSlotUnitType.get()](selSlot.get()) ?? respawnBullets)
   return res.__update({
-    size = [SIZE_TO_CONTENT, flex()]
+    size = FLEX_V
     children = {
       key = slotAABB.value
       onAttach = @() selSlotContentGenId.set(selSlotContentGenId.get() + 1)
@@ -417,7 +417,7 @@ let content = @() {
     : [
         slotsBlock
         {
-          size = [SIZE_TO_CONTENT, flex()]
+          size = FLEX_V
           children = [
             respawnBulletsPlace
             skinsList

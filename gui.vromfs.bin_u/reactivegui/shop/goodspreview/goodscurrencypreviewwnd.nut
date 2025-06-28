@@ -90,7 +90,7 @@ let previewBg = {
 }
 
 let currencyHighlight = {
-  size = [hdpx(700), hdpx(700)]
+  size = hdpx(700)
   rendObj = ROBJ_IMAGE
   image = gradRadial
   color = 0x00666636
@@ -122,12 +122,12 @@ let currencyImage = {
 }
 
 let currencyEffectFw = {
-  children = mkSparks({ size = [hdpx(1100), hdpx(500)], delay = aTimeHeaderStart, count = 30 })
+  children = mkSparks({ size = const [hdpx(1100), hdpx(500)], delay = aTimeHeaderStart, count = 30 })
   animations = opacityAnims(0.5, aTimeHeaderStart)
 }
 
 let currencyEffectBw = {
-  children = mkSparks({ size = [hdpx(1100), hdpx(500)], delay = aTimeHeaderStart, count = 20 })
+  children = mkSparks({ size = const [hdpx(1100), hdpx(500)], delay = aTimeHeaderStart, count = 20 })
   animations = opacityAnims(0.5, aTimeHeaderStart)
 }
 

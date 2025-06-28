@@ -65,7 +65,7 @@ function onBtnApply(isApply = true) {
 let onCloseButton = @() onBtnApply(false)
 
 let textarea = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER
@@ -148,8 +148,8 @@ let pageComment = {
       text = loc("rateGame/what_did_not_like")
     })
     {
-      size = [flex(), SIZE_TO_CONTENT]
-      padding = [0, hdpx(60)]
+      size = FLEX_H
+      padding = const [0, hdpx(60)]
       pos = [0, hdpx(300)]
       children = textInput(fieldComment, {
         placeholder = loc("feedback/editbox/placeholder")
@@ -163,7 +163,7 @@ let pageComment = {
 let imagesPreloadComp = @() {
   watch = isOpened
   children = !isOpened.value ? null : array(5).map(@(_, i) {
-    size = [1, 1]
+    size = 1
     rendObj = ROBJ_IMAGE
     image = Picture($"!ui/images/review_cue_{i + 1}.avif")
     opacity = 0.01
@@ -172,7 +172,7 @@ let imagesPreloadComp = @() {
 
 let girlImage = @() {
   watch = [fieldRating, hasAppliedRating, isRatedExcellent]
-  size = [hdpxi(644), hdpxi(914)]
+  size = const [hdpxi(644), hdpxi(914)]
   vplace = ALIGN_BOTTOM
   pos = [ sw(45) - (contentW / 2) - hdpxi(444), 0 ]
   rendObj = ROBJ_IMAGE

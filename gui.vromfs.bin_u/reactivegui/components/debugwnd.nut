@@ -47,7 +47,7 @@ function tabButton(text, idx, curTab) {
       onClick = @() curTab(idx)
       onElemState = @(s) stateFlags(s)
       watch = [stateFlags, curTab]
-      padding = [hdpx(5), hdpx(10)]
+      padding = const [hdpx(5), hdpx(10)]
       rendObj = ROBJ_BOX
       fillColor = sf & S_HOVER ? Color(200, 200, 200) : isSelected ? Color(0, 0, 0, 0) : Color(0, 0, 0)
       borderColor = Color(200, 200, 200)
@@ -55,7 +55,7 @@ function tabButton(text, idx, curTab) {
     }
   }
 }
-let hGap = freeze({ rendObj = ROBJ_SOLID size = [hdpx(1), hdpx(10)] vplace = ALIGN_CENTER color = Color(40, 40, 40, 40) })
+let hGap = freeze({ rendObj = ROBJ_SOLID size = const [hdpx(1), hdpx(10)] vplace = ALIGN_CENTER color = Color(40, 40, 40, 40) })
 let mkTabs = @(tabs, curTab) @() {
   watch = curTab
   children = wrap(
@@ -68,7 +68,7 @@ let mkTabs = @(tabs, curTab) @() {
 }
 
 let textArea = @(text) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   color = defaultColor
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
@@ -178,7 +178,7 @@ function mkInfoBlock(curTabIdx, tabs, filterText, textWatch) {
   return @() {
     watch = textWatch
     key = mkInfoBlockKey
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     children = textArea(textWatch.value)
     onAttach = recalcText
     function onDetach() {
@@ -202,18 +202,18 @@ let debugWndContent = @(tabs, curTab, filterText, close, textWatch, childrenOver
 
   children = [
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       valign = ALIGN_TOP
       children = [
         {
-          size = [flex(4), SIZE_TO_CONTENT]
+          size = const [flex(4), SIZE_TO_CONTENT]
           children = childrenOverTabs
         }
         textInput(filterText, {
           placeholder = "filter..."
           textStyle = fontVeryTiny
-          ovr = { padding = [hdpx(5), hdpx(10)] }
+          ovr = { padding = const [hdpx(5), hdpx(10)] }
           onChange = @(value) filterText(value)
           onEscape = @() filterText.value == "" ? close() : filterText("")
           hotkeys = [["L.Ctrl C", { action = @() set_clipboard_text(textWatch.value) }]]
@@ -225,7 +225,7 @@ let debugWndContent = @(tabs, curTab, filterText, close, textWatch, childrenOver
     makeVertScroll(
       @() {
         watch = curTab
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         children = mkInfoBlock(curTab.value, tabs, filterText, textWatch)
       },
       { rootBase = { behavior = Behaviors.Pannable } })

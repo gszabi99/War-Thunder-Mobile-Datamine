@@ -89,7 +89,7 @@ function mkHudTuningElem(cfg) {
     let scaleOvr = scale.get() == 1 ? {} : { transform = { scale = array(2, scale.get()) } }
     return {
       watch = [transform, scale]
-      size = [0, 0]
+      size = 0
       pos
       children = viewWithBorder
     }.__update(alignToDargPlace(align), scaleOvr)

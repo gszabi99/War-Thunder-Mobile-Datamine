@@ -72,7 +72,7 @@ let mkVerticalPannableArea = @(content, override = {}) {
 
 let categoriesBlock = @() {
   watch = attrUnitData
-  size = [ flex(), SIZE_TO_CONTENT ]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   children = mkAttrTabs(attrUnitData.value.preset.map(@(page, idx) {
       id = page.id
@@ -96,7 +96,7 @@ let mkAttrDetailsText = @(attrId) {
   size = flex()
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  margin = [0, hdpx(24)]
+  margin = const [0, hdpx(24)]
   text = loc($"attr_desc/{attrId}")
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -127,11 +127,11 @@ let attrDetails = @() {
         watch = [curCategory, lastModifiedAttr, isAttrDetailsVisible]
         size = [attrDetailsWidth, SIZE_TO_CONTENT]
         padding = 0
-        margin = [hdpx(20),0,0]
+        margin = const [hdpx(20),0,0]
         fillColor = 0xA0000000
         children = [
           {
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             flow = FLOW_VERTICAL
             children = (curCategory.value?.attrList ?? [])
               .map(@(attr) mkAttrDetailsRow(attr.id, lastModifiedAttr.value))
@@ -142,7 +142,7 @@ let attrDetails = @() {
 }
 
 let pageBlock = {
-  size = [ SIZE_TO_CONTENT, flex() ]
+  size = FLEX_V
   hplace = ALIGN_RIGHT
   flow = FLOW_VERTICAL
   children = [
@@ -151,8 +151,8 @@ let pageBlock = {
         watch = isUnitMaxSkills
         rendObj = ROBJ_SOLID
         color = 0xB0000000
-        size = [flex(), SIZE_TO_CONTENT]
-        padding = [hdpx(20), 0, hdpx(20), hdpx(130)]
+        size = FLEX_H
+        padding = const [hdpx(20), 0, hdpx(20), hdpx(130)]
         flow = FLOW_HORIZONTAL
         children = [
           txt({ text = "".concat(loc("unit/upgradePoints"), loc("ui/colon")) })
@@ -166,7 +166,7 @@ let pageBlock = {
       : { watch = isUnitMaxSkills }
     {
       size = [ pageWidth, flex() ]
-      margin = [hdpx(10),0,0]
+      margin = const [hdpx(10),0,0]
       children = [
         panelBg.__merge(mkVerticalPannableArea(unitAttrPage))
         attrDetails
@@ -269,7 +269,7 @@ let unitAttrWnd = {
           children = [
             mkVerticalPannableArea(categoriesBlock, {
               size = [ tabW, flex() ]
-              margin = [ hdpx(24), 0, 0, 0 ]
+              margin = const [ hdpx(24), 0, 0, 0 ]
             })
             @() {
               watch = mainHangarUnit

@@ -24,7 +24,7 @@ let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100) - tabHeight,
   [topAreaSize, gradientHeightBottom])
 
 let scrollArrowsBlock = {
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   padding = [0, 0, gradientHeightBottom, 0]
   hplace = ALIGN_CENTER
   children = [

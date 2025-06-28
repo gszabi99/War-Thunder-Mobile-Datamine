@@ -16,6 +16,7 @@ let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPres
 let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
 let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
 let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
+let { getGoodsAsOfferIcon } = require("%appGlobals/config/goodsPresentation.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
@@ -174,12 +175,12 @@ let mkProgressLabel = @(available, total, rStyle) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_BOTTOM
   children = {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     halign = ALIGN_RIGHT
-    padding = [0, hdpx(5), 0 , 0]
+    padding = const [0, hdpx(5), 0 , 0]
     children = [
       {
-        size = [pw(100), SIZE_TO_CONTENT]
+        size = const [pw(100), SIZE_TO_CONTENT]
         rendObj = ROBJ_TEXT
         text = "/".concat(available, total)
         halign = ALIGN_CENTER
@@ -235,7 +236,7 @@ function mkRewardReceivedMark(rStyle, ovr = {}) {
 }
 
 let mkReceivedCounter = @(received, total) {
-  margin = [hdpx(4), hdpx(8)]
+  margin = const [hdpx(4), hdpx(8)]
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   rendObj = ROBJ_TEXT
@@ -341,7 +342,7 @@ let mkDecoratorIconAvatar = @(decoratorId, _rStyle, size) {
 }
 
 let decoratorFontIconBase = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   halign = ALIGN_CENTER
@@ -512,7 +513,7 @@ function mkUnitTextsImpl(r, rStyle, isUpgraded) {
       clipChildren = true
       children = [
         {
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           pos = [0, hdpx(3)]
           flow = FLOW_VERTICAL
           halign = ALIGN_RIGHT
@@ -591,7 +592,7 @@ function mkRewardPlateBlueprintTexts(r, rStyle) {
         valign = ALIGN_BOTTOM
         halign = ALIGN_RIGHT
         flow = FLOW_VERTICAL
-        padding = [0, hdpx(5)]
+        padding = const [0, hdpx(5)]
         children = [
           unitRank.get()
             ? mkGradRankSmall(unitRank.get()).__update({ fontSize = rStyle.textStyle.fontSize, pos = [0, hdpx(5)] })
@@ -626,7 +627,7 @@ function mkRewardPlatePrizeTicketImage(r, rStyle, rewardCtors) {
 
 let unitOfferImageOvrByType = {
   [AIR] = {
-    size = [pw(90), ph(90)]
+    size = const [pw(90), ph(90)]
     imageHalign = ALIGN_LEFT
     vplace = ALIGN_CENTER
   }
@@ -655,7 +656,7 @@ let mkDiscountOfferTag = @(discount) discountTag(discount, {
   hplace = ALIGN_LEFT
   vplace = ALIGN_TOP
   pos = [0, 0]
-  size = [hdpx(93), hdpx(46)]
+  size = const [hdpx(93), hdpx(46)]
 }, { pos = null }.__update(fontTinyAccented))
 
 let mkDiscountOfferRank = @(unit) {
@@ -666,7 +667,7 @@ let mkDiscountOfferRank = @(unit) {
 }
 
 let mkDiscountOfferText = @(title, rStyle) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   margin = hdpx(5)
   rendObj = ROBJ_TEXTAREA
   behavior = [Behaviors.TextArea, Behaviors.Marquee]
@@ -692,7 +693,9 @@ function mkDiscountOfferUnit(goods, discount, rStyle) {
     : unit?.unitType == TANK || unit?.unitType == AIR ? "ui/gameuiskin#offer_bg_yellow.avif"
     : "ui/gameuiskin#offer_bg_blue.avif"
   let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
-  let image = mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image,
+  let unitImg = getGoodsAsOfferIcon(goods.id)
+    ?? (unit?.isUpgraded ? p.upgradedImage : p.image)
+  let image = mkFitCenterImg(unitImg,
     unitOfferImageOvrByType?[unit?.unitType] ?? {}).__update({ fallbackImage = Picture(p.image) })
   let imageOffset = currencyId == null || unit?.unitType == TANK ? 0
     : hdpx(20)

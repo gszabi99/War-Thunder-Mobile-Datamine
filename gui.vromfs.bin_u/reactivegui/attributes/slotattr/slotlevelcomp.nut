@@ -21,7 +21,7 @@ let mkSlotLevel = @(level, imageSize, ovr = {}, bgOvr = {}) {
   size = levelHolderSize
   pos = [-levelProgressBorderWidth / 2, 0]
   children = levelBg.__merge({
-    padding = [0, hdpx(10)]
+    padding = const [0, hdpx(10)]
     valign = ALIGN_CENTER
     children = [
       {
@@ -53,7 +53,7 @@ function mkSlotLevelBlock(slot, levels, override = {}) {
     : 0.0
   let imageSize = evenPx(30)
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     halign = ALIGN_RIGHT
     gap = levelProgressBorderWidth / 2

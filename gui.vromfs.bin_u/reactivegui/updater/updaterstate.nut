@@ -18,7 +18,7 @@ let { downloadInProgress, downloadState, totalSizeBytes, toDownloadSizeBytes, ge
   allowLimitedDownload, ALLOW_LIMITED_DOWNLOAD_SAVE_ID
 } = require("%appGlobals/clientState/downloadState.nut")
 let { localizeAddonsLimited, initialAddons, latestDownloadAddonsByCamp, latestDownloadAddons,
-  commonUhqAddons, soloNewbieByCampaign, coopNewbieByCampaign, getAddonsSize, MB
+  commonUhqAddons, soloNewbieByCampaign, coopNewbieByCampaign, getAddonsSize, MB, extendedSoundAddons
 } = require("%appGlobals/updater/addons.nut")
 let { hasAddons, addonsSizes, addonsExistInGameFolder, addonsVersions,
   isAddonsInfoActual, isAddonsExistInGameFolderActual, isAddonsVersionsActual
@@ -34,6 +34,7 @@ let { sendLoadingAddonsBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { isRandomBattleNewbie, isRandomBattleNewbieSingle } = require("%rGui/gameModes/gameModeState.nut")
 let { squadAddons } = require("%rGui/squad/squadAddons.nut")
 let { needUhqTextures } = require("%rGui/options/options/graphicOptions.nut")
+let { mkOptionValue, OPT_SOUND_USE_EXTENDED } = require("%rGui/options/guiOptions.nut")
 let msgBoxError = require("%rGui/components/msgBoxError.nut")
 let { totalSizeText } = require("%globalsDarg/updaterUtils.nut")
 let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
@@ -79,6 +80,11 @@ let latestAddonsToDownload = Computed(@(prev) mkAddonsToDownload(
   (clone latestDownloadAddons).extend(latestDownloadAddonsByCamp?[curCampaign.value] ?? []),
   hasAddons.value, prev))
 let extAddonsToAutoDownload = Computed(@(prev) mkAddonsToDownload(extAutoDownloadAddons.get(), hasAddons.value, prev))
+
+let validateSoundOption = @(val, list) list.contains(val) ? val : list[0]
+let useExtendedSoundsList = [false, true]
+let isSoundAddonsEnabled = mkOptionValue(OPT_SOUND_USE_EXTENDED, false, @(v) validateSoundOption(v, useExtendedSoundsList))
+let soundAddonsToDownload = Computed(@(prev) mkAddonsToDownload(extendedSoundAddons, hasAddons.get(), prev))
 
 let extAutoDownloadWatches = []
 
@@ -325,7 +331,7 @@ let addonsToAutoDownload = keepref(Computed(function() {
   if (!isAnyCampaignSelected.value)
     return initialAddonsToDownload.value?.keys()
   let list = initialAddonsToDownload.value.__merge(latestAddonsToDownload.get(), squadAddons.get(),
-    extAddonsToAutoDownload.get())
+    extAddonsToAutoDownload.get(), isSoundAddonsEnabled.get() ? soundAddonsToDownload.get() : {})
   foreach(a in getCampaignPkgsForOnlineBattle(curCampaign.value, maxCurCampaignMRank.value))
     list[a] <- true
   foreach(a in soloNewbieByCampaign?[curCampaign.get()] ?? [])
@@ -416,4 +422,8 @@ return {
   progressPercent
   isStageDownloading
   removeAddonsForCampaign
+
+  isSoundAddonsEnabled
+  soundAddonsToDownload
+  useExtendedSoundsList
 }

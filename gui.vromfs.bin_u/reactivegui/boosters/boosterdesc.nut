@@ -31,13 +31,13 @@ let rewardInfo = @(bst) {
   children = [
     mkCurrencyImage(bst, hdpxi(100))
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       minWidth = hdpx(500)
       rendObj = ROBJ_TEXTAREA
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       behavior = Behaviors.TextArea
-      padding = [0, hdpx(30)]
+      padding = const [0, hdpx(30)]
       text = loc($"booster/desc/{bst}")
     }.__update(fontSmall)
   ]
@@ -50,7 +50,7 @@ let content = @(bst) modalWndBg.__merge({
     header(bst)
     rewardInfo(bst)
     {
-      padding = [hdpx(20),0,hdpx(50),0]
+      padding = const [hdpx(20),0,hdpx(50),0]
       hplace = ALIGN_CENTER
       rendObj = ROBJ_TEXT
       color = 0xFFE0E0E0

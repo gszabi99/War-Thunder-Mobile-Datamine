@@ -154,13 +154,13 @@ let flightMenu = @() bgShaded.__merge({
     flow = FLOW_VERTICAL
     children = [
       modalWndHeaderBg.__merge({
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         padding = [hdpx(20), buttonsPadding]
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         children = [
           {
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             hplace = ALIGN_RIGHT
             halign = ALIGN_RIGHT
             children = backBtn

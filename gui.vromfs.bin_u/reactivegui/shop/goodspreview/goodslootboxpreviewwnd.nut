@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { registerScene, setSceneBgFallback, setSceneBg } = require("%rGui/navState.nut")
 let { GPT_LOOTBOX, previewType, previewGoods, closeGoodsPreview, openPreviewCount
 } = require("%rGui/shop/goodsPreviewState.nut")
@@ -27,7 +28,8 @@ let aTimeHeaderStart = 0.5
 let aTimePriceStart = aTimeHeaderStart + 0.3
 
 let openCount = Computed(@() previewType.get() == GPT_LOOTBOX ? openPreviewCount.get() : 0)
-let lootbox = Computed(@() serverConfigs.get()?.lootboxesCfg[previewGoods.get()?.lootboxes.findindex(@(_) true)])
+let lootbox = Computed(@(prev)
+  prevIfEqual(prev, serverConfigs.get()?.lootboxesCfg[previewGoods.get()?.lootboxes.findindex(@(_) true)]))
 let lootboxAmount = Computed(@() previewGoods.get()?.lootboxes.findvalue(@(_) true))
 let bgImage = keepref(Computed(@() lootboxPreviewBg?[lootbox.get()?.name]))
 
@@ -74,39 +76,38 @@ let headerPanel = {
 let pannableArea = verticalPannableAreaCtor(wndContentHeight + contentGradientSize[0] + contentGradientSize[1],
   contentGradientSize)
 let scrollHandler = ScrollHandler()
-
 let content = @() {
-  watch = [lootbox, lootboxAmount]
   size = flex()
   flow = FLOW_HORIZONTAL
   gap = contentGap
-  children = lootbox.get() == null ? null
-    : [
-        {
-          size = [rewardsBlockWidth, wndContentHeight]
-          children = [
-            pannableArea(
-              lootboxContentBlock(lootbox.get(), rewardsBlockWidth),
-              {},
-              { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
-            mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall, { vplace = ALIGN_TOP, pos = [0, wndContentHeight] })
-          ]
-        }
-        {
-          size = flex()
-          flow = FLOW_VERTICAL
-          halign = ALIGN_CENTER
-          children = [
+  children = [
+    {
+      size = [rewardsBlockWidth, wndContentHeight]
+      children = [
+        pannableArea(
+          lootboxContentBlock(lootbox, rewardsBlockWidth),
+          {},
+          { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+        mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall, { vplace = ALIGN_TOP, pos = [0, wndContentHeight] })
+      ]
+    }
+    @() {
+      watch = [lootbox, lootboxAmount]
+      size = flex()
+      flow = FLOW_VERTICAL
+      halign = ALIGN_CENTER
+      children = lootbox.get() == null ? null
+        : [
             lootboxImageWithTimer(lootbox.get(), lootboxAmount.get())
             { size = flex() }
             mkJackpotProgress(Computed(@() getStepsToNextFixed(lootbox.get(), serverConfigs.get(), servProfile.get())))
-            { size = [0, hdpx(10)] }
+            { size = const [0, hdpx(10)] }
             mkTimeBlockCentered(aTimePriceStart)
-            { size = [0, hdpx(10)] }
+            { size = const [0, hdpx(10)] }
             mkPriceBlockCentered(aTimePriceStart)
           ]
-        }
-      ]
+    }
+  ]
 }
 
 let previewWnd = @() {

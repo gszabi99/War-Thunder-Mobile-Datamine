@@ -175,6 +175,9 @@
   "iPhone 16 Plus": {
     "codename": "iPhone17,4"
   },
+  "iPhone 16e": {
+    "codename": "iPhone17,5"
+  },
   "iPod 1st Gen": {
     "codename": "iPod1,1"
   },
@@ -398,6 +401,12 @@
       "iPad13,19"
     ]
   },
+  "iPad 11": {
+    "codename": [
+      "iPad15,7",
+      "iPad15,8"
+    ]
+  },
   "iPad Pro 6 11 inch": {
     "codename": [
       "iPad14,3",
@@ -410,10 +419,16 @@
       "iPad14,6"
     ]
   },
-  "iPad Air 6": {
+  "iPad Air 6 11 inch": {
     "codename": [
       "iPad14,8",
       "iPad14,9"
+    ]
+  },
+  "iPad Air 6 13 inch": {
+    "codename": [
+      "iPad14,10",
+      "iPad14,11"
     ]
   },
   "iPad Pro 7 11 inch": {
@@ -436,10 +451,16 @@
       "iPad16,6-B"
     ]
   },
-  "iPad Air 7": {
+  "iPad Air 7 11 inch": {
     "codename": [
-      "iPad14,10",
-      "iPad14,11"
+      "iPad15,3",
+      "iPad15,4"
+    ]
+  },
+  "iPad Air 7 13 inch": {
+    "codename": [
+      "iPad15,5",
+      "iPad15,6"
     ]
   },
   "iPad Mini 7": {

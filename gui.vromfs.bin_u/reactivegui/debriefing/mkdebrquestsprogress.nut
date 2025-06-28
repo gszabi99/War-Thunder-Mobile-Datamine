@@ -19,7 +19,7 @@ function mkQuestTitle(quest) {
   let { achievement = false, tree_quest = false, lang_id = quest.name } = quest?.meta
   let text = loc(achievement || tree_quest ? $"{lang_id}/desc" : lang_id)
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     rendObj = ROBJ_TEXT
     text
     behavior = Behaviors.Marquee
@@ -65,7 +65,7 @@ function mkQuestProgressBar(quest, delay) {
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
         text = $"{current}/{required}"
-        padding = [0, hdpx(15), 0, 0]
+        padding = const [0, hdpx(15), 0, 0]
       }.__update(fontVeryTinyShaded)
     ]
   }
@@ -74,7 +74,7 @@ function mkQuestProgressBar(quest, delay) {
 let mkCompletedTxt = @(quest, delay) !(quest?.isCompleted ?? false) ? null : {
   pos = [pw(100), 0]
   vplace = ALIGN_CENTER
-  padding = [0, 0, 0, hdpx(30)]
+  padding = const [0, 0, 0, hdpx(30)]
   rendObj = ROBJ_TEXT
   text = utf8ToUpper(loc("quests/completed"))
 
@@ -103,7 +103,7 @@ function mkQuestComp(quest, delay) {
     gap = hdpx(2)
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
         gap = hdpx(10)

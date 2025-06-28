@@ -77,7 +77,7 @@ let mkDecoratorUnlockProgress = @(decName) function() {
             gap = hdpx(15)
             children = [
               {
-                size = [hdpx(500), SIZE_TO_CONTENT]
+                size = const [hdpx(500), SIZE_TO_CONTENT]
                 rendObj = ROBJ_TEXTAREA
                 behavior = Behaviors.TextArea
                 text = loc($"{unlock.name}/desc")

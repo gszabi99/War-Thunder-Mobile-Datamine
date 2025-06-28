@@ -25,17 +25,17 @@ function contactNameBlock(contact, info, addChildren = [], styles = {}) {
   let { nickFrame = null, title = null } = decorators
   let { nameStyle = fontTiny, titleStyle = fontTiny } = styles
   return {
-    size = [SIZE_TO_CONTENT, flex()]
+    size = FLEX_V
     flow = FLOW_VERTICAL
     children = [
       {
-        size = [SIZE_TO_CONTENT, flex()]
+        size = FLEX_V
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
         children = [
           @() {
             watch = [myUserRealName, myUserName]
-            size = [SIZE_TO_CONTENT, flex()]
+            size = FLEX_V
             valign = ALIGN_CENTER
             rendObj = ROBJ_TEXT
             color = nameColor
@@ -50,7 +50,7 @@ function contactNameBlock(contact, info, addChildren = [], styles = {}) {
         ]
       }
       {
-        size = [SIZE_TO_CONTENT, flex()]
+        size = FLEX_V
         valign = ALIGN_CENTER
         rendObj = ROBJ_TEXT
         color = titleColor

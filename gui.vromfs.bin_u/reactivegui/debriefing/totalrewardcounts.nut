@@ -24,9 +24,9 @@ let deltaStartTimeRewards = rewardAnimTime / 2
 let getIsMultiplayerMission = @(debrData) debrData?.sessionId != null
 let canUnitEarnGold = @(unit) (unit?.isPremium ?? false) || (unit?.isUpgraded ?? false)
 
-let getIsPremiumIncludedWp  = @(debrData) (debrData?.premiumBonus?.wpMul  ?? 1.0) > 1.0
-let getIsPremiumIncludedExp = @(debrData) (debrData?.premiumBonus?.expMul ?? 1.0) > 1.0
-let getIsPremiumIncludedGold = @(debrData) (debrData?.premiumBonus?.goldMul ?? 1.0) > 1.0
+let getIsPremiumIncludedWp  = @(debrData) (debrData?.premiumBonus.wpMul  ?? 1.0) > 1.0
+let getIsPremiumIncludedExp = @(debrData) (debrData?.premiumBonus.expMul ?? 1.0) > 1.0
+let getIsPremiumIncludedGold = @(debrData) (debrData?.premiumBonus.goldMul ?? 1.0) > 1.0
 
 let getPremMulWp  = @(debrData) debrData?.premiumBonus.wpMul  ?? debrData?.premiumBonusNotApplied.wpMul  ?? 1.0
 let getPremMulExp = @(debrData) debrData?.premiumBonus.expMul ?? debrData?.premiumBonusNotApplied.expMul ?? 1.0
@@ -430,7 +430,7 @@ function mkTotalRewardCounts(preset, rewardsInfo, debrData, rewardsStartTime) {
   let totalRewardsShowTime = rowComps.len() * deltaStartTimeRewards
 
   let totalRewardCountsComp = {
-    size = [hdpx(750), SIZE_TO_CONTENT]
+    size = const [hdpx(750), SIZE_TO_CONTENT]
     halign = ALIGN_CENTER
     children = {
       flow = FLOW_VERTICAL

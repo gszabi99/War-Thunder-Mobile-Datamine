@@ -639,7 +639,7 @@
       "rocket": {
         "caliber": 0.152,
         "mass": 27.8,
-        "explosiveType": "comp_b",
+        "explosiveType": "octol",
         "explosiveMass": 3.6,
         "massEnd": 23.12,
         "normalizationPreset": "heat",

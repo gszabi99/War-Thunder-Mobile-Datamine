@@ -86,7 +86,7 @@ let txtBase = {
 let txt = @(ovr) txtBase.__merge(ovr)
 
 let txtArea = @(ovr) txtBase.__merge({
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
 }, ovr)
@@ -110,7 +110,7 @@ function categoryComp() {
     : "".concat(loc("support/form/category"), colon, getCategoryLocName(fieldCategory.get()))
   return {
     watch = fieldCategory
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     children = textButtonCommon(text, supportChooseCategory)
   }
 }
@@ -122,7 +122,7 @@ let mkTextInputField = @(textWatch, placeholderText, options = {}) textInput(tex
 }.__update(options))
 
 let formBlock = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   gap = hdpx(25)
   children = [
@@ -131,13 +131,13 @@ let formBlock = {
     mkTextInputField(fieldMessage, loc("support/form/message"), { maxChars = 2048 })
     mkTextInputField(fieldEmail, loc("support/form/your_email"), { maxChars = 80, inputType = "mail" })
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       valign = ALIGN_CENTER
       flow = FLOW_HORIZONTAL
       gap = buttonsHGap
       children = [
         {
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           children = hasLogFile()
             ? horizontalToggleWithLabel(tglNeedAttachLogFile, loc("support/form/log_file_attachment/checkbox"))
             : null
@@ -175,7 +175,7 @@ function mkFinishedMsg(reqStateVal) {
 }
 
 let header = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   valign = ALIGN_CENTER
   children = [
     backButton(onClose)

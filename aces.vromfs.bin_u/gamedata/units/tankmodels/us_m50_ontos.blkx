@@ -22,6 +22,7 @@
   "canReloadNonGuns": true,
   "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
+  "useMultipleCrosshairs": true,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
   "moveType": "vehicle",

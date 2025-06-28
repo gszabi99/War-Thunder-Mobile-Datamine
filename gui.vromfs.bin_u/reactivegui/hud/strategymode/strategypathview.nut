@@ -184,7 +184,7 @@ function mkSelfNode(nodePos) {
   let icon = airGroupIcons?[curGroupIndex.value]
   let iconSize = (size * 0.85).tointeger()
   return {
-    size = [0, 0]
+    size = 0
     pos = [nodePos.x, nodePos.y]
     halign = ALIGN_CENTER
     valign = valign
@@ -245,7 +245,7 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
 
   return @() {
     watch = [isSelected, isMoving]
-    size = [0, 0]
+    size = 0
     padding = padding
     pos = [nodePos.x, nodePos.y]
     halign = ALIGN_CENTER
@@ -350,7 +350,7 @@ function mkPathEdgeButton(edgePos, edgeId, edgeColor) {
     watch = isSelected
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    size = [0, 0]
+    size = 0
     pos = [edgePos.x, edgePos.y]
     children = [
       {
@@ -457,7 +457,7 @@ function mkNodesUi(data) {
     edgesUi.append([VECTOR_LINE_DASHED, pendingSrcPos.x, pendingSrcPos.y, pendingDstPos.x, pendingDstPos.y, hdpx(10), hdpx(20)])
 
     nodesUi.append({
-      size = [0, 0]
+      size = 0
       halign = ALIGN_CENTER
       valign = pendingIconVAlign
       pos = [pendingDstPos.x, pendingDstPos.y]
@@ -472,7 +472,7 @@ function mkNodesUi(data) {
   }
 
   nodesUi.insert(0, {
-    size = [100, 100]
+    size = 100
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = hdpx(15)
     color = edgeColorDefault

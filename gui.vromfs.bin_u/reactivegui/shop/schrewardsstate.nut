@@ -7,7 +7,7 @@ let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { schRewardInProgress, apply_scheduled_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
-let { isAdsAvailable, showAdsForReward } = require("%rGui/ads/adsState.nut")
+let { isAdsAvailable, showAdsForReward, isProviderInited } = require("%rGui/ads/adsState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { playSound } = require("sound_wt")
@@ -148,6 +148,8 @@ function onSchRewardReceive(schReward) {
 
   if (!schReward.needAdvert || hasVip.get())
     applyScheduledReward(schReward.id)
+  else if (!isProviderInited.get())
+    logerr("Trying to show ads for apply Scheduled Reward when there is no initialized provider")
   else {
     playSound("meta_ad_button")
     showAdsForReward({ schRewardId = schReward.id, cost = schReward?.cost ?? 0, bqId = $"scheduled_{schReward.id}" })

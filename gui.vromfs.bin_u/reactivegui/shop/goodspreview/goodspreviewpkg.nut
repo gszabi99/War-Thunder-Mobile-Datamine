@@ -576,7 +576,7 @@ let activeItemHint = @() activeItemId.value == null ? { watch = activeItemId }
       color = 0xFF000000
       padding = [addHintPadding, saBorders[0] + addHintPadding]
       children = {
-        size = [hdpx(500), SIZE_TO_CONTENT]
+        size = const [hdpx(500), SIZE_TO_CONTENT]
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         text = "\n".concat(

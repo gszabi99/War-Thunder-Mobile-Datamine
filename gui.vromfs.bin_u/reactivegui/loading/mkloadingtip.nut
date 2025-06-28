@@ -24,7 +24,7 @@ let mkLoadingTip = @(ovr = {}) function() {
   return {
     watch = curTipInfo
     key
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     color = textColor
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
@@ -36,11 +36,11 @@ let mkLoadingTip = @(ovr = {}) function() {
 }
 
 let gradientLoadingTip = {
-  size = [hdpx(1200), SIZE_TO_CONTENT]
+  size = const [hdpx(1200), SIZE_TO_CONTENT]
   hplace = ALIGN_CENTER
   vplace = ALIGN_BOTTOM
   pos = [0, sh(-10)]
-  padding = [hdpx(20), hdpx(100)]
+  padding = const [hdpx(20), hdpx(100)]
   rendObj = ROBJ_9RECT
   image = gradTranspDoubleSideX
   texOffs = [0, gradDoubleTexOffset]

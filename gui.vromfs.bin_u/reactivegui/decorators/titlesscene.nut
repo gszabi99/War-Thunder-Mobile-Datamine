@@ -47,7 +47,7 @@ function applySelectedTitle() {
 }
 
 let header = {
-  size = [SIZE_TO_CONTENT,hdpx(100)]
+  size = const [SIZE_TO_CONTENT,hdpx(100)]
   flow = FLOW_VERTICAL
   children = [
     @() {
@@ -94,12 +94,12 @@ function titleRow(name, locName, rowIdx) {
       children = [
         @() {
           watch = [isChoosen, availTitles, isUnseen]
-          size = [hdpx(85),hdpx(85)]
+          size = hdpx(85)
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           children = name != "" && name not in availTitles.value
             ? {
-                size =[hdpx(35),hdpx(45)]
+                size =const [hdpx(35),hdpx(45)]
                 rendObj = ROBJ_IMAGE
                 color = 0xFFFFB70B
                 image =  Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(35)}:{hdpxi(45)}:P")
@@ -109,7 +109,7 @@ function titleRow(name, locName, rowIdx) {
                 isChoosen.value ? choosenMark(hdpxi(45), { hplace = ALIGN_CENTER }) : null)
             : isUnseen.value
               ? {
-                  margin = [hdpx(15), hdpx(20)]
+                  margin = const [hdpx(15), hdpx(20)]
                   children = priorityUnseenMark
                 }
               : null
@@ -184,12 +184,12 @@ function titlesList() {
   return {
     key = listKey
     watch = [availTitles, allTitles]
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_HORIZONTAL
     gap
     onAttach
     children = arrayByRows(titleComps, rows).map(@(children) {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_VERTICAL
       children
     })
@@ -205,7 +205,7 @@ let titleContent = {
     {
       rendObj = ROBJ_TEXT
       text = loc("decorator/title/choose")
-      padding = [hdpx(40), 0,hdpx(40),0]
+      padding = const [hdpx(40), 0,hdpx(40),0]
     }.__update(fontMedium)
     makeVertScroll(titlesList, { scrollHandler })
     footer

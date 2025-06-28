@@ -53,18 +53,19 @@ let mkGlow = @(size, color, opacity) {
 }
 
 function updateParticles(state, halfSize, particleSize, speedY, scaleBySpeed, opacity) {
-  let { isActive = false, startTime = -1 } = state
+  let { isActive = false, startTime = -1, lastTime = -1, isInitial = true } = state
   let time = get_time_msec()
 
   if (startTime >= time)
     return null
 
   if (!isActive) {
-    initSparkState(state, halfSize, time, speedY)
+    initSparkState(state, halfSize, time, speedY, isInitial)
+    state.isInitial <- false
     return { opacity = 0.0 }
   }
-  else
-    updateSparkState(state, time)
+
+  updateSparkState(state, time)
 
   let { pos, speed } = state
   let moveScale = min(maxScaleBySpeed, 1 + scaleBySpeed / hdpx(200) * length(speed))
@@ -73,6 +74,8 @@ function updateParticles(state, halfSize, particleSize, speedY, scaleBySpeed, op
 
   if (isOutsideTheFrame) {
     state.isActive <- false
+    let dt = time - max(lastTime, startTime)
+    state.isInitial <- dt > 300
     return { opacity = 0.0 }
   }
 
@@ -102,6 +105,7 @@ function mkSparks(state, halfSize) {
     color
     onAttach = @() initSparkState(state, halfSize, get_time_msec(), speedY, true)
     behavior = Behaviors.RtPropUpdate
+    onlyWhenParentInScreen = true
     update = @() updateParticles(state, halfSize, particleSize, speedY, scaleBySpeed, opacity)
     children = mkGlow(particleSize, color, opacity)
   }
@@ -123,6 +127,7 @@ function mkAshes(state, halfSize) {
     color = rand.rfloat(0, 1) < chanceToBeColored ? color : null
     onAttach = @() initSparkState(state, halfSize, get_time_msec(), speedY, true)
     behavior = Behaviors.RtPropUpdate
+    onlyWhenParentInScreen = true
     update = @() updateParticles(state, halfSize, particleSize, speedY, scaleBySpeed, opacity)
   }
 }

@@ -7,7 +7,8 @@ let { eventbus_subscribe } = require("eventbus")
 let { deferOnce } = require("dagor.workcycle")
 let { hangar_load_model_with_skin, hangar_move_cam_to_unit_place,
   hangar_get_current_unit_name, hangar_get_loaded_unit_name, change_background_models_list_with_skin,
-  change_one_background_model_with_skin, hangar_get_current_unit_skin, get_current_background_models_list
+  change_one_background_model_with_skin, hangar_get_current_unit_skin, get_current_background_models_list,
+  hangar_force_reload_model
 } = require("hangar")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { isInMenu, isInMpSession, isInLoadingScreen, isInBattle } = require("%appGlobals/clientState/clientState.nut")
@@ -249,6 +250,20 @@ function resetCustomHangarUnit() {
     hangarUnitDataBackup(null)
   }
 }
+
+let hangarUnitMods = keepref(Computed(@() mainHangarUnit.get()?.mods))
+local lastMods = null
+local lastModsUnitName = null
+hangarUnitMods.subscribe(function(mods) {
+  let unitName = mainHangarUnit.get()?.name
+  let needReload = unitName != null && unitName == lastModsUnitName
+    && hangarUnitData.get()?.name == loadedHangarUnitName.get()
+    && !isEqual((mods ?? {}).filter(@(v) v), (lastMods ?? {}).filter(@(v) v))
+  lastMods = clone mods
+  lastModsUnitName = unitName
+  if (needReload)
+    hangar_force_reload_model()
+})
 
 function onReloadModel() {
   if (!canReloadModel.get())

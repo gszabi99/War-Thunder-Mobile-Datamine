@@ -608,6 +608,7 @@
       "armorThickness": 2.0,
       "armorThrough": 12.0,
       "fireProtectionHp": 15.0,
+      "createSecondaryShatters": false,
       "fireParamsPreset": "fuel_exterior",
       "stopChanceOnDeadPart": 0.0,
       "fuel_tank_exterior_r_01_dm": {},
@@ -2863,6 +2864,63 @@
       "decal1OppositeMirrored": false,
       "decal1WidthBox": 0.224173,
       "decal1Tex": "china_numbers_0"
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        1.45166,
+        -7.39286e-8,
+        1.35312,
+        2.22873
+      ],
+      "decal0Line1": [
+        0.32223,
+        -1.92742,
+        -0.345697,
+        4.12309
+      ],
+      "decal0Line2": [
+        -1.45166,
+        -1.18286e-7,
+        1.35312,
+        -1.22873
+      ],
+      "decal0Line3": [
+        0.32223,
+        -1.92742,
+        0.345696,
+        4.12309
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        0.662228,
+        0.238138,
+        -0.710454,
+        -0.884867
+      ],
+      "decal0CPNormDepth1": [
+        0.662228,
+        0.238138,
+        0.710454,
+        -0.884867
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.503904
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.23617,
+      "decal0Tex": "noak_gf_roundel"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -2870,6 +2928,18 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "cn_camo_sand_ltgreen_dkgreen_spots*"
+      }
+    },
+    "forest": {
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "cn_camo_summer_green*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_winter*"
       }
     }
   },

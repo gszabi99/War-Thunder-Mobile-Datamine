@@ -181,7 +181,9 @@ return {
     },
     "cn_is_2_1944": {
       "": "ussr_camo_green",
-      "desert": "cn_camo_sand_ltgreen_dkgreen_spots"
+      "desert": "cn_camo_sand_ltgreen_dkgreen_spots",
+      "forest": "cn_camo_summer_green",
+      "winter": "ussr_camo_winter"
     },
     "cn_isu_122": {
       "": "cn_camo_green_yellow_black",
@@ -229,7 +231,9 @@ return {
     },
     "cn_plz_83": {
       "": "ussr_camo_green",
-      "desert": "cn_camo_sand_ltgreen_dkgreen_spots"
+      "desert": "cn_camo_sand_ltgreen_dkgreen_spots",
+      "forest": "cn_camo_summer_green",
+      "winter": "ussr_camo_winter"
     },
     "cn_plz_83_130": {
       "": "ussr_camo_green",
@@ -263,7 +267,9 @@ return {
     },
     "cn_type_62": {
       "": "ussr_camo_green",
-      "desert": "cn_camo_sand_ltgreen_dkgreen_spots"
+      "desert": "cn_camo_sand_ltgreen_dkgreen_spots",
+      "forest": "cn_camo_summer_green",
+      "winter": "ussr_camo_winter"
     },
     "cn_type_64": {
       "": "camo_lunar_ny_25",
@@ -305,7 +311,9 @@ return {
     },
     "cn_zsl_92": {
       "": "ussr_camo_green",
-      "desert": "cn_camo_sand_ltgreen_dkgreen_spots"
+      "desert": "cn_camo_sand_ltgreen_dkgreen_spots",
+      "forest": "cn_camo_summer_green",
+      "winter": "ussr_camo_winter"
     },
     "cn_ztl_11": {
       "": "ussr_camo_green",
@@ -1003,6 +1011,9 @@ return {
     "germ_frigate_rckt_bremen_nc": {
       "upgraded": "camo_blackgray_net"
     },
+    "germ_frigate_rckt_sachsen": {
+      "upgraded": "camo_3gray_colors_geometry"
+    },
     "germ_jgdpz_38t": {
       "": "ger_camo_dunkelgelb",
       "upgraded": "ger_camo_dunkelgelb_green"
@@ -1546,6 +1557,10 @@ return {
       "": "it_camo_green",
       "upgraded": "it_camo_modern_three_color"
     },
+    "it_battleship_caio_duilio": {
+      "": "camo_browngray_net",
+      "factory": "camo_redwhite_stripes"
+    },
     "it_battleship_francesco_caracciolo": {
       "": "camo_blue_geometry"
     },
@@ -1680,6 +1695,9 @@ return {
     },
     "j6k1_prem": {
       "": "jap_j6k1_orange"
+    },
+    "j7w1": {
+      "": "jap_ki_43_3_otsu"
     },
     "jp_armoredcruiser_ikoma": {
       "": "camo_darkgrey_big_spots"
@@ -2591,6 +2609,9 @@ return {
     "uk_destroyer_rckt_type23_nc": {
       "upgraded": "camo_greygreen_curves"
     },
+    "uk_destroyer_rckt_type45": {
+      "upgraded": "camo_bluegray_geometry"
+    },
     "uk_destroyer_tribal": {
       "upgraded": "camo_polish_bluegeometry"
     },
@@ -2740,7 +2761,8 @@ return {
       "": "sub_m1_ny_camo"
     },
     "uk_sub_swiftsure": {
-      "upgraded": "camo_mtb_spots"
+      "upgraded": "camo_mtb_spots",
+      "yellow": "camo_yellow"
     },
     "uk_sub_type_v": {
       "upgraded": "camo_polish_bluegeometry"
@@ -4134,10 +4156,13 @@ return {
       "dark_spots": "camo_dark_spots",
       "darkbrown_spots_prem": "camo_darkbrown_spots",
       "darkgray_blotch": "camo_darkgray_blotch",
+      "darkgray_blotch_bp": "camo_darkgray_blotch",
       "disruptive_gray": "camo_disruptive_gray",
       "factory": "camo_navygrey_5",
+      "gray_spots": "camo_gray_spots",
       "grayriver": "camo_grayriver",
       "greencoast": "camo_greencoast",
+      "greencoast_bp": "camo_greencoast",
       "greenwhite_spots": "camo_greenwhite_spots",
       "greyblack_geometry_prem": "camo_greyblack_geometry",
       "lightblue_geometry": "camo_lightblue_geometry",

@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "hudState" import hud_is_in_cutscene, is_hud_visible
 
 let { eventbus_subscribe } = require("eventbus")
-let { safeArea } = require("%appGlobals/safeArea.nut")
+let { safeAreaW } = require("%appGlobals/safeArea.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let initOptions = require("%scripts/options/initOptions.nut")
 let { isInRespawn } = require("%appGlobals/clientState/respawnStateBase.nut")
@@ -45,8 +45,8 @@ function initHudOptionsOnce() {
   g_hud_event_manager.init()
   g_hud_event_manager.subscribe("ReinitHud", @(_) updateHudType())
   g_hud_event_manager.subscribe("Cutscene", @(_) updateHudType())
-  set_hud_width_limit(safeArea)
-  set_option_hud_screen_safe_area(safeArea)
+  set_hud_width_limit(safeAreaW)
+  set_option_hud_screen_safe_area(safeAreaW)
   isInited = true
 }
 

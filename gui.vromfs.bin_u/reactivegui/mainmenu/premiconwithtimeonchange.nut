@@ -117,7 +117,7 @@ function mkChangeView(change) {
 }
 
 let hoverBg = {
-  size = [pw(150), flex()]
+  size = const [pw(150), flex()]
   hplace = ALIGN_CENTER
   color = 0x8052C4E4
   rendObj = ROBJ_9RECT
@@ -132,7 +132,7 @@ let withHoveredBg = @(content, stateFlags) {
       watch = stateFlags
       key = stateFlags
       size = flex()
-      padding = [hdpx(3), 0]
+      padding = const [hdpx(3), 0]
       children =  stateFlags.value & S_HOVER ? hoverBg : null
     }
     content
@@ -163,7 +163,7 @@ function premIconWithTimeOnChange() {
       @() {
         watch = nextChange
         key = nextChange
-        size = [0, 0] 
+        size = 0 
         vplace = ALIGN_BOTTOM
         hplace = ALIGN_CENTER
         children = nextChange.value == null ? null

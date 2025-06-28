@@ -46,12 +46,12 @@ let pattern = {
 }
 
 let numberBox = @(text) {
-  size = [ph(100), ph(100)]
+  size = ph(100)
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = [
     {
-      size = [ph(71), ph(71)]
+      size = ph(71)
       rendObj = ROBJ_BOX
       fillColor = 0xFF33363A
       borderColor = 0xFF52C7E4
@@ -100,7 +100,7 @@ let mkLevelInfo = @(levels, sp, sf) {
     pattern
     {
       size = flex()
-      padding = [hdpx(10), hdpx(20)]
+      padding = const [hdpx(10), hdpx(20)]
       valign = ALIGN_CENTER
       halign = ALIGN_LEFT
       gap = hdpx(20)
@@ -141,7 +141,7 @@ function generateDataDiscount(discountConfig, levelsToMax, isForSlot = false) {
 
 let mkLevelPrice = @(fullCostGold, costGold, costMul, isInProgress) @() {
   watch = [isInProgress, balanceGold]
-  size = [flex(), hdpx(70)]
+  size = const [flex(), hdpx(70)]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = isInProgress.get() != null ? spinner

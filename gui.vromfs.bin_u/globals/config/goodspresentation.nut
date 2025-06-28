@@ -6,12 +6,17 @@ let customGoodsLocId = {
   ships_top_blueprints_slots = "shop/top_blueprints_slots"
 }
 
-let defaultIcon = "ui/gameuiskin#icon_primary_attention.svg"
+let defaultIcon = "ui/gameuiskin/icon_primary_attention.svg"
 let icons = {
-  air_blueprints_slots = "ui/gameuiskin#shop_blueprints_folder.avif"
-  air_top_blueprints_slots = "ui/gameuiskin#shop_blueprints_folder.avif"
-  ships_blueprints_slots = "ui/gameuiskin#shop_blueprints_folder_ships.avif"
-  ships_top_blueprints_slots = "ui/gameuiskin#shop_blueprints_folder_ships.avif"
+  air_blueprints_slots = "ui/gameuiskin/shop_blueprints_folder.avif"
+  air_top_blueprints_slots = "ui/gameuiskin/shop_blueprints_folder.avif"
+  ships_blueprints_slots = "ui/gameuiskin/shop_blueprints_folder_ships.avif"
+  ships_top_blueprints_slots = "ui/gameuiskin/shop_blueprints_folder_ships.avif"
+}
+
+let iconGoodsAsOffer = {
+  seasonal_event_offer_yellow_submarine = "ui/unitskin#uk_sub_swiftsure_yellow.avif"
+  seasonal_event_offer_yellow_submarine_skin_only = "ui/unitskin#uk_sub_swiftsure_yellow.avif"
 }
 
 let defaultSlotsPreviewBg = "ui/images/air_beta_access_bg.avif"
@@ -36,4 +41,5 @@ return {
   getGoodsIcon = @(id) icons?[id] ?? defaultIcon
   getSlotsPreviewBg = @(id) slotsPreviewBg?[id] ?? defaultSlotsPreviewBg
   getSlotsTexts = @(id) slotTexts?[id] ?? defaultSlotsTexts
+  getGoodsAsOfferIcon = @(id) iconGoodsAsOffer?[id]
 }

@@ -48,7 +48,7 @@ let toggleItemVisibility = @(id) voiceMsgPieHidden.mutate(function(v) {
 let onBtnVisibility = @() toggleItemVisibility(selItemId.get())
 
 let header = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   valign = ALIGN_CENTER
   children = [
     backButton(onClose)
@@ -123,7 +123,7 @@ function mkItemRow(idx) {
 
 let itemsList = @() {
   watch = voiceMsgPieOrder
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_SOLID
   color = 0x80000000
   flow = FLOW_VERTICAL
@@ -144,7 +144,7 @@ let mkIcoBtnContent = @(icon, needUpsideDown = false) {
 
 let footer = @() {
   watch = [voiceMsgPieHidden, selItemId]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   gap = buttonsHGap
@@ -171,7 +171,7 @@ let voiceMsgPieEditorWnd = bgShaded.__merge({
     {
       size = flex()
       vplace = ALIGN_CENTER
-      padding = [0, 0, hdpx(20), 0]
+      padding = const [0, 0, hdpx(20), 0]
       valign = ALIGN_CENTER
       flow = FLOW_HORIZONTAL
       gap = saBorders[0]

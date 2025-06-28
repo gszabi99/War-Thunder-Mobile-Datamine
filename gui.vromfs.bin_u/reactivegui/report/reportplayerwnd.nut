@@ -87,7 +87,7 @@ function formBlock() {
   let message = EditableText(fieldMessage.get())
   let lenWatched = Computed(@() utf8(fieldMessage.get()).charCount())
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     gap = hdpx(25)
     children = [
@@ -130,10 +130,10 @@ let content = @()
       {
         flow = FLOW_VERTICAL
         valign = ALIGN_TOP
-        padding = [hdpx(25), hdpx(40), hdpx(40), hdpx(40)]
+        padding = const [hdpx(25), hdpx(40), hdpx(40), hdpx(40)]
         gap = hdpx(25)
         minWidth = SIZE_TO_CONTENT
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         children = [
           formBlock
           mkButtons
@@ -178,7 +178,7 @@ selectedPlayerForReport.subscribe(function(v) {
     })
     onDetach = @() selectedPlayerForReport.set(null)
     sound = { click = "click" }
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = content

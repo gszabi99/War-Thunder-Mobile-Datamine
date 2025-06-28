@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 import "%globalScripts/ecs.nut" as ecs
-let { eventbus_subscribe } = require("eventbus")
+let { registerRespondent } = require("scriptRespondent")
 let io = require("io")
 let { object_to_json_string } = require("json")
 let { register_command } = require("console")
 let logBD = log_with_prefix("[HANGAR_BATTLE_DATA] ")
-let { hangarUnit } = require("hangarUnit.nut")
+let { mainHangarUnit } = require("hangarUnit.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
@@ -40,11 +40,11 @@ function setBattleDataToClientEcs(bd) {
 }
 
 function mkHangarBattleData() {
-  if (hangarUnit.value == null)
+  if (mainHangarUnit.get() == null)
     return null
   let { name, country = "", unitType = "", mods = null, modPreset = "",
-    isUpgraded = false, isPremium = false
-  } = hangarUnit.value
+    isUpgraded = false, isPremium = false, platoonUnits = []
+  } = mainHangarUnit.get()
 
   let cfgMods = serverConfigs.value?.unitModPresets[modPreset] ?? {}
   let items = mods != null
@@ -53,7 +53,6 @@ function mkHangarBattleData() {
     : isPremium || isUpgraded
       ? cfgMods.map(@(_) 1) 
     : {}
-
   return {
     userId = myUserId.value
     items
@@ -63,14 +62,17 @@ function mkHangarBattleData() {
       unitType
       isUpgraded
       isPremium = isPremium || isUpgraded
-      weapons = {} 
+      weapons = { [$"{name}_default"] = true }
       attributes = {} 
+      platoonUnits = platoonUnits.map(@(p) {
+        name = p.name
+        weapons = { [$"{p.name}_default"] = true }
+      })
     }
   }
 }
 
-eventbus_subscribe("CreateBattleDataForHangar",
-  @(_) setBattleDataToClientEcs(mkHangarBattleData()))
+registerRespondent("create_battle_data_for_hangar", @() setBattleDataToClientEcs(mkHangarBattleData()))
 
 register_command(
   function() {

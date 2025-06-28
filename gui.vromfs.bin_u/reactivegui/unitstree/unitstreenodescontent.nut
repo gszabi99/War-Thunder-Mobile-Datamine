@@ -7,7 +7,9 @@ let { flagsWidth, bgLight, mkTreeNodesFlag, flagTreeOffset, gamercardOverlap, in
 let { unitsTreeOpenRank, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { curSelectedUnit, curUnitName, availableUnitsList } = require("%rGui/unit/unitsWndState.nut")
-let { isSlotsAnimActive, selectedTreeSlotIdx, slotIdxByHangarUnit, selectTreeSlotByUnitName } = require("%rGui/slotBar/slotBarState.nut")
+let { isSlotsAnimActive, selectedTreeSlotIdx, slotIdxByHangarUnit, selectTreeSlotByUnitName,
+  selectedUnitToSlot
+} = require("%rGui/slotBar/slotBarState.nut")
 let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { doubleSidePannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -15,13 +17,13 @@ let { gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let { unseenArrowsBlockCtor, scrollHandler, scrollPos, startAnimScroll, interruptAnimScroll
 } = require("unitsTreeScroll.nut")
 let { isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
-let { mkTreeNodesUnitPlate } = require("mkUnitPlate.nut")
+let { mkTreeNodesUnitPlate, mkTreeNodesUnitPlateDefault } = require("mkUnitPlate.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { unseenUnits, markUnitSeen, markUnitsSeen } = require("%rGui/unit/unseenUnits.nut")
 let { markBranchSeen } = require("%rGui/unitsTree/unseenBranches.nut")
-let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
+let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { selectedCountry, mkVisibleNodes, mkFilteredNodes, mkCountryNodesCfg, mkCountries,
   setResearchedUnitsSeen, currentResearch, researchCountry, unitsResearchStatus, unseenResearchedUnits,
   setUnitToScroll, unitToScroll, unitInfoToScroll, blockedCountries
@@ -38,6 +40,7 @@ let { animUnitWithLink, animNewUnitsAfterResearch, isBuyUnitWndOpened,
   animResearchRequirementsAncestors, animNewUnitsAfterResearchTrigger, animBuyRequirementsInfo
 } = require("animState.nut")
 let { attractColor } = require("treeAnimConsts.nut")
+let { draggedData, removeUnitFromSlot } = require("%rGui/slotBar/dragDropSlotState.nut")
 
 let aTimeAppearLink = 1
 let aTimeChangeLink = 0.5
@@ -509,27 +512,35 @@ function genLinks(nodes, positions, size) {
 let function mkUnitsNode(name, pos, hasDarkScreenV) {
   let xmbNode = XmbNode()
   let unit = Computed(@() campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name])
-  let watch = [unit, curCampaign]
+  let needDuplicateDraggableUnit = Computed(@() draggedData.get() != null && draggedData.get()?.unitName == unit.get()?.name)
+  let isUnitSelectedToSlot = Computed(@() selectedUnitToSlot.get() != null && selectedUnitToSlot.get() == name)
+  let watch = [unit, curCampaign, needDuplicateDraggableUnit, isUnitSelectedToSlot]
   return function() {
     let curUnit = unit.get()
     return curUnit == null ? { watch }
       : {
           watch
-          children = mkTreeNodesUnitPlate(
-            curUnit,
-            xmbNode,
-            {
-              pos,
-              onClick = function() {
-                if (hasDarkScreenV && !currentResearch.get() && !unitsResearchStatus.get()?[name].canResearch)
-                  return
-                curSelectedUnit.set(name)
-                markUnitSeen(curUnit)
-                markBranchSeen(curCampaign.get(), curUnit.country)
-                if(name in unseenResearchedUnits.get()?[selectedCountry.get()])
-                  setResearchedUnitsSeen({ [name] = true })
-              }
-            })
+          children = [
+            isUnitSelectedToSlot.get() ? null
+              : mkTreeNodesUnitPlate(
+                  curUnit,
+                  xmbNode,
+                  {
+                    pos,
+                    onClick = function() {
+                      if (hasDarkScreenV && !currentResearch.get() && !unitsResearchStatus.get()?[name].canResearch)
+                        return
+                      curSelectedUnit.set(name)
+                      markUnitSeen(curUnit)
+                      markBranchSeen(curCampaign.get(), curUnit.country)
+                      if(name in unseenResearchedUnits.get()?[selectedCountry.get()])
+                        setResearchedUnitsSeen({ [name] = true })
+                    }
+                  })
+            needDuplicateDraggableUnit.get() || isUnitSelectedToSlot.get()
+              ? mkTreeNodesUnitPlateDefault(curUnit, xmbNode, { pos })
+              : null
+          ]
         }
   }
 }
@@ -594,7 +605,8 @@ let mkUnitsTree = @(countryNodesCfg, hasDarkScreenV) function() {
 let mkUnitsTreeFull = @(countryNodesCfg, hasDarkScreenV, areaSizeV) {
   minWidth = areaSizeV[0]
   minHeight = areaSizeV[1]
-  behavior = Behaviors.Button
+  behavior = Behaviors.DragAndDrop
+  onDrop = @(data) removeUnitFromSlot(data)
   function onClick() {
     if (!isLvlUpAnimated.get()) {
       curSelectedUnit.set(null)
@@ -790,12 +802,12 @@ let function mkUnitsTreeNodesContent() {
       ]
     }
     @() {
-      size = [sw(100), sh(100)]
+      size = const [sw(100), sh(100)]
       watch = [hasDarkScreen, isCampaignWithSlots]
       children = hasDarkScreen.get()
           ? @() {
               watch = [areaSize, hasSelectedUnit]
-              size = [sw(100), sh(100)]
+              size = const [sw(100), sh(100)]
               children = [
                 mkCutBg([getLightBox(areaSize.get())])
                 {

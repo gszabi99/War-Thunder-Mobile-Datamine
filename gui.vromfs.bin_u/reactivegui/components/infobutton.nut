@@ -155,7 +155,7 @@ function infoTooltipButton(contentCtor, tooltipOvr = {}, ovr = {}) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [hdpx(40),hdpx(40)]
+    size = hdpx(40)
     lineWidth = hdpx(2)
     commands = [
       [VECTOR_ELLIPSE, 50, 50, 50, 50],

@@ -29,14 +29,14 @@ let getLevelUnlockLineAnimTime = @(count) count == 0 ? 0
 let scrollBoxMargin = [ 0, ceil(itemW * (itemBlinkScale - 1) / 2) + hdpx(2) ]
 
 let mkLevelUnlockLinesContainer = @(children) {
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   children = makeSideScroll({
     margin = scrollBoxMargin
     flow = FLOW_VERTICAL
     gap = itemsGap
     children
   }, {
-    size = [SIZE_TO_CONTENT, flex()]
+    size = FLEX_V
   })
 }
 
@@ -96,7 +96,7 @@ let mkLabel = @(text, isUnlocked) {
 
 let mkIcon = @(path) {
   size = [iconSize, iconSize]
-  margin = [0, hdpx(5)]
+  margin = const [0, hdpx(5)]
   rendObj = ROBJ_IMAGE
   image = Picture($"{path}:{iconSize}:{iconSize}:P")
   keepAspect = true
@@ -104,7 +104,7 @@ let mkIcon = @(path) {
 }
 
 let mkFontIcon = @(text) {
-  margin = [0, hdpx(5)]
+  margin = const [0, hdpx(5)]
   rendObj = ROBJ_TEXT
   text
   color = 0xFFFFFFF

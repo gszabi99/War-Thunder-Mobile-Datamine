@@ -127,6 +127,7 @@
     "disableAsserts": true,
     "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
+    "giftsURL": "https://api-gotest.gaijinent.com/user_gift.php",
     "androidExitOnANR": {
       "APP_CMD_INIT_WINDOW": true,
       "APP_CMD_TERM_WINDOW": true
@@ -270,6 +271,7 @@
     "skinsDecalsCacheSz": 1073741824,
     "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
+    "giftsURL": "https://api.gaijinent.com/user_gift.php",
     "contentUpdater": {
       "enabled": true,
       "shouldLogToCrashlytics": true,
@@ -327,6 +329,7 @@
     "skinsDecalsCacheSz": 1073741824,
     "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
+    "giftsURL": "https://api.gaijinent.com/user_gift.php",
     "contentUpdater": {
       "enabled": true,
       "shouldLogToCrashlytics": true,
@@ -389,6 +392,7 @@
     "disableAsserts": true,
     "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
+    "giftsURL": "https://api.gaijinent.com/user_gift.php",
     "androidExitOnANR": {
       "APP_CMD_INIT_WINDOW": true,
       "APP_CMD_TERM_WINDOW": true

@@ -962,6 +962,14 @@
           "check_trigger_status": false,
           "after_activation": "disable"
         },
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "player",
+          "isImmortal": true
+        },
         "wait": {
           "time": 1.0
         },
@@ -1067,6 +1075,14 @@
             "time": 0.5
           }
         ],
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "player",
+          "isImmortal": true
+        },
         "playerSetMouseAim": {
           "lookat": "look_at_01"
         },
@@ -2958,7 +2974,7 @@
               0.0,
               0.0
             ],
-            "time": 0.5
+            "time": 0.3
           },
           {
             "mode": "fadeIn",
@@ -2967,19 +2983,19 @@
               0.0,
               0.0
             ],
-            "time": 0.5
+            "time": 0.3
           }
         ],
         "wait": [
           {
-            "time": 0.6
+            "time": 0.4
           },
           {
-            "time": 1.0
+            "time": 0.3
           }
         ],
         "unitRespawn": {
-          "delay": 1.0,
+          "delay": 0.1,
           "offset": [
             0.0,
             0.0,
@@ -3011,6 +3027,9 @@
           "object": "player",
           "move_type": "teleport",
           "lookat": "waypoint01"
+        },
+        "triggerEnable": {
+          "target": "player_in_battle_area"
         }
       },
       "else_actions": {}
@@ -3097,10 +3116,10 @@
           "object": "player",
           "isImmortal": false
         },
-        "triggerEnable": {
+        "__triggerEnable": {
           "target": "player_in_battle_area"
         },
-        "wait": {
+        "__wait": {
           "time": 1.0
         },
         "triggerActivate": {
@@ -5724,14 +5743,24 @@
             "ID_ACTION_BAR_ITEM_10"
           ]
         },
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player",
-          "cannotMove": true
-        }
+        "unitSetProperties": [
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player",
+            "cannotMove": true
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player",
+            "isImmortal": true
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -5805,14 +5834,24 @@
             ]
           }
         ],
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player",
-          "cannotMove": true
-        }
+        "unitSetProperties": [
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player",
+            "cannotMove": true
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player",
+            "isImmortal": true
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -5854,14 +5893,24 @@
             ]
           }
         ],
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player",
-          "cannotMove": true
-        }
+        "unitSetProperties": [
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player",
+            "cannotMove": true
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player",
+            "isImmortal": true
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -6015,93 +6064,7 @@
     },
     "Debug": {
       "isCategory": true,
-      "is_enabled": true,
-      "Debug_init": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 0.01
-          }
-        },
-        "conditions": {
-          "playerWhenCameraState": {
-            "value": -5.0,
-            "state": "pitch",
-            "comparasion_func": "less"
-          }
-        },
-        "actions": {
-          "triggerDisable": {
-            "target": "camera_done"
-          },
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ALL"
-          },
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "player",
-            "isImmortal": false
-          },
-          "triggerEnable": {
-            "target": "Debug_01"
-          }
-        },
-        "else_actions": {}
-      },
-      "Debug_01": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "playerWhenCameraState": {
-            "value": 5.0,
-            "state": "pitch",
-            "comparasion_func": "more"
-          }
-        },
-        "actions": {
-          "unitDamage": {
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [
-              1.0,
-              1.0
-            ],
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "radiusOffset": [
-              10.0,
-              15.0
-            ],
-            "target": "player",
-            "partName": "loader_dm"
-          }
-        },
-        "else_actions": {}
-      }
+      "is_enabled": true
     },
     "timing_rec_driving_01": {
       "is_enabled": false,

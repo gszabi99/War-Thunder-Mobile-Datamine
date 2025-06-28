@@ -75,7 +75,7 @@ let wpStyle = CS_GAMERCARD.__merge({ iconKey = "levelUpWp" })
 let goldStyle = CS_GAMERCARD.__merge({ iconKey = "levelUpGold" })
 let headerPanel = @(hasLvlUpPkgs) @() {
   watch = maxRewardLevelInfo
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_CENTER
   children = [
     @() {
@@ -86,7 +86,7 @@ let headerPanel = @(hasLvlUpPkgs) @() {
         : null
     }
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       halign = ALIGN_RIGHT
       gap = hdpx(70)
@@ -111,7 +111,7 @@ let levelUpRequirePkgDownload = @(lvlUpUnitsPkgs) {
   children = [
     @() {
       watch = addonsSizes
-      size = [hdpx(600), SIZE_TO_CONTENT]
+      size = const [hdpx(600), SIZE_TO_CONTENT]
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       halign = ALIGN_CENTER

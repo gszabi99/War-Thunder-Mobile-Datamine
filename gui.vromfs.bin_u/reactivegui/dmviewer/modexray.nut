@@ -59,13 +59,14 @@ function mkUnitDataForXray(unitName, unit, unitBlk) {
   let xrayOverride = {}
   copyParamsToTable(unitBlk?.xrayOverride, xrayOverride)
   let unitTags = get_unittags_blk()?[unitName]
+  let simUnitType = getSimpleUnitType(unit)
   return {
     unitBlk
     unitTags
     unitName
     unit
     crewId = -1
-    simUnitType = getSimpleUnitType(unit)
+    simUnitType
     unitDataCache = {}
     xrayRemap
     xrayOverride
@@ -96,7 +97,8 @@ function mkPartTooltipInfo(partParams, unitData) {
   if (partName == "" || unitData == null)
     return res
 
-  let { xrayRemap, xrayOverride, unit, unitName, simUnitType, unitBlk, unitDataCache } = unitData
+  let { xrayRemap, xrayOverride, unit, unitName, simUnitType, unitBlk, unitDataCache
+  } = unitData
   let partType = getPartType(partName, xrayRemap)
 
   let descData = getDescriptionInXrayMode(partType, partParams, {

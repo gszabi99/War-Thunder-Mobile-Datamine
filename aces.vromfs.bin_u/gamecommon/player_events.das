@@ -25,7 +25,7 @@ struct EventPlayerOwnedUnitChanged
   toEid : EntityId
   fromEid : EntityId
 
-[cpp_event(broadcast)]
+[cpp_event(broadcast, with_scheme, cpp_gen=false)]
 struct EventPlayerControlledUnitChanged
   playerId : int
   playerEid : EntityId

@@ -40,7 +40,7 @@ let mkGradientBlock = @(color, children, width = hintWidth, padding = hdpx(10)) 
       ]
     }
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       margin = padding
       halign = ALIGN_CENTER
       children

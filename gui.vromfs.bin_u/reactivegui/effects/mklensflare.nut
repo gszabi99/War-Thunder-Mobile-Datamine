@@ -128,7 +128,7 @@ let lensStarOppositeHalf = @() {
   opacity = 0
   clipChildren = true
   children = {
-    size = [pw(200), ph(100)]
+    size = const [pw(200), ph(100)]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
@@ -139,7 +139,7 @@ let lensStarOppositeHalf = @() {
         image = gradRing()
       }
       {
-        size = [pw(60), ph(60)]
+        size = const [pw(60), ph(60)]
         rendObj = ROBJ_IMAGE
         color = lensStarOppositeColor
         image = Picture($"ui/images/effects/star_01.svg:{lensStarH/2}:{lensStarH/2}:P")
@@ -166,7 +166,7 @@ let lensStarOpposite = @(moveAnim) {
           )
         })
         {
-          size = [pw(93), ph(100)]
+          size = const [pw(93), ph(100)]
           vplace = ALIGN_CENTER
           rendObj = ROBJ_IMAGE
           color = lensStarOppositeColor
@@ -190,7 +190,7 @@ let lensStarOpposite = @(moveAnim) {
 
 let lensFlareOppositeLeftImage = mkLensFlareCutRadiusLeft(50, 10, 23, 100, 18, 10)
 let lensFlareOppositeLeft = @(ovr = {}) {
-  size = [hdpx(500), hdpx(1000)]
+  size = const [hdpx(500), hdpx(1000)]
   pos = [pw(-50), 0]
   hplace = ALIGN_RIGHT
   rendObj = ROBJ_IMAGE
@@ -199,7 +199,7 @@ let lensFlareOppositeLeft = @(ovr = {}) {
 }.__update(ovr)
 
 let lensStarOppositeGlowAndLine = @(moveAnim) {
-  size = [hdpx(3000), 0]
+  size = const [hdpx(3000), 0]
   valign = ALIGN_CENTER
   children = [
     mkLensGlow(2 * lensStarH)
@@ -214,7 +214,7 @@ let lensStarOppositeGlowAndLine = @(moveAnim) {
 
 let lensFlareBoxImage = mkLensFlareCutRadiusLeft(50, 6, 20, -25, 30, -21)
 let lensFlareBox = @(moveAnim) {
-  size = [hdpx(300), hdpx(600)]
+  size = const [hdpx(300), hdpx(600)]
   rendObj = ROBJ_IMAGE
   image = lensFlareBoxImage()
   color = lensStarReflColor

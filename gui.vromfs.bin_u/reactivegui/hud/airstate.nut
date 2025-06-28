@@ -26,7 +26,8 @@ let BombsState       = Watched({ count = 0, time = -1, endTime = 1 })
 let RocketsState     = Watched({ count = 0, time = -1, endTime = 1 }) 
 let TorpedoesState   = Watched({ count = 0, time = -1, endTime = 1 }) 
 let cannonsOverheat  = Watched(0)
-let mgunsOverheat  = Watched(0)
+let mgunsOverheat    = Watched(0)
+let addgunsOverheat  = Watched(0)
 let TurretsVisible = Watched(array(NUM_TURRETS_MAX, false))
 let TurretsReloading = Watched(array(NUM_TURRETS_MAX, false))
 let TurretsEmpty = Watched(array(NUM_TURRETS_MAX, false))
@@ -48,6 +49,7 @@ let airState = {
   isActiveTurretCamera
   cannonsOverheat
   mgunsOverheat
+  addgunsOverheat
 
   TurretsVisible
   TurretsReloading
@@ -94,11 +96,13 @@ registerInteropFunc("updateCannonsArray", function(index, count, _seconds, _sele
     Cannon0.set({ count, time, endTime })
 })
 
-registerInteropFunc("updateGunsOverheat", function(cannons_overheat, mguns_overheat) {
+registerInteropFunc("updateGunsOverheat", function(cannons_overheat, mguns_overheat, addguns_overheat) {
   if (cannonsOverheat.get() != cannons_overheat)
     cannonsOverheat.set(cannons_overheat)
   if (mgunsOverheat.get() != mguns_overheat)
     mgunsOverheat.set(mguns_overheat)
+  if (addgunsOverheat.get() != addguns_overheat)
+    addgunsOverheat.set(addguns_overheat)
 })
 
 registerInteropFunc("updateMachineGunsArray", function(index, count, _seconds, _selected, time, endTime, _mode) {

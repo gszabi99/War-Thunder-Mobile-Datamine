@@ -205,7 +205,7 @@ let mkUnitBlueprintMark = @(unit, ovr = {}) function() {
         gap = hdpx(5)
         children = [
           {
-            size = [hdpx(30), hdpx(30)]
+            size = hdpx(30)
             rendObj = ROBJ_IMAGE
             image = Picture($"ui/unitskin#blueprint_default_small.avif:{hdpx(30)}:{hdpx(30)}:P")
             transform = {
@@ -246,7 +246,7 @@ let mkPlateTextTimer = @(endTime, override = {}) @() {
   children = endTime - serverTime.get() > 0
     ? [
         {
-          size = [hdpx(25), hdpx(25)]
+          size = hdpx(25)
           margin = hdpx(4)
           rendObj = ROBJ_IMAGE
           image = Picture($"ui/gameuiskin#timer_icon.svg:{hdpx(25)}:{hdpx(25)}:P")
@@ -370,7 +370,7 @@ function mkUnitLock(unit, isLocked, justUnlockedDelay = null){
     key = {}
     hplace = ALIGN_RIGHT
     vplace = ALIGN_BOTTOM
-    padding = [hdpx(10), 0]
+    padding = const [hdpx(10), 0]
     children
   }
 }
@@ -401,7 +401,7 @@ let function mkUnitFlag(unit, isLocked = false) {
 }
 
 let unitPlateNameOvr = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   padding = [plateTextsSmallPad * 0.5, plateTextsSmallPad * 2, 0, 0]
   halign = ALIGN_RIGHT
   behavior = Behaviors.Marquee

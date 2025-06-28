@@ -11,7 +11,7 @@ let mkText = @(text, color = defColor) {
 
 let mkRow = @(t1, t2, icon = null) {
   minWidth = SIZE_TO_CONTENT
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   gap = hdpx(10)
   children = [
@@ -29,7 +29,7 @@ let mkMarqueeText = @(text)
   mkText(text).__update({ behavior = Behaviors.Marquee })
 
 let mkMarqueeRow = @(t1, t2, icon = null) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   gap = hdpx(10)
   children = [

@@ -37,7 +37,7 @@ registerHandler("consolePrintError",
   @(res) console_print(res?.error == null ? "SUCCESS" : console_print(res))) 
 
 let infoTextOvr = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_LEFT,
   preformatted = FMT_KEEP_SPACES | FMT_NO_WRAP
 }.__update(fontTiny)
@@ -49,11 +49,11 @@ registerHandler("onDebugLootboxChances",
     if ("percents" in data)
       data.percents = data.percents.map(@(v)
         $"{v > 0.1 ? round_by_value(v, 0.01) : roundToDigits(v, 2)}%")
-    let text = object_to_json_string(data)
+    let text = object_to_json_string(data, true)
     openMsgBox({
       uid = "debug_lootbox_chances"
       text = makeSideScroll(msgBoxText(text, infoTextOvr))
-      wndOvr = { size = [hdpx(1100), hdpx(1000)] }
+      wndOvr = { size = const [hdpx(1100), hdpx(1000)] }
       buttons = [
         { text = "COPY", cb = @() set_clipboard_text(text) }   
         { id = "ok", styleId = "PRIMARY", isDefault = true }   
@@ -76,7 +76,7 @@ registerHandler("onDebugCheckPurchases",
     openMsgBox({
       uid = "debug_check_purchases"
       text = makeSideScroll(msgBoxText(text, infoTextOvr))
-      wndOvr = { size = [hdpx(1100), hdpx(1000)] }
+      wndOvr = { size = const [hdpx(1100), hdpx(1000)] }
       buttons = [
         { text = "COPY", cb = @() set_clipboard_text(text) }   
         { id = "ok", styleId = "PRIMARY", isDefault = true }   

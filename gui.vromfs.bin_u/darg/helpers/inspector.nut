@@ -87,7 +87,7 @@ function panelToolbar() {
     @() wndHalign(invAlign(wndHalign.value)))
   return {
     watch = wndHalign
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_HORIZONTAL
     padding = sh(1)
     gap = sh(0.5)
@@ -110,7 +110,7 @@ let mkColorCtor = @(color) @(content) {
 }
 
 let mkImageCtor = @(image) @(content) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   children = [
     content
@@ -172,7 +172,7 @@ function mkPropContent(desc, key, sf) {
     keyValue = $"{keyValue} {valCtor}"
   local content = {
     rendObj = ROBJ_TEXTAREA
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     behavior = Behaviors.TextArea
     color = textColor(sf)
     fontSize
@@ -197,7 +197,7 @@ function propPanel(desc) {
     let stateFlags = Watched(0)
     return @() {
       watch = stateFlags
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       behavior = Behaviors.Button
       onElemState = @(sf) stateFlags(sf)
       onClick = @() set_clipboard_text(getPropValueTexts(desc, k).text)
@@ -323,7 +323,7 @@ function details() {
 
 let help = {
   rendObj = ROBJ_TEXTAREA
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   behavior = Behaviors.TextArea
   vplace = ALIGN_BOTTOM
   margin = [hdpx(5), hdpx(10)]

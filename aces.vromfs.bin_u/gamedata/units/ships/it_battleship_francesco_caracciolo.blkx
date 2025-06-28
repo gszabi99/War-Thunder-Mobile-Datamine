@@ -385,8 +385,8 @@
       "steering_gear_01_dm": {}
     },
     "magazines": {
-      "armorClass": "ship_structural_steel",
-      "armorThickness": 15.0,
+      "armorClass": "ship_RHA",
+      "armorThickness": 303.0,
       "armorThrough": 300.0,
       "hp": 590.0,
       "explosionDamageMult": 0.0001,

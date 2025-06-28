@@ -113,7 +113,7 @@ let mkNextLevelBgAnimations = @(levelProgressDelay, levelProgressAnimTime, trigg
 ]
 
 let mkTextUnderLevelLine = @(text, color, override = {}) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   maxWidth = hdpx(350)
   hplace = ALIGN_RIGHT
   halign = ALIGN_RIGHT
@@ -253,7 +253,7 @@ let mkProgressTitle = @(text) {
 
 let mkProgressDesc = @(text) doubleSideGradient.__merge({
   pos = [hdpx(39), hdpx(100)]
-  padding = [hdpx(5), hdpx(50)]
+  padding = const [hdpx(5), hdpx(50)]
   children = {
     halign = ALIGN_LEFT
     rendObj = ROBJ_TEXTAREA
@@ -358,7 +358,7 @@ function mkLevelProgressLine(curLevelConfig, reward, title, desc, animStartTime,
   let curLevelIdxWatch = Watched(0)
   let isLevelupMomentWatch = Watched(false)
   let levelProgressLineComp = {
-    size = [SIZE_TO_CONTENT, hdpx(100)]
+    size = const [SIZE_TO_CONTENT, hdpx(100)]
     children = [
       mkProgressTitle(title)
       {
@@ -428,7 +428,7 @@ function mkResearchProgressLine(debrData, unitResearchInfo, title, desc, animSta
   let curLevelIdxWatch = Watched(0)
   let isLevelupMomentWatch = Watched(false)
   let researchProgressLineComp = {
-    size = [SIZE_TO_CONTENT, hdpx(100)]
+    size = const [SIZE_TO_CONTENT, hdpx(100)]
     children = [
       mkProgressTitle(title)
       {

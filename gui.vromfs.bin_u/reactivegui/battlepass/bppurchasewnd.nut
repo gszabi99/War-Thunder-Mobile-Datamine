@@ -67,7 +67,7 @@ let mkRewardWithProgress = @(vInfo) {
   gap = hdpx(5)
   children = [
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       valign = ALIGN_BOTTOM
       children = [
         {
@@ -103,12 +103,12 @@ function rewardsBlock(text, viewInfo, rewardCtor) {
       }
 
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     gap = boxGap
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         text = $"{text}{colon}"
@@ -141,7 +141,7 @@ function rewardsToViewInfo(rewards, servConfigs) {
 let rewardsList = @(selBpInfo) function() {
   let res = {
     watch = [bpPurchasedUnlock, bpPaidRewardsUnlock, bpFreeRewardsUnlock, curStage, serverConfigs, selBpInfo, purchasedBp]
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
   }
   if (bpPaidRewardsUnlock.value == null)
     return res
@@ -200,7 +200,7 @@ let rewardsList = @(selBpInfo) function() {
   return res.__update({
     children = {
       key = selBpInfo.get()?.bpType
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       valign = ALIGN_CENTER
       flow = FLOW_VERTICAL
       gap = rewardsListGap
@@ -308,7 +308,7 @@ let buyBlock = @(bpList, selBpInfo) function() {
               },
               { ovr = { minWidth = bpIconSize }})
         : {
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             text = loc("error/googleplay/GP_ITEM_UNAVAILABLE")

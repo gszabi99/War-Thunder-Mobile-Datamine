@@ -98,14 +98,14 @@ let mkSlotBase = @(isSelected) mkCardBase.__merge({
 
 let mkLevelLockInfo = @(isLocked, reqLevel) @() {
   watch = [isLocked, reqLevel]
-  margin = [hdpxi(5), 0]
+  margin = const [hdpxi(5), 0]
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   children = !isLocked.get() ? null
     : reqLevel.get() > 0 ? mkLevelLockSmall(reqLevel.get())
     : {
         margin = hdpxi(10)
-        size = [hdpxi(25), hdpxi(35)]
+        size = const [hdpxi(25), hdpxi(35)]
         rendObj = ROBJ_IMAGE
         color = 0xFFAA1111
         image =  Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(25)}:{hdpxi(35)}:P")
@@ -128,12 +128,12 @@ function getTitlePaddingBottom(isSelected) {
 
 let mkSlotTitle = @(title, isSelected, ovr = {}) title == "" ? null
   : {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_BOX
       fillColor = 0x44000000
       padding = [hdpx(1), isSelected ? padding : defPadding]
       children = {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         rendObj = ROBJ_TEXT
         color = 0xFFFFFFFF
         text = title
@@ -157,14 +157,14 @@ function mkWeaponCard(w) {
     sound = { click = "choose" }
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         padding
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         children = commonWeaponIcon(w)
       }
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         padding = getTitlePaddingTop(w.slotIdx == selectedWCardIdx.get())
         vplace = ALIGN_TOP
         hplace = ALIGN_CENTER
@@ -178,7 +178,7 @@ function mkWeaponCard(w) {
 }
 
 let mkSlotText = @(text) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXT
   text
   hplace = ALIGN_CENTER
@@ -201,10 +201,10 @@ function mkBeltCard(w) {
     children = [
       mkBeltImage(w?.bullets ?? [], isSelected.get() ? imgSize : weaponSize - defPadding * 2)
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         padding = getTitlePaddingTop(isSelected.get())
         children = {
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           fillColor = 0x44000000
           rendObj = ROBJ_BOX
           padding = [hdpx(2), isSelected.get() ? padding : defPadding]
@@ -224,14 +224,14 @@ let mkBeltSlot = @(w, slotIdx, isSelected) mkSlotBase(isSelected).__update({
   children = [
     mkBeltImage(w.equipped?.bullets ?? [], isSelected ? imgSize : weaponSize - defPadding * 2)
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       padding = getTitlePaddingTop(isSelected)
       vplace = ALIGN_TOP
       hplace = ALIGN_CENTER
       children = mkSlotTitle(caliberTitle(w), isSelected)
     }
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       padding = getTitlePaddingBottom(isSelected)
       vplace = ALIGN_BOTTOM
       hplace = ALIGN_CENTER
@@ -252,7 +252,7 @@ function mkWeaponSlot(w, slotIdx, isSelected) {
         children = commonWeaponIcon(w)
       }
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         padding = getTitlePaddingTop(isSelected)
         vplace = ALIGN_TOP
         hplace = ALIGN_CENTER
@@ -263,7 +263,7 @@ function mkWeaponSlot(w, slotIdx, isSelected) {
 }
 
 let mkRowGroup = @(children) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   gap = cellGap
   children
@@ -277,7 +277,7 @@ function overloadInfoBlock() {
     : colorize(badTextColor2, "\n".join(overloads))
   return {
     watch = overloadInfo
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
     color = commonTextColor
@@ -291,7 +291,7 @@ let arrayToRows = @(elems, elemsInRow, ovr = {}) array(calcRowsByElems(elems, el
 
 let mkGroup = @(children) {
   rendObj = ROBJ_BOX
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   fillColor = 0xA0000000
   children
@@ -309,7 +309,7 @@ function mkChooseBeltSlotWnd() {
   let turretSlotsRows = arrayToRows(turretSlots, SLOTS_IN_ROW, { halign = ALIGN_CENTER, padding = paddingWnd })
   return {
     watch = watchList
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     gap = contentGap
     children = [
@@ -334,14 +334,14 @@ function mkChooseSecondarySlotWnd() {
 
   return {
     watch = watchList
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     gap = cellGap
     children = arrayToRows(weaponSlots, SLOTS_IN_ROW)
   }
 }
 
-let mkContentByType = @(weaponContentCtor, beltContentCtor, size = [flex(), SIZE_TO_CONTENT]) @() {
+let mkContentByType = @(weaponContentCtor, beltContentCtor, size = FLEX_H) @() {
   watch = contentType
   size
   halign = ALIGN_CENTER
@@ -405,7 +405,7 @@ let mkRequirementsTextComp = @(isLocked, isPurchased, reqLevel, mod) {
 }.__update(fontTiny)
 
 let selectInfo = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = commonTextColor
@@ -459,7 +459,7 @@ function mkSecondaryButtons() {
   let { isPurchased } = selectedWCardStates
   return @() {
     watch = [selectedSlotWeaponName, selectedWCard, isPurchased]
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
@@ -476,7 +476,7 @@ function mkBeltButtons() {
   let { isLocked, isPurchased, mod, reqLevel } = selectedBeltCardStates
   return @(){
     watch = [selectedBeltCard , selectedBeltSlot, isLocked, isPurchased]
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = selectedBeltCard.get() == null || selectedBeltSlot.get()?.equipped.id == selectedBeltCard.get().id ? null

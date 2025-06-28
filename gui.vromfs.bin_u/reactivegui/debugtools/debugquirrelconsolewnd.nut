@@ -81,8 +81,8 @@ function consoleExecute() {
 }
 
 let consoleTextInput = {
-  size = [flex(), SIZE_TO_CONTENT]
-  padding = [0, 0, hdpx(50), 0]
+  size = FLEX_H
+  padding = const [0, 0, hdpx(50), 0]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   children = [
@@ -105,7 +105,7 @@ consoleLog.subscribe(@(_) defer(scrollToLogBottom))
 
 let consoleLogArea = @() {
   watch = consoleLog
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = 0xFFFFFFFF
@@ -115,11 +115,11 @@ let consoleLogArea = @() {
 }.__update(fontTiny)
 
 let footerBtns = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     textButtonCommon("CLEAR", consoleLogClear)
-    { size = [flex(), 0] }
+    { size = const [flex(), 0] }
     textButtonPrimary("COPY", consoleLogCopy)
   ]
 }
@@ -130,7 +130,7 @@ return @() addModalWindow({
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   children = {
-    size = [sh(130), sh(90)]
+    size = const [sh(130), sh(90)]
     padding = hdpx(10)
     stopMouse = true
     vplace = ALIGN_CENTER
@@ -141,7 +141,7 @@ return @() addModalWindow({
     gap = hdpx(10)
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_HORIZONTAL
         valign = ALIGN_TOP
         children = [

@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 
+let { isDownloadedFromSite } = require("%appGlobals/clientState/clientState.nut")
 let { isDebugTouchesActive } = require("%rGui/debugTools/debugTouches.nut")
 let { OPT_SHOW_TOUCHES_ENABLED, mkOptionValue, optionsVersion } = require("%rGui/options/guiOptions.nut")
-let { isGameAutoUpdateVisible, isGameAutoUpdateEnabled, gameAutoUpdateList } = require("gameAutoUpdateOption.nut")
+let { isGameAutoUpdateEnabled, gameAutoUpdateList } = require("gameAutoUpdateOption.nut")
 let { isBackgroundUpdateVisible, isBackgroundUpdateEnabled, backgroundUpdateList } = require("backgroundUpdateOption.nut")
 let { allow_background_resource_update, allow_apk_update } = require("%appGlobals/permissions.nut")
 let { reset_gui_options } = require("controlsOptions")
@@ -60,7 +61,7 @@ let resetControlsButton = {
 
 return {
   systemOptions = [
-    isGameAutoUpdateVisible ? autoUpdateSetting : null
+    isDownloadedFromSite ? autoUpdateSetting : null
     isBackgroundUpdateVisible ? backgroundUpdateSetting : null
     showTouchesSetting
     resetControlsButton

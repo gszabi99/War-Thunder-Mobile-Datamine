@@ -93,7 +93,7 @@ let mkText = @(text, ovr = {}) {
 }.__update(fontTinyAccented, ovr)
 
 let mkFramedText = @(text) {
-  padding = [hdpx(10), hdpx(20)]
+  padding = const [hdpx(10), hdpx(20)]
   rendObj = ROBJ_SOLID
   color = 0x40000000
   children = {
@@ -106,7 +106,7 @@ let mkFramedText = @(text) {
 }
 
 let modalBg = freeze({
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   valign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   padding = hdpx(20)

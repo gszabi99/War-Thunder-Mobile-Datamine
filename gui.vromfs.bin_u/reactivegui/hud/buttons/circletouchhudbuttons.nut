@@ -29,6 +29,8 @@ let { lowerAircraftCamera } = require("camera_control")
 let { playHapticPattern } = require("hapticVibration")
 let { getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT } = require("%rGui/options/guiOptions.nut")
 let { HAPT_SHOOT_ITEM } = require("%rGui/hud/hudHaptic.nut")
+let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
+
 
 let bigButtonSize = hdpxi(150)
 let bigButtonImgSize = (0.65 * bigButtonSize + 0.5).tointeger()
@@ -95,7 +97,7 @@ function mkCircleProgressBg(size, actionItem, onFinishExt = @() playSound("weapo
     })
 
   let { empty, ready, broken, noAmmo } = btnBgColor
-  return mkCircleBg(size).__update({
+  let circleBg = mkCircleBg(size).__update({
     key = $"action_bg_{id}_{cooldownEndTime}"
     fgColor = !isAvailableActionItem(actionItem) ? noAmmo
       : (actionItem?.broken ?? false) ? broken
@@ -103,6 +105,7 @@ function mkCircleProgressBg(size, actionItem, onFinishExt = @() playSound("weapo
     bgColor = empty
     animations
   })
+  return mkItemWithCooldownText(id, circleBg, [size, size], hasCooldown, cooldownEndTime)
 }
 
 function mkCircleProgressBgWeapon(size, id, weaponData, isAvailable, onFinishExt = @() playSound("weapon_primary_ready"), ovr = {}) {
@@ -129,12 +132,13 @@ function mkCircleProgressBgWeapon(size, id, weaponData, isAvailable, onFinishExt
     })
 
   let { empty, ready, noAmmo } = btnBgColor
-  return mkCircleBg(size).__update({
+  let circleBg = mkCircleBg(size).__update({
     key = $"action_bg_{id}_{endTime}"
     fgColor = isAvailable ? ready : noAmmo
     bgColor = empty
     animations
   }, ovr)
+  return mkItemWithCooldownText(id, circleBg, [size, size], hasCooldown, endTime)
 }
 
 function mkCircleBgWeapon(size, id, isAvailable) {

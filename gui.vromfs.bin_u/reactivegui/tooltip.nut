@@ -22,7 +22,7 @@ let tooltipBg = {
   fillColor = 0xDD000000
   borderColor = 0xFF808080
   borderWidth = hdpxi(4)
-  padding = [hdpx(20), hdpx(30)]
+  padding = const [hdpx(20), hdpx(30)]
 }
 
 let mkTooltipText = @(text, ovr = {}) {
@@ -199,7 +199,7 @@ function tooltipComp() {
 
   return position.__merge({
     watch = state
-    size = [0, 0]
+    size = 0
     halign
     valign
     children = {

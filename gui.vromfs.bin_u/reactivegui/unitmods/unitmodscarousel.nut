@@ -141,7 +141,7 @@ function mkMod(id, content, scrollToMod) {
   let isHover = Computed (@() stateFlags.value & S_HOVER)
 
   return {
-    size = [SIZE_TO_CONTENT, flex()]
+    size = FLEX_V
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags(v)
     clickableInfo = loc("mainmenu/btnSelect")
@@ -163,7 +163,7 @@ function mkMod(id, content, scrollToMod) {
 }
 
 let mkMods = @(modsSorted, scrollToMod) {
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   flow = FLOW_HORIZONTAL
   gap = modsGap
   children = modsSorted

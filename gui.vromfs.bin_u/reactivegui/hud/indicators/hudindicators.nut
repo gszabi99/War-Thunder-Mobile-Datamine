@@ -17,7 +17,7 @@ function mkHudIndicatorsContainer(playerId, children) {
     playerTitlesVisibility.get()?[playerId] ?? false))
   return {
     key = $"hudIndicatorBhv{playerId}"
-    size = [0, 0]
+    size = 0
     behavior = Indicator
     playerId
     useTargetCenterPos = true

@@ -74,7 +74,7 @@ let bulletStatus = @(isNext, isCurrent, scale) {
   rendObj = ROBJ_TEXT
   hplace = ALIGN_CENTER
   pos = [0, ph(100)]
-  padding = [hdpx(6), 0, 0, 0]
+  padding = const [hdpx(6), 0, 0, 0]
   text = isCurrent ? loc("hint/currentBullet/short")
     : isNext ? loc("hint/nextBullet/short")
     : null
@@ -100,7 +100,7 @@ function bulletButton(bulletInfo, bulletCount, scale) {
         scale)
       @() {
         watch = bulletCount
-        padding = [0, 0, 0, hdpx(4)]
+        padding = const [0, 0, 0, hdpx(4)]
         rendObj = ROBJ_TEXT
         text = bulletCount.value
       }.__update(getScaledFont(fontVeryTinyShaded, scale))

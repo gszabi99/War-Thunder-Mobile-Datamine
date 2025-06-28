@@ -122,7 +122,7 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, addHead
 
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
         children = [

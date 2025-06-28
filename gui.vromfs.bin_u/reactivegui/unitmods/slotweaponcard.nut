@@ -81,7 +81,7 @@ let mkEquippedIcon = @(isEquipped) @() !isEquipped.get() ? { watch = isEquipped 
     }
 
 let mkSlotText = @(text, ovr = {}) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   margin = contentMargin
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
@@ -130,7 +130,7 @@ let mkLevelLockInfo = @(isLocked, reqLevel) @() {
   children = !isLocked.get() ? null
     : reqLevel.get() > 0 ? mkLevelLock(reqLevel.get())
     : {
-        size = [hdpxi(35), hdpxi(45)]
+        size = const [hdpxi(35), hdpxi(45)]
         rendObj = ROBJ_IMAGE
         color = 0xFFAA1111
         image =  Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(35)}:{hdpxi(45)}:P")
@@ -176,7 +176,7 @@ function mkSlotWeapon(idx, scrollToWeapon) {
 
   return {
     key = slotWeaponKey(idx)
-    size = [SIZE_TO_CONTENT, flex()]
+    size = FLEX_V
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags(v)
     clickableInfo = loc("mainmenu/btnSelect")
@@ -254,7 +254,7 @@ function mkSlotBelt(idx, scrollToWeapon) {
   let isHover = Computed(@() stateFlags.get() & S_HOVER)
   return {
     key = slotBeltKey(idx)
-    size = [SIZE_TO_CONTENT, flex()]
+    size = FLEX_V
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags(v)
     clickableInfo = loc("mainmenu/btnSelect")

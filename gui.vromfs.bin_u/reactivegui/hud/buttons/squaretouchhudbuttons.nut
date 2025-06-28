@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { round } = require("math")
 let { touchButtonSize, btnBgColor, borderColor, borderColorPushed, borderWidth
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { defShortcutOvr}  = require("hudButtonsPkg.nut")
@@ -71,7 +72,7 @@ function mkSquareButtonBg(actionItem, buttonBgSize = touchButtonSize, onFinishEx
   let cooldown = hasCooldown ? (1 - (cooldownLeft / max(cooldownTime, 1))) : 1
   let { empty, ready, broken, noAmmo } = btnBgColor
   let trigger = $"action_cd_finish_{id}"
-  return {
+  let item = {
     size = [buttonBgSize, buttonBgSize]
     rendObj = ROBJ_PROGRESS_CIRCULAR
     image = Picture($"ui/gameuiskin#hud_movement_stop2_bg.svg:{buttonBgSize}:{buttonBgSize}:P")
@@ -96,6 +97,7 @@ function mkSquareButtonBg(actionItem, buttonBgSize = touchButtonSize, onFinishEx
       }
     ]
   }
+  return mkItemWithCooldownText(id, item, [buttonBgSize, buttonBgSize], hasCooldown, cooldownEndTime)
 }
 
 return {

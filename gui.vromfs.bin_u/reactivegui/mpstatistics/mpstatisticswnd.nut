@@ -98,7 +98,7 @@ function onDetach() {
 
 let wndTitle = @() {
   watch = missionName
-  size = [hdpx(480), SIZE_TO_CONTENT]
+  size = const [hdpx(480), SIZE_TO_CONTENT]
   maxHeight = hdpx(44)
   rendObj = ROBJ_TEXTAREA
   behavior = [Behaviors.TextArea, Behaviors.Marquee]
@@ -120,7 +120,7 @@ return bgShaded.__merge({
   children = [
     @() {
       watch = [playersByTeam, battleCampaign]
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
       children = mkMpStatsTable(getColumnsByCampaign(battleCampaign.get(), get_current_mission_name()), playersByTeam.get())

@@ -169,7 +169,7 @@ function mkArrowsWidgetComps(fullSize) {
         ]
       }
       {
-        size = [SIZE_TO_CONTENT, flex()]
+        size = FLEX_V
         children = [
           arrowRight
         ]

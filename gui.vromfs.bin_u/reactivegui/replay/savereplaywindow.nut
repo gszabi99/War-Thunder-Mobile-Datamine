@@ -43,7 +43,7 @@ let applyButton = @() {
 }
 
 let wndContent = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   padding = buttonsHGap
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -59,7 +59,7 @@ let saveReplayWnd = bgShaded.__merge({
   size = flex()
   onAttach = @() set_kb_focus(replayName)
   children = @() modalWndBg.__merge({
-    size = [hdpx(800), SIZE_TO_CONTENT]
+    size = const [hdpx(800), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     children = [
       modalWndHeaderWithClose(loc("mainmenu/btnSaveReplay"), close)

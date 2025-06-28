@@ -31,7 +31,7 @@ let incomeSounds = {
 }
 
 let hoverBg = {
-  size = [pw(120), flex()]
+  size = const [pw(120), flex()]
   color = 0x8052C4E4
   opacity = 1
   rendObj = ROBJ_9RECT
@@ -181,7 +181,7 @@ function mkBalance(baseId, style, onClick, initBalance) {
               })
           @() {
             watch = [nextChange, id]
-            size = [0, 0] 
+            size = 0 
             hplace = ALIGN_RIGHT
             vplace = ALIGN_BOTTOM
             children = nextChange.value == null ? null

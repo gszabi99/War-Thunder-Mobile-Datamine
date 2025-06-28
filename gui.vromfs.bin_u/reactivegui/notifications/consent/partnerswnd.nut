@@ -16,8 +16,8 @@ let partners = ["google", "meta", "unity"]
 let pointSize = [hdpx(3), hdpx(3)]
 
 let partnerRow = @(p){
-  size = [flex(), SIZE_TO_CONTENT]
-  padding = [hdpx(20),hdpx(70)]
+  size = FLEX_H
+  padding = const [hdpx(20),hdpx(70)]
   flow = FLOW_VERTICAL
   children = [
     {
@@ -52,14 +52,14 @@ let partnerRow = @(p){
 }
 
 let closeBtn = {
-  padding = [hdpx(20), 0]
+  padding = const [hdpx(20), 0]
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_CENTER
   children = textButtonPrimary(loc("msgbox/btn_ok"), close)
 }
 
 let content = modalWndBg.__merge({
-  size = [hdpx(700), hdpx(700)]
+  size = hdpx(700)
   flow = FLOW_VERTICAL
   children = [
     modalWndHeaderWithClose(loc("consentWnd/main/partners"), close)

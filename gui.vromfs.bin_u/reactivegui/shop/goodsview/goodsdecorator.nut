@@ -21,7 +21,7 @@ let mkAvatarImg = @(decoratorId) {
   vplace = ALIGN_CENTER
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  margin = [0, hdpx(80)]
+  margin = const [0, hdpx(80)]
   rendObj = ROBJ_BOX
   borderColor = 0xFFA0A0A0
   borderWidth = avatarBorderWidth
@@ -35,7 +35,7 @@ let mkAvatarImg = @(decoratorId) {
 
 let mkTitleImg = @(decoratorId) {
   behavior = Behaviors.TextArea
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   vplace = ALIGN_CENTER

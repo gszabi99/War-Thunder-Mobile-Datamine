@@ -76,7 +76,7 @@ function selectedInfo() {
 }
 
 let bottomBar = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   margin = saBordersRv
   vplace = ALIGN_BOTTOM
   valign = ALIGN_BOTTOM

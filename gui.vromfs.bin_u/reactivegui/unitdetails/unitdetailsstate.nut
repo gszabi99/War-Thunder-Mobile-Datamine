@@ -10,7 +10,8 @@ let curSelectedUnitSkin = Watched(null)
 let openUnitOvr = mkWatched(persist, "openUnitOvr", null)
 let unitDetailsOpenCount = Watched(openUnitOvr.get() == null ? 0 : 1)
 let isWindowAttached = Watched(false)
-let isSkinsWndAttached = Watched(false)
+let isCustomizationWndAttached = Watched(false)
+let isOwnUnit = Computed(@() (openUnitOvr.get()?.canShowOwnUnit ?? true) && openUnitOvr.get()?.name in campMyUnits.get())
 
 let function setUnit(unit) {
   if (unit != null)
@@ -53,7 +54,7 @@ let unitToShow = Computed(@() unitToShowCommon.get() == null || curSelectedUnitS
         .__merge({ [unitToShowCommon.get().name] = curSelectedUnitSkin.get() })
     }))
 unitToShow.subscribe(function(u) {
-  if (isWindowAttached.get() || isSkinsWndAttached.get())
+  if (isWindowAttached.get() || isCustomizationWndAttached.get())
     setUnit(u)
 })
 isWindowAttached.subscribe(@(v) !v ? null : setUnit(unitToShow.get()))
@@ -79,5 +80,6 @@ return {
   platoonUnitsList
   unitToShow
   isWindowAttached
-  isSkinsWndAttached
+  isCustomizationWndAttached
+  isOwnUnit
 }

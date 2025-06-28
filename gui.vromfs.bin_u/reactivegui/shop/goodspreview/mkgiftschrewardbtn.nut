@@ -19,7 +19,7 @@ function mkGiftSchRewardBtn(giftSchReward, aTimeHeaderStart, skipAnimsOnce = nul
     return null
   local isPurchasing = Computed(@() giftSchReward.id in schRewardInProgress.get())
   return {
-    size = [hdpx(130),hdpx(130)]
+    size = hdpx(130)
     pos = [verticalGap,0]
     rendObj = ROBJ_IMAGE
     image = Picture("ui/gameuiskin#offer_gift_icon.avif:0:P")
@@ -28,7 +28,7 @@ function mkGiftSchRewardBtn(giftSchReward, aTimeHeaderStart, skipAnimsOnce = nul
     children = [
       {
         hplace = ALIGN_RIGHT
-        margin = [hdpx(10), hdpx(10), 0, 0]
+        margin = const [hdpx(10), hdpx(10), 0, 0]
         children = priorityUnseenMark
       }
       @() {

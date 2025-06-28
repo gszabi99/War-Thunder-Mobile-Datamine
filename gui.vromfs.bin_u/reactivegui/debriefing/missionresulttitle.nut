@@ -119,8 +119,8 @@ function mkMissionResultTitle(debrData, needAnim) {
     : isWon ? missionResultParamsByType.victory
     : missionResultParamsByType.defeat
   return {
-    size = [flex(), SIZE_TO_CONTENT]
-    margin = [0, 0, hdpx(32), 0]
+    size = FLEX_H
+    margin = const [0, 0, hdpx(32), 0]
     children = [
       {
         flow = FLOW_VERTICAL

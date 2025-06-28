@@ -18,7 +18,7 @@ let cardMargin = [hdpx(10), 0]
 let tooltipWidth = hdpx(600)
 let caliberTriggers = ["additional gun", "machine gun", "cannon", "gunner"]
 
-let mkText = @(text) msgBoxText(text, { size = [flex(), SIZE_TO_CONTENT], color = textColor })
+let mkText = @(text) msgBoxText(text, { size = FLEX_H, color = textColor })
 
 function mkWeaponIcon(weapon) {
   let { iconType = "" } = weapon
@@ -49,7 +49,7 @@ function mkWeaponCard(headerText, weapon, borderColor, txtColor) {
     : null
 
   return {
-    size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
+    size = SIZE_TO_CONTENT
     flow = FLOW_VERTICAL
     margin = cardMargin
     padding = borderWidth
@@ -72,7 +72,7 @@ function mkWeaponCard(headerText, weapon, borderColor, txtColor) {
         children = [
           mkWeaponIcon(weapon)
           msgBoxText(colorize(txtColor ?? borderColor, wText),
-              { size = [flex(), SIZE_TO_CONTENT],
+              { size = FLEX_H,
                 halign = ALIGN_LEFT,
                 valign = ALIGN_TOP,
                 margin = [0, 0, 0, cardTextMargin]
@@ -86,7 +86,7 @@ function mkWeaponCard(headerText, weapon, borderColor, txtColor) {
         ]
       }
       msgBoxText(headerText, {
-        size = [flex(), SIZE_TO_CONTENT],
+        size = FLEX_H,
         halign = ALIGN_CENTER,
         color = textColor
       }).__update(fontTinyAccented)
@@ -95,7 +95,7 @@ function mkWeaponCard(headerText, weapon, borderColor, txtColor) {
 }
 
 let vertList = @(children, ovr = {}) {
-  size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
+  size = SIZE_TO_CONTENT
   flow = FLOW_HORIZONTAL
   halign = ALIGN_CENTER
   gap = weaponCardsGap
@@ -146,7 +146,7 @@ let openConflictsMsgBox = @(slotIdx, weapon, conflicts, equipWeaponListFunc)
           .__update({ [slotIdx] = weapon.name }))
       }
     ]
-    wndOvr = { size = [hdpx(1200), hdpx(900)] }
+    wndOvr = { size = const [hdpx(1200), hdpx(900)] }
   })
 
 function customEquipCurWeaponMsg(currentSlotIdx, currentWeapon, equippedBySlots, equipCurrent, equipList) {

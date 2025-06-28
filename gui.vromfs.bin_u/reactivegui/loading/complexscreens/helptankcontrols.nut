@@ -51,7 +51,7 @@ let crosshair = {
 }
 
 let crosshairWithText = @(color, text) {
-  padding = [0, 0, 0, hdpx(5)]
+  padding = const [0, 0, 0, hdpx(5)]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = hdpx(10)
@@ -151,7 +151,7 @@ let hints = [
 
 function makeScreen() {
   return {
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     rendObj = ROBJ_SOLID
     color = 0xFF000000
     children = {

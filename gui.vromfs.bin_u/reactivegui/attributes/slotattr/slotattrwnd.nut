@@ -81,7 +81,7 @@ function categoriesBlock() {
   let unseenSlotAttrByIdx = mkUnseenSlotAttrByIdx(selectedSlotIdx.get())
   return {
     watch = [attrSlotData, selectedSlotIdx]
-    size = [ flex(), SIZE_TO_CONTENT ]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     children = mkAttrTabs(attrSlotData.get().preset.map(@(page, idx) {
         id = page.id
@@ -106,7 +106,7 @@ let mkAttrDetailsText = @(attrId) {
   size = flex()
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  margin = [0, hdpx(24)]
+  margin = const [0, hdpx(24)]
   text = loc($"attr_desc/{attrId}")
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -137,11 +137,11 @@ let attrDetails = @() {
         watch = [curCategory, lastModifiedAttr, isAttrDetailsVisible]
         size = [attrDetailsWidth, SIZE_TO_CONTENT]
         padding = 0
-        margin = [hdpx(20),0,0]
+        margin = const [hdpx(20),0,0]
         fillColor = 0xA0000000
         children = [
           {
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             flow = FLOW_VERTICAL
             children = (curCategory.get()?.attrList ?? [])
               .map(@(attr) mkAttrDetailsRow(attr.id, lastModifiedAttr.get()))
@@ -152,7 +152,7 @@ let attrDetails = @() {
 }
 
 let pageBlock = {
-  size = [ SIZE_TO_CONTENT, flex() ]
+  size = FLEX_V
   hplace = ALIGN_RIGHT
   flow = FLOW_VERTICAL
   children = [
@@ -161,9 +161,9 @@ let pageBlock = {
         watch = isSlotMaxSkills
         rendObj = ROBJ_SOLID
         color = 0xB0000000
-        size = [flex(), SIZE_TO_CONTENT]
-        padding = [hdpx(20), 0, hdpx(20), hdpx(130)]
-        margin = [0, 0, hdpx(10), 0]
+        size = FLEX_H
+        padding = const [hdpx(20), 0, hdpx(20), hdpx(130)]
+        margin = const [0, 0, hdpx(10), 0]
         flow = FLOW_HORIZONTAL
         children = [
           txt({
@@ -280,7 +280,7 @@ let gamercardSlotLevelLine = @(slot, keyHintText, idx, slotNameBlock){
   children = [
     slotTitle(slot, loc("gamercard/slot/title", { idx = idx + 1 }))
     doubleSideGradient.__merge({
-      padding = [hdpx(5), 0]
+      padding = const [hdpx(5), 0]
       pos = [0, hdpx(55)]
       flow = FLOW_VERTICAL
       gap = hdpx(10)
@@ -342,7 +342,7 @@ let slotAttrWnd = {
       size = flex()
       flow = FLOW_HORIZONTAL
       gap = hdpx(20)
-      margin = [hdpx(25), 0, 0, 0]
+      margin = const [hdpx(25), 0, 0, 0]
       children = [
         {
           size = flex()

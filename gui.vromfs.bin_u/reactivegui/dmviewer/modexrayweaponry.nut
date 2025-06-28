@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 let { get_game_params_blk } = require("blkGetters")
 let { get_option_torpedo_dive_depth_auto, get_option_torpedo_dive_depth } = require("weaponryOptions")
+let { doesLocTextExist } = require("dagor.localize")
 let { round, round_by_value } = require("%sqstd/math.nut")
 let { blkOptFromPath, eachBlock } = require("%sqstd/datablock.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
-let { compareWeaponFunc } = require("%globalScripts/modeXrayLib.nut")
-let { SHIP, BOAT } = require("%appGlobals/unitConst.nut")
+let { compareWeaponFunc, S_SHIP, S_BOAT, S_SUBMARINE } = require("%globalScripts/modeXrayLib.nut")
 let { getUnitAttrValRaw } = require("%rGui/dmViewer/modeXrayAttr.nut")
 
 let CANNON_CALIBER_MIN = 15
@@ -52,6 +52,32 @@ function getWeaponNameByBlkPath(weaponBlkPath) {
   return fn.endswith(".blk") ? fn.slice(0, -4) : fn
 }
 
+function getWeaponLocNameCustom(weaponName, commonData) {
+  let { simUnitType } = commonData
+  let isNaval = [S_SHIP, S_BOAT, S_SUBMARINE].contains(simUnitType)
+  if (!isNaval)
+    return loc($"weapons/{weaponName}")
+
+  let shortLocId = $"weapons/{weaponName}/short"
+  if (doesLocTextExist(shortLocId))
+    return loc(shortLocId)
+
+  let weaponInfoBlk = getUnitWeaponsList(commonData).findvalue(@(w) w?.blk.endswith($"/{weaponName}.blk"))
+  if (weaponInfoBlk?.weaponType == "rockets") {
+    let blk = blkOptFromPath(weaponInfoBlk.blk)
+    let bulletName = blk?.bullet.bulletName
+    if (bulletName != null)
+      return loc($"weapons/{bulletName}/short")
+  }
+  return loc(shortLocId)
+}
+
+function shouldShowAmmoAndShotFreq(weaponInfoBlk, commonData) {
+  let { simUnitType } = commonData
+  let isNaval = [S_SHIP, S_BOAT, S_SUBMARINE].contains(simUnitType)
+  return !isNaval || weaponInfoBlk?.weaponType != "rockets"
+}
+
 let toStr_speed = @(v) " ".concat(round(v * 3.6), loc("measureUnits/kmh"))
 let toStr_horsePowers = @(v) " ".concat(round(v), loc("measureUnits/hp"))
 let toStr_thrustKgf = @(v) " ".concat(round(v / 10.0) * 10, loc("measureUnits/kgf"))
@@ -62,26 +88,33 @@ let toStr_depth = @(v) " ".concat(round_by_value(v, 0.1), loc("measureUnits/mete
 
 
 function getWeaponDescTextByWeaponInfoBlk(commonData, weaponInfoBlk) {
+  let { simUnitType } = commonData
+
   let res = []
   let weaponBlk = blkOptFromPath(weaponInfoBlk?.blk)
   let weapon = weaponBlk?.torpedo
   if (weapon == null)
     return res
 
+  let isNaval = [ S_SHIP, S_BOAT, S_SUBMARINE] .contains(simUnitType)
+  let isShipTorpedo = isNaval && weapon?.bulletType == "torpedo"
+
   
-  let massKg = weapon?.mass ??  weapon?.massKg ?? 0.0
-  let massLbs = weapon?.mass_lbs ?? weapon?.massLbs ?? 0.0
-  let massKgTxt = massKg > 0 ? toStr_massKg(massKg) : null
-  let massLbsTxt = massLbs > 0 ? toStr_massLbs(massLbs) : null
-  let massLbsAndKgTxt = massLbsTxt && massKgTxt
-    ? "".concat(massLbsTxt, loc("ui/parentheses/space", { text = massKgTxt })) : null
-  let massTxt = massLbsAndKgTxt ?? massKgTxt ?? massLbsTxt
-  if (massTxt != null)
-    res.append("".concat(loc("bullet_properties/Mass"), colon, massTxt))
+  if (!isShipTorpedo) {
+    let massKg = weapon?.mass ??  weapon?.massKg ?? 0.0
+    let massLbs = weapon?.mass_lbs ?? weapon?.massLbs ?? 0.0
+    let massKgTxt = massKg > 0 ? toStr_massKg(massKg) : null
+    let massLbsTxt = massLbs > 0 ? toStr_massLbs(massLbs) : null
+    let massLbsAndKgTxt = massLbsTxt && massKgTxt
+      ? "".concat(massLbsTxt, loc("ui/parentheses/space", { text = massKgTxt })) : null
+    let massTxt = massLbsAndKgTxt ?? massKgTxt ?? massLbsTxt
+    if (massTxt != null)
+      res.append("".concat(loc("bullet_properties/Mass"), colon, massTxt))
+  }
 
   
   if (weapon?.bulletType == "torpedo") {
-    if (weapon?.maxSpeedInWater)
+    if (weapon?.maxSpeedInWater && !isShipTorpedo)
       res.append("".concat(loc("torpedo/maxSpeedInWater"), colon,
         toStr_speed(weapon.maxSpeedInWater * getTorpedoSpeedMult())))
     if (weapon?.distToLive) {
@@ -90,7 +123,7 @@ function getWeaponDescTextByWeaponInfoBlk(commonData, weaponInfoBlk) {
       res.append("".concat(loc("torpedo/distanceToLive"), colon, toStr_distance(val)))
     }
     if (weapon?.diveDepth) {
-      let diveDepth = [ SHIP, BOAT ].contains(commonData.unit.unitType) && !get_option_torpedo_dive_depth_auto()
+      let diveDepth = isNaval && !get_option_torpedo_dive_depth_auto()
           ? get_option_torpedo_dive_depth()
           : weapon.diveDepth
       res.append("".concat(loc("bullet_properties/diveDepth"), colon, toStr_depth(diveDepth)))
@@ -100,7 +133,7 @@ function getWeaponDescTextByWeaponInfoBlk(commonData, weaponInfoBlk) {
   }
 
   
-  if (weapon?.explosiveType) {
+  if (weapon?.explosiveType && !isShipTorpedo) {
     res.append("".concat(loc("bullet_properties/explosiveType"), colon, loc($"explosiveType/{weapon.explosiveType}")))
     if (weapon?.explosiveMass)
       res.append("".concat(loc("bullet_properties/explosiveMass"), colon, toStr_massKg(weapon.explosiveMass)))
@@ -113,7 +146,9 @@ return {
   getCommonWeapons
   getUnitWeaponsList
   getWeaponNameByBlkPath
+  getWeaponLocNameCustom
   getWeaponDescTextByWeaponInfoBlk
+  shouldShowAmmoAndShotFreq
   isCaliberCannon
   toStr_speed
   toStr_horsePowers

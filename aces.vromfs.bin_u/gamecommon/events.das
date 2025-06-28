@@ -8,6 +8,7 @@ require %game.unit.unit_events
 require %game.unit.ammo_stowage_events
 require %game.unit.repair_system_events
 require %game.unit.extinguish_system_events
+require %game.unit.aircraft_events
 require %game.unit.ship_events
 require %game.unit.unit_proximity_damage_events
 require Weapon
@@ -44,16 +45,6 @@ struct ActUpdatePaused
 
 
 
-
-[cpp_event(unicast)]
-struct EventAnimIrq
-  irqType : int
-
-[cpp_event(unicast)]
-struct CmdSoundIrq
-  irq : string
-  irqType : uint
-
 [cpp_event(unicast)]
 struct EventOnStartShooting
   weaponIdx : int
@@ -61,6 +52,7 @@ struct EventOnStartShooting
 [cpp_event(unicast)]
 struct EventOnMetaPartDamage
   damage : uint16
+  offender : EntityId
 
 [cpp_event(unicast)]
 struct EventRepairMetaPart
@@ -89,12 +81,6 @@ struct CmdCameraUpdate
 
 [cpp_event(unicast)]
 struct CmdPostPhysUpdate
-  tick : int
-  dt : float
-  isForReal : bool
-
-[cpp_event(unicast)]
-struct CmdPrePhysUpdate
   tick : int
   dt : float
   isForReal : bool
@@ -464,32 +450,18 @@ struct EventZoneCaptured
   wasArmy : uint8
   army : uint8
 
+[cpp_event(broadcast, with_scheme)]
+struct EventBattleAreaStatusChanged
+  active : bool
+  areaId : int
+
 [cpp_event(unicast, with_scheme)]
-struct EventGroundModelCollision
-  offender : EntityId
-  impulse : float
-  pos : float3
-
-[cpp_event(unicast)]
-struct EventOnInstallWeapMod
-  slotTag : string
-  gunSlotId : int
-  withSfx : bool
-
-[event(broadcast, routing=ROUTING_SERVER_TO_CLIENT)]
-struct EventOnEntityHit
-  victim : EntityId
-  offender : EntityId
-  damageType : int
-  collNodeId : int
-  deltaHp : float
-  hitDir : float3
-
-[event(unicast)]
-struct CmdOnHeroHit
-  damageType : int
-  hitDir : float3
-  collNodeId : int
+struct EventUnitToUnitCollision
+  toUnit : EntityId
+  lPos : float3
+  fullImpulse : float
+  damage : float
+  isFriction : bool
 
 [event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
 struct CmdShowHitMark
@@ -499,103 +471,12 @@ struct CmdShowHitMark
   damageToArmorPercent : float
   hitResult : int
 
-[event(unicast)]
-struct EventDamageOverTimeFinished {}
+[cpp_event(unicast, with_scheme)]
+struct CmdTrySpawnSlave {}
 
-[cpp_event(unicast)]
-struct EventUseItem
-  item : EntityId
-  target : EntityId
+[cpp_event(broadcast)]
+struct EventEntityManagerBeforeClear {}
 
-[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
-struct HumanStopUseItemRequest {}
-
-[event(unicast)]
-struct EventOnLootItemUsed
-  target : ecs::EntityId
-
-[event(unicast)]
-struct EventOnLootUse
-  itemEid : ecs::EntityId
-
-[event(unicast)]
-struct EventInterruptItemUse {}
-
-[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
-struct EventEntityDied
-  victim : EntityId
-  offender : EntityId
-  victimTeam : int
-  offenderTeam : int
-
-[event(unicast)]
-struct CmdBodyCleanup
-  time : float
-
-[event(unicast)]
-struct CmdInventoryPickup
-  itemEid : EntityId
-  usefulOnly : bool
-
-[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
-struct CmdInventoryPickupGunMod
-  item : EntityId
-
-[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
-struct HumanRemoveItemFromWeapRequest
-  slotId : int
-  slotName : string
-  toGround : bool
-
-[event(unicast)]
-struct CmdInventoryDropGun
-  slotId : int
-
-[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
-struct HumanDropWeapRequest
-  slotId : int
-
-[cpp_event(unicast)]
-struct EventOnLootDrop
-  itemEid : EntityId
-
-[event(unicast)]
-struct EventOnActionDisabled
-  action : string
-
-[event(unicast)]
-struct CmdPickupSpecialItem
-  pickuperEid : EntityId
-  usefulOnly : bool
-
-[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
-struct HumanPickupItemRequest
-  itemEid : EntityId
-  usefulOnly : bool
-
-[event(unicast)]
-struct CmdEquipItem
-  itemEid : EntityId
-  slotName : string
-
-[cpp_event(unicast)]
-struct CmdEquipItemDirect
-  itemEid : EntityId
-  slot : string
-  allowReorderSlots : bool
-  dropPrevItem : bool
-
-[event(unicast)]
-struct EventOnWeapSlotItemPickup
-  itemEid : EntityId
-  slotId : int
-
-[cpp_event(unicast)]
-struct HumanWeapSetCurrentGun
-  slot : uint8
-
-[cpp_event(unicast)]
-struct CmdSwapEquipSlots
-  item : EntityId
-  fromSlotName : string
-  toSlotName : string
+[cpp_event(broadcast)]
+struct EventGameObjectsCreated
+  game_objects : EntityId

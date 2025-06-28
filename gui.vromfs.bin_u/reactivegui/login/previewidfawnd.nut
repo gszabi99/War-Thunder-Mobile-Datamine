@@ -47,7 +47,7 @@ let showPreviewWnd = @()
           children = textBlock(loc("msg/IDFAWndDescription", { btn = colorize(0xFF699dcd, loc("msg/Allow")) }), 0xFFFFFFFF)
         }
         {
-          size = [hdpx(425), hdpx(80)]
+          size = const [hdpx(425), hdpx(80)]
           pos = [-hdpx(120), -hdpx(140)]
           vplace = ALIGN_BOTTOM
           halign = ALIGN_CENTER

@@ -4,6 +4,7 @@ let { getScaledFont } = require("%globalsDarg/fontScale.nut")
 let { touchButtonSize, borderWidth, btnBgColor, imageColor, imageDisabledColor,
   borderColor, borderColorPushed, borderNoAmmoColor, textColor
 } = require("%rGui/hud/hudTouchButtonStyle.nut")
+let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
 let { unitType } = require("%rGui/hudState.nut")
 
 
@@ -26,7 +27,7 @@ function mkActionItemProgress(actionItem, isAvailable) {
   let hasCooldown = isAvailable && cooldownDuration > 0
   let cooldown = hasCooldown ? (1 - (cooldownDuration / max(time, 1))) : 1
   let trigger = $"action_cd_finish_{id}"
-  return {
+  let item = {
     size = flex()
     children = {
       size = flex()
@@ -48,12 +49,16 @@ function mkActionItemProgress(actionItem, isAvailable) {
     animations = [{ prop = AnimProp.scale, duration = 0.2,
       from = [1.0, 1.0], to = [1.2, 1.2], easing = CosineFull, trigger }]
   }
+  return mkItemWithCooldownText(id, item, flex(), hasCooldown, endTime)
 }
 
 let mkActionItemProgressByWatches = @(actionItem, isAvailable) @()
   actionItem.get() == null ? { watch = actionItem }
-    : mkActionItemProgress(actionItem.get(), isAvailable.get())
-        .__update({ watch = [actionItem, isAvailable] })
+    : {
+        watch = [actionItem, isAvailable]
+        size = flex()
+        children = mkActionItemProgress(actionItem.get(), isAvailable.get())
+      }
 
 let mkActionItemCount = @(count, scale = 1) {
   size = flex()

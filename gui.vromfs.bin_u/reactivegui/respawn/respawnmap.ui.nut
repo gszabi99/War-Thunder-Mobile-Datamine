@@ -24,7 +24,7 @@ let mapRootKey = {}
 
 let mkRespBase = @(rb) @() {
   watch = [curRespBase, localTeam, selSlot]
-  size = [0, 0]
+  size = 0
   translate = mapSizePx.value.map(@(v, axis) round(v * rb.mapPos[axis]))
   rendObj = ROBJ_SOLID
   color = curRespBase.value == rb.id ? 0xFFFFFFFF : 0x80800000

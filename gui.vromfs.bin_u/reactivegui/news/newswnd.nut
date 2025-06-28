@@ -64,7 +64,7 @@ function pagesStrip() {
   }
   return {
     watch = [pagesCount, articlesPerPage]
-    size = [SIZE_TO_CONTENT, flex()]
+    size = FLEX_V
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = pagesStripW
@@ -82,7 +82,7 @@ let newMark = {
   screenOffs = newMarkTexOffs
   texOffs = newMarkTexOffs
   color = tagRedColor
-  padding = [ 0, hdpx(20), 0, hdpx(10) ]
+  padding = const [ 0, hdpx(20), 0, hdpx(10) ]
   children = {
     rendObj = ROBJ_TEXT
     color = 0xFFFFFFFF
@@ -152,12 +152,12 @@ function articleTabBase(info, sf, isSelected, isUnseen) {
         size = flex()
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
-        padding = [hdpx(4), hdpx(12), hdpx(4), hdpx(4)]
+        padding = const [hdpx(4), hdpx(12), hdpx(4), hdpx(4)]
         gap = hdpx(10)
         children = [
           thumb == null ? null : mkThumbnailImg(thumb)
           {
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             maxHeight = ph(100)
             behavior = [Behaviors.TextArea, Behaviors.Marquee]
             rendObj = ROBJ_TEXTAREA
@@ -208,7 +208,7 @@ let articleSelector = @() {
   gap = pagesStripGap
   children = newsfeed.value.len() == 0 ? null : [
     {
-      size = [SIZE_TO_CONTENT, flex()]
+      size = FLEX_V
       flow = FLOW_VERTICAL
       gap = selectorBtnGap.value
       children = newsfeed.value
@@ -226,7 +226,7 @@ let seeMoreUrl = {
   t = "url"
   url = moreInfoUrl
   v = loc("visitGameSite", "See game website for more details")
-  margin = [hdpx(50), 0, 0, 0]
+  margin = const [hdpx(50), 0, 0, 0]
 }
 
 function scrollArticle() {  
@@ -268,15 +268,15 @@ let articleLoading = freeze({
 let mkArticleTitle = @(title) {
   behavior = Behaviors.TextArea
   rendObj = ROBJ_TEXTAREA
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   color = textColor
   text = title
-  margin = [0, 0, hdpx(15), 0]
+  margin = const [0, 0, hdpx(15), 0]
 }.__update(fontLarge)
 
 let mkContent = @(content, title) {
-  size = [flex(), SIZE_TO_CONTENT]
-  padding = [hdpx(30), hdpx(75)]
+  size = FLEX_H
+  padding = const [hdpx(30), hdpx(75)]
   children = formatText(content.len() == 0 ? missedArticleText
     : [mkArticleTitle(title)].extend(content).append(seeMoreUrl))
 }
@@ -298,7 +298,7 @@ let articleContent = @() {
 }
 let wndHeaderGap = hdpx(30)
 let wndHeader = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   valign = ALIGN_CENTER
   children = [
     backButton(function() {
@@ -306,11 +306,11 @@ let wndHeader = {
     })
     {
       rendObj = ROBJ_TEXT
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       halign = ALIGN_CENTER
       color = textColor
       text = loc("newsWnd/header")
-      margin = [0, 0, 0, hdpx(15)]
+      margin = const [0, 0, 0, hdpx(15)]
     }.__update(fontBig)
   ]
 }

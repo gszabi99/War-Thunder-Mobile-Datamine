@@ -105,7 +105,7 @@ let function mkUnitResearchPriceAnim(researchStatus, ovr = {}) {
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     children = [
-      mkIcon("ui/gameuiskin#unit_exp_icon.svg", [hdpxi(28), hdpxi(28)], {margin = [0, hdpx(10), 0, 0]})
+      mkIcon("ui/gameuiskin#unit_exp_icon.svg", [hdpxi(28), hdpxi(28)], {margin = const [0, hdpx(10), 0, 0]})
       mkAnimatedCountText(animUnitAfterResearch.get(), isResearched ? reqExp : exp, reqExp, isResearched ? reqExp : exp)
       {
         rendObj = ROBJ_TEXT

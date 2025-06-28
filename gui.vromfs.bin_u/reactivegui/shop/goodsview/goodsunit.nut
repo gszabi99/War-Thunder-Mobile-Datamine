@@ -22,6 +22,7 @@ let { mkRewardCurrencyImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
 let { mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
 let { ALL_PURCHASED } = require("%rGui/shop/goodsStates.nut")
+let { getGoodsAsOfferIcon } = require("%appGlobals/config/goodsPresentation.nut")
 
 
 let fonticonPreview = "⌡"
@@ -45,14 +46,14 @@ let bgHiglight = {
 
 let unitOfferImageOvrByType = {
   [AIR] = {
-    size = [pw(90), ph(90)]
+    size = const [pw(90), ph(90)]
     imageHalign = ALIGN_LEFT
     vplace = ALIGN_CENTER
   }
 }
 
 let branchOfferImageOvr = {
-  size = [pw(80), ph(80)]
+  size = const [pw(80), ph(80)]
   imageHalign = ALIGN_LEFT
   vplace = ALIGN_CENTER
 }
@@ -61,7 +62,7 @@ let discountTagUnit = @(percent) discountTag(percent, {
   hplace = ALIGN_LEFT
   vplace = ALIGN_TOP
   pos = [0, 0]
-  size = [hdpx(93), hdpx(46)]
+  size = const [hdpx(93), hdpx(46)]
 })
 
 function isUnitOrUnitUpgradePurchased(myCampaignUnitsValue, unit) {
@@ -110,10 +111,10 @@ function mkUnitTexts(goods, unit) {
   return {
     size = flex()
     flow = FLOW_VERTICAL
-    padding = [hdpx(15), hdpx(34), 0, hdpx(34)]
+    padding = const [hdpx(15), hdpx(34), 0, hdpx(34)]
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         hplace = ALIGN_RIGHT
         flow = FLOW_HORIZONTAL
         valign = ALIGN_CENTER
@@ -163,7 +164,7 @@ let mkConsumableIcons = @(items) {
 }
 
 let mkMRank = @(mRank) !mRank ? null : {
-  padding = [hdpx(10), hdpx(15)]
+  padding = const [hdpx(10), hdpx(15)]
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   children = mkGradRank(mRank)
@@ -186,6 +187,8 @@ function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
 
   let ovrState = Computed(@() state.get() | (isPurchased ? ALL_PURCHASED : 0))
   let consumableItems = consumablesOnGoodsPlate.map(@(id) [ id, goods?.items[id] ?? 0 ]).filter(@(v) v[1] > 0)
+  let unitImg = getGoodsAsOfferIcon(goods.id)
+    ?? (unit?.isUpgraded ? p.upgradedImage : p.image)
   let unitImgScale = consumableItems.len() == 0 ? unitImgScaleDefault
     : (unitImgScaleWithConsumableByType?[unit?.unitType] ?? unitImgScaleDefault)
   return mkGoodsWrap(
@@ -196,7 +199,7 @@ function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
       mkBgImg($"!ui/unitskin#bg_ground_{unit.unitType}.avif")
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
-      mkUnitImg(p.image, [(goodsSmallSize[0] * unitImgScale).tointeger(), (goodsBgH * unitImgScale).tointeger()])
+      mkUnitImg(unitImg, [(goodsSmallSize[0] * unitImgScale).tointeger(), (goodsBgH * unitImgScale).tointeger()])
       mkUnitTexts(goods, unit)
       mkSquareIconBtn(fonticonPreview, @() isPurchased ? unitDetailsWnd(unit) : openGoodsPreview(goods.id),
         { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
@@ -226,7 +229,9 @@ function mkOfferUnit(goods, onClick, state) {
     : unit?.unitType == TANK || unit?.unitType == AIR ? "ui/gameuiskin#offer_bg_yellow.avif"
     : "ui/gameuiskin#offer_bg_blue.avif"
   let currencyId = currenciesOnOfferBanner.findvalue(@(v) v in currencies)
-  let image = mkFitCenterImg(unit?.isUpgraded ? p.upgradedImage : p.image,
+  let image = mkFitCenterImg(
+    getGoodsAsOfferIcon(goods.id)
+      ?? (unit?.isUpgraded ? p.upgradedImage : p.image),
     unitOfferImageOvrByType?[unit?.unitType] ?? {}).__update({ fallbackImage = Picture(p.image) })
   let imageOffset = currencyId == null || unit?.unitType == TANK? 0
     : hdpx(40)

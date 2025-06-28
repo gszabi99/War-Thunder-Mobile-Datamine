@@ -86,7 +86,7 @@ let mkStatusRow = @(icon, iconColor, text, ovr = {}) {
           color = iconColor ?? 0xFFFFFFFF
         }
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       text
@@ -158,7 +158,7 @@ function memberInfo(uid) {
       contactLevelBlock(info.value)
       contactAvatar(info.value, avatarSize)
       contactNameBlock(contact.value, info.value, [status, battleStatus])
-        .__update({ padding = [hdpx(40), 0], size = flex()})
+        .__update({ padding = const [hdpx(40), 0], size = flex()})
       unitInfo(bestUnit)
     ]
   }

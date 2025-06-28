@@ -46,6 +46,7 @@ let {
   set_target_selection_type,
   set_aircraft_target_follower,
   set_quit_zoom_after_kill,
+  set_mouse_aim,
   CAM_TYPE_FREE_PLANE,
   CAM_TYPE_NORMAL_PLANE,
   CAM_TYPE_BINOCULAR_PLANE } = require("controlsOptions")
@@ -300,13 +301,15 @@ let CAM_VISC_LIMITS = {
 }
 
 currentAircraftCtrlType.subscribe( function(v) {
-  let optId = (v == "mouse_aim") ? OPT_CAMERA_VISC_PLANE : OPT_CAMERA_VISC_PLANE_STICK
+  let isMouseAim = v == "mouse_aim"
+  set_mouse_aim(isMouseAim)
+  let optId = isMouseAim ? OPT_CAMERA_VISC_PLANE : OPT_CAMERA_VISC_PLANE_STICK
   let limits = CAM_VISC_LIMITS[optId]
   let optValue = optionValues?[optId]
   if (optValue != null)
     set_camera_viscosity(max(limits[1] - optValue.get(), limits[0]))
 
-  let optZoomId = (v == "mouse_aim") ? OPT_CAMERA_VISC_IN_ZOOM_PLANE : OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK
+  let optZoomId = isMouseAim ? OPT_CAMERA_VISC_IN_ZOOM_PLANE : OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK
   let limitsZoom = CAM_VISC_LIMITS[optZoomId]
   let optValueZoom = optionValues?[optZoomId]
   if (optValueZoom != null)

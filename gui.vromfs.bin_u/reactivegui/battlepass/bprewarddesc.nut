@@ -28,7 +28,7 @@ let mkUnitPlate = @(unitId) function() {
   if (unit == null)
     return res
   return res.__update({
-    padding = [hdpx(50), 0, hdpx(30),0]
+    padding = const [hdpx(50), 0, hdpx(30),0]
     flow = FLOW_HORIZONTAL
     children = {
       size = [ unitPlateWidth, unitPlateHeight ]
@@ -96,7 +96,7 @@ let receiveBtn = @(reward) mkSpinnerHideBlock(isBpRewardsInProgress,
 
 let rewardDesc = @(reward) @() {
   watch = curStage
-  size = [flex(), hdpx(40)]
+  size = const [flex(), hdpx(40)]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER

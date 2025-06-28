@@ -9,12 +9,12 @@ let {
 } = require("%rGui/unit/components/unitPlateComp.nut")
 let { getRewardPlateSize, REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
 
-let padding = [hdpx(5), hdpx(5)]
+let padding = hdpx(5)
 let iconSize = hdpxi(90)
 
 function calcMaxTextWidth(slots, styles) {
   let size = getRewardPlateSize(slots, styles)
-  return size[0] - 2 * padding[1] - styles.markSize
+  return size[0] - 2 * padding - styles.markSize
 }
 
 let mkNameText = @(nameLoc) mkPlateText(nameLoc, fontTiny).__update({
@@ -29,7 +29,7 @@ let mkBattleModCommonText = @(battleMod, _, __) {
   padding
   clipChildren = true
   halign = ALIGN_RIGHT
-  children = mkNameText(loc(battleMod.locId)).__update({ size = [flex(), SIZE_TO_CONTENT] })
+  children = mkNameText(loc(battleMod.locId)).__update({ size = FLEX_H })
 }
 
 let mkBattleModCommonImage = @(battleMod, styles, slots = 1) {

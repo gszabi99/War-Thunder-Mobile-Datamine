@@ -74,7 +74,7 @@ function clearOrFillFields(id = "", view = defaultPointView) {
 let selectPointViewContent = @() modalBg.__merge({ 
   size = [hdpx(600), hdpx(900)]
   children = makeVertScroll({
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(20)
@@ -337,7 +337,7 @@ function historyFwdBtn() {
 }
 
 let content = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = optionsBtnGap
@@ -358,13 +358,13 @@ let content = {
 }
 
 let mapEditorHeaderOptions = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   children = !isEditAllowed
     ? mkFramedText($"To edit points you must set\ndebug/<color={0xFFFFFFFF}>useAddonVromSrc</color>:b=yes\nin the config.blk")
     : [
       @() {
         watch = isHeaderOptionsOpen
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         padding = [saBordersRv[0], saBordersRv[1], optionsBtnGap, saBordersRv[1]]
         rendObj = ROBJ_SOLID
         color = 0xC0000000

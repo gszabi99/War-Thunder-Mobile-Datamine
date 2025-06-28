@@ -99,8 +99,8 @@ function avatarBtn(item) {
           : 0xFF4F4F4F
         children = !isAvailable.value
           ? {
-              size =[hdpx(25),hdpx(32)]
-              margin = [hdpx(10),hdpx(15)]
+              size =const [hdpx(25),hdpx(32)]
+              margin = const [hdpx(10),hdpx(15)]
               rendObj = ROBJ_IMAGE
               color = 0xFFAA1111
               image = Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(25)}:{hdpxi(32)}:P")
@@ -110,7 +110,7 @@ function avatarBtn(item) {
               isChoosen.value ? choosenMark : null)
           : isUnseen.value
             ? {
-                margin = [hdpx(15), hdpx(20)]
+                margin = const [hdpx(15), hdpx(20)]
                 children = priorityUnseenMark
               }
           : null

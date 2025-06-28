@@ -2,15 +2,17 @@ from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout, setInterval, clearTimer } = require("dagor.workcycle")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { addModalWindow, removeModalWindow, hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg } = require("%rGui/components/modalWnd.nut")
+let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
 let { getUnitLocId } = require("%appGlobals/unitPresentation.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { addModalWindow, removeModalWindow, hasModalWindows } = require("%rGui/components/modalWindows.nut")
+let { modalWndBg } = require("%rGui/components/modalWnd.nut")
 let { slotBarSelectWnd } = require("slotBar.nut")
 let { selectedUnitToSlot, closeSelectUnitToSlotWnd, canOpenSelectUnitWithModal, selectedUnitAABBKey } = require("slotBarState.nut")
 let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { setUnitToScroll } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
+let { mkTreeNodesUnitPlate } = require("%rGui/unitsTree/mkUnitPlate.nut")
 
 let WND_UID = "selectUnitToSlot"
 
@@ -37,6 +39,8 @@ function mkBgText(rect) {
 
 function openImpl() {
   let rect = Watched(null)
+  let xmbNode = XmbNode()
+  let unit = Computed(@() campMyUnits.get()?[selectedUnitToSlot.get()] ?? campUnitsCfg.get()?[selectedUnitToSlot.get()])
   function updateRect() {
     let new = gui_scene.getCompAABBbyKey(selectedUnitAABBKey.get())
     if (new != null && !isEqual(new, rect.get()))
@@ -51,15 +55,18 @@ function openImpl() {
     onClick = closeSelectUnitToSlotWnd
     children = [
       @() {
-        watch = rect
+        watch = [rect, unit]
         key = rect
         size = flex()
         onAttach = @() setInterval(0.05, updateRect)
         onDetach = @() clearTimer(updateRect)
-        children = [
-          mkCutBg([rect.get()])
-          mkBgText(rect.get())
-        ]
+        children = !rect.get() || !unit.get() ? null
+          : [
+              mkCutBg([rect.get()])
+              mkTreeNodesUnitPlate(unit.get(), xmbNode,
+                { pos = [rect.get().l, rect.get().t], dragStartDelay = null, transform = {} })
+              mkBgText(rect.get())
+            ]
       }
       {
         margin = [0, 0, saBorders[1], 0]

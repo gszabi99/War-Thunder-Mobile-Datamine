@@ -35,7 +35,7 @@ let mkPrizeInfo = @(rType, progress, idx, isReady) {
     }
     @() {
       watch = isReady
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_TEXT
       behavior = Behaviors.Marquee
       speed = hdpx(30)
@@ -81,7 +81,7 @@ function mkRewardRow(rewardInfo, idx) {
     children = [
       mkPrizeInfo(rType, progress, idx, isReady)
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_HORIZONTAL
         halign = ALIGN_RIGHT
         gap = lbRewardsGap

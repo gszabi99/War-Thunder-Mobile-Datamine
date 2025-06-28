@@ -8,7 +8,7 @@ let activePointers = Watched({})
 let pointerPos = {}
 
 let pointerView = {
-  size = [hdpx(50), hdpx(50)]
+  size = hdpx(50)
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = hdpx(4)
   color = 0x80000000
@@ -20,7 +20,7 @@ let pointerView = {
 }
 
 let mkPointer = @(id) {
-  size = [0, 0]
+  size = 0
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = pointerView

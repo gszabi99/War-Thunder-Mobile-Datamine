@@ -31,7 +31,7 @@ let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { curSelectedUnit, availableUnitsList } = require("%rGui/unit/unitsWndState.nut")
 let { tryResetToMainScene } = require("%rGui/navState.nut")
-let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
+let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { unitsResearchStatus, currentResearch, blockedCountries } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
 let openBuyUnitResearchWnd = require("%rGui/unitsTree/buyUnitResearchWnd.nut")
@@ -112,7 +112,7 @@ function findGoodsPrem(shopGoodsList) {
 }
 
 let bgTextMessage = {
-  size = [SIZE_TO_CONTENT, hdpx(50)]
+  size = const [SIZE_TO_CONTENT, hdpx(50)]
   color = 0x8F000000
   valign = ALIGN_CENTER
   rendObj = ROBJ_9RECT
@@ -158,7 +158,7 @@ let mkTimeLeftText = @(endTime) function() {
 }
 
 let mkUnitChangeInfo = @(prevUnit, newUnit) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -200,7 +200,7 @@ function setResearchUnit(unitName) {
         msgBoxText(
           loc(isOtherCountry ? "\n\n".concat(loc("researchOtherCountry/desc"), loc("msg/changeUnitResearch"))
             : loc("msg/changeUnitResearch")),
-          { size = [flex(), SIZE_TO_CONTENT] })
+          { size = FLEX_H })
         mkUnitChangeInfo(prevUnit, newUnit)
       ]
     }
@@ -317,7 +317,7 @@ let unitActionButtons = @(allowSeveralRows) function() {
       let premId = findGoodsPrem(shopGoods.get())?.id
       bigBtnsList.append(textButtonPlayerLevelUp(utf8ToUpper(loc("units/btn_speed_explore")), rank, starRank,
         @() havePremium.get() || premId == null ? buyExpUnitName(unitName) : openGoodsPreview(premId)
-        { hotkeys = ["^J:Y"] , childOvr = { padding = [0, hdpx(6)] gap = 0 }})
+        { hotkeys = ["^J:Y"] , childOvr = { padding = const [0, hdpx(6)] gap = 0 }})
       )
     }
   }

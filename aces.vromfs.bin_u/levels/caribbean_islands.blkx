@@ -12,7 +12,6 @@
   "wind_scale": 0.7,
   "max_wind_strength": 3.0,
   "water_level": 0.0,
-  "harmonicsType": "blue",
   "precisionNotDetectedUnits": 200.0,
   "notDetectedUnitsSizeMul": 0.9,
   "soundAmbientPathStudio": "event/ambience",

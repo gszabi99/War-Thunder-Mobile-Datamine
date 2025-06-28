@@ -178,7 +178,7 @@ function mkUnitsFilter(options, allUnits, closeFilters, clearFilters) {
             .extend(filters.map(@(f) mkFilter(f)))
         }
         {
-          size = [SIZE_TO_CONTENT, flex()]
+          size = FLEX_V
           flow = FLOW_VERTICAL
           gap = hdpx(10)
           halign = ALIGN_CENTER

@@ -94,7 +94,7 @@ let addModalWindowWithHeader = @(key, title, content) addModalWindow(bgShaded.__
         @() removeModalWindow(key),
         {
           minWidth = SIZE_TO_CONTENT,
-          padding = [0, hdpx(10)]
+          padding = const [0, hdpx(10)]
         })
       content
     ]

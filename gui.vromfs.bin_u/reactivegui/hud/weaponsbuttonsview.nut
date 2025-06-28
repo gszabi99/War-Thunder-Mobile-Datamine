@@ -241,7 +241,7 @@ let mkBulletEditView = @(image, bulletNumber) {
     {
       rendObj = ROBJ_TEXT
       size = [touchButtonSize, touchButtonSize]
-      padding = [0, hdpx(6), hdpx(2), 0]
+      padding = const [0, hdpx(6), hdpx(2), 0]
       valign = ALIGN_BOTTOM
       halign = ALIGN_RIGHT
       text = getRomanNumeral(bulletNumber)

@@ -109,20 +109,20 @@ let headerMarquee = @(width) {
 
 let bulletIconHeight = hdpxi(77)
 let bulletsLegendBlock = @(text, bulletIcon, width, height) {
-  size = [ flex(), SIZE_TO_CONTENT ]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   padding = gap
   children = [
     {
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
-      size = [ flex(), SIZE_TO_CONTENT ]
+      size = FLEX_H
       halign = ALIGN_CENTER
       color = textColor
       text
     }.__update(fontVeryTiny),
     {
-      size = [ flex(), SIZE_TO_CONTENT ]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       halign = ALIGN_CENTER
       children = {

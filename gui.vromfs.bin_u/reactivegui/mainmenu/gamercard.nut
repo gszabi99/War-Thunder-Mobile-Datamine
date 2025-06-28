@@ -216,7 +216,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
 
 
 let hoverBg = {
-  size = [pw(120), flex()]
+  size = const [pw(120), flex()]
   color = 0x8052C4E4
   opacity = 1
   rendObj = ROBJ_9RECT
@@ -272,7 +272,7 @@ function platoonOrUnitTitle(unit) {
         gap = hdpx(20)
         children = [
           !isElite ? null : {
-            size = [hdpx(90), hdpx(40)]
+            size = const [hdpx(90), hdpx(40)]
             rendObj = ROBJ_IMAGE
             keepAspect = KEEP_ASPECT_FIT
             image = Picture("ui/gameuiskin#icon_premium.svg")
@@ -296,10 +296,10 @@ let gamercardUnitLevelLine = @(unit, keyHintText){
   children = [
     platoonOrUnitTitle(unit)
     {
-      size = [0, 0]
+      size = 0
       children = doubleSideGradient.__merge(
         {
-          padding = [hdpx(5), hdpx(50)]
+          padding = const [hdpx(5), hdpx(50)]
           pos = [hdpx(30) hdpx(55)]
           children = @(){
             watch = curCampaign
@@ -375,7 +375,7 @@ function shopBtn() {
       {
         size = flex()
         vplace = ALIGN_CENTER
-        padding = [hdpx(3), 0]
+        padding = const [hdpx(3), 0]
         children = stateFlags.get() & S_HOVER ? hoverBg : null
       }
       {
@@ -409,7 +409,7 @@ let mkGamercard = @(menuBtn, backCb = null) {
         mkCurrencyBalance(GOLD, openBuyCurrencyWnd(GOLD))
         mkCurrencyBalance(PLATINUM, openBuyCurrencyWnd(PLATINUM))
         {
-          margin = [0, 0, 0, hdpx(20)]
+          margin = const [0, 0, 0, hdpx(20)]
           children = menuBtn
         }
       ]
@@ -446,7 +446,7 @@ let mkGamercardUnitCampaign = @(backCb, keyHintText, unit = hangarUnit) {
 }
 
 let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   halign = ALIGN_RIGHT
   valign = ALIGN_CENTER

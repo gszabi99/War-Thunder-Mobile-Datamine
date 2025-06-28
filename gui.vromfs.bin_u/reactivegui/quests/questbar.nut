@@ -156,7 +156,7 @@ function mkQuestBar(quest) {
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
         text = quest?.isFinished ? loc("ui/received") : $"{current}/{required}"
-        padding = [0, hdpx(15), 0, 0]
+        padding = const [0, hdpx(15), 0, 0]
       }.__update(fontVeryTinyShaded)
     ]
   }
@@ -211,7 +211,7 @@ let questBarProgressValue = @(name, required, visProgress, nextChange) @() {
   text = $"{visProgress.get()}/{required}"
   children = @() {
     watch = nextChange
-    size = [0, 0] 
+    size = 0 
     hplace = ALIGN_RIGHT
     vplace = ALIGN_BOTTOM
     children = nextChange.get() == null ? null
@@ -224,9 +224,9 @@ let questBarProgressValue = @(name, required, visProgress, nextChange) @() {
 let multiRewardProgressBarCtor = @(rewards, isUnlocked, onRewardClick, canClaimReward, isRewardInProgress) {
   flow = FLOW_HORIZONTAL
   gap = questItemsGap
-  children = rewards.map(@(reward) isDisabledGoods(reward)
-    ? null
-    : { children = rewardProgressBarCtor(reward, isUnlocked, onRewardClick, canClaimReward, isRewardInProgress) })
+  children = rewards.map(@(reward) {
+    children = rewardProgressBarCtor(reward, isUnlocked, onRewardClick, canClaimReward, isRewardInProgress)
+  })
 }
 
 function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
@@ -250,6 +250,7 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
 
       let rewardPreview = Computed(@()
         getUnlockRewardsViewInfo(stages[idx], serverConfigs.get())
+          .filter(@(reward) !isDisabledGoods(reward))
           .sort(sortRewardsViewInfo))
 
       function onRewardClick() {
@@ -270,7 +271,7 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
       }
 
       return {
-        size = [SIZE_TO_CONTENT, flex()]
+        size = FLEX_V
         flow = FLOW_HORIZONTAL
         children = [
           {
@@ -370,9 +371,9 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, headerChild
                 }
                 children = [
                   pannableArea(mkStages(progressUnlock.get(), minStageProgressWidth, tabId, curSectionId),
-                    { pos = [0, 0], size = [flex(), SIZE_TO_CONTENT], vplace = ALIGN_CENTER, clipChildren = false },
+                    { pos = [0, 0], size = FLEX_H, vplace = ALIGN_CENTER },
                     {
-                      size = [flex(), SIZE_TO_CONTENT]
+                      size = FLEX_H
                       behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
                       scrollHandler
                     })

@@ -1966,7 +1966,7 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "f_82e_default",
+        "name": "f-82e_default",
         "blk": "gameData/FlightModels/weaponPresets/empty.blk"
       },
       {

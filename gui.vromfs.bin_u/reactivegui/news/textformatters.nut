@@ -17,7 +17,7 @@ let headerMargin = 2 * blockInterval
 let urlLineWidth = hdpx(1)
 let borderWidth = hdpx(1)
 
-let spoilerBtnHeight = hdpx(86)
+let spoilerWidth = saSize[0] - saBordersRv[0]*2 - selectorBtnW - hdpx(124)
 let contentBackground = 0x66000000
 
 let btnActive = 0xFFCFCFCF
@@ -41,7 +41,7 @@ let noteStyle = { color = 0xFF808080 }.__update(fontTiny)
 let openUrl = @(url) eventbus_send("openUrl", { baseUrl = urlAliases?[url] ?? url })
 
 let textArea = @(params) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   text = wordHyphenation((params?.v == "" && params?.t == "paragraph" ? "\n" : params?.v) ?? "")
   behavior = Behaviors.TextArea
@@ -86,7 +86,7 @@ let mkUlElement = @(bullet) function(elem, level = 0) {
   else
     children.append(elem)
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_HORIZONTAL
     margin = [0, 0, 0, indent]
     children
@@ -108,7 +108,7 @@ function objListToArrayWithLevels(x, level = 0) {
 
 let mkList = @(elemFunc) @(obj, formatTextFunc, _) {
     flow = FLOW_VERTICAL
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     children = objListToArrayWithLevels(obj).map(@(e) elemFunc(formatTextFunc(e.text), e.level))
   }
 
@@ -130,19 +130,19 @@ let formatList = @(v, formatTextFunc) type(v) != "array" ? formatTextFunc(v)
   : v.map(@(elem) formatTextFunc(elem))
 
 let horizontal = @(obj, formatTextFunc, _) obj.__merge({
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = formatList(obj.v, formatTextFunc)
 })
 
 let vertical = @(obj, formatTextFunc, _) obj.__merge({
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   children = formatList(obj.v, formatTextFunc)
 })
 
 let accent = @(obj, formatTextFunc, _) obj.__merge({
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   margin = blockInterval
   children = [
     {
@@ -152,11 +152,11 @@ let accent = @(obj, formatTextFunc, _) obj.__merge({
       opacity = 0.2
     }
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_BOX
-      borderWidth = [0, 0, 0, hdpx(4)]
+      borderWidth = const [0, 0, 0, hdpx(4)]
       borderColor = locColorTable?[obj?.color] ?? accentDefaultColor
-      padding = [hdpx(20), hdpx(40)]
+      padding = const [hdpx(20), hdpx(40)]
       flow = FLOW_VERTICAL
       children = formatList(obj.v, formatTextFunc).map(@(p) p.__merge({color = locColorTable?[obj?.color] ?? accentDefaultColor}))
   }]
@@ -170,7 +170,7 @@ function columns(obj, formatTextFunc, _) {
   local cols = obj.v.filter(@(v) v?.t == "column")
   cols = cols.slice(0, preset.len())
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_HORIZONTAL
     children = cols.map(@(col, idx) {
       flow = FLOW_VERTICAL
@@ -185,7 +185,7 @@ let mkWatchVideo = @(caption) {
   rendObj = ROBJ_SOLID
   color = 0x96000000
   halign = ALIGN_CENTER
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   children = {
     rendObj = ROBJ_TEXT
     text = caption ?? loc("Watch video")
@@ -219,14 +219,14 @@ function video(obj, _, __) {
 }
 
 let image = @(obj, _, style = {}) {
-  size = obj?.width == null || obj?.height == null ? [flex(), SIZE_TO_CONTENT]
+  size = obj?.width == null || obj?.height == null ? FLEX_H
     : obj.width > widthImgMax ? [widthImgMax, widthImgMax * (obj.height.tofloat() / obj.width.tofloat())]
     : [obj.width, obj.height]
   padding = blockInterval
   hplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
   image = Picture(obj.v)
-  margin = [hdpx(15), 0, hdpx(10)]
+  margin = const [hdpx(15), 0, hdpx(10)]
   imageAffectsLayout = true
   keepAspect = true
   children = {
@@ -243,41 +243,45 @@ function spoiler(obj, formatTextFunc, __) {
   let isExpanded = Watched(false)
   let isHover = Watched(false)
   let contentHeight = Watched(0)
-  let spoilerHeight = Watched(spoilerBtnHeight)
-  let resetSpoilerHeight = @() spoilerHeight.set(spoilerBtnHeight)
-  let button = {
-    size = [flex(), spoilerBtnHeight]
+  let buttonHeight = Watched(0)
+  let spoilerHeight = Watched(0)
+  let resetSpoilerHeight = @() spoilerHeight.set(buttonHeight.get())
+
+  buttonHeight.subscribe(@(v) spoilerHeight.set(v))
+
+  let button = @() {
+    watch = [isExpanded, isHover]
+    size = [spoilerWidth, SIZE_TO_CONTENT]
+    padding = insideBlockPadding
     rendObj = ROBJ_BOX
-    children = @() {
-      watch = [isExpanded, isHover]
-      size = flex()
-      padding = insideBlockPadding
-      rendObj = ROBJ_BOX
-      flow = FLOW_HORIZONTAL
-      gap = { size = flex() }
-      valign = ALIGN_CENTER
-      fillColor = isHover.get() && isExpanded.get() ? btnHovActive
-        : !isHover.get() && isExpanded.get() ? btnActive
-        : !isHover.get() && !isExpanded.get()? btnDef : btnHovDef
-      behavior = Behaviors.Button
-      onClick = @() isExpanded(!isExpanded.get())
-      onHover = @(sf) isHover(sf)
-      children = [
-        {
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          text = obj.summary
-          color = isExpanded.get() ? activeTextColor : commonTextColor
-        }.__update(fontSmall)
-        expandArrow(isExpanded, defaultExpandAnimationDuration)
-      ]
-    }
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(20)
+    valign = ALIGN_CENTER
+    fillColor = isHover.get() && isExpanded.get() ? btnHovActive
+      : !isHover.get() && isExpanded.get() ? btnActive
+      : !isHover.get() && !isExpanded.get() ? btnDef
+      : btnHovDef
+    behavior = Behaviors.Button
+    onClick = @() isExpanded(!isExpanded.get())
+    onHover = @(sf) isHover(sf)
+    children = [
+      @() {
+        watch = isExpanded
+        rendObj = ROBJ_TEXTAREA
+        size = FLEX_H
+        behavior = Behaviors.TextArea
+        text = obj.summary
+        color = isExpanded.get() ? activeTextColor : commonTextColor
+      }.__update(fontSmall)
+      expandArrow(isExpanded, defaultExpandAnimationDuration)
+    ]
   }
 
   let content = @() {
-    watch = [isExpanded, contentHeight]
-    pos = [0, spoilerBtnHeight]
-    size = [flex(), SIZE_TO_CONTENT]
+    watch = [isExpanded, contentHeight, buttonHeight]
+    pos = [0, buttonHeight.get()]
+    size = [spoilerWidth, SIZE_TO_CONTENT]
+    flow = FLOW_VERTICAL
     padding = insideBlockPadding
     rendObj = ROBJ_BOX
     fillColor = contentBackground
@@ -292,18 +296,19 @@ function spoiler(obj, formatTextFunc, __) {
   }
 
   contentHeight.set(calc_comp_size(content)[1])
+  buttonHeight.set(calc_comp_size(button)[1])
 
   isExpanded.subscribe(function(v) {
     if (v) {
       clearTimer(resetSpoilerHeight)
-      spoilerHeight.set(spoilerBtnHeight + contentHeight.get())
+      spoilerHeight.set(buttonHeight.get() + contentHeight.get())
     } else
       resetTimeout(defaultExpandAnimationDuration, resetSpoilerHeight)
   })
 
   return @() {
     watch = spoilerHeight
-    size = [flex(), spoilerHeight.get()]
+    size = [spoilerWidth, spoilerHeight.get()]
     margin = [headerMargin, 0]
     clipChildren = true
     children = [
@@ -343,13 +348,13 @@ function tabs(obj, formatTextFunc, __) {
   }
   return @() {
     watch = currentTab
-    size = [flex(),SIZE_TO_CONTENT]
+    size = FLEX_H
     margin = [headerMargin, 0]
     flow = FLOW_VERTICAL
     rendObj = ROBJ_BOX
     children = [
       @() {
-        size = [flex(),hdpx(100)]
+        size = const [flex(),hdpx(100)]
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
         clipChildren = true
@@ -357,7 +362,7 @@ function tabs(obj, formatTextFunc, __) {
         children = obj.v.map(@(tab) createCaptionBtn(tab))
       },
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         rendObj = ROBJ_SOLID
         color = contentBackground
         flow = FLOW_VERTICAL

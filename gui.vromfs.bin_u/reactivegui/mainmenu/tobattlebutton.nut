@@ -27,28 +27,10 @@ let { needReadyCheckButton, initiateReadyCheck, isReadyCheckSuspended } = requir
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
 let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
-let { hasPenaltyStatus } = require("%rGui/mainMenu/penaltyState.nut")
+let { battleBtnCampaign, penaltyTimerIcon } = require("%rGui/queue/penaltyComps.nut")
+
 
 let queueCurRandomBattleMode = @() eventbus_send("queueToGameMode", { modeId = randomBattleMode.get()?.gameModeId })
-
-let battleBtnCampaign = Computed(@() randomBattleMode.get()?.campaign ?? curCampaign.get())
-
-let timerSize = hdpxi(40)
-let penaltyTimerIcon = @(campaign = null) function() {
-  let res = { watch = [hasPenaltyStatus, battleBtnCampaign] }
-  let hasPenalty = (hasPenaltyStatus.get()?[campaign ?? battleBtnCampaign.get()] ?? false)
-    || (hasPenaltyStatus.get()?[curCampaign.get()] ?? false)
-  return !hasPenalty ? res
-    : res.__update({
-        size = [timerSize, timerSize]
-        margin = [hdpx(8), hdpx(16)]
-        rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#timer_icon.svg:{timerSize}:{timerSize}:P")
-        vplace = ALIGN_TOP
-        hplace = ALIGN_RIGHT
-        keepAspect = KEEP_ASPECT_FIT
-      })
-}
 
 let hotkeyX = ["^J:X | Enter"]
 let commonOvr = {

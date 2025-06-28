@@ -1,6 +1,6 @@
 from "%globalScripts/logs.nut" import *
 let { crc32 } =  require("hash")
-let { isNamePassing, clearAllWhitespace } = require("%appGlobals/dirtyWordsFilter.nut")
+let { isNamePassing, clearExcessiveWhitespace } = require("%appGlobals/dirtyWordsFilter.nut")
 
 let NAMES_CACHE_MAX_LEN = 1000
 let namesCache = {}
@@ -24,7 +24,7 @@ function getPlayerName(nameReal, myUsernameReal = "", myUsername = "") {
   if (nameReal not in namesCache) {
     let nameToCheck = removePlatformPostfix(nameReal)
     let name = isNamePassing(nameToCheck)
-      ? clearAllWhitespace(nameToCheck)
+      ? clearExcessiveWhitespace(nameToCheck)
       : mkCensoredName(nameReal)
 
     if (namesCache.len() >= NAMES_CACHE_MAX_LEN)

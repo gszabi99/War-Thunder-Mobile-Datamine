@@ -1599,6 +1599,18 @@
           "to": "camo_grayriver*"
         }
       ]
+    },
+    "yellow": {
+      "replace_tex": [
+        {
+          "from": "camo_syntheticblackpaint*",
+          "to": "camo_yellow*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_yellow*"
+        }
+      ]
     }
   }
 }

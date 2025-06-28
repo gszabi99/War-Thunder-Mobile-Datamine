@@ -37,7 +37,7 @@ isLoaded.subscribe(function(v) {
 
 let content = @()
   modalWndBg.__merge({
-    size = [hdpx(800), SIZE_TO_CONTENT]
+    size = const [hdpx(800), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     valign = ALIGN_TOP
     stopMouse = true
@@ -45,7 +45,7 @@ let content = @()
       @() modalWndHeader(isLoaded.get() ? loc("shop/watchAdvert/trying") : loc("shop/watchAdvert/loading"),
         { watch = isLoaded })
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_VERTICAL
         valign = ALIGN_TOP
         padding = hdpx(40)
@@ -95,7 +95,7 @@ isOpenedAdsPreloaderWnd.subscribe(function(v) {
       hasAdsPreloadError.set(false)
     }
     sound = { click = "click" }
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = content

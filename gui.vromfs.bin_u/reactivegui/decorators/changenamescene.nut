@@ -17,7 +17,7 @@ let changeNameScene = {
       text = myNameWithFrame.value ?? ""
     }.__update(fontMedium)
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       behavior = Behaviors.TextArea
       rendObj = ROBJ_TEXTAREA
       halign = ALIGN_CENTER

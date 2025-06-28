@@ -19,7 +19,6 @@ const VERSIONS_RESP_ID = "legalVersion.result"
 let versionsFallback = {
   privacypolicy = 1681821489
   termsofservice = 1681820778
-  gamerules = 1681821726
 }
 
 let acceptedVersions = Watched(null)

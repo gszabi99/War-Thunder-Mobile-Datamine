@@ -102,7 +102,7 @@ function dmModules(scale) {
     valign = ALIGN_BOTTOM
     children = arrayByRows(dmIcons.filter(@(_, idx) DmStateMask.get() & (1 << idx)), iconColumnCount)
       .map(@(row) {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_HORIZONTAL
         halign = ALIGN_RIGHT
         children = row.map(@(c) mkIcon(c, size))
@@ -119,7 +119,7 @@ let dmModulesEditView = {
   valign = ALIGN_BOTTOM
   children = arrayByRows(dmIcons.map(@(c) mkIcon(c)), iconColumnCount)
     .map(@(row) {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       halign = ALIGN_RIGHT
       children = row

@@ -618,7 +618,7 @@ function mkBlueprintPlateTexts(reward, unitRank, rStyle) {
         valign = ALIGN_BOTTOM
         halign = ALIGN_RIGHT
         flow = FLOW_VERTICAL
-        padding = [0, hdpx(5)]
+        padding = const [0, hdpx(5)]
         children = [
           unitRank
             ? mkGradRankSmall(unitRank).__update({ fontSize = rStyle.textStyle.fontSize, pos = [0, hdpx(5)] })
@@ -882,13 +882,13 @@ let progressAnimations = [{
 }]
 
 let mkOpenCountText = @(text, count) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = hdpx(10)
   children = [
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       text
@@ -914,7 +914,7 @@ let mkOpenCountText = @(text, count) {
 let progressbar = @(value) {
   rendObj = ROBJ_BOX
   size = [progressbarWidth, progressbarHeight]
-  margin = [hdpx(12), 0]
+  margin = const [hdpx(12), 0]
   fillColor = 0x80000000
   borderWidth = hdpx(2)
   padding = hdpx(2)

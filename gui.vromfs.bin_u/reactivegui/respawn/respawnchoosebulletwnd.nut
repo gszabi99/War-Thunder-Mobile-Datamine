@@ -93,7 +93,7 @@ function mkBulletButton(isSecondary, name, bSet, fromUnitTags, id) {
           })
         @() {
           watch = isCurrent
-          size = [hdpx(9), flex()]
+          size = const [hdpx(9), flex()]
           rendObj = ROBJ_IMAGE
           image = lineGradient()
           opacity = isCurrent.value ? 1 : 0
@@ -105,7 +105,7 @@ function mkBulletButton(isSecondary, name, bSet, fromUnitTags, id) {
           ? {
             rendObj = ROBJ_IMAGE
             pos = [0, -hdpx(5)]
-            size = [hdpxi(70), hdpxi(70)]
+            size = hdpxi(70)
             image = Picture("ui/gameuiskin#lock_unit.svg")
             keepAspect = KEEP_ASPECT_FIT
             vplace = ALIGN_BOTTOM
@@ -120,13 +120,13 @@ function mkBulletButton(isSecondary, name, bSet, fromUnitTags, id) {
           : null
         @() {
           watch = isLockedSlot
-          size = [flex(), hdpx(108)]
+          size = const [flex(), hdpx(108)]
           rendObj = ROBJ_BOX
           borderWidth = isLockedSlot.value ? 0 : hdpxi(4)
         }
       ]
     }
-    mkPriorityUnseenMarkWatch(hasUnseenBullets, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT, margin = [hdpx(7), hdpx(7)] })
+    mkPriorityUnseenMarkWatch(hasUnseenBullets, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT, margin = hdpx(7) })
   ]
   function onClick() {
     sendPlayerActivityToServer()
@@ -179,7 +179,7 @@ function bulletsList() {
   }
 }
 
-let separator = { size = [ flex(), hdpx(10) ] }
+let separator = { size = const [ flex(), hdpx(10) ] }
 
 let mkStatRow = @(nameText, valText, color = 0xFFC0C0C0) {
   size = [flex(), statRowHeight]
@@ -187,7 +187,7 @@ let mkStatRow = @(nameText, valText, color = 0xFFC0C0C0) {
   flow = FLOW_HORIZONTAL
   children = [
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_TEXT
       color
       text = nameText
@@ -204,7 +204,7 @@ let mkStatRow = @(nameText, valText, color = 0xFFC0C0C0) {
 }
 
 let mkStatTextarea = @(text, color = 0xFFC0C0C0) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text
@@ -221,7 +221,7 @@ function mkShellVideo(videos, width) {
         watch
         key = videos
         size = [width, (0.25 * width + 0.5).tointeger()]
-        margin = [hdpx(10), 0, 0, 0]
+        margin = const [hdpx(10), 0, 0, 0]
         hplace = ALIGN_CENTER
         children = {
           size = flex()
@@ -250,8 +250,8 @@ function curBulletInfo() {
   let bulletName = getAmmoNameText(bSet)
   let children = [
     {
-      size = [ flex(), SIZE_TO_CONTENT ]
-      margin = [0, 0, hdpx(10), 0]
+      size = FLEX_H
+      margin = const [0, 0, hdpx(10), 0]
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       color = 0xFFFFFFFF
@@ -273,7 +273,7 @@ function curBulletInfo() {
   return {
     watch = [bulletsInfo, bulletsSecInfo, isBulletSec, curSlotName]
     key = "curBulletInfo" 
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     minHeight = hdpx(500)
     padding = hdpx(15)
     flow = FLOW_VERTICAL
@@ -308,7 +308,7 @@ function applyButton() {
     watch = [savedSlotName, curSlotName, bulletsInfo, bulletsSecInfo, isBulletSec, selSlot]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    size = [flex(), hdpx(110)]
+    size = const [flex(), hdpx(110)]
     children
   }
 }

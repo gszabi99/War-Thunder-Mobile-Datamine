@@ -66,12 +66,12 @@ function scrollForward() {
 isLvlUpAnimated.subscribe(@(v) v ? scrollForward() : null)
 
 let unseenArrowsBlockCtor = @(needShowL, needShowR, ovr = {}) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   pos = [0, hdpx(17)]
   children = [
     @() {
       watch = needShowL
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       pos = [-flagTreeOffset, 0]
       children = !needShowL.get() ? null : [
         {
@@ -84,7 +84,7 @@ let unseenArrowsBlockCtor = @(needShowL, needShowR, ovr = {}) {
     }
     @() {
       watch = needShowR
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       pos = [saBorders[0] * 0.5, 0]
       children = !needShowR.get() ? null : [
         {

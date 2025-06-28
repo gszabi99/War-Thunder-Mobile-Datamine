@@ -13,7 +13,7 @@ let hasInvitations = Computed(@() invitations.value.len() > 0)
 
 let invitesList = mkVerticalPannableArea(@() {
   watch = invitations
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   children = invitations.value.map(mkNotifyRow)
 })
@@ -33,7 +33,7 @@ let content = @() {
 
 let buttons = @() {
   watch = hasInvitations
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   valign = ALIGN_BOTTOM
   children = !hasInvitations.value ? null
     : textButtonCommon(loc("invites/clearAll"), clearAll)

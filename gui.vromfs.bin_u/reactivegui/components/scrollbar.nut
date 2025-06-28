@@ -60,7 +60,7 @@ function scrollbar(scroll_handler, options = {}) {
   let knob = @() {
     watch = stateFlags
     key = "knob"
-    size = [flex(), flex()]
+    size = flex()
     rendObj = ROBJ_SOLID
     color = knobStyle?.colorCalc(stateFlags.get()) ?? knobStyle?.color
   }

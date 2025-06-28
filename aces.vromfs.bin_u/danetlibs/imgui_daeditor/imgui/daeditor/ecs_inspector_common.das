@@ -13,7 +13,7 @@ require DagorDebug3D
 require EcsUtils
 require imgui/imgui_boost
 require strings
-require strings_boost
+require daslib/strings_boost
 require math.base
 require daslib/static_let
 require daslib/safe_addr

@@ -15,7 +15,7 @@ let openRewardsPreviewModal = @(content, title, onClick = null)
     key = REWARDS_PREVIEW_MODAL_UID
     animations = wndSwitchAnim
     onDetach = onClick
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = modalWndBg.__merge({

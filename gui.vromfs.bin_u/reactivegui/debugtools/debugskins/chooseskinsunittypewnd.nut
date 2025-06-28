@@ -10,7 +10,7 @@ let close = @() modalPopupWnd.remove(wndUid)
 let gap = hdpx(10)
 
 let content = @(unitTypes, curUnitType, onChange) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   padding = gap
   flow = FLOW_VERTICAL
   gap
@@ -21,7 +21,7 @@ let content = @(unitTypes, curUnitType, onChange) {
         close()
         onChange(ut)
       },
-      { ovr = { size = [flex(), hdpx(100)] } })
+      { ovr = { size = const [flex(), hdpx(100)] } })
   )
 }
 
@@ -31,7 +31,7 @@ return @(targetRect, unitTypes, curUnitType, onChange) modalPopupWnd.add(targetR
   hotkeys = [[btnBEscUp, close]]
   popupBg = bgShaded
   children = {
-    size = [sh(65), SIZE_TO_CONTENT]
+    size = const [sh(65), SIZE_TO_CONTENT]
     stopMouse = true
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER

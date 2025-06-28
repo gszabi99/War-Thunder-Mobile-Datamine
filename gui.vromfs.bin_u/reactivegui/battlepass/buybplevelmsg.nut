@@ -9,7 +9,7 @@ let { msgBoxText } = require("%rGui/components/msgBox.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { bpCardStyle } = require("bpCardsStyle.nut")
 
-let textOvr = { size = [flex(), SIZE_TO_CONTENT] }
+let textOvr = { size = FLEX_H }
 
 function purchaseContent(stageInfo) {
   let needReward = Computed(@() !stageInfo.isPaid || (stageInfo.isPaid && isBpActive.value))
@@ -17,7 +17,7 @@ function purchaseContent(stageInfo) {
   return @() {
     watch = [needReward, nextLevel]
     flow = FLOW_VERTICAL
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     gap = hdpx(10)
     halign = ALIGN_CENTER
     children = [

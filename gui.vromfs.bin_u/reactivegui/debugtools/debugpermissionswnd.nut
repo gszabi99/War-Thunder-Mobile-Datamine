@@ -16,7 +16,7 @@ let wndUid = "permissionsWnd"
 let close = @() removeModalWindow(wndUid)
 
 let mkBtn = @(label, isActive, func) (isActive ? textButtonBright : textButtonCommon)(
-  label, func, { ovr = { size = [flex(), hdpx(100)] } })
+  label, func, { ovr = { size = const [flex(), hdpx(100)] } })
 
 function permissionsList() {
   let list = allPermissions.get()
@@ -32,12 +32,12 @@ function permissionsList() {
 
   return {
     watch = allPermissions
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     padding = [0, gap]
     gap
     children = rows.map(@(children) {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       gap
       children

@@ -19,7 +19,7 @@ let gap = hdpx(10)
 let selectedCampaign = mkWatched(persist, "selectedCampaign", curCampaign.get())
 
 let noGameModes = {
-  size = [ hdpx(500), SIZE_TO_CONTENT ]
+  size = const [ hdpx(500), SIZE_TO_CONTENT ]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER
@@ -30,7 +30,7 @@ let noGameModes = {
 function gameModesList() {
   let res = {
     watch = [debugModes, selectedCampaign]
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     padding = gap
     children = noGameModes
   }
@@ -46,7 +46,7 @@ function gameModesList() {
           return
         eventbus_send("queueToGameMode", { modeId })
       },
-      { ovr = { size = [flex(), hdpx(100)] } }))
+      { ovr = { size = const [flex(), hdpx(100)] } }))
 
   if (modes.len() == 0)
     return res
@@ -56,11 +56,11 @@ function gameModesList() {
     rows.top().resize(2, { size = flex() })
 
   return res.__update({
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     gap
     children = rows.map(@(children) {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       gap
       children
@@ -87,7 +87,7 @@ function gameModesTabs() {
       flow = FLOW_HORIZONTAL
       gap = hdpx(20)
       onAttach = @() selectedCampaign.set(getDefaultCampaign(campaigns))
-      children = campaigns.map(@(c) listButton(c, Computed(@() selectedCampaign.get() == c), @() selectedCampaign.set(c), { size = [hdpx(200), SIZE_TO_CONTENT] }))
+      children = campaigns.map(@(c) listButton(c, Computed(@() selectedCampaign.get() == c), @() selectedCampaign.set(c), { size = const [hdpx(200), SIZE_TO_CONTENT] }))
     })
 }
 
@@ -97,7 +97,7 @@ return @() addModalWindow({
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close }]]
   children = {
-    size = [sh(130), sh(90)]
+    size = const [sh(130), sh(90)]
     stopMouse = true
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
@@ -106,7 +106,7 @@ return @() addModalWindow({
     flow = FLOW_VERTICAL
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_HORIZONTAL
         valign = ALIGN_CENTER
         padding = gap

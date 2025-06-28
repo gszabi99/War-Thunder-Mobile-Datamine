@@ -169,7 +169,7 @@ function combobox(watches, options, tooltip=null, combo_style=comboStyle) {
       onDetachPopup = @() combo_style.onCloseDropDown(xmbNode)
 
     let popupContent = {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_BOX
       fillColor = combo_style?.popupBgColor ?? Color(10,10,10)
       borderColor = combo_style?.popupBdColor ?? Color(80,80,80)
@@ -184,7 +184,7 @@ function combobox(watches, options, tooltip=null, combo_style=comboStyle) {
         flow = FLOW_VERTICAL
         children
         gap = combo_style?.itemGap
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         maxHeight = itemHeight*10.5 + itemGapHt*9 
         
       }

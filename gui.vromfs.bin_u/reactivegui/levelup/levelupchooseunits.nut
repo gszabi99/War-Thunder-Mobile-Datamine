@@ -88,7 +88,7 @@ isAttached.subscribe(function(v) {
 })
 
 let textarea = @(text, override = {}) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER

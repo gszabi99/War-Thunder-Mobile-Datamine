@@ -15,7 +15,7 @@ let msgContent = @(text, moreInfoLink) {
   flow = FLOW_VERTICAL
   gap = hdpx(50)
   children = [
-    msgBoxText(text, { size = [flex(), SIZE_TO_CONTENT] })
+    msgBoxText(text, { size = FLEX_H })
     urlText(moreInfoLink, moreInfoLink, { ovr = fontTiny })
   ]
 }

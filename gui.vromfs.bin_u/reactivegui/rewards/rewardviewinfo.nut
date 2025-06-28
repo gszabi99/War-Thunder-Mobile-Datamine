@@ -228,7 +228,7 @@ function groupRewards(rewards) {
   return res
 }
 
-function getLootboxCommonRewardsViewInfo(lootbox) {
+function getLootboxCommonRewardsViewInfo(lootbox, lockedBy = []) {
   let { name = "", lastReward = "", rewardsOrder = {} } = lootbox
   let rewards = lootbox.rewards.map(function(chance, id) {
     let rewardCfg = serverConfigs.value?.rewardsCfg[id]
@@ -242,6 +242,7 @@ function getLootboxCommonRewardsViewInfo(lootbox) {
       content
       dropLimit = lootbox?.dropLimit[id] ?? dropLimitByType?[content?.rType] ?? NO_DROP_LIMIT
       dropLimitRaw = lootbox?.dropLimit[id]
+      lockedBy
     }
   })
     .filter(@(v) v != null)
@@ -284,17 +285,19 @@ function getLootboxCommonRewardsViewInfo(lootbox) {
 function getLootboxFixedRewardsViewInfo(lootbox) {
   let fixedRewards = []
   let added = {}
-  foreach (_value, id in lootbox.fixedRewards) {
+  foreach (fr in lootbox.fixedRewards) {
+    let id = fr?.rewardId ?? fr 
     if (id in added)
       continue
     added[id] <- true
 
+    let lockedBy = fr?.lockedBy ?? []
     let rewardCfg = serverConfigs.value?.rewardsCfg[id]
     let content = getRewardsViewInfo(rewardCfg)?[0]
     if (content?.rType == "lootbox") {
-      let rewards = getLootboxCommonRewardsViewInfo(serverConfigs.value?.lootboxesCfg[content.id])
+      let rewards = getLootboxCommonRewardsViewInfo(serverConfigs.value?.lootboxesCfg[content.id], lockedBy)
       foreach (r in rewards)
-        fixedRewards.append(r.__merge({ isJackpot = true, parentSource = lootbox?.name ?? "", parentRewardId = id }))
+        fixedRewards.append(r.__merge({ isJackpot = true, parentSource = lootbox?.name ?? "", parentRewardId = id, lockedBy }))
     }
     else
       fixedRewards.append({
@@ -305,6 +308,7 @@ function getLootboxFixedRewardsViewInfo(lootbox) {
         chance = 0
         content
         dropLimit = NO_DROP_LIMIT
+        lockedBy
       })
   }
   return fixedRewards
@@ -361,8 +365,11 @@ function isViewInfoRewardEmpty(reward, profile) {
 
 function canReceiveFixedReward(lootbox, id, reward, profile) {
   let { name, fixedRewards } = lootbox
-  let openCount = profile?.lootboxStats[name].opened ?? 0
-  let rollToReceive = fixedRewards.findindex(@(r, idxStr) r == id && idxStr.tointeger() > openCount)
+  let { opened = 0, total = {} } = profile?.lootboxStats[name]
+  let rollToReceive = fixedRewards
+    .findindex(@(fr, idxStr) (fr?.rewardId ?? fr) == id  
+      && idxStr.tointeger() > opened
+      && null == fr?.lockedBy.findvalue(@(l) (total?[l] ?? 0) > 0))
   return !isRewardEmpty(reward, profile) && rollToReceive != null
 }
 
@@ -392,8 +399,8 @@ function fillRewardsCounts(rewards, profile, configs) {
       let { fixedRewards = {} } = configs?.lootboxesCfg[r?.source]
       local received = 0
       local dropLimit = 0
-      foreach(countStr, id in fixedRewards)
-        if (id == r.id) {
+      foreach(countStr, fr in fixedRewards)
+        if ((fr?.rewardId ?? fr) == r.id) { 
           dropLimit++
           if (countStr.tointeger() <= opened)
             received++

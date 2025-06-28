@@ -7,6 +7,7 @@ let {
   isAdsAvailable = Watched(false),
   isAdsVisible = Watched(false),
   isLoaded = Watched(false),
+  isInited = Watched(false),
   showAdsForReward = @(_) null
 } = is_ios || debugAs == "ios" ? require("byPlatform/adsIOS.nut")
   : is_android || is_pc ? require("byPlatform/adsAndroid.nut") 
@@ -20,6 +21,7 @@ return {
   isAdsAvailable
   isAdsVisible
   isLoaded
+  isProviderInited = Computed(@() isInited.get())
   showAdsForReward
   changeAttachedAdsButtons
   adsButtonCounter = {

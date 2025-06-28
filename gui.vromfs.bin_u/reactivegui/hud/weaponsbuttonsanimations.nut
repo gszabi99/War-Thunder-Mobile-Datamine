@@ -74,7 +74,7 @@ function mkConsumableAnimation(nextAnimation, start, finish, onDecrement) {
   return {
     key = nextAnimation
     valign = ALIGN_CENTER
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     opacity = 0
     transform = {}
     flow = FLOW_HORIZONTAL

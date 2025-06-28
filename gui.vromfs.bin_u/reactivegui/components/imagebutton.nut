@@ -11,7 +11,9 @@ let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style
 function framedImageBtn(image, onClick, ovr = {}, addChild = null) {
   let stateFlags = Watched(0)
   let size = ovr?.size ?? framedBtnSize
-  let imageSize = ovr?.imageSize ?? size.map(@(v) (v - imageSizeDecrease).tointeger())
+  let imageSize = ovr?.imageSize
+    ?? size?.map(@(v) (v - imageSizeDecrease).tointeger())
+    ?? (size - imageSizeDecrease).tointeger()
   return @() {
     watch = stateFlags
     size
@@ -32,7 +34,7 @@ function framedImageBtn(image, onClick, ovr = {}, addChild = null) {
         size = imageSize
         rendObj = ROBJ_IMAGE
         color = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
-        image = Picture($"{image}:{imageSize[0]}:{imageSize[1]}:P")
+        image = Picture($"{image}:{imageSize?[0] ?? imageSize}:{imageSize?[1] ?? imageSize}:P")
         keepAspect = true
       }
       addChild

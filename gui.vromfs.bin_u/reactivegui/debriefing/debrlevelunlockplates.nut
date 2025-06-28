@@ -30,15 +30,15 @@ let scrollBoxMarginV = ceil(plateH * (plateBlinkScale - 1) / 2) + hdpx(2)
 let scrollBoxMarginL = scrollBoxMarginR + (platoonPlatesCustomGap * maxPlatoonExtraPlatesCount)
 
 let mkLevelUnlockPlatesContainer = @(children) {
-  margin = [0, 0, 0, hdpx(212)]
-  size = [SIZE_TO_CONTENT, flex()]
+  margin = const [0, 0, 0, hdpx(212)]
+  size = FLEX_V
   children = makeSideScroll({
     margin = [scrollBoxMarginV, scrollBoxMarginR, scrollBoxMarginV, scrollBoxMarginL]
     flow = FLOW_VERTICAL
     gap = platesGap
     children
   }, {
-    size = [SIZE_TO_CONTENT, flex()]
+    size = FLEX_V
   })
 }
 
@@ -122,7 +122,7 @@ let mkDebrPlateMod = @(mod, isUnlocked, unlockDelay) {
 
 
 let upgradePointsIcon = {
-  size = [hdpx(110), hdpx(85)]
+  size = const [hdpx(110), hdpx(85)]
   vplace = ALIGN_CENTER
   pos = [pw(8), ph(14)]
   rendObj = ROBJ_IMAGE

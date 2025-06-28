@@ -80,7 +80,7 @@ let msgContent = @(text, priceComp) {
   valign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   children = [
-    type(text) == "string" ? msgBoxText(text, { size = [flex(), SIZE_TO_CONTENT] }) : text
+    type(text) == "string" ? msgBoxText(text, { size = FLEX_H }) : text
     {
       flow = FLOW_HORIZONTAL
       gap = hdpx(32)
@@ -98,7 +98,7 @@ function openMsgBoxPurchase(text, price, purchase, bqInfo, title = null, onCance
 
     priceComp.append(
       mkCurrencyComp(decimalFormat(p.price), p.currencyId, CS_INCREASED_ICON)
-        .__update({ margin = [ hdpx(25), 0, 0, 0 ] })
+        .__update({ margin = const [ hdpx(25), 0, 0, 0 ] })
     )
   }
 

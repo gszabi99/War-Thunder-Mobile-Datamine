@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { hasVip } = require("%rGui/state/profilePremium.nut")
 let { campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockProgress } = require("%rGui/unlocks/unlocks.nut")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
@@ -8,7 +9,7 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { register_command } = require("console")
 let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { showAdsForReward } = require("%rGui/ads/adsState.nut")
+let { showAdsForReward, isProviderInited  } = require("%rGui/ads/adsState.nut")
 let { playSound } = require("sound_wt")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { speed_up_unlock_progress } = require("%appGlobals/pServer/pServerApi.nut")
@@ -224,9 +225,16 @@ function onWatchQuestAd(unlock) {
     return false
   }
 
-  if(hasVip.get()) {
+  if (hasVip.get()) {
     speed_up_unlock_progress(name)
     return true
+  }
+
+  if (!isProviderInited.get()) {
+    let locId = "shop/notAvailableAds"
+    openMsgBox({ text = loc(locId) })
+    sendErrorLocIdBqEvent(locId)
+    return false
   }
 
   if (progressCorrectionStep > 0 && !isCompleted) {

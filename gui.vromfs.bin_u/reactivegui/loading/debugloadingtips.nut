@@ -29,7 +29,7 @@ function getTipsList() {
 }
 
 let tipsText = @(tips) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   color = textColor
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea

@@ -24,7 +24,7 @@ let mkVerticalPannableArea = @(content, override) {
 }.__update(override)
 
 let header = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   valign = ALIGN_CENTER
   children = [
     backButton(onClose)

@@ -684,6 +684,182 @@
       }
     }
   },
+  "b-29": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_wake_island_Jet",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "wright",
+        "model": "r-3350-57",
+        "mass": 1251.0
+      },
+      "engine2_dm": {
+        "alias": "engine1_dm"
+      },
+      "engine3_dm": {
+        "alias": "engine1_dm"
+      },
+      "engine4_dm": {
+        "alias": "engine1_dm"
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_usa": true,
+      "type_bomber": true,
+      "type_longrange_bomber": true,
+      "bomberview": true,
+      "western_front": true,
+      "pacific": true,
+      "korean_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 12000.0,
+      "maxSpeed": 178.0,
+      "turnTime": 32.0,
+      "airfieldLen": 1500.0,
+      "climbTime": 984.0,
+      "maxSpeedAlt": 9100.0,
+      "climbAlt": 6000.0,
+      "climbSpeed": 6.51126,
+      "wingLoading": 283.0,
+      "powerToWeightRatio": 0.05,
+      "rollRate": 15.0,
+      "pilotsCount": 2,
+      "gunnersCount": 5,
+      "pylonCount": 1,
+      "massPerSec": 6.49875,
+      "weapons": {
+        "gunBrowning50_turret_late": {
+          "type": "gunner0",
+          "gunsCount": 12,
+          "ammoCount": 12000,
+          "shotFreq": 12.5
+        },
+        "500lbx20": {},
+        "1000lb": {
+          "reqModification": "aircraft_mod_1"
+        },
+        "500lbx40": {
+          "reqModification": "aircraft_mod_3"
+        },
+        "2000lb": {
+          "reqModification": "aircraft_mod_5"
+        },
+        "4000lb": {
+          "reqModification": "aircraft_mod_6"
+        }
+      }
+    },
+    "bullets": {
+      "gunBrowning50_turret_late": {
+        "default": {
+          "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
+        },
+        "50cal_turret_armor_targets": {
+          "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/ap_i_t_ball_M20/",
+          "reqModification": "aircraft_mod_4"
+        },
+        "50cal_turret_universal": {
+          "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/ap_i_t_ball_M20/",
+          "reqModification": "aircraft_mod_2"
+        }
+      }
+    }
+  },
+  "b-29_prem": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "testFlight": "testFlight_wake_island_Jet",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "wright",
+        "model": "r-3350-57",
+        "mass": 1251.0
+      },
+      "engine2_dm": {
+        "alias": "engine1_dm"
+      },
+      "engine3_dm": {
+        "alias": "engine1_dm"
+      },
+      "engine4_dm": {
+        "alias": "engine1_dm"
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_usa": true,
+      "type_bomber": true,
+      "type_longrange_bomber": true,
+      "bomberview": true,
+      "western_front": true,
+      "pacific": true,
+      "korean_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 12000.0,
+      "maxSpeed": 178.0,
+      "turnTime": 32.0,
+      "airfieldLen": 1500.0,
+      "climbTime": 984.0,
+      "maxSpeedAlt": 9100.0,
+      "climbAlt": 6000.0,
+      "climbSpeed": 6.51126,
+      "wingLoading": 283.0,
+      "powerToWeightRatio": 0.05,
+      "rollRate": 15.0,
+      "pilotsCount": 2,
+      "gunnersCount": 5,
+      "pylonCount": 1,
+      "massPerSec": 6.49875,
+      "weapons": {
+        "gunBrowning50_turret_late": {
+          "type": "gunner0",
+          "gunsCount": 12,
+          "ammoCount": 12000,
+          "shotFreq": 12.5
+        },
+        "500lbx20": {},
+        "1000lb": {
+          "reqModification": "aircraft_mod_1"
+        },
+        "500lbx40": {
+          "reqModification": "aircraft_mod_3"
+        },
+        "2000lb": {
+          "reqModification": "aircraft_mod_5"
+        },
+        "4000lb": {
+          "reqModification": "aircraft_mod_6"
+        }
+      }
+    },
+    "bullets": {
+      "gunBrowning50_turret_late": {
+        "default": {
+          "icon": "ap_i_t_ball_M20/ap_ball_M2/ap_ball_M2/i_ball_M1/"
+        },
+        "50cal_turret_armor_targets": {
+          "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/ap_i_t_ball_M20/",
+          "reqModification": "aircraft_mod_4"
+        },
+        "50cal_turret_universal": {
+          "icon": "ap_i_ball_M8/i_ball_M23/ap_i_ball_M8/ap_i_t_ball_M20/",
+          "reqModification": "aircraft_mod_2"
+        }
+      }
+    }
+  },
   "i-15_1934": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -30233,6 +30409,313 @@
       }
     }
   },
+  "j2m5": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "mitsubishi",
+        "model": "kasei_26",
+        "mass": 855.0
+      },
+      "tanks_params": {
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": false
+        },
+        "tank3_dm": {
+          "protected": false
+        }
+      }
+    },
+    "tags": {
+      "axis": true,
+      "country_japan": true,
+      "type_fighter": true,
+      "pacific": true,
+      "far_eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 11500.0,
+      "maxSpeed": 170.833,
+      "turnTime": 19.0,
+      "airfieldLen": 300.0,
+      "climbTime": 57.0,
+      "maxSpeedAlt": 6580.0,
+      "climbAlt": 1000.0,
+      "climbSpeed": 17.54,
+      "wingLoading": 171.07,
+      "powerToWeightRatio": 0.61,
+      "rollRate": 139.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 2,
+      "massPerSec": 4.25704,
+      "weapons": {
+        "cannonType99": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 380,
+          "shotFreq": 8.6
+        },
+        "cannonType99Mk2": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 420,
+          "shotFreq": 8.16
+        },
+        "type97mod6_60kg": {
+          "reqModification": "aircraft_mod_3"
+        }
+      }
+    },
+    "bullets": {
+      "cannonType99": {
+        "default": {
+          "icon": "t_shell/he_frag_i/he_frag_i/ap_i/"
+        },
+        "type99mk1_universal": {
+          "icon": "he_frag_t/he_frag/he_frag/ap/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "type99mk1_ground_targets": {
+          "icon": "ap_i/ap_i/ap/ap/he_frag/he_frag_t/",
+          "reqModification": "aircraft_mod_5"
+        },
+        "type99mk1_tracers": {
+          "icon": "he_frag_t/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "type99mk1_stealth": {
+          "icon": "he_frag/he_frag/he_frag/ap/ap/",
+          "reqModification": "aircraft_mod_4"
+        }
+      },
+      "cannonType99Mk2": {
+        "default": {
+          "icon": "t_shell/frag_i/frag_i/ap_i/"
+        },
+        "type99mk2_universal": {
+          "icon": "he_frag_t/he_frag/he_frag/ap_i/",
+          "reqModification": "aircraft_mod_7"
+        },
+        "type99mk2_ground_targets": {
+          "icon": "ap_i/ap_i/ap_i/ap_i/he_frag/he_frag_t/",
+          "reqModification": "aircraft_mod_8"
+        },
+        "type99mk2_tracers": {
+          "icon": "he_frag_t/",
+          "reqModification": "aircraft_mod_6"
+        },
+        "type99mk2_stealth": {
+          "icon": "he_frag/he_frag/he_frag/ap_i/ap_i/",
+          "reqModification": "aircraft_mod_9"
+        }
+      }
+    }
+  },
+  "j2m5_prem": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "mitsubishi",
+        "model": "kasei_26",
+        "mass": 855.0
+      },
+      "tanks_params": {
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": false
+        },
+        "tank3_dm": {
+          "protected": false
+        }
+      }
+    },
+    "tags": {
+      "axis": true,
+      "country_japan": true,
+      "type_fighter": true,
+      "pacific": true,
+      "far_eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 11500.0,
+      "maxSpeed": 170.833,
+      "turnTime": 19.0,
+      "airfieldLen": 300.0,
+      "climbTime": 57.0,
+      "maxSpeedAlt": 6580.0,
+      "climbAlt": 1000.0,
+      "climbSpeed": 17.54,
+      "wingLoading": 171.07,
+      "powerToWeightRatio": 0.61,
+      "rollRate": 139.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 2,
+      "massPerSec": 4.25704,
+      "weapons": {
+        "cannonType99": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 380,
+          "shotFreq": 8.6
+        },
+        "cannonType99Mk2": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 420,
+          "shotFreq": 8.16
+        },
+        "type97mod6_60kg": {
+          "reqModification": "aircraft_mod_3"
+        }
+      }
+    },
+    "bullets": {
+      "cannonType99": {
+        "default": {
+          "icon": "t_shell/he_frag_i/he_frag_i/ap_i/"
+        },
+        "type99mk1_universal": {
+          "icon": "he_frag_t/he_frag/he_frag/ap/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "type99mk1_ground_targets": {
+          "icon": "ap_i/ap_i/ap/ap/he_frag/he_frag_t/",
+          "reqModification": "aircraft_mod_5"
+        },
+        "type99mk1_tracers": {
+          "icon": "he_frag_t/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "type99mk1_stealth": {
+          "icon": "he_frag/he_frag/he_frag/ap/ap/",
+          "reqModification": "aircraft_mod_4"
+        }
+      },
+      "cannonType99Mk2": {
+        "default": {
+          "icon": "t_shell/frag_i/frag_i/ap_i/"
+        },
+        "type99mk2_universal": {
+          "icon": "he_frag_t/he_frag/he_frag/ap_i/",
+          "reqModification": "aircraft_mod_7"
+        },
+        "type99mk2_ground_targets": {
+          "icon": "ap_i/ap_i/ap_i/ap_i/he_frag/he_frag_t/",
+          "reqModification": "aircraft_mod_8"
+        },
+        "type99mk2_tracers": {
+          "icon": "he_frag_t/",
+          "reqModification": "aircraft_mod_6"
+        },
+        "type99mk2_stealth": {
+          "icon": "he_frag/he_frag/he_frag/ap_i/ap_i/",
+          "reqModification": "aircraft_mod_9"
+        }
+      }
+    }
+  },
+  "j7w1": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "mitsubishi",
+        "model": "ha_104",
+        "mass": 942.0
+      },
+      "engine2_dm": {
+        "alias": "engine1_dm"
+      },
+      "tanks_params": {
+        "tank1_dm": {
+          "protected": true
+        },
+        "tank2_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank3_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank4_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank5_dm": {
+          "protected": true,
+          "protected_boost": true
+        }
+      }
+    },
+    "tags": {
+      "axis": true,
+      "country_japan": true,
+      "type_fighter": true,
+      "pacific": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 12500.0,
+      "maxSpeed": 208.333,
+      "turnTime": 30.0,
+      "airfieldLen": 650.0,
+      "climbTime": 640.0,
+      "maxSpeedAlt": 8500.0,
+      "climbAlt": 8000.0,
+      "climbSpeed": 18.6,
+      "wingLoading": 257.0,
+      "powerToWeightRatio": 0.45,
+      "rollRate": 138.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 4,
+      "massPerSec": 10.125,
+      "weapons": {
+        "cannonType5": {
+          "type": "cannon",
+          "gunsCount": 4,
+          "ammoCount": 240,
+          "shotFreq": 7.5
+        },
+        "type97mod6_60kg": {}
+      }
+    },
+    "bullets": {
+      "cannonType5": {
+        "default": {
+          "icon": "ball_shell/he_frag/he_frag_i/he_frag_t/"
+        },
+        "type5_universal": {
+          "icon": "he_frag_t/he_frag_i/he_frag/ball_t_shell/he_frag/he_frag/",
+          "reqModification": "aircraft_mod_2"
+        },
+        "type5_ground_targets": {
+          "icon": "ball_t_shell/ball_t_shell/he_frag_t/",
+          "reqModification": "aircraft_mod_7"
+        },
+        "type5_tracers": {
+          "icon": "he_frag_t/",
+          "reqModification": "aircraft_mod_1"
+        },
+        "type5_stealth": {
+          "icon": "he_frag/he_frag/he_frag/ball_shell/",
+          "reqModification": "aircraft_mod_5"
+        }
+      }
+    }
+  },
   "n1k2_j": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -30920,26 +31403,23 @@
     "tags": {
       "axis": true,
       "country_japan": true,
-      "type_bomber": true,
-      "type_dive_bomber": true,
-      "type_torpedo": true,
-      "bomberview": true,
+      "type_fighter": true,
       "far_eastern_front": true,
       "pacific": true,
       "air": true
     },
     "Shop": {
-      "maxAltitude": 9400.0,
+      "maxAltitude": 9800.0,
       "maxSpeed": 155.0,
       "turnTime": 15.0,
-      "airfieldLen": 720.0,
-      "climbTime": 584.0,
-      "maxSpeedAlt": 5900.0,
+      "airfieldLen": 190.0,
+      "climbTime": 390.0,
+      "maxSpeedAlt": 6000.0,
       "climbAlt": 6000.0,
-      "climbSpeed": 10.2,
-      "wingLoading": 191.0,
-      "powerToWeightRatio": 0.176,
-      "rollRate": 43.0,
+      "climbSpeed": 15.3,
+      "wingLoading": 122.0,
+      "powerToWeightRatio": 0.43,
+      "rollRate": 136.0,
       "pilotsCount": 1,
       "gunnersCount": 0,
       "pylonCount": 2,
@@ -31014,17 +31494,17 @@
       "air": true
     },
     "Shop": {
-      "maxAltitude": 9400.0,
+      "maxAltitude": 9800.0,
       "maxSpeed": 155.0,
       "turnTime": 15.0,
-      "airfieldLen": 720.0,
-      "climbTime": 584.0,
-      "maxSpeedAlt": 5900.0,
+      "airfieldLen": 190.0,
+      "climbTime": 390.0,
+      "maxSpeedAlt": 6000.0,
       "climbAlt": 6000.0,
-      "climbSpeed": 10.2,
-      "wingLoading": 191.0,
-      "powerToWeightRatio": 0.176,
-      "rollRate": 43.0,
+      "climbSpeed": 15.3,
+      "wingLoading": 122.0,
+      "powerToWeightRatio": 0.43,
+      "rollRate": 136.0,
       "pilotsCount": 1,
       "gunnersCount": 0,
       "pylonCount": 2,
@@ -31147,7 +31627,7 @@
     "crewTotalCount": 194,
     "tierGroup": 2,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -31200,7 +31680,7 @@
     "crewTotalCount": 1255,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -31255,7 +31735,7 @@
     "crewTotalCount": 1516,
     "tierGroup": 7,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_battlecruiser": true,
       "ship": true
     },
@@ -31310,7 +31790,7 @@
     "crewTotalCount": 1730,
     "tierGroup": 6,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_battleship": true,
       "ship": true
     },
@@ -31363,7 +31843,7 @@
     "crewTotalCount": 1360,
     "tierGroup": 6,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_battleship": true,
       "ship": true
     },
@@ -31416,7 +31896,7 @@
     "crewTotalCount": 692,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -31482,7 +31962,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -31594,7 +32074,7 @@
     "crewTotalCount": 52,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -31650,7 +32130,7 @@
     "crewTotalCount": 84,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -31732,7 +32212,7 @@
     "crewTotalCount": 52,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -31831,7 +32311,7 @@
     "crewTotalCount": 270,
     "tierGroup": 2,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -31893,7 +32373,7 @@
     "crewTotalCount": 284,
     "tierGroup": 1,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -31946,7 +32426,7 @@
     "crewTotalCount": 170,
     "tierGroup": 1,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -32052,7 +32532,7 @@
     "crewTotalCount": 260,
     "tierGroup": 2,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -32114,7 +32594,7 @@
     "crewTotalCount": 812,
     "tierGroup": 5,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battleship": true,
       "ship": true
     },
@@ -32167,7 +32647,7 @@
     "crewTotalCount": 812,
     "tierGroup": 5,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battlecruiser": true,
       "ship": true
     },
@@ -32220,7 +32700,7 @@
     "crewTotalCount": 1300,
     "tierGroup": 5,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_battleship": true,
       "ship": true
     },
@@ -32273,7 +32753,7 @@
     "crewTotalCount": 1300,
     "tierGroup": 5,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_battleship": true,
       "ship": true
     },
@@ -32336,7 +32816,7 @@
     "crewTotalCount": 1244,
     "tierGroup": 6,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_battleship": true,
       "ship": true
     },
@@ -32391,7 +32871,7 @@
     "crewTotalCount": 272,
     "tierGroup": 1,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -32444,7 +32924,7 @@
     "crewTotalCount": 784,
     "tierGroup": 3,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -32570,7 +33050,7 @@
     "crewTotalCount": 1272,
     "tierGroup": 3,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -32632,7 +33112,7 @@
     "crewTotalCount": 680,
     "tierGroup": 3,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -32696,7 +33176,7 @@
     "crewTotalCount": 748,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -32758,7 +33238,7 @@
     "crewTotalCount": 1184,
     "tierGroup": 3,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_heavy_cruiser": true,
       "ship": true
     },
@@ -32813,7 +33293,7 @@
     "crewTotalCount": 1384,
     "tierGroup": 5,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_battleship": true,
       "ship": true
     },
@@ -32856,7 +33336,7 @@
     "crewTotalCount": 876,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_heavy_cruiser": true,
       "ship": true
     },
@@ -33076,7 +33556,7 @@
     "crewTotalCount": 264,
     "tierGroup": 1,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -33129,7 +33609,7 @@
     "crewTotalCount": 264,
     "tierGroup": 1,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -33182,7 +33662,7 @@
     "crewTotalCount": 220,
     "tierGroup": 2,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -33235,7 +33715,7 @@
     "crewTotalCount": 1184,
     "tierGroup": 6,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battleship": true,
       "ship": true
     },
@@ -33300,7 +33780,7 @@
     "crewTotalCount": 1480,
     "tierGroup": 7,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_battlecruiser": true,
       "ship": true
     },
@@ -33353,7 +33833,7 @@
     "crewTotalCount": 1420,
     "tierGroup": 7,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battleship": true,
       "ship": true
     },
@@ -33408,7 +33888,7 @@
     "crewTotalCount": 1900,
     "tierGroup": 7,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_battleship": true,
       "ship": true
     },
@@ -33461,7 +33941,7 @@
     "crewTotalCount": 1052,
     "tierGroup": 5,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_battleship": true,
       "ship": true
     },
@@ -33523,7 +34003,7 @@
     "crewTotalCount": 1880,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_battleship": true,
       "ship": true
     },
@@ -33631,7 +34111,7 @@
     "crewTotalCount": 1292,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_battleship": true,
       "ship": true
     },
@@ -33686,7 +34166,7 @@
     "crewTotalCount": 270,
     "tierGroup": 1,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -33748,7 +34228,7 @@
     "crewTotalCount": 194,
     "tierGroup": 2,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -33810,7 +34290,7 @@
     "crewTotalCount": 748,
     "tierGroup": 3,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -33932,7 +34412,7 @@
     "crewTotalCount": 1384,
     "tierGroup": 5,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_battleship": true,
       "ship": true
     },
@@ -33987,7 +34467,7 @@
     "crewTotalCount": 52,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -34023,7 +34503,7 @@
     "crewTotalCount": 272,
     "tierGroup": 1,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -34076,7 +34556,7 @@
     "crewTotalCount": 170,
     "tierGroup": 1,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -34129,7 +34609,7 @@
     "crewTotalCount": 882,
     "tierGroup": 5,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_battlecruiser": true,
       "ship": true
     },
@@ -34182,7 +34662,7 @@
     "crewTotalCount": 1996,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battleship": true,
       "ship": true
     },
@@ -34235,7 +34715,7 @@
     "crewTotalCount": 1480,
     "tierGroup": 7,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_battleship": true,
       "ship": true
     },
@@ -34300,7 +34780,7 @@
     "crewTotalCount": 32,
     "tierGroup": 1,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -34346,7 +34826,7 @@
     "crewTotalCount": 1800,
     "tierGroup": 3,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_heavy_cruiser": true,
       "ship": true
     },
@@ -34401,7 +34881,7 @@
     "crewTotalCount": 2500,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_battleship": true,
       "ship": true
     },
@@ -34507,7 +34987,7 @@
     "crewTotalCount": 284,
     "tierGroup": 2,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -34635,7 +35115,7 @@
     "crewTotalCount": 1244,
     "tierGroup": 6,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_battleship": true,
       "ship": true
     },
@@ -34690,7 +35170,7 @@
     "crewTotalCount": 784,
     "tierGroup": 3,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_heavy_cruiser": true,
       "ship": true
     },
@@ -34754,7 +35234,7 @@
     "crewTotalCount": 52,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_france": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -34942,7 +35422,7 @@
     "crewTotalCount": 680,
     "tierGroup": 3,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -35006,7 +35486,7 @@
     "crewTotalCount": 1384,
     "tierGroup": 6,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_battleship": true,
       "ship": true
     },
@@ -35059,7 +35539,7 @@
     "crewTotalCount": 1272,
     "tierGroup": 3,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -35112,7 +35592,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -35192,7 +35672,7 @@
     "crewTotalCount": 1900,
     "tierGroup": 6,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_battleship": true,
       "ship": true
     },
@@ -35247,7 +35727,7 @@
     "crewTotalCount": 1730,
     "tierGroup": 6,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_battleship": true,
       "ship": true
     },
@@ -35386,7 +35866,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -35518,7 +35998,7 @@
     "crewTotalCount": 1360,
     "tierGroup": 6,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_battleship": true,
       "ship": true
     },
@@ -35571,7 +36051,7 @@
     "crewTotalCount": 52,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -35620,7 +36100,7 @@
     "crewTotalCount": 1184,
     "tierGroup": 3,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_heavy_cruiser": true,
       "ship": true
     },
@@ -35675,7 +36155,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_battleship": true,
       "ship": true
     },
@@ -35730,7 +36210,7 @@
     "crewTotalCount": 52,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -35786,7 +36266,7 @@
     "crewTotalCount": 692,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battleship": true,
       "ship": true
     },
@@ -35829,7 +36309,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -35905,7 +36385,7 @@
     "crewTotalCount": 748,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_france": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -35971,7 +36451,7 @@
     "crewTotalCount": 692,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_heavy_cruiser": true,
       "ship": true
     },
@@ -36037,7 +36517,7 @@
     "crewTotalCount": 692,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_battleship": true,
       "ship": true
     },
@@ -36100,7 +36580,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -36190,7 +36670,7 @@
     "crewTotalCount": 194,
     "tierGroup": 2,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -36253,7 +36733,7 @@
     "crewTotalCount": 1900,
     "tierGroup": 7,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_battleship": true,
       "ship": true
     },
@@ -36317,7 +36797,7 @@
     "crewTotalCount": 1800,
     "tierGroup": 3,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_heavy_cruiser": true,
       "ship": true
     },
@@ -36372,7 +36852,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -36441,7 +36921,7 @@
     "crewTotalCount": 264,
     "tierGroup": 3,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battlecruiser": true,
       "ship": true
     },
@@ -36505,7 +36985,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -36694,7 +37174,7 @@
     "crewTotalCount": 264,
     "tierGroup": 1,
     "tags": {
-      "country_germany": true,
+      "country_france": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -36757,7 +37237,7 @@
     "crewTotalCount": 692,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -36823,7 +37303,7 @@
     "crewTotalCount": 692,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -36903,7 +37383,7 @@
     "crewTotalCount": 692,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_france": true,
       "type_battleship": true,
       "ship": true
     },
@@ -36956,7 +37436,7 @@
     "crewTotalCount": 692,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battleship": true,
       "ship": true
     },
@@ -37020,7 +37500,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -37086,7 +37566,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -37165,7 +37645,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -37229,7 +37709,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battleship": true,
       "ship": true
     },
@@ -37417,7 +37897,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_battleship": true,
       "ship": true
     },
@@ -37545,7 +38025,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_battleship": true,
       "ship": true
     },
@@ -37598,7 +38078,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -37678,7 +38158,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_cruiser": true,
       "ship": true
     },
@@ -37744,7 +38224,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battleship": true,
       "ship": true
     },
@@ -37798,7 +38278,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_france": true,
       "type_cruiser": true,
       "ship": true
     },
@@ -37864,7 +38344,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -37920,7 +38400,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_battleship": true,
       "ship": true
     },
@@ -37975,7 +38455,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -38055,7 +38535,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_cruiser": true,
       "ship": true
     },
@@ -38179,7 +38659,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -38304,7 +38784,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battlecruiser": true,
       "ship": true
     },
@@ -38379,7 +38859,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_italy": true,
       "type_battleshipr": true,
       "ship": true
     },
@@ -38442,7 +38922,7 @@
     "crewTotalCount": 194,
     "tierGroup": 2,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -38495,7 +38975,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_heavy_cruiser": true,
       "ship": true
     },
@@ -38575,7 +39055,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_heavy_cruiser": true,
       "ship": true
     },
@@ -38639,7 +39119,7 @@
     "crewTotalCount": 60,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -38725,7 +39205,7 @@
     "crewTotalCount": 60,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_battleship": true,
       "ship": true
     },
@@ -38778,7 +39258,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -38919,7 +39399,7 @@
     "crewTotalCount": 1480,
     "tierGroup": 7,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -38973,7 +39453,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -39063,7 +39543,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_battleship": true,
       "ship": true
     },
@@ -39118,7 +39598,7 @@
     "crewTotalCount": 1800,
     "tierGroup": 3,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_heavy_cruiser": true,
       "ship": true
     },
@@ -39173,7 +39653,7 @@
     "crewTotalCount": 264,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_light_cruiser": true,
       "ship": true
     },
@@ -39460,7 +39940,7 @@
     "crewTotalCount": 284,
     "tierGroup": 2,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -39513,7 +39993,7 @@
     "crewTotalCount": 52,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -39569,7 +40049,7 @@
     "crewTotalCount": 1480,
     "tierGroup": 7,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_battleship": true,
       "ship": true
     },
@@ -39634,7 +40114,7 @@
     "crewTotalCount": 692,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battleship": true,
       "ship": true
     },
@@ -39677,7 +40157,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battleship": true,
       "ship": true
     },
@@ -39731,7 +40211,7 @@
     "crewTotalCount": 100,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battleship": true,
       "ship": true
     },
@@ -39785,7 +40265,7 @@
     "crewTotalCount": 692,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battleship": true,
       "ship": true
     },
@@ -39849,7 +40329,7 @@
     "crewTotalCount": 692,
     "tierGroup": 4,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_heavy_cruiser": true,
       "ship": true
     },
@@ -39915,7 +40395,7 @@
     "crewTotalCount": 1360,
     "tierGroup": 6,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_battleship": true,
       "ship": true
     },
@@ -39968,7 +40448,7 @@
     "crewTotalCount": 1480,
     "tierGroup": 7,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_battlecruiser": true,
       "ship": true
     },
@@ -40023,7 +40503,7 @@
     "crewTotalCount": 1480,
     "tierGroup": 7,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_battleship": true,
       "ship": true
     },
@@ -40152,7 +40632,7 @@
     "crewTotalCount": 1480,
     "tierGroup": 7,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_battleship": true,
       "ship": true
     },
@@ -40216,7 +40696,7 @@
     "crewTotalCount": 1480,
     "tierGroup": 7,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_battlecruiser": true,
       "ship": true
     },
@@ -40280,7 +40760,7 @@
     "crewTotalCount": 60,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_japan": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -40316,7 +40796,7 @@
     "crewTotalCount": 60,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -40381,7 +40861,7 @@
     "crewTotalCount": 60,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true
     },
@@ -40470,7 +40950,7 @@
     "crewTotalCount": 60,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_usa": true,
       "type_cruiser": true,
       "ship": true
     },
@@ -40550,7 +41030,7 @@
     "crewTotalCount": 60,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_france": true,
       "type_cruiser": true,
       "ship": true
     },
@@ -40606,7 +41086,7 @@
     "crewTotalCount": 60,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_ussr": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -40637,7 +41117,7 @@
         "ussr_533mm_53_65_torpedo": {
           "wtype": "torpedo",
           "damage": 6045.0,
-          "shotFreq": 0.04,
+          "shotFreq": 0.033,
           "distToLive": 3500.0,
           "gunsCount": 1,
           "caliber": 533.0,
@@ -40655,7 +41135,7 @@
     "crewTotalCount": 60,
     "tierGroup": 8,
     "tags": {
-      "country_germany": true,
+      "country_britain": true,
       "type_destroyer": true,
       "ship": true,
       "submarine": true
@@ -40691,6 +41171,250 @@
           "gunsCount": 1,
           "caliber": 533.0,
           "ammoCount": 52,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "it_battleship_caio_duilio": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "operatorCountry": "country_italy_kingdom",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 60,
+    "tierGroup": 8,
+    "tags": {
+      "country_germany": true,
+      "type_destroyer": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 2030,
+      "shipCrewMin": 470,
+      "shipCrewRating": 2.81273,
+      "maxSpeed": 13.4,
+      "turningTime": 29,
+      "mainWeaponCaliber": 320.0,
+      "weapons": {
+        "320mm_40_mod_1936_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 2200.0,
+          "shotFreq": 0.1,
+          "gunsCount": 10,
+          "caliber": 320.0,
+          "ammoCount": 1300,
+          "isBeltAmmo": false
+        },
+        "135mm_45_oto_mod1938_naval_user_cannon": {
+          "wtype": "auxCannon",
+          "damage": 400.0,
+          "shotFreq": 0.5,
+          "gunsCount": 6,
+          "gunsTotalCount": 12,
+          "gunsMult": 0.5,
+          "caliber": 135.0,
+          "ammoCount": 3000,
+          "isBeltAmmo": false
+        },
+        "90mm_50_ansaldo_mod_1939_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 118.0,
+          "shotFreq": 0.267,
+          "aimMaxDist": 3500.0,
+          "gunsCount": 10,
+          "caliber": 90.0,
+          "ammoCount": 4200,
+          "isBeltAmmo": false
+        },
+        "37mm_54_breda_mod1938_mod39_aircool_single_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 22.0,
+          "shotFreq": 3.333,
+          "aimMaxDist": 3500.0,
+          "gunsCount": 3,
+          "caliber": 37.0,
+          "ammoCount": 4500,
+          "isBeltAmmo": true
+        },
+        "37mm_54_breda_mod1938_mod38_aircool_twin_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 22.0,
+          "shotFreq": 3.333,
+          "aimMaxDist": 3500.0,
+          "gunsCount": 8,
+          "caliber": 37.0,
+          "ammoCount": 12000,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "germ_frigate_rckt_sachsen": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "operatorCountry": "country_frg",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 60,
+    "tierGroup": 8,
+    "tags": {
+      "country_germany": true,
+      "type_destroyer": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 230,
+      "shipCrewMin": 50,
+      "shipCrewRating": 2.99636,
+      "maxSpeed": 15.0,
+      "turningTime": 24,
+      "addTorpedoesCountPack": 3,
+      "asmCaptureDuration": 5.0,
+      "ecmType": "rocketBlocker",
+      "ecmDuration": 5.0,
+      "mainWeaponCaliber": 76.0,
+      "weapons": {
+        "76mm_62_oto_melara_compact_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 200.0,
+          "shotFreq": 2.0,
+          "gunsCount": 1,
+          "caliber": 76.0,
+          "ammoCount": 640,
+          "isBeltAmmo": false
+        },
+        "de_324mm_mu90_torpedo": {
+          "wtype": "torpedo",
+          "damage": 2750.0,
+          "shotFreq": 0.1,
+          "distToLive": 2750.0,
+          "gunsCount": 2,
+          "caliber": 324.0,
+          "ammoCount": 24,
+          "isBeltAmmo": false
+        },
+        "340mm_rgm_84_alike_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 9500.0,
+          "shotFreq": 4.2,
+          "reloadTime": 15.0,
+          "rocketsSalvo": 4,
+          "distToLive": 10000.0,
+          "gunsCount": 1,
+          "caliber": 340.0,
+          "ammoCount": 400,
+          "isBeltAmmo": false
+        },
+        "340mm_sm_2_alike_vls_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 5500.0,
+          "shotFreq": 4.2,
+          "reloadTime": 12.0,
+          "rocketsSalvo": 4,
+          "distToLive": 10000.0,
+          "gunsCount": 1,
+          "caliber": 340.0,
+          "ammoCount": 400,
+          "isBeltAmmo": false
+        },
+        "27mm_rheinmetall_mlg27_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 15.0,
+          "shotFreq": 28.33,
+          "aimMaxDist": 3500.0,
+          "gunsCount": 2,
+          "caliber": 27.0,
+          "ammoCount": 1800,
+          "isBeltAmmo": true
+        },
+        "countermeasure_launcher_ship": {
+          "wtype": "ircm",
+          "damage": 15.0,
+          "shotFreq": 0.066,
+          "cmLiveTime": 4.0,
+          "gunsCount": 6,
+          "caliber": 130.0,
+          "ammoCount": 600,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "uk_destroyer_rckt_type45": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 60,
+    "tierGroup": 8,
+    "tags": {
+      "country_britain": true,
+      "type_destroyer": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 190,
+      "shipCrewMin": 40,
+      "shipCrewRating": 3.22697,
+      "maxSpeed": 16.38,
+      "turningTime": 25,
+      "asmCaptureDuration": 4.0,
+      "ecmType": "captureBlocker",
+      "ecmDuration": 17.0,
+      "mainWeaponCaliber": 114.0,
+      "weapons": {
+        "114mm_50_qf_mk8_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 400.0,
+          "shotFreq": 0.263,
+          "gunsCount": 1,
+          "caliber": 114.0,
+          "ammoCount": 300,
+          "isBeltAmmo": false
+        },
+        "30mm_Bushmaster_2_Mk_44_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 23.0,
+          "shotFreq": 3.334,
+          "aimMaxDist": 3500.0,
+          "gunsCount": 2,
+          "caliber": 30.0,
+          "ammoCount": 900,
+          "isBeltAmmo": true
+        },
+        "340mm_rgm_84_alike_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 9500.0,
+          "shotFreq": 4.2,
+          "reloadTime": 15.0,
+          "rocketsSalvo": 4,
+          "distToLive": 10000.0,
+          "gunsCount": 1,
+          "caliber": 340.0,
+          "ammoCount": 400,
+          "isBeltAmmo": false
+        },
+        "180mm_aster_15_alike_rocket_naval_bullet": {
+          "wtype": "rockets",
+          "damage": 3500.0,
+          "shotFreq": 4.2,
+          "reloadTime": 12.0,
+          "rocketsSalvo": 4,
+          "distToLive": 10000.0,
+          "gunsCount": 1,
+          "caliber": 180.0,
+          "ammoCount": 400,
+          "isBeltAmmo": false
+        },
+        "countermeasure_launcher_ship": {
+          "wtype": "ircm",
+          "damage": 15.0,
+          "shotFreq": 0.066,
+          "cmLiveTime": 4.0,
+          "gunsCount": 6,
+          "caliber": 130.0,
+          "ammoCount": 600,
           "isBeltAmmo": false
         }
       }
@@ -42059,18 +42783,15 @@
       },
       "37mm_M3_user_cannon_for_M6A1": {
         "default": {
-          "icon": "hud_ammo_ap1_he0",
-          "isHidden": true
+          "icon": "hud_ammo_ap1_he0"
         },
         "37mm_usa_m3_HE": {
           "icon": "hud_ammo_he",
-          "isHE": true,
-          "isHidden": true
+          "isHE": true
         },
         "37mm_usa_m3_APC": {
           "icon": "hud_ammo_ap2_he0",
-          "reqLevel": 11,
-          "isHidden": true
+          "reqLevel": 11
         }
       }
     },
@@ -44007,13 +44728,11 @@
       "76mm_3inch_howitzer_MkI_user_cannon": {
         "default": {
           "icon": "hud_ammo_he",
-          "isHE": true,
-          "isHidden": true
+          "isHE": true
         },
         "76mm_britain_howitzer_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
-          "maxCount": 2,
-          "isHidden": true
+          "maxCount": 2
         }
       }
     },
@@ -44523,7 +45242,7 @@
         "77mm_QQF_Mk_II_L50_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 76.2,
-          "armorPower": 136.893,
+          "armorPower": 144.975,
           "reloadTime": 5.88235,
           "gunnerTurretRotationSpeed": 15.0,
           "isBeltAmmo": false
@@ -44862,7 +45581,7 @@
         "77mm_QQF_Mk_II_L50_comet_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 76.2,
-          "armorPower": 216.0,
+          "armorPower": 217.155,
           "reloadTime": 7.40741,
           "gunnerTurretRotationSpeed": 15.0,
           "isBeltAmmo": false
@@ -47358,7 +48077,7 @@
         "84mm_QQF_20pdr_Mk_I_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 83.4,
-          "armorPower": 232.624,
+          "armorPower": 239.141,
           "reloadTime": 6.25,
           "gunnerTurretRotationSpeed": 18.0,
           "isBeltAmmo": false
@@ -47511,8 +48230,7 @@
       },
       "103mm_MILAN_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     },
@@ -50051,8 +50769,7 @@
       },
       "103mm_milan_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     },
@@ -50531,8 +51248,7 @@
       },
       "127mm_TOW_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     },
@@ -50828,7 +51544,7 @@
         "100mm_D10T2S_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 100.0,
-          "armorPower": 298.0,
+          "armorPower": 336.249,
           "reloadTime": 7.49625,
           "gunnerTurretRotationSpeed": 15.0,
           "isBeltAmmo": false
@@ -51706,17 +52422,14 @@
       },
       "37mm_M3_user_cannon_for_M6A1": {
         "37mm_usa_m3_APC": {
-          "icon": "hud_ammo_ap2_he0",
-          "isHidden": true
+          "icon": "hud_ammo_ap2_he0"
         },
         "default": {
-          "icon": "hud_ammo_ap1_he0",
-          "isHidden": true
+          "icon": "hud_ammo_ap1_he0"
         },
         "37mm_usa_m3_HE": {
           "isHE": true,
-          "icon": "hud_ammo_he",
-          "isHidden": true
+          "icon": "hud_ammo_he"
         }
       }
     },
@@ -51860,8 +52573,7 @@
       "110mm_M8_rocket_launcher": {
         "default": {
           "image": "rocket_20kg_short",
-          "icon": "hud_he_rocket",
-          "isHidden": true
+          "icon": "hud_he_rocket"
         }
       }
     },
@@ -52599,22 +53311,18 @@
       },
       "75mm_KwK44_L36_user_cannon": {
         "default": {
-          "icon": "hud_ammo_heat",
-          "isHidden": true
+          "icon": "hud_ammo_heat"
         },
         "75mm_ger_kwk44_HE": {
           "icon": "hud_ammo_he",
-          "isHE": true,
-          "isHidden": true
+          "isHE": true
         },
         "75mm_ger_kwk44_HEAT": {
-          "icon": "hud_ammo_heat",
-          "isHidden": true
+          "icon": "hud_ammo_heat"
         },
         "75mm_ger_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
-          "maxCount": 2,
-          "isHidden": true
+          "maxCount": 2
         }
       }
     },
@@ -53344,6 +54052,14 @@
           "icon": "hud_ammo_he",
           "isHE": true
         },
+        "105mm_china_HE_VT": {
+          "icon": "hud_ammo_he3_vt",
+          "reqLevel": 3
+        },
+        "105mm_SAP": {
+          "icon": "hud_ammo_ap1_he1",
+          "reqLevel": 3
+        },
         "105mm_china_APDS_FS": {
           "icon": "hud_ammo_apfsds",
           "reqLevel": 3
@@ -53412,6 +54128,10 @@
         "105mm_TYPE83_HESH": {
           "icon": "hud_ammo_he",
           "isHE": true
+        },
+        "105mm_SAP": {
+          "icon": "hud_ammo_ap1_he1",
+          "reqLevel": 8
         },
         "105mm_china_APDS_FS": {
           "icon": "hud_ammo_apfsds",
@@ -54602,7 +55322,7 @@
         "84mm_QQF_20pdr_Mk_I_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 83.4,
-          "armorPower": 232.624,
+          "armorPower": 239.141,
           "reloadTime": 6.25,
           "gunnerTurretRotationSpeed": 18.0,
           "isBeltAmmo": false
@@ -54722,7 +55442,7 @@
         "120mm_QQF_Tk_L1A1_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 120.0,
-          "armorPower": 487.879,
+          "armorPower": 502.248,
           "reloadTime": 14.9254,
           "gunnerTurretRotationSpeed": 18.0,
           "isBeltAmmo": false
@@ -56379,7 +57099,7 @@
         "120mm_OBL_Tk_L11_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 120.0,
-          "armorPower": 315.0,
+          "armorPower": 298.301,
           "reloadTime": 7.46269,
           "gunnerTurretRotationSpeed": 22.5,
           "isBeltAmmo": false
@@ -56452,7 +57172,7 @@
         "120mm_QQF_Tk_L1A1_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 120.0,
-          "armorPower": 487.879,
+          "armorPower": 502.248,
           "reloadTime": 14.9254,
           "gunnerTurretRotationSpeed": 16.3,
           "isBeltAmmo": false
@@ -57925,8 +58645,7 @@
       },
       "136mm_HOT_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     },
@@ -58444,7 +59163,7 @@
         "120mm_OBL_Tk_L11_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 120.0,
-          "armorPower": 315.0,
+          "armorPower": 298.301,
           "reloadTime": 7.46269,
           "gunnerTurretRotationSpeed": 22.5,
           "isBeltAmmo": false
@@ -59109,8 +59828,7 @@
       },
       "125mm_9M113_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     },
@@ -61642,16 +62360,13 @@
       },
       "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap2_he2"
         },
         "152mm_us_tow_2a": {
-          "icon": "hud_ammo_atgm_tandem_ap3_he3",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_tandem_ap3_he3"
         },
         "152mm_us_tow_2": {
-          "icon": "hud_ammo_atgm_ap2_he2",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     }
@@ -61924,12 +62639,10 @@
       },
       "152mm_Type_79_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap2_he2"
         },
         "152mm_jp_type_79_ASM": {
-          "icon": "hud_ammo_atgm_ap2_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_vt_fuze_ap1_he1"
         }
       }
     }
@@ -62531,8 +63244,7 @@
       "158mm_NB_Wf_41_rocket_launcher": {
         "default": {
           "image": "rocket_20kg_short",
-          "icon": "hud_he_rocket",
-          "isHidden": true
+          "icon": "hud_he_rocket"
         }
       }
     }
@@ -62932,8 +63644,7 @@
       },
       "125mm_9M113_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     }
@@ -63148,8 +63859,7 @@
       },
       "70mm_Hydra_70_magach_user_cannon": {
         "default": {
-          "icon": "hud_ammo_heat",
-          "isHidden": true
+          "icon": "hud_ammo_heat"
         }
       }
     }
@@ -63589,8 +64299,7 @@
       },
       "120mm_302_atgm_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     }
@@ -63967,12 +64676,10 @@
       },
       "127mm_bgm_71_tow_begleitpanzer_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he2",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he2"
         },
         "127mm_us_itow": {
-          "icon": "hud_ammo_atgm_ap2_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap2_he1"
         }
       }
     },
@@ -64441,7 +65148,7 @@
         "84mm_QQF_20pdr_Mk_I_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 83.4,
-          "armorPower": 232.624,
+          "armorPower": 239.141,
           "reloadTime": 6.25,
           "gunnerTurretRotationSpeed": 20.0,
           "isBeltAmmo": false
@@ -65013,16 +65720,13 @@
       },
       "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap2_he2",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap2_he2"
         },
         "152mm_us_tow_2": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         },
         "152mm_us_tow_2a": {
-          "icon": "hud_ammo_atgm_tandem_ap3_he3",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_tandem_ap3_he3"
         }
       }
     }
@@ -65554,16 +66258,13 @@
       },
       "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap2_he2"
         },
         "152mm_us_tow_2a": {
-          "icon": "hud_ammo_atgm_tandem_ap3_he3",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_tandem_ap3_he3"
         },
         "152mm_us_tow_2": {
-          "icon": "hud_ammo_atgm_ap2_he2",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     }
@@ -66359,12 +67060,10 @@
       },
       "152mm_9M133_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_tandem_ap2_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_tandem_ap2_he1"
         },
         "152mm_9M133FM_3_ATGM": {
-          "icon": "hud_ammo_atgm_he_ap1_he2",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_he_ap1_he2"
         }
       }
     }
@@ -66605,8 +67304,7 @@
       },
       "127mm_TOW_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     },
@@ -67527,12 +68225,10 @@
       },
       "37mm_M3_user_cannon_for_M6A1": {
         "37mm_usa_m3_APC": {
-          "icon": "hud_ammo_ap2_he0",
-          "isHidden": true
+          "icon": "hud_ammo_ap2_he0"
         },
         "default": {
-          "icon": "hud_ammo_ap1_he0",
-          "isHidden": true
+          "icon": "hud_ammo_ap1_he0"
         }
       }
     },
@@ -67920,19 +68616,16 @@
         }
       },
       "100mm_2a70_zbd_user_cannon": {
-        "100mm_9m117": {
-          "icon": "hud_ammo_atgm_tandem_ap1_he1",
-          "isHidden": true
-        },
         "default": {
           "isHE": true,
-          "icon": "hud_ammo_he",
-          "isHidden": true
+          "icon": "hud_ammo_he"
         },
         "100mm_3of70": {
           "isHE": true,
-          "icon": "hud_ammo_he",
-          "isHidden": true
+          "icon": "hud_ammo_he"
+        },
+        "100mm_9m117": {
+          "icon": "hud_ammo_atgm_tandem_ap1_he1"
         }
       }
     }
@@ -68316,7 +69009,7 @@
         "84mm_QQF_20pdr_Mk_I_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 83.4,
-          "armorPower": 232.624,
+          "armorPower": 239.141,
           "reloadTime": 6.25,
           "gunnerTurretRotationSpeed": 20.0,
           "isBeltAmmo": false
@@ -69507,11 +70200,11 @@
           "gunnerTurretRotationSpeed": 6.0,
           "isBeltAmmo": false
         },
-        "15mm_MG151_user_cannon": {
+        "20mm_MG151_20_user_cannon": {
           "wtype": "machinegun",
-          "caliber": 15.0,
-          "armorPower": 14.4056,
-          "reloadTime": 0.0857192,
+          "caliber": 20.0,
+          "armorPower": 14.1371,
+          "reloadTime": 0.0857118,
           "gunnerTurretRotationSpeed": 30.0,
           "isBeltAmmo": true
         }
@@ -69730,7 +70423,7 @@
         "120mm_OBL_Tk_L11_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 120.0,
-          "armorPower": 315.0,
+          "armorPower": 298.301,
           "reloadTime": 7.46269,
           "gunnerTurretRotationSpeed": 22.5,
           "isBeltAmmo": false
@@ -69903,8 +70596,7 @@
       },
       "115mm_MILAN_2_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     }
@@ -70347,16 +71039,13 @@
       },
       "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap2_he2"
         },
         "152mm_us_tow_2a": {
-          "icon": "hud_ammo_atgm_tandem_ap3_he3",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_tandem_ap3_he3"
         },
         "152mm_us_tow_2": {
-          "icon": "hud_ammo_atgm_ap2_he2",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     }
@@ -70516,7 +71205,7 @@
         "100mm_D54TS_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 100.0,
-          "armorPower": 298.0,
+          "armorPower": 378.991,
           "reloadTime": 8.54701,
           "gunnerTurretRotationSpeed": 20.0,
           "isBeltAmmo": false
@@ -71457,8 +72146,7 @@
       },
       "150mm_Rbs_56_BILL_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     }
@@ -71554,7 +72242,7 @@
           "caliber": 81.0,
           "armorPower": 330.0,
           "reloadTime": 0.4,
-          "gunnerTurretRotationSpeed": 0.0,
+          "gunnerTurretRotationSpeed": 20.0,
           "isBeltAmmo": false
         }
       }
@@ -71764,8 +72452,7 @@
       },
       "103mm_milan_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     }
@@ -71800,7 +72487,7 @@
         "84mm_QQF_20pdr_Mk_I_fume_extractor_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 83.4,
-          "armorPower": 232.624,
+          "armorPower": 239.141,
           "reloadTime": 6.25,
           "gunnerTurretRotationSpeed": 20.0,
           "isBeltAmmo": false
@@ -72203,8 +72890,7 @@
       },
       "127mm_TOW_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     },
@@ -72370,8 +73056,7 @@
       },
       "250kg_TT_rocket_launcher": {
         "default": {
-          "icon": "hud_he_rocket",
-          "isHidden": true
+          "icon": "hud_he_rocket"
         }
       }
     }
@@ -73177,7 +73862,7 @@
         "84mm_kan_strv81_user_cannon": {
           "wtype": "mainCannon",
           "caliber": 83.4,
-          "armorPower": 232.624,
+          "armorPower": 239.141,
           "reloadTime": 6.25,
           "gunnerTurretRotationSpeed": 20.0,
           "isBeltAmmo": false
@@ -73220,8 +73905,7 @@
       },
       "164mm_s11_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         }
       }
     }
@@ -73859,16 +74543,13 @@
       },
       "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap2_he2",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap2_he2"
         },
         "152mm_us_tow_2": {
-          "icon": "hud_ammo_atgm_ap1_he1",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_ap1_he1"
         },
         "152mm_us_tow_2a": {
-          "icon": "hud_ammo_atgm_tandem_ap3_he3",
-          "isHidden": true
+          "icon": "hud_ammo_atgm_tandem_ap3_he3"
         }
       }
     }
@@ -74685,6 +75366,1073 @@
         "57mm_ussr_HE": {
           "isHE": true,
           "icon": "hud_ammo_he"
+        }
+      }
+    }
+  },
+  "us_m1a1_hc_abrams": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_medium_tank": true,
+      "has_aps": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 120.0,
+      "armorThicknessFront": [
+        0.7,
+        0.05,
+        0.25
+      ],
+      "armorThicknessSide": [
+        0.1,
+        0.05,
+        0.85
+      ],
+      "crew": 4,
+      "mass": 61230.0,
+      "maxSpeedForward": 18.9613,
+      "maxSpeedBackward": 10.6029,
+      "powerToWeightRatio": 24.8081,
+      "weapons": {
+        "120mm_M256_M1A2_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 120.0,
+          "armorPower": 480.0,
+          "reloadTime": 5.0,
+          "gunnerTurretRotationSpeed": 40.0,
+          "isBeltAmmo": false
+        },
+        "12_7mm_M2_HB_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 23.3753,
+          "reloadTime": 0.104167,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        },
+        "7_62mm_M240_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.0638162,
+          "gunnerTurretRotationSpeed": 18.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "120mm_M256_M1A2_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "120mm_DM_HEAT_FS": {
+          "icon": "hud_ammo_heat"
+        },
+        "120mm_NATO_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "120mm_M829A_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "120mm_M908_HE_OR": {
+          "icon": "hud_ammo_he_or_tank"
+        }
+      }
+    }
+  },
+  "us_m1_ip_abrams": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 105.0,
+      "armorThicknessFront": [
+        0.7,
+        0.05,
+        0.25
+      ],
+      "armorThicknessSide": [
+        0.1,
+        0.05,
+        0.85
+      ],
+      "crew": 4,
+      "mass": 56800.0,
+      "maxSpeedForward": 18.9613,
+      "maxSpeedBackward": 10.6029,
+      "powerToWeightRatio": 26.743,
+      "weapons": {
+        "105mm_M68A1_IP_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 105.0,
+          "armorPower": 400.0,
+          "reloadTime": 5.0,
+          "gunnerTurretRotationSpeed": 40.0,
+          "isBeltAmmo": false
+        },
+        "12_7mm_M2_HB_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 23.3753,
+          "reloadTime": 0.104167,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        },
+        "7_62mm_M240_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.0638162,
+          "gunnerTurretRotationSpeed": 18.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "105mm_M68A1_IP_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "105mm_usa_HESH": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "105mm_NATO_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "105mm_us_M416_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        },
+        "105mm_usa_M833_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        }
+      }
+    }
+  },
+  "us_m1128_mgs_reskin": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 105.0,
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 3,
+      "mass": 18700.0,
+      "maxSpeedForward": 26.8044,
+      "maxSpeedBackward": 3.46379,
+      "powerToWeightRatio": 18.7166,
+      "weapons": {
+        "105mm_M68A1_E8_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 105.0,
+          "armorPower": 400.0,
+          "reloadTime": 7.49625,
+          "gunnerTurretRotationSpeed": 40.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_M240_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.0638162,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        },
+        "12_7mm_M2_HB_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 23.3753,
+          "reloadTime": 0.104167,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "105mm_M68A1_E8_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "105mm_NATO_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "105mm_usa_M900_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        }
+      }
+    }
+  },
+  "us_m247_reskin6": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_spaa": true
+    },
+    "bullets": {
+      "40mm_M266_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "40mm_SGT_YORK_AP": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "40mm_SGT_YORK_HE": {
+          "icon": "hud_ammo_bullet_he",
+          "reqLevel": 18
+        },
+        "40mm_SGT_YORK_HE_prox": {
+          "icon": "hud_ammo_bullet_he_vt",
+          "reqLevel": 21
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 40.0,
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 3,
+      "mass": 49350.0,
+      "maxSpeedForward": 13.3644,
+      "maxSpeedBackward": 2.22093,
+      "powerToWeightRatio": 15.1976,
+      "weapons": {
+        "40mm_M266_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 40.0,
+          "armorPower": 21.7547,
+          "reloadTime": 0.2,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "germ_vt_1_2": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "operatorCountry": "country_germany_modern",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_germany": true,
+      "tank": true,
+      "type_tank_destroyer": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 120.0,
+      "mainWeaponType": "auxCannon",
+      "armorThicknessFront": [
+        0.05,
+        0.0,
+        0.95
+      ],
+      "armorThicknessSide": [
+        0.1,
+        0.0,
+        0.9
+      ],
+      "crew": 3,
+      "mass": 43500.0,
+      "maxSpeedForward": 19.4667,
+      "maxSpeedBackward": 11.1934,
+      "powerToWeightRatio": 50.5747,
+      "weapons": {
+        "120mm_Rheinmetall_L44_user_cannon": {
+          "wtype": "auxCannon",
+          "caliber": 120.0,
+          "armorPower": 480.0,
+          "reloadTime": 7.46269,
+          "gunnerTurretRotationSpeed": 60.0,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {
+      "120mm_Rheinmetall_L44_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "120mm_NATO_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "120mm_DM_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        }
+      }
+    }
+  },
+  "germ_leopard_I_reskin3": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "operatorCountry": "country_germany_modern",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_germany": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 105.0,
+      "armorThicknessFront": [
+        0.2,
+        0.2,
+        0.6
+      ],
+      "armorThicknessSide": [
+        0.05,
+        0.0,
+        0.95
+      ],
+      "crew": 4,
+      "mass": 40000.0,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 6.96214,
+      "powerToWeightRatio": 20.75,
+      "weapons": {
+        "105mm_L7A3_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 105.0,
+          "armorPower": 350.485,
+          "reloadTime": 6.66667,
+          "gunnerTurretRotationSpeed": 24.0,
+          "isBeltAmmo": false
+        },
+        "7_92mm_MG3_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.05,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "105mm_L7A3_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_apds"
+        },
+        "105mm_usa_HESH": {
+          "icon": "hud_ammo_he",
+          "isHE": true
+        },
+        "105mm_usa_HEAT_FS": {
+          "icon": "hud_ammo_heat"
+        }
+      }
+    }
+  },
+  "germ_marder_df_105": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "operatorCountry": "country_germany_modern",
+    "tags": {
+      "country_germany": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 105.0,
+      "armorThicknessFront": [
+        0.05,
+        0.0,
+        0.95
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 3,
+      "mass": 30000.0,
+      "maxSpeedForward": 20.7391,
+      "maxSpeedBackward": 20.7391,
+      "powerToWeightRatio": 24.0,
+      "weapons": {
+        "105mm_CN_105_57_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 105.0,
+          "armorPower": 400.0,
+          "reloadTime": 5.0,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_FN_MAG60_40_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 24.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "105mm_CN_105_57_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "105mm_fr_CN105_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "105mm_fr_CN105_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    }
+  },
+  "germ_marder_1a1_reskin": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "operatorCountry": "country_germany_modern",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_germany": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
+    },
+    "bullets": {
+      "20mm_Rh_202_Marder_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "20mm_rh202_AP": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "20mm_rh202_HE": {
+          "icon": "hud_ammo_bullet_he",
+          "reqLevel": 18
+        }
+      },
+      "103mm_MILAN_rocket_launcher": {
+        "default": {
+          "icon": "hud_ammo_atgm_ap1_he1"
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 20.0,
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 3,
+      "mass": 29200.0,
+      "maxSpeedForward": 20.9026,
+      "maxSpeedBackward": 20.9026,
+      "powerToWeightRatio": 20.5479,
+      "weapons": {
+        "20mm_Rh_202_Marder_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 20.0,
+          "armorPower": 30.963,
+          "reloadTime": 0.0749963,
+          "gunnerTurretRotationSpeed": 60.0,
+          "isBeltAmmo": true
+        },
+        "7_92mm_MG3_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.05,
+          "gunnerTurretRotationSpeed": 40.0,
+          "isBeltAmmo": true
+        },
+        "103mm_MILAN_rocket_launcher": {
+          "wtype": "rockets",
+          "caliber": 103.0,
+          "armorPower": 530.0,
+          "reloadTime": 12.0048,
+          "gunnerTurretRotationSpeed": 24.0,
+          "isBeltAmmo": false
+        }
+      }
+    }
+  },
+  "it_oto_r3_106sr": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_italy": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 106.0,
+      "mainWeaponType": "auxCannon",
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 4,
+      "mass": 3450.0,
+      "maxSpeedForward": 31.9291,
+      "maxSpeedBackward": 8.05168,
+      "powerToWeightRatio": 27.5362,
+      "weapons": {
+        "106mm_106_SR_user_cannon": {
+          "wtype": "auxCannon",
+          "caliber": 106.0,
+          "armorPower": 433.0,
+          "reloadTime": 10.0,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": false
+        },
+        "12_7mm_M80_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 2.0,
+          "reloadTime": 0.2,
+          "gunnerTurretRotationSpeed": 18.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "106mm_106_SR_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "106mm_M361A1_HESH": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        }
+      }
+    }
+  },
+  "it_c13_t90": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_italy_tft",
+    "tags": {
+      "country_italy": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 90.0,
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 3,
+      "mass": 14250.0,
+      "maxSpeedForward": 19.4957,
+      "maxSpeedBackward": 3.9286,
+      "powerToWeightRatio": 25.2632,
+      "weapons": {
+        "90mm_Cockerill_Mk_3_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 90.0,
+          "armorPower": 250.0,
+          "reloadTime": 7.46269,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_FN_MAG60_40_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "90mm_Cockerill_Mk_3_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "90mm_cockerill_HESH": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "90mm_cockerill_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    }
+  },
+  "it_btr_80a_hungary": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_hungary": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 30.0,
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 3,
+      "mass": 14550.0,
+      "maxSpeedForward": 24.1744,
+      "maxSpeedBackward": 3.27567,
+      "powerToWeightRatio": 17.8694,
+      "weapons": {
+        "30mm_2A72_BTR_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 30.0,
+          "armorPower": 35.1221,
+          "reloadTime": 0.181818,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        },
+        "7_62mm_PKT_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 4.825,
+          "reloadTime": 0.0857633,
+          "gunnerTurretRotationSpeed": 5.5,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "30mm_2A72_BTR_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "30mm_2a72_BTR_HE": {
+          "icon": "hud_ammo_bullet_he"
+        },
+        "30mm_2a72_BTR_AP": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "30mm_2a42_APDS": {
+          "icon": "hud_ammo_bullet_ap"
+        }
+      }
+    }
+  },
+  "it_zsu_57_2": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_italy_tft",
+    "tags": {
+      "country_hungary": true,
+      "tank": true,
+      "type_spaa": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 57.0,
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.05,
+        0.0,
+        0.95
+      ],
+      "crew": 6,
+      "mass": 28000.0,
+      "maxSpeedForward": 13.8984,
+      "maxSpeedBackward": 2.08476,
+      "powerToWeightRatio": 18.5714,
+      "weapons": {
+        "57mm_S_68_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 57.0,
+          "armorPower": 78.3726,
+          "reloadTime": 0.5,
+          "gunnerTurretRotationSpeed": 60.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "57mm_S_68_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "57mm_ussr_AP": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "57mm_ussr_HE": {
+          "icon": "hud_ammo_bullet_he"
+        },
+        "57mm_ussr_APCBC": {
+          "icon": "hud_ammo_bullet_ap"
+        }
+      }
+    }
+  },
+  "cn_al_khalid_1": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_china_tft",
+    "tags": {
+      "country_china": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 125.0,
+      "armorThicknessFront": [
+        0.65,
+        0.0,
+        0.35
+      ],
+      "armorThicknessSide": [
+        0.15,
+        0.0,
+        0.85
+      ],
+      "crew": 3,
+      "mass": 48000.0,
+      "maxSpeedForward": 19.4864,
+      "maxSpeedBackward": 8.80143,
+      "powerToWeightRatio": 25.0,
+      "weapons": {
+        "125mm_ZPT_98_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 125.0,
+          "armorPower": 480.0,
+          "reloadTime": 7.10227,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_Type86_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 4.825,
+          "reloadTime": 0.0857633,
+          "gunnerTurretRotationSpeed": 7.0,
+          "isBeltAmmo": true
+        },
+        "12_7mm_QJC_88A_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 17.75,
+          "reloadTime": 0.0857192,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "125mm_ZPT_98_user_cannon": {
+        "125mm_china_DTW_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "125mm_china_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "125mm_china_HE_VT": {
+          "icon": "hud_ammo_he3_vt"
+        },
+        "125mm_china_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        }
+      }
+    }
+  },
+  "cn_ztz_99_w": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_china_tft",
+    "tags": {
+      "country_china": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 125.0,
+      "armorThicknessFront": [
+        0.65,
+        0.0,
+        0.35
+      ],
+      "armorThicknessSide": [
+        0.15,
+        0.05,
+        0.8
+      ],
+      "crew": 3,
+      "mass": 51000.0,
+      "maxSpeedForward": 18.0647,
+      "maxSpeedBackward": 1.27512,
+      "powerToWeightRatio": 23.5294,
+      "weapons": {
+        "125mm_ZPT_98_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 125.0,
+          "armorPower": 480.0,
+          "reloadTime": 7.10227,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_Type86_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 4.825,
+          "reloadTime": 0.0857633,
+          "gunnerTurretRotationSpeed": 7.0,
+          "isBeltAmmo": true
+        },
+        "12_7mm_QJC_88A_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 17.75,
+          "reloadTime": 0.0857192,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "125mm_ZPT_98_user_cannon": {
+        "125mm_china_DTW_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "125mm_china_ATGM": {
+          "icon": "hud_ammo_atgm_tandem_ap1_he1"
+        },
+        "125mm_china_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "125mm_china_HE_VT": {
+          "icon": "hud_ammo_he3_vt"
+        },
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "125mm_china_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        }
+      }
+    }
+  },
+  "cn_zbd_04a_reskin": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_china_tft",
+    "tags": {
+      "country_china": true,
+      "tank": true,
+      "type_light_tank": true,
+      "scout": true,
+      "canRepairAnyAlly": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 30.0,
+      "armorThicknessFront": [
+        0.1,
+        0.0,
+        0.9
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 3,
+      "mass": 22900.0,
+      "maxSpeedForward": 19.444,
+      "maxSpeedBackward": 4.76928,
+      "powerToWeightRatio": 26.2009,
+      "weapons": {
+        "30mm_zpt_99_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 30.0,
+          "armorPower": 44.9248,
+          "reloadTime": 0.181818,
+          "gunnerTurretRotationSpeed": 35.0,
+          "isBeltAmmo": true
+        },
+        "100mm_2a70_zbd_user_cannon": {
+          "wtype": "auxCannon",
+          "caliber": 100.0,
+          "armorPower": 31.026,
+          "reloadTime": 4.0,
+          "gunnerTurretRotationSpeed": 0.0,
+          "isBeltAmmo": false
+        },
+        "5_8mm_QJT_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 5.8,
+          "armorPower": 6.5,
+          "reloadTime": 0.0749963,
+          "gunnerTurretRotationSpeed": 0.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "30mm_zpt_99_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "30mm_2a42_HE": {
+          "maxCount": 1,
+          "icon": "hud_ammo_bullet_he"
+        },
+        "30mm_2a42_APDS": {
+          "maxCount": 1,
+          "icon": "hud_ammo_bullet_ap",
+          "reqLevel": 13
+        },
+        "30mm_2a42_APDS_FS": {
+          "maxCount": 1,
+          "icon": "hud_ammo_bullet_ap",
+          "reqLevel": 16
+        }
+      },
+      "100mm_2a70_zbd_user_cannon": {
+        "default": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "100mm_3of70": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
+        "100mm_9m117": {
+          "icon": "hud_ammo_atgm_tandem_ap1_he1"
+        }
+      }
+    }
+  },
+  "cn_pgz_09_reskin4": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_china_tft",
+    "tags": {
+      "country_china": true,
+      "tank": true,
+      "type_spaa": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 35.0,
+      "armorThicknessFront": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "armorThicknessSide": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "crew": 3,
+      "mass": 38000.0,
+      "maxSpeedForward": 18.1016,
+      "maxSpeedBackward": 4.21948,
+      "powerToWeightRatio": 21.0526,
+      "weapons": {
+        "35mm_PG_99_35_2_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 35.0,
+          "armorPower": 36.8965,
+          "reloadTime": 0.10917,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "35mm_PG_99_35_2_user_cannon": {
+        "default": {
+          "icon": "hud_ammo_bullet_ap_he"
+        },
+        "35mm_kda_HE": {
+          "icon": "hud_ammo_bullet_he",
+          "reqLevel": 18
+        },
+        "35mm_kda_APHEI": {
+          "icon": "hud_ammo_bullet_ap"
+        },
+        "35mm_kda_APDS": {
+          "icon": "hud_ammo_bullet_ap",
+          "reqLevel": 21,
+          "isExternalAmmo": "true"
         }
       }
     }

@@ -59,7 +59,7 @@ let mkNotifyBg = @(notify, rowIdx, children) {
 }
 
 let mkTextArea = @(text, ovr = {}) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = 0xFFE0E0E0
@@ -103,7 +103,7 @@ function mkPlayerNotify(notify, rowIdx, addChild = null) {
 
 let mkInviteFromPlayer = @(notify, rowIdx) mkPlayerNotify(notify, rowIdx,
   {
-    size = [SIZE_TO_CONTENT, flex()]
+    size = FLEX_V
     flow = FLOW_HORIZONTAL
     gap
     children = [

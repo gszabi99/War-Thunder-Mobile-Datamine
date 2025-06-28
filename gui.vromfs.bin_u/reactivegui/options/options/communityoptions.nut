@@ -118,7 +118,7 @@ function mkFeedBackButtons(item){
           image = Picture($"{image}:{iconSize}:{iconSize}:P")
         }
         {
-          size = [hdpx(300), SIZE_TO_CONTENT]
+          size = const [hdpx(300), SIZE_TO_CONTENT]
           behavior = Behaviors.TextArea
           rendObj = ROBJ_TEXTAREA
           text

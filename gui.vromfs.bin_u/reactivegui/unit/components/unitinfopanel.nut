@@ -47,7 +47,7 @@ let mkText = @(override = {}) {
 }.__update(fontVeryTinyAccented, override)
 
 let mkTextArea = @(override = {}) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   behavior = Behaviors.TextArea
   color = textColor
   rendObj = ROBJ_TEXTAREA
@@ -85,7 +85,7 @@ let mkUnitTitleCtor = @(unitNameCtor) function(unit, override = {}, textOverride
         gap = hdpx(20)
         children = [
           {
-            size = [hdpx(90), hdpx(40)]
+            size = const [hdpx(90), hdpx(40)]
             rendObj = ROBJ_IMAGE
             keepAspect = KEEP_ASPECT_FIT
             vplace = ALIGN_BOTTOM
@@ -128,12 +128,12 @@ function mkStatRow(data, prevProgress) {
   let { header = null, value = null, progress = null,
     progressColor = null, uid = null, isMultiline = false, progressAttr = 0 } = data
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     gap = statsInsideGap
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         valign = ALIGN_BOTTOM
         children = [
           isMultiline ? mkTextArea({ text = header }) : mkText(setScrollStr(header))
@@ -191,7 +191,7 @@ let armorIconView = @(image) {
   image = Picture($"ui/gameuiskin#{image}.svg:{armorIconSize}:{armorIconSize}:P")
 }
 let iconsView = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_BOX
   flow = FLOW_HORIZONTAL
   halign = ALIGN_RIGHT
@@ -203,7 +203,7 @@ let iconsView = {
 }
 
 let mkArmorText = @(needLabels, id) {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     halign = ALIGN_LEFT
@@ -269,18 +269,18 @@ function mkArmorRow(id, percentValsP3, avgShellPenetration, width) {
   }
 
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     gap = statsInsideGap
     children = [
       mkArmorText(needLabels, id)
       !needLabels ? null : {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         padding = [ 0, progressBorderW ]
         children = cfg.map(@(v) v.labelElem)
       }
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         padding = progressBorderW
         rendObj = ROBJ_BOX
         fillColor = progressBgColor
@@ -325,7 +325,7 @@ function unitPriceBlock(unit) {
       margin = [statsGap, 0, 0, 0]
       flow = FLOW_HORIZONTAL
       children = [
-        mkText({ text = loc("unitsTree/purchasePrice"), size = [ flex(), SIZE_TO_CONTENT ] })
+        mkText({ text = loc("unitsTree/purchasePrice"), size = FLEX_H })
         mkCurrencyComp(price.get().price, price.get().currencyId, CS_COMMON.__merge({
           iconSize = bonusTinySize
           fontStyle = fontVeryTinyAccented
@@ -337,7 +337,7 @@ function unitPriceBlock(unit) {
 }
 
 let mkConsumableRow = @(id, value) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   valign = ALIGN_CENTER
   children = [
     mkText({ text = loc($"consumable/cost/{id}") })
@@ -378,7 +378,7 @@ function unitMRankBlock(mRank) {
       {
         rendObj = ROBJ_TEXT
         text = loc("attrib_section/mRank")
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
       }.__update(fontVeryTinyAccented)
       mkGradRank(mRank)
     ]
@@ -391,10 +391,10 @@ let unitRewardsBlock = @(unit, title) {
   size = [ statsWidth, hdpx(40) ]
   children = [
     {
-      margin = [ 0, hdpx(10), 0, 0 ]
+      margin = const [ 0, hdpx(10), 0, 0 ]
       rendObj = ROBJ_TEXT
       text = title
-      size = [ flex(), SIZE_TO_CONTENT ]
+      size = FLEX_H
       behavior = Behaviors.Marquee
       delay = defMarqueeDelay
       speed = hdpx(50)
@@ -409,14 +409,14 @@ let unitRewardsDailyBlock = @(unit, title, unitsGold) unit?.dailyGoldLimit == 0 
   size = [ statsWidth, hdpx(40) ]
   children =  [
     {
-      margin = [ 0, hdpx(10), 0, 0 ]
+      margin = const [ 0, hdpx(10), 0, 0 ]
       rendObj = ROBJ_TEXT
       text =  title
-      size = [ flex(), SIZE_TO_CONTENT ]
+      size = FLEX_H
       behavior = Behaviors.Marquee
       delay = defMarqueeDelay
       speed = hdpx(50)
-    }.__update(fontTiny)
+    }.__update(fontVeryTinyAccented)
     mkUnitDailyLimit(unit, unitsGold, {})
   ]
 }
@@ -471,7 +471,7 @@ let unitInfoPanel = @(ovr = {}, headerCtor = mkPlatoonOrUnitTitle, unit = hangar
       halign = ALIGN_RIGHT
       children = [
         unitHeaderBlock(unit.value, headerCtor)
-        { size = [0, hdpx(15)] }
+        { size = const [0, hdpx(15)] }
         unitMRankBlock(unit.value?.mRank)
         unitRewardsBlock(unit.value, loc("attrib_section/battleRewards"))
         unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
@@ -520,7 +520,7 @@ let unitInfoPanelFull = @(unit = hangarUnit, ovr = {}) function() {
 
   return {
     watch = [ unit, itemsCfgByCampaignOrdered, attrPresets ]
-    size = [SIZE_TO_CONTENT, flex()]
+    size = FLEX_V
     children = unit.value == null ? null
       : makeVertScroll(
           {
@@ -540,7 +540,7 @@ let unitInfoPanelFull = @(unit = hangarUnit, ovr = {}) function() {
               unitConsumablesBlock(unit.get(), itemsCfgByCampaignOrdered.get()?[unit.get()?.campaign] ?? [])
             ]
           },
-          { size = [SIZE_TO_CONTENT, flex()], isBarOutside = true })
+          { size = FLEX_V, isBarOutside = true })
   }.__update(ovr)
 }
 

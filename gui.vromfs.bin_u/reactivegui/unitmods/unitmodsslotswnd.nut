@@ -228,7 +228,7 @@ function mkSlotContent(idx) {
 let slotsKey = {}
 let slotsList = @(slots) {
   key = slotsKey
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   onAttach = scrollToSlot
   children = mkTabs(
     slots.slice(1) 
@@ -266,7 +266,7 @@ function beltsList(weapons, filter) {
   if (list.len() == 0)
     return null
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     children = mkTabs(list, curBeltsWeaponIdx, {}, setCurBeltsWeaponIdx)
   }
 }
@@ -285,7 +285,7 @@ let mkBlock = @(text, child) child == null ? null
           color = bgColor
           valign = ALIGN_CENTER
           children = {
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             text
@@ -342,7 +342,7 @@ let curBeltGunCount = Computed(@() curBeltWeapon.get() == null ? -1
   : equippedWeaponIdCount.get()?[curBeltWeapon.get().weaponId] ?? 0)
 let slotWeaponsBlock = @() {
   watch = [weaponsCount, beltsCount, curBeltGunCount]
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   flow = curBeltGunCount.get() == 0 ? null : FLOW_HORIZONTAL
   gap = weaponGap
   children = curBeltGunCount.get() == 0 ? notUsedCurGunInfo
@@ -431,7 +431,7 @@ let hasUnseenRewards = Computed(@() curUnit.get()?.name in unseenUnitLvlRewardsL
 let slotPresetButtons = @() {
   watch = [isNotAvailableForUse, curWeapon, curBelt, modsInProgress, curWeaponIsLocked, curWeaponReqLevel,
     equippedWeaponId, curWeapons, equippedBeltId, curUnit, isGamepad, hasUnseenRewards, curSlotIdx]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL

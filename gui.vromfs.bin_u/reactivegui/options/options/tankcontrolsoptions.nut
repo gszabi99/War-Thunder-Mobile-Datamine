@@ -1,17 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
+let { register_command } = require("console")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { 
   OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_SHOW_MOVE_DIRECTION_IN_SIGHT, OPT_ARMOR_PIERCING_FIXED,
-  OPT_AUTO_ZOOM_TANK, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_CAMERA_SENSE,
+  OPT_AUTO_ZOOM_TANK, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_CAMERA_SENSE, OPT_TANK_ALTERNATIVE_CONTROL_TYPE,
   OPT_CAMERA_SENSE_IN_ZOOM, OPT_CAMERA_SENSE_TANK, OPT_FREE_CAMERA_TANK,
   OPT_SHOW_RETICLE, OPT_HUD_TANK_SHOW_SCORE, OPT_SHOW_GRASS_IN_TANK_VISION, USEROPT_ENABLE_AUTO_HEALING, mkOptionValue, getOptValue
 } = require("%rGui/options/guiOptions.nut")
 let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle, set_enable_auto_healing, get_enable_auto_healing,
   set_auto_zoom, CAM_TYPE_NORMAL_TANK, CAM_TYPE_BINOCULAR_TANK, CAM_TYPE_FREE_TANK
 } = require("controlsOptions")
+let { has_option_tank_alternative_control } = require("%appGlobals/permissions.nut")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { sharedStats } = require("%appGlobals/pServer/campaign.nut")
-let {cameraSenseSlider} =  require("%rGui/options/options/controlsOptions.nut")
+let { sharedStats, abTests } = require("%appGlobals/pServer/campaign.nut")
+let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
 } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
 let { gearDownOnStopButtonList, currentGearDownOnStopButtonTouch, showGearDownControl
@@ -32,6 +35,26 @@ let tankMoveControlType = {
   list = tankMoveCtrlTypesList
   valToString = ctrlTypeToString
   openInfo = openChooseMovementControls
+}
+
+let isDebugTankAltControlType = hardPersistWatched("options.isDebugTankAltControlType", false)
+let tankAltControlTypeButtonList = [false, true]
+let tankAltControlTypeDefault = Computed(@()
+  (isDebugTankAltControlType.get() == ((abTests.get()?.tankAltControlType ?? "false") == "true"))
+    ? tankAltControlTypeButtonList[0]
+    : tankAltControlTypeButtonList[1])
+let currentTankAltControlTypeRaw = mkOptionValue(OPT_TANK_ALTERNATIVE_CONTROL_TYPE)
+let currentTankAltControlType = Computed(@()
+  validate(currentTankAltControlTypeRaw.get() ?? tankAltControlTypeDefault.get(), tankAltControlTypeButtonList))
+let tankAltControlType = {
+  locId = "options/tank_alternative_control_type"
+  ctrlType = OCT_LIST
+  value = currentTankAltControlType
+  setValue = @(v) currentTankAltControlTypeRaw(v)
+  onChangeValue = @(v) sendChange("tank_alternative_control_type", v)
+  list = tankAltControlTypeButtonList
+  valToString = @(v) loc(v ? "options/controlType/alternative" : "options/controlType/default")
+  visible = has_option_tank_alternative_control
 }
 
 let gearDownOnStopButtonTouch = {
@@ -183,6 +206,10 @@ let enableCrewAutoHealingType = {
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
 }
 
+register_command(function() {
+  currentTankAltControlTypeRaw(null)
+  isDebugTankAltControlType.set(!isDebugTankAltControlType.get())
+}, "debug.toggleAbTest.tankAltControlType")
 
 return {
   currentTargetTrackingType
@@ -190,6 +217,7 @@ return {
   hudScoreTank
   tankControlsOptions = [
     tankMoveControlType
+    tankAltControlType
     cameraSenseSlider(CAM_TYPE_NORMAL_TANK, "options/camera_sensitivity", OPT_CAMERA_SENSE_TANK, getOptValue(OPT_CAMERA_SENSE)?? 1.0)
     cameraSenseSlider(CAM_TYPE_FREE_TANK, "options/free_camera_sensitivity_tank", OPT_FREE_CAMERA_TANK, 2.0, 0.5, 15.5, 0.075)
     cameraSenseSlider(CAM_TYPE_BINOCULAR_TANK, "options/camera_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_TANK, getOptValue(OPT_CAMERA_SENSE_IN_ZOOM)?? 1.0)

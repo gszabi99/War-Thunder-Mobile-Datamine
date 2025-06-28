@@ -78,8 +78,8 @@ function buyPlatformGoodsExt(goodsOrId) {
     return
   }
   if (can_use_alternative_payment_ios_usa.get() && is_ios && listSpecialWndCountry.contains(getCountryCode())) {
-    let relatedGaijinId = campConfigs.get()?.allGoods[goodsOrId].relatedGaijinId
-    if(relatedGaijinId != ""){
+    let needShowAlternativePurchase = campConfigs.get()?.allGoods[goodsOrId].needShowAlternativePurchase
+    if(needShowAlternativePurchase){
       goodsToPaySpecialWnd.set(goodsOrId)
       return
     }

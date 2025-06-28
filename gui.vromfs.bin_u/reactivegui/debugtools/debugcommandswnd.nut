@@ -44,7 +44,7 @@ let wndUid = "debugCommandsWnd"
 let close = @() removeModalWindow(wndUid)
 
 registerHandler("sceenlogResult", @(res) screenlog(res?.error == null ? "SUCCESS!" : "ERROR"))
-let mkBtn = @(label, func) textButtonCommon(label, func, { ovr = { size = [flex(), hdpx(100)] } })
+let mkBtn = @(label, func) textButtonCommon(label, func, { ovr = { size = const [flex(), hdpx(100)] } })
 let withClose = @(action) function() {
   close()
   action()
@@ -56,7 +56,7 @@ function resetProfileWithStats() {
 }
 
 let infoTextOvr = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_LEFT,
   preformatted = FMT_KEEP_SPACES | FMT_NO_WRAP
 }.__update(fontTiny)
@@ -70,7 +70,7 @@ function showSortedTable(tbl) {
   return openMsgBox({
     uid = "debug_show_table"
     text = makeSideScroll(msgBoxText(text, infoTextOvr))
-    wndOvr = { size = [hdpx(1100), hdpx(1000)] }
+    wndOvr = { size = const [hdpx(1100), hdpx(1000)] }
     buttons = [
       { text = "COPY", cb = @() set_clipboard_text(text) }   
       { id = "ok", styleId = "PRIMARY", isDefault = true }   
@@ -125,7 +125,7 @@ let commandsList = [].extend(
           : $"cur = newbie {forceNewbieModeIdx.value}"
         return {
           watch = [curCampaign, forceNewbieModeIdx]
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           children = mkBtn($"Toggle newbie mode ({curMode})",
             function() {
               if (list == null) {
@@ -158,12 +158,12 @@ function mkCommandsList() {
     rows.top().resize(2, { size = flex() })
 
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     padding = gap
     gap
     children = rows.map(@(children) {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       gap
       children
@@ -185,7 +185,7 @@ function consoleExecute() {
 }
 
 let consoleTextInput = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   padding = [0, gap, hdpx(50), gap]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -216,7 +216,7 @@ return @() addModalWindow({
     onDetach = consoleClear
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_HORIZONTAL
         valign = ALIGN_TOP
         padding = gap

@@ -22,6 +22,7 @@ let { PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, PURCH_TYPE_GOODS_REROLL_SLOTS,
 } = require("%rGui/shop/bqPurchaseInfo.nut")
 let { getAdjustedPriceInfo } = require("%rGui/shop/goodsUtils.nut")
 let { GOLD } = require("%appGlobals/currenciesState.nut")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 
@@ -96,8 +97,12 @@ let needFreeRefreshSlots = keepref(Computed(function() {
       || shopGenSlotInProgress.get() == previewGoods.get()?.id
       || rerollCost.get() == null) 
     return false
-  return getDay(rewardSlots.get()?.time ?? 0, dayOffset.get()) != serverTimeDay.get()
-    || rewardSlots.get()?.isPurchased
+  let { time = 0, isPurchased = false, goods = [] } = rewardSlots.get()
+  return getDay(time, dayOffset.get()) != serverTimeDay.get()
+    || isPurchased
+    || (goods.len() > 0
+        && null == goods.findvalue(@(g)
+          (serverConfigs.get()?.allBlueprints[g[0].id].targetCount ?? 0) > (servProfile.get()?.blueprints[g[0].id] ?? 0)))
 }))
 
 selIndex.subscribe(function(_) {
@@ -123,8 +128,6 @@ function freeRefreshSlots() {
 }
 
 needFreeRefreshSlots.subscribe(@(_) deferOnce(freeRefreshSlots))
-
-rewardSlots.subscribe(@(_) selIndex.set(-1))
 
 let txt = @(text, ovr = {}) { rendObj = ROBJ_TEXT, text }.__update(fontSmallAccented, ovr)
 
@@ -181,7 +184,7 @@ function headerText() {
           : "\n\n".concat(description, loc("shop/hint/availableSlots", { slots = ", ".join(allLeftSlotNames) })), fontTinyAccented),
         { halign = ALIGN_RIGHT },
         {
-          size = [hdpx(52), hdpx(52)]
+          size = hdpx(52)
           fillColor = 0x80000000
           children = {
             rendObj = ROBJ_TEXT
@@ -241,14 +244,15 @@ let mkHightlightPlate = @(isSelected, rStyle) {
   ]
 }
 
-function mkSlot(slotIdx, reward, rStyle) {
+function mkSlot(reward, rStyle) {
   let size = getRewardPlateSize(reward.slots, rStyle)
   let stateFlags = Watched(0)
-  let isSelected = Computed(@() selIndex.get() == slotIdx)
+  let isSelected = Computed(@() selIndex.get() == reward.slotIdx)
   let unit = Computed(@() serverConfigs.value?.allUnits?[reward.id])
 
   return @() {
     watch = [isSelected, stateFlags, rewardSlots, unit, openedUnitFromTree]
+    key = unit
     size
     behavior = Behaviors.Button
     onElemState = @(v) rewardSlots.get()?.isPurchased ? null : stateFlags(v)
@@ -256,9 +260,9 @@ function mkSlot(slotIdx, reward, rStyle) {
         ? null
       : isSelected.get()
         ? unitDetailsWnd({ name = reward.id })
-      : selIndex.set(slotIdx)
+      : selIndex.set(reward.slotIdx)
     sound = rewardSlots.get()?.isPurchased ? {} : { click  = "click" }
-    onAttach = @() openedUnitFromTree.get() == unit.get()?.name ? selIndex.set(slotIdx) : null
+    onAttach = @() openedUnitFromTree.get() == unit.get()?.name ? selIndex.set(reward.slotIdx) : null
 
     children = [
       mkRewardPlateBg(reward, rStyle)
@@ -274,9 +278,8 @@ function mkSlot(slotIdx, reward, rStyle) {
   }
 }
 
-function fillRewardsByRows(goods, slotsInRowMax, style) {
+function fillRewardsByRows(rewards, slotsInRowMax, style) {
   let res = []
-  let rewards = goods.map(@(g) getRewardsViewInfo(g)[0])
   let totalSlots = rewards.reduce(@(tsRes, r) tsRes + r.slots, 0)
   let rowsCount = totalSlots / slotsInRowMax + ((totalSlots % slotsInRowMax) ? 1 : 0)
   if (rowsCount == 0)
@@ -284,13 +287,13 @@ function fillRewardsByRows(goods, slotsInRowMax, style) {
   let slotsInRowMin = totalSlots / rowsCount + ((totalSlots % rowsCount) ? 1 : 0)
 
   local curRowSlots = slotsInRowMax
-  foreach(slotIdx, r in rewards) {
+  foreach(r in rewards) {
     if (curRowSlots >= slotsInRowMin || curRowSlots + r.slots > slotsInRowMax) {
       res.append([])
       curRowSlots = 0
     }
     curRowSlots += r.slots
-    res.top().append(mkSlot(slotIdx, r, style))
+    res.top().append(mkSlot(r, style))
   }
   return res
 }
@@ -386,40 +389,54 @@ let buttons = @(hasRerollAnim) function() {
 }
 
 function content() {
-  let isActual = Computed(@() shopGenSlotInProgress.get() != previewGoods.get()?.id
-    && getDay(rewardSlots.get()?.time ?? 0, dayOffset.get()) == serverTimeDay.get())
+  let availableRewards = Computed(function(prev) {
+    let { time = 0, goods = [] } = rewardSlots.get()
+    if (shopGenSlotInProgress.get() || getDay(time, dayOffset.get()) != serverTimeDay.get())
+      return isEqual(prev, []) ? prev : []
+    let res = goods.reduce(
+      @(res, g, idx) (serverConfigs.get()?.allBlueprints[g[0].id].targetCount ?? 0) <= (servProfile.get()?.blueprints[g[0].id] ?? 0)
+        ? res
+        : res.append(getRewardsViewInfo(g)[0].__update({ slotIdx = idx })),
+      [])
+    return isEqual(prev, res) ? prev : res
+  })
+  let isPurchased = Computed(@() rewardSlots.get()?.isPurchased ?? false)
   return function() {
-    let { goods = [], isPurchased = false } = rewardSlots.get()
-    let style = goods.len() > MAX_BIG_SLOTS ? REWARD_STYLE_SMALL : REWARD_STYLE_MEDIUM
+    let rewards = availableRewards.get()
+    let style = rewards.len() > MAX_BIG_SLOTS ? REWARD_STYLE_SMALL : REWARD_STYLE_MEDIUM
     let { boxSize, boxGap } = style
     let slotsInRow = (maxWndWidth + boxGap) / (boxSize + boxGap)
-    let hasOnlyOneSlot = goods.len() == 1
-    let rows = !isActual.get() || shopGenSlotInProgress.get() ? []
-      : fillRewardsByRows(goods, slotsInRow, style)
+    let rows = fillRewardsByRows(rewards, slotsInRow, style)
     let curUnit = openedUnitFromTree.get()
     let hasAnySlot = rows.len() > 0
-    let hasRerollHint = !isPurchased && hasAnySlot && curUnit != null
-      && !goods.reduce(@(res, g) res.$rawset(g[0].id, true), {})?[curUnit]
+    let hasRerollHint = !isPurchased.get() && hasAnySlot && curUnit != null
+      && !rewards.reduce(@(res, r) res.$rawset(r.id, true), {})?[curUnit]
 
+    let setSelIdx = @() selIndex.set(availableRewards.get().len() == 1 ? availableRewards.get()[0].slotIdx : -1)
+    let rewardSlotsSubscription = @(_) setSelIdx()
     return {
-      watch = [rewardSlots, isActual, shopGenSlotInProgress, openedGoodsId, openedUnitFromTree]
+      watch = [shopGenSlotInProgress, openedGoodsId, openedUnitFromTree, isPurchased, availableRewards]
       size = flex()
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       flow = FLOW_VERTICAL
       gap = blockGap
       children = [
-        isPurchased || hasOnlyOneSlot ? null
+        isPurchased.get() || availableRewards.get().len() == 1 ? null
           : txt(hasAnySlot ? utf8ToUpper(loc("shop/pickOneItem"))
             : utf8ToUpper(loc(getSlotsTexts(openedGoodsId.get()).missing)))
         {
-          key = hasOnlyOneSlot
+          key = availableRewards
           size = [SIZE_TO_CONTENT, max(2, rows.len()) * (boxSize + boxGap) - boxGap]
           flow = FLOW_VERTICAL
           valign = ALIGN_CENTER
           halign = ALIGN_CENTER
           gap = boxGap
-          onAttach = @() hasOnlyOneSlot ? selIndex.set(0) : null
+          function onAttach() {
+            setSelIdx()
+            rewardSlots.subscribe(rewardSlotsSubscription)
+          }
+          onDetach = @() rewardSlots.unsubscribe(rewardSlotsSubscription)
           children = shopGenSlotInProgress.get() ? spinner
             : rows.map(@(children) {
                 flow = FLOW_HORIZONTAL
@@ -429,7 +446,7 @@ function content() {
         }
         hasAnySlot ? buttons(hasRerollHint) : null
         {
-          size = [flex(), hdpx(24)]
+          size = const [flex(), hdpx(24)]
           valign = ALIGN_CENTER
           halign = ALIGN_CENTER
           children = !hasRerollHint ? null

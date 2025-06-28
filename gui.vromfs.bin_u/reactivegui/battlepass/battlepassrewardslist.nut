@@ -41,7 +41,7 @@ function markAvailableReward(slot){
 }
 
 let paidMark = {
-  size = [flex(), hdpx(12)]
+  size = const [flex(), hdpx(12)]
   rendObj = ROBJ_SOLID
   color = 0xFFFFDE70
 }

@@ -890,6 +890,7 @@
       "armorThickness": 2.0,
       "armorThrough": 12.0,
       "fireProtectionHp": 15.0,
+      "createSecondaryShatters": false,
       "fireParamsPreset": "fuel_exterior",
       "stopChanceOnDeadPart": 0.0,
       "fuel_tank_exterior_r_01_dm": {},
@@ -3389,10 +3390,10 @@
               "createGunEffects": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.2,
               "allowableDelta": 360.0,
+              "shotFreq": 40.0,
               "salvo": 2,
-              "salvoDelay": 0.0,
+              "salvoDelay": 5.0,
               "speedYaw": 24.0,
               "speedPitch": 15.0,
               "fireConeAngle": [
@@ -3400,61 +3401,6 @@
                 5.0
               ],
               "bullets": 8,
-              "ChainfireTime": 0.5,
-              "DelayAfterShoot": 2.0,
-              "accuracyAir": 1.5,
-              "accuracyGnd": 0.0,
-              "errMeasureVel": 0.0,
-              "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 0.0,
-              "errMeasureVelDir": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errTargetting": 3.0,
-              "errExplTime": 0.0,
-              "forestallTime": 0.1,
-              "turret": {
-                "head": "bone_grenade",
-                "gun": "bone_grenade"
-              },
-              "limits": {
-                "yaw": [
-                  0.0,
-                  0.0
-                ],
-                "pitch": [
-                  0.0,
-                  0.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner4",
-              "triggerGroup": "smoke",
-              "isSharedAmmoOnTriggerGroup": true,
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
-              "weaponType": "rockets",
-              "useEmitter": true,
-              "emitter": "emtr_mortar_flame_02",
-              "emitterGenRange": [
-                1,
-                8
-              ],
-              "emitterGenFmt": "emtr_mortar_flame_%02d",
-              "ignoreLoaderPenalty": true,
-              "createGunEffects": true,
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "shotFreq": 0.2,
-              "allowableDelta": 360.0,
-              "salvo": 2,
-              "salvoDelay": 0.0,
-              "speedYaw": 24.0,
-              "speedPitch": 15.0,
-              "fireConeAngle": [
-                1.0,
-                5.0
-              ],
-              "bullets": 0,
               "ChainfireTime": 0.5,
               "DelayAfterShoot": 2.0,
               "accuracyAir": 1.5,
@@ -3688,6 +3634,251 @@
       "decal3OppositeMirrored": false,
       "decal3WidthBox": 0.238184,
       "decal3Tex": "decal_402"
+    },
+    "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -2.87961,
+        -1.28729e-7,
+        8.5819e-8,
+        -1.11802
+      ],
+      "decal0Line1": [
+        1.5497e-7,
+        -2.59988,
+        1.23804,
+        3.36772
+      ],
+      "decal0Line2": [
+        2.87961,
+        -1.28729e-7,
+        0.0,
+        2.11802
+      ],
+      "decal0Line3": [
+        -9.67732e-8,
+        -2.59988,
+        -1.23804,
+        3.36772
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        2.12204e-8,
+        0.429935,
+        0.90286,
+        -1.90112
+      ],
+      "decal0CPNormDepth1": [
+        2.12204e-8,
+        0.429935,
+        -0.90286,
+        -1.90112
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.34727
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.201365,
+      "decal0Tex": "noak_gf_roundel",
+      "decal1Line0": [
+        -3.87854,
+        -1.73384e-7,
+        1.15589e-7,
+        -2.74884
+      ],
+      "decal1Line1": [
+        2.40083e-7,
+        -3.50177,
+        1.66752,
+        4.26766
+      ],
+      "decal1Line2": [
+        3.87854,
+        -1.73384e-7,
+        0.0,
+        3.74884
+      ],
+      "decal1Line3": [
+        -9.89894e-8,
+        -3.50177,
+        -1.66752,
+        4.26766
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        3.81968e-8,
+        0.429935,
+        0.90286,
+        -1.90111
+      ],
+      "decal1CPNormDepth1": [
+        3.81968e-8,
+        0.429935,
+        -0.90286,
+        -1.90111
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.257829
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": true,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.201186,
+      "decal1Tex": "china_numbers_2",
+      "decal2Line0": [
+        -3.87825,
+        -1.73371e-7,
+        1.15581e-7,
+        -3.46028
+      ],
+      "decal2Line1": [
+        2.27371e-7,
+        -3.50151,
+        1.66739,
+        4.26851
+      ],
+      "decal2Line2": [
+        3.87825,
+        -1.73371e-7,
+        0.0,
+        4.46028
+      ],
+      "decal2Line3": [
+        -1.11677e-7,
+        -3.50151,
+        -1.66739,
+        4.26851
+      ],
+      "decal2HaveCP": true,
+      "decal2CPNormDepth": [
+        3.13229e-8,
+        0.429935,
+        0.90286,
+        -1.90111
+      ],
+      "decal2CPNormDepth1": [
+        3.13229e-8,
+        0.429935,
+        -0.90286,
+        -1.90111
+      ],
+      "decal2RotScale": [
+        1.5708,
+        0.257848
+      ],
+      "decal2Mirrored": false,
+      "decal2Wrap": false,
+      "decal2Abs": true,
+      "decal2OppositeMirrored": false,
+      "decal2WidthBox": 0.201177,
+      "decal2Tex": "china_numbers_2"
+    },
+    "winter": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0,
+      "decal0Line0": [
+        -2.87961,
+        -1.28729e-7,
+        8.5819e-8,
+        -1.12037
+      ],
+      "decal0Line1": [
+        1.66609e-7,
+        -2.59988,
+        1.23804,
+        3.46509
+      ],
+      "decal0Line2": [
+        2.87961,
+        -1.28729e-7,
+        0.0,
+        2.12037
+      ],
+      "decal0Line3": [
+        -8.51338e-8,
+        -2.59988,
+        -1.23804,
+        3.46509
+      ],
+      "decal0HaveCP": true,
+      "decal0CPNormDepth": [
+        2.97086e-8,
+        0.429935,
+        0.90286,
+        -1.90111
+      ],
+      "decal0CPNormDepth1": [
+        2.97086e-8,
+        0.429935,
+        -0.90286,
+        -1.90111
+      ],
+      "decal0RotScale": [
+        1.5708,
+        0.34727
+      ],
+      "decal0Mirrored": false,
+      "decal0Wrap": false,
+      "decal0Abs": true,
+      "decal0OppositeMirrored": false,
+      "decal0WidthBox": 0.200233,
+      "decal0Tex": "noak_gf_roundel",
+      "decal1Line0": [
+        0.0,
+        -1.15303e-7,
+        -2.63782,
+        0.476906
+      ],
+      "decal1Line1": [
+        -0.0,
+        -2.63782,
+        1.15303e-7,
+        4.27744
+      ],
+      "decal1Line2": [
+        0.0,
+        -1.15303e-7,
+        2.63782,
+        0.523095
+      ],
+      "decal1Line3": [
+        0.0,
+        -2.63782,
+        -1.15303e-7,
+        4.27744
+      ],
+      "decal1HaveCP": true,
+      "decal1CPNormDepth": [
+        -1.0,
+        0.0,
+        0.0,
+        -3.11905
+      ],
+      "decal1CPNormDepth1": [
+        1.0,
+        -0.0,
+        -0.0,
+        3.09979
+      ],
+      "decal1RotScale": [
+        1.5708,
+        0.379101
+      ],
+      "decal1Mirrored": false,
+      "decal1Wrap": false,
+      "decal1Abs": false,
+      "decal1OppositeMirrored": false,
+      "decal1WidthBox": 0.2339,
+      "decal1Tex": "noak_gf_roundel"
     }
   },
   "vehicleSkins": {
@@ -3695,6 +3886,18 @@
       "replace_tex": {
         "from": "ussr_camo_green*",
         "to": "cn_camo_sand_ltgreen_dkgreen_spots*"
+      }
+    },
+    "forest": {
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "cn_camo_summer_green*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_winter*"
       }
     }
   },

@@ -242,13 +242,13 @@ let mkPrizeTicketsContent = @(content, title)
         flow = FLOW_HORIZONTAL
         halign = ALIGN_CENTER
         valign = ALIGN_TOP
-        padding = [0, hdpx(30)]
+        padding = const [0, hdpx(30)]
         gap = hdpx(20)
         children = content
       }
       @() {
         watch = [selIndexes, currentTicketCounts]
-        size = [flex(), hdpx(50)]
+        size = const [flex(), hdpx(50)]
         halign = ALIGN_CENTER
         valign = ALIGN_TOP
         rendObj = ROBJ_TEXT
@@ -339,7 +339,7 @@ function openRewardPrizeSelect() {
     key = PRIZE_TICKETS_SELECT_WND_UID
     animations = wndSwitchAnim
     sound = { click = "click" }
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     onAttach = @() isModalAttached.set(true)

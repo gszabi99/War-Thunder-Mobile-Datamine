@@ -24,6 +24,7 @@ let comma = loc("ui/comma")
 let initialAddons = []
 let latestDownloadAddonsByCamp = {} 
 let latestDownloadAddons = []
+let extendedSoundAddons = []
 let commonUhqAddons = ["pkg_environment_uhq"]
 let ovrHangarAddon = {addons = [], hangarPath=""}
 
@@ -93,7 +94,7 @@ if (addonsBlk != null) {
     let allConditions = b % "conditions"
     foreach (conditions in allConditions) {
       let { campaign = null, mRank = null, isSoloNewbie = false, isCoopNewbie = false, isDownloadLast = false,
-        isDownloadFirst = false
+        isDownloadFirst = false, isExtendedSound = false
       } = conditions
       if (isDownloadFirst) {
         initialAddons.append(addon)
@@ -105,6 +106,10 @@ if (addonsBlk != null) {
         latestDownloadAddons.append(addon)
         if (hq)
           latestDownloadAddons.append(addonHq)
+        continue
+      }
+      if (isExtendedSound) {
+        extendedSoundAddons.append(addon)
         continue
       }
 
@@ -211,11 +216,8 @@ let getAddonsSize = @(addons, addonSizesV)
 
 let mbToString = @(mb) "".concat(mb > 0 ? mb : "???", loc("measureUnits/MB"))
 
-function getAddonsSizeStr(addons, addonSizesV) {
-  let bytes = getAddonsSize(addons, addonSizesV)
-  let mb = (bytes + (MB / 2)) / MB
-  return mbToString(mb)
-}
+let getAddonsSizeInMb = @(addons, addonSizesV) (getAddonsSize(addons, addonSizesV) + (MB / 2)) / MB
+let getAddonsSizeStr = @(addons, addonSizesV) mbToString(getAddonsSizeInMb(addons, addonSizesV))
 
 let gameModeAddonToAddonSetMap = {
   [PKG_NAVAL] = commonCampaignAddons?.ships ?? [],
@@ -235,6 +237,7 @@ return freeze({
   ovrHangarAddon
   soloNewbieByCampaign
   coopNewbieByCampaign
+  extendedSoundAddons
 
   gameModeAddonToAddonSetMap
 
@@ -245,5 +248,6 @@ return freeze({
   mbToString
   getAddonsSizeStr
   getAddonsSize
+  getAddonsSizeInMb
   resetAddonNamesCache = @() addonNames.clear()
 })

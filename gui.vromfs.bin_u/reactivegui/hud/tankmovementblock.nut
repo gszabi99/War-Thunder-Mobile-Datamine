@@ -192,7 +192,7 @@ function gamepadStick(scale) {
       dir.normalize()
     return {
       watch = stickDelta
-      size = [0, 0]
+      size = 0
       pos = [pw(50.0 - 50.0 * dir.x), ph(50.0 - 50.0 * dir.y)]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER

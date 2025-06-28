@@ -397,7 +397,7 @@ function findWeapon(weaponSlots, wId, isFullName = true) {
           if (weap.weaponId == wId)
             return weap
   foreach (weaponSlot in weaponSlots)
-    foreach (weap in weaponSlot?.wPresets?.default_common?.weapons ?? {})
+    foreach (weap in weaponSlot?.wPresets.default_common.weapons ?? {})
       if (weap.weaponId == wId)
         return weap
   return null
@@ -406,7 +406,7 @@ function findWeapon(weaponSlots, wId, isFullName = true) {
 function getTotalWeaponAmountByCaliberAndType(weaponSlots, caliber, weaponType) {
   local total = 0
   foreach (weaponSlot in weaponSlots)
-    foreach (weap in weaponSlot?.wPresets?.default_common?.weapons ?? {})
+    foreach (weap in weaponSlot?.wPresets.default_common.weapons ?? {})
       if (weap.bulletSets[weap.bulletSets.keys()[0]].caliber == caliber && weap.trigger == weaponType)
         total += weap.guns
   return total

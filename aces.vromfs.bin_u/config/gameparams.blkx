@@ -243,7 +243,7 @@
   "newDamageTimer": 100.0,
   "friendlyFireImmortalOnLandTime": 30.0,
   "readyToDieRepairTimeMult": 3.0,
-  "bailoutEnabled": false,
+  "bailoutEnabled": true,
   "bailoutReadyToDieTime": 7.0,
   "bailoutHoldTime": 3.0,
   "bailoutHoldTimeAtExitZone": 1.5,

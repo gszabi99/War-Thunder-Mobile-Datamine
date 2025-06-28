@@ -91,7 +91,7 @@ function mkPlaneUi(actionItem, airGroupIndex) {
 function mkPlaneDebugInfo(airGroupIndex) {
   let airGroupData = Computed(@() strategyDataRest.value?[airGroupIndex] )
   return @() {
-    size = [hdpx(450), 0]
+    size = const [hdpx(450), 0]
     watch = airGroupData
     halign = ALIGN_RIGHT
     flow = FLOW_VERTICAL
@@ -128,7 +128,7 @@ function mkPlaneDebugInfo(airGroupIndex) {
 
 function mkShipDebugInfo() {
   return @() {
-    size = [hdpx(450), 0]
+    size = const [hdpx(450), 0]
     watch = strategyDataShip
     halign = ALIGN_RIGHT
     flow = FLOW_VERTICAL

@@ -254,7 +254,7 @@ function openImpl() {
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
       gap = hdpx(40)
-      padding = [0,0,hdpx(20),0]
+      padding = const [0,0,hdpx(20),0]
       minWidth = minWidthWnd
       children = [
         modalWndHeader(loc("unitsTree/chooseCountryResearch"), { padding = [0, buttonsHGap] })

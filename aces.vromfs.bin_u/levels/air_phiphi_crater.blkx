@@ -5,7 +5,6 @@
   "volumeCloudsActive": true,
   "z_far": 30000.0,
   "addLandToSky": false,
-  "harmonicsType": "green",
   "mapCoord0": [
     -16384.0,
     -16384.0

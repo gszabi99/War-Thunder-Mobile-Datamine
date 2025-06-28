@@ -1,3 +1,4 @@
+require app
 require ecs
 require net
 require Unit
@@ -35,7 +36,32 @@ def unit_change_possessing_plr_from(evt : EventPlayerChangeControlFrom; var poss
   possessedByPlr = INVALID_ENTITY_ID
 
 [es]
-def unit_change_possessing_plr_to(evt : EventPlayerChangeControlTo; var possessedByPlr : EntityId&)
+def unit_change_possessing_plr_to(evt : EventPlayerChangeControlTo; eid : EntityId; var possessedByPlr : EntityId&)
   possessedByPlr = evt.playerEid
+  query(possessedByPlr) <| $ [es] (var possessed : EntityId&)
+    possessed = eid
   if evt.playerEid == INVALID_ENTITY_ID
     logerr("player pid:{evt.playerId} sync eid is not set, when changing control to unit")
+
+[es(tag=gameClient, on_appear)]
+def track_sync_players_es(evt : Event; base_player_id : int; var is_local : bool&)
+  if base_player_id == get_local_player_no()
+    is_local = true
+
+[es(tag=server, track=connId, on_appear)]
+def track_conn_id_players_es(evt : Event; player_id : int; connId : int)
+  find_query() <| $ [es] (base_player_id : int;
+                          var connid : int&)
+    if base_player_id == player_id
+      connid = connId
+      return true
+    return false
+
+[es(tag=server, on_appear)]
+def appear_conn_id_players_es(evt : Event; base_player_id : int; var connid : int&)
+  find_query() <| $ [es] (player_id : int;
+                          connId : int)
+    if player_id == base_player_id
+      connid = connId
+      return true
+    return false

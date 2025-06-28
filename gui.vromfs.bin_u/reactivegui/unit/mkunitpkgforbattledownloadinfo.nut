@@ -22,7 +22,7 @@ let textArea = @(text, ovr = {}) {
   texOffs = [0, gradDoubleTexOffset]
   screenOffs = [0, hdpx(50)]
   color = 0x90000000
-  padding = [hdpx(5), hdpx(20)]
+  padding = const [hdpx(5), hdpx(20)]
   gap = hdpx(20)
   children = @() {
     size = [saSize[0] - 2 * statsWidth, SIZE_TO_CONTENT]

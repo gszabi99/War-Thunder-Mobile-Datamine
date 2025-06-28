@@ -473,7 +473,7 @@ eventbus_subscribe("auth.onRegisterGooglePurchase", function(result) {
     showErrorMsg(loc("msg/errorPaymentDelayed"))
   else if (status in yu2BadConnectionCodes) {
     lastYu2TimeoutErrorTime.set(get_time_msec())
-    showErrorMsg(loc("msg/errorRegisterPaymentTimeout"), { size = [hdpx(1300), hdpx(700)] })
+    showErrorMsg(loc("msg/errorRegisterPaymentTimeout"), { size = const [hdpx(1300), hdpx(700)] })
     if (restoreStatus.get() == RESTORE_STARTED || restoreStatus.get() == RESTORE_REQUIRE) {
       logG("Change restore to silent after auth error")
       restoreStatus.set(RESTORE_STARTED_SILENT)

@@ -5,7 +5,7 @@ let { gap } = require("contactInfoPkg.nut")
 
 let btnDefOvr = { size = [evenPx(100), evenPx(55)], vplace = ALIGN_CENTER }
 let mkContactResponse = @(uid) @() {
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   flow = FLOW_HORIZONTAL
   gap
   children = [

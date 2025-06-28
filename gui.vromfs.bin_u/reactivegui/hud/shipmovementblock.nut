@@ -243,7 +243,7 @@ function movementBlock(unitType, scale) {
             children = middle
           }
           {
-            size = [SIZE_TO_CONTENT, flex()]
+            size = FLEX_V
             children = [
               rightArrow
               speedComp(scale)

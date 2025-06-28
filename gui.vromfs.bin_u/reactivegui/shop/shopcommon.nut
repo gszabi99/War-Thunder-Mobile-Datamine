@@ -82,6 +82,8 @@ function getGoodsType(goods) {
     return SGT_UNIT
   if (goods.units.len() >= 2 )
     return SGT_BRANCH
+  if (goods.skins.len() > 0)
+    return SGT_SKIN
   if (goods.items.len() > 0)
     return SGT_CONSUMABLES
   if (goods.lootboxes.len() > 0)
@@ -100,13 +102,15 @@ function getGoodsType(goods) {
 }
 
 function isGoodsFitToCampaign(goods, cConfigs, curCampaign = null) {
-  let { units = [], unitUpgrades = [], items = {} , meta = {}, blueprints = {} } = goods
+  let { units = [], unitUpgrades = [], skins = {}, items = {} , meta = {}, blueprints = {} } = goods
   if (units.len() > 0)
     return null != units.findvalue(@(u) u in cConfigs?.allUnits)
   if (blueprints.len() > 0)
     return null != units.findvalue(@(u) u in cConfigs?.allUnits)
   if (unitUpgrades.len() > 0)
     return null != unitUpgrades.findvalue(@(u) u in cConfigs?.allUnits)
+  if (skins.len() > 0)
+    return null != skins.findvalue(@(_, u) u in cConfigs?.allUnits)
   if (items.len() > 0)
     return null != items.findvalue(@(_, i) i in cConfigs?.allItems)
   if (meta?.campaign && meta?.campaign != curCampaign)

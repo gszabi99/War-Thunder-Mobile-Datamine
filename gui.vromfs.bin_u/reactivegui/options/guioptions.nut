@@ -8,6 +8,7 @@ let optionsVersion = Watched(0)
 
 let optListNative = [
   "OPT_TANK_MOVEMENT_CONTROL"
+  "OPT_TANK_ALTERNATIVE_CONTROL_TYPE"
   "OPT_CAMERA_SENSE"
   "OPT_FREE_CAMERA_TANK"
   "OPT_FREE_CAMERA_PLANE"
@@ -70,6 +71,7 @@ let optListScriptOnly = [
   "USEROPT_QUIT_ZOOM_AFTER_KILL"
   "OPT_AIRCRAFT_FREE_CAMERA_BY_TOUCH"
   "USEROPT_ALLOW_JIP"
+  "OPT_SOUND_USE_EXTENDED"
 ]
 
 let optListLocalScriptOnly = [

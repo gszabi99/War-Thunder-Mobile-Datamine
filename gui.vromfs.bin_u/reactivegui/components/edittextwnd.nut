@@ -22,14 +22,14 @@ function mkInput(pName, maxLength) {
   return textInput(pName, {
     ovr = {
       size = [flex(), editNameInputHeight]
-      margin = [hdpx(60), 0]
-      padding = [hdpx(10), hdpx(10)]
+      margin = const [hdpx(60), 0]
+      padding = hdpx(10)
       borderRadius = editNameInputHeight / 2
       fillColor = 0xffffffff
     }
     textStyle = {
       color = 0xff000000
-      padding = [0, hdpx(20)]
+      padding = const [0, hdpx(20)]
     }
     maxChars = maxLength
     isValidChange = @(v) utf8(v).charCount() <= maxLength
@@ -47,7 +47,7 @@ let mainContent = @(text, onApply, maxLength) bgShadedLight.__merge({
     children = mkCustomMsgBoxWnd(
       loc("presets/edit_wnd/title"),
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         children = mkInput(text, maxLength)
       },
       [textButtonPrimary(

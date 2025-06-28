@@ -26,7 +26,7 @@ function tabData(tab) {
           : {
               size = flex()
               rendObj = ROBJ_IMAGE
-              image = Picture(image)
+              image = Picture($"{image}:0:P")
               keepAspect = KEEP_ASPECT_FIT
               imageHalign = ALIGN_LEFT
               imageValign = ALIGN_BOTTOM

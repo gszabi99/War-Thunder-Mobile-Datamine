@@ -19,7 +19,7 @@ let bgSlotColor = 0xFFe38e15
 
 let offerCardBaseStyle = {
   rendObj = ROBJ_FRAME
-  borderWidth = [hdpx(2), hdpx(2), 0, hdpx(2)]
+  borderWidth = const [hdpx(2), hdpx(2), 0, hdpx(2)]
   size = [ offerCardWidth, offerCardHeight ]
 }
 
@@ -35,7 +35,7 @@ let bottomGradient = mkBgGradient((offerCardHeight / 2).tointeger(),
   { transform = { rotate = 180 }, vplace = ALIGN_BOTTOM, color = 0xFF000000 })
 let cardBgGradient = {
   size = flex()
-  padding = [hdpx(1), 0, 0, 0]
+  padding = const [hdpx(1), 0, 0, 0]
   children = [
     topGradient
     bottomGradient
@@ -70,7 +70,7 @@ let battleRewardsTitle = @(unit, ovr = {}){
   hplace = ALIGN_LEFT
   text = "".concat(loc("attrib_section/battleRewards"), colon)
   color = unit?.isUpgraded ? premiumTextColor : 0xFFFFFFFF
-  padding = [hdpx(10), hdpx(30)]
+  padding = const [hdpx(10), hdpx(30)]
 }.__update(fontTiny, ovr)
 
 
@@ -79,7 +79,7 @@ let premDesc = {
   pos = [offerCardWidth - hdpx(30), hdpx(30)]
   children =[
     {
-      size = [hdpx(389), hdpx(144)]
+      size = const [hdpx(389), hdpx(144)]
       hplace = ALIGN_RIGHT
       vplace = ALIGN_TOP
       rendObj = ROBJ_IMAGE
@@ -87,7 +87,7 @@ let premDesc = {
       color = bgSlotColor
       flipX = true
       children = {
-        margin = [hdpx(20), hdpx(30)]
+        margin = const [hdpx(20), hdpx(30)]
         size = flex()
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
@@ -96,7 +96,7 @@ let premDesc = {
       }.__update(fontVeryTiny)
     }
     {
-      size = [hdpx(30), hdpx(30)]
+      size = hdpx(30)
       rendObj = ROBJ_VECTOR_CANVAS
       fillColor = 0x90000000
       color = 0

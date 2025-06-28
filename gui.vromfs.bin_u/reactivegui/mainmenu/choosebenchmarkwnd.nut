@@ -23,11 +23,11 @@ function byRows(list) {
   if (rows.top().len() < 2)
     rows.top().resize(2, { size = flex() })
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     gap
     children = rows.map(@(children) {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       gap
       children
@@ -35,7 +35,7 @@ function byRows(list) {
   }
 }
 
-let btnStyle = { ovr = { size = [flex(), hdpx(100)] } }
+let btnStyle = { ovr = { size = const [flex(), hdpx(100)] } }
 function missionsListUi() {
   let children = [byRows(benchmarksList.value.map(@(b)
     textButtonCommon(
@@ -49,7 +49,7 @@ function missionsListUi() {
   if (benchmarkGameModes.value.len() > 0)
     children.append(
       {
-        margin = [hdpx(10), 0, 0, 0]
+        margin = const [hdpx(10), 0, 0, 0]
         rendObj = ROBJ_TEXT
         text = loc("chapters/onlineBenchmark")
       }.__update(fontSmall),
@@ -65,7 +65,7 @@ function missionsListUi() {
     )
   return {
     watch = [benchmarksList, benchmarkGameModes]
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     padding = gap
     gap
     flow = FLOW_VERTICAL
@@ -79,7 +79,7 @@ return @() addModalWindow({
   size = flex()
   onAttach = @() eventbus_send("getBenchmarksList", {})
   children = {
-    size = [hdpx(1300), SIZE_TO_CONTENT]
+    size = const [hdpx(1300), SIZE_TO_CONTENT]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     rendObj = ROBJ_SOLID
@@ -89,7 +89,7 @@ return @() addModalWindow({
     stopHotkeys = true
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_HORIZONTAL
         valign = ALIGN_CENTER
         padding = gap

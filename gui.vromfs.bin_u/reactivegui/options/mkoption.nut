@@ -46,7 +46,7 @@ let mkTooltipContentCtor = @(title, desc) @() "\n".concat(
 )
 
 let optBlock = @(header, content, openInfo, desc, locId, ovr = {}) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   children = [
     mkHeader(header,
@@ -65,10 +65,12 @@ let optionCtors = {
       return null
     }
     let sendChangeValue = @() onChangeValue?(value.get())
-    if (visible instanceof Watched)
-      return @() !visible.get() ? { watch = visible }
-        : { watch = visible
-            children = sliderWithButtons(value, loc(locId),
+    let isVisibleW = visible instanceof Watched ? visible : Watched(true)
+    return @() !isVisibleW.get()
+      ? { watch = isVisibleW }
+      : {
+          watch = isVisibleW
+          children = sliderWithButtons(value, loc(locId),
             setValue == null && onChangeValue == null ? ctrlOverride
               : ctrlOverride.__merge({
                 function onChange(v) {
@@ -81,25 +83,12 @@ let optionCtors = {
                }
              }),
             valToString)
-          }
-    return sliderWithButtons(value, loc(locId),
-      setValue == null && onChangeValue == null ? ctrlOverride
-        : ctrlOverride.__merge({
-          function onChange(v) {
-            sliderValueSound()
-            if (setValue != null)
-              setValue(v)
-            else
-              value.set(v)
-            resetTimeout(1, sendChangeValue)
-         }
-       }),
-      valToString)
+        }
   },
 
   [OCT_LIST] = function(opt) {
     let { value = null, setValue = null, onChangeValue = null, locId = "", list = [], valToString = @(v) v, openInfo = null,
-      description = "", mkContentCtor = null, columnsMaxCustom = columnsMax } = opt
+      description = "", mkContentCtor = null, columnsMaxCustom = columnsMax, visible = null } = opt
     if (value == null) {
       logerr($"Options: Missing value for option {opt?.locId}")
       return null
@@ -111,26 +100,19 @@ let optionCtors = {
         setValue(v)
       onChangeValue?(v)
     }
-    if (list instanceof Watched)
-      return @() list.value.len() == 0 ? { watch = list }
-        : optBlock(loc(locId),
-            listbox({ value, list = list.value, valToString,
-              setValue = sendChangeValue,
-              columns = clamp(list.value.len(), columnsMin, columnsMaxCustom),
-              mkContentCtor
-            }),
-            openInfo, description, locId,
-            { watch = list })
-
-    if (list.len() == 0)
-      return null
-    return optBlock(loc(locId),
-      listbox({ value, list, valToString,
-        setValue = sendChangeValue,
-        columns = clamp(list.len(), columnsMin, columnsMaxCustom),
-        mkContentCtor
-      }),
-      openInfo, description, locId)
+    let isVisibleW = visible instanceof Watched ? visible : Watched(true)
+    let listW = list instanceof Watched ? list : Watched(list)
+    let watch = [ isVisibleW, listW ]
+    return @() !isVisibleW.get() || listW.get().len() == 0
+      ? { watch }
+      : optBlock(loc(locId),
+          listbox({ value, list = listW.get(), valToString,
+            setValue = sendChangeValue,
+            columns = clamp(listW.get().len(), columnsMin, columnsMaxCustom),
+            mkContentCtor
+          }),
+          openInfo, description, locId,
+          { watch })
   },
 
   [OCT_BUTTON] = function(opt) {
@@ -140,7 +122,7 @@ let optionCtors = {
       return null
     }
     return textButtonCommon(loc(locId), onClick,
-      { ovr = { hplace = ALIGN_LEFT, margin = [hdpx(30), 0] } })
+      { ovr = { hplace = ALIGN_LEFT, margin = const [hdpx(30), 0] } })
   }
 }
 

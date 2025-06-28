@@ -31,7 +31,7 @@ let btnLine = @(isActive) {
 function btnBase(textOrCtor, sf, isSelected) {
   let isActive = isSelected || (sf & S_ACTIVE) != 0
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     children = [
       {
         size = flex()
@@ -66,7 +66,7 @@ function listButton(textOrCtor, isSelected, onClick, override = {}) {
   let stateFlags = Watched(0)
   return @() {
     watch = [isSelected, stateFlags]
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     gap
     behavior = Behaviors.Button

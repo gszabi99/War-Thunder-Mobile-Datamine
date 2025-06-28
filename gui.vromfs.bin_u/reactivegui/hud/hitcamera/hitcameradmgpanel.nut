@@ -273,7 +273,7 @@ let panelChildrenCtorByType = {
 
 let hitCameraDmgPanel = @(scale) @() {
   watch = [hcUnitType, hudUnitType]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   padding = [round(hdpx(6) * scale), 0]

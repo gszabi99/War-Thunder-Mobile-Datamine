@@ -102,7 +102,8 @@ let rouletteOpenCount = Computed(@() receivedRewardsCur.value?.openCount
 let rouletteFixedRewards = Computed(function() {
   let res = []
   let { fixedRewards = {} } = serverConfigs.value?.lootboxesCfg[rouletteOpenId.value]
-  foreach(countStr, rewardId in fixedRewards) {
+  foreach(countStr, fr in fixedRewards) {
+    let rewardId = fr?.rewardId ?? fr 
     let reward = serverConfigs.value?.rewardsCfg[rewardId]
     let viewInfo = reward != null ? getRewardsViewInfo(reward) : []
     if (viewInfo.len() != 0)
@@ -145,7 +146,8 @@ function calcJackpotOpens(id, openCount, profile, configs) {
 
   let hasOpens = profile?.lootboxStats[id].opened ?? 0
   let jackpotsById = {}
-  foreach(idxStr, rewardId in fixedRewards) {
+  foreach(idxStr, fr in fixedRewards) {
+    let rewardId = fr?.rewardId ?? fr 
     let idx = idxStr.tointeger()
     if (idx <= hasOpens || idx > hasOpens + openCount)
       continue

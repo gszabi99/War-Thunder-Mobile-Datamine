@@ -35,7 +35,7 @@ let textsForLoggerEditView = @(userName) [
 let hintsGapBase = hdpx(10)
 
 let mkTextLogger = @(text) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text

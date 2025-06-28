@@ -47,10 +47,10 @@ let animatedTextBlock = @(text) {
 
 let purchaseEffectText = @(text) {
   rendObj = ROBJ_BOX
-  size = [sw(100), hdpx(180)]
+  size = const [sw(100), hdpx(180)]
   hplace = ALIGN_CENTER
-  margin = [sh(10), 0, 0, 0]
-  borderWidth = [8, 0]
+  margin = const [sh(10), 0, 0, 0]
+  borderWidth = const [8, 0]
   borderColor = blackBgColor
   transform = {}
   animations = [

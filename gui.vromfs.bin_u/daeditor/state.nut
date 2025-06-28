@@ -3,16 +3,19 @@ import "%sqstd/ecs.nut" as ecs
 
 let console = require("console")
 let { mkFrameIncrementObservable } = require("%daeditor/ec_to_watched.nut")
+let { hideAllWindows } = require("%daeditor/components/window.nut")
 
 let {getEditMode=@() null, isFreeCamMode=@() false, setWorkMode=@(_) null,
      setEditMode=@(_) null, setPointActionPreview=@(_, __) null, DE4_MODE_POINT_ACTION=null, DE4_MODE_SELECT=null,
      DE4_MODE_MOVE=null, DE4_MODE_ROTATE=null, DE4_MODE_SCALE=null, DE4_MODE_MOVE_SURF=null,
      DE4_BASIS_WORLD=null, DE4_BASIS_LOCAL=null, DE4_BASIS_PARENT=null,
-     getGizmoBasisType=@() null, setGizmoBasisType=@(_) null} = require_optional("daEditorEmbedded")
+     DE4_CENTER_PIVOT=null, DE4_CENTER_SELECTION=null,
+     getGizmoBasisType=@() null, setGizmoBasisType=@(_) null,
+     getGizmoCenterType=@() null, setGizmoCenterType=@(_) null} = require_optional("daEditorEmbedded")
 let {is_editor_activated=@() false, get_scene_filepath=@() null, set_start_work_mode=@(_) null, get_instance=@() null} = require_optional("entity_editor")
 let selectedEntity = Watched(ecs.INVALID_ENTITY_ID)
 let { selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey } = mkFrameIncrementObservable({}, "selectedEntities")
-let showEntitySelect = mkWatched(persist, "showEntitySelect", false)
+let { markedScenes, markedScenesSetKeyVal, markedScenesDeleteKey } = mkFrameIncrementObservable({}, "markedScenes")
 
 const SETTING_EDITOR_WORKMODE = "daEditor/workMode"
 const SETTING_EDITOR_TPLGROUP = "daEditor/templatesGroup"
@@ -48,12 +51,19 @@ let canChangeGizmoBasisType = function() {
   return m == DE4_MODE_MOVE || m == DE4_MODE_MOVE_SURF || m == DE4_MODE_ROTATE || m == DE4_MODE_SCALE
 }
 
-let gizmoBasisTypeNames = [[DE4_BASIS_WORLD, "Basis: world"], [DE4_BASIS_LOCAL, "Basis: local"], [DE4_BASIS_PARENT, "Basis: parent"]]
+let gizmoBasisTypeNames = [[DE4_BASIS_WORLD, "World"], [DE4_BASIS_LOCAL, "Local"], [DE4_BASIS_PARENT, "Parent"]]
 let gizmoBasisType = Watched(getGizmoBasisType())
 let gizmoBasisTypeEditingDisabled = Watched(!canChangeGizmoBasisType())
 
 gizmoBasisType.subscribe(function(v) {
   setGizmoBasisType(v)
+})
+
+let gizmoCenterTypeNames = [[DE4_CENTER_PIVOT, "Pivot"], [DE4_CENTER_SELECTION, "Selection"]]
+let gizmoCenterType = Watched(getGizmoCenterType())
+
+gizmoCenterType.subscribe(function(v) {
+  setGizmoCenterType(v)
 })
 
 let proceedWithSavingUnsavedChanges = function(showMsgbox, callback, unsavedText=null, proceedText=null) {
@@ -95,7 +105,7 @@ function editorUnpause(time) {
     editorUnpauseData.timerRunning = false
     return
   }
-  if (editorTimeStop.value || editorUnpauseData.timerRunning) {
+  if (editorTimeStop.get() || editorUnpauseData.timerRunning) {
     editorTimeStop(false)
     editorUnpauseData.timerRunning = true
     gui_scene.resetTimeout(time, editorUnpauseEnd)
@@ -107,7 +117,7 @@ let typePointAction = mkWatched(persist, "typePointAction", "")
 let namePointAction = mkWatched(persist, "namePointAction", "")
 local funcPointAction = null
 function setPointActionMode(actionType, actionName, cb) {
-  showEntitySelect(false)
+  hideAllWindows()
   setEditMode(DE4_MODE_POINT_ACTION)
   setPointActionPreview("", 0.0) 
   typePointAction(actionType)
@@ -163,6 +173,10 @@ function handleEntityMoved(eid) {
 }
 
 return {
+  EntitySelectWndId = "entity_select"
+  LoadedScenesWndId = "loaded_scenes"
+  LogsWindowId = "log_window"
+
   showUIinEditor = mkWatched(persist, "showUIinEditor", false)
   editorIsActive = Watched(is_editor_activated())
   editorFreeCam = Watched(isFreeCamMode?())
@@ -176,7 +190,9 @@ return {
   propPanelClosed
   filterString = mkWatched(persist, "filterString", "")
   selectedCompName = Watched()
-  showEntitySelect
+  markedScenes
+  markedScenesSetKeyVal
+  markedScenesDeleteKey
   showTemplateSelect = mkWatched(persist, "showTemplateSelect", false)
   showHelp = mkWatched(persist, "showHelp", false)
   entitiesListUpdateTrigger = mkWatched(persist, "entitiesListUpdateTrigger", 0)
@@ -189,6 +205,8 @@ return {
   gizmoBasisTypeNames
   gizmoBasisTypeEditingDisabled
   canChangeGizmoBasisType
+  gizmoCenterType
+  gizmoCenterTypeNames
   proceedWithSavingUnsavedChanges
   showDebugButtons = Watched(true)
 

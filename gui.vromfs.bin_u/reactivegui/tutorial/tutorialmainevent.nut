@@ -3,7 +3,6 @@ let logT = log_with_prefix("[BATTLE_PASS_TUTOR] ")
 let { register_command } = require("console")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { isInSquad } = require("%appGlobals/squadState.nut")
-let { playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isCampaignWithUnitsResearch, curCampaign, campProfile, sharedStats } = require("%appGlobals/pServer/campaign.nut")
 let { receiveUnlockRewards, unlockInProgress } = require("%rGui/unlocks/unlocks.nut")
@@ -14,8 +13,8 @@ let { sendBqQuestsTask } = require("%rGui/quests/bqQuests.nut")
 let { openQuestsWndOnTab, COMMON_TAB, isQuestsOpen, curTabId, EVENT_TAB, questsBySection,
   tutorialSectionId, tutorialSectionIdWithReward, isSameTutorialSectionId } = require("%rGui/quests/questsState.nut")
 let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
-let { openEventWnd, curEventLootboxes } = require("%rGui/event/eventState.nut")
-let { openEmbeddedLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
+let { openEventWnd, curEventLootboxes, isFitSeasonRewardsRequirements } = require("%rGui/event/eventState.nut")
+let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
 let { markTutorialCompleted, mkIsTutorialCompleted,
   isFinishedBattlePass, isFinishedSlotAttributes, isFinishedArsenal } = require("completedTutorials.nut")
 let { questTutorialOptionalTime } = require("tutorialConst.nut")
@@ -38,16 +37,13 @@ let hasFirstBattles = Computed(function() {
   return idx < battleRewardsLen
 })
 
-let hasLevelOrMRank = Computed(@() ((playerLevelInfo.get()?.level ?? 0) >= 3)
-  || (null != campMyUnits.get().findvalue(@(u) (u?.mRank ?? 0) >= 2)))
-
 let needShowTutorial = Computed(@() !isInSquad.get()
   && !isFinished.get()
   && canShowTutorialByCampaign.get()
   && isFinishedBattlePass.get()
   && !hasFirstBattles.get()
   && tutorialSectionIdWithReward.get() != null
-  && hasLevelOrMRank.get())
+  && isFitSeasonRewardsRequirements.get())
 let canStartTutorial = Computed(@() !hasModalWindows.get()
   && isMainMenuTopScene.get()
   && !isTutorialActive.get())
@@ -160,7 +156,7 @@ function startTutorial() {
         text = loc("tutorial/mainEvent/openMiddleLootbox")
         objects = [{
           keys = Computed(@() $"lootbox_{curEventLootboxes.get()?[1].name}")
-          onClick = @() openEmbeddedLootboxPreview(curEventLootboxes.get()?[1].name)
+          onClick = @() openEventWndLootbox(curEventLootboxes.get()?[1].name)
           needArrow = true
         }]
         charId = "mary_points"

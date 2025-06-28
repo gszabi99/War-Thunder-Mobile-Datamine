@@ -12,7 +12,7 @@ let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
 let mkIconPrem = @() mkBgImg("ui/gameuiskin/premium_active_big.avif:0:P")
   .__update({
     vplace = ALIGN_CENTER
-    size = [hdpx(300), hdpx(200)]
+    size = const [hdpx(300), hdpx(200)]
   })
 let numFontGrad = mkFontGradient(0xFFF2E46B, 0xFFCE733B, 11, 5, 2)
 let daysFontGrad = mkFontGradient(0xFFF2E46B, 0xFFCE733B, 11, 6, 2)
@@ -63,7 +63,7 @@ let infoBtn = infoGreyButton(
   {
     size = [evenPx(60), evenPx(60)]
     color = 0x50000000
-    margin = [hdpx(12), hdpx(12)]
+    margin = hdpx(12)
     hplace = ALIGN_LEFT
     vplace = ALIGN_BOTTOM
   }

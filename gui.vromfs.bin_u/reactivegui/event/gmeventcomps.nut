@@ -82,7 +82,7 @@ function mkGmGoods(goods, mkOnClick, state, animParams) {
 
 let gmEventContent = @(goodsList) @() {
   watch = goodsList
-  padding = [hdpx(10), 0]
+  padding = const [hdpx(10), 0]
   flow = FLOW_HORIZONTAL
   gap = goodsGap
   halign = ALIGN_CENTER

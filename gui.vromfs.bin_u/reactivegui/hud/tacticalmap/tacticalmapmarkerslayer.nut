@@ -28,7 +28,7 @@ let isMapPosValid = @(p) p != null && p.x >= 0 && p.x <= 1 && p.y >= 0 && p.y <=
 
 let mkMapMarkerComp = @(id, mapPos, iconOvr) {
   key = $"mapMark{id}"
-  size = [0, 0]
+  size = 0
   pos = [pw(mapPos.x * 100), ph(mapPos.y * 100)]
   children = {
     key = $"mapMarkImg{id}"

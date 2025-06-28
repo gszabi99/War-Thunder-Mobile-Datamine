@@ -9811,39 +9811,39 @@
       "immortal": true
     },
     {
-      "name": "conex_box_e_a",
+      "name": "conex_box_e_a_dmg",
       "immortal": true
     },
     {
-      "name": "conex_box_e_b",
+      "name": "conex_box_e_b_dmg",
       "immortal": true
     },
     {
-      "name": "conex_box_f_a",
+      "name": "conex_box_f_a_dmg",
       "immortal": true
     },
     {
-      "name": "conex_box_f_b",
+      "name": "conex_box_f_b_dmg",
       "immortal": true
     },
     {
-      "name": "conex_box_g_a",
+      "name": "conex_box_g_a_dmg",
       "immortal": true
     },
     {
-      "name": "conex_box_g_b",
+      "name": "conex_box_g_b_dmg",
       "immortal": true
     },
     {
-      "name": "conex_box_h_a",
+      "name": "conex_box_h_a_dmg",
       "immortal": true
     },
     {
-      "name": "conex_box_h_b",
+      "name": "conex_box_h_b_dmg",
       "immortal": true
     },
     {
-      "name": "metal_fence_b",
+      "name": "metal_fence_b_dmg",
       "immortal": true
     },
     {
@@ -10549,6 +10549,67 @@
       "immortal": true
     },
     {
+      "name": "tree_populus_medium_a",
+      "destructionImpulse": 20000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_medium_ground",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_sea_bush_a",
+      "destructionImpulse": 3000.0,
+      "fx": "ad_bush_felling_leaves_green",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "tree_sea_bush_b",
+      "destructionImpulse": 3000.0,
+      "fx": "ad_bush_felling_leaves_green",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "tree_sea_bush_c",
+      "destructionImpulse": 3000.0,
+      "fx": "ad_bush_felling_leaves_green",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "tree_sea_bush_d",
+      "destructionImpulse": 3000.0,
+      "fx": "ad_bush_felling_leaves_green",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "tree_sea_bush_e",
+      "destructionImpulse": 3000.0,
+      "fx": "ad_bush_felling_leaves_green",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "tree_sea_bush_f",
+      "destructionImpulse": 3000.0,
+      "fx": "ad_bush_felling_leaves_green",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
       "name": "tree_tilia_large_detail_a",
       "destructionImpulse": 60000.0,
       "canopyTriangle": false,
@@ -10878,7 +10939,7 @@
     },
     {
       "name": "tree_sakura_bush_a",
-      "destructionImpulse": 30000.0,
+      "destructionImpulse": 3000.0,
       "canopyTopPart": 0.7,
       "canopyTopOffset": 0.1,
       "canopyWidthPart": 0.65,
@@ -10889,7 +10950,7 @@
     },
     {
       "name": "tree_sakura_bush_b",
-      "destructionImpulse": 30000.0,
+      "destructionImpulse": 3000.0,
       "canopyTopPart": 0.7,
       "canopyTopOffset": 0.1,
       "canopyWidthPart": 0.65,
@@ -11192,6 +11253,82 @@
       "fxScale": 1.0,
       "stopsBullets": false,
       "material": "transparentBeton"
+    },
+    {
+      "name": "tree_birch_snow_large_a",
+      "destructionImpulse": 30000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_snow_medium",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_birch_snow_large_b",
+      "destructionImpulse": 30000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_snow_medium",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_birch_snow_medium_a",
+      "destructionImpulse": 20000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_snow_medium",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_birch_snow_medium_b",
+      "destructionImpulse": 20000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_snow_medium",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_fir_snow_lush_medium_a",
+      "destructionImpulse": 30000.0,
+      "canopyTriangle": true,
+      "canopyTopPart": 1.0,
+      "canopyTopOffset": 0.0,
+      "canopyWidthPart": 0.33,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_snow_medium",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "tree_fir_snow_lush_medium_b",
+      "destructionImpulse": 30000.0,
+      "canopyTriangle": true,
+      "canopyTopPart": 1.0,
+      "canopyTopOffset": 0.0,
+      "canopyWidthPart": 0.33,
+      "canopyOpacity": 1.0,
+      "fx": "ad_tree_felling_snow_medium",
+      "fxScale": 1.0,
+      "material": "wood"
     }
   ],
   "default_building": {
@@ -19022,6 +19159,14 @@
       "fxScale": 1.0,
       "dmPreset": "wall_2_5_brick"
     },
+    "metal_fence_b": {
+      "nextRes": "metal_fence_b_dmg",
+      "hp": 60.0,
+      "impulseThreshold": 19.0,
+      "fx": "ad_metal",
+      "fxScale": 3.0,
+      "physRes": "metal_fence_b_destr_phobj"
+    },
     "highway_road_sign_a": {
       "nextRes": "highway_road_sign_a_dmg",
       "hp": 60.0,
@@ -22280,6 +22425,70 @@
       "hp": 10.0,
       "isParent": false,
       "impulseThreshold": 1.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "conex_box_e_a": {
+      "nextRes": "conex_box_e_a_dmg",
+      "hp": 200.0,
+      "isParent": false,
+      "impulseThreshold": 50.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "conex_box_e_b": {
+      "nextRes": "conex_box_e_b_dmg",
+      "hp": 200.0,
+      "isParent": false,
+      "impulseThreshold": 50.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "conex_box_f_a": {
+      "nextRes": "conex_box_f_a_dmg",
+      "hp": 200.0,
+      "isParent": false,
+      "impulseThreshold": 50.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "conex_box_f_b": {
+      "nextRes": "conex_box_f_b_dmg",
+      "hp": 200.0,
+      "isParent": false,
+      "impulseThreshold": 50.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "conex_box_g_a": {
+      "nextRes": "conex_box_g_a_dmg",
+      "hp": 200.0,
+      "isParent": false,
+      "impulseThreshold": 50.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "conex_box_g_b": {
+      "nextRes": "conex_box_g_b_dmg",
+      "hp": 200.0,
+      "isParent": false,
+      "impulseThreshold": 50.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "conex_box_h_a": {
+      "nextRes": "conex_box_h_a_dmg",
+      "hp": 200.0,
+      "isParent": false,
+      "impulseThreshold": 50.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0
+    },
+    "conex_box_h_b": {
+      "nextRes": "conex_box_h_b_dmg",
+      "hp": 200.0,
+      "isParent": false,
+      "impulseThreshold": 50.0,
       "fx": "ad_metal",
       "fxScale": 1.0
     },

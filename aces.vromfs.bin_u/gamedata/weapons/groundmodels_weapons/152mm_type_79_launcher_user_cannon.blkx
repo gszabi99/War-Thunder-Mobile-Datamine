@@ -723,22 +723,22 @@
   "152mm_jp_type_79_ASM": {
     "bullet": {
       "normalizationPreset": "heat",
-      "ricochetPreset": "atgm",
-      "groundRicochetPreset": "atgm",
-      "secondaryShattersPreset": "ap",
+      "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
+      "secondaryShattersPreset": "ap_rocket",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "atgm_tank",
-      "cumulativeSecondaryShattersPreset": "atgm",
-      "explodeOnRendinst": true,
+      "bulletType": "atgm_vt_fuze_tank",
+      "slopeEffectPreset": "ap",
       "fresnel": [
         0.23,
         0.1,
         2.0
       ],
-      "shellAnimation": "video/shells_animations/atgm.ivf",
+      "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/he_vt.ivf",
       "bulletName": "type_79_atgm",
       "mass": 19.9,
       "caliber": 0.152,
@@ -770,24 +770,24 @@
         "massEnd": 18.0,
         "massEnd1": 16.0,
         "explosiveType": "comp_b",
-        "explosiveMass": 4.2,
+        "explosiveMass": 2.3,
         "normalizationPreset": "heat",
-        "ricochetPreset": "atgm",
-        "groundRicochetPreset": "atgm",
-        "secondaryShattersPreset": "ap",
+        "ricochetPreset": "he",
+        "groundRicochetPreset": "he",
+        "secondaryShattersPreset": "ap_rocket",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.3,
         "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "atgm_tank",
-        "cumulativeSecondaryShattersPreset": "atgm",
-        "explodeOnRendinst": true,
+        "bulletType": "atgm_vt_fuze_tank",
+        "slopeEffectPreset": "ap",
         "fresnel": [
           0.23,
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/atgm.ivf",
+        "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_vt.ivf",
         "maxDeltaAngle": 0.03,
         "dragCx": 0.027,
         "length": 1.15,
@@ -808,6 +808,7 @@
         "operatedDist": 4000.0,
         "autoLeveling": true,
         "autoAiming": true,
+        "hasProximityFuse": true,
         "selfDestructionFx": "explosion_air_selfexplosion_big",
         "explosionEffect": "hit_133_160mm_metal_he",
         "groundCollisionEffect": "hit_133_160mm_dirt_he",
@@ -865,6 +866,15 @@
         },
         "pressureDamage": {
           "damageType": "pressure"
+        },
+        "proximityFuse": {
+          "radius": 2.5,
+          "armDistance": 30.0,
+          "detectAirUnits": false,
+          "detectGroundUnits": true,
+          "detectGround": false,
+          "detectShells": false,
+          "detectDeadUnits": true
         },
         "collisions": {
           "default": {
@@ -1044,12 +1054,6 @@
             4.0,
             10000.0
           ]
-        },
-        "cumulativeDamage": {
-          "armorPower": 700.0,
-          "distance": 7.5,
-          "damage": 300.0,
-          "onHitChanceMultFire": 25.0
         },
         "tracerTrail": {
           "smokeEffect": "",

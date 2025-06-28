@@ -46,7 +46,7 @@ let { toBattleButtonForRandomBattles } = require("%rGui/mainMenu/toBattleButton.
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { boostersListActive, boostersHeight } = require("%rGui/boosters/boostersListActive.nut")
-let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
+let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { DBGLEVEL } = require("dagor.system")
 let { slotBarMainMenu, slotBarMainMenuSize } = require("%rGui/slotBar/slotBar.nut")
@@ -75,7 +75,7 @@ mainMenuUnitToShow.subscribe(@(unitId) unitId == null ? null : setHangarUnit(uni
 
 let mkUnitName = @(unit, sf) {
   vplace = ALIGN_CENTER
-  margin = [0, hdpx(20)]
+  margin = const [0, hdpx(20)]
   flow = FLOW_HORIZONTAL
   gap = hdpx(24)
   children = [
@@ -126,7 +126,7 @@ let campaignsBtn = @() {
     : [
         framedImageBtn(getCampaignPresentation(curCampaign.value).icon, chooseCampaignWnd,
           {
-            padding = [hdpx(0), hdpx(20), hdpx(0), hdpx(20) ]
+            padding = const [hdpx(0), hdpx(20), hdpx(0), hdpx(20) ]
             size = SIZE_TO_CONTENT
             sound = { click = "click" }
             imageSize = [hdpx(70) , hdpx(70)]
@@ -134,7 +134,7 @@ let campaignsBtn = @() {
             gap = hdpx(20)
           },
           {
-            size = [SIZE_TO_CONTENT, flex()]
+            size = FLEX_V
             rendObj = ROBJ_TEXT
             valign = ALIGN_CENTER
             color = 0xFFFFFFFF
@@ -207,7 +207,7 @@ let leftTopButtons = {
     btnVerRow([
       mkGamercard(dropMenuBtn)
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         children = [
           {
             hplace = ALIGN_LEFT
@@ -218,7 +218,7 @@ let leftTopButtons = {
             ]
           }
           {
-            size = [0, 0]
+            size = 0
             hplace = ALIGN_RIGHT
             halign = ALIGN_RIGHT
             children = offerPromo

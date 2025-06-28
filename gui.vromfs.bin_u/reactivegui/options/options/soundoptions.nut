@@ -5,7 +5,14 @@ from "soundOptions" import SND_TYPE_MASTER, SND_TYPE_MUSIC, SND_TYPE_MENU_MUSIC,
   is_sound_inited, get_sound_volume, set_sound_volume, get_option_voice_message_voice, set_option_voice_message_voice
 let { eventbus_send } = require("eventbus")
 let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
+let { addonsSizes } = require("%appGlobals/updater/addonsState.nut")
+let { localizeAddonsLimited, getAddonsSizeInMb, mbToString } = require("%appGlobals/updater/addons.nut")
+let { sendLoadingAddonsBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { optionsVersion } = require("%rGui/options/guiOptions.nut")
+let { isExtendedSoundAllowed } = require("%rGui/options/debugOptions.nut")
+let { soundAddonsToDownload, isSoundAddonsEnabled, useExtendedSoundsList } = require("%rGui/updater/updaterState.nut")
+let { openMsgBox } = require("%rGui/components/msgBox.nut")
+
 
 const SOUND_MAX = 100 
 
@@ -72,6 +79,36 @@ let optRadioMessagesVoice = {
   valToString = @(v) loc($"options/radio_messages_voice/voice{v}")
 }
 
+let curUseExtendedSoundsOptionType = {
+  locId = "options/use_extended_sound"
+  ctrlType = OCT_LIST
+  value = isSoundAddonsEnabled
+  list = Computed(@() isExtendedSoundAllowed.get() ? useExtendedSoundsList : [])
+  function setValue(v) {
+    let addons = soundAddonsToDownload.get()
+    if (!v || addons.len() == 0) {
+      isSoundAddonsEnabled.set(v)
+      return
+    }
+
+    let addonsList = addons.keys()
+    log($"[ADDONS] Ask download addons on try to enable extended sound:", addonsList)
+    let sizeMb = getAddonsSizeInMb(addonsList, addonsSizes.get())
+    sendLoadingAddonsBqEvent("msg_download_sound_addons", addons, { sizeMb, source = "option_extended_sound" })
+    openMsgBox({
+      text = loc("msg/needDownloadPackForExtendedSound", {
+        pkg = localizeAddonsLimited(addonsList, 3)
+        size = mbToString(sizeMb)
+      })
+      buttons = [
+        { id = "cancel", isCancel = true }
+        { id = "download", styleId = "PRIMARY", isDefault = true, cb = @() isSoundAddonsEnabled.set(true) }
+      ]
+    })
+  }
+  valToString = @(v) loc(v ? "options/enable" : "options/disable")
+}
+
 log("SoundOptions: is_sound_inited on load ?", is_sound_inited())
 
 return {
@@ -84,6 +121,7 @@ return {
     mkSoundSlider([SND_TYPE_DIALOGS], "options/volume_dialogs")
     mkSoundSlider([SND_TYPE_RADIO], "options/volume_radio_messages")
     optRadioMessagesVoice
+    curUseExtendedSoundsOptionType
   ]
   radioMessageVoice
 }

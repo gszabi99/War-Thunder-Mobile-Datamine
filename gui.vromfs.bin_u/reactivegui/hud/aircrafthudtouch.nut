@@ -9,7 +9,8 @@ let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
 let ctrlPieMenu = require("%rGui/hud/controlsPieMenu/ctrlPieMenu.nut")
 let cameraPieMenu = require("%rGui/hud/cameraPieMenu/cameraPieMenu.nut")
 let { TargetSelector } = require("wt.behaviors")
-let { cannonsOverheat, mgunsOverheat, hasMGun0, hasCanon0, Cannon0, MGun0 } = require("%rGui/hud/airState.nut")
+let { cannonsOverheat, mgunsOverheat, addgunsOverheat, hasMGun0, hasCanon0, hasAddGun, Cannon0, MGun0, AddGun
+} = require("%rGui/hud/airState.nut")
 let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
@@ -77,10 +78,11 @@ let leftOverheatProgress = @() {
 }
 
 let rightOverheatProgress = @() {
-  watch = [hasMGun0, mgunsOverheat, MGun0]
+  watch = [hasMGun0, hasAddGun, mgunsOverheat, addgunsOverheat, MGun0, AddGun]
   size = flex()
   children = hasMGun0.get() && mgunsOverheat.get() > 0.1 && MGun0.get().time == 0.
     ? mkOverheatProgress(ORIENT_RIGHT, mgunsOverheat.get())
+    : hasAddGun.get() && addgunsOverheat.get() > 0.1 && AddGun.get().time == 0. ? mkOverheatProgress(ORIENT_RIGHT, addgunsOverheat.get())
     : null
 }
 
@@ -168,7 +170,7 @@ eventbus_subscribe("onHitIndicator", function(evt) {
 })
 
 let targetSelectorLayer = {
-  size = [sw(100), sh(100)]
+  size = const [sw(100), sh(100)]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   behavior = TargetSelector

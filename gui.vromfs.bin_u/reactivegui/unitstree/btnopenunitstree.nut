@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { translucentButton } = require("%rGui/components/translucentButton.nut")
 let { unseenUnits } = require("%rGui/unit/unseenUnits.nut")
 let { curCampaignUnseenBranches } = require("%rGui/unitsTree/unseenBranches.nut")
-let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
+let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { openUnitsTreeWnd } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { openLvlUpWndIfCan } = require("%rGui/levelUp/levelUpState.nut")
 let { mkPriorityUnseenMarkWatch, priorityUnseenMarkFeature } = require("%rGui/components/unseenMark.nut")

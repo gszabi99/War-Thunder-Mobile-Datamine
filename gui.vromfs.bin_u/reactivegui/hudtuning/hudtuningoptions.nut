@@ -116,7 +116,7 @@ let curUnitTypeInfo = @() {
 
 let content = @() {
   watch = hasAnyOfAllElemOptions
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = tuningBtnGap
@@ -135,13 +135,13 @@ let content = @() {
 
 let hudTuningOptions = @() {
   watch = transformInProgress
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   transform = { translate = [0, transformInProgress.value == null ? 0 : hdpx(-500)] }
   transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
   children = [
     @() {
       watch = isOpen
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       padding = [saBordersRv[0], saBordersRv[1], tuningBtnGap, saBordersRv[1]]
       rendObj = ROBJ_SOLID
       color = 0xC0000000

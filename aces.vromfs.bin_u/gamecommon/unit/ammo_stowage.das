@@ -435,9 +435,34 @@ def ammo_stowage_on_stop_burn_es(evt : Event;
 
 
 [es]
-def ammo_stowage_cancel_replenishment_es(evt : EventAmmoStowageCancelReplenishment;
-                                         var ammo_stowages__replenishmentStartEnd : Point2List&)
-  for start_end in ammo_stowages__replenishmentStartEnd
-    start_end.x = -1.0f
-    start_end.y = -1.0f
+def ammo_stowage_reset_replenishment_es(evt : EventAmmoStowageResetReplenishment;
+                                        eid : EntityId;
+                                        unit__ref : UnitRef;
+                                        ammo_stowages__state : UInt32List;
+                                        var ammo_stowages__replenishmentStartEnd : Point2List&;
+                                        ammo_stowages__replenishmentTime : Point2List)
+  var unit = unit__ref.unit
+  if unit.isDelayed
+    return
 
+  let current_time = float(get_app().usefulTotalTime)
+  for stowage_id, replenishment_start_end, replanishment_time in iter_range(ammo_stowages__state), ammo_stowages__replenishmentStartEnd, ammo_stowages__replenishmentTime
+    if replenishment_start_end.x <= 0.0 && replenishment_start_end.y <= 0.0
+      continue
+
+    if replenishment_start_end.x > current_time
+      continue
+
+
+    replenishment_start_end.x = current_time
+    replenishment_start_end.y = current_time + replanishment_time.x * unit.loaderPenalty
+
+    send_net_event(eid, EventAmmoStowageNetSyncReplanishmentReset(stowageId = stowage_id, endTime = replenishment_start_end.y))
+
+
+[es(tag=netClient)]
+def ammo_stowage_sync_reset_replenishment_es(evt : EventAmmoStowageNetSyncReplanishmentReset;
+                                             var ammo_stowages__replenishmentStartEnd : Point2List&)
+  if evt.stowageId < length(ammo_stowages__replenishmentStartEnd)
+    let current_time = float(get_app().usefulTotalTime)
+    ammo_stowages__replenishmentStartEnd[evt.stowageId] = float2(current_time, evt.endTime)

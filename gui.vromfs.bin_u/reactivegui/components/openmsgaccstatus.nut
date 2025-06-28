@@ -34,7 +34,7 @@ let openMsgAccStatus = @(msg) openMsgBox(msg.__merge({
     size = flex()
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
-    padding = [0, 0, hdpx(30), 0]
+    padding = const [0, 0, hdpx(30), 0]
     children = [
       msgBoxText(msg.text)
       userIdBlock(msg.userId)

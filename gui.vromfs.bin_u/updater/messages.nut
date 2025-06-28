@@ -67,7 +67,7 @@ let mkMsgBox = @(title, desc, buttons) bgMessage.__merge({
       children = [
         msgBoxText(desc),
         {
-          size = [ flex(), SIZE_TO_CONTENT ]
+          size = FLEX_H
           halign = ALIGN_CENTER
           flow = FLOW_HORIZONTAL
           gap = { size = flex() }

@@ -140,6 +140,9 @@
   "iPhone 16 Plus": {
     "batterySize": 4674
   },
+  "iPhone 16e": {
+    "batterySize": 4005
+  },
   "iPad 1": {
     "batterySize": 6600
   },
@@ -236,23 +239,32 @@
   "iPad 10": {
     "batterySize": 7606
   },
+  "iPad 11": {
+    "batterySize": 7606
+  },
   "iPad Pro 6 11 inch": {
     "batterySize": 7538
   },
   "iPad Pro 6 12.9 inch": {
     "batterySize": 9720
   },
-  "iPad Air 6": {
+  "iPad Air 6 11 inch": {
     "batterySize": 8900
+  },
+  "iPad Air 6 13 inch": {
+    "batterySize": 10340
+  },
+  "iPad Air 7 11 inch": {
+    "batterySize": 8900
+  },
+  "iPad Air 7 13 inch": {
+    "batterySize": 10340
   },
   "iPad Pro 7 11 inch": {
     "batterySize": 8160
   },
   "iPad Pro 7 12.9 inch": {
     "batterySize": 10290
-  },
-  "iPad Air 7": {
-    "batterySize": 10340
   },
   "iPad Mini 7": {
     "batterySize": 5078

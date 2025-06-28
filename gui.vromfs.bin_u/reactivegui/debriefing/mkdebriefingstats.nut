@@ -30,7 +30,7 @@ function playerPlaceCtor(_uid, place, _printVal, startTime) {
     size = [flex(), playerPlaceIconSize]
     halign = ALIGN_RIGHT
     children = {
-      size = [hdpx(20), flex()] 
+      size = const [hdpx(20), flex()] 
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [
@@ -147,7 +147,7 @@ let mkInlineIcon = @(children) {
 }
 
 let mkStat = @(uid, text, value, startTime, printVal, valueCtor) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   children = [
@@ -173,7 +173,7 @@ function mkItemsUsedRows(itemsUsed, delay) {
     if (!doesLocTextExist(locId))
       locId = "debriefing/spent/default"
     return {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       children = [
@@ -228,7 +228,7 @@ function mkDebriefingStats(debrData, startAnimTime) {
       }
     : {
         debriefingStats = {
-          size = [hdpx(750), SIZE_TO_CONTENT]
+          size = const [hdpx(750), SIZE_TO_CONTENT]
           flow = FLOW_VERTICAL
           children
         }

@@ -14,7 +14,7 @@ let mkTitle = @(ovr = {}) @() chosenTitle.value
 
 let choosenMark = @(size = defMarkSize, ovr = {}) {
   size = [size, size]
-  margin = [hdpxi(10), hdpxi(15)]
+  margin = const [hdpxi(10), hdpxi(15)]
   rendObj = ROBJ_IMAGE
   color = 0xFF78FA78
   image = Picture($"ui/gameuiskin#check.svg:{size}:{size}:P")

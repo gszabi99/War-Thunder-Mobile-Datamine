@@ -165,7 +165,7 @@ let mkRows = @(rowsCfg, width) {
     let { header, valueText, color } = r
     return valueText == null ? mkDesc(width, header, color)
       : {
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           flow = FLOW_HORIZONTAL
           gap = infoGap
           children = [

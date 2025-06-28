@@ -68,7 +68,7 @@ function mkMarksOfDepthTexts(countOfMarks, scale) {
   let iconSize = scaleArr(periscopSize, scale)
   let font = prettyScaleForSmallNumberCharVariants(fontTinyShaded, scale)
   return {
-    size = [SIZE_TO_CONTENT, flex()]
+    size = FLEX_V
     margin = [0, 0, 0, hdpx(5 * scale)]
     children = array(countOfMarks / marksTextStep)
       .map(@(_, i) {
@@ -238,7 +238,7 @@ function mkDepthSliderEditView() {
           }
         ]
       }
-      { size = [hdpx(25), 0] } 
+      { size = const [hdpx(25), 0] } 
       {
         size = periscopSize
         pos = [0, -hdpx(33)]

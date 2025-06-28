@@ -69,12 +69,12 @@ function damageLogUi() {
       ]
       children = [
         {
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           text = damageTypes
           halign = ALIGN_RIGHT
         }.__update(textStyle)
         {
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           text = damageCount
           halign = ALIGN_LEFT
           animations = [

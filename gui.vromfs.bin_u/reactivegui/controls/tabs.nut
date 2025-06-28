@@ -34,7 +34,7 @@ function mkTab(cfg, isSelected, onClick) {
 
   let underline = @() {
     watch = stateFlags
-    size = [flex(), hdpx(5)]
+    size = const [flex(), hdpx(5)]
     rendObj = ROBJ_SOLID
     color = isSelected ? 0xFFFFFFFF
       : stateFlags.value & S_HOVER ? hoverColor

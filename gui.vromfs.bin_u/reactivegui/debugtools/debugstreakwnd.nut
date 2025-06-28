@@ -30,11 +30,11 @@ let wndHeader = {
     backButton(close)
     {
       rendObj = ROBJ_TEXT
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       halign = ALIGN_CENTER
       color = 0xFFFFFFFF
       text = "ui.debug.streak"
-      margin = [0, 0, 0, hdpx(15)]
+      margin = const [0, 0, 0, hdpx(15)]
     }.__update(fontBig)
   ]
 }
@@ -44,7 +44,7 @@ function mkList() {
   unlocks.extend(multiStageUnlockIdConfig.reduce(@(res, val) res.append({ id = val[2], num = 2}, {id = val[3], num = 3}, {id = val.def, num = 9}), []))
   let rows = ceil(unlocks.len().tofloat() / columns).tointeger()
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     gap = vgap
     halign = ALIGN_CENTER

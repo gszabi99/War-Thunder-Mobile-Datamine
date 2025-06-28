@@ -89,7 +89,7 @@ let contactsList = {
     mkVerticalPannableArea(
       @() {
         watch = searchContactsResult
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_VERTICAL
         children = searchContactsResult.value
           .map(@(name, uid) { uid, name })

@@ -112,7 +112,7 @@ isAuthorized.subscribe(function(v) {
 })
 
 
-let getProductId = @(goods) goods?.purchaseGuids?.switch_EU.extId
+let getProductId = @(goods) goods?.purchaseGuids.switch_EU.extId
 
 let goodsIdByProductId = Computed(function() {
   let res = {}

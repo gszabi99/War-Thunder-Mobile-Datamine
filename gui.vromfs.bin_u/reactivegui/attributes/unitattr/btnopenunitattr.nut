@@ -21,7 +21,7 @@ let statusUnitAttr = keepref(Computed(function() {
 
 let statusMark = @(sf) @() {
   watch = statusUnitAttr
-  size = [0, 0]
+  size = 0
   hplace = ALIGN_RIGHT
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER

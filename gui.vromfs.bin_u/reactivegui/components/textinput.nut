@@ -17,7 +17,7 @@ let floatingTextInputHeight = hdpx(100)
 let floatingOptions = {
   ovr = {
     size = [flex(), floatingTextInputHeight]
-    padding = [hdpx(10), hdpx(35)]
+    padding = const [hdpx(10), hdpx(35)]
     fillColor = 0x990C1113
   }
   textStyle = fontSmall

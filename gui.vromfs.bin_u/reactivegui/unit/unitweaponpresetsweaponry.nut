@@ -163,12 +163,12 @@ function getTitlePaddingBottom() {
 
 let mkSlotTitle = @(title, ovr = {}) title == "" ? null
   : {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_BOX
       fillColor = 0x44000000
       padding = [hdpx(1), defPadding]
       children = {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         rendObj = ROBJ_TEXT
         color = 0xFFFFFFFF
         text = title
@@ -184,14 +184,14 @@ let mkBeltSlot = @(w) slotBase.__merge({
   children = [
     mkBeltImage(w.equipped?.bullets ?? [], weaponSize - defPadding * 2)
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       padding = getTitlePaddingTop()
       vplace = ALIGN_TOP
       hplace = ALIGN_CENTER
       children = mkSlotTitle(caliberTitle(w))
     }
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       padding = getTitlePaddingBottom()
       vplace = ALIGN_BOTTOM
       hplace = ALIGN_CENTER
@@ -210,7 +210,7 @@ let mkWeaponSlot = @(w) slotBase.__merge({
       children = commonWeaponIcon(w)
     }
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       padding = getTitlePaddingTop()
       vplace = ALIGN_TOP
       hplace = ALIGN_CENTER
@@ -272,7 +272,7 @@ function getEquippedWeaponByGroup(weapons, belts, uName, allSlots, mods) {
 }
 
 let mkRowGroup = @(children) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   gap = cellGap
   children
@@ -284,7 +284,7 @@ let arrayToRows = @(elems, elemsInRow, ovr = {}) array(calcRowsByElems(elems, el
 
 let mkGroup = @(children) {
   rendObj = ROBJ_BOX
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   fillColor = 0xFF383B3E
   children
@@ -322,7 +322,7 @@ function mkChooseWeaponSlotWnd() {
 }
 
 let mkWeaponBlock = {
-  size = [ SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   padding = paddingWnd
   rendObj = ROBJ_SOLID
   color = 0x50000000
@@ -333,7 +333,7 @@ let mkWeaponBlock = {
 }
 
 let centralBlock = {
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   children = mkWeaponBlock
@@ -379,7 +379,7 @@ let mkBlockContent = @(preset, idx) @(){
 
 let unitWeaponPresetWeaponry = {
   size = flex()
-  padding = [0, 0, hdpx(40), 0]
+  padding = const [0, 0, hdpx(40), 0]
   children = {
     flow = FLOW_HORIZONTAL
     gap = contentGap

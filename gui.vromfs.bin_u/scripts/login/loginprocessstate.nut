@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import pause_game, sign_out
+from "%scripts/dagui_natives.nut" import sign_out
 from "%scripts/dagui_library.nut" import *
+from "gameplayBinding" import pause_game
 
 let { registerRespondent } = require("scriptRespondent")
 let { eventbus_subscribe } = require("eventbus")

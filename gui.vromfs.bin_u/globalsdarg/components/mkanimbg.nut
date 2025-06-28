@@ -34,13 +34,13 @@ function mkAnimBgLayer(layerCfg, animTime = defAnimTime) {
 
 let mkAnimBg = @(layersCfg, fbImage = null, animTime = defAnimTime) {
   key = layersCfg
-  size = [sw(100), sh(100)]
+  size = const [sw(100), sh(100)]
   rendObj = ROBJ_SOLID
   color = 0xFF000000
   halign = ALIGN_CENTER
 
   children = { 
-    size = [sh(250), sh(100)]
+    size = const [sh(250), sh(100)]
     children = [
       {
         size = flex()

@@ -1,7 +1,8 @@
-from "%scripts/dagui_natives.nut" import disable_flight_menu, is_player_unit_alive, is_respawn_screen, set_aircraft_accepted_cb
+from "%scripts/dagui_natives.nut" import disable_flight_menu, is_respawn_screen, set_aircraft_accepted_cb
 from "%scripts/dagui_library.nut" import *
 from "hudState" import hud_request_hud_tank_debuffs_state, hud_request_hud_ship_debuffs_state,
   hud_request_hud_crew_state
+let { is_player_unit_alive } = require("unit")
 let logR = log_with_prefix("[RESPAWN] ")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce, resetTimeout, setInterval, clearTimer } = require("dagor.workcycle")

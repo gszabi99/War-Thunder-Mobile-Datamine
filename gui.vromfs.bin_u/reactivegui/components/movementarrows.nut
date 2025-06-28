@@ -324,7 +324,7 @@ let mkMoveArrowsView = @(midGap, midComp = null) {
 let moveArrowsView = mkMoveArrowsView(shHud(2), null)
 let moveArrowsViewWithMode = mkMoveArrowsView(0,
   {
-    size = [flex(), hdpx(30)]
+    size = const [flex(), hdpx(30)]
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
     text = loc("HUD/ENGINE_REV_STOP_SHORT")

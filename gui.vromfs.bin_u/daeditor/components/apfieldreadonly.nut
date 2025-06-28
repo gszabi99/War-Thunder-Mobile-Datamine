@@ -20,8 +20,8 @@ function fieldReadOnly(params = {}) {
     return @() {
       watch = valText
       rendObj = ROBJ_TEXT
-      size = [flex(), SIZE_TO_CONTENT]
-      text = valText.value
+      size = FLEX_H
+      text = valText.get()
       margin = fsh(0.5)
     }
   }
@@ -29,7 +29,7 @@ function fieldReadOnly(params = {}) {
   let valText = compValToString(val)
   return @() {
     rendObj = ROBJ_TEXT
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     text = valText
     margin = fsh(0.5)
   }

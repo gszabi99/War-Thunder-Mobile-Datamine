@@ -77,7 +77,7 @@ function mkQuestText(item) {
   let header = loc(locId)
   let text = loc($"{locId}/desc")
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     gap = hdpx(8)
     children = [
@@ -105,9 +105,9 @@ function mkAchievementText(item) {
   let text = loc($"{locId}/desc")
   return {
     minHeight = hdpx(80)
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     children = {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       maxWidth = pw(100)
@@ -119,7 +119,7 @@ function mkAchievementText(item) {
 
 let purchaseContentCtor = @(textLoc, costLoc) @(rewardsPreview, item) {
   flow = FLOW_VERTICAL
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   gap = hdpx(30)
@@ -244,12 +244,12 @@ function mkItem(item, textCtor) {
   return {
     rendObj = ROBJ_SOLID
     color = bgColor
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     xmbNode = {}
     children = [
       @() {
         watch = [isUnseen, isCompletedPrevQuest]
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         children = item.hasReward
             ? {
                 margin = unseenMarkMargin
@@ -260,8 +260,8 @@ function mkItem(item, textCtor) {
       }
 
       {
-        size = [flex(), SIZE_TO_CONTENT]
-        padding = [hdpx(10), hdpx(30), hdpx(15), hdpx(30)]
+        size = FLEX_H
+        padding = const [hdpx(10), hdpx(30), hdpx(15), hdpx(30)]
         flow = FLOW_HORIZONTAL
         gap = questItemsGap
         vplace = ALIGN_CENTER
@@ -269,7 +269,7 @@ function mkItem(item, textCtor) {
         children = [
           @() {
             watch = headerPadding
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             flow = FLOW_VERTICAL
             gap = hdpx(8)
             children = isCompletedPrevQuest.get() ? [
@@ -278,7 +278,7 @@ function mkItem(item, textCtor) {
             ] : [
               {
                 rendObj = ROBJ_TEXT
-                size = [flex(), hdpx(90)]
+                size = const [flex(), hdpx(90)]
                 flow = FLOW_HORIZONTAL
                 halign = ALIGN_LEFT
                 valign = ALIGN_CENTER
@@ -344,7 +344,7 @@ function mkSectionTabs(sections, curSectionId, onSectionChange) {
   })
 
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     halign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = contentWidth * gapPart / (sLen - 1)
@@ -418,7 +418,7 @@ function calcQuestChainPositions(quests) {
 }
 
 let headerLine = @(headerChildCtor, child) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   gap = headerLineGap
   valign = ALIGN_CENTER
@@ -507,7 +507,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
 
     return {
       watch = [isProgressBySection, sections, isSectionsEmpty, hasProgressUnlock]
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       gap = pageBlocksGap
       flow = FLOW_VERTICAL
       children = isProgressBySection.get() ? [sectionsBlock, progressBlock] : [progressBlock, sectionsBlock]
@@ -555,7 +555,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
                       pannableCtors[blocksOnTop.value](
                         @() {
                           watch = questsCount
-                          size = [flex(), SIZE_TO_CONTENT]
+                          size = FLEX_H
                           flow = FLOW_VERTICAL
                           gap = hdpx(20)
                           children = array(questsCount.get())
@@ -563,7 +563,7 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
                               let q = Computed(@(prev) prevIfEqual(prev, questsSorted.get()?[i]))
                               return @() {
                                 watch = q
-                                size = [flex(), SIZE_TO_CONTENT]
+                                size = FLEX_H
                                 children = q.get() == null ? null : itemCtor(q.get())
                               }
                             })

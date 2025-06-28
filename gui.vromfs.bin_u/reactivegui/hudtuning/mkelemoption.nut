@@ -24,7 +24,7 @@ function mkHeader(header, child) {
     return textComp
 
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
@@ -41,7 +41,7 @@ let mkTooltipContentCtor = @(title, desc) @() "\n".concat(
 )
 
 let optBlock = @(header, content, openInfo, desc, locId, ovr = {}) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   children = [
     mkHeader(header,

@@ -53,7 +53,7 @@ function mkCustomIconButton(iconPath, onClick, isDisabled, hotkeys = null) {
 
 let mkButtons = @() {
   watch = [isCurrentPreset, isNotSavedPreset, isMaxSavedPresetAmountReached]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   halign = ALIGN_RIGHT
   valign = ALIGN_BOTTOM

@@ -26,7 +26,7 @@ let { curSelectedUnit, sizePlatoon, curUnitName,availableUnitsList } = require("
 let { unitActions, discountBlock } = require("%rGui/unit/unitsWndActions.nut")
 let { clearFilters } = require("%rGui/unit/unitsFilterState.nut")
 let { unseenUnits } = require("%rGui/unit/unseenUnits.nut")
-let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
+let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
 let { openExpWnd, canPurchaseLevelUp } = require("%rGui/mainMenu/expWndState.nut")
 let { levelBorder } = require("%rGui/components/levelBlockPkg.nut")
@@ -158,7 +158,7 @@ let unitFilterButton = @() {
         ]] }
       }
   : {
-      padding = [hdpx(10), hdpx(25)]
+      padding = const [hdpx(10), hdpx(25)]
       behavior = Behaviors.Button
       onElemState = @(s) filterStateFlags(s)
       onClick = @(e) openFiltersPopup(e)
@@ -462,7 +462,7 @@ function infoPanel() {
             children = [
               unitInfoPanel(
                 {
-                  size = [flex(), SIZE_TO_CONTENT]
+                  size = FLEX_H
                   maxHeight = maxInfoPanelHeight
                   halign = ALIGN_RIGHT
                   hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
@@ -515,7 +515,7 @@ function infoPanel() {
 
 let unitsTreeWnd = {
   key = {}
-  size = [sw(100), sh(100)]
+  size = const [sw(100), sh(100)]
   children = [
     mkTreeBg(isUnitsTreeOpen)
 
@@ -525,7 +525,7 @@ let unitsTreeWnd = {
     }
 
     {
-      size = [sw(100), SIZE_TO_CONTENT]
+      size = const [sw(100), SIZE_TO_CONTENT]
       padding = [saBorders[1], saBorders[0], 0, saBorders[0]]
       children = unitsTreeGamercard
     }

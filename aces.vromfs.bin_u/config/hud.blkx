@@ -81,6 +81,7 @@
   "useSmoothScaleForUHD": true,
   "showShipWinchIcon": false,
   "spectateNextUnitIfDestroy": true,
+  "showXrayShotCameraAsCutscene": true,
   "isCompassVisible": false,
   "isShipSpeedUnboosted": true,
   "distanceViewMultiplier": 2.0,
@@ -4025,7 +4026,8 @@
         "shortcutIdx": -1
       },
       "smoke_grenade_activate": {
-        "shortcutIdx": 13
+        "shortcutIdx": 13,
+        "useSalvoDelay": true
       },
       "smoke_screen_activate": {
         "shortcutIdx": 14
@@ -4803,6 +4805,34 @@
       255,
       255,
       200
-    ]
+    ],
+    "steeringAnglesTable": {
+      "point": [
+        [
+          0.0,
+          35.0
+        ],
+        [
+          0.01,
+          30.0
+        ],
+        [
+          0.05,
+          24.0
+        ],
+        [
+          0.1,
+          10.0
+        ],
+        [
+          0.25,
+          4.0
+        ],
+        [
+          1.0,
+          0.9
+        ]
+      ]
+    }
   }
 }

@@ -49,7 +49,7 @@ function tabData(tab, ovr = {}) {
           watch = tabModName
           size = flex()
           rendObj = ROBJ_IMAGE
-          image = tabModName.get() == null ? null : Picture($"ui/gameuiskin#{tabModName.value}.avif:0:P")
+          image = tabModName.get() == null ? null : Picture($"ui/gameuiskin/{tabModName.value}.avif:0:P")
           fallbackImage = Picture(defImage)
           keepAspect = KEEP_ASPECT_FILL
           imageHalign = ALIGN_LEFT

@@ -97,6 +97,7 @@ let skinsByTag = {
     "jp_camo_post_green_olive"
     "jp_camo_modern_green"
     "isr_camo_sandgreen"
+    "pak_forest_fourcolor"
   ],
 
   [DESERT] = [
@@ -300,6 +301,7 @@ let skinsByTag = {
     "camo_atlanticocean"
     "camo_destroyer_gearing_lny"
     "ussr_1114_rct"
+    "camo_yellow"
   ],
 
   [AIR] = [

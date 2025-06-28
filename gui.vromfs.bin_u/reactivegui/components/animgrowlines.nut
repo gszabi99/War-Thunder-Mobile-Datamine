@@ -41,7 +41,7 @@ let lerpVectorLine = @(vLine, start, end, cur)
     lerp(start, end, vLine[2], vLine[4], cur),
   ]
 
-function mkAGLinesCfgOrdered(lines, speed, delay = 0, size = [sw(100), sh(100)]) {
+function mkAGLinesCfgOrdered(lines, speed, delay = 0, size = const [sw(100), sh(100)]) {
   let drawers = []
   local totalTime = 1000.0 * delay
   foreach (stepList in lines) {

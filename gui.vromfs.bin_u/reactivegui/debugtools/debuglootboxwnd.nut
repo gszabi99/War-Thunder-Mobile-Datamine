@@ -18,7 +18,7 @@ let wndContentHeight = saSize[1] - wndHeaderHeight + opacityGradientSize
 let wndBackgroundColor = 0xFF5c5e73
 
 let wndHeader = @(children) {
-  size = [flex(), hdpx(60)]
+  size = const [flex(), hdpx(60)]
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(15)
@@ -26,7 +26,7 @@ let wndHeader = @(children) {
     backButton(close)
     {
       rendObj = ROBJ_TEXT
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       text = "Debug lootbox rewards"
     }.__update(fontBig)
   ].extend(children)
@@ -34,7 +34,7 @@ let wndHeader = @(children) {
 
 let pannableArea = verticalPannableAreaCtor(wndContentHeight, [opacityGradientSize, opacityGradientSize])
 let mkWndContent = @(rewards, rStyle) pannableArea({
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_VERTICAL

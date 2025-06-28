@@ -50,7 +50,7 @@ let mkImage = @(image, imageSizeMul, imageTabOffset) function() {
 function tabData(tab, idx, curTabIdx) {
   let { locId  = "", image = null, imageSizeMul = null, isVisible = null, unseen = null,
     tabContent = null, tabHeight = tabH, ovr = {}, imageTabOffset = null } = tab
-  let padding = [hdpx(10), hdpx(20)]
+  let padding = const [hdpx(10), hdpx(20)]
   let unseenMarkPos = [padding[1] + unseenSize[1] / 5, -padding[0] - unseenSize[1] / 5]
   local unseenMark = null
   if (unseen != null) {

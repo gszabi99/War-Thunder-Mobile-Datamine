@@ -135,7 +135,7 @@ let mkCurLevelBgAnimations = @(stepAnimDelay, stepAnimTime, trigger, blinkSize) 
 ]
 
 let mkLevelStatusText = @(text, isOpaque, override = {}) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text = text
@@ -149,7 +149,7 @@ let mkExpText = @(exp, color) {
   hplace = ALIGN_RIGHT
   vplace = ALIGN_CENTER
   valign = ALIGN_CENTER
-  margin = [0, hdpx(5), 0, 0]
+  margin = const [0, hdpx(5), 0, 0]
   flow = FLOW_HORIZONTAL
   gap = hdpx(3)
   children = [
@@ -236,7 +236,7 @@ let mkSlotPlateLevelComp = @(animId, curLevelIdxWatch, levelUpsArray, lineColor)
     vplace = ALIGN_BOTTOM
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    margin = [hdpx(2), hdpx(2)]
+    margin = hdpx(2)
     children = [
       mkSlotLevelBg({
         fillColor = isLevelUpPrevSteps || isLevelUpCurStep ? receivedExpProgressColor : nextLevelBgColor
@@ -278,7 +278,7 @@ let mkUnitPlateLevelComp = @(animId, curLevelIdxWatch, levelUpsArray, lineColor)
     vplace = ALIGN_BOTTOM
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    margin = [hdpx(20), hdpx(15)]
+    margin = const [hdpx(20), hdpx(15)]
     children = [
       mkUnitLevelBg({
         fillColor = isLevelUpPrevSteps || isLevelUpCurStep ? receivedExpProgressColor : nextLevelBgColor
@@ -432,7 +432,7 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
       }
       {
         size = [plateW, SIZE_TO_CONTENT]
-        margin = [hdpx(10), 0]
+        margin = const [hdpx(10), 0]
         minHeight = expTextStarSize
         valign = ALIGN_CENTER
         key = $"level_status_{animId}"

@@ -201,7 +201,10 @@ let bulletsToSpawn = Computed(function() {
 })
 
 let chosenBulletsAmount = Computed(@() chosenBullets.value.reduce(@(acc, bullet) acc + bullet.count, 0))
-let hasZeroBullets = Computed(@() chosenBulletsAmount.value == 0)
+let chosenBulletsSecAmount = Computed(@() chosenBulletsSec.get().len() > 0
+  ? chosenBulletsSec.value.reduce(@(acc, bullet) acc + bullet.count, 0)
+  : -1)
+let hasZeroBullets = Computed(@() chosenBulletsAmount.value == 0 || chosenBulletsSecAmount.value == 0)
 let hasLowBullets = Computed(@() chosenBulletsAmount.value < BULLETS_LOW_AMOUNT
   || chosenBulletsAmount.value < bulletsInfo.value.total * BULLETS_LOW_PERCENT / 100)
 let hasZeroMainBullets = Computed(@() hasExtraBullets.get()

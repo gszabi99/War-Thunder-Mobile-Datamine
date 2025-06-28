@@ -41,13 +41,13 @@ function statusBlock() {
     clipChildren = true
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         text = statusText
       }.__update(fontVeryTiny)
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         rendObj = ROBJ_TEXTAREA
         behavior = [Behaviors.TextArea, Behaviors.Marquee]
         maxHeight = hdpx(60)
@@ -72,7 +72,7 @@ let downloadInfoBlock = @() {
   texOffs = [0, gradDoubleTexOffset]
   screenOffs = [0, hdpx(50)]
   color = 0x90000000
-  padding = [hdpx(5), hdpx(20)]
+  padding = const [hdpx(5), hdpx(20)]
   gap = hdpx(20)
 
   behavior = Behaviors.Button

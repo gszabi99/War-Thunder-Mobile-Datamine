@@ -7,17 +7,19 @@ let log = require("%globalScripts/logs.nut")
 let { loc } = require("dagor.localize")
 let dargBaseLib = require("%darg/darg_library.nut")
 let screenUnits = require("screenUnits.nut")
-let { safeArea } = require("%appGlobals/safeArea.nut")
+let { safeAreaW, safeAreaH } = require("%appGlobals/safeArea.nut")
 let fontsStyle = require("fontsStyle.nut")
 
 let colorArr = @(color) [(color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF, (color >> 24) & 0xFF]
 
 let saBorders = [
-  (sw((1.0 - safeArea) * 100) / 2).tointeger(),
-  (sh((1.0 - safeArea) * 100) / 2).tointeger()
+  (sw((1.0 - safeAreaW) * 100) / 2).tointeger(),
+  (sh((1.0 - safeAreaH) * 100) / 2).tointeger()
 ]
 let saSize = [sw(100), sh(100)].map(@(v, i) v.tointeger() - 2 * saBorders[i])
 let saBordersRv = [saBorders[1], saBorders[0]]
+
+let saRatio = saSize[0].tofloat() / saSize[1]
 
 let appearAnim = @(delay, duration) [
   { prop = AnimProp.opacity, from = 0, to = 0, duration = delay, play = true }
@@ -60,12 +62,13 @@ return dargBaseLib.__merge(
   defMarqueeDelayVert = [1, 2]
 
   
-  safeArea
+  safeAreaW
+  safeAreaH
   saSize
   saBorders
   saBordersRv 
-  saRatio = saSize[0].tofloat() / saSize[1]
-  isWidescreen = (saSize[0].tofloat() / saSize[1]) >= 1.92
+  saRatio
+  isWidescreen = saRatio >= 1.92
 
   
   colon = loc("ui/colon")

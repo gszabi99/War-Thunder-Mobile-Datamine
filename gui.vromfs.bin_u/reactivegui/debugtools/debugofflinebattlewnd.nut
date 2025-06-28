@@ -151,7 +151,7 @@ let toBattleHint = @(text) {
 }
 
 let wndHeader = @(children) {
-  size = [flex(), hdpx(60)]
+  size = const [flex(), hdpx(60)]
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(15)
@@ -159,7 +159,7 @@ let wndHeader = @(children) {
     backButton(close)
     {
       rendObj = ROBJ_TEXT
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       text = loc("mainmenu/offlineBattles")
     }.__update(fontBig)
   ].extend(children)

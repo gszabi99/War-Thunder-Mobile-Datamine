@@ -6,8 +6,6 @@ return freeze({
   reload_main_script_module = @() r?["reload_main_script_module"]()
   check_login_pass = r["check_login_pass"]
   in_flight_menu = r["in_flight_menu"]
-  pause_game = r["pause_game"]
-  is_game_paused = r["is_game_paused"]
   get_cur_gui_scene = r["get_cur_gui_scene"]
   disable_flight_menu = r["disable_flight_menu"]
   exit_game = r["exit_game"]
@@ -37,7 +35,6 @@ return freeze({
   make_invalid_user_id = r["make_invalid_user_id"]
   run_reactive_gui = r["run_reactive_gui"]
   set_mute_sound_in_flight_menu = r["set_mute_sound_in_flight_menu"]
-  is_player_unit_alive = r["is_player_unit_alive"]
   set_aircraft_accepted_cb = r["set_aircraft_accepted_cb"]
   get_cur_circuit_name = r["get_cur_circuit_name"]
   save_common_local_settings = r["save_common_local_settings"]

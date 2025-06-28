@@ -70,7 +70,7 @@ function mkGoodsLootbox(goods, _, state, animParams, addChildren) {
             .__update({ hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, lootboxIconSize * 0.1] })
       amount <= 1
         ? null
-        : mkCurrencyAmountTitle(lootboxes?[lootboxId], 0, titleFontGrad).__update({ margin = [hdpx(32), 0] })
+        : mkCurrencyAmountTitle(lootboxes?[lootboxId], 0, titleFontGrad).__update({ margin = const [hdpx(32), 0] })
       mkLootboxTitle(goods)
       !canPurchase ? null : mkSquareIconBtn(fonticonPreview, onClick, { vplace = ALIGN_BOTTOM, margin = contentMargin })
       mkGoodsTimeLeftText(goods, { vplace = ALIGN_BOTTOM, margin = textMargin })

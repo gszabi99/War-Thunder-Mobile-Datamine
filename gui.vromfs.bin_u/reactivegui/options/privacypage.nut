@@ -34,7 +34,7 @@ return @() {
     mkCustomButton(
       mkButtonTextMultiline(
         loc("privacyPolicy"),
-        {size = [hdpx(450), SIZE_TO_CONTENT], lineSpacing = hdpx(-8)}.__update(fontSmallAccentedShaded)),
+        {size = const [hdpx(450), SIZE_TO_CONTENT], lineSpacing = hdpx(-8)}.__update(fontSmallAccentedShaded)),
       @() eventbus_send("openUrl", { baseUrl = PRIVACY_POLICY_URL }),
       mergeStyles(PRIMARY, buttonsWidthStyle))
     consentRequiredForCurrentRegion.get() ? textButtonPrimary(loc("mainmenu/consentPrivacy"), @() isOpenedManage(true), buttonsWidthStyle) : null

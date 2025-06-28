@@ -538,7 +538,8 @@ function aircraftMoveStickBase(scale) {
     function onDetach() {
       setVirtualAxisValue("elevator", 0)
       setVirtualAxisValue("ailerons", 0)
-      set_mouse_aim(true)
+      if (!isInBattle.get())
+        set_mouse_aim(true)
     }
     children = [
       imgBgComp
@@ -579,7 +580,8 @@ function aircraftMoveSecondaryStickBase(scale) {
     function onDetach() {
       setVirtualAxisValue("rudder", 0)
       setVirtualAxisValue("throttle", 0)
-      set_mouse_aim(true)
+      if (!isInBattle.get())
+        set_mouse_aim(true)
     }
     children = [
       imgBgComp
@@ -612,7 +614,8 @@ function aircraftMoveRudderStickBase(scale) {
     function onDetach() {
       setVirtualAxisValue("rudder", 0)
       setVirtualAxisValue("climb", 0)
-      set_mouse_aim(true)
+      if (!isInBattle.get())
+        set_mouse_aim(true)
     }
     children = [
       imgBgComp
@@ -795,7 +798,7 @@ function aircraftIndicators(scale) {
 }
 
 let aircraftIndicatorsEditView = {
-  size = [hdpx(250), hdpx(150)]
+  size = const [hdpx(250), hdpx(150)]
   valign = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   gap = hdpx(5)

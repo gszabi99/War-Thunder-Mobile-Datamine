@@ -44,7 +44,7 @@ let optionsBlockAllElems = @(options) @() optionsBlockBg.__merge({
   watch = tuningUnitType
   children = [
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       text = loc("hudTuning/allElemsOptions/desc")
@@ -87,7 +87,7 @@ function optionsPosBlock(id, options, editView, transform) {
   let valign = viewPos[1] - optionsSize[1] - offset >= minTop ? ALIGN_BOTTOM : ALIGN_TOP
 
   return {
-    size = [0, 0]
+    size = 0
     pos = [
       viewPos[0] + viewSize[0] / 2,
       viewPos[1] + (valign == ALIGN_BOTTOM ? - offset : viewSize[1] + offset)

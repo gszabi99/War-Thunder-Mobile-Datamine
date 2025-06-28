@@ -87,9 +87,9 @@ function mkTreeNodesUnitPlateSimple(unit, unitSize = unitPlateTiny) {
             flow = FLOW_VERTICAL
             children = [
               {
-                size = [flex(), SIZE_TO_CONTENT]
+                size = FLEX_H
                 flow = FLOW_HORIZONTAL
-                padding = [0, hdpx(5), 0 , 0]
+                padding = const [0, hdpx(5), 0 , 0]
                 children = [
                   mkUnitResearchPrice(researchStatus, Watched(false))
                   {size = flex()}
@@ -108,7 +108,7 @@ function mkTreeNodesUnitPlateSimple(unit, unitSize = unitPlateTiny) {
         ]
       }
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL

@@ -22,7 +22,7 @@ function updateRightsImpl() {
   client.request(rqData, function(result) {
     if (!isContactsLoggedIn.value)
       return
-    let errorStr = result?.error ?? result?.result?.error
+    let errorStr = result?.error ?? result?.result.error
     if (errorStr != null) {
       log("ERROR: invalid cln_get_user_rights result:", errorStr)
       rightsError(errorStr)

@@ -197,14 +197,14 @@ function mkDebriefingWndTabUnitsSet(debrData, params) {
         children = [
           mkMissionResultTitle(debrData, false)
           {
-            size = [hdpx(1600), flex()]
+            size = const [hdpx(1600), flex()]
             halign = ALIGN_CENTER
             flow = FLOW_HORIZONTAL
             gap = columnGap
             children = slotColumnsData.map(@(v) v.columnComp)
           }
           {
-            size = [hdpx(1600), flex()]
+            size = const [hdpx(1600), flex()]
             halign = ALIGN_CENTER
             flow = FLOW_HORIZONTAL
             gap = columnGap

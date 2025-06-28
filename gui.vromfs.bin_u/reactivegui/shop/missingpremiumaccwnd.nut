@@ -49,7 +49,7 @@ let premDesc = @() infoText.value
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
     halign = ALIGN_CENTER
-    margin = [hdpx(20), hdpx(48), hdpx(50), hdpx(48)]
+    margin = const [hdpx(20), hdpx(48), hdpx(50), hdpx(48)]
     text = infoText.value
     color = 0xC0C0C0C0
     parSpacing = hdpx(10)
@@ -60,14 +60,14 @@ let premIcon = {
   rendObj = ROBJ_IMAGE
   size = [premIconW, premIconH]
   vplace = ALIGN_CENTER
-  margin = [hdpx(20), 0, hdpx(50), 0]
+  margin = const [hdpx(20), 0, hdpx(50), 0]
   image = Picture($"ui/gameuiskin#premium_active_big.avif:{premIconW}:{premIconH}:P")
 }
 
 let buttons = @(toBattle){
   flow = FLOW_HORIZONTAL
   gap = hdpx(50)
-  margin = [hdpx(20), hdpx(48), hdpx(48), hdpx(48)]
+  margin = const [hdpx(20), hdpx(48), hdpx(48), hdpx(48)]
   children = [
     textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
       function() {

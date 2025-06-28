@@ -27,7 +27,7 @@ let buttonFrames = {
 }
 
 let patternImage = {
-  size = [ph(100), ph(100)]
+  size = ph(100)
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#button_pattern.svg:{defButtonHeight}:{defButtonHeight}")
   keepAspect = KEEP_ASPECT_NONE
@@ -107,6 +107,7 @@ let mergeStyles = @(s1, s2) (s2?.len() ?? 0) == 0 ? s1
       stateFlags = s2?.stateFlags ?? s1?.stateFlags
       tooltipCtor = s1?.tooltipCtor ?? s2?.tooltipCtor
       hasPattern = s2?.hasPattern ?? s1?.hasPattern ?? true
+      repayTime = s1?.repayTime ?? s2?.repayTime
     }
 
 let btnImgCache = {}
@@ -193,7 +194,7 @@ function mkIcon(path, size) {
 
 function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
   let { ovr = {}, childOvr = {}, gradientOvr = {}, hotkeyBlockOvr = {}, hotkeys = null,
-    tooltipCtor = null, hasPattern = true
+    tooltipCtor = null, hasPattern = true, repayTime = 0.3
   } = style
   let stateFlags = style?.stateFlags ?? Watched(0)
   let contentExt = mkButtonContentWithHotkey(stateFlags, hotkeys,
@@ -237,7 +238,7 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
           onElemState = @(v) stateFlags(v)
           onClick
         }
-      : mkButtonHoldTooltip(onClick, stateFlags, key, tooltipCtor))
+      : mkButtonHoldTooltip(onClick, stateFlags, key, tooltipCtor, repayTime))
 }
 
 let textButton = @(text, onClick, style = buttonStyles.PRIMARY)

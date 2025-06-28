@@ -40,7 +40,7 @@ let maxColumns = (saSize[0] / (gap + goodsW)).tointeger()
 let imgStyle = {
   imageHalign = ALIGN_CENTER
   imageValign = ALIGN_CENTER
-  margin = [hdpx(50), hdpx(25), 0, hdpx(25)]
+  margin = const [hdpx(50), hdpx(25), 0, hdpx(25)]
 }
 
 function getImgByAmount(curId, amount) {
@@ -138,7 +138,7 @@ function mkGoods(goods, onClick, state, animParams) {
         fillColor = 0xBF000000
         children = @() {
           watch = timeText
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           vplace = ALIGN_CENTER
@@ -196,7 +196,7 @@ function mkEventCurrenciesGoods() {
 
   return {
     watch = [eventCurrenciesGoods, currencyId, currencyToFullId, needUseScroll]
-    padding = [hdpx(45), 0, 0, 0]
+    padding = const [hdpx(45), 0, 0, 0]
     size = flex()
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
@@ -218,7 +218,7 @@ function mkEventCurrenciesGoods() {
 
 let buyEventCurrenciesHeader = @() {
   watch = [currencyId, parentEventLoc]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_CENTER
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea

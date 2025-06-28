@@ -51,37 +51,35 @@ let anyTapHint = {
   color = 0xFFA0A0A0
 }.__update(fontTiny)
 
-let nextKeyHintCtor = @(nextKeyAllowed, onClick) onClick == null ? null
-  : @() !nextKeyAllowed.get() ? { watch = nextKeyAllowed }
-    : {
-        watch = nextKeyAllowed
-        size = [flex(), SIZE_TO_CONTENT]
-        margin = [hdpx(10), 0, 0, 0]
-        behavior = Behaviors.Button
-        onClick
-        sound = { click  = "click" }
-        flow = FLOW_HORIZONTAL
-        gap = hdpx(20)
-        valign = ALIGN_CENTER
-        children = [
-          {
-            size = [flex(), msgBorderWidth]
-            rendObj = ROBJ_IMAGE
-            image = simpleHorGrad
-            color = msgBorderColor
-          }
-          anyTapHint.__merge({ hotkeys = [[$"{btnAUp} | Space", onClick]] })
-          {
-            size = [flex(), msgBorderWidth]
-            rendObj = ROBJ_IMAGE
-            image = simpleHorGrad
-            color = msgBorderColor
-            flipX = true
-          }
-        ]
-      }
+let nextKeyHintCtor = @(onClick) onClick == null ? null
+  : {
+      size = FLEX_H
+      margin = const [hdpx(10), 0, 0, 0]
+      behavior = Behaviors.Button
+      onClick
+      sound = { click  = "click" }
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(20)
+      valign = ALIGN_CENTER
+      children = [
+        {
+          size = [flex(), msgBorderWidth]
+          rendObj = ROBJ_IMAGE
+          image = simpleHorGrad
+          color = msgBorderColor
+        }
+        anyTapHint.__merge({ hotkeys = [[$"{btnAUp} | Space", onClick]] })
+        {
+          size = [flex(), msgBorderWidth]
+          rendObj = ROBJ_IMAGE
+          image = simpleHorGrad
+          color = msgBorderColor
+          flipX = true
+        }
+      ]
+    }
 
-let messageCtor = @(text, nextKeyAllowed, onNext, textOverride = {}) {
+let messageCtor = @(text, onNext, textOverride = {}) {
   padding = defMsgPadding
   rendObj = ROBJ_BOX
   fillColor = msgBgColor
@@ -98,7 +96,7 @@ let messageCtor = @(text, nextKeyAllowed, onNext, textOverride = {}) {
       color = commonTextColor
       halign = ALIGN_CENTER
     }.__update(fontSmall, textOverride)
-    nextKeyHintCtor(nextKeyAllowed, onNext)
+    nextKeyHintCtor(onNext)
   ]
 }
 

@@ -106,7 +106,7 @@ let chooseUnitBlock = @() {
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = hdpx(50)
-  padding = [0,hdpx(50)]
+  padding = const [0,hdpx(50)]
   children = availableUnitsList.get().len() > 0
     ? [
         {
@@ -127,7 +127,7 @@ let chooseUnitBlock = @() {
       ]
     : [
         {
-          size = [hdpx(1000), SIZE_TO_CONTENT]
+          size = const [hdpx(1000), SIZE_TO_CONTENT]
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           hplace = ALIGN_CENTER
@@ -162,7 +162,7 @@ let mkLevelBlock = levelBlock({ pos = [0, 0] }, {
 let necessaryPoints = @(){
   flow = FLOW_HORIZONTAL
   hplace = ALIGN_RIGHT
-  margin = [0, hdpx(60), 0, 0]
+  margin = const [0, hdpx(60), 0, 0]
   children = [
     @(){
       watch = playerLevelInfo
@@ -180,7 +180,7 @@ let necessaryPoints = @(){
 }
 
 let experienceWnd = @() modalWndBg.__merge({
-  padding = [0,0, hdpx(50), 0]
+  padding = const [0,0, hdpx(50), 0]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = hdpx(50)

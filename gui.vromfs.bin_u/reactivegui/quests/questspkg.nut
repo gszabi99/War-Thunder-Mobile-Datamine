@@ -8,7 +8,7 @@ let { progressBarRewardSize } = require("rewardsComps.nut")
 let { CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
 let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
 let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { adsButtonCounter } = require("%rGui/ads/adsState.nut")
+let { adsButtonCounter, isProviderInited } = require("%rGui/ads/adsState.nut")
 let adBudget = require("%rGui/ads/adBudget.nut")
 let { sendBqQuestsSpeedUp } = require("bqQuests.nut")
 let { mkGlare } = require("%rGui/components/glare.nut")
@@ -42,7 +42,7 @@ let newMark = {
   screenOffs = newMarkTexOffs
   texOffs = newMarkTexOffs
   color = tagRedColor
-  padding = [0, hdpx(30), 0, hdpx(20)]
+  padding = const [0, hdpx(30), 0, hdpx(20)]
   children = txt({
     text = utf8ToUpper(loc("shop/item/new"))
     vplace = ALIGN_CENTER
@@ -126,7 +126,7 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeM
           @() {
             minHeight = progressBarRewardSize
             children = @() {
-              margin = [hdpx(5), 0, 0, 0]
+              margin = const [hdpx(5), 0, 0, 0]
               watch = iconWatch
               size = [headerIconSize, headerIconSize]
               rendObj = ROBJ_IMAGE
@@ -149,14 +149,14 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeM
 }
 
 function mkAdsBtn(unlock) {
-  let hasAdBudget = Computed(@() adBudget.value >= SPEED_UP_AD_COST)
+  let hasAdBudget = Computed(@() adBudget.get() >= SPEED_UP_AD_COST)
   function onClick() {
     if (onWatchQuestAd(unlock))
       sendBqQuestsSpeedUp(unlock)
   }
 
   return @() {
-    watch = hasAdBudget
+    watch = [hasAdBudget, isProviderInited]
     children = mkCustomButton(
       {
         size = flex()
@@ -165,7 +165,7 @@ function mkAdsBtn(unlock) {
         flow = FLOW_HORIZONTAL
         gap = btnGap
         children = [
-          !hasAdBudget.value ? null : {
+          !hasAdBudget.get() ? null : {
             size = !hasVip.get() ? [iconSize, iconSize] : [vipIconW, vipIconH]
             rendObj = ROBJ_IMAGE
             keepAspect = KEEP_ASPECT_FILL
@@ -174,7 +174,7 @@ function mkAdsBtn(unlock) {
               : Picture($"ui/gameuiskin#gamercard_subs_vip.svg:{vipIconW}:{vipIconH}:P")
           }
           {
-            maxWidth = hasAdBudget.value ? (btnSize[0] - iconSize - btnGap) : btnSize[0]
+            maxWidth = hasAdBudget.get() ? (btnSize[0] - iconSize - btnGap) : btnSize[0]
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             halign = ALIGN_CENTER
@@ -185,7 +185,7 @@ function mkAdsBtn(unlock) {
         ]
       },
       onClick,
-      mergeStyles(hasAdBudget.value ? buttonStyles.SECONDARY : buttonStyles.COMMON , btnStyleSound)
+      mergeStyles((hasAdBudget.get() && isProviderInited.get()) ? buttonStyles.SECONDARY : buttonStyles.COMMON , btnStyleSound)
     )
   }
 }

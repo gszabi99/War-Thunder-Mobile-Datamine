@@ -75,8 +75,8 @@ let mkText = @(text, style) {
 }.__update(style)
 
 let header = {
-  size = [SIZE_TO_CONTENT, hdpx(100)]
-  padding = [0, hdpx(100), 0, 0]
+  size = const [SIZE_TO_CONTENT, hdpx(100)]
+  padding = const [0, hdpx(100), 0, 0]
   rendObj = ROBJ_9RECT
   image = gradTranspDoubleSideX
   texOffs = [0, gradDoubleTexOffset]
@@ -89,7 +89,7 @@ let header = {
   children = [
     @() {
       watch = canClose
-      size = [hdpx(80), SIZE_TO_CONTENT]
+      size = const [hdpx(80), SIZE_TO_CONTENT]
       children = canClose.value ? backButton(close, { animations = wndSwitchAnim }) : null
     }
     mkText(loc("dailyRewards/header"), fontBig)
@@ -157,6 +157,7 @@ let checkImg = {
   vplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#daily_mark_claimed.avif:{checkSize}:{checkSize}:P")
+  keepAspect = true
 }
 
 let checkImgWithAnim = checkImg.__merge({
@@ -472,7 +473,7 @@ function dayInRowInfo() {
   return daysInRow < 1 ? { watch = userstatStats }
     : mkText(loc("dailyRewards/daysInRow", { days = daysInRow })
       { watch = userstatStats
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         valign = ALIGN_BOTTOM
         halign = ALIGN_CENTER
         color = activeTextColor

@@ -193,6 +193,10 @@ eventbus_subscribe("ios.ads.onReward", function (params) {
 
 
 function showAdsForReward(rInfo) {
+  if (!isInited.get()) {
+    logerr("Trying to show ads when there is no initialized provider")
+    return
+  }
   providersStatuses.clear()
   if (isLoaded.get())
     handleShowAds(rInfo)
@@ -205,4 +209,5 @@ return {
   isAdsVisible
   showAdsForReward
   isLoaded
+  isInited
 }

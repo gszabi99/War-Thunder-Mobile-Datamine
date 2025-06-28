@@ -8,7 +8,7 @@ let { blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nu
 let { registerScene } = require("%rGui/navState.nut")
 let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
 let { GPT_UNIT, GPT_BLUEPRINT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount,
-  HIDE_PREVIEW_MODALS_ID
+  HIDE_PREVIEW_MODALS_ID, eventIdByPersonalDiscount
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -49,6 +49,7 @@ let { mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize } = requir
 let { backButtonHeight } = require("%rGui/components/backButton.nut")
 let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
 let mkGiftSchRewardBtn = require("mkGiftSchRewardBtn.nut")
+let mkPersonalDiscountBtn = require("mkPersonalDiscountBtn.nut")
 let { doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
 let skipOfferBtn = require("skipOfferBtn.nut")
 
@@ -128,9 +129,17 @@ let unitForShow = keepref(Computed(function() {
   if (!isWindowAttached.value || previewGoodsUnit.value == null)
     return null
   let unitName = curSelectedUnitId.value
-  if (unitName == previewGoodsUnit.value.name || unitName == "")
-    return previewGoodsUnit.value
-  return campUnitsCfg.get()?[unitName] ?? previewGoodsUnit.value.__merge({ name = unitName })
+  local res = unitName == previewGoodsUnit.value.name || unitName == "" ? previewGoodsUnit.get()
+    : (campUnitsCfg.get()?[unitName] ?? previewGoodsUnit.value.__merge({ name = unitName }))
+
+  let skin = previewGoods.get()?.skins[previewGoodsUnit.get()?.name]
+  if (skin != null) {
+    res = clone res
+    res.currentSkins <- clone (res?.currentSkins ?? {})
+    res.currentSkins[unitName] <- skin
+    res.currentSkins[previewGoodsUnit.get().name] <- skin
+  }
+  return res
 }))
 
 unitForShow.subscribe(function(unit) {
@@ -184,11 +193,15 @@ function openDetailsWnd() {
     name = unitForShow.value.name,
     custom = unitForShow.value,
   })
-  unitDetailsWnd({
+  let cfg = {
     name = unitForShow.get()?.name
     isUpgraded = previewGoodsUnit.value?.isUpgraded ?? false
     canShowOwnUnit = false
-  })
+  }
+  let { currentSkins = null } = unitForShow.get()
+  if (currentSkins != null && currentSkins != previewGoodsUnit.get()?.currentSkins)
+    cfg.currentSkins <- currentSkins
+  unitDetailsWnd(cfg)
 }
 
 function mkBlueprintUnitPlate(unit){
@@ -214,12 +227,12 @@ function mkBlueprintUnitPlate(unit){
             flow = FLOW_VERTICAL
             children = [
               {
-                size = [flex(), SIZE_TO_CONTENT]
+                size = FLEX_H
                 halign = ALIGN_RIGHT
-                padding = [0, hdpx(5), 0 , 0]
+                padding = const [0, hdpx(5), 0 , 0]
                 children = [
                   {
-                    size = [pw(100), SIZE_TO_CONTENT]
+                    size = const [pw(100), SIZE_TO_CONTENT]
                     rendObj = ROBJ_TEXT
                     text = "/".concat((servProfile.get()?.blueprints?[unit.name] ?? 0), (serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1) )
                     halign = ALIGN_CENTER
@@ -411,17 +424,17 @@ let itemsDesc = @() previewGoods.get().items.len() < 1 && previewGoods.get().dec
 let earlyAccessImageBlock = @(img) img == null ? null
   : {
       pos = [-saBorders[0], 0]
-      size = [sw(50), sh(50)]
+      size = const [sw(50), sh(50)]
       rendObj = ROBJ_IMAGE
       image = Picture($"{img}:0:P")
     }
 
 let earlyAccessDescriptionBlock = @(locId, unitName = null) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   gap = hdpx(10)
   children = [
-    @() itemsDescText.__update({ watch = previewGoods, padding = [hdpx(20), 0] })
+    @() itemsDescText.__update({ watch = previewGoods, padding = const [hdpx(20), 0] })
     {
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
@@ -479,7 +492,7 @@ let rightBlock = {
       size = [flex(), maxInfoPanelHeight]
       children = unitInfoPanel({
         maxHeight = maxInfoPanelHeight
-        padding = [hdpx(30), hdpx(30), hdpx(20), hdpx(30)]
+        padding = const [hdpx(30), hdpx(30), hdpx(20), hdpx(30)]
         hplace = ALIGN_RIGHT
         behavior = [ Behaviors.Button, HangarCameraControl ]
         touchMarginPriority = TOUCH_BACKGROUND
@@ -489,7 +502,7 @@ let rightBlock = {
       animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)
     }
     {
-      size = [SIZE_TO_CONTENT, flex()]
+      size = FLEX_V
       hplace = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM
       flow = FLOW_HORIZONTAL
@@ -622,7 +635,7 @@ let previewWnd = @() {
   children = !needShowUi.value ? doubleClickListener(@() needShowUi(true))
     : [
         {
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           valign = ALIGN_CENTER
           children = [
             {
@@ -630,14 +643,25 @@ let previewWnd = @() {
               flow = FLOW_HORIZONTAL
               children = [
                 mkHeader
-                @() {
-                  watch = [previewGoodsUnit, schRewards, activeOffer, previewGoods]
-                  size = [0, 0]
-                  children = activeOffer.get()?.id != previewGoods.get()?.id ? null :
-                    mkGiftSchRewardBtn(
-                      schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"]
-                      aTimeHeaderStart,
-                      skipAnimsOnce)
+                {
+                  size = 0
+                  flow = FLOW_HORIZONTAL
+                  gap = hdpx(10)
+                  children = [
+                    @() {
+                      watch = [previewGoodsUnit, schRewards, activeOffer, previewGoods]
+                      children = activeOffer.get()?.id != previewGoods.get()?.id ? null :
+                        mkGiftSchRewardBtn(
+                          schRewards.get()?[$"gift_{previewGoodsUnit.get()?.campaign}_offer"]
+                          aTimeHeaderStart,
+                          skipAnimsOnce)
+                    }
+                    @() {
+                      watch = [eventIdByPersonalDiscount, previewGoods]
+                      children = !eventIdByPersonalDiscount.get() || !previewGoods.get()?.id ? null :
+                        mkPersonalDiscountBtn(eventIdByPersonalDiscount.get(), aTimeHeaderStart)
+                    }
+                  ]
                 }
               ]
             }

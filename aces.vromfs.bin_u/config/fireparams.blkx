@@ -142,6 +142,46 @@
       "extinguishChance": 0.99,
       "penetration": 15.0
     },
+    "fuel_exterior": {
+      "damage": 1.0,
+      "damageType": "fire",
+      "isDamageRelative": false,
+      "radiusScales": [
+        0.4,
+        0.6
+      ],
+      "maxFireTime": [
+        10.0,
+        10.0
+      ],
+      "penetration": 3.0,
+      "extinguisherEffective": false,
+      "fxPresetName": "fuel_exterior",
+      "extinguishChance": 0.99,
+      "allowMultipleFx": true
+    },
+    "fuel_internal": {
+      "damage": 0.05,
+      "damageType": "fire",
+      "radiusScale": 1.5,
+      "fxPresetName": "fuel_internal",
+      "maxFireTime": [
+        20.0,
+        30.0
+      ],
+      "penetration": 4.0,
+      "engineExtinguishFireSpeed": [
+        0.0,
+        55.0
+      ],
+      "engineExtinguishFireSpeedChance": [
+        0.9,
+        1.0
+      ],
+      "nonExtinguishFireTime": 1.0,
+      "underwaterExtinguishTime": 1.0,
+      "underwaterExtinguishAdditionalWater": 0.05
+    },
     "hull_bustle": {
       "damage": 1.0,
       "damageType": "fire",

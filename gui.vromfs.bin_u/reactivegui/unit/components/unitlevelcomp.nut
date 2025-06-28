@@ -40,7 +40,7 @@ function mkUnitLevelBlock(unit, override = {}) {
       ? 1.0 * clamp(exp, 0, nextLevelExp) / nextLevelExp
     : 0.0
   return {
-    size = [ flex(), SIZE_TO_CONTENT ]
+    size = FLEX_H
     valign = ALIGN_CENTER
     children = [
       mkProgressLevelBg({

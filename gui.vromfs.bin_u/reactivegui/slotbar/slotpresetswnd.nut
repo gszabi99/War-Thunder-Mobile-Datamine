@@ -146,7 +146,7 @@ function mkPresetButtons(presets, presetIdx) {
 
   return @() {
     watch = [presets, isCurrentPreset, isNotSavedPreset, isMaxSavedPresetAmountReached, curCampaign]
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     halign = ALIGN_RIGHT
     vplace =  ALIGN_BOTTOM
     flow = FLOW_HORIZONTAL
@@ -285,11 +285,11 @@ let mkBlockContent = @(preset, pIdx, activePresetIdx, activeSlotIdx) @() {
   size = [presetBlockWidth, SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   gap = hdpx(4)
-  padding = [hdpx(10), hdpx(2), hdpx(2)]
+  padding = const [hdpx(10), hdpx(2), hdpx(2)]
   children = [
     {
       rendObj = ROBJ_TEXT
-      margin = [0, 0, 0, hdpx(4)]
+      margin = const [0, 0, 0, hdpx(4)]
       text = $"{preset.name}{!(isEqual(preset.presetUnits, currentPresetUnits.get())) ? "" : $" ({loc("presets/current")})"}"
     }.__update(fontTinyShaded)
     mkPresetSlots(preset, pIdx, activePresetIdx, activeSlotIdx)
@@ -365,7 +365,7 @@ function slotPresetWnd() {
           unitInfoPanel(
             {
               rendObj = ROBJ_BOX
-              size = [flex(), SIZE_TO_CONTENT]
+              size = FLEX_H
               hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
               padding = [0, infoPanelPadding]
               animations = wndSwitchAnim

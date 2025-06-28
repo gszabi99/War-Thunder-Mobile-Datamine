@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+let { mkProgressStatusText, mkProgressbar, progressbarGap } = require("%globalsDarg/loading/loadingProgressbar.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
 let { downloadWndParams, closeDownloadAddonsWnd, wantStartDownloadAddons, isDownloadPaused, downloadAddonsStr,
   totalSizeBytes, downloadState, updaterError, progressPercent, allowLimitedDownload,
@@ -18,6 +19,8 @@ let wndUid = "downloadAddonsWnd"
 let spinnerSize = hdpx(100).tointeger()
 let downloadingColor = 0xFFE8E8E8
 let checkingColor = 0x80808080
+
+let progressPercentInt = Computed(@() progressPercent.get() ?? 0)
 
 let statusText = Computed(@() wantStartDownloadAddons.value.len() == 0 ? loc("updater/status/complete")
   : isDownloadPaused.value ? "".concat(
@@ -98,36 +101,21 @@ function pauseButton() {
 }
 
 let bottomBlock = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   vplace = ALIGN_BOTTOM
   valign = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   gap = hdpx(30)
   children = [
     pauseButton
-    {
-      size = [flex(), SIZE_TO_CONTENT]
+    @() {
+      watch = isStageDownloading
+      size = FLEX_H
       flow = FLOW_VERTICAL
-      gap = hdpx(15)
+      gap = progressbarGap
       children = [
-        @() {
-          watch = statusText
-          size = [flex(), SIZE_TO_CONTENT]
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          text = statusText.value
-        }.__update(fontMediumShaded)
-        {
-          size = [flex(), hdpx(15)]
-          rendObj = ROBJ_SOLID
-          color = 0xFF827A7A
-          children = @() {
-            watch = [progressPercent, isStageDownloading]
-            size = [pw(progressPercent.value ?? 0), flex()]
-            rendObj = ROBJ_SOLID
-            color = isStageDownloading.value ? downloadingColor : checkingColor
-          }
-        }
+        mkProgressStatusText(statusText)
+        mkProgressbar(progressPercentInt, isStageDownloading.get() ? downloadingColor : checkingColor)
       ]
     }
   ]

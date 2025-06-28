@@ -56,7 +56,7 @@ function depthControl(scale) {
         padding = [0, textPadding, 0, 0]
       }.__update(font1)
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         rendObj = ROBJ_SOLID
         color = 0,
         padding = textPadding
@@ -80,7 +80,7 @@ function depthControl(scale) {
         children = @() {
           watch = [waterDist, periscopeDepthCtrl]
           rendObj = ROBJ_TEXTAREA
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           halign = ALIGN_RIGHT
           behavior = [Behaviors.TextArea]
           text = depthText.value
@@ -105,7 +105,7 @@ let depthControlEditView = {
     {
       margin = textPadding
       rendObj = ROBJ_TEXTAREA
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       halign = ALIGN_RIGHT
       behavior = [Behaviors.TextArea]
       text = loc("controls/submarine_depth")

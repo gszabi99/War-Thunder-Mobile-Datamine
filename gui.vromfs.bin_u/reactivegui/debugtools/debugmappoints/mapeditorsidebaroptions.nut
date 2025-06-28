@@ -64,10 +64,10 @@ function onEditPreset(id, bg, mapSize) {
 }
 
 let selectPresetContent = modalBg.__merge({
-  size = [hdpx(700), hdpx(900)]
+  size = const [hdpx(700), hdpx(900)]
   children = makeVertScroll(@() {
     watch = savedPresets
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(20)
@@ -77,7 +77,7 @@ let selectPresetContent = modalBg.__merge({
 })
 
 let addPresetContent = modalBg.__merge({
-  size = [hdpx(600), SIZE_TO_CONTENT]
+  size = const [hdpx(600), SIZE_TO_CONTENT]
   function onAttach() {
     clearOrFillFields()
 
@@ -100,7 +100,7 @@ let addPresetContent = modalBg.__merge({
 })
 
 let editPresetContent = modalBg.__merge({
-  size = [hdpx(600), SIZE_TO_CONTENT]
+  size = const [hdpx(600), SIZE_TO_CONTENT]
   function onAttach() {
     clearOrFillFields(currentPresetId.get(), presetBackground.get())
 
@@ -152,7 +152,7 @@ let generatePresetsBtn = mkTextOptionBtn("Generate presets",
 
 let content = @() {
   watch = [currentPresetId, savedPresets, hasEventUnlocks]
-  size = [hdpx(300), flex()]
+  size = const [hdpx(300), flex()]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = optionsBtnGap
@@ -161,19 +161,19 @@ let content = @() {
     currentPresetId.get() ? editPresetBtn(currentPresetId.get()) : null
     savedPresets.get().len() > 1 ? selectPresetBtn : null
     hasEventUnlocks.get() ? generatePresetsBtn : null
-    { size = [SIZE_TO_CONTENT, flex()] }
+    { size = FLEX_V }
     deletePresetBtn
   ]
 }
 
 let mapEditorSidebarOptions = {
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   padding = [optionBtnSize + optionsBtnGap + saBordersRv[0], 0]
   vplace = ALIGN_BOTTOM
   children = [
     @() {
       watch = isSidebarOptionsOpen
-      size = [SIZE_TO_CONTENT, flex()]
+      size = FLEX_V
       padding = [optionsBtnGap, saBorders[0]]
       rendObj = ROBJ_SOLID
       color = 0xC0000000

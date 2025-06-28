@@ -9,7 +9,7 @@ let { round_by_value } = require("%sqstd/math.nut")
 let { utf8Capitalize, utf8ToLower, toIntegerSafe } = require("%sqstd/string.nut")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { fileName } = require("%sqstd/path.nut")
-let { isEqual, isFloat, isPoint2, unique, appendOnce, tablesCombine } = require("%sqStdLibs/helpers/u.nut")
+let { isEqual, isFloat, isPoint2, isIPoint2, unique, appendOnce, tablesCombine } = require("%sqStdLibs/helpers/u.nut")
 
 
 
@@ -36,6 +36,8 @@ let preparePartType = [
   { pattern = regexp2(@"__+"),       replace = "_" },
   { pattern = regexp2(@"_+$"),       replace = "" },
 ]
+
+let rePartIdx = regexp2("_([0-9]+)(_dm)?$")
 
 function getPartType(name, xrayRemap) {
   if (name == "")
@@ -163,11 +165,7 @@ function getFirstFound(sourceBlkArray, getter, defValue = null) {
   return result ?? defValue
 }
 
-function extractIndexFromDmPartName(partName) {
-  let strArr = partName.split("_")
-  let l = strArr.len()
-  return (l > 2 && strArr[l - 1] == "dm") ? toIntegerSafe(strArr[l - 2], -1, false) : -1
-}
+let extractIndexFromDmPartName = @(partName) rePartIdx.multiExtract("\\1", partName)?[0].tointeger() ?? -1
 
 function getXrayViewerDataByDmPartName(partName, commonData) {
   let { unitBlk } = commonData
@@ -556,7 +554,7 @@ function getWeaponByXrayPartName(unitWeaponsList, weaponPartName, linkedPartName
       return weapon
   }
   foreach (weapon in unitWeaponsList) {
-    if (isPoint2(weapon?.emitterGenRange)) {
+    if (isIPoint2(weapon?.emitterGenRange)) {
       let rangeMin = min(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
       let rangeMax = max(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
       foreach (linkKeyFmt in partLinkSourcesGenFmt)
@@ -573,6 +571,18 @@ function getWeaponByXrayPartName(unitWeaponsList, weaponPartName, linkedPartName
     if ("partsDP" in weapon && weapon["partsDP"].indexof(weaponPartName) != null)
       return weapon
   }
+
+  if (weaponPartName.startswith("auxiliary_caliber_turret")) {
+    let turretIdx = extractIndexFromDmPartName(weaponPartName)
+    foreach (weapon in unitWeaponsList)
+      if (weapon?.turret.head.startswith("auxiliary_caliber_turret") && isIPoint2(weapon?.emitterGenRange)) {
+        let turretStartIdx = extractIndexFromDmPartName(weapon.turret.head)
+        let rangeLen = abs(weapon.emitterGenRange.x - weapon.emitterGenRange.y) + 1
+        if (turretIdx >= turretStartIdx && turretIdx < turretStartIdx + rangeLen)
+          return weapon
+      }
+  }
+
   return null
 }
 
@@ -781,6 +791,9 @@ function mkWeaponPartLocId(partType, partName, weaponInfoBlk, commonData) {
   }
   return partType
 }
+
+let getWeaponLocName = @(weaponName, commonData)
+  commonData?.getWeaponLocNameCustom(weaponName, commonData) ?? loc($"weapons/{weaponName}")
 
 function getWeaponTotalBulletCount(unitWeaponsList, partType, weaponInfoBlk) {
   if (partType == "cannon_breech") {
@@ -1037,7 +1050,9 @@ function getAmmoStowageInfo(unitBlk, weaponTrigger, ammoStowageId = null, collec
 }
 
 function mkWeaponDesc(partType, params, commonData) {
-  let { unitBlk, getUnitWeaponsList, simUnitType, getWeaponNameByBlkPath, getWeaponDescTextByWeaponInfoBlk } = commonData
+  let { unitBlk, getUnitWeaponsList, simUnitType, getWeaponNameByBlkPath, getWeaponDescTextByWeaponInfoBlk,
+    shouldShowAmmoAndShotFreq = null
+  } = commonData
   let partName = params.name
   let weaponTrigger = params?.weapon_trigger
   let desc = []
@@ -1059,7 +1074,7 @@ function mkWeaponDesc(partType, params, commonData) {
 
     if (turretWeaponsNames.len() > 0)
       foreach(weaponName, weaponsCount in turretWeaponsNames)
-        desc.append("".concat(loc($"weapons/{weaponName}"),
+        desc.append("".concat(getWeaponLocName(weaponName, commonData),
           weaponsCount > 1 ? format(loc("weapons/counter"), weaponsCount) : ""))
   }
   local weaponInfoBlk = null
@@ -1088,7 +1103,7 @@ function mkWeaponDesc(partType, params, commonData) {
     let weaponBlkLink = weaponInfoBlk?.blk ?? ""
     let weaponName = getWeaponNameByBlkPath(weaponBlkLink)
     let weaponNameStr = weaponName != "" && turretWeaponsNames.len() == 0
-      ? loc($"weapons/{weaponName}")
+      ? getWeaponLocName(weaponName, commonData)
       : ""
     let unitWeaponsList = getUnitWeaponsList(commonData)
     let ammo = isSpecialBullet ? 1 : getWeaponTotalBulletCount(unitWeaponsList, partType, weaponInfoBlk)
@@ -1101,10 +1116,12 @@ function mkWeaponDesc(partType, params, commonData) {
     else {
       if (weaponNameStr != "")
         desc.append(weaponNameStr)
-      if (ammo > 1)
-        desc.append("".concat(loc("shop/ammo"), colon, ammo))
       let status = getWeaponStatus(weaponPartName, weaponInfoBlk, commonData)
-      desc.extend(getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, commonData))
+      if (shouldShowAmmoAndShotFreq?(weaponInfoBlk, commonData) ?? true) {
+        if (ammo > 1)
+          desc.append("".concat(loc("shop/ammo"), colon, ammo))
+        desc.extend(getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, commonData))
+      }
       desc.append(getMassInfo(blkOptFromPath(weaponBlkLink)))
       if (status?.isPrimary || status?.isSecondary) {
         if (weaponInfoBlk?.autoLoader)
@@ -2071,7 +2088,7 @@ function mkFireDirecirOrRangefinderDesc(_partType, params, commonData) {
     if (weaponNames.len() != 0) {
       desc.append(loc("xray/fire_control/weapons"))
       desc.extend(weaponNames
-        .map(@(n) loc($"weapons/{n}"))
+        .map(@(n) getWeaponLocName(n, commonData))
         .map(@(n) "".concat(bullet, n)))
 
       

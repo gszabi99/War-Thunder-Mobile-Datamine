@@ -207,7 +207,7 @@ function mkAsmCaptureData(endTime, cooldown) {
 let asmCaptureProgress = @() {
   watch = [asmCaptureTime, asmCaptureEndTime]
   transform = defTransform
-  size = [0, 0]
+  size = 0
   behavior = Indicator
   useTargetCenterPos = true
   offsetY = 10

@@ -119,7 +119,7 @@ let scrollHandler = ScrollHandler()
 function scrollToCurSubPreset() {
   let preset = presetBgElems.get()
     .findvalue(@(v) v.id == getFirstOrCurSubPreset())
-  let { pos = [0, 0], size = [0, 0] } = preset
+  let { pos = [0, 0], size = 0 } = preset
   scrollHandler.scrollToX(hdpxi(pos[0]) - hdpxi(size[0]/2))
   scrollHandler.scrollToY(hdpxi(pos[1]))
 }
@@ -280,7 +280,7 @@ let footer = {
           children = !curEventEndsAt.get() || (curEventEndsAt.get() - serverTime.get() < 0) ? null
             : mkTimeUntil(secondsToHoursLoc(curEventEndsAt.get() - serverTime.get()),
                 "quests/untilTheEnd",
-                { key = "event_time", margin = [hdpx(20), 0, hdpx(60), 0] }.__update(fontTinyAccented))
+                { key = "event_time", margin = const [hdpx(20), 0, hdpx(60), 0] }.__update(fontTinyAccented))
         }
         mkToBattleButtonWithSquadManagement(function() {
           if (curGmList.get().len() == 0)

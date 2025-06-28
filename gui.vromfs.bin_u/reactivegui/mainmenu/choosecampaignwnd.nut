@@ -78,7 +78,7 @@ let mkCampaignImage = @(campaign) {
 
 let mkCampaignName = @(name, sf) {
   rendObj = ROBJ_SOLID
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   padding = hdpx(12)
   vplace = ALIGN_BOTTOM
   halign = ALIGN_CENTER
@@ -200,14 +200,14 @@ function mkCampaignSkipTutorButton(){
       gap = hdpx(10)
       children = [
         {
-          size = [hdpx(40), hdpx(40)]
+          size = hdpx(40)
           rendObj = ROBJ_BOX
           fillColor = 0
           borderColor = 0x80FFFFFF
           borderWidth = 2
           children = skipTutor.get()
             ? {
-              size = [hdpx(40), hdpx(40)]
+              size = hdpx(40)
               rendObj = ROBJ_IMAGE
               image = Picture($"ui/gameuiskin#check.svg:{hdpx(40)}:{hdpx(40)}:P")
               keepAspect = true
@@ -295,7 +295,7 @@ function campaignsListUi(){
 
 let changeCampaignDesc = @() {
   watch = campaignsList
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text = loc("changeCampaign/desc")
@@ -330,7 +330,7 @@ let chooseCampaignScene = bgShaded.__merge({
   children = [
     @() {
       watch = isAnyCampaignSelected
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       children = [
         isAnyCampaignSelected.get() ? backBtn : null
         can_use_debug_console.get() ? mkCampaignSkipTutorButton : null

@@ -68,7 +68,7 @@ let header = {
     {
       rendObj = ROBJ_TEXT
       text = loc("decorators/chooseDecoratorName")
-      padding = [hdpx(40), 0,0,0]
+      padding = const [hdpx(40), 0,0,0]
     }.__update(fontMedium)
   ]
 }
@@ -122,8 +122,8 @@ function tagBtn(item) {
           : 0xFF4F4F4F
         children = !isAvailable.value
           ? {
-              size =[hdpx(25),hdpx(32)]
-              margin = [hdpx(10),hdpx(15)]
+              size =const [hdpx(25),hdpx(32)]
+              margin = const [hdpx(10),hdpx(15)]
               rendObj = ROBJ_IMAGE
               color = stateFlags.value & S_HOVER ? hoverColor : 0xFFAA1111
               image =  Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(25)}:{hdpxi(32)}:P")
@@ -133,7 +133,7 @@ function tagBtn(item) {
               isChoosen.value ? choosenMark : null)
           : isUnseen.value
             ? {
-                margin = [hdpx(15), hdpx(20)]
+                margin = const [hdpx(15), hdpx(20)]
                 children = priorityUnseenMark
               }
           : null

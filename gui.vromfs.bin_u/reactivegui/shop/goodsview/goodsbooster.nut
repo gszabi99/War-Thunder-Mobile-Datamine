@@ -15,7 +15,7 @@ let slotNameBG = {
   image = gradCircularSmallHorCorners
   screenOffs = [0, 0, hdpx(200), hdpx(200)]
   texOffs = gradCircCornerOffset
-  margin = [ hdpx(4), hdpx(10)]
+  margin = const [ hdpx(4), hdpx(10)]
 }
 
 let bgHiglight = {
@@ -60,7 +60,7 @@ function mkGoodsBooster(goods, onClick, state, animParams, addChildren) {
       mkImgs(boostersList)
       slotNameBG.__merge({
         size = [hdpx(270), viewBaseValue > 0 ? hdpx(175) : hdpx(135)]
-        padding = [hdpx(20), 0]
+        padding = const [hdpx(20), 0]
         children = boostersList.map(@(v, id)
           mkCurrencyAmountTitleArea(v,
             viewBaseValue,

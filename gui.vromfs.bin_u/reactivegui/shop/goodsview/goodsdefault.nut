@@ -10,7 +10,7 @@ let mkGoodsDefault = @(goods, onClick, state, animParams, addChildren) mkGoodsWr
   onClick,
   @(_, _) [
     goods?.isShowDebugOnly ? underConstructionBg : null
-    txt({ text = getLocNameDefault(goods), margin = [ hdpx(55), 0, 0, hdpx(35) ] })
+    txt({ text = getLocNameDefault(goods), margin = const [ hdpx(55), 0, 0, hdpx(35) ] })
     mkGoodsLimitAndEndTime(goods)
   ].extend(mkGoodsCommonParts(goods, state), addChildren),
   mkPricePlate(goods, state, animParams))

@@ -14,23 +14,23 @@ let closeLicenseWnd = @() isLicenseOpened.set(false)
 let openLicenseWnd = @() isLicenseOpened.set(true)
 
 let wndHeader = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   valign = ALIGN_CENTER
   children = [
     backButton(closeLicenseWnd)
     {
       rendObj = ROBJ_TEXT
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       halign = ALIGN_CENTER
       color = 0xFFFFFFFF
       text = loc("options/license")
-      margin = [0, 0, 0, hdpx(15)]
+      margin = const [0, 0, 0, hdpx(15)]
     }.__update(fontBig)
   ]
 }
 
 let mkLicenseContent = @() scrollbar.makeSideScroll({
-  size = [hdpx(1500), SIZE_TO_CONTENT]
+  size = const [hdpx(1500), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text = file_exists(licenseFileName) ? read_text_from_file_on_disk(licenseFileName) : ""

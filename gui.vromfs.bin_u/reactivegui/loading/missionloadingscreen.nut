@@ -46,21 +46,21 @@ let mkImage = @(path, size, ovr = null) {
 
 let textBlock = @() {
   watch = isMissionLoading
-  size = [hdpx(800), flex()]
-  margin = [hdpx(160), 0, hdpx(30), 0]
+  size = const [hdpx(800), flex()]
+  margin = const [hdpx(160), 0, hdpx(30), 0]
   flow = FLOW_VERTICAL
   gap = hdpx(40)
   children = isMissionLoading.value
     ? [
         {
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           halign = ALIGN_TOP
           text = locMissionName()
         }.__update(fontMedium)
         {
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           halign = ALIGN_TOP
@@ -100,12 +100,12 @@ return @() {
                   curCampaign.get() not in mapBgByCamp ? null
                     : {
                         size = flex()
-                        margin = [hdpx(20), hdpx(40), hdpx(20), hdpx(42)]
+                        margin = const [hdpx(20), hdpx(40), hdpx(20), hdpx(42)]
                         rendObj = ROBJ_IMAGE
                         image = Picture(mapBgByCamp[curCampaign.get()])
                       }
                   {
-                    margin = [hdpx(20), hdpx(40), hdpx(20), hdpx(42)]
+                    margin = const [hdpx(20), hdpx(40), hdpx(20), hdpx(42)]
                     size = flex()
                     rendObj = ROBJ_TACTICAL_MAP
                   }
@@ -133,7 +133,7 @@ return @() {
           rendObj = ROBJ_SOLID
           color = 0xFF000000
           children = mkLoadingTip({
-            size = [hdpx(1200), SIZE_TO_CONTENT]
+            size = const [hdpx(1200), SIZE_TO_CONTENT]
             hplace = ALIGN_CENTER
             vplace = ALIGN_CENTER
           })

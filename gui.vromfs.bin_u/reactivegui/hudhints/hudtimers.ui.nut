@@ -150,7 +150,7 @@ let timerIcon = @(timerCfg, timer) function() {
 }
 
 let timerTextStyle = {
-  size = [hdpx(100), SIZE_TO_CONTENT] 
+  size = const [hdpx(100), SIZE_TO_CONTENT] 
   halign = ALIGN_CENTER
   rendObj = ROBJ_TEXT
   color = 0xFFFFFFFF

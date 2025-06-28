@@ -16,7 +16,7 @@ let modalWndBg = freeze({
 
 let modalWndHeaderBg = freeze({
   size = [ flex(), wndHeaderHeight ]
-  padding = [0, hdpx(20)]
+  padding = const [0, hdpx(20)]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
 

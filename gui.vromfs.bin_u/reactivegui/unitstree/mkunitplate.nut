@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { unitsMaxRank, unitsTreeOpenRank } = require("%rGui/unitsTree/unitsTreeState.nut")
 let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
+let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkPlatoonPlateFrame,
   mkUnitsTreePrice, bgPlatesTranslate, mkUnitBlueprintMark, mkUnitResearchPrice,
@@ -14,7 +15,7 @@ let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
 let { discountTagUnitSmall } = require("%rGui/components/discountTag.nut")
 let { curSelectedUnit, curUnitName } = require("%rGui/unit/unitsWndState.nut")
 let { unseenUnits, markUnitSeen } = require("%rGui/unit/unseenUnits.nut")
-let { unseenSkins } = require("%rGui/unitSkins/unseenSkins.nut")
+let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
 let { mkPriorityUnseenMarkWatch, priorityUnseenMarkFeature, priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
 let { hasDataForLevelWnd, isSeen, isLvlUpAnimated } = require("%rGui/levelUp/levelUpState.nut")
 let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
@@ -40,6 +41,7 @@ let { aDelayPrice, aTimePriceScale, aTimePriceShake } = require("%rGui/unitsTree
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
 let { curCampaignUnseenBranches } = require("%rGui/unitsTree/unseenBranches.nut")
+let { draggedData } = require("%rGui/slotBar/dragDropSlotState.nut")
 
 let frameBorderWidth = hdpxi(2)
 let framesGapMul = 0.7
@@ -160,7 +162,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
     onElemState = @(s) stateFlags(s)
     clickableInfo = isSelected.get() ? { skipDescription = true } : loc("mainmenu/btnSelect")
     xmbNode
-    sound = { click  = "choose" }
+    sound = { click = "choose" }
     children = [
       mkPlatoonPlates(unit)
       mkUnitBg(unit, isLocked.get(), justUnlockedDelay.get())
@@ -228,7 +230,7 @@ let mkTreeNodesUnitPlateSpeedUpAnim = @(unit, price, discount, researchStatus, x
               children = [
                 @() {
                   watch = animUnitAfterResearch
-                  size = [flex(), SIZE_TO_CONTENT]
+                  size = FLEX_H
                   padding = plateTextsSmallPad
                   flow = FLOW_HORIZONTAL
                   children = mkUnitResearchPriceAnim(researchStatus.get(), { padding = 0 })
@@ -332,7 +334,7 @@ function mkTreeNodesUnitPlateUnlockAnim(unit, xmbNode, ovr = {}) {
           flow = FLOW_VERTICAL
           children = [
             {
-              size = [SIZE_TO_CONTENT, hdpx(40)]
+              size = const [SIZE_TO_CONTENT, hdpx(40)]
               padding = plateTextsSmallPad
               valign = ALIGN_BOTTOM
               flow = FLOW_HORIZONTAL
@@ -355,7 +357,7 @@ function mkTreeNodesUnitPlateUnlockAnim(unit, xmbNode, ovr = {}) {
               }]
             }
             {
-              size = [flex(), SIZE_TO_CONTENT]
+              size = FLEX_H
               opacity = 0
               children = mkPlateExpBar(unitsResearchStatus.get()?[unit.name])
               animations = [
@@ -383,6 +385,50 @@ function mkTreeNodesUnitPlateUnlockAnim(unit, xmbNode, ovr = {}) {
   }.__update(ovr)
 }
 
+function mkTreeNodesUnitPlateDefault(unit, xmbNode, ovr = {}) {
+  if (unit == null)
+    return null
+
+  let researchStatus = Computed(@() unitsResearchStatus.get()?[unit.name])
+  let isOwned = Computed(@() unit.name in campMyUnits.get())
+  let isLocked = Computed(@() !isOwned.get() && (unit.name not in canBuyUnits.get()))
+  let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
+  let canPurchase = Computed(@() unit.name in canBuyUnits.get())
+  let isPremium = unit?.isUpgraded || unit?.isPremium
+  let isCollectible = unit?.isCollectible
+  return @() {
+    watch = [isSelected, isOwned, isLocked, canPurchase, researchStatus, researchCountry]
+    size = unitPlateTiny
+    key = treeNodeUnitPlateKey(unit.name)
+    xmbNode
+    children = [
+      mkUnitBg(unit, isLocked.get(), null,
+        !isLocked.get() || (researchStatus.get()?.canResearch ?? false) || (researchStatus.get()?.isResearched ?? false))
+      mkUnitImage(unit, canPurchase.get() || isLocked.get())
+      mkUnitTexts(unit, loc(getUnitLocId(unit.name)), isLocked.get())
+      mkUnitInfo(unit)
+      {
+        size = flex()
+        valign = ALIGN_TOP
+        pos = [0, -selLineSize]
+        children = selectedLineHorUnits(isSelected, isPremium, isCollectible)
+      }
+      @() researchStatus.get()?.isCurrent
+        ? {
+            watch = researchStatus
+            size = [unitPlateTiny[0] + frameBorderWidth * 2, unitPlateTiny[1]]
+            rendObj = ROBJ_BOX
+            hplace = ALIGN_CENTER
+            fillColor = 0
+            borderColor = 0xFFFFFFFF
+            borderWidth = frameBorderWidth
+        }
+        : { watch = researchStatus }
+      mkProfileUnitDailyBonus(unit)
+    ]
+  }.__update(ovr)
+}
+
 function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
   if (unit == null)
     return null
@@ -394,6 +440,8 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
   let isLocked = Computed(@() !isOwned.get() && (unit.name not in canBuyUnits.get()))
   let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
   let canPurchase = Computed(@() unit.name in canBuyUnits.get())
+  let canDrag = Computed(@() isOwned.get() && isCampaignWithSlots.get())
+  let isDraggedUnit = Computed(@() draggedData.get() != null && draggedData.get()?.unitName == unit.name)
   let price = Computed(@() canPurchase.get() || (researchStatus.get()?.isResearched && unit.name not in campMyUnits.get())
       ? getUnitAnyPrice(unit, false, unitDiscounts.get())
     : null)
@@ -420,15 +468,18 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
     : animNewUnitsAfterResearch.get()?[unit.name]
       ? mkTreeNodesUnitPlateUnlockAnim(unit, xmbNode, ovr.__merge({ watch = animNewUnitsAfterResearch }))
     : {
-      watch = [isSelected, isOwned, isLocked, canPurchase, researchStatus, needShowBlueprintBar,
+      watch = [isSelected, isLocked, isDraggedUnit, canPurchase, researchStatus, needShowBlueprintBar,
         researchCountry, needToShowHighlight, animUnitAfterResearch, animNewUnitsAfterResearch,
         needDelayAnimation, canPlayAnimUnitAfterResearch]
       size = unitPlateTiny
-      behavior = Behaviors.Button
+      behavior = canDrag.get() ? Behaviors.DragAndDrop : Behaviors.Button
+      dropData = { unitName = unit.name }
+      onDragMode = @(on, data) draggedData.set(on ? data : null)
       function onClick() {
         curSelectedUnit.set(unit.name)
         markUnitSeen(unit)
       }
+      dragStartDelay = 0.5
       key = treeNodeUnitPlateKey(unit.name)
       onAttach = unitsTreeOpenRank.get() != null
         && unit.rank == (unitsTreeOpenRank.get() + min(scrollBlocks, unitsMaxRank.get() - playerLevelInfo.get().level))
@@ -445,7 +496,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
         needToShowHighlight.get()
           ? {
               key = unit.name
-              size = [flex(), ph(70)]
+              size = const [flex(), ph(70)]
               rendObj = ROBJ_IMAGE
               vplace = ALIGN_TOP
               image = highlighCurrentResearch
@@ -489,7 +540,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
           flow = FLOW_VERTICAL
           children = [
             {
-              size = [flex(), hdpx(40)]
+              size = const [flex(), hdpx(40)]
               padding = plateTextsSmallPad
               valign = ALIGN_BOTTOM
               flow = FLOW_HORIZONTAL
@@ -529,10 +580,10 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}) {
               borderColor = 0xFFFFFFFF
               borderWidth = frameBorderWidth
           }
-          : {watch = researchStatus}
+          : { watch = researchStatus }
         mkProfileUnitDailyBonus(unit)
       ]
-      transform = {}
+      transform = { scale = isDraggedUnit.get() ? [1.1, 1.1] : [1, 1] }
       animations = [
         { prop = AnimProp.rotate, to = 2, duration = aTimePriceShake, easing = Shake4,
           trigger = $"unit_exp_{unit.name}", delay = aDelayPrice }
@@ -546,6 +597,7 @@ return {
   triggerAnim
   mkUnitPlate
   mkTreeNodesUnitPlate
+  mkTreeNodesUnitPlateDefault
   framesGapMul
   treeNodeUnitPlateKey
 }

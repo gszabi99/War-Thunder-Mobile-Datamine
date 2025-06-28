@@ -18,7 +18,6 @@
   "lastclip_horizon": true,
   "clipmap_tex_mips": 5,
   "addLandToSky": true,
-  "harmonicsType": "green",
   "max_wind_strength": 3.0,
   "mapCoord0": [
     -32768.0,

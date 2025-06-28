@@ -141,7 +141,7 @@ let supportButton = transparentButton(loc("mainmenu/support"), "ui/gameuiskin#me
     textOverride = {
       children = {
         rendObj = ROBJ_FRAME
-        borderWidth = [0, 0, 2, 0]
+        borderWidth = const [0, 0, 2, 0]
         size = flex()
         pos = [0, 2]
       }
@@ -164,7 +164,7 @@ let mkTextInputField = @(textWatch, nameText, options = {}) textInput(textWatch,
 let mkPasswordInputField = @() {
   watch = [isPasswordVisible, isCanViewPassword]
   valign = ALIGN_CENTER
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   children = [
     mkTextInputField(loginPas, loc("mainmenu/password"), { password = isPasswordVisible.value ? null : "\u2022" })
     isCanViewPassword.value
@@ -207,7 +207,7 @@ function doResendCode() {
   })
 }
 let resendCodeBlock = @() {
-  size = [flex(), hdpx(55)]
+  size = const [flex(), hdpx(55)]
   flow = FLOW_HORIZONTAL
   watch = [resendTimer]
   valign = ALIGN_CENTER
@@ -237,7 +237,7 @@ let gaijinAuthorization = @() {
   gap = hdpx(30)
   children = [
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       valign = ALIGN_CENTER
       children = [
         mkGaijinLogo()

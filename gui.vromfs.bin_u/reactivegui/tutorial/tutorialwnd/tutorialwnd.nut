@@ -2,14 +2,14 @@ from "%globalsDarg/darg_library.nut" import *
 let { setInterval, clearTimer, deferOnce } = require("dagor.workcycle")
 let { addModalWindow, removeModalWindow, MWP_ALWAYS_TOP } = require("%rGui/components/modalWindows.nut")
 let tutorialWndDefStyle = require("tutorialWndDefStyle.nut")
-let { isTutorialActive, tutorialConfigVersion, getTutorialConfig, stepIdx, WND_UID, isTutorialSkipOnClick
-  nextStep, nextStepByDefaultHotkey, skipStep, nextKeyAllowed, skipKeyAllowed, getTimeAfterStepStart
+let { isTutorialActive, tutorialConfigVersion, getTutorialConfig, stepIdx, WND_UID,
+  nextStep, nextStepByDefaultHotkey, skipStep, getTimeAfterStepStart
 } = require("tutorialWndState.nut")
 let { getBox, incBoxSize, createHighlight, findGoodPos, findGoodArrowPos, sizePosToBox,
   hasInteractions, getNotInterractPos, findGoodPosX
 } = require("tutorialUtils.nut")
 
-const DEF_SKIP_TIME = 3.0
+
 let charBestPosOffsetX = hdpxi(330)
 
 let boxUpdateCount = Watched(0)
@@ -39,14 +39,12 @@ function mkBg(boxes, style, nextStepDelay) {
   }
 }
 
-let bgContinueButton = @() !nextKeyAllowed.get() ? { watch = nextKeyAllowed }
-  : {
-      watch = nextKeyAllowed
-      size = flex()
-      behavior = Behaviors.Button
-      onClick = nextStepByDefaultHotkey
-      sound = { click  = "click" }
-    }
+let bgContinueButton = {
+  size = flex()
+  behavior = Behaviors.Button
+  onClick = nextStepByDefaultHotkey
+  sound = { click  = "click" }
+}
 
 
 function mkArrowLinks(stepData, boxes, style) {
@@ -89,7 +87,7 @@ function mkMessage(text, charId, customCtor, boxes, style) {
   let character = style.characterCtor(charId, false)
   
   let charSize = calc_comp_size(character)
-  let msgSize = calc_comp_size(ctor(text, Watched(false), nextStepByDefaultHotkey))
+  let msgSize = calc_comp_size(ctor(text, nextStepByDefaultHotkey))
 
   let charPosY = sh(100) - charSize[1]
   let bestCharPos = [max(saBorders[0], sw(50) - charSize[0] - charBestPosOffsetX), charPosY]
@@ -123,7 +121,7 @@ function mkMessage(text, charId, customCtor, boxes, style) {
   return {
     messageComp = {
       pos = msgPos
-      children = ctor(text, nextKeyAllowed, nextStepByDefaultHotkey)
+      children = ctor(text, nextStepByDefaultHotkey)
     }
     messageBox = sizePosToBox(msgSize, msgPos)
     characterComp = {
@@ -133,10 +131,9 @@ function mkMessage(text, charId, customCtor, boxes, style) {
   }
 }
 
-function mkSkipButton(stepSkipDelay, boxes, style, isClickBtn) {
+function mkSkipButton(boxes, style) {
   let skipBtnKey = $"skipBtn{stepIdx.get()}"
-  let skipBtn = isClickBtn ? style.skipBtnClickCtor(skipStep, skipBtnKey)
-    : style.skipBtnCtor(stepSkipDelay, skipStep, skipBtnKey)
+  let skipBtn = style.skipBtnClickCtor(skipStep, skipBtnKey)
   let size = calc_comp_size(skipBtn)
   local pos = null
   let rightPos = [sw(95) - size[0], sh(5)]
@@ -151,11 +148,10 @@ function mkSkipButton(stepSkipDelay, boxes, style, isClickBtn) {
     pos = findGoodPos(size, rightPos, boxes)
 
   return {
-    skipBtn = @() {
-      watch = skipKeyAllowed
+    skipBtn = {
       key = $"skipBtnContainer{stepIdx.get()}"
       pos
-      children = skipKeyAllowed.get() ? skipBtn : null
+      children = skipBtn
     }
     skipBox = sizePosToBox(size, pos)
   }
@@ -197,7 +193,7 @@ function checkValidBoxes() {
 }
 
 function tutorialWnd() {
-  let watch = [tutorialConfigVersion, stepIdx, boxUpdateCountWithStep, isTutorialSkipOnClick]
+  let watch = [tutorialConfigVersion, stepIdx, boxUpdateCountWithStep]
   let config = getTutorialConfig()
   let style = tutorialWndDefStyle.__merge(config?.style ?? {})
 
@@ -232,8 +228,7 @@ function tutorialWnd() {
   let { linkBoxes = null, arrowLinks = null } = mkArrowLinks(stepData, boxes, style)
   let obstacles = (clone boxes).extend(linkBoxes ?? [])
 
-  let stepSkipTime = isTutorialSkipOnClick.get() ? 0 : (config?.stepSkipDelay ?? DEF_SKIP_TIME)
-  let { skipBtn, skipBox } = mkSkipButton(stepSkipTime, obstacles, style, isTutorialSkipOnClick.get())
+  let { skipBtn, skipBox } = mkSkipButton(obstacles, style)
   obstacles.append(skipBox)
   let { characterComp = null, messageComp = null, messageBox = null } = mkMessage(text, charId, textCtor, obstacles, style)
   if (messageBox != null)
@@ -274,7 +269,7 @@ let close = @() removeModalWindow(WND_UID)
 let open = @() addModalWindow({
   key = WND_UID
   priority = MWP_ALWAYS_TOP
-  size = [sw(100), sh(100)]
+  size = const [sw(100), sh(100)]
   children = tutorialWnd
   onClick = @() null
 })

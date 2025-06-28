@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { G_UNIT, G_UNIT_UPGRADE, G_ITEM, G_CURRENCY, G_LOOTBOX, G_PREMIUM, G_BOOSTER
+let { G_UNIT, G_UNIT_UPGRADE, G_ITEM, G_CURRENCY, G_LOOTBOX, G_PREMIUM, G_BOOSTER, G_SKIN
 } = require("%appGlobals/rewardType.nut")
 let { getGoodsType } = require("shopCommon.nut")
 
@@ -8,6 +8,7 @@ function rewardsToShopGoods(rewards) {
   let res = {
     units = []
     unitUpgrades = []
+    skins = {}
     items = {}
     lootboxes = {}
     premiumDays = 0
@@ -30,6 +31,8 @@ function rewardsToShopGoods(rewards) {
       res.premiumDays += g.count
     else if (g.gType == G_BOOSTER)
       res.boosters[g.id] <- g.count
+    else if (g.gType == G_SKIN)
+      res.skins[g.id] <- g.subId
 
   res.gtype <- getGoodsType(res)
   return res

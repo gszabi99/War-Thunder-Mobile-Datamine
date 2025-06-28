@@ -80,7 +80,7 @@ function translucentButton(icon, text, onClick, mkChild = null, ovr = {}) {
         ]
       }
       text == "" ? null : {
-        size = [SIZE_TO_CONTENT, flex()]
+        size = FLEX_V
         maxWidth = maxTextWidth
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea

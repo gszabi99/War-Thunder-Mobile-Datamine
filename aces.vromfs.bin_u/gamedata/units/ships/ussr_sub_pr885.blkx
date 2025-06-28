@@ -695,7 +695,7 @@
         "gyroAngle": 185.0,
         "courseSmoothness": 100.0,
         "maxAngularSpeed": 0.8,
-        "shotFreq": 0.04,
+        "shotFreq": 0.033,
         "turret": {
           "head": "tt_head_01",
           "gun": "tt_01"
@@ -813,7 +813,7 @@
               "gyroAngle": 185.0,
               "courseSmoothness": 100.0,
               "maxAngularSpeed": 0.8,
-              "shotFreq": 0.04,
+              "shotFreq": 0.033,
               "turret": {
                 "head": "tt_head_01",
                 "gun": "tt_01"

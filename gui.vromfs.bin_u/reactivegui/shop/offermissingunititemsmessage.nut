@@ -80,7 +80,7 @@ let purchaseDesc = {
 }
 
 let titleWnd = @(unit, itemId){
-  margin = [hdpx(20), 0,0,0]
+  margin = const [hdpx(20), 0,0,0]
   size = [titleWidth, SIZE_TO_CONTENT]
   colorTable = {
     shipNameColor = 0x1052C4E4
@@ -137,7 +137,7 @@ let mkMissingItemsComp = @(unit, timeWndShowing) Computed(function() {
     let neededCountOfGoods = ceil((reqItems - hasItems).tofloat() / goods.items[name])
     let { price = 0, currencyId = ""} = goods?.price
     let priceForGoods = price * neededCountOfGoods
-    let canBuyItem = priceForGoods <= (balance.get()?[goods?.price?.currencyId] ?? 0)
+    let canBuyItem = priceForGoods <= (balance.get()?[goods?.price.currencyId] ?? 0)
     let timeInterval = itemShowCd?[name][canBuyItem ? "hasBalance" : "noBalance"] ?? 0
     if (priceForGoods <= 0)
       continue
@@ -236,7 +236,7 @@ let mkSimpleContent = @(item){
     {
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
-      size = [hdpx(700), SIZE_TO_CONTENT]
+      size = const [hdpx(700), SIZE_TO_CONTENT]
       halign = ALIGN_CENTER
       colorTable = {
         mark = 0xFFFF0000
@@ -269,7 +269,7 @@ let mkContWithTransfToSkill = @(item) {
       children = [
         mkItemPlate(item.itemId, item.hasItems)
         {
-          margin = [0, hdpx(25)]
+          margin = const [0, hdpx(25)]
           size = arrowSize
           valign = ALIGN_CENTER
           rendObj = ROBJ_IMAGE
@@ -290,7 +290,7 @@ let mkContWithTransfToSkill = @(item) {
               image = Picture($"{battleItemsIcons[item.itemId]}:{battleItemIconSize}:{battleItemIconSize}:P")
             }
             @() {
-              size = [flex(), hdpx(30)]
+              size = const [flex(), hdpx(30)]
               vplace = ALIGN_BOTTOM
               valign = ALIGN_CENTER
               halign = ALIGN_CENTER
@@ -305,8 +305,8 @@ let mkContWithTransfToSkill = @(item) {
     {
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
-      size = [hdpx(700), SIZE_TO_CONTENT]
-      margin = [0,0,hdpx(30),0]
+      size = const [hdpx(700), SIZE_TO_CONTENT]
+      margin = const [0,0,hdpx(30),0]
       halign = ALIGN_CENTER
       colorTable = {
         mark = markTextColor
@@ -325,7 +325,7 @@ let mkContWithTransfToSkill = @(item) {
 
 let mkMsgContent = @(item, needSwitchAnim, toBattle, unit) modalWndBg.__merge({
   key = item.itemId
-  size = [ flex(), SIZE_TO_CONTENT ]
+  size = FLEX_H
   padding = [0, 0, insideIndent, 0]
   flow = FLOW_VERTICAL
   valign = ALIGN_CENTER
@@ -358,7 +358,7 @@ function itemsPurchaseMessage(missItems, toBattle, unit, onClose) {
     local needSwitchAnim = false
     return {
       watch = [itemToShow, missItems]
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       function onAttach() {
         needSwitchAnim = true
       }

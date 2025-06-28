@@ -4,7 +4,7 @@ let hudTimers = require("%rGui/hudHints/hudTimers.ui.nut")
 let hudTimerPosY = hdpx(190)
 
 return {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   hplace = ALIGN_CENTER
   vplace = ALIGN_BOTTOM
   halign = ALIGN_CENTER

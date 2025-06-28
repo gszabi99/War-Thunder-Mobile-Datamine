@@ -65,6 +65,9 @@ let customLootboxImages = {
   past_events_box_tanks_seasons_1_to_17 = "past_events_box_seasons_1_to_17.avif"
   past_events_box_ships_seasons_1_to_17 = "past_events_box_seasons_1_to_17.avif"
   past_events_box_air_seasons_1_to_17 = "past_events_box_seasons_1_to_17.avif"
+  past_events_box_tanks_seasons_1_to_18 = "past_events_box_seasons_1_to_18.avif"
+  past_events_box_ships_seasons_1_to_18 = "past_events_box_seasons_1_to_18.avif"
+  past_events_box_air_seasons_1_to_18 = "past_events_box_seasons_1_to_18.avif"
 }
 
 let customRouletteImages = {
@@ -114,6 +117,7 @@ let customLocId = {
 let lootboxLocIdByNamePart = {
   ["_medium_season_"] = "lootbox/every_day_award_medium_pack",
   ["_big_season_"] = "lootbox/every_day_award_big_pack_1",
+  ["_subbox_"] = "lootbox/lucky"
 }
 
 let defaultImgFilenameCache = {}

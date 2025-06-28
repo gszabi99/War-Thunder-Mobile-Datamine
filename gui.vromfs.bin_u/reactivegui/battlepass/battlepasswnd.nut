@@ -56,7 +56,7 @@ let header = {
       ]
     }
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       halign = ALIGN_RIGHT
       gap = hdpx(70)
@@ -69,7 +69,7 @@ let header = {
 }
 
 let scrollArrowsBlock = {
-  size = [flex(),hdpx(363)]
+  size = const [flex(),hdpx(363)]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   children = [
@@ -107,7 +107,7 @@ let levelBlock = @() {
   children = [
     bpLevelLabel($"{loc("mainmenu/rank")} {curStage.get()}")
     {
-      size = [hdpx(300), SIZE_TO_CONTENT]
+      size = const [hdpx(300), SIZE_TO_CONTENT]
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = [
@@ -119,8 +119,8 @@ let levelBlock = @() {
 }
 
 let leftMiddle = {
-  size = [SIZE_TO_CONTENT, flex()]
-  padding = [hdpx(10), 0, hdpx(20), 0]
+  size = FLEX_V
+  padding = const [hdpx(10), 0, hdpx(20), 0]
   children = [
     levelBlock
     {
@@ -132,7 +132,7 @@ let leftMiddle = {
         mkBtnOpenTabQuests(COMMON_TAB, {
           sizeBtn = [hdpx(109), hdpx(109)],
           iconSize = hdpx(85)
-          size = [hdpx(109), hdpx(109)]
+          size = hdpx(109)
         })
       ]
     }
@@ -145,7 +145,7 @@ let openPurchBpButton = @(text) textButtonMultiline(utf8ToUpper(text), openBPPur
 let rightMiddle = @() {
   watch = [isBpActive, purchasedBp]
   size = [defButtonMinWidth, flex()]
-  padding = [hdpx(10), 0, hdpx(20), 0]
+  padding = const [hdpx(10), 0, hdpx(20), 0]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   valign = ALIGN_BOTTOM
@@ -202,7 +202,7 @@ let content = @(stagesList, recommendInfo) @() {
   children = [
     middlePart(stagesList.get())
     {
-      size = [sw(100), SIZE_TO_CONTENT]
+      size = const [sw(100), SIZE_TO_CONTENT]
       hplace = ALIGN_CENTER
       children = [
         {
@@ -210,9 +210,9 @@ let content = @(stagesList, recommendInfo) @() {
           size = [flex(), progressIconSize[1]]
         }
         rewardPannable(rewardsList(stagesList.get(), recommendInfo),
-          { pos = [0, 0], size = [flex(), SIZE_TO_CONTENT], clipChilden = false },
+          { pos = [0, 0], size = FLEX_H, clipChilden = false },
           {
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
             scrollHandler = scrollHandler
           })

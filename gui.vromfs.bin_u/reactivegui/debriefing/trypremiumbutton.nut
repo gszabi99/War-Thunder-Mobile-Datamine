@@ -46,8 +46,8 @@ let btnIcon = {
 }
 
 let btnText = {
-  size = [flex(), SIZE_TO_CONTENT]
-  margin = [0, hdpx(10)]
+  size = FLEX_H
+  margin = const [0, hdpx(10)]
   halign = ALIGN_CENTER
   vplace = ALIGN_CENTER
   pos = [0, ph(29)]

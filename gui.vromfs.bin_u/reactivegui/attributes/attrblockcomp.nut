@@ -117,7 +117,7 @@ let txt = @(ovr) {
 }.__merge(fontTiny, ovr)
 
 let mkRowLabel = @(label) txt({
-  size=[flex(), SIZE_TO_CONTENT]
+  size=FLEX_H
   vplace = ALIGN_TOP
   valign = ALIGN_BOTTOM
   text = label
@@ -277,7 +277,7 @@ function mkProgressBarIndicators(minLevel, selLevel, maxLevel, totalLevels, mkCe
 }
 
 let mkRowProgressBar = @(minLevel, selLevel, maxLevel, totalLevels, mkCellOnClick) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   gap = cellGap
 }.__update(totalLevels > MAX_ATTRIBUTE_INDICATORS

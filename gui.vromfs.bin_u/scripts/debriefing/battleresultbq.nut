@@ -30,6 +30,7 @@ let { isInSquad } = require("%appGlobals/squadState.nut")
 let { wasBattleDataApplied } = require("%scripts/battleData/battleData.nut")
 
 let OPT_GRAPHICS_QUALITY = addLocalUserOption("OPT_GRAPHICS_QUALITY")
+let OPT_GRAPHICS_SCENE_RESOLUTION = addLocalUserOption("OPT_GRAPHICS_SCENE_RESOLUTION")
 let OPT_FPS = addLocalUserOption("OPT_FPS")
 let OPT_RAYTRACING = addLocalUserOption("OPT_RAYTRACING")
 let OPT_AA = addLocalUserOption("OPT_AA")
@@ -137,6 +138,7 @@ function onFrameTimes(evt, _eid, _comp) {
     mission = get_current_mission_name()
     fpsLimit = get_gui_option(OPT_FPS)
     videoSetting = get_gui_option(OPT_GRAPHICS_QUALITY)
+    sceneResolution = get_gui_option(OPT_GRAPHICS_SCENE_RESOLUTION)
     raytracing = get_gui_option(OPT_RAYTRACING)
     sessionId = get_mp_session_id_int()
     tankMoveControlType = get_gui_option(OPT_TANK_MOVEMENT_CONTROL) ?? "stick_static"

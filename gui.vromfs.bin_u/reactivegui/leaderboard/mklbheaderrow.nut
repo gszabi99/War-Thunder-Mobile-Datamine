@@ -33,7 +33,7 @@ function headerIconButton(icon, contentCtor, hasHint) {
       !hasHint ? null
         : {
             rendObj = ROBJ_VECTOR_CANVAS
-            size = [hdpx(40), hdpx(40)]
+            size = hdpx(40)
             lineWidth = hdpx(2)
             fillColor = 0
             color = stateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF

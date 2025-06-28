@@ -22,8 +22,8 @@
   "maxAngAccelV": 0.01,
   "groundNormSmoothViscosity": 4.5,
   "customUpdateDiv": 5,
-  "drownGFactor": 0.00001,
-  "drownRollSpeed": 0.01,
+  "drownGFactor": 0.01,
+  "drownRollSpeed": 0.05,
   "SoundMove": "models.Ship",
   "tailStartOffset": -10.0,
   "DamageParts": {

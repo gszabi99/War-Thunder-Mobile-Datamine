@@ -59,8 +59,12 @@ function buildPurchaseUrl(info) {
 function mkGoods(baseGoods, info) {
   if (baseGoods == null || info == null)
     return null
-  let { shop_price = 0, shop_price_curr = "", duration = 0 } = info
-  if (shop_price == false || shop_price <= 0)
+  let { shop_price = 0, shop_price_curr = "", duration = 0, item_id = null } = info
+  if (!["integer", "float"].contains(type(shop_price))) {
+    logerr($"Gaijin shop item {item_id} has bad shop_price = ({type(shop_price)}) {shop_price}")
+    return null
+  }
+  if (shop_price <= 0)
     return null
   let currencyId = shop_price_curr.tolower()
   let platformDiscount = getGaijinDiscount(baseGoods)
@@ -112,8 +116,10 @@ function buyPlatformGoods(goodsOrId) {
 }
 
 function buyPlatformGoodsFromOtherPlatform(otherPlatformGoodsId) {
-  let relatedGaijinId = campConfigs.get()?.allGoods[otherPlatformGoodsId].relatedGaijinId
-  let guid = campConfigs.get()?.allGoods[relatedGaijinId].purchaseGuids.gaijin.guid
+  let goods = campConfigs.get()?.allGoods[otherPlatformGoodsId]
+  if (!goods)
+    return
+  let guid = goods.purchaseGuids?.gaijin.guid ?? campConfigs.get()?.allGoods[goods.relatedGaijinId].purchaseGuids.gaijin.guid
   let url = goodsInfo.get()?[guid].url
   if (url == null)
     return

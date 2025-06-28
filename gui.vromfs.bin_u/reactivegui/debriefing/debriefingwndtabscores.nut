@@ -53,7 +53,7 @@ function mkDebriefingWndTabScores(debrData, _params) {
           mkMissionResultTitle(debrData, true)
           achievementsComp
           {
-            size = [hdpx(1600), SIZE_TO_CONTENT]
+            size = const [hdpx(1600), SIZE_TO_CONTENT]
             flow = FLOW_HORIZONTAL
             gap = hdpx(100)
             children = [
@@ -62,7 +62,7 @@ function mkDebriefingWndTabScores(debrData, _params) {
             ]
           }
           questsProgressComps == null ? null : makeSideScroll({
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             halign = ALIGN_CENTER
             flow = FLOW_VERTICAL
             gap = hdpx(8)

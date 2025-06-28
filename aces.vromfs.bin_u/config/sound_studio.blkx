@@ -17,9 +17,10 @@
   "soundSpeed": 400.0,
   "acquireSndThresholdPercent": 95.0,
   "preloadSndThresholdPercent": 95.0,
+  "unloadSndThresholdPercent": 70.0,
   "simpleSound": false,
   "allwaysLoadCockpitSounds": false,
-  "forceGameLanguage": true,
+  "canChooseSpeechLanguage": true,
   "noCockpitSounds": true,
   "language": "Russian",
   "banksFolder": "sound",
@@ -37,10 +38,6 @@
   "event_surface_time_to_live": 12.0,
   "event_surface_ai_time_to_live": 6.0,
   "event_explosion_time_to_live": 6.0,
-  "FmEngineAi": "engine_ai",
-  "FmBomberEngineAi": "engine_bomber_ai",
-  "FmJetEngineAi": "engine_jet_ai",
-  "FmHeliEngineAi": "engine_heli_ai",
   "timeToRandomChatMin": 4.0,
   "timeToRandomChatMax": 8.0,
   "volumeGunDownLimit": 0.2,
@@ -170,6 +167,78 @@
           "optional": true
         },
         "_crew_dialogs_common_<lang>.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_strv103": {
+        "mobile_tanks_strv103": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_strv103.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_105mm_l74": {
+        "mobile_tanks_l7": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_l7.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_t34": {
+        "mobile_tanks_t34": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_t34.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_76mm_l11": {
+        "mobile_tanks_l11": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_l11.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_panzer4": {
+        "mobile_tanks_panzer4": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_panzer4.assets": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        }
+      },
+      "pkg_extended_75mm_kwk40": {
+        "mobile_tanks_kwk40": {
+          "async": true,
+          "preload": false,
+          "optional": true
+        },
+        "mobile_tanks_kwk40.assets": {
           "async": true,
           "preload": false,
           "optional": true

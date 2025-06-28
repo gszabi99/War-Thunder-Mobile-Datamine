@@ -79,12 +79,12 @@ function mkAttrRow(attr) {
 let unitAttrPage = @() {
   key = startIncBtnGlare
   watch = curCategory
-  size = [ flex(), SIZE_TO_CONTENT ]
+  size = FLEX_H
   onAttach = @() setInterval(incBtnAnimRepeat, startIncBtnGlare)
   onDetach = @() clearTimer(startIncBtnGlare)
   children = {
     key = curCategory.get()
-    size = [ flex(), SIZE_TO_CONTENT ]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     children = (curCategory.get()?.attrList ?? []).map(mkAttrRow)
     animations = wndSwitchAnim

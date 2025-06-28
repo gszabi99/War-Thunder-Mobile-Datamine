@@ -25,7 +25,7 @@ function urlLikeButton(text, action, style = {}) {
     transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     children = {
       rendObj = ROBJ_FRAME
-      borderWidth = [0, 0, 2, 0]
+      borderWidth = const [0, 0, 2, 0]
       size = flex()
       pos = [0, 2]
       color = Color(192, 192, 192)

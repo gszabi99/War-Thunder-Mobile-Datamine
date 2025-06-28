@@ -60,9 +60,11 @@ let { openSelectUnitToSlotWnd, canOpenSelectUnitWithModal } = require("%rGui/slo
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { unitInfoPanel, mkPlatoonOrUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
 let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { curUnitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
+let { curUnitInProgress, enable_unit_skin } = require("%appGlobals/pServer/pServerApi.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { isDisabledGoods } = require("%rGui/shop/shopState.nut")
+let { sendAppsFlyerSavedEvent } = require("%rGui/notifications/logEvents.nut")
+let { mkGradText } =  require("%rGui/unitCustom/unitCustomComps.nut")
 
 
 let wndWidth = saSize[0]
@@ -107,6 +109,8 @@ let aTitleScaleUpTime = 0.15
 let aTitleScaleDownTime = aTitleScaleUpTime
 let aTitleScaleMin = 0.75
 let aTitleScaleMax = 1.1
+
+let appsFlyerSaveId = "DefaultSkinWasReplaced"
 
 let infoTextBySource = {
   premium_convert_by_subscription = @(count) loc("reward/premium_convert_by_subscription/desc",
@@ -220,7 +224,7 @@ let WND_UID = "unseenPurchaseWindow"
 let close = @() removeModalWindow(WND_UID)
 
 let isAnimFinished = Watched(false)
-needShow.subscribe(@(v) v ? isAnimFinished(false) : null)
+needShow.subscribe(@(v) v ? isAnimFinished.set(false) : null)
 
 let mkRewardAnimProps = @(startDelay, scaleTo) {
   transform = {}
@@ -447,6 +451,25 @@ let mkDecoratorRewardLabel = @(startDelay, decoratorId)
     children = mkRewardLabel(startDelay, loc($"decorator/{allDecorators.value?[decoratorId].dType}"))
   }
 
+function mkSkinEquipButton(unitName, skinName) {
+  let unit = Computed(@() campMyUnits.get()?[unitName])
+  let currentSkin = Computed(@() unit.get()?.currentSkins[unitName] ?? "")
+
+  return @() {
+    watch = [currentSkin, unit]
+    children = !unit.get() ? null
+      : currentSkin.get() == skinName
+        ? mkGradText(loc("skins/applied")).__update({ size = SIZE_TO_CONTENT, padding = hdpx(10) })
+      : textButtonPrimary(loc("mainmenu/btnApply"),
+          function() {
+            enable_unit_skin(unitName, unitName, skinName)
+            if (skinName != "")
+              sendAppsFlyerSavedEvent("skin_equiped_1", appsFlyerSaveId)
+          },
+          { ovr = { size = [flex(), hdpx(70)] }, hasPattern = false })
+  }
+}
+
 let skinIconSize = round(rewIconSize * 0.75).tointeger()
 let skinIconBroderRadius = round(skinIconSize*0.2).tointeger()
 function mkSkinRewardIcon(startDelay, unitName, skinName) {
@@ -499,7 +522,7 @@ function mkBlueprintPlateTexts(r, rStyle) {
         valign = ALIGN_BOTTOM
         halign = ALIGN_RIGHT
         flow = FLOW_VERTICAL
-        padding = [0, hdpx(5)]
+        padding = const [0, hdpx(5)]
         children = [
           unitRank.get()
             ? mkGradRankSmall(unitRank.get()).__update({ fontSize = rStyle.textStyle.fontSize, pos = [0, hdpx(5)] })
@@ -595,8 +618,16 @@ let rewardCtors = {
   }
   skin = {
     mkIcon = @(rewardInfo) mkSkinRewardIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.subId)
-    mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay,
-      loc("skins/title", { unitName = loc(getUnitLocId(rewardInfo.id)) }))
+    mkText = @(rewardInfo) {
+      size = [rewTextMaxWidth, SIZE_TO_CONTENT]
+      flow = FLOW_VERTICAL
+      halign = ALIGN_CENTER
+      gap = hdpx(10)
+      children = [
+        mkRewardLabelMultiline(rewardInfo.startDelay, loc("skins/title", { unitName = loc(getUnitLocId(rewardInfo.id)) }))
+        mkSkinEquipButton(rewardInfo.id, rewardInfo.subId)
+      ]
+    }
   }
   blueprint = {
     mkIcon = @(rewardInfo) mkBlueprintRewardIcon(rewardInfo, REWARD_STYLE_MEDIUM)
@@ -698,7 +729,7 @@ function mkUnitPlate(unitInfo) {
 function mkUnitButton(unitInfo, myUnits, cUnitInProgress, cSlots, cCampaignSlots) {
   if (unitInfo?.unit == null)
     return null
-  let btnOvr = {ovr = { size = [unitPlateWidth, hdpx(70)], margin = [hdpx(10),0,0,0]}, hasPattern = false}
+  let btnOvr = {ovr = { size = [unitPlateWidth, hdpx(70)], margin = const [hdpx(10),0,0,0]}, hasPattern = false}
   if (cCampaignSlots != null) {
     let onClick = @() openSelectUnitToSlotWnd(unitInfo.id, unseenPurchaseUnitPlateKey(unitInfo.id))
     return cSlots.findindex(@(slot) slot.name == unitInfo.id) == null
@@ -821,7 +852,8 @@ let mkUnitRewards = @(unitsData) unitsData.len() == 0 ? null : @() {
 let wndAnimations = [{
   prop = AnimProp.scale, from = [1, 0], to = [1, 1],
   duration = aIntroTime,
-  play = true, trigger = ANIM_SKIP
+  play = true, trigger = ANIM_SKIP,
+  onFinish = @() isAnimFinished.set(true)
 }]
 
 let mkTitleAnimations = @(startDelay) [
@@ -839,7 +871,7 @@ let mkTitleAnimations = @(startDelay) [
     play = true, trigger = ANIM_SKIP }
   { prop = AnimProp.scale, from = [aTitleScaleMax, aTitleScaleMax], to = [1, 1], easing = InCubic,
     delay = startDelay + aTitleScaleDelayTime + aTitleScaleUpTime, duration = aTitleScaleDownTime,
-    play = true, trigger = ANIM_SKIP, onFinish = @() isAnimFinished(true) }
+    play = true, trigger = ANIM_SKIP, onFinish = @() isAnimFinished.set(true) }
 ]
 
 let lbValueFields = ["tillPlaces", "place", "tillPercent", "percent"]
@@ -924,7 +956,7 @@ function mkLbInfoTable(texts) {
       sizes[key] = max(sizes[key], calc_comp_size(comp)[0])
 
   return {
-    margin = [0, hdpx(150), 0, hdpx(150)]
+    margin = const [0, hdpx(150), 0, hdpx(150)]
     flow = FLOW_VERTICAL
     children = comps.map(@(data) {
       gap = hdpx(40)
@@ -951,14 +983,14 @@ function mkLeaderboardRewardTitle(startDelay, activeGroup) {
     return modalWndHeader(loc("mainmenu/you_received"))
 
   return {
-    margin = [0, 0, hdpx(20), 0]
+    margin = const [0, 0, hdpx(20), 0]
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     children = [
       modalWndHeader(loc("lb/rewardHeader"))
-      { size = [0, hdpx(30)] }
+      { size = const [0, hdpx(30)] }
       mkLbInfoTable(texts)
-      { size = [0, hdpx(60)] }
+      { size = const [0, hdpx(60)] }
       mkText(loc("mainmenu/you_received"))
     ]
     transform = {}
@@ -983,16 +1015,16 @@ function mkCustomTextRewardTitle(startDelay, activeGroup) {
     return modalWndHeader(title)
 
   return {
-    size = [flex(), SIZE_TO_CONTENT]
-    margin = [0, 0, hdpx(20), 0]
+    size = FLEX_H
+    margin = const [0, 0, hdpx(20), 0]
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     children = [
       modalWndHeader(title)
-      { size = [0, hdpx(30)] }
+      { size = const [0, hdpx(30)] }
       {
-        size = [flex(), SIZE_TO_CONTENT]
-        padding = [0, hdpx(30)]
+        size = FLEX_H
+        padding = const [0, hdpx(30)]
         maxWidth = hdpx(1100)
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
@@ -1033,13 +1065,13 @@ let mkTapToContinueText = @(startDelay) {
 }.__update(fontMedium)
 
 function skipAnims() {
-  isAnimFinished(true)
+  isAnimFinished.set(true)
   anim_skip(ANIM_SKIP)
   anim_skip_delay(ANIM_SKIP_DELAY)
 }
 
 function onCloseRequest() {
-  if (!isAnimFinished.value) {
+  if (!isAnimFinished.get()) {
     skipAnims()
     return
   }
@@ -1175,13 +1207,13 @@ if (((stackData.get()?.convertions.len() ?? 0) > 0
   || (stackData.get()?.discounts.len() ?? 0) > 0)
     && (stackData.get()?.rewardIcons.len() ?? 0) == 0) {
   showAddRewardMessage()
-  isAnimFinished(true)
+  isAnimFinished.set(true)
 }
 
 stackData.subscribe(function(v) {
-  if(((v?.convertions.len() ?? 0) > 0 || (v?.discounts.len() ?? 0) > 0) && (stackData.get()?.rewardIcons.len() ?? 0) == 0){
+  if (((v?.convertions.len() ?? 0) > 0 || (v?.discounts.len() ?? 0) > 0) && (stackData.get()?.rewardIcons.len() ?? 0) == 0){
     showAddRewardMessage()
-    isAnimFinished(true)
+    isAnimFinished.set(true)
   }
   else
     removeModalWindow($"{WND_UID}_add")

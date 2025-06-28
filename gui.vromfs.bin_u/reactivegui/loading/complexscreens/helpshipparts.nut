@@ -205,7 +205,7 @@ function mkHintBlock(hint) {
     pos = [pw(pos[0]), ph(pos[1])]
   }
   return {
-    size = [0, 0]
+    size = 0
     pos
     children = {
       rendObj = ROBJ_BOX
@@ -227,7 +227,7 @@ function mkTgtPoint(hint) {
   if (lines == null)
     return null
   return {
-    size = [0, 0]
+    size = 0
     pos = [pw(lines[0]), ph(lines[1])]
     children = {
       size = [pointSize, pointSize]
@@ -241,7 +241,7 @@ function mkTgtPoint(hint) {
 
 function makeScreen() {
   return {
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     rendObj = ROBJ_SOLID
     color = 0xFF000000
     children = {

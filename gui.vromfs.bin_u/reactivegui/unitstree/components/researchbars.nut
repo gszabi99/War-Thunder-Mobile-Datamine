@@ -54,7 +54,7 @@ function blueprintBar(unit) {
   return @() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in campMyUnits.get() && !isBlocked
     ? {
       watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, campMyUnits, blockedCountries]
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_VERTICAL
       gap = hdpx(5)
       children = [
@@ -98,7 +98,7 @@ function unitResearchBar(unitName) {
   return @() !needHint.get() ? { watch = needHint }
     : {
         watch = needHint
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         halign = ALIGN_RIGHT
         flow = FLOW_VERTICAL
         gap = hdpx(10)

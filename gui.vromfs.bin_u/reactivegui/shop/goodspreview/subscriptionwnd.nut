@@ -148,7 +148,7 @@ let vipRowsCfg = [
 ]
 
 let mkBonusRow = @(bonus, cfg) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   gap = smallGap
   children = [
@@ -171,7 +171,7 @@ let mkBonusRow = @(bonus, cfg) {
       ]
     }
     {
-      size = [ flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       color = textColor
@@ -297,7 +297,7 @@ function mkPurchButton(subs, subsList, totalConvertAmount, currencyId, leftTimeL
           children = [
             {
               behavior = Behaviors.TextArea
-              size = [flex(), SIZE_TO_CONTENT]
+              size = FLEX_H
               rendObj = ROBJ_TEXTAREA
               color = textColor
               text = loc("subscription/convertPremiumInfoTime", { time = colorize(userlogTextColor, leftTimeLoc.get()) })
@@ -333,7 +333,7 @@ function purchBlock(subs, isActive, subsList, totalConvertAmount, currencyId, le
   let isGroupActive = Computed(@() subsList.findindex(@(s) subscriptions.get()?[s].isActive ?? false))
   return @() {
     watch = [subscriptions, can_upgrade_subscription, isGroupActive]
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     children = isActive || (isGroupActive.get() && !can_upgrade_subscription.get())
@@ -371,7 +371,7 @@ function purchBlock(subs, isActive, subsList, totalConvertAmount, currencyId, le
 }
 
 let urls = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   gap = urlsGap
   children = [
@@ -422,7 +422,7 @@ let subsIcons = @(list) function() {
 }
 
 let infoBlock = @(hasConvertPremiumInfo) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   minHeight = descriptionMinHeight
   flow = FLOW_VERTICAL
   gap = infoGap
@@ -430,7 +430,7 @@ let infoBlock = @(hasConvertPremiumInfo) {
     description
     !hasConvertPremiumInfo ? null
       : {
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           color = textColor
@@ -455,7 +455,7 @@ function mkWindow() {
       : [
           modalWndHeaderWithClose(getSubsName(subscription.get().id), closeSubsPreview)
           {
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             padding = wndGap
             flow = FLOW_HORIZONTAL
             gap = wndGap

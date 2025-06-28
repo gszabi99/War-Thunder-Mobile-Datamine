@@ -11,7 +11,8 @@ let { S_UNDEFINED, S_AIRCRAFT, S_HELICOPTER, S_TANK, S_SHIP, S_BOAT, S_SUBMARINE
 let { AIR, HELICOPTER, TANK, SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
 let sharedWatches = require("sharedWatches.nut")
 let { getUnitStats } = require("%rGui/dmViewer/modeXrayAttr.nut")
-let { getCommonWeapons, getUnitWeaponsList, getWeaponNameByBlkPath, getWeaponDescTextByWeaponInfoBlk,
+let { getCommonWeapons, getUnitWeaponsList, getWeaponNameByBlkPath, getWeaponLocNameCustom,
+  getWeaponDescTextByWeaponInfoBlk, shouldShowAmmoAndShotFreq,
   isCaliberCannon, toStr_speed, toStr_horsePowers, toStr_thrustKgf, toStr_distance
 } = require("%rGui/dmViewer/modeXrayWeaponry.nut")
 
@@ -165,7 +166,9 @@ let xrayCommonGetters = {
   isCaliberCannon
   getCommonWeapons
   getWeaponNameByBlkPath
+  getWeaponLocNameCustom
   getWeaponDescTextByWeaponInfoBlk
+  shouldShowAmmoAndShotFreq
   findAnyModEffectValueBlk = @(...) null
   isModAvailableOrFree = @(...) true
 

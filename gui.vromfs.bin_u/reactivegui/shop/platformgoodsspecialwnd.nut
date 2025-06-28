@@ -42,8 +42,10 @@ function getBonusDesc(id) {
   if (goods.currencies?.gold)
     res = loc("onlineShop/gaijinBonusGold")
   if (goods.premiumDays > 0) {
-    let premDaysNoBonus = campConfigs.get()?.allGoods.findvalue(@(v) v.relatedGaijinId == id).premiumDays ?? 0
-    res = loc("onlineShop/gaijinBonusPrem", { amount = goods.premiumDays - premDaysNoBonus })
+    let premDaysWithBonus = campConfigs.get()?.allGoods[goods.relatedGaijinId].premiumDays ?? goods.premiumDays
+    let amount = premDaysWithBonus - goods.premiumDays
+    if (amount != 0)
+      res = loc("onlineShop/gaijinBonusPrem", { amount })
   }
   return res
 }
@@ -112,15 +114,15 @@ function mkBtn(params){
 }
 
 let content = modalWndBg.__merge({
-  size = [hdpx(800), SIZE_TO_CONTENT]
-  padding = [0,hdpx(40), hdpx(40),hdpx(40)]
+  size = const [hdpx(800), SIZE_TO_CONTENT]
+  padding = const [0,hdpx(40), hdpx(40),hdpx(40)]
   flow = FLOW_VERTICAL
   gap = hdpx(30)
   halign = ALIGN_CENTER
   children = [
     header
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_VERTICAL
       gap = hdpx(10)
       children = btnsList.map(mkBtn)

@@ -1,8 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { OPT_AUTO_UPDATE_ENABLED, mkOptionValue } = require("%rGui/options/guiOptions.nut")
-let { allow_apk_update } = require("%appGlobals/permissions.nut")
-let { isDownloadedFromSite } = require("%appGlobals/clientState/clientState.nut")
 
 let AU_NOT_ALLOW = "not_allow"
 let AU_ALLOW_ONLY_WIFI = "allow_only_wifi"
@@ -17,7 +15,6 @@ return {
   AU_ALLOW_ONLY_WIFI
   AU_ALLOW_ALWAYS
 
-  isGameAutoUpdateVisible = isDownloadedFromSite && allow_apk_update.get()
   gameAutoUpdateList
   isGameAutoUpdateEnabled
 }

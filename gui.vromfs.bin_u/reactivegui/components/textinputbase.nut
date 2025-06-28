@@ -141,7 +141,7 @@ function textInput(text_state, options = {}) {
       text = placeholder
       rendObj = ROBJ_TEXT
       animations = [failAnim(text_state)]
-      margin = [0, sh(0.5)]
+      margin = const [0, sh(0.5)]
     }.__update(textStyle, { color = placeHolderColor })
     placeholderObj = placeholder instanceof Watched
       ? @() phBase.__update({ watch = placeholder, text = placeholder.value })
@@ -191,7 +191,7 @@ function textInput(text_state, options = {}) {
 
   return @() {
     watch = stateFlags
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     onElemState = @(sf) stateFlags(sf)
 
     rendObj = ROBJ_BOX

@@ -3,7 +3,7 @@ let logG = log_with_prefix("[GOODS] ")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
-let { YU2_OK, YU2_WRONG_PAYMENT, registerApplePurchase } = require("auth_wt")
+let { YU2_OK, YU2_EXPIRED, YU2_WRONG_PAYMENT, registerApplePurchase } = require("auth_wt")
 let { is_pc } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
@@ -214,7 +214,7 @@ eventbus_subscribe("ios.billing.onAuthPurchaseCallback", function(result) {
   isRegisterInProgress.set(false)
   let {status, purchase_transaction_id = null } = result
 
-  if (status == YU2_OK && purchase_transaction_id) {
+  if ((status == YU2_OK || status == YU2_EXPIRED) && purchase_transaction_id) {
     logG($"register_apple_purchase success")
     confirmPurchase(purchase_transaction_id)
     return
@@ -226,7 +226,7 @@ eventbus_subscribe("ios.billing.onAuthPurchaseCallback", function(result) {
     showErrorMsg(loc("msg/errorPaymentDelayed"))
   else if (status in yu2BadConnectionCodes) {
     lastYu2TimeoutErrorTime.set(get_time_msec())
-    showErrorMsg(loc("msg/errorRegisterPaymentTimeout"), { size = [hdpx(1300), hdpx(700)] })
+    showErrorMsg(loc("msg/errorRegisterPaymentTimeout"), { size = const [hdpx(1300), hdpx(700)] })
     if (restoreStatus.get() == RESTORE_STARTED) {
       logG("Change restore to silent after auth error")
       restoreStatus.set(RESTORE_STARTED_SILENT)

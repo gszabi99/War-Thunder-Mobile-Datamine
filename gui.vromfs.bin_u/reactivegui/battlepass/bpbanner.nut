@@ -2,7 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let { openBattlePassWnd, isBpSeasonActive, hasBpRewardsToReceive } = require("battlePassState.nut")
 let { framedImageBtn } = require("%rGui/components/imageButton.nut")
-let { openEventWnd, eventSeason, unseenLootboxes, unseenLootboxesShowOnce, MAIN_EVENT_ID, isEventActive
+let { openEventWnd, eventSeason, unseenLootboxes, unseenLootboxesShowOnce, MAIN_EVENT_ID, isEventActive,
+  isFitSeasonRewardsRequirements
 } = require("%rGui/event/eventState.nut")
 let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
 let { translucentButtonsHeight } = require("%rGui/components/translucentButton.nut")
@@ -32,9 +33,10 @@ let mainEventBtn = framedImageBtn($"ui/gameuiskin#icon_events.svg",
 return function () {
   let { color, image, imageOffset } = getEventPresentation(eventSeason.get())
   return {
-    watch = [isBpSeasonActive, hasBpRewardsToReceive, isEventActive, eventSeason]
+    watch = [isBpSeasonActive, hasBpRewardsToReceive, isEventActive, eventSeason, isFitSeasonRewardsRequirements]
     size = [bannerIconSize[0] * 2, SIZE_TO_CONTENT]
-    children = isBpSeasonActive.get()
+    children = !isFitSeasonRewardsRequirements.get() ? null
+      : isBpSeasonActive.get()
         ? {
             rendObj = ROBJ_9RECT
             image = gradTranspDoubleSideX
@@ -87,7 +89,7 @@ return function () {
               }
             ]
           }
-    : isEventActive.get() ? mainEventBtn
-    : null
+      : isEventActive.get() ? mainEventBtn
+      : null
   }
 }

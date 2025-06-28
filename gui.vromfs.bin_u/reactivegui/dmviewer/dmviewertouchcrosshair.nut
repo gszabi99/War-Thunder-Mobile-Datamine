@@ -33,7 +33,7 @@ return @() !needDmViewerCrosshair.get()
     }
   : {
       watch = [needDmViewerCrosshair, pointerScreenX, pointerScreenY]
-      size = [0, 0]
+      size = 0
       pos = [pointerScreenX.get(), pointerScreenY.get()]
       children = crosshairComp
     }

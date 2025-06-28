@@ -22,7 +22,7 @@ let hcResultStyleId = Computed(@() hcResult.value?.styleId ?? "")
 
 let resultBlink = {
   pos = [pw(-20), 0]
-  size = [pw(110), hdpx(10)]
+  size = const [pw(110), hdpx(10)]
   vplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#blink_sharp.svg:{blinkImgTexSize}:{blinkImgTexSize}:K:P")

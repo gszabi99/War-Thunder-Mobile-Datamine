@@ -14,7 +14,7 @@ let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(activeBgColor, 0, gradTexSize / 4, gradTexSize * 6 / 16, gradTexSize * 3 / 16, gradTexSize * 3 / 8))
 
 let mkTabContent = @(content, isActive, tabOverride, isHover) {
-  size = [ flex(), SIZE_TO_CONTENT ]
+  size = FLEX_H
 
   children = [
     @() {
@@ -43,7 +43,7 @@ function mkTab(id, content, curTabId, tabOverride, onClick = null) {
   let isHover = Computed (@() stateFlags.value & S_HOVER)
 
   return {
-    size = [ flex(), SIZE_TO_CONTENT ]
+    size = FLEX_H
     behavior = Behaviors.Button
     xmbNode = {}
     onElemState = @(v) stateFlags(v)
@@ -61,7 +61,7 @@ function mkTab(id, content, curTabId, tabOverride, onClick = null) {
 }
 
 let tabsRoot = {
-  size = [ flex(), SIZE_TO_CONTENT ]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   gap = tabsGap
 }

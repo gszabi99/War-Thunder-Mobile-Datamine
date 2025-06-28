@@ -7,7 +7,12 @@ let seasonsCfg = Computed(@() serverConfigs.get()?.seasons ?? {})
 let curSeasons = Watched({})
 let nextUpdateTime = Watched({ value = 0 })
 
-let mkSeason = @(idx, isActive, start, end) { idx, isActive, start, end }
+let mkSeason = @(idx, isActive, start, end, unlocks) { idx, isActive, start, end, unlocks }
+
+let mkRewardUnlocks = @(rewards) rewards.map(@(v) {
+  campaignLevel = v.unlockCampaignLevel
+  unitMRank = v.unlockUnitMRank
+})
 
 function updateSeasons() {
   let seasons = seasonsCfg.get()
@@ -31,7 +36,8 @@ function updateSeasons() {
         cur[id] <- mkSeason(s.rangeList.len() - 1 + s.idxOffset,
           false,
           last.start,
-          last.end)
+          last.end,
+          mkRewardUnlocks(s.rewards))
         continue
       }
       let loops = (time - last.end) / s.repeat + 1
@@ -39,7 +45,8 @@ function updateSeasons() {
       cur[id] <- mkSeason(s.rangeList.len() - 1 + loops + s.idxOffset,
         start <= time,
         start,
-        last.end + s.repeat * loops)
+        last.end + s.repeat * loops,
+        mkRewardUnlocks(s.rewards))
       continue
     }
 
@@ -50,14 +57,16 @@ function updateSeasons() {
         cur[id] <- mkSeason(i + 1 + s.idxOffset,
           false,
           nextRange.start,
-          nextRange.end)
+          nextRange.end,
+          mkRewardUnlocks(s.rewards))
         break
       }
       if (time >= range.start || i == 0) {
         cur[id] <- mkSeason(i + s.idxOffset,
           time >= range.start,
           range.start,
-          range.end)
+          range.end,
+          mkRewardUnlocks(s.rewards))
         break
       }
     }

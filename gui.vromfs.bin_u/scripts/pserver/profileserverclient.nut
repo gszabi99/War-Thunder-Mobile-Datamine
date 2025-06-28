@@ -111,8 +111,8 @@ eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
 
   local err = debugError ?? result?.error
   debugError = null
-  if (err == null && !(result?.response?.success ?? true))
-    err = result?.response?.error ?? "unknown error"
+  if (err == null && !(result?.response.success ?? true))
+    err = result?.response.error ?? "unknown error"
   let reqTime = collectLastRequestResult(id, result)
 
   if (err == null) {

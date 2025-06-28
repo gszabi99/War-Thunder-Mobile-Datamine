@@ -96,14 +96,14 @@ let img_swipe_to_rotate_cam_air = @(_) {
 
 let mkImg = function(imgName, ovr = {}){
   return {
-    size = [ hdpx(160),  hdpx(160)]
+    size = hdpx(160)
     rendObj = ROBJ_BOX
     fillColor = 0xff333333
     borderColor = 0xffffffff
     borderWidth = hdpx(3)
     vplace = ALIGN_TOP
     children = {
-      size = [hdpxi(100),  hdpxi(100)]
+      size = hdpxi(100)
       rendObj = ROBJ_IMAGE
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
@@ -155,7 +155,7 @@ let air_tutorial_forestall_crosshair_gif = @(_) {
   pos = [0, -hdpx(250)]
   children = mkGradientBlock(defBgColor, [
         {
-          size = [hdpx(30), hdpx(30)]
+          size = hdpx(30)
           pos = [hdpx(80), 0]
           hplace = ALIGN_CENTER
           vplace = ALIGN_CENTER
@@ -163,7 +163,7 @@ let air_tutorial_forestall_crosshair_gif = @(_) {
           image = Picture($"ui/gameuiskin#forestall.svg:{imgSize}:{imgSize}:P")
         }
         {
-          size = [hdpx(40), hdpx(40)]
+          size = hdpx(40)
           pos = [-hdpx(80), 0]
           hplace = ALIGN_CENTER
           vplace = ALIGN_CENTER

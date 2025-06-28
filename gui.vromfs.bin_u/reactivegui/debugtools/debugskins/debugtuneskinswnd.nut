@@ -107,7 +107,7 @@ let wndHeader = @(children) {
     backButton(close)
     {
       rendObj = ROBJ_TEXT
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       text = "ui.debug.skins"
     }.__update(fontBig)
   ].extend(children)
@@ -123,7 +123,7 @@ let toggleBtn = @(isLeft, onClick, isActive) framedImageBtn(
   "ui/gameuiskin#spinnerListBox_arrow_up.svg",
   onClick,
   {
-    size = [hdpx(70), hdpx(70)]
+    size = hdpx(70)
     opacity = isActive ? 1.0 : 0.3
     transform = { rotate = isLeft ? -90 : 90 }
   })
@@ -307,7 +307,7 @@ let presetsList = @(curSkinUnitPreset, curSkinDefaultPreset) function() {
       ))
   return {
     watch = selTag
-    size = [SIZE_TO_CONTENT, flex()]
+    size = FLEX_V
     children = makeVertScroll(
       {
         padding = [0, presetGap, 0, 0]
@@ -319,7 +319,7 @@ let presetsList = @(curSkinUnitPreset, curSkinDefaultPreset) function() {
           children = column
         })
       }
-      { size = [SIZE_TO_CONTENT, flex()] })
+      { size = FLEX_V })
   }
 }
 
@@ -346,7 +346,7 @@ let function presetView(preset, curSkinUnitPreset, curSkinDefaultPreset) {
 }
 
 let framedText = @(text) {
-  padding = [hdpx(10), hdpx(20)]
+  padding = const [hdpx(10), hdpx(20)]
   rendObj = ROBJ_SOLID
   color = 0x40000000
   children = {

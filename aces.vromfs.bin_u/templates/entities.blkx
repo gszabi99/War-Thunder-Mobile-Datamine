@@ -13,10 +13,6 @@
     "%wtlibs/templates/damage_model.blk",
     "%wtlibs/templates/microdetail.blk"
   ],
-  "backmodel_spawn_point": {
-    "_use": "spawn_point",
-    "forPremiumVehicle": false
-  },
   "delayed_action": {
     "delayed_action__doAtTime": -1.0,
     "delayed_action__timer": 0.0

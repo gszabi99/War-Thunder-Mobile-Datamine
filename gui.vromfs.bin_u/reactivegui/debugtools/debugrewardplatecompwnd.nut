@@ -75,17 +75,17 @@ let wndHeader = {
     backButton(close)
     {
       rendObj = ROBJ_TEXT
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       halign = ALIGN_CENTER
       color = 0xFFFFFFFF
       text = "ui.debug.reward_plate_comp"
-      margin = [0, 0, 0, hdpx(15)]
+      margin = const [0, 0, 0, hdpx(15)]
     }.__update(fontBig)
   ]
 }
 
 let mkRewardPlateCompsByStyle = @(rStyle) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   children = wrap(dbgRewardsInfo.map(@(r) mkRewardPlate(r, rStyle)),
@@ -94,7 +94,7 @@ let mkRewardPlateCompsByStyle = @(rStyle) {
 
 let pannableArea = verticalPannableAreaCtor(wndContentHeight, [opacityGradientSize, opacityGradientSize])
 let mkWndContent = @() pannableArea({
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_VERTICAL

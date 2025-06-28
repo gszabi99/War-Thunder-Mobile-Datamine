@@ -16,6 +16,7 @@ let { hasAimingModeForWeapon, markWeapKeyHold, unmarkWeapKeyHold } = require("%r
 let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
 let { mkActionBtnGlare } = require("%rGui/hud/weaponsButtonsAnimations.nut")
+let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
 let { isAvailableActionItem } = require("actionButtonComps.nut")
 
 
@@ -45,7 +46,7 @@ function mkRhombBtnBg(isAvailable, actionItem, scale, onFinishExt = null) {
   let { empty, ready, broken, noAmmo } = btnBgColor
   let trigger = $"action_cd_finish_{id}"
   let size = scaleEven(cooldownImgSize, scale)
-  return {
+  let item = {
     size = [size, size]
     rendObj = ROBJ_PROGRESS_CIRCULAR
     image = Picture($"ui/gameuiskin#hud_weapon_bg.svg:{size}:{size}:P")
@@ -70,6 +71,7 @@ function mkRhombBtnBg(isAvailable, actionItem, scale, onFinishExt = null) {
       }
     ]
   }
+  return mkItemWithCooldownText(id, item, [size, size], hasCooldown, cooldownEndTime)
 }
 
 let mkRhombBtnBorder = @(stateFlags, isAvailable, scale) {

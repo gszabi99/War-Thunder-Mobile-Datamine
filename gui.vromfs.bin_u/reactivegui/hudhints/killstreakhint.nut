@@ -97,7 +97,7 @@ registerHintCreator(HINT_TYPE, function(data, _) {
     children = [
       participantsRow(participants, slotsCount)
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         halign = ALIGN_CENTER
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea

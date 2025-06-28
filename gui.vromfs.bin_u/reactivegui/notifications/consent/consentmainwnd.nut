@@ -18,8 +18,8 @@ let key = "consentMain"
 let close = @() needOpenConsentWnd(false)
 
 let mainButtons = {
-  size = [flex(), SIZE_TO_CONTENT]
-  padding = [hdpx(20), hdpx(50), hdpx(40), hdpx(50)]
+  size = FLEX_H
+  padding = const [hdpx(20), hdpx(50), hdpx(40), hdpx(50)]
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   children = [
@@ -30,14 +30,14 @@ let mainButtons = {
 }
 
 let textCtor = @(id){
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text = loc(id)
 }.__update(fontTiny)
 
 let linkTextCtor = @(id, onClick, ovr = {}){
-  padding = [hdpx(30), 0]
+  padding = const [hdpx(30), 0]
   rendObj = ROBJ_TEXT
   text = loc(id)
   onClick
@@ -48,7 +48,7 @@ let linkTextCtor = @(id, onClick, ovr = {}){
 
 let desc = {
   size = flex()
-  padding = [hdpx(20), hdpx(70)]
+  padding = const [hdpx(20), hdpx(70)]
   flow = FLOW_VERTICAL
   children = [
     textCtor("consentWnd/main/consentMesssagePart1")
@@ -65,7 +65,7 @@ let content = modalWndBg.__merge({
   children = [
     @(){
       watch = can_skip_consent
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       valign = ALIGN_CENTER
       children = [
         modalWndHeader(loc("consentWnd/main/header"))

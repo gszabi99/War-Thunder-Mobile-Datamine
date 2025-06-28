@@ -22,11 +22,11 @@ function byRows(list) {
   if (rows.top().len() < 2)
     rows.top().resize(2, { size = flex() })
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     gap
     children = rows.map(@(children) {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       gap
       children
@@ -37,8 +37,8 @@ function byRows(list) {
 let replaySort = @(a, b) b.startTime <=> a.startTime || b.name <=> a.name
 
 let headerText = @(text) {
-  size = [flex(), SIZE_TO_CONTENT]
-  margin = [hdpx(10), 0, 0, 0]
+  size = FLEX_H
+  margin = const [hdpx(10), 0, 0, 0]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text
@@ -46,7 +46,7 @@ let headerText = @(text) {
 }.__update(fontTiny)
 
 let invalidReplaysList = @(replays) {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text = ", ".join(replays.map(@(r) r.name))
@@ -74,7 +74,7 @@ function replaysList() {
           on_view_replay(r.path)
         },
         {
-          ovr = { size = [flex(), hdpx(100)] }
+          ovr = { size = const [flex(), hdpx(100)] }
           tooltipCtor = @() getReplayDescription(r)
         }))))
 
@@ -101,7 +101,7 @@ function replaysList() {
 
   return {
     watch = can_write_replays
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     padding = gap
     gap
     flow = FLOW_VERTICAL
@@ -124,7 +124,7 @@ return @() addModalWindow({
     stopHotkeys = true
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_HORIZONTAL
         valign = ALIGN_CENTER
         padding = gap
@@ -140,7 +140,7 @@ return @() addModalWindow({
       makeVertScroll(
         replaysList,
         {
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           maxHeight = hdpx(900)
           rootBase = { behavior = Behaviors.Pannable }
         })

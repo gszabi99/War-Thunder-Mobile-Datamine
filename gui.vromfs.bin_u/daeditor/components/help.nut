@@ -54,7 +54,7 @@ let help = @(showHelp) function(){
   }
 
   let caption = {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     rendObj = ROBJ_SOLID
     color = Color(50, 50, 50, 50)
 
@@ -72,7 +72,7 @@ let help = @(showHelp) function(){
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
     text = helpText
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     margin = fsh(1)
   }
 

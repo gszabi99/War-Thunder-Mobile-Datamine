@@ -95,7 +95,7 @@ let playersCount = @() textParams.__merge({
 })
 
 let waitCircle = {
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   valign = ALIGN_CENTER
   children = {
     size = [spinnerSize, spinnerSize]
@@ -226,7 +226,7 @@ let hintIcon = @() {
 }
 
 let aimingHint = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_CENTER
   hplace = ALIGN_CENTER
   vplace = ALIGN_BOTTOM
@@ -238,7 +238,7 @@ let aimingHint = {
     }
     @() textParams.__merge({
       watch = missionCampaign
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       halign = ALIGN_CENTER

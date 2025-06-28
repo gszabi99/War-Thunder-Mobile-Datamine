@@ -21,6 +21,7 @@
   "game_das_gen_2_make_syntax": true,
   "game_das_enable_serialization": true,
   "game_das_serialization_remove_cache": false,
+  "game_darg_project_script": "dasProject/darg.das_project",
   "localizationVrom": "lang.vromfs.bin",
   "localizationRegionalVrom": "",
   "addAllAddonsToBasePath": false,
@@ -508,6 +509,42 @@
           "mRank": 5
         }
       ]
+    },
+    "pkg_extended_strv103": {
+      "hq": false,
+      "conditions": {
+        "isExtendedSound": true
+      }
+    },
+    "pkg_extended_105mm_l74": {
+      "hq": false,
+      "conditions": {
+        "isExtendedSound": true
+      }
+    },
+    "pkg_extended_t34": {
+      "hq": false,
+      "conditions": {
+        "isExtendedSound": true
+      }
+    },
+    "pkg_extended_76mm_l11": {
+      "hq": false,
+      "conditions": {
+        "isExtendedSound": true
+      }
+    },
+    "pkg_extended_panzer4": {
+      "hq": false,
+      "conditions": {
+        "isExtendedSound": true
+      }
+    },
+    "pkg_extended_75mm_kwk40": {
+      "hq": false,
+      "conditions": {
+        "isExtendedSound": true
+      }
     },
     "pkg_lvl_vietnam_hills": {
       "conditions": {
@@ -1015,6 +1052,24 @@
       "conditions": {
         "campaign": "ships",
         "mRank": 6
+      }
+    },
+    "pkg_germ_frigate_rckt_sachsen": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_uk_destroyer_rckt_type45": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_it_battleship_caio_duilio": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
       }
     },
     "pkg_ussr_kv_122": {
@@ -1544,7 +1599,8 @@
     "latency": 0,
     "vrStreamerMode": false,
     "vreye": "left",
-    "fpsLimitOnUpdater": 10
+    "fpsLimitOnUpdater": 10,
+    "compatibilityFxGpuSparksEnabled": false
   },
   "graphics": {
     "useHdr": true,
@@ -1595,6 +1651,7 @@
     "heightmapDimBits": 4,
     "mirrorQuality": 0,
     "forceUnitsLodForWater": 2,
+    "limitNonPlayerUnitsLodForCSM": 2,
     "impostorMaxTexSize": 128,
     "waterPerlin": true,
     "usePostfxGlow": true,
@@ -1642,6 +1699,7 @@
     "blendedAirplanesSkies": true,
     "lmeshAsyncCulling": false,
     "allowETC2": true,
+    "heightmapFlowmapDepthUsePointFilter": true,
     "riexCanIncreaseRenderBuffer": false,
     "riMaxModelsPerLevel": 1024,
     "riAllowGenJobsQueueReorder": true,
@@ -1750,6 +1808,7 @@
     "disableHangar": false,
     "disableChat": false,
     "workThreadsStackSize": 393216,
+    "dasLoadJobStackSize": 262144,
     "replayDofFar": [
       100.0,
       400.0,
@@ -2034,7 +2093,11 @@
     "android": {
       "flag": "--notime",
       "addons": {
-        "flag": "--noversion"
+        "flag": [
+          "--noversion",
+          "--enable_tag",
+          "min_core"
+        ]
       },
       "background_addons": {
         "flag": "--noversion"
@@ -2043,7 +2106,11 @@
     "iOS": {
       "flag": "--notime",
       "addons": {
-        "flag": "--noversion"
+        "flag": [
+          "--noversion",
+          "--enable_tag",
+          "min_core"
+        ]
       },
       "background_addons": {
         "flag": "--noversion"
@@ -2079,9 +2146,7 @@
       "stopMetric": "addons_update_stop",
       "flag": [
         "--clear",
-        "--onlypacks",
-        "--enable_tag",
-        "min_core"
+        "--onlypacks"
       ]
     },
     "background_addons": {
@@ -2457,8 +2522,6 @@
     "linux64": true,
     "Vulkan": true,
     "graphics": {
-      "dafx_modfx_bboard_render": true,
-      "sparks_ps": true,
       "gen_weather": true,
       "render_full_tonemap": true,
       "skies_render_screen": true,
@@ -2528,17 +2591,6 @@
         "highPerfCores": 240,
         "antiThrottlingSleepMs": 5,
         "antiThrottlingFpsLimit": 50
-      }
-    },
-    "force_disable_compression": {
-      "codename": [
-        "CPH2641",
-        "CPH2669",
-        "ALT-LX1",
-        "23124RA7EO"
-      ],
-      "graphics": {
-        "allowETC2": false
       }
     },
     "fps_limiter": {
@@ -2647,6 +2699,13 @@
       },
       "vulkan": {
         "preRotation": false
+      },
+      "android_presets": {
+        "low": {
+          "graphics": {
+            "sceneResolutionPreset": "low"
+          }
+        }
       }
     }
   },
@@ -2687,7 +2746,7 @@
         "limitNonPlayerShipUnitsLod": -1,
         "hangarTankLod": 0,
         "hangarShipLod": 0,
-        "compatibilityShadowQuality": "high",
+        "shadowQuality": "high",
         "hangarShadowQuality": "high",
         "grassRadiusMul": 0.8,
         "grassDensityMul": 0.87,
@@ -2740,6 +2799,9 @@
       },
       "debug": {
         "lodDistanceScale": 1.0
+      },
+      "video": {
+        "compatibilityFxGpuSparksEnabled": false
       }
     }
   },
@@ -2776,7 +2838,7 @@
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": true,
-        "compatibilityShadowQuality": "low",
+        "shadowQuality": "low",
         "hangarShadowQuality": "low",
         "grassRadiusMul": 0.5,
         "grassDensityMul": 0.5,
@@ -2839,6 +2901,9 @@
       },
       "debug": {
         "lodDistanceScale": 1.0
+      },
+      "video": {
+        "compatibilityFxGpuSparksEnabled": false
       }
     },
     "medium": {
@@ -2855,7 +2920,7 @@
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": false,
-        "compatibilityShadowQuality": "low",
+        "shadowQuality": "low",
         "hangarShadowQuality": "low",
         "grassRadiusMul": 0.45,
         "grassDensityMul": 0.15,
@@ -2918,6 +2983,9 @@
       },
       "debug": {
         "lodDistanceScale": 1.0
+      },
+      "video": {
+        "compatibilityFxGpuSparksEnabled": false
       }
     },
     "high": {
@@ -2934,7 +3002,7 @@
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": false,
-        "compatibilityShadowQuality": "high",
+        "shadowQuality": "high",
         "hangarShadowQuality": "high",
         "grassRadiusMul": 0.8,
         "grassDensityMul": 0.87,
@@ -2997,6 +3065,9 @@
       },
       "debug": {
         "lodDistanceScale": 1.0
+      },
+      "video": {
+        "compatibilityFxGpuSparksEnabled": false
       }
     },
     "max": {
@@ -3013,7 +3084,7 @@
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": false,
-        "compatibilityShadowQuality": "max",
+        "shadowQuality": "max",
         "hangarShadowQuality": "max",
         "grassRadiusMul": 1.0,
         "grassDensityMul": 1.0,
@@ -3076,6 +3147,9 @@
       },
       "debug": {
         "lodDistanceScale": 1.0
+      },
+      "video": {
+        "compatibilityFxGpuSparksEnabled": true
       }
     },
     "movie": {
@@ -3092,7 +3166,7 @@
         "hangarShipLod": 0,
         "hangarAirplaneLod": 0,
         "battleHideNodesInHangar": false,
-        "compatibilityShadowQuality": "movie",
+        "shadowQuality": "movie",
         "hangarShadowQuality": "movie",
         "grassRadiusMul": 2.0,
         "grassDensityMul": 2.0,
@@ -3155,6 +3229,9 @@
       },
       "debug": {
         "lodDistanceScale": 0.5
+      },
+      "video": {
+        "compatibilityFxGpuSparksEnabled": true
       }
     }
   },
@@ -3164,7 +3241,7 @@
         "sceneResolutionPreset": "low",
         "defaultPresetAA": "low_fxaa",
         "fxDensityMul": 0.2,
-        "compatibilityShadowQuality": "low",
+        "shadowQuality": "low",
         "hangarShadowQuality": "low",
         "limitPlayerAirplaneUnitsLod": 1,
         "limitPlayerTankUnitsLod": 2,
@@ -3225,6 +3302,9 @@
         "buffersCount": 1,
         "shaderlodMode": "always_low",
         "updateCountHigh": 4
+      },
+      "video": {
+        "compatibilityFxGpuSparksEnabled": false
       }
     },
     "medium": {
@@ -3232,7 +3312,7 @@
         "sceneResolutionPreset": "low",
         "defaultPresetAA": "low_fxaa",
         "fxDensityMul": 0.8,
-        "compatibilityShadowQuality": "high",
+        "shadowQuality": "high",
         "hangarShadowQuality": "high",
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
@@ -3293,6 +3373,9 @@
         "buffersCount": 2,
         "shaderlodMode": "auto",
         "updateCountHigh": 8
+      },
+      "video": {
+        "compatibilityFxGpuSparksEnabled": false
       }
     },
     "high": {
@@ -3300,7 +3383,7 @@
         "sceneResolutionPreset": "medium",
         "defaultPresetAA": "high_fxaa",
         "fxDensityMul": 1.0,
-        "compatibilityShadowQuality": "high",
+        "shadowQuality": "high",
         "hangarShadowQuality": "high",
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
@@ -3361,6 +3444,9 @@
         "buffersCount": 2,
         "shaderlodMode": "always_high",
         "updateCountHigh": 8
+      },
+      "video": {
+        "compatibilityFxGpuSparksEnabled": false
       }
     },
     "max": {
@@ -3368,7 +3454,7 @@
         "sceneResolutionPreset": "high",
         "defaultPresetAA": "mobile_taa",
         "fxDensityMul": 1.0,
-        "compatibilityShadowQuality": "max",
+        "shadowQuality": "max",
         "hangarShadowQuality": "max",
         "limitPlayerAirplaneUnitsLod": -1,
         "limitPlayerTankUnitsLod": -1,
@@ -3429,6 +3515,9 @@
         "buffersCount": 2,
         "shaderlodMode": "always_high",
         "updateCountHigh": 8
+      },
+      "video": {
+        "compatibilityFxGpuSparksEnabled": true
       }
     }
   },
@@ -3589,11 +3678,13 @@
           "disableMultiDrawIndirect": {
             "affected": true
           },
-          "latencyWait": {
-            "waitWorker": false
-          },
           "memsetOnRub": {
             "affected": false
+          },
+          "latencyWait": {
+            "useSharedFenceWait": false,
+            "waitApp": false,
+            "waitWorker": false
           }
         }
       }

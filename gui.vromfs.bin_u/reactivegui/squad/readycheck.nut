@@ -4,12 +4,16 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isInSquad, squadId, isSquadLeader, squadLeaderReadyCheckTime, squadMembers } = require("%appGlobals/squadState.nut")
 let setReady = require("setReady.nut")
+let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
 let { isInDebriefing, isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
 let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
 let { curUnit } = require("%appGlobals/pServer/profile.nut")
 let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
 let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
+let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
+let { battleBtnCampaign, penaltyTimerIcon } = require("%rGui/queue/penaltyComps.nut")
+
 
 let MSG_UID = "readyCheck"
 let CAN_REPEAT_SEC = 15
@@ -47,6 +51,13 @@ function applyReadyCheckResult(newReady) {
   readyCheckTime(max(serverTime.value, squadLeaderReadyCheckTime.value))
 }
 
+let onSquadReady = @() showNoPremMessageIfNeed(@()
+  offerMissingUnitItemsMessage(curUnit.get(), @() applyReadyCheckResult(true), @() applyReadyCheckResult(false)))
+let onSquadNotReady = @() applyReadyCheckResult(false)
+
+let cbReadyCheckId = "onResetPenaltyReadyCheck"
+registerHandler(cbReadyCheckId, @(res) res?.error == null ? onSquadReady() : null)
+
 function showReadyCheck() {
   if (!shouldShowMsg.value)
     return
@@ -54,10 +65,14 @@ function showReadyCheck() {
     uid = MSG_UID
     text = loc("squad/readyCheckMsg")
     buttons = [
-      { text = loc("status/squad_not_ready"), isCancel = true,
-        cb = @() applyReadyCheckResult(false) }
-      { text = loc("status/squad_ready"), styleId = "PRIMARY", isDefault = true,
-        cb = @() showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnit.get(), @() applyReadyCheckResult(true), @() applyReadyCheckResult(false))) }
+      { text = loc("status/squad_not_ready"), isCancel = true, cb = onSquadNotReady }
+      { text = loc("status/squad_ready"), styleId = "PRIMARY", isDefault = true, addChild = penaltyTimerIcon()
+        function cb() {
+          if (tryOpenQueuePenaltyWnd(battleBtnCampaign.get(), cbReadyCheckId, onSquadNotReady))
+            return
+          onSquadReady()
+        }
+      }
     ]
   })
 }

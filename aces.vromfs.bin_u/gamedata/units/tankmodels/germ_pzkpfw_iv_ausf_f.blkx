@@ -1777,7 +1777,8 @@
     "turret_turn": "turret_turn_manual_y",
     "EngineNameAi": "engine_tank_ai_middle",
     "TrackSoundNameAi": "tracks_ai_medium",
-    "gun_turn": "turret_turn_mg_light"
+    "gun_turn": "turret_turn_mg_light",
+    "EngineNameEx": "engine_panzer4"
   },
   "class_tags": {},
   "commonWeapons": {

@@ -84,7 +84,7 @@ let mkHorizontalPannableArea = @(content) {
 
 let categoriesBlock = @() {
   watch = modsCategories
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   children = mkModsCategories(modsCategories.value?.map(@(cat) {
     id = cat
     locId = cat == "" ? null : $"modification/{cat}"
@@ -94,7 +94,7 @@ let categoriesBlock = @() {
 
 let modsBlock = @() {
   watch = modsSorted
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   children = mkMods(modsSorted.value, scrollToMod)
 }
 
@@ -117,13 +117,13 @@ let mkModsInfo = @() panelBg.__merge({
     : [
         @() {
           watch = [curMod, curModId]
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           flow = FLOW_VERTICAL
           gap = hdpx(5)
           children = curModId.value == null ? null
             : [
                 {
-                  size = [flex(), SIZE_TO_CONTENT]
+                  size = FLEX_H
                   flow = FLOW_HORIZONTAL
                   children = [
                     mkModIcon
@@ -138,7 +138,7 @@ let mkModsInfo = @() panelBg.__merge({
                 }
 
                 {
-                  size = [flex(), SIZE_TO_CONTENT]
+                  size = FLEX_H
                   rendObj = ROBJ_TEXTAREA
                   behavior = Behaviors.TextArea
                   text = loc($"modification/{curMod.value?.name}/desc")
@@ -146,7 +146,7 @@ let mkModsInfo = @() panelBg.__merge({
 
                 unit.value.level >= (curMod.value?.reqLevel ?? 0) ? null
                   : {
-                      size = [flex(), SIZE_TO_CONTENT]
+                      size = FLEX_H
                       rendObj = ROBJ_TEXT
                       text = loc("mod/reqLevel", { level = curMod.value?.reqLevel })
                     }.__update(fontSmall)
@@ -223,7 +223,7 @@ let unitModsWnd = {
             @() {
               watch = [isCurModPurchased, isCurModEnabled,
                 isCurModLocked, curMod, modsInProgress]
-              size = [flex(), SIZE_TO_CONTENT]
+              size = FLEX_H
               margin = [hdpx(25), saBorders[0], hdpx(25), 0]
               halign = ALIGN_RIGHT
               children = !curMod.value ? null

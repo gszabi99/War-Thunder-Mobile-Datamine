@@ -58,7 +58,7 @@ let simpleThreatRocketsIndicator = @(scale) @() {
 }
 
 let threatRocketsBlock = @() {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   watch = [threatRockets, hasCountermeasures]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER

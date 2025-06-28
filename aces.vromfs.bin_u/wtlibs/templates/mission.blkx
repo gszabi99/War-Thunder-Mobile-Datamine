@@ -109,6 +109,11 @@
     "spawnPointType": "",
     "missionObject:tag": {}
   },
+  "backmodel_spawn_point": {
+    "_use": "spawn_point",
+    "forPremiumVehicle": false,
+    "forSlaveVehicle": false
+  },
   "route": {
     "route__routeId": "",
     "route__isLooped": false,
@@ -268,6 +273,7 @@
       ]
     ],
     "capture_zone__zoneId": -1,
+    "capture_zone__name": "",
     "capture_zone__radius": 1.0,
     "capture_zone__progress": 0.0,
     "_tracked": [
@@ -296,6 +302,10 @@
         0.0
       ],
       "capzone__minRadius": -1.0,
+      "capzone__extendOutsideNavMeshPositionsRadius": 0.0,
+      "capzone__minDistBetweenNavPoints": 2.5,
+      "capzone__maxInNavPoints": 20,
+      "capzone__maxOutNavPoints": 30,
       "capzone__insideNavmeshPositions:list<p3>": {},
       "capzone__outsideNavmeshPositions:list<p3>": {}
     }
@@ -313,5 +323,9 @@
   },
   "capture_zone_proxy_point": {
     "_use": "capture_zone_proxy_sphere"
+  },
+  "capture_zone_proxy_polygon": {
+    "_use": "base_capture_zone_proxy",
+    "capzone__approximateRadius": -1.0
   }
 }

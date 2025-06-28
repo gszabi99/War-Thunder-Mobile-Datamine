@@ -93,7 +93,7 @@ function mkGoodsSlots(goods, _, state, animParams, addChildren) {
         keepAspect = true
       }
       txt({
-        margin = [hdpx(10), hdpx(20)]
+        margin = const [hdpx(10), hdpx(20)]
         hplace = ALIGN_RIGHT
         text = getLocNameDefault(goods)
       }.__update(fontSmall))

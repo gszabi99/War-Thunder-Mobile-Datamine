@@ -92,12 +92,12 @@ function eventTabContent(){
   })
 
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     children = [
       @() {
         watch = eventSeasonName
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         halign = ALIGN_RIGHT
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
@@ -105,7 +105,7 @@ function eventTabContent(){
       }.__update(fontTinyAccented)
       @() {
         watch = [eventEndsAt, serverTime]
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         halign = ALIGN_RIGHT
         rendObj = ROBJ_TEXT
         text = !eventEndsAt.value || (eventEndsAt.value - serverTime.value < 0) ? null
@@ -135,12 +135,12 @@ function mkSpecialEventTabContent(idx) {
         keepAspect = KEEP_ASPECT_FIT
       }
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         flow = FLOW_VERTICAL
         children = [
           @() {
             watch = locId
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             halign = ALIGN_RIGHT
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
@@ -148,7 +148,7 @@ function mkSpecialEventTabContent(idx) {
           }.__update(fontTinyAccented)
           @() {
             watch = [serverTime, endsAt]
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             halign = ALIGN_RIGHT
             rendObj = ROBJ_TEXT
             text = !endsAt.get() || (endsAt.get() - serverTime.get() < 0) ? null

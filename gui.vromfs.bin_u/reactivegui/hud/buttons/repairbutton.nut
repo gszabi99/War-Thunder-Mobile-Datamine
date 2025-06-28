@@ -77,17 +77,25 @@ let mkBlackBg = @(box, borderW) {
   color = 0xFF000000
 }
 
+function getRepairIcon(assistState, aType) {
+  if (aType == AB_TOOLKIT)
+    if (assistState == 1)
+      return "hud_repair_assist.svg"
+    else if (assistState > 1)
+      return "hud_cancel_repair_assist.svg"
+  return iconByAType?[aType] ?? "hud_consumable_repair.svg"
+}
+
 function mkSlaveButton(aType, box, hoverAType, stateFlagsBase, borderW) {
   let stateFlags = Computed(@() hoverAType.get() == aType ? stateFlagsBase.get() : 0)
   let actionItem = Computed(@() actionBarItems.get()?[aType])
   let isAvailable = Computed(@() actionItem.get() != null && isAvailableActionItem(actionItem.get()))
   let isVisible = Computed(@() actionItem.get() != null)
   let size = [box.r - box.l, box.b - box.t]
-  let image = Picture($"ui/gameuiskin#{iconByAType?[aType] ?? "hud_consumable_repair.svg"}:{size[0]}:{size[1]}:P")
   let bg = mkBlackBg(box, borderW)
   return @() !isVisible.get() ? { watch = isVisible }
     : {
-        watch = isVisible
+        watch = [isVisible, repairAssistAllow]
         size
         pos = [box.l, box.t]
         children = [
@@ -98,7 +106,7 @@ function mkSlaveButton(aType, box, hoverAType, stateFlagsBase, borderW) {
             watch = isAvailable
             rendObj = ROBJ_IMAGE
             size
-            image
+            image = Picture($"ui/gameuiskin#{getRepairIcon(repairAssistAllow.get(), aType)}:{size[0]}:{size[1]}:P")
             keepAspect = true
             color = !isAvailable.get() ? imageDisabledColor : imageColor
           }

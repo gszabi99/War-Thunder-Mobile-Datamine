@@ -16,7 +16,7 @@ function contactsList(uidsList, playerSelectedUserId, responseAction) {
       mkVerticalPannableArea(
         @() {
           watch = ordered
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           flow = FLOW_VERTICAL
           children = ordered.value
             .map(@(uid, idx) mkContactRow(uid, idx,

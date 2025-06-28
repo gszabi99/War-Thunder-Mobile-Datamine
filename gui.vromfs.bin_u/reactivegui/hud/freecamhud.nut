@@ -10,7 +10,7 @@ let movementBlock = {
   gap
   children = [
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       halign = ALIGN_CENTER
       children = mkSimpleCircleTouchBtn("ui/gameuiskin#circle.svg", "ID_FREECAM_FORWARD")
     }

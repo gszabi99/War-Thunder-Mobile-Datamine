@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { get_base_game_version_str } = require("app")
 let { UPDATER_DOWNLOADING, UPDATER_PURIFYING, UPDATER_DOWNLOADING_YUP
 } = require("contentUpdater")
+let { mkProgressStatusText, mkProgressbar, progressbarGap } = require("%globalsDarg/loading/loadingProgressbar.nut")
 let { updaterState } = require("loginUpdaterState.nut")
 let { gradientLoadingTip } = require("%rGui/loading/loadingScreen.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
@@ -36,45 +37,27 @@ let statusText = Computed(function() {
 
 let progressPercent = Computed(@() updaterState.value?.percent ?? 0)
 
+let infoComp = @() {
+  watch = myUserId
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  halign = ALIGN_RIGHT
+  valign = ALIGN_CENTER
+  hplace = ALIGN_RIGHT
+  text = "\n".concat(
+    "".concat(loc("userID"), colon, myUserId.get())
+    "".concat(loc("mainmenu/version"), colon, get_base_game_version_str())
+  )
+}.__update(fontTiny)
+
 let bottomBlock = {
   size = flex()
   valign = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
-  gap = hdpx(15)
+  gap = progressbarGap
   children = [
-    {
-      size = [flex(), SIZE_TO_CONTENT]
-      valign = ALIGN_BOTTOM
-      children = [
-        @() {
-          watch = statusText
-          rendObj = ROBJ_TEXT
-          text = statusText.value
-        }.__update(fontMediumShaded)
-        @() {
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          halign = ALIGN_RIGHT
-          valign = ALIGN_CENTER
-          hplace = ALIGN_RIGHT
-          text = "\n".concat(
-            "".concat(loc("userID"), colon, myUserId.value)
-            "".concat(loc("mainmenu/version"), colon, get_base_game_version_str())
-          )
-        }.__update(fontTiny)
-      ]
-    }
-    {
-      size = [flex(), hdpx(15)]
-      rendObj = ROBJ_SOLID
-      color = 0xFF827A7A
-      children = @() {
-        watch = progressPercent
-        size = [pw(progressPercent.value), flex()]
-        rendObj = ROBJ_SOLID
-        color = 0xFFE8E8E8
-      }
-    }
+    mkProgressStatusText(statusText, infoComp)
+    mkProgressbar(progressPercent)
   ]
 }
 

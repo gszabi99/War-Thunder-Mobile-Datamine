@@ -408,10 +408,10 @@ let gamercardLevelBlock = {
       color = profileStateFlags.value & S_HOVER ? hoverColor : 0xFFFFFFFF
     }.__update(fontSmall)
     {
-      size = [0, 0]
+      size = 0
       children = doubleSideGradient.__merge(
         {
-          padding = [hdpx(5), hdpx(50)]
+          padding = const [hdpx(5), hdpx(50)]
           pos = [hdpx(20) hdpx(45)]
           children = @() {
             watch = playerLevelInfo
@@ -452,7 +452,7 @@ let mkGamercardUnitWnd = @(backCb = null) {
 
 let unitButtons = @() {
   watch = [isShowedUnitOwned, isFiltersVisible, campMyUnits, curSelectedUnit]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     isShowedUnitOwned.get() && !isFiltersVisible.get() ? btnOpenUnitAttr : null
@@ -467,7 +467,7 @@ let gamercardPlace = {
   children = [
     mkGamercardUnitWnd(closeByBackBtn)
     unitInfoPanel({
-      size = [SIZE_TO_CONTENT, flex()]
+      size = FLEX_V
       hplace = ALIGN_RIGHT
       behavior = [ Behaviors.Button, HangarCameraControl ]
       touchMarginPriority = TOUCH_BACKGROUND
@@ -481,7 +481,7 @@ let gamercardPlace = {
 
 let unitsWnd = {
   key = {}
-  size = [ sw(100), sh(100) ]
+  size = const [ sw(100), sh(100) ]
   stopMouse = true
   stopHotkeys = true
   behavior = HangarCameraControl
