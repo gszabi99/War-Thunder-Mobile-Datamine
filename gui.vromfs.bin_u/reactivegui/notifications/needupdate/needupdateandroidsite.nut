@@ -6,6 +6,7 @@ let { parse_json } = require("json")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
 let { get_cur_circuit_name, get_base_game_version_str } = require("app")
+let { check_compatible_exe_version_exists_in_bundle } = require("contentUpdater")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { check_version } = require("%sqstd/version_compare.nut")
@@ -80,9 +81,15 @@ startTimer()
 nextRequestTime.subscribe(@(_) startTimer())
 
 let needSuggestToUpdate = Computed(function() {
-  local actualVersion = actualGameVersion.value ?? ""
+  local actualVersion = actualGameVersion.get() ?? ""
   let version = get_base_game_version_str()
-  return actualVersion != "" && version != "" && !check_version($">={actualVersion}", version)
+  if (actualVersion == "" || version == "")
+    return false
+  let av = actualVersion.split(".")
+  let v = version.split(".")
+  if (av?[0] == v?[0] && av?[1] == v?[1]) 
+    return !check_version($">={actualVersion}", version)
+  return !check_compatible_exe_version_exists_in_bundle(actualVersion)
 })
 
 return {

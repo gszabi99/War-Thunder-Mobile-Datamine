@@ -1,8 +1,8 @@
 from "%globalScripts/logs.nut" import *
 from "sysinfo" import get_user_system_info
-import "regexp2" as regexp2
 from "%sqstd/platform.nut" import is_ios
 import "%globalScripts/sharedWatched.nut" as sharedWatched
+let { regexp2 = null } = require_optional("regexp2") 
 
 let SAFEAREA_DEFAULT = 0.9
 
@@ -12,7 +12,7 @@ local safeAreaH = SAFEAREA_DEFAULT
 let isDebugEmuIPhoneDynamicIsland = sharedWatched("isDebugEmuIPhoneDynamicIsland", @() false)
 
 
-if (is_ios || isDebugEmuIPhoneDynamicIsland.get()) {
+if ((is_ios || isDebugEmuIPhoneDynamicIsland.get()) && regexp2 != null) {
   let { cpu = "", videoCard = "" } = isDebugEmuIPhoneDynamicIsland.get()
     ? { cpu = "iPhone 16 Pro", videoCard = "Apple A18 Pro GPU" }
     : get_user_system_info()

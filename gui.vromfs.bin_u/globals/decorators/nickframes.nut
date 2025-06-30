@@ -132,6 +132,12 @@ let nickFrames = {
   shuriken_throw = @(n) $"⚿{n}⛀"
   overlord_air = @(n) $"⛆{n}⛇"
   yellow_submarine = @(n) $"⛏{n}⛐"
+  torch_crown = @(n) $"⛈{n}⛉"
+  star_stripes = @(n) $"⛊{n}⛊"
+  army_token = @(n) $"⛋{n}⛌"
+  unchain = @(n) $"⛍{n}⛎"
+  eagle_wings = @(n) $"⛑{n}⛒"
+  stars_and_stripes = @(n) $"⛓{n}⛔"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

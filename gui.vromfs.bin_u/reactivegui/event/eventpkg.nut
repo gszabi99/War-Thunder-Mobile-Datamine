@@ -263,7 +263,7 @@ function mkPurchaseBtns(lootbox, onPurchase) {
             @() !canOpenX10.get() ? null : onPurchase(lootbox, price * 10, currencyFullId.get(), 10),
             (!isActive.value || (balance.value?[currencyFullId.get()] ?? 0) < price * 10
               || !canOpenX10.get() ? buttonStyles.COMMON : {})
-              .__merge({ hotkeys = ["^J:Y"], tooltipCtor = @() loc("x10Btn/desc"),
+              .__merge({ hotkeys = ["^J:Y"], tooltipCtor = @() !canOpenX10.get() ? loc("x10Btn/desc") : null,
                 repayTime = 0 }))
     ]
   }

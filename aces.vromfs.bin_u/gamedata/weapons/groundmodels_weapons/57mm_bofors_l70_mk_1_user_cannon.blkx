@@ -376,30 +376,30 @@
   },
   "57mm_germ_Bofors_SAP": {
     "bullet": {
-      "mass": 2.4,
+      "mass": 2.7,
       "explosiveType": "hexal",
-      "explosiveMass": 0.075,
+      "explosiveMass": 0.3,
       "caliber": 0.057,
       "speed": 950.0,
       "maxDistance": 9000.0,
-      "normalizationPreset": "apbc",
-      "ricochetPreset": "apbc",
-      "groundRicochetPreset": "apbc",
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
+      "groundRicochetPreset": "he",
       "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.05,
+      "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
-      "stabilityReductionAfterPenetration": 0.0,
-      "stucking": 0.7,
-      "stuckingAngle": 45.0,
-      "bulletType": "aphebc_tank",
-      "slopeEffectPreset": "apbc",
+      "stabilityReductionAfterPenetration": 0.15,
+      "bulletType": "sap_hei_tank",
+      "slopeEffectPreset": "ap",
       "fresnel": [
         0.23,
         0.1,
         2.0
       ],
-      "shellAnimation": "video/shells_animations/aphe.ivf",
+      "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/sap.ivf",
+      "guiCustomIcon": "sapcbc_tank",
       "bulletName": "57_438mm_sap",
       "relativeVelHitShift": [
         300.0,
@@ -419,21 +419,15 @@
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
-          0.2
+          0.5
         ],
         "mod2": [
-          20.0,
-          0.4
+          15.0,
+          0.7
         ],
         "mod3": [
-          [
-            30.0,
-            0.6
-          ],
-          [
-            45.0,
-            0.9
-          ]
+          30.0,
+          0.99
         ]
       },
       "hitpower": {
@@ -450,13 +444,102 @@
           10000.0
         ]
       },
+      "pressureDamage": {
+        "damageType": "pressure"
+      },
       "damage": {
         "kinetic": {
           "damageType": "generic",
-          "demarrePenetrationK": 0.9,
+          "demarrePenetrationK": 0.46,
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07
+        },
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.25,
+          "segment": [
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                10.0
+              ],
+              "countPortion": 0.09
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                11.0,
+                39.0
+              ],
+              "countPortion": 0.1
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.5,
+              "angles": [
+                40.0,
+                70.0
+              ],
+              "countPortion": 0.11
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                71.0,
+                180.0
+              ],
+              "countPortion": 0.2
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                181.0,
+                289.0
+              ],
+              "countPortion": 0.2
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.5,
+              "angles": [
+                290.0,
+                320.0
+              ],
+              "countPortion": 0.11
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                321.0,
+                349.0
+              ],
+              "countPortion": 0.1
+            },
+            {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                350.0,
+                359.0
+              ],
+              "countPortion": 0.09
+            }
+          ]
         }
       },
       "visual": {

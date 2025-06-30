@@ -42783,15 +42783,18 @@
       },
       "37mm_M3_user_cannon_for_M6A1": {
         "default": {
-          "icon": "hud_ammo_ap1_he0"
+          "icon": "hud_ammo_ap1_he0",
+          "isHidden": true
         },
         "37mm_usa_m3_HE": {
           "icon": "hud_ammo_he",
-          "isHE": true
+          "isHE": true,
+          "isHidden": true
         },
         "37mm_usa_m3_APC": {
           "icon": "hud_ammo_ap2_he0",
-          "reqLevel": 11
+          "reqLevel": 11,
+          "isHidden": true
         }
       }
     },
@@ -44728,11 +44731,13 @@
       "76mm_3inch_howitzer_MkI_user_cannon": {
         "default": {
           "icon": "hud_ammo_he",
-          "isHE": true
+          "isHE": true,
+          "isHidden": true
         },
         "76mm_britain_howitzer_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
-          "maxCount": 2
+          "maxCount": 2,
+          "isHidden": true
         }
       }
     },
@@ -48230,7 +48235,8 @@
       },
       "103mm_MILAN_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     },
@@ -50769,7 +50775,8 @@
       },
       "103mm_milan_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     },
@@ -51248,7 +51255,8 @@
       },
       "127mm_TOW_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     },
@@ -52422,14 +52430,17 @@
       },
       "37mm_M3_user_cannon_for_M6A1": {
         "37mm_usa_m3_APC": {
-          "icon": "hud_ammo_ap2_he0"
+          "icon": "hud_ammo_ap2_he0",
+          "isHidden": true
         },
         "default": {
-          "icon": "hud_ammo_ap1_he0"
+          "icon": "hud_ammo_ap1_he0",
+          "isHidden": true
         },
         "37mm_usa_m3_HE": {
           "isHE": true,
-          "icon": "hud_ammo_he"
+          "icon": "hud_ammo_he",
+          "isHidden": true
         }
       }
     },
@@ -52573,7 +52584,8 @@
       "110mm_M8_rocket_launcher": {
         "default": {
           "image": "rocket_20kg_short",
-          "icon": "hud_he_rocket"
+          "icon": "hud_he_rocket",
+          "isHidden": true
         }
       }
     },
@@ -53311,18 +53323,22 @@
       },
       "75mm_KwK44_L36_user_cannon": {
         "default": {
-          "icon": "hud_ammo_heat"
+          "icon": "hud_ammo_heat",
+          "isHidden": true
         },
         "75mm_ger_kwk44_HE": {
           "icon": "hud_ammo_he",
-          "isHE": true
+          "isHE": true,
+          "isHidden": true
         },
         "75mm_ger_kwk44_HEAT": {
-          "icon": "hud_ammo_heat"
+          "icon": "hud_ammo_heat",
+          "isHidden": true
         },
         "75mm_ger_Smoke": {
           "reqModification": "tank_smoke_screen_smoke_shell",
-          "maxCount": 2
+          "maxCount": 2,
+          "isHidden": true
         }
       }
     },
@@ -58645,7 +58661,8 @@
       },
       "136mm_HOT_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     },
@@ -59828,7 +59845,8 @@
       },
       "125mm_9M113_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     },
@@ -62360,13 +62378,16 @@
       },
       "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap2_he2"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         },
         "152mm_us_tow_2a": {
-          "icon": "hud_ammo_atgm_tandem_ap3_he3"
+          "icon": "hud_ammo_atgm_tandem_ap3_he3",
+          "isHidden": true
         },
         "152mm_us_tow_2": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap2_he2",
+          "isHidden": true
         }
       }
     }
@@ -62639,10 +62660,12 @@
       },
       "152mm_Type_79_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap2_he2"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         },
         "152mm_jp_type_79_ASM": {
-          "icon": "hud_ammo_atgm_vt_fuze_ap1_he1"
+          "icon": "hud_ammo_atgm_ap2_he1",
+          "isHidden": true
         }
       }
     }
@@ -63244,7 +63267,8 @@
       "158mm_NB_Wf_41_rocket_launcher": {
         "default": {
           "image": "rocket_20kg_short",
-          "icon": "hud_he_rocket"
+          "icon": "hud_he_rocket",
+          "isHidden": true
         }
       }
     }
@@ -63644,7 +63668,8 @@
       },
       "125mm_9M113_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     }
@@ -63859,7 +63884,8 @@
       },
       "70mm_Hydra_70_magach_user_cannon": {
         "default": {
-          "icon": "hud_ammo_heat"
+          "icon": "hud_ammo_heat",
+          "isHidden": true
         }
       }
     }
@@ -64299,7 +64325,8 @@
       },
       "120mm_302_atgm_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     }
@@ -64676,10 +64703,12 @@
       },
       "127mm_bgm_71_tow_begleitpanzer_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he2"
+          "icon": "hud_ammo_atgm_ap1_he2",
+          "isHidden": true
         },
         "127mm_us_itow": {
-          "icon": "hud_ammo_atgm_ap2_he1"
+          "icon": "hud_ammo_atgm_ap2_he1",
+          "isHidden": true
         }
       }
     },
@@ -65720,13 +65749,16 @@
       },
       "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap2_he2"
+          "icon": "hud_ammo_atgm_ap2_he2",
+          "isHidden": true
         },
         "152mm_us_tow_2": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         },
         "152mm_us_tow_2a": {
-          "icon": "hud_ammo_atgm_tandem_ap3_he3"
+          "icon": "hud_ammo_atgm_tandem_ap3_he3",
+          "isHidden": true
         }
       }
     }
@@ -66258,13 +66290,16 @@
       },
       "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap2_he2"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         },
         "152mm_us_tow_2a": {
-          "icon": "hud_ammo_atgm_tandem_ap3_he3"
+          "icon": "hud_ammo_atgm_tandem_ap3_he3",
+          "isHidden": true
         },
         "152mm_us_tow_2": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap2_he2",
+          "isHidden": true
         }
       }
     }
@@ -67060,10 +67095,12 @@
       },
       "152mm_9M133_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_tandem_ap2_he1"
+          "icon": "hud_ammo_atgm_tandem_ap2_he1",
+          "isHidden": true
         },
         "152mm_9M133FM_3_ATGM": {
-          "icon": "hud_ammo_atgm_he_ap1_he2"
+          "icon": "hud_ammo_atgm_he_ap1_he2",
+          "isHidden": true
         }
       }
     }
@@ -67304,7 +67341,8 @@
       },
       "127mm_TOW_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     },
@@ -68225,10 +68263,12 @@
       },
       "37mm_M3_user_cannon_for_M6A1": {
         "37mm_usa_m3_APC": {
-          "icon": "hud_ammo_ap2_he0"
+          "icon": "hud_ammo_ap2_he0",
+          "isHidden": true
         },
         "default": {
-          "icon": "hud_ammo_ap1_he0"
+          "icon": "hud_ammo_ap1_he0",
+          "isHidden": true
         }
       }
     },
@@ -68616,16 +68656,19 @@
         }
       },
       "100mm_2a70_zbd_user_cannon": {
+        "100mm_9m117": {
+          "icon": "hud_ammo_atgm_tandem_ap1_he1",
+          "isHidden": true
+        },
         "default": {
           "isHE": true,
-          "icon": "hud_ammo_he"
+          "icon": "hud_ammo_he",
+          "isHidden": true
         },
         "100mm_3of70": {
           "isHE": true,
-          "icon": "hud_ammo_he"
-        },
-        "100mm_9m117": {
-          "icon": "hud_ammo_atgm_tandem_ap1_he1"
+          "icon": "hud_ammo_he",
+          "isHidden": true
         }
       }
     }
@@ -70596,7 +70639,8 @@
       },
       "115mm_MILAN_2_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     }
@@ -71039,13 +71083,16 @@
       },
       "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap2_he2"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         },
         "152mm_us_tow_2a": {
-          "icon": "hud_ammo_atgm_tandem_ap3_he3"
+          "icon": "hud_ammo_atgm_tandem_ap3_he3",
+          "isHidden": true
         },
         "152mm_us_tow_2": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap2_he2",
+          "isHidden": true
         }
       }
     }
@@ -72146,7 +72193,8 @@
       },
       "150mm_Rbs_56_BILL_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     }
@@ -72452,7 +72500,8 @@
       },
       "103mm_milan_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     }
@@ -72890,7 +72939,8 @@
       },
       "127mm_TOW_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     },
@@ -73056,7 +73106,8 @@
       },
       "250kg_TT_rocket_launcher": {
         "default": {
-          "icon": "hud_he_rocket"
+          "icon": "hud_he_rocket",
+          "isHidden": true
         }
       }
     }
@@ -73905,7 +73956,8 @@
       },
       "164mm_s11_rocket_launcher": {
         "default": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         }
       }
     }
@@ -74543,13 +74595,16 @@
       },
       "127mm_BGM_71_tow_M3A3_launcher_user_cannon": {
         "default": {
-          "icon": "hud_ammo_atgm_ap2_he2"
+          "icon": "hud_ammo_atgm_ap2_he2",
+          "isHidden": true
         },
         "152mm_us_tow_2": {
-          "icon": "hud_ammo_atgm_ap1_he1"
+          "icon": "hud_ammo_atgm_ap1_he1",
+          "isHidden": true
         },
         "152mm_us_tow_2a": {
-          "icon": "hud_ammo_atgm_tandem_ap3_he3"
+          "icon": "hud_ammo_atgm_tandem_ap3_he3",
+          "isHidden": true
         }
       }
     }
@@ -76366,16 +76421,19 @@
         }
       },
       "100mm_2a70_zbd_user_cannon": {
+        "100mm_9m117": {
+          "icon": "hud_ammo_atgm_tandem_ap1_he1",
+          "isHidden": true
+        },
         "default": {
           "isHE": true,
-          "icon": "hud_ammo_he"
+          "icon": "hud_ammo_he",
+          "isHidden": true
         },
         "100mm_3of70": {
           "isHE": true,
-          "icon": "hud_ammo_he"
-        },
-        "100mm_9m117": {
-          "icon": "hud_ammo_atgm_tandem_ap1_he1"
+          "icon": "hud_ammo_he",
+          "isHidden": true
         }
       }
     }

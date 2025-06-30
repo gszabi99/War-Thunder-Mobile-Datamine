@@ -1564,6 +1564,12 @@
         "mRank": 9
       }
     },
+    "pkg_cn_al_khalid_1": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 10
+      }
+    },
     "pkg_environment_uhq": {
       "base": false,
       "hq": false,
@@ -2062,7 +2068,7 @@
     "enabled": true
   },
   "unitedVdata.dynModel": {
-    "use": true,
+    "use": false,
     "canRebuild": false,
     "common": {
       "exactSize": true,
