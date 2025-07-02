@@ -39,12 +39,13 @@ function mkBg(boxes, style, nextStepDelay) {
   }
 }
 
-let bgContinueButton = {
-  size = flex()
-  behavior = Behaviors.Button
-  onClick = nextStepByDefaultHotkey
-  sound = { click  = "click" }
-}
+let bgContinueButton = @(hasNextKey) !hasNextKey ? null
+  : {
+      size = flex()
+      behavior = Behaviors.Button
+      onClick = nextStepByDefaultHotkey
+      sound = { click  = "click" }
+    }
 
 
 function mkArrowLinks(stepData, boxes, style) {
@@ -79,7 +80,7 @@ function mkArrowLinks(stepData, boxes, style) {
   }
 }
 
-function mkMessage(text, charId, customCtor, boxes, style) {
+function mkMessage(text, charId, hasNextKey, customCtor, boxes, style) {
   if (text == null && customCtor == null)
     return null
 
@@ -87,7 +88,7 @@ function mkMessage(text, charId, customCtor, boxes, style) {
   let character = style.characterCtor(charId, false)
   
   let charSize = calc_comp_size(character)
-  let msgSize = calc_comp_size(ctor(text, nextStepByDefaultHotkey))
+  let msgSize = calc_comp_size(ctor(text, hasNextKey, nextStepByDefaultHotkey))
 
   let charPosY = sh(100) - charSize[1]
   let bestCharPos = [max(saBorders[0], sw(50) - charSize[0] - charBestPosOffsetX), charPosY]
@@ -121,7 +122,7 @@ function mkMessage(text, charId, customCtor, boxes, style) {
   return {
     messageComp = {
       pos = msgPos
-      children = ctor(text, nextStepByDefaultHotkey)
+      children = ctor(text, hasNextKey, nextStepByDefaultHotkey)
     }
     messageBox = sizePosToBox(msgSize, msgPos)
     characterComp = {
@@ -198,7 +199,7 @@ function tutorialWnd() {
   let style = tutorialWndDefStyle.__merge(config?.style ?? {})
 
   let stepData = config?.steps[stepIdx.value] ?? {}
-  local { nextStepAfter = null, text = null, textCtor = null, charId = null } = stepData
+  local { nextStepAfter = null, text = null, textCtor = null, charId = null, hasNextKey = false } = stepData
 
   if (text instanceof Watched) {
     watch.append(text)
@@ -230,7 +231,8 @@ function tutorialWnd() {
 
   let { skipBtn, skipBox } = mkSkipButton(obstacles, style)
   obstacles.append(skipBox)
-  let { characterComp = null, messageComp = null, messageBox = null } = mkMessage(text, charId, textCtor, obstacles, style)
+  let { characterComp = null, messageComp = null, messageBox = null } = mkMessage(text,
+    charId, hasNextKey, textCtor, obstacles, style)
   if (messageBox != null)
     obstacles.append(messageBox)
 
@@ -239,7 +241,7 @@ function tutorialWnd() {
     size = flex()
     stopMouse = true
     children = [
-      bgContinueButton
+      bgContinueButton(hasNextKey)
       mkBg(boxes, style, config?.nextStepDelay ?? 0.5)
       arrowLinks
       characterComp

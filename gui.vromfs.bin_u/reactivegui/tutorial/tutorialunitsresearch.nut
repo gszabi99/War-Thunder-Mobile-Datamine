@@ -112,7 +112,7 @@ function startTutorial() {
     steps = [
       {
         id = "s1_welcome_to_research_menu"
-        nextKeyDelay = -1
+        hasNextKey = true
         text = loc("tutorial_welcome_to_research_menu")
       }
       {
@@ -180,7 +180,7 @@ function startTutorial() {
           closeMsgBox(PURCHASE_BOX_UID)
         }
         text = loc("tutorial_select_next_research_description")
-        nextKeyDelay = -1
+        hasNextKey = true
       }
       {
         id = "s7_select_next_research_unit"
@@ -208,7 +208,7 @@ function startTutorial() {
       }
       {
         id = STEP_PARTING_WORDS
-        nextKeyDelay = -1
+        hasNextKey = true
         charId = "mary_like"
         text = loc("tutorial_parting_words_research_unit")
       }
@@ -225,7 +225,7 @@ function startTutorial() {
       }
       {
         id = "s11_finish_research_unit_tutorial"
-        nextKeyDelay = -1
+        hasNextKey = true
         charId = "mary_like"
         text = loc("tutorial_finish_research_unit")
       }

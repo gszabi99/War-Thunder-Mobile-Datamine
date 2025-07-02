@@ -205,7 +205,7 @@ function startTutorial() {
       {
         id = "s11_show_progress_bar"
         text = loc("tutorial/battlePass/progressBarInfo")
-        nextKeyDelay = -1
+        hasNextKey = true
         objects = [{
           keys = "battle_pass_progress_bar"
           needArrow = true
@@ -214,7 +214,7 @@ function startTutorial() {
       {
         id = "s12_show_free_reward"
         text = loc("tutorial/battlePass/rewardInfo")
-        nextKeyDelay = -1
+        hasNextKey = true
         objects = [{
           keys = Computed(@() $"battle_pass_reward_{tutorialFreeMarkIdx.get()}")
           needArrow = true
@@ -223,7 +223,7 @@ function startTutorial() {
       {
         id = "s13_show_end_time"
         text = loc("tutorial/battlePass/timeInfo")
-        nextKeyDelay = -1
+        hasNextKey = true
         objects = [{
           keys = "battle_pass_time"
           needArrow = true

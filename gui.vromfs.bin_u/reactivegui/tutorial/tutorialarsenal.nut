@@ -203,7 +203,7 @@ function startTutorial() {
       }
       {
         id = "s7_finish_arsenal_tutorial"
-        nextKeyDelay = -1
+        hasNextKey = true
         charId = "mary_like"
         text = loc("tutorial/arsenal/finish")
       }

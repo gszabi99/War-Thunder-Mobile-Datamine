@@ -101,7 +101,7 @@ function startTutorial() {
         id = "s4_open_section_with_reward"
         text = isSameTutorialSectionId.get() ? loc("tutorial/mainEvent/sectionInfo")
           : "\n".concat(loc("tutorial/mainEvent/sectionInfo"), loc("tutorial/mainEvent/openSectionWithReward"))
-        nextKeyDelay = isSameTutorialSectionId.get() ? -1 : null
+        hasNextKey = isSameTutorialSectionId.get()
         objects = [{
           keys = Computed(@() $"sectionId_{tutorialSectionIdWithReward.get()}")
           onClick = isSameTutorialSectionId.get() ? null
@@ -164,7 +164,7 @@ function startTutorial() {
       {
         id = "s10_show_jackpot_progress"
         text = loc("tutorial/mainEvent/jackpotProgressInfo")
-        nextKeyDelay = -1
+        hasNextKey = true
         objects = [{
           keys = "jackpot_progress"
           needArrow = true
@@ -173,7 +173,7 @@ function startTutorial() {
       {
         id = "s11_show_end_time"
         text = loc("tutorial/mainEvent/timeInfo")
-        nextKeyDelay = -1
+        hasNextKey = true
         objects = [{
           keys = "event_time"
           needArrow = true

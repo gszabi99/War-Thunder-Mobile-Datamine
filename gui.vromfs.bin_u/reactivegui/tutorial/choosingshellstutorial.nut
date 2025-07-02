@@ -106,7 +106,7 @@ function startTutorial() {
         }
         text = loc("tutorial_view_ammo_details")
         charId = "mary_points"
-        nextKeyDelay = 1
+        hasNextKey = true
         objects = [{ keys = "bulletsInfo" }]
       }
       {
@@ -117,18 +117,18 @@ function startTutorial() {
       {
         id = "s6_compare_shells"
         text = loc("tutorial_compare_shells")
-        nextKeyDelay = 1
+        hasNextKey = true
         objects = [{ keys = "curBulletInfo" }]
       }
       {
         id = "s7_quick_compare_shells"
-        nextKeyDelay = 1
+        hasNextKey = true
         text = loc("tutorial_quick_compare_shells")
         objects = allowedBulletsForChoose.map(@(obj) { keys = $"{obj.keys}_icon" })
       }
       {
         id = "s8_shell_properties"
-        nextKeyDelay = 1
+        hasNextKey = true
         text = loc("tutorial_shell_properties")
         objects = [{
           keys = "bulletsLegend"

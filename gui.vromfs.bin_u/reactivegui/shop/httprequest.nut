@@ -5,7 +5,7 @@ let { getPlayerToken } = require("auth_wt")
 
 let hasLog = {}
 function logByUrlOnce(url, text) {
-  if (url in hasLog)
+  if (!url || url in hasLog)
     return
   hasLog[url] <- true
   log(text)

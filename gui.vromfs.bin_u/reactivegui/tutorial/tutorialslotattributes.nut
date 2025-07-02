@@ -135,7 +135,7 @@ function startTutorial() {
         id = "s4_open_slot_attributes"
         text = loc("tutorial/slotAttributes/attributesInfo")
         charId = "mary_points"
-        nextKeyDelay = -1
+        hasNextKey = true
         objects = [
           { keys = ["upgradePoints", "upgradePointsValue"], sizeIncAdd = hdpx(5), needArrow = true }
           { keys = "slotAttributesList" }
@@ -153,7 +153,7 @@ function startTutorial() {
       }
       {
         id = FINISH_STEP
-        nextKeyDelay = -1
+        hasNextKey = true
         charId = "mary_like"
         text = loc("tutorial/slotAttributes/finish")
       }

@@ -18,8 +18,7 @@ let { is_multiplayer } = require("%scripts/util.nut")
 let { isInFlightMenu, isInBattle, canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type, get_local_mplayer } = require("mission")
 let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer, get_respawns_left,
-  quit_mission_after_complete, restart_mission, get_mission_restore_type, get_mission_status,
-  is_ready_to_die
+  quit_mission_after_complete, restart_mission, get_mission_restore_type, get_mission_status
 } = require("guiMission")
 
 function canRestart() {
@@ -165,7 +164,7 @@ function bailout() {
 
   if (get_respawns_left() == 0 || !isSlotsAvailable)
     msg = "\n\n".concat(msg, loc("flightmenu/thisWillCountAsDeserter"))
-  else if (!isFreeSlotsAvailable && !is_ready_to_die())
+  else if (!isFreeSlotsAvailable)
     msg = "\n\n".concat(msg, loc("flightmenu/thisWillCountAsDeserterIfNotUseSpare"))
 
   openConfirmMsg(msg, loc("flightmenu/btnLeaveTheTank"), "fMenuBailout")

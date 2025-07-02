@@ -169,6 +169,10 @@ function showCutscene(v) {
   if (!v)
     stop_prem_cutscene()
   else if (!needShowUi.value && !skipAnimsOnce.value) {
+    if (unitForShow.get()?.name == "j7w1") {
+      needShowUi.set(true)
+      return
+    }
     let unitType = unitForShow.value?.unitType ?? ""
     local presetType = TANK_PRESET_TYPE
     if (unitType == SHIP)

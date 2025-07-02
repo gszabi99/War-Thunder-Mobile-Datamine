@@ -51,7 +51,7 @@ let anyTapHint = {
   color = 0xFFA0A0A0
 }.__update(fontTiny)
 
-let nextKeyHintCtor = @(onClick) onClick == null ? null
+let nextKeyHintCtor = @(canSkipByClick, onClick) onClick == null || !canSkipByClick ? null
   : {
       size = FLEX_H
       margin = const [hdpx(10), 0, 0, 0]
@@ -79,7 +79,7 @@ let nextKeyHintCtor = @(onClick) onClick == null ? null
       ]
     }
 
-let messageCtor = @(text, onNext, textOverride = {}) {
+let messageCtor = @(text, canSkipByClick, onNext, textOverride = {}) {
   padding = defMsgPadding
   rendObj = ROBJ_BOX
   fillColor = msgBgColor
@@ -96,7 +96,7 @@ let messageCtor = @(text, onNext, textOverride = {}) {
       color = commonTextColor
       halign = ALIGN_CENTER
     }.__update(fontSmall, textOverride)
-    nextKeyHintCtor(onNext)
+    nextKeyHintCtor(canSkipByClick, onNext)
   ]
 }
 

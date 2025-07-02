@@ -146,6 +146,8 @@ function applyAttributes() {
 }
 
 function markSlotAttributesSeen(slotIdx) {
+  if (slotIdx == null)
+    return
   let curSlotLevel = curSlots.get()?[slotIdx]?.level
 
   seenSlotAttributes.mutate(function(v) {

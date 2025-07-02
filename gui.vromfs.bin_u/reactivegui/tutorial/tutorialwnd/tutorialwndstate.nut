@@ -41,7 +41,6 @@ from "%globalsDarg/darg_library.nut" import *
 
 
 
-
 let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { get_time_msec } = require("dagor.time")
 let { register_command } = require("console")

@@ -317,7 +317,7 @@ function getLootboxFixedRewardsViewInfo(lootbox) {
 function getLootboxRewardsViewInfo(lootbox, needToGroup = false) {
   let fixedRewards = getLootboxFixedRewardsViewInfo(lootbox)
   let commonRewards = getLootboxCommonRewardsViewInfo(lootbox)
-    .filter(@(cR) fixedRewards.findindex(@(fR) fR.rewardId == cR.rewardId) == null)
+    .filter(@(cR) fixedRewards.findindex(@(fR) fR?.rewardId && cR?.rewardId && fR.rewardId == cR.rewardId) == null)
   return fixedRewards.extend(needToGroup ? groupRewards(commonRewards) : commonRewards)
 }
 

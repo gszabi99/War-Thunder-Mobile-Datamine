@@ -17,8 +17,9 @@ let canLinkEmailForGaijinLogin = Computed(@() can_link_email_for_gaijin_login.ge
   && (curLoginType.get() in emailLinkUrlsCfg)
   && authTags.get().contains(emailLinkUrlsCfg[curLoginType.get()].noEmailTag))
 
-let openLinkEmailUrlImpl = @(stoken) eventbus_send("openUrl",
-  { baseUrl = "".concat(emailLinkUrlsCfg[curLoginType.get()].url, stoken) })
+let openLinkEmailUrlImpl = @(stoken) curLoginType.get() in emailLinkUrlsCfg
+  ? eventbus_send("openUrl", { baseUrl = "".concat(emailLinkUrlsCfg[curLoginType.get()].url, stoken) })
+  : null
 
 eventbus_subscribe("onGetStokenToLinkEmailForGaijinLogin", function(msg) {
   let { status, stoken = null } = msg
