@@ -61,7 +61,7 @@ function saveAndSendBattlesCount() {
       return
     get_local_custom_settings_blk()[LAST_SUBMITTED_COUNT_OF_BATTLES] = closestCount
     eventbus_send("saveProfile", {})
-    sendAppsFlyerEvent($"{closestCount}_battles_1")
+    sendAppsFlyerEvent($"battles_{closestCount}_1")
   }
 }
 lastBattlesTotal.subscribe(@(v) battlesListCountToSend.contains(v) ? saveAndSendBattlesCount() : null)

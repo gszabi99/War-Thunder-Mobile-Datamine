@@ -149,7 +149,7 @@ function onSchRewardReceive(schReward) {
   if (!schReward.needAdvert || hasVip.get())
     applyScheduledReward(schReward.id)
   else if (!isProviderInited.get())
-    logerr("Trying to show ads for apply Scheduled Reward when there is no initialized provider")
+    openMsgBox({ text = loc("shop/notAvailableAds") })
   else {
     playSound("meta_ad_button")
     showAdsForReward({ schRewardId = schReward.id, cost = schReward?.cost ?? 0, bqId = $"scheduled_{schReward.id}" })

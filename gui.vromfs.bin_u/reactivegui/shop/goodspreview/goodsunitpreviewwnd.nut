@@ -8,7 +8,7 @@ let { blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nu
 let { registerScene } = require("%rGui/navState.nut")
 let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
 let { GPT_UNIT, GPT_BLUEPRINT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount,
-  HIDE_PREVIEW_MODALS_ID, eventIdByPersonalDiscount
+  HIDE_PREVIEW_MODALS_ID
 } = require("%rGui/shop/goodsPreviewState.nut")
 let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
@@ -661,9 +661,9 @@ let previewWnd = @() {
                           skipAnimsOnce)
                     }
                     @() {
-                      watch = [eventIdByPersonalDiscount, previewGoods]
-                      children = !eventIdByPersonalDiscount.get() || !previewGoods.get()?.id ? null :
-                        mkPersonalDiscountBtn(eventIdByPersonalDiscount.get(), aTimeHeaderStart)
+                      watch = previewGoods
+                      children = !previewGoods.get()?.id ? null :
+                        mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart)
                     }
                   ]
                 }

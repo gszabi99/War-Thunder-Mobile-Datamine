@@ -30,7 +30,7 @@ let attrSlotData = Computed(function() {
   }
 })
 
-let slotUnitName = Computed(@() attrSlotData.get().slot?.name)
+let slotUnitName = Computed(@() attrSlotData.get().slot?.name ?? "")
 let slotAttributes = Computed(@() attrSlotData.get().slot?.attrLevels)
 let slotLevel = Computed(@() attrSlotData.get().slot?.level)
 let slotLevelsToMax = Computed(@() (maxSlotLevels.get()?.len() ?? 0) - (attrSlotData.get().slot?.level ?? 0))

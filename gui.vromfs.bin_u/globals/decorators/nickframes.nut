@@ -134,8 +134,8 @@ let nickFrames = {
   yellow_submarine = @(n) $"⛏{n}⛐"
   torch_crown = @(n) $"⛈{n}⛉"
   star_stripes = @(n) $"⛊{n}⛊"
-  army_token = @(n) $"⛋{n}⛌"
-  unchain = @(n) $"⛍{n}⛎"
+  unchain = @(n) $"⛋{n}⛌"
+  army_token = @(n) $"⛍{n}⛎"
   eagle_wings = @(n) $"⛑{n}⛒"
   stars_and_stripes = @(n) $"⛓{n}⛔"
 }

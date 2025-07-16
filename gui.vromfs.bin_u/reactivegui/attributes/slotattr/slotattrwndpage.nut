@@ -32,9 +32,8 @@ function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, ma
   }
 }
 
-function mkAttrRow(attr, idx) {
-  let shopCfg = getUnitTagsShop(slotUnitName.get())
-  let catId = curCategoryId.get()
+function mkAttrRow(unitName, catId, attr, idx) {
+  let shopCfg = getUnitTagsShop(unitName)
   let minLevel = Computed(@() slotAttributes.get()?[catId][attr.id] ?? 0) 
   let selLevel = Computed(@() max(selAttributes.get()?[catId][attr.id] ?? minLevel.get(), minLevel.get())) 
   let maxLevel = Computed(@() getMaxAttrLevelData(attr, selLevel.get(), leftSlotSp.get()).maxLevel) 
@@ -86,17 +85,19 @@ function mkAttrRow(attr, idx) {
 
 let slotAttrPage = @() {
   key = "slotAttributesList" 
-  watch = curCategory
+  watch = [curCategory, slotUnitName]
   size = FLEX_H
   onAttach = @() setInterval(incBtnAnimRepeat, startIncBtnGlare)
   onDetach = @() clearTimer(startIncBtnGlare)
-  children = {
-    key = curCategory.get()
-    size = FLEX_H
-    flow = FLOW_VERTICAL
-    children = (curCategory.get()?.attrList ?? []).map(mkAttrRow)
-    animations = wndSwitchAnim
-  }
+  children = slotUnitName.get() == "" ? null
+    : {
+        key = curCategory.get()
+        size = FLEX_H
+        flow = FLOW_VERTICAL
+        children = (curCategory.get()?.attrList ?? [])
+          .map(@(attr, idx) mkAttrRow(slotUnitName.get(), curCategoryId.get(), attr, idx))
+        animations = wndSwitchAnim
+      }
 }
 
 return { slotAttrPage }

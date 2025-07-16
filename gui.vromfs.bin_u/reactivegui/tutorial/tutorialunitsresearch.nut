@@ -141,7 +141,7 @@ function startTutorial() {
           function onClick() {
             if (!unitInProgress.get()) {
               let { unitId = "", currencyId = "", price = "" } = delayedPurchaseUnitData.get()
-              if(unitId != "" && currencyId != "" && price != "")
+              if (unitId != "" && currencyId != "" && price != "" && unitId not in servProfile.get()?.units)
                 buy_unit(unitId, currencyId, price, { id = "onUnitPurchaseResult", unitId })
             }
             return true

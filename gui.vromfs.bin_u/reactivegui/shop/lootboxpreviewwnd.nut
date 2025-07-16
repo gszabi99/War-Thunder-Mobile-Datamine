@@ -1,12 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { registerScene } = require("%rGui/navState.nut")
+let { getLootboxName, lootboxPreviewBg } = require("%appGlobals/config/lootboxPresentation.nut")
+let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { backButton } = require("%rGui/components/backButton.nut")
 let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
 let { lootboxPreviewContent } = require("lootboxPreviewContent.nut")
 let { previewLootbox, isLootboxPreviewOpen, closeLootboxPreview } = require("lootboxPreviewState.nut")
 
+let defaultBgImage = "ui/images/event_bg.avif"
+let bgImage = keepref(Computed(@() lootboxPreviewBg?[previewLootbox.get()?.name] ?? defaultBgImage))
 
 let wndHeaderGap = hdpx(30)
 let wndHeader = {
@@ -20,7 +22,7 @@ let wndHeader = {
       size = FLEX_H
       halign = ALIGN_CENTER
       color = 0xFFFFFFFF
-      text = getLootboxName(previewLootbox.value?.name)
+      text = getLootboxName(previewLootbox.get()?.name)
       margin = const [0, 0, 0, hdpx(15)]
     }.__update(fontBig)
   ]
@@ -30,9 +32,6 @@ let lootboxPreviewWnd = @() {
   key = isLootboxPreviewOpen
   watch = previewLootbox
   size = flex()
-  rendObj = ROBJ_IMAGE
-  keepAspect = KEEP_ASPECT_FILL
-  image = Picture("ui/images/event_bg.avif")
   color = 0xFFFFFFFF
   children = {
     size = flex()
@@ -47,4 +46,8 @@ let lootboxPreviewWnd = @() {
   animations = wndSwitchAnim
 }
 
-registerScene("lootboxPreviewWnd", lootboxPreviewWnd, closeLootboxPreview, isLootboxPreviewOpen)
+let sceneId = "lootboxPreviewWnd"
+registerScene(sceneId, lootboxPreviewWnd, closeLootboxPreview, isLootboxPreviewOpen)
+setSceneBgFallback(sceneId, defaultBgImage)
+setSceneBg(sceneId, bgImage.get())
+bgImage.subscribe(@(v) setSceneBg(sceneId, v))

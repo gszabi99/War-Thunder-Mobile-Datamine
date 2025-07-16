@@ -101,8 +101,11 @@ let rouletteOpenCount = Computed(@() receivedRewardsCur.value?.openCount
 
 let rouletteFixedRewards = Computed(function() {
   let res = []
-  let { fixedRewards = {} } = serverConfigs.value?.lootboxesCfg[rouletteOpenId.value]
+  let { fixedRewards = {} } = serverConfigs.value?.lootboxesCfg[rouletteOpenId.get()]
+  let { total = {} } = servProfile.get()?.lootboxStats[rouletteOpenId.get()]
   foreach(countStr, fr in fixedRewards) {
+    if (fr?.lockedBy.findvalue(@(r) (total?[r] ?? 0) > 0) != null)
+      continue
     let rewardId = fr?.rewardId ?? fr 
     let reward = serverConfigs.value?.rewardsCfg[rewardId]
     let viewInfo = reward != null ? getRewardsViewInfo(reward) : []
@@ -144,12 +147,15 @@ function calcJackpotOpens(id, openCount, profile, configs) {
   if (fixedRewards.len() == 0)
     return []
 
+  let { total = {} } = profile?.lootboxStats[id]
   let hasOpens = profile?.lootboxStats[id].opened ?? 0
   let jackpotsById = {}
   foreach(idxStr, fr in fixedRewards) {
     let rewardId = fr?.rewardId ?? fr 
     let idx = idxStr.tointeger()
     if (idx <= hasOpens || idx > hasOpens + openCount)
+      continue
+    if (fr?.lockedBy.findvalue(@(r) (total?[r] ?? 0) > 0) != null)
       continue
     let rewCfg = configs?.rewardsCfg[rewardId] ?? []
     let rewLootboxes = rewCfg.reduce(@(res, g) g.gType == "lootbox" ? res.$rawset(g.id, g.count) : res, {})

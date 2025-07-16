@@ -31,9 +31,18 @@ let customLootboxImages = {
   event_special_ships_lunar_ny_2025         = "event_special_lunar_ny.avif"
   event_special_air_lunar_ny_2025           = "event_special_lunar_ny.avif"
 
+  event_special_tanks_independence_2025      = "event_special_independence_2025.avif"
+  event_special_ships_independence_2025      = "event_special_independence_2025.avif"
+  event_special_air_independence_2025        = "event_special_independence_2025.avif"
+
   event_special_tanks_april_fools_2025      = "event_special_ships_april_2025.avif"
   event_special_ships_april_fools_2025      = "event_special_ships_april_2025.avif"
   event_special_air_april_fools_2025        = "event_special_ships_april_2025.avif"
+
+  event_ships_medium_subbox_box_season_22   = "lucky_box.avif"
+  event_air_medium_subbox_box_season_22     = "lucky_box.avif"
+  event_air_big_subbox_box_season_22        = "lucky_box.avif"
+  event_ships_big_subbox_box_season_22      = "lucky_box.avif"
 
   past_events_box_tanks_seasons_1_to_3 = "past_events_box_ships_seasons_1_to_3.avif"
   past_events_box_ships_seasons_1_to_4 = "past_events_box_ships_seasons_1_to_3.avif"
@@ -68,6 +77,9 @@ let customLootboxImages = {
   past_events_box_tanks_seasons_1_to_18 = "past_events_box_seasons_1_to_18.avif"
   past_events_box_ships_seasons_1_to_18 = "past_events_box_seasons_1_to_18.avif"
   past_events_box_air_seasons_1_to_18 = "past_events_box_seasons_1_to_18.avif"
+  past_events_box_tanks_seasons_1_to_19 = "past_events_box_seasons_1_to_19.avif"
+  past_events_box_ships_seasons_1_to_19 = "past_events_box_seasons_1_to_19.avif"
+  past_events_box_air_seasons_1_to_19 = "past_events_box_seasons_1_to_19.avif"
 }
 
 let customRouletteImages = {
@@ -97,6 +109,15 @@ let lootboxPreviewBg = {
   event_special_gift_tanks_new_year_2025         = "ui/images/event_bg_christmas_2024.avif"
   event_special_gift_ships_new_year_2025         = "ui/images/event_bg_christmas_2024.avif"
   event_special_gift_air_new_year_2025           = "ui/images/event_bg_christmas_2024.avif"
+
+  event_ships_big_subbox_box_season_22           = "ui/images/event_bg_season_22.avif"
+  event_ships_medium_subbox_box_season_22        = "ui/images/event_bg_season_22.avif"
+  event_air_medium_subbox_box_season_22          = "ui/images/event_bg_season_22.avif"
+  event_air_big_subbox_box_season_22             = "ui/images/event_bg_season_22.avif"
+
+  event_special_tanks_independence_2025          = "ui/images/event_bg_event_independence_day.avif"
+  event_special_ships_independence_2025          = "ui/images/event_bg_event_independence_day.avif"
+  event_special_air_independence_2025            = "ui/images/event_bg_event_independence_day.avif"
 }
 
 let customEventLootboxScale = {

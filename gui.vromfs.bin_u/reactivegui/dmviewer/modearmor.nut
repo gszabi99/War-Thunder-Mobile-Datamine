@@ -34,6 +34,13 @@ let isSolidW = Watched(false)
 let isVariableThicknessW = Watched(false)
 let partNameW = Watched("")
 
+dmViewerMode.subscribe(function(_) {
+  partNameW.set("")
+  thicknessW.set(0.0)
+  scrPosX.set(0)
+  scrPosY.set(0)
+})
+
 function onUpdateHintArmor(p) {
   let { posX, posY, angle = 0, normal_angle = 0, thickness = 0, effective_thickness = 0, solid = false,
     variable_thickness = false, name = ""

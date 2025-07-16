@@ -225,4 +225,5 @@ return {
 
   tooltipBg
   mkTooltipText
+  REPAY_TIME
 }

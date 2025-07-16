@@ -22,7 +22,6 @@
   "dustFx": "",
   "useTouchTargeting": true,
   "ecsTemplate": "tank_wtm",
-  "useMultipleCrosshairs": true,
   "autoSightDistanceCorrection": true,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
@@ -48,8 +47,6 @@
   "type": "typeTankDestroyer",
   "minRelativeTankCameraThreshold": 1.44,
   "isSequentialPrimaryShot": true,
-  "arcadePowerMult": 1.5,
-  "arcadeTurnPowerMult": 1.1,
   "controlDevices": {
     "device": [
       {
@@ -1885,7 +1882,8 @@
         },
         "hullAiming": {
           "horizontal": true,
-          "maxAllowedRoll": 37.0
+          "maxAllowedRoll": 37.0,
+          "maxSpeedForHorizontalAiming": 100.0
         }
       },
       {
@@ -1968,7 +1966,8 @@
         },
         "hullAiming": {
           "horizontal": true,
-          "maxAllowedRoll": 37.0
+          "maxAllowedRoll": 37.0,
+          "maxSpeedForHorizontalAiming": 100.0
         }
       }
     ]

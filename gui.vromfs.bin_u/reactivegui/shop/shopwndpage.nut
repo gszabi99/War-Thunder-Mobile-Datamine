@@ -3,7 +3,7 @@ let { utf8ToUpper } = require("%sqstd/string.nut")
 let { arrayByRows } = require("%sqstd/underscore.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { SGT_UNIT, SGT_BLUEPRINTS, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
+let { SGT_UNIT, SGT_BLUEPRINTS, SGT_SKIN, SGT_CONSUMABLES } = require("%rGui/shop/shopConst.nut")
 let { curCategoryId, goodsByCategory, sortGoods, openShopWnd, goodsLinks, subsByCategory, subsGroups
 } = require("%rGui/shop/shopState.nut")
 let { actualSchRewardByCategory, onSchRewardReceive } = require("schRewardsState.nut")
@@ -169,7 +169,7 @@ function mkGoodsListWithBaseValue(goodsListBase) {
 }
 
 function onGoodsClick(goods) {
-  if (goods.gtype == SGT_UNIT || goods.gtype == SGT_BLUEPRINTS)
+  if (goods.gtype == SGT_UNIT || goods.gtype == SGT_BLUEPRINTS || goods.gtype == SGT_SKIN)
     openGoodsPreview(goods.id)
   else
     purchaseFunc(goods)

@@ -188,7 +188,7 @@ function mkJackpotChanceText(id, chances, mainChances, stepsCount) {
     return loc("item/chance/error")
 
   let chance = roundToDigits(chances.percents[id], 2)
-  let chanceForGuaranteed = $"{loc("item/chance/jackpot", { count = stepsCount })}{colon}{chance}%"
+  let chanceForGuaranteed = $"{loc("item/chance/fixedReward", { count = stepsCount })}{colon}{chance}%"
 
   if (!mainChances.percents?[id] && chances.percents?[id])
     return chanceForGuaranteed
@@ -205,7 +205,7 @@ function mkJackpotChanceContent(reward, stepsCount, mainPercents, mainChanceInPr
     return loc("item/chance/alternativeRewardReceived")
 
   if (isLastReward)
-    return loc("item/chance/lastRewardJackpot", { count = stepsCount })
+    return loc("item/chance/lastRewardFixed", { count = stepsCount })
 
   let jackpotChances = mkLootboxChancesComp(parentSource)
 
@@ -271,6 +271,7 @@ function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) {
     halign = ALIGN_LEFT
     children = isInProgressFull.get() ? spinner
       : mainChances.get() == null || nestedChances.get() == null ? mkText(loc("item/chance/error"))
+      : dropFromNested.rewardId not in nestedChances.get().percents ? mkText(loc("jackpot/alreadyReceived"))
       : [ mkText(loc("item/chance/fromNested", { lootboxName = getLootboxName(dropFromNested.rewardId) })) ]
           .extend(
             agregatedRewards != null
@@ -538,13 +539,11 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
     let full = jackpotCount.get() == 0 ? allRewards.get() : allRewards.get().slice(jackpotCount.get())
     let list = []
     let lootboxes = []
-    foreach (r in full) {
-      let { rType, dropLimit = NO_DROP_LIMIT, received = 0 } = r
-      if (rType == G_LOOTBOX && (dropLimit == NO_DROP_LIMIT || dropLimit > received))
+    foreach (r in full)
+      if (r.rType == G_LOOTBOX)
         lootboxes.append(r)
       else
         list.append(r)
-    }
     return { list, lootboxes }
   })
   let commonRewards = Computed(@() commonRewardsInfo.get().list)
@@ -577,7 +576,7 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
     gap = style.get().boxGap
     children = blockWithHeaderArray(loc("lootbox/eachOpenReward"), openRewards.get(), width, style.get())
       .append(lootBoxWithSameJackpot.get() == null || jackpotRewards.get().len() == 0 ? null
-        : mkTextArea(loc("jackpot/sameJackpotHint", {
+        : mkTextArea(loc("fixedReward/sameRewardHint", {
             current = getLootboxName(lootboxName.get())
             same = getLootboxName(lootBoxWithSameJackpot.get())
           }), width),
@@ -585,8 +584,8 @@ let function lootboxContentBlock(lootbox, width, ovr = {}) {
             ? mkTextArea(loc("jackpot/locked/info", { count = lockedJackpotCount.get() }), width )
             : null)
       .extend(
-        blockWithHeaderArray(loc("jackpot/rewardsHeader"), jackpotRewards.get(), width, style.get(), lootbox)
         blockWithLootboxesInfoArray(loc("events/lootboxContains/special"), rewardLootboxes.get(), width, style.get())
+        blockWithHeaderArray(loc("fixedReward/rewardsHeader"), jackpotRewards.get(), width, style.get(), lootbox)
         blockWithHeaderArray(rewardLootboxes.get().len() == 0 ? loc("events/lootboxContains") : loc("events/lootboxContains/other"),
           commonRewards.get(), width, style.get())
       )
@@ -661,7 +660,7 @@ let mkJackpotProgress = @(stepsToFixed) @() {
     mkRow([
       {
         rendObj = ROBJ_TEXT
-        text = utf8ToUpper(loc("events/jackpot"))
+        text = utf8ToUpper(loc("events/fixedReward"))
       }.__update(fontVeryTinyAccented)
       {
         rendObj = ROBJ_TEXT

@@ -1,7 +1,7 @@
 {
   "node": [
     {
-      "name": "%major_banner_buoy_b",
+      "name": "%major_banner_buoy_a",
       "tm": [
         [
           -0.976296,
@@ -27,7 +27,7 @@
       "forcePos": true
     },
     {
-      "name": "%major_banner_buoy_b",
+      "name": "%major_banner_buoy_a",
       "tm": [
         [
           0.608761,
@@ -53,7 +53,7 @@
       "forcePos": true
     },
     {
-      "name": "%major_banner_buoy_b",
+      "name": "%major_banner_buoy_a",
       "tm": [
         [
           0.715288,
@@ -78,7 +78,7 @@
       ]
     },
     {
-      "name": "%major_banner_buoy_b",
+      "name": "%major_banner_buoy_a",
       "tm": [
         [
           0.724444,

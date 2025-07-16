@@ -17,8 +17,6 @@ let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.
 let { requestData } = require("%rGui/shop/httpRequest.nut")
 
 
-let giftsURL = get_network_block()?[get_cur_circuit_name()].giftsURL
-
 let INTERVAL_BETWEEN_REQUESTS_SEC = minutesToSeconds(30)
 let INTERVAL_BETWEEN_REQUESTS_MSEC = secondsToMilliseconds(INTERVAL_BETWEEN_REQUESTS_SEC)
 
@@ -41,8 +39,16 @@ let resetRequestedFlag = @() isGiftInfoRequested.set(false)
 let createGiftRequestParams = @(action, giftId = null)
   $"token={get_user_info().token}&act={action}&game=wtm&lang={loc("current_lang")}{giftId == null ? "" : $"&id={giftId}"}"
 
-let makeGiftRequest = @(onSuccess, onFailure, action = GIFT_ACTION.INFO, giftId = null)
+function makeGiftRequest(onSuccess, onFailure, action = GIFT_ACTION.INFO, giftId = null) {
+  let giftsURL = get_network_block()?[get_cur_circuit_name()].giftsURL
+  if (giftsURL == null) {
+    log("Empty gifts URL: ", get_network_block()?[get_cur_circuit_name()])
+    logerr($"Empty gifts url for circuit /*{get_cur_circuit_name()}*/")
+    onFailure({ ["error"] = "Empty gifts url" })
+    return
+  }
   requestData(giftsURL, createGiftRequestParams(action, giftId), onSuccess, onFailure)
+}
 
 let getGiftsInfo = @()
   makeGiftRequest(

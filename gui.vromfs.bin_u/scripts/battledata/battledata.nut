@@ -121,9 +121,12 @@ function onChangeSlots(eid, comp) {
   }
 
   local slots = comp.unitSlots.getAll()
-  if ((shouldDisableMenu || isOfflineMenu) && slots.len() == 0)
-    slots = [get_arg_value_by_name("unitModel") ?? "germ_cruiser_admiral_hipper"]
-  let campaign = serverConfigs.get()?.allUnits[slots[0]].campaign ?? ""
+  if (slots.len() == 0)
+    if (shouldDisableMenu || isOfflineMenu)
+      slots = [get_arg_value_by_name("unitModel") ?? "germ_cruiser_admiral_hipper"]
+    else
+      logerr($"Player got empty slots list for battle /*{get_mp_session_id_str()}, isUnitsOverrided = {comp.isUnitsOverrided}*/")
+  let campaign = serverConfigs.get()?.allUnits[slots?[0]].campaign ?? ""
   local isSlots = (serverConfigs.get()?.campaignCfg[campaign].totalSlots ?? 0) > 0
   logBD($"[sessionId={get_mp_session_id_str()}] Init slots. isBattleDataReceived = {comp.isBattleDataReceived},",
     $"isUnitsOverrided = {comp.isUnitsOverrided}, ovrUnitUpgradesPreset = {comp.ovrUnitUpgradesPreset}, isSlots = {isSlots},",

@@ -1,17 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 let { needDmViewerCrosshair, pointerScreenX, pointerScreenY } = require("%rGui/dmViewer/dmViewerState.nut")
 
-let CROSSHAIR_SIZE = evenPx(120)
-let CROSSHAIR_LINE_WIDTH = evenPx(8)
-let CROSSHAIR_HOLE_PERCENT = 20
+let CROSSHAIR_SIZE = evenPx(40)
+let CROSSHAIR_LINE_WIDTH = evenPx(4)
 
 let mkCrosshairDrawCommands = @(color, width) [
   [VECTOR_COLOR, color],
   [VECTOR_WIDTH, width],
-  [VECTOR_LINE, 50, 0, 50, 50 - CROSSHAIR_HOLE_PERCENT],
-  [VECTOR_LINE, 100, 50, 50 + CROSSHAIR_HOLE_PERCENT, 50],
-  [VECTOR_LINE, 50, 100, 50, 50 + CROSSHAIR_HOLE_PERCENT],
-  [VECTOR_LINE, 0, 50, 50 - CROSSHAIR_HOLE_PERCENT, 50],
+  [VECTOR_LINE, 50, 0, 50, 100],
+  [VECTOR_LINE, 0, 50, 100, 50],
 ]
 
 let crosshairComp = {

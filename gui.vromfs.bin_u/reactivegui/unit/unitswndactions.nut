@@ -57,12 +57,12 @@ let msgGap = hdpx(24)
 let gapBtns = hdpx(18)
 
 function getBlueprintGoodsId(config, shopCfg, uName) {
-  let preset = config?.goodsRewardSlots
-    .findindex(@(reward) reward.variants
-      .findvalue(@(variant) variant
-        .findvalue(@(goods) goods.id == uName && goods.gType == G_BLUEPRINT) != null))
+  let presets = config?.goodsRewardSlots
+    .filter(@(reward) null
+      != reward.variants
+        .findvalue(@(v) v.findvalue(@(g) g.id == uName && g.gType == G_BLUEPRINT) != null))
 
-  return shopCfg.findindex(@(goods) goods.slotsPreset == preset)
+  return shopCfg.findindex(@(goods) uName in goods.blueprints || goods.slotsPreset in presets)
 }
 
 let curSelectedUnitPrice = Computed(@()

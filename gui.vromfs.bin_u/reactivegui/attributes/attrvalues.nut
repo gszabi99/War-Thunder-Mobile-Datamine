@@ -407,6 +407,12 @@ function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods) {
       cfg.updateStats(stats, getAttrMul(cfg, attrId, step, stepsTotal) * modsMul(attrId, mods) * submarineMul)
     }
   }
+
+  if (unitType == TANK) {
+    let tankGearMult = 1 + (1 - (get_game_params_blk()?.difficulty_settings.baseDifficulty.easy.tankMainGearRatioMult ?? 1))
+    stats.maxSpeedForward *= tankGearMult
+    stats.maxSpeedBackward *= tankGearMult
+  }
   return stats
 }
 

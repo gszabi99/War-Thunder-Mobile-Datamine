@@ -67,6 +67,7 @@ function openUnitDetailsWnd(unitOvr = {}) {
 function closeUnitDetailsWnd() {
   openUnitOvr.set(null)
   unitDetailsOpenCount.set(0)
+  resetCustomHangarUnit()
 }
 
 return {

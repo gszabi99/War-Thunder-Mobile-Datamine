@@ -195,12 +195,12 @@ function mkAdsBtn(reqPlayerLevel, adReward) {
       @() bestCampLevel.value >= reqPlayerLevel
           ? onSchRewardReceive(adReward)
         : openMsgBox({ text = loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) }) }),
-      (!isProviderInited.get()
-        || (bestCampLevel.value >= reqPlayerLevel
-          && adReward?.isReady
-          && (cost < adBudget.value))
-              ? buttonStyles.SECONDARY
-            : buttonStyles.COMMON)
+      ((isProviderInited.get()
+        && bestCampLevel.value >= reqPlayerLevel
+        && adReward?.isReady
+        && cost < adBudget.value)
+            ? buttonStyles.SECONDARY
+          : buttonStyles.COMMON)
         .__merge({ hotkeys = ["^J:RB"] }))
   }
 }

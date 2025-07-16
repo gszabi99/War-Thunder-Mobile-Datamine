@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
 let { register_command } = require("console")
+let { get_base_game_version_str } = require("app")
+let { check_version } = require("%sqstd/version_compare.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { 
   OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_SHOW_MOVE_DIRECTION_IN_SIGHT, OPT_ARMOR_PIERCING_FIXED,
@@ -13,7 +15,7 @@ let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle, se
 } = require("controlsOptions")
 let { has_option_tank_alternative_control } = require("%appGlobals/permissions.nut")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { sharedStats, abTests } = require("%appGlobals/pServer/campaign.nut")
+let { abTests, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
 } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
@@ -24,6 +26,7 @@ let { openChooseMovementControls
 
 let autoZoomDefaultTrueStart = 1699894800 
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "tanks", v)
+let hasAltControlType = check_version(">=1.17.1.38", get_base_game_version_str())
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 
@@ -39,8 +42,9 @@ let tankMoveControlType = {
 
 let isDebugTankAltControlType = hardPersistWatched("options.isDebugTankAltControlType", false)
 let tankAltControlTypeButtonList = [false, true]
-let tankAltControlTypeDefault = Computed(@()
-  (isDebugTankAltControlType.get() == ((abTests.get()?.tankAltControlType ?? "false") == "true"))
+let tankAltControlTypeDefault = !hasAltControlType
+  ? Watched(tankAltControlTypeButtonList[0])
+  : Computed(@() (isDebugTankAltControlType.get() == ((abTests.get()?.tankAltControlType ?? "false") == "true"))
     ? tankAltControlTypeButtonList[0]
     : tankAltControlTypeButtonList[1])
 let currentTankAltControlTypeRaw = mkOptionValue(OPT_TANK_ALTERNATIVE_CONTROL_TYPE)
@@ -55,6 +59,10 @@ let tankAltControlType = {
   list = tankAltControlTypeButtonList
   valToString = @(v) loc(v ? "options/controlType/alternative" : "options/controlType/default")
   visible = has_option_tank_alternative_control
+  description = "\n".join([loc("options/desc/tank_alternative_control_type")].extend([
+    "us_m4a3e8_76w_sherman",
+    "germ_pzkpfw_V_ausf_d_panther",
+    "ussr_is_2_1943"].map(@(v) $"- {loc(v)}")))
 }
 
 let gearDownOnStopButtonTouch = {
@@ -124,7 +132,7 @@ let currentArmorPiercingType = {
 }
 
 let autoZoomList = [false, true]
-let autoZoomDefault = Computed(@() (sharedStats.get()?.firstLoginTime ?? 0) > autoZoomDefaultTrueStart)
+let autoZoomDefault = Computed(@() firstLoginTime.get() > autoZoomDefaultTrueStart)
 let currentAutoZoomRaw = mkOptionValue(OPT_AUTO_ZOOM_TANK)
 let currentAutoZoom = Computed(@()
   validate(currentAutoZoomRaw.value
@@ -217,7 +225,7 @@ return {
   hudScoreTank
   tankControlsOptions = [
     tankMoveControlType
-    tankAltControlType
+    hasAltControlType ? tankAltControlType : null
     cameraSenseSlider(CAM_TYPE_NORMAL_TANK, "options/camera_sensitivity", OPT_CAMERA_SENSE_TANK, getOptValue(OPT_CAMERA_SENSE)?? 1.0)
     cameraSenseSlider(CAM_TYPE_FREE_TANK, "options/free_camera_sensitivity_tank", OPT_FREE_CAMERA_TANK, 2.0, 0.5, 15.5, 0.075)
     cameraSenseSlider(CAM_TYPE_BINOCULAR_TANK, "options/camera_sensitivity_in_zoom", OPT_CAMERA_SENSE_IN_ZOOM_TANK, getOptValue(OPT_CAMERA_SENSE_IN_ZOOM)?? 1.0)

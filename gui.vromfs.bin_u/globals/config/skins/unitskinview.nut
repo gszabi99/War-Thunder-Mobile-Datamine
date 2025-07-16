@@ -70,6 +70,13 @@ return {
     "b-17g_prem": {
       "": "usa_tbd_1_1938"
     },
+    "b-29": {
+      "": "germ_he51c1",
+      "yellow": "usa_b_29_yellow"
+    },
+    "b-29_prem": {
+      "": "usa_b_29_eagle"
+    },
     "b6n1": {
       "": "germ_bf_109c_1"
     },
@@ -1741,6 +1748,13 @@ return {
     },
     "j2m2_prem": {
       "": "jap_a7m1"
+    },
+    "j2m5": {
+      "": "jap_ki_43_3_otsu",
+      "white": "jap_j2m5_museum"
+    },
+    "j2m5_prem": {
+      "": "germ_bf_110g_2_night"
     },
     "j5n1": {
       "": "jap_yokosuka_d4y2_mod12"

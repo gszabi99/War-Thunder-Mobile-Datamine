@@ -112,7 +112,7 @@ let mkProgress = @(stepsToFixed) @() {
           { size = const [hdpx(10), 0] }
           {
             rendObj = ROBJ_TEXT
-            text = loc("events/jackpot")
+            text = loc("events/fixedReward")
           }.__update(fontTinyShaded)
           {
             rendObj = ROBJ_TEXT

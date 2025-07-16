@@ -5,7 +5,7 @@ let { isGamepad } = require("%appGlobals/activeControls.nut")
 let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
 let { btnA } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { getGamepadHotkey } = require("%rGui/controlsMenu/dargHotkeys.nut")
-let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
+let { mkButtonHoldTooltip, REPAY_TIME } = require("%rGui/tooltip.nut")
 
 
 let ICON_SIZE = hdpx(70)
@@ -107,7 +107,7 @@ let mergeStyles = @(s1, s2) (s2?.len() ?? 0) == 0 ? s1
       stateFlags = s2?.stateFlags ?? s1?.stateFlags
       tooltipCtor = s1?.tooltipCtor ?? s2?.tooltipCtor
       hasPattern = s2?.hasPattern ?? s1?.hasPattern ?? true
-      repayTime = s1?.repayTime ?? s2?.repayTime
+      repayTime = s1?.repayTime ?? s2?.repayTime ?? REPAY_TIME
     }
 
 let btnImgCache = {}

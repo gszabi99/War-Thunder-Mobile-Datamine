@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { eventbus_send } = require("eventbus")
 let { eachParam, isDataBlock } = require("%sqstd/datablock.nut")
-let { curCampaign, campaignsList } = require("%appGlobals/pServer/campaign.nut")
+let { curCampaign, campaignsList, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
@@ -12,11 +12,10 @@ let SAVE_ID = "seenCampaigns"
 let seenCampaigns = Watched({})
 
 let newReleasedCampaigns = Computed(function() {
-  let { firstLoginTime = 0 } = servProfile.get()?.sharedStats
   let { campaignCfg = {} } = serverConfigs.get()
   return campaignCfg.filter(function(cfg, campaign) {
     let { releaseDate = 0 } = cfg
-    return releaseDate > firstLoginTime
+    return releaseDate > firstLoginTime.get()
       && (servProfile.get()?.levelInfo[campaign].exp ?? 0) == 0
       && (servProfile.get()?.levelInfo[campaign].level ?? 0) == 0
       && campaignsList.get().contains(campaign)

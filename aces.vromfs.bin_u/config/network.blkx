@@ -195,6 +195,7 @@
     "skinsDecalsCacheSz": 1073741824,
     "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
+    "giftsURL": "https://api.gaijinent.com/user_gift.php",
     "contentUpdater": {
       "enabled": true,
       "shouldLogToCrashlytics": true,

@@ -21,6 +21,7 @@ let iconsScale = {
   halloweenbond = 1.4
   blackfridaybond = 1.4
   hotmaybond = 1.4
+  independencebond = 1.4
   ircm_kit = 1.4
 }
 let maxIconsScale = iconsScale.reduce(@(a, b) max(a, b))
@@ -44,6 +45,7 @@ let icons = {
   halloweenbond = "ui/gameuiskin#warbond_icon_halloween_2024.avif"
   blackfridaybond = "ui/gameuiskin#warbond_icon_black_friday_2024.avif"
   hotmaybond = "ui/gameuiskin#warbond_icon_hotmaybond.avif"
+  independencebond = "ui/gameuiskin#warbond_icon_independencebond.avif"
   
   ship_tool_kit = "ui/gameuiskin#shop_consumables_repair_gamercard.avif"
   ship_smoke_screen_system_mod = "ui/gameuiskin#shop_consumables_smoke_gamercard.avif"
@@ -66,6 +68,7 @@ let bigIcons = {
   halloweenbond = "ui/gameuiskin#halloweenbond_goods_01.avif"
   blackfridaybond = "ui/gameuiskin#blackfridaybond_goods_01.avif"
   hotmaybond = "ui/gameuiskin#hotmaybond_goods_01.avif"
+  independencebond = "ui/gameuiskin#independencebond_goods_01.avif"
 }
 
 let placeholder = "ui/gameuiskin#icon_primary_attention.svg"
@@ -90,6 +93,7 @@ let currencyEventDescriptions = {
   nybond          = convertsToGold
   aprilMapPiece   = convertsToGold
   hotmaybond      = convertsToGold
+  independencebond      = convertsToGold
 }
 
 let getBaseCurrency = memoize(function getBaseCurrencyImpl(fullId) {

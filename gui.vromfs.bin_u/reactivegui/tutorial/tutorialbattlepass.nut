@@ -4,7 +4,7 @@ let { register_command } = require("console")
 let { deferOnce, resetTimeout } = require("dagor.workcycle")
 let { isInSquad } = require("%appGlobals/squadState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { isCampaignWithUnitsResearch, curCampaign, campProfile, sharedStats } = require("%appGlobals/pServer/campaign.nut")
+let { isCampaignWithUnitsResearch, curCampaign, campProfile, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
 let { receiveUnlockRewards, unlockInProgress } = require("%rGui/unlocks/unlocks.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
@@ -237,7 +237,7 @@ function startTutorial() {
 let startTutorialDelayed = @() deferOnce(function() {
   if (!showTutorial.get())
     return
-  if ((sharedStats.get()?.firstLoginTime ?? 0) < questTutorialOptionalTime)
+  if (firstLoginTime.get() < questTutorialOptionalTime)
     openMsgBox({
       text = loc("tutorial/battlePass/available")
       buttons = [

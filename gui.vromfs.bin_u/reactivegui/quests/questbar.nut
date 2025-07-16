@@ -262,12 +262,11 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
             rewardPreview.get()[0]?.count, rewardPreview.get()[0]?.id)
           return
         }
-        if (stageCompletion.get() < 1.0)
-          return anim_start("eventProgressStats")
-
         let reward = rewardPreview.get()?[0]
         if (reward?.rType in onStageRewardClickByType)
-          onStageRewardClickByType[reward.rType](reward)
+          return onStageRewardClickByType[reward.rType](reward)
+        if (stageCompletion.get() < 1.0)
+          return anim_start("eventProgressStats")
       }
 
       return {

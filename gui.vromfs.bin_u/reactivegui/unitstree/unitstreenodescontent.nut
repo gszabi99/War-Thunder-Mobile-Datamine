@@ -379,7 +379,7 @@ function genLinks(nodes, positions, size) {
     if (reqUnits.len() == 0)
       continue
     let isVertical = reqUnits.len() == 1 && node.x == (nodes?[reqUnits[0]].x ?? -1)
-    let uid = ";".concat(";".join(reqUnits.sort()), isVertical)
+    let uid = ";".concat(";".join((clone reqUnits).sort()), isVertical)
     if (uid not in groups)
       groups[uid] <- { reqUnits, tgtNodes = [] }
     groups[uid].tgtNodes.append(node)

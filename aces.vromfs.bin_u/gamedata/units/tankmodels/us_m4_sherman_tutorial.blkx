@@ -58,6 +58,102 @@
       0.5
     ]
   },
+  "steeringTable": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.4
+      ],
+      [
+        -60.0,
+        0.75
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.35
+      ],
+      [
+        60.0,
+        0.5
+      ],
+      [
+        74.0,
+        0.9
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
+  "steeringTableAlternative": {
+    "point": [
+      [
+        -12.0,
+        0.0
+      ],
+      [
+        -13.0,
+        0.1
+      ],
+      [
+        -45.0,
+        0.3
+      ],
+      [
+        -70.0,
+        0.9
+      ],
+      [
+        -75.0,
+        1.0
+      ],
+      [
+        12.0,
+        0.0
+      ],
+      [
+        13.0,
+        0.1
+      ],
+      [
+        20.0,
+        0.15
+      ],
+      [
+        55.0,
+        0.6
+      ],
+      [
+        60.0,
+        0.7
+      ],
+      [
+        74.0,
+        0.8
+      ],
+      [
+        75.0,
+        1.0
+      ]
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1857,7 +1953,7 @@
       ],
       "CenterOfGravity": [
         0.2,
-        0.8,
+        0.4,
         0.0
       ],
       "CenterOfGravityClampY": [
@@ -1870,7 +1966,23 @@
     "tracks": {
       "animationMultiplier": 0.68,
       "height": 0.045,
-      "width": 0.4
+      "width": 0.4,
+      "fricSideRot": [
+        5.0,
+        0.0,
+        0.6,
+        0.3
+      ],
+      "fricSideRotAlternative": [
+        5.0,
+        0.0,
+        1.0,
+        0.3
+      ],
+      "fricFrontal": [
+        1.0,
+        0.8
+      ]
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -1886,6 +1998,7 @@
       "driveGearRadius": 0.31,
       "mainGearRatio": 3.674,
       "sideGearRatio": 2.74,
+      "alternativeGearControl": 4.0,
       "gearRatios": {
         "ratio": [
           -5.64,

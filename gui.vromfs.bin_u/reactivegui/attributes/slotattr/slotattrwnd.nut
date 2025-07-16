@@ -309,10 +309,11 @@ let mkLeftBlockSlotCampaign = @(backCb, keyHintText, slotNameBlock) @() {
   gap = gamercardGap
   children = [
     backCb != null ? backButton(backCb, { vplace = ALIGN_CENTER }) : null
-    gamercardSlotLevelLine(curSlots.get()[selectedSlotIdx.get()],
-      keyHintText,
-      selectedSlotIdx.get(),
-      slotNameBlock)
+    selectedSlotIdx.get() not in curSlots.get() ? null
+      : gamercardSlotLevelLine(curSlots.get()[selectedSlotIdx.get()],
+          keyHintText,
+          selectedSlotIdx.get(),
+          slotNameBlock)
   ]
 }
 

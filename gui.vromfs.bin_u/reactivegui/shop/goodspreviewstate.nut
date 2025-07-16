@@ -4,7 +4,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { defer } = require("dagor.workcycle")
 let { activeOffer } = require("offerState.nut")
 let { activeOffersByGoods } = require("offerByGoodsState.nut")
-let { shopGoodsAllCampaigns, saveSeenGoods, discountsToApply } = require("shopState.nut")
+let { shopGoodsAllCampaigns, saveSeenGoods } = require("shopState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { shopPurchaseInProgress, validate_active_offer } = require("%appGlobals/pServer/pServerApi.nut")
 let { platformPurchaseInProgress } = require("platformGoods.nut")
@@ -16,8 +16,6 @@ let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let { specialEventsLootboxesState } = require("%rGui/event/eventState.nut")
-let { questsBySection } = require("%rGui/quests/questsState.nut")
 
 let GPT_UNIT = "unit"
 let GPT_CURRENCY = "currency"
@@ -25,6 +23,7 @@ let GPT_PREMIUM = "premium"
 let GPT_LOOTBOX = "lootbox"
 let GPT_SLOTS = "slots"
 let GPT_BLUEPRINT = "blueprint"
+let GPT_SKIN = "skin"
 
 let HIDE_PREVIEW_MODALS_ID = "goodsPreviewAnim"
 
@@ -96,53 +95,17 @@ function openGoodsPreviewInMenuOnly(id) {
 let previewGoods = Computed(@() getPreviewGoods(openedGoodsId.get(), activeOffer.get(),
   activeOffersByGoods.get(), shopGoodsAllCampaigns.get()))
 
-let userstatRewards = Computed(@() serverConfigs.get()?.userstatRewards)
-let personalDiscountsByGoodsId = keepref(Computed(@() serverConfigs.get()?.personalDiscounts[previewGoods.get()?.id]))
-let availableDiscounts = Computed(@() personalDiscountsByGoodsId.get()?.filter(@(v)
-  v.goodsId not in discountsToApply.get() || v.price < discountsToApply.get()[v.goodsId]))
-
-let availableDiscountRewards = Computed(function() {
-  if (availableDiscounts.get() == null || availableDiscounts.get().len() == 0)
-    return null
-
-  let res = {}
-  foreach (key, rewards in userstatRewards.get())
-    if (rewards.findvalue(@(g) g.gType == "discount" && availableDiscounts.get().findindex(@(v) v.id == g.id) != null) != null)
-      res[key] <- true
-
-  if (res.len() == 0)
-    return null
-  return res
-})
-
-let eventIdByPersonalDiscount = Computed(function() {
-  let { withoutLootboxes = {} } = specialEventsLootboxesState.get()
-  let discountRewards = availableDiscountRewards.get()
-  local res = null
-
-  if (!discountRewards || withoutLootboxes.len() == 0)
-    return res
-
-  foreach (eventName, eventState in withoutLootboxes)
-    foreach (quest in questsBySection.get()?[eventName] ?? {}) {
-      if (quest?.stages.findindex(@(v) v?.rewards.findindex(@(_, id) id in discountRewards) != null) != null) {
-        res = eventState.eventId
-        break
-      }
-    }
-
-  return res
-})
-
 let previewGoodsUnit = Computed(@() getBestUnitByGoods(previewGoods.get(), serverConfigs.get()))
 
-let previewType = Computed(@() (previewGoods.get()?.slotsPreset ?? "") != "" ? GPT_SLOTS
-  : (previewGoods.get()?.blueprints.len() ?? 0) > 0 ? GPT_BLUEPRINT
-  : previewGoodsUnit.value != null ? GPT_UNIT
-  : (previewGoods.get()?.lootboxes.len() ?? 0) > 0 ? GPT_LOOTBOX
-  : (previewGoods.get()?.currencies.len() ?? 0) > 0 ? GPT_CURRENCY
-  : (previewGoods.get()?.premiumDays ?? 0) > 0  ? GPT_PREMIUM
-  : null)
+let getPreviewType = @(goods, goodsUnit) (goods?.slotsPreset ?? "") != "" ? GPT_SLOTS
+  : (goods?.blueprints.len() ?? 0) > 0 ? GPT_BLUEPRINT
+  : goodsUnit != null ? GPT_UNIT
+  : (goods?.skins.len() ?? 0) > 0  ? GPT_SKIN
+  : (goods?.lootboxes.len() ?? 0) > 0 ? GPT_LOOTBOX
+  : (goods?.currencies.len() ?? 0) > 0 ? GPT_CURRENCY
+  : (goods?.premiumDays ?? 0) > 0  ? GPT_PREMIUM
+  : null
+let previewType = Computed(@() getPreviewType(previewGoods.get(), previewGoodsUnit.get()))
 
 let isPreviewGoodsPurchasing = Computed(@() previewGoods.value?.id != null
   && (previewGoods.value.id == shopPurchaseInProgress.value
@@ -162,7 +125,7 @@ eventbus_subscribe("openGoodsPreview", @(msg) openGoodsPreview(msg.id))
 eventbus_subscribe("openGoodsPreviewInMenuNoModals", @(msg) openGoodsPreviewInMenuOnly(msg.id))
 
 let offerUnitName = keepref(Computed(@() activeOffer.value?.id == openedGoodsId.value ? previewGoodsUnit.value?.name
-  : null))
+  : previewGoods.get()?.skins.keys()[0]))
 local offerPrevUnitName = offerUnitName.value
 offerUnitName.subscribe(function(v) {
   if (offerPrevUnitName != null && (v != null || activeOffer.value?.id == openedGoodsId.value))
@@ -198,6 +161,7 @@ return {
   GPT_LOOTBOX
   GPT_SLOTS
   GPT_BLUEPRINT
+  GPT_SKIN
 
   HIDE_PREVIEW_MODALS_ID
 
@@ -213,7 +177,7 @@ return {
   isPreviewGoodsPurchasing
   openGoodsPreviewInMenuOnly
   getAddonsToShowGoods
-  eventIdByPersonalDiscount
+  getPreviewType
 
   openSubsPreview = @(id) openedSubsId.set(id)
   closeSubsPreview = @() openedSubsId.set(null)

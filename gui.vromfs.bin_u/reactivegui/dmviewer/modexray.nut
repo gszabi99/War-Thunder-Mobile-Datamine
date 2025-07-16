@@ -34,6 +34,12 @@ isModeActive.subscribe(@(v) v ? init() : null)
 if (isModeActive.get())
   init()
 
+dmViewerMode.subscribe(function(_) {
+  partParamsW.set({})
+  scrPosX.set(0)
+  scrPosY.set(0)
+})
+
 function onUpdateHintXray(p) {
   let { posX, posY, name = "", weapon_trigger = null } = p
   scrPosX.set(posX)

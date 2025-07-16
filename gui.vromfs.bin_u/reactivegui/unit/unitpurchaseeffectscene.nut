@@ -25,7 +25,9 @@ let isOpened = Watched(needOpen.get())
 let close = @() unitToShow(null)
 let isSceneAttached = Watched(false)
 let canShowEffect = keepref(Computed(@() isSceneAttached.get()
-  && isHangarUnitLoaded.get() && hangarUnit.get()?.name == unitToShow.get()?.name))
+  && isHangarUnitLoaded.get()
+  && unitToShow.get() != null
+  && hangarUnit.get()?.name == unitToShow.get().name))
 
 let defEffectCfg = {
   play = @() play_fx_on_unit(Point3(0.3, 0.0, -0.45), 170, "misc_open_ship", "misc_open_large_ship")
@@ -53,7 +55,7 @@ let playPurchSound = @() playSound(getPurchaseSound())
 canShowEffect.subscribe(function(v) {
   if(!v)
     return
-  let { play, timeToShowUnit, timeTotal } = getEffectCfg(unitToShow.get()?.name)
+  let { play, timeToShowUnit, timeTotal } = getEffectCfg(unitToShow.get().name)
   disable_scene_camera()
   reset_camera_pos_dir()
   play()

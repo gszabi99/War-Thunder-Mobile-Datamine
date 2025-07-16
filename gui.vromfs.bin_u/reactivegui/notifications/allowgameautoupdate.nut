@@ -4,7 +4,7 @@ let { register_command } = require("console")
 let { resetTimeout } = require("dagor.workcycle")
 let { get_common_local_settings_blk } = require("blkGetters")
 let { allow_apk_update } = require("%appGlobals/permissions.nut")
-let { sharedStats } = require("%appGlobals/pServer/campaign.nut")
+let { firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
 let { isInMenu, isDownloadedFromSite } = require("%appGlobals/clientState/clientState.nut")
 let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -25,7 +25,7 @@ let needShowMessage = keepref(Computed(@() isDownloadedFromSite
   && allow_apk_update.get()
   && isInMenu.get()
   && isGameAutoUpdateEnabled.get() == AU_NOT_ALLOW
-  && (serverTimeDay.get() - getDay(sharedStats.get()?.firstLoginTime ?? 0, dayOffset.get())) > 0))
+  && (serverTimeDay.get() - getDay(firstLoginTime.get(), dayOffset.get())) > 0))
 
 function openMessageIfNeed() {
   if (!needShowMessage.get())

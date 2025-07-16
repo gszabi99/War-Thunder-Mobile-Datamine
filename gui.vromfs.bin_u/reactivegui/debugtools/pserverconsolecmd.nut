@@ -182,6 +182,8 @@ registerHandler("onCheatShiftTime", @(_) check_new_offer(curCampaign.value, "con
 
 register_command(@() shift_all_offers_time(86400, "onCheatShiftTime"),
   "meta.gen_next_day_offer")
+register_command(@(minutes) shift_all_offers_time(minutes * 60, "consolePrintResult"),
+  "meta.shift_offer_time_minutes")
 register_command(@() debug_offer_generation_stats(curCampaign.value, "consolePrint"),
   "meta.debug_offer_generation_stats")
 

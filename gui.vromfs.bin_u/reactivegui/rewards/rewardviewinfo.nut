@@ -338,7 +338,7 @@ let isEmptyByRType = {
   [G_UNIT_UPGRADE] = @(value, _, profile) profile?.units[value].isUpgraded,
   [G_SKIN] = @(unitName, skinName, profile) skinName in profile?.skins[unitName],
   [G_BLUEPRINT] = @(value, _, profile) value in profile?.units
-    || (profile?.blueprints?[value] ?? 0) >= serverConfigs.get().allBlueprints[value].targetCount
+    || (profile?.blueprints?[value] ?? 0) >= (serverConfigs.get()?.allBlueprints[value].targetCount ?? 0)
 }
 
 function isRewardEmpty(reward, profile) {

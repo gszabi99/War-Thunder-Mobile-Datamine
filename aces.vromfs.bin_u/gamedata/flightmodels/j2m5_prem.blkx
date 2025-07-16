@@ -2010,10 +2010,16 @@
   },
   "vehicleSkins": {
     "white": {
-      "replace_tex": {
-        "from": "j2m5_a*",
-        "to": "j2m5_a*"
-      }
+      "replace_tex": [
+        {
+          "from": "j2m5_a*",
+          "to": "j2m5_1158_a*"
+        },
+        {
+          "from": "j2m5_n*",
+          "to": "j2m5_1158_n*"
+        }
+      ]
     }
   },
   "weapon_presets": {

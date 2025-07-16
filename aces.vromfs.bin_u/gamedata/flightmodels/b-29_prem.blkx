@@ -3646,10 +3646,16 @@
   },
   "vehicleSkins": {
     "yellow": {
-      "replace_tex": {
-        "from": "b_29_c*",
-        "to": "b_29_c*"
-      }
+      "replace_tex": [
+        {
+          "from": "b_29_c*",
+          "to": "b_29_dina_might_c*"
+        },
+        {
+          "from": "b_29_n*",
+          "to": "b_29_dina_might_n*"
+        }
+      ]
     }
   },
   "weapon_presets": {
@@ -3660,9 +3666,15 @@
   },
   "default_skin": {
     "name": "prem",
-    "replace_tex": {
-      "from": "b_29_c*",
-      "to": "b_29_c*"
-    }
+    "replace_tex": [
+      {
+        "from": "b_29_c*",
+        "to": "b_29_legal_eagle_c*"
+      },
+      {
+        "from": "b_29_n*",
+        "to": "b_29_legal_eagle_n*"
+      }
+    ]
   }
 }

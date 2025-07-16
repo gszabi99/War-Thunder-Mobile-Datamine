@@ -30,7 +30,7 @@ let close = @() slotIndex(null)
 registerHandler("closeBuySlotLevelWnd", @(_) close())
 
 function onClickPurchase(curLevel, tgtLevel, nextLevelExp, costGold, sp) {
-  if (slotInProgress.get() != null)
+  if (slotInProgress.get() != null || slotIndex.get() == null)
     return
   openMsgBoxPurchase({
     text = loc("shop/needMoneyQuestion", {item = colorize(userlogTextColor, getSpCostText(sp))}),

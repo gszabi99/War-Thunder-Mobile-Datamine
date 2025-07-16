@@ -2716,6 +2716,9 @@
               "needStopOnRespawn": true
             }
           ],
+          "wait": {
+            "time": 1.5
+          },
           "triggerEnable": {
             "target": [
               "ships_bots_load_behtree",

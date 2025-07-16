@@ -1570,6 +1570,24 @@
         "mRank": 10
       }
     },
+    "pkg_us_m1a1_hc_abrams": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 11
+      }
+    },
+    "pkg_germ_vt_1_2": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 7
+      }
+    },
+    "pkg_it_oto_r3_106sr": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 6
+      }
+    },
     "pkg_environment_uhq": {
       "base": false,
       "hq": false,
@@ -1740,6 +1758,7 @@
     "harmonicsSimilarityEps": 0.05,
     "listAllAaOptions": true,
     "mobile_demonpostfx": true,
+    "enableWaterPresetInterpolation": false,
     "raytraced_shadows": {
       "maxBlasBuildsPerFrame": 30,
       "additionalElementsCheck": false,

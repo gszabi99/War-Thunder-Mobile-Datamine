@@ -3,7 +3,7 @@ let { serverConfigs } = require("servConfigs.nut")
 let servProfile = require("servProfile.nut")
 let { set_current_campaign } = require("pServerApi.nut")
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
-let { setTimeout } = require("dagor.workcycle")
+let { resetTimeout } = require("dagor.workcycle")
 
 let defaultCampaign = "tanks"
 
@@ -32,7 +32,7 @@ function setCampaign(campaign) {
 }
 
 savedCampaign.subscribe(@(_)
-  setTimeout(0.1, @() savedCampaign.value == selectedCampaign.value ? selectedCampaign(null) : null))
+  resetTimeout(0.1, @() savedCampaign.value == selectedCampaign.value ? selectedCampaign(null) : null))
 
 function chooseByCampaign(res, key, campaign) {
   if (key in res)
@@ -61,6 +61,7 @@ let campConfigs = Computed(function() {
   filterByCampaign(res, "allUnits", campaign)
   filterByCampaignMask(res, "allBoosters", campaignBit)
   filterByCampaignMask(res, "allItems", campaignBit)
+  filterByCampaignMask(res, "infoPopups", campaignBit)
   return res
 })
 
@@ -142,6 +143,7 @@ let exportProfile = {
 
 return exportProfile.__update({
   isProfileReceived = Computed(@() servProfile.get().len() > 0)
+  firstLoginTime = Computed(@() servProfile.get()?.sharedStats.firstLoginTime ?? 0)
   campaignsLevelInfo
   curCampaign
   defaultCampaign

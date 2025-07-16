@@ -1981,12 +1981,12 @@
       ],
       "defaultGearRadius": 0.55,
       "defaultDampeningForce": [
-        45000.0,
-        45000.0
+        150000.0,
+        150000.0
       ],
       "hasSuspensionOnDriveGear": true,
-      "dampeningRelaxationRatio": 0.15,
-      "dampeningCompressionRatio": 0.05,
+      "dampeningRelaxationRatio": 0.4,
+      "dampeningCompressionRatio": 0.15,
       "brokenWheelSteeringDeflection": -15.0,
       "steeringNodes": {
         "wheel_r_01": "bone_wheel_r_01",
@@ -2009,18 +2009,6 @@
         "wheel_r_03": 0.4,
         "wheel_r_04": 0.4
       },
-      "wheelsDamageWeight": {
-        "wheel_l_01": 0.05,
-        "wheel_r_01": 0.05,
-        "wheel_l_02": 0.05,
-        "wheel_r_02": 0.05,
-        "wheel_l_03": 0.05,
-        "wheel_r_03": 0.05,
-        "wheel_l_04": 0.05,
-        "wheel_r_04": 0.05,
-        "wheel_r_drive": 0.25,
-        "wheel_l_drive": 0.25
-      },
       "driven": {
         "wheel_l_01": true,
         "wheel_r_01": true,
@@ -2040,6 +2028,16 @@
         "wheel_l_03": true,
         "wheel_r_04": true,
         "wheel_l_04": true
+      },
+      "wheelsDamageWeight": {
+        "wheel_l_01": 0.25,
+        "wheel_r_01": 0.25,
+        "wheel_l_02": 0.25,
+        "wheel_r_02": 0.25,
+        "wheel_l_03": 0.25,
+        "wheel_r_03": 0.25,
+        "wheel_l_04": 0.25,
+        "wheel_r_04": 0.25
       }
     },
     "floats": {

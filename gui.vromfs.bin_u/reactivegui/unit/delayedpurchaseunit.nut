@@ -1,53 +1,64 @@
 from "%globalsDarg/darg_library.nut" import *
 let { register_command } = require("console")
-let { deferOnce, setTimeout } = require("dagor.workcycle")
+let { deferOnce } = require("dagor.workcycle")
 let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { campMyUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
 let { curSlots } = require("%appGlobals/pServer/slots.nut")
 
-let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
+let { requestOpenUnitPurchEffect, isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
 let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
 let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
-let TIME_TO_DELAY = 3.5
 let delayedPurchaseList = persist("delayedPurchaseList", @() [])
 let needSaveUnitDataForTutorial = mkWatched(persist, "needSaveUnitDataForTutorial", false)
 let delayedPurchaseUnitData = mkWatched(persist, "delayedPurchaseUnitData", {})
+let needShowLastPurchasedUnit = mkWatched(persist, "needShowLastPurchasedUnit", false)
+let lastPurchasedUnit = mkWatched(persist, "lastPurchasedUnit", null)
 
 needSaveUnitDataForTutorial.subscribe(@(v) !v ? delayedPurchaseUnitData.set({}) : null)
+needShowLastPurchasedUnit.subscribe(@(v) !v ? lastPurchasedUnit.set(null) : null)
 
 let needShow = keepref(Computed(@() !hasModalWindows.get()
+  && !isPurchEffectVisible.get()
   && !isInLoadingScreen.get()
   && !isTutorialActive.get()
   && isMainMenuAttached.get()
   && isLoggedIn.get()))
 
-function showPurchases() {
-  if (!needShow.get() && delayedPurchaseList.len() == 0)
-    return
-  let listForRequest = delayedPurchaseList.filter(@(v) curSlots.get().findindex(@(slot) slot?.name == v) != null)
+let needShowLastUnit = keepref(Computed(@() needShow.get()
+  && needShowLastPurchasedUnit.get()
+  && lastPurchasedUnit.get() != null))
 
+function showPurchasedUnit(unit) {
+  if (!unit)
+    return
+  setHangarUnit(unit.name)
+  requestOpenUnitPurchEffect(unit)
+}
+
+function showPurchases() {
+  if (!needShow.get() || delayedPurchaseList.len() == 0 || isPurchEffectVisible.get())
+    return
+
+  let listForRequest = delayedPurchaseList.filter(@(v) curSlots.get().findindex(@(slot) slot?.name == v) != null)
   if(listForRequest.len() == 0)
     return delayedPurchaseList.clear()
 
-  if (curUnit.get()?.name != listForRequest.top())
-    setCurrentUnit(listForRequest.top())
+  let unit = campMyUnits.get()?[listForRequest.top()]
+  if (!unit)
+    return
 
-  foreach (idx, unitId in listForRequest) {
-    let unit = campMyUnits.get()?[unitId]
-    if (unit)
-      setTimeout(idx * TIME_TO_DELAY, function() {
-        setHangarUnit(unit.name)
-        requestOpenUnitPurchEffect(unit)
-        let index = delayedPurchaseList.findindex(@(p) p == unit.name)
-        if(index != null)
-          delayedPurchaseList.remove(index)
-      }, {})
-  }
+  if (curUnit.get()?.name != unit.name)
+    setCurrentUnit(unit.name)
+  showPurchasedUnit(unit)
+
+  let index = delayedPurchaseList.findindex(@(p) p == unit.name)
+  if (index != null)
+    delayedPurchaseList.remove(index)
 }
 needShow.subscribe(@(v) v ? deferOnce(showPurchases) : null)
 
@@ -55,6 +66,23 @@ function addNewPurchasedUnit(unitId) {
   if (unitId == null)
     return
   delayedPurchaseList.append(unitId)
+}
+
+function showLastPurchasedUnit() {
+  if (!needShowLastUnit.get())
+    return
+  showPurchasedUnit(lastPurchasedUnit.get())
+  needShowLastPurchasedUnit.set(false)
+}
+
+needShowLastUnit.subscribe(@(v) v ? deferOnce(showLastPurchasedUnit) : null)
+
+function addLastPurchasedUnit(unitId) {
+  let unit = campMyUnits.get()?[unitId]
+  if (unit == null)
+    return
+  lastPurchasedUnit.set(unit)
+  needShowLastPurchasedUnit.set(true)
 }
 
 function debug_unit_slots_purchase_effects() {
@@ -71,4 +99,7 @@ return {
   addNewPurchasedUnit
   delayedPurchaseUnitData
   needSaveUnitDataForTutorial
+  lastPurchasedUnit
+  addLastPurchasedUnit
+  needShowLastPurchasedUnit
 }

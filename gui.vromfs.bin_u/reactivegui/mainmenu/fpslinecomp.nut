@@ -63,12 +63,12 @@ let textStyle = {
   halign = ALIGN_CENTER
   rendObj = ROBJ_TEXT
   color = defColor
-}.__update(fontVeryVeryTiny)
+}.__update(fontVeryVeryTinyShaded)
 
 let graphicsComp = @() textStyle.__merge({
   watch = graphicsText
   text = graphicsText.value
-}, fontTiny)
+}, fontTinyShaded)
 
 let gpuComp = @() textStyle.__merge({
   watch = gpu
@@ -79,7 +79,7 @@ let gpuBigComp = @() textStyle.__merge({
   watch = gpu
   text = (gpu.get().len() > 0) ? $"GPU: {gpu.get()}" : ""
   color = fadedColor
-}, fontVeryTiny)
+}, fontVeryTinyShaded)
 
 let sessionComp = @() textStyle.__merge({
   watch = sessionId

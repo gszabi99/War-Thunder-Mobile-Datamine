@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
+let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
 let { canBuyUnits } = require("%appGlobals/unitsState.nut")
 
 let unitDiscounts = Watched({})
@@ -11,11 +11,13 @@ function isTimeInRange(timeRange, time) {
   return (start <= time && (end <= 0 || end >= time))
 }
 
-let nextUpdate = Watched({ time = 0 }) 
 let maxTime = 0x7FFFFFFFFFFFFFFF
 
 function updateActualDiscounts() {
-  let curTime = serverTime.value
+  if (!isServerTimeValid.get())
+    return
+
+  let curTime = getServerTime()
   let allDiscounts = serverConfigs.value?.allDiscounts.unit ?? {}
   local nextTime = allDiscounts.reduce(
     function(res, val) {
@@ -26,27 +28,21 @@ function updateActualDiscounts() {
         return end
       return res
     }, maxTime) ?? maxTime
-  if (nextTime != maxTime)
-    nextUpdate({ time = nextTime + 1 })
-  unitDiscounts(serverConfigs.value?.allDiscounts.unit
+
+  unitDiscounts.set(serverConfigs.value?.allDiscounts.unit
     .filter(@(v, _id) isTimeInRange(v?.timeRange ?? {}, curTime))
     .filter(@(_v, id) id in canBuyUnits.value) ?? {})
+
+  if (nextTime == maxTime || nextTime <= curTime)
+    clearTimer(updateActualDiscounts)
+  else
+    resetTimeout(nextTime - curTime, updateActualDiscounts)
 }
 
 updateActualDiscounts()
-serverConfigs.subscribe(@(_) updateActualDiscounts())
-canBuyUnits.subscribe(@(_) updateActualDiscounts())
-
-function resetUpdateTimer() {
-  let { time } = nextUpdate.value
-  let left = time - serverTime.value
-  if (left <= 0)
-    clearTimer(updateActualDiscounts)
-  else
-    resetTimeout(left, updateActualDiscounts)
-}
-resetUpdateTimer()
-nextUpdate.subscribe(@(_) resetUpdateTimer())
+serverConfigs.subscribe(@(_) deferOnce(updateActualDiscounts))
+canBuyUnits.subscribe(@(_) deferOnce(updateActualDiscounts))
+isServerTimeValid.subscribe(@(_) deferOnce(updateActualDiscounts))
 
 return {
   unitDiscounts

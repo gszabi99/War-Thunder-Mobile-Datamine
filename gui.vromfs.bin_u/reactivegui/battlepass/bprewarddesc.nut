@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { REWARD_STYLE_BIG, REWARD_STYLE_LARGE } = require("%rGui/rewards/rewardStyles.nut")
+let { REWARD_STYLE_BIG, REWARD_STYLE_LARGE, REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
 let { mkRewardPlateImage } = require("%rGui/rewards/rewardPlateComp.nut")
 let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
@@ -108,13 +108,13 @@ let rewardDesc = @(reward) @() {
     : loc("battlepass/paid")
 }.__update(fontTinyAccented)
 
-let defImageCtor = @(viewInfo) mkRewardPlateImage(viewInfo, REWARD_STYLE_LARGE)
-let unitImageCtor = @(viewInfo) mkUnitPlate(viewInfo.id)
+let defImageCtor = @(viewInfo, _) mkRewardPlateImage(viewInfo, REWARD_STYLE_LARGE)
+let unitImageCtor = @(viewInfo, _) mkUnitPlate(viewInfo.id)
 
 let infoImageCtors = {
   unit = unitImageCtor
   unitUpgrade = unitImageCtor
-  decorator = @(viewInfo) mkRewardPlateImage(viewInfo, REWARD_STYLE_BIG)
+  decorator = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)
 }
 
 let bpRewardDesc = @(reward) function() {
@@ -146,7 +146,7 @@ let bpRewardDesc = @(reward) function() {
             behavior = Behaviors.Button
             onClick = @() viewInfo.rType == "lootbox" ? openLootboxPreview(viewInfo.id) : null
             children = viewInfo == null ? null
-              : (infoImageCtors?[viewInfo.rType] ?? defImageCtor)(viewInfo)
+              : (infoImageCtors?[viewInfo.rType] ?? defImageCtor)(viewInfo, reward.canReceive)
           }
           reward.canReceive ? receiveBtn(reward) : rewardDesc(reward)
         ]

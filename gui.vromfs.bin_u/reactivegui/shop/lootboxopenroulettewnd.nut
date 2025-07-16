@@ -699,7 +699,7 @@ let receiveRewardAnimBlock = @(viewInfo, key, duration)
       transform = {}
       animations = [{ prop = AnimProp.scale, to = [1.3, 1.3], easing = CosineFull,
         duration, play = true,
-        onFinish = @() onRewardScaleFinish(viewInfo, findIndexForJoin(visibleInfos.get(), viewInfo))
+        onFinish = @() onRewardScaleFinish(viewInfo, findIndexForJoin(visibleInfos.get(), viewInfo) ?? -1)
       }]
     })
 
@@ -964,7 +964,7 @@ let fixedProgressInfo = @() {
   flow = FLOW_VERTICAL
   children = [
     mkOpenCountText(loc("lootbox/totalOpened"), fixedRewardCurrent.value)
-    mkOpenCountText(loc("events/jackpot"), fixedRewardTotal.value - fixedRewardCurrent.value)
+    mkOpenCountText(loc("events/fixedReward"), fixedRewardTotal.value - fixedRewardCurrent.value)
     progressbar(fixedRewardCurrent.value.tofloat() / fixedRewardTotal.value)
   ]
 }
@@ -1014,7 +1014,7 @@ let afterJackpotReceivedInfo = @(openedLootboxForJackpot) {
       valign = ALIGN_BOTTOM
       children = {
         rendObj = ROBJ_TEXT
-        text = loc("jackpot/jackpotReceived", {openedLootboxForJackpot})
+        text = loc("fixedReward/received", {openedLootboxForJackpot})
         transform = {}
         animations = [
           { prop = AnimProp.scale, to = [1.1, 1.1],

@@ -1,20 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { curUnit, playerLevelInfo, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
+
+let { playSound } = require("sound_wt")
 let { unitInProgress, buy_unit, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
+let { curUnit, playerLevelInfo, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
+let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
 let { buyUnitsData, setCurrentUnit } = require("%appGlobals/unitsState.nut")
+let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
+let { addNewPurchasedUnit, delayedPurchaseUnitData, needSaveUnitDataForTutorial, addLastPurchasedUnit
+} = require("delayedPurchaseUnit.nut")
+let { animUnitWithLink, isBuyUnitWndOpened } = require("%rGui/unitsTree/animState.nut")
+let { openSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
 let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
 let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { playSound } = require("sound_wt")
+let { boughtUnit } = require("%rGui/unit/selectNewUnitWnd.nut")
+let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
 let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let { unitDiscounts } = require("unitsDiscountState.nut")
-let { openSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
-let { isCampaignWithUnitsResearch } = require("%appGlobals/pServer/campaign.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { addNewPurchasedUnit, delayedPurchaseUnitData, needSaveUnitDataForTutorial } = require("delayedPurchaseUnit.nut")
-let { animUnitWithLink, isBuyUnitWndOpened } = require("%rGui/unitsTree/animState.nut")
-let { boughtUnit } = require("%rGui/unit/selectNewUnitWnd.nut")
 
 registerHandler("onUnitPurchaseResult",
   function onUnitPurchaseResult(res, context) {
@@ -30,17 +32,19 @@ registerHandler("onUnitPurchaseResult",
       }
     }
     else {
-      if(!isCampaignWithUnitsResearch.get())
+      if (!isCampaignWithUnitsResearch.get())
         boughtUnit.set(unitId)
       setHangarUnit(unitId)
     }
-    if(isCampaignWithUnitsResearch.get())
-      addNewPurchasedUnit(unitId)
-    if (curSlots.get().len() > 0) {
+    if (isCampaignWithSlots.get()) {
       animUnitWithLink.set(unitId)
       openSelectUnitToSlotWnd(unitId, $"treeNodeUnitPlate:{unitId}")
       playSound("meta_build_unit")
+      if (isCampaignWithUnitsResearch.get())
+        addNewPurchasedUnit(unitId)
     }
+    else if (isCampaignWithUnitsResearch.get())
+      addLastPurchasedUnit(unitId)
   })
 
 function purchaseUnit(unitId, bqInfo, isUpgraded = false, executeAfter = null, content = null, title = null, onCancel = null) {

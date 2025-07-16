@@ -1,11 +1,12 @@
+from "%globalScripts/logs.nut" import *
+from "math" import min
+from "dagor.workcycle" import resetTimeout, clearTimer
 let { Watched, Computed } = require("frp")
-let { resetTimeout } = require("dagor.workcycle")
 let { serverConfigs } = require("servConfigs.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 
 let seasonsCfg = Computed(@() serverConfigs.get()?.seasons ?? {})
 let curSeasons = Watched({})
-let nextUpdateTime = Watched({ value = 0 })
 
 let mkSeason = @(idx, isActive, start, end, unlocks) { idx, isActive, start, end, unlocks }
 
@@ -14,17 +15,18 @@ let mkRewardUnlocks = @(rewards) rewards.map(@(v) {
   unitMRank = v.unlockUnitMRank
 })
 
+let getNextTime = @(curNextTime, newTime) newTime <= 0 ? curNextTime
+  : curNextTime <= 0 ? newTime
+  : min(curNextTime, newTime)
+
 function updateSeasons() {
   let seasons = seasonsCfg.get()
-  if (seasons.len() == 0)
-    return
-  if (!isServerTimeValid.get()) {
+  if (seasons.len() == 0 || !isServerTimeValid.get()) {
     curSeasons.set({})
     return
   }
 
   let cur = {}
-  local nextTime = 0
   let time = serverTime.get()
   foreach(id, s in seasons) {
     if ((s?.rangeList.len() ?? 0) == 0)
@@ -71,17 +73,23 @@ function updateSeasons() {
       }
     }
   }
+
   curSeasons.set(cur)
-  nextUpdateTime.set({ value = nextTime })
+
+  local nextTime = 0
+  foreach (s in cur) {
+    nextTime = getNextTime(nextTime, s.start - time)
+    nextTime = getNextTime(nextTime, s.end - time + 1)
+  }
+
+  if (nextTime <= 0)
+    clearTimer(updateSeasons)
+  else
+    resetTimeout(nextTime, updateSeasons)
 }
 updateSeasons()
 seasonsCfg.subscribe(@(_) updateSeasons())
 isServerTimeValid.subscribe(@(_) updateSeasons())
-
-let startTimer = @(time) time <= serverTime.get() ? null
-  : resetTimeout(time - serverTime.get(), updateSeasons)
-startTimer(nextUpdateTime.get().value)
-nextUpdateTime.subscribe(@(v) startTimer(v.value))
 
 return {
   curSeasons

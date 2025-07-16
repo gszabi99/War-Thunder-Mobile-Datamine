@@ -20,7 +20,7 @@ let { bgShaded } = require("%rGui/style/backgrounds.nut")
 let { openUnitAttrWnd } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
 let { debriefingData, curDebrTabId, nextDebrTabId, isDebriefingAnimFinished, isNoExtraScenesAfterDebriefing,
   DEBR_TAB_SCORES, DEBR_TAB_CAMPAIGN, debrTabsShowTime, stopDebriefingAnimation,
-  needShowBtns_Campaign, needShowBtns_Unit, needShowBtns_Final,
+  needShowBtns_Campaign, needShowBtns_Unit, needShowBtns_Final, needReinitScene
 } = require("debriefingState.nut")
 let { randomBattleMode, allGameModes, shouldStartNewbieSingleOnline } = require("%rGui/gameModes/gameModeState.nut")
 let { newbieOfflineMissions, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
@@ -58,7 +58,10 @@ let { mkToBattleButton } = require("%rGui/mainMenu/toBattleButton.nut")
 
 local isAttached = false
 
-let closeDebriefing = @() eventbus_send("Debriefing_CloseInDagui", {})
+function closeDebriefing() {
+  eventbus_send("Debriefing_CloseInDagui", {})
+  needReinitScene.set(true)
+}
 let startBattle = @(modeId) eventbus_send("queueToGameMode", { modeId })
 let function openSpecialEvent() {
   let eventName = allGameModes.get().findvalue(@(m) m.name == debriefingData.get()?.roomInfo.game_mode_name)?.eventId
@@ -347,6 +350,8 @@ function debriefingWnd() {
   let debrAnimTime = tabsShowTime.reduce(@(res, v) res + v.timeShow, 0)
 
   function reinitScene() {
+    if (!needReinitScene.get())
+      return
     debrTabsShowTime.set(tabsShowTime)
     curDebrTabId.set(debrTabsInfo?[0].id ?? DEBR_TAB_SCORES)
     isDebriefingAnimFinished.set(debrAnimTime <= 0)

@@ -163,6 +163,8 @@ let equipSelWeapon = @() equipWeapon(selectedWSlotIdx.get(), selectedWCard.get()
 let unequipSelWeapon = @() equipWeapon(selectedWSlotIdx.get(), "")
 
 function equipSelWeaponToWings() {
+  if (selectedWSlot.get() == null || selectedWCard.get() == null)
+    return
   let { name = "", mirrorId = null } = selectedWCard.get()
   let { index, mirror = null } = selectedWSlot.get()
   let weapon = { [index] = name }
@@ -172,6 +174,8 @@ function equipSelWeaponToWings() {
 }
 
 function unequipSelWeaponFromWings() {
+  if (selectedWSlot.get() == null)
+    return
   let { index, mirror = null } = selectedWSlot.get()
   let weapon = { [index] = "", [mirror] = "" }
   if (mirror != null)

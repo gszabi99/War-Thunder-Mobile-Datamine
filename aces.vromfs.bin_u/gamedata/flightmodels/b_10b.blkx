@@ -2248,6 +2248,7 @@
           {
             "iconType": "bomb_100kg_group",
             "name": "250lb",
+            "isDefault": true,
             "ShowNodes": {
               "node": "pylon_bomb4"
             },

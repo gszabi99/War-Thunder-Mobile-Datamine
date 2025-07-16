@@ -83,7 +83,7 @@ let isBpPurchasedByType = Computed(function() {
       return count > 0
 
     let { start = 0, end = 0 } = seasons?[oncePerSeason]
-    return lastTime != 0 && start != 0 && lastTime >= start && lastTime <= end
+    return lastTime != 0 && lastTime >= start && (end > 0 && lastTime <= end)
   })
 })
 

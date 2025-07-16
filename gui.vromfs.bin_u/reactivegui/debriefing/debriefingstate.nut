@@ -19,6 +19,7 @@ let DEBR_TAB_SCORES   = 4
 let curDebrTabId = mkWatched(persist, "curDebrTabId", DEBR_TAB_MPSTATS)
 
 let debrTabsShowTime = Watched([])
+let needReinitScene = Watched(true)
 
 let nextDebrTabId = Computed(function() {
   let list = debrTabsShowTime.get()
@@ -83,6 +84,7 @@ isInDebriefing.subscribe(function(v) {
     clearTimer(showBtns_Final)
   }
 })
+isDebriefingAnimFinished.subscribe(@(v) !v ? needReinitScene.set(false) : null)
 
 return {
   debriefingData
@@ -102,4 +104,5 @@ return {
   needShowBtns_Campaign
   needShowBtns_Unit
   needShowBtns_Final
+  needReinitScene
 }

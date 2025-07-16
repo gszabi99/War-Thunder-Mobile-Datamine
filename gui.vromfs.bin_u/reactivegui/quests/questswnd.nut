@@ -62,7 +62,7 @@ let linkToBattlePassBtnCtor = @() {
 function mkLinkToStoreBtnInfo(idx) {
   let lootboxInfo = Computed(@() specialEventsLootboxesState.get().withLootboxes.findvalue(@(v) v.idx == idx))
   let id = getSpecialEventName(idx + 1)
-  let eventName = Computed(@() questsCfg.get()?[id][0] ?? "")
+  let eventName = Computed(@() specialEventsLootboxesState.get().withoutLootboxes.findvalue(@(v) v.eventId == id)?.eventName ?? "")
   let eventIcon = Computed(@() lootboxInfo.get()
     ? getEventPresentation(lootboxInfo.get().eventName).icon
     : getEventPresentation(eventName.get()).icon)

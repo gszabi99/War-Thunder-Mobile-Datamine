@@ -455,6 +455,7 @@ function infoPanel() {
         ? panelBg.__merge({
             size = [infoPanelWidth, infoPanelHeight]
             padding = [infoPannelPadding, saBorders[0], saBorders[1], infoPannelPadding]
+            stopMouse = true
             hplace = ALIGN_RIGHT
             vplace = ALIGN_BOTTOM
             valign = ALIGN_BOTTOM

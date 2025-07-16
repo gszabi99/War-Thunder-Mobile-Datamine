@@ -6,7 +6,7 @@ let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let { visibleOffer, onOfferSceneAttach, onOfferSceneDetach, offerPurchasingState
+let { visibleOffer, onOfferPromoAttach, onOfferPromoDetach, offerPurchasingState
 } = require("offerState.nut")
 let { activeOffersByGoods, mkOfferByGoodsPurchasingState
 } = require("offerByGoodsState.nut")
@@ -26,7 +26,7 @@ let pointSize = hdpx(11)
 local animScrollCfg = null
 let aTimeScroll = 0.5
 let autoSwipeTime = 10
-let minScrollSpeed = hdpx(1)
+let minScrollSpeed = hdpxi(1)
 
 let scrollHandler = ScrollHandler()
 let sliderOfferIdx = Watched(0)
@@ -103,17 +103,16 @@ function startAnimScroll(posX2, scrollSpeed = minScrollSpeed) {
   if (time <= 0)
     return
 
-  if (animScrollCfg != null)
-    clearTimer(updateAnimScroll)
   let start = get_time_msec()
   animScrollCfg = { posX1, posX2, start, end = start + time,
     easing = @(t) 1.0 - (1.0 - t) * (1.0 - t)
   }
+  clearTimer(updateAnimScroll)
   setInterval(0.01, updateAnimScroll)
 }
 
 function autoSwipe() {
-  let nextOfferIdx = (realSliderOfferIdx.get() + 1) % activeOffersByGoods.get().len()
+  let nextOfferIdx = (realSliderOfferIdx.get() + 1) % (activeOffersByGoods.get().len() || 1)
   startAnimScroll(getOfferXByIdx(nextOfferIdx))
   sliderOfferIdx.set(nextOfferIdx)
   resetTimeout(autoSwipeTime, autoSwipe)
@@ -190,8 +189,8 @@ let promoKey = {}
 let offerPromo = @() {
   watch = [visibleOffer, activeOffersByGoods]
   key = promoKey
-  onAttach = @() onOfferSceneAttach(promoKey)
-  onDetach = @() onOfferSceneDetach(promoKey)
+  onAttach = @() onOfferPromoAttach(promoKey)
+  onDetach = @() onOfferPromoDetach(promoKey)
   flow = FLOW_HORIZONTAL
   halign = ALIGN_RIGHT
   gap = eventGiftGap

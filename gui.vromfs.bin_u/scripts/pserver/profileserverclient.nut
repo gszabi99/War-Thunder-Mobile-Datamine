@@ -92,6 +92,14 @@ function collectLastRequest(id, action, params) {
   })
 }
 
+let paramLogRemap = {
+  ["array"] = @(v) $"array:{v.len()}",
+  ["table"] = @(v) $"table:{v.len()}",
+}
+
+let getParamsLog = @(params) params == null ? "null"
+  : object_to_json_string(params.map(@(v) paramLogRemap?[type(v)](v) ?? v))
+
 local doRequest = null 
 
 eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
@@ -149,7 +157,7 @@ eventbus_subscribe(RESULT_ID, function checkAndLogError(msg) {
 
   retryActionsCounter.$rawdelete(action)
   if (errId not in noNeedLogerrOnErrors)
-    logerr($"[profileServerClient] {action} returned error: {logErr}")
+    logerr($"[profileServerClient] {action} returned error: {logErr} /*params = {getParamsLog(params)}*/")
   sendResult({ error = err }, id, progressId, action)
 
   if (errId == "NO_TOKEN")
@@ -181,12 +189,12 @@ function doRequestOnline(action, params, id, progressId) {
     data = reqData
   }
 
-  logPSC($"Sending request {id}, method: {action}")
+  logPSC($"Sending request {id}, method: {action}, params: {getParamsLog(params)}")
   profile.requestEventBus(requestData, RESULT_ID, { id, params, progressId, action })
 }
 
 function doRequestOffline(action, params, id, progressId) {
-  logPSC($"Offline request {id}, method: {action}")
+  logPSC($"Offline request {id}, method: {action}, params: {getParamsLog(params)}")
   defer(function() {
     let actionHandler = offlineActions?[action]
     eventbus_send(RESULT_ID,

@@ -7,6 +7,7 @@
       "%lang/matching.csv",
       "%lang/serverErrors.csv",
       "%lang/controls.csv",
+      "%lang/dmviewer.csv",
       "%lang/encyclopedia_tips.csv",
       "%lang/menu.csv",
       "%lang/menu_chat.csv",

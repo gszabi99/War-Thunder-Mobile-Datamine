@@ -42,7 +42,7 @@ let { REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, getRewardPlateSize, progressBarHe
 let { mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts, mkRewardSearchPlate,
   mkRewardUnitFlag
 } = require("%rGui/rewards/rewardPlateComp.nut")
-let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+let { getRewardsViewInfo, isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
 let { mkTooltipText } = require("%rGui/tooltip.nut")
 let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
@@ -100,9 +100,7 @@ let needFreeRefreshSlots = keepref(Computed(function() {
   let { time = 0, isPurchased = false, goods = [] } = rewardSlots.get()
   return getDay(time, dayOffset.get()) != serverTimeDay.get()
     || isPurchased
-    || (goods.len() > 0
-        && null == goods.findvalue(@(g)
-          (serverConfigs.get()?.allBlueprints[g[0].id].targetCount ?? 0) > (servProfile.get()?.blueprints[g[0].id] ?? 0)))
+    || (goods.len() > 0 && null == goods.findvalue(@(g) !isRewardEmpty(g, servProfile.get())))
 }))
 
 selIndex.subscribe(function(_) {
@@ -162,14 +160,13 @@ function timer() {
 
 function headerText() {
   let previewG = previewGoods.get()
-  let excludeGoods = serverConfigs.get()?.allBlueprints.reduce(@(res, v, unitName) (campMyUnits.get()?[unitName] != null
-    || (servProfile.get()?.blueprints[unitName] ?? 0) >= (v?.targetCount ?? 0)) ? res.$rawset(unitName, true)
-      : res, {}) ?? {}
-  let allLeftSlotNames = goodsRewardSlots.get()?.variants.reduce(@(res, v)
-    !excludeGoods?[v[0].id] ? res.append(loc(getUnitLocId(v[0].id))) : res, []) ?? []
+  let allLeftSlotNames = (goodsRewardSlots.get()?.variants ?? []).reduce(
+    @(res, v) isRewardEmpty(v, servProfile.get()) ? res
+      : res.append(loc(getUnitLocId(v[0].id))),
+    [])
   let description = loc(getSlotsTexts(openedGoodsId.get()).description)
   return {
-    watch = [previewGoods, openedGoodsId, goodsRewardSlots, campMyUnits, serverConfigs, servProfile]
+    watch = [previewGoods, openedGoodsId, goodsRewardSlots, campMyUnits, serverConfigs, servProfile] 
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)
     valign = ALIGN_CENTER
@@ -394,8 +391,7 @@ function content() {
     if (shopGenSlotInProgress.get() || getDay(time, dayOffset.get()) != serverTimeDay.get())
       return isEqual(prev, []) ? prev : []
     let res = goods.reduce(
-      @(res, g, idx) (serverConfigs.get()?.allBlueprints[g[0].id].targetCount ?? 0) <= (servProfile.get()?.blueprints[g[0].id] ?? 0)
-        ? res
+      @(res, g, idx) isRewardEmpty(g, servProfile.get()) ? res
         : res.append(getRewardsViewInfo(g)[0].__update({ slotIdx = idx })),
       [])
     return isEqual(prev, res) ? prev : res

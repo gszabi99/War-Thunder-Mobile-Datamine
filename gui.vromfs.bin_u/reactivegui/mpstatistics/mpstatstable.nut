@@ -49,7 +49,7 @@ let mkCellFontIcon = @(icon) {
 }.__update(fontMedium)
 
 
-let premIconSize = fontSmall.fontSize
+let premIconSize = fontTinyAccented.fontSize
 let premiumMark = @(player) !player.hasPremium ? null
   : mkSubsIcon(
     player.hasVip ? "vip"
