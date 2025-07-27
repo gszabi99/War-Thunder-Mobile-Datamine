@@ -1072,6 +1072,12 @@
         "mRank": 4
       }
     },
+    "pkg_us_battleship_colorado_class_colorado": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 4
+      }
+    },
     "pkg_ussr_kv_122": {
       "conditions": {
         "campaign": "tanks",
@@ -1586,6 +1592,12 @@
       "conditions": {
         "campaign": "tanks",
         "mRank": 6
+      }
+    },
+    "pkg_il_merkava_mk_2d": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 9
       }
     },
     "pkg_environment_uhq": {

@@ -1554,6 +1554,10 @@ return {
       "": "us_camo_olive",
       "upgraded": "isr_camo_sandgray"
     },
+    "il_magach_7c": {
+      "": "isr_camo_sandgreen",
+      "desert": "isr_camo_sandgray"
+    },
     "il_merkava_mk_1": {
       "": "isr_camo_sandgray",
       "desert": "isr_camo_threecolor",
@@ -1562,6 +1566,14 @@ return {
     },
     "il_merkava_mk_2b_early": {
       "": "isr_camo_threecolor",
+      "desert": "isr_camo_sandgray"
+    },
+    "il_merkava_mk_2d": {
+      "": "isr_camo_sandgreen",
+      "desert": "isr_camo_sandgray"
+    },
+    "il_sabra_mk1": {
+      "": "isr_camo_sandgreen",
       "desert": "isr_camo_sandgray"
     },
     "il_sholef": {
@@ -1580,6 +1592,10 @@ return {
     },
     "il_zsu_23_4_reskin": {
       "": "isr_camo_threecolor",
+      "desert": "isr_camo_sandgray"
+    },
+    "il_zsu_23_4_reskin2": {
+      "": "isr_camo_sandgreen",
       "desert": "isr_camo_sandgray"
     },
     "il_zsu_57_2": {
@@ -2184,6 +2200,9 @@ return {
     "lagg-3-8": {
       "": "ussr_sb_2m_100"
     },
+    "lagg-i-301": {
+      "": "ussr_i_301"
+    },
     "me-410a-1": {
       "": "germ_me_410a_1"
     },
@@ -2571,7 +2590,9 @@ return {
     },
     "uk_centurion_mk_5_raac": {
       "": "uk_camo_very_dark_drab",
-      "forest": "au_camo_green_sand"
+      "desert": "uk_camo_standart_modern_desert_bicolor",
+      "forest": "au_camo_green_sand",
+      "winter": "fr_camo_winter_green_white"
     },
     "uk_challenger_1": {
       "": "uk_camo_very_dark_drab",
@@ -2712,7 +2733,9 @@ return {
     },
     "uk_fv107_scimitar": {
       "": "uk_camo_very_dark_drab",
-      "forest": "uk_camo_standart_modern_bicolor"
+      "desert": "uk_camo_standart_modern_desert_bicolor",
+      "forest": "uk_camo_standart_modern_bicolor",
+      "winter": "fr_camo_winter_green_white"
     },
     "uk_fv221_caernarvon": {
       "": "uk_camo_very_dark_drab",
@@ -2754,7 +2777,9 @@ return {
     },
     "uk_m109a1": {
       "": "uk_camo_very_dark_drab",
-      "forest": "uk_camo_standart_modern_bicolor"
+      "desert": "uk_camo_standart_modern_desert_bicolor",
+      "forest": "uk_camo_standart_modern_bicolor",
+      "winter": "fr_camo_winter_green_white"
     },
     "uk_olifant_mk_2": {
       "": "rsa_camo_dark_earth",
@@ -2822,7 +2847,9 @@ return {
     },
     "uk_skink_aa_reskin": {
       "": "uk_camo_very_dark_drab",
-      "forest": "uk_camo_standart_modern_bicolor"
+      "desert": "uk_camo_standart_modern_desert_bicolor",
+      "forest": "uk_camo_standart_modern_bicolor",
+      "winter": "fr_camo_winter_green_white"
     },
     "uk_sub_m1": {
       "": "sub_m1_ny_camo"
@@ -2899,6 +2926,9 @@ return {
     },
     "us_battleship_california": {
       "upgraded": "camo_multicolor_cubes"
+    },
+    "us_battleship_colorado_class_colorado": {
+      "": "camo_blackblue_geometry"
     },
     "us_battleship_iowa": {
       "upgraded": "camo_nato_blue_geometry"

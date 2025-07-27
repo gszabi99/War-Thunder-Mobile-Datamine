@@ -4,7 +4,7 @@ let { eventbus_send } = require("eventbus")
 let { sendAppsFlyerEvent } = require("logEvents.nut")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { lastBattles, sharedStats, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+let { lastBattles, sharedStats, curCampaign, campaignsList, getCampaignStatsId } = require("%appGlobals/pServer/campaign.nut")
 let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
@@ -53,10 +53,24 @@ function findClosestOrEqualLowerValue(list, target) {
   return res
 }
 
+let playerStats = ComputedImmediate(@() userstatStats.get()?.stats["global"])
+let totalProfileBattles = keepref(Computed(function() {
+  let res = {}
+
+  foreach (campaign in campaignsList.get()) {
+    let camp = getCampaignStatsId(campaign)
+    let stats = playerStats.get()?[camp] ?? {}
+    if (camp not in res)
+      res[camp] <- (stats?.battles ?? 0)
+  }
+
+  return res.reduce(@(acc, count) count + acc, 0)
+}))
+
 function saveAndSendBattlesCount() {
   let savedCount = get_local_custom_settings_blk()?[LAST_SUBMITTED_COUNT_OF_BATTLES] ?? 0
-  if (savedCount < lastBattlesTotal.get()) {
-    let closestCount = findClosestOrEqualLowerValue(battlesListCountToSend, lastBattlesTotal.get())
+  if (savedCount < totalProfileBattles.get()) {
+    let closestCount = findClosestOrEqualLowerValue(battlesListCountToSend, totalProfileBattles.get())
     if (closestCount == null || closestCount <= savedCount)
       return
     get_local_custom_settings_blk()[LAST_SUBMITTED_COUNT_OF_BATTLES] = closestCount
@@ -64,7 +78,7 @@ function saveAndSendBattlesCount() {
     sendAppsFlyerEvent($"battles_{closestCount}_1")
   }
 }
-lastBattlesTotal.subscribe(@(v) battlesListCountToSend.contains(v) ? saveAndSendBattlesCount() : null)
+totalProfileBattles.subscribe(@(v) battlesListCountToSend.contains(v) ? saveAndSendBattlesCount() : null)
 
 let level = keepref(Computed(@() playerLevelInfo.value.level))
 sendEventByValue("level_3", level, 3, 1)
@@ -86,8 +100,7 @@ loginCount.subscribe(function(count) {
     sendAppsFlyerEvent("login_day_2")
 })
 
-let bpLevelsUserstat = ComputedImmediate(@()
-  userstatStats.get()?.stats["global"].meta_common.battlepass_stage_progress ?? 0)
+let bpLevelsUserstat = ComputedImmediate(@() playerStats.get()?.meta_common.battlepass_stage_progress ?? 0)
 let bpNewLevels = hardPersistWatched("logEvents.bpNewLevels", 0)
 
 isUserstatMissingData.subscribe(@(_) bpNewLevels.set(0))

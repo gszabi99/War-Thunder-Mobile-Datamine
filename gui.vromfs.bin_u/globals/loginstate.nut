@@ -22,9 +22,9 @@ let LOGIN_STATE = {
   ONLINE_SETTINGS_AVAILABLE   = 0x00100
   LEGAL_ACCEPTED              = 0x00200
   CONTACTS_LOGGED_IN          = 0x00400
-  GOOGLE_CONSENT              = 0x00800
-  CONSENT_WND                 = 0x01000
-  IOS_IDFA                    = 0x02000
+  CONSENT_WND                 = 0x00800
+  IOS_IDFA                    = 0x01000
+  GOOGLE_CONSENT              = 0x02000
 
 
   
@@ -36,9 +36,9 @@ let LOGIN_STATE = {
   NOT_LOGGED_IN               = 0x00000
   AUTH_AND_UPDATED            = 0x00003
   READY_TO_FULL_LOAD          = 0x00107
-  READY_FOR_GOOGLE_CONSENT    = 0x00700
-  READY_FOR_OUR_CONSENT       = 0x00F00
-  READY_FOR_IDFA              = 0x01F00
+  READY_FOR_OUR_CONSENT       = 0x00700
+  READY_FOR_IDFA              = 0x00F00
+  READY_FOR_GOOGLE_CONSENT    = 0x01F00
   LOGGED_IN                   = 0x03FF7 
 }
 

@@ -13,7 +13,7 @@ let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
 let { openGoodsPreviewInMenuOnly, getAddonsToShowGoods } = require("%rGui/shop/goodsPreviewState.nut")
 let { featureGoodsToShow } = require("goodsAutoPreview.nut")
 let { offerToShow, offerShowedTime } = require("offerAutoPreview.nut")
-let { showInRow } = require("offerByGoodsAutoPreview.nut")
+let { offersByGoodsToShow, offersByGoodsShowedState, showInRow } = require("offerByGoodsAutoPreview.nut")
 
 
 let goodsToShowCfgIdx = Watched(null)
@@ -27,6 +27,18 @@ let notOpenedBattlesCount = Computed(@()
 
 let previewCfg = [
   {
+    priority = Computed(function() {
+      let offersByGoods = offersByGoodsToShow.get()
+      let { allUnits = null } = serverConfigs.get()
+      return offersByGoods.len() == 0 ? -1
+        : !isReadyToFullLoad.get() ? -1
+        : (!showInRow.get() && notOpenedBattlesCount.get() < 1) ? -1
+        : offersByGoods.findvalue(@(v) getAddonsToShowGoods(v, allUnits, hasAddons.get()).len() == 0) == null ? 2
+        : 5
+    }),
+    getGoods = @() offersByGoodsToShow.get()
+  },
+  {
     cbOnPreview = @() sendOfferBqEvent("openInfoAutomatically", offerToShow.get().campaign),
     priority = Computed(function() {
       let offer = offerToShow.get()
@@ -35,8 +47,8 @@ let previewCfg = [
         : !isReadyToFullLoad.get() ? -1
         : (!showInRow.get() && notOpenedBattlesCount.get() < 1) ? -1
         : (offer?.endTime ?? 0) <= (offerShowedTime.get()?[offer?.campaign] ?? 0) ? -1
-        : getAddonsToShowGoods(offer, allUnits, hasAddons.get()).len() > 0 ? 1
-        : 4
+        : getAddonsToShowGoods(offer, allUnits, hasAddons.get()).len() > 0 ? 0
+        : 3
     }),
     getGoods = @() [offerToShow.get()]
   },
@@ -47,8 +59,8 @@ let previewCfg = [
       return featureGoods.len() == 0 ? -1
         : !isReadyToFullLoad.get() ? -1
         : (!showInRow.get() && notOpenedBattlesCount.get() < 1) ? -1
-        : featureGoods.findvalue(@(v) getAddonsToShowGoods(v, allUnits, hasAddons.get()).len() == 0) == null ? 0
-        : 3
+        : featureGoods.findvalue(@(v) getAddonsToShowGoods(v, allUnits, hasAddons.get()).len() == 0) == null ? 1
+        : 4
     })
     getGoods = @() featureGoodsToShow.get()
   }
@@ -100,7 +112,7 @@ function assignGoodsToShow() {
 }
 
 assignGoodsToShow()
-foreach (w in [featureGoodsToShow, offerToShow].extend(previewCfg.map(@(v) v.priority)))
+foreach (w in [featureGoodsToShow, offerToShow, offersByGoodsToShow].extend(previewCfg.map(@(v) v.priority)))
   w.subscribe(@(_) assignGoodsToShow())
 
 let reqAddonsToShowGoods = Computed(@() !isReadyToFullLoad.get() || goodsToShow.get() == null ? []
@@ -129,6 +141,7 @@ isLoggedIn.subscribe(function(v) {
     return
   commonOpenedAtBattleCountByCamp.set({})
   offerShowedTime.set({})
+  offersByGoodsShowedState.set({})
 })
 
 let openGoodsPreviewDelayed = @() resetTimeout(0.3, openGoodsPreview)

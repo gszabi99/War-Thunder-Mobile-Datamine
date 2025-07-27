@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
 let { register_command } = require("console")
 let { get_local_custom_settings_blk } = require("blkGetters")
-let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
+let { isDownloadedFromGooglePlay, getBuildMarket, APPREVIEW_OK = 1 } = require("android.platform")
 let { get_base_game_version_str, get_game_version_str } = require("app")
 let { resetTimeout } = require("dagor.workcycle")
 let { is_ios, is_android, is_nswitch } = require("%sqstd/platform.nut")
@@ -12,7 +12,7 @@ let { check_version } = require("%sqstd/version_compare.nut")
 let { allow_review_cue } = require("%appGlobals/permissions.nut")
 let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { lastBattles } = require("%appGlobals/pServer/campaign.nut")
-let { isOnlineSettingsAvailable, isLoggedIn } = require("%appGlobals/loginState.nut")
+let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { myUserIdStr } = require("%appGlobals/profileStates.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
@@ -40,13 +40,14 @@ let {
 let IS_PLATFORM_STORE_AVAILABLE = storeId != ""
 const SKIP_BATTLES_WHEN_REJECTED = 10
 const SKIP_HOURS_WHEN_REJECTED = 24
+const MAX_HUAWEI_REVIEW_TRIES = 15
+const TIME_TO_FAIL_HUAWEI_REVIEW = 20
 
 let SAVE_ID_BLK = "rateGame"
 let SAVE_ID_RATED = $"{SAVE_ID_BLK}/rated"
 let SAVE_ID_STORE = $"{SAVE_ID_BLK}/rated_{storeId}"
 let SAVE_ID_SEEN = $"{SAVE_ID_BLK}/seen"
 let SAVE_ID_BATTLES = $"{SAVE_ID_BLK}/battles"
-let SAVE_ID_LOGIN_COUNT = $"{SAVE_ID_BLK}/loginCount"
 
 let REVIEW_IS_AVAILABLE = !is_nswitch 
 
@@ -54,27 +55,14 @@ let userFeedbackTube = "user_feedback"
 let pollId = "review_que"
 
 let isRateGameSeen = hardPersistWatched("rateGameState.isRateGameSeen", false)
+let isHuaweiRateInProgress = hardPersistWatched("rateGameState.isHuaweiRateInProgress", false)
+let huaweiRateTriesCount = hardPersistWatched("rateGameState.huaweiRateTriesCount", 0)
 
 let isRatedOnStore = Watched(false)
 let savedRating = Watched(0)
 let lastSeenDate = Watched(0)
 let lastSeenBattles = Watched(0)
 let canRateGameByCurTime = Watched(false)
-let loginCount = Watched(0)
-
-function setLoginCount() {
-  let blk = get_local_custom_settings_blk()
-  let loginCountNewVal = loginCount.get() + 1
-  setBlkValueByPath(blk, SAVE_ID_LOGIN_COUNT, loginCountNewVal)
-  loginCount.set(loginCountNewVal)
-  eventbus_send("saveProfile", {})
-}
-
-isLoggedIn.subscribe(function(v) {
-  if (v)
-    setLoginCount()
-  isRateGameSeen(false)
-})
 
 if (is_ios && appStoreProdVersion.get() == "") {
   appStoreProdVersion.subscribe(@(v) log($"appStoreProdVersion: {v}"))
@@ -106,7 +94,6 @@ function initSavedData() {
   savedRating(getBlkValueByPath(blk, SAVE_ID_RATED, 0))
   lastSeenDate(getBlkValueByPath(blk, SAVE_ID_SEEN, 0))
   lastSeenBattles(getBlkValueByPath(blk, SAVE_ID_BATTLES, 0))
-  loginCount.set(getBlkValueByPath(blk, SAVE_ID_LOGIN_COUNT, 0))
 }
 isOnlineSettingsAvailable.subscribe(@(_) initSavedData())
 initSavedData()
@@ -139,7 +126,7 @@ let needRateGame = Computed(@() allow_review_cue.get()
   && lastBattles.get().len() >= showAfterBattlesCount.get()
   && canRateGameByCurTime.get()
   && needRateGameByDebriefing(debriefingData.get())
-  && (!isHuaweiBuild || loginCount.get() > 10)
+  && !isHuaweiRateInProgress.get()
 )
 
 function sendGameRating(rating, comment) {
@@ -169,6 +156,39 @@ let sendRateWndEvent = @(eventId) sendCustomBqEvent(userFeedbackTube, {
   gameVersion = get_game_version_str()
 })
 
+function stopWatchHuaweiReview(handler) {
+  eventbus_unsubscribe("app.onAppReview", handler)
+  isHuaweiRateInProgress.set(false)
+}
+
+function huaweiAppReviewHundler(response) {
+  let { status = -1 } = response
+
+  if (status == APPREVIEW_OK) {
+    isRateGameSeen.set(true)
+    stopWatchHuaweiReview(huaweiAppReviewHundler)
+  }
+  else {
+    huaweiRateTriesCount.set(huaweiRateTriesCount.get() + 1)
+    if (huaweiRateTriesCount.get() < MAX_HUAWEI_REVIEW_TRIES)
+      showAppReview()
+    else
+      stopWatchHuaweiReview(huaweiAppReviewHundler)
+  }
+}
+
+function tryToShowAppReview() {
+  if (isHuaweiRateInProgress.get())
+    return
+
+  isHuaweiRateInProgress.set(true)
+  eventbus_subscribe("app.onAppReview", huaweiAppReviewHundler)
+  resetTimeout(TIME_TO_FAIL_HUAWEI_REVIEW, @() isHuaweiRateInProgress.get()
+    ? stopWatchHuaweiReview(huaweiAppReviewHundler)
+    : null)
+  showAppReview()
+}
+
 function platformAppReview(isRatedExcellent) {
   if (!IS_PLATFORM_STORE_AVAILABLE)
     return
@@ -179,7 +199,10 @@ function platformAppReview(isRatedExcellent) {
     eventbus_send("saveProfile", {})
   }
   if (needShowAppReview(isRatedExcellent))
-    showAppReview()
+    if (isHuaweiBuild)
+      tryToShowAppReview()
+    else
+      showAppReview()
 }
 
 isRateGameSeen.subscribe(function(val) {

@@ -2,7 +2,7 @@ from "%globalScripts/logs.nut" import *
 from "sysinfo" import get_user_system_info
 from "%sqstd/platform.nut" import is_ios
 import "%globalScripts/sharedWatched.nut" as sharedWatched
-let { regexp2 = null } = require_optional("regexp2") 
+let regexp2 = require_optional("regexp2") 
 
 let SAFEAREA_DEFAULT = 0.9
 

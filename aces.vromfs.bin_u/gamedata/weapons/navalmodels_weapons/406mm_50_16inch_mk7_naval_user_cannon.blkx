@@ -706,6 +706,8 @@
     "bullet": {
       "bulletCount": 25,
       "mass": 1016.05,
+      "explosiveType": "tnt",
+      "explosiveMass": 70.0,
       "caliber": 0.406,
       "speed": 762.0,
       "maxDistance": 100000.0,
@@ -730,6 +732,7 @@
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "406mm_mk5_apcbc",
       "dynamicKv": true,
+      "hitPowerMult": 3000.0,
       "relativeVelArmorShift": [
         200.0,
         1000.0

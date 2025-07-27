@@ -2547,6 +2547,18 @@
         "from": "us_camo_olive*",
         "to": "uk_camo_standart_modern_bicolor*"
       }
+    },
+    "desert": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "uk_camo_standart_modern_desert_bicolor*"
+      }
+    },
+    "winter": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "fr_camo_winter_green_white*"
+      }
     }
   },
   "defaultDecals": {
@@ -2556,6 +2568,16 @@
       "camo_rotation": 0.0
     },
     "forest": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "desert": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
+    },
+    "winter": {
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0

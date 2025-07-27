@@ -409,6 +409,7 @@ let skinsByTag = {
     "ussr_il_2m"
     "ussr_il_2m_type3_1945"
     "ussr_il_2_37_1943_wo13_c"
+    "ussr_i_301"
     "ussr_il_4"
     "ussr_il_10"
     "ussr_il_10_winter44"
