@@ -1,11 +1,9 @@
 import "math" as math
 
-let mark_pure2 = getroottable()?.mark_pure ?? @(v) v
-
 const GOLDEN_RATIO = 1.618034
 
-let minByAbs = mark_pure2(@(a, b) math.fabs(a) < math.fabs(b) ? a : b)
-let maxByAbs = mark_pure2(@(a, b) math.fabs(a) > math.fabs(b) ? a : b)
+let minByAbs = mark_pure(@(a, b) math.fabs(a) < math.fabs(b) ? a : b)
+let maxByAbs = mark_pure(@(a, b) math.fabs(a) > math.fabs(b) ? a : b)
 
 
 
@@ -23,7 +21,7 @@ function round_by_value(value, roundValue) {
   return math.floor(value.tofloat() / roundValue + 0.5) * roundValue
 }
 
-mark_pure2(round_by_value)
+mark_pure(round_by_value)
 
 function number_of_set_bits(i) {
   i = i - ((i >> 1) & (0x5555555555555555));
@@ -35,7 +33,7 @@ function is_bit_set(bitMask, bitIdx) {
   return (bitMask & 1 << bitIdx) > 0
 }
 
-mark_pure2(is_bit_set)
+mark_pure(is_bit_set)
 
 function change_bit(bitMask, bitIdx, value) {
   return (bitMask & ~(1 << bitIdx)) | (value ? (1 << bitIdx) : 0)
@@ -95,7 +93,7 @@ function calc_golden_ratio_columns(total, widthToHeight = 1.0) {
   return math.ceil(total.tofloat() / rows).tointeger()
 }
 
-let color2uint = mark_pure2(@(r, g, b, a = 255) math.clamp(r + g * 256 + b * 65536 + a * 16777216, 0, 4294967295))
+let color2uint = mark_pure(@(r, g, b, a = 255) math.clamp(r + g * 256 + b * 65536 + a * 16777216, 0, 4294967295))
 
 let romanNumeralLookup = [
   "","I","II","III","IV","V","VI","VII","VIII","IX",
@@ -185,10 +183,10 @@ let export = math.__merge({
   color2uint
   getRomanNumeral
   splitThousands
-  calcPercent = mark_pure2(@(value) (100.0 * value + 0.5).tointeger())
+  calcPercent = mark_pure(@(value) (100.0 * value + 0.5).tointeger())
   average
   median
   truncateToMultiple
 })
 
-return export
+return freeze(export)

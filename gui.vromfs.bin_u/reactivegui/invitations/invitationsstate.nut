@@ -66,7 +66,7 @@ let NOTIFICATION_PARAMS = {
   styleId = ""
 }
 function pushNotification(notify = NOTIFICATION_PARAMS) {
-  notify = NOTIFICATION_PARAMS.__merge({ time = serverTime.value }, notify)
+  notify = NOTIFICATION_PARAMS.__merge({ time = serverTime.get() }, notify)
 
   if (notify.id != null)
     removeNotifyById(notify.id)

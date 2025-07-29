@@ -52,7 +52,6 @@ require("%rGui/tutorial/tutorialSlotAttributes.nut")
 require("%rGui/tutorial/tutorTreeEvent.nut")
 require("%rGui/feedback/rateGameState.nut")
 require("%rGui/updater/downloadAddonsWnd.nut")
-require("%rGui/updater/backgroundContentUpdater.nut")
 require("%rGui/report/reportPlayerWnd.nut")
 require("weaponry/debugBullets.nut")
 require("shop/unseenPurchaseMessage.nut")
@@ -140,16 +139,16 @@ let hudBase = require("%rGui/hud/hudBase.nut")
 let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 isInBattle.subscribe(@(v)
-  sendNewbieBqEvent(v ? "enterBattle" : "leaveBattle", { status = isInMpSession.value ? "online" : "offline" }))
+  sendNewbieBqEvent(v ? "enterBattle" : "leaveBattle", { status = isInMpSession.get() ? "online" : "offline" }))
 
 let battleScene = @() {
   watch = [isInRespawn, isInSpectatorMode, isInArtilleryMap, isInFlightMenu, isMpStatisticsActive, isVoiceMsgMapSceneOpened]
   key = {}
   size = flex()
-  children = isInFlightMenu.value ? flightMenu
-    : isMpStatisticsActive.value ? mpStatisticsWnd
+  children = isInFlightMenu.get() ? flightMenu
+    : isMpStatisticsActive.get() ? mpStatisticsWnd
     : isInSpectatorMode.value ? hudSpectator
-    : isInRespawn.value ? respawnWnd
+    : isInRespawn.get() ? respawnWnd
     : isInArtilleryMap.value ? hudArtilleryMap
     : isVoiceMsgMapSceneOpened.get() ? voiceMsgMapScene
     : hudBase
@@ -164,7 +163,7 @@ return {
       size = flex()
       waitForChildrenFadeOut = true
       children = getTopScene(scenesOrder.value)
-        ?? (isInBattle.value ? battleScene : mainMenuWnd)
+        ?? (isInBattle.get() ? battleScene : mainMenuWnd)
     }
     modalWindowsComponent
     compToCompAnimations

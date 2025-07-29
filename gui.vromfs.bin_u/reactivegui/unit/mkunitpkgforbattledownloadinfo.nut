@@ -61,7 +61,7 @@ function mkUnitPkgForBattleDownloadInfo(ovr = {}) {
     hplace = ALIGN_CENTER
     halign = ALIGN_CENTER
     gap = hdpx(10)
-    children = reqPkgList.get().len() == 0 || reqPkgList.get().findvalue(@(a) a not in wantStartDownloadAddons.get()) != null ? null
+    children = reqPkgList.get().len() == 0 || reqPkgList.get().findvalue(@(a) a not in wantStartDownloadAddons.get()?.addons) != null ? null
       : textArea(loc("msg/downloadPackToUseUnitOnline"))
   }.__update(ovr)
 }

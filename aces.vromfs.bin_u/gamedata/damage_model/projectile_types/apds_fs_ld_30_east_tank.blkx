@@ -1,0 +1,54 @@
+{
+  "normalizationPreset": "default",
+  "ricochetPreset": "apds_fs_long",
+  "groundRicochetPreset": "apds_fs_long",
+  "secondaryShattersPreset": "apds_fs_long",
+  "stabilityThreshold": 0.05,
+  "stabilityCaliberToArmorThreshold": 5.0,
+  "stabilityReductionAfterRicochet": 0.5,
+  "stabilityReductionAfterPenetration": 0.0,
+  "stucking": 0.7,
+  "stuckingAngle": 45.0,
+  "bulletType": "apds_fs_long_l30_tank",
+  "slopeEffectPreset": "apds_fs_long",
+  "fresnel": [
+    0.23,
+    0.1,
+    2.0
+  ],
+  "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
+  "gbufferModelName": "tank_shell_apdsfs_ld_30_su",
+  "modelName": "tank_shell_apdsfs_ld_30_su",
+  "penetratorModelName": "tank_shell_apdsfs_ld_30_su_deform",
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.2
+    ],
+    "mod2": [
+      20.0,
+      0.45
+    ]
+  },
+  "DamageParts": {
+    "body": {
+      "hp": 100.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 15.0
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onKill": {
+        "destabilization": 1.0,
+        "impulse": 0.005
+      }
+    }
+  },
+  "tracePattern": {
+    "caliber": 10.0,
+    "circleCount": 2,
+    "pointCount": 6
+  }
+}

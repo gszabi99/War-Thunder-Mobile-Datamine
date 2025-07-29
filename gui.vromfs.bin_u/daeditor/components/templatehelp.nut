@@ -1,9 +1,8 @@
+import "ecs" as ecs
+import "entity_editor" as entity_editor
 from "%darg/ui_imports.nut" import *
-
-let ecs = require("ecs")
 let txt = require("%daeditor/components/text.nut").dtext
 
-let entity_editor = require("entity_editor")
 
 
 function modifyReduceExtends(arr) {

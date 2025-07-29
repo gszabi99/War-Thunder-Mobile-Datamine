@@ -33,7 +33,7 @@ let loadingScreen = @() {
   onAttach = @() addFpsLimit(lsKey)
   onDetach = @() removeFpsLimit(lsKey)
   size = flex()
-  children = (isMissionLoading.value ? missionScreen : null)
+  children = (isMissionLoading.get() ? missionScreen : null)
     ?? [
          loadingAnimBg
          mkTitleLogo({ margin = saBordersRv })
@@ -62,9 +62,9 @@ register_command(function(id) {
   curScreenId(id)
   return log($"Set to loading screen '{id}'")
 }, "ui.debug.loadingSet")
-register_command(@() isInLoadingScreen(!isInLoadingScreen.value), "ui.debug.loadingScreen")
+register_command(@() isInLoadingScreen(!isInLoadingScreen.get()), "ui.debug.loadingScreen")
 register_command(function() {
-  isMissionLoading(!isMissionLoading.value || !isInLoadingScreen.value)
+  isMissionLoading(!isMissionLoading.get() || !isInLoadingScreen.get())
   isInLoadingScreen(true)
 }, "ui.debug.missionLoading")
 

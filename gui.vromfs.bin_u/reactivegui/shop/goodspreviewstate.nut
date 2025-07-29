@@ -1,16 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-
 let { eventbus_subscribe } = require("eventbus")
 let { defer } = require("dagor.workcycle")
+let { has_missing_resources_for_units } = require("contentUpdater")
 let { activeOffer } = require("offerState.nut")
 let { activeOffersByGoods } = require("offerByGoodsState.nut")
 let { shopGoodsAllCampaigns, saveSeenGoods } = require("shopState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { shopPurchaseInProgress, validate_active_offer } = require("%appGlobals/pServer/pServerApi.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { platformPurchaseInProgress } = require("platformGoods.nut")
-let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
-let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
+let { openDownloadUnitsWnd } = require("%rGui/updater/updaterState.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
@@ -34,27 +33,24 @@ let openPreviewCount = Watched(openedGoodsId.get() == null ? 0 : 1)
 let openedSubsId = mkWatched(persist, "openedSubsId", null)
 
 
-function tryAddPkgs(res, unit) {
-  if (unit != null)
-    foreach (pkg in getUnitPkgs(unit.name, unit.mRank))
-      res[pkg] <- true
+function addTagsUnitsWithPlatoon(res, unitName, sConfigs) {
+  res[getTagsUnitName(unitName)] <- true
+  let { platoonUnits = [] } = sConfigs?.allUnits[unitName]
+  foreach (p in platoonUnits)
+    res[getTagsUnitName(p.name)] <- true
 }
 
-function getAddonsToShowGoods(goods, allUnits, excludeAddons) {
+function getAllTagsUnitsToShowGoods(goods, sConfigs) {
   let res = {}
-  foreach (unitName in goods?.unitUpgrades ?? [])
-    tryAddPkgs(res, allUnits?[unitName])
-
-  foreach (unitName in goods?.units ?? [])
-    tryAddPkgs(res, allUnits?[unitName])
-
-  foreach (unitName, _ in goods?.blueprints ?? {})
-    tryAddPkgs(res, allUnits?[unitName])
-
+  foreach (u in goods?.unitUpgrades ?? [])
+    addTagsUnitsWithPlatoon(res, u, sConfigs)
+  foreach (u in goods?.units ?? [])
+    addTagsUnitsWithPlatoon(res, u, sConfigs)
+  foreach (u, _ in goods?.blueprints ?? {})
+    addTagsUnitsWithPlatoon(res, u, sConfigs)
   if (goods?.meta.previewUnit != null)
-    tryAddPkgs(res, allUnits?[goods?.meta.previewUnit])
-
-  return res.keys().filter(@(a) !excludeAddons?[a])
+    addTagsUnitsWithPlatoon(res, goods.meta.previewUnit, sConfigs)
+  return res
 }
 
 let getPreviewGoods = @(id, activeOff, activeOffsByGoods, shopGoods)
@@ -64,9 +60,12 @@ let getPreviewGoods = @(id, activeOff, activeOffsByGoods, shopGoods)
 
 function openGoodsPreview(id) {
   let goods = getPreviewGoods(id, activeOffer.get(), activeOffersByGoods.get(), shopGoodsAllCampaigns.get())
-  let addons = getAddonsToShowGoods(goods, serverConfigs.get()?.allUnits, hasAddons.get())
-  if (addons.len() != 0) {
-    openDownloadAddonsWnd(addons, "openGoodsPreview", { paramStr1 = id }, "openGoodsPreview", { id })
+  if (goods == null)
+    return
+
+  let reqUnits = getAllTagsUnitsToShowGoods(goods, serverConfigs.get())
+  if (reqUnits.len() != 0 && has_missing_resources_for_units(reqUnits.keys(), true)) {
+    openDownloadUnitsWnd(reqUnits.keys(), "openGoodsPreview", { paramStr1 = id }, "openGoodsPreview", { id })
     return
   }
 
@@ -77,9 +76,12 @@ function openGoodsPreview(id) {
 
 function openGoodsPreviewInMenuOnly(id) {
   let goods = getPreviewGoods(id, activeOffer.get(), activeOffersByGoods.get(), shopGoodsAllCampaigns.get())
-  let addons = getAddonsToShowGoods(goods, serverConfigs.get()?.allUnits, hasAddons.get())
-  if (addons.len() != 0) {
-    openDownloadAddonsWnd(addons, "openGoodsPreview", { paramStr1 = id }, "openGoodsPreviewInMenuNoModals", { id })
+  if (goods == null)
+    return
+
+  let reqUnits = getAllTagsUnitsToShowGoods(goods, serverConfigs.get())
+  if (reqUnits.len() != 0 && has_missing_resources_for_units(reqUnits.keys(), true)) {
+    openDownloadUnitsWnd(reqUnits.keys(), "openGoodsPreview", { paramStr1 = id }, "openGoodsPreviewInMenuNoModals", { id })
     return false
   }
 
@@ -118,7 +120,7 @@ isPreviewGoodsPurchasing.subscribe(function(v) {
   if (slotsPreset != "")
     return
   if (previewGoodsUnit.get() != null || activeOffer.get()?.id == id || limit > 0 || dailyLimit > 0 || oncePerSeason != "")
-    closeGoodsPreview()
+    defer(closeGoodsPreview)
 })
 
 eventbus_subscribe("openGoodsPreview", @(msg) openGoodsPreview(msg.id))
@@ -176,7 +178,7 @@ return {
   previewType
   isPreviewGoodsPurchasing
   openGoodsPreviewInMenuOnly
-  getAddonsToShowGoods
+  getAllTagsUnitsToShowGoods
   getPreviewType
 
   openSubsPreview = @(id) openedSubsId.set(id)

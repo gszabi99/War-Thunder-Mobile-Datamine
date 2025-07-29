@@ -15,7 +15,7 @@ let tabs = [
     image = "ui/gameuiskin#profile_avatar_icon.svg"
     content = avatarScene
     isFullWidth = true
-    unseen = Computed(@() availAvatars.value.findindex(@(_, id) id in unseenDecorators.value) != null
+    unseen = Computed(@() availAvatars.get().findindex(@(_, id) id in unseenDecorators.get()) != null
       ? UNSEEN_HIGH : SEEN)
   }
   {
@@ -23,7 +23,7 @@ let tabs = [
     image = "ui/gameuiskin#profile_decor_icon.svg"
     content = nickFramesScene
     isFullWidth = true
-    unseen = Computed(@() availNickFrames.value.findindex(@(_, id) id in unseenDecorators.value) != null
+    unseen = Computed(@() availNickFrames.get().findindex(@(_, id) id in unseenDecorators.get()) != null
       ? UNSEEN_HIGH : SEEN)
   }
   {
@@ -31,7 +31,7 @@ let tabs = [
     image = "ui/gameuiskin#profile_tilte_icon.svg"
     content = titlesScene
     isFullWidth = true
-    unseen = Computed(@() availTitles.value.findindex(@(_, id) id in unseenDecorators.value) != null
+    unseen = Computed(@() availTitles.get().findindex(@(_, id) id in unseenDecorators.get()) != null
       ? UNSEEN_HIGH : SEEN)
   }
   {

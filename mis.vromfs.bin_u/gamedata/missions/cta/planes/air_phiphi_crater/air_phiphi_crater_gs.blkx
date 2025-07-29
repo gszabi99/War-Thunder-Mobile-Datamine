@@ -460,8 +460,8 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": [
-              "t1_ships_squad",
-              "t2_ships_squad"
+              "t1_navy_ships_squad",
+              "t2_navy_ships_squad"
             ],
             "accuracy": 0.05,
             "airAccuracy": 0.05,
@@ -674,8 +674,8 @@
           "check_targets": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "t1_ships_squad",
-          "target": "t2_ships_squad"
+          "object": "t1_navy_ships_squad",
+          "target": "t2_navy_ships_squad"
         }
       },
       "actions": {
@@ -685,8 +685,8 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "object": [
-            "t1_ships_squad",
-            "t2_ships_squad"
+            "t1_navy_ships_squad",
+            "t2_navy_ships_squad"
           ],
           "useForTriggerFiltered": true,
           "speed": 0.0,
@@ -723,8 +723,8 @@
           "check_targets": "all",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "t1_ships_squad",
-          "target": "t2_ships_squad"
+          "object": "t1_navy_ships_squad",
+          "target": "t2_navy_ships_squad"
         }
       },
       "actions": {
@@ -734,8 +734,8 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "object": [
-            "t1_ships_squad",
-            "t2_ships_squad"
+            "t1_navy_ships_squad",
+            "t2_navy_ships_squad"
           ],
           "speed": 40.0,
           "lockSpeed": true
@@ -16753,7 +16753,7 @@
         }
       },
       {
-        "name": "t1_ship_13",
+        "name": "t1_ship_01",
         "tm": [
           [
             0.67559,
@@ -16810,7 +16810,7 @@
         "way": {}
       },
       {
-        "name": "t2_ship_13",
+        "name": "t2_ship_01",
         "tm": [
           [
             -0.608762,
@@ -16867,7 +16867,7 @@
         "way": {}
       },
       {
-        "name": "t1_ship_04",
+        "name": "t1_boats_06",
         "tm": [
           [
             0.843392,
@@ -17340,7 +17340,7 @@
         }
       },
       {
-        "name": "t1_ship_06",
+        "name": "t1_boats_07",
         "tm": [
           [
             0.843392,
@@ -17812,7 +17812,7 @@
         }
       },
       {
-        "name": "t1_ship_08",
+        "name": "t1_ship_02",
         "tm": [
           [
             0.843392,
@@ -18284,7 +18284,7 @@
         }
       },
       {
-        "name": "t1_ship_10",
+        "name": "t1_ship_03",
         "tm": [
           [
             0.843392,
@@ -18756,7 +18756,7 @@
         }
       },
       {
-        "name": "t1_ship_01",
+        "name": "t1_boats_08",
         "tm": [
           [
             0.866025,
@@ -19195,7 +19195,7 @@
         }
       },
       {
-        "name": "t1_ship_03",
+        "name": "t1_boats_09",
         "tm": [
           [
             0.866025,
@@ -19636,7 +19636,7 @@
         }
       },
       {
-        "name": "t1_ship_05",
+        "name": "t1_ship_04",
         "tm": [
           [
             0.866025,
@@ -20078,7 +20078,7 @@
         }
       },
       {
-        "name": "t1_ship_07",
+        "name": "t1_ship_05",
         "tm": [
           [
             0.866025,
@@ -20520,7 +20520,7 @@
         }
       },
       {
-        "name": "t1_ship_09",
+        "name": "t1_ship_06",
         "tm": [
           [
             0.866025,
@@ -20961,7 +20961,7 @@
         }
       },
       {
-        "name": "t2_ship_01",
+        "name": "t2_boats_06",
         "tm": [
           [
             0.0871556,
@@ -21360,7 +21360,7 @@
         }
       },
       {
-        "name": "t2_ship_03",
+        "name": "t2_boats_07",
         "tm": [
           [
             0.0871556,
@@ -21801,7 +21801,7 @@
         }
       },
       {
-        "name": "t2_ship_05",
+        "name": "t2_ship_02",
         "tm": [
           [
             0.0871556,
@@ -22242,7 +22242,7 @@
         }
       },
       {
-        "name": "t2_ship_07",
+        "name": "t2_ship_03",
         "tm": [
           [
             0.0871556,
@@ -22683,7 +22683,7 @@
         }
       },
       {
-        "name": "t2_ship_09",
+        "name": "t2_ship_04",
         "tm": [
           [
             0.0871556,
@@ -23091,7 +23091,7 @@
         }
       },
       {
-        "name": "t2_ship_04",
+        "name": "t2_boats_08",
         "tm": [
           [
             -0.843391,
@@ -23501,7 +23501,7 @@
         }
       },
       {
-        "name": "t2_ship_06",
+        "name": "t2_boats_09",
         "tm": [
           [
             -0.843391,
@@ -23911,7 +23911,7 @@
         }
       },
       {
-        "name": "t2_ship_08",
+        "name": "t2_ship_05",
         "tm": [
           [
             -0.843391,
@@ -24320,7 +24320,7 @@
         }
       },
       {
-        "name": "t2_ship_10",
+        "name": "t2_ship_06",
         "tm": [
           [
             -0.843391,
@@ -24761,7 +24761,11 @@
             "t1_boats_02",
             "t1_boats_03",
             "t1_boats_04",
-            "t1_boats_05"
+            "t1_boats_05",
+            "t1_boats_06",
+            "t1_boats_07",
+            "t1_boats_08",
+            "t1_boats_09"
           ],
           "object_marking": 0
         }
@@ -24796,13 +24800,17 @@
             "t2_boats_02",
             "t2_boats_03",
             "t2_boats_04",
-            "t2_boats_05"
+            "t2_boats_05",
+            "t2_boats_06",
+            "t2_boats_07",
+            "t2_boats_08",
+            "t2_boats_09"
           ],
           "object_marking": 0
         }
       },
       {
-        "name": "t1_ships_squad",
+        "name": "t1_navy_ships_squad",
         "tm": [
           [
             1.0,
@@ -24828,21 +24836,17 @@
         "props": {
           "squad_members": [
             "t1_ship_01",
+            "t1_ship_02",
             "t1_ship_03",
             "t1_ship_04",
             "t1_ship_05",
-            "t1_ship_06",
-            "t1_ship_07",
-            "t1_ship_08",
-            "t1_ship_09",
-            "t1_ship_10",
-            "t1_ship_13"
+            "t1_ship_06"
           ],
           "object_marking": 0
         }
       },
       {
-        "name": "t2_ships_squad",
+        "name": "t2_navy_ships_squad",
         "tm": [
           [
             1.0,
@@ -24868,15 +24872,11 @@
         "props": {
           "squad_members": [
             "t2_ship_01",
+            "t2_ship_02",
             "t2_ship_03",
             "t2_ship_04",
             "t2_ship_05",
-            "t2_ship_06",
-            "t2_ship_07",
-            "t2_ship_08",
-            "t2_ship_09",
-            "t2_ship_10",
-            "t2_ship_13"
+            "t2_ship_06"
           ],
           "object_marking": 0
         }
@@ -24965,7 +24965,7 @@
         ],
         "props": {
           "squad_members": [
-            "t2_ships_squad",
+            "t2_navy_ships_squad",
             "t2_boats_squad"
           ],
           "object_marking": 0
@@ -24997,7 +24997,7 @@
         ],
         "props": {
           "squad_members": [
-            "t1_ships_squad",
+            "t1_navy_ships_squad",
             "t1_boats_squad"
           ],
           "object_marking": 0
@@ -25190,7 +25190,7 @@
         "props": {
           "squad_members": [
             "t1_boats_squad",
-            "t1_ships_squad",
+            "t1_navy_ships_squad",
             "t1_bunkers_squad"
           ],
           "object_marking": 0
@@ -25223,7 +25223,7 @@
         "props": {
           "squad_members": [
             "t2_boats_squad",
-            "t2_ships_squad",
+            "t2_navy_ships_squad",
             "t2_bunkers_squad"
           ],
           "object_marking": 0
@@ -25254,7 +25254,7 @@
           ]
         ],
         "props": {
-          "squad_members": "t1_ships_squad"
+          "squad_members": "t1_navy_ships_squad"
         }
       },
       {
@@ -25282,7 +25282,7 @@
           ]
         ],
         "props": {
-          "squad_members": "t2_ships_squad"
+          "squad_members": "t2_navy_ships_squad"
         }
       }
     ],

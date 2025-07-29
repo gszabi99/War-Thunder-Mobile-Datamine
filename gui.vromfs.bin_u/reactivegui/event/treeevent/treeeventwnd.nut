@@ -234,7 +234,7 @@ let lootboxBtn = mkCustomButton({
 }, @() openEventWnd(openedTreeEventId.get()))
 
 let curEventLootboxes = Computed(@()
-  orderLootboxesBySlot(eventLootboxesRaw.value.filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == openedTreeEventId.get())))
+  orderLootboxesBySlot(eventLootboxesRaw.get().filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == openedTreeEventId.get())))
 
 let needShowUnseenMark = Computed(function(){
   foreach(lb in curEventLootboxes.get())

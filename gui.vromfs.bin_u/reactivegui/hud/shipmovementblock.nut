@@ -41,7 +41,7 @@ function showCtrlHint() {
   }
 }
 
-let averageSpeedDirection = Computed(@() machineSpeedDirection[averageSpeed.value])
+let averageSpeedDirection = Computed(@() machineSpeedDirection[averageSpeed.get()])
 
 let maxSpeedBySteps = Computed(function() {
   if (playerUnitName.value == "")
@@ -160,7 +160,7 @@ let mkForwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
 
 function mkStopImage(scale, ovr = {}) {
   let size = scaleArr([speedImageWidth, speedImageHeight], scale)
-  return @() !isStoppedSpeedStep.value ? { watch = isStoppedSpeedStep }
+  return @() !isStoppedSpeedStep.get() ? { watch = isStoppedSpeedStep }
     : {
         watch = isStoppedSpeedStep
         size
@@ -180,7 +180,7 @@ let machineSpeed = @(scale) {
       watch = [averageSpeed]
       rendObj = ROBJ_TEXT
       hplace = ALIGN_CENTER
-      text = machineSpeedLoc[averageSpeed.value]
+      text = machineSpeedLoc[averageSpeed.get()]
     }.__update(getScaledFont(fontTinyShaded, scale))
     mkStopImage(scale, { flipX = true, hplace = ALIGN_RIGHT })
   ]

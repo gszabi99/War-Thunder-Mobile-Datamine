@@ -55,6 +55,11 @@
       "value": false
     }
   },
+  "animchar_additional_data": {
+    "additional_data:list<p4>": {
+      "_tags": "render"
+    }
+  },
   "animchar_turn_dir": {
     "_use": "animchar",
     "animchar__turnDir": true,

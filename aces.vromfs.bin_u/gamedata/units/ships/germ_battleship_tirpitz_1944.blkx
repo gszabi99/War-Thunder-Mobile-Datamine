@@ -32,6 +32,7 @@
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_battleship",
   "allowSupportPlane": true,
+  "addTorpedoesCountPack": 4,
   "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,
   "smokeScreenEffectTime": 30.0,
@@ -870,7 +871,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.071,
+        "shotFreq": 0.067,
         "speedYaw": 60.0,
         "speedPitch": 54.0,
         "bullets": 126,
@@ -942,7 +943,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.071,
+        "shotFreq": 0.067,
         "speedYaw": 60.0,
         "speedPitch": 54.0,
         "bullets": 126,
@@ -1000,7 +1001,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.071,
+        "shotFreq": 0.067,
         "speedYaw": 60.0,
         "speedPitch": 54.0,
         "bullets": 126,
@@ -1058,7 +1059,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.071,
+        "shotFreq": 0.067,
         "speedYaw": 60.0,
         "speedPitch": 54.0,
         "bullets": 126,
@@ -1116,7 +1117,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.071,
+        "shotFreq": 0.067,
         "speedYaw": 60.0,
         "speedPitch": 54.0,
         "bullets": 126,
@@ -1174,7 +1175,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.071,
+        "shotFreq": 0.067,
         "speedYaw": 60.0,
         "speedPitch": 54.0,
         "bullets": 126,
@@ -1232,7 +1233,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.071,
+        "shotFreq": 0.067,
         "speedYaw": 60.0,
         "speedPitch": 54.0,
         "bullets": 126,
@@ -1305,7 +1306,7 @@
         "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "shotFreq": 0.071,
+        "shotFreq": 0.067,
         "speedYaw": 60.0,
         "speedPitch": 54.0,
         "bullets": 126,
@@ -2599,6 +2600,113 @@
         }
       },
       {
+        "trigger": "gunner50",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
+        "emitter": "bone_torpedo_01",
+        "bullets": 8,
+        "useEmitter": true,
+        "emitterGenRange": [
+          1,
+          4
+        ],
+        "emitterGenFmt": "bone_torpedo_%02d",
+        "ammoDpGenFmt": "torpedo_%02d_dm",
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 20.0,
+        "useStartSpeed": true,
+        "allowableDelta": 100.0,
+        "gyroAngle": 0.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.043,
+        "turret": {
+          "head": "tt_head_01",
+          "gun": "tt_01",
+          "gunnerDm": "tt_02_dm"
+        },
+        "limits": {
+          "yaw": [
+            -150.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        },
+        "limitsDeadzone": {
+          "yaw": [
+            -45.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner51",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
+        "emitter": "bone_torpedo_05",
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "useEmitter": true,
+        "emitterGenRange": [
+          5,
+          8
+        ],
+        "emitterGenFmt": "bone_torpedo_%02d",
+        "ammoDpGenFmt": "torpedo_%02d_dm",
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 20.0,
+        "useStartSpeed": true,
+        "allowableDelta": 100.0,
+        "gyroAngle": 0.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.043,
+        "turret": {
+          "head": "tt_head_02",
+          "gun": "tt_02",
+          "gunnerDm": "tt_02_dm"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            150.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        },
+        "limitsDeadzone": {
+          "yaw": [
+            0.0,
+            45.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
         "dummy": true,
         "trigger": "gunner31",
         "triggerGroup": "primary",
@@ -2633,6 +2741,10 @@
       "blk": "gameData/units/ships/weaponPresets/germ_battleship_tirpitz_1944_default.blk"
     }
   },
+  "torpedoSeries": {
+    "delay": 0.2,
+    "count": 4
+  },
   "modifications": {
     "ship_tool_kit": {},
     "ship_smoke_screen_system_mod": {},
@@ -2650,7 +2762,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -2722,7 +2834,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -2780,7 +2892,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -2838,7 +2950,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -2896,7 +3008,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -2954,7 +3066,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -3012,7 +3124,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -3085,7 +3197,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -4376,6 +4488,113 @@
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 100.0,
                 "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner50",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
+              "emitter": "bone_torpedo_01",
+              "bullets": 8,
+              "useEmitter": true,
+              "emitterGenRange": [
+                1,
+                4
+              ],
+              "emitterGenFmt": "bone_torpedo_%02d",
+              "ammoDpGenFmt": "torpedo_%02d_dm",
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 100.0,
+              "gyroAngle": 0.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.043,
+              "turret": {
+                "head": "tt_head_01",
+                "gun": "tt_01",
+                "gunnerDm": "tt_02_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -150.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -45.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner51",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
+              "emitter": "bone_torpedo_05",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "emitterGenRange": [
+                5,
+                8
+              ],
+              "emitterGenFmt": "bone_torpedo_%02d",
+              "ammoDpGenFmt": "torpedo_%02d_dm",
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 100.0,
+              "gyroAngle": 0.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.043,
+              "turret": {
+                "head": "tt_head_02",
+                "gun": "tt_02",
+                "gunnerDm": "tt_02_dm"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  150.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  0.0,
+                  45.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
               }
             },
             {
@@ -4431,7 +4650,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -4503,7 +4722,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -4561,7 +4780,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -4619,7 +4838,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -4677,7 +4896,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -4735,7 +4954,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -4793,7 +5012,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -4866,7 +5085,7 @@
               "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "shotFreq": 0.071,
+              "shotFreq": 0.067,
               "speedYaw": 60.0,
               "speedPitch": 54.0,
               "bullets": 126,
@@ -6157,6 +6376,113 @@
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 100.0,
                 "speedFromVehicleVerticalMult": -1.0
+              }
+            },
+            {
+              "trigger": "gunner50",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
+              "emitter": "bone_torpedo_01",
+              "bullets": 8,
+              "useEmitter": true,
+              "emitterGenRange": [
+                1,
+                4
+              ],
+              "emitterGenFmt": "bone_torpedo_%02d",
+              "ammoDpGenFmt": "torpedo_%02d_dm",
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 100.0,
+              "gyroAngle": 0.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.043,
+              "turret": {
+                "head": "tt_head_01",
+                "gun": "tt_01",
+                "gunnerDm": "tt_02_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -150.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  -45.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner51",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/de_533mm_g7a_torpedo.blk",
+              "emitter": "bone_torpedo_05",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "emitterGenRange": [
+                5,
+                8
+              ],
+              "emitterGenFmt": "bone_torpedo_%02d",
+              "ammoDpGenFmt": "torpedo_%02d_dm",
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 20.0,
+              "useStartSpeed": true,
+              "allowableDelta": 100.0,
+              "gyroAngle": 0.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.043,
+              "turret": {
+                "head": "tt_head_02",
+                "gun": "tt_02",
+                "gunnerDm": "tt_02_dm"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  150.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "limitsDeadzone": {
+                "yaw": [
+                  0.0,
+                  45.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
               }
             },
             {

@@ -58,7 +58,7 @@ function avatarBtn(item) {
   let isChoosen = Computed(@() chosenAvatarName.get() == name)
   let isSelected = Computed(@() selectedAvatarName.get() == name)
   let isAvailable = Computed(@() name in availAvatars.get() || name == "")
-  let isUnseen = Computed(@() name in unseenDecorators.value)
+  let isUnseen = Computed(@() name in unseenDecorators.get())
   return {
     rendObj = ROBJ_SOLID
     color = 0xAA000000
@@ -192,7 +192,7 @@ let decorationNameWnd = {
   flow = FLOW_VERTICAL
   gap
   onAttach = @() selectedAvatarName.set(chosenAvatarName.get())
-  onDetach = @() markDecoratorsSeen(unseenDecorators.value.filter(@(_, id) id in availAvatars.value).keys())
+  onDetach = @() markDecoratorsSeen(unseenDecorators.get().filter(@(_, id) id in availAvatars.get()).keys())
   children = [
     header
     makeVertScroll(avatarsList, { scrollHandler })

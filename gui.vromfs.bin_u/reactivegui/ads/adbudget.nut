@@ -9,9 +9,9 @@ let adBudget = Computed(@() max(servProfile.value?.adBudget.common.count ?? 0, i
 let nextResetTime = keepref(Computed(@() servProfile.value?.adBudget.common.nextResetTime ?? 0))
 
 function adBudgetClientUpdate() {
-  isAdBudgetPastReset.set(serverTime.value >= nextResetTime.value)
+  isAdBudgetPastReset.set(serverTime.get() >= nextResetTime.value)
   if (!isAdBudgetPastReset.value)
-    resetTimeout(nextResetTime.value - serverTime.value, adBudgetClientUpdate)
+    resetTimeout(nextResetTime.value - serverTime.get(), adBudgetClientUpdate)
 }
 adBudgetClientUpdate()
 nextResetTime.subscribe(@(_) adBudgetClientUpdate())

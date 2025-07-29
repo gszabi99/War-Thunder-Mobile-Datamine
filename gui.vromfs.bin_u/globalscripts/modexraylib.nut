@@ -2128,7 +2128,7 @@ function mkFireControlRoomOrBridgeDesc(_partType, params, commonData) {
 }
 
 function mkFireControlSystemDesc(partType, params, commonData) {
-  let { getUnitWeaponsList, findAnyModEffectValueBlk } = commonData
+  let { getUnitWeaponsList, findAnyModEffectValueBlk, findModEffectValuesString = @(...) [], unitBlk } = commonData
   let partName = params.name
   let desc = []
   let partsList = []
@@ -2139,7 +2139,7 @@ function mkFireControlSystemDesc(partType, params, commonData) {
     { key = "guidedWeaponControlsDmPart", locId = "armor_class/guided_weapon_controls" }
   ]) {
     foreach (weapon in unitWeaponsList)
-      if (weapon?[cfg.key] == partName) {
+      if ((weapon % cfg.key).findindex(@(v) v == partName) != null) {
         partsList.append(loc(cfg.locId))
         break
       }
@@ -2159,13 +2159,15 @@ function mkFireControlSystemDesc(partType, params, commonData) {
     }
   }
 
-  let rangefinderDmPart = findAnyModEffectValueBlk(commonData, "rangefinderDmPart")
-  if (rangefinderDmPart == partName)
+  let rangefinderDmParts = findModEffectValuesString(commonData, "rangefinderDmPart")
+  if (rangefinderDmParts.contains(partName))
     partsList.append(loc("modification/laser_rangefinder_lws"))
 
   let nightVisionBlk = findAnyModEffectValueBlk(commonData, "nightVision")
-  if (nightVisionBlk?.nightVisionDmPart == partName)
-    partsList.append(loc("modification/night_vision_system"))
+  let unitNightVisionBlk = unitBlk?.nightVision
+  if ((!!nightVisionBlk && (nightVisionBlk % "nightVisionDmPart").contains(partName))
+    || (!!unitNightVisionBlk && (unitNightVisionBlk % "nightVisionDmPart").contains(partName)))
+      partsList.append(loc("modification/night_vision_system"))
 
   if (partsList.len())
     desc.append(loc($"armor_class/desc/{partType}", { partsList = "\n".join(partsList) }))

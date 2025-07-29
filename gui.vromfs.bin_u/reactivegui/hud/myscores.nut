@@ -111,7 +111,7 @@ function mkImageWithCount(value, image, scale = 1, key = null) {
 let mkMyScores = @(score) mkImageWithCount(score, icons.score)
 let mkMyDamage = @(score) mkImageWithCount(score, icons.damage)
 let mkTankMyScores = @(score) @()
-  mkImageWithCount(score, hudScoreTank.value == "kills" ? icons.groundKills : icons.score)
+  mkImageWithCount(score, hudScoreTank.get() == "kills" ? icons.groundKills : icons.score)
     .__update({ watch = hudScoreTank })
 let mkAirMyScores = @(score) mkImageWithCount(score, icons.kills)
 

@@ -47,13 +47,13 @@ let curSelectedUnit = Computed(function() {
 })
 
 let needSkipBtn = Computed(@() buyUnitsData.value.canLevelUpWithoutBuy
-  && null == availableUnitsList.value.findvalue(@(u) getUnitAnyPrice(u, true, unitDiscounts.value)?.discount == 1))
+  && null == availableUnitsList.value.findvalue(@(u) getUnitAnyPrice(u, true, unitDiscounts.get())?.discount == 1))
 
 let nextFreeUnitLevel = Computed(function() {
   local res = 0
-  let newLevel = playerLevelInfo.value.level + 1
+  let newLevel = playerLevelInfo.get().level + 1
   foreach (u in campUnitsCfg.get())
-    if (u.rank > newLevel && (res == 0 || u.rank < res) && getUnitAnyPrice(u, true, unitDiscounts.value)?.discount == 1.0)
+    if (u.rank > newLevel && (res == 0 || u.rank < res) && getUnitAnyPrice(u, true, unitDiscounts.get())?.discount == 1.0)
       res = u.rank
   return res
 })
@@ -74,7 +74,7 @@ function onBuyUnit() {
 }
 
 function onSkipUnitPurchase() {
-  sendNewbieBqEvent("skipChooseUnitInLevelUpWnd", { status = playerLevelInfo.value.level.tostring() })
+  sendNewbieBqEvent("skipChooseUnitInLevelUpWnd", { status = playerLevelInfo.get().level.tostring() })
   skipLevelUpUnitPurchase()
 }
 
@@ -101,7 +101,7 @@ let textarea = @(text, override = {}) {
 
 let unitActionButtons = function() {
   let unit = buyUnitsData.value.canBuyOnLvlUp?[curSelectedUnit.value]
-  let price = unit != null ? getUnitAnyPrice(unit, true, unitDiscounts.value) : null
+  let price = unit != null ? getUnitAnyPrice(unit, true, unitDiscounts.get()) : null
   let isFree = price != null && price.price == 0
   let isPaid = price != null && !isFree
 
@@ -161,7 +161,7 @@ function mkUnitPlate(unit, onClick) {
     return null
 
   let isSelected = Computed(@() curSelectedUnit.value == unit.name)
-  let price = getUnitAnyPrice(unit, true, unitDiscounts.value)
+  let price = getUnitAnyPrice(unit, true, unitDiscounts.get())
 
   return {
     size = [ unitsPlateCombinedW, unitPlateHeight ]

@@ -397,7 +397,7 @@ function insertGap(list, gap){
   return res
 }
 
-return {
+return freeze({
   invert
   tablesCombine
   isEqual
@@ -423,4 +423,4 @@ return {
   deep_merge
   flatten
   insertGap
-}
+})

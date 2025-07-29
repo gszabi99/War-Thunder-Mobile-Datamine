@@ -796,7 +796,7 @@ function mkCircleLockBtn(shortcutId, scale) {
         commands = [
           [VECTOR_ELLIPSE, 50, 50, 50, 50],
         ]
-        color = (stateFlags.value & S_ACTIVE) != 0 ? borderColorPushed : canLock.value ? borderColor: borderNoAmmoColor
+        color = (stateFlags.value & S_ACTIVE) != 0 ? borderColorPushed : canLock.get() ? borderColor: borderNoAmmoColor
       }
       lockButtonIcon(imgSize, offImgSize)
       mkCircleGlare(bgSize, "lock")

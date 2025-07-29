@@ -74,7 +74,7 @@ let mkDecoratorHeader = @(viewInfo) @() {
   rendObj = ROBJ_TEXT
   vplace = ALIGN_TOP
   halign = ALIGN_CENTER
-  text = loc($"decorator/{allDecorators.value?[viewInfo.id].dType}")
+  text = loc($"decorator/{allDecorators.get()?[viewInfo.id].dType}")
 }.__update(fontSmallAccented)
 
 let mkDefaultRewardHeader = @(viewInfo) {

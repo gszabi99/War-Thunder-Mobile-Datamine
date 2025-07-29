@@ -52,12 +52,12 @@ let randomBattleMode = Computed(function() {
     if (curNewbieMode.get() != null)
       return curNewbieMode.get()
   }
-  if (allGameModes.value.len() == 0)
+  if (allGameModes.get().len() == 0)
     return null
 
-  local modes = allGameModes.value.filter(@(m) m?.displayType == "random_battle")
+  local modes = allGameModes.get().filter(@(m) m?.displayType == "random_battle")
   if (modes.len() == 0) 
-    modes = allGameModes.value
+    modes = allGameModes.get()
   let campaign = curCampaign.value
   let campaign2 = getCampaignPresentation(campaign).campaign
   return modes.findvalue(@(m) m?.campaign == campaign)
@@ -65,14 +65,14 @@ let randomBattleMode = Computed(function() {
     ?? modes.findvalue(@(_) true)
 })
 
-let benchmarkGameModes = Computed(@() allGameModes.value.filter(@(m) m?.displayType != "random_battle"
+let benchmarkGameModes = Computed(@() allGameModes.get().filter(@(m) m?.displayType != "random_battle"
   && m.name.indexof("benchmark") != null))
 
-let debugModes = Computed(@() allGameModes.value.filter(@(m, id) m?.displayType != "random_battle"
+let debugModes = Computed(@() allGameModes.get().filter(@(m, id) m?.displayType != "random_battle"
   && m?.displayType != "separate_event"
   && id not in benchmarkGameModes.value))
 
-let maxSquadSize = Computed(@() allGameModes.value.reduce(@(res, m) max(res, m?.maxSquadSize ?? m?.minSquadSize ?? 1), 1))
+let maxSquadSize = Computed(@() allGameModes.get().reduce(@(res, m) max(res, m?.maxSquadSize ?? m?.minSquadSize ?? 1), 1))
 
 register_command(
   @() log("curRandomBattleModeName = ", randomBattleMode.value?.name)

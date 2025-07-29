@@ -49,9 +49,9 @@ function initOfflineMenuProfile() {
 }
 
 if (isOfflineMenu) {
-  if (serverConfigs.value.len() == 0 && !isInLoadingScreen.value)
+  if (serverConfigs.get().len() == 0 && !isInLoadingScreen.get())
     initOfflineMenuProfile()
-  isInLoadingScreen.subscribe(@(v) v || serverConfigs.value.len() != 0 ? null : initOfflineMenuProfile())
+  isInLoadingScreen.subscribe(@(v) v || serverConfigs.get().len() != 0 ? null : initOfflineMenuProfile())
 }
 
 function saveResult(res, fileName) {
@@ -72,7 +72,7 @@ registerHandler("onFullProfileGenerated",
     let profile = clone res
     profile?.$rawdelete("isCustom")
     saveResult(profile, PROFILE)
-    saveResult(serverConfigs.value.__merge({
+    saveResult(serverConfigs.get().__merge({
       adsCfg = {}
       allGoods = {}
       clientMissionRewards = {}
@@ -108,7 +108,7 @@ let offlineActions = {
     res.units[newUnit.name] <- newUnit.__merge({ isCurrent = true })
 
     let saveBlk = get_common_local_settings_blk()
-    let campaign = serverConfigs.value?.allUnits[newUnit.name].campaign ?? ""
+    let campaign = serverConfigs.get()?.allUnits[newUnit.name].campaign ?? ""
     setBlkValueByPath(saveBlk, $"{UNITS_SAVE_ID}/{campaign}", newUnit.name)
     eventbus_send("saveProfile", {})
 

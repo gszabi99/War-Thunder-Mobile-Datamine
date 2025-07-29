@@ -37,7 +37,7 @@ let clusterStats = hardPersistWatched("clusterStats", [])
 let optimalClusters = hardPersistWatched("optimalClusters", [])
 let requestsCounter = hardPersistWatched("requestsCounter", 0)
 let hostsCfg = persist("hostsCfg", @() {})
-let isProbingActive = Computed(@() isInMenu.value && isMatchingOnline.value)
+let isProbingActive = Computed(@() isInMenu.get() && isMatchingOnline.value)
 
 
 function writeInt64NetBytes(stream, i) {
@@ -76,7 +76,7 @@ function checkPacketSign(id, timestamp, sign, delayMs) {
 
 function mkRequestData(requestNum) {
   let id = requestNum
-  let timestamp = gameStartServerTimeMsec.value + get_time_msec()
+  let timestamp = gameStartServerTimeMsec.get() + get_time_msec()
   let delayMs = 0
   let sign = getPacketSign(id, timestamp, delayMs)
   let data = blob(PACKET_SIZE_BYTES)
@@ -297,7 +297,7 @@ clusterStats.subscribe(function(val) {
 
 clusterStats.subscribe(function(val) {
   let newMyClustersRTT = val.filter(@(v) v.hostsRTT != null).map(@(v) [ v.clusterId, v.hostsRTT ]).totable()
-  if (!isEqual(newMyClustersRTT, myClustersRTT.value))
+  if (!isEqual(newMyClustersRTT, myClustersRTT.get()))
     myClustersRTT(newMyClustersRTT)
 })
 

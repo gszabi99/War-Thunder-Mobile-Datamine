@@ -1062,9 +1062,6 @@
         },
         "comment": {
           "value": "vklyuchaem nagradu za vypolnenie zadaniya"
-        },
-        "triggerEnable": {
-          "target": "t2_task_completed"
         }
       },
       "else_actions": {}
@@ -1105,9 +1102,6 @@
         },
         "comment": {
           "value": "vklyuchaem nagradu za vypolnenie zadaniya"
-        },
-        "triggerEnable": {
-          "target": "t1_task_completed"
         }
       },
       "else_actions": {}
@@ -1387,8 +1381,9 @@
           "var": "t1_bases_reward_counter"
         },
         "gameMPChangeScore": {
-          "value": -7,
+          "value": -9,
           "valueSystem": "percentage",
+          "changeReason": "bombing_zone_died",
           "team": "A"
         },
         "playHint": [
@@ -1630,8 +1625,9 @@
           "var": "t2_bases_reward_counter"
         },
         "gameMPChangeScore": {
-          "value": -7,
+          "value": -9,
           "valueSystem": "percentage",
+          "changeReason": "bombing_zone_died",
           "team": "B"
         },
         "playHint": [

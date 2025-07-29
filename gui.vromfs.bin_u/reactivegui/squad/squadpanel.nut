@@ -79,7 +79,7 @@ let memberStatus = @(isLeader, state, onlineStatus) function() {
   if (state.value == null)
     return { watch = state }
   let isInBattle = state.value?.inBattle ?? false
-  let isWaitReadyCheck = squadLeaderReadyCheckTime.value > (state.value?.readyCheckTime ?? 0)
+  let isWaitReadyCheck = squadLeaderReadyCheckTime.get() > (state.value?.readyCheckTime ?? 0)
   return {
     watch = [isLeader, state, onlineStatus, squadLeaderReadyCheckTime]
     hplace = ALIGN_RIGHT
@@ -103,10 +103,10 @@ let mkRank = @(rank) @() {
 function mkMember(uid) {
   let userId = uid.tostring()
   let info = mkPublicInfo(userId)
-  let state = Computed(@() squadMembers.value?[uid])
-  let isLeader = Computed(@() uid == squadId.value)
+  let state = Computed(@() squadMembers.get()?[uid])
+  let isLeader = Computed(@() uid == squadId.get())
   let isMe = Computed(@() uid == myUserId.value)
-  let isInvitee = Computed(@() state.value == null && uid in isInvitedToSquad.value)
+  let isInvitee = Computed(@() state.value == null && uid in isInvitedToSquad.get())
   let onlineStatus = mkContactOnlineStatus(userId)
   let rank = Computed(@() getMemberMaxMRank(state.get(), squadLeaderCampaign.get(), serverConfigs.get()))
   let stateFlags = Watched(0)
@@ -146,7 +146,7 @@ function refreshMembersInfo() {
 }
 
 function squadMembersList() {
-  let children = squadMembersOrder.value.map(mkMember)
+  let children = squadMembersOrder.get().map(mkMember)
   for(local i = children.len(); i < maxSquadSize.value; i++)
     children.append(squadInviteButton)
   return {
@@ -185,7 +185,7 @@ return @() {
   gap = hdpx(7)
   children = maxSquadSize.value <= 1 ? null
     : [
-        isInSquad.value ? squadHeader : null
-        buttonsRow(isInSquad.value)
+        isInSquad.get() ? squadHeader : null
+        buttonsRow(isInSquad.get())
       ]
 }

@@ -13,7 +13,7 @@ let { getBox, incBoxSize, createHighlight, findGoodPos, findGoodArrowPos, sizePo
 let charBestPosOffsetX = hdpxi(330)
 
 let boxUpdateCount = Watched(0)
-let boxUpdateCountWithStep = Computed(@() boxUpdateCount.value + stepIdx.value)
+let boxUpdateCountWithStep = Computed(@() boxUpdateCount.value + stepIdx.get())
 
 
 let mkLightCtorExt = @(lightCtor, nextStepDelay) function(box) {
@@ -180,7 +180,7 @@ let nextStepSubscription = @(v) v ? deferOnce(nextStep) : null
 let isBoxValid = @(box) box.r - box.l > 0 && box.b - box.t > 0
 
 function checkValidBoxes() {
-  let { objects = [] } = getTutorialConfig()?.steps[stepIdx.value]
+  let { objects = [] } = getTutorialConfig()?.steps[stepIdx.get()]
   foreach (objData in objects) {
     local { keys = null } = objData
     if (keys instanceof Watched)
@@ -198,7 +198,7 @@ function tutorialWnd() {
   let config = getTutorialConfig()
   let style = tutorialWndDefStyle.__merge(config?.style ?? {})
 
-  let stepData = config?.steps[stepIdx.value] ?? {}
+  let stepData = config?.steps[stepIdx.get()] ?? {}
   local { nextStepAfter = null, text = null, textCtor = null, charId = null, hasNextKey = false } = stepData
 
   if (text instanceof Watched) {

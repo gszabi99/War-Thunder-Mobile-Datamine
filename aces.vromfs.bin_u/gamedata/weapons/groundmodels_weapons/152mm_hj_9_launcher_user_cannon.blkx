@@ -136,6 +136,7 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
+      "shellCollision": true,
       "dragCx": 0.027,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_133_160mm_metal_he",
@@ -604,6 +605,7 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
+        "shellCollision": true,
         "dragCx": 0.027,
         "selfDestructionFx": "explosion_air_selfexplosion_big",
         "explosionEffect": "hit_133_160mm_metal_he",

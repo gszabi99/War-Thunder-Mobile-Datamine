@@ -18,7 +18,7 @@ function updateActualDiscounts() {
     return
 
   let curTime = getServerTime()
-  let allDiscounts = serverConfigs.value?.allDiscounts.unit ?? {}
+  let allDiscounts = serverConfigs.get()?.allDiscounts.unit ?? {}
   local nextTime = allDiscounts.reduce(
     function(res, val) {
       let {start = 0, end = 0} = val?.timeRange
@@ -29,7 +29,7 @@ function updateActualDiscounts() {
       return res
     }, maxTime) ?? maxTime
 
-  unitDiscounts.set(serverConfigs.value?.allDiscounts.unit
+  unitDiscounts.set(serverConfigs.get()?.allDiscounts.unit
     .filter(@(v, _id) isTimeInRange(v?.timeRange ?? {}, curTime))
     .filter(@(_v, id) id in canBuyUnits.value) ?? {})
 

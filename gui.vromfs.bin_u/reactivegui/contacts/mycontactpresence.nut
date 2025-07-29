@@ -16,7 +16,7 @@ let presenceDefault = {
   gameId = GAME_ID
 }
 
-let serverPresence = Computed(@() presences.value?[myUserIdStr.value])
+let serverPresence = Computed(@() presences.get()?[myUserIdStr.value])
 let localPresence = hardPersistWatched("myLocalPresence", presenceDefault)
 
 function isFloatEqual(a, b, eps = 1e-6) {

@@ -2,13 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 let { HangarCameraControl } = require("wt.behaviors")
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
 let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
 let { registerScene } = require("%rGui/navState.nut")
 let { unitInfoPanelFull, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { unitPlateWidth, unitPlateHeight, unitPlatesGap, mkUnitInfo
-  mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine
-} = require("%rGui/unit/components/unitPlateComp.nut")
 let panelBg = require("%rGui/components/panelBg.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { textButtonPrimary, mkButtonTextMultiline, mergeStyles, mkCustomButton, mkFrameImg, textButtonUnseenMargin
@@ -20,15 +16,14 @@ let { mkLeftBlockUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
 let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
+let { hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
-let { scaleAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
-let { justUnlockedPlatoonUnits } = require("%rGui/unit/justUnlockedPlatoonUnits.nut")
 let { btnOpenUnitAttrBig } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
 let mkBtnOpenCustomization = require("%rGui/unitCustom/mkBtnOpenCustomization.nut")
 let { curSelectedUnitId, openUnitOvr, closeUnitDetailsWnd, baseUnit,
   platoonUnitsList, unitToShow, isWindowAttached, openUnitDetailsWnd, unitDetailsOpenCount
 } = require("unitDetailsState.nut")
-let { selectedLineHorUnitsCustomSize, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
+let { mkPlatoonUnitsBlock } = require("unitDetailsComps.nut")
 let { hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
 let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
 let { openUnitRewardsModal, unseenUnitLvlRewardsList } = require("%rGui/levelUp/unitLevelUpState.nut")
@@ -79,73 +74,19 @@ let nextLevelToUnlockUnit = Computed(function() {
 })
 
 platoonUnitsList.subscribe(function(pu) {
-  if (null != pu.findvalue(@(p) p.name == curSelectedUnitId.value))
+  if (null != pu.findvalue(@(p) p.name == curSelectedUnitId.get()))
     return
-  local name = openUnitOvr.value?.selUnitName
+  local name = openUnitOvr.get()?.selUnitName
   if (name == null || null == pu.findvalue(@(p) p.name == name))
     name = pu?[0].name
   curSelectedUnitId(name)
 })
 
-let UNIT_DELAY = 1.5
-let UNIT_SCALE = 1.2
-function mkUnitPlate(unit, platoonUnit, onClick) {
-  let p = getUnitPresentation(platoonUnit)
-  let platoonUnitFull = unit.__merge(platoonUnit)
-  let isPremium = !!(unit?.isPremium || unit?.isUpgraded)
-  let isSelected = Computed(@() unitToShow.get()?.name == platoonUnit.name)
-  let isLocked = Computed(@() !isPremium && platoonUnit.reqLevel > (campMyUnits.get()?[unit.name].level ?? 0))
-  let justUnlockedDelay = Computed(@() justUnlockedPlatoonUnits.value.indexof(platoonUnit.name) != null ? UNIT_DELAY : null)
-  let isCollectible = unit?.isCollectible
-  return @() {
-    watch = [isLocked, justUnlockedDelay]
-    behavior = Behaviors.Button
-    onClick
-    sound = { click  = "choose" }
-    flow = FLOW_HORIZONTAL
-    children = [
-      {
-        key = {}
-        size = [ unitPlateWidth, unitPlateHeight ]
-        transform = {}
-        animations = scaleAnimation(justUnlockedDelay.value, [UNIT_SCALE, UNIT_SCALE])
-        children = [
-          {
-            size = flex()
-            valign = ALIGN_TOP
-            pos = [0, -2 * selLineSize]
-            children = selectedLineHorUnitsCustomSize([flex(), 2*selLineSize], isSelected, isPremium, isCollectible)
-          }
-          mkUnitBg(unit, isLocked.get(), justUnlockedDelay.value)
-          mkUnitSelectedGlow(unit, isSelected, justUnlockedDelay.value)
-          mkUnitImage(platoonUnitFull, isLocked.get())
-          mkUnitTexts(platoonUnitFull, loc(p.locId), isLocked.get())
-          !isLocked.value ? mkUnitInfo(unit, { pos = [-hdpx(30), 0] }) : null
-          mkUnitSlotLockedLine(platoonUnit, isLocked.value, justUnlockedDelay.value)
-        ]
-      }
-    ]
-  }
-}
-
-function platoonUnitsBlock() {
-  let res = { watch = [ baseUnit, platoonUnitsList ] }
-  return platoonUnitsList.value.len() == 0
-    ? res
-    : res.__update({
-        size = SIZE_TO_CONTENT
-        flow = FLOW_VERTICAL
-        gap = unitPlatesGap
-        children = platoonUnitsList.value
-          .map(@(pu) mkUnitPlate(baseUnit.value, pu, @() curSelectedUnitId(pu.name)))
-      })
-}
-
 let dmViewerSwitchComp = mkDmViewerSwitchComp(baseUnit)
 let btnopenUnitCustomization = mkBtnOpenCustomization(baseUnit, statsWidth)
 
 let unitInfoPanelPlace = @() {
-  watch = curCampaign
+  watch = [curCampaign, hasHangarUnitResources]
   size = FLEX_V
   pos = [0, infoPanelOffsetY]
   padding = [ getInfoPanelTopPadByCampaign(curCampaign.get()), 0, 0, 0 ]
@@ -159,7 +100,7 @@ let unitInfoPanelPlace = @() {
           touchMarginPriority = TOUCH_BACKGROUND
         })
       dmViewerSwitchComp
-      btnopenUnitCustomization
+      !hasHangarUnitResources.get() ? null : btnopenUnitCustomization
     ]
   })
 }
@@ -180,8 +121,8 @@ let rewardsButton = @() {
 }
 
 let testDriveButton = @() {
-  watch = [can_debug_units, hasUnseenRewards]
-  children = !can_debug_units.value ? null
+  watch = [can_debug_units, hasHangarUnitResources, hasUnseenRewards]
+  children = !can_debug_units.get() || !hasHangarUnitResources.get() ? null
     : textButtonPrimary("TEST DRIVE",
         @() startTestFlight(unitToShow.get()),
         { hotkeys = ["^J:X | Enter"], ovr = hasUnseenRewards.get() ? { size = leftBtnSizeWithRewardBtn } : {} })
@@ -247,7 +188,7 @@ let sceneContent = {
           vplace = ALIGN_BOTTOM
           valign = ALIGN_BOTTOM
           children = [
-            platoonUnitsBlock
+            mkPlatoonUnitsBlock(baseUnit, platoonUnitsList, unitToShow, @(n) curSelectedUnitId.set(n))
             buttonsBlock
           ]
         }
@@ -266,7 +207,7 @@ let sceneRoot = {
 
   function onAttach() {
     isWindowAttached(true)
-    sendNewbieBqEvent("openUnitDetails", { status = unitToShow.value?.name ?? "" })
+    sendNewbieBqEvent("openUnitDetails", { status = unitToShow.get()?.name ?? "" })
   }
   function onDetach() {
     clearDmViewerUnitDataCollection()

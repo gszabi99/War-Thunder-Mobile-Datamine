@@ -3095,7 +3095,10 @@
             "drawFromGui": true,
             "object": "target_plane01_0",
             "element": "",
-            "areaSizeMul": 2.5
+            "areaSizeMul": 5.0
+          },
+          "wait": {
+            "time": 3.0
           },
           "playerControls": {
             "setStatus": "enable",
@@ -3132,7 +3135,7 @@
           "playerWhenCursorIn": {
             "cursor": "mouseAim",
             "element": "enemy",
-            "areaSizeMul": 2.0,
+            "areaSizeMul": 5.0,
             "targetName": "target_plane01_0"
           }
         },
@@ -3140,7 +3143,7 @@
           "wait": {
             "time": 0.05
           },
-          "playHint": [
+          "__playHint": [
             {
               "hintType": "tutorialHint",
               "name": "",
@@ -3170,29 +3173,29 @@
               "shouldBlink": false
             }
           ],
-          "hudElementSelectionShade": {
+          "__hudElementSelectionShade": {
             "drawFromGui": true,
             "object": "target_plane01_0",
-            "element": "plane_lock_target",
-            "areaSizeMul": 2.5
+            "areaSizeMul": 2.5,
+            "element": "plane_lock_target"
           },
           "__wait": {
             "time": 1.0
           },
           "missionSetTimeSpeed": {
-            "speed": 0.0,
+            "speed": 0.01,
             "realtimeTriggers": true
           },
-          "playerControls": {
+          "__playerLockTarget": {
+            "target": "target_plane01"
+          },
+          "__playerControls": {
             "setStatus": "enable",
             "needKeyUp": false,
             "control": "ID_LOCK_TARGET"
           },
           "triggerEnable": {
-            "target": [
-              "shooting_lock_target_pressed",
-              "shooting_check_still_aimed"
-            ]
+            "target": "shooting_lock_target_pressed"
           }
         },
         "else_actions": {}
@@ -3214,7 +3217,7 @@
           "playerWhenCursorIn": {
             "cursor": "mouseAim",
             "element": "enemy",
-            "areaSizeMul": 2.0,
+            "areaSizeMul": 5.0,
             "targetName": "target_plane01_0"
           }
         },

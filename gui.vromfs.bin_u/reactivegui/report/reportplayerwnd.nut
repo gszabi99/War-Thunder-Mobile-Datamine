@@ -148,8 +148,8 @@ isReportStatusSuccessed.subscribe(function(v) {
       uid = SUCCESS_WND_UID
       title = loc("support/form/report/success")
       text = loc("support/form/report/successDescription")
+      buttons = [{ id = "ok", styleId = "PRIMARY", cb = close }]
     })
-
 })
 
 isReportStatusRejected.subscribe(function(v) {
@@ -158,6 +158,7 @@ isReportStatusRejected.subscribe(function(v) {
       uid = REJECT_WND_UID
       title = loc("support/form/report/reject")
       text = loc("support/form/report/rejectDescription")
+      buttons = [{ id = "ok", styleId = "PRIMARY", cb = close }]
     })
 })
 

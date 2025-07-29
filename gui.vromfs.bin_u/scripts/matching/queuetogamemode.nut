@@ -51,20 +51,20 @@ function showReqBattleModeMsg(msgLocId, reqBMods, msgParams = {}) {
 
 function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
   let { minSquadSize = 1, only_override_units = false } = mode
-  if (!isInSquad.value) {
+  if (!isInSquad.get()) {
     if (minSquadSize > 1)
       return msgBoxWithFalse({ text = loc("squad/minimumSquadSizeWarning", { count = minSquadSize }) })
     return true
   }
 
-  if (!isSquadLeader.value)
+  if (!isSquadLeader.get())
     return msgBoxWithFalse({ text = loc("squad/only_leader_can_queue") })
 
-  if (squadMembers.value.len() < minSquadSize)
+  if (squadMembers.get().len() < minSquadSize)
     return msgBoxWithFalse({ text = loc("squad/minimumSquadSizeWarning", { count = minSquadSize }) })
 
   let { maxSquadSize = minSquadSize } = mode
-  if (squadMembers.value.len() > maxSquadSize) {
+  if (squadMembers.get().len() > maxSquadSize) {
     if (maxSquadSize == 1)
       openFMsgBox({ text = loc("squad/modeNotAvailableForSquad") })
     else
@@ -72,10 +72,10 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
     return false
   }
 
-  if (isInvitedToSquad.value.len() > 0)
+  if (isInvitedToSquad.get().len() > 0)
     return msgBoxWithFalse({ text = loc("squad/has_non_accept_invites") })
 
-  if (squadMembers.value.findindex(@(_, uid) !squadOnline.value?[uid]))
+  if (squadMembers.get().findindex(@(_, uid) !squadOnline.get()?[uid]))
     return msgBoxWithFalse({ text = loc("squad/has_offline_members") })
 
   if (reqBMods.len() > 0) {
@@ -87,9 +87,9 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
   }
 
   if (!only_override_units) {
-    local rankMin = curUnit.value?.mRank ?? 0
+    local rankMin = curUnit.get()?.mRank ?? 0
     local rankMax = rankMin
-    foreach(m in squadMembers.value) {
+    foreach(m in squadMembers.get()) {
       let mRank = getMemberMaxMRank(m, squadLeaderCampaign.get(), serverConfigs.get())
       if (mRank == null)
         continue
@@ -119,8 +119,8 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
   }
 
   local hasAllAddons = true
-  foreach(uid, member in squadMembers.value)
-    if (uid != squadId.value
+  foreach(uid, member in squadMembers.get())
+    if (uid != squadId.get()
         && (member?.missingAddons ?? []).findvalue(@(a) a in allReqAddons)) {
       hasAllAddons = false
       break
@@ -128,7 +128,7 @@ function isSquadReadyWithMsgbox(mode, allReqAddons, reqBMods) {
   if (!hasAllAddons)
     return msgBoxWithFalse({ text = loc("squad/not_all_has_packs") })
 
-  if (squadMembers.value.findindex(@(m, uid) uid != squadId.value && !m?.ready))
+  if (squadMembers.get().findindex(@(m, uid) uid != squadId.get() && !m?.ready))
     return msgBoxWithFalse({ text = loc("squad/not_all_ready") })
 
   return true
@@ -165,7 +165,7 @@ function queueToGameModeImpl(mode) {
     let locs = localizeAddons(addonsToDownload)
     addonsToDownload.each(@(a) log($"[ADDONS] Ask update addon {a} on try to join queue (cur version = '{addonsVersions.get()?[a] ?? "-"}')"))
 
-    let isAlreadyInProgress = isEqual(downloadInProgress.get(), addonsToDownload.reduce(@(res, v) res.$rawset(v, true), {}))
+    let isAlreadyInProgress = isEqual(downloadInProgress.get()?.addons, addonsToDownload.reduce(@(res, v) res.$rawset(v, true), {}))
     local sizeMb = isAlreadyInProgress ? getDownloadLeftMbNotUpdatable() : 0
     if (sizeMb <= 0)
       sizeMb = (getAddonsSize(addonsToDownload, addonsSizes.get()) + (MB / 2)) / MB
@@ -239,7 +239,7 @@ function tryQueueToGameMode(modeId) {
     return
   }
 
-  let mode = allGameModes.value?[modeId]
+  let mode = allGameModes.get()?[modeId]
   if (mode == null) {
     logerr($"Not found mode with id {modeId} to start battle")
     return
@@ -260,7 +260,7 @@ function queueToGameMode(modeId) {
 }
 
 function queueToGameModeAfterAddons(modeId) {
-  let mode = allGameModes.value?[modeId]
+  let mode = allGameModes.get()?[modeId]
   if (mode == null)
     return 
   let { addonsToDownload } = getModeAddonsInfo(mode, allBattleUnits.get(), serverConfigs.get(), hasAddons.get(), addonsExistInGameFolder.get(), addonsVersions.get())

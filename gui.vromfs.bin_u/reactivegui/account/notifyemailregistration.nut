@@ -34,19 +34,19 @@ let battlesTotal = Computed(@()
     .reduce(@(a, b) a + b))
 
 let needShowGuestMsg = keepref(Computed(@() !isGuestMsgShowed.value
-  && isInMenuNoModals.value
-  && isGuestLogin.value
-  && ((playerLevelInfo.value?.level ?? 0) > 1 || battlesTotal.value > 2)))
+  && isInMenuNoModals.get()
+  && isGuestLogin.get()
+  && ((playerLevelInfo.get()?.level ?? 0) > 1 || battlesTotal.value > 2)))
 let isVerifyMsgShowed = hardPersistWatched("isVerifyMsgShowed", false)
 
 let isVerifyMsgTimerPassed = hardPersistWatched("isVerifyMsgTimerPassed", false)
 let lastVerifyMsgTime = Watched(0)
 function setVerifyMsgTimerPassed() {isVerifyMsgTimerPassed(true)}
 lastVerifyMsgTime.subscribe(function(value) {
-  if (serverTime.value > value + NOTIFY_PERIOD)
+  if (serverTime.get() > value + NOTIFY_PERIOD)
     setVerifyMsgTimerPassed()
   else
-    resetTimeout(value + NOTIFY_PERIOD - serverTime.value, setVerifyMsgTimerPassed)
+    resetTimeout(value + NOTIFY_PERIOD - serverTime.get(), setVerifyMsgTimerPassed)
 })
 function loadVerifyMsgTime() { lastVerifyMsgTime(get_local_custom_settings_blk()?[VERIFY_MSG_UID] ?? 0) }
 if (isLoggedIn.value)
@@ -54,8 +54,8 @@ if (isLoggedIn.value)
 isLoggedIn.subscribe(@(v) v ? loadVerifyMsgTime(): null)
 
 let needShowVerifyMsg = keepref(Computed(@() !isVerifyMsgShowed.value
-  && isInMenuNoModals.value
-  && needVerifyEmail.value
+  && isInMenuNoModals.get()
+  && needVerifyEmail.get()
   && hasEnoughOnlineBattles.value
   && isVerifyMsgTimerPassed.value
   ))
@@ -91,7 +91,7 @@ isGuestLogin.subscribe(@(v) v ? null : closeMsgBox(GUEST_MSG_UID))
 
 function saveVerifyMsgTime() {
   isVerifyMsgTimerPassed(false)
-  lastVerifyMsgTime(serverTime.value)
+  lastVerifyMsgTime(serverTime.get())
   get_local_custom_settings_blk()[VERIFY_MSG_UID] = lastVerifyMsgTime.value
   eventbus_send("saveProfile", {})
 }

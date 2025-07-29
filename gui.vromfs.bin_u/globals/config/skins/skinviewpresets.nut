@@ -98,6 +98,8 @@ let skinsByTag = {
     "jp_camo_modern_green"
     "isr_camo_sandgreen"
     "pak_forest_fourcolor"
+    "jp_camo_modern_bicolor"
+    "ussr_modern_green"
   ],
 
   [DESERT] = [

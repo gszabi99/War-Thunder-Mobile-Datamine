@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 let { DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY } = require("hangar")
+let { SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
 let { allow_dm_viewer, allow_dm_viewer_ships_armor } = require("%appGlobals/permissions.nut")
+let { hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
 let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
 let { dmViewerMode } = require("dmViewerState.nut")
-let { SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
 
 let forAnyUnit = @(_unitW) Watched(true)
 let noArmorForShips = @(unitW) Computed(
@@ -78,7 +79,9 @@ let mkModeBtnsSet = @(unitW) {
 }
 
 let mkDmViewerSwitchComp = @(unitW) @() {
-    watch = [allow_dm_viewer, unitW]
-  }.__update(!allow_dm_viewer.get() || unitW.get() == null ? {} : mkModeBtnsSet(unitW))
+    watch = [allow_dm_viewer, hasHangarUnitResources, unitW]
+  }.__update(!allow_dm_viewer.get() || !hasHangarUnitResources.get() || unitW.get() == null
+    ? {}
+    : mkModeBtnsSet(unitW))
 
 return mkDmViewerSwitchComp

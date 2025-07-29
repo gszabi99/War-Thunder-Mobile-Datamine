@@ -1,13 +1,9 @@
-let {editorIsActive, editorFreeCam, entitiesListUpdateTrigger, showTemplateSelect,
-     showPointAction, callPointActionCallback, resetPointActionMode,
-     handleEntityCreated, handleEntityRemoved, handleEntityMoved,
-     de4editMode, de4workMode, gizmoBasisType, gizmoBasisTypeEditingDisabled, canChangeGizmoBasisType,
-     gizmoCenterType} = require("state.nut")
+import "daEditorEmbedded" as daEditor
+import "entity_editor" as entity_editor
+from "eventbus" import eventbus_subscribe
+let { editorIsActive, editorFreeCam, entitiesListUpdateTrigger, showTemplateSelect, showPointAction, callPointActionCallback, resetPointActionMode, handleEntityCreated, handleEntityRemoved, handleEntityMoved, de4editMode, de4workMode, gizmoBasisType, gizmoBasisTypeEditingDisabled, canChangeGizmoBasisType, gizmoCenterType } = require("state.nut")
 
-let daEditor = require("daEditorEmbedded")
-let entity_editor = require("entity_editor")
 
-let { eventbus_subscribe } = require("eventbus")
 
 let {DE4_MODE_POINT_ACTION, isFreeCamMode=null} = daEditor
 let {DE4_MODE_CREATE_ENTITY, get_point_action_op} = entity_editor

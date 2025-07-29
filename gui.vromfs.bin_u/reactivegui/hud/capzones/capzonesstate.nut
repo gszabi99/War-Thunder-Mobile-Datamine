@@ -27,7 +27,7 @@ function checkRestartZoneUpdater(inBattle) {
   updateCapZones()
   setInterval(1.0, updateCapZones)
 }
-checkRestartZoneUpdater(isInBattle.value)
+checkRestartZoneUpdater(isInBattle.get())
 isInBattle.subscribe(checkRestartZoneUpdater)
 
 return {

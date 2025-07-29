@@ -16,7 +16,7 @@ let canReceivePremDailyBonus = Computed(@() hasPremDailyBonus.get() && hasPremiu
 let nextUpdate = Watched({ time = 0 }) 
 
 function updateState() {
-  let now = serverTime.value
+  let now = serverTime.get()
   let endsAt = premiumEndsAt.value
   nextUpdate({ time = endsAt })
   havePremiumDeprecated.set(endsAt - now > 0)
@@ -26,7 +26,7 @@ premiumEndsAt.subscribe(@(_) updateState())
 
 function resetUpdateTimer() {
   let { time } = nextUpdate.value
-  let left = time - serverTime.value
+  let left = time - serverTime.get()
   if (left <= 0)
     clearTimer(updateState)
   else

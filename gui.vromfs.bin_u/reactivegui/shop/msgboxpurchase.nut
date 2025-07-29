@@ -24,7 +24,7 @@ let mkText = @(text) {
 }.__update(fontSmall)
 
 function showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel = null) {
-  let notEnough = Computed(@() price - (balance.value?[currencyId] ?? 0))
+  let notEnough = Computed(@() price - (balance.get()?[currencyId] ?? 0))
   notEnough.subscribe(@(v) v <= 0 ? closeMsgBox(NO_BALANCE_UID) : null)
   let replaceTable = {
     ["{price}"] = mkCurrencyComp(price, currencyId), 
@@ -66,7 +66,7 @@ function showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel = null
 }
 
 function showNoBalanceMsgIfNeed(price, currencyId, bqInfo, onGoToShop = null, onCancel = null) {
-  let hasBalance = (balance.value?[currencyId] ?? 0) >= price
+  let hasBalance = (balance.get()?[currencyId] ?? 0) >= price
   if (hasBalance)
     return false
 

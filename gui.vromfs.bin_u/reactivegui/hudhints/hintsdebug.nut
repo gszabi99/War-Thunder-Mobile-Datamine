@@ -78,16 +78,16 @@ register_command(
     isKill = true
     action = "kill"
 
-    playerId = rnd_int(0, 1) ? localMPlayerId.value
-      : localMPlayerId.value == 0 ? 1
+    playerId = rnd_int(0, 1) ? localMPlayerId.get()
+      : localMPlayerId.get() == 0 ? 1
       : 0,
-    team = localMPlayerTeam.value
+    team = localMPlayerTeam.get()
     unitName = campUnitsCfg.get().findvalue(@(_) true)?.name ?? ""
     unitType = UT_Ship
     unitNameLoc = "Killer Unit"
 
-    victimPlayerId = localMPlayerId.value == 0 ? 1 : 0,
-    victimTeam = 3- localMPlayerTeam.value
+    victimPlayerId = localMPlayerId.get() == 0 ? 1 : 0,
+    victimTeam = 3- localMPlayerTeam.get()
     victimUnitName = campUnitsCfg.get().findvalue(@(_) true)?.name ?? ""
     victimUnitType = UT_Ship
     victimUnitNameLoc = "Victim Unit"
@@ -97,7 +97,7 @@ register_command(
 register_command(
   @() eventbus_send("HudMessage", {
     type = HUD_MSG_STREAK_EX
-    playerId = localMPlayerId.value
+    playerId = localMPlayerId.get()
     unlockId = ((get_unlocks_blk() % "unlockable")?.filter(@(blk) blk?.type == "streak") ?? [])[rnd_int(0, 40)].id
     stage = rnd_int(1, 3)
     wp = 100
@@ -117,19 +117,19 @@ register_command(
       isKill = true
       action = "kill"
 
-      playerId = localMPlayerId.value,
-      team = 3 - localMPlayerTeam.value
+      playerId = localMPlayerId.get(),
+      team = 3 - localMPlayerTeam.get()
       unitName = unit?.name ?? ""
       unitType
       unitNameLoc = "Killer Unit"
 
-      victimPlayerId = localMPlayerId.value,
-      victimTeam = localMPlayerTeam.value
+      victimPlayerId = localMPlayerId.get(),
+      victimTeam = localMPlayerTeam.get()
       victimUnitName = unit?.name ?? ""
       victimUnitType = unitType
       victimUnitNameLoc = "Victim Unit"
     })
-    if (myUserId.value != null && (playersCommonStats.value?[myUserId.value].len() ?? 0) == 0)
+    if (myUserId.value != null && (playersCommonStats.get()?[myUserId.value].len() ?? 0) == 0)
       dbgCommonStats.mutate(@(v) v[myUserId.value] <- {
         hasPremium = true
         hasVip = true

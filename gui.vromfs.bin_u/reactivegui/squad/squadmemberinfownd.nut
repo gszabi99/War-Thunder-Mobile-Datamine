@@ -40,7 +40,7 @@ squadMembers.subscribe(@(v) openParams.value == null || openParams.value.uid in 
   : close())
 isInvitedToSquad.subscribe(function(v) {
   let { uid = null } = openParams.value
-  if (uid != null && uid not in squadMembers.value && uid not in v)
+  if (uid != null && uid not in squadMembers.get() && uid not in v)
     close()
 })
 isSquadLeader.subscribe(@(_) close()) 
@@ -96,19 +96,19 @@ let mkStatusRow = @(icon, iconColor, text, ovr = {}) {
 
 function statusBlock(uid) {
   let onlineStatus = mkContactOnlineStatus(uid.tostring())
-  let view = Computed(@() squadId.value == uid ? statusView.leader
-    : squadMembers.value?[uid].ready ? statusView.memberReady
-    : isInvitedToSquad.value?[uid] ? statusView.invitee
+  let view = Computed(@() squadId.get() == uid ? statusView.leader
+    : squadMembers.get()?[uid].ready ? statusView.memberReady
+    : isInvitedToSquad.get()?[uid] ? statusView.invitee
     : onlineStatus.value == false ? statusView.memberOffline
-    : squadLeaderReadyCheckTime.value > (squadMembers.value?[uid].readyCheckTime ?? 0) ? statusView.memberReadyCheck
-    : uid in squadMembers.value ? statusView.memberNotReady
+    : squadLeaderReadyCheckTime.get() > (squadMembers.get()?[uid].readyCheckTime ?? 0) ? statusView.memberReadyCheck
+    : uid in squadMembers.get() ? statusView.memberNotReady
     : null)
   return @() mkStatusRow(view.value?.icon, view.value?.color, view.value?.text,
     { watch = view })
 }
 
 function inBattleBlock(uid) {
-  let isInBattle = Computed(@() squadMembers.value?[uid].inBattle ?? false)
+  let isInBattle = Computed(@() squadMembers.get()?[uid].inBattle ?? false)
   return @() !isInBattle.value ? { watch = isInBattle }
     : mkStatusRow("in_battle.svg", 0xFFFFFFFF, loc("status/in_battle"), { watch = isInBattle })
 }
@@ -166,7 +166,7 @@ function memberInfo(uid) {
 
 function buttons(uid) {
   let userId = uid.tostring()
-  let needButtonsPlace = Computed(@() isSquadLeader.value || uid == myUserId.value)
+  let needButtonsPlace = Computed(@() isSquadLeader.get() || uid == myUserId.value)
   return @() !needButtonsPlace.value ? { watch = needButtonsPlace }
     : {
         watch = needButtonsPlace

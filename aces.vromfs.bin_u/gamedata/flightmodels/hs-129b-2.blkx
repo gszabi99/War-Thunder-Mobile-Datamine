@@ -1872,7 +1872,7 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "hs_129b_2_default",
+        "name": "hs-129b-2_default",
         "blk": "gameData/FlightModels/weaponPresets/hs_129b_2_default.blk"
       },
       {

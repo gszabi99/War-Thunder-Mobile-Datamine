@@ -63,7 +63,7 @@ function enableDeviceState(isEnable) {
   }
 }
 isInBattle.subscribe(enableDeviceState)
-if (isInBattle.value)
+if (isInBattle.get())
   enableDeviceState(true)
 
 let getTextMonoWidthPx = @(text) calc_comp_size({ rendObj = ROBJ_TEXT, text }.__update(textsFontMono))[0]

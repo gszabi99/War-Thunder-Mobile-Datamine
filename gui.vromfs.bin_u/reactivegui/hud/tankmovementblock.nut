@@ -105,8 +105,8 @@ function fullImgBg(scale) {
 let imgBgComp = @(scale) @() {
   watch = isStickActiveByStick
   size = flex()
-  opacity = isStickActiveByStick.value ? 0.5 : 1.0
-  children = isStickActiveByStick.value ? imgBg(scale) : fullImgBg(scale)
+  opacity = isStickActiveByStick.get() ? 0.5 : 1.0
+  children = isStickActiveByStick.get() ? imgBg(scale) : fullImgBg(scale)
   transform = {}
 }
 

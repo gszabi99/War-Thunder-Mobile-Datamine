@@ -8,6 +8,8 @@ let { get_network_block } = require("blkGetters")
 let { get_user_info } = require("auth_wt")
 let { minutesToSeconds, secondsToMilliseconds } = require("%sqstd/time.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
 let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
 let { isInQueue } = require("%appGlobals/queueState.nut")
@@ -134,11 +136,15 @@ let showGiftWnd = @() !needShow.get() ? null
           image = Picture($"ui/gameuiskin#icon_gift.avif:{giftSize}:{giftSize}:P")
           keepAspect = true
         },
-        msgBoxText(loc("shop/giftDesc", {donator = actualGifts.get()[0].donator_name, gift = actualGifts.get()[0].item_name}))
+        msgBoxText(loc("shop/giftDesc", {
+          donator = actualGifts.get()[0].donator_name,
+          gift = actualGifts.get()[0].item_name,
+          timeAgo = secondsToHoursLoc(serverTime.get() - actualGifts.get()[0].item_payment_time)
+        }))
       ]
     }
     buttons = [
-      { id = "delete", isCancel = true, cb = @() sendGiftsAnswer(actualGifts.get()[0].gift_id, GIFT_ACTION.DELETE) }
+      { id = "reject", isCancel = true, cb = @() sendGiftsAnswer(actualGifts.get()[0].gift_id, GIFT_ACTION.DELETE) }
       { id = "activate", styleId = "PRIMARY", isDefault = true, cb = @() sendGiftsAnswer(actualGifts.get()[0].gift_id, GIFT_ACTION.ACTIVATE) }
     ]
   })

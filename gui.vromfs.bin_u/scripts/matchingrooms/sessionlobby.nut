@@ -1,6 +1,7 @@
-from "%scripts/dagui_natives.nut" import in_flight_menu, set_host_cb, is_online_available, send_error_log, script_net_assert, connect_to_host_list
+from "%scripts/dagui_natives.nut" import set_host_cb, is_online_available, send_error_log, script_net_assert, connect_to_host_list
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+from "gameplayBinding" import inFlightMenu, isInFlight
 
 let { g_listener_priority } = require("%scripts/g_listener_priority.nut")
 let { set_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
@@ -32,7 +33,6 @@ let { get_meta_mission_info_by_name, leave_mp_session, quit_to_debriefing,
 } = require("guiMission")
 let { set_game_mode, get_game_mode, get_game_type } = require("mission")
 let { web_rpc } = require("%scripts/webRPC.nut")
-let { isInFlight } = require("gameplayBinding")
 let { format } = require("string")
 let { tostring_r } = require("%sqstd/string.nut")
 let matching = require("%appGlobals/matching_api.nut")
@@ -170,7 +170,7 @@ function notify_room_invite(params) {
   log("notify_room_invite")
   
 
-  if (!isInMenu.value && isLoggedIn.value) {
+  if (!isInMenu.get() && isLoggedIn.value) {
     log("Invite rejected: player is already in flight or in loading level or in unloading level");
     return false
   }
@@ -951,10 +951,10 @@ SessionLobby = {
         if (is_my_userid(m.userId)) {
           this.afterLeaveRoom({})
           if (kicked) {
-            if (!isInMenu.value) {
+            if (!isInMenu.get()) {
               quit_to_debriefing()
               interrupt_multiplayer(true)
-              in_flight_menu(false)
+              inFlightMenu(false)
             }
             openFMsgBox({ text = loc("matching/msg_kicked"), isPersist = true })
           }
@@ -981,7 +981,7 @@ SessionLobby = {
   }
 
   getMGameMode = @(room = null, _isCustomGameModeAllowed = true)
-    gameModesRaw.value?[this.getMGameModeId(room)]
+    gameModesRaw.get()?[this.getMGameModeId(room)]
 
   getRoomEvent = @(room = null) this.getMGameMode(room)
 

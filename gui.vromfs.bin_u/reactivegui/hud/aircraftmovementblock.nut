@@ -156,7 +156,7 @@ function mkGamepadHotkey(hotkey, isVisible, isActive, ovr) {
   return @() {
     watch = [isVisible, isGamepad, isActive]
     key = imageComp
-    children = isVisible.value && isGamepad.value ? imageComp : null
+    children = isVisible.value && isGamepad.get() ? imageComp : null
     transform = { scale = isActive.value ? [0.8, 0.8] : [1.0, 1.0] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
   }.__update(ovr)
@@ -888,7 +888,7 @@ function aircraftMoveArrows(scale) {
             children = vertArrows
           }
           rightArrow
-          isGamepad.value ? gamepadMouseAimAxisListener : null
+          isGamepad.get() ? gamepadMouseAimAxisListener : null
         ]
     animations = dfAnimBottomLeft
   }

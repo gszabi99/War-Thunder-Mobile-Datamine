@@ -68,7 +68,7 @@ let mkEquippedFrame = @(isEquipped) @() !isEquipped.value ? { watch = isEquipped
     }
 
 function mkEquippedIcon(isEquipped) {
-  let icon = Computed(@() iconsCfg?[unit.value?.unitType] ?? iconsCfg.tank)
+  let icon = Computed(@() iconsCfg?[unit.get()?.unitType] ?? iconsCfg.tank)
 
   return @() !isEquipped.value ? { watch = [unit, isEquipped] }
     : {
@@ -90,9 +90,9 @@ function modData(mod) {
   let reqLevel = mod?.reqLevel ?? 0
   let currency = getModCurrency(mod)
   let cost = mkCurUnitModCostComp(mod)
-  let isLocked = Computed(@() reqLevel > (unit.value?.level ?? 0))
-  let isPurchased = Computed(@() unitMods.value?[id] != null)
-  let isEquipped = Computed(@() unitMods.value?[id])
+  let isLocked = Computed(@() reqLevel > (unit.get()?.level ?? 0))
+  let isPurchased = Computed(@() unitMods.get()?[id] != null)
+  let isEquipped = Computed(@() unitMods.get()?[id])
   let textSize = calc_str_box(loc(locId), fontSmallShaded)[0]
 
   return {
@@ -137,7 +137,7 @@ function modData(mod) {
 function mkMod(id, content, scrollToMod) {
   let xmbNode = XmbNode()
   let stateFlags = Watched(0)
-  let isActive = Computed (@() curModId.value == id || (stateFlags.value & S_ACTIVE) != 0)
+  let isActive = Computed (@() curModId.get() == id || (stateFlags.value & S_ACTIVE) != 0)
   let isHover = Computed (@() stateFlags.value & S_HOVER)
 
   return {

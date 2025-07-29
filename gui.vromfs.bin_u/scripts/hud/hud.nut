@@ -17,7 +17,7 @@ let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 isHudVisible(is_hud_visible())
 
 function getHudType() {
-  if (!isHudVisible.value)
+  if (!isHudVisible.get())
     return HT_NONE
   if (hud_is_in_cutscene())
     return HT_CUTSCENE
@@ -32,7 +32,7 @@ function updateHudType() {
   curHudType(getHudType())
 }
 
-if (isHudVisible.value) {
+if (isHudVisible.get()) {
   updateHudType()
 }
 

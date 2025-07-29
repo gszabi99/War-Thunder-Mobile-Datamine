@@ -149,4 +149,4 @@ eventbus_subscribe("register_mplayer_callbacks",
 
 let { squadMembers } = require("%appGlobals/squadState.nut")
 let { registerRespondent } = require("scriptRespondent")
-registerRespondent("is_in_my_squad", @(userId, _checkAutosquad = true) userId in squadMembers.value)
+registerRespondent("is_in_my_squad", @(userId, _checkAutosquad = true) userId in squadMembers.get())

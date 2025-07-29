@@ -1058,7 +1058,8 @@
             "target": "t1_quest_units_squad",
             "randomTargetsCount": 1,
             "doExplosion": true,
-            "useForTriggerFiltered": true
+            "useForTriggerFiltered": true,
+            "giveKillTo": "t2_quest_units_squad"
           },
           {
             "part": 0,
@@ -1081,7 +1082,8 @@
             "target": "t2_quest_units_squad",
             "randomTargetsCount": 1,
             "doExplosion": true,
-            "useForTriggerFiltered": true
+            "useForTriggerFiltered": true,
+            "giveKillTo": "t1_quest_units_squad"
           }
         ]
       },
@@ -1167,7 +1169,8 @@
             "target": "t1_land_squad",
             "randomTargetsCount": 1,
             "doExplosion": true,
-            "useForTriggerFiltered": true
+            "useForTriggerFiltered": true,
+            "giveKillTo": "t2_quest_units_squad"
           },
           {
             "part": 0,
@@ -1190,101 +1193,10 @@
             "target": "t2_land_squad",
             "randomTargetsCount": 1,
             "doExplosion": true,
-            "useForTriggerFiltered": true
+            "useForTriggerFiltered": true,
+            "giveKillTo": "t1_quest_units_squad"
           }
         ]
-      },
-      "else_actions": {}
-    },
-    "t1_task_completed": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "gameMPChangeScore": {
-          "value": -7,
-          "valueSystem": "percentage",
-          "team": "B"
-        }
-      },
-      "else_actions": {}
-    },
-    "t2_task_completed": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "gameMPChangeScore": {
-          "value": -7,
-          "valueSystem": "percentage",
-          "team": "A"
-        }
-      },
-      "else_actions": {}
-    },
-    "t1_loose": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "gameMPChangeScore": {
-          "value": -1,
-          "valueSystem": "percentage",
-          "team": "A"
-        }
-      },
-      "else_actions": {}
-    },
-    "t2_loose": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "gameMPChangeScore": {
-          "value": -1,
-          "valueSystem": "percentage",
-          "team": "B"
-        }
       },
       "else_actions": {}
     },
@@ -2232,52 +2144,6 @@
           "var": "barabashka_is_waiting"
         }
       }
-    },
-    "t1_minor_task_completed": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "gameMPChangeScore": {
-          "value": -3,
-          "valueSystem": "percentage",
-          "team": "B"
-        }
-      },
-      "else_actions": {}
-    },
-    "t2_minor_task_completed": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "gameMPChangeScore": {
-          "value": -3,
-          "valueSystem": "percentage",
-          "team": "A"
-        }
-      },
-      "else_actions": {}
     }
   },
   "mission_objectives": {

@@ -38,8 +38,8 @@ let ratedCountHint = @() {
   behavior = Behaviors.TextArea
   valign = ALIGN_CENTER
   color = defTxtColor
-  text = ratingBattlesCount.value <= 0 ? null
-    : loc("lb/maxRatedBattles/desc", { count = ratingBattlesCount.value })
+  text = ratingBattlesCount.get() <= 0 ? null
+    : loc("lb/maxRatedBattles/desc", { count = ratingBattlesCount.get() })
 }.__update(fontVeryTiny)
 
 let header = @() {
@@ -58,8 +58,8 @@ let header = @() {
       flow = FLOW_VERTICAL
       valign = ALIGN_CENTER
       children = [
-        curLbCfg.value == null ? null
-          : mkLbName(curLbCfg.value.locId)
+        curLbCfg.get() == null ? null
+          : mkLbName(curLbCfg.get().locId)
         ratedCountHint
       ]
     }
@@ -80,7 +80,7 @@ let mkCell = @(category, rowData, isRated) mkTextCell(category, category.getText
 
 function mkLogTimeCell(category, rowData, isRated) {
   let timeLeft = Computed(@() rowData.timestamp <= 0 ? ""
-    : secondsToHoursLoc(serverTime.value - rowData.timestamp))
+    : secondsToHoursLoc(serverTime.get() - rowData.timestamp))
   return @() mkTextCell(category, timeLeft.value, isRated)
     .__update({ watch = timeLeft })
 }
@@ -106,13 +106,13 @@ function getLasBattleIdx(battles) {
 }
 
 function content() {
-  let categories = curLbCfg.value?.battleCategories ?? curLbCfg.value?.categories
+  let categories = curLbCfg.get()?.battleCategories ?? curLbCfg.get()?.categories
   if (categories == null)
     return { watch = curLbCfg }
 
-  let sortField = curLbCfg.value.sortBy.field
-  let ratedCount = ratingBattlesCount.value
-  let battles = (clone bestBattles.value)
+  let sortField = curLbCfg.get().sortBy.field
+  let ratedCount = ratingBattlesCount.get()
+  let battles = (clone bestBattles.get())
     .sort(@(a, b) (b?.battle_common[sortField] ?? -1) <=> (a?.battle_common[sortField] ?? -1))
     .map(@(v, idx) (v?.battle_common ?? {})
       .__merge({ idx = idx >= ratedCount ? -1 : idx, timestamp = v?["$timestamp"] ?? -1 }))

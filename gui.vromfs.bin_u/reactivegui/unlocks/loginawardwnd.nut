@@ -61,7 +61,7 @@ let receiveAnimCheckStartShowTime = receiveAnimItemTime - 0.1
 local lastAnimState = -1
 local animStateStartTime = 0
 let close = @() isLoginAwardOpened(false)
-let canClose = Computed(@() !loginAwardUnlock.value?.hasReward)
+let canClose = Computed(@() !loginAwardUnlock.get()?.hasReward)
 
 let activePlateHotkeys = ["^J:X | Enter"]
 
@@ -101,7 +101,7 @@ function mkFirstRewardComp(stageData) {
   let rewardId = rewards.findindex(@(_) true)
   if (rewardId == null)
     return Watched(null)
-  return Computed(@() serverConfigs.value?.userstatRewards[rewardId] ?? [])
+  return Computed(@() serverConfigs.get()?.userstatRewards[rewardId] ?? [])
 }
 
 let rewardBg = {
@@ -208,7 +208,7 @@ let activePlateButtonBlock = function() {
     watch = [loginAwardUnlock, hasLoginAwardByAds, isShowUnseenDelayed]
     size = flex()
     children = isShowUnseenDelayed.value ? null 
-      : loginAwardUnlock.value?.hasReward ? receiveBtn
+      : loginAwardUnlock.get()?.hasReward ? receiveBtn
       : !hasLoginAwardByAds.value ? null
       : watchAdsBtn
   }
@@ -222,13 +222,13 @@ let activePlateButtonBlock = function() {
 }
 
 let onActivePlateClick = @() isShowUnseenDelayed.value ? null
-  : loginAwardUnlock.value?.hasReward ? receiveLoginAward()
+  : loginAwardUnlock.get()?.hasReward ? receiveLoginAward()
   : !hasLoginAwardByAds.value ? null
   : showLoginAwardAds()
 
 function activePlateHotkeyComp() {
   let res = { watch = isGamepad }
-  return !isGamepad.value ? res : res.__update({
+  return !isGamepad.get() ? res : res.__update({
     margin = hdpx(8)
     children = mkBtnImageComp(getGamepadHotkey(activePlateHotkeys), hdpx(32))
   })
@@ -238,7 +238,7 @@ let smallBtnHeight = evenPx(50)
 let smallBtnMargin = hdpx(10)
 function previewBtnBlock() {
   let res = { watch = [loginAwardUnlock, isShowUnseenDelayed] }
-  return (isShowUnseenDelayed.value || loginAwardUnlock.value?.hasReward) ? res : res.__update({
+  return (isShowUnseenDelayed.value || loginAwardUnlock.get()?.hasReward) ? res : res.__update({
     hplace = ALIGN_LEFT
     margin = [dayTextHeight + smallBtnMargin, 0, 0, smallBtnMargin]
     children = [
@@ -379,7 +379,7 @@ function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, a
   let isNonInteractive = !isCurrentActivePlate && !isPreviewable
   let stateFlags = isNonInteractive ? null : Watched(0)
   let plateComp = isNonInteractive ? plateBase
-    : @() (isShowUnseenDelayed.value || (isPreviewable && loginAwardUnlock.value?.hasReward))
+    : @() (isShowUnseenDelayed.value || (isPreviewable && loginAwardUnlock.get()?.hasReward))
       ? plateBase.__update({ watch = [ isShowUnseenDelayed, loginAwardUnlock ] })
       : plateBase.__update({
           watch = [ isShowUnseenDelayed, loginAwardUnlock, stateFlags ]
@@ -401,20 +401,20 @@ function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, a
 
 function itemsBlock() {
   let stageOffsetByAds = hasLoginAwardByAds.value ? -1 : 0
-  let { lastRewardedStage = 0 } = loginAwardUnlock.value
+  let { lastRewardedStage = 0 } = loginAwardUnlock.get()
   let { stages = [], stage = 0 } = getRelativeStageData(
-    stageOffsetByAds == 0 || loginAwardUnlock.value == null ? loginAwardUnlock.value
-      : loginAwardUnlock.value.__merge({
-          stage = loginAwardUnlock.value.stage + stageOffsetByAds
-          lastRewardedStage = min(lastRewardedStage, loginAwardUnlock.value.stage + stageOffsetByAds)
+    stageOffsetByAds == 0 || loginAwardUnlock.get() == null ? loginAwardUnlock.get()
+      : loginAwardUnlock.get().__merge({
+          stage = loginAwardUnlock.get().stage + stageOffsetByAds
+          lastRewardedStage = min(lastRewardedStage, loginAwardUnlock.get().stage + stageOffsetByAds)
         }))
   if (stages.len() == 0)
     return { watch = loginAwardUnlock }
   if ((stages.len() % FULL_DAYS) != 0)
     logerr($"Everyday login unlock stages count should be multiple of 14, but current stages count is {stages.len()}")
 
-  let stageOffset = loginAwardUnlock.value.stage - stage + stageOffsetByAds
-  local currentFull = max(loginAwardUnlock.value.current, loginAwardUnlock.value?.stage ?? 0) 
+  let stageOffset = loginAwardUnlock.get().stage - stage + stageOffsetByAds
+  local currentFull = max(loginAwardUnlock.get().current, loginAwardUnlock.get()?.stage ?? 0) 
   let startStage = ((lastRewardedStage - stageOffset + stageOffsetByAds) / FULL_DAYS).tointeger() * FULL_DAYS
   let startStageFull = startStage + stageOffset
   let lastRewardedStageInPeriod = lastRewardedStage - startStageFull

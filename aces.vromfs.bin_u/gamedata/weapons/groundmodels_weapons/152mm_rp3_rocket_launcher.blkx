@@ -62,6 +62,7 @@
     "endSmokeViscosity": 0.05,
     "maxDistance": 4500.0,
     "minDistance": 30.0,
+    "shellCollision": true,
     "spawnExplosionWreckage": false,
     "spawnExplosionFx": false,
     "explosionOffset": 0.05,

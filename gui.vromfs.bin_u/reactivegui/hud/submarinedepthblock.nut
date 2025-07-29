@@ -105,12 +105,12 @@ function mkGamepadShortcutImg(shortcutId, isPushed, isVisible, scale, ovr) {
   let res = mkContinuousButtonParams(@() isPushed(true), @() isPushed(false), shortcutId, stateFlags)
     .__update(ovr)
   let watch = [isVisible, isGamepad, stateFlags]
-  return @() !isGamepad.value ? { watch }
+  return @() !isGamepad.get() ? { watch }
     : res.__update({
         watch
         key = imageComp
         vplace = ALIGN_CENTER
-        children = isVisible.value && isGamepad.value ? imageComp : null
+        children = isVisible.value && isGamepad.get() ? imageComp : null
         transform = { scale = stateFlags.value & S_ACTIVE ? [0.8, 0.8] : [1.0, 1.0] }
         transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
       })

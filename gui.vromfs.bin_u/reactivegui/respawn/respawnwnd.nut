@@ -59,7 +59,7 @@ let levelHolderSize = evenPx(84)
 let unitListGradientSize = [unitPlatesGap, saBorders[1]]
 let rhombusSize = round(levelHolderSize / sqrt(2) / 2) * 2
 
-let needCancel = Computed(@() isRespawnStarted.value && !isRespawnInProgress.value && respawnSlots.value.len() > 1)
+let needCancel = Computed(@() isRespawnStarted.get() && !isRespawnInProgress.get() && respawnSlots.value.len() > 1)
 let showLowBulletsWarning = Watched(true)
 let startRespawnTime = mkWatched(persist, "startRespawnTime", -1)
 isRespawnStarted.subscribe(function(v) {
@@ -85,7 +85,7 @@ let topPanel = @() {
     { size = FLEX_V, children = logerrHintsBlock }
     scoreBoard
     mkMenuButton(1.0, { onClick = @() eventbus_send("openFlightMenuInRespawn", {}) })
-    respawnUnitItems.value?.spare ? balanceBlock : null
+    respawnUnitItems.get()?.spare ? balanceBlock : null
   ]
 }
 
@@ -210,13 +210,13 @@ let pannableArea = verticalPannableAreaCtor(unitListHeight + unitListGradientSiz
 
 function slotsBlock() {
   let title = slotsBlockTitle(respawnUnitInfo.get(), hasRespawnSeparateSlots.get())
-  let list = respawnSlots.value.map(@(slot) mkSlotPlate(slot, respawnUnitInfo.value))
+  let list = respawnSlots.value.map(@(slot) mkSlotPlate(slot, respawnUnitInfo.get()))
   return {
     watch = [respawnSlots, respawnUnitInfo, hasRespawnSeparateSlots]
     size = [unitPlateWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     gap = unitPlatesGap
-    children = respawnUnitInfo.value == null ? null
+    children = respawnUnitInfo.get() == null ? null
       : list.len() <= 4 ? [ title ].extend(list)
       : [
           title
@@ -259,10 +259,10 @@ let map = {
 let cancelText = utf8ToUpper(loc("Cancel"))
 function cancelBtn() {
   local btnText = cancelText
-  if (timeToRespawn.value > 0)
+  if (timeToRespawn.get() > 0)
     btnText = "".concat(btnText,
       loc("ui/parentheses/space", {
-        text = $"{timeToRespawn.value}{loc("mainmenu/seconds")}" }))
+        text = $"{timeToRespawn.get()}{loc("mainmenu/seconds")}" }))
   return {
     watch = timeToRespawn
     children = textButtonCommon(btnText, cancelRespawn, { hotkeys = [btnBEscUp] })
@@ -302,25 +302,25 @@ function toBattleButton(onClick, styleOvr) {
 }
 
 function toBattle() {
-  if (chosenBullets.value.len() == 0) 
-    respawn(selSlot.value, bulletsToSpawn.value)
-  else if (hasZeroBullets.value)
+  if (chosenBullets.get().len() == 0) 
+    respawn(selSlot.value, bulletsToSpawn.get())
+  else if (hasZeroBullets.get())
     openMsgBox({ text = loc("respawn/zero_ammo") })
   else if (hasZeroMainBullets.get())
     openMsgBox({ text = loc("respawn/zero_main_ammo") })
-  else if (hasLowBullets.value && hasChangedCurSlotBullets.value && showLowBulletsWarning.value) {
+  else if (hasLowBullets.get() && hasChangedCurSlotBullets.get() && showLowBulletsWarning.value) {
     openMsgBox({
       text = loc("respawn/low_ammo")
       buttons = [
         { id = "cancel", isCancel = true }
         { text = utf8ToUpper(loc("mainmenu/toBattle/short")), styleId = "BATTLE",
-          cb = @() respawn(selSlot.value, bulletsToSpawn.value) }
+          cb = @() respawn(selSlot.value, bulletsToSpawn.get()) }
       ]
     })
     showLowBulletsWarning(false)
   }
   else
-    respawn(selSlot.value, bulletsToSpawn.value)
+    respawn(selSlot.value, bulletsToSpawn.get())
 }
 
 let buttons = @() {
@@ -361,7 +361,7 @@ let weaponryBlockByUnitType = {
 
 function respawnBulletsPlace() {
   let res = { watch = [slotAABB, selSlotUnitType, selSlot], onAttach = @() deferOnce(updateSlotAABB) }
-  if (slotAABB.value == null)
+  if (slotAABB.get() == null)
     return res
   let contentAABB = gui_scene.getCompAABBbyKey("respawnWndContent")
   if (contentAABB == null)
@@ -372,7 +372,7 @@ function respawnBulletsPlace() {
   return res.__update({
     size = FLEX_V
     children = {
-      key = slotAABB.value
+      key = slotAABB.get()
       onAttach = @() selSlotContentGenId.set(selSlotContentGenId.get() + 1)
       children = content
     }
@@ -430,8 +430,8 @@ let content = @() {
 let animLines = @() {
   watch = selSlotLinesSteps
   size = flex()
-  children = selSlotLinesSteps.value == null ? null
-    : mkAnimGrowLines(mkAGLinesCfgOrdered(selSlotLinesSteps.value, lineSpeed))
+  children = selSlotLinesSteps.get() == null ? null
+    : mkAnimGrowLines(mkAGLinesCfgOrdered(selSlotLinesSteps.get(), lineSpeed))
 }
 
 return bgShaded.__merge({

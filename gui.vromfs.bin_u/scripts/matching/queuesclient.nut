@@ -69,13 +69,13 @@ function actualizeSquadQueueOnce() {
   if (isSquadActualizeSend.value)
     return
   isSquadActualizeSend(true)
-  queueDataCheckTime(serverTime.value)
+  queueDataCheckTime(serverTime.get())
 }
 
 function tryWriteMembersData() {
   let playersUpd = {}
-  let campaign = squadLeaderCampaign.value
-  foreach(uid, m in squadMembers.value) {
+  let campaign = squadLeaderCampaign.get()
+  foreach(uid, m in squadMembers.get()) {
     if (uid == myUserId.value)
       continue
     let { queueToken = "", units = {} } = m
@@ -143,7 +143,7 @@ let queueSteps = {
   },
 
   [QS_ACTUALIZE_SQUAD] = function() {
-    if (!isInSquad.value)
+    if (!isInSquad.get())
       setQueueState(QS_JOINING)
     else
       tryWriteMembersData()
@@ -201,10 +201,10 @@ curUnitInfo.subscribe(function(_) {
 })
 
 squadMembers.subscribe(function(v) {
-  if (!isInQueue.value || !isSquadLeader.value)
+  if (!isInQueue.value || !isSquadLeader.get())
     return
 
-  foreach(uid, m in squadMembers.value)
+  foreach(uid, m in squadMembers.get())
     if (uid != myUserId.value && !m?.ready) {
       logQ("Leave queue because member become not ready")
       leaveQueue()
@@ -225,7 +225,7 @@ function joinQueue(params) {
     return
   }
   let paramsExt = {
-    clusters = getOptimalClustersForSquad(squadMembers.value) ?? selClusters.value
+    clusters = getOptimalClustersForSquad(squadMembers.get()) ?? selClusters.get()
     team = TEAM_ANY
     jip = get_gui_option(USEROPT_ALLOW_JIP) ?? true
   }.__update(params)

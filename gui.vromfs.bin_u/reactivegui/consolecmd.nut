@@ -30,9 +30,9 @@ register_command(function(colorStr, multiplier) {
   log(format("color = 0x%X, Color(%d, %d, %d, %d)", resColor, r, g, b, a))
 }, "debug.multiply_color")
 
-allPermissions.value.each(@(_, id) register_command(function() {
+allPermissions.get().each(@(_, id) register_command(function() {
   dbgPermissions.mutate(@(v) v[id] <- !v?[id])
-  log($"{id} = {allPermissions.value?[id]}")
+  log($"{id} = {allPermissions.get()?[id]}")
 }, $"toggle_permission.{id}"))
 
 register_command(@(name) log(localizeAddons([name])), "debug.addonLoc")

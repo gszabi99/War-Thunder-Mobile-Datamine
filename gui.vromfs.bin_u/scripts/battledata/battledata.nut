@@ -268,7 +268,7 @@ let onCreateBattleDataForClient = @() is_local_multiplayer() ? createBattleDataF
 
 registerRespondent("create_battle_data_for_client", onCreateBattleDataForClient)
 
-let mpBattleDataForClientEcs = keepref(Computed(@() !isInBattle.value || !is_multiplayer() ? null
+let mpBattleDataForClientEcs = keepref(Computed(@() !isInBattle.get() || !is_multiplayer() ? null
   : state.value?.data))
 mpBattleDataForClientEcs.subscribe(@(v) setBattleDataToClientEcs(v))
 
@@ -280,8 +280,11 @@ realBattleData.subscribe(function(v) {
 })
 
 isInBattle.subscribe(function(v) {
-  if (v)
+  if (v) {
+    if (!isBattleDataApplied.get())
+      battleCampaign.set("")
     wasBattleDataApplied(isBattleDataApplied.get())
+  }
   else {
     isBattleDataApplied(false)
     isSingleMissionOverrided.set(false)
@@ -289,7 +292,7 @@ isInBattle.subscribe(function(v) {
 })
 isBattleDataApplied.subscribe(@(v) v ? wasBattleDataApplied(v) : null)
 
-let battleUnitName = keepref(Computed(@() !isInBattle.value ? null : state.value?.slots[0]))
+let battleUnitName = keepref(Computed(@() !isInBattle.get() ? null : state.value?.slots[0]))
 battleUnitName.subscribe(@(v) mainBattleUnitName(v))
 
 register_command(function() {

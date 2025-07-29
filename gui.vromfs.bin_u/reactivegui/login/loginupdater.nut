@@ -29,13 +29,13 @@ let statusByStage = {
 }
 
 let statusText = Computed(function() {
-  let { stage = null, errorCode = null } = updaterState.value
+  let { stage = null, errorCode = null } = updaterState.get()
   return errorCode != null ? loc($"updater/error/{errorCode}")
-    : stage != null ? (statusByStage?[stage] ?? defaultStatusText)(updaterState.value)
+    : stage != null ? (statusByStage?[stage] ?? defaultStatusText)(updaterState.get())
     : ""
 })
 
-let progressPercent = Computed(@() updaterState.value?.percent ?? 0)
+let progressPercent = Computed(@() updaterState.get()?.percent ?? 0)
 
 let infoComp = @() {
   watch = myUserId

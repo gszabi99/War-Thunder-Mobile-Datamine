@@ -6,7 +6,7 @@ let { myUserId } = require("%appGlobals/profileStates.nut")
 
 function applyRights(result) {
   let { clientPermJwt = null, dedicatedPermJwt = null, penaltiesJwt = null } = result
-  let curP = rights.value
+  let curP = rights.get()
   if (clientPermJwt == null && dedicatedPermJwt == null && penaltiesJwt == null
       && curP?.penaltiesJwt == null && curP?.dedicatedPermJwt == null && curP?.permissions == null) {
     logR("Failed to apply permissions, because no data.")

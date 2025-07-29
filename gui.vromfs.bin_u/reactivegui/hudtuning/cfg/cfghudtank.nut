@@ -46,7 +46,7 @@ let { isUnitAlive } = require("%rGui/hudState.nut")
 let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.value == "arrows")
-let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.value) && !isGamepad.value)
+let isBattleMoveArrows = Computed(@() (isViewMoveArrows.value || isKeyboard.get()) && !isGamepad.get())
 let isTargetTracking = Computed(@() !currentTargetTrackingType.value)
 
 let actionBarInterval = isWidescreen ? 150 : 130
@@ -208,7 +208,7 @@ return {
     ctor = @(scale) @() {
       watch = isGamepad
       key = "tank_move_stick_zone"
-      children = isGamepad.value ? tankGamepadMoveBlock(scale) : tankMoveStick(scale)
+      children = isGamepad.get() ? tankGamepadMoveBlock(scale) : tankMoveStick(scale)
     }
     defTransform = mkLBPos([0, 0])
     editView = tankMoveStickView
@@ -263,7 +263,7 @@ return {
 
   doll = {
     ctor = mkDoll
-    defTransform = mkLBPos([hdpx(520), 0])
+    defTransform = mkLBPos([hdpx(540), 0])
     editView = dollEditView
     hideForDelayed = false
   }
@@ -293,7 +293,7 @@ return {
 
   techDebuffs = {
     ctor = mkTechDebuffs
-    defTransform = mkLBPos([hdpx(255), 0])
+    defTransform = mkLBPos([hdpx(210), 0])
     editView = techDebuffsEditView
     hideForDelayed = false
   }

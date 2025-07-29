@@ -18,7 +18,7 @@ let { stat_get_benchmark } = require("guiMission")
 let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
 
 eventbus_subscribe("gui_start_debriefing", function gui_start_debriefing(...) {
-  if (needLogoutAfterSession.value) {
+  if (needLogoutAfterSession.get()) {
     destroy_session("on needLogoutAfterSession from gui_start_debriefing")
     
     resetTimeout(0.3, startLogout)

@@ -23,14 +23,14 @@ let {
 } = require_optional("das.daeditor")
 
 
-selectedEntities.subscribe(function(val) {
+selectedEntities.subscribe_with_nasty_disregard_of_frp_update(function(val) {
   if (val.len() == 1)
     selectedEntity(val.keys()[0])
   else
     selectedEntity(INVALID_ENTITY_ID)
 })
 
-selectedEntity.subscribe(function(_eid) {
+selectedEntity.subscribe_with_nasty_disregard_of_frp_update(function(_eid) {
   selectedCompName(null)
 })
 
@@ -72,6 +72,14 @@ function getSceneIdLoadType(sceneId) {
 
 function getSceneIdIndex(sceneId) {
   return (sceneId >> 2)
+}
+
+function getSceneIndicies(scenes) {
+  local sceneCounts = [0,  0,  0,  0,  0]
+  foreach (scene in scenes) {
+    sceneCounts[scene.loadType] += 1
+  }
+  return [0, 0, sceneCounts[1], sceneCounts[1] + sceneCounts[2]]
 }
 
 const loadTypeConst = 4
@@ -128,6 +136,7 @@ return {
   getSceneIdOf
   getSceneIdLoadType
   getSceneIdIndex
+  getSceneIndicies
 
   loadTypeConst
   sceneGenerated

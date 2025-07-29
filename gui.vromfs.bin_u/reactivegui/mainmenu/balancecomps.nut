@@ -41,7 +41,7 @@ let hoverBg = {
 }
 
 let initCurrencyBalance = @(currencyId) currencyId in visibleBalance.value  || !currencyId ? null
-  : visibleBalance.mutate(@(v) v[currencyId] <- balance.value?[currencyId])
+  : visibleBalance.mutate(@(v) v[currencyId] <- balance.get()?[currencyId])
 let initItemBalance = @(itemId) itemId in visibleBalance.value ? null
   : visibleBalance.mutate(@(v) v[itemId] <- items.value?[itemId].count
       ?? (isProfileReceived.value ? 0 : null))
@@ -57,7 +57,7 @@ function applyChanges(changes) {
     })
 }
 
-local prevBalance = clone balance.value
+local prevBalance = clone balance.get()
 balance.subscribe(function(b) {
   let changes = {}
   let visBalanceApply = {}
@@ -71,7 +71,7 @@ balance.subscribe(function(b) {
     if (diff != 0)
       changes[id] <- { cur, diff }
   }
-  prevBalance = clone balance.value
+  prevBalance = clone balance.get()
   applyChanges(changes)
   if (visBalanceApply.len() > 0)
     visibleBalance(visibleBalance.value.__merge(visBalanceApply))

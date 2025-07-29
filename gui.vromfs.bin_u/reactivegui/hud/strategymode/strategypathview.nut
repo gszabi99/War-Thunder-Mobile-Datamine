@@ -41,7 +41,7 @@ let selectedInfo = Watched({
   posIsValid = false
 })
 
-let curAttackIcon = Computed(@() airGroupAttackIcons?[curAirGroupType.value] ?? debugIconWarning)
+let curAttackIcon = Computed(@() airGroupAttackIcons?[curAirGroupType.get()] ?? debugIconWarning)
 let selectedNodeId = Computed(@() selectedInfo.value?.nodeId ?? -1)
 let selectedEdgeId = Computed(@() selectedInfo.value?.edgeId ?? -1)
 let selectedNodeType = Computed(@() selectedInfo.value?.nodeType ?? NODE_INVALID)
@@ -124,33 +124,33 @@ function pathRefreshUi() {
 function onNodeEditClick(newNodeType) {
   local nodeId = -1
   if (selectedEdgeId.value != -1) {
-    nodeId = nodeInsert(curGroupIndex.value, selectedEdgeId.value, newNodeType, selectedUnitId.value, selectedPos.value)
+    nodeId = nodeInsert(curGroupIndex.get(), selectedEdgeId.value, newNodeType, selectedUnitId.value, selectedPos.value)
   } else if(selectedNodeId.value != -1) {
-    nodeId = nodeEdit(curGroupIndex.value, selectedNodeId.value, newNodeType, selectedUnitId.value, selectedPos.value)
+    nodeId = nodeEdit(curGroupIndex.get(), selectedNodeId.value, newNodeType, selectedUnitId.value, selectedPos.value)
   }
   else {
-    nodeId = nodeAdd(curGroupIndex.value, newNodeType, selectedUnitId.value, selectedPos.value)
+    nodeId = nodeAdd(curGroupIndex.get(), newNodeType, selectedUnitId.value, selectedPos.value)
   }
   pathSelectNode(newNodeType, nodeId, -1, false)
 }
 
 function onNodeInsertClick(newNodeType) {
   local insertPos = selectedPos.value
-  for (local i = 1; i < strategyDataCur.value.nodes.len(); i++) {
-    let node = strategyDataCur.value.nodes[i]
-    if (strategyDataCur.value.nodes[i].id == selectedEdgeId.value) {
-      let prevNode = strategyDataCur.value.nodes[i - 1]
+  for (local i = 1; i < strategyDataCur.get().nodes.len(); i++) {
+    let node = strategyDataCur.get().nodes[i]
+    if (strategyDataCur.get().nodes[i].id == selectedEdgeId.value) {
+      let prevNode = strategyDataCur.get().nodes[i - 1]
       let edgeMidPos = midPoint(prevNode.pos2, node.pos2)
       insertPos = setSelection(edgeMidPos.x, edgeMidPos.y).pos
       break
     }
   }
-  let nodeId = nodeInsert(curGroupIndex.value, selectedEdgeId.value, newNodeType, selectedUnitId.value, insertPos)
+  let nodeId = nodeInsert(curGroupIndex.get(), selectedEdgeId.value, newNodeType, selectedUnitId.value, insertPos)
   pathSelectNode(newNodeType, nodeId, -1, false)
 }
 
 function onNodeClearClick() {
-  nodeClear(curGroupIndex.value, selectedNodeId.value, false)
+  nodeClear(curGroupIndex.get(), selectedNodeId.value, false)
   pathSelectionReset()
 }
 
@@ -163,25 +163,25 @@ function onNodeClick(nodeType, nodeId, edgeId, pos) {
 function onNodeMove(nodeType, nodeId, newPos) {
   let newNodeType = (nodeType == NODE_ORDER_HUNT) ? NODE_ORDER_HUNT : NODE_ORDER_POINT
   pathSelectPoint(newPos.x, newPos.y)
-  nodeId = nodeEdit(curGroupIndex.value, nodeId, newNodeType, selectedUnitId.value, selectedPos.value)
+  nodeId = nodeEdit(curGroupIndex.get(), nodeId, newNodeType, selectedUnitId.value, selectedPos.value)
   pathSelectNode(newNodeType, nodeId, -1, true)
 }
 
 function onPathLaunch() {
-  if (curGroupIndex.value >= 0)
-    launchPlane(curGroupIndex.value, curAirGroupIsLaunched.value)
+  if (curGroupIndex.get() >= 0)
+    launchPlane(curGroupIndex.get(), curAirGroupIsLaunched.get())
   else
     launchShip()
 }
 
 function onPathAbort() {
-  nodeClear(curGroupIndex.value, -1, true)
+  nodeClear(curGroupIndex.get(), -1, true)
   pathSelectionReset()
 }
 
 function mkSelfNode(nodePos) {
   local { size, color, valign, border, rotate, padding, opacity } = getNodeStyle(NODE_SELF)
-  let icon = airGroupIcons?[curGroupIndex.value]
+  let icon = airGroupIcons?[curGroupIndex.get()]
   let iconSize = (size * 0.85).tointeger()
   return {
     size = 0
@@ -410,7 +410,7 @@ function mkNodesUi(data) {
     if (ui)
       nodesUi.append(ui)
 
-    if (optDebugDraw.value) {
+    if (optDebugDraw.get()) {
       nodesUi.append({
         rendObj = ROBJ_TEXT
         color = debugTextColor
@@ -531,7 +531,7 @@ function mkCommandsUi(groupIndex) {
   let isDeffendAllowed = Computed(@() selectedUnitId.value != -1 && !selectedUnitIsEnemy.value)
   let isHuntAllowed = Computed(@() selectedUnitId.value == -1 && (isWorldPointSelected.value || selectedNodeType.value == NODE_ORDER_POINT))
   let isPointAllowed = Computed(@() selectedUnitId.value == -1 && (isWorldPointSelected.value || selectedNodeType.value == NODE_ORDER_HUNT))
-  let isPointClearAllowed = Computed(@() selectedEdgeId.value == -1 && (selectedNodeId.value != -1 || (curAirGroupPathLength.value > 1 && !curAirGroupIsReturning.value)))
+  let isPointClearAllowed = Computed(@() selectedEdgeId.value == -1 && (selectedNodeId.value != -1 || (curAirGroupPathLength.get() > 1 && !curAirGroupIsReturning.get())))
   let isPointInsertAllowed = Computed(@() selectedNodeId.value == -1 && selectedEdgeId.value != -1)
   let isAllwaysEnabled = Watched(true)
   return {
@@ -578,7 +578,7 @@ function mkCommandsUi(groupIndex) {
 let pathNodesUi = @() {
   size = flex()
   watch = strategyDataCur
-  children = strategyDataCur.value ? mkNodesUi(strategyDataCur.value) : null
+  children = strategyDataCur.get() ? mkNodesUi(strategyDataCur.get()) : null
 }
 
 function textButtonDisabled(label, hintStr) {
@@ -603,16 +603,16 @@ let pathCommandsUi = @() {
   flow = FLOW_VERTICAL
   gap = hdpx(40)
   children = [
-    mkCommandsUi(curGroupIndex.value),
+    mkCommandsUi(curGroupIndex.get()),
     {
       hplace = ALIGN_LEFT
       vplace = ALIGN_BOTTOM
       flow = FLOW_HORIZONTAL
       gap = hdpx(40)
       children = [
-        curAirGroupIsLaunched.value
+        curAirGroupIsLaunched.get()
           ? textButtonSecondary(utf8ToUpper(loc("strategyMode/take_control")), onPathLaunch)
-        : curAirGroupPathLength.value > 1
+        : curAirGroupPathLength.get() > 1
           ? textButtonPrimary(utf8ToUpper(loc("strategyMode/launch")), onPathLaunch)
         : textButtonDisabled(utf8ToUpper(loc("strategyMode/launch")), loc("strategyMode/empty_path"))
         textButtonBright(utf8ToUpper(loc("strategyMode/abort_mission")), onPathAbort)

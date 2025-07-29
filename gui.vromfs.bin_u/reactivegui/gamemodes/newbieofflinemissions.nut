@@ -37,7 +37,7 @@ let firstBattlesReward = Computed(@()
 let missionsList = Computed(function() {
   let singleBattleCfg = newbieGameModesConfig?[curCampaign.value]
     .findvalue(@(cfg) (cfg?.offlineMissions ?? []).len() != 0
-      && cfg.isFit(newbieModeStats.value, curUnit.value?.mRank ?? 0))
+      && cfg.isFit(newbieModeStats.value, curUnit.get()?.mRank ?? 0))
   let defaultMissions = singleBattleCfg?.offlineMissions
 
   return defaultMissions
@@ -55,8 +55,8 @@ let newbieOfflineMissions = Computed(function() {
       return null
   }
   else {
-    let { level = 0 } = curUnit.value
-    let platoonUnit = curUnit.value?.platoonUnits.findvalue(@(u) (u?.reqLevel ?? 0) <= level)
+    let { level = 0 } = curUnit.get()
+    let platoonUnit = curUnit.get()?.platoonUnits.findvalue(@(u) (u?.reqLevel ?? 0) <= level)
     if (platoonUnit != null)
       return null
   }
@@ -152,14 +152,14 @@ debriefingData.subscribe(function(data) {
 })
 
 function mkCurRewardBattleData(reward, predefinedId, unit) {
-  let { level, exp, nextLevelExp } = playerLevelInfo.value
+  let { level, exp, nextLevelExp } = playerLevelInfo.get()
   let { wp = 0 } = reward
-  let premiumBonusesCfg = serverConfigs.value?.gameProfile.premiumBonuses
+  let premiumBonusesCfg = serverConfigs.get()?.gameProfile.premiumBonuses
 
   let baseExp = reward?.exp ?? 0
-  let totalExp = !havePremium.value ? baseExp
+  let totalExp = !havePremium.get() ? baseExp
     : (baseExp * (premiumBonusesCfg?.expMul ?? 1.0) + 0.5).tointeger()
-  let totalWp = !havePremium.value ? wp : (wp * (premiumBonusesCfg?.wpMul ?? 1.0) + 0.5).tointeger()
+  let totalWp = !havePremium.get() ? wp : (wp * (premiumBonusesCfg?.wpMul ?? 1.0) + 0.5).tointeger()
 
   let expData = { baseExp, totalExp, premExp = totalExp - baseExp }
   let unitName = unit?.name ?? ""
@@ -211,14 +211,14 @@ let dbgCurrentNewbieMission = Computed(function() {
 let startDebugNewbieMission = @()
   startNewbieMission(
     dbgCurrentNewbieMission.value
-    serverConfigs.value?.firstBattlesRewards[curCampaign.get()][0]
+    serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][0]
     null
   )
 let startLocalMultiplayerMission = function() {
   local abandoned_factory = ["abandoned_factory_Conq1", "abandoned_factory_Conq2", "abandoned_factory_Conq3" ]
   startLocalMPMission(
     abandoned_factory
-    serverConfigs.value?.firstBattlesRewards[curCampaign.get()][0]
+    serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][0]
     null
   )
 }

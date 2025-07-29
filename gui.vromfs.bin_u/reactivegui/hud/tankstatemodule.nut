@@ -3,7 +3,7 @@ let { fabs, round } = require("math")
 let { XrayDoll, TouchAreaOutButton } = require("wt.behaviors")
 let { scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
 let { hasDebuffGuns, hasDebuffTurretDrive, hasDebuffEngine, hasDebuffTracks, hasDebuffFire, speed,
-  hasDebuffDriver, hasDebuffGunner, hasDebuffLoader
+  hasDebuffDriver, hasDebuffGunner, hasDebuffLoader, hasDebuffFireExternal
 } = require("%rGui/hud/tankState.nut")
 let { isStickActive, stickDelta } = require("stickState.nut")
 let { mkDebuffIcon, mkDebuffIconEditView } = require("components/debuffIcon.nut")
@@ -32,6 +32,7 @@ let techDebuffsCfg = [
   mkDebuffCfg(hasDebuffEngine, "engine_state_indicator.svg")
   mkDebuffCfg(hasDebuffTracks, "track_state_indicator.svg")
   mkDebuffCfg(hasDebuffFire, "fire_indicator.svg")
+  mkDebuffCfg(hasDebuffFireExternal, "fire_indicator.svg")
 ]
 
 let moveType = Computed(function() {

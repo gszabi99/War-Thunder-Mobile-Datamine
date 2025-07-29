@@ -2117,6 +2117,20 @@
       "distScaleOnNotHero": 1.0
     }
   },
+  "engine_ship_jet_ai": {
+    "effects": {
+      "path": "naval/engines/ai_jet"
+    },
+    "outside": {
+      "path": "naval/engines/ai_jet",
+      "eventBack": "engine",
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
   "engine_ship_wood_ai": {
     "effects": {
       "path": "event/engines/ai_ship"
@@ -8061,6 +8075,41 @@
       "distScaleOnNotHero": 1.0
     }
   },
+  "engine_ship_jet": {
+    "effects": {
+      "path": "naval/engines/ship_jet",
+      "wep": "",
+      "overheatOutside": "",
+      "overheatCockpit": "",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8
+    },
+    "outside": {
+      "path": "naval/engines/ship_jet",
+      "eventFront": "",
+      "eventBack": "engine",
+      "eventSurround": "",
+      "eventLod1": "engine",
+      "offsetPos": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          -1.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
   "engine_ship_wood": {
     "effects": {
       "path": "event/engines/ship"
@@ -10852,6 +10901,42 @@
           "playerRole": "commander",
           "player": -1,
           "minSpeechInterval": 10.0
+        },
+        "rocketsOnTarget": {
+          "event": "12_mlrs/voice_message_officer_on_target",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 10.0
+        },
+        "missileOut": {
+          "event": "12_mlrs/voice_message_sailor_missile_out",
+          "playerRole": "sailor",
+          "player": -1,
+          "minSpeechInterval": 5.0
+        },
+        "weAreTarget": {
+          "event": "12_mlrs/voice_message_officer_we_are_target",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 10.0
+        },
+        "launchDetected_01": {
+          "event": "12_mlrs/voice_message_officer_missile_launch_detected_01",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 5.0
+        },
+        "launchDetected_02": {
+          "event": "12_mlrs/voice_message_officer_missile_launch_detected_02",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 5.0
+        },
+        "targetOff": {
+          "event": "12_mlrs/voice_message_officer_target_off",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 5.0
         }
       },
       "distanceMetric": {

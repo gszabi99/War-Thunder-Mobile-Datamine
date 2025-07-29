@@ -1,8 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 let { setCustomHangarUnit, resetCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+let { mkBaseUnit, mkPlatoonUnitsList, mkUnitToShowCommon } = require("%rGui/unit/unitList.nut")
 
 
 let curSelectedUnitId = Watched(null)
@@ -20,33 +19,8 @@ let function setUnit(unit) {
     resetCustomHangarUnit()
 }
 
-let baseUnit = Computed(function() {
-  let { name = null, canShowOwnUnit = true} = openUnitOvr.value
-  local res = canShowOwnUnit ? campMyUnits.get()?[name] ?? serverConfigs.value?.allUnits[name]
-    : serverConfigs.value?.allUnits[name]
-  if (res == null)
-    return res
-  res = res.__merge(openUnitOvr.value)
-  if (res?.isUpgraded ?? false)
-    res.__update(campConfigs.value?.gameProfile.upgradeUnitBonus ?? {})
-  return res
-})
-
-let platoonUnitsList = Computed(function() {
-  let { name = "", platoonUnits = [] } = baseUnit.value
-  return platoonUnits.len() != 0
-    ? [ { name, reqLevel = 0 } ].extend(platoonUnits)
-    : []
-})
-
-let unitToShowCommon = Computed(function() {
-  if (baseUnit.value == null)
-    return null
-  let unitName = curSelectedUnitId.value
-  if (unitName == baseUnit.value.name || unitName == null || unitName == "")
-    return baseUnit.value
-  return baseUnit.value.__merge({ name = unitName })
-})
+let baseUnit = mkBaseUnit(openUnitOvr)
+let unitToShowCommon = mkUnitToShowCommon(baseUnit, curSelectedUnitId)
 let unitToShow = Computed(@() unitToShowCommon.get() == null || curSelectedUnitSkin.get() == null
   ? unitToShowCommon.get()
   : unitToShowCommon.get().__merge({
@@ -78,7 +52,7 @@ return {
   openUnitDetailsWnd
   closeUnitDetailsWnd
   baseUnit
-  platoonUnitsList
+  platoonUnitsList = mkPlatoonUnitsList(baseUnit)
   unitToShow
   isWindowAttached
   isCustomizationWndAttached

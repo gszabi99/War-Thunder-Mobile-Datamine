@@ -213,11 +213,11 @@ let needShow = keepref(ComputedImmediate(@() !hasActiveCustomUnseenView.value
     || (stackData.get()?.unitPlates.len() ?? 0) > 0
     || (stackData.get()?.battleMod.len() ?? 0) > 0)
   && activeUnseenPurchasesGroup.value.list.len() != 0
-  && isInMenu.value
+  && isInMenu.get()
   && isLoggedIn.value
   && !isTutorialActive.value
   && !isInQueue.value
-  && !hasJustUnlockedUnitsAnimation.value))
+  && !hasJustUnlockedUnitsAnimation.get()))
 
 let WND_UID = "unseenPurchaseWindow"
 
@@ -368,7 +368,7 @@ let decoratorCompByType = {
 }
 
 function mkDecoratorRewardIcon(startDelay, decoratorId) {
-  let decoratorType = Computed(@() allDecorators.value?[decoratorId].dType)
+  let decoratorType = Computed(@() allDecorators.get()?[decoratorId].dType)
   return @() {
     watch = decoratorType
     size = [SIZE_TO_CONTENT, rewIconSize]
@@ -448,7 +448,7 @@ function mkRewardLabelMultiline(startDelay, text, ovr = {}) {
 let mkDecoratorRewardLabel = @(startDelay, decoratorId)
   @() {
     watch = allDecorators
-    children = mkRewardLabel(startDelay, loc($"decorator/{allDecorators.value?[decoratorId].dType}"))
+    children = mkRewardLabel(startDelay, loc($"decorator/{allDecorators.get()?[decoratorId].dType}"))
   }
 
 function mkSkinEquipButton(unitName, skinName) {
@@ -495,7 +495,7 @@ function mkBlueprintPlateTexts(r, rStyle) {
   let { id } = r
   let available = Computed(@() servProfile.get()?.blueprints?[id] ?? 0)
   let total = Computed(@() serverConfigs.get()?.allBlueprints?[id].targetCount ?? 1)
-  let unitRank = Computed(@() serverConfigs.value?.allUnits?[id]?.mRank)
+  let unitRank = Computed(@() serverConfigs.get()?.allUnits?[id]?.mRank)
   let hasBlueprintUnit = Computed(@() id in campMyUnits.get())
 
   return {
@@ -831,7 +831,7 @@ let mkUnitRewards = @(unitsData) unitsData.len() == 0 ? null : @() {
   children =
     arrayByRows(
       unitsData.map(@(v)
-        v.__merge({ unit = serverConfigs.value?.allUnits[v.id].__merge({ isUpgraded = v.gType == "unitUpgrade" }) })),
+        v.__merge({ unit = serverConfigs.get()?.allUnits[v.id].__merge({ isUpgraded = v.gType == "unitUpgrade" }) })),
       unitsPerRow)
     .map(@(row) {
       flow = FLOW_HORIZONTAL

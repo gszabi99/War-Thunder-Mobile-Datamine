@@ -444,8 +444,8 @@
     ],
     "subtype": "target_turret",
     "horLimit": [
-      0.0,
-      0.0
+      -1.0,
+      1.0
     ],
     "verLimit": [
       -1.0,

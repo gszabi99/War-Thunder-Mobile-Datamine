@@ -15,13 +15,13 @@ let borderWidthCurrent = hdpxi(3)
 let imgSizeBase = (touchButtonSize * 0.75).tointeger()
 
 function onToggleBullet(isNext, isCurrent) {
-  if (!isGamepad.value && (isNext || (isCurrent && !nextBulletName.value)))
+  if (!isGamepad.get() && (isNext || (isCurrent && !nextBulletName.get())))
     return
   toggleNextBullet()
 }
 
 function getBulletIcon(id, isBulletBelt) {
-  let icon = bulletsInfo.value?.fromUnitTags[id]?.icon
+  let icon = bulletsInfo.get()?.fromUnitTags[id]?.icon
   if (icon != null)
     return $"{icon}.svg"
   return (isBulletBelt ?? false) ? "hud_ammo_bullet_ap.svg" : "hud_ammo_ap1_he1.svg"
@@ -83,8 +83,8 @@ let bulletStatus = @(isNext, isCurrent, scale) {
 function bulletButton(bulletInfo, bulletCount, scale) {
   let name = Computed(@() bulletInfo.value?.bullets[0])
   let id = Computed(@() bulletInfo.value?.id)
-  let isNext = Computed(@() id.value == nextBulletName.value)
-  let isCurrent = Computed(@() id.value == currentBulletName.value)
+  let isNext = Computed(@() id.value == nextBulletName.get())
+  let isCurrent = Computed(@() id.value == currentBulletName.get())
   let isBulletBelt = Computed(@() bulletInfo.value?.isBulletBelt)
   let btnSize = scaleEven(touchButtonSize, scale)
   let imgSize = scaleEven(imgSizeBase, scale)

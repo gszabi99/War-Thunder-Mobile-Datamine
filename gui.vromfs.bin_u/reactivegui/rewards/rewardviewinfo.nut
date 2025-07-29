@@ -231,7 +231,7 @@ function groupRewards(rewards) {
 function getLootboxCommonRewardsViewInfo(lootbox, lockedBy = []) {
   let { name = "", lastReward = "", rewardsOrder = {} } = lootbox
   let rewards = lootbox.rewards.map(function(chance, id) {
-    let rewardCfg = serverConfigs.value?.rewardsCfg[id]
+    let rewardCfg = serverConfigs.get()?.rewardsCfg[id]
     let content = getRewardsViewInfo(rewardCfg)?[0]
     return {
       id
@@ -249,7 +249,7 @@ function getLootboxCommonRewardsViewInfo(lootbox, lockedBy = []) {
     .values()
 
   if (lastReward != "") {
-    let rewardCfg = serverConfigs.value?.rewardsCfg[lastReward]
+    let rewardCfg = serverConfigs.get()?.rewardsCfg[lastReward]
     rewards.append({
       id = lastReward
       source = name
@@ -292,10 +292,10 @@ function getLootboxFixedRewardsViewInfo(lootbox) {
     added[id] <- true
 
     let lockedBy = fr?.lockedBy ?? []
-    let rewardCfg = serverConfigs.value?.rewardsCfg[id]
+    let rewardCfg = serverConfigs.get()?.rewardsCfg[id]
     let content = getRewardsViewInfo(rewardCfg)?[0]
     if (content?.rType == "lootbox") {
-      let rewards = getLootboxCommonRewardsViewInfo(serverConfigs.value?.lootboxesCfg[content.id], lockedBy)
+      let rewards = getLootboxCommonRewardsViewInfo(serverConfigs.get()?.lootboxesCfg[content.id], lockedBy)
       foreach (r in rewards)
         fixedRewards.append(r.__merge({ isJackpot = true, parentSource = lootbox?.name ?? "", parentRewardId = id, lockedBy }))
     }
@@ -338,7 +338,8 @@ let isEmptyByRType = {
   [G_UNIT_UPGRADE] = @(value, _, profile) profile?.units[value].isUpgraded,
   [G_SKIN] = @(unitName, skinName, profile) skinName in profile?.skins[unitName],
   [G_BLUEPRINT] = @(value, _, profile) value in profile?.units
-    || (profile?.blueprints?[value] ?? 0) >= (serverConfigs.get()?.allBlueprints[value].targetCount ?? 0)
+    || (profile?.blueprints?[value] ?? 0) >= (serverConfigs.get()?.allBlueprints[value].targetCount ?? 0),
+  [G_LOOTBOX] = @(value, _, profile) value in profile?.lootboxes
 }
 
 function isRewardEmpty(reward, profile) {

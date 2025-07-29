@@ -61,18 +61,6 @@
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_medium",
-  "dm_for_shop": {
-    "armorThicknessFront": [
-      0.75,
-      0.05,
-      0.2
-    ],
-    "armorThicknessSide": [
-      0.15,
-      0.0,
-      0.85
-    ]
-  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank_modern",

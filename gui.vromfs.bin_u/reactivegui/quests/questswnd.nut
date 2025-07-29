@@ -31,8 +31,8 @@ let imageTabOffset = Computed(@() getEventPresentation(eventSeason.get()).imageT
 let mkUnseen = @(tabId) Computed(function() {
   if (progressUnlockByTab.get()?[tabId].hasReward)
     return UNSEEN_HIGH
-  let hasUnseen = hasUnseenQuestsBySection.value
-  return questsCfg.value?[tabId].findvalue(@(s) !!hasUnseen?[s] || !!progressUnlockBySection.get()?[s].hasReward) != null
+  let hasUnseen = hasUnseenQuestsBySection.get()
+  return questsCfg.get()?[tabId].findvalue(@(s) !!hasUnseen?[s] || !!progressUnlockBySection.get()?[s].hasReward) != null
     ? UNSEEN_HIGH
     : SEEN
 })
@@ -108,8 +108,8 @@ function eventTabContent(){
         size = FLEX_H
         halign = ALIGN_RIGHT
         rendObj = ROBJ_TEXT
-        text = !eventEndsAt.value || (eventEndsAt.value - serverTime.value < 0) ? null
-          : secondsToHoursLoc(eventEndsAt.value - serverTime.value)
+        text = !eventEndsAt.value || (eventEndsAt.value - serverTime.get() < 0) ? null
+          : secondsToHoursLoc(eventEndsAt.value - serverTime.get())
       }.__update(fontTinyAccented)
     ]
   }
@@ -167,8 +167,8 @@ function mkSpecialQuestsTab(idx) {
     id
     tabContent = mkSpecialEventTabContent(idx)
     isFullWidth = true
-    contentCtor = @() questsWndPage(Computed(@() questsCfg.value?[id] ?? []), mkQuest, id, comp, width)
-    isVisible = Computed(@() questsCfg.value?[id].findindex(@(s) questsBySection.value[s].len() > 0) != null)
+    contentCtor = @() questsWndPage(Computed(@() questsCfg.get()?[id] ?? []), mkQuest, id, comp, width)
+    isVisible = Computed(@() questsCfg.get()?[id].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
   }
 }
 
@@ -180,8 +180,8 @@ let tabs = [
     imageSizeMul = imageSizeMul
     imageTabOffset = imageTabOffset
     isFullWidth = true
-    contentCtor = @() questsWndPage(Computed(@() questsCfg.value[COMMON_TAB]), mkQuest, COMMON_TAB, linkToBattlePassBtnCtor)
-    isVisible = Computed(@() questsCfg.value[COMMON_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null
+    contentCtor = @() questsWndPage(Computed(@() questsCfg.get()[COMMON_TAB]), mkQuest, COMMON_TAB, linkToBattlePassBtnCtor)
+    isVisible = Computed(@() questsCfg.get()[COMMON_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null
       && isBpSeasonActive.get())
   }
   {
@@ -190,10 +190,10 @@ let tabs = [
     imageSizeMul = imageSizeMul
     imageTabOffset = imageTabOffset
     isFullWidth = true
-    contentCtor = @() questsWndPage(Computed(@() questsCfg.value[EVENT_TAB]), mkQuest, EVENT_TAB, linkToEventBtnCtor)
+    contentCtor = @() questsWndPage(Computed(@() questsCfg.get()[EVENT_TAB]), mkQuest, EVENT_TAB, linkToEventBtnCtor)
     tabContent = eventTabContent()
     isVisible = Computed(@() isEventActive.value
-      && questsCfg.value[EVENT_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
+      && questsCfg.get()[EVENT_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
     ovr = { key = "main_event_tab" } 
   }
   mkSpecialQuestsTab(0)
@@ -205,8 +205,8 @@ let tabs = [
     image = "ui/gameuiskin#prizes_icon.svg"
     imageSizeMul = 0.8
     isFullWidth = true
-    contentCtor = @() questsWndPage(Computed(@() questsCfg.value[ACHIEVEMENTS_TAB]), mkAchievement, ACHIEVEMENTS_TAB)
-    isVisible = Computed(@() questsCfg.value[ACHIEVEMENTS_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
+    contentCtor = @() questsWndPage(Computed(@() questsCfg.get()[ACHIEVEMENTS_TAB]), mkAchievement, ACHIEVEMENTS_TAB)
+    isVisible = Computed(@() questsCfg.get()[ACHIEVEMENTS_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
   }
   {
     id = PROMO_TAB
@@ -214,8 +214,8 @@ let tabs = [
     image = "ui/gameuiskin#quest_promo_icon.svg"
     imageSizeMul = 0.9
     isFullWidth = true
-    contentCtor = @() questsWndPage(Computed(@() questsCfg.value[PROMO_TAB]), mkQuest, PROMO_TAB)
-    isVisible = Computed(@() questsCfg.value[PROMO_TAB].findindex(@(s) questsBySection.value[s].len() > 0) != null)
+    contentCtor = @() questsWndPage(Computed(@() questsCfg.get()[PROMO_TAB]), mkQuest, PROMO_TAB)
+    isVisible = Computed(@() questsCfg.get()[PROMO_TAB].findindex(@(s) questsBySection.get()[s].len() > 0) != null)
   }
 ]
 

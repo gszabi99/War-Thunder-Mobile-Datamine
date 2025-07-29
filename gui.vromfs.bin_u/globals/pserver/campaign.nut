@@ -16,7 +16,7 @@ let campaignsLevelInfo = Computed(@()(servProfile.get()?.levelInfo ?? {}))
 let savedCampaign = Computed(@() campaignsLevelInfo.get().findindex(@(i) i?.isCurrent ?? false)) 
 let isAnyCampaignSelected = Computed(@() (selectedCampaign.value ?? savedCampaign.value) != null)
 
-let campaignsList = Computed(@() serverConfigs.value?.circuit.campaigns.available ?? [ defaultCampaign ])
+let campaignsList = Computed(@() serverConfigs.get()?.circuit.campaigns.available ?? [ defaultCampaign ])
 
 let curCampaign = Computed(@()
   campaignsList.value.contains(selectedCampaign.value) ? selectedCampaign.value

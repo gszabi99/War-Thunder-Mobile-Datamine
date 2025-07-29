@@ -60,10 +60,10 @@ let lbRewards = Computed(function() {
   return res
 })
 
-let curLbRewards = Computed(@() lbRewards.value?[curLbCfg.value?.gameMode] ?? [])
+let curLbRewards = Computed(@() lbRewards.value?[curLbCfg.get()?.gameMode] ?? [])
 
 let curLbTimeRange = Computed(function() {
-  let { gameMode = null } = curLbCfg.value
+  let { gameMode = null } = curLbCfg.get()
   if (gameMode == null)
     return null
   foreach(data in seasonRewards.value?.current ?? [])

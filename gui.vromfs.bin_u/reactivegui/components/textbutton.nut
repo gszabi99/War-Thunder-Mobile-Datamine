@@ -134,7 +134,7 @@ function mkButtonContentWithHotkey(stateFlags, hotkeys, content, ovr = {}) {
     let hotkey = isHovered.value ? btnA
       : isHotkeyDisabled.value ? null
       : hotkeyBase
-    if (!isGamepad.value || hotkey == null)
+    if (!isGamepad.get() || hotkey == null)
       return res
 
     return res.__update({

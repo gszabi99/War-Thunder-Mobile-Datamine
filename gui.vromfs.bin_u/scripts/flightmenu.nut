@@ -1,7 +1,7 @@
-from "%scripts/dagui_natives.nut" import toggle_freecam, in_flight_menu, is_freecam_enabled,
-  do_player_bailout, close_ingame_gui, is_player_can_bailout, is_camera_not_flight
-from "gameplayBinding" import is_game_paused, pause_game
-from "app" import is_dev_version, is_offline_version
+from "%scripts/dagui_natives.nut" import toggle_freecam, is_freecam_enabled
+from "gameplayBinding" import closeIngameGui, doPlayerBailout, inFlightMenu,
+  isCameraNotFlight, isPlayerCanBailout
+from "app" import is_dev_version, is_offline_version, isGamePaused, pauseGame
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 from "%globalScripts/ecs.nut" import *
@@ -18,7 +18,8 @@ let { is_multiplayer } = require("%scripts/util.nut")
 let { isInFlightMenu, isInBattle, canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
 let { is_benchmark_game_mode, get_game_mode, get_game_type, get_local_mplayer } = require("mission")
 let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer, get_respawns_left,
-  quit_mission_after_complete, restart_mission, get_mission_restore_type, get_mission_status
+  quit_mission_after_complete, restart_mission, get_mission_restore_type, get_mission_status,
+  is_ready_to_die, ERT_MANUAL, MISSION_STATUS_RUNNING, MISSION_STATUS_SUCCESS, MISSION_STATUS_FAIL
 } = require("guiMission")
 
 function canRestart() {
@@ -32,8 +33,8 @@ function canBailout() {
   let gm = get_game_mode()
   return (get_mission_restore_type() != ERT_MANUAL || gm == GM_TEST_FLIGHT)
     && !is_benchmark_game_mode()
-    && !is_camera_not_flight()
-    && is_player_can_bailout()
+    && !isCameraNotFlight()
+    && isPlayerCanBailout()
     && get_mission_status() == MISSION_STATUS_RUNNING
 }
 
@@ -42,9 +43,9 @@ let isMissionFailed = @() get_mission_status() == MISSION_STATUS_FAIL
 function closeFlightMenu() {
   if (isMissionFailed())
     return
-  in_flight_menu(false) 
-  if (is_game_paused())
-    pause_game(false)
+  inFlightMenu(false) 
+  if (isGamePaused())
+    pauseGame(false)
   isInFlightMenu(false)
 }
 
@@ -66,7 +67,7 @@ function sendDisconnectMessage() {
 
 function doBailout() {
   if (canBailout())
-    do_player_bailout()
+    doPlayerBailout()
 
   closeFlightMenu()
 }
@@ -78,9 +79,9 @@ subscribeFMsgBtns({
   function fMenuQuitFailedMission(_) {
     quit_to_debriefing()
     interrupt_multiplayer(true)
-    in_flight_menu(false)
-    if (is_game_paused())
-      pause_game(false)
+    inFlightMenu(false)
+    if (isGamePaused())
+      pauseGame(false)
   }
 
   fMenuBailout = @(_) doBailout()
@@ -164,7 +165,7 @@ function bailout() {
 
   if (get_respawns_left() == 0 || !isSlotsAvailable)
     msg = "\n\n".concat(msg, loc("flightmenu/thisWillCountAsDeserter"))
-  else if (!isFreeSlotsAvailable)
+  else if (!isFreeSlotsAvailable && !is_ready_to_die())
     msg = "\n\n".concat(msg, loc("flightmenu/thisWillCountAsDeserterIfNotUseSpare"))
 
   openConfirmMsg(msg, loc("flightmenu/btnLeaveTheTank"), "fMenuBailout")
@@ -222,9 +223,9 @@ let flightMenuButtons = [
 ]
 
 function gui_start_flight_menu(...) {
-  in_flight_menu(true)
-  if (!is_game_paused())
-   pause_game(true)
+  inFlightMenu(true)
+  if (!isGamePaused())
+   pauseGame(true)
 
   eventbus_send("FlightMenu_UpdateButtonsList", {
     buttons = flightMenuButtons.filter(@(b) b.isVisible()).map(@(b) b.name)
@@ -240,15 +241,15 @@ eventbus_subscribe("gui_start_flight_menu_psn", function gui_start_flight_menu_p
 eventbus_subscribe("gui_start_flight_menu_help", function gui_start_flight_menu_help() {
   
   deferOnce(function() {
-    close_ingame_gui()
-    if (is_game_paused())
-      pause_game(false)
+    closeIngameGui()
+    if (isGamePaused())
+      pauseGame(false)
   })
 })
 
 function quit_mission() {
-  in_flight_menu(false)
-  pause_game(false)
+  inFlightMenu(false)
+  pauseGame(false)
   requestEarlyExitRewards()
 
   if (is_multiplayer())

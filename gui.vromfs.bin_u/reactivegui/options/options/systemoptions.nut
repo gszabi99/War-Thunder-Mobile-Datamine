@@ -5,8 +5,7 @@ let { isDownloadedFromSite } = require("%appGlobals/clientState/clientState.nut"
 let { isDebugTouchesActive } = require("%rGui/debugTools/debugTouches.nut")
 let { OPT_SHOW_TOUCHES_ENABLED, mkOptionValue, optionsVersion } = require("%rGui/options/guiOptions.nut")
 let { isGameAutoUpdateEnabled, gameAutoUpdateList } = require("gameAutoUpdateOption.nut")
-let { isBackgroundUpdateVisible, isBackgroundUpdateEnabled, backgroundUpdateList } = require("backgroundUpdateOption.nut")
-let { allow_background_resource_update, allow_apk_update } = require("%appGlobals/permissions.nut")
+let { allow_apk_update } = require("%appGlobals/permissions.nut")
 let { reset_gui_options } = require("controlsOptions")
 let { reset_volumes } = require("soundOptions")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
@@ -17,14 +16,6 @@ let autoUpdateSetting = {
   value = isGameAutoUpdateEnabled
   list = Computed(@() allow_apk_update.get() ? gameAutoUpdateList : [])
   valToString = @(v) loc($"options/autoUpdate/{v}")
-}
-
-let backgroundUpdateSetting = {
-  locId = "options/backgroundUpdate"
-  ctrlType = OCT_LIST
-  value = isBackgroundUpdateEnabled
-  list = Computed(@() allow_background_resource_update.get() ? backgroundUpdateList : [])
-  valToString = @(v) loc (v ? "options/enable" : "options/disable")
 }
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
@@ -62,7 +53,6 @@ let resetControlsButton = {
 return {
   systemOptions = [
     isDownloadedFromSite ? autoUpdateSetting : null
-    isBackgroundUpdateVisible ? backgroundUpdateSetting : null
     showTouchesSetting
     resetControlsButton
   ]

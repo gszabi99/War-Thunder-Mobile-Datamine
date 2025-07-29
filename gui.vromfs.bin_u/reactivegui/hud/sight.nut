@@ -10,7 +10,7 @@ let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
 let { crosshairColor, scopeSize } = require("%rGui/hud/commonSight.nut")
 let { targetSelectionProgress, asmCaptureProgress } = require("%rGui/hud/targetSelectionProgress.nut")
 let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
-let { isHrosshairVisibile } = require("shipState.nut")
+let { isHrosshairVisibile, aimModulePos } = require("shipState.nut")
 
 let crosshairColorFire = Color(70, 70, 70)
 let reloadColorPrimary = 0xCC23CACC
@@ -26,6 +26,7 @@ let pointSize = hdpxi(10)
 let crosshairLineSize = hdpx(10)
 let crosshairReloadSize = (1.7 * crosshairSize).tointeger()
 let reloadImageInZoom = getSvgImage("reload_indication_in_zoom", crosshairReloadSize)
+let moduleMarkSize = hdpxi(35)
 
 let fireIncreaseSizeAnimTime = 0.2
 let fireDecreaseSizeAnimTime = 0.4
@@ -81,14 +82,14 @@ function mkReloadPartData(action, color) {
   }
 }
 
-let reloadSecAction = Computed(@() isSecondaryBulletsSame.value ? secondaryAction.value : null)
+let reloadSecAction = Computed(@() isSecondaryBulletsSame.get() ? secondaryAction.value : null)
 let reloadIndicator = @() {
   watch = [primaryAction, reloadSecAction]
   size = [crosshairReloadSize, crosshairReloadSize]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   children = [
-    mkReloadPartData(primaryAction.value, reloadColorPrimary)
+    mkReloadPartData(primaryAction.get(), reloadColorPrimary)
     mkReloadPartData(reloadSecAction.value, reloadColorSecondary)
   ]
     .filter(@(v) v != null)
@@ -170,6 +171,27 @@ let mkCrosshairAutoAim = @(color) {
   children = reloadIndicator
 }
 
+let aimModulePosUpdate = @() {
+  transform = {
+    translate = [
+      aimModulePos.get().x,
+      aimModulePos.get().y
+    ]
+  }
+}
+
+let aimModuleIndicator = {
+  behavior = Behaviors.RtPropUpdate
+  size = [moduleMarkSize, moduleMarkSize]
+  pos = [-saBorders[0] - moduleMarkSize * 0.5, -saBorders[1] - moduleMarkSize * 0.5]
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#ship_aa_caliber_sight.svg:{moduleMarkSize}:{moduleMarkSize}")
+  color = crosshairColor
+  hplace = ALIGN_LEFT
+  vplace = ALIGN_TOP
+  update = aimModulePosUpdate
+}
+
 let sightCommands = [
   [VECTOR_LINE, 3, 0, 0, 5, 0, 95, 3, 100],
   [VECTOR_LINE, 97, 0, 100, 5, 100, 95, 97, 100],
@@ -195,13 +217,14 @@ let cancelShootMark = {
 }
 
 let shipSight = @() {
-  watch = [isCurHoldWeaponInCancelZone, hasCrosshairForWeapon]
+  watch = [isCurHoldWeaponInCancelZone, hasCrosshairForWeapon, aimModulePos]
   size = flex()
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
     targetSelectionProgress
     asmCaptureProgress
+    aimModulePos.get().x > 0 && aimModulePos.get().y > 0 ? aimModuleIndicator : null
     !isHrosshairVisibile.value ? null
       : isCurHoldWeaponInCancelZone.value ? cancelShootMark
       : !hasCrosshairForWeapon.value ? sightFrame

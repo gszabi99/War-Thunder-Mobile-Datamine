@@ -35,3 +35,4 @@ subscribeDebuffWarning(tankState.hasDebuffTurretDrive, "turret_gear_state_indica
 subscribeDebuffWarning(tankState.hasDebuffEngine, "engine_state_indicator", loc("hint/debuff/engine"))
 subscribeDebuffWarning(tankState.hasDebuffTracks, "track_state_indicator", loc("hint/debuff/tracks"))
 subscribeDebuffWarning(tankState.hasDebuffFire, "hud_debuff_fire", loc("hint/debuff/tank_fire"))
+subscribeDebuffWarning(tankState.hasDebuffFireExternal, "hud_debuff_fire", loc("hint/debuff/tank_fire_external"))

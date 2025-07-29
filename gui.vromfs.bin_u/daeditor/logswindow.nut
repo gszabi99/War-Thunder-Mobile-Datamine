@@ -1,15 +1,13 @@
+import "dagor.debug" as dagorDebug
+from "dagor.clipboard" import set_clipboard_text
 from "%darg/ui_imports.nut" import *
-
 from "%sqstd/ecs.nut" import *
-
-let {LogsWindowId} = require("state.nut")
-let {hasNewLogerr} = require("%daeditor/state/logsWindow.nut")
-let {colors} = require("components/style.nut")
+let { LogsWindowId } = require("state.nut")
+let { hasNewLogerr } = require("%daeditor/state/logsWindow.nut")
+let { colors } = require("components/style.nut")
 let textButton = require("components/textButton.nut")
-let {isWindowVisible} = require("components/window.nut")
-let {makeVertScroll} = require("%daeditor/components/scrollbar.nut")
-let dagorDebug = require("dagor.debug")
-let {set_clipboard_text} = require("dagor.clipboard")
+let { isWindowVisible } = require("components/window.nut")
+let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
 
 let scrollHandler = ScrollHandler()
 let logExpandedTexScroll = ScrollHandler()

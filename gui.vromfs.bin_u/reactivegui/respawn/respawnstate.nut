@@ -77,15 +77,15 @@ let canUseSpare = Computed(@() (respawnUnitItems.get()?.spare ?? 0) > 0)
 
 let respawnSlots = Computed(function() {
   let res = []
-  if (respawnUnitInfo.value == null)
+  if (respawnUnitInfo.get() == null)
     return res
   let rMask = (readySlotsMask.value | spareSlotsMask.value) & ~disabledSlotsMask.value
   let sMask = spareSlotsMask.value
   let defMods = respawnUnitItems.get()
-  res.append(mkSlot(0, respawnUnitInfo.value, defMods, rMask, sMask))
-  foreach (idx, sUnit in respawnUnitInfo.value?.platoonUnits ?? [])
+  res.append(mkSlot(0, respawnUnitInfo.get(), defMods, rMask, sMask))
+  foreach (idx, sUnit in respawnUnitInfo.get()?.platoonUnits ?? [])
     res.append(mkSlot(idx + 1, sUnit, defMods, rMask, sMask))
-  foreach (sUnit in respawnUnitInfo.value?.lockedUnits ?? [])
+  foreach (sUnit in respawnUnitInfo.get()?.lockedUnits ?? [])
     res.append(mkSlot(res.len(), sUnit, defMods).__update({ reqLevel = sUnit?.reqLevel ?? 0, isLocked = true }))
   if (!hasRespawnSeparateSlots.get()) {
     let { level = -1, isCollectible = false, isPremium = false, isUpgraded = false } = respawnUnitInfo.get()
@@ -271,12 +271,12 @@ function cancelRespawn() {
 function tryAutospawn() {
   let slot = respawnSlots.value?[0]
   if (slot == null) {
-    logR("Skip auto spawn because respawnUnitInfo.value is null")
+    logR("Skip auto spawn because respawnUnitInfo.get() is null")
     return
   }
 
   let { name, mods } = slot
-  let { level = 0 } = respawnUnitInfo.value
+  let { level = 0 } = respawnUnitInfo.get()
   respawn(slot, getDefaultBulletsForSpawn(name, level, mods))
 }
 
@@ -306,12 +306,12 @@ isInRespawn.subscribe(function(v) {
   else
     clearTimer(updateMasks)
 })
-if (isInRespawn.value)
+if (isInRespawn.get())
   onEnterRespawn()
 
 isInRespawn.subscribe(function(v) {
   if (v && !hasAvailableSlot.value)
-    logR($"On init respawn screen slots not available. respawns_left = {respawnsLeft.value}, hasUnitToSpawn = {respawnUnitInfo.value != null}")
+    logR($"On init respawn screen slots not available. respawns_left = {respawnsLeft.get()}, hasUnitToSpawn = {respawnUnitInfo.get() != null}")
 })
 
 register_command(function() {

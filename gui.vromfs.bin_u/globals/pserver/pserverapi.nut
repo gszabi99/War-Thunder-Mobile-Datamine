@@ -20,6 +20,7 @@ const PROGRESS_LOOTBOX = "LootboxInProgress"
 const PROGRESS_LEVEL = "LevelInProgress"
 const PROGRESS_MODS = "ModsInProgress"
 const PROGRESS_SKINS = "SkinsInProgress"
+const PROGRESS_DECALS = "DecalsInProgress"
 const PROGRESS_BOOSTER = "BoosterInProgress"
 const PROGRESS_SLOT = "SlotInProgress"
 const PROGRESS_PERSONAL_GOODS = "PersonalGoodsInProgress"
@@ -246,6 +247,7 @@ return {
   levelInProgress = mkProgress(PROGRESS_LEVEL)
   modsInProgress = mkProgress(PROGRESS_MODS)
   skinsInProgress = mkProgress(PROGRESS_SKINS)
+  decalsInProgress = mkProgress(PROGRESS_DECALS)
   boosterInProgress = mkProgress(PROGRESS_BOOSTER)
   slotInProgress = mkProgress(PROGRESS_SLOT)
   personalGoodsInProgress = mkProgress(PROGRESS_PERSONAL_GOODS)
@@ -270,6 +272,8 @@ return {
   royal_beta_units_unlock = @(cb = null) request({ method = "royal_beta_units_unlock" }, cb)
   generate_full_offline_profile = @(cb = null) request({ method = "generate_full_offline_profile" }, cb)
   process_currency_write_off = @(cb = null) request({ method = "process_currency_write_off" }, cb)
+  add_all_decals = @(cb = null) request({ method = "add_all_decals" }, cb)
+  remove_all_decals = @(cb = null) request({ method = "remove_all_decals" }, cb)
 
   reset_campaigns = @(campaigns, cb = null) request({
     method = "reset_campaigns"
@@ -901,5 +905,26 @@ return {
   debug_apply_deserter_lock_time = @(sessionId, campaign, timestamp, cb = null) request({
     method = "debug_apply_deserter_lock_time"
     params = { sessionId, campaign, timestamp }
+  }, cb)
+
+  buy_decal = @(decalName, currencyId, price, cb = null) request({
+    method = "buy_decal"
+    params = { decalName, currencyId, price }
+    progressId = PROGRESS_DECALS
+    progressValue = decalName
+  }, cb)
+
+  add_decal_by_name = @(decalName, cb = null) request({
+    method = "add_decal_by_name"
+    params = { decalName }
+    progressId = PROGRESS_DECALS
+    progressValue = decalName
+  }, cb)
+
+  remove_decal_by_name = @(decalName, cb = null) request({
+    method = "remove_decal_by_name"
+    params = { decalName }
+    progressId = PROGRESS_DECALS
+    progressValue = decalName
   }, cb)
 }

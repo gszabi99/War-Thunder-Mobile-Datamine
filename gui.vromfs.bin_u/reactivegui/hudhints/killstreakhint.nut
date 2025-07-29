@@ -22,7 +22,7 @@ const MP_TEAM_NEUTRAL = 0
 let getPlayerColor = @(player) player.isLocal ? localPlayerColor
   : player?.isInHeroSquad ? mySquadLightColor
   : player.team == MP_TEAM_NEUTRAL ? null
-  : player.team == localMPlayerTeam.value ? teamBlueLightColor
+  : player.team == localMPlayerTeam.get() ? teamBlueLightColor
   : teamRedLightColor
 
 function getColoredName(player) {
@@ -64,7 +64,7 @@ function mkParticipantIcon(info, idx) {
 }
 
 let participantsRow = @(participants, slotsCount) function() {
-  let firstTeam = localMPlayerTeam.value == MP_TEAM_NEUTRAL ? 1 : localMPlayerTeam.value
+  let firstTeam = localMPlayerTeam.get() == MP_TEAM_NEUTRAL ? 1 : localMPlayerTeam.get()
   let list = { [true] = [], [false] = [] }
   foreach (p in participants)
     if (p.participant != null)

@@ -28,14 +28,14 @@ let mkCatIcon = @(cat) {
 
 function tabData(tab, ovr = {}) {
   let { id = "", locId  = "" } = tab
-  let modsSorted = Computed(@() modsByCategory.value?[id].values().sort(modsSort) ?? [])
-  let purchasedModName = Computed(@() modsSorted.value.findvalue(@(v) unitMods.value?[v.name] == false)?.name)
-  let activeModName = Computed(@() modsSorted.value.findvalue(@(v) unitMods.value?[v.name] == true)?.name)
+  let modsSorted = Computed(@() modsByCategory.get()?[id].values().sort(modsSort) ?? [])
+  let purchasedModName = Computed(@() modsSorted.value.findvalue(@(v) unitMods.get()?[v.name] == false)?.name)
+  let activeModName = Computed(@() modsSorted.value.findvalue(@(v) unitMods.get()?[v.name] == true)?.name)
   let tabModName = Computed(@() activeModName.value ?? purchasedModName.value ?? modsSorted.value?[0]?.name)
-  let tabMod = Computed(@() mods.value?[tabModName.value])
+  let tabMod = Computed(@() mods.get()?[tabModName.value])
   let reqLevel = Computed(@() tabMod.value?.reqLevel ?? 0)
-  let isLocked = Computed(@() reqLevel.value > (unit.value?.level ?? 0))
-  let isPurchased = Computed(@() unitMods.value?[tabModName.value] != null)
+  let isLocked = Computed(@() reqLevel.value > (unit.get()?.level ?? 0))
+  let isPurchased = Computed(@() unitMods.get()?[tabModName.value] != null)
   let hasInactiveMod = Computed(@() !activeModName.value && purchasedModName.value != null)
 
   return {
@@ -104,7 +104,7 @@ function tabData(tab, ovr = {}) {
           hplace = ALIGN_LEFT
           vplace = ALIGN_TOP
           margin = hdpx(20)
-          children = (unseenModsByCategory.value?[id].len() ?? 0) > 0 && curCategoryId.value != id ? priorityUnseenMark : null
+          children = (unseenModsByCategory.get()?[id].len() ?? 0) > 0 && curCategoryId.get() != id ? priorityUnseenMark : null
         }
       ]
     }.__update(ovr)

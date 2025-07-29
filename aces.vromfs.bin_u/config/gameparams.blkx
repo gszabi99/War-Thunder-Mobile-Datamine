@@ -69,6 +69,7 @@
   "showEnemyAtKillZone": true,
   "effectsZNearOffsetInCockpit": 2.0,
   "invisibleSupportUnits": true,
+  "allowShipAnimCharInHangar": true,
   "unitDefaultVisibilityDistance": 2000.0,
   "sleeveFallFx": "hit_12_18mm_water",
   "minMassMultApexObjectsCollidedWithHero": 0.002,
@@ -210,6 +211,7 @@
   "killDistFromBattleAreaForTanks": 20.0,
   "maxTimeToReturnToMapForShips": 90.0,
   "killDistFromBattleAreaForShips": 300.0,
+  "safeUnderwaterTimeTanks": 7.0,
   "considerEnginePowerForHullAiming": true,
   "dynamicCubeTexSize": 256,
   "dynamicCubePos": [
@@ -369,6 +371,8 @@
   "dayTimeSpeed": 0.0,
   "syncWeatherPeriod": 1000000.0,
   "useMedicalKitWithToolkit": true,
+  "missionTeamTicketsPenaltyStatEnabled": true,
+  "missionTeamTicketsPenaltyStatDebug": true,
   "disableDamageForBombOwner": true,
   "maxTimeWaitFirstSpawn": 60.0,
   "debugRiTexture": "detail_concrete_tex_d",
@@ -9561,6 +9565,9 @@
     "velocityAlphaMul": 16.0,
     "velocityAlphaAdd": -1.9
   },
+  "framestat": {
+    "firstFramesToSkip": 100
+  },
   "haze": {
     "offsetScale": 0.0135,
     "distortionScale": 0.1,
@@ -16764,7 +16771,22 @@
       "pacific_island_medium_a",
       "pacific_island_medium_b",
       "pacific_island_small_a",
-      "pacific_island_small_b"
+      "pacific_island_small_b",
+      "canyon_cliff_big_a",
+      "canyon_cliff_big_b",
+      "canyon_cliff_big_c",
+      "canyon_cliff_hole",
+      "canyon_cliff_huge_a",
+      "canyon_cliff_huge_b",
+      "canyon_cliff_huge_c",
+      "canyon_cliff_platform_a",
+      "canyon_cliff_platform_b",
+      "canyon_cliff_platform_c",
+      "canyon_cliff_platform_a_part",
+      "canyon_cliff_platform_b_part",
+      "canyon_cliff_platform_c_part",
+      "canyon_rock_a",
+      "canyon_rock_b"
     ]
   },
   "rendinstOpt": {

@@ -4,7 +4,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { campProfile } = require("%appGlobals/pServer/campaign.nut")
 let { isForCampaign, dbgCampaignSelector } = require("debugCampaignSelector.nut")
 
-let tabs = Computed(@() (isForCampaign.value ? campProfile.value : servProfile.value)
+let tabs = Computed(@() (isForCampaign.get() ? campProfile.value : servProfile.value)
   .filter(@(v) type(v) == "table" || type(v) == "array")
   .map(@(data, id) { id, data })
   .values()

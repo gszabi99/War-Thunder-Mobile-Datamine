@@ -39,7 +39,7 @@
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
   "expClass": "exp_tank",
-  "mass": 31800.0,
+  "mass": 32638.0,
   "bulletHitFx": "ground_model_hit",
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
@@ -1552,9 +1552,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 30300.0,
+      "Empty": 31135.0,
       "Fuel": 300.0,
-      "TakeOff": 30600.0,
+      "TakeOff": 31435.0,
       "momentOfInertia": [
         2.5,
         2.5,

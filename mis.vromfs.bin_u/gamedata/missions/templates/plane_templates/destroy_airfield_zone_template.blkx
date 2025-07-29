@@ -226,8 +226,9 @@
       },
       "actions": {
         "gameMPChangeScore": {
-          "value": -1,
+          "value": -3,
           "valueSystem": "percentage",
+          "changeReason": "airport_died",
           "team": "A"
         }
       },
@@ -255,8 +256,9 @@
       },
       "actions": {
         "gameMPChangeScore": {
-          "value": -1,
+          "value": -3,
           "valueSystem": "percentage",
+          "changeReason": "airport_died",
           "team": "B"
         }
       },

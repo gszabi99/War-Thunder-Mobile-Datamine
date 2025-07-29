@@ -18,7 +18,7 @@ let unreadMark = priorityUnseenMark.__merge({ margin  = 2 * borderWidth })
 function mkTimeMark(notify) {
   let { time } = notify
   let timeText = Computed(function() {
-    local showTime = serverTime.value - time
+    local showTime = serverTime.get() - time
     showTime = showTime - (showTime % 60)
     if (showTime <= 0)
       return loc("justNow")

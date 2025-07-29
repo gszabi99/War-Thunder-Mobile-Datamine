@@ -1603,7 +1603,7 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "fw_190a_5_u14_default",
+        "name": "fw_190a_5_u14_prem_default",
         "blk": "gameData/FlightModels/weaponPresets/fw_190a_5_u14_default.blk"
       },
       {

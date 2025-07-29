@@ -101,13 +101,13 @@ let rouletteOpenCount = Computed(@() receivedRewardsCur.value?.openCount
 
 let rouletteFixedRewards = Computed(function() {
   let res = []
-  let { fixedRewards = {} } = serverConfigs.value?.lootboxesCfg[rouletteOpenId.get()]
+  let { fixedRewards = {} } = serverConfigs.get()?.lootboxesCfg[rouletteOpenId.get()]
   let { total = {} } = servProfile.get()?.lootboxStats[rouletteOpenId.get()]
   foreach(countStr, fr in fixedRewards) {
     if (fr?.lockedBy.findvalue(@(r) (total?[r] ?? 0) > 0) != null)
       continue
     let rewardId = fr?.rewardId ?? fr 
-    let reward = serverConfigs.value?.rewardsCfg[rewardId]
+    let reward = serverConfigs.get()?.rewardsCfg[rewardId]
     let viewInfo = reward != null ? getRewardsViewInfo(reward) : []
     if (viewInfo.len() != 0)
       res.append({ count = countStr.tointeger(), viewInfo })
@@ -277,14 +277,14 @@ let openDelayed = @() deferOnce(function() {
     return
 
   let id = nextOpenId.value
-  let { openType, rewardsList, lastReward } = calcOpenInfo(id, servProfile.value, serverConfigs.value)
+  let { openType, rewardsList, lastReward } = calcOpenInfo(id, servProfile.value, serverConfigs.get())
   if (rewardsList.len() == 0 || rewardsList.findvalue(@(v) v != rewardsList[0]) == null) { 
     open_lootbox_several(id, nextOpenCount.value)
     return
   }
 
-  let jackpots = calcJackpotOpens(id, nextOpenCount.value, servProfile.value, serverConfigs.value)
-    .map(@(j) j.__update(calcOpenInfo(j.jackpotId, servProfile.value, serverConfigs.value)))
+  let jackpots = calcJackpotOpens(id, nextOpenCount.value, servProfile.value, serverConfigs.get())
+    .map(@(j) j.__update(calcOpenInfo(j.jackpotId, servProfile.value, serverConfigs.get())))
 
   log($"[ROULETTE] Open lootbox = {id} x{nextOpenCount.value}, jackpots count = {jackpots.len()}")
 
@@ -378,7 +378,7 @@ function logOpenConfig() {
 
 register_command(
   function(name) {
-    let { lootboxesCfg = null, rewardsCfg = {} } = serverConfigs.value
+    let { lootboxesCfg = null, rewardsCfg = {} } = serverConfigs.get()
     let weights = lootboxesCfg?[name].rewards
     if (weights == null) {
       console_print($"lootbox {name} does not exists") 

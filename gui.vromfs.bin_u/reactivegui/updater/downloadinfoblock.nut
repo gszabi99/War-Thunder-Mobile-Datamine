@@ -14,24 +14,24 @@ let progress = @() {
   size = [progressSize, progressSize]
   rendObj = ROBJ_PROGRESS_CIRCULAR
   image = Picture($"ui/gameuiskin#circular_progress_1.svg:{progressSize}:{progressSize}")
-  fgColor = isStageDownloading.value ? 0xFFFFFFFF : checkingColor
+  fgColor = isStageDownloading.get() ? 0xFFFFFFFF : checkingColor
   bgColor = 0x33555555
-  fValue = 0.01 * (progressPercent.value ?? 0)
+  fValue = 0.01 * (progressPercent.get() ?? 0)
 
   children = {
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     rendObj = ROBJ_TEXT
-    text = progressPercent.value == null ? "-" : $"{progressPercent.value}%"
-    color = isStageDownloading.value ? 0xFFFFFFFF : checkingColor
+    text = progressPercent.get() == null ? "-" : $"{progressPercent.get()}%"
+    color = isStageDownloading.get() ? 0xFFFFFFFF : checkingColor
   }.__update(fontVeryVeryTinyAccented)
 }
 
 function statusBlock() {
-  let statusText = isDownloadPaused.value ? loc("updater/status/paused/short")
+  let statusText = isDownloadPaused.get() ? loc("updater/status/paused/short")
     : isDownloadPausedByConnection.value ? loc("updater/status/pausedByConnection/short")
-    : updaterError.value != null ? loc($"updater/error/{updaterError.value}")
-    : !isStageDownloading.value ? loc("pl1/check_profile")
+    : updaterError.get() != null ? loc($"updater/error/{updaterError.get()}")
+    : !isStageDownloading.get() ? loc("pl1/check_profile")
     : loc("updater/status/downloading/short")
   return {
     watch = [isDownloadPaused, updaterError, downloadAddonsStr, isStageDownloading, isDownloadPausedByConnection]
@@ -51,7 +51,7 @@ function statusBlock() {
         rendObj = ROBJ_TEXTAREA
         behavior = [Behaviors.TextArea, Behaviors.Marquee]
         maxHeight = hdpx(60)
-        text = downloadAddonsStr.value
+        text = downloadAddonsStr.get()
         color = 0xFFC0C0C0
 
         orientation = O_VERTICAL
@@ -94,6 +94,6 @@ let downloadInfoBlock = @() {
 
 return @() {
   watch = wantStartDownloadAddons
-  children = wantStartDownloadAddons.value.len() == 0 ? null
+  children = wantStartDownloadAddons.get().len() == 0 ? null
     : downloadInfoBlock
 }

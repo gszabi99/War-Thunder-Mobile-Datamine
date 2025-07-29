@@ -1710,7 +1710,7 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "p_40e_default",
+        "name": "p-40c_china_default",
         "blk": "gameData/FlightModels/weaponPresets/p_40e_default.blk"
       },
       {

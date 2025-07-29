@@ -16,7 +16,7 @@ return @() {
   children = [
     loadingAnimBg
     isUpdateInProgress.value ? mkLoginUpdater()
-      : isInLoadingScreen.value || isLoginStarted.value ? loadingBeforeLogin
+      : isInLoadingScreen.get() || isLoginStarted.value ? loadingBeforeLogin
       : mkLoginWnd()
     mkTitleLogo({ margin = saBordersRv })
   ]

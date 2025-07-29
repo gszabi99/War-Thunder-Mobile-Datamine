@@ -16,6 +16,7 @@
       "%lang/menu_multiplayer.csv",
       "%lang/menu_options.csv",
       "%lang/menu_discount_description.csv",
+      "%lang/decals.csv",
       "%lang/missions_fails.csv",
       "%lang/missions_hints.csv",
       "%lang/missions_locations.csv",

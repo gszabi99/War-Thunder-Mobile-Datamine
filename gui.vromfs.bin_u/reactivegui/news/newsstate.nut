@@ -93,10 +93,10 @@ let curArticleId = Computed(function() {
 let curArticleContent = Computed(@() receivedArticles.value?[curArticleId.value])
 let curArticleIdx = Computed(@() newsfeed.value.findindex(@(v) v.id == curArticleId.value) ?? -1)
 let haveUnseenArticles = Computed(@() unseenArticleId.value != null)
-let needShowNewsWnd = Computed(@() isMainMenuAttached.value
+let needShowNewsWnd = Computed(@() isMainMenuAttached.get()
   && haveUnseenArticles.value
   && (sharedStats.value?.sessionsCountPersist ?? 0) >= MIN_SESSIONS_TO_FORCE_SHOW
-  && !hasModalWindows.value
+  && !hasModalWindows.get()
   && (curArticleContent.value?.id ?? EMPTY_PAGE_ID) != EMPTY_PAGE_ID
 )
 

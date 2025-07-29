@@ -12,10 +12,10 @@ return function mkStoredAlarm(persistId, period = 604800 ) {
   let storeId = $"{persistId}Time"
 
   lastTime.subscribe(function(value) {
-    if (serverTime.value > value + period)
+    if (serverTime.get() > value + period)
       setTimerPassed()
     else
-      resetTimeout(value + period - serverTime.value, setTimerPassed)
+      resetTimeout(value + period - serverTime.get(), setTimerPassed)
   })
 
   let loadStoredTime = @() lastTime.set(get_local_custom_settings_blk()?[storeId] ?? 0)

@@ -126,12 +126,12 @@ function mkLootboxImageWithTimer(name, width, timeRange, reqPlayerLevel, sizeMul
   let blockSize = [width, lootboxHeight]
   let { start = 0, end = 0 } = timeRange
   let isActive = Computed(@() bestCampLevel.value >= reqPlayerLevel
-    && start < serverTime.value
-    && (end <= 0 || end > serverTime.value))
+    && start < serverTime.get()
+    && (end <= 0 || end > serverTime.get()))
   let timeText = Computed(@() bestCampLevel.value < reqPlayerLevel
       ? loc("lootbox/reqCampaignLevel", { reqLevel = reqPlayerLevel })
-    : start > serverTime.value
-      ? loc("lootbox/availableAfter", { time = secondsToHoursLoc(start - serverTime.value) })
+    : start > serverTime.get()
+      ? loc("lootbox/availableAfter", { time = secondsToHoursLoc(start - serverTime.get()) })
     : "")
 
   return @() {
@@ -231,8 +231,8 @@ function mkPurchaseBtns(lootbox, onPurchase) {
   let currencyFullId = mkCurrencyFullId(currencyId)
   let { start = 0, end = 0 } = timeRange
   let isActive = Computed(@() bestCampLevel.value >= reqPlayerLevel
-    && start < serverTime.value
-    && (end <= 0 || end > serverTime.value))
+    && start < serverTime.get()
+    && (end <= 0 || end > serverTime.get()))
   let adReward = Computed(@() schRewards.value.findvalue(
     @(r) (null != r.rewards.findvalue(@(g) g.id == name && g.gType == G_LOOTBOX))))
   let canOpenX10 = Computed(function(){
@@ -255,13 +255,13 @@ function mkPurchaseBtns(lootbox, onPurchase) {
       textButtonPricePurchase(hasBulkPurchase ? utf8ToUpper(loc("events/oneReward")) : null,
         mkCurrencyComp(price, currencyFullId.get()),
         @() onPurchase(lootbox, price, currencyFullId.get()),
-        (!isActive.value || (balance.value?[currencyFullId.get()] ?? 0) < price ? buttonStyles.COMMON : {})
+        (!isActive.value || (balance.get()?[currencyFullId.get()] ?? 0) < price ? buttonStyles.COMMON : {})
           .__merge({ hotkeys = ["^J:X"] }))
       !hasBulkPurchase ? null
         : textButtonPricePurchase(utf8ToUpper(loc("events/tenRewards")),
             mkCurrencyComp(price * 10, currencyFullId.get()),
             @() !canOpenX10.get() ? null : onPurchase(lootbox, price * 10, currencyFullId.get(), 10),
-            (!isActive.value || (balance.value?[currencyFullId.get()] ?? 0) < price * 10
+            (!isActive.value || (balance.get()?[currencyFullId.get()] ?? 0) < price * 10
               || !canOpenX10.get() ? buttonStyles.COMMON : {})
               .__merge({ hotkeys = ["^J:Y"], tooltipCtor = @() !canOpenX10.get() ? loc("x10Btn/desc") : null,
                 repayTime = 0 }))

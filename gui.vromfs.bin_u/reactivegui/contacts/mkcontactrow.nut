@@ -16,11 +16,11 @@ function onlineBlock(uid, onlineStatus, battleUnit) {
     : battleUnit.value != null
       ? "\n".concat(loc("status/in_battle"), loc(getCampaignPresentation(battleUnit.value?.campaign).headerLocId))
     : colorize(onlineColor, loc("contacts/online")))
-  let squadText = Computed(@() !isInSquad.value ? ""
-    : squadId.value == uid ? colorize(leaderColor, loc("status/squad_leader"))
-    : squadMembers.value?[uid].ready ? colorize(memberReadyColor, loc("status/squad_ready"))
-    : uid in squadMembers.value ? colorize(memberNotReadyColor, loc("status/squad_not_ready"))
-    : isInvitedToSquad.value?[uid] ? loc("status/squad_invited")
+  let squadText = Computed(@() !isInSquad.get() ? ""
+    : squadId.get() == uid ? colorize(leaderColor, loc("status/squad_leader"))
+    : squadMembers.get()?[uid].ready ? colorize(memberReadyColor, loc("status/squad_ready"))
+    : uid in squadMembers.get() ? colorize(memberNotReadyColor, loc("status/squad_not_ready"))
+    : isInvitedToSquad.get()?[uid] ? loc("status/squad_invited")
     : "")
   return @() {
     watch = [onlineText, squadText]
@@ -37,7 +37,7 @@ function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null) {
   let contact = Contact(userId)
   let info = mkPublicInfo(userId)
   let onlineStatus = mkContactOnlineStatus(userId)
-  let battleUnit = Computed(@() serverConfigs.value?.allUnits[presences.value?[userId].battleUnit])
+  let battleUnit = Computed(@() serverConfigs.get()?.allUnits[presences.get()?[userId].battleUnit])
   let stateFlags = Watched(0)
   let isHovered = Computed(@() (stateFlags.value & S_HOVER) != 0)
   return @() {

@@ -1045,6 +1045,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/sapi_shell.ivf",
         "recoilMultiplier": 0.3,
         "onHitChanceMultFire": 6.0,
         "relativeVelHitShift": [
@@ -2224,6 +2225,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/sapi_shell.ivf",
         "recoilMultiplier": 0.3,
         "onHitChanceMultFire": 6.0,
         "relativeVelHitShift": [
@@ -2416,6 +2418,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/sapi_shell.ivf",
         "recoilMultiplier": 0.3,
         "onHitChanceMultFire": 6.0,
         "relativeVelHitShift": [
@@ -4580,6 +4583,7 @@
           0.1,
           2.0
         ],
+        "shellAnimation": "video/shells_animations/sapi_shell.ivf",
         "recoilMultiplier": 0.3,
         "onHitChanceMultFire": 6.0,
         "relativeVelHitShift": [

@@ -30,7 +30,7 @@ let userstatInfoTables = mkUserstatWatch("infoTables")
 let statsInProgress = mkWatched(persist, "statsInProgress", {})
 let tablesActivityOvr = Watched({}) 
 
-let getStatsActualTimeLeft = @() (userstatStats.value?.timestamp ?? 0) + STATS_ACTUAL_TIMEOUT - serverTime.value
+let getStatsActualTimeLeft = @() (userstatStats.value?.timestamp ?? 0) + STATS_ACTUAL_TIMEOUT - serverTime.get()
 let isStatsActualByTime = Watched(getStatsActualTimeLeft() > 0)
 userstatStats.subscribe(function(_) {
   let timeLeft = getStatsActualTimeLeft()

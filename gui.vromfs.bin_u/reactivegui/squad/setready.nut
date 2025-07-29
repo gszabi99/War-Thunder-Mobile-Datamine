@@ -14,7 +14,7 @@ let { addonsSizes } = require("%appGlobals/updater/addonsState.nut")
 
 subscribeFMsgBtns({
   function squadChangeCampaignByLeader(_) {
-    let campaign = squadLeaderCampaign.value
+    let campaign = squadLeaderCampaign.get()
     if (curCampaign.value == campaign)
       return
     if (!campaignsList.value.contains(campaign)) {
@@ -22,7 +22,7 @@ subscribeFMsgBtns({
       return
     }
     let unit = servProfile.value?.units
-      .findvalue(@(_, name) serverConfigs.value?.allUnits[name].campaign == campaign)
+      .findvalue(@(_, name) serverConfigs.get()?.allUnits[name].campaign == campaign)
     if (unit == null)
       rewardTutorialMission(campaign)
     setCampaign(campaign)
@@ -30,7 +30,7 @@ subscribeFMsgBtns({
 })
 
 function showChangeCampaignMsg() {
-  if (!campaignsList.value.contains(squadLeaderCampaign.value)) {
+  if (!campaignsList.value.contains(squadLeaderCampaign.get())) {
     openFMsgBox({ text = loc("squad/cant_ready/leader_campaign_invalid") })
     return
   }
@@ -46,13 +46,13 @@ function showChangeCampaignMsg() {
 }
 
 function setReady(ready) {
-  if (ready == isReady.value || !isInSquad.value || isSquadLeader.value)
+  if (ready == isReady.get() || !isInSquad.get() || isSquadLeader.get())
     return
   if (!ready) {
     isReady(false)
     return
   }
-  if (curCampaign.value != squadLeaderCampaign.value) {
+  if (curCampaign.value != squadLeaderCampaign.get()) {
     showChangeCampaignMsg()
     return
   }

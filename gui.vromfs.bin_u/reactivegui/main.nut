@@ -64,10 +64,10 @@ local sceneAfterLogin = null
 local isAllScriptsLoaded = Watched(false)
 
 let forceHideCursor = Watched(false)
-let needCursorInHud = Computed(@() !isGamepad.value || !isHudAttached.value || hasModalWindows.value)
+let needCursorInHud = Computed(@() !isGamepad.get() || !isHudAttached.value || hasModalWindows.get())
 let needShowCursor  = Computed(@() !forceHideCursor.value
-                                  && needCursorForActiveInputDevice.value
-                                  && (!isInBattle.value || (isHudVisible.value && needCursorInHud.value)))
+                                  && needCursorForActiveInputDevice.get()
+                                  && (!isInBattle.get() || (isHudVisible.get() && needCursorInHud.value)))
 
 register_command(@() forceHideCursor(!forceHideCursor.value), "ui.force_hide_mouse_pointer")
 
@@ -139,9 +139,9 @@ let cursor = Cursor({
 let waitbox = @() {
   watch = waitboxes
   size = flex()
-  children = waitboxes.value.len() == 0 ? null
+  children = waitboxes.get().len() == 0 ? null
     : bgShadedDark.__merge({
-        key = waitboxes.value[0]
+        key = waitboxes.get()[0]
         size = flex()
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
@@ -153,7 +153,7 @@ let waitbox = @() {
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             halign = ALIGN_CENTER
-            text = waitboxes.value[0].text
+            text = waitboxes.get()[0].text
           }.__update(fontSmall)
           spinner
         ]
@@ -164,7 +164,7 @@ let waitbox = @() {
 return function() {
   let children = !isLoggedIn.value && isLoginRequired.value
       ? [sceneBeforeLogin, modalWindowsComponent]
-    : isInLoadingScreen.value ? [loadingScreen]
+    : isInLoadingScreen.get() ? [loadingScreen]
     : [sceneAfterLogin]
   children.append(hotkeysPanel, tooltipComp, inspectorRoot, debugSafeArea, fpsLineComp,
     deviceStateArea, waitbox, dbgOverlayComponent)

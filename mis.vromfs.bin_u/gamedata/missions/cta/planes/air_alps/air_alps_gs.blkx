@@ -7316,14 +7316,14 @@
         ],
         "props": {
           "squad_members": [
+            "t1_aaa_01",
+            "t1_aaa_02",
             "t1_aaa_03",
             "t1_aaa_04",
+            "t1_aaa_05",
+            "t1_aaa_06",
             "t1_aaa_07",
-            "t1_aaa_11",
-            "t1_aaa_14",
-            "t1_aaa_17",
-            "t1_aaa_21",
-            "t1_aaa_24"
+            "t1_aaa_08"
           ],
           "object_marking": 0
         }
@@ -7354,14 +7354,14 @@
         ],
         "props": {
           "squad_members": [
+            "t2_aaa_01",
             "t2_aaa_02",
+            "t2_aaa_03",
+            "t2_aaa_04",
             "t2_aaa_05",
-            "t2_aaa_08",
-            "t2_aaa_11",
-            "t2_aaa_15",
-            "t2_aaa_17",
-            "t2_aaa_21",
-            "t2_aaa_24"
+            "t2_aaa_06",
+            "t2_aaa_07",
+            "t2_aaa_08"
           ],
           "object_marking": 0
         }
@@ -7572,14 +7572,14 @@
         ],
         "props": {
           "squad_members": [
-            "t2_bunker01",
-            "t2_bunker02",
-            "t2_bunker03",
-            "t2_bunker04",
-            "t2_bunker05",
-            "t2_bunker06",
-            "t2_bunker07",
-            "t2_bunker08"
+            "t2_bunker_01",
+            "t2_bunker_02",
+            "t2_bunker_03",
+            "t2_bunker_04",
+            "t2_bunker_05",
+            "t2_bunker_06",
+            "t2_bunker_07",
+            "t2_bunker_08"
           ],
           "object_marking": 0
         }
@@ -7610,14 +7610,14 @@
         ],
         "props": {
           "squad_members": [
-            "t1_bunker01",
-            "t1_bunker02",
-            "t1_bunker03",
-            "t1_bunker04",
-            "t1_bunker05",
-            "t1_bunker06",
-            "t1_bunker07",
-            "t1_bunker08"
+            "t1_bunker_01",
+            "t1_bunker_02",
+            "t1_bunker_03",
+            "t1_bunker_04",
+            "t1_bunker_05",
+            "t1_bunker_06",
+            "t1_bunker_07",
+            "t1_bunker_08"
           ],
           "object_marking": 0
         }
@@ -8817,7 +8817,7 @@
         "way": {}
       },
       {
-        "name": "t1_aaa_03",
+        "name": "t1_aaa_01",
         "tm": [
           [
             0.939693,
@@ -8874,7 +8874,7 @@
         "way": {}
       },
       {
-        "name": "t1_aaa_14",
+        "name": "t1_aaa_02",
         "tm": [
           [
             0.973426,
@@ -8931,7 +8931,7 @@
         "way": {}
       },
       {
-        "name": "t1_aaa_17",
+        "name": "t1_aaa_03",
         "tm": [
           [
             -0.5373,
@@ -8988,7 +8988,7 @@
         "way": {}
       },
       {
-        "name": "t1_aaa_11",
+        "name": "t1_aaa_04",
         "tm": [
           [
             0.675591,
@@ -9045,7 +9045,7 @@
         "way": {}
       },
       {
-        "name": "t2_aaa_02",
+        "name": "t2_aaa_01",
         "tm": [
           [
             -0.087155,
@@ -9102,7 +9102,7 @@
         "way": {}
       },
       {
-        "name": "t2_aaa_05",
+        "name": "t2_aaa_02",
         "tm": [
           [
             -0.258819,
@@ -9159,7 +9159,7 @@
         "way": {}
       },
       {
-        "name": "t2_aaa_08",
+        "name": "t2_aaa_03",
         "tm": [
           [
             -0.984808,
@@ -9216,7 +9216,7 @@
         "way": {}
       },
       {
-        "name": "t2_aaa_11",
+        "name": "t2_aaa_04",
         "tm": [
           [
             -0.382683,
@@ -9273,7 +9273,7 @@
         "way": {}
       },
       {
-        "name": "t2_aaa_15",
+        "name": "t2_aaa_05",
         "tm": [
           [
             -0.923879,
@@ -9330,7 +9330,7 @@
         "way": {}
       },
       {
-        "name": "t2_aaa_17",
+        "name": "t2_aaa_06",
         "tm": [
           [
             -0.258819,
@@ -9387,7 +9387,7 @@
         "way": {}
       },
       {
-        "name": "t1_aaa_21",
+        "name": "t1_aaa_05",
         "tm": [
           [
             0.843392,
@@ -9444,7 +9444,7 @@
         "way": {}
       },
       {
-        "name": "t1_aaa_24",
+        "name": "t1_aaa_06",
         "tm": [
           [
             0.300706,
@@ -9501,7 +9501,7 @@
         "way": {}
       },
       {
-        "name": "t2_aaa_21",
+        "name": "t2_aaa_07",
         "tm": [
           [
             -0.927578,
@@ -9558,7 +9558,7 @@
         "way": {}
       },
       {
-        "name": "t2_aaa_24",
+        "name": "t2_aaa_08",
         "tm": [
           [
             -0.976296,
@@ -10343,7 +10343,7 @@
         }
       },
       {
-        "name": "t1_aaa_04",
+        "name": "t1_aaa_07",
         "tm": [
           [
             -0.130526,
@@ -12916,7 +12916,7 @@
         }
       },
       {
-        "name": "t1_aaa_07",
+        "name": "t1_aaa_08",
         "tm": [
           [
             0.707107,
@@ -16438,7 +16438,7 @@
     ],
     "structures": [
       {
-        "name": "t1_bunker01",
+        "name": "t1_bunker_01",
         "tm": [
           [
             0.939692,
@@ -16495,7 +16495,7 @@
         "way": {}
       },
       {
-        "name": "t1_bunker02",
+        "name": "t1_bunker_02",
         "tm": [
           [
             -0.34202,
@@ -16552,7 +16552,7 @@
         "way": {}
       },
       {
-        "name": "t1_bunker03",
+        "name": "t1_bunker_03",
         "tm": [
           [
             0.67559,
@@ -16609,121 +16609,7 @@
         "way": {}
       },
       {
-        "name": "t1_bunker05",
-        "tm": [
-          [
-            0.610836,
-            0.175778,
-            -0.771999
-          ],
-          [
-            -0.102214,
-            0.984392,
-            0.143262
-          ],
-          [
-            0.785132,
-            -0.00860026,
-            0.619269
-          ],
-          [
-            -2591.52,
-            350.95,
-            569.232
-          ]
-        ],
-        "unit_class": "uk_bunker",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {}
-      },
-      {
-        "name": "t1_bunker06",
-        "tm": [
-          [
-            -0.707107,
-            0.0,
-            -0.707107
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.707107,
-            0.0,
-            -0.707107
-          ],
-          [
-            -2436.41,
-            558.862,
-            2743.49
-          ]
-        ],
-        "unit_class": "uk_bunker",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {}
-      },
-      {
-        "name": "t1_bunker04",
+        "name": "t1_bunker_04",
         "tm": [
           [
             0.642786,
@@ -16780,7 +16666,121 @@
         "way": {}
       },
       {
-        "name": "t2_bunker01",
+        "name": "t1_bunker_05",
+        "tm": [
+          [
+            0.610836,
+            0.175778,
+            -0.771999
+          ],
+          [
+            -0.102214,
+            0.984392,
+            0.143262
+          ],
+          [
+            0.785132,
+            -0.00860026,
+            0.619269
+          ],
+          [
+            -2591.52,
+            350.95,
+            569.232
+          ]
+        ],
+        "unit_class": "uk_bunker",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_bunker_06",
+        "tm": [
+          [
+            -0.707107,
+            0.0,
+            -0.707107
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.707107,
+            0.0,
+            -0.707107
+          ],
+          [
+            -2436.41,
+            558.862,
+            2743.49
+          ]
+        ],
+        "unit_class": "uk_bunker",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_bunker_01",
         "tm": [
           [
             1.56462e-7,
@@ -16837,7 +16837,7 @@
         "way": {}
       },
       {
-        "name": "t2_bunker02",
+        "name": "t2_bunker_02",
         "tm": [
           [
             0.300706,
@@ -16894,7 +16894,7 @@
         "way": {}
       },
       {
-        "name": "t2_bunker03",
+        "name": "t2_bunker_03",
         "tm": [
           [
             -0.999048,
@@ -16951,7 +16951,7 @@
         "way": {}
       },
       {
-        "name": "t2_bunker04",
+        "name": "t2_bunker_04",
         "tm": [
           [
             -0.382684,
@@ -17008,7 +17008,7 @@
         "way": {}
       },
       {
-        "name": "t2_bunker05",
+        "name": "t2_bunker_05",
         "tm": [
           [
             -0.906309,
@@ -17065,7 +17065,7 @@
         "way": {}
       },
       {
-        "name": "t2_bunker06",
+        "name": "t2_bunker_06",
         "tm": [
           [
             -0.0436204,
@@ -17120,7 +17120,7 @@
         "way": {}
       },
       {
-        "name": "t1_bunker07",
+        "name": "t1_bunker_07",
         "tm": [
           [
             0.342019,
@@ -17177,7 +17177,7 @@
         "way": {}
       },
       {
-        "name": "t1_bunker08",
+        "name": "t1_bunker_08",
         "tm": [
           [
             0.216439,
@@ -17234,7 +17234,7 @@
         "way": {}
       },
       {
-        "name": "t2_bunker07",
+        "name": "t2_bunker_07",
         "tm": [
           [
             -0.996195,
@@ -17291,7 +17291,7 @@
         "way": {}
       },
       {
-        "name": "t2_bunker08",
+        "name": "t2_bunker_08",
         "tm": [
           [
             -0.976296,

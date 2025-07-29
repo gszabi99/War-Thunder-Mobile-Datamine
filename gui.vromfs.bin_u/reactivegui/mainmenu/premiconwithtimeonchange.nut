@@ -18,18 +18,18 @@ let { CS_GAMERCARD, CS_INCREASED_ICON } = require("%rGui/components/currencyComp
 let premIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
 let highlightTrigger = {}
 
-let visibleEndsAt = hardPersistWatched("premium.visibleEndsAt", premiumEndsAt.value ?? -1)
+let visibleEndsAt = hardPersistWatched("premium.visibleEndsAt", premiumEndsAt.get() ?? -1)
 let changeOrders = hardPersistWatched("premium.changeOrders", [])
 let nextChange = Computed(@() changeOrders.value?[0])
 
 isProfileReceived.subscribe(function(_) {
-  visibleEndsAt(premiumEndsAt.value)
+  visibleEndsAt(premiumEndsAt.get())
   changeOrders([])
 })
 premiumEndsAt.subscribe(function(endsAt) {
   if (endsAt == visibleEndsAt.value && changeOrders.value.len() == 0)
     return
-  let prev = max(changeOrders.value.len() == 0 ? visibleEndsAt.value : changeOrders.value.top().cur, serverTime.value)
+  let prev = max(changeOrders.value.len() == 0 ? visibleEndsAt.value : changeOrders.value.top().cur, serverTime.get())
   local diff = endsAt - prev
   if (abs(diff % TIME_HOUR_IN_SECONDS) < TIME_MINUTE_IN_SECONDS)
     diff = round_by_value(diff, TIME_MINUTE_IN_SECONDS).tointeger()
@@ -56,7 +56,7 @@ let premImageMain = @() mkSubsIcon(
 })
 
 function premiumTime(style = CS_GAMERCARD) {
-  local timeLeft = max(0, visibleEndsAt.value - serverTime.value)
+  local timeLeft = max(0, visibleEndsAt.value - serverTime.get())
   if (timeLeft >= 3 * TIME_DAY_IN_SECONDS)  
     timeLeft = round_by_value(timeLeft, TIME_HOUR_IN_SECONDS).tointeger()
 

@@ -7,7 +7,7 @@ let { round_by_value } = require("%sqstd/math.nut")
 let zoneSize = evenPx(45)
 
 function mkCapZoneIndicator(idx) {
-  let zone = Computed(@() capZones.value?[idx])
+  let zone = Computed(@() capZones.get()?[idx])
   return function() {
     local res = { watch = zone }
     if (zone.value == null || !zone.value.hasWorldMarkers)

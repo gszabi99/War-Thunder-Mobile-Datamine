@@ -1,46 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("math")
 let { defer } = require("dagor.workcycle")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bulletsInfo, bulletsSecInfo, chosenBullets, chosenBulletsSec, setOrSwapUnitBullet,
-  visibleBullets, visibleBulletsSec, BULLETS_PRIM_SLOTS
+let { bulletsInfo, bulletsSecInfo, chosenBullets, chosenBulletsSec, setOrSwapCurUnitBullet,
+  visibleBullets, visibleBulletsSec
 } = require("bulletsChoiceState.nut")
-let { selSlot, hasUnseenShellsBySlot, saveSeenShells } = require("respawnState.nut")
+let { selSlot, hasUnseenShellsBySlot } = require("respawnState.nut")
 let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let mkBulletSlot = require("mkBulletSlot.nut")
 let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let getBulletStats = require("bulletStats.nut")
-let { getAmmoNameText, getAmmoTypeText, getAmmoAdviceText } = require("%rGui/weaponry/weaponsVisual.nut")
-let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
-let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
-let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
-let { mkGradientCtorDoubleSideY, gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
+let { isEqual } = require("%sqstd/underscore.nut")
 let { sendPlayerActivityToServer } = require("playerActivity.nut")
+let { BULLETS_PRIM_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
+let { mkBulletsList, mkCurListBulletInfo } = require("%rGui/bullets/bulletsSelectorComps.nut")
 
-let bgSlotColor = 0xFF51C1D1
-let slotBGImage = mkBitmapPictureLazy(gradTexSize, gradTexSize,
-  mkGradientCtorRadial(bgSlotColor, 0 , 20, 55, 35, 0))
 
 let WND_UID = "respawn_choose_bullet_wnd"
-let bulletSlotSize = [hdpxi(350), hdpxi(105)]
-let minWndWidth = hdpx(700)
-let minBulletWidth = max(bulletSlotSize[0], hdpx(150))
-let bulletHeight = bulletSlotSize[1]
-let statRowHeight = hdpx(28)
-let lockedColor = 0xFFF04005
-let lineColor = 0xFF75D0E7
 let wndKey = {}
-let transDuration = 0.3
-let lineGradient = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, lineColor, 0.25))
-let opacityTransition = [{ prop = AnimProp.opacity, duration = transDuration, easing = InOutQuad }]
-
-let maxColumns = 2
-let slotsGap = hdpx(5)
-let bulletsColumnsCount = @(bSetsCount) min(maxColumns, bSetsCount)
-let bulletsListWidth = @(columns) max((minBulletWidth * columns) + slotsGap, minWndWidth)
 
 let openedSlot = Watched(-1)
 let openParams = mkWatched(persist, "openParams", null)
@@ -52,8 +28,6 @@ let savedSlotName = Computed(function() {
     : (bullets?[openParams.get().slotIdx % BULLETS_PRIM_SLOTS].name ?? curSlotName.get())
 })
 let wndAABB = Watched(null)
-
-let hasBulletsVideo = Computed(@() hasAddons.value?.pkg_video ?? false)
 
 function close(){
   openedSlot(-1)
@@ -70,221 +44,10 @@ curSlotName.subscribe(@(_) defer( function() {
     wndAABB(aabb)
 }))
 
-function mkBulletButton(isSecondary, name, bSet, fromUnitTags, id) {
-  let isCurrent = Computed(@() name == curSlotName.value)
-  let isLockedSlot = Computed(@() (fromUnitTags?.reqLevel ?? 0) > (selSlot.value?.level ?? 0))
-  let hasUnseenBullets = Computed(@() hasUnseenShellsBySlot.value?[selSlot.value?.id ?? 0][name])
-  let children = [
-    @() {
-      watch = isLockedSlot
-      valign = ALIGN_TOP
-      children = [
-        @() mkBulletSlot(isSecondary, bSet, fromUnitTags,
-          {
-            color = isCurrent.value ? 0xFF51C1D1 : 0x402C2C2C
-            opacity = isLockedSlot.value ? 0.5 : 1
-            rendObj = isCurrent.value ? ROBJ_IMAGE : ROBJ_SOLID
-            image = isCurrent.value ? slotBGImage() : null
-          }, {
-            key = $"{name}_icon" 
-          }, {
-            watch = [ isCurrent, isLockedSlot ]
-            key = name 
-          })
-        @() {
-          watch = isCurrent
-          size = const [hdpx(9), flex()]
-          rendObj = ROBJ_IMAGE
-          image = lineGradient()
-          opacity = isCurrent.value ? 1 : 0
-          transitions = opacityTransition
-          hplace = id % 2 != 0 ? ALIGN_RIGHT : ALIGN_LEFT
-          pos = [id % 2 != 0 ? hdpx(15) : hdpx(-15), 0]
-        }
-        isLockedSlot.value
-          ? {
-            rendObj = ROBJ_IMAGE
-            pos = [0, -hdpx(5)]
-            size = hdpxi(70)
-            image = Picture("ui/gameuiskin#lock_unit.svg")
-            keepAspect = KEEP_ASPECT_FIT
-            vplace = ALIGN_BOTTOM
-            children = {
-              rendObj = ROBJ_TEXT
-              text = fromUnitTags.reqLevel
-              hplace = ALIGN_CENTER
-              vplace = ALIGN_CENTER
-              pos = [hdpx(1), hdpx(10)]
-            }.__update(fontVeryTiny)
-          }
-          : null
-        @() {
-          watch = isLockedSlot
-          size = const [flex(), hdpx(108)]
-          rendObj = ROBJ_BOX
-          borderWidth = isLockedSlot.value ? 0 : hdpxi(4)
-        }
-      ]
-    }
-    mkPriorityUnseenMarkWatch(hasUnseenBullets, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT, margin = hdpx(7) })
-  ]
-  function onClick() {
-    sendPlayerActivityToServer()
-    curSlotName(name)
-  }
-
-  return {
-    behavior = Behaviors.Button
-    onClick
-    children
-    transitions = [{ prop = AnimProp.color, duration = 0.3, easing = InOutQuad }]
-  }
-}
-
-function bulletsList() {
-  let bInfo = isBulletSec.get() ? bulletsSecInfo.get() : bulletsInfo.get()
-  if (bInfo == null)
-    return { watch = [bulletsInfo, bulletsSecInfo, isBulletSec] }
-
-  let { bulletSets, bulletsOrder, fromUnitTags } = bInfo
-  let visibleBulletsList = bulletsOrder.filter(function(name) {
-    let { isExternalAmmo = false } = fromUnitTags?[name]
-    let bullets = isBulletSec.get() ? visibleBulletsSec.get() : visibleBullets.get()
-    let isVisible = bullets?[name] ?? false
-    return openedSlot.get() == 0 ? isVisible && !isExternalAmmo : isVisible
-  })
-  let numberBullets = visibleBulletsList.len()
-  let columns = bulletsColumnsCount(numberBullets)
-  let rows = ceil(numberBullets.tofloat() / columns)
-  let rowsWithBullets = arrayByRows(visibleBulletsList.map(@(name, id)
-    mkBulletButton(isBulletSec.get(), name, bulletSets[name], fromUnitTags?[name], id)), columns)
-  return {
-    watch = [bulletsInfo, bulletsSecInfo, openedSlot, isBulletSec, visibleBullets, visibleBulletsSec]
-    key = "bulletsList" 
-    size = [bulletsListWidth(columns), bulletHeight * rows]
-    flow = FLOW_VERTICAL
-    gap = slotsGap
-    children = rowsWithBullets.map(@(item) {
-      flow = FLOW_HORIZONTAL
-      children = item
-      gap = slotsGap
-    }).append({
-      key = "saveSection"
-      size = flex()
-      function onDetach() {
-        if (selSlot.get()?.name != null)
-          saveSeenShells(selSlot.get().name, visibleBulletsList.map(@(name) name))
-      }
-    })
-  }
-}
-
-let separator = { size = const [ flex(), hdpx(10) ] }
-
-let mkStatRow = @(nameText, valText, color = 0xFFC0C0C0) {
-  size = [flex(), statRowHeight]
-  valign = ALIGN_CENTER
-  flow = FLOW_HORIZONTAL
-  children = [
-    {
-      size = FLEX_H
-      rendObj = ROBJ_TEXT
-      color
-      text = nameText
-      behavior = Behaviors.Marquee
-      delay = defMarqueeDelay
-      speed = hdpx(30)
-    }.__update(fontVeryTiny)
-    {
-      rendObj = ROBJ_TEXT
-      color
-      text = valText
-    }.__update(fontVeryTiny)
-  ]
-}
-
-let mkStatTextarea = @(text, color = 0xFFC0C0C0) {
-  size = FLEX_H
-  rendObj = ROBJ_TEXTAREA
-  behavior = Behaviors.TextArea
-  text
-  color
-}.__update(fontVeryTiny)
-
-function mkShellVideo(videos, width) {
-  if (videos.len() == 0)
-    return null
-  let idx = Watched(0)
-  let watch = [idx, hasBulletsVideo]
-  return @() !hasBulletsVideo.value ? { watch }
-    : {
-        watch
-        key = videos
-        size = [width, (0.25 * width + 0.5).tointeger()]
-        margin = const [hdpx(10), 0, 0, 0]
-        hplace = ALIGN_CENTER
-        children = {
-          size = flex()
-          key = idx.value
-          rendObj = ROBJ_MOVIE
-          behavior = Behaviors.Movie
-          loop = videos.len() == 1
-          keepAspect = true
-          movie = $"content/pkg_video/{videos[idx.value]}"
-          onFinish = @() idx((idx.value + 1) % videos.len())
-        }
-      }
-}
-
-function curBulletInfo() {
-  let bInfo = isBulletSec.get() ? bulletsSecInfo.get() : bulletsInfo.get()
-  if (bInfo == null)
-    return { watch = [bulletsInfo, bulletsSecInfo, isBulletSec] }
-
-  let { bulletSets, fromUnitTags, unitName } = bInfo
-  let { caliber = 0.0 } = bulletSets.findvalue(@(_) true)
-  let bSet = bulletSets?[curSlotName.value]
-  let tags = fromUnitTags?[curSlotName.value]
-  let { reqLevel = 0 } = tags
-  let columns = bulletsColumnsCount(bulletSets.len())
-  let bulletName = getAmmoNameText(bSet)
-  let children = [
-    {
-      size = FLEX_H
-      margin = const [0, 0, hdpx(10), 0]
-      rendObj = ROBJ_TEXTAREA
-      behavior = Behaviors.TextArea
-      color = 0xFFFFFFFF
-      text = loc($"bulletNameWithCaliber", {caliber, bulletName})
-    }.__update(fontTiny)
-    mkStatTextarea(getAmmoTypeText(bSet))
-  ]
-
-  let adviceText = getAmmoAdviceText(bSet)
-  if (adviceText != "")
-    children.append(mkStatTextarea(adviceText))
-  children.append(mkShellVideo(bSet?.shellAnimations ?? [], bulletsListWidth(columns)))
-
-  children.append(separator)
-  if (reqLevel > (selSlot.value?.level ?? 0))
-    children.append(mkStatRow(loc("requiredPlatoonLevel"), reqLevel, lockedColor))
-  children.extend(getBulletStats(bSet, tags, unitName).map(@(s) mkStatRow(s.nameText, s.valueText)))
-
-  return {
-    watch = [bulletsInfo, bulletsSecInfo, isBulletSec, curSlotName]
-    key = "curBulletInfo" 
-    size = FLEX_H
-    minHeight = hdpx(500)
-    padding = hdpx(15)
-    flow = FLOW_VERTICAL
-    children
-  }
-}
-
 function applyBullet() {
   let { slotIdx = null } = openParams.get()
   if (slotIdx != null)
-    setOrSwapUnitBullet(slotIdx, curSlotName.get())
+    setOrSwapCurUnitBullet(slotIdx, curSlotName.get())
   close()
 }
 
@@ -313,6 +76,36 @@ function applyButton() {
   }
 }
 
+function onClickBulletBtn(name) {
+  sendPlayerActivityToServer()
+  curSlotName.set(name)
+}
+
+function bulletContent() {
+  let bInfo = Computed(@() isBulletSec.get() ? bulletsSecInfo.get() : bulletsInfo.get())
+  let visBullets = Computed(@() isBulletSec.get() ? visibleBulletsSec.get() : visibleBullets.get())
+  let cBullets = Computed(@() isBulletSec.get() ? chosenBulletsSec.get() : chosenBullets.get())
+  return @() {
+    watch = [bInfo, visBullets, cBullets]
+    halign = ALIGN_CENTER
+    flow = FLOW_VERTICAL
+    children = [
+      mkBulletsList({
+        bInfo,
+        visibleBullets = visBullets,
+        chosenBullets = cBullets,
+        openedSlot,
+        selSlot,
+        hasUnseenShells = hasUnseenShellsBySlot,
+        curSlotName,
+        onClickBtn = onClickBulletBtn
+      })
+      mkCurListBulletInfo(bInfo, curSlotName, selSlot)
+      applyButton
+    ]
+  }
+}
+
 let window = {
   onAttach = @() defer(@() wndAABB(gui_scene.getCompAABBbyKey(wndKey)))
   key = "bulletsInfo" 
@@ -321,15 +114,9 @@ let window = {
   hplace = ALIGN_RIGHT
   rendObj = ROBJ_SOLID
   color = 0xA0000000
-  flow = FLOW_VERTICAL
-  halign = ALIGN_CENTER
   padding = hdpx(20)
   maxHeight = saSize[1]
-  children = [
-    bulletsList
-    curBulletInfo
-    applyButton
-  ]
+  children = bulletContent()
 }
 
 function content() {

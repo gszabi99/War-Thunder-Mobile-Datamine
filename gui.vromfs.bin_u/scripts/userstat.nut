@@ -129,7 +129,7 @@ let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
   || userstatStats.value.len() == 0
   || userstatInfoTables.get().len() == 0)
 let needValidateMissingData = keepref(Computed(@()
-  isUserstatMissingData.value && isReadyToConnect.value && !isInBattle.value))
+  isUserstatMissingData.value && isReadyToConnect.value && !isInBattle.get()))
 
 function updateValidationTimer(needValidate) {
   if (!needValidate) {

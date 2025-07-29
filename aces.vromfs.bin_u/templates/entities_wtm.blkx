@@ -469,5 +469,12 @@
       "battle_perfstat__segment_200_plus": 0.0,
       "battle_perfstat__normalizationValue": 5.0
     }
+  },
+  "hangar_battle_data": {
+    "isBattleDataReceived": false,
+    "server_player__userId:u64": {
+      "value": -1
+    },
+    "hangarBattleData:object": {}
   }
 }

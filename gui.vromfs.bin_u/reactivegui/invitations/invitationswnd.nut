@@ -9,13 +9,13 @@ let { textButtonCommon } = require("%rGui/components/textButton.nut")
 
 
 let close = @() isInvitationsOpened(false)
-let hasInvitations = Computed(@() invitations.value.len() > 0)
+let hasInvitations = Computed(@() invitations.get().len() > 0)
 
 let invitesList = mkVerticalPannableArea(@() {
   watch = invitations
   size = FLEX_H
   flow = FLOW_VERTICAL
-  children = invitations.value.map(mkNotifyRow)
+  children = invitations.get().map(mkNotifyRow)
 })
 
 let noInvitesMsg = {

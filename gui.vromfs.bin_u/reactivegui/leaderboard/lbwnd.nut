@@ -55,7 +55,7 @@ let lbTabs = @() {
   watch = curLbId
   flow = FLOW_HORIZONTAL
   gap = hdpx(40)
-  children = lbCfgOrdered.map(@(cfg) mkTab(cfg, curLbId.value == cfg.id, @() curLbId(cfg.id)))
+  children = lbCfgOrdered.map(@(cfg) mkTab(cfg, curLbId.get() == cfg.id, @() curLbId(cfg.id)))
 }
 
 function rewardsTimer() {
@@ -67,16 +67,16 @@ function rewardsTimer() {
   local timeLeft = 0
   if (start != null) {
     let startTime = parseUnixTimeCached(start)
-    if (startTime > serverTime.value) {
+    if (startTime > serverTime.get()) {
       locId = "lb/seasonStartTime"
-      timeLeft = startTime - serverTime.value
+      timeLeft = startTime - serverTime.get()
     }
   }
   if (end != null && locId == null) {
     let endTime = parseUnixTimeCached(end)
-    if (endTime > serverTime.value) {
+    if (endTime > serverTime.get()) {
       locId = "lb/seasonEndTime"
-      timeLeft = endTime - serverTime.value
+      timeLeft = endTime - serverTime.get()
     }
     else
       locId = "lb/seasonFinished"
@@ -101,7 +101,7 @@ let header = @() {
     lbTabs
     { size = flex() }
     rewardsTimer
-    !hasBestBattles.value ? null
+    !hasBestBattles.get() ? null
       : mkCustomButton(
           {
             size = [lbTabIconSize, lbTabIconSize]
@@ -181,7 +181,7 @@ function mkPrizeCell(category, rowData) {
       return -1
     return curLbRewards.value.findindex(@(r) r.progress == -1 ? true
       : r.rType == "tillPlaces" ? r.progress > place
-      : r.rType == "tillPercent" && lbTotalPlaces.value > 0 ? r.progress >= 100.0 * place / lbTotalPlaces.value
+      : r.rType == "tillPercent" && lbTotalPlaces.get() > 0 ? r.progress >= 100.0 * place / lbTotalPlaces.get()
       : false)
   })
   return @() {
@@ -230,7 +230,7 @@ let myRequirementsRow = @(emptyColor) function() {
     rendObj = ROBJ_SOLID
     color = emptyColor
   }
-  let count = minRatingBattles.value - bestBattlesCount.value
+  let count = minRatingBattles.get() - bestBattlesCount.get()
   if (count <= 0)
     return res
   return res.__update({
@@ -250,7 +250,7 @@ let myRequirementsRow = @(emptyColor) function() {
       {
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
-        text = "/".concat(colorize(0xFFFFFFFF, bestBattlesCount.value), minRatingBattles.value)
+        text = "/".concat(colorize(0xFFFFFFFF, bestBattlesCount.get()), minRatingBattles.get())
         color = defTxtColor
       }.__update(fontTiny)
       flexGap
@@ -375,7 +375,7 @@ let lbRewardsWarning = {
 
 function lbNoDataMsg() {
   let textsList = [loc("leaderboard/noLbData")]
-  let count = minRatingBattles.value - bestBattlesCount.value
+  let count = minRatingBattles.get() - bestBattlesCount.get()
   if (count > 0)
     textsList.append(loc("lb/needMoreBattlesForLeaderboad", { count, countText = colorize(0xFFFFFFFF, count) }))
   return lbErrorMsg("\n\n".join(textsList))
@@ -385,8 +385,8 @@ function lbNoDataMsg() {
 let content = @() {
   watch = [curLbCfg, curLbData, curLbSelfRow, isLbRequestInProgress, curLbErrName]
   size = flex()
-  children = curLbCfg.value != null && (curLbData.value?.len() ?? 0) > 0
-      ? lbTableFull(curLbCfg.value.categories, curLbData.value, curLbSelfRow.value)
+  children = curLbCfg.get() != null && (curLbData.value?.len() ?? 0) > 0
+      ? lbTableFull(curLbCfg.get().categories, curLbData.value, curLbSelfRow.value)
     : isLbRequestInProgress.value ? waitLeaderBoard
     : curLbErrName.value == null ? lbNoDataMsg
     : lbErrorMsg(loc($"error/{curLbErrName.value}"))
@@ -409,7 +409,7 @@ let scene = bgShaded.__merge({
     lbPage(0)
     isRefreshLbEnabled(true)
     actualizeStats()
-    if (curLbId.value == null)
+    if (curLbId.get() == null)
       curLbId(lbCfgOrdered.findvalue(@(c) c?.campaign == curCampaign.value)?.id
         ?? lbCfgOrdered.findvalue(@(_) true)?.id)
   }

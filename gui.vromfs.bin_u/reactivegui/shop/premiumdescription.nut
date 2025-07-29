@@ -14,7 +14,7 @@ let premDescWndUid = "prem_desc_wnd_uid"
 let isPremiumDescriptionWndVisible = Watched(false)
 let premiumDescriptionWidth = sw(50)
 
-let premiumBonusesCfg = Computed(@() serverConfigs.value?.gameProfile.premiumBonuses)
+let premiumBonusesCfg = Computed(@() serverConfigs.get()?.gameProfile.premiumBonuses)
 let bonusMultText = @(v) $"{v}x"
 let infoText = Computed(function() {
   if (premiumBonusesCfg.value == null)

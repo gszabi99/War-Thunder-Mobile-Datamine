@@ -1,9 +1,11 @@
 from "%globalScripts/logs.nut" import *
 let { Computed } = require("frp")
 let { get_settings_blk } = require("blkGetters")
+let { has_missing_resources_for_units } = require("contentUpdater")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
+let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 
 
 let ADDON_VERSION_EMPTY = ""
@@ -17,6 +19,9 @@ let isAddonsSizesActual = sharedWatched("isAddonsSizesActual", @() false)
 let isAddonsInfoActual = Computed(@() isAddonsExistInGameFolderActual.get()
   && isAddonsVersionsActual.get()
   && isAddonsSizesActual.get())
+let resourcesDownloadVersion = Computed(@(prev) type(prev) != "integer" ? 0
+  : isAddonsVersionsActual.get() ? prev + 1
+  : prev)
 
 let allAddons = {}
 let addonsBlk = get_settings_blk()?.addons
@@ -39,10 +44,16 @@ let hasAddons = Computed(function(prev) {
   return isEqual(cur, prev) ? prev : cur
 })
 
+let mkHasUnitsResources = @(unitNamesW) Computed(function() {
+  let has = resourcesDownloadVersion.get()  
+  return unitNamesW.get().len() == 0 || !has_missing_resources_for_units(unitNamesW.get().map(@(u) getTagsUnitName(u)), true)
+})
+
 return {
   
   hasAddons
   isAddonsInfoActual
+  mkHasUnitsResources
 
   
   addonsExistInGameFolder
@@ -51,6 +62,7 @@ return {
   isAddonsVersionsActual
   addonsSizes
   isAddonsSizesActual
+  resourcesDownloadVersion
 
   ADDON_VERSION_EMPTY
 }

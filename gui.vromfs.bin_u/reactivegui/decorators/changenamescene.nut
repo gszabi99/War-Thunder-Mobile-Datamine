@@ -14,7 +14,7 @@ let changeNameScene = {
     @() {
       watch = myNameWithFrame
       rendObj = ROBJ_TEXT
-      text = myNameWithFrame.value ?? ""
+      text = myNameWithFrame.get() ?? ""
     }.__update(fontMedium)
     {
       size = FLEX_H

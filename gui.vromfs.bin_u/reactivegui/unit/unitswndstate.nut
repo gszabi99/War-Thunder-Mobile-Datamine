@@ -15,7 +15,7 @@ let availableUnitsList = Computed(@() campUnitsCfg.get()
 let sizePlatoon = Computed(@() (availableUnitsList.value?[0].platoonUnits ?? []).len())
 
 let curSelectedUnit = Watched(null)
-let curUnitName = Computed(@() curUnit.value?.name)
+let curUnitName = Computed(@() curUnit.get()?.name)
 
 curSelectedUnit.subscribe(function(unitId) {
   if (unitId != null)

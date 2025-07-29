@@ -98,7 +98,7 @@ canFetchContacts.subscribe(@(_) fetchIfNeed())
 
 function updatePresencesByList(newPresences) {
   logC("Update presences: ", newPresences.len() > 5 ? newPresences.len() : newPresences)
-  let curPresences = presences.value
+  let curPresences = presences.get()
   let updPresences = {}
   foreach (p in newPresences)
     updPresences[p.userId] <- p?.update ? (curPresences?[p.userId] ?? {}).__merge(p.presences)

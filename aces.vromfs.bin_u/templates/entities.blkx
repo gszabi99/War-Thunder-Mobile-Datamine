@@ -10,6 +10,7 @@
     "%wtlibs/templates/units.blk",
     "%wtlibs/templates/grid.blk",
     "%wtlibs/templates/fx.blk",
+    "%wtlibs/templates/lights.blk",
     "%wtlibs/templates/damage_model.blk",
     "%wtlibs/templates/microdetail.blk"
   ],

@@ -1,16 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let { hasAddons, addonsSizes } = require("%appGlobals/updater/addonsState.nut")
-let { localizeAddonsLimited, getAddonsSizeStr } = require("%appGlobals/updater/addons.nut")
-let { openDownloadAddonsWnd, wantStartDownloadAddons } = require("%rGui/updater/updaterState.nut")
+let { mkHasUnitsResources } = require("%appGlobals/updater/addonsState.nut")
+let { openDownloadUnitsWnd, wantStartDownloadAddons } = require("%rGui/updater/updaterState.nut")
 let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
 let { textButtonCommon } = require("%rGui/components/textButton.nut")
 let { textColor } = require("%rGui/style/stdColors.nut")
 let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 
 
 let textArea = @(text, ovr = {}) {
@@ -35,31 +32,26 @@ let textArea = @(text, ovr = {}) {
 }
 
 function mkUnitPkgDownloadInfo(unitW, needProgress = true, ovr = {}) {
-  let reqPkgList = Computed(@() unitW.get() == null || !isReadyToFullLoad.get() ? []
-    : getUnitPkgs(unitW.value.name, unitW.value.mRank).filter(@(a) !hasAddons.value?[a]))
+  let unitNames = Computed(@() unitW.get() == null ? []
+    : [unitW.get().name].extend(unitW.get()?.platoonUnits.map(@(pu) pu.name) ?? []))
+  let hasResources = mkHasUnitsResources(unitNames)
   let { halign = ALIGN_CENTER } = ovr
   return @() {
-    watch = [reqPkgList, wantStartDownloadAddons, addonsSizes]
+    watch = [hasResources, wantStartDownloadAddons, unitNames]
     vplace = ALIGN_BOTTOM
     hplace = ALIGN_CENTER
     halign
     flow = FLOW_VERTICAL
     gap = hdpx(10)
-    children = reqPkgList.value.len() == 0 ? null
-      : isEqual(wantStartDownloadAddons.get(), reqPkgList.get().reduce(@(res, a) res.$rawset(a, true), {}))
+    children = hasResources.get() || unitNames.get().len() == 0 ? null
+      : !isEqual(wantStartDownloadAddons.get()?.units, unitNames.get().reduce(@(res, u) res.$rawset(u, true), {}))
         ? [
-            needProgress ? downloadInfoBlock : null
+            textArea(loc("msg/needDownloadPackToShowUnit"), { halign })
+            textButtonCommon(utf8ToUpper(loc("msgbox/btn_download")),
+              @() openDownloadUnitsWnd(unitNames.get(), "unitDownloadInfoBlock"))
           ]
-      : [
-          textArea(
-            loc("msg/needDownloadPackToUseUnit", {
-              pkg = localizeAddonsLimited(reqPkgList.get(), 3)
-              size = getAddonsSizeStr(reqPkgList.get(), addonsSizes.get())
-            }),
-            { halign })
-          textButtonCommon(utf8ToUpper(loc("msgbox/btn_download")),
-            @() openDownloadAddonsWnd(reqPkgList.value, "unitDownloadInfoBlock"))
-        ]
+      : needProgress ? downloadInfoBlock
+      : null
   }.__update(ovr)
 }
 

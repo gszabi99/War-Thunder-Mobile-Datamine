@@ -6,7 +6,7 @@ let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let isReplayShortcuts = isPlayingReplay.value
 
 function reloadVmIfNeed() {
-  if (isPlayingReplay.value != isReplayShortcuts && !isInLoadingScreen.value)
+  if (isPlayingReplay.value != isReplayShortcuts && !isInLoadingScreen.get())
     eventbus_send("reloadDargVM", { msg = "replay shortcuts changed" })
 }
 isPlayingReplay.subscribe(@(_) resetTimeout(0.1, reloadVmIfNeed))

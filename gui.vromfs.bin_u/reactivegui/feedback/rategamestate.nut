@@ -17,9 +17,9 @@ let { myUserIdStr } = require("%appGlobals/profileStates.nut")
 let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
 let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
 let { getScoreKeyRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
+let { appStoreProdVersion } = require("%rGui/appStoreVersion.nut")
 let isHuaweiBuild = getBuildMarket() == "appgallery"
 
-local appStoreProdVersion = mkWatched(persist, "appStoreProdVersion", "")
 let {
   storeId = "",
   showAppReview = @() null,
@@ -63,14 +63,6 @@ let savedRating = Watched(0)
 let lastSeenDate = Watched(0)
 let lastSeenBattles = Watched(0)
 let canRateGameByCurTime = Watched(false)
-
-if (is_ios && appStoreProdVersion.get() == "") {
-  appStoreProdVersion.subscribe(@(v) log($"appStoreProdVersion: {v}"))
-  eventbus_subscribe("ios.platform.onGetAppStoreProdVersion",
-    @(v) type(v.value) == "string" ? appStoreProdVersion.set(v.value)
-      : logerr($"Wrong event ios.platform.onGetAppStoreProdVersion result type = {type(v.value)}: {v.value}"))
-  require("ios.platform").getAppStoreProdVersion()
-}
 
 function updateCanRateByTime() {
   if (!isServerTimeValid.get()) {
@@ -208,7 +200,7 @@ function platformAppReview(isRatedExcellent) {
 isRateGameSeen.subscribe(function(val) {
   if (!val)
     return
-  lastSeenDate(serverTime.value)
+  lastSeenDate(serverTime.get())
   lastSeenBattles(lastBattles.value.len())
   if (isOnlineSettingsAvailable.value) {
     let blk = get_local_custom_settings_blk()

@@ -135,8 +135,8 @@ function combobox(watches, options, tooltip=null, combo_style=comboStyle) {
     }
 
     onAttachRoot = function onAttachRootImpl() {
-      options.subscribe(inputWatchesChangeListener)
-      wdata.subscribe(inputWatchesChangeListener)
+      options.subscribe_with_nasty_disregard_of_frp_update(inputWatchesChangeListener)
+      wdata.subscribe_with_nasty_disregard_of_frp_update(inputWatchesChangeListener)
     }
 
     onDetachRoot = function onDetachRootImpl() {

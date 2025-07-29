@@ -43,6 +43,10 @@ let customLootboxImages = {
   event_air_medium_subbox_box_season_22     = "lucky_box.avif"
   event_air_big_subbox_box_season_22        = "lucky_box.avif"
   event_ships_big_subbox_box_season_22      = "lucky_box.avif"
+  event_ships_medium_subbox_box_season_23   = "lucky_box.avif"
+  event_air_medium_subbox_box_season_23     = "lucky_box.avif"
+  event_air_big_subbox_box_season_23        = "lucky_box.avif"
+  event_ships_big_subbox_box_season_23      = "lucky_box.avif"
 
   past_events_box_tanks_seasons_1_to_3 = "past_events_box_ships_seasons_1_to_3.avif"
   past_events_box_ships_seasons_1_to_4 = "past_events_box_ships_seasons_1_to_3.avif"
@@ -114,6 +118,10 @@ let lootboxPreviewBg = {
   event_ships_medium_subbox_box_season_22        = "ui/images/event_bg_season_22.avif"
   event_air_medium_subbox_box_season_22          = "ui/images/event_bg_season_22.avif"
   event_air_big_subbox_box_season_22             = "ui/images/event_bg_season_22.avif"
+  event_ships_big_subbox_box_season_23           = "ui/images/event_bg_season_23.avif"
+  event_ships_medium_subbox_box_season_23        = "ui/images/event_bg_season_23.avif"
+  event_air_medium_subbox_box_season_23          = "ui/images/event_bg_season_23.avif"
+  event_air_big_subbox_box_season_23             = "ui/images/event_bg_season_23.avif"
 
   event_special_tanks_independence_2025          = "ui/images/event_bg_event_independence_day.avif"
   event_special_ships_independence_2025          = "ui/images/event_bg_event_independence_day.avif"

@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 let { eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
+let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
 
 let hintMaxWidth = hdpx(600)
 let hintShiftX = hdpx(150)
 let hintShiftY = hdpx(-100)
 let hintPad = hdpx(20)
 let hitTitleGap = hdpx(7)
-let hintRightAlignedMaxX = sw(100) - hintShiftX - hintMaxWidth
+let hintRightAlignedMaxX = sw(100) - hintShiftX - hintMaxWidth - statsWidth
 let unitStatusTextMaxWidth = hdpx(600)
 
 let accentColor = 0xFFFFFF80

@@ -182,7 +182,7 @@ let timerVisual = @(timerCfg, timer) {
 }
 
 function timerPlace(timerCfg, idx, total) {
-  let timer = Computed(@() activeTimers.value?[timerCfg.id])
+  let timer = Computed(@() activeTimers.get()?[timerCfg.id])
   return @() {
     watch = timer
     size = [timerSize, timerSize]
@@ -199,7 +199,7 @@ function timerPlace(timerCfg, idx, total) {
 }
 
 function hudTimers() {
-  let filtered = timers.filter(@(t) t.id in timersVisibility.value)
+  let filtered = timers.filter(@(t) t.id in timersVisibility.get())
   let total = filtered.len()
   return {
     watch = timersVisibility
@@ -211,7 +211,7 @@ function hudTimers() {
 
 function randomTimer() {
   let id = chooseRandom(timers).id
-  if (id in activeTimers.value) {
+  if (id in activeTimers.get()) {
     removeTimer(id)
     return
   }

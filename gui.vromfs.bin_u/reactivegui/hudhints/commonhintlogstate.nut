@@ -40,7 +40,7 @@ isInBattle.subscribe(function(_) {
 const MP_TEAM_NEUTRAL = 0
 
 let getTeamColor = @(team) team == MP_TEAM_NEUTRAL ? null
- : team == localMPlayerTeam.value ? teamBlueColor
+ : team == localMPlayerTeam.get() ? teamBlueColor
  : teamRedColor
 
 let addCommonHint = @(text, evId = "", evType = "simpleTextTiny") addEvent({ id = evId, hType = evType, text })
@@ -127,9 +127,9 @@ eventbus_subscribe("hint:shoot_when_tank_stop:show", function(_) {
 })
 
 eventbus_subscribe("hint:change_shell_type:show", function(_) {
-  if (bulletsInfo.value == null)
+  if (bulletsInfo.get() == null)
     return
-  let isHE = bulletsInfo.value?.fromUnitTags[currentBulletName.value ?? "default"]?.isHE ?? false
+  let isHE = bulletsInfo.get()?.fromUnitTags[currentBulletName.get() ?? "default"]?.isHE ?? false
   if (isHE && incHintCounter("change_shell_type", 15))
     addCommonHint(loc("hints/change_shell_type"))
 })

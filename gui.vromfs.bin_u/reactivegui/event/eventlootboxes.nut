@@ -83,7 +83,7 @@ function isFitCurSeason(timeRange, seasonName, userstatStatsV) {
     && (end <= 0 || end > (userstatStatsV?.stats[seasonName]["$startedAt"] ?? 0))
 }
 
-let eventLootboxesRaw = Computed(@() serverConfigs.value?.lootboxesCfg
+let eventLootboxesRaw = Computed(@() serverConfigs.get()?.lootboxesCfg
   .filter(function(v, id) {
     if (inactiveLootboxes.get()?[id] == L_FINISHED)
       return false

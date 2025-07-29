@@ -66,3 +66,6 @@ struct CmdApplyPartDamageEffect
 struct EventEngineOverheatDamage
   start : bool
 
+[cpp_event(unicast, with_scheme)]
+struct CmdMoveCrewOut
+  num_alive_members : int

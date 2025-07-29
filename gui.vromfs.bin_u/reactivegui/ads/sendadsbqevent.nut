@@ -19,7 +19,7 @@ function sendAdsBqEvent(status, provider, withReward = true) {
 
   let count = adBudget?.common.count ?? 0
   let nextResetTime = adBudget?.common.nextResetTime ?? 0
-  let views_available = serverTime.value >= nextResetTime && count == 0 ? -1 : count
+  let views_available = serverTime.get() >= nextResetTime && count == 0 ? -1 : count
 
   sendCustomBqEvent("ads", bqParams.__merge({
     status

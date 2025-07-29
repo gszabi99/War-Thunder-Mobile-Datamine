@@ -17,7 +17,7 @@ let US_NEED_BLUEPRINTS = 6
 let US_CAN_RESEARCH = 7
 
 let buyUnitsData = Computed(function() {
-  let { level, isReadyForLevelUp } = playerLevelInfo.value
+  let { level, isReadyForLevelUp } = playerLevelInfo.get()
   let { unitsResearch = {}, blueprints = {} } = servProfile.get()
   let { unitTreeNodes = {}, unitResearchExp = {}, allBlueprints = {} } = serverConfigs.get()
   let canBuy = {}

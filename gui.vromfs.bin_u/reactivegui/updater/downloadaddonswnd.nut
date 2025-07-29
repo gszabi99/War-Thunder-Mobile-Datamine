@@ -22,17 +22,17 @@ let checkingColor = 0x80808080
 
 let progressPercentInt = Computed(@() progressPercent.get() ?? 0)
 
-let statusText = Computed(@() wantStartDownloadAddons.value.len() == 0 ? loc("updater/status/complete")
-  : isDownloadPaused.value ? "".concat(
-      loc("updater/status/paused", { addonInfo = downloadAddonsStr.value }),
+let statusText = Computed(@() wantStartDownloadAddons.get().len() == 0 ? loc("updater/status/complete")
+  : isDownloadPaused.get() ? "".concat(
+      loc("updater/status/paused", { addonInfo = downloadAddonsStr.get() }),
       colon, getDownloadInfoText(totalSizeBytes.value, 0, 0))
   : isDownloadPausedByConnection.value ? "".concat(
-      loc("updater/status/pausedByConnection", { addonInfo = downloadAddonsStr.value }),
+      loc("updater/status/pausedByConnection", { addonInfo = downloadAddonsStr.get() }),
       colon, getDownloadInfoText(totalSizeBytes.value, 0, 0))
-  : updaterError.value != null ? loc($"updater/error/{updaterError.value}")
-  : !isStageDownloading.value ? loc("pl1/check_profile")
+  : updaterError.get() != null ? loc($"updater/error/{updaterError.get()}")
+  : !isStageDownloading.get() ? loc("pl1/check_profile")
   : "".concat(
-      loc("updater/status/downloading", { addonInfo = downloadAddonsStr.value }),
+      loc("updater/status/downloading", { addonInfo = downloadAddonsStr.get() }),
       colon, getDownloadInfoText(totalSizeBytes.value, downloadState.value?.etaSec ?? 0, downloadState.value?.dspeed ?? 0))
 )
 
@@ -84,16 +84,16 @@ let openLimitConnectionMsgBox = @() openMsgBox({
 
 function pauseButton() {
   let res = { watch = [isDownloadPaused, isDownloadPausedByConnection, wantStartDownloadAddons] }
-  if (wantStartDownloadAddons.value.len() == 0)
+  if (wantStartDownloadAddons.get().len() == 0)
     return res
   return res.__update({
     opacity = isDownloadPausedByConnection.value ? 0.3 : 1.0
     children = translucentIconButton(
-      isDownloadPaused.value || isDownloadPausedByConnection.value
+      isDownloadPaused.get() || isDownloadPausedByConnection.value
         ? "ui/gameuiskin#replay_play.svg"
         : "ui/gameuiskin#replay_pause.svg",
       @() isDownloadPausedByConnection.value ? openLimitConnectionMsgBox()
-        : isDownloadPaused(!isDownloadPaused.value),
+        : isDownloadPaused(!isDownloadPaused.get()),
       hdpxi(45),
       [hdpx(105), hdpx(80)]
     )
@@ -150,7 +150,7 @@ let openProgressWnd = @() addModalWindow({
   onClick = @() null
 })
 
-if (downloadWndParams.value != null)
+if (downloadWndParams.get() != null)
   openProgressWnd()
 downloadWndParams.subscribe(@(p) p == null ? removeModalWindow(wndUid)
   : openProgressWnd())

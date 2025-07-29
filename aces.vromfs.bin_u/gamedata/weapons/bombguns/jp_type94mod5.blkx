@@ -20,7 +20,6 @@
     "waterExplosionEffect": "bomb_water_explosion_big",
     "fallToUnitFx": "hit_81_105mm_metal_ap",
     "fallToWaterFx": "bomb_reflection",
-    "fallFx": "hit_59_80mm_dirt_ap",
     "shatterPatchRadius": 0.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,

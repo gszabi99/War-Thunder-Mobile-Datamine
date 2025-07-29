@@ -22,6 +22,7 @@
   "game_das_enable_serialization": true,
   "game_das_serialization_remove_cache": false,
   "game_darg_project_script": "dasProject/darg.das_project",
+  "dargHangarPictureDiscardAllowed": false,
   "localizationVrom": "lang.vromfs.bin",
   "localizationRegionalVrom": "",
   "addAllAddonsToBasePath": false,
@@ -148,10 +149,6 @@
     "%dasImgui": {
       "forSource": "../../prog/1stPartyLibs/daScript/modules/dasImgui/daslib",
       "forVromfs": "daslib"
-    },
-    "%imgui": {
-      "forSource": "../../skyquake/prog/scripts/das/imgui",
-      "forVromfs": "das/imgui"
     }
   },
   "addonBasePath": {
@@ -594,6 +591,11 @@
       }
     },
     "pkg_lvl_air_hurtgen_africa": {
+      "conditions": {
+        "campaign": "air"
+      }
+    },
+    "pkg_lvl_air_grand_canyon": {
       "conditions": {
         "campaign": "air"
       }
@@ -1076,6 +1078,18 @@
       "conditions": {
         "campaign": "ships",
         "mRank": 4
+      }
+    },
+    "pkg_germ_frigate_rckt_baden_wurttemberg": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
+      }
+    },
+    "pkg_jp_sub_yushio": {
+      "conditions": {
+        "campaign": "ships",
+        "mRank": 6
       }
     },
     "pkg_ussr_kv_122": {
@@ -1594,6 +1608,24 @@
         "mRank": 6
       }
     },
+    "pkg_jp_type_10_prototype": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 11
+      }
+    },
+    "pkg_ussr_t_72m2_moderna": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 10
+      }
+    },
+    "pkg_fr_lorraine_100": {
+      "conditions": {
+        "campaign": "tanks",
+        "mRank": 5
+      }
+    },
     "pkg_il_merkava_mk_2d": {
       "conditions": {
         "campaign": "tanks",
@@ -1854,7 +1886,6 @@
     "skipIntegratedGpuWarning": true,
     "netLogerr": true,
     "dynamicImpostorsPerFrame": 1,
-    "enableNvHighlights": "auto",
     "logerrOnSecLayer": true,
     "mobileStyleFpsString": true,
     "maxWorkThreads": 2,
@@ -2096,7 +2127,7 @@
     "timeoutSec": 500
   },
   "ugc": {
-    "enabled": true
+    "enabled": false
   },
   "unitedVdata.dynModel": {
     "use": false,
@@ -2138,6 +2169,9 @@
       },
       "background_addons": {
         "flag": "--noversion"
+      },
+      "optional_game_resources": {
+        "flag": "--noversion"
       }
     },
     "iOS": {
@@ -2150,6 +2184,9 @@
         ]
       },
       "background_addons": {
+        "flag": "--noversion"
+      },
+      "optional_game_resources": {
         "flag": "--noversion"
       }
     },
@@ -2209,333 +2246,227 @@
     }
   },
   "shadows": {
-    "zExpansion": 100.0,
-    "depthBias": 0.25,
-    "depthSlopeBias": 0.7,
-    "depthConstBias": 0.000021,
     "bigShipForShadowsFrom": 0.0,
-    "occlusionSunDirThreshold": 0.5,
     "shadowsDistMulInZoom": 3.0,
-    "enableStaticInTps": true,
-    "hangarUseFixedShadowCascade": true,
-    "hangarShipsUseFixedShadowCascade": true,
-    "tpsUseFixedShadowCascade": true,
-    "underwaterUseFixedShadowCascade": true,
-    "staticMaxUpdatePart": 0.005,
-    "low": {
-      "cascadeWidth": 512,
-      "enableSparseUpdate": false,
-      "underwaterCascadeWidth": 512,
+    "staticShadows": {
+      "optimizeBigQuadRenderForSmallCascade": true,
+      "cascadeCount": 2,
+      "maxDist": 4000.0,
+      "texWidth": 1024,
+      "cascadeStarting": 0,
+      "depthBias": 0.05,
+      "depthBiasForCascade0": 0.002,
+      "cascadeTransition": false,
+      "cascade0Dist": 800.0,
+      "minHeight": -20.0,
+      "maxHeight": 100.0,
+      "maxHeightRange": 150.0,
+      "riExLod0InCascade0": true,
+      "maxUpdateTexelPart": 0.005,
+      "minSizeForRiextraCascade1": 10.0,
+      "aircraft": {
+        "maxDist": 2000.0,
+        "depthBias": 0.00025,
+        "depthBiasForCascade0": 0.000025,
+        "cascade0Dist": 100.0,
+        "maxHeight": 4500.0,
+        "maxHeightRange": 4550.0
+      },
+      "tank": {
+        "maxDist": 2000.0,
+        "depthBias": 0.005,
+        "depthBiasForCascade0": 0.0005,
+        "cascade0Dist": 100.0
+      }
+    },
+    "csm": {
+      "cascadeWidth": 0,
       "splitsW": 2,
       "splitsH": 1,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 1000.0,
-      "tpsPowWeight": 0.98,
-      "bigShipsShadowDist": 700.0,
-      "bigShipsPowWeight": 0.45,
-      "hangarShadowDist": 150.0,
-      "hangarPowWeight": 0.9,
-      "hangarZNearForCascadeDistribution": 0.5,
-      "hangarShipsShadowDist": 150.0,
-      "hangarShipsPowWeight": 0.5,
-      "tanksShadowDist": 200.0,
-      "tanksPowWeight": 0.7,
-      "underwaterShadowDist": 500.0,
-      "underwaterPowWeight": 0.5,
-      "underwaterShadowStart": 0.01,
       "fadeOut": 30.0,
+      "depthBias": 0.25,
+      "depthSlopeBias": 0.7,
+      "depthConstBias": 0.000021,
+      "shadowStart": 0.0,
+      "zExpansion": 100.0,
       "rotationMargin": 0.1,
-      "vsmSize": 2048,
-      "renderHeightmap": false,
+      "zNearForCascadeDistribution": -1.0,
+      "useFixedShadowCascade": false,
       "useOcclusion": false,
-      "staticCascadeCount": 2,
-      "staticCascadeTexWidth": 1024,
-      "staticCascadeMaxDist": 4000.0,
-      "staticCascade0Dist": 800.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeUseRiSecLayer": false,
-      "staticCascadeMinHeight": -20.0,
-      "staticCascadeMaxHeight": 100.0,
-      "staticMaxHeightRange": 150.0,
-      "staticCascadeTransition": false,
-      "optimizeBigQuadRenderForSmallCascade": true,
-      "staticCascadeDualPass": false,
-      "staticCascadeDepthBias": 0.05,
-      "staticCascadeRiExLod0InCascade0": true,
-      "staticCascadeDepthBiasForCascade0": 0.002,
-      "staticCascadeMinSizeForRiextraCascade1": 10.0,
-      "tank": {
-        "staticCascadeCount": 2,
-        "staticCascadeTexWidth": 1024,
-        "staticCascadeMaxDist": 2000.0,
-        "staticCascade0Dist": 100.0,
-        "staticCascadeStarting": 0,
-        "staticCascadeUseRiSecLayer": false,
-        "staticCascadeMinHeight": -20.0,
-        "staticCascadeMaxHeight": 100.0,
-        "staticMaxHeightRange": 150.0,
-        "staticCascadeTransition": false,
-        "optimizeBigQuadRenderForSmallCascade": true,
-        "staticCascadeDualPass": false,
-        "staticCascadeDepthBias": 0.005,
-        "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.0005,
-        "staticCascadeMinSizeForRiextraCascade1": 10.0
+      "renderHeightmap": false,
+      "enableSparseUpdate": false,
+      "aircraft": {
+        "useFixedShadowCascade": true
       },
-      "airplane": {
-        "staticCascadeCount": 2,
-        "staticCascadeTexWidth": 1024,
-        "staticCascadeMaxDist": 2000.0,
-        "staticCascade0Dist": 100.0,
-        "staticCascadeStarting": 0,
-        "staticCascadeUseRiSecLayer": false,
-        "staticCascadeMinHeight": -20.0,
-        "staticCascadeMaxHeight": 4500.0,
-        "staticMaxHeightRange": 4550.0,
-        "staticCascadeTransition": false,
-        "optimizeBigQuadRenderForSmallCascade": true,
-        "staticCascadeDualPass": false,
-        "staticCascadeDepthBias": 0.00025,
-        "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.000025,
-        "staticCascadeMinSizeForRiextraCascade1": 10.0
+      "hangar": {
+        "useFixedShadowCascade": true
+      },
+      "hangar_ship": {
+        "useFixedShadowCascade": true
+      },
+      "underwater": {
+        "useFixedShadowCascade": true
+      }
+    },
+    "low": {
+      "vsmSize": 2048,
+      "csm": {
+        "cascadeWidth": 512,
+        "aircraft": {
+          "shadowDist": 1000.0,
+          "powWeight": 0.98
+        },
+        "tank": {
+          "shadowDist": 200.0,
+          "powWeight": 0.7
+        },
+        "small_ship": {
+          "shadowDist": 700.0,
+          "powWeight": 0.45
+        },
+        "big_ship": {
+          "shadowDist": 700.0,
+          "powWeight": 0.45
+        },
+        "hangar": {
+          "shadowDist": 150.0,
+          "powWeight": 0.9,
+          "zNearForCascadeDistribution": 0.5
+        },
+        "hangar_ship": {
+          "shadowDist": 150.0,
+          "powWeight": 0.5,
+          "zNearForCascadeDistribution": 0.5
+        },
+        "underwater": {
+          "shadowDist": 500.0,
+          "powWeight": 0.5,
+          "shadowStart": 0.01
+        }
       }
     },
     "high": {
-      "cascadeWidth": 1024,
-      "enableSparseUpdate": false,
-      "underwaterCascadeWidth": 512,
-      "splitsW": 2,
-      "splitsH": 1,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 1000.0,
-      "tpsPowWeight": 0.98,
-      "bigShipsShadowDist": 1000.0,
-      "bigShipsPowWeight": 0.6,
-      "hangarShadowDist": 150.0,
-      "hangarPowWeight": 0.9,
-      "hangarZNearForCascadeDistribution": 0.5,
-      "hangarShipsShadowDist": 250.0,
-      "hangarShipsPowWeight": 0.7,
-      "tanksShadowDist": 500.0,
-      "tanksPowWeight": 0.9,
-      "underwaterShadowDist": 500.0,
-      "underwaterPowWeight": 0.5,
-      "underwaterShadowStart": 0.01,
-      "fadeOut": 30.0,
-      "rotationMargin": 0.1,
       "vsmSize": 2048,
-      "renderHeightmap": false,
-      "useOcclusion": false,
-      "staticCascadeCount": 2,
-      "staticCascadeTexWidth": 2048,
-      "staticCascadeMaxDist": 4000.0,
-      "staticCascade0Dist": 800.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeUseRiSecLayer": false,
-      "staticCascadeMinHeight": -20.0,
-      "staticCascadeMaxHeight": 100.0,
-      "staticMaxHeightRange": 150.0,
-      "staticCascadeTransition": false,
-      "optimizeBigQuadRenderForSmallCascade": true,
-      "staticCascadeDualPass": false,
-      "staticCascadeDepthBias": 0.05,
-      "staticCascadeRiExLod0InCascade0": true,
-      "staticCascadeDepthBiasForCascade0": 0.002,
-      "staticCascadeMinSizeForRiextraCascade1": 10.0,
-      "tank": {
-        "staticCascadeCount": 2,
-        "staticCascadeTexWidth": 2048,
-        "staticCascadeMaxDist": 2000.0,
-        "staticCascade0Dist": 100.0,
-        "staticCascadeStarting": 0,
-        "staticCascadeUseRiSecLayer": false,
-        "staticCascadeMinHeight": -20.0,
-        "staticCascadeMaxHeight": 100.0,
-        "staticMaxHeightRange": 150.0,
-        "staticCascadeTransition": false,
-        "optimizeBigQuadRenderForSmallCascade": true,
-        "staticCascadeDualPass": false,
-        "staticCascadeDepthBias": 0.005,
-        "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.0005,
-        "staticCascadeMinSizeForRiextraCascade1": 10.0
+      "staticShadows": {
+        "texWidth": 2048
       },
-      "airplane": {
-        "staticCascadeCount": 2,
-        "staticCascadeTexWidth": 2048,
-        "staticCascadeMaxDist": 2000.0,
-        "staticCascade0Dist": 100.0,
-        "staticCascadeStarting": 0,
-        "staticCascadeUseRiSecLayer": false,
-        "staticCascadeMinHeight": -20.0,
-        "staticCascadeMaxHeight": 4500.0,
-        "staticMaxHeightRange": 4550.0,
-        "staticCascadeTransition": false,
-        "optimizeBigQuadRenderForSmallCascade": true,
-        "staticCascadeDualPass": false,
-        "staticCascadeDepthBias": 0.00025,
-        "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.000025,
-        "staticCascadeMinSizeForRiextraCascade1": 10.0
+      "csm": {
+        "cascadeWidth": 1024,
+        "aircraft": {
+          "shadowDist": 1000.0,
+          "powWeight": 0.98
+        },
+        "tank": {
+          "shadowDist": 500.0,
+          "powWeight": 0.9
+        },
+        "small_ship": {
+          "shadowDist": 1000.0,
+          "powWeight": 0.6
+        },
+        "big_ship": {
+          "shadowDist": 1000.0,
+          "powWeight": 0.6
+        },
+        "hangar": {
+          "shadowDist": 150.0,
+          "powWeight": 0.9,
+          "zNearForCascadeDistribution": 0.5
+        },
+        "hangar_ship": {
+          "shadowDist": 250.0,
+          "powWeight": 0.7,
+          "zNearForCascadeDistribution": 0.5
+        },
+        "underwater": {
+          "shadowDist": 500.0,
+          "powWeight": 0.5,
+          "shadowStart": 0.01,
+          "cascadeWidth": 512
+        }
       }
     },
     "max": {
-      "cascadeWidth": 1536,
-      "enableSparseUpdate": false,
-      "underwaterCascadeWidth": 1024,
-      "splitsW": 2,
-      "splitsH": 1,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 1000.0,
-      "tpsPowWeight": 0.98,
-      "bigShipsShadowDist": 1000.0,
-      "bigShipsPowWeight": 0.6,
-      "hangarShadowDist": 150.0,
-      "hangarPowWeight": 0.9,
-      "hangarZNearForCascadeDistribution": 0.5,
-      "hangarShipsShadowDist": 250.0,
-      "hangarShipsPowWeight": 0.7,
-      "tanksShadowDist": 500.0,
-      "tanksPowWeight": 0.9,
-      "underwaterShadowDist": 500.0,
-      "underwaterPowWeight": 0.5,
-      "underwaterShadowStart": 0.01,
-      "fadeOut": 30.0,
-      "rotationMargin": 0.1,
       "vsmSize": 2048,
-      "renderHeightmap": false,
-      "useOcclusion": false,
-      "staticCascadeCount": 2,
-      "staticCascadeTexWidth": 2048,
-      "staticCascadeMaxDist": 4000.0,
-      "staticCascade0Dist": 800.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeUseRiSecLayer": false,
-      "staticCascadeMinHeight": -20.0,
-      "staticCascadeMaxHeight": 100.0,
-      "staticMaxHeightRange": 150.0,
-      "staticCascadeTransition": false,
-      "optimizeBigQuadRenderForSmallCascade": true,
-      "staticCascadeDualPass": false,
-      "staticCascadeDepthBias": 0.05,
-      "staticCascadeRiExLod0InCascade0": true,
-      "staticCascadeDepthBiasForCascade0": 0.002,
-      "staticCascadeMinSizeForRiextraCascade1": 10.0,
-      "tank": {
-        "staticCascadeCount": 2,
-        "staticCascadeTexWidth": 2048,
-        "staticCascadeMaxDist": 2000.0,
-        "staticCascade0Dist": 100.0,
-        "staticCascadeStarting": 0,
-        "staticCascadeUseRiSecLayer": false,
-        "staticCascadeMinHeight": -20.0,
-        "staticCascadeMaxHeight": 100.0,
-        "staticMaxHeightRange": 150.0,
-        "staticCascadeTransition": false,
-        "optimizeBigQuadRenderForSmallCascade": true,
-        "staticCascadeDualPass": false,
-        "staticCascadeDepthBias": 0.005,
-        "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.0005,
-        "staticCascadeMinSizeForRiextraCascade1": 10.0
+      "staticShadows": {
+        "texWidth": 2048
       },
-      "airplane": {
-        "staticCascadeCount": 2,
-        "staticCascadeTexWidth": 2048,
-        "staticCascadeMaxDist": 2000.0,
-        "staticCascade0Dist": 100.0,
-        "staticCascadeStarting": 0,
-        "staticCascadeUseRiSecLayer": false,
-        "staticCascadeMinHeight": -20.0,
-        "staticCascadeMaxHeight": 4500.0,
-        "staticMaxHeightRange": 4550.0,
-        "staticCascadeTransition": false,
-        "optimizeBigQuadRenderForSmallCascade": true,
-        "staticCascadeDualPass": false,
-        "staticCascadeDepthBias": 0.00025,
-        "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.000025,
-        "staticCascadeMinSizeForRiextraCascade1": 10.0
+      "csm": {
+        "cascadeWidth": 1536,
+        "aircraft": {
+          "shadowDist": 1000.0,
+          "powWeight": 0.98
+        },
+        "tank": {
+          "shadowDist": 500.0,
+          "powWeight": 0.9
+        },
+        "small_ship": {
+          "shadowDist": 1000.0,
+          "powWeight": 0.6
+        },
+        "big_ship": {
+          "shadowDist": 1000.0,
+          "powWeight": 0.6
+        },
+        "hangar": {
+          "shadowDist": 150.0,
+          "powWeight": 0.9,
+          "zNearForCascadeDistribution": 0.5
+        },
+        "hangar_ship": {
+          "shadowDist": 250.0,
+          "powWeight": 0.7,
+          "zNearForCascadeDistribution": 0.5
+        },
+        "underwater": {
+          "shadowDist": 500.0,
+          "powWeight": 0.5,
+          "shadowStart": 0.01,
+          "cascadeWidth": 1024
+        }
       }
     },
     "movie": {
-      "cascadeWidth": 4096,
-      "enableSparseUpdate": false,
-      "underwaterCascadeWidth": 1024,
-      "splitsW": 2,
-      "splitsH": 1,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 1000.0,
-      "tpsPowWeight": 0.9,
-      "bigShipsShadowDist": 1000.0,
-      "bigShipsPowWeight": 0.6,
-      "hangarShadowDist": 150.0,
-      "hangarPowWeight": 0.9,
-      "hangarZNearForCascadeDistribution": 0.5,
-      "hangarShipsShadowDist": 250.0,
-      "hangarShipsPowWeight": 0.7,
-      "tanksShadowDist": 500.0,
-      "tanksPowWeight": 0.9,
-      "underwaterShadowDist": 500.0,
-      "underwaterPowWeight": 0.5,
-      "underwaterShadowStart": 0.01,
-      "fadeOut": 30.0,
-      "rotationMargin": 0.1,
       "vsmSize": 2048,
-      "renderHeightmap": false,
-      "useOcclusion": false,
-      "staticCascadeCount": 2,
-      "staticCascadeTexWidth": 8192,
-      "staticCascadeMaxDist": 4000.0,
-      "staticCascade0Dist": 800.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeUseRiSecLayer": false,
-      "staticCascadeMinHeight": -20.0,
-      "staticCascadeMaxHeight": 100.0,
-      "staticMaxHeightRange": 150.0,
-      "staticCascadeTransition": false,
-      "optimizeBigQuadRenderForSmallCascade": true,
-      "staticCascadeDualPass": false,
-      "staticCascadeDepthBias": 0.05,
-      "staticCascadeRiExLod0InCascade0": true,
-      "staticCascadeDepthBiasForCascade0": 0.002,
-      "staticCascadeMinSizeForRiextraCascade1": -1.0,
-      "tank": {
-        "staticCascadeCount": 2,
-        "staticCascadeTexWidth": 8192,
-        "staticCascadeMaxDist": 2000.0,
-        "staticCascade0Dist": 100.0,
-        "staticCascadeStarting": 0,
-        "staticCascadeUseRiSecLayer": false,
-        "staticCascadeMinHeight": -20.0,
-        "staticCascadeMaxHeight": 100.0,
-        "staticMaxHeightRange": 150.0,
-        "staticCascadeTransition": false,
-        "optimizeBigQuadRenderForSmallCascade": true,
-        "staticCascadeDualPass": false,
-        "staticCascadeDepthBias": 0.005,
-        "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.0005,
-        "staticCascadeMinSizeForRiextraCascade1": -1.0
+      "staticShadows": {
+        "texWidth": 8192,
+        "minSizeForRiextraCascade1": -1.0
       },
-      "airplane": {
-        "staticCascadeCount": 2,
-        "staticCascadeTexWidth": 8192,
-        "staticCascadeMaxDist": 2000.0,
-        "staticCascade0Dist": 100.0,
-        "staticCascadeStarting": 0,
-        "staticCascadeUseRiSecLayer": false,
-        "staticCascadeMinHeight": -20.0,
-        "staticCascadeMaxHeight": 4500.0,
-        "staticMaxHeightRange": 4550.0,
-        "staticCascadeTransition": false,
-        "optimizeBigQuadRenderForSmallCascade": true,
-        "staticCascadeDualPass": false,
-        "staticCascadeDepthBias": 0.00025,
-        "staticCascadeRiExLod0InCascade0": true,
-        "staticCascadeDepthBiasForCascade0": 0.000025,
-        "staticCascadeMinSizeForRiextraCascade1": -1.0
+      "csm": {
+        "cascadeWidth": 4096,
+        "aircraft": {
+          "shadowDist": 1000.0,
+          "powWeight": 0.9
+        },
+        "tank": {
+          "shadowDist": 500.0,
+          "powWeight": 0.9
+        },
+        "small_ship": {
+          "shadowDist": 1000.0,
+          "powWeight": 0.6
+        },
+        "big_ship": {
+          "shadowDist": 1000.0,
+          "powWeight": 0.6
+        },
+        "hangar": {
+          "shadowDist": 150.0,
+          "powWeight": 0.9,
+          "zNearForCascadeDistribution": 0.5
+        },
+        "hangar_ship": {
+          "shadowDist": 250.0,
+          "powWeight": 0.7,
+          "zNearForCascadeDistribution": 0.5
+        },
+        "underwater": {
+          "shadowDist": 500.0,
+          "powWeight": 0.5,
+          "shadowStart": 0.01,
+          "cascadeWidth": 1024
+        }
       }
     }
   },
@@ -2855,8 +2786,8 @@
     "movie": 1.0
   },
   "android_scene_resolutions": {
-    "low": 450,
-    "medium": 516,
+    "low": 448,
+    "medium": 512,
     "high": 688,
     "movie": 1080
   },
@@ -3560,7 +3491,7 @@
   },
   "vulkan": {
     "texUploadLimitMb": 32,
-    "debugImageGarbadgeReads": true,
+    "debugGarbadgeReads": true,
     "vendor": {
       "Qualcomm": {
         "driverProps": {
@@ -3583,6 +3514,9 @@
               {
                 "gpu": [
                   "640",
+                  "642",
+                  "642L",
+                  "644",
                   "650",
                   "660"
                 ],
@@ -3632,6 +3566,18 @@
             "entry": {
               "driverMaxVer0": 512,
               "driverMaxVer1": 420,
+              "data": {
+                "affected": true
+              }
+            }
+          },
+          "hasFloatClearBug": {
+            "entry": {
+              "gpu": [
+                "610",
+                "613",
+                "618"
+              ],
               "data": {
                 "affected": true
               }

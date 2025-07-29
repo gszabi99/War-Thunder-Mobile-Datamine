@@ -1,20 +1,19 @@
+import "entity_editor" as entity_editor
+import "daEditorEmbedded" as daEditor
 from "%darg/ui_imports.nut" import *
-
-let {showTemplateSelect, editorIsActive, showDebugButtons, selectedTemplatesGroup, addEntityCreatedCallback} = require("state.nut")
-let {colors} = require("components/style.nut")
+let { showTemplateSelect, editorIsActive, showDebugButtons, selectedTemplatesGroup, addEntityCreatedCallback } = require("state.nut")
+let { colors } = require("components/style.nut")
 let txt = require("%daeditor/components/text.nut").dtext
 
 let textButton = require("components/textButton.nut")
 let closeButton = require("components/closeButton.nut")
 let nameFilter = require("components/nameFilter.nut")
 let combobox = require("%daeditor/components/combobox.nut")
-let {makeVertScroll} = require("%daeditor/components/scrollbar.nut")
-let {mkTemplateTooltip} = require("components/templateHelp.nut")
+let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
+let { mkTemplateTooltip } = require("components/templateHelp.nut")
 
-let {getSceneLoadTypeText} = require("%daeditor/daeditor_es.nut")
-let {defaultScenesSortMode} = require("components/mkSortSceneModeButton.nut")
-let entity_editor = require("entity_editor")
-let daEditor = require("daEditorEmbedded")
+let { getSceneLoadTypeText } = require("%daeditor/daeditor_es.nut")
+let { defaultScenesSortMode } = require("components/mkSortSceneModeButton.nut")
 let {DE4_MODE_SELECT} = daEditor
 
 const noSceneSelected = "UNKNOWN:0"
@@ -214,9 +213,9 @@ function sceneToText(scene) {
   return "MAIN"
 }
 
-allScenes.subscribe(function(v) {
+allScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
   allSceneTexts(v.map(@(scene, _idx) sceneToText(scene)))
-  allSceneTexts.value.append(noSceneSelected)
+  allSceneTexts.get().append(noSceneSelected)
   local scene = entity_editor.get_instance()?.getTargetScene()
   if (scene != null && ("loadType" in scene) && ("index" in scene)) {
     selectedScene.set(sceneToText(scene))
@@ -229,9 +228,9 @@ selectedScene.subscribe(function(v) {
   local loadType = 0
   local index = 0
   if (v != noSceneSelected) {
-    local selectedSceneIndex = allSceneTexts.value.indexof(v)
+    local selectedSceneIndex = allSceneTexts.get().indexof(v)
     if (selectedSceneIndex != null) {
-      local scene = allScenes.value[selectedSceneIndex]
+      local scene = allScenes.get()[selectedSceneIndex]
       loadType = scene.loadType
       index = scene.index
     }
@@ -247,7 +246,7 @@ function dialogRoot() {
   local scenes = entity_editor.get_instance().getSceneImports() ?? []
   scenes.sort(defaultScenesSortMode.func)
   allScenes(scenes)
-  let selectedSceneIndex = selectedScene.value != noSceneSelected ? allSceneTexts.value.indexof(selectedScene.value) : null
+  let selectedSceneIndex = selectedScene.get() != noSceneSelected ? allSceneTexts.get().indexof(selectedScene.get()) : null
   let sceneInfo = selectedSceneIndex != null ? scenes[selectedSceneIndex] : null
   let sceneTitleStyle = { fontSize = hdpx(17), color=Color(150,150,150,120) }
   let sceneInfoStyle = { fontSize = hdpx(17), color=Color(180,180,180,120) }
@@ -262,7 +261,7 @@ function dialogRoot() {
       flow = FLOW_VERTICAL
       children = [
         txt("Select target scene to create entity in", sceneTitleStyle)
-        txt(selectedScene.value, sceneInfoStyle)
+        txt(selectedScene.get(), sceneInfoStyle)
         sceneInfo != null ? txt($"{sceneInfo.path}", sceneInfoStyle) : null
       ]
 

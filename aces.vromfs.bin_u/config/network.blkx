@@ -70,29 +70,24 @@
     },
     "skinsDecalsCDN": {
       "maxSizePS4": 157286400,
-      "hashesReqUrl": "https://public-configs.warthunder.com/staging/dldata.info",
+      "hashesReqUrl": "https://public-configs.warthunder.com/wtm-staging/dldata.info",
       "baseUrls": {
         "url": [
           {
             "weight": 5.0,
-            "url": "https://dldata-aws.warthunder.com/staging/"
+            "url": "https://dldata-wtmobile-aws.cdn.gaijin.net/wtm-staging/"
           },
           {
             "weight": 1.0,
-            "url": "https://dldata-warthunder.cdn.gaijin.net/staging/"
+            "url": "https://dldata-wtmobile-aws.cdn.gaijin.net/wtm-staging/"
           }
         ]
       }
     }
   },
   "_common_skinsDecalsCDN": {
-    "url": [
-      "https://dldata-aws.warthunder.com/staging/",
-      "https://dldata-aws.warthunder.com/staging/",
-      "https://dldata-warthunder.cdn.gaijin.net/staging/",
-      "https://dldata-aws.warthunder.com/staging/"
-    ],
-    "hashesReqUrl": "https://public-configs.warthunder.com/staging/dldata.info"
+    "url": "https://dldata-wtmobile-aws.cdn.gaijin.net/wtm-staging/",
+    "hashesReqUrl": "https://public-configs.warthunder.com/wtm-staging/dldata.info"
   },
   "_common_ugcSkinsDecalsCDN": {
     "ugcServerUrl": [

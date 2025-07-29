@@ -427,7 +427,8 @@
             ],
             "target": "t2_quest_units_squad",
             "randomTargetsCount": 1,
-            "doExplosion": true
+            "doExplosion": true,
+            "giveKillTo": "t1_quest_units_squad"
           },
           {
             "part": 0,
@@ -449,7 +450,8 @@
             ],
             "target": "t1_quest_units_squad",
             "randomTargetsCount": 1,
-            "doExplosion": true
+            "doExplosion": true,
+            "giveKillTo": "t2_quest_units_squad"
           }
         ],
         "wait": {

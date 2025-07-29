@@ -50,8 +50,10 @@ let battleResult = Computed(function() {
   else {
     res = baseBattleResult.get()?.__merge({ roomInfo = roomInfo.get() })
     if ("realName" in res?.unit) {
-      res.unit.name = res.unit.realName
-      res.unit.$rawdelete("realName")
+      let unitCopy = clone res.unit
+      unitCopy.name = res.unit.realName
+      unitCopy.$rawdelete("realName")
+      res.unit = unitCopy
     }
     if (res?.sessionId != battleSessionId.get())
       return connectFailedData.get()?.sessionId != battleSessionId.get() ? null
@@ -215,7 +217,7 @@ function requestEarlyExitRewards() {
     eventbus_send("matchingApiNotify", { name = "match.remove_from_session" }) 
 }
 
-eventbus_subscribe("onBattleConnectionFailed", @(p) connectFailedData(p.__merge({ sessionId = battleSessionId.value })))
+eventbus_subscribe("onBattleConnectionFailed", @(p) connectFailedData(p.__merge({ sessionId = battleSessionId.get() })))
 
 register_command(requestEarlyExitRewards, "debriefing.request_early_exit_rewards")
 register_command(function() {

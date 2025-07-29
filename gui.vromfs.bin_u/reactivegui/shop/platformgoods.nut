@@ -46,7 +46,7 @@ subscribeFMsgBtns({
 })
 
 function buyPlatformGoodsExt(goodsOrId) {
-  if (isGuestLogin.value) {
+  if (isGuestLogin.get()) {
     renewGuestRegistrationTags()
     openFMsgBox({
       text = "".concat(loc("msg/needRegistrationBeforePurchase"), "\n", loc("mainmenu/desc/link_to_gaijin_account"))

@@ -203,7 +203,7 @@ updateNextRefreshTime(lastInitStatus.value)
 lastInitStatus.subscribe(updateNextRefreshTime)
 
 function startRefreshTimer() {
-  if (isInBattle.value || nextRefreshTime.value <= 0)
+  if (isInBattle.get() || nextRefreshTime.value <= 0)
     clearTimer(refreshAvailableSkus)
   else
     resetTimeout(max(0.1, 0.001 * (nextRefreshTime.value - get_time_msec())), refreshAvailableSkus)

@@ -245,7 +245,7 @@ function mkSlot(reward, rStyle) {
   let size = getRewardPlateSize(reward.slots, rStyle)
   let stateFlags = Watched(0)
   let isSelected = Computed(@() selIndex.get() == reward.slotIdx)
-  let unit = Computed(@() serverConfigs.value?.allUnits?[reward.id])
+  let unit = Computed(@() serverConfigs.get()?.allUnits?[reward.id])
 
   return @() {
     watch = [isSelected, stateFlags, rewardSlots, unit, openedUnitFromTree]

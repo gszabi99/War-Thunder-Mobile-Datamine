@@ -10,7 +10,7 @@ let { getUnitTags, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { startTestFlightByName } = require("%rGui/gameModes/startOfflineMode.nut")
 
 function debugUnitStats() {
-  let { allUnits = {} } = serverConfigs.value
+  let { allUnits = {} } = serverConfigs.get()
   let unitsByCamp = {}
   foreach(name, unit in allUnits) {
     let { campaign = "" } = unit

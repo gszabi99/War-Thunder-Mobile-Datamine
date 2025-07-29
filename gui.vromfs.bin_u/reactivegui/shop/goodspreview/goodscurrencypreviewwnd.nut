@@ -16,7 +16,7 @@ let { mkCurrencyComp, CS_BIG } = require("%rGui/components/currencyComp.nut")
 let { mkLensFlare, aTimeFlareMiddle } = require("%rGui/effects/mkLensFlare.nut")
 let skipOfferBtn = require("skipOfferBtn.nut")
 
-let openCount = Computed(@() previewType.value == GPT_CURRENCY ? openPreviewCount.get() : 0)
+let openCount = Computed(@() previewType.get() == GPT_CURRENCY ? openPreviewCount.get() : 0)
 let imageHeight = hdpx(450)
 
 
@@ -44,7 +44,7 @@ let header = mkPreviewHeader(Watched(loc("offer/gold")), closeGoodsPreview, aTim
 let rightBottomBlock = mkPriceWithTimeBlockNoOldPrice(aTimePriceStart, skipOfferBtn)
 
 function goldInfo() {
-  let { discountInPercent = 0 } = previewGoods.value
+  let { discountInPercent = 0 } = previewGoods.get()
   let gold = previewGoods.get()?.currencies.gold ?? 0
   let oldGold = (gold * (1.0 - (discountInPercent / 100.0))).tointeger()
   return doubleSideGradient.__merge({

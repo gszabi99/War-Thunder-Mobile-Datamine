@@ -231,8 +231,8 @@ function mkItem(item, textCtor) {
   )
   let imgLockSize = hdpxi(60)
   let isUnseen = Computed(@() !item.hasReward
-    && item.name not in seenQuests.value
-    && item.name not in inactiveEventUnlocks.value)
+    && item.name not in seenQuests.get()
+    && item.name not in inactiveEventUnlocks.get())
 
   let rewardsPreview = Computed(@() getRewardsPreviewInfo(item, serverConfigs.get()))
   let eventCurrencyReward = Computed(@() getEventCurrencyReward(rewardsPreview.get()))
@@ -352,7 +352,7 @@ function mkSectionTabs(sections, curSectionId, onSectionChange) {
       let isUnlocked = Computed(@() isSectionActive(id, questsBySection.get(), unlockTables.get()))
       return mkSectionBtn(@() onSectionChange(id),
         Computed(@() curSectionId.value == id),
-        Computed(@() !!hasUnseenQuestsBySection.value?[id]
+        Computed(@() !!hasUnseenQuestsBySection.get()?[id]
           || !!progressUnlockBySection.get()?[id].hasReward),
         @() {
           watch = [isUnlocked, sectionsFont, sectionsCfg]
@@ -393,7 +393,7 @@ function questTimerUntilStart(curSectionId) {
 
 let questsSort = @(a, b) b.hasReward <=> a.hasReward
   || a.isFinished <=> b.isFinished
-  || a.name in seenQuests.value <=> b.name in seenQuests.value
+  || a.name in seenQuests.get() <=> b.name in seenQuests.get()
   || a.chainPos <=> b.chainPos
   || a.name <=> b.name
 
@@ -486,8 +486,8 @@ function questsWndPage(sections, itemCtor, tabId, headerChildCtor = null, header
     return n
   })
 
-  let tabCurrencies = Computed(@() getQuestCurrenciesInTab(tabId, questsCfg.value, questsBySection.value,
-    progressUnlockBySection.value, progressUnlockByTab.value, serverConfigs.value))
+  let tabCurrencies = Computed(@() getQuestCurrenciesInTab(tabId, questsCfg.get(), questsBySection.get(),
+    progressUnlockBySection.get(), progressUnlockByTab.get(), serverConfigs.get()))
 
   let scrollHandler = ScrollHandler()
 

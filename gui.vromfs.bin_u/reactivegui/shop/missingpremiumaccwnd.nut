@@ -25,11 +25,11 @@ let SAVE_TIME_LAST_PREM_WND_SHOW = "timeLastPremWndShow"
 
 function close(){
   removeModalWindow(WND_UID)
-  get_local_custom_settings_blk()[SAVE_TIME_LAST_PREM_WND_SHOW] = serverTime.value
+  get_local_custom_settings_blk()[SAVE_TIME_LAST_PREM_WND_SHOW] = serverTime.get()
 }
 
 
-let premiumBonusesCfg = Computed(@() serverConfigs.value?.gameProfile.premiumBonuses)
+let premiumBonusesCfg = Computed(@() serverConfigs.get()?.gameProfile.premiumBonuses)
 let bonusMultText = @(v) $"{v}x"
 let infoText = Computed(function() {
   if (premiumBonusesCfg.value == null)
@@ -105,13 +105,13 @@ let showNoPremWnd = @(toBattle) addModalWindow(bgShadedDark.__merge({
 }))
 
 function showNoPremMessageIfNeed(toBattle){
-  if (havePremium.value){
+  if (havePremium.get()){
     toBattle()
     return
   }
 
-  if((serverTime.value - (get_local_custom_settings_blk()?[SAVE_TIME_LAST_PREM_WND_SHOW] ?? 0) >= TIME_RESHOWING_WND)
-      && premiumEndsAt.value) {
+  if((serverTime.get() - (get_local_custom_settings_blk()?[SAVE_TIME_LAST_PREM_WND_SHOW] ?? 0) >= TIME_RESHOWING_WND)
+      && premiumEndsAt.get()) {
     showNoPremWnd(toBattle)
     return
   }

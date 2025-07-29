@@ -38,7 +38,7 @@ let needActualize = Computed(@()
   !isBattleDataActual.value
     && hasBattleUnit.value
     && isLoggedIn.value
-    && !isInMpSession.value
+    && !isInMpSession.get()
     && battleUnitsInfo.get() != null)
 let battleDataError = Computed(@() lastResult.value?.error)
 let lastActTime = Watched(-1)
@@ -75,7 +75,7 @@ lastProfileKeysUpdated.subscribe(function(list) {
     markNeedRefresh()
 })
 
-let curUnitName = Computed(@() curUnit.value?.name)
+let curUnitName = Computed(@() curUnit.get()?.name)
 function refreshBattleUnitsinfo() {
   if (isInMpSession.get())
     return
@@ -86,6 +86,8 @@ function refreshBattleUnitsinfo() {
     })
   else if (curUnitName.get() != null)
     battleUnitsInfo.set({ isSlots = false, unit = curUnitName.get() })
+  else
+    battleUnitsInfo.set(null)
 }
 if (battleUnitsInfo.get() == null)
   refreshBattleUnitsinfo()

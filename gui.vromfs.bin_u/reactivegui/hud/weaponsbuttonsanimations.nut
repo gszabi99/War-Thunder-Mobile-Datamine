@@ -105,7 +105,7 @@ function mkConsumableAnimation(nextAnimation, start, finish, onDecrement) {
 function mkConsumableSpend(itemId, start = consumableAnimationBottom, finish = consumableAnimationTop, onDecrement = null) {
   if (!itemId)
     return null
-  let nextAnimation = Computed(@() spendItemsQueue.value.findvalue(@(i) i.itemId == itemId))
+  let nextAnimation = Computed(@() spendItemsQueue.get().findvalue(@(i) i.itemId == itemId))
   return {
     hplace = ALIGN_LEFT
     children = @() {

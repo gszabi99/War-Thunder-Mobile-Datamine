@@ -21,15 +21,15 @@ let isLbBestBattlesOpened = mkWatched(persist, "isLbBestBattlesOpened", false)
 let isRefreshLbEnabled = mkWatched(persist, "isRefreshLbEnabled", false)
 
 let curLbCfg = Computed(@() lbCfgById?[curLbId.value])
-let lbMyPlace = Computed(@() (curLbSelfRow.value?.idx ?? -2) + 1)
+let lbMyPlace = Computed(@() (curLbSelfRow.get()?.idx ?? -2) + 1)
 let lbMyPage = Computed(@() lbMyPlace.value < 0 ? -1 : (lbMyPlace.value - 1) / lbPageRows)
 let lbTotalPlaces = Computed(function() {
-  if (curLbData.value == null)
+  if (curLbData.get() == null)
     return -1
-  return curLbData.value.findvalue(@(val) "$" in val)?["$"].total ?? 0
+  return curLbData.get().findvalue(@(val) "$" in val)?["$"].total ?? 0
 })
 let lbLastPage = Computed(function() {
-  if (curLbData.value == null)
+  if (curLbData.get() == null)
     return -1
   let total = lbTotalPlaces.value
   let lastPage = total > 0 ? (min(total, MAX_PAGE_PLACE) - 1) / lbPageRows : lbPage.value

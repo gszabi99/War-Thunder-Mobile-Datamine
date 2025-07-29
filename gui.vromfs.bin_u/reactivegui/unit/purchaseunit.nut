@@ -54,8 +54,8 @@ function purchaseUnit(unitId, bqInfo, isUpgraded = false, executeAfter = null, c
   if (unit == null)
     return
 
-  let isForLevelUp = playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp)
-  local price = getUnitAnyPrice(unit, isForLevelUp, unitDiscounts.value)
+  let isForLevelUp = playerLevelInfo.get().isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp)
+  local price = getUnitAnyPrice(unit, isForLevelUp, unitDiscounts.get())
   if (isUpgraded) {
     if (!isForLevelUp) {
       logerr("Try to purchase upgraded unit not on level up")

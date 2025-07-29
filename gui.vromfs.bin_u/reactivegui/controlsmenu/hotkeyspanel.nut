@@ -78,12 +78,12 @@ function combineHotkeys(data) {
   return hotkeys
 }
 
-let isPanelVisible = Computed(@() cursorPresent.value && isGamepad.value
-  && (!isHudAttached.value || hasModalWindows.value))
+let isPanelVisible = Computed(@() cursorPresent.value && isGamepad.get()
+  && (!isHudAttached.value || hasModalWindows.get()))
 
 let joyAHint = Computed(function() {
   local hotkeyAText = defaultJoyAHint
-  if (!isGamepad.value)
+  if (!isGamepad.get())
     return hotkeyAText
   if (type(hoveredClickableInfo.value) == "string")
     return hoveredClickableInfo.value

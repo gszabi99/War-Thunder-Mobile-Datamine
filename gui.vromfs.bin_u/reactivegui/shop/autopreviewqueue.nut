@@ -1,16 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
+let { has_missing_resources_for_units } = require("contentUpdater")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { prevIfEqual } = require("%sqstd/underscore.nut")
 let { isReadyToFullLoad, isLoggedIn } = require("%appGlobals/loginState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
+let { resourcesDownloadVersion } = require("%appGlobals/updater/addonsState.nut")
 let { onlineBattlesCountForSession } = require("%rGui/onlineBattleCountState.nut")
-let { registerAutoDownloadAddons } = require("%rGui/updater/updaterState.nut")
+let { registerAutoDownloadUnits } = require("%rGui/updater/updaterState.nut")
 let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let { openGoodsPreviewInMenuOnly, getAddonsToShowGoods } = require("%rGui/shop/goodsPreviewState.nut")
+let { openGoodsPreviewInMenuOnly, getAllTagsUnitsToShowGoods } = require("%rGui/shop/goodsPreviewState.nut")
 let { featureGoodsToShow } = require("goodsAutoPreview.nut")
 let { offerToShow, offerShowedTime } = require("offerAutoPreview.nut")
 let { offersByGoodsToShow, offersByGoodsShowedState, showInRow } = require("offerByGoodsAutoPreview.nut")
@@ -29,11 +31,14 @@ let previewCfg = [
   {
     priority = Computed(function() {
       let offersByGoods = offersByGoodsToShow.get()
-      let { allUnits = null } = serverConfigs.get()
+      let has = resourcesDownloadVersion.get()  
       return offersByGoods.len() == 0 ? -1
         : !isReadyToFullLoad.get() ? -1
         : (!showInRow.get() && notOpenedBattlesCount.get() < 1) ? -1
-        : offersByGoods.findvalue(@(v) getAddonsToShowGoods(v, allUnits, hasAddons.get()).len() == 0) == null ? 2
+        : offersByGoods
+            .findvalue(@(v) !has_missing_resources_for_units(getAllTagsUnitsToShowGoods(v, serverConfigs.get()).keys(), true))
+            == null
+          ? 2
         : 5
     }),
     getGoods = @() offersByGoodsToShow.get()
@@ -42,12 +47,12 @@ let previewCfg = [
     cbOnPreview = @() sendOfferBqEvent("openInfoAutomatically", offerToShow.get().campaign),
     priority = Computed(function() {
       let offer = offerToShow.get()
-      let { allUnits = null } = serverConfigs.get()
+      let has = resourcesDownloadVersion.get()  
       return offer == null ? -1
         : !isReadyToFullLoad.get() ? -1
         : (!showInRow.get() && notOpenedBattlesCount.get() < 1) ? -1
         : (offer?.endTime ?? 0) <= (offerShowedTime.get()?[offer?.campaign] ?? 0) ? -1
-        : getAddonsToShowGoods(offer, allUnits, hasAddons.get()).len() > 0 ? 0
+        : has_missing_resources_for_units(getAllTagsUnitsToShowGoods(offer, serverConfigs.get()).keys(), true) ? 0
         : 3
     }),
     getGoods = @() [offerToShow.get()]
@@ -55,11 +60,14 @@ let previewCfg = [
   {
     priority = Computed(function() {
       let featureGoods = featureGoodsToShow.get()
-      let { allUnits = null } = serverConfigs.get()
+      let has = resourcesDownloadVersion.get()  
       return featureGoods.len() == 0 ? -1
         : !isReadyToFullLoad.get() ? -1
         : (!showInRow.get() && notOpenedBattlesCount.get() < 1) ? -1
-        : featureGoods.findvalue(@(v) getAddonsToShowGoods(v, allUnits, hasAddons.get()).len() == 0) == null ? 1
+        : featureGoods
+            .findvalue(@(v) !has_missing_resources_for_units(getAllTagsUnitsToShowGoods(v, serverConfigs.get()).keys(), true))
+            == null
+          ? 1
         : 4
     })
     getGoods = @() featureGoodsToShow.get()
@@ -115,13 +123,19 @@ assignGoodsToShow()
 foreach (w in [featureGoodsToShow, offerToShow, offersByGoodsToShow].extend(previewCfg.map(@(v) v.priority)))
   w.subscribe(@(_) assignGoodsToShow())
 
-let reqAddonsToShowGoods = Computed(@() !isReadyToFullLoad.get() || goodsToShow.get() == null ? []
-  : getAddonsToShowGoods(goodsToShow.get(), serverConfigs.get()?.allUnits, hasAddons.get()))
-let nextAddonsToShowGoods = Computed(@() !isReadyToFullLoad.get() || goodsToShow.get() == null ? []
-  : getAddonsToShowGoods(nextGoodsToShow.get(), serverConfigs.get()?.allUnits, hasAddons.get()))
+let mkReqUnitsToShowGoods = @(goods) Computed(function(prev) {
+  if (!isReadyToFullLoad.get() || goods.get() == null)
+    return prevIfEqual(prev, {})
+  let has = resourcesDownloadVersion.get()  
+  let res = getAllTagsUnitsToShowGoods(goods.get(), serverConfigs.get())
+  return prevIfEqual(prev, has_missing_resources_for_units(res.keys(), true) ? res : {})
+})
+
+let reqUnitsToShowGoods = keepref(mkReqUnitsToShowGoods(goodsToShow))
+let nextUnitsToShowGoods = keepref(mkReqUnitsToShowGoods(nextGoodsToShow))
 
 let needShow = Computed(@() goodsToShow.get() != null
-  && reqAddonsToShowGoods.get().len() == 0
+  && reqUnitsToShowGoods.get().len() == 0
   && !isInBattle.get()
   && isInMenuNoModals.get())
 
@@ -148,5 +162,5 @@ let openGoodsPreviewDelayed = @() resetTimeout(0.3, openGoodsPreview)
 openGoodsPreviewDelayed()
 needShow.subscribe(@(v) v ? openGoodsPreviewDelayed() : null)
 
-registerAutoDownloadAddons(reqAddonsToShowGoods)
-registerAutoDownloadAddons(nextAddonsToShowGoods)
+registerAutoDownloadUnits(reqUnitsToShowGoods)
+registerAutoDownloadUnits(nextUnitsToShowGoods)

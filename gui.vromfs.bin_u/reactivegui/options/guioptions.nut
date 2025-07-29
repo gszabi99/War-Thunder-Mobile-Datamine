@@ -77,7 +77,6 @@ let optListScriptOnly = [
 let optListLocalScriptOnly = [
   "OPT_AUTO_UPDATE_ENABLED"
   "OPT_SHOW_TOUCHES_ENABLED"
-  "OPT_BACKGROUND_UPDATE_ENABLED"
 ]
 
 let export = {}

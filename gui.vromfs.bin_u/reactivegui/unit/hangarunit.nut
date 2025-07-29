@@ -11,11 +11,10 @@ let { hangar_load_model_with_skin, hangar_move_cam_to_unit_place,
   hangar_force_reload_model
 } = require("hangar")
 let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+let { allMainUnitsByPlatoon } = require("%appGlobals/pServer/allMainUnitsByPlatoon.nut")
 let { isInMenu, isInMpSession, isInLoadingScreen, isInBattle } = require("%appGlobals/clientState/clientState.nut")
 let { isEqual } = require("%sqstd/underscore.nut")
-let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
-let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
-let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
+let { mkHasUnitsResources } = require("%appGlobals/updater/addonsState.nut")
 let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
 let { mkWeaponPreset } = require("unitSettings.nut")
 let { getEqippedWithoutOverload, getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
@@ -37,7 +36,7 @@ let mainHangarUnit = Computed(function() {
   let { name = loadedHangarUnitName.value, custom = null } = hangarUnitData.value
   if (custom != null) {
     if (custom.name not in campUnitsCfg.get()) {
-      let mainName = campUnitsCfg.get().findindex(@(u) u.platoonUnits.findvalue(@(pu) pu.name == custom.name) != null)
+      let mainName = allMainUnitsByPlatoon.get()?[custom.name].name
       if (mainName != null)
         return custom.__merge({ name = mainName })
     }
@@ -128,11 +127,10 @@ let hangarUnitSkin = Computed(@() hangarUnitData.get()?.skin
   ?? hangarUnit.get()?.currentSkins[hangarUnit.get()?.name]
   ?? (hangarUnit.get()?.isUpgraded ? "upgraded" : ""))
 
-let hangarUnitReqPkg  = Computed(@() hangarUnitName.get() == null || !isReadyToFullLoad.get() ? []
-  : getUnitPkgs(hangarUnitName.get(), hangarUnit.get()?.mRank).filter(@(a) !hasAddons.value?[a]))
-
-let hasNotDownloadedPkgForHangarUnit = Computed(@() hangarUnitReqPkg .get().findvalue(@(a) !hasAddons.value?[a]) != null)
-let canReloadModel = keepref(Computed(@() !hasNotDownloadedPkgForHangarUnit.get() && !isInBattle.get() && !isInLoadingScreen.get()))
+let downloadUnitNames = Computed(@() hangarUnit.get() == null ? []
+    : [hangarUnit.get().name].extend(hangarUnit.get()?.platoonUnits.map(@(pu) pu.name) ?? []))
+let hasHangarUnitResources = mkHasUnitsResources(downloadUnitNames)
+let canReloadModel = keepref(Computed(@() !isInBattle.get() && !isInLoadingScreen.get()))
 
 function setHangarUnitWeaponPreset(unitName, preset) {
   if (unitName == null)
@@ -157,7 +155,7 @@ function loadModel(unitName, skin, weapPreset) {
   if ((unitName ?? "") == "")
     return
 
-  if (hasNotDownloadedPkgForHangarUnit.get() && !isOfflineMenu) {
+  if (!hasHangarUnitResources.get() && !isOfflineMenu) {
     hangar_move_cam_to_unit_place(getTagsUnitName(unitName))
     return
   }
@@ -174,7 +172,7 @@ hangarUnitSkin.subscribe(@(_) loadCurrentHangarUnitModel())
 hangarUnitPreset.subscribe(@(_) loadCurrentHangarUnitModel())
 
 isInMpSession.subscribe(function(v) {
-  if (v || !isInMenu.value || hangar_get_current_unit_name() == loadedInfo.value.name)
+  if (v || !isInMenu.get() || hangar_get_current_unit_name() == loadedInfo.value.name)
     return
   loadedInfo({
     name = hangar_get_current_unit_name()
@@ -184,8 +182,8 @@ isInMpSession.subscribe(function(v) {
 })
 
 function reloadAllBgModels() {
-  if (!hasNotDownloadedPkgForHangarUnit.get())
-    change_background_models_list_with_skin(hangarUnitName.get(), hangarBgUnits.get())
+  change_background_models_list_with_skin(hangarUnitName.get(),
+    hasHangarUnitResources.get() ? hangarBgUnits.get() : [])
 }
 
 function loadBGModels() {
@@ -193,8 +191,11 @@ function loadBGModels() {
   if (bgUnits.len() == 0)
     return
   let { name, skin } = loadedInfo.get()
-  if (name == null || name != hangarUnitName.get() || skin != hangarUnitSkin.get())
+  if (name == null || name != hangarUnitName.get() || skin != hangarUnitSkin.get()) {
+    if (!hasHangarUnitResources.get())
+      reloadAllBgModels() 
     return 
+  }
 
   if (!wasLoadBgModelsAfterLoading) {
     reloadAllBgModels()
@@ -272,6 +273,7 @@ function onReloadModel() {
   reloadAllBgModels()
 }
 canReloadModel.subscribe(@(_) deferOnce(onReloadModel))
+hasHangarUnitResources.subscribe(@(_) deferOnce(onReloadModel))
 
 eventbus_subscribe("onHangarModelStartLoad", @(_) isHangarUnitLoaded(false))
 
@@ -308,6 +310,5 @@ return {
   mainHangarUnit
   mainHangarUnitName
 
-  hangarUnitReqPkg
-  hasNotDownloadedPkgForHangarUnit
+  hasHangarUnitResources
 }

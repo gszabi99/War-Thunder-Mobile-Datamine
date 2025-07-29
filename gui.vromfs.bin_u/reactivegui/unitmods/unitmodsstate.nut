@@ -22,7 +22,7 @@ let modsSort = @(a, b) a.reqLevel <=> b.reqLevel || a.name <=> b.name
 let isUnitModsOpen = mkWatched(persist, "isUnitModsOpen", false)
 let curCategoryId = mkWatched(persist, "curCategoryId", "")
 let curModId = mkWatched(persist, "curModId", "")
-let unit = Computed(@() campMyUnits.get()?[hangarUnitName.value])
+let unit = Computed(@() campMyUnits.get()?[hangarUnitName.get()])
 let unitName = Computed(@() unit.value?.name)
 let unitMods = Computed(@() unit.value?.mods)
 let unitModPreset = Computed(@() unit.value?.modPreset)

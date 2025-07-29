@@ -10,7 +10,7 @@ let BLINK = 0.5
 let SHOW = 2.0
 let HIDE = 5.5
 
-let notUploadedHqTextures = Computed(@() hasAddons.value?.pkg_secondary_hq == false)
+let notUploadedHqTextures = Computed(@() hasAddons.get()?.pkg_secondary_hq == false)
 let showWarningInHangar = Watched(false)
 let showWarningInBattle = Watched(false)
 let wasShownInHangar = mkWatched(persist, "wasShownInHangar", false)

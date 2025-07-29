@@ -20,7 +20,7 @@ statsRaw.subscribe(@(_)
   resetTimeout(playersDamageStats.value.len() == 0 ? 0.01 : 0.1, syncStats))
 
 playersDamageStats.subscribe(function(stats) {
-  if (!isInBattle.value)
+  if (!isInBattle.get())
     return
   let upd = []
   foreach(id, _ in stats)

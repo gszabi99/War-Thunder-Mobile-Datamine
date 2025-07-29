@@ -43,9 +43,9 @@ let customErrorMsg = {
     openFMsgBox({
       text = "\n".concat(
         format(loc("charServer/ban/timed"), secondsToHoursLoc(durationSec)),
-        serverTime.value <= 0 ? ""
+        serverTime.get() <= 0 ? ""
           : format(loc("charServer/ban/timeLeft"),
-              secondsToHoursLoc(startSec + durationSec - serverTime.value)),
+              secondsToHoursLoc(startSec + durationSec - serverTime.get())),
         " ",
         message
       )

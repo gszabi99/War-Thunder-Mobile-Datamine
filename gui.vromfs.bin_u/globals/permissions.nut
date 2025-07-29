@@ -34,7 +34,6 @@ let defaults = {
   request_firebase_consent_eu_only = false
   has_att_warmingup_scene = false
   allow_apk_update = false
-  allow_background_resource_update = DBGLEVEL > 0
   allow_subscriptions = DBGLEVEL > 0
   can_upgrade_subscription = DBGLEVEL > 0
   allow_dm_viewer = DBGLEVEL > 0 && isCircuitDev
@@ -48,7 +47,7 @@ let dbgPermissions = sharedWatched("dbgPermissions", @() {})
 
 let allPermissions = Computed(function() {
   let res = clone defaults
-  foreach (id in rights.value?.permissions.value ?? []) {
+  foreach (id in rights.get()?.permissions.value ?? []) {
     if (trim(id) != id)
       logerr($"Permission ID with whitespace detected: \"{id}\"")
     res[id] <- true

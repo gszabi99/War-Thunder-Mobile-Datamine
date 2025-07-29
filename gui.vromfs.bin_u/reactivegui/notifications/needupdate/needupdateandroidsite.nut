@@ -5,8 +5,8 @@ let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { parse_json } = require("json")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout, deferOnce } = require("dagor.workcycle")
-let { get_cur_circuit_name, get_base_game_version_str } = require("app")
-let { check_compatible_exe_version_exists_in_bundle } = require("contentUpdater")
+let { get_cur_circuit_name } = require("app")
+let { get_all_library_versions } = require("contentUpdater")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
 let { check_version } = require("%sqstd/version_compare.nut")
@@ -29,7 +29,7 @@ let actualGameVersion = hardPersistWatched("actualGameVersion.value")
 let actualGameHash = hardPersistWatched("actualGameVersion.hash")
 let nextRequestTime = hardPersistWatched("actualGameVersion.nextTime")
 let needRequest = Watched(nextRequestTime.value <= get_time_msec())
-let allowRequest = Computed(@() needRequest.value && !isInBattle.value && !isInLoadingScreen.value)
+let allowRequest = Computed(@() needRequest.value && !isInBattle.get() && !isInLoadingScreen.get())
 
 needRequest.subscribe(@(v) v ? null
   : nextRequestTime(get_time_msec() + REQUEST_PERIOD_MSEC))
@@ -82,14 +82,10 @@ nextRequestTime.subscribe(@(_) startTimer())
 
 let needSuggestToUpdate = Computed(function() {
   local actualVersion = actualGameVersion.get() ?? ""
-  let version = get_base_game_version_str()
-  if (actualVersion == "" || version == "")
+  if (actualVersion == "")
     return false
-  let av = actualVersion.split(".")
-  let v = version.split(".")
-  if (av?[0] == v?[0] && av?[1] == v?[1]) 
-    return !check_version($">={actualVersion}", version)
-  return !check_compatible_exe_version_exists_in_bundle(actualVersion)
+  let all = get_all_library_versions()
+  return all.len() != 0 && null == all.findvalue(@(v) check_version($">={actualVersion}", v))
 })
 
 return {

@@ -5,7 +5,7 @@ let { LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_FACEBOOK, LT_APPLE, LT_NS
 } = require("%appGlobals/loginState.nut")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { authState } = require("%scripts/login/authState.nut")
-let exitGame = require("%scripts/utils/exitGame.nut")
+let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let googlePlayAccount = require("android.account.googleplay")
 let guestFirebaseAccount = require_optional("android.account.guest")
 let hmsAccount = require("android.account.huawei")
@@ -26,7 +26,7 @@ let { FORGOT_PASSWORD_URL } = require("%appGlobals/legal.nut")
 let { logStage, onlyActiveStageCb, export, finalizeStage, interruptStage} = require("mkStageBase.nut")("auth", LOGIN_STATE.LOGIN_STARTED, LOGIN_STATE.AUTHORIZED)
 
 subscribeFMsgBtns({
-  loginExitGame = @(_) exitGame()
+  loginExitGame = @(_) exitGamePlatform()
   loginRecovery = @(_) openUrl(FORGOT_PASSWORD_URL, false, "login_wnd")
 })
 
@@ -270,14 +270,14 @@ function start() {
   send_counter("sq.app.stage", 1, { stage = "auth_start" })
   sendLoadingStageBqEvent("auth_start")
 
-  let { loginType } = authState.value
+  let { loginType } = authState.get()
   let loginStart = loginByType?[loginType]
   if (loginStart == null) {
     interruptStage({ error = $"Unknown loginType = {loginType}" })
     return
   }
   logStage($"Start login {loginType}")
-  loginStart(authState.value)
+  loginStart(authState.get())
 }
 
 return export.__merge({

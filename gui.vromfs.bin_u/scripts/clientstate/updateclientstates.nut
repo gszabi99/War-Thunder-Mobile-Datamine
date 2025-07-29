@@ -34,7 +34,7 @@ updateStates()
 let updateMissionState = @()
   missionProgressType(get_current_mission_info_cached()?.missionProgressType ?? "")
 
-let shouldUpdateMisson = keepref(Computed(@() isInBattle.value && !isInLoadingScreen.value))
+let shouldUpdateMisson = keepref(Computed(@() isInBattle.get() && !isInLoadingScreen.get()))
 if (shouldUpdateMisson.value)
   updateMissionState()
 shouldUpdateMisson.subscribe(@(v) v ? updateMissionState() : null)

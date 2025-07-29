@@ -79,9 +79,9 @@ function onPurchase(lootbox, price, currencyId, count = 1) {
   let { start = 0, end = 0 } = timeRange
   let errMsg = bestCampLevel.value < reqPlayerLevel
       ? loc("lootbox/availableAfterLevel", { level = colorize("@mark", reqPlayerLevel) })
-    : start > serverTime.value
-      ? loc("lootbox/availableAfter", { time = secondsToHoursLoc(start - serverTime.value) })
-    : end > 0 && end < serverTime.value ? loc("lootbox/noLongerAvailable")
+    : start > serverTime.get()
+      ? loc("lootbox/availableAfter", { time = secondsToHoursLoc(start - serverTime.get()) })
+    : end > 0 && end < serverTime.get() ? loc("lootbox/noLongerAvailable")
     : null
   if (errMsg != null) {
     openMsgBox({ text = errMsg })
@@ -128,7 +128,7 @@ function mkLootboxBlock(lootbox, blockSize) {
   let sizeMul = customEventLootboxScale?[name] ?? sizeMulBySlot?[lootbox.meta?.event_slot] ?? 1.0
   let stateFlags = Watched(0)
   let lootboxImage = mkLootboxImageWithTimer(name, blockSize, timeRange, reqPlayerLevel, sizeMul)
-  let stepsToFixed = Computed(@() getStepsToNextFixed(lootbox, serverConfigs.value, servProfile.value))
+  let stepsToFixed = Computed(@() getStepsToNextFixed(lootbox, serverConfigs.get(), servProfile.value))
   let info = lootboxInfo(lootbox, stateFlags)
 
   return @() {
@@ -173,7 +173,7 @@ function mkLootboxBlock(lootbox, blockSize) {
 
 function onClose() {
   campToBack.set(null)
-  if (isEventWndLootboxOpen.value)
+  if (isEventWndLootboxOpen.get())
     closeEventWndLootbox()
   else {
     unseenLootboxesShowOnce.set(unseenLootboxesShowOnce.get().filter(@(event) event != curEventName.get()))
@@ -184,7 +184,7 @@ function onClose() {
 isCurEventActive.subscribe(function(isActive) {
   if (isActive)
     return
-  if (isEventWndLootboxOpen.value)
+  if (isEventWndLootboxOpen.get())
     closeEventWndLootbox()
   closeEventWnd()
 })
@@ -294,8 +294,8 @@ let eventGamercard = {
           watch = [serverTime, curEventEndsAt]
           halign = ALIGN_CENTER
           valign = ALIGN_BOTTOM
-          children = !curEventEndsAt.value || (curEventEndsAt.value - serverTime.value < 0) ? null
-            : mkTimeUntil(secondsToHoursLoc(curEventEndsAt.value - serverTime.value),
+          children = !curEventEndsAt.value || (curEventEndsAt.value - serverTime.get() < 0) ? null
+            : mkTimeUntil(secondsToHoursLoc(curEventEndsAt.value - serverTime.get()),
                 "quests/untilTheEnd",
                 { key = "event_time", margin = const [hdpx(20), 0, hdpx(60), 0] }.__update(fontTinyAccented))
         }
@@ -318,7 +318,7 @@ let scrollArrowsBlock = {
 
 function mkLootboxPreviewContent() {
   let progressInfo = mkJackpotProgress(
-    Computed(@() getStepsToNextFixed(eventWndLootbox.value, serverConfigs.value, servProfile.value)))
+    Computed(@() getStepsToNextFixed(eventWndLootbox.get(), serverConfigs.get(), servProfile.value)))
   return {
     size = flex()
     padding = const [hdpx(40), 0, 0, 0]
@@ -372,7 +372,7 @@ function eventWndContent() {
     padding = saBordersRv
     flow = FLOW_VERTICAL
     children = [eventGamercard]
-      .extend(isEventWndLootboxOpen.value
+      .extend(isEventWndLootboxOpen.get()
         ? [ mkLootboxPreviewContent() ]
         : [
             {

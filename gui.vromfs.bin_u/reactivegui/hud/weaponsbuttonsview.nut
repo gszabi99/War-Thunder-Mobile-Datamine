@@ -602,7 +602,7 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
 function weaponRightBlockPrimary(number, curBulletIdxW, scale) {
   if (curBulletIdxW == null)
     return weaponNumber(number, scale)
-  let isNeedChange = Computed(@() curBulletIdxW.value != nextBulletIdx.value)
+  let isNeedChange = Computed(@() curBulletIdxW.value != nextBulletIdx.get())
   let changeSize = scaleEven(changeMarkSize, scale)
   let weaponChangeMark = mkWeaponRightBlock(scale, {
     size = [changeSize, changeSize]
@@ -657,6 +657,7 @@ function mkWeaponryItemByTrigger(buttonConfig, actionItem, scale) {
     selShortcut
     getShortcut = @(_, __) shortcut
     getImage = @(_) image
+    alternativeImage = "ui/gameuiskin#hud_ship_autocannon.svg"
     relImageSize
     hasAim = true
     hasCrosshair = true

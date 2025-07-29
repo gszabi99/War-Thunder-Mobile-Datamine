@@ -17,7 +17,7 @@ let { onlyActiveStageCb, export, finalizeStage, interruptStage
 let finish = onlyActiveStageCb(function() {
   send_counter("sq.updater.done", 1)
 
-  let as = authState.value
+  let as = authState.get()
   set_login_pass(as.loginName.tostring(), as.loginPas, AUTO_SAVE_FLG_LOGIN | AUTO_SAVE_FLG_PASS)
   setAutologinType(as.loginType)
   setAutologinEnabled(true)

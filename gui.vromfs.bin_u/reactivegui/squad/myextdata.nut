@@ -15,7 +15,7 @@ let { activeBattleMods } = require("%appGlobals/pServer/battleMods.nut")
 let { chosenDecoratorsHash } = require("%rGui/decorators/decoratorState.nut")
 
 let curUnits = keepref(Computed(function() {
-  let { allUnits = null, campaignCfg = {} } = serverConfigs.value
+  let { allUnits = null, campaignCfg = {} } = serverConfigs.get()
   let { units = null } = servProfile.value
   if (units == null || allUnits == null)
     return null
@@ -37,7 +37,7 @@ let curUnits = keepref(Computed(function() {
 }))
 
 let missingAddons = keepref(Computed(function(prev) {
-  let res = hasAddons.value.filter(@(v) !v)
+  let res = hasAddons.get().filter(@(v) !v)
     .keys()
     .sort()
   return isEqual(prev, res) ? prev : res

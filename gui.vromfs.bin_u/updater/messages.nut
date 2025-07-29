@@ -161,9 +161,9 @@ let downloadMsg = @(bytes) mkMsgBox(loc("updater/downloadWarning/header"),
     }))
 
 
-register_command(@() needUpdateMsg(!needUpdateMsg.value), "debug.updateMessage")
-register_command(@() needRestartMsg(!needRestartMsg.value), "debug.restartMessage")
-register_command(@() needDownloadAcceptMsg(!needDownloadAcceptMsg.value), "debug.downloadMessage")
+register_command(@() needUpdateMsg(!needUpdateMsg.get()), "debug.updateMessage")
+register_command(@() needRestartMsg(!needRestartMsg.get()), "debug.restartMessage")
+register_command(@() needDownloadAcceptMsg(!needDownloadAcceptMsg.get()), "debug.downloadMessage")
 
 return @() {
   watch = [needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, totalSizeBytes]

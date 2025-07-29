@@ -377,7 +377,7 @@ let decoratorIconContentCtors = {
 function mkRewardPlateDecoratorImage(r, rStyle) {
   let { id } = r
   let size = getRewardPlateSize(r.slots, rStyle)
-  let decoratorType = Computed(@() (allDecorators.value?[id].dType))
+  let decoratorType = Computed(@() (allDecorators.get()?[id].dType))
   let comp = { watch = decoratorType }
   return @() decoratorType.value == null ? comp : comp.__update({
     size
@@ -387,11 +387,11 @@ function mkRewardPlateDecoratorImage(r, rStyle) {
 
 function mkRewardPlateDecoratorTexts(r, rStyle) {
   let { id } = r
-  let decoratorType = Computed(@() (allDecorators.value?[id].dType))
+  let decoratorType = Computed(@() (allDecorators.get()?[id].dType))
   let comp = { watch = decoratorType }
   return @() decoratorType.value == null ? comp
     : comp.__update(
-        mkRewardLabel(mkCommonLabelTextMarquee(loc($"decorator/{allDecorators.value?[id].dType}"), rStyle), rStyle))
+        mkRewardLabel(mkCommonLabelTextMarquee(loc($"decorator/{allDecorators.get()?[id].dType}"), rStyle), rStyle))
 }
 
 
@@ -438,7 +438,7 @@ function mkRewardPlateBoosterImage(r, rStyle) {
 
 
 function mkRewardPlateUnitImageImpl(r, rStyle, isUpgraded) {
-  let unit = Computed(@() serverConfigs.value?.allUnits?[r.id].__merge({ isUpgraded }))
+  let unit = Computed(@() serverConfigs.get()?.allUnits?[r.id].__merge({ isUpgraded }))
   let comp = { watch = unit }
   return @() unit.value == null ? comp : comp.__update({
     size = getRewardPlateSize(r.slots, rStyle)
@@ -500,7 +500,7 @@ let mkRewardPlateUnitImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, 
 let mkRewardPlateUnitUpgradeImage = @(r, rStyle) mkRewardPlateUnitImageImpl(r, rStyle, true)
 
 function mkUnitTextsImpl(r, rStyle, isUpgraded) {
-  let unit = Computed(@() serverConfigs.value?.allUnits?[r.id].__merge({ isUpgraded }))
+  let unit = Computed(@() serverConfigs.get()?.allUnits?[r.id].__merge({ isUpgraded }))
   let size = getRewardPlateSize(r.slots, rStyle)
   return function() {
     let res = { watch = unit }

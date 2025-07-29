@@ -1,15 +1,17 @@
-from "%scripts/dagui_natives.nut" import disable_flight_menu, is_respawn_screen, set_aircraft_accepted_cb
+from "%scripts/dagui_natives.nut" import set_aircraft_accepted_cb
+from "guiRespawn" import canRespawnCaNow, canRequestAircraftNow, doRespawnPlayer,
+  requestAircraftAndWeaponWithSlots, isRespawnScreen
 from "%scripts/dagui_library.nut" import *
 from "hudState" import hud_request_hud_tank_debuffs_state, hud_request_hud_ship_debuffs_state,
   hud_request_hud_crew_state
+from "gameplayBinding" import disableFlightMenu
 let { is_player_unit_alive } = require("unit")
 let logR = log_with_prefix("[RESPAWN] ")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { deferOnce, resetTimeout, setInterval, clearTimer } = require("dagor.workcycle")
 let DataBlock = require("DataBlock")
-let { canRespawnCaNow, canRequestAircraftNow, doRespawnPlayer, requestAircraftAndWeaponWithSlots } = require("guiRespawn")
 let { get_game_mode, get_game_type } = require("mission")
-let { quit_to_debriefing, get_respawns_left,
+let { MISSION_STATUS_RUNNING, quit_to_debriefing, get_respawns_left,
   get_mp_respawn_countdown, get_mission_status } = require("guiMission")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { curBattleUnit, curBattleItems, curBattleSkins, isBattleDataReceived, isSeparateSlots, unitsAvgCostWp, battleData
@@ -24,7 +26,7 @@ let { isInRespawn, respawnUnitInfo, respawnUnitItems, isRespawnStarted, timeToRe
 let isFake = keepref(Computed(@() battleData.get()?.isFake))
 let predefinedReward = keepref(Computed(@() battleData.get()?.predefinedReward))
 let dailyUnitBonus = keepref(Computed(@() battleData.get()?.dailyUnitBonus))
-let unitToSpawn = Computed(@() !isBatleDataRequired.value || isBattleDataReceived.value || isLocalMultiplayer.value
+let unitToSpawn = Computed(@() !isBatleDataRequired.get() || isBattleDataReceived.value || isLocalMultiplayer.get()
   ? curBattleUnit.value : null)
 let respawnData = mkWatched(persist, "respawnData", null)
 let wantedRespawnData = mkWatched(persist, "wantedRespawnData", null)
@@ -46,12 +48,12 @@ isInRespawn.subscribe(function(v) {
   respawnData(null)
   if (!v)
     return
-  disable_flight_menu(true)
+  disableFlightMenu(true)
   updateRespawnUnitInfo()
 })
-unitToSpawn.subscribe(@(v) isInRespawn.value ? respawnUnitInfo(v) : null)
-curBattleItems.subscribe(@(v) isInRespawn.value ? respawnUnitItems(v) : null)
-curBattleSkins.subscribe(@(v) isInRespawn.value ? respawnUnitSkins(v) : null)
+unitToSpawn.subscribe(@(v) isInRespawn.get() ? respawnUnitInfo(v) : null)
+curBattleItems.subscribe(@(v) isInRespawn.get() ? respawnUnitItems(v) : null)
+curBattleSkins.subscribe(@(v) isInRespawn.get() ? respawnUnitSkins(v) : null)
 isSeparateSlots.subscribe(@(v) hasRespawnSeparateSlots.set(v))
 unitsAvgCostWp.subscribe(@(v) isInRespawn.get() ? curUnitsAvgCostWp.set(v) : null)
 isFake.subscribe(@(v) isBattleDataFake.set(v))
@@ -60,7 +62,7 @@ dailyUnitBonus.subscribe(@(v) dailyBonus.set(v))
 
 hasPredefinedReward.set(predefinedReward.get() != null)
 dailyBonus.set(dailyUnitBonus.get())
-if (isInRespawn.value && unitToSpawn.value != null)
+if (isInRespawn.get() && unitToSpawn.value != null)
   updateRespawnUnitInfo()
 
 eventbus_subscribe("getLocalPlayerSpawnInfo",
@@ -71,7 +73,7 @@ eventbus_subscribe("getLocalPlayerSpawnInfo",
     }))
 
 function applyRespawnDataCb(result) {
-  if (!isRespawnDataInProgress.value)
+  if (!isRespawnDataInProgress.get())
     return
   isRespawnDataInProgress(false)
   if (result == ERR_ACCEPT)
@@ -91,7 +93,7 @@ function applyRespawnDataCb(result) {
 set_aircraft_accepted_cb({}, applyRespawnDataCb)
 
 function applyRespawnData() {
-  if (isRespawnDataInProgress.value)
+  if (isRespawnDataInProgress.get())
     return
   let { idInCountry, respBaseId, weaponPreset = {} } = wantedRespawnData.value
   let wBlk = DataBlock()
@@ -111,16 +113,16 @@ function applyRespawnData() {
 }
 
 function tryRespawn() {
-  if (isRespawnInProgress.value || !canRespawnCaNow() || timeToRespawn.value >= -100)
+  if (isRespawnInProgress.get() || !canRespawnCaNow() || timeToRespawn.get() >= -100)
     return
 
-  disable_flight_menu(false)
+  disableFlightMenu(false)
   hud_request_hud_tank_debuffs_state()
   hud_request_hud_crew_state()
   hud_request_hud_ship_debuffs_state()
   logR("Call doRespawnPlayer")
   isRespawnInProgress(doRespawnPlayer())
-  if (!isRespawnInProgress.value) {
+  if (!isRespawnInProgress.get()) {
     isRespawnStarted(false)
     openFMsgBox({ text = loc("msg/error_when_try_to_respawn"), uid = "error_when_try_to_respawn" })
   }
@@ -128,25 +130,25 @@ function tryRespawn() {
 
 function onCountdownTimer() {
   timeToRespawn(get_mp_respawn_countdown())
-  if (!isRespawnStarted.value)
+  if (!isRespawnStarted.get())
     clearTimer(onCountdownTimer)
   else
     tryRespawn()
 }
 
 function updateRespawnStep() {
-  if (!isRespawnStarted.value || isRespawnInProgress.value) 
+  if (!isRespawnStarted.get() || isRespawnInProgress.get()) 
     return
 
   if (get_mission_status() > MISSION_STATUS_RUNNING)
     quit_to_debriefing()
 
-  if (isRespawnDataInProgress.value)
+  if (isRespawnDataInProgress.get())
     return
   if (!isRespawnDataActual.value) {
     if (canRequestAircraftNow()) {
       applyRespawnData()
-      if (isLocalMultiplayer.value)
+      if (isLocalMultiplayer.get())
         setInterval(2.0, onCountdownTimer) 
     }
     else
@@ -163,12 +165,12 @@ foreach (w in [isRespawnStarted, isRespawnDataActual, isRespawnDataInProgress, i
   w.subscribe(@(_) deferOnce(updateRespawnStep))
 
 eventbus_subscribe("openFlightMenuInRespawn", function(_) {
-  disable_flight_menu(false)
+  disableFlightMenu(false)
   eventbus_send("gui_start_flight_menu")
 })
 
 eventbus_subscribe("requestRespawn", function(data) {
-  if (isRespawnInProgress.value || !isInRespawn.value)
+  if (isRespawnInProgress.get() || !isInRespawn.get())
     return
   logR("requestRespawn: ", data)
   wantedRespawnData(data)
@@ -176,14 +178,14 @@ eventbus_subscribe("requestRespawn", function(data) {
 })
 
 eventbus_subscribe("cancelRespawn", function(_) {
-  if (!isRespawnInProgress.value)
+  if (!isRespawnInProgress.get())
     isRespawnStarted(false)
 })
 
 eventbus_subscribe("gui_start_respawn", function gui_start_respawn(...) {
-  logR($"gui_start_respawn {is_respawn_screen()}")
+  logR($"gui_start_respawn {isRespawnScreen()}")
   respawnsLeft(get_respawns_left())
   isBatleDataRequired((get_game_type() & (GT_VERSUS | GT_COOPERATIVE)) != 0
     && get_game_mode() != GM_SINGLE_MISSION)
-  isInRespawn(is_respawn_screen()) 
+  isInRespawn(isRespawnScreen()) 
 })

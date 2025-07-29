@@ -14,7 +14,7 @@ let ERROR_UPDATE_DELAY = 60
 let wasErrorSoon = Watched(false)
 
 let lootboxes = Computed(function() {
-  let { lootboxesCfg = {} } = serverConfigs.value
+  let { lootboxesCfg = {} } = serverConfigs.get()
   let roulette = {}
   let silent = {}
   foreach(id, v in servProfile.value?.lootboxes ?? {}) {
@@ -29,13 +29,13 @@ let lootboxes = Computed(function() {
   return { roulette, silent }
 })
 
-let canOpenSilent = Computed(@() !isInBattle.value && lootboxInProgress.value == null && !wasErrorSoon.value)
+let canOpenSilent = Computed(@() !isInBattle.get() && lootboxInProgress.value == null && !wasErrorSoon.value)
 let canOpenWithWindow = Computed(@() canOpenSilent.value
   && isLoggedIn.value
   && unseenPurchasesExt.value.len() == 0
   && !isShowUnseenDelayed.value
   && !isTutorialActive.value
-  && !hasJustUnlockedUnitsAnimation.value)
+  && !hasJustUnlockedUnitsAnimation.get())
 
 let idToSilentOpen = keepref(Computed(@() canOpenSilent.value ? lootboxes.value.silent.findindex(@(_) true) : null))
 

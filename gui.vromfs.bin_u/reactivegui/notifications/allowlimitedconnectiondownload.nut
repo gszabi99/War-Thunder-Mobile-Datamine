@@ -16,8 +16,8 @@ isAsked.subscribe(function(v) {
 })
 
 let needShowMessage = keepref(Computed(@() !isAsked.value
-  && isInMenu.value
-  && !isDownloadPaused.value
+  && isInMenu.get()
+  && !isDownloadPaused.get()
   && isDownloadPausedByConnection.value))
 
 function openMessageIfNeed() {

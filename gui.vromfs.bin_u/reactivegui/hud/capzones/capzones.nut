@@ -24,8 +24,8 @@ function capZoneCtr(zone) {
   let progressVal = fabs(0.01 * progress)
   let team = progress == 0 ? MP_TEAM_NEUTRAL : progress > 0 ? 2 : 1
   let isIndividual = captureType == ECT_CAPTURE_INDIVIDUAL
-  let teamColor = isIndividual ? teamBlueColor : zoneColor(team, localMPlayerTeam.value)
-  let isClockwise = isIndividual || team == localMPlayerTeam.value || team == MP_TEAM_NEUTRAL
+  let teamColor = isIndividual ? teamBlueColor : zoneColor(team, localMPlayerTeam.get())
+  let isClockwise = isIndividual || team == localMPlayerTeam.get() || team == MP_TEAM_NEUTRAL
   return res.__update({
     rendObj = ROBJ_PROGRESS_CIRCULAR
     keepAspect = true

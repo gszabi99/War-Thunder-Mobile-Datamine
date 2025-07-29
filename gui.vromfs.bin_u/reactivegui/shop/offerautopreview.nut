@@ -10,7 +10,7 @@ let offerShowedTime = hardPersistWatched("offerAutoPreview.showedTime", {})
 let offerToShow = Computed(@() !hasSavedDeepLink.get() ? visibleOffer.get() : null)
 
 let isVisiblePreviewOpened = keepref(Computed(@() visibleOffer.value != null
-  && previewGoods.value?.id == visibleOffer.value?.id))
+  && previewGoods.get()?.id == visibleOffer.value?.id))
 
 isVisiblePreviewOpened.subscribe(@(v) !v ? null
   : offerShowedTime.mutate(@(val) val[visibleOffer.get().campaign] <- visibleOffer.get().endTime))

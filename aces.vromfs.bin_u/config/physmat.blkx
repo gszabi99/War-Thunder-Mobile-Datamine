@@ -1311,12 +1311,12 @@
     "visibilityCamera": {
       "transparentCamera": {
         "en": false
+      },
+      "transparentBeton": {
+        "en": false
       }
     },
     "visibilityRay": {
-      "transparentBeton": {
-        "en": false
-      },
       "transparentCamera": {
         "en": false
       }

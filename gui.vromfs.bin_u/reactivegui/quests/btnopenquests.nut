@@ -18,7 +18,7 @@ let statusMark = @(_) @() {
 
 let btnOpenQuests = @() {
   watch = questsBySection
-  children = questsBySection.value.findindex(@(s) s.len() > 0) == null ? null
+  children = questsBySection.get().findindex(@(s) s.len() > 0) == null ? null
     : translucentButton("ui/gameuiskin#quests.svg",
         "",
         openQuestsWnd,
@@ -40,7 +40,7 @@ function mkBtnOpenTabQuests(tabId, ovr = {}) {
   }
   return @() {
     watch = questsBySection
-    children = questsBySection.value.findindex(@(s) s.len() > 0) == null ? null
+    children = questsBySection.get().findindex(@(s) s.len() > 0) == null ? null
       : translucentButton("ui/gameuiskin#quests.svg",
           "",
           @() openQuestsWndOnTab(tabId),

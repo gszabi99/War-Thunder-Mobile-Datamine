@@ -1,15 +1,13 @@
+import "math" as math
+import "entity_editor" as entity_editor
+from "dagor.math" import Point2, Point3, Point4
+from "string" import endswith
 from "%darg/ui_imports.nut" import *
 from "%darg/laconic.nut" import *
 from "%sqstd/ecs.nut" import *
-import "math" as math
-import "entity_editor" as entity_editor
-
-let { Point2, Point3, Point4 } = require("dagor.math")
-
-let {endswith} = require("string")
-let {getValFromObj, isCompReadOnly, updateComp} = require("components/attrUtil.nut")
-let {filterString, propPanelVisible, propPanelClosed, selectedCompName, extraPropPanelCtors, selectedEntity, selectedEntities, de4workMode, wantOpenRISelect} = require("state.nut")
-let {colors, gridHeight} = require("components/style.nut")
+let { getValFromObj, isCompReadOnly, updateComp } = require("components/attrUtil.nut")
+let { filterString, propPanelVisible, propPanelClosed, selectedCompName, extraPropPanelCtors, selectedEntity, selectedEntities, de4workMode, wantOpenRISelect } = require("state.nut")
+let { colors, gridHeight } = require("components/style.nut")
 
 let selectedCompComp = Watched(null)
 let selectedCompPath = Watched(null)
@@ -22,24 +20,24 @@ let deselectComp = function() {
 let textButton = require("components/textButton.nut")
 let closeButton = require("components/closeButton.nut")
 let textInput = require("%daeditor/components/textInput.nut")
-let {addModalWindow, removeModalWindow, modalWindowsComponent} = require("%daeditor/components/modalWindows.nut")
-let {showMsgbox} = require("%daeditor/components/msgbox.nut")
+let { addModalWindow, removeModalWindow, modalWindowsComponent } = require("%daeditor/components/modalWindows.nut")
+let { showMsgbox } = require("%daeditor/components/msgbox.nut")
 let infoBox = @(text) showMsgbox({text})
 let mkSortModeButton = require("components/mkSortModeButton.nut")
 let nameFilter = require("components/nameFilter.nut")
 
 let cursors = require("components/cursors.nut")
-let {mkTemplateTooltip, mkCompMetaInfoText} = require("components/templateHelp.nut")
-let {getCompSqTypePropEdit, getCompNamePropEdit} = require("propPanelControls.nut")
-let {makeVertScroll} = require("%daeditor/components/scrollbar.nut")
+let { mkTemplateTooltip, mkCompMetaInfoText } = require("components/templateHelp.nut")
+let { getCompSqTypePropEdit, getCompNamePropEdit } = require("propPanelControls.nut")
+let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
 
 let fieldReadOnly = require("components/apFieldReadOnly.nut")
 let compNameFilter = require("components/apNameFilter.nut")(filterString, selectedCompName)
 
-let {riSelectShown, riSelectWindow, openRISelectForEntity} = require("riSelect.nut")
+let { riSelectShown, riSelectWindow, openRISelectForEntity } = require("riSelect.nut")
 
 let combobox = require("%daeditor/components/combobox.nut")
-let {getEntityExtraName, getSceneLoadTypeText} = require("%daeditor/daeditor_es.nut")
+let { getEntityExtraName, getSceneLoadTypeText } = require("%daeditor/daeditor_es.nut")
 
 let entitySortState = Watched({})
 
@@ -441,8 +439,8 @@ let autoOpenClosePropPanel = function(_) {
     return
   propPanelVisible(show)
 }
-selectedEntity.subscribe(autoOpenClosePropPanel)
-selectedEntities.subscribe(autoOpenClosePropPanel)
+selectedEntity.subscribe_with_nasty_disregard_of_frp_update(autoOpenClosePropPanel)
+selectedEntities.subscribe_with_nasty_disregard_of_frp_update(autoOpenClosePropPanel)
 
 
 let hiddenComponents = {
@@ -1058,7 +1056,7 @@ let getCurComps = @() (selectedEntity.get() ?? INVALID_ENTITY_ID) == INVALID_ENT
 let curEntityComponents = Watched(getCurComps())
 let setCurComps = @() curEntityComponents(getCurComps())
 
-selectedEntity.subscribe(function(eid){
+selectedEntity.subscribe_with_nasty_disregard_of_frp_update(function(eid){
   gui_scene.resetTimeout(0.1, setCurComps)
 
   if (wantOpenRISelect.get()) {
@@ -1067,6 +1065,15 @@ selectedEntity.subscribe(function(eid){
       openRISelectForEntity(eid)
     })
   }
+})
+
+register_es("update_cur_components_on_entity_recreated",
+{
+  [[EventEntityRecreated]] = function(...){
+    setCurComps()
+  }
+},{
+  comps_rq = ["daeditor__selected"]
 })
 
 let isCurEntityComponents = Computed(@() curEntityComponents.get().len()>0)

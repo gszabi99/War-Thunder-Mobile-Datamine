@@ -78,6 +78,7 @@
     0.0
   ],
   "aircraftShowMachAboveValue": 0.75,
+  "drowningHintDeadbandTank": 2.5,
   "useSmoothScaleForUHD": true,
   "showShipWinchIcon": false,
   "spectateNextUnitIfDestroy": true,

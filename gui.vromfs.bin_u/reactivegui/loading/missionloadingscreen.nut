@@ -50,7 +50,7 @@ let textBlock = @() {
   margin = const [hdpx(160), 0, hdpx(30), 0]
   flow = FLOW_VERTICAL
   gap = hdpx(40)
-  children = isMissionLoading.value
+  children = isMissionLoading.get()
     ? [
         {
           size = FLEX_H

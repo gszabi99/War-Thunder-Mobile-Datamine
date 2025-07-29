@@ -78,8 +78,8 @@ function tagBtn(item) {
   let stateFlags = Watched(0)
   let isChoosen = Computed(@() chosenFrameName.get() == name)
   let isSelected = Computed(@() selectedFrameName.get() == name)
-  let isAvailable = Computed(@() name in availNickFrames.value || name == "")
-  let isUnseen = Computed(@() name in unseenDecorators.value)
+  let isAvailable = Computed(@() name in availNickFrames.get() || name == "")
+  let isUnseen = Computed(@() name in unseenDecorators.get())
   return @() {
     watch = stateFlags
     rendObj = ROBJ_SOLID
@@ -220,7 +220,7 @@ let decorationNameWnd = {
   flow = FLOW_VERTICAL
   gap
   onAttach = @() selectedFrameName.set(chosenFrameName.get())
-  onDetach = @() markDecoratorsSeen(unseenDecorators.value.filter(@(_, id) id in availNickFrames.value).keys())
+  onDetach = @() markDecoratorsSeen(unseenDecorators.get().filter(@(_, id) id in availNickFrames.get()).keys())
   children = [
     header
     makeVertScroll(framesList, { scrollHandler })

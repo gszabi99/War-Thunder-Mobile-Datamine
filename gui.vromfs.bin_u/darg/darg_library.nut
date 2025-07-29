@@ -6,17 +6,14 @@ from "%sqstd/string.nut" import tostring_r
 from "math" import min
 from "daRg" import sh, sw, calc_comp_size, gui_scene, Color, flex
 
-let mark_pure2 = getroottable()?.mark_pure ?? @(v) v
-
-
 
 
 
 function watchElemState(builder, params={}) {
   let stateFlags = params?.stateFlags ?? Watched(0)
-  let onElemState = @(sf) stateFlags.update(sf)
+  let onElemState = @(sf) stateFlags.set(sf)
   return function() {
-    let desc = builder(stateFlags.value)
+    let desc = builder(stateFlags.get())
     local watch = desc?.watch ?? []
     if (type(watch) != "array")
       watch = [watch]
@@ -44,7 +41,7 @@ function isDargComponent(comp) {
   if (c_type != "table" && c_type != "class")
     return false
   foreach(k, _val in c) {
-    if (k in Set("size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"))
+    if (k in const Set("size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"))
       return true
   }
   return false
@@ -56,11 +53,11 @@ let hdpx = sh(100) <= sw(75)
   ? @(pixels) sh(100.0 * pixels / 1080)
   : @(pixels) sw(75.0 * pixels / 1080)
 
-mark_pure2(hdpx)
+mark_pure(hdpx)
 
-let hdpxi = mark_pure2(@(pixels) hdpx(pixels).tointeger())
+let hdpxi = mark_pure(@(pixels) hdpx(pixels).tointeger())
 
-let fsh = mark_pure2(sh(100) <= sw(75) ? sh : @(v) sw(0.75 * v))
+let fsh = mark_pure(sh(100) <= sw(75) ? sh : @(v) sw(0.75 * v))
 
 let numerics = Set("float", "integer")
 
@@ -85,7 +82,7 @@ function wrap(elems, params=wrapParams) {
   let secondaryGap = isFlowHor ? vgap : hgap
   if (type(gap) in numerics)
     gap = isFlowHor ? freeze({size=[gap,0]}) : freeze({size=[0,gap]})
-  let flowElemProto = params?.flowElemProto ?? {}
+  let flowElemProto = params?.flowElemProto ?? const {}
   let flowElems = []
   if (paddingTop && isFlowHor)
     flowElems.append(paddingTop)
@@ -148,7 +145,7 @@ function mul_color(color, mult, alpha_mult=1) {
                  colorPart(((color >> 24) & 0xff) * mult * alpha_mult))
 }
 
-mark_pure2(mul_color)
+mark_pure(mul_color)
 
 function XmbNode(params={}) {
   return clone params
@@ -168,22 +165,22 @@ function mkWatched(persistFunc, persistKey, defVal=null, observableInitArg=null)
 }
 
 let FLEX_H = const [flex(), SIZE_TO_CONTENT]
-let flex_h = mark_pure2(function(val=null) {
+let flex_h = mark_pure(function(val=null) {
   if (val == null)
     return FLEX_H
   assert(typeof val in numerics, @() $"val can be only numerics, got {type(val)}")
   return [flex(val), SIZE_TO_CONTENT]
 })
 
-let FLEX_V = [SIZE_TO_CONTENT, flex()]
-let flex_v = mark_pure2(function(val=null) {
+let FLEX_V = const [SIZE_TO_CONTENT, flex()]
+let flex_v = mark_pure(function(val=null) {
   if (val == null)
     return FLEX_H
   assert(typeof val in numerics, @() $"val can be only numerics, got {type(val)}")
   return [SIZE_TO_CONTENT, flex(val)]
 })
 
-return darg.__merge({
+return freeze(darg.__merge({
   mkWatched
   WatchedRo
   XmbNode
@@ -203,4 +200,4 @@ return darg.__merge({
   FLEX_V
   flex_h
   flex_v
-})
+}))

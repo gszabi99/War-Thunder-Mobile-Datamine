@@ -148,7 +148,7 @@ let isCurEventActive = Computed(@() curEvent.get() == MAIN_EVENT_ID ? isEventAct
   : curEvent.get() in specialEvents.get())
 
 let curEventLootboxes = Computed(@()
-  orderLootboxesBySlot(eventLootboxesRaw.value.filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == curEventName.value)))
+  orderLootboxesBySlot(eventLootboxesRaw.get().filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == curEventName.value)))
 
 let curEventCurrencies = Computed(@() curEventLootboxes.value.reduce(function(res, l) {
   let currencyId = l?.currencyId
@@ -246,7 +246,7 @@ isSettingsAvailable.subscribe(function(_) {
 balance.subscribe(function(v) {
   let showOnce = {}
   let availability = {}
-  foreach (lootbox in eventLootboxesRaw.value) {
+  foreach (lootbox in eventLootboxesRaw.get()) {
     let canBuy = (v?[lootbox.currencyId] ?? 0) >= lootbox.price
     if (canBuy && lootboxesAvailability.value?[lootbox.name] == false)
       showOnce[lootbox.name] <- lootbox?.meta.event_id ?? MAIN_EVENT_ID

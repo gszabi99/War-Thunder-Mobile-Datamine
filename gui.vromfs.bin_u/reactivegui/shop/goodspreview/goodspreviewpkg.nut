@@ -284,7 +284,7 @@ let purchaseButtonBlock = @(animStartTime) function() {
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
   }
-  let goods = previewGoods.value
+  let goods = previewGoods.get()
   let info = getPriceInfo(goods)
   if (info == null)
     return res
@@ -317,7 +317,7 @@ let purchaseButtonBlock = @(animStartTime) function() {
 
 let purchaseButtonNoOldPrice = function() {
   let res = { watch = previewGoods }
-  let goods = previewGoods.value
+  let goods = previewGoods.get()
   let info = getPriceInfo(goods)
   if (info == null)
     return res

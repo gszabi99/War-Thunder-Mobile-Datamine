@@ -3,6 +3,7 @@ import "%sqstd/ecs.nut" as ecs
 let interopGet = require("%rGui/interopGen.nut")
 let { register_command } = require("console")
 let { rnd_int } = require("dagor.random")
+let { Point2 } = require("dagor.math")
 
 let buoyancy = Watched(1.0)
 let fire = Watched(false)
@@ -47,7 +48,6 @@ ecs.register_es("maxHpToRepairTracker", {
   comps_ro = [["meta_parts_hp_repair__speed", ecs.TYPE_FLOAT], ["meta_parts_hp_repair__duration", ecs.TYPE_FLOAT]],
   comps_rq = ["controlledHero"]
 })
-
 
 let shipState = {
   speed = Watched(0)
@@ -114,9 +114,8 @@ let shipState = {
   isTargetRepair = Watched(false)
   targetHp = Watched(0)
   isAsmCaptureAllowed = Watched(true)
-
-  leftTurretRotationTime = Watched(0)
   isHrosshairVisibile = Watched(false)
+  aimModulePos = Watched(Point2(-1., -1.))
 }
 
 

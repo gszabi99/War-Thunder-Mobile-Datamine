@@ -6,7 +6,7 @@ let openReviewCueWnd = require("%rGui/feedback/reviewCueWnd.nut")
 local onCloseCb = null
 
 function tryShowRateGame() {
-  if (!needRateGame.value)
+  if (!needRateGame.get())
     return
 
   openReviewCueWnd(onCloseCb)

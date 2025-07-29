@@ -38,7 +38,7 @@ let getVictimUnitType = @(msg) hudMessagesUnitTypesMap?[msg.victimUnitType] ?? g
 let getUnitTypeSuffix = @(unitType) unitTypeSuffix?[unitType] ?? unitTypeSuffix[SHIP]
 
 let getTeamColor = @(team) team == MP_TEAM_NEUTRAL ? null
- : team == localMPlayerTeam.value ? teamBlueLightColor
+ : team == localMPlayerTeam.get() ? teamBlueLightColor
  : teamRedLightColor
 
 function getTargetName(player, unitNameLoc, team) {

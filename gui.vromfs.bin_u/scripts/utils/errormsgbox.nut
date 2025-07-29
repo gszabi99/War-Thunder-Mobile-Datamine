@@ -61,7 +61,7 @@ function errorCodeToString(error_code) {
     return "80130184" 
 
   else if (error_code == YU2_WRONG_2STEP_CODE) {
-    let { secStepType } = authState.value
+    let { secStepType } = authState.get()
     return secStepType == SST_MAIL ? "YU2_WRONG_2STEP_CODE_EMAIL" : "YU2_WRONG_2STEP_CODE"
   }
 

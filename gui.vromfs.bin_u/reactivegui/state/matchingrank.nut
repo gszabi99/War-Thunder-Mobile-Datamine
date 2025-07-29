@@ -9,10 +9,10 @@ let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 
 let curUnitMRankRange = Computed(function() {
   let mRank = maxSquadMRank.value ?? battleUnitsMaxMRank.get()
-  let campaign = squadLeaderCampaign.value ?? curCampaign.get()
+  let campaign = squadLeaderCampaign.get() ?? curCampaign.get()
   if (mRank == null || campaign == null)
     return null
-  let isMaxMRank = !serverConfigs.value?.allUnits.findvalue(@(u) u.campaign == campaign && u.mRank > mRank)
+  let isMaxMRank = !serverConfigs.get()?.allUnits.findvalue(@(u) u.campaign == campaign && u.mRank > mRank)
   let minMRank = max(1, mRank - 1)
   let maxMRank = isMaxMRank ? mRank : mRank + 1
   return { minMRank, maxMRank }

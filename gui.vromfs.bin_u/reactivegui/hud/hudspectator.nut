@@ -41,7 +41,7 @@ eventbus_subscribe("toggleMpstatscreen", @(_) isInSpectatorMode.get() ? needShow
 let watchedHero = Computed(@() isAttached.get() ? get_mplayer_by_id(watchedHeroId.get()) : null)
 let watchedHeroName = Computed(@() watchedHero.value == null ? "" : watchedHero.value.name)
 let watchedHeroColor = Computed(@() watchedHero.value == null ? 0xFFFFFFFF
-  : watchedHero.value.team == localMPlayerTeam.value ? teamBlueColor : teamRedColor)
+  : watchedHero.value.team == localMPlayerTeam.get() ? teamBlueColor : teamRedColor)
 let hasTapHint = Computed(@() needShowTapHint.get() && (isPlaceVisible.get() || isScoreVisible.get()))
 
 let switchTargetImage = Picture($"!ui/gameuiskin#spinnerListBox_arrow_up.svg:{buttonImageSize}:{buttonImageSize}")

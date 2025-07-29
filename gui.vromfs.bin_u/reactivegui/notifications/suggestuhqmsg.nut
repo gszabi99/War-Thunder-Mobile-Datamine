@@ -16,18 +16,18 @@ let { addonsToDownload } = require("%rGui/updater/updaterState.nut")
 let MSG_UID = "suggestUHQ"
 let isSuggested = Watched(get_common_local_settings_blk()?.uhqTexturesSuggested ?? false)
 let uhqAddons = Computed(function() {
-  let addonsToCheck = clone addonsToDownload.value
-  foreach(a, v in hasAddons.value)
+  let addonsToCheck = clone addonsToDownload.get()
+  foreach(a, v in hasAddons.get())
     if (v)
       addonsToCheck[a] <- true
 
   let res = {}
   foreach(a in commonUhqAddons)
-    if (hasAddons.value?[a] == false)
+    if (hasAddons.get()?[a] == false)
       res[a] <- true
   foreach(a, _ in addonsToCheck) {
     let uhq = $"{a}_uhq"
-    if (hasAddons.value?[uhq] == false)
+    if (hasAddons.get()?[uhq] == false)
       res[uhq] <- true
   }
   return res
@@ -39,7 +39,7 @@ let needSuggest = Computed(@() isUhqAllowed.value
   && isLoggedIn.value
   && (!isRandomBattleNewbie.value && randomBattleMode.value != null)
 )
-let needShow = keepref(Computed(@() needSuggest.value && isInMenuNoModals.value))
+let needShow = keepref(Computed(@() needSuggest.value && isInMenuNoModals.get()))
 
 function setSuggested(suggested) {
   isSuggested(suggested)

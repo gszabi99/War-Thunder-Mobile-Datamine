@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
-let { get_game_mode } = require("mission")
+let { get_game_mode, get_game_type } = require("mission")
 let { GO_WIN, GO_EARLY, get_game_over_reason } = require("guiMission")
 let { get_current_mission_info_cached } = require("blkGetters")
 let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
@@ -28,7 +28,7 @@ let mkSlotsCommonInfo = @(campaign) {
 }
 
 function getSingleMissionResult(rewardData) {
-  if (battleSessionId.value != -1) 
+  if (battleSessionId.get() != -1) 
     return null
 
   let reason = get_game_over_reason()
@@ -37,18 +37,20 @@ function getSingleMissionResult(rewardData) {
   let isTutorial = get_game_mode() == GM_TRAINING && missionName.startswith("tutorial") && "predefinedId" not in rewardData?.battleData
   let { needAddUnit = false } = rewardData
 
-  let unitName = battleUnitName.value
-  let baseBattleData = wasBattleDataApplied.value ? (lastClientBattleData.value ?? {}) : {}
+  let unitName = battleUnitName.get()
+  let baseBattleData = wasBattleDataApplied.get() ? (lastClientBattleData.get() ?? {}) : {}
   let campaign = rewardData?.battleData.campaign ?? getCampaignByUnitName(unitName, curCampaign.get())
   let isSeparateSlots = (serverConfigs.get()?.campaignCfg[campaign].totalSlots ?? 0) > 0
   log($"Result info: baseBattleData.unit = {baseBattleData?.unit.name}")
   log($"rewardData?.battleData.unit = {rewardData?.battleData.reward.unitName}")
-  log($"battleUnitName = {battleUnitName.value}")
+  log($"battleUnitName = {battleUnitName.get()}")
   let res = baseBattleData.__merge({
     isFinished = reason != GO_EARLY
     isWon = reason == GO_WIN
     isSingleMission = true
     mission = missionName
+    gameType = get_game_type()
+    gm = get_game_mode()
     campaign
     userId = myUserId.get()
     isResearchCampaign = campaign in serverConfigs.get()?.unitTreeNodes
@@ -71,8 +73,8 @@ function getSingleMissionResult(rewardData) {
   else
     res.reward <- { unitName }
 
-  if (!isTutorial && offlineKills.value > 0)
-    res.players <- { [myUserId.value.tostring()] = { kills = offlineKills.value } }
+  if (!isTutorial && offlineKills.get() > 0)
+    res.players <- { [myUserId.value.tostring()] = { kills = offlineKills.get() } }
 
   return res
 }

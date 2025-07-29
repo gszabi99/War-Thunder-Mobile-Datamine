@@ -13,7 +13,7 @@ let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let battleDataQuery = ecs.SqQuery("hangarBattleDataQuery",
   {
     comps_ro = [["server_player__userId", ecs.TYPE_UINT64]]
-    comps_rw = [["battleData", ecs.TYPE_OBJECT]]
+    comps_rw = [["hangarBattleData", ecs.TYPE_OBJECT], ["isBattleDataReceived", ecs.TYPE_BOOL]]
   })
 
 
@@ -25,17 +25,18 @@ function setBattleDataToClientEcs(bd) {
     if (c.server_player__userId != myUserId.value)
       return
     logBD("Set battle data to client entity")
-    c.battleData = bd
+    c.hangarBattleData = bd
+    c.isBattleDataReceived = true
     isFound = true
   })
   if (isFound)
     return
 
-  ecs.g_entity_mgr.createEntity("wtm_server_player",
+  ecs.g_entity_mgr.createEntity("hangar_battle_data",
     {
       server_player__userId = [myUserId.value, ecs.TYPE_UINT64]
       isBattleDataReceived = true
-      battleData = bd
+      hangarBattleData = bd
     }, @(_e) logBD("Created wtm_server_player with battle data."))
 }
 
@@ -46,7 +47,7 @@ function mkHangarBattleData() {
     isUpgraded = false, isPremium = false, platoonUnits = []
   } = mainHangarUnit.get()
 
-  let cfgMods = serverConfigs.value?.unitModPresets[modPreset] ?? {}
+  let cfgMods = serverConfigs.get()?.unitModPresets[modPreset] ?? {}
   let items = mods != null
       ? mods.filter(@(has, id) has && id in cfgMods)
           .map(@(_) 1)

@@ -42,7 +42,7 @@ let info = Computed(function() {
   if (unitCfg == null)
     return null
   let cStats = killer.isBot ? genBotCommonStats(killer.name, unitName, unitCfg, 0)
-    : playersCommonStats.value?[killer.userId.tointeger()]
+    : playersCommonStats.get()?[killer.userId.tointeger()]
   let { hasPremium = false, decorators = null, units = null, hasVip = false, hasPrem = false } = cStats
   return killData.value.__merge({
     killerHasPremium = hasPremium || hasPrem || hasVip
@@ -55,7 +55,7 @@ eventbus_subscribe("HudMessage", function(data) {
   if (data.type != HUD_MSG_MULTIPLAYER_DMG)
     return
   let { isKill = false, playerId = null, victimPlayerId = null } = data
-  if (isKill && localMPlayerId.value == victimPlayerId) {
+  if (isKill && localMPlayerId.get() == victimPlayerId) {
     let killer = get_mplayer_by_id(playerId)
     if (killer != null)
       killData.set(data.__merge({ killer }))

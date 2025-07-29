@@ -23,8 +23,8 @@ function show() {
 
 function openAfterDebriefing() {
   if (!isInQueue.value
-      && isNoExtraScenesAfterDebriefing.value
-      && !needRateGame.value)
+      && isNoExtraScenesAfterDebriefing.get()
+      && !needRateGame.get())
     show()
 }
 

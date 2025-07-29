@@ -12,8 +12,8 @@ let mkContactsOrderImpl = @(uids) Computed(function(prev) {
   let uidsArr = type(uids.value) == "table" ? uids.value.keys() : uids.value
   let priorities = {}
   foreach(uid in uidsArr)
-    priorities[uid] <- priorityByStatus?[onlineStatus.value?[uid]] ?? -1
-  let list = uidsArr.map(@(uid) allContacts.value?[uid] ?? { realnick = "", userId = uid })
+    priorities[uid] <- priorityByStatus?[onlineStatus.get()?[uid]] ?? -1
+  let list = uidsArr.map(@(uid) allContacts.get()?[uid] ?? { realnick = "", userId = uid })
   list.sort(@(a, b) priorities[b.userId] <=> priorities[a.userId]
     || a.realnick <=> b.realnick)
   let res = list.map(@(v) v.userId)

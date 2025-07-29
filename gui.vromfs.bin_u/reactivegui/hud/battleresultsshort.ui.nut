@@ -188,8 +188,8 @@ let achievements = function(streaks) {
 
 let achievementsBlock = @() {
   watch = [debriefingData]
-  children = 0 < (debriefingData.value?.streaks.len() ?? 0)
-    ? mkUserScores(achievements(debriefingData.value?.streaks), "debriefing/Unlocks")
+  children = 0 < (debriefingData.get()?.streaks.len() ?? 0)
+    ? mkUserScores(achievements(debriefingData.get()?.streaks), "debriefing/Unlocks")
     : null
 }
 

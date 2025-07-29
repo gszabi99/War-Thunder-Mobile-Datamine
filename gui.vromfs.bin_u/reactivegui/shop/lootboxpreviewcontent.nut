@@ -311,7 +311,7 @@ function mkPreviewIconImpl(reward, rStyle, ovr = {}) {
 }
 
 function mkRewardFlag(reward, rStyle) {
-  let unit = Computed(@() serverConfigs.value?.allUnits?[reward.id])
+  let unit = Computed(@() serverConfigs.get()?.allUnits?[reward.id])
   return @() {
     watch = unit
     children = mkRewardUnitFlag(unit.get(), rStyle)
@@ -407,13 +407,12 @@ function itemsBlock(rewards, width, style, ovr = {}, lootbox = null) {
   }.__update(ovr)
 }
 
-function getLootboxRewardsAutoLast(lootbox, profile, srvConfigs) {
+function getLootboxRewardsAutoLast(lootbox, profile, srvConfigs, isAllReceived = false) {
   let res = fillRewardsCounts(getLootboxRewardsViewInfo(lootbox, true), profile, srvConfigs)
   let lastRewardIdx = res.findindex(@(r) r?.isLastReward ?? false)
   if (lastRewardIdx == null)
     return res
-  local isAllEmpty = null == res.findindex(@(r) !r?.isLastReward && !isSingleViewInfoRewardEmpty(r, profile))
-  if (!isAllEmpty)
+  if (isAllReceived || null != res.findindex(@(r) !r?.isLastReward && !isSingleViewInfoRewardEmpty(r, profile)))
     res.remove(lastRewardIdx)
   return res
 }
@@ -438,11 +437,13 @@ let mkMoreInfoButton = @(reward, style) reward.rType not in mkPlateClickByType ?
       mergeStyles(PRIMARY, { ovr = { size = [style.boxSize, style.boxSize], minWidth = style.boxSize } }))
 
 function mkRewardLootboxInfo(reward, width, style) {
+  let { id, dropLimit = NO_DROP_LIMIT, received = 0 } = reward
+  let isAllReceived = dropLimit != NO_DROP_LIMIT && dropLimit <= received
   let slotsInRow = getSlotsInRow(width, style) - 1 - reward.slots
   let arrowSize = [style.boxSize * 2 / 3, (style.boxSize / 4) * 2]
-  let lootbox = Computed(@() serverConfigs.get()?.lootboxesCfg[reward.id])
+  let lootbox = Computed(@() serverConfigs.get()?.lootboxesCfg[id])
   let rewards = Computed(@() lootbox.get() == null ? []
-    : getLootboxRewardsAutoLast(lootbox.get(), servProfile.get(), serverConfigs.get()))
+    : getLootboxRewardsAutoLast(lootbox.get(), servProfile.get(), serverConfigs.get(), isAllReceived))
   let visibleCount = Computed(function() {
     local res = 0
     local slotsLeft = slotsInRow

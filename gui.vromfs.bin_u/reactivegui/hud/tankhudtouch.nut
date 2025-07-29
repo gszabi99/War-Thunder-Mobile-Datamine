@@ -103,7 +103,7 @@ let arcadeCrosshairSight = @() tankZoomAutoAimMode.value  ?
     mkCrosshairLine([0, halfCrosshairLineHeight], [0, hdpx(30)], {size = sizeAim, hplace = ALIGN_CENTER, vplace = ALIGN_BOTTOM })
     mkCrosshairLine([halfCrosshairLineHeight, 0], [hdpx(30), 0], {size = sizeAimRv, hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER })
   ]
-  update = currentArmorPiercingFixed.value ? sightDestinationUpdate : screenPositionUpdate()
+  update = currentArmorPiercingFixed.get() ? sightDestinationUpdate : screenPositionUpdate()
 }
 
 
@@ -121,7 +121,7 @@ let arcadeCrosshairAim = @() tankZoomAutoAimMode.value ?
       [VECTOR_FILL_COLOR, 0],
       [VECTOR_ELLIPSE, 50, 50, 40, 40],
     ]
-  update = currentArmorPiercingFixed.value ? sightDestinationUpdate : screenPositionUpdate()
+  update = currentArmorPiercingFixed.get() ? sightDestinationUpdate : screenPositionUpdate()
 }
 :
 { watch = [tankCrosshairColor, tankZoomAutoAimMode] }
@@ -161,7 +161,7 @@ let arcadeCrosshair = @() {
   ]
   children = [
     primaryRocketGun.value || isFreeCamera.value ? null : arcadeCrosshairSight
-  ].extend(currentArmorPiercingFixed.value && !primaryRocketGun.value && allowShoot.value
+  ].extend(currentArmorPiercingFixed.get() && !primaryRocketGun.value && allowShoot.value
       ? array(crosshairAmount.get()).map(@(_, i) mkCircleGunPosition(i)) : [])
 }
 

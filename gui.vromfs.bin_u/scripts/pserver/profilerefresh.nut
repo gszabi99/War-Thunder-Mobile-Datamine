@@ -22,17 +22,17 @@ let isProfileRequestedAfterBattle = mkWatched(persist, "isProfileRequestedAfterB
 let isProfileReceivedAfterBattle = mkWatched(persist, "isProfileReceivedAfterBattle", true)
 let lastProfileError = mkWatched(persist, "lastProfileError", null)
 let lastConfigsError = mkWatched(persist, "lastConfigsError", null)
-let hasLastBattleReward = Computed(@() (battleResult.value?.reward.playerExp.totalExp ?? 0) != 0
-  || (battleResult.value?.reward.playerWp.totalWp ?? 0) != 0
-  || (battleResult.value?.reward.units ?? []).findvalue(@(v) (v?.exp.totalExp ?? 0) != 0) != null
-  || (battleResult.value?.reward.units ?? []).findvalue(@(v) (v?.gold.totalGold ?? 0) != 0) != null
-  || (battleResult.value?.reward.unitExp.totalExp ?? 0) != 0 
+let hasLastBattleReward = Computed(@() (battleResult.get()?.reward.playerExp.totalExp ?? 0) != 0
+  || (battleResult.get()?.reward.playerWp.totalWp ?? 0) != 0
+  || (battleResult.get()?.reward.units ?? []).findvalue(@(v) (v?.exp.totalExp ?? 0) != 0) != null
+  || (battleResult.get()?.reward.units ?? []).findvalue(@(v) (v?.gold.totalGold ?? 0) != 0) != null
+  || (battleResult.get()?.reward.unitExp.totalExp ?? 0) != 0 
 )
 let isWaitProfile = keepref(Computed(@()
-  !isInBattle.value && hasLastBattleReward.value && !isProfileReceivedAfterBattle.value))
+  !isInBattle.get() && hasLastBattleReward.value && !isProfileReceivedAfterBattle.value))
 
 function checkUpdateProfile() {
-  if (isInBattle.value) {
+  if (isInBattle.get()) {
     logPR("Delay update profile because in the battle")
     isProfileChanged(true)
     return
@@ -96,7 +96,7 @@ isInDebriefing.subscribe(function(v) {
 function sendBqNotReceivedProfile() {
   if (!isWaitProfile.value)
     return
-  if (isInDebriefing.value) {
+  if (isInDebriefing.get()) {
     
     resetTimeout(SEND_BQ_NOT_RECEIVED_TIME, sendBqNotReceivedProfile)
     return

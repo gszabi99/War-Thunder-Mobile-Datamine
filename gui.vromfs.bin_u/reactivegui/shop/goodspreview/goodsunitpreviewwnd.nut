@@ -65,7 +65,7 @@ let maxInfoPanelHeight = saSize[1] - hdpx(380)
 let isWindowAttached = Watched(false)
 let needShowUi = Watched(false)
 let skipAnimsOnce = Watched(false)
-let openCount = Computed(@() previewType.value == GPT_UNIT || previewType.value == GPT_BLUEPRINT ? openPreviewCount.get() : 0)
+let openCount = Computed(@() previewType.get() == GPT_UNIT || previewType.get() == GPT_BLUEPRINT ? openPreviewCount.get() : 0)
 let needScroll = Computed(@() (previewGoods.get()?.units.len() ?? 0) + (previewGoods.get()?.unitUpgrades.len() ?? 0) > 8)
 let goodsBattleMode = Computed(function() {
   let { campaign = "", country = "" } = previewGoodsUnit.get()
@@ -126,11 +126,11 @@ let curSelectedUnitId = Watched("")
 previewGoodsUnit.subscribe(@(v) curSelectedUnitId(v?.name ?? ""))
 
 let unitForShow = keepref(Computed(function() {
-  if (!isWindowAttached.value || previewGoodsUnit.value == null)
+  if (!isWindowAttached.value || previewGoodsUnit.get() == null)
     return null
   let unitName = curSelectedUnitId.value
-  local res = unitName == previewGoodsUnit.value.name || unitName == "" ? previewGoodsUnit.get()
-    : (campUnitsCfg.get()?[unitName] ?? previewGoodsUnit.value.__merge({ name = unitName }))
+  local res = unitName == previewGoodsUnit.get().name || unitName == "" ? previewGoodsUnit.get()
+    : (campUnitsCfg.get()?[unitName] ?? previewGoodsUnit.get().__merge({ name = unitName }))
 
   let skin = previewGoods.get()?.skins[previewGoodsUnit.get()?.name]
   if (skin != null) {
@@ -162,17 +162,13 @@ eventbus_subscribe("onHangarModelStartLoad", @(_) readyToShowCutScene(false))
 eventbus_subscribe(cutSceneWaitForVisualsLoaded ? "onHangarModelVisualsLoaded" : "onHangarModelLoaded", @(_) readyToShowCutScene(true))
 
 let needShowCutscene = keepref(Computed(@() unitForShow.value != null
-  && loadedHangarUnitName.value == getTagsUnitName(unitForShow.value?.name ?? "")
+  && loadedHangarUnitName.get() == getTagsUnitName(unitForShow.value?.name ?? "")
   && readyToShowCutScene.value ))
 
 function showCutscene(v) {
   if (!v)
     stop_prem_cutscene()
   else if (!needShowUi.value && !skipAnimsOnce.value) {
-    if (unitForShow.get()?.name == "j7w1") {
-      needShowUi.set(true)
-      return
-    }
     let unitType = unitForShow.value?.unitType ?? ""
     local presetType = TANK_PRESET_TYPE
     if (unitType == SHIP)
@@ -199,7 +195,7 @@ function openDetailsWnd() {
   })
   let cfg = {
     name = unitForShow.get()?.name
-    isUpgraded = previewGoodsUnit.value?.isUpgraded ?? false
+    isUpgraded = previewGoodsUnit.get()?.isUpgraded ?? false
     canShowOwnUnit = false
   }
   let { currentSkins = null } = unitForShow.get()
@@ -339,9 +335,9 @@ let platoonUnitsBlock = @() {
   flow = FLOW_VERTICAL
   gap = unitPlatesGap
   children = previewGoodsUnit.get() == null ? null
-    : [ { name = previewGoodsUnit.value.name, reqLevel = 0 } ]
-        .extend(previewGoodsUnit.value?.platoonUnits)
-        .map(@(pu, idx) mkUnitPlate(idx, previewGoodsUnit.value, pu, @() curSelectedUnitId(pu.name)))
+    : [ { name = previewGoodsUnit.get().name, reqLevel = 0 } ]
+        .extend(previewGoodsUnit.get()?.platoonUnits)
+        .map(@(pu, idx) mkUnitPlate(idx, previewGoodsUnit.get(), pu, @() curSelectedUnitId(pu.name)))
 }
 
 let singleUnitBlock = @() {
@@ -406,8 +402,8 @@ let balanceBlock = @() {
   valign = ALIGN_CENTER
   gap = horGap
   children = [
-    (previewGoods.value?.price.price ?? 0) <= 0 ? null
-      : mkCurrencyBalance(previewGoods.value.price.currencyId)
+    (previewGoods.get()?.price.price ?? 0) <= 0 ? null
+      : mkCurrencyBalance(previewGoods.get().price.currencyId)
     unitInfoButton
   ]
   animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)

@@ -39,7 +39,7 @@ foreach (key in [ "gpu", "preset", "sessionId", "latency", "latencyA", "latencyR
 }
 let { gpu, preset, sessionId, latency, latencyA, latencyR } = comps
 
-let graphicsText = Computed(@() !(hasAddons.value?.pkg_secondary_hq ?? true)  ? "Low Quality Textures"
+let graphicsText = Computed(@() !(hasAddons.get()?.pkg_secondary_hq ?? true)  ? "Low Quality Textures"
   : preset.value != "" ? $"Graphics: {capitalize(preset.value)}"
   : "")
 

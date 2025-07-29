@@ -1,11 +1,11 @@
+from "string" import format
+from "dagor.clipboard" import set_clipboard_text
 from "%darg/ui_imports.nut" import *
+import "inspectorViews.nut" as fieldsMap
+import "simpleCursors.nut" as cursors
 
 
-let {format} = require("string")
 let utf8 = require_optional("utf8")
-let {set_clipboard_text} = require("dagor.clipboard")
-let fieldsMap = require("inspectorViews.nut")
-let cursors = require("simpleCursors.nut")
 
 let shown          = persist("shown", @() Watched(false))
 let wndHalign      = persist("wndHalign", @() Watched(ALIGN_RIGHT))
@@ -17,13 +17,13 @@ let viewIdx        = persist("viewIdx", @() Watched(0))
 let showRootsInfo  = persist("showRoots", @() Watched(false))
 let showChildrenInfo=persist("showChildrenInfo", @() Watched(false))
 
-let curData        = Computed(@() pickedList.value?[viewIdx.value])
+let curData        = Computed(@() pickedList.get()?[viewIdx.get()])
 
 let fontSize = sh(1.5)
 let valColor = Color(155,255,50)
 
 function inspectorToggle() {
-  shown(!shown.value)
+  shown.modify(@(v) !v)
   pickerActive(false)
   pickedList([])
   viewIdx(0)
@@ -36,13 +36,13 @@ function textButton(text, action, isEnabled = true) {
   let override = isEnabled
     ? {
         watch = stateFlags
-        onElemState = isEnabled ? @(val) stateFlags.update(val) : null
+        onElemState = isEnabled ? @(val) stateFlags.set(val) : null
         onClick = isEnabled ? action : null
       }
     : {}
 
   return function() {
-    let sf = stateFlags.value
+    let sf = stateFlags.get()
     let color = !isEnabled ? Color(80, 80, 80, 200)
       : sf & S_ACTIVE      ? Color(100, 120, 200, 255)
       : sf & S_HOVER       ? Color(110, 135, 220, 255)
@@ -54,10 +54,10 @@ function textButton(text, action, isEnabled = true) {
       behavior = Behaviors.Button
       focusOnClick = true
       color = color
-      padding = [hdpx(5), hdpx(10)]
+      padding = const [hdpx(5), hdpx(10)]
       children = {
         rendObj = ROBJ_TEXT
-        text = text
+        text
         color = isEnabled ? 0xFFFFFFFF : 0xFFBBBBBB
       }
     }.__update(override)
@@ -65,16 +65,16 @@ function textButton(text, action, isEnabled = true) {
 }
 
 function mkDirBtn(text, dir) {
-  let isVisible = Computed(@() pickedList.value.len() > 1)
-  let isEnabled = Computed(@() (viewIdx.value + dir) in pickedList.value)
+  let isVisible = Computed(@() pickedList.get().len() > 1)
+  let isEnabled = Computed(@() (viewIdx.get() + dir) in pickedList.get())
   return @() {
     watch = [isVisible, isEnabled]
-    children = !isVisible.value ? null
-      : textButton(text, @() isEnabled.value ? viewIdx(viewIdx.value + dir) : null, isEnabled.value)
+    children = !isVisible.get() ? null
+      : textButton(text, @() isEnabled.get() ? viewIdx(viewIdx.get() + dir) : null, isEnabled.get())
   }
 }
 
-let gap = { size = flex() }
+let gap = const { size = flex() }
 let pickBtn = textButton("Pick", @() pickerActive(true))
 let prevBtn = mkDirBtn("Prev", -1)
 let nextBtn = mkDirBtn("Next", 1)
@@ -83,15 +83,15 @@ let closeBtn = textButton("Close", inspectorToggle)
 let invAlign = @(align) align == ALIGN_LEFT ? ALIGN_RIGHT : ALIGN_LEFT
 
 function panelToolbar() {
-  let alignBtn = textButton(wndHalign.value == ALIGN_RIGHT ? "<|" : "|>",
-    @() wndHalign(invAlign(wndHalign.value)))
+  let alignBtn = textButton(wndHalign.get() == ALIGN_RIGHT ? "<|" : "|>",
+    @() wndHalign(invAlign(wndHalign.get())))
   return {
     watch = wndHalign
     size = FLEX_H
     flow = FLOW_HORIZONTAL
     padding = sh(1)
     gap = sh(0.5)
-    children = wndHalign.value == ALIGN_RIGHT
+    children = wndHalign.get() == ALIGN_RIGHT
       ? [alignBtn, pickBtn, prevBtn, nextBtn, gap, closeBtn]
       : [closeBtn, gap, prevBtn, nextBtn, pickBtn, alignBtn]
   }
@@ -125,7 +125,7 @@ let mkImageCtor = @(image) @(content) {
   ]
 }
 
-let IMAGE_KEYS = ["image", "fallbackImage"]
+let IMAGE_KEYS = {"image":1, "fallbackImage":1}
 
 function getPropValueTexts(desc, key, textLimit = 0) {
   let val = desc[key]
@@ -138,7 +138,7 @@ function getPropValueTexts(desc, key, textLimit = 0) {
     text = "<null>"
   } else if (tp == "array") {
     text = ", ".join(val)
-  } else if (IMAGE_KEYS.contains(key)) {
+  } else if (key in IMAGE_KEYS) {
     text = val.tostring()
     valCtor = mkImageCtor(val)
   } else if (tp == "integer" && key.tolower().indexof("color") != null) {
@@ -201,7 +201,7 @@ function propPanel(desc) {
       behavior = Behaviors.Button
       onElemState = @(sf) stateFlags(sf)
       onClick = @() set_clipboard_text(getPropValueTexts(desc, k).text)
-      children = mkPropContent(desc, k, stateFlags.value)
+      children = mkPropContent(desc, k, stateFlags.get())
     }
   })
 }
@@ -233,7 +233,7 @@ function clickableText(labelText, valueText, onClick = null, highlightBB = null)
   return @() {
     watch = elemSF
     rendObj = ROBJ_TEXTAREA
-    behavior = [Behaviors.TextArea, Behaviors.Button]
+    behavior = const [Behaviors.TextArea, Behaviors.Button]
     function onElemState(sf) {
       elemSF(sf)
       if (highlightBB)
@@ -242,7 +242,7 @@ function clickableText(labelText, valueText, onClick = null, highlightBB = null)
     onDetach = @() animHighlight(null)
     onClick = onClick ?? @() set_clipboard_text(valueText)
     fontSize
-    color = textColor(elemSF.value)
+    color = textColor(elemSF.get())
     text = $"{labelText} = <color={valColor}>{valueText}</color>"
   }
 }
@@ -259,8 +259,8 @@ function rootsPanel(roots) {
     flow = FLOW_VERTICAL
     gap = hdpx(2) 
     children = [
-      clickableText("---show roots---", showRootsInfo.value, @() showRootsInfo(!showRootsInfo.value))
-    ].extend(showRootsInfo.value ? rootsList : [])
+      clickableText("---show roots---", showRootsInfo.get(), @() showRootsInfo(!showRootsInfo.get()))
+    ].extend(showRootsInfo.get() ? rootsList : [])
   }
 }
 
@@ -278,9 +278,9 @@ function childrenPanel(children) {
     children = [
       clickableText(
         $"---show children ({childrenList.len()}) ---",
-        showChildrenInfo.value,
-        @() showChildrenInfo(!showChildrenInfo.value))
-    ].extend(showChildrenInfo.value ? childrenList : [])
+        showChildrenInfo.get(),
+        @() showChildrenInfo(!showChildrenInfo.get()))
+    ].extend(showChildrenInfo.get() ? childrenList : [])
   }
 }
 
@@ -289,7 +289,7 @@ function details() {
     watch = curData
     size = flex()
   }
-  let sel = curData.value
+  let sel = curData.get()
   if (sel == null)
     return res
 
@@ -303,7 +303,7 @@ function details() {
     onClick = @() set_clipboard_text(sel.locationText)
     text = prepareCallstackText(sel.locationText)
     fontSize
-    color = textColor(summarySF.value)
+    color = textColor(summarySF.get())
     hangingIndent = sh(3)
   }
 
@@ -314,14 +314,14 @@ function details() {
 
   return res.__update({
     flow = FLOW_VERTICAL
-    padding = [hdpx(5), hdpx(10)]
+    padding = const [hdpx(5), hdpx(10)]
     children = [ bbox ]
       .extend(propPanel(sel.componentDesc))
       .append(rootsPanel(sel.roots), childrenPanel(sel.children), summaryText)
   })
 }
 
-let help = {
+let help = const {
   rendObj = ROBJ_TEXTAREA
   size = FLEX_H
   behavior = Behaviors.TextArea
@@ -331,7 +331,7 @@ let help = {
   text = @"L.Ctrl + L.Shift + I - switch inspector off\nL.Ctrl + L.Shift + P - switch picker on/off"
 }
 
-let hr = {
+let hr = const {
   rendObj = ROBJ_SOLID
   color = 0x333333
   size = [flex(), hdpx(1)]
@@ -341,8 +341,8 @@ let inspectorPanel = @() {
   watch = wndHalign
   rendObj = ROBJ_SOLID
   color = Color(0, 0, 50, 50)
-  size = [sw(30), sh(100)]
-  hplace = wndHalign.value
+  size = const [sw(30), sh(100)]
+  hplace = wndHalign.get()
   behavior = Behaviors.Button
   clipChildren = true
 
@@ -358,7 +358,7 @@ let inspectorPanel = @() {
 
 function highlightRect() {
   let res = { watch = highlight }
-  let hv = highlight.value
+  let hv = highlight.get()
   if (hv == null)
     return res
   return res.__update({
@@ -378,11 +378,11 @@ function highlightRect() {
 function animHighlightRect() {
   let res = {
     watch = animHighlight
-    animations = [{
+    animations = const [{
       prop = AnimProp.opacity, from = 0.5, to = 1.0, duration = 0.5, easing = CosineFull, play = true, loop = true
     }]
   }
-  let ah = animHighlight.value
+  let ah = animHighlight.get()
   if (ah == null)
     return res
   return res.__update({
@@ -396,7 +396,7 @@ function animHighlightRect() {
 
 
 let elementPicker = @() {
-  size = [sw(100), sh(100)]
+  size = const [sw(100), sh(100)]
   behavior = Behaviors.InspectPicker
   cursor = cursors.normal
   rendObj = ROBJ_SOLID
@@ -415,15 +415,15 @@ function inspectorRoot() {
     skipInspection = true
   }
 
-  if (shown.value)
+  if (shown.get())
     res.__update({
       cursor = cursors.normal
       children = [
-        (pickerActive.value ? elementPicker : inspectorPanel),
+        (pickerActive.get() ? elementPicker : inspectorPanel),
         animHighlightRect,
         { hotkeys = [
           ["L.Ctrl L.Shift I", @() shown(false)],
-          ["L.Ctrl L.Shift P", @() pickerActive(!pickerActive.value)]
+          ["L.Ctrl L.Shift P", @() pickerActive(!pickerActive.get())]
         ] }
       ]
     })

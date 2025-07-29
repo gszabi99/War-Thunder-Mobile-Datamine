@@ -33,7 +33,7 @@ let playersByTeam = Computed(function() {
         let { damage = 0.0, score = 0.0 } = playersDamageStats.value?[id]
         let { level = 1, starLevel = 0, hasPremium = false, decorators = null, units = {},
           hasVip = false, hasPrem = false } = !isBot
-            ? playersCommonStats.value?[userId.tointeger()]
+            ? playersCommonStats.get()?[userId.tointeger()]
             : genBotCommonStats(name, unitName, getPlatoonUnitCfg(unitName, allMainUnitsByPlatoon.get()) ?? {}, playerLevelInfo.get().level)
         let unit = units?[unitName]
         let { unitClass = "", mRank = null } = unit

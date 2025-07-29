@@ -25,7 +25,7 @@ let isQueueDataActual = Computed(@() !needRefresh.value && isEqual(successResult
 let queueDataError = Computed(@() lastResult.value?.error)
 let needActualize = Computed(@() !isQueueDataActual.get() && isLoggedIn.get() && curUnitInfo.get() != null)
 let needDebugNewResult = Watched(false)
-let actualizeDelay = Computed(@() isInSquad.value && !isSquadLeader.value && isReady.value
+let actualizeDelay = Computed(@() isInSquad.get() && !isSquadLeader.get() && isReady.get()
   ? SQUAD_ACTUALIZE_DELAY
   : SILENT_ACTUALIZE_DELAY)
 
@@ -99,7 +99,7 @@ needActualize.subscribe(function(v) {
 })
 
 squadLeaderQueueDataCheckTime.subscribe(function(_) {
-  if (isInSquad.value && !isSquadLeader.value && isReady.value)
+  if (isInSquad.get() && !isSquadLeader.get() && isReady.get())
     actualizeIfNeed()
 })
 

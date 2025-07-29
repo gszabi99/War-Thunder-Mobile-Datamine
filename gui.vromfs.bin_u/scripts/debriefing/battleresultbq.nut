@@ -100,7 +100,7 @@ isInBattle.subscribe(function(v) {
   }
 })
 
-if (isInBattle.value) {
+if (isInBattle.get()) {
   activatePingMeasurement(true, false)
 }
 

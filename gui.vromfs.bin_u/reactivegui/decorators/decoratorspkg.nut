@@ -3,11 +3,11 @@ let { chosenTitle } = require("%rGui/decorators/decoratorState.nut")
 
 let defMarkSize = hdpxi(30)
 
-let mkTitle = @(ovr = {}) @() chosenTitle.value
+let mkTitle = @(ovr = {}) @() chosenTitle.get()
   ? {
     watch = chosenTitle
     rendObj = ROBJ_TEXT
-    text = loc($"title/{chosenTitle.value.name}")
+    text = loc($"title/{chosenTitle.get().name}")
     color = 0xFFFFB70B
   }.__update(ovr)
   : { watch = chosenTitle }

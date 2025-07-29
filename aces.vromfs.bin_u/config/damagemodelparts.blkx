@@ -568,7 +568,7 @@
     "antenna_target_location": {},
     "antenna_target_tagging": {},
     "antenna_target_location_NN": {
-      "template": "antenna_target_location_#06#"
+      "template": "antenna_target_location_#07#"
     },
     "antenna_target_tagging_NN": {
       "template": "antenna_target_tagging_#06#"

@@ -148,8 +148,8 @@ function applyTransformProgress() {
 }
 
 function openTuningRecommended() {
-  let uType = isInBattle.value ? hudUnitType.value
-    : hangarUnitName.value != "" ? getUnitType(hangarUnitName.value)
+  let uType = isInBattle.get() ? hudUnitType.value
+    : hangarUnitName.get() != "" ? getUnitType(hangarUnitName.get())
     : null
   tuningUnitType(uType in allTuningUnitTypes ? uType : allTuningUnitTypes.findindex(@(_) true))
 }

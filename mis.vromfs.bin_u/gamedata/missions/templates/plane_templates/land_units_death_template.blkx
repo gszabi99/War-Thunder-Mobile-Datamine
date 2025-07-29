@@ -96,7 +96,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.1
         }
       },
       "conditions": {
@@ -112,17 +112,23 @@
         }
       },
       "actions": {
-        "gameMPChangeScore": {
-          "value": -100,
-          "valueSystem": "amount",
-          "ignoreSingleMissions": false,
-          "var": "additional_units_tickets_cost",
-          "team": "A"
-        },
-        "varModify": {
+        "__varModify": {
           "operator": "add",
           "value": 1.0,
           "var": "t1_land_death_counter"
+        },
+        "triggerEnable": {
+          "target": [
+            "t1_truck_aaa_squad_damaged",
+            "t1_trucks_squad_damaged",
+            "t1_aaa_squad_damaged",
+            "t1_artillery_squad_damaged",
+            "t1_tanks_squad_damaged",
+            "t1_bunkers_squad_damaged",
+            "t1_navy_ships_squad_damaged",
+            "t1_cargo_ships_squad_damaged",
+            "t1_boats_squad_damaged"
+          ]
         }
       },
       "else_actions": {}
@@ -137,7 +143,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.1
         }
       },
       "conditions": {
@@ -153,124 +159,988 @@
         }
       },
       "actions": {
-        "gameMPChangeScore": {
-          "value": -100,
-          "valueSystem": "amount",
-          "ignoreSingleMissions": false,
-          "var": "additional_units_tickets_cost",
-          "team": "B"
-        },
-        "varModify": {
+        "__varModify": {
           "operator": "add",
           "value": 1.0,
           "var": "t2_land_death_counter"
+        },
+        "triggerEnable": {
+          "target": [
+            "t2_truck_aaa_squad_damaged",
+            "t2_trucks_squad_damaged",
+            "t2_aaa_squad_damaged",
+            "t2_artillery_squad_damaged",
+            "t2_tanks_squad_damaged",
+            "t2_bunkers_squad_damaged",
+            "t2_navy_ships_squad_damaged",
+            "t2_cargo_ships_squad_damaged",
+            "t2_boats_squad_damaged"
+          ]
         }
       },
       "else_actions": {}
     },
-    "t1_all_land_destroyed": {
+    "t1_check_dead_unit_type": {
+      "isCategory": true,
       "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
+      "t1_truck_aaa_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t1_truck_aaa_squad",
+            "var": "t1_truck_aaa_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t1_truck_aaa_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "truck_aaa_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "A"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_truck_aaa_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
       },
-      "events": {
-        "periodicEvent": {
-          "time": 30.0
-        }
+      "t1_trucks_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t1_trucks_squad",
+            "var": "t1_trucks_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t1_trucks_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "truck_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "A"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_trucks_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
       },
-      "conditions": {},
-      "actions": {
-        "triggerEnable": {
-          "target": "t1_all_land_destroyed_mp_change"
-        }
+      "t1_aaa_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t1_aaa_squad",
+            "var": "t1_aaa_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t1_aaa_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "air_defense_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "A"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_aaa_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
       },
-      "else_actions": {}
+      "t1_artillery_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t1_artillery_squad",
+            "var": "t1_artillery_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t1_artillery_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "artillery_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "A"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_artillery_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "t1_tanks_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t1_tanks_squad",
+            "var": "t1_tanks_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t1_tanks_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "tank_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "A"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_tanks_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "t1_bunkers_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t1_bunkers_squad",
+            "var": "t1_bunkers_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t1_bunkers_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "fortification_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "A"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_bunkers_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "t1_navy_ships_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t1_navy_ships_squad",
+            "var": "t1_navy_ships_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t1_navy_ships_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "navy_ship_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "A"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_navy_ships_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "t1_cargo_ships_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t1_cargo_ships_squad",
+            "var": "t1_cargo_ships_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t1_cargo_ships_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "cargo_ship_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "A"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_cargo_ships_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
+      },
+      "t1_boats_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t1_boats_squad",
+            "var": "t1_boats_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t1_boats_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "boat_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "A"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t1_boats_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
+      }
     },
-    "t2_all_land_destroyed": {
+    "t2_check_dead_unit_type": {
+      "isCategory": true,
       "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
+      "t2_truck_aaa_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t2_truck_aaa_squad",
+            "var": "t2_truck_aaa_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t2_truck_aaa_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "truck_aaa_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "B"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_truck_aaa_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
       },
-      "events": {
-        "periodicEvent": {
-          "time": 30.0
-        }
+      "t2_trucks_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t2_trucks_squad",
+            "var": "t2_trucks_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t2_trucks_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "truck_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "B"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_trucks_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
       },
-      "conditions": {},
-      "actions": {
-        "triggerEnable": {
-          "target": "t2_all_land_destroyed_mp_change"
-        }
+      "t2_aaa_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t2_aaa_squad",
+            "var": "t2_aaa_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t2_aaa_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "air_defense_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "B"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_aaa_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
       },
-      "else_actions": {}
-    },
-    "t1_all_land_destroyed_mp_change": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
+      "t2_artillery_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t2_artillery_squad",
+            "var": "t2_artillery_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t2_artillery_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "artillery_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "B"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_artillery_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
       },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
+      "t2_tanks_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t2_tanks_squad",
+            "var": "t2_tanks_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t2_tanks_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "tank_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "B"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_tanks_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
       },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isActive",
-          "object_marking": 0,
-          "func": "less",
-          "value": 1,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "t1_quest_units_squad"
-        }
+      "t2_bunkers_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t2_bunkers_squad",
+            "var": "t2_bunkers_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t2_bunkers_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "fortification_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "B"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_bunkers_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
       },
-      "actions": {
-        "triggerEnable": {
-          "target": "t1_loose"
-        }
+      "t2_navy_ships_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t2_navy_ships_squad",
+            "var": "t2_navy_ships_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t2_navy_ships_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "navy_ship_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "B"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_navy_ships_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
       },
-      "else_actions": {}
-    },
-    "t2_all_land_destroyed_mp_change": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
+      "t2_cargo_ships_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t2_cargo_ships_squad",
+            "var": "t2_cargo_ships_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t2_cargo_ships_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "cargo_ship_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "B"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_cargo_ships_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
       },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isActive",
-          "object_marking": 0,
-          "func": "less",
-          "value": 1,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "t2_quest_units_squad"
-        }
-      },
-      "actions": {
-        "triggerEnable": {
-          "target": "t2_loose"
-        }
-      },
-      "else_actions": {}
+      "t2_boats_squad_damaged": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isKilled",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t2_boats_squad",
+            "var": "t2_boats_squad_death_counter"
+          },
+          "objectExists": {
+            "target": "t2_boats_squad",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "amount",
+            "changeReason": "boat_died",
+            "ignoreSingleMissions": false,
+            "var": "additional_units_tickets_cost",
+            "team": "B"
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_land_death_counter"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "t2_boats_squad_death_counter"
+            }
+          ]
+        },
+        "else_actions": {}
+      }
     },
     "arcade_land_units_adding": {
       "isCategory": true,
@@ -759,9 +1629,7 @@
           "triggerEnable": {
             "target": [
               "t1_land_damaged",
-              "t2_land_damaged",
-              "t1_all_land_destroyed",
-              "t2_all_land_destroyed"
+              "t2_land_damaged"
             ]
           }
         },
@@ -774,6 +1642,24 @@
     "is_enabled": true
   },
   "variables": {
+    "t1_truck_aaa_squad_death_counter": 0,
+    "t1_trucks_squad_death_counter": 0,
+    "t1_aaa_squad_death_counter": 0,
+    "t1_artillery_squad_death_counter": 0,
+    "t1_tanks_squad_death_counter": 0,
+    "t1_bunkers_squad_death_counter": 0,
+    "t1_boats_squad_death_counter": 0,
+    "t1_cargo_ships_squad_death_counter": 0,
+    "t1_navy_ships_squad_death_counter": 0,
+    "t2_truck_aaa_squad_death_counter": 0,
+    "t2_trucks_squad_death_counter": 0,
+    "t2_aaa_squad_death_counter": 0,
+    "t2_artillery_squad_death_counter": 0,
+    "t2_tanks_squad_death_counter": 0,
+    "t2_bunkers_squad_death_counter": 0,
+    "t2_boats_squad_death_counter": 0,
+    "t2_cargo_ships_squad_death_counter": 0,
+    "t2_navy_ships_squad_death_counter": 0,
     "t1_land_death_counter": 0,
     "t2_land_death_counter": 0,
     "t1_additional_units_squad_name": "",

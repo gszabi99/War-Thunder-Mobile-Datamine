@@ -79,7 +79,7 @@ restorePersist()
 hasModalWindows.subscribe(function(v) {
   if (!v)
     deferOnce(function() {
-      if (!hasModalWindows.value)
+      if (!hasModalWindows.get())
         restorePersist()
     })
 })

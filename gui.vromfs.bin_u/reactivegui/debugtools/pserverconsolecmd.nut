@@ -6,9 +6,9 @@ let pServerApi = require("%appGlobals/pServer/pServerApi.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
 let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, set_purch_player_type,
   check_new_offer, debug_offer_generation_stats, shift_all_offers_time, generate_fixed_type_offer,
-  userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler,
-  add_decorator, set_current_decorator, remove_decorator, unset_current_decorator,
-  apply_profile_mutation, add_lootbox, get_base_lootbox_chances, get_my_lootbox_chances,
+  userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler, add_decal_by_name,
+  add_decorator, set_current_decorator, remove_decorator, unset_current_decorator, add_all_decals, remove_decal_by_name,
+  apply_profile_mutation, add_lootbox, get_base_lootbox_chances, get_my_lootbox_chances, remove_all_decals,
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, halt_goods_purchase, add_shop_goods,
   halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, debug_apply_unit_daily_bonus_in_battle,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
@@ -164,6 +164,10 @@ register_command(@()
     !mainHangarUnit.get()?.isUpgraded ? "consolePrintResult"
       : { id = "downgradeUnit", name = mainHangarUnitName.get() })
   "meta.remove_all_skins_for_hangar_unit")
+register_command(@() add_all_decals("consolePrintResult"), "meta.add_all_decals")
+register_command(@(id) add_decal_by_name(id, "consolePrintResult"), "meta.add_decal_by_name")
+register_command(@() remove_all_decals("consolePrintResult"), "meta.remove_all_decals")
+register_command(@(id) remove_decal_by_name(id, "consolePrintResult"), "meta.remove_decal_by_name")
 
 register_command(function(count) {
   foreach(c in currencyOrder)

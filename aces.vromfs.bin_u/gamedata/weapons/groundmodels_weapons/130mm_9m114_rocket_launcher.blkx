@@ -107,6 +107,7 @@
       200.0,
       1000.0
     ],
+    "shellCollision": true,
     "explodeTreshold": [
       0.00001,
       0.1

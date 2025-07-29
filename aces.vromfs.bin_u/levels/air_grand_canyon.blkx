@@ -1,0 +1,124 @@
+{
+  "lastClip": true,
+  "lastclip_horizon": true,
+  "clipmap_tex_mips": 6,
+  "volumeCloudsActive": true,
+  "z_far": 50000.0,
+  "addLandToSky": false,
+  "mapCoord0": [
+    -65536.0,
+    -65536.0
+  ],
+  "mapCoord1": [
+    65536.0,
+    65536.0
+  ],
+  "minAreaSize": [
+    12000.0,
+    12000.0
+  ],
+  "aiMapCoord0": [
+    -65536.0,
+    -65536.0
+  ],
+  "aiMapCoord1": [
+    65536.0,
+    65536.0
+  ],
+  "customLevelMap": "air_grand_canyon_map*",
+  "numBorderCellsXPos": 16,
+  "numBorderCellsXNeg": 16,
+  "numBorderCellsZPos": 16,
+  "numBorderCellsZNeg": 16,
+  "mirrorShrinkXPos": 16.0,
+  "mirrorShrinkXNeg": 16.0,
+  "mirrorShrinkZPos": 16.0,
+  "mirrorShrinkZNeg": 16.0,
+  "gridSteps": [
+    9216.0,
+    9216.0
+  ],
+  "weatherPreset": "gameData/environments/weather_preset_1.blk",
+  "weatherTypes": "gameData/environments/weather_types.blk",
+  "land_translucency": "some",
+  "layeredFogHeightOffset": -3.0,
+  "water_level": 0.0,
+  "clipmap": {
+    "texelSize": 0.125,
+    "lastClipSize": 512
+  },
+  "stars": {
+    "latitude": 34.0,
+    "longitude": 69.0,
+    "year": 1979,
+    "month": 12,
+    "day": 27
+  },
+  "shader_vars": {
+    "specular_detect_land_color": [
+      0.71,
+      0.66,
+      0.52,
+      1.0
+    ],
+    "translucency_detection_hardness": 1.0,
+    "smoothness_detection_hardness": 2.0,
+    "land_smoothness_detect_color": [
+      0.62,
+      0.61,
+      0.54,
+      2.0
+    ],
+    "max_river_width": 900.0,
+    "ocean_density": 0.6,
+    "river_density": 0.8,
+    "water_color_noise_size": 1631.0,
+    "ocean0": [
+      0.149,
+      0.208,
+      0.494,
+      0.0
+    ],
+    "ocean1": [
+      0.149,
+      0.208,
+      0.494,
+      0.0
+    ],
+    "river0": [
+      0.5,
+      0.35,
+      0.12,
+      0.0
+    ],
+    "river1": [
+      0.36,
+      0.41,
+      0.17,
+      0.0
+    ]
+  },
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_stone_b_tex_n*",
+      "microdetail_soil_a_tex_n*",
+      "microdetail_sand_c_tex_n*",
+      "microdetail_soil_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_grass_b_tex_n*",
+      "microdetail_forest_floor_b_tex_n*",
+      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_wood_b_tex_n*",
+      "microdetail_metal_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*"
+    ],
+    "land_micro_details_uv_scale": 0.51
+  },
+  "technicsSkins": {
+    "groundSkin": [
+      "jungle",
+      "default"
+    ]
+  }
+}

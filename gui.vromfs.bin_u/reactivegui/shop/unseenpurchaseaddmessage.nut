@@ -49,7 +49,7 @@ let fromCtor = {
       reward.count >= 0
         ? exceedBlueprintsProgress(reward.count, serverConfigs.get()?.allBlueprints[reward.id].targetCount ?? 1)
         : mkRewardTextLabel(-reward.count, REWARD_STYLE_SMALL)
-      mkRewardUnitFlag(serverConfigs.value?.allUnits?[reward.id], REWARD_STYLE_MEDIUM)
+      mkRewardUnitFlag(serverConfigs.get()?.allUnits?[reward.id], REWARD_STYLE_MEDIUM)
     ]
   },
 

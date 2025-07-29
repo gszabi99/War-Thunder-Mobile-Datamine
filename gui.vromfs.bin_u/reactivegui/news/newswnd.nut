@@ -216,7 +216,7 @@ let articleSelector = @() {
         .map(articleTab)
     }
     newsfeed.value.len() <= articlesPerPage.value ? null : pagesStrip
-    !isGamepad.value || newsfeed.value.len() <= 1 ? null : { hotkeys = tabsHotkeys }
+    !isGamepad.get() || newsfeed.value.len() <= 1 ? null : { hotkeys = tabsHotkeys }
   ]
 }
 

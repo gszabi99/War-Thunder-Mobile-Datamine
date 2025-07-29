@@ -5,7 +5,7 @@ let servProfile = require("%appGlobals/pServer/servProfile.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 return {
-  fwVisibleInEditor = Computed(@() isInBattle.value
+  fwVisibleInEditor = Computed(@() isInBattle.get()
                         ? (actionBarItems.value?[AB_FIREWORK].count ?? 0) > 0
                         : (servProfile.value?.items["firework_kit"].count ?? 0) > 0)
   fwVisibleInBattle = Computed(@() (actionBarItems.value?[AB_FIREWORK].count ?? 0) > 0)

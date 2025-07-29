@@ -74,8 +74,8 @@ let avatar = @() {
 let name =  @() textParams.__merge({
   watch = [havePremium, myNameWithFrame]
   vplace = ALIGN_CENTER
-  text = myNameWithFrame.value ?? ""
-  color = havePremium.value ? premiumTextColor : textColor
+  text = myNameWithFrame.get() ?? ""
+  color = havePremium.get() ? premiumTextColor : textColor
 })
 
 let levelUpReadyAnim = { prop = AnimProp.opacity, duration = 3.0, easing = CosineFull, play = true, loop = true }
@@ -90,7 +90,7 @@ let starLevelOvr = {
 let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function() {
   let { exp, nextLevelExp, level, isReadyForLevelUp, starLevel, isNextStarLevel, historyStarLevel,
     isStarProgress, isMaxLevel
-  } = playerLevelInfo.value
+  } = playerLevelInfo.get()
   let progresOffset = levelHolderSize * rotateCompensate
   let onLevelClick = isReadyForLevelUp ? openLvlUpWndIfCan
     : !isMaxLevel && !isCampaignWithUnitsResearch.get()
@@ -106,7 +106,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
     padding = [0, progresOffset]
     children = [
       mkProgressLevelBg({
-        key = playerLevelInfo.value
+        key = playerLevelInfo.get()
         opacity = 1.0,
         animations = isReadyForLevelUp
           ? [ levelUpReadyAnim.__merge({ from = 0.5, to = 1.0 }) ]
@@ -138,7 +138,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
           children = [
             @() textParams.__merge({
               watch = levelStateFlags
-              key = playerLevelInfo.value
+              key = playerLevelInfo.get()
               text = level - starLevel
               animations = isReadyForLevelUp && !isNextStarLevel ? levelUpReadyAnimsCur : null
               transform = {
@@ -148,7 +148,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
             })
             isReadyForLevelUp && !isNextStarLevel
               ? textParams.__merge({
-                  key = playerLevelInfo.value
+                  key = playerLevelInfo.get()
                   text = level + 1
                   opacity = 0.0
                   transform = {
@@ -191,7 +191,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
               children = [
                 @() textParams.__merge({
                   watch = nextLevelStateFlags
-                  key = playerLevelInfo.value
+                  key = playerLevelInfo.get()
                   text = level - starLevel + (isStarProgress ? 0 : 1)
                   color = isReadyForLevelUp ? levelUpTextColor : nextLevelTextColor
                   transform = {

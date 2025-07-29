@@ -17,8 +17,8 @@ let { curStage } = require("%rGui/battlePass/battlePassState.nut")
 let tutorialResultEvent = keepref(Computed(function() {
   let mission = tutorialMissions.value?[firstBattleTutor.value]
   let typeId = curCampaign.value == "ships" ? "ship" : "tank"
-  return mission == null || debriefingData.value?.mission != mission ? null
-    : (debriefingData.value?.isFinished ?? false) ? $"battle_tutorial_{typeId}_complete"
+  return mission == null || debriefingData.get()?.mission != mission ? null
+    : (debriefingData.get()?.isFinished ?? false) ? $"battle_tutorial_{typeId}_complete"
     : $"battle_tutorial_{typeId}_skip"
 }))
 
@@ -80,7 +80,7 @@ function saveAndSendBattlesCount() {
 }
 totalProfileBattles.subscribe(@(v) battlesListCountToSend.contains(v) ? saveAndSendBattlesCount() : null)
 
-let level = keepref(Computed(@() playerLevelInfo.value.level))
+let level = keepref(Computed(@() playerLevelInfo.get().level))
 sendEventByValue("level_3", level, 3, 1)
 sendEventByValue("level_10", level, 10, 1)
 
@@ -96,7 +96,7 @@ loginCount.subscribe(function(count) {
   if (count != 2)
     return
   let todayFirstLogin = sharedStats.value?.lastLoginDayFirstTime ?? 0
-  if (serverTime.value - todayFirstLogin <= 60)
+  if (serverTime.get() - todayFirstLogin <= 60)
     sendAppsFlyerEvent("login_day_2")
 })
 

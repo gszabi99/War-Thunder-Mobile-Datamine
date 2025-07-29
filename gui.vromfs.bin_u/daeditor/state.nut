@@ -1,7 +1,6 @@
-from "%darg/ui_imports.nut" import *
+import "console" as console
 import "%sqstd/ecs.nut" as ecs
-
-let console = require("console")
+from "%darg/ui_imports.nut" import *
 let { mkFrameIncrementObservable } = require("%daeditor/ec_to_watched.nut")
 let { hideAllWindows } = require("%daeditor/components/window.nut")
 
@@ -230,4 +229,3 @@ return {
 
   wantOpenRISelect = Watched(false)
 }
-

@@ -22,7 +22,7 @@ foreach(exportId, listId in contactsListsMap) {
 
 let { friendsUids, wtmLink } = export
 let friendsOnlineUids = Computed(@()
-  friendsUids.value.filter(@(_, userId) isContactOnline(userId, onlineStatus.value)).keys()
+  friendsUids.value.filter(@(_, userId) isContactOnline(userId, onlineStatus.get())).keys()
 )
 
 let accountLink = Computed(@() wtmLink.get().findvalue(@(_) true))

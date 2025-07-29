@@ -31,15 +31,15 @@ let needShowTutorial = Computed(@() !isInSquad.get()
   && !isFinished.get()
   && !isCampaignWithUnitsResearch.get()
   && !hasBattles.get())
-let canStartTutorial = Computed(@() isUnitsTreeAttached.value
-  && !hasModalWindows.value
+let canStartTutorial = Computed(@() isUnitsTreeAttached.get()
+  && !hasModalWindows.get()
   && !isTutorialActive.value)
 let showTutorial = keepref(Computed(@() canStartTutorial.value
   && (needShowTutorial.value || isDebugMode.value)))
 
 let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.value == TUTORIAL_ID
-  && !isMainMenuAttached.value
-  && !isUnitsTreeAttached.value))
+  && !isMainMenuAttached.get()
+  && !isUnitsTreeAttached.get()))
 let finishEarly = @() shouldEarlyCloseTutorial.value ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
@@ -63,7 +63,7 @@ function startTutorial() {
           animationStartTime = get_time_msec()
           resetTimeout(3.0, @() unitsListShowEnough(true)) 
         }
-        nextStepAfter = Computed(@() unitsListShowEnough.value || !hasJustUnlockedUnitsAnimation.value)
+        nextStepAfter = Computed(@() unitsListShowEnough.value || !hasJustUnlockedUnitsAnimation.get())
         objects = [{
           keys = "sceneRoot"
           onClick = @() animationStartTime + 1000 <= get_time_msec()

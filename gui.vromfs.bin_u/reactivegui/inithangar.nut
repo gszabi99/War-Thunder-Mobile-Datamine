@@ -8,7 +8,7 @@ function activateAddonIfNeed(_) {
   if ((ovrHangarAddon?.hangarPath ?? "") == "" || !isAppLoaded.value || (ovrHangarAddon?.addons.len() ?? 0)==0)
     return
   let { addons, hangarPath } = ovrHangarAddon
-  let isReady = null == addons.findvalue(@(a) !hasAddons.value?[a])
+  let isReady = null == addons.findvalue(@(a) !hasAddons.get()?[a])
   if (isReady)
     activate_downloadable_hangar(hangarPath, addons[0])
 }

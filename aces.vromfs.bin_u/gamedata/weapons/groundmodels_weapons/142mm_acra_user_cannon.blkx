@@ -479,6 +479,7 @@
         "ricochetEffect": "hit_133_160mm_metal_ap",
         "waterCollisionEffect": "hit_133_160mm_water",
         "explosionPatchRadius": 4.0,
+        "shellCollision": true,
         "smokeEffect": "trail_smoke",
         "maxDistance": 6000.0,
         "minDistance": 30.0,

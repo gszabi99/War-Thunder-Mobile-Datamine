@@ -43,6 +43,8 @@
       "groundCollisionEffect": "hit_8_11mm_dirt_he",
       "ricochetEffect": "hit_8_11mm_metal_he",
       "waterCollisionEffect": "hit_12_18mm_water",
+      "selfDestructionFx": "hit_8_11mm_metal_he",
+      "explosionEffect": "hit_8_11mm_metal_he",
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -196,6 +198,8 @@
       "groundCollisionEffect": "hit_8_11mm_dirt_he",
       "ricochetEffect": "hit_8_11mm_metal_he",
       "waterCollisionEffect": "hit_12_18mm_water",
+      "selfDestructionFx": "hit_8_11mm_metal_he",
+      "explosionEffect": "hit_8_11mm_metal_he",
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -349,6 +353,8 @@
       "groundCollisionEffect": "hit_8_11mm_dirt_he",
       "ricochetEffect": "hit_8_11mm_metal_he",
       "waterCollisionEffect": "hit_12_18mm_water",
+      "selfDestructionFx": "hit_8_11mm_metal_he",
+      "explosionEffect": "hit_8_11mm_metal_he",
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -502,6 +508,8 @@
       "groundCollisionEffect": "hit_8_11mm_dirt_he",
       "ricochetEffect": "hit_8_11mm_metal_he",
       "waterCollisionEffect": "hit_12_18mm_water",
+      "selfDestructionFx": "hit_8_11mm_metal_he",
+      "explosionEffect": "hit_8_11mm_metal_he",
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -658,6 +666,8 @@
         "groundCollisionEffect": "hit_8_11mm_dirt_he",
         "ricochetEffect": "hit_8_11mm_metal_he",
         "waterCollisionEffect": "hit_12_18mm_water",
+        "selfDestructionFx": "hit_8_11mm_metal_he",
+        "explosionEffect": "hit_8_11mm_metal_he",
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -811,6 +821,8 @@
         "groundCollisionEffect": "hit_8_11mm_dirt_he",
         "ricochetEffect": "hit_8_11mm_metal_he",
         "waterCollisionEffect": "hit_12_18mm_water",
+        "selfDestructionFx": "hit_8_11mm_metal_he",
+        "explosionEffect": "hit_8_11mm_metal_he",
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -964,6 +976,8 @@
         "groundCollisionEffect": "hit_8_11mm_dirt_he",
         "ricochetEffect": "hit_8_11mm_metal_he",
         "waterCollisionEffect": "hit_12_18mm_water",
+        "selfDestructionFx": "hit_8_11mm_metal_he",
+        "explosionEffect": "hit_8_11mm_metal_he",
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -1117,6 +1131,8 @@
         "groundCollisionEffect": "hit_8_11mm_dirt_he",
         "ricochetEffect": "hit_8_11mm_metal_he",
         "waterCollisionEffect": "hit_12_18mm_water",
+        "selfDestructionFx": "hit_8_11mm_metal_he",
+        "explosionEffect": "hit_8_11mm_metal_he",
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,

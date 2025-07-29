@@ -1,9 +1,9 @@
+import "entity_editor" as entity_editor
 from "%darg/ui_imports.nut" import *
 from "%sqstd/ecs.nut" import *
+from "style.nut" import colors, gridHeight, gridMargin
 
-let {colors, gridHeight, gridMargin} = require("style.nut")
-let {compValToString, isValueTextValid, convertTextToVal, setValToObj, getValFromObj, isCompReadOnly} = require("attrUtil.nut")
-let entity_editor = require("entity_editor")
+let { compValToString, isValueTextValid, convertTextToVal, setValToObj, getValFromObj, isCompReadOnly } = require("attrUtil.nut")
 
 let getCompVal = @(eid, comp_name, path) path!=null ? getValFromObj(eid, comp_name, path) : _dbg_get_comp_val_inspect(eid, comp_name)
 
@@ -28,18 +28,19 @@ function fieldEditText_(params={}) {
     curText.update(compTextVal)
   }
 
+  let uniqueTimerKey = $"{eid}, {comp_name}, {path}, {rawComponentName}"
   function updateTextFromEcsTimeout() {
     updateTextFromEcs()
     if (!isFocus.get())
-      gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout)
+      gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout, uniqueTimerKey)
   }
 
   function updateComponentByTimer() {
     if (rawComponentName == "transform") {
       if (isFocus.get())
-        gui_scene.clearTimer(updateTextFromEcsTimeout)
+        gui_scene.clearTimer(uniqueTimerKey)
       else
-        gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout)
+        gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout, uniqueTimerKey)
     }
   }
 

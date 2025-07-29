@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import sign_out
 from "%scripts/dagui_library.nut" import *
-from "gameplayBinding" import pause_game
+from "app" import pauseGame
 
 let { registerRespondent } = require("scriptRespondent")
 let { eventbus_subscribe } = require("eventbus")
@@ -140,7 +140,7 @@ isLoggedIn.subscribe(function(v) {
 registerRespondent("is_logged_in", @() isLoggedIn.get())
 
 eventbus_subscribe("gui_start_startscreen", function gui_start_startscreen(...) {
-  pause_game(false) 
+  pauseGame(false) 
   deferOnce(updateClientStates)
 })
 

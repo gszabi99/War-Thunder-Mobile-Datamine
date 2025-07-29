@@ -238,7 +238,7 @@ function mkPlayerRow(columnCfg, player, teamColor, idx) {
   return {
     size = [ flex(), rowHeight ]
     rendObj = ROBJ_SOLID
-    color = player == selectedPlayerForInfo.value ? 0xA0000000
+    color = player == selectedPlayerForInfo.get() ? 0xA0000000
       : (player?.isLocal ?? false) ? rowBgLocalPlayerColor
       : idx % 2 != 0 ? rowBgOddColor
       : rowBgEvenColor
@@ -246,7 +246,7 @@ function mkPlayerRow(columnCfg, player, teamColor, idx) {
       key = player?.userId
       behavior = Behaviors.Button
       onClick = function() {
-        if (selectedPlayerForInfo.value == player)
+        if (selectedPlayerForInfo.get() == player)
           selectedPlayerForInfo(null)
         else
           selectedPlayerForInfo({player, campaign = curCampaign.get()})

@@ -31,8 +31,8 @@ let backBtn = backButton(close)
 isOpened.subscribe(function(v) {
   if (!v)
     return
-  let uType = isInBattle.value ? unitType.value
-    : hangarUnitName.value != "" ? getUnitType(hangarUnitName.value)
+  let uType = isInBattle.get() ? unitType.value
+    : hangarUnitName.get() != "" ? getUnitType(hangarUnitName.get())
     : null
   curUnitType(pages.contains(uType) ? uType : pages[0])
 })

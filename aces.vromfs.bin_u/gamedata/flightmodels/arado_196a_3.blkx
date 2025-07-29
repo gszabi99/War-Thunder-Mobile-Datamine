@@ -1506,7 +1506,7 @@
   },
   "weapon_presets": {
     "preset": {
-      "name": "ar_196a_3_default",
+      "name": "arado_196a_3_default",
       "blk": "gameData/FlightModels/weaponPresets/ar_196a_3_2xsc50.blk"
     }
   },

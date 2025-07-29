@@ -107,9 +107,9 @@ let commandsList = [].extend(
     { label = "copy_last_debriefing",
       function func() {
         close()
-        if (debriefingData.value == null)
+        if (debriefingData.get() == null)
           return dlog("Debriefing data is empty") 
-        set_clipboard_text(object_to_json_string(debriefingData.value, true))
+        set_clipboard_text(object_to_json_string(debriefingData.get(), true))
         return dlog("Debriefing data copied to clipboard") 
       }
     }

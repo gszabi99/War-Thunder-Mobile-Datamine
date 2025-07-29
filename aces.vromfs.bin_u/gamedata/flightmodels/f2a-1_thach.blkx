@@ -1504,12 +1504,6 @@
       "preset": "default_common"
     }
   },
-  "weapon_presets": {
-    "preset": {
-      "name": "f2a-1_default",
-      "blk": "gameData/FlightModels/weaponPresets/f2a-1_default.blk"
-    }
-  },
   "WeaponSlots": {
     "WeaponSlot": {
       "index": 0,
@@ -1711,5 +1705,11 @@
         "to": "gray_blue_yellow_red_rottex*"
       }
     ]
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "f2a-1_thach_default",
+      "blk": "gameData/FlightModels/weaponPresets/fw_190a_5_u14_default.blk"
+    }
   }
 }

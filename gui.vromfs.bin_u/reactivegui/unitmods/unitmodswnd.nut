@@ -32,7 +32,7 @@ let iconSize = hdpxi(140)
 let modsWidth = saSize[0] - modW - blocksGap
 let catsBlockMargin = hdpx(24)
 let catsBlockHeight = saSize[1] - gamercardHeight - catsBlockMargin
-let catsHeight = Computed(@() min((tabH + tabsGap) * modsCategories.value.len() - tabsGap, catsBlockHeight))
+let catsHeight = Computed(@() min((tabH + tabsGap) * modsCategories.get().len() - tabsGap, catsBlockHeight))
 let emptyCatSlotHeight = Computed(@() catsBlockHeight - catsHeight.value - tabsGap)
 
 let pageWidth = saSize[0] + saBorders[0] - tabW
@@ -45,7 +45,7 @@ let scrollToMod = @() curModIndex.get() == null ? null
   : modsScrollHandler.scrollToX(curModIndex.get() * (modW + modsGap) - (modsWidth - modW) / 2)
 
 curCategoryId.subscribe(@(v) v == null ? null
-  : catsScrollHandler.scrollToY((modsCategories.value.findindex(@(cat) cat == v) ?? 0)
+  : catsScrollHandler.scrollToY((modsCategories.get().findindex(@(cat) cat == v) ?? 0)
     * (tabH + tabsGap) - catsHeight.value + tabH))
 
 let mkVerticalPannableArea = @(content) {
@@ -85,7 +85,7 @@ let mkHorizontalPannableArea = @(content) {
 let categoriesBlock = @() {
   watch = modsCategories
   size = FLEX_H
-  children = mkModsCategories(modsCategories.value?.map(@(cat) {
+  children = mkModsCategories(modsCategories.get()?.map(@(cat) {
     id = cat
     locId = cat == "" ? null : $"modification/{cat}"
   }),
@@ -95,7 +95,7 @@ let categoriesBlock = @() {
 let modsBlock = @() {
   watch = modsSorted
   size = FLEX_V
-  children = mkMods(modsSorted.value, scrollToMod)
+  children = mkMods(modsSorted.get(), scrollToMod)
 }
 
 let mkModIcon = @() {
@@ -108,19 +108,19 @@ let mkModIcon = @() {
 
 let mkModsInfo = @() panelBg.__merge({
   watch = [unit, curMod]
-  size = curMod.value ? [modW * 2, SIZE_TO_CONTENT] : [ 0, 0]
+  size = curMod.get() ? [modW * 2, SIZE_TO_CONTENT] : [ 0, 0]
   margin = [0, saBorders[0], 0, 0]
   padding = [hdpx(30), saBorders[0]]
   flow = FLOW_VERTICAL
   gap = hdpx(30)
-  children = unit.value == null ? null
+  children = unit.get() == null ? null
     : [
         @() {
           watch = [curMod, curModId]
           size = FLEX_H
           flow = FLOW_VERTICAL
           gap = hdpx(5)
-          children = curModId.value == null ? null
+          children = curModId.get() == null ? null
             : [
                 {
                   size = FLEX_H
@@ -132,7 +132,7 @@ let mkModsInfo = @() panelBg.__merge({
                       rendObj = ROBJ_TEXTAREA
                       behavior = Behaviors.TextArea
                       halign = ALIGN_RIGHT
-                      text = loc($"modification/{curMod.value?.name}")
+                      text = loc($"modification/{curMod.get()?.name}")
                     }.__update(fontSmall)
                   ]
                 }
@@ -141,14 +141,14 @@ let mkModsInfo = @() panelBg.__merge({
                   size = FLEX_H
                   rendObj = ROBJ_TEXTAREA
                   behavior = Behaviors.TextArea
-                  text = loc($"modification/{curMod.value?.name}/desc")
+                  text = loc($"modification/{curMod.get()?.name}/desc")
                 }.__update(fontTiny)
 
-                unit.value.level >= (curMod.value?.reqLevel ?? 0) ? null
+                unit.get().level >= (curMod.get()?.reqLevel ?? 0) ? null
                   : {
                       size = FLEX_H
                       rendObj = ROBJ_TEXT
-                      text = loc("mod/reqLevel", { level = curMod.value?.reqLevel })
+                      text = loc("mod/reqLevel", { level = curMod.get()?.reqLevel })
                     }.__update(fontSmall)
               ]
         }
@@ -163,10 +163,10 @@ let spinner = {
 }
 
 function onPurchase() {
-  let unitName = unit.value.name
-  let modName = curMod.value.name
-  let price = getModCost(curMod.value, curUnitAllModsCost.value)
-  let currencyId = getModCurrency(curMod.value)
+  let unitName = unit.get().name
+  let modName = curMod.get().name
+  let price = getModCost(curMod.get(), curUnitAllModsCost.value)
+  let currencyId = getModCurrency(curMod.get())
   openMsgBoxPurchase({
     text = loc("shop/needMoneyQuestion",
       { item = colorize(userlogTextColor, loc($"modification/{modName}")) }),
@@ -226,14 +226,14 @@ let unitModsWnd = {
               size = FLEX_H
               margin = [hdpx(25), saBorders[0], hdpx(25), 0]
               halign = ALIGN_RIGHT
-              children = !curMod.value ? null
-                : isCurModLocked.value
-                  ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), curMod.value?.reqLevel,
-                    @() buyUnitLevelWnd(unit.value.name), { hotkeys = ["^J:Y"] })
+              children = !curMod.get() ? null
+                : isCurModLocked.get()
+                  ? textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")), curMod.get()?.reqLevel,
+                    @() buyUnitLevelWnd(unit.get().name), { hotkeys = ["^J:Y"] })
                 : modsInProgress.value != null ? spinner
-                : !isCurModPurchased.value ? textButtonPurchase(loc("mainmenu/btnBuy"), onPurchase)
-                : !isCurModEnabled.value ? textButtonPrimary(loc("mod/enable"), enableCurUnitMod)
-                : !curMod.value?.isAlwaysOn ? textButtonPrimary(loc("mod/disable"), disableCurUnitMod)
+                : !isCurModPurchased.get() ? textButtonPurchase(loc("mainmenu/btnBuy"), onPurchase)
+                : !isCurModEnabled.get() ? textButtonPrimary(loc("mod/enable"), enableCurUnitMod)
+                : !curMod.get()?.isAlwaysOn ? textButtonPrimary(loc("mod/disable"), disableCurUnitMod)
                 : null
             }
             mkHorizontalPannableArea(modsBlock)

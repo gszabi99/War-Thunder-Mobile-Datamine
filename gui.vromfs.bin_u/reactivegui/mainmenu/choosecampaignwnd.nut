@@ -112,7 +112,7 @@ function onCampaignChange(campaign, onChangeCamp = null) {
     return
   }
 
-  if (!isInSquad.value) {
+  if (!isInSquad.get()) {
     openMsgBox({
       text = loc("msg/needTutorialToAccessCampaign")
       buttons = [
@@ -123,7 +123,7 @@ function onCampaignChange(campaign, onChangeCamp = null) {
     return
   }
 
-  if (squadLeaderCampaign.value == campaign) {
+  if (squadLeaderCampaign.get() == campaign) {
     rewardTutorialMission(campaign)
     applyCampaign()
     return

@@ -94,6 +94,7 @@ let gunsList = Computed(function() {
           mkButtonFunction = "mkWeaponryItemByTrigger"
           shortcut = "ID_SHIP_WEAPON_ALL"
           selShortcut = shipSelectShortcuts?[trigger]
+          alternativeImage = "ui/gameuiskin#hud_ship_mortar.svg"
           hasCrosshair = true
         }
       }

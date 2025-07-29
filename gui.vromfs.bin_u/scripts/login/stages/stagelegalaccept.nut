@@ -10,7 +10,7 @@ let { export, finalizeStage } = require("mkStageBase.nut")("legalAccept",
 isLoginAllowed.subscribe(@(v) v ? defer(finalizeStage) : null)
 
 function start() {
-  if (isLoginAllowed.value)
+  if (isLoginAllowed.get())
     finalizeStage()
 }
 

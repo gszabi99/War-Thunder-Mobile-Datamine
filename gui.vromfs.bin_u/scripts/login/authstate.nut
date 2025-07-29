@@ -20,7 +20,7 @@ let sendState = @(v) eventbus_send("updateAuthStates", v)
 authState.subscribe(@(v) eventbus_send("updateAuthStates", v))
 
 function resetAuthState() {
-  if (isInLoadingScreen.value) 
+  if (isInLoadingScreen.get()) 
     return
 
   let lp = get_login_pass()

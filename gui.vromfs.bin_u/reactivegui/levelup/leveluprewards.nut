@@ -49,7 +49,7 @@ function afterReceiveRewards() {
 }
 
 function receiveRewards() {
-  let level = rewardsToReceive.value.findindex(@(_) true)
+  let level = rewardsToReceive.get().findindex(@(_) true)
   if (level == null) {
     afterReceiveRewards()
     return
@@ -112,7 +112,7 @@ let levelUpText = @() {
     loc("levelUp/newLevel"),
     @(text) { rendObj = ROBJ_TEXT, text }.__update(fontMedium),
     {
-      ["{level}"] = mkPlayerLevel(maxRewardLevelInfo.value.level, maxRewardLevelInfo.value.starLevel), 
+      ["{level}"] = mkPlayerLevel(maxRewardLevelInfo.get().level, maxRewardLevelInfo.get().starLevel), 
     }
   )
 }

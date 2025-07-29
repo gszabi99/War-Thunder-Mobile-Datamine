@@ -632,7 +632,7 @@ function mkBlueprintPlateTexts(reward, unitRank, rStyle) {
 
 function mkBlueprintPlate(reward, rStyle, ovr = {}) {
   let size = getRewardPlateSize(reward.slots, rStyle)
-  let unit = Computed(@() serverConfigs.value?.allUnits?[reward.id])
+  let unit = Computed(@() serverConfigs.get()?.allUnits?[reward.id])
 
   return {
     size

@@ -35,7 +35,7 @@ let bgColor = @(rowIdx) rowIdx % 2 == 0 ? 0x00000000 : 0x80323232
 
 let chosenTitleName = Computed(@() chosenTitle.get()?.name ?? "")
 let selectedTitleName = Watched(chosenTitleName.get())
-let visibleTitles = Computed(@() allTitles.value.filter(@(dec, id) !dec.isHidden || isShowAllDecorators.value || (id in availTitles.value)))
+let visibleTitles = Computed(@() allTitles.get().filter(@(dec, id) !dec.isHidden || isShowAllDecorators.get() || (id in availTitles.get())))
 let hasVisibleTitles = Computed(@() visibleTitles.value.len() > 0)
 
 function applySelectedTitle() {
@@ -53,7 +53,7 @@ let header = {
     @() {
       watch = [myUserName, chosenNickFrame]
       rendObj = ROBJ_TEXT
-      text = frameNick(myUserName.value, chosenNickFrame.value?.name)
+      text = frameNick(myUserName.value, chosenNickFrame.get()?.name)
     }.__update(fontMedium)
     mkTitle(fontSmall)
   ]
@@ -63,7 +63,7 @@ function titleRow(name, locName, rowIdx) {
   let stateFlags = Watched(0)
   let isChoosen = Computed(@() chosenTitleName.get() == name)
   let isSelected = Computed(@() selectedTitleName.get() == name)
-  let isUnseen = Computed(@() name in unseenDecorators.value)
+  let isUnseen = Computed(@() name in unseenDecorators.get())
   return {
     rendObj = ROBJ_SOLID
     size = [flex(), rowHeight]
@@ -97,7 +97,7 @@ function titleRow(name, locName, rowIdx) {
           size = hdpx(85)
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
-          children = name != "" && name not in availTitles.value
+          children = name != "" && name not in availTitles.get()
             ? {
                 size =const [hdpx(35),hdpx(45)]
                 rendObj = ROBJ_IMAGE
@@ -169,7 +169,7 @@ function titlesList() {
   let titles = visibleTitles.get()
     .keys()
     .map(@(name) { name, locName = loc($"title/{name}") })
-    .sort(@(a,b) (b.name in availTitles.value) <=> (a.name in availTitles.value)
+    .sort(@(a,b) (b.name in availTitles.get()) <=> (a.name in availTitles.get())
       || a.locName <=> b.locName)
     .insert(0, { name = "", locName = loc("title/empty") })
   let titleComps = titles.map(@(v, idx) titleRow(v.name, v.locName, idx % rows))
@@ -219,7 +219,7 @@ let titlesScene = @() {
   size = flex()
   maxWidth = hdpx(1800)
   onAttach = @() selectedTitleName.set(chosenTitleName.get())
-  onDetach = @() markDecoratorsSeen(unseenDecorators.value.filter(@(_, id) id in availTitles.value).keys())
+  onDetach = @() markDecoratorsSeen(unseenDecorators.get().filter(@(_, id) id in availTitles.get()).keys())
   children = hasVisibleTitles.value ? titleContent
     : {
       halign = ALIGN_CENTER

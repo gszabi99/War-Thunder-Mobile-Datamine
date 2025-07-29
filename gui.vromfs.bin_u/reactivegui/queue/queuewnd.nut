@@ -154,7 +154,7 @@ let cancelOvr = { hotkeys = [[btnBEscUp, loc("mainmenu/btnCancel")]] }
 function leaveQueue() {
   if (isDebugQueueWnd.get())
     return isDebugQueueWnd.set(false)
-  if (!isInSquad.value || isSquadLeader.value) {
+  if (!isInSquad.get() || isSquadLeader.get()) {
     leaveQueueImpl()
     return
   }

@@ -27,7 +27,7 @@ function getSysInfo() {
   tbl.battery <- get_battery()
   tbl.isCharging <- is_charging()
   tbl.thermalState <- get_thermal_state()
-  tbl.authorization <- authState.value.loginType
+  tbl.authorization <- authState.get().loginType
   tbl.location <- getCountryCode() 
   tbl.gameLanguage <- getLocalLanguage() 
   if (getFirebaseAppInstanceId()!=null)

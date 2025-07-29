@@ -27,7 +27,7 @@ let isForbiddenPlatformPurchaseFromRussia = isDownloadedFromGooglePlay() ? isDis
   : @(goods) isDebugDisabledCurrency.value && isDisabledCurrency(goods)
 
 function getGoodsWebId(guid) {
-  let { url = "" } = goodsInfo.value?[guid]
+  let { url = "" } = goodsInfo.get()?[guid]
   if (url == "")
     return null
   let parts = url.split_by_chars("?&")
@@ -77,7 +77,7 @@ eventbus_subscribe("openRussiaInAppPurchase.timeout", function(guids) {
 })
 
 goodsInfo.subscribe(function(_) {
-  let wbox = waitboxes.value.findvalue(@(w) w.uid == WND_UID)
+  let wbox = waitboxes.get().findvalue(@(w) w.uid == WND_UID)
   if (wbox == null)
     return
   if (openPurchaseByGuids(wbox.context))

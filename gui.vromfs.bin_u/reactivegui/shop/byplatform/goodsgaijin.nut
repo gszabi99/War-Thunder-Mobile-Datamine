@@ -84,7 +84,7 @@ let platformGoods = Computed(function() {
   let { allGoods = {} } = campConfigs.value
   let guidToGoodsId = goodsIdByGuid.value
   let res = {}
-  foreach (guid, data in goodsInfo.value) { 
+  foreach (guid, data in goodsInfo.get()) { 
     let goodsId = guidToGoodsId?[guid]
     let goods = mkGoods(allGoods?[goodsId], data)
     if (goods != null)
@@ -104,7 +104,7 @@ let platformSubs = Computed(function() {
 })
 
 let platformOffer = Computed(@()
-  mkGoods(activeOffers.value, goodsInfo.value?[getGaijinGuid(activeOffers.value)]))
+  mkGoods(activeOffers.value, goodsInfo.get()?[getGaijinGuid(activeOffers.value)]))
 
 function buyPlatformGoods(goodsOrId) {
   local baseUrl = goodsOrId?.purchaseUrl ?? platformGoods.value?[goodsOrId].purchaseUrl

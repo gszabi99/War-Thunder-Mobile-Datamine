@@ -31,7 +31,7 @@ let isSkippedTutor = mkWatched(persist, "isSkippedFirstBattleTutor", {})
 let started = mkWatched(persist, "started", null)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 
-let allMissions = Computed(@() (serverConfigs.value?.clientMissionRewards ?? {})
+let allMissions = Computed(@() (serverConfigs.get()?.clientMissionRewards ?? {})
   .filter(@(_, id) id in tutorialMissions.value))
 let missionsWithRewards = Computed(@() allMissions.value
   .filter(@(_, id) id not in started.value && (receivedMissionRewards.value?[id] ?? 0) == 0))
@@ -51,13 +51,13 @@ let setSkippedTutor = @(campaign) isSkippedTutor.mutate(@(v) v[getFirstBattleTut
 function needFirstBattleTutorForCampaign(campaign) {
   if (getFirstBattleTutor(campaign) not in missionsWithRewards.value)
     return false
-  let sUnits = serverConfigs.value?.allUnits ?? {}
+  let sUnits = serverConfigs.get()?.allUnits ?? {}
   let ownCampUnit = (servProfile.value?.units ?? {}).findvalue(@(_, name) sUnits?[name].campaign == campaign)
   return ownCampUnit == null || needFirstBattleTutorByStats(servProfile.value?.sharedStatsByCampaign[getCampaignStatsId(campaign)])
 }
 
 function mkRewardBattleData(rewards) {
-  let { level, exp, nextLevelExp } = playerLevelInfo.value
+  let { level, exp, nextLevelExp } = playerLevelInfo.get()
   let { playerExp = 0 } = rewards
   return {
     campaign = curCampaign.get()
@@ -69,11 +69,11 @@ function mkRewardBattleData(rewards) {
 
 let needForceStartTutorial = keepref(Computed(@()
   needFirstBattleTutor.value
-  && !isInSquad.value
+  && !isInSquad.get()
   && isAnyCampaignSelected.value
   && isProfileReceived.value
   && isLoggedIn.value
-  && isInMenu.value))
+  && isInMenu.get()))
 
 function startTutor(id, currentUnitName = null) {
   if (id not in tutorialMissions.value)

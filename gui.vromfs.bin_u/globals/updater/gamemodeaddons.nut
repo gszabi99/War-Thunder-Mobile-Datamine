@@ -91,14 +91,14 @@ let allMyBattleUnits = Computed(function() {
   let res = {}
   if (curCampaignSlotUnits.get() != null)
     curCampaignSlotUnits.get().each(@(name) res[name] <- true)
-  else if (curUnit.value != null)
-    res[curUnit.value.name] <- true
+  else if (curUnit.get() != null)
+    res[curUnit.get().name] <- true
   return res
 })
 
 let allBattleUnits = Computed(function() {
   let res = clone (allMyBattleUnits.get())
-  foreach(m in squadMembers.value) {
+  foreach(m in squadMembers.get()) {
     let list = m?.units[squadLeaderCampaign.get()]
     if (type(list) == "array")
       foreach(name in list)

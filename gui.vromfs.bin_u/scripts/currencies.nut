@@ -30,10 +30,10 @@ let notifications = {
       lastBalanceUpdate(timestamp)
     }
 
-    let newBalance = clone balance.value
+    let newBalance = clone balance.get()
     foreach (k, v in ev.balance)
       newBalance[k] <- v?.value
-    if (!isEqual(newBalance, balance.value))
+    if (!isEqual(newBalance, balance.get()))
       balance(newBalance)
     isBalanceReceived.set(true)
   }

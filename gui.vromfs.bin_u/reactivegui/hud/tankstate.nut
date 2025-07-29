@@ -16,6 +16,7 @@ let tankStateNative = {
   hasDebuffEngine = Watched(0)
   hasDebuffTracks = Watched(0)
   hasDebuffFire = Watched(0)
+  hasDebuffFireExternal = Watched(0)
   primaryRocketGun = Watched(false)
   hasSecondaryGun = Watched(false)
   IsTracked = Watched(true)
@@ -27,21 +28,22 @@ interopGen({
   postfix = "Update"
 })
 
-let { hasDebuffGuns, hasDebuffTurretDrive, hasDebuffEngine, hasDebuffTracks, hasDebuffFire } = tankStateNative
+let { hasDebuffGuns, hasDebuffTurretDrive, hasDebuffEngine, hasDebuffTracks, hasDebuffFire, hasDebuffFireExternal } = tankStateNative
 
-let driverReady = Computed(@() crewDriverState.value.state == "ok")
-let gunnerReady = Computed(@() crewGunnerState.value.state == "ok")
-let loaderReady = Computed(@() crewLoaderState.value.state == "ok")
+let driverReady = Computed(@() crewDriverState.get().state == "ok")
+let gunnerReady = Computed(@() crewGunnerState.get().state == "ok")
+let loaderReady = Computed(@() crewLoaderState.get().state == "ok")
 
 let export = tankStateNative.__merge({
   hasDebuffGuns = Computed(@() !!hasDebuffGuns.value != ((debugDebuff.value & 1) != 0))
   hasDebuffTurretDrive = Computed(@() !!hasDebuffTurretDrive.value != ((debugDebuff.value & 2) != 0))
   hasDebuffEngine = Computed(@() !!hasDebuffEngine.value != ((debugDebuff.value & 4) != 0))
   hasDebuffTracks = Computed(@() !!hasDebuffTracks.value != ((debugDebuff.value & 8) != 0))
-  hasDebuffFire = Computed(@() !!hasDebuffFire.value != ((debugDebuff.value & 16) != 0))
+  hasDebuffFire = Computed(@()   !!hasDebuffFire.value != ((debugDebuff.value & 16) != 0))
   hasDebuffDriver = Computed(@() !driverReady.value != ((debugDebuff.value & 32) != 0))
   hasDebuffGunner = Computed(@() !gunnerReady.value != ((debugDebuff.value & 64) != 0))
   hasDebuffLoader = Computed(@() !loaderReady.value != ((debugDebuff.value & 128) != 0))
+  hasDebuffFireExternal = Computed(@() !!hasDebuffFireExternal.value != ((debugDebuff.value & 256) != 0))
 })
 
 let maxDebugDebuff = 255

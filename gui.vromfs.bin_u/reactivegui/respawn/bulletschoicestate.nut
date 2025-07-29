@@ -1,29 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let DataBlock = require("DataBlock")
-let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { ceil } = require("%sqstd/math.nut")
-let { eachBlock, isDataBlock } = require("%sqstd/datablock.nut")
 let { selSlot, cancelRespawn } = require("respawnState.nut")
 let { respawnUnitItems } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
 let { register_command } = require("console")
+let { setUnitBullets, setOrSwapUnitBullet, resetSavedBullets, applySavedBullets, savedBullets
+} = require("%rGui/bullets/savedBullets.nut")
+let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS, BULLETS_LOW_AMOUNT, BULLETS_LOW_PERCENT,
+  ammoReductionFactorDef, ammoReductionSecFactorDef
+} = require("%rGui/bullets/bulletsConst.nut")
+let { calcBulletStep, calcVisibleBullets, calcChosenBullets, calcMaxBullets, calcLeftSteps
+} = require("%rGui/bullets/calcBullets.nut")
 
-
-const BULLETS_PRIM_SLOTS = 2
-const BULLETS_SEC_SLOTS = 1
-const SAVE_ID = "bullets"
-let BULLETS_LOW_AMOUNT = 5
-let BULLETS_LOW_PERCENT = 25.0
-
-let ammoReductionFactorDef = 0.6 
-let ammoReductionSecFactorDef = 1 
-let ammoReductionFactorsByIdx = {
-  [0] = 0.45, 
-  [1] = 0.15 
-}
 
 let unitName = Computed(@() selSlot.value?.name)
 let unitLevel = Computed(@() selSlot.value?.level ?? 0)
@@ -39,25 +27,9 @@ let bulletsSecInfo = Computed(function() {
 let hasChangedCurSlotBullets = Watched(false)
 selSlot.subscribe(@(_) hasChangedCurSlotBullets(false))
 
-let savedBullets = Watched(null)
-function loadSavedBullets(name) {
-  if (name == null)
-    return null
-  let sBlk = get_local_custom_settings_blk()
-  let res = getBlkValueByPath(sBlk, $"{SAVE_ID}/{name}")
-  if (!isDataBlock(res))
-    return null
-  let resExt = DataBlock()
-  resExt.setFrom(res)
-  return resExt
-}
-let applySavedBullets = @(name) savedBullets(loadSavedBullets(name))
 applySavedBullets(unitName.value)
 unitName.subscribe(applySavedBullets)
 
-isOnlineSettingsAvailable.subscribe(@(_) savedBullets(null)) 
-
-let calcBulletStep = @(bInfo) max((bInfo?.catridge ?? 1) * (bInfo?.guns ?? 1), 1)
 let bulletStep = Computed(@() calcBulletStep(bulletsInfo.get()))
 let bulletSecStep = Computed(@() calcBulletStep(bulletsSecInfo.get()))
 
@@ -70,105 +42,13 @@ let bulletSecTotalSteps = Computed(@() ceil(bulletSecTotalCount.get() / bulletSe
 let hasExtraBullets = Computed(@() bulletStep.get() * bulletTotalSteps.get() > bulletTotalCount.get())
 let hasExtraBulletsSec = Computed(@() bulletSecStep.get() * bulletSecTotalSteps.get() > bulletSecTotalCount.get())
 
-let calcVisibleBullets = @(bInfo, respawnUItems) (bInfo?.bulletSets ?? {}).reduce(function(res, _, name) {
-  let { reqModification = "", isHidden = false } = bInfo?.fromUnitTags[name]
-  return ((reqModification == "" || (respawnUItems?[reqModification] ?? 0) > 0)) && !isHidden ? res.$rawset(name, true)
-    : res
-}, {})
 let visibleBullets = Computed(@() calcVisibleBullets(bulletsInfo.get(), respawnUnitItems.get()))
 let visibleBulletsSec = Computed(@() calcVisibleBullets(bulletsSecInfo.get(), respawnUnitItems.get()))
 
-function calcMaxBullets(bTotalSteps, bInfo, bSlots) {
-  let bulletSlots = min(bSlots, bTotalSteps)
-  return array(bulletSlots).map(@(_, idx) idx).reduce(function(res, slotIdx) {
-    let remaining = bulletTotalCount.get() - res.total
-
-    local curCount = (bInfo?.catridge ?? 1) * bulletSlots
-    let maxCountSteps = (bulletTotalCount.get() / curCount).tointeger()
-    curCount = curCount * maxCountSteps
-
-    res.maxCounts[slotIdx] <- remaining >= curCount ? curCount : remaining
-    res.total += curCount
-    return res
-  }, { maxCounts = {}, total = 0 }).maxCounts
-}
 let maxBulletsCountForExtraAmmo = Computed(@() !hasExtraBullets.get() ? {}
-  : calcMaxBullets(bulletTotalSteps.get(), bulletsInfo.get(), BULLETS_PRIM_SLOTS))
+  : calcMaxBullets(bulletTotalSteps.get(), bulletsInfo.get(), bulletTotalCount.get(), BULLETS_PRIM_SLOTS))
 let maxBulletsSecCountForExtraAmmo = Computed(@() !hasExtraBulletsSec.get() ? {}
-  : calcMaxBullets(bulletSecTotalSteps.get(), bulletsSecInfo.get(), BULLETS_SEC_SLOTS))
-
-function calcChosenBullets(bInfo, level, stepSize, visible, maxBullets,
-  hasExtra, bTotalSteps, sBullets, sBulletLimit, ammoReductionFactor, bSlots, addIndex = 0
-) {
-  let res = []
-  if (bInfo == null)
-    return res
-  let { fromUnitTags, bulletsOrder } = bInfo
-  local leftSteps = bTotalSteps
-  local bulletSlots = min(bSlots, bTotalSteps)
-  local bulletIdx = 0
-  let used = {}
-  if (sBullets != null)
-    eachBlock(sBullets, function(blk) {
-      bulletIdx += 1
-      if (sBulletLimit(bulletIdx))
-        return
-      let { name = null, count = 0 } = blk
-      let { reqLevel = 0, isExternalAmmo = false, maxCount = leftSteps } = fromUnitTags?[name]
-      if (res.len() >= bulletSlots
-          || !visible?[name]
-          || name in used
-          || reqLevel > level
-          || (res.len() == 0 && isExternalAmmo))
-        return
-      local steps = min(ceil(count.tofloat() / stepSize), leftSteps, maxCount)
-      if (bTotalSteps == 1) 
-        steps = 1
-      leftSteps -= steps
-      let countBullets = steps * stepSize
-      let maxBulletsCount = maxBullets?[res.len()] ?? 0
-      res.append({ name, idx = res.len() + addIndex, count = !hasExtra ? countBullets
-        : count == 0 ? count
-        : maxBulletsCount })
-      used[name] <- true
-    })
-
-  if (res.len() < bulletSlots)
-    foreach (bName in bulletsOrder)
-      if ((bName not in used)
-          && visible?[bName]
-          && (fromUnitTags?[bName].reqLevel ?? 0) <= level
-      ) {
-        res.append({ name = bName, count = -1, idx = res.len() + addIndex })
-        if (res.len() >= bulletSlots)
-          break
-      }
-
-  local notInitedCount = res.reduce(@(accum, bData) bData.count < 0 ? accum + 1 : accum, 0)
-  if (notInitedCount > 0) {
-    let bulletSlotsCount = res.len()
-    foreach (bData in res)
-      if (bData.count < 0) {
-        bData.count = 0
-        if (leftSteps > 0) {
-          local steps = min(leftSteps, fromUnitTags?[bData.name].maxCount ?? leftSteps)
-          if (!hasExtra) {
-            if (bulletSlotsCount == 1 && leftSteps > 1)
-              steps = min(ceil(bTotalSteps * ammoReductionFactor), leftSteps)
-            else if(bulletSlotsCount > 1)
-              steps = min(ceil(bTotalSteps * (ammoReductionFactorsByIdx?[bData.idx] ?? 1)), leftSteps)
-            bData.count = steps * stepSize
-          }
-          else
-            bData.count = min(steps * stepSize, (maxBullets?[bData.idx] ?? 0))
-          leftSteps -= steps
-          notInitedCount--
-        }
-      }
-  }
-
-  return res
-}
+  : calcMaxBullets(bulletSecTotalSteps.get(), bulletsSecInfo.get(), bulletSecTotalCount.get(), BULLETS_SEC_SLOTS))
 
 let chosenBullets = Computed(@() calcChosenBullets(bulletsInfo.get(), unitLevel.get(), bulletStep.get(),
   visibleBullets.get(), maxBulletsCountForExtraAmmo.get(), hasExtraBullets.get(), bulletTotalSteps.get(),
@@ -211,83 +91,25 @@ let hasZeroMainBullets = Computed(@() hasExtraBullets.get()
   && bulletsToSpawn.get().len() > 0
   && bulletsToSpawn.get()[0].count == 0)
 
-function saveBullets(name, blk) {
-  hasChangedCurSlotBullets(true)
-  let sBlk = get_local_custom_settings_blk()
-  setBlkValueByPath(sBlk, $"{SAVE_ID}/{name}", blk)
-  eventbus_send("saveProfile", {})
-}
-
-function collectChangedBlkBullet(slot, hasChanged, bName, bCount) {
-  let blk = DataBlock()
-  blk.name = hasChanged ? bName : slot.name
-  blk.count = hasChanged ? bCount : slot.count
-  return blk
-}
-
 function setCurUnitBullets(slotIdx, bName, bCount) {
-  if (unitName.value == null)
+  if (!setUnitBullets(unitName.get(), chosenBullets.get(), chosenBulletsSec.get(), slotIdx, bName, bCount))
     return
-
-  let blk = DataBlock()
-  foreach (idx, slot in chosenBullets.get())
-    blk.bullet <- collectChangedBlkBullet(slot, idx == slotIdx, bName, bCount)
-  foreach (idx, slot in chosenBulletsSec.get())
-    blk.bullet <- collectChangedBlkBullet(slot, idx + BULLETS_PRIM_SLOTS == slotIdx, bName, bCount)
-  savedBullets(blk)
+  hasChangedCurSlotBullets.set(true)
   cancelRespawn() 
-  saveBullets(unitName.value, blk)
 }
 
-function collectBlkBullet(slot, maxBullets, withExtraBullets, newName) {
-  let { name, count } = slot
-  let blk = DataBlock()
-  blk.name = newName ?? name
-  blk.count = (!withExtraBullets || count == 0) ? count : (maxBullets ?? 0)
-  return blk
-}
-
-function setOrSwapUnitBullet(slotIdx, bName) {
-  if (unitName.get() == null)
+function setOrSwapCurUnitBullet(slotIdx, bName) {
+  if (!setOrSwapUnitBullet(unitName.get(), chosenBullets.get(), chosenBulletsSec.get(), maxBulletsCountForExtraAmmo.get(),
+      maxBulletsSecCountForExtraAmmo.get(), hasExtraBullets.get(), hasExtraBulletsSec.get(), slotIdx, bName))
     return
-
-  let bullets = slotIdx >= BULLETS_PRIM_SLOTS ? chosenBulletsSec.get() : chosenBullets.get()
-  let actualBulletIdx = slotIdx % BULLETS_PRIM_SLOTS
-  if (actualBulletIdx not in bullets)
-    return
-
-  let prevIdx = bullets.findindex(@(s) s.name == bName)
-  if (prevIdx == slotIdx)
-    return
-
-  let newNames = { [slotIdx] = bName }
-  if (prevIdx != null)
-    newNames[prevIdx] <- bullets[actualBulletIdx].name
-
-  let blk = DataBlock()
-  foreach (idx, slot in chosenBullets.get())
-    blk.bullet <- collectBlkBullet(slot, maxBulletsCountForExtraAmmo.get()?[idx],
-      hasExtraBullets.get(), newNames?[idx])
-  foreach (idx, slot in chosenBulletsSec.get())
-    blk.bullet <- collectBlkBullet(slot, maxBulletsSecCountForExtraAmmo.get()?[idx],
-      hasExtraBulletsSec.get(), newNames?[idx + BULLETS_PRIM_SLOTS])
-  savedBullets(blk)
+  hasChangedCurSlotBullets.set(true)
   cancelRespawn() 
-  saveBullets(unitName.get(), blk)
 }
 
-let calcLeftSteps = @(bStep, bTotalSteps, bullets) bullets.reduce(@(res, bData) res - bData.count / bStep, bTotalSteps)
 let bulletLeftSteps = Computed(@() calcLeftSteps(bulletStep.get(), bulletTotalSteps.get(), chosenBullets.get()))
 let bulletSecLeftSteps = Computed(@() calcLeftSteps(bulletSecStep.get(), bulletSecTotalSteps.get(), chosenBulletsSec.get()))
 
-function resetSavedBullets() {
-  get_local_custom_settings_blk().removeBlock(SAVE_ID)
-  if (unitName.get() != null)
-    applySavedBullets(unitName.get())
-  eventbus_send("saveProfile", {})
-}
-
-register_command(resetSavedBullets, "debug.reset_saved_bullets")
+register_command(@() resetSavedBullets(unitName.get()), "debug.respawn.reset_saved_bullets")
 
 return {
   bulletsInfo
@@ -313,7 +135,5 @@ return {
   maxBulletsSecCountForExtraAmmo
 
   setCurUnitBullets
-  setOrSwapUnitBullet
-
-  BULLETS_PRIM_SLOTS
+  setOrSwapCurUnitBullet
 }

@@ -34,7 +34,7 @@ isInDebriefing.subscribe(function(v) {
 
   local hasBalanceForLevelUpUnit = false
   foreach(unit in buyUnitsData.value.canBuyOnLvlUp) {
-    let { currencyId = null, price = 0 } = getUnitAnyPrice(unit, true, unitDiscounts.value)
+    let { currencyId = null, price = 0 } = getUnitAnyPrice(unit, true, unitDiscounts.get())
     if (currencyId != WP || price > balanceWp.value)
       continue
     hasBalanceForLevelUpUnit = true
@@ -46,7 +46,7 @@ isInDebriefing.subscribe(function(v) {
 isLvlUpOpened.subscribe(@(_) upgradeUnitName(null))
 
 let maxRewardLevelInfo = Computed(function(prev) {
-  let { level, starLevel, isReadyForLevelUp, isStarProgress = false } = playerLevelInfo.value
+  let { level, starLevel, isReadyForLevelUp, isStarProgress = false } = playerLevelInfo.get()
   let res = {
     level = level + (isReadyForLevelUp ? 1 : 0)
     starLevel = !isReadyForLevelUp ? starLevel
@@ -80,7 +80,7 @@ let needAutoLevelUp = keepref(Computed(@() !levelInProgress.get()
   && hasDataForLevelWnd.value
   && rewardsToReceive.value.len() == 0
   && buyUnitsData.value.canBuyOnLvlUp.len() == 0
-  && !isInBattle.value))
+  && !isInBattle.get()))
 
 function skipLevelUpUnitPurchase() {
   if (levelInProgress.get())
@@ -141,7 +141,7 @@ function onNeedOpenLevelUpWnd() {
 needOpenLevelUpWnd.subscribe(@(_) deferOnce(onNeedOpenLevelUpWnd))
 
 let lvlUpCost = Computed(function() {
-  let { costGold, nextLevelExp, exp } = playerLevelInfo.value
+  let { costGold, nextLevelExp, exp } = playerLevelInfo.get()
   let expLeft = nextLevelExp - exp
   return nextLevelExp
     ? max(1, (min(1.0, expLeft.tofloat() / nextLevelExp) * costGold + 0.5).tointeger())

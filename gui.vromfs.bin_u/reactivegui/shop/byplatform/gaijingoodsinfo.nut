@@ -19,7 +19,7 @@ let goodsInfo = hardPersistWatched("goodsGaijin.goodsInfo", {})
 let lastError = hardPersistWatched("goodsGaijin.lastError", null)
 let lastUpdateTime = hardPersistWatched("goodsGaijin.lastUpdateTime", 0)
 let needForceUpdate = Watched(false)
-let needRetry = Computed(@() lastError.value != null && !isInBattle.value && !isGoodsRequested.value)
+let needRetry = Computed(@() lastError.value != null && !isInBattle.get() && !isGoodsRequested.value)
 
 let resetRequestedFlag = @() isGoodsRequested(false)
 isGoodsRequested.subscribe(@(_) resetTimeout(NO_ANSWER_TIMEOUT_SEC, resetRequestedFlag))
@@ -45,7 +45,7 @@ function refreshAvailableGuids() {
     function(data) {
       isGoodsRequested(false)
       lastError(null)
-      lastUpdateTime(serverTime.value)
+      lastUpdateTime(serverTime.get())
       let list = data?.items
       if (type(list) == "table" && list.len() > 0)
         goodsInfo.mutate(@(v) v.__update(list))
@@ -68,10 +68,10 @@ else if (goodsInfo.value.len() == 0)
 let forceUpdateAllGuids = @() needForceUpdate(true)
 function startAutoUpdateTimer() {
   needForceUpdate(false)
-  if (isInBattle.value || lastUpdateTime.value <= 0)
+  if (isInBattle.get() || lastUpdateTime.value <= 0)
     clearTimer(forceUpdateAllGuids)
   else
-    resetTimeout(max(0.1, lastUpdateTime.value + AUTO_UPDATE_TIME_SEC - serverTime.value), forceUpdateAllGuids)
+    resetTimeout(max(0.1, lastUpdateTime.value + AUTO_UPDATE_TIME_SEC - serverTime.get()), forceUpdateAllGuids)
 }
 startAutoUpdateTimer()
 lastUpdateTime.subscribe(@(_) startAutoUpdateTimer())

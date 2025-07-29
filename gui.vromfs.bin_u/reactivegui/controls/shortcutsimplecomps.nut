@@ -9,7 +9,7 @@ let mkGamepadShortcutImage = @(shortcutId, ovr = {}, scale = 1.0) @() {
   watch = isGamepad
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  children = !isGamepad.value || shortcutId not in gamepadShortcuts ? null
+  children = !isGamepad.get() || shortcutId not in gamepadShortcuts ? null
     : mkBtnImageComp(gamepadShortcuts?[shortcutId], min(1.0, scale) * (ovr?.size[1] ?? defBtnHeight))
 }.__update(ovr)
 

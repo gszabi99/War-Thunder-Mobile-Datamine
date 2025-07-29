@@ -1,5 +1,5 @@
+from "daRg" import set_kb_focus
 let nameFilter = require("nameFilter.nut")
-let {set_kb_focus} = require("daRg")
 
 return @(filterString, selectedCompName) nameFilter(filterString, {
   placeholder = "Filter by name"
@@ -26,4 +26,3 @@ return @(filterString, selectedCompName) nameFilter(filterString, {
     set_kb_focus(null)
   }
 })
-

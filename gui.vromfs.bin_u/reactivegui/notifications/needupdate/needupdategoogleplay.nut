@@ -12,7 +12,7 @@ const REQUEST_PERIOD_MSEC = 1800000
 let needSuggestToUpdate = hardPersistWatched("googlePlay.needSuggestToUpdate")
 let nextRequestTime = hardPersistWatched("googlePlay.needSuggestToUpdate.nextTime")
 let needRequest = Watched(nextRequestTime.value <= get_time_msec())
-let allowRequest = Computed(@() needRequest.value && !isInBattle.value && !isInLoadingScreen.value)
+let allowRequest = Computed(@() needRequest.value && !isInBattle.get() && !isInLoadingScreen.get())
 
 needRequest.subscribe(@(v) v ? null
   : nextRequestTime(get_time_msec() + REQUEST_PERIOD_MSEC))

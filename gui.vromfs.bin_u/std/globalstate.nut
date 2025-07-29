@@ -1,16 +1,16 @@
+import "dagor.math" as math
 from "modules" import on_module_unload
 from "nestdb" import ndbRead, ndbWrite, ndbDelete, ndbExists
 from "eventbus" import eventbus_send_foreign, eventbus_subscribe
 from "dagor.debug" import logerr
-
-
-
 from "dagor.memtrace" import is_quirrel_object_larger_than, set_huge_alloc_threshold
 from "dagor.time" import get_time_msec
 from "iostream" import blob
 
-let math = require("dagor.math")
-let availableClasses = {}.__update(math)
+
+
+
+let serialazableClasses = {}.__update(math)
 
 
 
@@ -116,7 +116,7 @@ on_module_unload(function(is_closing) {
 
 
           data = blob()
-          data.writeobject(val, availableClasses)
+          data.writeobject(val, serialazableClasses)
         }
         else
           data = val
@@ -167,7 +167,7 @@ function hardPersistWatched(key, def=null, big_immutable_data = null) {
 
 
 
-        val = data?.readobject(availableClasses)
+        val = data?.readobject(serialazableClasses)
 
         
         if (big_immutable_data) {
@@ -202,8 +202,8 @@ function hardPersistWatched(key, def=null, big_immutable_data = null) {
 
 
 
-return {
+return freeze({
   globalWatched
   hardPersistWatched
   setUniqueNestKey
-}
+})

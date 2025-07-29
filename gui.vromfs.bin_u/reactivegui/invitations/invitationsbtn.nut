@@ -5,7 +5,7 @@ let { priorityUnseenMark, unseenMark, unseenSize } = require("%rGui/components/u
 
 let invitationsBtn = @() {
   watch = invitations
-  children = invitations.value.len() == 0 ? null
+  children = invitations.get().len() == 0 ? null
     : framedImageBtn("ui/gameuiskin#icon_party.svg",
         openInvitations,
         {

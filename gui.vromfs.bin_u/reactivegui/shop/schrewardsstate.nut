@@ -74,7 +74,7 @@ function updateActualSchRewards() {
   if (!isServerTimeValid.get())
     return
   let received = receivedSchRewards.value
-  let curTime = serverTime.value
+  let curTime = serverTime.get()
   local nextTime = 0
   local actual = {}
   local status = {}
@@ -112,7 +112,7 @@ isServerTimeValid.subscribe(@(v) v ? updateActualSchRewards() : null)
 
 function resetUpdateTimer() {
   let { time } = nextUpdate.value
-  let left = time - serverTime.value
+  let left = time - serverTime.get()
   if (left <= 0)
     clearTimer(updateActualSchRewards)
   else
@@ -125,7 +125,7 @@ registerHandler("onSchRewardApplied", function(res, context) {
   if (res?.error != null)
     return
   let { rewardId } = context
-  lastAppliedSchReward({ rewardId, time = serverTime.value })
+  lastAppliedSchReward({ rewardId, time = serverTime.get() })
 })
 
 let applyScheduledReward = @(rewardId)
@@ -162,7 +162,7 @@ eventbus_subscribe("adsRewardApply", function(data) {
   if (reward == null)
     return
   let receivedTime = receivedSchRewards.value?[schRewardId] ?? 0
-  if (receivedTime + reward.interval <= serverTime.value)
+  if (receivedTime + reward.interval <= serverTime.get())
     applyScheduledReward(schRewardId)
 })
 

@@ -250,7 +250,7 @@ let mkLevelProgress = @(columnsCfgV, idx) function() {
     }
   }
 
-  let { level, exp, nextLevelExp } = playerLevelInfo.value
+  let { level, exp, nextLevelExp } = playerLevelInfo.get()
 
   local rGap = (columnsCfgV?[idx + 3] ?? 0) == columnsCfgV[idx + 2] ? RGAP_HAS_GAP : 0
   if (rGap == RGAP_HAS_GAP) {
@@ -277,13 +277,13 @@ let mkLevelProgress = @(columnsCfgV, idx) function() {
       {
         size = [SIZE_TO_CONTENT, levelMarkSize]
         valign = ALIGN_CENTER
-        children = unitsMaxRank.value == idx + 1 ? null
+        children = unitsMaxRank.get() == idx + 1 ? null
           : mkTreeRankProgressBar(levelCompletion, barWidth, slots, rGap,
               { pos = [levelMarkSize - progressBarHeight * 0.5, hdpx(1)] })
       }
       levelMark(
         idx + 1,
-        max(0, idx + 1 - unitsMaxRank.value + unitsMaxStarRank.value),
+        max(0, idx + 1 - unitsMaxRank.get() + unitsMaxStarRank.get()),
         level >= idx + 1
       )
     ]
@@ -310,7 +310,7 @@ function unitsTree(unitsByGroup, columnsCfg) {
       curSelectedUnit.subscribe(onChangeSelectedUnit)
       defer(@() unitsTreeOpenRank.get() != null
         ? scrollToRank(columnsCfg.get(), unitsTreeOpenRank.get())
-        : scrollToUnit(columnsCfg.get(), curSelectedUnit.value ?? curUnitName.value))
+        : scrollToUnit(columnsCfg.get(), curSelectedUnit.get() ?? curUnitName.get()))
     }
     function onDetach() {
       isTreeAttached.set(false)

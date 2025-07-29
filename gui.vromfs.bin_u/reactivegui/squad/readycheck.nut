@@ -19,36 +19,36 @@ let MSG_UID = "readyCheck"
 let CAN_REPEAT_SEC = 15
 let readyCheckTime = hardPersistWatched("readyCheckTime", 0)
 let isReadyCheckSuspended = Watched(false)
-let needReadyCheckButton = Computed(@() isSquadLeader.value
-  && squadMembers.value.findvalue(@(m, uid) uid != squadId.value && !m?.ready) != null)
-isInSquad.subscribe(@(_) readyCheckTime(isSquadLeader.value ? 0 : serverTime.value))
-isSquadLeader.subscribe(@(v) !isInSquad.value ? null
-  : readyCheckTime(v ? 0 : serverTime.value))
+let needReadyCheckButton = Computed(@() isSquadLeader.get()
+  && squadMembers.get().findvalue(@(m, uid) uid != squadId.get() && !m?.ready) != null)
+isInSquad.subscribe(@(_) readyCheckTime(isSquadLeader.get() ? 0 : serverTime.get()))
+isSquadLeader.subscribe(@(v) !isInSquad.get() ? null
+  : readyCheckTime(v ? 0 : serverTime.get()))
 
-let needReadyCheckMsg = Computed(@() isInSquad.value
-  && !isSquadLeader.value
-  && squadLeaderReadyCheckTime.value > readyCheckTime.value)
-let canShowReadyCheck = Computed(@() !isInBattle.value
-  && !isInLoadingScreen.value
-  && (!isInDebriefing.value || isDebriefingAnimFinished.value))
+let needReadyCheckMsg = Computed(@() isInSquad.get()
+  && !isSquadLeader.get()
+  && squadLeaderReadyCheckTime.get() > readyCheckTime.value)
+let canShowReadyCheck = Computed(@() !isInBattle.get()
+  && !isInLoadingScreen.get()
+  && (!isInDebriefing.get() || isDebriefingAnimFinished.get()))
 
 let shouldShowMsg = keepref(Computed(@() needReadyCheckMsg.value && canShowReadyCheck.value))
 
 function initiateReadyCheck() {
-  if (!isSquadLeader.value)
+  if (!isSquadLeader.get())
     return
   if (isReadyCheckSuspended.value) {
     openMsgBox({ text = loc("squad/readyCheckInCooldownMsg") })
     return
   }
-  readyCheckTime(serverTime.value)
+  readyCheckTime(serverTime.get())
   isReadyCheckSuspended(true)
   resetTimeout(CAN_REPEAT_SEC, @() isReadyCheckSuspended(false))
 }
 
 function applyReadyCheckResult(newReady) {
   setReady(newReady)
-  readyCheckTime(max(serverTime.value, squadLeaderReadyCheckTime.value))
+  readyCheckTime(max(serverTime.get(), squadLeaderReadyCheckTime.get()))
 }
 
 let onSquadReady = @() showNoPremMessageIfNeed(@()

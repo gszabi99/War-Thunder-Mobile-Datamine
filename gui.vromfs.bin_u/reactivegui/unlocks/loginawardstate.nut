@@ -19,7 +19,7 @@ const LOGIN_UNLOCK_ID = "every_day_award"
 let loginAwardUnlock = Computed(@() activeUnlocks.value?[LOGIN_UNLOCK_ID])
 let isLoginAwardOpened = mkWatched(persist, "isLoginAwardOpened", false)
 let needShowLoginAwardWnd = keepref(Computed(@() (loginAwardUnlock.value?.hasReward ?? false)
-  && isInMenuNoModals.value))
+  && isInMenuNoModals.get()))
 
 function getStageReward(unlock) {
   let { stages, stage } = getRelativeStageData(unlock)

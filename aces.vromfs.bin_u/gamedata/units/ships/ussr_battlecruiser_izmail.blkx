@@ -804,7 +804,7 @@
     }
   },
   "ShopParams": {
-    "turning90degTimeSec": 37
+    "turning90degTimeSec": 46
   },
   "ShipPhys": {
     "mass": {
@@ -924,7 +924,7 @@
             -3.58,
             0.0
           ],
-          "area": 50.0,
+          "area": 38.0,
           "deflection": 35.0,
           "dmPart": "steering_gear_01_dm"
         }

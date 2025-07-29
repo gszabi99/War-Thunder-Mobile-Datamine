@@ -176,7 +176,7 @@ function saveTimeShowingWnd(itemId){
   if (itemId in itemShowCd && isOnlineSettingsAvailable.value){
     let sBlk = get_local_custom_settings_blk()
     let blk = sBlk.addBlock(TIMERS_SHOWING_MISS_ITEMS)
-    blk[itemId] = serverTime.value
+    blk[itemId] = serverTime.get()
     eventbus_send("saveProfile", {})
   }
 }
@@ -391,7 +391,7 @@ function itemsPurchaseMessage(missItems, toBattle, unit, onClose) {
 }
 
 debriefingData.subscribe(function(_data) {
-  let { itemsUsed = {} } = debriefingData.value
+  let { itemsUsed = {} } = debriefingData.get()
   if (isOnlineSettingsAvailable.value){
     let sBlk = get_local_custom_settings_blk()
     let blk = sBlk.addBlock(TIMERS_SHOWING_MISS_ITEMS)
@@ -413,7 +413,7 @@ function offerMissingUnitItemsMessage(unit, toBattle, onClose = @() null) {
     return
   }
 
-  let missItems = mkMissingItemsComp(unit, serverTime.value)
+  let missItems = mkMissingItemsComp(unit, serverTime.get())
   if (missItems.value.len() == 0) {
     toBattle()
     return

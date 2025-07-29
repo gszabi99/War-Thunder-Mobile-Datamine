@@ -1,23 +1,19 @@
+import "daEditorEmbedded" as daEditor
+from "entity_editor" import DE4_MODE_CREATE_ENTITY, get_instance
 from "%darg/ui_imports.nut" import *
 from "%darg/laconic.nut" import *
+let { LogsWindowId, EntitySelectWndId, LoadedScenesWndId, propPanelVisible, propPanelClosed, showHelp, markedScenes, de4editMode, de4workMode, de4workModes, showUIinEditor, editorTimeStop, gizmoBasisType, gizmoBasisTypeNames, gizmoBasisTypeEditingDisabled, gizmoCenterType, gizmoCenterTypeNames } = require("state.nut")
 
-let {LogsWindowId, EntitySelectWndId, LoadedScenesWndId, propPanelVisible, propPanelClosed, showHelp,
-     markedScenes,
-     de4editMode, de4workMode, de4workModes, showUIinEditor, editorTimeStop,
-     gizmoBasisType, gizmoBasisTypeNames, gizmoBasisTypeEditingDisabled,
-     gizmoCenterType, gizmoCenterTypeNames} = require("state.nut")
-
-let {getSceneIdOf, sceneGenerated, sceneSaved} = require("%daeditor/daeditor_es.nut")
-let {defaultScenesSortMode} = require("components/mkSortSceneModeButton.nut")
+let { getSceneIdOf, sceneGenerated, sceneSaved } = require("%daeditor/daeditor_es.nut")
+let { defaultScenesSortMode } = require("components/mkSortSceneModeButton.nut")
 
 let pictureButton = require("components/pictureButton.nut")
+let { showMsgbox } = require("%daeditor/components/msgbox.nut")
 let combobox = require("%daeditor/components/combobox.nut")
 let cursors = require("%daeditor/components/cursors.nut")
-let {hideWindow, toggleWindow, mkIsWindowVisible} = require("%daeditor/components/window.nut")
-let {hasNewLogerr} = require("%daeditor/state/logsWindow.nut")
+let { hideWindow, toggleWindow, mkIsWindowVisible } = require("%daeditor/components/window.nut")
+let { hasNewLogerr } = require("%daeditor/state/logsWindow.nut")
 
-let daEditor = require("daEditorEmbedded")
-let {DE4_MODE_CREATE_ENTITY, get_instance} = require("entity_editor")
 let {DE4_MODE_MOVE, DE4_MODE_ROTATE, DE4_MODE_SCALE, DE4_MODE_MOVE_SURF, DE4_MODE_SELECT,
      DE4_MODE_POINT_ACTION, getEditMode, setEditMode} = daEditor
 
@@ -99,6 +95,40 @@ let isVisibleEntitiesSelect = mkIsWindowVisible(EntitySelectWndId)
 let isVisibleLoadedScenesWnd = mkIsWindowVisible(LoadedScenesWndId)
 let isVisibleLogsWnd = mkIsWindowVisible(LogsWindowId)
 
+let mkMessageboxSaveScenes = function(editableScenesCount) {
+  local messageText = ""
+  if (editableScenesCount > 1) {
+    messageText = $"There are multiple ({editableScenesCount}) edited IMPORT scenes!"
+  } else {
+    messageText = $"There's an edited IMPORT scene!"
+  }
+  return {
+    uid = "messagebox_save_scenes"
+    text = messageText
+    onClose = function() {}
+    buttons = [
+      {
+        text = "Save MAIN and all edited IMPORT scenes"
+        action = function() { get_instance().saveObjects("", true) }
+        isCurrent = true
+        isCancel = false
+      }
+      {
+        text = "Save only the MAIN scene"
+        action = function() { get_instance().saveObjects("", false) }
+        isCurrent = false
+        isCancel = false
+      }
+      {
+        text = "Cancel"
+        action = function() {}
+        isCurrent = false
+        isCancel = true
+      }
+    ]
+  }
+}
+
 let markedSceneText = Computed(function() {
   local nMrk = 0
   local path = ""
@@ -106,7 +136,7 @@ let markedSceneText = Computed(function() {
   scenes.sort(defaultScenesSortMode.func)
   foreach (scene in scenes) {
     local sceneId = getSceneIdOf(scene)
-    local isMarked = markedScenes.value?[sceneId] ?? false
+    local isMarked = markedScenes.get()?[sceneId] ?? false
     if (isMarked) {
       if (nMrk == 0) {
         path = scene.path
@@ -114,8 +144,8 @@ let markedSceneText = Computed(function() {
       nMrk++
     }
   }
-  local isMarkedSaved = markedScenes.value?[getSceneIdOf(sceneSaved)] ?? false
-  local isMarkedGenerated = markedScenes.value?[getSceneIdOf(sceneGenerated)] ?? false
+  local isMarkedSaved = markedScenes.get()?[getSceneIdOf(sceneSaved)] ?? false
+  local isMarkedGenerated = markedScenes.get()?[getSceneIdOf(sceneGenerated)] ?? false
   local textSav = isMarkedSaved ? $"{sceneSaved.asText} " : ""
   local textGen = isMarkedGenerated ? $"{sceneGenerated.asText} " : ""
   if (nMrk > 0 || isMarkedSaved || isMarkedGenerated) {
@@ -128,8 +158,15 @@ let markedSceneText = Computed(function() {
 function mainToolbar() {
   let toggleTime = @() editorTimeStop(!editorTimeStop.get())
   let toggleHelp = @() showHelp.modify(@(v) !v)
-  let save = @() get_instance().saveObjects("", false)
-  let saveChildScenes = @() get_instance().saveObjects("", true)
+  let save = function() {
+    local editableScenesCount = get_instance().getEditableScenesCount() ?? 0
+    local hasUnsavedChildScenes = get_instance().hasUnsavedChildScenes() ?? false
+    if (editableScenesCount == 0 || !hasUnsavedChildScenes) {
+      get_instance().saveObjects("", false)
+    } else {
+      showMsgbox(mkMessageboxSaveScenes(editableScenesCount))
+    }
+  }
 
   let markedSceneStyle = {
     fontSize = hdpx(15)
@@ -189,7 +226,6 @@ function mainToolbar() {
           @() {watch = editorTimeStop children = toolbarButton(svg("time_toggle"), toggleTime, "Toggle time (Ctrl+T)", !editorTimeStop.get())}
           separator
           toolbarButton(svg("save"), save, "Save")
-          toolbarButton(svg("save"), saveChildScenes, "Save child scenes")
           @() { watch = hasNewLogerr children = toolbarButton(svg("logs"), toggleLogsWindows, "Show errors (Ctrl+L)", isVisibleLogsWnd, hasNewLogerr.get() ? { defColor=Color(251,78,58,250) } : {})}
           toolbarButton(svg("help"), toggleHelp, "Help (F1)", showHelp.get())
 

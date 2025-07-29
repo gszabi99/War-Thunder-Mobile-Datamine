@@ -1,4 +1,5 @@
-from "%scripts/dagui_natives.nut" import disable_network, exit_game, sign_out
+from "%scripts/dagui_natives.nut" import disable_network, sign_out
+from "app" import exitGame
 from "%scripts/dagui_library.nut" import *
 let { subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
 let { is_multiplayer } = require("%scripts/util.nut")
@@ -33,7 +34,7 @@ function startLogout() {
     return
   forceSendBqQueue()
   if (!canLogout())
-    return exit_game()
+    return exitGame()
 
   if (is_multiplayer()) { 
     if (isInFlight()) {
@@ -99,12 +100,12 @@ eventbus_subscribe("relogin", @(_) startRelogin())
 
 eventbus_subscribe("changeName", function(_) {
   openUrl(loc("url/changeName"))
-  callbackWhenAppWillActive("logOut")
+  callbackWhenAppWillActive(@() eventbus_send("logOut", {}))
 })
 
 eventbus_subscribe("deleteAccount", function(_) {
   openUrl(DELETE_ACCOUNT_URL)
-  callbackWhenAppWillActive("logOut")
+  callbackWhenAppWillActive(@() eventbus_send("logOut", {}))
 })
 
 subscribeFMsgBtns({

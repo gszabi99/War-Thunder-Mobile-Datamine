@@ -391,7 +391,7 @@ subscribeFMsgBtns({
 
 subscribeGroup(INVITE_ACTION_ID, {
   function onApply(notify) {
-    if (!isValidBalance.value) {
+    if (!isValidBalance.get()) {
       openFMsgBox({ text = loc("gameMode/negativeBalance") })
       return
     }
@@ -458,7 +458,7 @@ function dismissSquadMember(userId) {
   if (userId not in squadMembers.value)
     return
   openFMsgBox({
-    text = loc("squad/ask/remove", { name = getContactNick(allContacts.value?[userId.tostring()]) })
+    text = loc("squad/ask/remove", { name = getContactNick(allContacts.get()?[userId.tostring()]) })
     buttons = [
       { id = "cancel", isCancel = true }
       { id = "removeSquadMember", eventId = "dismissSquadMember", context = { userId }}
@@ -470,7 +470,7 @@ function dismissAllOfflineSquadmates() {
   if (!isSquadLeader.value)
     return
   foreach (userId, _ in squadMembers.value)
-    if (!isContactOnline(userId.tostring(), onlineStatus.value))
+    if (!isContactOnline(userId.tostring(), onlineStatus.get()))
       matchingCall("msquad.dismiss_member", { userId })
 }
 
@@ -496,7 +496,7 @@ function createSquad() {
 }
 
 function inviteToSquad(userId) {
-  if (!isValidBalance.value) {
+  if (!isValidBalance.get()) {
     logS($"Invite: member {userId}: negative balance")
     return openFMsgBox({ text = loc("gameMode/negativeBalance") })
   }

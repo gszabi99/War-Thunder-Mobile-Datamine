@@ -72,7 +72,7 @@ registerHandler("onDebugOfferUnits",
       return
     }
 
-    let { allUnits } = serverConfigs.value
+    let { allUnits } = serverConfigs.get()
     let unitsByCamp = {}
     let unknown = []
     foreach(unitName in units) {

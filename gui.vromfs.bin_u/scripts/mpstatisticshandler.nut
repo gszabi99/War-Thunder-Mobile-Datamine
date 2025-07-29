@@ -1,5 +1,5 @@
-from "%scripts/dagui_natives.nut" import set_mute_sound_in_flight_menu, in_flight_menu
 from "%scripts/dagui_library.nut" import *
+from "gameplayBinding" import inFlightMenu, setMuteSoundInFlightMenu
 
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { isMpStatisticsActive } = require("%appGlobals/clientState/clientState.nut")
@@ -8,8 +8,8 @@ let { registerRespondent } = require("scriptRespondent")
 
 isMpStatisticsActive.subscribe(function(val) {
   if (val)
-    set_mute_sound_in_flight_menu(false)
-  in_flight_menu(val)
+    setMuteSoundInFlightMenu(false)
+  inFlightMenu(val)
 })
 
 let cbOpenMpStatistics = @(_) isMpStatisticsActive.set(true)

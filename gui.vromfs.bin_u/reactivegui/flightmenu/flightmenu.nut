@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
+let { get_game_mode, GM_TRAINING } = require("mission")
+let { get_current_mission_info_cached } = require("blkGetters")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { btnBEscUp, EMPTY_ACTION, btnB } = require("%rGui/controlsMenu/gpActBtn.nut")
 let { myUserId } = require("%appGlobals/profileStates.nut")
@@ -8,7 +10,7 @@ let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentati
 let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
 let { canBailoutFromFlightMenu } = require("%appGlobals/clientState/clientState.nut")
 let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
+let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { textButtonBright, textButtonPrimary, textButtonCommon, textButtonMultiline, buttonsVGap, mergeStyles
@@ -94,14 +96,17 @@ let menuContent = @(isGivingUp, campaign) mkCustomMsgBoxWnd(loc("msgbox/leaveBat
   ])
 
 function openLeaveBattleMsg() {
+  let missionName = get_current_mission_info_cached()?.name ?? ""
+  let isTutorial = get_game_mode() == GM_TRAINING && missionName.startswith("tutorial")
+  let campaign = Computed(@() battleCampaign.get() == "" ? curCampaign.get() : battleCampaign.get())
   removeModalWindow(LEAVE_BATTLE_MSG_UID)
   addModalWindow({
     key = LEAVE_BATTLE_MSG_UID
     children = @() {
-      watch = [canDeserter, battleCampaign]
+      watch = [canDeserter, campaign]
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
-      children = menuContent(canDeserter.get(), battleCampaign.get())
+      children = menuContent(canDeserter.get() && !isTutorial, campaign.get())
     }
     onClick = EMPTY_ACTION
   })

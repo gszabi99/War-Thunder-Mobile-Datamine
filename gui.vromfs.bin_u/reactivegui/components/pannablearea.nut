@@ -4,7 +4,7 @@ let { lerpClamped } = require("%sqstd/math.nut")
 let { isGamepad, isKeyboard } = require("%appGlobals/activeControls.nut")
 let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
 
-let isMoveByKeys = Computed(@() isGamepad.value || isKeyboard.value)
+let isMoveByKeys = Computed(@() isGamepad.get() || isKeyboard.get())
 
 let pannableBase = {
   size = flex()

@@ -24,10 +24,10 @@ let testFlightByUnitType = {
 }
 
 function downloadUnitPacksAndSend(unitName, extAddons, eventId, params) {
-  let { mRank = 1 } = serverConfigs.value?.allUnits[unitName]
+  let { mRank = 1 } = serverConfigs.get()?.allUnits[unitName]
   let pkgs = getUnitPkgs(unitName, mRank)
     .extend(extAddons)
-    .filter(@(v) !hasAddons.value?[v])
+    .filter(@(v) !hasAddons.get()?[v])
   if (pkgs.len() == 0)
     eventbus_send(eventId, params)
   else

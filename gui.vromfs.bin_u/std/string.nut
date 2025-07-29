@@ -1,6 +1,8 @@
+from "string" import regexp, format
 from "iostream" import blob
-let { regexp, format } = require("string")
-let { clamp, log10, min } = require("math")
+from "math" import clamp, log10, min
+import "string" as string
+
 let regexp2 = require_optional("regexp2")
 let utf8 = require_optional("utf8")
 
@@ -144,6 +146,7 @@ function isStringObviousString(str) {
     return !possibleNotStrRegExp.match(str)
   return false
 }
+mark_pure(isStringObviousString)
 
 let defTostringParams = freeze({
   maxdeeplevel = 4
@@ -603,6 +606,7 @@ function floatToStringRounded(value, presize) {
   }
   return format("%.{0}f".subst(-log10(presize).tointeger()), value)
 }
+mark_pure(floatToStringRounded)
 
 function isStringInteger(str) {
   if (type(str) == "integer")
@@ -621,6 +625,8 @@ function isStringInteger(str) {
       return false
   return true
 }
+
+mark_pure(isStringInteger)
 
 function isStringFloat(str, separator=".") {
   if (type(str) == "integer" || type(str) == "float")
@@ -665,6 +671,7 @@ function isStringFloat(str, separator=".") {
   }
   return true
 }
+mark_pure(isStringFloat)
 
 function toIntegerSafe(str, defValue = 0, needAssert = true) {
   if (type(str) == "string")
@@ -675,6 +682,8 @@ function toIntegerSafe(str, defValue = 0, needAssert = true) {
     assert(false, @() $"can't convert '{str}' to integer")
   return defValue
 }
+
+mark_pure(toIntegerSafe)
 
 local utf8ToUpper
 local utf8ToLower
@@ -741,6 +750,7 @@ function utf8CharToInt(str) {
   return res
 }
 
+mark_pure(utf8CharToInt)
 
 function hexStringToInt(hexString) {
   
@@ -758,6 +768,7 @@ function hexStringToInt(hexString) {
 
   return res
 }
+mark_pure(hexStringToInt)
 
 
 function cutPrefix(id, prefix, defValue = null) {
@@ -780,6 +791,8 @@ function cutPostfix(id, postfix, defValue = null) {
     return id.slice(0, idLen - pLen)
   return defValue
 }
+mark_pure(cutPostfix)
+mark_pure(cutPrefix)
 
 function intToStrWithDelimiter(value, delimiter = " ", charsAmount = 3) {
   local res = value.tointeger().tostring()
@@ -792,6 +805,7 @@ function intToStrWithDelimiter(value, delimiter = " ", charsAmount = 3) {
   return res
 }
 
+mark_pure(intToStrWithDelimiter)
 
 function stripTags(str) {
   if (!str || !str.len())
@@ -919,6 +933,8 @@ function splitStringBySize(str, maxSize) {
   return result
 }
 
+mark_pure(splitStringBySize)
+
 function obj2stringarray(obj, curpath = null){
   let res = []
   curpath = curpath ?? []
@@ -937,7 +953,7 @@ function obj2stringarray(obj, curpath = null){
   return res
 }
 
-return {
+return freeze(string.__merge({
   INVALID_INDEX
   CASE_PAIR_LOWER
   CASE_PAIR_UPPER
@@ -981,4 +997,4 @@ return {
   toIntegerSafe
   splitStringBySize
   obj2stringarray
-}
+}))

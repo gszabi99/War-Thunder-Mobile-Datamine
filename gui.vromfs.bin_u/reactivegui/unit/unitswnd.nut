@@ -60,25 +60,25 @@ isUnitsWndAttached.subscribe(function(v) {
   else if (!isPurchEffectVisible.value)
     set_camera_shift_centered()
 })
-loadedHangarUnitName.subscribe(@(_) isUnitsWndAttached.value ? set_camera_shift_upper() : null)
+loadedHangarUnitName.subscribe(@(_) isUnitsWndAttached.get() ? set_camera_shift_upper() : null)
 
 let holdInfo = {} 
 
 let scrollHandler = ScrollHandler()
 let scrollPos = Computed(@() (scrollHandler.elem?.getScrollOffsX() ?? 0))
 
-let gap = Computed(@() (sizePlatoon.value + 0.8) * platoonSelPlatesGap)
+let gap = Computed(@() (sizePlatoon.get() + 0.8) * platoonSelPlatesGap)
 
-let isShowedUnitOwned = Computed(@() hangarUnitName.value in campMyUnits.get())
+let isShowedUnitOwned = Computed(@() hangarUnitName.get() in campMyUnits.get())
 
 let isFitAllFilters = @(unit) filters.findvalue(@(f) f.value.value != null && !f.isFit(unit, f.value.value)) == null
 curFilters.subscribe(function(v) {
   if (v.len() == 0 || !isUnitsWndOpened.get())
     return
-  let unit = campUnitsCfg.get()?[curSelectedUnit.value]
+  let unit = campUnitsCfg.get()?[curSelectedUnit.get()]
   if (unit != null && isFitAllFilters(unit))
     return
-  let first = availableUnitsList.value.findvalue(isFitAllFilters)
+  let first = availableUnitsList.get().findvalue(isFitAllFilters)
   curSelectedUnit(first?.name)
 })
 
@@ -93,19 +93,19 @@ let unitFilterButton = @() {
   watch = [isFiltersVisible, isGamepad]
   vplace = ALIGN_TOP
   pos = [saBorders[0], saBorders[1] + saSize[1]]
-}.__update(isGamepad.value
+}.__update(isGamepad.get()
   ? {
       key = filterStateFlags
       children = { hotkeys = [[
         "^J:LT",
-        getFiltersText(activeFilters.value),
+        getFiltersText(activeFilters.get()),
         @(e) openFilters(e, curCampaign.get() in serverConfigs.get()?.unitTreeNodes)
       ]] }
     }
   : {
       padding = hdpx(10)
       rendObj = ROBJ_SOLID
-      color = isFiltersVisible.value ? 0xA0000000 : 0
+      color = isFiltersVisible.get() ? 0xA0000000 : 0
 
       behavior = Behaviors.Button
       onElemState = @(s) filterStateFlags(s)
@@ -113,8 +113,8 @@ let unitFilterButton = @() {
       children = @() {
         watch = [filterStateFlags, activeFilters]
         rendObj = ROBJ_TEXT
-        color = activeFilters.value > 0 || (filterStateFlags.value & S_ACTIVE) ? 0xFFFFFFFF : 0xFFA0A0A0
-        text = getFiltersText(activeFilters.value)
+        color = activeFilters.get() > 0 || (filterStateFlags.get() & S_ACTIVE) ? 0xFFFFFFFF : 0xFFA0A0A0
+        text = getFiltersText(activeFilters.get())
       }.__update(fontTiny)
       transitions = [{ prop = AnimProp.color, duration = 0.3, easing = InOutQuad }]
     })
@@ -145,11 +145,11 @@ function mkPlatoonPlates(unit) {
   let platoonUnits = unit.platoonUnits
   let platoonSize = platoonUnits?.len() ?? 0
   let isLocked = Computed(@() (unit.name not in campMyUnits.get()) && (unit.name not in canBuyUnits.value))
-  let isSelected = Computed(@() curSelectedUnit.value == unit.name)
-  let isEquipped = Computed(@() unit.name == curUnitName.value)
-  let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
-  let justBoughtDelay = Computed(@() !justBoughtUnits.value?[unit.name] ? null
-    : justUnlockedDelay.value ? justBoughtUnits.value?[unit.name]
+  let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
+  let isEquipped = Computed(@() unit.name == curUnitName.get())
+  let justUnlockedDelay = Computed(@() justUnlockedUnits.get()?[unit.name])
+  let justBoughtDelay = Computed(@() !justBoughtUnits.get()?[unit.name] ? null
+    : justUnlockedDelay.value ? justBoughtUnits.get()?[unit.name]
     : WND_REVEAL)
 
   return @() {
@@ -181,16 +181,16 @@ function mkPlatoonPlate(unit) {
     curSelectedUnit(unit.name)
     markUnitSeen(unit)
     if (isHold(unit.name))
-      unitDetailsWnd({ name = hangarUnitName.value })
+      unitDetailsWnd({ name = hangarUnitName.get() })
   }
-  let isSelected = Computed(@() curSelectedUnit.value == unit.name || (stateFlags.value & S_HOVER))
-  let isEquipped = Computed(@() unit.name == curUnitName.value)
+  let isSelected = Computed(@() curSelectedUnit.get() == unit.name || (stateFlags.value & S_HOVER))
+  let isEquipped = Computed(@() unit.name == curUnitName.get())
   let canPurchase = Computed(@() unit.name in canBuyUnits.value)
   let isLocked = Computed(@() (unit.name not in campMyUnits.get()) && (unit.name not in canBuyUnits.value))
-  let canBuyForLvlUp = Computed(@() playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp))
-  let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value, unitDiscounts.value) : null)
-  let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
-  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
+  let canBuyForLvlUp = Computed(@() playerLevelInfo.get().isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp))
+  let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value, unitDiscounts.get()) : null)
+  let justUnlockedDelay = Computed(@() justUnlockedUnits.get()?[unit.name])
+  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get())
   let discount = Computed(@() unitDiscounts?.value[unit.name])
   return @() {
     watch = [isSelected, justUnlockedDelay, price, discount, isLocked, canPurchase]
@@ -241,16 +241,16 @@ function mkUnitPlate(unit) {
     curSelectedUnit(unit.name)
     markUnitSeen(unit)
     if (isHold(unit.name))
-      unitDetailsWnd({ name = hangarUnitName.value })
+      unitDetailsWnd({ name = hangarUnitName.get() })
   }
-  let isSelected = Computed(@() curSelectedUnit.value == unit.name || (stateFlags.value & S_HOVER))
-  let isEquipped = Computed(@() unit.name == curUnitName.value)
+  let isSelected = Computed(@() curSelectedUnit.get() == unit.name || (stateFlags.value & S_HOVER))
+  let isEquipped = Computed(@() unit.name == curUnitName.get())
   let canPurchase = Computed(@() unit.name in canBuyUnits.value)
-  let canBuyForLvlUp = Computed(@() playerLevelInfo.value.isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp))
-  let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value, unitDiscounts.value) : null)
+  let canBuyForLvlUp = Computed(@() playerLevelInfo.get().isReadyForLevelUp && (unit?.name in buyUnitsData.value.canBuyOnLvlUp))
+  let price = Computed(@() canPurchase.value ? getUnitAnyPrice(unit, canBuyForLvlUp.value, unitDiscounts.get()) : null)
   let isLocked = Computed(@() (unit.name not in campMyUnits.get()) && (unit.name not in canBuyUnits.value))
-  let justUnlockedDelay = Computed(@() justUnlockedUnits.value?[unit.name])
-  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.value)
+  let justUnlockedDelay = Computed(@() justUnlockedUnits.get()?[unit.name])
+  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get())
   let discount = Computed(@() unitDiscounts?.value[unit.name])
   return @() {
     watch = [isSelected, stateFlags, justUnlockedDelay, price, discount, isLocked, canPurchase]
@@ -296,10 +296,10 @@ function mkUnitPlate(unit) {
 
 let unseenUnitsIndex = Computed(function(){
   let res = {}
-  if (unseenUnits.value.len() == 0 || !isUnitsWndOpened.value)
+  if (unseenUnits.get().len() == 0 || !isUnitsWndOpened.get())
     return res
-  foreach(idx, unit in availableUnitsList.value){
-    if(unit.name in unseenUnits.value)
+  foreach(idx, unit in availableUnitsList.get()){
+    if(unit.name in unseenUnits.get())
       res[unit.name] <- idx
   }
   return res
@@ -316,7 +316,7 @@ let needShowUnseenMarkArrowR = Computed(@()
 let scrollArrowsBlock = @(){
   watch = availableUnitsList
   size = [flex(),unitsPlateCombinedHeight]
-  pos = [0, (availableUnitsList.value?[0].platoonUnits ?? []).len() > 0 ? hdpx(-15) : 0]
+  pos = [0, (availableUnitsList.get()?[0].platoonUnits ?? []).len() > 0 ? hdpx(-15) : 0]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   children = [
@@ -364,7 +364,7 @@ foreach (f in filters)
 listWatches = listWatches.filter(@(w) w != null)
 
 function unitsBlock() {
-  local filtered = availableUnitsList.value
+  local filtered = availableUnitsList.get()
   foreach (f in filters) {
     let { value } = f.value
     if (value != null)
@@ -377,15 +377,15 @@ function unitsBlock() {
     flow = FLOW_HORIZONTAL
     gap = gap.value
     function onAttach() {
-      if (curSelectedUnit.value == null)
-        curSelectedUnit(curUnitName.value)
-      let selUnitIdx = filtered.findindex(@(u) u.name == curSelectedUnit.value) ?? 0
+      if (curSelectedUnit.get() == null)
+        curSelectedUnit(curUnitName.get())
+      let selUnitIdx = filtered.findindex(@(u) u.name == curSelectedUnit.get()) ?? 0
       let scrollPosX = (unitPlateWidth + gap.value) * selUnitIdx - (0.5 * (saSize[0] - unitPlateWidth))
       scrollHandler.scrollToX(scrollPosX)
     }
     children = filtered.len() == 0 ? noUnitsMsg
       : [ unitsBarHorizPad ]
-          .extend(filtered.map(@(u) sizePlatoon.value > 0 ? mkPlatoonPlate(u) : mkUnitPlate(u)))
+          .extend(filtered.map(@(u) sizePlatoon.get() > 0 ? mkPlatoonPlate(u) : mkUnitPlate(u)))
           .append(unitsBarHorizPad)
   }
 }
@@ -419,7 +419,7 @@ let gamercardLevelBlock = {
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             maxWidth = hdpx(600)
-            text = playerLevelInfo.value?.nextLevelExp == 0
+            text = playerLevelInfo.get()?.nextLevelExp == 0
               ? loc("gamercard/levelCamp/maxLevel/campaign")
               : loc("gamercard/levelCamp/desc")
           }.__update(fontVeryTiny)
@@ -471,7 +471,7 @@ let gamercardPlace = {
       hplace = ALIGN_RIGHT
       behavior = [ Behaviors.Button, HangarCameraControl ]
       touchMarginPriority = TOUCH_BACKGROUND
-      onClick = @() unitDetailsWnd({ name = hangarUnitName.value })
+      onClick = @() unitDetailsWnd({ name = hangarUnitName.get() })
       clickableInfo = loc("msgbox/btn_more")
       hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
     }, mkUnitTitle )
@@ -519,7 +519,7 @@ let unitsWnd = {
         {
           vplace = ALIGN_BOTTOM
           hplace = ALIGN_CENTER
-          children = mkUnitPkgDownloadInfo(Computed(@() campUnitsCfg.get()?[curSelectedUnit.value]))
+          children = mkUnitPkgDownloadInfo(Computed(@() campUnitsCfg.get()?[curSelectedUnit.get()]))
         }
 
       ]

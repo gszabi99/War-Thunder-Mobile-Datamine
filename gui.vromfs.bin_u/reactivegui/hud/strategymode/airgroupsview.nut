@@ -66,7 +66,7 @@ function mkStrategyCommandsUi(data) {
 }
 
 function mkPlaneUi(actionItem, airGroupIndex) {
-  let airGroupData = Computed(@() strategyDataRest.value?[airGroupIndex])
+  let airGroupData = Computed(@() strategyDataRest.get()?[airGroupIndex])
   return {
     flow = FLOW_VERTICAL
     gap = hdpx(7)
@@ -89,7 +89,7 @@ function mkPlaneUi(actionItem, airGroupIndex) {
 }
 
 function mkPlaneDebugInfo(airGroupIndex) {
-  let airGroupData = Computed(@() strategyDataRest.value?[airGroupIndex] )
+  let airGroupData = Computed(@() strategyDataRest.get()?[airGroupIndex] )
   return @() {
     size = const [hdpx(450), 0]
     watch = airGroupData
@@ -137,22 +137,22 @@ function mkShipDebugInfo() {
       {
         rendObj = ROBJ_TEXT
         color = debugTextColor
-        text = $"Speed={strategyDataShip.value?.speed}"
+        text = $"Speed={strategyDataShip.get()?.speed}"
       }
       {
         rendObj = ROBJ_TEXT
         color = debugTextColor
-        text = $"Throttle={strategyDataShip.value?.throttle}"
+        text = $"Throttle={strategyDataShip.get()?.throttle}"
       }
       {
         rendObj = ROBJ_TEXT
         color = debugTextColor
-        text = $"Steering={strategyDataShip.value?.steering}"
+        text = $"Steering={strategyDataShip.get()?.steering}"
       }
       {
         rendObj = ROBJ_TEXT
         color = debugTextColor
-        text = $"IsDrivingBackward={strategyDataShip.value?.isDrivingBackward}"
+        text = $"IsDrivingBackward={strategyDataShip.get()?.isDrivingBackward}"
       }
     ]
   }
@@ -169,8 +169,8 @@ let shipUi = {
 
 function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, trigger) {
   let stateFlags = Watched(0)
-  let isSelected = Computed(@() curGroupIndex.value == selectableIndex)
-  let canClick = Computed(@() selectableIndex == -1 ? true : strategyDataRest.value?[selectableIndex].groupNotDead)
+  let isSelected = Computed(@() curGroupIndex.get() == selectableIndex)
+  let canClick = Computed(@() selectableIndex == -1 ? true : strategyDataRest.get()?[selectableIndex].groupNotDead)
   let buttonSize = airGroupButtonHeight
   let iconSize = (buttonSize * 0.65).tointeger()
   return @() {
@@ -251,7 +251,7 @@ function mkPlaneSelectable(airGroupIndex, actionItem) {
     watch = optDebugDraw
     flow = FLOW_HORIZONTAL
     children = [
-      !optDebugDraw.value ? null
+      !optDebugDraw.get() ? null
         : mkPlaneDebugInfo(airGroupIndex)
       mkUnitSelectable(airGroupIndex, icon, borderWidth, mkPlaneUi(actionItem, airGroupIndex),
         actionItem, $"airGroupHealthReduced{airGroupIndex}")
@@ -264,7 +264,7 @@ function mkShipSelectable() {
     watch = optDebugDraw
     flow = FLOW_HORIZONTAL
     children = [
-      !optDebugDraw.value ? null
+      !optDebugDraw.get() ? null
         : mkShipDebugInfo()
         mkUnitSelectable(-1, iconShip, borderWidth, shipUi, null, null)
     ]

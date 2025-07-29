@@ -72,6 +72,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/sapi_shell.ivf",
       "bulletName": "30_170mm_aphe_i",
       "relativeVelHitShift": [
         300.0,

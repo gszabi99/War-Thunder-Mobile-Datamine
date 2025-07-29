@@ -17,12 +17,12 @@ registerHandler("onDecoratorPurchaseResult",
 function purchaseDecorator(decId, localizedName, bqInfo) {
   if (decoratorInProgress.value != null)
     return
-  if (decId in myDecorators.value) {
+  if (decId in myDecorators.get()) {
     logerr("Try to purchase own decorator")
     return
   }
 
-  let decor = allDecorators.value?[decId]
+  let decor = allDecorators.get()?[decId]
   if (decor == null)
     return
 

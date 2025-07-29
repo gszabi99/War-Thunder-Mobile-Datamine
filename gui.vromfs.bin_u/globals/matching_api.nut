@@ -47,11 +47,13 @@ function matching_rpc_call(cmd, params = null, cb = null) {
   let res = matching_call(cmd, params)
   
   if (cb == null)
-    return
-  if (res?.reqId != null)
-    eventbus_subscribe_onehit($"{cmd}.{res.reqId}", cb)
+    return null
+  let { reqId = null } = res
+  if (reqId != null)
+    eventbus_subscribe_onehit($"{cmd}.{reqId}", @(result) cb(result.__merge({ reqId })))
   else
     cb(res)
+  return reqId
 }
 
 return {

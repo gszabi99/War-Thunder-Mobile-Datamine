@@ -17,6 +17,7 @@ let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit, gameType
 } = require("%rGui/missionState.nut")
 let { teamBlueColor, teamRedColor, teamBlueDarkColor, teamRedDarkColor } = require("%rGui/style/teamColors.nut")
 let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
+let { ticketPenaltyReasonAllyLogPlace, ticketPenaltyReasonEnemyLogPlace } = require("%rGui/hudHints/ticketsPenaltyReason.nut")
 
 let secondsPerHour = 3600
 let barRatio = 56.0 / 19
@@ -28,11 +29,12 @@ let scoreBarPadding = (0.15 * scoreBarPlateHeight).tointeger()
 let scoreBarGap = (-0.4 * scoreBarPlateHeight).tointeger()
 let scoreBarWidth = scoreBarGap * (SCORE_PLATES_TEAM_COUNT - 1) + SCORE_PLATES_TEAM_COUNT * scoreBarPlateWidth + 4 * scoreBarPadding
 let scoreBarHeight = scoreBarPlateHeight + 2 * scoreBarPadding
-let baseIconSize = (scoreBarHeight * 1.3).tointeger()
+let baseIconSize = (scoreBarHeight * 1.4)
 let timerBgWidth   = (0.65 * scoreBarWidth).tointeger()
 let timerBgHeight  = (57.0 / 131 * timerBgWidth).tointeger()
 let gapToTimer = @(timerBgWidthV) -0.15 * timerBgWidthV
 let scoreBarOffesetY = 0.45 * timerBgHeight
+let penaltyReasonBlockSize = [hdpx(130), hdpx(60)]
 
 let timerBgColor = 0x4D000000
 
@@ -44,8 +46,14 @@ let needScoreBoard = Computed(@() (gameType.get() & (GT_MP_SCORE | GT_MP_TICKETS
 
 let battleBasesRaw = hardPersistWatched("battleBasesRaw",[])
 
-let localTeamBases = Computed(@() battleBasesRaw.get().filter(@(b) b.team == localTeam.get()) ?? [])
-let enemyTeamBases = Computed(@() battleBasesRaw.get().filter(@(b) b.team != localTeam.get()) ?? [])
+let mkBasesByTeam = @(isLocal) Computed(function() {
+  let bases = battleBasesRaw.get().filter(@(b) isLocal ? b.team == localTeam.get() : b.team != localTeam.get()) ?? []
+  let airField = bases.findvalue(@(v) v.isAirfield)
+  return airField != null ? [airField] : bases
+})
+
+let localTeamBasesToShow = mkBasesByTeam(true)
+let enemyTeamBasesToShow = mkBasesByTeam(false)
 
 let updateBZones = @() battleBasesRaw.set(getBombingZones() ?? [])
 eventbus_subscribe("onBombingZoneDamaged", @(_) updateBZones())
@@ -60,8 +68,9 @@ let scoreParamsByTeam = {
     halign = ALIGN_RIGHT
     image = "hud_healthbar_left_slot.svg"
     baseImage = "base_ally"
-    bases = localTeamBases
-    baseCount = Computed(@() localTeamBases.get().len())
+    bases = localTeamBasesToShow
+    baseCount = Computed(@() localTeamBasesToShow.get().len())
+    penaltyLog = ticketPenaltyReasonAllyLogPlace
   }
   enemyTeam = {
     score = enemyTeamTickets
@@ -71,8 +80,9 @@ let scoreParamsByTeam = {
     halign = ALIGN_LEFT
     image = "hud_healthbar_right_slot.svg"
     baseImage = "base_enemy"
-    bases = enemyTeamBases
-    baseCount = Computed(@() enemyTeamBases.get().len())
+    bases = enemyTeamBasesToShow
+    baseCount = Computed(@() enemyTeamBasesToShow.get().len())
+    penaltyLog = ticketPenaltyReasonEnemyLogPlace
   }
 }
 
@@ -203,8 +213,27 @@ function mkBasesIndicators(scoreParams, basesBlockHeight, iconSize) {
   }
 }
 
+let getScoreBarAttentionAnimations = @(trigger) [
+  {
+    prop = AnimProp.fillColor,
+    to = 0xFFFFFFFF,
+    duration = 1.5,
+    trigger,
+    loop = true,
+    easing = CosineFull
+  }
+  {
+    prop = AnimProp.color,
+    to = 0xFFFFFFFF,
+    duration = 1.5,
+    trigger,
+    loop = true,
+    easing = CosineFull
+  }
+]
+
 function mkLinearScoreBarWithScore(teamName, scale) {
-  let { score, fillColor, image, halign, prevScore } = scoreParamsByTeam[teamName]
+  let { score, fillColor, image, halign, prevScore, penaltyLog } = scoreParamsByTeam[teamName]
   let progress = Computed(@() scoreLimit.get() == 0 ? 0 : clamp(score.get().tofloat() / scoreLimit.get(), 0.0, 1.0))
   let padding = max(round(scoreBarPadding * scale).tointeger(), 1)
   let paddingInc = hdpxi(scale)
@@ -217,7 +246,8 @@ function mkLinearScoreBarWithScore(teamName, scale) {
   }
 
   let progressBarSize = scaleArr([scoreBarWidth, scoreBarHeight], scale)
-  let iconSize = (baseIconSize * scale).tointeger()
+  let penaltyBlockSize = scaleArr(penaltyReasonBlockSize, scale)
+  let iconSize = round(baseIconSize * scale / 2) * 2
   let basesBlockHeight = progressBarSize[1] * 2
   return mkScoreBarBg(image, progressBarSize).__update({
     padding = [padding + paddingInc, 2 * padding + paddingInc]
@@ -234,6 +264,7 @@ function mkLinearScoreBarWithScore(teamName, scale) {
           halign == ALIGN_RIGHT
             ? [VECTOR_POLY, 100, 100, full, 0, full - full * progress.get(), 0, 100.0 - full * progress.get(), 100]
             : [VECTOR_POLY, 0, 100, ofs, 0, ofs + full * progress.get(), 0, full * progress.get(), 100]]
+        animations = getScoreBarAttentionAnimations($"{teamName}AirportDamaged")
       }
       @() {
         watch = prevScore
@@ -250,7 +281,14 @@ function mkLinearScoreBarWithScore(teamName, scale) {
           setInterval(0.05, updateScore)
         }
         onDetach = @() clearTimer(updateScore)
-        }.__update(fontVeryVeryTinyShaded)
+      }.__update(fontVeryVeryTinyShaded)
+      {
+        size = penaltyBlockSize
+        pos = [halign == ALIGN_LEFT ? progressBarSize[0] : -progressBarSize[0], -progressBarSize[1]]
+        valign = ALIGN_BOTTOM
+        halign
+        children = penaltyLog
+      }
       mkBasesIndicators(scoreParamsByTeam[teamName], basesBlockHeight, iconSize)
     ]
   })

@@ -423,7 +423,7 @@ struct HumanRequestSetWishAmmoItemType
 
 [event(unicast)]
 struct EventOnGrenadeThrow
-  gun_props_id : int
+  gun_props_id : uint
 
 [event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
 struct HumanRequestUnloadAmmo

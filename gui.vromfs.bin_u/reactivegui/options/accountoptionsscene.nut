@@ -13,7 +13,7 @@ let tabs = [
     locId = "options/account"
     image = "ui/gameuiskin#menu_account.svg"
     content = accountPage
-    unseen = Computed(@() hasUnseenDecorators.value ? UNSEEN_HIGH : SEEN)
+    unseen = Computed(@() hasUnseenDecorators.get() ? UNSEEN_HIGH : SEEN)
   }
   {
     locId = "options/community"

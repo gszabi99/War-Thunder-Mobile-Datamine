@@ -81,7 +81,7 @@ let headerPanel = @(hasLvlUpPkgs) @() {
     @() {
       watch = upgradeUnitName
       hplace = ALIGN_LEFT
-      children = upgradeUnitName.value != null ? backButton(@() upgradeUnitName(null))
+      children = upgradeUnitName.get() != null ? backButton(@() upgradeUnitName(null))
         : !hasLvlUpPkgs ? backButton(closeByBackButton)
         : null
     }
@@ -98,7 +98,7 @@ let headerPanel = @(hasLvlUpPkgs) @() {
       animations = appearAnim(balanceAppearDelay, balanceAppearTime)
     }
     headerLine(animStartDelay)
-    levelUpFlag(flagHeight, maxRewardLevelInfo.value.level, maxRewardLevelInfo.value.starLevel, animStartDelay)
+    levelUpFlag(flagHeight, maxRewardLevelInfo.get().level, maxRewardLevelInfo.get().starLevel, animStartDelay)
   ]
 }
 
@@ -157,7 +157,7 @@ function levelUpWnd() {
       hasLvlUpPkgs ? levelUpChooseUnits
         : levelUpRequirePkgDownload(lvlUpUnitsPkgs)
     ]
-  }.__update(upgradeUnitName.value != null ? bgShaded : {})
+  }.__update(upgradeUnitName.get() != null ? bgShaded : {})
 }
 
 registerScene("levelUpWnd", levelUpWnd, closeLvlUpWnd, isLvlUpOpened)

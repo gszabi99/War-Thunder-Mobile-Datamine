@@ -1,7 +1,7 @@
+import "math" as math
 from "%darg/ui_imports.nut" import *
-let {colors} = require("style.nut")
+let { colors } = require("style.nut")
 
-let math = require("math")
 
 let calcFrameColor = @(sf) sf & S_KB_FOCUS ? colors.TextActive
   : sf & S_HOVER ? colors.TextHover

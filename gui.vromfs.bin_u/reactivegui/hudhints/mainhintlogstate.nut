@@ -81,7 +81,7 @@ let addHudMessage = {
 
   [HUD_MSG_MULTIPLAYER_DMG] = function(data) {
     let { isKill = false, playerId = null, victimPlayerId = null, victimUnitName = "" } = data
-    if (!isKill || localMPlayerId.value != playerId)
+    if (!isKill || localMPlayerId.get() != playerId)
       return
 
     let classIcon = getUnitClassFontIcon(campUnitsCfg.get()?[victimUnitName])

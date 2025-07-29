@@ -1,30 +1,21 @@
+import "entity_editor" as entity_editor
+from "string" import format
 from "%darg/ui_imports.nut" import *
-
 from "%sqstd/ecs.nut" import *
-
-let {LoadedScenesWndId, selectedEntities, markedScenes, de4workMode} = require("state.nut")
-let {colors} = require("components/style.nut")
+let { LoadedScenesWndId, selectedEntities, markedScenes, de4workMode } = require("state.nut")
+let { colors } = require("components/style.nut")
 let textButton = require("components/textButton.nut")
 let nameFilter = require("components/nameFilter.nut")
-let {makeVertScroll} = require("%daeditor/components/scrollbar.nut")
-let {getEntityExtraName,
-     getSceneLoadTypeText, getSceneId, getSceneIdOf, getSceneIdLoadType, getSceneIdIndex,
-     loadTypeConst, sceneGenerated, sceneSaved,
-     getNumMarkedScenes, matchSceneEntity, matchEntityByScene} = require("%daeditor/daeditor_es.nut")
-let { format } = require("string")
-let entity_editor = require("entity_editor")
-let mkSortModeButton = require("components/mkSortModeButton.nut")
-let {defaultScenesSortMode, mkSceneSortModeButton} = require("components/mkSortSceneModeButton.nut")
+let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
+let { getSceneLoadTypeText, getSceneId, getSceneIdOf, getSceneIdLoadType, getSceneIdIndex, getSceneIndicies, loadTypeConst, sceneGenerated, sceneSaved, getNumMarkedScenes, matchSceneEntity, matchEntityByScene } = require("%daeditor/daeditor_es.nut")
+let { defaultScenesSortMode, mkSceneSortModeButton } = require("components/mkSortSceneModeButton.nut")
 let scrollHandler = ScrollHandler()
-let scrollHandlerEntities = ScrollHandler()
 let markedStateScenes = mkWatched(persist, "markedStateScenes", {})
 let editedStateScenes = mkWatched(persist, "editedStateScenes", {})
 let filterString = mkWatched(persist, "filterString", "")
 let filterScenesBySelectedEntities = mkWatched(persist, "filterScenesBySelectedEntities", true)
 let allScenes = mkWatched(persist, "allScenes", [])
-let allSceneCounts = mkWatched(persist, "allSceneCounts", [])
 let allSceneIndices = mkWatched(persist, "allSceneIndices", [])
-let filterStringEntities = mkWatched(persist, "filterStringEntities", "")
 let selectionStateEntities = mkWatched(persist, "selectionStateEntities", {})
 let allEntities = mkWatched(persist, "allEntities", [])
 let filteredEntities = Watched([])
@@ -33,22 +24,7 @@ let sceneSortState = Watched(defaultScenesSortMode)
 
 local sceneSortFuncCache = defaultScenesSortMode.func
 
-let entitySortState = Watched({})
-
-local entitySortFuncCache = null
-
 let statusAnimTrigger = { lastN = null }
-
-local locateOnDoubleClick = false
-
-let numSelectedEntities = Computed(function() {
-  local nSel = 0
-  foreach (v in selectionStateEntities.get()) {
-    if (v)
-      ++nSel
-  }
-  return nSel
-})
 
 let selectedEntitiesSceneIds = Computed(function() {
   local res = [[],  [],  [],  [],  []]
@@ -89,7 +65,7 @@ function sceneToText(scene) {
     return scene.asText
   }
   local sceneId = getSceneIdOf(scene)
-  local edit = editedStateScenes.value?[sceneId] ? "> " : "| "
+  local edit = editedStateScenes.get()?[sceneId] ? "> " : "| "
   local loadType = "MAIN"
   local idSeparator = ""
   local index = ""
@@ -105,11 +81,11 @@ function sceneToText(scene) {
   if (sceneSortFuncCache == defaultScenesSortMode.func) {
     if (scene.hasParent) {
       local prefix = ""
-      local loadTypeIndex = allSceneIndices.value[scene.loadType]
-      local parentScene = allScenes.value[loadTypeIndex + scene.parent]
+      local loadTypeIndex = allSceneIndices.get()[scene.loadType]
+      local parentScene = allScenes.get()[loadTypeIndex + scene.parent]
       while (parentScene.hasParent) {
         prefix = $"    {prefix}"
-        parentScene = allScenes.value[loadTypeIndex + parentScene.parent]
+        parentScene = allScenes.get()[loadTypeIndex + parentScene.parent]
       }
       relation = $"{prefix}{scene.imports > 0 ? "+- " : "-- "}"
     }
@@ -160,25 +136,8 @@ let filteredScenesEntityCount = Computed(function() {
   return eCount
 })
 
-function matchEntityByText(eid, text) {
-  if (text==null || text=="" || eid.tostring().indexof(text)!=null)
-    return true
-  let tplName = g_entity_mgr.getEntityTemplateName(eid)
-  if (tplName==null)
-    return false
-  if (tplName.tolower().contains(text.tolower()))
-    return true
-  let riExtraName = getEntityExtraName(eid)
-  if (riExtraName != null && riExtraName.tolower().contains(text.tolower()))
-    return true
-  return false
-}
-
 function filterEntities() {
   local entities = allEntities.get()
-
-  if (filterStringEntities.get() != "")
-    entities = entities.filter(@(eid) matchEntityByText(eid, filterStringEntities.get()))
 
   if (getNumMarkedScenes() > 0) {
     local savedMarked = markedStateScenes.get()?[sceneSaved.id]
@@ -186,16 +145,12 @@ function filterEntities() {
     entities = entities.filter(@(eid) matchEntityByScene(eid, savedMarked, generatedMarked))
   }
 
-  if (entitySortFuncCache != null)
-    entities.sort(entitySortFuncCache)
-
   filteredEntities.set(entities)
 
   entity_editor.get_instance()?.unhideAll()
   entity_editor.get_instance()?.hideUnmarkedEntities(filteredEntities.get())
 }
 
-filterStringEntities.subscribe(@(_v) filterEntities())
 let persistMarkedScenes = function(v) {
   if (v) {
     local scenes = markedScenes.get()
@@ -204,14 +159,12 @@ let persistMarkedScenes = function(v) {
   }
 }
 markedScenes.whiteListMutatorClosure(persistMarkedScenes)
-markedStateScenes.subscribe(function(v) {
+markedStateScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
   persistMarkedScenes(v)
   markedScenes.trigger()
   filterEntities()
 })
-editedStateScenes.subscribe(@(_v) filterEntities())
-
-let filteredEntitiesCount = Computed(@() filteredEntities.get().len())
+editedStateScenes.subscribe_with_nasty_disregard_of_frp_update(@(_v) filterEntities())
 
 function calculateSceneEntityCount(saved, generated) {
   local entities = allEntities.get()
@@ -233,7 +186,7 @@ let numMarkedScenesEntityCount = Computed(function() {
         if (scene == sceneGenerated)
           nGenerated = calculateSceneEntityCount(false, true)
       } else {
-        if (scene.importDepth == 0 || editedStateScenes.value?[sceneId])
+        if (scene.importDepth == 0 || editedStateScenes.get()?[sceneId])
           nMrkSaved += scene.entityCount
         else
           nMrkGenerated += scene.entityCount
@@ -245,13 +198,6 @@ let numMarkedScenesEntityCount = Computed(function() {
 
 function markScene(cb) {
   markedStateScenes.mutate(function(value) {
-    foreach (k, v in value)
-      value[k] = cb(k, v)
-  })
-}
-
-function applyEntitySelection(cb) {
-  selectionStateEntities.mutate(function(value) {
     foreach (k, v in value)
       value[k] = cb(k, v)
   })
@@ -278,7 +224,7 @@ let markScenesInvert = function() {
 let toggleEditing = function() {
   editedStateScenes.mutate(function(value) {
     foreach (sceneId, edited in value) {
-      if (markedStateScenes.value?[sceneId]) {
+      if (markedStateScenes.get()?[sceneId]) {
         local loadType = getSceneIdLoadType(sceneId)
         local index = getSceneIdIndex(sceneId)
         if (entity_editor.get_instance()?.isChildScene(loadType, index)) {
@@ -293,12 +239,6 @@ let toggleEditing = function() {
 function scrollScenesBySelection() {
   scrollHandler.scrollToChildren(function(desc) {
     return ("scene" in desc) && markedStateScenes.get()?[getSceneIdOf(desc.scene)]
-  }, 2, false, true)
-}
-
-function scrollEntitiesBySelection() {
-  scrollHandlerEntities.scrollToChildren(function(desc) {
-    return ("eid" in desc) && selectionStateEntities.get()?[desc.eid]
   }, 2, false, true)
 }
 
@@ -359,29 +299,6 @@ let filter = nameFilter(filterString, {
     set_kb_focus(null)
   }
 })
-
-let filterEntitiesByName = nameFilter(filterStringEntities, {
-  placeholder = "Filter by name"
-
-  function onChange(text) {
-    filterStringEntities(text)
-  }
-
-  function onEscape() {
-    set_kb_focus(null)
-  }
-
-  function onReturn() {
-    set_kb_focus(null)
-  }
-
-  function onClear() {
-    filterStringEntities.update("")
-    set_kb_focus(null)
-  }
-})
-
-let removeSelectedByEditorTemplate = @(tname) tname.replace("+daeditor_selected+","+").replace("+daeditor_selected","").replace("daeditor_selected+","")
 
 function listSceneRow(scene, idx) {
   return watchElemState(function(sf) {
@@ -484,21 +401,18 @@ function listRowMoreLeft(num, idx) {
 
 function initScenesList() {
   local scenes = entity_editor.get_instance()?.getSceneImports() ?? []
-  local sceneCounts = [0,  0,  0,  0]
   foreach (scene in scenes) {
-    sceneCounts[scene.loadType] += 1
     local sceneId = getSceneId(scene.loadType, scene.index)
-    local isMarked = markedScenes.value?[sceneId] ?? false
-    markedStateScenes.value[sceneId] <- isMarked
-    editedStateScenes.value[sceneId] <- false
+    local isMarked = markedScenes.get()?[sceneId] ?? false
+    markedStateScenes.get()[sceneId] <- isMarked
+    editedStateScenes.get()[sceneId] <- false
   }
   allScenes(scenes)
-  allSceneCounts(sceneCounts)
-  allSceneIndices([0, 0, sceneCounts[1], sceneCounts[1] + sceneCounts[2]])
+  allSceneIndices(getSceneIndicies(scenes))
   markedStateScenes.trigger()
 }
 
-sceneSortState.subscribe(function(v) {
+sceneSortState.subscribe_with_nasty_disregard_of_frp_update(function(v) {
   sceneSortFuncCache = v?.func
   selectedEntities.trigger()
   markedStateScenes.trigger()
@@ -506,170 +420,6 @@ sceneSortState.subscribe(function(v) {
 })
 
 de4workMode.subscribe(@(_) gui_scene.resetTimeout(0.1, initScenesList))
-
-function doSelect() {
-  let eids = []
-  foreach (k, v in selectionStateEntities.get()) if (v) eids.append(k)
-  entity_editor.get_instance().selectEntities(eids)
-  gui_scene.resetTimeout(0.1, function() {
-    selectedEntities.trigger()
-    selectionStateEntities.trigger()
-  })
-}
-
-function doLocate() {
-  let eids = []
-  foreach (k, v in selectionStateEntities.get()) if (v) eids.append(k)
-  entity_editor.get_instance().selectEntities(eids)
-  entity_editor.get_instance().zoomAndCenter()
-}
-
-function doSelectEid(eid, mod) {
-  let eids = []
-  local found = false
-  foreach (k, _v in selectedEntities.get()) {
-    if (k == eid)
-      found = true
-    else if (mod)
-      eids.append(k)
-  }
-  if (!found)
-    eids.append(eid)
-  entity_editor.get_instance().selectEntities(eids)
-  gui_scene.resetTimeout(0.1, @() selectionStateEntities.trigger())
-}
-
-function statusLineEntities() {
-  let nMrk = numSelectedEntities.get()
-  let nSel = selectedEntities.get().len()
-
-  return {
-    watch = [numSelectedEntities, filteredEntitiesCount, selectedEntities]
-    size = FLEX_H
-    flow = FLOW_HORIZONTAL
-    children = [
-      {
-        rendObj = ROBJ_TEXT
-        size = FLEX_H
-        text = format(" %d %s marked, %d selected", nMrk, nMrk==1 ? "entity" : "entities", nSel)
-      }
-      {
-        rendObj = ROBJ_TEXT
-        halign = ALIGN_RIGHT
-        size = FLEX_H
-        text = format("%d listed", filteredEntitiesCount.get())
-        color = Color(170,170,170)
-      }
-    ]
-  }
-}
-
-function listEntityRow(eid, idx) {
-  return watchElemState(function(sf) {
-    let isSelected = selectionStateEntities.get()?[eid]
-    let textColor = isSelected ? colors.TextDefault : colors.TextDarker
-    let color = isSelected ? colors.Active
-      : sf & S_TOP_HOVER ? colors.GridRowHover
-      : colors.GridBg[idx % colors.GridBg.len()]
-
-    let extraName = getEntityExtraName(eid)
-    let extra = (extraName != null) ? $"/ {extraName}" : ""
-
-    local tplName = g_entity_mgr.getEntityTemplateName(eid) ?? ""
-    let name = removeSelectedByEditorTemplate(tplName)
-    let div = (tplName != name) ? "•" : "|"
-
-    local loadTypeVal = entity_editor.get_instance()?.getEntityRecordLoadType(eid) ?? 0
-    local indexVal = entity_editor.get_instance()?.getEntityRecordIndex(eid) ?? -1
-    local loadType = "MAIN"
-    local idSeparator = ""
-    local index = ""
-    if (loadTypeVal > 0 && indexVal >= 0) {
-      local loadTypeIndex = allSceneIndices.value[loadTypeVal]
-      local scene = allScenes.value[loadTypeIndex + indexVal]
-      if (scene.importDepth != 0) {
-        loadType = getSceneLoadTypeText(scene)
-        idSeparator = ":"
-        index = scene.index
-      }
-    } else {
-      loadType = getSceneLoadTypeText(loadTypeVal)
-      idSeparator = ":"
-      index = indexVal ?? -1
-    }
-
-    return {
-      rendObj = ROBJ_SOLID
-      size = FLEX_H
-      color
-      eid
-      behavior = Behaviors.Button
-
-      function onClick(evt) {
-        if (evt.shiftKey) {
-          local selCount = 0
-          foreach (_k, v in selectionStateEntities.get()) {
-            if (v)
-              ++selCount
-          }
-          if (selCount > 0) {
-            local idx1 = -1
-            local idx2 = -1
-            foreach (i, filteredEid in filteredEntities.get()) {
-              if (eid == filteredEid) {
-                idx1 = i
-                idx2 = i
-              }
-            }
-            foreach (i, filteredEid in filteredEntities.get()) {
-              if (selectionStateEntities.get()?[filteredEid]) {
-                if (idx1 > i)
-                  idx1 = i
-                if (idx2 < i)
-                  idx2 = i
-              }
-            }
-            if (idx1 >= 0 && idx2 >= 0) {
-              if (idx1 > idx2) {
-                let tmp = idx1
-                idx1 = idx2
-                idx2 = tmp
-              }
-              selectionStateEntities.mutate(function(value) {
-                for (local i = idx1; i <= idx2; i++) {
-                  let filteredEid = filteredEntities.get()[i]
-                  value[filteredEid] <- !evt.ctrlKey
-                }
-              })
-            }
-          }
-        }
-        else if (evt.ctrlKey) {
-          selectionStateEntities.mutate(function(value) {
-            value[eid] <- !value?[eid]
-          })
-        }
-        else {
-          applyEntitySelection(@(eid_, _cur) eid_==eid)
-        }
-      }
-
-      onDoubleClick = function(evt) {
-        if (locateOnDoubleClick) { doLocate(); return }
-        locateOnDoubleClick = true
-        gui_scene.resetTimeout(0.3, @() locateOnDoubleClick = false)
-        doSelectEid(eid, evt.ctrlKey)
-      }
-
-      children = {
-        rendObj = ROBJ_TEXT
-        text = $"{eid}  {div}  {name} {extra}  {loadType}{idSeparator}{index}"
-        color = textColor
-        margin = fsh(0.5)
-      }
-    }
-  })
-}
 
 function initEntitiesList() {
   let entities = entity_editor.get_instance()?.getEntities("") ?? []
@@ -680,14 +430,6 @@ function initEntitiesList() {
   allEntities(entities)
   selectionStateEntities.trigger()
 }
-
-entitySortState.subscribe(function(v) {
-  entitySortFuncCache = v?.func
-  selectedEntities.trigger()
-  selectionStateEntities.trigger()
-  initEntitiesList()
-  filterEntities()
-})
 
 function initLists() {
   initScenesList();
@@ -779,31 +521,6 @@ function mkScenesList() {
     }
   })
 
-  function listEntitiesContent() {
-    const maxVisibleItems = 250
-    let eRows = filteredEntities.get().slice(0, maxVisibleItems).map(@(eid, idx) listEntityRow(eid, idx))
-    if (eRows.len() < filteredEntities.get().len())
-      eRows.append(listRowMoreLeft(filteredEntities.get().len() - eRows.len(), eRows.len()))
-
-    return {
-      watch = [allEntities, selectedEntities, selectionStateEntities, filteredEntities]
-      size = FLEX_H
-      flow = FLOW_VERTICAL
-      children = eRows
-      behavior = Behaviors.Button
-    }
-  }
-
-  let scrollListEntities = makeVertScroll(listEntitiesContent, {
-    scrollHandlerEntities
-    rootBase = {
-      size = flex()
-      function onAttach() {
-        scrollEntitiesBySelection()
-      }
-    }
-  })
-
   return  @() {
     flow = FLOW_VERTICAL
     gap = fsh(0.5)
@@ -848,29 +565,6 @@ function mkScenesList() {
           textButton("Toggle editing", toggleEditing)
         ]
       }
-      {
-        size = FLEX_H
-        flow = FLOW_HORIZONTAL
-        children = [
-          mkSortModeButton(entitySortState)
-          { size = [sw(0.2), SIZE_TO_CONTENT] }
-          filterEntitiesByName
-        ]
-      }
-      {
-        size = flex()
-        children = scrollListEntities
-      }
-      statusLineEntities
-      {
-        flow = FLOW_HORIZONTAL
-        size = FLEX_H
-        halign = ALIGN_CENTER
-        children = [
-          textButton("Select", doSelect, {hotkeys=["^Enter"]})
-          textButton("Locate", doLocate, {hotkeys=["^Z"]})
-        ]
-      }
     ]
   }
 }
@@ -881,4 +575,3 @@ return {
   mkContent = mkScenesList
   saveState=true
 }
-

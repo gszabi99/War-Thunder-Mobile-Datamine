@@ -66,21 +66,21 @@ function getBlueprintGoodsId(config, shopCfg, uName) {
 }
 
 let curSelectedUnitPrice = Computed(@()
-  (campUnitsCfg.get()?[curSelectedUnit.value]?.costGold ?? 0) + (campUnitsCfg.get()?[curSelectedUnit.value]?.costWp ?? 0))
-let canEquipSelectedUnit = Computed(@() (curSelectedUnit.value in campMyUnits.get()) && (curSelectedUnit.value != curUnit.value?.name))
+  (campUnitsCfg.get()?[curSelectedUnit.get()]?.costGold ?? 0) + (campUnitsCfg.get()?[curSelectedUnit.get()]?.costWp ?? 0))
+let canEquipSelectedUnit = Computed(@() (curSelectedUnit.get() in campMyUnits.get()) && (curSelectedUnit.get() != curUnit.get()?.name))
 
 function onSetCurrentUnit() {
-  if (curSelectedUnit.value == null || curUnitInProgress.value != null)
+  if (curSelectedUnit.get() == null || curUnitInProgress.value != null)
     return
-  setCurrentUnit(curSelectedUnit.value)
+  setCurrentUnit(curSelectedUnit.get())
   tryResetToMainScene()
 }
 
 function onBuyUnit() {
-  if (curSelectedUnit.value == null || unitInProgress.value != null)
+  if (curSelectedUnit.get() == null || unitInProgress.value != null)
     return
-  let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, curSelectedUnit.value)
-  purchaseUnit(curSelectedUnit.value, bqPurchaseInfo)
+  let bqPurchaseInfo = mkBqPurchaseInfo(PURCH_SRC_UNITS, PURCH_TYPE_UNIT, curSelectedUnit.get())
+  purchaseUnit(curSelectedUnit.get(), bqPurchaseInfo)
 }
 
 function tryBuyUnit(isBlocked, canBuyUnit, unitName) {
@@ -122,7 +122,7 @@ let bgTextMessage = {
 }
 
 let infoBtn = infoBlueButton(
-  @() unitDetailsWnd({ name = hangarUnitName.value })
+  @() unitDetailsWnd({ name = hangarUnitName.get() })
   {
     size = [defButtonHeight, defButtonHeight]
     hotkeys = [["^J:Y", loc("msgbox/btn_more")]]

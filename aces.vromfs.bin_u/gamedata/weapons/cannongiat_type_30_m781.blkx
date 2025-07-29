@@ -47,6 +47,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/sapi_shell.ivf",
       "onHitChanceMultFire": 10.0,
       "relativeVelHitShift": [
         [
@@ -220,6 +221,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/sapi_shell.ivf",
       "onHitChanceMultFire": 10.0,
       "relativeVelHitShift": [
         [
@@ -393,6 +395,7 @@
         0.1,
         2.0
       ],
+      "shellAnimation": "video/shells_animations/sapi_shell.ivf",
       "onHitChanceMultFire": 10.0,
       "relativeVelHitShift": [
         [

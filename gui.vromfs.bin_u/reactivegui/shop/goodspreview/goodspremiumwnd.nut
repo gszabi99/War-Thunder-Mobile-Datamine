@@ -12,7 +12,7 @@ let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
 
 let premDescWndUid = "prem_desc_wnd_uid"
 
-let isOpened = keepref(Computed(@() previewType.value == GPT_PREMIUM))
+let isOpened = keepref(Computed(@() previewType.get() == GPT_PREMIUM))
 let premiumDescriptionWndBg = 0xDC000000
 let premiumDescriptionWidth = sw(50)
 let premiumDescriptionHeaderHeight = sh(8)
@@ -21,7 +21,7 @@ let premiumDescriptionDecorativeLineBg = 0xFFD4D4D4
 let insideIndent = hdpxi(12)
 let iconSize = hdpx(300)
 
-let premiumBonusesCfg = Computed(@() serverConfigs.value?.gameProfile.premiumBonuses)
+let premiumBonusesCfg = Computed(@() serverConfigs.get()?.gameProfile.premiumBonuses)
 let bonusMultText = @(v) $"{v}x"
 let infoText = Computed(function() {
   if (premiumBonusesCfg.value == null)
@@ -54,7 +54,7 @@ let premiumDescriptionHeader = @(){
     children = {
       rendObj = ROBJ_TEXT
       text = loc($"charServer/entitlement/PremiumAccount/header",
-        {days = previewGoods.value?.premiumDays})
+        {days = previewGoods.get()?.premiumDays})
     }.__update(fontMedium)
   }
 
@@ -65,8 +65,8 @@ let pricePlate = @() {
   padding = const [ hdpx(24), 0 ]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  children = textButtonPurchase(utf8ToUpper(previewGoods.value?.priceExt.priceText ?? ""),
-    @() buyPlatformGoods(previewGoods.value.id), fontMedium)
+  children = textButtonPurchase(utf8ToUpper(previewGoods.get()?.priceExt.priceText ?? ""),
+    @() buyPlatformGoods(previewGoods.get().id), fontMedium)
 }
 
 let premiumDescription = {

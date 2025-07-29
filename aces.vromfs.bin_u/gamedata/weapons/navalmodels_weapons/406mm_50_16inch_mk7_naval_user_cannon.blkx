@@ -147,7 +147,7 @@
         0.0
       ],
       "traceFreq": 1,
-      "tracer": "152mmGreen",
+      "tracer": "300mmGreenShip",
       "trail": "black"
     },
     "collisions": {
@@ -352,7 +352,7 @@
           0.0
         ],
         "traceFreq": 1,
-        "tracer": "152mmGreen",
+        "tracer": "300mmGreenShip",
         "trail": "black"
       },
       "collisions": {
@@ -835,7 +835,7 @@
           0.0
         ],
         "traceFreq": 1,
-        "tracer": "152mmGreen",
+        "tracer": "300mmGreenShip",
         "trail": "black"
       },
       "collisions": {

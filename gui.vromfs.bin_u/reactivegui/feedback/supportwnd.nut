@@ -201,8 +201,8 @@ let supportWnd = bgShaded.__merge({
     @() {
       watch = requestState
       size = flex()
-      children = requestState.value?.id != null ? mkFinishedMsg(requestState.value)
-        : requestState.value.isProcessing ? waitBlock
+      children = requestState.get()?.id != null ? mkFinishedMsg(requestState.get())
+        : requestState.get().isProcessing ? waitBlock
         : mkVerticalPannableArea(formBlock, { size = flex() })
     }
   ]
@@ -210,7 +210,7 @@ let supportWnd = bgShaded.__merge({
 })
 
 isLoggedIn.subscribe(@(v) v ? null : resetForm())
-isOpened.subscribe(@(v) !v && requestState.value.id != null
+isOpened.subscribe(@(v) !v && requestState.get().id != null
   ? onRequestResultSeen()
   : null)
 
@@ -229,7 +229,7 @@ registerScene("supportWnd", supportWnd, onClose, isOpened)
 
 let openSupportTicketWnd = @() isOpened(true)
 let openSupportTicketUrl = @() eventbus_send("openUrl", { baseUrl = loc("url/feedback/support") })
-let openSupportTicketWndOrUrl = @() canUseZendeskApi.value ? openSupportTicketWnd() : openSupportTicketUrl()
+let openSupportTicketWndOrUrl = @() canUseZendeskApi.get() ? openSupportTicketWnd() : openSupportTicketUrl()
 
 return {
   openSupportTicketWndOrUrl

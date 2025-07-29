@@ -68,7 +68,7 @@ function onPointerMove(evt) {
   if (!pointerState.active)
     return 0
 
-  if (optMoveCameraByDrag.value) {
+  if (optMoveCameraByDrag.get()) {
     let isPointerPosWithin = isPosWithin(pointerState.start, Point2(evt.x, evt.y))
     if (!isPointerPosWithin)
       onZoneSelectionMove(pointerState.start.x, pointerState.start.y, evt.x, evt.y)
@@ -92,7 +92,7 @@ function onPointerRelease(evt) {
   if (isPointerPosWithin) {
     pathSelectPoint(evt.x, evt.y)
   }
-  else if (optMoveCameraByDrag.value) {
+  else if (optMoveCameraByDrag.get()) {
     onZoneSelectionMove(pointerState.start.x, pointerState.start.y, evt.x, evt.y)
   }
 
@@ -115,7 +115,7 @@ function onGestureActive(evt) {
   }
 
   if (evt.type == GESTURE_DETECTOR_DRAG) {
-    if (optMoveCameraByDrag.value) {
+    if (optMoveCameraByDrag.get()) {
       cameraAddOffset(Point2(evt.dx, evt.dy))
       pathRefreshUi()
     }
@@ -132,7 +132,7 @@ function onGestureActive(evt) {
 
 function onGestureEnd(evt) {
   if (evt.type == GESTURE_DETECTOR_DRAG) {
-    if (!optMoveCameraByDrag.value) {
+    if (!optMoveCameraByDrag.get()) {
       onZoneSelectionMove(evt.x0, evt.y0, evt.x, evt.y)
       onZoneSelectionEnd()
     }

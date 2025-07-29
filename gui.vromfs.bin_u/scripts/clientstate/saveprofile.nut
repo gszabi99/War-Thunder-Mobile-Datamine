@@ -22,7 +22,7 @@ function saveProfileImpl(isLogged) {
 }
 
 function onSaveProfileTimer() {
-  if (isInLoadingScreen.value) {
+  if (isInLoadingScreen.get()) {
     logP($"Delay profile save because of in loading")
     isSaveDelayed = true
     return

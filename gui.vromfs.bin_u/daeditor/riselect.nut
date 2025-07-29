@@ -1,22 +1,19 @@
+import "DataBlock" as DataBlock
+import "math" as math
+from "string" import startswith, regexp
 from "%darg/ui_imports.nut" import *
 from "%darg/laconic.nut" import *
-from "string" import regexp
 from "%sqstd/ecs.nut" import *
-
-let DataBlock = require("DataBlock")
-
 let nameFilter = require("components/nameFilter.nut")
 let textButton = require("%daeditor/components/textButton.nut")
 let combobox = require("%daeditor/components/combobox.nut")
 
-let {showMsgbox} = require("%daeditor/components/msgbox.nut")
+let { showMsgbox } = require("%daeditor/components/msgbox.nut")
 
 let entity_editor = require_optional("entity_editor")
-let {propPanelVisible, selectedEntity, editorUnpause} = require("state.nut")
-let {registerPerCompPropEdit} = require("%daeditor/propPanelControls.nut")
+let { propPanelVisible, selectedEntity, editorUnpause } = require("state.nut")
+let { registerPerCompPropEdit } = require("%daeditor/propPanelControls.nut")
 
-let math = require("math")
-let {startswith} = require("string")
 
 
 let riSelectShown = Watched(false)
@@ -751,7 +748,7 @@ function riNavOf() {
   return riPages.get()
 }
 
-riGroup.subscribe(function(_v) {
+riGroup.subscribe_with_nasty_disregard_of_frp_update(function(_v) {
   riTagsShown(false)
 })
 
@@ -1117,7 +1114,7 @@ function openSelectRI(selectedRI, onSelect=null) {
 }
 
 let riSelectEid = Watched(INVALID_ENTITY_ID)
-propPanelVisible.subscribe(function(v) {
+propPanelVisible.subscribe_with_nasty_disregard_of_frp_update(function(v) {
   if (v && selectedEntity.get() != riSelectEid.get() && riSelectShown.get())
     riSelectShown(false)
 })
@@ -1164,7 +1161,7 @@ function openRISelectForEntity(eid) {
   riGotoPageByValue(riSelectValue.get())
 }
 
-riSelectShown.subscribe(function(v) {
+riSelectShown.subscribe_with_nasty_disregard_of_frp_update(function(v) {
   if (!v) {
     riTagsShown(false)
     riCloseEditGroups()

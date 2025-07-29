@@ -24,7 +24,7 @@ let hintForSkip = function() {
     return { watch = [showSkipHint, isGamepad] }
   else{
     let hintIcon = mkGamepadShortcutImage("ID_CONTINUE", defShortcutOvr)
-    let hintText = isGamepad.value ? loc("hints/skip") : loc("hints/skip_doubletap")
+    let hintText = isGamepad.get() ? loc("hints/skip") : loc("hints/skip_doubletap")
     return {
       watch = [showSkipHint, isGamepad]
       vplace = ALIGN_BOTTOM

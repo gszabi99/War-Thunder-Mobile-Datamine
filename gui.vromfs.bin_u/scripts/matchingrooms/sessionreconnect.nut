@@ -24,8 +24,8 @@ let rejectedRoomsIds = hardPersistWatched("session.rejectedRoomsIds", [])
 let isNeedReconnectMsg = Computed(@()
   reconnectData.value != null
     && !rejectedRoomsIds.value.contains(reconnectData.value.roomId)
-    && isInMenu.value
-    && sessionLobbyStatus.value == lobbyStates.NOT_IN_ROOM)
+    && isInMenu.get()
+    && sessionLobbyStatus.get() == lobbyStates.NOT_IN_ROOM)
 
 eventbus_subscribe("reconnectAfterAddons", @(c) joinRoom(c.roomId))
 
@@ -33,7 +33,7 @@ let getAttribUnitName = @(attribs)
   attribs?[$"pinfo_{myUserId.value}"].crafts_info[0].name
 
 function getMaxRankUnitName() {
-  let { allUnits = {} } = serverConfigs.value
+  let { allUnits = {} } = serverConfigs.get()
   let { units } = servProfile.value
   local resUnit = null
   foreach(unit in allUnits)
@@ -44,7 +44,7 @@ function getMaxRankUnitName() {
 
 function getAddonsToDownload(attribs) {
   let { game_mode_id = null } = attribs
-  let mode = allGameModes.value?[game_mode_id]
+  let mode = allGameModes.get()?[game_mode_id]
   let unitName = getAttribUnitName(attribs) ?? getMaxRankUnitName()
   log("[ADDONS] getModeAddonsInfo at sessionReconnect for unit: ", unitName)
   log("modeInfo = ", getModeAddonsDbgString(mode))
