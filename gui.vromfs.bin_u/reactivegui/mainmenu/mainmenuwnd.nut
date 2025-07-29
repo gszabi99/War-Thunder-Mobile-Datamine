@@ -1,11 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "app" import exitGame
 let { HangarCameraControl } = require("wt.behaviors")
-let { has_missing_resources_for_units } = require("contentUpdater")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
-let { resourcesDownloadVersion } = require("%appGlobals/updater/addonsState.nut")
 let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
 let { mkGamercard, gamercardHeight } = require("%rGui/mainMenu/gamercard.nut")
 let offerPromo = require("%rGui/shop/offerPromo.nut")
@@ -25,7 +20,6 @@ let mkUnitPkgForBattleDownloadInfo = require("%rGui/unit/mkUnitPkgForBattleDownl
 let unitDetailsWnd = require("%rGui/unitDetails/unitDetailsWnd.nut")
 let { hoverColor } = require("%rGui/style/stdColors.nut")
 let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
-let { registerAutoDownloadUnits } = require("%rGui/updater/updaterState.nut")
 let { openMsgBox } = require("%rGui/components/msgBox.nut")
 let { newbieOfflineMissions } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 let { allow_players_online_info, allow_subscriptions } = require("%appGlobals/permissions.nut")
@@ -70,30 +64,14 @@ let centerBlockBottomMargin = defButtonHeight + battleInfoBlockMinHeight
 let unitNameBlockHeight = hdpx(60)
 let unitNameBgColor = 0x90000000
 
-let mainMenuUnitToShow = Computed(function() {
+let mainMenuUnitToShow = keepref(Computed(function() {
   if (!isMainMenuAttached.get())
     return null
-  return curUnit.get()
-    ?? campUnitsCfg.get().reduce(@(res, unit) res == null || res.rank > unit.rank ? unit : res)
-})
-
-let mainMenuUnitNameToShow = keepref(Computed(@() mainMenuUnitToShow.get()?.name))
-
-mainMenuUnitNameToShow.subscribe(@(unitId) unitId == null ? null : setHangarUnit(unitId))
-
-registerAutoDownloadUnits(Computed(function(prev) {
-  if (!isReadyToFullLoad.get() || mainMenuUnitToShow.get() == null)
-    return prevIfEqual(prev, {})
-
-  let { name, platoonUnits = [] } = mainMenuUnitToShow.get()
-  let res = {}
-  res[getTagsUnitName(name)] <- true
-  foreach (p in platoonUnits)
-    res[getTagsUnitName(p.name)] <- true
-
-  let has = resourcesDownloadVersion.get()  
-  return prevIfEqual(prev, has_missing_resources_for_units(res.keys(), true) ? res : {})
+  return curUnit.get()?.name
+    ?? campUnitsCfg.get().reduce(@(res, unit) res == null || res.rank > unit.rank ? unit : res)?.name
 }))
+
+mainMenuUnitToShow.subscribe(@(unitId) unitId == null ? null : setHangarUnit(unitId))
 
 let mkUnitName = @(unit, sf) {
   vplace = ALIGN_CENTER

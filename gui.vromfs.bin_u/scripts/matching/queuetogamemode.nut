@@ -165,7 +165,7 @@ function queueToGameModeImpl(mode) {
     let locs = localizeAddons(addonsToDownload)
     addonsToDownload.each(@(a) log($"[ADDONS] Ask update addon {a} on try to join queue (cur version = '{addonsVersions.get()?[a] ?? "-"}')"))
 
-    let isAlreadyInProgress = isEqual(downloadInProgress.get()?.addons, addonsToDownload.reduce(@(res, v) res.$rawset(v, true), {}))
+    let isAlreadyInProgress = isEqual(downloadInProgress.get(), addonsToDownload.reduce(@(res, v) res.$rawset(v, true), {}))
     local sizeMb = isAlreadyInProgress ? getDownloadLeftMbNotUpdatable() : 0
     if (sizeMb <= 0)
       sizeMb = (getAddonsSize(addonsToDownload, addonsSizes.get()) + (MB / 2)) / MB

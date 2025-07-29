@@ -2,19 +2,20 @@ from "%globalsDarg/darg_library.nut" import *
 let { fabs, round } = require("math")
 let { get_time_msec } = require("dagor.time")
 let { clearTimer, resetTimeout, setInterval } = require("dagor.workcycle")
-let { has_missing_resources_for_units } = require("contentUpdater")
+let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
 let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+let { getUnitPkgs } = require("%appGlobals/updater/campaignAddons.nut")
 let { visibleOffer, onOfferPromoAttach, onOfferPromoDetach, offerPurchasingState
 } = require("offerState.nut")
 let { activeOffersByGoods, mkOfferByGoodsPurchasingState
 } = require("offerByGoodsState.nut")
 let { mkOffer } = require("%rGui/shop/goodsView/offers.nut")
 let { offerW, offerH } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { openGoodsPreview, previewType, getAllTagsUnitsToShowGoods } = require("%rGui/shop/goodsPreviewState.nut")
+let { openGoodsPreview, previewType, getAddonsToShowGoods } = require("%rGui/shop/goodsPreviewState.nut")
 let { buyPlatformGoods } = require("platformGoods.nut")
 let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { openDownloadUnitsWnd } = require("%rGui/updater/updaterState.nut")
+let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 let { eventGift, eventGiftGap } = require("%rGui/event/eventGift.nut")
 
 
@@ -36,11 +37,12 @@ let getOfferXByIdx = @(idx) idx * offerW
 let getOfferIdxByX = @(x) round(x / offerW).tointeger()
 
 function previewOffer() {
-  if (visibleOffer.get() == null || !isReadyToFullLoad.get())
+  if (visibleOffer.get() == null)
     return
 
-  let reqUnits = getAllTagsUnitsToShowGoods(visibleOffer.get(), serverConfigs.get())
-  if (reqUnits.len() == 0 || !has_missing_resources_for_units(reqUnits.keys(), true)) {
+  let reqAddonsToShowOffer = (!isReadyToFullLoad.get() || visibleOffer.get() == null) ? []
+    : getAddonsToShowGoods(visibleOffer.get(), serverConfigs.get()?.allUnits, hasAddons.get())
+  if (reqAddonsToShowOffer.len() == 0) {
     openGoodsPreview(visibleOffer.get().id)
     if (previewType.get() == null) { 
       buyPlatformGoods(visibleOffer.get())
@@ -51,7 +53,7 @@ function previewOffer() {
     return
   }
 
-  openDownloadUnitsWnd(reqUnits.keys(), "previewOfferByClick", { paramStr1 = visibleOffer.get().id },
+  openDownloadAddonsWnd(reqAddonsToShowOffer, "previewOfferByClick", { paramStr1 = visibleOffer.get().id },
     "openGoodsPreview", { id = visibleOffer.get().id })
   sendOfferBqEvent("openInfoFromBanner", visibleOffer.get().campaign)
 }
@@ -59,19 +61,24 @@ function previewOffer() {
 
 function previewOfferByGoods(id) {
   let offer = activeOffersByGoods.get()?[id]
-  if (offer == null || !isReadyToFullLoad.get())
+  if (offer == null)
     return
 
-  let reqUnits = getAllTagsUnitsToShowGoods(offer, serverConfigs.get())
-  if (reqUnits.len() == 0 || !has_missing_resources_for_units(reqUnits.keys(), true)) {
-    openGoodsPreview(id)
-    if (previewType.get() == null) 
-      buyPlatformGoods(offer)
-    return
+  if (isReadyToFullLoad.get()) {
+    let unit = serverConfigs.get()?.allUnits[offer?.unitUpgrades[0] ?? offer?.units[0]]
+    if (unit != null) {
+      let reqAddons = getUnitPkgs(unit.name, unit.mRank).filter(@(a) !hasAddons.get()?[a])
+      if (reqAddons.len() != 0) {
+        openDownloadAddonsWnd(reqAddons, "previewGoodsOfferByClick", { paramStr1 = id },
+          "openGoodsPreview", { id })
+        return
+      }
+    }
   }
 
-  openDownloadUnitsWnd(reqUnits.keys(), "previewGoodsOfferByClick", { paramStr1 = id },
-    "openGoodsPreview", { id })
+  openGoodsPreview(id)
+  if (previewType.get() == null) 
+    buyPlatformGoods(offer)
 }
 
 function updateAnimScroll() {

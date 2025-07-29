@@ -52,11 +52,14 @@ function refreshOfflineMissionsList() {
 function runOfflineBattle(unitName = null, missionName = null) {
   unitName = unitName ?? savedUnitName.get()
   missionName = missionName ?? savedOBDebugMissionName.get() ?? savedMissionName.get()
-  if(unitName not in (serverConfigs.get()?.allUnits ?? {}))
+  let allUnits = serverConfigs.get()?.allUnits ?? {}
+  let realUnitName = $"{unitName}_nc"
+
+  if(unitName not in allUnits && realUnitName not in allUnits)
     return
 
   log($"OflineStartBattle: start mission {missionName} for {unitName}")
-  let unit = serverConfigs.get()?.allUnits[unitName] ?? {}
+  let unit = allUnits?[unitName] ?? allUnits?[realUnitName] ?? {}
   let battleData = {
     isCustomOfflineBattle = true
     reward = { unitName }

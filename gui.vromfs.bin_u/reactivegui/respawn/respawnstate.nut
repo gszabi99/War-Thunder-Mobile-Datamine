@@ -13,7 +13,7 @@ let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft, respawnUnitI
 } = require("%appGlobals/clientState/respawnStateBase.nut")
 let { getUnitTags, getUnitType, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
 let { AIR, TANK } = require("%appGlobals/unitConst.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+let { isInBattle, isSingleMissionOverrided } = require("%appGlobals/clientState/clientState.nut")
 let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
 let { getDefaultBulletsForSpawn } = require("%rGui/weaponry/bulletsCalc.nut")
 let servProfile = require("%appGlobals/pServer/servProfile.nut")
@@ -83,10 +83,12 @@ let respawnSlots = Computed(function() {
   let sMask = spareSlotsMask.value
   let defMods = respawnUnitItems.get()
   res.append(mkSlot(0, respawnUnitInfo.get(), defMods, rMask, sMask))
-  foreach (idx, sUnit in respawnUnitInfo.get()?.platoonUnits ?? [])
-    res.append(mkSlot(idx + 1, sUnit, defMods, rMask, sMask))
-  foreach (sUnit in respawnUnitInfo.get()?.lockedUnits ?? [])
-    res.append(mkSlot(res.len(), sUnit, defMods).__update({ reqLevel = sUnit?.reqLevel ?? 0, isLocked = true }))
+  if (!isSingleMissionOverrided.get()) {
+    foreach (idx, sUnit in respawnUnitInfo.get()?.platoonUnits ?? [])
+      res.append(mkSlot(idx + 1, sUnit, defMods, rMask, sMask))
+    foreach (sUnit in respawnUnitInfo.get()?.lockedUnits ?? [])
+      res.append(mkSlot(res.len(), sUnit, defMods).__update({ reqLevel = sUnit?.reqLevel ?? 0, isLocked = true }))
+  }
   if (!hasRespawnSeparateSlots.get()) {
     let { level = -1, isCollectible = false, isPremium = false, isUpgraded = false } = respawnUnitInfo.get()
     let skins = respawnUnitSkins.get() ?? {}

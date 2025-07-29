@@ -70,6 +70,11 @@ let mkBotOpt = @(value, locId, maxValue) {
 function setMisBlkParamsContent(campaign) {
   let allUnits = Computed(@() serverConfigs.get()?.allUnits ?? {})
   let gmCfg = mkGameModeByCampaign(getCampaignStatsId(campaign))
+  let isCommonUnit = Computed(function() {
+    let unit = allUnits.get()?[savedUnitName.get()] ?? allUnits.get()?[$"{savedUnitName.get()}_nc"] ?? {}
+    let { isPremium = false, isHidden = false } = unit
+    return !isPremium && !isHidden
+  })
 
   let maxBotsCount = Computed(function() {
     let maxBotsByCfg = gmCfg.get()?.mission_decl.maxBots
@@ -92,6 +97,7 @@ function setMisBlkParamsContent(campaign) {
     ctrlType = OCT_LIST
     value = savedUnitPresetLevel
     list = unitPresetsLevelList
+    visible = isCommonUnit
     valToString = @(v) loc($"mainmenu/offlineBattles/unitPreset/{v}")
   }
 
@@ -102,7 +108,7 @@ function setMisBlkParamsContent(campaign) {
     padding = hdpx(40)
     gap = hdpx(40)
     function onAttach() {
-      let selectedUnit = allUnits.get()?[savedUnitName.get()] ?? {}
+      let selectedUnit = allUnits.get()?[savedUnitName.get()] ?? allUnits.get()?[$"{savedUnitName.get()}_nc"] ?? {}
       savedBotsCount.set(maxBotsCount.get())
       savedBotsRank.set(selectedUnit?.mRank ?? defMaxBotsRank)
     }

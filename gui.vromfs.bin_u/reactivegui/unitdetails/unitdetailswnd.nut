@@ -16,7 +16,7 @@ let { mkLeftBlockUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
 let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
 let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
-let { hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
+let { hasNotDownloadedPkgForHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
 let { btnOpenUnitAttrBig } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
 let mkBtnOpenCustomization = require("%rGui/unitCustom/mkBtnOpenCustomization.nut")
@@ -86,7 +86,7 @@ let dmViewerSwitchComp = mkDmViewerSwitchComp(baseUnit)
 let btnopenUnitCustomization = mkBtnOpenCustomization(baseUnit, statsWidth)
 
 let unitInfoPanelPlace = @() {
-  watch = [curCampaign, hasHangarUnitResources]
+  watch = [curCampaign, hasNotDownloadedPkgForHangarUnit]
   size = FLEX_V
   pos = [0, infoPanelOffsetY]
   padding = [ getInfoPanelTopPadByCampaign(curCampaign.get()), 0, 0, 0 ]
@@ -100,7 +100,7 @@ let unitInfoPanelPlace = @() {
           touchMarginPriority = TOUCH_BACKGROUND
         })
       dmViewerSwitchComp
-      !hasHangarUnitResources.get() ? null : btnopenUnitCustomization
+      hasNotDownloadedPkgForHangarUnit.get() ? null : btnopenUnitCustomization
     ]
   })
 }
@@ -121,8 +121,8 @@ let rewardsButton = @() {
 }
 
 let testDriveButton = @() {
-  watch = [can_debug_units, hasHangarUnitResources, hasUnseenRewards]
-  children = !can_debug_units.get() || !hasHangarUnitResources.get() ? null
+  watch = [can_debug_units, hasNotDownloadedPkgForHangarUnit, hasUnseenRewards]
+  children = !can_debug_units.get() || hasNotDownloadedPkgForHangarUnit.get() ? null
     : textButtonPrimary("TEST DRIVE",
         @() startTestFlight(unitToShow.get()),
         { hotkeys = ["^J:X | Enter"], ovr = hasUnseenRewards.get() ? { size = leftBtnSizeWithRewardBtn } : {} })

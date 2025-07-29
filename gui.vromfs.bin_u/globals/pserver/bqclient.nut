@@ -133,11 +133,11 @@ function sendLoadingAddonsBqEvent(action, addons = null, data = {}) {
     platform = get_platform_string_id(),
     connectionStatus = connectionStatus.get(),
     allowLimitedConnectionDownload = allowLimitedDownload.get(),
-    addonsInProgress = ";".join((downloadInProgress.get()?.addons ?? downloadInProgress.get()?.units)?.keys().sort() ?? [])
+    addonsInProgress = ";".join(downloadInProgress.get().keys().sort())
   })
   if (addons != null) {
     params.addons <- ";".join((clone addons).sort())
-    params.isSameAddonsDownloading <- isEqual(downloadInProgress.get()?.addons, addons.reduce(@(res, v) res.$rawset(v, true), {}))
+    params.isSameAddonsDownloading <- isEqual(downloadInProgress.get(), addons.reduce(@(res, v) res.$rawset(v, true), {}))
   }
   eventbus_send("sendBqEvent", { tableId = "loading_addons_1", data = addEventTime(params) })
 }
