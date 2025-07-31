@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/rewardType.nut" import *
 let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 let { isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
 
@@ -17,7 +18,7 @@ function getStepsToNextFixed(lootbox, sConfigs, sProfile) {
     if (steps.tointeger() > opened
         && (steps.tointeger() < openingToNext || openingToNext == 0)
         && id in rewardsCfg
-        && !isRewardEmpty(rewardsCfg[id], sProfile)
+        && (rewardsCfg[id].findvalue(@(v) v.gType == G_LOOTBOX) != null || !isRewardEmpty(rewardsCfg[id], sProfile))
         && null == fr?.lockedBy.findvalue(@(l) (total?[l] ?? 0) > 0))
       openingToNext = steps.tointeger()
   }

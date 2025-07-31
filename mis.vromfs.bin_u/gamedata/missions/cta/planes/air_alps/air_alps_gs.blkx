@@ -60,6 +60,8 @@
       "country_allies": "ussr",
       "restoreType": "attempts",
       "optionalTakeOff": false,
+      "missionProgressType": "airGS",
+      "showAIKilllog": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,

@@ -138,6 +138,10 @@ let nickFrames = {
   army_token = @(n) $"⛍{n}⛎"
   eagle_wings = @(n) $"⛑{n}⛒"
   stars_and_stripes = @(n) $"⛓{n}⛔"
+  totems = @(n) $"⛥{n}⛥"
+  feathers = @(n) $"⛨{n}⛩"
+  roach_tomahawk = @(n) $"⛦{n}⛧"
+  drums = @(n) $"⛪{n}⛫"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

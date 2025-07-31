@@ -61,6 +61,8 @@
       "restoreType": "attempts",
       "difficulty": "",
       "optionalTakeOff": false,
+      "missionProgressType": "airGS",
+      "showAIKilllog": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,

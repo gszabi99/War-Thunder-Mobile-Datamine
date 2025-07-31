@@ -176,6 +176,7 @@ function mkBasesIndicators(scoreParams, basesBlockHeight, iconSize) {
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
     halign
+    onAttach = updateBZones
     children = array(baseCount.get()).map(function(_, i) {
       let b = Computed(@(prev) isEqual(bases.get()?[i], prev) ? prev : bases.get()?[i])
       return @() {

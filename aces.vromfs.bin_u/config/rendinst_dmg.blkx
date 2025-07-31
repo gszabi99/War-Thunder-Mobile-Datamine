@@ -10549,6 +10549,130 @@
       "immortal": true
     },
     {
+      "name": "canyon_cliff_big_a",
+      "immortal": true
+    },
+    {
+      "name": "canyon_cliff_big_b",
+      "immortal": true
+    },
+    {
+      "name": "canyon_cliff_big_c",
+      "immortal": true
+    },
+    {
+      "name": "canyon_cliff_hole",
+      "immortal": true
+    },
+    {
+      "name": "canyon_cliff_huge_a",
+      "immortal": true
+    },
+    {
+      "name": "canyon_cliff_huge_b",
+      "immortal": true
+    },
+    {
+      "name": "canyon_cliff_huge_c",
+      "immortal": true
+    },
+    {
+      "name": "canyon_cliff_platform_a",
+      "immortal": true
+    },
+    {
+      "name": "canyon_cliff_platform_b",
+      "immortal": true
+    },
+    {
+      "name": "canyon_cliff_platform_c",
+      "immortal": true
+    },
+    {
+      "name": "canyon_cliff_platform_c_part",
+      "immortal": true
+    },
+    {
+      "name": "canyon_rock_a",
+      "immortal": true
+    },
+    {
+      "name": "canyon_rock_b",
+      "immortal": true
+    },
+    {
+      "name": "city_highway_overpass_b_high_skew",
+      "immortal": true
+    },
+    {
+      "name": "city_highway_viaduct_a",
+      "immortal": true
+    },
+    {
+      "name": "city_highway_viaduct_b_bend",
+      "immortal": true
+    },
+    {
+      "name": "city_highway_viaduct_c",
+      "immortal": true
+    },
+    {
+      "name": "city_highway_viaduct_d",
+      "immortal": true
+    },
+    {
+      "name": "city_highway_viaduct_e",
+      "immortal": true
+    },
+    {
+      "name": "suspencion_bridge_a",
+      "immortal": true
+    },
+    {
+      "name": "suspencion_bridge_a_column_a",
+      "immortal": true
+    },
+    {
+      "name": "suspencion_bridge_a_column_b",
+      "immortal": true
+    },
+    {
+      "name": "suspencion_bridge_a_frame_a",
+      "immortal": true
+    },
+    {
+      "name": "suspencion_bridge_a_road_a",
+      "immortal": true
+    },
+    {
+      "name": "suspencion_bridge_a_road_b",
+      "immortal": true
+    },
+    {
+      "name": "suspencion_bridge_a_road_c",
+      "immortal": true
+    },
+    {
+      "name": "suspencion_bridge_a_strap_a",
+      "immortal": true
+    },
+    {
+      "name": "suspencion_bridge_a_strap_b",
+      "immortal": true
+    },
+    {
+      "name": "suspencion_bridge_a_strap_c",
+      "immortal": true
+    },
+    {
+      "name": "suspencion_bridge_a_strap_d",
+      "immortal": true
+    },
+    {
+      "name": "viaduct_auto_metal_frame_700x16x145_a",
+      "immortal": true
+    },
+    {
       "name": "tree_populus_medium_a",
       "destructionImpulse": 20000.0,
       "canopyTriangle": false,

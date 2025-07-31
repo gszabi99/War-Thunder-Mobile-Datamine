@@ -1916,7 +1916,7 @@
       "stabilityReductionAfterPenetration": 0.0,
       "stucking": 0.7,
       "stuckingAngle": 45.0,
-      "bulletType": "apds_fs_long_l30_tank",
+      "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [
         0.23,
@@ -1924,9 +1924,6 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
-      "gbufferModelName": "tank_shell_apdsfs_ld_30_su",
-      "modelName": "tank_shell_apdsfs_ld_30_su",
-      "penetratorModelName": "tank_shell_apdsfs_ld_30_su_deform",
       "bulletName": "125mm_tapna",
       "onHitChanceMultExplFuel": 0.1,
       "relativeVelHitShift": [

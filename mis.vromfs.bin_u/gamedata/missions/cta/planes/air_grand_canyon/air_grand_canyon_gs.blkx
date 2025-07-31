@@ -51,6 +51,8 @@
       "environment": "Day",
       "weather": "clear",
       "noRespawns": false,
+      "missionProgressType": "airGS",
+      "showAIKilllog": true,
       "locName": "missions/_GS/medium_tank;location/air_grand_canyon",
       "locDesc": "missions/_GS/desc",
       "scoreLimit": 3800,

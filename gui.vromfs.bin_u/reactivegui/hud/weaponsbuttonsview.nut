@@ -50,6 +50,7 @@ let periscopIconWidth = touchButtonSize / 2
 let periscopIconHeight = (periscopIconWidth * 0.7).tointeger()
 let surfacingIconSize = (touchButtonSize * 0.4).tointeger()
 let changeMarkSize = hdpxi(20)
+let altImageSize = 1.0
 
 let gunImageBySizeOrder = [
   { image = "ui/gameuiskin#hud_ship_calibre_main_3_left.svg", relImageSize = 1.3 }
@@ -474,6 +475,7 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
   let isBulletBelt = actionItem?.isBulletBelt
     && (key == TRIGGER_GROUP_PRIMARY || key == TRIGGER_GROUP_MACHINE_GUN)
   let vibrationMult = getOptValue(OPT_HAPTIC_INTENSITY_ON_SHOOT)
+  let needUseAltImg = alternativeImage && actionItem?.isAlternativeImage
 
   function onStopTouch() {
     set_can_lower_camera(false)
@@ -554,7 +556,7 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
 
   let btnSize = scaleEven(touchButtonSize, scale)
   let btnTouchSize = scaleEven(touchSizeForRhombButton, scale)
-  let imgSize = scaleEven(relImageSize * defImageSize, scale)
+  let imgSize = scaleEven((needUseAltImg ? altImageSize : relImageSize) * defImageSize, scale)
   let zRadiusX = scaleEven(zoneRadiusX, scale)
   let zRadiusY = scaleEven(zoneRadiusY, scale)
   return @() {
@@ -572,7 +574,7 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
         rendObj = ROBJ_IMAGE
         size = [imgSize, imgSize]
         pos = [0, -hdpx(5)] 
-        image = svgNullable(alternativeImage && actionItem?.isAlternativeImage ? alternativeImage : getImage(unitType.value), imgSize)
+        image = svgNullable(needUseAltImg ? alternativeImage : getImage(unitType.value), imgSize)
         keepAspect = KEEP_ASPECT_FIT
         color = (!isAvailable && !isOnCd.get()) || isDisabled.get() || (hasAim && !(actionItem?.aimReady ?? true)) || !canShoot.get() || isBlocked.get()
           ? imageDisabledColor

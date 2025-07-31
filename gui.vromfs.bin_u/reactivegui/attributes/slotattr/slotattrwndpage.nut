@@ -89,15 +89,14 @@ let slotAttrPage = @() {
   size = FLEX_H
   onAttach = @() setInterval(incBtnAnimRepeat, startIncBtnGlare)
   onDetach = @() clearTimer(startIncBtnGlare)
-  children = slotUnitName.get() == "" ? null
-    : {
-        key = curCategory.get()
-        size = FLEX_H
-        flow = FLOW_VERTICAL
-        children = (curCategory.get()?.attrList ?? [])
-          .map(@(attr, idx) mkAttrRow(slotUnitName.get(), curCategoryId.get(), attr, idx))
-        animations = wndSwitchAnim
-      }
+  children = {
+    key = curCategory.get()
+    size = FLEX_H
+    flow = FLOW_VERTICAL
+    children = (curCategory.get()?.attrList ?? [])
+      .map(@(attr, idx) mkAttrRow(slotUnitName.get(), curCategoryId.get(), attr, idx))
+    animations = wndSwitchAnim
+  }
 }
 
 return { slotAttrPage }

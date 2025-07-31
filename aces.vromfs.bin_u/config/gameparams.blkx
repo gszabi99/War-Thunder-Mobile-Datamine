@@ -18651,7 +18651,7 @@
   },
   "wreckage": {
     "useInteractiveObject": true,
-    "interactiveObjectTTL": 60.0
+    "interactiveObjectTTL": 30.0
   },
   "flightModelToFlightModelCollision": {
     "friction": 1.5,
