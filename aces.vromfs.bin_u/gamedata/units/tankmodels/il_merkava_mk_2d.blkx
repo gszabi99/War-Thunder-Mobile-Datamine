@@ -47,7 +47,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "minRelativeTankCameraThreshold": 1.17,
+  "minRelativeTankCameraThreshold": 1.22,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "smokeScreenActivateTime": 5.0,
@@ -2461,57 +2461,6 @@
         }
       },
       {
-        "trigger": "gunner5",
-        "triggerGroup": "smoke",
-        "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
-        "weaponType": "rockets",
-        "useEmitter": true,
-        "emitter": "emtr_mortar_flame_13",
-        "emitterGenRange": [
-          1,
-          1
-        ],
-        "emitterGenFmt": "emtr_mortar_flame_%02d",
-        "createGunEffects": true,
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "allowableDelta": 360.0,
-        "salvo": 1,
-        "speedYaw": 24.0,
-        "speedPitch": 15.0,
-        "fireConeAngle": 1.0,
-        "bullets": 30,
-        "salvoAmount": 100.0,
-        "ChainfireTime": 0.0,
-        "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 1000.0,
-        "AttackMaxRadius": 1000.0,
-        "AttackMaxHeight": 1000.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 1.5,
-        "errMeasureVel": 0.0,
-        "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 0.0,
-        "errMeasureVelDir": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "turret": {
-          "head": "bone_grenade",
-          "gun": "bone_grenade"
-        },
-        "limits": {
-          "yaw": [
-            -0.0,
-            0.0
-          ],
-          "pitch": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
         "trigger": "gunner6",
         "triggerGroup": "commander",
         "blk": "gameData/Weapons/dummy_weapon.blk",
@@ -3128,7 +3077,7 @@
     "headPos": [
       0.0,
       3.6,
-      -13.7
+      -14.5
     ],
     "headPosOnShooting": [
       -1.5,
@@ -3821,57 +3770,6 @@
               }
             },
             {
-              "trigger": "gunner5",
-              "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
-              "weaponType": "rockets",
-              "useEmitter": true,
-              "emitter": "emtr_mortar_flame_13",
-              "emitterGenRange": [
-                1,
-                1
-              ],
-              "emitterGenFmt": "emtr_mortar_flame_%02d",
-              "createGunEffects": true,
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "allowableDelta": 360.0,
-              "salvo": 1,
-              "speedYaw": 24.0,
-              "speedPitch": 15.0,
-              "fireConeAngle": 1.0,
-              "bullets": 30,
-              "salvoAmount": 100.0,
-              "ChainfireTime": 0.0,
-              "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 1000.0,
-              "AttackMaxRadius": 1000.0,
-              "AttackMaxHeight": 1000.0,
-              "accuracyAir": 0.0,
-              "accuracyGnd": 1.5,
-              "errMeasureVel": 0.0,
-              "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 0.0,
-              "errMeasureVelDir": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errTargetting": 3.0,
-              "errExplTime": 0.0,
-              "turret": {
-                "head": "bone_grenade",
-                "gun": "bone_grenade"
-              },
-              "limits": {
-                "yaw": [
-                  -0.0,
-                  0.0
-                ],
-                "pitch": [
-                  0.0,
-                  0.0
-                ]
-              }
-            },
-            {
               "trigger": "gunner6",
               "triggerGroup": "commander",
               "blk": "gameData/Weapons/dummy_weapon.blk",
@@ -3915,9 +3813,10 @@
               "createGunEffects": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
+              "shotFreq": 0.2,
               "allowableDelta": 360.0,
-              "salvo": 2,
-              "salvoDelay": 0.5,
+              "salvo": 1,
+              "salvoDelay": 0.0,
               "speedYaw": 24.0,
               "speedPitch": 15.0,
               "fireConeAngle": 1.0,

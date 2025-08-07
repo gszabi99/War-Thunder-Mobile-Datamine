@@ -386,22 +386,22 @@ Target akan terkunci secara otomatis selama kamu tetap mengarahkan kursor ke tar
 "hints/wtm_tutorial_plane/following_time_to_lock";"Target locks automatically as long as you keep the cursor on the target";"La cible se verrouille automatiquement tant que vous gardez le réticule dessus";"Il bersaglio viene agganciato automaticamente finchè mantieni il cursore su di esso";"Das Ziel wird automatisch fixiert, solange du den Cursor auf dem Ziel lässt";"El objetivo se fija automáticamente mientras mantengas el cursor sobre el objetivo";"Захват происходит автоматически, пока вы держите курсор на цели";"Ціль фіксується автоматично, доки ви тримаєте на ній курсор";"Cel jest automatycznie blokowany, dopóki kursor znajduje się na nim";"O alvo é bloqueado automaticamente enquanto mantiver o cursor sobre o alvo";"İmleci hedef üzerinde tuttuğunuz sürece hedef otomatik olarak kilitlenir";"Cíl se uzamkne automaticky, dokud je kurzor na cíli.";"Τώρα μπορείτε να κλειδώσετε τον στόχο";"Target akan terkunci secara otomatis selama kamu tetap mengarahkan kursor ke target";"ทีนี้คุณสามารถล็อกเป้าหมายได้แล้ว";"목표물에 커서를 계속 올려둘 경우, 자동으로 고정됩니다.";"只\t需\t一\t直\t将\t准\t星\t对\t准\t目\t标，\t即\t可\t自\t动\t进\t行\t锁\t定";"カーソルを\t標的に\t合わせ\t続けると\t自動で\tロックされます";"只\t需\t一\t直\t將\t準\t星\t對\t準\t目\t標，\t即\t可\t自\t動\t進\t行\t鎖\t定";;
 "hints/wtm_tutorial_plane/following_start_turning";"Now your aircraft will start following the target
 Keep the aim cursor at enemy plane";"Votre avion va maintenant commencer à suivre la cible
-Maintenez le curseur de la souris sur l'avion ennemi";"Ora il tuo aereo inizierà a seguire il bersaglio
+Maintenez le curseur de visée sur l'avion ennemi";"Ora il tuo aereo inizierà a seguire il bersaglio
 Tieni il puntatore sull'aereo nemico";"Dein Flugzeug wird nun beginnen, das Ziel zu verfolgen.
-Halte den Mauszeiger auf das feindliche Flugzeug gerichtet";"Ahora tu avión empezará a seguir al objetivo
-Mantén el cursor de puntería del ratón en el avión enemigo";"Сейчас самолёт начнёт следовать за целью
+Halte den Ziel-Cursor auf das feindliche Flugzeug gerichtet";"Ahora tu avión empezará a seguir al objetivo
+Mantén el cursor de puntería en el avión enemigo";"Сейчас самолёт начнёт следовать за целью
 Удерживайте курсор на вражеском самолете";"Тепер ваш літак почне відстежувати ціль
 Утримуйте курсор на ворожому літаку";"Teraz samolot zacznie podążać za celem
-Trzymaj kursor myszy na wrogim samolocie";"Agora, a sua aeronave começará a seguir o alvo
-Mantenha o cursor da mira do mouse no avião inimigo";"Artık uçağınız hedefi takip etmeye başladı
-Fareyle nişan imlecini düşman uçağının üzerinde tutun";"Nyní začne letadlo sledovat cíl
-Udržuj kurzor myši na nepřátelském letadle";"Τώρα το αεροσκάφος σας θα αρχίσει να ακολουθεί τον στόχο
+Trzymaj kursor na wrogim samolocie";"Agora, a sua aeronave começará a seguir o alvo
+Mantenha o cursor de mira do rato no avião inimigo";"Artık uçağınız hedefi takip etmeye başladı
+Nişan imlecini düşman uçağının üzerinde tutun";"Nyní začne letadlo sledovat cíl
+Udržuj kurzor míření na nepřátelském letadle";"Τώρα το αεροσκάφος σας θα αρχίσει να ακολουθεί τον στόχο
 Κρατήστε τον κέρσορα του ποντικιού πάνω στο εχθρικό αεροπλάνο";"Sekarang pesawatmu akan mulai mengikuti target
-Tahan kursor Mouse Aim pada pesawat musuh";"จากนี้อากาศยานของคุณจะเริ่มติดตามเป้าหมาย
+Tahan kursor bidik pada pesawat musuh";"จากนี้อากาศยานของคุณจะเริ่มติดตามเป้าหมาย
 รักษาตำแหน่งเคอร์เซอร์เอาไว้ที่เครื่องบินศัตรู";"이제 항공기가 목표를 따라가기 시작합니다.
 적기에게 커서를 맞추세요.";"现\t在\t您\t的\t战\t机\t正\t追\t击\t目\t标
 注\t意\t让\t瞄\t准\t环\t一\t直\t对\t准\t敌\t机";"これであなたの\t機体は\t標的を\t追跡し\t始めます
-狙いを\t定め、\tマウス\t照準\tカーソルを\t敵航空機上で\t維持しましょう";"接\t下\t來，\t你\t的\t戰\t機\t會\t開\t始\t追\t蹤\t目\t標
+狙いを\t定め、\t照準\tカーソルを\t敵航空機上で\t維持しましょう";"接\t下\t來，\t你\t的\t戰\t機\t會\t開\t始\t追\t蹤\t目\t標
 記\t得\t要\t讓\t瞄\t准\t環\t繼\t續\t瞄\t準\t著\t敵\t方\t飛\t機";;
 "hints/wtm_tutorial_plane/following_keep_aiming";"Keep the cursor at the enemy plane";"Maintenez le curseur sur l'avion ennemi";"Mantieni il cursore sull'aereo nemico";"Halte den Cursor auf dem gegnerischen Flugzeug";"Mantén el cursor en el avión enemigo";"Удерживайте курсор на самолете врага";"Утримуйте курсор на ворожому літаку";"Utrzymuj kursor na samolocie wroga";"Mantenha o cursor no avião inimigo";"İmleci düşman uçağında tutun";"Udržuj kurzor na nepřátelském letadle";"Κρατήστε τον κέρσορα στο εχθρικό αεροπλάνο";"Pertahankan kursor pada pesawat musuh";"รักษาตำแหน่งเคอร์เซอร์ไว้ที่เครื่องบินศัตรู";"커서를 적기에 계속 맞추십시오";"让\t瞄\t准\t环\t一\t直\t对\t准\t敌\t机";"カーソルを\t敵航空機に\t合わせ\t続けましょう";"讓\t瞄\t准\t環\t一\t直\t瞄\t準\t著\t敵\t方\t飛\t機";;
 "hints/wtm_tutorial_plane/following_hint";"As you can see plane itself follows the target when cursor near it";"Comme vous pouvez le voir, l'avion suit lui-même la cible lorsque le curseur se trouve à proximité";"Come puoi vedere l'aereo stesso segue il bersaglio quando il cursore è vicino";"Wie du sehen kannst, folgt das Flugzeug selbst dem Ziel, wenn sich der Cursor in dessen Nähe befindet";"Como puedes ver, el propio avión sigue al objetivo cuando el cursor se acerca a él";"Как видите, самолет сам следует за целью, когда курсор рядом с ней";"Як бачите, літак сам переслідує ціль, поки на неї наведено курсор";"Jak widać, samolot sam podąża za celem, gdy kursor znajduje się w jego pobliżu";"Como pode ver, o próprio avião segue o alvo quando o cursor está perto dele";"Gördüğünüz gibi, imleç yakinda olduğunda uçak hedefi kendi başına takip eder";"Jak vidíš, letadlo samo sleduje cíl, když se k němu přiblíží kurzor";"Όπως μπορείτε να δείτε, το αεροπλάνο ακολουθεί τον στόχο όταν ο κέρσορας είναι κοντά του";"Seperti yang kamu lihat, pesawat itu sendiri akan mengikuti target saat kursor berada di dekatnya";"เครื่องบินจะติดตามศัตรูเมื่อเคอร์เซอร์อยู่ใกล้ดังที่เห็นอยู่";"보시다시피 비행기가 커서 주변에 있는 적을 따라가고 있습니다.";"如\t您\t所\t见，\t当\t瞄\t准\t环\t位\t于\t目\t标\t周\t边\t时，\t飞\t机\t会\t自\t动\t跟\t随\t目\t标\t飞\t行";"ご\t覧の\t通り、\tカーソルを\t標的に\t近づけると、\t航空機が\tターゲットを\t追従します";"可\t以\t看\t到，\t飛\t機\t會\t自\t動\t調\t整\t航\t向，\t追\t蹤\t瞄\t准\t環\t周\t圍\t的\t目\t標";;

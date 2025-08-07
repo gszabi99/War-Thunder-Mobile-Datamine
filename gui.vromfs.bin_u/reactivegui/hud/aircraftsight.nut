@@ -17,6 +17,8 @@ let isSightAttached = Watched(false)
 let needSightBlink = keepref(Computed(@() isSightAttached.get() && (elementBlinks.get()?.crosshair ?? false)))
 let needDestinationBlink = keepref(Computed(@() isSightAttached.get() && (elementBlinks.get()?.mouseAim ?? false)))
 let airDestinationOpacity = 0.45
+let hasTargetName = Computed(@() hasTarget.get() && targetUnitName.get() != null && targetUnitName.get() != "")
+
 
 let sightTrigger = {}
 let sightAnimatons = [{
@@ -33,16 +35,16 @@ needSightBlink.subscribe(@(v) v ? anim_start(sightTrigger) : anim_request_stop(s
 needDestinationBlink.subscribe(@(v) v ? anim_start(destTrigger) : anim_request_stop(destTrigger))
 
 let airTarget = @() {
-  watch = [hasTarget, targetUnitName, startCrosshairAnimationTime, TargetLockTime]
+  watch = [hasTargetName, targetUnitName, startCrosshairAnimationTime, TargetLockTime]
   transform = {}
   behavior = Indicator
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  children = !hasTarget.value ? null
+  children = !hasTargetName.get() ? null
     : [
-        targetName(targetUnitName.get() ?? "")
-        mkTargetSelectionData(startCrosshairAnimationTime.value + TargetLockTime.value,
-          TargetLockTime.value, calc_str_box(targetUnitName.get() ?? "", fontTiny))
+        targetName
+        mkTargetSelectionData(startCrosshairAnimationTime.get() + TargetLockTime.get(),
+          TargetLockTime.get(), calc_str_box(targetUnitName.get(), fontTiny))
       ]
 }
 

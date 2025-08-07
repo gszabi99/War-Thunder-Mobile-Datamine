@@ -3,7 +3,7 @@ let { Indicator } = require("wt.behaviors")
 let { get_mission_time } = require("mission")
 let { eventbus_subscribe } = require("eventbus")
 let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { targetUnitName } = require("%rGui/hudState.nut")
+let { targetUnitName, hasTarget } = require("%rGui/hudState.nut")
 let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 let color = 0xFFFFFFFF
@@ -23,8 +23,7 @@ let targetImage = getSvgImage("target_lock_corner", targetSize)
 let targetOffset = [0, - hdpx(20)]
 
 eventbus_subscribe("on_delayed_target_select:show", function(data) {
-  let { lockTime = 0.0, endTime = 0.0, name = "" } = data
-  targetUnitName.set(name)
+  let { lockTime = 0.0, endTime = 0.0 } = data
   cooldownEndTime.set(endTime)
   cooldownTime.set(lockTime)
   showTargetName.set(true)
@@ -35,6 +34,10 @@ eventbus_subscribe("on_asm_capture:show", function(data) {
   asmCaptureEndTime.set(endTime)
   asmCaptureTime.set(lockTime)
 })
+
+let nameTrigger = {}
+
+let hasTargetName = Computed(@() showTargetName.get() && targetUnitName.get() != null && targetUnitName.get() != "")
 
 function hide_asm() {
   asmCaptureEndTime.set(0.0)
@@ -53,6 +56,11 @@ isInBattle.subscribe(function(_) {
 })
 eventbus_subscribe("on_asm_capture:hide", @(_) hide_asm())
 eventbus_subscribe("on_delayed_target_select:hide", @(_) hide_delayed_target_select())
+hasTarget.subscribe(function(value){
+  if (value == false)
+    showTargetName.set(false)
+})
+targetUnitName.subscribe(@(_) anim_start(nameTrigger))
 
 let mkTargetCorner = @(cdLeft, delay, ovr) {
   rendObj = ROBJ_PROGRESS_CIRCULAR
@@ -121,31 +129,32 @@ function mkTargetSelectionData(endTime, cooldown, textSize) {
   }
 }
 
-let targetName = @(text) {
+let targetName = @() {
+  watch = targetUnitName
   pos = targetOffset
   rendObj = ROBJ_TEXT
   color
   opacity = 1.0
-  text
+  text = targetUnitName.get()
   animations = [
     {
       prop = AnimProp.opacity, from = 0.0, to = 1.0, play = true,
-      duration = 0.5
+      duration = 0.6, trigger = nameTrigger
     }
   ]
 }.__update(fontTiny)
 
 let targetSelectionProgress = @() {
-  watch = [showTargetName, cooldownTime, cooldownEndTime, targetUnitName]
+  watch = [hasTarget, hasTargetName, cooldownTime, cooldownEndTime, targetUnitName]
   transform = defTransform
   behavior = Indicator
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  children = [
-    showTargetName.value ? targetName(targetUnitName.value) : null
-    targetUnitName.get() == null || targetUnitName.get() == "" ? null
-      : mkTargetSelectionData(cooldownEndTime.value, cooldownTime.value, calc_str_box(targetUnitName.get(), fontTiny))
-  ]
+  children = !hasTargetName.get() ? null
+    : [
+        targetName
+        mkTargetSelectionData(cooldownEndTime.get(), cooldownTime.get(), calc_str_box(targetUnitName.get(), fontTiny))
+      ]
 }
 
 let cornerSize = [hdpx(75), hdpx(35)]

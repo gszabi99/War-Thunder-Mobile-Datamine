@@ -14,6 +14,7 @@ let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle, se
 let { has_option_tank_alternative_control } = require("%appGlobals/permissions.nut")
 let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { abTests, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
+let { isLoggedIn } = require("%appGlobals/loginState.nut")
 let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
 let { tankMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
 } = require("%rGui/options/chooseMovementControls/tankMoveControlType.nut")
@@ -44,6 +45,12 @@ let tankAltControlTypeDefault = Computed(@()
     ? tankAltControlTypeButtonList[0]
     : tankAltControlTypeButtonList[1])
 let currentTankAltControlTypeRaw = mkOptionValue(OPT_TANK_ALTERNATIVE_CONTROL_TYPE)
+let setDefaultValueTankAltControlType = @() currentTankAltControlTypeRaw.get() == null
+  ? currentTankAltControlTypeRaw.set(tankAltControlTypeDefault.get())
+  : null
+if (isLoggedIn.get())
+  setDefaultValueTankAltControlType()
+isLoggedIn.subscribe(@(v) v ? setDefaultValueTankAltControlType() : null)
 let currentTankAltControlType = Computed(@()
   validate(currentTankAltControlTypeRaw.get() ?? tankAltControlTypeDefault.get(), tankAltControlTypeButtonList))
 let tankAltControlType = {

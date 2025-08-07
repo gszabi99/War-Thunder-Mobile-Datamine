@@ -685,6 +685,18 @@ let mkDiscountOfferText = @(title, rStyle) {
     }.__update(rStyle.textStyle),
   rStyle.boxSize - textPadding[1] * 2, [rStyle.textStyleSmall, rStyle.textStyle]))
 
+function mkReceivedUnit(unit, rStyle) {
+  let isReceived = Computed(@() unit.name in campMyUnits.get())
+
+  return @() {
+    watch = isReceived
+    size = flex()
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = isReceived.get() ? mkRewardReceivedMark(rStyle) : null
+  }
+}
+
 function mkDiscountOfferUnit(goods, discount, rStyle) {
   let unit = getBestUnitByGoods(goods, serverConfigs.get())
   let { currencies = {}, offerClass = null } = goods
@@ -709,6 +721,7 @@ function mkDiscountOfferUnit(goods, discount, rStyle) {
         mkDiscountOfferText(loc("discountUpgrade"), rStyle)
         mkDiscountOfferRank(unit)
         mkDiscountOfferTag(discount)
+        mkReceivedUnit(unit, rStyle)
       ], size)
 }
 

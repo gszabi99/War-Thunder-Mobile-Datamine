@@ -6,10 +6,38 @@ let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { contactsRequest, contactsRegisterHandler, canRequestToContacts } = require("contactsState.nut")
 
 let AGEING_TIME_MSEC = 600000
+let maxUidInRequest = 100
 let allPublicInfo = hardPersistWatched("allPublicInfo", {})
 let delayedUids = mkWatched(persist, "delayedUids", {})
 let inProgressUids = Watched({})
 let needRequest = Computed(@() canRequestToContacts.value && delayedUids.value.len() > 0 && inProgressUids.value.len() == 0)
+
+function requestPublicInfo() {
+  if (!needRequest.get())
+    return
+
+  let uids = delayedUids.get()
+  local usersToSend = []
+  local uidsToSend = {}
+  if (uids.len() > maxUidInRequest) {
+    usersToSend = uids.keys().slice(0, maxUidInRequest)
+    uidsToSend = usersToSend.reduce(function(res, uid) {
+      res[uid] <- true
+      return res
+    }, {})
+    inProgressUids.set(uidsToSend)
+    delayedUids.set(uids.filter(@(_, v) !uidsToSend?[v]))
+  } else {
+    usersToSend = uids.keys()
+    inProgressUids.set(uids)
+    delayedUids.set({})
+    uidsToSend = uids
+  }
+  logP($"Request public info for {usersToSend.len()} contacts")
+  contactsRequest("get_public_users_info",
+    { data = { users = usersToSend, tags = ["general"] } },
+    { uids = uidsToSend })
+}
 
 contactsRegisterHandler("get_public_users_info", function(result, context) {
   let { uids } = context
@@ -21,21 +49,9 @@ contactsRegisterHandler("get_public_users_info", function(result, context) {
   foreach(uid, _ in uids)
     upd[uid] <- (result?[uid] ?? {}).__merge(timeUpd)
   if (upd.len() != 0)
-    allPublicInfo(allPublicInfo.value.__merge(upd))
+    allPublicInfo(allPublicInfo.get().__merge(upd))
+  requestPublicInfo()
 })
-
-function requestPublicInfo() {
-  if (!needRequest.value)
-    return
-
-  let uids = delayedUids.value
-  delayedUids({})
-  logP($"Request public info for {uids.len()} contacts")
-  inProgressUids(uids)
-  contactsRequest("get_public_users_info",
-    { data = { users = uids.keys(), tags = ["general"] } },
-    { uids })
-}
 
 needRequest.subscribe(@(v) v ? deferOnce(requestPublicInfo) : null)
 if (needRequest.value)

@@ -1,7 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { get_game_mode, GM_TRAINING } = require("mission")
+let { get_game_mode, GM_TRAINING, get_local_mplayer } = require("mission")
+let { is_ready_to_die } = require("guiMission")
+let { getSpareSlotsMask } = require("guiRespawn")
 let { get_current_mission_info_cached } = require("blkGetters")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { btnBEscUp, EMPTY_ACTION, btnB } = require("%rGui/controlsMenu/gpActBtn.nut")
@@ -99,6 +101,14 @@ function openLeaveBattleMsg() {
   let missionName = get_current_mission_info_cached()?.name ?? ""
   let isTutorial = get_game_mode() == GM_TRAINING && missionName.startswith("tutorial")
   let campaign = Computed(@() battleCampaign.get() == "" ? curCampaign.get() : battleCampaign.get())
+  let allSlotsMask = (1 << respawnSlots.get().len()) - 1
+  local spareSlotsMask = allSlotsMask & getSpareSlotsMask()
+  let currentUnitName = get_local_mplayer()?.aircraftName
+  let currentSlotIdx = respawnSlots.get().findindex(@(v) v.name == currentUnitName)
+  let currentSlotMask = currentSlotIdx != null ? 1 << currentSlotIdx : 0
+  if ((currentSlotMask & spareSlotsMask) == 0)
+    spareSlotsMask = (spareSlotsMask | currentSlotMask)
+  let isFreeSlotsAvailable = (allSlotsMask & ~spareSlotsMask) != 0
   removeModalWindow(LEAVE_BATTLE_MSG_UID)
   addModalWindow({
     key = LEAVE_BATTLE_MSG_UID
@@ -106,7 +116,7 @@ function openLeaveBattleMsg() {
       watch = [canDeserter, campaign]
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
-      children = menuContent(canDeserter.get() && !isTutorial, campaign.get())
+      children = menuContent(canDeserter.get() && !isTutorial && (!is_ready_to_die() || isFreeSlotsAvailable), campaign.get())
     }
     onClick = EMPTY_ACTION
   })
